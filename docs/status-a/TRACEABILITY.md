@@ -1,8 +1,8 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-The explicit corrected-source Darcy entry variant is qualified for the first2days
+The explicit corrected-source Darcy entry variant is canonically admitted for the first2days
 of the original112-node/five-domain macro/Rutter/Feddes/DRAMET3/numeric-heat
-application; PR1455 canonical admission is pending. A default-zero entry-width
+application by PR1455, actual merge `8842707c73e0f11f69190eb1c6070dd70550916d`. A default-zero entry-width
 input retains the literal historical gate. Explicit1e-4cm selection applies a
 bounded cubic gate with its matching production Jacobian and the default-off
 anchored Cauchy proposal ceiling. This is a corrected-source variant, not exact
@@ -19,6 +19,11 @@ through2.495days; neither5days nor seasonal macro execution is qualified.
 MC-NUT01/MC-SOL01 remain CLOSED WITH EXCLUSIONS. Authority:
 `integration/mc-sol01/drainage/ENTRY_RAMP_STATUS.json`,
 `ENTRY_RAMP_CONTRACT.md` and `integration/audits/verify_entry_ramp_current.py`.
+The canonical `ENTRY_RAMP_ADMISSION.json` closes this bounded unit WITH EXCLUSIONS
+and supersedes the executed contract's qualification-time proposal label. Actual
+merge has the complete qualified tree `4a03dc765087226253baa4133415f264475c2408`
+exactly;23 owner controls,10 retained481 controls,27 unchanged FSI35 dependencies
+and strict docs pass on the actual merge. Full historical issue1386 remains open.
 
 The actual original SWMACRO1/SWSOLU0 water application is canonically admitted
 by PR1454 for the first1.0539999999964493days on the unmodified112-node/five-domain

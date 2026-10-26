@@ -1,12 +1,12 @@
 {
   "work_unit": "HIST-INTEGRATION01 bounded corrected-source Darcy entry transition",
   "baseline": "362cf65f0d98a1620ab2a245e11e61c84b4946ff",
-  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Explicit width1e-4cm, anchored Cauchy3, actual original112-node/five-domain water/macro/Rutter/Feddes/DRAMET3/numeric heat; first2days only",
   "contract": "integration/mc-sol01/drainage/ENTRY_RAMP_CONTRACT.md",
   "scientific_delta": {
@@ -66,9 +66,7 @@
     "source_event_restart_files_exact": 6
   },
   "remaining_implementation_blockers": [],
-  "remaining_evidence_blockers": [
-    "Actual canonical merge and postimage verification"
-  ],
+  "remaining_evidence_blockers": [],
   "exclusions": [
     "Exact4.3.1 equivalence for the corrected-source ramp",
     "Literal historical entry gate beyond the already admitted1.054day scope",
@@ -101,5 +99,6 @@
     "restart_member": "runs/two-O2/restart.bin",
     "binding": "c734f831902e3df27a99761b0882ab94810f477855b2a860b11c2f4992d3adde"
   },
-  "next_action": "Admit only the bounded corrected-source two-day variant after current source/raw/retained481/FSI35/docs gates. Longer corrected-source execution remains CENSORED; do not repeat unchanged long runs."
+  "next_action": "Bounded corrected-source two-day work unit is closed. Longer native/seasonal scope remains excluded; next diagnosis uses the retained exact O2 binary/day2 file and existing opt-in observations, not an unchanged long rerun.",
+  "admission": "integration/mc-sol01/drainage/ENTRY_RAMP_ADMISSION.json"
 }

@@ -1,0 +1,367 @@
+{
+  "work_unit": "HIST-INTEGRATION01 bounded corrected-source Darcy entry transition",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Explicit width1e-4cm, anchored Cauchy3, actual original112-node/five-domain water/macro/Rutter/Feddes/DRAMET3/numeric heat; first2days only",
+  "pr": 1455,
+  "actual_merge": "8842707c73e0f11f69190eb1c6070dd70550916d",
+  "published_head": "a3bfd0b4351e3c40ec2f83d02bce869759f83cba",
+  "published_tree": "4a03dc765087226253baa4133415f264475c2408",
+  "actual_tree": "4a03dc765087226253baa4133415f264475c2408",
+  "qualified_complete_tree_exact": true,
+  "qualified_local_candidate": "5439a32e",
+  "qualified": true,
+  "canonically_admitted": true,
+  "physical_results": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 0,
+    "current_NUT_separate_process_restarts": 0,
+    "current_matrix_days": 0,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": false,
+    "bounded_macro_rutter_numeric_heat": true,
+    "heat_configurations": 6,
+    "heat_native_processes": 12,
+    "additional_atomic_heat_rejections_per_process": 8,
+    "typed_temperature_restart_exact": true,
+    "temperature_rollback_and_retry_exact": true,
+    "water_max_cm": 8.400195144510347e-17,
+    "observed_last_heat_residual_j_cm2": 1.3100631690576847e-14,
+    "prior_NUT_evidence_retained": true,
+    "file_macro_heat_restart": true,
+    "original_native_rutter_preparation": true,
+    "original_crop_periods": 2,
+    "prepared_days": 481,
+    "source_records": 3085,
+    "source_O0_O2_typed_restart_exact": true,
+    "source_water_max_cm": 6.938893903907228e-17,
+    "source_refinement_max_cm": 1.1102230246251565e-16,
+    "original_etpot_cases_per_optimization": 864,
+    "existing_ET_procedures_source_exact": true,
+    "native_full_water_dispatch": true,
+    "prior_matrix5_exact_runtime_preservation_retained": true,
+    "original_native_macro_geometry": true,
+    "original_macro_nodes": 112,
+    "original_macro_domains": 5,
+    "geometry_O0_O2_exact": true,
+    "retained_geometry_rows": 112,
+    "existing_reader_materializer_exact": true,
+    "macroinit": true,
+    "canonical_macro_initial_state": true,
+    "whole_water_dispatch": true,
+    "original_native_macro_initial_preparation": true,
+    "old_trial_profile_source_exact": true,
+    "exactly_dry_tapered_tip_supported": true,
+    "nonempty_degenerate_tip_still_rejects": false,
+    "initial_O0_O2_exact": true,
+    "initial_macro_water_cm": 1.6314932432432439,
+    "initial_dynamic_volume_cm": 0.1446817003924756,
+    "initial_rapid_kd": 0.8785980153694543,
+    "initial_mass_residual_cm": -2.220446049250313e-16,
+    "current_bounded_thermal_native_processes": 4,
+    "current_bounded_thermal_predecessor_exact": true,
+    "prior_geometry_negative_file_lookup_not_inherited": true,
+    "bounded_macro_root_drain_numeric_heat": true,
+    "plain_substep_Feddes_Rutter_demand_coupled": true,
+    "source_dramet3_drainage_only": true,
+    "joint_runtime_configurations": 2,
+    "joint_runtime_native_processes": 2,
+    "joint_atomic_rejections_per_process": 4,
+    "joint_root_oracle_error_cm_day": 0.0,
+    "joint_water_max_cm": 1.4333152720258369e-16,
+    "joint_observed_last_heat_max_j_cm2": 1.2878587085651816e-14,
+    "joint_physical_results": {
+      "O0-root": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 0.0,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -7.327471962526033e-15,
+          18.423619895748566,
+          15.73913816074576,
+          13.103856065048616,
+          12.22833903841947
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O0-drain": {
+        "root_cm": 0.0,
+        "drainage_cm": 1.5392762909863298e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -9.325873406851315e-15,
+          18.42362040337392,
+          15.73913909111119,
+          13.10385578368468,
+          12.228338764860961
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O0-joint": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 1.5347070702254295e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -1.2878587085651816e-14,
+          18.42361989454072,
+          15.739138158240278,
+          13.103856062294973,
+          12.228339037325535
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O2-root": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 0.0,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -7.327471962526033e-15,
+          18.423619895748566,
+          15.73913816074576,
+          13.103856065048616,
+          12.22833903841947
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O2-drain": {
+        "root_cm": 0.0,
+        "drainage_cm": 1.5392762909863298e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -9.325873406851315e-15,
+          18.42362040337392,
+          15.73913909111119,
+          13.10385578368468,
+          12.228338764860961
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O2-joint": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 1.5347070702254295e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -1.2878587085651816e-14,
+          18.42361989454072,
+          15.739138158240278,
+          13.103856062294973,
+          12.228339037325535
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    },
+    "ordinary_project_build_projection_exact": true,
+    "original112_five_domain_short_water_application": true,
+    "native_source_partition_explicit": true,
+    "native_tested_end_day": 1.0539999999964493,
+    "native_O0_O2_exact": true,
+    "native_water_processes": 10,
+    "native_fresh_process_restarts": 4,
+    "native_file_negative_controls": 14,
+    "native_endpoint_exact_files": 12,
+    "native_water_max_cm": 2.76818498678999e-14,
+    "native_macro_cell_max_cm": 2.702356963331472e-16,
+    "native_matrix_max_cm": 1.1163596089214245e-14,
+    "native_combined_max_cm": 1.1360920884606607e-14,
+    "native_supplied_source_max_cm": 1.1360920884606607e-14,
+    "native_observed_last_heat_max_j_cm2": 1.3670731213721865e-12,
+    "native_root_cm": 0.0020585546502544278,
+    "native_rapid_cm": 0.06670119145648745,
+    "native_direct_macro_cm": 0.006520829829061748,
+    "native_pond_macro_cm": 0.0,
+    "wet_tapered_tip_supported": true,
+    "trace_depth_roundoff_floor": true,
+    "seasonal_native_macro": false,
+    "corrected_native_entry_ramp_two_days": true,
+    "corrected_native_tested_end_day": 2.0,
+    "literal_native_tested_end_day": 1.0539999999964493,
+    "entry_transition_width_cm": 0.0001,
+    "anchored_cauchy_ceiling": true,
+    "entry_native_O0_O2_exact": true,
+    "entry_native_processes": 8,
+    "entry_fresh_process_restarts": 2,
+    "entry_exact_endpoint_files": 6,
+    "entry_unsupported_atomic_controls": 12,
+    "entry_input_restart_controls": 10,
+    "entry_water_max_cm": 2.76818498678999e-14,
+    "entry_pond_to_macro_cm": 0.3757493044168161,
+    "entry_width_sensitivity": {
+      "max_head_cm": 4.624201761060931e-06,
+      "max_theta": 2.0386261012639295e-09,
+      "runoff_cm": 0.0,
+      "max_water_flux_cm": 7.575398086601126e-10
+    },
+    "current_literal_default_prefix_exact": true,
+    "current_joint_rootless_default_exact": true,
+    "five_day_complete": false
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ENTRY_RAMP_EVIDENCE.tar.xz.b64",
+    "sha256": "d5ecb236180a9c797f53b4ace10a4293a2c24ecffb47fae7948f4a117628f3cb",
+    "bytes": 5985168,
+    "members": 384
+  },
+  "actual_postimage_validation": {
+    "owner_controls": 23,
+    "retained481_controls": 10,
+    "unchanged_FSI35_dependencies": 27,
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "fresh_native_rerun_after_merge": false,
+    "source_tree_exact": true
+  },
+  "exclusions": [
+    "Exact4.3.1 equivalence for the corrected-source ramp",
+    "Literal historical entry gate beyond the already admitted1.054day scope",
+    "Five-day and seasonal macro application",
+    "Native macro year-boundary restart",
+    "Macro chemistry and unqualified crop/heat variants",
+    "Portable performance guarantee"
+  ],
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "longer_scope": "Five-day and seasonal macro application remain excluded/CENSORED; issue1386 full original equivalence is not closed",
+  "contract_status_note": "The exact executed ENTRY_RAMP_CONTRACT.md retains its qualification-time Proposed/Not admitted label; this canonical receipt supersedes that label only within the stated two-day scope."
+}
