@@ -1011,6 +1011,20 @@ module mod_fmr_serialized_reference_backend
 
 contains
 
+  logical function macro_numeric_heat_valid(p) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    ! Existing numeric endpoint heat owner in the combined MIGMAC10 layout.
+    ! Other macro/thermal cross-products remain fail closed.
+    ok=.false.
+    if(.not.p%soil_temperature_active.or..not.p%macropore_active.or. &
+       .not.p%boesten_evaporation_active.or..not.allocated(p%soil_temperature))return
+    if(p%root_extraction_active.or.p%drainage_response_active.or.p%frost_active.or.p%snow_active.or. &
+       p%picard_conductivity_iteration.or.p%elasticity_active.or.p%hysteresis_active)return
+    if(.not.p%soil_temperature%ready())return
+    if(p%soil_temperature%node_count()/=p%active_nodes)return
+    ok=p%soil_temperature%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC
+  end function macro_numeric_heat_valid
+
   logical function joint_drainage_trace_valid(p) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::p
     type(process_hydraulic_view_t)::view
@@ -2533,7 +2547,8 @@ contains
       if (parameters%snow_active .or. (parameters%drainage_response_active.and. &
           .not.joint_drainage_trace_valid(parameters)) .or. &
           (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
-           .not.soil_n_heat_trace) .or. &
+           .not.soil_n_heat_trace.and..not.(macro_numeric_heat_valid(parameters).and. &
+             template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE)) .or. &
           parameters%black_evaporation_active .or. (parameters%boesten_evaporation_active.and. &
           (template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.or. &
            parameters%macropore_active.or.allocated(forcing%rutter)).and. &
@@ -2659,7 +2674,8 @@ contains
       end if
       if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
           parameters%root_compensation%method /= ROOT_COMP_OFF .or. &
-          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          parameters%snow_active .or. (parameters%soil_temperature_active.and. &
+            .not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters))) .or. &
           (parameters%macropore_active .neqv. composed_rutter_boesten_macro) .or. &
           parameters%black_evaporation_active .or. &
           (parameters%boesten_evaporation_active .neqv. composed_rutter_boesten_macro) .or. &
@@ -2769,7 +2785,8 @@ contains
            template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE .and. &
            template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) .or. &
           parameters%snow_active .or. (parameters%soil_temperature_active.and. &
-          template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION) .or. &
+          template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.and. &
+          .not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters))) .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
@@ -3302,7 +3319,9 @@ contains
              self%macropore_policy%valid() .and. self%macropore_policy%enabled .and. &
              self%soil_water_selection%uses_reference() .and. &
              .not. parameters%snow_active .and. &
-             .not. parameters%soil_temperature_active .and. .not. parameters%black_evaporation_active .and. &
+             (.not.parameters%soil_temperature_active.or. &
+               (self%rutter_active.and.macro_numeric_heat_valid(parameters))) .and. &
+             .not. parameters%black_evaporation_active .and. &
              .not. parameters%drainage_response_active .and. &
              .not. self%fixed_weir_surface_water_active .and. &
              parameters%macropore%valid_for_nodes(parameters%active_nodes)
@@ -3436,7 +3455,8 @@ contains
         ok = ok .and. .not. self%black_evaporation_active .and. self%boesten_evaporation_active .and. &
              .not. allocated(parameters%black_evaporation) .and. allocated(parameters%boesten_evaporation) .and. &
              self%soil_water_selection%uses_reference() .and. .not. parameters%snow_active .and. &
-             (.not.parameters%soil_temperature_active.or.self%accepted_water_flux_trace_enabled) .and. &
+             (.not.parameters%soil_temperature_active.or.self%accepted_water_flux_trace_enabled.or. &
+               (self%rutter_active.and.macro_numeric_heat_valid(parameters))) .and. &
              .not. self%fixed_weir_surface_water_active .and. &
              (.not.parameters%drainage_response_active.or. &
               (self%accepted_water_flux_trace_enabled.and.joint_drainage_trace_valid(parameters))) .and. &

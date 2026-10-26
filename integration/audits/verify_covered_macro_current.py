@@ -11,6 +11,7 @@ def projection():
   end+=1;t=t[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[end:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_heat_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD');assert not git('status','--porcelain','--',*SCIENCE),'unpersisted covered receipt source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign covered receipt delta';assert reader(PARENT)==projection(),'predecessor owner body changed'
  for p,h in s['postimages'].items():assert sha(reader(p))==h,p
@@ -52,12 +53,16 @@ def validate(f):
  m=js('matrix/RESULT.json');assert m['status']=='CURRENT_NATIVE_MATRIX5_O0_O2_EXACT'and m['days']==5 and m['nodes']==112 and not m['full481_reexecuted'];assert all(e['returncode']==0 for e in m['events'])
  for opt in ['O0','O2']:assert m['results']['baseline/'+opt]==m['results']['current/'+opt]
  return dict(qualified=True,covered_O0_O2_exact=True,positive_internal_transfer=True,covered_depths=[3,4],positive_probe_interval_day=1e-3/4096,covered_configurations=4,covered_native_processes=8,corruption_controls_per_substep=12,original_replay_rollback_and_FMR_restore_assertions_retained=True,trace_ON_OFF_physical_stdout_exact=True,current_uncovered_configurations=20,current_uncovered_native_processes=40,current_NUT_runs=8,current_NUT_separate_process_restarts=16,current_matrix_days=5,current_matrix_artifacts_predecessor_exact=True,full481_reexecuted=False,full_original_Andelst=False,macro_chemistry_or_heat_admitted=False,canonically_admitted=False)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_heat_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_heat_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return json.loads(capsule()['parent/fsi35.json'])
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_macro_heat_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()

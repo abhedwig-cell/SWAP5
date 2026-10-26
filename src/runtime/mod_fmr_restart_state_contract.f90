@@ -134,7 +134,9 @@ contains
                state%macropore%num_nodes == state%active_nodes .and. &
                ieee_is_finite(state%boesten_evaporation%spev) .and. state%boesten_evaporation%spev >= 0.0_real64 .and. &
                ieee_is_finite(state%boesten_evaporation%saev) .and. state%boesten_evaporation%saev >= 0.0_real64 .and. &
-               .not. allocated(state%snow) .and. .not. allocated(state%soil_temperature)
+               .not. allocated(state%snow)
+          if(allocated(state%soil_temperature))matches=matches.and.state%soil_temperature%ready().and. &
+            state%soil_temperature%node_count()==state%active_nodes
         class default
           matches = .false.
         end select

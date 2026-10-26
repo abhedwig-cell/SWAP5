@@ -1,5 +1,21 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+The bounded Reference Rutter/Boesten/macropore/numeric-heat runtime is now
+locally qualified at checked O0/O2. The existing temperature state is advanced
+alongside the original water owners and retained exactly through typed FMR
+restart, rollback and smaller retry. Six configurations/twelve native processes
+pass; eight additional invalid heat configurations per process reject atomically.
+Independent water-receipt budgets remain below8.41e-17cm; maximum observed last
+heat-step residual is1.32e-14J/cm2, not a daily energy sum. Current twenty
+uncovered and four covered macropore configurations preserve accepted results.
+The original112-node matrix/heat/drain/crop five-day differential is byte exact.
+Prior481-day and nutrient evidence remain dated, without a new execution claim.
+Native SWMACRO input/dispatch, full original Andelst, macro chemistry, response
+drainage/active-root thermal composition and file macro/heat restart publication
+remain excluded. MC-NUT01/MC-SOL01 stay CLOSED WITH EXCLUSIONS. Qualification and
+canonical admission are separate in
+`integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json`.
+
 Covered matrix-to-macropore accepted-water receipts are canonically admitted at
 checked O0/O2. Explicit donor-node/domain amounts repair the active-domain
 entry face and receipt validation without changing water equations, committed

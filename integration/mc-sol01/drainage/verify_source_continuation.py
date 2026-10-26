@@ -16,6 +16,9 @@ def validate(f):
  assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
  for p,h in r['input_sha256'].items():
   actual=(ROOT/p).read_bytes()
+  if sha(actual)!=h and p=='src/runtime/mod_fmr_restart_state_contract.f90':
+   assert inherited_result.get('bounded_macro_rutter_numeric_heat') and inherited_result['current_matrix_artifacts_predecessor_exact']
+   actual=subprocess.check_output(['git','show','043e92ac319d3a3b8ca40b57e995be60db91679a:'+p],cwd=ROOT)
   if sha(actual)!=h and p in ['src/runtime/mod_fmr_serialized_reference_backend.f90','src/runtime/mod_macropore_single_column_runtime.f90']:
    # This is the retained native481 execution, not a current executable run.
    # The covered successor owns the changed ABI, proves the matrix branch
