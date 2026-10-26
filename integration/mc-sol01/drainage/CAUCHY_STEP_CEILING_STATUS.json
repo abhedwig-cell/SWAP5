@@ -1,0 +1,47 @@
+{
+  "work_unit": "HIST-INTEGRATION01 anchored Cauchy step ceiling",
+  "baseline": "362cf65f0d98a1620ab2a245e11e61c84b4946ff",
+  "stage": "EXPERIMENTAL_IMPLEMENTED_BUILT_CENSORED",
+  "implemented": true,
+  "tested": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "cases": {
+    "O0": {
+      "status": "CENSORED",
+      "seconds": 90.01333355899988,
+      "last_reported_end": 1.9400000000023283,
+      "reported_attempts": 5498,
+      "solver_rejections": 2,
+      "temporal_rejections": 2789,
+      "mass_rejections": 0
+    },
+    "O2": {
+      "status": "CENSORED",
+      "seconds": 90.01307283699862,
+      "last_reported_end": 1.9400000000023283,
+      "reported_attempts": 5498,
+      "solver_rejections": 2,
+      "temporal_rejections": 2789,
+      "mass_rejections": 0
+    }
+  },
+  "postimages": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "c387bb3d1b88d4d3d563632c78d37b9e8559f54a757b5e7d40319b28fa77797f",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "eb4c9f341dec9b21aefbf9082f62b88ee23cb8ad764bb0b9a6be4cd3e03b85db",
+    "app/solute_project/main_water.f90": "a3ea5462cc94b62609f7e39cafaf70a29a2d0dfad87269f7acc296af656eafff",
+    "tools/solute/run_native_water.py": "e114c5da884846c1f3eaaf27efa6371af66a7d5b98388d872b12e44fd7286ac8",
+    "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_CONTRACT.md": "c5d72f29a495d06bf7f6ab20d2b4923912d4038280205eb0f7b28e22f2d8d390"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_EVIDENCE.tar.xz.b64",
+    "sha256": "5bc04cc126477585b085a78abfb0c5883cb38feef368b8d624fba46a37421a16",
+    "bytes": 1028816,
+    "members": 45
+  },
+  "blockers": [
+    "Both actual source O0/O2 two-day trials still censored at90s near1.94day",
+    "Unsupported-caller/selector-negative controls and exact restart/preservation admission not completed"
+  ],
+  "next_action": "Instrument individual full/half temporal-error components and topology mismatch at the stalled source interval; do not repeat identical90s runs or weaken any gate. Experimental option stays outside canonical."
+}

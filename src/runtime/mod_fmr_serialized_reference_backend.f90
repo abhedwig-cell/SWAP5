@@ -2496,6 +2496,8 @@ contains
     logical, intent(in), optional :: trusted_prepared_parameters
     logical, intent(in), optional :: trace_accepted_water_flux_substeps
     logical, intent(in), optional :: trace_accepted_soil_n_heat
+    logical :: anchored_ceiling
+    real(real64) :: previous_selector_cursor,accepted_width,endpoint_margin
     logical :: soil_n_heat_trace
     logical :: bottom_thermal_ok, top_sensible_ok, soil_salt_boundary_ok
     integer :: salt_active_domains
@@ -2850,6 +2852,19 @@ contains
       self%model%top_sensible_boundary_carrier_active = top_sensible_ok
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
+    anchored_ceiling=self%model%macropore_policy%anchored_cauchy_step_ceiling
+    previous_selector_cursor=t0
+    if(anchored_ceiling)then
+      if(.not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters).and. &
+         self%model%accepted_water_flux_trace_enabled.and.allocated(forcing%legacy_swbotb3_implicit_control)))then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+      if(.not.forcing%rutter%matrix_source_area_partition)then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
     trial_forcing = forcing
     trial_config = config
     self%model%weather_surface_active = allocated(forcing%weather_surface)
@@ -3079,6 +3094,14 @@ contains
       call self%model%legacy_swbotb3_implicit_control%resolve_proposal(cursor, target_t1, &
            self%model%cauchy3_proposal, provider_status)
       valid = provider_status == FMR_CAUCHY3_OK .and. self%model%cauchy3_proposal%available
+      if(valid.and.anchored_ceiling.and.cursor>previous_selector_cursor)then
+        accepted_width=cursor-previous_selector_cursor
+        target_t1=min(requested_t1,cursor+2.0_real64*accepted_width)
+        endpoint_margin=max(config%progress_tolerance,128.0_real64*epsilon(1.0_real64)* &
+          max(1.0_real64,abs(cursor),abs(requested_t1)))
+        if(requested_t1-target_t1<=endpoint_margin)target_t1=requested_t1
+      end if
+      previous_selector_cursor=cursor
     end subroutine
   end subroutine fmr_serialized_backend_run_trial
 

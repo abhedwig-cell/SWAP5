@@ -35,6 +35,7 @@ module mod_macropore_single_column_runtime
   integer,parameter,public::MACRO_RUNTIME_FAILED=4
 
   type, public :: macropore_runtime_policy_t
+    logical :: anchored_cauchy_step_ceiling=.false.
     logical :: enabled=.false.
     logical :: inner_richards_exchange_enabled=.false.
     logical :: source_reduction_retry_enabled=.false.

@@ -180,12 +180,17 @@ program swap5_native_water_project
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
-  logical::did_commit,policy_ok
+  logical::did_commit,policy_ok,anchored_ceiling=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
   call get_command_argument(5,macro_path);call get_command_argument(6,binding)
+  call get_command_argument(8,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='anchored-cauchy','unknown native execution policy')
+    anchored_ceiling=.true.
+  end if
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
   if(len_trim(arg)>0)then
@@ -455,6 +460,7 @@ program swap5_native_water_project
   numerical%transaction%temporal_tolerance=temporal_tolerance;numerical%transaction%mass_tolerance=1d-10
   numerical%transaction%max_retries=40;numerical%transaction%retry_scale=.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)
+  macro_policy%anchored_cauchy_step_ceiling=anchored_ceiling
   macro_policy%enabled=.true.;macro_policy%inner_richards_exchange_enabled=.true.
   macro_policy%solver_mass_tolerance_cm=1d-10;macro_policy%internal_exchange_tolerance_cm=1d-10
   call backend%configure_macropore_policy(macro_policy,policy_ok);call require(policy_ok,'Reference macro policy')
