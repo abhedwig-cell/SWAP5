@@ -43,7 +43,8 @@ contains
     type(macropore_standard_storage_view_t),intent(out)::view
 
     integer::nd,n,id,ic,bottom,topw
-    real(real64)::total,capacity,remaining,vol,frac,zbottom
+    real(real64)::total,capacity,remaining,vol,frac,zbottom,amount
+    logical::degenerate_tip
 
     view=macropore_standard_storage_view_t()
     if(.not.state%ready())return
@@ -66,10 +67,7 @@ contains
       if(any(state%water_domain_cp(id,top_node:bottom)<-1.0e-12_real64))return
 
       total=sum(max(0.0_real64,state%water_domain_cp(id,top_node:bottom)))
-      ! Original tapered IC domains may end at a zero-volume node while dry.
-      ! Empty domains need no division by that tip volume. A wet degenerate
-      ! bottom remains outside this contract and rejects before publication.
-      if(state%volume_domain_cp(id,bottom)<=1.0e-8_real64.and.any(state%water_domain_cp(id,top_node:bottom)/=0.0_real64))return
+      degenerate_tip=state%volume_domain_cp(id,bottom)<=1.0e-8_real64
       capacity=sum(state%volume_domain_cp(id,top_node:bottom))
       if(total>capacity+1.0e-10_real64)return
       total=min(max(total,0.0_real64),capacity)
@@ -77,6 +75,25 @@ contains
 
       remaining=total
       topw=bottom
+      if(degenerate_tip.and.total>0.0_real64)then
+        ! A tapered original IC domain can have a zero-volume terminal cell.
+        ! Fill bottom-up without dividing by that tip. Zero-volume cells below
+        ! the actual water front are wet, as in source MACROSTATE; only positive
+        ! capacities receive water. Preserve even sub-quantum positive stocks.
+        do ic=bottom,top_node,-1
+          vol=state%volume_domain_cp(id,ic)
+          if(vol<=0.0_real64)then
+            view%wet_fraction(id,ic)=1.0_real64
+            cycle
+          end if
+          amount=min(remaining,vol)
+          view%normalized_water_cm(id,ic)=amount
+          view%wet_fraction(id,ic)=amount/vol
+          remaining=max(0.0_real64,remaining-amount)
+          topw=ic
+          if(remaining<=0.0_real64)exit
+        end do
+      else
       do ic=bottom,top_node,-1
         vol=state%volume_domain_cp(id,ic)
         if(vol<=1.0e-12_real64)then
@@ -98,9 +115,10 @@ contains
           exit
         end if
       end do
+      end if
       if(remaining>1.0e-10_real64)return
 
-      if(total<=1.0e-12_real64)then
+      if(total<=1.0e-12_real64.and.(.not.degenerate_tip.or.total<=0.0_real64))then
         topw=bottom
         view%normalized_water_cm(id,:)=0.0_real64
         view%wet_fraction(id,:)=0.0_real64

@@ -27,7 +27,8 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False,native_heat=False):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False,native_heat=False,native_water=False):
+ if native_water and not(native_hydraulics and native_heat):raise ValueError('native water requires source hydraulics and numeric heat')
  if native_heat and (not native_hydraulics or retain_step_proposal or water_flux_temporal):
   raise ValueError('native heat requires explicit native hydraulics and ordinary Reference execution')
  if water_flux_temporal and (not retain_step_proposal or solute_transport!='reference' or water_conductivity!='frozen'):
@@ -39,13 +40,14 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if solute_transport not in ['reference','implicit_upwind']:raise ValueError('unknown solute transport policy')
  if not math.isfinite(temporal_tolerance) or temporal_tolerance<=0:raise ValueError('positive finite temporal tolerance required')
  executables={k:Path(bundle[k]).resolve()for k in ['project_reader','crop_reader','root_reader','exe']}
+ if bool(bundle.get('native_water',False))!=native_water:raise ValueError('application bundle and requested water/solute route differ')
  if bundle.get('schema')!=1 or bundle.get('status')!='BUILT':raise ValueError('invalid build bundle')
  metadata={k:check_reader(p)for k,p in executables.items()}
  if any(sha(p.read_bytes())!=bundle['executable_sha256'][str(p)]for p in executables.values()):raise ValueError('changed bundle executable')
  swp_bytes=swp.read_bytes();sources=[('original_swp',swp_bytes)];prepared=[];rain_events=[]
  with tempfile.TemporaryDirectory(prefix='swap5-project-input-')as tmp:
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
-  heat_args=['native-heat']if native_heat else[]
+  heat_args=['native-water']if native_water else(['native-heat']if native_heat else[])
   native(executables['project_reader'],['input.swp','scan',*heat_args],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
   for r in references:
@@ -67,11 +69,12 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   for r in references:
    if r['kind']!='crop':continue
    index=r['index'];names=['period-'+index+'.swp','crop-'+index+'.crp','weather.met']
-   native(executables['crop_reader'],names,stage,b'SWP_NATIVE_SIMPLE_CROP_PREPARED')
+   native(executables['crop_reader'],names+(['native-rutter']if native_water else[]),stage,b'SWP_NATIVE_SIMPLE_CROP_PREPARED')
    native(executables['root_reader'],names,stage,b'SWP_NATIVE_ROOT_IMPORTED')
    plan=list(csv.DictReader((stage/'crop_daily.csv').open()));rain=list(csv.DictReader((stage/'rain.csv').open()))
    if not plan or len(plan)!=len(rain)or any(float(a['t1900'])!=float(b['t1900'])for a,b in zip(plan,rain)):raise ValueError('foreign crop/rain calendar')
-   prepared.append(dict(index=int(index),plan=plan,rain=rain,root=(stage/'root.nml').read_text()))
+   prepared.append(dict(index=int(index),plan=plan,rain=rain,root=(stage/'root.nml').read_text(),**(dict(rutter=list(csv.DictReader((stage/'rutter_daily.csv').open())))if native_water else{})))
+   if native_water:(stage/'rutter_daily.csv').unlink()
    (stage/'crop_daily.csv').unlink();(stage/'root.nml').unlink();(stage/'rain.csv').unlink()
   weather=(stage/'weather.met').read_bytes()
  if not prepared:raise ValueError('no crop periods')
@@ -155,6 +158,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  if boesten:audit['boesten_cofred']=boesten[0]
  if water_flux_temporal:audit['water_flux_temporal']=True
  if native_hydraulics:audit['native_hydraulics']=True
+ if native_water:audit['native_water']=True
  if native_heat:audit['native_heat']=dict(air_temperature='original daily (TMIN+TMAX)/2',days=len(combined))
  if solute_transport!='reference':audit['solute_transport']=solute_transport
  if water_conductivity!='frozen':audit['water_conductivity']=water_conductivity
@@ -165,6 +169,16 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
    ' rain_ends='+','.join(r['end_day']for r in rain_events),
    ' rain_rates='+','.join(r['rate_cm_day']for r in rain_events),'/']
   audit['rain_events']=rain_events
+ if native_water:
+  selected=[]
+  for i,index in enumerate(indices):
+   if index:row=next(p for p in prepared if p['index']==index)['rutter'][i]
+   else:row=dict(capacity_cm='0',initial_storage_cm='0',dry_transpiration_cm_day='0',wet_transpiration_cm_day='0',interception_evaporation_cm_day='0')
+   selected.append(row)
+  lines+=['&rutter_daily',' vegetation_cover='+','.join(r['cover']for r in combined)]
+  for name,key in [('canopy_capacity','capacity_cm'),('transpiration_dry','dry_transpiration_cm_day'),('transpiration_wet','wet_transpiration_cm_day'),('canopy_evaporation','interception_evaporation_cm_day')]:
+   lines.append(' '+name+'='+','.join(r[key]for r in selected))
+  lines+=['/']
  return '\n'.join(lines)+'\n',swp_bytes,audit,executables['exe']
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('swp',type=Path);ap.add_argument('--bundle',type=Path,required=True)

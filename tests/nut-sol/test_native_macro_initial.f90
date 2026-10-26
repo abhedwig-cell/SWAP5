@@ -44,11 +44,14 @@ program test_native_macro_initial
  call prepare_initial_dynamic_crack_profile(p%shrinkage,p%theta,p%geometry%dz,p%matrix_fraction, &
   1,n+1,old_dynamic,old_subsidence,ok)
  if(ok)error stop 'invalid initial cutoff accepted'
- ! Exactly dry, tapered domain4 is valid. Nonempty degenerate tips still reject,
- ! atomically, even for an amount below the ordinary reporting quantum.
+ ! A positive amount must pass through the original zero-volume tapered tip
+ ! without being lost or divided by zero. Negative capacity remains invalid.
  before%water_domain_cp(4,before%icp_bottom_domain(4))=1d-13
  call canonicalize_macropore_standard_storage(before,1,p%z,p%geometry%dz,v,ok)
- if(ok.or.before%water_domain_cp(4,before%icp_bottom_domain(4))/=1d-13)error stop 'wet degenerate tip changed'
+ if(.not.ok.or.abs(sum(before%water_domain_cp(4,:))-1d-13)>1d-25)error stop 'wet tapered tip lost water'
+ before%volume_domain_cp(4,before%icp_bottom_domain(4))=-1d-13
+ call canonicalize_macropore_standard_storage(before,1,p%z,p%geometry%dz,v,ok)
+ if(ok.or.before%volume_domain_cp(4,before%icp_bottom_domain(4))/=-1d-13)error stop 'negative tapered volume changed'
  call copy_macropore_continuation_state(p%state,before,ok)
  if(.not.ok)error stop 'restore initial witness'
  ! Real sorptivity owner consumes all source coefficients. Probe partial wet walls

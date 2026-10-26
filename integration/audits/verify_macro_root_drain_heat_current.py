@@ -11,6 +11,7 @@ def projection():
   end+=1;t=t[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[end:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_water_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD');assert not git('status','--porcelain','--',*SCIENCE),'unpersisted source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign joint runtime delta';assert reader(PARENT)==projection(),'changed predecessor assertions'
  for p,h in s['postimages'].items():assert sha(reader(p))==h,p
@@ -55,12 +56,16 @@ def validate(f):
  assert b'COMPLETED=F'in f['counter/native.stdout']and b'A9 FMR top-input active serialized trial'in f['counter/native.stderr']
  result=dict(parent['result']);result.update(qualified=True,bounded_macro_root_drain_numeric_heat=True,plain_substep_Feddes_Rutter_demand_coupled=True,source_dramet3_drainage_only=True,joint_runtime_configurations=6,joint_runtime_native_processes=6,joint_atomic_rejections_per_process=4,joint_root_oracle_error_cm_day=0.,joint_water_max_cm=maxwater,joint_observed_last_heat_max_j_cm2=maxheat,joint_physical_results=physical,current_bounded_thermal_native_processes=4,current_bounded_thermal_predecessor_exact=True,full_original_Andelst=False,whole_water_dispatch=False,native_full_water_dispatch=False,file_macro_heat_restart=False,full481_reexecuted=False,current_NUT_runs=0,current_NUT_separate_process_restarts=0,current_matrix_days=0,canonically_admitted=False)
  return result
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_water_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_water_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return dict(status='UNCHANGED_EXECUTABLE_DEPENDENCIES',dependencies=len(deps),baseline=BASE)
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_water_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()

@@ -1,6 +1,7 @@
   subroutine check_macro_trace(obs)
     use, intrinsic :: ieee_arithmetic,only:ieee_value,ieee_quiet_nan
-    use mod_fmr_serialized_reference_backend,only:fmr_water_flux_substep_trace_t,fmr_macropore_trace_receipt_valid
+    use mod_fmr_serialized_reference_backend,only:fmr_water_flux_substep_trace_t,fmr_macropore_trace_receipt_valid, &
+      fmr_macropore_trace_cell_balance_valid
     type(fmr_serialized_physical_observation_t),intent(in)::obs
     type(fmr_water_flux_substep_trace_t)::s,bad
     real(real64)::delta,expected,dt0,cellerr,materr,maxcell,maxmat,maxgross,gross,topamount,rapid,returned,pond
@@ -16,6 +17,11 @@
         (s%macropore_vertical_face_rate(:,1:n0)-s%macropore_vertical_face_rate(:,2:n0+1)- &
          s%macropore_matrix_exchange_domain-s%macropore_external_outflow_rate)))
       if(cellerr>1.e-10_real64)error stop 'independent macro per-cell budget'
+      if(.not.fmr_macropore_trace_cell_balance_valid(s,n0))error stop 'macro cell certificate'
+      bad=s;bad%macropore_water_end(1,n0)=bad%macropore_water_end(1,n0)+1.e-8_real64
+      if(fmr_macropore_trace_cell_balance_valid(bad,n0))error stop 'cell stock corruption accepted'
+      bad=s;bad%macropore_vertical_face_rate(1,n0+1)=bad%macropore_vertical_face_rate(1,n0+1)+1.e-8_real64/dt0
+      if(fmr_macropore_trace_cell_balance_valid(bad,n0))error stop 'cell face corruption accepted'
       delta=sum(dz(1:n0)*s%matrix_area_fraction*(s%water_end-s%water_start))
       expected=dt0*(-s%top_flux+s%bottom_flux+sum(s%net_node_source))
       materr=abs(delta-expected)
