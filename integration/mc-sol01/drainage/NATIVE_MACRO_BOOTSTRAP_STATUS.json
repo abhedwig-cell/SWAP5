@@ -5,14 +5,12 @@
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_CONTRACT.md",
-  "blockers": [
-    "Actual canonical merge and postimage verification"
-  ],
-  "next_action": "Admit original geometry unit. Continue actual MACROINIT dependencies jointly; never use source dummy sorptivity as computed coefficients",
-  "recovery_point": "Original112-node/five-domain high-precision geometry O0/O2 and production consumer exact",
-  "stage": "GEOMETRY_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "blockers": [],
+  "next_action": "Implement original MACROINIT prerequisites together: Parlange coefficients from actual hydraulics, source shrinkage and initial macro water/rapid state. Then connect native SWSOLU0 whole-water application and coupled file restart. Retain admitted source geometry/Rutter/heat and do not substitute source dummy coefficients.",
+  "recovery_point": "PR1451 actual merge and exact qualified tree independently verified",
+  "stage": "GEOMETRY_CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "scientific_delta": {
     "app/solute_column/read_swp_macro_geometry.f90": "A",
     "app/solute_crop/read_swp_macro_geometry.f90": "A",
@@ -64,7 +62,7 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "bounded_macro_rutter_numeric_heat": true,
     "heat_configurations": 6,
     "heat_native_processes": 12,
@@ -99,5 +97,21 @@
   "remaining_migration_blockers": [
     "Source-derived Parlange sorptivity coefficients: original SWSORP1 overrides dummy SORPMAX/SORPALFA inputs",
     "Complete original dynamic/shrinkage/rapid initial state and full macro/heat/root/drainage dispatch/file restart"
+  ],
+  "admission": "integration/mc-sol01/drainage/NATIVE_MACRO_GEOMETRY_ADMISSION.json",
+  "actual_merge": "d8365e9de6ed7a2f674f56840dff4464dac1d622",
+  "qualified_complete_tree": "3e3b06a48d8be58d150acc1c3d0d54e584adfc0c",
+  "relevant_paths": [
+    "tools/solute/legacy_reader_sources.py",
+    "app/solute_crop/read_swp_macro_geometry.f90",
+    "app/solute_column/read_swp_macro_geometry.f90",
+    "src/runtime/mod_fmr_macropore_configuration.f90",
+    "src/process/macropore/mod_macropore_dynamic_shrinkage.f90"
+  ],
+  "authority_paths": [
+    "integration/mc-sol01/drainage/NATIVE_MACRO_GEOMETRY_ADMISSION.json",
+    "integration/mc-sol01/drainage/NATIVE_RUTTER_ADMISSION.json",
+    "integration/mc-sol01/drainage/MACRO_HEAT_ADMISSION.json",
+    "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
   ]
 }

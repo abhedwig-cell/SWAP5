@@ -1,0 +1,117 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original macro bootstrap",
+  "baseline": "69885373cc8b15e33a5e970aaf189ca70dcb7da4",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Original SWMACRO1/SWSOLU0 source input and112-node/five-domain geometry, consumed by production geometry owner; no MACROINIT or water advance",
+  "pr": 1451,
+  "actual_merge": "d8365e9de6ed7a2f674f56840dff4464dac1d622",
+  "published_head": "a413bfa81293a6ffd135040888c34045aaa799e5",
+  "qualified_complete_tree": "3e3b06a48d8be58d150acc1c3d0d54e584adfc0c",
+  "actual_tree": "3e3b06a48d8be58d150acc1c3d0d54e584adfc0c",
+  "qualified_complete_tree_exact": true,
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 0,
+    "current_NUT_separate_process_restarts": 0,
+    "current_matrix_days": 0,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": true,
+    "bounded_macro_rutter_numeric_heat": true,
+    "heat_configurations": 6,
+    "heat_native_processes": 12,
+    "additional_atomic_heat_rejections_per_process": 8,
+    "typed_temperature_restart_exact": true,
+    "temperature_rollback_and_retry_exact": true,
+    "water_max_cm": 8.400195144510347e-17,
+    "observed_last_heat_residual_j_cm2": 1.3100631690576847e-14,
+    "prior_NUT_evidence_retained": true,
+    "file_macro_heat_restart": false,
+    "original_native_rutter_preparation": true,
+    "original_crop_periods": 2,
+    "prepared_days": 481,
+    "source_records": 3085,
+    "source_O0_O2_typed_restart_exact": true,
+    "source_water_max_cm": 6.938893903907228e-17,
+    "source_refinement_max_cm": 1.1102230246251565e-16,
+    "original_etpot_cases_per_optimization": 864,
+    "existing_ET_procedures_source_exact": true,
+    "native_full_water_dispatch": false,
+    "prior_matrix5_exact_runtime_preservation_retained": true,
+    "original_native_macro_geometry": true,
+    "original_macro_nodes": 112,
+    "original_macro_domains": 5,
+    "geometry_O0_O2_exact": true,
+    "retained_geometry_rows": 112,
+    "existing_reader_materializer_exact": true,
+    "macroinit": false,
+    "canonical_macro_initial_state": false,
+    "whole_water_dispatch": false
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/NATIVE_MACRO_GEOMETRY_EVIDENCE.tar.xz.b64",
+    "sha256": "124189136cdeff554e95003121a6264115252ef0a85f9fa4a4da1bf097b7be7e",
+    "bytes": 462908,
+    "members": 124
+  },
+  "actual_postimage_validation": {
+    "working_tree_clean": true,
+    "owner_controls": 17,
+    "retained481_predecessor_validated": true,
+    "fsi35_dependencies_unchanged": 27,
+    "docs": true,
+    "mkdocs_strict": true,
+    "raw_logs": {
+      "actual-macro-geometry-owner.json": {
+        "sha256": "9ce2e8d3b8c4f39e5daa1291d305c796d664edb50a3640a3a48b1da655c9b138",
+        "bytes": 3083
+      },
+      "actual-macro-geometry-retained481.json": {
+        "sha256": "48dbdc72d19db294fd3a7d2f782af09030191c4b6dae3c74a4cda69702052a37",
+        "bytes": 963
+      },
+      "actual-macro-geometry-fsi35.json": {
+        "sha256": "719aab06805ee0886f6c397236200709818b8f2d249691d199a3c1752bebd381",
+        "bytes": 124
+      },
+      "actual-macro-geometry-docs.stdout": {
+        "sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "bytes": 36
+      },
+      "actual-macro-geometry-mkdocs.stderr": {
+        "sha256": "9dad27a0392d743763e7b7c282a9d1524897af2e47bc50a489c129652bc26b8b",
+        "bytes": 69559
+      }
+    }
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "exclusions": [
+    "MACROINIT/MACROSTATE and source-derived Parlange coefficients",
+    "Complete dynamic/rapid/sorptivity initial state",
+    "Whole original macro/Rutter/heat/root/drainage water application",
+    "Complete coupled file restart",
+    "Full original4.3.1 equivalence"
+  ],
+  "work_packages": {
+    "MC-NUT01": "CLOSED WITH EXCLUSIONS",
+    "MC-SOL01": "CLOSED WITH EXCLUSIONS"
+  },
+  "hosted_numerical_pass_claimed": false
+}

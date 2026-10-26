@@ -1,6 +1,7 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-Original active SWMACRO1/SWSOLU0 geometry preparation is locally qualified.
+Original active SWMACRO1/SWSOLU0 geometry preparation is canonically admitted
+by PR1451.
 An isolated input adapter uses exact archived read_macropore, MACROGEOM,
 DEFINECOMPART and DiamPolyg procedure bodies. The unmodified original SWP/BBC
 construct112 nodes/five domains, including source matrix-area fractions, static
@@ -12,9 +13,11 @@ The old reader materializer body is byte exact; predecessor ET/Rutter and water
 proofs remain dated. Complete MACROINIT/MACROSTATE, source-derived Parlange
 sorptivity coefficients, dynamic/rapid initial state and whole-water/file-restart
 composition remain open. Raw SORPMAX/SORPALFA values are dummies under original
-SWSORP1 and must not be passed through as computed values. Qualification and
-canonical admission are separate in
-`integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_STATUS.json`.
+SWSORP1 and must not be passed through as computed values. Actual merge
+`d8365e9de6ed7a2f674f56840dff4464dac1d622` has complete qualified tree
+`3e3b06a48d8be58d150acc1c3d0d54e584adfc0c` exactly. Current17 source/raw controls,
+retained481 owner, unchanged27-dependency FSI35 source and strict docs pass.
+Admission: `integration/mc-sol01/drainage/NATIVE_MACRO_GEOMETRY_ADMISSION.json`.
 
 Original Rutter crop/ETref preparation is canonically admitted by PR1450 in an explicit
 `native-rutter` reader mode. Two original crop periods and the intervening fallow
