@@ -15,6 +15,7 @@ def et_projection(reader=lambda p:(ROOT/p).read_bytes()):
  assert t.encode()==subprocess.check_output(['git','show',BASE+':'+ET],cwd=ROOT),'existing ET procedures changed'
  return True
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_geometry_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  assert not git('status','--porcelain','--',*SCIENCE),'unpersisted native Rutter source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign native Rutter delta'
@@ -54,12 +55,16 @@ def validate(f):
  # is unchanged; prior matrix/macro/N science stays dated, not re-executed.
  result=dict(parent['result']);result.update(qualified=True,original_native_rutter_preparation=True,original_crop_periods=2,prepared_days=481,source_records=3085,source_O0_O2_typed_restart_exact=True,source_water_max_cm=values[4],source_refinement_max_cm=values[5],original_etpot_cases_per_optimization=864,existing_ET_procedures_source_exact=True,native_full_water_dispatch=False,current_matrix_days=0,prior_matrix5_exact_runtime_preservation_retained=True,full_original_Andelst=False,full481_reexecuted=False,canonically_admitted=False)
  return result
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_geometry_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_geometry_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return dict(status='UNCHANGED_EXECUTABLE_DEPENDENCIES',dependencies=len(deps),baseline=BASE)
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_geometry_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()

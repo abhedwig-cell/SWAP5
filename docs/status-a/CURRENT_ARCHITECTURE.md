@@ -1,5 +1,21 @@
 # SWAP5 Status-A current architecture
 
+Original active SWMACRO1/SWSOLU0 geometry preparation is locally qualified.
+An isolated input adapter uses exact archived read_macropore, MACROGEOM,
+DEFINECOMPART and DiamPolyg procedure bodies. The unmodified original SWP/BBC
+construct112 nodes/five domains, including source matrix-area fractions, static
+volumes, potential domain bottoms and polygon diameters. High-precision O0/O2
+output is byte exact, agrees with all112 retained rounded source-output rows,
+and is consumed by the existing production geometry owner. Five invalid source/
+descriptor cases per optimization reject. No water kernel is linked or advanced.
+The old reader materializer body is byte exact; predecessor ET/Rutter and water
+proofs remain dated. Complete MACROINIT/MACROSTATE, source-derived Parlange
+sorptivity coefficients, dynamic/rapid initial state and whole-water/file-restart
+composition remain open. Raw SORPMAX/SORPALFA values are dummies under original
+SWSORP1 and must not be passed through as computed values. Qualification and
+canonical admission are separate in
+`integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_STATUS.json`.
+
 Original Rutter crop/ETref preparation is canonically admitted by PR1450 in an explicit
 `native-rutter` reader mode. Two original crop periods and the intervening fallow
 cover481 days. At O0/O2,864 cases per optimization match the actual archived

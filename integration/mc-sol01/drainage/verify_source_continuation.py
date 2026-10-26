@@ -16,6 +16,9 @@ def validate(f):
  assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
  for p,h in r['input_sha256'].items():
   actual=(ROOT/p).read_bytes()
+  if sha(actual)!=h and p=='tools/solute/legacy_reader_sources.py':
+   assert inherited_result.get('existing_reader_materializer_exact')
+   actual=subprocess.check_output(['git','show','69885373cc8b15e33a5e970aaf189ca70dcb7da4:'+p],cwd=ROOT)
   if sha(actual)!=h and p=='src/process/mod_reference_et_demand_process.f90':
    assert inherited_result.get('existing_ET_procedures_source_exact')
    actual=subprocess.check_output(['git','show','e15d5ffd1b28701eb96da7ae817f85c47a15a597:'+p],cwd=ROOT)
