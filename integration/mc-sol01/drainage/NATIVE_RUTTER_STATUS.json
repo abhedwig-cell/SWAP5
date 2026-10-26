@@ -1,0 +1,17 @@
+{
+  "work_unit": "HIST-INTEGRATION01 original native Rutter forcing",
+  "baseline": "e15d5ffd1b28701eb96da7ae817f85c47a15a597",
+  "stage": "IMPLEMENTATION",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/drainage/NATIVE_RUTTER_CONTRACT.md",
+  "blockers": [
+    "Native crop adapter rejects SWINTER3",
+    "ETref adapter exposes only dry canopy demand"
+  ],
+  "next_action": "Add original wet-canopy ETref preparation and explicit crop Rutter mode",
+  "recovery_point": "Selected native Rutter preparation scope"
+}
