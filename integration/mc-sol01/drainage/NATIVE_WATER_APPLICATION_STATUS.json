@@ -1,0 +1,45 @@
+{
+  "work_unit": "HIST-INTEGRATION01 native SWSOLU0 macro Rutter heat water application",
+  "baseline": "72839916e6498b95ab4cb9e120df5a6868e2f20d",
+  "stage": "FIRST_DAY_PASSED_SECOND_DAY_PREPARATION_BLOCKER",
+  "implemented": true,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_CONTRACT.md",
+  "recovery_point": "First full original day passes after positive tapered-tip repair; continuous and fresh-process day1 restart both reject identically before attempts on day2 source interval [1.017,1.041]. Source-window preparation diagnosis pending.",
+  "blockers": [
+    "Day2 second source rain window rejects before solver attempts",
+    "Decode validation/negative controls, O0/O2 application and proportional preservation not yet qualified"
+  ],
+  "next_action": "Diagnose exact pre-solver window rejection, then qualify file restart and O0/O2 short production execution",
+  "test_selection": {
+    "groups": {
+      "native_water": {
+        "changed_dependency": "source SWP-led water application orchestration, portable-decoded same-platform committed file adapter, wet degenerate-tip canonical storage",
+        "scientific_claim": "actual original112-node/five-domain source water/Rutter/root/DRAMET3/heat production and exact source-event/day file restart",
+        "owner": "HIST-INTEGRATION01",
+        "authority": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_CONTRACT.md",
+        "expected_seconds": 180,
+        "existing_evidence": "Source481 matrix, native geometry/MACROINIT/Rutter and four-node joint runtime retained. First native macro prefix0.8665day passed; rain rejection retained as counterexample.",
+        "prior_execution": "FAILED",
+        "diagnosis": "Domain4 has a nearly zero-volume potential tip. Existing dry-only standard-storage admission rejects positive water there; fix uses exact bottom-up capacities without division by zero. No tolerance or physical coefficient changed."
+      }
+    }
+  },
+  "relevant_paths": [
+    "app/solute_project/main_water.f90",
+    "app/solute_column/macro_water_restart.f90",
+    "app/solute_column/read_swp_macro_configuration.f90",
+    "tools/solute/run_native_water.py",
+    "src/process/macropore/mod_macropore_standard_storage.f90"
+  ],
+  "evidence_paths": [
+    "../native-water-day1-dev/manifest.json",
+    "../native-water-day1-dev2/manifest.json",
+    "../native-water-two-dev/manifest.json",
+    "../native-water-resume-dev/manifest.json"
+  ],
+  "last_reconciled_upstream": "72839916e6498b95ab4cb9e120df5a6868e2f20d"
+}

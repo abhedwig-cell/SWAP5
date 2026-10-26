@@ -8,18 +8,24 @@ program read_swp_macro_initial
  use MOD_swap_base,only:swsolu
  use MOD_macropore
  use MOD_MvG,only:source_cof=>cofgen,paramvg,set_cofgen_pointers,calc_cofgen_extra,watcon, &
-  swsophy,sw_use_elas,fl_use_tables,fl_use_kh_power,iHWCKmodel
+  swsophy,sw_use_elas,fl_use_tables,fl_use_kh_power,iHWCKmodel,hconduc
  use MOD_gwl,only:calcgwl
  use MOD_drain,only:swdtyp
  use mod_column_swp_water,only:import_column_swp_water
  implicit none
  character(1024)::swp,bbc,output,dra
+ character(32)::config_mode
+ logical::full_config
  integer::mode,bottom_mode,nsub,m,k,j,i,u,nn
  integer::layers(256),counts(256)
- real(real64)::width(256),gwl,depth
+ real(real64)::width(256),gwl,depth,minimum_surface_conductivity
+ real(real64),allocatable::initial_theta(:)
  real(real64),allocatable::heads(:),cofgen(:,:)
  logical::rdinqr
  call get_command_argument(1,swp);call get_command_argument(2,bbc);call get_command_argument(3,output);call get_command_argument(4,dra)
+ call get_command_argument(5,config_mode)
+ call require(len_trim(config_mode)==0.or.trim(config_mode)=='native-water','unknown configuration option')
+ full_config=trim(config_mode)=='native-water'
  call require(len_trim(swp)>0.and.len_trim(output)>0,'SWP and output required')
  call rdinit(74,0,trim(swp));call rdsinr('swmacro',0,1,mode);call require(mode==1,'requires original active SWMACRO')
  call rdsinr('swfrost',0,1,m);call require(m==0,'frost not selected')
@@ -87,6 +93,15 @@ program read_swp_macro_initial
  call require(all(ieee_is_finite(sorpalfa(:numlay))).and.all(sorpalfa(:numlay)>0d0),'computed Parlange exponent')
  call require(all(ieee_is_finite(vlmpdycp(:nn))).and.all(vlmpdycp(:nn)>=0d0),'initial dynamic volumes')
  call require(ieee_is_finite(kdcrrlref(1)).and.kdcrrlref(1)>0d0,'rapid reference')
+ if(full_config)then
+  call require(swdarcy==1,'native water requires original SWDARCY1')
+  ! Original MPVOLUME supplies the static-only lower bound. This project's
+  ! conductivity is already at the original1000 cm/day cap at that bound.
+  initial_theta=theta(:nn);theta(:nn)=thetas(:nn);call MPVOLUME(1)
+  minimum_surface_conductivity=ksmpss
+  theta(:nn)=initial_theta;call MPVOLUME(1)
+  call require(minimum_surface_conductivity==1000d0.and.ksmpss==1000d0,'variable surface conductivity not selected')
+ end if
  ! All input and geometry checks precede output creation.
  open(newunit=u,file=trim(output),status='new',action='write')
  write(u,'(a)')'&macro_geometry'
@@ -131,6 +146,21 @@ program read_swp_macro_initial
  write(u,'(a,*(es25.17e3,a))')' darcy=',((cdarcy(j,i),',',j=1,numdm),i=1,nn)
  write(u,'(a,*(es25.17e3,a))')' domain_water=',(wasrmpdm(i),',',i=1,numdm)
  write(u,'(a)')'/'
+ if(full_config)then
+  write(u,'(a)')'&macro_configuration'
+  write(u,'(a,i0)')' seepage_option=',swsep
+  write(u,'(a,es25.17e3)')' shape_factor=',shapefacmp
+  write(u,'(a,es25.17e3)')' rapid_resistance=',rapdraresref(1)
+  write(u,'(a,es25.17e3)')' critical_undersaturation=',critundsatvol
+  write(u,'(a,es25.17e3)')' pond_threshold=',pndmxmp
+  write(u,'(a,es25.17e3)')' source_surface_conductivity=',ksmpss
+  write(u,'(a,es25.17e3)')' minimum_surface_conductivity=',minimum_surface_conductivity
+  write(u,'(a,*(es25.17e3,a))')' conductivity=',(hconduc(i,h(i),theta(i),0d0),',',i=1,nn)
+  write(u,'(a,*(es25.17e3,a))')' entry_head=',(cofgen(9,i),',',i=1,nn)
+  write(u,'(a,*(es25.17e3,a))')' sorption_factor=',(sorpfacparl(layer(i)),',',i=1,nn)
+  write(u,'(a,*(es25.17e3,a))')' horizontal_ksat=',(ksatfit(layer(i)),',',i=1,nn)
+  write(u,'(a)')'/'
+ end if
  close(u)
  write(*,'(a,i0,a,i0)')'SWP_ORIGINAL_MACRO_INITIAL_PREPARED nodes=',nn,' domains=',numdm
 contains

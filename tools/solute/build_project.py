@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',type=Path,required=True)
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--native-water',action='store_true');ap.add_argument('--output',type=Path,required=True)
  ap.add_argument('--optimization',choices=['O0','O2'],required=True)
  ap.add_argument('--physical-build',type=Path);ap.add_argument('--crop-reader',type=Path);ap.add_argument('--root-reader',type=Path)
  a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -49,11 +49,17 @@ def main():
  for exe in [crop,root]:
   meta=json.loads((exe.parent/'build-complete.json').read_text());assert meta['status']=='BUILT' and sha(exe)==meta['executable_sha256']
   assert all(sha(ROOT/p)==h for p,h in meta['input_sha256'].items())
- column=out/'column';column.mkdir();exe=column/'swap5_solute_project';driver=ROOT/'app/solute_project/main.f90'
+ column=out/'column';column.mkdir();exe=column/'swap5_solute_project';driver=ROOT/('app/solute_project/main_water.f90'if a.native_water else'app/solute_project/main.f90')
  heat_reader=ROOT/'app/solute_column/read_swp_heat.f90'
- run(fc+flags+['-J'+str(column),heat_reader,driver,*objects,base/'libttutil.a','-o',exe],column,'project_compile_link')
+ extra=[ROOT/p for p in ['app/solute_column/read_swp_macro_geometry.f90','app/solute_column/read_swp_macro_initial.f90','app/solute_column/read_swp_macro_configuration.f90','app/solute_column/macro_water_restart.f90']]if a.native_water else[]
+ run(fc+flags+['-J'+str(column),*extra,heat_reader,driver,*objects,base/'libttutil.a','-o',exe],column,'project_compile_link')
+ if a.native_water:
+  if len(fc)!=1:raise ValueError('native source reader requires a compiler executable wrapper')
+  macro_build=out/'read_macro'
+  run([sys.executable,ROOT/'tools/solute/build_macro_geometry_reader.py','--initial-state','--fc',fc[0],
+    '--input-build',base,'--optimization',a.optimization,'--output',macro_build],ROOT,'native_macro_reader')
  inputs={p:h for p,h in physical['input_sha256'].items()if p!='app/solute_crop/main.f90'}
- inputs.update({str(p.relative_to(ROOT)):sha(p)for p in [driver,heat_reader,*common]})
+ inputs.update({str(p.relative_to(ROOT)):sha(p)for p in [driver,heat_reader,*extra,*common]})
  meta=dict(status='BUILT',candidate=candidate,compiler_command=fc,compiler=physical['compiler'],flags=flags+['-J'+str(column)],
   provider_count=194,reused_provider_objects=193,input_sha256=inputs,generated_input_sha256={},
   source_build=physical,reused_artifact_sha256=artifacts,executable_sha256=sha(exe),events=events)
@@ -61,5 +67,8 @@ def main():
  (column/'build-complete.json').write_text(json.dumps(meta,indent=2)+'\n')
  bundle=dict(schema=1,status='BUILT',optimization=a.optimization,project_reader=str(project_reader),crop_reader=str(crop),root_reader=str(root),exe=str(exe),
   executable_sha256={str(p):sha(p)for p in [project_reader,crop,root,exe]},physical_build=physical)
+ if a.native_water:
+  bundle['native_water']=True;bundle['macro_reader']=str(macro_build/'swap5_read_macro_initial')
+  bundle['executable_sha256'][bundle['macro_reader']]=sha(Path(bundle['macro_reader']))
  (out/'bundle.json').write_text(json.dumps(bundle,indent=2)+'\n');print(json.dumps(dict(status='BUILT',reused_providers=193)))
 if __name__=='__main__':main()

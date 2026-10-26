@@ -23,13 +23,14 @@ program read_swp_project
  character(1024)::swp,action,metfil,pathatm,pathcrop,crops(MAX_CROPS),filename,crp,metnames(8),rainnames(8),rainfil
  character(16)::start_text,end_text,a,b,index_text,ext
  logical::rdinqr
- logical::native_heat=.false.
+ logical::native_heat=.false.,native_water=.false.
  character(32)::heat_option
  type(crop_calendar_t)::calendar
  call get_command_argument(1,swp);call get_command_argument(2,action)
  call get_command_argument(3,heat_option)
- call require(len_trim(heat_option)==0.or.trim(heat_option)=='native-heat','unknown project reader option')
- native_heat=trim(heat_option)=='native-heat'
+ call require(len_trim(heat_option)==0.or.trim(heat_option)=='native-heat'.or.trim(heat_option)=='native-water','unknown project reader option')
+ native_water=trim(heat_option)=='native-water'
+ native_heat=trim(heat_option)=='native-heat'.or.native_water
  call require(trim(action)=='scan'.or.trim(action)=='prepare','scan or prepare required')
  call rdinit(74,0,trim(swp))
  call rdstim('tstart',tstart);call rdstim('tend',tend)
@@ -55,7 +56,13 @@ program read_swp_project
   call safe(pathdrain)
  end if
  call zero('swirfix',1);call zero('swirrf',3);call zero('swrunon',1)
- call zero('swmacro',1);call zero('swsnow',1);call zero('swfrost',1)
+ if(native_water)then
+  call rdsinr('swmacro',0,1,mode);call require(mode==1,'native water requires SWMACRO1')
+  call rdsinr('swsolu',0,1,mode);call require(mode==0,'native water requires SWSOLU0')
+ else
+  call zero('swmacro',1)
+ end if
+ call zero('swsnow',1);call zero('swfrost',1)
  if(native_heat)then
   call rdsinr('swhea',0,2,mode);call require(mode==1,'native numeric project requires SWHEA1')
   call rdsinr('swcalt',1,2,mode);call require(mode==2,'native numeric project requires SWCALT2')
