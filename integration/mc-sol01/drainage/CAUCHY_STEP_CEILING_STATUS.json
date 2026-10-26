@@ -1,7 +1,7 @@
 {
   "work_unit": "HIST-INTEGRATION01 anchored Cauchy step ceiling",
   "baseline": "362cf65f0d98a1620ab2a245e11e61c84b4946ff",
-  "stage": "EXPERIMENTAL_IMPLEMENTED_BUILT_CENSORED",
+  "stage": "EXPERIMENTAL_ENTRY_GATE_STALL_LOCALIZED_NOT_QUALIFIED",
   "implemented": true,
   "tested": true,
   "qualified": false,
@@ -26,13 +26,6 @@
       "mass_rejections": 0
     }
   },
-  "postimages": {
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "c387bb3d1b88d4d3d563632c78d37b9e8559f54a757b5e7d40319b28fa77797f",
-    "src/runtime/mod_macropore_single_column_runtime.f90": "eb4c9f341dec9b21aefbf9082f62b88ee23cb8ad764bb0b9a6be4cd3e03b85db",
-    "app/solute_project/main_water.f90": "a3ea5462cc94b62609f7e39cafaf70a29a2d0dfad87269f7acc296af656eafff",
-    "tools/solute/run_native_water.py": "e114c5da884846c1f3eaaf27efa6371af66a7d5b98388d872b12e44fd7286ac8",
-    "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_CONTRACT.md": "c5d72f29a495d06bf7f6ab20d2b4923912d4038280205eb0f7b28e22f2d8d390"
-  },
   "evidence": {
     "path": "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_EVIDENCE.tar.xz.b64",
     "sha256": "5bc04cc126477585b085a78abfb0c5883cb38feef368b8d624fba46a37421a16",
@@ -40,8 +33,26 @@
     "members": 45
   },
   "blockers": [
-    "Both actual source O0/O2 two-day trials still censored at90s near1.94day",
-    "Unsupported-caller/selector-negative controls and exact restart/preservation admission not completed"
+    "Source-bound treatment of historical discontinuous Darcy entry branch; do not silently smooth or force acceptance",
+    "Policy unsupported-caller/selector controls and restart/preservation admission remain incomplete"
   ],
-  "next_action": "Instrument individual full/half temporal-error components and topology mismatch at the stalled source interval; do not repeat identical90s runs or weaken any gate. Experimental option stays outside canonical."
+  "next_action": "Resolve source branch-crossing contract with a short real-production counterexample before another long native execution. No identical150s rerun.",
+  "prior_experiment_postimages": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "c387bb3d1b88d4d3d563632c78d37b9e8559f54a757b5e7d40319b28fa77797f",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "eb4c9f341dec9b21aefbf9082f62b88ee23cb8ad764bb0b9a6be4cd3e03b85db",
+    "app/solute_project/main_water.f90": "a3ea5462cc94b62609f7e39cafaf70a29a2d0dfad87269f7acc296af656eafff",
+    "tools/solute/run_native_water.py": "e114c5da884846c1f3eaaf27efa6371af66a7d5b98388d872b12e44fd7286ac8",
+    "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_CONTRACT.md": "c5d72f29a495d06bf7f6ab20d2b4923912d4038280205eb0f7b28e22f2d8d390"
+  },
+  "later_diagnostic": "integration/mc-sol01/drainage/CAUCHY_ENTRY_DIAGNOSTIC_STATUS.json",
+  "postimages": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "43abb5fd5c4d17afe6816e4aa8fe3fe34f7bae1008e351e93d534cfd8229849f",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "eb4c9f341dec9b21aefbf9082f62b88ee23cb8ad764bb0b9a6be4cd3e03b85db",
+    "app/solute_project/main_water.f90": "a3ea5462cc94b62609f7e39cafaf70a29a2d0dfad87269f7acc296af656eafff",
+    "tools/solute/run_native_water.py": "e114c5da884846c1f3eaaf27efa6371af66a7d5b98388d872b12e44fd7286ac8",
+    "tests/nut-sol/test_native_macro_entry_jump.f90": "bf1e8fe36564c2c5129e637115ab2451fa5a1010566fc8b3c7f9e20120102826",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "3da5143101af19abcab58afccf4c8f0cf328e06e1b462b145ce74874f0ac40d5",
+    "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90": "46772e6e3264a1f09b56549134cb9f3d568268756d63c8132ded87f2a84bdcc1",
+    "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_CONTRACT.md": "1cc34aa3513f8f889aa39283ca7928aee4f9c253d0ec09e9a4fffe704d68dbe1"
+  }
 }

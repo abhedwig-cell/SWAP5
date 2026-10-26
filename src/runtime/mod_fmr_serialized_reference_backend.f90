@@ -1,5 +1,5 @@
 module mod_fmr_serialized_reference_backend
-  use, intrinsic :: iso_fortran_env, only: int64, real64
+  use, intrinsic :: iso_fortran_env, only: int64, real64, error_unit
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, transaction_attempt_context_t, transaction_scratch_scope_t, trial_outcome_t, &
        TX_MASS_MISSING_NONE, TX_MASS_MISSING_UNSPECIFIED, TX_TEMPORAL_EXTERNAL_FULL_HALF, &
@@ -2860,6 +2860,10 @@ contains
         call reject_backend_trial(result,candidate,diagnostics)
         return
       end if
+      if(.not.allocated(forcing%rutter))then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
       if(.not.forcing%rutter%matrix_source_area_partition)then
         call reject_backend_trial(result,candidate,diagnostics)
         return
@@ -5653,6 +5657,8 @@ contains
     outcome%backtracking_attempts = solve_result%diagnostics%backtracking_attempts
     outcome%alternative_solver_calls = solve_result%diagnostics%alternative_solver_calls
     outcome%workspace_full_resets = solve_result%diagnostics%workspace_full_resets
+    if(self%macropore_policy%anchored_cauchy_step_ceiling) &
+      call diagnose_macro_step(t0,t1,solve_result%status)
     outcome%workspace_zeroed_bytes = solve_result%diagnostics%workspace_zeroed_bytes
     if (trajectory_solver_used) then
       outcome%linear_solves = outcome%linear_solves + direction_result%additional_tridiagonal_backsolves
@@ -6761,6 +6767,58 @@ contains
     ok=.true.
   end function
 
+  subroutine diagnose_macro_step(t0,t1,status_code)
+    real(real64),intent(in)::t0,t1
+    integer,intent(in)::status_code
+    integer,save::calls=0
+    integer::env_status
+    character(8)::setting
+    real::cpu
+    call get_environment_variable('SWAP5_DIAG_MACRO_TEMPORAL',setting,status=env_status)
+    if(env_status/=0.or.trim(setting)/='1')return
+    calls=calls+1
+    if(calls>20.and.mod(calls,128)/=0)return
+    call cpu_time(cpu)
+    write(error_unit,*) 'MACRO_STEP',calls,t0,t1,status_code,cpu
+    flush(error_unit)
+  end subroutine diagnose_macro_step
+
+  ! Opt-in observation only; never modifies candidates or acceptance policy.
+  subroutine diagnose_macro_temporal(full_state,half_state,dt,value)
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),intent(in)::dt,value
+    integer,save::calls=0
+    logical,save::initialized=.false.,enabled=.false.
+    character(8)::setting
+    integer::status,j
+    if(.not.initialized)then
+      call get_environment_variable('SWAP5_DIAG_MACRO_TEMPORAL',setting,status=status)
+      enabled=status==0.and.trim(setting)=='1'
+      initialized=.true.
+    end if
+    if(.not.enabled)return
+    calls=calls+1
+    if(calls>20.and.mod(calls,256)/=0)return
+    select type(f=>full_state)
+    class is(fmr_b110_physical_state_t)
+      select type(h=>half_state)
+      class is(fmr_b110_physical_state_t)
+        if(.not.allocated(f%macropore).or..not.allocated(h%macropore))return
+        j=maxloc(abs(f%pressure_head-h%pressure_head),dim=1)
+        write(error_unit,*) 'MACRO_TEMPORAL',calls,dt,value,' head_node ',j, &
+          f%pressure_head(j),h%pressure_head(j),' pond ',f%ponding_depth,h%ponding_depth, &
+          ' gwl ',f%groundwater_level,h%groundwater_level,' stocks ', &
+          maxval(abs(f%macropore%water_domain_cp-h%macropore%water_domain_cp)), &
+          ' volume ',maxval(abs(f%macropore%volume_domain_cp-h%macropore%volume_domain_cp)), &
+          ' dynamic ',maxval(abs(f%macropore%dynamic_volume_cp-h%macropore%dynamic_volume_cp))
+        write(error_unit,*) 'MACRO_TOPOLOGY',f%macropore%icp_bottom_domain,h%macropore%icp_bottom_domain
+        if(allocated(h%rutter))write(error_unit,*) 'MACRO_ENDPOINT',h%rutter%accepted_until(), &
+          f%water_content(j),h%water_content(j)
+        flush(error_unit)
+      end select
+    end select
+  end subroutine diagnose_macro_temporal
+
   real(real64) function fmr_water_flux_temporal_assessment(self,full_state,half_state,full_outcome, &
       half1_outcome,half2_outcome,attempt_dt) result(value)
     class(fmr_serialized_reference_model_t),intent(in)::self
@@ -6771,6 +6829,8 @@ contains
     real(real64)::normalized
     if(.not.self%water_flux_temporal%enabled)then
       value=self%temporal_error(full_state,half_state)
+      if(self%macropore_policy%anchored_cauchy_step_ceiling) &
+        call diagnose_macro_temporal(full_state,half_state,attempt_dt,value)
       return
     end if
     value=huge(0.0_real64)
