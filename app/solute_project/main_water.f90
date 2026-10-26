@@ -174,6 +174,7 @@ program swap5_native_water_project
   character(64)::binding
   real(real64)::canopy_capacity(MAX_WINDOWS)=0d0,transpiration_dry(MAX_WINDOWS)=0d0,transpiration_wet(MAX_WINDOWS)=0d0
   real(real64)::canopy_evaporation(MAX_WINDOWS)=0d0,vegetation_cover(MAX_WINDOWS)=0d0
+  real(real64)::entry_ramp_width_cm=0d0
   real(real64)::stop_time=huge(1d0),day_start
   real(real64)::cursor,endpoint,rain_rate,day_residual,root_amount,drain_amount,rapid_amount,runoff_amount,bottom_amount_day
   real(real64)::pond_macro_amount,max_pond_depth,direct_macro_amount,max_net_source_check,net_source_check
@@ -190,6 +191,14 @@ program swap5_native_water_project
   if(len_trim(arg)>0)then
     call require(trim(arg)=='anchored-cauchy','unknown native execution policy')
     anchored_ceiling=.true.
+  end if
+  call get_command_argument(9,arg)
+  if(len_trim(arg)>0)then
+    read(arg,*,iostat=io)entry_ramp_width_cm
+    call require(io==0,'entry transition width grammar')
+    call require(ieee_is_finite(entry_ramp_width_cm),'entry transition width finite')
+    call require(anchored_ceiling.and.entry_ramp_width_cm>0d0.and.entry_ramp_width_cm<=1d-3, &
+      'explicit entry transition width range/policy')
   end if
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
@@ -409,6 +418,7 @@ program swap5_native_water_project
   call require(all(canopy_capacity>=0d0).and.all(transpiration_dry>=0d0).and.all(transpiration_wet>=0d0).and. &
     all(canopy_evaporation>=0d0).and.all(vegetation_cover>=0d0).and.all(vegetation_cover<=1d0),'Rutter plan limits')
   call import_column_macro_configuration(trim(macro_path),macro_initial,macro_config)
+  macro_config%rate_template%unsaturated%entry_transition_width_cm=entry_ramp_width_cm
   call require(macro_initial%geometry%num_nodes==numnod.and.all(macro_initial%geometry%dz==dz),'source macro/water geometry')
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen
   ! Original hconduc deliberately excludes KSATEXM for SWMACRO1.

@@ -1,5 +1,6 @@
 module mod_ppa_wu05a6_unsat_absorption_rate
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_ppa_wu05a6_sorptivity_rate, only: sorptivity_rate_request_t, sorptivity_rate_result_t, &
        evaluate_sorptivity_rate
   implicit none
@@ -7,6 +8,8 @@ module mod_ppa_wu05a6_unsat_absorption_rate
 
   type, public :: unsat_absorption_request_t
     type(sorptivity_rate_request_t) :: sorptivity
+    ! Explicit corrected-source variant. Zero preserves the archived gate.
+    real(real64) :: entry_transition_width_cm = 0.0_real64
     real(real64) :: shape_factor = 1.0_real64
     real(real64), allocatable :: pressure_head(:)
     real(real64), allocatable :: elevation(:)
@@ -30,7 +33,7 @@ module mod_ppa_wu05a6_unsat_absorption_rate
     real(real64), allocatable :: seed_theta_ref(:,:)
   end type unsat_absorption_result_t
 
-  public :: evaluate_unsat_absorption
+  public :: evaluate_unsat_absorption, evaluate_entry_darcy_head_difference
 
 contains
 
@@ -38,6 +41,10 @@ contains
     class(unsat_absorption_request_t), intent(in) :: self
     integer :: n, nd
 
+    ok=ieee_is_finite(self%entry_transition_width_cm)
+    if(.not.ok)return
+    ok=self%entry_transition_width_cm>=0.0_real64.and.self%entry_transition_width_cm<=1.e-3_real64
+    if(.not.ok)return
     ok = self%sorptivity%valid()
     if (.not. ok) return
     n = self%sorptivity%num_nodes
@@ -55,6 +62,27 @@ contains
          all(self%sorp_fac_parallel <= 1.0_real64)
   end function unsat_request_valid
 
+  pure subroutine evaluate_entry_darcy_head_difference(head,entry,hmp,width,delh,derivative)
+    real(real64),intent(in)::head,entry,hmp,width
+    real(real64),intent(out)::delh,derivative
+    real(real64)::threshold,x,gate,gate_slope,raw
+    delh=0.0_real64;derivative=0.0_real64
+    threshold=entry-1.e-8_real64
+    if(head>=threshold.or.hmp<=1.e-8_real64)return
+    raw=max(0.0_real64,hmp-head)
+    if(raw<=0.0_real64)return
+    gate=1.0_real64;gate_slope=0.0_real64
+    if(width>0.0_real64)then
+      if(head>threshold-width)then
+        x=(threshold-head)/width
+        gate=x*x*(3.0_real64-2.0_real64*x)
+        gate_slope=-6.0_real64*x*(1.0_real64-x)/width
+      end if
+    end if
+    delh=raw*gate
+    derivative=-gate+raw*gate_slope
+  end subroutine evaluate_entry_darcy_head_difference
+
   subroutine evaluate_unsat_absorption(request, result)
     type(unsat_absorption_request_t), intent(in) :: request
     type(unsat_absorption_result_t), intent(out) :: result
@@ -62,7 +90,7 @@ contains
     type(sorptivity_rate_request_t) :: sorp_request
     type(sorptivity_rate_result_t) :: sorp_result
     integer :: id, ic, ic_top, ic_bottom, nd, n
-    real(real64) :: hmp, delh, recres, raw_darcy, sat_fraction, sorp_fac, darcy_scaled, selected
+    real(real64) :: hmp, delh, ignored_derivative, recres, raw_darcy, sat_fraction, sorp_fac, darcy_scaled, selected
     logical :: excluded_by_perched
 
     result = unsat_absorption_result_t()
@@ -106,11 +134,8 @@ contains
         darcy_scaled = 0.0_real64
         if (ic > request%sorptivity%top_water_node(id)) then
           hmp = max(0.0_real64,request%groundwater_level_domain(id)-request%elevation(ic))
-          if (request%pressure_head(ic) < request%entry_head(ic)-1.0e-8_real64 .and. hmp > 1.0e-8_real64) then
-            delh = max(0.0_real64,hmp-request%pressure_head(ic))
-          else
-            delh = 0.0_real64
-          end if
+          call evaluate_entry_darcy_head_difference(request%pressure_head(ic),request%entry_head(ic),hmp, &
+               request%entry_transition_width_cm,delh,ignored_derivative)
 
           recres = request%shape_factor*8.0_real64*request%sorptivity%domain_fraction(id,ic) * &
                request%sorptivity%dz(ic)*request%conductivity(ic) / request%sorptivity%diameter(ic)**2
