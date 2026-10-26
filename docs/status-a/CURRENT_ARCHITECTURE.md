@@ -1,5 +1,33 @@
 # SWAP5 Status-A current architecture
 
+The actual original SWMACRO1/SWSOLU0 water application is canonically admitted
+by PR1454 for the first1.0539999999964493days on the unmodified112-node/five-domain
+SWP/BBC/DRA, with source Rutter, plain Feddes roots, source DRAMET3 and numeric
+heat. The explicit source-area partition prevents duplicate matrix/macro rain;
+an independent supplied-net-Rutter-source stock budget closes within1.14e-14cm.
+Wet tapered-tip storage and a bounded machine-roundoff floor in the observation
+cell certificate repair concrete source failures. The Rutter pond/head provider
+uses the existing derivative and configured donor; positive committed source pond
+storage/transfer is not claimed by this short proof. Solver/temporal/accepted-mass
+tolerances are unchanged. Ten checked O0/O2 native processes have byte-exact
+physical output and decoded file payload. Four fresh-process source-event/day
+restarts reproduce12 endpoint files exactly;14 corrupt/foreign files reject
+before any state publication. Same-platform complete-event/day files only.
+Existing joint/rootless thermal stdout and four default builder executables are
+predecessor-byte-exact. The retained481 owner passes without a new481-day run.
+NUT01/SOL01 remain CLOSED WITH EXCLUSIONS; no broad F-CI, low-air or RossFast
+extension is claimed. Seasonal/full431 identity and variable-surface-conductivity
+projects remain excluded. Earlier five-day development runs were censored before
+the final source-partition correction; final longer-run cost is initially UNKNOWN.
+The earlier blocks below retain their dated evidence; their no-native-dispatch,
+no-file-restart and dry-only-tip statements are superseded only within this scope.
+Actual merge `7e2e82750176836afe78ef90785ae1d879c6d9f3` has complete qualified tree
+`a98c82307d50c37710985cc4a6ae05470fe9062f` exactly. Actual-merge27 source/raw
+controls, retained481 owner, unchanged27 FSI35 dependencies and strict docs pass.
+Authority: `integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_STATUS.json`,
+`NATIVE_WATER_APPLICATION_CONTRACT.md` and `NATIVE_WATER_APPLICATION_ADMISSION.json`.
+A separately selected bounded longer probe is tracked in `NATIVE_WATER_LONGER_STATUS.json`.
+
 The bounded ordinary Reference macro/Rutter/Boesten/numeric-heat runtime with
 plain substep Feddes roots, source drainage-only DRAMET3 and their joint case is
 canonically admitted by PR1453. The root process receives the

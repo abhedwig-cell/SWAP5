@@ -1,17 +1,15 @@
 {
   "work_unit": "HIST-INTEGRATION01 native SWSOLU0 macro Rutter heat water application",
   "baseline": "72839916e6498b95ab4cb9e120df5a6868e2f20d",
-  "stage": "SHORT_NATIVE_APPLICATION_QUALIFIED_PENDING_ADMISSION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_CONTRACT.md",
   "recovery_point": "Original112/five-domain O0/O2 short production, positive direct macro/root/rapid, independent supplied-source budget and four exact fresh-process restarts;14 invalid file controls",
-  "blockers": [
-    "Actual canonical merge and postimage verification"
-  ],
+  "blockers": [],
   "next_action": "Admit bounded first1.054day native application and exact event/day file restart; select a bounded current-partition longer probe after canonical checkpoint",
   "test_selection": {
     "groups": {
@@ -108,7 +106,7 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "bounded_macro_rutter_numeric_heat": true,
     "heat_configurations": 6,
     "heat_native_processes": 12,
@@ -638,5 +636,9 @@
     "tests/nut-sol/qualify_native_macro_water.py",
     "tests/nut-sol/test_native_macro_initial.f90",
     "tests/nut-sol/macro_trace_checks.inc"
-  ]
+  ],
+  "admission": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_ADMISSION.json",
+  "actual_merge": "7e2e82750176836afe78ef90785ae1d879c6d9f3",
+  "qualified_complete_tree": "a98c82307d50c37710985cc4a6ae05470fe9062f",
+  "longer_successor": "integration/mc-sol01/drainage/NATIVE_WATER_LONGER_STATUS.json"
 }

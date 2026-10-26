@@ -1,0 +1,38 @@
+{
+  "work_unit": "HIST-INTEGRATION01 current source-partition longer native probe",
+  "baseline": "7e2e82750176836afe78ef90785ae1d879c6d9f3",
+  "stage": "SELECTED_PENDING_EXECUTION",
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "parent_admission": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_ADMISSION.json",
+  "test_selection": {
+    "groups": {
+      "native_longer": {
+        "changed_dependency": "Actual original forcing beyond the qualified1.054day prefix; final explicit source partition unchanged",
+        "scientific_claim": "Determine current-route completion/cost and positive committed pond exchange through source event1.77 and day2; no seasonal equivalence",
+        "owner": "HIST-INTEGRATION01",
+        "authority": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_CONTRACT.md",
+        "expected_seconds": 180,
+        "existing_evidence": "Checked O0/O2 first1.054day with exact source-event/day file restart. Reuse qualified O2 day1 file instead of recomputing that prefix.",
+        "prior_execution": "NONE",
+        "cost_boundary": "Two bounded sequential current O2 stages, maximum90s each. Retain censored output; no identical repeat or broad solver tests."
+      }
+    }
+  },
+  "planned_stages": [
+    {
+      "start_day": 1.0,
+      "end_day": 1.7699999999967986,
+      "timeout_seconds": 90
+    },
+    {
+      "start_day": 1.7699999999967986,
+      "end_day": 2.0,
+      "timeout_seconds": 90
+    }
+  ],
+  "recovery_point": "Qualified O2 day-prefix/restart.bin in NATIVE_WATER_APPLICATION_EVIDENCE archive",
+  "next_action": "Execute first source-event segment, then resume through day2 only after a complete recoverable checkpoint"
+}
