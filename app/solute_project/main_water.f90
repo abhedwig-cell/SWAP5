@@ -44,13 +44,9 @@ program swap5_native_water_project
   use mod_fmr_macropore_configuration
   use mod_macropore_single_column_runtime,only:macropore_runtime_policy_t
   use mod_interception_source_window_runtime,only:initialize_interception_window,interception_source_window_t
-  use mod_rutter_source_window_processor
-  use mod_rutter_interception_process,only:rutter_interval_result_t,rutter_diagnostics_t
+  use mod_rutter_source_window_processor,only:initialize_rutter_canopy_state
   use mod_kernel_transactions,only:kernel_checkpoint_t,kernel_candidate_state_t,kernel_result_t,kernel_diagnostics_t
   implicit none
-  type(rutter_interval_result_t)::dbg_result
-  type(rutter_diagnostics_t)::dbg_diag
-  type(rutter_source_trial_t)::dbg_trial
   integer,parameter :: MAX_WINDOWS=2048,MAX_NODES=256
   integer :: nodes=4
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
@@ -178,8 +174,10 @@ program swap5_native_water_project
   character(64)::binding
   real(real64)::canopy_capacity(MAX_WINDOWS)=0d0,transpiration_dry(MAX_WINDOWS)=0d0,transpiration_wet(MAX_WINDOWS)=0d0
   real(real64)::canopy_evaporation(MAX_WINDOWS)=0d0,vegetation_cover(MAX_WINDOWS)=0d0
+  real(real64)::stop_time=huge(1d0),day_start
   real(real64)::cursor,endpoint,rain_rate,day_residual,root_amount,drain_amount,rapid_amount,runoff_amount,bottom_amount_day
-  real(real64)::potential_root_amount,observed_heat
+  real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
+  real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
   logical::did_commit,policy_ok
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
@@ -192,6 +190,12 @@ program swap5_native_water_project
   if(len_trim(arg)>0)then
     read(arg,*,iostat=io)stop_after
     call require(io==0,'invalid stop-after window')
+  end if
+  call get_command_argument(7,arg)
+  if(len_trim(arg)>0)then
+    read(arg,*,iostat=io)stop_time
+    call require(io==0,'invalid stop time')
+    call require(ieee_is_finite(stop_time).and.stop_time>0d0,'positive stop time')
   end if
   open(newunit=u,file=trim(path),status='old',action='read',iostat=io)
   call require(io==0,'cannot open input')
@@ -461,13 +465,18 @@ program swap5_native_water_project
     call require(code==0,'native macro water restart rejected')
   end if
   call water%current_time(clock,ok);call require(ok,'source native clock')
-  first=nint(clock)+1;call require(clock==real(first-1,real64),'restart must be a day boundary')
+  first=floor(clock)+1
+  call require(clock==real(first-1,real64).or.any(rain_ends(:rain_count)==clock),'restart must be a source-event/day boundary')
+  if(stop_time<huge(1d0))then
+    call require(stop_time>clock.and.stop_time<=real(min(windows,stop_after),real64),'stop time extent')
+    call require(any(ends_day(:windows)==stop_time).or.any(rain_ends(:rain_count)==stop_time),'stop at source-event/day boundary')
+  end if
   open(newunit=uv,file='budget.csv',status='new');write(uv,'(a)') &
-    'day,water_residual_cm,root_cm,drainage_cm,rapid_cm,runoff_cm,bottom_cm,soil_evap_cm,wet_potential_cm,observed_last_heat_residual_j_cm2'
+    'day,t0,t1,water_residual_cm,root_cm,drainage_cm,rapid_cm,runoff_cm,bottom_cm,soil_evap_cm,wet_potential_cm,observed_last_heat_residual_j_cm2,max_macro_cell_cm,max_matrix_cm,max_combined_cm'
   open(newunit=up,file='progress.csv',status='new');write(up,'(a)')'day,segment,t0,t1,attempts,solver_rejections,temporal_rejections,mass_rejections,residual_cm'
   rain_index=1
   do while(rain_index<rain_count.and.rain_ends(rain_index)<=clock+1d-12);rain_index=rain_index+1;end do
-  do j=first,min(windows,stop_after)
+  daily_loop:do j=first,min(windows,stop_after)
     call select_project_profile(profile_index(j));crop_input=fmr_root_uptake_crop_input_t()
     if(crop_active(j))then
       call materialize_static_root_profile(density_table,z-.5d0*dz,maximum_root_depth_cm,root_depth_cm(j), &
@@ -481,8 +490,9 @@ program swap5_native_water_project
       forcing%substep_root%request%cumulative_root_fraction=crop_input%cumulative_root_fraction
     forcing%substep_root%request%potential_transpiration=transpiration_dry(j)
     forcing%soil_temperature%air_temperature_c=air_temperature_c(j)
-    cursor=real(j-1,real64);part=0;day_residual=0d0;root_amount=0d0;drain_amount=0d0
+    cursor=max(clock,real(j-1,real64));day_start=cursor;part=0;day_residual=0d0;root_amount=0d0;drain_amount=0d0
     rapid_amount=0d0;runoff_amount=0d0;bottom_amount_day=0d0;evap_amount=0d0;potential_root_amount=0d0;observed_heat=0d0
+    max_cell_check=0d0;max_matrix_check=0d0;max_gross_check=0d0
     do while(cursor<ends_day(j))
       part=part+1;endpoint=ends_day(j);rain_rate=rain_cm_day(j)
       if(detailed_rain)then
@@ -503,15 +513,6 @@ program swap5_native_water_project
       forcing%rutter%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
       forcing%rutter%ponding_max_cm=pond_max_cm;forcing%rutter%runoff_resistance_day=runoff_resistance_day
       forcing%rutter%runoff_exponent=1d0
-      call water%snapshot(physical,ok)
-      select type(s=>physical)
-      type is(fmr_b110_boesten_macropore_state_t)
-        if(s%rutter%source_window_initialized())then
-          call prepare_rutter_source_trial(forcing%rutter%source_window,s%rutter,endpoint,forcing%rutter%process, &
-            dbg_result,dbg_trial,dbg_diag,code)
-          if(code/=0) print *, 'NATIVE_RUTTER_PREP_DETAIL',code,dbg_diag%status
-        end if
-      end select
       call water%capture_checkpoint(checkpoint,ok);call require(ok,'native committed checkpoint')
       call backend%run_trial(column_id,template,p,water,forcing,numerical,cursor,endpoint,checkpoint, &
         water_result,candidate,water_diagnostics,trace_accepted_water_flux_substeps=.true.)
@@ -538,6 +539,26 @@ program swap5_native_water_project
       do step_index=1,size(observation%accepted_water_flux_substeps)
         associate(s=>observation%accepted_water_flux_substeps(step_index))
         call require(fmr_macropore_trace_receipt_valid(s,numnod),'native macro water receipt')
+        call require(fmr_macropore_trace_cell_balance_valid(s,numnod),'native macro cell certificate')
+        dt_check=s%t1-s%t0
+        cell_check=maxval(abs(s%macropore_water_end-s%macropore_water_start-dt_check* &
+          (s%macropore_vertical_face_rate(:,:numnod)-s%macropore_vertical_face_rate(:,2:)- &
+           s%macropore_matrix_exchange_domain-s%macropore_external_outflow_rate)))
+        call require(cell_check<=1d-10,'independent macro cell budget')
+        delta_check=sum(dz*s%matrix_area_fraction*(s%water_end-s%water_start))
+        expected_check=dt_check*(-s%top_flux+s%bottom_flux+sum(s%net_node_source))
+        matrix_check=abs(delta_check-expected_check)
+        call require(matrix_check<=1d-10,'independent matrix budget')
+        call require(abs(sum(s%macropore_vertical_face_rate(:,numnod+1))*dt_check)<=1d-10,'unbooked macro export')
+        call require(s%converged_surface_available,'native source surface receipt')
+        delta_check=delta_check+sum(s%macropore_water_end-s%macropore_water_start)+s%pond_end_cm-s%pond_start_cm
+        expected_check=dt_check*(s%converged_surface_net_potential_cm_day+s%bottom_flux+ &
+          sum(s%subsurface_source-s%drainage_sink-s%root_sink))+s%macropore_surface_return_cm+ &
+          s%macropore_accepted_cm-s%converged_runoff_depth_cm-s%macropore_rapid_outflow_cm
+        gross_check=abs(delta_check-expected_check)
+        call require(gross_check<=1d-10,'independent declared-boundary combined budget')
+        max_cell_check=max(max_cell_check,cell_check);max_matrix_check=max(max_matrix_check,matrix_check)
+        max_gross_check=max(max_gross_check,gross_check)
         root_amount=root_amount+sum(s%root_sink)*(s%t1-s%t0)
         drain_amount=drain_amount+sum(s%drainage_sink)*(s%t1-s%t0)
         rapid_amount=rapid_amount+s%macropore_rapid_outflow_cm
@@ -550,17 +571,21 @@ program swap5_native_water_project
       observed_heat=max(observed_heat,abs(observation%soil_temperature_energy_residual_j_cm2))
       call backend%commit_trial_candidate(water,candidate,water_diagnostics,did_commit,commit_status)
       call require(did_commit.and.commit_status==0,'native candidate publication')
+      call water%current_time(clock,ok);call require(ok.and.clock==endpoint,'native exact committed clock')
       committed_window=forcing%rutter%source_window
       day_residual=day_residual+water_result%mass%residual;cursor=endpoint
+      if(cursor==stop_time)exit
     end do
-    write(uv,'(i0,9(a,es25.17e3))')j,',',day_residual,',',root_amount,',',drain_amount,',',rapid_amount,',',runoff_amount, &
-      ',',bottom_amount_day,',',evap_amount,',',potential_root_amount,',',observed_heat
+    write(uv,'(i0,14(a,es25.17e3))')j,',',day_start,',',cursor,',',day_residual,',',root_amount,',',drain_amount,',',rapid_amount,',',runoff_amount, &
+      ',',bottom_amount_day,',',evap_amount,',',potential_root_amount,',',observed_heat, &
+      ',',max_cell_check,',',max_matrix_check,',',max_gross_check
     flush(uv)
     call write_macro_water_restart('restart.bin',binding,column_id,template,p,water,committed_window,code)
     call require(code==0,'native coupled restart publication')
     write(*,'(a,i0,a,es25.17e3)')'NATIVE_WATER_ACCEPTED day=',j,' residual_cm=',day_residual
     flush(6)
-  end do
+    if(cursor>=stop_time)exit daily_loop
+  end do daily_loop
   close(uv);close(up)
   call water%snapshot(physical,ok);call require(ok,'native final committed snapshot')
   select type(s=>physical)

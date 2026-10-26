@@ -531,6 +531,7 @@ module mod_fmr_serialized_reference_backend
     type(fmr_rutter_runtime_forcing_t), allocatable :: rutter
   end type fmr_b110_physical_forcing_t
 
+  public :: fmr_macropore_trace_cell_balance_valid
   public :: fmr_macropore_trace_receipt_valid
 
   ! Read-only trial trace of one accepted Richards physical substep. It is
@@ -5390,6 +5391,18 @@ contains
              self%rutter_forcing%potential_pond_evaporation_cm_per_day, self%rutter_forcing%ponding_max_cm, &
              self%rutter_forcing%runoff_resistance_day, self%rutter_forcing%runoff_exponent)
       end if
+      if(self%macropore_active.and.self%soil_temperature_active)then
+        ! This existing provider evaluates candidate-head conductivity. Supply
+        ! its already implemented total-flux derivative when the pond/head
+        ! regime becomes active; a missing Jacobian is not a valid fallback.
+        rutter_top_provider%implicit_conductivity=.true.
+        if(self%macropore_config%surface_pond_inflow_enabled)then
+          rutter_top_provider%macropore_pond_donor_active=.true.
+          rutter_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
+          rutter_top_provider%macropore_surface_conductivity= &
+            self%macropore_config%surface_macropore_conductivity_cm_per_day
+        end if
+      end if
       request%evaluation%dynamic_top_boundary => rutter_top_provider
     else if (.not. self%black_evaporation_active .and. .not. self%boesten_evaporation_active) then
       request%evaluation%top_boundary => self%top_boundary
@@ -6361,7 +6374,7 @@ contains
     type(fmr_water_flux_substep_trace_t),intent(in)::step
     integer,intent(in)::n
     integer::k,nd
-    real(real64)::dt
+    real(real64)::dt,rate_scale,storage_scale,roundoff_cm
     ok=.false.
     if(.not.fmr_macropore_trace_receipt_valid(step,n))return
     k=step%macropore_top_node;dt=step%t1-step%t0
@@ -6370,11 +6383,19 @@ contains
     if(any(shape(step%macropore_water_start)/=[nd,n]).or.any(shape(step%macropore_water_end)/=[nd,n]))return
     if(any(.not.ieee_is_finite(step%macropore_water_start)).or.any(.not.ieee_is_finite(step%macropore_water_end)))return
     ! No macro control volume exists above k; its entry face belongs to cell k.
-    if(maxval(abs((step%macropore_water_end(:,k:n)-step%macropore_water_start(:,k:n))/dt- &
+    ! Test the same rate certificate in depth units. Subtracting stored stocks
+    ! has a finite representation error independent of dt; division by a short
+    ! rain event must not turn that sub-ulp depth into a false physical failure.
+    ! Eight elementary operations bound the explicit roundoff floor. The rate
+    ! threshold and all solver/transaction mass gates remain unchanged.
+    rate_scale=max(1.0_real64,maxval(abs(step%macropore_vertical_face_rate)), &
+      maxval(abs(step%macropore_matrix_exchange_domain)))
+    storage_scale=max(1.0_real64,maxval(abs(step%macropore_water_start)),maxval(abs(step%macropore_water_end)))
+    roundoff_cm=8.0_real64*epsilon(1.0_real64)*storage_scale
+    if(maxval(abs(step%macropore_water_end(:,k:n)-step%macropore_water_start(:,k:n)-dt* &
       (step%macropore_vertical_face_rate(:,k:n)-step%macropore_vertical_face_rate(:,k+1:n+1)- &
        step%macropore_matrix_exchange_domain(:,k:n)-step%macropore_external_outflow_rate(:,k:n))))> &
-       1.0e-12_real64*max(1.0_real64,maxval(abs(step%macropore_vertical_face_rate)), &
-       maxval(abs(step%macropore_matrix_exchange_domain))))return
+       1.0e-12_real64*rate_scale*dt+roundoff_cm)return
     ok=.true.
   end function fmr_macropore_trace_cell_balance_valid
 

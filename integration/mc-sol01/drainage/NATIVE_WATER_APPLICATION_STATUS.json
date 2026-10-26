@@ -1,19 +1,19 @@
 {
   "work_unit": "HIST-INTEGRATION01 native SWSOLU0 macro Rutter heat water application",
   "baseline": "72839916e6498b95ab4cb9e120df5a6868e2f20d",
-  "stage": "FIRST_DAY_PASSED_SECOND_DAY_PREPARATION_BLOCKER",
+  "stage": "SOURCE_DAY2_POND_COUPLING_REPAIR_IMPLEMENTED",
   "implemented": true,
   "persisted": true,
   "tested": false,
   "qualified": false,
   "canonically_admitted": false,
   "contract": "integration/mc-sol01/drainage/NATIVE_WATER_APPLICATION_CONTRACT.md",
-  "recovery_point": "First full original day passes after positive tapered-tip repair; continuous and fresh-process day1 restart both reject identically before attempts on day2 source interval [1.017,1.041]. Source-window preparation diagnosis pending.",
+  "recovery_point": "Current first full day O0/O2 and joint runtime bit-exact. Day2 rain false trace rejection repaired with machine-roundoff depth guard; actual next source pond/head interval exposed missing Rutter provider derivative and dropped configured pond donor. Existing derivative/donor wired; replay pending.",
   "blockers": [
-    "Day2 second source rain window rejects before solver attempts",
-    "Decode validation/negative controls, O0/O2 application and proportional preservation not yet qualified"
+    "Replay actual day2 pond/head with existing derivative/donor wiring",
+    "Complete current file restart controls and final O0/O2 source application qualification"
   ],
-  "next_action": "Diagnose exact pre-solver window rejection, then qualify file restart and O0/O2 short production execution",
+  "next_action": "Run current native pond composition O0/O2 short project, exact source-event/day file restart and negative controls",
   "test_selection": {
     "groups": {
       "native_water": {

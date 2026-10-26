@@ -1,6 +1,8 @@
 ! One same-platform, CRC-protected committed water/heat/macro/Rutter generation.
 module mod_macro_water_restart
  use iso_fortran_env,only:real64,int64,int32,int8
+ use ieee_arithmetic,only:ieee_is_finite
+ use mod_macropore_standard_storage,only:macropore_standard_storage_view_t,derive_macropore_standard_storage_view
  use iso_c_binding,only:c_int,c_char,c_null_char
  use mod_kernel_transactions,only:kernel_committed_state_t
  use mod_fmr_runtime_core
@@ -44,7 +46,8 @@ contains
  type(fmr_committed_restart_bundle_t)::b
  type(soil_temperature_field_view_t)::heat
  type(rutter_source_restart_t)::rutter
- integer::u,io,n,nd,st,size_bytes
+ integer::u,io,n,nd,st,size_bytes,slash
+ character(:),allocatable::directory
  integer(c_int)::fd,rc
  integer(int8),allocatable::bytes(:)
  integer(int32)::crc
@@ -56,11 +59,13 @@ contains
  select type(s=>b%records(1)%physical_state)
  type is(fmr_b110_boesten_macropore_state_t)
   if(.not.allocated(s%macropore).or..not.allocated(s%soil_temperature).or..not.allocated(s%rutter))return
+  if(.not.valid_state(s,p,b%records(1)%committed_time))return
   n=s%active_nodes;nd=s%macropore%num_domains
   call build_soil_temperature_field_view(s%soil_temperature,heat,st);if(st/=0)return
   rutter_bound=s%rutter%source_window_initialized()
   if(rutter_bound)then
    call export_rutter_source_restart(window,s%rutter,rutter,st);if(st/=0)return
+   if(rutter%source_progress%accepted_until/=rutter%source_progress%t1)return
   else
    rutter%canopy_storage_cm=s%rutter%canopy_storage()
   end if
@@ -81,6 +86,11 @@ contains
   fd=open_c(path//'.tmp'//c_null_char,0_c_int);if(fd<0)return
   rc=sync_c(fd);st=close_c(fd);if(rc/=0.or.st/=0)return
   rc=rename_c(path//'.tmp'//c_null_char,path//c_null_char);if(rc/=0)return
+  slash=index(path,'/',back=.true.);directory='.'
+  if(slash==1)directory='/'
+  if(slash>1)directory=path(:slash-1)
+  fd=open_c(directory//c_null_char,0_c_int);if(fd<0)return
+  rc=sync_c(fd);st=close_c(fd);if(rc/=0.or.st/=0)return
   status=0
  class default
   return
@@ -106,7 +116,7 @@ contains
  character(64)::stored_binding
  logical::ok,rutter_bound
  status=1
- if(water%ready())return
+ if(water%ready().or.len_trim(binding)/=64)return
  open(newunit=u,file=path,status='old',access='stream',form='unformatted',action='read',iostat=io);if(io/=0)return
  inquire(unit=u,size=size_bytes)
  if(size_bytes<128.or.size_bytes>10000000)then;close(u);return;end if
@@ -136,6 +146,7 @@ contains
  if(io/=0.or.position/=size_bytes-3)return
  call initialize_soil_temperature_state(temperature,s%soil_temperature,st);if(st/=0)return
  if(rutter_bound)then
+  if(rutter%source_progress%accepted_until/=rutter%source_progress%t1)return
   call restore_rutter_source_restart(rutter,window,s%rutter,st)
  else
   if(rutter%schema/=0.or.rutter%source_progress%schema/=0)return
@@ -143,9 +154,40 @@ contains
   call initialize_rutter_canopy_state(rutter%canopy_storage_cm,s%rutter,st)
  end if
  if(st/=0)return
+ if(.not.valid_state(s,p,b%records(1)%committed_time))return
  allocate(b%records(1)%physical_state,source=s)
  call fmr_restore_committed_restart(b,p%parameter_set_id,[column],[template],registry,ok,st)
  if(.not.ok.or.st/=FMR_RESTART_OK)return
  water=registry(1);status=0
  end subroutine
+ logical function valid_state(s,p,clock)result(ok)
+ type(fmr_b110_boesten_macropore_state_t),intent(in)::s
+ type(fmr_b110_physical_parameters_t),intent(in)::p
+ real(real64),intent(in)::clock
+ type(macropore_standard_storage_view_t)::view
+ ok=.false.
+ if(.not.ieee_is_finite(clock).or.clock<0d0)return
+ if(.not.all(ieee_is_finite(s%pressure_head)).or..not.all(ieee_is_finite(s%water_content)))return
+ if(any(s%water_content<0d0).or.any(s%water_content>1d0))return
+ if(.not.all(ieee_is_finite([s%ponding_depth,s%groundwater_level,s%boesten_evaporation%spev,s%boesten_evaporation%saev])))return
+ if(s%ponding_depth<0d0.or.s%boesten_evaporation%spev<0d0.or.s%boesten_evaporation%saev<0d0)return
+ if(.not.allocated(s%macropore).or..not.allocated(s%rutter).or..not.allocated(s%soil_temperature))return
+ if(.not.s%macropore%ready())return
+ associate(m=>s%macropore)
+ if(.not.all(ieee_is_finite(m%sorptivity)).or..not.all(ieee_is_finite(m%theta_sorption_ref)).or. &
+    .not.all(ieee_is_finite(m%absorption_time)).or..not.all(ieee_is_finite(m%volume_domain_cp)).or. &
+    .not.all(ieee_is_finite(m%water_domain_cp)).or..not.all(ieee_is_finite(m%dynamic_volume_cp)))return
+ if(any(m%sorptivity<0d0).or.any(m%theta_sorption_ref<0d0).or.any(m%absorption_time<0d0).or. &
+    any(m%volume_domain_cp<0d0).or.any(m%water_domain_cp<0d0).or.any(m%dynamic_volume_cp<0d0))return
+ call derive_macropore_standard_storage_view(m,p%macropore%geometry%top_node,p%z,p%dz,view)
+ if(.not.view%valid)return
+ if(maxval(abs(view%normalized_water_cm-m%water_domain_cp))>1d-10)return
+ end associate
+ if(s%rutter%source_window_initialized())then
+  if(abs(s%rutter%accepted_until()-clock)>64d0*epsilon(1d0)*max(1d0,abs(clock)))return
+ else
+  if(clock/=0d0)return
+ end if
+ ok=.true.
+ end function
 end module

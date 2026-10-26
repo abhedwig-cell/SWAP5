@@ -32,3 +32,29 @@ for this concrete functional reason: canonical storage fills positive capacities
 bottom-up, marks intervening zero-volume tips wet, and preserves small positive
 stocks without division by zero. The old positive-bottom branch and its numerical
 quantums remain unchanged. Negative capacity and overcapacity still reject.
+
+The second original rain day exposes an observation-only false rejection: a
+1.6e-16cm inactive-domain face residual becomes1.6e-12cm/day on a short accepted
+step. The cell certificate now evaluates the same1e-12 rate bound in depth
+units plus an explicit eight-operation floating representation floor,
+8*epsilon*max(1,largest cell stock)cm. This supersedes only the predecessor
+trace contract's prohibition of a changed observation threshold for this
+concrete failure. No face, state, physical flux, solver/temporal tolerance or
+1e-10cm accepted mass gate changes. Independent cell/column depth budgets retain
+1e-10cm. Corrupt cell stocks and faces at1e-8cm must still reject. The existing
+read-only cell certificate is exposed additively for those direct controls.
+
+The file adapter accepts complete source-event or day boundaries only, uses the
+existing typed FMR/kernel and Rutter restart owners, binds raw sources and
+executable, checks CRC/dimensions/finite physical state/clock, and fsyncs the
+file and containing directory after atomic rename. Same-platform only; no
+portable format or arbitrary in-window restart is claimed.
+
+The next source day2 interval reaches the real pond/head regime. Rutter's
+provider had candidate-head conductivity but no derivative certificate, causing
+a HeadCalc hard stop, and had lost the explicit macro pond donor settings when
+replacing the separately bound Boesten provider. The macro/numeric-heat Rutter
+composition now selects the existing total-flux derivative implementation and
+passes the existing configured pond threshold/conductivity. Physical leaf
+equations are unchanged. This is a concrete coupling correction, not an
+implicit admission of other Rutter or hydraulic variants.
