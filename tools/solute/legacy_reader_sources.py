@@ -41,3 +41,45 @@ contains
  tt=folder/'TTUTIL';first=['ttutilprefs.f90','ttutil.f90','outdat.f90','rdmodulettutil.f90']
  providers=[tt/n for n in first]+[p for p in sorted(tt.glob('*.f90'))+sorted(tt.glob('*.for')) if p.name not in first]
  return path,providers
+
+def materialize_macro_geometry(root,out):
+    """Exact original geometry/read procedures in an isolated preparation context."""
+    import re
+    archive=root/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
+    with tarfile.open(fileobj=io.BytesIO(base64.b64decode(archive.read_bytes())),mode='r:gz')as tar:
+        raw={n:tar.extractfile('SWAP/'+n).read()for n in ['arrays.f90','variables.f90','macropore.f90']}
+    assert hashlib.sha256(raw['macropore.f90']).hexdigest()=='f44049c551b5206ada58f1bb150bc250c5502171e49568a7ad8f01eed7bf106f'
+    arrays=raw['arrays.f90'].decode('latin1')
+    normal=arrays.split('!DEC$ ELSE',1)[1].split('!DEC$ END IF',1)[0]
+    arrays='module MOD_arrays\n'+normal+'\nend module MOD_arrays\n'
+    variables=raw['variables.f90'].decode('latin1');m=re.search(r'^module MOD_swap_mp\b.*?^end module MOD_swap_mp',variables,re.I|re.M|re.S);assert m
+    shared=m.group()+'\n'
+    macro=raw['macropore.f90'].decode('latin1');header=macro[:macro.lower().index('   contains')]
+    # These two public names belong to unselected execution procedures. Remove
+    # only that declaration; all selected scientific procedure bytes stay exact.
+    header=re.sub(r'^\s*public :: macrostatevar, macropore\s*$', '',header,flags=re.M|re.I)
+    procedures=[]
+    for name in ['MACROGEOM','DEFINECOMPART','DiamPolyg','read_macropore']:
+        pattern=(r'^\s*real\(8\)\s+FUNCTION 'if name=='DiamPolyg'else r'^\s*SUBROUTINE ')+name+r'\b.*?^\s*end\s+(?:subroutine|function)\s+'+name+r'\b'
+        p=re.search(pattern,macro,re.M|re.I|re.S);assert p,name;procedures.append((name,p.group()))
+    context='''module MOD_grid
+ use MOD_arrays,only:macp,maho
+ implicit none
+ integer::numnod=0,numlay=0
+ real(8),allocatable::z(:),dz(:),zbotcp(:)
+ integer,allocatable::layer(:)
+end module
+module variables
+ use MOD_arrays,only:maho
+ implicit none
+ real(8)::ksatfit(maho)=0d0
+end module
+module MOD_swap_base
+ implicit none
+ integer::swsolu=0
+end module
+'''
+    text=arrays+shared+context+header+'\ncontains\n'+'\n'.join(p for _,p in procedures)+'\nend module MOD_macropore\n'
+    path=out/'original_macro_geometry.f90';path.write_bytes(text.encode('latin1'))
+    identity=dict(raw_sha256={n:hashlib.sha256(b).hexdigest()for n,b in raw.items()},procedure_sha256={n:hashlib.sha256(p.encode('latin1')).hexdigest()for n,p in procedures},generated_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),original_array_branch='non-multiswap DEC ELSE; exact constants',scope='read_macropore/MACROGEOM/DEFINECOMPART/DiamPolyg only')
+    return path,identity
