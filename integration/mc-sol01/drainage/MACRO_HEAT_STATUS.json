@@ -1,17 +1,17 @@
 {
   "work_unit": "HIST-INTEGRATION01 macro/Rutter/numeric heat",
   "baseline": "043e92ac319d3a3b8ca40b57e995be60db91679a",
-  "implemented": false,
+  "implemented": true,
   "persisted": true,
-  "tested": false,
-  "qualified": false,
+  "tested": true,
+  "qualified": true,
   "canonically_admitted": false,
   "contract": "integration/mc-sol01/drainage/MACRO_HEAT_CONTRACT.md",
   "blockers": [
-    "Runtime and typed restart exclude combined heat",
-    "Native original input/dispatch remains separate"
+    "Actual canonical merge and postimage verification",
+    "Original native macro input/dispatch remains excluded"
   ],
-  "next_action": "Build unchanged current providers O0/O2; implement bounded existing-owner composition",
+  "next_action": "Admit bounded runtime, verify actual merge; continue original native input mapping separately",
   "test_selection": {
     "candidate": "043e92ac319d3a3b8ca40b57e995be60db91679a",
     "groups": {
@@ -25,5 +25,67 @@
         "prior_execution": "NONE"
       }
     }
-  }
+  },
+  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "scientific_delta": {
+    "integration/audits/verify_covered_macro_current.py": "M",
+    "integration/audits/verify_macro_heat_current.py": "A",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M"
+  },
+  "postimages": {
+    "integration/mc-sol01/drainage/MACRO_HEAT_CONTRACT.md": "aeac598c3bec4c948dba31b8e3246db0366dfcb1bf3a31fa74263e12dbee7d63",
+    "integration/mc-sol01/drainage/seal_macro_heat.py": "286091311d59031dd8bbc7b1b33ec05c9ed65b0fe569e9d32b3a551232bbe31e",
+    "integration/mc-sol01/drainage/probe_macro_heat_predecessor.py": "60f45347e4c2bc336176a20d7123851b66f04889ca600e892a7085e756a9acc4",
+    "integration/audits/verify_macro_heat_current.py": "7810c55e98d1c8afc596ae2d904d438b9b7b136da35a7a88e51add460864340d",
+    "integration/mc-sol01/drainage/qualify_macro_trace.py": "17e1245c925c51dfe05e5a274b8443f1495dfefc71c5f571e77e0821ae51bb14",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "225932aed449208bd4e7f2497b037bcb3b0877bddf0800ad635842bc6dabccc1",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "8dca95c57d7d0046296c21d96821fbe37cd1ae0f30a610d26d994a38cd16b509",
+    "integration/mc-sol01/drainage/rebuild_covered_macro.py": "c5d060a7eaae356fa62cc89fa0cd01c1d1800aed74da331986af9d8e06d367ac",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "4c5722159acd160507ffc1bc0c96a2efd3f10c871788366c17ce2f7e59430a17",
+    "integration/mc-sol01/drainage/preserve_covered_matrix.py": "07f5adac947eaa7d96a822948fd20ab0c6f488ac295ea70ab4c07335ac9bca04",
+    "integration/audits/verify_covered_macro_current.py": "eae28e2f2032002fde09d066a46531113a496014428aaf9daca576bb85a5fa34"
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/MACRO_HEAT_EVIDENCE.tar.xz.b64",
+    "sha256": "d2103cac399d204935f710bc5af80e784187d6d08948b3c8e14dae4267a81432",
+    "bytes": 1216772,
+    "members": 467
+  },
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 0,
+    "current_NUT_separate_process_restarts": 0,
+    "current_matrix_days": 5,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": false,
+    "bounded_macro_rutter_numeric_heat": true,
+    "heat_configurations": 6,
+    "heat_native_processes": 12,
+    "additional_atomic_heat_rejections_per_process": 8,
+    "typed_temperature_restart_exact": true,
+    "temperature_rollback_and_retry_exact": true,
+    "water_max_cm": 8.400195144510347e-17,
+    "observed_last_heat_residual_j_cm2": 1.3100631690576847e-14,
+    "prior_NUT_evidence_retained": true,
+    "file_macro_heat_restart": false
+  },
+  "recovery_point": "Complete fresh O0/O2 thermal and nonthermal production proof"
 }

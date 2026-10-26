@@ -25,3 +25,18 @@ must reject incomplete heat configuration and unsupported modes atomically.
 Check O0/O2, observer independence and same-input nonthermal preservation.
 Full original Andelst, macro chemistry, multi-domain/long-duration thermal
 accuracy and file restart publication remain unqualified unless separately run.
+
+Measured qualification: checked GNU13.3 O0/O2 each execute three existing
+MIGMAC10 static/unchanged/shrink modes, trace OFF/ON. Twelve native processes,
+96 additional invalid heat probes, original10-envelope/competing-source
+assertions, rejected state/discard/smaller retry/replay/commit and both kernel
+and typed FMR restart comparisons pass. Temperature comparisons use exact bits.
+Maximum independent accepted macro/matrix/column water residual8.4002e-17cm;
+maximum observed last-step thermal residual1.3101e-14J/cm2. These short interface
+runs do not establish thermal temporal convergence or a whole-day energy sum.
+Forty uncovered and eight covered nonthermal processes retain predecessor
+results; two O0/O2 five-day original112-node matrix differentials are exact.
+Runtime and restart module interfaces are byte exact to the predecessor;17
+transitive providers were nevertheless rebuilt and177 unchanged objects reused
+per optimization. The initial no-heat-admission counterexample and failed driver
+compilation remain raw evidence. Prior nutrient/481-day science is dated.

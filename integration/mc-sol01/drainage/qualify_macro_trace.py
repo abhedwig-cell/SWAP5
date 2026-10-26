@@ -64,6 +64,7 @@ for name in ['trial','replay']:
         end if
 '''+anchor)
   text=text.replace("    call committed%snapshot(after_trial_state,available)\n    if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &\n         error stop 'A9 FMR top-input candidate leaked into committed state'", "    call check_heat(backend%observation(),candidate)\n    call committed%snapshot(after_trial_state,available)\n    if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &\n         error stop 'A9 FMR top-input candidate leaked into committed state'")
+  text=text.replace("    call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &\n         kres,candidate,kdiag", "    ! Additional active-heat rejection checks below.\n    call backend%run_trial(column,template,fparams,committed,forcing,numerical,0.0_real64,fmr_dt,checkpoint, &\n         kres,candidate,kdiag",1)
   helper_heat='''
   subroutine check_heat(obs,cand)
     type(fmr_serialized_physical_observation_t),intent(in)::obs
@@ -90,6 +91,7 @@ for name in ['trial','replay']:
   end subroutine
 '''
   text=text.replace('\ncontains\n','\ncontains\n'+helper_heat,1)
+  text=text.replace('    ! Additional active-heat rejection checks below.',"    do negative_case=1,8\n      negative_params=fparams;negative_forcing=forcing\n      select case(negative_case)\n      case(1)\n        negative_params%soil_temperature%solution_mode=2\n        negative_params%soil_temperature%analytic_damping_depth_cm=10._real64\n      case(2)\n        negative_params%soil_temperature%active_nodes=numnod-1\n      case(3)\n        negative_params%soil_temperature%initialized=.false.\n      case(4)\n        deallocate(negative_forcing%soil_temperature)\n      case(5)\n        negative_forcing%soil_temperature%top_boundary_mode=99\n      case(6)\n        negative_forcing%soil_temperature%bottom_boundary_mode=99\n      case(7)\n        negative_params%root_extraction_active=.true.\n      case(8)\n        negative_params%picard_conductivity_iteration=.true.\n      end select\n      call negative_backend%initialize(top)\n      call negative_backend%configure_macropore_policy(policy,policy_ok)\n      if(.not.policy_ok)error stop 'bad heat policy'\n      call negative_backend%run_trial(column,template,negative_params,committed,negative_forcing,numerical, &\n        0._real64,fmr_dt,checkpoint,negative_result,negative_candidate,negative_diag, &\n        trusted_prepared_parameters=.true.,trace_accepted_water_flux_substeps=want_trace)\n      if(negative_result%completed.or.negative_candidate%ready())error stop 'invalid macro heat accepted'\n      call committed%snapshot(after_trial_state,available)\n      if(.not.available.or..not.same_fmr_state(before_state,after_trial_state))error stop 'invalid macro heat leaked'\n    end do\n    print '(a)','MACRO_HEAT_EIGHT_REJECTIONS_ATOMIC_PASS'\n",1)
  # A9 direct runtime retains its existing bottom7; only the composed FMR call uses the admitted implicit BBC.
  if name=='trial':
   text=text.replace('p%bottom_mode=7','p%bottom_mode=3; if(migmac11)p%bottom_mode=7')
