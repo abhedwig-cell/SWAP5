@@ -1,7 +1,7 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-Original MACROINIT preparation and typed initial stocks are locally qualified at
-checked O0/O2, pending canonical admission. Exact archived default-MvG, calcgwl,
+Original MACROINIT preparation and typed initial stocks are canonically admitted
+by PR1452 at checked O0/O2. Exact archived default-MvG, calcgwl,
 MACROINIT, PARLANGE, SHRINKPAR/SHRINK and MPVOLUME procedures prepare the actual
 unmodified112-node/five-domain SWP/BBC/DRA. Source-computed sorptivity ignores raw
 empirical dummies under SWSORP1. Prepared source Kim coefficients retain the finite
@@ -20,6 +20,10 @@ restart is claimed. Whole original SWSOLU0 root/drainage/heat orchestration and
 coupled file restart remain open; NUT01/SOL01 stay CLOSED WITH EXCLUSIONS.
 Contract: `integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_CONTRACT.md`.
 Current source/evidence authority: `integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json`.
+Actual merge `0c63b6178d9231e253f998f0dc2c8446ddaef002` has complete qualified
+tree `adff343e3db155f4e14ad95db2b531027988bfb5` exactly. Actual-merge24 controls,
+retained481 owner, unchanged27-dependency FSI35 source and strict docs pass.
+Admission: `integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_ADMISSION.json`.
 
 Original active SWMACRO1/SWSOLU0 geometry preparation is canonically admitted
 by PR1451.

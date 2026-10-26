@@ -1,18 +1,16 @@
 {
   "work_unit": "HIST-INTEGRATION01 native macro initialization",
   "baseline": "9118712678cd305e9bbe96bc0a1ad8e6a51ada15",
-  "stage": "INITIALIZATION_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "INITIALIZATION_CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_CONTRACT.md",
-  "blockers": [
-    "Actual canonical merge and postimage verification"
-  ],
-  "next_action": "Admit source initialization unit; continue full water composition without reopening NUT/SOL or changing accepted source reference differences",
-  "recovery_point": "Original MACROINIT and typed initial stocks checked at O0/O2; prior thermal output exact",
+  "blockers": [],
+  "next_action": "Implement native full-water source-state composition with active roots/response drainage/numeric heat and coupled file restart. Keep admitted initial/source/forcing and bounded proofs.",
+  "recovery_point": "PR1452 actual merge independently verified against qualified tree",
   "test_selection": {
     "groups": {
       "native_initial": {
@@ -94,7 +92,7 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "bounded_macro_rutter_numeric_heat": true,
     "heat_configurations": 6,
     "heat_native_processes": 12,
@@ -385,5 +383,8 @@
     "tools/solute/build_crop_column.py",
     "tools/solute/build_macro_geometry_reader.py",
     "tools/solute/legacy_reader_sources.py"
-  ]
+  ],
+  "admission": "integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_ADMISSION.json",
+  "actual_merge": "0c63b6178d9231e253f998f0dc2c8446ddaef002",
+  "qualified_complete_tree": "adff343e3db155f4e14ad95db2b531027988bfb5"
 }

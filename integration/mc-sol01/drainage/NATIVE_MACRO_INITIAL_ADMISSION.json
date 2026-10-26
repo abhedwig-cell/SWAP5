@@ -1,0 +1,173 @@
+{
+  "work_unit": "HIST-INTEGRATION01 native macro initialization",
+  "baseline": "9118712678cd305e9bbe96bc0a1ad8e6a51ada15",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Original SWMACRO1/SWSOLU0 source MACROINIT and current conservative typed initialization,112 nodes/five domains; no whole-water advance",
+  "pr": 1452,
+  "actual_merge": "0c63b6178d9231e253f998f0dc2c8446ddaef002",
+  "published_head": "71935e955dbe578aae0bb1e9e53d87d06589969a",
+  "qualified_complete_tree": "adff343e3db155f4e14ad95db2b531027988bfb5",
+  "actual_tree": "adff343e3db155f4e14ad95db2b531027988bfb5",
+  "qualified_complete_tree_exact": true,
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 0,
+    "current_NUT_separate_process_restarts": 0,
+    "current_matrix_days": 0,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": true,
+    "bounded_macro_rutter_numeric_heat": true,
+    "heat_configurations": 6,
+    "heat_native_processes": 12,
+    "additional_atomic_heat_rejections_per_process": 8,
+    "typed_temperature_restart_exact": true,
+    "temperature_rollback_and_retry_exact": true,
+    "water_max_cm": 8.400195144510347e-17,
+    "observed_last_heat_residual_j_cm2": 1.3100631690576847e-14,
+    "prior_NUT_evidence_retained": true,
+    "file_macro_heat_restart": false,
+    "original_native_rutter_preparation": true,
+    "original_crop_periods": 2,
+    "prepared_days": 481,
+    "source_records": 3085,
+    "source_O0_O2_typed_restart_exact": true,
+    "source_water_max_cm": 6.938893903907228e-17,
+    "source_refinement_max_cm": 1.1102230246251565e-16,
+    "original_etpot_cases_per_optimization": 864,
+    "existing_ET_procedures_source_exact": true,
+    "native_full_water_dispatch": false,
+    "prior_matrix5_exact_runtime_preservation_retained": true,
+    "original_native_macro_geometry": true,
+    "original_macro_nodes": 112,
+    "original_macro_domains": 5,
+    "geometry_O0_O2_exact": true,
+    "retained_geometry_rows": 112,
+    "existing_reader_materializer_exact": true,
+    "macroinit": true,
+    "canonical_macro_initial_state": true,
+    "whole_water_dispatch": false,
+    "original_native_macro_initial_preparation": true,
+    "old_trial_profile_source_exact": true,
+    "exactly_dry_tapered_tip_supported": true,
+    "nonempty_degenerate_tip_still_rejects": true,
+    "initial_O0_O2_exact": true,
+    "initial_macro_water_cm": 1.6314932432432439,
+    "initial_dynamic_volume_cm": 0.1446817003924756,
+    "initial_rapid_kd": 0.8785980153694543,
+    "initial_mass_residual_cm": -2.220446049250313e-16,
+    "current_bounded_thermal_native_processes": 4,
+    "current_bounded_thermal_predecessor_exact": true,
+    "prior_geometry_negative_file_lookup_not_inherited": true
+  },
+  "actual_postimage_validation": {
+    "actual_merge": "0c63b6178d9231e253f998f0dc2c8446ddaef002",
+    "actual_tree": "adff343e3db155f4e14ad95db2b531027988bfb5",
+    "qualified_complete_tree_exact": true,
+    "working_tree_clean": true,
+    "events": [
+      {
+        "label": "owner_and_controls",
+        "command": [
+          "python",
+          "-B",
+          "integration/audits/verify_native_macro_initial_current.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.9989058799983468,
+        "stdout_sha256": "bee6b0dd83c4904d202a6fb15e45faa8b1073fe53acbca5c3d11383b89886a7f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "retained481_owner",
+        "command": [
+          "python",
+          "-B",
+          "integration/mc-sol01/drainage/verify_source_continuation.py"
+        ],
+        "returncode": 0,
+        "seconds": 7.340289924999524,
+        "stdout_sha256": "48dbdc72d19db294fd3a7d2f782af09030191c4b6dae3c74a4cda69702052a37",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fsi35_source",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json;print(json.dumps(runpy.run_path('integration/audits/verify_native_macro_initial_current.py')['fsi35_successors']()))"
+        ],
+        "returncode": 0,
+        "seconds": 0.18304649899982905,
+        "stdout_sha256": "55fe3af443b4310970fcbef29c50aeb07d50539611a720d553e360b4371146f1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.18458920600096462,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_mkdocs",
+        "command": [
+          "python",
+          "-B",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/7aafa0ba8548/actual-initial-site"
+        ],
+        "returncode": 0,
+        "seconds": 13.827927423000801,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "d1a0f18b1c3fd60964a97231e4f3e345b806e23be638726146b0888a4ad47512"
+      }
+    ]
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "exclusions": [
+    "Native full SWSOLU0 application orchestration of source initial macro state with active roots, response drainage and numeric heat",
+    "Coupled file restart and short distinguishing112-node/five-domain advance, then historical seasonal evidence",
+    "Full original4.3.1 equality, chemistry, original MACROSTATE transient flux reconstruction"
+  ],
+  "hosted_numerical_pass_claimed": false,
+  "work_packages": {
+    "MC-NUT01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    },
+    "MC-SOL01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    }
+  }
+}
