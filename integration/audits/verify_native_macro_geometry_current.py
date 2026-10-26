@@ -11,6 +11,7 @@ def projection():
   end+=1;t=t[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[end:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_initial_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD');assert not git('status','--porcelain','--',*SCIENCE),'unpersisted source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign geometry delta';assert reader(PARENT)==projection(),'changed predecessor assertions'
  old=subprocess.check_output(['git','show',BASE+':tools/solute/legacy_reader_sources.py'],cwd=ROOT);current=reader('tools/solute/legacy_reader_sources.py');assert current[:len(old)]==old and current[len(old):].startswith(b'\ndef materialize_macro_geometry('),'old reader materialization changed'
@@ -39,12 +40,16 @@ def validate(f):
   assert sha(f['geometry/'+o+'-consumer-native.stdout'])==r['results'][o]['consumer_stdout_sha256']and b'PRODUCTION_PASS nodes=112 domains=5'in f['geometry/'+o+'-consumer-native.stdout']
  result=dict(parent['result']);result.update(qualified=True,original_native_macro_geometry=True,original_macro_nodes=112,original_macro_domains=5,geometry_O0_O2_exact=True,retained_geometry_rows=112,existing_reader_materializer_exact=True,macroinit=False,canonical_macro_initial_state=False,whole_water_dispatch=False,full_original_Andelst=False,canonically_admitted=False)
  return result
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_initial_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_initial_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return dict(status='UNCHANGED_EXECUTABLE_DEPENDENCIES',dependencies=len(deps),baseline=BASE)
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_macro_initial_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()

@@ -8,7 +8,7 @@
   "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/NATIVE_MACRO_BOOTSTRAP_CONTRACT.md",
   "blockers": [],
-  "next_action": "Implement original MACROINIT prerequisites together: Parlange coefficients from actual hydraulics, source shrinkage and initial macro water/rapid state. Then connect native SWSOLU0 whole-water application and coupled file restart. Retain admitted source geometry/Rutter/heat and do not substitute source dummy coefficients.",
+  "next_action": "Geometry remains a dated admitted layer. Continue via NATIVE_MACRO_INITIAL_STATUS.json for original source preparation/typed initial state and remaining whole-water composition.",
   "recovery_point": "PR1451 actual merge and exact qualified tree independently verified",
   "stage": "GEOMETRY_CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "scientific_delta": {
@@ -113,5 +113,6 @@
     "integration/mc-sol01/drainage/NATIVE_RUTTER_ADMISSION.json",
     "integration/mc-sol01/drainage/MACRO_HEAT_ADMISSION.json",
     "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64"
-  ]
+  ],
+  "initialization_successor": "integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json"
 }
