@@ -20,6 +20,9 @@ def validate(f):
    assert inherited_result.get('old_trial_profile_source_exact') and inherited_result.get('current_bounded_thermal_predecessor_exact')
    assert r['original_macro_Rutter_excluded'] and not inherited_result['full481_reexecuted']
    actual=subprocess.check_output(['git','show','9118712678cd305e9bbe96bc0a1ad8e6a51ada15:'+p],cwd=ROOT)
+  if sha(actual)!=h and p=='tools/solute/build_project.py':
+   assert inherited_result.get('ordinary_project_build_projection_exact') and not inherited_result['full481_reexecuted']
+   actual=subprocess.check_output(['git','show','72839916e6498b95ab4cb9e120df5a6868e2f20d:'+p],cwd=ROOT)
   if sha(actual)!=h and p=='tools/solute/legacy_reader_sources.py':
    assert inherited_result.get('existing_reader_materializer_exact')
    actual=subprocess.check_output(['git','show','69885373cc8b15e33a5e970aaf189ca70dcb7da4:'+p],cwd=ROOT)

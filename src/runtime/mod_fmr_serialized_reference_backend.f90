@@ -461,6 +461,7 @@ module mod_fmr_serialized_reference_backend
     integer :: unit_id = 0
   end type fmr_soil_salt_boundary_forcing_t
   type, public :: fmr_rutter_runtime_forcing_t
+    logical :: matrix_source_area_partition = .false.
     logical :: prepared = .false.
     type(interception_source_window_t) :: source_window
     type(rutter_interval_input_t) :: process
@@ -2883,6 +2884,13 @@ contains
       if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%source_window%valid()) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
+      end if
+      if(forcing%rutter%matrix_source_area_partition)then
+        if(.not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters).and. &
+          self%model%accepted_water_flux_trace_enabled))then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
       end if
       call committed%snapshot(accepted_snapshot, rutter_snapshot_available)
       if (.not. rutter_snapshot_available) then
@@ -5396,6 +5404,7 @@ contains
         ! its already implemented total-flux derivative when the pond/head
         ! regime becomes active; a missing Jacobian is not a valid fallback.
         rutter_top_provider%implicit_conductivity=.true.
+        rutter_top_provider%matrix_source_area_partition=self%rutter_forcing%matrix_source_area_partition
         if(self%macropore_config%surface_pond_inflow_enabled)then
           rutter_top_provider%macropore_pond_donor_active=.true.
           rutter_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
@@ -6096,6 +6105,7 @@ contains
     real(real64)::macro_return_to_pond,macro_requested_rate
     real(real64),allocatable::covering_sink(:)
     integer :: n, prior, capacity, index
+    logical :: matrix_sources_partitioned
 
     ok = .false.
     if (.not. associated(self%qssdi) .or. .not. associated(self%qdra) .or. .not. associated(self%qrot)) return
@@ -6172,8 +6182,18 @@ contains
         ! must equal its separately supplied gross sources minus actual
         ! evaporation. This is an independent consistency gate on the
         ! converged provider receipt, never an inference from qtop.
-        if (.not.request%boundary%matrix_source_area_partition .or. &
-            request%boundary%macropore_surface_area_fraction < 0.0_real64) then
+        ! The inner macro solve owns candidate geometry; the outer request is
+        ! a detached input and does not acquire its candidate fraction. Read
+        ! source-partition ownership from the actual bound boundary provider.
+        matrix_sources_partitioned=request%boundary%matrix_source_area_partition.and. &
+          request%boundary%macropore_surface_area_fraction>=0.0_real64
+        if(associated(request%evaluation%dynamic_top_boundary))then
+          select type(top=>request%evaluation%dynamic_top_boundary)
+          type is(b110_dynamic_top_boundary_solver_provider_t)
+            matrix_sources_partitioned=top%matrix_source_area_partition
+          end select
+        end if
+        if (.not.matrix_sources_partitioned) then
           if (.not.ieee_is_finite(self%workspace%converged_surface_result%bare_soil_evaporation)) return
           if (self%workspace%converged_surface_result%bare_soil_evaporation < 0.0_real64) return
           if (abs(self%workspace%converged_surface_result%net_potential_surface_flux - &

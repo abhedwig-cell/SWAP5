@@ -58,3 +58,23 @@ composition now selects the existing total-flux derivative implementation and
 passes the existing configured pond threshold/conductivity. Physical leaf
 equations are unchanged. This is a concrete coupling correction, not an
 implicit admission of other Rutter or hydraulic variants.
+
+The native application explicitly selects Rutter matrix source-area partition
+through an additive, default-false physical forcing field. Rutter already owns
+the direct macro rain receipt, but the old boundary provider kept an unpartitioned
+matrix supply. Source-selected partition now removes that duplicate matrix input.
+The historical declared-boundary fixtures retain default-false behavior. The
+new application additionally checks combined stock change against independently
+supplied net-Rutter rain/irrigation/runon, actual evaporation and external sinks,
+so a balanced but duplicated declared source cannot certify native execution.
+Positive direct macro input is required. Positive accepted pond transfer is
+claimed only if actually observed; a Newton trial visiting a pond/head branch
+is not evidence of positive committed pond storage or transfer.
+
+The partitioned inner solve retains candidate geometry in its own request.
+The detached outer request consequently has no candidate surface fraction;
+the trace's unpartitioned-source consistency gate must read the actual bound
+provider's explicit partition flag. The old unpartitioned gate remains exact
+for its default-false owner. No candidate geometry is copied back into committed
+state or inferred from a closing residual. The new supplied-source stock check
+independently qualifies this explicit native route.

@@ -176,6 +176,7 @@ program swap5_native_water_project
   real(real64)::canopy_evaporation(MAX_WINDOWS)=0d0,vegetation_cover(MAX_WINDOWS)=0d0
   real(real64)::stop_time=huge(1d0),day_start
   real(real64)::cursor,endpoint,rain_rate,day_residual,root_amount,drain_amount,rapid_amount,runoff_amount,bottom_amount_day
+  real(real64)::pond_macro_amount,max_pond_depth,direct_macro_amount,max_net_source_check,net_source_check
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
@@ -472,7 +473,7 @@ program swap5_native_water_project
     call require(any(ends_day(:windows)==stop_time).or.any(rain_ends(:rain_count)==stop_time),'stop at source-event/day boundary')
   end if
   open(newunit=uv,file='budget.csv',status='new');write(uv,'(a)') &
-    'day,t0,t1,water_residual_cm,root_cm,drainage_cm,rapid_cm,runoff_cm,bottom_cm,soil_evap_cm,wet_potential_cm,observed_last_heat_residual_j_cm2,max_macro_cell_cm,max_matrix_cm,max_combined_cm'
+    'day,t0,t1,water_residual_cm,root_cm,drainage_cm,rapid_cm,runoff_cm,bottom_cm,soil_evap_cm,wet_potential_cm,observed_last_heat_residual_j_cm2,max_macro_cell_cm,max_matrix_cm,max_combined_cm,pond_to_macro_cm,max_pond_cm,direct_macro_cm,max_net_source_cm'
   open(newunit=up,file='progress.csv',status='new');write(up,'(a)')'day,segment,t0,t1,attempts,solver_rejections,temporal_rejections,mass_rejections,residual_cm'
   rain_index=1
   do while(rain_index<rain_count.and.rain_ends(rain_index)<=clock+1d-12);rain_index=rain_index+1;end do
@@ -492,7 +493,7 @@ program swap5_native_water_project
     forcing%soil_temperature%air_temperature_c=air_temperature_c(j)
     cursor=max(clock,real(j-1,real64));day_start=cursor;part=0;day_residual=0d0;root_amount=0d0;drain_amount=0d0
     rapid_amount=0d0;runoff_amount=0d0;bottom_amount_day=0d0;evap_amount=0d0;potential_root_amount=0d0;observed_heat=0d0
-    max_cell_check=0d0;max_matrix_check=0d0;max_gross_check=0d0
+    max_cell_check=0d0;max_matrix_check=0d0;max_gross_check=0d0;pond_macro_amount=0d0;max_pond_depth=0d0;direct_macro_amount=0d0;max_net_source_check=0d0
     do while(cursor<ends_day(j))
       part=part+1;endpoint=ends_day(j);rain_rate=rain_cm_day(j)
       if(detailed_rain)then
@@ -504,6 +505,7 @@ program swap5_native_water_project
         rain_rate*(endpoint-cursor),forcing%rutter%source_window,code)
       call require(code==0,'source rain window')
       forcing%rutter%prepared=.true.
+      forcing%rutter%matrix_source_area_partition=.true.
       forcing%rutter%process%vegetation_cover_fraction=vegetation_cover(j)
       forcing%rutter%process%canopy_storage_capacity_cm=canopy_capacity(j)
       forcing%rutter%process%interception_evaporation_capacity_cm_per_day=canopy_evaporation(j)
@@ -557,10 +559,21 @@ program swap5_native_water_project
           s%macropore_accepted_cm-s%converged_runoff_depth_cm-s%macropore_rapid_outflow_cm
         gross_check=abs(delta_check-expected_check)
         call require(gross_check<=1d-10,'independent declared-boundary combined budget')
+        call require(s%converged_gross_sources_available,'native supplied source receipt')
+        expected_check=dt_check*(s%converged_rain_rate_cm_day+s%converged_irrigation_rate_cm_day+ &
+          s%converged_snowmelt_rate_cm_day+s%converged_runon_rate_cm_day-s%converged_soil_evaporation_cm_day- &
+          s%converged_pond_evaporation_cm_day+s%bottom_flux+sum(s%subsurface_source-s%drainage_sink-s%root_sink))- &
+          s%converged_runoff_depth_cm-s%macropore_rapid_outflow_cm
+        net_source_check=abs(delta_check-expected_check)
+        call require(net_source_check<=1d-10,'independent supplied-source combined budget')
+        max_net_source_check=max(max_net_source_check,net_source_check)
+        direct_macro_amount=direct_macro_amount+s%macropore_external_top_cm
         max_cell_check=max(max_cell_check,cell_check);max_matrix_check=max(max_matrix_check,matrix_check)
         max_gross_check=max(max_gross_check,gross_check)
         root_amount=root_amount+sum(s%root_sink)*(s%t1-s%t0)
         drain_amount=drain_amount+sum(s%drainage_sink)*(s%t1-s%t0)
+        pond_macro_amount=pond_macro_amount+s%macropore_pond_accepted_cm
+        max_pond_depth=max(max_pond_depth,s%pond_start_cm,s%pond_end_cm)
         rapid_amount=rapid_amount+s%macropore_rapid_outflow_cm
         runoff_amount=runoff_amount+s%converged_runoff_depth_cm
         bottom_amount_day=bottom_amount_day+s%bottom_flux*(s%t1-s%t0)
@@ -576,9 +589,9 @@ program swap5_native_water_project
       day_residual=day_residual+water_result%mass%residual;cursor=endpoint
       if(cursor==stop_time)exit
     end do
-    write(uv,'(i0,14(a,es25.17e3))')j,',',day_start,',',cursor,',',day_residual,',',root_amount,',',drain_amount,',',rapid_amount,',',runoff_amount, &
+    write(uv,'(i0,18(a,es25.17e3))')j,',',day_start,',',cursor,',',day_residual,',',root_amount,',',drain_amount,',',rapid_amount,',',runoff_amount, &
       ',',bottom_amount_day,',',evap_amount,',',potential_root_amount,',',observed_heat, &
-      ',',max_cell_check,',',max_matrix_check,',',max_gross_check
+      ',',max_cell_check,',',max_matrix_check,',',max_gross_check,',',pond_macro_amount,',',max_pond_depth,',',direct_macro_amount,',',max_net_source_check
     flush(uv)
     call write_macro_water_restart('restart.bin',binding,column_id,template,p,water,committed_window,code)
     call require(code==0,'native coupled restart publication')
