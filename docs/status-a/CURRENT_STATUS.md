@@ -1,5 +1,25 @@
 # SWAP5 Status-A current status
 
+The explicit corrected-source Darcy entry variant is qualified for the first2days
+of the original112-node/five-domain macro/Rutter/Feddes/DRAMET3/numeric-heat
+application; PR1455 canonical admission is pending. A default-zero entry-width
+input retains the literal historical gate. Explicit1e-4cm selection applies a
+bounded cubic gate with its matching production Jacobian and the default-off
+anchored Cauchy proposal ceiling. This is a corrected-source variant, not exact
+4.3.1 equivalence. Actual O0/O2 physical output and restart payload are exact;
+two fresh source-event process restarts reproduce six endpoint files exactly.
+Positive pond-to-macro transfer is0.3757493044cm; independent supplied-source
+water certificates stay below2.77e-14cm, with zero solver/mass rejections in the
+two-day full runs. A1e-5cm width changes max head by4.63e-6cm and runoff by zero.
+Twelve unsupported-caller and ten input/foreign-file controls reject atomically.
+The literal admitted prefix and existing joint/rootless thermal stdout remain
+predecessor-exact. The old source481 owner is retained without a new481-day run.
+The separate continuation to5days is CENSORED at100s, with complete-window output
+through2.495days; neither5days nor seasonal macro execution is qualified.
+MC-NUT01/MC-SOL01 remain CLOSED WITH EXCLUSIONS. Authority:
+`integration/mc-sol01/drainage/ENTRY_RAMP_STATUS.json`,
+`ENTRY_RAMP_CONTRACT.md` and `integration/audits/verify_entry_ramp_current.py`.
+
 The actual original SWMACRO1/SWSOLU0 water application is canonically admitted
 by PR1454 for the first1.0539999999964493days on the unmodified112-node/five-domain
 SWP/BBC/DRA, with source Rutter, plain Feddes roots, source DRAMET3 and numeric

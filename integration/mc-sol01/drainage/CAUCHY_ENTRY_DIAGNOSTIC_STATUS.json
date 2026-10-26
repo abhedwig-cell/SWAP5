@@ -1,0 +1,103 @@
+{
+  "status": "DIAGNOSTIC_SUPPORTED_PREFIX_AND_HISTORICAL_ENTRY_STALL",
+  "baseline": "362cf65f0d98a1620ab2a245e11e61c84b4946ff",
+  "implemented": true,
+  "tested": true,
+  "qualified": false,
+  "canonically_admitted": false,
+  "cases": {
+    "macro-temporal-diag-O2": {
+      "status": "CENSORED",
+      "seconds": 55.00560459100234
+    },
+    "macro-temporal-diag2-prefix": {
+      "status": "COMPLETE",
+      "seconds": 21.269166384001437
+    },
+    "macro-temporal-diag2-tail": {
+      "status": "CENSORED",
+      "seconds": 40.00331947599989
+    },
+    "macro-temporal-diag3-two": {
+      "status": "CENSORED",
+      "seconds": 150.00763131499843
+    },
+    "macro-temporal-diag3-prefix-O0": {
+      "status": "COMPLETE",
+      "seconds": 43.781533731998934
+    }
+  },
+  "physical_comparison": {
+    "exact_files": [
+      "state.csv",
+      "temperature.csv",
+      "budget.csv",
+      "progress.csv",
+      "native.stdout",
+      "macro.nml"
+    ],
+    "restart_payload_exact": true,
+    "diagnostic_instrumentation_differs": true,
+    "O2_prefix_manifest_exact_backend_preimage_reconstructed_and_checked": true,
+    "end_day": 1.9400000000023283,
+    "max_water_certificate_cm": 1.169507199416664e-14,
+    "positive_pond_transfer_cm": 0.3757493044168161,
+    "fresh_process_restart_equivalence": false
+  },
+  "stall": {
+    "sampled_last_t0": 1.9844937857072225,
+    "sampled_last_t1": 1.9844937857072362,
+    "sampled_last_width_day": 1.3766765505351941e-14,
+    "sampled_node": 44,
+    "head_near_cm": -10.00000001,
+    "sampled_topology_mismatches": 0,
+    "full_day2_complete": false
+  },
+  "leaf": {
+    "constructed_history_not_actual_trajectory": true,
+    "optimizations_exact": true,
+    "threshold_cm": -10.00000001,
+    "below_rate_cm_day": 3.079641447940094,
+    "above_rate_cm_day": 0.0
+  },
+  "source_postimages": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "43abb5fd5c4d17afe6816e4aa8fe3fe34f7bae1008e351e93d534cfd8229849f",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "eb4c9f341dec9b21aefbf9082f62b88ee23cb8ad764bb0b9a6be4cd3e03b85db",
+    "app/solute_project/main_water.f90": "a3ea5462cc94b62609f7e39cafaf70a29a2d0dfad87269f7acc296af656eafff",
+    "tools/solute/run_native_water.py": "e114c5da884846c1f3eaaf27efa6371af66a7d5b98388d872b12e44fd7286ac8",
+    "tests/nut-sol/test_native_macro_entry_jump.f90": "bf1e8fe36564c2c5129e637115ab2451fa5a1010566fc8b3c7f9e20120102826",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "3da5143101af19abcab58afccf4c8f0cf328e06e1b462b145ce74874f0ac40d5",
+    "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90": "46772e6e3264a1f09b56549134cb9f3d568268756d63c8132ded87f2a84bdcc1",
+    "integration/mc-sol01/drainage/CAUCHY_STEP_CEILING_CONTRACT.md": "1cc34aa3513f8f889aa39283ca7928aee4f9c253d0ec09e9a4fffe704d68dbe1"
+  },
+  "remaining_blockers": [
+    "Source-bound treatment of historical discontinuous Darcy entry branch; do not silently smooth or force acceptance",
+    "Policy unsupported-caller/selector controls and restart/preservation admission remain incomplete"
+  ],
+  "next_action": "Resolve source branch-crossing contract with a short real-production counterexample before another long native execution. No identical150s rerun.",
+  "recovery": {
+    "O2": {
+      "executable_member": "recovery/O2-prefix-executable",
+      "checkpoint_member": "runs/macro-temporal-diag2-prefix/restart.bin",
+      "binding": "1f0a8e5fff7a0d3dece66bbafbfa94b73fbfba447a312c6f89e3b033f30ab4f6"
+    },
+    "O0": {
+      "executable_member": "recovery/O0-prefix-executable",
+      "checkpoint_member": "runs/macro-temporal-diag3-prefix-O0/restart.bin",
+      "binding": "4ba6c44938f3c47ae11497bc794a62b0a6655a36cbca2082bacf2f40b8363377"
+    }
+  },
+  "scope_exclusions": [
+    "day2",
+    "seasonal",
+    "full431 equivalence",
+    "new native restart equivalence claim",
+    "canonical admission"
+  ],
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/CAUCHY_ENTRY_DIAGNOSTIC_EVIDENCE.tar.xz.b64",
+    "sha256": "d6a68832fc8a467d5eccd18b3fda48cb094108cb00c0b1f99763246bb36af7cb",
+    "bytes": 4580284,
+    "members": 113
+  }
+}

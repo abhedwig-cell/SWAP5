@@ -2,7 +2,7 @@
 import argparse,hashlib,json,os,re,resource,subprocess,time,gzip,datetime
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3]
-p=argparse.ArgumentParser();p.add_argument('--build',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=['pilot','full'],default='full');p.add_argument('--numeric-heat',action='store_true');p.add_argument('--root-drain',choices=['root','drain','joint']);a=p.parse_args();assert not a.root_drain or a.numeric_heat,'joint mode requires numeric heat'
+p=argparse.ArgumentParser();p.add_argument('--build',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=['pilot','full'],default='full');p.add_argument('--anchored-entry-ramp',action='store_true');p.add_argument('--numeric-heat',action='store_true');p.add_argument('--root-drain',choices=['root','drain','joint']);a=p.parse_args();assert not a.anchored_entry_ramp or(a.numeric_heat and a.root_drain=='joint');assert not a.root_drain or a.numeric_heat,'joint mode requires numeric heat'
 build=a.build.resolve();out=a.output.resolve();out.mkdir();sha=lambda b:hashlib.sha256(b).hexdigest()
 resource.setrlimit(resource.RLIMIT_STACK,(64*1024*1024,resource.getrlimit(resource.RLIMIT_STACK)[1]))
 b=json.loads((build/'build-complete.json').read_text());assert b['status']=='BUILT'
@@ -138,6 +138,39 @@ MISSING_OWNER
   at="    print '(a)','MACRO_HEAT_EIGHT_REJECTIONS_ATOMIC_PASS'\n";assert at in text;text=text.replace(at,at+negative,1)
   anchor='    call committed%snapshot(before_state,available)'
   text=text.replace(anchor,setup+anchor,1)
+ if a.anchored_entry_ramp:
+  anchor_setup='    call committed%snapshot(before_state,available)'
+  setup_ramp="    fparams%macropore%rate_template%unsaturated%entry_transition_width_cm=1.e-4_real64\n    forcing%rutter%matrix_source_area_partition=.true.\n    policy%anchored_cauchy_step_ceiling=.true.\n    call backend%configure_macropore_policy(policy,policy_ok)\n    if(.not.policy_ok)error stop 'entry positive policy'\n"
+  text=text.replace(anchor_setup,setup_ramp+anchor_setup,1)
+  at="    print '(a)','MACRO_ROOT_DRAIN_FOUR_REJECTIONS_ATOMIC_PASS'\n"
+  controls="""
+    do negative_case=1,6
+      negative_params=fparams;negative_forcing=forcing
+      select case(negative_case)
+      case(1)
+        deallocate(negative_forcing%rutter)
+      case(2)
+        deallocate(negative_forcing%legacy_swbotb3_implicit_control)
+      case(3)
+        negative_forcing%rutter%matrix_source_area_partition=.false.
+      case(5)
+        negative_params%macropore%rate_template%unsaturated%entry_transition_width_cm=-1._real64
+      case(6)
+        negative_params%soil_temperature_active=.false.
+      end select
+      call negative_backend%initialize(top)
+      call negative_backend%configure_macropore_policy(policy,policy_ok)
+      if(.not.policy_ok)error stop 'entry policy configuration'
+      call negative_backend%run_trial(column,template,negative_params,committed,negative_forcing,numerical, &
+        0._real64,fmr_dt,checkpoint,negative_result,negative_candidate,negative_diag, &
+        trusted_prepared_parameters=.true.,trace_accepted_water_flux_substeps=negative_case/=4)
+      if(negative_result%completed.or.negative_candidate%ready())error stop 'unsupported entry policy accepted'
+      call committed%snapshot(after_trial_state,available)
+      if(.not.available.or..not.same_fmr_state(before_state,after_trial_state))error stop 'entry rejection leaked'
+    end do
+    print '(a)','ENTRY_SIX_REJECTIONS_ATOMIC_PASS'
+"""
+  assert at in text;text=text.replace(at,at+controls,1)
  # A9 direct runtime retains its existing bottom7; only the composed FMR call uses the admitted implicit BBC.
  if name=='trial':
   text=text.replace('p%bottom_mode=7','p%bottom_mode=3; if(migmac11)p%bottom_mode=7')
@@ -167,5 +200,5 @@ MISSING_OWNER
   checks=[l.decode().split()for l in streams[-1].splitlines()if l.startswith(b'MACRO_TRACE_CHECK_PASS')];assert checks
   results[name+'/'+label]=checks
 for p,h in bindings.items():assert sha(Path(p).read_bytes())==h,p
-inputs[str(Path(__file__).relative_to(ROOT))]=sha(Path(__file__).read_bytes());result=dict(status='MACRO_TRACE_REAL_TRIAL_REPLAY_O0_O2_PHASE_PASS',phase=a.phase,root_drain=a.root_drain,results=results,provider_build=str(build),build_sha256=sha((build/'build-complete.json').read_bytes()),provider_bindings=bindings,input_sha256=inputs,events=events,qualified=False,canonically_admitted=False)
+inputs[str(Path(__file__).relative_to(ROOT))]=sha(Path(__file__).read_bytes());result=dict(status='MACRO_TRACE_REAL_TRIAL_REPLAY_O0_O2_PHASE_PASS',phase=a.phase,root_drain=a.root_drain,anchored_entry_ramp=a.anchored_entry_ramp,results=results,provider_build=str(build),build_sha256=sha((build/'build-complete.json').read_bytes()),provider_bindings=bindings,input_sha256=inputs,events=events,qualified=False,canonically_admitted=False)
 (out/'RESULT.json').write_text(json.dumps(result,indent=2));print(json.dumps({'cases':len(results),'events':len(events),'status':result['status']}))

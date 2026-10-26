@@ -38,6 +38,12 @@ def validate(f):
    # exact at O0/O2 and preserves the original source in its parent receipt.
    assert inherited_result['current_matrix_artifacts_predecessor_exact'] and not inherited_result['full481_reexecuted']
    actual=subprocess.check_output(['git','show','9d108ee89ae6e1e19d8705a696779555a4a0491c:'+p],cwd=ROOT)
+  if sha(actual)!=h and p in ['src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90','src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90']:
+   # Dated matrix481 proof excludes macropores. The new owner separately
+   # executes width-zero native/default preservation; no fresh481 is claimed.
+   assert inherited_result.get('corrected_native_entry_ramp_two_days') and inherited_result.get('current_literal_default_prefix_exact')
+   assert r['original_macro_Rutter_excluded'] and not inherited_result['full481_reexecuted']
+   actual=subprocess.check_output(['git','show','362cf65f0d98a1620ab2a245e11e61c84b4946ff:'+p],cwd=ROOT)
   assert sha(actual)==h,p
  def generation(prefix,end,parent):
   m=json.loads(f[prefix+'/manifest.json']);assert m['status']=='COMPLETE' and m['returncode']==0 and m['stop_after']==end

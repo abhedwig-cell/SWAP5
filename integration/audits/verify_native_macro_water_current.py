@@ -11,6 +11,7 @@ def projection():
   end+=1;t=t[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[end:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/ENTRY_RAMP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_entry_ramp_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD');assert not git('status','--porcelain','--',*SCIENCE),'unpersisted source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign native water delta';assert reader(PARENT)==projection(),'changed predecessor assertions'
  for p,h in s['postimages'].items():assert sha(reader(p))==h,p
@@ -82,12 +83,16 @@ def validate(f):
  assert roots>0 and rapid>0 and direct>0 and maxheat<1e-9
  result=dict(parent['result']);result.update(qualified=True,ordinary_project_build_projection_exact=True,native_full_water_dispatch=True,whole_water_dispatch=True,original112_five_domain_short_water_application=True,file_macro_heat_restart=True,native_source_partition_explicit=True,native_tested_end_day=r['tested_end_day'],native_O0_O2_exact=True,native_water_processes=10,native_fresh_process_restarts=4,native_file_negative_controls=14,native_endpoint_exact_files=12,native_water_max_cm=maxwater,native_macro_cell_max_cm=maxcell,native_matrix_max_cm=maxmatrix,native_combined_max_cm=maxcombined,native_supplied_source_max_cm=maxsource,native_observed_last_heat_max_j_cm2=maxheat,native_root_cm=roots,native_rapid_cm=rapid,native_direct_macro_cm=direct,native_pond_macro_cm=pond,nonempty_degenerate_tip_still_rejects=False,wet_tapered_tip_supported=True,trace_depth_roundoff_floor=True,current_bounded_thermal_native_processes=4,current_bounded_thermal_predecessor_exact=True,joint_runtime_native_processes=2,joint_runtime_configurations=2,full_original_Andelst=False,seasonal_native_macro=False,full481_reexecuted=False,current_NUT_runs=0,current_matrix_days=0,canonically_admitted=False)
  return result
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/ENTRY_RAMP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_entry_ramp_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/ENTRY_RAMP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_entry_ramp_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return dict(status='UNCHANGED_EXECUTABLE_DEPENDENCIES',dependencies=len(deps),baseline=BASE)
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/ENTRY_RAMP_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_entry_ramp_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()

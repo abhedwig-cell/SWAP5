@@ -1,0 +1,105 @@
+{
+  "work_unit": "HIST-INTEGRATION01 bounded corrected-source Darcy entry transition",
+  "baseline": "362cf65f0d98a1620ab2a245e11e61c84b4946ff",
+  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "scope": "Explicit width1e-4cm, anchored Cauchy3, actual original112-node/five-domain water/macro/Rutter/Feddes/DRAMET3/numeric heat; first2days only",
+  "contract": "integration/mc-sol01/drainage/ENTRY_RAMP_CONTRACT.md",
+  "scientific_delta": {
+    "app/solute_project/main_water.f90": "M",
+    "integration/audits/verify_entry_ramp_current.py": "A",
+    "integration/audits/verify_native_macro_water_current.py": "M",
+    "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90": "M",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "M",
+    "tests/nut-sol/test_native_macro_entry_jump.f90": "A",
+    "tests/nut-sol/test_native_macro_entry_ramp.f90": "A",
+    "tools/solute/run_native_water.py": "M"
+  },
+  "postimages": {
+    "integration/mc-sol01/drainage/qualify_macro_trace.py": "5ce403f7ded2a6fa389365105dfc3ac6a449ed41b5565a5cc33acb39cf06000a",
+    "app/solute_project/main_water.f90": "470d58ef7f074e93f3f79dc02167ce00ac88e37ed751c1445dea1991f0577712",
+    "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90": "8704247abae2a475e1ca888fc1bec0f963b64877bb8190e0686cece0111f9a3b",
+    "integration/audits/verify_native_macro_water_current.py": "e1f771c88bf168891934a57faf71a0d7ebc2b70cc4f7caae4b376a2501089628",
+    "tests/nut-sol/test_native_macro_entry_jump.f90": "bf1e8fe36564c2c5129e637115ab2451fa5a1010566fc8b3c7f9e20120102826",
+    "integration/mc-sol01/drainage/ENTRY_RAMP_CONTRACT.md": "63b40f591c317a10b68c524f10e3bf38b80c3a8070a205927ce8cb7fcd9a7eb9",
+    "tests/nut-sol/test_native_macro_entry_ramp.f90": "d73d9f41fb0ba60f00c48dcf4ccbd2e0a9d6e68fe161aa4c786595bcfe0773e5",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "eb4c9f341dec9b21aefbf9082f62b88ee23cb8ad764bb0b9a6be4cd3e03b85db",
+    "tools/solute/run_native_water.py": "2574ede610ff803ad734a4e203487cca216dd45d951bc4293365272ce27c0c5d",
+    "integration/audits/verify_entry_ramp_current.py": "6fe298c33d55f4bb7a52b3ab45154baef559fcd379d2e1e80e1c639060bf7486",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "43abb5fd5c4d17afe6816e4aa8fe3fe34f7bae1008e351e93d534cfd8229849f",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "dbf97b981205a98ea9dbf40bf45a6ce73a26060bf384bad1ae7bce54a6aaa49d",
+    "integration/mc-sol01/drainage/rebuild_covered_macro.py": "ea8700a1748cba9a9136c408e873e3d81f69f612944fee2e921d043aa8cd3195",
+    "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_STATUS.json": "5ec95edee78077b94601f9e25899a96d40f1c1c903e8111430c258bafc8cefa8",
+    "integration/mc-sol01/drainage/seal_entry_ramp.py": "f5461d23fc9394976f4e7640b20b4b313de5b14a77b24260866333812e52a1c4",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "51043eddc6680fbc1039998435000b73c569c998c9e86cca8f10c9f077b0d35b"
+  },
+  "provider_input_count": 204,
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ENTRY_RAMP_EVIDENCE.tar.xz.b64",
+    "sha256": "d5ecb236180a9c797f53b4ace10a4293a2c24ecffb47fae7948f4a117628f3cb",
+    "bytes": 5985168,
+    "members": 384
+  },
+  "qualification": {
+    "qualified": true,
+    "canonically_admitted": false,
+    "end_day": 2,
+    "seasonal": false,
+    "five_day_complete": false,
+    "width_cm": 0.0001,
+    "width_sensitivity": {
+      "max_head_cm": 4.624201761060931e-06,
+      "max_theta": 2.0386261012639295e-09,
+      "runoff_cm": 0.0,
+      "max_water_flux_cm": 7.575398086601126e-10
+    },
+    "literal_default_native_prefix_exact": true,
+    "previous_joint_rootless_exact": true,
+    "recorded_failed_fixture_setup_corrected": true,
+    "negative_controls": 22,
+    "source_event_restart_files_exact": 6
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [
+    "Actual canonical merge and postimage verification"
+  ],
+  "exclusions": [
+    "Exact4.3.1 equivalence for the corrected-source ramp",
+    "Literal historical entry gate beyond the already admitted1.054day scope",
+    "Five-day and seasonal macro application",
+    "Native macro year-boundary restart",
+    "Macro chemistry and unqualified crop/heat variants",
+    "Portable performance guarantee"
+  ],
+  "test_selection": {
+    "changed": "Darcy entry residual and matched Jacobian, explicit caller/binding, default-off Cauchy proposal ceiling",
+    "selected": [
+      "O0/O2 real production rate/derivative",
+      "Actual original2day native composition and positive pond",
+      "Same-platform complete-event file restart",
+      "Default literal prefix and existing joint/rootless native differential preservation",
+      "Unsupported callers and invalid/foreign input",
+      "Parent source/raw owner, retained481 owner, unchanged FSI35 source, docs"
+    ],
+    "not_selected": [
+      "Fresh481day numerical run",
+      "MC-NUT01 reopening",
+      "Broad F-CI",
+      "Low-air stress",
+      "RossFast",
+      "New1e-6 accuracy probe"
+    ]
+  },
+  "recovery": {
+    "executable_member": "recovery/native_water_O2",
+    "restart_member": "runs/two-O2/restart.bin",
+    "binding": "c734f831902e3df27a99761b0882ab94810f477855b2a860b11c2f4992d3adde"
+  },
+  "next_action": "Admit only the bounded corrected-source two-day variant after current source/raw/retained481/FSI35/docs gates. Longer corrected-source execution remains CENSORED; do not repeat unchanged long runs."
+}

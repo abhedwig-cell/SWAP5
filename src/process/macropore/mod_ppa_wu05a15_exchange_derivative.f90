@@ -2,6 +2,7 @@ module mod_ppa_wu05a15_exchange_derivative
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, macropore_rate_bundle_result_t
+  use mod_ppa_wu05a6_unsat_absorption_rate,only:evaluate_entry_darcy_head_difference
   implicit none
   private
 
@@ -27,7 +28,7 @@ contains
     type(macropore_exchange_derivative_result_t),intent(out)::result
 
     integer::nd,n,id,ic,ic_top,ic_bottom
-    real(real64)::qout,denom,hmp,delh,qexc
+    real(real64)::qout,denom,hmp,delh,qexc,ddelh
 
     result=macropore_exchange_derivative_result_t()
     if(.not.rates%valid)return
@@ -80,14 +81,10 @@ contains
           if(ic<=request%unsaturated%sorptivity%top_water_node(id))cycle
           hmp=max(0.0_real64,request%unsaturated%groundwater_level_domain(id)- &
                request%unsaturated%elevation(ic))
-          if(request%unsaturated%pressure_head(ic)<request%unsaturated%entry_head(ic)-1.0e-8_real64 .and. &
-             hmp>1.0e-8_real64)then
-            delh=max(0.0_real64,hmp-request%unsaturated%pressure_head(ic))
-          else
-            delh=0.0_real64
-          end if
+          call evaluate_entry_darcy_head_difference(request%unsaturated%pressure_head(ic), &
+               request%unsaturated%entry_head(ic),hmp,request%unsaturated%entry_transition_width_cm,delh,ddelh)
           if(abs(delh)>HEAD_DIFFERENCE_THRESHOLD) &
-               result%unsaturated_dqdh(id,ic)= -qout/delh
+               result%unsaturated_dqdh(id,ic)=qout*ddelh/delh
         end if
       end do
     end do
