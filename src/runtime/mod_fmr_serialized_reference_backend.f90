@@ -1018,8 +1018,13 @@ contains
     ok=.false.
     if(.not.p%soil_temperature_active.or..not.p%macropore_active.or. &
        .not.p%boesten_evaporation_active.or..not.allocated(p%soil_temperature))return
-    if(p%root_extraction_active.or.p%drainage_response_active.or.p%frost_active.or.p%snow_active.or. &
+    if(p%frost_active.or.p%snow_active.or. &
        p%picard_conductivity_iteration.or.p%elasticity_active.or.p%hysteresis_active)return
+    if(p%root_compensation%method/=ROOT_COMP_OFF.or.p%root_salinity_active.or.p%root_frost%active)return
+    if(allocated(p%bartholomeus).or.allocated(p%micro_de_willigen))return
+    if(p%drainage_response_active)then
+      if(.not.joint_drainage_trace_valid(p))return
+    end if
     if(.not.p%soil_temperature%ready())return
     if(p%soil_temperature%node_count()/=p%active_nodes)return
     ok=p%soil_temperature%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC
@@ -1036,6 +1041,9 @@ contains
     if(size(p%drainage_response_levels)/=1)return
     if(p%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
     if(p%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
+    if(p%macropore_active)then
+      if(p%bottom_mode/=3.or.p%drainage_response_levels(1)%dramet3%drain_type/=1)return
+    end if
     select case(p%bottom_mode)
     case(2)
       if(.not.p%drainage_qbot_smooth_freatic_projection)return
@@ -1046,7 +1054,7 @@ contains
     case default
       return
     end select
-    if(p%frost_active.or.p%macropore_active.or.p%snow_active)return
+    if(p%frost_active.or.p%snow_active)return
     if(p%soil_temperature_active)then
       if(.not.allocated(p%soil_temperature))return
       if(p%soil_temperature%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
@@ -2679,7 +2687,9 @@ contains
           (parameters%macropore_active .neqv. composed_rutter_boesten_macro) .or. &
           parameters%black_evaporation_active .or. &
           (parameters%boesten_evaporation_active .neqv. composed_rutter_boesten_macro) .or. &
-          parameters%drainage_response_active .or. parameters%elasticity_active .or. &
+          (parameters%drainage_response_active.and. &
+           .not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters))) .or. &
+          parameters%elasticity_active .or. &
           parameters%direct_retention_active .or. allocated(parameters%bartholomeus) .or. &
           (parameters%bottom_mode /= 2 .and. parameters%bottom_mode /= 7 .and. &
            .not.(composed_rutter_boesten_macro.and.parameters%bottom_mode==3.and. &
@@ -2937,6 +2947,15 @@ contains
         return
       end if
       rutter_sink_total = sum(forcing%root_extraction_sink)
+      if(allocated(forcing%substep_root))then
+        ! Plain substep uptake owns the sink. Give it the canopy-adjusted demand,
+        ! without requiring a second precomputed extraction source.
+        if(any(forcing%root_extraction_sink/=0.0_real64))then
+          call reject_backend_trial(result,candidate,diagnostics)
+          return
+        end if
+        trial_forcing%substep_root%request%potential_transpiration=rutter_result%potential_transpiration_cm_per_day
+      else
       if (.not. ieee_is_finite(rutter_sink_total) .or. rutter_sink_total < 0.0_real64) then
         call reject_backend_trial(result, candidate, diagnostics)
         return
@@ -2955,6 +2974,7 @@ contains
         return
       end if
       trial_forcing%root_extraction_sink = forcing%root_extraction_sink * rutter_scale
+      end if
       trial_forcing%root_potential_transpiration = rutter_result%potential_transpiration_cm_per_day
       trial_forcing%rutter%prepared = .true.
       trial_forcing%rutter%result = rutter_result
@@ -3322,7 +3342,8 @@ contains
              (.not.parameters%soil_temperature_active.or. &
                (self%rutter_active.and.macro_numeric_heat_valid(parameters))) .and. &
              .not. parameters%black_evaporation_active .and. &
-             .not. parameters%drainage_response_active .and. &
+             (.not.parameters%drainage_response_active.or. &
+               (self%rutter_active.and.macro_numeric_heat_valid(parameters).and.self%accepted_water_flux_trace_enabled)) .and. &
              .not. self%fixed_weir_surface_water_active .and. &
              parameters%macropore%valid_for_nodes(parameters%active_nodes)
       else
@@ -3893,11 +3914,21 @@ contains
               self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE) return
           if(self%soil_temperature_parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
         end if
-        if (self%frost_active.or.self%rutter_active.or.self%snow_active) return
-        if (self%rfm_configuration%enabled.or.self%macropore_active.or.allocated(forcing%macropore_top_input)) return
+        if (self%frost_active.or.self%snow_active) return
+        if (self%rutter_active.or.self%macropore_active)then
+          if(.not.(self%rutter_active.and.self%macropore_active.and.self%soil_temperature_active.and. &
+             self%boesten_evaporation_active.and.self%accepted_water_flux_trace_enabled))return
+          if(forcing%substep_root%parameters%empirical_oxygen_enabled)return
+        end if
+        if (self%rfm_configuration%enabled.or.allocated(forcing%macropore_top_input)) return
         if (self%swkimpl /= 0) return
         if (allocated(forcing%root_potential_sink).or.allocated(forcing%crop_oxygen)) return
-        if (forcing%root_potential_transpiration /= 0.0_real64.or.forcing%root_drought_reduction_total /= 0.0_real64) return
+        if(forcing%root_drought_reduction_total/=0.0_real64)return
+        if(self%rutter_active)then
+          if(forcing%root_potential_transpiration/=forcing%substep_root%request%potential_transpiration)return
+        else
+          if(forcing%root_potential_transpiration/=0.0_real64)return
+        end if
         self%substep_root = forcing%substep_root
       end if
       if (allocated(self%micro_de_willigen)) then
@@ -4491,6 +4522,7 @@ contains
     type(boesten_evaporation_forcing_t) :: boesten_process_forcing
     type(boesten_evaporation_result_t) :: boesten_result
     type(rutter_interval_result_t) :: rutter_process_result
+    type(root_water_uptake_request_t) :: substep_root_request
     type(fmr_macropore_top_input_forcing_t) :: macro_top_input_trial
     type(rfm_matrix_source_provider_t), target :: rfm_source_provider
     type(rfm_live_trial_prepare_result_t) :: rfm_live
@@ -5058,13 +5090,15 @@ contains
         self%qrot = self%qrot_unmodified
       end if
       if (allocated(self%substep_root)) then
+        substep_root_request=self%substep_root%request
+        if(self%rutter_active)substep_root_request%potential_transpiration=rutter_process_result%potential_transpiration_cm_per_day
         block
           type(root_water_uptake_flux_result_t) :: roots
           ! Always rebuild from THIS full/half/retry base, never a previous trial.
           call build_process_hydraulic_view(request%base_state, hydraulic_start, hydraulic_view_ok)
           if (.not.hydraulic_view_ok) return
           call evaluate_macro_feddes_drought_uptake(self%substep_root%parameters, hydraulic_start, &
-               self%substep_root%request, roots, self%substep_root_diagnostics)
+               substep_root_request, roots, self%substep_root_diagnostics)
           if (self%substep_root_diagnostics%status /= ROOT_UPTAKE_OK) return
           self%qrot = roots%root_extraction_sink
         end block

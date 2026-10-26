@@ -1,5 +1,25 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+The bounded ordinary Reference macro/Rutter/Boesten/numeric-heat runtime with
+plain substep Feddes roots, source drainage-only DRAMET3 and their joint case is
+locally qualified, pending canonical admission. The root process receives the
+admitted prepared Rutter source-window demand; it needs no duplicate prescribed
+root sink. In the rainy/no-evaporation fixture, wet demand.025cm/day replaces the
+uncoupled dry request.05cm/day. Existing Rutter temporal partitioning, process
+equations, state layout and numerical tolerances are retained. Six four-node/
+one-domain O0/O2 configurations give bit-exact full native output, positive
+root uptake2.5e-5cm and positive joint drainage1.535e-8cm, independent budgets,
+rejected-trial rollback/smaller retry and exact kernel/FMR typed restart.
+Twenty-four additional joint controls reject unsupported observation-disabled,
+oxygen/salinity/open-drain/missing-owner combinations atomically. The four old
+rootless/no-response thermal processes remain predecessor-byte-exact. The exact
+joint driver rejects against baseline53db6ca0. This closes a bounded runtime
+coupling gap; the actual112-node/five-domain whole SWSOLU0 application, coupled
+file restart and seasonal evidence remain open. No full F-CI, fresh481-day/NUT,
+low-air or RossFast expansion is claimed. NUT01/SOL01 remain CLOSED WITH EXCLUSIONS.
+Authority: `integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_STATUS.json` and
+`integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_CONTRACT.md`.
+
 Original MACROINIT preparation and typed initial stocks are canonically admitted
 by PR1452 at checked O0/O2. Exact archived default-MvG, calcgwl,
 MACROINIT, PARLANGE, SHRINKPAR/SHRINK and MPVOLUME procedures prepare the actual
