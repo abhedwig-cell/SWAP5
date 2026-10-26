@@ -1,0 +1,29 @@
+{
+  "work_unit": "HIST-INTEGRATION01 macro/Rutter/numeric heat",
+  "baseline": "043e92ac319d3a3b8ca40b57e995be60db91679a",
+  "implemented": false,
+  "persisted": true,
+  "tested": false,
+  "qualified": false,
+  "canonically_admitted": false,
+  "contract": "integration/mc-sol01/drainage/MACRO_HEAT_CONTRACT.md",
+  "blockers": [
+    "Runtime and typed restart exclude combined heat",
+    "Native original input/dispatch remains separate"
+  ],
+  "next_action": "Build unchanged current providers O0/O2; implement bounded existing-owner composition",
+  "test_selection": {
+    "candidate": "043e92ac319d3a3b8ca40b57e995be60db91679a",
+    "groups": {
+      "macro_heat": {
+        "changed_dependency": "Existing combined runtime admission and typed state restart",
+        "scientific_claim": "Atomic active heat/macro/Rutter execution and exact typed continuation",
+        "owner": "HIST-INTEGRATION01",
+        "authority": "integration/mc-sol01/drainage/MACRO_HEAT_CONTRACT.md",
+        "expected_seconds": 240,
+        "existing_evidence": "Unchanged process owners retained; this cross-product requires fresh execution",
+        "prior_execution": "NONE"
+      }
+    }
+  }
+}

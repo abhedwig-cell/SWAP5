@@ -2,7 +2,7 @@
 import argparse,hashlib,json,os,re,resource,subprocess,time,gzip,datetime
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3]
-p=argparse.ArgumentParser();p.add_argument('--build',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=['pilot','full'],default='full');a=p.parse_args();build=a.build.resolve();out=a.output.resolve();out.mkdir();sha=lambda b:hashlib.sha256(b).hexdigest()
+p=argparse.ArgumentParser();p.add_argument('--build',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=['pilot','full'],default='full');p.add_argument('--numeric-heat',action='store_true');a=p.parse_args();build=a.build.resolve();out=a.output.resolve();out.mkdir();sha=lambda b:hashlib.sha256(b).hexdigest()
 resource.setrlimit(resource.RLIMIT_STACK,(64*1024*1024,resource.getrlimit(resource.RLIMIT_STACK)[1]))
 b=json.loads((build/'build-complete.json').read_text());assert b['status']=='BUILT'
 for path,h in b['input_sha256'].items():assert sha((ROOT/path).read_bytes())==h,path
@@ -33,6 +33,63 @@ for name in ['trial','replay']:
   call get_environment_variable('MACRO_TRACE_ON',trace_flag)
   want_trace=trace_flag=='1'
 """+text[at:]
+ if a.numeric_heat:
+  if name!='replay':continue
+  text=text.replace('  implicit none','''  use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters,initialize_soil_temperature_state
+  use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view
+  implicit none''',1)
+  text=text.replace('    if(migmac10)then\n      call fmr_new_b110_boesten_macropore_committed_state','''    fparams%soil_temperature_active=.true.
+    allocate(fparams%soil_temperature,initial%soil_temperature)
+    call initialize_soil_temperature_parameters(dz,[.25_real64,.5_real64,.75_real64,1._real64], &
+      spread(.427494_real64,1,numnod),spread(.3_real64,1,numnod),spread(.2_real64,1,numnod), &
+      spread(.02_real64,1,numnod),fparams%soil_temperature,rutter_status)
+    if(rutter_status/=0)error stop 'macro heat parameters'
+    call initialize_soil_temperature_state(spread(12._real64,1,numnod),initial%soil_temperature,rutter_status)
+    if(rutter_status/=0)error stop 'macro heat initial state'
+    allocate(forcing%soil_temperature)
+    forcing%soil_temperature%prescribed_surface_temperature_c=20._real64
+    if(migmac10)then
+      call fmr_new_b110_boesten_macropore_committed_state''',1)
+  text=text.replace('          negative_params%soil_temperature_active=.true.', '          deallocate(negative_params%soil_temperature)')
+  text=text.replace('    same=.false.\n    select type (aa=>a)', '    type(soil_temperature_field_view_t)::ta,tb\n    integer::sa,sb\n    same=.false.\n    select type (aa=>a)',1)
+  anchor='        if(same)same=allocated(aa%macropore).eqv.allocated(bb%macropore)'
+  assert anchor in text
+  text=text.replace(anchor,'''        if(same)same=allocated(aa%soil_temperature).eqv.allocated(bb%soil_temperature)
+        if(same.and.allocated(aa%soil_temperature))then
+          call build_soil_temperature_field_view(aa%soil_temperature,ta,sa)
+          call build_soil_temperature_field_view(bb%soil_temperature,tb,sb)
+          same=sa==0.and.sb==0
+          if(same)same=all(transfer(ta%temperature_c,[0_int64],size(ta%temperature_c))== &
+            transfer(tb%temperature_c,[0_int64],size(tb%temperature_c)))
+        end if
+'''+anchor)
+  text=text.replace("    call committed%snapshot(after_trial_state,available)\n    if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &\n         error stop 'A9 FMR top-input candidate leaked into committed state'", "    call check_heat(backend%observation(),candidate)\n    call committed%snapshot(after_trial_state,available)\n    if(.not.available .or. .not.same_fmr_state(before_state,after_trial_state)) &\n         error stop 'A9 FMR top-input candidate leaked into committed state'")
+  helper_heat='''
+  subroutine check_heat(obs,cand)
+    type(fmr_serialized_physical_observation_t),intent(in)::obs
+    type(kernel_candidate_state_t),intent(in)::cand
+    class(transaction_state_t),allocatable::s
+    type(soil_temperature_field_view_t)::v
+    logical::ok
+    integer::code
+    if(.not.obs%soil_temperature_executed.or.obs%soil_temperature_status/=0.or. &
+      .not.obs%soil_temperature_energy_accounting_complete)error stop 'macro heat execution'
+    if(abs(obs%soil_temperature_energy_residual_j_cm2)>1e-9_real64)error stop 'macro heat energy closure'
+    call cand%snapshot(s,ok)
+    if(.not.ok)error stop 'macro heat candidate'
+    select type(s)
+    class is(fmr_b110_physical_state_t)
+      if(.not.allocated(s%soil_temperature))error stop 'macro heat lost state'
+      call build_soil_temperature_field_view(s%soil_temperature,v,code)
+      if(code/=0.or..not.any(v%temperature_c>12._real64))error stop 'macro heat inactive'
+      write(*,'(a,*(es25.17e3,1x))')'MACRO_HEAT_CHECK_PASS ',obs%soil_temperature_energy_residual_j_cm2, &
+        v%temperature_c
+    class default
+      error stop 'macro heat wrong candidate'
+    end select
+  end subroutine
+'''
+  text=text.replace('\ncontains\n','\ncontains\n'+helper_heat,1)
  # A9 direct runtime retains its existing bottom7; only the composed FMR call uses the admitted implicit BBC.
  if name=='trial':
   text=text.replace('p%bottom_mode=7','p%bottom_mode=3; if(migmac11)p%bottom_mode=7')
