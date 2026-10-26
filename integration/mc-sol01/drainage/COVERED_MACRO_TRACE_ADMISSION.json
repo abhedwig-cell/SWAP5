@@ -1,0 +1,147 @@
+{
+  "work_unit": "HIST-INTEGRATION01 covered macropore water trace",
+  "baseline": "9d108ee89ae6e1e19d8705a696779555a4a0491c",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Four-node one-domain checked O0/O2 covered-water interface at entry nodes3/4; bounded positive transfer and dry replay",
+  "pr": 1448,
+  "actual_merge": "7d4d0ee848b3e934ab4ce62e109539459920be09",
+  "published_head": "dd159ae97e9171df6a4fb0fc6a01760c8a41c4d8",
+  "published_tree": "de9a052fbcc6817880b3a2aa674f026f7185653a",
+  "actual_tree": "de9a052fbcc6817880b3a2aa674f026f7185653a",
+  "qualified_local_candidate": "36c592be14f5fcf4f1bc324ec9216b93908536f6",
+  "qualified_complete_tree_exact": true,
+  "physical_results": {
+    "positive_internal_transfer_cm": 1.2800063350648031e-08,
+    "macro_active_cell_max_residual_cm": 0.0,
+    "matrix_max_residual_cm": 3.384829557274585e-12,
+    "combined_column_max_residual_cm": 3.3848357274860892e-12
+  },
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 8,
+    "current_NUT_separate_process_restarts": 16,
+    "current_matrix_days": 5,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": true
+  },
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_EVIDENCE.tar.xz.b64",
+    "sha256": "9a1de437588acf1dee8ca536c95b4c8fec51c0f682d93c87771a94bd90e84bae",
+    "bytes": 2603644,
+    "members": 2588
+  },
+  "actual_postimage_validation": {
+    "actual_merge": "7d4d0ee848b3e934ab4ce62e109539459920be09",
+    "actual_tree": "de9a052fbcc6817880b3a2aa674f026f7185653a",
+    "qualified_complete_tree_exact": true,
+    "working_tree_clean": true,
+    "events": [
+      {
+        "label": "owner_and_controls",
+        "command": [
+          "python",
+          "-B",
+          "integration/audits/verify_covered_macro_current.py"
+        ],
+        "returncode": 0,
+        "seconds": 1.4625491580000016,
+        "stdout_sha256": "5869c6c5a66112a76702d5dd7e45a48633878f322843f124d508e0412a641271",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "retained481_owner",
+        "command": [
+          "python",
+          "-B",
+          "integration/mc-sol01/drainage/verify_source_continuation.py"
+        ],
+        "returncode": 0,
+        "seconds": 20.32227922599941,
+        "stdout_sha256": "48dbdc72d19db294fd3a7d2f782af09030191c4b6dae3c74a4cda69702052a37",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fsi35_source",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json; print(json.dumps(runpy.run_path('integration/audits/verify_saturation_storage_current.py')['fsi35_successors']()))"
+        ],
+        "returncode": 0,
+        "seconds": 0.5606029450000278,
+        "stdout_sha256": "e918f3625e9b4b5edaa72f058bc5d6c329d3bc2c3b591a501ce23b3b0b1ef19d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.19476050400044187,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_mkdocs",
+        "command": [
+          "python",
+          "-B",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/6719f15c908a/covered-actual-site"
+        ],
+        "returncode": 0,
+        "seconds": 12.962047935000555,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "0362aa688a5b480aa1da6924befec90542587f247adeaa03083b0766f674936b"
+      }
+    ]
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "exclusions": [
+    "Full original macro/Rutter/heat application",
+    "Multi-domain covered runtime qualification",
+    "Macro chemistry",
+    "Broad temporal accuracy from the short positive-transfer interface probe",
+    "Fresh full481-day execution",
+    "Full original SWAP4.3.1 application equivalence"
+  ],
+  "hosted_numerical_pass_claimed": false,
+  "work_packages": {
+    "MC-NUT01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    },
+    "MC-SOL01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    }
+  }
+}

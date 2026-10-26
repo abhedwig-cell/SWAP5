@@ -1,6 +1,6 @@
 # SWAP5 Status-A current architecture
 
-Covered matrix-to-macropore accepted-water receipts are locally qualified at
+Covered matrix-to-macropore accepted-water receipts are canonically admitted at
 checked O0/O2. Explicit donor-node/domain amounts repair the active-domain
 entry face and receipt validation without changing water equations, committed
 state, temporal/mass tolerances or default policy. A short positive-transfer
@@ -12,8 +12,14 @@ restarts reproduce accepted results. Current original112-node matrix/heat/drain/
 crop five-day artifacts are exact against independent predecessor O0/O2 builds.
 The full481-day execution remains its preserved predecessor, not a fresh current
 executable run. Full original macro/Rutter/heat and macro chemistry remain
-excluded; MC-NUT01/MC-SOL01 stay CLOSED WITH EXCLUSIONS. Actual canonical
-admission is pending in `integration/mc-sol01/drainage/COVERED_MACRO_TRACE_STATUS.json`.
+excluded; MC-NUT01/MC-SOL01 stay CLOSED WITH EXCLUSIONS. PR1448 actual merge
+`7d4d0ee848b3e934ab4ce62e109539459920be09` has complete tree
+`de9a052fbcc6817880b3a2aa674f026f7185653a`, exactly matching the qualified
+and published tree. Owning19 negative controls, retained481 owner, unchanged
+FSI35 source and strict documentation checks pass on that merge. Covered runtime
+qualification is four-node/one-domain only; multi-domain covered composition
+remains excluded. Admission authority:
+`integration/mc-sol01/drainage/COVERED_MACRO_TRACE_ADMISSION.json`.
 
 Original112-node source matrix chain now completes481 days at checked O2,
 with the original1998 crop/fallow and1999 second-crop activation. The previously

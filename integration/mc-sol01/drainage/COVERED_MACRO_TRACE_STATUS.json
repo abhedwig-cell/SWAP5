@@ -1,14 +1,12 @@
 {
   "work_unit": "HIST-INTEGRATION01 covered macropore water trace",
   "baseline": "9d108ee89ae6e1e19d8705a696779555a4a0491c",
-  "stage": "QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_CONTRACT.md",
-  "remaining_blockers": [
-    "Canonical admission and exact merged-postimage verification"
-  ],
+  "remaining_blockers": [],
   "test_selection": {
     "candidate": "9d108ee89ae6e1e19d8705a696779555a4a0491c",
     "groups": {
@@ -82,10 +80,10 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false
+    "canonically_admitted": true
   },
-  "recovery_point": "Persisted complete covered receipt evidence and current preservation",
-  "next_action": "Verify owning source/raw gates, integrate candidate and verify actual canonical merge. Do not claim full original application.",
+  "recovery_point": "PR1448 actual canonical merge independently verified against complete qualified tree",
+  "next_action": "Covered-water receipt unit closed. Full original macro/Rutter/heat composition remains excluded and requires a separately selected integration unit.",
   "physical_results": {
     "positive_internal_transfer_cm": 1.2800063350648031e-08,
     "macro_active_cell_max_residual_cm": 0.0,
@@ -99,5 +97,8 @@
     "docs_source": "PASS",
     "mkdocs_strict": "PASS",
     "hosted_numerical_pass_claimed": false
-  }
+  },
+  "admission": "integration/mc-sol01/drainage/COVERED_MACRO_TRACE_ADMISSION.json",
+  "actual_merge": "7d4d0ee848b3e934ab4ce62e109539459920be09",
+  "qualified_complete_tree": "de9a052fbcc6817880b3a2aa674f026f7185653a"
 }
