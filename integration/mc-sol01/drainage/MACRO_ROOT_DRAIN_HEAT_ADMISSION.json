@@ -1,0 +1,389 @@
+{
+  "work_unit": "HIST-INTEGRATION01 plain root/response drainage/numeric heat macro composition",
+  "baseline": "53db6ca034c988dddaa66172036ae70fd5772630",
+  "status": "CLOSED WITH EXCLUSIONS",
+  "scope": "Four-node/one-domain plain substep Feddes roots and/or source single-level drainage-only tube DRAMET3 in numeric-heat Rutter/Boesten/macropore Reference layout",
+  "pr": 1453,
+  "actual_merge": "bc4e6d6bf561e438605e9c0522d8db0131dfdf84",
+  "published_head": "9bf02e5c9f3c6ec610776c9a2b978017aa203fbc",
+  "qualified_complete_tree": "859eb09a6919af9256026bc18c9d3baa330b8466",
+  "actual_tree": "859eb09a6919af9256026bc18c9d3baa330b8466",
+  "qualified_complete_tree_exact": true,
+  "qualification": {
+    "qualified": true,
+    "covered_O0_O2_exact": true,
+    "positive_internal_transfer": true,
+    "covered_depths": [
+      3,
+      4
+    ],
+    "positive_probe_interval_day": 2.44140625e-07,
+    "covered_configurations": 4,
+    "covered_native_processes": 8,
+    "corruption_controls_per_substep": 12,
+    "original_replay_rollback_and_FMR_restore_assertions_retained": true,
+    "trace_ON_OFF_physical_stdout_exact": true,
+    "current_uncovered_configurations": 20,
+    "current_uncovered_native_processes": 40,
+    "current_NUT_runs": 0,
+    "current_NUT_separate_process_restarts": 0,
+    "current_matrix_days": 0,
+    "current_matrix_artifacts_predecessor_exact": true,
+    "full481_reexecuted": false,
+    "full_original_Andelst": false,
+    "macro_chemistry_or_heat_admitted": false,
+    "canonically_admitted": true,
+    "bounded_macro_rutter_numeric_heat": true,
+    "heat_configurations": 6,
+    "heat_native_processes": 12,
+    "additional_atomic_heat_rejections_per_process": 8,
+    "typed_temperature_restart_exact": true,
+    "temperature_rollback_and_retry_exact": true,
+    "water_max_cm": 8.400195144510347e-17,
+    "observed_last_heat_residual_j_cm2": 1.3100631690576847e-14,
+    "prior_NUT_evidence_retained": true,
+    "file_macro_heat_restart": false,
+    "original_native_rutter_preparation": true,
+    "original_crop_periods": 2,
+    "prepared_days": 481,
+    "source_records": 3085,
+    "source_O0_O2_typed_restart_exact": true,
+    "source_water_max_cm": 6.938893903907228e-17,
+    "source_refinement_max_cm": 1.1102230246251565e-16,
+    "original_etpot_cases_per_optimization": 864,
+    "existing_ET_procedures_source_exact": true,
+    "native_full_water_dispatch": false,
+    "prior_matrix5_exact_runtime_preservation_retained": true,
+    "original_native_macro_geometry": true,
+    "original_macro_nodes": 112,
+    "original_macro_domains": 5,
+    "geometry_O0_O2_exact": true,
+    "retained_geometry_rows": 112,
+    "existing_reader_materializer_exact": true,
+    "macroinit": true,
+    "canonical_macro_initial_state": true,
+    "whole_water_dispatch": false,
+    "original_native_macro_initial_preparation": true,
+    "old_trial_profile_source_exact": true,
+    "exactly_dry_tapered_tip_supported": true,
+    "nonempty_degenerate_tip_still_rejects": true,
+    "initial_O0_O2_exact": true,
+    "initial_macro_water_cm": 1.6314932432432439,
+    "initial_dynamic_volume_cm": 0.1446817003924756,
+    "initial_rapid_kd": 0.8785980153694543,
+    "initial_mass_residual_cm": -2.220446049250313e-16,
+    "current_bounded_thermal_native_processes": 4,
+    "current_bounded_thermal_predecessor_exact": true,
+    "prior_geometry_negative_file_lookup_not_inherited": true,
+    "bounded_macro_root_drain_numeric_heat": true,
+    "plain_substep_Feddes_Rutter_demand_coupled": true,
+    "source_dramet3_drainage_only": true,
+    "joint_runtime_configurations": 6,
+    "joint_runtime_native_processes": 6,
+    "joint_atomic_rejections_per_process": 4,
+    "joint_root_oracle_error_cm_day": 0.0,
+    "joint_water_max_cm": 1.4333152720258369e-16,
+    "joint_observed_last_heat_max_j_cm2": 1.2878587085651816e-14,
+    "joint_physical_results": {
+      "O0-root": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 0.0,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -7.327471962526033e-15,
+          18.423619895748566,
+          15.73913816074576,
+          13.103856065048616,
+          12.22833903841947
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O0-drain": {
+        "root_cm": 0.0,
+        "drainage_cm": 1.5392762909863298e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -9.325873406851315e-15,
+          18.42362040337392,
+          15.73913909111119,
+          13.10385578368468,
+          12.228338764860961
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O0-joint": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 1.5347070702254295e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -1.2878587085651816e-14,
+          18.42361989454072,
+          15.739138158240278,
+          13.103856062294973,
+          12.228339037325535
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O2-root": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 0.0,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -7.327471962526033e-15,
+          18.423619895748566,
+          15.73913816074576,
+          13.103856065048616,
+          12.22833903841947
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            8.033938098117588e-17,
+            7.746624522408929e-17,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O2-drain": {
+        "root_cm": 0.0,
+        "drainage_cm": 1.5392762909863298e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -9.325873406851315e-15,
+          18.42362040337392,
+          15.73913909111119,
+          13.10385578368468,
+          12.228338764860961
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.122149248522497e-16,
+            1.0299920638612292e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      },
+      "O2-joint": {
+        "root_cm": 2.4999999999999998e-05,
+        "drainage_cm": 1.5347070702254295e-08,
+        "root_oracle_error_cm_day": 0.0,
+        "heat": [
+          -1.2878587085651816e-14,
+          18.42361989454072,
+          15.739138158240278,
+          13.103856062294973,
+          12.228339037325535
+        ],
+        "traces": [
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            16.0,
+            0.0,
+            1.4333152720258369e-16,
+            1.3227266504323154e-16,
+            0.00031250000000000006,
+            0.0,
+            0.0,
+            0.0
+          ]
+        ]
+      }
+    }
+  },
+  "actual_postimage_validation": {
+    "actual_merge": "bc4e6d6bf561e438605e9c0522d8db0131dfdf84",
+    "actual_tree": "859eb09a6919af9256026bc18c9d3baa330b8466",
+    "qualified_complete_tree_exact": true,
+    "working_tree_clean": true,
+    "events": [
+      {
+        "label": "owner_and_controls",
+        "command": [
+          "python",
+          "-B",
+          "integration/audits/verify_macro_root_drain_heat_current.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.7297144940002909,
+        "stdout_sha256": "a2043098f1c4e078d3b51e6191bb21ccf0c840f48a4f9596ec2aee0bfe3e3107",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "retained481_owner",
+        "command": [
+          "python",
+          "-B",
+          "integration/mc-sol01/drainage/verify_source_continuation.py"
+        ],
+        "returncode": 0,
+        "seconds": 6.015844954001295,
+        "stdout_sha256": "48dbdc72d19db294fd3a7d2f782af09030191c4b6dae3c74a4cda69702052a37",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "fsi35_source",
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import runpy,json;print(json.dumps(runpy.run_path('integration/audits/verify_macro_root_drain_heat_current.py')['fsi35_successors']()))"
+        ],
+        "returncode": 0,
+        "seconds": 0.1749749280006654,
+        "stdout_sha256": "6e6f53d228a48e3ce9a0a9b8e0a86e8e31295180139ada9926878d111752f46f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docs",
+        "command": [
+          "python",
+          "-B",
+          "tools/docs/check_docs.py"
+        ],
+        "returncode": 0,
+        "seconds": 0.1800945920003869,
+        "stdout_sha256": "9bdb177357532228c4c74c51545de3ca7c520805b080e3e46c1707674528cdee",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "strict_mkdocs",
+        "command": [
+          "python",
+          "-B",
+          "-m",
+          "mkdocs",
+          "build",
+          "--strict",
+          "--site-dir",
+          "/workspace/scratch/7aafa0ba8548/actual-root-drain-site"
+        ],
+        "returncode": 0,
+        "seconds": 15.41712618299971,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "dd7dba8f4db95ce38d320f7690cab003b8d2f61fa4e411caae9bab5ccd9ce4ec"
+      }
+    ]
+  },
+  "remaining_implementation_blockers": [],
+  "remaining_evidence_blockers": [],
+  "exclusions": [
+    "Native full SWSOLU0 application orchestration using actual112-node/five-domain source inputs and active root/drainage/heat runtime",
+    "Coupled file restart and historical seasonal execution evidence",
+    "Compensation, oxygen, frost/snow/salt and other drainage selectors",
+    "New adaptive canopy/Richards temporal algorithm or complete4.3.1 equivalence"
+  ],
+  "hosted_numerical_pass_claimed": false,
+  "work_packages": {
+    "MC-NUT01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    },
+    "MC-SOL01": {
+      "status": "CLOSED WITH EXCLUSIONS",
+      "implementation_blockers": [],
+      "evidence_blockers": []
+    }
+  }
+}

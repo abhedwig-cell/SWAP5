@@ -2,7 +2,7 @@
 
 The bounded ordinary Reference macro/Rutter/Boesten/numeric-heat runtime with
 plain substep Feddes roots, source drainage-only DRAMET3 and their joint case is
-locally qualified, pending canonical admission. The root process receives the
+canonically admitted by PR1453. The root process receives the
 admitted prepared Rutter source-window demand; it needs no duplicate prescribed
 root sink. In the rainy/no-evaporation fixture, wet demand.025cm/day replaces the
 uncoupled dry request.05cm/day. Existing Rutter temporal partitioning, process
@@ -19,6 +19,10 @@ file restart and seasonal evidence remain open. No full F-CI, fresh481-day/NUT,
 low-air or RossFast expansion is claimed. NUT01/SOL01 remain CLOSED WITH EXCLUSIONS.
 Authority: `integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_STATUS.json` and
 `integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_CONTRACT.md`.
+Actual merge `bc4e6d6bf561e438605e9c0522d8db0131dfdf84` has complete qualified
+tree `859eb09a6919af9256026bc18c9d3baa330b8466` exactly. Actual-merge16 controls,
+retained481 owner, unchanged27-dependency FSI35 source and strict docs pass.
+Admission: `integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_ADMISSION.json`.
 
 Original MACROINIT preparation and typed initial stocks are canonically admitted
 by PR1452 at checked O0/O2. Exact archived default-MvG, calcgwl,

@@ -1,18 +1,16 @@
 {
   "work_unit": "HIST-INTEGRATION01 plain root/response drainage/numeric heat macro composition",
   "baseline": "53db6ca034c988dddaa66172036ae70fd5772630",
-  "stage": "RUNTIME_QUALIFIED_PENDING_CANONICAL_ADMISSION",
+  "stage": "RUNTIME_CANONICAL_ADMITTED_CLOSED_WITH_EXCLUSIONS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "contract": "integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_CONTRACT.md",
-  "blockers": [
-    "Actual canonical merge and postimage verification"
-  ],
+  "blockers": [],
   "next_action": "Admit bounded runtime composition; connect full native source application and file restart",
-  "recovery_point": "Six positive native O0/O2 runtime configurations, exact typed restart/rollback,24 additional joint atomic controls and original rootless output exact",
+  "recovery_point": "PR1453 actual merge independently verified against complete qualified tree",
   "relevant_paths": [
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
     "integration/mc-sol01/drainage/qualify_macro_trace.py"
@@ -75,7 +73,7 @@
     "full481_reexecuted": false,
     "full_original_Andelst": false,
     "macro_chemistry_or_heat_admitted": false,
-    "canonically_admitted": false,
+    "canonically_admitted": true,
     "bounded_macro_rutter_numeric_heat": true,
     "heat_configurations": 6,
     "heat_native_processes": 12,
@@ -556,5 +554,8 @@
     "tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-swap.bbc.gz",
     "tools/solute/build_crop_column.py",
     "tools/solute/legacy_reader_sources.py"
-  ]
+  ],
+  "admission": "integration/mc-sol01/drainage/MACRO_ROOT_DRAIN_HEAT_ADMISSION.json",
+  "actual_merge": "bc4e6d6bf561e438605e9c0522d8db0131dfdf84",
+  "qualified_complete_tree": "859eb09a6919af9256026bc18c9d3baa330b8466"
 }
