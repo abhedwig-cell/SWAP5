@@ -1,5 +1,22 @@
 # SWAP5 Status-A current architecture
 
+Original Rutter crop/ETref preparation is locally qualified in an explicit
+`native-rutter` reader mode. Two original crop periods and the intervening fallow
+cover481 days. At O0/O2,864 cases per optimization match the actual archived
+ETpot body bit for bit; ordinary crop-demand output is predecessor-exact. Original
+SICCAPLAI and the historical zero initial canopy store are retained. Actual
+original detailed rain and prepared crop demands drive3085 source windows over
+481 days through the existing Rutter owner, with atomic invalid-input rejection,
+source refinement and exact typed restart/O0/O2 output. Maximum source balance
+residual6.94e-17cm; this is a forcing-component run, without Richards execution.
+The existing INT13 transfer of capacity loss to the surface remains an explicit
+SWAP5 reference difference. Metadata preparation projects SWMACRO to zero only
+to obtain the crop/weather views; no macro-disabled water calculation is labelled
+original. Original SWSOLU0 and CRP/weather/rain bytes are retained. Full original
+macro/heat/root/drainage application and file restart remain open. Qualification
+and actual canonical admission are recorded separately in
+`integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json`.
+
 The bounded Reference Rutter/Boesten/macropore/numeric-heat runtime is now
 canonically admitted at checked O0/O2 by PR1449. Actual merge
 `8a0d53b511e7f3be01ffbbba37f49f98a0855a63` has complete tree

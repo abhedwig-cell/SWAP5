@@ -9,6 +9,11 @@ program read_swp_crop
   use mod_crop_root_depth_dvs
   use mod_reference_et_demand_process
   implicit none
+  logical::native_rutter=.false.
+  character(32)::rutter_option
+  real(real64)::siccaplai=0d0
+  real(real64),allocatable::rutter_output(:,:)
+  type(traditional_pm_daily_result_t)::rutter_demand
   integer::mode,n,ncrop,i,j,first,last,status,u,datea(6),crop_index
   integer,allocatable::dd(:),mm(:),yyyy(:)
   real(real64)::tstart,tend,starts(64),ends(64),rds,kdir,kdif,lai,rd,dvsend
@@ -33,6 +38,9 @@ program read_swp_crop
   type(reference_et_demand_result_t)::demand
   type(reference_et_demand_diagnostics_t)::et_diagnostics
   call get_command_argument(1,swp);call get_command_argument(2,crp);call get_command_argument(3,met)
+  call get_command_argument(4,rutter_option)
+  call require(len_trim(rutter_option)==0.or.trim(rutter_option)=='native-rutter','unknown crop option')
+  native_rutter=trim(rutter_option)=='native-rutter'
   call basename(crp,'.crp');call basename(met,'.met')
   call rdinit(74,0,trim(swp))
   call rdstim('tstart',tstart);call rdstim('tend',tend)
@@ -78,7 +86,14 @@ program read_swp_crop
   call initialize_fixed_crop(parameters,state,status);call require(status==FIXED_CROP_OK,'invalid phenology')
   call zero_switch('swprep',1);call zero_switch('swsow',3);call zero_switch('swgerm',3)
   call zero_switch('swco2',1)
-  call rdsinr('swinter',0,3,mode);call require(mode==0,'interception requires physical composition')
+  call rdsinr('swinter',0,3,mode)
+  if(native_rutter)then
+    call require(mode==3,'native Rutter requires SWINTER3')
+    call rdsdor('siccaplai',0d0,.5d0,siccaplai)
+    ! Original interception(task1) resets SICACT to zero; it does not read it.
+  else
+    call require(mode==0,'interception requires physical composition')
+  end if
   call rdsinr('swcf',1,2,mode);call require(mode==1,'ETref needs crop factors')
   if(rdinqr('swgc'))call require(.false.,'deprecated SWGC not selected')
   call read_table('laitb',0d0,2d0,0d0,12d0,x,y)
@@ -111,6 +126,7 @@ program read_swp_crop
   call require(times(1)<=tstart.and.times(n)>=tend,'incomplete MET calendar')
   first=nint(tstart-times(1))+1;last=nint(tend-times(1))+1
   allocate(output(9,last-first+1));output=0d0;harvested=.false.
+  if(native_rutter)allocate(rutter_output(6,last-first+1))
   do i=first,last
     j=i-first+1
     call calendar%select_at(times(i),crop_index,active,starts_today,status)
@@ -136,6 +152,12 @@ program read_swp_crop
     call evaluate_restricted_reference_et_demand(et_parameters,et_forcing,et_canopy,demand,et_diagnostics)
     call require(et_diagnostics%status==REF_ET_DEMAND_OK.and.et_diagnostics%result_produced,'ETref')
     end if
+    if(native_rutter)then
+      call evaluate_reference_et_rutter_demand(et_parameters,et_forcing,et_canopy,rutter_demand,et_diagnostics)
+      call require(et_diagnostics%status==REF_ET_DEMAND_OK.and.et_diagnostics%result_produced,'Rutter ETref')
+      rutter_output(:,j)=[times(i),siccaplai*lai,0d0,rutter_demand%potential_transpiration_dry_cm_per_day, &
+        rutter_demand%potential_transpiration_wet_cm_per_day,rutter_demand%interception_evaporation_capacity_cm_per_day]
+    end if
     output(:,j)=[times(i),merge(1d0,0d0,active),merge(state%development_stage,0d0,active), &
       lai,canopy%vegetation_cover_fraction,rd,demand%potential_transpiration_cm_per_day, &
       demand%potential_soil_evaporation_cm_per_day,demand%potential_pond_evaporation_cm_per_day]
@@ -154,6 +176,16 @@ program read_swp_crop
       ',',output(5,j),',',output(6,j),',',output(7,j),',',output(8,j),',',output(9,j)
   end do
   close(u)
+  if(native_rutter)then
+    open(newunit=u,file='rutter_daily.csv',status='new',action='write')
+    write(u,'(A)')'t1900,capacity_cm,initial_storage_cm,dry_transpiration_cm_day,wet_transpiration_cm_day,interception_evaporation_cm_day'
+    do j=1,size(rutter_output,2)
+      write(u,'(ES25.16E3,5(A,ES25.16E3))')rutter_output(1,j),',',rutter_output(2,j),',',rutter_output(3,j), &
+        ',',rutter_output(4,j),',',rutter_output(5,j),',',rutter_output(6,j)
+    end do
+    close(u)
+    print '(A)','SWP_NATIVE_RUTTER_CROP_PREPARED'
+  end if
   print '(A)','SWP_NATIVE_SIMPLE_CROP_PREPARED'
 contains
   subroutine require(ok,message)

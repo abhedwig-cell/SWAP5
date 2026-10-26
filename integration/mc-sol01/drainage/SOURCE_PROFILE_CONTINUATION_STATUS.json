@@ -28,7 +28,7 @@
   },
   "postimages": {
     "integration/mc-sol01/drainage/continue_source_profile.py": "7408756d010850249b36f19b2ee51fe6c15a7905ed441c75d3e56bce5e164815",
-    "integration/mc-sol01/drainage/verify_source_continuation.py": "8dca95c57d7d0046296c21d96821fbe37cd1ae0f30a610d26d994a38cd16b509",
+    "integration/mc-sol01/drainage/verify_source_continuation.py": "02b08bb01d2e648b9f4882a253685abeb89fe14d583ae1f2c31dd1776c8932e3",
     "integration/mc-sol01/drainage/seal_source_continuation.py": "801275b487ced11e6b09dae0a68ada58617a01b3dbcde59f6c228172bc2c5ae5",
     "integration/mc-sol01/drainage/SOURCE_PROFILE_CONTINUATION_CONTRACT.md": "bcba2a920e3c5012fc799c92c0e260f47d39cac30a1c2372c9e3b114f14ebe4c",
     "integration/mc-sol01/drainage/SOURCE_PROFILE_EXACT_RECOVERY.json": "1e3168e9e019c2c1f1f0170ba7e72f4e726fdb72ab5ef41108f207216d3c72a5"
@@ -114,5 +114,6 @@
     "scope": "Retain original481-day execution as predecessor; current O0/O2 matrix/heat/drain/crop artifacts exact over five-day differential branch test",
     "full481_reexecuted": false
   },
-  "macro_heat_successor": "integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json"
+  "macro_heat_successor": "integration/mc-sol01/drainage/MACRO_HEAT_STATUS.json",
+  "native_rutter_successor": "integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json"
 }

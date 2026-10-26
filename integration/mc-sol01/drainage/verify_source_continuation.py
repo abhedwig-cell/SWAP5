@@ -16,6 +16,9 @@ def validate(f):
  assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
  for p,h in r['input_sha256'].items():
   actual=(ROOT/p).read_bytes()
+  if sha(actual)!=h and p=='src/process/mod_reference_et_demand_process.f90':
+   assert inherited_result.get('existing_ET_procedures_source_exact')
+   actual=subprocess.check_output(['git','show','e15d5ffd1b28701eb96da7ae817f85c47a15a597:'+p],cwd=ROOT)
   if sha(actual)!=h and p=='src/runtime/mod_fmr_restart_state_contract.f90':
    assert inherited_result.get('bounded_macro_rutter_numeric_heat') and inherited_result['current_matrix_artifacts_predecessor_exact']
    actual=subprocess.check_output(['git','show','043e92ac319d3a3b8ca40b57e995be60db91679a:'+p],cwd=ROOT)

@@ -41,7 +41,7 @@ module mod_reference_et_demand_process
     logical :: result_produced = .false.
   end type reference_et_demand_diagnostics_t
 
-  public :: evaluate_restricted_reference_et_demand
+  public :: evaluate_restricted_reference_et_demand, evaluate_reference_et_rutter_demand
 
   integer, parameter :: PM_IDENTITY_KIND=selected_int_kind(18)
   real(real64), parameter :: PI = 3.141592653589793238462643383279502884197_real64
@@ -205,6 +205,43 @@ contains
 
     diagnostics%result_produced = .true.
   end subroutine evaluate_restricted_reference_et_demand
+
+  ! Original MOD_meteo:ETpot wet-canopy partition for the daily ETref route.
+  ! Reuse the validated dry/surface owner; EW0 precedes the CO2 correction.
+  subroutine evaluate_reference_et_rutter_demand(parameters,forcing,canopy,result,diagnostics)
+    type(reference_et_demand_parameters_t),intent(in)::parameters
+    type(reference_et_demand_forcing_t),intent(in)::forcing
+    type(reference_et_demand_canopy_view_t),intent(in)::canopy
+    type(traditional_pm_daily_result_t),intent(out)::result
+    type(reference_et_demand_diagnostics_t),intent(out)::diagnostics
+    type(reference_et_demand_result_t)::dry
+    real(real64)::wet_evaporation
+    result=traditional_pm_daily_result_t()
+    call evaluate_restricted_reference_et_demand(parameters,forcing,canopy,dry,diagnostics)
+    if(.not.diagnostics%result_produced)return
+    result%potential_soil_evaporation_cm_per_day=dry%potential_soil_evaporation_cm_per_day
+    result%potential_pond_evaporation_cm_per_day=dry%potential_pond_evaporation_cm_per_day
+    result%potential_transpiration_dry_cm_per_day=dry%potential_transpiration_cm_per_day
+    if(canopy%crop_emerged)then
+      result%et0_mm_per_day=forcing%reference_et_mm_per_day*canopy%vegetation_cover_fraction*canopy%crop_factor
+      result%ew0_mm_per_day=result%et0_mm_per_day
+    end if
+    result%es0_mm_per_day=forcing%reference_et_mm_per_day*(1.0_real64-canopy%vegetation_cover_fraction)
+    result%ep0_mm_per_day=result%es0_mm_per_day*parameters%pond_evaporation_factor
+    wet_evaporation=result%ew0_mm_per_day*0.1_real64
+    if(wet_evaporation>0.0_real64)then
+      result%potential_transpiration_wet_cm_per_day= &
+        (dry%potential_transpiration_cm_per_day/(dry%potential_transpiration_cm_per_day+wet_evaporation))* &
+          dry%potential_transpiration_cm_per_day
+      result%interception_evaporation_capacity_cm_per_day= &
+        (wet_evaporation/(dry%potential_transpiration_cm_per_day+wet_evaporation))*result%ew0_mm_per_day*0.1_real64
+    end if
+    if(.not.all(ieee_is_finite([result%potential_transpiration_wet_cm_per_day, &
+       result%interception_evaporation_capacity_cm_per_day])))then
+      result=traditional_pm_daily_result_t()
+      diagnostics%status=REF_ET_DEMAND_INVALID_RESULT;diagnostics%result_produced=.false.
+    end if
+  end subroutine evaluate_reference_et_rutter_demand
 
   pure logical function result_is_valid(result) result(valid)
     type(reference_et_demand_result_t), intent(in) :: result

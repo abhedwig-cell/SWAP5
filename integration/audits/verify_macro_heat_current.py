@@ -11,6 +11,7 @@ def projection():
   end+=1;t=t[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[end:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_rutter_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE;git('merge-base','--is-ancestor',BASE,'HEAD')
  assert not git('status','--porcelain','--',*SCIENCE),'unpersisted macro heat source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign macro heat delta'
@@ -58,12 +59,16 @@ def validate(f):
  for opt in ['O0','O2']:assert matrix['results']['baseline/'+opt]==matrix['results']['current/'+opt]
  result=dict(parent['result']);result.update(qualified=True,bounded_macro_rutter_numeric_heat=True,heat_configurations=6,heat_native_processes=12,additional_atomic_heat_rejections_per_process=8,typed_temperature_restart_exact=True,temperature_rollback_and_retry_exact=True,water_max_cm=maxwater,observed_last_heat_residual_j_cm2=maxenergy,current_NUT_runs=0,current_NUT_separate_process_restarts=0,prior_NUT_evidence_retained=True,full_original_Andelst=False,full481_reexecuted=False,file_macro_heat_restart=False,canonically_admitted=False)
  return result
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_rutter_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_rutter_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return dict(status='UNCHANGED_EXECUTABLE_DEPENDENCIES',dependencies=len(deps),baseline=BASE)
 def self_test():
+ if (ROOT/'integration/mc-sol01/drainage/NATIVE_RUTTER_STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_native_rutter_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()
