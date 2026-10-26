@@ -55,6 +55,7 @@ module mod_macropore_dynamic_shrinkage
   public :: evaluate_clay_kim_shrinkage_fraction
   public :: evaluate_dynamic_crack_volume
   public :: evaluate_dynamic_crack_profile
+  public :: prepare_initial_dynamic_crack_profile
   public :: find_dynamic_groundwater_cutoff
   public :: map_surface_crack_depth_to_node
   public :: prepare_rapid_drain_reference_kd
@@ -651,5 +652,44 @@ contains
     if(present(subsidence_result_cm))subsidence_result_cm=subsidence_cm
     ok = .true.
   end subroutine evaluate_dynamic_crack_volume
+
+  subroutine prepare_initial_dynamic_crack_profile(config,theta,dz,matrix_area_fraction,top_node,cutoff, &
+       dynamic_volume,subsidence,ok)
+    type(dynamic_shrinkage_config_t),intent(in)::config
+    real(real64),intent(in)::theta(:),dz(:),matrix_area_fraction(:)
+    integer,intent(in)::top_node,cutoff
+    real(real64),allocatable,intent(out)::dynamic_volume(:),subsidence(:)
+    logical,intent(out)::ok
+    type(dynamic_crack_request_t)::request
+    real(real64)::shrink
+    integer::n,i
+    logical::local_ok
+    ok=.false.;n=size(theta)
+    allocate(dynamic_volume(n),subsidence(n));dynamic_volume=0.0_real64;subsidence=0.0_real64
+    if(.not.config%enabled.or..not.config%valid_for_nodes(n))return
+    if(size(dz)/=n.or.size(matrix_area_fraction)/=n)return
+    if(top_node<1.or.top_node>n.or.cutoff<0.or.cutoff>n)return
+    if(any(.not.ieee_is_finite(theta)).or.any(.not.ieee_is_finite(dz)).or. &
+         any(.not.ieee_is_finite(matrix_area_fraction)))return
+    if(any(theta<0.0_real64).or.any(theta>config%theta_s).or.any(dz<=0.0_real64).or. &
+         any(matrix_area_fraction<=0.0_real64).or.any(matrix_area_fraction>1.0_real64))return
+    ! Initial source MPVOLUME starts with zero crack volumes and walks downward.
+    ! The already prepared upper neighbour is visible when choosing the wetting
+    ! branch. Ordinary trial evaluation keeps its accepted-state semantics.
+    do i=top_node,cutoff
+      call evaluate_node_shrinkage_fraction(config,i,theta(i),shrink,local_ok)
+      if(.not.local_ok)return
+      request=dynamic_crack_request_t()
+      request%theta=theta(i);request%theta_previous=theta(i)
+      request%theta_s=config%theta_s(i);request%theta_crack=config%theta_crack(i)
+      request%dz_cm=dz(i);request%geometry_factor=config%geometry_factor(i)
+      request%matrix_area_fraction=matrix_area_fraction(i)
+      request%minimum_subsidence_cm=config%minimum_subsidence_cm(i)
+      request%neighbour_dynamic_volume_cm=dynamic_volume(max(1,i-1))
+      call evaluate_dynamic_crack_volume(request,shrink,dynamic_volume(i),local_ok,subsidence(i))
+      if(.not.local_ok)return
+    end do
+    ok=.true.
+  end subroutine prepare_initial_dynamic_crack_profile
 
 end module mod_macropore_dynamic_shrinkage

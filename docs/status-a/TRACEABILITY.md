@@ -1,5 +1,26 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+Original MACROINIT preparation and typed initial stocks are locally qualified at
+checked O0/O2, pending canonical admission. Exact archived default-MvG, calcgwl,
+MACROINIT, PARLANGE, SHRINKPAR/SHRINK and MPVOLUME procedures prepare the actual
+unmodified112-node/five-domain SWP/BBC/DRA. Source-computed sorptivity ignores raw
+empirical dummies under SWSORP1. Prepared source Kim coefficients retain the finite
+historical iteration; existing modern characteristic preparation is unchanged.
+The new initial-only crack-profile seam calls existing scientific leaves in source
+downward order. Storage accepts an exactly dry tapered tip; nonempty tips retain
+rejection. Source dynamic/subsidence/domain volumes and rapid reference match the
+production owners within1e-12cm (rapid reference within1e-12 in its own units).
+Initial macropore water1.631493243243244cm and dynamic volume0.144681700392476cm
+are preserved; canonical mass residual is2.23e-16cm. O0/O2 descriptors and consumer
+stdout are bit exact. Corrected lowercase TTUTIL negative-control paths establish
+actual source rejection, superseding the old file-lookup controls. The short
+four-process macro/Rutter/numeric-heat replay is byte exact against prior output,
+including rollback, retry and typed restart. No full native time advance or file
+restart is claimed. Whole original SWSOLU0 root/drainage/heat orchestration and
+coupled file restart remain open; NUT01/SOL01 stay CLOSED WITH EXCLUSIONS.
+Contract: `integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_CONTRACT.md`.
+Current source/evidence authority: `integration/mc-sol01/drainage/NATIVE_MACRO_INITIAL_STATUS.json`.
+
 Original active SWMACRO1/SWSOLU0 geometry preparation is canonically admitted
 by PR1451.
 An isolated input adapter uses exact archived read_macropore, MACROGEOM,

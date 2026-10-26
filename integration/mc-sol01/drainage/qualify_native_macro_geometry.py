@@ -18,7 +18,7 @@ for opt in ['O0','O2']:
  c=out/(opt+'-consumer');c.mkdir();cexe=c/'consumer';flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(c),'-I'+str(c)];run([a.fc,*flags,*providers,'-o',cexe],c,opt+'-consumer-link');cp=run([cexe,g],c,opt+'-consumer-native');results[opt]=dict(geometry_sha256=sha(g.read_bytes()),consumer_stdout_sha256=sha(cp.stdout),retained_rounded_rows=112)
  original=(out/'swap.swp').read_bytes()
  for label,modified in [('macro-off',original.replace(b'SWMACRO = 1',b'SWMACRO = 0')),('solute-on',original.replace(b'SWSOLU = 0',b'SWSOLU = 1')),('bad-diameter',re.sub(rb'(?im)^(\s*DIPOMI\s*=\s*)[\d.]+',rb'\g<1>0.',original))]:
-  assert modified!=original;p=out/(opt+'-'+label+'.swp');p.write_bytes(modified);target=out/(opt+'-'+label+'.nml');run([exe,p,out/'swap.bbc',target],out,opt+'-'+label,False);assert not target.exists()
+  assert modified!=original;p=out/(opt.lower()+'-'+label+'.swp');p.write_bytes(modified);target=out/(opt+'-'+label+'.nml');run([exe,p,out/'swap.bbc',target],out,opt+'-'+label,False);assert not target.exists()
  for label,modified in [('partition',text.replace('fractions=','fractions=2.,',1)),('matrix',re.sub(r'(matrix_fraction=)\s*[-+\d.E]+',r'\g<1>0.',text,count=1))]:
   p=out/(opt+'-corrupt-'+label+'.nml');p.write_text(modified);run([cexe,p],c,opt+'-corrupt-'+label,False)
 assert geometries[0]==geometries[1]and results['O0']==results['O2']

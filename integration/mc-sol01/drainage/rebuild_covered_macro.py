@@ -2,14 +2,14 @@
 import argparse,hashlib,json,re,shutil,subprocess,time,runpy
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[3];sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
-p=argparse.ArgumentParser();p.add_argument('--macro-heat',action='store_true');p.add_argument('--base',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();base=a.base.resolve();out=a.output.resolve();out.mkdir();b=json.loads((base/'build-complete.json').read_text());before=json.loads(json.dumps(b));events=[]
+p=argparse.ArgumentParser();p.add_argument('--macro-heat',action='store_true');p.add_argument('--macro-initial',action='store_true');p.add_argument('--base',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();base=a.base.resolve();out=a.output.resolve();out.mkdir();b=json.loads((base/'build-complete.json').read_text());before=json.loads(json.dumps(b));events=[]
 if not(base/'legacy_swp_original.f90').exists():runpy.run_path(str(ROOT/'tools/solute/legacy_reader_sources.py'))['materialize'](ROOT,base)
 for p,h in b['generated_input_sha256'].items():assert sha(base/p)==h,p
 shutil.copyfile(base/'legacy_swp_original.f90',out/'legacy_swp_original.f90')
 shutil.copytree(base/'historical-input',out/'historical-input')
 for x in base.iterdir():
  if x.is_file()and(x.suffix in ['.o','.mod']or x.name=='libttutil.a'):shutil.copyfile(x,out/x.name)
-changed={p for p,h in b['input_sha256'].items()if sha(ROOT/p)!=h};assert changed and changed<={'src/runtime/mod_macropore_single_column_runtime.f90','src/runtime/mod_fmr_serialized_reference_backend.f90',*(['src/runtime/mod_fmr_restart_state_contract.f90'] if a.macro_heat else [])},changed
+changed={p for p,h in b['input_sha256'].items()if sha(ROOT/p)!=h};assert changed and changed<={'src/runtime/mod_macropore_single_column_runtime.f90','src/runtime/mod_fmr_serialized_reference_backend.f90',*(['src/runtime/mod_fmr_restart_state_contract.f90'] if a.macro_heat else []),*(['src/process/macropore/mod_macropore_dynamic_shrinkage.f90','src/process/macropore/mod_macropore_standard_storage.f90','tools/solute/legacy_reader_sources.py']if a.macro_initial else[])},changed
 source_hashes={p:sha(ROOT/p)for p in b['input_sha256']}
 modules=set();fresh=[];reused=[]
 for e in b['events']:

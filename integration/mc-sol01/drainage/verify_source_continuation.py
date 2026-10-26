@@ -16,6 +16,10 @@ def validate(f):
  assert r['original_macro_Rutter_excluded'] and not r['full_original_Andelst'];assert len(r['events'])==len(r['segments']) and all(e['returncode']==0 for e in r['events'])
  for p,h in r['input_sha256'].items():
   actual=(ROOT/p).read_bytes()
+  if sha(actual)!=h and p in ['src/process/macropore/mod_macropore_dynamic_shrinkage.f90','src/process/macropore/mod_macropore_standard_storage.f90']:
+   assert inherited_result.get('old_trial_profile_source_exact') and inherited_result.get('current_bounded_thermal_predecessor_exact')
+   assert r['original_macro_Rutter_excluded'] and not inherited_result['full481_reexecuted']
+   actual=subprocess.check_output(['git','show','9118712678cd305e9bbe96bc0a1ad8e6a51ada15:'+p],cwd=ROOT)
   if sha(actual)!=h and p=='tools/solute/legacy_reader_sources.py':
    assert inherited_result.get('existing_reader_materializer_exact')
    actual=subprocess.check_output(['git','show','69885373cc8b15e33a5e970aaf189ca70dcb7da4:'+p],cwd=ROOT)

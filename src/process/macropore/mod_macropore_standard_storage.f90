@@ -62,11 +62,14 @@ contains
     do id=1,nd
       bottom=state%icp_bottom_domain(id)
       if(bottom<top_node .or. bottom>n)return
-      if(state%volume_domain_cp(id,bottom)<=1.0e-8_real64)return
       if(any(state%volume_domain_cp(id,top_node:bottom)<0.0_real64))return
       if(any(state%water_domain_cp(id,top_node:bottom)<-1.0e-12_real64))return
 
       total=sum(max(0.0_real64,state%water_domain_cp(id,top_node:bottom)))
+      ! Original tapered IC domains may end at a zero-volume node while dry.
+      ! Empty domains need no division by that tip volume. A wet degenerate
+      ! bottom remains outside this contract and rejects before publication.
+      if(state%volume_domain_cp(id,bottom)<=1.0e-8_real64.and.any(state%water_domain_cp(id,top_node:bottom)/=0.0_real64))return
       capacity=sum(state%volume_domain_cp(id,top_node:bottom))
       if(total>capacity+1.0e-10_real64)return
       total=min(max(total,0.0_real64),capacity)

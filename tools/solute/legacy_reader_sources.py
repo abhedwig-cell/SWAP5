@@ -83,3 +83,43 @@ end module
     path=out/'original_macro_geometry.f90';path.write_bytes(text.encode('latin1'))
     identity=dict(raw_sha256={n:hashlib.sha256(b).hexdigest()for n,b in raw.items()},procedure_sha256={n:hashlib.sha256(p.encode('latin1')).hexdigest()for n,p in procedures},generated_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),original_array_branch='non-multiswap DEC ELSE; exact constants',scope='read_macropore/MACROGEOM/DEFINECOMPART/DiamPolyg only')
     return path,identity
+
+
+def materialize_macro_initial(root,out):
+    """Exact source MACROINIT and default-MvG preparation, never a water step.
+
+    Unselected hydraulic models have fail-closed providers, not approximate
+    science. The SWP adapter admits only analytical model1/no hysteresis/frost.
+    """
+    import re
+    geometry,identity=materialize_macro_geometry(root,out)
+    archive=root/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
+    with tarfile.open(fileobj=io.BytesIO(base64.b64decode(archive.read_bytes())),mode='r:gz')as t:
+        raw={n:t.extractfile('SWAP/'+n).read()for n in ['macropore.f90','MOD_MvG_functions.f90','calcgwl.f90']}
+    def procedure(text,name,kind='subroutine'):
+        pattern=r'^ *'+(r'real\(8\) +'if kind=='function'else'')+kind+' '+name+r'\b.*?^ *end '+kind+' '+name+r'\b'
+        m=re.search(pattern,text,re.M|re.I|re.S);assert m,name;return m.group()
+    g=geometry.read_bytes().decode('latin1')
+    g=g.replace('real(8),allocatable::z(:),dz(:),zbotcp(:)','real(8),allocatable::z(:),dz(:),zbotcp(:),disnod(:)')
+    g=g.replace('integer,allocatable::layer(:)','integer,allocatable::layer(:)\n integer::botcom(maho)=0,nod1lay(maho)=0')
+    g=g.replace('use MOD_arrays,only:maho\n implicit none\n real(8)::ksatfit(maho)=0d0',"""use MOD_arrays,only:maho,macp
+ implicit none
+ real(8)::ksatfit(maho)=0d0,thetsl(maho)=0d0
+ real(8)::thetas(macp)=0d0,thetar(macp)=0d0,theta(macp)=0d0,thetm1(macp)=0d0,h(macp)=0d0,fhyst(macp)=1d0
+ integer::indeks(macp)=-1,swbotb=3,nodgwl=0,bpegwl=0,npegwl=0
+ logical::fluseksatexm(macp)=.false.
+ real(8)::dt=0d0,gwlinp=0d0,pond=0d0,t1900=0d0,gwl=999d0,pegwl=999d0,pegwl_bot=999d0,gwlm1=999d0,gwlconv=1d3""")
+    g=g.replace('integer::swsolu=0','integer::swsolu=0,swhyst=0,swfrost=0,swmacro=1,i_instance=1')
+    prefix,gheader=g.split('module MOD_macropore',1)
+    support=(root/'app/solute_crop/original_macro_hydraulic_context.f90').read_text()
+    mvg=raw['MOD_MvG_functions.f90'].decode('latin1');header=mvg[:mvg.index('   contains')]
+    header=header.replace('public :: calc_cofgen_extra, fill_cofgen, set_cofgen_pointers','public :: calc_cofgen_extra, set_cofgen_pointers').replace('public :: watcon, moiscap, hconduc, dhconduc, prhead','public :: watcon, moiscap, hconduc, prhead')
+    selected=[(name,procedure(mvg,name,kind))for name,kind in [('calc_cofgen_extra','subroutine'),('set_cofgen_pointers','subroutine'),('watcon','function'),('moiscap','function'),('hconduc','function'),('prhead','function')]]
+    hydraulic=header+'\ncontains\n'+'\n'.join(body for _,body in selected)+'\nend module MOD_MvG\n'
+    macro=raw['macropore.f90'].decode('latin1')
+    added=[(name,procedure(macro,name,kind))for name,kind in [('MACROINIT','subroutine'),('PARLANGE','subroutine'),('SHRINKPAR','subroutine'),('SHRINK','function'),('MPVOLUME','subroutine')]]
+    gheader=gheader.replace('end module MOD_macropore','\n'.join(body for _,body in added)+'\nend module MOD_macropore')
+    text=prefix+support+hydraulic+raw['calcgwl.f90'].decode('latin1')+'module MOD_macropore'+gheader
+    path=out/'original_macro_initial.f90';path.write_bytes(text.encode('latin1'))
+    identity.update(initial_raw_sha256={n:hashlib.sha256(b).hexdigest()for n,b in raw.items()},initial_procedure_sha256={n:hashlib.sha256(b.encode('latin1')).hexdigest()for n,b in selected+added},generated_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),scope='read/geometry plus exact MACROINIT, PARLANGE, SHRINKPAR, SHRINK, MPVOLUME and calcgwl; MACROSTATE excluded')
+    return path,identity
