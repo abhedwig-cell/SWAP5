@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Produce bound day 62 checkpoint, then continue original water route toward year boundary and qualify solute and donor comparison.",
+  "next_action": "Continue from bound day 62 checkpoint toward year boundary; qualify solute, donor comparison, affected owner evidence and exact merge.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -395,7 +395,26 @@
         "temporal_rejections": 14240,
         "mass_rejections": 0,
         "day44_to62_max_daily_water_residual_cm": 1.3120355496498703e-12,
-        "description": "Day 62 checkpoint being regenerated from day 44; censored run ends in day 63 and does not supply a final restart."
+        "description": "Censored exploration. Valid bound day 62 restart subsequently reproduced from day 44."
+      },
+      "current_source_day62": {
+        "status": "COMPLETE_WATER_NOT_QUALIFIED",
+        "from_day": 0,
+        "to_day": 62,
+        "restart_days": [
+          4,
+          30,
+          44
+        ],
+        "native_seconds": 323.405133649,
+        "attempts": 82005,
+        "solver_rejections": 105,
+        "temporal_rejections": 41398,
+        "mass_rejections": 0,
+        "day44_to62_max_daily_residual_cm": 1.3120355496498703e-12,
+        "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
+        "day30_to44_exact_replay": "PASS",
+        "recovery_library_file_id": "libfile_d1a3f7aacbac8191bfa263b1ffad779d"
       }
     }
   }
