@@ -1,4 +1,5 @@
 module mod_macropore_standard_rate_adapter
+  use, intrinsic :: ieee_arithmetic,only:ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection
@@ -34,7 +35,7 @@ module mod_macropore_standard_rate_adapter
   public :: derive_matrix_perched_zone_view
   public :: prepare_standard_macropore_rate_request
   public :: prepare_standard_sorptivity_history_request
-  public :: unsaturated_wall_multiplier
+  public :: unsaturated_wall_multiplier,integrate_matrix_wet_wall
 
 contains
 
@@ -43,6 +44,59 @@ contains
     factor=0.0_real64
     if(macro_wet>0.0_real64)factor=max(0.0_real64,macro_wet-matrix_wet)/macro_wet
   end function unsaturated_wall_multiplier
+
+  pure real(real64) function positive_wall(a,b,length) result(wet)
+    real(real64),intent(in)::a,b,length
+    wet=0.0_real64
+    if(a>=0.0_real64.and.b>=0.0_real64)then
+      wet=length
+    else if(a>0.0_real64)then
+      wet=length*a/(a-b)
+    else if(b>0.0_real64)then
+      wet=length*b/(b-a)
+    end if
+  end function
+
+  subroutine integrate_matrix_wet_wall(h,z,dz,macro_wet,matrix_wet,overlap,ok)
+    real(real64),intent(in)::h(:),z(:),dz(:),macro_wet(:,:)
+    real(real64),intent(out)::matrix_wet(:),overlap(:,:)
+    logical,intent(out),optional::ok
+    integer::i,id,n
+    real(real64)::upper,lower,m,hm
+    matrix_wet=0.0_real64;overlap=0.0_real64
+    if(present(ok))ok=.false.
+    n=size(h)
+    if(n<2.or.size(z)/=n.or.size(dz)/=n.or.size(matrix_wet)/=n)return
+    if(size(macro_wet,2)/=n.or.any(shape(overlap)/=shape(macro_wet)))return
+    if(any(.not.ieee_is_finite(h)).or.any(.not.ieee_is_finite(z)).or.any(.not.ieee_is_finite(dz)))return
+    if(any(.not.ieee_is_finite(macro_wet)).or.any(dz<=0.0_real64))return
+    if(any(z(1:n-1)<=z(2:n)).or.any(macro_wet<0.0_real64).or.any(macro_wet>1.0_real64))return
+    do i=1,n
+      if(i>1)then
+        upper=h(i)+(h(i-1)-h(i))*0.5_real64*dz(i)/(z(i-1)-z(i))
+      else
+        upper=h(i)+(h(i)-h(i+1))*0.5_real64*dz(i)/(z(i)-z(i+1))
+      end if
+      if(i<n)then
+        lower=h(i)+(h(i+1)-h(i))*0.5_real64*dz(i)/(z(i)-z(i+1))
+      else
+        lower=h(i)+(h(i)-h(i-1))*0.5_real64*dz(i)/(z(i-1)-z(i))
+      end if
+      matrix_wet(i)=positive_wall(lower,h(i),0.5_real64)+positive_wall(h(i),upper,0.5_real64)
+      do id=1,size(macro_wet,1)
+        m=macro_wet(id,i)
+        if(m<=0.5_real64)then
+          hm=lower+2.0_real64*m*(h(i)-lower)
+          overlap(id,i)=positive_wall(lower,hm,m)
+        else
+          hm=h(i)+2.0_real64*(m-0.5_real64)*(upper-h(i))
+          overlap(id,i)=positive_wall(lower,h(i),0.5_real64)+positive_wall(h(i),hm,m-0.5_real64)
+        end if
+        overlap(id,i)=min(max(overlap(id,i),0.0_real64),min(m,matrix_wet(i)))
+      end do
+    end do
+    if(present(ok))ok=.true.
+  end subroutine
 
   subroutine derive_candidate_matrix_saturated_zone_view(matrix,z,dz,view)
     type(soil_water_physical_state_t),intent(in)::matrix
@@ -345,7 +399,7 @@ contains
 
     perched_view=matrix_perched_zone_view_t()
     perched_view%valid=.true.
-    if(template%perched_detection_enabled)then
+    if(template%perched_detection_enabled.and..not.template%unsaturated%continuous_sorption)then
       call derive_matrix_perched_zone_view(matrix,template%unsaturated%sorptivity%theta_s,z,dz,matrix_view, &
            template%critical_under_saturated_volume_cm,perched_view)
       if(.not.perched_view%valid)return
@@ -441,6 +495,35 @@ contains
       request%rapid%volume_under_drain_cm=0.0_real64
     end if
 
+    if(template%unsaturated%continuous_sorption)then
+      ! Integrate both upper and lower saturated wall intervals. Discrete
+      ! ordinary/perched labels must not omit half a near-saturated cell.
+      allocate(request%matrix_sat%matrix_wet_fraction(n),request%matrix_sat%wet_wall_overlap(nd,n))
+      call integrate_matrix_wet_wall(matrix%pressure_head,z,dz,macro_view%wet_fraction, &
+        request%matrix_sat%matrix_wet_fraction,request%matrix_sat%wet_wall_overlap,ok)
+      if(.not.ok)return
+      request%matrix_sat%matrix_top_saturated_node=1
+      request%matrix_sat%matrix_bottom_saturated_node=n
+      request%matrix_sat%matrix_partial_top_active=.false.
+      request%interflow_sat%matrix_bottom_saturated_node=0
+      request%unsaturated%sorptivity%perched_active=.false.
+      request%unsaturated%sorptivity%matrix_top_saturated_node=n+1
+      request%unsaturated%sorptivity%domain_fraction=template%unsaturated%sorptivity%domain_fraction
+      do id=1,nd
+        do topw=1,n
+          if(request%unsaturated%sorptivity%swmbf==2.and.id==1)then
+            volume_under_drain=1.0_real64-request%matrix_sat%matrix_wet_fraction(topw)
+          else if(macro_view%wet_fraction(id,topw)>0.0_real64)then
+            volume_under_drain=max(0.0_real64,macro_view%wet_fraction(id,topw)- &
+              request%matrix_sat%wet_wall_overlap(id,topw))/macro_view%wet_fraction(id,topw)
+          else
+            volume_under_drain=0.0_real64
+          end if
+          request%unsaturated%sorptivity%domain_fraction(id,topw)= &
+            request%unsaturated%sorptivity%domain_fraction(id,topw)*volume_under_drain
+        end do
+      end do
+    end if
     request%limiter%accepted_storage_cm=sum(accepted_macro%water_domain_cp,dim=2)
     request%limiter%maximum_storage_cm=sum(geometry%volume_domain_cp,dim=2)
     request%limiter%redistribution_capacity_cm=max(0.0_real64, &
