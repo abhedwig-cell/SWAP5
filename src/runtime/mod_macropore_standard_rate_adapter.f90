@@ -327,6 +327,17 @@ contains
     end if
     if(matrix_view%active)then
       request%unsaturated%sorptivity%matrix_top_saturated_node=matrix_view%top_node
+      ! Same wall partition for the ordinary partially saturated top cell.
+      if(template%unsaturated%entry_transition_width_cm>0.0_real64)then
+        topw=matrix_view%top_node
+        if(matrix%pressure_head(topw)<0.0_real64)then
+          volume_under_drain=max(0.0_real64,min(1.0_real64, &
+            (matrix%groundwater_level-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
+          request%unsaturated%sorptivity%matrix_top_saturated_node=topw+1
+          request%unsaturated%sorptivity%domain_fraction(:,topw)= &
+            request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+        end if
+      end if
     else
       request%unsaturated%sorptivity%matrix_top_saturated_node=n+1
     end if
