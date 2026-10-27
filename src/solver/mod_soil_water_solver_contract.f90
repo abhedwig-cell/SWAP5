@@ -78,6 +78,12 @@ module mod_soil_water_solver_contract
      real(real64) :: head_abs_tolerance = 0.0_real64
      real(real64) :: head_rel_tolerance = 0.0_real64
      real(real64) :: ponding_tolerance = 0.0_real64
+     ! Optional intratrial bordered Newton control. The pointer borrows worker
+     ! scratch, never committed physical state. Default node0 preserves the existing numerical behavior.
+     integer :: control_node = 0
+     real(real64), allocatable :: control_sink_direction(:)
+     real(real64), pointer :: control_coefficient => null()
+     real(real64) :: control_balance_tolerance = 0.0_real64
   end type soil_water_numerical_config_t
 
   type, public :: soil_water_top_boundary_result_t
