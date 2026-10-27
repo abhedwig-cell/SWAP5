@@ -10,6 +10,9 @@ module mod_ppa_wu05a6_unsat_absorption_rate
     type(sorptivity_rate_request_t) :: sorptivity
     ! Explicit corrected-source variant. Zero preserves the archived gate.
     real(real64) :: entry_transition_width_cm = 0.0_real64
+    ! Independent corrected-source wall partition and saturation/history limit.
+    ! It never follows implicitly from a numerical Jacobian or entry width.
+    logical :: continuous_sorption = .false.
     real(real64) :: shape_factor = 1.0_real64
     real(real64), allocatable :: pressure_head(:)
     real(real64), allocatable :: elevation(:)
@@ -99,8 +102,8 @@ contains
     sorp_request = request%sorptivity
     sorp_request%flow_reduction = 1.0_real64
     ! Experimental corrected-source route: continuous saturation limit and
-    ! persistent positive sorption history. Zero-width archived route is exact.
-    call evaluate_sorptivity_rate(sorp_request,sorp_result,request%entry_transition_width_cm>0.0_real64)
+    ! persistent positive sorption history. Independent default-off selection.
+    call evaluate_sorptivity_rate(sorp_request,sorp_result,request%continuous_sorption)
     if (.not. sorp_result%valid) return
 
     nd = request%sorptivity%num_domains
