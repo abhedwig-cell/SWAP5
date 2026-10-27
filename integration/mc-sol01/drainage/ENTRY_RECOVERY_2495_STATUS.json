@@ -64,7 +64,6 @@
       "restart_payload_not_compared": "Identity binds changed executable"
     },
     "remaining": [
-      "Replay exact O2 day2 restart with same new binding",
       "Complete O0 native candidate and restart verification",
       "Review limiter-active quasi-Jacobian accuracy and partial-top boundary",
       "Select and execute owning science and preservation gates, qualify actual merge"
@@ -74,6 +73,24 @@
       "5-day and seasonal macro application",
       "Macro solute",
       "Partial-cell physical experiment that regressed at day1.19"
-    ]
+    ],
+    "o2_restart_replay": {
+      "status": "PASS_TESTED_NOT_ADMITTED",
+      "split_day": 2,
+      "end_day": 2.6600000000034925,
+      "source_event_restart": true,
+      "byte_exact": [
+        "input.nml",
+        "input.swp",
+        "macro.nml",
+        "restart.bin",
+        "state.csv",
+        "temperature.csv"
+      ],
+      "day3_budget_row_exact": true,
+      "restart_sha256": "381d958aa84533eab4c25178338ad011565f38d6f438d31b945de734faf45aa1",
+      "binding": "a33082f14d80d1753ed95a02de54ba0ee92a53c98917e24ca5dafce586ddbd98",
+      "foreign_restart": "REJECTED before output using previous executable binding"
+    }
   }
 }
