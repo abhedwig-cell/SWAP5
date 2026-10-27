@@ -77,5 +77,5 @@ program native_perched_jacobian
  if(.not.limited_plus%valid.or..not.limited_minus%valid)error stop 'limited perturbed bundle invalid'
  fd=sum(limited_plus%qexc_to_matrix_rate(:,k)-limited_minus%qexc_to_matrix_rate(:,k))/(2._real64*dh)
  print *, 'LIMITER_PROBE',minval(limited%limiter%inflow_fraction),fd,derivative%total_dqdh_node(k)
- print '(a,2(1x,es24.16e3))','PERCHED_JACOBIAN_PASS',fd,err
+ print '(a)','LIMITER_DIAGNOSTIC_COMPLETED'
 end program
