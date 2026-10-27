@@ -30,5 +30,22 @@
     "executable_sha256": "15d359dc4f4260330d49385313a46b2b8a84f53e05a15cd5efa859ba91c5c145",
     "input_restart_sha256": "393202275e3a051910f6279ffa1d607099887b69e7dc098ebb6cc00b5c1319bb",
     "compiler": "gfortran unavailable; no code change or new qualification"
+  },
+  "followup_probe_20261027_retry": {
+    "stage": "DIAGNOSTIC_NOT_QUALIFIED",
+    "canonical_base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
+    "compiler": "GNU Fortran 13.3.0, Ubuntu; checked O0/O2 drainage drivers and O2 native project build passed",
+    "compiler_recovery_library_file_id": "libfile_dbd09a2d6a588191bee270501d30b871",
+    "source_patch_and_raw_logs": "integration/mc-sol01/drainage/ENTRY_RETRY_DIAGNOSTIC.tar.gz.b64",
+    "start": 2.4950000000026193,
+    "endpoint": 2.514000000002852,
+    "wall_timeout_s": 8,
+    "result": "CENSORED, no completed source window",
+    "macro_runtime_retry_count": 188,
+    "sampled_successful_richards_calls": 703,
+    "measurement_scope": "First 891 logged calls before timeout; does not prove all failure causes. Consecutive observations show 2x accepted-width proposal repeatedly followed by MACRO_RUNTIME_RETRY and half-width converged calls.",
+    "instrumented_executable_sha256": "41c9705076bf1208e05f18c313d0e7fde577b97b5a4a3fc623d9193a87edb84c",
+    "restart_sha256": "393202275e3a051910f6279ffa1d607099887b69e7dc098ebb6cc00b5c1319bb",
+    "next": "Instrument macropore runtime return path and matrix solver diagnostics for retry; isolate first nonconvergence and fix existing coupled solver without relaxing accuracy or balance."
   }
 }
