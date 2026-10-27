@@ -36,6 +36,7 @@ module mod_macropore_single_column_runtime
 
   type, public :: macropore_runtime_policy_t
     logical :: anchored_cauchy_step_ceiling=.false.
+    logical :: perched_jacobian_enabled=.false.
     logical :: enabled=.false.
     logical :: inner_richards_exchange_enabled=.false.
     logical :: source_reduction_retry_enabled=.false.
@@ -289,7 +290,7 @@ contains
              base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
              base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
              geometry_config,shrinkage_config,base_request%base_state%water_content,matrix_area_fraction,top_input_local, &
-             base_request%boundary%bottom_mode)
+             base_request%boundary%bottom_mode,policy%perched_jacobian_enabled)
         if(.not.ok)then
           result%status=MACRO_RUNTIME_FAILED
           return
