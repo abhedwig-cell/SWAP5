@@ -4,7 +4,9 @@ program test_bordered_drain_control
  implicit none
  real(real64)::a(5),b(5),c(5),rhs(5),direction(5),truth(5),delta(5),gamma(5),saved(5),scale,dlambda
  real(real128)::res,term
- integer::n,node,power,i,st,cases
+ integer::n,node,power,i,st,cases,model_index,iteration,accel_cases
+ real(real64)::weight,next_weight,x(2),fixed(2),now(2),previous(2),factor_model
+ real(real64),parameter::models(5)=[-50.0_real64,-2.0_real64,-0.5_real64,0.0_real64,0.25_real64]
  cases=0
  do n=3,5,2
  do node=1,n
@@ -42,6 +44,31 @@ program test_bordered_drain_control
  call reference_constraint_correction(5,a,b,c,direction,0,1.0_real64,delta,dlambda,st)
  call check(st/=0.and.all(delta==saved),'invalid node rejects atomically')
  print *,'BORDERED_DRAIN_CONTROL_PASS',cases
+ accel_cases=0
+ do power=-150,150,150
+  scale=10.0_real64**power
+  do model_index=1,size(models)
+   factor_model=models(model_index);fixed=[1.0_real64,-2.0_real64]*scale
+   x=[-3.0_real64,4.0_real64]*scale;weight=0.5_real64;previous=0
+   do iteration=1,64
+    now=(factor_model-1)*(x-fixed)
+    if(maxval(abs(now/scale))<1e-10_real64)exit
+    next_weight=weight
+    if(iteration>1)then
+     call reference_aitken_weight(weight,previous,now,next_weight,st)
+     call check(st==0.and.next_weight>0.and.next_weight<=1,'finite convex Aitken weight')
+    end if
+    previous=now;x=x+next_weight*now;weight=next_weight
+   end do
+   call check(maxval(abs((x-fixed)/scale))<1e-8_real64,'known continuous carrier fixed point')
+   accel_cases=accel_cases+1
+  end do
+ end do
+ call reference_aitken_weight(0.5_real64,[0.0_real64],[0.0_real64],next_weight,st)
+ call check(st==0.and.next_weight==0.5_real64,'zero residual does not invent acceleration')
+ call reference_aitken_weight(0.5_real64,[1.0_real64],[1.0_real64,2.0_real64],next_weight,st)
+ call check(st/=0,'incompatible acceleration shapes reject')
+ print *,'AITKEN_CARRIER_PASS',accel_cases
 contains
  subroutine check(ok,msg)
  logical,intent(in)::ok
@@ -52,3 +79,4 @@ contains
  end if
  end subroutine
 end program
+
