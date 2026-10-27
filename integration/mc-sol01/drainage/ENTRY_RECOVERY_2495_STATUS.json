@@ -88,5 +88,39 @@
       "day2_budget_exact_to_predecessor": true,
       "note": "Separate O0 source-event restarts; exact whole-run restart payload between O0 and O2 not established. Runs overlapped compilation, timing is not controlled performance comparison."
     }
+  },
+  "partial_cell_experiment_20261027": {
+    "status": "EXPERIMENTAL_UNQUALIFIED_PHYSICAL_FORMULA_CHANGE",
+    "source_commit": "9f7c1994369545c84e56e6c2910e72d3fa97cea8",
+    "description": "For opt-in entry ramp and negative head at groundwater top cell, scale unsaturated domain area by the unsaturated fraction and retain it in absorption range. Historical width-zero route unchanged by this branch.",
+    "reason": "Original rate source changes abruptly across groundwater-cell face, affecting temporal convergence. Proposal is a subcell physical approximation, not demonstrated historical 4.3.1 parity.",
+    "diagnostic_face_probe": {
+      "gwl_cm": [
+        -44.000001,
+        -43.999999
+      ],
+      "top_nodes": [
+        40,
+        39
+      ],
+      "head_node39_cm": -0.7461778932455709,
+      "source_node39_cm_day": [
+        0.002291121479725682,
+        0.0022911203341649446
+      ],
+      "maximum_source_difference_cm_day": 1.903464327303317e-8,
+      "prior_jump_cm_day": 0.002278551051618531
+    },
+    "diagnostic_window": {
+      "from": 2.6600000000034925,
+      "to": 2.743000000002212,
+      "completed": true,
+      "water_residual_cm": 4.2875425432242764e-13,
+      "attempts": 433,
+      "temporal_rejections": 219,
+      "mass_rejections": 0,
+      "scope": "Diagnostic executable read predecessor executable restart via explicit old binding. Evidence only; not production qualification."
+    },
+    "next": "Rebuild without diagnostics; run normally prepared original source, physical mass/temporal comparisons, O0/O2 and exact restart; test zero-width and transition boundaries, limiter-active cases, and explicitly justify new physical approximation before admission."
   }
 }
