@@ -70,7 +70,7 @@ module mod_fmr_serialized_reference_backend
        B111_HYD_BIMODAL_MVG_WCK
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
-       evaluate_b111_profile_groundwater_projection
+       evaluate_b111_profile_groundwater_projection, minimum_pocket_node, evaluate_b111_pocket_contact_limits
   use mod_b110_direct_retention_core, only: acquire_b110_direct_retention_slot
   use mod_b110_direct_retention_provider, only: b110_direct_retention_provider_t, bind_b110_direct_retention_provider
   use mod_b110_dynamic_top_boundary_solver_adapter, only: b110_dynamic_top_boundary_solver_provider_t, &
@@ -4562,8 +4562,8 @@ contains
     logical :: coupled_trial,coupled_engaged
     integer :: coupled_iteration
     real(real64) :: coupled_head_change,coupled_gwl_change
-    logical :: coupled_mixture_active
-    integer :: coupled_used_crossing,coupled_previous_crossing,coupled_critical_node,i_coupled
+    logical :: coupled_mixture_active,coupled_contact_changed
+    integer :: coupled_used_crossing,coupled_previous_crossing,coupled_critical_node,i_coupled,coupled_pocket_first,coupled_pocket_last,coupled_min_node
     real(real64) :: coupled_previous_gwl,coupled_gwl_left,coupled_gwl_right,coupled_effective_gwl
     real(real64) :: coupled_f_left,coupled_f_right,coupled_f,coupled_alpha,coupled_alpha_used,coupled_blend_width
     real(real64),allocatable :: coupled_q_used(:,:),coupled_q_previous(:,:),coupled_q_left(:,:),coupled_q_right(:,:)
@@ -4643,6 +4643,7 @@ contains
     coupled_mixture_active=.false.
     coupled_previous_crossing=-1
     coupled_critical_node=0
+    coupled_pocket_first=0;coupled_pocket_last=0
     coupled_alpha=0.0_real64
     coupled_alpha_used=0.0_real64
     coupled_blend_width=0.0_real64
@@ -5429,7 +5430,18 @@ contains
     end if
 
     if(coupled_trial)then
+      request%numerical%control_node=0
+      if(allocated(request%numerical%control_sink_direction))deallocate(request%numerical%control_sink_direction)
+      nullify(request%numerical%control_coefficient)
       if(coupled_mixture_active)then
+        call evaluate_b111_pocket_contact_limits(self%soil_parameters%z,self%soil_parameters%node_distance, &
+          hydraulic_start%pressure_head,hydraulic_start%ponding_depth,coupled_pocket_first,coupled_pocket_last, &
+          coupled_critical_node,coupled_gwl_left,coupled_gwl_right,context_ok,corrected_macro_positive_film(self))
+        if(.not.context_ok)return
+        call evaluate_contact_drain_rate(self,hydraulic_start,coupled_gwl_left,t1,coupled_q_left,context_ok)
+        if(.not.context_ok)return
+        call evaluate_contact_drain_rate(self,hydraulic_start,coupled_gwl_right,t1,coupled_q_right,context_ok)
+        if(.not.context_ok)return
         self%qdra=coupled_q_left
         coupled_control_value=coupled_alpha
         coupled_sink%base=>self%source_sink
@@ -5785,14 +5797,37 @@ contains
       if(coupled_engaged)then
       coupled_head_change=maxval(abs(hydraulic_end%pressure_head-hydraulic_start%pressure_head))
       coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
+      coupled_contact_changed=.false.
       if(coupled_mixture_active)then
+        if(profile_projection%crossing_lower_node>coupled_pocket_last)then
+          ! A new deeper pocket requires a new graph, not the old constraint.
+          coupled_mixture_active=.false.;coupled_previous_crossing=-1
+          coupled_contact_changed=.true.
+        else
+          coupled_min_node=minimum_pocket_node(hydraulic_end%pressure_head,coupled_pocket_first,coupled_pocket_last)
+          if(coupled_min_node==0)return
+          if(hydraulic_end%pressure_head(coupled_min_node)<-1e-8_real64.and. &
+             coupled_min_node/=coupled_critical_node)then
+            coupled_critical_node=coupled_min_node
+            coupled_contact_changed=.true.
+          end if
+        end if
         coupled_f=hydraulic_end%pressure_head(coupled_critical_node)
         coupled_gwl_change=abs(coupled_f)
         coupled_blend_width=0.0_real64
       else if(coupled_iteration>1.and.coupled_head_change>1e-8_real64)then
         if(profile_projection%crossing_lower_node==coupled_previous_crossing.and. &
            profile_projection%crossing_lower_node/=coupled_used_crossing)then
-          coupled_critical_node=max(profile_projection%crossing_lower_node,coupled_used_crossing)
+          coupled_pocket_first=min(profile_projection%crossing_lower_node,coupled_used_crossing)+1
+          coupled_pocket_last=max(profile_projection%crossing_lower_node,coupled_used_crossing)
+          ! Adjacent interior zero crossings are continuous. Only a disappearing
+          ! pocket has a nonsmooth drainage graph requiring complementarity.
+          if(coupled_pocket_first==1.or.coupled_pocket_last-coupled_pocket_first>=1)then
+          if(profile_projection%crossing_lower_node>coupled_used_crossing)then
+            coupled_critical_node=minimum_pocket_node(hydraulic_end%pressure_head,coupled_pocket_first,coupled_pocket_last)
+          else
+            coupled_critical_node=minimum_pocket_node(hydraulic_start%pressure_head,coupled_pocket_first,coupled_pocket_last)
+          end if
           if(coupled_critical_node>0)then
             coupled_f_left=hydraulic_start%pressure_head(coupled_critical_node)
             coupled_f_right=hydraulic_end%pressure_head(coupled_critical_node)
@@ -5800,15 +5835,16 @@ contains
               coupled_mixture_active=.true.
               coupled_q_left=coupled_q_previous;coupled_q_right=coupled_q_used
               coupled_gwl_left=coupled_previous_gwl;coupled_gwl_right=hydraulic_start%groundwater_level
-              coupled_alpha=max(0.0_real64,min(1.0_real64,-coupled_f_left/(coupled_f_right-coupled_f_left)))
-          if(coupled_alpha<0.1_real64.or.coupled_alpha>0.9_real64)coupled_alpha=0.5_real64
+              ! Fresh limiting curves are oriented deep-to-shallow below.
+              coupled_alpha=0.5_real64
               write(*,*) 'ACTIVE_SET_BEGIN',t0,t1,coupled_critical_node,coupled_f_left,coupled_f_right,coupled_alpha
             end if
+          end if
           end if
         end if
       end if
       if(coupled_head_change>1e-8_real64.or.coupled_gwl_change>1e-8_real64.or. &
-         coupled_blend_width>self%compartment_balance_tolerance)then
+         coupled_blend_width>self%compartment_balance_tolerance.or.coupled_contact_changed)then
         if(coupled_iteration>=64)then
           write(*,*) 'COUPLED_EXHAUSTED',t0,t1,coupled_head_change,coupled_gwl_change,coupled_mixture_active
           return
@@ -6957,6 +6993,29 @@ contains
     if(f%pond_input%implicit_pond_evaporation)return
     ok=.true.
   end function
+
+  subroutine evaluate_contact_drain_rate(self,hydraulic,level,t1,q,ok)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    type(process_hydraulic_view_t),intent(in)::hydraulic
+    real(real64),intent(in)::level,t1
+    real(real64),allocatable,intent(out)::q(:,:)
+    logical,intent(out)::ok
+    type(process_hydraulic_view_t)::limit_view
+    type(fmr_drainage_response_diagnostics_t)::response
+    type(drainage_node_transfer_t)::partition
+    type(drainage_distribution_diagnostics_t)::distribution
+    ok=.false.
+    allocate(q(1,hydraulic%active_nodes));q=0.0_real64
+    limit_view=hydraulic;limit_view%groundwater_level=level
+    call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
+      limit_view,q,response,substep_t1=t1)
+    self%drainage_response_evaluations=self%drainage_response_evaluations+1
+    if(response%status/=FMR_DRAIN_BIND_OK)return
+    call distribute_single_level_signed_divdra(self%drainage_trial_distribution,limit_view,sum(q),partition,distribution)
+    if(distribution%status/=DRAIN_DIST_OK)return
+    q(1,:)=partition%soil_to_drain_rate
+    ok=.true.
+  end subroutine evaluate_contact_drain_rate
 
   pure logical function corrected_macro_positive_film(self) result(enabled)
     class(fmr_serialized_reference_model_t),intent(in)::self
