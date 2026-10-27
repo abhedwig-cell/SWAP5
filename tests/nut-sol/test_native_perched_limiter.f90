@@ -95,5 +95,11 @@ program native_perched_jacobian
  if(abs(fd-derivative%total_dqdh_node(k))>1.e-7_real64)error stop 'multi-node limited Jacobian mismatch'
  print *, 'PERCHED_MULTINODE_LIMITER_PASS',fd,derivative%total_dqdh_node(k)
 
+ deallocate(limited%saturated%qin_interflow_rate)
+ allocate(limited%saturated%qin_interflow_rate(nd-1,n))
+ limited%saturated%qin_interflow_rate=0._real64
+ call evaluate_macropore_exchange_derivative(request,limited,capacity,derivative,.true.)
+ if(derivative%valid)error stop 'malformed limited inflow admitted'
+ print '(a)','PERCHED_LIMITER_INVALID_SHAPE_REJECTED'
  print '(a)','PERCHED_LIMITER_TEST_DONE'
 end program
