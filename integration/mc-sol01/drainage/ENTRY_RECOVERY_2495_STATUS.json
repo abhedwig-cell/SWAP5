@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Qualify the small-stock change with its own executable binding, meaningful storage tests O0/O2, original early trajectory and day 44 continuation; reconcile zero-volume domain behavior before admission.",
+  "next_action": "Use current-source normally prepared result and matching binding to replay and reach day 44; qualify targeted interaction tests, compare SWAP 4.3.1, then promote only exact merge.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -325,19 +325,28 @@
     },
     "small_storage_candidate": {
       "status": "DIAGNOSTIC_ONLY_NOT_QUALIFIED",
-      "source_commit": "6691e604064d21669a6d9fe976739e3e90d8d5cc",
-      "test_commit": "47aabd411a3f69993e96d5b13a3d6fe656136057",
+      "source_commit": "185ffd508db90d5e12300433aca80987593166a5",
+      "test_commit": "1a6fbfce226329a62bc95985f438d73f60dd6a1e",
       "diagnosis": "Domain 5 cell 40 received 5.67e-13 to 8.67e-13 cm across its upper face while start/end storage, outflow and exchange were zero. Prior normalization discarded positive storage <=1e-12 cm in nondegenerate domains; preserving the stock removed the observed trace failure in the following diagnostic.",
       "change": "Preserve positive stock and avoid rounding near-capacity stock up, without altering trace balance thresholds.",
-      "day43_to44_diagnostic": "COMPLETE, 422 attempts, 0 solver, 213 temporal and 0 mass rejections, water residual -1.28785870856518159e-14 cm. Instrumented/manual cross-executable use of old binding is diagnostic only, not qualified restart.",
-      "remaining": "Normal prepared run with new binding and full regression in progress; retain year boundary, solute and owner evidence requirements.",
-      "component_o0_o2": "PASS: tiny stock 8e-13 cm, near-capacity stock and dry stock",
+      "day43_to44_diagnostic": "PASS on current source, 422 attempts, 0 solver, 213 temporal, 0 mass rejection, water residual -1.28785870856518159e-14 cm. Manually reused old binding solely for diagnosis: not a valid release restart.",
+      "remaining": "Normal prepared current-source run and bound restart in progress, no inheritance from predecessor source. Qualify year boundary, solute, donor and owner evidence.",
+      "component_o0_o2": "PASS small 8e-13 stock, near-capacity stock, dry stock and intermediate zero-volume cell",
       "normal_prepared_o2": {
         "status": "CENSORED",
         "start_day": 0,
         "last_completed_source_event_day": 4.546999999998661,
         "timeout_seconds": 120,
         "gate": "Not day 5 completion; no final checkpoint from this run"
+      },
+      "preceding_source_day4": {
+        "status": "COMPLETE_NOT_CURRENT_SOURCE",
+        "native_seconds": 112.747327821,
+        "attempts": 27691,
+        "solver_rejections": 3,
+        "temporal_rejections": 13948,
+        "mass_rejections": 0,
+        "binding": "c15852ca28bdfb04bde5b79dfcea6438f161288720114dbae43259b65254c2bf"
       }
     }
   }
