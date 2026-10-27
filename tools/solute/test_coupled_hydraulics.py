@@ -8,7 +8,7 @@ root=Path(__file__).resolve().parents[2]
 manifest=json.loads((a.physical_build/'build-complete.json').read_text())
 paths=[root/x for x in manifest['input_sha256'] if x.endswith('.f90')]
 modules={name.lower():path for path in paths for name in re.findall(r'^\s*module\s+(\w+)\s*$',path.read_text(),re.M|re.I)}
-for test in ['test_bordered_drain_control','test_integrated_wet_wall','test_joint_wall_exchange']:
+for test in ['test_positive_film_projection','test_bordered_drain_control','test_integrated_wet_wall','test_joint_wall_exchange']:
  ordered=[];seen=set()
  def visit(path):
   if path in seen:return
