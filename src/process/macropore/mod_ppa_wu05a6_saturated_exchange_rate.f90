@@ -77,13 +77,18 @@ contains
          all(self%domain_fraction>=0.0_real64) .and. all(self%cdarcy>=0.0_real64)
   end function saturated_exchange_request_valid
 
-  subroutine evaluate_saturated_exchange(request,result)
+  subroutine evaluate_saturated_exchange(request,result,partial_wall_partition)
     type(saturated_exchange_request_t),intent(in)::request
     type(saturated_exchange_result_t),intent(out)::result
 
+    logical,intent(in),optional::partial_wall_partition
+    logical::partition,partial_top
+    real(real64)::macro_fraction
     integer::id,ic,ic_bottom,nd,n
     real(real64)::hmp,hma,delh,recres,res_hor,res_vrt,res_rad,matrix_fraction,signed_amount
 
+    partition=.false.
+    if(present(partial_wall_partition))partition=partial_wall_partition
     result=saturated_exchange_result_t()
     if(.not.request%valid())return
 
@@ -109,14 +114,29 @@ contains
 
         if(hmp<1.0e-8_real64 .and. delh>0.0_real64)delh=0.0_real64
         if(abs(delh)<1.0e-8_real64)delh=0.0_real64
-        if(hma<0.0_real64)delh=0.0_real64
+        partial_top=ic==request%matrix_top_saturated_node.and.request%matrix_partial_top_active
+        matrix_fraction=1.0_real64
+        if(partial_top)matrix_fraction=max(0.0_real64,min(1.0_real64, &
+          (request%matrix_level-(request%z(ic)-0.5_real64*request%dz(ic)))/request%dz(ic)))
+        ! A partially saturated cell can have a negative centre head while
+        ! its lower wall is saturated. The explicit corrected-source route
+        ! retains Darcy exchange over that wall on both sides of h=0.
+        if(hma<0.0_real64.and..not.(partition.and.partial_top))delh=0.0_real64
 
         signed_amount=0.0_real64
 
         if(delh>0.0_real64)then
           recres=request%cdarcy(id,ic)
-          if(ic==request%top_macro_saturated_node(id)) &
-               recres=request%macro_saturated_fraction(id)*recres
+          if(partition)then
+            macro_fraction=1.0_real64
+            if(ic==request%top_macro_saturated_node(id))macro_fraction=request%macro_saturated_fraction(id)
+            ! Both wet intervals occupy the lower wall: their overlap is
+            ! their minimum, rather than the product of their fractions.
+            recres=min(matrix_fraction,macro_fraction)*recres
+          else
+            if(ic==request%top_macro_saturated_node(id)) &
+                 recres=request%macro_saturated_fraction(id)*recres
+          end if
           signed_amount=-request%flow_reduction*recres*delh*request%step_duration
 
         else if(delh<0.0_real64)then
