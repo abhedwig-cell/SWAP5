@@ -50,6 +50,22 @@
       "diagnostic_executable_sha256": "293d52c5f9cfcb561d15e07e19b7195f605dbcc7ebadd4a8f94e142910b7e9a9",
       "observation": "Repeated full/half temporal rejection with node39 and groundwater projection differences near -44 cm; root cause not established."
     },
-    "input_provenance_note": "Fresh O2 uses retained prepared original input bytes with legacy generator/executable comments from predecessor; binding recomputed against new executable. It is not a fresh preparation by the candidate's normal launcher. Rerun normal preparation for qualification."
+    "input_provenance_note": "Fresh O2 uses retained prepared original input bytes with legacy generator/executable comments from predecessor; binding recomputed against new executable. It is not a fresh preparation by the candidate's normal launcher. Rerun normal preparation for qualification.",
+    "normally_prepared_o2": {
+      "status": "COMPLETE_TESTED_NOT_QUALIFIED",
+      "end_day": 2.6600000000034925,
+      "simulation_seconds": 48.705,
+      "attempts": 11499,
+      "solver_rejections": 3,
+      "temporal_rejections": 5824,
+      "mass_rejections": 0,
+      "water_residual_day3_cm": -1.332409876875218e-12,
+      "prep_binding": "e3893a56eb52e508371d6177c7c5d1ec1b93edeebeca0aa0e7e4cd0bddf4535e",
+      "recovery_library_file_id": "libfile_4697b3a120048191bfbe65f49e15b74a",
+      "recovery_sha256": "72a88aab63fa0e4a385318bb5a28d84f2a2383a9e215f3936c0a2a231b8baa1c",
+      "first_two_days_water_budget_identical_to_admitted_predecessor": true,
+      "split_candidate_restart_final_state_and_temperature_exact": true,
+      "qualification_limit": "Full source-event restart replay bound to same prepared input not yet compared; O0/O2 end-to-end candidate full run not completed. No SWAP431 end-to-end parity or solute scope claimed."
+    }
   }
 }
