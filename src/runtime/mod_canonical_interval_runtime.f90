@@ -60,7 +60,7 @@ contains
     end if
 
     if (config%retain_accepted_step_proposal) then
-      if (present(target_selector) .or. config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
+      if (config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
         result%status = CANONICAL_STATUS_INVALID_REQUEST
         return
       end if
@@ -92,6 +92,8 @@ contains
       selector_valid = .true.
       if (present(target_selector)) then
         call target_selector(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)
+        ! The selector owns boundary validity; accepted-error history can only tighten its cap.
+        if (proposal_active) transaction_t1 = min(transaction_t1, cursor + proposed_dt)
       end if
       tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
       ! Choose the exact endpoint before execution, never relabel a solved trace.
