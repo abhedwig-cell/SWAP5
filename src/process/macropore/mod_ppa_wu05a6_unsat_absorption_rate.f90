@@ -98,7 +98,9 @@ contains
 
     sorp_request = request%sorptivity
     sorp_request%flow_reduction = 1.0_real64
-    call evaluate_sorptivity_rate(sorp_request,sorp_result)
+    ! Experimental corrected-source route: continuous saturation limit and
+    ! persistent positive sorption history. Zero-width archived route is exact.
+    call evaluate_sorptivity_rate(sorp_request,sorp_result,request%entry_transition_width_cm>0.0_real64)
     if (.not. sorp_result%valid) return
 
     nd = request%sorptivity%num_domains
