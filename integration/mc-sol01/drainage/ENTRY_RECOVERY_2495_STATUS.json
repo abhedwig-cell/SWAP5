@@ -1,0 +1,22 @@
+{
+  "baseline": "e7169f06e54b8f3406f1f5b69d6b22be73d5879b",
+  "stage": "DIAGNOSTIC_RECOVERY_COMPLETE_NOT_SCOPE_ADMISSION",
+  "qualified": false,
+  "canonically_admitted": false,
+  "recovered_from_pr": 1455,
+  "clock": 2.4950000000026193,
+  "seconds": 7.085465759000044,
+  "water_max_cm": 1.745131816832668e-14,
+  "binding": "c734f831902e3df27a99761b0882ab94810f477855b2a860b11c2f4992d3adde",
+  "checkpoint_member": "restart.bin",
+  "executable_recovery": "ENTRY_RAMP_EVIDENCE.tar.xz.b64:recovery/native_water_O2",
+  "evidence": {
+    "path": "integration/mc-sol01/drainage/ENTRY_RECOVERY_2495_EVIDENCE.tar.xz.b64",
+    "sha256": "81534ec5394070ef6447d83580c87f5d7d9ae5af07e7fdd32285a7da8bda9c89",
+    "bytes": 115560,
+    "members": 13
+  },
+  "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
+  "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
+  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion"
+}
