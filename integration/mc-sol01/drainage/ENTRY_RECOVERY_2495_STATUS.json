@@ -131,6 +131,18 @@
       "candidate_diagonal": -0.07393411494952053,
       "interpretation": "In this constructed one-node capped inflow case the cap fraction changes with pressure. The proposed term omits that dependence, so it is a quasi-Jacobian, not the exact derivative.",
       "next": "Derive and test the active limiter contribution, including multi-node cross-dependence, or explicitly constrain and substantiate a bounded quasi-Newton policy. Do not promote to general exact Jacobian."
+    },
+    "o0_disabled_split": {
+      "status": "COMPLETE_TESTED_NOT_ADMITTED",
+      "split_day": 1,
+      "end_day": 2,
+      "predecessor_byte_exact": [
+        "state.csv",
+        "temperature.csv"
+      ],
+      "day2_budget_row_exact": true,
+      "day2_progress_rows_exact": true,
+      "source_event_binding": "O0 option-off executable and normal input; no cross-executable restart identity claim"
     }
   }
 }
