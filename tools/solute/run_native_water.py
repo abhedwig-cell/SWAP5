@@ -5,10 +5,11 @@ from pathlib import Path
 from run_project import prepare
 from run_crop_daily import check_reader
 ROOT=Path(__file__).resolve().parents[2];sha=lambda b:hashlib.sha256(b).hexdigest()
-p=argparse.ArgumentParser();p.add_argument('swp',type=Path);p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--restart',type=Path);p.add_argument('--anchored-cauchy',action='store_true');p.add_argument('--perched-jacobian',action='store_true');p.add_argument('--continuous-sorption',action='store_true');p.add_argument('--entry-ramp-width-cm',type=float,default=0.);p.add_argument('--stop-after',type=int,default=1);p.add_argument('--stop-at-time',type=float);p.add_argument('--temporal-tolerance',type=float,default=.01);p.add_argument('--timeout-seconds',type=float,default=120);a=p.parse_args()
+p=argparse.ArgumentParser();p.add_argument('swp',type=Path);p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--restart',type=Path);p.add_argument('--anchored-cauchy',action='store_true');p.add_argument('--perched-jacobian',action='store_true');p.add_argument('--continuous-sorption',action='store_true');p.add_argument('--coupled-hydraulics',action='store_true');p.add_argument('--entry-ramp-width-cm',type=float,default=0.);p.add_argument('--stop-after',type=int,default=1);p.add_argument('--stop-at-time',type=float);p.add_argument('--temporal-tolerance',type=float,default=.01);p.add_argument('--timeout-seconds',type=float,default=120);a=p.parse_args()
 assert a.entry_ramp_width_cm==0. or(a.anchored_cauchy and 0.<a.entry_ramp_width_cm<=1e-3),'entry width range/policy'
 assert not a.perched_jacobian or (a.anchored_cauchy and a.entry_ramp_width_cm>0.),'perched Jacobian requires bounded native route'
 assert not a.continuous_sorption or (a.anchored_cauchy and a.entry_ramp_width_cm>0.),'corrected sorption requires bounded native route'
+assert not a.coupled_hydraulics or a.continuous_sorption,'coupled hydraulics requires current wall route'
 out=a.output.resolve()
 if out.exists():raise FileExistsError(out)
 bundle=json.loads((a.bundle/'bundle.json').read_bytes());assert bundle.get('native_water')
@@ -17,6 +18,7 @@ if a.anchored_cauchy:document+='! native_execution_policy=anchored-cauchy\n'
 if a.entry_ramp_width_cm:document+='! corrected_source_entry_transition_width_cm='+repr(a.entry_ramp_width_cm)+'\n'
 if a.perched_jacobian:document+='! native_numerical_policy=perched-jacobian\n'
 if a.continuous_sorption:document+='! corrected_source_sorption=continuous-partial-wall-and-saturation-history-v1\n'
+if a.coupled_hydraulics:document+='! native_numerical_policy=coupled-hydraulics-bordered-drain-contact-v1\n'
 macro_reader=Path(bundle['macro_reader']);check_reader(macro_reader);assert sha(macro_reader.read_bytes())==bundle['executable_sha256'][str(macro_reader)]
 # Exact raw companions are already bound by the existing project preparation.
 def original(name):
@@ -42,6 +44,7 @@ with tempfile.TemporaryDirectory(prefix='swap5-native-water-',dir=out.parent)as 
  if a.entry_ramp_width_cm:cmd.append(repr(a.entry_ramp_width_cm))
  if a.perched_jacobian or a.continuous_sorption:cmd.append('perched-jacobian'if a.perched_jacobian else'historical-jacobian')
  if a.continuous_sorption:cmd.append('continuous-sorption')
+ if a.coupled_hydraulics:cmd.append('coupled-hydraulics')
  if ok:ok=run(cmd,'native',a.timeout_seconds)
  record=dict(status='COMPLETE'if ok else('CENSORED'if events[-1]['censored']else'FAILED'),route='ORIGINAL_SWSOLU0_MACRO_RUTTER_HEAT',events=events,binding_sha256=binding,stop_after=a.stop_after,preparation=audit,compiler_and_source_bundle=bundle,qualified=False,canonically_admitted=False,files={p.name:sha(p.read_bytes())for p in stage.iterdir()if p.is_file()})
  (stage/'manifest.json').write_text(json.dumps(record,indent=2)+'\n');shutil.copytree(stage,out)
