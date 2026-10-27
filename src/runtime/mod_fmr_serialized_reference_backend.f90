@@ -4857,7 +4857,7 @@ contains
           if (low3_physical%active_nodes /= self%soil_parameters%active_nodes .or. &
               .not. allocated(low3_physical%pressure_head)) return
           call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection)
+               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
         class default
           return
         end select
@@ -5343,7 +5343,7 @@ contains
       ! Numerical-only outer consistency iteration. All repeated solves below
       ! retain request%base_state and the accepted macro/history origin.
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-        hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection)
+        hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
       if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
       hydraulic_start%groundwater_level=profile_projection%level_cm
       coupled_used_crossing=profile_projection%crossing_lower_node
@@ -5372,7 +5372,7 @@ contains
       drainage_level_present=.true.
       if(allocated(self%drainage_trial_distribution))then
         call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-          hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection)
+          hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
         if(.not.profile_projection%valid)return
         drainage_level_present=profile_projection%level_present
         if(drainage_level_present)then
@@ -5775,7 +5775,7 @@ contains
       call build_process_hydraulic_view(solve_result%candidate_state,hydraulic_end,hydraulic_view_ok)
       if(.not.hydraulic_view_ok)return
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-        hydraulic_end%pressure_head,hydraulic_end%ponding_depth,profile_projection)
+        hydraulic_end%pressure_head,hydraulic_end%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
       if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
       hydraulic_end%groundwater_level=profile_projection%level_cm
       ! Keep the established time-discrete process evaluation on smooth steps.
@@ -5898,7 +5898,7 @@ contains
     end if
     if(allocated(self%drainage_trial_distribution))then
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-        solve_result%candidate_state%pressure_head,solve_result%candidate_state%ponding_depth,profile_projection)
+        solve_result%candidate_state%pressure_head,solve_result%candidate_state%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
       if(.not.profile_projection%valid)return
       ! CALCGWL's historical absent diagnostic sentinel; never passed to the
       ! response law. The next trial again evaluates the typed profile view.
@@ -6958,6 +6958,13 @@ contains
     ok=.true.
   end function
 
+  pure logical function corrected_macro_positive_film(self) result(enabled)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    enabled=.false.
+    if(.not.self%macropore_active.or..not.allocated(self%macropore_config))return
+    enabled=self%macropore_config%rate_template%unsaturated%continuous_sorption
+  end function corrected_macro_positive_film
+
   subroutine diagnose_macro_step(t0,t1,status_code)
     real(real64),intent(in)::t0,t1
     integer,intent(in)::status_code
@@ -7301,7 +7308,7 @@ contains
       real(real64)::lumped(1,state%active_nodes)
       ok=.false.;allocate(q(state%active_nodes));q=0.0_real64
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-        state%pressure_head,state%ponding_depth,projection)
+        state%pressure_head,state%ponding_depth,projection,positive_pond_surface=corrected_macro_positive_film(self))
       if(.not.projection%valid)return
       if(projection%level_present)then
         view%active_nodes=state%active_nodes;view%pressure_head=state%pressure_head;view%water_content=state%water_content
