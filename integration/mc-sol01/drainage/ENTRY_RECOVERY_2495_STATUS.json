@@ -35,6 +35,20 @@
     "recovery_library_file_id": "libfile_1859b104b0e48191bb91cab2bf61331c",
     "recovery_sha256": "a3c1084f8b995ce422e09fcd79d8d994cbc6c0b4370f61e13cef940cb3fe9d87",
     "limits": "Not independently qualified for limiter-active or partially saturated top derivative; original 4.3.1 comparison and O0/O2 complete application and restart replay not established; no admission. Numerical option currently tied to entry width pending contract review.",
-    "next": "Use bound day2.66 restart to isolate next slowdown near day2.695; complete affected science and preservation gates before canonical merge."
+    "next": "Investigate groundwater-level and node39 full/half differences near day2.695; preserve temporal accuracy and confirm diagnostic versus governing-state coupling. Complete science, policy contract and preservation gates before merge.",
+    "next_window_diagnostic": {
+      "status": "CENSORED_NOT_QUALIFIED",
+      "start_day": 2.6600000000034925,
+      "target_day": 2.743000000002212,
+      "wall_timeout_s": 12,
+      "progress_last_observation_day": 2.6950618515004843,
+      "temporal_samples": 2249,
+      "temporal_samples_above_0_01": 1133,
+      "reported_macro_solver_retries": 0,
+      "scope": "Diagnostic executable read the candidate restart with the earlier binding; evidence only, no accepted endpoint or restart qualification",
+      "evidence": "integration/mc-sol01/drainage/PERCHED_NEXT_WINDOW_EVIDENCE.tar.gz.b64",
+      "diagnostic_executable_sha256": "293d52c5f9cfcb561d15e07e19b7195f605dbcc7ebadd4a8f94e142910b7e9a9",
+      "observation": "Repeated full/half temporal rejection with node39 and groundwater projection differences near -44 cm; root cause not established."
+    }
   }
 }
