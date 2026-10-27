@@ -330,7 +330,7 @@
       "diagnosis": "Domain 5 cell 40 received 5.67e-13 to 8.67e-13 cm across its upper face while start/end storage, outflow and exchange were zero. Prior normalization discarded positive storage <=1e-12 cm in nondegenerate domains; preserving the stock removed the observed trace failure in the following diagnostic.",
       "change": "Preserve positive stock and avoid rounding near-capacity stock up, without altering trace balance thresholds.",
       "day43_to44_diagnostic": "PASS on current source, 422 attempts, 0 solver, 213 temporal, 0 mass rejection, water residual -1.28785870856518159e-14 cm. Manually reused old binding solely for diagnosis: not a valid release restart.",
-      "remaining": "Normal prepared current-source run and bound restart in progress, no inheritance from predecessor source. Qualify year boundary, solute, donor and owner evidence.",
+      "remaining": "Continue with same bound executable from day 4 to day 30 and beyond day 44, qualify restart replay, solute, donor and owner evidence.",
       "component_o0_o2": "PASS small 8e-13 stock, near-capacity stock, dry stock and intermediate zero-volume cell",
       "normal_prepared_o2": {
         "status": "CENSORED",
@@ -347,6 +347,23 @@
         "temporal_rejections": 13948,
         "mass_rejections": 0,
         "binding": "c15852ca28bdfb04bde5b79dfcea6438f161288720114dbae43259b65254c2bf"
+      },
+      "current_source_day4": {
+        "status": "COMPLETE_NOT_QUALIFIED",
+        "native_seconds": 113.216818144,
+        "attempts": 27691,
+        "solver_rejections": 3,
+        "temporal_rejections": 13948,
+        "mass_rejections": 0,
+        "water_residual_day4_cm": -3.6685932069957516e-14,
+        "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
+        "physical_equality_to_preceding_stock_source": [
+          "budget.csv",
+          "state.csv",
+          "temperature.csv",
+          "progress.csv"
+        ],
+        "recovery_library_file_id": "libfile_a00a43d471b8819185a4bf47841665fa"
       }
     }
   }
