@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Continue from bound day 62 checkpoint toward year boundary; qualify solute, donor comparison, affected owner evidence and exact merge.",
+  "next_action": "Using bound day 62 checkpoint diagnose high temporal rejection and source-event cost around days 62–65; preserve error gates, then continue toward year boundary and qualify coupled solute and donor comparison.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -415,6 +415,18 @@
         "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
         "day30_to44_exact_replay": "PASS",
         "recovery_library_file_id": "libfile_d1a3f7aacbac8191bfa263b1ffad779d"
+      },
+      "after_day62_censored": {
+        "from_day": 62,
+        "last_complete_day": 64,
+        "last_complete_source_event_day": 64.77300000000105,
+        "native_timeout_seconds": 100,
+        "attempts": 22508,
+        "solver_rejections": 11,
+        "temporal_rejections": 11372,
+        "mass_rejections": 0,
+        "max_complete_daily_water_residual_cm": 7.016210529231515e-13,
+        "restart_available": false
       }
     }
   }
