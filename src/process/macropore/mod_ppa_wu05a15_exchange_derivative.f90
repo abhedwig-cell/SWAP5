@@ -30,7 +30,7 @@ contains
 
     integer::nd,n,id,ic,ic_top,ic_bottom
     logical::perched_enabled
-    real(real64)::qout,denom,hmp,delh,qexc,ddelh
+    real(real64)::qout,denom,hmp,delh,qexc,ddelh,inflow_total,local_inflow,limiter_factor
 
     result=macropore_exchange_derivative_result_t()
     perched_enabled=.false.
@@ -137,7 +137,31 @@ contains
           if(request%interflow_sat%matrix_head(ic)<0.0_real64.or. &
              delh>=-HEAD_DIFFERENCE_THRESHOLD)cycle
           if(rates%qin_interflow_rate(id,ic)<=0.0_real64)cycle
-          result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+rates%qin_interflow_rate(id,ic)/delh
+          limiter_factor=1.0_real64
+          if(allocated(rates%limiter%inflow_fraction))then
+            if(size(rates%limiter%inflow_fraction)/=nd)return
+            if(rates%limiter%inflow_fraction(id)<1.0_real64)then
+              ! A capped domain shares its available storage among all
+              ! inflows. Differentiate this factor for a local interior
+              ! perched inflow, retaining the existing diagonal solver.
+              ! Cases with another local exchange remain on the prior
+              ! Jacobian until their coupled derivative is qualified.
+              if(rates%qout_unsat_rate(id,ic)/=0.0_real64.or.rates%qout_sat_rate(id,ic)/=0.0_real64.or. &
+                 rates%qin_matrix_sat_rate(id,ic)/=0.0_real64)cycle
+              if(.not.allocated(rates%saturated%qin_interflow_rate).or. &
+                 .not.allocated(rates%saturated%qin_matrix_sat_rate))return
+              if(.not.allocated(request%limiter%potential_top_vertical_cm).or. &
+                 .not.allocated(request%limiter%potential_top_lateral_cm))return
+              inflow_total=request%limiter%potential_top_vertical_cm(id)+ &
+                request%limiter%potential_top_lateral_cm(id)+request%interflow_sat%step_duration * &
+                (sum(rates%saturated%qin_interflow_rate(id,:))+sum(rates%saturated%qin_matrix_sat_rate(id,:)))
+              local_inflow=request%interflow_sat%step_duration*rates%saturated%qin_interflow_rate(id,ic)
+              if(.not.ieee_is_finite(inflow_total).or.inflow_total<=0.0_real64)return
+              limiter_factor=max(0.0_real64,min(1.0_real64,1.0_real64-local_inflow/inflow_total))
+            end if
+          end if
+          result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+ &
+            limiter_factor*rates%qin_interflow_rate(id,ic)/delh
           result%perched_derivative_included=.true.
         end do
       end do
