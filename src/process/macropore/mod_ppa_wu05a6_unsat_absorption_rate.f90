@@ -41,6 +41,13 @@ module mod_ppa_wu05a6_unsat_absorption_rate
 contains
 
   pure logical function unsat_request_valid(self) result(ok)
+    class(unsat_absorption_request_t),intent(in)::self
+    ok=self%sorptivity%valid()
+    if(.not.ok)return
+    ok=unsat_outer_fields_valid(self)
+  end function unsat_request_valid
+
+  pure logical function unsat_outer_fields_valid(self) result(ok)
     class(unsat_absorption_request_t), intent(in) :: self
     integer :: n, nd
 
@@ -48,7 +55,9 @@ contains
     if(.not.ok)return
     ok=self%entry_transition_width_cm>=0.0_real64.and.self%entry_transition_width_cm<=1.e-3_real64
     if(.not.ok)return
-    ok = self%sorptivity%valid()
+    ! The absorption owner uses unit-flow sorption internally. Validate the
+    ! original flow reduction here before that scalar is overridden in the copy.
+    ok = self%sorptivity%flow_reduction>=0.0_real64
     if (.not. ok) return
     n = self%sorptivity%num_nodes
     nd = self%sorptivity%num_domains
@@ -63,7 +72,7 @@ contains
     if (.not. ok) return
     ok = all(self%conductivity >= 0.0_real64) .and. all(self%sorp_fac_parallel >= 0.0_real64) .and. &
          all(self%sorp_fac_parallel <= 1.0_real64)
-  end function unsat_request_valid
+  end function unsat_outer_fields_valid
 
   pure subroutine evaluate_entry_darcy_head_difference(head,entry,hmp,width,delh,derivative)
     real(real64),intent(in)::head,entry,hmp,width
@@ -97,7 +106,9 @@ contains
     logical :: excluded_by_perched
 
     result = unsat_absorption_result_t()
-    if (.not. request%valid()) return
+    ! Validate absorption-specific fields first; the unchanged sorptivity leaf
+    ! validates all remaining fields once, before returning any physical rate.
+    if (.not. unsat_outer_fields_valid(request)) return
 
     sorp_request = request%sorptivity
     sorp_request%flow_reduction = 1.0_real64
