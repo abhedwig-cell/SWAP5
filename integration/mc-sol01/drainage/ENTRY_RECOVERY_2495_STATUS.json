@@ -18,5 +18,17 @@
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
   "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
-  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion"
+  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
+  "followup_probe_20261027": {
+    "base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
+    "start_clock": 2.4950000000026193,
+    "target_clock": 2.514000000002852,
+    "wall_timeout_seconds": 15,
+    "result": "CENSORED; no completed source window or new restart",
+    "diagnostic_log": "integration/mc-sol01/drainage/ENTRY_RECOVERY_2495_DIAGNOSTIC.log",
+    "diagnostic": "SWAP5_DIAG_MACRO_TEMPORAL=1; last sampled solver call 1152 at t0=2.4984766845729744, t1=2.4984790039089120; sampled solver status 1 is converged; full/half temporal differences observed; cause not established",
+    "executable_sha256": "15d359dc4f4260330d49385313a46b2b8a84f53e05a15cd5efa859ba91c5c145",
+    "input_restart_sha256": "393202275e3a051910f6279ffa1d607099887b69e7dc098ebb6cc00b5c1319bb",
+    "compiler": "gfortran unavailable; no code change or new qualification"
+  }
 }
