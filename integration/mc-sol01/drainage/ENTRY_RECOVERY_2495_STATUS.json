@@ -733,6 +733,24 @@
       "No intermediate physical commit or duplicate time integration",
       "Final source/flux/ledger/trace use one final coefficient set",
       "Physical option remains separate from numerical policy"
-    ]
+    ],
+    "checkpoint_source_commit": "e3d754da7636d930277fd720c3bb924239bd5c3a",
+    "branch": "work/closure-coupled-trial",
+    "implementation": "Independent default-off numerical policy. Immutable-origin hydraulic view iteration, up to64 iterations. At a detected two-cycle, bordered Richards correction pins the switching node to zero and solves a convex coefficient between the two original DRAMET3 drainage vectors. Residual is refreshed after every coefficient change; actual final vector feeds ledger and diagnostics. Per-cell linear-pressure wet wall integration replaces the prior top-only approximation only under the unqualified continuous-sorption physical option.",
+    "scientific_limit": "The contact mixture is a proposed weak interpretation of the discontinuous historical projection/drainage law. It is not proved pointwise historical equivalence and requires explicit scientific admission. Ordinary default route unchanged; no tolerance relaxation. No production merge.",
+    "focused_tests": {
+      "bordered_correction": "O0/O2 PASS24 each; known solutions across1e-12,1,1e12 scales; real128 residual; singular/invalid-node atomic rejection",
+      "wet_wall": "O0/O2 PASS; hydrostatic exactness, vanishing dry-pocket continuity, overlap, dry/wet, invalid input"
+    },
+    "diagnostic_65": {
+      "source": "audited-stage, before final policy/helper refactor",
+      "start": 64.89800000000105,
+      "end": 65,
+      "seconds": 15.871995527,
+      "water_residual_cm": -4.258607355644983e-13,
+      "scope": "Mixed prior-source checkpoint; diagnostic only, not a final-source prefix or seasonal gate"
+    },
+    "excluded_evidence": "stage-state65, bordered-error65 and final-discriminator65 copied wrong provider paths. Excluded; not source-qualified. audited-stage used verified provider paths.",
+    "next_action": "Complete cold O0/O2 final-source builds, fresh original-input run and exact restart; no reuse of prior physical source prefix as final qualification."
   }
 }
