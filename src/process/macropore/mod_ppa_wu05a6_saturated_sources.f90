@@ -30,7 +30,8 @@ contains
     partition=.false.
     if(present(partial_wall_partition))partition=partial_wall_partition
     result = saturated_sources_result_t()
-    if (.not. interflow_request%valid() .or. .not. matrix_request%valid()) return
+    ! Each leaf validates its complete request before any rate calculation.
+    ! Do not rescan both requests here; invalid leaf results reject assembly below.
     if (interflow_request%num_domains /= matrix_request%num_domains .or. &
         interflow_request%num_nodes /= matrix_request%num_nodes) return
 
