@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Continue original application from qualified-by-binding local day 3 checkpoint toward day 5; diagnose high temporal rejection and qualify partial-cell transition without the day 1.19 regression.",
+  "next_action": "Continue from day 5 restart toward day 30 while verifying replay from day 3, solute, donor comparison and high temporal rejection.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -247,6 +247,25 @@
           "water_residual_2748_to_3_cm": -6.944445019030354e-14,
           "recovery_library_file_id": "libfile_489c4ef992f08191a4161c7005f12c25",
           "limits": "The first 2.66-day uninterrupted result and the later split segments were individually completed. Continuous whole-period day 3 replay, solute and donor parity not qualified."
+        },
+        "day5_segmented": {
+          "status": "COMPLETE_WATER_NOT_GATE_ADMISSION",
+          "to_day": 5,
+          "from_day": 0,
+          "source_restart_days": [
+            2.66,
+            2.748,
+            3
+          ],
+          "native_seconds_total": 150.350925253,
+          "attempts": 34754,
+          "solver_rejections": 18,
+          "temporal_rejections": 17505,
+          "mass_rejections": 0,
+          "water_residual_day4_cm": -3.6685932069957516e-14,
+          "water_residual_day5_cm": -3.094365041977909e-13,
+          "recovery_library_file_id": "libfile_87c57b4d8f888191b75a2e16b938a523",
+          "limitations": "Original prepared water route. Physical solute balance, SWAP 4.3.1 differences and replay of day 5 not yet established; no gate A admission."
         }
       },
       "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
