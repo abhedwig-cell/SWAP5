@@ -45,9 +45,22 @@ module mod_ppa_wu05a6_sorptivity_rate
     logical, allocatable :: end_event(:,:)
   end type sorptivity_rate_result_t
 
-  public :: evaluate_sorptivity_rate
+  public :: evaluate_sorptivity_rate, evaluate_saturation_wall_gate
 
 contains
+
+  pure subroutine evaluate_saturation_wall_gate(deficit,gate,slope)
+    real(real64),intent(in)::deficit
+    real(real64),intent(out)::gate,slope
+    real(real64)::x
+    gate=1.0_real64;slope=0.0_real64
+    if(deficit>=CRIT_SAT_DEF)return
+    gate=0.0_real64
+    if(deficit<=0.0_real64)return
+    x=deficit/CRIT_SAT_DEF
+    gate=x*x*(3.0_real64-2.0_real64*x)
+    slope=6.0_real64*x*(1.0_real64-x)/CRIT_SAT_DEF
+  end subroutine evaluate_saturation_wall_gate
 
   pure logical function sorptivity_request_valid(self) result(ok)
     class(sorptivity_rate_request_t), intent(in) :: self
@@ -91,7 +104,7 @@ contains
 
     logical, intent(in), optional :: continuous_saturation
     logical :: continuous
-    real(real64) :: deficit_floor, event_rate_floor, time_increment
+    real(real64) :: deficit_floor, event_rate_floor, time_increment,gate,gate_slope
     integer :: id, ic, ic_top, ic_bottom, n, nd
     real(real64) :: sat_def, time, theta_ref, sorp_seed, active, amount
     logical :: excluded_by_perched
@@ -168,6 +181,13 @@ contains
         end if
 
         amount = min(Q_SORP_MAX*request%step_duration*request%dz(ic), max(0.0_real64,amount))
+        ! Historical positive-rate history may carry theta_ref above theta_s.
+        ! Therefore removing the deficit cutoff alone does not give a zero
+        ! saturation limit. Use a C1 gate only inside its original 1e-8 range.
+        if(continuous)then
+          call evaluate_saturation_wall_gate(sat_def,gate,gate_slope)
+          amount=amount*gate
+        end if
         if (amount/request%step_duration > event_rate_floor) result%end_event(id,ic) = .false.
 
         result%amount_cm(id,ic) = request%flow_reduction*amount
