@@ -196,6 +196,20 @@
         "recovery_library_file_id": "libfile_c72fdc6bc4e88191befe4ac91114c7dc",
         "recovery_sha256": "8ed0c674fdcd7c83e9b52e924d5fa40ad8d04d3c6a20b6421a367ffad66136fa"
       }
+    },
+    "guarded_limiter_postimage": {
+      "status": "IN_PROGRESS_NOT_QUALIFIED",
+      "source_commit": "ac12d55b0a7d39417ec1122451bdae01b5dda8c9",
+      "guard": "Reject invalid capped input sizes, limiter fractions, nonfinite or inconsistent local inflow before evaluating the local diagonal correction.",
+      "tests": {
+        "o0_o2": "PASS for existing entry ramp, uncapped derivative, single- and two-node capped derivative and malformed saturated input shape",
+        "single_node_fd": 0,
+        "single_node_analytic": 0,
+        "two_node_fd": -0.026885132710374737,
+        "two_node_analytic": -0.026885132708916563
+      },
+      "native": "Normal input O2 and split O0 runs in progress; earlier source postimage results are inherited only as prior evidence, not current PASS.",
+      "remaining": "Check independently prepared full and split application O2, O0, boundary/limiter interactions, other invalid arrays, owning qualification, exact merge postimage."
     }
   }
 }
