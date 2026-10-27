@@ -329,9 +329,16 @@
       "test_commit": "47aabd411a3f69993e96d5b13a3d6fe656136057",
       "diagnosis": "Domain 5 cell 40 received 5.67e-13 to 8.67e-13 cm across its upper face while start/end storage, outflow and exchange were zero. Prior normalization discarded positive storage <=1e-12 cm in nondegenerate domains; preserving the stock removed the observed trace failure in the following diagnostic.",
       "change": "Preserve positive stock and avoid rounding near-capacity stock up, without altering trace balance thresholds.",
-      "component_o2": "PASS: tiny stock 8e-13 cm, near-capacity stock and dry stock",
       "day43_to44_diagnostic": "COMPLETE, 422 attempts, 0 solver, 213 temporal and 0 mass rejections, water residual -1.28785870856518159e-14 cm. Instrumented/manual cross-executable use of old binding is diagnostic only, not qualified restart.",
-      "remaining": "Normal prepared run with new binding and full regression in progress; retain year boundary, solute and owner evidence requirements."
+      "remaining": "Normal prepared run with new binding and full regression in progress; retain year boundary, solute and owner evidence requirements.",
+      "component_o0_o2": "PASS: tiny stock 8e-13 cm, near-capacity stock and dry stock",
+      "normal_prepared_o2": {
+        "status": "CENSORED",
+        "start_day": 0,
+        "last_completed_source_event_day": 4.546999999998661,
+        "timeout_seconds": 120,
+        "gate": "Not day 5 completion; no final checkpoint from this run"
+      }
     }
   }
 }
