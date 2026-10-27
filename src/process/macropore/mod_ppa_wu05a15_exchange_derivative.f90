@@ -140,6 +140,9 @@ contains
           limiter_factor=1.0_real64
           if(allocated(rates%limiter%inflow_fraction))then
             if(size(rates%limiter%inflow_fraction)/=nd)return
+            if(any(.not.ieee_is_finite(rates%limiter%inflow_fraction)).or. &
+               any(rates%limiter%inflow_fraction<0.0_real64).or. &
+               any(rates%limiter%inflow_fraction>1.0_real64))return
             if(rates%limiter%inflow_fraction(id)<1.0_real64)then
               ! A capped domain shares its available storage among all
               ! inflows. Differentiate this factor for a local interior
@@ -152,11 +155,17 @@ contains
                  .not.allocated(rates%saturated%qin_matrix_sat_rate))return
               if(.not.allocated(request%limiter%potential_top_vertical_cm).or. &
                  .not.allocated(request%limiter%potential_top_lateral_cm))return
+              if(any(shape(rates%saturated%qin_interflow_rate)/=[nd,n]).or. &
+                 any(shape(rates%saturated%qin_matrix_sat_rate)/=[nd,n]))return
+              if(size(request%limiter%potential_top_vertical_cm)/=nd.or. &
+                 size(request%limiter%potential_top_lateral_cm)/=nd)return
               inflow_total=request%limiter%potential_top_vertical_cm(id)+ &
                 request%limiter%potential_top_lateral_cm(id)+request%interflow_sat%step_duration * &
                 (sum(rates%saturated%qin_interflow_rate(id,:))+sum(rates%saturated%qin_matrix_sat_rate(id,:)))
               local_inflow=request%interflow_sat%step_duration*rates%saturated%qin_interflow_rate(id,ic)
-              if(.not.ieee_is_finite(inflow_total).or.inflow_total<=0.0_real64)return
+              if(.not.ieee_is_finite(inflow_total).or.inflow_total<=0.0_real64.or. &
+                 .not.ieee_is_finite(local_inflow).or.local_inflow<0.0_real64)return
+              if(local_inflow>inflow_total+64.0_real64*epsilon(1.0_real64)*max(1.0_real64,inflow_total))return
               limiter_factor=max(0.0_real64,min(1.0_real64,1.0_real64-local_inflow/inflow_total))
             end if
           end if
