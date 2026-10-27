@@ -7,6 +7,7 @@ def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--native-water',action='store_true');ap.add_argument('--output',type=Path,required=True)
  ap.add_argument('--optimization',choices=['O0','O2'],required=True)
+ ap.add_argument('--build-profile',choices=['checked','production'],default='checked',help='Match the existing physical builder profile; physical/numerical guards remain active')
  ap.add_argument('--physical-build',type=Path);ap.add_argument('--crop-reader',type=Path);ap.add_argument('--root-reader',type=Path)
  a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
@@ -19,10 +20,12 @@ def main():
  def save():(out/'events.json').write_text(json.dumps(events,indent=2)+'\n')
  base=a.physical_build.resolve() if a.physical_build else out/'shared'
  if a.physical_build is None:
-  run([sys.executable,ROOT/'tools/solute/build_crop_column.py','--output',base,'--optimization',a.optimization],ROOT,'cold_physical_build')
+  run([sys.executable,ROOT/'tools/solute/build_crop_column.py','--output',base,'--optimization',a.optimization,'--build-profile',a.build_profile],ROOT,'cold_physical_build')
  physical=json.loads((base/'build-complete.json').read_text())
  assert physical['status']=='BUILT' and physical['provider_count']==194
- assert '-'+a.optimization in physical['flags'] and '-fcheck=all' in physical['flags']
+ assert '-'+a.optimization in physical['flags']
+ assert physical.get('build_profile','checked')==a.build_profile,'physical build profile mismatch'
+ assert ('-fcheck=all' in physical['flags'])==(a.build_profile=='checked'),'compiler check profile mismatch'
  assert sha(base/'swap5_solute_column')==physical['executable_sha256']
  assert all(sha(ROOT/p)==h for p,h in physical['input_sha256'].items())
  assert all(sha(base/p)==h for p,h in physical['generated_input_sha256'].items())
@@ -65,7 +68,7 @@ def main():
   source_build=physical,reused_artifact_sha256=artifacts,executable_sha256=sha(exe),events=events)
  assert all(sha(ROOT/p)==h for p,h in inputs.items())and all(sha(Path(p))==h for p,h in artifacts.items())
  (column/'build-complete.json').write_text(json.dumps(meta,indent=2)+'\n')
- bundle=dict(schema=1,status='BUILT',optimization=a.optimization,project_reader=str(project_reader),crop_reader=str(crop),root_reader=str(root),exe=str(exe),
+ bundle=dict(schema=1,status='BUILT',build_profile=a.build_profile,optimization=a.optimization,project_reader=str(project_reader),crop_reader=str(crop),root_reader=str(root),exe=str(exe),
   executable_sha256={str(p):sha(p)for p in [project_reader,crop,root,exe]},physical_build=physical)
  if a.native_water:
   bundle['native_water']=True;bundle['macro_reader']=str(macro_build/'swap5_read_macro_initial')
