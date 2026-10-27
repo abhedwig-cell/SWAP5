@@ -1,3 +1,6 @@
+! Historical counterexample recorded against source 76b306eb; this program
+! reports current values when rebuilt against later candidate source.
+! The retained status contains the original measured mismatch.
 program native_perched_jacobian
  use iso_fortran_env,only:real64
  use mod_column_swp_macro_configuration
