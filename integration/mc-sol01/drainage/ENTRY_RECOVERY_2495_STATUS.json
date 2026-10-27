@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Finish missing checked evidence and test existing production build profile for actual closure performance; then extend actual original input toward481 with year-boundary restart.",
+  "next_action": "Continue corrected-forcing source8dcb from CRC-valid237 checkpoint toward481. At365 verify a fresh-process year restart and exact split/unsplit endpoint. On failure diagnose its actual source-event checkpoint; predecessor256.854 is not this variant's state.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -575,7 +575,7 @@
     }
   },
   "closure_sprint_01_20261027": {
-    "status": "RESTORED_BOESTEN_FORCING_ORIGINAL30_COMPLETE_NOT_ADMITTED",
+    "status": "RESTORED_BOESTEN_FORCING_ORIGINAL237_COMMITTED_SEASONAL_CONTINUING_NOT_ADMITTED",
     "canonical_head": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
     "canonical_admission": "Unchanged: original corrected-entry first2days only; MC-NUT01/MC-SOL01 CLOSED WITH EXCLUSIONS",
     "candidate_source": "8dcb2e9053f5af3ec8e305f3888d78d4d319cebe",
@@ -636,37 +636,45 @@
         "scientific_admission": false
       },
       "C": {
-        "execution": "NOT_COMPLETE_CURRENT_VARIANT",
-        "active_request": "30→90, timeout240seconds",
-        "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
+        "execution": "237_COMPLETE_DAYS_CURRENT_VARIANT_CONTINUING",
+        "last_committed_day": 237,
+        "year_boundary_restart": "PENDING",
+        "days481_complete": false
       }
     },
     "current_chain": {
       "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
       "start_day": 0,
-      "end_day": 30,
-      "native_seconds": 138.34420610200323,
-      "days_per_second": 0.21685042579868186,
-      "attempts": 28077,
-      "solver_rejections": 3,
-      "temporal_rejections": 6499,
+      "end_day": 237,
+      "native_seconds": 1147.5397804120075,
+      "days_per_second": 0.20652878797361482,
+      "attempts": 230049,
+      "solver_rejections": 112,
+      "temporal_rejections": 69717,
       "mass_rejections": 0,
-      "max_daily_water_cm": 1.6643061278090454e-11,
+      "max_daily_water_cm": 3.897920874962324e-11,
       "chain": [
         "evap-wiring-original1",
         "evap-wiring-original5",
-        "evap-wiring-original30"
+        "evap-wiring-original30",
+        "evap-wiring-original90",
+        "evap-wiring-checked90",
+        "evap-wiring-seasonal01-120",
+        "evap-wiring-seasonal02-150",
+        "evap-wiring-seasonal03-180",
+        "evap-wiring-seasonal04-210",
+        "evap-wiring-seasonal05-240"
       ],
-      "cumulative_drainage_delta_cm": -0.037993472884559995,
-      "endpoint_gwl_cm": -98.46240625777344,
-      "b0_gwl_cm": -93.55953,
-      "gwl_delta_cm": -4.902876257773443,
+      "cumulative_drainage_delta_cm": 0.017633027487068256,
+      "endpoint_gwl_cm": -179.96710707332608,
+      "b0_gwl_cm": -180.0946,
+      "gwl_delta_cm": 0.12749292667393775,
       "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "count_scope": "Recorded attempts/rejections include observed discarded partial work; censored in-flight counts are lower bounds. Native seconds include censored partial work.",
       "binding": "a55a2c15adc30a38f3d78da18c1f8045be484dd981f6b236d56f0a5c7ecc1c4e",
-      "substance_balance": "N/A original SWSOLU0; full SOL/NUT not qualified",
-      "soil_evaporation_0_30_cm": 0.8997752432325303,
-      "restart_replay": "Current5→7 vs5→6→7 complete restart.bin/state.csv/temperature.csv byte exact",
-      "scientific_admission": false
+      "substance_balance": "N/A original SWSOLU0, no full SOL/N qualification",
+      "qualified": false,
+      "canonically_admitted": false
     },
     "tests": {
       "compiler": "GNU Fortran13.3.0 operational;194-provider checked O0/O2 cold builds preserved, final native trajectory O2 only",
@@ -675,7 +683,8 @@
       "qualification": false,
       "canonical_admission": false,
       "broad_FCI_low_air_RossFast": "NOT_SELECTED_IMPACT; no new broad campaigns",
-      "current_additions": "Checked O0/O2 real bordered correction and integrated wall/Darcy/source booking PASS; mixed predecessor64.898 event O0/O2 final pressure exact, diagnostic only; full original5/30/65/90 O2 only"
+      "current_additions": "Checked O0/O2 real bordered correction and integrated wall/Darcy/source booking PASS; mixed predecessor64.898 event O0/O2 final pressure exact, diagnostic only; full original5/30/65/90 O2 only",
+      "current_evaporation_additions": "Actual original0→2 checked O0 vs production O2: profile/heat/budget/progress and physical restart payload exact; current5→7 vs5→6→7 full restart/state/heat byte exact; one0→5 .005 temporal refinement measured max head0.0418371cm, max theta8.80955e-8. Not seasonal O0/O2 or4.3.1 equivalence."
     },
     "reference_comparison": {
       "source": "Frozen original B0 DATE/RAIN/DRN/GWL CSV",
@@ -693,12 +702,7 @@
       "current": "Current-profile macro view passes former64.758 block in actual original-input chain; next64.898->64.916 rejection remains. Do not attribute its exact component to DRAMET3 without the next discriminator."
     },
     "closure_inventory": {
-      "1_missing_functional_implementation": [
-        {
-          "priority": 1,
-          "blocker": "Boesten positive soil/pond demand omitted by original native application: wired in8dcb; actual original30 complete, positive soil evaporation0.899775cm; O0/O2 day1 physical exact. Scientific admission still open."
-        }
-      ],
+      "1_missing_functional_implementation": [],
       "2_numerical_errors_and_performance": [
         {
           "priority": 2,
@@ -724,17 +728,19 @@
           "priority": 6,
           "scope": "Full SOL/NUT and other original options remain exclusions; first bounded production target is this original SWSOLU0 water/macro/root/drain/heat route. Full historical migration is broader."
         }
-      ]
+      ],
+      "closed_functional": "Original Boesten soil/pond demand wiring restored in8dcb; original237 accepted, positive original soil flux, O0/O2 two-day exact."
     },
     "recovery": {
       "library_file_id": "libfile_3208132dcf0481918050e682afe1734d",
-      "version": 1,
+      "version": 3,
       "archive": "SWAP5_coupled_contact_20261027.tar.xz",
-      "bytes": 6486320,
-      "sha256": "1b886387bca635c692af4b48e0bda250d99aa21bae131d9a55f5840f852d8ef7",
-      "preserved_prefix": 210,
-      "local_newer_prefix": 256.85399999999936,
-      "note": "Newer terminal checkpoint still requires next archive writeback; brief environment outage restored the original scratch files."
+      "bytes": 13699468,
+      "sha256": "a361db02ac8f600c7dd84a15adec6950581f91778ef41e2c141be4d869c8956f",
+      "preserved_corrected_forcing_prefix": 237,
+      "preserved_omitted_evaporation_predecessor_event": 256.85399999999936,
+      "entrypoint": "evap-wiring-recovery.json and recovery-tools/replay-evap.py; old coupled-contact-recovery.json is predecessor only",
+      "note": "Corrected forcing and accuracy(.005) variants retain distinct executor/input bindings; never silently mix them."
     },
     "release_boundary": "No canonical merge or production release: explicit original water candidate tested locally only. Complete historical migration remains open.",
     "previous_candidate_9d_evidence": {
@@ -1088,38 +1094,73 @@
     "current_chain": {
       "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
       "start_day": 0,
-      "end_day": 30,
-      "native_seconds": 138.34420610200323,
-      "days_per_second": 0.21685042579868186,
-      "attempts": 28077,
-      "solver_rejections": 3,
-      "temporal_rejections": 6499,
+      "end_day": 237,
+      "native_seconds": 1147.5397804120075,
+      "days_per_second": 0.20652878797361482,
+      "attempts": 230049,
+      "solver_rejections": 112,
+      "temporal_rejections": 69717,
       "mass_rejections": 0,
-      "max_daily_water_cm": 1.6643061278090454e-11,
+      "max_daily_water_cm": 3.897920874962324e-11,
       "chain": [
         "evap-wiring-original1",
         "evap-wiring-original5",
-        "evap-wiring-original30"
+        "evap-wiring-original30",
+        "evap-wiring-original90",
+        "evap-wiring-checked90",
+        "evap-wiring-seasonal01-120",
+        "evap-wiring-seasonal02-150",
+        "evap-wiring-seasonal03-180",
+        "evap-wiring-seasonal04-210",
+        "evap-wiring-seasonal05-240"
       ],
-      "cumulative_drainage_delta_cm": -0.037993472884559995,
-      "endpoint_gwl_cm": -98.46240625777344,
-      "b0_gwl_cm": -93.55953,
-      "gwl_delta_cm": -4.902876257773443,
+      "cumulative_drainage_delta_cm": 0.017633027487068256,
+      "endpoint_gwl_cm": -179.96710707332608,
+      "b0_gwl_cm": -180.0946,
+      "gwl_delta_cm": 0.12749292667393775,
       "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "count_scope": "Recorded attempts/rejections include observed discarded partial work; censored in-flight counts are lower bounds. Native seconds include censored partial work.",
       "binding": "a55a2c15adc30a38f3d78da18c1f8045be484dd981f6b236d56f0a5c7ecc1c4e",
-      "substance_balance": "N/A original SWSOLU0; full SOL/NUT not qualified",
-      "soil_evaporation_0_30_cm": 0.8997752432325303,
-      "restart_replay": "Current5→7 vs5→6→7 complete restart.bin/state.csv/temperature.csv byte exact",
-      "scientific_admission": false
+      "substance_balance": "N/A original SWSOLU0, no full SOL/N qualification",
+      "qualified": false,
+      "canonically_admitted": false
     },
     "accuracy_selection": {
-      "status": "SELECTED_PENDING",
+      "status": "COMPLETE_MEASURED_NOT_NEW_SCIENTIFIC_ADMISSION",
       "question": "Does halving existing Full Richards temporal tolerance from.01 to.005 materially change the corrected-forcing original five-day ponding/entry trajectory?",
       "reason": "First integrated positive evaporation and new wall/groundwater coupling requires a short actual-route accuracy discriminator beyond mass conservation; no broad tolerance campaign.",
       "expected_native_seconds": 160,
       "maximum_native_seconds": 240,
       "scope": "Original0→5 only, raw input unchanged, existing physical equations unchanged, no relaxed tolerance, no restart cross-binding",
-      "admission_threshold": "No new acceptance threshold invented; report measured pressure/theta/GWL/flux differences to existing owner before claiming scientific admission."
-    }
+      "admission_threshold": "No new acceptance threshold invented; report measured pressure/theta/GWL/flux differences to existing owner before claiming scientific admission.",
+      "result": {
+        "max_head_difference_cm": 0.041837119515275134,
+        "max_theta_difference": 8.809554846722634e-8,
+        "pond_cm_difference": 0,
+        "gwl_cm_difference": 0.038930020607303106,
+        "integrated_flux_differences_cm": {
+          "root_cm": -2.168404344971009e-18,
+          "drainage_cm": 0.000010680923908712447,
+          "rapid_cm": 0.0002735603213086524,
+          "runoff_cm": 0,
+          "bottom_cm": -0.0002920687226337648,
+          "soil_evap_cm": 3.180020236026593e-7,
+          "pond_to_macro_cm": -0.00006625021389750074,
+          "direct_macro_cm": 4.665294526251529e-7
+        },
+        "max_daily_water_residual_cm": 1.0913075998431054e-11,
+        "native_seconds": 164.61841737399664,
+        "scope": "One short original0→5 temporal refinement .01→.005; differences measured, no new science acceptance threshold or equivalence claim."
+      }
+    },
+    "day2_O0_O2": {
+      "state": true,
+      "heat": true,
+      "budget": true,
+      "progress": true,
+      "physical_restart_payload": true,
+      "scope": "Each executable restarts from its own bound day1"
+    },
+    "regression": "tools/solute/check_original_evaporation.py: actual original day1 positive soil evaporation/drying history and exact O0/O2 comparison PASS. Old frozen predecessor day1 soil_evap_cm independently confirmed zero. Strict source identity correctly rejects importing its stale bundle through the changed builder."
   }
 }
