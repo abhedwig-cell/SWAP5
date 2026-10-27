@@ -575,10 +575,10 @@
     }
   },
   "closure_sprint_01_20261027": {
-    "status": "ORIGINAL256_COMPLETE_256_854_COMMITTED_NUMERICAL_SUCCESSOR_SELECTED",
+    "status": "RESTORED_BOESTEN_FORCING_ORIGINAL30_COMPLETE_NOT_ADMITTED",
     "canonical_head": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
     "canonical_admission": "Unchanged: original corrected-entry first2days only; MC-NUT01/MC-SOL01 CLOSED WITH EXCLUSIONS",
-    "candidate_source": "8fc49e78db35f121ed1a5715f0092d306b337492",
+    "candidate_source": "8dcb2e9053f5af3ec8e305f3888d78d4d319cebe",
     "branch": "work/closure-perched-explicit",
     "pr": 1457,
     "merged": false,
@@ -597,61 +597,76 @@
     "science": "Explicit corrected-source physical variant, not literal SWAP431. Temporal(.01) and mass(1e-10) tolerances unchanged. Moving-zone/off-diagonal source Jacobian remains incomplete.",
     "gates": {
       "A": {
-        "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
+        "execution": "COMPLETE_CURRENT_EVAPORATION_FORCING_NOT_ADMITTED",
         "from_day": 0,
         "to_day": 5,
-        "seconds": 122.40433392699924,
-        "attempts": 18508,
-        "solver_rejections": 2,
-        "temporal_rejections": 5656,
-        "mass_rejections": 0
+        "native_seconds": 85.75577599600365,
+        "attempts": 16447,
+        "solver_rejections": 0,
+        "temporal_rejections": 3972,
+        "mass_rejections": 0,
+        "max_daily_water_cm": 7.093728382479014e-12
       },
       "B": {
-        "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
-        "from_day": 0,
-        "to_day": 30,
-        "seconds": 187.65611605300364,
-        "attempts": 29654,
-        "solver_rejections": 2,
-        "temporal_rejections": 7988,
-        "mass_rejections": 0
+        "execution": "COMPLETE_CURRENT_EVAPORATION_FORCING_NOT_ADMITTED",
+        "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+        "start_day": 0,
+        "end_day": 30,
+        "native_seconds": 138.34420610200323,
+        "days_per_second": 0.21685042579868186,
+        "attempts": 28077,
+        "solver_rejections": 3,
+        "temporal_rejections": 6499,
+        "mass_rejections": 0,
+        "max_daily_water_cm": 1.6643061278090454e-11,
+        "chain": [
+          "evap-wiring-original1",
+          "evap-wiring-original5",
+          "evap-wiring-original30"
+        ],
+        "cumulative_drainage_delta_cm": -0.037993472884559995,
+        "endpoint_gwl_cm": -98.46240625777344,
+        "b0_gwl_cm": -93.55953,
+        "gwl_delta_cm": -4.902876257773443,
+        "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+        "binding": "a55a2c15adc30a38f3d78da18c1f8045be484dd981f6b236d56f0a5c7ecc1c4e",
+        "substance_balance": "N/A original SWSOLU0; full SOL/NUT not qualified",
+        "soil_evaporation_0_30_cm": 0.8997752432325303,
+        "restart_replay": "Current5→7 vs5→6→7 complete restart.bin/state.csv/temperature.csv byte exact",
+        "scientific_admission": false
       },
       "C": {
-        "execution": "FAILED_AFTER256_COMPLETE_DAYS",
-        "complete_native_prefix_end": 256,
-        "last_committed_source_event": 256.85399999999936,
-        "failed_endpoint": 256.8689999999988,
-        "days481_complete": false,
+        "execution": "NOT_COMPLETE_CURRENT_VARIANT",
+        "active_request": "30→90, timeout240seconds",
         "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
       }
     },
     "current_chain": {
       "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
       "start_day": 0,
-      "end_day": 90,
-      "native_seconds": 481.12470280700654,
-      "days_per_second": 0.18706168998373315,
-      "attempts": 48980,
-      "solver_rejections": 5,
-      "temporal_rejections": 11430,
+      "end_day": 30,
+      "native_seconds": 138.34420610200323,
+      "days_per_second": 0.21685042579868186,
+      "attempts": 28077,
+      "solver_rejections": 3,
+      "temporal_rejections": 6499,
       "mass_rejections": 0,
-      "max_daily_water_cm": 2.458228065549406e-11,
+      "max_daily_water_cm": 1.6643061278090454e-11,
       "chain": [
-        "coupled-event-original5",
-        "coupled-event-original7",
-        "coupled-event-original30",
-        "coupled-event-original65",
-        "coupled-event-original90"
+        "evap-wiring-original1",
+        "evap-wiring-original5",
+        "evap-wiring-original30"
       ],
-      "cumulative_drainage_delta_cm": 0.4542881897299287,
-      "endpoint_gwl_cm": -116.75834888830985,
-      "b0_gwl_cm": -119.85954,
-      "gwl_delta_cm": 3.1011911116901416,
+      "cumulative_drainage_delta_cm": -0.037993472884559995,
+      "endpoint_gwl_cm": -98.46240625777344,
+      "b0_gwl_cm": -93.55953,
+      "gwl_delta_cm": -4.902876257773443,
       "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
-      "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
-      "restart_replay": "5→7 vs5→6→7 complete restart/profile/temperature byte exact",
-      "substance_balance": "N/A original SWSOLU0; no SOL/N qualification",
-      "cost_scope": "Native elapsed, some overlapping builds/replays; not controlled speed comparison"
+      "binding": "a55a2c15adc30a38f3d78da18c1f8045be484dd981f6b236d56f0a5c7ecc1c4e",
+      "substance_balance": "N/A original SWSOLU0; full SOL/NUT not qualified",
+      "soil_evaporation_0_30_cm": 0.8997752432325303,
+      "restart_replay": "Current5→7 vs5→6→7 complete restart.bin/state.csv/temperature.csv byte exact",
+      "scientific_admission": false
     },
     "tests": {
       "compiler": "GNU Fortran13.3.0 operational;194-provider checked O0/O2 cold builds preserved, final native trajectory O2 only",
@@ -678,34 +693,38 @@
       "current": "Current-profile macro view passes former64.758 block in actual original-input chain; next64.898->64.916 rejection remains. Do not attribute its exact component to DRAMET3 without the next discriminator."
     },
     "closure_inventory": {
-      "1_missing_functional_implementation": "CONFIRMED: native original application omitted original positive evaporation demand at Boesten forcing. Existing process implementation is available; connect and qualify its actual integral route before any historical closure claim.",
-      "2_numerical_errors_and_performance": [
+      "1_missing_functional_implementation": [
         {
           "priority": 1,
-          "blocker": "Seasonal checked-build cost:144→157 uses240s, no mass/solver failure. At151→152 diagnostic, actual pressure full/half error decreases below0.01cm at dt4.15e-5day; not established zero-dt floor. Assess existing production compiler profile before changing equations/tolerances."
+          "blocker": "Boesten positive soil/pond demand omitted by original native application: wired in8dcb; actual original30 complete, positive soil evaporation0.899775cm; O0/O2 day1 physical exact. Scientific admission still open."
+        }
+      ],
+      "2_numerical_errors_and_performance": [
+        {
+          "priority": 2,
+          "blocker": "Complete corrected forcing seasonal execution. Old omitted-evap predecessor fails at256.8689999999988 due disappearing perched pocket/CALCGWL/DRAMET3 active-contact inconsistency. One fixed-contact/Aitken successor failed and was removed; do not inherit that failure location for the new forcing trajectory."
         }
       ],
       "3_missing_integral_evidence": [
         {
-          "priority": 2,
-          "blocker": "Current original481days/year restart; complete90 and committed157. Restore terminal/measured evidence for host-interrupted90→144 using short exact-source replay."
-        },
-        {
           "priority": 3,
-          "blocker": "Scientific explanation/accuracy qualification of SWAP431 differences, especially day30 groundwater delta."
+          "blocker": "Current481 days including year-boundary restart, native costs and balances; A/B locally complete only."
         },
         {
           "priority": 4,
-          "blocker": "Full affected final-variant O0/O2, failure rollback and owning scientific/admission preservation before exact canonical merge."
+          "blocker": "Scientific explanation and numerical accuracy qualification against original4.3.1; day30 GWLdelta−4.902876cm, provisional cumulativeDRNdelta−0.0379935cm. Rounded four-column B0 cannot establish whole balance equivalence."
+        },
+        {
+          "priority": 5,
+          "blocker": "Affected owning admission/preservation and exact merge tree; current O0/O2 day1 and exact restarted7-day endpoint are evidence, not full seasonal admission."
         }
       ],
       "4_historical_options_outside_first_production_closure": [
         {
-          "priority": 5,
-          "scope": "Full SOL/NUT and unselected historical option combinations remain separate exclusions; original SWSOLU0 requires no solute balance. A bounded corrected-source original water release is distinct from full historical migration."
+          "priority": 6,
+          "scope": "Full SOL/NUT and other original options remain exclusions; first bounded production target is this original SWSOLU0 water/macro/root/drain/heat route. Full historical migration is broader."
         }
-      ],
-      "local_closed_execution_blocker": "Actual final-source0→65→90 passes former64.898 stop; not inherited mixed-source prefix admission."
+      ]
     },
     "recovery": {
       "library_file_id": "libfile_3208132dcf0481918050e682afe1734d",
@@ -841,6 +860,67 @@
         "all5_endpoint_files_exact": true,
         "scope": "Diagnostic performance only: same-model151 checkpoint, different executor identity. Not seasonal/source-upgrade restart admission."
       }
+    },
+    "predecessor_evaporation_omitted": {
+      "gates": {
+        "A": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
+          "from_day": 0,
+          "to_day": 5,
+          "seconds": 122.40433392699924,
+          "attempts": 18508,
+          "solver_rejections": 2,
+          "temporal_rejections": 5656,
+          "mass_rejections": 0
+        },
+        "B": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
+          "from_day": 0,
+          "to_day": 30,
+          "seconds": 187.65611605300364,
+          "attempts": 29654,
+          "solver_rejections": 2,
+          "temporal_rejections": 7988,
+          "mass_rejections": 0
+        },
+        "C": {
+          "execution": "FAILED_AFTER256_COMPLETE_DAYS",
+          "complete_native_prefix_end": 256,
+          "last_committed_source_event": 256.85399999999936,
+          "failed_endpoint": 256.8689999999988,
+          "days481_complete": false,
+          "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
+        }
+      },
+      "current_chain": {
+        "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+        "start_day": 0,
+        "end_day": 90,
+        "native_seconds": 481.12470280700654,
+        "days_per_second": 0.18706168998373315,
+        "attempts": 48980,
+        "solver_rejections": 5,
+        "temporal_rejections": 11430,
+        "mass_rejections": 0,
+        "max_daily_water_cm": 2.458228065549406e-11,
+        "chain": [
+          "coupled-event-original5",
+          "coupled-event-original7",
+          "coupled-event-original30",
+          "coupled-event-original65",
+          "coupled-event-original90"
+        ],
+        "cumulative_drainage_delta_cm": 0.4542881897299287,
+        "endpoint_gwl_cm": -116.75834888830985,
+        "b0_gwl_cm": -119.85954,
+        "gwl_delta_cm": 3.1011911116901416,
+        "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+        "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
+        "restart_replay": "5→7 vs5→6→7 complete restart/profile/temperature byte exact",
+        "substance_balance": "N/A original SWSOLU0; no SOL/N qualification",
+        "cost_scope": "Native elapsed, some overlapping builds/replays; not controlled speed comparison"
+      },
+      "scope": "Frozen numerical predecessor ONLY. Positive original Boesten evaporation demand was not passed by native application. No complete original-production claim."
     }
   },
   "coupled_hydraulic_trial_design_20261027": {
@@ -988,6 +1068,49 @@
     "evidence": "Original prepared481-day soil_evaporation_cm_day is positive (day1 0.0419768972711cm/day, bare day235 0.1581cm/day); boesten_evaporation=.true. Native main allocates Boesten forcing but sets only pond/runoff controls; its potential bare-soil and pond demands stay at default0. Backend Boesten reads those fields; active Rutter subsequently uses its empirical soil demand. Recorded soil evaporation and SPEV/SAEV stay0 through256.854.",
     "repair": "Wire the original daily bare-soil and pond potential evaporation rates into existing Boesten runtime forcing for every original rain source window. Do not change process equations, numerical tolerances, macro/Rutter area conventions or restart layout.",
     "qualification": "Actual fresh original input native run, positive soil evaporation and nonzero Boesten drying state when applicable; independent matrix/macro/declared-boundary mass assertions; O0/O2 focused affected route. Prior256-day run remains predecessor evidence with missing evaporation, not a complete historical production route.",
-    "scope": "First missing functional connection takes priority over further contact micro-repairs. Full481/year/current scientific admission remains open."
+    "scope": "First missing functional connection takes priority over further contact micro-repairs. Full481/year/current scientific admission remains open.",
+    "source_commit": "8dcb2e9053f5af3ec8e305f3888d78d4d319cebe",
+    "result": "LOCAL_ORIGINAL30_COMPLETE_NOT_ADMITTED",
+    "day1_actual_soil_evaporation_cm": 0.041976897271121826,
+    "day1_input_soil_evaporation_cm_day": 0.041976897271121826,
+    "day1_Boesten_SPEV_SAEV": [
+      0.01659684389377535,
+      0.01659684389377535
+    ],
+    "day1_O0_O2": {
+      "state": true,
+      "heat": true,
+      "budget": true,
+      "progress": true,
+      "physical_restart_payload": true
+    },
+    "restart5_7_vs5_6_7": "Complete restart/state/temperature byte exact",
+    "current_chain": {
+      "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+      "start_day": 0,
+      "end_day": 30,
+      "native_seconds": 138.34420610200323,
+      "days_per_second": 0.21685042579868186,
+      "attempts": 28077,
+      "solver_rejections": 3,
+      "temporal_rejections": 6499,
+      "mass_rejections": 0,
+      "max_daily_water_cm": 1.6643061278090454e-11,
+      "chain": [
+        "evap-wiring-original1",
+        "evap-wiring-original5",
+        "evap-wiring-original30"
+      ],
+      "cumulative_drainage_delta_cm": -0.037993472884559995,
+      "endpoint_gwl_cm": -98.46240625777344,
+      "b0_gwl_cm": -93.55953,
+      "gwl_delta_cm": -4.902876257773443,
+      "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "binding": "a55a2c15adc30a38f3d78da18c1f8045be484dd981f6b236d56f0a5c7ecc1c4e",
+      "substance_balance": "N/A original SWSOLU0; full SOL/NUT not qualified",
+      "soil_evaporation_0_30_cm": 0.8997752432325303,
+      "restart_replay": "Current5→7 vs5→6→7 complete restart.bin/state.csv/temperature.csv byte exact",
+      "scientific_admission": false
+    }
   }
 }
