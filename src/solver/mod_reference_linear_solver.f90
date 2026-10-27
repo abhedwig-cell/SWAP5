@@ -1,13 +1,37 @@
 module mod_reference_linear_solver
+  use, intrinsic :: ieee_arithmetic,only:ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   implicit none
   private
 
-  public :: reference_tridag
+  public :: reference_tridag,reference_constraint_correction
   public :: reference_tridag_backsolve
   public :: reference_band_solve
 
 contains
+
+  subroutine reference_constraint_correction(n,a,b,c,direction,node,head,delta,control_delta,status)
+    integer,intent(in)::n,node
+    real(real64),intent(in)::a(:),b(:),c(:),direction(:),head
+    real(real64),intent(inout)::delta(:)
+    real(real64),intent(out)::control_delta
+    integer,intent(out)::status
+    real(real64)::response(n),gamma(n),candidate(n),step
+    control_delta=0.0_real64;status=1
+    if(n<1.or.node<1.or.node>n)return
+    if(min(size(a),size(b),size(c),size(direction),size(delta))<n)return
+    if(.not.ieee_is_finite(head).or.any(.not.ieee_is_finite(direction(:n))))return
+    if(any(.not.ieee_is_finite(a(:n))).or.any(.not.ieee_is_finite(b(:n))).or. &
+       any(.not.ieee_is_finite(c(:n))).or.any(.not.ieee_is_finite(delta(:n))))return
+    call reference_tridag(n,a,b,c,direction,response,gamma,status)
+    if(status/=0)return
+    status=1
+    if(.not.ieee_is_finite(response(node)).or.response(node)==0.0_real64)return
+    step=(delta(node)-head)/response(node)
+    candidate=delta(:n)-response*step
+    if(.not.ieee_is_finite(step).or.any(.not.ieee_is_finite(candidate)))return
+    delta(:n)=candidate;control_delta=step;status=0
+  end subroutine
 
   subroutine reference_tridag(n, a, b, c, r, u, gamma, ierror, beta_factor, capture_in_gamma_requested)
     integer, intent(in) :: n
