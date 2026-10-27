@@ -3,6 +3,7 @@ module mod_ppa_wu05a15_exchange_derivative
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   use mod_ppa_wu05a6_rate_bundle, only: macropore_rate_bundle_request_t, macropore_rate_bundle_result_t
   use mod_ppa_wu05a6_unsat_absorption_rate,only:evaluate_entry_darcy_head_difference
+  use mod_ppa_wu05a6_sorptivity_rate,only:evaluate_saturation_wall_gate
   implicit none
   private
 
@@ -30,7 +31,7 @@ contains
 
     integer::nd,n,id,ic,ic_top,ic_bottom
     logical::perched_enabled
-    real(real64)::qout,denom,hmp,delh,qexc,ddelh,inflow_total,local_inflow,limiter_factor
+    real(real64)::qout,denom,hmp,delh,qexc,ddelh,inflow_total,local_inflow,limiter_factor,gate,gate_slope
 
     result=macropore_exchange_derivative_result_t()
     perched_enabled=.false.
@@ -81,6 +82,12 @@ contains
           if(abs(denom)<=HEAD_DIFFERENCE_THRESHOLD)return
           result%unsaturated_dqdh(id,ic)= -qout*request%unsaturated%sorptivity%sorptivity_alpha(ic) / &
                denom*capacity(ic)
+          if(request%unsaturated%continuous_sorption)then
+            call evaluate_saturation_wall_gate(request%unsaturated%sorptivity%theta_s(ic)- &
+              request%unsaturated%sorptivity%theta(ic),gate,gate_slope)
+            if(gate>0.0_real64)result%unsaturated_dqdh(id,ic)=result%unsaturated_dqdh(id,ic)- &
+              qout*(gate_slope/gate)*capacity(ic)
+          end if
         else
           if(ic<=request%unsaturated%sorptivity%top_water_node(id))cycle
           hmp=max(0.0_real64,request%unsaturated%groundwater_level_domain(id)- &
@@ -107,7 +114,11 @@ contains
         delh=hmp-request%matrix_sat%matrix_head(ic)
         if(hmp<1.0e-8_real64 .and. delh>0.0_real64)delh=0.0_real64
         if(abs(delh)<1.0e-8_real64)delh=0.0_real64
-        if(request%matrix_sat%matrix_head(ic)<0.0_real64)delh=0.0_real64
+        if(request%matrix_sat%matrix_head(ic)<0.0_real64)then
+          if(.not.(request%unsaturated%continuous_sorption.and. &
+            request%matrix_sat%matrix_partial_top_active.and.ic==request%matrix_sat%matrix_top_saturated_node)) &
+              delh=0.0_real64
+        end if
 
         if(abs(delh)>HEAD_DIFFERENCE_THRESHOLD)then
           qexc=rates%qout_sat_rate(id,ic)-rates%qin_matrix_sat_rate(id,ic)
