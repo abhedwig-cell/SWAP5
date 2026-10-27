@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
+  "next_action": "Diagnose and repair partly saturated top-cell / groundwater-face source transition around day 2.695, preserving early trajectory and balance; restart from guarded day 2.660 checkpoint.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -198,7 +198,7 @@
       }
     },
     "guarded_limiter_postimage": {
-      "status": "IN_PROGRESS_NOT_QUALIFIED",
+      "status": "TESTED_NOT_QUALIFIED",
       "source_commit": "ac12d55b0a7d39417ec1122451bdae01b5dda8c9",
       "guard": "Reject invalid capped input sizes, limiter fractions, nonfinite or inconsistent local inflow before evaluating the local diagonal correction.",
       "tests": {
@@ -208,8 +208,26 @@
         "two_node_fd": -0.026885132710374737,
         "two_node_analytic": -0.026885132708916563
       },
-      "native": "Normal input O2 and split O0 runs in progress; earlier source postimage results are inherited only as prior evidence, not current PASS.",
-      "remaining": "Check independently prepared full and split application O2, O0, boundary/limiter interactions, other invalid arrays, owning qualification, exact merge postimage."
+      "native": {
+        "full_o2": {
+          "from_day": 0,
+          "to_day": 2.6600000000034925,
+          "native_seconds": 47.624,
+          "attempts": 11499,
+          "solver_rejections": 3,
+          "temporal_rejections": 5824,
+          "mass_rejections": 0,
+          "water_residual_cm": -1.332409876875218e-12,
+          "binding": "4c825048cb212f9816980dbfa46b08be8e117a045412c92b8e6193c628b933ef",
+          "physical_files_equal_prior_postimage": true
+        },
+        "o2_restart_day2": "PASS: input.nml, input.swp, macro.nml, state.csv, temperature.csv, restart.bin and final budget row byte-identical to full run",
+        "o0_split_vs_o2_split": "PASS: budget.csv, state.csv, temperature.csv and progress.csv byte-identical",
+        "o2_option_off_to_day2": "PASS: budget, state, temperature and progress byte-identical to admitted predecessor",
+        "foreign_executable_restart": "REJECTED before physical output",
+        "recovery_library_file_id": "libfile_af2a5a1be7b8819186fd60cac81b0097"
+      },
+      "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
     }
   }
 }
