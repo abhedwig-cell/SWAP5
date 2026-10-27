@@ -678,7 +678,7 @@
       "current": "Current-profile macro view passes former64.758 block in actual original-input chain; next64.898->64.916 rejection remains. Do not attribute its exact component to DRAMET3 without the next discriminator."
     },
     "closure_inventory": {
-      "1_missing_functional_implementation": "No additional missing selected water process demonstrated: actual112-node/five-domain macro/Rutter/Feddes/DRAMET3/numeric-heat route executes. Do not interpret unqualified full historical option combinations as proven missing leaves.",
+      "1_missing_functional_implementation": "CONFIRMED: native original application omitted original positive evaporation demand at Boesten forcing. Existing process implementation is available; connect and qualify its actual integral route before any historical closure claim.",
       "2_numerical_errors_and_performance": [
         {
           "priority": 1,
@@ -969,6 +969,25 @@
       "evidence": "Contact12 formed from projection branches12/0 actually exposes branch11 (h11=-0.0012786,h12=0). Adjacent branches11/10 are also incorrectly treated as a discontinuity and pin ordinary groundwater motion to grid nodes. This can make full/half groundwater levels jump although pressure differences are below0.01cm.",
       "revised_contract": "Use scale-safe vector Aitken relaxation for the continuous carrier fixed point, with convergence tested on the original undamped head/GWL residual at unchanged1e-8cm and existing64 iterations. Restrict discontinuous contact activation to nonadjacent indices or the fully-saturated branch. Reject/release a contact exposing a third projection branch, reset transient control pointers, and restart ordinary iteration from its candidate view. Keep active linear constraints exactly feasible during damped Newton steps; no accepted-state projection, no tolerance relaxation. All physical expressions and mass gates unchanged.",
       "scope": "Proposed diagnostic repair, not a proven multi-contact algorithm; fail closed if it does not converge."
+    },
+    "result": {
+      "status": "FAILED_EXCLUDED_FROM_BEST_CANDIDATE",
+      "source": "36b7618b3588ade856db01dca9c69050b463f227",
+      "preserved_branch": "work/closure-contact-repair-01",
+      "tests_commit": "8f882dfc74ea65fab5423e76fb88eb76e9d65fe1",
+      "native_seconds": 32.14238443999784,
+      "internal_floor_clock": 256.86774671205455,
+      "final_dt": 5.684341886080802e-14,
+      "remaining_head_residual_cm": 0.013271115507507147,
+      "remaining_gwl_residual_cm": 11.017855495375136,
+      "action": "Best main source restored to tested carrier plus validation optimization. Proposed next numerical architecture: minimum pressure over the disappearing unsaturated pocket, with dynamic active node and consistent branch limits; not implemented/admitted. First restore omitted physical evaporation forcing."
     }
+  },
+  "boesten_forcing_recovery_20261027": {
+    "state": "CONFIRMED_MISSING_APPLICATION_WIRING_REPAIR_SELECTED",
+    "evidence": "Original prepared481-day soil_evaporation_cm_day is positive (day1 0.0419768972711cm/day, bare day235 0.1581cm/day); boesten_evaporation=.true. Native main allocates Boesten forcing but sets only pond/runoff controls; its potential bare-soil and pond demands stay at default0. Backend Boesten reads those fields; active Rutter subsequently uses its empirical soil demand. Recorded soil evaporation and SPEV/SAEV stay0 through256.854.",
+    "repair": "Wire the original daily bare-soil and pond potential evaporation rates into existing Boesten runtime forcing for every original rain source window. Do not change process equations, numerical tolerances, macro/Rutter area conventions or restart layout.",
+    "qualification": "Actual fresh original input native run, positive soil evaporation and nonzero Boesten drying state when applicable; independent matrix/macro/declared-boundary mass assertions; O0/O2 focused affected route. Prior256-day run remains predecessor evidence with missing evaporation, not a complete historical production route.",
+    "scope": "First missing functional connection takes priority over further contact micro-repairs. Full481/year/current scientific admission remains open."
   }
 }
