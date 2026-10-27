@@ -1201,7 +1201,7 @@
     "next": "Continue separately: fresh b29d original30→481 with exact year restart; later-state cross-executor probe only to find new causal failures early."
   },
   "pocket_contact_successor_20261027": {
-    "status": "PROPOSED_SELECTED_NOT_IMPLEMENTED_OR_QUALIFIED",
+    "status": "TWO_FOCUSED_CYCLES_FAILED_EXCLUDED_FROM_BEST_CANDIDATE",
     "baseline": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
     "actual_interval": [
       300.3130000000019,
@@ -1221,10 +1221,25 @@
       "admission": false
     },
     "phase2": {
-      "status": "SELECTED_PENDING",
+      "status": "FAILED_NOT_ADMITTED",
       "method": "Reuse previously tested scale-safe reference_aitken_weight for ordinary same/adjacent-interior projection branches only. Reset history at nonsmooth pocket contacts; retain minimum-pressure active set and original one-sided DRAMET3/DIVDRA vectors. Relax hydraulic trial guesses H/theta/pond together, never accepted physical state. Add explicit outer theta-storage and pond convergence at existing compartment/pond tolerances so damping cannot fake head-only convergence.",
       "guards": "Unchanged immutable accepted origin,64 outer maximum,1e-8 head/GWL and existing water-mass criteria; no temporal-metric exception or threshold relaxation.",
-      "stop_rule": "If this second focused cycle fails the same block, do not microrepair further; preserve failure and require joint semismooth/algebraic-source formulation."
+      "stop_rule": "If this second focused cycle fails the same block, do not microrepair further; preserve failure and require joint semismooth/algebraic-source formulation.",
+      "source": "17952b76c5f17c158ae2ac167d64b9e562788141",
+      "seconds": 2.1765366139952675,
+      "attempts": 167,
+      "solver_rejections": 29,
+      "temporal_rejections": 40,
+      "mass_rejections": 0,
+      "all5_O0_O2_contracts": "PASS; mathematical/component contracts do not establish actual historical transition",
+      "complete_failed_trial_restart_rollback": "Byte exact for BOTH phases against positive-film-diagnostic01-364/diagnostic-rejected.bin",
+      "main_best_candidate_unchanged": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942; original141 complete"
+    },
+    "architecture_reconsideration": {
+      "selected_next_block": "Joint semismooth Richards/DRAMET3 residual/Jacobian in existing reference solver; smooth CALCGWL head feedback as low-rank source derivative, disappearing-pocket min-pressure contact selected inside the Newton solve with original one-sided drainage vectors. Reuse existing tridiagonal/bordered solves; preserve accepted-origin transaction, exact source bookkeeping and all current tolerances.",
+      "why": "Minimum-node repair alone leaves continuous outer map noncontractive; guarded Aitken does not fix the actual zero-time pressure/GWL inconsistency. Two focused cycles were stopped according to the sprint rule; no further constraint/tolerance microrepair.",
+      "first_decisive_gate": "Existing CRC-valid300.313 source-event state, replay actual300.313→300.324/301; require converged original balances, no zero-dt error floor, O0/O2 and exact failure/restart controls before another long replay.",
+      "implemented": false
     }
   }
 }
