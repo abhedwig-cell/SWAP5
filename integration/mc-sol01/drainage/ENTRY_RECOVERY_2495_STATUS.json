@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Implement and test bounded composition of Cauchy selector and accepted-error proposal; run day64 diagnostics and preserve transaction, forcing endpoints and tolerance gates.",
+  "next_action": "Qualify composed selector/error-history contract and complete matched source-event interval, verify accuracy and own binding, then extend historical run.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -457,6 +457,25 @@
       "controller_diagnosis": "canonical interval forbids retain_accepted_step_proposal when target_selector is present. Anchored Cauchy selector resets target to cursor+2*accepted_width after each accepted step, without the accepted temporal_error. This is a concrete controller conflict, not measured proof of its entire cost.",
       "proposed_block": "Allow a selector cap and accepted-error timestep proposal to compose through min bounds, retain source endpoint semantics and restart determinism, then compare attempts, residual and trajectory on bound day64 input before promotion.",
       "qualified": false
+    },
+    "accepted_error_selector_candidate": {
+      "source_commit": "b43493e345d1ca0e3e5f00d6b759d5d245019ae3",
+      "status": "DIAGNOSTIC_CENSORED_NOT_QUALIFIED",
+      "change": "Allow accepted-error proposal and selector cap to compose by minimum; enable retained proposal only on explicit anchored Cauchy route. No tolerances, physics or mass gates changed.",
+      "build": "O2 checked project build COMPLETE; existing provider artifacts reused for unchanged interfaces",
+      "diagnostic_binding": "Old day64 binding reused solely for cross-executable diagnostic, not a qualified restart",
+      "timeout_each_seconds": 60,
+      "common_end_day": 64.79099999999744,
+      "candidate_attempts": 8969,
+      "baseline_attempts": 10371,
+      "candidate_temporal_rejections": 3095,
+      "baseline_temporal_rejections": 5255,
+      "candidate_solver_rejections": 0,
+      "baseline_solver_rejections": 1,
+      "mass_rejections_both": 0,
+      "candidate_max_segment_water_residual_cm": 8.295725217877248e-13,
+      "baseline_max_segment_water_residual_cm": 9.017508961761678e-13,
+      "remaining": "Need focused selector/error-history contracts and O0/O2, complete matched interval with terminal state and temporal accuracy comparison, normally prepared own-binding run and deterministic restart; exact merge and owner qualification remain open."
     }
   }
 }
