@@ -1213,6 +1213,18 @@
     "contract": "For nonadjacent CALCGWL branch jumps, or disappearance into the fully saturated branch0, enforce min(h) over the disappearing pocket=0. Select/update the minimum-pressure active node and reject contact candidates retaining negative pocket pressures beyond the existing1e-8 head criterion. Ordinary adjacent interior crossings remain continuous fixed-point cases. Refresh the two original DRAMET3+DIVDRA limiting rate vectors at the active zero-pressure node and the shallower residual profile. Retain the existing bordered Richards lambda in[0,1], original equations, immutable accepted origin and all accuracy/mass guards. No new physical state or time-error exception.",
     "selection": "Real production pure contact-view helper O0/O2 with minimum-node, one-sided-limit and malformed controls, existing bordered/physical wall contracts; actual300.313→301 native transition and later-state continuation. Old cross-executor checkpoints remain diagnostic only; fresh whole-source proof is distinct.",
     "prior_candidate": "Main work/closure-perched-explicit retains tested positive-film route, fresh141 days; stop the next unqualified long rerun while the observed later causal blocker is repaired.",
-    "canonical_admission": false
+    "canonical_admission": false,
+    "phase1": {
+      "source": "e17d1837d4cd0ff191eaea2f3538fb48b0b46942",
+      "contracts": "All five actual production contract drivers O0/O2 PASS",
+      "runtime": "FAILED actual300.313→300.324,2.371523715seconds,167 recorded attempts/30 solver/39 temporal/0 mass rejections; continuous branch outer fixed point exhausts64 iterations after false deepest-node contact is replaced",
+      "admission": false
+    },
+    "phase2": {
+      "status": "SELECTED_PENDING",
+      "method": "Reuse previously tested scale-safe reference_aitken_weight for ordinary same/adjacent-interior projection branches only. Reset history at nonsmooth pocket contacts; retain minimum-pressure active set and original one-sided DRAMET3/DIVDRA vectors. Relax hydraulic trial guesses H/theta/pond together, never accepted physical state. Add explicit outer theta-storage and pond convergence at existing compartment/pond tolerances so damping cannot fake head-only convergence.",
+      "guards": "Unchanged immutable accepted origin,64 outer maximum,1e-8 head/GWL and existing water-mass criteria; no temporal-metric exception or threshold relaxation.",
+      "stop_rule": "If this second focused cycle fails the same block, do not microrepair further; preserve failure and require joint semismooth/algebraic-source formulation."
+    }
   }
 }
