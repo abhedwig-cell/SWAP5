@@ -181,7 +181,7 @@ program swap5_native_water_project
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
-  logical::did_commit,policy_ok,anchored_ceiling=.false.,perched_jacobian=.false.
+  logical::did_commit,policy_ok,anchored_ceiling=.false.,perched_jacobian=.false.,continuous_sorption=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
@@ -202,10 +202,17 @@ program swap5_native_water_project
   end if
   call get_command_argument(10,arg)
   if(len_trim(arg)>0)then
-    call require(trim(arg)=='perched-jacobian','unknown perched Jacobian policy')
+    call require(trim(arg)=='perched-jacobian'.or.trim(arg)=='historical-jacobian','unknown perched Jacobian policy')
     call require(anchored_ceiling.and.entry_ramp_width_cm>0d0,'perched Jacobian requires bounded native route')
-    perched_jacobian=.true.
+    perched_jacobian=trim(arg)=='perched-jacobian'
   end if
+  call get_command_argument(11,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='continuous-sorption','unknown corrected sorption source')
+    call require(anchored_ceiling.and.entry_ramp_width_cm>0d0,'corrected sorption requires bounded native route')
+    continuous_sorption=.true.
+  end if
+  call require(command_argument_count()<=11,'unexpected native water arguments')
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
   if(len_trim(arg)>0)then
@@ -425,6 +432,7 @@ program swap5_native_water_project
     all(canopy_evaporation>=0d0).and.all(vegetation_cover>=0d0).and.all(vegetation_cover<=1d0),'Rutter plan limits')
   call import_column_macro_configuration(trim(macro_path),macro_initial,macro_config)
   macro_config%rate_template%unsaturated%entry_transition_width_cm=entry_ramp_width_cm
+  macro_config%rate_template%unsaturated%continuous_sorption=continuous_sorption
   call require(macro_initial%geometry%num_nodes==numnod.and.all(macro_initial%geometry%dz==dz),'source macro/water geometry')
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen
   ! Original hconduc deliberately excludes KSATEXM for SWMACRO1.
