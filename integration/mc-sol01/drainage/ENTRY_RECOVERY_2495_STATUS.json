@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Continue from day 5 restart toward day 30 while verifying replay from day 3, solute, donor comparison and high temporal rejection.",
+  "next_action": "Continue from day 30 bound checkpoint toward year boundary, confirm exact restart, qualify solute and compare donor; address rejection costs.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -265,7 +265,28 @@
           "water_residual_day4_cm": -3.6685932069957516e-14,
           "water_residual_day5_cm": -3.094365041977909e-13,
           "recovery_library_file_id": "libfile_87c57b4d8f888191b75a2e16b938a523",
-          "limitations": "Original prepared water route. Physical solute balance, SWAP 4.3.1 differences and replay of day 5 not yet established; no gate A admission."
+          "limitations": "Original prepared water route. Physical solute balance, SWAP 4.3.1 differences and replay of day 5 not yet established; no gate A admission.",
+          "replay_day3_to5": "PASS: prepared inputs, state, temperature, restart, budget and progress byte-identical"
+        },
+        "day30_segmented": {
+          "status": "COMPLETE_WATER_NOT_GATE_ADMISSION",
+          "from_day": 0,
+          "to_day": 30,
+          "source_restart_days": [
+            2.66,
+            2.748,
+            3,
+            5
+          ],
+          "native_seconds_total": 229.621838335,
+          "attempts": 53849,
+          "solver_rejections": 95,
+          "temporal_rejections": 27136,
+          "mass_rejections": 0,
+          "day5_to30_max_daily_water_residual_cm": 5.197769298304067e-13,
+          "day30_water_residual_cm": 8.663209039028175e-15,
+          "recovery_library_file_id": "libfile_36220b73b890819192745c4d91b28e82",
+          "limitations": "Segmented original prepared water route; run from day5 concurrent with day3-to5 replay. No 30-day continuous replay, solute or SWAP 4.3.1 comparison."
         }
       },
       "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
