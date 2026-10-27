@@ -48,7 +48,17 @@
       "scope": "Diagnostic executable read the candidate restart with the earlier binding; evidence only, no accepted endpoint or restart qualification",
       "evidence": "integration/mc-sol01/drainage/PERCHED_NEXT_WINDOW_EVIDENCE.tar.gz.b64",
       "diagnostic_executable_sha256": "293d52c5f9cfcb561d15e07e19b7195f605dbcc7ebadd4a8f94e142910b7e9a9",
-      "observation": "Repeated full/half temporal rejection with node39 and groundwater projection differences near -44 cm; root cause not established."
+      "observation": "Repeated full/half temporal rejection with node39 and groundwater projection differences near -44 cm; root cause not established.",
+      "face_boundary_observation": {
+        "water_table_below_cm": -44.000001,
+        "water_table_above_cm": -43.999999,
+        "cell_top_below": 40,
+        "cell_top_above": 39,
+        "pressure_head_node39_cm": -0.7403571803832384,
+        "exchange_node39_below_cm_day": 0.002278551051618531,
+        "exchange_node39_above_cm_day": 0,
+        "interpretation": "At fixed matrix state and macropore state a finite source jump occurs across the grid face; causality for all temporal rejections remains unqualified."
+      }
     },
     "input_provenance_note": "Fresh O2 uses retained prepared original input bytes with legacy generator/executable comments from predecessor; binding recomputed against new executable. It is not a fresh preparation by the candidate's normal launcher. Rerun normal preparation for qualification.",
     "normally_prepared_o2": {
@@ -66,6 +76,17 @@
       "first_two_days_water_budget_identical_to_admitted_predecessor": true,
       "split_candidate_restart_final_state_and_temperature_exact": true,
       "qualification_limit": "Full source-event restart replay bound to same prepared input not yet compared; O0/O2 end-to-end candidate full run not completed. No SWAP431 end-to-end parity or solute scope claimed."
+    },
+    "normally_prepared_o0": {
+      "status": "TESTED_NOT_QUALIFIED",
+      "initial_run": "0->1.94 censored at 55 seconds; day1 restart retained",
+      "day1_to_day2_seconds": 48.13582281700019,
+      "day2_to_day2_495_seconds": 16.383997044000353,
+      "day2_495_to_day2_66_seconds": 40.10686227199989,
+      "end_day": 2.6600000000034925,
+      "final_state_and_temperature_byte_exact_to_normal_o2": true,
+      "day2_budget_exact_to_predecessor": true,
+      "note": "Separate O0 source-event restarts; exact whole-run restart payload between O0 and O2 not established. Runs overlapped compilation, timing is not controlled performance comparison."
     }
   }
 }
