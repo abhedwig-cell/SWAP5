@@ -35,6 +35,7 @@ module mod_macropore_single_column_runtime
   integer,parameter,public::MACRO_RUNTIME_FAILED=4
 
   type, public :: macropore_runtime_policy_t
+    logical :: coupled_hydraulic_trial=.false.
     logical :: anchored_cauchy_step_ceiling=.false.
     logical :: perched_jacobian_enabled=.false.
     logical :: enabled=.false.
