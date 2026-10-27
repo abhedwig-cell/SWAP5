@@ -1,0 +1,30 @@
+name: Temporary compiler recovery
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/closure-compiler-recovery.yml'
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Package existing compiler
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p recovery
+          gfortran --version | head -1 | tee recovery/version.txt
+          cp -L "$(command -v gfortran)" recovery/gfortran
+          cp -L "$(gfortran -print-prog-name=f951)" recovery/f951
+          cp -L "$(gfortran -print-file-name=libgfortran.so)" recovery/libgfortran.so
+          cp -L "$(gfortran -print-file-name=libgfortran.a)" recovery/libgfortran.a
+          gfortran -print-search-dirs > recovery/search-dirs.txt
+          sha256sum recovery/* > recovery/SHA256SUMS
+          tar -czf compiler-recovery.tar.gz -C recovery .
+      - uses: actions/upload-artifact@v4
+        with:
+          name: closure-compiler-recovery
+          path: compiler-recovery.tar.gz
+          retention-days: 1
