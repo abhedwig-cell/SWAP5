@@ -313,6 +313,18 @@ contains
     request%unsaturated%sorptivity%perched_active=perched_view%active
     request%unsaturated%sorptivity%perched_top_node=perched_view%top_node
     request%unsaturated%sorptivity%perched_bottom_node=perched_view%bottom_node
+    ! Experimental corrected-source route: partition the partially saturated
+    ! perched top cell, retaining absorption over its unsaturated wall.
+    if(template%unsaturated%entry_transition_width_cm>0.0_real64.and.perched_view%active)then
+      topw=perched_view%top_node
+      if(perched_view%partial_top_active.and.matrix%pressure_head(topw)<0.0_real64)then
+        volume_under_drain=max(0.0_real64,min(1.0_real64, &
+          (perched_view%water_level_cm-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
+        request%unsaturated%sorptivity%perched_top_node=topw+1
+        request%unsaturated%sorptivity%domain_fraction(:,topw)= &
+          request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+      end if
+    end if
     if(matrix_view%active)then
       request%unsaturated%sorptivity%matrix_top_saturated_node=matrix_view%top_node
     else
