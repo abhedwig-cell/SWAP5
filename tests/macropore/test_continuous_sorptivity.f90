@@ -53,6 +53,9 @@ program test_continuous_sorptivity
   call check(ur%valid.and.ur%selected_amount_cm(1,1)==0,'zero width legacy exact')
   u%entry_transition_width_cm=1e-4_real64
   call evaluate_unsat_absorption(u,ur)
+  call check(ur%selected_amount_cm(1,1)==0,'entry width independent of sorption')
+  u%continuous_sorption=.true.
+  call evaluate_unsat_absorption(u,ur)
   call check(ur%valid.and.ur%selected_amount_cm(1,1)>0,'composed corrected route')
   r%theta=r%theta_s
   call evaluate_sorptivity_rate(r,corrected,.true.)
