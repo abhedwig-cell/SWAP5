@@ -21,9 +21,10 @@ module mod_b111_profile_groundwater_projection
 
 contains
 
-  pure subroutine evaluate_b111_profile_groundwater_projection(z, node_distance, pressure_head, ponding_depth, result)
+  pure subroutine evaluate_b111_profile_groundwater_projection(z, node_distance, pressure_head, ponding_depth, result, positive_pond_surface)
     real(real64), intent(in) :: z(:), node_distance(:), pressure_head(:), ponding_depth
     type(b111_profile_groundwater_projection_t), intent(out) :: result
+    logical, intent(in), optional :: positive_pond_surface
 
     integer :: n, node, lower
     real(real64) :: denominator
@@ -55,6 +56,15 @@ contains
       result%status = B111_PROFILE_GWL_FULLY_SATURATED
       result%valid = .true.
       result%level_present = .true.
+      ! A positive surface film is a connected free-water boundary regardless
+      ! of its thickness. The literal legacy absence threshold remains the
+      ! default; the explicit corrected wall route selects this convention.
+      if (present(positive_pond_surface)) then
+        if (positive_pond_surface .and. ponding_depth > 0.0_real64) then
+          result%level_cm = ponding_depth
+          return
+        end if
+      end if
       if (pressure_head(1) > 0.0_real64) then
         if (ponding_depth < 1.0e-8_real64) then
           result%level_cm = min(z(1) + pressure_head(1), ponding_depth)
