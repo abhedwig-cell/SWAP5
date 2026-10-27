@@ -181,7 +181,7 @@ program swap5_native_water_project
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
-  logical::did_commit,policy_ok,anchored_ceiling=.false.
+  logical::did_commit,policy_ok,anchored_ceiling=.false.,perched_jacobian=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
@@ -199,6 +199,12 @@ program swap5_native_water_project
     call require(ieee_is_finite(entry_ramp_width_cm),'entry transition width finite')
     call require(anchored_ceiling.and.entry_ramp_width_cm>0d0.and.entry_ramp_width_cm<=1d-3, &
       'explicit entry transition width range/policy')
+  end if
+  call get_command_argument(10,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='perched-jacobian','unknown perched Jacobian policy')
+    call require(anchored_ceiling.and.entry_ramp_width_cm>0d0,'perched Jacobian requires bounded native route')
+    perched_jacobian=.true.
   end if
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
@@ -471,6 +477,7 @@ program swap5_native_water_project
   numerical%transaction%max_retries=40;numerical%transaction%retry_scale=.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)
   macro_policy%anchored_cauchy_step_ceiling=anchored_ceiling
+  macro_policy%perched_jacobian_enabled=perched_jacobian
   macro_policy%enabled=.true.;macro_policy%inner_richards_exchange_enabled=.true.
   macro_policy%solver_mass_tolerance_cm=1d-10;macro_policy%internal_exchange_tolerance_cm=1d-10
   call backend%configure_macropore_policy(macro_policy,policy_ok);call require(policy_ok,'Reference macro policy')
