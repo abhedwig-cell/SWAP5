@@ -115,9 +115,10 @@ contains
         if(hmp<1.0e-8_real64 .and. delh>0.0_real64)delh=0.0_real64
         if(abs(delh)<1.0e-8_real64)delh=0.0_real64
         if(request%matrix_sat%matrix_head(ic)<0.0_real64)then
-          if(.not.(request%unsaturated%continuous_sorption.and. &
-            request%matrix_sat%matrix_partial_top_active.and.ic==request%matrix_sat%matrix_top_saturated_node)) &
-              delh=0.0_real64
+          if(.not.allocated(request%matrix_sat%matrix_wet_fraction))then
+            if(.not.(request%unsaturated%continuous_sorption.and. &
+              request%matrix_sat%matrix_partial_top_active.and.ic==request%matrix_sat%matrix_top_saturated_node))delh=0.0_real64
+          end if
         end if
 
         if(abs(delh)>HEAD_DIFFERENCE_THRESHOLD)then
