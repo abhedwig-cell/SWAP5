@@ -113,7 +113,7 @@ contains
     node_distance(1)=0.5_real64*dz(1)
     node_distance(2:n)=z(1:n-1)-z(2:n)
     call evaluate_b111_profile_groundwater_projection(z,node_distance,matrix%pressure_head, &
-      matrix%ponding_depth,projection)
+      matrix%ponding_depth,projection,positive_pond_surface=.true.)
     if(.not.projection%valid)return
     carrier=matrix
     ! Typed absence means no saturated wall, rather than the legacy 999 sentinel.
