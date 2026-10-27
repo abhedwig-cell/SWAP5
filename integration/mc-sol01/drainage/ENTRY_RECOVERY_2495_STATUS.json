@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Diagnose and repair partly saturated top-cell / groundwater-face source transition around day 2.695, preserving early trajectory and balance; restart from guarded day 2.660 checkpoint.",
+  "next_action": "Continue original application from qualified-by-binding local day 3 checkpoint toward day 5; diagnose high temporal rejection and qualify partial-cell transition without the day 1.19 regression.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -225,7 +225,29 @@
         "o0_split_vs_o2_split": "PASS: budget.csv, state.csv, temperature.csv and progress.csv byte-identical",
         "o2_option_off_to_day2": "PASS: budget, state, temperature and progress byte-identical to admitted predecessor",
         "foreign_executable_restart": "REJECTED before physical output",
-        "recovery_library_file_id": "libfile_af2a5a1be7b8819186fd60cac81b0097"
+        "recovery_library_file_id": "libfile_af2a5a1be7b8819186fd60cac81b0097",
+        "day3_segmented": {
+          "status": "COMPLETE_NOT_QUALIFIED",
+          "from_day": 0,
+          "to_day": 3,
+          "source_restart_days": [
+            2.66,
+            2.748
+          ],
+          "native_seconds_by_segment": [
+            47.624,
+            39.208520122,
+            12.304210832
+          ],
+          "additional_attempts": 10739,
+          "additional_solver_rejections": 0,
+          "additional_temporal_rejections": 5379,
+          "additional_mass_rejections": 0,
+          "water_residual_266_to_2748_cm": 1.224853551917704e-13,
+          "water_residual_2748_to_3_cm": -6.944445019030354e-14,
+          "recovery_library_file_id": "libfile_489c4ef992f08191a4161c7005f12c25",
+          "limits": "The first 2.66-day uninterrupted result and the later split segments were individually completed. Continuous whole-period day 3 replay, solute and donor parity not qualified."
+        }
       },
       "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
     }
