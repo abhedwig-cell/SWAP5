@@ -20,8 +20,10 @@ jobs:
           cp -L "$(gfortran -print-prog-name=f951)" recovery/f951
           cp -L "$(gfortran -print-file-name=libgfortran.so)" recovery/libgfortran.so
           cp -L "$(gfortran -print-file-name=libgfortran.a)" recovery/libgfortran.a
+          cp -L "$(gfortran -print-file-name=libgfortran.spec)" recovery/libgfortran.spec
+          cp -a "$(gfortran -print-file-name=finclude)" recovery/finclude
           gfortran -print-search-dirs > recovery/search-dirs.txt
-          sha256sum recovery/* > recovery/SHA256SUMS
+          find recovery -type f -print0 | sort -z | xargs -0 sha256sum > recovery/SHA256SUMS
           tar -czf compiler-recovery.tar.gz -C recovery .
       - uses: actions/upload-artifact@v4
         with:
