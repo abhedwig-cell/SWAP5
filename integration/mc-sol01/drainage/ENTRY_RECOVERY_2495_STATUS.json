@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Instrument the exact KERNEL_STATUS_NOT_ADMITTED branch on day 43 to 44 using the bound day 43 checkpoint, identify and implement the missing supported combination, then resume.",
+  "next_action": "Identify node/domain and physical source of the day 43.4785 macropore cell residual; reconcile rate receipt and storage update without loosening the cell balance, then replay day 43 through 44 from bound checkpoint.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -306,8 +306,19 @@
           "mass_rejections": 0,
           "day30_to43_max_daily_water_residual_cm": 9.582265536600687e-14,
           "recovery_library_file_id": "libfile_a2ddf1d64c0c8191885a1c2a6b4adf16",
-          "failure": "Day 43 to 44 reproducibly rejects with KERNEL_STATUS_NOT_ADMITTED 101 and no solver attempt. Logged Rutter clock equals cursor, and is printed unconditionally on rejection; it is not a diagnosed clock error.",
-          "limitations": "Segmented original prepared water route. Solute, donor comparison, full-period replay and exact merge not qualified."
+          "failure": "Day 43 to 44 transaction computes, but accepted water flux trace rejects five trial substeps near day 43.4785 due to fmr_macropore_trace_cell_balance_valid. Rejection resets diagnostics, thus prior zero solver attempts were not evidence of pre-solver rejection. Rutter clock equals cursor and is printed unconditionally.",
+          "limitations": "Segmented original prepared water route. Solute, donor comparison, full-period replay and exact merge not qualified.",
+          "diagnostic": {
+            "interval_starts_day": 43.478515625,
+            "cell_balance_residual_cm_min": 5.672011034257313e-13,
+            "cell_balance_residual_cm_max": 8.672957056517945e-13,
+            "threshold_cm_min": 5.68260683940025e-15,
+            "threshold_cm_max": 1.740135683940025e-14,
+            "max_residual_threshold_ratio": 152.62285957184574,
+            "receipt_validation": "PASS before cell-balance gate for reported failures",
+            "method": "Temporary O2 diagnostic executables replayed the day-43 checkpoint using its original binding solely for inspection; they are not qualified or restart-compatible release builds.",
+            "tolerance": "unchanged"
+          }
         }
       },
       "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
