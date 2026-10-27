@@ -1,5 +1,7 @@
 module mod_macropore_standard_rate_adapter
   use, intrinsic :: iso_fortran_env, only: real64
+  use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
+       evaluate_b111_profile_groundwater_projection
   use mod_ppa_wu05a6_rapid_drain_rate, only: derive_rapid_volume_under_drain
   use mod_soil_water_solver_contract, only: soil_water_physical_state_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t
@@ -28,7 +30,7 @@ module mod_macropore_standard_rate_adapter
     real(real64) :: bottom_level_cm=0.0_real64
   end type matrix_perched_zone_view_t
 
-  public :: derive_matrix_saturated_zone_view
+  public :: derive_matrix_saturated_zone_view,derive_candidate_matrix_saturated_zone_view
   public :: derive_matrix_perched_zone_view
   public :: prepare_standard_macropore_rate_request
   public :: prepare_standard_sorptivity_history_request
@@ -41,6 +43,30 @@ contains
     factor=0.0_real64
     if(macro_wet>0.0_real64)factor=max(0.0_real64,macro_wet-matrix_wet)/macro_wet
   end function unsaturated_wall_multiplier
+
+  subroutine derive_candidate_matrix_saturated_zone_view(matrix,z,dz,view)
+    type(soil_water_physical_state_t),intent(in)::matrix
+    real(real64),intent(in)::z(:),dz(:)
+    type(matrix_saturated_zone_view_t),intent(out)::view
+    type(soil_water_physical_state_t)::carrier
+    type(b111_profile_groundwater_projection_t)::projection
+    real(real64)::node_distance(size(z))
+    integer::n
+    view=matrix_saturated_zone_view_t()
+    n=matrix%active_nodes
+    if(n<2.or.size(z)/=n.or.size(dz)/=n)return
+    if(.not.allocated(matrix%pressure_head))return
+    node_distance(1)=0.5_real64*dz(1)
+    node_distance(2:n)=z(1:n-1)-z(2:n)
+    call evaluate_b111_profile_groundwater_projection(z,node_distance,matrix%pressure_head, &
+      matrix%ponding_depth,projection)
+    if(.not.projection%valid)return
+    carrier=matrix
+    ! Typed absence means no saturated wall, rather than the legacy 999 sentinel.
+    carrier%groundwater_level=z(n)-0.5_real64*dz(n)
+    if(projection%level_present)carrier%groundwater_level=projection%level_cm
+    call derive_matrix_saturated_zone_view(carrier,z,dz,view)
+  end subroutine derive_candidate_matrix_saturated_zone_view
 
   subroutine derive_matrix_saturated_zone_view(matrix,z,dz,view)
     type(soil_water_physical_state_t),intent(in)::matrix
@@ -294,7 +320,14 @@ contains
     ! Dynamic A9 top input and A10 rapid drainage are both composed from
     ! immutable configuration plus current accepted/candidate hydraulic views.
 
-    call derive_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
+    if(template%unsaturated%continuous_sorption)then
+      ! Saturated exchange is algebraic in the current hydraulic profile.
+      ! A lagged accepted level otherwise gives a non-vanishing full/half
+      ! discrepancy even as dt tends to zero. Keep storage/history immutable.
+      call derive_candidate_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
+    else
+      call derive_matrix_saturated_zone_view(matrix,z,dz,matrix_view)
+    end if
     if(.not.matrix_view%valid)return
 
     request=template
@@ -340,7 +373,7 @@ contains
         topw=matrix_view%top_node
         if(matrix_view%active)then
           volume_under_drain=max(0.0_real64,min(1.0_real64, &
-            (matrix%groundwater_level-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
+            (matrix_view%groundwater_level_cm-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
           request%unsaturated%sorptivity%matrix_top_saturated_node=topw+1
           request%unsaturated%sorptivity%domain_fraction(:,topw)= &
             request%unsaturated%sorptivity%domain_fraction(:,topw)* &
@@ -368,6 +401,7 @@ contains
     request%matrix_sat%step_duration=step_duration
     request%matrix_sat%matrix_partial_top_active=.true.
     request%matrix_sat%matrix_level=matrix%groundwater_level
+    if(template%unsaturated%continuous_sorption)request%matrix_sat%matrix_level=matrix_view%groundwater_level_cm
     request%matrix_sat%matrix_head=matrix%pressure_head
     request%matrix_sat%bottom_domain=geometry%bottom_domain
     if(matrix_view%active)then
