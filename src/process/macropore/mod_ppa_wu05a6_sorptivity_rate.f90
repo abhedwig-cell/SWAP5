@@ -85,14 +85,25 @@ contains
          all(self%wet_fraction <= 1.0_real64)
   end function sorptivity_request_valid
 
-  subroutine evaluate_sorptivity_rate(request, result)
+  subroutine evaluate_sorptivity_rate(request, result, continuous_saturation)
     type(sorptivity_rate_request_t), intent(in) :: request
     type(sorptivity_rate_result_t), intent(out) :: result
 
+    logical, intent(in), optional :: continuous_saturation
+    logical :: continuous
+    real(real64) :: deficit_floor, event_rate_floor, time_increment
     integer :: id, ic, ic_top, ic_bottom, n, nd
     real(real64) :: sat_def, time, theta_ref, sorp_seed, active, amount
     logical :: excluded_by_perched
 
+    continuous=.false.
+    if(present(continuous_saturation))continuous=continuous_saturation
+    deficit_floor=CRIT_SAT_DEF
+    event_rate_floor=1.0e-7_real64
+    if(continuous)then
+      deficit_floor=0.0_real64
+      event_rate_floor=0.0_real64
+    end if
     result = sorptivity_rate_result_t()
     if (.not. request%valid()) return
 
@@ -121,7 +132,9 @@ contains
         if (excluded_by_perched) cycle
 
         sat_def = max(0.0_real64, request%theta_s(ic)-request%theta(ic))
-        if (sat_def < CRIT_SAT_DEF) cycle
+        if (sat_def <= deficit_floor) then
+          if(continuous.or.sat_def<CRIT_SAT_DEF)cycle
+        end if
 
         time = request%history_absorption_time(id,ic)
         theta_ref = request%history_theta_ref(id,ic)
@@ -135,7 +148,7 @@ contains
           active = sorp_seed
           result%seed_theta_ref(id,ic) = theta_ref
           result%seed_sorptivity(id,ic) = sorp_seed
-        else if (theta_ref-request%theta(ic) > CRIT_SAT_DEF) then
+        else if (theta_ref-request%theta(ic) > deficit_floor) then
           active = request%sorptivity_max(ic) * &
                ((theta_ref-request%theta(ic)) / &
                (request%theta_s(ic)-request%theta_r(ic)))**request%sorptivity_alpha(ic)
@@ -143,16 +156,19 @@ contains
           active = 0.0_real64
         end if
 
+        time_increment=sqrt(time+request%step_duration)-sqrt(time)
+        if(continuous)time_increment=request%step_duration / &
+          (sqrt(time+request%step_duration)+sqrt(time))
         amount = active*request%domain_fraction(id,ic) * &
              (4.0_real64*request%wall_correction(ic)*request%dz(ic)/request%diameter(ic)) * &
-             (sqrt(time+request%step_duration)-sqrt(time))
+             time_increment
 
         if ((request%swmbf == 1 .or. id > 1) .and. ic == request%top_water_node(id)) then
           amount = request%wet_fraction(id,ic)*amount
         end if
 
         amount = min(Q_SORP_MAX*request%step_duration*request%dz(ic), max(0.0_real64,amount))
-        if (amount/request%step_duration > 1.0e-7_real64) result%end_event(id,ic) = .false.
+        if (amount/request%step_duration > event_rate_floor) result%end_event(id,ic) = .false.
 
         result%amount_cm(id,ic) = request%flow_reduction*amount
         result%rate_cm_per_day(id,ic) = result%amount_cm(id,ic)/request%step_duration
