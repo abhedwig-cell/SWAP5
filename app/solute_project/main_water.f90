@@ -542,6 +542,10 @@ program swap5_native_water_project
       call initialize_interception_window(1000000_int64+int(j,int64)*MAX_RAIN_EVENTS+rain_index,cursor,endpoint, &
         rain_rate*(endpoint-cursor),forcing%rutter%source_window,code)
       call require(code==0,'source rain window')
+      ! The active Boesten process owns the empirical soil-demand reduction.
+      ! Rutter reuses that result; its own potential cannot replace this input.
+      forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=soil_evaporation_cm_day(j)
+      forcing%boesten_evaporation%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
       forcing%rutter%prepared=.true.
       forcing%rutter%matrix_source_area_partition=.true.
       forcing%rutter%process%vegetation_cover_fraction=vegetation_cover(j)
