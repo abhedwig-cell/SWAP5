@@ -71,7 +71,8 @@ contains
     call evaluate_unsat_absorption(request%unsaturated,result%unsaturated)
     if(.not.result%unsaturated%valid)return
 
-    call evaluate_saturated_sources(request%interflow_sat,request%matrix_sat,result%saturated)
+    call evaluate_saturated_sources(request%interflow_sat,request%matrix_sat,result%saturated, &
+      request%unsaturated%continuous_sorption)
     if(.not.result%saturated%valid)return
 
     call evaluate_rapid_drain(request%rapid,result%rapid)
