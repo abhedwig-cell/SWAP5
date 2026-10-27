@@ -96,16 +96,16 @@ contains
       else
       do ic=bottom,top_node,-1
         vol=state%volume_domain_cp(id,ic)
-        if(vol<=1.0e-12_real64)then
-          if(remaining>1.0e-12_real64)return
+        if(vol<=0.0_real64)then
+          if(remaining>0.0_real64)return
           cycle
         end if
-        if(remaining>=vol-1.0e-12_real64)then
+        if(remaining>=vol)then
           view%normalized_water_cm(id,ic)=vol
           view%wet_fraction(id,ic)=1.0_real64
           remaining=max(0.0_real64,remaining-vol)
           topw=ic
-          if(remaining<=1.0e-12_real64)exit
+          if(remaining<=0.0_real64)exit
         else
           view%normalized_water_cm(id,ic)=remaining
           frac=remaining/vol
@@ -118,7 +118,7 @@ contains
       end if
       if(remaining>1.0e-10_real64)return
 
-      if(total<=1.0e-12_real64.and.(.not.degenerate_tip.or.total<=0.0_real64))then
+      if(total<=0.0_real64)then
         topw=bottom
         view%normalized_water_cm(id,:)=0.0_real64
         view%wet_fraction(id,:)=0.0_real64
