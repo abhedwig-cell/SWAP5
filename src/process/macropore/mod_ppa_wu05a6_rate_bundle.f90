@@ -52,9 +52,8 @@ contains
 
     result=macropore_rate_bundle_result_t()
 
-    if(.not.request%unsaturated%valid())return
-    if(.not.request%interflow_sat%valid() .or. .not.request%matrix_sat%valid())return
-    if(.not.request%rapid%valid())return
+    ! Constitutive leaves validate their full inputs; never publish an invalid leaf.
+    ! Retain limiter validation here because its arrays are written before its leaf call.
     if(.not.request%limiter%valid())return
 
     nd=request%unsaturated%sorptivity%num_domains
@@ -69,14 +68,23 @@ contains
        abs(request%rapid%step_duration-dt)>1.0e-14_real64)return
 
     call evaluate_unsat_absorption(request%unsaturated,result%unsaturated)
-    if(.not.result%unsaturated%valid)return
+    if(.not.result%unsaturated%valid)then
+      result=macropore_rate_bundle_result_t()
+      return
+    end if
 
     call evaluate_saturated_sources(request%interflow_sat,request%matrix_sat,result%saturated, &
       request%unsaturated%continuous_sorption)
-    if(.not.result%saturated%valid)return
+    if(.not.result%saturated%valid)then
+      result=macropore_rate_bundle_result_t()
+      return
+    end if
 
     call evaluate_rapid_drain(request%rapid,result%rapid)
-    if(.not.result%rapid%valid)return
+    if(.not.result%rapid%valid)then
+      result=macropore_rate_bundle_result_t()
+      return
+    end if
 
     call copy_limiter_request(request%limiter,limiter_request)
     limiter_request%potential_interflow_sat_cm = sum(result%saturated%qin_interflow_rate,dim=2)*dt
