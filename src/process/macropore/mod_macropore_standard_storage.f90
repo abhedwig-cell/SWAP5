@@ -96,10 +96,7 @@ contains
       else
       do ic=bottom,top_node,-1
         vol=state%volume_domain_cp(id,ic)
-        if(vol<=0.0_real64)then
-          if(remaining>0.0_real64)return
-          cycle
-        end if
+        if(vol<=0.0_real64)cycle
         if(remaining>=vol)then
           view%normalized_water_cm(id,ic)=vol
           view%wet_fraction(id,ic)=1.0_real64
