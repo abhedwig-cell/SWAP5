@@ -789,7 +789,36 @@
           "O0_O2_max_head_difference_cm": 0,
           "water_residual_cm": -4.2795281207652636e-13
         },
-        "next": "Reuse day7→30; if complete reuse30→65 and longer. Exact native source files and reader sources, not just physical providers, must remain bound."
+        "next": "Reuse day7→30; if complete reuse30→65 and longer. Exact native source files and reader sources, not just physical providers, must remain bound.",
+        "actual_original_prefix90": {
+          "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+          "start_day": 0,
+          "end_day": 90,
+          "native_seconds": 481.12470280700654,
+          "days_per_second": 0.18706168998373315,
+          "attempts": 48980,
+          "solver_rejections": 5,
+          "temporal_rejections": 11430,
+          "mass_rejections": 0,
+          "max_daily_water_cm": 2.458228065549406e-11,
+          "chain": [
+            "coupled-event-original5",
+            "coupled-event-original7",
+            "coupled-event-original30",
+            "coupled-event-original65",
+            "coupled-event-original90"
+          ],
+          "cumulative_drainage_delta_cm": 0.4542881897299287,
+          "endpoint_gwl_cm": -116.75834888830985,
+          "b0_gwl_cm": -119.85954,
+          "gwl_delta_cm": 3.1011911116901416,
+          "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+          "status": "COMPLETE_LOCALLY_NOT_SCIENTIFICALLY_ADMITTED",
+          "historical_period": "1998-01-01 through1998-03-31 inclusive",
+          "source_commit": "8fc49e78db35f121ed1a5715f0092d306b337492",
+          "next": "Reuse90→180, then original year boundary/481. No final-source prefix restart across year qualified yet."
+        },
+        "closed_execution_blocker": "Original source event64.898 passed within actual final-source0→65→90 chain; no inherited mixed-source admission. Numerical mechanism locally repaired; physical/contact scientific admission remains open."
       }
     }
   }
