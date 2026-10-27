@@ -315,6 +315,18 @@ contains
     request%unsaturated%sorptivity%perched_bottom_node=perched_view%bottom_node
     if(matrix_view%active)then
       request%unsaturated%sorptivity%matrix_top_saturated_node=matrix_view%top_node
+      ! Experimental corrected-source subcell partition: retain absorption
+      ! over the unsaturated part of a partially flooded top matrix cell.
+      ! The legacy width-zero route remains unchanged.
+      if(template%unsaturated%entry_transition_width_cm>0.0_real64.and. &
+         matrix%pressure_head(matrix_view%top_node)<0.0_real64)then
+        topw=matrix_view%top_node
+        volume_under_drain=max(0.0_real64,min(1.0_real64, &
+          (matrix%groundwater_level-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
+        request%unsaturated%sorptivity%matrix_top_saturated_node=topw+1
+        request%unsaturated%sorptivity%domain_fraction(:,topw)= &
+          request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+      end if
     else
       request%unsaturated%sorptivity%matrix_top_saturated_node=n+1
     end if
