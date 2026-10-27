@@ -4559,7 +4559,7 @@ contains
     type(soil_water_solver_diagnostics_t) :: coupled_diagnostics
     type(fmr_affine_drain_control_t),target::coupled_sink
     real(real64),target::coupled_control_value
-    logical :: coupled_trial
+    logical :: coupled_trial,coupled_engaged
     integer :: coupled_iteration
     real(real64) :: coupled_head_change,coupled_gwl_change
     logical :: coupled_mixture_active
@@ -4634,11 +4634,12 @@ contains
       if(.not.allocated(self%drainage_response_levels))return
       if(size(self%drainage_response_levels)/=1)return
       if(self%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
-      if(self%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
+      if(self%drainage_response_levels(1)%dramet3%allocation_mode/=DRAMET3_DRAINAGE_ONLY)return
       if(self%swbotb3_explicit_active.or.self%bottom_mode/=3)return
       if(self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or.self%frost_active.or.self%snow_active)return
       if(self%root_compensation%method/=ROOT_COMP_OFF.or.allocated(self%bartholomeus))return
     end if
+    coupled_engaged=.false.
     coupled_mixture_active=.false.
     coupled_previous_crossing=-1
     coupled_critical_node=0
@@ -5777,6 +5778,11 @@ contains
         hydraulic_end%pressure_head,hydraulic_end%ponding_depth,profile_projection)
       if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
       hydraulic_end%groundwater_level=profile_projection%level_cm
+      ! Keep the established time-discrete process evaluation on smooth steps.
+      ! A projection branch jump needs a coupled solve: dt reduction alone cannot
+      ! remove its finite drainage discontinuity. Once engaged, retain strict accuracy.
+      coupled_engaged=coupled_engaged.or.profile_projection%crossing_lower_node/=coupled_used_crossing
+      if(coupled_engaged)then
       coupled_head_change=maxval(abs(hydraulic_end%pressure_head-hydraulic_start%pressure_head))
       coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
       if(coupled_mixture_active)then
@@ -5813,6 +5819,7 @@ contains
         hydraulic_start=hydraulic_end
         goto 770
       end if
+      end if ! coupled_engaged
       coupled_diagnostics%route=solve_result%diagnostics%route
       solve_result%diagnostics=coupled_diagnostics
       ! Final inner solve alone is published; diagnostics count all solves.
