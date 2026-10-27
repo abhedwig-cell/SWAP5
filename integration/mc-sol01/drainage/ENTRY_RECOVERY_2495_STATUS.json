@@ -18,5 +18,23 @@
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
   "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
-  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion"
+  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
+  "perched_jacobian_candidate_20261027": {
+    "status": "TESTED_NOT_QUALIFIED_NOT_CANONICAL",
+    "source_commit": "161d228f66c5bf4d8cd6e7494dbca9160fa4532c",
+    "base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
+    "scope": "Provisional opt-in local Jacobian term for interior perched-zone matrix-to-macropore seepage; excludes partially saturated top cell. Width zero preserves historical derivative branch.",
+    "measured_source_derivative": -0.14786822988971382,
+    "previous_derivative": 0,
+    "component_test_o0_o2_error": 2.3883395261492524e-12,
+    "existing_entry_leaf_o2": "PASS",
+    "fresh_run": "0->2.63999999999941792 completed segments; censored at 50 s before requested 2.66",
+    "restart_run": "bound candidate day2 restart -> 2.66000000000349246 COMPLETE in 24.746s",
+    "resumed_water_balance_cm": -1.332409876875218e-12,
+    "restart_sha256": "83180a64cc143255c921cec33dcc86d7303d9c706abd0fe11fb3db69b0603944",
+    "recovery_library_file_id": "libfile_1859b104b0e48191bb91cab2bf61331c",
+    "recovery_sha256": "a3c1084f8b995ce422e09fcd79d8d994cbc6c0b4370f61e13cef940cb3fe9d87",
+    "limits": "Not independently qualified for limiter-active or partially saturated top derivative; original 4.3.1 comparison and O0/O2 complete application and restart replay not established; no admission. Numerical option currently tied to entry width pending contract review.",
+    "next": "Use bound day2.66 restart to isolate next slowdown near day2.695; complete affected science and preservation gates before canonical merge."
+  }
 }
