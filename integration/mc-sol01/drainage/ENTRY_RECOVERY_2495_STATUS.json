@@ -64,7 +64,7 @@
       "restart_payload_not_compared": "Identity binds changed executable"
     },
     "remaining": [
-      "Complete O0 native candidate and restart verification",
+      "Compare continuous vs split O0 source-event restart when required by owning authority",
       "Review limiter-active quasi-Jacobian accuracy and partial-top boundary",
       "Select and execute owning science and preservation gates, qualify actual merge"
     ],
@@ -98,6 +98,29 @@
       "end_day": 2.6600000000034925,
       "binding": "a33082f14d80d1753ed95a02de54ba0ee92a53c98917e24ca5dafce586ddbd98",
       "scope": "Exact normal O2 executable, prepared original input, endpoint state and restart; not admitted."
+    },
+    "o0_enabled_normal_split": {
+      "status": "COMPLETE_TESTED_NOT_ADMITTED",
+      "restart_points": [
+        1,
+        2
+      ],
+      "end_day": 2.6600000000034925,
+      "byte_exact_to_o2_same_day2_split": [
+        "state.csv",
+        "temperature.csv",
+        "budget.csv",
+        "progress.csv"
+      ],
+      "native_seconds_by_segment": [
+        1.929,
+        54.367,
+        52.494
+      ],
+      "timing_note": "Some execution overlapped another test; not a controlled performance comparison.",
+      "restart_byte_comparison": "O0 and O2 binding differs because executable identity differs; no cross-build byte claim.",
+      "recovery_library_file_id": "libfile_075e957329d881918d3cd813e2bdf0ee",
+      "recovery_sha256": "776dbc0bb0093e13179ca9ab84098d17ae043ccf62ac29cc2e5b0794cc74d116"
     }
   }
 }
