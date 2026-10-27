@@ -4,11 +4,40 @@ module mod_reference_linear_solver
   implicit none
   private
 
-  public :: reference_tridag,reference_constraint_correction
+  public :: reference_tridag,reference_constraint_correction,reference_aitken_weight
   public :: reference_tridag_backsolve
   public :: reference_band_solve
 
 contains
+
+  subroutine reference_aitken_weight(previous_weight,previous,current,weight,status)
+    real(real64),intent(in)::previous_weight,previous(:),current(:)
+    real(real64),intent(out)::weight
+    integer,intent(out)::status
+    real(real64)::scale,denominator,raw
+    real(real64)::old(size(previous)),difference(size(previous))
+    weight=previous_weight;status=1
+    if(size(previous)<1.or.size(previous)/=size(current))return
+    if(.not.ieee_is_finite(previous_weight))return
+    if(previous_weight<=0.0_real64.or.previous_weight>1.0_real64)return
+    if(any(.not.ieee_is_finite(previous)).or.any(.not.ieee_is_finite(current)))return
+    scale=max(maxval(abs(previous)),maxval(abs(current)))
+    status=0
+    if(scale==0.0_real64)return
+    old=previous/scale;difference=current/scale-old
+    denominator=dot_product(difference,difference)
+    if(denominator<=tiny(1.0_real64))return
+    raw=-previous_weight*dot_product(old,difference)/denominator
+    if(.not.ieee_is_finite(raw))then
+      status=1;return
+    end if
+    if(raw>0.0_real64)then
+      weight=min(1.0_real64,max(1.0e-4_real64,raw))
+    else
+      weight=min(previous_weight,0.5_real64)
+    end if
+  end subroutine reference_aitken_weight
+
 
   subroutine reference_constraint_correction(n,a,b,c,direction,node,head,delta,control_delta,status)
     integer,intent(in)::n,node
