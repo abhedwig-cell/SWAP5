@@ -10,10 +10,12 @@ program test_joint_wall_exchange
   type(saturated_exchange_request_t)::s,inactive
   type(saturated_exchange_result_t)::minus,plus,old,reference
   type(saturated_sources_result_t)::sources
-  type(macropore_rate_bundle_request_t)::request
+  type(macropore_rate_bundle_request_t)::request,bad_bundle
   type(macropore_rate_bundle_result_t)::rates
   type(macropore_exchange_derivative_result_t)::jac
   type(unsat_absorption_result_t)::absorption,absplus,absminus
+  type(unsat_absorption_request_t)::bad
+  integer::bad_case
   real(real64)::fd,overlap,unsat,theta_plus,theta_minus
   s%num_domains=1;s%num_nodes=1;s%matrix_top_saturated_node=1;s%matrix_bottom_saturated_node=1
   s%step_duration=0.01_real64;s%matrix_level=-1.25_real64
@@ -82,7 +84,68 @@ program test_joint_wall_exchange
   call evaluate_unsat_absorption(request%unsaturated,absminus)
   fd=0.001_real64*(absplus%selected_rate_cm_per_day(1,1)-absminus%selected_rate_cm_per_day(1,1))/(theta_plus-theta_minus)
   call check(abs(jac%total_dqdh_node(1)-fd)<1e-5_real64*abs(fd),'saturation gate real-rate finite difference')
-  print *,'JOINT_WALL_EXCHANGE_PASS' 
+  ! Each public leaf must still reject malformed nested inputs before exposing rates.
+  do bad_case=1,7
+    bad=request%unsaturated
+    select case(bad_case)
+    case(1)
+      bad%sorptivity%flow_reduction=-1.0_real64
+    case(2)
+      bad%sorptivity%dz=-1.0_real64
+    case(3)
+      deallocate(bad%sorptivity%history_absorption_time)
+    case(4)
+      bad%pressure_head=[0.0_real64,1.0_real64]
+    case(5)
+      bad%entry_transition_width_cm=-1.0_real64
+    case(6)
+      bad%conductivity=-1.0_real64
+    case(7)
+      bad%sorptivity%num_nodes=0
+    end select
+    call check(.not.bad%valid(),'invalid nested request predicate')
+    call evaluate_unsat_absorption(bad,absorption)
+    call check(.not.absorption%valid.and..not.allocated(absorption%selected_rate_cm_per_day), &
+      'invalid nested request yields no physical rates')
+  end do
+  request%matrix_sat=s;request%interflow_sat=inactive
+  request%rapid%num_nodes=1;request%rapid%bottom_domain_node=1
+  request%rapid%step_duration=0.01_real64;request%rapid%resistance_reference_day=1
+  request%rapid%diameter=[10.0_real64];request%rapid%dz=[1.0_real64]
+  request%rapid%volume_main_domain_cp=[1.0_real64]
+  request%limiter%num_domains=1
+  request%limiter%accepted_storage_cm=[1.0_real64];request%limiter%maximum_storage_cm=[2.0_real64]
+  request%limiter%minimum_storage_cm=[0.0_real64];request%limiter%top_domain_fraction=[1.0_real64]
+  request%limiter%potential_top_vertical_cm=[0.0_real64];request%limiter%potential_top_lateral_cm=[0.0_real64]
+  request%limiter%potential_interflow_sat_cm=[0.0_real64];request%limiter%potential_matrix_sat_cm=[0.0_real64]
+  request%limiter%potential_outflow_cm=[0.0_real64];request%limiter%redistribution_capacity_cm=[0.0_real64]
+  call evaluate_macropore_rate_bundle(request,rates)
+  call check(rates%valid,'complete real bundle positive control')
+  do bad_case=1,8
+    bad_bundle=request
+    select case(bad_case)
+    case(1)
+      bad_bundle%matrix_sat%cdarcy=-1
+    case(2)
+      bad_bundle%interflow_sat%ksat_horizontal=-1
+    case(3)
+      bad_bundle%rapid%resistance_reference_day=-1
+    case(4)
+      bad_bundle%unsaturated%sorptivity%flow_reduction=-1
+    case(5)
+      bad_bundle%limiter%accepted_storage_cm=-1
+    case(6)
+      bad_bundle%unsaturated%sorptivity%num_nodes=0
+    case(7)
+      bad_bundle%rapid%step_duration=-1
+    case(8)
+      deallocate(bad_bundle%matrix_sat%matrix_head)
+    end select
+    call evaluate_macropore_rate_bundle(bad_bundle,rates)
+    call check(.not.rates%valid.and..not.allocated(rates%qout_unsat_rate), &
+      'malformed leaf or limiter cannot publish bundle rates')
+  end do
+  print *,'JOINT_WALL_EXCHANGE_AND_GUARDS_PASS'
 contains
   subroutine check(ok,msg)
     logical,intent(in)::ok
