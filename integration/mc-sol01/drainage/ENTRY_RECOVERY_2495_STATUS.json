@@ -756,7 +756,41 @@
       "reason": "Global coupling fails performance gate: O0 reaches2.514days/240.006s; O2 reaches3days/240.013s,9499attempts2348temporal0solver0mass rejections, max daily9.68801081e-12cm. No active contact in early prefix. Global recomputation is excessive.",
       "selection": "8fc49e78: ordinary smooth steps retain existing time-discrete evaluation. Engage the strict immutable-origin64-iteration coupling only when candidate CALCGWL crossing_lower_node differs from the evaluation view; once engaged do not disengage in the same trial. No tolerance relaxation. Contact weak-interpretation admission still required.",
       "source_audit": "214 project/reader/build inputs exact to ac1adcd after removing only extra trailing blank lines from15 recovered readers. Rebuilt exact-source O2 native exe bit identical c0e82d4ea2df2f92d58abf45dfe225d37ea2aed289ac0e66609b6f6aed1b779d. Macro reader binary differs by build path but produced byte-identical macro.nml; other4executables identical.",
-      "next": "Changed-provider audited O2 rebuild, fresh original5 and65-event diagnostic. Global prefixes excluded from localized policy qualification."
+      "next": "Changed-provider audited O2 rebuild, fresh original5 and65-event diagnostic. Global prefixes excluded from localized policy qualification.",
+      "evidence": {
+        "source_commit": "8fc49e78db35f121ed1a5715f0092d306b337492",
+        "native_O2_sha256": "6af8711015d74281e28f4fbf11c4357eaaa8dbee4f53962f0cc17a8ac2091dd1",
+        "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
+        "gate_A_execution": {
+          "status": "COMPLETE_LOCALLY_NOT_SCIENTIFICALLY_ADMITTED",
+          "start": 0,
+          "end": 5,
+          "seconds": 122.40433392699924,
+          "days_per_second": 0.04084822685266971,
+          "attempts": 18508,
+          "solver_rejections": 2,
+          "temporal_rejections": 5656,
+          "mass_rejections": 0,
+          "max_daily_water_cm": 8.96272639439033e-12,
+          "directory": "coupled-event-original5",
+          "donor_gwl_delta_cm": -0.028481310027416384,
+          "donor_cumulative_drainage_delta_cm": 0.04556040997465474,
+          "donor_mapping": "Provisional DRN=matrix+rapid, frozen rounded B0, unexplained; no equivalence"
+        },
+        "restart_5_7": "PASS: original5→7 versus5→6→7 restart.bin/state.csv/temperature.csv byte identical. Frozen executable and input identity equal. Not a year-boundary restart.",
+        "event_64_898_65": {
+          "scope": "Diagnostic only: prior physical variant checkpoint, not prefix admission",
+          "O0_seconds": 5.6897300649943645,
+          "O2_seconds": 2.5212014830030967,
+          "attempts": 537,
+          "solver_rejections": 0,
+          "temporal_rejections": 73,
+          "mass_rejections": 0,
+          "O0_O2_max_head_difference_cm": 0,
+          "water_residual_cm": -4.2795281207652636e-13
+        },
+        "next": "Reuse day7→30; if complete reuse30→65 and longer. Exact native source files and reader sources, not just physical providers, must remain bound."
+      }
     }
   }
 }
