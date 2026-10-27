@@ -75,7 +75,27 @@
       "recovery_sha256": "72a88aab63fa0e4a385318bb5a28d84f2a2383a9e215f3936c0a2a231b8baa1c",
       "first_two_days_water_budget_identical_to_admitted_predecessor": true,
       "split_candidate_restart_final_state_and_temperature_exact": true,
-      "qualification_limit": "Full source-event restart replay bound to same prepared input not yet compared; O0/O2 end-to-end candidate full run not completed. No SWAP431 end-to-end parity or solute scope claimed."
+      "qualification_limit": "Normal source-event restart replay is exact on O2. Full O0/O2 uninterrupted candidate application, limiter and partially saturated top derivative, governing policy contract, owning science and preservation gates remain unqualified. No SWAP431 full parity or solute scope claimed.",
+      "exact_restart_replay": {
+        "status": "PASS_TESTED_NOT_ADMITTED",
+        "split_day": 2,
+        "end_day": 2.6600000000034925,
+        "binding": "e3893a56eb52e508371d6177c7c5d1ec1b93edeebeca0aa0e7e4cd0bddf4535e",
+        "byte_exact": [
+          "input.nml",
+          "input.swp",
+          "macro.nml",
+          "restart.bin",
+          "state.csv",
+          "temperature.csv"
+        ],
+        "day3_budget_row_exact": true,
+        "endpoint_sha256": {
+          "restart": "945a079b7afa3ab93fe778800585fa58698958beb3336f3cd82f715c062cb5a9",
+          "state": "286068c801ef11cb1809eba32ae743fd6fb717f4e60b5b9d7a9ab289b156c",
+          "temperature": "8397259411ae6df5ebf6760d3cb968ba9167046c09ac2645b827c39fdb58fc12"
+        }
+      }
     },
     "normally_prepared_o0": {
       "status": "TESTED_NOT_QUALIFIED",
