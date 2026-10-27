@@ -4559,6 +4559,8 @@ contains
     type(soil_water_solver_diagnostics_t) :: coupled_diagnostics
     type(fmr_affine_drain_control_t),target::coupled_sink
     real(real64),target::coupled_control_value
+    character(8)::contact_diag
+    integer::contact_diag_status
     logical :: coupled_trial,coupled_engaged
     integer :: coupled_iteration
     real(real64) :: coupled_head_change,coupled_gwl_change
@@ -4626,6 +4628,7 @@ contains
     type(frost_bottom_result_t) :: frost_bottom_result
     integer :: frost_status, frost_provider_status
     character(len=64) :: drainage_direction_route
+    call get_environment_variable('SWAP5_DIAG_CONTACT',contact_diag,status=contact_diag_status)
     coupled_trial=self%macropore_policy%coupled_hydraulic_trial
     if(coupled_trial)then
       if(.not.self%macropore_active.or..not.allocated(self%macropore_config))return
@@ -5786,6 +5789,12 @@ contains
       coupled_head_change=maxval(abs(hydraulic_end%pressure_head-hydraulic_start%pressure_head))
       coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
       if(coupled_mixture_active)then
+        if(contact_diag_status==0.and.trim(contact_diag)=='1')then
+          write(error_unit,*)'CONTACT_CANDIDATE_DETAIL',t0,t1,coupled_critical_node, &
+            profile_projection%crossing_lower_node,coupled_alpha, &
+            hydraulic_end%pressure_head(max(1,coupled_critical_node-2):min(size(hydraulic_end%pressure_head),coupled_critical_node+2))
+          flush(error_unit)
+        end if
         coupled_f=hydraulic_end%pressure_head(coupled_critical_node)
         coupled_gwl_change=abs(coupled_f)
         coupled_blend_width=0.0_real64
@@ -5803,6 +5812,13 @@ contains
               coupled_alpha=max(0.0_real64,min(1.0_real64,-coupled_f_left/(coupled_f_right-coupled_f_left)))
           if(coupled_alpha<0.1_real64.or.coupled_alpha>0.9_real64)coupled_alpha=0.5_real64
               write(*,*) 'ACTIVE_SET_BEGIN',t0,t1,coupled_critical_node,coupled_f_left,coupled_f_right,coupled_alpha
+              if(contact_diag_status==0.and.trim(contact_diag)=='1')then
+                write(error_unit,*)'CONTACT_BRACKET_DETAIL',t0,t1,coupled_critical_node, &
+                  coupled_previous_crossing,coupled_used_crossing, &
+                  hydraulic_start%pressure_head(max(1,coupled_critical_node-2):min(size(hydraulic_start%pressure_head),coupled_critical_node+2)), &
+                  hydraulic_end%pressure_head(max(1,coupled_critical_node-2):min(size(hydraulic_end%pressure_head),coupled_critical_node+2))
+                flush(error_unit)
+              end if
             end if
           end if
         end if
