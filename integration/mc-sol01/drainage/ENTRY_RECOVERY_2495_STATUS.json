@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "From the exact current committed source-event checkpoint64.898, measure the remaining zero-dt full/half component and implement consistent candidate hydraulic coupling/Jacobian for macro exchange and response drainage within an immutable-origin trial; then repeat the failed window and preserve the original prefix before481/year-boundary qualification.",
+  "next_action": "Finish missing checked evidence and test existing production build profile for actual closure performance; then extend actual original input toward481 with year-boundary restart.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -575,16 +575,18 @@
     }
   },
   "closure_sprint_01_20261027": {
-    "status": "LOCAL_ORIGINAL_PREFIX_64_898_TESTED_NOT_QUALIFIED",
+    "status": "LOCAL_ORIGINAL90_COMPLETE_157_COMMITTED_NOT_QUALIFIED",
     "canonical_head": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
     "canonical_admission": "Unchanged: original corrected-entry first2days only; MC-NUT01/MC-SOL01 CLOSED WITH EXCLUSIONS",
-    "candidate_source": "9d7661571aa14a72f3a49080f0cc36042040bbea",
+    "candidate_source": "8fc49e78db35f121ed1a5715f0092d306b337492",
     "branch": "work/closure-perched-explicit",
     "pr": 1457,
     "merged": false,
     "source_identity": {
-      "checked_files": 199,
-      "exact_remote_match": true
+      "checked_files": 214,
+      "exact_model_and_reader_sources": true,
+      "checked_build_project_predecessor": "ac1adcd7863e0afdfd8f6585a6ba887652922b7f",
+      "model_backend_successor": "8fc49e78db35f121ed1a5715f0092d306b337492"
     },
     "implementation": [
       "Independent default-off --continuous-sorption, bound into prepared input and executable restart identity; not implied by entry width or numerical Jacobian",
@@ -595,64 +597,60 @@
     "science": "Explicit corrected-source physical variant, not literal SWAP431. Temporal(.01) and mass(1e-10) tolerances unchanged. Moving-zone/off-diagonal source Jacobian remains incomplete.",
     "gates": {
       "A": {
-        "execution": "COMPLETE_O2_ORIGINAL_INPUT",
+        "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
         "from_day": 0,
         "to_day": 5,
-        "seconds": 108.85396170899912,
-        "attempts": 18712,
-        "solver_rejections": 22,
-        "temporal_rejections": 5760,
+        "seconds": 122.40433392699924,
+        "attempts": 18508,
+        "solver_rejections": 2,
+        "temporal_rejections": 5656,
         "mass_rejections": 0
       },
       "B": {
-        "execution": "COMPLETE_O2_ORIGINAL_INPUT",
-        "from_day": 5,
+        "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
+        "from_day": 0,
         "to_day": 30,
-        "seconds": 62.335674802998255,
-        "cumulative_0_30_seconds": 171.18963651199738,
-        "attempts": 12440,
-        "solver_rejections": 51,
-        "temporal_rejections": 3312,
+        "seconds": 187.65611605300364,
+        "attempts": 29654,
+        "solver_rejections": 2,
+        "temporal_rejections": 7988,
         "mass_rejections": 0
       },
       "C": {
-        "execution": "FAILED_BEFORE_DAY65",
-        "from_day": 30,
-        "last_complete_day": 64,
-        "last_committed_event": 64.89800000000105,
-        "failed_endpoint": 64.91599999999744,
-        "seconds": 220.22689779199573,
+        "execution": "IN_PROGRESS",
+        "complete_native_prefix_end": 90,
+        "same_source_day_checkpoint": 157,
         "days481_complete": false,
         "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
       }
     },
     "current_chain": {
-      "from_day": 0,
-      "last_complete_day": 64,
-      "last_committed_source_event": 64.89800000000105,
-      "failed_interval": [
-        64.89800000000105,
-        64.91599999999744
-      ],
-      "seconds_including_failed_window": 391.4165343039931,
-      "accepted_days_per_wall_second": 0.16580290895324853,
-      "wall_clock_conditions": "Some native runs overlapped builds/replays; raw elapsed costs, not a controlled comparative benchmark",
-      "attempts": 70695,
-      "solver_rejections": 92,
-      "temporal_rejections": 21705,
+      "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+      "start_day": 0,
+      "end_day": 90,
+      "native_seconds": 481.12470280700654,
+      "days_per_second": 0.18706168998373315,
+      "attempts": 48980,
+      "solver_rejections": 5,
+      "temporal_rejections": 11430,
       "mass_rejections": 0,
-      "max_daily_water_residual_cm": 2.4607649251606745e-11,
-      "substance_balance": "N/A: original SWSOLU0, not solute/N qualification",
-      "binding": "c362f31041202f674e8fbe4e91cec2ac2af8e90b5f157516d3b2492788cee3c7",
-      "restart_replay": {
-        "input.nml": true,
-        "macro.nml": true,
-        "restart.bin": true,
-        "state.csv": true,
-        "temperature.csv": true,
-        "budget.csv": true,
-        "progress.csv": true
-      }
+      "max_daily_water_cm": 2.458228065549406e-11,
+      "chain": [
+        "coupled-event-original5",
+        "coupled-event-original7",
+        "coupled-event-original30",
+        "coupled-event-original65",
+        "coupled-event-original90"
+      ],
+      "cumulative_drainage_delta_cm": 0.4542881897299287,
+      "endpoint_gwl_cm": -116.75834888830985,
+      "b0_gwl_cm": -119.85954,
+      "gwl_delta_cm": 3.1011911116901416,
+      "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
+      "restart_replay": "5→7 vs5→6→7 complete restart/profile/temperature byte exact",
+      "substance_balance": "N/A original SWSOLU0; no SOL/N qualification",
+      "cost_scope": "Native elapsed, some overlapping builds/replays; not controlled speed comparison"
     },
     "tests": {
       "compiler": "GNU Fortran13.3.0 operational;194-provider checked O0/O2 cold builds preserved, final native trajectory O2 only",
@@ -660,7 +658,8 @@
       "exact_restart": "Current5->7 versus5->6->7: seven endpoint files including complete restart.bin byte exact",
       "qualification": false,
       "canonical_admission": false,
-      "broad_FCI_low_air_RossFast": "NOT_SELECTED_IMPACT; no new broad campaigns"
+      "broad_FCI_low_air_RossFast": "NOT_SELECTED_IMPACT; no new broad campaigns",
+      "current_additions": "Checked O0/O2 real bordered correction and integrated wall/Darcy/source booking PASS; mixed predecessor64.898 event O0/O2 final pressure exact, diagnostic only; full original5/30/65/90 O2 only"
     },
     "reference_comparison": {
       "source": "Frozen original B0 DATE/RAIN/DRN/GWL CSV",
@@ -682,13 +681,13 @@
       "2_numerical_errors_and_performance": [
         {
           "priority": 1,
-          "blocker": "Consistent algebraic hydraulic carrier and coupled macro/drainage source derivatives at current64.898; avoid a zero-dt error floor without loosening gates."
+          "blocker": "Seasonal checked-build cost:144→157 uses240s, no mass/solver failure. At151→152 diagnostic, actual pressure full/half error decreases below0.01cm at dt4.15e-5day; not established zero-dt floor. Assess existing production compiler profile before changing equations/tolerances."
         }
       ],
       "3_missing_integral_evidence": [
         {
           "priority": 2,
-          "blocker": "Current original481days and exact year-boundary restart."
+          "blocker": "Current original481days/year restart; complete90 and committed157. Restore terminal/measured evidence for host-interrupted90→144 using short exact-source replay."
         },
         {
           "priority": 3,
@@ -704,23 +703,130 @@
           "priority": 5,
           "scope": "Full SOL/NUT and unselected historical option combinations remain separate exclusions; original SWSOLU0 requires no solute balance. A bounded corrected-source original water release is distinct from full historical migration."
         }
-      ]
+      ],
+      "local_closed_execution_blocker": "Actual final-source0→65→90 passes former64.898 stop; not inherited mixed-source prefix admission."
     },
     "recovery": {
-      "library_file_id": "libfile_6880a9a364848191aa11d6dc602f490d",
-      "version": 1,
-      "archive": "SWAP5_continuous_sorption_day64_20261027.tar.xz",
-      "sha256": "8be6f1e4b11ce1f2188904210d8e806d597fb2bbac4166a9b73c11ddfc6e9baf",
-      "bytes": 7751924,
-      "executable": "candidate-gwl-project/executable",
-      "prepared_input_directory": "candidate-gwl-original65",
-      "source_event_checkpoint": "candidate-gwl-original65/diagnostic-rejected.bin",
-      "source_event_clock": 64.89800000000105,
-      "day_checkpoint": "candidate-gwl-original65/restart.bin",
-      "binding": "c362f31041202f674e8fbe4e91cec2ac2af8e90b5f157516d3b2492788cee3c7",
-      "prior_variants": "V1/V2 and mixed-binding probes retained separately; never silently reuse them as final-variant qualification"
+      "library_file_id": "libfile_3208132dcf0481918050e682afe1734d",
+      "version": 0,
+      "archive": "SWAP5_coupled_contact_20261027.tar.xz",
+      "bytes": 4218692,
+      "sha256": "0647e87cbd39aba5d408adbdd60118ee98f49d90d902321f7c908e23297bd649",
+      "native_O2_sha256": "6af8711015d74281e28f4fbf11c4357eaaa8dbee4f53962f0cc17a8ac2091dd1",
+      "checkpoint": "coupled-event-original90/restart.bin",
+      "replay": "python recovery-tools/replay.py coupled-event-original90 180 /absolute/new/output",
+      "scope": "Preserved through90 only; later144/157 artifacts pending writeback"
     },
-    "release_boundary": "No canonical merge or production release: explicit original water candidate tested locally only. Complete historical migration remains open."
+    "release_boundary": "No canonical merge or production release: explicit original water candidate tested locally only. Complete historical migration remains open.",
+    "previous_candidate_9d_evidence": {
+      "candidate_source": "9d7661571aa14a72f3a49080f0cc36042040bbea",
+      "gates": {
+        "A": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT",
+          "from_day": 0,
+          "to_day": 5,
+          "seconds": 108.85396170899912,
+          "attempts": 18712,
+          "solver_rejections": 22,
+          "temporal_rejections": 5760,
+          "mass_rejections": 0
+        },
+        "B": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT",
+          "from_day": 5,
+          "to_day": 30,
+          "seconds": 62.335674802998255,
+          "cumulative_0_30_seconds": 171.18963651199738,
+          "attempts": 12440,
+          "solver_rejections": 51,
+          "temporal_rejections": 3312,
+          "mass_rejections": 0
+        },
+        "C": {
+          "execution": "FAILED_BEFORE_DAY65",
+          "from_day": 30,
+          "last_complete_day": 64,
+          "last_committed_event": 64.89800000000105,
+          "failed_endpoint": 64.91599999999744,
+          "seconds": 220.22689779199573,
+          "days481_complete": false,
+          "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
+        }
+      },
+      "current_chain": {
+        "from_day": 0,
+        "last_complete_day": 64,
+        "last_committed_source_event": 64.89800000000105,
+        "failed_interval": [
+          64.89800000000105,
+          64.91599999999744
+        ],
+        "seconds_including_failed_window": 391.4165343039931,
+        "accepted_days_per_wall_second": 0.16580290895324853,
+        "wall_clock_conditions": "Some native runs overlapped builds/replays; raw elapsed costs, not a controlled comparative benchmark",
+        "attempts": 70695,
+        "solver_rejections": 92,
+        "temporal_rejections": 21705,
+        "mass_rejections": 0,
+        "max_daily_water_residual_cm": 2.4607649251606745e-11,
+        "substance_balance": "N/A: original SWSOLU0, not solute/N qualification",
+        "binding": "c362f31041202f674e8fbe4e91cec2ac2af8e90b5f157516d3b2492788cee3c7",
+        "restart_replay": {
+          "input.nml": true,
+          "macro.nml": true,
+          "restart.bin": true,
+          "state.csv": true,
+          "temperature.csv": true,
+          "budget.csv": true,
+          "progress.csv": true
+        }
+      },
+      "tests": {
+        "compiler": "GNU Fortran13.3.0 operational;194-provider checked O0/O2 cold builds preserved, final native trajectory O2 only",
+        "O0_O2_contracts": "PASS: current16-provider joint wall real-rate FD/conservation;15-provider partial history and15-provider candidate groundwater view; two-provider sorption gate/rational time integral",
+        "exact_restart": "Current5->7 versus5->6->7: seven endpoint files including complete restart.bin byte exact",
+        "qualification": false,
+        "canonical_admission": false,
+        "broad_FCI_low_air_RossFast": "NOT_SELECTED_IMPACT; no new broad campaigns",
+        "current_additions": "Checked O0/O2 real bordered correction and integrated wall/Darcy/source booking PASS; mixed predecessor64.898 event O0/O2 final pressure exact, diagnostic only; full original5/30/65/90 O2 only"
+      },
+      "recovery": {
+        "library_file_id": "libfile_6880a9a364848191aa11d6dc602f490d",
+        "version": 1,
+        "archive": "SWAP5_continuous_sorption_day64_20261027.tar.xz",
+        "sha256": "8be6f1e4b11ce1f2188904210d8e806d597fb2bbac4166a9b73c11ddfc6e9baf",
+        "bytes": 7751924,
+        "executable": "candidate-gwl-project/executable",
+        "prepared_input_directory": "candidate-gwl-original65",
+        "source_event_checkpoint": "candidate-gwl-original65/diagnostic-rejected.bin",
+        "source_event_clock": 64.89800000000105,
+        "day_checkpoint": "candidate-gwl-original65/restart.bin",
+        "binding": "c362f31041202f674e8fbe4e91cec2ac2af8e90b5f157516d3b2492788cee3c7",
+        "prior_variants": "V1/V2 and mixed-binding probes retained separately; never silently reuse them as final-variant qualification"
+      }
+    },
+    "build_profile_successor": "0029514775c2f16fd58542c6dc3e9994d0a3da0e",
+    "host_interruption_90_144": {
+      "status": "EXEC_SESSION_DISAPPEARED_WITHOUT_TERMINAL_RECORD",
+      "checkpoint": 144,
+      "CRC_valid": true,
+      "native_seconds": "UNKNOWN",
+      "observed_native_file_span_seconds_lower_bound": 278.4910788536072,
+      "resumed144_157": {
+        "status": "CENSORED_240s",
+        "seconds": 240.016,
+        "checkpoint": 157,
+        "accepted_source_event": 157.1377500000017,
+        "no_recorded_native_error": true
+      },
+      "recovery_action": "Repeat only missing90→144 in bounded chunks to restore terminal status, timing and exact physical checkpoint comparison. Concrete need: missing measurement/terminal proof, not a broad rerun."
+    },
+    "production_profile_experiment": {
+      "state": "IMPLEMENTED_PERSISTED_BUILDING_NOT_TESTED",
+      "source": "0029514775c2f16fd58542c6dc3e9994d0a3da0e",
+      "contract": "Propagate existing checked/production profile in native project builder; default checked unchanged. Production removes compiler bounds/shape instrumentation only, retains FPE traps, all physical residual/acceptance guards and tolerances. Strict matching provider profile prevents accidental mixed-profile reuse.",
+      "qualification": "Fresh original prefix; compare physical restart payload, profile, heat and daily balances against checked before counting performance. No inherited seasonal production execution."
+    }
   },
   "coupled_hydraulic_trial_design_20261027": {
     "status": "PROPOSED_NUMERICAL_EXPERIMENT_NOT_ADMITTED",
