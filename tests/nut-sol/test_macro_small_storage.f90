@@ -24,5 +24,19 @@ program test_macro_small_storage
  state%water_domain_cp=0.0_real64
  call canonicalize_macropore_standard_storage(state,1,z,dz,view,ok)
  if(.not.ok.or.any(state%water_domain_cp/=0.0_real64))error stop 'dry stock'
+ call state%initialize(1,3,ok)
+ if(.not.ok)error stop 'zero-volume initialization'
+ state%icp_bottom_domain=3
+ state%volume_domain_cp(1,:)=[1.0e-3_real64,0.0_real64,2.0e-3_real64]
+ state%water_domain_cp(1,3)=2.0e-3_real64+tiny
+ block
+ real(real64)::z3(3),dz3(3),before
+ z3=[-1.0_real64,-3.0_real64,-5.0_real64];dz3=2.0_real64
+ before=sum(state%water_domain_cp)
+ call canonicalize_macropore_standard_storage(state,1,z3,dz3,view,ok)
+ if(.not.ok.or.abs(sum(state%water_domain_cp)-before)>1.0e-18_real64)error stop 'zero-volume cell lost water'
+ if(state%water_domain_cp(1,2)/=0.0_real64.or.state%water_domain_cp(1,1)<=0.0_real64) &
+   error stop 'zero-volume cell blocked small stock'
+ end block
  print '(a)','MACRO_SMALL_STORAGE_PASS'
 end program
