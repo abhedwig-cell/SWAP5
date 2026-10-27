@@ -90,7 +90,7 @@
     }
   },
   "partial_cell_experiment_20261027": {
-    "status": "EXPERIMENTAL_UNQUALIFIED_PHYSICAL_FORMULA_CHANGE",
+    "status": "FAILED_NORMAL_SOURCE_RUN_NOT_QUALIFIED",
     "source_commit": "9f7c1994369545c84e56e6c2910e72d3fa97cea8",
     "description": "For opt-in entry ramp and negative head at groundwater top cell, scale unsaturated domain area by the unsaturated fraction and retain it in absorption range. Historical width-zero route unchanged by this branch.",
     "reason": "Original rate source changes abruptly across groundwater-cell face, affecting temporal convergence. Proposal is a subcell physical approximation, not demonstrated historical 4.3.1 parity.",
@@ -125,6 +125,25 @@
     "evidence": {
       "path": "integration/mc-sol01/drainage/FACE_PARTITION_EXPERIMENT_EVIDENCE.tar.xz.b64",
       "sha256": "947c8e45b914f279488cb9172b96be3bee8a84e0899462cf868285de3a2cc310"
+    },
+    "normal_original_run": {
+      "status": "FAILED_REGRESSION_NOT_QUALIFIED",
+      "end_completed_source_event": 1.1419999999998254,
+      "rejected_interval": [
+        1.1419999999998254,
+        1.2909999999974389
+      ],
+      "wall_seconds": 10.047,
+      "solver_rejections_in_failed_interval": 86,
+      "diagnostic_stall_near": 1.1916181646166677,
+      "diagnostic_largest_residual_node": 57,
+      "diagnostic_head_cm": -0.01969056564,
+      "diagnostic_groundwater_level_cm": -81.2696824,
+      "observation": "Diagnostic solver reaches 64 iterations and time increments near floating-point progress limit. The instrumented executable differs from the bound executable and is diagnostic only.",
+      "component_test_o2": "PARTIAL_FACE_RATE_PASS 2.9733566308740023e-8",
+      "recovery_library_file_id": "libfile_de7c00c838a4819183470e78e3c5b2bc",
+      "recovery_sha256": "d9747b864e8e7ebdaf85db3374bc7210c1270b7b78ba0292c5b7523421a4ee8e",
+      "decision": "Do not merge or count as successful historical migration. Diagnose earlier transition and provide independently justified physical treatment."
     }
   }
 }
