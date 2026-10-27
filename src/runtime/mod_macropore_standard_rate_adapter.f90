@@ -32,8 +32,15 @@ module mod_macropore_standard_rate_adapter
   public :: derive_matrix_perched_zone_view
   public :: prepare_standard_macropore_rate_request
   public :: prepare_standard_sorptivity_history_request
+  public :: unsaturated_wall_multiplier
 
 contains
+
+  pure real(real64) function unsaturated_wall_multiplier(macro_wet,matrix_wet) result(factor)
+    real(real64),intent(in)::macro_wet,matrix_wet
+    factor=0.0_real64
+    if(macro_wet>0.0_real64)factor=max(0.0_real64,macro_wet-matrix_wet)/macro_wet
+  end function unsaturated_wall_multiplier
 
   subroutine derive_matrix_saturated_zone_view(matrix,z,dz,view)
     type(soil_water_physical_state_t),intent(in)::matrix
@@ -317,12 +324,13 @@ contains
     ! perched top cell, retaining absorption over its unsaturated wall.
     if(template%unsaturated%continuous_sorption.and.perched_view%active)then
       topw=perched_view%top_node
-      if(perched_view%partial_top_active.and.matrix%pressure_head(topw)<0.0_real64)then
+      if(perched_view%partial_top_active)then
         volume_under_drain=max(0.0_real64,min(1.0_real64, &
           (perched_view%water_level_cm-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
         request%unsaturated%sorptivity%perched_top_node=topw+1
         request%unsaturated%sorptivity%domain_fraction(:,topw)= &
-          request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+          request%unsaturated%sorptivity%domain_fraction(:,topw)* &
+          [(unsaturated_wall_multiplier(macro_view%wet_fraction(id,topw),volume_under_drain),id=1,nd)]
       end if
     end if
     if(matrix_view%active)then
@@ -330,12 +338,13 @@ contains
       ! Same wall partition for the ordinary partially saturated top cell.
       if(template%unsaturated%continuous_sorption)then
         topw=matrix_view%top_node
-        if(matrix%pressure_head(topw)<0.0_real64)then
+        if(matrix_view%active)then
           volume_under_drain=max(0.0_real64,min(1.0_real64, &
             (matrix%groundwater_level-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
           request%unsaturated%sorptivity%matrix_top_saturated_node=topw+1
           request%unsaturated%sorptivity%domain_fraction(:,topw)= &
-            request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+            request%unsaturated%sorptivity%domain_fraction(:,topw)* &
+          [(unsaturated_wall_multiplier(macro_view%wet_fraction(id,topw),volume_under_drain),id=1,nd)]
         end if
       end if
     else
