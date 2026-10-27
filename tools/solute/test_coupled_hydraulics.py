@@ -8,7 +8,7 @@ root=Path(__file__).resolve().parents[2]
 manifest=json.loads((a.physical_build/'build-complete.json').read_text())
 paths=[root/x for x in manifest['input_sha256'] if x.endswith('.f90')]
 modules={name.lower():path for path in paths for name in re.findall(r'^\s*module\s+(\w+)\s*$',path.read_text(),re.M|re.I)}
-for test,entry in [('test_bordered_drain_control','mod_reference_linear_solver'),('test_integrated_wet_wall','mod_macropore_standard_rate_adapter')]:
+for test in ['test_bordered_drain_control','test_integrated_wet_wall','test_joint_wall_exchange']:
  ordered=[];seen=set()
  def visit(path):
   if path in seen:return
@@ -16,7 +16,8 @@ for test,entry in [('test_bordered_drain_control','mod_reference_linear_solver')
   for name in re.findall(r'^\s*use\s*(?:,\s*(?:non_)?intrinsic\s*::\s*|::\s*)?(\w+)',path.read_text(),re.M|re.I):
    if name.lower() in modules and modules[name.lower()]!=path:visit(modules[name.lower()])
   ordered.append(path)
- visit(modules[entry])
+ visit(root/'tests/macropore'/(test+'.f90'))
+ ordered.pop() # Link the driver once, after compiling its actual module closure.
  for opt in ['O0','O2']:
   directory=(a.output/(test+'-'+opt)).resolve();directory.mkdir(parents=True,exist_ok=False)
   flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fcheck=all','-fbacktrace','-J'+str(directory),'-I'+str(directory)]
