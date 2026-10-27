@@ -18,5 +18,62 @@
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
   "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
-  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion"
+  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
+  "explicit_perched_jacobian_candidate_20261027": {
+    "status": "TESTED_NOT_QUALIFIED_NOT_CANONICAL",
+    "source_commit": "76b306eb48162c6520ffd1f74a757481e775b751",
+    "canonical_base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
+    "option": "Explicit numerical --perched-jacobian, default off; currently bounded by native anchored-Cauchy and positive entry ramp input. Bound into prepared input and restart identity.",
+    "science": "No physical source equation or tolerance modified. Interior perched seepage Jacobian only; partly saturated top cell excluded. Limiter-active and other broader domains remain unqualified.",
+    "component": {
+      "o0_o2": "PASS",
+      "absolute_error": 2.3883395261492524e-12,
+      "entry_ramp_o2": "PASS",
+      "zero_width_leaf_o2": "PASS",
+      "independent_policy_and_width": "PASS"
+    },
+    "o2_enabled_normal_run": {
+      "status": "COMPLETE_TESTED",
+      "from_day": 0,
+      "to_day": 2.6600000000034925,
+      "native_seconds": 53.216444977999345,
+      "attempts": 11499,
+      "solver_rejections": 3,
+      "temporal_rejections": 5824,
+      "mass_rejections": 0,
+      "water_residual_day3_cm": -1.332409876875218e-12,
+      "byte_exact_physical_files_to_earlier_width_tied_candidate": [
+        "budget.csv",
+        "state.csv",
+        "temperature.csv",
+        "progress.csv"
+      ],
+      "binding": "a33082f14d80d1753ed95a02de54ba0ee92a53c98917e24ca5dafce586ddbd98",
+      "timing_note": "Concurrent default preservation run; not a controlled performance comparison."
+    },
+    "o2_disabled_normal_run": {
+      "status": "COMPLETE_TESTED",
+      "from_day": 0,
+      "to_day": 2,
+      "physical_byte_exact_predecessor": [
+        "budget.csv",
+        "state.csv",
+        "temperature.csv",
+        "progress.csv"
+      ],
+      "restart_payload_not_compared": "Identity binds changed executable"
+    },
+    "remaining": [
+      "Replay exact O2 day2 restart with same new binding",
+      "Complete O0 native candidate and restart verification",
+      "Review limiter-active quasi-Jacobian accuracy and partial-top boundary",
+      "Select and execute owning science and preservation gates, qualify actual merge"
+    ],
+    "excluded": [
+      "Full historical 4.3.1 parity",
+      "5-day and seasonal macro application",
+      "Macro solute",
+      "Partial-cell physical experiment that regressed at day1.19"
+    ]
+  }
 }
