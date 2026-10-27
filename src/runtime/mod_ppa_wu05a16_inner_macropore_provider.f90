@@ -22,6 +22,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
 
   type, extends(macropore_exchange_provider_t), public :: ppa_wu05a16_inner_macropore_provider_t
     logical :: configured=.false.
+    logical :: perched_jacobian_enabled=.false.
     type(macropore_continuation_state_t) :: accepted_macro
     type(macropore_geometry_result_t) :: geometry
     type(macropore_geometry_config_t) :: geometry_config
@@ -112,7 +113,7 @@ contains
                                                  accepted_ponding_depth,accepted_groundwater_level,ok, &
                                                  covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
                                                  geometry_config,shrinkage,accepted_matrix_theta,matrix_area_fraction,top_input, &
-                                                 bottom_boundary_mode)
+                                                 bottom_boundary_mode,perched_jacobian_enabled)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(inout)::self
     type(macropore_continuation_state_t),intent(in)::accepted_macro
     type(macropore_geometry_result_t),intent(in)::geometry
@@ -125,8 +126,11 @@ contains
     real(real64),intent(in),optional::accepted_matrix_theta(:),matrix_area_fraction(:)
     type(fmr_macropore_top_input_forcing_t),intent(in),optional::top_input
     integer,intent(in),optional::bottom_boundary_mode
+    logical,intent(in),optional::perched_jacobian_enabled
 
     self%configured=.false.
+    self%perched_jacobian_enabled=.false.
+    if(present(perched_jacobian_enabled))self%perched_jacobian_enabled=perched_jacobian_enabled
     ok=.false.
     if(.not.accepted_macro%ready() .or. .not.geometry%valid)return
     if(step_duration<=0.0_real64)return
@@ -273,7 +277,7 @@ contains
       end if
       return
     end if
-    call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative)
+    call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative,self%perched_jacobian_enabled)
     if(.not.derivative%valid)return
     if(size(dexchange_dhead)/=self%accepted_macro%num_nodes)return
 

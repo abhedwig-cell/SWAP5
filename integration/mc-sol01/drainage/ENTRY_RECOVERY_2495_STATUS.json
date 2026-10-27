@@ -1,15 +1,37 @@
 {
   "baseline": "e7169f06e54b8f3406f1f5b69d6b22be73d5879b",
-  "stage": "DIAGNOSTIC_RECOVERY_COMPLETE_NOT_SCOPE_ADMISSION",
+  "stage": "CLOSURE_SPRINT01_TESTED_POSITIVE_FILM141_CONTACT_BLOCK_OPEN",
   "qualified": false,
   "canonically_admitted": false,
   "recovered_from_pr": 1455,
-  "clock": 2.4950000000026193,
-  "seconds": 7.085465759000044,
-  "water_max_cm": 1.745131816832668e-14,
-  "binding": "c734f831902e3df27a99761b0882ab94810f477855b2a860b11c2f4992d3adde",
-  "checkpoint_member": "restart.bin",
-  "executable_recovery": "ENTRY_RAMP_EVIDENCE.tar.xz.b64:recovery/native_water_O2",
+  "clock": 141,
+  "seconds": 615.8410080570029,
+  "water_max_cm": 3.897920874962324e-11,
+  "binding": "297c87deac1ca091d0e60198fd09d0db02d8fb67c71cb87e5abe08661c5b8cfd",
+  "checkpoint_member": "positive-film-seasonal07-141/restart.bin",
+  "executable_recovery": {
+    "library_file_id": "libfile_3208132dcf0481918050e682afe1734d",
+    "version": 5,
+    "archive": "SWAP5_coupled_contact_20261027.tar.xz",
+    "bytes": 21064968,
+    "sha256": "8623eac3f386403c9e4d452d65b3f1aeb621c486a92ab51f5390e3fe4623c34f",
+    "primary_entrypoint": "LATEST_RECOVERY.json -> positive-film-recovery.json",
+    "primary_source": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+    "preserved_primary_original_days": 141,
+    "primary_executable": "native/positive-film-O2/swap5_solute_project",
+    "primary_executable_sha256": "bd9eb745c6507a2c4758200340d22bcbc99895c4d62e4a2c66e1616dac39e04c",
+    "primary_binding": "297c87deac1ca091d0e60198fd09d0db02d8fb67c71cb87e5abe08661c5b8cfd",
+    "prior_evaporation_corrected_source_event": 256.94200000000274,
+    "later_state_diagnostic_event": 300.3130000000019,
+    "diagnostic_entrypoint": "pocket301-diagnostic-recovery.json / recovery-tools/replay-pocket-diagnostic.py",
+    "portable_self_check": {
+      "fresh_extracted_primary30_31": "COMPLETE",
+      "causal300313_replay": "EXPECTED_FAILURE",
+      "complete_failure_rollback": "BYTE_EXACT"
+    },
+    "compiler": "GNU Fortran13.3.0 operational; actual checked O0/production O2 model runs verified",
+    "compiler_recovery_library_file_id": "libfile_dbd09a2d6a588191bee270501d30b871"
+  },
   "evidence": {
     "path": "integration/mc-sol01/drainage/ENTRY_RECOVERY_2495_EVIDENCE.tar.xz.b64",
     "sha256": "81534ec5394070ef6447d83580c87f5d7d9ae5af07e7fdd32285a7da8bda9c89",
@@ -17,6 +39,1278 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
-  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion"
+  "next_action": "Implement one joint Richards/DRAMET3 source-Jacobian block in existing reference solver: current H/theta/pond view, smooth groundwater feedback as low-rank derivative, disappearing-pocket minimum-pressure active set inside Newton with original one-sided drainage vectors. Reuse tridiagonal/bordered solves. First actual-model gate: archived300.313→300.324/301; then O0/O2, strict mass/head/temporal and restart checks before another long same-source run.",
+  "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
+  "explicit_perched_jacobian_candidate_20261027": {
+    "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
+    "source_commit": "76b306eb48162c6520ffd1f74a757481e775b751",
+    "canonical_base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
+    "option": "Explicit numerical --perched-jacobian, default off; currently bounded by native anchored-Cauchy and positive entry ramp input. Bound into prepared input and restart identity.",
+    "science": "No physical source equation or tolerance modified. Interior perched seepage Jacobian only; partly saturated top cell excluded. Limiter-active and other broader domains remain unqualified.",
+    "component": {
+      "o0_o2": "PASS",
+      "absolute_error": 2.3883395261492524e-12,
+      "entry_ramp_o2": "PASS",
+      "zero_width_leaf_o2": "PASS",
+      "independent_policy_and_width": "PASS"
+    },
+    "o2_enabled_normal_run": {
+      "status": "COMPLETE_TESTED",
+      "from_day": 0,
+      "to_day": 2.6600000000034925,
+      "native_seconds": 53.216444977999345,
+      "attempts": 11499,
+      "solver_rejections": 3,
+      "temporal_rejections": 5824,
+      "mass_rejections": 0,
+      "water_residual_day3_cm": -1.332409876875218e-12,
+      "byte_exact_physical_files_to_earlier_width_tied_candidate": [
+        "budget.csv",
+        "state.csv",
+        "temperature.csv",
+        "progress.csv"
+      ],
+      "binding": "a33082f14d80d1753ed95a02de54ba0ee92a53c98917e24ca5dafce586ddbd98",
+      "timing_note": "Concurrent default preservation run; not a controlled performance comparison."
+    },
+    "o2_disabled_normal_run": {
+      "status": "COMPLETE_TESTED",
+      "from_day": 0,
+      "to_day": 2,
+      "physical_byte_exact_predecessor": [
+        "budget.csv",
+        "state.csv",
+        "temperature.csv",
+        "progress.csv"
+      ],
+      "restart_payload_not_compared": "Identity binds changed executable"
+    },
+    "remaining": [
+      "Complete O0 candidate run and relevant default/negative controls",
+      "Assess omitted off-diagonal and topology/limiter transitions, including atomic malformed-input handling",
+      "Select owning science/preservation gates and verify actual merge postimage"
+    ],
+    "excluded": [
+      "Full historical 4.3.1 parity",
+      "5-day and seasonal macro application",
+      "Macro solute",
+      "Partial-cell physical experiment that regressed at day1.19"
+    ],
+    "o2_restart_replay": {
+      "status": "PASS_TESTED_NOT_ADMITTED",
+      "split_day": 2,
+      "end_day": 2.6600000000034925,
+      "source_event_restart": true,
+      "byte_exact": [
+        "input.nml",
+        "input.swp",
+        "macro.nml",
+        "restart.bin",
+        "state.csv",
+        "temperature.csv"
+      ],
+      "day3_budget_row_exact": true,
+      "restart_sha256": "381d958aa84533eab4c25178338ad011565f38d6f438d31b945de734faf45aa1",
+      "binding": "a33082f14d80d1753ed95a02de54ba0ee92a53c98917e24ca5dafce586ddbd98",
+      "foreign_restart": "REJECTED before output using previous executable binding"
+    },
+    "recovery": {
+      "library_file_id": "libfile_be0f7682ce4c819193bde71351cd2219",
+      "sha256": "4ab41c723bffe5d95b68c8eb8c7261db09fe4fae039ff44c1e6ac2219df8a2fb",
+      "end_day": 2.6600000000034925,
+      "binding": "a33082f14d80d1753ed95a02de54ba0ee92a53c98917e24ca5dafce586ddbd98",
+      "scope": "Exact normal O2 executable, prepared original input, endpoint state and restart; not admitted."
+    },
+    "o0_enabled_normal_split": {
+      "status": "COMPLETE_TESTED_NOT_ADMITTED",
+      "restart_points": [
+        1,
+        2
+      ],
+      "end_day": 2.6600000000034925,
+      "byte_exact_to_o2_same_day2_split": [
+        "state.csv",
+        "temperature.csv",
+        "budget.csv",
+        "progress.csv"
+      ],
+      "native_seconds_by_segment": [
+        1.929,
+        54.367,
+        52.494
+      ],
+      "timing_note": "Some execution overlapped another test; not a controlled performance comparison.",
+      "restart_byte_comparison": "O0 and O2 binding differs because executable identity differs; no cross-build byte claim.",
+      "recovery_library_file_id": "libfile_075e957329d881918d3cd813e2bdf0ee",
+      "recovery_sha256": "776dbc0bb0093e13179ca9ab84098d17ae043ccf62ac29cc2e5b0794cc74d116"
+    },
+    "publication": "Draft review and recovery only; selected owning qualification and actual merge testing remain outstanding. Broad unrelated workflows intentionally not selected.",
+    "limiter_counterexample": {
+      "status": "FAILED_EXACT_JACOBIAN_NOT_ADMITTED",
+      "diagnostic": "integration/mc-sol01/drainage/DIAGNOSTIC_PERCHED_LIMITER.f90",
+      "inflow_fraction": 0.5,
+      "finite_difference_total_source": 0,
+      "candidate_diagonal": -0.07393411494952053,
+      "interpretation": "In this constructed one-node capped inflow case the cap fraction changes with pressure. The proposed term omits that dependence, so it is a quasi-Jacobian, not the exact derivative.",
+      "next": "Derive and test the active limiter contribution, including multi-node cross-dependence, or explicitly constrain and substantiate a bounded quasi-Newton policy. Do not promote to general exact Jacobian.",
+      "resolution": {
+        "status": "BOUNDED_LOCAL_DIAGONAL_FIXED_NOT_QUALIFIED",
+        "implementation_source_commit": "a6fc5fef09d3d9a508b76a0b72b5780cec3383e6",
+        "tests": "tests/nut-sol/test_native_perched_limiter.f90",
+        "one_node_finite_difference": 0,
+        "one_node_candidate": 0,
+        "two_node_finite_difference": -0.026885132710374737,
+        "two_node_candidate": -0.026885132708916563,
+        "o0_o2": "PASS",
+        "limitations": "Diagonal derivative only for interior perched inflow with no overlapping local inflow/outflow, with fixed topology and ordinary differentiable active limiter. Cross-node off-diagonal dependencies are not added; other regimes fall back to prior approximation."
+      }
+    },
+    "o0_disabled_split": {
+      "status": "COMPLETE_TESTED_NOT_ADMITTED",
+      "split_day": 1,
+      "end_day": 2,
+      "predecessor_byte_exact": [
+        "state.csv",
+        "temperature.csv"
+      ],
+      "day2_budget_row_exact": true,
+      "day2_progress_rows_exact": true,
+      "source_event_binding": "O0 option-off executable and normal input; no cross-executable restart identity claim"
+    },
+    "limiter_candidate_o2": {
+      "status": "SPLIT_COMPLETE_NOT_QUALIFIED",
+      "initial_normal_run": "censored at 55 s after complete-window 2.64",
+      "resume_from_day": 2,
+      "resume_to_day": 2.6600000000034925,
+      "resume_native_seconds": 25.212,
+      "byte_exact_to_predecessor_explicit_candidate_same_interval": [
+        "state.csv",
+        "temperature.csv",
+        "budget.csv",
+        "progress.csv"
+      ],
+      "water_residual_cm": -1.332409876875218e-12,
+      "attempts": 4975,
+      "solver_rejections": 3,
+      "temporal_rejections": 2518,
+      "mass_rejections": 0,
+      "option_off_o2_day2": "budget, state, temperature, progress byte-exact to admitted predecessor",
+      "full_run": {
+        "status": "COMPLETE_TESTED_NOT_ADMITTED",
+        "from_day": 0,
+        "end_day": 2.6600000000034925,
+        "native_seconds": 45.9695609219998,
+        "attempts": 11499,
+        "solver_rejections": 3,
+        "temporal_rejections": 5824,
+        "mass_rejections": 0,
+        "water_residual_day3_cm": -1.332409876875218e-12,
+        "source_event_restart_from_day2_exact": [
+          "input.nml",
+          "input.swp",
+          "macro.nml",
+          "state.csv",
+          "temperature.csv",
+          "restart.bin",
+          "day3 budget row"
+        ],
+        "binding": "2b770f2874aaea65b9313067e3707e1688f946171563287a4cf1d1016726b5c2",
+        "recovery_library_file_id": "libfile_c72fdc6bc4e88191befe4ac91114c7dc",
+        "recovery_sha256": "8ed0c674fdcd7c83e9b52e924d5fa40ad8d04d3c6a20b6421a367ffad66136fa"
+      }
+    },
+    "guarded_limiter_postimage": {
+      "status": "TESTED_NOT_QUALIFIED",
+      "source_commit": "ac12d55b0a7d39417ec1122451bdae01b5dda8c9",
+      "guard": "Reject invalid capped input sizes, limiter fractions, nonfinite or inconsistent local inflow before evaluating the local diagonal correction.",
+      "tests": {
+        "o0_o2": "PASS for existing entry ramp, uncapped derivative, single- and two-node capped derivative and malformed saturated input shape",
+        "single_node_fd": 0,
+        "single_node_analytic": 0,
+        "two_node_fd": -0.026885132710374737,
+        "two_node_analytic": -0.026885132708916563
+      },
+      "native": {
+        "full_o2": {
+          "from_day": 0,
+          "to_day": 2.6600000000034925,
+          "native_seconds": 47.624,
+          "attempts": 11499,
+          "solver_rejections": 3,
+          "temporal_rejections": 5824,
+          "mass_rejections": 0,
+          "water_residual_cm": -1.332409876875218e-12,
+          "binding": "4c825048cb212f9816980dbfa46b08be8e117a045412c92b8e6193c628b933ef",
+          "physical_files_equal_prior_postimage": true
+        },
+        "o2_restart_day2": "PASS: input.nml, input.swp, macro.nml, state.csv, temperature.csv, restart.bin and final budget row byte-identical to full run",
+        "o0_split_vs_o2_split": "PASS: budget.csv, state.csv, temperature.csv and progress.csv byte-identical",
+        "o2_option_off_to_day2": "PASS: budget, state, temperature and progress byte-identical to admitted predecessor",
+        "foreign_executable_restart": "REJECTED before physical output",
+        "recovery_library_file_id": "libfile_af2a5a1be7b8819186fd60cac81b0097",
+        "day3_segmented": {
+          "status": "COMPLETE_NOT_QUALIFIED",
+          "from_day": 0,
+          "to_day": 3,
+          "source_restart_days": [
+            2.66,
+            2.748
+          ],
+          "native_seconds_by_segment": [
+            47.624,
+            39.208520122,
+            12.304210832
+          ],
+          "additional_attempts": 10739,
+          "additional_solver_rejections": 0,
+          "additional_temporal_rejections": 5379,
+          "additional_mass_rejections": 0,
+          "water_residual_266_to_2748_cm": 1.224853551917704e-13,
+          "water_residual_2748_to_3_cm": -6.944445019030354e-14,
+          "recovery_library_file_id": "libfile_489c4ef992f08191a4161c7005f12c25",
+          "limits": "The first 2.66-day uninterrupted result and the later split segments were individually completed. Continuous whole-period day 3 replay, solute and donor parity not qualified."
+        },
+        "day5_segmented": {
+          "status": "COMPLETE_WATER_NOT_GATE_ADMISSION",
+          "to_day": 5,
+          "from_day": 0,
+          "source_restart_days": [
+            2.66,
+            2.748,
+            3
+          ],
+          "native_seconds_total": 150.350925253,
+          "attempts": 34754,
+          "solver_rejections": 18,
+          "temporal_rejections": 17505,
+          "mass_rejections": 0,
+          "water_residual_day4_cm": -3.6685932069957516e-14,
+          "water_residual_day5_cm": -3.094365041977909e-13,
+          "recovery_library_file_id": "libfile_87c57b4d8f888191b75a2e16b938a523",
+          "limitations": "Original prepared water route. Physical solute balance, SWAP 4.3.1 differences and replay of day 5 not yet established; no gate A admission.",
+          "replay_day3_to5": "PASS: prepared inputs, state, temperature, restart, budget and progress byte-identical"
+        },
+        "day30_segmented": {
+          "status": "COMPLETE_WATER_NOT_GATE_ADMISSION",
+          "from_day": 0,
+          "to_day": 30,
+          "source_restart_days": [
+            2.66,
+            2.748,
+            3,
+            5
+          ],
+          "native_seconds_total": 229.621838335,
+          "attempts": 53849,
+          "solver_rejections": 95,
+          "temporal_rejections": 27136,
+          "mass_rejections": 0,
+          "day5_to30_max_daily_water_residual_cm": 5.197769298304067e-13,
+          "day30_water_residual_cm": 8.663209039028175e-15,
+          "recovery_library_file_id": "libfile_36220b73b890819192745c4d91b28e82",
+          "limitations": "Segmented original prepared water route; run from day5 concurrent with day3-to5 replay. No 30-day continuous replay, solute or SWAP 4.3.1 comparison."
+        },
+        "day43_segmented": {
+          "status": "COMPLETE_WATER_NOT_GATE_ADMISSION",
+          "from_day": 0,
+          "to_day": 43,
+          "source_restart_days": [
+            2.66,
+            2.748,
+            3,
+            5,
+            30
+          ],
+          "native_seconds_total": 255.981470442,
+          "attempts": 61287,
+          "solver_rejections": 96,
+          "temporal_rejections": 30916,
+          "mass_rejections": 0,
+          "day30_to43_max_daily_water_residual_cm": 9.582265536600687e-14,
+          "recovery_library_file_id": "libfile_a2ddf1d64c0c8191885a1c2a6b4adf16",
+          "failure": "Day 43 to 44 transaction computes, but accepted water flux trace rejects five trial substeps near day 43.4785 due to fmr_macropore_trace_cell_balance_valid. Rejection resets diagnostics, thus prior zero solver attempts were not evidence of pre-solver rejection. Rutter clock equals cursor and is printed unconditionally.",
+          "limitations": "Segmented original prepared water route. Solute, donor comparison, full-period replay and exact merge not qualified.",
+          "diagnostic": {
+            "interval_starts_day": 43.478515625,
+            "cell_balance_residual_cm_min": 5.672011034257313e-13,
+            "cell_balance_residual_cm_max": 8.672957056517945e-13,
+            "threshold_cm_min": 5.68260683940025e-15,
+            "threshold_cm_max": 1.740135683940025e-14,
+            "max_residual_threshold_ratio": 152.62285957184574,
+            "receipt_validation": "PASS before cell-balance gate for reported failures",
+            "method": "Temporary O2 diagnostic executables replayed the day-43 checkpoint using its original binding solely for inspection; they are not qualified or restart-compatible release builds.",
+            "tolerance": "unchanged"
+          }
+        }
+      },
+      "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
+    },
+    "small_storage_candidate": {
+      "status": "DAY44_BOUND_WATER_TESTED_NOT_QUALIFIED",
+      "source_commit": "185ffd508db90d5e12300433aca80987593166a5",
+      "test_commit": "1a6fbfce226329a62bc95985f438d73f60dd6a1e",
+      "diagnosis": "Domain 5 cell 40 received 5.67e-13 to 8.67e-13 cm across its upper face while start/end storage, outflow and exchange were zero. Prior normalization discarded positive storage <=1e-12 cm in nondegenerate domains; preserving the stock removed the observed trace failure in the following diagnostic.",
+      "change": "Preserve positive stock and avoid rounding near-capacity stock up, without altering trace balance thresholds.",
+      "day43_to44_diagnostic": "PASS on current source, 422 attempts, 0 solver, 213 temporal, 0 mass rejection, water residual -1.28785870856518159e-14 cm. Manually reused old binding solely for diagnosis: not a valid release restart.",
+      "remaining": "Continue toward year boundary and qualify solute, SWAP 4.3.1 differences, affected owner evidence and exact merge.",
+      "component_o0_o2": "PASS small 8e-13 stock, near-capacity stock, dry stock and intermediate zero-volume cell",
+      "normal_prepared_o2": {
+        "status": "CENSORED",
+        "start_day": 0,
+        "last_completed_source_event_day": 4.546999999998661,
+        "timeout_seconds": 120,
+        "gate": "Not day 5 completion; no final checkpoint from this run"
+      },
+      "preceding_source_day4": {
+        "status": "COMPLETE_NOT_CURRENT_SOURCE",
+        "native_seconds": 112.747327821,
+        "attempts": 27691,
+        "solver_rejections": 3,
+        "temporal_rejections": 13948,
+        "mass_rejections": 0,
+        "binding": "c15852ca28bdfb04bde5b79dfcea6438f161288720114dbae43259b65254c2bf"
+      },
+      "current_source_day4": {
+        "status": "COMPLETE_NOT_QUALIFIED",
+        "native_seconds": 113.216818144,
+        "attempts": 27691,
+        "solver_rejections": 3,
+        "temporal_rejections": 13948,
+        "mass_rejections": 0,
+        "water_residual_day4_cm": -3.6685932069957516e-14,
+        "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
+        "physical_equality_to_preceding_stock_source": [
+          "budget.csv",
+          "state.csv",
+          "temperature.csv",
+          "progress.csv"
+        ],
+        "recovery_library_file_id": "libfile_a00a43d471b8819185a4bf47841665fa"
+      },
+      "current_source_day44": {
+        "status": "COMPLETE_NOT_ADMITTED",
+        "from_day": 0,
+        "to_day": 44,
+        "restart_days": [
+          4,
+          30
+        ],
+        "native_seconds": 243.798477239,
+        "attempts": 61709,
+        "solver_rejections": 96,
+        "temporal_rejections": 31129,
+        "mass_rejections": 0,
+        "day30_to44_max_daily_water_residual_cm": 9.582265536600687e-14,
+        "day44_residual_cm": -1.2878587085651816e-14,
+        "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
+        "same_source_replay_day30_to44": "PASS byte-identical prepared inputs, state, temperature, restart, budget, progress",
+        "recovery_library_file_id": "libfile_1f063769bdc88191b5b10e0c2cca381a"
+      },
+      "current_source_long_run": {
+        "status": "CENSORED_NO_FINAL_RESTART",
+        "from_day": 44,
+        "last_complete_day": 62,
+        "last_complete_source_event_day": 62.620999999999185,
+        "native_timeout_seconds": 120,
+        "attempts": 28194,
+        "solver_rejections": 19,
+        "temporal_rejections": 14240,
+        "mass_rejections": 0,
+        "day44_to62_max_daily_water_residual_cm": 1.3120355496498703e-12,
+        "description": "Censored exploration. Valid bound day 62 restart subsequently reproduced from day 44."
+      },
+      "current_source_day62": {
+        "status": "COMPLETE_WATER_NOT_QUALIFIED",
+        "from_day": 0,
+        "to_day": 62,
+        "restart_days": [
+          4,
+          30,
+          44
+        ],
+        "native_seconds": 323.405133649,
+        "attempts": 82005,
+        "solver_rejections": 105,
+        "temporal_rejections": 41398,
+        "mass_rejections": 0,
+        "day44_to62_max_daily_residual_cm": 1.3120355496498703e-12,
+        "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
+        "day30_to44_exact_replay": "PASS",
+        "recovery_library_file_id": "libfile_d1a3f7aacbac8191bfa263b1ffad779d"
+      },
+      "after_day62_censored": {
+        "from_day": 62,
+        "last_complete_day": 64,
+        "last_complete_source_event_day": 64.77300000000105,
+        "native_timeout_seconds": 100,
+        "attempts": 22508,
+        "solver_rejections": 11,
+        "temporal_rejections": 11372,
+        "mass_rejections": 0,
+        "max_complete_daily_water_residual_cm": 7.016210529231515e-13,
+        "restart_available": false
+      },
+      "current_source_day64": {
+        "status": "WATER_EXECUTED_NOT_QUALIFIED",
+        "restart_days": [
+          62,
+          63
+        ],
+        "day63_attempts": 9219,
+        "day63_solver_rejections": 10,
+        "day63_temporal_rejections": 4634,
+        "day63_mass_rejections": 0,
+        "day64_attempts": 3458,
+        "day64_solver_rejections": 0,
+        "day64_temporal_rejections": 1756,
+        "day64_mass_rejections": 0,
+        "day64_water_residual_cm": -2.0702450170828612e-13,
+        "binding": "570f86c72b40bfe91d1a33898d4cd1b6a43519f922349de92e1d07cfd041d035",
+        "recovery_library_file_id": "libfile_90ddc6bf0dcc8191a9393223327b6906",
+        "note": "Direct preserved executable and restart, after workspace maintenance. Run not instrumented; checkout still unavailable."
+      }
+    },
+    "source_recovery_20261027": {
+      "ref": "62304b2413becb3c0edb40993f68adce83129f0b",
+      "restored_files": 214,
+      "build_provider_sources": 194,
+      "verification": "Restored Git blob hashes match pinned tree; physical provider input SHA256 matches preserved executable build manifest.",
+      "local_build": "O2 checked 194-provider crop-column build COMPLETE; project/native-water executable not rebuilt yet.",
+      "controller_diagnosis": "canonical interval forbids retain_accepted_step_proposal when target_selector is present. Anchored Cauchy selector resets target to cursor+2*accepted_width after each accepted step, without the accepted temporal_error. This is a concrete controller conflict, not measured proof of its entire cost.",
+      "proposed_block": "Allow a selector cap and accepted-error timestep proposal to compose through min bounds, retain source endpoint semantics and restart determinism, then compare attempts, residual and trajectory on bound day64 input before promotion.",
+      "qualified": false
+    },
+    "accepted_error_selector_candidate": {
+      "source_commit": "b43493e345d1ca0e3e5f00d6b759d5d245019ae3",
+      "status": "DIAGNOSTIC_CENSORED_NOT_QUALIFIED",
+      "change": "Allow accepted-error proposal and selector cap to compose by minimum; enable retained proposal only on explicit anchored Cauchy route. No tolerances, physics or mass gates changed.",
+      "build": "O2 checked project build COMPLETE; existing provider artifacts reused for unchanged interfaces",
+      "diagnostic_binding": "Old day64 binding reused solely for cross-executable diagnostic, not a qualified restart",
+      "timeout_each_seconds": 60,
+      "common_end_day": 64.79099999999744,
+      "candidate_attempts": 8969,
+      "baseline_attempts": 10371,
+      "candidate_temporal_rejections": 3095,
+      "baseline_temporal_rejections": 5255,
+      "candidate_solver_rejections": 0,
+      "baseline_solver_rejections": 1,
+      "mass_rejections_both": 0,
+      "candidate_max_segment_water_residual_cm": 8.295725217877248e-13,
+      "baseline_max_segment_water_residual_cm": 9.017508961761678e-13,
+      "remaining": "Need focused selector/error-history contracts and O0/O2, complete matched interval with terminal state and temporal accuracy comparison, normally prepared own-binding run and deterministic restart; exact merge and owner qualification remain open.",
+      "contract_successor": {
+        "source_commit": "911bbe851e48b7d01fa27396d2fd2f67989146f4",
+        "test_commit": "63952a707da15d1d32545ffca63b7e8f5e5095cc",
+        "tests": "O0/O2 PASS existing FCI66 selector contracts repeated with retained proposal off/on; six production providers per optimization",
+        "guards": "Invalid selector output remains invalid before min composition; no global endpoint snap across selector cap",
+        "scope": "Contract checks only; successor not yet model-run"
+      },
+      "full_day_diagnostic": {
+        "candidate_source": "b43493e345d1ca0e3e5f00d6b759d5d245019ae3",
+        "candidate_status": "FAILED",
+        "candidate_seconds": 64.38774516700141,
+        "candidate_interval": [
+          64.82200000000012,
+          64.83999999999651
+        ],
+        "candidate_interval_attempts": 260,
+        "candidate_interval_solver_rejections": 87,
+        "candidate_interval_temporal_rejections": 16,
+        "baseline_status": "CENSORED",
+        "baseline_timeout_seconds": 150,
+        "baseline_last_completed_event": 64.82200000000012,
+        "meaning": "Both routes blocked at same source segment; common mechanism not yet proven. Full day65 is not complete; partial attempt reduction is not qualification.",
+        "restart": "Manual old-binding diagnostic only; no current own-binding restart qualification."
+      }
+    },
+    "day65_source_diagnosis": {
+      "status": "CAUSAL_SWITCH_IDENTIFIED_EXPERIMENT_INCOMPLETE",
+      "node": 21,
+      "elevation_cm": -20.5,
+      "head_cm_approx": -0.26858,
+      "ordinary_top_node": 38,
+      "perched_top_nodes": [
+        21,
+        22
+      ],
+      "perched_bottom_node": 30,
+      "exchange_when_top22_cm_day": 0.0005448600519878162,
+      "exchange_when_top21_cm_day": 0,
+      "theta_deficit_approx": 4.16e-7,
+      "meaning": "Moving perched top excludes whole node21 from unsaturated absorption although its head is negative. Residual cannot smoothly converge while topology alternates.",
+      "experiment_branch": "work/closure-perched-cell",
+      "experiment_commit": "10824ef3390470e85ff6793f2b81dd615171fc80",
+      "experimental_science": "In existing positive-entry-width corrected-source route, retain unsaturated wall fraction in partial perched top cell; not applied to width-zero legacy route. Physical coupling change is not qualified.",
+      "diagnostic_result": "Old-binding diagnostic passed 64.822->64.840 with 199 attempts, 0 solver, 18 temporal, 0 mass rejections and residual -3.18661763643035556e-13 cm; completed five segments through 64.898, then failed next segment with 39 solver rejections.",
+      "limits": "No day65 completion, no bound production restart, no O0/O2/scientific qualification of cell partition. Temporary diagnostic head/provider edits restored.",
+      "next_block": "Jointly diagnose ordinary and perched partial-cell classification, partition and derivatives, then verify continuity, early trajectory, mass and deterministic restart. Avoid more isolated threshold microfixes.",
+      "following_transition": {
+        "status": "TERMINAL_ZERO_STEP_IDENTIFIED_NOT_REPAIRED",
+        "checkpoint_day": 64.89800000000105,
+        "internal_stall_time": 64.90243487869809,
+        "macro_runtime": "438 diagnostic returns all MACRO_RUNTIME_CONVERGED with converged matrix result",
+        "headcalc": "No failure-probe records in this short replay",
+        "surface_receipt": "Observed nonnegative and valid; not the identified cause",
+        "terminal_return": "fmr_serialized_advance line4671 rejects equal t0,t1 after full/half split at machine resolution",
+        "interpretation": "Retained-proposal route accumulates accepted shrinking steps at finite time. The error components driving shrinkage have not been instrumented. Not evidence for a heat, pond or Newton failure at this transition.",
+        "next_architecture": "Record accepted dt/proposal_factor and each temporal-error component; diagnose irreducible error or active-set source history. Reconsider compositional controller shrinkage/progress handling rather than adding another physical threshold correction.",
+        "diagnostic_source_edits_restored": true
+      },
+      "temporal_component_correction": {
+        "status": "PREVIOUS_SHRINKAGE_INTERPRETATION_CORRECTED",
+        "accepted_dt_examples": [
+          1.4779288903810084e-12,
+          4.618527782440651e-14
+        ],
+        "accepted_error_examples": [
+          7.845812888263026e-10,
+          3.015543370565865e-11
+        ],
+        "proposal_factor": 2,
+        "larger_trial_error_examples": [
+          0.030801259017732008,
+          0.060196771676380156
+        ],
+        "controlling_component": "Pressure head node21 and groundwater level; sampled macro stock differences around 1e-14 cm or less",
+        "meaning": "Tiny accepted steps are proposed to grow, then larger trials fail temporal comparison. Not evidence for safety-factor self-shrinkage; active-set/source continuity remains central."
+      },
+      "joint_partition_experiment": {
+        "commit": "48619afbbcefc50c3583bead07f9fd009a1a0cb0",
+        "branch": "work/closure-perched-cell",
+        "status": "REJECTED_FOR_PRODUCTION_EARLY_REGRESSION",
+        "diagnostic_completion": "Old-binding source-event continuation from64.898 to65 COMPLETE; residual -2.16097972849382813e-13 cm",
+        "initial_route": {
+          "status": "FAILED",
+          "from_day": 0,
+          "last_complete_event": 1.9159999999974389,
+          "failed_endpoint": 1.9279999999998836,
+          "seconds": 17.14758244800032,
+          "binding": "6a05f4d0a3752740fb20b644c1ccf76020a4bd7f611a62600e4f5fb191bc74f5",
+          "preparation": "Unchanged previously prepared original input, initial state native direct invocation; not a fresh SWP import",
+          "failed_interval_attempts": 1337,
+          "solver_rejections": 77,
+          "temporal_rejections": 105,
+          "mass_rejections": 0
+        },
+        "conclusion": "No production admission or merge. After local partial-cell fixes fail preservation, reconsider coherent active-set partition and consistent source derivatives, including groundwater dependencies. Do not continue threshold microfixes."
+      }
+    }
+  },
+  "closure_sprint_01_20261027": {
+    "status": "FRESH_ORIGINAL141_GATES_AB_EXECUTION_COMPLETE_C_OPEN_TWO_POCKET_REPAIRS_EXCLUDED",
+    "canonical_head": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
+    "canonical_admission": "Unchanged canonical receipts only. Canonical main_water still has zero Boesten potential assignments; restored positive-demand/positive-film141 route is not canonically admitted.",
+    "candidate_source": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+    "branch": "work/closure-perched-explicit",
+    "pr": 1457,
+    "merged": false,
+    "source_identity": {
+      "previous_model_reader_audit": "214-file predecessor audit retained for unchanged dependency surface only",
+      "current_provider_build_audited_files": 197,
+      "changed_published_source_blobs_verified": 5,
+      "main_water_blob": "e99e28144c36b01879147dc5f4bd05ef76408193",
+      "backend_blob": "9f2e9d662843783b3fedeb2c1042d4a55e4769ed",
+      "projection_blob": "fceffa50a59456b2cc245ef6f332d6531d3ff8b2",
+      "current_code_source": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+      "full_repository_tree_qualification": false
+    },
+    "implementation": [
+      "Independent default-off --continuous-sorption, bound into prepared input and executable restart identity; not implied by entry width or numerical Jacobian",
+      "Complementary macro/matrix wet wall areas; saturated transfer across negative/positive top-cell centre head; perched macro-to-matrix transfer explicitly booked",
+      "Continuous positive sorption history and matching partial-cell cutoff; stable sqrt time integral; C1 gate inside original1e-8 theta-deficit range and matching local derivative",
+      "Reuse existing typed CALCGWL projection of current candidate profile for all corrected rate evaluations; immutable accepted stocks/history retained"
+    ],
+    "science": "Explicit corrected-source physical variant, not literal SWAP431. Temporal(.01) and mass(1e-10) tolerances unchanged. Moving-zone/off-diagonal source Jacobian remains incomplete.",
+    "gates": {
+      "A": {
+        "execution": "COMPLETE_NOT_SCIENTIFICALLY_ADMITTED",
+        "from_day": 0,
+        "to_day": 5,
+        "native_seconds": 95.19552917499823,
+        "attempts": 16447,
+        "solver_rejections": 0,
+        "temporal_rejections": 3972,
+        "mass_rejections": 0,
+        "max_daily_water_cm": 7.093728382479014e-12
+      },
+      "B": {
+        "execution": "COMPLETE_NOT_SCIENTIFICALLY_ADMITTED",
+        "from_day": 0,
+        "to_day": 30,
+        "native_seconds": 150.81688694299373,
+        "attempts": 28077,
+        "solver_rejections": 3,
+        "temporal_rejections": 6499,
+        "mass_rejections": 0,
+        "max_daily_water_cm": 1.6643061278090454e-11
+      },
+      "C": {
+        "execution": "OPEN_CURRENT_SOURCE141_COMPLETE",
+        "source": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+        "current_complete_days": 141,
+        "days481_complete": false,
+        "year_boundary_restart": "NOT_EXECUTED_CURRENT_MACRO_VARIANT",
+        "reason": "Paused at complete141 after later-state probe exposed causal contact failure; repair it before spending another long replay."
+      }
+    },
+    "current_chain": {
+      "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+      "start_day": 0,
+      "end_day": 141,
+      "native_seconds": 615.8410080570029,
+      "days_per_second": 0.2289551981035808,
+      "attempts": 113772,
+      "solver_rejections": 22,
+      "temporal_rejections": 30700,
+      "mass_rejections": 0,
+      "max_daily_water_cm": 3.897920874962324e-11,
+      "chain": [
+        "positive-film-original1",
+        "positive-film-original2",
+        "positive-film-original5",
+        "positive-film-original30",
+        "positive-film-seasonal04-60",
+        "positive-film-seasonal05-90",
+        "positive-film-seasonal06-111",
+        "positive-film-seasonal07-141"
+      ],
+      "cumulative_drainage_delta_cm": 0.017633027487068256,
+      "endpoint_gwl_cm": -146.56941118328209,
+      "b0_gwl_cm": -152.47991,
+      "gwl_delta_cm": 5.9104988167179044,
+      "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "count_scope": "Recorded attempts/rejections include observed discarded partial work; censored in-flight counts are lower bounds. Native seconds include censored partial work.",
+      "sum_water_residual_cm": 3.743195020979896e-10,
+      "soil_evaporation_cm": 8.898206120547599,
+      "binding": "297c87deac1ca091d0e60198fd09d0db02d8fb67c71cb87e5abe08661c5b8cfd",
+      "native_sha256": "bd9eb745c6507a2c4758200340d22bcbc99895c4d62e4a2c66e1616dac39e04c",
+      "qualified": false,
+      "canonically_admitted": false,
+      "substance_balance": "N/A original SWSOLU0; no SOL/N qualification",
+      "cost_scope": "Native elapsed with overlapping builds/probes; censored partial cost included, recorded in-flight counts are lower bounds."
+    },
+    "tests": {
+      "compiler": "GNU Fortran13.3.0, actual checked O0 versus production O2 original0→2 profile/heat/budget/progress and physical restart payload EXACT",
+      "O0_O2_contracts": "PASS: current16-provider joint wall real-rate FD/conservation;15-provider partial history and15-provider candidate groundwater view; two-provider sorption gate/rational time integral",
+      "exact_restart": "Current5->7 versus5->6->7: seven endpoint files including complete restart.bin byte exact",
+      "qualification": false,
+      "canonical_admission": false,
+      "broad_FCI_low_air_RossFast": "NOT_SELECTED_IMPACT during development; owning stable-candidate/exact-merge preservation still pending",
+      "current_additions": "Checked O0/O2 real bordered correction and integrated wall/Darcy/source booking PASS; mixed predecessor64.898 event O0/O2 final pressure exact, diagnostic only; full original5/30/65/90 O2 only",
+      "current_evaporation_additions": "Actual original0→2 checked O0 vs production O2: profile/heat/budget/progress and physical restart payload exact; current5→7 vs5→6→7 full restart/state/heat byte exact; one0→5 .005 temporal refinement measured max head0.0418371cm, max theta8.80955e-8. Not seasonal O0/O2 or4.3.1 equivalence.",
+      "current_restart": "Current b29d5→7 versus5→6→7 complete restart.bin/state.csv/temperature.csv BYTE EXACT",
+      "current_physical_contracts": "Four real production positive-film/bordered/wet-wall/bundle drivers O0/O2 PASS at restored b29d source; narrow scope only",
+      "preservation0_30": "All daily budgets and endpoint pressure/heat/physical restart payload exact to evaporation-corrected v1"
+    },
+    "reference_comparison": {
+      "source": "Frozen original B0 DATE/RAIN/DRN/GWL CSV",
+      "sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "gwl_delta_day5_cm": 0.011914276421059355,
+      "gwl_delta_day30_cm": -3.6980760704000915,
+      "drainage_delta_0_30_cm": 0.17752032914113938,
+      "max_abs_daily_drainage_delta_0_30_cm": 0.02573242525131432,
+      "mapping": "Provisional DRN comparison to source matrix drainage plus rapid macropore drainage. Rounded B0 values; not an equivalence acceptance gate.",
+      "interpretation": "Differences remain scientifically unexplained; no equivalence or production closure claim"
+    },
+    "diagnosis": {
+      "closed_local": "Original sorption deficit switch and history reset repaired; head-sign source jump near node45 measured0->0.202822cm/day and removed in corrected wall route",
+      "v2_floor": "All420 macro returns converged, but full/half groundwater difference tends to0.01121879cm as dt shrinks; head43 difference persists at identical theta, macro stock differences tend to roundoff",
+      "current": "Current-profile macro view passes former64.758 block in actual original-input chain; next64.898->64.916 rejection remains. Do not attribute its exact component to DRAMET3 without the next discriminator."
+    },
+    "closure_inventory": {
+      "1_missing_functional_implementation": [],
+      "2_numerical_errors_and_performance": [
+        {
+          "priority": 1,
+          "blocker": "Joint Richards/DRAMET3/CALCGWL coupling: later-state300.313→300.324 has disappearing-pocket zero-dt head/GWL inconsistency. Two minimum-contact/Aitken outer-iteration repair cycles FAILED and are excluded. Move current-trial feedback into existing residual/Jacobian with semismooth contact and low-rank/bordered solves; retain original operators and all tolerances."
+        }
+      ],
+      "3_missing_integral_evidence": [
+        {
+          "priority": 2,
+          "blocker": "Current same-source481days/year restart. Current141, v1 actual256.942 and mixed-executor300.313 are distinct; latter two cannot establish this gate."
+        },
+        {
+          "priority": 3,
+          "blocker": "Scientific4.3.1 difference explanation and full balance/profile comparison; day141 GWLdelta+5.9104988cm, provisional cumulative(matrix+rapid)DRNdelta+0.0176330cm. SWSOLU0 gives no substance qualification."
+        },
+        {
+          "priority": 4,
+          "blocker": "Affected owning scientific/preservation and exact merge tree before canonical admission; no merge or production release claimed."
+        }
+      ],
+      "4_historical_options_outside_first_production_closure": [
+        {
+          "priority": 5,
+          "scope": "Full macro SOL/NUT and other unselected options remain exclusions. First bounded production target is original SWSOLU0 water/macro/Rutter/plain roots/response drainage/numeric heat; full historical migration is broader."
+        }
+      ],
+      "closed_functional": [
+        "Original soil/pond Boesten demand reaches actual native route; current141 soil evaporation8.898206cm.",
+        "Explicit corrected fully saturated positive-film convention removes artificial1e-8 pond-presence discontinuity; literal/default and zero-film semantics retained."
+      ]
+    },
+    "recovery": {
+      "library_file_id": "libfile_3208132dcf0481918050e682afe1734d",
+      "version": 5,
+      "archive": "SWAP5_coupled_contact_20261027.tar.xz",
+      "bytes": 21064968,
+      "sha256": "8623eac3f386403c9e4d452d65b3f1aeb621c486a92ab51f5390e3fe4623c34f",
+      "primary_entrypoint": "LATEST_RECOVERY.json -> positive-film-recovery.json",
+      "primary_source": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+      "preserved_primary_original_days": 141,
+      "primary_executable": "native/positive-film-O2/swap5_solute_project",
+      "primary_executable_sha256": "bd9eb745c6507a2c4758200340d22bcbc99895c4d62e4a2c66e1616dac39e04c",
+      "primary_binding": "297c87deac1ca091d0e60198fd09d0db02d8fb67c71cb87e5abe08661c5b8cfd",
+      "prior_evaporation_corrected_source_event": 256.94200000000274,
+      "later_state_diagnostic_event": 300.3130000000019,
+      "diagnostic_entrypoint": "pocket301-diagnostic-recovery.json / recovery-tools/replay-pocket-diagnostic.py",
+      "portable_self_check": {
+        "fresh_extracted_primary30_31": "COMPLETE",
+        "causal300313_replay": "EXPECTED_FAILURE",
+        "complete_failure_rollback": "BYTE_EXACT"
+      },
+      "compiler": "GNU Fortran13.3.0 operational; actual checked O0/production O2 model runs verified",
+      "compiler_recovery_library_file_id": "libfile_dbd09a2d6a588191bee270501d30b871"
+    },
+    "release_boundary": "Locally tested, preserved and published in draft PR1457. NOT scientifically qualified or canonically integrated. Bounded water production closure and full historical migration remain open.",
+    "previous_candidate_9d_evidence": {
+      "candidate_source": "9d7661571aa14a72f3a49080f0cc36042040bbea",
+      "gates": {
+        "A": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT",
+          "from_day": 0,
+          "to_day": 5,
+          "seconds": 108.85396170899912,
+          "attempts": 18712,
+          "solver_rejections": 22,
+          "temporal_rejections": 5760,
+          "mass_rejections": 0
+        },
+        "B": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT",
+          "from_day": 5,
+          "to_day": 30,
+          "seconds": 62.335674802998255,
+          "cumulative_0_30_seconds": 171.18963651199738,
+          "attempts": 12440,
+          "solver_rejections": 51,
+          "temporal_rejections": 3312,
+          "mass_rejections": 0
+        },
+        "C": {
+          "execution": "FAILED_BEFORE_DAY65",
+          "from_day": 30,
+          "last_complete_day": 64,
+          "last_committed_event": 64.89800000000105,
+          "failed_endpoint": 64.91599999999744,
+          "seconds": 220.22689779199573,
+          "days481_complete": false,
+          "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
+        }
+      },
+      "current_chain": {
+        "from_day": 0,
+        "last_complete_day": 64,
+        "last_committed_source_event": 64.89800000000105,
+        "failed_interval": [
+          64.89800000000105,
+          64.91599999999744
+        ],
+        "seconds_including_failed_window": 391.4165343039931,
+        "accepted_days_per_wall_second": 0.16580290895324853,
+        "wall_clock_conditions": "Some native runs overlapped builds/replays; raw elapsed costs, not a controlled comparative benchmark",
+        "attempts": 70695,
+        "solver_rejections": 92,
+        "temporal_rejections": 21705,
+        "mass_rejections": 0,
+        "max_daily_water_residual_cm": 2.4607649251606745e-11,
+        "substance_balance": "N/A: original SWSOLU0, not solute/N qualification",
+        "binding": "c362f31041202f674e8fbe4e91cec2ac2af8e90b5f157516d3b2492788cee3c7",
+        "restart_replay": {
+          "input.nml": true,
+          "macro.nml": true,
+          "restart.bin": true,
+          "state.csv": true,
+          "temperature.csv": true,
+          "budget.csv": true,
+          "progress.csv": true
+        }
+      },
+      "tests": {
+        "compiler": "GNU Fortran13.3.0 operational;194-provider checked O0/O2 cold builds preserved, final native trajectory O2 only",
+        "O0_O2_contracts": "PASS: current16-provider joint wall real-rate FD/conservation;15-provider partial history and15-provider candidate groundwater view; two-provider sorption gate/rational time integral",
+        "exact_restart": "Current5->7 versus5->6->7: seven endpoint files including complete restart.bin byte exact",
+        "qualification": false,
+        "canonical_admission": false,
+        "broad_FCI_low_air_RossFast": "NOT_SELECTED_IMPACT; no new broad campaigns",
+        "current_additions": "Checked O0/O2 real bordered correction and integrated wall/Darcy/source booking PASS; mixed predecessor64.898 event O0/O2 final pressure exact, diagnostic only; full original5/30/65/90 O2 only"
+      },
+      "recovery": {
+        "library_file_id": "libfile_6880a9a364848191aa11d6dc602f490d",
+        "version": 1,
+        "archive": "SWAP5_continuous_sorption_day64_20261027.tar.xz",
+        "sha256": "8be6f1e4b11ce1f2188904210d8e806d597fb2bbac4166a9b73c11ddfc6e9baf",
+        "bytes": 7751924,
+        "executable": "candidate-gwl-project/executable",
+        "prepared_input_directory": "candidate-gwl-original65",
+        "source_event_checkpoint": "candidate-gwl-original65/diagnostic-rejected.bin",
+        "source_event_clock": 64.89800000000105,
+        "day_checkpoint": "candidate-gwl-original65/restart.bin",
+        "binding": "c362f31041202f674e8fbe4e91cec2ac2af8e90b5f157516d3b2492788cee3c7",
+        "prior_variants": "V1/V2 and mixed-binding probes retained separately; never silently reuse them as final-variant qualification"
+      }
+    },
+    "build_profile_successor": "0029514775c2f16fd58542c6dc3e9994d0a3da0e",
+    "host_interruption_90_144": {
+      "status": "EXEC_SESSION_DISAPPEARED_WITHOUT_TERMINAL_RECORD",
+      "checkpoint": 144,
+      "CRC_valid": true,
+      "native_seconds": "UNKNOWN",
+      "observed_native_file_span_seconds_lower_bound": 278.4910788536072,
+      "resumed144_157": {
+        "status": "CENSORED_240s",
+        "seconds": 240.016,
+        "checkpoint": 157,
+        "accepted_source_event": 157.1377500000017,
+        "no_recorded_native_error": true
+      },
+      "recovery_action": "Repeat only missing90→144 in bounded chunks to restore terminal status, timing and exact physical checkpoint comparison. Concrete need: missing measurement/terminal proof, not a broad rerun."
+    },
+    "production_profile_experiment": {
+      "state": "IMPLEMENTED_PERSISTED_BUILDING_NOT_TESTED",
+      "source": "0029514775c2f16fd58542c6dc3e9994d0a3da0e",
+      "contract": "Propagate existing checked/production profile in native project builder; default checked unchanged. Production removes compiler bounds/shape instrumentation only, retains FPE traps, all physical residual/acceptance guards and tolerances. Strict matching provider profile prevents accidental mixed-profile reuse.",
+      "qualification": "Fresh original prefix; compare physical restart payload, profile, heat and daily balances against checked before counting performance. No inherited seasonal production execution."
+    },
+    "validation_performance": {
+      "source": "5c0efcd83b8f6a906801c0cd71949d4bc0837d6c",
+      "native_O2_sha256": "36725161bddc913bbbb51ee4182cefcb1fa2c7ede427ae400bb37ec066c36394",
+      "original5_complete_seconds": 109.585,
+      "first5_profile_heat_budget_progress_exact_to_predecessor": true,
+      "complete_restart_payload_excluding_executor_binding_and_CRC_exact": true,
+      "checked_O0_O2_real_contracts": "PASS including7 malformed nested absorption requests and8 complete-bundle negative controls",
+      "paired151_152_differential": {
+        "before_cpu_mean": 7.5721125,
+        "after_cpu_mean": 6.888868,
+        "speedup": 1.0991809539680537,
+        "all5_endpoint_files_exact": true,
+        "scope": "Diagnostic performance only: same-model151 checkpoint, different executor identity. Not seasonal/source-upgrade restart admission."
+      }
+    },
+    "predecessor_evaporation_omitted": {
+      "gates": {
+        "A": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
+          "from_day": 0,
+          "to_day": 5,
+          "seconds": 122.40433392699924,
+          "attempts": 18508,
+          "solver_rejections": 2,
+          "temporal_rejections": 5656,
+          "mass_rejections": 0
+        },
+        "B": {
+          "execution": "COMPLETE_O2_ORIGINAL_INPUT_NOT_SCIENTIFICALLY_ADMITTED",
+          "from_day": 0,
+          "to_day": 30,
+          "seconds": 187.65611605300364,
+          "attempts": 29654,
+          "solver_rejections": 2,
+          "temporal_rejections": 7988,
+          "mass_rejections": 0
+        },
+        "C": {
+          "execution": "FAILED_AFTER256_COMPLETE_DAYS",
+          "complete_native_prefix_end": 256,
+          "last_committed_source_event": 256.85399999999936,
+          "failed_endpoint": 256.8689999999988,
+          "days481_complete": false,
+          "year_boundary_restart": "NOT_EXECUTED_CURRENT_VARIANT"
+        }
+      },
+      "current_chain": {
+        "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+        "start_day": 0,
+        "end_day": 90,
+        "native_seconds": 481.12470280700654,
+        "days_per_second": 0.18706168998373315,
+        "attempts": 48980,
+        "solver_rejections": 5,
+        "temporal_rejections": 11430,
+        "mass_rejections": 0,
+        "max_daily_water_cm": 2.458228065549406e-11,
+        "chain": [
+          "coupled-event-original5",
+          "coupled-event-original7",
+          "coupled-event-original30",
+          "coupled-event-original65",
+          "coupled-event-original90"
+        ],
+        "cumulative_drainage_delta_cm": 0.4542881897299287,
+        "endpoint_gwl_cm": -116.75834888830985,
+        "b0_gwl_cm": -119.85954,
+        "gwl_delta_cm": 3.1011911116901416,
+        "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+        "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
+        "restart_replay": "5→7 vs5→6→7 complete restart/profile/temperature byte exact",
+        "substance_balance": "N/A original SWSOLU0; no SOL/N qualification",
+        "cost_scope": "Native elapsed, some overlapping builds/replays; not controlled speed comparison"
+      },
+      "scope": "Frozen numerical predecessor ONLY. Positive original Boesten evaporation demand was not passed by native application. No complete original-production claim."
+    },
+    "restored_evaporation_v1_predecessor": {
+      "source": "8dcb2e9053f5af3ec8e305f3888d78d4d319cebe",
+      "complete_days": 256,
+      "last_committed_source_event": 256.94200000000274,
+      "scope": "Actual original positive evaporation restored; different source, not current141 end-to-end qualification.",
+      "blocked_interval": [
+        256.94200000000274,
+        256.96100000000297
+      ],
+      "cause": "Literal1e-8 positive-film threshold causes0.449cm GWL jump with6.6e-6cm head error.",
+      "new_variant_probe": "Corrected film convention256.942→257 COMPLETE1.067105717s, explicit cross-executor diagnostic only."
+    }
+  },
+  "coupled_hydraulic_trial_design_20261027": {
+    "status": "PROPOSED_NUMERICAL_EXPERIMENT_NOT_ADMITTED",
+    "reason": "Actual final-source64.898 replay shows drainage carrier jump -20.5547573 to -33.5000000cm, drainage0.1088904854 to0.083cm/day and persistent head86 full/half difference0.0343609507cm while stocks approach roundoff.",
+    "contract": "Within one trial, retain the same accepted pressure/water storage, macro stocks, sorption history and Rutter interval. Iterate only derived hydraulic views and existing Cauchy3/DRAMET3/Feddes evaluations against the converged candidate. Publish/account only the final mutually consistent solve; failure is a rejected trial. No equation or tolerance relaxation.",
+    "selection": "First a bounded diagnostic at current64.898; then independent default-off numerical policy, counters, O0/O2 contract tests, earlier trajectory and exact restart if feasible. No inherited seasonal qualification.",
+    "coupling_gate": "Candidate head and projected water table agree with the process evaluation view to1e-8cm, independently of dt. Exhaustion must reject;32 iterations maximum for initial diagnostic.",
+    "architecture_invariants": [
+      "Immutable storage origin across all inner solves",
+      "No intermediate physical commit or duplicate time integration",
+      "Final source/flux/ledger/trace use one final coefficient set",
+      "Physical option remains separate from numerical policy"
+    ],
+    "checkpoint_source_commit": "e3d754da7636d930277fd720c3bb924239bd5c3a",
+    "branch": "work/closure-coupled-trial",
+    "implementation": "Independent default-off numerical policy. Immutable-origin hydraulic view iteration, up to64 iterations. At a detected two-cycle, bordered Richards correction pins the switching node to zero and solves a convex coefficient between the two original DRAMET3 drainage vectors. Residual is refreshed after every coefficient change; actual final vector feeds ledger and diagnostics. Per-cell linear-pressure wet wall integration replaces the prior top-only approximation only under the unqualified continuous-sorption physical option.",
+    "scientific_limit": "The contact mixture is a proposed weak interpretation of the discontinuous historical projection/drainage law. It is not proved pointwise historical equivalence and requires explicit scientific admission. Ordinary default route unchanged; no tolerance relaxation. No production merge.",
+    "focused_tests": {
+      "bordered_correction": "O0/O2 PASS24 each; known solutions across1e-12,1,1e12 scales; real128 residual; singular/invalid-node atomic rejection",
+      "wet_wall": "O0/O2 PASS; hydrostatic exactness, vanishing dry-pocket continuity, overlap, dry/wet, invalid input"
+    },
+    "diagnostic_65": {
+      "source": "audited-stage, before final policy/helper refactor",
+      "start": 64.89800000000105,
+      "end": 65,
+      "seconds": 15.871995527,
+      "water_residual_cm": -4.258607355644983e-13,
+      "scope": "Mixed prior-source checkpoint; diagnostic only, not a final-source prefix or seasonal gate"
+    },
+    "excluded_evidence": "stage-state65, bordered-error65 and final-discriminator65 copied wrong provider paths. Excluded; not source-qualified. audited-stage used verified provider paths.",
+    "next_action": "Complete cold O0/O2 final-source builds, fresh original-input run and exact restart; no reuse of prior physical source prefix as final qualification.",
+    "event_localization": {
+      "reason": "Global coupling fails performance gate: O0 reaches2.514days/240.006s; O2 reaches3days/240.013s,9499attempts2348temporal0solver0mass rejections, max daily9.68801081e-12cm. No active contact in early prefix. Global recomputation is excessive.",
+      "selection": "8fc49e78: ordinary smooth steps retain existing time-discrete evaluation. Engage the strict immutable-origin64-iteration coupling only when candidate CALCGWL crossing_lower_node differs from the evaluation view; once engaged do not disengage in the same trial. No tolerance relaxation. Contact weak-interpretation admission still required.",
+      "source_audit": "214 project/reader/build inputs exact to ac1adcd after removing only extra trailing blank lines from15 recovered readers. Rebuilt exact-source O2 native exe bit identical c0e82d4ea2df2f92d58abf45dfe225d37ea2aed289ac0e66609b6f6aed1b779d. Macro reader binary differs by build path but produced byte-identical macro.nml; other4executables identical.",
+      "next": "Changed-provider audited O2 rebuild, fresh original5 and65-event diagnostic. Global prefixes excluded from localized policy qualification.",
+      "evidence": {
+        "source_commit": "8fc49e78db35f121ed1a5715f0092d306b337492",
+        "native_O2_sha256": "6af8711015d74281e28f4fbf11c4357eaaa8dbee4f53962f0cc17a8ac2091dd1",
+        "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
+        "gate_A_execution": {
+          "status": "COMPLETE_LOCALLY_NOT_SCIENTIFICALLY_ADMITTED",
+          "start": 0,
+          "end": 5,
+          "seconds": 122.40433392699924,
+          "days_per_second": 0.04084822685266971,
+          "attempts": 18508,
+          "solver_rejections": 2,
+          "temporal_rejections": 5656,
+          "mass_rejections": 0,
+          "max_daily_water_cm": 8.96272639439033e-12,
+          "directory": "coupled-event-original5",
+          "donor_gwl_delta_cm": -0.028481310027416384,
+          "donor_cumulative_drainage_delta_cm": 0.04556040997465474,
+          "donor_mapping": "Provisional DRN=matrix+rapid, frozen rounded B0, unexplained; no equivalence"
+        },
+        "restart_5_7": "PASS: original5→7 versus5→6→7 restart.bin/state.csv/temperature.csv byte identical. Frozen executable and input identity equal. Not a year-boundary restart.",
+        "event_64_898_65": {
+          "scope": "Diagnostic only: prior physical variant checkpoint, not prefix admission",
+          "O0_seconds": 5.6897300649943645,
+          "O2_seconds": 2.5212014830030967,
+          "attempts": 537,
+          "solver_rejections": 0,
+          "temporal_rejections": 73,
+          "mass_rejections": 0,
+          "O0_O2_max_head_difference_cm": 0,
+          "water_residual_cm": -4.2795281207652636e-13
+        },
+        "next": "Reuse day7→30; if complete reuse30→65 and longer. Exact native source files and reader sources, not just physical providers, must remain bound.",
+        "actual_original_prefix90": {
+          "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+          "start_day": 0,
+          "end_day": 90,
+          "native_seconds": 481.12470280700654,
+          "days_per_second": 0.18706168998373315,
+          "attempts": 48980,
+          "solver_rejections": 5,
+          "temporal_rejections": 11430,
+          "mass_rejections": 0,
+          "max_daily_water_cm": 2.458228065549406e-11,
+          "chain": [
+            "coupled-event-original5",
+            "coupled-event-original7",
+            "coupled-event-original30",
+            "coupled-event-original65",
+            "coupled-event-original90"
+          ],
+          "cumulative_drainage_delta_cm": 0.4542881897299287,
+          "endpoint_gwl_cm": -116.75834888830985,
+          "b0_gwl_cm": -119.85954,
+          "gwl_delta_cm": 3.1011911116901416,
+          "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+          "status": "COMPLETE_LOCALLY_NOT_SCIENTIFICALLY_ADMITTED",
+          "historical_period": "1998-01-01 through1998-03-31 inclusive",
+          "source_commit": "8fc49e78db35f121ed1a5715f0092d306b337492",
+          "next": "Reuse90→180, then original year boundary/481. No final-source prefix restart across year qualified yet."
+        },
+        "closed_execution_blocker": "Original source event64.898 passed within actual final-source0→65→90 chain; no inherited mixed-source admission. Numerical mechanism locally repaired; physical/contact scientific admission remains open."
+      }
+    }
+  },
+  "active_contact_successor_20261027": {
+    "state": "PROPOSED_NUMERICAL_REPAIR_PERSISTED_BEFORE_IMPLEMENTATION",
+    "base_source": "49ee77b036a79b87eef8de65de9c13623c9d3bdd",
+    "reproduced_failure": {
+      "source": "8fc49e78db35f121ed1a5715f0092d306b337492",
+      "actual_original_complete_days": 256,
+      "source_event": 256.85399999999936,
+      "rejected_endpoint": 256.8689999999988,
+      "diagnostic_seconds": 1.3678245350020006,
+      "recorded_failed_window_attempts": 248,
+      "solver_rejections": 14,
+      "temporal_rejections": 49,
+      "mass_rejections": 0,
+      "checkpoint": "coupled-event-checked270c/diagnostic-rejected.bin",
+      "binding": "49efd03392aa217a2ea1baaef62bc89298091996c8eed612d5cf1ad17b087583",
+      "internal_contact_region": 256.867763450045
+    },
+    "evidence": "ACTIVE_SET_BEGIN/ACCEPT repeatedly switches critical nodes11/12. A contact can produce a third projection branch without invalidating the frozen two-branch support. Current code pins the linear head constraint only for undamped Newton updates, so a converged damped iterate can remain slightly off the discontinuous manifold.",
+    "contract": "Retain physical equations and all acceptance limits. Initialize constrained trial guesses on h(control)=0, recompute their constitutive theta, keep every line-search iterate on that linear manifold, and disable only unconstrained predictor/restart heuristics while the control is active. Accepted storage origin never changes. Track the two pure branch indices; if a converged contact exposes a new branch, release the obsolete constraint and bracket the new branch against the retained shallower pure branch. Total64-iteration limit unchanged; no intermediate physical publication.",
+    "tests_selected": "Checked real production O0/O2 contracts and exact failed256.854 replay; source-bound earlier evidence retained only for unchanged paths. This is a proposed repair, not a proven multi-contact method or production admission.",
+    "release_boundary": "No canonical merge until required scientific/preservation admission. Full481/year restart still open.",
+    "observed_refinement": {
+      "diagnostic_commit": "1ac6a0c80fa94856af142c1a7e7494a47389c5f3",
+      "evidence": "Contact12 formed from projection branches12/0 actually exposes branch11 (h11=-0.0012786,h12=0). Adjacent branches11/10 are also incorrectly treated as a discontinuity and pin ordinary groundwater motion to grid nodes. This can make full/half groundwater levels jump although pressure differences are below0.01cm.",
+      "revised_contract": "Use scale-safe vector Aitken relaxation for the continuous carrier fixed point, with convergence tested on the original undamped head/GWL residual at unchanged1e-8cm and existing64 iterations. Restrict discontinuous contact activation to nonadjacent indices or the fully-saturated branch. Reject/release a contact exposing a third projection branch, reset transient control pointers, and restart ordinary iteration from its candidate view. Keep active linear constraints exactly feasible during damped Newton steps; no accepted-state projection, no tolerance relaxation. All physical expressions and mass gates unchanged.",
+      "scope": "Proposed diagnostic repair, not a proven multi-contact algorithm; fail closed if it does not converge."
+    },
+    "result": {
+      "status": "FAILED_EXCLUDED_FROM_BEST_CANDIDATE",
+      "source": "36b7618b3588ade856db01dca9c69050b463f227",
+      "preserved_branch": "work/closure-contact-repair-01",
+      "tests_commit": "8f882dfc74ea65fab5423e76fb88eb76e9d65fe1",
+      "native_seconds": 32.14238443999784,
+      "internal_floor_clock": 256.86774671205455,
+      "final_dt": 5.684341886080802e-14,
+      "remaining_head_residual_cm": 0.013271115507507147,
+      "remaining_gwl_residual_cm": 11.017855495375136,
+      "action": "Best main source restored to tested carrier plus validation optimization. Proposed next numerical architecture: minimum pressure over the disappearing unsaturated pocket, with dynamic active node and consistent branch limits; not implemented/admitted. First restore omitted physical evaporation forcing."
+    }
+  },
+  "boesten_forcing_recovery_20261027": {
+    "state": "CONFIRMED_MISSING_APPLICATION_WIRING_REPAIR_SELECTED",
+    "evidence": "Original prepared481-day soil_evaporation_cm_day is positive (day1 0.0419768972711cm/day, bare day235 0.1581cm/day); boesten_evaporation=.true. Native main allocates Boesten forcing but sets only pond/runoff controls; its potential bare-soil and pond demands stay at default0. Backend Boesten reads those fields; active Rutter subsequently uses its empirical soil demand. Recorded soil evaporation and SPEV/SAEV stay0 through256.854.",
+    "repair": "Wire the original daily bare-soil and pond potential evaporation rates into existing Boesten runtime forcing for every original rain source window. Do not change process equations, numerical tolerances, macro/Rutter area conventions or restart layout.",
+    "qualification": "Actual fresh original input native run, positive soil evaporation and nonzero Boesten drying state when applicable; independent matrix/macro/declared-boundary mass assertions; O0/O2 focused affected route. Prior256-day run remains predecessor evidence with missing evaporation, not a complete historical production route.",
+    "scope": "First missing functional connection takes priority over further contact micro-repairs. Full481/year/current scientific admission remains open.",
+    "source_commit": "8dcb2e9053f5af3ec8e305f3888d78d4d319cebe",
+    "result": "LOCAL_ORIGINAL30_COMPLETE_NOT_ADMITTED",
+    "day1_actual_soil_evaporation_cm": 0.041976897271121826,
+    "day1_input_soil_evaporation_cm_day": 0.041976897271121826,
+    "day1_Boesten_SPEV_SAEV": [
+      0.01659684389377535,
+      0.01659684389377535
+    ],
+    "day1_O0_O2": {
+      "state": true,
+      "heat": true,
+      "budget": true,
+      "progress": true,
+      "physical_restart_payload": true
+    },
+    "restart5_7_vs5_6_7": "Complete restart/state/temperature byte exact",
+    "current_chain": {
+      "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+      "start_day": 0,
+      "end_day": 237,
+      "native_seconds": 1147.5397804120075,
+      "days_per_second": 0.20652878797361482,
+      "attempts": 230049,
+      "solver_rejections": 112,
+      "temporal_rejections": 69717,
+      "mass_rejections": 0,
+      "max_daily_water_cm": 3.897920874962324e-11,
+      "chain": [
+        "evap-wiring-original1",
+        "evap-wiring-original5",
+        "evap-wiring-original30",
+        "evap-wiring-original90",
+        "evap-wiring-checked90",
+        "evap-wiring-seasonal01-120",
+        "evap-wiring-seasonal02-150",
+        "evap-wiring-seasonal03-180",
+        "evap-wiring-seasonal04-210",
+        "evap-wiring-seasonal05-240"
+      ],
+      "cumulative_drainage_delta_cm": 0.017633027487068256,
+      "endpoint_gwl_cm": -179.96710707332608,
+      "b0_gwl_cm": -180.0946,
+      "gwl_delta_cm": 0.12749292667393775,
+      "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "count_scope": "Recorded attempts/rejections include observed discarded partial work; censored in-flight counts are lower bounds. Native seconds include censored partial work.",
+      "binding": "a55a2c15adc30a38f3d78da18c1f8045be484dd981f6b236d56f0a5c7ecc1c4e",
+      "substance_balance": "N/A original SWSOLU0, no full SOL/N qualification",
+      "qualified": false,
+      "canonically_admitted": false
+    },
+    "accuracy_selection": {
+      "status": "COMPLETE_MEASURED_NOT_NEW_SCIENTIFIC_ADMISSION",
+      "question": "Does halving existing Full Richards temporal tolerance from.01 to.005 materially change the corrected-forcing original five-day ponding/entry trajectory?",
+      "reason": "First integrated positive evaporation and new wall/groundwater coupling requires a short actual-route accuracy discriminator beyond mass conservation; no broad tolerance campaign.",
+      "expected_native_seconds": 160,
+      "maximum_native_seconds": 240,
+      "scope": "Original0→5 only, raw input unchanged, existing physical equations unchanged, no relaxed tolerance, no restart cross-binding",
+      "admission_threshold": "No new acceptance threshold invented; report measured pressure/theta/GWL/flux differences to existing owner before claiming scientific admission.",
+      "result": {
+        "max_head_difference_cm": 0.041837119515275134,
+        "max_theta_difference": 8.809554846722634e-8,
+        "pond_cm_difference": 0,
+        "gwl_cm_difference": 0.038930020607303106,
+        "integrated_flux_differences_cm": {
+          "root_cm": -2.168404344971009e-18,
+          "drainage_cm": 0.000010680923908712447,
+          "rapid_cm": 0.0002735603213086524,
+          "runoff_cm": 0,
+          "bottom_cm": -0.0002920687226337648,
+          "soil_evap_cm": 3.180020236026593e-7,
+          "pond_to_macro_cm": -0.00006625021389750074,
+          "direct_macro_cm": 4.665294526251529e-7
+        },
+        "max_daily_water_residual_cm": 1.0913075998431054e-11,
+        "native_seconds": 164.61841737399664,
+        "scope": "One short original0→5 temporal refinement .01→.005; differences measured, no new science acceptance threshold or equivalence claim."
+      }
+    },
+    "day2_O0_O2": {
+      "state": true,
+      "heat": true,
+      "budget": true,
+      "progress": true,
+      "physical_restart_payload": true,
+      "scope": "Each executable restarts from its own bound day1"
+    },
+    "regression": "tools/solute/check_original_evaporation.py: actual original day1 positive soil evaporation/drying history and exact O0/O2 comparison PASS. Old frozen predecessor day1 soil_evap_cm independently confirmed zero. Strict source identity correctly rejects importing its stale bundle through the changed builder."
+  },
+  "positive_film_projection_recovery_20261027": {
+    "status": "IMPLEMENTED_PRESERVED_ORIGINAL141_TESTED_NOT_ADMITTED",
+    "actual_source_interval": [
+      256.94200000000274,
+      256.96100000000297
+    ],
+    "checkpoint": "evap-wiring-event256942/restart.bin",
+    "observation": "At dt3.461755e-7day full/half positive ponds1.09854e-8/5.53902e-9cm produce groundwater jump0.449434cm despite raw head difference6.59456e-6cm and macrostock difference2.723e-9cm. Current-node/perched source/contact is not the dominant error at this event.",
+    "cause": "Literal CALCGWL1e-8cm pond-presence convention; both candidates have real positive surface water but opposite diagnostic branches.",
+    "physical_contract": "For explicit corrected continuous-wall physical variant only, any strictly positive film in the fully saturated profile uses its supplied surface water level. The literal/default typed CALCGWL semantics, zero-pond behaviour and all physical equations/mass/temporal tolerances remain unchanged. This corrects a derived hydraulic view, not a relaxed temporal assessment. Make the selected corrected-source convention explicit in versioned prepared-input binding.",
+    "implementation": "Optional positive-film argument on existing typed projection; consistent use by corrected macro rate adapter, drainage/current-profile outer solve and final groundwater receipt. No parallel kernel, no new state layout, no hidden numerical-policy change.",
+    "selection": "Real two-module O0/O2 projection driver with default/zero/invalid controls; exact current failed-event replay with all original acceptance and independent budgets; if successful, new bound original5/30/481 trajectory. Old256.942 state reuse across executors is diagnostic only unless a reviewed upgrade is qualified.",
+    "canonical_admission": false,
+    "source_commit": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+    "tested_source_blobs_exact": true,
+    "contract_tests": "O0/O2 positive-film physical projection with literal/zero/interior/invalid controls plus existing bordered/drain, wet-wall and full-bundle contracts PASS",
+    "diagnostic_event": {
+      "from": 256.94200000000274,
+      "to": 257,
+      "seconds": 1.0671057170038694,
+      "returncode": 0,
+      "scope": "Explicit cross-executor diagnostic restart, not end-to-end original qualification. All active namelist data and four raw companions exact; comments/provenance differ."
+    },
+    "fresh_bound_original": {
+      "scope": "Frozen rounded SWAP4.3.1 B0; provisional DRN=matrix+rapid mapping; differences unexplained, not equivalence",
+      "start_day": 0,
+      "end_day": 141,
+      "native_seconds": 615.8410080570029,
+      "days_per_second": 0.2289551981035808,
+      "attempts": 113772,
+      "solver_rejections": 22,
+      "temporal_rejections": 30700,
+      "mass_rejections": 0,
+      "max_daily_water_cm": 3.897920874962324e-11,
+      "chain": [
+        "positive-film-original1",
+        "positive-film-original2",
+        "positive-film-original5",
+        "positive-film-original30",
+        "positive-film-seasonal04-60",
+        "positive-film-seasonal05-90",
+        "positive-film-seasonal06-111",
+        "positive-film-seasonal07-141"
+      ],
+      "cumulative_drainage_delta_cm": 0.017633027487068256,
+      "endpoint_gwl_cm": -146.56941118328209,
+      "b0_gwl_cm": -152.47991,
+      "gwl_delta_cm": 5.9104988167179044,
+      "donor_sha256": "bcdfe6222bb1120e19e150e84bde881d2eac519723921b859448577e2f5a519d",
+      "count_scope": "Recorded attempts/rejections include observed discarded partial work; censored in-flight counts are lower bounds. Native seconds include censored partial work.",
+      "sum_water_residual_cm": 3.743195020979896e-10,
+      "soil_evaporation_cm": 8.898206120547599,
+      "binding": "297c87deac1ca091d0e60198fd09d0db02d8fb67c71cb87e5abe08661c5b8cfd",
+      "native_sha256": "bd9eb745c6507a2c4758200340d22bcbc99895c4d62e4a2c66e1616dac39e04c",
+      "qualified": false,
+      "canonically_admitted": false,
+      "substance_balance": "N/A original SWSOLU0; no SOL/N qualification",
+      "cost_scope": "Native elapsed with overlapping builds/probes; censored partial cost included, recorded in-flight counts are lower bounds."
+    },
+    "old256942_chain": "Original restored evaporation route still ends at256.942; failed/CENSORED source256.942→256.961 is retained, not silently replaced by cross-executor continuation",
+    "next": "Continue separately: fresh b29d original30→481 with exact year restart; later-state cross-executor probe only to find new causal failures early.",
+    "recovery": {
+      "library_file_id": "libfile_3208132dcf0481918050e682afe1734d",
+      "version": 5,
+      "archive": "SWAP5_coupled_contact_20261027.tar.xz",
+      "bytes": 21064968,
+      "sha256": "8623eac3f386403c9e4d452d65b3f1aeb621c486a92ab51f5390e3fe4623c34f",
+      "primary_entrypoint": "LATEST_RECOVERY.json -> positive-film-recovery.json",
+      "primary_source": "b29d9b16cd05bd2821b2bd8c8f06b34abb82e942",
+      "preserved_primary_original_days": 141,
+      "primary_executable": "native/positive-film-O2/swap5_solute_project",
+      "primary_executable_sha256": "bd9eb745c6507a2c4758200340d22bcbc99895c4d62e4a2c66e1616dac39e04c",
+      "primary_binding": "297c87deac1ca091d0e60198fd09d0db02d8fb67c71cb87e5abe08661c5b8cfd",
+      "prior_evaporation_corrected_source_event": 256.94200000000274,
+      "later_state_diagnostic_event": 300.3130000000019,
+      "diagnostic_entrypoint": "pocket301-diagnostic-recovery.json / recovery-tools/replay-pocket-diagnostic.py",
+      "portable_self_check": {
+        "fresh_extracted_primary30_31": "COMPLETE",
+        "causal300313_replay": "EXPECTED_FAILURE",
+        "complete_failure_rollback": "BYTE_EXACT"
+      },
+      "compiler": "GNU Fortran13.3.0 operational; actual checked O0/production O2 model runs verified",
+      "compiler_recovery_library_file_id": "libfile_dbd09a2d6a588191bee270501d30b871"
+    }
+  },
+  "pocket_contact_successor_20261027": {
+    "status": "TWO_FOCUSED_CYCLES_FAILED_EXCLUDED_FROM_BEST_CANDIDATE",
+    "branch": "work/closure-pocket-contact-02",
+    "source": "17952b76c5f17c158ae2ac167d64b9e562788141",
+    "final_status_commit": "e2e24721a42bd494896bdd2f752daef1109e4f43",
+    "phase1_seconds": 2.371523714995419,
+    "phase2_seconds": 2.1765366139952675,
+    "failed_source_interval": [
+      300.3130000000019,
+      300.3240000000005
+    ],
+    "O0_O2_component_contracts": "PASS; not actual transition qualification",
+    "both_complete_restart_rollbacks_byte_exact": true,
+    "diagnostic_source": "8dc4cdd75685df9f869827316662874aff491ca2",
+    "measured_zero_dt_floor": {
+      "dt_day": 1.3744442883763296e-13,
+      "head_difference_cm": 0.00124539279005,
+      "gwl_difference_cm": 0.11966925902811987,
+      "macrostock_difference_cm": 2.7755575615628914e-17
+    },
+    "next": "Joint semismooth Richards/source residual/Jacobian. Stop further Picard/Aitken microrepairs; reuse mathematical helpers, not failed outer-runtime implementation."
+  }
 }

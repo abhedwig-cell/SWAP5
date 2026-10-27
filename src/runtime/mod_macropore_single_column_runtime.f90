@@ -35,7 +35,9 @@ module mod_macropore_single_column_runtime
   integer,parameter,public::MACRO_RUNTIME_FAILED=4
 
   type, public :: macropore_runtime_policy_t
+    logical :: coupled_hydraulic_trial=.false.
     logical :: anchored_cauchy_step_ceiling=.false.
+    logical :: perched_jacobian_enabled=.false.
     logical :: enabled=.false.
     logical :: inner_richards_exchange_enabled=.false.
     logical :: source_reduction_retry_enabled=.false.
@@ -289,7 +291,7 @@ contains
              base_request%parameters%dz,dt,base_request%base_state%ponding_depth, &
              base_request%base_state%groundwater_level,ok,covering_minimum_polygon_diameter_cm,covering_ksat_cm_per_day, &
              geometry_config,shrinkage_config,base_request%base_state%water_content,matrix_area_fraction,top_input_local, &
-             base_request%boundary%bottom_mode)
+             base_request%boundary%bottom_mode,policy%perched_jacobian_enabled)
         if(.not.ok)then
           result%status=MACRO_RUNTIME_FAILED
           return
@@ -454,13 +456,13 @@ contains
       end if
 
       call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt, &
-           history_local,ok)
+           history_local,ok,rate_request)
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
       call apply_sorptivity_history_update(history_local,accepted_macro,raw_rates%unsaturated, &
-           result%macropore_candidate,ok)
+           result%macropore_candidate,ok,rate_request%unsaturated%continuous_sorption)
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
         return
@@ -609,13 +611,13 @@ contains
       return
     end if
 
-    call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt,history_local,ok)
+    call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt,history_local,ok,rate_request)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
     end if
     call apply_sorptivity_history_update(history_local,accepted_macro,raw_rates%unsaturated, &
-         result%macropore_candidate,ok)
+         result%macropore_candidate,ok,rate_request%unsaturated%continuous_sorption)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return

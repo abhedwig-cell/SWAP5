@@ -1,4 +1,5 @@
 module mod_ppa_wu05a6_saturated_exchange_rate
+  use, intrinsic :: ieee_arithmetic,only:ieee_is_finite
   use, intrinsic :: iso_fortran_env, only: real64
   implicit none
   private
@@ -13,6 +14,7 @@ module mod_ppa_wu05a6_saturated_exchange_rate
     integer :: matrix_top_saturated_node = 1
     integer :: matrix_bottom_saturated_node = 0
     logical :: matrix_partial_top_active = .true.
+    real(real64),allocatable :: matrix_wet_fraction(:),wet_wall_overlap(:,:)
     integer :: swsep = 0
     real(real64) :: matrix_level = 0.0_real64
     real(real64) :: step_duration = 0.0_real64
@@ -47,7 +49,7 @@ contains
 
   pure logical function saturated_exchange_request_valid(self) result(ok)
     class(saturated_exchange_request_t), intent(in) :: self
-    integer :: nd,n
+    integer :: nd,n,id_valid
 
     nd=self%num_domains
     n=self%num_nodes
@@ -71,19 +73,41 @@ contains
          all(shape(self%domain_fraction)==[nd,n]) .and. all(shape(self%cdarcy)==[nd,n])
     if(.not.ok)return
 
+    if(allocated(self%matrix_wet_fraction).neqv.allocated(self%wet_wall_overlap))then
+      ok=.false.;return
+    end if
+    if(allocated(self%matrix_wet_fraction))then
+      ok=size(self%matrix_wet_fraction)==n.and.all(shape(self%wet_wall_overlap)==[nd,n])
+      if(.not.ok)return
+      ok=all(ieee_is_finite(self%matrix_wet_fraction)).and.all(ieee_is_finite(self%wet_wall_overlap))
+      if(.not.ok)return
+      ok=all(self%matrix_wet_fraction>=0.0_real64).and.all(self%matrix_wet_fraction<=1.0_real64).and. &
+         all(self%wet_wall_overlap>=0.0_real64)
+      if(.not.ok)return
+      do id_valid=1,nd
+        if(any(self%wet_wall_overlap(id_valid,:)>self%matrix_wet_fraction))ok=.false.
+      end do
+      if(.not.ok)return
+    end if
+
     ok=all(self%macro_saturated_fraction>=0.0_real64) .and. &
          all(self%macro_saturated_fraction<=1.0_real64) .and. all(self%dz>0.0_real64) .and. &
          all(self%ksat_horizontal>=0.0_real64) .and. all(self%diameter>0.0_real64) .and. &
          all(self%domain_fraction>=0.0_real64) .and. all(self%cdarcy>=0.0_real64)
   end function saturated_exchange_request_valid
 
-  subroutine evaluate_saturated_exchange(request,result)
+  subroutine evaluate_saturated_exchange(request,result,partial_wall_partition)
     type(saturated_exchange_request_t),intent(in)::request
     type(saturated_exchange_result_t),intent(out)::result
 
+    logical,intent(in),optional::partial_wall_partition
+    logical::partition,partial_top
+    real(real64)::macro_fraction
     integer::id,ic,ic_bottom,nd,n
     real(real64)::hmp,hma,delh,recres,res_hor,res_vrt,res_rad,matrix_fraction,signed_amount
 
+    partition=.false.
+    if(present(partial_wall_partition))partition=partial_wall_partition
     result=saturated_exchange_result_t()
     if(.not.request%valid())return
 
@@ -109,19 +133,45 @@ contains
 
         if(hmp<1.0e-8_real64 .and. delh>0.0_real64)delh=0.0_real64
         if(abs(delh)<1.0e-8_real64)delh=0.0_real64
-        if(hma<0.0_real64)delh=0.0_real64
+        partial_top=ic==request%matrix_top_saturated_node.and.request%matrix_partial_top_active
+        matrix_fraction=1.0_real64
+        if(partial_top)matrix_fraction=max(0.0_real64,min(1.0_real64, &
+          (request%matrix_level-(request%z(ic)-0.5_real64*request%dz(ic)))/request%dz(ic)))
+        ! A partially saturated cell can have a negative centre head while
+        ! its lower wall is saturated. The explicit corrected-source route
+        ! retains Darcy exchange over that wall on both sides of h=0.
+        if(partition.and.allocated(request%matrix_wet_fraction))then
+          matrix_fraction=request%matrix_wet_fraction(ic)
+          if(matrix_fraction<=0.0_real64)delh=0.0_real64
+        else
+          if(hma<0.0_real64.and..not.(partition.and.partial_top))delh=0.0_real64
+        end if
 
         signed_amount=0.0_real64
 
         if(delh>0.0_real64)then
           recres=request%cdarcy(id,ic)
-          if(ic==request%top_macro_saturated_node(id)) &
-               recres=request%macro_saturated_fraction(id)*recres
+          if(partition)then
+            macro_fraction=1.0_real64
+            if(ic==request%top_macro_saturated_node(id))macro_fraction=request%macro_saturated_fraction(id)
+            ! Both wet intervals occupy the lower wall: their overlap is
+            ! their minimum, rather than the product of their fractions.
+            if(allocated(request%wet_wall_overlap))then
+              recres=request%wet_wall_overlap(id,ic)*recres
+            else
+              recres=min(matrix_fraction,macro_fraction)*recres
+            end if
+          else
+            if(ic==request%top_macro_saturated_node(id)) &
+                 recres=request%macro_saturated_fraction(id)*recres
+          end if
           signed_amount=-request%flow_reduction*recres*delh*request%step_duration
 
         else if(delh<0.0_real64)then
           matrix_fraction=1.0_real64
-          if(ic==request%matrix_top_saturated_node .and. request%matrix_partial_top_active)then
+          if(partition.and.allocated(request%matrix_wet_fraction))then
+            matrix_fraction=request%matrix_wet_fraction(ic)
+          else if(ic==request%matrix_top_saturated_node .and. request%matrix_partial_top_active)then
             matrix_fraction=(request%matrix_level-(request%z(ic)-0.5_real64*request%dz(ic))) / &
                  request%dz(ic)
           end if

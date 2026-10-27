@@ -181,7 +181,7 @@ program swap5_native_water_project
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
-  logical::did_commit,policy_ok,anchored_ceiling=.false.
+  logical::did_commit,policy_ok,anchored_ceiling=.false.,perched_jacobian=.false.,continuous_sorption=.false.,coupled_hydraulics=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
@@ -200,6 +200,25 @@ program swap5_native_water_project
     call require(anchored_ceiling.and.entry_ramp_width_cm>0d0.and.entry_ramp_width_cm<=1d-3, &
       'explicit entry transition width range/policy')
   end if
+  call get_command_argument(10,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='perched-jacobian'.or.trim(arg)=='historical-jacobian','unknown perched Jacobian policy')
+    call require(anchored_ceiling.and.entry_ramp_width_cm>0d0,'perched Jacobian requires bounded native route')
+    perched_jacobian=trim(arg)=='perched-jacobian'
+  end if
+  call get_command_argument(11,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='continuous-sorption','unknown corrected sorption source')
+    call require(anchored_ceiling.and.entry_ramp_width_cm>0d0,'corrected sorption requires bounded native route')
+    continuous_sorption=.true.
+  end if
+  call get_command_argument(12,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='coupled-hydraulics','unknown coupled hydraulic policy')
+    call require(continuous_sorption.and.anchored_ceiling,'coupled hydraulics requires bounded current-wall route')
+    coupled_hydraulics=.true.
+  end if
+  call require(command_argument_count()<=12,'unexpected native water arguments')
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
   if(len_trim(arg)>0)then
@@ -419,6 +438,7 @@ program swap5_native_water_project
     all(canopy_evaporation>=0d0).and.all(vegetation_cover>=0d0).and.all(vegetation_cover<=1d0),'Rutter plan limits')
   call import_column_macro_configuration(trim(macro_path),macro_initial,macro_config)
   macro_config%rate_template%unsaturated%entry_transition_width_cm=entry_ramp_width_cm
+  macro_config%rate_template%unsaturated%continuous_sorption=continuous_sorption
   call require(macro_initial%geometry%num_nodes==numnod.and.all(macro_initial%geometry%dz==dz),'source macro/water geometry')
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen
   ! Original hconduc deliberately excludes KSATEXM for SWMACRO1.
@@ -470,7 +490,9 @@ program swap5_native_water_project
   numerical%transaction%temporal_tolerance=temporal_tolerance;numerical%transaction%mass_tolerance=1d-10
   numerical%transaction%max_retries=40;numerical%transaction%retry_scale=.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)
+  macro_policy%coupled_hydraulic_trial=coupled_hydraulics
   macro_policy%anchored_cauchy_step_ceiling=anchored_ceiling
+  macro_policy%perched_jacobian_enabled=perched_jacobian
   macro_policy%enabled=.true.;macro_policy%inner_richards_exchange_enabled=.true.
   macro_policy%solver_mass_tolerance_cm=1d-10;macro_policy%internal_exchange_tolerance_cm=1d-10
   call backend%configure_macropore_policy(macro_policy,policy_ok);call require(policy_ok,'Reference macro policy')
@@ -520,6 +542,10 @@ program swap5_native_water_project
       call initialize_interception_window(1000000_int64+int(j,int64)*MAX_RAIN_EVENTS+rain_index,cursor,endpoint, &
         rain_rate*(endpoint-cursor),forcing%rutter%source_window,code)
       call require(code==0,'source rain window')
+      ! The active Boesten process owns the empirical soil-demand reduction.
+      ! Rutter reuses that result; its own potential cannot replace this input.
+      forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=soil_evaporation_cm_day(j)
+      forcing%boesten_evaporation%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
       forcing%rutter%prepared=.true.
       forcing%rutter%matrix_source_area_partition=.true.
       forcing%rutter%process%vegetation_cover_fraction=vegetation_cover(j)

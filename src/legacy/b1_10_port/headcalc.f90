@@ -18,7 +18,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
-   use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
+   use mod_reference_linear_solver, only: reference_tridag, reference_band_solve, reference_constraint_correction
    use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
@@ -110,6 +110,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    real(8)                          :: dt, dtmin, critdevh2cp, critdevh1cp, critdevponddt
    real(8)                          :: CritDevBalCp, CritDevBalTot, lysimeter_plate_head
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
+   logical :: control_active
+   integer :: control_node,control_error
+   real(8) :: control_old,control_delta
+   real(8),allocatable :: control_direction(:)
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
@@ -139,6 +143,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    else
       lysimeter_plate_head=0.0d0
    end if
+   control_active=.false.
    explicit_geometry = .not. legacy_state_binding
    if (explicit_geometry) then
       if (.not. present(parameter_set)) error stop 'HeadCalc: explicit parameter geometry required'
@@ -567,6 +572,23 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          return
       end if
 
+      if(present(numerical_config))then
+        if(numerical_config%control_node>0)then
+          control_node=numerical_config%control_node
+          if(control_node<=1.or.control_node>=NN.or..not.associated(numerical_config%control_coefficient).or. &
+             .not.allocated(numerical_config%control_sink_direction))then
+            state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+          end if
+          if(size(numerical_config%control_sink_direction)/=numnod.or. &
+             numerical_config%control_balance_tolerance<=0.0d0)then
+            state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+          end if
+          control_active=.true.
+          if(.not.allocated(control_direction))allocate(control_direction(numnod))
+          control_direction=numerical_config%control_sink_direction
+          control_old=numerical_config%control_coefficient
+        end if
+      end if
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
       call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
@@ -583,6 +605,14 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          call alternative_solver()
       end if
 
+      if(control_active)then
+        ctx%diagnostics%linear_solves=ctx%diagnostics%linear_solves+1
+        call reference_constraint_correction(NN,fsi_ws%dfdh_upper,fsi_ws%dfdh_main,fsi_ws%dfdh_lower, &
+          control_direction,control_node,state%h(control_node),fsi_ws%delta_head,control_delta,control_error)
+        if(control_error/=0)then
+          state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+        end if
+      end if
 !     back tracking cycle
       factor = 1.0d0
       do itry = 1, MaxBackTr
@@ -590,8 +620,13 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          ctx%diagnostics%backtracking_attempts = ctx%diagnostics%backtracking_attempts + 1
 !        factor reduces the change of state%h (fsi_ws%delta_head) calculated as a full Newton Raphson step
 
+         if(control_active)then
+           if(control_delta>0.0d0)factor=min(factor,max(0.0d0,control_old/control_delta))
+           if(control_delta<0.0d0)factor=min(factor,max(0.0d0,(1.0d0-control_old)/(-control_delta)))
+           numerical_config%control_coefficient=max(0.0d0,min(1.0d0,control_old-factor*control_delta))
+         end if
 !        update state%h
-         if (fldtmin .AND. state%numbit > MaxIt .and. .not.consistent_provider_conductivity) then
+         if (fldtmin .AND. state%numbit > MaxIt .and. .not.consistent_provider_conductivity.and..not.control_active) then
             factmax = 0.0d0
             do i = 1, NN
                if (dabs(fsi_ws%old_head(i) ) < 1.0d0 ) then
@@ -610,6 +645,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             end do
          end if
 
+         if(control_active.and.factor==1.0d0)state%h(control_node)=0.0d0
          if (corner_retry_active) then
             ! Enter the unsaturated side without a finite negative overshoot
             ! at the Mualem corner. The one-cm scale is the existing absolute
@@ -767,6 +803,10 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
     
       end do
 
+      if(control_active)then
+        if(abs(state%h(control_node))>1.0d-8.or. &
+           abs(fsi_ws%residual(control_node))>numerical_config%control_balance_tolerance)flnonconv=.true.
+      end if
 !     test for waterbalance of ponding layer
       if (provider_dynamic_top_active) then
          if (state%ftoph) state%qtop = -state%kmean(1)*((state%hsurf - state%h(1))/grid_disnod(1) + 1.0d0)
@@ -1346,6 +1386,10 @@ subroutine vector_F(iTask)
 !  functions
    real(8)                    :: afgen
 
+   ! The affine control is a Newton unknown, so its provider must be read
+   ! for every residual, including every line-search candidate.
+   if(control_active)call evaluation_context%source_sink%evaluate(state%h(1:numnod),state%theta(1:numnod), &
+     fsi_ws%source(1:numnod),fsi_ws%sink(1:numnod))
    ! The constitutive provider owns the storage increment for every explicit
    ! geometry. Its stable difference avoids cancellation at short trial steps;
    ! providers without an override retain the exact theta-difference fallback.

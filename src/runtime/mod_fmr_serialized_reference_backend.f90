@@ -39,7 +39,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_top_sensible_boundary_carrier, only: fmr_top_sensible_boundary_carrier_t, &
        fmr_top_sensible_boundary_candidate_t
   use mod_soil_water_solver_contract, only: soil_water_parameter_set_t, soil_water_solve_request_t, &
-       soil_water_solve_result_t, soil_water_solver_diagnostics_t, &
+       soil_water_solve_result_t, soil_water_solver_diagnostics_t, source_sink_provider_t, &
        soil_water_top_boundary_result_t, top_boundary_provider_t, &
        SW_SOLVE_CONVERGED, SW_TOP_BOUNDARY_AVAILABLE, &
        soil_water_temporal_indicator_request_t, soil_water_temporal_indicator_result_t, &
@@ -90,6 +90,7 @@ module mod_fmr_serialized_reference_backend
   use mod_b110_serialized_context_binding, only: bind_b110_serialized_legacy_context
   use mod_snow_process, only: snow_parameters_t, snow_state_t, snow_forcing_t, snow_flux_result_t, &
        snow_mass_contribution_t, snow_diagnostics_t, evaluate_snow_reference_call, SNOW_OK
+  use mod_drainage_dramet3_response,only:DRAMET3_DRAINAGE_ONLY
   use mod_process_hydraulic_view, only: process_hydraulic_view_t, build_process_hydraulic_view
   use mod_b110_smooth_freatic_projection, only: b110_smooth_freatic_projection_diagnostics_t, &
        evaluate_b110_smooth_freatic_projection, B110_GWL_PROJECTION_OK
@@ -311,6 +312,14 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure :: clone => fmr_b110_rfm_state_clone
   end type fmr_b110_rfm_state_t
+
+  type,extends(source_sink_provider_t)::fmr_affine_drain_control_t
+    class(source_sink_provider_t),pointer::base=>null()
+    real(real64),pointer::coefficient=>null(),booked_drainage(:,:)=>null()
+    real(real64),allocatable::left(:),direction(:)
+  contains
+    procedure::evaluate=>evaluate_affine_drain_control
+  end type
 
   type, extends(kernel_parameters_t), public :: fmr_b110_physical_parameters_t
     integer(int64) :: parameter_set_id = 0_int64
@@ -1013,6 +1022,15 @@ module mod_fmr_serialized_reference_backend
 
 contains
 
+  subroutine evaluate_affine_drain_control(self,pressure_head,water_content,source,sink)
+    class(fmr_affine_drain_control_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:)
+    real(real64),intent(out)::source(:),sink(:)
+    call self%base%evaluate(pressure_head,water_content,source,sink)
+    sink=sink-sum(self%booked_drainage,dim=1)+self%left+self%coefficient*self%direction
+  end subroutine
+
+
   logical function macro_numeric_heat_valid(p) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::p
     ! Existing numeric endpoint heat owner in the combined MIGMAC10 layout.
@@ -1042,7 +1060,7 @@ contains
     if(.not.allocated(p%drainage_response_levels))return
     if(size(p%drainage_response_levels)/=1)return
     if(p%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
-    if(p%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
+    if(p%drainage_response_levels(1)%dramet3%allocation_mode/=DRAMET3_DRAINAGE_ONLY)return
     if(p%macropore_active)then
       if(p%bottom_mode/=3.or.p%drainage_response_levels(1)%dramet3%drain_type/=1)return
     end if
@@ -2871,6 +2889,8 @@ contains
     end if
     trial_forcing = forcing
     trial_config = config
+    ! Explicit anchored numerical route: retain the accepted temporal-error proposal.
+    if(anchored_ceiling) trial_config%retain_accepted_step_proposal=.true.
     self%model%weather_surface_active = allocated(forcing%weather_surface)
     if (self%model%weather_surface_active) then
       ! This composition has no smooth dynamic-top history certificate.
@@ -4536,6 +4556,17 @@ contains
     real(real64), allocatable :: scan_cofgen(:,:)
     type(soil_water_solve_request_t) :: request
     type(soil_water_solve_result_t) :: solve_result
+    type(soil_water_solver_diagnostics_t) :: coupled_diagnostics
+    type(fmr_affine_drain_control_t),target::coupled_sink
+    real(real64),target::coupled_control_value
+    logical :: coupled_trial,coupled_engaged
+    integer :: coupled_iteration
+    real(real64) :: coupled_head_change,coupled_gwl_change
+    logical :: coupled_mixture_active
+    integer :: coupled_used_crossing,coupled_previous_crossing,coupled_critical_node,i_coupled
+    real(real64) :: coupled_previous_gwl,coupled_gwl_left,coupled_gwl_right,coupled_effective_gwl
+    real(real64) :: coupled_f_left,coupled_f_right,coupled_f,coupled_alpha,coupled_alpha_used,coupled_blend_width
+    real(real64),allocatable :: coupled_q_used(:,:),coupled_q_previous(:,:),coupled_q_left(:,:),coupled_q_right(:,:)
     type(macropore_runtime_result_t) :: macropore_result
     type(mobile_macro_salt_receipt_t) :: salt_receipt
     type(soil_water_accepted_step_direction_result_t) :: direction_result
@@ -4595,6 +4626,28 @@ contains
     type(frost_bottom_result_t) :: frost_bottom_result
     integer :: frost_status, frost_provider_status
     character(len=64) :: drainage_direction_route
+    coupled_trial=self%macropore_policy%coupled_hydraulic_trial
+    if(coupled_trial)then
+      if(.not.self%macropore_active.or..not.allocated(self%macropore_config))return
+      if(.not.self%macropore_config%rate_template%unsaturated%continuous_sorption)return
+      if(.not.self%drainage_response_active.or..not.allocated(self%drainage_trial_distribution))return
+      if(.not.allocated(self%drainage_response_levels))return
+      if(size(self%drainage_response_levels)/=1)return
+      if(self%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
+      if(self%drainage_response_levels(1)%dramet3%allocation_mode/=DRAMET3_DRAINAGE_ONLY)return
+      if(self%swbotb3_explicit_active.or.self%bottom_mode/=3)return
+      if(self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or.self%frost_active.or.self%snow_active)return
+      if(self%root_compensation%method/=ROOT_COMP_OFF.or.allocated(self%bartholomeus))return
+    end if
+    coupled_engaged=.false.
+    coupled_mixture_active=.false.
+    coupled_previous_crossing=-1
+    coupled_critical_node=0
+    coupled_alpha=0.0_real64
+    coupled_alpha_used=0.0_real64
+    coupled_blend_width=0.0_real64
+    coupled_iteration=0
+    coupled_diagnostics=soil_water_solver_diagnostics_t()
     outcome = trial_outcome_t()
     macropore_accepted_top_cm = 0.0_real64
     macropore_rapid_outflow_cm = 0.0_real64
@@ -4804,7 +4857,7 @@ contains
           if (low3_physical%active_nodes /= self%soil_parameters%active_nodes .or. &
               .not. allocated(low3_physical%pressure_head)) return
           call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection)
+               low3_physical%pressure_head,low3_physical%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
         class default
           return
         end select
@@ -5284,11 +5337,42 @@ contains
       return
     end select
 
+770 continue
+    if(coupled_trial)then
+      coupled_iteration=coupled_iteration+1
+      ! Numerical-only outer consistency iteration. All repeated solves below
+      ! retain request%base_state and the accepted macro/history origin.
+      call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+        hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
+      if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
+      hydraulic_start%groundwater_level=profile_projection%level_cm
+      coupled_used_crossing=profile_projection%crossing_lower_node
+      if(self%swbotb3_explicit_active)then
+        call evaluate_b111_explicit_cauchy_profile_flux(profile_projection%level_cm, &
+          self%swbotb3_explicit_hdrain_cm,self%swbotb3_explicit_shape_3,self%cauchy3_proposal%aquifer_total_head_cm, &
+          self%legacy_swbotb3_implicit_control%external_resistance_days(),low3_ztop,low3_zbot,self%soil_parameters%dz, &
+          low3_ksat,cauchy3_q4,low3_qbot,low3_gwlmean,low3_cvalprof,low3_status)
+        if(low3_status/=B111_EXPLICIT_CAUCHY_OK)return
+        request%boundary%bottom_flux=low3_qbot
+        self%last_observation%cauchy3_explicit_qbot_cm_per_day=low3_qbot
+        self%last_observation%cauchy3_explicit_gwlmean_cm=low3_gwlmean
+        self%last_observation%cauchy3_explicit_profile_resistance_day=low3_cvalprof
+      end if
+      if(allocated(self%substep_root))then
+        block
+          type(root_water_uptake_flux_result_t)::roots
+          call evaluate_macro_feddes_drought_uptake(self%substep_root%parameters,hydraulic_start, &
+            substep_root_request,roots,self%substep_root_diagnostics)
+          if(self%substep_root_diagnostics%status/=ROOT_UPTAKE_OK)return
+          self%qrot=roots%root_extraction_sink
+        end block
+      end if
+    end if
     if (self%drainage_response_active.and..not.self%frost_response_drainage_active) then
       drainage_level_present=.true.
       if(allocated(self%drainage_trial_distribution))then
         call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-          hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection)
+          hydraulic_start%pressure_head,hydraulic_start%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
         if(.not.profile_projection%valid)return
         drainage_level_present=profile_projection%level_present
         if(drainage_level_present)then
@@ -5344,6 +5428,22 @@ contains
       end if
     end if
 
+    if(coupled_trial)then
+      if(coupled_mixture_active)then
+        self%qdra=coupled_q_left
+        coupled_control_value=coupled_alpha
+        coupled_sink%base=>self%source_sink
+        coupled_sink%coefficient=>coupled_control_value
+        coupled_sink%booked_drainage=>self%qdra
+        coupled_sink%left=sum(coupled_q_left,dim=1)
+        coupled_sink%direction=sum(coupled_q_right-coupled_q_left,dim=1)
+        request%numerical%control_node=coupled_critical_node
+        request%numerical%control_sink_direction=coupled_sink%direction
+        request%numerical%control_coefficient=>coupled_control_value
+        request%numerical%control_balance_tolerance=self%compartment_balance_tolerance
+      end if
+      coupled_q_used=self%qdra
+    end if
     if (self%root_extraction_active) then
       if (.not. associated(self%qrot_zero) .or. size(self%qrot_zero) /= size(self%qrot)) return
       call bind_b110_source_sink_provider(self%source_sink, self%qdra, self%qssdi, self%qrot_zero)
@@ -5413,6 +5513,7 @@ contains
       end select
     else
       request%evaluation%source_sink=>self%source_sink
+      if(coupled_mixture_active)request%evaluation%source_sink=>coupled_sink
     end if
     if (self%root_extraction_active) request%evaluation%root_sink => self%root_sink
     if (self%rutter_active) then
@@ -5580,6 +5681,20 @@ contains
         return
       end select
       solve_result = macropore_result%matrix_result
+      if(coupled_mixture_active)then
+        coupled_alpha=coupled_control_value
+        coupled_alpha_used=coupled_alpha
+        self%qdra=(1.0_real64-coupled_alpha)*coupled_q_left+coupled_alpha*coupled_q_right
+        coupled_q_used=self%qdra
+        coupled_effective_gwl=(1.0_real64-coupled_alpha)*coupled_gwl_left+coupled_alpha*coupled_gwl_right
+        self%drainage_response_diagnostics%aggregate%signed_soil_to_drain_rate=sum(self%qdra)
+        do i_coupled=1,size(self%qdra,1)
+          self%drainage_response_diagnostics%level(i_coupled)%signed_soil_to_drain_rate=sum(self%qdra(i_coupled,:))
+          self%drainage_response_diagnostics%level(i_coupled)%dramet3%signed_exchange_cm_per_day=sum(self%qdra(i_coupled,:))
+          self%drainage_response_diagnostics%level(i_coupled)%branch_or_nonsmooth_point=.true.
+        end do
+        self%last_observation%drainage_response=self%drainage_response_diagnostics
+      end if
       macropore_pond_requested_cm=macropore_result%pond_requested_top_input_cm
       macropore_pond_accepted_cm=macropore_result%pond_accepted_top_input_cm
       macropore_pond_returned_cm=macropore_result%pond_returned_surface_cm
@@ -5638,6 +5753,77 @@ contains
       call self%solver%solve(request, self%workspace, solve_result)
     end if
 
+    if(coupled_trial)then
+      coupled_diagnostics%headcalc_calls=coupled_diagnostics%headcalc_calls+solve_result%diagnostics%headcalc_calls
+      coupled_diagnostics%nonlinear_iterations=coupled_diagnostics%nonlinear_iterations+solve_result%diagnostics%nonlinear_iterations
+      coupled_diagnostics%jacobian_builds=coupled_diagnostics%jacobian_builds+solve_result%diagnostics%jacobian_builds
+      coupled_diagnostics%linear_solves=coupled_diagnostics%linear_solves+solve_result%diagnostics%linear_solves
+      coupled_diagnostics%backtracking_attempts=coupled_diagnostics%backtracking_attempts+solve_result%diagnostics%backtracking_attempts
+      coupled_diagnostics%alternative_solver_calls=coupled_diagnostics%alternative_solver_calls+solve_result%diagnostics%alternative_solver_calls
+      coupled_diagnostics%internal_retries=coupled_diagnostics%internal_retries+solve_result%diagnostics%internal_retries
+      coupled_diagnostics%interface_sensitivity_backsolves=coupled_diagnostics%interface_sensitivity_backsolves+solve_result%diagnostics%interface_sensitivity_backsolves
+      coupled_diagnostics%constitutive_evaluations=coupled_diagnostics%constitutive_evaluations+solve_result%diagnostics%constitutive_evaluations
+      coupled_diagnostics%constitutive_initial_full_evaluations=coupled_diagnostics%constitutive_initial_full_evaluations+solve_result%diagnostics%constitutive_initial_full_evaluations
+      coupled_diagnostics%constitutive_candidate_full_evaluations=coupled_diagnostics%constitutive_candidate_full_evaluations+solve_result%diagnostics%constitutive_candidate_full_evaluations
+      coupled_diagnostics%constitutive_candidate_demand_evaluations=coupled_diagnostics%constitutive_candidate_demand_evaluations+solve_result%diagnostics%constitutive_candidate_demand_evaluations
+      coupled_diagnostics%constitutive_capacity_only_evaluations=coupled_diagnostics%constitutive_capacity_only_evaluations+solve_result%diagnostics%constitutive_capacity_only_evaluations
+      coupled_diagnostics%constitutive_candidate_terminal_evaluations=coupled_diagnostics%constitutive_candidate_terminal_evaluations+solve_result%diagnostics%constitutive_candidate_terminal_evaluations
+      coupled_diagnostics%constitutive_candidate_capacity_reuses=coupled_diagnostics%constitutive_candidate_capacity_reuses+solve_result%diagnostics%constitutive_candidate_capacity_reuses
+      coupled_diagnostics%workspace_full_resets=coupled_diagnostics%workspace_full_resets+solve_result%diagnostics%workspace_full_resets
+      coupled_diagnostics%workspace_zeroed_bytes=coupled_diagnostics%workspace_zeroed_bytes+solve_result%diagnostics%workspace_zeroed_bytes
+      if(solve_result%status/=SW_SOLVE_CONVERGED)return
+      call build_process_hydraulic_view(solve_result%candidate_state,hydraulic_end,hydraulic_view_ok)
+      if(.not.hydraulic_view_ok)return
+      call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+        hydraulic_end%pressure_head,hydraulic_end%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
+      if(.not.profile_projection%valid.or..not.profile_projection%level_present)return
+      hydraulic_end%groundwater_level=profile_projection%level_cm
+      ! Keep the established time-discrete process evaluation on smooth steps.
+      ! A projection branch jump needs a coupled solve: dt reduction alone cannot
+      ! remove its finite drainage discontinuity. Once engaged, retain strict accuracy.
+      coupled_engaged=coupled_engaged.or.profile_projection%crossing_lower_node/=coupled_used_crossing
+      if(coupled_engaged)then
+      coupled_head_change=maxval(abs(hydraulic_end%pressure_head-hydraulic_start%pressure_head))
+      coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
+      if(coupled_mixture_active)then
+        coupled_f=hydraulic_end%pressure_head(coupled_critical_node)
+        coupled_gwl_change=abs(coupled_f)
+        coupled_blend_width=0.0_real64
+      else if(coupled_iteration>1.and.coupled_head_change>1e-8_real64)then
+        if(profile_projection%crossing_lower_node==coupled_previous_crossing.and. &
+           profile_projection%crossing_lower_node/=coupled_used_crossing)then
+          coupled_critical_node=max(profile_projection%crossing_lower_node,coupled_used_crossing)
+          if(coupled_critical_node>0)then
+            coupled_f_left=hydraulic_start%pressure_head(coupled_critical_node)
+            coupled_f_right=hydraulic_end%pressure_head(coupled_critical_node)
+            if(coupled_f_left*coupled_f_right<0.0_real64)then
+              coupled_mixture_active=.true.
+              coupled_q_left=coupled_q_previous;coupled_q_right=coupled_q_used
+              coupled_gwl_left=coupled_previous_gwl;coupled_gwl_right=hydraulic_start%groundwater_level
+              coupled_alpha=max(0.0_real64,min(1.0_real64,-coupled_f_left/(coupled_f_right-coupled_f_left)))
+          if(coupled_alpha<0.1_real64.or.coupled_alpha>0.9_real64)coupled_alpha=0.5_real64
+              write(*,*) 'ACTIVE_SET_BEGIN',t0,t1,coupled_critical_node,coupled_f_left,coupled_f_right,coupled_alpha
+            end if
+          end if
+        end if
+      end if
+      if(coupled_head_change>1e-8_real64.or.coupled_gwl_change>1e-8_real64.or. &
+         coupled_blend_width>self%compartment_balance_tolerance)then
+        if(coupled_iteration>=64)then
+          write(*,*) 'COUPLED_EXHAUSTED',t0,t1,coupled_head_change,coupled_gwl_change,coupled_mixture_active
+          return
+        end if
+        coupled_previous_crossing=coupled_used_crossing
+        coupled_previous_gwl=hydraulic_start%groundwater_level
+        coupled_q_previous=coupled_q_used
+        hydraulic_start=hydraulic_end
+        goto 770
+      end if
+      end if ! coupled_engaged
+      coupled_diagnostics%route=solve_result%diagnostics%route
+      solve_result%diagnostics=coupled_diagnostics
+      ! Final inner solve alone is published; diagnostics count all solves.
+    end if
     self%last_observation%solver_executed = .true.
     self%last_observation%solver_status = solve_result%status
     self%last_observation%top_flux = solve_result%top_flux
@@ -5712,7 +5898,7 @@ contains
     end if
     if(allocated(self%drainage_trial_distribution))then
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-        solve_result%candidate_state%pressure_head,solve_result%candidate_state%ponding_depth,profile_projection)
+        solve_result%candidate_state%pressure_head,solve_result%candidate_state%ponding_depth,profile_projection,positive_pond_surface=corrected_macro_positive_film(self))
       if(.not.profile_projection%valid)return
       ! CALCGWL's historical absent diagnostic sentinel; never passed to the
       ! response law. The next trial again evaluates the typed profile view.
@@ -5723,6 +5909,11 @@ contains
            candidate_projected_groundwater_level, candidate_projection_status, projection_diagnostics)
       if (candidate_projection_status /= FMR_QBOT_DRAIN_DIRECTION_OK) return
       solve_result%candidate_state%groundwater_level = candidate_projected_groundwater_level
+    end if
+    if(coupled_mixture_active)then
+      ! The mixture is a stage flux, never a persistent groundwater state.
+      write(*,*) 'ACTIVE_SET_ACCEPT',t0,t1,coupled_iteration,coupled_critical_node,coupled_alpha_used, &
+        coupled_effective_gwl,solve_result%candidate_state%pressure_head(coupled_critical_node)
     end if
     if (self%soil_water_selection%uses_rossfast()) then
       call self%soil_water_selection%temporal_certificate_snapshot(rossfast_certificate_available, &
@@ -6767,6 +6958,13 @@ contains
     ok=.true.
   end function
 
+  pure logical function corrected_macro_positive_film(self) result(enabled)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    enabled=.false.
+    if(.not.self%macropore_active.or..not.allocated(self%macropore_config))return
+    enabled=self%macropore_config%rate_template%unsaturated%continuous_sorption
+  end function corrected_macro_positive_film
+
   subroutine diagnose_macro_step(t0,t1,status_code)
     real(real64),intent(in)::t0,t1
     integer,intent(in)::status_code
@@ -7110,7 +7308,7 @@ contains
       real(real64)::lumped(1,state%active_nodes)
       ok=.false.;allocate(q(state%active_nodes));q=0.0_real64
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
-        state%pressure_head,state%ponding_depth,projection)
+        state%pressure_head,state%ponding_depth,projection,positive_pond_surface=corrected_macro_positive_film(self))
       if(.not.projection%valid)return
       if(projection%level_present)then
         view%active_nodes=state%active_nodes;view%pressure_head=state%pressure_head;view%water_content=state%water_content
