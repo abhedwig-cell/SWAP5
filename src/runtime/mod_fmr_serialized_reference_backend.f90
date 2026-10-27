@@ -2871,6 +2871,8 @@ contains
     end if
     trial_forcing = forcing
     trial_config = config
+    ! Explicit anchored numerical route: retain the accepted temporal-error proposal.
+    if(anchored_ceiling) trial_config%retain_accepted_step_proposal=.true.
     self%model%weather_surface_active = allocated(forcing%weather_surface)
     if (self%model%weather_surface_active) then
       ! This composition has no smooth dynamic-top history certificate.
