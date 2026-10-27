@@ -7,7 +7,7 @@ program test_continuous_sorptivity
   type(sorptivity_rate_result_t)::legacy,explicit_legacy,corrected,previous
   type(unsat_absorption_request_t)::u
   type(unsat_absorption_result_t)::ur
-  real(real64)::deficit,expected
+  real(real64)::deficit,expected,gate,slope
   real(real128)::oracle,dtq,tq,aq
   integer::k
   r%num_domains=1;r%num_nodes=1;r%top_node=1;r%swmbf=1
@@ -29,10 +29,19 @@ program test_continuous_sorptivity
     call check(all(legacy%end_event.eqv.explicit_legacy%end_event),'default history exact')
     call evaluate_sorptivity_rate(r,corrected,.true.)
     expected=2*sqrt((r%theta_s(1)-r%theta(1))/0.4_real64)*0.4_real64*sqrt(r%step_duration)
+    call evaluate_saturation_wall_gate(r%theta_s(1)-r%theta(1),gate,slope)
+    expected=expected*gate
     call check(abs(corrected%amount_cm(1,1)-expected)<1e-14_real64*expected,'power-law oracle')
     call check(.not.corrected%end_event(1,1),'positive history retained')
     if(k>8)call check(legacy%amount_cm(1,1)==0,'archived deficit cutoff')
   end do
+  ! Positive history can carry its reference above saturation. The gate
+  ! must still suppress absorption as the actual matrix reaches saturation.
+  r%history_absorption_time=1;r%history_theta_ref=0.5001_real64
+  r%theta=0.5_real64-1e-12_real64
+  call evaluate_sorptivity_rate(r,corrected,.true.)
+  call check(corrected%rate_cm_per_day(1,1)<1e-9_real64,'history saturation limit')
+  r%history_absorption_time=0;r%history_theta_ref=0
   r%theta=0.5_real64-1e-8_real64*(1+1e-5_real64)
   call evaluate_sorptivity_rate(r,previous,.true.)
   r%theta=0.5_real64-1e-8_real64*(1-1e-5_real64)
