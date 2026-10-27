@@ -114,6 +114,32 @@ contains
 
     result%total_dqdh_node=sum(result%unsaturated_dqdh+result%main_saturated_dqdh,dim=1)
     result%perched_derivative_included=.false.
+    ! Corrected-source opt-in only: include the local head dependence of
+    ! matrix-to-macropore seepage in a perched saturated zone. Retain the
+    ! literal historical Jacobian when the entry-transition width is zero.
+    ! The partially saturated top cell has a moving water-table fraction and
+    ! is deliberately excluded until its additional derivative is qualified.
+    if(request%unsaturated%entry_transition_width_cm>0.0_real64.and. &
+       request%unsaturated%sorptivity%perched_active)then
+      if(.not.request%interflow_sat%valid().or..not.allocated(rates%qin_interflow_rate))return
+      if(any(shape(rates%qin_interflow_rate)/=[nd,n]))return
+      do id=1,nd
+        if(request%interflow_sat%matrix_bottom_saturated_node<=0)cycle
+        ic_top=request%interflow_sat%matrix_top_saturated_node
+        ic_bottom=min(request%interflow_sat%bottom_domain(id),request%interflow_sat%matrix_bottom_saturated_node)
+        do ic=ic_top,ic_bottom
+          if(ic==ic_top.and.request%interflow_sat%matrix_partial_top_active)cycle
+          hmp=request%interflow_sat%macro_reference_level(id)-request%interflow_sat%z(ic)
+          if(hmp<1.0e-8_real64)hmp=0.0_real64
+          delh=hmp-request%interflow_sat%matrix_head(ic)
+          if(request%interflow_sat%matrix_head(ic)<0.0_real64.or. &
+             delh>=-HEAD_DIFFERENCE_THRESHOLD)cycle
+          if(rates%qin_interflow_rate(id,ic)<=0.0_real64)cycle
+          result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+rates%qin_interflow_rate(id,ic)/delh
+          result%perched_derivative_included=.true.
+        end do
+      end do
+    end if
     result%valid=.true.
   end subroutine evaluate_macropore_exchange_derivative
 
