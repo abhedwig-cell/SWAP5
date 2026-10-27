@@ -17,7 +17,7 @@ module mod_b111_profile_groundwater_projection
     real(real64) :: level_cm = 0.0_real64
   end type b111_profile_groundwater_projection_t
 
-  public :: evaluate_b111_profile_groundwater_projection
+  public :: evaluate_b111_profile_groundwater_projection, minimum_pocket_node, evaluate_b111_pocket_contact_limits
 
 contains
 
@@ -86,5 +86,40 @@ contains
     result%valid = .true.
     result%level_present = .true.
   end subroutine evaluate_b111_profile_groundwater_projection
+
+  pure integer function minimum_pocket_node(head, first, last) result(node)
+    real(real64),intent(in)::head(:)
+    integer,intent(in)::first,last
+    node=0
+    if(first<1.or.last<first.or.last>size(head))return
+    if(any(.not.ieee_is_finite(head(first:last))))return
+    node=first-1+minloc(head(first:last),dim=1)
+  end function minimum_pocket_node
+
+  pure subroutine evaluate_b111_pocket_contact_limits(z,distance,head,pond,first,last,node, &
+       deep_level,shallow_level,ok,positive_pond_surface)
+    real(real64),intent(in)::z(:),distance(:),head(:),pond
+    integer,intent(in)::first,last,node
+    real(real64),intent(out)::deep_level,shallow_level
+    logical,intent(out)::ok
+    logical,intent(in)::positive_pond_surface
+    real(real64)::limiting_head(size(head))
+    type(b111_profile_groundwater_projection_t)::projection
+    ok=.false.;deep_level=0.0_real64;shallow_level=0.0_real64
+    if(size(z)/=size(head).or.size(distance)/=size(head))return
+    if(minimum_pocket_node(head,first,last)==0)return
+    if(node<first.or.node>last)return
+    ! The negative one-sided zero approaches the active node's depth. Remove
+    ! only this disappearing pocket to obtain the other original CALCGWL limit.
+    ! This is a private limit view, never a mutation of physical candidate water.
+    limiting_head=head
+    limiting_head(first:last)=max(0.0_real64,limiting_head(first:last))
+    limiting_head(node)=0.0_real64
+    call evaluate_b111_profile_groundwater_projection(z,distance,limiting_head,pond,projection,positive_pond_surface)
+    if(.not.projection%valid.or..not.projection%level_present)return
+    if(projection%level_cm<=z(node))return
+    deep_level=z(node);shallow_level=projection%level_cm
+    ok=.true.
+  end subroutine evaluate_b111_pocket_contact_limits
 
 end module mod_b111_profile_groundwater_projection
