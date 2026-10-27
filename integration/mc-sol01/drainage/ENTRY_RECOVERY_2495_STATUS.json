@@ -20,7 +20,7 @@
   "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
-    "status": "TESTED_NOT_QUALIFIED_NOT_CANONICAL",
+    "status": "TESTED_LIMITER_COUNTEREXAMPLE_NOT_QUALIFIED",
     "source_commit": "76b306eb48162c6520ffd1f74a757481e775b751",
     "canonical_base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
     "option": "Explicit numerical --perched-jacobian, default off; currently bounded by native anchored-Cauchy and positive entry ramp input. Bound into prepared input and restart identity.",
@@ -122,6 +122,15 @@
       "recovery_library_file_id": "libfile_075e957329d881918d3cd813e2bdf0ee",
       "recovery_sha256": "776dbc0bb0093e13179ca9ab84098d17ae043ccf62ac29cc2e5b0794cc74d116"
     },
-    "publication": "Draft review and recovery only; selected owning qualification and actual merge testing remain outstanding. Broad unrelated workflows intentionally not selected."
+    "publication": "Draft review and recovery only; selected owning qualification and actual merge testing remain outstanding. Broad unrelated workflows intentionally not selected.",
+    "limiter_counterexample": {
+      "status": "FAILED_EXACT_JACOBIAN_NOT_ADMITTED",
+      "diagnostic": "integration/mc-sol01/drainage/DIAGNOSTIC_PERCHED_LIMITER.f90",
+      "inflow_fraction": 0.5,
+      "finite_difference_total_source": 0,
+      "candidate_diagonal": -0.07393411494952053,
+      "interpretation": "In this constructed one-node capped inflow case the cap fraction changes with pressure. The proposed term omits that dependence, so it is a quasi-Jacobian, not the exact derivative.",
+      "next": "Derive and test the active limiter contribution, including multi-node cross-dependence, or explicitly constrain and substantiate a bounded quasi-Newton policy. Do not promote to general exact Jacobian."
+    }
   }
 }
