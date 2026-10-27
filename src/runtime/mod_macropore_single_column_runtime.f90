@@ -455,13 +455,13 @@ contains
       end if
 
       call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt, &
-           history_local,ok)
+           history_local,ok,rate_request)
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
       call apply_sorptivity_history_update(history_local,accepted_macro,raw_rates%unsaturated, &
-           result%macropore_candidate,ok)
+           result%macropore_candidate,ok,rate_request%unsaturated%continuous_sorption)
       if(.not.ok)then
         result%status=MACRO_RUNTIME_FAILED
         return
@@ -610,13 +610,13 @@ contains
       return
     end if
 
-    call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt,history_local,ok)
+    call prepare_standard_sorptivity_history_request(history_request,geometry,candidate_view,matrix_view,dt,history_local,ok,rate_request)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
     end if
     call apply_sorptivity_history_update(history_local,accepted_macro,raw_rates%unsaturated, &
-         result%macropore_candidate,ok)
+         result%macropore_candidate,ok,rate_request%unsaturated%continuous_sorption)
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
