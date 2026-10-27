@@ -1111,6 +1111,15 @@
       "soil_evaporation_0_30_cm": 0.8997752432325303,
       "restart_replay": "Current5→7 vs5→6→7 complete restart.bin/state.csv/temperature.csv byte exact",
       "scientific_admission": false
+    },
+    "accuracy_selection": {
+      "status": "SELECTED_PENDING",
+      "question": "Does halving existing Full Richards temporal tolerance from.01 to.005 materially change the corrected-forcing original five-day ponding/entry trajectory?",
+      "reason": "First integrated positive evaporation and new wall/groundwater coupling requires a short actual-route accuracy discriminator beyond mass conservation; no broad tolerance campaign.",
+      "expected_native_seconds": 160,
+      "maximum_native_seconds": 240,
+      "scope": "Original0→5 only, raw input unchanged, existing physical equations unchanged, no relaxed tolerance, no restart cross-binding",
+      "admission_threshold": "No new acceptance threshold invented; report measured pressure/theta/GWL/flux differences to existing owner before claiming scientific admission."
     }
   }
 }
