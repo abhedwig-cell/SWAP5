@@ -50,12 +50,13 @@ contains
          all(self%diameter>0.0_real64)
   end function history_update_request_valid
 
-  subroutine apply_sorptivity_history_update(request,accepted_macro,absorption,candidate_macro,ok)
+  subroutine apply_sorptivity_history_update(request,accepted_macro,absorption,candidate_macro,ok,stable_time_integral)
     type(sorptivity_history_update_request_t),intent(in)::request
     type(macropore_continuation_state_t),intent(in)::accepted_macro
     type(unsat_absorption_result_t),intent(in)::absorption
     type(macropore_continuation_state_t),intent(inout)::candidate_macro
     logical,intent(out)::ok
+    logical,intent(in),optional::stable_time_integral
 
     integer::id,ic,ic_bottom,nd,n
     real(real64)::time,delta_root,sorp,theta_ref
@@ -91,6 +92,10 @@ contains
             sorp=absorption%seed_sorptivity(id,ic)
             theta_ref=absorption%seed_theta_ref(id,ic)
             delta_root=sqrt(time+request%step_duration)-sqrt(time)
+            if(present(stable_time_integral))then
+              if(stable_time_integral)delta_root=request%step_duration / &
+                (sqrt(time+request%step_duration)+sqrt(time))
+            end if
             theta_ref=theta_ref + request%wall_correction(ic)*request%wet_fraction(id,ic) * &
                  request%domain_fraction(id,ic)*(4.0_real64/request%diameter(ic))*sorp*delta_root
             candidate_macro%sorptivity(id,ic)=sorp
