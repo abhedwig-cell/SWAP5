@@ -46,6 +46,19 @@
     "measurement_scope": "First 891 logged calls before timeout; does not prove all failure causes. Consecutive observations show 2x accepted-width proposal repeatedly followed by MACRO_RUNTIME_RETRY and half-width converged calls.",
     "instrumented_executable_sha256": "41c9705076bf1208e05f18c313d0e7fde577b97b5a4a3fc623d9193a87edb84c",
     "restart_sha256": "393202275e3a051910f6279ffa1d607099887b69e7dc098ebb6cc00b5c1319bb",
-    "next": "Instrument macropore runtime return path and matrix solver diagnostics for retry; isolate first nonconvergence and fix existing coupled solver without relaxing accuracy or balance."
+    "next": "Diagnose production Richards iteration/residual and Jacobian at first 64-iteration retry using source-event restart; target the coupled surface/macro nonlinearity without relaxing tolerances or conservation.",
+    "solver_detail": {
+      "wall_timeout_s": 5,
+      "retry_observations": 114,
+      "solver_status": "SW_SOLVE_RETRY_ADVISED",
+      "route": "legacy-reference-retry",
+      "nonlinear_iterations_64": 114,
+      "backtracking_attempts_64": 111,
+      "backtracking_attempts_80": 1,
+      "backtracking_attempts_126": 2,
+      "native_balance_residual_available": false,
+      "instrumented_executable_sha256": "ab0b7eb9638214c1d7f1e62731906fde4a24d8deebe4f379c59f45238adb01c4",
+      "interpretation": "Repeated coupled Richards nonlinear retries hit 64 iterations. Underlying cause of nonconvergence and appropriate repair remain unproven."
+    }
   }
 }
