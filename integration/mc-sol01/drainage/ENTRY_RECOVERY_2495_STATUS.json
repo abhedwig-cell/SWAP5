@@ -1162,5 +1162,19 @@
       "scope": "Each executable restarts from its own bound day1"
     },
     "regression": "tools/solute/check_original_evaporation.py: actual original day1 positive soil evaporation/drying history and exact O0/O2 comparison PASS. Old frozen predecessor day1 soil_evap_cm independently confirmed zero. Strict source identity correctly rejects importing its stale bundle through the changed builder."
+  },
+  "positive_film_projection_recovery_20261027": {
+    "status": "PROPOSED_SELECTED_NOT_IMPLEMENTED_OR_QUALIFIED",
+    "actual_source_interval": [
+      256.94200000000274,
+      256.96100000000297
+    ],
+    "checkpoint": "evap-wiring-event256942/restart.bin",
+    "observation": "At dt3.461755e-7day full/half positive ponds1.09854e-8/5.53902e-9cm produce groundwater jump0.449434cm despite raw head difference6.59456e-6cm and macrostock difference2.723e-9cm. Current-node/perched source/contact is not the dominant error at this event.",
+    "cause": "Literal CALCGWL1e-8cm pond-presence convention; both candidates have real positive surface water but opposite diagnostic branches.",
+    "physical_contract": "For explicit corrected continuous-wall physical variant only, any strictly positive film in the fully saturated profile uses its supplied surface water level. The literal/default typed CALCGWL semantics, zero-pond behaviour and all physical equations/mass/temporal tolerances remain unchanged. This corrects a derived hydraulic view, not a relaxed temporal assessment. Make the selected corrected-source convention explicit in versioned prepared-input binding.",
+    "implementation": "Optional positive-film argument on existing typed projection; consistent use by corrected macro rate adapter, drainage/current-profile outer solve and final groundwater receipt. No parallel kernel, no new state layout, no hidden numerical-policy change.",
+    "selection": "Real two-module O0/O2 projection driver with default/zero/invalid controls; exact current failed-event replay with all original acceptance and independent budgets; if successful, new bound original5/30/481 trajectory. Old256.942 state reuse across executors is diagnostic only unless a reviewed upgrade is qualified.",
+    "canonical_admission": false
   }
 }
