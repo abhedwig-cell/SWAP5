@@ -395,24 +395,43 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       if (swbotb == 9) NN = numnod - 1
    end if
 
+   ! The contact is a linear constraint on trial iterates, never on accepted storage.
+   if(present(numerical_config))then
+     if(numerical_config%control_node>0)then
+       control_node=numerical_config%control_node
+       if(control_node<=1.or.control_node>=NN.or..not.provider_constitutive_active.or. &
+          .not.associated(numerical_config%control_coefficient).or. &
+          .not.allocated(numerical_config%control_sink_direction))then
+         state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+       end if
+       if(size(numerical_config%control_sink_direction)/=numnod.or. &
+          numerical_config%control_balance_tolerance<=0.0d0)then
+         state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+       end if
+       control_active=.true.
+       allocate(control_direction(numnod));control_direction=numerical_config%control_sink_direction
+       state%h(control_node)=0.0d0
+     end if
+   end if
+
    ! Preserve every successful ordinary solve. Only a failed solve entering
    ! desaturation at a machine-near-zero head gets one bounded damped restart.
    corner_retry_active = .false.
    warm_probe_pending=.false.;cold_probe_pending=.false.
    if(present(numerical_config))then
       if(numerical_config%reuse_trial_head.and.consistent_provider_conductivity.and. &
-         provider_dynamic_top_active.and.swmacro==0) &
+         provider_dynamic_top_active.and.swmacro==0.and..not.control_active) &
         warm_probe_pending=any(state%h/=state%hm1)
    end if
-   corner_retry_available = consistent_provider_conductivity .and. provider_dynamic_top_active .and. swmacro == 0
+   corner_retry_available = consistent_provider_conductivity .and. provider_dynamic_top_active .and. swmacro == 0.and..not.control_active
    if (corner_retry_available) then
       corner_retry_available = any(state%hm1 >= 0.0d0 .and. state%hm1 <= sqrt(epsilon(1.0d0)))
       if (corner_retry_available) corner_entry_state = state
    end if
-   picard_corner_available = picard_corner_restart_admitted()
+   picard_corner_available = picard_corner_restart_admitted().and..not.control_active
    picard_corner_active = .false.
    if (picard_corner_available) picard_corner_entry = state
-   saturated_flux_available = saturated_flux_restart_admitted()
+   saturated_flux_available = saturated_flux_restart_admitted().and..not.control_active
    saturated_flux_active = .false.
    saturated_flux_seed = .false.
 900 continue
@@ -427,6 +446,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       provider_tuple_valid = .true.
       provider_tuple_from_candidate = .false.
       state%k(1:numnod) = fsi_ws%provider_k(1:numnod)
+      if(control_active)state%theta(1:numnod)=fsi_ws%provider_theta(1:numnod)
    else
       do i = 1, numnod
          state%k(i) = hconduc(i,state%h(i),state%theta(i),rfcp(i))
@@ -572,23 +592,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          return
       end if
 
-      if(present(numerical_config))then
-        if(numerical_config%control_node>0)then
-          control_node=numerical_config%control_node
-          if(control_node<=1.or.control_node>=NN.or..not.associated(numerical_config%control_coefficient).or. &
-             .not.allocated(numerical_config%control_sink_direction))then
-            state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
-          end if
-          if(size(numerical_config%control_sink_direction)/=numnod.or. &
-             numerical_config%control_balance_tolerance<=0.0d0)then
-            state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
-          end if
-          control_active=.true.
-          if(.not.allocated(control_direction))allocate(control_direction(numnod))
-          control_direction=numerical_config%control_sink_direction
-          control_old=numerical_config%control_coefficient
-        end if
-      end if
+      if(control_active)control_old=numerical_config%control_coefficient
 !     solve the tridiagonal matrix
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
       call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
@@ -645,7 +649,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
             end do
          end if
 
-         if(control_active.and.factor==1.0d0)state%h(control_node)=0.0d0
+         if(control_active)state%h(control_node)=0.0d0
          if (corner_retry_active) then
             ! Enter the unsaturated side without a finite negative overshoot
             ! at the Mualem corner. The one-cm scale is the existing absolute
@@ -804,7 +808,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end do
 
       if(control_active)then
-        if(abs(state%h(control_node))>1.0d-8.or. &
+        if(state%h(control_node)/=0.0d0.or. &
            abs(fsi_ws%residual(control_node))>numerical_config%control_balance_tolerance)flnonconv=.true.
       end if
 !     test for waterbalance of ponding layer
