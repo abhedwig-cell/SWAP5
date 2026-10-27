@@ -5771,7 +5771,13 @@ contains
       coupled_diagnostics%constitutive_candidate_capacity_reuses=coupled_diagnostics%constitutive_candidate_capacity_reuses+solve_result%diagnostics%constitutive_candidate_capacity_reuses
       coupled_diagnostics%workspace_full_resets=coupled_diagnostics%workspace_full_resets+solve_result%diagnostics%workspace_full_resets
       coupled_diagnostics%workspace_zeroed_bytes=coupled_diagnostics%workspace_zeroed_bytes+solve_result%diagnostics%workspace_zeroed_bytes
-      if(solve_result%status/=SW_SOLVE_CONVERGED)return
+      if(solve_result%status/=SW_SOLVE_CONVERGED)then
+        write(error_unit,*) 'POCKET_SOLVE_REJECT',t0,t1,solve_result%status,coupled_mixture_active, &
+          coupled_critical_node,coupled_control_value
+        if(allocated(solve_result%candidate_state%pressure_head)) &
+          write(error_unit,*) 'POCKET_REJECT_HEADS',solve_result%candidate_state%pressure_head(:16)
+        return
+      end if
       call build_process_hydraulic_view(solve_result%candidate_state,hydraulic_end,hydraulic_view_ok)
       if(.not.hydraulic_view_ok)return
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
@@ -5787,6 +5793,8 @@ contains
       coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
       if(coupled_mixture_active)then
         coupled_f=hydraulic_end%pressure_head(coupled_critical_node)
+        write(error_unit,*) 'POCKET_CONTACT_STATE',t0,t1,coupled_critical_node,coupled_alpha_used, &
+          hydraulic_end%groundwater_level,hydraulic_end%pressure_head(:16)
         coupled_gwl_change=abs(coupled_f)
         coupled_blend_width=0.0_real64
       else if(coupled_iteration>1.and.coupled_head_change>1e-8_real64)then
@@ -6996,7 +7004,7 @@ contains
     end if
     if(.not.enabled)return
     calls=calls+1
-    if(calls>20.and.mod(calls,256)/=0)return
+    if(calls>20.and.mod(calls,256)/=0.and.dt>1e-5_real64)return
     select type(f=>full_state)
     class is(fmr_b110_physical_state_t)
       select type(h=>half_state)
