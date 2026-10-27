@@ -68,6 +68,7 @@ module mod_fmr_serialized_reference_backend
        b111_analytical_hydraulic_provider_t, initialize_b111_analytical_hydraulic_parameters, &
        bind_b111_analytical_hydraulic_provider, B111_HYD_EXPONENTIAL, B111_HYD_BIMODAL_MVG, &
        B111_HYD_BIMODAL_MVG_WCK
+  use mod_reference_linear_solver,only:reference_aitken_weight
   use mod_b111_explicit_cauchy_profile_flux, only: evaluate_b111_explicit_cauchy_profile_flux, B111_EXPLICIT_CAUCHY_OK
   use mod_b111_profile_groundwater_projection, only: b111_profile_groundwater_projection_t, &
        evaluate_b111_profile_groundwater_projection, minimum_pocket_node, evaluate_b111_pocket_contact_limits
@@ -4561,8 +4562,11 @@ contains
     real(real64),target::coupled_control_value
     logical :: coupled_trial,coupled_engaged
     integer :: coupled_iteration
-    real(real64) :: coupled_head_change,coupled_gwl_change
-    logical :: coupled_mixture_active,coupled_contact_changed
+    real(real64) :: coupled_head_change,coupled_gwl_change,coupled_stock_change,coupled_pond_change
+    real(real64) :: coupled_weight,coupled_new_weight
+    integer :: coupled_weight_status
+    real(real64),allocatable :: coupled_residual(:),coupled_previous_residual(:)
+    logical :: coupled_mixture_active,coupled_contact_changed,coupled_residual_available
     integer :: coupled_used_crossing,coupled_previous_crossing,coupled_critical_node,i_coupled,coupled_pocket_first,coupled_pocket_last,coupled_min_node
     real(real64) :: coupled_previous_gwl,coupled_gwl_left,coupled_gwl_right,coupled_effective_gwl
     real(real64) :: coupled_f_left,coupled_f_right,coupled_f,coupled_alpha,coupled_alpha_used,coupled_blend_width
@@ -4641,6 +4645,7 @@ contains
     end if
     coupled_engaged=.false.
     coupled_mixture_active=.false.
+    coupled_residual_available=.false.;coupled_weight=1.0_real64
     coupled_previous_crossing=-1
     coupled_critical_node=0
     coupled_pocket_first=0;coupled_pocket_last=0
@@ -5797,6 +5802,11 @@ contains
       if(coupled_engaged)then
       coupled_head_change=maxval(abs(hydraulic_end%pressure_head-hydraulic_start%pressure_head))
       coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
+      coupled_stock_change=maxval(abs((hydraulic_end%water_content-hydraulic_start%water_content)*self%soil_parameters%dz))
+      if(allocated(self%macropore_config%matrix_area_fraction)) &
+        coupled_stock_change=maxval(abs((hydraulic_end%water_content-hydraulic_start%water_content)* &
+          self%soil_parameters%dz*self%macropore_config%matrix_area_fraction))
+      coupled_pond_change=abs(hydraulic_end%ponding_depth-hydraulic_start%ponding_depth)
       coupled_contact_changed=.false.
       if(coupled_mixture_active)then
         if(profile_projection%crossing_lower_node>coupled_pocket_last)then
@@ -5844,7 +5854,9 @@ contains
         end if
       end if
       if(coupled_head_change>1e-8_real64.or.coupled_gwl_change>1e-8_real64.or. &
-         coupled_blend_width>self%compartment_balance_tolerance.or.coupled_contact_changed)then
+         coupled_blend_width>self%compartment_balance_tolerance.or.coupled_contact_changed.or. &
+         coupled_stock_change>self%compartment_balance_tolerance.or. &
+         coupled_pond_change>request%numerical%ponding_tolerance)then
         if(coupled_iteration>=64)then
           write(*,*) 'COUPLED_EXHAUSTED',t0,t1,coupled_head_change,coupled_gwl_change,coupled_mixture_active
           return
@@ -5852,6 +5864,28 @@ contains
         coupled_previous_crossing=coupled_used_crossing
         coupled_previous_gwl=hydraulic_start%groundwater_level
         coupled_q_previous=coupled_q_used
+        if(.not.coupled_mixture_active.and..not.coupled_contact_changed.and. &
+           (profile_projection%crossing_lower_node==coupled_used_crossing.or. &
+            (min(profile_projection%crossing_lower_node,coupled_used_crossing)>0.and. &
+             abs(profile_projection%crossing_lower_node-coupled_used_crossing)==1)))then
+          ! Accelerate only the continuous fixed-point map. These are private
+          ! hydraulic guesses; the solved candidate and accepted origin stay intact.
+          coupled_residual=hydraulic_end%pressure_head-hydraulic_start%pressure_head
+          if(coupled_residual_available)then
+            call reference_aitken_weight(coupled_weight,coupled_previous_residual,coupled_residual, &
+              coupled_new_weight,coupled_weight_status)
+            if(coupled_weight_status/=0)return
+            coupled_weight=coupled_new_weight
+          end if
+          coupled_previous_residual=coupled_residual;coupled_residual_available=.true.
+          hydraulic_end%pressure_head=hydraulic_start%pressure_head+coupled_weight*coupled_residual
+          hydraulic_end%water_content=(1.0_real64-coupled_weight)*hydraulic_start%water_content+ &
+            coupled_weight*hydraulic_end%water_content
+          hydraulic_end%ponding_depth=(1.0_real64-coupled_weight)*hydraulic_start%ponding_depth+ &
+            coupled_weight*hydraulic_end%ponding_depth
+        else
+          coupled_residual_available=.false.;coupled_weight=1.0_real64
+        end if
         hydraulic_start=hydraulic_end
         goto 770
       end if
