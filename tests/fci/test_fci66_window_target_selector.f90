@@ -141,10 +141,13 @@ program test_fci66_window_target_selector
   use mod_fci66_test_model
   implicit none
 
-  integer :: failures
+  integer :: failures, pass
+  logical :: retained_suite=.false.
 
   failures = 0
   call test_default_current_canonical_behavior(failures)
+  do pass=1,2
+  retained_suite=pass==2
   call test_bounded_selector_completes_atomically(failures)
   call test_stalled_selector_fails_before_transaction(failures)
   call test_overshoot_selector_fails_before_transaction(failures)
@@ -153,6 +156,7 @@ program test_fci66_window_target_selector
   call test_retry_cap_tightens_transaction_budget(failures)
   call test_retry_cap_cannot_relax_caller_budget(failures)
   call test_selector_substep_limit_keeps_external_state(failures)
+  end do
 
   if (failures /= 0) then
     write(*,'(A,I0)') 'FCI66_WINDOW_TARGET_SELECTOR_GATE FAIL failures=', failures
@@ -217,6 +221,7 @@ contains
     config%transaction%retry_scale = 0.5_real64
     config%transaction%max_retries = 3
     config%max_committed_substeps = 16
+    config%retain_accepted_step_proposal=retained_suite
   end subroutine standard_setup
 
   subroutine test_default_current_canonical_behavior(failures)
@@ -488,3 +493,4 @@ contains
   end subroutine relax_retry_cap_selector
 
 end program test_fci66_window_target_selector
+
