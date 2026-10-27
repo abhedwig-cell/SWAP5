@@ -18,7 +18,7 @@ if a.anchored_cauchy:document+='! native_execution_policy=anchored-cauchy\n'
 if a.entry_ramp_width_cm:document+='! corrected_source_entry_transition_width_cm='+repr(a.entry_ramp_width_cm)+'\n'
 if a.perched_jacobian:document+='! native_numerical_policy=perched-jacobian\n'
 if a.continuous_sorption:document+='! corrected_source_sorption=continuous-partial-wall-and-saturation-history-v2-positive-film\n'
-if a.coupled_hydraulics:document+='! native_numerical_policy=coupled-hydraulics-minimum-pocket-drain-contact-v2\n'
+if a.coupled_hydraulics:document+='! native_numerical_policy=coupled-hydraulics-minimum-pocket-aitken-v3\n'
 macro_reader=Path(bundle['macro_reader']);check_reader(macro_reader);assert sha(macro_reader.read_bytes())==bundle['executable_sha256'][str(macro_reader)]
 # Exact raw companions are already bound by the existing project preparation.
 def original(name):
