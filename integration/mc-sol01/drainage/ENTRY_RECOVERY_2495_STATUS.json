@@ -721,5 +721,18 @@
       "prior_variants": "V1/V2 and mixed-binding probes retained separately; never silently reuse them as final-variant qualification"
     },
     "release_boundary": "No canonical merge or production release: explicit original water candidate tested locally only. Complete historical migration remains open."
+  },
+  "coupled_hydraulic_trial_design_20261027": {
+    "status": "PROPOSED_NUMERICAL_EXPERIMENT_NOT_ADMITTED",
+    "reason": "Actual final-source64.898 replay shows drainage carrier jump -20.5547573 to -33.5000000cm, drainage0.1088904854 to0.083cm/day and persistent head86 full/half difference0.0343609507cm while stocks approach roundoff.",
+    "contract": "Within one trial, retain the same accepted pressure/water storage, macro stocks, sorption history and Rutter interval. Iterate only derived hydraulic views and existing Cauchy3/DRAMET3/Feddes evaluations against the converged candidate. Publish/account only the final mutually consistent solve; failure is a rejected trial. No equation or tolerance relaxation.",
+    "selection": "First a bounded diagnostic at current64.898; then independent default-off numerical policy, counters, O0/O2 contract tests, earlier trajectory and exact restart if feasible. No inherited seasonal qualification.",
+    "coupling_gate": "Candidate head and projected water table agree with the process evaluation view to1e-8cm, independently of dt. Exhaustion must reject;32 iterations maximum for initial diagnostic.",
+    "architecture_invariants": [
+      "Immutable storage origin across all inner solves",
+      "No intermediate physical commit or duplicate time integration",
+      "Final source/flux/ledger/trace use one final coefficient set",
+      "Physical option remains separate from numerical policy"
+    ]
   }
 }
