@@ -20,7 +20,7 @@
   "next_action": "Restore exact canonical O2 executable and this complete-event checkpoint; diagnose the following2.495->2.514 window with a short production residual/Jacobian probe. No unchanged long rerun.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
-    "status": "TESTED_LIMITER_COUNTEREXAMPLE_NOT_QUALIFIED",
+    "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
     "source_commit": "76b306eb48162c6520ffd1f74a757481e775b751",
     "canonical_base": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
     "option": "Explicit numerical --perched-jacobian, default off; currently bounded by native anchored-Cauchy and positive entry ramp input. Bound into prepared input and restart identity.",
@@ -64,9 +64,10 @@
       "restart_payload_not_compared": "Identity binds changed executable"
     },
     "remaining": [
-      "Compare continuous vs split O0 source-event restart when required by owning authority",
-      "Review limiter-active quasi-Jacobian accuracy and partial-top boundary",
-      "Select and execute owning science and preservation gates, qualify actual merge"
+      "Complete normally prepared full O2 and exact split replay for final limiter postimage",
+      "Complete O0 candidate run and relevant default/negative controls",
+      "Assess omitted off-diagonal and topology/limiter transitions, including atomic malformed-input handling",
+      "Select owning science/preservation gates and verify actual merge postimage"
     ],
     "excluded": [
       "Full historical 4.3.1 parity",
@@ -130,7 +131,18 @@
       "finite_difference_total_source": 0,
       "candidate_diagonal": -0.07393411494952053,
       "interpretation": "In this constructed one-node capped inflow case the cap fraction changes with pressure. The proposed term omits that dependence, so it is a quasi-Jacobian, not the exact derivative.",
-      "next": "Derive and test the active limiter contribution, including multi-node cross-dependence, or explicitly constrain and substantiate a bounded quasi-Newton policy. Do not promote to general exact Jacobian."
+      "next": "Derive and test the active limiter contribution, including multi-node cross-dependence, or explicitly constrain and substantiate a bounded quasi-Newton policy. Do not promote to general exact Jacobian.",
+      "resolution": {
+        "status": "BOUNDED_LOCAL_DIAGONAL_FIXED_NOT_QUALIFIED",
+        "implementation_source_commit": "a6fc5fef09d3d9a508b76a0b72b5780cec3383e6",
+        "tests": "tests/nut-sol/test_native_perched_limiter.f90",
+        "one_node_finite_difference": 0,
+        "one_node_candidate": 0,
+        "two_node_finite_difference": -0.026885132710374737,
+        "two_node_candidate": -0.026885132708916563,
+        "o0_o2": "PASS",
+        "limitations": "Diagonal derivative only for interior perched inflow with no overlapping local inflow/outflow, with fixed topology and ordinary differentiable active limiter. Cross-node off-diagonal dependencies are not added; other regimes fall back to prior approximation."
+      }
     },
     "o0_disabled_split": {
       "status": "COMPLETE_TESTED_NOT_ADMITTED",
@@ -143,6 +155,25 @@
       "day2_budget_row_exact": true,
       "day2_progress_rows_exact": true,
       "source_event_binding": "O0 option-off executable and normal input; no cross-executable restart identity claim"
+    },
+    "limiter_candidate_o2": {
+      "status": "SPLIT_COMPLETE_NOT_QUALIFIED",
+      "initial_normal_run": "censored at 55 s after complete-window 2.64",
+      "resume_from_day": 2,
+      "resume_to_day": 2.6600000000034925,
+      "resume_native_seconds": 25.212,
+      "byte_exact_to_predecessor_explicit_candidate_same_interval": [
+        "state.csv",
+        "temperature.csv",
+        "budget.csv",
+        "progress.csv"
+      ],
+      "water_residual_cm": -1.332409876875218e-12,
+      "attempts": 4975,
+      "solver_rejections": 3,
+      "temporal_rejections": 2518,
+      "mass_rejections": 0,
+      "option_off_o2_day2": "budget, state, temperature, progress byte-exact to admitted predecessor"
     }
   }
 }
