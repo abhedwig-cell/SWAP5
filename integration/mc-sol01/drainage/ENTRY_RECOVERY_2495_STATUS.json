@@ -46,7 +46,7 @@
     "measurement_scope": "First 891 logged calls before timeout; does not prove all failure causes. Consecutive observations show 2x accepted-width proposal repeatedly followed by MACRO_RUNTIME_RETRY and half-width converged calls.",
     "instrumented_executable_sha256": "41c9705076bf1208e05f18c313d0e7fde577b97b5a4a3fc623d9193a87edb84c",
     "restart_sha256": "393202275e3a051910f6279ffa1d607099887b69e7dc098ebb6cc00b5c1319bb",
-    "next": "Diagnose production Richards iteration/residual and Jacobian at first 64-iteration retry using source-event restart; target the coupled surface/macro nonlinearity without relaxing tolerances or conservation.",
+    "next": "Test conditional perched-zone seepage derivative against production finite differences and historical restart; check water balance, temporal accuracy, restart and default-width preservation.",
     "solver_detail": {
       "wall_timeout_s": 5,
       "retry_observations": 114,
@@ -59,6 +59,17 @@
       "native_balance_residual_available": false,
       "instrumented_executable_sha256": "ab0b7eb9638214c1d7f1e62731906fde4a24d8deebe4f379c59f45238adb01c4",
       "interpretation": "Repeated coupled Richards nonlinear retries hit 64 iterations. Underlying cause of nonconvergence and appropriate repair remain unproven."
+    },
+    "jacobian_probe": {
+      "status": "DIAGNOSTIC_NOT_QUALIFIED",
+      "head_node": 24,
+      "head_cm": 0.34851281903306697,
+      "macro_exchange_cm_day": -0.05153397364754443,
+      "provider_analytic_derivative": 0,
+      "finite_difference_cm_day_per_cm": -0.14786822988971382,
+      "perturbation_cm": 0.000001,
+      "source_freezing_active": false,
+      "note": "Failed candidate, diagnostic evaluations only. Conditional on same active regime; no accepted new endpoint."
     }
   }
 }
