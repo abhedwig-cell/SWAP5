@@ -17,7 +17,7 @@
     "members": 13
   },
   "workspace_maintenance": "Unpublished failed-width-ceiling source/evidence was pruned before its branch/commit publication completed; do not credit that experiment as available or qualified.",
-  "next_action": "Continue from day 30 bound checkpoint toward year boundary, confirm exact restart, qualify solute and compare donor; address rejection costs.",
+  "next_action": "Instrument the exact KERNEL_STATUS_NOT_ADMITTED branch on day 43 to 44 using the bound day 43 checkpoint, identify and implement the missing supported combination, then resume.",
   "scope": "O2 complete-event recovery only; canonical qualification remains first2days, no day3/seasonal promotion",
   "explicit_perched_jacobian_candidate_20261027": {
     "status": "LIMITER_DIAGONAL_CANDIDATE_TESTED_NOT_QUALIFIED",
@@ -287,6 +287,27 @@
           "day30_water_residual_cm": 8.663209039028175e-15,
           "recovery_library_file_id": "libfile_36220b73b890819192745c4d91b28e82",
           "limitations": "Segmented original prepared water route; run from day5 concurrent with day3-to5 replay. No 30-day continuous replay, solute or SWAP 4.3.1 comparison."
+        },
+        "day43_segmented": {
+          "status": "COMPLETE_WATER_NOT_GATE_ADMISSION",
+          "from_day": 0,
+          "to_day": 43,
+          "source_restart_days": [
+            2.66,
+            2.748,
+            3,
+            5,
+            30
+          ],
+          "native_seconds_total": 255.981470442,
+          "attempts": 61287,
+          "solver_rejections": 96,
+          "temporal_rejections": 30916,
+          "mass_rejections": 0,
+          "day30_to43_max_daily_water_residual_cm": 9.582265536600687e-14,
+          "recovery_library_file_id": "libfile_a2ddf1d64c0c8191885a1c2a6b4adf16",
+          "failure": "Day 43 to 44 reproducibly rejects with KERNEL_STATUS_NOT_ADMITTED 101 and no solver attempt. Logged Rutter clock equals cursor, and is printed unconditionally on rejection; it is not a diagnosed clock error.",
+          "limitations": "Segmented original prepared water route. Solute, donor comparison, full-period replay and exact merge not qualified."
         }
       },
       "remaining": "Capped multi-cell off-diagonal and changing active set require scientific qualification; partly saturated top/face around day 2.695 remains blocking; qualify affected owner evidence and exact merge version. No five-day, solute or donor parity claim."
