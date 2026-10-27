@@ -963,6 +963,12 @@
     "evidence": "ACTIVE_SET_BEGIN/ACCEPT repeatedly switches critical nodes11/12. A contact can produce a third projection branch without invalidating the frozen two-branch support. Current code pins the linear head constraint only for undamped Newton updates, so a converged damped iterate can remain slightly off the discontinuous manifold.",
     "contract": "Retain physical equations and all acceptance limits. Initialize constrained trial guesses on h(control)=0, recompute their constitutive theta, keep every line-search iterate on that linear manifold, and disable only unconstrained predictor/restart heuristics while the control is active. Accepted storage origin never changes. Track the two pure branch indices; if a converged contact exposes a new branch, release the obsolete constraint and bracket the new branch against the retained shallower pure branch. Total64-iteration limit unchanged; no intermediate physical publication.",
     "tests_selected": "Checked real production O0/O2 contracts and exact failed256.854 replay; source-bound earlier evidence retained only for unchanged paths. This is a proposed repair, not a proven multi-contact method or production admission.",
-    "release_boundary": "No canonical merge until required scientific/preservation admission. Full481/year restart still open."
+    "release_boundary": "No canonical merge until required scientific/preservation admission. Full481/year restart still open.",
+    "observed_refinement": {
+      "diagnostic_commit": "1ac6a0c80fa94856af142c1a7e7494a47389c5f3",
+      "evidence": "Contact12 formed from projection branches12/0 actually exposes branch11 (h11=-0.0012786,h12=0). Adjacent branches11/10 are also incorrectly treated as a discontinuity and pin ordinary groundwater motion to grid nodes. This can make full/half groundwater levels jump although pressure differences are below0.01cm.",
+      "revised_contract": "Use scale-safe vector Aitken relaxation for the continuous carrier fixed point, with convergence tested on the original undamped head/GWL residual at unchanged1e-8cm and existing64 iterations. Restrict discontinuous contact activation to nonadjacent indices or the fully-saturated branch. Reject/release a contact exposing a third projection branch, reset transient control pointers, and restart ordinary iteration from its candidate view. Keep active linear constraints exactly feasible during damped Newton steps; no accepted-state projection, no tolerance relaxation. All physical expressions and mass gates unchanged.",
+      "scope": "Proposed diagnostic repair, not a proven multi-contact algorithm; fail closed if it does not converge."
+    }
   }
 }
