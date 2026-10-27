@@ -191,7 +191,6 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_legacy_head_bottom_boundary_provider, only: fmr_hbot5_control_t, fmr_hbot5_proposal_t, FMR_HBOT5_OK
   use mod_fmr_legacy_cauchy_bottom_boundary_provider, only: fmr_cauchy3_control_t, fmr_cauchy3_proposal_t, &
        FMR_CAUCHY3_OK
-  use mod_reference_linear_solver,only:reference_aitken_weight
   implicit none
   private
   public :: fmr_frost_response_drainage_configuration_valid
@@ -4560,11 +4559,6 @@ contains
     type(soil_water_solver_diagnostics_t) :: coupled_diagnostics
     type(fmr_affine_drain_control_t),target::coupled_sink
     real(real64),target::coupled_control_value
-    integer::coupled_crossing_left,coupled_crossing_right,coupled_accel_status
-    logical::coupled_accel_ready
-    real(real64)::coupled_weight
-    real(real64),allocatable::coupled_residual(:),coupled_previous_residual(:)
-    real(real64),allocatable::coupled_view_k(:),coupled_view_c(:),coupled_view_dk(:)
     logical :: coupled_trial,coupled_engaged
     integer :: coupled_iteration
     real(real64) :: coupled_head_change,coupled_gwl_change
@@ -4645,8 +4639,6 @@ contains
       if(self%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or.self%frost_active.or.self%snow_active)return
       if(self%root_compensation%method/=ROOT_COMP_OFF.or.allocated(self%bartholomeus))return
     end if
-    coupled_weight=0.5_real64;coupled_accel_ready=.false.
-    coupled_crossing_left=-1;coupled_crossing_right=-1
     coupled_engaged=.false.
     coupled_mixture_active=.false.
     coupled_previous_crossing=-1
@@ -5347,12 +5339,6 @@ contains
 
 770 continue
     if(coupled_trial)then
-      ! A released contact cannot leave a borrowed coefficient/provider in the next solve.
-      request%numerical%control_node=0
-      nullify(request%numerical%control_coefficient)
-      if(allocated(request%numerical%control_sink_direction))deallocate(request%numerical%control_sink_direction)
-      request%numerical%control_balance_tolerance=0.0_real64
-      request%evaluation%source_sink=>self%source_sink
       coupled_iteration=coupled_iteration+1
       ! Numerical-only outer consistency iteration. All repeated solves below
       ! retain request%base_state and the accepted macro/history origin.
@@ -5800,33 +5786,18 @@ contains
       coupled_head_change=maxval(abs(hydraulic_end%pressure_head-hydraulic_start%pressure_head))
       coupled_gwl_change=abs(hydraulic_end%groundwater_level-hydraulic_start%groundwater_level)
       if(coupled_mixture_active)then
-        if(profile_projection%crossing_lower_node/=coupled_crossing_left.and. &
-           profile_projection%crossing_lower_node/=coupled_crossing_right)then
-          ! A third branch invalidates this two-branch contact. Re-enter the
-          ! continuous carrier solve; do not publish an obsolete zero constraint.
-          if(coupled_iteration>=64)return
-          write(*,*)'ACTIVE_SET_RELEASE',t0,t1,coupled_critical_node,profile_projection%crossing_lower_node
-          coupled_mixture_active=.false.;coupled_critical_node=0
-          coupled_previous_crossing=-1;coupled_accel_ready=.false.;coupled_weight=0.5_real64
-          hydraulic_start=hydraulic_end
-          goto 770
-        end if
         coupled_f=hydraulic_end%pressure_head(coupled_critical_node)
         coupled_gwl_change=abs(coupled_f)
         coupled_blend_width=0.0_real64
       else if(coupled_iteration>1.and.coupled_head_change>1e-8_real64)then
         if(profile_projection%crossing_lower_node==coupled_previous_crossing.and. &
-           profile_projection%crossing_lower_node/=coupled_used_crossing.and. &
-           (min(profile_projection%crossing_lower_node,coupled_used_crossing)==0.or. &
-            abs(profile_projection%crossing_lower_node-coupled_used_crossing)>1))then
+           profile_projection%crossing_lower_node/=coupled_used_crossing)then
           coupled_critical_node=max(profile_projection%crossing_lower_node,coupled_used_crossing)
           if(coupled_critical_node>0)then
             coupled_f_left=hydraulic_start%pressure_head(coupled_critical_node)
             coupled_f_right=hydraulic_end%pressure_head(coupled_critical_node)
             if(coupled_f_left*coupled_f_right<0.0_real64)then
               coupled_mixture_active=.true.
-              coupled_crossing_left=coupled_previous_crossing;coupled_crossing_right=coupled_used_crossing
-              coupled_accel_ready=.false.;coupled_weight=0.5_real64
               coupled_q_left=coupled_q_previous;coupled_q_right=coupled_q_used
               coupled_gwl_left=coupled_previous_gwl;coupled_gwl_right=hydraulic_start%groundwater_level
               coupled_alpha=max(0.0_real64,min(1.0_real64,-coupled_f_left/(coupled_f_right-coupled_f_left)))
@@ -5845,29 +5816,7 @@ contains
         coupled_previous_crossing=coupled_used_crossing
         coupled_previous_gwl=hydraulic_start%groundwater_level
         coupled_q_previous=coupled_q_used
-        if(coupled_mixture_active)then
-          hydraulic_start=hydraulic_end
-        else
-          coupled_residual=[hydraulic_end%pressure_head-hydraulic_start%pressure_head, &
-            hydraulic_end%groundwater_level-hydraulic_start%groundwater_level]
-          if(coupled_accel_ready)then
-            call reference_aitken_weight(coupled_weight,coupled_previous_residual,coupled_residual, &
-              coupled_alpha_used,coupled_accel_status)
-            if(coupled_accel_status/=0)return
-            coupled_weight=coupled_alpha_used
-          end if
-          coupled_previous_residual=coupled_residual;coupled_accel_ready=.true.
-          hydraulic_start%pressure_head=hydraulic_start%pressure_head+coupled_weight* &
-            (hydraulic_end%pressure_head-hydraulic_start%pressure_head)
-          hydraulic_start%ponding_depth=hydraulic_start%ponding_depth+coupled_weight* &
-            (hydraulic_end%ponding_depth-hydraulic_start%ponding_depth)
-          if(.not.associated(request%evaluation%constitutive))return
-          if(.not.allocated(coupled_view_k))allocate(coupled_view_k(size(hydraulic_start%pressure_head)), &
-            coupled_view_c(size(hydraulic_start%pressure_head)),coupled_view_dk(size(hydraulic_start%pressure_head)))
-          call request%evaluation%constitutive%evaluate(hydraulic_start%pressure_head, &
-            hydraulic_start%water_content,coupled_view_k,coupled_view_c,coupled_view_dk)
-          ! Acceptance uses the undamped residual above, never the smaller relaxed update.
-        end if
+        hydraulic_start=hydraulic_end
         goto 770
       end if
       end if ! coupled_engaged
