@@ -313,8 +313,31 @@ contains
     request%unsaturated%sorptivity%perched_active=perched_view%active
     request%unsaturated%sorptivity%perched_top_node=perched_view%top_node
     request%unsaturated%sorptivity%perched_bottom_node=perched_view%bottom_node
+    ! Experimental corrected-source route: partition the partially saturated
+    ! perched top cell, retaining absorption over its unsaturated wall.
+    if(template%unsaturated%continuous_sorption.and.perched_view%active)then
+      topw=perched_view%top_node
+      if(perched_view%partial_top_active.and.matrix%pressure_head(topw)<0.0_real64)then
+        volume_under_drain=max(0.0_real64,min(1.0_real64, &
+          (perched_view%water_level_cm-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
+        request%unsaturated%sorptivity%perched_top_node=topw+1
+        request%unsaturated%sorptivity%domain_fraction(:,topw)= &
+          request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+      end if
+    end if
     if(matrix_view%active)then
       request%unsaturated%sorptivity%matrix_top_saturated_node=matrix_view%top_node
+      ! Same wall partition for the ordinary partially saturated top cell.
+      if(template%unsaturated%continuous_sorption)then
+        topw=matrix_view%top_node
+        if(matrix%pressure_head(topw)<0.0_real64)then
+          volume_under_drain=max(0.0_real64,min(1.0_real64, &
+            (matrix%groundwater_level-(z(topw)-0.5_real64*dz(topw)))/dz(topw)))
+          request%unsaturated%sorptivity%matrix_top_saturated_node=topw+1
+          request%unsaturated%sorptivity%domain_fraction(:,topw)= &
+            request%unsaturated%sorptivity%domain_fraction(:,topw)*(1.0_real64-volume_under_drain)
+        end if
+      end if
     else
       request%unsaturated%sorptivity%matrix_top_saturated_node=n+1
     end if
@@ -386,7 +409,7 @@ contains
 
 
 
-  subroutine prepare_standard_sorptivity_history_request(template,geometry,macro_view,matrix_view,step_duration,request,ok)
+  subroutine prepare_standard_sorptivity_history_request(template,geometry,macro_view,matrix_view,step_duration,request,ok,rate_request)
     type(sorptivity_history_update_request_t),intent(in)::template
     type(macropore_geometry_result_t),intent(in)::geometry
     type(macropore_standard_storage_view_t),intent(in)::macro_view
@@ -394,6 +417,7 @@ contains
     real(real64),intent(in)::step_duration
     type(sorptivity_history_update_request_t),intent(out)::request
     logical,intent(out)::ok
+    type(macropore_rate_bundle_request_t),intent(in),optional::rate_request
 
     ok=.false.
     if(.not.geometry%valid .or. .not.macro_view%valid .or. step_duration<=0.0_real64)return
@@ -406,6 +430,16 @@ contains
       request%matrix_top_saturated_node=matrix_view%top_node
     else
       request%matrix_top_saturated_node=geometry%num_nodes+1
+    end if
+    ! The corrected partial-cell source must retain the sorption history of
+    ! exactly those matrix cells that were eligible in its rate evaluation.
+    ! Reusing the geometric saturated cutoff here resets a partially wet top
+    ! cell at every accepted step, falsely restarting sqrt(t) absorption.
+    if(present(rate_request))then
+      if(rate_request%unsaturated%continuous_sorption)then
+        request%matrix_top_saturated_node=rate_request%unsaturated%sorptivity%matrix_top_saturated_node
+        request%domain_fraction=rate_request%unsaturated%sorptivity%domain_fraction
+      end if
     end if
     ok=request%valid()
   end subroutine prepare_standard_sorptivity_history_request
