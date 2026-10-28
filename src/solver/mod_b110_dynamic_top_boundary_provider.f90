@@ -52,6 +52,8 @@ module mod_b110_dynamic_top_boundary_provider
     logical :: macropore_pond_donor_active = .false.
     real(real64) :: macropore_pond_threshold_cm = 0.0_real64
     real(real64) :: macropore_surface_conductivity_cm_per_day = 0.0_real64
+    ! Zero retains the fixed-K contract; positive uses source MPVOLUME KsMpSs.
+    real(real64) :: macropore_polygon_diameter_cm = 0.0_real64
     logical :: implicit_pond_evaporation = .false.
   end type b110_dynamic_top_boundary_request_t
 
@@ -76,7 +78,21 @@ module mod_b110_dynamic_top_boundary_provider
 
   public :: evaluate_b110_dynamic_top_boundary
 
+public :: evaluate_source_macropore_surface_conductivity
 contains
+
+  pure subroutine evaluate_source_macropore_surface_conductivity(area,diameter,conductivity,ok)
+    real(real64),intent(in)::area,diameter
+    real(real64),intent(out)::conductivity
+    logical,intent(out)::ok
+    ok=.false.;conductivity=0.0_real64
+    if(.not.all(ieee_is_finite([area,diameter])))return
+    if(area<0.0_real64.or.area>0.6_real64.or.diameter<0.001_real64.or.diameter>1.0e6_real64)return
+    ! Literal original MPVOLUME(case1), after its minimum-width area gate.
+    conductivity=2.0_real64*7.2e8_real64*(diameter*(1.0_real64-sqrt(1.0_real64-area)))**3/diameter
+    conductivity=min(max(conductivity,1.0e-14_real64),1.0e3_real64)
+    ok=.true.
+  end subroutine evaluate_source_macropore_surface_conductivity
 
   subroutine evaluate_b110_dynamic_top_boundary(geometry, hydraulics, request, result)
     type(soil_water_parameter_set_t), intent(in) :: geometry
@@ -93,7 +109,7 @@ contains
     real(real64) :: available_supply, infiltration_capacity, actual_pond_evaporation
     real(real64) :: donor_dq_dh0max, base_pond_dh_dhead, direct_macro_input_cm
     logical :: ok, donor_ok
-    real(real64) :: runoff_slope
+    real(real64) :: runoff_slope, surface_macro_k
 
     result = b110_dynamic_top_boundary_result_t()
     donor_dq_dh0max = 0.0_real64
@@ -270,8 +286,16 @@ contains
       if (request%matrix_source_area_partition) direct_macro_input_cm = &
            (request%precipitation_rate_cm_per_day+request%irrigation_rate_cm_per_day+ &
             request%snowmelt_rate_cm_per_day)*request%macropore_surface_area_fraction*request%step_duration_day
+      surface_macro_k=request%macropore_surface_conductivity_cm_per_day
+      if(request%macropore_polygon_diameter_cm>0.0_real64)then
+        call evaluate_source_macropore_surface_conductivity(request%macropore_surface_area_fraction, &
+             request%macropore_polygon_diameter_cm,surface_macro_k,donor_ok)
+        if(.not.donor_ok)then
+          result%status=B110_DYN_TOP_INVALID_INPUT;result%route='invalid-macro-conductivity';return
+        end if
+      end if
       call evaluate_b110_macropore_pond_donor(max(0.0_real64,h0max), direct_macro_input_cm, &
-           request%macropore_pond_threshold_cm,p1,request%macropore_surface_conductivity_cm_per_day, &
+           request%macropore_pond_threshold_cm,p1,surface_macro_k, &
            request%step_duration_day,result%macropore_pond_requested_lateral_cm,donor_dq_dh0max,donor_ok)
       if (.not.donor_ok) then
         result%status=B110_DYN_TOP_INVALID_INPUT
@@ -416,6 +440,12 @@ contains
          request%potential_pond_evaporation_cm_per_day, request%ponding_max_cm, &
          request%runoff_resistance_day, request%runoff_exponent]
     if (.not. all(ieee_is_finite(values))) return
+    if(.not.ieee_is_finite(request%macropore_polygon_diameter_cm))return
+    if(request%macropore_polygon_diameter_cm<0.0_real64.or.request%macropore_polygon_diameter_cm>1.0e6_real64)return
+    if(request%macropore_polygon_diameter_cm>0.0_real64)then
+      if(request%macropore_polygon_diameter_cm<0.001_real64.or..not.request%macropore_pond_donor_active)return
+      if(request%macropore_surface_area_fraction<0.0_real64.or.request%macropore_surface_area_fraction>0.6_real64)return
+    end if
     if (request%candidate_ponding_depth_cm < 0.0_real64) return
     if (request%previous_ponding_depth_cm < 0.0_real64) return
     if (request%step_duration_day <= 0.0_real64) return

@@ -3820,6 +3820,10 @@ contains
       if (parameters%macropore_active .and. allocated(parameters%macropore)) then
         allocate(self%macropore_config)
         self%macropore_config = parameters%macropore
+        if(self%macropore_config%variable_surface_conductivity)then
+          if(.not.self%macropore_config%surface_pond_inflow_enabled)return
+          if(self%macropore_config%geometry%top_node/=1)return
+        end if
       end if
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
@@ -3938,6 +3942,9 @@ contains
     n = self%soil_parameters%active_nodes
     select type (forcing)
     type is (fmr_b110_physical_forcing_t)
+      if(allocated(self%macropore_config))then
+        if(self%macropore_config%variable_surface_conductivity.and..not.forcing%experimental_process_combinations)return
+      end if
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return
       if (allocated(forcing%substep_root)) then
@@ -5011,6 +5018,9 @@ contains
           if (allocated(self%macropore_config)) then
             if(self%macropore_config%surface_pond_inflow_enabled)then
               boesten_top_provider%macropore_pond_donor_active=.true.
+              if(self%macropore_config%variable_surface_conductivity) &
+                boesten_top_provider%macropore_polygon_diameter= &
+                self%macropore_config%geometry%characteristic_diameter(self%macropore_config%geometry%top_node)
               boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
               boesten_top_provider%macropore_surface_conductivity= &
                    self%macropore_config%surface_macropore_conductivity_cm_per_day
@@ -5443,6 +5453,9 @@ contains
         rutter_top_provider%matrix_source_area_partition=self%rutter_forcing%matrix_source_area_partition
         if(self%macropore_config%surface_pond_inflow_enabled)then
           rutter_top_provider%macropore_pond_donor_active=.true.
+          if(self%macropore_config%variable_surface_conductivity) &
+            rutter_top_provider%macropore_polygon_diameter= &
+            self%macropore_config%geometry%characteristic_diameter(self%macropore_config%geometry%top_node)
           rutter_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
           rutter_top_provider%macropore_surface_conductivity= &
             self%macropore_config%surface_macropore_conductivity_cm_per_day

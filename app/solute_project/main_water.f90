@@ -443,7 +443,8 @@ program swap5_native_water_project
     all(ieee_is_finite(vegetation_cover)),'finite Rutter plan')
   call require(all(canopy_capacity>=0d0).and.all(transpiration_dry>=0d0).and.all(transpiration_wet>=0d0).and. &
     all(canopy_evaporation>=0d0).and.all(vegetation_cover>=0d0).and.all(vegetation_cover<=1d0),'Rutter plan limits')
-  call import_column_macro_configuration(trim(macro_path),macro_initial,macro_config)
+  call import_column_macro_configuration(trim(macro_path),macro_initial,macro_config, &
+       allow_variable_surface=trim(execution_mode)=='experimental')
   macro_config%rate_template%unsaturated%entry_transition_width_cm=entry_ramp_width_cm
   call require(macro_initial%geometry%num_nodes==numnod.and.all(macro_initial%geometry%dz==dz),'source macro/water geometry')
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen

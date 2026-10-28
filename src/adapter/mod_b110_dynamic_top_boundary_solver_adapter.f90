@@ -31,6 +31,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
      logical :: macropore_pond_donor_active = .false.
      real(real64) :: macropore_pond_threshold = 0.0_real64
      real(real64) :: macropore_surface_conductivity = 0.0_real64
+     real(real64) :: macropore_polygon_diameter = 0.0_real64
      logical :: matrix_source_area_partition = .false.
      logical :: implicit_pond_evaporation = .false.
      logical :: implicit_conductivity = .false.
@@ -124,6 +125,7 @@ contains
     b110_request%macropore_pond_donor_active = self%macropore_pond_donor_active
     b110_request%macropore_pond_threshold_cm = self%macropore_pond_threshold
     b110_request%macropore_surface_conductivity_cm_per_day = self%macropore_surface_conductivity
+    b110_request%macropore_polygon_diameter_cm = self%macropore_polygon_diameter
     b110_request%implicit_pond_evaporation = self%implicit_pond_evaporation
 
     call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)

@@ -1,0 +1,78 @@
+{
+  "work_unit": "DATAQUAL06",
+  "baseline": "cba2117d679fe1165cc03c60e86e67943a777466",
+  "batches": [
+    "low24-O2",
+    "compose32-O2",
+    "storms-O0",
+    "restarts-O0",
+    "restarts-O2",
+    "preservation-O2"
+  ],
+  "scenario_executions": 66,
+  "native_process_executions_including_restarts": 78,
+  "distinct_started_configurations": 60,
+  "water_qualified_executions": 49,
+  "distinct_water_qualified_configurations": 45,
+  "extra_started_configurations": 58,
+  "extra_water_qualified_configurations": 43,
+  "baseline_started": 85,
+  "baseline_water_qualified": 28,
+  "combined_started": 143,
+  "combined_water_qualified": 71,
+  "categories": {
+    "successful_water_qualified": 49,
+    "budget_exceeded": 16,
+    "numerical_stall": 1
+  },
+  "primary_completed_configuration_days": 53.53799999983312,
+  "baseline_deduplicated_configuration_days": 31.403999999907683,
+  "combined_deduplicated_configuration_days": 76.725999999755,
+  "additional_deduplicated_configuration_days": 45.32199999984732,
+  "max_water_certificate_cm": 1.1675122674192906e-14,
+  "longest_fresh_integral_days": 2.0,
+  "historical_checkpoint_days": 2.748,
+  "historical_checkpoint_authority": "integration/dataqual03/RECOVERY.json; retained prior evidence, not re-executed with new executable",
+  "new_options": "original MPVOLUME variable KsMpSs from candidate area; low VLMPSTSS source inputs with existing roots/Rutter/heat/drainage, experimental only",
+  "production_admission_changed": false,
+  "full_historical_closure": false,
+  "qualification": "water only: finite112-node state/temperature,theta0..1,4 independent certificates<=1e-10cm,zero mass rejections,exact target and restart; selected exact full/split and O0/O2; no full energy/solute/N/parity",
+  "count_definition": "same normalized source transformations and execution options as DATAQUAL05 seal; parameter variants of one historical Andelst project, not independent projects; combined counts cover DATAQUAL05+06, not a full01..04 union",
+  "reference_comparison": {
+    "reference": "fresh exact B1.12 first2days,3 input variants; historical end date shortened only",
+    "comparisons": [
+      {
+        "case": "original",
+        "day": 1,
+        "gwl_delta_cm": 0.04749032723505309,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0011515820303237695
+      },
+      {
+        "case": "original",
+        "day": 2,
+        "gwl_delta_cm": 0.06042660032071012,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0035379102016690617
+      },
+      {
+        "case": "storm-e0p5-r4p0",
+        "day": 1,
+        "gwl_delta_cm": 0.026584661522278452,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0015334008884327135
+      },
+      {
+        "case": "storm-e2p0-r4p0",
+        "day": 1,
+        "gwl_delta_cm": 0.026584661522278452,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0015334008884327135
+      }
+    ],
+    "tolerances": "daily GWL/DRN are rounded source outputs; descriptive deltas only, no scientifically validated general trajectory tolerance. Hard water certificates1e-10cm, local surface2e-13cm, head partial FD5e-10; no model parity admission"
+  },
+  "remaining_closure": [
+    "coupled Richards/macropore residual/Jacobian, including high-rain low-volume censors and prior2.848675 stall",
+    "longer low-volume continuation rejected at source1.33 after previous accepted windows; no5/30/481days",
+    "native historical chemistry/N,WOFOST,snow and extended drainage composition",
+    "full original season and year-boundary restart",
+    "complete matched431 pressure/moisture/ET/runoff/heat/chemical trajectory and justified variable-specific parity tolerances"
+  ]
+}

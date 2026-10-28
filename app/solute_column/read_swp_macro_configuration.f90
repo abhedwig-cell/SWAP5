@@ -7,8 +7,10 @@ module mod_column_swp_macro_configuration
  private
  public::import_column_macro_configuration
 contains
- subroutine import_column_macro_configuration(path,initial,config)
+ subroutine import_column_macro_configuration(path,initial,config,allow_variable_surface)
  character(*),intent(in)::path
+ logical,intent(in),optional::allow_variable_surface
+ logical::variable_allowed
  type(native_macro_initial_t),intent(out)::initial
  type(fmr_macropore_physical_config_t),intent(out)::config
  integer::n,u,code,seepage_option
@@ -27,8 +29,12 @@ contains
  call require(all(ieee_is_finite([shape_factor,rapid_resistance,critical_undersaturation,pond_threshold,source_surface_conductivity,minimum_surface_conductivity])), &
   'configuration scalars')
  call require(seepage_option==1,'original seepage option1')
- call require(source_surface_conductivity==1000d0.and.minimum_surface_conductivity==1000d0, &
-  'source surface conductivity must be capped even without dynamic cracks')
+ variable_allowed=.false.
+ if(present(allow_variable_surface))variable_allowed=allow_variable_surface
+ call require(minimum_surface_conductivity>=1d-14.and.source_surface_conductivity>=minimum_surface_conductivity.and. &
+  source_surface_conductivity<=1000d0,'surface conductivity range')
+ if(.not.variable_allowed)call require(source_surface_conductivity==1000d0.and.minimum_surface_conductivity==1000d0, &
+  'variable surface conductivity requires experimental mode')
  call initialize_fmr_macropore_standard_config(config,initial%geometry%top_node,initial%geometry%static_volume_cp, &
   initial%geometry%domain_fraction,initial%geometry%potential_bottom_domain,initial%z,initial%geometry%dz, &
   initial%geometry%characteristic_diameter,initial%theta_s,initial%theta_r,1d0+0d0*initial%theta_s, &
@@ -42,6 +48,7 @@ contains
  call require(ok,'production standard macro configuration')
  ! Current geometry preparation replaces the seed wall correction at every
  ! actual rate evaluation. No new wall formula is introduced by this adapter.
+ config%variable_surface_conductivity=minimum_surface_conductivity<1000d0
  config%surface_pond_inflow_enabled=.true.;config%surface_pond_threshold_cm=pond_threshold
  config%surface_macropore_conductivity_cm_per_day=source_surface_conductivity
  call require(config%valid_for_nodes(n),'production macro configuration')

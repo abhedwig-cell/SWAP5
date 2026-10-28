@@ -197,6 +197,8 @@ def verify_qualification():
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src')}
 
 def fsi35_successors():
+    if (ROOT/'integration/dataqual06/STATUS.json').is_file():
+        return runpy.run_path(str(ROOT/'integration/audits/verify_dataqual06_current.py'))['fsi35_successors']()
     if (ROOT/'integration/dataqual05/STATUS.json').is_file():
         return runpy.run_path(str(ROOT/'integration/audits/verify_dataqual05_current.py'))['fsi35_successors']()
     if 'live_composition' in json.loads((ROOT/'benchmarks/performance/PERF01_TYPED_WATER_FLUX_20261023_STATUS.json').read_text()):

@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+DATAQUAL06 is an executed, water-qualified experimental successor to DATAQUAL05.
+Original MPVOLUME variable surface conductivity now uses residual candidate area;
+production fixed-cap streams/payload remain exact.66 primary executions yield43
+extra successful configurations, taking the DATAQUAL05+06 distinct water-qualified
+count28→71 and distinct started85→143. All32 new root/LAI/drainage compositions
+complete1.054days; stronger rain cases remain censored/failed. Current full/split
+and O0/O2 endpoints, eight native controls and affected FCI93 oracles pass.
+No seasonal, energy/chemistry/N, full431 parity or production admission claim.
+Integration/admission state is owned by `integration/dataqual06/STATUS.json`,
+`RESULTS.md` and any later explicit merge receipt; issue1386 remains open.
+
 DATAQUAL05 is integrated by PR1464, actual merge
 `a96cf1456dd4b4e7f756ebb0e79872ba9442d715`, exact qualified tree
 `5c23a7a1c9043963ed28588e4017c99ff4d7f007`. Actual-merge owner/raw checks
