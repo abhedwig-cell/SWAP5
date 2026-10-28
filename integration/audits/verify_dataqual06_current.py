@@ -1,5 +1,5 @@
 """Bounded variable-surface source, real native water evidence and preservation."""
-import base64,csv,hashlib,io,json,math,subprocess,tarfile
+import base64,csv,hashlib,io,json,math,re,subprocess,tarfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];BASE='cba2117d679fe1165cc03c60e86e67943a777466'
 STATUS='integration/dataqual06/STATUS.json';SELF='integration/audits/verify_dataqual06_current.py';PARENT='integration/audits/verify_dataqual05_current.py';PERF='integration/performance/authority.py'
@@ -8,7 +8,7 @@ def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).
 def parent_projection():
  text=subprocess.check_output(['git','show',BASE+':'+PARENT],cwd=ROOT,text=True)
  for name,args in [('source','reader,changed'),('verify',''),('self_test',''),('fsi35_successors','')]:
-  at=text.index('def '+name+'(');end=text.index('):',at)+2
+  at=re.search(r'^def '+re.escape(name)+r'\(',text,re.M).start();end=text.index('):',at)+2
   if text[end:end+1]!='\n':text=text[:end]+'\n '+text[end:]
   end+=1;text=text[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+text[end:]
  return text.encode()
@@ -22,6 +22,8 @@ def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  assert not git('diff','HEAD','--','src','app','tools','tests','integration/audits','integration/performance'),'unpersisted science'
  delta={r.split('\t')[1]:r.split('\t')[0]for r in git('diff','--name-status',BASE,'HEAD','--','src','app','tools','tests','examples','reference','.github','integration/audits','integration/performance').splitlines()}
  assert delta==s['scientific_delta'],'foreign scientific delta'
+ compile(reader(PARENT).decode(),PARENT,'exec')
+ compile(reader(PERF).decode(),PERF,'exec')
  assert reader(PARENT)==parent_projection(),'parent authority changed beyond explicit delegation'
  assert reader(PERF)==perf_projection(),'FSI authority changed beyond explicit delegation'
  for p,h in s['postimages'].items():assert sha(reader(p))==h,p
@@ -67,6 +69,14 @@ def validate(f):
   for p in ['state.csv','temperature.csv','budget.csv','progress.csv','cost.csv','diagnostics.csv']:
    assert f['preservation-O2/'+name+'/run/'+p]==f['baseline/'+name+'/'+p]
   assert f['preservation-O2/'+name+'/run/restart.bin'][72:-4]==f['baseline/'+name+'/restart.bin'][72:-4]
+ for batch,name in [('uncapped-O0','uncapped-low-v0p0005-r1-e2'),('uncapped-wet-O0','uncapped-low-v0p0005-r4-e0p5')]:
+  for p in ['state.csv','temperature.csv']:assert f[batch+'/'+name+'/run/'+p]==f['uncapped8-O2/'+name+'/run/'+p]
+  assert f[batch+'/'+name+'/run/restart.bin'][72:-4]==f['uncapped8-O2/'+name+'/run/restart.bin'][72:-4]
+ wet=next(x for x in aggregate if x['batch']=='uncapped-wet-O0');assert wet['status']=='PASS'and wet['flux_totals_cm']['pond_to_macro_cm']>0.02
+ for x in aggregate:
+  if x['batch'].startswith('uncapped')and x['status']=='PASS':
+   text=f[x['batch']+'/'+x['id']+'/run/macro.nml'].decode()
+   k=float(re.search(r'source_surface_conductivity=\s*(\S+)',text)[1]);assert 0<k<1000
  assert js('controls/RESULT.json')['passed']==8
  fs=js('fsi35/RESULT.json');assert fs['returncode']==0 and fs['unchanged_dependencies']==25
  assert b'FCI93_FIXED_K_NATIVE_IMMUTABLE_ORACLE_O0_O2=PASS'in f['fsi35/stdout']

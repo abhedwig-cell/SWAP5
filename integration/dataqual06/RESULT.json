@@ -7,28 +7,31 @@
     "storms-O0",
     "restarts-O0",
     "restarts-O2",
-    "preservation-O2"
+    "preservation-O2",
+    "uncapped8-O2",
+    "uncapped-O0",
+    "uncapped-wet-O0"
   ],
-  "scenario_executions": 66,
-  "native_process_executions_including_restarts": 78,
-  "distinct_started_configurations": 60,
-  "water_qualified_executions": 49,
-  "distinct_water_qualified_configurations": 45,
-  "extra_started_configurations": 58,
-  "extra_water_qualified_configurations": 43,
+  "scenario_executions": 76,
+  "native_process_executions_including_restarts": 92,
+  "distinct_started_configurations": 68,
+  "water_qualified_executions": 57,
+  "distinct_water_qualified_configurations": 51,
+  "extra_started_configurations": 66,
+  "extra_water_qualified_configurations": 49,
   "baseline_started": 85,
   "baseline_water_qualified": 28,
-  "combined_started": 143,
-  "combined_water_qualified": 71,
+  "combined_started": 151,
+  "combined_water_qualified": 77,
   "categories": {
-    "successful_water_qualified": 49,
-    "budget_exceeded": 16,
+    "successful_water_qualified": 57,
+    "budget_exceeded": 18,
     "numerical_stall": 1
   },
-  "primary_completed_configuration_days": 53.53799999983312,
+  "primary_completed_configuration_days": 61.96999999980471,
   "baseline_deduplicated_configuration_days": 31.403999999907683,
-  "combined_deduplicated_configuration_days": 76.725999999755,
-  "additional_deduplicated_configuration_days": 45.32199999984732,
+  "combined_deduplicated_configuration_days": 83.0499999997337,
+  "additional_deduplicated_configuration_days": 51.64599999982602,
   "max_water_certificate_cm": 1.1675122674192906e-14,
   "longest_fresh_integral_days": 2.0,
   "historical_checkpoint_days": 2.748,
@@ -74,5 +77,50 @@
     "native historical chemistry/N,WOFOST,snow and extended drainage composition",
     "full original season and year-boundary restart",
     "complete matched431 pressure/moisture/ET/runoff/heat/chemical trajectory and justified variable-specific parity tolerances"
-  ]
+  ],
+  "rejected_trial_rollback_exact": true,
+  "overlapping_unmerged_candidate": "PR1465 b8364799bf21d2c4ab9a7f815bb8398958c5f647 independently implements same law in adapter. Its outputs are NOT inherited/count-added; THETCRMP0 corroboration freshly executed here. It remains unmerged and requires reconciliation, not additive code merge.",
+  "initially_uncapped": [
+    {
+      "id": "uncapped-low-v0p0005-r1-e0p5",
+      "batch": "uncapped8-O2",
+      "pond_to_macro_cm": 0.0
+    },
+    {
+      "id": "uncapped-low-v0p0005-r1-e2",
+      "batch": "uncapped8-O2",
+      "pond_to_macro_cm": 0.0
+    },
+    {
+      "id": "uncapped-low-v0p0005-r4-e0p5",
+      "batch": "uncapped8-O2",
+      "pond_to_macro_cm": 0.02806860871605903
+    },
+    {
+      "id": "uncapped-low-v0p0005-r4-e2",
+      "batch": "uncapped8-O2",
+      "pond_to_macro_cm": 0.029247375792749747
+    },
+    {
+      "id": "uncapped-low-v0p001-r1-e0p5",
+      "batch": "uncapped8-O2",
+      "pond_to_macro_cm": 0.0
+    },
+    {
+      "id": "uncapped-low-v0p001-r1-e2",
+      "batch": "uncapped8-O2",
+      "pond_to_macro_cm": 0.0
+    },
+    {
+      "id": "uncapped-low-v0p0005-r1-e2",
+      "batch": "uncapped-O0",
+      "pond_to_macro_cm": 0.0
+    },
+    {
+      "id": "uncapped-low-v0p0005-r4-e0p5",
+      "batch": "uncapped-wet-O0",
+      "pond_to_macro_cm": 0.02806860871605903
+    }
+  ],
+  "additional_diagnostic_control": "own day1\u21921.041 checkpoint exact against actual rejected-window rollback; separate from76 primary targets"
 }

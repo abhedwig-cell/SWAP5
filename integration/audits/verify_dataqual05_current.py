@@ -15,9 +15,7 @@ def parent_projection():
 def perf_projection():
  raw=subprocess.check_output(['git','show',BASE+':'+PERF],cwd=ROOT)
  hook="    if (ROOT/'"+STATUS+"').is_file():\n        return runpy.run_path(str(ROOT/'"+SELF+"'))['fsi35_successors']()\n"
- return raw.replace(b'def fsi35_successors():
- if (ROOT/'integration/dataqual06/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual06_current.py'))['fsi35_successors']()
- \n',b'def fsi35_successors():\n'+hook.encode(),1)
+ return raw.replace(b'def fsi35_successors():\n',b'def fsi35_successors():\n'+hook.encode(),1)
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
  if (ROOT/'integration/dataqual06/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual06_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE and s['implemented']and s['tested']
@@ -98,6 +96,7 @@ def verify():
  if (ROOT/'integration/dataqual06/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual06_current.py'))['verify']()
  source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/dataqual06/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual06_current.py'))['fsi35_successors']()
  source();f=capsule();validate(f)
  deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  changed=[d['path']for d in deps if git('rev-parse','HEAD:'+d['path'])!=git('rev-parse',BASE+':'+d['path'])]

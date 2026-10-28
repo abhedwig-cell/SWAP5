@@ -2,9 +2,10 @@
 
 DATAQUAL06 is an executed, water-qualified experimental successor to DATAQUAL05.
 Original MPVOLUME variable surface conductivity now uses residual candidate area;
-production fixed-cap streams/payload remain exact.66 primary executions yield43
+production fixed-cap streams/payload remain exact.76 primary executions yield49
 extra successful configurations, taking the DATAQUAL05+06 distinct water-qualified
-count28→71 and distinct started85→143. All32 new root/LAI/drainage compositions
+count28→77 and distinct started85→151. Six initially uncapped THETCRMP0 cases also
+complete the wet target, including positive pond transfer and exact selected O0/O2/restart. All32 new root/LAI/drainage compositions
 complete1.054days; stronger rain cases remain censored/failed. Current full/split
 and O0/O2 endpoints, eight native controls and affected FCI93 oracles pass.
 No seasonal, energy/chemistry/N, full431 parity or production admission claim.

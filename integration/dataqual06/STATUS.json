@@ -27,8 +27,8 @@
     "app/solute_column/read_swp_macro_configuration.f90": "47d1a1ea310764fb983dd0005a6329327ac58271d2d8853abfec70d99dd055dc",
     "app/solute_crop/read_swp_macro_initial.f90": "e331b5ab3435753ab2b0863d7ea3dd17155ba0b9a7b1630a4203ed0f87d99f7d",
     "app/solute_project/main_water.f90": "c8b84eb7cdde146c2caeab7f3f1e8b002ce3626f04c5c9989fb6e28201c47543",
-    "integration/audits/verify_dataqual05_current.py": "de658124a411e7652f4b30d47c71b8c69b856b3f4f34eed626a2e2bc65dff317",
-    "integration/audits/verify_dataqual06_current.py": "aa84a6b4d581a72f8182988f925a40134acd21eb808a53ed86cb49d3a479415b",
+    "integration/audits/verify_dataqual05_current.py": "1ee1b8d0f413b733c4cdf4dfa9fa1946aeb2e0d2ef74c7e51dbdcb32d6984e7e",
+    "integration/audits/verify_dataqual06_current.py": "78a6c9a98f50d1accd21f7cccb1696ebe9ad23a9989a90829957766ef5b420dd",
     "integration/dataqual06/CONTRACT.md": "e2a0604555b1a652d1528f7b47aa70ae4573ab3b26f37f3f66bce07147b7f60b",
     "integration/dataqual06/check_controls.py": "604b65e3eba50d819d4e9fdb7aa5bf59922b5fc0f044fed51cc7610c32aa2b84",
     "integration/dataqual06/compose32.json": "815c7f1fdbb2ebb8899f38e2b0a3122df048ff0f1cab9949bef696675b4cfcad",
@@ -37,9 +37,12 @@
     "integration/dataqual06/restarts.json": "bfdd2ac20ef258eae4d3b94f0c49b0b1b4538b442e1bba41e39f5a6e60421463",
     "integration/dataqual06/run_contract.py": "66a8eed8a1ea67b1a6ad91445b9a5f43c20b4c5e67a5bea832cd03491435aefe",
     "integration/dataqual06/run_fsi35.py": "a83f70ab6ebe6c5e169d39a82c277635035077b3fa755be7c5f191637b7b0076",
-    "integration/dataqual06/seal.py": "60557076febd6236a303134f0bc42b351bea91108409c69ed6c0410b5dea21ff",
+    "integration/dataqual06/seal.py": "87e3598147cabb47821b9e79fc2673a71b29028cc3f1c8373eb764335cd2d654",
     "integration/dataqual06/storms.json": "690e6ede7791c849d92087033837903dc2fe5077017a514df0e07b35e37feef7",
     "integration/dataqual06/test_surface_conductivity.f90": "a87b80946fa71e4684a5be48e6b975d6087c5b4bb7da8b5d9c7c0e62cbb79030",
+    "integration/dataqual06/uncapped-O0.json": "5e43ead222c739348be9343d451a04b1168cc06144b9f5d624102940503be54a",
+    "integration/dataqual06/uncapped-wet-O0.json": "deb65ddd0813e5981dbd75ee53aaff7b9969f89d756d1bed13e521e6edaa91fd",
+    "integration/dataqual06/uncapped8.json": "62dfd6201827e6be634f61177367d13ee2461bf619318f5948daf8ed07c3347f",
     "integration/performance/authority.py": "fed22f5f8ee4522308f27764f58e66b9dbe9c3c141fabf3501d2a8324f8da294",
     "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": "c863927a8974a5753b71fe6d6d19e995576af102446953ca9527797cf78e767b",
     "src/runtime/mod_fmr_macropore_configuration.f90": "8c71e63e5d4787b1c1b8d167542c3226bcc37ac1c607c59e0823f663c149283c",
@@ -132,11 +135,18 @@
       "integration/dataqual06/evidence-080.b64",
       "integration/dataqual06/evidence-081.b64",
       "integration/dataqual06/evidence-082.b64",
-      "integration/dataqual06/evidence-083.b64"
+      "integration/dataqual06/evidence-083.b64",
+      "integration/dataqual06/evidence-084.b64",
+      "integration/dataqual06/evidence-085.b64",
+      "integration/dataqual06/evidence-086.b64",
+      "integration/dataqual06/evidence-087.b64",
+      "integration/dataqual06/evidence-088.b64",
+      "integration/dataqual06/evidence-089.b64",
+      "integration/dataqual06/evidence-090.b64"
     ],
-    "sha256": "7c1373482e043d7a93e1c31880fbd3b8873b4411c84d99c55a500e309e0213c3",
-    "bytes": 3745128,
-    "members": 2612
+    "sha256": "b993b6dd00ff0863cd83bef3277f22ed9310c9f5c8d2f19963e7d0b499bcc833",
+    "bytes": 4054660,
+    "members": 3038
   },
   "result": {
     "work_unit": "DATAQUAL06",
@@ -147,28 +157,31 @@
       "storms-O0",
       "restarts-O0",
       "restarts-O2",
-      "preservation-O2"
+      "preservation-O2",
+      "uncapped8-O2",
+      "uncapped-O0",
+      "uncapped-wet-O0"
     ],
-    "scenario_executions": 66,
-    "native_process_executions_including_restarts": 78,
-    "distinct_started_configurations": 60,
-    "water_qualified_executions": 49,
-    "distinct_water_qualified_configurations": 45,
-    "extra_started_configurations": 58,
-    "extra_water_qualified_configurations": 43,
+    "scenario_executions": 76,
+    "native_process_executions_including_restarts": 92,
+    "distinct_started_configurations": 68,
+    "water_qualified_executions": 57,
+    "distinct_water_qualified_configurations": 51,
+    "extra_started_configurations": 66,
+    "extra_water_qualified_configurations": 49,
     "baseline_started": 85,
     "baseline_water_qualified": 28,
-    "combined_started": 143,
-    "combined_water_qualified": 71,
+    "combined_started": 151,
+    "combined_water_qualified": 77,
     "categories": {
-      "successful_water_qualified": 49,
-      "budget_exceeded": 16,
+      "successful_water_qualified": 57,
+      "budget_exceeded": 18,
       "numerical_stall": 1
     },
-    "primary_completed_configuration_days": 53.53799999983312,
+    "primary_completed_configuration_days": 61.96999999980471,
     "baseline_deduplicated_configuration_days": 31.403999999907683,
-    "combined_deduplicated_configuration_days": 76.725999999755,
-    "additional_deduplicated_configuration_days": 45.32199999984732,
+    "combined_deduplicated_configuration_days": 83.0499999997337,
+    "additional_deduplicated_configuration_days": 51.64599999982602,
     "max_water_certificate_cm": 1.1675122674192906e-14,
     "longest_fresh_integral_days": 2.0,
     "historical_checkpoint_days": 2.748,
@@ -214,12 +227,57 @@
       "native historical chemistry/N,WOFOST,snow and extended drainage composition",
       "full original season and year-boundary restart",
       "complete matched431 pressure/moisture/ET/runoff/heat/chemical trajectory and justified variable-specific parity tolerances"
-    ]
+    ],
+    "rejected_trial_rollback_exact": true,
+    "overlapping_unmerged_candidate": "PR1465 b8364799bf21d2c4ab9a7f815bb8398958c5f647 independently implements same law in adapter. Its outputs are NOT inherited/count-added; THETCRMP0 corroboration freshly executed here. It remains unmerged and requires reconciliation, not additive code merge.",
+    "initially_uncapped": [
+      {
+        "id": "uncapped-low-v0p0005-r1-e0p5",
+        "batch": "uncapped8-O2",
+        "pond_to_macro_cm": 0.0
+      },
+      {
+        "id": "uncapped-low-v0p0005-r1-e2",
+        "batch": "uncapped8-O2",
+        "pond_to_macro_cm": 0.0
+      },
+      {
+        "id": "uncapped-low-v0p0005-r4-e0p5",
+        "batch": "uncapped8-O2",
+        "pond_to_macro_cm": 0.02806860871605903
+      },
+      {
+        "id": "uncapped-low-v0p0005-r4-e2",
+        "batch": "uncapped8-O2",
+        "pond_to_macro_cm": 0.029247375792749747
+      },
+      {
+        "id": "uncapped-low-v0p001-r1-e0p5",
+        "batch": "uncapped8-O2",
+        "pond_to_macro_cm": 0.0
+      },
+      {
+        "id": "uncapped-low-v0p001-r1-e2",
+        "batch": "uncapped8-O2",
+        "pond_to_macro_cm": 0.0
+      },
+      {
+        "id": "uncapped-low-v0p0005-r1-e2",
+        "batch": "uncapped-O0",
+        "pond_to_macro_cm": 0.0
+      },
+      {
+        "id": "uncapped-low-v0p0005-r4-e0p5",
+        "batch": "uncapped-wet-O0",
+        "pond_to_macro_cm": 0.02806860871605903
+      }
+    ],
+    "additional_diagnostic_control": "own day1\u21921.041 checkpoint exact against actual rejected-window rollback; separate from76 primary targets"
   },
   "test_selection": {
     "owner": "RT/HY/VQ",
     "changed_dependency": "source surface conductivity, native input/configuration, dynamic top provider and adapter",
-    "selected": "945 real top/adapter cases O0/O2,66 primary model executions,12 split/restarts,8 native negative controls,affected FCI93 O0/O2 oracles,source/raw owner",
+    "selected": "945 real top/adapter cases O0/O2,76 primary model executions,16 split/restarts,8 native negative controls,affected FCI93 O0/O2 oracles,source/raw owner",
     "full_fci": "NOT_SELECTED_IMPACT",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "authority": "integration/dataqual06/CONTRACT.md"
