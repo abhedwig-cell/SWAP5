@@ -349,6 +349,8 @@ contains
     result%status = B110_DYN_TOP_AVAILABLE
     if (result%runoff_depth_cm == 0.0_real64) then
       result%route = 'ponded-head'
+    else if(request%runoff_exponent/=1.0_real64)then
+      result%route='ponded-head-power-runoff'
     else
       result%route = 'ponded-head-linear-runoff'
     end if
