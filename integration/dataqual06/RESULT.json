@@ -1,0 +1,80 @@
+{
+  "batches": [
+    "dq06-wet32-O2",
+    "dq06-storms-O0",
+    "dq06-storms-O2",
+    "dq06-static8-O2",
+    "dq06-qualification-O0",
+    "dq06-qualification-O2",
+    "dq06-static-qualification-O0"
+  ],
+  "scenario_executions": 58,
+  "distinct_configurations": 46,
+  "native_process_executions_including_restarts": 76,
+  "completed_native_processes": 50,
+  "water_qualified_executions": 32,
+  "distinct_water_qualified_configurations": 25,
+  "categories": {
+    "successful_water_qualified": 32,
+    "budget_exceeded": 26
+  },
+  "max_water_certificate_cm": 1.1675122674192906e-14,
+  "longest_integral_days": 2.0,
+  "restart_exact_executions": 9,
+  "restart_exact_distinct_configurations": 5,
+  "uncapped_model_completions": [
+    {
+      "batch": "dq06-static8-O2",
+      "id": "static-v0p0005-e0p5-r1p0",
+      "initial_conductivity_cm_day": 2.250844066527245
+    },
+    {
+      "batch": "dq06-static8-O2",
+      "id": "static-v0p0005-e0p5-r4p0",
+      "initial_conductivity_cm_day": 2.250844066527245
+    },
+    {
+      "batch": "dq06-static8-O2",
+      "id": "static-v0p0005-e2p0-r1p0",
+      "initial_conductivity_cm_day": 2.250844066527245
+    },
+    {
+      "batch": "dq06-static8-O2",
+      "id": "static-v0p0005-e2p0-r4p0",
+      "initial_conductivity_cm_day": 2.250844066527245
+    },
+    {
+      "batch": "dq06-static8-O2",
+      "id": "static-v0p001-e0p5-r1p0",
+      "initial_conductivity_cm_day": 18.01351013287675
+    },
+    {
+      "batch": "dq06-static8-O2",
+      "id": "static-v0p001-e2p0-r1p0",
+      "initial_conductivity_cm_day": 18.01351013287675
+    },
+    {
+      "batch": "dq06-static-qualification-O0",
+      "id": "static-v0p0005-e0p5-r4p0",
+      "initial_conductivity_cm_day": 2.250844066527245
+    }
+  ],
+  "source_options": [
+    "SWSOLU0,112nodes,8soil layers,5macro domains",
+    "SWMACRO1/SWDARCY1/SWSORP1 with original shrinkage/current candidate geometry",
+    "SWINTER3,Rutter;SWREDU2,Boesten;SWDROUGHT1,Feddes;experimental empirical oxygen0/1",
+    "SWDRA1/DRAMET3/tube,SWBBCFILE1/SWBOTB3",
+    "SWHEA1/SWCALT2 numeric heat",
+    "experimental RSROEXP0.5..2 and source surface conductivity1e-14..1000cm/day"
+  ],
+  "counts_caveat": "58 attempts include repeats across target/build and restarts;46 distinct input/policy configurations, variants of one historical project, not46 historical projects. All primary native processes started. Censors retain committed checkpoints; in-flight solver work after last returned source window is UNKNOWN.",
+  "qualification_basis": "finite112-node state/heat,theta0..1,four independent water certificates<=1e-10cm,no mass rejections,exact target and committed restart; selected O0/O2/full-split. No whole-energy,chemical/N or431-equivalence qualification.",
+  "resources": "Per-driver2or4workers; overlapped campaigns peak configured concurrency8 within8CPU/8GiB cgroup, OMP1 and inherited1GiB per launcher/native address-space limit. No speedup comparison.",
+  "remaining_closure": [
+    "Coupled Richards/macropore residual/Jacobian:26 budget censors including all8 low-area storm attempts; separate2.848675 remains unresolved",
+    "Full original season/year restart and wider independent historical project population",
+    "Broader native chem/N,WOFOST,snow,extended drainage compositions",
+    "Full SWAP431 trajectory/flux equivalence; only retained rounded reference deltas inherited",
+    "Stronger nonlinear head/flux/geometry Jacobian validation over active shrinking below-cap trajectories; bounded tested capability only"
+  ]
+}

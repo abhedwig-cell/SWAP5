@@ -4218,6 +4218,10 @@ contains
         if (allocated(forcing%black_evaporation)) return
       end if
 
+      if(self%macropore_active)then
+        if(self%macropore_config%source_surface_conductivity_enabled.and. &
+           .not.forcing%experimental_process_combinations)return
+      end if
       self%boesten_evaporation_forcing = fmr_boesten_evaporation_runtime_forcing_t()
       if (self%boesten_evaporation_active) then
         if (.not. allocated(forcing%boesten_evaporation)) return
@@ -5011,6 +5015,9 @@ contains
           if (allocated(self%macropore_config)) then
             if(self%macropore_config%surface_pond_inflow_enabled)then
               boesten_top_provider%macropore_pond_donor_active=.true.
+          if(self%macropore_config%source_surface_conductivity_enabled) &
+            boesten_top_provider%source_surface_diameter_cm= &
+              self%macropore_config%geometry%characteristic_diameter(1)
               boesten_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
               boesten_top_provider%macropore_surface_conductivity= &
                    self%macropore_config%surface_macropore_conductivity_cm_per_day
@@ -5443,6 +5450,9 @@ contains
         rutter_top_provider%matrix_source_area_partition=self%rutter_forcing%matrix_source_area_partition
         if(self%macropore_config%surface_pond_inflow_enabled)then
           rutter_top_provider%macropore_pond_donor_active=.true.
+          if(self%macropore_config%source_surface_conductivity_enabled) &
+            rutter_top_provider%source_surface_diameter_cm= &
+              self%macropore_config%geometry%characteristic_diameter(1)
           rutter_top_provider%macropore_pond_threshold=self%macropore_config%surface_pond_threshold_cm
           rutter_top_provider%macropore_surface_conductivity= &
             self%macropore_config%surface_macropore_conductivity_cm_per_day

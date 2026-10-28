@@ -1,5 +1,16 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+DATAQUAL06 implements experimental source-derived macropore surface conductivity
+from the existing candidate-area interface.58 actual primary attempts cover46
+distinct configurations of one historical project,32 water-qualified completions
+across25 configurations and26 budget censors. The32 wet low-area subset gives17
+qualified endpoints;6of8 initially uncapped source cases also complete. All8 heavy
+storm attempts remain censored. Four O0/O2 endpoint/payload comparisons, selected
+exact file restarts, six native atomic controls and affected FCI93 native O0/O2
+assertions pass. Production baseline streams/payload remain exact. Canonical
+admission and hosted checks are separately recorded in integration/dataqual06.
+No full season, whole-energy/chemical/N or431 parity; issue1386 stays open.
+
 DATAQUAL05 is integrated by PR1464, actual merge
 `a96cf1456dd4b4e7f756ebb0e79872ba9442d715`, exact qualified tree
 `5c23a7a1c9043963ed28588e4017c99ff4d7f007`. Actual-merge owner/raw checks
