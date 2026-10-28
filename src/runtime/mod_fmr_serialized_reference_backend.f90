@@ -496,6 +496,8 @@ module mod_fmr_serialized_reference_backend
   end type
 
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
+    ! DATAQUAL01: admission evidence only; never changes process equations or budgets.
+    logical :: experimental_empirical_oxygen = .false.
     real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
     real(real64), allocatable :: frost_divdra_scalars_cm_per_day(:)
     real(real64) :: top_flux = 0.0_real64
@@ -3954,7 +3956,8 @@ contains
         if (self%rutter_active.or.self%macropore_active)then
           if(.not.(self%rutter_active.and.self%macropore_active.and.self%soil_temperature_active.and. &
              self%boesten_evaporation_active.and.self%accepted_water_flux_trace_enabled))return
-          if(forcing%substep_root%parameters%empirical_oxygen_enabled)return
+          if(forcing%substep_root%parameters%empirical_oxygen_enabled.and. &
+             .not.forcing%experimental_empirical_oxygen)return
         end if
         if (self%rfm_configuration%enabled.or.allocated(forcing%macropore_top_input)) return
         if (self%swkimpl /= 0) return

@@ -171,6 +171,7 @@ program swap5_native_water_project
   type(kernel_result_t)::water_result
   type(kernel_diagnostics_t)::water_diagnostics
   character(1024)::macro_path
+  character(16)::execution_mode='production'
   character(64)::binding
   real(real64)::canopy_capacity(MAX_WINDOWS)=0d0,transpiration_dry(MAX_WINDOWS)=0d0,transpiration_wet(MAX_WINDOWS)=0d0
   real(real64)::canopy_evaporation(MAX_WINDOWS)=0d0,vegetation_cover(MAX_WINDOWS)=0d0
@@ -183,6 +184,10 @@ program swap5_native_water_project
   integer::rain_index,step_index,uv,us,ut,up,part,commit_status
   logical::did_commit,policy_ok,anchored_ceiling=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
+  call get_command_argument(10,arg)
+  if(len_trim(arg)>0)execution_mode=trim(arg)
+  call require(trim(execution_mode)=='production'.or.trim(execution_mode)=='experimental'.or. &
+    trim(execution_mode)=='comparison','unknown execution mode')
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -456,6 +461,7 @@ program swap5_native_water_project
   allocate(forcing%root_extraction_sink(numnod),forcing%subsurface_irrigation_source(numnod),forcing%substep_root, &
     forcing%boesten_evaporation,forcing%rutter)
   forcing%root_extraction_sink=0d0;forcing%subsurface_irrigation_source=0d0
+  forcing%experimental_empirical_oxygen=trim(execution_mode)=='experimental'
   forcing%top_flux=0d0;forcing%bottom_flux=0d0
   forcing%boesten_evaporation%ponding_max_cm=pond_max_cm
   forcing%boesten_evaporation%runoff_resistance_day=runoff_resistance_day
