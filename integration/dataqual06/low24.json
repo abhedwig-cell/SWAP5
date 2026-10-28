@@ -1,0 +1,1004 @@
+{
+  "schema": 1,
+  "source_directory": "tests/qualification/ppa-wu05-migmac10-canonical-20261006",
+  "input_files": [
+    "swap.swp",
+    "swap.bbc",
+    "swap.dra",
+    "wintcer1.crp",
+    "wintcer2.crp",
+    "andelst_meteo.998",
+    "andelst_meteo.999",
+    "andelst_rain.998",
+    "andelst_rain.999"
+  ],
+  "timeout_seconds": 15,
+  "slow_seconds_per_day": 10,
+  "design": "24 low-volume variants of original Andelst,4 volumes x3 rain factors x2 runoff exponents; original soil/crop/heat/drainage retained; not24 independent projects",
+  "scenarios": [
+    {
+      "id": "low-v0p0005-r1-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p0005-r1-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p0005-r2-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p0005-r2-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p0005-r4-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p0005-r4-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p001-r1-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.001 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p001-r1-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.001 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p001-r2-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.001 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p001-r2-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.001 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p001-r4-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.001 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p001-r4-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.001 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p002-r1-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.002 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p002-r1-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.002 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p002-r2-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.002 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p002-r2-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.002 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p002-r4-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.002 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p002-r4-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.002 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p005-r1-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p005-r1-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p005-r2-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p005-r2-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 2.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p005-r4-e0p5",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.5 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    },
+    {
+      "id": "low-v0p005-r4-e2",
+      "mode": "experimental",
+      "days": 2,
+      "stop_at_time": 1.0539999999964493,
+      "timeout_seconds": 30,
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "restart_check": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*RSROEXP\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>2.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*VLMPSTSS\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>0.005 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        }
+      ]
+    }
+  ]
+}
