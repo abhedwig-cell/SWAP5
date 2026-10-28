@@ -54,7 +54,7 @@ def classify(result,log):
  if result['status']=='CENSORED':return 'budget_exceeded'
  if result.get('execution_complete'):return 'successful_insufficiently_qualified'
  if 'NATIVE_WATER_REJECTED'in log and (result.get('solver_rejections',0)>0 or result.get('temporal_rejections',0)>0):return 'numerical_stall'
- if any(x in log for x in ['not selected','not qualified','not admitted','requires SWMACRO1','requires SWHEA1','requires SWSOLU0','requires experimental mode']):return 'missing_functionality_or_admission'
+ if any(x in log for x in ['not selected','not qualified','not admitted','requires SWMACRO1','requires SWHEA1','requires SWSOLU0','requires experimental mode','outside implemented']):return 'missing_functionality_or_admission'
  if any(x in log for x in ['outside range','out of range','pondmx','PONDMX','invalid','nonfinite','range is','positive','HLIM','hlim']):return 'invalid_input'
  return 'unclassified_execution_failure'
 def main():
@@ -64,7 +64,7 @@ def main():
  source=ROOT/spec['source_directory'];bundle=a.bundle.resolve();results=[]
  baseline=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  write_json(out/'batch.json',dict(manifest=spec,manifest_sha256=sha(a.manifest),source_commit=baseline,
-  jobs=a.jobs,process_isolation=True,dirty=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True),bundle_sha256=sha(bundle/'bundle.json')))
+  jobs=a.jobs,process_isolation=True,dirty=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True),batch_driver_sha256=sha(Path(__file__)),native_launcher_sha256=sha(ROOT/'tools/solute/run_native_water.py'),bundle_sha256=sha(bundle/'bundle.json')))
  ids=[s['id']for s in spec['scenarios']]
  if len(ids)!=len(set(ids))or any(not re.fullmatch(r'[a-zA-Z0-9_-]+',s)for s in ids):raise ValueError('unique safe scenario IDs required')
  for i,scenario in enumerate(spec['scenarios']):
@@ -84,8 +84,9 @@ def main():
   try:
    for op in scenario.get('transformations',[]):modify(inputs,op)
    r['input_sha256']={p.name:sha(p)for p in inputs.iterdir()}
+   r['source_process_options']={p.name:{k:v.strip()for k,v in re.findall(r'^\s*(SW\w+)\s*=\s*([^!\n]+)',p.read_text(),re.M|re.I)}for p in inputs.iterdir()if p.suffix in ['.swp','.crp','.dra']}
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
-    '--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
+    '--memory-mib',str(scenario.get('memory_mib',spec.get('memory_mib',1024))),'--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
    if 'solver_max_iterations'in scenario:cmd+=['--solver-max-iterations',str(scenario['solver_max_iterations'])]
    if scenario.get('perched_jacobian'):cmd+=['--perched-jacobian']
    if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
@@ -112,10 +113,12 @@ def main():
    r['last_successful_time']=float(committed[-1]['t1'])if committed else 0.
    r['native_returncode']=native.get('returncode');r['launcher_returncode']=cp.returncode
    r['execution_complete']=native.get('returncode')==0 and cp.returncode==0
+   r['last_restart_time']=r['completed_days']if(case/'run/restart.bin').is_file()else None
+   if r['execution_complete']and not r['physical_complete']:r['failure']='native completed; endpoint/certificate qualification not established'
    r['qualification_category']=classify(r,log)
    r['qualification_basis']='finite endpoint,theta bounds,4 independent water certificates<=1e-10cm,no mass rejections,target reached,committed file'if r['physical_complete']else'not_established'
-   r['configuration_sha256']=hashlib.sha256(json.dumps(r['input_sha256'],sort_keys=True).encode()).hexdigest()
    r['process_options']={k:scenario.get(k,v)for k,v in [('mode','experimental'),('source_surface_demand',False),('perched_jacobian',False),('solver_max_iterations',64),('anchored',True),('entry_width_cm',1e-4)]}
+   r['configuration_sha256']=hashlib.sha256(json.dumps(dict(inputs=r['input_sha256'],options=r['process_options']),sort_keys=True).encode()).hexdigest()
    r['failure_category']='none'if r['status']=='PASS'else'timeout'if r['status']=='CENSORED'else'admission_or_numerical_rejection'if rejected else'input_or_execution_rejection'
    if scenario.get('reference'):
     ref=ROOT/scenario['reference'];raw=gzip.decompress(ref.read_bytes())if ref.suffix=='.gz'else ref.read_bytes()

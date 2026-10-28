@@ -4,7 +4,7 @@ Baseline 5a0b0fcd4461d651c141919da09a8ddcb9ff25e2; RT/VQ, issues1458/1386.
 DATAQUAL01–04 are admitted predecessors; do not repeat their unchanged diagnostics.
 
 Use the existing native-water builder and isolated-process batch driver. MultiSWAP
-is serialized, so at most two independent native processes are selected here.
+is serialized, so initially two independent native processes are selected here.
 Every model has a hard walltime budget. No new parallel model framework.
 
 First block: dependency-aware bounded batch concurrency, six explicit scientific
@@ -67,3 +67,46 @@ The first day is rain-free in the real source. Therefore the short target is
 OA remains unchanged and all costs/censors remain visible. Dry GWLI=-110 variants
 already stall before a returned source window; this is not evidence of rainfall-
 triggered maaiveld failure. Use outcomes to separate this hydraulic-start problem.
+
+Resource measurement: current cgroup quota8 CPUs and8GiB memory. After the
+initial2-worker campaign, select4 workers for the independent wet-window batch,
+OMP_NUM_THREADS=1 and1GiB inherited address-space limit per launcher/native process.
+This bounds aggregate selected model address space at4GiB. The native launcher
+uses POSIX RLIMIT_AS; walltime remains separately bounded. No portable speed claim.
+
+Directed surface interaction selection: four source-derived storm cases combine
+PONDMX0, VLMPSTSS.001, rain4x/8x and exponent.5/2, targeting the first wet event
+at1.054 with90s native budgets. These are deliberate stress/input variants, not
+unaltered historical projects or4.3.1 equivalence. Select full/split file restart
+and O0/O2 for successful cases; retain failures unchanged. This supplies active
+nonlinear runoff interaction evidence beyond the direct provider root test.
+
+Initial four directed storms reject at the unchanged TTUTIL input gate because
+the manifest wrote integer literal PONDMX=0 instead of the required real0.0.
+Retain these lexical invalid-input outcomes; correct the manifest, then rerun.
+They are not nonlinear model failures or successful model executions.
+
+Corrected low-macro-volume storms expose a genuine implemented-interface limit:
+original MPVOLUME no longer guarantees the constant1000cm/day surface-conductivity
+cap at VLMPSTSS.001. Both original-source/bootstrap and imported-config guards
+correctly reject variable conductivity; do not bypass either guard. Preserve these
+four missing-functionality outcomes. Select four separately named capped storms
+with VLMPSTSS.03, retaining all active macro/root/heat/drainage processes. This is
+a distinct supported physical parameter selection, not repair of the excluded
+variable-conductivity configurations.
+
+## Design uniqueness correction (before final qualification)
+
+The first design used columns1..12 on64 row indices. Pair coverage was balanced,
+but the columns span only four bits:16 unique vectors, each repeated4times. This
+was detected by the actual distinct-configuration count during sealing, before
+canonical admission. All152 prior attempts and their physical/restart results
+remain recorded; they are not64 distinct configurations. Final qualification is
+withdrawn pending a corrected design. `design.json` is labelled superseded.
+
+V2 selects columns1,2,4,8,16,32,3,5,9,17,33,6. The first six span all six row bits.
+The generator asserts64 unique factor vectors,66 factor pairs,264 level pairs and
+16 observations per level pair. `wet-window64-v2.json` runs each unique vector
+once, with the same real inputs,1.054day target,15s budget and4 isolated workers.
+No earlier run is relabelled or deleted; exact repeated parameters remain reusable
+scientific evidence but do not increase configuration coverage.

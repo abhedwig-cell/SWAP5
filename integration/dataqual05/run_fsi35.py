@@ -12,10 +12,10 @@ deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_2026
 changed=[x['path']for x in deps if subprocess.check_output(['git','show',BASE+':'+x['path']],cwd=ROOT)!=(ROOT/x['path']).read_bytes()]
 assert changed==['src/solver/mod_b110_dynamic_top_boundary_provider.f90'],changed
 path='tests/fci/run_fci93_non_m1_fixed_k_qualification.sh';raw=subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT).decode();assert raw==(ROOT/path).read_text()
-tail=raw[raw.index('\nFKT15_DONOR=',raw.index('# F-CI75 is')):]
+tail=raw[raw.rindex('\nFKT15_DONOR='):]
 # Keep the temporary native evidence directory for recovery instead of trap cleanup.
 tail=tail.replace("trap 'rm -rf \"$BUILD\"' EXIT",'')
-prefix='#!/usr/bin/env bash\nset -euo pipefail\ncd '+str(ROOT)+'\nBASE=d8414c1ba11bee9f061622fd2495f631a57d2383\nfail(){ echo "FCI93_FIXED_K_FAIL $*" >&2; exit93; }\n'
+prefix='#!/usr/bin/env bash\nset -euo pipefail\ncd '+str(ROOT)+'\nBASE=d8414c1ba11bee9f061622fd2495f631a57d2383\nOWNER_SOURCE=5898e6616dbb6871a9f52d489038235ba1172cae\nfail(){ echo "FCI93_FIXED_K_FAIL $*" >&2; exit 93; }\n'
 script=out/'native.sh';script.write_text(prefix+tail)
 start=time.monotonic();cp=subprocess.run(['bash',str(script)],capture_output=True,cwd=ROOT)
 (out/'stdout').write_bytes(cp.stdout);(out/'stderr').write_bytes(cp.stderr)

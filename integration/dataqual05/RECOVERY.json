@@ -1,0 +1,23 @@
+{
+  "executable": "recovery/native-O2",
+  "executable_sha256": "212c7b1321f3ba4dcd7c5e6e4e6d15900bf07e3bd419d21fb56bb01a7314b9ad",
+  "checkpoint": "recovery/restart.bin",
+  "checkpoint_sha256": "c9843b11ebb48bb6a820ac56cda392438401b2414f61640cbfaeed017a94fb39",
+  "committed_time": 1.0,
+  "command": [
+    "./native-O2",
+    "input.nml",
+    "restart.bin",
+    "2",
+    "input.swp",
+    "macro.nml",
+    "297063a382ace946fe641cdb038a84e7ee21188c2d5f29260a7633affa93a8ce",
+    "2",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian"
+  ],
+  "warning": "Input-only directory; same GNU13.3/Linux platform. Restore executable permission. Target2days was censored at15s; continuation is not qualified. Never retag binding or reuse another executable."
+}
