@@ -71,6 +71,7 @@ def main():
    r['input_sha256']={p.name:sha(p)for p in inputs.iterdir()}
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
+   if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
    if 'restart_from'in scenario:
     if scenario['restart_from']not in ids[:ids.index(scenario['id'])]:raise ValueError('restart_from must identify an earlier scenario')
     cmd+=['--restart',str(out/scenario['restart_from']/'run/restart.bin')]
@@ -91,7 +92,7 @@ def main():
    committed=progress[:-1]if rejected else progress
    r['last_successful_time']=float(committed[-1]['t1'])if committed else 0.
    r['failure_category']='none'if r['status']=='PASS'else'timeout'if r['status']=='CENSORED'else'admission_or_numerical_rejection'if rejected else'input_or_execution_rejection'
-   if r['mode']=='comparison'and scenario.get('reference'):
+   if scenario.get('reference'):
     ref=ROOT/scenario['reference'];raw=gzip.decompress(ref.read_bytes())if ref.suffix=='.gz'else ref.read_bytes()
     donor={x['DATE']:x for x in csv.DictReader(io.StringIO('\n'.join(x for x in raw.decode().splitlines()if not x.startswith('*'))))}
     groundwater={int(x['day']):float(x['groundwater_cm'])for x in rows(case/'run/diagnostics.csv')};comparisons=[]
