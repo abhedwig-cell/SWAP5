@@ -3,6 +3,7 @@
 import argparse,csv,datetime,gzip,hashlib,io,json,math,re,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
+class RestartDependencyUnavailable(RuntimeError):pass
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def write_json(p,v):p.write_text(json.dumps(v,indent=2,allow_nan=False)+'\n')
 def rows(p):
@@ -71,10 +72,13 @@ def main():
    r['input_sha256']={p.name:sha(p)for p in inputs.iterdir()}
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
+   if scenario.get('perched_jacobian'):cmd+=['--perched-jacobian']
    if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
    if 'restart_from'in scenario:
     if scenario['restart_from']not in ids[:ids.index(scenario['id'])]:raise ValueError('restart_from must identify an earlier scenario')
-    cmd+=['--restart',str(out/scenario['restart_from']/'run/restart.bin')]
+    prior=out/scenario['restart_from']/'run/restart.bin'
+    if not prior.is_file():raise RestartDependencyUnavailable('no published restart from '+scenario['restart_from'])
+    cmd+=['--restart',str(prior)]
    if 'stop_at_time'in scenario:cmd+=['--stop-at-time',str(scenario['stop_at_time'])]
    if scenario.get('anchored',True):cmd+=['--anchored-cauchy','--entry-ramp-width-cm',str(scenario.get('entry_width_cm',1e-4))]
    with(case/'launcher.stdout').open('wb')as so,(case/'launcher.stderr').open('wb')as se:
@@ -117,6 +121,8 @@ def main():
     r['restart']='exact'if exact else'mismatch'
     if not exact:r['status']='FAILED';r['failure']='restart mismatch'
    r['slow']=r['status']=='CENSORED'or(r['seconds_per_day']is not None and r['seconds_per_day']>spec['slow_seconds_per_day'])
+  except RestartDependencyUnavailable as e:
+   r.update(status='SKIPPED_DEPENDENCY',failure=str(e),failure_category='dependency_unavailable',seconds=time.monotonic()-start)
   except Exception as e:
    r.update(status='FAILED',failure=type(e).__name__+': '+str(e),seconds=time.monotonic()-start)
   results.append(r);save();print(json.dumps({k:r.get(k)for k in ['id','status','completed_days','seconds','failure']}),flush=True)

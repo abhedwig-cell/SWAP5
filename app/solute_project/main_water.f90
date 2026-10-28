@@ -183,7 +183,7 @@ program swap5_native_water_project
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,uc,ud,part,commit_status
   real(real64)::oxygen_reduction_amount
-  logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.
+  logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.,perched_jacobian=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(10,arg)
   if(len_trim(arg)>0)execution_mode=trim(arg)
@@ -194,6 +194,12 @@ program swap5_native_water_project
     call require(trim(arg)=='source-surface-demand','unknown source forcing variant')
     call require(trim(execution_mode)=='experimental','source surface demand requires experimental mode')
     source_surface_demand=.true.
+  end if
+  call get_command_argument(12,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='perched-jacobian','unknown numerical Jacobian policy')
+    call require(trim(execution_mode)=='experimental','perched Jacobian requires experimental mode')
+    perched_jacobian=.true.
   end if
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
@@ -483,6 +489,7 @@ program swap5_native_water_project
   numerical%transaction%temporal_tolerance=temporal_tolerance;numerical%transaction%mass_tolerance=1d-10
   numerical%transaction%max_retries=40;numerical%transaction%retry_scale=.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)
+  macro_policy%perched_jacobian_enabled=perched_jacobian
   macro_policy%anchored_cauchy_step_ceiling=anchored_ceiling
   macro_policy%enabled=.true.;macro_policy%inner_richards_exchange_enabled=.true.
   macro_policy%solver_mass_tolerance_cm=1d-10;macro_policy%internal_exchange_tolerance_cm=1d-10

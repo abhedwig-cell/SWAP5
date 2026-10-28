@@ -1,0 +1,21 @@
+{
+  "owner_source_raw": "PASS",
+  "corruption_controls": 20,
+  "fsi35": {
+    "status": "UNCHANGED_EXECUTABLE_DEPENDENCIES",
+    "dependencies": 27,
+    "baseline": "4b61966e63bcb20d0688c919687a798147226114"
+  },
+  "general_successor": "PASS",
+  "docs_source": "PASS",
+  "docs_strict": "PASS",
+  "compiler": "GNU Fortran13.3.0 checked O0/O2",
+  "production_admission_changed": false,
+  "not_selected": [
+    "fresh481",
+    "full numerical F-CI",
+    "highest low-air",
+    "RossFast"
+  ],
+  "reason": "No changed implementations or accepted contracts in these unselected domains; new candidate bounded to explicit experimental numerical policy, affected native/component/state evidence retained."
+}

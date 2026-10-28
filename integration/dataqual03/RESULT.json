@@ -1,0 +1,41 @@
+{
+  "default_preserved_exact": true,
+  "O0_O2_endpoint_exact": true,
+  "primary_restart_exact": true,
+  "failed_window_rollback_exact": true,
+  "primary_end_day": 2.514000000002852,
+  "new_committed_checkpoint": 2.7479999999995925,
+  "window_off_censored": true,
+  "window_on_complete": true,
+  "three_day_complete": false,
+  "scenario_executions": 13,
+  "physical_passes": 7,
+  "censored": 3,
+  "failed_or_rejected": 2,
+  "skipped": 1,
+  "O0_note": "Initial full process censored at60s; own day2 restart continuation completes2.514 with exact O2 endpoint physical payload.",
+  "old_dependency_attempt": "primary-O2/jacobian-five FAILED missing predecessor restart before collector fix; harness dependency failure, not a numerical result.",
+  "numerical_window": {
+    "origin_day": 2.4950000000026193,
+    "target_day": 2.514000000002852,
+    "off_seconds": 60.01428351300001,
+    "on_seconds": 3.8618275850003556,
+    "origin_state_only": true,
+    "restart_qualification": false,
+    "portable_speedup_claim": false
+  },
+  "failed_window": {
+    "t0": " 2.74799999999959255E+000",
+    "t1": " 3.00000000000000000E+000",
+    "completed": "F",
+    "nonlinear_iterations": "25846",
+    "headcalc_calls": "2460",
+    "linear_solves": "25846",
+    "backtracking_attempts": "39041",
+    "accepted_substeps": "416",
+    "min_accepted_dt": " 8.88178419700125232E-016",
+    "max_accepted_dt": " 4.92187499730789568E-004"
+  },
+  "production_admission_changed": false,
+  "full_historical_closure": false
+}
