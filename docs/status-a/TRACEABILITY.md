@@ -1,6 +1,9 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-DATAQUAL06 is an executed, water-qualified experimental successor to DATAQUAL05.
+DATAQUAL06 is canonically integrated by PR1466, actual merge
+`e53ec3ca76dfd667c459251302fe6a73d2944c2c`, exact qualified tree
+`4b39527df75be3dfb0246f2a9cc61af87a7cff6a`. Actual-merge owner/raw/30 controls pass.
+Selected hosted canonical feedback and documentation pass; no full numerical F-CI.
 Original MPVOLUME variable surface conductivity now uses residual candidate area;
 production fixed-cap streams/payload remain exact.76 primary executions yield49
 extra successful configurations, taking the DATAQUAL05+06 distinct water-qualified

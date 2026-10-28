@@ -1,0 +1,35 @@
+{
+  "evidence": "STATUS.json evidence.parts; verify archive/member hashes before extracting recovery/",
+  "working_directory": "recovery",
+  "origin_committed_time": 1.0539999999964493,
+  "origin": "origin.bin",
+  "executable": "native-O2",
+  "command": [
+    "./native-O2",
+    "input.nml",
+    "origin.bin",
+    "5",
+    "input.swp",
+    "macro.nml",
+    "2d9f1abb1f2d6e6ed61f0d6ca57c280e8e34230e71f9d0df2105142f4c8a0717",
+    "1.7976931348623157e308",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian"
+  ],
+  "expected_result": "rejection before source1.33\u21921.4425; not5day success",
+  "same_platform": "GNU13.3/Linux",
+  "replay": {
+    "returncode": 1,
+    "seconds": 4.910465585999191,
+    "expected_rejection": true,
+    "input_unchanged": true,
+    "rejected_checkpoint_exact": true,
+    "replayed_origin_sha256": "80737a1d6121b3b75ce3433cd0dbded81b5109011fb555333bce9ef6df394347",
+    "executable_sha256": "3a1e76adb68678d16e58984938c0989b968a3707821301ba7551c715a0a67607",
+    "claim": "packaged original checkpoint/executable reconstruct same committed1.33 rejection; no5day qualification"
+  },
+  "warning": "chmod executable; extract only input.nml,input.swp,macro.nml,origin.bin,native-O2 to empty directory; never rebind to a different executable; diagnostic-rejected.bin is retained separately"
+}

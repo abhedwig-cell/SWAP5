@@ -56,3 +56,5 @@ Remaining closure: coupled Richards/macropore convergence (including prior2.8486
 longer variable-conductivity admission failure, full seasonal/year restart,
 broader native chemistry/N/WOFOST/snow/drainage, and complete matched431 trajectories.
 Authority: STATUS.json, RESULT.json, summary.csv and verify_dataqual06_current.py.
+
+Canonical admission: PR1466 actual merge `e53ec3ca76dfd667c459251302fe6a73d2944c2c`, exact qualified tree `4b39527df75be3dfb0246f2a9cc61af87a7cff6a`. Actual-merge owner/raw/30 negative controls pass. All60 final PR workflows terminal:33success/27failure; selected canonical feedback and documentation pass, not full numerical F-CI. Remaining failures/logs are explicit in HOSTED_STATUS.json.

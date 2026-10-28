@@ -2,12 +2,12 @@
   "work_unit": "DATAQUAL06",
   "workstream": "RT/HY/VQ",
   "baseline": "cba2117d679fe1165cc03c60e86e67943a777466",
-  "stage": "EXECUTED_EXPERIMENTAL_CANDIDATE",
+  "stage": "CANONICALLY_INTEGRATED_BOUNDED_EXPERIMENTAL_VARIABLE_SURFACE",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "production_admission_changed": false,
   "full_historical_closure": false,
   "scientific_delta": {
@@ -281,5 +281,7 @@
     "full_fci": "NOT_SELECTED_IMPACT",
     "highest_low_air": "NOT_SELECTED_POLICY",
     "authority": "integration/dataqual06/CONTRACT.md"
-  }
+  },
+  "admission": "integration/dataqual06/ADMISSION.json",
+  "actual_merge": "e53ec3ca76dfd667c459251302fe6a73d2944c2c"
 }
