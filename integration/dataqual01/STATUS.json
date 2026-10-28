@@ -2,12 +2,12 @@
   "workstream": "RT/MP/VQ",
   "work_unit": "SWAP5-DATAQUAL01",
   "baseline": "e47e98c6b8e614c75284c831925a34d7756cd4b0",
-  "stage": "QUALIFIED_INFRASTRUCTURE_PENDING_CANONICAL_MERGE",
+  "stage": "CANONICAL_INFRASTRUCTURE_ADMITTED_EXPERIMENTAL_ONLY",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Explicit experimental empirical-root oxygen admission and bounded independent historical batches; no production physics promotion",
   "contract": "integration/dataqual01/CONTRACT.md",
   "scientific_delta": {
@@ -275,5 +275,9 @@
     "No in-flight counters after timeout",
     "Native variable crack surface conductivity and saturated startup remain unavailable"
   ],
-  "next_action": "Verify successor owner and strict docs on persisted exact postimage, reconcile live PR1457/canonical, then integrate infrastructure only; retain production guard."
+  "next_action": "Use measured batches to prioritize forcing/reference and numerical feedback work; production empirical oxygen and full historical closure remain excluded. Reconcile separate PR1457 before inheriting any longer-run evidence.",
+  "canonical_pr": 1460,
+  "actual_merge": "43fd2f821d88fc0c80b7a2563ccfb020a62543ba",
+  "qualified_tree": "54db8c9d8626bdfa36b0ccb22551ca5f535b7f04",
+  "actual_merge_tree": "54db8c9d8626bdfa36b0ccb22551ca5f535b7f04"
 }

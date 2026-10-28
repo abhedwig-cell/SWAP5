@@ -1,0 +1,58 @@
+{
+  "recorded_at": "2026-10-28",
+  "qualified_head": "c303aa2b9a802afc39a76732bfaeaacdf4107b32",
+  "observed_run_count_first_page": 100,
+  "not_a_complete_run_inventory": true,
+  "local_automatic_feedback_pass": true,
+  "documentation_run": 40659533789,
+  "documentation_conclusion": "success",
+  "empirical_root_run": 40659533422,
+  "empirical_root_conclusion": "success",
+  "broad_scope": "NOT_SELECTED_IMPACT; not credited as PASS",
+  "observed_failures": [
+    {
+      "id": 40659533829,
+      "name": "PUB-P2E02 Reference uncertainty"
+    },
+    {
+      "id": 40659533608,
+      "name": "PPA MICRO06 stacked source and runtime qualification"
+    },
+    {
+      "id": 40659533492,
+      "name": "PUB-P2E04 Reference failure census"
+    },
+    {
+      "id": 40659457147,
+      "name": "PUB-P2E04 Reference B/C sweeps"
+    },
+    {
+      "id": 40659457108,
+      "name": "PPA MICRO06 stacked source and runtime qualification"
+    },
+    {
+      "id": 40659457314,
+      "name": "F-CI72 EB-I23 moving preservation"
+    },
+    {
+      "id": 40659457231,
+      "name": "PUB-P2E04 Reference failure census"
+    },
+    {
+      "id": 40659457227,
+      "name": "PUB-P1E02 post-solver rollback"
+    },
+    {
+      "id": 40659457372,
+      "name": "PUB-ME D1 transition authority"
+    }
+  ],
+  "reconciled_compile_failures": {
+    "runs": [
+      40659457147,
+      40659457108
+    ],
+    "message": "Missing mod_drainage_dramet3_response.mod in legacy compilation recipes; the importing mod_fmr_drainage_response_binding.f90 has identical baseline/current blob e42634aa1cbdf5091a0b0ccd5f5f7882e8c5e616; no imports changed in the five-line runtime delta."
+  },
+  "remaining_queued_runs": "Not selected owner evidence, no success claimed."
+}

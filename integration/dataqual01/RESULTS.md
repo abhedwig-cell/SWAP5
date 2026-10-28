@@ -1,7 +1,9 @@
 # DATAQUAL01 measured migration batch
 
 Tested candidate on canonical baseline `e47e98c6b8e614c75284c831925a34d7756cd4b0`.
-Infrastructure qualified pending exact canonical merge verification. Experimental
+Infrastructure integrated by PR1460, actual merge43fd2f821d88fc0c80b7a2563ccfb020a62543ba;
+complete merge tree exactly matches54db8c9d8626bdfa36b0ccb22551ca5f535b7f04.
+Source/raw owner checks pass on the actual merge. Experimental
 success is not production admission. Machine authority: `STATUS.json`, `RESULT.json`
 and `summary.csv`; complete raw evidence includes development failures.
 

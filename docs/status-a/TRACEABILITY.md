@@ -1,7 +1,9 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-DATAQUAL01 experimental execution and historical batches are tested on baseline
-`e47e98c6b8e614c75284c831925a34d7756cd4b0`, pending canonical integration in PR1459.
+DATAQUAL01 experimental execution and historical batches are canonically integrated by PR1460, actual merge
+`43fd2f821d88fc0c80b7a2563ccfb020a62543ba`, with exact qualified full tree
+`54db8c9d8626bdfa36b0ccb22551ca5f535b7f04`. Admission is execution infrastructure
+only; experimental process evidence is not production promotion.
 Production remains default and retains its empirical-oxygen combination guard.
 The explicit experimental mode uses the existing Feddes factor, unchanged
 mass/transaction/restart gates and additive cost/groundwater diagnostics.
