@@ -47,3 +47,23 @@ independent high-precision balance/root checks, literal-linear preservation,
 nonlinear active-runoff original-derived cases and full/split file restart.
 No claim this fixes the distinct inner Richards/macropore stall. Other exponents
 and instantaneous RSRO<.001 are outside this implementation, explicitly rejected.
+
+## Measured cost selection
+
+The first64-case two-day campaign uses15s per native process at concurrency2.
+Early cases mostly time out after their valid day1 checkpoint; several have no
+returned source window. Preserve all of them as budget exceeded. Select a separate
+short wet-window64 campaign (same physical configurations, same15s budget, target1.054 at the third wet source event), never relabel
+these two-day attempts. Selected2day/full-split cases may use120s because they
+must distinguish actual new nonlinear runoff and restart reproducibility.
+The final native FSI35 oracle is selected because the dynamic-top provider is1 of
+its27 transitive providers. Reuse26 unchanged inputs and the exact admitted native
+oracle tail/compile helper; record the changed provider. Expected under1minute,
+no unselected full F-CI or highest low-air. The historical registration front matter
+cannot itself qualify a new source; its native assertions remain unchanged.
+
+The first day is rain-free in the real source. Therefore the short target is
+1.054days, not1day, so rainfall and surface options actually execute. The two-day
+OA remains unchanged and all costs/censors remain visible. Dry GWLI=-110 variants
+already stall before a returned source window; this is not evidence of rainfall-
+triggered maaiveld failure. Use outcomes to separate this hydraulic-start problem.
