@@ -82,6 +82,7 @@ program swap5_native_water_project
   real(real64) :: bulk_density=1.3d0,kf=0.2d0,dispersivity_cm=0.2d0,diffusion_cm2_day=0.05d0,tscf=0.5d0
   real(real64) :: root_cm_day(MAX_NODES)=0d0,drain_cm_day(MAX_NODES)=0d0,bottom_up_cm_day=0d0
   real(real64) :: cdrain_mg_cm3=0d0,cseep_mg_cm3=0d0
+  real(real64) :: runoff_exponent=1d0
   real(real64) :: pond_max_cm=1d6,runoff_resistance_day=0d0,temporal_tolerance=1d-6
   real(real64) :: ends_day(MAX_WINDOWS)=0d0,rain_cm_day(MAX_WINDOWS)=0d0
   real(real64) :: irrigation_cm_day(MAX_WINDOWS)=0d0,runon_cm_day(MAX_WINDOWS)=0d0,evaporation_cm_day(MAX_WINDOWS)=0d0
@@ -150,7 +151,7 @@ program swap5_native_water_project
   namelist /crop/ root_table_points,upper_layer_bottom_node,maximum_root_depth_cm,root_relative_depth,root_density, &
     hlim3l,hlim3h,hlim4,adcrl,adcrh,hlim1,hlim2u,hlim2l,empirical_oxygen_enabled,crop_active, &
     potential_transpiration_cm_day,root_depth_cm,substep_root_stress
-  namelist /column/ solver_max_iterations,schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
+  namelist /column/ runoff_exponent,solver_max_iterations,schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,water_flux_temporal,dynamic_temperature,freundlich_exponent,reference_concentration, &
@@ -237,6 +238,9 @@ program swap5_native_water_project
   if(io/=0)write(*,'(A)')trim(message)
   call require(io==0,'invalid column namelist')
   call require(solver_max_iterations>=1.and.solver_max_iterations<=256,'solver iteration budget range')
+  call require(ieee_is_finite(runoff_exponent).and.runoff_exponent>=0.5d0.and.runoff_exponent<=2d0, &
+    'experimental runoff exponent range0.5..2')
+  if(runoff_exponent/=1d0)call require(trim(execution_mode)=='experimental','nonlinear runoff requires experimental mode')
   if(solver_max_iterations/=64)call require(trim(execution_mode)=='experimental', &
     'nondefault solver iteration budget requires experimental mode')
   read(u,nml=surface,iostat=io,iomsg=message)
@@ -479,10 +483,11 @@ program swap5_native_water_project
     forcing%boesten_evaporation,forcing%rutter)
   forcing%root_extraction_sink=0d0;forcing%subsurface_irrigation_source=0d0
   forcing%experimental_empirical_oxygen=trim(execution_mode)=='experimental'
+  forcing%experimental_process_combinations=trim(execution_mode)=='experimental'
   forcing%top_flux=0d0;forcing%bottom_flux=0d0
   forcing%boesten_evaporation%ponding_max_cm=pond_max_cm
   forcing%boesten_evaporation%runoff_resistance_day=runoff_resistance_day
-  forcing%boesten_evaporation%runoff_exponent=1d0
+  forcing%boesten_evaporation%runoff_exponent=runoff_exponent
   column_id%column_id=671001_int64;column_id%template_id=671010_int64;column_id%parameter_ref=p%parameter_set_id
   column_id%state_handle=1_int64;column_id%forcing_handle=1_int64;column_id%backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
   template%template_id=column_id%template_id;template%physics_topology_id=671020_int64
@@ -564,7 +569,7 @@ program swap5_native_water_project
       forcing%rutter%potential_bare_soil_evaporation_cm_per_day=soil_evaporation_cm_day(j)
       forcing%rutter%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
       forcing%rutter%ponding_max_cm=pond_max_cm;forcing%rutter%runoff_resistance_day=runoff_resistance_day
-      forcing%rutter%runoff_exponent=1d0
+      forcing%rutter%runoff_exponent=runoff_exponent
       call water%capture_checkpoint(checkpoint,ok);call require(ok,'native committed checkpoint')
       call backend%run_trial(column_id,template,p,water,forcing,numerical,cursor,endpoint,checkpoint, &
         water_result,candidate,water_diagnostics,trace_accepted_water_flux_substeps=.true.)

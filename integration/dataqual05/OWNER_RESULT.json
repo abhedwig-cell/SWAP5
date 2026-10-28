@@ -1,0 +1,1276 @@
+{
+  "result": {
+    "dataqual05_tested": true,
+    "qualified": true,
+    "production_admission_changed": false,
+    "full_historical_closure": false,
+    "measured": {
+      "design_correction": "First two64-row campaigns contain only16 unique factor vectors, repeated4times; V2 has64 unique vectors verified from actual input hashes. No historical result relabelled.",
+      "batches": [
+        "scale64-O2",
+        "wet-window64-O2",
+        "qualification-O2",
+        "qualification-O0",
+        "storms-O2",
+        "storms-fixed-O2",
+        "capped-storms-O2",
+        "capped-qualification-O0",
+        "serial-check-O2",
+        "wet-window64-v2-O2"
+      ],
+      "scenario_executions": 216,
+      "distinct_configurations": 93,
+      "water_native_primary_executions": 208,
+      "distinct_water_native_configurations": 85,
+      "native_process_executions_including_restarts": 234,
+      "completed_native_processes": 78,
+      "physical_completions": 52,
+      "distinct_physically_completed_configurations": 28,
+      "categories": {
+        "budget_exceeded": 156,
+        "successful_water_qualified": 52,
+        "invalid_input": 4,
+        "missing_functionality_or_admission": 4
+      },
+      "restart_exact_executions": 13,
+      "restart_exact_distinct_configurations": 7,
+      "max_water_certificate_cm": 1.1675122674192906e-14,
+      "longest_integral_days": 2.0,
+      "positive_runoff_completed_executions": 24,
+      "max_runoff_cm": 0.0234013087171124,
+      "O0_O2_endpoint_payload_exact": {
+        "oa64-00": true,
+        "oa64-08": true,
+        "default-two": true,
+        "original-corrected-two": true,
+        "cap-storm-e0p5-r4p0": true,
+        "cap-storm-e2p0-r4p0": true
+      },
+      "serial_parallel_physical_exact": true,
+      "default_predecessor_exact": true,
+      "qualification_basis": "finite112-node state/heat,theta0..1,4 independent water certificates<=1e-10cm,no mass rejections,exact target and committed restart; selected full/split/O0/O2; no full energy/solute/N/parity certification",
+      "counts_caveat": "Scenario executions include repeated targets/builds and rejected readers. Distinct means normalized input transformations+execution/physical/numerical options, not independent historical projects. Native counts exclude input readers and6 direct negative controls; include real split/resumed processes.",
+      "coverage": {
+        "design_configurations": 64,
+        "design_factor_pairs": 66,
+        "design_level_pairs": 264,
+        "configured_level_pairs": 264,
+        "water_qualified_distinct_design_rows": 18,
+        "water_qualified_level_pairs": 220,
+        "water_qualified_pairs": {
+          "gwl_cm|pondmx_cm": [
+            [
+              -80.9,
+              0.0
+            ],
+            [
+              -80.9,
+              0.1
+            ]
+          ],
+          "gwl_cm|rain_factor": [
+            [
+              -80.9,
+              1.0
+            ],
+            [
+              -80.9,
+              4.0
+            ]
+          ],
+          "gwl_cm|ksat_factor": [
+            [
+              -80.9,
+              0.7
+            ],
+            [
+              -80.9,
+              1.3
+            ]
+          ],
+          "gwl_cm|alpha_factor": [
+            [
+              -80.9,
+              0.8
+            ],
+            [
+              -80.9,
+              1.2
+            ]
+          ],
+          "gwl_cm|lai_factor": [
+            [
+              -80.9,
+              0.75
+            ],
+            [
+              -80.9,
+              1.25
+            ]
+          ],
+          "gwl_cm|temperature_factor": [
+            [
+              -80.9,
+              0.8
+            ],
+            [
+              -80.9,
+              1.2
+            ]
+          ],
+          "gwl_cm|drain_resistance_day": [
+            [
+              -80.9,
+              250.0
+            ],
+            [
+              -80.9,
+              1000.0
+            ]
+          ],
+          "gwl_cm|macro_surface_fraction": [
+            [
+              -80.9,
+              0.03
+            ],
+            [
+              -80.9,
+              0.05
+            ]
+          ],
+          "gwl_cm|runoff_exponent": [
+            [
+              -80.9,
+              0.5
+            ],
+            [
+              -80.9,
+              2.0
+            ]
+          ],
+          "gwl_cm|empirical_oxygen": [
+            [
+              -80.9,
+              false
+            ],
+            [
+              -80.9,
+              true
+            ]
+          ],
+          "gwl_cm|root_depth_factor": [
+            [
+              -80.9,
+              0.8
+            ],
+            [
+              -80.9,
+              1.2
+            ]
+          ],
+          "pondmx_cm|rain_factor": [
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              4.0
+            ],
+            [
+              0.1,
+              1.0
+            ],
+            [
+              0.1,
+              4.0
+            ]
+          ],
+          "pondmx_cm|ksat_factor": [
+            [
+              0.0,
+              0.7
+            ],
+            [
+              0.0,
+              1.3
+            ],
+            [
+              0.1,
+              0.7
+            ],
+            [
+              0.1,
+              1.3
+            ]
+          ],
+          "pondmx_cm|alpha_factor": [
+            [
+              0.0,
+              0.8
+            ],
+            [
+              0.0,
+              1.2
+            ],
+            [
+              0.1,
+              0.8
+            ],
+            [
+              0.1,
+              1.2
+            ]
+          ],
+          "pondmx_cm|lai_factor": [
+            [
+              0.0,
+              0.75
+            ],
+            [
+              0.0,
+              1.25
+            ],
+            [
+              0.1,
+              0.75
+            ],
+            [
+              0.1,
+              1.25
+            ]
+          ],
+          "pondmx_cm|temperature_factor": [
+            [
+              0.0,
+              0.8
+            ],
+            [
+              0.1,
+              1.2
+            ]
+          ],
+          "pondmx_cm|drain_resistance_day": [
+            [
+              0.0,
+              250.0
+            ],
+            [
+              0.0,
+              1000.0
+            ],
+            [
+              0.1,
+              250.0
+            ],
+            [
+              0.1,
+              1000.0
+            ]
+          ],
+          "pondmx_cm|macro_surface_fraction": [
+            [
+              0.0,
+              0.03
+            ],
+            [
+              0.0,
+              0.05
+            ],
+            [
+              0.1,
+              0.03
+            ],
+            [
+              0.1,
+              0.05
+            ]
+          ],
+          "pondmx_cm|runoff_exponent": [
+            [
+              0.0,
+              0.5
+            ],
+            [
+              0.0,
+              2.0
+            ],
+            [
+              0.1,
+              0.5
+            ],
+            [
+              0.1,
+              2.0
+            ]
+          ],
+          "pondmx_cm|empirical_oxygen": [
+            [
+              0.0,
+              false
+            ],
+            [
+              0.0,
+              true
+            ],
+            [
+              0.1,
+              false
+            ],
+            [
+              0.1,
+              true
+            ]
+          ],
+          "pondmx_cm|root_depth_factor": [
+            [
+              0.0,
+              0.8
+            ],
+            [
+              0.0,
+              1.2
+            ],
+            [
+              0.1,
+              0.8
+            ],
+            [
+              0.1,
+              1.2
+            ]
+          ],
+          "rain_factor|ksat_factor": [
+            [
+              1.0,
+              0.7
+            ],
+            [
+              1.0,
+              1.3
+            ],
+            [
+              4.0,
+              1.3
+            ]
+          ],
+          "rain_factor|alpha_factor": [
+            [
+              1.0,
+              0.8
+            ],
+            [
+              1.0,
+              1.2
+            ],
+            [
+              4.0,
+              1.2
+            ]
+          ],
+          "rain_factor|lai_factor": [
+            [
+              1.0,
+              0.75
+            ],
+            [
+              1.0,
+              1.25
+            ],
+            [
+              4.0,
+              1.25
+            ]
+          ],
+          "rain_factor|temperature_factor": [
+            [
+              1.0,
+              0.8
+            ],
+            [
+              1.0,
+              1.2
+            ],
+            [
+              4.0,
+              0.8
+            ],
+            [
+              4.0,
+              1.2
+            ]
+          ],
+          "rain_factor|drain_resistance_day": [
+            [
+              1.0,
+              250.0
+            ],
+            [
+              4.0,
+              1000.0
+            ]
+          ],
+          "rain_factor|macro_surface_fraction": [
+            [
+              1.0,
+              0.03
+            ],
+            [
+              1.0,
+              0.05
+            ],
+            [
+              4.0,
+              0.05
+            ]
+          ],
+          "rain_factor|runoff_exponent": [
+            [
+              1.0,
+              0.5
+            ],
+            [
+              1.0,
+              2.0
+            ],
+            [
+              4.0,
+              2.0
+            ]
+          ],
+          "rain_factor|empirical_oxygen": [
+            [
+              1.0,
+              false
+            ],
+            [
+              1.0,
+              true
+            ],
+            [
+              4.0,
+              true
+            ]
+          ],
+          "rain_factor|root_depth_factor": [
+            [
+              1.0,
+              0.8
+            ],
+            [
+              1.0,
+              1.2
+            ],
+            [
+              4.0,
+              0.8
+            ],
+            [
+              4.0,
+              1.2
+            ]
+          ],
+          "ksat_factor|alpha_factor": [
+            [
+              0.7,
+              0.8
+            ],
+            [
+              0.7,
+              1.2
+            ],
+            [
+              1.3,
+              0.8
+            ],
+            [
+              1.3,
+              1.2
+            ]
+          ],
+          "ksat_factor|lai_factor": [
+            [
+              0.7,
+              0.75
+            ],
+            [
+              0.7,
+              1.25
+            ],
+            [
+              1.3,
+              0.75
+            ],
+            [
+              1.3,
+              1.25
+            ]
+          ],
+          "ksat_factor|temperature_factor": [
+            [
+              0.7,
+              0.8
+            ],
+            [
+              0.7,
+              1.2
+            ],
+            [
+              1.3,
+              0.8
+            ],
+            [
+              1.3,
+              1.2
+            ]
+          ],
+          "ksat_factor|drain_resistance_day": [
+            [
+              0.7,
+              250.0
+            ],
+            [
+              1.3,
+              250.0
+            ],
+            [
+              1.3,
+              1000.0
+            ]
+          ],
+          "ksat_factor|macro_surface_fraction": [
+            [
+              0.7,
+              0.03
+            ],
+            [
+              1.3,
+              0.05
+            ]
+          ],
+          "ksat_factor|runoff_exponent": [
+            [
+              0.7,
+              0.5
+            ],
+            [
+              0.7,
+              2.0
+            ],
+            [
+              1.3,
+              0.5
+            ],
+            [
+              1.3,
+              2.0
+            ]
+          ],
+          "ksat_factor|empirical_oxygen": [
+            [
+              0.7,
+              false
+            ],
+            [
+              0.7,
+              true
+            ],
+            [
+              1.3,
+              false
+            ],
+            [
+              1.3,
+              true
+            ]
+          ],
+          "ksat_factor|root_depth_factor": [
+            [
+              0.7,
+              0.8
+            ],
+            [
+              0.7,
+              1.2
+            ],
+            [
+              1.3,
+              0.8
+            ],
+            [
+              1.3,
+              1.2
+            ]
+          ],
+          "alpha_factor|lai_factor": [
+            [
+              0.8,
+              0.75
+            ],
+            [
+              0.8,
+              1.25
+            ],
+            [
+              1.2,
+              0.75
+            ],
+            [
+              1.2,
+              1.25
+            ]
+          ],
+          "alpha_factor|temperature_factor": [
+            [
+              0.8,
+              0.8
+            ],
+            [
+              0.8,
+              1.2
+            ],
+            [
+              1.2,
+              0.8
+            ],
+            [
+              1.2,
+              1.2
+            ]
+          ],
+          "alpha_factor|drain_resistance_day": [
+            [
+              0.8,
+              250.0
+            ],
+            [
+              1.2,
+              250.0
+            ],
+            [
+              1.2,
+              1000.0
+            ]
+          ],
+          "alpha_factor|macro_surface_fraction": [
+            [
+              0.8,
+              0.03
+            ],
+            [
+              0.8,
+              0.05
+            ],
+            [
+              1.2,
+              0.03
+            ],
+            [
+              1.2,
+              0.05
+            ]
+          ],
+          "alpha_factor|runoff_exponent": [
+            [
+              0.8,
+              0.5
+            ],
+            [
+              1.2,
+              2.0
+            ]
+          ],
+          "alpha_factor|empirical_oxygen": [
+            [
+              0.8,
+              false
+            ],
+            [
+              0.8,
+              true
+            ],
+            [
+              1.2,
+              false
+            ],
+            [
+              1.2,
+              true
+            ]
+          ],
+          "alpha_factor|root_depth_factor": [
+            [
+              0.8,
+              0.8
+            ],
+            [
+              0.8,
+              1.2
+            ],
+            [
+              1.2,
+              0.8
+            ],
+            [
+              1.2,
+              1.2
+            ]
+          ],
+          "lai_factor|temperature_factor": [
+            [
+              0.75,
+              0.8
+            ],
+            [
+              0.75,
+              1.2
+            ],
+            [
+              1.25,
+              0.8
+            ],
+            [
+              1.25,
+              1.2
+            ]
+          ],
+          "lai_factor|drain_resistance_day": [
+            [
+              0.75,
+              250.0
+            ],
+            [
+              1.25,
+              250.0
+            ],
+            [
+              1.25,
+              1000.0
+            ]
+          ],
+          "lai_factor|macro_surface_fraction": [
+            [
+              0.75,
+              0.03
+            ],
+            [
+              0.75,
+              0.05
+            ],
+            [
+              1.25,
+              0.03
+            ],
+            [
+              1.25,
+              0.05
+            ]
+          ],
+          "lai_factor|runoff_exponent": [
+            [
+              0.75,
+              0.5
+            ],
+            [
+              0.75,
+              2.0
+            ],
+            [
+              1.25,
+              0.5
+            ],
+            [
+              1.25,
+              2.0
+            ]
+          ],
+          "lai_factor|empirical_oxygen": [
+            [
+              0.75,
+              false
+            ],
+            [
+              1.25,
+              true
+            ]
+          ],
+          "lai_factor|root_depth_factor": [
+            [
+              0.75,
+              0.8
+            ],
+            [
+              0.75,
+              1.2
+            ],
+            [
+              1.25,
+              0.8
+            ],
+            [
+              1.25,
+              1.2
+            ]
+          ],
+          "temperature_factor|drain_resistance_day": [
+            [
+              0.8,
+              250.0
+            ],
+            [
+              0.8,
+              1000.0
+            ],
+            [
+              1.2,
+              250.0
+            ],
+            [
+              1.2,
+              1000.0
+            ]
+          ],
+          "temperature_factor|macro_surface_fraction": [
+            [
+              0.8,
+              0.03
+            ],
+            [
+              0.8,
+              0.05
+            ],
+            [
+              1.2,
+              0.03
+            ],
+            [
+              1.2,
+              0.05
+            ]
+          ],
+          "temperature_factor|runoff_exponent": [
+            [
+              0.8,
+              0.5
+            ],
+            [
+              0.8,
+              2.0
+            ],
+            [
+              1.2,
+              0.5
+            ],
+            [
+              1.2,
+              2.0
+            ]
+          ],
+          "temperature_factor|empirical_oxygen": [
+            [
+              0.8,
+              false
+            ],
+            [
+              0.8,
+              true
+            ],
+            [
+              1.2,
+              false
+            ],
+            [
+              1.2,
+              true
+            ]
+          ],
+          "temperature_factor|root_depth_factor": [
+            [
+              0.8,
+              0.8
+            ],
+            [
+              0.8,
+              1.2
+            ],
+            [
+              1.2,
+              0.8
+            ],
+            [
+              1.2,
+              1.2
+            ]
+          ],
+          "drain_resistance_day|macro_surface_fraction": [
+            [
+              250.0,
+              0.03
+            ],
+            [
+              250.0,
+              0.05
+            ],
+            [
+              1000.0,
+              0.05
+            ]
+          ],
+          "drain_resistance_day|runoff_exponent": [
+            [
+              250.0,
+              0.5
+            ],
+            [
+              250.0,
+              2.0
+            ],
+            [
+              1000.0,
+              2.0
+            ]
+          ],
+          "drain_resistance_day|empirical_oxygen": [
+            [
+              250.0,
+              false
+            ],
+            [
+              250.0,
+              true
+            ],
+            [
+              1000.0,
+              true
+            ]
+          ],
+          "drain_resistance_day|root_depth_factor": [
+            [
+              250.0,
+              0.8
+            ],
+            [
+              250.0,
+              1.2
+            ],
+            [
+              1000.0,
+              0.8
+            ],
+            [
+              1000.0,
+              1.2
+            ]
+          ],
+          "macro_surface_fraction|runoff_exponent": [
+            [
+              0.03,
+              0.5
+            ],
+            [
+              0.03,
+              2.0
+            ],
+            [
+              0.05,
+              0.5
+            ],
+            [
+              0.05,
+              2.0
+            ]
+          ],
+          "macro_surface_fraction|empirical_oxygen": [
+            [
+              0.03,
+              false
+            ],
+            [
+              0.03,
+              true
+            ],
+            [
+              0.05,
+              false
+            ],
+            [
+              0.05,
+              true
+            ]
+          ],
+          "macro_surface_fraction|root_depth_factor": [
+            [
+              0.03,
+              0.8
+            ],
+            [
+              0.03,
+              1.2
+            ],
+            [
+              0.05,
+              0.8
+            ],
+            [
+              0.05,
+              1.2
+            ]
+          ],
+          "runoff_exponent|empirical_oxygen": [
+            [
+              0.5,
+              false
+            ],
+            [
+              0.5,
+              true
+            ],
+            [
+              2.0,
+              false
+            ],
+            [
+              2.0,
+              true
+            ]
+          ],
+          "runoff_exponent|root_depth_factor": [
+            [
+              0.5,
+              0.8
+            ],
+            [
+              0.5,
+              1.2
+            ],
+            [
+              2.0,
+              0.8
+            ],
+            [
+              2.0,
+              1.2
+            ]
+          ],
+          "empirical_oxygen|root_depth_factor": [
+            [
+              false,
+              0.8
+            ],
+            [
+              false,
+              1.2
+            ],
+            [
+              true,
+              0.8
+            ],
+            [
+              true,
+              1.2
+            ]
+          ]
+        },
+        "qualification_extent": "through1.054days only; not seasonal coverage",
+        "source_options": [
+          "112nodes,8source soil rows,5macro domains",
+          "SWSOLU0",
+          "SWMACRO1/SWDARCY1/SWSORP1/source initialization;constant1000cm/day surface conductivity only",
+          "SWINTER3 Rutter",
+          "SWREDU2 Boesten",
+          "SWDROUGHT1/substep Feddes;SWOXYGEN0 or1 experimental",
+          "SWDRA1/DRAMET3/tube/drainage-only",
+          "SWBBCFILE1/SWBOTB3",
+          "SWHEA1/SWCALT2 numeric heat",
+          "new RSROEXP0.5..2 experimental"
+        ],
+        "exclusions": [
+          "full season/year boundary",
+          "variable surface conductivity",
+          "native solute/N",
+          "SWCROP2/WOFOST dispatch",
+          "snow/frost/extended surface water compositions",
+          "full4.3.1 equivalence"
+        ]
+      },
+      "reference_comparison": {
+        "reference_sha256": "51816234b5a574c6d9d680c06742480fde64aa4f6b4a2f49b5e7dd45a15e11b1",
+        "reference": "frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate",
+        "days": [
+          {
+            "date": "1998-01-01",
+            "gwl_delta_cm": 0.04749032723505309,
+            "matrix_plus_rapid_drainage_delta_cm": 0.0011515820303237695
+          },
+          {
+            "date": "1998-01-02",
+            "gwl_delta_cm": 0.06042660032071012,
+            "matrix_plus_rapid_drainage_delta_cm": 0.0035379102016690617
+          }
+        ]
+      },
+      "remaining_closure": [
+        "Coupled Richards/macropore residual/Jacobian: dry-start budget failures and separate admitted2.848675 stall; precise mechanism unproved",
+        "Variable surface conductivity below the1000cm/day cap: four correctly rejected low-macro storm inputs",
+        "Full-season original macro trajectory and year-boundary restart, beyond bounded source windows",
+        "Broader native process/input compositions, including original chemistry/N and WOFOST/snow/extended drainage",
+        "Full4.3.1 trajectory and flux equivalence; existing rounded GWL/drainage differences remain"
+      ]
+    }
+  },
+  "negative_controls": {
+    "passed": 40,
+    "controls": [
+      "source:app/solute_crop/read_swp_project.f90",
+      "source:app/solute_project/main_water.f90",
+      "source:integration/audits/verify_dataqual04_current.py",
+      "source:integration/audits/verify_dataqual05_current.py",
+      "source:integration/dataqual05/CONTRACT.md",
+      "source:integration/dataqual05/capped-qualification.json",
+      "source:integration/dataqual05/capped-storms.json",
+      "source:integration/dataqual05/check_controls.py",
+      "source:integration/dataqual05/design-v2.json",
+      "source:integration/dataqual05/design.json",
+      "source:integration/dataqual05/make_manifest.py",
+      "source:integration/dataqual05/qualification.json",
+      "source:integration/dataqual05/refresh_provider.py",
+      "source:integration/dataqual05/run_contract.py",
+      "source:integration/dataqual05/run_fsi35.py",
+      "source:integration/dataqual05/scale64-v2.json",
+      "source:integration/dataqual05/scale64.json",
+      "source:integration/dataqual05/seal.py",
+      "source:integration/dataqual05/serial-check.json",
+      "source:integration/dataqual05/storms.json",
+      "source:integration/dataqual05/test_power_runoff.f90",
+      "source:integration/dataqual05/wet-window64-v2.json",
+      "source:integration/dataqual05/wet-window64.json",
+      "source:integration/performance/authority.py",
+      "source:src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "source:src/solver/mod_b110_dynamic_top_boundary_provider.f90",
+      "source:tools/solute/run_dataqual_batch.py",
+      "source:tools/solute/run_native_water.py",
+      "source:tools/solute/run_project.py",
+      "evidence:FINAL_RESULT.json",
+      "evidence:contract/RESULT.json",
+      "evidence:fsi35/RESULT.json",
+      "evidence:controls/RESULT.json",
+      "evidence:executed-postimages.json",
+      "inflated-completion-count",
+      "repeated-input-labelled-unique",
+      "restart:oa64-00",
+      "restart:oa64-08",
+      "restart:default-two",
+      "restart:original-corrected-two"
+    ]
+  },
+  "fsi35": {
+    "src/solver/mod_soil_water_solver_contract.f90": {
+      "historical_blob": "7b16c3fcf58179f1491104a1dce3279010b4178a",
+      "canonical_blob": "fbf992e965639f8f0ea0aef17a61138ad501b57e"
+    },
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": {
+      "historical_blob": "5418b6a1a9f651e818678f347c9cd8399693eb82",
+      "canonical_blob": "5418b6a1a9f651e818678f347c9cd8399693eb82"
+    },
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": {
+      "historical_blob": "8cf848d0ac85602bcde434d76189990f30c11dcb",
+      "canonical_blob": "8cf848d0ac85602bcde434d76189990f30c11dcb"
+    },
+    "src/runtime/mod_a23bu_worker_execution_context.f90": {
+      "historical_blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56",
+      "canonical_blob": "7861f062c5c7c3aa6bf386a9af793489d4a76f56"
+    },
+    "src/solver/mod_reference_linear_solver.f90": {
+      "historical_blob": "0ab15b79e8e74c94df43e4c27dfede268c28c112",
+      "canonical_blob": "0ab15b79e8e74c94df43e4c27dfede268c28c112"
+    },
+    "src/solver/mod_reference_richards_workspace.f90": {
+      "historical_blob": "1ae4eea78df6b27dc982b8318402f78728394aa7",
+      "canonical_blob": "1ae4eea78df6b27dc982b8318402f78728394aa7"
+    },
+    "src/solver/mod_reference_richards_state_binding.f90": {
+      "historical_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec",
+      "canonical_blob": "a2488ce3a6a6eff665a59d3dd68907d26f8304ec"
+    },
+    "src/solver/mod_b110_default_mvg_provider.f90": {
+      "historical_blob": "bde864f59082d0aef5bf0eb51526fa5e7c1091ed",
+      "canonical_blob": "b8aab93bfd8541e5bee46dcd53b096c6b925fec7"
+    },
+    "src/solver/mod_b110_default_mvg_directional_provider.f90": {
+      "historical_blob": "1eae1c4092542d224cceb9c2d494f91eba2565c3",
+      "canonical_blob": "ddc767fc0dff62d83a646dd68a16e97f5702efb4"
+    },
+    "src/solver/mod_b110_source_sink_provider.f90": {
+      "historical_blob": "d6c57add72387e5c0022a44319fff08046194aac",
+      "canonical_blob": "d6c57add72387e5c0022a44319fff08046194aac"
+    },
+    "src/solver/mod_b110_root_sink_provider.f90": {
+      "historical_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a",
+      "canonical_blob": "ef2d2fd883d116c314b98e8f0f14330150b4778a"
+    },
+    "src/solver/mod_fixed_flux_top_boundary_provider.f90": {
+      "historical_blob": "fb226f133bd48d8ab945f111c76897aeff49facf",
+      "canonical_blob": "fb226f133bd48d8ab945f111c76897aeff49facf"
+    },
+    "src/solver/mod_b110_direct_retention_core.f90": {
+      "historical_blob": "4079f23ac63a60efb80e499029346fac88f8a780",
+      "canonical_blob": "4079f23ac63a60efb80e499029346fac88f8a780"
+    },
+    "src/solver/mod_b110_direct_retention_provider.f90": {
+      "historical_blob": "8de39d457ee85ef930c021be360648c490b2c732",
+      "canonical_blob": "8de39d457ee85ef930c021be360648c490b2c732"
+    },
+    "src/solver/mod_reference_richards_temporal_indicator.f90": {
+      "historical_blob": "63b89538e7466437a6af38a69d76a8043b206370",
+      "canonical_blob": "349211075fe02c23042492a795bc2e308b0dfed2"
+    },
+    "src/solver/mod_surface_evaporation_capacity_contract.f90": {
+      "historical_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982",
+      "canonical_blob": "551513f77caeb9c54e8c8b1cdc326be0e9d01982"
+    },
+    "src/solver/mod_b110_surface_evaporation_capacity_provider.f90": {
+      "historical_blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2",
+      "canonical_blob": "8909cdf342527a2b0266c8d9a5fc918f98556ea2"
+    },
+    "src/process/mod_restricted_surface_evaporation.f90": {
+      "historical_blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77",
+      "canonical_blob": "1f795f0baaa3ed86272a1feabc3f1a6463b3ce77"
+    },
+    "src/solver/mod_b110_dynamic_top_boundary_provider.f90": {
+      "historical_blob": "5d0cb59ce3e66b5501b62523b58d6fd43f93a1ae",
+      "canonical_blob": "d26039905f8d8feb2daa24195b08743f779e25ab"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90": {
+      "historical_blob": "abe2d699017300e890eeb69a56448bb071660d2d",
+      "canonical_blob": "d6f3cf5b8d49a937d919520eea88faf62457eadf"
+    },
+    "src/adapter/mod_b110_dynamic_top_boundary_directional_adapter.f90": {
+      "historical_blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a",
+      "canonical_blob": "0a957376b9a9fdea00ab6009f129803fb5341e4a"
+    },
+    "src/runtime/mod_fmr_legacy_qgwl_bottom_boundary_provider.f90": {
+      "historical_blob": "28aa42572ee202e7a25f790c175927c832ee849b",
+      "canonical_blob": "28aa42572ee202e7a25f790c175927c832ee849b"
+    },
+    "src/runtime/mod_fmr_legacy_bottom_boundary_application_binding.f90": {
+      "historical_blob": "e381db141cf8c2b148dd944b98a73a7612a00296",
+      "canonical_blob": "e381db141cf8c2b148dd944b98a73a7612a00296"
+    },
+    "src/legacy/b1_10_port/headcalc.f90": {
+      "historical_blob": "7ff36cbadf8acfaa09e129ff54aa54a933c3f1ac",
+      "canonical_blob": "5a734398c1172ceacb0142c4bdbaf94092141057"
+    },
+    "src/adapter/mod_reference_richards_legacy_binding.f90": {
+      "historical_blob": "8862ff35d17d309389c0f151cd296ca3a0729029",
+      "canonical_blob": "9e11a4f614627175c84fa6228eb7f2e71fd5ded5"
+    },
+    "src/adapter/mod_reference_richards_accepted_step_directional_service.f90": {
+      "historical_blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19",
+      "canonical_blob": "6bb0ae737b5cbf26084b6de8250cebdce932fd19"
+    },
+    "src/adapter/mod_b110_production_soil_water_task2.f90": {
+      "historical_blob": "ed678be6e27621ac076a883c947abba8032ac7e6",
+      "canonical_blob": "ed678be6e27621ac076a883c947abba8032ac7e6"
+    }
+  }
+}

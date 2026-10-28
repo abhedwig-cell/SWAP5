@@ -93,6 +93,7 @@ contains
     real(real64) :: available_supply, infiltration_capacity, actual_pond_evaporation
     real(real64) :: donor_dq_dh0max, base_pond_dh_dhead, direct_macro_input_cm
     logical :: ok, donor_ok
+    real(real64) :: runoff_slope
 
     result = b110_dynamic_top_boundary_result_t()
     donor_dq_dh0max = 0.0_real64
@@ -299,11 +300,12 @@ contains
       ! through an absolute runoff-depth gate. Enter the bounded analytical
       ! linear-runoff solution directly.
       if (request%runoff_resistance_day < B110_DYN_TOP_MIN_LINEAR_RSRO_DAY .or. &
-          request%runoff_exponent /= 1.0_real64) then
+          request%runoff_exponent < 0.5_real64 .or. request%runoff_exponent > 2.0_real64) then
         result%status = B110_DYN_TOP_UNSUPPORTED
         result%route = 'active-runoff-outside-profile'
         return
       end if
+      if (request%runoff_exponent == 1.0_real64) then
       p2 = 1.0_real64/(p1 + 1.0_real64 + request%step_duration_day/request%runoff_resistance_day)
       result%candidate_ponding_depth_cm = p2 * (request%previous_ponding_depth_cm + &
            q0*request%step_duration_day - k1_max*request%step_duration_day + &
@@ -315,6 +317,23 @@ contains
         result%surface_head_derivative_available = .true.
         result%surface_head_dpressure_head_top = p2 * &
              (p1-donor_dq_dh0max*base_pond_dh_dhead)
+      end if
+      else
+        ! Original PONDRUNOFF power law, solved monotonically from the same
+        ! no-runoff surface balance. The macro donor remains the source-owned
+        ! no-runoff proposal; its existing derivative enters the chain rule.
+        call nonlinear_runoff_pond(h0max, p1, request, result%candidate_ponding_depth_cm, &
+             result%runoff_depth_cm, runoff_slope, ok)
+        if (.not.ok) then
+          result%status=B110_DYN_TOP_UNSUPPORTED
+          result%route='nonlinear-runoff-unresolved'
+          return
+        end if
+        if (request%fixed_top_node_conductivity_cm_per_day >= 0.0_real64) then
+          result%surface_head_derivative_available=.true.
+          result%surface_head_dpressure_head_top=(p1-donor_dq_dh0max*base_pond_dh_dhead)/ &
+               (1.0_real64+p1+runoff_slope)
+        end if
       end if
     end if
 
@@ -330,6 +349,8 @@ contains
     result%status = B110_DYN_TOP_AVAILABLE
     if (result%runoff_depth_cm == 0.0_real64) then
       result%route = 'ponded-head'
+    else if(request%runoff_exponent/=1.0_real64)then
+      result%route='ponded-head-power-runoff'
     else
       result%route = 'ponded-head-linear-runoff'
     end if
@@ -417,6 +438,39 @@ contains
     end if
     ok = .true.
   end subroutine validate_request
+
+  pure subroutine nonlinear_runoff_pond(no_runoff, p1, request, pond, runoff, slope, ok)
+    real(real64), intent(in) :: no_runoff,p1
+    type(b110_dynamic_top_boundary_request_t), intent(in) :: request
+    real(real64), intent(out) :: pond,runoff,slope
+    logical, intent(out) :: ok
+    real(real64) :: lo,hi,mid,excess,factor,rhs,residual
+    integer :: iteration
+    ! For0.5<=exponent<=2 and admitted finite surface data, this function is
+    ! strictly increasing. Bisect to adjacent representable values; no model
+    ! acceptance tolerance is changed. Small exponents need more than53 halvings.
+    lo=0.0_real64;hi=no_runoff-request%ponding_max_cm
+    factor=request%step_duration_day/request%runoff_resistance_day
+    rhs=(1.0_real64+p1)*hi
+    do iteration=1,512
+      mid=lo+0.5_real64*(hi-lo)
+      if(mid==lo.or.mid==hi)exit
+      residual=(1.0_real64+p1)*mid+factor*mid**request%runoff_exponent-rhs
+      if(residual>0.0_real64)then
+        hi=mid
+      else
+        lo=mid
+      end if
+    end do
+    excess=lo+0.5_real64*(hi-lo)
+    pond=request%ponding_max_cm+excess
+    ! Evaluate flux and derivative at the actual published pond (same roundoff).
+    excess=pond-request%ponding_max_cm
+    runoff=factor*excess**request%runoff_exponent
+    slope=0.0_real64
+    if(excess>0.0_real64)slope=factor*request%runoff_exponent*excess**(request%runoff_exponent-1.0_real64)
+    ok=iteration<=512.and.all(ieee_is_finite([pond,runoff,slope])).and.excess>0.0_real64
+  end subroutine nonlinear_runoff_pond
 
   pure real(real64) function restricted_linear_runoff_depth(ponding_depth_cm, request) result(runoff_depth)
     real(real64), intent(in) :: ponding_depth_cm

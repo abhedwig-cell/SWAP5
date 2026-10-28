@@ -27,7 +27,7 @@ def native(exe,args,stage,marker):
  if cp.returncode or marker not in cp.stdout:
   raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace'))
  return cp
-def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False,native_heat=False,native_water=False):
+def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_conductivity='frozen',surface_exfiltration='reject',retain_step_proposal=False,water_flux_temporal=False,native_hydraulics=False,native_heat=False,native_water=False,experimental_configuration=False):
  if native_water and not(native_hydraulics and native_heat):raise ValueError('native water requires source hydraulics and numeric heat')
  if native_heat and (not native_hydraulics or retain_step_proposal or water_flux_temporal):
   raise ValueError('native heat requires explicit native hydraulics and ordinary Reference execution')
@@ -47,7 +47,7 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
  swp_bytes=swp.read_bytes();sources=[('original_swp',swp_bytes)];prepared=[];rain_events=[]
  with tempfile.TemporaryDirectory(prefix='swap5-project-input-')as tmp:
   stage=Path(tmp);(stage/'input.swp').write_bytes(swp_bytes)
-  heat_args=['native-water']if native_water else(['native-heat']if native_heat else[])
+  heat_args=['native-water-experimental'if experimental_configuration else'native-water']if native_water else(['native-heat']if native_heat else[])
   native(executables['project_reader'],['input.swp','scan',*heat_args],stage,b'SWP_NATIVE_PROJECT_SCANNED')
   references=list(csv.DictReader((stage/'project.csv').open()))
   for r in references:
@@ -101,12 +101,14 @@ def prepare(bundle,swp,temporal_tolerance,solute_transport='reference',water_con
   comments.append('! '+name+'_sha256='+sha(raw));encoded=base64.b64encode(raw).decode()
   comments+=['! '+name+'_base64='+encoded[i:i+76]for i in range(0,len(encoded),76)]
  values={r['kind']:float(r['value'])for r in references if r['kind']in ['bottom','pondmax','rsro']}
+ runoff=next((float(r['value'])for r in references if r['kind']=='runoff_exponent'),1.)
  lines=comments+['&column',' schema=2,nodes=0,swp_water_bootstrap=.true.',f' temporal_tolerance={temporal_tolerance:.17e}',
   f' bottom_up_cm_day={values["bottom"]:.17e}',f' pond_max_cm={values["pondmax"]:.17e}',f' runoff_resistance_day={values["rsro"]:.17e}',
   '/','&surface',' windows='+str(len(combined)),' ends_day='+','.join(str(i+1)for i in range(len(combined))),
   ' rain_cm_day='+','.join(r['rain_cm_day']for r in prepared[0]['rain']),
   ' soil_evaporation_cm_day='+','.join(r['soil_evaporation_cm_day']for r in combined),
   ' evaporation_cm_day='+','.join(r['pond_evaporation_cm_day']for r in combined),'/']
+ if runoff!=1.:lines.insert(lines.index('&surface')-1,f' runoff_exponent={runoff:.17e}')
  seasonal={r['kind']:float(r['value'])for r in references if r['kind']in ['bottom_amplitude','bottom_daymax','legacy_origin']}
  if seasonal:
   years=[float(r['value'])for r in references if r['kind']=='year_start']

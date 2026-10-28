@@ -23,13 +23,14 @@ program read_swp_project
  character(1024)::swp,action,metfil,pathatm,pathcrop,crops(MAX_CROPS),filename,crp,metnames(8),rainnames(8),rainfil
  character(16)::start_text,end_text,a,b,index_text,ext
  logical::rdinqr
- logical::native_heat=.false.,native_water=.false.
+ logical::native_heat=.false.,native_water=.false.,experimental_configuration=.false.
  character(32)::heat_option
  type(crop_calendar_t)::calendar
  call get_command_argument(1,swp);call get_command_argument(2,action)
  call get_command_argument(3,heat_option)
- call require(len_trim(heat_option)==0.or.trim(heat_option)=='native-heat'.or.trim(heat_option)=='native-water','unknown project reader option')
- native_water=trim(heat_option)=='native-water'
+ call require(len_trim(heat_option)==0.or.trim(heat_option)=='native-heat'.or.trim(heat_option)=='native-water'.or.trim(heat_option)=='native-water-experimental','unknown project reader option')
+ experimental_configuration=trim(heat_option)=='native-water-experimental'
+ native_water=trim(heat_option)=='native-water'.or.experimental_configuration
  native_heat=trim(heat_option)=='native-heat'.or.native_water
  call require(trim(action)=='scan'.or.trim(action)=='prepare','scan or prepare required')
  call rdinit(74,0,trim(swp))
@@ -84,7 +85,12 @@ program read_swp_project
   call rdsdor('sinmax',0d0,366d0,daymax)
  end if
  call rdsdor('pondmx',0d0,1000d0,pondmx);call rdsdor('rsro',.001d0,1d0,rsro)
- call rdsdor('rsroexp',.01d0,10d0,exponent);call require(exponent==1d0,'nonlinear runoff exponent not selected')
+ call rdsdor('rsroexp',.01d0,10d0,exponent)
+ if(experimental_configuration)then
+  call require(exponent>=.5d0.and.exponent<=2d0,'nonlinear runoff exponent outside implemented0.5..2')
+ else
+  call require(exponent==1d0,'nonlinear runoff exponent requires experimental mode')
+ end if
  call rdsdor('rds',1d0,5000d0,rds)
  call rdscha('metfil',metfil);call lowerc(metfil);call safe(metfil)
  pathatm='';pathcrop=''
@@ -164,6 +170,7 @@ program read_swp_project
   end if
   write(u,'(A,ES25.16E3)')'pondmax,0,',pondmx
   write(u,'(A,ES25.16E3)')'rsro,0,',rsro
+  if(exponent/=1d0)write(u,'(A,ES25.16E3)')'runoff_exponent,0,',exponent
   close(u)
   print '(A)','SWP_NATIVE_PROJECT_SCANNED';stop
  end if

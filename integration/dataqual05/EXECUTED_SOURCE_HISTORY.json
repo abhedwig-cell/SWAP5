@@ -1,0 +1,36 @@
+{
+  "prerequisite": "5a0b0fcd4461d651c141919da09a8ddcb9ff25e2",
+  "commits": [
+    "0cf796cc5ea9a06963f70e965d7994c4a2144306",
+    "0ed46ef3c8290530fc8084947cb17f74331d3b77",
+    "16c71232d64d92cdb313a99c12b31bcae4a92617",
+    "4b531211d0ee04cc5c506bdd90cdcee75d1eecc3",
+    "6d4ba96e350e2bf15a2bca665bf749e114825551",
+    "6e023ff182d49822b7b3ed8a16eb003f8854775d",
+    "7197e7d96b444ec883b7d0fe3ed406ce19684b6f",
+    "84759ba68bc218285bfc31a47dcd39b5ab88ce31",
+    "92905330cebe01276b01579843196df051ade3b6",
+    "d5c012c5dff0d6a71619b75e3206a5b6e0320dfc",
+    "e8e6182d9ca4bebeaaef184b622da68d096042fc",
+    "fc40ac766f35055babf8b954178e2dce447968f5"
+  ],
+  "refs": [
+    "refs/dataqual05/executed-00",
+    "refs/dataqual05/executed-01",
+    "refs/dataqual05/executed-02",
+    "refs/dataqual05/executed-03",
+    "refs/dataqual05/executed-04",
+    "refs/dataqual05/executed-05",
+    "refs/dataqual05/executed-06",
+    "refs/dataqual05/executed-07",
+    "refs/dataqual05/executed-08",
+    "refs/dataqual05/executed-09",
+    "refs/dataqual05/executed-10",
+    "refs/dataqual05/executed-11"
+  ],
+  "bytes": 53558,
+  "sha256": "ccf1cba37ba91b863a4547b7d22a409a053221f7c44f8948a58535b8ccd8ef05",
+  "verify_stdout": "The bundle contains these 12 refs:\n0cf796cc5ea9a06963f70e965d7994c4a2144306 refs/dataqual05/executed-00\n0ed46ef3c8290530fc8084947cb17f74331d3b77 refs/dataqual05/executed-01\n16c71232d64d92cdb313a99c12b31bcae4a92617 refs/dataqual05/executed-02\n4b531211d0ee04cc5c506bdd90cdcee75d1eecc3 refs/dataqual05/executed-03\n6d4ba96e350e2bf15a2bca665bf749e114825551 refs/dataqual05/executed-04\n6e023ff182d49822b7b3ed8a16eb003f8854775d refs/dataqual05/executed-05\n7197e7d96b444ec883b7d0fe3ed406ce19684b6f refs/dataqual05/executed-06\n84759ba68bc218285bfc31a47dcd39b5ab88ce31 refs/dataqual05/executed-07\n92905330cebe01276b01579843196df051ade3b6 refs/dataqual05/executed-08\nd5c012c5dff0d6a71619b75e3206a5b6e0320dfc refs/dataqual05/executed-09\ne8e6182d9ca4bebeaaef184b622da68d096042fc refs/dataqual05/executed-10\nfc40ac766f35055babf8b954178e2dce447968f5 refs/dataqual05/executed-11\nThe bundle requires this ref:\n5a0b0fcd4461d651c141919da09a8ddcb9ff25e2 \nThe bundle uses this hash algorithm: sha1\n",
+  "verify_stderr": "/workspace/scratch/f7fe2fac2f73/dataqual05-executed-sources.bundle is okay\n",
+  "purpose": "Preserve exact local source/build commits recorded by native executions despite connector-created snapshot commits having different commit identities."
+}

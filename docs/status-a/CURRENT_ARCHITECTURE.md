@@ -1,5 +1,21 @@
 # SWAP5 Status-A current architecture
 
+DATAQUAL05 scientific execution is complete locally; exact canonical admission
+is pending. The existing dynamic-top provider now supports experimental source
+RSROEXP0.5..2 with a monotone surface balance/derivative, preserving the literal
+linear arithmetic and production admission.216 scenario attempts include85 distinct
+water configurations actually started,52 water-qualified primary completions across
+28 distinct configurations,156 budget censors and8 input/functionality rejections.
+The corrected rank6 design genuinely executes64 unique input sets:18 complete the
+wet1.054day target,46 are censored. Earlier repeated rank4 rows remain explicit.
+Six current O0/O2 configuration endpoints/payloads, seven exact file-restart
+configurations, serial/parallel identity, six native controls and affected FCI93
+native O0/O2 preservation pass. Source/raw/current owner and hosted integration
+status remain owned by `integration/dataqual05/STATUS.json`, `RESULTS.md` and its
+separate admission receipt. No full season, chemistry/N,4.3.1 parity or production
+nonlinear promotion; issue1386 remains open.
+
+
 DATAQUAL04 is integrated by PR1463, actual merge
 `8e1968ac45d58470807585e00f3f48d9e991a52d`, exact qualified full tree
 `7c246940f3d4c315680a9c72a68d44b5ed2c8d4e`. Failed macropore inner-solver

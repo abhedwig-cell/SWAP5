@@ -498,6 +498,8 @@ module mod_fmr_serialized_reference_backend
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     ! DATAQUAL01: admission evidence only; never changes process equations or budgets.
     logical :: experimental_empirical_oxygen = .false.
+    ! Explicit application mode; bypasses evidence-only guards, never inputs/interfaces.
+    logical :: experimental_process_combinations = .false.
     real(real64) :: frost_divdra_scalar_cm_per_day = 0.0_real64
     real(real64), allocatable :: frost_divdra_scalars_cm_per_day(:)
     real(real64) :: top_flux = 0.0_real64
@@ -3957,7 +3959,7 @@ contains
           if(.not.(self%rutter_active.and.self%macropore_active.and.self%soil_temperature_active.and. &
              self%boesten_evaporation_active.and.self%accepted_water_flux_trace_enabled))return
           if(forcing%substep_root%parameters%empirical_oxygen_enabled.and. &
-             .not.forcing%experimental_empirical_oxygen)return
+             .not.(forcing%experimental_empirical_oxygen.or.forcing%experimental_process_combinations))return
         end if
         if (self%rfm_configuration%enabled.or.allocated(forcing%macropore_top_input)) return
         if (self%swkimpl /= 0) return
@@ -4231,7 +4233,11 @@ contains
              forcing%boesten_evaporation%runoff_exponent]
         if (.not. all(ieee_is_finite(boesten_values))) return
         if (any(boesten_values(1:8) < 0.0_real64)) return
-        if (forcing%boesten_evaporation%runoff_exponent /= 1.0_real64) return
+        if (forcing%boesten_evaporation%runoff_exponent /= 1.0_real64) then
+          if (.not.forcing%experimental_process_combinations) return
+          if (forcing%boesten_evaporation%runoff_exponent < 0.5_real64.or. &
+              forcing%boesten_evaporation%runoff_exponent > 2.0_real64) return
+        end if
         ! Runon is an admitted shared-surface source for the B1.11 dynamic
         ! top boundary. It must not be reclassified as direct macropore input.
         ! Snowmelt remains outside this bounded Boesten envelope here.
