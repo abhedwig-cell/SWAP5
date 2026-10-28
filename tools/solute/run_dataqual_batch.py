@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Bounded independent native SWAP5 runs from a versioned JSON manifest."""
-import argparse,csv,datetime,gzip,hashlib,io,json,math,re,subprocess,sys,time
+import argparse,csv,datetime,gzip,hashlib,io,json,math,os,re,subprocess,sys,time
+from concurrent.futures import ThreadPoolExecutor,wait,FIRST_COMPLETED
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 class RestartDependencyUnavailable(RuntimeError):pass
@@ -47,21 +48,34 @@ def assess(folder,target):
   oxygen_reduction_cm=sum(float(r['oxygen_reduction_cm'])for r in diag)if diag else None,solute_balance='not_applicable_SWSOLU0',
   flux_totals_cm={k:sum(float(r[k])for r in b)if b else None for k in ['root_cm','drainage_cm','rapid_cm','runoff_cm','bottom_cm','soil_evap_cm','pond_to_macro_cm','direct_macro_cm']},
   last_reported_interval_t0=float(pr[-1]['t0'])if pr else None,diagnostic_counts='completed_or_returned_intervals_only_inflight_unavailable')
+def classify(result,log):
+ """Conservative categories; unrecognized execution failures are never invalid physics."""
+ if result['status']=='PASS':return 'successful_water_qualified'
+ if result['status']=='CENSORED':return 'budget_exceeded'
+ if result.get('execution_complete'):return 'successful_insufficiently_qualified'
+ if 'NATIVE_WATER_REJECTED'in log and (result.get('solver_rejections',0)>0 or result.get('temporal_rejections',0)>0):return 'numerical_stall'
+ if any(x in log for x in ['not selected','not qualified','not admitted','requires SWMACRO1','requires SWHEA1','requires SWSOLU0','requires experimental mode']):return 'missing_functionality_or_admission'
+ if any(x in log for x in ['outside range','out of range','pondmx','PONDMX','invalid','nonfinite','range is','positive','HLIM','hlim']):return 'invalid_input'
+ return 'unclassified_execution_failure'
 def main():
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--bundle',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--bundle',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);ap.add_argument('--jobs',type=int,default=1);a=ap.parse_args()
+ if not 1<=a.jobs<=min(8,os.cpu_count()or 1):ap.error('--jobs must be1..min(8,CPU count)')
  spec=json.loads(a.manifest.read_text());out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  source=ROOT/spec['source_directory'];bundle=a.bundle.resolve();results=[]
  baseline=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
  write_json(out/'batch.json',dict(manifest=spec,manifest_sha256=sha(a.manifest),source_commit=baseline,
-  dirty=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True),bundle_sha256=sha(bundle/'bundle.json')))
+  jobs=a.jobs,process_isolation=True,dirty=subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True),bundle_sha256=sha(bundle/'bundle.json')))
  ids=[s['id']for s in spec['scenarios']]
  if len(ids)!=len(set(ids))or any(not re.fullmatch(r'[a-zA-Z0-9_-]+',s)for s in ids):raise ValueError('unique safe scenario IDs required')
+ for i,scenario in enumerate(spec['scenarios']):
+  if 'restart_from'in scenario and scenario['restart_from']not in ids[:i]:raise ValueError('restart_from must identify an earlier scenario')
  def save():
+  results.sort(key=lambda r:ids.index(r['id']))
   write_json(out/'results.json',results)
-  keys=['id','mode','status','completed_days','seconds','seconds_per_day','attempts','solver_rejections','temporal_rejections','mass_rejections','water_max_independent_cm','solver_iterations','oxygen_reduction_cm','last_successful_time','restart','failure_category','failure']
+  keys=['id','mode','status','qualification_category','qualification_basis','completed_days','seconds','seconds_per_day','attempts','solver_rejections','temporal_rejections','mass_rejections','water_max_independent_cm','solver_iterations','oxygen_reduction_cm','last_successful_time','restart','failure_category','failure']
   with(out/'summary.csv').open('w',newline='')as f:
    w=csv.DictWriter(f,fieldnames=keys,extrasaction='ignore');w.writeheader();w.writerows(results)
- for scenario in spec['scenarios']:
+ def execute(scenario):
   case=out/scenario['id'];case.mkdir();inputs=case/'inputs';inputs.mkdir()
   for name in spec['input_files']:
    (inputs/name).write_bytes(gzip.decompress((source/('b111-'+name+'.gz')).read_bytes()))
@@ -96,6 +110,12 @@ def main():
    progress=rows(case/'run/progress.csv');rejected='NATIVE_WATER_REJECTED'in log
    committed=progress[:-1]if rejected else progress
    r['last_successful_time']=float(committed[-1]['t1'])if committed else 0.
+   r['native_returncode']=native.get('returncode');r['launcher_returncode']=cp.returncode
+   r['execution_complete']=native.get('returncode')==0 and cp.returncode==0
+   r['qualification_category']=classify(r,log)
+   r['qualification_basis']='finite endpoint,theta bounds,4 independent water certificates<=1e-10cm,no mass rejections,target reached,committed file'if r['physical_complete']else'not_established'
+   r['configuration_sha256']=hashlib.sha256(json.dumps(r['input_sha256'],sort_keys=True).encode()).hexdigest()
+   r['process_options']={k:scenario.get(k,v)for k,v in [('mode','experimental'),('source_surface_demand',False),('perched_jacobian',False),('solver_max_iterations',64),('anchored',True),('entry_width_cm',1e-4)]}
    r['failure_category']='none'if r['status']=='PASS'else'timeout'if r['status']=='CENSORED'else'admission_or_numerical_rejection'if rejected else'input_or_execution_rejection'
    if scenario.get('reference'):
     ref=ROOT/scenario['reference'];raw=gzip.decompress(ref.read_bytes())if ref.suffix=='.gz'else ref.read_bytes()
@@ -120,11 +140,22 @@ def main():
     # File binding header may include path-independent executable/source identity; compare entire files too.
     exact=exact and (case/'run/restart.bin').read_bytes()==(case/'resumed/restart.bin').read_bytes()
     r['restart']='exact'if exact else'mismatch'
-    if not exact:r['status']='FAILED';r['failure']='restart mismatch'
+    r['restart_process_executions']=2
+    if not exact:r['status']='FAILED';r['qualification_category']='successful_insufficiently_qualified';r['failure']='restart mismatch'
    r['slow']=r['status']=='CENSORED'or(r['seconds_per_day']is not None and r['seconds_per_day']>spec['slow_seconds_per_day'])
   except RestartDependencyUnavailable as e:
-   r.update(status='SKIPPED_DEPENDENCY',failure=str(e),failure_category='dependency_unavailable',seconds=time.monotonic()-start)
+   r.update(status='SKIPPED_DEPENDENCY',failure=str(e),qualification_category='dependency_unavailable',failure_category='dependency_unavailable',seconds=time.monotonic()-start)
   except Exception as e:
-   r.update(status='FAILED',failure=type(e).__name__+': '+str(e),seconds=time.monotonic()-start)
-  results.append(r);save();print(json.dumps({k:r.get(k)for k in ['id','status','completed_days','seconds','failure']}),flush=True)
+   r.update(status='FAILED',qualification_category='harness_failure',failure=type(e).__name__+': '+str(e),seconds=time.monotonic()-start)
+  return r
+ pending=list(spec['scenarios']);completed=set();running={}
+ with ThreadPoolExecutor(max_workers=a.jobs)as pool:
+  while pending or running:
+   ready=[s for s in pending if s.get('restart_from')is None or s['restart_from']in completed]
+   for scenario in ready[:a.jobs-len(running)]:
+    pending.remove(scenario);running[pool.submit(execute,scenario)]=scenario['id']
+   done,_=wait(running,return_when=FIRST_COMPLETED)
+   for future in done:
+    completed.add(running.pop(future));r=future.result();results.append(r);save()
+    print(json.dumps({k:r.get(k)for k in ['id','status','qualification_category','completed_days','seconds','failure']}),flush=True)
 if __name__=='__main__':main()

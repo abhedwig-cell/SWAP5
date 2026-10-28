@@ -29,3 +29,21 @@ low-air, RossFast or unselected full numerical F-CI. No blanket model-equivalenc
 claim. Use observed failures to select any subsequent Fortran change, never invent
 new physics solely to produce a code diff. Day2.848675 remains a separate numerical
 work package unless a concrete residual/Jacobian cause is established.
+
+## Source-bound nonlinear surface runoff block
+
+Actual blocker: project reader and Boesten forcing reject RSROEXP!=1. Source
+`reference/swap-4.3.1/b1_11_frost_source/SWAP/boundtop.f90` PONDRUNOFF defines
+runoff=dt/rsro*(pond-pondmx)**rsroexp. Implement the existing physical law for
+bounded exponent0.5..2 in the existing dynamic-top provider, with monotone implicit
+surface balance and its exact local derivative. Preserve the linear arithmetic
+branch. Runtime and native source mapping require explicit experimental mode;
+production/comparison still reject nonlinear inputs. No source options disabled.
+The generic experimental_process_combinations forcing capability is independent
+of canopy/macro/heat combinations and retains all input/interface checks.
+
+Affected solver/runtime owners need source-bound O0/O2 contract derivatives,
+independent high-precision balance/root checks, literal-linear preservation,
+nonlinear active-runoff original-derived cases and full/split file restart.
+No claim this fixes the distinct inner Richards/macropore stall. Other exponents
+and instantaneous RSRO<.001 are outside this implementation, explicitly rejected.

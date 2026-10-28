@@ -14,7 +14,7 @@ assert a.entry_ramp_width_cm==0. or(a.anchored_cauchy and 0.<a.entry_ramp_width_
 out=a.output.resolve()
 if out.exists():raise FileExistsError(out)
 bundle=json.loads((a.bundle/'bundle.json').read_bytes());assert bundle.get('native_water')
-document,swp,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,native_hydraulics=True,native_heat=True,native_water=True)
+document,swp,audit,exe=prepare(bundle,a.swp.resolve(),a.temporal_tolerance,native_hydraulics=True,native_heat=True,native_water=True,experimental_configuration=a.mode=='experimental')
 if a.solver_max_iterations!=64:
  document,count=re.subn(r'(&column\b)',lambda m:m[0]+'\n solver_max_iterations='+str(a.solver_max_iterations)+',',document,count=1,flags=re.I)
  assert count==1,'column namelist absent'
