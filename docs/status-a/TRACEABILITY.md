@@ -1,5 +1,20 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+DATAQUAL01 experimental execution and historical batches are tested on baseline
+`e47e98c6b8e614c75284c831925a34d7756cd4b0`, pending canonical integration in PR1459.
+Production remains default and retains its empirical-oxygen combination guard.
+The explicit experimental mode uses the existing Feddes factor, unchanged
+mass/transaction/restart gates and additive cost/groundwater diagnostics.
+Forty-five scenario executions yield29 physical completions,12 rejections/failures
+and4 timeouts; a separate day2 continuation is censored through complete source
+window2.495. Original2day and active-oxygen endpoints are exact O0/O2; incumbent
+physical output/restart payload and joint/rootless replay stdout remain exact.
+No full historical closure,4.3.1 parity or experimental production promotion.
+Authority: `integration/dataqual01/STATUS.json`, `RESULTS.md`, `summary.csv` and
+`integration/audits/verify_dataqual01_current.py`. PR1457 is a separate unmerged
+physical/numerical candidate and its long-run evidence is not inherited here.
+
+
 The explicit corrected-source Darcy entry variant is canonically admitted for the first2days
 of the original112-node/five-domain macro/Rutter/Feddes/DRAMET3/numeric-heat
 application by PR1455, actual merge `8842707c73e0f11f69190eb1c6070dd70550916d`. A default-zero entry-width

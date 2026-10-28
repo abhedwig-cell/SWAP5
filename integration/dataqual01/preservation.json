@@ -1,0 +1,121 @@
+{
+  "schema": 1,
+  "source_directory": "tests/qualification/ppa-wu05-migmac10-canonical-20261006",
+  "input_files": [
+    "swap.swp",
+    "swap.bbc",
+    "swap.dra",
+    "wintcer1.crp",
+    "wintcer2.crp",
+    "andelst_meteo.998",
+    "andelst_meteo.999",
+    "andelst_rain.998",
+    "andelst_rain.999"
+  ],
+  "timeout_seconds": 20,
+  "slow_seconds_per_day": 5,
+  "pairwise_design": "16 binary rows: x0,x1,x2,x3,x0 xor x1; every pair covers all four levels. Original profile retained; ksat column scaled, no equation change.",
+  "scenarios": [
+    {
+      "id": "historical-production",
+      "mode": "production",
+      "days": 1,
+      "restart_check": false,
+      "timeout_seconds": 60
+    },
+    {
+      "id": "pairwise-01",
+      "mode": "experimental",
+      "days": 1,
+      "factors": {
+        "gwl": 1,
+        "pond": 0,
+        "rain": 0,
+        "ksat": 0,
+        "oxygen": 1
+      },
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-100.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-10.0\\n HLIM2L=-10.0",
+          "count": 1
+        }
+      ],
+      "restart_check": false,
+      "stop_at_time": 1.0
+    },
+    {
+      "id": "oxygen-production-reject",
+      "mode": "production",
+      "days": 2,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-10.0\\n HLIM2L=-10.0",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "invalid-negative-pond",
+      "days": 1,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-1 ",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

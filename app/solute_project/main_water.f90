@@ -181,7 +181,8 @@ program swap5_native_water_project
   real(real64)::pond_macro_amount,max_pond_depth,direct_macro_amount,max_net_source_check,net_source_check
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
-  integer::rain_index,step_index,uv,us,ut,up,part,commit_status
+  integer::rain_index,step_index,uv,us,ut,up,uc,ud,part,commit_status
+  real(real64)::oxygen_reduction_amount
   logical::did_commit,policy_ok,anchored_ceiling=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(10,arg)
@@ -497,6 +498,9 @@ program swap5_native_water_project
   open(newunit=uv,file='budget.csv',status='new');write(uv,'(a)') &
     'day,t0,t1,water_residual_cm,root_cm,drainage_cm,rapid_cm,runoff_cm,bottom_cm,soil_evap_cm,wet_potential_cm,observed_last_heat_residual_j_cm2,max_macro_cell_cm,max_matrix_cm,max_combined_cm,pond_to_macro_cm,max_pond_cm,direct_macro_cm,max_net_source_cm'
   open(newunit=up,file='progress.csv',status='new');write(up,'(a)')'day,segment,t0,t1,attempts,solver_rejections,temporal_rejections,mass_rejections,residual_cm'
+  open(newunit=uc,file='cost.csv',status='new');write(uc,'(a)') &
+    't0,t1,completed,nonlinear_iterations,headcalc_calls,linear_solves,backtracking_attempts,accepted_substeps,min_accepted_dt,max_accepted_dt'
+  open(newunit=ud,file='diagnostics.csv',status='new');write(ud,'(a)')'day,t0,t1,oxygen_reduction_cm,groundwater_cm'
   rain_index=1
   do while(rain_index<rain_count.and.rain_ends(rain_index)<=clock+1d-12);rain_index=rain_index+1;end do
   daily_loop:do j=first,min(windows,stop_after)
@@ -514,6 +518,7 @@ program swap5_native_water_project
     forcing%substep_root%request%potential_transpiration=transpiration_dry(j)
     forcing%soil_temperature%air_temperature_c=air_temperature_c(j)
     cursor=max(clock,real(j-1,real64));day_start=cursor;part=0;day_residual=0d0;root_amount=0d0;drain_amount=0d0
+    oxygen_reduction_amount=0d0
     rapid_amount=0d0;runoff_amount=0d0;bottom_amount_day=0d0;evap_amount=0d0;potential_root_amount=0d0;observed_heat=0d0
     max_cell_check=0d0;max_matrix_check=0d0;max_gross_check=0d0;pond_macro_amount=0d0;max_pond_depth=0d0;direct_macro_amount=0d0;max_net_source_check=0d0
     do while(cursor<ends_day(j))
@@ -544,6 +549,11 @@ program swap5_native_water_project
         water_diagnostics%attempts,',',water_diagnostics%solver_rejections,',',water_diagnostics%temporal_rejections,',', &
         water_diagnostics%mass_rejections,',',water_result%mass%residual
       flush(up)
+      write(uc,'(es25.17e3,a,es25.17e3,a,l1,5(a,i0),2(a,es25.17e3))')cursor,',',endpoint,',',water_result%completed, &
+        ',',water_diagnostics%nonlinear_iterations,',',water_diagnostics%headcalc_calls,',',water_diagnostics%linear_solves, &
+        ',',water_diagnostics%backtracking_attempts,',',water_diagnostics%accepted_substeps, &
+        ',',water_diagnostics%min_accepted_substep_duration,',',water_diagnostics%max_accepted_substep_duration
+      flush(uc)
       if(.not.water_result%completed)then
         call water%snapshot(physical,ok)
         select type(s=>physical)
@@ -592,6 +602,7 @@ program swap5_native_water_project
         direct_macro_amount=direct_macro_amount+s%macropore_external_top_cm
         max_cell_check=max(max_cell_check,cell_check);max_matrix_check=max(max_matrix_check,matrix_check)
         max_gross_check=max(max_gross_check,gross_check)
+        oxygen_reduction_amount=oxygen_reduction_amount+s%root_oxygen_reduction_cm_day*dt_check
         root_amount=root_amount+sum(s%root_sink)*(s%t1-s%t0)
         drain_amount=drain_amount+sum(s%drainage_sink)*(s%t1-s%t0)
         pond_macro_amount=pond_macro_amount+s%macropore_pond_accepted_cm
@@ -615,13 +626,19 @@ program swap5_native_water_project
       ',',bottom_amount_day,',',evap_amount,',',potential_root_amount,',',observed_heat, &
       ',',max_cell_check,',',max_matrix_check,',',max_gross_check,',',pond_macro_amount,',',max_pond_depth,',',direct_macro_amount,',',max_net_source_check
     flush(uv)
+    call water%snapshot(physical,ok);call require(ok,'diagnostic committed state')
+    select type(s=>physical)
+    type is(fmr_b110_boesten_macropore_state_t)
+      write(ud,'(i0,4(a,es25.17e3))')j,',',day_start,',',cursor,',',oxygen_reduction_amount,',',s%groundwater_level
+    end select
+    flush(ud)
     call write_macro_water_restart('restart.bin',binding,column_id,template,p,water,committed_window,code)
     call require(code==0,'native coupled restart publication')
     write(*,'(a,i0,a,es25.17e3)')'NATIVE_WATER_ACCEPTED day=',j,' residual_cm=',day_residual
     flush(6)
     if(cursor>=stop_time)exit daily_loop
   end do daily_loop
-  close(uv);close(up)
+  close(uv);close(up);close(uc);close(ud)
   call water%snapshot(physical,ok);call require(ok,'native final committed snapshot')
   select type(s=>physical)
   type is(fmr_b110_boesten_macropore_state_t)

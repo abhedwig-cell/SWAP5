@@ -19,8 +19,8 @@
     {
       "id": "historical-production",
       "mode": "production",
-      "days": 2,
-      "restart_check": true,
+      "days": 1,
+      "restart_check": false,
       "timeout_seconds": 60
     },
     {
@@ -915,6 +915,14 @@
       "days": 2,
       "anchored": false,
       "timeout_seconds": 15
+    },
+    {
+      "id": "historical-comparison",
+      "mode": "comparison",
+      "days": 2,
+      "timeout_seconds": 60,
+      "reference": "tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-result_output.csv.gz",
+      "restart_check": true
     }
   ]
 }

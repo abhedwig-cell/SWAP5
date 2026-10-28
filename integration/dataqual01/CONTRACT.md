@@ -40,3 +40,15 @@ Selected: checked O0/O2 original short execution, ordinary versus experimental
 oxygen rejection/admission, invalid input, complete-event restarts, focused
 root/heat/transaction preservation. No unchanged broad F-CI, low-air or fresh481.
 No numerical improvement is justified before measured failure diagnosis.
+
+Additive application diagnostics expose the existing kernel nonlinear-iteration,
+HeadCalc/linear-solve/backtracking counts and accepted timestep extrema per returned
+source window, plus accepted daily empirical oxygen reduction and groundwater.
+These observe the existing diagnostics/state only and change no physical output.
+An interrupted in-flight window remains unmeasured; recorded counts are lower bounds.
+
+The driver also accepts `restart_from` referring to an earlier scenario in the
+same manifest. The native binding rejects changed sources/mode/executable.
+Performance uses actually reported interval duration, not absolute model clock.
+Comparison uses only complete daily rows of the retained rounded4.3.1 DATE/DRN/GWL
+file. Matrix+rapid drainage is a descriptive mapping; nonzero deltas remain open.

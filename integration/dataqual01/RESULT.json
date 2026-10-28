@@ -1,0 +1,44 @@
+{
+  "physical_passes": 29,
+  "scenario_executions": 45,
+  "censored_runs": 5,
+  "failed_or_rejected": 12,
+  "active_oxygen_reduction_cm": 0.0005534549859084265,
+  "production_oxygen_rejected": true,
+  "invalid_input_rejected": true,
+  "physical_exact_O0_O2": true,
+  "predecessor_two_days_exact": true,
+  "current_joint_rootless_stdout_exact": true,
+  "restart_exact": true,
+  "water_max_independent_cm": 1.1695939355904628e-14,
+  "continuation": {
+    "start_day": 2.0,
+    "last_complete_source_window": 2.4950000000026193,
+    "seconds": 20.005861780000032,
+    "attempts": 2043,
+    "solver_rejections": 0,
+    "temporal_rejections": 1040,
+    "mass_rejections": 0,
+    "nonlinear_iterations": 20401,
+    "status": "CENSORED",
+    "inflight_counts_available": false
+  },
+  "comparison": {
+    "reference_sha256": "51816234b5a574c6d9d680c06742480fde64aa4f6b4a2f49b5e7dd45a15e11b1",
+    "reference": "frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate",
+    "days": [
+      {
+        "date": "1998-01-01",
+        "gwl_delta_cm": 0.17825123049641434,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0014989282628849743
+      },
+      {
+        "date": "1998-01-02",
+        "gwl_delta_cm": 0.8925642536169391,
+        "matrix_plus_rapid_drainage_delta_cm": 0.008410850909697093
+      }
+    ]
+  },
+  "production_admission_changed": false,
+  "full_historical_closure": false
+}

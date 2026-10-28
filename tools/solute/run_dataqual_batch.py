@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Bounded independent native SWAP5 runs from a versioned JSON manifest."""
-import argparse,csv,gzip,hashlib,json,math,re,subprocess,sys,time
+import argparse,csv,datetime,gzip,hashlib,io,json,math,re,subprocess,sys,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
@@ -28,18 +28,22 @@ def modify(folder,op):
  else:raise ValueError('unknown input transformation')
  p.write_bytes(text.encode())
 def assess(folder,target):
- b=rows(folder/'budget.csv');pr=rows(folder/'progress.csv');state=rows(folder/'state.csv');temp=rows(folder/'temperature.csv')
+ b=rows(folder/'budget.csv');pr=rows(folder/'progress.csv');state=rows(folder/'state.csv');temp=rows(folder/'temperature.csv');cost=rows(folder/'cost.csv');diag=rows(folder/'diagnostics.csv')
  values=[float(v)for row in b+pr+state+temp for v in row.values()]
  finite=bool(b and state and temp)and all(math.isfinite(v)for v in values)
  cert=['max_macro_cell_cm','max_matrix_cm','max_combined_cm','max_net_source_cm']
  physical=finite and len(state)==len(temp)and all(0<=float(r['theta'])<=1 for r in state)
  certificates=physical and all(abs(float(r[k]))<=1e-10 for r in b for k in cert)and all(int(r['mass_rejections'])==0 for r in pr)
  end=float(b[-1]['t1'])if b else 0.
+ start=float(b[0]['t0'])if b else None
  complete=certificates and abs(end-target)<=1e-9 and (folder/'restart.bin').is_file()
  sums={k:sum(int(r[k])for r in pr)for k in ['attempts','solver_rejections','temporal_rejections','mass_rejections']}
- return dict(physical_complete=complete,completed_days=end,water_max_independent_cm=max((abs(float(r[k]))for r in b for k in cert),default=None),
+ return dict(physical_complete=complete,completed_days=end,simulated_days=end-start if start is not None else None,water_max_independent_cm=max((abs(float(r[k]))for r in b for k in cert),default=None),
   water_max_daily_residual_cm=max((abs(float(r['water_residual_cm']))for r in b),default=None),
-  **sums,solver_iterations=None,solute_balance='not_applicable_SWSOLU0',
+  **sums,solver_iterations=sum(int(r['nonlinear_iterations'])for r in cost)if cost else None,
+  headcalc_calls=sum(int(r['headcalc_calls'])for r in cost)if cost else None,
+  min_accepted_dt=min((float(r['min_accepted_dt'])for r in cost if int(r['accepted_substeps'])>0),default=None),
+  oxygen_reduction_cm=sum(float(r['oxygen_reduction_cm'])for r in diag)if diag else None,solute_balance='not_applicable_SWSOLU0',
   flux_totals_cm={k:sum(float(r[k])for r in b)for k in ['root_cm','drainage_cm','rapid_cm','runoff_cm','bottom_cm','soil_evap_cm','pond_to_macro_cm','direct_macro_cm']},
   last_reported_interval_t0=float(pr[-1]['t0'])if pr else None,diagnostic_counts='completed_or_returned_intervals_only_inflight_unavailable')
 def main():
@@ -53,7 +57,7 @@ def main():
  if len(ids)!=len(set(ids))or any(not re.fullmatch(r'[a-zA-Z0-9_-]+',s)for s in ids):raise ValueError('unique safe scenario IDs required')
  def save():
   write_json(out/'results.json',results)
-  keys=['id','mode','status','completed_days','seconds','seconds_per_day','attempts','solver_rejections','temporal_rejections','mass_rejections','water_max_independent_cm','restart','failure']
+  keys=['id','mode','status','completed_days','seconds','seconds_per_day','attempts','solver_rejections','temporal_rejections','mass_rejections','water_max_independent_cm','solver_iterations','oxygen_reduction_cm','last_successful_time','restart','failure_category','failure']
   with(out/'summary.csv').open('w',newline='')as f:
    w=csv.DictWriter(f,fieldnames=keys,extrasaction='ignore');w.writeheader();w.writerows(results)
  for scenario in spec['scenarios']:
@@ -67,6 +71,9 @@ def main():
    r['input_sha256']={p.name:sha(p)for p in inputs.iterdir()}
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
+   if 'restart_from'in scenario:
+    if scenario['restart_from']not in ids[:ids.index(scenario['id'])]:raise ValueError('restart_from must identify an earlier scenario')
+    cmd+=['--restart',str(out/scenario['restart_from']/'run/restart.bin')]
    if 'stop_at_time'in scenario:cmd+=['--stop-at-time',str(scenario['stop_at_time'])]
    if scenario.get('anchored',True):cmd+=['--anchored-cauchy','--entry-ramp-width-cm',str(scenario.get('entry_width_cm',1e-4))]
    with(case/'launcher.stdout').open('wb')as so,(case/'launcher.stderr').open('wb')as se:
@@ -75,11 +82,24 @@ def main():
    manifest=json.loads((case/'run/manifest.json').read_text())if(case/'run/manifest.json').exists()else{}
    native=next((e for e in manifest.get('events',[])if e['label']=='native'),{})
    r['seconds']=native.get('seconds',time.monotonic()-start)
-   r['seconds_per_day']=r['seconds']/r['completed_days']if r['completed_days']>0 else None
+   r['seconds_per_day']=r['seconds']/r['simulated_days']if r['simulated_days']is not None and r['simulated_days']>0 else None
    r['status']='PASS'if cp.returncode==0 and r['physical_complete']else'CENSORED'if native.get('censored')else'FAILED'
    log='\n'.join(p.read_text(errors='replace')for p in [case/'run/native.stdout',case/'run/native.stderr',case/'run/source_initial.stdout',case/'launcher.stderr']if p.exists())
    lines=[line.strip()for line in log.splitlines()if any(k in line for k in ['REJECTED','Error','error stop','ValueError','AssertionError'])]
    r['failure']='; '.join(lines[-4:])if r['status']!='PASS'else''
+   progress=rows(case/'run/progress.csv');rejected='NATIVE_WATER_REJECTED'in log
+   committed=progress[:-1]if rejected else progress
+   r['last_successful_time']=float(committed[-1]['t1'])if committed else 0.
+   r['failure_category']='none'if r['status']=='PASS'else'timeout'if r['status']=='CENSORED'else'admission_or_numerical_rejection'if rejected else'input_or_execution_rejection'
+   if r['mode']=='comparison'and scenario.get('reference'):
+    ref=ROOT/scenario['reference'];raw=gzip.decompress(ref.read_bytes())if ref.suffix=='.gz'else ref.read_bytes()
+    donor={x['DATE']:x for x in csv.DictReader(io.StringIO('\n'.join(x for x in raw.decode().splitlines()if not x.startswith('*'))))}
+    groundwater={int(x['day']):float(x['groundwater_cm'])for x in rows(case/'run/diagnostics.csv')};comparisons=[]
+    for x in rows(case/'run/budget.csv'):
+     day=int(x['day']);date=str(datetime.date(1998,1,1)+datetime.timedelta(days=day-1))
+     if date in donor and float(x['t1'])==day and float(x['t0'])==day-1 and day in groundwater:
+      comparisons.append(dict(date=date,gwl_delta_cm=groundwater[day]-float(donor[date]['GWL']),matrix_plus_rapid_drainage_delta_cm=float(x['drainage_cm'])+float(x['rapid_cm'])-float(donor[date]['DRN'])))
+    r['comparison']=dict(reference_sha256=sha(ref),reference='frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate',days=comparisons)
    if r['status']=='PASS'and scenario.get('restart_check')and scenario['days']>=2:
     for end,label,restart in [(1,'split',None),(scenario['days'],'resumed',case/'split/restart.bin')]:
      c=cmd.copy();c[c.index('--output')+1]=str(case/label);c[c.index('--stop-after')+1]=str(end)
