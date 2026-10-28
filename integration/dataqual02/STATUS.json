@@ -2,12 +2,12 @@
   "workstream": "RT/VQ",
   "work_unit": "DATAQUAL02",
   "baseline": "ad62053833bbd2a5f40a493db89ae4b02cd11a46",
-  "stage": "QUALIFIED_EXPERIMENTAL_SOURCE_MAPPING_PENDING_CANONICAL",
+  "stage": "CANONICAL_EXPERIMENTAL_SOURCE_MAPPING_ADMITTED",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Explicit default-off original positive surface demand into existing Boesten owner; no production promotion",
   "contract": "integration/dataqual02/CONTRACT.md",
   "scientific_delta": {
@@ -184,5 +184,9 @@
       "unchanged physical process requalification"
     ]
   },
-  "next_action": "Verify current owner/source and actual canonical merge; then prioritize remaining local hydraulic transient cost using the exact corrected2.495 restart."
+  "next_action": "Diagnose corrected2.495->2.514 hydraulic transient from the retained same-source checkpoint; reconcile PR1457 residual/Jacobian and physical variants separately. Production promotion and full historical closure remain open.",
+  "canonical_pr": 1461,
+  "actual_merge": "0e3cd4889c36ad101b0bc19072036e3a4471f99e",
+  "qualified_tree": "c3d43144f8a255dff1b6c83945edf1ecc0ff225c",
+  "actual_merge_tree": "c3d43144f8a255dff1b6c83945edf1ecc0ff225c"
 }

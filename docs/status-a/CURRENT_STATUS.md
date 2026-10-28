@@ -1,5 +1,23 @@
 # SWAP5 Status-A current status
 
+DATAQUAL02 is canonically integrated by PR1461, actual merge
+`0e3cd4889c36ad101b0bc19072036e3a4471f99e`, exact qualified full tree
+`c3d43144f8a255dff1b6c83945edf1ecc0ff225c`. The explicit default-off experimental
+source variant connects original positive soil/pond demands to the existing
+Boesten owner. Production/comparison retain their prior mapping. No equations,
+tolerances or restart schema change. Twenty scenario executions give14 physical
+completions,4 intended rejections and2 timeouts (one deliberate reporting probe).
+Corrected original2day output/payload is exact O0/O2; default2day output is
+predecessor-exact. Corrected day2 GWL delta to rounded431 shrinks from+0.892564cm
+to+0.060427cm; parity remains open. The numerical cost block persists: a matched
+corrected2.495 checkpoint/executable and extracted diagnostic replay are retained.
+Current owner source/raw/corruption and27 unchanged FSI35 dependencies pass on the
+actual merge; all13 observed PR workflows complete successfully, without claiming
+an unselected full numerical F-CI. Authority: `integration/dataqual02/ADMISSION.json`,
+`STATUS.json`, `RESULTS.md` and `RECOVERY.json`. PR1457's other variants and longer
+execution evidence are not inherited.
+
+
 DATAQUAL01 experimental execution and historical batches are canonically integrated by PR1460, actual merge
 `43fd2f821d88fc0c80b7a2563ccfb020a62543ba`, with exact qualified full tree
 `54db8c9d8626bdfa36b0ccb22551ca5f535b7f04`. Admission is execution infrastructure

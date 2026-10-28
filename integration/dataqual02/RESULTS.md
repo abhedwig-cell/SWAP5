@@ -1,6 +1,8 @@
 # DATAQUAL02 measured surface-demand correction
 
-Tested/qualified candidate on baselinead620538; canonical integration pending.
+Canonically integrated by PR1461, merge0e3cd4889c36ad101b0bc19072036e3a4471f99e.
+The complete merge tree equals qualifiedc3d43144f8a255dff1b6c83945edf1ecc0ff225c;
+source/raw owner verification passes on the actual merge. Baselinead620538.
 This is an explicit default-off experimental source-mapping correction. Production
 and comparison keep their old mapping. No physical equation, numerical tolerance,
 transaction or restart format changes. Only the two positive-demand assignments
