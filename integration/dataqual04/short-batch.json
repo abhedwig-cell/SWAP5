@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "source_directory": "tests/qualification/ppa-wu05-migmac10-canonical-20261006",
+  "input_files": [
+    "swap.swp",
+    "swap.bbc",
+    "swap.dra",
+    "wintcer1.crp",
+    "wintcer2.crp",
+    "andelst_meteo.998",
+    "andelst_meteo.999",
+    "andelst_rain.998",
+    "andelst_rain.999"
+  ],
+  "timeout_seconds": 30,
+  "slow_seconds_per_day": 5,
+  "pairwise_design": "16 binary rows: x0,x1,x2,x3,x0 xor x1; every pair covers all four levels. Original profile retained; ksat column scaled, no equation change.",
+  "scenarios": [
+    {
+      "id": "default-production",
+      "mode": "production",
+      "days": 1
+    },
+    {
+      "id": "budget-64",
+      "mode": "experimental",
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "solver_max_iterations": 64,
+      "days": 1,
+      "restart_check": false
+    },
+    {
+      "id": "budget-128",
+      "mode": "experimental",
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "solver_max_iterations": 128,
+      "days": 1,
+      "restart_check": true
+    },
+    {
+      "id": "budget-256",
+      "mode": "experimental",
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "solver_max_iterations": 256,
+      "days": 1,
+      "restart_check": false
+    },
+    {
+      "id": "invalid-0",
+      "mode": "experimental",
+      "solver_max_iterations": 0,
+      "days": 1
+    },
+    {
+      "id": "invalid-257",
+      "mode": "experimental",
+      "solver_max_iterations": 257,
+      "days": 1
+    },
+    {
+      "id": "production-nondefault-rejected",
+      "mode": "production",
+      "solver_max_iterations": 128,
+      "days": 1
+    },
+    {
+      "id": "comparison-nondefault-rejected",
+      "mode": "comparison",
+      "solver_max_iterations": 128,
+      "days": 1
+    }
+  ]
+}

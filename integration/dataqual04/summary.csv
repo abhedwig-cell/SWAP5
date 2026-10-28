@@ -1,0 +1,21 @@
+batch,id,mode,status,completed_days,seconds,seconds_per_day,solver_iterations,solver_rejections,temporal_rejections,mass_rejections,water_max_independent_cm,restart,failure
+short-O0,default-production,production,PASS,1.0,2.0727916560026642,2.0727916560026642,1750,0,97,0,5.016820292524926e-15,not_tested,
+short-O0,budget-64,experimental,PASS,1.0,3.320105095001054,3.320105095001054,1842,0,102,0,2.6773288447357046e-15,not_tested,
+short-O0,budget-128,experimental,PASS,1.0,3.280592547998822,3.280592547998822,1842,0,102,0,2.6773288447357046e-15,not_tested,
+short-O0,budget-256,experimental,PASS,1.0,2.2738862200021686,2.2738862200021686,1842,0,102,0,2.6773288447357046e-15,not_tested,
+short-O0,invalid-0,experimental,FAILED,0.0,0.0668246850000287,,,0,0,0,,not_tested,run_native_water.py: error: --solver-max-iterations range is1..256
+short-O0,invalid-257,experimental,FAILED,0.0,0.11502077099794406,,,0,0,0,,not_tested,run_native_water.py: error: --solver-max-iterations range is1..256
+short-O0,production-nondefault-rejected,production,FAILED,0.0,0.06501046799894539,,,0,0,0,,not_tested,run_native_water.py: error: nondefault solver iteration budget requires --mode experimental
+short-O0,comparison-nondefault-rejected,comparison,FAILED,0.0,0.11986930100101745,,,0,0,0,,not_tested,run_native_water.py: error: nondefault solver iteration budget requires --mode experimental
+two-O0,default-two,production,PASS,2.0,71.04216210999948,35.52108105499974,62112,0,3306,0,1.1675122674192906e-14,not_tested,
+two-O0,budget128-two,experimental,PASS,2.0,75.68528905499988,37.84264452749994,49331,0,2622,0,8.337853519592431e-15,exact,
+short-O2,default-production,production,PASS,1.0,0.9177543010009686,0.9177543010009686,1750,0,97,0,5.016820292524926e-15,not_tested,
+short-O2,budget-64,experimental,PASS,1.0,1.4186394839998684,1.4186394839998684,1842,0,102,0,2.6773288447357046e-15,not_tested,
+short-O2,budget-128,experimental,PASS,1.0,1.720833601000777,1.720833601000777,1842,0,102,0,2.6773288447357046e-15,not_tested,
+short-O2,budget-256,experimental,PASS,1.0,1.0487171189997753,1.0487171189997753,1842,0,102,0,2.6773288447357046e-15,not_tested,
+short-O2,invalid-0,experimental,FAILED,0.0,0.11662067200086312,,,0,0,0,,not_tested,run_native_water.py: error: --solver-max-iterations range is1..256
+short-O2,invalid-257,experimental,FAILED,0.0,0.06498819400076172,,,0,0,0,,not_tested,run_native_water.py: error: --solver-max-iterations range is1..256
+short-O2,production-nondefault-rejected,production,FAILED,0.0,0.11535907500001485,,,0,0,0,,not_tested,run_native_water.py: error: nondefault solver iteration budget requires --mode experimental
+short-O2,comparison-nondefault-rejected,comparison,FAILED,0.0,0.11576401300044381,,,0,0,0,,not_tested,run_native_water.py: error: nondefault solver iteration budget requires --mode experimental
+two-O2,default-two,production,PASS,2.0,38.65055320000101,19.325276600000507,62112,0,3306,0,1.1675122674192906e-14,not_tested,
+two-O2,budget128-two,experimental,PASS,2.0,29.156925628001773,14.578462814000886,49331,0,2622,0,8.337853519592431e-15,exact,

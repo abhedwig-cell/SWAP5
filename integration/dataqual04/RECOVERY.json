@@ -1,0 +1,32 @@
+{
+  "executable": "recovery/native-O2",
+  "executable_sha256": "ac80ea9d4873347e32b38b6844b09e924d51f986fa78d2579d223990c6c251a1",
+  "cwd": "replay",
+  "prepared_inputs": {
+    "input.nml": "cost-O2/input.nml",
+    "input.swp": "cost-O2/input.swp",
+    "macro.nml": "cost-O2/macro.nml",
+    "restart.bin": "cost-O2/origin.bin"
+  },
+  "command": [
+    "../recovery/native-O2",
+    "input.nml",
+    "origin.bin",
+    "3",
+    "input.swp",
+    "macro.nml",
+    "ee19a5a893c0491fdc46ddd05ac971fa9828c2ce9cf86d3fc8d33ee201ef28b1",
+    "3",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian"
+  ],
+  "environment": {
+    "SWAP5_DIAG_MACRO_TEMPORAL": "1"
+  },
+  "origin_state_only": true,
+  "new_restart_qualified": false,
+  "warning": "Empty input-only cwd. Authentic DATAQUAL03 origin binding; never retag. Reproduces numerical rejection and corrected failed-work counts only, not a new-source historical restart qualification. Primary current-source two-day/full-split proof is separate. Same platform only."
+}

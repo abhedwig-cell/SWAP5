@@ -1,0 +1,67 @@
+{
+  "default_preserved_exact": true,
+  "O0_O2_endpoint_exact": true,
+  "primary_restart_exact": true,
+  "failed_window_rollback_exact": true,
+  "iteration_budget_does_not_fix_stall": true,
+  "failed_work_counted": true,
+  "three_day_complete": false,
+  "scenario_executions": 20,
+  "physical_passes": 12,
+  "rejected": 8,
+  "probes": [
+    {
+      "name": "cost-O0",
+      "budget": 64,
+      "seconds": 44.72983736199967,
+      "recorded_rejected_inner_solves": 63,
+      "failed_nonlinear_iterations": 4032,
+      "nonlinear_iterations": 29878,
+      "headcalc_calls": 2523,
+      "last_internal_time": 2.8486751098551224,
+      "rollback_exact": true,
+      "origin_state_only": true
+    },
+    {
+      "name": "cost-O2",
+      "budget": 64,
+      "seconds": 25.734715046997735,
+      "recorded_rejected_inner_solves": 63,
+      "failed_nonlinear_iterations": 4032,
+      "nonlinear_iterations": 29878,
+      "headcalc_calls": 2523,
+      "last_internal_time": 2.8486751098551224,
+      "rollback_exact": true,
+      "origin_state_only": true
+    },
+    {
+      "name": "budget128",
+      "budget": 128,
+      "seconds": 35.81468546100223,
+      "recorded_rejected_inner_solves": 63,
+      "failed_nonlinear_iterations": 8064,
+      "nonlinear_iterations": 33910,
+      "headcalc_calls": 2523,
+      "last_internal_time": 2.8486751098551224,
+      "rollback_exact": true,
+      "origin_state_only": true
+    },
+    {
+      "name": "budget256",
+      "budget": 256,
+      "seconds": 58.71901752999838,
+      "recorded_rejected_inner_solves": 63,
+      "failed_nonlinear_iterations": 16128,
+      "nonlinear_iterations": 41974,
+      "headcalc_calls": 2523,
+      "last_internal_time": 2.8486751098551224,
+      "rollback_exact": true,
+      "origin_state_only": true
+    }
+  ],
+  "old_reported_nonlinear_iterations": 25846,
+  "old_reported_headcalc_calls": 2460,
+  "new_physical_progress_claim": false,
+  "production_admission_changed": false,
+  "full_historical_closure": false
+}
