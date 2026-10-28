@@ -1,0 +1,28 @@
+{
+  "executable": "recovery/native-O2",
+  "executable_sha256": "b7ab75e948d276c96b164c191ce1e6ac9dd028f05c6549285c27fcd18a098da5",
+  "same_platform_only": true,
+  "cwd": "replay",
+  "prepared_inputs": {
+    "input.nml": "checkpoint2748/input.nml",
+    "input.swp": "checkpoint2748/input.swp",
+    "macro.nml": "checkpoint2748/macro.nml",
+    "restart.bin": "checkpoint2748/restart.bin"
+  },
+  "command": [
+    "../recovery/native-O2",
+    "input.nml",
+    "origin.bin",
+    "3",
+    "input.swp",
+    "macro.nml",
+    "ee19a5a893c0491fdc46ddd05ac971fa9828c2ce9cf86d3fc8d33ee201ef28b1",
+    "3",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian"
+  ],
+  "warning": "Extract verified capsule, create empty replay directory, copy only prepared_inputs there and name the input restart origin.bin. This next source window is expected to reject near2.748; use external timeout. Never retag bindings. Prior origin-state window diagnostics do not qualify new restart histories."
+}

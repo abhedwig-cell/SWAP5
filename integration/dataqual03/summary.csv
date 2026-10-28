@@ -1,0 +1,14 @@
+batch,id,mode,status,completed_days,last_successful_time,seconds,solver_iterations,temporal_rejections,water_max_independent_cm,restart,failure
+primary-O2,default-two,production,PASS,2.0,2.0,36.394686933999765,62112,3306,1.1675122674192906e-14,not_tested,
+primary-O2,surface-two-off,experimental,PASS,2.0,2.0,26.22102212899972,49331,2622,8.337853519592431e-15,not_tested,
+primary-O2,jacobian-primary,experimental,PASS,2.514000000002852,2.514000000002852,44.279637943000125,82241,3977,3.889217507074827e-14,exact,
+primary-O2,jacobian-three,experimental,CENSORED,0.0,2.743000000002212,45.01612907700019,78572,2611,,not_tested,time limit exceeded; in-flight counts unavailable
+primary-O2,jacobian-five,experimental,FAILED,0.0,0.0,0.032533858000533655,,0,,not_tested,native macro water restart rejected; ERROR STOP 1; Error termination. Backtrace:
+primary-O0,default-two,production,PASS,2.0,2.0,82.5848061609995,62112,3306,1.1675122674192906e-14,not_tested,
+primary-O0,surface-two-off,experimental,PASS,2.0,2.0,51.072172658000454,49331,2622,8.337853519592431e-15,not_tested,
+primary-O0,jacobian-primary,experimental,CENSORED,2.0,2.40400000000227,60.01564064200011,51764,2748,8.337853519592431e-15,not_tested,time limit exceeded; in-flight counts unavailable
+smoke,jacobian-literal-source,experimental,PASS,1.0,1.0,1.126377443999445,1750,97,5.016820292524926e-15,not_tested,
+smoke,active-oxygen-jacobian,experimental,PASS,1.0,1.0,1.2494000530004996,1842,102,2.7257926818458067e-15,not_tested,
+smoke,production-jacobian-rejected,production,FAILED,0.0,0.0,0.16715046600074857,,0,,not_tested,run_native_water.py: error: --perched-jacobian requires --mode experimental
+dependency,limited,experimental,CENSORED,0.0,0.0,0.010824846000105026,,0,,not_tested,time limit exceeded; in-flight counts unavailable
+dependency,dependent,experimental,SKIPPED_DEPENDENCY,,,0.0003747060000023339,,,,not_tested,no published restart from limited
