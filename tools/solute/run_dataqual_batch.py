@@ -71,6 +71,7 @@ def main():
    r['input_sha256']={p.name:sha(p)for p in inputs.iterdir()}
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
+   if scenario.get('perched_jacobian'):cmd+=['--perched-jacobian']
    if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
    if 'restart_from'in scenario:
     if scenario['restart_from']not in ids[:ids.index(scenario['id'])]:raise ValueError('restart_from must identify an earlier scenario')
