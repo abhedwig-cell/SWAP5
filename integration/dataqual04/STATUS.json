@@ -2,12 +2,12 @@
   "work_unit": "DATAQUAL04",
   "workstream": "RT/HY/MP/VQ",
   "baseline": "872cf5aacdd87981206c9c1b6d05318d26fad3e1",
-  "stage": "QUALIFIED_BOUNDED_DIAGNOSTICS_PENDING_CANONICAL",
+  "stage": "CANONICALLY_INTEGRATED_BOUNDED_ACCOUNTING_AND_EXPERIMENTS",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Correct rejected inner-solver cost accounting and expose explicit bounded iteration-budget experiments; no physical progress or production promotion",
   "contract": "integration/dataqual04/CONTRACT.md",
   "scientific_delta": {
@@ -185,5 +185,7 @@
       "new physics qualification"
     ]
   },
-  "next_action": "Verify exact canonical merge; then diagnose a concrete inner Richards/macropore residual/Jacobian failure at internal2.848675 without more budget increases."
+  "next_action": "Verify exact canonical merge; then diagnose a concrete inner Richards/macropore residual/Jacobian failure at internal2.848675 without more budget increases.",
+  "production_admitted": false,
+  "admission": "integration/dataqual04/ADMISSION.json"
 }

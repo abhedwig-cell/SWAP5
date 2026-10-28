@@ -1,5 +1,27 @@
 # SWAP5 Status-A current architecture
 
+DATAQUAL04 is integrated by PR1463, actual merge
+`8e1968ac45d58470807585e00f3f48d9e991a52d`, exact qualified full tree
+`7c246940f3d4c315680a9c72a68d44b5ed2c8d4e`. Failed macropore inner-solver
+work is now counted before rollback return. Default64 Newton totals change from
+25,846 to29,878, including4,032 previously omitted iterations; HeadCalc calls
+change2,460 to2,523. Explicit experimental budgets128/256 report33,910/41,974
+iterations and still fail at the same internal2.848675 time. The last committed
+checkpoint remains2.748. Tiny successful full/half errors approach roundoff;
+no temporal-tolerance relaxation or budget increase solves the stall.
+Twenty current O0/O2 batch executions give12 physical completions and8 intended
+rejections. Two-day production streams/payload remain predecessor-exact;
+current budget128 O0/O2 endpoint/payload and full/split restart are exact.
+Six native guards,17 corruption controls, current source/raw and27 unchanged
+FSI35 dependencies pass on the actual merge. Observed PR workflows32PASS/25FAIL;
+legacy recipe/identity/layout checks and reproduced baseline EB-I25 failure are
+retained explicitly. No full numerical F-CI, physical progress, production
+promotion or historical closure claim. Authority: `integration/dataqual04/ADMISSION.json`,
+`RESULTS.md`, `HOSTED_STATUS.json` and `RECOVERY.json`. The consolidated table
+contains98 executions:62PASS,26rejected/failed,9censored,1dependency skip.
+Historical cost rows retain their source-version-specific incomplete counters.
+
+
 DATAQUAL03 is canonically integrated by PR1462, actual merge
 `724bbd2de747c5565d3bd4a92145dcf8b5ba46a3`, exact qualified full tree
 `59bec5eda71354d268639aecba4fa527f8982ffb`. Its default-off experimental perched
