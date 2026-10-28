@@ -11,6 +11,7 @@ def projection():
   end+=1;t=t[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+name+"']("+args+")\n"+t[end:]
  return t.encode()
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/dataqual01/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual01_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE and s['qualified'];git('merge-base','--is-ancestor',BASE,'HEAD');assert not git('status','--porcelain','--',*SCIENCE),'unpersisted entry source'
  delta={x.split('\t')[1]:x.split('\t')[0]for x in git('diff','--name-status',BASE,'HEAD','--',*SCIENCE).splitlines()};assert delta==s['scientific_delta'],'foreign entry delta';assert reader(PARENT)==projection(),'predecessor assertions changed'
  for p,h in s['postimages'].items():assert sha(reader(p))==h,p
@@ -59,12 +60,16 @@ def validate(f):
  assert js('runs/five-resumed-O2/manifest.json')['status']=='CENSORED'and not r['five_day_complete']
  result=dict(parent['result']);result.update(qualified=True,canonically_admitted=False,corrected_native_entry_ramp_two_days=True,corrected_native_tested_end_day=2.,literal_native_tested_end_day=1.0539999999964493,entry_transition_width_cm=.0001,anchored_cauchy_ceiling=True,entry_native_O0_O2_exact=True,entry_native_processes=native,entry_fresh_process_restarts=2,entry_exact_endpoint_files=6,entry_unsupported_atomic_controls=12,entry_input_restart_controls=10,entry_water_max_cm=maxwater,entry_pond_to_macro_cm=pond,entry_width_sensitivity=sensitivity,current_literal_default_prefix_exact=True,current_joint_rootless_default_exact=True,five_day_complete=False,seasonal_native_macro=False,full_original_Andelst=False)
  return result
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/dataqual01/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual01_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/dataqual01/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual01_current.py'))['fsi35_successors']()
  source();deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert git('rev-parse','HEAD:'+d['path'])==git('rev-parse',BASE+':'+d['path']),d['path']
  return dict(status='UNCHANGED_EXECUTABLE_DEPENDENCIES',dependencies=len(deps),baseline=BASE)
 def self_test():
+ if (ROOT/'integration/dataqual01/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual01_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(name,fn):
   try:fn()
