@@ -1,0 +1,327 @@
+{
+  "qualified_head": "d6e0bde2df17ad4635d14ceec5091a11b9026abc",
+  "qualified_tree": "59bec5eda71354d268639aecba4fa527f8982ffb",
+  "observed_pr_workflows": [
+    {
+      "id": 40671575174,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575584,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575304,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575532,
+      "name": "PUB-ME D1 transition authority",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575482,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575524,
+      "name": "PUB-ME D3 origin authority",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575561,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575536,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575129,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575680,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575555,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575607,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575251,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575418,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575032,
+      "name": "PUB-P1E02 post-solver rollback",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575113,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575496,
+      "name": "MC-NUT01 focused native qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575153,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575515,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575547,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575736,
+      "name": "PUB-P2E04 Reference failure census",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40671575472,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575300,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575258,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575557,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575659,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575675,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575494,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575419,
+      "name": "F-PERF-CANON01 D AHL50",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575537,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40671575672,
+      "name": "MC-SOL01 original SWP chemistry",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "observed_count": 31,
+  "successes": 20,
+  "failures": [
+    {
+      "id": 40671575532,
+      "name": "PUB-ME D1 transition authority",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575482,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ],
+      "classification": "UNCHANGED_RECIPE_MISSING_DEPENDENCY",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575524,
+      "name": "PUB-ME D3 origin authority",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575561,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575536,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575129,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575680,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ],
+      "classification": "UNCHANGED_RECIPE_MISSING_DEPENDENCY",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575251,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575032,
+      "name": "PUB-P1E02 post-solver rollback",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "Error: Equality comparison for REAL(8) at (1) [-Werror=compare-reals]"
+      ],
+      "classification": "UNCHANGED_POND_RECIPE_WARNING_ERROR",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575515,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ],
+      "classification": "HISTORICAL_PUBLICATION_SOURCE_FIREWALL",
+      "pass_claimed": false
+    },
+    {
+      "id": 40671575736,
+      "name": "PUB-P2E04 Reference failure census",
+      "status": "completed",
+      "conclusion": "failure",
+      "reason": [
+        "Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ],
+      "classification": "UNCHANGED_RECIPE_MISSING_DEPENDENCY",
+      "pass_claimed": false
+    }
+  ],
+  "all_green": false,
+  "selection": "Bounded experimental numerical policy; owning local O0/O2 model/component/state and exact default preservation are admission evidence. Automatic F-CI workflow is source feedback only; no full numerical F-CI claim.",
+  "failure_logs": "HOSTED_FAILURE_LOGS.tar.xz.b64",
+  "failure_logs_tar_sha256": "17de7fa297f570b9b57c5cd01bfc0995968dec1cb8a104e2905d87c5341f5336",
+  "baseline_reproductions": {
+    "baseline": "4b61966e63bcb20d0688c919687a798147226114",
+    "missing_dramet3_recipe_returncode": 1,
+    "unchanged_pond_compile_returncode": 1
+  },
+  "first_page_only_api": true
+}

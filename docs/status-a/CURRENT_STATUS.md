@@ -1,5 +1,28 @@
 # SWAP5 Status-A current status
 
+DATAQUAL03 is canonically integrated by PR1462, actual merge
+`724bbd2de747c5565d3bd4a92145dcf8b5ba46a3`, exact qualified full tree
+`59bec5eda71354d268639aecba4fa527f8982ffb`. Its default-off experimental perched
+seepage diagonal Jacobian changes numerical linearisation only. Physical flux
+laws, limiter outputs, tolerances, balance/rollback/restart checks and production
+defaults remain unchanged. Real GNU13.3 O0/O2 production-interface derivatives,
+default preservation and native policy/binding controls pass. The fresh source-bound
+O2 original run completes2.514days with exact full/split restart; O0 own day2
+continuation gives the exact endpoint/payload after its initial60s censor.
+Further source-bound O2 checkpoints complete2.743 and2.748. The next window to3
+rejects with102 solver/402 temporal rejections and min dt8.88e-16day. Its complete
+rollback equals the independently completed2.748 checkpoint, including an actual
+freshly extracted replay. No day3/day5/seasonal success or production promotion.
+Current owner source/raw/20 corruption controls and27 unchanged FSI35 dependencies
+pass on the actual merge. Observed PR workflows20PASS/11FAIL: historical publication
+source firewalls and unchanged recipe compile failures are retained explicitly;
+no all-green or full numerical F-CI claim. Authority:
+`integration/dataqual03/ADMISSION.json`, `STATUS.json`, `RESULTS.md`,
+`RECOVERY.json` and `HOSTED_STATUS.json`. `migration-overview.csv` combines78
+executions across DATAQUAL01/02/03:50 physical completions,18 rejected/failed,
+9 censored and1 dependency skip; executions are not distinct configurations.
+
+
 DATAQUAL02 is canonically integrated by PR1461, actual merge
 `0e3cd4889c36ad101b0bc19072036e3a4471f99e`, exact qualified full tree
 `c3d43144f8a255dff1b6c83945edf1ecc0ff225c`. The explicit default-off experimental

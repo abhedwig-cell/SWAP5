@@ -1,5 +1,28 @@
 # SWAP5 Status-A current architecture
 
+DATAQUAL03 is canonically integrated by PR1462, actual merge
+`724bbd2de747c5565d3bd4a92145dcf8b5ba46a3`, exact qualified full tree
+`59bec5eda71354d268639aecba4fa527f8982ffb`. Its default-off experimental perched
+seepage diagonal Jacobian changes numerical linearisation only. Physical flux
+laws, limiter outputs, tolerances, balance/rollback/restart checks and production
+defaults remain unchanged. Real GNU13.3 O0/O2 production-interface derivatives,
+default preservation and native policy/binding controls pass. The fresh source-bound
+O2 original run completes2.514days with exact full/split restart; O0 own day2
+continuation gives the exact endpoint/payload after its initial60s censor.
+Further source-bound O2 checkpoints complete2.743 and2.748. The next window to3
+rejects with102 solver/402 temporal rejections and min dt8.88e-16day. Its complete
+rollback equals the independently completed2.748 checkpoint, including an actual
+freshly extracted replay. No day3/day5/seasonal success or production promotion.
+Current owner source/raw/20 corruption controls and27 unchanged FSI35 dependencies
+pass on the actual merge. Observed PR workflows20PASS/11FAIL: historical publication
+source firewalls and unchanged recipe compile failures are retained explicitly;
+no all-green or full numerical F-CI claim. Authority:
+`integration/dataqual03/ADMISSION.json`, `STATUS.json`, `RESULTS.md`,
+`RECOVERY.json` and `HOSTED_STATUS.json`. `migration-overview.csv` combines78
+executions across DATAQUAL01/02/03:50 physical completions,18 rejected/failed,
+9 censored and1 dependency skip; executions are not distinct configurations.
+
+
 The explicit corrected-source Darcy entry variant is canonically admitted for the first2days
 of the original112-node/five-domain macro/Rutter/Feddes/DRAMET3/numeric-heat
 application by PR1455, actual merge `8842707c73e0f11f69190eb1c6070dd70550916d`. A default-zero entry-width

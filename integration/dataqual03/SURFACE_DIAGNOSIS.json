@@ -1,0 +1,111 @@
+{
+  "measurements": {
+    "checkpoint2743": {
+      "budget": {
+        "day": "3",
+        "t0": " 2.51400000000285218E+000",
+        "t1": " 2.74300000000221189E+000",
+        "water_residual_cm": "-1.23322532741276802E-012",
+        "root_cm": " 3.40295775554411037E-005",
+        "drainage_cm": " 1.03671527444870945E-002",
+        "rapid_cm": " 1.67387690044644655E-001",
+        "runoff_cm": " 0.00000000000000000E+000",
+        "bottom_cm": "-1.23272216887900646E-001",
+        "soil_evap_cm": " 9.75452351245271717E-004",
+        "wet_potential_cm": " 3.40295775554411037E-005",
+        "observed_last_heat_residual_j_cm2": " 7.28472837607796464E-013",
+        "max_macro_cell_cm": " 6.29760543023057776E-016",
+        "max_matrix_cm": " 3.23308328893656682E-013",
+        "max_combined_cm": " 3.23226471629634027E-013",
+        "pond_to_macro_cm": " 5.13321528530423454E-001",
+        "max_pond_cm": " 5.28502779475497998E-006",
+        "direct_macro_cm": " 3.00986388168984591E-002",
+        "max_net_source_cm": " 3.23226471629634027E-013"
+      },
+      "progress": {
+        "day": "3",
+        "segment": "7",
+        "t0": " 2.66000000000349246E+000",
+        "t1": " 2.74300000000221189E+000",
+        "attempts": "2561",
+        "solver_rejections": "0",
+        "temporal_rejections": "1283",
+        "mass_rejections": "0",
+        "residual_cm": "-1.57401869316231569E-013"
+      },
+      "cost": {
+        "t0": " 2.66000000000349246E+000",
+        "t1": " 2.74300000000221189E+000",
+        "completed": "T",
+        "nonlinear_iterations": "41540",
+        "headcalc_calls": "7683",
+        "linear_solves": "41540",
+        "backtracking_attempts": "44094",
+        "accepted_substeps": "1278",
+        "min_accepted_dt": " 1.58309936520995009E-007",
+        "max_accepted_dt": " 6.48437500785803422E-004"
+      },
+      "diagnostics": {
+        "day": "3",
+        "t0": " 2.51400000000285218E+000",
+        "t1": " 2.74300000000221189E+000",
+        "oxygen_reduction_cm": " 0.00000000000000000E+000",
+        "groundwater_cm": "-4.61607792327896362E+001"
+      }
+    },
+    "checkpoint2748": {
+      "budget": {
+        "day": "3",
+        "t0": " 2.74300000000221189E+000",
+        "t1": " 2.74799999999959255E+000",
+        "water_residual_cm": " 6.38378239159465011E-015",
+        "root_cm": " 7.43003876369192228E-007",
+        "drainage_cm": " 3.25220504339178093E-004",
+        "rapid_cm": " 5.27519998822785496E-003",
+        "runoff_cm": " 0.00000000000000000E+000",
+        "bottom_cm": "-4.41885543123025134E-003",
+        "soil_evap_cm": " 5.51054535775443841E-008",
+        "wet_potential_cm": " 7.43003876369192228E-007",
+        "observed_last_heat_residual_j_cm2": " 5.60900176131695627E-013",
+        "max_macro_cell_cm": " 5.93359721291027761E-016",
+        "max_matrix_cm": " 7.62682229993164908E-016",
+        "max_combined_cm": " 9.87599758917045989E-016",
+        "pond_to_macro_cm": " 2.78034467081396897E-001",
+        "max_pond_cm": " 2.27415228129578511E-005",
+        "direct_macro_cm": " 1.20399702798451285E-002",
+        "max_net_source_cm": " 9.87545548808421714E-016"
+      },
+      "progress": {
+        "day": "3",
+        "segment": "1",
+        "t0": " 2.74300000000221189E+000",
+        "t1": " 2.74799999999959255E+000",
+        "attempts": "1149",
+        "solver_rejections": "1",
+        "temporal_rejections": "577",
+        "mass_rejections": "0",
+        "residual_cm": " 6.38378239159465011E-015"
+      },
+      "cost": {
+        "t0": " 2.74300000000221189E+000",
+        "t1": " 2.74799999999959255E+000",
+        "completed": "T",
+        "nonlinear_iterations": "18715",
+        "headcalc_calls": "3444",
+        "linear_solves": "18715",
+        "backtracking_attempts": "26202",
+        "accepted_substeps": "571",
+        "min_accepted_dt": " 1.52587890545063942E-007",
+        "max_accepted_dt": " 1.95312499897681846E-005"
+      },
+      "diagnostics": {
+        "day": "3",
+        "t0": " 2.74300000000221189E+000",
+        "t1": " 2.74799999999959255E+000",
+        "oxygen_reduction_cm": " 0.00000000000000000E+000",
+        "groundwater_cm": "-3.79046623200726813E+001"
+      }
+    }
+  },
+  "interpretation": "Association, not causal proof: groundwater observation moves quickly, tiny positive surface film and large pond-to-macro transfer coexist with temporal rejection collapse. No mass rejection; retain clock guard and investigate moving boundary/temporal estimator. Full Richards nonlinear/contact and time integration remain open."
+}

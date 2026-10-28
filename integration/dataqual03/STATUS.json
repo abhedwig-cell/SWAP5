@@ -2,12 +2,12 @@
   "workstream": "RT/HY/MP/VQ",
   "work_unit": "DATAQUAL03",
   "baseline": "4b61966e63bcb20d0688c919687a798147226114",
-  "stage": "QUALIFIED_BOUNDED_EXPERIMENTAL_PENDING_CANONICAL",
+  "stage": "CANONICALLY_INTEGRATED_BOUNDED_EXPERIMENTAL_ONLY",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "scope": "Default-off perched seepage diagonal numerical policy, source-bound primary endpoint2.514, accepted checkpoint2.748; day3 fails",
   "contract": "integration/dataqual03/CONTRACT.md",
   "scientific_delta": {
@@ -144,5 +144,7 @@
     "production_admission_changed": false,
     "full_historical_closure": false
   },
-  "next_action": "Verify exact merge and retain default production admission. Diagnose moving boundary and temporal rejection collapse after2.748 without relaxing tolerances."
+  "next_action": "Verify exact merge and retain default production admission. Diagnose moving boundary and temporal rejection collapse after2.748 without relaxing tolerances.",
+  "production_admitted": false,
+  "admission": "integration/dataqual03/ADMISSION.json"
 }
