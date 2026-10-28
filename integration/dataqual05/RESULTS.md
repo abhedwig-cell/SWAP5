@@ -1,8 +1,13 @@
 # DATAQUAL05: real migration scale and nonlinear surface runoff
 
 Baseline `5a0b0fcd4461d651c141919da09a8ddcb9ff25e2`. Issues1458/1386.
-Local scientific execution is complete; canonical admission needs its separate
-exact-merge receipt. No full historical closure or production expansion.
+Integrated through PR1464, actual merge `a96cf1456dd4b4e7f756ebb0e79872ba9442d715`.
+Its full tree `5c23a7a1c9043963ed28588e4017c99ff4d7f007` exactly matches the qualified head.
+The actual-merge owner/raw checks and40 corruption controls pass.
+All60 hosted PR workflows are terminal:33 pass,27 fail; the canonical selected
+qualification and docs pass. This is not all-green CI or full numerical F-CI.
+See `ADMISSION.json`, `HOSTED_STATUS.json` and preserved failed-job logs.
+No full historical closure or production expansion.
 
 The native original-input route rejected every RSROEXP other than1. The existing
 dynamic-top provider now solves the original PONDRUNOFF law

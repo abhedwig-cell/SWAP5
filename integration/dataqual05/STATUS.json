@@ -2,12 +2,12 @@
   "work_unit": "DATAQUAL05",
   "workstream": "RT/HY/VQ",
   "baseline": "5a0b0fcd4461d651c141919da09a8ddcb9ff25e2",
-  "stage": "QUALIFIED_PENDING_CANONICAL",
+  "stage": "CANONICALLY_INTEGRATED_BOUNDED_EXPERIMENTAL_RUNOFF_AND_BATCH",
   "implemented": true,
   "persisted": true,
   "tested": true,
   "qualified": true,
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "production_admission_changed": false,
   "full_historical_closure": false,
   "contract": "integration/dataqual05/CONTRACT.md",
@@ -1383,6 +1383,9 @@
       "production nonlinear admission"
     ]
   },
-  "next_action": "Publish and inspect coherent PR checks, merge bounded experimental scope, verify actual canonical tree and write admission receipt.",
-  "local_gates": "integration/dataqual05/LOCAL_GATES.json"
+  "next_action": "Resolve coupled Richards/macropore dry-state residual/Jacobian and variable surface conductivity; retain bounded scope and continue other valid configurations.",
+  "local_gates": "integration/dataqual05/LOCAL_GATES.json",
+  "admission": "integration/dataqual05/ADMISSION.json",
+  "actual_merge": "a96cf1456dd4b4e7f756ebb0e79872ba9442d715",
+  "actual_merge_tree": "5c23a7a1c9043963ed28588e4017c99ff4d7f007"
 }

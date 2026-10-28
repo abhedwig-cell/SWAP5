@@ -1,7 +1,10 @@
 # SWAP5 Status-A current architecture
 
-DATAQUAL05 scientific execution is complete locally; exact canonical admission
-is pending. The existing dynamic-top provider now supports experimental source
+DATAQUAL05 is integrated by PR1464, actual merge
+`a96cf1456dd4b4e7f756ebb0e79872ba9442d715`, exact qualified tree
+`5c23a7a1c9043963ed28588e4017c99ff4d7f007`. Actual-merge owner/raw checks
+and40 corruption controls pass. Hosted PR workflows:33 success,27 failure, all60
+terminal; selected canonical qualification passes, not full numerical F-CI. The existing dynamic-top provider now supports experimental source
 RSROEXP0.5..2 with a monotone surface balance/derivative, preserving the literal
 linear arithmetic and production admission.216 scenario attempts include85 distinct
 water configurations actually started,52 water-qualified primary completions across
