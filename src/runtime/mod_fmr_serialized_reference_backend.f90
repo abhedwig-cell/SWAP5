@@ -5619,6 +5619,22 @@ contains
       if (.not. ieee_is_finite(macropore_accepted_top_cm) .or. macropore_accepted_top_cm < 0.0_real64) return
       if (.not. ieee_is_finite(macropore_rapid_outflow_cm) .or. macropore_rapid_outflow_cm < 0.0_real64) return
       if (macropore_result%status /= MACRO_RUNTIME_CONVERGED) then
+        ! A rejected inner solve consumed real work before this early return.
+        ! Preserve its diagnostics even though its physical state is rolled back.
+        self%last_observation%solver_executed = solve_result%diagnostics%headcalc_calls>0
+        self%last_observation%solver_status = solve_result%status
+        self%last_observation%solver_diagnostics = solve_result%diagnostics
+        outcome%nonlinear_iterations = solve_result%diagnostics%nonlinear_iterations
+        outcome%internal_retries = solve_result%diagnostics%internal_retries
+        outcome%headcalc_calls = solve_result%diagnostics%headcalc_calls
+        outcome%jacobian_builds = solve_result%diagnostics%jacobian_builds
+        outcome%linear_solves = solve_result%diagnostics%linear_solves
+        outcome%backtracking_attempts = solve_result%diagnostics%backtracking_attempts
+        outcome%alternative_solver_calls = solve_result%diagnostics%alternative_solver_calls
+        outcome%workspace_full_resets = solve_result%diagnostics%workspace_full_resets
+        outcome%workspace_zeroed_bytes = solve_result%diagnostics%workspace_zeroed_bytes
+        if(self%macropore_policy%anchored_cauchy_step_ceiling) &
+          call diagnose_macro_rejection(t0,t1,macropore_result)
         if (macropore_result%status == MACRO_RUNTIME_RETRY) solve_result%retry_advised = .true.
         return
       end if
@@ -6770,6 +6786,19 @@ contains
     ok=.true.
   end function
 
+  subroutine diagnose_macro_rejection(t0,t1,r)
+    real(real64),intent(in)::t0,t1
+    type(macropore_runtime_result_t),intent(in)::r
+    integer::env_status
+    character(8)::setting
+    call get_environment_variable('SWAP5_DIAG_MACRO_TEMPORAL',setting,status=env_status)
+    if(env_status/=0.or.trim(setting)/='1')return
+    write(error_unit,*) 'MACRO_REJECT',t0,t1,r%status,r%matrix_result%status, &
+      r%outer_iterations,r%final_relative_exchange_change,r%internal_exchange_residual_cm, &
+      r%macro_balance_residual_cm,r%matrix_result%diagnostics%nonlinear_iterations
+    flush(error_unit)
+  end subroutine diagnose_macro_rejection
+
   subroutine diagnose_macro_step(t0,t1,status_code)
     real(real64),intent(in)::t0,t1
     integer,intent(in)::status_code
@@ -6780,7 +6809,7 @@ contains
     call get_environment_variable('SWAP5_DIAG_MACRO_TEMPORAL',setting,status=env_status)
     if(env_status/=0.or.trim(setting)/='1')return
     calls=calls+1
-    if(calls>20.and.mod(calls,128)/=0)return
+    if(calls>20.and.mod(calls,128)/=0.and.t1-t0>=1.e-7_real64)return
     call cpu_time(cpu)
     write(error_unit,*) 'MACRO_STEP',calls,t0,t1,status_code,cpu
     flush(error_unit)
@@ -6801,7 +6830,7 @@ contains
     end if
     if(.not.enabled)return
     calls=calls+1
-    if(calls>20.and.mod(calls,256)/=0)return
+    if(calls>20.and.mod(calls,256)/=0.and.dt>=1.e-7_real64)return
     select type(f=>full_state)
     class is(fmr_b110_physical_state_t)
       select type(h=>half_state)

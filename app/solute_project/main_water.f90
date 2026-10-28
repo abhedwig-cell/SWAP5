@@ -70,6 +70,7 @@ program swap5_native_water_project
   integer :: rain_count=0,accepted_count=0,rain_segments_completed=0
   real(real64) :: rain_ends(MAX_RAIN_EVENTS)=0d0,rain_rates(MAX_RAIN_EVENTS)=0d0,rain_supplied_cm=0d0
   namelist /rain_events/ rain_count,rain_ends,rain_rates
+  integer :: solver_max_iterations=64
   integer :: solute_transport_scheme=0
   logical :: picard_conductivity_iteration=.false.
   logical :: continuous_mvg=.false.
@@ -149,7 +150,7 @@ program swap5_native_water_project
   namelist /crop/ root_table_points,upper_layer_bottom_node,maximum_root_depth_cm,root_relative_depth,root_density, &
     hlim3l,hlim3h,hlim4,adcrl,adcrh,hlim1,hlim2u,hlim2l,empirical_oxygen_enabled,crop_active, &
     potential_transpiration_cm_day,root_depth_cm,substep_root_stress
-  namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
+  namelist /column/ solver_max_iterations,schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,water_flux_temporal,dynamic_temperature,freundlich_exponent,reference_concentration, &
@@ -235,6 +236,9 @@ program swap5_native_water_project
   read(u,nml=column,iostat=io,iomsg=message)
   if(io/=0)write(*,'(A)')trim(message)
   call require(io==0,'invalid column namelist')
+  call require(solver_max_iterations>=1.and.solver_max_iterations<=256,'solver iteration budget range')
+  if(solver_max_iterations/=64)call require(trim(execution_mode)=='experimental', &
+    'nondefault solver iteration budget requires experimental mode')
   read(u,nml=surface,iostat=io,iomsg=message)
   if(io/=0)write(*,'(A)')trim(message)
   call require(io==0,'invalid surface namelist')
@@ -441,7 +445,7 @@ program swap5_native_water_project
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen
   ! Original hconduc deliberately excludes KSATEXM for SWMACRO1.
   p%ksatexm_extension_active=.false.;p%bottom_mode=3;p%swkimpl=0;p%swkmean=1
-  p%max_iterations=64;p%max_backtracking=24;p%root_extraction_active=.true.;p%macropore_active=.true.
+  p%max_iterations=solver_max_iterations;p%max_backtracking=24;p%root_extraction_active=.true.;p%macropore_active=.true.
   p%compartment_balance_tolerance=1d-10;p%total_balance_tolerance=1d-10
   p%head_abs_tolerance=1d-8;p%head_rel_tolerance=1d-8;p%ponding_tolerance=1d-10
   allocate(p%macropore);p%macropore=macro_config
