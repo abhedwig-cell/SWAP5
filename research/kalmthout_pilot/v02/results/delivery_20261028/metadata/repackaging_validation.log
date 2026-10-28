@@ -1,0 +1,46 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "variable": "GPP",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_GPP_20250101_20261001.nc",
+      "all_values_exact_equal_including_missing": true,
+      "finite_values": 833895,
+      "missing_values": 1783449,
+      "all_time_and_metadata_checks": "PASS",
+      "bytes": 8863286,
+      "sha256": "341ff036f151669ed2d22920f97a309603085224e3bd844984ab027bbfc3db1d"
+    },
+    {
+      "variable": "soil_moisture",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc",
+      "all_values_exact_equal_including_missing": true,
+      "finite_values": 13086720,
+      "missing_values": 0,
+      "all_time_and_metadata_checks": "PASS",
+      "bytes": 37980542,
+      "sha256": "d3ef28dfa226a614a6e98cecfc7447eeae52258e3cca6ce93eb8389d38704bcf"
+    },
+    {
+      "variable": "ET",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_ET_20250101_20261001.nc",
+      "all_values_exact_equal_including_missing": true,
+      "finite_values": 2617344,
+      "missing_values": 0,
+      "all_time_and_metadata_checks": "PASS",
+      "bytes": 16053293,
+      "sha256": "b04dac60b6cce1acbd8d1a8c9a0ffd35246dcab6f9546efa38f46ae0d5c44008"
+    },
+    {
+      "variable": "soil_temperature",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc",
+      "all_values_exact_equal_including_missing": true,
+      "finite_values": 13086720,
+      "missing_values": 0,
+      "all_time_and_metadata_checks": "PASS",
+      "bytes": 33216669,
+      "sha256": "57aaa95ec10439e69747f4f3ab6f0c50eff8a14afa9c14de32d87fcbe94e52fa"
+    }
+  ],
+  "scope": "Repackaging, daily selection, grid orientation, time normalisation, exact scientific values and flags; no new model physics or external field validation."
+}

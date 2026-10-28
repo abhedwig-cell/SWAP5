@@ -16,5 +16,14 @@
   ],
   "future_results_note_workflow": "workflow/RESULTS_NOTE_WORKFLOW.md",
   "future_version_record_template": "workflow/NEXT_VERSION_RECORD.template.json",
-  "representation_table_reproduction": "scripts/build_representation_table.py --verify"
+  "representation_table_reproduction": "scripts/build_representation_table.py --verify",
+  "latest_ingestion_delivery": {
+    "date": "2026-10-28",
+    "path": "delivery_20261028/README.md",
+    "layout": "4 files, one scientific variable per file; 639 days from 2025-01-01 through 2026-10-01 inclusive",
+    "validation": "delivery_20261028/metadata/repackaging_validation.json",
+    "product_database_edits": "delivery_20261028/metadata/workbook_changes.json",
+    "ftp_or_stream_delivery_confirmed": false,
+    "source_model_results_unchanged": true
+  }
 }

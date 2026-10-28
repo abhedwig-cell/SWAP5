@@ -1,0 +1,64 @@
+{
+  "status": "COMPLETE_REPACKAGED_AND_EXACT_ARRAY_VALIDATED",
+  "source_commit": "a045b6202fa39b6492c9c5aad5bb26ae7177cd44",
+  "source_files": {
+    "SYMPHONICA_Kalmthout_V02_daily_2025.nc": "9ff38882055753433201dc362a1b2e86ea351e41d2ad14e93f97e5a8c384f131",
+    "SYMPHONICA_Kalmthout_V02_daily_2026.nc": "30111cab9490dda538f9161fc92893e5e2bf15c09adbb35ea390ee6e68f2df26"
+  },
+  "start": "2025-01-01",
+  "end_inclusive": "2026-10-01",
+  "reporting_days": 639,
+  "time_coordinate": "Preserved end of UTC day; first 2025-01-02 00:00Z, final 2026-10-02 00:00Z. Use simulation_date for daily labels.",
+  "fill_value": -999.0,
+  "grid_reindexing": "row/col to time[,depth],y,x with y ascending; no resampling",
+  "products": [
+    {
+      "variable": "GPP",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_GPP_20250101_20261001.nc",
+      "bytes": 8863286,
+      "sha256": "341ff036f151669ed2d22920f97a309603085224e3bd844984ab027bbfc3db1d",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": null
+    },
+    {
+      "variable": "soil_moisture",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc",
+      "bytes": 37980542,
+      "sha256": "d3ef28dfa226a614a6e98cecfc7447eeae52258e3cca6ce93eb8389d38704bcf",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": 5
+    },
+    {
+      "variable": "ET",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_ET_20250101_20261001.nc",
+      "bytes": 16053293,
+      "sha256": "b04dac60b6cce1acbd8d1a8c9a0ffd35246dcab6f9546efa38f46ae0d5c44008",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": null
+    },
+    {
+      "variable": "soil_temperature",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc",
+      "bytes": 33216669,
+      "sha256": "57aaa95ec10439e69747f4f3ab6f0c50eff8a14afa9c14de32d87fcbe94e52fa",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": 5
+    }
+  ]
+}

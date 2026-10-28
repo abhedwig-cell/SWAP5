@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "source_commit": "a045b6202fa39b6492c9c5aad5bb26ae7177cd44",
+  "checks": {
+    "independent_complete_array_repackaging": "metadata/repackaging_validation.json",
+    "workbook_targeted_cell_and_visual_checks": "metadata/workbook_validation.json",
+    "workbook_untouched_package_preservation": "metadata/workbook_preservation_validation.json",
+    "all_four_git_parts_reassembled_and_hash_verified": "metadata/reassembly_validation.log",
+    "python_script_syntax": "PASS",
+    "relative_readme_links": "PASS",
+    "documentation_source_checks": "PASS: python tools/docs/check_docs.py",
+    "strict_documentation_build": "PASS: mkdocs build --strict, exit 0, 17.61 seconds; existing missing-anchor message is INFO"
+  },
+  "not_selected": {
+    "native_run_or_solver_tests": "No native physics, parameters, forcing or solver implementation changed.",
+    "new_observational_validation": "No new observation dataset is supplied.",
+    "comprehensive_CF_checker": "Not run; intended convention is declared, without a compliance claim.",
+    "FTP_STREAM_ingestion": "No external upload/registration instruction or verified ingestion access."
+  }
+}

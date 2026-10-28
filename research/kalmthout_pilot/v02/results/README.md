@@ -35,3 +35,7 @@ The water model is provisional, uncalibrated and not independently validated. St
 ## Preparing a comparable note for the next version
 
 Follow the [results-note workflow](workflow/RESULTS_NOTE_WORKFLOW.md) and complete the [next-version record](workflow/NEXT_VERSION_RECORD.template.json). The procedure specifies source and metadata preservation, conversion review, analysis/figure/table coverage, version-specific assumptions, verification and delivery. The current scripts and literal report findings are tied to V02; review and adapt them in a separate version directory.
+
+## Delivery layout agreed on 28 October 2026
+
+The [revised ingestion delivery](delivery_20261028/README.md) provides four NetCDF files, one scientific variable per file, each covering 2025-01-01 through 2026-10-01 inclusive. It retains all 639 daily records and the original values, with exact verified grid reindexing and explicit temporal/depth support. WENR product-database metadata and reproducible packaging/verification scripts are preserved alongside it. The earlier annual files and reports remain the unchanged research reference.

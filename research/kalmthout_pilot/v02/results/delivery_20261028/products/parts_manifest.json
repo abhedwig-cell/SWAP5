@@ -1,0 +1,152 @@
+{
+  "status": "COMPLETE_REPACKAGED_AND_EXACT_ARRAY_VALIDATED",
+  "source_commit": "a045b6202fa39b6492c9c5aad5bb26ae7177cd44",
+  "source_files": {
+    "SYMPHONICA_Kalmthout_V02_daily_2025.nc": "9ff38882055753433201dc362a1b2e86ea351e41d2ad14e93f97e5a8c384f131",
+    "SYMPHONICA_Kalmthout_V02_daily_2026.nc": "30111cab9490dda538f9161fc92893e5e2bf15c09adbb35ea390ee6e68f2df26"
+  },
+  "start": "2025-01-01",
+  "end_inclusive": "2026-10-01",
+  "reporting_days": 639,
+  "time_coordinate": "Preserved end of UTC day; first 2025-01-02 00:00Z, final 2026-10-02 00:00Z. Use simulation_date for daily labels.",
+  "fill_value": -999.0,
+  "grid_reindexing": "row/col to time[,depth],y,x with y ascending; no resampling",
+  "products": [
+    {
+      "variable": "GPP",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_GPP_20250101_20261001.nc",
+      "bytes": 8863286,
+      "sha256": "341ff036f151669ed2d22920f97a309603085224e3bd844984ab027bbfc3db1d",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": null,
+      "parts": [
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_GPP_20250101_20261001.nc.part001",
+          "bytes": 7200000,
+          "sha256": "1514bdd60c4f585b7ce3987bde51afe76a3b468b35a95715a251ae87260b93ba"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_GPP_20250101_20261001.nc.part002",
+          "bytes": 1663286,
+          "sha256": "ac7d9ed9678f22c1cac313daf1d2be041fb4347e3fd6e8d7d61617c2602bb575"
+        }
+      ]
+    },
+    {
+      "variable": "soil_moisture",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc",
+      "bytes": 37980542,
+      "sha256": "d3ef28dfa226a614a6e98cecfc7447eeae52258e3cca6ce93eb8389d38704bcf",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": 5,
+      "parts": [
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc.part001",
+          "bytes": 7200000,
+          "sha256": "38df9148d26ceeadb65b738185dc486bdd7b2aa5b131ccf62b0802fd1b4f4712"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc.part002",
+          "bytes": 7200000,
+          "sha256": "a85ecfd61d3372e4acb0f7d5f07dbb4470329e5af181267c03ebff1736c8c739"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc.part003",
+          "bytes": 7200000,
+          "sha256": "aaec2e6863fd210aecb8735881389bab09ce80c432381998b1f75f5e7d41bdb1"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc.part004",
+          "bytes": 7200000,
+          "sha256": "baa6cc10473280b854368b13c582940ec24c035c3a0e416840f3ffde4a489609"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc.part005",
+          "bytes": 7200000,
+          "sha256": "779b457bb1db650163a99644414740a9e0b4f39ecaf68d95b3c99b4a01fec978"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_moisture_20250101_20261001.nc.part006",
+          "bytes": 1980542,
+          "sha256": "0c0a6e5876fa65b0942bd64ce206ae21f6fd779b16c839c1529307c11ecf9131"
+        }
+      ]
+    },
+    {
+      "variable": "ET",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_ET_20250101_20261001.nc",
+      "bytes": 16053293,
+      "sha256": "b04dac60b6cce1acbd8d1a8c9a0ffd35246dcab6f9546efa38f46ae0d5c44008",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": null,
+      "parts": [
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_ET_20250101_20261001.nc.part001",
+          "bytes": 7200000,
+          "sha256": "89553fecac180d907f1ead0cd74955acabdafe95337a70a02d3d2a03df0622da"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_ET_20250101_20261001.nc.part002",
+          "bytes": 7200000,
+          "sha256": "c7ff0a2a37834efff2f4dea88e04c103bdae8689c3c19771b8987755f8417f51"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_ET_20250101_20261001.nc.part003",
+          "bytes": 1653293,
+          "sha256": "52a74cee450d5381052d8d4bcb5004420988ee2be9983801c645edc8264de5e9"
+        }
+      ]
+    },
+    {
+      "variable": "soil_temperature",
+      "file": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc",
+      "bytes": 33216669,
+      "sha256": "57aaa95ec10439e69747f4f3ab6f0c50eff8a14afa9c14de32d87fcbe94e52fa",
+      "days": 639,
+      "spatial_shape": [
+        64,
+        64
+      ],
+      "depths": 5,
+      "parts": [
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc.part001",
+          "bytes": 7200000,
+          "sha256": "92c16db5d53b45641d216f646cbbc7e2a87d33684cc400f7b776cd8cda9901b3"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc.part002",
+          "bytes": 7200000,
+          "sha256": "45908285d67f98724cc3456e9df17c4352c299d6df477d4bd3d7b4f84168cd0b"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc.part003",
+          "bytes": 7200000,
+          "sha256": "966f20f235fd7c58f04cf83be8213da62d1f428c61e1fc063ee0b8581d47b2b0"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc.part004",
+          "bytes": 7200000,
+          "sha256": "e443e5170f47f70ba3bd4cc6ad461a47cecf0738ea2da13fe5057b2da146c7b5"
+        },
+        {
+          "name": "Kalmthoutseheide_SWAP_WOFOST_soil_temperature_20250101_20261001.nc.part005",
+          "bytes": 4416669,
+          "sha256": "0d99280cbba7596143268dac846b1d12dc35afd2827763250c39f62516507d11"
+        }
+      ]
+    }
+  ]
+}

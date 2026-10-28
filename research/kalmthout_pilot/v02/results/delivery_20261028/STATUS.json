@@ -1,0 +1,18 @@
+{
+  "workstream": "SYMPHONICA independent SWAP431 application",
+  "work_unit": "KALMTHOUT_VARIABLE_DELIVERY_20261028",
+  "baseline": "a045b6202fa39b6492c9c5aad5bb26ae7177cd44",
+  "status": "COMPLETE_LOCAL_EXACT_ARRAY_AND_METADATA_VALIDATION",
+  "interfaces_changed": "Research delivery layout only; four variable files on original regular grid. No canonical SWAP5 interface or invariant changed.",
+  "native_model_results_changed": false,
+  "products": "metadata/product_manifest.json",
+  "verification": [
+    "metadata/repackaging_validation.json",
+    "metadata/workbook_validation.json",
+    "metadata/workbook_preservation_validation.json",
+    "metadata/reassembly_validation.log"
+  ],
+  "scientific_scope": "Repackaging only. Previous model limitations remain; no independent field validation or comprehensive external CF checker.",
+  "delivery_to_external_ftp_or_stream": "NOT_PERFORMED",
+  "next_safe_step": "Ingest four NetCDF files using reporting-day labels or daily bounds; confirm depth and no-data handling; record actual FTP and STREAM results separately."
+}
