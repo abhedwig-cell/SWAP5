@@ -44,7 +44,7 @@ def assess(folder,target):
   headcalc_calls=sum(int(r['headcalc_calls'])for r in cost)if cost else None,
   min_accepted_dt=min((float(r['min_accepted_dt'])for r in cost if int(r['accepted_substeps'])>0),default=None),
   oxygen_reduction_cm=sum(float(r['oxygen_reduction_cm'])for r in diag)if diag else None,solute_balance='not_applicable_SWSOLU0',
-  flux_totals_cm={k:sum(float(r[k])for r in b)for k in ['root_cm','drainage_cm','rapid_cm','runoff_cm','bottom_cm','soil_evap_cm','pond_to_macro_cm','direct_macro_cm']},
+  flux_totals_cm={k:sum(float(r[k])for r in b)if b else None for k in ['root_cm','drainage_cm','rapid_cm','runoff_cm','bottom_cm','soil_evap_cm','pond_to_macro_cm','direct_macro_cm']},
   last_reported_interval_t0=float(pr[-1]['t0'])if pr else None,diagnostic_counts='completed_or_returned_intervals_only_inflight_unavailable')
 def main():
  ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('manifest',type=Path);ap.add_argument('--bundle',type=Path,required=True);ap.add_argument('--output',type=Path,required=True);a=ap.parse_args()
@@ -71,6 +71,7 @@ def main():
    r['input_sha256']={p.name:sha(p)for p in inputs.iterdir()}
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
+   if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
    if 'restart_from'in scenario:
     if scenario['restart_from']not in ids[:ids.index(scenario['id'])]:raise ValueError('restart_from must identify an earlier scenario')
     cmd+=['--restart',str(out/scenario['restart_from']/'run/restart.bin')]
@@ -85,13 +86,13 @@ def main():
    r['seconds_per_day']=r['seconds']/r['simulated_days']if r['simulated_days']is not None and r['simulated_days']>0 else None
    r['status']='PASS'if cp.returncode==0 and r['physical_complete']else'CENSORED'if native.get('censored')else'FAILED'
    log='\n'.join(p.read_text(errors='replace')for p in [case/'run/native.stdout',case/'run/native.stderr',case/'run/source_initial.stdout',case/'launcher.stderr']if p.exists())
-   lines=[line.strip()for line in log.splitlines()if any(k in line for k in ['REJECTED','Error','error stop','ValueError','AssertionError'])]
-   r['failure']='; '.join(lines[-4:])if r['status']!='PASS'else''
+   lines=[line.strip()for line in log.splitlines()if any(k in line.lower()for k in ['rejected','error','exception'])]
+   r['failure']='time limit exceeded; in-flight counts unavailable'if r['status']=='CENSORED'else'; '.join(lines[-4:])if r['status']!='PASS'else''
    progress=rows(case/'run/progress.csv');rejected='NATIVE_WATER_REJECTED'in log
    committed=progress[:-1]if rejected else progress
    r['last_successful_time']=float(committed[-1]['t1'])if committed else 0.
    r['failure_category']='none'if r['status']=='PASS'else'timeout'if r['status']=='CENSORED'else'admission_or_numerical_rejection'if rejected else'input_or_execution_rejection'
-   if r['mode']=='comparison'and scenario.get('reference'):
+   if scenario.get('reference'):
     ref=ROOT/scenario['reference'];raw=gzip.decompress(ref.read_bytes())if ref.suffix=='.gz'else ref.read_bytes()
     donor={x['DATE']:x for x in csv.DictReader(io.StringIO('\n'.join(x for x in raw.decode().splitlines()if not x.startswith('*'))))}
     groundwater={int(x['day']):float(x['groundwater_cm'])for x in rows(case/'run/diagnostics.csv')};comparisons=[]

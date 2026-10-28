@@ -1,0 +1,431 @@
+{
+  "schema": 1,
+  "source_directory": "tests/qualification/ppa-wu05-migmac10-canonical-20261006",
+  "input_files": [
+    "swap.swp",
+    "swap.bbc",
+    "swap.dra",
+    "wintcer1.crp",
+    "wintcer2.crp",
+    "andelst_meteo.998",
+    "andelst_meteo.999",
+    "andelst_rain.998",
+    "andelst_rain.999"
+  ],
+  "timeout_seconds": 30,
+  "slow_seconds_per_day": 5,
+  "pairwise_design": "16 binary rows: x0,x1,x2,x3,x0 xor x1; every pair covers all four levels. Original profile retained; ksat column scaled, no equation change.",
+  "scenarios": [
+    {
+      "id": "literal-original-two",
+      "mode": "production",
+      "days": 2,
+      "timeout_seconds": 90,
+      "reference": "tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-result_output.csv.gz"
+    },
+    {
+      "id": "source-demand-two",
+      "mode": "experimental",
+      "days": 2,
+      "source_surface_demand": true,
+      "timeout_seconds": 120,
+      "restart_check": true,
+      "reference": "tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-result_output.csv.gz"
+    },
+    {
+      "id": "paired-00-off",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-80.9 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "id": "paired-00-on",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": true,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-80.9 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "id": "paired-01-off",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-100.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-10.0\\n HLIM2L=-10.0",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "paired-01-on",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": true,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-100.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 1.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-10.0\\n HLIM2L=-10.0",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "paired-04-off",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-80.9 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "id": "paired-04-on",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": true,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-80.9 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "id": "paired-05-off",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": false,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-100.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-10.0\\n HLIM2L=-10.0",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "paired-05-on",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": true,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*GWLI\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-100.0 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1.0 ",
+          "count": 1
+        },
+        {
+          "kind": "scale_table",
+          "file": "andelst_rain.998",
+          "header": "^\\s*Station\\s+Day",
+          "column": 5,
+          "factor": 4.0,
+          "count": 2098
+        },
+        {
+          "kind": "scale_table",
+          "file": "swap.swp",
+          "header": "^\\s*ORES\\s+OSAT",
+          "column": 5,
+          "factor": 1.0,
+          "count": 8
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-10.0\\n HLIM2L=-10.0",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "production-variant-rejected",
+      "mode": "production",
+      "days": 1,
+      "source_surface_demand": true
+    },
+    {
+      "id": "comparison-variant-rejected",
+      "mode": "comparison",
+      "days": 1,
+      "source_surface_demand": true
+    },
+    {
+      "id": "negative-pond-rejected",
+      "mode": "experimental",
+      "days": 1,
+      "source_surface_demand": true,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "swap.swp",
+          "pattern": "^(\\s*PONDMX\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>-1 ",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "source-demand-continuation",
+      "mode": "experimental",
+      "days": 3,
+      "source_surface_demand": true,
+      "restart_from": "source-demand-two",
+      "timeout_seconds": 30
+    }
+  ]
+}

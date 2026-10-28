@@ -1,0 +1,21 @@
+{
+  "executable": "recovery/native-O2",
+  "executable_sha256": "f9ab383b68e506eda023fdf477689440d8a42240160b3faa672708502422d04f",
+  "same_platform_only": true,
+  "cwd": "checkpoint",
+  "command": [
+    "../recovery/native-O2",
+    "input.nml",
+    "restart.bin",
+    "3",
+    "input.swp",
+    "macro.nml",
+    "462459964dbd30ce2d5f2c649da5162469c3e9b9c8a150a01c5148a8936bfd91",
+    "2.5140000000028522",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand"
+  ],
+  "warning": "Use a fresh copied checkpoint directory and an external timeout. Complete source-window2.495 is preserved; local-window is censored and not accepted output."
+}

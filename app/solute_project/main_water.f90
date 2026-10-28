@@ -183,12 +183,18 @@ program swap5_native_water_project
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
   integer::rain_index,step_index,uv,us,ut,up,uc,ud,part,commit_status
   real(real64)::oxygen_reduction_amount
-  logical::did_commit,policy_ok,anchored_ceiling=.false.
+  logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(10,arg)
   if(len_trim(arg)>0)execution_mode=trim(arg)
   call require(trim(execution_mode)=='production'.or.trim(execution_mode)=='experimental'.or. &
     trim(execution_mode)=='comparison','unknown execution mode')
+  call get_command_argument(11,arg)
+  if(len_trim(arg)>0)then
+    call require(trim(arg)=='source-surface-demand','unknown source forcing variant')
+    call require(trim(execution_mode)=='experimental','source surface demand requires experimental mode')
+    source_surface_demand=.true.
+  end if
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -531,6 +537,12 @@ program swap5_native_water_project
       call initialize_interception_window(1000000_int64+int(j,int64)*MAX_RAIN_EVENTS+rain_index,cursor,endpoint, &
         rain_rate*(endpoint-cursor),forcing%rutter%source_window,code)
       call require(code==0,'source rain window')
+      ! DATAQUAL02: original positive demand belongs to the existing Boesten owner.
+      ! Explicit corrected-source variant; literal production mapping is retained.
+      if(source_surface_demand)then
+        forcing%boesten_evaporation%potential_bare_soil_evaporation_cm_per_day=soil_evaporation_cm_day(j)
+        forcing%boesten_evaporation%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
+      end if
       forcing%rutter%prepared=.true.
       forcing%rutter%matrix_source_area_partition=.true.
       forcing%rutter%process%vegetation_cover_fraction=vegetation_cover(j)

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "source_directory": "tests/qualification/ppa-wu05-migmac10-canonical-20261006",
+  "input_files": [
+    "swap.swp",
+    "swap.bbc",
+    "swap.dra",
+    "wintcer1.crp",
+    "wintcer2.crp",
+    "andelst_meteo.998",
+    "andelst_meteo.999",
+    "andelst_rain.998",
+    "andelst_rain.999"
+  ],
+  "timeout_seconds": 30,
+  "slow_seconds_per_day": 5,
+  "pairwise_design": "16 binary rows: x0,x1,x2,x3,x0 xor x1; every pair covers all four levels. Original profile retained; ksat column scaled, no equation change.",
+  "scenarios": [
+    {
+      "id": "surface-and-active-oxygen",
+      "mode": "experimental",
+      "days": 1,
+      "transformations": [
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=\\s*)[^!\\n]+",
+          "replacement": "\\g<1>1 ",
+          "count": 1
+        },
+        {
+          "kind": "replace",
+          "file": "wintcer1.crp",
+          "pattern": "^(\\s*SWOXYGEN\\s*=.*)$",
+          "replacement": "\\g<1>\\n HLIM1=0.0\\n HLIM2U=-100.0\\n HLIM2L=-100.0",
+          "count": 1
+        }
+      ],
+      "source_surface_demand": true
+    }
+  ]
+}
