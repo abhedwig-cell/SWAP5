@@ -42,7 +42,7 @@ with tempfile.TemporaryDirectory(prefix='swap5-native-water-',dir=out.parent)as 
    except subprocess.TimeoutExpired:censored=True
    except OSError as e:launch_error=str(e);se.write((launch_error+"\n").encode())
   event=dict(label=label,command=list(map(str,cmd)),returncode=returncode,censored=censored,launch_error=launch_error,seconds=time.monotonic()-started);events.append(event);return returncode==0 and launch_error is None
- ok=run([macro_reader,'input.swp','input.bbc','macro.nml','input.dra','native-water'],'source_initial',60)
+ ok=run([macro_reader,'input.swp','input.bbc','macro.nml','input.dra','native-water-experimental'if a.mode=='experimental'else'native-water'],'source_initial',60)
  binding=sha(document.encode()+swp+(stage/'macro.nml').read_bytes()+sha(exe.read_bytes()).encode())if ok else''
  cmd=[exe,'input.nml',str(a.restart.resolve())if a.restart else'-',str(a.stop_after),'input.swp','macro.nml',binding]
  if a.stop_at_time is not None or a.anchored_cauchy or a.mode!='production':cmd.append(str(a.stop_at_time)if a.stop_at_time is not None else'1.7976931348623157e308')

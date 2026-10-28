@@ -30,6 +30,7 @@ module mod_b110_dynamic_top_boundary_solver_adapter
      real(real64) :: runoff_exponent = 1.0_real64
      logical :: macropore_pond_donor_active = .false.
      real(real64) :: macropore_pond_threshold = 0.0_real64
+     real(real64) :: source_surface_diameter_cm = 0.0_real64
      real(real64) :: macropore_surface_conductivity = 0.0_real64
      logical :: matrix_source_area_partition = .false.
      logical :: implicit_pond_evaporation = .false.
@@ -124,6 +125,25 @@ contains
     b110_request%macropore_pond_donor_active = self%macropore_pond_donor_active
     b110_request%macropore_pond_threshold_cm = self%macropore_pond_threshold
     b110_request%macropore_surface_conductivity_cm_per_day = self%macropore_surface_conductivity
+    if(.not.ieee_is_finite(self%source_surface_diameter_cm))then
+      result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='source-macro-conductivity-invalid';return
+    end if
+    if(self%source_surface_diameter_cm/=0.0_real64)then
+      ! MPVOLUME case1: use the same candidate area as the direct macro supply.
+      ! Positive diameter selects this experimental configuration-derived law.
+      if(.not.ieee_is_finite(requested%macropore_surface_area_fraction))then
+        result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='source-macro-conductivity-invalid';return
+      end if
+      if(self%source_surface_diameter_cm<=0.0_real64.or. &
+         requested%macropore_surface_area_fraction<0.0_real64.or. &
+         requested%macropore_surface_area_fraction>0.6_real64.or..not.self%macropore_pond_donor_active)then
+        result%status=SW_TOP_BOUNDARY_UNAVAILABLE;result%route='source-macro-conductivity-invalid';return
+      end if
+      b110_request%macropore_surface_conductivity_cm_per_day=min(max( &
+        2.0_real64*7.2e8_real64*(self%source_surface_diameter_cm* &
+        (1.0_real64-sqrt(1.0_real64-requested%macropore_surface_area_fraction)))**3/ &
+        self%source_surface_diameter_cm,1.0e-14_real64),1.0e3_real64)
+    end if
     b110_request%implicit_pond_evaporation = self%implicit_pond_evaporation
 
     call evaluate_b110_dynamic_top_boundary(self%geometry, self%hydraulics, b110_request, b110_result)

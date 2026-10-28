@@ -1,0 +1,30 @@
+{
+  "population": "DATAQUAL05+DATAQUAL06 versions of one historical Andelst project, not independent projects",
+  "normalization": "json.dumps({inputs: row.input_sha256, options: row.process_options}, sort_keys=True); recompute because historical stored SHA formats differ",
+  "source_files": [
+    "integration/dataqual05/all-results.json",
+    "integration/dataqual06/all-results.json"
+  ],
+  "counts": {
+    "attempted": {
+      "dataqual05": 93,
+      "dataqual06": 46,
+      "overlap": 6,
+      "combined": 133
+    },
+    "native": {
+      "dataqual05": 85,
+      "dataqual06": 46,
+      "overlap": 2,
+      "combined": 129
+    },
+    "water_qualified": {
+      "dataqual05": 28,
+      "dataqual06": 25,
+      "overlap": 2,
+      "combined": 51
+    }
+  },
+  "scenario_attempts": 274,
+  "native_processes_including_restarts": 310
+}

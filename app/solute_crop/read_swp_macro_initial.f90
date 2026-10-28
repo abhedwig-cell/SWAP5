@@ -24,8 +24,9 @@ program read_swp_macro_initial
  logical::rdinqr
  call get_command_argument(1,swp);call get_command_argument(2,bbc);call get_command_argument(3,output);call get_command_argument(4,dra)
  call get_command_argument(5,config_mode)
- call require(len_trim(config_mode)==0.or.trim(config_mode)=='native-water','unknown configuration option')
- full_config=trim(config_mode)=='native-water'
+ call require(len_trim(config_mode)==0.or.trim(config_mode)=='native-water'.or. &
+  trim(config_mode)=='native-water-experimental','unknown configuration option')
+ full_config=len_trim(config_mode)>0
  call require(len_trim(swp)>0.and.len_trim(output)>0,'SWP and output required')
  call rdinit(74,0,trim(swp));call rdsinr('swmacro',0,1,mode);call require(mode==1,'requires original active SWMACRO')
  call rdsinr('swfrost',0,1,m);call require(m==0,'frost not selected')
@@ -100,7 +101,11 @@ program read_swp_macro_initial
   initial_theta=theta(:nn);theta(:nn)=thetas(:nn);call MPVOLUME(1)
   minimum_surface_conductivity=ksmpss
   theta(:nn)=initial_theta;call MPVOLUME(1)
-  call require(minimum_surface_conductivity==1000d0.and.ksmpss==1000d0,'variable surface conductivity not selected')
+  call require(all(ieee_is_finite([minimum_surface_conductivity,ksmpss])).and. &
+   minimum_surface_conductivity>=1d-14.and.ksmpss>=minimum_surface_conductivity.and.ksmpss<=1000d0, &
+   'source surface conductivity bounds')
+  if(minimum_surface_conductivity/=1000d0)call require(trim(config_mode)=='native-water-experimental', &
+   'variable surface conductivity requires experimental mode')
  end if
  ! All input and geometry checks precede output creation.
  open(newunit=u,file=trim(output),status='new',action='write')

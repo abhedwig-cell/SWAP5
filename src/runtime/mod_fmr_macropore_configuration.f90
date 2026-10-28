@@ -21,6 +21,7 @@ module mod_fmr_macropore_configuration
     logical :: covering_parameters_available = .false.
     real(real64) :: covering_minimum_polygon_diameter_cm = 0.0_real64
     real(real64) :: covering_ksat_cm_per_day = 0.0_real64
+    logical :: source_surface_conductivity_enabled = .false.
     logical :: surface_pond_inflow_enabled = .false.
     real(real64) :: surface_pond_threshold_cm = 0.0_real64
     real(real64) :: surface_macropore_conductivity_cm_per_day = 0.0_real64
@@ -293,6 +294,9 @@ contains
     if (self%shrinkage%enabled) then
       if (.not. self%shrinkage%valid_for_nodes(active_nodes)) return
       if (.not. allocated(self%matrix_area_fraction)) return
+    end if
+    if(self%source_surface_conductivity_enabled)then
+      if(.not.self%surface_pond_inflow_enabled.or.self%geometry%top_node/=1)return
     end if
     if (self%geometry%num_nodes /= active_nodes) return
     if (.not. allocated(self%matrix_area_fraction)) return
