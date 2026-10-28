@@ -1,0 +1,21 @@
+batch,id,mode,status,completed_days,last_successful_time,seconds,solver_iterations,temporal_rejections,water_max_independent_cm,restart,failure
+batch-O2,literal-original-two,production,PASS,2.0,2.0,35.10928518699984,62112,3306,1.1675122674192906e-14,not_tested,
+batch-O2,source-demand-two,experimental,PASS,2.0,2.0,28.428330523000113,49331,2622,8.337853519592431e-15,exact,
+batch-O2,paired-00-off,experimental,PASS,1.0,1.0,1.117511220999404,1750,97,4.9639112265076335e-15,not_tested,
+batch-O2,paired-00-on,experimental,PASS,1.0,1.0,1.2197956239997438,1842,102,2.677762525604699e-15,not_tested,
+batch-O2,paired-01-off,experimental,PASS,1.0,1.0,10.053012131999822,17599,952,2.2560349855621498e-15,not_tested,
+batch-O2,paired-01-on,experimental,PASS,1.0,1.0,14.985174607000772,17733,953,2.325613659981407e-15,not_tested,
+batch-O2,paired-04-off,experimental,PASS,1.0,1.0,1.9806203510006526,2947,155,2.783823756095146e-15,not_tested,
+batch-O2,paired-04-on,experimental,PASS,1.0,1.0,2.8459863409998434,3059,161,1.7327922408570673e-15,not_tested,
+batch-O2,paired-05-off,experimental,PASS,1.0,1.0,11.460958618999939,18348,983,2.2560349855621498e-15,not_tested,
+batch-O2,paired-05-on,experimental,PASS,1.0,1.0,11.686275293999643,18289,980,2.325613659981407e-15,not_tested,
+batch-O2,production-variant-rejected,production,FAILED,0.0,0.0,0.06604171900016809,,0,,not_tested,
+batch-O2,comparison-variant-rejected,comparison,FAILED,0.0,0.0,0.11494267599937302,,0,,not_tested,
+batch-O2,negative-pond-rejected,experimental,FAILED,0.0,0.0,0.11523439800021151,,0,,not_tested,raise ValueError('native project preparation rejected:\n'+cp.stdout.decode(errors='replace')+cp.stderr.decode(errors='replace')); ValueError: native project preparation rejected:; Error termination. Backtrace:
+batch-O2,source-demand-continuation,experimental,CENSORED,0.0,2.4950000000026193,30.006608276000406,28014,1173,,not_tested,
+batch-O0,literal-original-two,production,PASS,1.0,1.0,1.7755844540006365,1750,97,5.016820292524926e-15,not_tested,
+batch-O0,source-demand-two,experimental,PASS,2.0,2.0,51.320014623000134,49331,2622,8.337853519592431e-15,not_tested,
+combined,surface-and-active-oxygen,experimental,PASS,1.0,1.0,1.8262738039993565,1842,102,2.7257926818458067e-15,not_tested,
+reporting,start,experimental,PASS,1.0,1.0,1.0687954109998827,1842,102,2.6773288447357046e-15,not_tested,
+reporting,censored-report,experimental,CENSORED,0.0,1.0169999999998254,0.1016173379994143,64,3,,not_tested,time limit exceeded; in-flight counts unavailable
+reporting,invalid-mode-report,production,FAILED,0.0,0.0,0.06556356700002652,,0,,not_tested,run_native_water.py: error: --source-surface-demand requires --mode experimental

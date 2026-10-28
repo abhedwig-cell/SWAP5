@@ -1,0 +1,77 @@
+{
+  "scenario_executions": 20,
+  "physical_passes": 14,
+  "failed_or_rejected": 4,
+  "censored": 2,
+  "physical_O0_O2_exact": true,
+  "default_preserved_exact": true,
+  "same_variant_restart_exact": true,
+  "surface_demand": {
+    "first_day_soil_evap_cm": 0.04197689727112184,
+    "original_potential_cm": 0.041976897271121826,
+    "SPEV": 0.0008990248884654456,
+    "SAEV": 0.0008990248884654456
+  },
+  "independent_water_max_cm": 1.1675122674192906e-14,
+  "old_reference": {
+    "reference_sha256": "51816234b5a574c6d9d680c06742480fde64aa4f6b4a2f49b5e7dd45a15e11b1",
+    "reference": "frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate",
+    "days": [
+      {
+        "date": "1998-01-01",
+        "gwl_delta_cm": 0.17825123049641434,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0014989282628849743
+      },
+      {
+        "date": "1998-01-02",
+        "gwl_delta_cm": 0.8925642536169391,
+        "matrix_plus_rapid_drainage_delta_cm": 0.008410850909697093
+      }
+    ]
+  },
+  "corrected_reference": {
+    "reference_sha256": "51816234b5a574c6d9d680c06742480fde64aa4f6b4a2f49b5e7dd45a15e11b1",
+    "reference": "frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate",
+    "days": [
+      {
+        "date": "1998-01-01",
+        "gwl_delta_cm": 0.04749032723505309,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0011515820303237695
+      },
+      {
+        "date": "1998-01-02",
+        "gwl_delta_cm": 0.06042660032071012,
+        "matrix_plus_rapid_drainage_delta_cm": 0.0035379102016690617
+      }
+    ]
+  },
+  "old_iterations": 62112,
+  "corrected_iterations": 49331,
+  "continuation": {
+    "status": "CENSORED",
+    "seconds": 30.006608276000406,
+    "last_successful_time": 2.4950000000026193,
+    "attempts": 2314,
+    "solver_iterations": 28014,
+    "temporal_rejections": 1173,
+    "solver_rejections": 0,
+    "mass_rejections": 0
+  },
+  "checkpoint": {
+    "time": 2.4950000000026193,
+    "status": "COMPLETE",
+    "seconds": 17.09065556599944,
+    "restart_sha256": "6a3a5c368d852df40f79c8a39a86e5b5af11a48da7959f2a47d35238f56a687e"
+  },
+  "local_window": {
+    "status": "CENSORED",
+    "seconds": 15.003304526000647,
+    "environment": {
+      "SWAP5_DIAG_MACRO_TEMPORAL": "1"
+    },
+    "last_complete_source_window": 2.4950000000026193,
+    "inflight_progress_is_not_committed_source_window": true
+  },
+  "production_admission_changed": false,
+  "full_historical_closure": false
+}

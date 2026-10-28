@@ -1,0 +1,188 @@
+{
+  "workstream": "RT/VQ",
+  "work_unit": "DATAQUAL02",
+  "baseline": "ad62053833bbd2a5f40a493db89ae4b02cd11a46",
+  "stage": "QUALIFIED_EXPERIMENTAL_SOURCE_MAPPING_PENDING_CANONICAL",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "canonically_admitted": false,
+  "scope": "Explicit default-off original positive surface demand into existing Boesten owner; no production promotion",
+  "contract": "integration/dataqual02/CONTRACT.md",
+  "scientific_delta": {
+    "app/solute_project/main_water.f90": "M",
+    "integration/audits/verify_dataqual01_current.py": "M",
+    "integration/audits/verify_dataqual02_current.py": "A",
+    "tools/solute/run_dataqual_batch.py": "M",
+    "tools/solute/run_native_water.py": "M"
+  },
+  "postimages": {
+    "app/solute_project/main_water.f90": "54c39ab99164167290252f57202752a2763dee8c5f271f6f0c224600d2224afa",
+    "integration/audits/verify_dataqual01_current.py": "dbb72115aead4c90c768d4e79ee19dac90b480de8e2c24b922de3af9fb3a0b8d",
+    "integration/audits/verify_dataqual02_current.py": "af9b9e69000d1e6d13f4eb5951557b85980875705a682a4553e1d6af5bdbd5bb",
+    "integration/dataqual02/check_controls.py": "d4c314fd63ded620a35fff0b7a976bf2bd9bca1a687a359812129f73f69c4a6a",
+    "integration/dataqual02/check_surface_demand.py": "274b5b1a4bc366dc51e6c570b8fb1944379ec806c588351ed6de87c6491ab981",
+    "integration/dataqual02/seal.py": "05e8cf3993c3851941c8a3c4eacd739336e24f728d4cf44cde660c3032fe56e7",
+    "tools/solute/run_dataqual_batch.py": "6871ed2203d2b674b177407202e6e2808e650c647f15018c19a4abbf78745ef8",
+    "tools/solute/run_native_water.py": "c159ec55981c0dfa25ac106334fb90e60d355d301af19ee88dd5eea8416a5161"
+  },
+  "evidence": {
+    "parts": [
+      "integration/dataqual02/evidence-000.b64",
+      "integration/dataqual02/evidence-001.b64",
+      "integration/dataqual02/evidence-002.b64",
+      "integration/dataqual02/evidence-003.b64",
+      "integration/dataqual02/evidence-004.b64",
+      "integration/dataqual02/evidence-005.b64",
+      "integration/dataqual02/evidence-006.b64",
+      "integration/dataqual02/evidence-007.b64",
+      "integration/dataqual02/evidence-008.b64",
+      "integration/dataqual02/evidence-009.b64",
+      "integration/dataqual02/evidence-010.b64",
+      "integration/dataqual02/evidence-011.b64",
+      "integration/dataqual02/evidence-012.b64",
+      "integration/dataqual02/evidence-013.b64",
+      "integration/dataqual02/evidence-014.b64",
+      "integration/dataqual02/evidence-015.b64",
+      "integration/dataqual02/evidence-016.b64",
+      "integration/dataqual02/evidence-017.b64",
+      "integration/dataqual02/evidence-018.b64",
+      "integration/dataqual02/evidence-019.b64",
+      "integration/dataqual02/evidence-020.b64",
+      "integration/dataqual02/evidence-021.b64",
+      "integration/dataqual02/evidence-022.b64",
+      "integration/dataqual02/evidence-023.b64",
+      "integration/dataqual02/evidence-024.b64",
+      "integration/dataqual02/evidence-025.b64",
+      "integration/dataqual02/evidence-026.b64",
+      "integration/dataqual02/evidence-027.b64",
+      "integration/dataqual02/evidence-028.b64",
+      "integration/dataqual02/evidence-029.b64",
+      "integration/dataqual02/evidence-030.b64",
+      "integration/dataqual02/evidence-031.b64",
+      "integration/dataqual02/evidence-032.b64",
+      "integration/dataqual02/evidence-033.b64",
+      "integration/dataqual02/evidence-034.b64",
+      "integration/dataqual02/evidence-035.b64",
+      "integration/dataqual02/evidence-036.b64",
+      "integration/dataqual02/evidence-037.b64",
+      "integration/dataqual02/evidence-038.b64",
+      "integration/dataqual02/evidence-039.b64",
+      "integration/dataqual02/evidence-040.b64",
+      "integration/dataqual02/evidence-041.b64",
+      "integration/dataqual02/evidence-042.b64",
+      "integration/dataqual02/evidence-043.b64"
+    ],
+    "sha256": "febf9fe9bd9f0a60b582292b9aee5d34415036db963757b7d2a06cf24f4a5501",
+    "bytes": 1937108,
+    "members": 756
+  },
+  "result": {
+    "scenario_executions": 20,
+    "physical_passes": 14,
+    "failed_or_rejected": 4,
+    "censored": 2,
+    "physical_O0_O2_exact": true,
+    "default_preserved_exact": true,
+    "same_variant_restart_exact": true,
+    "surface_demand": {
+      "first_day_soil_evap_cm": 0.04197689727112184,
+      "original_potential_cm": 0.041976897271121826,
+      "SPEV": 0.0008990248884654456,
+      "SAEV": 0.0008990248884654456
+    },
+    "independent_water_max_cm": 1.1675122674192906e-14,
+    "old_reference": {
+      "reference_sha256": "51816234b5a574c6d9d680c06742480fde64aa4f6b4a2f49b5e7dd45a15e11b1",
+      "reference": "frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate",
+      "days": [
+        {
+          "date": "1998-01-01",
+          "gwl_delta_cm": 0.17825123049641434,
+          "matrix_plus_rapid_drainage_delta_cm": 0.0014989282628849743
+        },
+        {
+          "date": "1998-01-02",
+          "gwl_delta_cm": 0.8925642536169391,
+          "matrix_plus_rapid_drainage_delta_cm": 0.008410850909697093
+        }
+      ]
+    },
+    "corrected_reference": {
+      "reference_sha256": "51816234b5a574c6d9d680c06742480fde64aa4f6b4a2f49b5e7dd45a15e11b1",
+      "reference": "frozen rounded SWAP4.3.1 output; descriptive comparison, no equivalence or independent mass certificate",
+      "days": [
+        {
+          "date": "1998-01-01",
+          "gwl_delta_cm": 0.04749032723505309,
+          "matrix_plus_rapid_drainage_delta_cm": 0.0011515820303237695
+        },
+        {
+          "date": "1998-01-02",
+          "gwl_delta_cm": 0.06042660032071012,
+          "matrix_plus_rapid_drainage_delta_cm": 0.0035379102016690617
+        }
+      ]
+    },
+    "old_iterations": 62112,
+    "corrected_iterations": 49331,
+    "continuation": {
+      "status": "CENSORED",
+      "seconds": 30.006608276000406,
+      "last_successful_time": 2.4950000000026193,
+      "attempts": 2314,
+      "solver_iterations": 28014,
+      "temporal_rejections": 1173,
+      "solver_rejections": 0,
+      "mass_rejections": 0
+    },
+    "checkpoint": {
+      "time": 2.4950000000026193,
+      "status": "COMPLETE",
+      "seconds": 17.09065556599944,
+      "restart_sha256": "6a3a5c368d852df40f79c8a39a86e5b5af11a48da7959f2a47d35238f56a687e"
+    },
+    "local_window": {
+      "status": "CENSORED",
+      "seconds": 15.003304526000647,
+      "environment": {
+        "SWAP5_DIAG_MACRO_TEMPORAL": "1"
+      },
+      "last_complete_source_window": 2.4950000000026193,
+      "inflight_progress_is_not_committed_source_window": true
+    },
+    "production_admission_changed": false,
+    "full_historical_closure": false
+  },
+  "source_provenance": {
+    "pr1457_head": "51439058f58cc1c8ca7f3cf803a851b768bb4bff",
+    "imported": "Only original soil/pond potential-demand assignments, under a new experimental gate",
+    "not_imported": [
+      "continuous wall law",
+      "perched Jacobian",
+      "coupled hydraulics",
+      "141day evidence"
+    ]
+  },
+  "test_selection": {
+    "selected": [
+      "Adapter rebuild with verified unchanged194-provider physical build O0/O2",
+      "Actual original day1/days1-2 and independent positive-demand history",
+      "Paired forcing cases and active empirical-oxygen composition",
+      "Exact default and O0/O2 endpoint/payload preservation",
+      "Same-variant restart and six direct native negative controls",
+      "Own corrected2.495 source-event checkpoint and bounded local diagnostic",
+      "Owner source/raw and unchanged FSI35",
+      "Docs source/strict"
+    ],
+    "not_selected": [
+      "fresh481",
+      "broad F-CI",
+      "low-air",
+      "RossFast",
+      "unchanged physical process requalification"
+    ]
+  },
+  "next_action": "Verify current owner/source and actual canonical merge; then prioritize remaining local hydraulic transient cost using the exact corrected2.495 restart."
+}
