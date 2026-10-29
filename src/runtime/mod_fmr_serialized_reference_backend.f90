@@ -392,6 +392,7 @@ module mod_fmr_serialized_reference_backend
     logical :: frost_active = .false.
     type(frost_hydraulic_parameters_t) :: frost_hydraulic
     logical :: soil_temperature_active = .false.
+    logical :: black_heat_composition_enabled = .false.
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t), allocatable :: black_evaporation
     logical :: boesten_evaporation_active = .false.
@@ -415,6 +416,7 @@ module mod_fmr_serialized_reference_backend
   end type fmr_b110_physical_parameters_t
 
   type, public :: fmr_black_evaporation_runtime_forcing_t
+    logical :: wetting_reset_each_trial=.false.
     real(real64) :: precipitation_rate_cm_per_day = 0.0_real64
     real(real64) :: irrigation_rate_cm_per_day = 0.0_real64
     real(real64) :: snowmelt_rate_cm_per_day = 0.0_real64
@@ -921,6 +923,7 @@ module mod_fmr_serialized_reference_backend
     type(frost_constitutive_provider_t), pointer :: frost_constitutive => null()
     logical :: black_evaporation_active = .false.
     type(black_evaporation_parameters_t) :: black_evaporation_parameters
+    real(real64)::black_forcing_end_time=0d0
     type(fmr_black_evaporation_runtime_forcing_t) :: black_evaporation_forcing
     logical :: boesten_evaporation_active = .false.
     type(boesten_evaporation_parameters_t) :: boesten_evaporation_parameters
@@ -1045,8 +1048,13 @@ contains
     if(.not.p%drainage_response_active.or..not.allocated(p%drainage_trial_distribution))return
     if(.not.allocated(p%drainage_response_levels))return
     if(size(p%drainage_response_levels)/=1)return
-    if(p%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
-    if(p%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
+    if(p%drainage_response_levels(1)%variant==FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2)then
+      if(.not.p%black_heat_composition_enabled.or.p%root_extraction_active.or.p%macropore_active)return
+      if(.not.p%drainage_response_levels(1)%hooghoudt_prepared%is_valid)return
+    else
+      if(p%drainage_response_levels(1)%variant/=FMR_DRAIN_VARIANT_DRAMET3)return
+      if(p%drainage_response_levels(1)%dramet3%allocation_mode/=3)return
+    end if
     if(p%macropore_active)then
       if(p%bottom_mode/=3.or.p%drainage_response_levels(1)%dramet3%drain_type/=1)return
     end if
@@ -1891,13 +1899,14 @@ contains
     call committed%initialize(lineage_id, carrier, ok, initial_time)
   end subroutine fmr_new_b110_fixed_weir_surface_water_committed_state
 
-  subroutine fmr_new_b110_black_evaporation_committed_state(committed, lineage_id, state, black_state, initial_time, ok)
+  subroutine fmr_new_b110_black_evaporation_committed_state(committed, lineage_id, state, black_state, initial_time, ok, parameters)
     type(kernel_committed_state_t), intent(out) :: committed
     integer(int64), intent(in) :: lineage_id
     type(fmr_b110_physical_state_t), intent(in) :: state
     type(black_evaporation_state_t), intent(in) :: black_state
     real(real64), intent(in) :: initial_time
     logical, intent(out) :: ok
+    type(fmr_b110_physical_parameters_t),intent(in),optional::parameters
     class(transaction_state_t), allocatable :: carrier
 
     ok = .false.
@@ -1908,7 +1917,7 @@ contains
       call copy_b110_physical_state(state, typed_carrier)
       typed_carrier%black_evaporation = black_state
     end select
-    call committed%initialize(lineage_id, carrier, ok, initial_time)
+    call committed%initialize(lineage_id, carrier, ok, initial_time, parameters)
   end subroutine fmr_new_b110_black_evaporation_committed_state
 
   subroutine fmr_new_b110_boesten_evaporation_committed_state(committed, lineage_id, state, boesten_state, initial_time, ok, parameters)
@@ -2553,7 +2562,9 @@ contains
       if(.not.self%model%accepted_water_flux_trace_enabled.or..not.parameters%soil_temperature_active.or. &
          parameters%frost_active.or.(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.and. &
          .not.(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.and. &
-         parameters%boesten_evaporation_active)).or. &
+         parameters%boesten_evaporation_active).and. &
+         .not.(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION.and. &
+         parameters%black_heat_composition_enabled.and.parameters%black_evaporation_active)).or. &
          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)then
         call reject_backend_trial(result,candidate,diagnostics)
         return
@@ -2565,7 +2576,7 @@ contains
           (parameters%soil_temperature_active.and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.and. &
            .not.soil_n_heat_trace.and..not.(macro_numeric_heat_valid(parameters).and. &
              template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE)) .or. &
-          parameters%black_evaporation_active .or. (parameters%boesten_evaporation_active.and. &
+          (parameters%black_evaporation_active.and..not.parameters%black_heat_composition_enabled) .or. (parameters%boesten_evaporation_active.and. &
           (template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.or. &
            parameters%macropore_active.or.allocated(forcing%rutter)).and. &
            .not.(parameters%macropore_active.and. &
@@ -2789,7 +2800,7 @@ contains
     if (parameters%black_evaporation_active) then
       if (parameters%boesten_evaporation_active .or. &
           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
-          parameters%snow_active .or. parameters%soil_temperature_active .or. &
+          parameters%snow_active .or. (parameters%soil_temperature_active.and..not.parameters%black_heat_composition_enabled) .or. &
           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
         result = kernel_result_t()
         result%status = KERNEL_STATUS_NOT_ADMITTED
@@ -3507,9 +3518,16 @@ contains
         ok = ok .and. .not. parameters%boesten_evaporation_active .and. self%black_evaporation_active .and. &
              .not. self%boesten_evaporation_active .and. allocated(parameters%black_evaporation) .and. &
              .not. allocated(parameters%boesten_evaporation) .and. self%soil_water_selection%uses_reference() .and. &
-             .not. parameters%snow_active .and. .not. parameters%soil_temperature_active .and. &
-             .not. self%fixed_weir_surface_water_active .and. .not. parameters%drainage_response_active .and. &
+             .not. parameters%snow_active .and. &
+             (.not.parameters%soil_temperature_active.or.parameters%black_heat_composition_enabled) .and. &
+             .not. self%fixed_weir_surface_water_active .and. &
+             (.not.parameters%drainage_response_active.or.parameters%black_heat_composition_enabled) .and. &
              .not. parameters%root_extraction_active .and. parameters%bottom_mode /= 5
+        if(parameters%black_heat_composition_enabled)then
+          ok=ok.and.parameters%soil_temperature_active.and.allocated(parameters%soil_temperature).and. &
+            .not.parameters%macropore_active.and.parameters%bottom_mode==2.and.self%accepted_water_flux_trace_enabled
+          if(ok)ok=parameters%soil_temperature%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC
+        end if
         if (ok) ok = ieee_is_finite(parameters%black_evaporation%cofred) .and. &
              parameters%black_evaporation%cofred >= 0.0_real64
       else if (parameters%boesten_evaporation_active) then
@@ -4223,6 +4241,7 @@ contains
           if (.not. same_real_bits(forcing%black_evaporation%wetting_event_time, interval%t0)) return
         end if
         self%black_evaporation_forcing = forcing%black_evaporation
+        self%black_forcing_end_time=interval%t1
       else
         if (allocated(forcing%black_evaporation)) return
       end if
@@ -4947,6 +4966,8 @@ contains
                black_physical%ponding_depth > BLACK_EVAP_PONDING_CLASSIFICATION_CM
           black_process_forcing%wetting_reset_event = self%black_evaporation_forcing%wetting_reset_event .and. &
                same_real_bits(t0, self%black_evaporation_forcing%wetting_event_time)
+          black_process_forcing%wetting_reset_event=black_process_forcing%wetting_reset_event.or. &
+               self%black_evaporation_forcing%wetting_reset_each_trial
           call evaluate_black_evaporation_reduction(self%black_evaporation_parameters, &
                black_physical%black_evaporation, black_process_forcing, step_duration, black_result)
           self%last_observation%black_evaporation_evaluated = black_result%status == BLACK_EVAP_AVAILABLE
@@ -6914,6 +6935,45 @@ contains
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
+    real(real64)::endpoint,history_bound
+    ! Only the new explicit accepted-trace Black composition uses this metric.
+    ! C*abs(sqrt(Lfull)-sqrt(Lhalf)) bounds all future dry evaporation-depth
+    ! disagreement from LDWET. A sustained wetting reset erases that memory at
+    ! the next trial; at the forcing endpoint it must again satisfy the bound.
+    if(self%black_evaporation_active.and.self%accepted_water_flux_trace_enabled)then
+      value=huge(0.0_real64)
+      if(.not.allocated(self%trace_arena).or.self%trace_tail<=0)return
+      if(.not.allocated(self%trace_arena(self%trace_tail)%payload))return
+      endpoint=self%trace_arena(self%trace_tail)%payload%t1
+      select type(full=>full_state)
+      type is(fmr_b110_black_evaporation_state_t)
+        select type(half=>half_state)
+        type is(fmr_b110_black_evaporation_state_t)
+          if(.not.all(ieee_is_finite([full%black_evaporation%ldwet,half%black_evaporation%ldwet])))return
+          if(min(full%black_evaporation%ldwet,half%black_evaporation%ldwet)<0d0)return
+          value=fmr_weather_surface_temporal_error(self,full,half)
+          block
+            character(8)::setting
+            integer::status
+            integer,save::calls=0
+            call get_environment_variable('SWAP5_DIAG_BLACK_TEMPORAL',setting,status=status)
+            if(status==0.and.trim(setting)=='1')then
+              calls=calls+1
+              if(calls<=24.or.mod(calls,1000)==0)write(error_unit,*)'BLACK_TEMPORAL',calls,endpoint,value, &
+                maxval(abs(full%pressure_head-half%pressure_head)), &
+                full%groundwater_level,half%groundwater_level,full%black_evaporation%ldwet,half%black_evaporation%ldwet
+            end if
+          end block
+          if(.not.self%black_evaporation_forcing%wetting_reset_each_trial.or. &
+             same_real_bits(endpoint,self%black_forcing_end_time))then
+            history_bound=self%black_evaporation_parameters%cofred* &
+              abs(sqrt(full%black_evaporation%ldwet)-sqrt(half%black_evaporation%ldwet))
+            value=max(value,history_bound)
+          end if
+        end select
+      end select
+      return
+    end if
     ! New plain-Boesten accepted-trace composition. The older water-only
     ! certificate/identity route below remains unchanged. Persistent process
     ! history contributes to the error budget as well as the hydraulic state.

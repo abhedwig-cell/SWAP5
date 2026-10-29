@@ -24,7 +24,8 @@ contains
  logical function matrix_thermal_template(t)result(ok)
   type(fmr_template_t),intent(in)::t
   ok=(t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.or. &
-   t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION).and. &
+   t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.or. &
+   t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION).and. &
    t%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_NONE.and. &
    (t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_NONE.or. &
     t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
@@ -62,6 +63,10 @@ contains
   select type(q=>physical)
   type is(fmr_b110_physical_state_t);call inspect(q)
   type is(fmr_b110_temporal_indicator_state_t);call inspect(q)
+  type is(fmr_b110_black_evaporation_state_t)
+   if(.not.ieee_is_finite(q%black_evaporation%ldwet))return
+   if(q%black_evaporation%ldwet<0d0)return
+   call inspect(q)
   type is(fmr_b110_boesten_evaporation_state_t)
    if(.not.all(ieee_is_finite([q%boesten_evaporation%spev,q%boesten_evaporation%saev])))return
    if(min(q%boesten_evaporation%spev,q%boesten_evaporation%saev)<0d0)return
@@ -118,9 +123,19 @@ contains
       supply%runon_rate,supply%runon_c])))return
     if(supply%t0/=t0.or.supply%t1/=t1)return
     if(.not.ieee_is_finite(forcing%top_flux))return
-    if(allocated(forcing%black_evaporation).or. &
-      allocated(forcing%snow).or.allocated(forcing%rfm_surface).or. &
+    if(allocated(forcing%snow).or.allocated(forcing%rfm_surface).or. &
       allocated(forcing%macropore_top_input))return
+    if(allocated(forcing%black_evaporation))then
+      if(.not.parameters%black_heat_composition_enabled)return
+      if(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION)return
+      if(allocated(forcing%pond_input).or.allocated(forcing%rutter).or.allocated(forcing%boesten_evaporation))return
+      if(supply%implicit_pond_evaporation)return
+      if(forcing%black_evaporation%precipitation_rate_cm_per_day/=supply%rain_rate.or. &
+         forcing%black_evaporation%irrigation_rate_cm_per_day/=supply%irrigation_rate.or. &
+         forcing%black_evaporation%runon_rate_cm_per_day/=supply%runon_rate)return
+    else
+      if(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION)return
+    end if
     if(allocated(forcing%boesten_evaporation))then
       if(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION)return
       if(allocated(forcing%pond_input).or.allocated(forcing%rutter).or.supply%implicit_pond_evaporation)return

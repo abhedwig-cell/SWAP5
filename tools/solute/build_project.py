@@ -5,7 +5,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def main():
- ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--native-water',action='store_true');ap.add_argument('--output',type=Path,required=True)
+ ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--fallow-reader',action='store_true');ap.add_argument('--native-water',action='store_true');ap.add_argument('--output',type=Path,required=True)
  ap.add_argument('--optimization',choices=['O0','O2'],required=True)
  ap.add_argument('--physical-build',type=Path);ap.add_argument('--crop-reader',type=Path);ap.add_argument('--root-reader',type=Path)
  a=ap.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
@@ -70,5 +70,8 @@ def main():
  if a.native_water:
   bundle['native_water']=True;bundle['macro_reader']=str(macro_build/'swap5_read_macro_initial')
   bundle['executable_sha256'][bundle['macro_reader']]=sha(Path(bundle['macro_reader']))
+ if a.fallow_reader:
+  bundle['fallow_reader']=str(native('read_fallow',[ROOT/'src/process/mod_pmdirect_swetr0_process.f90',ROOT/'app/solute_project/read_fallow_project.f90'],'ORIGINAL_PM_FALLOW_PREFIX_PREPARED'))
+  bundle['executable_sha256'][bundle['fallow_reader']]=sha(Path(bundle['fallow_reader']))
  (out/'bundle.json').write_text(json.dumps(bundle,indent=2)+'\n');print(json.dumps(dict(status='BUILT',reused_providers=193)))
 if __name__=='__main__':main()

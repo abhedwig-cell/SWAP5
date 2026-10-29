@@ -14,8 +14,8 @@ program swap5_native_project_column
   use mod_b110_default_mvg_provider
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
   use mod_b111_persistent_pond, only: pond_step_t
-  use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t
-  use mod_fmr_drainage_response_binding,only:FMR_DRAIN_VARIANT_DRAMET3
+  use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t,black_evaporation_state_t
+  use mod_fmr_drainage_response_binding,only:FMR_DRAIN_VARIANT_DRAMET3,FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2
   use mod_drainage_dramet3_response,only:initialize_dramet3_channel_control,DRAMET3_OK
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED
@@ -38,6 +38,7 @@ program swap5_native_project_column
     fmr_evaluate_committed_root_uptake,FMR_ROOT_UPTAKE_BINDING_OK
   use mod_process_hydraulic_view,only:process_hydraulic_view_t
   use mod_root_water_uptake_process,only:root_water_uptake_request_t,evaluate_macro_feddes_drought_uptake
+  use mod_drainage_hooghoudt_equivalent_depth
   implicit none
   integer,parameter :: MAX_WINDOWS=2048,MAX_NODES=256
   integer :: nodes=4
@@ -47,6 +48,11 @@ program swap5_native_project_column
   logical :: cauchy3_bottom=.false.,cauchy3_half_cell=.true.
   integer :: cauchy3_count=0
   real(real64) :: cauchy3_resistance=0d0,cauchy3_dates(1024)=0d0,cauchy3_heads(1024)=0d0
+  logical :: fallow_only=.false.,black_evaporation=.false.
+  integer::source_bottom_mode=0,drain_variant=3
+  real(real64)::black_rsigni=0d0,black_cofred=0d0,drain_shape=0d0,drain_khtop=0d0,drain_entres=0d0,drain_base=0d0,drain_wetper=0d0
+  type(hooghoudt_equivalent_depth_geometry_t)::hh_geometry
+  type(hooghoudt_equivalent_depth_diagnostics_t)::hh_diagnostic
   logical :: boesten_evaporation=.false.
   real(real64) :: boesten_cofred=0d0
   logical :: native_drainage=.false.
@@ -141,7 +147,8 @@ program swap5_native_project_column
   namelist /crop/ root_table_points,upper_layer_bottom_node,maximum_root_depth_cm,root_relative_depth,root_density, &
     hlim3l,hlim3h,hlim4,adcrl,adcrh,hlim1,hlim2u,hlim2l,empirical_oxygen_enabled,crop_active, &
     potential_transpiration_cm_day,root_depth_cm,substep_root_stress
-  namelist /column/ schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
+  namelist /column/ fallow_only,source_bottom_mode,black_evaporation,black_cofred,black_rsigni,drain_variant, &
+    drain_shape,drain_khtop,drain_entres,drain_base,drain_wetper,schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
     retain_accepted_step_proposal,water_flux_temporal,dynamic_temperature,freundlich_exponent,reference_concentration, &
@@ -197,13 +204,14 @@ program swap5_native_project_column
   end do
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
+  if(fallow_only)call validate_original_fallow()
   call require(all(ieee_is_finite(air_temperature_c)),'nonfinite air temperature')
   call require(all(air_temperature_c>=-50d0).and.all(air_temperature_c<=60d0),'air temperature outside domain')
   call require(swp_heat_bootstrap.or.all(air_temperature_c==20d0),'air forcing requires native heat')
   if(swp_heat_bootstrap)then
     call require(swp_native_hydraulics.and.dynamic_temperature,'native heat requires native hydraulics and dynamic heat')
     call require(all(initial_temperature_c==20d0).and.all(surface_temperature_c==20d0),'duplicate native heat owner')
-    call require(.not.retain_accepted_step_proposal, &
+    call require(.not.retain_accepted_step_proposal.or.(fallow_only.and.black_evaporation), &
       'native heat project composition not selected')
   end if
   call require(.not.swp_native_hydraulics.or.swp_water_bootstrap,'native hydraulics requires SWP water bootstrap')
@@ -216,7 +224,7 @@ program swap5_native_project_column
       ! The project adapter has already resolved and validated the external BBC.
       ! Initialization uses that same physical bottom owner, without a second file.
       call import_column_swp_water(trim(legacy_swp),nodes,cell_thickness_cm,swp_heads,swp_cofgen, &
-        source_pond=swp_source_pond,initial_bottom_mode=merge(3,2,cauchy3_bottom), &
+        source_pond=swp_source_pond,initial_bottom_mode=merge(source_bottom_mode,merge(3,2,cauchy3_bottom),source_bottom_mode/=0), &
         source_groundwater=swp_source_groundwater,allow_ksatexm=.true.)
       if(swp_source_pond>=0d0)then
         call require(initial_pond_cm==0d0,'SWINCO2 forbids a second initial pond depth')
@@ -290,7 +298,8 @@ program swap5_native_project_column
   call require(all(initial_temperature_c>=-50d0).and.all(initial_temperature_c<=60d0).and. &
     all(surface_temperature_c>=-50d0).and.all(surface_temperature_c<=60d0),'heat outside admitted domain')
   call require(dynamic_temperature.or.decay_rate_day==0d0,'decay requires explicit dynamic heat activation')
-  call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal),'thermal proposal combination not qualified')
+  call require(.not.(dynamic_temperature.and.retain_accepted_step_proposal).or.(fallow_only.and.black_evaporation), &
+    'thermal proposal combination not qualified')
   call require(.not.implicit_pond_evaporation.or.(.not.dynamic_temperature.and. &
     .not.retain_accepted_step_proposal.and.freundlich_exponent==1d0),'implicit pond combination not qualified')
   call require(.not.any(soil_evaporation_cm_day>0d0).or.((.not.dynamic_temperature.or.swp_heat_bootstrap).and. &
@@ -303,6 +312,7 @@ program swap5_native_project_column
   call require(.not.water_flux_temporal.or.temporal_tolerance==1d-3, &
     'water/flux temporal metric uses explicit fixed .001 depth and rate budgets')
   call require(swp_water_bootstrap.and.all(root_cm_day==0d0),'native crop forbids prescribed second root sink')
+  if(.not.fallow_only)then
   call require(root_table_points>=2.and.root_table_points<=MAX_ROOT_KNOTS,'root knot count')
   call require(all(ieee_is_finite([maximum_root_depth_cm,root_relative_depth,root_density, &
     hlim3l,hlim3h,hlim4,adcrl,adcrh,hlim1,hlim2u,hlim2l,root_depth_cm,potential_transpiration_cm_day])), &
@@ -341,7 +351,7 @@ program swap5_native_project_column
     end associate
   end do
   do j=1,windows
-    call select_project_profile(profile_index(j))
+    if(.not.fallow_only)call select_project_profile(profile_index(j))
     if(.not.crop_active(j))then
       call require(root_depth_cm(j)==0d0.and.potential_transpiration_cm_day(j)==0d0,'fallow root demand must be zero')
     else
@@ -356,6 +366,11 @@ program swap5_native_project_column
   crop_input=fmr_root_uptake_crop_input_t()
   root_parameters=root_water_uptake_parameters_t(numnod,hlim3l,hlim3h,hlim4,adcrl,adcrh, &
     empirical_oxygen_enabled,upper_layer_bottom_node,hlim1,hlim2u,hlim2l)
+  else
+    call require(.not.any(crop_active).and.all(potential_transpiration_cm_day==0d0).and.all(root_depth_cm==0d0), &
+      'fallow prefix contains crop demand')
+    call require(profile_count==0.and.all(profile_index==0).and..not.substep_root_stress,'fallow crop state must be absent')
+  end if
   p%parameter_set_id=670001_int64;p%active_nodes=numnod
   call require(.not.continuous_mvg.or.picard_conductivity_iteration,'continuous MvG requires explicit Picard route')
   if(continuous_mvg)p%parameter_set_id=670002_int64
@@ -372,7 +387,7 @@ program swap5_native_project_column
   if(cauchy3_bottom)p%bottom_mode=3
   p%picard_conductivity_iteration=picard_conductivity_iteration
   if(picard_conductivity_iteration)p%max_iterations=64
-  p%root_extraction_active=.true.
+  p%root_extraction_active=.not.fallow_only
   initial%active_nodes=numnod;initial%pressure_head=spread(initial_head,1,numnod)
   if(swp_water_bootstrap)initial%pressure_head=swp_heads
   allocate(initial%water_content(numnod),conductivity(numnod),capacity(numnod),dkdh(numnod))
@@ -404,9 +419,10 @@ program swap5_native_project_column
   allocate(forcing%drainage_flux_by_level(1,numnod))
   forcing%drainage_flux_by_level(1,:)=drain_cm_day(1:numnod)
   if(native_drainage)then
-    call require((.not.dynamic_temperature.or.swp_heat_bootstrap).and..not.retain_accepted_step_proposal,'drainage composition outside scope')
+    call require((.not.dynamic_temperature.or.swp_heat_bootstrap).and. &
+      (.not.retain_accepted_step_proposal.or.(fallow_only.and.black_evaporation)),'drainage composition outside scope')
     call require(all(drain_cm_day==0d0),'duplicate drainage owner')
-    call require(drain_table_count>=1.and.drain_table_count<=1024,'drainage table capacity')
+    if(drain_variant==3)call require(drain_table_count>=1.and.drain_table_count<=1024,'drainage table capacity')
     call require(all(ieee_is_finite([drain_resistance,drain_infiltration_resistance,drain_spacing_m, &
       drain_bottom_cm,drain_legacy_origin,drain_table_times,drain_table_heads,drain_anisotropy])),'finite drainage')
     call require(drain_spacing_m>=1d0.and.drain_spacing_m<=1d5,'drain spacing domain')
@@ -416,6 +432,7 @@ program swap5_native_project_column
     p%drainage_response_active=.true.;p%drainage_qbot_smooth_freatic_projection=.not.cauchy3_bottom
     allocate(p%drainage_response_levels(1),p%drainage_trial_distribution,forcing%drainage_response_controls(1))
     deallocate(forcing%drainage_flux_by_level)
+    if(drain_variant==3)then
     p%drainage_response_levels(1)%variant=FMR_DRAIN_VARIANT_DRAMET3
     p%drainage_response_levels(1)%dramet3%drain_bottom_cm=drain_bottom_cm
     p%drainage_response_levels(1)%dramet3%drainage_resistance_day=drain_resistance
@@ -425,6 +442,16 @@ program swap5_native_project_column
     call initialize_dramet3_channel_control(p%drainage_response_levels(1)%dramet3_channel,0d0,drain_legacy_origin, &
       drain_table_times(:drain_table_count),drain_table_heads(:drain_table_count),code)
     call require(code==DRAMET3_OK,'channel initialization')
+    else
+      call require(drain_variant==2,'unsupported original drain variant')
+      p%drainage_response_levels(1)%variant=FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2
+      p%drainage_response_levels(1)%hooghoudt_ipos2%shape_factor=drain_shape
+      p%drainage_response_levels(1)%hooghoudt_ipos2%horizontal_conductivity_top=drain_khtop
+      p%drainage_response_levels(1)%hooghoudt_ipos2%entry_resistance=drain_entres
+      hh_geometry=hooghoudt_equivalent_depth_geometry_t(100d0*drain_spacing_m,drain_bottom_cm,drain_base,drain_wetper)
+      call prepare_hooghoudt_equivalent_depth(hh_geometry,p%drainage_response_levels(1)%hooghoudt_prepared,hh_diagnostic)
+      call require(hh_diagnostic%status==EQDEPTH_OK,'original equivalent drain depth')
+    end if
     p%drainage_trial_distribution%active_nodes=numnod
     p%drainage_trial_distribution%dz=dz;p%drainage_trial_distribution%zbotcp=z-.5d0*dz
     p%drainage_trial_distribution%saturated_conductivity=p%cofgen(3,:)
@@ -433,7 +460,14 @@ program swap5_native_project_column
     p%drainage_trial_distribution%drain_spacing=100d0*drain_spacing_m
   end if
   forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
-  if(boesten_evaporation)then
+  if(black_evaporation)then
+    call require(.not.boesten_evaporation.and.fallow_only.and.swp_heat_bootstrap,'explicit Black heat fallow route')
+    p%black_evaporation_active=.true.;p%black_heat_composition_enabled=.true.
+    allocate(p%black_evaporation,forcing%black_evaporation)
+    p%black_evaporation%cofred=black_cofred
+    forcing%black_evaporation%ponding_max_cm=pond_max_cm
+    forcing%black_evaporation%runoff_resistance_day=runoff_resistance_day
+  else if(boesten_evaporation)then
     p%boesten_evaporation_active=.true.;allocate(p%boesten_evaporation,forcing%boesten_evaporation)
     p%boesten_evaporation%cofred=boesten_cofred
     forcing%boesten_evaporation%ponding_max_cm=pond_max_cm
@@ -463,7 +497,7 @@ program swap5_native_project_column
       concentration_mg_cm3(1:numnod),rain_c,cdrain_mg_cm3,cseep_mg_cm3)
   end if
   ! Proposal trajectories with positive tracer require separate qualification.
-  call require(.not.retain_accepted_step_proposal.or.(all(concentration_mg_cm3==0d0).and. &
+  call require(.not.retain_accepted_step_proposal.or.(fallow_only.and.black_evaporation).or.(all(concentration_mg_cm3==0d0).and. &
     initial_pond_mass_mg_cm2==0d0.and.rain_c==0d0.and.irrigation_c==0d0.and.runon_c==0d0.and. &
     cdrain_mg_cm3==0d0.and.cseep_mg_cm3==0d0.and.dry_mg_cm2_day==0d0), &
     'native proposal requires zero tracer')
@@ -475,9 +509,10 @@ program swap5_native_project_column
   template%template_id=column_id%template_id;template%physics_topology_id=660210_int64
   template%vertical_layout_id=660220_int64;template%state_layout_id=660230_int64
   template%solver_interface_id=660240_int64;template%compatible_backend_id=FMR_BACKEND_SERIALIZED_REFERENCE
+  if(black_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
   if(boesten_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   if(dynamic_temperature)then
-    if(.not.boesten_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
+    if(.not.boesten_evaporation.and..not.black_evaporation)template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE
     p%soil_temperature_active=.true.
     allocate(p%soil_temperature,initial%soil_temperature,forcing%soil_temperature)
     if(swp_heat_bootstrap)then
@@ -508,7 +543,10 @@ program swap5_native_project_column
     end if
     call require(code==JOINT_OK,'restart rejected')
   else
-    if(boesten_evaporation)then
+    if(black_evaporation)then
+      call fmr_new_b110_black_evaporation_committed_state(water,column_id%column_id,initial, &
+        black_evaporation_state_t(),0d0,ok,p)
+    else if(boesten_evaporation)then
       if(dynamic_temperature)then
         call fmr_new_b110_boesten_evaporation_committed_state(water,column_id%column_id,initial, &
           boesten_evaporation_state_t(),0d0,ok,p)
@@ -555,7 +593,7 @@ program swap5_native_project_column
   write(u,'(A)')''
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
-    call select_project_profile(profile_index(j))
+    if(.not.fallow_only)call select_project_profile(profile_index(j))
     crop_input=fmr_root_uptake_crop_input_t();crop_input%crop_emerged=crop_active(j)
     crop_input%potential_transpiration=potential_transpiration_cm_day(j)
     if(crop_active(j))then
@@ -564,11 +602,15 @@ program swap5_native_project_column
       call require(code==CROP_ROOT_PROFILE_OK,'crop root geometry')
       call require(crop_input%rooted_nodes>0.or.potential_transpiration_cm_day(j)==0d0,'positive demand without roots')
     end if
+    if(.not.fallow_only)then
     call fmr_evaluate_committed_root_uptake(water,root_parameters,crop_input,root_fluxes,root_diagnostics,root_binding)
     call require(root_binding%status==FMR_ROOT_UPTAKE_BINDING_OK.and.root_diagnostics%status==ROOT_UPTAKE_OK, &
       'committed crop root binding')
     forcing%root_extraction_sink=root_fluxes%root_extraction_sink
     expected_transpiration=sum(root_fluxes%root_extraction_sink)*(t1-t0)
+    else
+      forcing%root_extraction_sink=0d0;expected_transpiration=0d0
+    end if
     if(substep_root_stress)then
       if(allocated(forcing%substep_root))deallocate(forcing%substep_root)
       allocate(forcing%substep_root)
@@ -579,7 +621,14 @@ program swap5_native_project_column
         forcing%substep_root%request%cumulative_root_fraction=crop_input%cumulative_root_fraction
       forcing%root_extraction_sink=0d0
     end if
-    if(boesten_evaporation)then
+    if(black_evaporation)then
+      forcing%black_evaporation%wetting_reset_each_trial=rain_cm_day(j)+irrigation_cm_day(j)>black_rsigni
+      forcing%black_evaporation%precipitation_rate_cm_per_day=rain_cm_day(j)
+      forcing%black_evaporation%irrigation_rate_cm_per_day=irrigation_cm_day(j)
+      forcing%black_evaporation%runon_rate_cm_per_day=runon_cm_day(j)
+      forcing%black_evaporation%potential_bare_soil_evaporation_cm_per_day=soil_evaporation_cm_day(j)
+      forcing%black_evaporation%potential_pond_evaporation_cm_per_day=evaporation_cm_day(j)
+    else if(boesten_evaporation)then
       forcing%boesten_evaporation%precipitation_rate_cm_per_day=rain_cm_day(j)
       forcing%boesten_evaporation%irrigation_rate_cm_per_day=irrigation_cm_day(j)
       forcing%boesten_evaporation%runon_rate_cm_per_day=runon_cm_day(j)
@@ -614,7 +663,11 @@ program swap5_native_project_column
         result%diagnostics%attempts,result%diagnostics%solver_rejections, &
         result%diagnostics%temporal_rejections,result%diagnostics%headcalc_calls
       numerical%retain_accepted_step_proposal=.false.
-      call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+      if(dynamic_temperature)then
+        call run_pond_thermal_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+      else
+        call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
+      end if
       numerical%retain_accepted_step_proposal=.true.
     end if
     if(result%status/=JOINT_OK)then
@@ -638,6 +691,10 @@ program swap5_native_project_column
     call require(result%status==JOINT_OK,'joint interval rejected')
     call require(result%water%mass%complete,'incomplete water accounting')
     call require(abs(result%water%mass%residual)<=1d-10.and.abs(result%chemical%residual)<=1d-10,'balance rejected')
+    if(fallow_only)then
+      call write_pond_thermal_restart('checkpoint.bin',column_id,template,p%parameter_set_id,p,water,solute,code)
+      call require(code==JOINT_OK,'fallow accepted checkpoint export')
+    end if
     if(.not.detailed_rain)then
       observation=backend%observation()
       call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
@@ -720,6 +777,25 @@ program swap5_native_project_column
     end select
   end if
 contains
+  subroutine validate_original_fallow()
+    real(real64)::source_first,source_last,emergence(64),source_cofred
+    integer::n,selector
+    call require(windows>=1.and.windows<=MAX_WINDOWS,'fallow window capacity')
+    call require(len_trim(legacy_swp)>0,'fallow route requires original SWP')
+    call rdinit(74,0,trim(legacy_swp))
+    call rdstim('tstart',source_first);call rdstim('tend',source_last)
+    call rdatim('cropstart',emergence,64,n)
+    call require(n>0,'original crop calendar missing')
+    call require(source_first+ends_day(windows)<=minval(emergence(:n)).and. &
+      source_first+ends_day(windows)<=source_last+1d0,'fallow prefix crosses original emergence/calendar')
+    call rdsinr('swbotb',1,8,selector)
+    call require(selector==6.and.source_bottom_mode==6.and.bottom_up_cm_day==0d0.and..not.cauchy3_bottom, &
+      'source SWBOTB6 must remain exactly zero flux')
+    call rdsinr('swredu',0,2,selector);call require(selector==1.and.black_evaporation,'original Black option changed')
+    call rdsdor('cofredbl',0d0,1d0,source_cofred)
+    call require(source_cofred==black_cofred,'original Black coefficient changed')
+    close(74)
+  end subroutine validate_original_fallow
   subroutine reset_day_totals()
     observed_heat_residual_j_cm2=0d0
     bottom_amount=0d0

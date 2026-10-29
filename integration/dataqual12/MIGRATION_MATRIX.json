@@ -1,0 +1,493 @@
+{
+  "schema": 1,
+  "baseline": "3bcf96ccf64008bc7ba09c0ab8e82ea8f77d21e5",
+  "status_vocabulary": [
+    "not_implemented",
+    "implemented_not_executed",
+    "experimental_executed",
+    "water_qualified",
+    "integrally_qualified",
+    "canonically_admitted",
+    "blocked"
+  ],
+  "denominator": {
+    "independent_original_projects": 3,
+    "templates_excluded": 1,
+    "project_process_cells": 20,
+    "complete_project_migrations": 0,
+    "projects_with_inherited_bounded_water_evidence": 1,
+    "projects_with_current_bounded_water_evidence": 2
+  },
+  "projects": [
+    {
+      "project": "1.hupselbrook",
+      "original_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+      "nodes": 34,
+      "original_calendar_days": 1096,
+      "selectors": [
+        {
+          "kind": "calendar_start",
+          "index": "0",
+          "value": "  3.7256000000000000E+004"
+        },
+        {
+          "kind": "calendar_end",
+          "index": "0",
+          "value": "  3.8351000000000000E+004"
+        },
+        {
+          "kind": "swetr",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swcrop",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swmacro",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsolu",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swhea",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcalt",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swinco",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swbotb",
+          "index": "0",
+          "value": "6"
+        },
+        {
+          "kind": "swbbcfile",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swdra",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swrain",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swredu",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swfrost",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsnow",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swpondmx",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhyst",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "nodes",
+          "index": "0",
+          "value": "34"
+        },
+        {
+          "kind": "croptype",
+          "index": "1",
+          "value": "1"
+        },
+        {
+          "kind": "croptype",
+          "index": "2",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "3",
+          "value": "2"
+        }
+      ],
+      "features": [
+        {
+          "function": "pm_direct",
+          "status": "water_qualified",
+          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+        },
+        {
+          "function": "crop_rotation",
+          "status": "blocked",
+          "cause_or_scope": "First original crop emergence after day120; dynamic potato/grass runtime not coupled in this original project."
+        },
+        {
+          "function": "drainage",
+          "status": "water_qualified",
+          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+        },
+        {
+          "function": "bottom",
+          "status": "water_qualified",
+          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+        },
+        {
+          "function": "matrix_water",
+          "status": "water_qualified",
+          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+        },
+        {
+          "function": "heat",
+          "status": "experimental_executed",
+          "cause_or_scope": "Original numeric heat executes120days, O0/O2 and split/restart exact; no energy qualification."
+        },
+        {
+          "function": "solute",
+          "status": "experimental_executed",
+          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+        }
+      ],
+      "executed_days": 120,
+      "qualified_scope": "Water, positive solute balance and restart; pre-emergence only, no integral energy or crop qualification."
+    },
+    {
+      "project": "2.grassgrowth",
+      "original_swp_sha256": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "nodes": 113,
+      "original_calendar_days": 1827,
+      "selectors": [
+        {
+          "kind": "calendar_start",
+          "index": "0",
+          "value": "  2.9220000000000000E+004"
+        },
+        {
+          "kind": "calendar_end",
+          "index": "0",
+          "value": "  3.1046000000000000E+004"
+        },
+        {
+          "kind": "swetr",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swcrop",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swmacro",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsolu",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhea",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcalt",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swinco",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swbbcfile",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swdra",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swrain",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swredu",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swfrost",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsnow",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swpondmx",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhyst",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "nodes",
+          "index": "0",
+          "value": "113"
+        },
+        {
+          "kind": "croptype",
+          "index": "1",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "2",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "3",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "4",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "5",
+          "value": "2"
+        }
+      ],
+      "features": [
+        {
+          "function": "pm_direct",
+          "status": "blocked",
+          "cause_or_scope": "Direct PM now coupled for original Hupsel fallow; original Grassgrowth dynamic-grass and prescribed-head composition still unexecuted."
+        },
+        {
+          "function": "dynamic_grass",
+          "status": "not_implemented",
+          "cause_or_scope": "No WOFOST grass state owner in this driver; original CROPTYPE2/SWWOFOST3."
+        },
+        {
+          "function": "rain_duration",
+          "status": "experimental_executed",
+          "cause_or_scope": "Original 1827-day SWRAIN2 forcing executed by new production process and source adapter, O0/O2 exact. Forcing-only, no soil/crop execution."
+        },
+        {
+          "function": "bottom",
+          "status": "blocked",
+          "cause_or_scope": "Original external SWBOTB1 prescribed groundwater table; route only accepts external Cauchy3."
+        },
+        {
+          "function": "matrix_water",
+          "status": "blocked",
+          "cause_or_scope": "No original Grassgrowth model steps launched."
+        },
+        {
+          "function": "heat",
+          "status": "blocked",
+          "cause_or_scope": "No original Grassgrowth coupled heat execution."
+        },
+        {
+          "function": "drainage",
+          "status": "implemented_not_executed",
+          "cause_or_scope": "DRAMET3 exists; not executed in the original Grassgrowth composition."
+        }
+      ]
+    },
+    {
+      "project": "3.macroporeflow",
+      "original_swp_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+      "nodes": 112,
+      "original_calendar_days": 481,
+      "selectors": [
+        {
+          "kind": "calendar_start",
+          "index": "0",
+          "value": "  3.5795000000000000E+004"
+        },
+        {
+          "kind": "calendar_end",
+          "index": "0",
+          "value": "  3.6275000000000000E+004"
+        },
+        {
+          "kind": "swetr",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcrop",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swmacro",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swsolu",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhea",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcalt",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swinco",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swbbcfile",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swdra",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swrain",
+          "index": "0",
+          "value": "3"
+        },
+        {
+          "kind": "swredu",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swfrost",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsnow",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swpondmx",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhyst",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "nodes",
+          "index": "0",
+          "value": "112"
+        },
+        {
+          "kind": "croptype",
+          "index": "1",
+          "value": "1"
+        },
+        {
+          "kind": "croptype",
+          "index": "2",
+          "value": "1"
+        }
+      ],
+      "features": [
+        {
+          "function": "etref",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited DATAQUAL10 bounded original Andelst scope; no new independent project."
+        },
+        {
+          "function": "macropore_matrix_water",
+          "status": "water_qualified",
+          "cause_or_scope": "Inherited DATAQUAL10 original integral maximum 2.748 days; current 30s run completed one daily budget only, not newly qualified."
+        },
+        {
+          "function": "rutter",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited bounded original Andelst scope."
+        },
+        {
+          "function": "heat",
+          "status": "experimental_executed",
+          "cause_or_scope": "Numeric heat executed, no energy qualification claim."
+        },
+        {
+          "function": "drainage",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited DRAMET3 scope; current original prefix has zero drainage."
+        },
+        {
+          "function": "bottom",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited original Cauchy3 application scope."
+        }
+      ],
+      "current_preservation": "One original forcing event retains six streams and physical restart payload against canonical baseline; no repeated long stall."
+    }
+  ],
+  "templates": [
+    {
+      "project": "4.salinitystress",
+      "status": "blocked",
+      "cause": "Unresolved {{...}} template fields; generated complete run input unavailable in distribution. Not counted as fourth independent runnable project."
+    }
+  ],
+  "new_integral_model_projects_executed": 1,
+  "new_physical_laws": 0,
+  "new_original_forcing_option_executed": "Original Hupsel direct PM and two-hour surface irrigation",
+  "dataqual10_inherited": "Historical evidence retained separately; changed backend requalified only within explicit DATAQUAL12 selected scope.",
+  "new_original_model_projects_executed": 1
+}
