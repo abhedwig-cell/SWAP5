@@ -10,12 +10,12 @@
   "owners": "HY/RT/VQ",
   "test_selection": "Actual 194-provider checked O0/O2 builds, real rate FD columns and legacy controls, low-rank matrix tests, exact production and split/restart preservation, selected changed native variants, affected immutable FSI35 O0/O2 oracles.",
   "recovery": "integration/dataqual10/RECOVERY_REPLAY.json",
-  "next_action": "Current source/raw/corruption and incumbent-owner gates, exact published tree, hosted run reconciliation, safe canonical merge",
-  "stage": "FINAL_SOURCE_NATIVE_EVIDENCE_SEALED",
+  "next_action": "Functional migration: retain original stiffness blockage; add other original projects and missing physical combinations without relaxing invariants",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_QUALIFICATION",
   "full_coupling_decision": "For each active fixed-geometry stock cap, J_exchange=diag(d)-u*d^T. u is local inflow/total inflow for upper cap or local outflow/total outflow for lower cap; d is existing frozen-fraction net exchange derivative. The diagonal-only correction omits cross-cell terms. Add opt-in sibling macropore storage-coupling provider interface returning U,V and diagonal restore. Full Richards consumes exact low-rank update through Woodbury with existing tridiagonal factors; rank-zero route unchanged. Failed low-rank solve requests trial retry; never fall back to a matrix that omits the coupling. Physics/rates/state/restart/tolerances unchanged.",
   "qualification_selected": "Real full rate Jacobian finite-difference columns; independent low-rank linear residual and singular rejection O0/O2; cold native checked builds; changed-candidate forward and original continuation; production exact streams/restart; affected FCI93 native oracles requalified because solver contract/HeadCalc/linear solver change.",
   "inherited": "Historical qualified prefixes reused explicitly. Three FSI35 dependencies changed; native immutable O0/O2 replay requalifies them. Exploratory intermediate candidate results excluded from current qualification.",
-  "canonically_admitted": false,
+  "canonically_admitted": true,
   "result": "integration/dataqual10/RESULT.json",
   "qualification": "integration/audits/verify_dataqual10_current.py",
   "scientific_delta": {
@@ -47,5 +47,17 @@
     "integration/dataqual10/BUILD_O0.json": "f448b825a75e8933020cad3dc08e7098a2e468e9d7a7e125dd64053c14c30ecd",
     "integration/dataqual10/BUILD_O2.json": "efa426b8ae36a919b762e392c065b5cfeb9bf520a1aed3efc4426d90840393fc",
     "integration/dataqual10/ORACLES.json": "a0b560c88935a1eb0a2219d66c0fc4e886ca08abea6f1da2fbb3406cc89dcb82"
-  }
+  },
+  "canonical_merge": "2c100a61d1fc884f92214a0bae8fb24107685b02",
+  "qualified_tree": "56f0a1c5390efb2b6e4b45e45c64c971e69aae91",
+  "published_head": "211bcb5c8051291122dea40ebec09a73a64cc766",
+  "pr": 1470,
+  "merge_receipt": "integration/dataqual10/MERGE_RECEIPT.json",
+  "hosted": {
+    "total": 36,
+    "success": 22,
+    "failure": 14,
+    "full_numerical_F_CI": false
+  },
+  "additional_preservation": "Actual Ross12 adapter/selection unit replay exact O0/O2; source-bound ROSS_NATIVE.json. FROSS22 full admission identity remains rejected; no broad RossFast qualification claim."
 }

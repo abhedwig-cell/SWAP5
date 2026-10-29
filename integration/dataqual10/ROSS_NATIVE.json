@@ -1,0 +1,40 @@
+{
+  "returncode": 0,
+  "scope": "Actual Ross12 adapter and solver-selection unit oracles O0/O2; not full FROSS22 all-material/serialized admission",
+  "extracted_from": "tests/ross/run_ross13_ross12_semantic_successor_preservation.sh",
+  "recipe_sha256": "b76879809527482efe6a8493cfaa5499b906d42a5bd6d902df62ca27fc4ff187",
+  "source_sha256": {
+    "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+    "src/runtime/mod_a23bu_worker_execution_context.f90": "3bba0d4c16685c6af91e84285d1c296c396c72fcf91978c412ca1ca1d6a8270f",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+    "src/transaction/mod_fkt_temporal_indicator_history.f90": "f17deb9c343d17dc426689a589080048c208c38171b2a967ca9650211f3596db",
+    "src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+    "src/solver/mod_soil_water_solver_contract.f90": "5115d0d57be66f9b9a6839b60c3401bfe60710cc79eb0a344c5b3204d96da7b6",
+    "src/solver/mod_reference_richards_state_binding.f90": "11609ee59a2f1a888c408c611a54b773f931bb5e0b5c46bd3ebb4a016bcf32d2",
+    "src/runtime/mod_rossfast_d3r_execution_policy.f90": "5c64376250027ccd4f5dd256ad75e8a87e81e1547156c8851757248fed87a558",
+    "src/runtime/mod_rossfast_d3r_model_binding.f90": "1c4569d6eae9417c6d2adc5760dc76ea3fd4de0267fbb427cc944da1357f32bf",
+    "src/solver/mod_rossfast_d3r_table_kernel.f90": "5c1a4c5f78cd153cb37d02b7f11a0d6c1ced4c36822001979d1fc4311288f4a8",
+    "src/solver/mod_rossfast_d3r_table_provider.f90": "cb5988be404d220f30fa70a1e9920c4e0aa65b3ce53325f0e99cff49f7913ce5",
+    "src/solver/mod_rossfast_d3r_soil_water_solver.f90": "b922853f9c141f1bba14628509db92600bba66d6581b185e012d9c9a746a79fe",
+    "src/runtime/mod_fmr_soil_water_application_host.f90": "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c",
+    "src/runtime/mod_fmr_rossfast_solver_selection_binding.f90": "fba92c8b38224ce2530b83dec8dba4166153f1d63fbf9791d117519dd65b0c3f",
+    "tests/ross/test_ross12_soil_water_solver_adapter.f90": "a9a4b7d5894777a802ba0d48247bf2aa3e60949718edbbdc16fda4c50ae99181",
+    "tests/ross/test_ross12_solver_selection_binding.f90": "48d16252fb116985342c81326b5f0a9f80c0c590bb78dc5fdbd932a9a081ff59"
+  },
+  "native_script_sha256": "bc3c38abfa2f4c91ac63b83e8ed66c5b42920042d2d3a202ebf75f7c5b27786c",
+  "stdout_sha256": "f5cb04e555fb5e2a6a622e4afad23c328c3359caf3a2867c8c95a61e260eca59",
+  "outputs": {
+    "adapter_output.txt": {
+      "exact_O0_O2": true,
+      "sha256": "59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888",
+      "text": "ROSS12_SOIL_WATER_SOLVER_ADAPTER PASS\n"
+    },
+    "selection_output.txt": {
+      "exact_O0_O2": true,
+      "sha256": "062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c",
+      "text": "ROSS12_SOLVER_SELECTION_BINDING PASS\n"
+    }
+  }
+}

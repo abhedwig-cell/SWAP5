@@ -1,0 +1,437 @@
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:353:52:
+
+  353 |               token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
+      |                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:352:64:
+
+  352 |               token%step_sequence == state%issued_sequence .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:182:8:
+
+  182 |     if (step_t0 /= state%current_t1) then
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:485:11:
+
+  485 |        if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+      |           1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:491:68:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                    1
+Warning: Unused dummy argument ‘request’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:491:59:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:491:82:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                  1
+Warning: Unused dummy argument ‘solve_result’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:491:112:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                                                1
+Warning: Unused dummy argument ‘workspace’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:366:57:
+
+  366 |   logical function default_macropore_source_freezing(self) result(permitted)
+      |                                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:361:59:
+
+  361 |   real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:356:63:
+
+  356 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                               1
+Warning: Unused dummy argument ‘amount_cm’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:356:52:
+
+  356 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                    1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/runtime/mod_rossfast_d3r_model_binding.f90:457:49:
+
+  457 |          material%lambda == expected%lambda .and. &
+      |                                                 1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:456:73:
+
+  456 |          material%ksatexm_cm_per_day == expected%ksatexm_cm_per_day .and. &
+      |                                                                         1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:455:73:
+
+  455 |          material%ksatfit_cm_per_day == expected%ksatfit_cm_per_day .and. &
+      |                                                                         1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:454:39:
+
+  454 |          material%n == expected%n .and. &
+      |                                       1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:453:61:
+
+  453 |          material%alpha_per_cm == expected%alpha_per_cm .and. &
+      |                                                             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:452:51:
+
+  452 |          material%theta_s == expected%theta_s .and. &
+      |                                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:451:51:
+
+  451 |          material%theta_r == expected%theta_r .and. &
+      |                                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:450:51:
+
+  450 |     rossfast_d3r_material_is_admitted = found .and. &
+      |                                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:179:8:
+
+  179 |     if (config%transaction%retry_scale /= ROSSFAST_D3R_RETRY_SCALE) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:157:12:
+
+  157 |     if (any(cell_thickness_cm /= ROSSFAST_D3R_DZ_CM)) return
+      |            1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:576:35:
+
+  576 |          a%lambda == b%lambda .and. a%h_enpr_cm == b%h_enpr_cm
+      |                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:575:59:
+
+  575 |          a%ksatexm_cm_per_day == b%ksatexm_cm_per_day .and. &
+      |                                                           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:574:59:
+
+  574 |          a%ksatfit_cm_per_day == b%ksatfit_cm_per_day .and. &
+      |                                                           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:573:64:
+
+  573 |          a%alpha_per_cm == b%alpha_per_cm .and. a%n == b%n .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:573:47:
+
+  573 |          a%alpha_per_cm == b%alpha_per_cm .and. a%n == b%n .and. &
+      |                                               1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:572:66:
+
+  572 |          a%theta_r == b%theta_r .and. a%theta_s == b%theta_s .and. &
+      |                                                                  1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:572:37:
+
+  572 |          a%theta_r == b%theta_r .and. a%theta_s == b%theta_s .and. &
+      |                                     1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:571:68:
+
+  571 |     same_material = trim(a%material_id) == trim(b%material_id) .and. &
+      |                                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:533:10:
+
+  533 |       if (d(i - 1) == 0.0_real64 .or. .not. ieee_is_finite(d(i - 1))) return
+      |          1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:538:8:
+
+  538 |     if (d(ROSSFAST_D3R_N_CELLS) == 0.0_real64 .or. &
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:547:10:
+
+  547 |       if (d(i) == 0.0_real64 .or. .not. ieee_is_finite(d(i))) return
+      |          1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:174:8:
+
+  174 |     if (request%sigma /= ROSSFAST_D3R_SIGMA) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:175:8:
+
+  175 |     if (request%hard_mass_tolerance_cm /= ROSSFAST_D3R_HARD_MASS_TOL_CM) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:176:8:
+
+  176 |     if (request%boundary_envelope_fraction /= ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:177:8:
+
+  177 |     if (request%state_consistency_tolerance /= ROSSFAST_D3R_STATE_CONSISTENCY_TOL) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:178:8:
+
+  178 |     if (request%temporal_resolution_floor /= ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:179:8:
+
+  179 |     if (request%temporal_accuracy_tolerance /= ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:118:12:
+
+  118 |     if (any(request%parameters%dz /= ROSSFAST_D3R_DZ_CM)) return
+      |            1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:128:67:
+
+  128 |     if (.not. ieee_is_finite(request%base_state%ponding_depth) .or. &
+      |                                                                   1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:136:45:
+
+  136 |       if (any(source /= 0.0_real64) .or. any(sink /= 0.0_real64)) return
+      |                                             1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:136:14:
+
+  136 |       if (any(source /= 0.0_real64) .or. any(sink /= 0.0_real64)) return
+      |              1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+F_ROSS13_ROSS12_UNIT_PRESERVATION_O0=PASS
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:353:52:
+
+  353 |               token%step_t0 == state%issued_t0 .and. token%step_t1 == state%issued_t1
+      |                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:352:64:
+
+  352 |               token%step_sequence == state%issued_sequence .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/transaction/mod_accepted_trajectory_directional_sensitivity.f90:182:8:
+
+  182 |     if (step_t0 /= state%current_t1) then
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:485:11:
+
+  485 |        if (request%boundary%bottom_external_resistance_days /= 0.0_real64) return
+      |           1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_soil_water_solver_contract.f90:491:68:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                    1
+Warning: Unused dummy argument ‘request’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:491:59:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:491:82:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                  1
+Warning: Unused dummy argument ‘solve_result’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:491:112:
+
+  491 |   subroutine soil_water_temporal_indicator_unavailable(self, request, solve_result, indicator_request, workspace, indicator_result)
+      |                                                                                                                1
+Warning: Unused dummy argument ‘workspace’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:366:57:
+
+  366 |   logical function default_macropore_source_freezing(self) result(permitted)
+      |                                                         1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:361:59:
+
+  361 |   real(real64) function default_candidate_pond_lateral(self) result(amount_cm)
+      |                                                           1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:356:63:
+
+  356 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                               1
+Warning: Unused dummy argument ‘amount_cm’ at (1) [-Wunused-dummy-argument]
+src/solver/mod_soil_water_solver_contract.f90:356:52:
+
+  356 |   subroutine default_set_candidate_pond_lateral(self, amount_cm)
+      |                                                    1
+Warning: Unused dummy argument ‘self’ at (1) [-Wunused-dummy-argument]
+src/runtime/mod_rossfast_d3r_model_binding.f90:457:49:
+
+  457 |          material%lambda == expected%lambda .and. &
+      |                                                 1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:456:73:
+
+  456 |          material%ksatexm_cm_per_day == expected%ksatexm_cm_per_day .and. &
+      |                                                                         1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:455:73:
+
+  455 |          material%ksatfit_cm_per_day == expected%ksatfit_cm_per_day .and. &
+      |                                                                         1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:454:39:
+
+  454 |          material%n == expected%n .and. &
+      |                                       1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:453:61:
+
+  453 |          material%alpha_per_cm == expected%alpha_per_cm .and. &
+      |                                                             1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:452:51:
+
+  452 |          material%theta_s == expected%theta_s .and. &
+      |                                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:451:51:
+
+  451 |          material%theta_r == expected%theta_r .and. &
+      |                                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:450:51:
+
+  450 |     rossfast_d3r_material_is_admitted = found .and. &
+      |                                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:179:8:
+
+  179 |     if (config%transaction%retry_scale /= ROSSFAST_D3R_RETRY_SCALE) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/runtime/mod_rossfast_d3r_model_binding.f90:157:12:
+
+  157 |     if (any(cell_thickness_cm /= ROSSFAST_D3R_DZ_CM)) return
+      |            1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:576:35:
+
+  576 |          a%lambda == b%lambda .and. a%h_enpr_cm == b%h_enpr_cm
+      |                                   1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:575:59:
+
+  575 |          a%ksatexm_cm_per_day == b%ksatexm_cm_per_day .and. &
+      |                                                           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:574:59:
+
+  574 |          a%ksatfit_cm_per_day == b%ksatfit_cm_per_day .and. &
+      |                                                           1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:573:64:
+
+  573 |          a%alpha_per_cm == b%alpha_per_cm .and. a%n == b%n .and. &
+      |                                                                1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:573:47:
+
+  573 |          a%alpha_per_cm == b%alpha_per_cm .and. a%n == b%n .and. &
+      |                                               1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:572:66:
+
+  572 |          a%theta_r == b%theta_r .and. a%theta_s == b%theta_s .and. &
+      |                                                                  1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:572:37:
+
+  572 |          a%theta_r == b%theta_r .and. a%theta_s == b%theta_s .and. &
+      |                                     1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:571:68:
+
+  571 |     same_material = trim(a%material_id) == trim(b%material_id) .and. &
+      |                                                                    1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:533:10:
+
+  533 |       if (d(i - 1) == 0.0_real64 .or. .not. ieee_is_finite(d(i - 1))) return
+      |          1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:538:8:
+
+  538 |     if (d(ROSSFAST_D3R_N_CELLS) == 0.0_real64 .or. &
+      |        1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:547:10:
+
+  547 |       if (d(i) == 0.0_real64 .or. .not. ieee_is_finite(d(i))) return
+      |          1
+Warning: Equality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:174:8:
+
+  174 |     if (request%sigma /= ROSSFAST_D3R_SIGMA) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:175:8:
+
+  175 |     if (request%hard_mass_tolerance_cm /= ROSSFAST_D3R_HARD_MASS_TOL_CM) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:176:8:
+
+  176 |     if (request%boundary_envelope_fraction /= ROSSFAST_D3R_BOUNDARY_ENVELOPE_FRACTION) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:177:8:
+
+  177 |     if (request%state_consistency_tolerance /= ROSSFAST_D3R_STATE_CONSISTENCY_TOL) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:178:8:
+
+  178 |     if (request%temporal_resolution_floor /= ROSSFAST_D3R_TEMPORAL_RESOLUTION_FLOOR) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_table_kernel.f90:179:8:
+
+  179 |     if (request%temporal_accuracy_tolerance /= ROSSFAST_D3R_TEMPORAL_ACCURACY_TOLERANCE) return
+      |        1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:118:12:
+
+  118 |     if (any(request%parameters%dz /= ROSSFAST_D3R_DZ_CM)) return
+      |            1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:128:67:
+
+  128 |     if (.not. ieee_is_finite(request%base_state%ponding_depth) .or. &
+      |                                                                   1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:136:45:
+
+  136 |       if (any(source /= 0.0_real64) .or. any(sink /= 0.0_real64)) return
+      |                                             1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+src/solver/mod_rossfast_d3r_soil_water_solver.f90:136:14:
+
+  136 |       if (any(source /= 0.0_real64) .or. any(sink /= 0.0_real64)) return
+      |              1
+Warning: Inequality comparison for REAL(8) at (1) [-Wcompare-reals]
+F_ROSS13_ROSS12_UNIT_PRESERVATION_O2=PASS
+ROSS12_SOIL_WATER_SOLVER_ADAPTER PASS
+ROSS12_SOLVER_SELECTION_BINDING PASS
+F_ROSS13_ROSS12_ADAPTER_O0_O2_SHA256=59c16b1a625342d3cc9eceee3e190b4f7f67ef60a29d484f744748c234d72888
+F_ROSS13_ROSS12_SELECTION_O0_O2_SHA256=062f2e0e4bfb1be77b5417c98f3b6cadfaa5b773ae81ffc9dac9147507d1816c
+F_ROSS13_ROSS12_UNIT_SEMANTIC_SUCCESSOR_PRESERVATION=PASS
