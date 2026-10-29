@@ -1,0 +1,25 @@
+{
+  "work_unit": "DATAQUAL08",
+  "action": "continue own independently water-qualified day2 checkpoint to day3",
+  "origin_sha256": "95d84d94157c3bab1cfc625a3a67399521ef7995e47e77ce489d02abe6a7a5ff",
+  "command": [
+    "/tmp/dq08-five/native-O2",
+    "input.nml",
+    "origin.bin",
+    "3",
+    "input.swp",
+    "macro.nml",
+    "6ea02707a20d2e84570cf595642e646328c5aab28c95dbe4c4347061c7585b94",
+    "3.0",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian",
+    "conservative-macro-storage"
+  ],
+  "timeout_seconds": 60,
+  "physical_changes": false,
+  "budget_increase": false,
+  "prefix_replay": false
+}

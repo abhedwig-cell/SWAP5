@@ -1,0 +1,32 @@
+{
+  "work_unit": "DATAQUAL08",
+  "implemented": "Bound checkpoint execution and retention; no new Fortran physics/numerical correction",
+  "baseline_canonical": "358b34c2fb3ded052a8ca25ce10d89bf1f6053d9",
+  "dataqual07_actual_merge": "f5922716628fcc0caa0187d2b2eecb1fffba426e",
+  "started": 151,
+  "water_qualified": 83,
+  "extra_water_vs_DATAQUAL06": 6,
+  "extra_water_vs_DATAQUAL07": 0,
+  "configuration_days": 94.17599999972299,
+  "extra_days_vs_DATAQUAL07": 0.5575000000026193,
+  "extra_days_vs_DATAQUAL06": 11.12599999998929,
+  "longest_original_integral": 2.7479999999995925,
+  "native_processes": 16,
+  "five_day_requests": 15,
+  "five_day_completions": 0,
+  "censored_processes": 16,
+  "native_seconds": 960.4428064239964,
+  "checkpoint_extraction_seconds": 0.018734040000708774,
+  "new_prefix_water_max_cm": 1.8675246895791253e-15,
+  "combined_max_water_cm": 3.233083288936567e-13,
+  "new_functional_coverage": "One existing Andelst variant extended from1.4425 to2days with own exact-bound restart; no new physical process or independent original project",
+  "qualification": "Water-only complete daily prefix; all5day targets and day3 suffix remain censored",
+  "remaining_closure": [
+    "Coupled Richards/macropore collapse on original internal2.848675",
+    "Wet configurations remain computationally censored; no generic solver correction established",
+    "Original5/30/481days and year-boundary restart",
+    "Other original projects and native chemistry/N/WOFOST/snow compositions",
+    "Matched431 trajectories and quantity-specific physical/energy/solute/N equivalence"
+  ],
+  "next_safe_step": "Use sealed own day2 checkpoint; target a source-bound residual/Jacobian correction or missing original configuration, without repeating the censored unchanged suffix or increasing its budget"
+}

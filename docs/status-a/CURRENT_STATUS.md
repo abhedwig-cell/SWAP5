@@ -1,6 +1,21 @@
 # SWAP5 Status-A current status
 
-DATAQUAL07 candidate (PR1467) implements an explicit default-off experimental
+DATAQUAL08 continues own DATAQUAL07 checkpoints with unchanged executable,
+physical options and input binding. Fifteen independent five-day targets and one
+new day2-to3 suffix are all censored at60s each (960.443s total native work).
+One completed day2 prefix is independently water-qualified, with finite112-node
+state/temperature and a readable bound restart; extracting it executes zero
+physical steps. Deduplicated qualified days93.6185 to94.1760;151 variants started
+and83 water-qualified remain unchanged. No new original project, physical process,
+Fortran numerical repair, five-day completion or full431 parity is claimed.
+Authority: `integration/dataqual08/STATUS.json`, `RESULT.json`, `CAPSULE.json` and
+`verify.py`. DATAQUAL07 actual admission receipt is `integration/dataqual07/MERGE_RECEIPT.json`;
+all59 existing PR workflows terminal,34success/25failure; selected canonical
+feedback/docs pass, no full numerical F-CI.
+
+DATAQUAL07 canonically integrated by PR1467 (actual merge
+`f5922716628fcc0caa0187d2b2eecb1fffba426e`, exact qualified tree
+`d8a85ae66efbc3afcbc51e1441b96c5960c7b692`) implements an explicit default-off experimental
 macropore stock policy: outgoing fluxes respect available water and redistributed
 input respects remaining capacity. The reproduced1.33 trace rejection is repaired
 without relaxed balance/trace/temporal tolerances. Final-source53 scenario rows/60
