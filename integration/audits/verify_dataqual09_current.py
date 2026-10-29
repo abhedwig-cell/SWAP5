@@ -18,6 +18,7 @@ def parent_projection():
   end+=1;text=text[:end]+" if (ROOT/'"+STATUS+"').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['"+('validate_predecessor' if name=='validate' else name)+"']("+args+")\n"+text[end:]
  return text.encode()
 def source(reader=None,changed=None):
+ if (ROOT/'integration/dataqual10/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual10_current.py'))['source'](reader,changed)
  if reader is None:reader=lambda p:(ROOT/p).read_bytes()
  s=json.loads(reader(STATUS));assert s['baseline']==BASE
  assert not git('diff','HEAD','--','src','app','tools','tests','integration/audits')
@@ -42,6 +43,7 @@ def inherited(evidence=None):
  class View:
   def __truediv__(self,p):return Entry(str(p))
  projected={'src/runtime/mod_macropore_single_column_runtime.f90','app/solute_project/main_water.f90','tools/solute/run_native_water.py',PARENT}
+ if (ROOT/'integration/dataqual10/STATUS.json').is_file():projected.update(['src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90', 'src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90', 'src/solver/mod_soil_water_solver_contract.f90', 'src/solver/mod_reference_linear_solver.f90', 'src/legacy/b1_10_port/headcalc.f90', 'tools/solute/run_dataqual_batch.py'])
  ns={'__file__':str(ROOT/PARENT),'__name__':'inherited_dataqual07'}
  exec(compile(baseline(PARENT),str(ROOT/PARENT),'exec'),ns)
  ns['ROOT']=View()
@@ -131,13 +133,17 @@ def validate(f):
  summary=json.loads((ROOT/'integration/dataqual09/RESULT.json').read_bytes())
  assert len(durations)==summary['water_qualified']==83 and abs(sum(durations.values())-summary['configuration_days'])<1e-9
  return dict(qualified=True,physical_changes=False,qualified_pairs=sum(r['qualified_pair']for r in results),speedup_established=False)
-def verify():source();inherited();return validate(capsule())
+def verify():
+ if (ROOT/'integration/dataqual10/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual10_current.py'))['verify']()
+ source();inherited();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/dataqual10/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual10_current.py'))['fsi35_successors']()
  verify()
  deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  for d in deps:assert (ROOT/d['path']).read_bytes()==baseline(d['path'])
  return {d['path']:dict(historical_blob=d['blob'],canonical_blob=git('rev-parse','HEAD:'+d['path']))for d in deps}
 def self_test():
+ if (ROOT/'integration/dataqual10/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual10_current.py'))['self_test']()
  source();s=json.loads((ROOT/STATUS).read_bytes());passed=0
  for p in s['postimages']:
   try:source(lambda q:(ROOT/q).read_bytes()+b' 'if q==p else(ROOT/q).read_bytes())

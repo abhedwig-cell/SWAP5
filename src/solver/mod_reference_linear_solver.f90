@@ -1,13 +1,71 @@
 module mod_reference_linear_solver
   use, intrinsic :: iso_fortran_env, only: real64
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
   implicit none
   private
 
   public :: reference_tridag
   public :: reference_tridag_backsolve
   public :: reference_band_solve
+  public :: reference_tridag_low_rank
 
 contains
+
+  subroutine reference_tridag_low_rank(n,a,b,c,r,left,right,solution,gamma,ierror,additional_solves)
+    integer,intent(in)::n
+    real(real64),intent(in)::a(:),b(:),c(:),r(:),left(:,:),right(:,:)
+    real(real64),intent(out)::solution(:)
+    real(real64),intent(inout)::gamma(:)
+    integer,intent(out)::ierror
+    integer,intent(out),optional::additional_solves
+    real(real64),allocatable::beta(:),z(:,:),small_matrix(:,:),rhs(:),row(:)
+    real(real64)::pivot_value,multiplier,swap_value
+    integer::rank,j,k,pivot
+    if(present(additional_solves))additional_solves=0
+    ierror=2000;rank=size(left,2)
+    if(n<=0.or.size(a)<n.or.size(b)<n.or.size(c)<n.or.size(r)<n.or.size(solution)<n.or.size(gamma)<n)return
+    if(size(left,1)/=n.or.size(right,1)/=n.or.size(right,2)/=rank)return
+    if(any(.not.ieee_is_finite(left)).or.any(.not.ieee_is_finite(right)))return
+    allocate(beta(n),z(n,rank),small_matrix(rank,rank),rhs(rank),row(rank))
+    call reference_tridag(n,a,b,c,r,solution,gamma,ierror,beta_factor=beta,capture_in_gamma_requested=.false.)
+    if(ierror/=0)return
+    if(rank==0)return
+    do j=1,rank
+      call reference_tridag_backsolve(n,a,left(:,j),gamma,beta,z(:,j),ierror)
+      if(present(additional_solves))additional_solves=additional_solves+1
+      if(ierror/=0)return
+    end do
+    small_matrix=matmul(transpose(right),z)
+    do j=1,rank
+      small_matrix(j,j)=small_matrix(j,j)+1d0
+    end do
+    rhs=matmul(transpose(right),solution(:n))
+    if(any(.not.ieee_is_finite(small_matrix)).or.any(.not.ieee_is_finite(rhs)))then
+      ierror=2001;return
+    end if
+    ! Pivot only the small Woodbury system. The soil matrix remains tridiagonal.
+    do k=1,rank
+      pivot=k-1+maxloc(abs(small_matrix(k:rank,k)),dim=1)
+      if(abs(small_matrix(pivot,k))<0.3e-37_real64)then
+        ierror=2000+k;return
+      end if
+      if(pivot/=k)then
+        row=small_matrix(k,:);small_matrix(k,:)=small_matrix(pivot,:);small_matrix(pivot,:)=row
+        swap_value=rhs(k);rhs(k)=rhs(pivot);rhs(pivot)=swap_value
+      end if
+      pivot_value=small_matrix(k,k)
+      do j=k+1,rank
+        multiplier=small_matrix(j,k)/pivot_value
+        small_matrix(j,k:rank)=small_matrix(j,k:rank)-multiplier*small_matrix(k,k:rank)
+        rhs(j)=rhs(j)-multiplier*rhs(k)
+      end do
+    end do
+    do k=rank,1,-1
+      rhs(k)=(rhs(k)-sum(small_matrix(k,k+1:rank)*rhs(k+1:rank)))/small_matrix(k,k)
+    end do
+    solution(:n)=solution(:n)-matmul(z,rhs)
+    if(any(.not.ieee_is_finite(solution(:n))))ierror=2100
+  end subroutine reference_tridag_low_rank
 
   subroutine reference_tridag(n, a, b, c, r, u, gamma, ierror, beta_factor, capture_in_gamma_requested)
     integer, intent(in) :: n

@@ -1,0 +1,37 @@
+{
+  "schema": 1,
+  "source_directory": "tests/qualification/ppa-wu05-migmac10-canonical-20261006",
+  "input_files": [
+    "swap.swp",
+    "swap.bbc",
+    "swap.dra",
+    "wintcer1.crp",
+    "wintcer2.crp",
+    "andelst_meteo.998",
+    "andelst_meteo.999",
+    "andelst_rain.998",
+    "andelst_rain.999"
+  ],
+  "timeout_seconds": 60,
+  "slow_seconds_per_day": 10,
+  "design": "Production preservation2days and original integral experimental2.748\u21925 with own bound restart",
+  "scenarios": [
+    {
+      "id": "default-two",
+      "mode": "production",
+      "days": 2,
+      "timeout_seconds": 150,
+      "restart_check": false
+    },
+    {
+      "id": "original-corrected-two",
+      "mode": "experimental",
+      "source_surface_demand": true,
+      "perched_jacobian": true,
+      "days": 2,
+      "timeout_seconds": 150,
+      "restart_check": false,
+      "reference": "tests/qualification/ppa-wu05-migmac10-canonical-20261006/b111-result_output.csv.gz"
+    }
+  ]
+}
