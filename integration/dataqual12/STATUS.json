@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL12",
   "baseline": "3bcf96ccf64008bc7ba09c0ab8e82ea8f77d21e5",
-  "stage": "QUALIFIED_EXPERIMENTAL_NOT_YET_MERGED",
+  "stage": "CANONICALLY_INTEGRATED_EXPERIMENTAL_PREFIX",
   "contract": "Original Hupsel pre-emergence prefix only, all original physical parameters preserved. SWBOTB6 is zero flux, mapped exactly to existing prescribed-zero-flux boundary. Existing PM, Black, Hooghoudt-IPOS2, numeric heat, reactive solute owners are composed. No crop state is needed before the first original emergence date. Black numeric heat is explicit default-off; old callers and S5PT0001/2 streams stay unchanged. New S5PT0003 carries Black ldwet and binds cofred. Optional parameters on Black state constructor certify heat identity, preserving the old call signature.",
   "invariants": "No copied physics, no relaxed balance/temporal tolerances, staged joint rollback, reject prefixes crossing crop emergence, exact source inputs bound in launcher.",
   "scientific_delta": {
@@ -60,5 +60,6 @@
     "thermal_compile_seconds": 329.9315314939995,
     "thermal_native_seconds": 4.6729044370113115,
     "thermal_selection_justification": "Shared heat/restart composition changes require existing discriminating literal and rejected-trial checks; no long physical stress run."
-  }
+  },
+  "merge_receipt": "integration/dataqual12/MERGE_RECEIPT.json"
 }
