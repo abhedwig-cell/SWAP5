@@ -1,0 +1,47 @@
+{
+  "work_unit": "DATAQUAL13",
+  "baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
+  "stage": "GRASS_DEVELOPMENT_COMPONENT_QUALIFIED_NOT_MODEL_COUPLED",
+  "scope": "Original Grassgrowth SWWOFOST3, SWTSUM1, direct PM, SWRAIN2, prescribed groundwater table and numeric heat. Original inputs remain byte-exact. Existing crop/process/runtime owners must be reused; full original application is reference only, never SWAP5 evidence.",
+  "invariants": "Full Richards reference production retained; no copied water kernel; candidate grass state must commit with accepted water state and roll back on rejected trials; source forcing and original crop parameters retained.",
+  "selected": [
+    "original reference execution to establish grass startup and numerical oracle",
+    "small native production grass process closure O0/O2",
+    "bounded original Grassgrowth project execution after coupling"
+  ],
+  "not_selected": [
+    "long Andelst stall",
+    "full F-CI",
+    "low-air stress"
+  ],
+  "qualification": {
+    "optimization": [
+      "O0",
+      "O2"
+    ],
+    "original_routine_matches_per_build": 2799,
+    "original_weather_days": 1827,
+    "invalid_rejections_per_build": 5,
+    "optimization_output_exact": true,
+    "oracle_modification": "Original wofost.f90 private routine exposed by public declaration only; scientific body unchanged."
+  },
+  "model_execution": {
+    "swap5_original_grassgrowth_days": 0,
+    "full_reference_days": 1827,
+    "reference_exit": 100,
+    "reference_note": "B1.11 complete reference application, never counted as SWAP5. Output controls only changed for balance files.",
+    "shortened_reference_failure": "Original DATE1 has no measurement inside Jan1-5; original reader rejects shortened TEND. Full period succeeds."
+  },
+  "remaining": [
+    "Source grass biomass, root and mowing/grazing daily coupling to existing crop owner",
+    "SWBOTB1 moving internal groundwater-table runtime; cannot be replaced by free drainage or a bottom head without equivalence proof",
+    "Original PM/SWRAIN2/crop/heat daily transaction and exact restart"
+  ],
+  "source_sha256": {
+    "src/crop/mod_wofost_grass_development.f90": "7607f26fc526e34f86e6c24193c86da2dcf385b7bb3eee156a01d47604fa88ef",
+    "tests/dataqual13/qualify_grass_development.py": "4aafc516de50231eaba3ca7d37434faa2c9e997f4947882d6b9d0f7b78350d15",
+    "tests/dataqual13/grass_development_driver.f90": "b3553b2e9840a564375af1fe00e9621f859868278db50c8d07142d6f619d1b14"
+  },
+  "evidence_sha256": "8f87bf329ab596bde9d458f26ba362e6f45cf46231227f3f4d822257d636a063",
+  "canonical_admitted": false
+}
