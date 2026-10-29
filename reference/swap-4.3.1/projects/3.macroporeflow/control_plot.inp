@@ -1,0 +1,26 @@
+# Controlfile:  plotting SWAP results
+#________________________________________________
+#
+
+# SWAP simulation
+FILSWP                              ./swap.swp                            # Path to main inputfile of SWAP (*.swp)
+
+# figure setup
+FILPNG                              ./output.png                          # Path to figure (*.png) 
+GRAPH                               rain, drn, gwl                        # SWAP variables to plot
+WIDTH                               10                                    # Width of figure
+HEIGHT                              14                                    # Height of figure
+
+# period (default: simulation period)
+TSTART                              1998-01-01                            # Start of plot
+TEND                                1999-04-26                            # End of plot
+
+# observations
+DIROBS                              ./observed                            # Path to observations
+STATS                               rmse                                  # Index model performance (options: 'rpearson', 'syserr', 'rnderr', 'sse', 'mse', 'rmse', 'mae', 'ioa' or 'nse')
+
+# language
+LANGUAGE                            EN                                    # Language of labels (options 'NL' or 'EN')
+
+# meta-information
+CREATE_META                         No                                    # Export of graph data

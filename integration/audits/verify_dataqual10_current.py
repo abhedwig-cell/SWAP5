@@ -21,6 +21,7 @@ def parent_projection():
  text=text.replace(needle,needle+" if (ROOT/'"+STATUS+"').is_file():projected.update("+repr(PROJECTED)+")\n",1)
  return text.encode()
 def source(reader=None,changed=None):
+ if (ROOT/'integration/dataqual11/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual11_current.py'))['source'](reader,changed)
  if reader is None:reader=lambda p:(ROOT/p).read_bytes()
  s=json.loads(reader(STATUS));assert s['baseline']==BASE
  assert not git('diff','HEAD','--','src','app','tools','tests','integration/audits')

@@ -1,0 +1,488 @@
+{
+  "schema": 1,
+  "baseline": "61f723911c1936fd1860947053857eb7b7b9a84b",
+  "status_vocabulary": [
+    "not_implemented",
+    "implemented_not_executed",
+    "experimental_executed",
+    "water_qualified",
+    "integrally_qualified",
+    "canonically_admitted",
+    "blocked"
+  ],
+  "denominator": {
+    "independent_original_projects": 3,
+    "templates_excluded": 1,
+    "project_process_cells": 20,
+    "complete_project_migrations": 0,
+    "projects_with_inherited_bounded_water_evidence": 1
+  },
+  "projects": [
+    {
+      "project": "1.hupselbrook",
+      "original_swp_sha256": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+      "nodes": 34,
+      "original_calendar_days": 1096,
+      "selectors": [
+        {
+          "kind": "calendar_start",
+          "index": "0",
+          "value": "  3.7256000000000000E+004"
+        },
+        {
+          "kind": "calendar_end",
+          "index": "0",
+          "value": "  3.8351000000000000E+004"
+        },
+        {
+          "kind": "swetr",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swcrop",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swmacro",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsolu",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swhea",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcalt",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swinco",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swbotb",
+          "index": "0",
+          "value": "6"
+        },
+        {
+          "kind": "swbbcfile",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swdra",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swrain",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swredu",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swfrost",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsnow",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swpondmx",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhyst",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "nodes",
+          "index": "0",
+          "value": "34"
+        },
+        {
+          "kind": "croptype",
+          "index": "1",
+          "value": "1"
+        },
+        {
+          "kind": "croptype",
+          "index": "2",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "3",
+          "value": "2"
+        }
+      ],
+      "features": [
+        {
+          "function": "pm_direct",
+          "status": "blocked",
+          "cause_or_scope": "Process exists; file-led project driver rejects SWETR0 before stepping."
+        },
+        {
+          "function": "crop_rotation",
+          "status": "blocked",
+          "cause_or_scope": "Original includes simple maize and dynamic potato/grass; driver accepts only simple periods."
+        },
+        {
+          "function": "drainage",
+          "status": "blocked",
+          "cause_or_scope": "Original DRAMET2; file-led native route supports DRAMET3."
+        },
+        {
+          "function": "bottom",
+          "status": "blocked",
+          "cause_or_scope": "Original inline SWBOTB6 free drainage; driver requires prescribed flux inline."
+        },
+        {
+          "function": "matrix_water",
+          "status": "blocked",
+          "cause_or_scope": "No original Hupsel model steps launched."
+        },
+        {
+          "function": "heat",
+          "status": "blocked",
+          "cause_or_scope": "No integrated original Hupsel hydrothermal execution."
+        },
+        {
+          "function": "solute",
+          "status": "blocked",
+          "cause_or_scope": "SWSOLU1; native macro-water route requires SWSOLU0."
+        }
+      ]
+    },
+    {
+      "project": "2.grassgrowth",
+      "original_swp_sha256": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "nodes": 113,
+      "original_calendar_days": 1827,
+      "selectors": [
+        {
+          "kind": "calendar_start",
+          "index": "0",
+          "value": "  2.9220000000000000E+004"
+        },
+        {
+          "kind": "calendar_end",
+          "index": "0",
+          "value": "  3.1046000000000000E+004"
+        },
+        {
+          "kind": "swetr",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swcrop",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swmacro",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsolu",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhea",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcalt",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swinco",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swbbcfile",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swdra",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swrain",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swredu",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swfrost",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsnow",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swpondmx",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhyst",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "nodes",
+          "index": "0",
+          "value": "113"
+        },
+        {
+          "kind": "croptype",
+          "index": "1",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "2",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "3",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "4",
+          "value": "2"
+        },
+        {
+          "kind": "croptype",
+          "index": "5",
+          "value": "2"
+        }
+      ],
+      "features": [
+        {
+          "function": "pm_direct",
+          "status": "blocked",
+          "cause_or_scope": "Existing physical module lacks this file-led application coupling."
+        },
+        {
+          "function": "dynamic_grass",
+          "status": "not_implemented",
+          "cause_or_scope": "No WOFOST grass state owner in this driver; original CROPTYPE2/SWWOFOST3."
+        },
+        {
+          "function": "rain_duration",
+          "status": "experimental_executed",
+          "cause_or_scope": "Original 1827-day SWRAIN2 forcing executed by new production process and source adapter, O0/O2 exact. Forcing-only, no soil/crop execution."
+        },
+        {
+          "function": "bottom",
+          "status": "blocked",
+          "cause_or_scope": "Original external SWBOTB1 prescribed groundwater table; route only accepts external Cauchy3."
+        },
+        {
+          "function": "matrix_water",
+          "status": "blocked",
+          "cause_or_scope": "No original Grassgrowth model steps launched."
+        },
+        {
+          "function": "heat",
+          "status": "blocked",
+          "cause_or_scope": "No original Grassgrowth coupled heat execution."
+        },
+        {
+          "function": "drainage",
+          "status": "implemented_not_executed",
+          "cause_or_scope": "DRAMET3 exists; not executed in the original Grassgrowth composition."
+        }
+      ]
+    },
+    {
+      "project": "3.macroporeflow",
+      "original_swp_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+      "nodes": 112,
+      "original_calendar_days": 481,
+      "selectors": [
+        {
+          "kind": "calendar_start",
+          "index": "0",
+          "value": "  3.5795000000000000E+004"
+        },
+        {
+          "kind": "calendar_end",
+          "index": "0",
+          "value": "  3.6275000000000000E+004"
+        },
+        {
+          "kind": "swetr",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcrop",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swmacro",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swsolu",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhea",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swcalt",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swinco",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swbbcfile",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swdra",
+          "index": "0",
+          "value": "1"
+        },
+        {
+          "kind": "swrain",
+          "index": "0",
+          "value": "3"
+        },
+        {
+          "kind": "swredu",
+          "index": "0",
+          "value": "2"
+        },
+        {
+          "kind": "swfrost",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swsnow",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swpondmx",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "swhyst",
+          "index": "0",
+          "value": "0"
+        },
+        {
+          "kind": "nodes",
+          "index": "0",
+          "value": "112"
+        },
+        {
+          "kind": "croptype",
+          "index": "1",
+          "value": "1"
+        },
+        {
+          "kind": "croptype",
+          "index": "2",
+          "value": "1"
+        }
+      ],
+      "features": [
+        {
+          "function": "etref",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited DATAQUAL10 bounded original Andelst scope; no new independent project."
+        },
+        {
+          "function": "macropore_matrix_water",
+          "status": "water_qualified",
+          "cause_or_scope": "Inherited DATAQUAL10 original integral maximum 2.748 days; current 30s run completed one daily budget only, not newly qualified."
+        },
+        {
+          "function": "rutter",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited bounded original Andelst scope."
+        },
+        {
+          "function": "heat",
+          "status": "experimental_executed",
+          "cause_or_scope": "Numeric heat executed, no energy qualification claim."
+        },
+        {
+          "function": "drainage",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited DRAMET3 scope; current original prefix has zero drainage."
+        },
+        {
+          "function": "bottom",
+          "status": "canonically_admitted",
+          "cause_or_scope": "Inherited original Cauchy3 application scope."
+        }
+      ]
+    }
+  ],
+  "templates": [
+    {
+      "project": "4.salinitystress",
+      "status": "blocked",
+      "cause": "Unresolved {{...}} template fields; generated complete run input unavailable in distribution. Not counted as fourth independent runnable project."
+    }
+  ],
+  "new_integral_model_projects_executed": 0,
+  "new_physical_laws": 0,
+  "new_original_forcing_option_executed": "SWRAIN2 source adapter only",
+  "dataqual10_inherited": true
+}

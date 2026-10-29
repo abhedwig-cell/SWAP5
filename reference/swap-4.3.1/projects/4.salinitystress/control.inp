@@ -1,0 +1,39 @@
+# Controlfile: SWAP-WOFOST
+# Author:      H.M. Mulder
+# Model:       https://swap.wur.nl
+# Company:     Wageningen Environmental Research
+#________________________________________________
+#
+
+# PREPROCESS
+#------------------------------------------------
+
+PREPROCESS                          Yes                                  # Converting Excel to SQLite, options 'Yes' or 'No'
+
+FILXLS                              .\tools\datamodel.xlsx               # Path to Excel file containing SWAP settings
+FILSQL                              .\tools\datamodel.sqlite             # Path to SQLite file (to be created by the R)
+
+# MAINPROCESS
+#------------------------------------------------
+
+MAINPROCESS                         Yes                                  # Executing SWAP simulations, options 'Yes' or 'No' 
+
+DIRRUN                              .\temp                               # Path to directory where SWAP simulations are performed
+
+RUNID                               ALL                                  # Selection of run_id; for example 'ALL', '1,2,10' or '1-5, 10'
+
+PRGSWP                              ..\..\tools\SWAP\swap_4.3.1.exe      # Path to SWAP executable
+
+FILSWP                              .\tools\template\swap.swp            # Path swp-file
+FILDRA                              .\tools\template\swap.dra            # Path dra-file
+DIRINI                              .\tools\template\initial             # Path to directory ini-file(s)
+DIRMET                              .\tools\template\weather             # Path to directory met-file(s)
+DIRCRP                              .\tools\template\crop                # Path to directory crp-file(s)
+
+# POSTPROCESS
+#------------------------------------------------
+
+POSTPROCESS                         Yes
+
+DIROUT                              .\output                             # Path to directory with model results
+DIRFIG                              .\tools\figures                      # Path to directory with fig-template(s)
