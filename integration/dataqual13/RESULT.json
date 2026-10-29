@@ -1,0 +1,439 @@
+{
+  "work_unit": "DATAQUAL13",
+  "canonical_baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
+  "canonical_admitted": false,
+  "independent_original_projects_found": 3,
+  "new_original_projects_executed_this_work_unit": 1,
+  "new_original_projects_executed_since_DATAQUAL10": 2,
+  "original_projects_with_bounded_water_evidence": 3,
+  "complete_original_migrations": 0,
+  "denominator_original_projects": 3,
+  "project": "2.grassgrowth",
+  "original_inputs_sha256": {
+    "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+    "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+    "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+    "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+    "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+  },
+  "active_processes": [
+    "Full Richards MVG SWBOTB1 prescribed groundwater before first sample",
+    "direct PM",
+    "original SWRAIN2 duration rain and daily wet canopy fraction",
+    "source dormant SWWOFOST3 development and biomass",
+    "Feddes drought then physical Bartholomeus oxygen",
+    "Boesten SPEV/SAEV",
+    "numeric heat",
+    "DRAMET3 enabled; no positive drainage proof"
+  ],
+  "executed_days": 63,
+  "water_and_disk_restart_qualified_days": 5,
+  "qualified_optimizations": [
+    "O0",
+    "O2"
+  ],
+  "full_versus_split_restart_exact": true,
+  "invalid_restart_rejections_per_build": 5,
+  "maximum_water_residual_cm": 3.803207748731552e-14,
+  "maximum_heat_accounting_residual_j_cm2": 1.8082445263356561e-12,
+  "solute": "NOT_APPLICABLE original SWSOLU0",
+  "historical_reference_days": 1827,
+  "historical_comparison": [
+    {
+      "day": 1,
+      "water_difference_cm": -0.003493429499258127,
+      "potential_transpiration_difference_cm": -1.4131382695958816e-13
+    },
+    {
+      "day": 2,
+      "water_difference_cm": -0.005739153609454206,
+      "potential_transpiration_difference_cm": 1.3411754345993288e-13
+    },
+    {
+      "day": 3,
+      "water_difference_cm": -0.003511087708574223,
+      "potential_transpiration_difference_cm": -2.2225363910388651e-13
+    },
+    {
+      "day": 4,
+      "water_difference_cm": -0.009204166201243424,
+      "potential_transpiration_difference_cm": -4.7421485141474484e-14
+    },
+    {
+      "day": 5,
+      "water_difference_cm": -0.007390115937795372,
+      "potential_transpiration_difference_cm": -2.137506751459517e-13
+    },
+    {
+      "day": 2,
+      "water_difference_cm": -0.005739153609454206,
+      "potential_transpiration_difference_cm": 1.3411754345993288e-13
+    },
+    {
+      "day": 3,
+      "water_difference_cm": -0.003511087708574223,
+      "potential_transpiration_difference_cm": -2.2225363910388651e-13
+    },
+    {
+      "day": 4,
+      "water_difference_cm": -0.009204166201243424,
+      "potential_transpiration_difference_cm": -4.7421485141474484e-14
+    },
+    {
+      "day": 5,
+      "water_difference_cm": -0.007390115937795372,
+      "potential_transpiration_difference_cm": -2.137506751459517e-13
+    },
+    {
+      "day": 6,
+      "water_difference_cm": -0.007682726305461074,
+      "potential_transpiration_difference_cm": 4.0226285843991683e-13
+    },
+    {
+      "day": 7,
+      "water_difference_cm": -0.004829492143585412,
+      "potential_transpiration_difference_cm": -6.128127519322568e-15
+    },
+    {
+      "day": 8,
+      "water_difference_cm": -0.0027486888737087156,
+      "potential_transpiration_difference_cm": -2.004292998930568e-13
+    },
+    {
+      "day": 9,
+      "water_difference_cm": -0.002194210656426776,
+      "potential_transpiration_difference_cm": -1.1561758495037822e-13
+    },
+    {
+      "day": 10,
+      "water_difference_cm": -0.001751146738257603,
+      "potential_transpiration_difference_cm": 7.696968062909093e-15
+    },
+    {
+      "day": 11,
+      "water_difference_cm": -0.001403971550331562,
+      "potential_transpiration_difference_cm": 1.379521497035796e-13
+    },
+    {
+      "day": 12,
+      "water_difference_cm": -0.001120194541812225,
+      "potential_transpiration_difference_cm": 4.637488310033078e-13
+    },
+    {
+      "day": 13,
+      "water_difference_cm": -0.0008464671499268661,
+      "potential_transpiration_difference_cm": -4.183545870839467e-13
+    },
+    {
+      "day": 14,
+      "water_difference_cm": -0.0006732114687508783,
+      "potential_transpiration_difference_cm": -4.98512689461883e-13
+    },
+    {
+      "day": 15,
+      "water_difference_cm": -0.000572630599066315,
+      "potential_transpiration_difference_cm": -4.582887888626708e-13
+    },
+    {
+      "day": 16,
+      "water_difference_cm": -0.0004716288801205337,
+      "potential_transpiration_difference_cm": 7.758637482480069e-14
+    },
+    {
+      "day": 17,
+      "water_difference_cm": -0.0003788769980417328,
+      "potential_transpiration_difference_cm": -4.3236768332288733e-13
+    },
+    {
+      "day": 18,
+      "water_difference_cm": -0.0003017137311189799,
+      "potential_transpiration_difference_cm": -3.310155968772044e-13
+    },
+    {
+      "day": 19,
+      "water_difference_cm": -0.00027872489565083924,
+      "potential_transpiration_difference_cm": 4.3559773843515615e-13
+    },
+    {
+      "day": 20,
+      "water_difference_cm": -0.0001592961046696928,
+      "potential_transpiration_difference_cm": -1.6966462956791162e-14
+    },
+    {
+      "day": 21,
+      "water_difference_cm": -0.003704864376544492,
+      "potential_transpiration_difference_cm": 2.344322652669817e-13
+    },
+    {
+      "day": 22,
+      "water_difference_cm": -0.00634767989393481,
+      "potential_transpiration_difference_cm": -1.7507696681295926e-13
+    },
+    {
+      "day": 23,
+      "water_difference_cm": -0.004403417993358971,
+      "potential_transpiration_difference_cm": 4.385788607286223e-13
+    },
+    {
+      "day": 24,
+      "water_difference_cm": -0.003301629852444421,
+      "potential_transpiration_difference_cm": 2.975141834282713e-13
+    },
+    {
+      "day": 25,
+      "water_difference_cm": -0.002887769668149076,
+      "potential_transpiration_difference_cm": 2.338918989042149e-13
+    },
+    {
+      "day": 26,
+      "water_difference_cm": -0.0032430653357948813,
+      "potential_transpiration_difference_cm": 4.28426391585468e-13
+    },
+    {
+      "day": 27,
+      "water_difference_cm": -0.0027104630144378916,
+      "potential_transpiration_difference_cm": -2.1446386333501266e-14
+    },
+    {
+      "day": 28,
+      "water_difference_cm": -0.0023515702884822076,
+      "potential_transpiration_difference_cm": -1.9328505809768082e-13
+    },
+    {
+      "day": 29,
+      "water_difference_cm": -0.003623113593448579,
+      "potential_transpiration_difference_cm": 3.2353720397226837e-13
+    },
+    {
+      "day": 30,
+      "water_difference_cm": -0.0027922787395198156,
+      "potential_transpiration_difference_cm": 4.2629441643349253e-13
+    },
+    {
+      "day": 31,
+      "water_difference_cm": -0.025266829804280633,
+      "potential_transpiration_difference_cm": 1.2433803986411363e-13
+    },
+    {
+      "day": 32,
+      "water_difference_cm": -0.005255963521591411,
+      "potential_transpiration_difference_cm": 3.5085996608064107e-13
+    },
+    {
+      "day": 33,
+      "water_difference_cm": -0.01708464802754861,
+      "potential_transpiration_difference_cm": -6.003010588617741e-15
+    },
+    {
+      "day": 34,
+      "water_difference_cm": -0.015748801136254542,
+      "potential_transpiration_difference_cm": 5.256142743270686e-13
+    },
+    {
+      "day": 35,
+      "water_difference_cm": -0.00975493036614239,
+      "potential_transpiration_difference_cm": 2.1637032443511117e-13
+    },
+    {
+      "day": 36,
+      "water_difference_cm": -0.016066658037061643,
+      "potential_transpiration_difference_cm": 4.850139387335695e-13
+    },
+    {
+      "day": 37,
+      "water_difference_cm": -0.004721511741735185,
+      "potential_transpiration_difference_cm": -3.985392744987326e-13
+    },
+    {
+      "day": 38,
+      "water_difference_cm": -0.002409368111329968,
+      "potential_transpiration_difference_cm": 2.6973215327963374e-13
+    },
+    {
+      "day": 39,
+      "water_difference_cm": -0.0017997285669650864,
+      "potential_transpiration_difference_cm": 3.6236638689679523e-13
+    },
+    {
+      "day": 40,
+      "water_difference_cm": -0.0018505874838581349,
+      "potential_transpiration_difference_cm": 5.407757575071059e-13
+    },
+    {
+      "day": 41,
+      "water_difference_cm": -0.0016154214891344054,
+      "potential_transpiration_difference_cm": 5.491579413430259e-13
+    },
+    {
+      "day": 42,
+      "water_difference_cm": -0.001360092970031701,
+      "potential_transpiration_difference_cm": 2.8924605766089684e-13
+    },
+    {
+      "day": 43,
+      "water_difference_cm": -0.0012116897612486355,
+      "potential_transpiration_difference_cm": 3.3976987889872134e-13
+    },
+    {
+      "day": 44,
+      "water_difference_cm": -0.0011056586261304346,
+      "potential_transpiration_difference_cm": -1.1004391842206473e-13
+    },
+    {
+      "day": 45,
+      "water_difference_cm": -0.0010842887122635148,
+      "potential_transpiration_difference_cm": 4.1849163023854885e-13
+    },
+    {
+      "day": 46,
+      "water_difference_cm": 0.00010709654247875733,
+      "potential_transpiration_difference_cm": 4.995830138465607e-14
+    },
+    {
+      "day": 47,
+      "water_difference_cm": -0.0013956175014016026,
+      "potential_transpiration_difference_cm": -1.778334424162864e-13
+    },
+    {
+      "day": 48,
+      "water_difference_cm": -0.0017634183087977817,
+      "potential_transpiration_difference_cm": 5.021157101214868e-14
+    },
+    {
+      "day": 49,
+      "water_difference_cm": -0.001693991182918353,
+      "potential_transpiration_difference_cm": 2.0780599463421368e-13
+    },
+    {
+      "day": 50,
+      "water_difference_cm": -0.001609270680148711,
+      "potential_transpiration_difference_cm": -6.026429355543428e-14
+    },
+    {
+      "day": 51,
+      "water_difference_cm": -0.001608397633901859,
+      "potential_transpiration_difference_cm": -2.498765083736032e-13
+    },
+    {
+      "day": 52,
+      "water_difference_cm": -0.0016600086688356441,
+      "potential_transpiration_difference_cm": -1.3671008769478021e-13
+    },
+    {
+      "day": 53,
+      "water_difference_cm": -0.0017209346045490292,
+      "potential_transpiration_difference_cm": 1.1142614608772305e-12
+    },
+    {
+      "day": 54,
+      "water_difference_cm": -0.0012204216671989343,
+      "potential_transpiration_difference_cm": -3.651749042044017e-13
+    },
+    {
+      "day": 55,
+      "water_difference_cm": -0.0010061584104619214,
+      "potential_transpiration_difference_cm": -4.913638940173826e-13
+    },
+    {
+      "day": 56,
+      "water_difference_cm": -0.001294986058894665,
+      "potential_transpiration_difference_cm": 2.1672247330073446e-13
+    },
+    {
+      "day": 57,
+      "water_difference_cm": -0.0012550662810326685,
+      "potential_transpiration_difference_cm": -2.840280094451586e-13
+    },
+    {
+      "day": 58,
+      "water_difference_cm": -0.0010516045123551976,
+      "potential_transpiration_difference_cm": -5.586156537340514e-14
+    },
+    {
+      "day": 59,
+      "water_difference_cm": -0.0009297457222317007,
+      "potential_transpiration_difference_cm": 3.904689072076195e-13
+    },
+    {
+      "day": 60,
+      "water_difference_cm": -0.0008410924605470882,
+      "potential_transpiration_difference_cm": 2.0324020244544272e-13
+    },
+    {
+      "day": 61,
+      "water_difference_cm": -0.0008558350167788831,
+      "potential_transpiration_difference_cm": 1.1248640907624008e-12
+    },
+    {
+      "day": 62,
+      "water_difference_cm": -0.000973511576319197,
+      "potential_transpiration_difference_cm": 9.183140359247943e-13
+    },
+    {
+      "day": 63,
+      "water_difference_cm": -0.0008355073389907375,
+      "potential_transpiration_difference_cm": 6.547540287726861e-13
+    }
+  ],
+  "historical_equivalence_qualified": false,
+  "year_attempt": {
+    "requested_days": 365,
+    "completed_days": 63,
+    "returncode": 1,
+    "classification": "3 missing runtime coupling",
+    "cause": "day64 source active grass growth requires full potential/root/harvest lifecycle",
+    "checkpoint_sha256": "be73528d6d5828b0ae1ddeb352221469de7688cb1004c46ced224a04b31d2d05",
+    "seconds": 128.31368860200018
+  },
+  "runs": [
+    {
+      "command": [
+        "/workspace/scratch/f29d9f3066a3/dq13-grass-final-O2/swap5_grass_startup",
+        "30",
+        "retain-step",
+        "100000",
+        "/workspace/scratch/f29d9f3066a3/dq13-grass-qualification-O2/full/checkpoint.bin"
+      ],
+      "returncode": 1,
+      "seconds": 13.872161128994776
+    },
+    {
+      "command": [
+        "/workspace/scratch/f29d9f3066a3/dq13-grass-admitted-O2/swap5_grass_startup",
+        "30",
+        "retain-step",
+        "100000",
+        "/workspace/scratch/f29d9f3066a3/dq13-grass-admitted-O2/original-interval/checkpoint.bin"
+      ],
+      "returncode": 0,
+      "seconds": 81.79748276399914
+    },
+    {
+      "command": [
+        "/workspace/scratch/f29d9f3066a3/dq13-grass-admitted-O2/swap5_grass_startup",
+        "365",
+        "retain-step",
+        "100000",
+        "/workspace/scratch/f29d9f3066a3/dq13-grass-month-O2/checkpoint.bin"
+      ],
+      "returncode": 1,
+      "seconds": 128.31368860200018
+    }
+  ],
+  "component_and_preservation_authority": "STATUS.json and source-bound EVIDENCE.tar.xz",
+  "dataqual10_comparison": {
+    "started_variants": 151,
+    "water_qualified_variants": 83,
+    "qualified_configuration_days": 94.748,
+    "independent_original_projects": 1,
+    "longest_original_days": 2.748,
+    "new_current_variants_not_added_to_old_counts": true
+  },
+  "remaining": [
+    "Original Grassgrowth day64 active grass potential/root lifecycle and mowing/grazing joint runtime.",
+    "Time-varying original groundwater callback after first BBC observation.",
+    "Resolve measured whole-model historical water-stock/flux differences; no complete energy/physiology parity.",
+    "Full original periods remain unqualified:0/3 complete original migrations.",
+    "Actual canonical integration receipt pending."
+  ]
+}

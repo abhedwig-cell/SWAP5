@@ -9,6 +9,9 @@ module mod_wofost_crop_owner_state
        CROP_ROOT_DEPTH_BIOMASS_OK
   use mod_crop_root_profile_static, only: materialize_static_root_profile, CROP_ROOT_PROFILE_OK
   use mod_crop_root_uptake_input_contract, only: crop_root_uptake_input_t, validate_crop_root_uptake_input, CROP_ROOT_INPUT_OK
+  use mod_crop_root_biomass_distribution,only:crop_root_biomass_distribution_t, &
+    derive_crop_root_biomass_distribution,ROOT_BIOMASS_DISTRIBUTION_OK
+  use mod_crop_bartholomeus_input,only:crop_bartholomeus_input_t,publish_crop_bartholomeus_input
   implicit none
   private
 
@@ -52,6 +55,7 @@ module mod_wofost_crop_owner_state
     procedure, public :: current_development_stage => wofost_current_development_stage
     procedure, public :: evolution_continuation_available => wofost_evolution_continuation_available
     procedure, public :: read_actual_root_biomass => wofost_read_actual_root_biomass
+    procedure, public :: derive_bartholomeus_root_input => wofost_derive_bartholomeus_root_input
     procedure, public :: derive_dvs_root_depth => wofost_derive_dvs_root_depth
     procedure, public :: derive_biomass_root_depth => wofost_derive_biomass_root_depth
     procedure, public :: derive_biomass_root_uptake_input => wofost_derive_biomass_root_uptake_input
@@ -208,6 +212,31 @@ contains
     value = self%biomass%actual_root_biomass()
     available = .true.
   end subroutine wofost_read_actual_root_biomass
+
+  subroutine wofost_derive_bartholomeus_root_input(self,dz_cm,cumulative_fraction, &
+       specific_root_length_m_kg,air_temperature_c,input,distribution,available,status)
+    class(wofost_crop_owner_state_t),intent(in)::self
+    real(real64),intent(in)::dz_cm(:),cumulative_fraction(:),specific_root_length_m_kg,air_temperature_c
+    type(crop_bartholomeus_input_t),intent(out)::input
+    type(crop_root_biomass_distribution_t),intent(out)::distribution
+    logical,intent(out)::available
+    integer,intent(out)::status
+    real(real64)::root_biomass
+    logical::root_available
+    integer::code
+    input=crop_bartholomeus_input_t();distribution=crop_root_biomass_distribution_t();available=.false.
+    call self%read_actual_root_biomass(root_biomass,root_available,status)
+    if(status/=WOFOST_CROP_OWNER_OK.or..not.root_available)return
+    call derive_crop_root_biomass_distribution(root_biomass,specific_root_length_m_kg,dz_cm, &
+      cumulative_fraction,distribution,code)
+    status=WOFOST_CROP_OWNER_INVALID_ROOT_PROFILE
+    if(code/=ROOT_BIOMASS_DISTRIBUTION_OK)return
+    call publish_crop_bartholomeus_input(distribution%node_top_density_kg_m3,air_temperature_c,input,available)
+    if(.not.available)then
+      distribution=crop_root_biomass_distribution_t();return
+    end if
+    status=WOFOST_CROP_OWNER_OK
+  end subroutine
 
   subroutine wofost_derive_dvs_root_depth(self, table, maximum_root_depth_cm, value, available, status)
     class(wofost_crop_owner_state_t), intent(in) :: self

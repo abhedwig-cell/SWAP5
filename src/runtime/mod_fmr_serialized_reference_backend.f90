@@ -1041,6 +1041,20 @@ contains
     ok=p%soil_temperature%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC
   end function macro_numeric_heat_valid
 
+  logical function groundwater_oxygen_trace_scope(p) result(ok)
+    type(fmr_b110_physical_parameters_t),intent(in)::p
+    integer::route,waterfilm_mode
+    ok=.false.
+    if(p%bottom_mode/=1.or..not.p%prescribed_groundwater_active)return
+    if(.not.p%root_extraction_active.or..not.p%soil_temperature_active)return
+    if(.not.allocated(p%bartholomeus).or..not.allocated(p%soil_temperature))return
+    if(p%soil_temperature%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
+    if(p%root_compensation%method/=ROOT_COMP_OFF.or.p%root_salinity_active.or.p%root_frost%active)return
+    if(p%macropore_active.or.p%snow_active.or.p%frost_active.or.allocated(p%micro_de_willigen))return
+    call select_fmr_bartholomeus_route(p%bartholomeus%selection,route,waterfilm_mode)
+    ok=route==FMR_BARTHOLOMEUS_ACTIVE
+  end function
+
   logical function joint_drainage_trace_valid(p) result(ok)
     type(fmr_b110_physical_parameters_t),intent(in)::p
     type(process_hydraulic_view_t)::view
@@ -1061,6 +1075,8 @@ contains
       if(p%bottom_mode/=3.or.p%drainage_response_levels(1)%dramet3%drain_type/=1)return
     end if
     select case(p%bottom_mode)
+    case(1)
+      if(.not.p%prescribed_groundwater_active.or.p%drainage_qbot_smooth_freatic_projection)return
     case(2)
       if(.not.p%drainage_qbot_smooth_freatic_projection)return
     case(3)
@@ -1076,7 +1092,10 @@ contains
       if(p%soil_temperature%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)return
     end if
     if(p%root_compensation%method/=ROOT_COMP_OFF.or.p%root_salinity_active.or.p%root_frost%active)return
-    if(allocated(p%bartholomeus).or.allocated(p%micro_de_willigen))return
+    if(allocated(p%micro_de_willigen))return
+    if(allocated(p%bartholomeus))then
+      if(.not.groundwater_oxygen_trace_scope(p))return
+    end if
     call distribute_single_level_signed_divdra(p%drainage_trial_distribution,view,0d0,nodes,d)
     if(d%status/=DRAIN_DIST_OK)return
     if(p%drainage_trial_distribution%active_nodes/=p%active_nodes)return
@@ -3408,13 +3427,11 @@ contains
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            (.not. parameters%tabulated_hydraulics_active .or. allocated(parameters%linear_hydraulic_table))
       if(parameters%prescribed_groundwater_active)then
-        ! First runtime composition: plain fixed-geometry matrix water. Extra
-        ! physical owners remain separately qualified, never silently omitted.
+        ! Fixed-geometry source-table water. Existing process owners retain
+        ! their own checks below, including required accepted trace composition.
         ok=ok.and.parameters%bottom_mode==1.and.self%soil_water_selection%uses_reference().and. &
           parameters%swkmean==1.and..not.parameters%macropore_active.and..not.parameters%snow_active.and. &
-          .not.parameters%frost_active.and..not.parameters%soil_temperature_active.and. &
-          .not.parameters%black_evaporation_active.and..not.parameters%boesten_evaporation_active.and. &
-          .not.parameters%root_extraction_active.and..not.parameters%drainage_response_active.and. &
+          .not.parameters%frost_active.and..not.parameters%black_evaporation_active.and. &
           .not.parameters%hysteresis_active.and..not.parameters%elasticity_active.and. &
           .not.parameters%weather_trial_warm_start.and..not.parameters%picard_conductivity_iteration
       end if
@@ -3562,7 +3579,8 @@ contains
           ok=ok.and.self%accepted_water_flux_trace_enabled.and. &
             parameters%root_compensation%method==ROOT_COMP_OFF.and. &
             .not.parameters%root_salinity_active.and..not.parameters%root_frost%active.and. &
-            .not.allocated(parameters%bartholomeus).and..not.allocated(parameters%micro_de_willigen)
+            (.not.allocated(parameters%bartholomeus).or.groundwater_oxygen_trace_scope(parameters)).and. &
+            .not.allocated(parameters%micro_de_willigen)
         end if
       else
         ok = ok .and. .not. allocated(parameters%black_evaporation) .and. .not. self%black_evaporation_active .and. &
@@ -3609,10 +3627,13 @@ contains
         if(oxygen_route==FMR_BARTHOLOMEUS_ACTIVE) then
           ok=ok .and. parameters%root_extraction_active .and. parameters%soil_temperature_active .and. &
                self%soil_water_selection%uses_reference() .and. &
-               (parameters%bottom_mode==2 .or. parameters%bottom_mode==7) .and. &
+               (parameters%bottom_mode==2 .or. parameters%bottom_mode==7.or. &
+                (groundwater_oxygen_trace_scope(parameters).and.self%accepted_water_flux_trace_enabled)) .and. &
                .not.parameters%direct_retention_active .and. .not.parameters%elasticity_active .and. &
                .not.parameters%macropore_active .and. .not.parameters%snow_active .and. &
-               .not.parameters%drainage_response_active .and. .not.self%fixed_weir_surface_water_active
+               (.not.parameters%drainage_response_active.or. &
+                (groundwater_oxygen_trace_scope(parameters).and.self%accepted_water_flux_trace_enabled.and. &
+                 joint_drainage_trace_valid(parameters))).and..not.self%fixed_weir_surface_water_active
           ok=ok .and. parameters%bartholomeus%soil%initial_hysteresis_branch==0
           ok=ok .and. matches_bartholomeus_hydraulic_owner(parameters%bartholomeus,parameters%cofgen,parameters%dz)
         end if
@@ -3986,7 +4007,14 @@ contains
         if (.not.self%root_extraction_active) return
         if (forcing%substep_root%parameters%active_nodes /= n) return
         if (any(forcing%root_extraction_sink /= 0.0_real64)) return
-        if (allocated(self%micro_de_willigen).or.allocated(self%bartholomeus)) return
+        if (allocated(self%micro_de_willigen)) return
+        if(allocated(self%bartholomeus))then
+          if(.not.self%prescribed_groundwater_active.or..not.self%accepted_water_flux_trace_enabled)return
+          if(forcing%substep_root%parameters%empirical_oxygen_enabled)return
+          if(.not.allocated(forcing%crop_oxygen))return
+          if(.not.allocated(forcing%crop_oxygen%root_density_kg_m3))return
+          if(size(forcing%crop_oxygen%root_density_kg_m3)/=forcing%substep_root%request%rooted_nodes)return
+        end if
         if (self%root_compensation%method /= ROOT_COMP_OFF.or.self%root_salinity_active.or.self%root_frost%active) return
         ! Numeric heat uses the same hydraulic Feddes trial-beginning view.
         ! Admit it only on the joint accepted-trace route, with chemistry
@@ -4005,7 +4033,8 @@ contains
         end if
         if (self%rfm_configuration%enabled.or.allocated(forcing%macropore_top_input)) return
         if (self%swkimpl /= 0) return
-        if (allocated(forcing%root_potential_sink).or.allocated(forcing%crop_oxygen)) return
+        if (allocated(forcing%root_potential_sink)) return
+        if(allocated(forcing%crop_oxygen).and..not.allocated(self%bartholomeus))return
         if(forcing%root_drought_reduction_total/=0.0_real64)return
         if(self%rutter_active)then
           if(forcing%root_potential_transpiration/=forcing%substep_root%request%potential_transpiration)return
@@ -5207,8 +5236,15 @@ contains
           allocate(oxygen_w_root(oxygen_nodes))
           oxygen_w_root=1.0_real64/self%bartholomeus%specific_root_length_m_kg
           atmospheric_ctop=672.0_real64/(8.314472_real64*(self%crop_oxygen%air_temperature_c+273.0_real64))
-          oxygen_base%root_extraction_sink=self%qrot_unmodified
-          oxygen_base%actual_uptake_total=sum(self%qrot_unmodified)
+          ! A source substep-root request owns THIS sibling's drought sink.
+          ! Preserve the incumbent prescribed-sink route otherwise.
+          if(allocated(self%substep_root))then
+            oxygen_base%root_extraction_sink=self%qrot
+            oxygen_base%actual_uptake_total=sum(self%qrot)
+          else
+            oxygen_base%root_extraction_sink=self%qrot_unmodified
+            oxygen_base%actual_uptake_total=sum(self%qrot_unmodified)
+          end if
           call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
                self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
                self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors)
@@ -6336,6 +6372,10 @@ contains
       step%root_potential_cm_day = self%substep_root_diagnostics%potential_uptake_total
       step%root_drought_reduction_cm_day = self%substep_root_diagnostics%drought_reduction_total
       step%root_oxygen_reduction_cm_day = self%substep_root_diagnostics%oxygen_reduction_total
+      if(self%last_observation%bartholomeus_executed)then
+        step%root_oxygen_reduction_cm_day=step%root_oxygen_reduction_cm_day+ &
+          self%last_observation%root_oxygen_base_uptake-self%last_observation%root_oxygen_final_uptake
+      end if
     end if
     allocate(step%macropore_matrix_exchange(n))
     allocate(step%macropore_matrix_exchange_domain(0,n))
@@ -6952,7 +6992,7 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
     real(real64)::endpoint,history_bound
-    if(self%prescribed_groundwater_active)then
+    if(self%prescribed_groundwater_active.and..not.self%boesten_evaporation_active)then
       ! Reuse the existing mixed Richards head/storage/Darcy-exchange metric.
       ! The former exact-identity gate cannot assess an evolving water table.
       value=fmr_weather_surface_temporal_error(self,full_state,half_state)
@@ -7008,6 +7048,8 @@ contains
           if(.not.all(ieee_is_finite([full%boesten_evaporation%spev,full%boesten_evaporation%saev, &
             half%boesten_evaporation%spev,half%boesten_evaporation%saev])))return
           value=fmr_pond_input_temporal_error(full,half)
+          if(self%prescribed_groundwater_active) &
+            value=max(value,fmr_weather_surface_temporal_error(self,full,half))
           if(self%picard_conductivity_iteration.and.associated(self%hydraulic_parameters))then
             if(self%hydraulic_parameters%continuous_saturation_conductivity) &
               value=fmr_weather_surface_temporal_error(self,full,half)

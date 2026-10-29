@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL13",
   "baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
-  "stage": "COMPONENTS_QUALIFIED_ORIGINAL_PROJECT_NOT_YET_COUPLED",
+  "stage": "QUALIFIED_BOUNDED_ORIGINAL_GRASS_READY_FOR_CANONICAL",
   "scope": "Original Grassgrowth SWWOFOST3, SWTSUM1, direct PM, SWRAIN2, prescribed groundwater table and numeric heat. Original inputs remain byte-exact. Existing crop/process/runtime owners must be reused; full original application is reference only, never SWAP5 evidence.",
   "invariants": "Full Richards reference production retained; no copied water kernel; candidate grass state must commit with accepted water state and roll back on rejected trials; source forcing and original crop parameters retained.",
   "selected": [
@@ -26,56 +26,110 @@
     "oracle_modification": "Original wofost.f90 private routine exposed by public declaration only; scientific body unchanged."
   },
   "model_execution": {
-    "swap5_original_grassgrowth_days": 0,
+    "swap5_original_grassgrowth_days": 63,
     "full_reference_days": 1827,
     "reference_exit": 100,
     "reference_note": "B1.11 complete reference application, never counted as SWAP5. Output controls only changed for balance files.",
-    "shortened_reference_failure": "Original DATE1 has no measurement inside Jan1-5; original reader rejects shortened TEND. Full period succeeds."
+    "shortened_reference_failure": "Original DATE1 has no measurement inside Jan1-5; original reader rejects shortened TEND. Full period succeeds.",
+    "scope": "Original113-node Grassgrowth natural dormancy: five-day O0/O2 water and exact disk restart; O2 original continuation reaches30 then63days. Attempted365 stops before day64 active grass growth; last full-day checkpoint63 retained. No full project, active growth/root/harvest, variable groundwater or complete energy/historical equivalence claim.",
+    "superseded_experiments": {
+      "days": 5,
+      "reason": "Confirmed SWRAIN2 coupling defect: daily interception/wet-canopy fraction incorrectly recomputed from interval rain rate. Earlier five-day outputs are retained as superseded, not final qualification."
+    },
+    "five_day_water_qualified_optimizations": [
+      "O0",
+      "O2"
+    ],
+    "month_water_residual_cm": 2.9032332093947844e-14,
+    "month_heat_accounting_residual_j_cm2": 1.753650610142321e-12,
+    "reference_maximum_five_day_water_difference_cm": 0.009204166201243424,
+    "reference_maximum_five_day_transpiration_difference_cm": 2.2225363910388651e-13,
+    "historical_equivalence_qualified": false,
+    "solute": "NOT_APPLICABLE original SWSOLU0; no solute science inferred from CRC linkage.",
+    "reference_maximum_thirty_day_water_difference_cm": 0.009204166201243424,
+    "reference_maximum_thirty_day_transpiration_difference_cm": 4.98512689461883e-13,
+    "maximum_executed_water_residual_cm": 3.803207748731552e-14,
+    "maximum_executed_heat_accounting_residual_j_cm2": 1.8082445263356561e-12,
+    "year_attempt": {
+      "requested_days": 365,
+      "completed_days": 63,
+      "returncode": 1,
+      "classification": "3 missing runtime coupling",
+      "cause": "day64 source active grass growth requires full potential/root/harvest lifecycle",
+      "checkpoint_sha256": "be73528d6d5828b0ae1ddeb352221469de7688cb1004c46ced224a04b31d2d05",
+      "seconds": 128.31368860200018
+    },
+    "reference_maximum_executed_water_difference_cm": 0.025266829804280633,
+    "reference_maximum_executed_transpiration_difference_cm": 1.1248640907624008e-12
   },
   "remaining": [
-    "Connect original Grassgrowth project input and PM/SWRAIN2 daily forcing to the joint grass/root/Boesten/drainage/heat/water runtime.",
-    "Integrate source root-depth continuation and mowing/grazing management events and their atomic persistence.",
-    "Execute actual original project windows and file restart, qualify joint balances and historical comparison before canonical admission."
+    "Original Grassgrowth day64 active grass potential/root lifecycle and mowing/grazing joint runtime.",
+    "Time-varying original groundwater callback after first BBC observation.",
+    "Resolve measured whole-model historical water-stock/flux differences; no complete energy/physiology parity.",
+    "Full original periods remain unqualified:0/3 complete original migrations.",
+    "Actual canonical integration receipt pending."
   ],
   "source_sha256": {
+    "app/grass_project/initial_interval.f90": "3d4d83d38b8ebe5cc856fa249ae72f8761342bfa0f3617cc5cccb1ab7bb63c32",
+    "app/grass_project/restart_file.f90": "96a65c73a487885f78db6cbbfc12823638bf5ffb01deccf3c6ef9c65c0944d59",
     "app/solute_column/read_swp_water.f90": "762f0bce8cb01f9fa84692e1363596abf1f02f0efa84b09588627120d79ce934",
     "src/adapter/mod_b110_serialized_context_binding.f90": "3c135ba10d55e6cda904e0f0c904512fcce40b8dc41606b02708663edf4f3e28",
     "src/adapter/mod_reference_richards_legacy_binding.f90": "0f599500d801a6c41796c25881cb297b4a2d80b9494fa91e7ec05152f675a545",
+    "src/crop/mod_crop_root_biomass_distribution.f90": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9",
+    "src/crop/mod_crop_solar_geometry.f90": "d781d7cc9ed1370a0e51de4ec323dd145a658cad0b69271adeb56667dd31af80",
+    "src/crop/mod_wofost_crop_owner_state.f90": "889ee90ae98eeec10aee37b52497b7b472d572d4815c475d911dedf7b2ce0401",
     "src/crop/mod_wofost_finalize_rates.f90": "4b7a212630fb36dcc3bafb797c410e027629a87dca867a826fedfc01e9eb8aa0",
     "src/crop/mod_wofost_grass_daily_growth.f90": "76857dfa6fed21d5c78d8e51615de6405198e035916a4739ffeefbffe5a21983",
     "src/crop/mod_wofost_grass_development.f90": "7607f26fc526e34f86e6c24193c86da2dcf385b7bb3eee156a01d47604fa88ef",
     "src/crop/mod_wofost_one_day_structural_evolution.f90": "50ea53989291d3b4abac299a254ffffb6b0c43c9171ec57a85bffb47983d9e39",
+    "src/crop/mod_wofost_oxygen_respiration.f90": "e974551addebf739fd62044c55a51feb82993aba4e73377439ce0b7f501f2ba6",
     "src/crop/mod_wofost_rate_parameters.f90": "bb7a73d609e745d597a37622bb18a3bc627f923e30b1c3ca68f503fd3a0bea4b",
     "src/legacy/b1_10_port/headcalc.f90": "8d312910267c4da15cab6bf80217f10480beb2578382f2c2a032194af7724061",
+    "src/process/mod_pmdirect_swetr0_process.f90": "fe57c128bb42d9c124398dc939e27dd5cfc94f9b403a34f99ab161dc2131391d",
     "src/runtime/mod_fmr_production_application_bootstrap.f90": "1e0ff3ccaf43a90bd514d0a5226956fa907b845c48b2986686b76eb47c04bb2c",
-    "src/runtime/mod_fmr_serialized_reference_backend.f90": "a8958e01e8b2b858147d9bc7c137d3969ed1d58d03e641fe21d0ba24ee63e604",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "678b4fa6e59a88e3669741b249caa5b1d9d9bed5e5ae0d6c40ab8e4c873b6779",
     "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+    "tests/dataqual13/collect_component_evidence.py": "0facb09edb6110ca43a48308e496948826ab9772b8629e5965be4d1ce18a90ba",
+    "tests/dataqual13/duration_interception_driver.f90": "4ac19d9f8f4168f2dee968807d60ac6edc2fe8c021a43a6a9ddefbf2f9d60326",
     "tests/dataqual13/grass_development_driver.f90": "b3553b2e9840a564375af1fe00e9621f859868278db50c8d07142d6f619d1b14",
     "tests/dataqual13/grass_growth_oracle_driver.f90": "5136a05dcd470470eb009e9925c96b969ef1fcb9ce6242875a864b6bf73b88a6",
+    "tests/dataqual13/grass_oxygen_respiration_driver.f90": "5ac1a990f422f7b8ff66ec5840215c870afe2673b378dbff1295364305ef9cd1",
     "tests/dataqual13/grass_profile_input_driver.f90": "79f05e18d4b2667c3ed00a8af649202a44aa28328ba46d9b5b085c846da58c9d",
+    "tests/dataqual13/grass_solar_geometry_driver.f90": "e35e9848b88382708c961342b9c2cf8e38236a2466c238fb25f9da9915441039",
     "tests/dataqual13/groundwater_runtime_driver.f90": "343223359698bec5ac43f534d66363525632693ccd0ed52d1678978fbf4923b2",
     "tests/dataqual13/prescribed_groundwater_driver.f90": "8134f7faeb25c6b7a8906ed058f9a6661feda9ee5e5ad8aa11e5db2ecc75f242",
     "tests/dataqual13/qualify_crop_preservation.py": "091bb32dc721efb4542e45a9ec0b1e655511654e55e8f32d9bef1ed6eb93d446",
+    "tests/dataqual13/qualify_duration_interception.py": "53226439ae1dd5ace8f9f5793d90fb035d3b6d4dc49c8c1397978db0e8ea2514",
     "tests/dataqual13/qualify_grass_development.py": "4aafc516de50231eaba3ca7d37434faa2c9e997f4947882d6b9d0f7b78350d15",
     "tests/dataqual13/qualify_grass_growth.py": "cd9305f52cb7b8a4fc7f1ba3d2bdad7cc5bdad278769e757c4269cecf44238c9",
     "tests/dataqual13/qualify_grass_profile.py": "83778fe06ac7619733049cd5be3bf5c4f467052ddcec001bbe36465ad540bcbe",
     "tests/dataqual13/qualify_groundwater_runtime.py": "06e247147ad52cf48d8085c1953f81053e35215bc1e30233fe428ac9a017421d",
+    "tests/dataqual13/qualify_oxygen_respiration.py": "d35b56b648139610ebc625552894d3b022bff4f819cda2c3c6f1f82a0c6bdbe0",
     "tests/dataqual13/qualify_prescribed_groundwater.py": "72c2acf42541733ba914e7f942b3ed0dd130626a948385b2f520232320a4f78b",
+    "tests/dataqual13/qualify_root_oxygen_density.py": "6b3f49f58107ef0f3d2f24514ad6ef016cec60706f6d88f8948b245fa39803ea",
+    "tests/dataqual13/qualify_runtime_preservation.py": "4e7df6fb18194311ff3ce61f26c23774ec54868fdd3fdedb301cc2c56331ca3b",
+    "tests/dataqual13/qualify_solar_geometry.py": "c9acd266f0693c6b9c6286149bca8e33a514d976b7835199cc94920a2eaa3e5e",
     "tests/dataqual13/replay_groundwater_runtime.py": "d424e83aa14197b6ba126c8a324fd0b67547f37320d82d5809c3a6bd9b8a7a3a",
-    "tests/dataqual13/collect_component_evidence.py": "e4035b50fe0eb81847488901cc71d176000ddc08b55fae642ec77fe8a447bfc1",
-    "tests/dataqual13/verify_component_evidence.py": "c68d1a2a0ab105ccb97bd2ebfa1dc034f7c5f9b89de66847efccb825c8e8ecc4"
+    "tests/dataqual13/root_oxygen_density_driver.f90": "87d755f3fd767b2aac9e274d414b42ad3e5ddfd9cc00bde68c13b2d450795873",
+    "tests/dataqual13/verify_component_evidence.py": "b9ba59d6d0873e18fce5423e8f789477486764e16cb431f05af06c3fbef3c969",
+    "tools/solute/build_grass_startup.py": "c0b49ae3df0f7423dde66640a0adc98f041588d0abb6ed1d0fd6d192a8f54eed",
+    "tools/solute/qualify_grass_prefix.py": "1c4e5ae2ebb191f6b842857aa37988bb2f9270504eb6b7b6cfc93990536aefd3"
   },
-  "evidence_sha256": "1a69db79d16b2e6cf0d71b7e68f08e213b7114371142dbdabab21856c8a83ac4",
+  "evidence_sha256": "cfc28a49014a8a3cce48adc12009e80a2059983fc9a612d006e9bb8f98b01732",
   "canonical_admitted": false,
   "additional_selected": [
     "original mode1 Richards groundwater: equilibrium, balance, provider isolation and below-profile mode5 identity O0/O2",
     "new groundwater FMR transaction: acceptance, committed revision and stale interval rejection O0/O2",
     "original grass-file biomass owner: dormancy, growth, regrowth delay and nonannual DVS O0/O2",
-    "existing annual and WOFOST81 crop contracts for changed shared physiology"
+    "existing annual and WOFOST81 crop contracts for changed shared physiology",
+    "Literal source ProcessMeteoDT comparison for daily interception plus SWRAIN2 duration coupling,18 cases/build O0/O2.",
+    "Original MAXIT30/MAXBACKTR3/DTMAX.04 read natively; reuse existing retained accepted-step policy without relaxed balance/temporal tolerances.",
+    "Original5-day disk restart and corruption/source-binding rejection O0/O2, followed by30-day O2 source data."
   ],
   "implementation_limits": [
-    "Mode1 below-surface groundwater only, fixed-geometry matrix water in FMR; other process compositions still fail closed.",
-    "Crop day-end composition implemented before harvest; moving source root-depth and management event/state/restart wiring remain incomplete."
+    "Source groundwater series initial endpoint clamp only in the application before first measurement; varying-table scalar solver trials remain component-only evidence.",
+    "Natural grass dormancy only in original project driver. Active grass/root/potential/harvest lifecycle fails closed at its actual source boundary.",
+    "No full4.3.1 water/energy/physiology parity, full-period migration or production scope expansion claim."
   ],
   "additional_qualification": {
     "groundwater_direct": {
@@ -131,13 +185,55 @@
       "existing annual potential-growth contract O0/O2",
       "existing WOFOST81 daily candidate O0/O2",
       "existing WOFOST81 leaf structure O0/O2"
-    ]
+    ],
+    "joint_original_prefix": {
+      "days": 5,
+      "restart_payload_exact": true,
+      "rejected_restart_controls": 5,
+      "maximum_water_residual_cm": 2.2398749521812533e-14,
+      "maximum_heat_accounting_residual_j_cm2": 1.7670587215690148e-12
+    },
+    "current_preservation": "Six native groundwater/default bootstrap/physical oxygen contracts O0/O2 PASS against current production source; annual/WOFOST81/grass owner contracts PASS."
   },
   "scientific_findings": [
     "Original mode1 must obtain saturation and last-unsaturated-node hydraulic refresh from active column providers, not stale global COFGEN/watcon/hconduc.",
     "Mode1 below-profile flux is returned using existing original source flux materialization; bounds checks no longer index beyond the grid.",
     "Evolving mode1 uses the existing mixed Richards error metric, not an exact-state identity gate. Old defaults and tolerances retained.",
     "Original SWINCO2/SWBOTB1 initializes from the groundwater series and ignores SWP GWLI. Native import now requires the resolved source sample.",
-    "Grass uses existing WOFOST biomass owners and physiology without synthetic annual TSUM inputs or annual anthesis clamping."
-  ]
+    "Grass uses existing WOFOST biomass owners and physiology without synthetic annual TSUM inputs or annual anthesis clamping.",
+    "Original SWOXYGEN2 is physical Bartholomeus, not empirical oxygen; source selector retained.",
+    "Original ProcessMeteoDT retains daily AINTC/EINTC for transpiration while scaling water interception by current rain intensity. New explicit duration route matches18 original compiled cases per optimization exactly.",
+    "Original Grassgrowth prescribes MAXIT30, MAXBACKTR3, DTMAX.04. Native input adapter now uses those values instead of hardcoded8/4; no iteration-budget invention or tolerance relaxation.",
+    "New root-oxygen density, WOFOST respiration and solar geometry agree exactly with original compiled components; original biomass remains in the existing WOFOST owner."
+  ],
+  "next_physical_contract": {
+    "source_oxygen_mode": 2,
+    "source_oxygen_type": 1,
+    "correction": "Original Grassgrowth uses physical Bartholomeus oxygen, not empirical Feddes oxygen. No selector substitution is permitted.",
+    "selected": [
+      "Source-root biomass to node-top oxygen density using current WOFOST owner and original 113-node geometry, O0/O2 native original differential.",
+      "Literal original solar geometry on all1827 source weather days plus15 polar/leap-day controls O0/O2.",
+      "Original WOFOST oxygen respiration from unstressed assimilation, including regrowth delay and zero maintenance, O0/O2.",
+      "Changed WOFOST owner preservation: existing annual/WOFOST81/grass native contracts and source-verified incremental FMR dependency closure, actual groundwater/default/oxygen application checks.",
+      "Source-input first0.01-day Grassgrowth initial interval with physical Bartholomeus, PM/SWRAIN2, Boesten, numeric heat, open-channel DRAMET3 and original prescribed groundwater; cold native build expected under5min, trial capped30s.",
+      "Original wet/dry forcing edges and atomic dormant grass day-end. Compare ordinary and existing retained-step numerical execution; no tolerance or iteration-budget increase."
+    ],
+    "ownership": "Derived nodal views only, no new physical state owner or persistent copy. Rejected derivation cannot mutate crop biomass.",
+    "remaining_joint_runtime": "Dormant joint runtime now executed and water/restart qualified; active growth/root/harvest and varying groundwater remain closed."
+  },
+  "selected_costs": {
+    "original_model_native_5days_seconds_observed": {
+      "O0": 46.12565936500323,
+      "O2": 34.23558954300097
+    },
+    "current_build_providers": 199,
+    "cold_original_startup_providers": 187,
+    "runtime_preservation": "Only changed dependency wave rebuilt against prior source-verified objects; original groundwater/default/oxygen assertions retained.",
+    "restart": "Existing F-KT trusted reconstruction, existing soil-temperature owner and existing CRC32 reused. Source files and same-application binding checked before replacing either water or crop owner. Age/solute compile dependencies are CRC-owner linkage only; original SWSOLU remains0.",
+    "original_month_continuation_seconds": 81.79748276399914
+  },
+  "documentation_checks": {
+    "source_checker": "PASS",
+    "mkdocs_strict": "PASS (python -m mkdocs;25.82s)"
+  }
 }
