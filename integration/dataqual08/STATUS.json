@@ -1,0 +1,20 @@
+{
+  "work_unit": "DATAQUAL08",
+  "implemented": true,
+  "persisted": true,
+  "tested": true,
+  "qualified": true,
+  "baseline": "358b34c2fb3ded052a8ca25ce10d89bf1f6053d9",
+  "postimages": {
+    "integration/dataqual08/continue_checkpoints.py": "3216a19c10380aaece5c2ab79e1759386cc4f659f7f4e5d49822c9da905616cf",
+    "integration/dataqual08/retain_completed.py": "b3cf673dfb7443c2d4c028960a2a148e678c8f25a1d313567006302c2fb16304",
+    "integration/dataqual08/verify.py": "981adf9b14d9859e6d7f83650cb3f3f0135653a0013a4657ca2fb881c94e3283",
+    "integration/dataqual08/CAPSULE.json": "99f1ceb920f84870135de8e56b5b89183a6e49f3cc1d2a554edee370f8ff50d7",
+    "integration/dataqual08/RESULT.json": "f6639d941399e6f42c0ccf64a86f2cdc46db96759a5dd42c7ce335f7ac3021b9",
+    "integration/dataqual08/advance.json": "fbd641143ded58a2ff1ec7ca3d5797cdc672c41907d54a8dc51b50e9abd83588"
+  },
+  "dependency_surface": "unchanged DATAQUAL07 physical source and executable; scripts and sealed DATAQUAL08 experiment evidence",
+  "next_action": "integrate sealed experimental evidence, use own checkpoint only for a changed residual/Jacobian hypothesis or other missing original configuration",
+  "recovery_point": "CAPSULE.json and inherited DATAQUAL07 executable; own day2 checkpoint inside five/stock24-low-v0p0005-r1-e0p5/restart.bin",
+  "qualification": "one complete daily water-only prefix;16 censored targets retained;no physical source change"
+}
