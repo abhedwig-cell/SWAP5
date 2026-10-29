@@ -58,7 +58,11 @@ print("FPE_ZERO_WASTE01_PREPARED_MVG_FAILSAFE_STATIC=PASS")
 print("FPE_ZERO_WASTE01_H22B_BORROWED_BINDING_STATIC=PASS")
 assert "production_application_groundwater_ready" in src
 assert "groundwater_profile = groundwater_profile .and. config%tiles(i)%parameters%bottom_mode == 5" in src
-assert "standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7" in src
+# DATAQUAL13 adds only explicit default-off source SWBOTB1 to standalone mode7.
+# Preserve the full Boolean guard, including the required opt-in flag.
+compact = "".join(src.split())
+assert ("standalone_profile=standalone_profile.and.(config%tiles(i)%parameters%bottom_mode==7.or.&"
+        "(config%tiles(i)%parameters%bottom_mode==1.and.config%tiles(i)%parameters%prescribed_groundwater_active))") in compact
 assert "if (groundwater_profile) then" in src
 assert "macropore_active" in src
 assert "frost_active" in src

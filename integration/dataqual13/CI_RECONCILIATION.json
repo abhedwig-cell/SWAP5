@@ -1,0 +1,16 @@
+{
+  "work_unit": "DATAQUAL13",
+  "scientific_merge": "cc08278a03c85e6d8ccf99be99a0b9de72cae7bd",
+  "failed_remote_bootstrap_job": 123773664093,
+  "cause": "Pre-compilation textual standalone_profile==7 assertion excludes newly qualified explicit opt-in mode1; native original bootstrap driver passes both O0/O2.",
+  "change": "Assert entire mode7 OR(mode1 AND explicit flag) Boolean guard; all other static/native assertions retained.",
+  "static_checks": "PASS",
+  "guard_mutation_controls": [
+    "loss of mode7 rejected",
+    "mode1 without explicit flag rejected"
+  ],
+  "native_preservation": "Six existing native groundwater/default bootstrap/physical oxygen O0/O2 contracts PASS, source and assertions unchanged.",
+  "source_physics_changed": false,
+  "automatic_workflows": "Documentation PASS; several historical/frozen admission workflows failed or pending; no aggregate GitHub-green claim.",
+  "test_script_sha256": "fddacbc2b10855152f9b34e63896288db17595b9b2b54b012b1d97bf7c24751e"
+}
