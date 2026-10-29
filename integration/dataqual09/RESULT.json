@@ -1,0 +1,85 @@
+{
+  "work_unit": "DATAQUAL09",
+  "baseline": "a59ecaa23a492bcf193e83575a9a1f00fe97023b",
+  "started": 151,
+  "water_qualified": 83,
+  "configuration_days": 94.35949999972217,
+  "additional_configuration_days": 0.1834999999991851,
+  "longest_original_integral": 2.7479999999995925,
+  "native_model_processes": 17,
+  "native_pass": 13,
+  "native_censored": 3,
+  "native_input_rejected": 1,
+  "dependency_skipped": 1,
+  "direct_controls": 6,
+  "native_seconds": 432.5754134229992,
+  "speedup_established": false,
+  "physical_changes": false,
+  "qualified_pairs": 3,
+  "paired_timings": [
+    {
+      "opt": "O0",
+      "id": "low-v0p0005-r4-e0p5",
+      "loud": 60.00980001199969,
+      "quiet": 60.008932165999795,
+      "qualified": false,
+      "loud_lines": 92463,
+      "quiet_lines": 3
+    },
+    {
+      "opt": "O0",
+      "id": "low-v0p001-r1-e2",
+      "loud": 15.177724113000295,
+      "quiet": 16.001888492000944,
+      "qualified": true,
+      "loud_lines": 22865,
+      "quiet_lines": 5
+    },
+    {
+      "opt": "O2",
+      "id": "low-v0p0005-r4-e0p5",
+      "loud": 38.48677621299976,
+      "quiet": 46.071388012998796,
+      "qualified": true,
+      "loud_lines": 114215,
+      "quiet_lines": 5
+    },
+    {
+      "opt": "O2",
+      "id": "low-v0p001-r1-e2",
+      "loud": 7.796668463999595,
+      "quiet": 8.953865379999115,
+      "qualified": true,
+      "loud_lines": 22865,
+      "quiet_lines": 5
+    }
+  ],
+  "new_extension": [
+    {
+      "id": "low-v0p0005-r4-e0p5",
+      "status": "PASS",
+      "target": 1.6259999999965657,
+      "completed_days": 1.6259999999965657,
+      "seconds": 15.66600292000112,
+      "water_max_independent_cm": 4.7393729565858855e-15
+    },
+    {
+      "id": "low-v0p001-r1-e2",
+      "status": "CENSORED",
+      "target": 2.0,
+      "completed_days": 0.0,
+      "seconds": 60.03948634399967,
+      "water_max_independent_cm": null
+    }
+  ],
+  "causal_scope": "One additional prefix is expanded staged execution, not demonstrated speed gain from quiet diagnostics. Quiet policies do not create new physical configurations.",
+  "retained_failure": "Copied preservation manifest included two integral requests outside selected scope: rounded2.748 endpoint rejects at source-boundary validation before model stepping; dependent suffix skipped. Both retained; not retried.",
+  "nonclaims": [
+    "new original project",
+    "new physical process",
+    "solver correction",
+    "full numerical F-CI",
+    "five-day completion",
+    "energy/solute/N/full431 equivalence"
+  ]
+}

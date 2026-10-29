@@ -17,6 +17,7 @@ def perf_projection():
  hook="    if (ROOT/'"+STATUS+"').is_file():\n        return runpy.run_path(str(ROOT/'"+SELF+"'))['fsi35_successors']()\n"
  return raw.replace(b'def fsi35_successors():\n',b'def fsi35_successors():\n'+hook.encode(),1)
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/dataqual09/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual09_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE and s['implemented']and s['tested']
  git('merge-base','--is-ancestor',BASE,'HEAD')
  assert not git('diff','HEAD','--','src','app','tools','tests','integration/audits','integration/performance'),'unpersisted science'
@@ -35,6 +36,7 @@ def capsule():
   f={m.name:t.extractfile(m).read()for m in ms}
  assert json.loads(f.pop('MANIFEST.json'))=={p:sha(v)for p,v in f.items()};return f
 def validate(f):
+ if (ROOT/'integration/dataqual09/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual09_current.py'))['validate_predecessor'](f)
  js=lambda p:json.loads(f[p]);rows=lambda p:list(csv.DictReader(io.StringIO(f[p].decode())))
  s=json.loads((ROOT/STATUS).read_bytes());r=js('RESULT.json');posts=js('executed-postimages.json');assert posts==s['postimages']
  for p,h in posts.items():assert sha(f['executed/'+p])==h and sha((ROOT/p).read_bytes())==h,p
@@ -92,12 +94,16 @@ def validate(f):
  assert len(set(after)-set(before))==r['extra_water_qualified_configurations']
  assert abs(sum(after.values())-r['combined_deduplicated_configuration_days'])<1e-9
  return dict(dataqual07_tested=True,qualified=True,production_admission_changed=False,full_historical_closure=False,measured=r)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/dataqual09/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual09_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/dataqual09/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual09_current.py'))['fsi35_successors']()
  source();validate(capsule())
  deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  return {d['path']:dict(historical_blob=d['blob'],canonical_blob=git('rev-parse','HEAD:'+d['path']))for d in deps}
 def self_test():
+ if (ROOT/'integration/dataqual09/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual09_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "low-v0p0005-r4-e0p5",
+    "origin": "/tmp/dq09-pairs-O2/low-v0p0005-r4-e0p5/quiet",
+    "target": 1.6259999999965657,
+    "command": [
+      "/tmp/dq09-O2/column/swap5_solute_project",
+      "input.nml",
+      "origin.bin",
+      "2",
+      "input.swp",
+      "macro.nml",
+      "2ae62593bdffee709a08dac35efafc3a98d2edcc03bad101407e37315f8bb061",
+      "1.6259999999965657",
+      "anchored-cauchy",
+      "0.0001",
+      "experimental",
+      "source-surface-demand",
+      "perched-jacobian",
+      "conservative-macro-storage",
+      "quiet-macro-stages"
+    ],
+    "timeout_seconds": 60,
+    "executable_sha256": "891ae4ffe91c3189314329cc9cb9157f772f811d8cd059b38af02e7d845cb665",
+    "origin_sha256": "6d3e086741ac911996f18ded45bb30fa25cb8236b21cef711667a95948d72261"
+  },
+  {
+    "id": "low-v0p001-r1-e2",
+    "origin": "/tmp/dq09-pairs-O2/low-v0p001-r1-e2/quiet",
+    "target": 2.0,
+    "command": [
+      "/tmp/dq09-O2/column/swap5_solute_project",
+      "input.nml",
+      "origin.bin",
+      "2",
+      "input.swp",
+      "macro.nml",
+      "cc30f910921c6464dfce6d0f0d9c0045dff224d841c8cf73348dc42a08ce7a27",
+      "2.0",
+      "anchored-cauchy",
+      "0.0001",
+      "experimental",
+      "source-surface-demand",
+      "perched-jacobian",
+      "conservative-macro-storage",
+      "quiet-macro-stages"
+    ],
+    "timeout_seconds": 60,
+    "executable_sha256": "891ae4ffe91c3189314329cc9cb9157f772f811d8cd059b38af02e7d845cb665",
+    "origin_sha256": "c5cd63226b91301c414185189cf8ddada0b4fc920acbc24ab5f58b4e3c0f4f1a"
+  }
+]
