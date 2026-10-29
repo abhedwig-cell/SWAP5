@@ -35,6 +35,8 @@ module mod_macropore_single_column_runtime
   integer,parameter,public::MACRO_RUNTIME_FAILED=4
 
   type, public :: macropore_runtime_policy_t
+    ! Text-only stage observations. No accepted flux trace or state is disabled.
+    logical :: emit_stage_diagnostics=.true.
     logical :: perched_jacobian_enabled=.false.
     logical :: anchored_cauchy_step_ceiling=.false.
     logical :: enabled=.false.
@@ -195,7 +197,7 @@ contains
       result%status=MACRO_RUNTIME_FAILED
       return
     end if
-    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|GEOM_DIFF=',maxval(abs(geometry%volume_domain_cp-accepted_macro%volume_domain_cp)), &
+    if(policy%emit_stage_diagnostics)write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|GEOM_DIFF=',maxval(abs(geometry%volume_domain_cp-accepted_macro%volume_domain_cp)), &
          '|BOTTOM_MATCH=',all(geometry%bottom_domain==accepted_macro%icp_bottom_domain)
     if(maxval(abs(geometry%volume_domain_cp-accepted_macro%volume_domain_cp))>1.0e-10_real64 .or. &
        any(geometry%bottom_domain/=accepted_macro%icp_bottom_domain))then
@@ -214,7 +216,7 @@ contains
       requested_top_lateral=0.0_real64
       ok=top_input_local%valid() .and. .not.top_input_local%supplied
     end if
-    write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|TOP_OK=',ok
+    if(policy%emit_stage_diagnostics)write(*,'(*(g0))') 'MIGMAC01_RUNTIME_PRE|TOP_OK=',ok
     if(.not.ok)then
       result%status=MACRO_RUNTIME_FAILED
       return
@@ -243,7 +245,7 @@ contains
     n=accepted_macro%num_nodes
 
     if(policy%inner_richards_exchange_enabled)then
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INNER_ENTER'
+      if(policy%emit_stage_diagnostics)write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INNER_ENTER'
       reduction_attempt=macropore_reduction_continuation_t()
       if(present(reduction_accepted))reduction_attempt=reduction_accepted
       if(.not.reduction_attempt%valid())then
@@ -268,9 +270,9 @@ contains
         result%status=MACRO_RUNTIME_FAILED
         return
       end if
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_REQUEST_READY'
+      if(policy%emit_stage_diagnostics)write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_REQUEST_READY'
       call evaluate_macropore_rate_bundle(rate_request,current_rates)
-      write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_RATE_EVALUATED'
+      if(policy%emit_stage_diagnostics)write(*,'(a)') 'PPA_WU05A18_RUNTIME_STAGE=INITIAL_RATE_EVALUATED'
       if(.not.current_rates%valid)then
         result%status=MACRO_RUNTIME_FAILED
         return

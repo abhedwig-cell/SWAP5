@@ -187,6 +187,7 @@ program swap5_native_water_project
   real(real64)::oxygen_reduction_amount
   logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.,perched_jacobian=.false.
   logical::conservative_macro_storage=.false.
+  logical::quiet_macro_stages=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(10,arg)
   if(len_trim(arg)>0)execution_mode=trim(arg)
@@ -208,6 +209,10 @@ program swap5_native_water_project
   call require(len_trim(arg)==0.or.trim(arg)=='conservative-macro-storage','unknown macro storage policy')
   if(len_trim(arg)>0)call require(trim(execution_mode)=='experimental','macro storage policy requires experimental mode')
   conservative_macro_storage=len_trim(arg)>0
+  call get_command_argument(14,arg)
+  call require(len_trim(arg)==0.or.trim(arg)=='quiet-macro-stages','unknown macro stage output policy')
+  if(len_trim(arg)>0)call require(trim(execution_mode)=='experimental','quiet macro stages require experimental mode')
+  quiet_macro_stages=len_trim(arg)>0
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -506,6 +511,7 @@ program swap5_native_water_project
   numerical%transaction%max_retries=40;numerical%transaction%retry_scale=.5d0;numerical%max_committed_substeps=100000
   call backend%initialize(top)
   macro_policy%perched_jacobian_enabled=perched_jacobian
+  macro_policy%emit_stage_diagnostics=.not.quiet_macro_stages
   macro_policy%anchored_cauchy_step_ceiling=anchored_ceiling
   macro_policy%enabled=.true.;macro_policy%inner_richards_exchange_enabled=.true.
   macro_policy%solver_mass_tolerance_cm=1d-10;macro_policy%internal_exchange_tolerance_cm=1d-10

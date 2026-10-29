@@ -1,0 +1,24 @@
+{
+  "work_unit": "DATAQUAL09",
+  "baseline": "a59ecaa23a492bcf193e83575a9a1f00fe97023b",
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "decision": "Optional runtime emit_stage_diagnostics defaults true. Native/Python explicit quiet-macro-stages requires experimental mode. Only five writes are conditional; all physical branches, trace/budget diagnostics, numerical tolerances and restart layout unchanged. Text diagnostic selection does not enter physical restart binding; same-executable quiet/loud restart interoperability is required.",
+  "owners": "RT/MP/VQ",
+  "interfaces_changed": [
+    "macropore_runtime_policy_t text diagnostics field",
+    "native optional argument14",
+    "Python optional flag"
+  ],
+  "invariants": "Physical/numerical options remain separate from text output. No mutable SAVE/global/environment flag; each column owns its output policy.",
+  "finding": "One DATAQUAL08 censored60s process emitted129328 stdout lines; no measured speedup yet.",
+  "test_selection": {
+    "small": "real native O0/O2 loud/quiet pairs on two physical configurations, exact6 streams and whole same-exe restart, cross-mode restart",
+    "preservation": "default predecessor physical payload/streams and unchanged FSI35 dependency evidence",
+    "guards": "native and Python reject quiet in production/comparison and unknown argument14 before execution",
+    "excluded": "unchanged original stall, budget increases, highest low-air, full numerical F-CI"
+  },
+  "expected_cost": "Checked native194-provider builds about180s each; required for changed public policy type. Paired bounded runs target1.4425;60s hard cap. No unbounded trajectories.",
+  "next_action": "persist source then compile checked O0/O2, measure paired costs without promising acceleration"
+}
