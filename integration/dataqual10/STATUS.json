@@ -1,0 +1,14 @@
+{
+  "work_unit": "DATAQUAL10",
+  "baseline": "078845d20aeaa48d20b2633356e305a6eadfdedd",
+  "implemented": true,
+  "tested": false,
+  "qualified": false,
+  "finding": "Real imported rate-bundle uncapped derivative -50 matches finite difference -49.99999999988; active inflow cap gives legacy derivative -0.5 versus FD -3.47e-11, since the sole inflow is fixed by remaining capacity.",
+  "decision": "Differentiate common limiter fractions in total local exchange diagonal for explicit experimental conservative storage policy. Include incoming/outgoing local exchange contributions together. Legacy policy unchanged; no rate, mass, trace, timestep tolerance, physical selection or restart-layout change.",
+  "interfaces": "No public request/result signature or state layout changed. Internal helper only. Geometry, accepted storage and other-node heads held fixed; no full off-diagonal or partial-top derivative claim.",
+  "owners": "HY/RT/VQ",
+  "test_selection": "Real finite-difference rate-bundle driver O0/O2 first; selected changed-code native water continuations, production preservation and own restarts; unchanged FSI35 dependencies reused; no unchanged original-stall replay or budget increase",
+  "recovery": "Repro /tmp/dq10-probe-build, native macro.nml from admitted DATAQUAL09; real baseline stdout recorded in git",
+  "next_action": "persist and test actual rate/Jacobian feedback before native simulation"
+}

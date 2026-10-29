@@ -31,6 +31,8 @@ contains
     logical::perched_enabled
     integer::nd,n,id,ic,ic_top,ic_bottom
     real(real64)::qout,denom,hmp,delh,qexc,ddelh,inflow_total,local_inflow,limiter_factor
+    real(real64),allocatable::perched_dqdh(:,:)
+    logical::projection_ok
 
     result=macropore_exchange_derivative_result_t()
     perched_enabled=.false.
@@ -55,6 +57,7 @@ contains
     result%unsaturated_dqdh=0.0_real64
     result%main_saturated_dqdh=0.0_real64
     result%total_dqdh_node=0.0_real64
+    allocate(perched_dqdh(nd,n));perched_dqdh=0.0_real64
 
     ! Exact B1.11 ABSORPTION(2), standard swabs=1 route.
     do id=1,nd
@@ -143,7 +146,8 @@ contains
             if(any(.not.ieee_is_finite(rates%limiter%inflow_fraction)).or. &
                any(rates%limiter%inflow_fraction<0.0_real64).or. &
                any(rates%limiter%inflow_fraction>1.0_real64))return
-            if(rates%limiter%inflow_fraction(id)<1.0_real64)then
+            if(rates%limiter%inflow_fraction(id)<1.0_real64.and. &
+               .not.request%limiter%conservative_storage_bounds)then
               ! A capped domain shares its available storage among all
               ! inflows. Differentiate this factor for a local interior
               ! perched inflow, retaining the existing diagonal solver.
@@ -169,14 +173,78 @@ contains
               limiter_factor=max(0.0_real64,min(1.0_real64,1.0_real64-local_inflow/inflow_total))
             end if
           end if
-          result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+ &
-            limiter_factor*rates%qin_interflow_rate(id,ic)/delh
+          perched_dqdh(id,ic)=limiter_factor*rates%qin_interflow_rate(id,ic)/delh
+          result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+perched_dqdh(id,ic)
           result%perched_derivative_included=.true.
         end do
       end do
     end if
 
+    if(request%limiter%conservative_storage_bounds)then
+      call project_conservative_storage_diagonal(request,rates,perched_dqdh,result,projection_ok)
+      if(.not.projection_ok)return
+    end if
     result%valid=.true.
   end subroutine evaluate_macropore_exchange_derivative
+
+  subroutine project_conservative_storage_diagonal(request,rates,perched_dqdh,result,ok)
+    type(macropore_rate_bundle_request_t),intent(in)::request
+    type(macropore_rate_bundle_result_t),intent(in)::rates
+    real(real64),intent(in)::perched_dqdh(:,:)
+    type(macropore_exchange_derivative_result_t),intent(inout)::result
+    logical,intent(out)::ok
+    real(real64)::dt,total,local_amount,factor
+    integer::nd,n,id,ic
+    ok=.false.;nd=request%limiter%num_domains;n=size(result%total_dqdh_node)
+    if(.not.allocated(rates%limiter%inflow_fraction).or..not.allocated(rates%limiter%outflow_fraction))return
+    if(size(rates%limiter%inflow_fraction)/=nd.or.size(rates%limiter%outflow_fraction)/=nd)return
+    if(any(.not.ieee_is_finite(rates%limiter%inflow_fraction)).or. &
+       any(.not.ieee_is_finite(rates%limiter%outflow_fraction)))return
+    if(any(rates%limiter%inflow_fraction<0d0).or.any(rates%limiter%inflow_fraction>1d0).or. &
+       any(rates%limiter%outflow_fraction<0d0).or.any(rates%limiter%outflow_fraction>1d0))return
+    if(.not.allocated(rates%saturated%qin_interflow_rate).or. &
+       .not.allocated(rates%saturated%qin_matrix_sat_rate).or. &
+       .not.allocated(rates%saturated%qout_matrix_sat_rate).or. &
+       .not.allocated(rates%unsaturated%selected_rate_cm_per_day))return
+    if(any(shape(rates%saturated%qin_interflow_rate)/=[nd,n]).or. &
+       any(shape(rates%saturated%qin_matrix_sat_rate)/=[nd,n]).or. &
+       any(shape(rates%saturated%qout_matrix_sat_rate)/=[nd,n]).or. &
+       any(shape(rates%unsaturated%selected_rate_cm_per_day)/=[nd,n]))return
+    if(.not.allocated(request%limiter%potential_top_vertical_cm).or. &
+       .not.allocated(request%limiter%potential_top_lateral_cm))return
+    if(size(request%limiter%potential_top_vertical_cm)/=nd.or.size(request%limiter%potential_top_lateral_cm)/=nd)return
+    dt=request%matrix_sat%step_duration
+    do id=1,nd
+      if(rates%limiter%inflow_fraction(id)<1d0)then
+        total=request%limiter%potential_top_vertical_cm(id)+request%limiter%potential_top_lateral_cm(id)+ &
+          dt*sum(rates%saturated%qin_interflow_rate(id,:)+rates%saturated%qin_matrix_sat_rate(id,:))
+      else if(rates%limiter%outflow_fraction(id)<1d0)then
+        total=dt*sum(rates%saturated%qout_matrix_sat_rate(id,:)+rates%unsaturated%selected_rate_cm_per_day(id,:))
+        if(id==1)total=total+rates%rapid%total_amount_cm
+      else
+        cycle
+      end if
+      if(.not.ieee_is_finite(total).or.total<=0d0)return
+      do ic=1,n
+        if(rates%limiter%inflow_fraction(id)<1d0)then
+          local_amount=dt*(rates%saturated%qin_interflow_rate(id,ic)+rates%saturated%qin_matrix_sat_rate(id,ic))
+        else
+          local_amount=dt*(rates%saturated%qout_matrix_sat_rate(id,ic)+rates%unsaturated%selected_rate_cm_per_day(id,ic))
+        end if
+        if(.not.ieee_is_finite(local_amount).or.local_amount<0d0)return
+        ! Differentiate the shared stock fraction. The numerator of an active
+        ! inflow cap includes outgoing water; conversely an outflow cap includes
+        ! incoming water. Hence the SAME local net-exchange derivative is
+        ! multiplied by (1-local/total), including simultaneous local exchanges.
+        ! Geometry, accepted storage and other-node heads are held fixed here.
+        ! Component arrays retain frozen-fraction derivatives; only the total
+        ! diagonal includes this limiter feedback. No process rate is changed.
+        factor=max(0d0,min(1d0,1d0-local_amount/total))
+        if(factor/=1d0)result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+(factor-1d0)* &
+          (result%unsaturated_dqdh(id,ic)+result%main_saturated_dqdh(id,ic)+perched_dqdh(id,ic))
+      end do
+    end do
+    ok=.true.
+  end subroutine project_conservative_storage_diagonal
 
 end module mod_ppa_wu05a15_exchange_derivative
