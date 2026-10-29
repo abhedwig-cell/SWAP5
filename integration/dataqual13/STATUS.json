@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL13",
   "baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
-  "stage": "QUALIFIED_BOUNDED_ORIGINAL_GRASS_READY_FOR_CANONICAL",
+  "stage": "CANONICALLY_INTEGRATED_BOUNDED_EXPERIMENTAL_ORIGINAL_GRASS",
   "scope": "Original Grassgrowth SWWOFOST3, SWTSUM1, direct PM, SWRAIN2, prescribed groundwater table and numeric heat. Original inputs remain byte-exact. Existing crop/process/runtime owners must be reused; full original application is reference only, never SWAP5 evidence.",
   "invariants": "Full Richards reference production retained; no copied water kernel; candidate grass state must commit with accepted water state and roll back on rejected trials; source forcing and original crop parameters retained.",
   "selected": [
@@ -66,8 +66,7 @@
     "Original Grassgrowth day64 active grass potential/root lifecycle and mowing/grazing joint runtime.",
     "Time-varying original groundwater callback after first BBC observation.",
     "Resolve measured whole-model historical water-stock/flux differences; no complete energy/physiology parity.",
-    "Full original periods remain unqualified:0/3 complete original migrations.",
-    "Actual canonical integration receipt pending."
+    "Full original periods remain unqualified:0/3 complete original migrations."
   ],
   "source_sha256": {
     "app/grass_project/initial_interval.f90": "3d4d83d38b8ebe5cc856fa249ae72f8761342bfa0f3617cc5cccb1ab7bb63c32",
@@ -116,7 +115,7 @@
     "tools/solute/qualify_grass_prefix.py": "1c4e5ae2ebb191f6b842857aa37988bb2f9270504eb6b7b6cfc93990536aefd3"
   },
   "evidence_sha256": "cfc28a49014a8a3cce48adc12009e80a2059983fc9a612d006e9bb8f98b01732",
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "additional_selected": [
     "original mode1 Richards groundwater: equilibrium, balance, provider isolation and below-profile mode5 identity O0/O2",
     "new groundwater FMR transaction: acceptance, committed revision and stale interval rejection O0/O2",
@@ -235,5 +234,7 @@
   "documentation_checks": {
     "source_checker": "PASS",
     "mkdocs_strict": "PASS (python -m mkdocs;25.82s)"
-  }
+  },
+  "canonical_scope": "Bounded experimental original Grassgrowth application/components only; no production or complete project scope expansion.",
+  "canonical_merge": "cc08278a03c85e6d8ccf99be99a0b9de72cae7bd"
 }

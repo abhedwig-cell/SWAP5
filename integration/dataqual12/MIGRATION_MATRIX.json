@@ -521,8 +521,15 @@
     "canonical_baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
     "original_grassgrowth_days_executed": 63,
     "new_original_projects_executed": 1,
-    "canonical_admitted": false,
-    "scope": "Original113-node Grassgrowth natural dormancy: five-day O0/O2 water and exact disk restart; O2 original continuation reaches30 then63days. Attempted365 stops before day64 active grass growth; last full-day checkpoint63 retained. No full project, active growth/root/harvest, variable groundwater or complete energy/historical equivalence claim."
+    "canonical_admitted": true,
+    "scope": "Original113-node Grassgrowth natural dormancy: five-day O0/O2 water and exact disk restart; O2 original continuation reaches30 then63days. Attempted365 stops before day64 active grass growth; last full-day checkpoint63 retained. No full project, active growth/root/harvest, variable groundwater or complete energy/historical equivalence claim.",
+    "merge": "cc08278a03c85e6d8ccf99be99a0b9de72cae7bd",
+    "pr": 1473
   },
-  "new_original_model_projects_executed_since_DATAQUAL10": 2
+  "new_original_model_projects_executed_since_DATAQUAL10": 2,
+  "dataqual13_canonical_integration": {
+    "pr": 1473,
+    "merge": "cc08278a03c85e6d8ccf99be99a0b9de72cae7bd",
+    "scope": "Bounded experimental original Grassgrowth application/components only; no production or complete project scope expansion."
+  }
 }
