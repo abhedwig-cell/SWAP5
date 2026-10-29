@@ -1,0 +1,296 @@
+{
+  "work_unit": "DATAQUAL11",
+  "date": "2026-10-29",
+  "baseline": "61f723911c1936fd1860947053857eb7b7b9a84b",
+  "pr": 1471,
+  "pr_head": "0a793b1cbce466d6e8b8b36cdfcb8992f96d2655",
+  "actual_merge": "158fa950ad5d1d550bfc400fb66e4478708486c3",
+  "exact_qualified_tree": "8b58daea7ee598a9abe6eb3d994a03a0067adf42",
+  "actual_tree_verified": true,
+  "local_actual_merge": {
+    "new_owner_source_raw": "PASS",
+    "new_corruption_controls": 10,
+    "inherited_DATAQUAL10_source_raw": "PASS",
+    "inherited_corruption_controls": 16,
+    "canonical_modular_feedback_entrypoint": "PASS",
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS"
+  },
+  "pr_runs": [
+    {
+      "id": 40873084453,
+      "name": "VQ reference qualification",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084523,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084610,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084296,
+      "name": "PUB-ME D3 origin authority",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084625,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084918,
+      "name": "MC-NUT01 focused native qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085086,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084976,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084313,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084741,
+      "name": "PUB-ME D1 transition authority",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084922,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085298,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873085195,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873085109,
+      "name": "PUB-P2E04 Reference failure census",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084460,
+      "name": "PUB-P1E02 post-solver rollback",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873085118,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085287,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084541,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085245,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085107,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084762,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084895,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084659,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084696,
+      "name": "F-PERF-CANON01 D AHL50",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085239,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084749,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085842,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873084924,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873084786,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085529,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085129,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873085376,
+      "name": "MC-SOL01 original SWP chemistry",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "merge_runs": [
+    {
+      "id": 40873954845,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 40873954897,
+      "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873954873,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873954868,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873954887,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873954874,
+      "name": "MC-SOL01 original SWP chemistry",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 40873954850,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "retained_merge_failure": {
+    "run_id": 40873954845,
+    "assertion": "unregistered transaction successor",
+    "transaction_source_unchanged_vs_baseline": true,
+    "successor_recipe_unchanged_vs_baseline": true,
+    "previously_recorded": "DATAQUAL10 PR1470 body",
+    "full_FCI_claim": false
+  },
+  "functional_outcome": {
+    "independent_complete_original_projects": 3,
+    "additional_complete_original_projects_available": 2,
+    "template_sets_excluded": 1,
+    "new_integral_original_projects_executed": 0,
+    "new_whole_project_qualifications": 0,
+    "intended_goal_achieved": false,
+    "new_supported_forcing": "SWRAIN2 source process and standalone original-input adapter only",
+    "forcing_days": 1827,
+    "wet_days": 951,
+    "event_count": 2778,
+    "forcing_O0_O2_exact": true,
+    "literal_B0_rate_duration_exact": true,
+    "maximum_daily_event_depth_error_cm": 2.584488179024902e-12,
+    "forcing_not_wired_into_whole_Grassgrowth": true,
+    "full_431_model_comparison": false,
+    "full_heat_solute_restart_qualification": false
+  },
+  "inherited_DATAQUAL10": {
+    "started": 151,
+    "water_qualified": 83,
+    "configuration_days": 94.7479999997231,
+    "longest_original_integral_days": 2.7479999999995925,
+    "decimal_days": true
+  },
+  "matrix": "integration/dataqual11/MIGRATION_MATRIX.json",
+  "issues_updated": [
+    1458,
+    1386
+  ],
+  "issues_remain_open": true
+}
