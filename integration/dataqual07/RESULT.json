@@ -1,0 +1,84 @@
+{
+  "work_unit": "DATAQUAL07",
+  "baseline": "93d302d8c10850940b33aefd2ffd815f3d63b65a",
+  "batches": [
+    "stock24",
+    "wet13",
+    "restarts-O0",
+    "restarts-O2",
+    "preservation",
+    "integral",
+    "paired-six"
+  ],
+  "scenario_executions": 53,
+  "native_process_executions_including_restarts": 60,
+  "water_qualified_executions": 28,
+  "categories": {
+    "successful_water_qualified": 28,
+    "budget_exceeded": 20,
+    "numerical_stall": 3,
+    "unclassified_execution_failure": 1,
+    "dependency_unavailable": 1
+  },
+  "baseline_started": 151,
+  "combined_started": 151,
+  "baseline_water_qualified": 77,
+  "combined_water_qualified": 83,
+  "extra_water_qualified_configurations": 6,
+  "baseline_deduplicated_configuration_days": 83.0499999997337,
+  "combined_deduplicated_configuration_days": 93.61849999972037,
+  "additional_deduplicated_configuration_days": 10.56849999998667,
+  "longest_fresh_integral_days": 2.7479999999995925,
+  "max_water_certificate_cm": 3.233083288936567e-13,
+  "native_seconds_total": 2398.7134212270003,
+  "stock24_success_seconds": {
+    "median": 10.811087172000043,
+    "minimum": 7.5944266790002075,
+    "maximum": 41.62802269799977
+  },
+  "production_admission_changed": false,
+  "full_historical_closure": false,
+  "qualification": "water only,112-node finite state/temperature and theta bounds,4 independent certificates<=1e-10cm,no mass rejection;2 O0/O2 and full/split physical identities;not full energy/chemistry/N/model parity",
+  "count_definition": "same normalized physical transformations/options as DATAQUAL05/06; conservative numerical flag excluded to avoid inflating configurations;one original Andelst project;01..04 not silently unioned",
+  "causal_attribution": "All6 new wet completions also pass paired legacy policy with same60s budget. Count gain is expanded execution, not attributable to limiter fix. Fix causally removes reproduced1.33 post-solve stock/trace rejection.",
+  "unresolved_integral": "same2.848675 internal stall; actual2.748 rollback exact;29878 Newton,2523 HeadCalc,102 solver/402 temporal rejections,min accepted dt8.88e-16day",
+  "paired_policy_cases": [
+    {
+      "id": "low-v0p0005-r2-e0p5",
+      "status": "PASS",
+      "seconds": 17.302379466000275
+    },
+    {
+      "id": "low-v0p0005-r4-e2",
+      "status": "PASS",
+      "seconds": 17.656008979000035
+    },
+    {
+      "id": "low-v0p001-r2-e0p5",
+      "status": "PASS",
+      "seconds": 38.00571874900015
+    },
+    {
+      "id": "low-v0p002-r2-e0p5",
+      "status": "PASS",
+      "seconds": 25.460988476999773
+    },
+    {
+      "id": "low-v0p002-r2-e2",
+      "status": "PASS",
+      "seconds": 43.917113268999856
+    },
+    {
+      "id": "low-v0p005-r2-e0p5",
+      "status": "PASS",
+      "seconds": 13.823665193999659
+    }
+  ],
+  "remaining_closure": [
+    "coupled solver temporal collapse at original internal2.848675",
+    "high-rain configurations remain budget-censored or solver-rejected",
+    "full5/30/481day integral plus year-boundary restart",
+    "native chemistry/N/WOFOST/snow and extended compositions",
+    "matched431 pressure/moisture/ET/drainage/runoff trajectories and justified quantity-specific parity tolerances"
+  ]
+}

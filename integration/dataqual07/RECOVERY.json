@@ -1,0 +1,32 @@
+{
+  "executable": "recovery/native-O2",
+  "executable_sha256": "f79863c4d74d8f93fdd8715fbc65cd49cab55a85752275c08d668820dd17a8a3",
+  "same_platform_only": true,
+  "cwd": "replay",
+  "prepared_inputs": {
+    "input.nml": "restarts-O2/low-v0p001-r1-e2/run/input.nml",
+    "input.swp": "restarts-O2/low-v0p001-r1-e2/run/input.swp",
+    "macro.nml": "restarts-O2/low-v0p001-r1-e2/run/macro.nml",
+    "restart.bin": "restarts-O2/low-v0p001-r1-e2/run/restart.bin"
+  },
+  "qualified_prefix_command": [
+    "../recovery/native-O2",
+    "input.nml",
+    "-",
+    "2",
+    "input.swp",
+    "macro.nml",
+    "501385694256155db20e3f7fc955ff1a02ad4f7a3bb25704b3ada355f513fac9",
+    "1.4424999999973807",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian",
+    "conservative-macro-storage"
+  ],
+  "qualified_target": 1.4424999999973807,
+  "next_step": "Reuse this exact executable and binding with own restart as origin.bin. Five-day continuation remains unqualified; no foreign checkpoint rebinding. Original integral2.748\u21923 still rejects with exact actual rollback.",
+  "original_integral_checkpoint": "integral/original-stock-2p748/run/restart.bin",
+  "original_integral_rejection": "integral/original-stock-five/run/diagnostic-rejected.bin"
+}
