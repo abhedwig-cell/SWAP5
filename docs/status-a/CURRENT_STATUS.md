@@ -1,5 +1,28 @@
 # SWAP5 Status-A current status
 
+DATAQUAL10 implements fixed-geometry shared-stock exchange linearization for
+explicit experimental conservative storage. The accepted physical rates remain
+unchanged. The sibling provider returns diagonal and low-rank factors from one
+coherent evaluation; Full Richards solves the tridiagonal plus shared-stock
+coupling with a pivoted Woodbury correction. Rank-zero and production routes
+retain the existing solver. Singular coupling and active coupling combined with
+frozen-tridiagonal factor capture request a timestep retry, never an incomplete
+Jacobian or false tangent capture.
+
+Actual production-rate finite differences pass48 conservative cases and72 full
+Jacobian columns per optimization; the old policy has24 derivative defects in
+the same conservative fixtures. All48 legacy controls are exact. The linear
+solver passes216 matrices and singular rejection on O0/O2. Both two-day routes
+retain six streams and physical restart payload exactly; selected O0/O2 and
+split/restart state is exact. The affected FSI35 native immutable oracles are
+requalified on O0/O2. Three of27 dependency files changed; unchanged-source
+inheritance is not claimed for them. No native speedup, original-stall repair,
+new physical process, additional original project, energy/solute/N or full431
+parity is established. Numerical policy remains separate from physical options.
+Authority: `integration/dataqual10/STATUS.json`, `RESULT.json`, `CAPSULE.json`,
+`RESULTS.md`, and `integration/audits/verify_dataqual10_current.py`. Canonical
+admission is recorded only in a later actual merge receipt.
+
 DATAQUAL09 adds explicit experimental `--quiet-macro-stages`, preserving the
 runtime policy default and all accepted physical/balance/trace diagnostics.
 Five text-stage writes become optional; no solver or physical process changes.

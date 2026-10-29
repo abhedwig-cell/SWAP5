@@ -90,7 +90,31 @@ def validate(f):
  summary=json.loads((ROOT/'integration/dataqual10/RESULT.json').read_bytes())
  assert len(all_results)==summary['scenario_rows']
  assert sum(r['status']=='PASS'for r in all_results)==summary['water_qualified_rows']
+ durations,started=coverage(all_results)
+ assert len(started)==summary['started'] and len(durations)==summary['water_qualified']
+ assert abs(sum(durations.values())-summary['configuration_days'])<1e-9
  return dict(qualified=True,physical_laws_changed=False,numerical_storage_coupling=True,measured=summary)
+def coverage(current):
+ def sig(c):
+  defaults=dict(mode='experimental',source_surface_demand=False,perched_jacobian=False,solver_max_iterations=64,anchored=True,entry_width_cm=1e-4,transformations=[])
+  return json.dumps({k:c.get(k,v)for k,v in defaults.items()},sort_keys=True)
+ ns=runpy.run_path(str(ROOT/'integration/audits/verify_dataqual07_current.py'));prior=ns['capsule']()
+ durations={};started=set()
+ def add(r):
+  key=sig(r['configuration'])
+  if r.get('status')in ['PASS','CENSORED']or r.get('attempts',0)>0:started.add(key)
+  if r.get('status')=='PASS':durations[key]=max(durations.get(key,0),r['completed_days'])
+ for r in json.loads(prior['baseline-rows.json'])+json.loads(prior['all-results.json']):add(r)
+ old08=runpy.run_path(str(ROOT/'integration/dataqual09/read_dataqual08.py'))['read']()
+ for r in json.loads(old08['five/RETAINED.json'])['retained']:
+  add(dict(r,status='PASS'))
+ old09=unpack('integration/dataqual09/CAPSULE.json')
+ cases=json.loads((ROOT/'integration/dataqual09/cases.json').read_bytes())['scenarios']
+ for r in json.loads(old09['extensions/RESULT.json']):
+  if r['status']=='PASS':add(dict(r,configuration=next(c for c in cases if c['id']==r['id'])))
+ assert len(durations)==83 and abs(sum(durations.values())-94.35949999972217)<1e-9
+ for r in current:add(r)
+ return durations,started
 def verify():source();return validate(unpack('integration/dataqual10/CAPSULE.json'))
 def fsi35_successors():
  verify()

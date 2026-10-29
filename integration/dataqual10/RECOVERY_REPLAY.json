@@ -1,0 +1,24 @@
+{
+  "returncode": 0,
+  "zero_physical_steps": true,
+  "command": [
+    "/tmp/dq10-capsule-replay/native",
+    "input.nml",
+    "restart.bin",
+    "1",
+    "input.swp",
+    "macro.nml",
+    "dceea070a46e29528a08e69eca1064149f1d84bf0f35a80ebdfed17da97ef046",
+    "1.7976931348623157e308",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian",
+    "conservative-macro-storage",
+    "quiet-macro-stages"
+  ],
+  "state_exact": true,
+  "temperature_exact": true,
+  "restart_exact": true
+}
