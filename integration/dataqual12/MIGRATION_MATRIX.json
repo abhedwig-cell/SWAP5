@@ -16,7 +16,8 @@
     "project_process_cells": 20,
     "complete_project_migrations": 0,
     "projects_with_inherited_bounded_water_evidence": 1,
-    "projects_with_current_bounded_water_evidence": 2
+    "projects_with_current_bounded_water_evidence": 3,
+    "project_process_cells_scope": "20 selected original project/function cells; bounded statuses do not enumerate or establish complete physical migration."
   },
   "projects": [
     {
@@ -301,40 +302,60 @@
       "features": [
         {
           "function": "pm_direct",
-          "status": "blocked",
-          "cause_or_scope": "Direct PM now coupled for original Hupsel fallow; original Grassgrowth dynamic-grass and prescribed-head composition still unexecuted."
+          "status": "water_qualified",
+          "cause_or_scope": "Original unchanged113-node Grassgrowth: five-day O0/O2 water balance and disk restart exact; O2 original source continuation reaches63days;365-day attempt stops before active-growth day64. Natural dormancy, original physical Bartholomeus oxygen and clamped groundwater before first observation. No active grass/root/harvest or full energy/historical equivalence claim.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "dynamic_grass",
-          "status": "not_implemented",
-          "cause_or_scope": "No WOFOST grass state owner in this driver; original CROPTYPE2/SWWOFOST3."
+          "status": "blocked",
+          "cause_or_scope": "Original natural dormancy, TSUM/DVS/biomass and source oxygen composition execute63days. Day64 source active growth rejects before publication; potential/root/harvest joint lifecycle missing. Component growth matches original; not active-project proof.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "rain_duration",
-          "status": "experimental_executed",
-          "cause_or_scope": "Original 1827-day SWRAIN2 forcing executed by new production process and source adapter, O0/O2 exact. Forcing-only, no soil/crop execution."
+          "status": "water_qualified",
+          "cause_or_scope": "Original unchanged113-node Grassgrowth: five-day O0/O2 water balance and disk restart exact; O2 original source continuation reaches63days;365-day attempt stops before active-growth day64. Natural dormancy, original physical Bartholomeus oxygen and clamped groundwater before first observation. No active grass/root/harvest or full energy/historical equivalence claim.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "bottom",
-          "status": "blocked",
-          "cause_or_scope": "Original external SWBOTB1 prescribed groundwater table; route only accepts external Cauchy3."
+          "status": "water_qualified",
+          "cause_or_scope": "Original unchanged113-node Grassgrowth: five-day O0/O2 water balance and disk restart exact; O2 original source continuation reaches63days;365-day attempt stops before active-growth day64. Natural dormancy, original physical Bartholomeus oxygen and clamped groundwater before first observation. No active grass/root/harvest or full energy/historical equivalence claim.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "matrix_water",
-          "status": "blocked",
-          "cause_or_scope": "No original Grassgrowth model steps launched."
+          "status": "water_qualified",
+          "cause_or_scope": "Original unchanged113-node Grassgrowth: five-day O0/O2 water balance and disk restart exact; O2 original source continuation reaches63days;365-day attempt stops before active-growth day64. Natural dormancy, original physical Bartholomeus oxygen and clamped groundwater before first observation. No active grass/root/harvest or full energy/historical equivalence claim.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "heat",
-          "status": "blocked",
-          "cause_or_scope": "No original Grassgrowth coupled heat execution."
+          "status": "experimental_executed",
+          "cause_or_scope": "Original unchanged113-node Grassgrowth: five-day O0/O2 water balance and disk restart exact; O2 original source continuation reaches63days;365-day attempt stops before active-growth day64. Natural dormancy, original physical Bartholomeus oxygen and clamped groundwater before first observation. No active grass/root/harvest or full energy/historical equivalence claim.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "drainage",
-          "status": "implemented_not_executed",
-          "cause_or_scope": "DRAMET3 exists; not executed in the original Grassgrowth composition."
+          "status": "water_qualified",
+          "cause_or_scope": "Original unchanged113-node Grassgrowth: five-day O0/O2 water balance and disk restart exact; O2 original source continuation reaches63days;365-day attempt stops before active-growth day64. Natural dormancy, original physical Bartholomeus oxygen and clamped groundwater before first observation. No active grass/root/harvest or full energy/historical equivalence claim. DRAMET3 enabled; zero drainage in qualified prefix, no new positive-drainage proof.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         }
-      ]
+      ],
+      "native_initial_profile": {
+        "nodes": 113,
+        "depth_cm": 600,
+        "source_initial_groundwater_cm": -88,
+        "water_cm": 217.01743631333005,
+        "reference_rounded_water_cm": 217.02,
+        "scope": "Initialization only, not model execution."
+      },
+      "current_experimental_days": 63,
+      "original_oxygen_selector": 2,
+      "full_project_migrated": false,
+      "water_qualified_days": 5,
+      "executed_days": 63
     },
     {
       "project": "3.macroporeflow",
@@ -494,5 +515,14 @@
     "pr": 1472,
     "merge": "4e55baf8ab1889d00cd8594c4dc5519d20430011",
     "scope": "Experimental original Hupsel120-day prefix; no full project/energy admission."
-  }
+  },
+  "candidate_scope": {
+    "work_unit": "DATAQUAL13",
+    "canonical_baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
+    "original_grassgrowth_days_executed": 63,
+    "new_original_projects_executed": 1,
+    "canonical_admitted": false,
+    "scope": "Original113-node Grassgrowth natural dormancy: five-day O0/O2 water and exact disk restart; O2 original continuation reaches30 then63days. Attempted365 stops before day64 active grass growth; last full-day checkpoint63 retained. No full project, active growth/root/harvest, variable groundwater or complete energy/historical equivalence claim."
+  },
+  "new_original_model_projects_executed_since_DATAQUAL10": 2
 }

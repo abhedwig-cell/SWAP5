@@ -113,6 +113,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
+   real(8),allocatable :: groundwater_saturated_theta(:),groundwater_saturated_k(:)
    real(8),allocatable :: storage_left(:,:),storage_right(:,:),storage_diagonal_restore(:)
    integer::storage_rank,storage_additional_solves
    logical::storage_coupling_available
@@ -332,6 +333,16 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    end if
 
 !  special case: groundwater level specified
+   if (swbotb == 1.and.provider_constitutive_active) then
+      ! Original mode1 requires theta_s and K_s at the prescribed water table.
+      ! Obtain both from the active owner; legacy global COFGEN is unrelated
+      ! to an explicit column's hydraulic configuration.
+      allocate(groundwater_saturated_theta(numnod),groundwater_saturated_k(numnod))
+      call evaluation_context%constitutive%evaluate(spread(0.0d0,1,numnod), &
+           groundwater_saturated_theta,groundwater_saturated_k, &
+           fsi_ws%provider_capacity,fsi_ws%provider_dkdh)
+      ctx%diagnostics%constitutive_evaluations=ctx%diagnostics%constitutive_evaluations+1
+   end if
    if (swbotb == 1) then
       state%fllowgwl = .FALSE.
       if (state%gwlinp >= grid_z(1)-1.0d-4) then
@@ -371,15 +382,21 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
          return
       else
          NN = 0
-         do while (grid_z(NN+1) > state%gwlinp .AND. NN < numnod)
+         ! Fortran does not guarantee short-circuit evaluation. Never read
+         ! z(numnod+1) when the prescribed table lies below the profile.
+         do while (NN < numnod)
+            if (grid_z(NN+1) <= state%gwlinp) exit
             NN = NN + 1
          end do
-         if (grid_z(NN+1) < (state%gwlinp+nihil)) then
+         state%fllowgwl = NN == numnod
+         if (.not.state%fllowgwl) then
 !           groundwater within soil profile
-            if ((grid_z(NN)-state%gwlinp) < 1.0d-4 .AND. (NN > 0)) then
+            if (NN > 0) then
+            if ((grid_z(NN)-state%gwlinp) < 1.0d-4) then
 !              difference state%gwlinp with node to small to calculate gradient properly
                state%gwlinp = grid_z(NN)
                NN     = NN-1
+            end if
             end if
          else
 !           groundwater below soil profile
@@ -874,7 +891,11 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
 !           derive vertical flux profile in order to find state%qbot as a lower boundary condition for the saturated part of the soil system
             fsi_ws%vertical_flux(1) = state%qtop
             do i = NN+1, numnod
-               state%theta(i) = cofgen(2,i)
+               if(provider_constitutive_active)then
+                  state%theta(i)=groundwater_saturated_theta(i)
+               else
+                  state%theta(i) = cofgen(2,i)
+               end if
             end do
             do i = 1, numnod
               fsi_ws%vertical_flux(i+1) = fsi_ws%vertical_flux(i) + grid_dz(i)*matrix_fraction(i)*(state%theta(i)-state%thetm1(i)) / dt + fsi_ws%sink(i) - fsi_ws%source(i) + root_sink_term(i)
@@ -1449,11 +1470,28 @@ subroutine vector_F(iTask)
 
    ! for bottom BC, continued
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
+      if(provider_constitutive_active)then
+         ! The original internal-table node refreshes K at its current head
+         ! even in the otherwise fixed-conductivity iteration. Preserve that
+         ! ordering through the active provider, not legacy global watcon/K.
+         call evaluation_context%constitutive%evaluate(state%h(1:numnod), &
+              fsi_ws%provider_theta,fsi_ws%provider_k,fsi_ws%provider_capacity,fsi_ws%provider_dkdh)
+         ctx%diagnostics%constitutive_evaluations=ctx%diagnostics%constitutive_evaluations+1
+         provider_tuple_valid=.true.;provider_tuple_from_candidate=.true.
+         state%theta(NN)=fsi_ws%provider_theta(NN)
+         state%k(NN)=fsi_ws%provider_k(NN)
+      else
       state%theta(NN) = watcon(NN,state%h(NN))
       state%k(NN)     = hconduc(NN,state%h(NN),state%theta(NN),rfcp(NN))
+      end if
       ! in case of static macropores FrArMtrx < 1
       if (scale_matrix_area) state%k(NN) = matrix_fraction(NN) * state%k(NN)
+      if(provider_constitutive_active)then
+         state%kmean(NN+1)=hcomean(swkmean,state%k(NN),groundwater_saturated_k(NN+1), &
+              grid_dz(NN),grid_dz(NN+1),NN,state%h(NN),0.0d0)
+      else
       state%kmean(NN+1) = hcomean(swkmean, state%k(NN), cofgen(3,(NN+1)), grid_dz(NN), grid_dz(NN+1), NN, state%h(NN), 0.0d0)
+      end if
       fsi_ws%residual(NN)       = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + state%kmean(NN+1) * fsi_ws%head_gradient(NN+1) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN)
    else
       fsi_ws%residual(NN) = fsi_ws%provider_water_content_increment(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - state%kmean(NN) * fsi_ws%head_gradient(NN) + fsi_ws%sink(NN) - fsi_ws%source(NN) + root_sink_term(NN) 

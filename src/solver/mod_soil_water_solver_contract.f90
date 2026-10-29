@@ -57,6 +57,8 @@ module mod_soil_water_solver_contract
      logical :: macropore_active = .false.
      ! Immutable matrix cross-section. Absence preserves the unit-area route.
      real(real64), allocatable :: matrix_area_fraction(:)
+     ! Explicit experimental original SWBOTB1, below-surface groundwater table.
+     logical :: prescribed_groundwater_active = .false.
   end type soil_water_physical_config_t
 
   type, public :: soil_water_numerical_config_t

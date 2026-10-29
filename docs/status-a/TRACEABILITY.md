@@ -1,5 +1,20 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+DATAQUAL13 adds an experimental original113-node Grassgrowth application using
+Full Richards and existing water/crop/thermal owners. The unchanged original
+five-day dormant prefix qualifies water balance and exact same-build disk restart
+in O0/O2, including five invalid-restart controls. Original O2 continuation
+reaches63days; attempted365 stops before active-growth day64 and retains its
+last complete-day restart. Source daily/duration
+interception, groundwater initialization and physical Bartholomeus composition
+are retained. Root density, respiration and solar components match compiled
+original routines. This does not qualify active grass/root/harvest, time-varying
+groundwater, complete energy or full4.3.1 equivalence. See
+`integration/dataqual13/STATUS.json`, `EVIDENCE.tar.xz` and
+`tests/dataqual13/verify_component_evidence.py`; the unified
+`integration/dataqual12/MIGRATION_MATRIX.json` distinguishes bounded water3/3
+from complete original migration0/3. Actual admission requires a merge receipt.
+
 DATAQUAL12 experimentally executes the unchanged original Hupsel pre-emergence
 prefix for120days with direct PM, Black evaporation, Hooghoudt IPOS2, numeric
 heat, positive irrigation solute and original zero-flux SWBOTB6. O0/O2 endpoints

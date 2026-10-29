@@ -15,19 +15,24 @@ contains
     end if
   end subroutine
 
-  subroutine initialize_column_hydrostatic_water(width,gwli,bottom_mode,heads,source_pond)
+  subroutine initialize_column_hydrostatic_water(width,gwli,bottom_mode,heads,source_pond,allow_prescribed_groundwater)
     real(real64),intent(in)::width(:),gwli
     integer,intent(in)::bottom_mode
     real(real64),allocatable,intent(out)::heads(:)
     real(real64),intent(out)::source_pond
+    logical,optional,intent(in)::allow_prescribed_groundwater
+    logical::groundwater_selected
     real(real64)::depth,z
     integer::i,n
+    groundwater_selected=.false.
+    if(present(allow_prescribed_groundwater))groundwater_selected=allow_prescribed_groundwater
     n=size(width)
     call require(n>=2.and.n<=256,'hydrostatic node capacity')
     call require(all(ieee_is_finite(width)).and.all(width>0d0),'invalid hydrostatic grid')
     call require(ieee_is_finite(gwli),'nonfinite GWLI')
     call require(gwli>=-10000d0.and.gwli<=1000d0,'GWLI outside original input domain')
-    call require(bottom_mode>=2.and.bottom_mode<=8,'hydrostatic bottom mode not selected')
+    call require((bottom_mode>=2.and.bottom_mode<=8).or.(bottom_mode==1.and.groundwater_selected), &
+      'hydrostatic bottom mode not selected')
     allocate(heads(n));depth=0d0
     do i=1,n
       z=-(depth+.5d0*width(i));depth=depth+width(i)
@@ -38,13 +43,16 @@ contains
     source_pond=max(gwli,0d0)
   end subroutine initialize_column_hydrostatic_water
 
-  subroutine import_column_swp_water(path,nodes,width,heads,cofgen,source_pond,initial_bottom_mode,source_groundwater,allow_ksatexm)
+  subroutine import_column_swp_water(path,nodes,width,heads,cofgen,source_pond,initial_bottom_mode,source_groundwater,allow_ksatexm,allow_prescribed_groundwater,initial_groundwater_cm)
     character(*),intent(in)::path
     integer,intent(out)::nodes
     real(real64),intent(out)::width(:)
     real(real64),allocatable,intent(out)::heads(:),cofgen(:,:)
     real(real64),optional,intent(out)::source_pond
     logical,optional,intent(in)::allow_ksatexm
+    logical,optional,intent(in)::allow_prescribed_groundwater
+    logical::groundwater_selected
+    real(real64),optional,intent(in)::initial_groundwater_cm
     logical::ksatexm_selected
     real(real64)::ksatexm(256),help,relsatthr,term1,ksatthr
     integer,optional,intent(in)::initial_bottom_mode
@@ -55,6 +63,8 @@ contains
     real(real64),allocatable::htb(:)
     real(real64)::depth,z,gwli
     logical::rdinqr,rdinar
+    groundwater_selected=.false.
+    if(present(allow_prescribed_groundwater))groundwater_selected=allow_prescribed_groundwater
     call rdinit(73,0,trim(path))
     ! Extensions need their own physical owner; never silently downgrade them.
     if(present(source_pond))source_pond=-1d0
@@ -72,8 +82,15 @@ contains
         bottom_mode=initial_bottom_mode
         call require(bottom_mode>=1.and.bottom_mode<=8,'invalid resolved bottom mode')
       end if
-      call require(bottom_mode/=1,'SWBOTB1 time-table initialization excluded')
+      call require(bottom_mode/=1.or.groundwater_selected,'SWBOTB1 time-table initialization excluded')
+      if(bottom_mode==1)then
+        ! Original soilwater(1) initializes from GWLTAB at its source epoch,
+        ! not the inactive SWP GWLI. The time-series owner must resolve it.
+        call require(present(initial_groundwater_cm),'SWBOTB1 initial time-series sample required')
+        gwli=initial_groundwater_cm
+      else
       call rdsdor('gwli',-10000d0,1000d0,gwli)
+      end if
       call require(ieee_is_finite(gwli),'nonfinite GWLI')
       if(present(source_groundwater))source_groundwater=gwli
     end if
@@ -163,7 +180,7 @@ contains
         end if
       end do
     end do
-    if(initial_mode==2)call initialize_column_hydrostatic_water(width(:nodes),gwli,bottom_mode,heads,source_pond)
+    if(initial_mode==2)call initialize_column_hydrostatic_water(width(:nodes),gwli,bottom_mode,heads,source_pond,groundwater_selected)
     print '(A)','SWP_NATIVE_WATER_BOOTSTRAP_IMPORTED'
   end subroutine
 end module

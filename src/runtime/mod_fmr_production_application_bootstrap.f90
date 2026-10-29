@@ -555,7 +555,8 @@ contains
       ordinary_cauchy_profile = ordinary_cauchy_profile .and. config%tiles(i)%ordinary_implicit_cauchy
       ordinary_explicit_cauchy_profile = ordinary_explicit_cauchy_profile .and. config%tiles(i)%ordinary_explicit_cauchy
       ordinary_lysimeter_profile = ordinary_lysimeter_profile .and. config%tiles(i)%ordinary_lysimeter_plate
-      standalone_profile = standalone_profile .and. config%tiles(i)%parameters%bottom_mode == 7
+      standalone_profile = standalone_profile .and. (config%tiles(i)%parameters%bottom_mode == 7.or. &
+         (config%tiles(i)%parameters%bottom_mode==1.and.config%tiles(i)%parameters%prescribed_groundwater_active))
       prescribed_qbot_profile = prescribed_qbot_profile .and. config%tiles(i)%parameters%bottom_mode == 2
       direct_retention_requested = direct_retention_requested .or. config%tiles(i)%parameters%direct_retention_active
     end do
@@ -2718,7 +2719,8 @@ contains
     if (tile%parameters%parameter_set_id <= 0_int64) return
     if (tile%parameters%active_nodes <= 0) return
     if (tile%parameters%bottom_mode /= 5 .and. tile%parameters%bottom_mode /= 7 .and. &
-        tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3 .and. tile%parameters%bottom_mode /= 8) return
+        tile%parameters%bottom_mode /= 2 .and. tile%parameters%bottom_mode /= 3 .and. tile%parameters%bottom_mode /= 8.and. &
+        .not.(tile%parameters%bottom_mode==1.and.tile%parameters%prescribed_groundwater_active)) return
     if (allocated(tile%parameters%micro_de_willigen)) then
       if (allocated(tile%parameters%micro_horizon_first_node)) then
         if (.not. fmr_micro_horizon_map_valid(tile%parameters%micro_horizon_first_node, &

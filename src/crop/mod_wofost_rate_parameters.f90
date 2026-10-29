@@ -38,6 +38,7 @@ module mod_wofost_rate_parameters
     real(real64) :: maximum_leaf_relative_death_rate = 0.0_real64 ! PERDL
     real(real64) :: leaf_age_base_temperature = 0.0_real64        ! TBASE
     real(real64) :: maximum_relative_lai_growth_rate = 0.0_real64 ! RGRLAI
+    logical :: grass_development = .false. ! Original SWWOFOST=3; no annual TSUM/DTSMTB input
   end type wofost_rate_scalar_parameters_t
 
   ! Construction DTO holding already-qualified F-WOF29 compact tables.
@@ -92,7 +93,7 @@ contains
     status = validate_scalar_parameters(scalars)
     if (status /= WOFOST_RATE_PARAMETER_OK) return
 
-    if (.not. all_parameter_tables_ready(tables)) then
+    if (.not. all_parameter_tables_ready(tables,scalars%grass_development)) then
       status = WOFOST_RATE_PARAMETER_INVALID_TABLE
       return
     end if
@@ -115,7 +116,7 @@ contains
     ready = .false.
     if (.not. self%initialized) return
     if (validate_scalar_parameters(self%scalars) /= WOFOST_RATE_PARAMETER_OK) return
-    if (.not. all_parameter_tables_ready(self%tables)) return
+    if (.not. all_parameter_tables_ready(self%tables,self%scalars%grass_development)) return
     ready = .true.
   end function wofost_rate_parameter_bundle_ready
 
@@ -154,8 +155,12 @@ contains
       end if
     end if
 
+    if(scalars%grass_development)then
+      if(scalars%development_daylength_mode/=0)return
+    else
     if (.not. valid_positive_to(scalars%vegetative_temperature_sum_required, 10000.0_real64)) return
     if (.not. valid_positive_to(scalars%generative_temperature_sum_required, 10000.0_real64)) return
+    end if
     if (.not. valid_positive_to(scalars%diffuse_extinction_coefficient, 2.0_real64)) return
     if (.not. valid_inclusive(scalars%initial_light_use_efficiency, 0.0_real64, 10.0_real64)) return
     if (.not. valid_positive_to(scalars%co2_to_dry_matter_fraction, 1.0_real64)) return
@@ -176,11 +181,14 @@ contains
     status = WOFOST_RATE_PARAMETER_OK
   end function validate_scalar_parameters
 
-  logical function all_parameter_tables_ready(tables) result(ready)
+  logical function all_parameter_tables_ready(tables,grass) result(ready)
     type(wofost_rate_parameter_tables_t), intent(in) :: tables
+    logical,intent(in)::grass
 
     ready = .false.
-    if (.not. tables%temperature_sum_increment%ready()) return
+    if(.not.grass)then
+     if (.not. tables%temperature_sum_increment%ready()) return
+    end if
     if (.not. tables%maximum_assimilation%ready()) return
     if (.not. tables%daytime_temperature_factor%ready()) return
     if (.not. tables%minimum_temperature_factor%ready()) return
@@ -238,6 +246,12 @@ contains
     real(real64), intent(in) :: query_x
     real(real64), intent(out) :: value_y
     integer, intent(out) :: status
+    if(self%scalars%grass_development)then
+      value_y=0.0_real64;status=WOFOST_RATE_PARAMETER_INVALID_QUERY
+      if(.not.self%ready().or..not.ieee_is_finite(query_x))return
+      value_y=max(0.0_real64,query_x);status=WOFOST_RATE_PARAMETER_OK
+      return
+    end if
     call evaluate_parameter_table(self, self%tables%temperature_sum_increment, query_x, value_y, status)
   end subroutine evaluate_temperature_sum_increment
 

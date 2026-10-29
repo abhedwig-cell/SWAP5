@@ -82,6 +82,7 @@ module mod_pmdirect_swetr0_process
 
   public :: evaluate_pmdirect_swetr0_daily
   public :: apply_swinter1_daily_interval
+  public :: apply_swinter1_duration_interval
   public :: apply_swinter0_identity_interval
 
 contains
@@ -348,6 +349,48 @@ contains
     end if
     diagnostics%interval_result_produced = .true.
   end subroutine apply_swinter1_daily_interval
+
+  pure subroutine apply_swinter1_duration_interval(weather,canopy,daily_result,gross_interval_rain_cm_day, &
+                                                   interval_result,diagnostics)
+    type(pmdirect_swetr0_weather_t),intent(in)::weather
+    type(pmdirect_swetr0_canopy_t),intent(in)::canopy
+    type(pmdirect_swetr0_daily_result_t),intent(in)::daily_result
+    real(real64),intent(in)::gross_interval_rain_cm_day
+    type(pmdirect_swetr0_interval_result_t),intent(out)::interval_result
+    type(pmdirect_swetr0_diagnostics_t),intent(inout)::diagnostics
+    type(pmdirect_swetr0_interval_result_t)::daily
+    real(real64)::interception_rate
+    interval_result=pmdirect_swetr0_interval_result_t()
+    diagnostics%interval_result_produced=.false.
+    if(.not.ieee_is_finite(gross_interval_rain_cm_day))then
+      diagnostics%status=PMDIRECT_SWETR0_INVALID_WEATHER;return
+    end if
+    if(gross_interval_rain_cm_day<0d0)then
+      diagnostics%status=PMDIRECT_SWETR0_INVALID_WEATHER;return
+    end if
+    call apply_swinter1_daily_interval(weather,canopy,daily_result,daily,diagnostics)
+    if(diagnostics%status/=PMDIRECT_SWETR0_OK.or..not.diagnostics%interval_result_produced)return
+    ! Original ProcessMeteoDT: scale DAILY interception with the current rain
+    ! rate, but retain DAILY AINTC/EINTC for transpiration throughout the day.
+    ! This explicit route is for source SWRAIN1/2 without surface irrigation.
+    interception_rate=0d0
+    if(weather%gross_rain_cm_d>0d0) &
+      interception_rate=gross_interval_rain_cm_day*daily%interception_rate_cm_per_day/weather%gross_rain_cm_d
+    interval_result=daily
+    interval_result%interception_rate_cm_per_day=interception_rate
+    if(interception_rate<SMALL)then
+      interval_result%net_rain_cm_per_day=gross_interval_rain_cm_day
+    else if(gross_interval_rain_cm_day>SMALL)then
+      interval_result%net_rain_cm_per_day=gross_interval_rain_cm_day-interception_rate
+    else
+      interval_result%net_rain_cm_per_day=0d0
+    end if
+    if(.not.valid_interval_result(interval_result))then
+      interval_result=pmdirect_swetr0_interval_result_t()
+      diagnostics%status=PMDIRECT_SWETR0_INVALID_RESULT
+      diagnostics%interval_result_produced=.false.
+    end if
+  end subroutine
 
   pure real(real64) function aerodynamic_resistance(ch, ud, zm, zh) result(raero)
     real(real64), intent(in) :: ch, ud, zm, zh
