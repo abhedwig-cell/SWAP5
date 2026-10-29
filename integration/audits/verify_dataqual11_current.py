@@ -14,6 +14,7 @@ def parent_projection():
  assert old.count(needle)==1
  return old.replace(needle,needle+" if (ROOT/'integration/dataqual11/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'"+SELF+"'))['source'](reader,changed)\n",1).encode()
 def source(reader=None,changed=None):
+ if (ROOT/'integration/dataqual12/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual12_current.py'))['source'](reader,changed)
  if reader is None:reader=lambda p:(ROOT/p).read_bytes()
  s=json.loads(reader(STATUS));assert s['baseline']==BASE
  assert not git('diff','HEAD','--','src','app','tools','tests','reference','integration/audits')

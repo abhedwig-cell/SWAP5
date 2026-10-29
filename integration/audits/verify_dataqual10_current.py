@@ -116,7 +116,9 @@ def coverage(current):
  assert len(durations)==83 and abs(sum(durations.values())-94.35949999972217)<1e-9
  for r in current:add(r)
  return durations,started
-def verify():source();return validate(unpack('integration/dataqual10/CAPSULE.json'))
+def verify():
+ if (ROOT/'integration/dataqual12/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual12_current.py'))['verify']()
+ source();return validate(unpack('integration/dataqual10/CAPSULE.json'))
 def fsi35_successors():
  verify()
  deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']

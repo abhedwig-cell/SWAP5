@@ -1,0 +1,98 @@
+{
+  "status": "BOUNDED_WATER_SOLUTE_RESTART_QUALIFIED",
+  "new_original_projects_executed": 1,
+  "longest_new_project_days": 120,
+  "original_project": "1.hupselbrook",
+  "original_project_complete": false,
+  "new_physical_laws": 0,
+  "new_compositions": [
+    "direct PM, Black, Hooghoudt IPOS2, numeric heat, mobile solute",
+    "original SWBOTB6 zero flux",
+    "original two-hour surface irrigation, 48 mg/cm2 solute"
+  ],
+  "energy_qualified": false,
+  "historical_full_equivalence": false,
+  "coverage": {
+    "independent_complete_projects": 3,
+    "projects_with_bounded_water_evidence": 2,
+    "full_original_projects_migrated": 0
+  },
+  "runs": [
+    {
+      "run": "O0-5",
+      "start_day": 0.0,
+      "end_day": 5.0,
+      "native_seconds": 52.52167345000271,
+      "max_water_residual_cm": 2.3092638912203256e-14,
+      "max_solute_residual_mg_cm2": 4.249045559845399e-12,
+      "final_water_cm": 77.00398948366691,
+      "final_solute_mg_cm2": 47.99999920907426
+    },
+    {
+      "run": "O2-5",
+      "start_day": 0.0,
+      "end_day": 5.0,
+      "native_seconds": 24.86265185600132,
+      "max_water_residual_cm": 2.3092638912203256e-14,
+      "max_solute_residual_mg_cm2": 4.249045559845399e-12,
+      "final_water_cm": 77.00398948366691,
+      "final_solute_mg_cm2": 47.99999920907426
+    },
+    {
+      "run": "O2-30",
+      "start_day": 0.0,
+      "end_day": 30.0,
+      "native_seconds": 27.550096113998734,
+      "max_water_residual_cm": 2.3092638912203256e-14,
+      "max_solute_residual_mg_cm2": 4.249045559845399e-12,
+      "final_water_cm": 76.22377148934807,
+      "final_solute_mg_cm2": 47.99794925055161
+    },
+    {
+      "run": "O2-restart30",
+      "start_day": 5.0,
+      "end_day": 30.0,
+      "native_seconds": 4.8501467690002755,
+      "max_water_residual_cm": 1.0685896612017132e-14,
+      "max_solute_residual_mg_cm2": 1.6772000455134162e-12,
+      "final_water_cm": 76.22377148934807,
+      "final_solute_mg_cm2": 47.99794925055161
+    },
+    {
+      "run": "O2-120",
+      "start_day": 30.0,
+      "end_day": 120.0,
+      "native_seconds": 60.111286300001666,
+      "max_water_residual_cm": 2.1760371282653068e-14,
+      "max_solute_residual_mg_cm2": 9.56408563457245e-12,
+      "final_water_cm": 76.18276116411346,
+      "final_solute_mg_cm2": 45.17770242610846
+    },
+    {
+      "run": "O2-full120",
+      "start_day": 0.0,
+      "end_day": 120.0,
+      "native_seconds": 101.65807080300146,
+      "max_water_residual_cm": 2.3092638912203256e-14,
+      "max_solute_residual_mg_cm2": 9.56408563457245e-12,
+      "final_water_cm": 76.18276116411346,
+      "final_solute_mg_cm2": 45.17770242610846
+    },
+    {
+      "run": "O0-120",
+      "start_day": 5.0,
+      "end_day": 120.0,
+      "native_seconds": 130.66110335300255,
+      "max_water_residual_cm": 2.1760371282653068e-14,
+      "max_solute_residual_mg_cm2": 9.56408563457245e-12,
+      "final_water_cm": 76.18276116411346,
+      "final_solute_mg_cm2": 45.17770242610846
+    }
+  ],
+  "comparison": {
+    "reference": "B1.11 SWAP4.3.1 source authority; shortened TEND, optional SWCSV disabled",
+    "water120_reference_rounded_cm": 76.19,
+    "solute120_reference_rounded_mg_cm2": 45.16,
+    "claim": "Measured differences, no exact full historical equivalence."
+  }
+}

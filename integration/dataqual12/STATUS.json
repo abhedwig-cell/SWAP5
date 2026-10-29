@@ -1,0 +1,64 @@
+{
+  "work_unit": "DATAQUAL12",
+  "baseline": "3bcf96ccf64008bc7ba09c0ab8e82ea8f77d21e5",
+  "stage": "QUALIFIED_EXPERIMENTAL_NOT_YET_MERGED",
+  "contract": "Original Hupsel pre-emergence prefix only, all original physical parameters preserved. SWBOTB6 is zero flux, mapped exactly to existing prescribed-zero-flux boundary. Existing PM, Black, Hooghoudt-IPOS2, numeric heat, reactive solute owners are composed. No crop state is needed before the first original emergence date. Black numeric heat is explicit default-off; old callers and S5PT0001/2 streams stay unchanged. New S5PT0003 carries Black ldwet and binds cofred. Optional parameters on Black state constructor certify heat identity, preserving the old call signature.",
+  "invariants": "No copied physics, no relaxed balance/temporal tolerances, staged joint rollback, reject prefixes crossing crop emergence, exact source inputs bound in launcher.",
+  "scientific_delta": {
+    "app/solute_project/main.f90": "M",
+    "app/solute_project/read_fallow_project.f90": "A",
+    "integration/audits/verify_dataqual10_current.py": "M",
+    "integration/audits/verify_dataqual11_current.py": "M",
+    "integration/audits/verify_dataqual12_current.py": "A",
+    "src/adapter/mod_pond_thermal_restart_file.f90": "M",
+    "src/runtime/mod_fmr_b111_pond_thermal_application.f90": "M",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "tests/dataqual12/collect_qualification.py": "A",
+    "tools/solute/build_project.py": "M",
+    "tools/solute/run_column.py": "M",
+    "tools/solute/run_fallow_project.py": "A"
+  },
+  "source_files": {
+    "app/solute_project/main.f90": "cbfe000a1d29223c4f95a7ffe9b958e947e16284bfec111d8c347fc94b818804",
+    "app/solute_project/read_fallow_project.f90": "8ce5086402942b60db3df22bb0f608333da3d375c9e2033cf960f71277eda6eb",
+    "integration/audits/verify_dataqual10_current.py": "2bbd62c4989b7d967cff55b17393da9e5c7801951e6f19be6efd60e087fc4dd6",
+    "integration/audits/verify_dataqual11_current.py": "1a676af0998caa780423cc5d1e5f09101ac54178f6d4f2a99a6e8427bae84725",
+    "integration/audits/verify_dataqual12_current.py": "29ffdf4abc310ced579166065d31fd1eef3e91421cc11e566347080962afcfa4",
+    "src/adapter/mod_pond_thermal_restart_file.f90": "a3f123d71e2938ea9622f1e533334f66f42f9c2a45cdcc4d7fc54b5f3d3953ba",
+    "src/runtime/mod_fmr_b111_pond_thermal_application.f90": "e585ef2feb50cbc626e919374722594c33a95f7a9d22e53a3f6e6158838a217e",
+    "src/runtime/mod_fmr_restart_state_contract.f90": "eacd18dc93583583023436c59bb02aadec372e1f6be0d70ad0c08e695fc0b405",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "1c2fa084c7a4687e618dc37dc2abfa967914004a7c7476fd580ccaef8b63b21b",
+    "tests/dataqual12/collect_qualification.py": "71ebbb7a3d3e2e54abcf9219ee9130e6cb52cf5f8335edf37f555e748850e058",
+    "tools/solute/build_project.py": "24a2ea311fab0bfde8dab2d08d352de8333620f2b787ce8d08eacc5d500cd69e",
+    "tools/solute/run_column.py": "f25bd74d11b095a65ce517576db4cd408277a07bc0b1514fbef54bbc9371526e",
+    "tools/solute/run_fallow_project.py": "03ee28a5bb31d0d74ba93b20feda4d11c6960a28386d80117d901793765850cc"
+  },
+  "evidence_sha256": "9fd5e2840d819b2905bd890ac3fe71acb38e8ddb9d2e7f5a949c19de1b7686cf",
+  "selected": [
+    "O0/O2 checked194-provider original Hupsel physical closure",
+    "O0/O2 five-day and120-day positive-solute original project execution",
+    "exact 5->30 and30->120 restart endpoints",
+    "O0/O2 existing Black, bootstrap and common-forcing production contracts",
+    "O0/O2 existing thermal literal/restart/rejection focused checks",
+    "short original Andelst preservation against actual baseline",
+    "four fail-closed source/restart controls",
+    "source ownership successor and capsule integrity"
+  ],
+  "not_selected": {
+    "long_Andelst_stall": "Explicit user exclusion; no new common cause.",
+    "full_fci": "No full broad campaign selected; automatic CI recorded independently.",
+    "low_air": "No relevant physical law or low-air policy change."
+  },
+  "qualification_limits": [
+    "Only original pre-emergence120/1096days; crop rotation not executed.",
+    "Water/solute balance and restart qualified; energy and exact431equivalence not qualified.",
+    "Historical DATAQUAL10 runs remain historical on changed backend; no unexecuted preservation PASS."
+  ],
+  "source_owner": "Existing shared physical runtime, staged joint water/heat/solute owner, committed restart adapter; no shadow physics.",
+  "costs": {
+    "thermal_compile_seconds": 329.9315314939995,
+    "thermal_native_seconds": 4.6729044370113115,
+    "thermal_selection_justification": "Shared heat/restart composition changes require existing discriminating literal and rejected-trial checks; no long physical stress run."
+  }
+}

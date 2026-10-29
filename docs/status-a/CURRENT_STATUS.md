@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+DATAQUAL12 experimentally executes the unchanged original Hupsel pre-emergence
+prefix for120days with direct PM, Black evaporation, Hooghoudt IPOS2, numeric
+heat, positive irrigation solute and original zero-flux SWBOTB6. O0/O2 endpoints
+and split/restart payloads are exact. Water/solute balances qualify this bounded
+scope; energy, dynamic crop rotation and full1096-day equivalence do not.
+The compact authority is `integration/dataqual12/STATUS.json`, `RESULT.json`,
+`MIGRATION_MATRIX.json` and `integration/audits/verify_dataqual12_current.py`.
+Canonical admission requires an actual merge receipt. Historical DATAQUAL10
+counts remain separate; bounded original-project water coverage grows from1/3
+to2/3, while complete original-project migration remains0/3.
+
 DATAQUAL10 implements fixed-geometry shared-stock exchange linearization for
 explicit experimental conservative storage. The accepted physical rates remain
 unchanged. The sibling provider returns diagonal and low-rank factors from one
