@@ -1,0 +1,38 @@
+{
+  "status": "PASS_FORCING_ONLY",
+  "original_meteo_source_sha256": "5a095c16ec82fa544f7dd20ba568ba3a2b72906bff7dd3505af16e6722d86822",
+  "distribution_sha256": "2b48353db6cdf00246a1e5c0dcaafc2c61858729fad18446a1dc66359ec2a360",
+  "original_statements": [
+    "rtim = all_wet(i)",
+    "rainflx(rain_rec) = all_rain(i) * 0.1d0 / rtim"
+  ],
+  "results": [
+    {
+      "optimization": "O0",
+      "days": 1827,
+      "wet_days": 951,
+      "events": 2778,
+      "rain_cm": 410.1099999999988,
+      "maximum_daily_depth_error_cm": 2.584488179024902e-12,
+      "output_sha256": "40b9eae87772bcf8edfe0608e44a3d262eefbd3911615bda6a60d2889d9f5fde"
+    },
+    {
+      "optimization": "O2",
+      "days": 1827,
+      "wet_days": 951,
+      "events": 2778,
+      "rain_cm": 410.1099999999988,
+      "maximum_daily_depth_error_cm": 2.584488179024902e-12,
+      "output_sha256": "40b9eae87772bcf8edfe0608e44a3d262eefbd3911615bda6a60d2889d9f5fde"
+    }
+  ],
+  "dependencies": {
+    "src/process/mod_daily_rain_duration.f90": "6c957b9802332932a6953b63237e7aa3ffd42933151f49d926c78e04cbaf7a24",
+    "app/solute_project/prepare_rain_duration.f90": "7d66aabeaab8eb3a2211c5d771e577030c841a39e051cfdbf54b5ea5f9f4c5f3",
+    "tests/dataqual11/qualify_original_rain.py": "e951503f389e90cbacc2ecde5dee2faccf925236d422b2e0ee44cc76aeccab1b"
+  },
+  "full_model_executed": false,
+  "water_balance_qualified": false,
+  "solute_balance_qualified": false,
+  "restart_qualified": false
+}

@@ -1,0 +1,30 @@
+# Controlfile:  plotting SWAP results
+#________________________________________________
+#
+
+# SWAP simulation
+FILSWP                              ./swap.swp                            # Path to main inputfile of SWAP (*.swp)
+
+# figure setup
+FILPNG                              ./output.png                          # Path to figure (*.png) 
+GRAPH                               rain, cropdev_hrv, tred               # SWAP variables to plot
+WIDTH                               10                                    # Width of figure
+HEIGHT                              14                                    # Height of figure
+
+# period (default: simulation period)
+TSTART                              1980-01-01                            # Start of plot
+TEND                                1984-12-31                            # End of plot
+
+# observations
+DIROBS                              ./observed                            # Path to observations
+STATS                               rmse                                  # Index model performance (options: 'rpearson', 'syserr', 'rnderr', 'sse', 'mse', 'rmse', 'mae', 'ioa' or 'nse')
+
+# level of aggregation  (options: 'year', 'month', 'decade' or 'day')
+RAIN_AGGREGATE                      decade                                # Aggregation level of rain graph
+TRED_AGGREGATE                      decade                                # Aggregation level of tred graph
+
+# language
+LANGUAGE                            EN                                    # Language of labels (options 'NL' or 'EN')
+
+# meta-information
+CREATE_META                         No                                    # Export of graph data

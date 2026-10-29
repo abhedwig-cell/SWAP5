@@ -1,0 +1,433 @@
+**********************************************************************************
+* Contents: SWAP 4 - Crop data (dynamic crop growth)
+**********************************************************************************
+* Comment area:
+* Testbank of SWAP: build with template of crp-file
+*
+**********************************************************************************
+
+*** PLANT GROWTH SECTION ***
+
+**********************************************************************************
+* Part 1: Crop development
+
+* Switch for type of WOFOST crop development (default SWWOFOST=1):
+  SWWOFOST = 3               ! 1 = WOFOST
+                             ! 2 = WOFOST soybeans
+                             ! 3 = WOFOST grass
+
+* In case of WOFOST grass (SWWOFOST=3), specify:
+* Switch to indicate start of grass growth:
+  SWTSUM = 1                 ! 0 = No delay
+                             ! 1 = Start based on sum air temperatures > 200 degrees C
+                             ! 2 = Start based on soil temperature at specific depth
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Crop factor or crop height
+
+* Choose between crop factor and crop height
+* Choose crop factor if ETref is used, either from meteo input file (SWETR=1) or with Penman-Monteith
+* Choose crop height if Penman-Monteith should be used with actual crop height, albedo and canopy resistance
+  SWCF = 2                   ! 1 = Crop factor 
+                             ! 2 = Crop height
+
+* If SWCF=2, list crop height [0..1.d4 cm, R], as function of development stage [0..2 -, R]:
+  CHTB =
+ 0.0 12.0
+ 2.0 12.0
+* End of table
+
+* If SWCF=2, in addition to crop height list crop specific values for:
+  ALBEDO = 0.23              ! Crop reflection coefficient [0..1.0 -, R]                    
+  RSC = 79.1                 ! Minimum canopy resistance [0..1d6 s/m, R]
+  RSW = 0.0                  ! Canopy resistance of intercepted water [0..1d6 s/m, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3: Initial values
+
+  TDWI = 875.0               ! Initial total crop dry weight [0..10000 kg/ha, R]
+  RGRLAI = 0.007             ! Maximum relative increase in LAI [0..1 m2/m2/d, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 4: Green surface area
+
+  SPA = 0.0                  ! Specific pod area [0..1 ha/kg, R]
+  SSA = 0.0004               ! Specific stem area [0..1 ha/kg, R]
+  SPAN = 30.0                ! Life span under leaves under optimum conditions [0..366 d, R]
+  TBASE = 0.0                ! Lower threshold temperature for ageing of leaves [-10..30 degrees C, R]
+
+* List specific leaf area [0..1 ha/kg, R] as function of crop development stage [0..2 -, R]
+*   DVS  SLA
+  SLATB =
+ 0.0000000 0.0015
+ 0.4371585 0.0015
+ 0.9836066 0.0020
+ 2.0000000 0.0020
+* End of table 
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 5: Assimilation
+
+  KDIF = 0.6                 ! Extinction coefficient for diffuse visible light [0..2 -, R]
+  KDIR = 0.75                ! Extinction coefficient for direct visible light  [0..2 -, R]
+  EFF = 0.5                  ! Light use efficiency for real leaf [0..10 kg/ha/hr/(Jm2s), R]
+  CFRDM = 0.45               ! Carbon fraction in dry matter (default = 0.4) [0..1 kg C/kg MD, R]
+
+* List maximum CO2 assimilation rate [0..100 kg/ha/hr, R] as function of development stage [0..2 -, R]
+*   DVS  AMAX
+  AMAXTB =
+ 0.0000000 40.0
+ 0.5191257 40.0
+ 1.0928962 35.0
+ 1.5027322 25.0
+ 2.0000000 25.0
+* End of table 
+
+* List reduction factor of AMAX [-, R] as function of average day temperature [-10..50 degrees C, R]
+*   TAVD  TMPF
+  TMPFTB =
+  0.0 0.0
+  5.0 0.7
+ 15.0 1.0
+ 25.0 1.0
+ 40.0 0.0
+* End of table 
+
+* List reduction factor of AMAX [-, R] as function of minimum day temperature [-10..50 degrees C, R]
+*   TMNR  TMNF
+  TMNFTB =
+ 0.0 0.0
+ 4.0 1.0
+* End of table 
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 6: Conversion of assimilates into biomass
+
+  CVR = 0.694                ! Efficiency of conversion into roots [0..1 kg/kg, R]
+  CVS = 0.662                ! Efficiency of conversion into stems [0..1 kg/kg, R]
+  CVL = 0.685                ! Efficiency of conversion into leaves [0..1 kg/kg, R]
+  CVO = 0.0                  ! Efficiency of conversion into storage organs [0..1 kg/kg, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 7: Maintenance respiration
+
+  Q10 = 2.0                  ! Increase in respiration rate with temperature  [0..5 /10 degrees C, R]
+  RML = 0.03                 ! Maintenance respiration rate of leaves [0..1 kgCH2O/kg/d, R]
+  RMO = 0.0                  ! Maintenance respiration rate of storage organs [0..1 kgCH2O/kg/d, R]
+  RMR = 0.015                ! Maintenance respiration rate of roots [0..1 kgCH2O/kg/d, R]
+  RMS = 0.015                ! Maintenance respiration rate of stems [0..1 kgCH2O/kg/d, R]
+
+* List reduction factor of senescence [-, R] as function of development stage [0..2 -, R]
+*   DVS  RFSE
+  RFSETB = 
+ 0.0 1.0
+ 2.0 1.0
+* End of table 
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 8: Partitioning
+
+* List fraction of total dry matter increase partitioned to the roots [kg/kg, R]
+* as function of development stage [0..2 -, R]
+*   DVS  FR
+  FRTB = 
+ 0.0 0.2
+ 2.0 0.2
+* End of table 
+
+* List fraction of total above ground dry matter increase partitioned to the leaves [kg/kg, R]
+* as function of development stage [0..2 -, R]
+*   DVS  FL
+  FLTB = 
+ 0.0 0.6
+ 2.0 0.6
+* End of table 
+
+* List fraction of total above ground dry matter increase partitioned to the stems [kg/kg, R]
+* as function of development stage [0..2 -, R]
+*   DVS  FS
+  FSTB = 
+ 0.0 0.4
+ 2.0 0.4
+* End of table 
+
+* List fraction of total above ground dry matter increase partitioned to the storage organs [kg/kg, R]
+* as function of development stage [0..2 -, R]
+*   DVS  FO
+  FOTB = 
+ 0.0 0.0
+ 2.0 0.0
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 9: Death rates
+
+  PERDL = 0.05               ! Maximum relative death rate of leaves due to water stress [0..3 /d, R]
+
+* List relative death rates of roots [kg/kg/d] as function of development stage [0..2 -, R]
+*   DVS  RDRR
+  RDRRTB = 
+ 0.0000000 0.00
+ 0.9836066 0.02
+ 2.0000000 0.02
+* End of table
+
+* List relative death rates of stems [kg/kg/d] as function of development stage [0..2 -, R]
+*   DVS  RDRS
+  RDRSTB = 
+ 0.0000000 0.00
+ 0.9836066 0.02
+ 2.0000000 0.02
+* End of table
+
+**********************************************************************************
+
+*** ROOT GROWTH SECTION ***
+
+**********************************************************************************
+
+* Switch development of root depth
+  SWRD = 2                   ! 1 = Root depth depends on development stage
+                             ! 2 = Root depth depends on maximum daily increase
+                             ! 3 = Root depth depends on available root biomass
+
+* If case of dependency maximum daily increase (SWRD=2), specify:
+  RDI = 20.0                 ! Initial rooting depth [0..1000 cm, R]
+  RRI = 1.0                  ! Maximum daily increase in rooting depth [0..100 cm/d, R]
+  RDC = 30.0                 ! Maximum rooting depth of particular crop [0..1000 cm, R]
+
+* Switch for calculation rooting depth:
+  SWDMI2RD = 1               ! 0 = Rooting depth increase is related to availability assimilates for roots
+                             ! 1 = Rooting depth increase is related to relative dry matter increase
+                             ! 2 = Rooting depth increase is related to drought stress
+
+* Always specify:
+* Switch for calculation of relative root density (default SWRDC=0):
+  SWRDC = 0                  ! 0 = Root density is not modified
+                             ! 1 = Root density is modified based on root water extraction
+
+* List relative root density distribution [0..1 -, R] as function of relative rooting depth [0..1 -, R].
+* This defines the shape of the root distribution, for example, uniform, linear or exponential.
+*   RRD  RDENS
+  RDCTB =
+ 0.0 1.0
+ 1.0 0.0
+* End of table
+
+* In case of SWDROUGHT=2 or SWDROUGHT=3 or SWOXYGEN=2, specify:
+  SRL = 383571.0             ! Specific root length [0.0..1.d10 m root/kg root, R]
+  ROOTRADIUS = 0.0075        ! Root radius [1d-4..1 cm, R]
+
+**********************************************************************************
+
+*** STRESS FACTORS SECTION ***
+
+**********************************************************************************
+* Part 1: Drought stress
+  
+* Switch for drought stress:
+  SWDROUGHT = 1              ! 1 = Drought stress according to Feddes et al. (1978)
+                             ! 2 = Drought stress according to De Jong van Lier et al. (2013)
+                             ! 3 = Drought stress according to De Willigen et al. (2012)
+
+* If SWDROUGHT=1, or in case of irrigation scheduling (SCHEDULE=1), specify:
+  HLIM3H = -200.0            ! Pressure head below which water uptake reduction starts at high Tpot [-1d4..100 cm, R]
+  HLIM3L = -800.0            ! Pressure head below which water uptake reduction starts at low Tpot [-1d4..100 cm, R]
+  HLIM4 = -8000.0            ! No water extraction at lower soil water pressure heads [-1.6d4..100 cm, R]
+  ADCRH = 0.5                ! Level of high atmospheric demand, corresponding to HLIM3H [0..5 cm/d, R]
+  ADCRL = 0.1                ! Level of low atmospheric demand, corresponding to HLIM3L [0..5 cm/d, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Oxygen stress
+
+* Switch for oxygen stress:
+  SWOXYGEN = 2               ! 0 = No oxygen stress
+                             ! 1 = Oxygen stress according to Feddes et al. (1978)
+                             ! 2 = Oxygen stress according to Bartholomeus et al. (2008)
+
+* Switch for checking aerobic conditions in root zone to stop root(zone) development
+  SWWRTNONOX = 1             ! 0 = Do not check for aerobic conditions
+                             ! 1 = Check for aerobic conditions
+
+  AERATECRIT = 0.5           ! Threshold to stop root extension in case of oxygenstress; 0.0 maximum oxygen stress [0.0001..1.0 -, R]
+
+* If SWOXYGEN=2, specify:
+  Q10_MICROBIAL = 2.8        ! Relative increase in microbial respiration at temperature increase of 10 degrees C [1.0..4.0 -, R]
+  SPECIFIC_RESP_HUMUS = 0.0016 ! Respiration rate of humus at 25 degrees C [0.0..1.0 kg O2/kg degrees C/d, R] 
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3: Salinity stress
+
+* Switch salinity stress
+  SWSALINITY = 0             ! 0 = No salinity stress
+                             ! 1 = Maas and Hoffman reduction function
+
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 4: Compensation of root water uptake stress
+
+* Switch for compensation root water uptake stress
+  SWCOMPENSATE = 0           ! 0 = No compensation
+                             ! 1 = Compensation according to Jarvis (1989)
+                             ! 2 = Compensation according to Walsum (2019)
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 5: Pests, diseases or nutrients
+ 
+* Switch for calculation of potential yield
+  SWPOTRELMF = 2             ! 1 = Theoretical potential yield
+                             ! 2 = Attainable yield
+
+* In case of pest, diseases or nutrients, specify:
+  RELMF = 0.7                ! Relative management factor to reduce theoretical potential yield to attainable yield [0..1 -, R]
+
+**********************************************************************************
+
+*** INTERCEPTION SECTION ***
+
+**********************************************************************************
+
+* Switch for rainfall interception method:
+  SWINTER = 1                ! 0 = No interception calculated
+                             ! 1 = Agricultural crops, daily precipitation (Von Hoyningen-Hune and Braden)
+                             ! 2 = Trees and forests, daily precipitation (Gash)
+                             ! 3 = All vegetation, detailed precipitation (Rutter)
+
+* In case of agricultural crops (SWINTER=1) specify:
+  COFAB = 0.50               ! Interception coefficient, corresponding to maximum interception amount [0..1 cm, R]
+
+**********************************************************************************
+
+*** CO2 SECTION ***
+
+**********************************************************************************
+
+* Switch for assimilation correction due to CO2 impact
+  SWCO2 = 0                  ! 0 = No CO2 assimilation correction
+                             ! 1 = CO2 assimilation correction
+
+
+**********************************************************************************
+
+*** GRASSLAND MANAGEMENT SECTION ***
+
+**********************************************************************************
+* Part 1: General
+
+* Define sequence of periods with Grazing (= 1), Mowing (= 2) and Grazing with dewooling (=3) within calender year
+* Make sure you have enough periods; last period should continue until the end of the year
+  SEQGRZMOW = 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2
+
+* Switch for timing harvest, either for mowing or grazing
+  SWHARVEST = 2              ! 1 = Use dry matter threshold
+                             ! 2 = Use fixed dates
+
+* In case of fixed dates (SWHARVEST=2), specify harvest dates (maximum 999):
+  DATEHARVEST =
+  1980-05-06
+  1980-05-28
+  1980-06-24
+  1980-07-24
+  1980-08-19
+  1980-09-17
+  1980-10-23
+  1981-04-14
+  1981-05-19
+  1981-06-16
+  1981-07-14
+  1981-08-05
+  1981-09-08
+  1981-10-28
+  1982-05-11
+  1982-06-01
+  1982-07-06
+  1982-08-10
+  1982-10-13
+  1983-05-19
+  1983-06-15
+  1983-07-13
+  1983-08-17
+  1983-10-28
+  1984-05-15
+  1984-06-07
+  1984-07-05
+  1984-08-02
+  1984-09-11
+  1984-11-07
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Grazing settings (this part is valid when SEQGRZMOW(i)=1 or SEQGRZMOW(i)=3)
+
+* In case of grazing specify:
+  DMRESTGRZ = 700.0          ! Minimum amount of above ground DM after grazing [0..5000 kg DM/ha, R]
+
+* In case of grazing with dewooling (SEQGRAZMOW(i)=3), specify:
+  DMRESTDEW = 850.0          ! Remaining yield above ground after dewooling event [0..5000 kg DM/ha, R]
+
+* Grazing event settings:
+  DAYGRZ = 4                 ! Maximum days of grazing [1..366 d, I]
+  UPTGRZ = 340.0             ! Daily dry matter uptake by grazing [0..2500 kg/ha DM, R]
+  LOSSGRZ = 85.0             ! Daily dry matter loss during grazing due to droppings and treading [0..2500 kg/ha DM, R]
+
+* Switch for extra losses due to insufficient pressure head during grazing:
+  SWLOSSGRZ = 0              ! 0 = No losses
+                             ! 1 = Losses due to treading
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3: Mowing settings (this part is valid when SEQGRAZMOW(i)=2)
+
+* In case of mowing always specify:
+  DMRESTMOW = 700.0          ! Remaining yield above ground after mowing event [0..5000 kg DM/ha, R]
+
+* Switch for extra losses due to insufficient pressure head during mowing:
+  SWLOSSMOW = 0              ! 0 = No losses
+                             ! 1 = Losses due to work-ability
+
+* Relation between dry matter harvest [0..3d5 kg/ha, R] and days of delay in regrowth [0..366 d, I] after mowing
+  DELAYMOWTB =
+    0.0 2.0
+ 3000.0 3.0
+ 5000.0 4.0
+* End of table
+
+**********************************************************************************
+
+*** IRRIGATION SCHEDULING SECTION ***
+
+**********************************************************************************
+* Part 1: General
+
+  SCHEDULE = 0               ! Switch for application irrigation scheduling [Y=1, N=0] 
+
+**********************************************************************************
+
+* End of .crp file

@@ -1,0 +1,26 @@
+{
+  "work_unit": "DATAQUAL11",
+  "baseline": "61f723911c1936fd1860947053857eb7b7b9a84b",
+  "scope": "New isolated source forcing process and input adapters only; no existing production provider or application postimage changed.",
+  "selected": [
+    "O0/O2 checked original 1827-day forcing source oracle",
+    "O0/O2 invalid-input process contract",
+    "O0/O2 exact original project TTUTIL inspection",
+    "bounded actual original project attempts",
+    "new batch wrapper real execution"
+  ],
+  "not_selected": {
+    "full_fci": "No existing solver/runtime/transaction or accepted process changed.",
+    "low_air": "No affected low-air dependency.",
+    "existing_Andelst_long_stall": "Explicit user exclusion; no new common defect identified."
+  },
+  "evidence_sha256": "583e54c750d4978e04b130610872c128a3680bfa0645732a55d17bfe45f46e25",
+  "source_files": {
+    "src/process/mod_daily_rain_duration.f90": "6c957b9802332932a6953b63237e7aa3ffd42933151f49d926c78e04cbaf7a24",
+    "app/solute_project/prepare_rain_duration.f90": "7d66aabeaab8eb3a2211c5d771e577030c841a39e051cfdbf54b5ea5f9f4c5f3",
+    "app/solute_project/inspect_historical.f90": "ef5e0f7e04806d63b4751e856b4f5b24dff48ca1954b578daee10ba158e84e9c",
+    "tools/solute/run_historical_projects.py": "6d0438294f1197420119baa15b95c774325e727133ad4c3c5fff8f4d99b84539",
+    "tests/dataqual11/test_rain_duration.f90": "e05a8dea35d5ef05530df5db806310a426cb92cb137d13774516c049f5773d00",
+    "tests/dataqual11/qualify_original_rain.py": "e951503f389e90cbacc2ecde5dee2faccf925236d422b2e0ee44cc76aeccab1b"
+  }
+}

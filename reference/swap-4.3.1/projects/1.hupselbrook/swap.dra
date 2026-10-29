@@ -1,0 +1,251 @@
+**********************************************************************************
+* Filename: swap.dra                  
+* Contents: SWAP 4 - Input data for basic drainage
+**********************************************************************************
+* Comment area:
+* Testbank of SWAP: build with template of dra-file
+*
+**********************************************************************************
+
+*** BASIC DRAINAGE SECTION ***
+
+**********************************************************************************
+* Part 0: General
+
+* Switch, method of lateral drainage calculation:
+  DRAMET = 2                 ! 1 = Use table of drainage flux - groundwater level relation
+                             ! 2 = Use drainage formula of Hooghoudt or Ernst
+                             ! 3 = Use drainage/infiltration resistance, multi-level if needed
+
+  SWDIVD = 1                 ! Calculate vertical distribution of drainage flux in groundwater [Y=1, N=0]
+
+* If SWDIVD = 1, specify anisotropy factor COFANI (horizontal/vertical saturated hydraulic
+* conductivity) for each soil layer (maximum MAHO), [0.0001..1000 -, R]:
+  COFANI = 1.0 1.0
+
+* Apply alternative vertical distribution of infiltration flux compared to drainage flux [Y=1, N=0]
+  SWDIVDINF = 0              ! 0 = no alternative distribution of infiltration flux
+                             ! 1 = alternative distribution of infiltration flux
+
+* If SWDIVDINF = 1, specify reduction of depth of the infiltration layer, as fraction of maximum discharge layer depth:
+  FACDPTHINF = 1.0           ! Factor to reduce depth of infiltration layer [0.0..1.0 -, R]
+
+* Switch to adjust upper boundary of discharge layers
+  SWDISLAY = 0               ! 0 = No adjustment
+                             ! 1 = Adjustment based on given minimum depth
+                             ! 2 = Adjustment based on given factor
+
+* If SWDISLAY = 1, specify for each of the drainage systems (1:NRLEVS):
+* SWTOPDISLAY = Adjust top of discharge layer for each drain level [Y=1, N=0]
+* ZTOPDISLAY = Shallowest depth of top of model discharge layer for each drain level [-10000.0..0.0, cm, R]
+
+ SWTOPDISLAY ZTOPDISLAY
+           1    -200.00
+           0      -0.01
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 1: Table of drainage flux - groundwater level relation (DRAMET = 1)
+
+* If SWDIVD = 1, specify the drain spacing:
+  LM1 = 30.0                 ! Drain spacing, [1..1000 m, R]
+
+* Specify drainage flux QDRAIN [-100..1000 cm/d, R] as function of groundwater level GWL [-1000.0..10.0 cm, R]
+* negative GWL is below soil surface; start with highest groundwater level; maximum of 25 records:
+
+    GWL QDRAIN
+  -20.0    0.5
+ -100.0    0.1
+* End of table                                             
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 2: Drainage formula of Hooghoudt or Ernst (DRAMET = 2)
+*
+* Drain characteristics:
+  LM2 = 11.0                 ! Drain spacing, [1..1000 m, R]
+  SHAPE = 0.8                ! Shape factor to account for actual location between drain and water divide [0.0..1.0 -, R]
+  WETPER = 30.0              ! Wet perimeter of the drain, [0..1000 cm, R]
+  ZBOTDR = -80.0             ! Level of drain bottom, [-1000..0 cm, R, neg. below soil surface]
+  ENTRES = 20.0              ! Drain entry resistance, [0..1000 d, R]
+
+* Soil profile characteristics:
+
+* Position of drain:  
+  IPOS = 2                   ! 1 = On top of an impervious layer in a homogeneous profile          
+                             ! 2 = Above an impervious layer in a homogeneous profile              
+                             ! 3 = At the interface of a fine upper and a coarse lower soil layer
+                             ! 4 = In the lower, more coarse soil layer
+                             ! 5 = In the upper, more fine soil layer                                             
+
+* For all positions specify:
+  BASEGW = -200.0            ! Level of impervious layer, [-1d4..0 cm, R]
+  KHTOP = 25.0               ! Horizontal hydraulic conductivity top layer, [0..1000 cm/d, R]
+
+* In addition, specify:
+  KHBOT = 10.0               ! horizontal hydraulic conductivity bottom layer, [0..1000 cm/d, R]
+  ZINTF = -150.0             ! Level of interface of fine and coarse soil layer, [-1d4..0 cm, R]
+  KVTOP = 5.0                ! Vertical hydraulic conductivity top layer, [0..1000 cm/d, R]
+  KVBOT = 10.0               ! Vertical hydraulic conductivity bottom layer, [0..1000 cm/d, R]
+  GEOFAC = 4.8               ! Geometry factor of Ernst,  [0..100 -, R]
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3: Drainage and infiltration resistance (DRAMET = 3)
+
+  NRLEVS = 2                 ! Number of drainage levels, [1..5, I]
+
+* Option for interflow in highest (level NRLEVS) drainage level (shallow system with short residence time)
+  SWINTFL = 0                ! Switch for interflow [Y=1, N=0]
+
+* If SWINTFL = 1, specify:
+  COFINTFLB = 0.5            ! Coefficient for interflow relation  [0.01..10.0 d, R]
+  EXPINTFLB = 1.0            ! Exponent for interflow relation  [0.1..1.0 -, R]
+
+* Option to adjust discharge layers following interflow layer definition. In case of SWTOPNRSRF = 1, 
+* the bottom of the highest order drainage system (ZBOTDR(NRLEVS)) represents the maximum depth of the interflow discharge layer,
+* and minimum depth for the other discharge layers.
+  SWTOPNRSRF = 0             ! Switch to enable adjustment of model discharge layer [0,1, I] 
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3a: Drainage to level 1
+
+  DRARES1 = 100.0            ! Drainage resistance, [1..1d5 d, R]
+  INFRES1 = 100.0            ! Infiltration resistance, [0..1d5 d, R]
+
+* Switch, for allowance drainage/infiltration:
+  SWALLO1 = 1                ! 1 = Drainage and infiltration are both allowed
+                             ! 2 = Drainage is not allowed
+                             ! 3 = Infiltration is not allowed                          
+
+* If SWDIVD = 1 (drainage flux vertically distributed), specify the drain spacing:
+  L1 = 20.0                  ! Drain spacing, [1..100000 m, R]
+
+  ZBOTDR1 = -90.0            ! Level of drainage medium bottom, [-10000..0 cm, R]
+  SWDTYP1 = 2                ! Type of drainage medium: 1 = drain tube, 2 = open channel
+
+* Specify date DATOWL1 [YYYY-MM-DD] and channel water level LEVEL1 [-10000..200, cm, R]
+* LEVEL1 is negative if below soil surface; maximum MAOWL records:
+
+    DATOWL1 LEVEL1
+ 2002-01-12  -90.0
+ 2002-12-14  -90.0
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3b: Drainage to level 2
+
+  DRARES2 = 100.0            ! Drainage resistance, [1..1d5 d, R]
+  INFRES2 = 100.0            ! Infiltration resistance, [0..1d5 d, R]
+
+* Switch, for allowance drainage/infiltration:
+  SWALLO2 = 1                ! 1 = Drainage and infiltration are both allowed
+                             ! 2 = Drainage is not allowed
+                             ! 3 = Infiltration is not allowed                          
+
+* If SWDIVD = 1 (drainage flux vertically distributed), specify the drain spacing:
+  L2 = 20.0                  ! Drain spacing, [1..100000 m, R]
+
+  ZBOTDR2 = -90.0            ! Level of drainage medium bottom, [-10000..0 cm, R]
+  SWDTYP2 = 2                ! Type of drainage medium: 1 = drain tube, 2 = open channel
+
+* Specify date DATOWL2 [YYYY-MM-DD] and channel water level LEVEL2 [-10000..200, cm, R]
+* LEVEL2 is negative if below soil surface; maximum MAOWL records:
+
+    DATOWL2 LEVEL2
+ 2002-01-12  -90.0
+ 2002-12-14  -90.0
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3c: Drainage to level 3
+
+  DRARES3 = 100.0            ! Drainage resistance, [1..1d5 d, R]
+  INFRES3 = 100.0            ! Infiltration resistance, [0..1d5 d, R]
+
+* Switch, for allowance drainage/infiltration:
+  SWALLO3 = 1                ! 1 = Drainage and infiltration are both allowed
+                             ! 2 = Drainage is not allowed
+                             ! 3 = Infiltration is not allowed                          
+
+* If SWDIVD = 1 (drainage flux vertically distributed), specify the drain spacing:
+  L3 = 20.0                  ! Drain spacing, [1..100000 m, R]
+
+  ZBOTDR3 = -90.0            ! Level of drainage medium bottom, [-10000..0 cm, R]
+  SWDTYP3 = 2                ! Type of drainage medium: 1 = drain tube, 2 = open channel
+
+* Specify date DATOWL3 [YYYY-MM-DD] and channel water level LEVEL3 [-10000..200, cm, R]
+* LEVEL3 is negative if below soil surface; maximum MAOWL records:
+
+    DATOWL3 LEVEL3
+ 2002-01-12  -90.0
+ 2002-12-14  -90.0
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3d: Drainage to level 4
+
+  DRARES4 = 100.0            ! Drainage resistance, [1..1d5 d, R]
+  INFRES4 = 100.0            ! Infiltration resistance, [0..1d5 d, R]
+
+* Switch, for allowance drainage/infiltration:
+  SWALLO4 = 1                ! 1 = Drainage and infiltration are both allowed
+                             ! 2 = Drainage is not allowed
+                             ! 3 = Infiltration is not allowed                          
+
+* If SWDIVD = 1 (drainage flux vertically distributed), specify the drain spacing:
+  L4 = 20.0                  ! Drain spacing, [1..100000 m, R]
+
+  ZBOTDR4 = -90.0            ! Level of drainage medium bottom, [-10000..0 cm, R]
+  SWDTYP4 = 2                ! Type of drainage medium: 1 = drain tube, 2 = open channel
+
+* Specify date DATOWL4 [YYYY-MM-DD] and channel water level LEVEL4 [-10000..200, cm, R]
+* LEVEL4 is negative if below soil surface; maximum MAOWL records:
+
+    DATOWL4 LEVEL4
+ 2002-01-12  -90.0
+ 2002-12-14  -90.0
+* End of table
+
+**********************************************************************************
+
+**********************************************************************************
+* Part 3e: Drainage to level 5
+
+  DRARES5 = 100.0            ! Drainage resistance, [1..1d5 d, R]
+  INFRES5 = 100.0            ! Infiltration resistance, [0..1d5 d, R]
+
+* Switch, for allowance drainage/infiltration:
+  SWALLO5 = 1                ! 1 = Drainage and infiltration are both allowed
+                             ! 2 = Drainage is not allowed
+                             ! 3 = Infiltration is not allowed                          
+
+* If SWDIVD = 1 (drainage flux vertically distributed), specify the drain spacing:
+  L5 = 20.0                  ! Drain spacing, [1..100000 m, R]
+
+  ZBOTDR5 = -90.0            ! Level of drainage medium bottom, [-10000..0 cm, R]
+  SWDTYP5 = 2                ! Type of drainage medium: 1 = drain tube, 2 = open channel
+
+* Specify date DATOWL5 [YYYY-MM-DD] and channel water level LEVEL5 [-10000..200, cm, R]
+* LEVEL5 is negative if below soil surface; maximum MAOWL records:
+
+    DATOWL5 LEVEL5
+ 2002-01-12  -90.0
+ 2002-12-14  -90.0
+* End of table
+
+**********************************************************************************
+
+* End of .dra file           !

@@ -1,0 +1,26 @@
+# Controlfile:  plotting SWAP results
+#________________________________________________
+#
+
+# SWAP simulation
+FILSWP                              {{DIRRUN}}/run_{{run_id}}/swap.swp    # Path to main inputfile of SWAP (*.swp)
+
+# figure setup
+FILPNG                              {{DIROUT}}/output_{{run_id}}.png      # Path to figure (*.png) 
+GRAPH                               cropdev_wso, s_conc[-5.00], s_conc[-25.0], s_conc[-55.0] # SWAP variables to plot
+WIDTH                               10                                    # Width of figure
+HEIGHT                              14                                    # Height of figure
+
+# period (default: simulation period)
+TSTART                              2012-01-01                            # Start of plot
+TEND                                2015-12-31                            # End of plot
+
+# observations
+DIROBS                              ./tools/observed/{{label_id}}         # Path to observations
+STATS                               rmse                                  # Index model performance (options: 'rpearson', 'syserr', 'rnderr', 'sse', 'mse', 'rmse', 'mae', 'ioa' or 'nse')
+
+# language
+LANGUAGE                            EN                                    # Language of labels (options 'NL' or 'EN')
+
+# meta-information
+CREATE_META                         No                                    # Export of graph data
