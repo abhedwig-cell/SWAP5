@@ -63,6 +63,10 @@ def validate(f):
  for opt in ['O0','O2']:
   build=js('build/'+opt+'/bundle.json')
   assert build['physical_build']['provider_count']==194
+  column=json.loads((ROOT/('integration/dataqual09/BUILD_'+opt+'.json')).read_bytes())
+  assert column['provider_count']==194 and '-fcheck=all'in column['flags']
+  assert sha(f['recovery/native-'+opt])==column['executable_sha256']==build['executable_sha256'][build['exe']]
+  for p,h in column['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h,p
   for p,h in build['physical_build']['input_sha256'].items():assert sha((ROOT/p).read_bytes())==h,p
   for r in js(opt+'/RESULT.json'):
    results.append(r)

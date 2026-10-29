@@ -31,7 +31,9 @@
   "postimages": {
     "app/solute_project/main_water.f90": "9f27aa7263563905071462db2cb86ed6f7cf8476bc18414f839e9c563c8d4f65",
     "integration/audits/verify_dataqual07_current.py": "f0c588836803006823d8d4c0064956316561edee1dfd834bb848a6fe6ee14764",
-    "integration/audits/verify_dataqual09_current.py": "bb87ff2086b817536dc9d89bf4ae353f8b3b007357b0cca49b1b081e40334af9",
+    "integration/audits/verify_dataqual09_current.py": "4a8c377180d7ee2213a1ba300957f6a1e595e9f1262a76c1aff198a73cb07bc8",
+    "integration/dataqual09/BUILD_O0.json": "40367e59fd8eae089e02cf93ad0795ddcbcfcf14fefbff735c2eda0e7949551f",
+    "integration/dataqual09/BUILD_O2.json": "aadea5ae514fa663a964621d213367a382a10b16658234bc17987d4a26a6f3d7",
     "integration/dataqual09/CAPSULE.json": "b45ae8cc51ffa1f028de7c5b148354cb3ee3a858c409d8bb065c12de9c99b60e",
     "integration/dataqual09/RESULT.json": "41f91f15ebaecf8ff220cecaa4e5e8a4f2c3f4784dcdee5f4fcbe7204251bd58",
     "integration/dataqual09/cases.json": "4e71cfc1e659056afd9ddfbf248eedb93a23a6eb3f087da0881d56ed9899c904",
@@ -42,5 +44,5 @@
     "src/runtime/mod_macropore_single_column_runtime.f90": "c8ebc71e10736e823d7cbed8d7b7e0d2771e261440ff6dcbe766cfaf1886b015",
     "tools/solute/run_native_water.py": "32b6e3bf536c69f45acee03d9a8182b446ac29523e2b7c074dc9e33548b11b9c"
   },
-  "qualification": "diagnostic-only Fortran option,three exact pairs;source-bound inherited water qualification and one new wet prefix;12 corrupt-source and6 direct guards"
+  "qualification": "diagnostic-only Fortran option,three exact pairs;source-bound full native compile/link closure and inherited water qualification;one new wet prefix;14 corrupt-source and6 direct guards"
 }
