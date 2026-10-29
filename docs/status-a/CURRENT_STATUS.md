@@ -1,5 +1,20 @@
 # SWAP5 Status-A current status
 
+DATAQUAL09 adds explicit experimental `--quiet-macro-stages`, preserving the
+runtime policy default and all accepted physical/balance/trace diagnostics.
+Five text-stage writes become optional; no solver or physical process changes.
+Three completed native loud/quiet pairs preserve all seven files exactly;
+O0/O2 and loud-prefix/quiet-suffix restart identity pass. Both existing two-day
+routes preserve six predecessor streams and physical restart payload.
+The large O0 pair remains censored in both modes. Text output falls from22865
+or114215 lines to5; measured timing establishes no speedup. A new own-checkpoint
+wet prefix extends1.4425 to1.626days, adding0.1835 deduplicated days:94.3595 total,
+151 variants started,83 water-qualified. This gain is staged execution, not a
+causal diagnostic-policy speed gain. Original integral remains2.748days.
+Authority: `integration/dataqual09/STATUS.json`, `RESULT.json`, and
+`integration/audits/verify_dataqual09_current.py`; no full numerical F-CI,
+new original project, physical process, seasonal or full431 equivalence claim.
+
 DATAQUAL08 continues own DATAQUAL07 checkpoints with unchanged executable,
 physical options and input binding. Fifteen independent five-day targets and one
 new day2-to3 suffix are all censored at60s each (960.443s total native work).

@@ -1,0 +1,48 @@
+{
+  "work_unit": "DATAQUAL09",
+  "baseline": "a59ecaa23a492bcf193e83575a9a1f00fe97023b",
+  "implemented": true,
+  "tested": true,
+  "qualified": true,
+  "decision": "Optional runtime emit_stage_diagnostics defaults true. Native/Python explicit quiet-macro-stages requires experimental mode. Only five writes are conditional; all physical branches, trace/budget diagnostics, numerical tolerances and restart layout unchanged. Text diagnostic selection does not enter physical restart binding; same-executable quiet/loud restart interoperability is required.",
+  "owners": "RT/MP/VQ",
+  "interfaces_changed": [
+    "macropore_runtime_policy_t text diagnostics field",
+    "native optional argument14",
+    "Python optional flag"
+  ],
+  "invariants": "Physical/numerical options remain separate from text output. No mutable SAVE/global/environment flag; each column owns its output policy.",
+  "finding": "One DATAQUAL08 censored60s process emitted129328 stdout lines; no measured speedup yet.",
+  "test_selection": {
+    "small": "real native O0/O2 loud/quiet pairs on two physical configurations, exact6 streams and whole same-exe restart, cross-mode restart",
+    "preservation": "default predecessor physical payload/streams and unchanged FSI35 dependency evidence",
+    "guards": "native and Python reject quiet in production/comparison and unknown argument14 before execution",
+    "excluded": "unchanged original stall, budget increases, highest low-air, full numerical F-CI"
+  },
+  "expected_cost": "Checked native194-provider builds about180s each; required for changed public policy type. Paired bounded runs target1.4425;60s hard cap. No unbounded trajectories.",
+  "next_action": "publish exact tree, reconcile automatic hosted checks and integrate bounded experimental change;no measured solver acceleration",
+  "scientific_delta": {
+    "app/solute_project/main_water.f90": "M",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "M",
+    "tools/solute/run_native_water.py": "M",
+    "integration/audits/verify_dataqual07_current.py": "M",
+    "integration/audits/verify_dataqual09_current.py": "A"
+  },
+  "postimages": {
+    "app/solute_project/main_water.f90": "9f27aa7263563905071462db2cb86ed6f7cf8476bc18414f839e9c563c8d4f65",
+    "integration/audits/verify_dataqual07_current.py": "f0c588836803006823d8d4c0064956316561edee1dfd834bb848a6fe6ee14764",
+    "integration/audits/verify_dataqual09_current.py": "4a8c377180d7ee2213a1ba300957f6a1e595e9f1262a76c1aff198a73cb07bc8",
+    "integration/dataqual09/BUILD_O0.json": "40367e59fd8eae089e02cf93ad0795ddcbcfcf14fefbff735c2eda0e7949551f",
+    "integration/dataqual09/BUILD_O2.json": "aadea5ae514fa663a964621d213367a382a10b16658234bc17987d4a26a6f3d7",
+    "integration/dataqual09/CAPSULE.json": "b45ae8cc51ffa1f028de7c5b148354cb3ee3a858c409d8bb065c12de9c99b60e",
+    "integration/dataqual09/RESULT.json": "41f91f15ebaecf8ff220cecaa4e5e8a4f2c3f4784dcdee5f4fcbe7204251bd58",
+    "integration/dataqual09/cases.json": "4e71cfc1e659056afd9ddfbf248eedb93a23a6eb3f087da0881d56ed9899c904",
+    "integration/dataqual09/extensions.json": "94878642ae6a37712d0d2cb27e752750d6da643f0035445065175e012544ead7",
+    "integration/dataqual09/preservation.json": "56ba7286977df85b0652cd4a0bc755198209647ad5de99a31ec0a5c8f7a737a5",
+    "integration/dataqual09/read_dataqual08.py": "01e6c1900ac31d324f36ff6b8328200281aed5aebdb1e311d0df450d01b48676",
+    "integration/dataqual09/run_pairs.py": "7fcef0379bac94dcfa6360fbdf3ca30b1053fffa6361fce9018792ece0086458",
+    "src/runtime/mod_macropore_single_column_runtime.f90": "c8ebc71e10736e823d7cbed8d7b7e0d2771e261440ff6dcbe766cfaf1886b015",
+    "tools/solute/run_native_water.py": "32b6e3bf536c69f45acee03d9a8182b446ac29523e2b7c074dc9e33548b11b9c"
+  },
+  "qualification": "diagnostic-only Fortran option,three exact pairs;source-bound full native compile/link closure and inherited water qualification;one new wet prefix;14 corrupt-source and6 direct guards"
+}
