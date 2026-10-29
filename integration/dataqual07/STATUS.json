@@ -1,0 +1,22 @@
+{
+  "work_unit": "DATAQUAL07",
+  "baseline": "93d302d8c10850940b33aefd2ffd815f3d63b65a",
+  "stage": "REPRODUCED_POST_SOLVE_TRACE_REJECTION",
+  "production_admission_changed": false,
+  "qualified": false,
+  "canonical_changed": false,
+  "source_site": "src/runtime/mod_fmr_serialized_reference_backend.f90:3047 on baseline",
+  "cause_localized": "completed kernel window rejected when materialize_accepted_water_flux_trace returns false; exact inner trace guard remains unresolved",
+  "last_committed": 1.3300000000017462,
+  "rejected_endpoint": 1.4424999999973807,
+  "native_seconds": 8.335364959999879,
+  "rutter_checkpoint_probe": "real saved112-byte Rutter restart tail restores and accepts next dry source window using real4-provider checked O0 closure",
+  "new_qualified_configurations": 0,
+  "source_instrumentation": "diagnostic stdout only; own executable-bound fresh prefix, no foreign restart rebinding",
+  "evidence": {
+    "path": "integration/dataqual07/evidence.tar.xz.b64",
+    "sha256": "a57c418451ee264413f0c4f4ade2124b31a3c8c60ee78ef3443335511caf8aa7",
+    "bytes": 1443756
+  },
+  "next_step": "discriminate trace_failed flag, arena chain and coverage failure before changing any numerical or physical gate"
+}
