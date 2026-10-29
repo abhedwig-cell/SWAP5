@@ -20,7 +20,7 @@
     "excluded": "unchanged original stall, budget increases, highest low-air, full numerical F-CI"
   },
   "expected_cost": "Checked native194-provider builds about180s each; required for changed public policy type. Paired bounded runs target1.4425;60s hard cap. No unbounded trajectories.",
-  "next_action": "publish exact tree, reconcile automatic hosted checks and integrate bounded experimental change;no measured solver acceleration",
+  "next_action": "Address a source-backed residual/Jacobian defect or other missing historical configuration. Reuse own sealed1.626 checkpoint. Do not repeat the unchanged original stall or increase iteration/time budgets. No diagnostic-policy acceleration established.",
   "scientific_delta": {
     "app/solute_project/main_water.f90": "M",
     "src/runtime/mod_macropore_single_column_runtime.f90": "M",
@@ -44,5 +44,9 @@
     "src/runtime/mod_macropore_single_column_runtime.f90": "c8ebc71e10736e823d7cbed8d7b7e0d2771e261440ff6dcbe766cfaf1886b015",
     "tools/solute/run_native_water.py": "32b6e3bf536c69f45acee03d9a8182b446ac29523e2b7c074dc9e33548b11b9c"
   },
-  "qualification": "diagnostic-only Fortran option,three exact pairs;source-bound full native compile/link closure and inherited water qualification;one new wet prefix;14 corrupt-source and6 direct guards"
+  "qualification": "diagnostic-only Fortran option,three exact pairs;source-bound full native compile/link closure and inherited water qualification;one new wet prefix;14 corrupt-source and6 direct guards",
+  "canonical_admitted": true,
+  "actual_merge": "8be3439d8be2b06f4d9d67df763bf1a37d4d2541",
+  "actual_merge_tree": "e1384ee9e09f6b6c7ccbb9c72e08afcc9dfd1e9b",
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_EXPERIMENTAL_DIAGNOSTICS_AND_WATER_PREFIX"
 }
