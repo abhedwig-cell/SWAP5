@@ -22,7 +22,7 @@ program conservative_limiter_jacobian
  n=initial%geometry%num_nodes;nd=initial%geometry%num_domains;k=20
  allocate(capacity(n));capacity=0d0;cases=0;defects=0;worst=0d0;h=2d0;step=1d-5
  do policy=0,1
- do orientation=1,2
+ do orientation=1,4
  do capped=0,1
  do split=0,1
  do j=1,3
@@ -37,14 +37,23 @@ program conservative_limiter_jacobian
   q%matrix_sat%matrix_partial_top_active=.false.;q%matrix_sat%bottom_domain=n
   q%matrix_sat%matrix_head=0d0;q%matrix_sat%matrix_head(k)=h;q%matrix_sat%matrix_head(k+1)=3d0
   q%matrix_sat%macro_reference_level=q%matrix_sat%z(k)-10d0
-  if(orientation==2)q%matrix_sat%macro_reference_level=q%matrix_sat%z(k)+10d0
+  if(orientation==2.or.orientation==3)q%matrix_sat%macro_reference_level=q%matrix_sat%z(k)+10d0
+  if(orientation>=3)then
+   q%unsaturated%sorptivity%perched_active=.true.
+   q%unsaturated%sorptivity%perched_top_node=k;q%unsaturated%sorptivity%perched_bottom_node=k+split
+   q%interflow_sat%matrix_top_saturated_node=k;q%interflow_sat%matrix_bottom_saturated_node=k+split
+   q%interflow_sat%matrix_partial_top_active=.false.;q%interflow_sat%bottom_domain=n
+   q%interflow_sat%matrix_head=q%matrix_sat%matrix_head
+   q%interflow_sat%macro_reference_level=q%matrix_sat%z(k)+1d0
+   q%interflow_sat%cdarcy=3d0;q%interflow_sat%flow_reduction=1d0
+  end if
   q%matrix_sat%cdarcy=10d0;q%matrix_sat%flow_reduction=1d0
   q%limiter%conservative_storage_bounds=policy==1
   q%limiter%minimum_storage_cm=0d0
   q%limiter%accepted_storage_cm=1d5;q%limiter%maximum_storage_cm=2d5
   if(capped==1)then
    q%limiter%maximum_storage_cm=1d0;q%limiter%accepted_storage_cm=1d0-1d-6
-   if(orientation==2)q%limiter%accepted_storage_cm=1d-6
+   if(orientation==2.or.orientation==3)q%limiter%accepted_storage_cm=1d-6
   end if
   q%limiter%potential_top_vertical_cm=0d0;q%limiter%potential_top_lateral_cm=0d0
   q%limiter%redistribution_capacity_cm=0d0
@@ -52,8 +61,12 @@ program conservative_limiter_jacobian
   if(.not.r%valid)error stop 'invalid real rate bundle'
   call evaluate_macropore_exchange_derivative(q,r,capacity,d,.true.)
   if(.not.d%valid)error stop 'invalid real Jacobian'
-  q%matrix_sat%matrix_head(k)=h+step;call evaluate_macropore_rate_bundle(q,rp)
-  q%matrix_sat%matrix_head(k)=h-step;call evaluate_macropore_rate_bundle(q,rm)
+  q%matrix_sat%matrix_head(k)=h+step
+  if(orientation>=3)q%interflow_sat%matrix_head(k)=h+step
+  call evaluate_macropore_rate_bundle(q,rp)
+  q%matrix_sat%matrix_head(k)=h-step
+  if(orientation>=3)q%interflow_sat%matrix_head(k)=h-step
+  call evaluate_macropore_rate_bundle(q,rm)
   q%matrix_sat%matrix_head(k)=h
   if(.not.rp%valid.or..not.rm%valid)error stop 'invalid perturbed real bundles'
   fd=sum(rp%qexc_to_matrix_rate(:,k)-rm%qexc_to_matrix_rate(:,k))/(2d0*step)
@@ -75,6 +88,15 @@ program conservative_limiter_jacobian
  end do
  end do
  end do
+ if(.not.expect_defect)then
+  r%limiter%outflow_fraction(1)=-.1d0
+  call evaluate_macropore_exchange_derivative(q,r,capacity,d,.true.)
+  if(d%valid)error stop 'negative limiter fraction admitted'
+  r%limiter%outflow_fraction(1)=1d0
+  deallocate(r%limiter%outflow_fraction)
+  call evaluate_macropore_exchange_derivative(q,r,capacity,d,.true.)
+  if(d%valid)error stop 'missing limiter fraction admitted'
+ end if
  if(expect_defect)then
   if(defects==0)error stop 'expected baseline defect absent'
   print *, 'BASELINE_LIMITER_DERIVATIVE_DEFECTS',defects,cases,worst

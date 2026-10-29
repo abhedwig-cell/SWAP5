@@ -88,6 +88,7 @@ def main():
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--memory-mib',str(scenario.get('memory_mib',spec.get('memory_mib',1024))),'--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
    if 'solver_max_iterations'in scenario:cmd+=['--solver-max-iterations',str(scenario['solver_max_iterations'])]
+   if scenario.get('quiet_macro_stages'):cmd+=['--quiet-macro-stages']
    if scenario.get('conservative_macro_storage'):cmd+=['--conservative-macro-storage']
    if scenario.get('perched_jacobian'):cmd+=['--perched-jacobian']
    if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
