@@ -186,6 +186,7 @@ program swap5_native_water_project
   integer::rain_index,step_index,uv,us,ut,up,uc,ud,part,commit_status
   real(real64)::oxygen_reduction_amount
   logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.,perched_jacobian=.false.
+  logical::conservative_macro_storage=.false.
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(10,arg)
   if(len_trim(arg)>0)execution_mode=trim(arg)
@@ -203,6 +204,10 @@ program swap5_native_water_project
     call require(trim(execution_mode)=='experimental','perched Jacobian requires experimental mode')
     perched_jacobian=.true.
   end if
+  call get_command_argument(13,arg)
+  call require(len_trim(arg)==0.or.trim(arg)=='conservative-macro-storage','unknown macro storage policy')
+  if(len_trim(arg)>0)call require(trim(execution_mode)=='experimental','macro storage policy requires experimental mode')
+  conservative_macro_storage=len_trim(arg)>0
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
@@ -446,6 +451,7 @@ program swap5_native_water_project
   call import_column_macro_configuration(trim(macro_path),macro_initial,macro_config, &
        allow_variable_surface=trim(execution_mode)=='experimental')
   macro_config%rate_template%unsaturated%entry_transition_width_cm=entry_ramp_width_cm
+  macro_config%rate_template%limiter%conservative_storage_bounds=conservative_macro_storage
   call require(macro_initial%geometry%num_nodes==numnod.and.all(macro_initial%geometry%dz==dz),'source macro/water geometry')
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen
   ! Original hconduc deliberately excludes KSATEXM for SWMACRO1.

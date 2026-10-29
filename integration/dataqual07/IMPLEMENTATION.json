@@ -1,0 +1,10 @@
+{
+ "stage":"DEVELOPMENT_NOT_QUALIFIED",
+ "baseline":"93d302d8c10850940b33aefd2ffd815f3d63b65a",
+ "finding":"Domain5 loses availability: legacy limiter ignores outflow excess <=1e-7cm; candidate clips negative stock within1e-10cm. Actual per-cell discrepancy7.67100964216345e-11cm at domain bottom+1, dt1.0986328124573674e-4day.",
+ "decision":"Explicit default-off experimental numerical policy enforces limiter storage bounds without historical1e-7cm deadband; preserve legacy production arithmetic. No balance/trace/timestep tolerances changed. Physical process selections unchanged; flag is part of executable/input binding.",
+ "surface":["top inflow limiter request","rate-bundle request copy","native numerical-policy CLI","runtime experimental guard"],
+ "tests_selected":["real standalone limiter O0/O2 stock bounds and legacy identity","fresh failing historical group","independent native water certificates","full/split restart","production unchanged streams"],
+ "expected_cost":"small driver <1s; checked native cold build ~180s per optimization, selected because changed derived type propagates through real194-provider closure; bounded native trials 10..120s each",
+ "admission":"No canonical merge until affected owner qualification is reconciled. Unchanged unrelated process science not selected."
+}

@@ -121,6 +121,7 @@ contains
 
     nd=source%num_domains
     target%num_domains=nd
+    target%conservative_storage_bounds=source%conservative_storage_bounds
     allocate(target%accepted_storage_cm(nd),target%maximum_storage_cm(nd),target%minimum_storage_cm(nd), &
          target%potential_top_vertical_cm(nd),target%potential_top_lateral_cm(nd), &
          target%potential_interflow_sat_cm(nd),target%potential_matrix_sat_cm(nd), &
