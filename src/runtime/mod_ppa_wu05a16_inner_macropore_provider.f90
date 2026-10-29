@@ -241,12 +241,31 @@ contains
     end if
   end subroutine evaluate_inner_macropore_rate
 
-  subroutine evaluate_inner_macropore_derivative(self,pressure_head,water_content,capacity,dexchange_dhead, &
-                                                  derivative_available,active)
+  subroutine evaluate_inner_macropore_derivative(self,pressure_head,water_content,capacity,dexchange_dhead,derivative_available,active)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
     real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
     real(real64),intent(out)::dexchange_dhead(:)
     logical,intent(out)::derivative_available,active
+    call evaluate_inner_derivative_data(self,pressure_head,water_content,capacity,dexchange_dhead,derivative_available,active)
+  end subroutine evaluate_inner_macropore_derivative
+
+  subroutine evaluate_inner_storage_coupling(self,pressure_head,water_content,capacity,dexchange_dhead,active,left,right,diagonal_restore,available)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
+    real(real64),intent(out)::dexchange_dhead(:)
+    logical,intent(out)::active,available
+    real(real64),allocatable,intent(out)::left(:,:),right(:,:),diagonal_restore(:)
+    call evaluate_inner_derivative_data(self,pressure_head,water_content,capacity,dexchange_dhead,available,active,left,right,diagonal_restore)
+  end subroutine evaluate_inner_storage_coupling
+
+  subroutine evaluate_inner_derivative_data(self,pressure_head,water_content,capacity,dexchange_dhead, &
+                                                  derivative_available,active,left,right,diagonal_restore)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
+    real(real64),intent(out)::dexchange_dhead(:)
+    logical,intent(out)::derivative_available,active
+    real(real64),allocatable,intent(out),optional::left(:,:),right(:,:),diagonal_restore(:)
+    integer::id,nrank,column
 
     type(macropore_rate_bundle_request_t)::request
     type(macropore_rate_bundle_result_t)::rates
@@ -261,6 +280,11 @@ contains
     integer::cover_node
     logical::ok
 
+    if(present(left))allocate(left(size(pressure_head),0))
+    if(present(right))allocate(right(size(pressure_head),0))
+    if(present(diagonal_restore))then
+      allocate(diagonal_restore(size(pressure_head)));diagonal_restore=0d0
+    end if
     dexchange_dhead=0.0_real64
     derivative_available=.false.
     active=.false.
@@ -320,44 +344,23 @@ contains
       exchange(cover_node)=exchange(cover_node)-sum(covered_cm)/self%step_duration
       dexchange_dhead(cover_node)=dexchange_dhead(cover_node)-covered_dqdh
     end if
+    if(present(left).and.present(right).and.present(diagonal_restore))then
+      if(allocated(derivative%storage_left))then
+        nrank=0
+        do id=1,size(derivative%storage_left,2)
+          if(any(derivative%storage_left(:,id)/=0d0).and.any(derivative%storage_right(:,id)/=0d0))nrank=nrank+1
+        end do
+        deallocate(left,right);allocate(left(size(pressure_head),nrank),right(size(pressure_head),nrank));column=0
+        do id=1,size(derivative%storage_left,2)
+          if(.not.(any(derivative%storage_left(:,id)/=0d0).and.any(derivative%storage_right(:,id)/=0d0)))cycle
+          column=column+1;left(:,column)=derivative%storage_left(:,id);right(:,column)=derivative%storage_right(:,id)
+        end do
+        diagonal_restore=derivative%storage_diagonal_restore
+      end if
+    end if
     derivative_available=.true.
     active=max(maxval(abs(exchange)),maxval(abs(dexchange_dhead)))>1.0e-14_real64
-  end subroutine evaluate_inner_macropore_derivative
-
-  subroutine evaluate_inner_storage_coupling(self,pressure_head,water_content,capacity,left,right,diagonal_restore,available)
-    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
-    real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
-    real(real64),allocatable,intent(out)::left(:,:),right(:,:),diagonal_restore(:)
-    logical,intent(out)::available
-    type(macropore_rate_bundle_request_t)::request
-    type(macropore_rate_bundle_result_t)::rates
-    type(macropore_exchange_derivative_result_t)::derivative
-    type(matrix_saturated_zone_view_t)::view
-    type(soil_water_physical_state_t)::matrix
-    integer::n,id,nrank,column
-    logical::ok
-    n=size(pressure_head);available=.false.
-    allocate(left(n,0),right(n,0),diagonal_restore(n));diagonal_restore=0d0
-    if(.not.self%configured)return
-    available=.true.
-    if(.not.self%rate_template%limiter%conservative_storage_bounds)return
-    available=.false.
-    call evaluate_current_rates(self,pressure_head,water_content,request,rates,view,matrix,ok)
-    if(.not.ok)return
-    call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative,self%perched_jacobian_enabled)
-    if(.not.derivative%valid.or..not.allocated(derivative%storage_left))return
-    nrank=0
-    do id=1,size(derivative%storage_left,2)
-      if(any(derivative%storage_left(:,id)/=0d0).and.any(derivative%storage_right(:,id)/=0d0))nrank=nrank+1
-    end do
-    deallocate(left,right);allocate(left(n,nrank),right(n,nrank));column=0
-    do id=1,size(derivative%storage_left,2)
-      if(.not.(any(derivative%storage_left(:,id)/=0d0).and.any(derivative%storage_right(:,id)/=0d0)))cycle
-      column=column+1;left(:,column)=derivative%storage_left(:,id);right(:,column)=derivative%storage_right(:,id)
-    end do
-    diagonal_restore=derivative%storage_diagonal_restore
-    available=.true.
-  end subroutine evaluate_inner_storage_coupling
+  end subroutine evaluate_inner_derivative_data
 
   subroutine evaluate_inner_trial_geometry(self,water_content,geometry_current,ok,pressure_head)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self

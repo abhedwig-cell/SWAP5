@@ -149,7 +149,8 @@ module mod_soil_water_solver_contract
      procedure :: permits_source_freezing => default_macropore_source_freezing
   end type macropore_exchange_provider_t
 
-  ! Optional sibling for shared storage constraints. The exchange Jacobian is
+  ! Optional sibling for shared storage constraints. Its fixed-geometry
+  ! shared-storage linearization (not omitted geometry/topology terms) is
   ! diag(dexchange_dhead+diagonal_restore)-left*transpose(right).
   ! Factors are worker-local observations, never accepted physical state.
   type, abstract, extends(macropore_exchange_provider_t), public :: macropore_storage_coupling_provider_t
@@ -330,10 +331,12 @@ module mod_soil_water_solver_contract
        logical, intent(out) :: active
      end subroutine macropore_derivative_evaluate_ifc
 
-     subroutine macropore_storage_coupling_ifc(self,pressure_head,water_content,capacity,left,right,diagonal_restore,available)
+     subroutine macropore_storage_coupling_ifc(self,pressure_head,water_content,capacity,dexchange_dhead,active,left,right,diagonal_restore,available)
        import :: macropore_storage_coupling_provider_t,real64
        class(macropore_storage_coupling_provider_t),intent(in)::self
        real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
+       real(real64),intent(out)::dexchange_dhead(:)
+       logical,intent(out)::active
        real(real64),allocatable,intent(out)::left(:,:),right(:,:),diagonal_restore(:)
        logical,intent(out)::available
      end subroutine macropore_storage_coupling_ifc

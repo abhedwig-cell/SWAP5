@@ -1616,17 +1616,23 @@ subroutine jacobian_F()
       fsi_ws%dfdh_main(1:NN) = fsi_ws%dfdh_main(1:NN) - dFdhMp(1:NN)
    end if
    if (provider_macropore_active .and. .not. fsi_ws%unsaturated_flags(3)) then
+      select type(storage_provider=>evaluation_context%macropore)
+      class is(macropore_storage_coupling_provider_t)
+         call storage_provider%evaluate_storage_coupling(state%h(1:numnod),state%theta(1:numnod), &
+              state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_rate_active, &
+              storage_left,storage_right,storage_diagonal_restore,storage_coupling_available)
+         provider_macropore_derivative_available=storage_coupling_available
+      class default
       call evaluation_context%macropore%evaluate_derivative(state%h(1:numnod),state%theta(1:numnod), &
            state%dimoca(1:numnod),provider_macropore_dqdh,provider_macropore_derivative_available, &
            provider_macropore_rate_active)
+      end select
       if (provider_macropore_rate_active .and. .not.provider_macropore_derivative_available) &
            error stop 'HeadCalc: active macropore derivative unavailable'
       if (provider_macropore_rate_active) &
            fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
       select type(storage_provider=>evaluation_context%macropore)
       class is(macropore_storage_coupling_provider_t)
-         call storage_provider%evaluate_storage_coupling(state%h(1:numnod),state%theta(1:numnod), &
-              state%dimoca(1:numnod),storage_left,storage_right,storage_diagonal_restore,storage_coupling_available)
          if(.not.storage_coupling_available)then
             typed_bottom_invalid=.true.;return
          end if
