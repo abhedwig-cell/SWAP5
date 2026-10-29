@@ -1,0 +1,27 @@
+{
+  "origin": "/tmp/dq10-integral/original-stock-2p748/run",
+  "command": [
+    "/tmp/dq10-O2/column/swap5_solute_project",
+    "input.nml",
+    "origin.bin",
+    "3",
+    "input.swp",
+    "macro.nml",
+    "73beb70812db512cc7febde530b973eaef7c106d449af555882bcd1ce23dcdf1",
+    "2.7479999999995925",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian",
+    "conservative-macro-storage",
+    "quiet-macro-stages"
+  ],
+  "origin_checkpoint_sha256": "e48425ad1610b022f3e8e78674344dbb54f1ca94b046fe070b03b26b3e95f77e",
+  "phases": [
+    2.7479999999995925,
+    3.0
+  ],
+  "seconds_per_phase": 60,
+  "reason": "Resume own completed day2; no prefix replay or rebinding; one changed-Jacobian continuation question"
+}

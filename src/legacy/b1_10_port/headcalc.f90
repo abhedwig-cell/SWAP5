@@ -18,7 +18,7 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    use MOD_swap_base,      only: legacy_swmacro => swmacro, i_instance
    use mod_a23bu_worker_execution_context, only: a23bu_worker_context_t, a23bu_solver_history_t, a23bu_initialize_worker
    use mod_reference_richards_workspace, only: reference_richards_workspace_t, prepare_reference_workspace_for_solve
-   use mod_reference_linear_solver, only: reference_tridag, reference_band_solve
+   use mod_reference_linear_solver, only: reference_tridag, reference_band_solve, reference_tridag_low_rank
    use mod_b110_default_mvg_provider, only: b110_default_mvg_provider_t
    use mod_reference_richards_state_binding, only: reference_richards_state_binding_t, validate_reference_state_binding, &
         FSI_TOP_MODE_EXPLICIT_FLUX, FSI_TOP_MODE_DYNAMIC_PROVIDER
@@ -26,7 +26,8 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
         soil_water_numerical_config_t, soil_water_physical_config_t, soil_water_parameter_set_t, &
         soil_water_top_boundary_result_t, SW_TOP_BOUNDARY_AVAILABLE, &
         SW_TOP_BOUNDARY_REGIME_FLUX, SW_TOP_BOUNDARY_REGIME_HEAD, &
-        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY, evaluate_resistive_bottom_boundary
+        CONSTITUTIVE_DEMAND_WATER_CONTENT, CONSTITUTIVE_DEMAND_CAPACITY, evaluate_resistive_bottom_boundary, &
+        macropore_storage_coupling_provider_t
    use MOD_arrays,         only: mabbc
    use MOD_params,         only: nihil
    use MOD_grid,           only: legacy_numnod => numnod, legacy_z => z, legacy_dz => dz, legacy_disnod => disnod
@@ -112,6 +113,9 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
    integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, solver_numbit
    real(8)                          :: factor, Fmax
    real(8), allocatable             :: provider_macropore_exchange(:), provider_macropore_dqdh(:)
+   real(8),allocatable :: storage_left(:,:),storage_right(:,:),storage_diagonal_restore(:)
+   integer::storage_rank,storage_additional_solves
+   logical::storage_coupling_available
    real(8)                          :: factmax, factmax1, sump, sum1, sumold, deviat, q1
    logical                          :: flnonconv, flnonconv3
    logical                          :: flboth, flok
@@ -568,10 +572,24 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       end if
 
 !     solve the tridiagonal matrix
+      if(storage_rank>0.and.fsi_ws%tridag_factorization_capture_active)then
+         ! A captured tridiagonal factor cannot represent this full Jacobian.
+         state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+      end if
       ctx%diagnostics%linear_solves = ctx%diagnostics%linear_solves + 1
+      if(storage_rank>0)then
+         call reference_tridag_low_rank(NN,fsi_ws%dfdh_upper,fsi_ws%dfdh_main,fsi_ws%dfdh_lower, &
+              fsi_ws%residual,storage_left(1:NN,:),storage_right(1:NN,:),fsi_ws%delta_head,fsi_ws%tridag_gamma,ierror,storage_additional_solves)
+         ctx%diagnostics%linear_solves=ctx%diagnostics%linear_solves+storage_additional_solves
+         if(ierror/=0)then
+            ! Never silently fall back to a matrix which drops shared storage.
+            state%fldecdt=.true.;ctx%control%request_dt_reduction=.true.;return
+         end if
+      else
       call reference_tridag(NN, fsi_ws%dfdh_upper, fsi_ws%dfdh_main, fsi_ws%dfdh_lower, &
            fsi_ws%residual, fsi_ws%delta_head, fsi_ws%tridag_gamma, ierror, &
            capture_in_gamma_requested=fsi_ws%tridag_factorization_capture_active)
+      end if
 
 !     in the rare case that TRIDAG fails, use alternative solution
       if (ierror /= 0) then
@@ -1511,6 +1529,7 @@ end subroutine vector_F
 
 subroutine jacobian_F()
 
+   storage_rank=0
 !  first layer
    fsi_ws%dfdh_main(1) = state%dimoca(1)*matrix_fraction(1)*grid_dz(1)/dt - fsi_ws%dfdh_lower(1)
  
@@ -1604,6 +1623,27 @@ subroutine jacobian_F()
            error stop 'HeadCalc: active macropore derivative unavailable'
       if (provider_macropore_rate_active) &
            fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-provider_macropore_dqdh(1:NN)
+      select type(storage_provider=>evaluation_context%macropore)
+      class is(macropore_storage_coupling_provider_t)
+         call storage_provider%evaluate_storage_coupling(state%h(1:numnod),state%theta(1:numnod), &
+              state%dimoca(1:numnod),storage_left,storage_right,storage_diagonal_restore,storage_coupling_available)
+         if(.not.storage_coupling_available)then
+            typed_bottom_invalid=.true.;return
+         end if
+         if(.not.allocated(storage_left).or..not.allocated(storage_right).or..not.allocated(storage_diagonal_restore))then
+            typed_bottom_invalid=.true.;return
+         end if
+         if(size(storage_left,1)/=numnod.or.size(storage_right,1)/=numnod.or. &
+              size(storage_left,2)/=size(storage_right,2).or.size(storage_diagonal_restore)/=numnod)then
+            typed_bottom_invalid=.true.;return
+         end if
+         if(any(.not.ieee_is_finite(storage_left)).or.any(.not.ieee_is_finite(storage_right)).or. &
+              any(.not.ieee_is_finite(storage_diagonal_restore)))then
+            typed_bottom_invalid=.true.;return
+         end if
+         storage_rank=size(storage_left,2)
+         if(storage_rank>0)fsi_ws%dfdh_main(1:NN)=fsi_ws%dfdh_main(1:NN)-storage_diagonal_restore(1:NN)
+      end select
    end if
 
 end subroutine jacobian_F

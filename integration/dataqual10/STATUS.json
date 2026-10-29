@@ -10,5 +10,9 @@
   "owners": "HY/RT/VQ",
   "test_selection": "Real finite-difference rate-bundle driver O0/O2 first; selected changed-code native water continuations, production preservation and own restarts; unchanged FSI35 dependencies reused; no unchanged original-stall replay or budget increase",
   "recovery": "Repro /tmp/dq10-probe-build, native macro.nml from admitted DATAQUAL09; real baseline stdout recorded in git",
-  "next_action": "persist and test actual rate/Jacobian feedback before native simulation"
+  "next_action": "persist and test actual rate/Jacobian feedback before native simulation",
+  "stage": "DIAGONAL_PROBE_COMPLETE_FULL_STORAGE_COUPLING_IMPLEMENTATION",
+  "full_coupling_decision": "For each active fixed-geometry stock cap, J_exchange=diag(d)-u*d^T. u is local inflow/total inflow for upper cap or local outflow/total outflow for lower cap; d is existing frozen-fraction net exchange derivative. The diagonal-only correction omits cross-cell terms. Add opt-in sibling macropore storage-coupling provider interface returning U,V and diagonal restore. Full Richards consumes exact low-rank update through Woodbury with existing tridiagonal factors; rank-zero route unchanged. Failed low-rank solve requests trial retry; never fall back to a matrix that omits the coupling. Physics/rates/state/restart/tolerances unchanged.",
+  "qualification_selected": "Real full rate Jacobian finite-difference columns; independent low-rank linear residual and singular rejection O0/O2; cold native checked builds; changed-candidate forward and original continuation; production exact streams/restart; affected FCI93 native oracles requalified because solver contract/HeadCalc/linear solver change.",
+  "inherited": "Diagonal-only trial evidence is retained, not final-source qualification. FSI35 source identity is no longer claimed unchanged for the forthcoming shared solver seam."
 }

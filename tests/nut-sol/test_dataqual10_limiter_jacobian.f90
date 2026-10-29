@@ -12,7 +12,9 @@ program conservative_limiter_jacobian
  type(macropore_rate_bundle_result_t)::r,rp,rm
  type(macropore_exchange_derivative_result_t)::d
  real(real64),allocatable::capacity(:)
- real(real64)::fd,h,step,worst,err,tolerance,dt
+ real(real64)::fd,h,step,worst,err,tolerance,dt,old_head,full_worst
+ real(real64),allocatable::full_fd(:),full_column(:)
+ integer::column,full_cases
  character(1024)::path,mode
  integer::n,nd,k,policy,orientation,capped,split,j,cases,defects
  logical::expect_defect
@@ -20,6 +22,7 @@ program conservative_limiter_jacobian
  expect_defect=trim(mode)=='expect-defect'
  call import_column_macro_configuration(trim(path),initial,config,allow_variable_surface=.true.)
  n=initial%geometry%num_nodes;nd=initial%geometry%num_domains;k=20
+ allocate(full_fd(n),full_column(n));full_worst=0d0;full_cases=0
  allocate(capacity(n));capacity=0d0;cases=0;defects=0;worst=0d0;h=2d0;step=1d-5
  do policy=0,1
  do orientation=1,4
@@ -70,6 +73,27 @@ program conservative_limiter_jacobian
   q%matrix_sat%matrix_head(k)=h
   if(.not.rp%valid.or..not.rm%valid)error stop 'invalid perturbed real bundles'
   fd=sum(rp%qexc_to_matrix_rate(:,k)-rm%qexc_to_matrix_rate(:,k))/(2d0*step)
+#ifdef STORAGE_COUPLING
+  if(policy==1)then
+   if(orientation>=3)q%interflow_sat%matrix_head(k)=h
+   do column=k,k+split
+    old_head=q%matrix_sat%matrix_head(column)
+    q%matrix_sat%matrix_head(column)=old_head+step
+    if(orientation>=3)q%interflow_sat%matrix_head(column)=old_head+step
+    call evaluate_macropore_rate_bundle(q,rp)
+    q%matrix_sat%matrix_head(column)=old_head-step
+    if(orientation>=3)q%interflow_sat%matrix_head(column)=old_head-step
+    call evaluate_macropore_rate_bundle(q,rm)
+    q%matrix_sat%matrix_head(column)=old_head
+    if(orientation>=3)q%interflow_sat%matrix_head(column)=old_head
+    full_fd=sum(rp%qexc_to_matrix_rate-rm%qexc_to_matrix_rate,dim=1)/(2d0*step)
+    full_column=-matmul(d%storage_left,d%storage_right(column,:))
+    full_column(column)=full_column(column)+d%total_dqdh_node(column)+d%storage_diagonal_restore(column)
+    full_worst=max(full_worst,maxval(abs(full_column-full_fd)));full_cases=full_cases+1
+    if(maxval(abs(full_column-full_fd))>max(5d-9,5d-6*maxval(abs(full_fd))))error stop 'full storage coupling differs from real flux'
+   end do
+  end if
+#endif
   err=abs(fd-d%total_dqdh_node(k));tolerance=max(5d-9,5d-6*abs(fd))
   if(policy==0)then
    write(*,'(a,4i3,3es25.17e3)')'LEGACY',orientation,capped,split,j,sum(r%qexc_to_matrix_rate(:,k)),d%total_dqdh_node(k),fd
@@ -97,6 +121,9 @@ program conservative_limiter_jacobian
   call evaluate_macropore_exchange_derivative(q,r,capacity,d,.true.)
   if(d%valid)error stop 'missing limiter fraction admitted'
  end if
+#ifdef STORAGE_COUPLING
+ print *, 'STORAGE_COUPLING_FEEDBACK_PASS',full_cases,full_worst
+#endif
  if(expect_defect)then
   if(defects==0)error stop 'expected baseline defect absent'
   print *, 'BASELINE_LIMITER_DERIVATIVE_DEFECTS',defects,cases,worst

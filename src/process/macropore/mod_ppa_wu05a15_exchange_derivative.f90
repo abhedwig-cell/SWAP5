@@ -15,6 +15,7 @@ module mod_ppa_wu05a15_exchange_derivative
     real(real64),allocatable :: unsaturated_dqdh(:,:)
     real(real64),allocatable :: main_saturated_dqdh(:,:)
     real(real64),allocatable :: total_dqdh_node(:)
+    real(real64),allocatable :: storage_left(:,:),storage_right(:,:),storage_diagonal_restore(:)
   end type macropore_exchange_derivative_result_t
 
   public :: evaluate_macropore_exchange_derivative
@@ -213,6 +214,8 @@ contains
     if(.not.allocated(request%limiter%potential_top_vertical_cm).or. &
        .not.allocated(request%limiter%potential_top_lateral_cm))return
     if(size(request%limiter%potential_top_vertical_cm)/=nd.or.size(request%limiter%potential_top_lateral_cm)/=nd)return
+    allocate(result%storage_left(n,nd),result%storage_right(n,nd),result%storage_diagonal_restore(n))
+    result%storage_left=0d0;result%storage_right=0d0;result%storage_diagonal_restore=0d0
     dt=request%matrix_sat%step_duration
     do id=1,nd
       if(rates%limiter%inflow_fraction(id)<1d0)then
@@ -240,11 +243,16 @@ contains
         ! Component arrays retain frozen-fraction derivatives; only the total
         ! diagonal includes this limiter feedback. No process rate is changed.
         factor=max(0d0,min(1d0,1d0-local_amount/total))
+        result%storage_left(ic,id)=1d0-factor
+        result%storage_right(ic,id)=result%unsaturated_dqdh(id,ic)+result%main_saturated_dqdh(id,ic)+perched_dqdh(id,ic)
+        result%storage_diagonal_restore(ic)=result%storage_diagonal_restore(ic)+ &
+          result%storage_left(ic,id)*result%storage_right(ic,id)
         if(factor/=1d0)result%total_dqdh_node(ic)=result%total_dqdh_node(ic)+(factor-1d0)* &
           (result%unsaturated_dqdh(id,ic)+result%main_saturated_dqdh(id,ic)+perched_dqdh(id,ic))
       end do
     end do
-    ok=.true.
+    ok=all(ieee_is_finite(result%storage_left)).and.all(ieee_is_finite(result%storage_right)).and. &
+      all(ieee_is_finite(result%storage_diagonal_restore))
   end subroutine project_conservative_storage_diagonal
 
 end module mod_ppa_wu05a15_exchange_derivative

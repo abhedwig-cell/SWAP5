@@ -1,7 +1,7 @@
 module mod_ppa_wu05a16_inner_macropore_provider
   use, intrinsic :: iso_fortran_env, only: real64
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
-  use mod_soil_water_solver_contract, only: macropore_exchange_provider_t, soil_water_physical_state_t
+  use mod_soil_water_solver_contract, only: macropore_storage_coupling_provider_t, soil_water_physical_state_t
   use mod_macropore_continuation_state, only: macropore_continuation_state_t, copy_macropore_continuation_state
   use mod_ppa_wu05a5_multi_domain_process, only: macropore_geometry_config_t, macropore_geometry_result_t, &
        evaluate_macropore_geometry, evaluate_macropore_geometry_return
@@ -20,7 +20,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
   implicit none
   private
 
-  type, extends(macropore_exchange_provider_t), public :: ppa_wu05a16_inner_macropore_provider_t
+  type, extends(macropore_storage_coupling_provider_t), public :: ppa_wu05a16_inner_macropore_provider_t
     logical :: configured=.false.
     logical :: perched_jacobian_enabled=.false.
     type(macropore_continuation_state_t) :: accepted_macro
@@ -44,6 +44,7 @@ module mod_ppa_wu05a16_inner_macropore_provider
     procedure, public :: configure => configure_inner_macropore_provider
     procedure, public :: evaluate_rate => evaluate_inner_macropore_rate
     procedure, public :: evaluate_derivative => evaluate_inner_macropore_derivative
+    procedure, public :: evaluate_storage_coupling => evaluate_inner_storage_coupling
     procedure, public :: evaluate_trial_geometry => evaluate_inner_trial_geometry
     procedure, public :: permits_source_freezing => inner_permits_source_freezing
     procedure, public :: set_candidate_pond_lateral => inner_set_candidate_pond_lateral
@@ -322,6 +323,41 @@ contains
     derivative_available=.true.
     active=max(maxval(abs(exchange)),maxval(abs(dexchange_dhead)))>1.0e-14_real64
   end subroutine evaluate_inner_macropore_derivative
+
+  subroutine evaluate_inner_storage_coupling(self,pressure_head,water_content,capacity,left,right,diagonal_restore,available)
+    class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
+    real(real64),intent(in)::pressure_head(:),water_content(:),capacity(:)
+    real(real64),allocatable,intent(out)::left(:,:),right(:,:),diagonal_restore(:)
+    logical,intent(out)::available
+    type(macropore_rate_bundle_request_t)::request
+    type(macropore_rate_bundle_result_t)::rates
+    type(macropore_exchange_derivative_result_t)::derivative
+    type(matrix_saturated_zone_view_t)::view
+    type(soil_water_physical_state_t)::matrix
+    integer::n,id,nrank,column
+    logical::ok
+    n=size(pressure_head);available=.false.
+    allocate(left(n,0),right(n,0),diagonal_restore(n));diagonal_restore=0d0
+    if(.not.self%configured)return
+    available=.true.
+    if(.not.self%rate_template%limiter%conservative_storage_bounds)return
+    available=.false.
+    call evaluate_current_rates(self,pressure_head,water_content,request,rates,view,matrix,ok)
+    if(.not.ok)return
+    call evaluate_macropore_exchange_derivative(request,rates,capacity,derivative,self%perched_jacobian_enabled)
+    if(.not.derivative%valid.or..not.allocated(derivative%storage_left))return
+    nrank=0
+    do id=1,size(derivative%storage_left,2)
+      if(any(derivative%storage_left(:,id)/=0d0).and.any(derivative%storage_right(:,id)/=0d0))nrank=nrank+1
+    end do
+    deallocate(left,right);allocate(left(n,nrank),right(n,nrank));column=0
+    do id=1,size(derivative%storage_left,2)
+      if(.not.(any(derivative%storage_left(:,id)/=0d0).and.any(derivative%storage_right(:,id)/=0d0)))cycle
+      column=column+1;left(:,column)=derivative%storage_left(:,id);right(:,column)=derivative%storage_right(:,id)
+    end do
+    diagonal_restore=derivative%storage_diagonal_restore
+    available=.true.
+  end subroutine evaluate_inner_storage_coupling
 
   subroutine evaluate_inner_trial_geometry(self,water_content,geometry_current,ok,pressure_head)
     class(ppa_wu05a16_inner_macropore_provider_t),intent(in)::self
