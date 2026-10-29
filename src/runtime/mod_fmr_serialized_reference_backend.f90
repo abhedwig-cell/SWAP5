@@ -3944,6 +3944,8 @@ contains
     type is (fmr_b110_physical_forcing_t)
       if(allocated(self%macropore_config))then
         if(self%macropore_config%variable_surface_conductivity.and..not.forcing%experimental_process_combinations)return
+        if(self%macropore_config%rate_template%limiter%conservative_storage_bounds.and. &
+           .not.forcing%experimental_process_combinations)return
       end if
       if (.not. allocated(forcing%subsurface_irrigation_source) .or. .not. allocated(forcing%root_extraction_sink)) return
       if (size(forcing%subsurface_irrigation_source) /= n .or. size(forcing%root_extraction_sink) /= n) return

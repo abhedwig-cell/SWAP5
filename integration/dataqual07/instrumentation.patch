@@ -1,0 +1,466 @@
+diff --git a/src/runtime/mod_fmr_serialized_reference_backend.f90 b/src/runtime/mod_fmr_serialized_reference_backend.f90
+index 4a2cc64..ef14d32 100644
+--- a/src/runtime/mod_fmr_serialized_reference_backend.f90
++++ b/src/runtime/mod_fmr_serialized_reference_backend.f90
+@@ -2520,7 +2520,9 @@ contains
+ 
+     if(self%model%water_flux_temporal%enabled)then
+       if(.not.water_flux_trial_admitted(self,parameters,forcing,template,config))then
++      print *, 'DQ07_REJECT_SITE',2523
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2524
+         return
+       end if
+     end if
+@@ -2555,7 +2557,9 @@ contains
+          .not.(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.and. &
+          parameters%boesten_evaporation_active)).or. &
+          template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)then
++      print *, 'DQ07_REJECT_SITE',2558
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2559
+         return
+       end if
+     end if
+@@ -2576,7 +2580,9 @@ contains
+           template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. &
+           self%model%rfm_configuration%enabled .or. &
+           self%model%fixed_weir_surface_water_active) then
++      print *, 'DQ07_REJECT_SITE',2579
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2580
+         return
+       end if
+     end if
+@@ -2588,24 +2594,34 @@ contains
+     if (.not. self%initialized .or. column%backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
+         template%compatible_backend_id /= FMR_BACKEND_SERIALIZED_REFERENCE .or. &
+         column%template_id /= template%template_id .or. column%column_id <= 0_int64) then
++      print *, 'DQ07_REJECT_SITE',2591
+       call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2592
+       return
+     end if
+     if(allocated(parameters%mobile_dispersion).and.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)then
++      print *, 'DQ07_REJECT_SITE',2595
+       call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2596
+       return
+     end if
+     if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
+       if (.not. allocated(forcing%c_drain_salt)) then
++      print *, 'DQ07_REJECT_SITE',2600
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2601
+         return
+       end if
+       if (.not. fmr_c_drain_salt_matches_trial(forcing%c_drain_salt, column%forcing_handle, t0, t1)) then
++      print *, 'DQ07_REJECT_SITE',2604
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2605
+         return
+       end if
+       if (.not. allocated(forcing%soil_salt_boundary)) then
++      print *, 'DQ07_REJECT_SITE',2608
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2609
+         return
+       end if
+       select case (template%solute_state_layout_id)
+@@ -2623,7 +2639,9 @@ contains
+         soil_salt_boundary_ok = .false.
+       end select
+       if (.not. soil_salt_boundary_ok) then
++      print *, 'DQ07_REJECT_SITE',2626
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2627
+         return
+       end if
+       if (config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. &
+@@ -2632,14 +2650,18 @@ contains
+           template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED)) .or. parameters%drainage_response_active .or. &
+           parameters%black_evaporation_active .or. parameters%boesten_evaporation_active .or. &
+           self%model%rfm_configuration%enabled .or. self%model%fixed_weir_surface_water_active) then
++      print *, 'DQ07_REJECT_SITE',2635
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2636
+         return
+       end if
+       if(allocated(parameters%mobile_dispersion))then
+         if(template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED.or. &
+           .not.fmr_mobile_dispersion_matches_hydraulic_owner(parameters).or. &
+           .not.self%model%base_salt_temporal_policy%transport%valid())then
++      print *, 'DQ07_REJECT_SITE',2642
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2643
+           return
+         end if
+       end if
+@@ -2647,7 +2669,9 @@ contains
+         if (parameters%macropore_active .or. config%transaction%temporal_tolerance /= 1.0_real64 .or. &
+             .not. self%model%base_salt_temporal_policy%valid() .or. &
+             template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE) then
++      print *, 'DQ07_REJECT_SITE',2650
+           call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2651
+           return
+         end if
+       else
+@@ -2655,27 +2679,37 @@ contains
+             parameters%soil_temperature_active.or. &
+             .not.ieee_is_finite(parameters%salt_temporal_tolerance_mg_cm2).or. &
+             parameters%salt_temporal_tolerance_mg_cm2<=0.0_real64) then
++      print *, 'DQ07_REJECT_SITE',2658
+           call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2659
+           return
+         end if
+         if (.not.allocated(parameters%macropore%matrix_area_fraction)) then
++      print *, 'DQ07_REJECT_SITE',2662
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2663
+           return
+         end if
+         if (parameters%macropore%shrinkage%enabled.or. &
+             any(.not.ieee_is_finite(parameters%macropore%matrix_area_fraction)).or. &
+             any(parameters%macropore%matrix_area_fraction<=0.0_real64).or. &
+             any(parameters%macropore%matrix_area_fraction>1.0_real64)) then
++      print *, 'DQ07_REJECT_SITE',2669
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2670
+           return
+         end if
+       end if
+     else if (parameters%root_salinity_active) then
++      print *, 'DQ07_REJECT_SITE',2674
+       call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2675
+       return
+     end if
+     if (.not. fmr_solute_state_layout_known(template%solute_state_layout_id)) then
++      print *, 'DQ07_REJECT_SITE',2678
+       call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2679
+       return
+     end if
+     composed_rutter_boesten_macro = &
+@@ -2685,7 +2719,9 @@ contains
+     if (self%model%rutter_active) then
+       ! Preserve the independently qualified layouts; no combined Rutter/salt profile.
+       if (template%solute_state_layout_id /= FMR_SOLUTE_STATE_LAYOUT_NONE) then
++      print *, 'DQ07_REJECT_SITE',2688
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2689
+         return
+       end if
+       if (template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+@@ -2703,32 +2739,44 @@ contains
+            .not.(composed_rutter_boesten_macro.and.parameters%bottom_mode==3.and. &
+              .not.parameters%swbotb3_explicit_active)) .or. &
+           .not. self%model%soil_water_selection%uses_reference()) then
++      print *, 'DQ07_REJECT_SITE',2706
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2707
+         return
+       end if
+     end if
+     if(.not.fmr_frost_divdra_pair_valid(parameters,forcing))then
++      print *, 'DQ07_REJECT_SITE',2711
+       call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2712
+       return
+     end if
+     if (.not. fmr_serialized_rossfast_preflight(self, template, parameters, forcing, config, t0, t1)) then
++      print *, 'DQ07_REJECT_SITE',2715
+       call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2716
+       return
+     end if
+     if (self%model%fixed_weir_surface_water_active) then
+       if (parameters%drainage_response_active) then
++      print *, 'DQ07_REJECT_SITE',2720
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2721
+         return
+       end if
+       if (.not. self%model%fixed_weir_surface_water_configured .or. &
+           template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER .or. &
+           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+           config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF .or. parameters%snow_active) then
++      print *, 'DQ07_REJECT_SITE',2727
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2728
+         return
+       end if
+     else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER) then
++      print *, 'DQ07_REJECT_SITE',2731
+       call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2732
+       return
+     end if
+     self%model%macropore_reduction_continuation_enabled = .false.
+@@ -2741,7 +2789,9 @@ contains
+       self%model%temporal_indicator_history_enabled = .false.
+       self%model%macropore_reduction_continuation_enabled = .true.
+     case default
++      print *, 'DQ07_REJECT_SITE',2744
+       call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2745
+       return
+     end select
+     if (.not. fmr_optional_state_layout_known(template%optional_state_layout_id)) then
+@@ -2750,13 +2800,16 @@ contains
+       candidate = kernel_candidate_state_t()
+       diagnostics = kernel_diagnostics_t()
+       diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2753
+       return
+     end if
+     if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_RFM) then
+       if (.not. self%model%rfm_configuration%valid() .or. parameters%macropore_active .or. &
+           template%numerical_continuation_layout_id /= FMR_NUMERICAL_CONTINUATION_NONE .or. &
+           .not. self%model%soil_water_selection%uses_reference()) then
++      print *, 'DQ07_REJECT_SITE',2759
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2760
+         return
+       end if
+     end if
+@@ -2774,6 +2827,7 @@ contains
+         candidate = kernel_candidate_state_t()
+         diagnostics = kernel_diagnostics_t()
+         diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2777
+         return
+       end if
+     else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_MACROPORE .or. &
+@@ -2784,6 +2838,7 @@ contains
+       candidate = kernel_candidate_state_t()
+       diagnostics = kernel_diagnostics_t()
+       diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2787
+       return
+     end if
+     if (parameters%black_evaporation_active) then
+@@ -2796,6 +2851,7 @@ contains
+         candidate = kernel_candidate_state_t()
+         diagnostics = kernel_diagnostics_t()
+         diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2799
+         return
+       end if
+     else if (parameters%boesten_evaporation_active) then
+@@ -2811,6 +2867,7 @@ contains
+         candidate = kernel_candidate_state_t()
+         diagnostics = kernel_diagnostics_t()
+         diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2814
+         return
+       end if
+     else if (template%optional_state_layout_id == FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION .or. &
+@@ -2822,6 +2879,7 @@ contains
+       candidate = kernel_candidate_state_t()
+       diagnostics = kernel_diagnostics_t()
+       diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2825
+       return
+     else if (parameters%soil_temperature_active) then
+       if (template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE .or. &
+@@ -2831,6 +2889,7 @@ contains
+         candidate = kernel_candidate_state_t()
+         diagnostics = kernel_diagnostics_t()
+         diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2834
+         return
+       end if
+     else if (parameters%snow_active) then
+@@ -2840,6 +2899,7 @@ contains
+         candidate = kernel_candidate_state_t()
+         diagnostics = kernel_diagnostics_t()
+         diagnostics%admission_rejections = 1
++      print *, 'DQ07_RETURN_SITE',2843
+         return
+       end if
+     end if
+@@ -2861,15 +2921,21 @@ contains
+     if(anchored_ceiling)then
+       if(.not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters).and. &
+          self%model%accepted_water_flux_trace_enabled.and.allocated(forcing%legacy_swbotb3_implicit_control)))then
++      print *, 'DQ07_REJECT_SITE',2864
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2865
+         return
+       end if
+       if(.not.allocated(forcing%rutter))then
++      print *, 'DQ07_REJECT_SITE',2868
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2869
+         return
+       end if
+       if(.not.forcing%rutter%matrix_source_area_partition)then
++      print *, 'DQ07_REJECT_SITE',2872
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2873
+         return
+       end if
+     end if
+@@ -2884,17 +2950,23 @@ contains
+           parameters%bottom_mode/=7.or.parameters%elasticity_active.or.parameters%hysteresis_active.or. &
+           parameters%swkmean/=1.or.parameters%ksatexm_extension_active.or.parameters%conductivity_power_tail_active.or. &
+           allocated(parameters%micro_de_willigen).or.allocated(parameters%bartholomeus)) then
++      print *, 'DQ07_REJECT_SITE',2887
+         call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2888
+         return
+       end if
+       if (config%transaction%temporal_mode==TX_TEMPORAL_MODEL_CERTIFICATE) then
+         if (.not.config%model_temporal_indicator_budget_available.or. &
+             .not.ieee_is_finite(config%model_temporal_indicator_budget)) then
++      print *, 'DQ07_REJECT_SITE',2893
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2894
+           return
+         end if
+         if (config%model_temporal_indicator_budget<=0.0_real64) then
++      print *, 'DQ07_REJECT_SITE',2897
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2898
+           return
+         end if
+         trial_config%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+@@ -2905,62 +2977,82 @@ contains
+     end if
+     if (self%model%rutter_active) then
+       if (.not. allocated(forcing%rutter) .or. .not. forcing%rutter%source_window%valid()) then
++      print *, 'DQ07_REJECT_SITE',2908
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2909
+         return
+       end if
+       if(forcing%rutter%matrix_source_area_partition)then
+         if(.not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters).and. &
+           self%model%accepted_water_flux_trace_enabled))then
++      print *, 'DQ07_REJECT_SITE',2914
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2915
+           return
+         end if
+       end if
+       call committed%snapshot(accepted_snapshot, rutter_snapshot_available)
+       if (.not. rutter_snapshot_available) then
++      print *, 'DQ07_REJECT_SITE',2920
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2921
+         return
+       end if
+       select type (rutter_physical => accepted_snapshot)
+       class is (fmr_b110_physical_state_t)
+         if (.not. allocated(rutter_physical%rutter)) then
++      print *, 'DQ07_REJECT_SITE',2926
+           call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2927
+           return
+         end if
+         rutter_accepted_state = rutter_physical%rutter
+       class default
++      print *, 'DQ07_REJECT_SITE',2931
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2932
+         return
+       end select
+       if (.not. rutter_accepted_state%source_window_initialized()) then
+         if (abs(t0 - forcing%rutter%source_window%start_time()) > &
+             64.0_real64 * epsilon(1.0_real64) * max(1.0_real64, abs(t0))) then
++      print *, 'DQ07_REJECT_SITE',2937
+           call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2938
+           return
+         end if
+         call initialize_rutter_source_state(forcing%rutter%source_window, rutter_accepted_state%canopy_storage(), &
+              rutter_accepted_state, rutter_prepare_status)
+         if (rutter_prepare_status /= RUTTER_WINDOW_OK) then
++      print *, 'DQ07_REJECT_SITE',2943
+           call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2944
+           return
+         end if
+       end if
+       rutter_source_origin = rutter_accepted_state%accepted_until()
+       if (abs(rutter_source_origin - t0) > 64.0_real64 * epsilon(1.0_real64) * &
+           max(1.0_real64, abs(t0), abs(rutter_source_origin))) then
++      print *, 'DQ07_REJECT_SITE',2950
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2951
+         return
+       end if
+       call prepare_rutter_source_trial(forcing%rutter%source_window, rutter_accepted_state, t1, &
+            forcing%rutter%process, rutter_result, rutter_trial, rutter_diagnostics, rutter_prepare_status)
+       if (rutter_prepare_status /= RUTTER_WINDOW_OK .or. rutter_diagnostics%status /= RUTTER_OK .or. &
+           .not. rutter_diagnostics%result_produced) then
++      print *, 'DQ07_REJECT_SITE',2957
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2958
+         return
+       end if
+       call accept_rutter_source_trial(forcing%rutter%source_window, rutter_accepted_state, rutter_trial, &
+            rutter_candidate_state, rutter_prepare_status)
+       if (rutter_prepare_status /= RUTTER_WINDOW_OK) then
++      print *, 'DQ07_REJECT_SITE',2963
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2964
+         return
+       end if
+       rutter_rain_amount = forcing%rutter%source_window%aggregate_value() * (t1 - t0) / &
+@@ -2975,7 +3067,9 @@ contains
+           abs(rutter_residual) > 1024.0_real64 * epsilon(1.0_real64) * &
+           max(1.0_real64, abs(rutter_total_input), abs(rutter_surface_output), &
+               abs(rutter_storage_change), abs(rutter_result%reservoir_outflow_cm_per_day * (t1 - t0)))) then
++      print *, 'DQ07_REJECT_SITE',2978
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2979
+         return
+       end if
+       rutter_sink_total = sum(forcing%root_extraction_sink)
+@@ -2983,18 +3077,24 @@ contains
+         ! Plain substep uptake owns the sink. Give it the canopy-adjusted demand,
+         ! without requiring a second precomputed extraction source.
+         if(any(forcing%root_extraction_sink/=0.0_real64))then
++      print *, 'DQ07_REJECT_SITE',2986
+           call reject_backend_trial(result,candidate,diagnostics)
++      print *, 'DQ07_RETURN_SITE',2987
+           return
+         end if
+         trial_forcing%substep_root%request%potential_transpiration=rutter_result%potential_transpiration_cm_per_day
+       else
+       if (.not. ieee_is_finite(rutter_sink_total) .or. rutter_sink_total < 0.0_real64) then
++      print *, 'DQ07_REJECT_SITE',2992
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2993
+         return
+       end if
+       if (rutter_sink_total <= tiny(1.0_real64)) then
+         if (rutter_result%potential_transpiration_cm_per_day > tiny(1.0_real64)) then
++      print *, 'DQ07_REJECT_SITE',2997
+           call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',2998
+           return
+         end if
+         rutter_scale = 0.0_real64
+@@ -3002,7 +3102,9 @@ contains
+         rutter_scale = rutter_result%potential_transpiration_cm_per_day / rutter_sink_total
+       end if
+       if (.not. ieee_is_finite(rutter_scale) .or. rutter_scale < 0.0_real64) then
++      print *, 'DQ07_REJECT_SITE',3005
+         call reject_backend_trial(result, candidate, diagnostics)
++      print *, 'DQ07_RETURN_SITE',3006
+         return
+       end if
+       trial_forcing%root_extraction_sink = forcing%root_extraction_sink * rutter_scale
+@@ -3044,6 +3146,7 @@ contains
+     self%model%trusted_prepared_default_mvg = .false.
+     if (self%model%accepted_water_flux_trace_enabled .and. result%completed) then
+       call materialize_accepted_water_flux_trace(self%model,t0,t1,soil_salt_boundary_ok)
++      print *, 'DQ07_REJECT_SITE',3047
+       if (.not.soil_salt_boundary_ok) call reject_backend_trial(result,candidate,diagnostics)
+     end if
+     ! Transaction contexts have left scope after fmr_trial_from_checkpoint.

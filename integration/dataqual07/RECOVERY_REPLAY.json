@@ -1,0 +1,30 @@
+{
+  "capsule_sha256": "2f21bd0daf8177fa19c7841ca07e25b526cfca14bd237baf60c2e394728e9b5b",
+  "returncode": 0,
+  "seconds": 7.850701233000109,
+  "executable_sha256": "f79863c4d74d8f93fdd8715fbc65cd49cab55a85752275c08d668820dd17a8a3",
+  "exact_files": {
+    "state.csv": true,
+    "temperature.csv": true,
+    "restart.bin": true
+  },
+  "command": [
+    "/tmp/dq07-extracted-replay/native",
+    "input.nml",
+    "-",
+    "2",
+    "input.swp",
+    "macro.nml",
+    "501385694256155db20e3f7fc955ff1a02ad4f7a3bb25704b3ada355f513fac9",
+    "1.4424999999973807",
+    "anchored-cauchy",
+    "0.0001",
+    "experimental",
+    "source-surface-demand",
+    "perched-jacobian",
+    "conservative-macro-storage"
+  ],
+  "stdout_sha256": "5094021d044265d0af4b626bdd78eada8f54749523beaf7895c599974da93b0e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "replayed_target": 1.4424999999973807
+}

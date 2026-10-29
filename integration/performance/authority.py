@@ -197,6 +197,8 @@ def verify_qualification():
             'source_tree': git('rev-parse', 'HEAD:src'), 'current_source_tree': git('rev-parse', 'HEAD:src')}
 
 def fsi35_successors():
+    if (ROOT/'integration/dataqual07/STATUS.json').is_file():
+        return runpy.run_path(str(ROOT/'integration/audits/verify_dataqual07_current.py'))['fsi35_successors']()
     if (ROOT/'integration/dataqual06/STATUS.json').is_file():
         return runpy.run_path(str(ROOT/'integration/audits/verify_dataqual06_current.py'))['fsi35_successors']()
     if (ROOT/'integration/dataqual05/STATUS.json').is_file():

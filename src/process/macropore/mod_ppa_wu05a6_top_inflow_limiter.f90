@@ -4,6 +4,8 @@ module mod_ppa_wu05a6_top_inflow_limiter
   private
 
   type, public :: standard_inflow_limit_request_t
+    ! Numerical execution policy; legacy production deadbands remain the default.
+    logical :: conservative_storage_bounds = .false.
     integer :: num_domains = 0
     real(real64), allocatable :: accepted_storage_cm(:)
     real(real64), allocatable :: maximum_storage_cm(:)
@@ -75,13 +77,15 @@ contains
 
     real(real64), allocatable :: inflow_total(:), rejected_top(:), deficit(:), deficit_rel(:), outflow_excess(:)
     real(real64) :: temporary_storage, excess, top_potential, factor, pp_total, share, transfer
-    real(real64) :: requested_top_total, final_top_total
+    real(real64) :: requested_top_total, final_top_total, storage_deadband, available_outflow
     integer, allocatable :: order(:)
     integer :: nd,id,jd,i,j,tmp
 
     result=standard_inflow_limit_result_t()
     if(.not.request%valid())return
     nd=request%num_domains
+    storage_deadband=1.0e-7_real64
+    if(request%conservative_storage_bounds)storage_deadband=0.0_real64
     allocate(result%inflow_fraction(nd),result%accepted_top_vertical_cm(nd), &
          result%accepted_top_lateral_cm(nd),result%accepted_interflow_sat_cm(nd), &
          result%accepted_matrix_sat_cm(nd),result%redistributed_top_cm(nd),result%outflow_fraction(nd), &
@@ -103,7 +107,7 @@ contains
 
     do id=1,nd
       temporary_storage=request%accepted_storage_cm(id)+inflow_total(id)-request%potential_outflow_cm(id)
-      if(temporary_storage>request%maximum_storage_cm(id)+1.0e-7_real64 .and. inflow_total(id)>0.0_real64)then
+      if(temporary_storage>request%maximum_storage_cm(id)+storage_deadband .and. inflow_total(id)>0.0_real64)then
         excess=temporary_storage-request%maximum_storage_cm(id)
         result%inflow_fraction(id)=max(0.0_real64,1.0_real64-excess/inflow_total(id))
       end if
@@ -123,6 +127,13 @@ contains
     result%rejected_top_before_redistribution_cm=sum(rejected_top)
     excess=result%rejected_top_before_redistribution_cm
     deficit=request%redistribution_capacity_cm
+    if(request%conservative_storage_bounds)then
+      ! Existing top and matrix inputs already consume capacity. A receiving
+      ! domain may redistribute only the room remaining after those receipts.
+      deficit=min(deficit,max(0.0_real64,request%maximum_storage_cm-request%accepted_storage_cm - &
+        result%accepted_top_vertical_cm-result%accepted_top_lateral_cm - &
+        result%accepted_interflow_sat_cm-result%accepted_matrix_sat_cm+request%potential_outflow_cm))
+    end if
     do id=1,nd
       if(request%maximum_storage_cm(id)>1.0e-30_real64)then
         deficit_rel(id)=deficit(id)/request%maximum_storage_cm(id)
@@ -168,8 +179,20 @@ contains
     result%returned_surface_cm=max(0.0_real64,excess)
 
     do id=1,nd
+      if(request%conservative_storage_bounds)then
+        ! Use accepted inflows after limiting and redistribution. Compute the
+        ! available stock directly, avoiding 1-excess/outflow cancellation near
+        ! exhaustion. The same fraction scales every outgoing process below.
+        available_outflow=max(0.0_real64,request%accepted_storage_cm(id) + &
+          result%accepted_top_vertical_cm(id)+result%accepted_top_lateral_cm(id) + &
+          result%accepted_interflow_sat_cm(id)+result%accepted_matrix_sat_cm(id) - &
+          request%minimum_storage_cm(id))
+        outflow_excess(id)=max(0.0_real64,request%potential_outflow_cm(id)-available_outflow)
+        if(request%potential_outflow_cm(id)>0.0_real64) &
+          result%outflow_fraction(id)=min(1.0_real64,available_outflow/request%potential_outflow_cm(id))
+      end if
       result%residual_outflow_excess_cm(id)=outflow_excess(id)
-      if (outflow_excess(id)>1.0e-7_real64) then
+      if (.not.request%conservative_storage_bounds.and.outflow_excess(id)>1.0e-7_real64) then
         if (request%potential_outflow_cm(id)>outflow_excess(id)) then
           result%outflow_fraction(id)=max(0.0_real64, &
                1.0_real64-outflow_excess(id)/request%potential_outflow_cm(id))

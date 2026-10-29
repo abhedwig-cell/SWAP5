@@ -17,6 +17,7 @@ def perf_projection():
  hook="    if (ROOT/'"+STATUS+"').is_file():\n        return runpy.run_path(str(ROOT/'"+SELF+"'))['fsi35_successors']()\n"
  return raw.replace(b'def fsi35_successors():\n',b'def fsi35_successors():\n'+hook.encode(),1)
 def source(reader=lambda p:(ROOT/p).read_bytes(),changed=None):
+ if (ROOT/'integration/dataqual07/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual07_current.py'))['source'](reader,changed)
  s=json.loads(reader(STATUS));assert s['baseline']==BASE and s['implemented']and s['tested']
  git('merge-base','--is-ancestor',BASE,'HEAD')
  assert not git('diff','HEAD','--','src','app','tools','tests','integration/audits','integration/performance'),'unpersisted science'
@@ -83,13 +84,17 @@ def validate(f):
  ref=js('reference/RESULT.json');assert ref['reference']['source_tree']['manifest_sha256']=='5bab54598c3519c1b1f2f313431ba0947f39c9673eb1fbc7eec719477f9f2d0e'
  assert len(ref['cases'])==3 and all(x['complete']and x['returncode']==100 for x in ref['cases'])
  return dict(dataqual06_tested=True,qualified=True,production_admission_changed=False,full_historical_closure=False,measured=r)
-def verify():source();return validate(capsule())
+def verify():
+ if (ROOT/'integration/dataqual07/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual07_current.py'))['verify']()
+ source();return validate(capsule())
 def fsi35_successors():
+ if (ROOT/'integration/dataqual07/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual07_current.py'))['fsi35_successors']()
  source();f=capsule();validate(f)
  deps=json.loads((ROOT/'integration/audits/FCI93_NON_M1_COMPILE_DEPENDENCIES_20261011.json').read_bytes())['dependencies']
  assert json.loads(f['fsi35/RESULT.json'])['source']=={d['path']:sha((ROOT/d['path']).read_bytes())for d in deps}
  return {d['path']:dict(historical_blob=d['blob'],canonical_blob=git('rev-parse','HEAD:'+d['path']))for d in deps}
 def self_test():
+ if (ROOT/'integration/dataqual07/STATUS.json').is_file():return __import__('runpy').run_path(str(ROOT/'integration/audits/verify_dataqual07_current.py'))['self_test']()
  source();f=capsule();validate(f);passed=[]
  def reject(label,fn):
   try:fn()

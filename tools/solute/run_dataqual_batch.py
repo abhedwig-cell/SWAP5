@@ -88,6 +88,7 @@ def main():
    cmd=[sys.executable,str(ROOT/'tools/solute/run_native_water.py'),str(inputs/'swap.swp'),'--bundle',str(bundle),'--output',str(case/'run'),'--mode',r['mode'],
     '--memory-mib',str(scenario.get('memory_mib',spec.get('memory_mib',1024))),'--stop-after',str(scenario['days']),'--timeout-seconds',str(scenario.get('timeout_seconds',spec['timeout_seconds']))]
    if 'solver_max_iterations'in scenario:cmd+=['--solver-max-iterations',str(scenario['solver_max_iterations'])]
+   if scenario.get('conservative_macro_storage'):cmd+=['--conservative-macro-storage']
    if scenario.get('perched_jacobian'):cmd+=['--perched-jacobian']
    if scenario.get('source_surface_demand'):cmd+=['--source-surface-demand']
    if 'restart_from'in scenario:
@@ -117,7 +118,7 @@ def main():
    if r['execution_complete']and not r['physical_complete']:r['failure']='native completed; endpoint/certificate qualification not established'
    r['qualification_category']=classify(r,log)
    r['qualification_basis']='finite endpoint,theta bounds,4 independent water certificates<=1e-10cm,no mass rejections,target reached,committed file'if r['physical_complete']else'not_established'
-   r['process_options']={k:scenario.get(k,v)for k,v in [('mode','experimental'),('source_surface_demand',False),('perched_jacobian',False),('solver_max_iterations',64),('anchored',True),('entry_width_cm',1e-4)]}
+   r['process_options']={k:scenario.get(k,v)for k,v in [('mode','experimental'),('source_surface_demand',False),('perched_jacobian',False),('conservative_macro_storage',False),('solver_max_iterations',64),('anchored',True),('entry_width_cm',1e-4)]}
    r['configuration_sha256']=hashlib.sha256(json.dumps(dict(inputs=r['input_sha256'],options=r['process_options']),sort_keys=True).encode()).hexdigest()
    r['failure_category']='none'if r['status']=='PASS'else'timeout'if r['status']=='CENSORED'else'admission_or_numerical_rejection'if rejected else'input_or_execution_rejection'
    if scenario.get('reference'):

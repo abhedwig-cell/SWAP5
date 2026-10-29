@@ -1,5 +1,18 @@
 # SWAP5 Status-A current architecture
 
+DATAQUAL07 candidate (PR1467) implements an explicit default-off experimental
+macropore stock policy: outgoing fluxes respect available water and redistributed
+input respects remaining capacity. The reproduced1.33 trace rejection is repaired
+without relaxed balance/trace/temporal tolerances. Final-source53 scenario rows/60
+native processes yield6 extra water-qualified configurations,77→83; all6 also pass
+paired legacy policy at the same60s budget, so this count gain is expanded execution,
+not code-only attribution. Deduplicated DATAQUAL05–07 days83.050→93.6185;151 distinct
+configurations started, all variants of one original project. Two O0/O2 and split
+restarts are exact; both2day predecessor routes remain exact. Original integral
+reaches2.748 but still fails the next window with exact rollback. No full431 parity,
+seasonal/year-boundary closure or production expansion. Admission authority:
+`integration/dataqual07/STATUS.json`, `RESULTS.md` and any later actual merge receipt.
+
 DATAQUAL05 is integrated by PR1464, actual merge
 `a96cf1456dd4b4e7f756ebb0e79872ba9442d715`, exact qualified tree
 `5c23a7a1c9043963ed28588e4017c99ff4d7f007`. Actual-merge owner/raw checks
