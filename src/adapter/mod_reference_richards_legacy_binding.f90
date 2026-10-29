@@ -382,6 +382,16 @@ contains
                request%step_duration * result%unrounded_mass_balance_residual
        end if
 
+       if(request%boundary%bottom_mode==1.and..not.ws%state_binding%fldecdt.and. &
+          .not.ws%legacy_worker%control%request_dt_reduction)then
+          ! Inside the profile HeadCalc returns its original saturated-column
+          ! flux integration. Below it, use the existing source fluxes() owner
+          ! grouping, just as for a prescribed lower-face pressure head.
+          if(ws%state_binding%fllowgwl) &
+               call materialize_prescribed_head_bottom_flux(request,ws%richards,ws%state_binding)
+          ws%state_binding%gwl=request%boundary%bottom_head
+       end if
+
        ! Native SWAP prescribed-qbot enters the implemented bottom residual as
        ! F_N(...,qbot)=...-qbot. Therefore dF/dqbot=-e_N and implicit
        ! differentiation gives J * dh/dqbot = +e_N. Reuse the final normal
@@ -561,9 +571,23 @@ contains
        route = 'legacy-min-dt-deferred'
        return
     end if
+    if (request%boundary%bottom_mode == 1) then
+       route = 'prescribed-groundwater-domain-deferred'
+       if (.not. request%physical%prescribed_groundwater_active) return
+       if (request%physical%macropore_active.or.request%request_interface_sensitivity) return
+       if(request%numerical%conductivity_mean_method/=1) return
+       if(request%numerical%consistent_provider_conductivity) return
+       if (request%numerical%reuse_trial_head.or.request%numerical%picard_conductivity_iteration) return
+       if (.not.ieee_is_finite(request%boundary%bottom_head)) return
+       if (request%boundary%bottom_head>=request%parameters%z(1)-1.0e-4_real64) return
+    else if (request%physical%prescribed_groundwater_active) then
+       route = 'prescribed-groundwater-mode-mismatch'
+       return
+    end if
     if (request%boundary%bottom_mode /= 7 .and. request%boundary%bottom_mode /= -2 .and. &
         request%boundary%bottom_mode /= 5 .and. request%boundary%bottom_mode /= 2 .and. &
-        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8) then
+        request%boundary%bottom_mode /= 3 .and. request%boundary%bottom_mode /= 8 .and. &
+        request%boundary%bottom_mode /= 1) then
        route = 'legacy-bottom-mode-deferred'
        return
     end if

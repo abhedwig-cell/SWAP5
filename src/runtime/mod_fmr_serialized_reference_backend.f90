@@ -329,6 +329,7 @@ module mod_fmr_serialized_reference_backend
     logical :: prepared_default_mvg_available = .false.
     type(b110_default_mvg_parameters_t) :: prepared_default_mvg
     integer :: bottom_mode = 7
+    logical :: prescribed_groundwater_active = .false.
     logical :: swbotb3_explicit_active = .false.
     logical :: profile_groundwater_projection = .false.
     real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
@@ -844,6 +845,7 @@ module mod_fmr_serialized_reference_backend
     type(crop_bartholomeus_input_t), allocatable :: crop_oxygen
     real(real64), allocatable :: projection_zero_direction(:)
     integer :: bottom_mode = 7
+    logical :: prescribed_groundwater_active = .false.
     logical :: swbotb3_explicit_active = .false.
     logical :: profile_groundwater_projection = .false.
     real(real64) :: swbotb3_explicit_hdrain_cm = 0.0_real64
@@ -3401,9 +3403,21 @@ contains
         ok = ok .and. .not. allocated(parameters%macropore)
       end if
       ok = ok .and. (parameters%bottom_mode == 7 .or. parameters%bottom_mode == -2 .or. parameters%bottom_mode == 5 .or. &
-           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8) .and. &
+           parameters%bottom_mode == 2 .or. parameters%bottom_mode == 3 .or. parameters%bottom_mode == 8 .or. &
+           (parameters%bottom_mode==1.and.parameters%prescribed_groundwater_active)) .and. &
            parameters%swkimpl == 0 .and. parameters%swsophy == 0 .and. &
            (.not. parameters%tabulated_hydraulics_active .or. allocated(parameters%linear_hydraulic_table))
+      if(parameters%prescribed_groundwater_active)then
+        ! First runtime composition: plain fixed-geometry matrix water. Extra
+        ! physical owners remain separately qualified, never silently omitted.
+        ok=ok.and.parameters%bottom_mode==1.and.self%soil_water_selection%uses_reference().and. &
+          parameters%swkmean==1.and..not.parameters%macropore_active.and..not.parameters%snow_active.and. &
+          .not.parameters%frost_active.and..not.parameters%soil_temperature_active.and. &
+          .not.parameters%black_evaporation_active.and..not.parameters%boesten_evaporation_active.and. &
+          .not.parameters%root_extraction_active.and..not.parameters%drainage_response_active.and. &
+          .not.parameters%hysteresis_active.and..not.parameters%elasticity_active.and. &
+          .not.parameters%weather_trial_warm_start.and..not.parameters%picard_conductivity_iteration
+      end if
       if (parameters%hysteresis_active) then
         ok = ok .and. parameters%bottom_mode == 2 .and. &
              allocated(parameters%hysteresis_parameters) .and. &
@@ -3765,6 +3779,7 @@ contains
       self%direct_retention_active = parameters%direct_retention_active
       self%direct_retention_slot = parameters%prepared_direct_retention_slot
       self%bottom_mode = parameters%bottom_mode
+      self%prescribed_groundwater_active=parameters%prescribed_groundwater_active
       self%swbotb3_explicit_active = parameters%swbotb3_explicit_active
       self%profile_groundwater_projection = parameters%profile_groundwater_projection
       self%swbotb3_explicit_hdrain_cm = parameters%swbotb3_explicit_hdrain_cm
@@ -4827,6 +4842,7 @@ contains
       request%boundary%top_flux = self%top_flux
     end if
     request%boundary%bottom_mode = effective_bottom_mode
+    request%physical%prescribed_groundwater_active=self%prescribed_groundwater_active
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
@@ -6936,6 +6952,12 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
     real(real64)::endpoint,history_bound
+    if(self%prescribed_groundwater_active)then
+      ! Reuse the existing mixed Richards head/storage/Darcy-exchange metric.
+      ! The former exact-identity gate cannot assess an evolving water table.
+      value=fmr_weather_surface_temporal_error(self,full_state,half_state)
+      return
+    end if
     ! Only the new explicit accepted-trace Black composition uses this metric.
     ! C*abs(sqrt(Lfull)-sqrt(Lhalf)) bounds all future dry evaporation-depth
     ! disagreement from LDWET. A sustained wetting reset erases that memory at
@@ -7036,6 +7058,7 @@ contains
     end if
     if (self%bottom_mode /= 7 .and. self%bottom_mode /= -2 .and. self%bottom_mode /= 5 .and. &
         self%bottom_mode /= 2 .and. self%bottom_mode /= 8 .and. &
+        .not.(self%bottom_mode==1.and.self%prescribed_groundwater_active).and. &
         .not.(self%bottom_mode==3.and.self%rutter_active.and.self%macropore_active)) then
       value = huge(0.0_real64)
       return

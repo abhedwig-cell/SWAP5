@@ -307,7 +307,8 @@
         {
           "function": "dynamic_grass",
           "status": "not_implemented",
-          "cause_or_scope": "No WOFOST grass state owner in this driver; original CROPTYPE2/SWWOFOST3."
+          "cause_or_scope": "Development and pre-harvest biomass candidates match original compiled routines on O0/O2. Source management/root-depth/whole-project runtime and persistence remain blocked.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "rain_duration",
@@ -317,7 +318,8 @@
         {
           "function": "bottom",
           "status": "blocked",
-          "cause_or_scope": "Original external SWBOTB1 prescribed groundwater table; route only accepts external Cauchy3."
+          "cause_or_scope": "Explicit scalar SWBOTB1 trials execute through Reference and FMR with balance/rollback/owner restore on O0/O2. Original groundwater-table initialization now imported correctly; full original Grassgrowth process composition and daily source callback remain unexecuted.",
+          "component_evidence": "integration/dataqual13/STATUS.json"
         },
         {
           "function": "matrix_water",
@@ -334,7 +336,15 @@
           "status": "implemented_not_executed",
           "cause_or_scope": "DRAMET3 exists; not executed in the original Grassgrowth composition."
         }
-      ]
+      ],
+      "native_initial_profile": {
+        "nodes": 113,
+        "depth_cm": 600,
+        "source_initial_groundwater_cm": -88,
+        "water_cm": 217.01743631333005,
+        "reference_rounded_water_cm": 217.02,
+        "scope": "Initialization only, not model execution."
+      }
     },
     {
       "project": "3.macroporeflow",
@@ -494,5 +504,12 @@
     "pr": 1472,
     "merge": "4e55baf8ab1889d00cd8594c4dc5519d20430011",
     "scope": "Experimental original Hupsel120-day prefix; no full project/energy admission."
+  },
+  "candidate_scope": {
+    "work_unit": "DATAQUAL13",
+    "canonical_baseline": "5b03f3587d983606f854596b84edc767ea853b5b",
+    "original_grassgrowth_days_executed": 0,
+    "new_original_projects_executed": 0,
+    "canonical_admitted": false
   }
 }

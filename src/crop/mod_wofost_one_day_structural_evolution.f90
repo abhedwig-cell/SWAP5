@@ -49,6 +49,7 @@ module mod_wofost_one_day_structural_evolution
   type, public :: wofost_one_day_update_parameters_t
     real(real64) :: development_stage_end = 2.0_real64
     real(real64) :: leaf_lifespan = 0.0_real64
+    logical :: grass_development = .false.
   end type wofost_one_day_update_parameters_t
 
   type, public :: wofost_one_day_rate_packet_t
@@ -92,15 +93,19 @@ module mod_wofost_one_day_structural_evolution
 
 contains
 
-  subroutine prepare_wofost_one_day_candidate(committed, forcing, t0, t1, candidate, context, status)
+  subroutine prepare_wofost_one_day_candidate(committed, forcing, t0, t1, candidate, context, status, grass_development)
     type(wofost_crop_owner_state_t), intent(in) :: committed
     type(wofost_one_day_forcing_t), intent(in) :: forcing
     real(real64), intent(in) :: t0, t1
     type(wofost_crop_owner_state_t), intent(out) :: candidate
     type(wofost_one_day_window_context_t), intent(out) :: context
     integer, intent(out) :: status
+    logical,intent(in),optional::grass_development
+    logical::grass
     integer :: count
 
+    grass=.false.
+    if(present(grass_development))grass=grass_development
     context = wofost_one_day_window_context_t()
     status = WOFOST_ONE_DAY_OK
 
@@ -131,7 +136,7 @@ contains
       status = WOFOST_ONE_DAY_INVALID_OWNER
       return
     end if
-    if (committed%development_stage >= 1.0_real64 .and. &
+    if (.not.grass.and.committed%development_stage >= 1.0_real64 .and. &
          .not. committed%evolution_continuation%anthesis_reached) then
       status = WOFOST_ONE_DAY_INCONSISTENT_ANTHESIS
       return
@@ -216,7 +221,7 @@ contains
     candidate%biomass%storage_biomass = candidate%biomass%storage_biomass + rates%storage_net_growth_rate
 
     dvr_applied = rates%development_rate
-    if (candidate%development_stage + dvr_applied >= 1.0_real64 .and. &
+    if (.not.parameters%grass_development.and.candidate%development_stage + dvr_applied >= 1.0_real64 .and. &
          .not. candidate%evolution_continuation%anthesis_reached) then
       candidate%evolution_continuation%anthesis_reached = .true.
       dvr_applied = 1.0_real64 - candidate%development_stage

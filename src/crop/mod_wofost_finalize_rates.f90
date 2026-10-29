@@ -8,6 +8,7 @@ module mod_wofost_finalize_rates
   use mod_wofost_prepare_assimilation, only: wofost_prepare_assimilation_result_t
   use mod_wofost_one_day_structural_evolution, only: wofost_accepted_window_aggregates_t, &
        wofost_one_day_rate_packet_t, b110_relative_transpiration
+  use mod_wofost_grass_development,only:grass_development_candidate_t
   implicit none
   private
 
@@ -37,7 +38,7 @@ module mod_wofost_finalize_rates
 
 contains
 
-  subroutine finalize_wofost_one_day_rates(state_view, parameters, prepared, aggregates, forcing, rates, status)
+  subroutine finalize_wofost_one_day_rates(state_view, parameters, prepared, aggregates, forcing, rates, status, grass)
     type(wofost_one_day_rate_state_view_t), intent(in) :: state_view
     type(wofost_rate_parameter_bundle_t), intent(in) :: parameters
     type(wofost_prepare_assimilation_result_t), intent(in) :: prepared
@@ -45,6 +46,7 @@ contains
     type(wofost_finalize_rate_forcing_t), intent(in) :: forcing
     type(wofost_one_day_rate_packet_t), intent(out) :: rates
     integer, intent(out) :: status
+    type(grass_development_candidate_t),intent(in),optional::grass
 
     type(wofost_rate_scalar_parameters_t) :: scalars
     real(real64) :: reltr, dtsum, dvred, dvr
@@ -64,6 +66,12 @@ contains
     status = WOFOST_FINALIZE_RATES_INVALID_PARAMETERS
     if (.not. parameters%ready()) return
     scalars = parameters%scalar_view()
+    if(scalars%grass_development)then
+      if(.not.present(grass))return
+      if(.not.grass%valid.or..not.grass%growth_enabled)return
+    else
+      if(present(grass))return
+    end if
 
     status = WOFOST_FINALIZE_RATES_INVALID_PREPARED
     if (.not. ieee_is_finite(prepared%actual_pgass)) return
@@ -131,6 +139,10 @@ contains
 
     reltr = b110_relative_transpiration(aggregates)
 
+    if(scalars%grass_development)then
+      if(grass%temperature_sum_increment/=dtsum)return
+      dvr=grass%development_rate
+    else
     dvred = 1.0_real64
     if (scalars%development_daylength_mode == 1) then
       dvred = max(0.0_real64, min(1.0_real64, &
@@ -141,6 +153,8 @@ contains
       dvr = dvred * dtsum / scalars%vegetative_temperature_sum_required
     else
       dvr = dtsum / scalars%generative_temperature_sum_required
+    end if
+
     end if
 
     ! Preserve B1.10 update_wofost arithmetic order for the restricted route.
