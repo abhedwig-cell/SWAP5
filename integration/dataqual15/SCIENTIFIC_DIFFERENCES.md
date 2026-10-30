@@ -7,6 +7,28 @@ daily actual-transpiration difference is0.01128904cm and leaf-biomass difference
 is53.21609kg/ha. Whole scientific qualification remains open. The521-day
 measurements below are retained as historical evidence.
 
+
+The accepted-state follow-up now replays2922 actual accepted intervals, including
+7661 stressed node evaluations, in O0/O2. The current standalone factors are
+exactly the actual backend factors. Replacing them by the original owner
+changes integrated uptake by at most1.771e-10cm on the selected days. The whole
+original MACRO uptake owner also reproduces its factor counterfactual, while
+the current whole uptake reproduces native bookkeeping. Source numerical
+refinement alone changes full-project harvest from54049.870947kg/ha at
+DTMAX0.04 to54344.415200kg/ha at0.0025, versus native54354.337kg/ha. This is
+strong numerical-attribution evidence, not yet a frozen acceptance result.
+
+`STRESS_ATTRIBUTION_PREREGISTRATION.json` freezes the next test algorithm before
+two held-out donor refinements. Output-only nodal donor trajectories at0.005
+and0.0025 set quantity-specific numerical envelopes: three times their maximum
+difference plus a source-print/floating-point floor. The held-out0.00125 and
+0.000625 trajectories must independently reduce reference changes and place
+native errors inside every envelope. Potential controls use only the declared
+floor. Pressure uses the existing normalized temporal metric; theta and
+temperature retain their physical units. Day-start LAI is phase-aligned and
+annual initializations are excluded. This bounds observed numerical resolution
+only, not ecological-model uncertainty or unobserved energy terms.
+
 The controlled follow-up is `tests/dataqual15/qualify_stress.py`. It observes
 daily left h/theta/T, root fractions/density, respiration and potential demand
 on days25,72,73 and127, and accepted durations/demand/uptake/deepest-root oxygen

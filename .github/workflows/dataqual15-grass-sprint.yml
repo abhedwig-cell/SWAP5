@@ -50,7 +50,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - name: Authentic original donor with disclosed DTMAX refinement
-        run: python3 -B tests/dataqual15/qualify_donor_timestep.py --output "$RUNNER_TEMP/donor-timestep"
+        run: python3 -B tests/dataqual15/qualify_donor_timestep.py --output "$RUNNER_TEMP/donor-timestep" --profiles
       - uses: actions/upload-artifact@v4
         if: always()
         with:

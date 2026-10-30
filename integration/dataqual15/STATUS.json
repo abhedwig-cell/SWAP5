@@ -89,7 +89,7 @@
   "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
   "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion.",
   "scientific_followup": {
-    "stage": "PAIRED_OXYGEN_AND_TIMESTEP_REFINEMENT_IMPLEMENTED_NOT_YET_EXECUTED",
+    "stage": "WHOLE_UPTAKE_AND_INITIAL_DONOR_REFINEMENT_PASS_HELD_OUT_PROFILE_GATE_PENDING",
     "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
     "full_original_days": 1827,
     "full_proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
@@ -121,6 +121,20 @@
       26
     ],
     "next_action": "Execute real day1 diagnostic trajectories and paired O0/O2 original/current oxygen owners; preserve raw observations and accepted durations",
-    "historical_status_scope": "The pre-existing 521-day fields above remain the PR1476 historical receipt. Current full-period authority is GRASS_UNION_FULL_MANIFEST.json and CANONICAL_FULL_MERGE_RECEIPT.json."
+    "historical_status_scope": "The pre-existing 521-day fields above remain the PR1476 historical receipt. Current full-period authority is GRASS_UNION_FULL_MANIFEST.json and CANONICAL_FULL_MERGE_RECEIPT.json.",
+    "paired_accepted_cases": 2922,
+    "stressed_node_evaluations": 7661,
+    "paired_oxygen_O0_O2": "PASS",
+    "whole_uptake_O0_O2": "PASS",
+    "maximum_owner_only_daily_uptake_difference_cm": 1.770613985291325e-10,
+    "whole_uptake_run": 41071975005,
+    "initial_donor_dtmax_days": [
+      0.04,
+      0.02,
+      0.01,
+      0.005,
+      0.0025
+    ],
+    "held_out_profile_gate": "integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json"
   }
 }
