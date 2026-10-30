@@ -89,7 +89,7 @@ def main():
     needle="call rdsdor('dtmax',1d-7,1d0,source_dtmax)";assert text.count(needle)==1
     text=text.replace(needle,needle+f';source_dtmax=min(source_dtmax,{cap}d0)')
    driver.write_text(text,newline='\n');build=folder/'build';case=folder/'native'
-   command=[sys.executable,'-B',ROOT/'tools/solute/build_grass_startup.py','--compiler',fc,'--input-archive',originals['O2']/'ttobj/libttutil.a','--output',build,'--optimization','O2','--profile','checked','--driver',driver,'--provider-override',backend,'--end','1','--policy','retained']
+   command=[sys.executable,'-B',ROOT/'tools/solute/build_grass_diagnostic.py','--compiler',fc,'--input-archive',originals['O2']/'ttobj/libttutil.a','--output',build,'--optimization','O2','--profile','checked','--driver',driver,'--provider-override',backend,'--end','1','--policy','retained']
    if builds:command+=['--reuse-build',builds['coarse']]
    run(command,'build-'+name,timeout=600);builds[name]=build
    run([sys.executable,'-B',ROOT/'tests/dataqual15/run_original.py','--bundle',build,'--output',case,'--end','140','--capture','24','25','71','72','73','126','127','140','--timeout','2400'],'trajectory-'+name,timeout=2430)
@@ -124,7 +124,9 @@ def main():
     assert abs(amounts['uptake_cm']-float(budget[day-1]['uptake_cm']))<1e-10
     measurement['accepted_substeps'][str(day)]=dict(count=len(rows),minimum_duration_day=min(duration),maximum_duration_day=max(duration),duration_sum_day=math.fsum(duration),**amounts)
    for day in [25,72,73,126,127,140]:
-    checkpoint=case/f'checkpoint-{day}.bin';raw=checkpoint.read_bytes();state=layout(raw)
+    checkpoint=case/f'checkpoint-{day}.bin'
+    if day==140 and not checkpoint.exists():checkpoint=case/'checkpoint.bin'
+    raw=checkpoint.read_bytes();state=layout(raw)
     actual,potential=struct.unpack_from('=dd',raw,state['management']+4)
     measurement['selected_days'][str(day)]['native_harvest_kg_ha']=actual
     measurement['selected_days'][str(day)]['native_potential_harvest_kg_ha']=potential

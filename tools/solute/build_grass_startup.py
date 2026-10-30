@@ -15,16 +15,11 @@ p.add_argument('--profile',choices=['checked','production'],default='checked')
 p.add_argument('--reuse-build',type=Path)
 p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
 p.add_argument('--input-archive',type=Path,required=True)
-p.add_argument('--driver',type=Path,help='Explicit diagnostic application source; production driver is the default')
-p.add_argument('--provider-override',type=Path,action='append',default=[],help='Explicit generated diagnostic module source')
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
-a=p.parse_args();fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
-assert Path(fc).is_file(),('compiler missing',fc)
-assert archive.is_file(),('TTUTIL input archive missing',archive)
-compiler_version=subprocess.check_output([fc,'--version'],text=True).splitlines()[0]
-assert not a.output.exists(),('clean output required',a.output)
-out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
+assert archive.is_file()
 authority=ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(authority.read_bytes())),mode='r:gz')as t:
  original=t.extractfile('SWAP/functions.f90').read().decode('latin1')
@@ -34,19 +29,11 @@ for name in ['afgen_2','rdadortb']:
  assert match;helpers+=match.group()+'\n'
 helper=out/'original_input_helpers.f90';helper.write_text(helpers)
 context=ROOT/'app/solute_column/link_context.f90';driver=ROOT/'app/grass_project/initial_interval.f90'
-if a.driver:driver=a.driver.resolve();assert driver.is_file()
 mapping={}
 for source in list((ROOT/'src').rglob('*.f90'))+[context,ROOT/'app/solute_column/read_swp_water.f90',ROOT/'app/solute_column/read_swp_heat.f90']+list((ROOT/'app/grass_project').glob('*.f90')):
  for name in re.findall(r'^\s*module\s+(\w+)\s*$',source.read_text(),re.M|re.I):
   key=name.lower();assert key not in mapping,(key,source,mapping.get(key));mapping[key]=source
 ordered=[];seen=set();active=set()
-for override in a.provider_override:
- override=override.resolve();assert override.is_file()
- names=re.findall(r'^\s*module\s+(\w+)\s*$',override.read_text(),re.M|re.I)
- assert names,('override has no module',override)
- for name in names:
-  key=name.lower();assert key in mapping,('override has no existing owner',key)
-  mapping[key]=override
 def visit(source):
  if source in seen:return
  assert source not in active,source
@@ -62,7 +49,7 @@ visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 ordered += [helper,driver]
 flags=['-'+a.optimization,'-ffree-line-length-none','-fopenmp']+(['-fcheck=all']if a.profile=='checked'else[])+['-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out)]
 hashes={str(s):sha(s)for s in ordered}
-report=dict(status='BUILDING',profile=a.profile,compiler=compiler_version,
+report=dict(status='BUILDING',profile=a.profile,compiler=subprocess.check_output([fc,'--version'],text=True).splitlines()[0],
  source_sha256=hashes,original_input_archive_sha256=sha(archive),source_authority_sha256=sha(authority),flags=flags,events=[])
 def save():(out/'BUILD.json').write_text(json.dumps(report,indent=2)+'\n')
 def run(command,label,cwd=out,timeout=120):

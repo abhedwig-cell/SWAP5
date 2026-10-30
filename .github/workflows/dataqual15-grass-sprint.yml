@@ -6,6 +6,7 @@ on:
       - .github/workflows/dataqual15-grass-sprint.yml
       - tests/dataqual15/**
       - tools/solute/build_grass_startup.py
+      - tools/solute/build_grass_diagnostic.py
 permissions:
   contents: read
 concurrency:
@@ -35,6 +36,7 @@ jobs:
           set -euo pipefail
           FC=$(command -v gfortran-13)
           python3 -B tests/dataqual15/qualify_stress.py --compiler "$FC" --output "$RUNNER_TEMP/stress" --paired-only --observations "$RUNNER_TEMP/prior-stress/coarse/native"
+          python3 -B tools/solute/build_grass_diagnostic.py --compiler "$FC" --input-archive "$RUNNER_TEMP/stress/original-O2/ttobj/libttutil.a" --output "$RUNNER_TEMP/stress/diagnostic-smoke" --optimization O2 --profile checked --driver "$RUNNER_TEMP/prior-stress/coarse/observed_grass.f90" --provider-override "$RUNNER_TEMP/prior-stress/observed_backend.f90" --end 1 --policy retained
       - uses: actions/upload-artifact@v4
         if: always()
         with:
