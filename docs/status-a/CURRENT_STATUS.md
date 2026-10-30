@@ -1,5 +1,19 @@
 # SWAP5 Status-A current status
 
+DATAQUAL15 candidate (not canonically admitted) removes the original Grassgrowth
+variable-groundwater, first mowing and annual crop/root continuation barriers.
+The same-build original history reaches521 days, with140-day O0/O2 physical
+continuation equality and exact126-to140 and365-to367 disk restarts. Interrupted
+process exits are UNKNOWN; the1827-day target continues from unchanged atomic
+checkpoints. Actual biomass/water-stress differences from4.3.1 are measured;
+full scientific equivalence and production expansion are not claimed. Existing
+boundary, crop, potential, root and thermal owners remain authoritative.
+See `integration/dataqual15/STATUS.json`, `CONTRACT.md` and the single
+`integration/dataqual12/MIGRATION_MATRIX.json`. The isolated Hupsel candidate
+has365-day O0/O2 and494-day original execution evidence at source711f8ce,
+evidence commit132ccc7; its potato continuation is a separate integration task.
+Historical DATAQUAL12–14 paragraphs below describe their bounded admitted scope.
+
 DATAQUAL14 executes original Grassgrowth through active development:68days
 O0/O2 water and exact joint file restart, including5 active days after day63.
 Existing actual/potential WOFOST biomass and SWRD2 root-depth owners publish

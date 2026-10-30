@@ -17,7 +17,8 @@
     "complete_project_migrations": 0,
     "projects_with_inherited_bounded_water_evidence": 1,
     "projects_with_current_bounded_water_evidence": 3,
-    "project_process_cells_scope": "21 explicitly selected original project/function cells; bounded statuses are not a full functional-migration denominator."
+    "project_process_cells_scope": "21 explicitly selected original project/function cells; bounded statuses are not a full functional-migration denominator.",
+    "complete_original_executions": 0
   },
   "projects": [
     {
@@ -356,13 +357,13 @@
         "reference_rounded_water_cm": 217.02,
         "scope": "Initialization only, not model execution."
       },
-      "current_experimental_days": 113,
+      "current_experimental_days": 521,
       "original_oxygen_selector": 2,
       "full_project_migrated": false,
-      "water_qualified_days": 68,
-      "executed_days": 113,
-      "water_qualified_days_O2": 113,
-      "qualified_scope": "68days O0/O2 and exact63+5 file continuation;113days O2 including distinct-biomass78-to113 and distinct-root76-to78 restart. No harvest, varying groundwater, complete energy or historical equivalence."
+      "water_qualified_days": 140,
+      "executed_days": 521,
+      "water_qualified_days_O2": 521,
+      "qualified_scope": "Candidate DATAQUAL15 source76d41a0: original day1->438->521 contiguous same-executable checkpoint chain, interrupted process exits UNKNOWN; 140days checked O0/O2 physical continuation exact; exact126->140 and365->367 same-build restart. Water/heat-accounting residuals checked, original actual biomass/ET differences measured. No full1827, full energy, scientific equivalence or canonical admission claim."
     },
     {
       "project": "3.macroporeflow",
@@ -549,5 +550,49 @@
     "merge": "a9523e97deecf3fddf36b58de85fc353261d3093",
     "pr": 1475,
     "qualified_scope": "Experimental original Grassgrowth:68days O0/O2 water and joint restart,113days O2 including stressed/distinct-root restart. No complete original-project or production scope expansion."
-  }
+  },
+  "dataqual15_current_candidate": {
+    "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+    "grass_source": "76d41a0",
+    "grass_executed_original_days": 521,
+    "grass_O0_O2_qualified_days": 140,
+    "grass_year_boundary_restart_exact": "365->367",
+    "hupsel_source": "711f8ce",
+    "hupsel_evidence_commit": "132ccc7",
+    "hupsel_executed_original_days": 494,
+    "hupsel_O0_O2_qualified_days": 365,
+    "hupsel_remaining": "Original potato crop composition from10May2003; existing physics owners require joint transaction/persistence integration.",
+    "canonical_admitted": false,
+    "complete_original_executions": 0,
+    "fully_scientifically_qualified_projects": 0,
+    "original_inputs_retained": true,
+    "scope": "Experimental candidate execution; source-bound evidence, scientific differences and process exits remain distinct. Hupsel source/evidence is isolated in work/dataqual15-hupsel-codec, not yet combined with this main Grass tree."
+  },
+  "dataqual15_removed_grass_blockers": [
+    {
+      "blocker": "Original time-varying BBC groundwater callback",
+      "demonstrated_day": 114,
+      "kind": "missing_implementation"
+    },
+    {
+      "blocker": "Algebraic saturated-head temporal rejection at groundwater grid crossing",
+      "demonstrated_day": 116,
+      "kind": "numerical_error"
+    },
+    {
+      "blocker": "Persist existing LAIEXP compatibility carryover",
+      "demonstrated_day": 117,
+      "kind": "restart_implementation"
+    },
+    {
+      "blocker": "Original fixed-date mowing with actual/potential continuation",
+      "demonstrated_day": 127,
+      "kind": "missing_implementation"
+    },
+    {
+      "blocker": "Original annual crop/root reset and day-of-year continuation",
+      "demonstrated_day": 367,
+      "kind": "missing_implementation"
+    }
+  ]
 }

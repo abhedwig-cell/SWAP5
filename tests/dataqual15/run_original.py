@@ -7,9 +7,12 @@ assert sha(exe)==build['executable_sha256'];exe.chmod(exe.stat().st_mode|0o100);
 for n,h in build['original_inputs_sha256'].items():
  f=b/'original-interval'/n;assert sha(f)==h;shutil.copyfile(f,out/n)
 shutil.copyfile(b/'original-interval/application.binding',out/'application.binding')
-cmd=[str(exe),str(a.end),'retain-step','100000']+([str(a.restart.resolve())]if a.restart else[]);t=time.monotonic();captured=set();capture_seconds={};censored=False
+origin=None
+if a.restart:
+ origin=a.restart.resolve();shutil.copyfile(origin,out/'restart-origin.bin')
+cmd=[str(exe),str(a.end),'retain-step','100000']+([str(origin)]if origin else[]);t=time.monotonic();captured=set();capture_seconds={};censored=False
 with (out/'stdout').open('wb')as so,(out/'stderr').open('wb')as se:
- (out/'LAUNCH.json').write_text(json.dumps(dict(command=cmd,source_sha256=build['source_sha256'],executable_sha256=sha(exe)),indent=2)+'\n')
+ (out/'LAUNCH.json').write_text(json.dumps(dict(command=cmd,source_sha256=build['source_sha256'],executable_sha256=sha(exe),restart_sha256=sha(origin)if origin else None),indent=2)+'\n')
  proc=subprocess.Popen(cmd,cwd=out,stdout=so,stderr=se)
  while proc.poll() is None:
   try:

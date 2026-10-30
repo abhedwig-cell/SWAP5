@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL15",
   "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
-  "stage": "ORIGINAL_WEIGHTED_EXECUTION_IN_PROGRESS",
+  "stage": "ORIGINAL_SAME_BUILD_CONTINUATION_IN_PROGRESS",
   "owners": [
     "existing SWBOTB1 Richards boundary",
     "immutable existing fmr_hbot5_control_t table",
@@ -28,8 +28,8 @@
     "repeated long Andelst stall"
   ],
   "candidate_source_commit": "76d41a0",
-  "published_identical_tree_commit": "2203fd4a4c1b830b61cd7cb7ab083714f318670f",
-  "local_and_remote_tree": "0d9b8251e70e54c55808c049306bf26e8634efb6",
+  "published_identical_tree_commit": "05e4fad65c4e2ff931c00aa3851984e4cad2119d",
+  "local_and_remote_tree": "15f90f757ac5628ac3455835960156d3d9d0f7df",
   "expensive_selections": {
     "original_O2_full1827": {
       "expected_seconds": 7200,
@@ -68,5 +68,19 @@
     "predecessor_SWKMEAN1": "Superseded experimental numerical executions, full O2 stopped173days, diagnostic predecessor continuation stopped211; excluded from original-controls qualification. O0/O2 and126->140 restart were exact within that predecessor.",
     "current_face_mean": "Source SWKMEAN2 imported; actual Richards and temporal interior Darcy certificate both weighted by dz. Source MAXIT30/MAXBACKTR3/DTMIN1e-6/DTMAX.04/SWKIMPL0 retained.",
     "accuracy_policy": "Canonical SWAP5 stricter nonlinear/pond tolerances and external full-half temporal/mass acceptance are retained; no claim of identical original adaptive timestep or nonlinear stopping settings."
+  },
+  "latest_verified_original_days": 521,
+  "exact_year_transition": "365->367 checkpoint and daily budgets/crop byte exact",
+  "runtime_interruption": "Processes absent after user-turn recovery; checkpoint chain original1->438->521 verified unchanged, native exit statuses of interrupted segments UNKNOWN; continuing to1827.",
+  "measured_first_year_harvest_difference_kg_ha": 89.2828696426659,
+  "completed_original_projects": 0,
+  "fully_scientifically_qualified_projects": 0,
+  "portable_evidence": "integration/dataqual15/EVIDENCE_MANIFEST.json",
+  "portable_verifier": "tests/dataqual15/verify_evidence.py",
+  "pull_request": 1476,
+  "canonical_admitted": false,
+  "docs_checks": {
+    "source": "PASS",
+    "mkdocs_strict": "PASS14.60sec; existing INFO anchor diagnostics, no strict warning failure"
   }
 }
