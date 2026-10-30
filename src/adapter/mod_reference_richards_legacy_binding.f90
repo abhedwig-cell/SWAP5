@@ -575,7 +575,7 @@ contains
        route = 'prescribed-groundwater-domain-deferred'
        if (.not. request%physical%prescribed_groundwater_active) return
        if (request%physical%macropore_active.or.request%request_interface_sensitivity) return
-       if(request%numerical%conductivity_mean_method/=1) return
+       if(request%numerical%conductivity_mean_method/=1.and.request%numerical%conductivity_mean_method/=2) return
        if(request%numerical%consistent_provider_conductivity) return
        if (request%numerical%reuse_trial_head.or.request%numerical%picard_conductivity_iteration) return
        if (.not.ieee_is_finite(request%boundary%bottom_head)) return

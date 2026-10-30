@@ -76,8 +76,8 @@ program grass_initial_interval
  real(real64)::potential_management_factor,deepest_oxygen_integral
  integer::crop_log
  type(grass_development_parameters_t)::development_parameters
- type(grass_management_continuation_t)::management,day_management
- type(grass_development_candidate_t)::development
+ type(grass_management_continuation_t)::management,day_management,potential_management
+ type(grass_development_candidate_t)::development,potential_development
  type(wofost_one_day_update_parameters_t)::updates
  type(wofost_accepted_window_aggregates_t)::aggregates
  type(wofost_one_day_rate_packet_t)::rates
@@ -89,7 +89,7 @@ program grass_initial_interval
  type(wofost_prepare_assimilation_result_t)::assimilation
  type(wofost_oxygen_respiration_t)::respiration
  type(crop_root_biomass_distribution_t)::roots
- type(wofost_rate_table_t)::root_table,height_table
+ type(wofost_rate_table_t)::root_table,height_table,delay_table
  type(crop_solar_geometry_t)::solar
  type(pmdirect_swetr0_weather_t)::weather
  type(pmdirect_swetr0_site_t)::site
@@ -105,8 +105,11 @@ program grass_initial_interval
  real(real64)::surface_resistance,spacing,depth,drainres,infres,date_time,first_end
  real(real64)::clock,cursor,edge,day_end,step_dt,heat_residual,day_residual,day_in,day_out,day_start_water,day_final_water
  real(real64)::day_potential,day_actual,day_drought,day_oxygen
- integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack
- real(real64)::source_dtmax,segment_rain_rate,first_groundwater_observation,first_harvest
+ integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack,source_mean,source_implicit
+ real(real64)::source_dtmax,segment_rain_rate,project_end,mowing_residual,harvested,potential_harvested,delay_value
+ real(real64)::harvest_dates(1024),season_start(16),season_end(16)
+ integer::season_count,season_index,harvest_count,harvest_types(1024),day_of_year
+ real(real64)::year_origin
  real(real64),allocatable::heads(:),cofgen(:,:),conductivity(:),capacity(:),derivative(:),theta100(:),theta500(:)
  real(real64),allocatable::node_sand(:),node_organic(:),node_density(:),cumulative(:)
  integer::nodes,n,m,i,j,k,code,rooted,layers(256),counts(256),node_layer(256),dd(10000),mm(10000),yyyy(10000),date(6),mode,u
@@ -119,15 +122,24 @@ program grass_initial_interval
  call get_command_argument(2,arg)
  call require(len_trim(arg)==0.or.trim(arg)=='retain-step','unknown numerical execution policy')
  numerical%retain_accepted_step_proposal=trim(arg)=='retain-step'
- call require(limit>0d0.and.limit<=366d0,'bounded original startup horizon')
+ call require(limit>0d0.and.limit<=1827d0,'original project horizon')
  call rdinit(74,0,'input.swp')
  call expect('swcrop',1);call expect('swetr',0);call expect('swdivide',1);call expect('swrain',2)
  call expect('swmetdetail',0);call expect('swmacro',0);call expect('swsnow',0);call expect('swfrost',0)
  call expect('swsolu',0);call expect('swhyst',0);call expect('swhea',1);call expect('swcalt',2)
  call expect('swredu',2);call expect('swdra',1);call expect('swirfix',0);call expect('swpondmx',0)
- call rdstim('tstart',origin)
+ call rdstim('tstart',origin);call rdstim('tend',project_end)
+ call rdatim('cropstart',season_start,16,season_count);call rdatim('cropend',season_end,16,n)
+ call require(n==season_count.and.n==5,'original five grass seasons')
+ call rdfint('croptype',counts,256,n);call require(n==5.and.all(counts(:n)==2),'original detailed grass rotation')
  call rdsinr('maxit',5,100,source_maxit);call rdsinr('maxbacktr',1,10,source_maxbacktrack)
  call rdsdor('dtmax',1d-7,1d0,source_dtmax)
+ call rdsint('swkmean',source_mean);call rdsint('swkimpl',source_implicit)
+ call require(source_mean==2.and.source_implicit==0,'original weighted arithmetic frozen conductivity')
+ p%min_step_duration=value('dtmin')
+ ! Canonical strict water/mass acceptance remains unchanged. Import the source
+ ! physical face mean and iteration/time controls; retain stricter SWAP5
+ ! nonlinear accuracy rather than weakening conservation to source tolerances.
  site%latitude_degrees=value('lat');site%altitude_m=value('alt')
  site%wind_measurement_height_m=value('altw');site%humidity_measurement_height_m=value('alth')
  site%angstrom_a=value('angstroma');site%angstrom_b=value('angstromb');site%wind_function_factor=value('fwind')
@@ -148,15 +160,16 @@ program grass_initial_interval
  call rdfdou('bdens',density,256,m);close(74)
  call rdinit(74,0,'swap.bbc');call expect('swbotb',1)
  call rdatim('date1',times,1024,n);call rdfdou('gwlevel',levels,1024,n);close(74)
- first_groundwater_observation=times(1)
- call require(origin<first_groundwater_observation,'startup source groundwater sample domain')
+ allocate(forcing%prescribed_groundwater_control)
+ call forcing%prescribed_groundwater_control%initialize(times(:n),levels(:n),0d0,origin,0d0,project_end-origin+1d0,code)
+ call require(code==0,'source prescribed groundwater table')
  source_gwl=levels(1)
  call import_column_swp_water('input.swp',nodes,width,heads,cofgen,source_pond,initial_bottom_mode=1, &
    allow_ksatexm=.true.,allow_prescribed_groundwater=.true.,initial_groundwater_cm=source_gwl)
  call require(nodes==113.and.sum(width(:nodes))==600d0,'original Grassgrowth geometry')
  call initialize_column_context(width(:nodes))
  p%parameter_set_id=613001_int64;p%active_nodes=nodes;p%z=z;p%dz=dz;p%node_distance=disnod(:nodes);p%cofgen=cofgen
- p%bottom_mode=1;p%prescribed_groundwater_active=.true.;p%swkmean=1;p%max_iterations=source_maxit;p%max_backtracking=source_maxbacktrack
+ p%bottom_mode=1;p%prescribed_groundwater_active=.true.;p%swkmean=source_mean;p%max_iterations=source_maxit;p%max_backtracking=source_maxbacktrack
  p%ksatexm_extension_active=any(cofgen(10,:)>cofgen(3,:))
  call initialize_b110_default_mvg_parameters(hp,cofgen,enable_ksatexm_extension=p%ksatexm_extension_active)
  call bind_b110_default_mvg_provider(hydraulic,hp,limit)
@@ -197,8 +210,10 @@ program grass_initial_interval
  call construct_wofost_rate_parameter_bundle(scalars,tables,bundle,code);call require(code==0,'native grass parameters')
  ! Original read_wofost sets DVSEND=2 for SWWOFOST3; no annual input exists.
  updates%development_stage_end=2d0;updates%leaf_lifespan=value('span');updates%grass_development=.true.
- call expect('swharvest',2);call rdatim('dateharvest',times,1024,n)
- first_harvest=minval(times(:n))
+ call expect('swharvest',2);call rdatim('dateharvest',harvest_dates,1024,harvest_count)
+ call rdaint('seqgrzmow',harvest_types,1024,n)
+ call require(n==harvest_count.and.all(harvest_types(:n)==2),'source fixed-date mowing sequence')
+ call expect('swlossmow',0);mowing_residual=value('dmrestmow');call readtable('delaymowtb',delay_table)
  tdwi=value('tdwi');ssa=value('ssa');spa=value('spa');kdir=value('kdir');rdi=value('rdi');rdc=value('rdc')
  root_parameters%initial_root_depth_cm=rdi;root_parameters%maximum_root_depth_cm=min(rdc,sum(dz))
  call initialize_crop_root_depth_rate_state(root_parameters,root_state,code);call require(code==0,'native root depth owner')
@@ -274,7 +289,7 @@ program grass_initial_interval
  call require(available,'source joint initial owner')
  call water%capture_checkpoint(checkpoint,available);call require(available,'initial checkpoint')
  write(*,*)'ORIGINAL_GRASS_READY',nodes,sum(dz),sum(initial%water_content*dz),source_gwl,crop%biomass%root_biomass
- write(*,*)'ORIGINAL_GRASS_NUMERICS',source_maxit,source_maxbacktrack,source_dtmax,numerical%retain_accepted_step_proposal
+ write(*,*)'ORIGINAL_GRASS_NUMERICS',source_maxit,source_maxbacktrack,source_mean,source_implicit,source_dtmax,numerical%retain_accepted_step_proposal,source_mean,source_implicit
  clock=0d0
  call get_command_argument(4,restart_path)
  if(len_trim(restart_path)>0)then
@@ -288,6 +303,22 @@ program grass_initial_interval
  open(newunit=budget,file='budget.csv',status='replace',action='write')
  write(budget,'(a)')'day,t1,water_start_cm,water_end_cm,input_cm,output_cm,residual_cm,potential_cm,uptake_cm,drought_cm,oxygen_cm,heat_residual_j_cm2,temperature_sum,accepted_steps'
  do day_index=int(clock)+1,ceiling(limit)
+  do season_index=2,season_count
+   if(origin+day_index-1==season_start(season_index))then
+    ! Original initialize_wofost/initialize_grass and SWRD2 reset at source
+    ! CROPSTART, while the accepted water/thermal owners continue unchanged.
+    call initialize_wofost_emergence_owner(tdwi,bundle,crop,code);call require(code==0,'source new grass season')
+    call initialize_wofost_potential_shadow_from_actual(crop,potential,code);call require(code==0,'new season potential')
+    call initialize_crop_root_depth_rate_state(root_parameters,root_state,code);call require(code==0,'new season roots')
+    management%warm_days=0;management%regrowth_delay_days=0;management%potential_regrowth_delay_days=0
+    management%cut_index=1
+    do while(management%cut_index<=harvest_count)
+     if(harvest_dates(management%cut_index)>=season_start(season_index))exit
+     management%cut_index=management%cut_index+1
+    end do
+    management%potential_cut_index=management%cut_index
+   end if
+  end do
   call prepare_source_day(day_index)
   day_water=water;day_crop=crop;day_management=management;day_potential_crop=potential;day_roots=root_state;cursor=real(day_index-1,real64);day_end=min(limit,real(day_index,real64))
   day_potential=0d0;day_actual=0d0;day_drought=0d0;day_oxygen=0d0
@@ -350,12 +381,22 @@ program grass_initial_interval
   call require(abs(day_potential-day_actual-day_drought-day_oxygen)<=1d-10,'original uptake attribution')
   if(day_end==real(day_index,real64))then
    aggregates%potential_transpiration=day_potential;aggregates%actual_root_uptake=day_actual
-   call complete_grass_daily_candidate(prepared,crop_day,crop_view,bundle,assimilation,crop_forcing,updates,aggregates, &
-     development,crop_candidate,rates,code)
+   day_management=development%management
+   call complete_managed_grass(prepared,crop_day,crop_view,assimilation,aggregates,development, &
+     crop_candidate,rates,day_management%cut_index,day_management%regrowth_delay_days,harvested,code)
+   day_management%harvested_dry_matter=management%harvested_dry_matter+harvested
    call require(code==0,'source grass day-end')
    potential_aggregates%actual_root_uptake=1d0;potential_aggregates%potential_transpiration=1d0
-   call complete_grass_daily_candidate(potential_prepared,potential_context,potential_view,bundle,potential_assimilation, &
-     crop_forcing,updates,potential_aggregates,development,potential_candidate,potential_rates,code)
+   potential_management=management
+   potential_management%regrowth_delay_days=management%potential_regrowth_delay_days
+   call prepare_grass_development_candidate(development_parameters,potential_management, &
+     crop%evolution_continuation%temperature_sum,crop_forcing%average_temperature,0d0,potential_development,code)
+   call require(code==0,'potential management gate')
+   day_management%potential_regrowth_delay_days=potential_development%management%regrowth_delay_days
+   call complete_managed_grass(potential_prepared,potential_context,potential_view,potential_assimilation, &
+     potential_aggregates,potential_development,potential_candidate,potential_rates, &
+     day_management%potential_cut_index,day_management%potential_regrowth_delay_days,potential_harvested,code)
+   day_management%potential_harvested_dry_matter=management%potential_harvested_dry_matter+potential_harvested
    call require(code==0,'source potential grass day-end')
    call day_potential_crop%absorb_owner(potential_candidate,code);call require(code==0,'potential owner publication')
    root_forcing%potential_transpiration=day_potential;root_forcing%actual_root_uptake=day_actual
@@ -365,8 +406,9 @@ program grass_initial_interval
    root_forcing%deepest_root_oxygen_factor_integral=deepest_oxygen_integral
    call evaluate_crop_root_depth_rate_candidate(root_parameters,root_state,root_forcing,day_roots,root_diagnostic,code)
    call require(code==0,'source daily root extension')
-   day_crop=crop_candidate;day_management=development%management
+   day_crop=crop_candidate
    call write_grass_prefix_restart('checkpoint.bin',day_water,day_crop,day_management,code,day_potential_crop,day_roots)
+   if(code/=0)write(*,*)'GRASS_RESTART_STATUS',code
    call require(code==0,'atomic grass restart publication')
   end if
   water=day_water;crop=day_crop;management=day_management;potential=day_potential_crop;root_state=day_roots;clock=day_end
@@ -391,13 +433,13 @@ contains
   integer,intent(in)::day
   date=0;date(:3)=[yyyy(day),mm(day),dd(day)];call dtardp(date,0.,date_time)
   call require(date_time==origin+day-1,'consecutive original weather')
-  call require(date_time+1d0<first_groundwater_observation,'prefix reaches time-varying original groundwater; callback required')
-  call require(date_time+1d0<=first_harvest,'prefix reaches original harvest; management callback required')
  call materialize_static_root_profile(root_table,z-.5d0*dz,root_parameters%maximum_root_depth_cm, &
    root_state%actual_root_depth_cm,rooted,cumulative,code)
  call require(code==0,'source current root profile')
  forcing%substep_root%request%rooted_nodes=rooted;forcing%substep_root%request%cumulative_root_fraction=cumulative
- weather%day_of_year=day;weather%radiation_j_m2_d=1000d0*metrad(day)
+ date=0;date(:3)=[yyyy(day),1,1];call dtardp(date,0.,year_origin)
+ day_of_year=int(date_time-year_origin)+1
+ weather%day_of_year=day_of_year;weather%radiation_j_m2_d=1000d0*metrad(day)
  weather%minimum_air_temperature_c=tmn(day);weather%maximum_air_temperature_c=tmx(day)
  weather%vapour_pressure_kpa=humidity(day);weather%wind_speed_m_s=wind(day);weather%gross_rain_cm_d=.1d0*rain(day)
  call resolve_daily_rain_duration(rain(day),wet(day),wet_duration,rain_rate,code)
@@ -407,7 +449,7 @@ contains
  call require(code==0,'source crop day-start')
  call assemble_wofost_one_day_rate_state_view(prepared,ssa,spa,crop_view,available,code)
  call require(code==0.and.available,'source crop rate view')
- call evaluate_crop_solar_geometry(day,site%latitude_degrees,weather%radiation_j_m2_d,solar,code)
+ call evaluate_crop_solar_geometry(day_of_year,site%latitude_degrees,weather%radiation_j_m2_d,solar,code)
  call require(code==0,'source solar forcing')
  assimilation_forcing%daytime_mean_temperature=(tmx(day)+.5d0*(tmn(day)+tmx(day)))*.5d0
  assimilation_forcing%global_radiation=weather%radiation_j_m2_d
@@ -427,7 +469,8 @@ contains
  call prepare_wofost_actual_assimilation(potential_view,bundle,assimilation_forcing,potential_assimilation,code, &
    attainable_multiplier_override=potential_management_factor)
  call require(code==0,'source potential grass assimilation')
- call prepare_wofost_oxygen_respiration(crop_view,bundle,assimilation,.5d0*(tmn(day)+tmx(day)),0,respiration,code)
+ call prepare_wofost_oxygen_respiration(crop_view,bundle,assimilation,.5d0*(tmn(day)+tmx(day)), &
+   management%regrowth_delay_days,respiration,code)
  call require(code==0,'source grass oxygen respiration')
  p%bartholomeus%crop%q10_root=respiration%root_q10;p%bartholomeus%crop%c_mroot=respiration%root_maintenance_coefficient
  p%bartholomeus%crop%f_senes=respiration%senescence_factor
@@ -445,6 +488,33 @@ contains
  call prepare_grass_development_candidate(development_parameters,management, &
    crop%evolution_continuation%temperature_sum,crop_forcing%average_temperature,0d0,development,code)
  call require(code==0,'source grass development')
+ end subroutine
+ subroutine complete_managed_grass(base,context,view,assimilated,water_aggregates,growth, &
+      next,rates_out,cut_index,delay,removed,status)
+  type(wofost_crop_owner_state_t),intent(in)::base
+  type(wofost_one_day_window_context_t),intent(in)::context
+  type(wofost_one_day_rate_state_view_t),intent(in)::view
+  type(wofost_prepare_assimilation_result_t),intent(in)::assimilated
+  type(wofost_accepted_window_aggregates_t),intent(in)::water_aggregates
+  type(grass_development_candidate_t),intent(in)::growth
+  type(wofost_crop_owner_state_t),intent(out)::next
+  type(wofost_one_day_rate_packet_t),intent(out)::rates_out
+  integer,intent(inout)::cut_index,delay
+  real(real64),intent(out)::removed
+  integer,intent(out)::status
+  logical::cut_due
+  removed=0d0;cut_due=.false.
+  if(cut_index<=harvest_count)cut_due=date_time+1d0>harvest_dates(cut_index).and.growth%growth_enabled
+  if(cut_due)then
+   call complete_grass_daily_candidate(base,context,view,bundle,assimilated,crop_forcing,updates,water_aggregates, &
+     growth,next,rates_out,status,mowing_residual,removed)
+   if(status/=0)return
+   call delay_table%evaluate(removed,delay_value,status);if(status/=0)return
+   delay=int(delay_value);cut_index=cut_index+1
+  else
+   call complete_grass_daily_candidate(base,context,view,bundle,assimilated,crop_forcing,updates,water_aggregates, &
+     growth,next,rates_out,status)
+  end if
  end subroutine
  subroutine write_endpoint(state,time,balance)
   type(kernel_committed_state_t),intent(in)::state

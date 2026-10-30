@@ -509,6 +509,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: top_head = 0.0_real64
     real(real64) :: bottom_flux = 0.0_real64
     real(real64) :: bottom_head = 0.0_real64
+    ! SWBOTB1 samples its immutable source table at every physical trial end.
+    type(fmr_hbot5_control_t), allocatable :: prescribed_groundwater_control
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
     type(b110_legacy_swbotb2_application_control_t), allocatable :: legacy_swbotb2_control
@@ -769,6 +771,8 @@ module mod_fmr_serialized_reference_backend
   type, extends(kernel_model_t) :: fmr_serialized_reference_model_t
     type(fmr_substep_root_forcing_t), allocatable :: substep_root
     type(root_water_uptake_diagnostics_t) :: substep_root_diagnostics
+    ! SWBOTB1 samples its immutable source table at every physical trial end.
+    type(fmr_hbot5_control_t), allocatable :: prescribed_groundwater_control
     type(fmr_hbot5_control_t), allocatable :: legacy_swbotb5_control
     type(fmr_hbot5_proposal_t) :: hbot5_proposal
     type(fmr_cauchy3_control_t), allocatable :: legacy_swbotb3_implicit_control
@@ -1230,7 +1234,8 @@ contains
     if(abs(scalar)>1.e6_real64)return
     if(scalar/=0.0_real64.and.abs(scalar)<=1.e-10_real64)return
     if(allocated(forcing%legacy_swbotb2_control).or.allocated(forcing%legacy_swbotb4_qgwl_control))return
-    if(allocated(forcing%legacy_swbotb3_implicit_control).or.allocated(forcing%legacy_swbotb5_control))return
+    if(allocated(forcing%legacy_swbotb3_implicit_control).or.allocated(forcing%legacy_swbotb5_control).or. &
+       allocated(forcing%prescribed_groundwater_control))return
     if(allocated(forcing%drainage_flux_by_level).or.allocated(forcing%drainage_response_controls))return
     if(allocated(forcing%soil_salt_boundary).or.allocated(forcing%c_drain_salt).or.allocated(forcing%crop_oxygen))return
     if(.not.allocated(forcing%subsurface_irrigation_source).or..not.allocated(forcing%root_extraction_sink))return
@@ -3432,7 +3437,7 @@ contains
         ! Fixed-geometry source-table water. Existing process owners retain
         ! their own checks below, including required accepted trace composition.
         ok=ok.and.parameters%bottom_mode==1.and.self%soil_water_selection%uses_reference().and. &
-          parameters%swkmean==1.and..not.parameters%macropore_active.and..not.parameters%snow_active.and. &
+          (parameters%swkmean==1.or.parameters%swkmean==2).and..not.parameters%macropore_active.and..not.parameters%snow_active.and. &
           .not.parameters%frost_active.and..not.parameters%black_evaporation_active.and. &
           .not.parameters%hysteresis_active.and..not.parameters%elasticity_active.and. &
           .not.parameters%weather_trial_warm_start.and..not.parameters%picard_conductivity_iteration
@@ -3932,6 +3937,7 @@ contains
     if(allocated(self%crop_oxygen)) deallocate(self%crop_oxygen)
     self%hbot5_proposal = fmr_hbot5_proposal_t()
     self%cauchy3_proposal = fmr_cauchy3_proposal_t()
+    if (allocated(self%prescribed_groundwater_control)) deallocate(self%prescribed_groundwater_control)
     if (allocated(self%legacy_swbotb5_control)) deallocate(self%legacy_swbotb5_control)
     if (allocated(self%legacy_swbotb3_implicit_control)) deallocate(self%legacy_swbotb3_implicit_control)
     self%macropore_top_input_forcing = fmr_macropore_top_input_forcing_t()
@@ -4210,6 +4216,14 @@ contains
         if (any(forcing%root_extraction_sink < 0.0_real64)) return
       else
         if (any(abs(forcing%root_extraction_sink) > 0.0_real64)) return
+      end if
+      if (allocated(forcing%prescribed_groundwater_control)) then
+        if (self%bottom_mode/=1.or..not.self%prescribed_groundwater_active) return
+        if (.not.self%soil_water_selection%uses_reference()) return
+        if (.not.forcing%prescribed_groundwater_control%ready()) return
+        if (allocated(forcing%legacy_swbotb5_control).or.allocated(forcing%legacy_swbotb3_implicit_control).or. &
+            allocated(forcing%legacy_swbotb2_control).or.allocated(forcing%legacy_swbotb4_qgwl_control)) return
+        self%prescribed_groundwater_control=forcing%prescribed_groundwater_control
       end if
       if (allocated(forcing%legacy_swbotb5_control)) then
         if (self%bottom_mode /= 5 .or. .not. self%soil_water_selection%uses_reference()) return
@@ -4877,6 +4891,17 @@ contains
     request%boundary%top_head = self%top_head
     request%boundary%bottom_flux = effective_bottom_flux
     request%boundary%bottom_head = self%bottom_head
+    if (allocated(self%prescribed_groundwater_control)) then
+      block
+        type(fmr_hbot5_proposal_t) :: groundwater_sample
+        integer :: groundwater_status
+        ! BoundBottom: AFGEN(GWLTAB,t1900+dt). Do not freeze a parent
+        ! proposal across full/half siblings or retry at another endpoint.
+        call self%prescribed_groundwater_control%resolve(t0,t1,groundwater_sample,groundwater_status)
+        if(groundwater_status/=FMR_HBOT5_OK.or..not.groundwater_sample%available)return
+        request%boundary%bottom_head=groundwater_sample%pressure_head_cm
+      end block
+    end if
     if (allocated(self%legacy_swbotb3_implicit_control)) then
       if (.not. self%cauchy3_proposal%covers(t0,t1)) return
       call self%legacy_swbotb3_implicit_control%resolve_q4(t0, t1, cauchy3_q4, cauchy3_q4_sample_t1900, cauchy3_status)
@@ -5002,7 +5027,6 @@ contains
       else
         if (allocated(physical%macropore)) return
       end if
-
       if (self%black_evaporation_active) then
         select type (black_physical => state)
         type is (fmr_b110_black_evaporation_state_t)
@@ -5042,7 +5066,6 @@ contains
           return
         end select
       end if
-
       if (self%boesten_evaporation_active) then
         select type (boesten_physical => state)
         class is (fmr_b110_boesten_evaporation_state_t)
@@ -5114,7 +5137,6 @@ contains
         if(self%drainage_response_diagnostics%status/=FMR_DRAIN_BIND_OK)return
         self%unfrozen_drainage_flux=self%qdra
       end if
-
       if (self%soil_temperature_active) then
         if (.not. allocated(physical%soil_temperature) .or. .not. allocated(self%soil_temperature_parameters) .or. &
             .not. allocated(self%soil_temperature_forcing)) return
@@ -5755,6 +5777,17 @@ contains
     end if
 
     self%last_observation%solver_executed = .true.
+    if(self%prescribed_groundwater_active.and.solve_result%status/=SW_SOLVE_CONVERGED)then
+      block
+        character(8)::setting
+        integer::env_status
+        call get_environment_variable('SWAP5_DIAG_GROUNDWATER',setting,status=env_status)
+        if(env_status==0.and.trim(setting)=='1')write(error_unit,*)'GW_SOLVE_FAIL',t0,t1, &
+          request%boundary%bottom_head,solve_result%status,trim(solve_result%diagnostics%route), &
+          solve_result%diagnostics%nonlinear_iterations,solve_result%diagnostics%linear_solves, &
+          solve_result%native_balance_rate_residual_available,solve_result%native_balance_rate_residual_cm_per_day
+      end block
+    end if
     self%last_observation%solver_status = solve_result%status
     self%last_observation%top_flux = solve_result%top_flux
     self%last_observation%bottom_flux = solve_result%bottom_flux
@@ -5867,7 +5900,6 @@ contains
       call evaluate_temporal_history_service(self, state, request, solve_result, outcome, temporal_history_ok)
       if (.not. temporal_history_ok) return
     end if
-
     if (self%black_evaporation_active) then
       select type (black_physical => state)
       type is (fmr_b110_black_evaporation_state_t)
@@ -5877,7 +5909,6 @@ contains
         return
       end select
     end if
-
     if (self%boesten_evaporation_active) then
       select type (boesten_physical => state)
       class is (fmr_b110_boesten_evaporation_state_t)
@@ -7052,8 +7083,16 @@ contains
           if(.not.all(ieee_is_finite([full%boesten_evaporation%spev,full%boesten_evaporation%saev, &
             half%boesten_evaporation%spev,half%boesten_evaporation%saev])))return
           value=fmr_pond_input_temporal_error(full,half)
-          if(self%prescribed_groundwater_active) &
+          if(self%prescribed_groundwater_active)then
+            if(allocated(self%prescribed_groundwater_control))then
+              ! Moving prescribed groundwater: saturated h is algebraic.
+              ! Reuse the existing mixed Richards water/unsaturated-head/face
+              ! exchange metric, rather than reintroducing an all-head norm.
+              value=fmr_weather_surface_temporal_error(self,full,half)
+            else
             value=max(value,fmr_weather_surface_temporal_error(self,full,half))
+            end if
+          end if
           if(self%picard_conductivity_iteration.and.associated(self%hydraulic_parameters))then
             if(self%hydraulic_parameters%continuous_saturation_conductivity) &
               value=fmr_weather_surface_temporal_error(self,full,half)
@@ -7195,7 +7234,7 @@ contains
     class(fmr_serialized_reference_model_t),intent(in)::self
     class(transaction_state_t),intent(in)::full_state,half_state
     real(real64),allocatable::kf(:),kh(:)
-    real(real64)::dt,qf,qh,d,storage_error,head_error
+    real(real64)::dt,qf,qh,d,storage_error,head_error,mean_full,mean_half
     logical::ok
     integer::n,i
     value=huge(0.0_real64)
@@ -7246,8 +7285,15 @@ contains
         if(self%bottom_mode==7)value=max(value,dt*abs(kf(n)-kh(n)))
         do i=2,n
           d=self%soil_parameters%node_distance(i)
-          qf=.5_real64*(kf(i-1)+kf(i))*((full%pressure_head(i-1)-full%pressure_head(i))/d+1.0_real64)
-          qh=.5_real64*(kh(i-1)+kh(i))*((half%pressure_head(i-1)-half%pressure_head(i))/d+1.0_real64)
+          mean_full=.5_real64*(kf(i-1)+kf(i));mean_half=.5_real64*(kh(i-1)+kh(i))
+          if(self%swkmean==2)then
+            mean_full=(self%soil_parameters%dz(i-1)*kf(i-1)+self%soil_parameters%dz(i)*kf(i))/ &
+              (self%soil_parameters%dz(i-1)+self%soil_parameters%dz(i))
+            mean_half=(self%soil_parameters%dz(i-1)*kh(i-1)+self%soil_parameters%dz(i)*kh(i))/ &
+              (self%soil_parameters%dz(i-1)+self%soil_parameters%dz(i))
+          end if
+          qf=mean_full*((full%pressure_head(i-1)-full%pressure_head(i))/d+1.0_real64)
+          qh=mean_half*((half%pressure_head(i-1)-half%pressure_head(i))/d+1.0_real64)
           value=max(value,dt*abs(qf-qh))
         end do
         if(max(full%ponding_depth,half%ponding_depth)>0.0_real64.or. &
@@ -7258,6 +7304,18 @@ contains
           qh=.5_real64*(self%hydraulic_parameters%cofgen(3,1)+kh(1))* &
             ((half%ponding_depth-half%pressure_head(1))/d+1.0_real64)
           value=max(value,dt*abs(qf-qh))
+        end if
+        if(self%prescribed_groundwater_active.and.dt<2d-5)then
+          block
+            character(8)::setting
+            integer::env_status,j
+            call get_environment_variable('SWAP5_DIAG_GROUNDWATER',setting,status=env_status)
+            if(env_status==0.and.trim(setting)=='1')then
+              j=maxloc(abs(full%pressure_head-half%pressure_head),dim=1)
+              write(error_unit,*)'GW_TEMPORAL',dt,value,head_error,storage_error,j, &
+                full%pressure_head(j),half%pressure_head(j),full%groundwater_level,half%groundwater_level
+            end if
+          end block
         end if
         if(.not.ieee_is_finite(value))value=huge(0.0_real64)
       end select

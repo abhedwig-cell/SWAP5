@@ -19,7 +19,7 @@ module mod_wofost_grass_daily_growth
  public::complete_grass_daily_candidate
 contains
  subroutine complete_grass_daily_candidate(prepared,context,view,parameters,assimilation,forcing, &
-      update_parameters,aggregates,development,candidate,rates,status)
+      update_parameters,aggregates,development,candidate,rates,status,mowing_residual,harvested)
   type(wofost_crop_owner_state_t),intent(in)::prepared
   type(wofost_one_day_window_context_t),intent(in)::context
   type(wofost_one_day_rate_state_view_t),intent(in)::view
@@ -32,10 +32,14 @@ contains
   type(wofost_crop_owner_state_t),intent(out)::candidate
   type(wofost_one_day_rate_packet_t),intent(out)::rates
   integer,intent(out)::status
+  real(real64),intent(in),optional::mowing_residual
+  real(real64),intent(out),optional::harvested
+  real(real64)::remaining,leaves,stems,total,fl,fs,sla
   type(wofost_rate_scalar_parameters_t)::s
   type(wofost_one_day_diagnostics_t)::diagnostic
-  type(wofost_crop_owner_state_t)::trial
+  type(wofost_crop_owner_state_t)::trial,ordinary
   integer::code
+  if(present(harvested))harvested=0d0
   candidate=wofost_crop_owner_state_t();rates=wofost_one_day_rate_packet_t();status=GRASS_DAILY_INVALID
   if(.not.parameters%ready().or..not.development%valid)return
   s=parameters%scalar_view()
@@ -63,7 +67,51 @@ contains
    if(code/=WOFOST_FINALIZE_RATES_OK)then
     status=GRASS_DAILY_PHYSIOLOGY_REJECTED;return
    end if
+   if(present(mowing_residual))then
+    ! Source management_event/mowing_event executes BEFORE ordinary leaf
+    ! death/ageing and organ integration. Its state is still a staged candidate.
+    if(.not.ieee_is_finite(mowing_residual).or.mowing_residual<0d0)return
+    remaining=mowing_residual;trial=prepared
+    leaves=sum(prepared%biomass%leaf_biomass);stems=prepared%biomass%stem_biomass
+    total=leaves+stems+prepared%biomass%storage_biomass+ &
+      prepared%biomass%cumulative_dead_leaf_biomass+prepared%biomass%cumulative_dead_stem_biomass
+    if(present(harvested))harvested=max(0d0,total-min(leaves+stems+prepared%biomass%storage_biomass,remaining))
+    if(total>=remaining)then
+     call parameters%evaluate_leaf_partition_fraction(prepared%development_stage,fl,code)
+     if(code/=0.or.fl<=0d0)return
+     call parameters%evaluate_stem_partition_fraction(prepared%development_stage,fs,code)
+     if(code/=0)return
+     call parameters%evaluate_specific_leaf_area(prepared%development_stage,sla,code)
+     if(code/=0)return
+     if(remaining<leaves+stems)then
+      leaves=min(remaining,leaves+stems)/(1d0+fs/fl);stems=fs/fl*leaves
+     end if
+     trial%biomass%stem_biomass=stems
+     trial%biomass%leaf_biomass=[leaves];trial%biomass%specific_leaf_area=[sla];trial%biomass%leaf_age=[0d0]
+     trial%biomass%exponential_leaf_area_index=leaves*sla
+     if(allocated(trial%b110_reference_compatibility))deallocate(trial%b110_reference_compatibility)
+     trial%biomass%cumulative_dead_leaf_biomass=0d0;trial%biomass%cumulative_dead_stem_biomass=0d0
+     trial%biomass%retained_dead_biomass=0d0
+     rates%root_net_growth_rate=0d0;rates%stem_net_growth_rate=0d0
+     rates%root_death_rate=0d0;rates%stem_death_rate=0d0
+    else
+     ! Even an underweight fixed-date cut ends the event and suppresses
+     ! ordinary leaf updates; source still integrates the organ rates.
+     trial%biomass%root_biomass=trial%biomass%root_biomass+rates%root_net_growth_rate
+     trial%biomass%stem_biomass=trial%biomass%stem_biomass+rates%stem_net_growth_rate
+     trial%biomass%cumulative_dead_root_biomass=trial%biomass%cumulative_dead_root_biomass+rates%root_death_rate
+     trial%biomass%cumulative_dead_stem_biomass=trial%biomass%cumulative_dead_stem_biomass+rates%stem_death_rate
+     call finalize_wofost_one_day_candidate(prepared,context,update_parameters,aggregates,rates,ordinary,diagnostic,code)
+     if(code/=WOFOST_ONE_DAY_OK)return
+     trial%biomass%cumulative_dead_leaf_biomass=ordinary%biomass%cumulative_dead_leaf_biomass
+    end if
+    trial%biomass%storage_biomass=trial%biomass%storage_biomass+rates%storage_net_growth_rate
+    trial%evolution_continuation%temperature_sum=trial%evolution_continuation%temperature_sum+development%temperature_sum_increment
+    trial%development_stage=min(trial%development_stage+development%development_rate,update_parameters%development_stage_end)
+    code=0
+   else
    call finalize_wofost_one_day_candidate(prepared,context,update_parameters,aggregates,rates,trial,diagnostic,code)
+   end if
    if(code/=WOFOST_ONE_DAY_OK)then
     status=GRASS_DAILY_PHYSIOLOGY_REJECTED;return
    end if

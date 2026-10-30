@@ -11,6 +11,7 @@ sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--optimization',choices=['O0','O2'],required=True)
+p.add_argument('--profile',choices=['checked','production'],default='checked')
 p.add_argument('--reuse-build',type=Path)
 p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
 p.add_argument('--input-archive',type=Path,required=True)
@@ -46,9 +47,9 @@ def visit(source):
 visit(driver);ordered.remove(driver)
 visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 ordered += [helper,driver]
-flags=['-'+a.optimization,'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out)]
+flags=['-'+a.optimization,'-ffree-line-length-none','-fopenmp']+(['-fcheck=all']if a.profile=='checked'else[])+['-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out)]
 hashes={str(s):sha(s)for s in ordered}
-report=dict(status='BUILDING',compiler=subprocess.check_output([fc,'--version'],text=True).splitlines()[0],
+report=dict(status='BUILDING',profile=a.profile,compiler=subprocess.check_output([fc,'--version'],text=True).splitlines()[0],
  source_sha256=hashes,original_input_archive_sha256=sha(archive),source_authority_sha256=sha(authority),flags=flags,events=[])
 def save():(out/'BUILD.json').write_text(json.dumps(report,indent=2)+'\n')
 def run(command,label,cwd=out,timeout=120):
@@ -63,7 +64,7 @@ if a.reuse_build:
  import shutil
  baseline=a.reuse_build.resolve();old=json.loads((baseline/'BUILD.json').read_text())
  assert old['compiler']==report['compiler']
- assert ['-'+a.optimization] == [f for f in old['flags']if f in ['-O0','-O2']]
+ assert [f for f in flags if not f.startswith(('-I','-J'))]==[f for f in old['flags']if not f.startswith(('-I','-J'))],'code-generation profile mismatch'
  assert all(sha(Path(o))==h for o,h in old['object_sha256'].items())
  old_objects=list(old['object_sha256'])
  for i,(name,h)in enumerate(old['source_sha256'].items()):

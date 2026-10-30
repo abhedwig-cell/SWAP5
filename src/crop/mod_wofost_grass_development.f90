@@ -13,6 +13,9 @@ module mod_wofost_grass_development
   integer::required_warm_days=0
  end type
  type,public::grass_management_continuation_t
+  integer::cut_index=1,potential_cut_index=1
+  integer::potential_regrowth_delay_days=0
+  real(real64)::harvested_dry_matter=0d0,potential_harvested_dry_matter=0d0
   integer::warm_days=0
   integer::regrowth_delay_days=0
  end type

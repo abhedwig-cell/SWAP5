@@ -1,0 +1,306 @@
+{
+  "status": "MEASURED_BOUNDED_REFERENCE_DIFFERENCES_NOT_SCIENTIFIC_EQUIVALENCE",
+  "original_project": "Grassgrowth",
+  "days": 521,
+  "scientific_equivalence": false,
+  "units": {
+    "water_and_ET": "cm",
+    "biomass_and_harvest": "kg dry matter / ha",
+    "RD": "cm",
+    "LAI": "m2 / m2"
+  },
+  "sign": "SWAP5 minus original SWAP4.3.1",
+  "maximum_differences": {
+    "WTOT": {
+      "maximum_absolute_difference": 0.08442447506533313,
+      "day_of_maximum": 189,
+      "first_day_above_1e_minus8": 1
+    },
+    "TPOT": {
+      "maximum_absolute_difference": 0.006989630414957981,
+      "day_of_maximum": 205,
+      "first_day_above_1e_minus8": 73
+    },
+    "TACT": {
+      "maximum_absolute_difference": 0.011350297960838057,
+      "day_of_maximum": 188,
+      "first_day_above_1e_minus8": 25
+    },
+    "TREDDRY": {
+      "maximum_absolute_difference": 0.001679029864420048,
+      "day_of_maximum": 170,
+      "first_day_above_1e_minus8": 123
+    },
+    "TREDWET": {
+      "maximum_absolute_difference": 0.01062757769149356,
+      "day_of_maximum": 188,
+      "first_day_above_1e_minus8": 25
+    },
+    "WRT": {
+      "maximum_absolute_difference": 12.986008354855244,
+      "day_of_maximum": 205,
+      "first_day_above_1e_minus8": 72
+    },
+    "WLV": {
+      "maximum_absolute_difference": 54.15423398456346,
+      "day_of_maximum": 205,
+      "first_day_above_1e_minus8": 72
+    },
+    "WST": {
+      "maximum_absolute_difference": 19.360843528155442,
+      "day_of_maximum": 205,
+      "first_day_above_1e_minus8": 72
+    },
+    "PWRT": {
+      "maximum_absolute_difference": 5.115907697472721e-13,
+      "day_of_maximum": 115,
+      "first_day_above_1e_minus8": null
+    },
+    "RD": {
+      "maximum_absolute_difference": 0.05004186101970021,
+      "day_of_maximum": 439,
+      "first_day_above_1e_minus8": 72
+    }
+  },
+  "cumulative_ET_differences": {
+    "63": {
+      "TPOT": 7.61594801980403e-12,
+      "TACT": 0.0011037284020075273,
+      "TREDDRY": 0.0,
+      "TREDWET": -0.0011037283961061563
+    },
+    "113": {
+      "TPOT": 0.008683078596552814,
+      "TACT": 0.010825005425985674,
+      "TREDDRY": 0.0,
+      "TREDWET": -0.0021419268299256596
+    },
+    "140": {
+      "TPOT": 0.012788255603526921,
+      "TACT": 0.010555452537920751,
+      "TREDDRY": 0.004374729895090562,
+      "TREDWET": -0.0021419268299256596
+    },
+    "180": {
+      "TPOT": 0.013006361135850873,
+      "TACT": 0.01717465492336866,
+      "TREDDRY": 0.000835839863518418,
+      "TREDWET": -0.00500413365139541
+    },
+    "366": {
+      "TPOT": 0.07518819077392765,
+      "TACT": 0.1402022284025756,
+      "TREDDRY": 0.000835839863518418,
+      "TREDWET": -0.06584987749496135
+    },
+    "438": {
+      "TPOT": 0.0752108118409089,
+      "TACT": 0.14156168819134152,
+      "TREDDRY": 0.000835839863518418,
+      "TREDWET": -0.06718671621483711
+    },
+    "521": {
+      "TPOT": 0.11789569544479786,
+      "TACT": 0.20256289515007503,
+      "TREDDRY": 0.0015939704240084387,
+      "TREDWET": -0.08626117012928092
+    }
+  },
+  "stress_onset": [
+    {
+      "day": 71,
+      "SWAP5_actual_potential_ratio": 1.0,
+      "source_actual_potential_ratio": 1.0,
+      "SWAP5_oxygen_reduction_cm": 0.0,
+      "source_oxygen_reduction_cm": 0.0
+    },
+    {
+      "day": 72,
+      "SWAP5_actual_potential_ratio": 0.994608689786549,
+      "source_actual_potential_ratio": 0.988890191017209,
+      "SWAP5_oxygen_reduction_cm": 2.8979600077404662e-05,
+      "source_oxygen_reduction_cm": 5.971791777831e-05
+    },
+    {
+      "day": 73,
+      "SWAP5_actual_potential_ratio": 0.9374597689581733,
+      "source_actual_potential_ratio": 0.9162702506865243,
+      "SWAP5_oxygen_reduction_cm": 0.0006946102805745336,
+      "source_oxygen_reduction_cm": 0.000929735267
+    }
+  ],
+  "harvest": [
+    {
+      "day": 140,
+      "actual_kg_ha": 2132.1098638080316,
+      "potential_kg_ha": 2169.9465361131633,
+      "source_actual_kg_ha": 2125.305229699422,
+      "source_potential_kg_ha": 2169.946536113163,
+      "actual_difference_kg_ha": 6.804634108609662,
+      "potential_difference_kg_ha": 4.547473508864641e-13,
+      "next_cut": 2,
+      "next_potential_cut": 2
+    },
+    {
+      "day": 180,
+      "actual_kg_ha": 4608.271418097318,
+      "potential_kg_ha": 6244.284986194957,
+      "source_actual_kg_ha": 4598.447987324684,
+      "source_potential_kg_ha": 6244.284986194957,
+      "actual_difference_kg_ha": 9.82343077263431,
+      "potential_difference_kg_ha": 0.0,
+      "next_cut": 4,
+      "next_potential_cut": 4
+    },
+    {
+      "day": 366,
+      "actual_kg_ha": 10742.465086222666,
+      "potential_kg_ha": 12566.142742193451,
+      "source_actual_kg_ha": 10653.18221658,
+      "source_potential_kg_ha": 12566.14274219,
+      "actual_difference_kg_ha": 89.2828696426659,
+      "potential_difference_kg_ha": 3.4506228985264897e-09,
+      "next_cut": 8,
+      "next_potential_cut": 8
+    },
+    {
+      "day": 521,
+      "actual_kg_ha": 13469.723342091344,
+      "potential_kg_ha": 15323.439852127807,
+      "source_actual_kg_ha": 13364.941531679635,
+      "source_potential_kg_ha": 15323.439852124357,
+      "actual_difference_kg_ha": 104.78181041170865,
+      "potential_difference_kg_ha": 3.4506228985264897e-09,
+      "next_cut": 10,
+      "next_potential_cut": 10
+    }
+  ],
+  "groundwater_at_retained_checkpoints": [
+    {
+      "day": 63,
+      "SWAP5_cm": -87.99999999999999,
+      "source_cm": -88.0,
+      "difference_cm": 1.4210854715202004e-14
+    },
+    {
+      "day": 113,
+      "SWAP5_cm": -88.0,
+      "source_cm": -87.999999999998,
+      "difference_cm": -2.0037305148434825e-12
+    },
+    {
+      "day": 116,
+      "SWAP5_cm": -96.24999999999997,
+      "source_cm": -96.249999957692,
+      "difference_cm": -4.230797401305608e-08
+    },
+    {
+      "day": 117,
+      "SWAP5_cm": -100.375,
+      "source_cm": -100.375000000179,
+      "difference_cm": 1.7899992599268444e-10
+    },
+    {
+      "day": 126,
+      "SWAP5_cm": -102.6,
+      "source_cm": -102.600000000005,
+      "difference_cm": 5.002220859751105e-12
+    },
+    {
+      "day": 127,
+      "SWAP5_cm": -97.99999999999997,
+      "source_cm": -98.000000000063,
+      "difference_cm": 6.302514066192089e-11
+    },
+    {
+      "day": 130,
+      "SWAP5_cm": -102.92857142857143,
+      "source_cm": -102.928571428575,
+      "difference_cm": 3.566924533515703e-12
+    },
+    {
+      "day": 140,
+      "SWAP5_cm": -119.35714285714282,
+      "source_cm": -119.357142849738,
+      "difference_cm": -7.404821644740878e-09
+    },
+    {
+      "day": 180,
+      "SWAP5_cm": -129.83333333333348,
+      "source_cm": -129.833333380596,
+      "difference_cm": 4.7262517455237685e-08
+    },
+    {
+      "day": 365,
+      "SWAP5_cm": -48.45454545454545,
+      "source_cm": -48.454545454763,
+      "difference_cm": 2.1754686940766987e-10
+    },
+    {
+      "day": 366,
+      "SWAP5_cm": -47.85227272727273,
+      "source_cm": -47.852272727494,
+      "difference_cm": 2.212701133430528e-10
+    },
+    {
+      "day": 367,
+      "SWAP5_cm": -47.25,
+      "source_cm": -47.25,
+      "difference_cm": 0.0
+    },
+    {
+      "day": 438,
+      "SWAP5_cm": -64.2857142857143,
+      "source_cm": -64.285714292028,
+      "difference_cm": 6.313698008852953e-09
+    },
+    {
+      "day": 521,
+      "SWAP5_cm": -104.28571428571206,
+      "source_cm": -104.285714279046,
+      "difference_cm": -6.666056151516386e-09
+    }
+  ],
+  "LAI": {
+    "native_timing": "day-start crop_view; other crop.csv biomass columns are day-end",
+    "source_timing": "day-end",
+    "comparison": "native day d against source day d-1, excluding annual initializations1 and367",
+    "maximum_absolute_time_aligned_difference": 0.11561199142220602,
+    "day_of_maximum": 206,
+    "excluded_initialization_days": [
+      1,
+      367
+    ]
+  },
+  "observed_entry_point": "First actual biomass and root-depth divergence on day72 coincides with different oxygen-limited daily actual/potential transpiration. Potential biomass remains within reference print precision.",
+  "source_checks": {
+    "daily_growth_stress": "Original clipped iqrot_day/iptra_day and SWAP5 clipped accepted daily sink/potential ratio agree structurally.",
+    "deepest_root_oxygen": "Both integrate deepest-root oxygen factor times dt before daily root extension.",
+    "coupling_order": "Original RootExtraction precedes SoilWater; heat follows integral. SWAP5 computes oxygen on each full/half/retry left hydraulic/thermal state and commits accepted fluxes only.",
+    "respiration_and_density": "Source comparison found matching source formulas for root/node-top density, temperature constants, respiration partition and mowing delay. This is code inspection, not paired-state runtime equivalence."
+  },
+  "causal_attribution": "Not isolated. Different temporal/nonlinear acceptance and state trajectories can alter oxygen stress, but a controlled paired-state/step-refinement comparison is required before calling all differences numerical. No confirmed process-order implementation defect established here.",
+  "energy_scope": "Small heat-accounting residual does not establish full original energy or temperature equivalence.",
+  "profile_diagnostic_attempt": {
+    "folder": "dq15-original-profile-reference",
+    "status": "FAILED_OUTPUT_LOOKUP_NOT_COUNTED",
+    "success_marker": false,
+    "reason": "Unchanged donor executable rejects H[1:113] and plain H in its CSV variable lookup. Original qualified scalar-reference folder remains unchanged. No profile equivalence result."
+  },
+  "evidence_sha256": {
+    "dq15-weighted-yearrun-O2/budget.csv": "c56571654565969cf40907f296d26af9197fda4c8bbffeb365e408cd92f13c46",
+    "dq15-weighted-yearrun-O2/crop.csv": "9861c9d93259a620565bc30a483669d686b202e9733c8a3afb800066881ba2ef",
+    "dq15-weighted-yearrun-O2/checkpoint.bin": "59ddb575717b099a564b2c8cf52475017ebb3fedc7a7309a9e3567e968b2bdec",
+    "dq15-weighted-cont438-O2/budget.csv": "db97ddbfa8720b4f8c43d66f2f6274e9bba37846395ea7d2ac947b64e266ff7d",
+    "dq15-weighted-cont438-O2/crop.csv": "149a3b86c61f9abcc59d23d9164bc1dd397cbc2468ae3751ad462a74dae058f1",
+    "dq15-weighted-cont438-O2/checkpoint.bin": "cc585dfa08ad745d29badd28014f5dc4057671af5ce43b356aacdf17fcd58834",
+    "dq15-original-reference/result_output.csv": "aafc9ec03fd24dc85cc5c7dbe0c649ffd875511693e598577f6e3d55bbed0812"
+  },
+  "source_inspection_sha256": {
+    "app/grass_project/initial_interval.f90": "81fd9385a995fd993e2492b8c62ebbef7cadec3e66e73b0f4a52dc3c8c9b9f37",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "e9b7a1cf5c25481abb79ab01b28da333472a24db53ebacd6853a881e12f64289",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90": "50ea53989291d3b4abac299a254ffffb6b0c43c9171ec57a85bffb47983d9e39",
+    "src/crop/mod_wofost_oxygen_respiration.f90": "e974551addebf739fd62044c55a51feb82993aba4e73377439ce0b7f501f2ba6",
+    "src/crop/mod_crop_root_biomass_distribution.f90": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9"
+  }
+}
