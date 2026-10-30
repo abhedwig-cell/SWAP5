@@ -302,5 +302,392 @@
     "src/crop/mod_wofost_one_day_structural_evolution.f90": "50ea53989291d3b4abac299a254ffffb6b0c43c9171ec57a85bffb47983d9e39",
     "src/crop/mod_wofost_oxygen_respiration.f90": "e974551addebf739fd62044c55a51feb82993aba4e73377439ce0b7f501f2ba6",
     "src/crop/mod_crop_root_biomass_distribution.f90": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9"
+  },
+  "current_full_evidence": {
+    "days": 1827,
+    "authority": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "canonical_receipt": "integration/dataqual15/CANONICAL_FULL_MERGE_RECEIPT.json",
+    "scientific_equivalence": false,
+    "actual_harvest_relative_difference_percent": 0.5633,
+    "maximum_daily_actual_transpiration_difference_cm": 0.01128903608404791,
+    "maximum_leaf_biomass_difference_kg_ha": 53.216091338990054,
+    "causal_attribution": "Identical-state whole oxygen/uptake replay excludes a material selected-owner defect at observed accepted states. Source timestep refinement explains most of the literal-reference harvest difference. Frozen temperature resolution gate FAIL; no whole-model equivalence.",
+    "followup": "tests/dataqual15/qualify_stress.py",
+    "acceptance_scope": "Existing oxygen-component 1e-4 SOLVE gate only; no whole-yield equivalence threshold inferred",
+    "paired_run": 41071975005,
+    "accepted_cases": 2922,
+    "maximum_owner_only_daily_uptake_difference_cm": 1.770613985291325e-10,
+    "donor_refinement": {
+      "0.04": {
+        "dtmax_day": 0.04,
+        "project_actual_harvest_kg_ha": 54049.8709469
+      },
+      "0.005": {
+        "dtmax_day": 0.005,
+        "project_actual_harvest_kg_ha": 54327.61835673
+      },
+      "0.0025": {
+        "dtmax_day": 0.0025,
+        "project_actual_harvest_kg_ha": 54344.41520015
+      },
+      "0.00125": {
+        "dtmax_day": 0.00125,
+        "project_actual_harvest_kg_ha": 54352.253368770005
+      },
+      "0.000625": {
+        "dtmax_day": 0.000625,
+        "project_actual_harvest_kg_ha": 54355.92697639
+      }
+    },
+    "held_out_numerical_resolution_gate_pass": false,
+    "held_out_failures": {
+      "0.00125": {
+        "TREDDRY": {
+          "native_error": 0.0003284070990990373,
+          "limit": 0.0005107256830001189,
+          "reference_change": 0.00017694889499997313,
+          "previous_reference_change": 0.00017024156100003962,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": false
+        },
+        "PROFILE_temperature_c": {
+          "native_error": 0.006918903794463915,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00046271838770595153,
+          "previous_reference_change": 0.0009242553823938238,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      },
+      "0.000625": {
+        "PROFILE_temperature_c": {
+          "native_error": 0.007150261391404289,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00023142940943010615,
+          "previous_reference_change": 0.00046271838770595153,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      }
+    },
+    "science_manifest": "integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json",
+    "finest_donor_resolution_assessment": {
+      "fields": {
+        "WTOT": {
+          "native_error": 0.0021070101571467603,
+          "limit": 0.010245880947945013,
+          "reference_change": 0.0008215894060015216,
+          "previous_reference_change": 0.0016525667669782251,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "TPOT": {
+          "native_error": 0.00012947251418621297,
+          "limit": 0.0012438724870001143,
+          "reference_change": 8.179632599997211e-05,
+          "previous_reference_change": 0.00018351782400000127,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "TACT": {
+          "native_error": 0.0003344081878859373,
+          "limit": 0.004329224808999999,
+          "reference_change": 0.0003343058839999913,
+          "previous_reference_change": 0.0006714275019999993,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "TREDWET": {
+          "native_error": 0.0002787747572699311,
+          "limit": 0.004322264716000016,
+          "reference_change": 0.0002942635069999996,
+          "previous_reference_change": 0.0006609527189999978,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "TREDDRY": {
+          "native_error": 0.00023812613409901484,
+          "limit": 0.0005107256830001189,
+          "reference_change": 9.028096500002247e-05,
+          "previous_reference_change": 0.00017694889499997313,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "WRT": {
+          "native_error": 0.36043111663332184,
+          "limit": 2.6267576309650194,
+          "reference_change": 0.17190536244299892,
+          "previous_reference_change": 0.383071823840055,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "WLV": {
+          "native_error": 1.6149785176312434,
+          "limit": 9.813342735334006,
+          "reference_change": 0.6482219980719037,
+          "previous_reference_change": 1.4515223994021653,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "WST": {
+          "native_error": 0.4823459154486045,
+          "limit": 3.5852975434152112,
+          "reference_change": 0.23204341983807808,
+          "previous_reference_change": 0.5269590643039237,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "RD": {
+          "native_error": 0.00014372593838629655,
+          "limit": 0.005750418942993715,
+          "reference_change": 0.00041814340599799493,
+          "previous_reference_change": 0.0009507351740012382,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "PWRT": {
+          "native_error": 5.115907697472721e-13,
+          "limit": 1e-06,
+          "reference_change": 0.0,
+          "previous_reference_change": 0.0,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "RDPOT": {
+          "native_error": 0.0,
+          "limit": 1e-07,
+          "reference_change": 0.0,
+          "previous_reference_change": 0.0,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "DVS": {
+          "native_error": 4.989342272665453e-13,
+          "limit": 1e-08,
+          "reference_change": 0.0,
+          "previous_reference_change": 0.0,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "TSUM": {
+          "native_error": 4.547473508864641e-13,
+          "limit": 1e-08,
+          "reference_change": 0.0,
+          "previous_reference_change": 0.0,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "LAI_DAY_START": {
+          "native_error": 0.0027918259346968455,
+          "limit": 0.020980713795999036,
+          "reference_change": 0.0013838574939999404,
+          "previous_reference_change": 0.0031018450050002144,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "HRVDM_PROJECT": {
+          "native_error": 1.589715189053095,
+          "limit": 50.39053125998146,
+          "reference_change": 3.6736076200031675,
+          "previous_reference_change": 7.838168620000943,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "PHRVDM_PROJECT": {
+          "native_error": 3.4506228985264897e-09,
+          "limit": 1e-06,
+          "reference_change": 0.0,
+          "previous_reference_change": 0.0,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "NET_FLUX": {
+          "native_error": 0.0024110587317492937,
+          "limit": 0.008257538866000141,
+          "reference_change": 0.0006243234269998066,
+          "previous_reference_change": 0.001248781572000035,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "PROFILE_head_cm": {
+          "native_error": 0.0026464384899705855,
+          "limit": 0.00829568456160479,
+          "reference_change": 0.0006792542549844459,
+          "previous_reference_change": 0.0014101309592945363,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "PROFILE_water_content": {
+          "native_error": 0.0001290766288911116,
+          "limit": 0.00040491489594698385,
+          "reference_change": 3.3107415905841986e-05,
+          "previous_reference_change": 6.901948207960196e-05,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": true
+        },
+        "PROFILE_temperature_c": {
+          "native_error": 0.007150261391404289,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00023142940943010615,
+          "previous_reference_change": 0.00046271838770595153,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      },
+      "reference_change": {
+        "WTOT": 0.0008215894060015216,
+        "TPOT": 8.179632599997211e-05,
+        "TACT": 0.0003343058839999913,
+        "TREDWET": 0.0002942635069999996,
+        "TREDDRY": 9.028096500002247e-05,
+        "WRT": 0.17190536244299892,
+        "WLV": 0.6482219980719037,
+        "WST": 0.23204341983807808,
+        "RD": 0.00041814340599799493,
+        "PWRT": 0.0,
+        "RDPOT": 0.0,
+        "DVS": 0.0,
+        "TSUM": 0.0,
+        "LAI_DAY_START": 0.0013838574939999404,
+        "HRVDM_PROJECT": 3.6736076200031675,
+        "PHRVDM_PROJECT": 0.0,
+        "NET_FLUX": 0.0006243234269998066,
+        "PROFILE_head_cm": 0.0006792542549844459,
+        "PROFILE_water_content": 3.3107415905841986e-05,
+        "PROFILE_temperature_c": 0.00023142940943010615
+      },
+      "pass": false
+    },
+    "native_actual_harvest_kg_ha": 54354.33726120095,
+    "native_dtmax_0_01_diagnostic": {
+      "status": "FULL1827_DIAGNOSTIC_EXECUTION_PASS",
+      "interpretation": "Chosen after the coarse-native failure; exploratory numerical diagnosis under the pre-existing quantity-specific limits, not a retrospective PASS for the preregistered original gate",
+      "github_run": 41082719394,
+      "fields": {
+        "WTOT": {
+          "error": 0.0010898908844012567,
+          "limit": 0.010245880947945013,
+          "unit": "cm",
+          "inside": true
+        },
+        "TPOT": {
+          "error": 8.897270755020559e-05,
+          "limit": 0.0012438724870001143,
+          "unit": "cm/day",
+          "inside": true
+        },
+        "TACT": {
+          "error": 0.0003189037741890277,
+          "limit": 0.004329224808999999,
+          "unit": "cm/day",
+          "inside": true
+        },
+        "TREDWET": {
+          "error": 0.0002776661151891158,
+          "limit": 0.004322264716000016,
+          "unit": "cm/day",
+          "inside": true
+        },
+        "TREDDRY": {
+          "error": 0.00015159680920764104,
+          "limit": 0.0005107256830001189,
+          "unit": "cm/day",
+          "inside": true
+        },
+        "WRT": {
+          "error": 0.2423522405571248,
+          "limit": 2.6267576309650194,
+          "unit": "kg/ha",
+          "inside": true
+        },
+        "WLV": {
+          "error": 1.0708902707483503,
+          "limit": 9.813342735334006,
+          "unit": "kg/ha",
+          "inside": true
+        },
+        "WST": {
+          "error": 0.31899955592280094,
+          "limit": 3.5852975434152112,
+          "unit": "kg/ha",
+          "inside": true
+        },
+        "RD": {
+          "error": 0.0001091538832049821,
+          "limit": 0.005750418942993715,
+          "unit": "cm",
+          "inside": true
+        },
+        "PWRT": {
+          "error": 5.115907697472721e-13,
+          "limit": 1e-06,
+          "unit": "kg/ha",
+          "inside": true
+        },
+        "RDPOT": {
+          "error": 0.0,
+          "limit": 1e-07,
+          "unit": "cm",
+          "inside": true
+        },
+        "DVS": {
+          "error": 4.989342272665453e-13,
+          "limit": 1e-08,
+          "unit": "dimensionless",
+          "inside": true
+        },
+        "TSUM": {
+          "error": 4.547473508864641e-13,
+          "limit": 1e-08,
+          "unit": "degree day",
+          "inside": true
+        },
+        "LAI_DAY_START": {
+          "error": 0.0018490308767509234,
+          "limit": 0.020980713795999036,
+          "unit": "m2/m2",
+          "inside": true
+        },
+        "HRVDM_PROJECT": {
+          "error": 1.9256211253377842,
+          "limit": 50.39053125998146,
+          "unit": "kg/ha",
+          "inside": true
+        },
+        "PHRVDM_PROJECT": {
+          "error": 3.4506228985264897e-09,
+          "limit": 1e-06,
+          "unit": "kg/ha",
+          "inside": true
+        },
+        "NET_FLUX": {
+          "error": 0.0012464764256998606,
+          "limit": 0.008257538866000141,
+          "unit": "cm/day",
+          "inside": true
+        },
+        "PROFILE_head_cm": {
+          "error": 0.0008724433298576901,
+          "limit": 0.00829568456160479,
+          "unit": "normalized by max(1cm,abs(h))",
+          "inside": true
+        },
+        "PROFILE_water_content": {
+          "error": 4.2502364352964284e-05,
+          "limit": 0.00040491489594698385,
+          "unit": "cm3/cm3",
+          "inside": true
+        },
+        "PROFILE_temperature_c": {
+          "error": 0.0016146006338564334,
+          "limit": 0.002772767147181471,
+          "unit": "C",
+          "inside": true
+        }
+      },
+      "all_frozen_envelopes_inside": true,
+      "whole_scientific_equivalence": false,
+      "original_preregistered_gate_pass": false
+    }
   }
 }

@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL15",
   "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
-  "stage": "ORIGINAL_SAME_BUILD_CONTINUATION_IN_PROGRESS",
+  "stage": "FULL_ORIGINAL_EXECUTION_PASS_SCIENTIFIC_ATTRIBUTION_MEASURED_THERMAL_RESOLUTION_OPEN",
   "owners": [
     "existing SWBOTB1 Richards boundary",
     "immutable existing fmr_hbot5_control_t table",
@@ -69,11 +69,11 @@
     "current_face_mean": "Source SWKMEAN2 imported; actual Richards and temporal interior Darcy certificate both weighted by dz. Source MAXIT30/MAXBACKTR3/DTMIN1e-6/DTMAX.04/SWKIMPL0 retained.",
     "accuracy_policy": "Canonical SWAP5 stricter nonlinear/pond tolerances and external full-half temporal/mass acceptance are retained; no claim of identical original adaptive timestep or nonlinear stopping settings."
   },
-  "latest_verified_original_days": 521,
+  "latest_verified_original_days": 1827,
   "exact_year_transition": "365->367 checkpoint and daily budgets/crop byte exact",
   "runtime_interruption": "Processes absent after user-turn recovery; checkpoint chain original1->438->521 verified unchanged, native exit statuses of interrupted segments UNKNOWN; continuing to1827.",
   "measured_first_year_harvest_difference_kg_ha": 89.2828696426659,
-  "completed_original_projects": 0,
+  "completed_original_projects": 1,
   "fully_scientifically_qualified_projects": 0,
   "portable_evidence": "integration/dataqual15/EVIDENCE_MANIFEST.json",
   "portable_verifier": "tests/dataqual15/verify_evidence.py",
@@ -87,5 +87,139 @@
   "qualified_year_restart": "365->367 exact independently in O0 and O2",
   "canonical_receipt": "integration/dataqual15/MERGE_RECEIPT.json",
   "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
-  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion."
+  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion.",
+  "scientific_followup": {
+    "stage": "NUMERICAL_ATTRIBUTION_MEASURED_REFINED_NATIVE_WITHIN_FROZEN_ENVELOPES_ORIGINAL_GATE_FAILED",
+    "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
+    "full_original_days": 1827,
+    "full_proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "full_proof_local_verification": "PASS",
+    "recovery_linux_run": 41059647761,
+    "recovery_linux": "PASS",
+    "current_qualification": "FULLY_EXECUTED_SCIENTIFIC_QUALIFICATION_OPEN",
+    "paired_days": [
+      25,
+      72,
+      73,
+      127
+    ],
+    "refinement_caps_days": [
+      0.04,
+      0.02,
+      0.01
+    ],
+    "refinement_end_day": 140,
+    "physical_owners_changed": false,
+    "original_physical_inputs_changed": false,
+    "checkpoint_rebinding": false,
+    "invariants": [
+      7,
+      13,
+      21,
+      23,
+      25,
+      26
+    ],
+    "next_action": "Verify final permanent evidence and exact candidate, integrate only experimental portability/attribution scope; original-route thermal accuracy and whole energy qualification remain open.",
+    "historical_status_scope": "The pre-existing 521-day fields above remain the PR1476 historical receipt. Current full-period authority is GRASS_UNION_FULL_MANIFEST.json and CANONICAL_FULL_MERGE_RECEIPT.json.",
+    "paired_accepted_cases": 2922,
+    "stressed_node_evaluations": 7661,
+    "paired_oxygen_O0_O2": "PASS",
+    "whole_uptake_O0_O2": "PASS_SELECTED_ORIGINAL_OPTIONS_AND_NATIVE_ACCEPTED_STATES",
+    "maximum_owner_only_daily_uptake_difference_cm": 1.770613985291325e-10,
+    "whole_uptake_run": 41071975005,
+    "initial_donor_dtmax_days": [
+      0.04,
+      0.02,
+      0.01,
+      0.005,
+      0.0025
+    ],
+    "held_out_profile_gate": "integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json",
+    "donor_held_out_run": 41074182323,
+    "numerical_resolution_gate_pass": false,
+    "frozen_gate_failures": {
+      "0.00125": {
+        "TREDDRY": {
+          "native_error": 0.0003284070990990373,
+          "limit": 0.0005107256830001189,
+          "reference_change": 0.00017694889499997313,
+          "previous_reference_change": 0.00017024156100003962,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": false
+        },
+        "PROFILE_temperature_c": {
+          "native_error": 0.006918903794463915,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00046271838770595153,
+          "previous_reference_change": 0.0009242553823938238,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      },
+      "0.000625": {
+        "PROFILE_temperature_c": {
+          "native_error": 0.007150261391404289,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00023142940943010615,
+          "previous_reference_change": 0.00046271838770595153,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      }
+    },
+    "portable_science_evidence": "integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json",
+    "portable_science_verifier": "tests/dataqual15/stress_evidence.py",
+    "scientific_equivalence": false,
+    "native_thermal_selection": {
+      "status": "SOURCE_BOUND_FULL1827_DIAGNOSTIC_EXECUTED",
+      "script": "tests/dataqual15/qualify_native_thermal.py",
+      "expected_seconds": 2400,
+      "wall_cap_seconds": 7200,
+      "dtmax_day": 0.01,
+      "scope": "Fresh day1->1827 diagnostic numerical counterfactual; original physical files and existing process owners; separate executable binding; no checkpoint rebinding; no new original-project count",
+      "reason": "Held-out donor gate rejects native temperature at late retained profile dates. Existing140-day native refinements reduce maximum day140 temperature error. Prefix cannot resolve worst day1096 difference.",
+      "frozen_limit_unchanged": true,
+      "github_run": 41082719394,
+      "job": 124155753874,
+      "source_commit": "ad2edfd849559993ba45f08a522e4ecfa9743721",
+      "measured_native_seconds": 1606.596995257,
+      "returncode": 0,
+      "censored": false,
+      "maximum_water_residual_cm": 4.923839114212569e-14,
+      "maximum_heat_accounting_residual_j_cm2": 3.03817734859102e-12
+    },
+    "windows_self_contained_reproduction": {
+      "status": "PASS_REAL_ORIGINAL_CURRENT_OWNERS_O0_O2",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project)16.2.0",
+      "accepted_cases": 2922,
+      "O0_O2_identical": true,
+      "paired_compile_link_native_seconds": 34.24877959955484,
+      "original_provider_build_seconds": "UNKNOWN",
+      "result_sha256": "0e459dff1f9943d2187a6291060c56e25dd377a96adbd88d8f6893de0c947e5a",
+      "scope": "Component/oracle reproduction only; native full application fsync remains the supported Linux route"
+    },
+    "original_options": {
+      "SWSOLU": 0,
+      "SWMACRO": 0,
+      "SWHEA": 1,
+      "SWCALT": 2,
+      "SWDROUGHT": 1,
+      "SWOXYGEN": 2,
+      "solute_balance": "not_applicable"
+    },
+    "refined_native_all20_envelopes_inside": true,
+    "refined_native_temperature_error_c": 0.0016146006338564334,
+    "frozen_temperature_limit_c": 0.002772767147181471,
+    "full_scientific_qualification": "OPEN",
+    "final_local_checks": {
+      "original_full1827": "PASS",
+      "Hupsel_inherited1096": "PASS_EXACT_SHARED_RECIPES_RETAINED",
+      "portable_scientific_evidence": "PASS_INCLUDING_FAILED_ORIGINAL_GATE_AND_REFINED_DIAGNOSTIC",
+      "documentation_source": "PASS",
+      "mkdocs_strict": "PASS31.70sec",
+      "production_delta": "NONE"
+    }
+  },
+  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits."
 }

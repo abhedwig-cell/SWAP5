@@ -1,5 +1,21 @@
 # SWAP5 Status-A current status
 
+Proposed DATAQUAL15 follow-up (PR1479) preserves the original production owners
+and replays2922 accepted native intervals through real original/current oxygen
+and whole uptake routines in O0/O2, including7661 stressed node evaluations.
+Owner-only daily uptake differences stay below1.771e-10cm on the selected days.
+Full donor timestep refinement reduces the native harvest difference from
++304.466kg/ha to-1.590kg/ha, but the frozen held-out temperature envelope fails
+(0.007150261C versus0.002772767C). A separate full native DTMAX0.01 diagnostic completes1827days; all20
+quantity errors fit the same frozen envelopes, with temperature0.001614601C.
+The original preregistered coarse-native gate remains failed. This is measured numerical attribution, not whole-model scientific
+equivalence or production promotion. Authority: `integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json`,
+`integration/dataqual15/SCIENTIFIC_DIFFERENCES.md` and
+`python -B tests/dataqual15/stress_evidence.py`; the single migration matrix's
+full-execution2/3 and full-scientific0/3 counts remain unchanged.
+
+
+
 DATAQUAL15 now completes two of the three independent original projects on the same qualified Fortran postimage: Grassgrowth1827 days and Hupsel1096 days, each executed from day1 with its original physical input files. Checked GNU Fortran13.3 O0/O2, exact native disk restarts, source comparisons and water/solute/observed heat ledgers are recorded. Grassgrowth has367 independent O0/O2 days and six exact restarts; Hupsel has exact current-source year, irrigation and post-mowing restarts. Neither whole scientific equivalence nor production promotion is claimed.
 
 The current full-period authorities are `integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json` and `integration/dataqual15_hupsel/UNION_C3_HUPSEL_RESULT.json`. Current-source portable verifiers bind the complete reviewed production postimage, input bytes, actual builds and native outputs. Grassgrowth actual harvest differs from literal4.3.1 by+0.5633%; potential harvest agrees at printed precision. Remaining stressed-growth attribution and whole energy qualification remain open.

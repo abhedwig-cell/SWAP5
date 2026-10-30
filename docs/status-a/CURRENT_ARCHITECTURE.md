@@ -1,5 +1,21 @@
 # SWAP5 Status-A current architecture
 
+Proposed DATAQUAL15 follow-up (PR1479) preserves the original production owners
+and replays2922 accepted native intervals through real original/current oxygen
+and whole uptake routines in O0/O2, including7661 stressed node evaluations.
+Owner-only daily uptake differences stay below1.771e-10cm on the selected days.
+Full donor timestep refinement reduces the native harvest difference from
++304.466kg/ha to-1.590kg/ha, but the frozen held-out temperature envelope fails
+(0.007150261C versus0.002772767C). A separate full native DTMAX0.01 diagnostic completes1827days; all20
+quantity errors fit the same frozen envelopes, with temperature0.001614601C.
+The original preregistered coarse-native gate remains failed. This is measured numerical attribution, not whole-model scientific
+equivalence or production promotion. Authority: `integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json`,
+`integration/dataqual15/SCIENTIFIC_DIFFERENCES.md` and
+`python -B tests/dataqual15/stress_evidence.py`; the single migration matrix's
+full-execution2/3 and full-scientific0/3 counts remain unchanged.
+
+
+
 The original Hupsel rotation reuses the existing simple-maize germination/canopy/root owners and the existing WOFOST actual/potential lifecycle and adaptive-root transaction for potato and grass, alongside microscopic uptake, oxygen, salinity, irrigation, Black/Rutter and thermal owners. Existing reactive matrix chemistry is staged inside each water trial and published atomically; the application chemistry object is an exact persistence/output mirror. The extracted water-flux trace is read-only. Rejected trials cannot publish water, chemical, crop or management state.
 
 DATAQUAL15 now completes two of the three independent original projects on the same qualified Fortran postimage: Grassgrowth1827 days and Hupsel1096 days, each executed from day1 with its original physical input files. Checked GNU Fortran13.3 O0/O2, exact native disk restarts, source comparisons and water/solute/observed heat ledgers are recorded. Grassgrowth has367 independent O0/O2 days and six exact restarts; Hupsel has exact current-source year, irrigation and post-mowing restarts. Neither whole scientific equivalence nor production promotion is claimed.

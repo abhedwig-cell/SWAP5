@@ -1,0 +1,22 @@
+{
+  "status": "ALGORITHM_FROZEN_BEFORE_HELD_OUT_PROFILE_RUNS",
+  "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
+  "prior_component_run": 41069788879,
+  "prior_whole_uptake_and_scalar_donor_run": 41071975005,
+  "training_dtmax_days": [
+    0.005,
+    0.0025
+  ],
+  "held_out_dtmax_days": [
+    0.00125,
+    0.000625
+  ],
+  "reference": "Authentic archived literal4.3.1 output-only nodal executable, untouched physical inputs, DTMAX alone varied",
+  "rule": "Three times training sup-norm coarse/fine difference plus a field-specific source-print/roundoff floor. Potential controls use the floor alone. Both held-out refinements must decrease the reference change and place native errors inside all frozen envelopes.",
+  "source_script_sha256": "0369abb1d9cee24d714c60b7c0b76f9a694d19e0b9391444c979b01073c6b3a4",
+  "pressure": "Normalized by max(1cm,abs(h_native),abs(h_reference)), as in the admitted experimental temporal norm; absolute head difference is not hidden",
+  "LAI": "Native day-start versus donor previous-day end, annual initializations excluded",
+  "scientific_scope": "Conditional numerical-resolution agreement; no bound on ecological-model uncertainty or full energy equivalence",
+  "scientific_equivalence": false,
+  "project_counts_unchanged": true
+}

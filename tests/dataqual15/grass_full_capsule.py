@@ -4,7 +4,7 @@ Roles are explicit, but the full-period, source, balance and restart assertions
 are fixed. Packaging never snapshots an unfinished model or qualification run.
 """
 import argparse,csv,hashlib,io,json,math,struct,subprocess,tarfile,tempfile
-from pathlib import Path
+from pathlib import Path,PurePosixPath,PureWindowsPath
 from checkpoint_layout import layout,payload
 from check_history import check as history_check
 
@@ -125,7 +125,7 @@ def verify(capsule=CAPSULE,manifest=MANIFEST):
  for path,h in m['source_sha256'].items():assert sha((ROOT/path).read_bytes())==h,path
  with tarfile.open(fileobj=io.BytesIO(raw),mode='r:xz')as tar:
   members=tar.getmembers();assert len({p.name for p in members})==len(members)
-  assert all(p.isfile()and not Path(p.name).is_absolute()and'..'not in Path(p.name).parts for p in members)
+  assert all(p.isfile()and not PurePosixPath(p.name).is_absolute()and not PureWindowsPath(p.name).drive and'..'not in PurePosixPath(p.name).parts and'\\'not in p.name for p in members)
   f={p.name:tar.extractfile(p).read()for p in members}
  assert len(f)==m['archive_files'];assert json.loads(f.pop('MANIFEST.json'))=={name:sha(b)for name,b in f.items()}
  spec=json.loads(f['SPEC.json']);assert spec['baseline']==m['baseline']and spec['scientific_source_commit']==m['scientific_source_commit']
@@ -138,10 +138,10 @@ def verify(capsule=CAPSULE,manifest=MANIFEST):
   for path,h in report['source_sha256'].items():
    if path in m['external_source_members']:assert sha(f[m['external_source_members'][path]])==h;continue
    relative=None
-   if not Path(path).is_absolute():relative=Path(path)
+   if not PurePosixPath(path).is_absolute():relative=PurePosixPath(path)
    else:
     for root in spec['source_roots']:
-     try:relative=Path(path).relative_to(root);break
+     try:relative=PurePosixPath(path).relative_to(PurePosixPath(root));break
      except ValueError:pass
    assert relative is not None and '..'not in relative.parts,path
    assert m['source_sha256'][relative.as_posix()]==h

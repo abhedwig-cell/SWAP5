@@ -4,7 +4,7 @@ Checks archived native outputs without recompiling or claiming whole-model
 equivalence. The exact closed production delta protects inherited boundaries.
 """
 import base64,csv,hashlib,io,json,math,struct,subprocess,tarfile,tempfile
-from pathlib import Path
+from pathlib import Path,PurePosixPath,PureWindowsPath
 from checkpoint_layout import layout,payload
 from check_history import check
 
@@ -21,7 +21,7 @@ def verify():
  raw=(ROOT/'integration/dataqual15/EVIDENCE.tar.xz').read_bytes();assert sha(raw)==s['evidence_sha256']
  with tarfile.open(fileobj=io.BytesIO(raw),mode='r:xz')as tar:
   members=tar.getmembers();assert len({m.name for m in members})==len(members)
-  assert all(m.isfile()and not Path(m.name).is_absolute()and'..'not in Path(m.name).parts for m in members)
+  assert all(m.isfile()and not PurePosixPath(m.name).is_absolute()and not PureWindowsPath(m.name).drive and'..'not in PurePosixPath(m.name).parts and'\\'not in m.name for m in members)
   f={m.name:tar.extractfile(m).read()for m in members}
  assert len(f)==s['archive_files']
  manifest=json.loads(f.pop('MANIFEST.json'));assert manifest=={n:sha(b)for n,b in f.items()}
@@ -30,7 +30,9 @@ def verify():
  def bound(p,h):
   if p in s['external_source_members']:assert sha(f[s['external_source_members'][p]])==h,p
   else:
-   if Path(p).is_absolute():assert '/SWAP5/'in p;p=p.split('/SWAP5/',1)[1]
+   if PurePosixPath(p).is_absolute()or PureWindowsPath(p).is_absolute():
+    normalized=p.replace('\\','/');assert '/SWAP5/'in normalized,p;p=normalized.split('/SWAP5/',1)[1]
+   assert not PureWindowsPath(p).drive and '..'not in PurePosixPath(p).parts,p
    assert s['source_sha256'][p]==h and sha((ROOT/p).read_bytes())==h,p
  def bind(r):
   for p,h in r['source_sha256'].items():bound(p,h)
