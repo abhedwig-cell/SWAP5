@@ -1,6 +1,7 @@
 module mod_fwof34_test_model
   use, intrinsic :: iso_fortran_env, only: real64
-  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t
+  use, intrinsic :: ieee_arithmetic,only:ieee_is_finite
+  use mod_transaction_reference, only: transaction_state_t, trial_outcome_t,TX_MASS_MISSING_NONE,TX_MASS_MISSING_UNSPECIFIED
   use mod_canonical_contracts, only: canonical_state_t, canonical_forcing_t, canonical_interval_t, &
        canonical_numerical_config_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_model_t
@@ -30,6 +31,7 @@ module mod_fwof34_test_model
     procedure :: prepare_interval => fwof34_prepare_interval
     procedure :: advance => fwof34_advance
     procedure :: storage => fwof34_storage
+    procedure :: storage_accounting_status=>fwof34_storage_status
     procedure :: temporal_error => fwof34_temporal_error
   end type fwof34_model_t
 
@@ -104,8 +106,24 @@ contains
     end select
     outcome%solver_ok = .true.
     outcome%mass_in = transfer_mass
+    outcome%mass_accounting_complete=.true.
+    outcome%missing_mass_contribution_mask=TX_MASS_MISSING_NONE
     outcome%nonlinear_iterations = 1
   end subroutine fwof34_advance
+
+  subroutine fwof34_storage_status(self,state,complete,missing_mask)
+    class(fwof34_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::state
+    logical,intent(out)::complete
+    integer(kind=8),intent(out)::missing_mask
+    complete=.false.;missing_mask=TX_MASS_MISSING_UNSPECIFIED
+    select type(state)
+    type is(fwof34_state_t)
+      if(.not.ieee_is_finite(self%flux_rate).or..not.ieee_is_finite(state%water))return
+      complete=self%flux_rate>=0._real64.and.state%water>=0._real64
+      if(complete)missing_mask=TX_MASS_MISSING_NONE
+    end select
+  end subroutine fwof34_storage_status
 
   real(real64) function fwof34_storage(self, state) result(value)
     class(fwof34_model_t), intent(in) :: self
@@ -188,6 +206,34 @@ program test_fwof34_accepted_window_runtime_lineage
   call require(status == FMR_WOFOST_LINEAGE_WINDOW_INCOMPLETE .and. .not. available, &
        'incomplete window cannot emit crop event')
   print '(a)', 'FWOF34_REJECTED_TRIAL_ZERO_CONTRIBUTION=PASS'
+
+  ! Source micro qredrwu is clipped per node. Compensatory uptake at node1
+  ! is real water extraction but is not a negative biological reduction.
+  call begin_wofost_trial_contribution(checkpoint0,.4_real64,probe_trial,status)
+  call accumulate_wofost_trial_process_rate(probe_trial,0._real64,.2_real64,.16_real64,.2_real64,status, &
+       potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.09_real64])
+  call require(status==FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE,'exact carrier rejects clipped source interpretation')
+  call accumulate_wofost_trial_process_rate(probe_trial,0._real64,.2_real64,.16_real64,.2_real64,status, &
+       potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.09_real64], &
+       source_clipped_root_reduction=.true.,actual_root_sink=[.15_real64,.02_real64])
+  call require(status==FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE,'clipped actual uptake sum remains certified')
+  call accumulate_wofost_trial_process_rate(probe_trial,0._real64,.2_real64,.16_real64,.2_real64,status, &
+       potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.08_real64], &
+       source_clipped_root_reduction=.true.,actual_root_sink=[.15_real64,.01_real64])
+  call require(status==FMR_WOFOST_LINEAGE_INVALID_PROCESS_RATE,'clipped node loss cannot be fabricated')
+  call accumulate_wofost_trial_process_rate(probe_trial,0._real64,.2_real64,.16_real64,.2_real64,status, &
+       potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.09_real64], &
+       source_clipped_root_reduction=.true.,actual_root_sink=[.15_real64,.01_real64])
+  call require(status==FMR_WOFOST_LINEAGE_OK,'literal source clipped receipt accepted')
+  call accumulate_wofost_trial_process_rate(probe_trial,.2_real64,.4_real64,.11_real64,.2_real64,status, &
+       potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.09_real64])
+  call require(status/=FMR_WOFOST_LINEAGE_OK,'receipt interpretation cannot change within day')
+  call accumulate_wofost_trial_process_rate(probe_trial,.2_real64,.4_real64,.16_real64,.2_real64,status, &
+       potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.09_real64], &
+       source_clipped_root_reduction=.true.,actual_root_sink=[.15_real64,.01_real64])
+  call require(status==FMR_WOFOST_LINEAGE_OK.and.probe_trial%complete(),'clipped continuation completes exactly')
+  call discard_wofost_trial_contribution(probe_trial)
+  print '(a)', 'DATAQUAL15_SOURCE_CLIPPED_ROOT_RECEIPT_CERTIFICATE=PASS'
 
   ! Trial subintervals themselves must be contiguous. Failed gap/overlap calls
   ! are nonmutating and a correct continuation can still finish the trial.
@@ -336,9 +382,81 @@ program test_fwof34_accepted_window_runtime_lineage
        'delivered window cannot be prepared again')
   print '(a)', 'FWOF34_CROP_EVENT_DELIVERY_EXACTLY_ONCE_WITH_RETRYABLE_PREPARE=PASS'
 
+  call check_clipped_roundtrip()
   print '(a)', 'FWOF34_ACCEPTED_WINDOW_RUNTIME_LINEAGE_TEST PASS'
 
 contains
+
+  subroutine check_clipped_roundtrip()
+    type(kernel_committed_state_t)::s
+    type(kernel_checkpoint_t)::cp
+    type(kernel_executor_t)::k
+    type(fwof34_model_t),target::m
+    type(fwof34_parameters_t)::p
+    type(fwof34_forcing_t)::f
+    type(canonical_numerical_config_t)::c
+    type(fmr_wofost_accepted_window_t)::w,resumed
+    type(fmr_wofost_window_persistence_t)::view
+    type(fmr_wofost_trial_contribution_t)::trial
+    type(fmr_wofost_accepted_interval_certificate_t)::certificate
+    type(fmr_wofost_crop_event_token_t)::token
+    type(fmr_wofost_crop_event_identity_t)::identity,restored,exact_interpretation
+    type(fmr_wofost_crop_event_identity_persistence_t)::iv
+    type(wofost_accepted_window_aggregates_t)::a
+    logical::available,exported,ok
+    integer::code,i
+    real(real64)::t0,t1
+    call setup_committed(s,3402_int64,0._real64)
+    call setup_solver(p,f,c);call k%bind_model(m)
+    call s%capture_checkpoint(cp,ok);call require(ok,'clipped initial checkpoint')
+    call open_wofost_accepted_window(cp,.4_real64,w,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK,'clipped accepted day opens')
+    do i=1,2
+      t0=.2_real64*(i-1);t1=.2_real64*i
+      call s%capture_checkpoint(cp,ok);call require(ok,'clipped interval checkpoint')
+      call begin_wofost_trial_contribution(cp,t1,trial,code)
+      call accumulate_wofost_trial_process_rate(trial,t0,t1,.16_real64,.2_real64,code, &
+           potential_root_sink=[.1_real64,.1_real64],root_sink_reduction=[0._real64,.09_real64], &
+           source_clipped_root_reduction=.true.,actual_root_sink=[.15_real64,.01_real64])
+      call require(code==FMR_WOFOST_LINEAGE_OK,'clipped trial receipt prepared')
+      call advance_and_commit(k,m,p,f,c,s,cp,t0,t1)
+      call certify_fkt_accepted_interval(cp,s,certificate,code)
+      call require(code==FMR_WOFOST_LINEAGE_OK,'clipped actual kernel commit certificate')
+      call admit_wofost_accepted_trial(w,certificate,trial,code)
+      call require(code==FMR_WOFOST_LINEAGE_OK,'clipped trial enters accepted window')
+      call export_wofost_window_persistence(w,view,code)
+      call require(code==FMR_WOFOST_LINEAGE_OK.and.view%root_layer_reduction_clipped,'clipped window flag exported')
+      call reconstruct_wofost_window_persistence(view,resumed,code)
+      call require(code==FMR_WOFOST_LINEAGE_OK.and.resumed%ready(),'clipped window state restored')
+      w=resumed
+      view%root_layer_reduction_clipped=.false.
+      call reconstruct_wofost_window_persistence(view,resumed,code)
+      call require(code/=FMR_WOFOST_LINEAGE_OK,'compensatory receipt cannot restore as exact partition')
+    end do
+    call prepare_wofost_crop_event_delivery(w,a,token,available,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK.and.available,'clipped accepted event prepared')
+    call identify_wofost_crop_event(token,identity,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK,'clipped token identity')
+    call export_wofost_crop_event_identity_persistence(identity,iv,exported)
+    call require(exported.and.iv%root_layer_reduction_clipped,'clipped event flag persisted')
+    call reconstruct_wofost_crop_event_identity_from_persistence(iv,restored,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK.and.same_wofost_crop_event_identity(identity,restored), &
+         'clipped event exact identity roundtrip')
+    iv%root_layer_reduction_clipped=.false.
+    call require(.not.iv%ready(),'clipped compensatory event refuses exact reinterpretation')
+    ! Both interpretations are valid when clipping causes no compensatory
+    ! deficit, yet their receipt identities must remain different.
+    iv%root_sink_reduction_integral=.5_real64*(iv%potential_transpiration_integral-iv%actual_root_uptake_integral)
+    call reconstruct_wofost_crop_event_identity_from_persistence(iv,exact_interpretation,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK,'exact noncompensatory identity control')
+    iv%root_layer_reduction_clipped=.true.
+    call reconstruct_wofost_crop_event_identity_from_persistence(iv,restored,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK,'clipped noncompensatory identity control')
+    call require(.not.same_wofost_crop_event_identity(exact_interpretation,restored),'receipt mode binds event identity')
+    call commit_wofost_crop_event_delivery(w,token,code)
+    call require(code==FMR_WOFOST_LINEAGE_OK.and.w%delivery_committed(),'clipped token delivery committed once')
+    print '(a)', 'DATAQUAL15_CLIPPED_WINDOW_TOKEN_IDENTITY_PERSISTENCE=PASS'
+  end subroutine check_clipped_roundtrip
 
   subroutine setup_committed(state, lineage_id, initial_time)
     type(kernel_committed_state_t), intent(out) :: state

@@ -1,18 +1,12 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-DATAQUAL15 candidate (not canonically admitted) removes the original Grassgrowth
-variable-groundwater, first mowing and annual crop/root continuation barriers.
-The same-build original history reaches521 days, with367-day O0/O2 physical
-continuation equality and exact126-to140 O2 and365-to367 O0/O2 disk restarts. Interrupted
-process exits are UNKNOWN; the1827-day target continues from unchanged atomic
-checkpoints. Actual biomass/water-stress differences from4.3.1 are measured;
-full scientific equivalence and production expansion are not claimed. Existing
-boundary, crop, potential, root and thermal owners remain authoritative.
-See `integration/dataqual15/STATUS.json`, `CONTRACT.md` and the single
-`integration/dataqual12/MIGRATION_MATRIX.json`. The isolated Hupsel candidate
-has365-day O0/O2 and494-day original execution evidence at source711f8ce,
-evidence commit132ccc7; its potato continuation is a separate integration task.
-Historical DATAQUAL12–14 paragraphs below describe their bounded admitted scope.
+The current DATAQUAL15 combined qualification is a closed source dependency capsule, not an inference from old receipts. Its portable verifier checks source snapshots against the checkout, archived input bytes, actual ledgers, nested native CRCs and exact physical/restart comparisons. The canonical CI selector chooses this evidence before the historical M521 verifier.
+
+DATAQUAL15 now has one complete original historical project: Hupsel executes all1096 days from day1 with unchanged original input files and one gfortran O2 source build. The original maize, potato and grass seasons, three scheduled potato irrigations and seven threshold-triggered grass cuts execute. O0 executes the active494–1096 period; its first494-day predecessor is independently O0/O2 byte-exact. Complete endpoints and native restarts are exact across optimizations and the qualified fresh-process suffixes.
+
+The combined candidate preserves all367 original Grassgrowth budget/crop rows and its physical restart payload against C2. The longest separately executed single-source Grassgrowth history is1786/1827 days at139330b; day1787 fails an oxygen zero-front check. The oxygen successor is separate. There is no complete Grassgrowth execution, whole-project scientific equivalence or production promotion in this candidate.
+
+Current source, original inputs, real compiler/run records and claim limits are bound by `integration/dataqual15_hupsel/COMBINED_CLOSED_RESULT.json`, `COMBINED_CLOSED_EVIDENCE.tar.xz` and `tests/dataqual15_hupsel/verify_combined_closed.py`. The single migration matrix is `integration/dataqual12/MIGRATION_MATRIX.json`. Canonical admission requires the actual merge/postimage receipt. The3170aa1/PR1476 receipt remains the historical Grassgrowth baseline; older DATAQUAL paragraphs below retain their bounded historical scope.
 
 DATAQUAL14 active Grassgrowth composition reuses existing actual/potential crop,
 root-depth and water/thermal owners; its bounded evidence and admission authority

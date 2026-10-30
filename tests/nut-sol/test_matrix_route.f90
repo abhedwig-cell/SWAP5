@@ -12,6 +12,7 @@ program test_matrix_route
   use mod_solute_compartment_state,only:solute_compartment_state_t
   use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t
   use mod_fmr_b111_matrix_solute_route
+  use mod_root_salinity_response,only:SALINITY_OK,SALINITY_INVALID
   use b111_literal_oracle,only:literal_step
   implicit none
   real(real64),parameter::T0=0.0_real64,T1=1.0e-3_real64,HARD_MASS_GATE=1.0e-10_real64
@@ -33,6 +34,8 @@ program test_matrix_route
   type(mobile_salt_state_t)::mobile,reference_mobile
   type(solute_compartment_state_t)::companion
   real(real64),allocatable::water(:),expected_c(:),expected_mass(:),faces(:)
+  real(real64),allocatable::salinity_c(:),salinity_alpha(:),salinity_sink(:),salinity_loss(:),salinity_water(:)
+  real(real64)::salinity_total
   real(real64)::k,t,mass0,oracle_decay,oracle_in,oracle_out,closure,total_in,total_out,begin_time
   integer(int64)::revision
   integer::status,i,j,face_status
@@ -69,6 +72,23 @@ program test_matrix_route
        (expected_c/p%cref_mg_cm3)**p%frexp)*dz
   call initialize_matrix_solute(p,9001_int64,T0,water,expected_c,solute,status)
   call require(status==MATRIX_OK,'initialize actual chemical state')
+  call solute%root_salinity_view(T0,water,dz,spread(.1d0,1,numnod),.25d0,.5d0, &
+       salinity_c,salinity_alpha,salinity_sink,salinity_loss,salinity_total,status)
+  call require(status==SALINITY_OK,'reactive chemical owner salinity view')
+  call require(maxval(abs(salinity_c-expected_c))<1d-14,'same reactive dissolved concentration')
+  call require(maxval(abs(salinity_alpha-max(0d0,1d0-max(0d0,expected_c-.25d0)*.5d0)))<1d-14, &
+       'incumbent Maas-Hoffman salinity response')
+  call require(abs(sum(salinity_sink)+salinity_total-.1d0*numnod)<1d-14,'salinity uptake attribution')
+  call solute%root_salinity_view(T1,water,dz,spread(.1d0,1,numnod),.25d0,.5d0, &
+       salinity_c,salinity_alpha,salinity_sink,salinity_loss,salinity_total,status)
+  call require(status==SALINITY_INVALID.and..not.allocated(salinity_c),'reject other sibling clock')
+  salinity_water=water;salinity_water(1)=salinity_water(1)+1d-6
+  call solute%root_salinity_view(T0,salinity_water,dz,spread(.1d0,1,numnod),.25d0,.5d0, &
+       salinity_c,salinity_alpha,salinity_sink,salinity_loss,salinity_total,status)
+  call require(status==SALINITY_INVALID.and..not.allocated(salinity_c),'reject other sibling water')
+  call solute%root_salinity_view(T0,water,2d0*dz,spread(.1d0,1,numnod),.25d0,.5d0, &
+       salinity_c,salinity_alpha,salinity_sink,salinity_loss,salinity_total,status)
+  call require(status==SALINITY_INVALID.and..not.allocated(salinity_c),'reject chemical geometry change')
   initial=solute;mass0=sum(expected_mass);total_in=0.0_real64;total_out=0.0_real64
   do i=1,3
     begin_time=(i-1)*T1

@@ -17,6 +17,9 @@ program test_pond_thermal
  use mod_pond_thermal_restart_file
  use mod_b111_persistent_pond,only:pond_step_t
  use mod_soil_temperature_contract
+ use mod_restricted_surface_evaporation,only:black_evaporation_state_t
+ use mod_rutter_source_window_processor,only:initialize_rutter_canopy_state
+ use mod_interception_source_window_runtime,only:initialize_interception_window
  use mod_restricted_soil_temperature,only:initialize_soil_temperature_parameters
  use mod_solute_mobile_salt_state,only:mobile_salt_state_t
  use mod_solute_compartment_state,only:solute_compartment_state_t
@@ -32,6 +35,7 @@ program test_pond_thermal
  type(b111_reactive_solute_substep_forcing_t)::p,pbad
  type(matrix_joint_result_t)::r
  real(real64)::k,dt,t0,t1,decay_total,max_residual,exponent
+ logical::rutter_black=.false.
  integer::status,j,windows,first,last,accepted
  integer(int64)::restore_id
  character(512)::mode,path,endpoint,arg
@@ -40,6 +44,8 @@ program test_pond_thermal
  exponent=1d0
  call get_command_argument(5,arg)
  if(len_trim(arg)>0)read(arg,*)exponent
+ rutter_black=index(trim(mode),"rutter-")==1
+ if(rutter_black)mode=mode(8:)
  t0=0d0;t1=.001d0
  call initialize_application_config(cfg,-75d0,k)
  ! Same low-conductivity pond fixture as the admitted evolving surface route.
@@ -71,6 +77,36 @@ program test_pond_thermal
  allocate(cfg%tiles(1)%base_forcing%pond_input)
  cfg%tiles(1)%base_forcing%pond_input%rain_rate_cm_day=.25d0
  cfg%tiles(1)%base_forcing%pond_input%irrigation_rate_cm_day=.25d0
+ if(rutter_black)then
+  cfg%tiles(1)%initial_state%ponding_depth=0d0
+  cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK
+  cfg%tiles(1)%parameters%black_evaporation_active=.true.
+  cfg%tiles(1)%parameters%black_heat_composition_enabled=.true.
+  cfg%tiles(1)%parameters%reactive_solute_active=.true.
+  cfg%tiles(1)%parameters%root_extraction_active=.false.
+  allocate(cfg%tiles(1)%parameters%black_evaporation,cfg%tiles(1)%initial_state%rutter)
+  cfg%tiles(1)%parameters%black_evaporation%cofred=.5d0
+  call initialize_rutter_canopy_state(.02d0,cfg%tiles(1)%initial_state%rutter,status)
+  call require(status==0,'initial incumbent Rutter canopy')
+  cfg%tiles(1)%base_forcing%root_extraction_sink=0d0
+  cfg%tiles(1)%base_forcing%root_potential_transpiration=0d0
+  deallocate(cfg%tiles(1)%base_forcing%pond_input)
+  allocate(cfg%tiles(1)%base_forcing%black_evaporation,cfg%tiles(1)%base_forcing%rutter)
+  associate(f=>cfg%tiles(1)%base_forcing%black_evaporation)
+   f%precipitation_rate_cm_per_day=.25d0;f%irrigation_rate_cm_per_day=.25d0
+   f%potential_bare_soil_evaporation_cm_per_day=.1d0;f%potential_pond_evaporation_cm_per_day=.01d0
+   f%ponding_max_cm=1d0
+  end associate
+  associate(f=>cfg%tiles(1)%base_forcing%rutter)
+   f%prepared=.true.
+   call initialize_interception_window(19001_int64,0d0,.002d0,.0005d0,f%source_window,status)
+   call require(status==0,'existing source window')
+   f%process%vegetation_cover_fraction=.8d0;f%process%canopy_storage_capacity_cm=.01d0
+   f%process%interception_evaporation_capacity_cm_per_day=.2d0;f%process%surface_irrigation_cm_per_day=.25d0
+   f%potential_bare_soil_evaporation_cm_per_day=.1d0;f%potential_pond_evaporation_cm_per_day=.01d0
+   f%ponding_max_cm=1d0
+  end associate
+ end if
  call parameters(p)
  call backend%initialize(top)
  if(index(trim(mode),'reject')==1)then
@@ -152,7 +188,11 @@ program test_pond_thermal
   t0=.002d0*real(j-1,real64)/real(windows,real64);t1=.002d0*real(j,real64)/real(windows,real64)
   cfg%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=5d0
   if(j>windows/2)cfg%tiles(1)%base_forcing%soil_temperature%prescribed_surface_temperature_c=30d0
-  call checked_interval(water,chemical,t0,t1,p)
+  if(rutter_black)then
+   call checked_rutter_interval(water,chemical,t0,t1)
+  else
+   call checked_interval(water,chemical,t0,t1,p)
+  end if
   decay_total=decay_total+r%chemical%decay_out;max_residual=max(max_residual,abs(r%chemical%residual))
   accepted=accepted+r%chemical%completed_substeps
  end do
@@ -168,8 +208,72 @@ program test_pond_thermal
  print '(A,ES25.17)','DECAY=',decay_total
  print '(A,ES25.17)','MAX_SOLUTE_RESIDUAL=',max_residual
  call summary(water,chemical)
- print '(A)','THERMAL_PHYSICAL_LITERAL_RESTART=PASS'
+ if(rutter_black)then
+  print '(A)','BLACK_RUTTER_HEAT_REACTIVE_MASS_RESTART=PASS'
+ else
+  print '(A)','THERMAL_PHYSICAL_LITERAL_RESTART=PASS'
+ end if
 contains
+ subroutine checked_rutter_interval(w,c,a,b)
+  type(kernel_committed_state_t),intent(inout)::w
+  type(matrix_solute_state_t),intent(inout)::c
+  real(real64),intent(in)::a,b
+  class(transaction_state_t),allocatable::physical
+  type(fmr_serialized_physical_observation_t)::obs
+  type(mobile_salt_state_t)::m
+  type(solute_compartment_state_t)::s
+  real(real64),allocatable::theta(:)
+  real(real64)::time,mass0,mass1,water_residual,stock0,stock1,canopy0,canopy1,rutter_residual
+  integer(int64)::revision
+  integer::h
+  logical::ok
+  call c%snapshot(time,theta,m,s,revision);mass0=sum(m%mass_mg_cm2)+s%solute_total()
+  call w%snapshot(physical,ok);call require(ok,'initial full water stock')
+  select type(q=>physical)
+  type is(fmr_b110_black_evaporation_state_t)
+   canopy0=q%rutter%canopy_storage();stock0=sum(dz*q%water_content)+q%ponding_depth+canopy0
+  class default
+   call require(.false.,'initial Black/canopy owner')
+  end select
+  call run_test_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,w, &
+       cfg%tiles(1)%base_forcing,cfg%numerical,c,a,b,r)
+  if(r%status/=0)print *,'BLACK_RUTTER_DIAGNOSTIC',r%status,r%water%status,r%chemical%status, &
+       r%diagnostics%admission_rejections,r%diagnostics%solver_rejections,r%diagnostics%mass_rejections
+  call require(r%status==JOINT_OK,'existing Black Rutter heat reactive interval')
+  call c%snapshot(time,theta,m,s,revision);mass1=sum(m%mass_mg_cm2)+s%solute_total()
+  call require(abs(mass1-mass0-r%chemical%external_in+r%chemical%external_out)<1d-10,'direct chemical stock ledger')
+  call require(abs(r%water%mass%residual)<1d-10,'direct water stock ledger')
+  obs=backend%observation();water_residual=0d0
+  call require(obs%accepted_water_flux_trace_available,'actual trial water trace')
+  do h=1,size(obs%accepted_water_flux_substeps)
+   associate(t=>obs%accepted_water_flux_substeps(h))
+    water_residual=water_residual+sum(dz*(t%water_end-t%water_start))- &
+         (t%t1-t%t0)*(t%bottom_flux-t%top_flux+sum(t%net_node_source))
+    call require(t%rutter_reservoir_available,'same accepted trial canopy receipt')
+    rutter_residual=(t%rutter_gross_rain_rate_cm_day+t%rutter_gross_irrigation_rate_cm_day- &
+         t%converged_rain_rate_cm_day-t%converged_irrigation_rate_cm_day)*(t%t1-t%t0)- &
+         t%rutter_evaporation_cm-t%rutter_canopy_end_cm+t%rutter_canopy_start_cm
+    call require(abs(rutter_residual)<1d-10.and.abs(t%rutter_reservoir_residual_cm)<1d-10,'independent canopy stock ledger')
+    call require(t%reactive_chemical_available,'same accepted trial chemical receipt')
+   end associate
+  end do
+  call require(abs(water_residual)<1d-10,'independent actual matrix stock balance')
+  call w%snapshot(physical,ok);call require(ok,'same incumbent physical owner')
+  select type(q=>physical)
+  type is(fmr_b110_black_evaporation_state_t)
+   call require(allocated(q%rutter).and.allocated(q%reactive_solute),'incumbent canopy and reactive owners')
+   call require(q%rutter%accepted_until()==b,'actual Rutter endpoint clock')
+   call require(q%rutter%canopy_storage()<=.01d0,'source falling-leaf capacity bound')
+   call require(q%reactive_solute%same_state(c),'single authoritative chemical state and export mirror')
+   canopy1=q%rutter%canopy_storage();stock1=sum(dz*q%water_content)+q%ponding_depth+canopy1
+   call require(abs(stock1-stock0-r%water%mass%total_in+r%water%mass%total_out)<1d-10,'complete matrix pond canopy stock ledger')
+   call require(abs(r%water%mass%total_in-.5d0*(b-a))<1d-10,'actual gross canopy and surface input ledger')
+
+  class default
+   call require(.false.,'existing Black physical state type')
+  end select
+ end subroutine checked_rutter_interval
+
  subroutine run_test_interval(backend,column,template,parameters,water,forcing,config,chemical,a,b,result)
   type(fmr_serialized_reference_backend_t),intent(inout)::backend
   type(fmr_logical_column_t),intent(in)::column
@@ -184,6 +288,7 @@ contains
   type(pond_step_t)::supply
   supply%t0=a;supply%t1=b;supply%rain_rate=.25d0;supply%irrigation_rate=.25d0
   supply%rain_c=.125d0;supply%irrigation_c=.375d0
+  if(rutter_black)then;supply%rain_c=0d0;supply%irrigation_c=0d0;end if
   call run_pond_thermal_interval(backend,column,template,parameters,water,forcing,config,chemical,supply,a,b,result)
  end subroutine
  subroutine summary(w,c)
@@ -215,7 +320,12 @@ contains
   type(kernel_committed_state_t)::tmp
   class(transaction_state_t),allocatable::physical
   logical::ok
+  if(rutter_black)then
+   call fmr_new_b110_black_evaporation_committed_state(w,column%column_id,cfg%tiles(1)%initial_state, &
+        black_evaporation_state_t(),0d0,ok,parameters=cfg%tiles(1)%parameters)
+  else
   call fmr_new_b110_committed_state(w,column%column_id,cfg%tiles(1)%initial_state,0d0,ok,parameters=cfg%tiles(1)%parameters)
+  end if
   call require(ok,'initial certified heat water')
   call initialize_matrix_solute(f,9001_int64,0d0,cfg%tiles(1)%initial_state%water_content, &
    [.2d0,.3d0,.4d0,.5d0],c,status);call require(status==0,'initial chemical owner')
@@ -228,7 +338,7 @@ contains
    type(matrix_solute_state_t)::next
    call c%snapshot(time,theta,m,s,rev)
    call reconstruct_matrix_solute_trusted(f,9001_int64,rev,time,theta,m%concentration_mg_cm3,m%mass_mg_cm2, &
-    s%sorbed_matrix_mass,next,status,surface_mass=.25d0)
+    s%sorbed_matrix_mass,next,status,surface_mass=merge(0d0,.25d0,rutter_black))
    call require(status==0,'initial pond chemistry');c=next
   end block
   call require(pond_thermal_states_match(w,c),'initial joint match')

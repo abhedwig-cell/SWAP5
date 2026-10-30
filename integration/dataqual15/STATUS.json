@@ -78,11 +78,14 @@
   "portable_evidence": "integration/dataqual15/EVIDENCE_MANIFEST.json",
   "portable_verifier": "tests/dataqual15/verify_evidence.py",
   "pull_request": 1476,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "docs_checks": {
     "source": "PASS",
     "mkdocs_strict": "PASS14.60sec; existing INFO anchor diagnostics, no strict warning failure"
   },
   "O0_O2_exact_original_days": 367,
-  "qualified_year_restart": "365->367 exact independently in O0 and O2"
+  "qualified_year_restart": "365->367 exact independently in O0 and O2",
+  "canonical_receipt": "integration/dataqual15/MERGE_RECEIPT.json",
+  "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion."
 }

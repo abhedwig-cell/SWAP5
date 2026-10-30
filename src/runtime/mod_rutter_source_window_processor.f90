@@ -39,6 +39,8 @@ module mod_rutter_source_window_processor
     procedure, public :: accepted_until => source_accepted_until
     procedure, public :: source_window_initialized => source_window_initialized
     procedure, public :: same_source_candidate => source_same_candidate
+    procedure, public :: export_restart=>source_export_restart
+    procedure, public :: capacity_candidate=>source_capacity_candidate
   end type
 
   type, public :: rutter_source_trial_t
@@ -61,6 +63,37 @@ module mod_rutter_source_window_processor
   public :: accept_rutter_source_trial, export_rutter_source_restart, restore_rutter_source_restart
 
 contains
+
+  ! Source MOD_cropdevelopment read_interception task2/3: falling leaves or
+  ! harvest can reduce SICCAP below SICACT. SICCAPLOSS is exported as EIC by
+  ! integral.f90. Keep this a proposal so rejected water trials retain canopy.
+  subroutine source_capacity_candidate(self,capacity,candidate,export_cm,status)
+    class(rutter_source_state_t),intent(in)::self
+    real(real64),intent(in)::capacity
+    type(rutter_source_state_t),intent(out)::candidate
+    real(real64),intent(out)::export_cm
+    integer,intent(out)::status
+    candidate=rutter_source_state_t();export_cm=0.0_real64;status=RUTTER_WINDOW_INVALID
+    if(.not.ieee_is_finite(capacity).or..not.ieee_is_finite(self%canopy%canopy_storage_cm))return
+    if(capacity<0.0_real64.or.self%canopy%canopy_storage_cm<0.0_real64)return
+    candidate=self;export_cm=max(0.0_real64,self%canopy%canopy_storage_cm-capacity)
+    candidate%canopy%canopy_storage_cm=min(self%canopy%canopy_storage_cm,capacity)
+    status=RUTTER_WINDOW_OK
+  end subroutine source_capacity_candidate
+
+  subroutine source_export_restart(self,record,status)
+    class(rutter_source_state_t),intent(in)::self
+    type(rutter_source_restart_t),intent(out)::record
+    integer,intent(out)::status
+    record=rutter_source_restart_t();status=RUTTER_WINDOW_INVALID
+    if(.not.ieee_is_finite(self%canopy%canopy_storage_cm))return
+    if(self%canopy%canopy_storage_cm<0.0_real64)return
+    if(self%window%valid())then
+      call export_rutter_source_restart(self%window,self,record,status)
+    else
+      record%canopy_storage_cm=self%canopy%canopy_storage_cm;status=RUTTER_WINDOW_OK
+    end if
+  end subroutine source_export_restart
 
   subroutine initialize_rutter_source_state(window, canopy_storage_cm, state, status)
     type(interception_source_window_t), intent(in) :: window
@@ -225,8 +258,17 @@ contains
     window = interception_source_window_t()
     state = rutter_source_state_t()
     status = RUTTER_WINDOW_INVALID
-    if (record%schema /= RUTTER_WINDOW_RESTART_SCHEMA .or. &
-        .not. ieee_is_finite(record%canopy_storage_cm) .or. record%canopy_storage_cm < 0.0_real64) return
+    if(record%schema/=RUTTER_WINDOW_RESTART_SCHEMA)return
+    if(.not.ieee_is_finite(record%canopy_storage_cm))return
+    if(record%canopy_storage_cm<0.0_real64)return
+    if(.not.all(ieee_is_finite([record%parameters%vegetation_cover_fraction, &
+         record%parameters%canopy_storage_capacity_cm,record%parameters%interception_evaporation_capacity_cm_per_day, &
+         record%parameters%potential_transpiration_dry_cm_per_day,record%parameters%potential_transpiration_wet_cm_per_day, &
+         record%parameters%surface_irrigation_cm_per_day])))return
+    if(record%parameters%vegetation_cover_fraction<0.0_real64.or.record%parameters%vegetation_cover_fraction>1.0_real64)return
+    if(min(record%parameters%canopy_storage_capacity_cm,record%parameters%interception_evaporation_capacity_cm_per_day, &
+         record%parameters%potential_transpiration_dry_cm_per_day,record%parameters%potential_transpiration_wet_cm_per_day, &
+         record%parameters%surface_irrigation_cm_per_day)<0.0_real64)return
     call restore_interception_restart(record%source_progress, window, progress, status)
     if (status /= INTWIN_OK) then
       status = RUTTER_WINDOW_INVALID

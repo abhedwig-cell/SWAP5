@@ -1,0 +1,28 @@
+{
+  "work_unit": "DATAQUAL15_HUPSEL_MICRO_STRESS",
+  "status": "SOURCE_COMPONENT_O0_O2_PASS",
+  "scientific_source_commit": "f49896c9b970e0731b8bbd83c94762b1cdd0677f",
+  "evidence_sha256": "23067d80da5826595115a5c2c70fb22581702c53fee49a92e6789bf0a4fcca02",
+  "maximum_attribution_difference": 0.0,
+  "uptake_oracle_tolerance_cm_day": 2e-05,
+  "existing_uptake_source_cases_per_build": 6,
+  "literal_attribution_cases_per_build": 6,
+  "original_potato_scalar_parameters_used": true,
+  "original_Hupsel_extra_days_executed": 0,
+  "canonical_admitted": false,
+  "zero_demand_continuation": "Previous saved drought factor must be provided from the caller's cloned physical continuation after positive-demand history; default zero is initial observation only.",
+  "claim_ceiling": "Existing bounded de Willigen uptake cases plus original potato scalar parameter binding and literal no-frost microscopic stress partition; no full potato/runtime/project admission",
+  "test_selection": {
+    "selected": [
+      "Existing compiled de Willigen source oracle O0/O2",
+      "Literal RootExtraction_MICRO p_func partition O0/O2",
+      "Original potato scalar binding on existing component oracle profile",
+      "Zero demand initial and saved carry; negative remaining optimum rejected"
+    ],
+    "not_selected": [
+      "Full F-CI",
+      "Additional historical project variants",
+      "New synthetic model fixtures"
+    ]
+  }
+}

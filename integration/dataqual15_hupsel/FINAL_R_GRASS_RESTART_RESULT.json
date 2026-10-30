@@ -1,0 +1,273 @@
+{
+  "status": "FINAL_R_FULL_ORIGINAL1096_FUNCTIONAL_EXECUTION_WITH_EXACT_GRASS_RESTART_AND_CODEC_CONTROLS",
+  "model_code_commit": "f1afe2d474efd11d3374ba54952ae87b2f230ccd",
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "executable_sha256": "7d723fcaab70436ba8de7344dbd9907072dab3ad1048bc979ea8bbed165acfba",
+  "full_original_project_execution": true,
+  "completed_original_days": 1096,
+  "single_source_from_day1": true,
+  "scientific_equivalence": false,
+  "production_promoted": false,
+  "canonical_integration_verified": false,
+  "origin_command": [
+    "/workspace/scratch/c3166a264227/dq15-hupsel-rotation-current-r-O2/swap5_hupsel_germination",
+    "input.nml",
+    "-",
+    "1097",
+    "swap.swp",
+    "maize.crp"
+  ],
+  "origin_returncode": 0,
+  "origin_seconds": 686.2849629140001,
+  "original_inputs_sha256": {
+    "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b",
+    "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+    "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+    "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+    "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707"
+  },
+  "maximum_water_residual_cm": 8.301692666634608e-14,
+  "maximum_solute_residual_mg_cm2": 9.79690634173025e-12,
+  "restart_phase730_to731_byte_exact": true,
+  "restart_postcut868_to1096_byte_exact": true,
+  "terminal_native_sha256": "d11ecbab903a382f0a62b1df148fe7add0bb6f92a835630c8ec827bf12acd773",
+  "checkpoint730_sha256": "35422a3e344f8a710740096640801dcdb5e34b0e6e3e4cc002583751d6f96f03",
+  "checkpoint731_sha256": "735d1c60eed39d57bc7cb1261f649b234375426338820a3781b21edd3638c801",
+  "checkpoint868_sha256": "51f7b85b068cc581129e05baf7602cb13026728af0f01264063e2411b66161d7",
+  "fresh_process_suffixes": {
+    "dq15-hupsel-final-r-restart730to731-O2": {
+      "native_seconds": 0.1831343800004106,
+      "returncode": 0,
+      "completed_days": 731.0,
+      "comparisons": {
+        "budget.csv": {
+          "byte_exact_suffix": true,
+          "rows": 1,
+          "sha256": "fcb6441c3622c6524d657cddd620828bd25cc6e18610976a4188535548b5d004"
+        },
+        "crop.csv": {
+          "byte_exact_suffix": true,
+          "rows": 1,
+          "sha256": "1fb6cc74f2df32dba7e0959b4bf4b3983c340f7489fa7c6ca720f56eb0a916ec"
+        },
+        "germination.csv": {
+          "byte_exact_suffix": true,
+          "rows": 0,
+          "sha256": "50e1c94cf87e2cd3623fab954a781da23a823c1747a1ebd51a34f951054ca3dc"
+        }
+      }
+    },
+    "dq15-hupsel-final-r-restart868to1096-O2": {
+      "native_seconds": 96.60999856099806,
+      "returncode": 0,
+      "completed_days": 1096.0,
+      "comparisons": {
+        "budget.csv": {
+          "byte_exact_suffix": true,
+          "rows": 228,
+          "sha256": "e06a4b61a4744fcad1aed2c1da241ae647dd43a1c5445276db71d848de6645d6"
+        },
+        "crop.csv": {
+          "byte_exact_suffix": true,
+          "rows": 228,
+          "sha256": "733daea5ec073c782807c5e54f710404c29714c93cd33b204577eb7e74f68bc9"
+        },
+        "germination.csv": {
+          "byte_exact_suffix": true,
+          "rows": 0,
+          "sha256": "50e1c94cf87e2cd3623fab954a781da23a823c1747a1ebd51a34f951054ca3dc"
+        },
+        "state.csv": {
+          "byte_exact": true,
+          "sha256": "fc174840adf383de93c4c93c78fbf552a7cda4cc7c66bd3a79144d4349d65fce"
+        },
+        "temperature.csv": {
+          "byte_exact": true,
+          "sha256": "f49ca0b8b06de8c6d19de73312a415e61ea1e2f578718cf4af08632665dd99f3"
+        },
+        "endpoint.csv": {
+          "byte_exact": true,
+          "sha256": "add20655444c55e60b4740125ae0919be5bd227f185337f723ef9faf664d54dc"
+        },
+        "checkpoint.bin": {
+          "byte_exact": true,
+          "sha256": "d11ecbab903a382f0a62b1df148fe7add0bb6f92a835630c8ec827bf12acd773"
+        },
+        "restart.bin": {
+          "byte_exact": true,
+          "sha256": "d11ecbab903a382f0a62b1df148fe7add0bb6f92a835630c8ec827bf12acd773"
+        }
+      }
+    }
+  },
+  "codec_controls": {
+    "total": 111,
+    "valid_post_read_controls": 3,
+    "invalid_rejections": 108,
+    "all_clean_ERROR_STOP_1": true,
+    "days": [
+      730,
+      731,
+      868
+    ],
+    "no_budget_or_checkpoint_publication": true,
+    "script_commit": "c013edd",
+    "grass_states": [
+      {
+        "day": 730.0,
+        "management": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "day": 731.0,
+        "management": [
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0.0,
+          0.0
+        ]
+      },
+      {
+        "day": 868.0,
+        "management": [
+          2,
+          2,
+          0,
+          0,
+          0,
+          3,
+          3,
+          3666.079775552,
+          3671.493775247347
+        ]
+      }
+    ],
+    "mutation_cases": [
+      "valid_nonadvancing",
+      "outer_crc",
+      "outer_schema",
+      "outer_nodes",
+      "outer_clock_nan",
+      "outer_clock_fractional",
+      "bound_original_input",
+      "grass_cut_zero",
+      "grass_cut_exceeds_source_sequence",
+      "grass_potential_cut_zero",
+      "grass_potential_cut_exceeds_source_sequence",
+      "grass_actual_cut_age_negative",
+      "grass_potential_cut_age_negative",
+      "grass_warm_days_negative",
+      "grass_delay_negative",
+      "grass_potential_delay_negative",
+      "grass_harvest_negative",
+      "grass_harvest_nan",
+      "grass_potential_harvest_negative",
+      "grass_potential_harvest_nan",
+      "micro_presence_mismatch",
+      "micro_carry_negative",
+      "micro_carry_above_one",
+      "micro_carry_nan",
+      "black_age_negative",
+      "black_age_nan",
+      "rutter_schema_unsupported",
+      "rutter_schema_zero_nonzero_progress",
+      "rutter_canopy_negative",
+      "rutter_canopy_nan",
+      "rutter_progress_clock_mismatch",
+      "rutter_progress_clock_nan",
+      "irrigation_clock_mismatch",
+      "grass_presence_payload_retained",
+      "grass_management_silent_loss",
+      "truncated",
+      "extra_payload"
+    ]
+  },
+  "actual_harvest_events": [
+    {
+      "day": 868,
+      "cumulative_actual_harvest": 3666.079775552,
+      "cumulative_potential_harvest": 3671.493775247347,
+      "next_cut_index": 2,
+      "regrowth_delay_days": 3
+    },
+    {
+      "day": 902,
+      "cumulative_actual_harvest": 6693.32792420789,
+      "cumulative_potential_harvest": 6701.124944352421,
+      "next_cut_index": 3,
+      "regrowth_delay_days": 3
+    },
+    {
+      "day": 930,
+      "cumulative_actual_harvest": 9058.52282631447,
+      "cumulative_potential_harvest": 9067.522222096526,
+      "next_cut_index": 4,
+      "regrowth_delay_days": 2
+    },
+    {
+      "day": 956,
+      "cumulative_actual_harvest": 11125.026705247295,
+      "cumulative_potential_harvest": 11136.466200312532,
+      "next_cut_index": 5,
+      "regrowth_delay_days": 2
+    },
+    {
+      "day": 989,
+      "cumulative_actual_harvest": 13152.681010461982,
+      "cumulative_potential_harvest": 13165.566686131924,
+      "next_cut_index": 6,
+      "regrowth_delay_days": 2
+    },
+    {
+      "day": 1033,
+      "cumulative_actual_harvest": 14555.351861491275,
+      "cumulative_potential_harvest": 14569.638519427377,
+      "next_cut_index": 7,
+      "regrowth_delay_days": 2
+    },
+    {
+      "day": 1077,
+      "cumulative_actual_harvest": 14762.461795938036,
+      "cumulative_potential_harvest": 14762.291069381035,
+      "next_cut_index": 8,
+      "regrowth_delay_days": 2
+    }
+  ],
+  "grass_potential_reference_comparison": {
+    "original_reference_sha256": "e71c3d550e6e95460041ea560c48e37d20e682562fd56bbc3904787992e54184",
+    "days": 366,
+    "period": [
+      731,
+      1096
+    ],
+    "maximum_absolute_difference": {
+      "dvs": 4.989342272665453e-13,
+      "tsum": 4.547473508864641e-13,
+      "pwrt": 5.115907697472721e-13,
+      "pwlv": 5.115907697472721e-13,
+      "pwst": 5.115907697472721e-13,
+      "pwso": 0.0,
+      "rdpot": 0.0,
+      "potential_harvested_dry_matter": 2.622982719913125e-09
+    },
+    "scope": "Potential biomass/development/rootdepth and cumulativeharvest only; differences are bounded by original12decimal/scientific CSV precision. Coupled actualscientific equivalence is separate."
+  },
+  "claim_boundary": "This proves actual single-source original Hupsel execution1096 and exact native restarts. Canonical combined-branch execution/integration, full O0 qualification and complete scientific comparison are separately owned and are not inferred from this record.",
+  "archive_sha256": "8a47668c645f15cf1c9b94985b82d4b11d3bd8bfcb07020466d1ac9f8179dce8",
+  "archive_bytes": 292376
+}

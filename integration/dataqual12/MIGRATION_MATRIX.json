@@ -18,7 +18,9 @@
     "projects_with_inherited_bounded_water_evidence": 1,
     "projects_with_current_bounded_water_evidence": 3,
     "project_process_cells_scope": "21 explicitly selected original project/function cells; bounded statuses are not a full functional-migration denominator.",
-    "complete_original_executions": 0
+    "complete_original_executions": 1,
+    "fully_scientifically_qualified_projects": 0,
+    "complete_project_migrations_scope": "Full scientific migration remains0; successful original full-period execution is counted separately (Hupsel1/3)."
   },
   "projects": [
     {
@@ -142,41 +144,44 @@
         {
           "function": "pm_direct",
           "status": "water_qualified",
-          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         },
         {
           "function": "crop_rotation",
-          "status": "blocked",
-          "cause_or_scope": "First original crop emergence after day120; dynamic potato/grass runtime not coupled in this original project."
+          "status": "experimental_executed",
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         },
         {
           "function": "drainage",
           "status": "water_qualified",
-          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         },
         {
           "function": "bottom",
           "status": "water_qualified",
-          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         },
         {
           "function": "matrix_water",
           "status": "water_qualified",
-          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         },
         {
           "function": "heat",
           "status": "experimental_executed",
-          "cause_or_scope": "Original numeric heat executes120days, O0/O2 and split/restart exact; no energy qualification."
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         },
         {
           "function": "solute",
           "status": "experimental_executed",
-          "cause_or_scope": "Original Hupsel first120days, all original physical parameters; O0/O2 and split/restart exact, water and positive solute balance <=1e-10. SWBOTB6 means zero flux. Solute balance qualified, historical equivalence not established."
+          "cause_or_scope": "Full original1096-day rotation executes with existing owners; water max8.302e-14cm, solute max9.797e-12mg/cm2, observed heat max1.918e-12J/cm2; exact qualified native restarts and active-period O0/O2 outputs. Scientific equivalence and production admission are separate."
         }
       ],
-      "executed_days": 120,
-      "qualified_scope": "Water, positive solute balance and restart; pre-emergence only, no integral energy or crop qualification."
+      "executed_days": 1096,
+      "qualified_scope": "Combined DATAQUAL15 sourceef9a107: full original1096-day O2 execution fromday1, unchanged input files; actual O0 active494\u20131096 with independently byte-exact first494-day O0/O2 prefix, all active outputs and terminal native state byte-exact. Fresh same-build crop/irrigation/mowing restarts exact. Water/solute/observed heat residuals checked; actual scientific differences from4.3.1 quantified. Experimental functionality, not production or complete scientific equivalence.",
+      "full_original_execution": true,
+      "full_project_migrated": false,
+      "scientific_equivalence": false
     },
     {
       "project": "2.grassgrowth",
@@ -357,13 +362,13 @@
         "reference_rounded_water_cm": 217.02,
         "scope": "Initialization only, not model execution."
       },
-      "current_experimental_days": 521,
+      "current_experimental_days": 1786,
       "original_oxygen_selector": 2,
       "full_project_migrated": false,
       "water_qualified_days": 367,
-      "executed_days": 521,
-      "water_qualified_days_O2": 521,
-      "qualified_scope": "Candidate DATAQUAL15 source76d41a0: original day1->438->521 contiguous same-executable checkpoint chain, interrupted process exits UNKNOWN; 367days checked O0/O2 physical continuation exact; exact126->140 O2 and365->367 O0/O2 same-build restart. Water/heat-accounting residuals checked, original actual biomass/ET differences measured. No full1827, full energy, scientific equivalence or canonical admission claim."
+      "executed_days": 1786,
+      "water_qualified_days_O2": 1786,
+      "qualified_scope": "Longest actual original single-source history: C2source139330b day1\u21921786, return1 at next1787 oxygen zero-front failure; maxwater4.710e-14cm, observedheat3.169e-12J/cm2. Combined sourceef9a107 independently executes367days, all budget/crop rows and physical restart byte-exact C2, with exact365\u2192367 fresh restart. No full1827 or whole scientific-equivalence claim; later oxygen successor is not included."
     },
     {
       "project": "3.macroporeflow",
@@ -552,21 +557,26 @@
     "qualified_scope": "Experimental original Grassgrowth:68days O0/O2 water and joint restart,113days O2 including stressed/distinct-root restart. No complete original-project or production scope expansion."
   },
   "dataqual15_current_candidate": {
-    "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
-    "grass_source": "76d41a0",
-    "grass_executed_original_days": 521,
-    "grass_O0_O2_qualified_days": 367,
-    "grass_year_boundary_restart_exact": "365->367",
-    "hupsel_source": "711f8ce",
-    "hupsel_evidence_commit": "132ccc7",
-    "hupsel_executed_original_days": 494,
-    "hupsel_O0_O2_qualified_days": 365,
-    "hupsel_remaining": "Original potato crop composition from10May2003; existing physics owners require joint transaction/persistence integration.",
+    "qualified_source": "ef9a107",
+    "canonical_baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
     "canonical_admitted": false,
-    "complete_original_executions": 0,
+    "complete_original_executions": 1,
     "fully_scientifically_qualified_projects": 0,
+    "production_promoted": false,
     "original_inputs_retained": true,
-    "scope": "Experimental candidate execution; source-bound evidence, scientific differences and process exits remain distinct. Hupsel source/evidence is isolated in work/dataqual15-hupsel-codec, not yet combined with this main Grass tree."
+    "hupsel_executed_original_days": 1096,
+    "hupsel_single_source_from_day1": true,
+    "hupsel_original_total_days": 1096,
+    "hupsel_functional_closure": true,
+    "hupsel_scientific_equivalence": false,
+    "hupsel_remaining": "Canonical merge/postimage; remaining actual scientific differences are measured, not asserted equivalent.",
+    "grass_longest_original_days": 1786,
+    "grass_longest_source": "139330b",
+    "grass_combined_preservation_days": 367,
+    "grass_original_total_days": 1827,
+    "grass_remaining": "Day1787 oxygen zero-front roundoff; successor remains separate until independently qualified.",
+    "authority": "integration/dataqual15_hupsel/COMBINED_CLOSED_RESULT.json",
+    "portable_verifier": "tests/dataqual15_hupsel/verify_combined_closed.py"
   },
   "dataqual15_removed_grass_blockers": [
     {
@@ -594,5 +604,108 @@
       "demonstrated_day": 367,
       "kind": "missing_implementation"
     }
-  ]
+  ],
+  "dataqual15_prior_canonical_scope": {
+    "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+    "grass_source": "76d41a0",
+    "grass_executed_original_days": 521,
+    "grass_O0_O2_qualified_days": 367,
+    "grass_year_boundary_restart_exact": "365->367",
+    "hupsel_source": "711f8ce",
+    "hupsel_evidence_commit": "132ccc7",
+    "hupsel_executed_original_days": 494,
+    "hupsel_O0_O2_qualified_days": 365,
+    "hupsel_remaining": "Original potato crop composition from10May2003; existing physics owners require joint transaction/persistence integration.",
+    "canonical_admitted": true,
+    "complete_original_executions": 0,
+    "fully_scientifically_qualified_projects": 0,
+    "original_inputs_retained": true,
+    "scope": "Experimental candidate execution; source-bound evidence, scientific differences and process exits remain distinct. Hupsel source/evidence is isolated in work/dataqual15-hupsel-codec, not yet combined with this main Grass tree.",
+    "canonical_scope": "Grassgrowth only; source-bound521 days,367 O0/O2 and exact restart. Hupsel separate candidate is not admitted.",
+    "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8"
+  },
+  "dataqual15_removed_hupsel_execution_blockers": [
+    {
+      "blocker": "Original potato transaction, adaptive roots and joint restart composition",
+      "first_original_day": 494,
+      "kind": "missing_implementation"
+    },
+    {
+      "blocker": "Original Black wetting threshold binding in Rutter composition",
+      "first_original_day": 530,
+      "kind": "input_binding_error"
+    },
+    {
+      "blocker": "Microscopic demand-cap sum exceeded demand by one ulp",
+      "first_original_day": 537,
+      "kind": "numerical_error"
+    },
+    {
+      "blocker": "Black dry-memory refinement after invariant full Rutter canopy",
+      "first_original_day": 548,
+      "kind": "numerical_error"
+    },
+    {
+      "blocker": "Original ponding and runoff parameters missing in Rutter provider",
+      "first_original_day": 566,
+      "kind": "input_binding_error"
+    },
+    {
+      "blocker": "Absolute dry-pressure defect dominated unchanged water certificates",
+      "first_original_day": 566,
+      "kind": "numerical_error"
+    },
+    {
+      "blocker": "Original threshold-managed third grass season",
+      "first_original_day": 730,
+      "kind": "missing_implementation"
+    },
+    {
+      "blocker": "Low-demand root Newton result failed existing soil/root flux certificate",
+      "first_original_day": 1058,
+      "kind": "numerical_error"
+    }
+  ],
+  "dataqual15_hupsel_completed_functional_chains": [
+    {
+      "chain": "Original maize germination and crop lifecycle",
+      "implementation_scope": "Original simple-maize germination/emergence, prescribed LAI/root-depth tables and accepted crop lifecycle on the original first season."
+    },
+    {
+      "chain": "Original potato crop and root stress composition",
+      "implementation_scope": "Existing WOFOST actual/potential growth, adaptive roots, microscopic uptake, oxygen and salinity."
+    },
+    {
+      "chain": "Original seasonal rotation",
+      "implementation_scope": "Native maize\u2192potato\u2192grass handoffs, annual/leap-year calendar and accepted crop/root state."
+    },
+    {
+      "chain": "Transactional reactive water and heat",
+      "implementation_scope": "Existing reactive matrix chemistry advances inside each full/half/retry water/heat candidate; atomic rollback and accepted-state mirror."
+    },
+    {
+      "chain": "Original irrigation dayclock and automatic management",
+      "implementation_scope": "Existing source TCS1/DCS2 gifts584/591/603, accepted previous-day observations, within-day rate/end phases and preserved seasonal clock."
+    },
+    {
+      "chain": "Original third-grass threshold management and persistence",
+      "implementation_scope": "Existing grass biomass/root owners with independent actual/potential threshold mowing, seven cuts, regrowth and exact joint native restart."
+    }
+  ],
+  "dataqual15_hupsel_missing_functional_chains_completed": 6,
+  "dataqual15_hupsel_numerical_repairs": [
+    "Microscopic demand-cap positive-sum rounding",
+    "Black dry-history refinement after invariant full Rutter canopy",
+    "Dry-pressure temporal scaling with unchanged absolute water certificates",
+    "Low-demand microscopic Newton refinement to existing soil/root flux certificate",
+    "O0 non-short-circuit access through unassociated daily crop selector"
+  ],
+  "dataqual15_hupsel_numerical_repairs_count": 5,
+  "dataqual15_hupsel_parameter_binding_repairs": [
+    "Original signed HLHALF mapped to typed positive magnitude",
+    "Original SWRD2 root-depth oxygen gate separated from biomass root-growth policy",
+    "Original RSIGNI bound to Black within Rutter composition",
+    "Original PONDMX/RSRO/RSROEXP bound to Rutter surface provider"
+  ],
+  "dataqual15_count_boundary": "Six coherent missing functional chains, five numerical repairs and four parameter-binding corrections are distinct counts. Negative controls, compiler modes, configuration variants and the three crops are not independent original projects."
 }

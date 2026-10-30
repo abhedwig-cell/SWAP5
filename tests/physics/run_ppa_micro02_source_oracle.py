@@ -5,6 +5,9 @@ import os
 import pathlib
 import subprocess
 import tempfile
+import re
+import shlex
+import time
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 MEMBER = "reference/swap-4.3.1/b1_11_frost_source/SWAP/RWU_micro.f90"
@@ -116,23 +119,67 @@ integer,intent(out)::value
 error stop 96
 end subroutine
 """
+# Compile the literal source stress partition beside the existing microscopic
+# uptake oracle. This wrapper only supplies scalar accepted-uptake observations;
+# p_func and the source branch body remain byte-for-byte extracted statements.
+ATTRIBUTION_MEMBER="reference/swap-4.3.1/b1_11_frost_source/SWAP/rootextraction.f90"
+ATTRIBUTION_PIN="8b7b2846618a8f82f3ed676c2c489d2d34be8c44b0a0d952f7f22ff09af78cd5"
+attribution_raw=(ROOT/ATTRIBUTION_MEMBER).read_bytes()
+assert hashlib.sha256(attribution_raw).hexdigest()==ATTRIBUTION_PIN
+attribution_source=attribution_raw.decode().replace("\r\n","\n")
+p_func=re.search(r"^subroutine p_func\(.*?^end subroutine p_func",attribution_source,re.M|re.S).group()
+attribution_start=attribution_source.index("   qred    = max(0.0d0, qprosum - qrosum)")
+attribution_end=attribution_source.index("   ! activate root extension",attribution_start)
+attribution_body=attribution_source[attribution_start:attribution_end]
+attribution_literal="""module original_micro_attribution
+implicit none
+contains
+"""+p_func+"""
+subroutine original_attribute(noddrz,dz,Lrv_node,alpwet,alpsol,ptra,actual,mode,optimal, &
+     qreddrysum,qredwetsum,qredsolsum,alpdrynodrtz,previous)
+integer,intent(in)::noddrz,mode
+real(8),intent(in)::dz(noddrz),Lrv_node(noddrz),alpwet(noddrz),alpsol(noddrz),ptra,actual,optimal
+real(8),intent(out)::qreddrysum,qredwetsum,qredsolsum,alpdrynodrtz
+real(8),optional,intent(in)::previous
+real(8)::alpfrs(noddrz),qprosum,qrosum,qred_optrtz,qred,pO2,pS,pT,qredfrssum,alpdry,Alpha_micro_tot
+alpfrs=1.d0;qprosum=ptra;qrosum=actual;qred_optrtz=0.d0
+qreddrysum=0.d0;qredwetsum=0.d0;qredsolsum=0.d0;qredfrssum=0.d0
+alpdry=1.d0;Alpha_micro_tot=1.d0;alpdrynodrtz=0.d0
+if(present(previous))alpdrynodrtz=previous
+if(ptra<1.d-10)return
+if(mode==1)qred_optrtz=max(0.d0,ptra-optimal)
+"""+attribution_body+"""
+alpdrynodrtz=1.d0-(qreddrysum/ptra)
+end subroutine
+end module
+"""
+FC=shlex.split(os.environ.get("FC","gfortran"))
 SOURCES = ["src/process/mod_root_micro_matric_flux_table.f90",
            "src/process/mod_root_micro_de_willigen_process.f90",
            "tests/physics/test_ppa_micro02_source_oracle.f90"]
 outputs = {}
+events=[]
 with tempfile.TemporaryDirectory(prefix="micro02-oracle-") as tmp:
     tmp = pathlib.Path(tmp)
     literal = tmp / "corrected_literal.f90"
-    literal.write_text(STUBS + source + TRAILER)
+    literal.write_text(STUBS + source + TRAILER + attribution_literal)
     for opt in ("O0", "O2"):
         build = tmp / opt
         build.mkdir()
         binary = build / "test"
-        subprocess.run(["gfortran", "-" + opt, "-ffree-line-length-none", "-fcheck=all",
+        command=FC + ["-" + opt, "-ffree-line-length-none", "-fcheck=all",
                         "-ffpe-trap=invalid,zero,overflow", "-J" + str(build), "-I" + str(build),
-                        str(literal), *(str(ROOT / p) for p in SOURCES), "-o", str(binary)],
-                       cwd=build, check=True)
+                        str(literal), *(str(ROOT / p) for p in SOURCES), "-o", str(binary)]
+        started=time.monotonic();compiled=subprocess.run(command,cwd=build,capture_output=True,text=True)
+        events.append(dict(label="compile_link",optimization=opt,command=command,returncode=compiled.returncode,
+                           seconds=time.monotonic()-started,stdout=compiled.stdout,stderr=compiled.stderr))
+        if compiled.returncode:
+            print(compiled.stdout);print(compiled.stderr);compiled.check_returncode()
+        started=time.monotonic()
         execution = subprocess.run([str(binary)], capture_output=True, text=True, cwd=build)
+        events.append(dict(label="native",optimization=opt,returncode=execution.returncode,
+                           seconds=time.monotonic()-started,executable_sha256=hashlib.sha256(binary.read_bytes()).hexdigest(),
+                           stdout=execution.stdout,stderr=execution.stderr))
         print(execution.stdout, end="")
         if execution.returncode:
             print(execution.stderr, end="")
@@ -145,9 +192,14 @@ if os.environ.get("MICRO02_ORACLE_RESULT"):
         "schema": "swap5.micro02.corrected_literal.v1",
         "postimage": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=ROOT, text=True).strip(),
         "reference_sha256": PIN,
+        "attribution_reference_sha256":ATTRIBUTION_PIN,
+        "attribution_literal_sha256":hashlib.sha256(attribution_literal.encode()).hexdigest(),
+        "compiler_command":FC,
+        "compiler":subprocess.check_output(FC+["--version"],text=True).splitlines()[0],
+        "events":events,
         "corrected_literal_sha256": hashlib.sha256(source.encode()).hexdigest(),
         "explicit_patches": patches,
-        "source_sha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in [MEMBER, *SOURCES, "tests/physics/run_ppa_micro02_source_oracle.py"]},
+        "source_sha256": {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in [MEMBER,ATTRIBUTION_MEMBER, *SOURCES, "tests/physics/run_ppa_micro02_source_oracle.py"]},
         "runs": outputs,
-        "claim_ceiling": "Homogeneous conductivity and bounded de Willigen source comparison only; no runtime admission",
+        "claim_ceiling": "Existing bounded de Willigen uptake cases plus original potato scalar parameter binding and literal no-frost microscopic stress partition; no full potato/runtime/project admission",
     }, indent=2) + "\n")

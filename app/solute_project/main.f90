@@ -1,6 +1,19 @@
 ! Explicit native crop application. Physics/state/restart providers are shared with solute_column.
 program swap5_native_project_column
-  use iso_fortran_env, only: real64,int64,iostat_end
+  use mod_hupsel_germination
+  use mod_fmr_wofost_crop_transaction,only:fmr_wofost_crop_transaction_persistence_t
+  use mod_hupsel_potato
+  use mod_hupsel_rotation_restart
+  use mod_hupsel_scheduled_irrigation
+  use mod_pmdirect_swetr0_process,only:pmdirect_swetr0_weather_t,pmdirect_swetr0_daily_result_t
+  use mod_wofost_crop_owner_state,only:wofost_crop_owner_state_t
+  use mod_wofost_potential_shadow_state,only:wofost_potential_shadow_state_t
+  use mod_crop_root_depth_rate_owner,only:crop_root_depth_rate_state_t
+  use mod_crop_lifecycle_continuation,only:crop_lifecycle_continuation_t
+  use mod_fmr_wofost_accepted_window_lineage
+  use mod_rutter_source_window_processor,only:initialize_rutter_canopy_state
+  use mod_interception_source_window_runtime,only:initialize_interception_window
+  use iso_fortran_env, only: real64,int64,int32,iostat_end
   use ieee_arithmetic, only: ieee_is_finite
   use MOD_grid, only: numnod,z,dz,disnod
   use solute_column_context, only: initialize_column_context
@@ -9,7 +22,8 @@ program swap5_native_project_column
   use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_fmr_runtime_core
   use mod_fmr_serialized_reference_backend
-  use mod_kernel_transactions, only: kernel_committed_state_t
+  use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_parameter_identity_t, &
+    kernel_reconstruct_committed_state_trusted
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
@@ -18,7 +32,7 @@ program swap5_native_project_column
   use mod_fmr_drainage_response_binding,only:FMR_DRAIN_VARIANT_DRAMET3,FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2
   use mod_drainage_dramet3_response,only:initialize_dramet3_channel_control,DRAMET3_OK
   use mod_fmr_b111_matrix_solute_route
-  use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED
+  use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED,JOINT_INVALID
   use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
   use mod_fmr_b111_pond_thermal_application,only:run_pond_thermal_interval
   use mod_pond_thermal_restart_file
@@ -40,6 +54,23 @@ program swap5_native_project_column
   use mod_root_water_uptake_process,only:root_water_uptake_request_t,evaluate_macro_feddes_drought_uptake
   use mod_drainage_hooghoudt_equivalent_depth
   implicit none
+  type(hupsel_germination_t)::hupsel_germination,maize_trial
+  type(potato_crop_t),target::potato,potato_trial,grass,grass_trial
+  type(potato_crop_t),pointer::active_crop,active_trial
+  type(original_potato_irrigation_t)::scheduled_irrigation,irrigation_trial
+  type(pmdirect_swetr0_weather_t)::potato_weather
+  type(pmdirect_swetr0_daily_result_t)::potato_daily
+  type(wofost_crop_owner_state_t)::potato_owner
+  type(fmr_b110_physical_parameters_t),target::p_maize,p_potato,p_grass
+  type(fmr_template_t)::template_maize,template_potato,template_grass
+  logical::original_hupsel_rotation=.false.,potato_today=.false.,grass_today=.false.,diagnostic_predecessor=.false.
+  real(real64)::rotation_runoff_exponent=1d0
+  real(real64)::rotation_origin=0d0,irrigation_event_end=0d0,irrigation_rate=0d0,reported_potential=0d0
+  real(real64)::rotation_day_potential=0d0,rotation_day_drought=0d0,rotation_day_salinity=0d0,salinity_amount=0d0
+  character(32)::diagnostic_environment
+  logical::original_hupsel_germination=.false.,reactive_substep_chemistry=.false.
+  character(1024)::original_crop
+  integer::germination_log,crop_output
   integer,parameter :: MAX_WINDOWS=2048,MAX_NODES=256
   integer :: nodes=4
   real(real64) :: cell_thickness_cm(MAX_NODES)=0d0
@@ -147,7 +178,7 @@ program swap5_native_project_column
   namelist /crop/ root_table_points,upper_layer_bottom_node,maximum_root_depth_cm,root_relative_depth,root_density, &
     hlim3l,hlim3h,hlim4,adcrl,adcrh,hlim1,hlim2u,hlim2l,empirical_oxygen_enabled,crop_active, &
     potential_transpiration_cm_day,root_depth_cm,substep_root_stress
-  namelist /column/ fallow_only,source_bottom_mode,black_evaporation,black_cofred,black_rsigni,drain_variant, &
+  namelist /column/ original_hupsel_rotation,reactive_substep_chemistry,original_hupsel_germination,fallow_only,source_bottom_mode,black_evaporation,black_cofred,black_rsigni,drain_variant, &
     drain_shape,drain_khtop,drain_entres,drain_base,drain_wetper,schema,nodes,cell_thickness_cm,initial_head,initial_pond_cm,initial_pond_mass_mg_cm2,concentration_mg_cm3, &
     theta_r,theta_s,ksat_cm_day,alpha_per_cm,vg_n,pore_l,bulk_density,kf,dispersivity_cm,diffusion_cm2_day,tscf, &
     root_cm_day,drain_cm_day,bottom_up_cm_day,cdrain_mg_cm3,cseep_mg_cm3,pond_max_cm,runoff_resistance_day,temporal_tolerance, &
@@ -161,9 +192,13 @@ program swap5_native_project_column
     drain_table_count,drain_table_times,drain_table_heads,drain_anisotropy
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day,air_temperature_c
+  ! Fortran may evaluate both operands of .and.; daily selectors always
+  ! reference valid targets, including before the first detailed crop.
+  active_crop=>potato;active_trial=>potato_trial
   call get_command_argument(1,path)
   call get_command_argument(2,restart_path)
   call get_command_argument(4,legacy_swp)
+  call get_command_argument(5,original_crop)
   call get_command_argument(3,arg)
   stop_after=MAX_WINDOWS
   if(len_trim(arg)>0)then
@@ -205,6 +240,11 @@ program swap5_native_project_column
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
   if(fallow_only)call validate_original_fallow()
+  if(original_hupsel_germination)then
+    call require(fallow_only.and.len_trim(original_crop)>0,'source germination requires fallow physical route and original crop')
+    call hupsel_germination%initialize(trim(legacy_swp),trim(original_crop),code)
+    call require(code==0,'source germination initialization')
+  end if
   call require(all(ieee_is_finite(air_temperature_c)),'nonfinite air temperature')
   call require(all(air_temperature_c>=-50d0).and.all(air_temperature_c<=60d0),'air temperature outside domain')
   call require(swp_heat_bootstrap.or.all(air_temperature_c==20d0),'air forcing requires native heat')
@@ -459,12 +499,24 @@ program swap5_native_project_column
     ! Historical L1 is metres; DIVDRA geometry and hydraulic view use cm.
     p%drainage_trial_distribution%drain_spacing=100d0*drain_spacing_m
   end if
+  if(original_hupsel_germination)then
+    p%max_iterations=hupsel_germination%source_maxit;p%max_backtracking=hupsel_germination%source_maxbacktrack
+    p%swkmean=hupsel_germination%source_swkmean;p%min_step_duration=hupsel_germination%source_dtmin
+    p%root_extraction_active=.true.;p%root_compensation=hupsel_germination%compensation
+    density_table=hupsel_germination%root_table
+    maximum_root_depth_cm=hupsel_germination%root_parameters%maximum_root_depth_cm
+    root_parameters=hupsel_germination%uptake_parameters;root_parameters%active_nodes=numnod
+    ! HLIM2U/2L are identical in the original maize input.
+    root_parameters%upper_layer_bottom_node=0
+    substep_root_stress=.true.
+  end if
   forcing%root_extraction_sink=root_cm_day(1:numnod);forcing%subsurface_irrigation_source=spread(0d0,1,numnod)
   if(black_evaporation)then
     call require(.not.boesten_evaporation.and.fallow_only.and.swp_heat_bootstrap,'explicit Black heat fallow route')
     p%black_evaporation_active=.true.;p%black_heat_composition_enabled=.true.
     allocate(p%black_evaporation,forcing%black_evaporation)
     p%black_evaporation%cofred=black_cofred
+    forcing%black_evaporation%significant_wetting_cm=black_rsigni
     forcing%black_evaporation%ponding_max_cm=pond_max_cm
     forcing%black_evaporation%runoff_resistance_day=runoff_resistance_day
   else if(boesten_evaporation)then
@@ -526,15 +578,71 @@ program swap5_native_project_column
     call require(code==0,'thermal state initialization')
     end if
   end if
+  p%reactive_solute_active=reactive_substep_chemistry
   numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
   numerical%transaction%temporal_tolerance=temporal_tolerance
   numerical%retain_accepted_step_proposal=retain_accepted_step_proposal
   numerical%transaction%mass_tolerance=1d-10;numerical%transaction%max_retries=30
   numerical%transaction%retry_scale=0.5d0;numerical%max_committed_substeps=100000
   water_flux_policy%enabled=water_flux_temporal
+  if(original_hupsel_rotation)then
+    call require(original_hupsel_germination.and.reactive_substep_chemistry.and.black_evaporation.and.dynamic_temperature, &
+      'original rotation requires incumbent reactive Black heat route')
+    p_maize=p;template_maize=template
+    call potato%initialize(trim(legacy_swp),'potato.crp',p,code)
+    call require(code==0,'original potato typed owner initialization')
+    p_potato=p
+    p_potato%micro_de_willigen=potato%micro;p_potato%micro_horizon_first_node=potato%horizon_first
+    p_potato%bartholomeus=potato%oxygen;p_potato%root_compensation%method=0
+    p_potato%reactive_salinity_active=.true.;p_potato%root_salinity_active=.false.
+    p_potato%saltmax_mg_cm3=potato%saltmax;p_potato%saltslope_cm3_mg=potato%saltslope
+    template_potato=template;template_potato%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK
+    call grass%initialize(trim(legacy_swp),'grass.crp',p,code,grass_mode=.true.)
+    call require(code==0,'original grass typed owner initialization')
+    p_grass=p
+    p_grass%micro_de_willigen=grass%micro;p_grass%micro_horizon_first_node=grass%horizon_first
+    p_grass%bartholomeus=grass%oxygen;p_grass%root_compensation%method=0
+    p_grass%reactive_salinity_active=.true.;p_grass%root_salinity_active=.false.
+    p_grass%saltmax_mg_cm3=grass%saltmax;p_grass%saltslope_cm3_mg=grass%saltslope
+    template_grass=template_potato
+    call rdinit(74,0,trim(legacy_swp));call rdstim('tstart',rotation_origin)
+    call rdsdor('rsroexp',.01d0,10d0,rotation_runoff_exponent);close(74)
+    call scheduled_irrigation%initialize('potato.crp',rotation_origin,numnod,code)
+    call require(code==0,'original source scheduled irrigation initialization')
+    call get_environment_variable('SWAP5_DIAG_PREDECESSOR',diagnostic_environment,status=code)
+    diagnostic_predecessor=code==0.and.trim(diagnostic_environment)=='1'
+  end if
   call backend%initialize(top,water_flux_policy)
   if(trim(restart_path)/='-')then
-    if(dynamic_temperature)then
+    if(original_hupsel_rotation)then
+      if(diagnostic_predecessor)then
+        ! Explicit development recovery only. The old source is decoded under
+        ! its original external-chemical layout before the new trial companion
+        ! is attached by the current joint runtime. Never restart qualification.
+        p=p_maize;p%reactive_solute_active=.false.;template=template_maize
+        call hupsel_germination%read_restart(trim(restart_path),column_id,template,p%parameter_set_id, &
+          9001_int64,p,chemistry,water,solute,code)
+        call require(code==0,'diagnostic predecessor source checkpoint rejected')
+        call water%current_time(clock,ok)
+        call require(ok.and.clock<=potato%crop_start.and.clock==aint(clock),'diagnostic predecessor horizon')
+        scheduled_irrigation%clock=clock
+        p=p_maize
+        write(*,*)'DIAGNOSTIC_PREDECESSOR_IMPORT_NOT_RESTART_QUALIFICATION',clock
+      else
+        call peek_hupsel_rotation_clock(trim(restart_path),clock,code)
+        call require(code==0,'source rotation envelope rejected before publication')
+        if(clock>grass%crop_start)then
+          p=p_grass;template=template_grass
+        else if(clock>potato%crop_start)then
+          p=p_potato;template=template_potato
+        end if
+        call read_hupsel_rotation_restart(trim(restart_path),column_id,template,p%parameter_set_id,9001_int64,p, &
+          chemistry,water,solute,hupsel_germination,potato,grass,scheduled_irrigation,code)
+      end if
+    else if(original_hupsel_germination)then
+      call hupsel_germination%read_restart(trim(restart_path),column_id,template,p%parameter_set_id, &
+        9001_int64,p,chemistry,water,solute,code)
+    else if(dynamic_temperature)then
       call read_pond_thermal_restart(trim(restart_path),column_id,template,p%parameter_set_id,9001_int64, &
         p,chemistry,water,solute,code)
     else
@@ -587,12 +695,72 @@ program swap5_native_project_column
   if(historical_zero_solute_exfiltration)write(u,'(A)',advance='no') &
     ',surface_exfiltration_cm,surface_solute_exfiltration_mg_cm2'
   if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
+  if(original_hupsel_rotation)write(u,'(A)',advance='no')',salinity_reduction_cm'
   if(native_drainage)write(u,'(A)',advance='no')',drainage_cm'
   if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
   if(dynamic_temperature)write(u,'(A)',advance='no')',observed_heat_residual_j_cm2'
   write(u,'(A)')''
+  if(original_hupsel_rotation)then
+    open(newunit=crop_output,file='crop.csv',status='new')
+    write(crop_output,'(a)')'day,dvs,tsum,lai,wrt,wlv,wst,wso,pwrt,pwlv,pwst,pwso,rd,rdpot,germination_tsum,pressure_average_cm,mean_air_c,harvested_dry_matter,potential_harvested_dry_matter,cut_index,regrowth_delay_days'
+  end if
+  if(original_hupsel_germination)then
+    open(newunit=germination_log,file='germination.csv',status='new')
+    write(germination_log,'(a)')'time_day,temperature_sum,pressure_cm,germinated'
+  end if
   do j=first,stop_after
     t0=clock;t1=ends_day(j)
+    potato_today=original_hupsel_rotation.and.t0>=potato%crop_start
+    if(original_hupsel_rotation)then
+      call require(t0<grass%next_crop_start,'original rotation horizon exceeded')
+      grass_today=t0>=grass%crop_start
+      maize_trial=hupsel_germination;potato_trial=potato;grass_trial=grass;irrigation_trial=scheduled_irrigation
+      if(t0==aint(t0))then
+        rotation_day_potential=0d0;rotation_day_drought=0d0;rotation_day_salinity=0d0
+      end if
+      irrigation_rate=0d0;irrigation_event_end=t0
+    end if
+    if(potato_today)then
+      if(grass_today)then
+        active_crop=>grass;active_trial=>grass_trial;p=p_grass;template=template_grass
+      else
+        active_crop=>potato;active_trial=>potato_trial;p=p_potato;template=template_potato
+      end if
+      call activate_potato_surface(water,code);call require(code==0,'source canopy initialization failed')
+      call active_trial%day_begin(t0,water,code);call require(code==0,'source potato morning transition')
+      call original_rotation_weather(t0,potato_weather)
+      call active_trial%prepare(t0,potato_weather,p,forcing,potato_daily,code)
+      call require(code==0,'source potato crop and PM preparation')
+      ! The dynamic Rutter provider owns the same original surface runoff law.
+      forcing%rutter%ponding_max_cm=pond_max_cm
+      forcing%rutter%runoff_resistance_day=runoff_resistance_day
+      forcing%rutter%runoff_exponent=rotation_runoff_exponent
+      call active_trial%state%snapshot_owner(potato_owner,ok);call require(ok,'source potato morning owner')
+      if(active_trial%schedule_enabled)then
+      call scheduled_irrigation%propose_day(t0,potato_owner%development_stage,active_trial%active_today, &
+        potato_weather%gross_rain_cm_d,irrigation_trial,irrigation_event_end,irrigation_rate,code)
+      call require(code==0,'source TCS1 scheduled irrigation candidate')
+      end if
+      soil_evaporation_cm_day(j)=potato_daily%potential_soil_evaporation_cm_per_day
+      evaporation_cm_day(j)=potato_daily%potential_pond_evaporation_cm_per_day
+      rain_cm_day(j)=potato_weather%gross_rain_cm_d
+      potential_transpiration_cm_day(j)=potato_daily%potential_transpiration_dry_cm_per_day
+      crop_active(j)=active_trial%active_today
+      irrigation_cm_day(j)=irrigation_rate;irrigation_c=scheduled_irrigation%source_concentration
+    else if(original_hupsel_rotation)then
+      p=p_maize;template=template_maize
+      call maize_trial%day_begin(t0,water,code);call require(code==0,'source maize morning transition')
+      call maize_trial%prepare(t0,water,p,soil_evaporation_cm_day(j),evaporation_cm_day(j),rain_cm_day(j), &
+        potential_transpiration_cm_day(j),crop_active(j),root_depth_cm(j),code)
+      call require(code==0,'original maize canopy PM preparation')
+    else if(original_hupsel_germination)then
+      call hupsel_germination%day_begin(t0,water,code)
+      call require(code==0,'next original crop owner composition required')
+      call hupsel_germination%prepare(t0,water,p,soil_evaporation_cm_day(j),evaporation_cm_day(j),rain_cm_day(j), &
+        potential_transpiration_cm_day(j),crop_active(j),root_depth_cm(j),code)
+      call require(code==0,'original maize canopy/PM preparation')
+    end if
+    if(.not.potato_today)then
     if(.not.fallow_only)call select_project_profile(profile_index(j))
     crop_input=fmr_root_uptake_crop_input_t();crop_input%crop_emerged=crop_active(j)
     crop_input%potential_transpiration=potential_transpiration_cm_day(j)
@@ -621,6 +789,7 @@ program swap5_native_project_column
         forcing%substep_root%request%cumulative_root_fraction=crop_input%cumulative_root_fraction
       forcing%root_extraction_sink=0d0
     end if
+    end if
     if(black_evaporation)then
       forcing%black_evaporation%wetting_reset_each_trial=rain_cm_day(j)+irrigation_cm_day(j)>black_rsigni
       forcing%black_evaporation%precipitation_rate_cm_per_day=rain_cm_day(j)
@@ -648,7 +817,7 @@ program swap5_native_project_column
     supply%implicit_pond_evaporation=implicit_pond_evaporation
     supply%historical_zero_solute_exfiltration=historical_zero_solute_exfiltration
     if(swp_heat_bootstrap)forcing%soil_temperature%air_temperature_c=air_temperature_c(j)
-    if(detailed_rain)then
+    if(detailed_rain.or.original_hupsel_germination)then
       call run_detailed_rain_day(t0,t1,result)
     else if(dynamic_temperature)then
       if(.not.swp_heat_bootstrap)forcing%soil_temperature%prescribed_surface_temperature_c=surface_temperature_c(j)
@@ -656,7 +825,7 @@ program swap5_native_project_column
     else
     call run_pond_joint_interval(backend,column_id,template,p,water,forcing,numerical,solute,supply,t0,t1,result)
     end if
-    if(retain_accepted_step_proposal.and.result%status==JOINT_WATER_REJECTED)then
+    if(retain_accepted_step_proposal.and.result%status==JOINT_WATER_REJECTED.and..not.original_hupsel_germination)then
       ! The failed joint trial leaves both committed states unchanged. Retry
       ! this complete interval once through the incumbent numerical policy.
       write(*,*)'SWAP5_PROJECT_STEP_PROPOSAL_FALLBACK',j,result%water%status, &
@@ -691,11 +860,11 @@ program swap5_native_project_column
     call require(result%status==JOINT_OK,'joint interval rejected')
     call require(result%water%mass%complete,'incomplete water accounting')
     call require(abs(result%water%mass%residual)<=1d-10.and.abs(result%chemical%residual)<=1d-10,'balance rejected')
-    if(fallow_only)then
+    if(fallow_only.and..not.original_hupsel_germination)then
       call write_pond_thermal_restart('checkpoint.bin',column_id,template,p%parameter_set_id,p,water,solute,code)
       call require(code==JOINT_OK,'fallow accepted checkpoint export')
     end if
-    if(.not.detailed_rain)then
+    if(.not.(detailed_rain.or.original_hupsel_germination))then
       observation=backend%observation()
       call require(observation%accepted_water_flux_trace_available,'accepted trace unavailable')
       call reset_day_totals()
@@ -703,14 +872,30 @@ program swap5_native_project_column
     end if
 
     if(substep_root_stress)then
-      call require(abs(potential_amount-transpiration_amount-drought_amount-oxygen_amount)<=1d-12, &
+      call require(abs(potential_amount-transpiration_amount-drought_amount-oxygen_amount-salinity_amount)<=1d-12, &
         'accepted substep root reconciliation')
-      call require(abs(potential_amount-potential_transpiration_cm_day(j)*(t1-t0))<=1d-12, &
+      if(.not.potato_today)call require(abs(potential_amount-potential_transpiration_cm_day(j)*(t1-t0))<=1d-12, &
         'accepted substep potential demand mismatch')
     else
       call require(abs(transpiration_amount-expected_transpiration)<=1d-12,'accepted root carrier mismatch')
       drought_amount=root_diagnostics%drought_reduction_total*(t1-t0)
       oxygen_amount=root_diagnostics%oxygen_reduction_total*(t1-t0)
+    end if
+    if(original_hupsel_rotation)then
+      if(t1==aint(t1))then
+        call write_hupsel_rotation_restart('checkpoint.bin',column_id,template,p%parameter_set_id,p,water,solute, &
+          hupsel_germination,potato,grass,scheduled_irrigation,code)
+        call require(code==0,'source complete rotation checkpoint')
+        if(potato_today)call write_rotation_crop_row(t1)
+      end if
+    else if(original_hupsel_germination)then
+      call hupsel_germination%day_end(t1,air_temperature_c(j),water,code,transpiration_amount)
+      call require(code==0,'source germination accepted day proposal')
+      write(germination_log,'(3(es25.17e3,a),l1)')t1,',',hupsel_germination%lifecycle%germination_temperature_sum, &
+        ',',hupsel_germination%last_pressure,',',hupsel_germination%lifecycle%germinated
+      flush(germination_log)
+      call hupsel_germination%write_restart('checkpoint.bin',column_id,template,p%parameter_set_id,p,water,solute,code)
+      call require(code==0,'source joint germination checkpoint')
     end if
     write(u,'(I0,16(",",ES25.17E3),",",I0)',advance='no')j,t0,t1,result%water%mass%storage_start,result%water%mass%storage_end, &
       result%water%mass%total_in,result%water%mass%total_out,result%water%mass%residual, &
@@ -718,11 +903,14 @@ program swap5_native_project_column
       result%chemical%external_out,result%chemical%residual,infiltration,runon_amount,runoff,evap_amount, &
       accepted_count
     if(any(soil_evaporation_cm_day>0d0))write(u,'(A,ES25.17E3)',advance='no')',',soil_evap_amount
-    write(u,'(4(A,ES25.17E3))',advance='no')',',potential_transpiration_cm_day(j)*(t1-t0),',',transpiration_amount, &
+    reported_potential=potential_transpiration_cm_day(j)*(t1-t0)
+    if(potato_today)reported_potential=potential_amount
+    write(u,'(4(A,ES25.17E3))',advance='no')',',reported_potential,',',transpiration_amount, &
       ',',drought_amount,',',oxygen_amount
     if(historical_zero_solute_exfiltration)write(u,'(2(A,ES25.17E3))',advance='no') &
       ',',surface_exfiltration_amount,',',0d0
     if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
+    if(original_hupsel_rotation)write(u,'(A,ES25.17E3)',advance='no')',',salinity_amount
     if(native_drainage)write(u,'(A,ES25.17E3)',advance='no')',',drainage_amount
     if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
     if(dynamic_temperature)write(u,'(A,ES25.17E3)',advance='no')',',observed_heat_residual_j_cm2
@@ -730,7 +918,16 @@ program swap5_native_project_column
     clock=t1
   end do
   close(u)
-  if(dynamic_temperature)then
+  if(original_hupsel_germination)then
+    close(germination_log)
+    if(original_hupsel_rotation)close(crop_output)
+    if(original_hupsel_rotation)then
+      call write_hupsel_rotation_restart('restart.bin',column_id,template,p%parameter_set_id,p,water,solute, &
+        hupsel_germination,potato,grass,scheduled_irrigation,code)
+    else
+      call hupsel_germination%write_restart('restart.bin',column_id,template,p%parameter_set_id,p,water,solute,code)
+    end if
+  else if(dynamic_temperature)then
     call write_pond_thermal_restart('restart.bin',column_id,template,p%parameter_set_id,p,water,solute,code)
   else
   call write_matrix_joint_restart_file('restart.bin',column_id,template,p%parameter_set_id,water,solute,code,allow_surface_mass=.true.)
@@ -748,6 +945,7 @@ program swap5_native_project_column
         mobile%concentration_mg_cm3(j),mobile%mass_mg_cm2(j),companion%sorbed_matrix_mass(j)
     end do
     water_amount=sum(theta*dz)+q%ponding_depth
+    if(allocated(q%rutter))water_amount=water_amount+q%rutter%canopy_storage()
     close(u)
     open(newunit=u,file='endpoint.csv',status='new',action='write',iostat=io)
     call require(io==0,'cannot create endpoint output')
@@ -786,7 +984,7 @@ contains
     call rdstim('tstart',source_first);call rdstim('tend',source_last)
     call rdatim('cropstart',emergence,64,n)
     call require(n>0,'original crop calendar missing')
-    call require(source_first+ends_day(windows)<=minval(emergence(:n)).and. &
+    call require((original_hupsel_germination.or.source_first+ends_day(windows)<=minval(emergence(:n))).and. &
       source_first+ends_day(windows)<=source_last+1d0,'fallow prefix crosses original emergence/calendar')
     call rdsinr('swbotb',1,8,selector)
     call require(selector==6.and.source_bottom_mode==6.and.bottom_up_cm_day==0d0.and..not.cauchy3_bottom, &
@@ -796,13 +994,94 @@ contains
     call require(source_cofred==black_cofred,'original Black coefficient changed')
     close(74)
   end subroutine validate_original_fallow
+  subroutine write_rotation_crop_row(time)
+    real(real64),intent(in)::time
+    type(wofost_crop_owner_state_t)::owner
+    type(wofost_potential_shadow_state_t)::potential
+    type(crop_root_depth_rate_state_t)::depth
+    type(crop_lifecycle_continuation_t)::life
+    real(real64)::v(20)
+    type(fmr_wofost_crop_transaction_persistence_t)::diagnostic_view
+    logical::available
+    integer::st
+    v=0d0
+    call active_crop%state%snapshot_owner(owner,available);call require(available,'potato diagnostic owner')
+    call active_crop%state%snapshot_lifecycle(life,available);call require(available,'potato diagnostic lifecycle')
+    v(14)=life%germination_temperature_sum
+    v(15)=active_crop%last_pressure;v(16)=active_crop%daily_forcing%average_temperature
+    call active_crop%export_state(diagnostic_view,st);call require(st==0,'rotation diagnostic state')
+    if(diagnostic_view%grass_management_present)then
+      v(17)=diagnostic_view%grass_management%harvested_dry_matter
+      v(18)=diagnostic_view%grass_management%potential_harvested_dry_matter
+      v(19)=diagnostic_view%grass_management%cut_index
+      v(20)=diagnostic_view%grass_management%regrowth_delay_days
+    end if
+    if(owner%crop_emerged)then
+      call active_crop%state%snapshot_root_depth(depth,available);call require(available,'potato diagnostic roots')
+      call active_crop%state%snapshot_potential_shadow(potential,available);call require(available,'potato diagnostic potential')
+      v(1)=owner%development_stage;v(2)=owner%evolution_continuation%temperature_sum
+      call owner%derive_actual_leaf_area_index(active_crop%ssa,active_crop%spa,v(3),st);call require(st==0,'potato diagnostic LAI')
+      v(4)=owner%biomass%root_biomass;v(5)=owner%biomass%living_leaf_biomass()
+      v(6)=owner%biomass%stem_biomass;v(7)=owner%biomass%storage_biomass
+      v(8)=potential%biomass%root_biomass;v(9)=potential%biomass%living_leaf_biomass()
+      v(10)=potential%biomass%stem_biomass;v(11)=potential%biomass%storage_biomass
+      v(12)=depth%actual_root_depth_cm;v(13)=depth%potential_root_depth_cm
+    end if
+    write(crop_output,'(i0,20(a,es25.17e3))')int(time),(',',v(st),st=1,20)
+    flush(crop_output)
+  end subroutine
+  subroutine original_rotation_weather(time,weather)
+    real(real64),intent(in)::time
+    type(pmdirect_swetr0_weather_t),intent(out)::weather
+    integer::day
+    day=int(time)+1
+    call require(day>=1.and.day<=hupsel_germination%weather_days,'original rotation weather range')
+    weather%day_of_year=hupsel_germination%weather_day_of_year(day)
+    weather%radiation_j_m2_d=1000d0*hupsel_germination%rad(day)
+    weather%minimum_air_temperature_c=hupsel_germination%tmn(day)
+    weather%maximum_air_temperature_c=hupsel_germination%tmx(day)
+    weather%vapour_pressure_kpa=hupsel_germination%humidity(day)
+    weather%wind_speed_m_s=hupsel_germination%wind(day)
+    weather%gross_rain_cm_d=.1d0*hupsel_germination%rain(day)
+  end subroutine
+  subroutine activate_potato_surface(committed,status)
+    type(kernel_committed_state_t),intent(inout)::committed
+    integer,intent(out)::status
+    class(transaction_state_t),allocatable::q
+    type(kernel_committed_state_t)::next
+    type(kernel_parameter_identity_t)::identity
+    real(real64)::clock
+    integer::code
+    logical::ok
+    status=1
+    call committed%current_time(clock,ok);if(.not.ok)return
+    call committed%snapshot(q,ok);if(.not.ok)return
+    select type(physical=>q)
+    class is(fmr_b110_physical_state_t)
+      if(allocated(physical%rutter))then;status=0;return;end if
+      if(clock/=potato%crop_start)return
+      if(.not.allocated(physical%micro_drought_factor_carry))then
+        allocate(physical%micro_drought_factor_carry);physical%micro_drought_factor_carry=0d0
+      end if
+      allocate(physical%rutter)
+      call initialize_rutter_canopy_state(potato%initial_canopy_storage,physical%rutter,code)
+      if(code/=0)return
+    class default
+      return
+    end select
+    call p%capture_identity(identity,ok);if(.not.ok)return
+    call kernel_reconstruct_committed_state_trusted(next,committed%current_lineage_id(),committed%current_revision(), &
+      q,clock,.true.,ok,code,p,identity)
+    if(.not.ok.or.code/=0)return
+    committed=next;status=0
+  end subroutine
   subroutine reset_day_totals()
     observed_heat_residual_j_cm2=0d0
     bottom_amount=0d0
     drainage_amount=0d0
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
     surface_exfiltration_amount=0d0
-    transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0
+    transpiration_amount=0d0;drought_amount=0d0;oxygen_amount=0d0;potential_amount=0d0;salinity_amount=0d0
     accepted_count=0;rain_supplied_cm=0d0;rain_segments_completed=0
   end subroutine
   subroutine accumulate_fluxes(observation)
@@ -825,6 +1104,7 @@ contains
           drought_amount=drought_amount+s%root_drought_reduction_cm_day*(s%t1-s%t0)
           oxygen_amount=oxygen_amount+s%root_oxygen_reduction_cm_day*(s%t1-s%t0)
           potential_amount=potential_amount+s%root_potential_cm_day*(s%t1-s%t0)
+          salinity_amount=salinity_amount+s%root_salinity_reduction_cm_day*(s%t1-s%t0)
         end if
         infiltration=infiltration+max(0d0,-s%top_flux)*(s%t1-s%t0)
         surface_exfiltration_amount=surface_exfiltration_amount+ &
@@ -845,12 +1125,24 @@ contains
     type(fmr_b110_physical_forcing_t)::segment_forcing
     type(pond_step_t)::segment_supply
     type(fmr_serialized_physical_observation_t)::segment_observation
-    real(real64)::cursor,endpoint
+    type(kernel_checkpoint_t)::day_checkpoint,segment_checkpoint
+    type(fmr_wofost_accepted_window_t)::crop_window
+    type(fmr_wofost_trial_contribution_t)::crop_contribution
+    type(fmr_wofost_accepted_interval_certificate_t)::crop_certificate
+    real(real64)::cursor,endpoint,segment_irrigation,source_start,source_end,total_potential,total_drought,total_salinity
+    integer::lineage_status,step_index,source_phase
+    logical::lineage_ok
     integer::idx,left,right,middle,diagnostic_status
     logical::first_segment
     ! Existing owner types stage a day candidate. No persistent rain cursor or
     ! second physical state layout. Publish only after every interval succeeds.
     candidate_water=water;candidate_solute=solute
+    if(potato_today.and.day_start<=active_crop%crop_end)then
+      call candidate_water%capture_checkpoint(day_checkpoint,lineage_ok)
+      call require(lineage_ok,'source potato daily water checkpoint')
+      call open_wofost_accepted_window(day_checkpoint,day_end,crop_window,lineage_status)
+      call require(lineage_status==0,'source potato accepted day window')
+    end if
     cursor=day_start;first_segment=.true.;day_result=matrix_joint_result_t()
     call reset_day_totals()
     left=1;right=rain_count
@@ -864,16 +1156,48 @@ contains
     end do
     idx=left
     do while(cursor<day_end)
-      endpoint=min(day_end,rain_ends(idx))
+      if(original_hupsel_germination)then
+        endpoint=min(day_end,cursor+hupsel_germination%source_dtmax)
+        if(day_end-endpoint<=64d0*epsilon(endpoint)*max(1d0,abs(day_end)))endpoint=day_end
+      else
+        endpoint=min(day_end,rain_ends(idx))
+      end if
+      if(potato_today.and.irrigation_rate>0d0.and.cursor<irrigation_event_end)endpoint=min(endpoint,irrigation_event_end)
       call require(endpoint>cursor,'nonprogressing detailed rain interval')
       segment_forcing=forcing
-      if(boesten_evaporation)then
+      if(potato_today)then
+        segment_irrigation=0d0;source_start=day_start;source_end=day_end;source_phase=0
+        if(irrigation_rate>0d0)then
+          if(cursor<irrigation_event_end)then
+            segment_irrigation=irrigation_rate;source_end=irrigation_event_end
+          else
+            source_start=irrigation_event_end;source_phase=1
+          end if
+        end if
+        segment_forcing%rutter%process%surface_irrigation_cm_per_day=segment_irrigation
+        call initialize_interception_window(615400_int64+2_int64*int(day_start,int64)+source_phase,source_start,source_end, &
+          rain_cm_day(j)*(source_end-source_start),segment_forcing%rutter%source_window,lineage_status)
+        call require(lineage_status==0,'source irrigation/Rutter phase window')
+        segment_forcing%black_evaporation%irrigation_rate_cm_per_day=segment_irrigation
+        segment_forcing%black_evaporation%wetting_reset_each_trial=rain_cm_day(j)+segment_irrigation>black_rsigni
+      end if
+      if(original_hupsel_germination)then
+        segment_forcing%black_evaporation%precipitation_rate_cm_per_day=rain_cm_day(j)
+      else if(boesten_evaporation)then
         segment_forcing%boesten_evaporation%precipitation_rate_cm_per_day=rain_rates(idx)
       else
         segment_forcing%pond_input%rain_rate_cm_day=rain_rates(idx)
       end if
       segment_supply=supply;segment_supply%t0=cursor;segment_supply%t1=endpoint
       segment_supply%rain_rate=rain_rates(idx)
+      if(original_hupsel_germination)segment_supply%rain_rate=rain_cm_day(j)
+      if(potato_today)segment_supply%irrigation_rate=segment_irrigation
+      if(potato_today.and.day_start<=active_crop%crop_end)then
+        call candidate_water%capture_checkpoint(segment_checkpoint,lineage_ok)
+        call require(lineage_ok,'source potato segment checkpoint')
+        call begin_wofost_trial_contribution(segment_checkpoint,endpoint,crop_contribution,lineage_status)
+        call require(lineage_status==0,'source potato trial contribution')
+      end if
       if(dynamic_temperature)then
         call run_pond_thermal_interval(backend,column_id,template,p,candidate_water,segment_forcing,numerical, &
           candidate_solute,segment_supply,cursor,endpoint,part)
@@ -884,6 +1208,14 @@ contains
       if(part%status/=JOINT_OK)then
         day_result=part
         write(*,*)'detailed rain completed intervals:',rain_segments_completed
+        write(*,*)'ORIGINAL_INTERVAL_REJECT_DETAIL',cursor,endpoint,part%status,part%water%status,part%chemical%status, &
+          part%diagnostics%attempts,part%diagnostics%solver_rejections,part%diagnostics%temporal_rejections, &
+          part%diagnostics%mass_rejections
+        segment_observation=backend%observation()
+        write(*,*)'ORIGINAL_OWNER_REJECT_DETAIL',part%diagnostics%headcalc_calls,segment_observation%solver_status, &
+          segment_observation%black_evaporation_evaluated,segment_observation%bartholomeus_executed, &
+          segment_observation%bartholomeus_status,segment_observation%root_salinity_executed, &
+          segment_observation%root_salinity_status
         if(dynamic_temperature)then
           call write_pond_thermal_restart('diagnostic-partial-candidate.bin',column_id,template,p%parameter_set_id, &
             p,candidate_water,candidate_solute,diagnostic_status)
@@ -891,7 +1223,7 @@ contains
           call write_matrix_joint_restart_file('diagnostic-partial-candidate.bin',column_id,template,p%parameter_set_id, &
             candidate_water,candidate_solute,diagnostic_status,allow_surface_mass=.true.)
         end if
-        call require(diagnostic_status==JOINT_OK,'partial day diagnostic')
+        if(diagnostic_status/=JOINT_OK)write(*,*)'PARTIAL_DIAGNOSTIC_UNAVAILABLE',diagnostic_status
         return
       end if
       call require(part%water%mass%complete,'incomplete rain interval accounting')
@@ -914,10 +1246,28 @@ contains
       segment_observation=backend%observation()
       call require(segment_observation%accepted_water_flux_trace_available,'detailed rain trace missing')
       call accumulate_fluxes(segment_observation)
-      rain_supplied_cm=rain_supplied_cm+rain_rates(idx)*(endpoint-cursor)
+      if(potato_today.and.day_start<=active_crop%crop_end)then
+        do step_index=1,size(segment_observation%accepted_water_flux_substeps)
+          associate(step=>segment_observation%accepted_water_flux_substeps(step_index))
+            call require(allocated(step%potential_root_sink).and.allocated(step%root_sink_reduction), &
+              'source micro nodal uptake receipt missing')
+            call accumulate_wofost_trial_process_rate(crop_contribution,step%t0,step%t1,sum(step%root_sink), &
+              step%root_potential_cm_day,lineage_status,deepest_root_oxygen_factor=step%deepest_root_oxygen_factor, &
+              rootzone_drought_uptake_factor=step%rootzone_drought_uptake_factor, &
+              potential_root_sink=step%potential_root_sink,root_sink_reduction=step%root_sink_reduction, &
+              source_clipped_root_reduction=.true.,actual_root_sink=step%root_sink)
+            call require(lineage_status==0,'source clipped nodal root receipt invalid')
+          end associate
+        end do
+        call certify_fkt_accepted_interval(segment_checkpoint,candidate_water,crop_certificate,lineage_status)
+        call require(lineage_status==0,'source water commit identity')
+        call admit_wofost_accepted_trial(crop_window,crop_certificate,crop_contribution,lineage_status)
+        call require(lineage_status==0,'source crop accepted interval admission')
+      end if
+      rain_supplied_cm=rain_supplied_cm+segment_supply%rain_rate*(endpoint-cursor)
       rain_segments_completed=rain_segments_completed+1
       cursor=endpoint
-      if(cursor<day_end)idx=idx+1
+      if(cursor<day_end.and..not.original_hupsel_germination)idx=idx+1
     end do
     day_result%water%requested_t0=day_start;day_result%water%requested_t1=day_end;day_result%water%completed_t=day_end
     day_result%water%mass%interval_t0=day_start;day_result%water%mass%interval_t1=day_end
@@ -927,6 +1277,29 @@ contains
     day_result%chemical%residual=day_result%chemical%mass_after-day_result%chemical%mass_before- &
       day_result%chemical%external_in+day_result%chemical%external_out
     call require(abs(day_result%water%mass%residual)<=1d-10.and.abs(day_result%chemical%residual)<=1d-10,'detailed day balance')
+    if(original_hupsel_rotation)then
+      if(potato_today)then
+        if(day_start<=active_crop%crop_end)then
+          call active_trial%day_end(day_end,candidate_water,crop_window,diagnostic_status)
+          if(diagnostic_status/=0)then
+            write(*,*)'ORIGINAL_POTATO_CROP_DAY_REJECTED',day_start,diagnostic_status
+            day_result%status=JOINT_INVALID;return
+          end if
+        end if
+      else
+        call maize_trial%day_end(day_end,air_temperature_c(j),candidate_water,diagnostic_status,transpiration_amount)
+        if(diagnostic_status/=0)then;day_result%status=JOINT_INVALID;return;end if
+      end if
+      total_potential=rotation_day_potential+potential_amount
+      total_drought=rotation_day_drought+drought_amount
+      total_salinity=rotation_day_salinity+salinity_amount
+      if(day_end==aint(day_end))then
+        call irrigation_trial%commit_day(day_end,total_potential,total_drought,total_salinity,diagnostic_status)
+        if(diagnostic_status/=0)then;day_result%status=JOINT_INVALID;return;end if
+      end if
+      hupsel_germination=maize_trial;potato=potato_trial;grass=grass_trial;scheduled_irrigation=irrigation_trial
+      rotation_day_potential=total_potential;rotation_day_drought=total_drought;rotation_day_salinity=total_salinity
+    end if
     water=candidate_water;solute=candidate_solute
   end subroutine
   subroutine select_project_profile(index)

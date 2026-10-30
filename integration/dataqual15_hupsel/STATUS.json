@@ -1,0 +1,81 @@
+{
+  "work_unit": "DATAQUAL15_HUPSEL",
+  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+  "stage": "QUALIFIED_EXPERIMENTAL_ORIGINAL_YEAR_AND494_PREFIX",
+  "candidate_source": "711f8cec131ba5e468eb5eca03c7c95a6bf6372e",
+  "canonical_admitted": false,
+  "scope": "Original Hupsel maize germination, IDEV2 development, SWRD2 roots, direct PM/SWINTER1, original weighted conductivity and iteration/time controls, Black evaporation, numeric heat, Hooghoudt drainage, reactive solute and per-trial Jarvis uptake.",
+  "invariants": [
+    "Same physical water/heat/solute owners and staged day publication",
+    "No disabled original process",
+    "No solver iteration increase or tolerance relaxation",
+    "Same-build exact disk restart"
+  ],
+  "selected": [
+    "O0/O2 original365 fromday1 with all daily budgets",
+    "O0/O2 same-source250-to365 and130-to145 restart",
+    "O2 original1096 target from365; terminal494 at next crop composition",
+    "Existing real Jarvis/Black/fixedcrop contracts O0/O2",
+    "Original compiled germination19 actual source samples O0/O2",
+    "Sixteen source-bound corrupt restart controls each optimization"
+  ],
+  "costs_seconds": {
+    "dq15-hupsel-codec-365-O2": 151.17409000100088,
+    "dq15-hupsel-codec-365-O0": 325.8048930240002,
+    "dq15-hupsel-codec-split250-O2": 59.217115699000715,
+    "dq15-hupsel-codec-split130-O2": 1.671753827999055,
+    "dq15-hupsel-codec-1096-attempt-O2": 13.418468162999488
+  },
+  "qualified": {
+    "work_unit": "DATAQUAL15_HUPSEL",
+    "qualified_source_commit": "711f8cec131ba5e468eb5eca03c7c95a6bf6372e",
+    "project": "1.hupselbrook",
+    "original_days": 1096,
+    "completed_days_O2": 494,
+    "qualified_days_O0_O2": 365,
+    "full_original_project": false,
+    "scientific_equivalence": false,
+    "optimizations_exact": true,
+    "restart_250_to365_exact": true,
+    "restart_130_to145_exact": true,
+    "corruption_controls_per_optimization": 16,
+    "maximum_water_residual_cm": 7.127631818093505e-14,
+    "maximum_solute_residual_mg_cm2": 9.611207663073884e-12,
+    "maximum_heat_accounting_residual_j_cm2": 1.007114530660047e-12,
+    "reference_comparison": {
+      "water_cm": 0.01929729849382511,
+      "solute_mg_cm2": 0.02498308988904796,
+      "transpiration_cm": 4.998563692459879e-06
+    },
+    "diagnostic_log_scope": "Only budget/state/temperature/endpoint/checkpoint outputs are certified as complete. O0 germination diagnostic ends early despite complete365 budget and exact terminal state; no full diagnostic-log equality claim.",
+    "failed_feedback": "Initial focused Jarvis driver added an invalid trap flag that traps its deliberate NaN rejection control; rerun with original driver flags passes O0/O2. Failed raw retained, excluded from PASS.",
+    "numerical_controls": {
+      "source_imported": [
+        "MAXIT30",
+        "MAXBACKTR5",
+        "SWKMEAN2",
+        "DTMIN1e-6",
+        "DTMAX0.04",
+        "SWKIMPL0"
+      ],
+      "canonical_stricter": "Head/nonlinear balance and hard1e-10 water/solute transaction acceptance remain canonical; not literal original tolerances."
+    },
+    "cost_seconds": {
+      "dq15-hupsel-codec-365-O2": 151.17409000100088,
+      "dq15-hupsel-codec-365-O0": 325.8048930240002,
+      "dq15-hupsel-codec-split250-O2": 59.217115699000715,
+      "dq15-hupsel-codec-split130-O2": 1.671753827999055,
+      "dq15-hupsel-codec-1096-attempt-O2": 13.418468162999488
+    },
+    "remaining": "Second crop starts10May2003 at494days: complete WOFOST/DeWilligen/adaptive roots/Bartholomeus/salinity/Rutter/scheduled irrigation composition and joint persistence.",
+    "canonical_admitted": false,
+    "evidence_sha256": "32dbc14c40be1c5ec179cf05be86acfb54ce6cee6d18b63abdf77163297fc339"
+  },
+  "remaining_record": "integration/dataqual15_hupsel/NEXT_POTATO_CHAIN.md",
+  "not_selected": [
+    "Full moving F-CI",
+    "highest low-air stress",
+    "synthetic crop substitution",
+    "potato chain guard removal without physical state composition"
+  ]
+}

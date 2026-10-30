@@ -10,7 +10,7 @@ module mod_fmr_restart_state_contract
   use mod_fmr_runtime_core, only: FMR_OPTIONAL_STATE_LAYOUT_FIXED_WEIR_SURFACE_WATER, &
        FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION, FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION, &
        FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_MACROPORE, &
-       FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, &
+       FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK, &
        FMR_OPTIONAL_STATE_LAYOUT_MACROPORE, FMR_OPTIONAL_STATE_LAYOUT_RUTTER, FMR_OPTIONAL_STATE_LAYOUT_HYSTERESIS, FMR_SOLUTE_STATE_LAYOUT_NONE, &
        FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED, FMR_SOLUTE_STATE_LAYOUT_MOBILE_DISSOLVED_MACROPORE, &
        fmr_solute_state_layout_known
@@ -40,7 +40,8 @@ contains
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
       if (allocated(physical%rutter) .and. template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER .and. &
-          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE) return
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BOESTEN_MACROPORE.and. &
+          template%optional_state_layout_id /= FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK) return
     end select
     select type (physical => state)
     class is (fmr_b110_physical_state_t)
@@ -76,6 +77,20 @@ contains
           matches = .true.
         class default
           matches = .false.
+        end select
+        return
+      end if
+
+      if(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK)then
+        if(template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE)return
+        if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+        select type(state)
+        type is(fmr_b110_black_evaporation_state_t)
+          matches=allocated(state%rutter).and.allocated(state%soil_temperature).and. &
+            .not.allocated(state%snow).and..not.allocated(state%macropore)
+          if(matches)matches=state%soil_temperature%ready().and.state%soil_temperature%node_count()==state%active_nodes
+          if(matches)matches=ieee_is_finite(state%black_evaporation%ldwet)
+          if(matches)matches=state%black_evaporation%ldwet>=0.0_real64
         end select
         return
       end if

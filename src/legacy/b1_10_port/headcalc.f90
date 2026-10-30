@@ -1611,6 +1611,13 @@ subroutine jacobian_F()
    fsi_ws%dfdh_main(NN) = state%dimoca(NN)*matrix_fraction(NN)*grid_dz(NN)/dt - fsi_ws%dfdh_upper(NN) 
    if (swbotb == 1 .AND. (.NOT.state%fllowgwl)) then
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + state%kmean(NN+1)/(grid_z(NN)-state%gwlinp) 
+      if(provider_constitutive_active.and.SwKimpl==0)then
+         ! vector_F refreshes this face even when interior K is frozen. Its
+         ! provider derivative and selected weighted mean belong in this J.
+         fsi_ws%dfdh_main(NN)=fsi_ws%dfdh_main(NN)+ &
+              dkmean(swkmean,state%k(NN),groundwater_saturated_k(NN+1),grid_dz(NN),grid_dz(NN+1))* &
+              fsi_ws%provider_dkdh(NN)*fsi_ws%head_gradient(NN+1)
+      end if
    else if (swbotb == 3 .and. .not. legacy_state_binding) then
       fsi_ws%dfdh_main(NN)=fsi_ws%dfdh_main(NN)+typed_bottom_conductance
    else if (swbotb == 3 .AND. swbotb3Impl == 1) then ! Cauchy
@@ -1656,7 +1663,8 @@ subroutine jacobian_F()
       fsi_ws%dfdh_upper(NN) = fsi_ws%dfdh_upper(NN) - fsi_ws%dconductivity_dhead(NN-1) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN-1),state%k(NN),grid_dz(NN-1),grid_dz(NN)) 
       fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) - fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN) * dkmean(swkmean,state%k(NN),state%k(NN-1),grid_dz(NN),grid_dz(NN-1))
 
-      if (swbotb == 1 .OR. swbotb == 5 .OR. swbotb == 8 .AND. flboth) then
+      if ((swbotb == 1.and..not.(provider_constitutive_active.and.SwKimpl==0.and..not.state%fllowgwl)) .OR. &
+           swbotb == 5 .OR. swbotb == 8 .AND. flboth) then
          fsi_ws%dfdh_main(NN) = fsi_ws%dfdh_main(NN) + 0.5d0 * fsi_ws%dconductivity_dhead(NN) * fsi_ws%head_gradient(NN+1)
       end if
    end if

@@ -16,6 +16,8 @@ module mod_pond_thermal_restart_file
  use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view, &
   initialize_soil_temperature_state
  use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t,black_evaporation_state_t
+ use mod_rutter_source_window_processor,only:rutter_source_restart_t,restore_rutter_source_restart,initialize_rutter_canopy_state
+ use mod_interception_source_window_runtime,only:interception_source_window_t
  use mod_age_joint_restart_file,only:crc32
  implicit none
  private
@@ -58,6 +60,7 @@ contains
    end if
    v=[v,-53020003d0,p%black_evaporation%cofred]
   end if
+  if(p%reactive_solute_active)v=[v,-53020004d0]
   if(p%boesten_evaporation_active)then
    if(.not.allocated(p%boesten_evaporation))then
     deallocate(v);return
@@ -98,23 +101,27 @@ contains
   type(solute_compartment_state_t)::s
   type(soil_temperature_field_view_t)::heat
   real(real64),allocatable::v(:),hv(:),theta(:),derivative(:)
-  real(real64)::time
+  real(real64)::time,micro_carry
   integer(int64)::id,revision
   integer(int8),allocatable::a(:)
-  integer::u,io,code,n,slash
-  logical::ok,history,opened,boesten,black
+  integer::u,io,code,n,slash,micro_present
+  logical::ok,history,opened,boesten,black,rutter
   character(8)::tag
   type(boesten_evaporation_state_t)::pair
   type(black_evaporation_state_t)::black_pair
+  type(rutter_source_restart_t)::rutter_record
+  type(interception_source_window_t)::rutter_window
   character(:),allocatable::pending,parent
   status=1
   if(.not.matrix_thermal_template(template).or.column%state_handle/=1)return
-  black=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
+  rutter=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK
+  black=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION.or.rutter
   if(black.neqv.parameters%black_evaporation_active)return
   boesten=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   if(boesten.neqv.parameters%boesten_evaporation_active)return
   tag='S5PT0001';if(boesten)tag='S5PT0002'
   if(black)tag='S5PT0003'
+  if(rutter)tag='S5PT0004'
   if(template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
   if(.not.pond_thermal_states_match(water,chemical))return
   call water%certified_parameter_identity(identity,ok);if(.not.ok)return
@@ -126,6 +133,20 @@ contains
   if(.not.allocated(v).or..not.allocated(hv))return
   if(.not.all(ieee_is_finite(v)).or..not.all(ieee_is_finite(hv)))return
   call chemical%snapshot(time,theta,m,s,revision)
+  micro_present=0;micro_carry=0d0
+  select type(q=>b%records(1)%physical_state)
+  class is(fmr_b110_physical_state_t)
+   if(rutter)then
+    if(allocated(parameters%micro_de_willigen).neqv.allocated(q%micro_drought_factor_carry))return
+   else
+    if(allocated(q%micro_drought_factor_carry))return
+   end if
+   if(allocated(q%micro_drought_factor_carry))then
+    if(.not.ieee_is_finite(q%micro_drought_factor_carry))return
+    if(q%micro_drought_factor_carry<0d0.or.q%micro_drought_factor_carry>1d0)return
+    micro_present=1;micro_carry=q%micro_drought_factor_carry
+   end if
+  end select
   ! This format carries the physical water/heat state with no continuation history.
   select type(q=>b%records(1)%physical_state)
   type is(fmr_b110_physical_state_t)
@@ -135,6 +156,16 @@ contains
   type is(fmr_b110_black_evaporation_state_t)
    if(.not.black)return
    history=.false.;black_pair=q%black_evaporation
+   if(rutter)then
+    if(.not.allocated(q%rutter))return
+    call q%rutter%export_restart(rutter_record,code);if(code/=0)return
+    if(rutter_record%schema/=0)then
+     if(.not.ieee_is_finite(rutter_record%source_progress%accepted_until))return
+     if(rutter_record%source_progress%accepted_until/=b%records(1)%committed_time)return
+    end if
+   else
+    if(allocated(q%rutter))return
+   end if
    call build_soil_temperature_field_view(q%soil_temperature,heat,code)
   type is(fmr_b110_boesten_evaporation_state_t)
    if(.not.boesten)return
@@ -158,6 +189,8 @@ contains
     end select
     if(io/=0)exit writing
     if(black)write(u,iostat=io)black_pair%ldwet
+    if(io/=0)exit writing
+    if(rutter)write(u,iostat=io)micro_present,micro_carry,rutter_record
     if(boesten)write(u,iostat=io)pair%spev,pair%saev
     if(io/=0)exit writing
     if(history)write(u,iostat=io)derivative
@@ -206,17 +239,20 @@ contains
   integer(int8)::extra
   real(real64),allocatable::v(:),expected(:),hv(:),want_heat(:),temperature(:),derivative(:), &
    theta(:),concentration(:),dissolved(:),sorbed(:)
-  real(real64)::time,pond_mass
+  real(real64)::time,pond_mass,micro_carry
   integer(int64)::id,revision,physical_id
   character(8)::tag
-  integer::u,io,n,count,code
-  logical::ok,history,boesten,black
+  integer::u,io,n,count,code,micro_present
+  logical::ok,history,boesten,black,rutter
   type(boesten_evaporation_state_t)::pair
   type(black_evaporation_state_t)::black_pair
+  type(rutter_source_restart_t)::rutter_record
+  type(interception_source_window_t)::rutter_window
   status=1
   if(water%ready().or.chemical%ready())return
   if(.not.matrix_thermal_template(template).or.column%state_handle/=1)return
-  black=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION
+  rutter=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK
+  black=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION.or.rutter
   if(black.neqv.parameters%black_evaporation_active)return
   boesten=template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
   if(boesten.neqv.parameters%boesten_evaporation_active)return
@@ -236,8 +272,9 @@ contains
      n,history,physical_id,count
     if(io/=0)exit decoding
     io=1
+    if(.not.ieee_is_finite(r%committed_time))exit decoding
     if(n<1.or.n>256.or.n/=parameters%active_nodes)exit decoding
-    if((black.and.tag/='S5PT0003').or.(boesten.and.tag/='S5PT0002').or. &
+    if((rutter.and.tag/='S5PT0004').or.(black.and..not.rutter.and.tag/='S5PT0003').or.(boesten.and.tag/='S5PT0002').or. &
        (.not.black.and..not.boesten.and.tag/='S5PT0001'))exit decoding
     if(physical_id/=parameters%parameter_set_id.or.count/=size(want_heat))exit decoding
     allocate(hv(count));read(u,iostat=io)hv;if(io/=0)exit decoding
@@ -255,6 +292,31 @@ contains
      if(.not.ieee_is_finite(black_pair%ldwet))exit decoding
      if(black_pair%ldwet<0d0)exit decoding
      io=0
+    end if
+    if(rutter)then
+     read(u,iostat=io)micro_present,micro_carry,rutter_record;if(io/=0)exit decoding
+     io=1
+     if(micro_present/=0.and.micro_present/=1)exit decoding
+     if(.not.ieee_is_finite(micro_carry))exit decoding
+     if(micro_carry<0d0.or.micro_carry>1d0)exit decoding
+     if((micro_present==1).neqv.allocated(parameters%micro_de_willigen))exit decoding
+     if(micro_present==1)then
+      allocate(physical%micro_drought_factor_carry);physical%micro_drought_factor_carry=micro_carry
+     else
+      if(micro_carry/=0d0)exit decoding
+     end if
+     allocate(physical%rutter)
+     if(rutter_record%schema==0)then
+      io=1
+      if(rutter_record%source_progress%schema/=0)exit decoding
+      call initialize_rutter_canopy_state(rutter_record%canopy_storage_cm,physical%rutter,io)
+     else
+      io=1
+      if(.not.ieee_is_finite(rutter_record%source_progress%accepted_until))exit decoding
+      if(rutter_record%source_progress%accepted_until/=r%committed_time)exit decoding
+      call restore_rutter_source_restart(rutter_record,rutter_window,physical%rutter,io)
+     end if
+     if(io/=0)exit decoding
     end if
     if(boesten)read(u,iostat=io)pair%spev,pair%saev
     if(io/=0)exit decoding
@@ -295,6 +357,10 @@ contains
     if(.not.ok.or.io/=0)then;io=1;exit decoding;end if
     call reconstruct_matrix_solute_trusted(p,id,revision,time,theta,concentration,dissolved,sorbed,c,io,surface_mass=pond_mass)
     if(io/=0)exit decoding
+    if(parameters%reactive_solute_active)then
+     call attach_reactive_chemical(certified,c,parameters,io)
+     if(io/=0)exit decoding
+    end if
     io=1
     if(.not.pond_thermal_states_match(certified,c))exit decoding
     io=0

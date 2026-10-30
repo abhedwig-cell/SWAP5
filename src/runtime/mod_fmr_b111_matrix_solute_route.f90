@@ -3,7 +3,8 @@
 module mod_fmr_b111_matrix_solute_route
   use iso_fortran_env, only: real64,int64
   use ieee_arithmetic, only: ieee_is_finite
-  use mod_fmr_serialized_reference_backend, only: fmr_water_flux_substep_trace_t
+  use mod_fmr_water_flux_trace_contract, only: fmr_water_flux_substep_trace_t
+  use mod_root_salinity_response,only:evaluate_mobile_root_salinity_sink,SALINITY_INVALID
   use mod_solute_water_face_flux_reconstruction, only: reconstruct_interval_water_face_flux,WATER_FACE_FLUX_OK
   use mod_solute_mobile_salt_state, only: mobile_salt_state_t,initialize_mobile_salt_state,SOLUTE_OK
   use mod_solute_compartment_state, only: solute_compartment_state_t,initialize_solute_compartment_state,SOLCOMP_OK
@@ -26,6 +27,8 @@ module mod_fmr_b111_matrix_solute_route
     procedure::snapshot=>matrix_snapshot
     procedure::ready=>matrix_ready
     procedure::configuration=>matrix_configuration
+    procedure::root_salinity_view=>matrix_root_salinity_view
+    procedure::same_state=>matrix_same_state
   end type
   type,public::matrix_solute_restart_t
     private
@@ -40,6 +43,54 @@ module mod_fmr_b111_matrix_solute_route
   public::initialize_matrix_solute,consume_accepted_matrix_trace,export_matrix_solute_restart,restore_matrix_solute_restart
   public::matrix_parameter_vector,reconstruct_matrix_solute_trusted
 contains
+  logical function matrix_same_state(self,other)result(ok)
+    class(matrix_solute_state_t),intent(in)::self
+    type(matrix_solute_state_t),intent(in)::other
+    real(real64),allocatable::a(:),b(:)
+    ok=.false.
+    if(.not.self%ready().or..not.other%ready())return
+    if(self%time/=other%time.or.self%revision/=other%revision.or.self%parameter_id/=other%parameter_id)return
+    if(size(self%water)/=size(other%water))return
+    if(any(self%water/=other%water))return
+    if(any(self%mobile%mass_mg_cm2/=other%mobile%mass_mg_cm2))return
+    if(any(self%mobile%concentration_mg_cm3/=other%mobile%concentration_mg_cm3))return
+    if(any(self%companion%sorbed_matrix_mass/=other%companion%sorbed_matrix_mass))return
+    if(self%companion%pond_mass/=other%companion%pond_mass)return
+    if(self%companion%aquifer_mass/=other%companion%aquifer_mass)return
+    if(any(self%companion%age_amount/=other%companion%age_amount))return
+    a=matrix_parameter_vector(self%parameters);b=matrix_parameter_vector(other%parameters)
+    if(size(a)/=size(b))return
+    ok=all(a==b)
+  end function matrix_same_state
+
+  ! A read-only view of this incumbent reactive chemical owner, matched to
+  ! the exact water sibling and clock. This does not convert reactive sorbed
+  ! mass into mobile salt or introduce a second chemical state owner.
+  subroutine matrix_root_salinity_view(self,time,water,dz,potential,saltmax,saltslope, &
+       concentration,alpha,sink,node_loss,total_loss,status)
+    class(matrix_solute_state_t),intent(in)::self
+    real(real64),intent(in)::time,water(:),dz(:),potential(:),saltmax,saltslope
+    real(real64),allocatable,intent(out)::concentration(:),alpha(:),sink(:),node_loss(:)
+    real(real64),intent(out)::total_loss
+    integer,intent(out)::status
+    real(real64)::scale
+    integer::n
+    status=SALINITY_INVALID;total_loss=0.0_real64
+    if(.not.self%ready())return
+    if(.not.ieee_is_finite(time))return
+    if(time/=self%time)return
+    n=size(self%water)
+    if(size(water)/=n.or.size(dz)/=n.or.size(potential)/=n)return
+    if(.not.all(ieee_is_finite(water)).or..not.all(ieee_is_finite(dz)))return
+    if(.not.allocated(self%parameters%dz_cm))return
+    if(size(self%parameters%dz_cm)/=n)return
+    if(any(dz/=self%parameters%dz_cm))return
+    scale=max(1.0_real64,maxval(abs(self%water)))
+    if(any(abs(water-self%water)>1024.0_real64*epsilon(1.0_real64)*scale))return
+    call evaluate_mobile_root_salinity_sink(self%mobile%mass_mg_cm2,water,dz,saltmax,saltslope, &
+         potential,concentration,alpha,sink,node_loss,total_loss,status)
+  end subroutine matrix_root_salinity_view
+
   subroutine initialize_matrix_solute(p,parameter_id,time,water,concentration,state,status)
     type(b111_reactive_solute_substep_forcing_t),intent(in)::p
     integer(int64),intent(in)::parameter_id

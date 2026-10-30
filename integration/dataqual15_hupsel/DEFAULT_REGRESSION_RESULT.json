@@ -1,0 +1,174 @@
+{
+  "status": "DEFAULT_NATIVE_PRESERVATION_AND_18475BC_COMBINED_CONTRACT_PASS_NOT_ADMITTED",
+  "default_scientific_source": "cf2bd2f2f62a464457f1b14a72b97d1aea2774fa",
+  "test_runner_commit": "d18a342",
+  "combined_scientific_source": "18475bc0ac5e44190aefaf2ae7e254b322d91bfa",
+  "production_delta_from_default_source": false,
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "native_drivers": [
+    "tests/fapp/test_ppa_wu04a_black_process.f90",
+    "tests/fapp/test_ppa_wu04a_black_runtime.f90",
+    "tests/fapp/test_ppa_wu01_production_application_bootstrap.f90",
+    "tests/fapp/test_ppa_wu03_common_forcing_adapter.f90",
+    "tests/f-app08/test_rutter_output_binding.f90",
+    "tests/physics/test_ppa_micro03_runtime.f90",
+    "tests/fapp/test_ppa_root_hyd01_sink_equivalence.f90"
+  ],
+  "gates": {
+    "thermal": "FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED",
+    "pond": "PHYSICAL_PASS_NOT_ADMITTED",
+    "rutter_window": "PASS_O0_O2_IDENTITY",
+    "native": "EXISTING_NATIVE_BLACK_RUTTER_BOOTSTRAP_COMMONFORCING_MICRO_ROOT_PRESERVATION_PASS",
+    "combined184": "COMBINED_18475BC_O0_O2_EXACT_RESTART_13_NEGATIVES_PASS_NOT_ADMITTED"
+  },
+  "default_inheritance_to18475bc": "Only unselected Black+Rutter+accepted-trace guarded branch; not represented as compiled18475bc default execution",
+  "full_original_project_qualification": false,
+  "canonical_integration": false,
+  "report_sha256": {
+    "thermal": "27a3902f39a520b8a156fb72c51b462c43fae0bd30d2f12f478ea8f5e8957f3c",
+    "pond": "5f0d7284ddd2272cae113a3f63c842577eb440ed3d0b397441dd577f341c3242",
+    "native": "f6e8022c7d73ddfc984bc5691ee2d608c95246b1ea49d1ccd03f1efc5ba9873f",
+    "combined184": "d1e46a4121d52f960dd9b2c656ee68f637aaa87075f241022776314e6254f8e7"
+  },
+  "archive_sha256": "07c89d2e1eaa485d5cc57d251721bca4f31b7cdbbde23f4a31a7e2eb8d273684",
+  "archive_members": 4293,
+  "archive_size_bytes": 1182696,
+  "publication_build_artifact_omissions": {
+    "original_archive_sha256": "57fde8bb1c7dc9c8f53f596858a063aae5a64f9bec9e167b3647e1e657b7d21b",
+    "original_archive_bytes": 34261464,
+    "omitted_build_artifacts": [
+      {
+        "path": "thermal/O0/thermal",
+        "sha256": "8d5ff5d47231925e6f26adaa4870e2fdaf5efe3ebda695716798bc59afe0b347",
+        "bytes": 14575752
+      },
+      {
+        "path": "thermal/O2/thermal",
+        "sha256": "a2d88dd9a32ea37bcb438876cc092d7b731898ae747d2df3895e1567853b030e",
+        "bytes": 6385640
+      },
+      {
+        "path": "pond/O0/joint",
+        "sha256": "c3510c809db6a03af99d3263f9ccc0be5d6f2c9b429c6cde4669d9ef11b22922",
+        "bytes": 14385848
+      },
+      {
+        "path": "pond/O0/original",
+        "sha256": "801bb833cec3471ce3e0125c2328061985592bcff11c47f5edf7f8f7a47e605e",
+        "bytes": 14320048
+      },
+      {
+        "path": "pond/O0/incumbent",
+        "sha256": "4b5cbddc49c50e0393560e54d052faca530ae64c50989461bde3831d4724a2bb",
+        "bytes": 14389984
+      },
+      {
+        "path": "pond/O2/joint",
+        "sha256": "3cf95a49bc126c8ac620d8af0f89241747e4d949bdae2a9dbb58d4fb5827bb8a",
+        "bytes": 6314504
+      },
+      {
+        "path": "pond/O2/original",
+        "sha256": "a982258f1f4c209a56e1ef46d4f873352212f71576aaccaafe22635815123c39",
+        "bytes": 6310168
+      },
+      {
+        "path": "pond/O2/incumbent",
+        "sha256": "68707d575840a663469113a733555273d2945baca52783b4d147bfcb9abea428",
+        "bytes": 6322768
+      },
+      {
+        "path": "native/O0/test_rutter_output_binding",
+        "sha256": "4750a4b1877b63bcf31a557dbd671ce1650c34f6093bd6bebe62997bd6890d74",
+        "bytes": 13571368
+      },
+      {
+        "path": "native/O0/test_ppa_micro03_runtime",
+        "sha256": "9d3e54c9568989ab3325f7e8637b128f2154688b23959f957b2367c97995b20e",
+        "bytes": 13984880
+      },
+      {
+        "path": "native/O0/test_ppa_wu03_common_forcing_adapter",
+        "sha256": "fa310d2ec49af335e262a3932aa8469b2a7ab8878e8f395fae653178ece24cd9",
+        "bytes": 13810952
+      },
+      {
+        "path": "native/O0/test_ppa_wu04a_black_process",
+        "sha256": "a34d1360a1096932767558bceb89412e810a82f6d8fec2b58c0b743e0afd654b",
+        "bytes": 13566920
+      },
+      {
+        "path": "native/O0/test_ppa_wu01_production_application_bootstrap",
+        "sha256": "a539808d0d77646e9c0c18a7d321b5066b5b6112a69346d0b43c479f2eeb8af2",
+        "bytes": 14936224
+      },
+      {
+        "path": "native/O0/test_ppa_root_hyd01_sink_equivalence",
+        "sha256": "ad0ae2a0b11004799167ab70bf6603cc55e1fa4ccc131b1193990ae5d45552c6",
+        "bytes": 13839536
+      },
+      {
+        "path": "native/O0/test_ppa_wu04a_black_runtime",
+        "sha256": "219bb75905dbda57d12d77538b43ad81e7275aa47584c36817d7ce5c74398aba",
+        "bytes": 13950616
+      },
+      {
+        "path": "native/O2/test_rutter_output_binding",
+        "sha256": "134e928f4bced47778f96ece22caf5a88ee0fc84b10cf6586070e6ede2b77935",
+        "bytes": 5943296
+      },
+      {
+        "path": "native/O2/test_ppa_micro03_runtime",
+        "sha256": "6babf8e5f7c0a18cd4e52035f940702a0a0ba08ceaccebaab2680dab9ff41b0d",
+        "bytes": 6131256
+      },
+      {
+        "path": "native/O2/test_ppa_wu03_common_forcing_adapter",
+        "sha256": "ea8d7893de6b9d02e3d82a7d0a42205731dfe75eed9c766b5a20bb580315e94e",
+        "bytes": 6014672
+      },
+      {
+        "path": "native/O2/test_ppa_wu04a_black_process",
+        "sha256": "40c7cfad9172742095af64bc08d55eb9943b7ab3735a050bdc41689bfd481ce7",
+        "bytes": 5942952
+      },
+      {
+        "path": "native/O2/test_ppa_wu01_production_application_bootstrap",
+        "sha256": "6fbf7c04c9cb704af405bcd65f9160830202961c157d846b9a1744adea8a84bf",
+        "bytes": 6647352
+      },
+      {
+        "path": "native/O2/test_ppa_root_hyd01_sink_equivalence",
+        "sha256": "9c694af8ce88065dcd48f1162393e373077ab25e9bc37cada41118b8ce2f592f",
+        "bytes": 6084232
+      },
+      {
+        "path": "native/O2/test_ppa_wu04a_black_runtime",
+        "sha256": "e0a2e69384bdefe72bae2b25c983c356c2cba2a00136fd75bb4146aacacf219e",
+        "bytes": 6072336
+      },
+      {
+        "path": "combined184/verified-old-O0",
+        "sha256": "8d5ff5d47231925e6f26adaa4870e2fdaf5efe3ebda695716798bc59afe0b347",
+        "bytes": 14575752
+      },
+      {
+        "path": "combined184/verified-old-O2",
+        "sha256": "a2d88dd9a32ea37bcb438876cc092d7b731898ae747d2df3895e1567853b030e",
+        "bytes": 6385640
+      },
+      {
+        "path": "combined184/O0/thermal",
+        "sha256": "a1b0c73059343fb04fe660905c43ae369d36439e23e4bd092706490820b0154d",
+        "bytes": 14567560
+      },
+      {
+        "path": "combined184/O2/thermal",
+        "sha256": "bc07c1f524dabd1954170e3aace2788012c33840a385e34c36775b236d7f0bf7",
+        "bytes": 6381544
+      }
+    ],
+    "retained_scientific_members_byte_exact": true,
+    "scope": "Only reproducible old default/diagnostic ELF build artifacts are omitted. All source snapshots, compiler/link commands, compiler output, hash bindings, actual model/test outputs and native checkpoint records are retained. Full original-history executables and original TTUTIL are retained by the clean-build/current closed-union capsules. Original complete archives remain preserved outside this publication."
+  }
+}

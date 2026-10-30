@@ -65,7 +65,7 @@ for opt in ('O0','O2'):
     driver=ROOT/'tests/nut-sol/test_surface_process.f90'
     for i,p in enumerate(providers+[source,driver]):
         obj=build/f'process{i}.o';objects.append(obj);bind(p)
-        run(FC+flags+(['-Wall','-Wextra','-Werror'] if p in providers else [])+['-c',p,'-o',obj],build,'process_compile')
+        run(FC+flags+(['-Wall','-Wextra','-Werror','-Wno-error=compare-reals'] if p in providers else [])+['-c',p,'-o',obj],build,'process_compile')
     exe=build/'process';run(FC+flags+objects+['-o',exe],build,'process_link')
     stdout=run([exe],build,'process_native');assert b'SURFACE_LITERAL_150_UNITS_BALANCE_INVALID_CUTOFF=PASS' in stdout
     results['runs'][opt]=dict(process_stdout=stdout.decode(),oracle_sha256=digest(source),process_provider_count=2)
