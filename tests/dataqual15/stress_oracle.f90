@@ -21,13 +21,18 @@ program grass_stress_oracle
  type(BartholomeusImmutableDataset)::data
  type(BartholomeusCropParameters)::crop
  real(real64),allocatable::w100(:),w500(:),organic(:),sand(:),density(:),fraction(:),original(:),factors(:),wr(:)
- real(real64)::demand_dry,demand_wet,worst
- integer::unit,node,index,rooted
+ real(real64)::demand_dry,demand_wet,worst,worst_all
+ integer::unit,node,index,rooted,io,record,stressed
  logical::ok
  character(2048)::path
  call get_command_argument(1,path)
  open(newunit=unit,file=trim(path),status='old',action='read')
- read(unit,*)numnod,rooted
+ record=0;stressed=0;worst_all=0d0
+ do
+ read(unit,*,iostat=io)numnod,rooted
+ if(io<0)exit
+ if(io/=0)error stop 'paired input header'
+ record=record+1
  if(numnod/=113.or.rooted<1.or.rooted>numnod)error stop 'observed original geometry'
  read(unit,*)crop%c_mroot,crop%f_senes,crop%q10_root,crop%specific_resp_humus,crop%q10_microbial, &
    crop%microbial_shape_m,crop%root_shape_m,crop%root_radius_m,crop%max_resp_factor
@@ -39,7 +44,6 @@ program grass_stress_oracle
   if(index/=node)error stop 'observation order'
   orgmat(layer(node))=organic(node);psand(layer(node))=sand(node);bdens(layer(node))=density(node)
  end do
- close(unit)
  swsophy=0;swhyst=0;iHWCKmodel=1;indeks=-1;fl_use_tables=.false.
  call set_cofgen_pointers();call calc_cofgen_extra(numnod)
  campbell_h100=-100d0;campbell_h500=-500d0;gfp_h100=-100d0
@@ -61,17 +65,26 @@ program grass_stress_oracle
  call evaluate_bartholomeus_factors_from_state(view,data,crop,wr,wroot_node_top(:rooted), &
    672d0/(8.314472d0*(tav+273d0)),BARTHOLOMEUS_WATERFILM_REFERENCE,factors,ok)
  if(.not.ok)error stop 'current paired oxygen rejected'
+ print '(a,i0)','PAIRED_CASE ',record
  print '(a)','node,head_cm,theta,temperature_c,root_fraction,root_density_kg_m3,original_factor,current_factor,difference'
  do node=1,rooted
   print '(i0,8(a,es25.17e3))',node,',',h(node),',',theta(node),',',tsoil(node),',',fraction(node), &
    ',',wroot_node_top(node),',',original(node),',',factors(node),',',factors(node)-original(node)
  end do
  worst=maxval(abs(original-factors))
+ worst_all=max(worst_all,worst);stressed=stressed+count(original<.99999d0.or.factors<.99999d0)
  ! The existing assembled oracle uses 1e-4 to reflect the original SOLVE
  ! accuracy. This bounds the paired oxygen component, not whole crop yield.
  print '(a,es25.17e3)','PAIRED_MAX_FACTOR_DIFFERENCE ',worst
  print '(a,2(es25.17e3,1x))','PAIRED_ROOT_WEIGHTED_FACTORS ', &
    sum(fraction(:rooted)*original),sum(fraction(:rooted)*factors)
  if(worst>1d-4)error stop 'paired oxygen differs beyond existing source SOLVE gate'
+ deallocate(w100,w500,organic,sand,density,fraction,original,wr,factors)
+ end do
+ close(unit)
+ if(record<1)error stop 'empty paired state selection'
+ print '(a,i0)','PAIRED_CASE_COUNT ',record
+ print '(a,i0)','PAIRED_STRESSED_NODE_COUNT ',stressed
+ print '(a,es25.17e3)','PAIRED_ALL_MAX_FACTOR_DIFFERENCE ',worst_all
  print '(a)','PAIRED_ORIGINAL_CURRENT_OXYGEN_PASS'
 end program

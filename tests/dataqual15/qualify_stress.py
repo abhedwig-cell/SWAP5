@@ -4,10 +4,10 @@ The generated applications differ only in output diagnostics and an explicit
 DTMAX cap. Every trajectory starts on day1. Diagnostic binaries/checkpoints
 have their own bindings and are never substituted into the qualified capsule.
 """
-import argparse,csv,hashlib,io,json,re,subprocess,sys,tarfile,time
+import argparse,csv,hashlib,io,json,math,re,struct,subprocess,sys,tarfile,time
 from pathlib import Path
 from original_sources import build_original
-from checkpoint_layout import payload
+from checkpoint_layout import payload,layout
 ROOT=Path(__file__).resolve().parents[2]
 sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
 
@@ -34,6 +34,27 @@ def main():
   trace="     step_dt=q%t1-q%t0"
   assert observed.count(trace)==1
   observed=observed.replace(trace,trace+"\n     if(any(day_index==[25,72,73,127]))write(*,*)'STRESS_ACCEPTED',day_index,q%t0,q%t1, &\n       q%root_potential_cm_day,sum(q%root_sink),q%deepest_root_oxygen_factor")
+  backend=out/'observed_backend.f90'
+  backend_text=(ROOT/'src/runtime/mod_fmr_serialized_reference_backend.f90').read_text()
+  marker='          self%last_observation%bartholomeus_executed=.true.'
+  assert backend_text.count(marker)==1
+  tracing="""          if(oxygen_status==FMR_BARTHOLOMEUS_EXEC_OK.and.oxygen_nodes>0.and. &
+              any(int(floor(t0))==[24,71,72,126]))then
+           block
+            integer::dq_unit,dq_node
+            open(newunit=dq_unit,file='stress-trials.dat',status='unknown',position='append',action='write')
+            write(dq_unit,*)t0,t1,oxygen_nodes
+            do dq_node=1,oxygen_nodes
+             write(dq_unit,*)dq_node,hydraulic_start%pressure_head(dq_node), &
+               hydraulic_start%water_content(dq_node),oxygen_thermal%temperature_c(dq_node), &
+               oxygen_factors(dq_node),oxygen_base%root_extraction_sink(dq_node), &
+               oxygen_final%root_extraction_sink(dq_node)
+            end do
+            close(dq_unit)
+           end block
+          end if
+"""
+  backend.write_text(backend_text.replace(marker,tracing+marker),newline='\n')
   builds={};trajectories={};horizons=[('coarse',None),('half',.02),('quarter',.01)]
   for name,cap in horizons:
    folder=out/name;folder.mkdir();driver=folder/'observed_grass.f90';text=observed
@@ -41,7 +62,7 @@ def main():
     needle="call rdsdor('dtmax',1d-7,1d0,source_dtmax)";assert text.count(needle)==1
     text=text.replace(needle,needle+f';source_dtmax=min(source_dtmax,{cap}d0)')
    driver.write_text(text,newline='\n');build=folder/'build';case=folder/'native'
-   command=[sys.executable,'-B',ROOT/'tools/solute/build_grass_startup.py','--compiler',fc,'--input-archive',originals['O2']/'ttobj/libttutil.a','--output',build,'--optimization','O2','--profile','checked','--driver',driver,'--end','1','--policy','retained']
+   command=[sys.executable,'-B',ROOT/'tools/solute/build_grass_startup.py','--compiler',fc,'--input-archive',originals['O2']/'ttobj/libttutil.a','--output',build,'--optimization','O2','--profile','checked','--driver',driver,'--provider-override',backend,'--end','1','--policy','retained']
    if builds:command+=['--reuse-build',builds['coarse']]
    run(command,'build-'+name,timeout=600);builds[name]=build
    run([sys.executable,'-B',ROOT/'tests/dataqual15/run_original.py','--bundle',build,'--output',case,'--end','140','--capture','24','25','71','72','73','126','127','140','--timeout','2400'],'trajectory-'+name,timeout=2430)
@@ -60,8 +81,58 @@ def main():
   for name,case in trajectories.items():
    budget=getrows(case/'budget.csv');crop=getrows(case/'crop.csv')
    report['refinement'][name]=dict(end_day=140,maximum_water_residual_cm=max(abs(float(row['residual_cm']))for row in budget),selected_days={str(day):dict(native=budget[day-1],crop=crop[day-1],source={key:reference[day][key]for key in ['TPOT','TACT','TREDWET','TREDDRY','WRT','WLV','HRVDM']})for day in [25,72,73,126,127,140]})
+   measurement=report['refinement'][name]
+   receipt={day:[]for day in [25,72,73,127]}
+   for line in (case/'stdout').read_text().splitlines():
+    fields=line.split()
+    if fields and fields[0]=='STRESS_ACCEPTED':
+     day=int(fields[1]);receipt[day].append(list(map(float,fields[2:])))
+   measurement['accepted_substeps']={}
+   for day,rows in receipt.items():
+    assert rows,('missing accepted duration observation',name,day)
+    duration=[r[1]-r[0]for r in rows];assert all(dt>0 for dt in duration)
+    assert abs(math.fsum(duration)-1)<1e-10,('accepted day coverage',name,day)
+    amounts={key:math.fsum(r[index]*dt for r,dt in zip(rows,duration))for key,index in [('potential_cm',2),('uptake_cm',3),('deepest_oxygen_integral_day',4)]}
+    assert abs(amounts['potential_cm']-float(budget[day-1]['potential_cm']))<1e-10
+    assert abs(amounts['uptake_cm']-float(budget[day-1]['uptake_cm']))<1e-10
+    measurement['accepted_substeps'][str(day)]=dict(count=len(rows),minimum_duration_day=min(duration),maximum_duration_day=max(duration),duration_sum_day=math.fsum(duration),**amounts)
+   for day in [25,72,73,126,127,140]:
+    checkpoint=case/f'checkpoint-{day}.bin';raw=checkpoint.read_bytes();state=layout(raw)
+    actual,potential=struct.unpack_from('=dd',raw,state['management']+4)
+    measurement['selected_days'][str(day)]['native_harvest_kg_ha']=actual
+    measurement['selected_days'][str(day)]['native_potential_harvest_kg_ha']=potential
+   measurement['cumulative_140_cm']={key:math.fsum(float(row[key])for row in budget)for key in ['potential_cm','uptake_cm','oxygen_cm','drought_cm']}
+   measurement['raw_sha256']={file:sha(case/file)for file in ['budget.csv','crop.csv','stdout','checkpoint.bin']}
+
   report['coarse_output_only_trajectory_exact']=True
  assert observations is not None
+ accepted={}
+ for line in (observations/'stdout').read_text().splitlines():
+  fields=line.split()
+  if fields and fields[0]=='STRESS_ACCEPTED':
+   values=list(map(float,fields[2:]));accepted[(round(values[0],12),round(values[1],12))]=(int(fields[1]),values)
+ trial_file=observations/'stress-trials.dat';paired_records=[];batch=out/'accepted-oxygen-inputs.dat'
+ if trial_file.exists():
+  trials={};lines=iter(trial_file.read_text().splitlines())
+  for line in lines:
+   header=line.split();t0,t1=float(header[0]),float(header[1]);count=int(header[2]);nodes=[list(map(float,next(lines).split()))for _ in range(count)]
+   key=(round(t0,12),round(t1,12))
+   if key in accepted:trials[key]=nodes
+  assert set(trials)==set(accepted),'accepted thermal/oxygen trial observations missing'
+  with batch.open('w',newline='\n')as stream:
+   for key,(day,receipt)in sorted(accepted.items()):
+    daily=(observations/f'stress-input-{day}.dat').read_text().splitlines();node_count,root_count=map(int,daily[0].split());nodes=trials[key]
+    assert len(nodes)==root_count
+    stream.write('\n'.join(daily[:3])+'\n')
+    for i,line in enumerate(daily[3:]):
+     fields=line.split()
+     if i<root_count:fields[3:6]=[format(v,'.17e')for v in nodes[i][1:4]]
+     stream.write(' '.join(fields)+'\n')
+    dt=receipt[1]-receipt[0]
+    assert abs(sum(row[6]for row in nodes)-receipt[3])<1e-10,'production trace does not reproduce accepted uptake'
+    paired_records.append(dict(day=day,t0=receipt[0],t1=receipt[1],duration=dt,nodes=nodes))
+  report['accepted_pair_selection']=dict(cases=len(paired_records),batch_sha256=sha(batch),trial_observation_sha256=sha(trial_file),scope='Only actual accepted flux-receipt intervals; rejected/full sibling observations retained but excluded')
+
  # Production oxygen closure linked to the unmodified original B1.11 model
  # routines; original MOD_grid, watcon and OxygenStress are real providers.
  driver=ROOT/'tests/dataqual15/stress_oracle.f90';mapping={}
@@ -86,8 +157,31 @@ def main():
    path=observations/f'stress-input-{day}.dat';stdout=run([exe,path],f'paired-{opt}-{day}');(folder/f'day-{day}.stdout').write_bytes(stdout)
    lines=stdout.decode().splitlines();maximum=next(float(line.split()[-1])for line in lines if line.startswith('PAIRED_MAX_FACTOR_DIFFERENCE'))
    report['paired'][opt][str(day)]=dict(maximum_factor_difference=maximum,observation_sha256=sha(path),stdout_sha256=hashlib.sha256(stdout).hexdigest())
+  if paired_records:
+   raw=run([exe,batch],f'accepted-oxygen-{opt}',timeout=600);(folder/'accepted-oxygen.stdout').write_bytes(raw)
+   cases={};record=0
+   for line in raw.decode().splitlines():
+    if line.startswith('PAIRED_CASE '):record=int(line.split()[-1]);cases[record]=[]
+    elif line.strip()and line.strip()[0].isdigit()and ','in line:cases[record].append(list(map(float,line.split(','))))
+   assert len(cases)==len(paired_records)
+   by_day={day:dict(current_uptake_cm=0.,original_oxygen_on_native_uptake_cm=0.,maximum_factor_difference=0.,maximum_current_reproduction_error=0.,stressed_nodes=0,cases=0)for day in [25,72,73,127]}
+   for index,state in enumerate(paired_records,1):
+    rows=cases[index];assert len(rows)==len(state['nodes']);measurement=by_day[state['day']];measurement['cases']+=1
+    for row,production in zip(rows,state['nodes']):
+     old,new=row[6],row[7];error=abs(new-production[4]);measurement['maximum_current_reproduction_error']=max(measurement['maximum_current_reproduction_error'],error)
+     assert error<1e-12,('current standalone/actual backend oxygen mismatch',opt,index,row[0],error)
+     measurement['maximum_factor_difference']=max(measurement['maximum_factor_difference'],abs(new-old))
+     measurement['stressed_nodes']+=int(old<.99999 or new<.99999)
+     measurement['current_uptake_cm']+=production[5]*new*state['duration']
+     measurement['original_oxygen_on_native_uptake_cm']+=production[5]*old*state['duration']
+   budgets=list(csv.DictReader((observations/'budget.csv').open()))
+   for day,measurement in by_day.items():
+    assert abs(measurement['current_uptake_cm']-float(budgets[day-1]['uptake_cm']))<1e-10
+    measurement['oxygen_owner_only_uptake_difference_cm']=measurement['current_uptake_cm']-measurement['original_oxygen_on_native_uptake_cm']
+   assert sum(row['stressed_nodes']for row in by_day.values())>0,'paired accepted selection has no stressed coverage'
+   report['paired'][opt]['accepted_substeps']=by_day
  assert all(sha(ROOT/path)==digest for path,digest in report['source_sha256'].items())
- report['status']='PAIRED_OXYGEN_AND_REFINEMENT_MEASURED';report['limitations']=['Daily left states, not the complete accepted-substep temperature trajectory','Paired oxygen component does not yet certify the entire original uptake composition','No harvest-equivalence limit is inferred from the existing 1e-4 oxygen component gate'];save()
+ report['status']='PAIRED_OXYGEN_AND_REFINEMENT_MEASURED';report['limitations']=['Accepted-substep replay uses the native hydraulic/thermal trajectory and native pre-oxygen sinks; it does not substitute the donor trajectory','Paired oxygen component does not yet certify the entire original uptake composition','No harvest-equivalence limit is inferred from the existing 1e-4 oxygen component gate'];save()
  print(json.dumps({key:value for key,value in report.items()if key not in ['events','source_sha256','refinement']},indent=2))
 
 if __name__=='__main__':main()

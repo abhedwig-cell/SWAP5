@@ -16,6 +16,7 @@ p.add_argument('--reuse-build',type=Path)
 p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
 p.add_argument('--input-archive',type=Path,required=True)
 p.add_argument('--driver',type=Path,help='Explicit diagnostic application source; production driver is the default')
+p.add_argument('--provider-override',type=Path,action='append',default=[],help='Explicit generated diagnostic module source')
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
 a=p.parse_args();fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
@@ -39,6 +40,13 @@ for source in list((ROOT/'src').rglob('*.f90'))+[context,ROOT/'app/solute_column
  for name in re.findall(r'^\s*module\s+(\w+)\s*$',source.read_text(),re.M|re.I):
   key=name.lower();assert key not in mapping,(key,source,mapping.get(key));mapping[key]=source
 ordered=[];seen=set();active=set()
+for override in a.provider_override:
+ override=override.resolve();assert override.is_file()
+ names=re.findall(r'^\s*module\s+(\w+)\s*$',override.read_text(),re.M|re.I)
+ assert names,('override has no module',override)
+ for name in names:
+  key=name.lower();assert key in mapping,('override has no existing owner',key)
+  mapping[key]=override
 def visit(source):
  if source in seen:return
  assert source not in active,source
