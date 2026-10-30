@@ -3437,7 +3437,7 @@ contains
         ! Fixed-geometry source-table water. Existing process owners retain
         ! their own checks below, including required accepted trace composition.
         ok=ok.and.parameters%bottom_mode==1.and.self%soil_water_selection%uses_reference().and. &
-          parameters%swkmean==1.and..not.parameters%macropore_active.and..not.parameters%snow_active.and. &
+          (parameters%swkmean==1.or.parameters%swkmean==2).and..not.parameters%macropore_active.and..not.parameters%snow_active.and. &
           .not.parameters%frost_active.and..not.parameters%black_evaporation_active.and. &
           .not.parameters%hysteresis_active.and..not.parameters%elasticity_active.and. &
           .not.parameters%weather_trial_warm_start.and..not.parameters%picard_conductivity_iteration
@@ -7234,7 +7234,7 @@ contains
     class(fmr_serialized_reference_model_t),intent(in)::self
     class(transaction_state_t),intent(in)::full_state,half_state
     real(real64),allocatable::kf(:),kh(:)
-    real(real64)::dt,qf,qh,d,storage_error,head_error
+    real(real64)::dt,qf,qh,d,storage_error,head_error,mean_full,mean_half
     logical::ok
     integer::n,i
     value=huge(0.0_real64)
@@ -7285,8 +7285,15 @@ contains
         if(self%bottom_mode==7)value=max(value,dt*abs(kf(n)-kh(n)))
         do i=2,n
           d=self%soil_parameters%node_distance(i)
-          qf=.5_real64*(kf(i-1)+kf(i))*((full%pressure_head(i-1)-full%pressure_head(i))/d+1.0_real64)
-          qh=.5_real64*(kh(i-1)+kh(i))*((half%pressure_head(i-1)-half%pressure_head(i))/d+1.0_real64)
+          mean_full=.5_real64*(kf(i-1)+kf(i));mean_half=.5_real64*(kh(i-1)+kh(i))
+          if(self%swkmean==2)then
+            mean_full=(self%soil_parameters%dz(i-1)*kf(i-1)+self%soil_parameters%dz(i)*kf(i))/ &
+              (self%soil_parameters%dz(i-1)+self%soil_parameters%dz(i))
+            mean_half=(self%soil_parameters%dz(i-1)*kh(i-1)+self%soil_parameters%dz(i)*kh(i))/ &
+              (self%soil_parameters%dz(i-1)+self%soil_parameters%dz(i))
+          end if
+          qf=mean_full*((full%pressure_head(i-1)-full%pressure_head(i))/d+1.0_real64)
+          qh=mean_half*((half%pressure_head(i-1)-half%pressure_head(i))/d+1.0_real64)
           value=max(value,dt*abs(qf-qh))
         end do
         if(max(full%ponding_depth,half%ponding_depth)>0.0_real64.or. &

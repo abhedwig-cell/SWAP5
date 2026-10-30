@@ -204,9 +204,17 @@ real(8) function hcomean(method, kup, klow, dzup, dzlow, node, hup, hlow)
   integer, intent(in) :: method, node
   real(8), intent(in) :: kup, klow, dzup, dzlow, hup, hlow
   ! SWAP/functions.f90 SHA256 b32dee127747e619cb92965d0473173ec7fd93c56128a0dbd5ebf5942c300527.
-  ! This application fixes SWKMEAN=1, the already admitted arithmetic mean.
-  if(method/=1)error stop 'standalone: only arithmetic conductivity mean admitted'
-  hcomean=0.5d0*(kup+klow)
+  ! Source SWKMEAN2 is required by original Hupsel. The unweighted path
+  ! retains its literal predecessor arithmetic.
+  select case(method)
+  case(1)
+    hcomean=0.5d0*(kup+klow)
+  case(2)
+    if(dzup+dzlow<=0d0)error stop 'invalid weighted conductivity geometry'
+    hcomean=(dzup*kup+dzlow*klow)/(dzup+dzlow)
+  case default
+    error stop 'standalone: conductivity mean not implemented'
+  end select
 end function hcomean
 
 subroutine tridag(n, upper, main, lower, rhs, solution, ierror)

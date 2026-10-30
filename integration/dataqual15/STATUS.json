@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL15",
   "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
-  "stage": "IMPLEMENTING",
+  "stage": "ORIGINAL_WEIGHTED_EXECUTION_IN_PROGRESS",
   "owners": [
     "existing SWBOTB1 Richards boundary",
     "immutable existing fmr_hbot5_control_t table",
@@ -26,5 +26,47 @@
     "full FCI unless affected owner scope requires it",
     "highest low air stress",
     "repeated long Andelst stall"
-  ]
+  ],
+  "candidate_source_commit": "76d41a0",
+  "published_identical_tree_commit": "2203fd4a4c1b830b61cd7cb7ab083714f318670f",
+  "local_and_remote_tree": "0d9b8251e70e54c55808c049306bf26e8634efb6",
+  "expensive_selections": {
+    "original_O2_full1827": {
+      "expected_seconds": 7200,
+      "wall_cap_seconds": 14400,
+      "reason": "Explicit primary original-project completion objective; no prefix/fixture can qualify full lifecycle. O2 day1 run and diagnostic predecessor suffix run concurrently only to expose further blocks sooner; diagnostic suffix is not qualification."
+    },
+    "original_O0_140": {
+      "expected_seconds": 650,
+      "wall_cap_seconds": 2400,
+      "reason": "Independent optimization across varying groundwater, LAIEXP carryover and first original mowing; O2 full trajectory covers long duration."
+    },
+    "original_O2_production1827": {
+      "expected_seconds": 6000,
+      "wall_cap_seconds": 14400,
+      "reason": "Long original execution; same F90/Fortran optimization/FP traps and hard physical mass/restart controls. Checked O0/O2 140-day body and checked-vs-production140 payload equality required. Only compiler bounds instrumentation omitted; no fast-math/solver/forcing change."
+    },
+    "original_O0_140_to367": {
+      "expected_seconds": 1000,
+      "wall_cap_seconds": 2400,
+      "reason": "Direct original continuation across source annual crop/root reset and same-build year-boundary restart, changed lifecycle branch not covered by140days."
+    }
+  },
+  "qualified_components": {
+    "whole_original_grass_body_and_mowing_O0_O2": "8 donor whole-routine cases per build exact; final rerun after cut compatibility reset also PASS",
+    "existing_reference_groundwater_default_oxygen_preservation": "6 native contracts PASS O0/O2"
+  },
+  "implemented_blocks": [
+    "Source BBC actual per-trial endpoint callback",
+    "Moving-groundwater algebraic temporal metric repair",
+    "Fixed-date mowing actual/potential",
+    "Separate actual/potential regrowth continuation",
+    "Full LAIEXP compatibility persistence",
+    "Original annual crop/root reset and calendar day-of-year"
+  ],
+  "scope_correction": {
+    "predecessor_SWKMEAN1": "Superseded experimental numerical executions, full O2 stopped173days, diagnostic predecessor continuation stopped211; excluded from original-controls qualification. O0/O2 and126->140 restart were exact within that predecessor.",
+    "current_face_mean": "Source SWKMEAN2 imported; actual Richards and temporal interior Darcy certificate both weighted by dz. Source MAXIT30/MAXBACKTR3/DTMIN1e-6/DTMAX.04/SWKIMPL0 retained.",
+    "accuracy_policy": "Canonical SWAP5 stricter nonlinear/pond tolerances and external full-half temporal/mass acceptance are retained; no claim of identical original adaptive timestep or nonlinear stopping settings."
+  }
 }

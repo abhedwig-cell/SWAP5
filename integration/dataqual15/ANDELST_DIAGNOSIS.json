@@ -1,0 +1,128 @@
+{
+  "work_unit": "DATAQUAL15 Andelst diagnosis",
+  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+  "scope": "Current authority reconciliation plus one exact historical DATAQUAL07 diagnostic; NOT current source execution or admission",
+  "current_original_input_experimental_integral_days": 2.7479999999995925,
+  "reference_duration_days": 481,
+  "full_original_completed": false,
+  "full_scientific_equivalence": false,
+  "excluded481": "Original 112-node matrix-only route; not full original macro/Rutter/heat migration",
+  "replay": {
+    "scope": "HISTORICAL_DATAQUAL07_EXACT_SOURCE_DIAGNOSTIC_NOT_CURRENT_QUALIFICATION",
+    "command": [
+      "/workspace/scratch/c3166a264227/andelst-replay07/native",
+      "input.nml",
+      "origin.bin",
+      "5",
+      "input.swp",
+      "macro.nml",
+      "4e3c1ae8ae72cb046b31a02a5ae1f0fadfbae5011dd928c27e06afc93067b569",
+      "5.0",
+      "anchored-cauchy",
+      "0.0001",
+      "experimental",
+      "source-surface-demand",
+      "perched-jacobian",
+      "conservative-macro-storage"
+    ],
+    "environment": {
+      "SWAP5_DIAG_MACRO_TEMPORAL": "1"
+    },
+    "archive_sha256": "2f21bd0daf8177fa19c7841ca07e25b526cfca14bd237baf60c2e394728e9b5b",
+    "exe_sha256": "f79863c4d74d8f93fdd8715fbc65cd49cab55a85752275c08d668820dd17a8a3",
+    "origin_sha256": "e2c28ca4d44a6216dd23e8d6e7cc4978aa42a2d8463eb18755034433d43e3282",
+    "seconds": 16.533386909,
+    "returncode": 1,
+    "rollback_exact": true,
+    "original_checkpoint_unmodified": true
+  },
+  "raw_cost": [
+    {
+      "t0": " 2.74799999999959255E+000",
+      "t1": " 3.00000000000000000E+000",
+      "completed": "F",
+      "nonlinear_iterations": "29878",
+      "headcalc_calls": "2523",
+      "linear_solves": "29878",
+      "backtracking_attempts": "88805",
+      "accepted_substeps": "416",
+      "min_accepted_dt": " 8.88178419700125232E-016",
+      "max_accepted_dt": " 4.92187499730789568E-004"
+    }
+  ],
+  "raw_progress": [
+    {
+      "day": "3",
+      "segment": "1",
+      "t0": " 2.74799999999959255E+000",
+      "t1": " 3.00000000000000000E+000",
+      "attempts": "920",
+      "solver_rejections": "102",
+      "temporal_rejections": "402",
+      "mass_rejections": "0",
+      "residual_cm": " 0.00000000000000000E+000"
+    }
+  ],
+  "observations": {
+    "sampled_temporal_records": 39,
+    "all_recorded_macropore_domain_bottom_pairs_equal": true,
+    "recorded_macropore_domain_bottoms": [
+      92,
+      64,
+      57,
+      49,
+      39
+    ],
+    "volume_dynamic_differences_all_zero": true,
+    "norm_equal_max_head_difference_records": 31,
+    "records_both_max_head_nodes_saturated": 23,
+    "observed_norm_above_1e_4_records": 23,
+    "last_temporal": {
+      "call": 818,
+      "dt": 8.881784197001252e-16,
+      "norm_cm": 2.842170943040401e-14,
+      "head_node": 57,
+      "full_head_cm": 36.17454788234468,
+      "half_head_cm": 36.174547882344655,
+      "full_pond_cm": 0.0,
+      "half_pond_cm": 0.0,
+      "full_gwl_cm": -43.05983069867522,
+      "half_gwl_cm": -43.05983069867522,
+      "stock_difference_cm": 5.551115123125783e-17,
+      "volume_difference_cm": 0.0,
+      "dynamic_difference_cm": 0.0
+    },
+    "last_rejection": "t0=2.8486751098551224, t1=2.8486751098551233, macro status3, matrix status2, outer iterations0, nonlinear iterations64",
+    "topology_limit": "ICpBtDm pairs only. Matrix saturation-pocket/partial-top topology is not recorded, so equality does not exclude a matrix contact discontinuity."
+  },
+  "classification": {
+    "missing_physics": "No new absent physical owner established for this first3-day water/heat route",
+    "implementation": "Known partial-top perched geometry derivative deliberately omitted; whole Jacobian coverage incomplete. Its causality for this terminal failure is UNPROVEN.",
+    "numerical": "Reproduced Richards retry barrier at source t2.8486751098551224. Full/half norm tends to roundoff at the final accepted steps, so all-head temporal metric alone is not proven terminal cause.",
+    "evidence": "No complete481-day full original project or whole scientific-equivalence evidence. Current DATAQUAL10 continuation censored60s, so historical terminal failure must not be labelled current-source qualification."
+  },
+  "original_controls": {
+    "source_MAXIT": 30,
+    "source_MAXBACKTR": 4,
+    "source_DTMIN_day": 1e-05,
+    "source_DTMAX_day": 0.002,
+    "source_SWKMEAN": 1,
+    "experimental_solver_max_iterations": 64,
+    "interpretation": "Original physical inputs, explicit experimental numerical policy; not literal original solver-control equivalence"
+  },
+  "no_tolerance_or_code_change": true,
+  "source_sha256": {
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "fb6e6970a4d4704f03b5ecdf1ffc2114cb92d5abf988ba2a0b45ce8012d01bdc",
+    "src/process/macropore/mod_ppa_wu05a15_exchange_derivative.f90": "9fa872a01226a6206ffb0d20eb3629ebe96f1ca27cb3641d4b8c2881e7577b73",
+    "src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90": "0125f8e54f99f603713bb7756de4e0f10fd0caf1e6acb1dd1316b399fcc16d81",
+    "integration/dataqual07/STATUS.json": "4e0e2115260b036dbf368180bbb372859cf15c7730258401700fbb652fb1208d",
+    "integration/dataqual10/STATUS.json": "5e152a45349c0bbe34901a95d3c378ce22597d0a58f112aea8f1c7034f18051e",
+    "integration/dataqual12/MIGRATION_MATRIX.json": "a60365f5ee72e8e7501b707a9799fd88b8cf5348acac396c7906ca8080d2d6c5",
+    "reference/swap-4.3.1/projects/3.macroporeflow/swap.swp": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b"
+  },
+  "evidence": {
+    "path": "integration/dataqual15/ANDELST_HISTORICAL_DIAGNOSTIC.tar.xz",
+    "sha256": "0c2f6ede74c284f1a076b17c1f66baefc01751f3cade1959d8b35029cda398cf",
+    "bytes": 6360
+  }
+}

@@ -105,7 +105,7 @@ program grass_initial_interval
  real(real64)::surface_resistance,spacing,depth,drainres,infres,date_time,first_end
  real(real64)::clock,cursor,edge,day_end,step_dt,heat_residual,day_residual,day_in,day_out,day_start_water,day_final_water
  real(real64)::day_potential,day_actual,day_drought,day_oxygen
- integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack
+ integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack,source_mean,source_implicit
  real(real64)::source_dtmax,segment_rain_rate,project_end,mowing_residual,harvested,potential_harvested,delay_value
  real(real64)::harvest_dates(1024),season_start(16),season_end(16)
  integer::season_count,season_index,harvest_count,harvest_types(1024),day_of_year
@@ -134,6 +134,12 @@ program grass_initial_interval
  call rdfint('croptype',counts,256,n);call require(n==5.and.all(counts(:n)==2),'original detailed grass rotation')
  call rdsinr('maxit',5,100,source_maxit);call rdsinr('maxbacktr',1,10,source_maxbacktrack)
  call rdsdor('dtmax',1d-7,1d0,source_dtmax)
+ call rdsint('swkmean',source_mean);call rdsint('swkimpl',source_implicit)
+ call require(source_mean==2.and.source_implicit==0,'original weighted arithmetic frozen conductivity')
+ p%min_step_duration=value('dtmin')
+ ! Canonical strict water/mass acceptance remains unchanged. Import the source
+ ! physical face mean and iteration/time controls; retain stricter SWAP5
+ ! nonlinear accuracy rather than weakening conservation to source tolerances.
  site%latitude_degrees=value('lat');site%altitude_m=value('alt')
  site%wind_measurement_height_m=value('altw');site%humidity_measurement_height_m=value('alth')
  site%angstrom_a=value('angstroma');site%angstrom_b=value('angstromb');site%wind_function_factor=value('fwind')
@@ -163,7 +169,7 @@ program grass_initial_interval
  call require(nodes==113.and.sum(width(:nodes))==600d0,'original Grassgrowth geometry')
  call initialize_column_context(width(:nodes))
  p%parameter_set_id=613001_int64;p%active_nodes=nodes;p%z=z;p%dz=dz;p%node_distance=disnod(:nodes);p%cofgen=cofgen
- p%bottom_mode=1;p%prescribed_groundwater_active=.true.;p%swkmean=1;p%max_iterations=source_maxit;p%max_backtracking=source_maxbacktrack
+ p%bottom_mode=1;p%prescribed_groundwater_active=.true.;p%swkmean=source_mean;p%max_iterations=source_maxit;p%max_backtracking=source_maxbacktrack
  p%ksatexm_extension_active=any(cofgen(10,:)>cofgen(3,:))
  call initialize_b110_default_mvg_parameters(hp,cofgen,enable_ksatexm_extension=p%ksatexm_extension_active)
  call bind_b110_default_mvg_provider(hydraulic,hp,limit)
@@ -283,7 +289,7 @@ program grass_initial_interval
  call require(available,'source joint initial owner')
  call water%capture_checkpoint(checkpoint,available);call require(available,'initial checkpoint')
  write(*,*)'ORIGINAL_GRASS_READY',nodes,sum(dz),sum(initial%water_content*dz),source_gwl,crop%biomass%root_biomass
- write(*,*)'ORIGINAL_GRASS_NUMERICS',source_maxit,source_maxbacktrack,source_dtmax,numerical%retain_accepted_step_proposal
+ write(*,*)'ORIGINAL_GRASS_NUMERICS',source_maxit,source_maxbacktrack,source_mean,source_implicit,source_dtmax,numerical%retain_accepted_step_proposal,source_mean,source_implicit
  clock=0d0
  call get_command_argument(4,restart_path)
  if(len_trim(restart_path)>0)then
