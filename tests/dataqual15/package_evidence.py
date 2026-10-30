@@ -9,6 +9,7 @@ from check_history import check
 
 ROOT=Path(__file__).resolve().parents[2]
 BASE='d541180b32df692fa67c5fc795cc6b15e6812ed6'
+O0_YEAR=['dq15-weighted-yearrun-O0','dq15-weighted-yearsuffix-O0','dq15-weighted-cont188-O0','dq15-weighted-cont233-O0']
 sha=lambda b:hashlib.sha256(b).hexdigest()
 
 def package(workspace,segments):
@@ -39,7 +40,7 @@ def package(workspace,segments):
   binding=json.loads((folder/'application.binding').read_text());bind(binding['source_sha256'])
   small_tree(folder)
  for name in segments:run(workspace/name)
- for name in ['dq15-weighted-yearrun-O0','dq15-weighted-restart126-140-O2','dq15-weighted-restart365-367-O2']:
+ for name in [*O0_YEAR,'dq15-weighted-restart126-140-O2','dq15-weighted-restart365-367-O2','dq15-weighted-restart365-367-O0']:
   run(workspace/name)
  for opt,negative in [('O0','dq15-weighted-negative-O0'),('O2','dq15-weighted-negative-b-O2')]:
   build=workspace/('dq15-weighted-'+opt);report=json.loads((build/'BUILD.json').read_text())
@@ -65,6 +66,9 @@ def package(workspace,segments):
  for path in (donor/'providers/selected').glob('*.f90'):add(path,'original431/providers/selected/'+path.name)
  history=check([workspace/n for n in segments],ref/'result_output.csv')
  files['HISTORY_CHECK.json']=(json.dumps(history,indent=2)+'\n').encode()
+ o0_history=check([workspace/n for n in O0_YEAR],ref/'result_output.csv')
+ assert o0_history['completed_days']==367 and o0_history['segments'][-1]['returncode']==0
+ files['O0_HISTORY_CHECK.json']=(json.dumps(o0_history,indent=2)+'\n').encode()
  manifest={n:sha(b)for n,b in sorted(files.items())}
  files['MANIFEST.json']=(json.dumps(manifest,indent=2)+'\n').encode()
  output=ROOT/'integration/dataqual15/EVIDENCE.tar.xz'
@@ -74,6 +78,8 @@ def package(workspace,segments):
  delta=subprocess.check_output(['git','diff','--name-status',BASE,'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines()
  qualified_source=subprocess.check_output(['git','rev-parse','76d41a0'],cwd=ROOT,text=True).strip()
  summary=dict(schema=1,baseline=BASE,qualified_scientific_source_commit=qualified_source,evidence_sha256=sha(output.read_bytes()),archive_files=len(files),source_sha256=sources,external_source_members=external,reviewed_production_delta={line.split('\t')[1]:line.split('\t')[0]for line in delta},history_segments=segments,original_project_days=1827,executed_days=history['completed_days'],full_original_execution=history['full_original_execution'],scientific_equivalence=False,process_exit_scope='Interrupted native segments have UNKNOWN process exit; a complete original run requires successful native completion of the final exact same-build continuation.',diagnostic_log_scope='Daily budgets, crop rows and CRC-valid atomic checkpoints are complete for the archived interval; full stdout diagnostic completeness is not claimed.')
+ summary['O0_history_segments']=O0_YEAR
+ summary['O0_O2_exact_days']=367
  (ROOT/'integration/dataqual15/EVIDENCE_MANIFEST.json').write_text(json.dumps(summary,indent=2)+'\n')
  print(json.dumps({k:v for k,v in summary.items()if k not in ['source_sha256','external_source_members','reviewed_production_delta']},indent=2))
 

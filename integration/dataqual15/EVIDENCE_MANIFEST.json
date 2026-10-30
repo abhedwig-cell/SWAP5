@@ -2,8 +2,8 @@
   "schema": 1,
   "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
   "qualified_scientific_source_commit": "76d41a0e3554ce37bb195f6748c9db3e784804e5",
-  "evidence_sha256": "dad7bccefd3d4419cef863366e288239c7ed2f18c0632981d56c7d92102e9b7c",
-  "archive_files": 948,
+  "evidence_sha256": "274233d3a251c405d1922826024bee552eb409d4dd39e1afa9dfa7e3f4898b42",
+  "archive_files": 1019,
   "source_sha256": {
     "app/grass_project/initial_interval.f90": "81fd9385a995fd993e2492b8c62ebbef7cadec3e66e73b0f4a52dc3c8c9b9f37",
     "app/grass_project/restart_file.f90": "bed0e15b7757bcd180b556490776325ebf559b1391d954171caeeeef3e553f3e",
@@ -529,5 +529,12 @@
   "full_original_execution": false,
   "scientific_equivalence": false,
   "process_exit_scope": "Interrupted native segments have UNKNOWN process exit; a complete original run requires successful native completion of the final exact same-build continuation.",
-  "diagnostic_log_scope": "Daily budgets, crop rows and CRC-valid atomic checkpoints are complete for the archived interval; full stdout diagnostic completeness is not claimed."
+  "diagnostic_log_scope": "Daily budgets, crop rows and CRC-valid atomic checkpoints are complete for the archived interval; full stdout diagnostic completeness is not claimed.",
+  "O0_history_segments": [
+    "dq15-weighted-yearrun-O0",
+    "dq15-weighted-yearsuffix-O0",
+    "dq15-weighted-cont188-O0",
+    "dq15-weighted-cont233-O0"
+  ],
+  "O0_O2_exact_days": 367
 }

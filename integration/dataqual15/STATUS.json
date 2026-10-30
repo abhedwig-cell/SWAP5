@@ -54,7 +54,7 @@
   },
   "qualified_components": {
     "whole_original_grass_body_and_mowing_O0_O2": "8 donor whole-routine cases per build exact; final rerun after cut compatibility reset also PASS",
-    "existing_reference_groundwater_default_oxygen_preservation": "6 native contracts PASS O0/O2"
+    "existing_reference_groundwater_default_oxygen_preservation": "8 native contracts PASS O0/O2 including time-varying table"
   },
   "implemented_blocks": [
     "Source BBC actual per-trial endpoint callback",
@@ -82,5 +82,7 @@
   "docs_checks": {
     "source": "PASS",
     "mkdocs_strict": "PASS14.60sec; existing INFO anchor diagnostics, no strict warning failure"
-  }
+  },
+  "O0_O2_exact_original_days": 367,
+  "qualified_year_restart": "365->367 exact independently in O0 and O2"
 }

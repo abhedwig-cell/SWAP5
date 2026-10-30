@@ -64,7 +64,7 @@ def verify():
    assert name+'checkpoint.bin'not in f and name+'budget.csv'not in f
    if event['case']=='source':assert f[name+'input.swp']!=f['dq15-weighted-yearrun-'+opt+'/input.swp']
    else:assert f[name+'input.swp']==f['dq15-weighted-yearrun-'+opt+'/input.swp']
- for folder in [*s['history_segments'],'dq15-weighted-yearrun-O0','dq15-weighted-restart126-140-O2','dq15-weighted-restart365-367-O2']:
+ for folder in [*s['history_segments'],*s['O0_history_segments'],'dq15-weighted-restart126-140-O2','dq15-weighted-restart365-367-O2','dq15-weighted-restart365-367-O0']:
   binding=load(folder+'/application.binding');bind(binding)
   opt='O0'if folder.endswith('O0')else'O2'
   assert binding['executable_sha256']==load('dq15-weighted-'+opt+'/BUILD.json')['executable_sha256']
@@ -75,6 +75,17 @@ def verify():
  first,crop0=valid_rows(o0);long,crop2=valid_rows(o2)
  assert first==long[:140]and crop0==crop2[:140]
  assert payload(f[o0+'/checkpoint.bin'])==payload(f[o2+'/checkpoint-140.bin'])
+ year_budget=[];year_crop=[]
+ for folder in s['O0_history_segments']:
+  b,c=valid_rows(folder);year_budget+=b;year_crop+=c
+ assert [int(q['day'])for q in year_budget]==list(range(1,368))
+ assert year_budget==long[:367]and year_crop==crop2[:367]
+ year_end=s['O0_history_segments'][-1]
+ assert payload(f[year_end+'/checkpoint.bin'])==payload(f[o2+'/checkpoint-367.bin'])
+ restart='dq15-weighted-restart365-367-O0';r=load(restart+'/RESULT.json')
+ assert r['returncode']==0 and not r['censored']and r['completed_days']==367
+ b,c=valid_rows(restart);assert b==year_budget[365:367]and c==year_crop[365:367]
+ assert f[restart+'/checkpoint.bin']==f[year_end+'/checkpoint.bin']
  for folder,first_day,last in [('dq15-weighted-restart126-140-O2',127,140),('dq15-weighted-restart365-367-O2',366,367)]:
   r=load(folder+'/RESULT.json');assert r['returncode']==0 and not r['censored']and r['completed_days']==last
   b,c=valid_rows(folder);assert [int(q['day'])for q in b]==list(range(first_day,last+1))
@@ -113,9 +124,12 @@ def verify():
   for n,b in f.items():
    path=root/n;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(b)
   history=check([root/n for n in s['history_segments']],root/'dq15-original-reference/result_output.csv')
+  o0_history=check([root/n for n in s['O0_history_segments']],root/'dq15-original-reference/result_output.csv')
+ assert o0_history==load('O0_HISTORY_CHECK.json')and o0_history['completed_days']==367
+ assert o0_history['segments'][-1]['returncode']==0 and s['O0_O2_exact_days']==367
  assert history==load('HISTORY_CHECK.json')
  assert history['completed_days']==s['executed_days']and history['full_original_execution']==s['full_original_execution']
  assert not s['scientific_equivalence']and not history['scientific_equivalence']
- return dict(status='SOURCE_BOUND_ORIGINAL_GRASS_EXECUTION_PASS',executed_days=history['completed_days'],full_original_execution=history['full_original_execution'],scientific_equivalence=False,O0_O2_exact_days=140,exact_restarts=['126->140','365->367'],invalid_restart_controls_per_build=11,native_preservation_contracts=8,whole_original_grass_cases_per_build=8,maximum_water_residual_cm=history['maximum_water_residual_cm'])
+ return dict(status='SOURCE_BOUND_ORIGINAL_GRASS_EXECUTION_PASS',executed_days=history['completed_days'],full_original_execution=history['full_original_execution'],scientific_equivalence=False,O0_O2_exact_days=367,exact_restarts=['126->140 O2','365->367 O0/O2'],invalid_restart_controls_per_build=11,native_preservation_contracts=8,whole_original_grass_cases_per_build=8,maximum_water_residual_cm=history['maximum_water_residual_cm'])
 
 if __name__=='__main__':print(json.dumps(verify(),indent=2))
