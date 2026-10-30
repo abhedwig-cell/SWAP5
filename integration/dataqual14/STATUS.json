@@ -1,7 +1,7 @@
 {
   "work_unit": "DATAQUAL14",
   "baseline": "a19103d448e2ca94926fb2e43c61941d01bd5ed0",
-  "stage": "QUALIFIED_ACTIVE_GRASS_AND_STRESSED_JOINT_RESTART_READY_FOR_CANONICAL",
+  "stage": "CANONICALLY_INTEGRATED_BOUNDED_ACTIVE_ORIGINAL_GRASS",
   "scope": "Original Grassgrowth active days64 onward before first harvest and variable groundwater. Preserve original selectors and actual Full Richards runtime.",
   "owners": [
     "existing actual WOFOST crop owner",
@@ -51,7 +51,7 @@
     "Full original project periods and energy/physiology qualification; retain measured actual-branch historical differences."
   ],
   "discovery": "Discovery O0/O2 actual68-day runs and63+5 file comparisons completed; initial harness incorrectly required positive root allocation on first active day64 rather than within the active window. Actual positive allocation and extension occur65/68. Independent existing empty-root physical-oxygen control exposed new diagnostic index0; guard repaired and all six native controls plus final actual O0/O2 runs passed. All failed discovery logs retained, not counted as final qualification.",
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "model_execution": {
     "original_project": "2.grassgrowth",
     "original_calendar_days": 1827,
@@ -167,5 +167,8 @@
     "predecessor_failure": "DATAQUAL12 unreviewed delta scope guard; same rejection already present on baselinea191 (44 additional baseline paths).",
     "current_feedback": "Current DATAQUAL14 closed production-delta and source/capsule verifier; existing native owning contracts retained.",
     "scope": "Evidence/feedback only; no full F-CI or production expansion."
-  }
+  },
+  "canonical_merge": "a9523e97deecf3fddf36b58de85fc353261d3093",
+  "merge_receipt": "integration/dataqual14/MERGE_RECEIPT.json",
+  "canonical_scope": "Experimental original Grassgrowth:68days O0/O2 water and joint restart,113days O2 including stressed/distinct-root restart. No complete original-project or production scope expansion."
 }
