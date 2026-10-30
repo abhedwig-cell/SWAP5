@@ -6,6 +6,11 @@ The follow-up evidence is `STRESS_EVIDENCE_MANIFEST.json` with the portable
 verifier `python -B tests/dataqual15/stress_evidence.py`. Its successful evidence
 verification preserves a **failed** preregistered scientific resolution test.
 Whole-model scientific equivalence and production promotion remain open.
+The experimental follow-up is admitted by PR1479 at merge51ee43e; the fetched
+whole tree equals the exact qualified tree. Its actual receipt is
+`SCIENTIFIC_FOLLOWUP_MERGE_RECEIPT.json`. The two pre-existing legacy solute
+source-guard failures are recorded in `LEGACY_SOLUTE_GUARD_RECONCILIATION.json`;
+they are not relabelled PASS.
 
 ## Identical-state oxygen and whole uptake
 
