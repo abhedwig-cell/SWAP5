@@ -1,0 +1,80 @@
+{
+  "status": "REPRODUCED_BASELINE_SOURCE_GUARD_FAILURE_NOT_A_PASS",
+  "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
+  "candidate": "f93858d0be87584bd020076ae164618aa3e66436",
+  "scope": "Read-only reproduction of the exact first DATAQUAL12 source-guard assertion on canonical and candidate. Native solute runs are not relabelled or repeated by this preflight.",
+  "guard": "integration/audits/verify_dataqual12_current.py",
+  "guard_sha256": "29ffdf4abc310ced579166065d31fd1eef3e91421cc11e566347080962afcfa4",
+  "guard_status_sha256": "b61938b4089900c391d433eb1891d6de1afde3c74d3086667faba5214c7dac20",
+  "production_postimage_identical": true,
+  "production_tree_oids": {
+    "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+    "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "failure": "AssertionError: unreviewed delta",
+  "expected_delta_paths": 13,
+  "canonical_delta_paths": 132,
+  "candidate_delta_paths": 142,
+  "canonical_guard_condition_pass": false,
+  "candidate_guard_condition_pass": false,
+  "canonical_unreviewed_production_paths": [
+    "app/grass_project/initial_interval.f90",
+    "app/grass_project/restart_file.f90",
+    "app/solute_column/link_context.f90",
+    "app/solute_column/read_swp_water.f90",
+    "app/solute_project/hupsel_germination.f90",
+    "app/solute_project/hupsel_potato.f90",
+    "app/solute_project/hupsel_rotation_restart.f90",
+    "app/solute_project/hupsel_scheduled_irrigation.f90",
+    "src/adapter/mod_b110_serialized_context_binding.f90",
+    "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+    "src/adapter/mod_reference_richards_legacy_binding.f90",
+    "src/adapter/mod_wofost_crop_native_codec.f90",
+    "src/crop/mod_crop_root_biomass_distribution.f90",
+    "src/crop/mod_crop_solar_geometry.f90",
+    "src/crop/mod_wofost_crop_owner_state.f90",
+    "src/crop/mod_wofost_finalize_rates.f90",
+    "src/crop/mod_wofost_grass_daily_growth.f90",
+    "src/crop/mod_wofost_grass_development.f90",
+    "src/crop/mod_wofost_one_day_structural_evolution.f90",
+    "src/crop/mod_wofost_oxygen_respiration.f90",
+    "src/crop/mod_wofost_rate_parameters.f90",
+    "src/crop/mod_wofost_two_phase_crop_window.f90",
+    "src/legacy/b1_10_port/headcalc.f90",
+    "src/physics/oxygen/mod_bartholomeus_macro.f90",
+    "src/process/mod_pmdirect_swetr0_process.f90",
+    "src/process/mod_root_micro_de_willigen_process.f90",
+    "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+    "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+    "src/runtime/mod_fmr_production_application_bootstrap.f90",
+    "src/runtime/mod_fmr_runtime_core.f90",
+    "src/runtime/mod_fmr_water_flux_trace_contract.f90",
+    "src/runtime/mod_fmr_wofost_accepted_window_lineage.f90",
+    "src/runtime/mod_fmr_wofost_crop_transaction.f90",
+    "src/runtime/mod_interception_source_window_runtime.f90",
+    "src/runtime/mod_rutter_source_window_processor.f90",
+    "src/solver/mod_b110_default_mvg_provider.f90",
+    "src/solver/mod_soil_water_solver_contract.f90"
+  ],
+  "delta_sha256": {
+    "expected": "b1fce501b67f357726d45ff03d83dc5c58097e07c9437ac2c703256a29ac9fe0",
+    "canonical": "73e880bc2f06f6fc33106223bfb74e2d5278aa554c83f62b0abfc49171338593",
+    "candidate": "e8c85b57b96dc1fb2bcd21ef47761a6a167fccd4aa96b446d7beb7c53d739feb"
+  },
+  "observed_failed_workflows": [
+    {
+      "run": 41088622454,
+      "job": 124176283063,
+      "step": "Preserve existing surface age and accepted source authority"
+    },
+    {
+      "run": 41088622633,
+      "job": 124176284687,
+      "step": "Source bound admission and negative controls"
+    }
+  ],
+  "disposition": "Preserve the legacy failure explicitly. Current Grassgrowth/Hupsel full-period and scientific-study verifiers pass; they do not replace unqualified macro/surface-age predecessor science. No legacy assertion, source hash, mass gate or workflow is weakened.",
+  "scientific_equivalence": false,
+  "production_promotion": false
+}

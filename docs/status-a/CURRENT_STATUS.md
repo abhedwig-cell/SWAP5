@@ -1,6 +1,6 @@
 # SWAP5 Status-A current status
 
-Proposed DATAQUAL15 follow-up (PR1479) preserves the original production owners
+Canonically admitted DATAQUAL15 experimental follow-up (PR1479, merge51ee43e) preserves the original production owners
 and replays2922 accepted native intervals through real original/current oxygen
 and whole uptake routines in O0/O2, including7661 stressed node evaluations.
 Owner-only daily uptake differences stay below1.771e-10cm on the selected days.
@@ -13,6 +13,10 @@ equivalence or production promotion. Authority: `integration/dataqual15/STRESS_E
 `integration/dataqual15/SCIENTIFIC_DIFFERENCES.md` and
 `python -B tests/dataqual15/stress_evidence.py`; the single migration matrix's
 full-execution2/3 and full-scientific0/3 counts remain unchanged.
+Two legacy MC-SOL01 gates retain their pre-existing DATAQUAL12 source-guard
+failure; they are not a PASS. See `integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json`.
+The fetched merge tree exactly equals the tested tree; actual admission receipt:
+`integration/dataqual15/SCIENTIFIC_FOLLOWUP_MERGE_RECEIPT.json`.
 
 
 
