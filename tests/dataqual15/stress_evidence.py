@@ -3,17 +3,18 @@
 Keeps raw observations, paired real-owner outputs, immutable build bindings and
 both successful and failed frozen gates. No executable is run by verification.
 """
-import argparse,csv,hashlib,io,json,math,struct,subprocess,tarfile
+import argparse,base64,csv,hashlib,io,json,math,re,struct,subprocess,tarfile,zipfile
 from pathlib import Path,PurePosixPath,PureWindowsPath
 from checkpoint_layout import layout,payload
-from qualify_donor_timestep import register_envelope,assess_envelope
+from qualify_donor_timestep import register_envelope,assess_envelope,vectors,distance
+from original_sources import select_dec_branches
 ROOT=Path(__file__).resolve().parents[2]
 DEST=ROOT/'integration/dataqual15/STRESS_EVIDENCE.tar.xz'
 MANIFEST=DEST.with_name('STRESS_EVIDENCE_MANIFEST.json')
 sha=lambda raw:hashlib.sha256(raw).hexdigest()
 
 def package(observations,whole,donor,thermal=None):
- files={};sources={};bindings={};origins={}
+ files={};sources={};bindings={}
  def add(path,name):
   assert Path(path).is_file(),path;raw=Path(path).read_bytes();assert name not in files;files[name]=raw
  def tree(folder,prefix):
@@ -22,6 +23,7 @@ def package(observations,whole,donor,thermal=None):
  for case in ['coarse','half','quarter']:
   folder=observations/case;add(folder/'observed_grass.f90','observations/'+case+'/observed_grass.f90')
   for name in ['BUILD.json','swap5_grass_startup','original_input_helpers.f90']:add(folder/'build'/name,'observations/'+case+'/build/'+name)
+  add(folder/'build/original-interval/application.binding','observations/'+case+'/build/original-interval/application.binding')
   tree(folder/'native','observations/'+case+'/native')
  add(observations/'observed_backend.f90','observations/observed_backend.f90');add(observations/'RESULT.json','observations/RESULT.json')
  for name in ['RESULT.json','grass.crp','accepted-oxygen-inputs.dat']:add(whole/name,'whole/'+name)
@@ -47,20 +49,25 @@ def package(observations,whole,donor,thermal=None):
     assert digest in generated,('unbound generated source',path);bindings[path+'#'+digest]=generated[digest];continue
    if sha((ROOT/relative).read_bytes())!=digest:
     assert relative=='tests/dataqual15/stress_oracle.f90',relative
-    historical=subprocess.check_output(['git','show','e11ab92f4:'+relative],cwd=ROOT)
+    name=digest+'-stress_oracle.f90';retained=observations.parent/'historical'/name
+    if retained.exists():historical=retained.read_bytes()
+    elif DEST.exists():
+     with tarfile.open(DEST)as prior:historical=prior.extractfile('historical/'+name).read()
+    else:historical=subprocess.check_output(['git','show','583ddd473a5392f53d672d043e87404eb7dca3dd:'+relative],cwd=ROOT)
     assert sha(historical)==digest,('historical output-only oracle',relative)
     member='historical/'+digest+'-stress_oracle.f90';files[member]=historical;bindings[path+'#'+digest]=member
    else:sources[relative]=digest;bindings[path+'#'+digest]='repo:'+relative
- for path in ['tests/dataqual15/qualify_donor_timestep.py','tests/dataqual15/stress_oracle.f90','tests/dataqual15/stress_observations.inc','integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json','integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64','integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64']:
+ for path in ['tests/dataqual15/qualify_donor_timestep.py','tests/dataqual15/qualify_stress.py','tests/dataqual15/qualify_native_thermal.py','tests/dataqual15/original_sources.py','tests/dataqual15/stress_evidence.py','tools/solute/build_grass_diagnostic.py','tests/dataqual15/stress_oracle.f90','tests/dataqual15/stress_observations.inc','integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json','integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64','integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64']:
   sources[path]=sha((ROOT/path).read_bytes())
  files['MANIFEST.json']=(json.dumps({name:sha(raw)for name,raw in sorted(files.items())},indent=2)+'\n').encode()
  with tarfile.open(DEST,'w:xz',preset=6)as tar:
   for name,raw in sorted(files.items()):
    info=tarfile.TarInfo(name);info.size=len(raw);info.mode=0o644;info.mtime=0;tar.addfile(info,io.BytesIO(raw))
  manifest=dict(status='MEASURED_EVIDENCE_WITH_FAILED_FROZEN_GATE',scope='SCIENTIFIC_ATTRIBUTION_NOT_WHOLE_MODEL_EQUIVALENCE',capsule_sha256=sha(DEST.read_bytes()),archive_files=len(files),source_sha256=sources,source_bindings=bindings,inherited_full_capsule_sha256=sha((ROOT/'integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz').read_bytes()),scientific_equivalence=False,original_preregistered_gate_pass=False,has_native_thermal=thermal is not None,github_runs=dict(observations=41069788879,whole=41071975005,donor=41074182323))
+ if thermal:manifest['github_runs']['native_thermal']=41082719394
  MANIFEST.write_text(json.dumps(manifest,indent=2)+'\n',newline='\n');print('PACKAGED',len(files),'files',DEST.stat().st_size,'bytes',flush=True)
 
-def verify():
+def verify(extract=None):
  manifest=json.loads(MANIFEST.read_text());assert not manifest['scientific_equivalence']and not manifest['original_preregistered_gate_pass']
  for path,digest in manifest['source_sha256'].items():assert sha((ROOT/path).read_bytes())==digest,path
  raw=DEST.read_bytes();assert sha(raw)==manifest['capsule_sha256']
@@ -71,6 +78,13 @@ def verify():
  assert json.loads(files.pop('MANIFEST.json'))=={name:sha(raw)for name,raw in sorted(files.items())}
  load=lambda name:json.loads(files[name])
  rows=lambda name:list(csv.DictReader(io.StringIO(files[name].decode())))
+ def checkpoint(raw,prefix):
+  state=layout(raw);pos=8
+  for name in ['input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']:
+   n=struct.unpack_from('=i',raw,pos)[0];pos+=4
+   assert raw[pos:pos+n]==files[prefix+'/'+name],('checkpoint source/input binding',prefix,name)
+   pos+=n
+  return state
  for member,raw in files.items():
   if not member.endswith(('/BUILD.json','/application.binding','/RESULT.json'))or member.startswith('whole/original-'):continue
   record=json.loads(raw)
@@ -78,6 +92,19 @@ def verify():
    bound=manifest['source_bindings'][path+'#'+digest];actual=(ROOT/bound[5:]).read_bytes()if bound.startswith('repo:')else files[bound]
    assert sha(actual)==digest,(member,path)
  observations=load('observations/RESULT.json');whole=load('whole/RESULT.json');donor=load('donor/RESULT.json')
+ originals={}
+ with tarfile.open(fileobj=io.BytesIO(base64.b64decode((ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64').read_bytes())))as archive:
+  originals.update({m.name:archive.extractfile(m).read()for m in archive.getmembers()if m.isfile()})
+ with zipfile.ZipFile(io.BytesIO(base64.b64decode((ROOT/'integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64').read_bytes())))as archive:
+  originals.update({name:archive.read(name)for name in archive.namelist()if not name.endswith('/')})
+ for opt in ['O0','O2']:
+  original=load('whole/original-'+opt+'/BUILD.json');assert original['status']=='BUILT'and '-'+opt in original['flags']
+  assert all(e['returncode']==0 for e in original['events'])
+  for path,digest in {**original['authority_sha256'],**original['manifest_sha256']}.items():assert sha((ROOT/path).read_bytes())==digest,path
+  for path,digest in original['source_sha256'].items():assert path.startswith('source/')and sha(originals[path[7:]])==digest,path
+  for path,digest in original['selected_sha256'].items():
+   assert path.startswith('selected/')
+   selected=select_dec_branches(originals['SWAP/'+Path(path).name].decode('cp1252')).encode('cp1252');assert sha(selected)==digest,path
  assert observations['coarse_output_only_trajectory_exact']and observations['status']==whole['status']=='PAIRED_OXYGEN_AND_REFINEMENT_MEASURED'
  assert whole['accepted_pair_selection']['cases']==2922
  assert sha(files['whole/accepted-oxygen-inputs.dat'])==whole['accepted_pair_selection']['batch_sha256']
@@ -87,12 +114,17 @@ def verify():
   assert sha(files[prefix+'/build/swap5_grass_startup'])==build['executable_sha256']==binding['executable_sha256']
   assert build['flags'][0]=='-O2'and'-fcheck=all'in build['flags']
   budget=rows(prefix+'/native/budget.csv');crop=rows(prefix+'/native/crop.csv');assert len(budget)==len(crop)==140
+  terminal=load(prefix+'/native/RESULT.json');assert terminal['returncode']==0 and terminal['completed_days']==140 and not terminal['censored']
+  assert terminal['executable_sha256']==build['executable_sha256']
   for day,(b,c)in enumerate(zip(budget,crop),1):
    assert int(b['day'])==int(c['day'])==day
    assert all(math.isfinite(float(v))for v in [*b.values(),*c.values()])
    assert abs(float(b['residual_cm']))<1e-10 and abs(float(b['heat_residual_j_cm2']))<1e-8
+   assert abs(float(b['water_end_cm'])-float(b['water_start_cm'])-float(b['input_cm'])+float(b['output_cm']))<1e-10
    assert abs(float(b['potential_cm'])-float(b['uptake_cm'])-float(b['oxygen_cm'])-float(b['drought_cm']))<1e-10
   assert layout(files[prefix+'/native/checkpoint.bin'])['clock']==140
+  for name,raw in files.items():
+   if name.startswith(prefix+'/native/checkpoint')and name.endswith('.bin'):checkpoint(raw,prefix+'/native')
   project=ROOT/'reference/swap-4.3.1/projects/2.grassgrowth'
   for name,original in {'input.swp':'swap.swp','grass.crp':'grass.crp','input.met':'260.met','swap.bbc':'swap.bbc','swap.dra':'swap.dra'}.items():assert files[prefix+'/native/'+name]==(project/original).read_bytes()
  # Recheck the accepted receipt coverage and recompute whole-owner integrals.
@@ -133,6 +165,13 @@ def verify():
   prefix='donor/dtmax-'+cap;record=donor['runs'][cap];series[cap]=scalar(files[prefix+'/result_output.csv']);profiles[cap]={}
   assert record['completed_days']==1827 and record['returncode']==100 and not record['censored']and not record['physical_input_changes']
   assert sha(files[prefix+'/result_output.csv'])==record['scalar_sha256']and sha(files[prefix+'/nodal_profiles.csv'])==record['profiles_sha256']
+  assert len(series[cap])==1828 and series[cap][-1]['DATE']=='1984-12-31'
+  pattern=re.compile(r'(?im)^(\s*DTMAX\s*=\s*)([\d.eE+\-]+)([^\r\n]*)$')
+  candidate=files[prefix+'/swap.swp'].decode();literal=files['donor/dtmax-0.04/swap.swp'].decode()
+  assert len(list(pattern.finditer(candidate)))==1 and float(pattern.search(candidate)[2])==float(cap)
+  assert pattern.sub(r'\1NUMERICAL_DTMAX\3',candidate)==pattern.sub(r'\1NUMERICAL_DTMAX\3',literal)
+  for name in ['grass.crp','260.met','swap.bbc','swap.dra']:
+   assert files[prefix+'/'+name]==(ROOT/'reference/swap-4.3.1/projects/2.grassgrowth'/name).read_bytes()
   for row in rows(prefix+'/nodal_profiles.csv'):profiles[cap].setdefault(int(row['day']),[]).append(row)
  assert series['0.04']==scalar(literal_scalar)
  registration=load('donor/PREREGISTRATION.json');assert sha(files['donor/PREREGISTRATION.json'])==donor['preregistration_sha256']
@@ -148,18 +187,41 @@ def verify():
  result=dict(status='SOURCE_BOUND_STRESS_ATTRIBUTION_EVIDENCE_PASS',accepted_cases=2922,stressed_node_evaluations=sum(v['stressed_nodes']for v in whole['paired']['O2']['accepted_substeps'].values()),frozen_resolution_gate_pass=False,frozen_gate_failures=failures,scientific_equivalence=False)
  if manifest['has_native_thermal']:
   thermal=load('thermal/RESULT.json');assert thermal['status']=='NATIVE_THERMAL_REFINEMENT_MEASURED'and thermal['completed_days']==1827
+  terminal=load('thermal/native/RESULT.json');build=load('thermal/build/BUILD.json');binding=load('thermal/native/application.binding')
+  assert terminal['returncode']==0 and not terminal['censored']and terminal['completed_days']==1827
+  assert '-O2'in build['flags']and '-fcheck=all'in build['flags']and all(e['returncode']==0 for e in build['events'])
+  assert sha(files['thermal/build/swap5_grass_startup'])==build['executable_sha256']==binding['executable_sha256']==terminal['executable_sha256']
+  thermal_budget=rows('thermal/native/budget.csv');thermal_crop=rows('thermal/native/crop.csv');assert len(thermal_budget)==len(thermal_crop)==1827
+  for name,original in {'input.swp':'swap.swp','grass.crp':'grass.crp','input.met':'260.met','swap.bbc':'swap.bbc','swap.dra':'swap.dra'}.items():assert files['thermal/native/'+name]==(ROOT/'reference/swap-4.3.1/projects/2.grassgrowth'/original).read_bytes()
+  for day,(b,c)in enumerate(zip(thermal_budget,thermal_crop),1):
+   assert int(b['day'])==int(c['day'])==day and all(math.isfinite(float(v))for v in [*b.values(),*c.values()])
+   assert abs(float(b['residual_cm']))<1e-10 and abs(float(b['heat_residual_j_cm2']))<1e-8
+   assert abs(float(b['water_end_cm'])-float(b['water_start_cm'])-float(b['input_cm'])+float(b['output_cm']))<1e-10
+   assert abs(float(b['potential_cm'])-float(b['uptake_cm'])-float(b['drought_cm'])-float(b['oxygen_cm']))<1e-10
+  stock=float(thermal_budget[-1]['water_end_cm'])-float(thermal_budget[0]['water_start_cm']);flux=math.fsum(float(b['input_cm'])-float(b['output_cm'])for b in thermal_budget)
+  assert abs(stock-flux)<1e-10
   assert thermal['registration_sha256']==donor['preregistration_sha256']and thermal['profiles_sha256']==donor['runs']['0.000625']['profiles_sha256']
   actual={}
   for day in checkpoints:
    if day not in profiles['0.000625']:continue
-   member='thermal/native/'+('checkpoint.bin'if day==1827 else f'checkpoint-{day}.bin');raw=files[member];s=layout(raw);assert s['clock']==day
+   member='thermal/native/'+('checkpoint.bin'if day==1827 else f'checkpoint-{day}.bin');raw=files[member];s=checkpoint(raw,'thermal/native');assert s['clock']==day
    n=s['nodes'];v=struct.unpack_from('='+str(n)+'d',raw,s['physical']+16*n+16);ref=[float(r['temperature_c'])for r in sorted(profiles['0.000625'][day],key=lambda r:int(r['node']))]
    error=max(abs(a-b)for a,b in zip(v,ref));assert error==thermal['profiles'][str(day)]['refined']['maximum_temperature_error_c'];actual[day]=error
   maximum=max(actual.values());assert maximum==thermal['maximum_refined_temperature_error_c'];assert thermal['refined_inside_original_thermal_envelope']==(maximum<=registration['bounds']['PROFILE_temperature_c']['limit'])
   result['native_thermal_refinement']=dict(maximum_temperature_error_c=maximum,inside_frozen_envelope=thermal['refined_inside_original_thermal_envelope'])
+  fine_checkpoints={day:files['thermal/native/'+('checkpoint.bin'if day==1827 else f'checkpoint-{day}.bin')]for day in checkpoints}
+  fine,ref,units,_=vectors(series['0.000625'],profiles['0.000625'],thermal_budget,thermal_crop,fine_checkpoints)
+  fields={key:dict(error=distance(key,fine[key],ref[key]),limit=registration['bounds'][key]['limit'],unit=units[key],inside=distance(key,fine[key],ref[key])<=registration['bounds'][key]['limit'])for key in fine}
+  result['native_thermal_refinement'].update(all_frozen_envelopes_inside=all(v['inside']for v in fields.values()),quantity_errors_and_limits=fields,scope='Exploratory refined-native diagnosis chosen after the coarse failure; original preregistered gate remains failed')
+  reported=json.loads((ROOT/'integration/dataqual15/SCIENTIFIC_DIFFERENCES.json').read_text())['current_full_evidence']['native_dtmax_0_01_diagnostic']
+  assert fields==reported['fields']and reported['all_frozen_envelopes_inside']==result['native_thermal_refinement']['all_frozen_envelopes_inside']
+ if extract is not None:
+  target=Path(extract).resolve();target.mkdir(parents=True,exist_ok=False)
+  for name,raw in files.items():
+   destination=target/name;destination.parent.mkdir(parents=True,exist_ok=True);destination.write_bytes(raw)
  print(json.dumps(result,indent=2));return result
 
 if __name__=='__main__':
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--package',action='store_true');p.add_argument('--observations',type=Path);p.add_argument('--whole',type=Path);p.add_argument('--donor',type=Path);p.add_argument('--thermal',type=Path);a=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--package',action='store_true');p.add_argument('--observations',type=Path);p.add_argument('--whole',type=Path);p.add_argument('--donor',type=Path);p.add_argument('--thermal',type=Path);p.add_argument('--extract',type=Path);a=p.parse_args()
  if a.package:package(a.observations,a.whole,a.donor,a.thermal)
- verify()
+ verify(a.extract)

@@ -1,8 +1,8 @@
 {
   "status": "MEASURED_EVIDENCE_WITH_FAILED_FROZEN_GATE",
   "scope": "SCIENTIFIC_ATTRIBUTION_NOT_WHOLE_MODEL_EQUIVALENCE",
-  "capsule_sha256": "461eaace2471757e4b069878d58776760f0395cea94a2f0749d897690f202fcc",
-  "archive_files": 182,
+  "capsule_sha256": "1064b6814b7b7133951b556f808bb43c80dafe5f24ce9653550db2f59634417d",
+  "archive_files": 229,
   "source_sha256": {
     "app/solute_column/link_context.f90": "418ab24436bc529eeafd4402d827935ccd6ee6a69426e60b99e9d1bda79bb811",
     "app/solute_column/read_swp_water.f90": "762f0bce8cb01f9fa84692e1363596abf1f02f0efa84b09588627120d79ce934",
@@ -214,7 +214,13 @@
     "src/legacy/b1_10_port/headcalc.f90": "862e1ab60ebcc319853a7247c61513a900a90bc418c125a03ce789ff414ed3e9",
     "tests/dataqual15/stress_observations.inc": "6a9e3fca4ff76b6156b0445b39f85b3cb50ed5ceba21f1b21d11b1c068c8dfec",
     "tests/dataqual15/stress_oracle.f90": "f89c6909261529adabbc2a4649d86611a22d08d6fe0958f6ceaf25298eaa20ff",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "ea6459e347a89a427d2a6ecb61025b5f8484d4b5a287bbed39a143e2786dc724",
     "tests/dataqual15/qualify_donor_timestep.py": "0369abb1d9cee24d714c60b7c0b76f9a694d19e0b9391444c979b01073c6b3a4",
+    "tests/dataqual15/qualify_stress.py": "584a6564d2d1d48f7256ca689306cf8d591234a3642152f806ac04e33643bce3",
+    "tests/dataqual15/qualify_native_thermal.py": "45fc9ff68dbdadb1c61d0749c0eb8f851e266dcc980d27f69c16fa72341eb768",
+    "tests/dataqual15/original_sources.py": "5b9d0045a0e2364a042898e35027611904630100e67c13760e8d7da162337142",
+    "tests/dataqual15/stress_evidence.py": "7b5d488fe9ff734ee4390b151cf23bd52d888918f38db2d6acd40a5dac0f33aa",
+    "tools/solute/build_grass_diagnostic.py": "f5296258f893c1b1dfd463dc25ddfcb246f685c8a9188b6e664d6fd39cc74779",
     "integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json": "56c13d17780d4b6e171d78d7b0f163db4f0d44ae136a3a465fff15d7b479a002",
     "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
     "integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64": "4221b5bf89bc979673e88229858f6820e0c8d196083a68d56068c46e61b2d98b"
@@ -429,11 +435,11 @@
     "/home/runner/work/SWAP5/SWAP5/app/grass_project/restart_file.f90#bed0e15b7757bcd180b556490776325ebf559b1391d954171caeeeef3e553f3e": "repo:app/grass_project/restart_file.f90",
     "/home/runner/work/SWAP5/SWAP5/src/process/mod_daily_rain_duration.f90#6c957b9802332932a6953b63237e7aa3ffd42933151f49d926c78e04cbaf7a24": "repo:src/process/mod_daily_rain_duration.f90",
     "/home/runner/work/SWAP5/SWAP5/src/legacy/b1_10_port/headcalc.f90#862e1ab60ebcc319853a7247c61513a900a90bc418c125a03ce789ff414ed3e9": "repo:src/legacy/b1_10_port/headcalc.f90",
-    "/home/runner/work/_temp/stress/coarse/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "observations/quarter/build/original_input_helpers.f90",
+    "/home/runner/work/_temp/stress/coarse/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "thermal/build/original_input_helpers.f90",
     "/home/runner/work/_temp/stress/coarse/observed_grass.f90#223f7f857145f0265f7ff61805e9f673d65901e3d555ca46d00e00a263cadaea": "observations/coarse/observed_grass.f90",
-    "/home/runner/work/_temp/stress/half/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "observations/quarter/build/original_input_helpers.f90",
+    "/home/runner/work/_temp/stress/half/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "thermal/build/original_input_helpers.f90",
     "/home/runner/work/_temp/stress/half/observed_grass.f90#18524f07984663f01028cbc4fb63a4d76beb5f9c046ed32586b155c40391f93a": "observations/half/observed_grass.f90",
-    "/home/runner/work/_temp/stress/quarter/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "observations/quarter/build/original_input_helpers.f90",
+    "/home/runner/work/_temp/stress/quarter/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "thermal/build/original_input_helpers.f90",
     "/home/runner/work/_temp/stress/quarter/observed_grass.f90#ec701e3baed15f99b595ed0cb534dd684da062339a38ac28aa91ab6c0cca979d": "observations/quarter/observed_grass.f90",
     "src/solver/mod_soil_water_solver_contract.f90#91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c": "repo:src/solver/mod_soil_water_solver_contract.f90",
     "src/solver/mod_process_hydraulic_view.f90#3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35": "repo:src/solver/mod_process_hydraulic_view.f90",
@@ -460,15 +466,19 @@
     "tests/dataqual15/stress_observations.inc#6a9e3fca4ff76b6156b0445b39f85b3cb50ed5ceba21f1b21d11b1c068c8dfec": "repo:tests/dataqual15/stress_observations.inc",
     "src/process/mod_root_water_uptake_process.f90#0b6347fe91fd5174908f0966c4fe2bdf2084e4cf8baa945b7a4f3a0be0d2ca14": "repo:src/process/mod_root_water_uptake_process.f90",
     "src/process/mod_root_uptake_oxygen_composition.f90#a5e04d82ed7f6faea1d76be0ac81cffdde3cda14e0523075cd441ea3928c927e": "repo:src/process/mod_root_uptake_oxygen_composition.f90",
-    "tests/dataqual15/stress_oracle.f90#f89c6909261529adabbc2a4649d86611a22d08d6fe0958f6ceaf25298eaa20ff": "repo:tests/dataqual15/stress_oracle.f90"
+    "tests/dataqual15/stress_oracle.f90#f89c6909261529adabbc2a4649d86611a22d08d6fe0958f6ceaf25298eaa20ff": "repo:tests/dataqual15/stress_oracle.f90",
+    "/home/runner/work/SWAP5/SWAP5/src/runtime/mod_fmr_serialized_reference_backend.f90#ea6459e347a89a427d2a6ecb61025b5f8484d4b5a287bbed39a143e2786dc724": "repo:src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "/home/runner/work/_temp/native-thermal/build/original_input_helpers.f90#fa1d74dc3bfb493f3f528817c184e51bea477c48a234654c46b82f1c932fe58b": "thermal/build/original_input_helpers.f90",
+    "/home/runner/work/_temp/native-thermal/refined_grass.f90#c34c8eead0cb946a0c13f431dccbf2349ad21c311f1cefaac868cdd36ed05472": "thermal/refined_grass.f90"
   },
   "inherited_full_capsule_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
   "scientific_equivalence": false,
   "original_preregistered_gate_pass": false,
-  "has_native_thermal": false,
+  "has_native_thermal": true,
   "github_runs": {
     "observations": 41069788879,
     "whole": 41071975005,
-    "donor": 41074182323
+    "donor": 41074182323,
+    "native_thermal": 41082719394
   }
 }

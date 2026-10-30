@@ -7,6 +7,7 @@ on:
       - tests/dataqual15/**
       - tools/solute/build_grass_startup.py
       - tools/solute/build_grass_diagnostic.py
+      - integration/dataqual15/STRESS_EVIDENCE*
 permissions:
   contents: read
 concurrency:
@@ -14,79 +15,32 @@ concurrency:
   cancel-in-progress: true
 jobs:
   stress-attribution:
-    permissions:
-      contents: read
-      actions: read
     runs-on: ubuntu-24.04
-    timeout-minutes: 60
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      - uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ github.token }}
-          run-id: 41069788879
-          name: dataqual15-stress-583ddd473a5392f53d672d043e87404eb7dca3dd
-          path: ${{ runner.temp }}/prior-stress/
-      - name: Paired real oxygen owners and timestep refinement
+      - name: Verify and export permanent scientific evidence, retaining failed gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -c 'import json; from pathlib import Path; assert json.loads(Path("integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json").read_text())["has_native_thermal"]'
+          python3 -B tests/dataqual15/stress_evidence.py --extract "$RUNNER_TEMP/study"
+      - name: Rebuild paired real owners and execute the diagnostic adapter
         shell: bash
         run: |
           set -euo pipefail
           FC=$(command -v gfortran-13)
-          python3 -B tests/dataqual15/qualify_stress.py --compiler "$FC" --output "$RUNNER_TEMP/stress" --paired-only --observations "$RUNNER_TEMP/prior-stress/coarse/native"
-          python3 -B tools/solute/build_grass_diagnostic.py --compiler "$FC" --input-archive "$RUNNER_TEMP/stress/original-O2/ttobj/libttutil.a" --output "$RUNNER_TEMP/stress/diagnostic-smoke" --optimization O2 --profile checked --driver "$RUNNER_TEMP/prior-stress/coarse/observed_grass.f90" --provider-override "$RUNNER_TEMP/prior-stress/observed_backend.f90" --end 1 --policy retained
+          python3 -B tests/dataqual15/qualify_stress.py --compiler "$FC" --output "$RUNNER_TEMP/stress" --paired-only --observations "$RUNNER_TEMP/study/observations/coarse/native"
+          python3 -B tools/solute/build_grass_diagnostic.py --compiler "$FC" --input-archive "$RUNNER_TEMP/stress/original-O2/ttobj/libttutil.a" --output "$RUNNER_TEMP/stress/diagnostic-smoke" --optimization O2 --profile checked --driver "$RUNNER_TEMP/study/observations/coarse/observed_grass.f90" --provider-override "$RUNNER_TEMP/study/observations/observed_backend.f90" --end 1 --policy retained
+          python3 -c 'import csv,json,sys; from pathlib import Path; b=Path(sys.argv[1]); old=Path(sys.argv[2]); r=json.loads((b/"BUILD.json").read_text()); assert r["native_returncode"]==0 and r["original_project_completed_days"]==1; rows=lambda p:list(csv.DictReader(p.open())); assert all(rows(b/"original-interval"/name)==rows(old/name)[:1]for name in ["budget.csv","crop.csv"])' "$RUNNER_TEMP/stress/diagnostic-smoke" "$RUNNER_TEMP/study/observations/coarse/native"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: dataqual15-stress-${{ github.event.pull_request.head.sha }}
           path: ${{ runner.temp }}/stress/
-          retention-days: 30
-  native-thermal:
-    permissions:
-      contents: read
-      actions: read
-    runs-on: ubuntu-24.04
-    timeout-minutes: 130
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-      - uses: actions/download-artifact@v4
-        with:
-          github-token: ${{ github.token }}
-          run-id: 41074182323
-          name: dataqual15-donor-timestep-b67366e325b22b81b53c6c63458ca84f0cb19a87
-          path: ${{ runner.temp }}/held-out-donor/
-      - name: Fresh full native thermal refinement without relaxing the failed gate
-        run: python3 -B tests/dataqual15/qualify_native_thermal.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/native-thermal" --donor "$RUNNER_TEMP/held-out-donor"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dataqual15-native-thermal-${{ github.event.pull_request.head.sha }}
-          path: ${{ runner.temp }}/native-thermal/
-          retention-days: 30
-  donor-timestep:
-    runs-on: ubuntu-24.04
-    timeout-minutes: 60
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: 0
-      - name: Authentic original donor with disclosed DTMAX refinement
-        if: ${{ hashFiles('integration/dataqual15/STRESS_EVIDENCE.tar.xz') == '' }}
-        run: python3 -B tests/dataqual15/qualify_donor_timestep.py --output "$RUNNER_TEMP/donor-timestep" --profiles
-      - name: Verify sealed donor refinements and retain the failed frozen gate
-        if: ${{ hashFiles('integration/dataqual15/STRESS_EVIDENCE.tar.xz') != '' }}
-        run: python3 -B tests/dataqual15/stress_evidence.py
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: dataqual15-donor-timestep-${{ github.event.pull_request.head.sha }}
-          path: ${{ runner.temp }}/donor-timestep/
           retention-days: 30
   recovery:
     runs-on: ubuntu-24.04

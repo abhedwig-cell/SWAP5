@@ -1,46 +1,219 @@
-# Grassgrowth measured reference differences
+# Grassgrowth: full-period execution and scientific attribution
 
-The current canonical full-period authority is `GRASS_UNION_FULL_MANIFEST.json`
-and `CANONICAL_FULL_MERGE_RECEIPT.json`: all1827 original days are source-bound
-and complete. Current full-period actual harvest differs by+0.5633%; the maximum
-daily actual-transpiration difference is0.01128904cm and leaf-biomass difference
-is53.21609kg/ha. Whole scientific qualification remains open. The521-day
-measurements below are retained as historical evidence.
+The original1827-day Grassgrowth execution is complete and source-bound in
+`GRASS_UNION_FULL_MANIFEST.json` and `CANONICAL_FULL_MERGE_RECEIPT.json`.
+The follow-up evidence is `STRESS_EVIDENCE_MANIFEST.json` with the portable
+verifier `python -B tests/dataqual15/stress_evidence.py`. Its successful evidence
+verification preserves a **failed** preregistered scientific resolution test.
+Whole-model scientific equivalence and production promotion remain open.
+
+## Identical-state oxygen and whole uptake
+
+The real original and current owners receive identical native accepted states,
+root profiles, respiration and potential demand in O0/O2. All2922 accepted
+intervals on days25,72,73 and127 are represented, including7661 stressed node
+evaluations. Rejected/full sibling trials are retained in the raw observations
+and excluded from the accepted receipt integration. The current standalone
+oxygen factors reproduce the actual backend factors exactly. O0/O2 outputs
+are identical.
+
+| Day | Accepted intervals | Stressed node evaluations | Whole original uptake (cm) | Whole current uptake (cm) |
+|---|---:|---:|---:|---:|
+| 25 | 558 | 0 | 0.004469345352234 | 0.004469345352234 |
+| 72 | 1162 | 946 | 0.005345811715848 | 0.005345811636137 |
+| 73 | 1112 | 6715 | 0.010409137597776 | 0.010409137774837 |
+| 127 | 90 | 0 | 0.246763458109825 | 0.246763458109825 |
+
+The maximum original/current oxygen-factor difference is6.744e-5, within the
+inherited1e-4 SOLVE gate. Replacing only the oxygen owner changes integrated
+native uptake by at most1.771e-10cm on these days. The whole original macroscopic Feddes/Bartholomeus
+uptake reproduces the original-factor counterfactual within1e-10cm; the whole
+current uptake reproduces the accepted native ledger within1e-10cm. These
+results exclude a material selected oxygen/uptake-owner discrepancy on the
+observed states. They do not test a donor hydraulic/thermal trajectory or every
+other uptake option, and the component gate supplies no yield tolerance.
+
+## Controlled numerical trajectories
+
+Three checked native trajectories start independently on day1 with DTMAX caps
+0.04,0.02 and0.01day and run through140. They retain all original physical input
+bytes and use the existing numerical acceptance policy. Output-only diagnostic
+sources have separate source/executable bindings. The coarse budget, crop and
+physical checkpoint payload reproduce the qualified original trajectory exactly.
+No checkpoint source binding or CRC is rewritten. The original
+SWSOLU0 and SWMACRO0 remain selected: solute balance is not_applicable and
+macropore flow remains disabled. Macroscopic root uptake is a separate original
+Feddes/Bartholomeus option, not a macropore-flow addition. First actual harvest is
+2132.071263,2132.061813 and2132.058184kg/ha respectively, a spread of0.01308kg/ha.
+
+The sealed authentic original4.3.1 output-only nodal executable independently
+runs all1827days. DTMAX alone changes; the literal0.04 run reproduces all stored
+scalar and nodal rows exactly. Annual donor harvest counters are summed before
+comparison with the native project counter.
+
+| Original DTMAX (day) | Original project harvest (kg/ha) |
+|---:|---:|
+| 0.04 (literal reference) | 54049.870947 |
+| 0.005 (training) | 54327.618357 |
+| 0.0025 (training) | 54344.415200 |
+| 0.00125 (held out) | 54352.253369 |
+| 0.000625 (held out) | 54355.926976 |
+
+Native original-input harvest is54354.337261kg/ha. Its difference from the
+literal donor is+304.466314kg/ha (+0.5633%); versus the finest donor it is
+-1.589715kg/ha. Day25's donor-only coarse oxygen reduction vanishes on donor
+refinement. Day72 donor reduction approaches the native result. Combined with
+the identical-state replay, this is strong attribution to numerical trajectories,
+not evidence of an oxygen formula repair or a new physical owner.
+
+## Frozen held-out test: FAIL retained
+
+`STRESS_ATTRIBUTION_PREREGISTRATION.json` was committed before either held-out
+run. Quantity-specific envelopes are three times the sup-norm donor change
+between0.005 and0.0025 plus declared print/roundoff floors. Independent potential
+controls use the floor alone. Both held-out halvings must reduce each reference
+change and place native errors inside every frozen envelope. Pressure is
+normalized by max(1cm,abs(h)); theta and temperature retain physical units.
+Native day-start LAI is compared to donor previous-day end, excluding annual
+initializations. This is a conditional numerical-resolution test, not an
+observational/ecological error tolerance or full energy qualification.
+
+At0.00125, the drought-reference change is0.000176949cm/day, slightly larger than
+the preceding0.000170242cm/day, although the native drought error is within its
+frozen0.000510726cm/day envelope. The next halving decreases again. Temperature
+fails both held-out tests: maximum native errors0.006918904 and0.007150261C
+exceed the unchanged0.002772767C envelope. All other fields meet their frozen
+envelopes; the finest holdout fails temperature alone. No limit is enlarged
+post hoc and the original failed gate remains false.
+
+The following errors compare the unchanged qualified native trajectory with the
+finest donor. Scalar maxima use all1827 daily rows; harvest and nodal quantities
+use the retained native checkpoint dates only. Bounds are numerical-resolution
+envelopes, not ecological tolerances.
+
+| Quantity | Maximum error | Frozen envelope | Unit | Inside |
+|---|---:|---:|---|---|
+| WTOT | 0.00210701016 | 0.0102458809 | cm | yes |
+| TPOT | 0.000129472514 | 0.00124387249 | cm/day | yes |
+| TACT | 0.000334408188 | 0.00432922481 | cm/day | yes |
+| TREDWET | 0.000278774757 | 0.00432226472 | cm/day | yes |
+| TREDDRY | 0.000238126134 | 0.000510725683 | cm/day | yes |
+| WRT | 0.360431117 | 2.62675763 | kg/ha | yes |
+| WLV | 1.61497852 | 9.81334274 | kg/ha | yes |
+| WST | 0.482345915 | 3.58529754 | kg/ha | yes |
+| RD | 0.000143725938 | 0.00575041894 | cm | yes |
+| PWRT | 5.1159077e-13 | 1e-06 | kg/ha | yes |
+| RDPOT | 0 | 1e-07 | cm | yes |
+| DVS | 4.98934227e-13 | 1e-08 | dimensionless | yes |
+| TSUM | 4.54747351e-13 | 1e-08 | degree day | yes |
+| LAI_DAY_START | 0.00279182593 | 0.0209807138 | m2/m2 | yes |
+| HRVDM_PROJECT | 1.58971519 | 50.3905313 | kg/ha | yes |
+| PHRVDM_PROJECT | 3.4506229e-09 | 1e-06 | kg/ha | yes |
+| NET_FLUX | 0.00241105873 | 0.00825753887 | cm/day | yes |
+| PROFILE_head_cm | 0.00264643849 | 0.00829568456 | normalized by max(1cm,abs(h)) | yes |
+| PROFILE_water_content | 0.000129076629 | 0.000404914896 | cm3/cm3 | yes |
+| PROFILE_temperature_c | 0.00715026139 | 0.00277276715 | C | **no** |
+
+The largest finest-reference temperature error is day1096,node26: native
+3.059500807C versus donor3.052350546C. Their water contents differ by only
+2.82e-7cm3/cm3. A small heat-accounting residual therefore cannot be used as a
+temperature-error bound.
+
+Existing native refinement already reduces the day140 maximum temperature
+error versus the finest donor from0.003564388 to0.001744730 and0.000827322C.
+Day73 is nonmonotonic (0.000582356,0.000621883,0.000591040C), so a claim of
+uniform convergence at every date would be unsupported. A fresh full native
+DTMAX0.01 trajectory now completes all1827days in1606.60seconds, with all24
+retained full-day checkpoints (including the terminal checkpoint), unchanged
+physical inputs and a separate exact source/executable binding. Its maximum
+water residual is4.924e-14cm and heat-accounting residual3.038e-12J/cm2.
+
+### Exploratory full native numerical diagnosis
+
+At all14 retained donor profile dates (113nodes each), the refined native
+maximum temperature error is0.001614601C, below the **unchanged**0.002772767C
+envelope. All20 quantity-specific errors, including daily stress, biomass,
+water flux, potential controls and retained harvest/profile values, lie inside
+the original frozen envelopes. The full raw per-field result is in
+`SCIENTIFIC_DIFFERENCES.json` and independently recomputed by the portable
+verifier. Selected maximum nodal temperature errors are:
+
+| Day | Qualified coarse native error (C) | Refined native error (C) |
+|---|---:|---:|
+| 63 | 0.002094793 | 0.000693603 |
+| 140 | 0.003564388 | 0.000827322 |
+| 731 | 0.003073244 | 0.000861822 |
+| 922 | 0.005014811 | 0.001154408 |
+| 1096 | 0.007150261 | 0.001614601 |
+| 1461 | 0.004610581 | 0.001015256 |
+| 1827 | 0.002435697 | 0.000680586 |
+
+This diagnosis was chosen after the coarse temperature failure. It supports
+numerical attribution under pre-existing limits; it does not retroactively pass
+the original preregistered test, establish an ecological uncertainty bound or
+promote DTMAX0.01 into the production application. The original coarse
+qualification remains open and the failed intermediate drought monotonicity
+check remains recorded. No physical owner was changed to obtain these results.
 
 
-The accepted-state follow-up now replays2922 actual accepted intervals, including
-7661 stressed node evaluations, in O0/O2. The current standalone factors are
-exactly the actual backend factors. Replacing them by the original owner
-changes integrated uptake by at most1.771e-10cm on the selected days. The whole
-original MACRO uptake owner also reproduces its factor counterfactual, while
-the current whole uptake reproduces native bookkeeping. Source numerical
-refinement alone changes full-project harvest from54049.870947kg/ha at
-DTMAX0.04 to54344.415200kg/ha at0.0025, versus native54354.337kg/ha. This is
-strong numerical-attribution evidence, not yet a frozen acceptance result.
+Source inspection finds the same average old/new water contents, De Vries
+capacity/conductivity, arithmetic face conductivity and implicit thermal matrix
+for the selected air-temperature/zero-bottom-flux route. The original advances
+heat after water integration. The native route advances heat transactionally
+on accepted half steps. The selected native weather/water temporal metric
+controls pressure, storage and Darcy exchange, without an independent thermal
+error term. This explains why water acceptance and heat conservation alone
+cannot certify a temperature envelope. Inspection is not an identical-state
+runtime proof of every thermal branch. No physical process defect is confirmed
+and no production owner, solver tolerance or physical input is changed.
 
-`STRESS_ATTRIBUTION_PREREGISTRATION.json` freezes the next test algorithm before
-two held-out donor refinements. Output-only nodal donor trajectories at0.005
-and0.0025 set quantity-specific numerical envelopes: three times their maximum
-difference plus a source-print/floating-point floor. The held-out0.00125 and
-0.000625 trajectories must independently reduce reference changes and place
-native errors inside every envelope. Potential controls use only the declared
-floor. Pressure uses the existing normalized temporal metric; theta and
-temperature retain their physical units. Day-start LAI is phase-aligned and
-annual initializations are excluded. This bounds observed numerical resolution
-only, not ecological-model uncertainty or unobserved energy terms.
+## Reproduction and preserved scope
 
-The controlled follow-up is `tests/dataqual15/qualify_stress.py`. It observes
-daily left h/theta/T, root fractions/density, respiration and potential demand
-on days25,72,73 and127, and accepted durations/demand/uptake/deepest-root oxygen
-factors. Both real oxygen routines receive identical observed states in O0/O2.
-Separate checked day1 trajectories cap DTMAX at0.04,0.02 and0.01day through140;
-physical input bytes remain original. The coarse output-only postimage must
-exactly preserve the qualified daily budget/crop and native physical payload.
-This diagnostic changes no production owner or persistent field. Its results
-are pending; the inherited1e-4 oxygen-component SOLVE gate does not establish
-a crop/yield tolerance. Daily left temperatures do not claim the full accepted
-substep thermal trajectory, and the oxygen-component comparison does not yet
-certify the entire original uptake composition.
+Verify the portable raw-data archive without a compiler:
+
+```bash
+python -B tests/dataqual15/stress_evidence.py
+```
+
+Export the verified study to a new directory, preserving the exact sources,
+application bindings, original inputs, CRC checkpoints and native outputs:
+
+```bash
+python -B tests/dataqual15/stress_evidence.py --extract /tmp/grass-study
+python -B tests/dataqual15/qualify_stress.py --compiler /usr/bin/gfortran-13 --output /tmp/grass-paired --paired-only --observations /tmp/grass-study/observations/coarse/native
+```
+
+The second command rebuilds both real original and current owners in O0/O2.
+This self-contained reproduction also passes locally with Windows GNU16.2.0,
+2922 accepted intervals and identical O0/O2 results. The full application retains
+the supported Linux fsync route.
+No expired Actions artifact, scratch object or local historical commit is needed.
+The old oxygen-only diagnostic source is retained as an explicitly hashed
+historical snapshot alongside the later whole-uptake oracle. It is never bound
+to the current whole-uptake source hash.
+
+`qualify_donor_timestep.py --profiles` can rerun the full donor study from the
+unchanged original capsule. The fixed registration is recomputed from the
+training runs before either held-out run is launched. The native thermal
+counterfactual is reproducible with `qualify_native_thermal.py --compiler
+/usr/bin/gfortran-13 --output /tmp/grass-thermal --donor /tmp/grass-study/donor`.
+Its expected cost is2400seconds with a7200second wall cap, justified by the
+late day1096 temperature failure that a140-day prefix cannot assess. It starts
+on day1 with its own executable/source binding and never resumes an old bound
+checkpoint under a new executable.
+
+The original full1827-day execution remains a separate immutable authority.
+Variants and refined trajectories do not increase the single migration matrix's
+independent-project count: full original executions2/3 globally, whole scientific
+qualifications0/3. The source/executable provenance, hard mass/heat accounting
+and exact restart claims must not be replaced by the resolution envelope.
+
+## Historical521-day analysis
+
+The following observations describe the earlier521-day receipt. Statements about
+unperformed paired/profile diagnostics refer to that historical stage; the
+full-period and accepted-state evidence above supersedes those limitations for
+its explicitly tested scope.
 
 Experimental comparison of the frozen contiguous original-input day1–521 history with the complete original SWAP4.3.1 scalar reference. This establishes measured differences, not whole-model scientific equivalence. Exact input, output and inspected-source hashes and day-level results are in `SCIENTIFIC_DIFFERENCES.json`.
 
