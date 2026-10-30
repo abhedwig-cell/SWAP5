@@ -13,9 +13,6 @@ concurrency:
   cancel-in-progress: true
 jobs:
   recovery:
-    permissions:
-      contents: read
-      actions: write
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -23,16 +20,6 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      - name: Stop superseded pre-reconciliation run
-        env:
-          GH_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          set -euo pipefail
-          STATUS=$(gh api repos/abhedwig-cell/SWAP5/actions/runs/41058817430 --jq .status)
-          if [[ "$STATUS" != completed ]]; then
-            gh api --method POST repos/abhedwig-cell/SWAP5/actions/runs/41058817430/cancel
-          fi
       - name: Verify inherited full original history and execute sealed recovery
         run: python3 -B tests/dataqual15/recover_grass_full.py --output "$RUNNER_TEMP/recovery"
       - uses: actions/upload-artifact@v4
