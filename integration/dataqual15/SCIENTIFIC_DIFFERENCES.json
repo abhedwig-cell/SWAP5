@@ -311,8 +311,65 @@
     "actual_harvest_relative_difference_percent": 0.5633,
     "maximum_daily_actual_transpiration_difference_cm": 0.01128903608404791,
     "maximum_leaf_biomass_difference_kg_ha": 53.216091338990054,
-    "causal_attribution": "OPEN",
+    "causal_attribution": "Identical-state whole oxygen/uptake replay excludes a material selected-owner defect at observed accepted states. Source timestep refinement explains most of the literal-reference harvest difference. Frozen temperature resolution gate FAIL; no whole-model equivalence.",
     "followup": "tests/dataqual15/qualify_stress.py",
-    "acceptance_scope": "Existing oxygen-component 1e-4 SOLVE gate only; no whole-yield equivalence threshold inferred"
+    "acceptance_scope": "Existing oxygen-component 1e-4 SOLVE gate only; no whole-yield equivalence threshold inferred",
+    "paired_run": 41071975005,
+    "accepted_cases": 2922,
+    "maximum_owner_only_daily_uptake_difference_cm": 1.770613985291325e-10,
+    "donor_refinement": {
+      "0.04": {
+        "dtmax_day": 0.04,
+        "project_actual_harvest_kg_ha": 54049.8709469
+      },
+      "0.005": {
+        "dtmax_day": 0.005,
+        "project_actual_harvest_kg_ha": 54327.61835673
+      },
+      "0.0025": {
+        "dtmax_day": 0.0025,
+        "project_actual_harvest_kg_ha": 54344.41520015
+      },
+      "0.00125": {
+        "dtmax_day": 0.00125,
+        "project_actual_harvest_kg_ha": 54352.253368770005
+      },
+      "0.000625": {
+        "dtmax_day": 0.000625,
+        "project_actual_harvest_kg_ha": 54355.92697639
+      }
+    },
+    "held_out_numerical_resolution_gate_pass": false,
+    "held_out_failures": {
+      "0.00125": {
+        "TREDDRY": {
+          "native_error": 0.0003284070990990373,
+          "limit": 0.0005107256830001189,
+          "reference_change": 0.00017694889499997313,
+          "previous_reference_change": 0.00017024156100003962,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": false
+        },
+        "PROFILE_temperature_c": {
+          "native_error": 0.006918903794463915,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00046271838770595153,
+          "previous_reference_change": 0.0009242553823938238,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      },
+      "0.000625": {
+        "PROFILE_temperature_c": {
+          "native_error": 0.007150261391404289,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00023142940943010615,
+          "previous_reference_change": 0.00046271838770595153,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      }
+    },
+    "science_manifest": "integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json"
   }
 }
