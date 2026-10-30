@@ -1,0 +1,41 @@
+{
+  "work_unit": "DATAQUAL15 Andelst isolated correction and diagnosis",
+  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+  "stage": "BOUNDED_EXPERIMENTAL_NOT_FULL_CLOSURE",
+  "source_commit": "810812b",
+  "result_authority": "integration/dataqual15/ANDELST_STORAGE_AND_SHARP_RESULT.json",
+  "source_scope": "Corrected partial perched-wall law is explicitly experimental. Ramped65-day execution retains inherited entry width.0001, distinct from original sharp entry0.",
+  "original_days": 481,
+  "ramped_O2_full_days": 65,
+  "ramped_O0_O2_exact_days": 50,
+  "ramped_same_build_restart": "43->50 exact",
+  "sharp_original_entry_full_days": 1,
+  "sharp_original_entry_last_source_endpoint": 1.9580000000023283,
+  "sharp_status": "CENSORED_NOT_NATURAL_TERMINAL_FAILURE",
+  "next_ramped_failed_source_interval": [
+    65.17299999999756,
+    65.17499999999755
+  ],
+  "full_project_complete": false,
+  "scientific_equivalence": false,
+  "canonical_admitted": false,
+  "repaired_causes": [
+    "Proposed corrected B1 geometric unsaturated perched-wall fraction",
+    "Preserve every positive stock in existing storage owner without loosening any mass/trace gate"
+  ],
+  "source_numerical_controls": {
+    "MAXIT": 30,
+    "MAXBACKTR": 4,
+    "DTMIN_day": 1e-05,
+    "DTMAX_day": 0.002,
+    "SWKMEAN": 1,
+    "SWKIMPL": 0
+  },
+  "strict_canonical_acceptance_retained": true,
+  "prior_source_proof": {
+    "source": "9d52df5",
+    "ramped_days": 43,
+    "evidence": "integration/dataqual15/ANDELST_CORRECTED_PROGRESS_EVIDENCE.tar.xz",
+    "status": "SUPERSEDED_SOURCE_SNAPSHOT_NOT_CURRENT_POSTIMAGE_PROOF"
+  }
+}

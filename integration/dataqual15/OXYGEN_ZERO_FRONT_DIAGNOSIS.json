@@ -1,0 +1,19 @@
+{
+  "scope": "ACTUAL_ORIGINAL_DAY1787_OXYGEN_ZERO_FRONT_DIAGNOSIS",
+  "baseline_source": "139330b",
+  "completed_from_day1": 1786,
+  "failed_next_day": 1787,
+  "solver_executed": false,
+  "bartholomeus_status": 3,
+  "node_rejecting_boundary": 27,
+  "negative_boundary": -8.943285565235493e-15,
+  "zero_front_m": 0.010000042785623012,
+  "evaluation_depth_m": 0.01,
+  "microbial_scale": 2.558348433513476,
+  "root_scale": 0.0,
+  "previous_boundary": 0.00015675914088830593,
+  "certified_concentration_error": 4.941482290148416e-14,
+  "negative_within_error_bound": true,
+  "repair": "Return zero only for a negative analytical concentration covered by operation-roundoff plus existing zero-depth bracket uncertainty. Larger negative values fail closed; positive results preserve exact old arithmetic.",
+  "qualification_pending": true
+}
