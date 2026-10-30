@@ -1,15 +1,17 @@
-"""Source-verified incremental real Reference owner preservation, O0/O2.
+"""Source-verified clean real Reference owner preservation, O0/O2.
 
 The original static geometry fixture and unchanged production test assertions
-are retained. Changed WOFOST owner imports/vtables and their dependent providers
-are rebuilt; unrelated unchanged providers reuse their verified objects.
+are retained. All providers are rebuilt from repository sources; no vanished scratch artifacts
+or objects from a different compiler are reused.
 """
-import argparse,hashlib,json,re,shutil,subprocess,time
+import argparse,hashlib,json,re,subprocess,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
 a=p.parse_args();out=a.output.resolve();out.mkdir(exist_ok=False)
-base=ROOT.parent/'dq13-groundwater-runtime-verified';old=json.loads((base/'RESULT.json').read_text());context=base/'context.f90'
+context=out/'context.f90'
+fixture=ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90'
+context.write_text(fixture.read_text().replace('real(8), parameter :: disnod(numnod+1) = 1.0d0','real(8), parameter :: disnod(numnod+1) = [0.25d0,0.5d0,0.75d0,1d0,0.5d0]').replace('cofgen = 0.30d0',"error stop 'hidden global cofgen'").replace('watcon = 0.30d0',"error stop 'hidden global watcon'").replace('hconduc = 1.0d0',"error stop 'hidden global hconduc'"),newline='\n')
 programs=[ROOT/s for s in ['tests/dataqual13/groundwater_runtime_driver.f90','tests/dataqual15/groundwater_table_runtime_driver.f90','tests/fapp/test_ppa_wu01_production_application_bootstrap.f90','tests/physics/test_bartholomeus_application.f90']]
 providers={}
 for s in list((ROOT/'src').rglob('*.f90'))+[context]:
@@ -28,8 +30,7 @@ def visit(s):
  imports[s]=children;order.append(s)
 for s in programs:visit(s)
 visit(ROOT/'src/legacy/b1_10_port/headcalc.f90');order=[s for s in order if s not in programs]
-oldpaths={str(Path(k)if Path(k).is_absolute()else ROOT/k):(i,h)for i,(k,h)in enumerate(old['dependencies'].items())}
-hashes={str(s):sha(s)for s in order+programs};events=[];artifacts={};changed_by_opt={}
+hashes={str(s):sha(s)for s in order+programs+[fixture]};events=[];artifacts={};changed_by_opt={}
 def run(cmd,label,folder,timeout=120):
  t=time.perf_counter();r=subprocess.run(list(map(str,cmd)),capture_output=True,timeout=timeout);i=len(events)
  (folder/(str(i)+'.stdout')).write_bytes(r.stdout);(folder/(str(i)+'.stderr')).write_bytes(r.stderr)
@@ -38,23 +39,19 @@ def run(cmd,label,folder,timeout=120):
  return r.stdout
 fc=str(a.compiler.resolve())
 for opt in ['O0','O2']:
- f=out/opt;f.mkdir();oldbuild=base/opt
- for mod in oldbuild.glob('*.mod'):shutil.copyfile(mod,f/mod.name)
+ f=out/opt;f.mkdir()
  flags=['-'+opt,'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(f),'-J'+str(f)]
  objects=[];changed=set()
  for i,s in enumerate(order):
-  row=oldpaths.get(str(s))
-  if row and row[1]==hashes[str(s)]and not(set(imports[s])&changed):
-   obj=oldbuild/(str(row[0])+'.o');assert obj.is_file()and obj.stat().st_size>0
-   artifacts[str(obj)]=sha(obj)
-  else:
-   changed.add(s);obj=f/(str(i)+'.o');run([fc,*flags,'-c',s,'-o',obj],'compile_changed',f)
-   if obj.stat().st_size==0:run([fc,*flags,'-c',s,'-o',obj],'retry_empty_compiler_artifact',f)
-   assert obj.stat().st_size>0
+  changed.add(s);obj=f/(str(i)+'.o');run([fc,*flags,'-c',s,'-o',obj],'compile',f)
+  if obj.stat().st_size==0:run([fc,*flags,'-c',s,'-o',obj],'retry_empty_compiler_artifact',f)
+  assert obj.stat().st_size>0
   objects.append(obj)
  changed_by_opt[opt]=[str(s)for s in order if s in changed]
  for driver in programs:
-  exe=f/driver.stem;run([fc,*flags,driver,*objects,'-o',exe],'compile_link_existing_contract',f)
+  exe=f/driver.stem
+  response=f/(driver.stem+'.args');response.write_text('\n'.join(chr(34)+str(x).replace(chr(92),'/')+chr(34)for x in [*flags,driver,*objects,'-o',exe]),newline='\n')
+  run([fc,'@'+str(response)],'compile_link_existing_contract',f)
   raw=run([exe],'native_existing_contract',f,30);(f/(driver.stem+'.stdout')).write_bytes(raw)
   assert b'PASS'in raw or b'GATE PASS'in raw
   print(opt,driver.name,'PASS',flush=True)

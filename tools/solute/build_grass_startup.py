@@ -17,9 +17,12 @@ p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gf
 p.add_argument('--input-archive',type=Path,required=True)
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
-a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
-fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
-assert archive.is_file()
+a=p.parse_args();fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
+assert Path(fc).is_file(),('compiler missing',fc)
+assert archive.is_file(),('TTUTIL input archive missing',archive)
+compiler_version=subprocess.check_output([fc,'--version'],text=True).splitlines()[0]
+assert not a.output.exists(),('clean output required',a.output)
+out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
 authority=ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(authority.read_bytes())),mode='r:gz')as t:
  original=t.extractfile('SWAP/functions.f90').read().decode('latin1')
@@ -49,7 +52,7 @@ visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
 ordered += [helper,driver]
 flags=['-'+a.optimization,'-ffree-line-length-none','-fopenmp']+(['-fcheck=all']if a.profile=='checked'else[])+['-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out)]
 hashes={str(s):sha(s)for s in ordered}
-report=dict(status='BUILDING',profile=a.profile,compiler=subprocess.check_output([fc,'--version'],text=True).splitlines()[0],
+report=dict(status='BUILDING',profile=a.profile,compiler=compiler_version,
  source_sha256=hashes,original_input_archive_sha256=sha(archive),source_authority_sha256=sha(authority),flags=flags,events=[])
 def save():(out/'BUILD.json').write_text(json.dumps(report,indent=2)+'\n')
 def run(command,label,cwd=out,timeout=120):
