@@ -74,7 +74,11 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          if [[ -f src/crop/mod_b111_nfixation_policy.f90 ]]; then
+          if [[ -f integration/dataqual14/STATUS.json ]]; then
+            # Current source-bound original-project/owner proof. Closed production
+            # delta and six native preservation contracts; not full F-CI admission.
+            python3 -B tests/dataqual14/verify_evidence.py
+          elif [[ -f src/crop/mod_b111_nfixation_policy.f90 ]]; then
             # Exact additive source-policy proof; no N runtime admission.
             python3 -B tests/fwof/pp02/verify_b111_nfixation_successor.py
           elif [[ -f src/runtime/mod_fmr_interception_source_window_binding.f90 ]]; then

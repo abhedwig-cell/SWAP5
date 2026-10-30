@@ -110,16 +110,17 @@
     }
   },
   "source_sha256": {
+    ".github/workflows/fci-canonical.yml": "b4402ec8a41241c275dfeac82de61ab14b919a4727fe4fe33261c8e066c08262",
     "app/grass_project/initial_interval.f90": "3a556afe11548cd63e82adcb8fdf39390a18c83cd509f47bdf550b301792c9bb",
     "app/grass_project/restart_file.f90": "314bde7ce0fbfd9aed3f6a894403cb2c41daa971fa70bc25f7699be404b6cb12",
     "src/runtime/mod_fmr_serialized_reference_backend.f90": "fb6e6970a4d4704f03b5ecdf1ffc2114cb92d5abf988ba2a0b45ce8012d01bdc",
-    "tests/dataqual14/collect_evidence.py": "576d58ad635d634d00e36eaa26fe642648f2543ce72ded9ec5f8eb7f0fc4b01b",
+    "tests/dataqual14/collect_evidence.py": "5a9bc5333ab9106908195ed6ff747effb81606c2bd95ee760c226f9085bd420d",
     "tests/dataqual14/continue_original.py": "17ac5b4bf5b8568ca87de9a2ac85a34b9d64a2de9473f61a62a420ec8a066359",
     "tests/dataqual14/qualify_active_grass.py": "5ff20a26463bcfad6c4f7c241a6e08dc1917e0ec123e60854dc526336671c68c",
     "tests/dataqual14/qualify_root_extension.py": "e6b06628c409c3c7cc8970901b500e3feca7636b9b78bf7b21f0610dd6374905",
     "tests/dataqual14/qualify_runtime_preservation.py": "8b224bcd0cc7df66d889fca4ab547060df55eed4a08eb578f944952f6054c235",
     "tests/dataqual14/root_extension_oracle.f90": "a2d4b1ce1ec26e989e1a20b223d97271f973ab0f9cadf3c10a07547d49cc2a2a",
-    "tests/dataqual14/verify_evidence.py": "d02dd105e07a2ba0b0f9ed66683935b56bd5a64870da1b9b2d543859147b1437",
+    "tests/dataqual14/verify_evidence.py": "fd235be7c535cb0f1e3f8c52dd504d9fe339e3e9ff2d251c7543a2ac5c757c42",
     "tools/solute/build_grass_startup.py": "3cd8d8b120ae40bc2b44e7b4bb3075b478b6fd661a508569b63a845b64ca5400",
     "tools/solute/qualify_grass_prefix.py": "b090b678fc0c800325c40be56fd9c4720053ef67347d8d6fe6cc57d86c3c2355"
   },
@@ -156,5 +157,15 @@
   },
   "new_original_projects_this_work_unit": 0,
   "original_project_denominator": 3,
-  "complete_original_migrations": 0
+  "complete_original_migrations": 0,
+  "reviewed_production_delta": {
+    "app/grass_project/initial_interval.f90": "M",
+    "app/grass_project/restart_file.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M"
+  },
+  "ci_feedback_reconciliation": {
+    "predecessor_failure": "DATAQUAL12 unreviewed delta scope guard; same rejection already present on baselinea191 (44 additional baseline paths).",
+    "current_feedback": "Current DATAQUAL14 closed production-delta and source/capsule verifier; existing native owning contracts retained.",
+    "scope": "Evidence/feedback only; no full F-CI or production expansion."
+  }
 }

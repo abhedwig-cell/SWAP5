@@ -16,7 +16,7 @@ with tarfile.open(ROOT/'integration/dataqual13/EVIDENCE.tar.xz') as t:
  for n in ['components/dq13-grass-water-O2/full/budget.csv','components/dq13-grass-month-O2/budget.csv','components/dq13-grass-year-O2/budget.csv']:
   files['inherited/'+n]=t.extractfile(n).read()
 s=json.loads((OUT/'STATUS.json').read_text());paths=subprocess.check_output(['git','diff','--name-only',s['baseline'],'HEAD'],text=True,cwd=ROOT).splitlines()
-s['source_sha256']={p:sha((ROOT/p).read_bytes()) for p in paths if p.startswith(('src/','app/','tools/','tests/')) and (ROOT/p).is_file()}
+s['source_sha256']={p:sha((ROOT/p).read_bytes()) for p in paths if p.startswith(('src/','app/','tools/','tests/','.github/')) and (ROOT/p).is_file()}
 for f in (ROOT/'tests/dataqual14').glob('*.py'):s['source_sha256'][str(f.relative_to(ROOT))]=sha(f.read_bytes())
 files['MANIFEST.json']=json.dumps({n:sha(b)for n,b in sorted(files.items())},indent=2).encode()
 with tarfile.open(OUT/'EVIDENCE.tar.xz','w:xz') as t:

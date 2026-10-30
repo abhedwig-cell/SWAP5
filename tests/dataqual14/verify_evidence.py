@@ -1,9 +1,16 @@
 """Verify actual source-bound active Grassgrowth qualification without scratch dependencies."""
-import csv,hashlib,io,json,struct,tarfile
+import csv,hashlib,io,json,struct,subprocess,tarfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sha=lambda b:hashlib.sha256(b).hexdigest()
 def verify():
  s=json.loads((ROOT/'integration/dataqual14/STATUS.json').read_text())
+ # Closed reviewed production delta. A portable archive can verify the bound
+ # capsule; current Git feedback additionally rejects any unreviewed source.
+ if (ROOT/'.git').exists():
+  delta=subprocess.check_output(['git','diff','--name-status',s['baseline'],'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines()
+  assert {r.split('\t')[1]:r.split('\t')[0] for r in delta}==s['reviewed_production_delta'],'unreviewed production delta'
+  assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT),'uncommitted production source'
+
  for p,h in s['source_sha256'].items():assert sha((ROOT/p).read_bytes())==h,p
  b=(ROOT/'integration/dataqual14/EVIDENCE.tar.xz').read_bytes();assert sha(b)==s['evidence_sha256']
  with tarfile.open(fileobj=io.BytesIO(b),mode='r:xz')as t:
