@@ -18,7 +18,7 @@ module mod_grass_prefix_restart_file
  implicit none
  private
  public::write_grass_prefix_restart,read_grass_prefix_restart
- character(8),parameter::MAGIC='S5GRS002'
+ character(8),parameter::MAGIC='S5GRS003'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
   integer(c_int) function rename_c(a,b)bind(C,name='rename')
@@ -93,24 +93,40 @@ contains
   real(real64)::time
   logical::ok
   status=1
+  status=101
   if(potential%validate()/=0.or..not.potential%active.or.roots%validate()/=0)return
+  status=102
   call potential%materialize_owner(crop,potential_owner,ok,code)
-  if(code/=0.or..not.ok.or.allocated(potential_owner%b110_reference_compatibility))return
+  status=103
+  if(code/=0.or..not.ok)return
+  status=104
   if(.not.water%ready().or.crop%validate()/=WOFOST_CROP_OWNER_OK)return
+  status=105
   if(.not.crop%crop_emerged.or..not.allocated(crop%biomass).or..not.allocated(crop%evolution_continuation))return
-  if(allocated(crop%b110_reference_compatibility))return
+  status=106
+  status=107
   if(min(management%warm_days,management%regrowth_delay_days)<0)return
+  status=108
   call water%current_time(time,ok)
-  if(.not.ok.or.time/=aint(time).or.time<0d0.or.time>366d0)return
+  status=109
+  if(.not.ok.or.time/=aint(time).or.time<0d0.or.time>1827d0)return
+  status=110
   call water%certified_parameter_identity(identity,ok);if(.not.ok)return
+  status=111
   call water%snapshot(physical,ok);if(.not.ok)return
   select type(q=>physical)
   type is(fmr_b110_boesten_evaporation_state_t)
+  status=112
    n=q%active_nodes
+  status=113
    if(allocated(q%salt).or.allocated(q%macropore).or.allocated(q%snow).or.allocated(q%rutter))return
+  status=114
    if(.not.allocated(q%soil_temperature))return
+  status=115
    call build_soil_temperature_field_view(q%soil_temperature,heat,code);if(code/=0)return
+  status=116
    leaf_count=crop%biomass%active_leaf_cohort_count()
+  status=117
    if(leaf_count<1.or.leaf_count>4096)return
    pending=trim(path)//'.pending'
    open(newunit=u,file=pending,access='stream',form='unformatted',status='replace',action='write',iostat=io)
@@ -150,6 +166,10 @@ contains
     management%warm_days,management%regrowth_delay_days
    if(io==0)call write_crop(u,potential_owner,io)
    if(io==0)write(u,iostat=io)roots%actual_root_depth_cm,roots%potential_root_depth_cm
+   if(io==0)write(u,iostat=io)management%potential_regrowth_delay_days,management%harvested_dry_matter, &
+     management%potential_harvested_dry_matter,management%cut_index,management%potential_cut_index
+   if(io==0)call write_compatibility(u,crop,io)
+   if(io==0)call write_compatibility(u,potential_owner,io)
    close(u)
    if(io/=0)return
    call read_bytes(pending,bytes,code);if(code/=0)return
@@ -201,7 +221,7 @@ contains
   open(newunit=u,file=path,access='stream',form='unformatted',status='old',action='read',iostat=io)
   if(io/=0)return
   decode:block
-   read(u,iostat=io)tag;if(io/=0.or.tag/=MAGIC)exit decode
+   read(u,iostat=io)tag;if(io/=0.or.(tag/=MAGIC.and.tag/='S5GRS002'))exit decode
    do i=1,size(FILES)
     read(u,iostat=io)length;if(io/=0.or.length<1.or.length>2097152)exit decode
     allocate(character(length)::text)
@@ -214,7 +234,7 @@ contains
    if(io/=0.or.n<2.or.n>256)exit decode
    if(n/=parameters%active_nodes.or.n/=identity%active_nodes)exit decode
    if(.not.ieee_is_finite(clock))exit decode
-   if(clock/=aint(clock).or.clock<0d0.or.clock>366d0)exit decode
+   if(clock/=aint(clock).or.clock<0d0.or.clock>1827d0)exit decode
    allocate(identity%z(n),identity%dz(n),temperatures(n))
    read(u,iostat=io)identity%z,identity%dz;if(io/=0)exit decode
    allocate(fmr_b110_boesten_evaporation_state_t::physical)
@@ -246,6 +266,18 @@ contains
    read(u,iostat=io)decoded_roots%actual_root_depth_cm,decoded_roots%potential_root_depth_cm
    if(io/=0.or.decoded_roots%validate()/=0.or..not.root_parameters%ready())exit decode
    if(decoded_roots%potential_root_depth_cm>root_parameters%maximum_root_depth_cm)exit decode
+   if(tag==MAGIC)then
+    read(u,iostat=io)m%potential_regrowth_delay_days,m%harvested_dry_matter,m%potential_harvested_dry_matter,m%cut_index,m%potential_cut_index
+    if(io/=0)exit decode
+    call read_compatibility(u,decoded,io);if(io/=0)exit decode
+    call read_compatibility(u,potential_owner,io);if(io/=0)exit decode
+    call initialize_wofost_potential_shadow_from_actual(potential_owner,decoded_potential,code)
+    if(code/=0)exit decode
+   end if
+   if(min(m%cut_index,m%potential_cut_index)<1)exit decode
+   if(m%potential_regrowth_delay_days<0.or. &
+      .not.all(ieee_is_finite([m%harvested_dry_matter,m%potential_harvested_dry_matter])))exit decode
+   if(min(m%harvested_dry_matter,m%potential_harvested_dry_matter)<0d0)exit decode
    inquire(unit=u,pos=position)
    if(position/=size(bytes)-3)exit decode
    if(decoded%validate()/=WOFOST_CROP_OWNER_OK.or.min(m%warm_days,m%regrowth_delay_days)<0)exit decode
@@ -255,6 +287,28 @@ contains
    water=restored;crop=decoded;management=m;potential=decoded_potential;roots=decoded_roots;time=clock;status=0
   end block decode
   close(u)
+ end subroutine
+ subroutine write_compatibility(u,crop,io)
+  integer,intent(in)::u
+  type(wofost_crop_owner_state_t),intent(in)::crop
+  integer,intent(out)::io
+  write(u,iostat=io)allocated(crop%b110_reference_compatibility)
+  if(io/=0)return
+  if(allocated(crop%b110_reference_compatibility)) &
+   write(u,iostat=io)crop%b110_reference_compatibility%lai_exponential_rate_carryover
+ end subroutine
+ subroutine read_compatibility(u,crop,io)
+  integer,intent(in)::u
+  type(wofost_crop_owner_state_t),intent(inout)::crop
+  integer,intent(out)::io
+  logical::present_state
+  read(u,iostat=io)present_state;if(io/=0)return
+  if(present_state)then
+   allocate(crop%b110_reference_compatibility)
+   read(u,iostat=io)crop%b110_reference_compatibility%lai_exponential_rate_carryover
+   if(io/=0)return
+  end if
+  if(crop%validate()/=0)io=1
  end subroutine
  subroutine write_crop(u,crop,io)
   integer,intent(in)::u

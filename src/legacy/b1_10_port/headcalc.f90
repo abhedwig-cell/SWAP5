@@ -971,6 +971,19 @@ subroutine headcalc(worker, fsi_workspace, history, state_binding, evaluation_co
       ctx%diagnostics%internal_retries = ctx%diagnostics%internal_retries + 1
       goto 900
    end if
+   if(swbotb==1.and.dt<2d-5)then
+      block
+         character(8)::setting
+         integer::env_status,worst
+         call get_environment_variable('SWAP5_DIAG_GROUNDWATER',setting,status=env_status)
+         if(env_status==0.and.trim(setting)=='1')then
+            worst=maxloc(abs(fsi_ws%residual(:NN)),dim=1)
+            write(*,*)'GW_NEWTON_FAILURE',dt,state%gwlinp,NN,state%numbit,worst, &
+              maxval(abs(fsi_ws%residual(:NN))),maxval(abs(state%h(:NN)-fsi_ws%old_head(:NN))), &
+              state%h(NN),state%hm1(NN),grid_z(NN)-state%gwlinp
+         end if
+      end block
+   end if
    if (.NOT.fldtmin) then
 
 !     reset soil state variables

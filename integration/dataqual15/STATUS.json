@@ -1,0 +1,30 @@
+{
+  "work_unit": "DATAQUAL15",
+  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+  "stage": "IMPLEMENTING",
+  "owners": [
+    "existing SWBOTB1 Richards boundary",
+    "immutable existing fmr_hbot5_control_t table",
+    "existing joint grass owners"
+  ],
+  "invariants": [
+    "No tolerance or solver budget change",
+    "Trial endpoint table sample is pure; rejected trials retain state",
+    "Original input bytes retained"
+  ],
+  "selected": [
+    "O0/O2 current native original Grassgrowth from day1 through variable groundwater and first management boundary",
+    "Same-build disk restart across changing groundwater",
+    "Existing groundwater/default/oxygen preservation"
+  ],
+  "expected_seconds": {
+    "compile_per_build": 150,
+    "original_full_year": 1300
+  },
+  "expensive_selection_reason": "User explicitly requires full original project. Actual joint runtime closure203 providers; a small table test cannot establish full/half water and joint restart composition.",
+  "not_selected": [
+    "full FCI unless affected owner scope requires it",
+    "highest low air stress",
+    "repeated long Andelst stall"
+  ]
+}
