@@ -1,0 +1,41 @@
+{
+  "status": "CURRENT_CLIPPED_ROOT_LINEAGE_O0_O2_PASS",
+  "qualified_source_commit": "29b47db9f2ebbca916725252f1dc066b3b83d2e6",
+  "production_baseline": "a71c159",
+  "provider_count": 18,
+  "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "O0_O2_native_transcript_exact": true,
+  "all_six_carriers_and_persistence_modes_checked": true,
+  "old_default_contract_cases_retained": true,
+  "production_code_changes": false,
+  "evidence_sha256": "4a1fb3fafa058ac6f581b58ab3e18c3d561df13aa6e99d2c4d8b7625dfdca75a",
+  "source_sha256": {
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/runtime/mod_canonical_interval_runtime.f90": "7967d4c2fb3c32b5baf01c0b6dcfaaa686648d9a89a14ccd3b3c37307aa3188f",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/kernel/mod_kernel_transactions.f90": "3c7ebd554d85934e2885997b124cda318680b79941444025dd820c4dd5fa34de",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_wofost_actual_biomass_state.f90": "c451172db39746eabfdea0c681cd9c9bb5d7e8047ec1044e28f995d9747a13ac",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_wofost_rate_table.f90": "611b2891e64ec992a395174117d029f9f0d196ca3c04a18e858a9ced809d8777",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_crop_root_depth_dvs.f90": "17ea93688481fd2abc0dd7bc552ddf77583e69e7e29bca30649485fcfdc1e161",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_crop_root_depth_biomass.f90": "cad3f316fa4ad3bd3c3a2992c07782c5fcb2794347b6b7ea4ab9eb2ff01095a3",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_crop_root_profile_static.f90": "79c54eedac5126236b7ecc3e02d5485012a4f0438ff79e7677452dd9a9f47b95",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_crop_root_uptake_input_contract.f90": "01c08474c08d65cfca15055acb4aaaea1ca54968c8ae0d408a377a32d6d9f176",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_crop_root_biomass_distribution.f90": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_crop_bartholomeus_input.f90": "470c4fd84eb636db1b1d30682c94539db896fa7bb3d1911c36d3c9c1d13fd024",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_wofost_crop_owner_state.f90": "889ee90ae98eeec10aee37b52497b7b472d572d4815c475d911dedf7b2ce0401",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/crop/mod_wofost_one_day_structural_evolution.f90": "50ea53989291d3b4abac299a254ffffb6b0c43c9171ec57a85bffb47983d9e39",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/src/runtime/mod_fmr_wofost_accepted_window_lineage.f90": "59776899b96533123884b9331cb820b139772ef3633d79a96f09c34019442484",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/tests/fwof/test_fwof34_accepted_window_runtime_lineage.f90": "8f6dcd48f94b10a6f4cc96322ada164afc9099dad71d1fe4e77be98dafc571de",
+    "/workspace/scratch/c3166a264227/SWAP5-clipped-lineage/tests/dataqual15_hupsel/qualify_contracts.py": "da29870011b95a7694c0ff0b0af0534eda439b38218abbf1c91c6accd66a97e3"
+  },
+  "cost_seconds": {
+    "O0": 1.3736715229970287,
+    "O2": 4.088732184000037
+  },
+  "failed_feedback": "Prior97e45d9 driver omitted current kernel mass-completeness status; native FAIL retained. Current finite conservative test-model certificate repairs that omission; hydraulic/kernel mass assertions unchanged.",
+  "claim_ceiling": "Accepted-window lineage and biological receipt semantics only; no historical project calculation or additional migrated days.",
+  "canonical_admitted": false
+}

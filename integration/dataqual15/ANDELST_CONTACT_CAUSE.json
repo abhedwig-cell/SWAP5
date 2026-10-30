@@ -1,0 +1,54 @@
+{
+  "scope": "CURRENT_SOURCE_DIAGNOSTIC_FROM_REBOUND_HISTORICAL_CHECKPOINT_NOT_QUALIFICATION",
+  "source_baseline": "e3ea9ac",
+  "instrumentation_commit": "254f6301f4aeff86c27a26e7346292fb871845cf",
+  "full_original_completed": false,
+  "repair_implemented": false,
+  "native_seconds": 17.97510775599949,
+  "native_returncode": 1,
+  "rollback_exact": true,
+  "first_small_failed_Newton_dt_day": 6.008148201175345e-08,
+  "contact": {
+    "node_pair": [
+      26,
+      27
+    ],
+    "level_boundary_cm": -26.0,
+    "pressure_head_cm": [
+      -0.39024879013229613,
+      0.39024879013229336
+    ],
+    "perturbation_cm": 1e-08,
+    "perched_top_node_plus": 26,
+    "perched_top_node_minus": 27,
+    "perched_level_plus_cm": -25.999999993593832,
+    "perched_level_minus_cm": -26.00000000640617,
+    "node26_unsaturated_absorption_plus_cm_day": 0.0,
+    "node26_unsaturated_absorption_minus_cm_day": 0.022332123569824055,
+    "assembled_J26_26": 30.47105448533504,
+    "finite_difference_J26_26": 1116636.649545672,
+    "storage_slope_stable": 1.6243431073366548e-06
+  },
+  "terminal": {
+    "dt_day": 8.881784197001252e-16,
+    "total_rate_residual_cm_day": 0.3941342727891117,
+    "total_rate_tolerance_cm_day": 0.31525197391593474,
+    "largest_compartment_rate_residual_cm_day": 0.025223553674663522,
+    "pond_and_head_gates_pass": true,
+    "linear_solve_status": 0,
+    "linear_residual_max": 4.302104678969215e-18,
+    "storage_coupling_rank": 0
+  },
+  "source_control_limits": {
+    "original_MAXIT": 30,
+    "original_MAXBACKTR": 4,
+    "diagnostic_MAXIT": 64,
+    "diagnostic_MAXBACKTR": 24,
+    "original_DTMIN_day": 1e-05,
+    "original_DTMAX_day": 0.002
+  },
+  "cause": "Whole partly saturated perched top cell excludes unsaturated absorption. Top index26/27 flips at interpolation boundary-26cm while node26 remains h<0, creating finite absorption jump. Continuous Jacobian augmentation alone cannot remove this discontinuity.",
+  "donor": "Original B0 macrorate ABSORPTION has same explicit partly-saturated whole-cell exclusion and recalculates CALCGWL each Newton residual. A physical correction requires B1 reference qualification before B2 promotion; arbitrary smoothing is not established.",
+  "evidence_path": "integration/dataqual15/ANDELST_CONTACT_DIAGNOSTIC.tar.xz",
+  "evidence_sha256": "0e0c5a80e4481e98a4e74632a06cbdc813e8514a76508716c4d131f445b470e4"
+}

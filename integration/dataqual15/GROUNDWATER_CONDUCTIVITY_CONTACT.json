@@ -1,0 +1,48 @@
+{
+  "scope": "ACTUAL_ORIGINAL_EVENT_DIAGNOSTIC_NOT_RESTART_QUALIFICATION",
+  "source_commit": "32e719a0ed3bcea9e882d58f9df4d00c24892e58",
+  "original_day": 698,
+  "retained_full_day": 697,
+  "failed_internal_time": 697.2448275780339,
+  "samples": [
+    {
+      "dt": 9.811174095375463e-11,
+      "node": 44,
+      "head_cm": -0.0033897037258503624,
+      "perturbation_cm": 1e-07,
+      "assembled_J": 1267743.2817793547,
+      "finite_difference_J": 1544293.2596410876,
+      "reported_provider_dk_term": 0.0,
+      "K_plus_cm_day": 83.24164000000002,
+      "K_minus_cm_day": 76.73944400408078,
+      "residual_jump_after_linear_part_cm_day": 0.05530999557234656
+    },
+    {
+      "dt": 9.811174095375463e-11,
+      "node": 44,
+      "head_cm": -0.0033897037258503624,
+      "perturbation_cm": 1e-08,
+      "assembled_J": 1267743.2817793547,
+      "finite_difference_J": 4029529.917762742,
+      "reported_provider_dk_term": 0.0,
+      "K_plus_cm_day": 83.24164000000002,
+      "K_minus_cm_day": 76.73948774827295,
+      "residual_jump_after_linear_part_cm_day": 0.055235732719667745
+    },
+    {
+      "dt": 9.811174095375463e-11,
+      "node": 44,
+      "head_cm": -0.0033897037258503624,
+      "perturbation_cm": 1e-09,
+      "assembled_J": 1267743.2817793547,
+      "finite_difference_J": 28881896.46804673,
+      "reported_provider_dk_term": 0.0,
+      "K_plus_cm_day": 83.24164000000002,
+      "K_minus_cm_day": 76.7394921225699,
+      "residual_jump_after_linear_part_cm_day": 0.05522830637253475
+    }
+  ],
+  "cause": "Legacy relsat>1-1e-6 shortcut jumps K from76.73949 to83.24164cm/day at the live bottomunknown, making the residual discontinuous. A smooth-Jacobian amendment alone cannot remove this finite jump.",
+  "existing_repair": "Existing continuous_saturation_conductivity retains the selected Mualem law through the legacy shortcut; new original-project composition requires actual qualification.",
+  "physics_disabled": false
+}

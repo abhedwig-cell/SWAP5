@@ -1,0 +1,11 @@
+# Original Hupsel third-crop grass rotation
+
+The original third crop uses SWWOFOST3, SWRDC1, microscopic uptake, physical oxygen, salinity, Rutter and threshold mowing. This successor reuses the incumbent actual/potential WOFOST crop transaction, lifecycle, root-depth and adaptive-root owners. Qualified canonical3170aa1 grass development and daily mowing physiology are imported without a copied growth equation.
+
+The existing grass management continuation additionally retains separate actual/potential growing days since cut, alongside separate delays, cut indices and cumulative exports. Immutable source DMMOWTB(daynr), MXGDMOW, DMRESTMOW, DELAYMOWTB and all-mowing SEQGRZMOW bind the process. The source trigger is strictly aerial live+dead matter greater than DMMOWTB, or growing-days greater than MXGDMOW after the first cut. Mowing runs at source rate/update ordering; actual and potential thresholds are evaluated independently. Crop transaction clones and typed persistence include management before any publication.
+
+Source SWRD2 oxygen selection controls depth extension, not root biomass production: original WOFOST suppresses GRRT by oxygen only for SWRD3. The generalized adapter therefore leaves the separate biomass gate off for original potato/grass while retaining the existing root-depth oxygen gate. On a mowing day the adaptive owner receives the actual source root death rate, which is zero after mowing; deriving death as gross minus net would incorrectly add gross root production as a death flux when net growth was reset by mowing.
+
+Grass has no germination fields in the original input. Its existing emerged WOFOST/lifecycle/root/profile state is initialized directly at source crop-calendar activation, without inventing an accepted water interval. The future configuration can be read before activation, but cannot influence water before that date. Annual potato defaults remain unchanged except the separately documented source SWRD2 biomass-gate correction.
+
+This is experimental until compiled original execution and joint restart cover the source year, threshold mowing and independent actual/potential management. Full scientific equivalence is a separate claim. No new model fixtures or admission matrix are introduced.

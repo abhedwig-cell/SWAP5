@@ -1,0 +1,21 @@
+{
+  "scope": "ORIGINAL_FORCING_EDGE_ROUNDOFF_REPAIR",
+  "failed_original_day": 1475,
+  "old_retained_full_day": 1474,
+  "old_source": "5ab83ea",
+  "previous_real_interval": [
+    1474.1599999999999,
+    1474.1999999999998
+  ],
+  "requested_ghost_interval": [
+    1474.1999999999998,
+    1474.2
+  ],
+  "duration_day": 2.2737367544323206e-13,
+  "failed_solver_attempts": 31,
+  "temporal_rejections": 0,
+  "repair": "Existing64*epsilon*absolute_clock alignment now targets the actual forcing edge, including rain-end; the entire remainder is integrated in the preceding real interval.",
+  "physical_input_changes": false,
+  "tolerances_changed": false,
+  "time_or_rain_discarded": false
+}

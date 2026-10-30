@@ -8,7 +8,9 @@ module mod_wofost_two_phase_crop_window
        finalize_wofost_one_day_candidate, WOFOST_ONE_DAY_OK
   use mod_wofost_one_day_rate_state_view, only: wofost_one_day_rate_state_view_t, &
        assemble_wofost_one_day_rate_state_view, WOFOST_RATE_STATE_VIEW_OK
-  use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t
+  use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t,wofost_rate_scalar_parameters_t
+  use mod_wofost_grass_development,only:grass_development_candidate_t
+  use mod_wofost_grass_daily_growth,only:complete_grass_daily_candidate,GRASS_DAILY_OK
   use mod_wofost_prepare_assimilation, only: wofost_prepare_assimilation_forcing_t, &
        wofost_prepare_assimilation_result_t, prepare_wofost_actual_assimilation, &
        WOFOST_PREPARE_ASSIMILATION_OK
@@ -62,12 +64,13 @@ module mod_wofost_two_phase_crop_window
 
   public :: begin_wofost_one_day_crop_window
   public :: complete_wofost_one_day_crop_window
+  public :: complete_wofost_grass_crop_window
 
 contains
 
   subroutine begin_wofost_one_day_crop_window(committed, forcing, t0, t1, &
        stem_area_coefficient, storage_area_coefficient, rate_parameters, &
-       window, diagnostics, status)
+       window, diagnostics, status,attainable_multiplier_override)
     type(wofost_crop_owner_state_t), intent(in) :: committed
     type(wofost_one_day_forcing_t), intent(in) :: forcing
     real(real64), intent(in) :: t0, t1
@@ -77,6 +80,7 @@ contains
     type(wofost_two_phase_crop_window_t), intent(out) :: window
     type(wofost_crop_window_begin_diagnostics_t), intent(out) :: diagnostics
     integer, intent(out) :: status
+    real(real64),intent(in),optional::attainable_multiplier_override
 
     type(wofost_crop_owner_state_t) :: prepared_candidate
     type(wofost_one_day_window_context_t) :: structural_context
@@ -84,6 +88,7 @@ contains
     type(wofost_prepare_assimilation_forcing_t) :: phase_a_forcing
     type(wofost_prepare_assimilation_result_t) :: prepared_assimilation
     type(wofost_finalize_rate_forcing_t) :: phase_b_forcing
+    type(wofost_rate_scalar_parameters_t)::scalars
     logical :: view_available
     integer :: component_status
 
@@ -91,8 +96,9 @@ contains
     diagnostics = wofost_crop_window_begin_diagnostics_t()
     status = WOFOST_CROP_WINDOW_STRUCTURAL_PREPARE_ERROR
 
+    scalars=rate_parameters%scalar_view()
     call prepare_wofost_one_day_candidate(committed, forcing, t0, t1, &
-         prepared_candidate, structural_context, component_status)
+         prepared_candidate, structural_context, component_status,grass_development=scalars%grass_development)
     diagnostics%structural_prepare_status = component_status
     if (component_status /= WOFOST_ONE_DAY_OK) return
     diagnostics%prepared_candidate_built = .true.
@@ -131,7 +137,7 @@ contains
     phase_a_forcing%running_minimum_temperature = structural_context%running_minimum_temperature
 
     call prepare_wofost_actual_assimilation(rate_state_view, rate_parameters, &
-         phase_a_forcing, prepared_assimilation, component_status)
+         phase_a_forcing, prepared_assimilation, component_status,attainable_multiplier_override=attainable_multiplier_override)
     diagnostics%phase_a_status = component_status
     if (component_status /= WOFOST_PREPARE_ASSIMILATION_OK) then
       status = WOFOST_CROP_WINDOW_PHASE_A_ERROR
@@ -251,5 +257,32 @@ contains
     candidate = self%prepared_candidate
     available = .true.
   end subroutine wofost_crop_window_copy_prepared_candidate
+
+  subroutine complete_wofost_grass_crop_window(window,parameters,updates,aggregates,development, &
+       candidate,rates,status,mowing_residual,harvested,suppress_actual_root_growth)
+    type(wofost_two_phase_crop_window_t),intent(in)::window
+    type(wofost_rate_parameter_bundle_t),intent(in)::parameters
+    type(wofost_one_day_update_parameters_t),intent(in)::updates
+    type(wofost_accepted_window_aggregates_t),intent(in)::aggregates
+    type(grass_development_candidate_t),intent(in)::development
+    type(wofost_crop_owner_state_t),intent(out)::candidate
+    type(wofost_one_day_rate_packet_t),intent(out)::rates
+    integer,intent(out)::status
+    real(real64),intent(in),optional::mowing_residual
+    real(real64),intent(out),optional::harvested
+    logical,intent(in),optional::suppress_actual_root_growth
+    type(wofost_finalize_rate_forcing_t)::forcing
+    integer::code
+    candidate=wofost_crop_owner_state_t();rates=wofost_one_day_rate_packet_t()
+    if(present(harvested))harvested=0.0_real64
+    status=WOFOST_CROP_WINDOW_CONTEXT_NOT_READY
+    if(.not.window%ready().or..not.window%crop_active())return
+    forcing=window%phase_b_forcing
+    call complete_grass_daily_candidate(window%prepared_candidate,window%structural_context,window%rate_state_view, &
+         parameters,window%prepared_assimilation,forcing,updates,aggregates,development,candidate,rates,code, &
+         mowing_residual=mowing_residual,harvested=harvested,suppress_actual_root_growth=suppress_actual_root_growth)
+    status=WOFOST_CROP_WINDOW_PHASE_B_ERROR
+    if(code==GRASS_DAILY_OK)status=WOFOST_CROP_WINDOW_OK
+  end subroutine complete_wofost_grass_crop_window
 
 end module mod_wofost_two_phase_crop_window

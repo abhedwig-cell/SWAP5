@@ -187,7 +187,7 @@ contains
     end if
     if(present(dconductivity_dhead))then
       if(parameters%continuous_saturation_conductivity) &
-        dconductivity_dhead=b110_continuous_conductivity_slope(parameters%cofgen(:,node_index),pressure_head)
+        dconductivity_dhead=b110_continuous_conductivity_slope(parameters%cofgen(:,node_index),pressure_head,parameters%ksatexm_extension_enabled)
       if(.not.ieee_is_finite(dconductivity_dhead))return
     end if
     ok = .true.
@@ -353,7 +353,7 @@ contains
        dconductivity_dhead = 0.0_real64
        if(self%parameters%continuous_saturation_conductivity)then
           do i=1,n
-             dconductivity_dhead(i)=b110_continuous_conductivity_slope(self%parameters%cofgen(:,i),pressure_head(i))
+             dconductivity_dhead(i)=b110_continuous_conductivity_slope(self%parameters%cofgen(:,i),pressure_head(i),self%parameters%ksatexm_extension_enabled)
           end do
        end if
     end if
@@ -387,7 +387,7 @@ contains
     dconductivity_dhead = 0.0_real64
     if(self%parameters%continuous_saturation_conductivity)then
        do i=1,n
-          dconductivity_dhead(i)=b110_continuous_conductivity_slope(self%parameters%cofgen(:,i),pressure_head(i))
+          dconductivity_dhead(i)=b110_continuous_conductivity_slope(self%parameters%cofgen(:,i),pressure_head(i),self%parameters%ksatexm_extension_enabled)
        end do
     end if
   end subroutine b110_default_mvg_evaluate
@@ -529,11 +529,22 @@ contains
     end if
   end function b110_moiscap
 
-  pure real(real64) function b110_continuous_conductivity_slope(c,head) result(value)
+  pure real(real64) function b110_continuous_conductivity_slope(c,head,ksatexm_enabled) result(value)
     real(real64),intent(in)::c(:),head
-    real(real64)::dh,kplus,kminus,logse,a,t,dlogse
+    logical,intent(in),optional::ksatexm_enabled
+    logical::extension
+    real(real64)::dh,kplus,kminus,logse,a,t,dlogse,theta,relsat
     value=0.0_real64
     if(head>=0.0_real64)return
+    extension=.false.;if(present(ksatexm_enabled))extension=ksatexm_enabled
+    if(extension.and.c(10)>c(3))then
+      theta=b110_watcon(c,head);relsat=(theta-c(1))/c(25)
+      if(relsat>c(11))then
+        ! Differentiate the same original linear KSATEXM branch as K(h).
+        value=(c(10)-c(12))*b110_moiscap(c,head,0.0_real64)/((1.0_real64-c(11))*c(25))
+        return
+      end if
+    end if
     if(c(9)>B110_H_CRIT.and.head>B110_H_CRIT)then
       logse=b110_log1p(c(27)*head/c(25))
       a=-b110_expm1(logse*c(32));t=a**c(7)
@@ -542,8 +553,8 @@ contains
       return
     end if
     dh=max(1.0e-10_real64,1.0e-5_real64*abs(head))
-    kplus=b110_hconduc(c,head+dh,b110_watcon(c,head+dh),.false.,.false.,.true.)
-    kminus=b110_hconduc(c,head-dh,b110_watcon(c,head-dh),.false.,.false.,.true.)
+    kplus=b110_hconduc(c,head+dh,b110_watcon(c,head+dh),extension,.false.,.true.)
+    kminus=b110_hconduc(c,head-dh,b110_watcon(c,head-dh),extension,.false.,.true.)
     value=(kplus-kminus)/(2.0_real64*dh)
   end function
 

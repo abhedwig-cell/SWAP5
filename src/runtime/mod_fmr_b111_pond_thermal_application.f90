@@ -25,7 +25,8 @@ contains
   type(fmr_template_t),intent(in)::t
   ok=(t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RESTRICTED_SOIL_TEMPERATURE.or. &
    t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION.or. &
-   t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION).and. &
+   t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION.or. &
+   t%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK).and. &
    t%solute_state_layout_id==FMR_SOLUTE_STATE_LAYOUT_NONE.and. &
    (t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_NONE.or. &
     t%numerical_continuation_layout_id==FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY)
@@ -75,7 +76,19 @@ contains
  contains
   subroutine inspect(q)
    class(fmr_b110_physical_state_t),intent(in)::q
-   if(allocated(q%salt).or.allocated(q%macropore).or.allocated(q%snow).or.allocated(q%rutter))return
+   if(allocated(q%salt).or.allocated(q%macropore).or.allocated(q%snow))return
+   if(allocated(q%rutter))then
+    select type(q)
+    type is(fmr_b110_black_evaporation_state_t)
+     if(.not.ieee_is_finite(q%rutter%canopy_storage()))return
+     if(q%rutter%canopy_storage()<0d0)return
+    class default
+     return
+    end select
+   end if
+   if(allocated(q%reactive_solute))then
+    if(.not.q%reactive_solute%same_state(chemical))return
+   end if
    if(.not.allocated(q%soil_temperature))return
    if(.not.allocated(q%water_content).or..not.allocated(q%pressure_head))return
    if(q%active_nodes/=size(theta).or.size(q%water_content)/=size(theta))return
@@ -103,6 +116,7 @@ contains
   real(real64),intent(in)::t0,t1
   type(matrix_joint_result_t),intent(out)::result
   type(kernel_committed_state_t)::w
+  type(fmr_b110_physical_forcing_t)::trial_forcing
   type(kernel_checkpoint_t)::checkpoint
   type(kernel_candidate_state_t)::candidate
   type(fmr_serialized_physical_observation_t)::obs
@@ -115,7 +129,7 @@ contains
   real(real64),allocatable::theta(:)
   real(real64)::clock
   integer(int64)::id,revision
-  integer::code
+  integer::code,k
   logical::ok,committed
   result=matrix_joint_result_t()
     if(.not.all(ieee_is_finite([supply%t0,supply%t1,supply%rain_rate,supply%rain_c, &
@@ -127,14 +141,17 @@ contains
       allocated(forcing%macropore_top_input))return
     if(allocated(forcing%black_evaporation))then
       if(.not.parameters%black_heat_composition_enabled)return
-      if(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION)return
-      if(allocated(forcing%pond_input).or.allocated(forcing%rutter).or.allocated(forcing%boesten_evaporation))return
+      if(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION.and. &
+         template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK)return
+      if(allocated(forcing%pond_input).or.allocated(forcing%boesten_evaporation))return
+      if(allocated(forcing%rutter).neqv.(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK))return
       if(supply%implicit_pond_evaporation)return
       if(forcing%black_evaporation%precipitation_rate_cm_per_day/=supply%rain_rate.or. &
          forcing%black_evaporation%irrigation_rate_cm_per_day/=supply%irrigation_rate.or. &
          forcing%black_evaporation%runon_rate_cm_per_day/=supply%runon_rate)return
     else
-      if(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION)return
+      if(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_BLACK_EVAPORATION.or. &
+         template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK)return
     end if
     if(allocated(forcing%boesten_evaporation))then
       if(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION)return
@@ -152,8 +169,15 @@ contains
       if(.not.ieee_is_finite(forcing%rutter%runon_rate_cm_per_day))return
       if(forcing%rutter%runon_rate_cm_per_day<0d0.or. &
           forcing%rutter%runon_rate_cm_per_day/=supply%runon_rate)return
+      if(template%optional_state_layout_id==FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK)then
+        if(.not.parameters%reactive_solute_active)return
+        ! No canopy salt store exists: preserve source Hupsel's clean rain and
+        ! sprinkler water rather than losing intercepted positive solute.
+        if(supply%rain_c/=0d0.or.supply%irrigation_c/=0d0)return
+      else
       if(forcing%rutter%result%net_rain_cm_per_day/=supply%rain_rate.or. &
           forcing%rutter%result%net_surface_irrigation_cm_per_day/=supply%irrigation_rate)return
+      end if
     else
       if(supply%runon_rate/=0d0.and..not.allocated(forcing%pond_input))return
     end if
@@ -179,8 +203,15 @@ contains
   if(size(parameters%dz)/=size(p%dz_cm))return
   if(any(parameters%dz/=p%dz_cm))return
   w=water
+  if(parameters%reactive_solute_active)then
+   call attach_reactive_chemical(w,chemical,parameters,code);if(code/=0)return
+  end if
   call w%capture_checkpoint(checkpoint,ok);if(.not.ok)return
-  call backend%run_trial(column,template,parameters,w,forcing,config,t0,t1,checkpoint, &
+  trial_forcing=forcing
+  if(parameters%reactive_solute_active)then
+   allocate(trial_forcing%reactive_supply);trial_forcing%reactive_supply=supply
+  end if
+  call backend%run_trial(column,template,parameters,w,trial_forcing,config,t0,t1,checkpoint, &
    result%water,candidate,result%diagnostics,trace_accepted_water_flux_substeps=.true.,trace_accepted_soil_n_heat=.true.)
   result%status=JOINT_WATER_REJECTED
   if(.not.result%water%completed.or..not.candidate%ready())return
@@ -201,6 +232,32 @@ contains
    return
   end select
   if(code/=SOIL_TEMP_OK)return
+  if(parameters%reactive_solute_active)then
+   select type(q=>physical)
+   class is(fmr_b110_physical_state_t)
+    if(.not.allocated(q%reactive_solute))return
+    n=q%reactive_solute
+   class default
+    return
+   end select
+   result%chemical=matrix_solute_receipt_t();result%chemical%status=MATRIX_OK
+   do k=1,size(obs%accepted_water_flux_substeps)
+    associate(step=>obs%accepted_water_flux_substeps(k))
+     if(.not.step%reactive_chemical_available)return
+     if(k==1)result%chemical%mass_before=step%chemical_mass_before
+     result%chemical%mass_after=step%chemical_mass_after
+     result%chemical%external_in=result%chemical%external_in+step%chemical_external_in
+     result%chemical%external_out=result%chemical%external_out+step%chemical_external_out
+     result%chemical%decay_out=result%chemical%decay_out+step%chemical_decay_out
+     result%chemical%completed_substeps=k
+    end associate
+   end do
+   result%chemical%residual=result%chemical%mass_after-result%chemical%mass_before- &
+        result%chemical%external_in+result%chemical%external_out
+   if(abs(result%chemical%residual)>1d-10)return
+   if(.not.pond_thermal_states_match(w,n))return
+   water=w;chemical=n;result%status=JOINT_OK;return
+  end if
   dynamic=p;dynamic%temperature_c=heat%temperature_c
   call chemical%snapshot(clock,theta,m,s,revision)
   call reconstruct_matrix_solute_trusted(dynamic,id,revision,clock,theta,m%concentration_mg_cm3, &
