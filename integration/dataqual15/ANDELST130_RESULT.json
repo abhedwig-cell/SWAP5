@@ -1,0 +1,256 @@
+{
+  "scope": "BOUNDED_EXPERIMENTAL_INPUT_EXECUTION_AND_ACTUAL_TEMPORAL_DIAGNOSIS",
+  "source_commit": "0a61d40",
+  "censor": {
+    "scope": "EXPLICITLY_CENSORED_EXPERIMENTAL_RAMPED_RUN_NOT_NATURAL_FAILURE",
+    "censored": true,
+    "censor_reason": "Near-saturated pressure temporal refinement is diagnosed; keep this unqualified ramped run from blocking final canonical admission of the two fully executed original projects.",
+    "signal": "SIGINT",
+    "controller_exit_code": 130,
+    "native_process_observed_absent_after_interrupt": true,
+    "natural_native_terminal_status": "UNKNOWN_INTERRUPTED",
+    "source_commit": "0a61d40",
+    "executable_sha256": "3857230572d2c5f02544e6a69f332aa2b71be4ab047ddd0658aff215f7dc582b",
+    "completed_full_days": 130,
+    "last_accepted_source_time": 130.89000000000425,
+    "last_accepted_source_interval": {
+      "day": "131",
+      "segment": "445",
+      "t0": " 1.30888000000004240E+002",
+      "t1": " 1.30890000000004250E+002",
+      "attempts": "5346",
+      "solver_rejections": "0",
+      "temporal_rejections": "2677",
+      "mass_rejections": "0",
+      "residual_cm": "-2.99444063295295493E-013"
+    },
+    "last_source_cost": {
+      "t0": " 1.30888000000004240E+002",
+      "t1": " 1.30890000000004250E+002",
+      "completed": "T",
+      "nonlinear_iterations": "48012",
+      "headcalc_calls": "16038",
+      "linear_solves": "48012",
+      "backtracking_attempts": "48012",
+      "accepted_substeps": "2669",
+      "min_accepted_dt": " 1.22070304087174009E-007",
+      "max_accepted_dt": " 3.90625000001865175E-006"
+    },
+    "native_elapsed_seconds_before_signal": 1228,
+    "last_full_checkpoint_sha256": "6f3c2f00b24e4c029e9c3b2d0e0274f3c84096a8a79c0bcad6662edfd466fc7d",
+    "max_water_residual_cm": 3.308206248005263e-12,
+    "max_observed_last_heat_residual_j_cm2": 1.4440280568517316e-12,
+    "energy_qualification": "last-substep accounting only, not whole-project energy qualification",
+    "full_project_complete": false,
+    "scientific_equivalence": false,
+    "canonical_admitted": false
+  },
+  "observations": {
+    "andelst130-observed": {
+      "returncode": 87,
+      "diagnostic_stop": 87,
+      "seconds": 0.8169540139970195,
+      "scientific_payload_unchanged": true,
+      "dt_day": 9.76562489540811e-07,
+      "temporal_value_cm": 0.013464716394251619,
+      "unsaturated_head_defect_cm": 0.013464716394251619,
+      "matrix_water_defect_cm": 2.66703687190617e-08,
+      "diagnostic_gwl_difference_cm": 0.010632374629651054,
+      "actual_drainage_exchange_defect_cm": 0.0,
+      "critical_node": 68,
+      "full_head_cm": -1.362016128794583,
+      "half_head_cm": -1.3754808451888345,
+      "full_theta": 0.4419992121995861,
+      "half_theta": 0.44199920330132264,
+      "theta_difference": 8.898263459400368e-09,
+      "theta_head_secant": 6.608578449672531e-07,
+      "macro_water_defect_cm": 2.6173695655273832e-08,
+      "macro_volume_defect_cm": 1.0963452368173421e-14,
+      "dynamic_volume_defect_cm": 2.1926904736346842e-14,
+      "topology_mismatches": 0,
+      "actual_solves": [
+        [
+          "129.27500000000131",
+          "129.27500097656380",
+          "1",
+          "3",
+          "1",
+          "3",
+          "3",
+          "0",
+          "T",
+          "3.5366892021912498E-012",
+          "0.0000000000000000",
+          "-1.3298030813110331E-016"
+        ],
+        [
+          "129.27500000000131",
+          "129.27500048828256",
+          "1",
+          "3",
+          "1",
+          "3",
+          "3",
+          "0",
+          "T",
+          "-2.0346732801308397E-011",
+          "0.0000000000000000",
+          "-1.1813944386226071E-016"
+        ],
+        [
+          "129.27500048828256",
+          "129.27500097656380",
+          "1",
+          "3",
+          "1",
+          "3",
+          "3",
+          "0",
+          "T",
+          "4.4462090867133176E-011",
+          "0.0000000000000000",
+          "8.1870492295011533E-017"
+        ]
+      ]
+    },
+    "andelst131-observed": {
+      "returncode": 87,
+      "diagnostic_stop": 87,
+      "seconds": 0.8671685629997228,
+      "scientific_payload_unchanged": true,
+      "dt_day": 9.76562489540811e-07,
+      "temporal_value_cm": 0.016538637560454816,
+      "unsaturated_head_defect_cm": 0.016538637560454816,
+      "matrix_water_defect_cm": 3.2951037010064965e-08,
+      "diagnostic_gwl_difference_cm": 0.012757695721035134,
+      "actual_drainage_exchange_defect_cm": 0.0,
+      "critical_node": 70,
+      "full_head_cm": -1.390649192566407,
+      "half_head_cm": -1.4071878301268619,
+      "full_theta": 0.4419991932474092,
+      "half_theta": 0.4419991822490976,
+      "theta_difference": 1.0998311594789811e-08,
+      "theta_head_secant": 6.650071116551728e-07,
+      "macro_water_defect_cm": 3.236495782488191e-08,
+      "macro_volume_defect_cm": 5.814793091474257e-15,
+      "dynamic_volume_defect_cm": 1.1636525076852422e-14,
+      "topology_mismatches": 0,
+      "actual_solves": [
+        [
+          "130.32200000000154",
+          "130.32200097656403",
+          "1",
+          "3",
+          "1",
+          "3",
+          "3",
+          "0",
+          "T",
+          "-1.7985892328976678E-011",
+          "0.0000000000000000",
+          "-7.2040999196925498E-017"
+        ],
+        [
+          "130.32200000000154",
+          "130.32200048828278",
+          "1",
+          "3",
+          "1",
+          "3",
+          "3",
+          "0",
+          "T",
+          "2.0048888783490790E-011",
+          "0.0000000000000000",
+          "-6.4354916354421570E-018"
+        ],
+        [
+          "130.32200048828278",
+          "130.32200097656403",
+          "1",
+          "3",
+          "1",
+          "3",
+          "3",
+          "0",
+          "T",
+          "3.7784356950499191E-013",
+          "0.0000000000000000",
+          "-6.7903693235841470E-017"
+        ]
+      ]
+    }
+  },
+  "interpretation": "The actual rejected full/half comparison is dominated by a nearly saturated negative-pressure coordinate. Each Richards sibling converges; storage/macro-volume differences and native balance residuals are small. This proves which temporal criterion costs runtime; it does not prove a missing process, nonlinear/global absence of root, or justify changing a scalar tolerance.",
+  "reference_comparison": {
+    "scope": "DESCRIPTIVE_PARTIAL_COMPARISON_NOT_EQUIVALENCE",
+    "native_source": "0a61d40",
+    "days": 100,
+    "native_ramp_cm": 0.0001,
+    "B0_B1_donors_entry_width_cm": 0.0,
+    "mapping_authority": "Original swap_csv_output.f90: EACT=ievap, TACT=iqrot, DRN=iqdra+iQMpOutDrRap",
+    "B0": {
+      "EACT": {
+        "max_abs_daily_difference": 0.0020607881205825657,
+        "date_at_max": "1998-04-02",
+        "signed_at_max": -0.0020607881205825657,
+        "cumulative_difference": -0.0037631125104482964
+      },
+      "TACT": {
+        "max_abs_daily_difference": 4.923940024922913e-06,
+        "date_at_max": "1998-04-02",
+        "signed_at_max": -4.923940024922913e-06,
+        "cumulative_difference": -4.6943692758455555e-05
+      },
+      "DRN": {
+        "max_abs_daily_difference": 0.02626533203775855,
+        "date_at_max": "1998-03-14",
+        "signed_at_max": 0.02626533203775855,
+        "cumulative_difference": 0.07467003024953918
+      },
+      "GWL": {
+        "max_abs_daily_difference": 8.687580889344858,
+        "date_at_max": "1998-02-06",
+        "signed_at_max": -8.687580889344858,
+        "cumulative_difference": null
+      }
+    },
+    "B1": {
+      "EACT": {
+        "max_abs_daily_difference": 0.002070788120582562,
+        "date_at_max": "1998-04-02",
+        "signed_at_max": -0.002070788120582562,
+        "cumulative_difference": -0.0034531125104482925
+      },
+      "TACT": {
+        "max_abs_daily_difference": 4.923940024922913e-06,
+        "date_at_max": "1998-04-02",
+        "signed_at_max": -4.923940024922913e-06,
+        "cumulative_difference": -4.6943692758455555e-05
+      },
+      "DRN": {
+        "max_abs_daily_difference": 0.026235332037758546,
+        "date_at_max": "1998-03-14",
+        "signed_at_max": 0.026235332037758546,
+        "cumulative_difference": 0.076650030249539
+      },
+      "GWL": {
+        "max_abs_daily_difference": 7.117276161878479,
+        "date_at_max": "1998-02-05",
+        "signed_at_max": -7.117276161878479,
+        "cumulative_difference": null
+      }
+    }
+  },
+  "source_changes_after0a": "None; observation-only backend lives outside the repository scientific source.",
+  "original_sharp_entry_problem": "Unresolved inherited finite source-law jump; this0.0001cm ramped corrected-wall route is not literal B0 dynamics.",
+  "full_original_complete": false,
+  "scientific_equivalence": false,
+  "canonical_admitted": false,
+  "current_source_admission": false,
+  "new_source_same_build_whole_130day_restart_qualified": false,
+  "interrupted_trial_rollback_not_exercised_by_diagnostic_exit": true,
+  "evidence_path": "integration/dataqual15/ANDELST130_EVIDENCE.tar.xz",
+  "evidence_sha256": "535de21e7ce35ac885e7b15e9b27c33356085b1d8d1927e554dc27fdb3d9eed2",
+  "evidence_bytes": 3966292
+}

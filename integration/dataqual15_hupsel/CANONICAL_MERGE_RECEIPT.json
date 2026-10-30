@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1477",
+  "qualified_local_commit": "64d66927b8625db718e6aac57600ac006f69da4a",
+  "published_head": "618ae47722a07b0cdf27e3d8c1ab4f474e270be2",
+  "canonical_merge": "2127bb93dc5158e34a5449a1a775d6f7e59fe440",
+  "qualified_tree": "20ea341c039db72ef658b9a4073342945217b25f",
+  "actual_canonical_tree": "20ea341c039db72ef658b9a4073342945217b25f",
+  "exact_tree": true,
+  "postimage_verifier": "tests/dataqual15_hupsel/verify_combined_closed.py",
+  "postimage_result": "PASS",
+  "hupsel_original_days": 1096,
+  "grass_combined_days": 367,
+  "scientific_equivalence": false,
+  "production_promoted": false,
+  "selected_hosted_checks": [
+    {
+      "name": "F-CI canonical qualification",
+      "run_id": 41046890880,
+      "jobs": [
+        {
+          "id": 124033047311,
+          "name": "selection-preflight",
+          "conclusion": "success"
+        },
+        {
+          "id": 124035749012,
+          "name": "modular-feedback",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Documentation",
+      "run_id": 41046890816,
+      "conclusion": "success"
+    },
+    {
+      "name": "PPA-WU01 production application bootstrap",
+      "run_id": 41046890951,
+      "conclusion": "success"
+    }
+  ],
+  "unselected_full_fci": "NOT_SELECTED; no complete historical F-CI chain or all-CI claim",
+  "source_receipt": "integration/dataqual15_hupsel/COMBINED_CLOSED_RESULT.json",
+  "scope": "Full original Hupsel execution, source-bound physical/chemical ledger qualification and reproducible restart; whole scientific equivalence remains open."
+}
