@@ -23,6 +23,9 @@ module mod_wofost_one_day_structural_evolution
   integer, parameter, public :: WOFOST_ONE_DAY_INCONSISTENT_ANTHESIS = 11
 
   type, public :: wofost_one_day_forcing_t
+    integer :: calendar_day_of_year = 0
+    logical :: grass_soil_temperature_available=.false.
+    real(real64)::grass_soil_temperature_c=0.0_real64
     real(real64) :: minimum_temperature = 0.0_real64
     real(real64) :: average_temperature = 0.0_real64
     real(real64) :: daytime_average_temperature = 0.0_real64

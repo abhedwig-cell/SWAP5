@@ -6,6 +6,8 @@ on:
       - integration/f-ci-canonical
     paths:
       - 'src/**'
+      - 'app/**'
+      - 'integration/dataqual15_hupsel/**'
       - 'tests/**'
       - 'tools/**'
       - 'integration/f-ci/**'
@@ -14,6 +16,8 @@ on:
   pull_request:
     paths:
       - 'src/**'
+      - 'app/**'
+      - 'integration/dataqual15_hupsel/**'
       - 'tests/**'
       - 'tools/**'
       - 'integration/f-ci/**'
@@ -74,7 +78,16 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          if [[ -f integration/dataqual15/EVIDENCE_MANIFEST.json ]]; then
+          if [[ -f integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json ]]; then
+            # Actual full original1827/1096-day executions on the same current
+            # closed source. No whole scientific-equivalence/production promotion.
+            python3 -B tests/dataqual15/verify_grass_full_evidence.py --spec integration/dataqual15/GRASS_UNION_FULL_SPEC.json --capsule integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz --manifest integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json
+            python3 -B tests/dataqual15_hupsel/verify_union_c3_hupsel.py
+          elif [[ -f integration/dataqual15_hupsel/COMBINED_CLOSED_RESULT.json ]]; then
+            # Current closed source, complete original Hupsel and exact native
+            # preservation proof; experimental scope, not full F-CI admission.
+            python3 -B tests/dataqual15_hupsel/verify_combined_closed.py
+          elif [[ -f integration/dataqual15/EVIDENCE_MANIFEST.json ]]; then
             # Closed source-bound original-history proof and actual native
             # preservation. This is experimental scope, not full F-CI admission.
             python3 -B tests/dataqual15/verify_evidence.py

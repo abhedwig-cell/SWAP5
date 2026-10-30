@@ -1,0 +1,48 @@
+{
+  "status": "COMPONENT_PRESERVATION_AND_ORIGINAL_CONTINUATION_TO566_NOT_ADMITTED",
+  "scientific_source_commit": "1b75b5502f613edb60bcbd405e99a7422dfc066c",
+  "archive_sha256": "f16e6d141d21aeb34fdafb268eb3d638c1fe89fb29f5409046cae048596a4896",
+  "archive_members": 163,
+  "implemented_causes": [
+    "microscopic root cap positive sum rounding",
+    "Black dry memory numerical refinement after Rutter canopy filling"
+  ],
+  "next_blocker": "original PONDMX/RSRO/RSROEXP not bound to Rutter surface forcing",
+  "maximum_complete_day": 566,
+  "full_original_project": false,
+  "scientific_equivalence": false,
+  "all_provider_O0": false,
+  "source_sha256": {
+    "src/process/mod_root_micro_de_willigen_process.f90": "95d60587699ba3e84ed4e9bffb8f5011c7513279de77128aa3f872f94494c986",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "086868b4dcfff2cd796fd048942bffbec1974cb860c1ef0f5b05d967bf6b6654"
+  },
+  "archive_size_bytes": 2025692,
+  "publication_build_artifact_omissions": {
+    "original_archive_sha256": "273c0cc6cd2c0631a23e8394158d0470f55923b12672f031f210203366262dce",
+    "original_archive_bytes": 6311624,
+    "omitted_build_artifacts": [
+      {
+        "path": "dq15-hupsel-microcap-O0-bounded/swap5_hupsel",
+        "sha256": "3dcb60af5bd5670111445e638220f2caaecaf9cf3399a80f0175478764dc546a",
+        "bytes": 7270144
+      },
+      {
+        "path": "dq15-hupsel-microcap-O2-bounded/swap5_hupsel",
+        "sha256": "010502c148efaf3180e5914a6a747f256dc41176181174f4bc6124466490b4a7",
+        "bytes": 7229136
+      },
+      {
+        "path": "dq15-hupsel-wetting-fill-O0/swap5_hupsel",
+        "sha256": "c3070fba1ef82c5d3cd5fd66dfe842ea6673b00023cad9d93ec5986973d545d9",
+        "bytes": 8336192
+      },
+      {
+        "path": "dq15-hupsel-wetting-fill-O2/swap5_hupsel",
+        "sha256": "fa1b0aab3c324caec21aea1843f9d58838c4c446d8fcd53eb0e667207b7e4233",
+        "bytes": 7233336
+      }
+    ],
+    "retained_scientific_members_byte_exact": true,
+    "scope": "Only reproducible old default/diagnostic ELF build artifacts are omitted. All source snapshots, compiler/link commands, compiler output, hash bindings, actual model/test outputs and native checkpoint records are retained. Full original-history executables and original TTUTIL are retained by the clean-build/current closed-union capsules. Original complete archives remain preserved outside this publication."
+  }
+}

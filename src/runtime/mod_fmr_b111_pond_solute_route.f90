@@ -2,7 +2,7 @@ module mod_fmr_b111_pond_solute_route
  use iso_fortran_env,only:real64,int64
  use ieee_arithmetic,only:ieee_is_finite
  use mod_b111_persistent_pond
- use mod_fmr_serialized_reference_backend,only:fmr_water_flux_substep_trace_t
+ use mod_fmr_water_flux_trace_contract,only:fmr_water_flux_substep_trace_t
  use mod_solute_water_face_flux_reconstruction,only:reconstruct_interval_water_face_flux,WATER_FACE_FLUX_OK
  use mod_fmr_b111_matrix_solute_route
  use mod_solute_mobile_salt_state,only:mobile_salt_state_t
@@ -10,8 +10,43 @@ module mod_fmr_b111_pond_solute_route
  use mod_b111_reactive_solute_substep
  implicit none
  private
- public::consume_accepted_pond_trace
+ public::consume_accepted_pond_trace,consume_reactive_thermal_substep
 contains
+ subroutine consume_reactive_thermal_substep(committed,step,supply,temperature,receipt)
+  type(matrix_solute_state_t),intent(inout)::committed
+  type(fmr_water_flux_substep_trace_t),intent(in)::step
+  type(pond_step_t),intent(in)::supply
+  real(real64),intent(in)::temperature(:)
+  type(matrix_solute_receipt_t),intent(out)::receipt
+  type(matrix_solute_state_t)::temporary,next
+  type(b111_reactive_solute_substep_forcing_t)::p,dynamic
+  type(mobile_salt_state_t)::m
+  type(solute_compartment_state_t)::s
+  real(real64),allocatable::water(:)
+  real(real64)::clock
+  integer(int64)::id,revision
+  integer::code
+  receipt=matrix_solute_receipt_t()
+  if(.not.committed%ready())return
+  call committed%snapshot(clock,water,m,s,revision)
+  if(clock/=step%t0.or.size(temperature)/=size(water))return
+  if(.not.all(ieee_is_finite(temperature)))return
+  call committed%configuration(p,id);dynamic=p
+  if(dynamic%temperature_active)dynamic%temperature_c=temperature
+  receipt%process_status=1001
+  call reconstruct_matrix_solute_trusted(dynamic,id,revision,clock,water,m%concentration_mg_cm3, &
+       m%mass_mg_cm2,s%sorbed_matrix_mass,temporary,code,surface_mass=s%pond_mass)
+  if(code/=MATRIX_OK)return
+  call consume_accepted_pond_trace(temporary,[step],supply,receipt)
+  if(receipt%status/=MATRIX_OK)return
+  call temporary%snapshot(clock,water,m,s,revision)
+  receipt%process_status=1002
+  call reconstruct_matrix_solute_trusted(p,id,revision,clock,water,m%concentration_mg_cm3, &
+       m%mass_mg_cm2,s%sorbed_matrix_mass,next,code,surface_mass=s%pond_mass)
+  if(code/=MATRIX_OK)then;receipt%status=MATRIX_INVALID;return;end if
+  committed=next;receipt%process_status=0
+ end subroutine consume_reactive_thermal_substep
+
  subroutine consume_accepted_pond_trace(committed,steps,supply,receipt)
   type(matrix_solute_state_t),intent(inout)::committed
   type(fmr_water_flux_substep_trace_t),intent(in)::steps(:)

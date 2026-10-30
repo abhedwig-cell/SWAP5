@@ -1,0 +1,60 @@
+{
+  "scope": "EXPERIMENTAL_CORRECTED_PERCHED_WALL_AND_INHERITED_ENTRY_RAMP_VS_SEPARATE_ORIGINAL_SHARP_ENTRY",
+  "source_commit": "810812b",
+  "diagnostic_source_commit": "643d8e7",
+  "original_project": "3.macroporeflow",
+  "original_days": 481,
+  "canonical_admitted": false,
+  "full_original_complete": false,
+  "scientific_equivalence": false,
+  "corrected_with_ramp": {
+    "entry_width_cm": 0.0001,
+    "O0_days": 50,
+    "O2_days": 65,
+    "O0_O2_payload_exact_days": 50,
+    "same_build_restart": "43->50 exact checkpoint and all budgets",
+    "maximum_water_residual_cm": 9.17739043351142e-13,
+    "maximum_heat_accounting_residual_j_cm2": 1.4322432129176832e-12,
+    "O0_seconds": 685.8121460549992,
+    "O2_seconds": 537.6291332000001,
+    "next_failed_interval": [
+      65.17299999999756,
+      65.17499999999755
+    ],
+    "nonlinear_iterations": 654,
+    "headcalc_calls": 120,
+    "backtracks": 1265
+  },
+  "original_sharp_entry": {
+    "entry_width_cm": 0.0,
+    "completed_full_days": 1,
+    "last_completed_source_interval": 1.9580000000023283,
+    "censored": true,
+    "natural_terminal_status": "UNKNOWN",
+    "failed_Newton_diagnostic_seconds": 18.231716284000868,
+    "diagnostic_intentional_stop_code": 86,
+    "node": 45,
+    "air_entry_head_cm": -10.0,
+    "threshold_cm": -10.00000001,
+    "residual_above_cm_day": 0.004725091900589166,
+    "residual_below_cm_day": -0.03607598223366491,
+    "exchange_jump_cm_day": 0.04080106906082507,
+    "global_root_nonexistence_proven": false
+  },
+  "repairs": [
+    "Proposed B1 unsaturated perched-wall fraction; explicit corrected law",
+    "Preserve every positive macropore stock; no trace or mass gate relaxation"
+  ],
+  "source_numerical_controls": {
+    "MAXIT": 30,
+    "MAXBACKTR": 4,
+    "DTMIN_day": 1e-05,
+    "DTMAX_day": 0.002,
+    "SWKMEAN": 1,
+    "SWKIMPL": 0
+  },
+  "strict_canonical_acceptance_retained": true,
+  "evidence_path": "integration/dataqual15/ANDELST_STORAGE_AND_SHARP_EVIDENCE.tar.xz",
+  "evidence_sha256": "e926edbaa0ec998f257e3602314f2d0188ef62d1e00bfb89978e77fdd55e10c4",
+  "evidence_bytes": 3512676
+}

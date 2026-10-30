@@ -28,7 +28,7 @@ contains
       real(real64), intent(in) :: resp_factor
       logical, intent(out) :: ok
       real(real64) :: c_macro
-      real(real64) :: r_mroot_z0, a, b, dum, lroot
+      real(real64) :: r_mroot_z0, a, b, dum, lroot, concentration_error
       integer :: status
 
       ok = .false.
@@ -64,6 +64,19 @@ contains
                               b*(1.0_real64-(p%depth_m/p%root_shape_m)*exp(-lroot/p%root_shape_m) - &
                                exp(-p%depth_m/p%root_shape_m))
       else
+         c_macro = 0.0_real64
+      end if
+      ! The analytical concentration is nonnegative up to the zero front.
+      ! Cancellation in its three-term expression and the existing 1e-12
+      ! zero-depth bracket can give a tiny negative value just above that front.
+      ! Certify those two numerical errors before publishing a zero boundary;
+      ! a larger negative result remains an explicit physics failure.
+      if (c_macro < 0.0_real64) then
+         concentration_error = 32.0_real64*epsilon(1.0_real64)*(abs(p%ctop)+abs(a)+abs(b)) + &
+              1.0e-12_real64*max(1.0_real64,abs(lroot))*p%depth_m* &
+              (abs(a)*exp(-lroot/p%microbial_shape_m)/p%microbial_shape_m**2 + &
+               abs(b)*exp(-lroot/p%root_shape_m)/p%root_shape_m**2)
+         if (-c_macro > concentration_error) return
          c_macro = 0.0_real64
       end if
       ok = .true.

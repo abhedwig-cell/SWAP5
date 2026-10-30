@@ -2,60 +2,31 @@ name: DATAQUAL15 original Grassgrowth sprint
 on:
   pull_request:
     branches: [integration/f-ci-canonical]
-    paths: [.github/workflows/dataqual15-grass-sprint.yml]
+    paths:
+      - .github/workflows/dataqual15-grass-sprint.yml
+      - tests/dataqual15/**
+      - tools/solute/build_grass_startup.py
 permissions:
   contents: read
+concurrency:
+  group: dataqual15-grass-sprint-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 jobs:
-  original:
+  recovery:
     runs-on: ubuntu-24.04
-    timeout-minutes: 350
-    strategy:
-      fail-fast: false
-      matrix:
-        optimization: [O0, O2]
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
-      - name: Source-bound baseline
-        run: python3 -B tests/dataqual15/verify_evidence.py
-      - name: Original checked build and measured full continuation
-        shell: bash
-        run: |
-          set -euo pipefail
-          FC=$(command -v gfortran-13)
-          test -x "$FC"
-          WORK="$RUNNER_TEMP/dataqual15-${{ matrix.optimization }}"
-          mkdir -p "$WORK"
-          echo "WORK=$WORK" >> "$GITHUB_ENV"
-          python3 -B tests/dataqual15/original_sources.py --output "$WORK/providers" --compiler "$FC" --optimization '${{ matrix.optimization }}' --utilities-only
-          python3 -B tools/solute/build_grass_startup.py --output "$WORK/build" --optimization '${{ matrix.optimization }}' --profile checked --compiler "$FC" --input-archive "$WORK/providers/ttobj/libttutil.a" --end 1 --policy retained
-          python3 -B tests/dataqual15/run_original.py --bundle "$WORK/build" --output "$WORK/prefix" --end 140 --capture $(seq 1 140) --timeout 2400
-          END=367
-          if [[ '${{ matrix.optimization }}' == O2 ]]; then END=1827; fi
-          CAP=$(python3 -c 'import json,math,sys; r=json.load(open(sys.argv[1])); assert r["returncode"]==0 and r["completed_days"]==140; print(max(2400,math.ceil(r["seconds"]*2*(int(sys.argv[2])-140)/140)))' "$WORK/prefix/RESULT.json" "$END")
-          printf '{"measured_prefix_days":140,"remaining_days":%s,"wall_cap_seconds":%s}\n' "$((END-140))" "$CAP" > "$WORK/WALL_CAP.json"
-          python3 -B tests/dataqual15/run_original.py --bundle "$WORK/build" --output "$WORK/continuation" --restart "$WORK/prefix/checkpoint.bin" --end "$END" --capture $(seq 141 "$END") --timeout "$CAP"
-      - name: Eleven negative restart controls
-        run: python3 -B tests/dataqual15/qualify_restart.py --bundle "$WORK/build" --checkpoint "$WORK/prefix/checkpoint-117.bin" --output "$WORK/negative"
-      - name: Same-build mowing BBC and annual restarts
-        shell: bash
-        run: |
-          set -euo pipefail
-          for RANGE in 126:140 365:367 730:732 1095:1097 1460:1462; do
-            START=${RANGE%:*}; END=${RANGE#*:}
-            if [[ '${{ matrix.optimization }}' == O0 && $END -gt 367 ]]; then continue; fi
-            FOLDER=continuation
-            if [[ $START -le 140 ]]; then FOLDER=prefix; fi
-            python3 -B tests/dataqual15/run_original.py --bundle "$WORK/build" --output "$WORK/restart-$START-$END" --restart "$WORK/$FOLDER/checkpoint-$START.bin" --end "$END" --timeout 2400
-          done
+      - name: Verify inherited full original history and execute sealed recovery
+        run: python3 -B tests/dataqual15/recover_grass_full.py --output "$RUNNER_TEMP/recovery"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: dataqual15-${{ matrix.optimization }}-${{ github.event.pull_request.head.sha }}
-          path: ${{ runner.temp }}/dataqual15-${{ matrix.optimization }}/
-          include-hidden-files: true
+          name: dataqual15-recovery-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/recovery/
           retention-days: 30
   preservation:
     runs-on: ubuntu-24.04

@@ -1,0 +1,13 @@
+# Black, Rutter and numeric-heat composition
+
+Experimental successor to243e3b1. Original physical processes retain their owners. Layout `FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK` distinguishes existing Black LDWET plus the inherited optional Rutter source-window/canopy continuation and numeric heat. No hydraulic field or new canopy/evaporation state owner is introduced.
+
+The new composition evaluates Rutter from each actual full/half/retry candidate's accepted canopy/time to its actual trial endpoint, then supplies net rain and irrigation to Black/top-boundary wetting and the existing canopy-adjusted root demand. The independent Rutter reservoir balance is checked at that endpoint; water and chemical transaction acceptance remains unchanged. The existing independent Black and older Rutter layouts retain their old behavior. Canopy stock difference contributes in cm to temporal control.
+
+The existing joint pond/heat/solute restart gains a distinct S5PT0004 tag and carries the incumbent typed Rutter restart record, including source window and accepted progress. CRC, immutable heat/hydraulic vector, geometry, clock and parameters remain checked before publication. A stale or corrupted canopy record is rejected.
+
+Selected checks are actual gfortran compilation of the production closure, existing Black/Rutter/heat/mass/rollback/restart contracts and full original Hupsel execution when the surrounding potato adapter is ready. No full F-CI, low-air stress or synthetic replacement of original potato forcing is selected.
+
+The new layout's canonical water stock includes the same existing canopy reservoir. Its external surface ledger uses gross rain/irrigation and actual interception/soil/pond evaporation plus runoff, rather than counting only net throughfall. Accepted water traces expose the canopy stocks, gross source rates, EIC and reservoir residual for original-project daily accounting. Old layouts retain their preceding storage boundary. A proof using only soil+pond stock is insufficient for the new full water claim.
+
+Source canopy-capacity loss is included: MOD_cropdevelopment.f90 read_interception tasks2/3 reduces SICACT to SICCAP when LAI falls and records SICCAPLOSS; integral.f90 lines419–421 exports that loss through the interception ledger. The incumbent Rutter owner proposes that clamp without publishing it, each actual trial books the loss once as EIC and includes the original canopy stock in its full water balance. No state is added. The existing combined driver starts with0.02cm stored and0.01cm new capacity, so this transfer and its rollback/restart composition execute directly.

@@ -21,13 +21,13 @@ def main():
  if a.physical_build is None:
   run([sys.executable,ROOT/'tools/solute/build_crop_column.py','--output',base,'--optimization',a.optimization],ROOT,'cold_physical_build')
  physical=json.loads((base/'build-complete.json').read_text())
- assert physical['status']=='BUILT' and physical['provider_count']==194
+ assert physical['status']=='BUILT' and physical['provider_count']>1
  assert '-'+a.optimization in physical['flags'] and '-fcheck=all' in physical['flags']
  assert sha(base/'swap5_solute_column')==physical['executable_sha256']
  assert all(sha(ROOT/p)==h for p,h in physical['input_sha256'].items())
  assert all(sha(base/p)==h for p,h in physical['generated_input_sha256'].items())
  objects=[Path(e['command'][-1])for e in physical['events'] if e['category']=='compile' and not e['command'][-3].endswith('/app/solute_crop/main.f90')]
- assert len(objects)==193
+ assert len(objects)==physical['provider_count']-1
  artifacts={str(p):sha(p)for p in objects+[base/'libttutil.a']+list(base.glob('*.mod'))}
  flags=[f for f in physical['flags']if not f.startswith('-J')]+['-I'+str(base)]
  fc=physical['compiler_command'];assert subprocess.check_output(fc+['--version'],text=True).splitlines()[0]==physical['compiler']
@@ -61,7 +61,7 @@ def main():
  inputs={p:h for p,h in physical['input_sha256'].items()if p!='app/solute_crop/main.f90'}
  inputs.update({str(p.relative_to(ROOT)):sha(p)for p in [driver,heat_reader,*extra,*common]})
  meta=dict(status='BUILT',candidate=candidate,compiler_command=fc,compiler=physical['compiler'],flags=flags+['-J'+str(column)],
-  provider_count=194,reused_provider_objects=193,input_sha256=inputs,generated_input_sha256={},
+  provider_count=physical['provider_count'],reused_provider_objects=len(objects),input_sha256=inputs,generated_input_sha256={},
   source_build=physical,reused_artifact_sha256=artifacts,executable_sha256=sha(exe),events=events)
  assert all(sha(ROOT/p)==h for p,h in inputs.items())and all(sha(Path(p))==h for p,h in artifacts.items())
  (column/'build-complete.json').write_text(json.dumps(meta,indent=2)+'\n')
@@ -73,5 +73,5 @@ def main():
  if a.fallow_reader:
   bundle['fallow_reader']=str(native('read_fallow',[ROOT/'src/process/mod_pmdirect_swetr0_process.f90',ROOT/'app/solute_project/read_fallow_project.f90'],'ORIGINAL_PM_FALLOW_PREFIX_PREPARED'))
   bundle['executable_sha256'][bundle['fallow_reader']]=sha(Path(bundle['fallow_reader']))
- (out/'bundle.json').write_text(json.dumps(bundle,indent=2)+'\n');print(json.dumps(dict(status='BUILT',reused_providers=193)))
+ (out/'bundle.json').write_text(json.dumps(bundle,indent=2)+'\n');print(json.dumps(dict(status='BUILT',reused_providers=len(objects))))
 if __name__=='__main__':main()

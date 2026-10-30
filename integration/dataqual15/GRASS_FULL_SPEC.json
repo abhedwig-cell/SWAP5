@@ -1,0 +1,113 @@
+{
+  "schema": 1,
+  "baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+  "scientific_source_commit": "c307ee64e7826ddd90491aee2cc689d97b7c76b6",
+  "reviewed_production_delta": {
+    "app/grass_project/initial_interval.f90": "M",
+    "src/legacy/b1_10_port/headcalc.f90": "M",
+    "src/physics/oxygen/mod_bartholomeus_macro.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M",
+    "src/solver/mod_b110_default_mvg_provider.f90": "M"
+  },
+  "source_roots": [
+    "/workspace/scratch/c3166a264227/SWAP5-grass-relative",
+    "/workspace/scratch/c3166a264227/SWAP5"
+  ],
+  "builds": {
+    "O0": "dq15-oxygen-O0",
+    "O2": "dq15-oxygen-O2"
+  },
+  "full": "dq15-oxygen-full-O2",
+  "year_O0": "dq15-oxygen-year-O0",
+  "restarts": [
+    {
+      "folder": "dq15-oxygen-restart126-140-O2",
+      "optimization": "O2",
+      "purpose": "mowing",
+      "origin_day": 126,
+      "end_day": 140
+    },
+    {
+      "folder": "dq15-oxygen-restart365-367-O0",
+      "optimization": "O0",
+      "purpose": "year",
+      "origin_day": 365,
+      "end_day": 367
+    },
+    {
+      "folder": "dq15-oxygen-restart365-367-O2",
+      "optimization": "O2",
+      "purpose": "year",
+      "origin_day": 365,
+      "end_day": 367
+    },
+    {
+      "folder": "dq15-oxygen-restart918-922-O2",
+      "optimization": "O2",
+      "purpose": "distinct_delay",
+      "origin_day": 918,
+      "end_day": 922
+    },
+    {
+      "folder": "dq15-oxygen-restart1786-1827-O2",
+      "optimization": "O2",
+      "purpose": "oxygen",
+      "origin_day": 1786,
+      "end_day": 1827
+    },
+    {
+      "folder": "dq15-oxygen-restart1800-1827-O2",
+      "optimization": "O2",
+      "purpose": "final",
+      "origin_day": 1800,
+      "end_day": 1827
+    }
+  ],
+  "negative": {
+    "O0": "dq15-oxygen-negative-O0",
+    "O2": "dq15-oxygen-negative-O2"
+  },
+  "runtime": "dq15-oxygen-runtime",
+  "mowing": "dq15-mowing-final-oracle",
+  "reference_B0": "dq15-original-reference",
+  "reference_B0_nodal": "dq15-original-nodal-reference",
+  "reference_B1": "dq15-continuous-B1-reference",
+  "original_donor": "/workspace/scratch/f29d9f3066a3/dq13-reference431",
+  "repository_diagnostics": [
+    "integration/dataqual15/OXYGEN_ZERO_FRONT_DIAGNOSIS.json",
+    "integration/dataqual15/GROUNDWATER_CONDUCTIVITY_CONTACT.json",
+    "integration/dataqual15/FORCING_CLOCK_REPAIR.json"
+  ],
+  "diagnostic_files": [
+    {
+      "path": "dq15-oxygen-event1787b/stdout",
+      "scope": "DIAGNOSTIC_ONLY_NOT_CURRENT_SOURCE_RESTART_QUALIFICATION"
+    },
+    {
+      "path": "dq15-oxygen-refinement/RESULT.json",
+      "scope": "DIAGNOSTIC_ONLY_NOT_CURRENT_SOURCE_RESTART_QUALIFICATION"
+    },
+    {
+      "path": "dq15-oxygen-refinement/initial_interval_refinement.f90",
+      "scope": "DIAGNOSTIC_ONLY_NOT_CURRENT_SOURCE_RESTART_QUALIFICATION"
+    },
+    {
+      "path": "dq15-oxygen-refinement/origin-diagnostic.json",
+      "scope": "DIAGNOSTIC_ONLY_NOT_CURRENT_SOURCE_RESTART_QUALIFICATION"
+    },
+    {
+      "path": "dq15-oxygen-refinement/native/RESULT.json",
+      "scope": "DIAGNOSTIC_ONLY_NOT_CURRENT_SOURCE_RESTART_QUALIFICATION"
+    },
+    {
+      "path": "dq15-oxygen-refinement/native/budget.csv",
+      "scope": "DIAGNOSTIC_ONLY_NOT_CURRENT_SOURCE_RESTART_QUALIFICATION"
+    }
+  ],
+  "expected_provider_count": 203,
+  "qualified_production_tree_oids": {
+    "src": "2423aa8c11c03b24b7b28fdb3f117d2f8172c25e",
+    "app": "b04a1fdc7962c3dce3ce7c69b5d0bb809c019584",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  }
+}

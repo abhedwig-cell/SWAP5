@@ -1,0 +1,51 @@
+{
+  "scope": "BOUNDED_EXPERIMENTAL_ORIGINAL_INPUT_NOT_LITERAL_SHARP_OR_SCIENTIFIC_EQUIVALENCE",
+  "metric_scientific_commit": "03bcea7",
+  "edge_scientific_commit": "0a61d40",
+  "metric_O2_executed_full_days": 80,
+  "metric_O2_seconds": 546.9990923400001,
+  "metric_O2_natural_terminal": true,
+  "metric_O0_completed_full_days": 70,
+  "metric_O0_seconds": 1066.6087088970016,
+  "O0_O2_daily_budget_exact_days": 70,
+  "O0_O2_day70_scientific_checkpoint_exact": true,
+  "same_build_restart_2_5_exact": true,
+  "same_build_restart_65_70_exact": true,
+  "max_water_residual_cm": 8.327797513065785e-13,
+  "max_observed_last_heat_residual_j_cm2": 1.4440280568517316e-12,
+  "heat_is_not_whole_project_energy_qualification": true,
+  "metric_remaining_blocker": {
+    "kind": "numerically_tiny_source_rain_edge",
+    "t0": 80.4230000000014,
+    "t1": 80.4230000000025,
+    "status": 101
+  },
+  "edge_causal_replay_from_same_day80": {
+    "O2_returncode": 0,
+    "O2_seconds": 5.185310771001241,
+    "O0_returncode": 0,
+    "O0_seconds": 11.611065659002634,
+    "scientific_checkpoint_exact": true,
+    "daily_budget_exact": true,
+    "completed_day": 81,
+    "scientific_payload_rebound_only_identity_crc": true
+  },
+  "entry_width_cm": 0.0001,
+  "entry_policy": "INHERITED_EXPERIMENTAL_RAMP_NOT_ORIGINAL_SHARP",
+  "source_numerical_controls": {
+    "MAXIT": 30,
+    "MAXBACKTR": 4,
+    "DTMIN": 1e-05,
+    "DTMAX": 0.002,
+    "SWKMEAN": 1,
+    "SWKIMPL": 0
+  },
+  "full_original_complete": false,
+  "scientific_equivalence": false,
+  "canonical_admitted": false,
+  "current_source_admission": false,
+  "current_new_full_O2_execution": "separate active0a61d40 source run, not included in bounded metric80-day qualification",
+  "evidence_path": "integration/dataqual15/ANDELST80_EVIDENCE.tar.xz",
+  "evidence_sha256": "fa301f7043f706f478fe69063034d795bf2e61fb09a7d721fee81086c7147d64",
+  "evidence_bytes": 6744556
+}

@@ -102,7 +102,7 @@ program grass_initial_interval
  real(real64)::width(256),source_pond,source_gwl,origin,limit,wet_duration,rain_rate,tdwi,ssa,spa,kdir,rdi,rdc
  real(real64)::times(1024),levels(1024),flat(2048),sand(256),organic(256),density(256),ani(256),root_srl
  real(real64)::metrad(10000),tmn(10000),tmx(10000),humidity(10000),wind(10000),rain(10000),wet(10000)
- real(real64)::surface_resistance,spacing,depth,drainres,infres,date_time,first_end
+ real(real64)::surface_resistance,spacing,depth,drainres,infres,date_time,forcing_end
  real(real64)::clock,cursor,edge,day_end,step_dt,heat_residual,day_residual,day_in,day_out,day_start_water,day_final_water
  real(real64)::day_potential,day_actual,day_drought,day_oxygen
  integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack,source_mean,source_implicit
@@ -172,6 +172,10 @@ program grass_initial_interval
  p%bottom_mode=1;p%prescribed_groundwater_active=.true.;p%swkmean=source_mean;p%max_iterations=source_maxit;p%max_backtracking=source_maxbacktrack
  p%ksatexm_extension_active=any(cofgen(10,:)>cofgen(3,:))
  call initialize_b110_default_mvg_parameters(hp,cofgen,enable_ksatexm_extension=p%ksatexm_extension_active)
+ ! Reuse the existing continuous Mualem correction for the demonstrated
+ ! early-Ksat shortcut defect. Original retention, KSATEXM and SWKIMPL0 remain.
+ hp%continuous_saturation_conductivity=.true.
+ p%prepared_default_mvg_available=.true.;p%prepared_default_mvg=hp
  call bind_b110_default_mvg_provider(hydraulic,hp,limit)
  initial%active_nodes=nodes;initial%pressure_head=heads;initial%groundwater_level=source_gwl;initial%ponding_depth=source_pond
  allocate(initial%water_content(nodes),conductivity(nodes),capacity(nodes),derivative(nodes),theta100(nodes),theta500(nodes))
@@ -325,17 +329,18 @@ program grass_initial_interval
   deepest_oxygen_integral=0d0
   day_residual=0d0;day_in=0d0;day_out=0d0;heat_residual=0d0;accepted_steps=0
   do while(cursor<day_end)
-   edge=min(day_end,cursor+source_dtmax)
+   forcing_end=day_end
    if(cursor<real(day_index-1,real64)+wet_duration)then
-    edge=min(edge,real(day_index-1,real64)+wet_duration)
+    forcing_end=min(day_end,real(day_index-1,real64)+wet_duration)
     segment_rain_rate=rain_rate
    else
     segment_rain_rate=0d0
    end if
-   ! Close the current interval on its requested day boundary. Repeated DTMAX
-   ! additions may leave a few ulps; never submit a numerically zero final trial.
-   ! The full remaining duration is still integrated by this final real trial.
-   if(day_end-edge<=64d0*epsilon(edge)*max(1d0,abs(day_end)))edge=day_end
+   edge=min(forcing_end,cursor+source_dtmax)
+   ! Apply the existing day-end roundoff rule to every actual forcing edge.
+   ! Absorb the entire remaining few ulps into this real interval; never
+   ! discard elapsed time/rain or create a numerically zero wet-tail trial.
+   if(forcing_end-edge<=64d0*epsilon(edge)*max(1d0,abs(forcing_end)))edge=forcing_end
    call apply_swinter1_duration_interval(weather,canopy,et,segment_rain_rate,interception,et_diagnostic)
    call require(et_diagnostic%status==0,'source interval interception')
    forcing%substep_root%request%potential_transpiration=interception%potential_transpiration_cm_per_day

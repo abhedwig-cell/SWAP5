@@ -8,7 +8,8 @@ module mod_fmr_wofost_crop_transaction
   use mod_wofost_crop_owner_state, only: wofost_crop_owner_state_t, WOFOST_CROP_OWNER_OK
   use mod_wofost_one_day_structural_evolution, only: wofost_one_day_forcing_t, &
        wofost_accepted_window_aggregates_t, wofost_one_day_update_parameters_t, wofost_one_day_rate_packet_t
-  use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t
+  use mod_wofost_rate_parameters, only: wofost_rate_parameter_bundle_t,wofost_rate_scalar_parameters_t
+  use mod_wofost_grass_development
   use mod_wofost_potential_shadow_state, only: wofost_potential_shadow_state_t, &
        initialize_wofost_potential_shadow_from_actual, WOFOST_POTENTIAL_SHADOW_OK
   use mod_wofost_potential_shadow_daily, only: wofost_potential_daily_result_t, &
@@ -16,7 +17,7 @@ module mod_fmr_wofost_crop_transaction
   use mod_crop_root_anaerobic_extension_gate, only: root_extension_allowed_by_daily_oxygen, ROOT_ANOX_GATE_OK
   use mod_wofost_two_phase_crop_window, only: wofost_two_phase_crop_window_t, &
        wofost_crop_window_begin_diagnostics_t, wofost_crop_window_complete_diagnostics_t, &
-       begin_wofost_one_day_crop_window, complete_wofost_one_day_crop_window, WOFOST_CROP_WINDOW_OK
+       begin_wofost_one_day_crop_window, complete_wofost_one_day_crop_window, complete_wofost_grass_crop_window, WOFOST_CROP_WINDOW_OK,WOFOST_CROP_WINDOW_CONTEXT_NOT_READY
   use mod_fmr_wofost_accepted_window_lineage, only: fmr_wofost_accepted_window_t, &
        fmr_wofost_crop_event_token_t, fmr_wofost_crop_event_identity_t, &
        fmr_wofost_crop_event_identity_persistence_t, &
@@ -76,6 +77,7 @@ module mod_fmr_wofost_crop_transaction
     type(crop_lifecycle_continuation_t), allocatable :: lifecycle
     type(crop_root_depth_rate_state_t), allocatable :: root_depth
     type(adaptive_root_profile_state_t),allocatable :: root_profile
+    type(grass_management_continuation_t),allocatable::grass_management
   contains
     procedure :: clone => fmr_wofost_crop_transaction_clone
     procedure, public :: ready => fmr_wofost_crop_transaction_state_ready
@@ -85,6 +87,7 @@ module mod_fmr_wofost_crop_transaction
     procedure, public :: snapshot_root_growth => fmr_wofost_crop_transaction_snapshot_root_growth
     procedure, public :: snapshot_root_depth => fmr_wofost_crop_transaction_snapshot_root_depth
     procedure, public :: snapshot_root_profile => fmr_wofost_snapshot_root_profile
+    procedure, public :: snapshot_grass_management=>fmr_wofost_snapshot_grass_management
     procedure, public :: receipt_ready => fmr_wofost_crop_transaction_receipt_ready
     procedure, public :: snapshot_lifecycle => fmr_wofost_crop_transaction_snapshot_lifecycle
     procedure, public :: consumed_event => fmr_wofost_crop_transaction_consumed_event
@@ -102,6 +105,8 @@ module mod_fmr_wofost_crop_transaction
     logical :: root_depth_present = .false.
     type(crop_root_depth_rate_state_t) :: root_depth
     logical :: root_profile_present=.false.
+    logical::grass_management_present=.false.
+    type(grass_management_continuation_t)::grass_management
     type(adaptive_root_profile_state_t)::root_profile
     logical :: receipt_present = .false.
     logical :: lifecycle_present = .false.
@@ -125,6 +130,7 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: aeration_critical_factor = 0.0001_real64
     type(crop_root_depth_rate_parameters_t), allocatable :: root_depth_parameters
     type(adaptive_root_profile_configuration_t),allocatable :: root_profile_configuration
+    type(grass_management_parameters_t),allocatable::grass_parameters
   contains
     procedure, public :: ready => fmr_wofost_crop_transaction_parameters_ready
     procedure, public :: matches_canopy => fmr_wofost_parameters_matches_canopy
@@ -159,6 +165,7 @@ module mod_fmr_wofost_crop_transaction
     real(real64) :: aeration_critical_factor = 0.0001_real64
     type(crop_root_depth_rate_parameters_t), allocatable :: root_depth_parameters
     type(adaptive_root_profile_configuration_t),allocatable :: root_profile_configuration
+    type(grass_management_parameters_t),allocatable::grass_parameters
     logical :: parameters_ready = .false.
     type(fmr_wofost_crop_event_forcing_t) :: event_forcing
     logical :: interval_ready = .false.
@@ -179,8 +186,59 @@ module mod_fmr_wofost_crop_transaction
   public :: prepare_fmr_wofost_crop_event_forcing
   public :: export_fmr_wofost_crop_transaction_persistence
   public :: reconstruct_fmr_wofost_crop_transaction_from_persistence
+  public :: prepare_fmr_wofost_morning_emergence
 
 contains
+  subroutine prepare_fmr_wofost_morning_emergence(base,parameters,time,initial_dry_weight,candidate,status)
+    type(fmr_wofost_crop_transaction_state_t),intent(in)::base
+    type(fmr_wofost_crop_transaction_parameters_t),intent(in)::parameters
+    real(real64),intent(in)::time,initial_dry_weight
+    type(fmr_wofost_crop_transaction_state_t),intent(out)::candidate
+    integer,intent(out)::status
+    type(fmr_wofost_crop_event_identity_persistence_t)::receipt
+    type(crop_lifecycle_continuation_t)::lifecycle
+    type(wofost_crop_owner_state_t)::owner
+    logical::ok
+    integer::code
+    candidate=fmr_wofost_crop_transaction_state_t();status=FMR_WOF38_LIFECYCLE_REJECTED
+    if(.not.base%ready().or..not.parameters%ready())return
+    if(.not.ieee_is_finite(time).or..not.ieee_is_finite(initial_dry_weight))return
+    if(time/=aint(time).or.initial_dry_weight<0.0_real64.or.initial_dry_weight>10000.0_real64)return
+    if(.not.allocated(base%lifecycle).or.base%owner%crop_emerged)return
+    lifecycle=base%lifecycle
+    if(lifecycle%initialization_profile/=CROP_PROFILE_B111_TASK2)return
+    if(lifecycle%emerged.or.lifecycle%harvested.or..not.lifecycle%germinated)return
+    if(.not.lifecycle%prepared.or..not.lifecycle%sown)return
+    if(lifecycle%revision==huge(lifecycle%revision))return
+    call export_wofost_crop_event_identity_persistence(base%last_consumed_event,receipt,ok)
+    if(.not.ok)return
+    if(receipt%t1/=time.or.receipt%t0/=time-1.0_real64)return
+    if(receipt%actual_root_uptake_integral/=0.0_real64)return
+    if(receipt%potential_transpiration_integral/=0.0_real64)then
+      ! The source microscopic/root-depth laws define Tp<NIHIL as inactive.
+      ! Direct PM on the original bare canopy leaves a3.5e-24cm numerical
+      ! demand. Do not reinterpret it as root extraction or alter its ledger.
+      if(.not.allocated(parameters%root_depth_parameters))return
+      if(receipt%potential_transpiration_integral>=parameters%root_depth_parameters%negligible_transpiration)return
+    end if
+    call initialize_wofost_emergence_owner(initial_dry_weight,parameters%rate_parameters,owner,code)
+    if(code/=WOFOST_EMERGENCE_INIT_OK)return
+    lifecycle%emerged=.true.;lifecycle%revision=lifecycle%revision+1_8
+    if(allocated(parameters%root_profile_configuration))then
+      call initialize_fmr_wofost_crop_transaction_state(owner,candidate,code,.true.,lifecycle, &
+        parameters%root_depth_parameters,parameters%root_profile_configuration)
+    else if(allocated(parameters%root_depth_parameters))then
+      call initialize_fmr_wofost_crop_transaction_state(owner,candidate,code,.true.,lifecycle,parameters%root_depth_parameters)
+    else
+      call initialize_fmr_wofost_crop_transaction_state(owner,candidate,code,parameters%potential_shadow_enabled,lifecycle)
+    end if
+    if(code/=FMR_WOF38_OK)return
+    candidate%last_consumed_event=base%last_consumed_event
+    if(allocated(candidate%root_growth_carrier))candidate%root_growth_carrier%valid=.true.
+    if(.not.candidate%ready())return
+    status=FMR_WOF38_OK
+  end subroutine prepare_fmr_wofost_morning_emergence
+
 
   logical function fmr_wofost_root_growth_carrier_ready(self) result(ready)
     class(fmr_wofost_root_growth_carrier_t), intent(in) :: self
@@ -196,6 +254,10 @@ contains
     ready = .false.
     if (.not. self%valid) return
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if(self%grass_management_present)then
+      if(.not.self%owner%crop_emerged.or..not.self%potential_shadow_present)return
+      if(.not.self%grass_management%ready())return
+    end if
     if(self%root_profile_present)then
       if(.not.self%root_depth_present.or..not.self%owner%crop_emerged)return
       if(self%root_profile%validate()/=ADAPTIVE_ROOT_PROFILE_OK)return
@@ -268,6 +330,9 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_STATE
     if (.not. state%ready()) return
     view%owner = state%owner
+    if(allocated(state%grass_management))then
+      view%grass_management_present=.true.;view%grass_management=state%grass_management
+    end if
     if(allocated(state%root_profile))then
       view%root_profile_present=.true.;view%root_profile=state%root_profile
     end if
@@ -318,6 +383,7 @@ contains
     status = FMR_WOFOST_CROP_PERSISTENCE_INVALID_VIEW
     if (.not. view%ready()) return
     state%owner = view%owner
+    if(view%grass_management_present)state%grass_management=view%grass_management
     if(view%root_profile_present)state%root_profile=view%root_profile
     if (view%root_depth_present) then
       allocate(state%root_depth)
@@ -352,7 +418,7 @@ contains
   end subroutine reconstruct_fmr_wofost_crop_transaction_from_persistence
 
   subroutine initialize_fmr_wofost_crop_transaction_state(owner, state, status, enable_potential_shadow, lifecycle_initial, &
-       root_depth_parameters,root_profile_configuration)
+       root_depth_parameters,root_profile_configuration,grass_management)
     type(wofost_crop_owner_state_t), intent(in) :: owner
     type(fmr_wofost_crop_transaction_state_t), intent(out) :: state
     integer, intent(out) :: status
@@ -360,6 +426,7 @@ contains
     type(crop_lifecycle_continuation_t), intent(in), optional :: lifecycle_initial
     type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_parameters
     type(adaptive_root_profile_configuration_t),intent(in),optional::root_profile_configuration
+    type(grass_management_continuation_t),intent(in),optional::grass_management
     logical :: enable_shadow
     integer :: shadow_status
 
@@ -406,6 +473,11 @@ contains
       end if
       state%root_growth_carrier = fmr_wofost_root_growth_carrier_t()
     end if
+    if(present(grass_management))then
+      status=FMR_WOF38_INVALID_PARAMETERS
+      if(.not.owner%crop_emerged.or..not.enable_shadow.or..not.grass_management%ready())return
+      state%grass_management=grass_management
+    end if
     state%initialized = .true.
     status = FMR_WOF38_OK
   end subroutine initialize_fmr_wofost_crop_transaction_state
@@ -413,7 +485,7 @@ contains
   subroutine construct_fmr_wofost_crop_transaction_parameters(rate_parameters, update_parameters, &
        stem_area_coefficient, storage_area_coefficient, parameters, status, enable_potential_shadow, &
        potential_attainable_multiplier, enable_anaerobic_root_growth_gate, aeration_critical_factor, root_depth_parameters, &
-       root_profile_configuration)
+       root_profile_configuration,grass_management_parameters)
     type(wofost_rate_parameter_bundle_t), intent(in) :: rate_parameters
     type(wofost_one_day_update_parameters_t), intent(in) :: update_parameters
     real(real64), intent(in) :: stem_area_coefficient, storage_area_coefficient
@@ -425,6 +497,8 @@ contains
     real(real64), intent(in), optional :: aeration_critical_factor
     type(crop_root_depth_rate_parameters_t), intent(in), optional :: root_depth_parameters
     type(adaptive_root_profile_configuration_t),intent(in),optional::root_profile_configuration
+    type(grass_management_parameters_t),intent(in),optional::grass_management_parameters
+    type(wofost_rate_scalar_parameters_t)::scalars
     logical :: enable_shadow, enable_anaerobic_gate
     real(real64) :: potential_multiplier, aeration_threshold
 
@@ -462,6 +536,12 @@ contains
       parameters%root_profile_configuration=root_profile_configuration
     else if(allocated(parameters%root_depth_parameters))then
       if(parameters%root_depth_parameters%actual_extension_mode==CROP_ROOT_RATE_DROUGHT_SUPPLY)return
+    end if
+    if(present(grass_management_parameters))then
+      if(.not.grass_management_parameters%ready().or..not.enable_shadow)return
+      scalars=rate_parameters%scalar_view()
+      if(.not.scalars%grass_development.or..not.update_parameters%grass_development)return
+      parameters%grass_parameters=grass_management_parameters
     end if
     parameters%rate_parameters = rate_parameters
     parameters%update_parameters = update_parameters
@@ -575,6 +655,7 @@ contains
       end if
       if (allocated(self%root_depth)) typed_copy%root_depth=self%root_depth
       if(allocated(self%root_profile))typed_copy%root_profile=self%root_profile
+      if(allocated(self%grass_management))typed_copy%grass_management=self%grass_management
       typed_copy%last_consumed_event = self%last_consumed_event
       if (allocated(self%lifecycle)) then
         allocate(typed_copy%lifecycle)
@@ -591,6 +672,10 @@ contains
     ready = .false.
     if (.not. self%initialized) return
     if (self%owner%validate() /= WOFOST_CROP_OWNER_OK) return
+    if(allocated(self%grass_management))then
+      if(.not.self%owner%crop_emerged.or..not.allocated(self%potential_shadow))return
+      if(.not.self%grass_management%ready())return
+    end if
     if (allocated(self%lifecycle)) then
       if (.not. self%lifecycle%ready()) return
       if (self%lifecycle%last_event_identity%ready()) then
@@ -625,6 +710,15 @@ contains
     end if
     ready = .true.
   end function fmr_wofost_crop_transaction_state_ready
+
+  subroutine fmr_wofost_snapshot_grass_management(self,management,available)
+    class(fmr_wofost_crop_transaction_state_t),intent(in)::self
+    type(grass_management_continuation_t),intent(out)::management
+    logical,intent(out)::available
+    management=grass_management_continuation_t();available=.false.
+    if(.not.self%ready().or..not.allocated(self%grass_management))return
+    management=self%grass_management;available=.true.
+  end subroutine
 
   subroutine fmr_wofost_crop_transaction_snapshot_owner(self, owner, available)
     class(fmr_wofost_crop_transaction_state_t), intent(in) :: self
@@ -737,6 +831,10 @@ contains
     ready = .false.
     if (.not. self%initialized) return
     if (.not. self%rate_parameters%ready()) return
+    if(allocated(self%grass_parameters))then
+      if(.not.self%grass_parameters%ready().or..not.self%potential_shadow_enabled)return
+      if(.not.self%update_parameters%grass_development)return
+    end if
     if (allocated(self%root_depth_parameters)) then
       if (.not.self%root_depth_parameters%ready().or..not.self%potential_shadow_enabled) return
       if (self%root_depth_parameters%negligible_transpiration<=0.0_real64) return
@@ -798,6 +896,7 @@ contains
     self%parameters_ready = .false.
     if(allocated(self%root_depth_parameters)) deallocate(self%root_depth_parameters)
     if(allocated(self%root_profile_configuration))deallocate(self%root_profile_configuration)
+    if(allocated(self%grass_parameters))deallocate(self%grass_parameters)
     self%last_status = FMR_WOF38_INVALID_PARAMETERS
     select type (typed_parameters => parameters)
     type is (fmr_wofost_crop_transaction_parameters_t)
@@ -812,6 +911,7 @@ contains
       self%aeration_critical_factor = typed_parameters%aeration_critical_factor
       if(allocated(typed_parameters%root_depth_parameters)) self%root_depth_parameters=typed_parameters%root_depth_parameters
       if(allocated(typed_parameters%root_profile_configuration))self%root_profile_configuration=typed_parameters%root_profile_configuration
+      if(allocated(typed_parameters%grass_parameters))self%grass_parameters=typed_parameters%grass_parameters
       self%parameters_ready = .true.
       self%last_status = FMR_WOF38_OK
     class default
@@ -879,6 +979,7 @@ contains
     type(wofost_potential_daily_result_t) :: potential_result
     type(fmr_wofost_root_growth_carrier_t) :: candidate_growth_carrier
     type(crop_lifecycle_continuation_t) :: candidate_lifecycle
+    type(grass_management_continuation_t)::candidate_management
     type(crop_root_depth_rate_state_t) :: candidate_depth
     type(crop_root_depth_rate_daily_forcing_t) :: depth_forcing
     type(crop_root_depth_rate_diagnostics_t) :: depth_diagnostics
@@ -919,6 +1020,7 @@ contains
         return
       end if
 
+      if(allocated(typed_state%grass_management).neqv.allocated(self%grass_parameters))return
       if(allocated(typed_state%root_profile).and..not.allocated(self%root_profile_configuration))return
       if(allocated(self%root_profile_configuration).and.typed_state%owner%crop_emerged)then
         if(.not.allocated(typed_state%root_profile))return
@@ -962,6 +1064,12 @@ contains
           if(crop_status/=WOFOST_POTENTIAL_SHADOW_OK) return
           candidate_growth_carrier%valid=.true.
         end if
+      else
+      if(allocated(self%grass_parameters))then
+        call evaluate_managed_grass_transaction(self,typed_state,t0,t1,candidate_owner,rates,potential_result, &
+             candidate_growth_carrier,candidate_management,crop_status)
+        self%last_status=crop_status
+        if(crop_status/=FMR_WOF38_OK)return
       else
       if (self%potential_shadow_enabled) then
         call evaluate_wofost_potential_shadow_day(typed_state%owner, typed_state%potential_shadow, &
@@ -1020,7 +1128,8 @@ contains
         end if
       end if
 
-      end if
+      end if ! Ordinary annual or managed grass day.
+      end if ! Emergence initialization or ordinary evolution.
       if (allocated(self%root_depth_parameters)) then
         self%last_status=FMR_WOF38_ROOT_DEPTH_REJECTED
         candidate_depth=typed_state%root_depth
@@ -1064,6 +1173,7 @@ contains
         profile_forcing%root_biomass_end=candidate_owner%biomass%root_biomass
         profile_forcing%root_growth=rates%gross_root_growth_rate
         profile_forcing%root_death=rates%gross_root_growth_rate-rates%root_net_growth_rate
+        if(allocated(self%grass_parameters))profile_forcing%root_death=rates%root_death_rate
         profile_forcing%potential_root_sink=layer_receipt%potential_root_sink_integral
         profile_forcing%root_sink_reduction=layer_receipt%root_sink_reduction_integral
         call evaluate_adaptive_root_profile_candidate(self%root_profile_configuration%adaptation, &
@@ -1076,6 +1186,7 @@ contains
       end if
       ! All optional depth work succeeded before publishing any crop field.
       typed_state%owner = candidate_owner
+      if(allocated(self%grass_parameters))typed_state%grass_management=candidate_management
       if(allocated(self%root_profile_configuration))then
         if(candidate_owner%crop_emerged)typed_state%root_profile=candidate_profile
       end if
@@ -1101,6 +1212,136 @@ contains
       return
     end select
   end subroutine fmr_wofost_crop_advance
+
+  subroutine evaluate_managed_grass_transaction(self,base,t0,t1,owner,rates,potential_result,growth,management,status)
+    class(fmr_wofost_crop_transaction_model_t),intent(in)::self
+    type(fmr_wofost_crop_transaction_state_t),intent(in)::base
+    real(real64),intent(in)::t0,t1
+    type(wofost_crop_owner_state_t),intent(out)::owner
+    type(wofost_one_day_rate_packet_t),intent(out)::rates
+    type(wofost_potential_daily_result_t),intent(out)::potential_result
+    type(fmr_wofost_root_growth_carrier_t),intent(out)::growth
+    type(grass_management_continuation_t),intent(out)::management
+    integer,intent(out)::status
+    type(grass_development_candidate_t)::actual_development,potential_development
+    type(grass_management_continuation_t)::potential_management
+    type(wofost_crop_owner_state_t)::potential_owner,potential_candidate
+    type(wofost_one_day_rate_packet_t)::potential_rates
+    type(wofost_accepted_window_aggregates_t)::potential_aggregates
+    real(real64)::soil_temperature,removed,potential_removed
+    logical::allowed,available,suppress
+    integer::code
+    owner=wofost_crop_owner_state_t();rates=wofost_one_day_rate_packet_t()
+    potential_result=wofost_potential_daily_result_t();growth=fmr_wofost_root_growth_carrier_t()
+    management=grass_management_continuation_t();status=FMR_WOF38_CROP_COMPLETE_ERROR
+    if(.not.allocated(self%grass_parameters).or..not.allocated(base%grass_management))return
+    if(.not.allocated(base%potential_shadow).or..not.base%owner%crop_emerged)return
+    if(.not.allocated(base%owner%evolution_continuation))return
+    if(t1-t0/=1.0_real64)return
+    if(self%event_forcing%crop_forcing%calendar_day_of_year<1.or. &
+       self%event_forcing%crop_forcing%calendar_day_of_year>366)return
+    if(max(base%grass_management%cut_index,base%grass_management%potential_cut_index)> &
+       self%grass_parameters%sequence_length+1)return
+    soil_temperature=0.0_real64
+    if(self%grass_parameters%development%temperature_start_mode==2)then
+      if(.not.self%event_forcing%crop_forcing%grass_soil_temperature_available)return
+      soil_temperature=self%event_forcing%crop_forcing%grass_soil_temperature_c
+    end if
+    call prepare_grass_development_candidate(self%grass_parameters%development,base%grass_management, &
+         base%owner%evolution_continuation%temperature_sum,self%event_forcing%crop_forcing%average_temperature, &
+         soil_temperature,actual_development,code)
+    if(code/=GRASS_DEVELOPMENT_OK)return
+    management=actual_development%management
+    potential_management=base%grass_management
+    potential_management%regrowth_delay_days=base%grass_management%potential_regrowth_delay_days
+    call prepare_grass_development_candidate(self%grass_parameters%development,potential_management, &
+         base%owner%evolution_continuation%temperature_sum,self%event_forcing%crop_forcing%average_temperature, &
+         soil_temperature,potential_development,code)
+    if(code/=GRASS_DEVELOPMENT_OK)return
+    management%potential_regrowth_delay_days=potential_development%management%regrowth_delay_days
+    suppress=.false.
+    if(self%anaerobic_root_growth_gate_enabled)then
+      if(.not.self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_available)return
+      call root_extension_allowed_by_daily_oxygen(.true., &
+           self%event_forcing%accepted_aggregates%deepest_root_oxygen_factor_integral,self%aeration_critical_factor, &
+           allowed,code)
+      if(code/=ROOT_ANOX_GATE_OK)return
+      suppress=.not.allowed
+    end if
+    call complete_threshold_grass_day(self,base%owner,t0,t1,self%event_forcing%accepted_aggregates,actual_development, &
+         management%actual_cut_age,management%cut_index,management%regrowth_delay_days,owner,rates,removed,code,suppress)
+    if(code/=WOFOST_CROP_WINDOW_OK)return
+    call base%potential_shadow%materialize_owner(base%owner,potential_owner,available,code)
+    if(code/=WOFOST_POTENTIAL_SHADOW_OK.or..not.available)return
+    potential_aggregates%actual_root_uptake=1.0_real64;potential_aggregates%potential_transpiration=1.0_real64
+    call complete_threshold_grass_day(self,potential_owner,t0,t1,potential_aggregates,potential_development, &
+         management%potential_cut_age,management%potential_cut_index,management%potential_regrowth_delay_days, &
+         potential_candidate,potential_rates,potential_removed,code,.false.,self%potential_attainable_multiplier)
+    if(code/=WOFOST_CROP_WINDOW_OK)return
+    potential_result%candidate_shadow=base%potential_shadow
+    call potential_result%candidate_shadow%absorb_owner(potential_candidate,code)
+    if(code/=WOFOST_POTENTIAL_SHADOW_OK)return
+    potential_result%gross_root_growth_rate=potential_rates%gross_root_growth_rate
+    potential_result%potential_root_biomass=potential_result%candidate_shadow%root_biomass()
+    growth%actual_gross_root_growth=rates%gross_root_growth_rate
+    growth%potential_gross_root_growth=potential_rates%gross_root_growth_rate;growth%valid=.true.
+    if(.not.growth%ready())return
+    management%harvested_dry_matter=base%grass_management%harvested_dry_matter+removed
+    management%potential_harvested_dry_matter=base%grass_management%potential_harvested_dry_matter+potential_removed
+    if(.not.management%ready())return
+    status=FMR_WOF38_OK
+  end subroutine evaluate_managed_grass_transaction
+
+  subroutine complete_threshold_grass_day(self,base,t0,t1,aggregates,development,cut_age,cut_index,delay, &
+       candidate,rates,removed,status,suppress,attainable_multiplier)
+    class(fmr_wofost_crop_transaction_model_t),intent(in)::self
+    type(wofost_crop_owner_state_t),intent(in)::base
+    real(real64),intent(in)::t0,t1
+    type(wofost_accepted_window_aggregates_t),intent(in)::aggregates
+    type(grass_development_candidate_t),intent(in)::development
+    integer,intent(inout)::cut_age,cut_index,delay
+    type(wofost_crop_owner_state_t),intent(out)::candidate
+    type(wofost_one_day_rate_packet_t),intent(out)::rates
+    real(real64),intent(out)::removed
+    integer,intent(out)::status
+    logical,intent(in)::suppress
+    real(real64),intent(in),optional::attainable_multiplier
+    type(wofost_two_phase_crop_window_t)::window
+    type(wofost_crop_window_begin_diagnostics_t)::diagnostics
+    real(real64)::aerial,threshold,delay_value
+    logical::cut
+    integer::code
+    removed=0.0_real64;status=WOFOST_CROP_WINDOW_CONTEXT_NOT_READY
+    if(.not.allocated(self%grass_parameters).or..not.allocated(base%biomass))return
+    call begin_wofost_one_day_crop_window(base,self%event_forcing%crop_forcing,t0,t1, &
+         self%stem_area_coefficient,self%storage_area_coefficient,self%rate_parameters,window,diagnostics,code, &
+         attainable_multiplier_override=attainable_multiplier)
+    if(code/=WOFOST_CROP_WINDOW_OK)return
+    cut=.false.
+    if(development%growth_enabled)then
+      if(cut_age==huge(cut_age))return
+      cut_age=cut_age+1
+      if(cut_index<=self%grass_parameters%sequence_length)then
+        call self%grass_parameters%mowing_threshold%evaluate( &
+             real(self%event_forcing%crop_forcing%calendar_day_of_year,real64),threshold,code)
+        if(code/=0)return
+        aerial=sum(base%biomass%leaf_biomass)+base%biomass%stem_biomass+base%biomass%storage_biomass+ &
+             base%biomass%cumulative_dead_leaf_biomass+base%biomass%cumulative_dead_stem_biomass
+        cut=aerial>threshold.or.(cut_age>self%grass_parameters%max_growing_days.and.cut_index>1)
+      end if
+    end if
+    if(cut)then
+      call complete_wofost_grass_crop_window(window,self%rate_parameters,self%update_parameters,aggregates, &
+           development,candidate,rates,status,self%grass_parameters%mowing_residual,removed,suppress)
+      if(status/=WOFOST_CROP_WINDOW_OK)return
+      call self%grass_parameters%regrowth_delay%evaluate(removed,delay_value,code)
+      if(code/=0.or.delay_value<0.0_real64.or.delay_value>366.0_real64)return
+      delay=int(delay_value);cut_index=cut_index+1;cut_age=0
+    else
+      call complete_wofost_grass_crop_window(window,self%rate_parameters,self%update_parameters,aggregates, &
+           development,candidate,rates,status,suppress_actual_root_growth=suppress)
+    end if
+  end subroutine complete_threshold_grass_day
 
   real(real64) function fmr_wofost_crop_storage(self, state) result(value)
     class(fmr_wofost_crop_transaction_model_t), intent(in) :: self

@@ -57,7 +57,8 @@ contains
     integer,intent(out)::status
     window=interception_source_window_t(); status=INTWIN_INVALID
     if(id<=0_int64 .or. .not.ieee_is_finite(t0) .or. .not.ieee_is_finite(t1)) return
-    if(t1<=t0 .or. .not.ieee_is_finite(aggregate) .or. aggregate<0.0_real64) return
+    if(.not.ieee_is_finite(aggregate))return
+    if(t1<=t0.or.aggregate<0.0_real64)return
     window%id=id; window%t0=t0; window%t1=t1; window%aggregate=aggregate; status=INTWIN_OK
   end subroutine
 

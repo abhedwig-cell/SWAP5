@@ -19,7 +19,7 @@ module mod_wofost_grass_daily_growth
  public::complete_grass_daily_candidate
 contains
  subroutine complete_grass_daily_candidate(prepared,context,view,parameters,assimilation,forcing, &
-      update_parameters,aggregates,development,candidate,rates,status,mowing_residual,harvested)
+      update_parameters,aggregates,development,candidate,rates,status,mowing_residual,harvested,suppress_actual_root_growth)
   type(wofost_crop_owner_state_t),intent(in)::prepared
   type(wofost_one_day_window_context_t),intent(in)::context
   type(wofost_one_day_rate_state_view_t),intent(in)::view
@@ -34,6 +34,7 @@ contains
   integer,intent(out)::status
   real(real64),intent(in),optional::mowing_residual
   real(real64),intent(out),optional::harvested
+  logical,intent(in),optional::suppress_actual_root_growth
   real(real64)::remaining,leaves,stems,total,fl,fs,sla
   type(wofost_rate_scalar_parameters_t)::s
   type(wofost_one_day_diagnostics_t)::diagnostic
@@ -66,6 +67,12 @@ contains
    call finalize_wofost_one_day_rates(view,parameters,assimilation,aggregates,forcing,rates,code,development)
    if(code/=WOFOST_FINALIZE_RATES_OK)then
     status=GRASS_DAILY_PHYSIOLOGY_REJECTED;return
+   end if
+   if(present(suppress_actual_root_growth))then
+    if(suppress_actual_root_growth)then
+     rates%root_net_growth_rate=rates%root_net_growth_rate-rates%gross_root_growth_rate
+     rates%gross_root_growth_rate=0d0
+    end if
    end if
    if(present(mowing_residual))then
     ! Source management_event/mowing_event executes BEFORE ordinary leaf

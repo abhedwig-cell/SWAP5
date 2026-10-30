@@ -1,0 +1,1323 @@
+{
+  "schema": 1,
+  "work_unit": "SWAP5-DATAQUAL15",
+  "scientific_source_commit": "d6514abee5a85367a6b1fa181c011b6f2e9194ed",
+  "qualified_production_tree_oids": {
+    "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+    "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "independent_original_projects": 3,
+  "complete_original_executions": 2,
+  "fully_scientifically_qualified_projects": 0,
+  "missing_functional_process_chains_completed": 9,
+  "missing_chain_count_scope": "Three Grassgrowth and six Hupsel chains; numerical/parameter/restart repairs and configuration variants are separate.",
+  "grass": {
+    "days": 1827,
+    "returncode": 0,
+    "seconds": 1319.3188838360002,
+    "qualification": {
+      "status": "SOURCE_BOUND_FULL_ORIGINAL_GRASS_EXECUTION_PASS",
+      "full_original_days": 1827,
+      "independent_O0_O2_exact_days": 367,
+      "balances": {
+        "rows": 1827,
+        "maximum_water_residual_cm": 4.7101211819722266e-14,
+        "cumulative_water_stock_flux_residual_cm": 8.124189088070619e-15,
+        "maximum_heat_accounting_residual_j_cm2": 3.168642431772284e-12
+      },
+      "O0_balances": {
+        "rows": 367,
+        "maximum_water_residual_cm": 4.7101211819722266e-14,
+        "cumulative_water_stock_flux_residual_cm": 5.061851952132754e-15,
+        "maximum_heat_accounting_residual_j_cm2": 2.7764457399825915e-12
+      },
+      "exact_restarts": [
+        {
+          "optimization": "O2",
+          "origin": 126,
+          "end": 140,
+          "purpose": "mowing"
+        },
+        {
+          "optimization": "O0",
+          "origin": 365,
+          "end": 367,
+          "purpose": "year"
+        },
+        {
+          "optimization": "O2",
+          "origin": 365,
+          "end": 367,
+          "purpose": "year"
+        },
+        {
+          "optimization": "O2",
+          "origin": 918,
+          "end": 922,
+          "purpose": "distinct_delay"
+        },
+        {
+          "optimization": "O2",
+          "origin": 1786,
+          "end": 1827,
+          "purpose": "oxygen"
+        },
+        {
+          "optimization": "O2",
+          "origin": 1800,
+          "end": 1827,
+          "purpose": "final"
+        }
+      ],
+      "invalid_restart_controls_per_optimization": 11,
+      "native_preservation_contracts": 8,
+      "whole_original_grass_cases_per_build": 8,
+      "reference": {
+        "B0": "Literal original4.3.1 physical implementation; output-only diagnostics",
+        "B1": "Two documented early-Ksat threshold tests corrected; distinct counterfactual reference",
+        "days_each": 1827,
+        "read_only_B0_nodal_instrumentation_scalar_exact": true,
+        "scientific_equivalence": false
+      },
+      "B0_maximum_scalar_differences": {
+        "WTOT": 0.08344256198165567,
+        "TPOT": 0.006872216729159886,
+        "TACT": 0.01128903608404791,
+        "WRT": 12.801948995740645,
+        "WLV": 53.216091338990054,
+        "WST": 19.049678582920137,
+        "WSO": 0.0,
+        "PWRT": 5.115907697472721e-13,
+        "DVS": 4.989342272665453e-13,
+        "TSUM": 4.547473508864641e-13,
+        "RD": 0.06539532250382507,
+        "RDPOT": 0.0
+      },
+      "B1_maximum_scalar_differences": {
+        "WTOT": 0.08344256193066713,
+        "TPOT": 0.006872216725159863,
+        "TACT": 0.011289036078047904,
+        "WRT": 12.801948969998648,
+        "WLV": 53.216091307938086,
+        "WST": 19.049678571095114,
+        "WSO": 0.0,
+        "PWRT": 5.115907697472721e-13,
+        "DVS": 4.989342272665453e-13,
+        "TSUM": 4.547473508864641e-13,
+        "RD": 0.06539532250382507,
+        "RDPOT": 0.0
+      },
+      "B0_harvest_at_checkpoints": [
+        {
+          "day": 63,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 71,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 72,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 73,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 113,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 117,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 126,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 127,
+          "actual_kg_ha": 2132.071262841742,
+          "potential_kg_ha": 2169.9465361131633,
+          "source_actual_kg_ha": 2125.305229699422,
+          "source_potential_kg_ha": 2169.946536113163,
+          "actual_difference_kg_ha": 6.766033142319884,
+          "potential_difference_kg_ha": 4.547473508864641e-13,
+          "next_cut": 2,
+          "next_potential_cut": 2
+        },
+        {
+          "day": 140,
+          "actual_kg_ha": 2132.071262841742,
+          "potential_kg_ha": 2169.9465361131633,
+          "source_actual_kg_ha": 2125.305229699422,
+          "source_potential_kg_ha": 2169.946536113163,
+          "actual_difference_kg_ha": 6.766033142319884,
+          "potential_difference_kg_ha": 4.547473508864641e-13,
+          "next_cut": 2,
+          "next_potential_cut": 2
+        },
+        {
+          "day": 365,
+          "actual_kg_ha": 10741.464170969848,
+          "potential_kg_ha": 12566.142742193451,
+          "source_actual_kg_ha": 10653.18221658,
+          "source_potential_kg_ha": 12566.14274219,
+          "actual_difference_kg_ha": 88.28195438984767,
+          "potential_difference_kg_ha": 3.4506228985264897e-09,
+          "next_cut": 8,
+          "next_potential_cut": 8
+        },
+        {
+          "day": 366,
+          "actual_kg_ha": 10741.464170969848,
+          "potential_kg_ha": 12566.142742193451,
+          "source_actual_kg_ha": 10653.18221658,
+          "source_potential_kg_ha": 12566.14274219,
+          "actual_difference_kg_ha": 88.28195438984767,
+          "potential_difference_kg_ha": 3.4506228985264897e-09,
+          "next_cut": 8,
+          "next_potential_cut": 8
+        },
+        {
+          "day": 367,
+          "actual_kg_ha": 10741.464170969848,
+          "potential_kg_ha": 12566.142742193451,
+          "source_actual_kg_ha": 10653.18221658,
+          "source_potential_kg_ha": 12566.14274219,
+          "actual_difference_kg_ha": 88.28195438984767,
+          "potential_difference_kg_ha": 3.4506228985264897e-09,
+          "next_cut": 8,
+          "next_potential_cut": 8
+        },
+        {
+          "day": 731,
+          "actual_kg_ha": 22995.144830032274,
+          "potential_kg_ha": 25247.69470790153,
+          "source_actual_kg_ha": 22808.43950801,
+          "source_potential_kg_ha": 25247.694707900002,
+          "actual_difference_kg_ha": 186.70532202227332,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 15,
+          "next_potential_cut": 15
+        },
+        {
+          "day": 732,
+          "actual_kg_ha": 22995.144830032274,
+          "potential_kg_ha": 25247.69470790153,
+          "source_actual_kg_ha": 22808.43950801,
+          "source_potential_kg_ha": 25247.694707900002,
+          "actual_difference_kg_ha": 186.70532202227332,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 15,
+          "next_potential_cut": 15
+        },
+        {
+          "day": 918,
+          "actual_kg_ha": 29536.03892319685,
+          "potential_kg_ha": 32489.121943319937,
+          "source_actual_kg_ha": 29333.6637704572,
+          "source_potential_kg_ha": 32489.12194331841,
+          "actual_difference_kg_ha": 202.37515273965255,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 18,
+          "next_potential_cut": 18
+        },
+        {
+          "day": 922,
+          "actual_kg_ha": 29536.03892319685,
+          "potential_kg_ha": 32489.121943319937,
+          "source_actual_kg_ha": 29333.6637704572,
+          "source_potential_kg_ha": 32489.12194331841,
+          "actual_difference_kg_ha": 202.37515273965255,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 18,
+          "next_potential_cut": 18
+        },
+        {
+          "day": 1096,
+          "actual_kg_ha": 33052.433473922494,
+          "potential_kg_ha": 39138.93924656995,
+          "source_actual_kg_ha": 32849.64197672,
+          "source_potential_kg_ha": 39138.93924657,
+          "actual_difference_kg_ha": 202.79149720249552,
+          "potential_difference_kg_ha": -5.093170329928398e-11,
+          "next_cut": 20,
+          "next_potential_cut": 20
+        },
+        {
+          "day": 1461,
+          "actual_kg_ha": 43976.68525529294,
+          "potential_kg_ha": 53763.618194606854,
+          "source_actual_kg_ha": 43722.06266701,
+          "source_potential_kg_ha": 53763.61819461,
+          "actual_difference_kg_ha": 254.62258828293852,
+          "potential_difference_kg_ha": -3.14321368932724e-09,
+          "next_cut": 25,
+          "next_potential_cut": 25
+        },
+        {
+          "day": 1474,
+          "actual_kg_ha": 43976.68525529294,
+          "potential_kg_ha": 53763.618194606854,
+          "source_actual_kg_ha": 43722.06266701,
+          "source_potential_kg_ha": 53763.61819461,
+          "actual_difference_kg_ha": 254.62258828293852,
+          "potential_difference_kg_ha": -3.14321368932724e-09,
+          "next_cut": 25,
+          "next_potential_cut": 25
+        },
+        {
+          "day": 1475,
+          "actual_kg_ha": 43976.68525529294,
+          "potential_kg_ha": 53763.618194606854,
+          "source_actual_kg_ha": 43722.06266701,
+          "source_potential_kg_ha": 53763.61819461,
+          "actual_difference_kg_ha": 254.62258828293852,
+          "potential_difference_kg_ha": -3.14321368932724e-09,
+          "next_cut": 25,
+          "next_potential_cut": 25
+        },
+        {
+          "day": 1786,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.8709469,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46631430094567,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        },
+        {
+          "day": 1787,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.8709469,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46631430094567,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        },
+        {
+          "day": 1800,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.8709469,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46631430094567,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        },
+        {
+          "day": 1827,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.8709469,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46631430094567,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        }
+      ],
+      "B1_harvest_at_checkpoints": [
+        {
+          "day": 63,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 71,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 72,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 73,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 113,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 117,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 126,
+          "actual_kg_ha": 0.0,
+          "potential_kg_ha": 0.0,
+          "source_actual_kg_ha": 0.0,
+          "source_potential_kg_ha": 0.0,
+          "actual_difference_kg_ha": 0.0,
+          "potential_difference_kg_ha": 0.0,
+          "next_cut": 1,
+          "next_potential_cut": 1
+        },
+        {
+          "day": 127,
+          "actual_kg_ha": 2132.071262841742,
+          "potential_kg_ha": 2169.9465361131633,
+          "source_actual_kg_ha": 2125.305229699422,
+          "source_potential_kg_ha": 2169.946536113163,
+          "actual_difference_kg_ha": 6.766033142319884,
+          "potential_difference_kg_ha": 4.547473508864641e-13,
+          "next_cut": 2,
+          "next_potential_cut": 2
+        },
+        {
+          "day": 140,
+          "actual_kg_ha": 2132.071262841742,
+          "potential_kg_ha": 2169.9465361131633,
+          "source_actual_kg_ha": 2125.305229699422,
+          "source_potential_kg_ha": 2169.946536113163,
+          "actual_difference_kg_ha": 6.766033142319884,
+          "potential_difference_kg_ha": 4.547473508864641e-13,
+          "next_cut": 2,
+          "next_potential_cut": 2
+        },
+        {
+          "day": 365,
+          "actual_kg_ha": 10741.464170969848,
+          "potential_kg_ha": 12566.142742193451,
+          "source_actual_kg_ha": 10653.18222486,
+          "source_potential_kg_ha": 12566.14274219,
+          "actual_difference_kg_ha": 88.28194610984792,
+          "potential_difference_kg_ha": 3.4506228985264897e-09,
+          "next_cut": 8,
+          "next_potential_cut": 8
+        },
+        {
+          "day": 366,
+          "actual_kg_ha": 10741.464170969848,
+          "potential_kg_ha": 12566.142742193451,
+          "source_actual_kg_ha": 10653.18222486,
+          "source_potential_kg_ha": 12566.14274219,
+          "actual_difference_kg_ha": 88.28194610984792,
+          "potential_difference_kg_ha": 3.4506228985264897e-09,
+          "next_cut": 8,
+          "next_potential_cut": 8
+        },
+        {
+          "day": 367,
+          "actual_kg_ha": 10741.464170969848,
+          "potential_kg_ha": 12566.142742193451,
+          "source_actual_kg_ha": 10653.18222486,
+          "source_potential_kg_ha": 12566.14274219,
+          "actual_difference_kg_ha": 88.28194610984792,
+          "potential_difference_kg_ha": 3.4506228985264897e-09,
+          "next_cut": 8,
+          "next_potential_cut": 8
+        },
+        {
+          "day": 731,
+          "actual_kg_ha": 22995.144830032274,
+          "potential_kg_ha": 25247.69470790153,
+          "source_actual_kg_ha": 22808.439523200002,
+          "source_potential_kg_ha": 25247.694707900002,
+          "actual_difference_kg_ha": 186.70530683227116,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 15,
+          "next_potential_cut": 15
+        },
+        {
+          "day": 732,
+          "actual_kg_ha": 22995.144830032274,
+          "potential_kg_ha": 25247.69470790153,
+          "source_actual_kg_ha": 22808.439523200002,
+          "source_potential_kg_ha": 25247.694707900002,
+          "actual_difference_kg_ha": 186.70530683227116,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 15,
+          "next_potential_cut": 15
+        },
+        {
+          "day": 918,
+          "actual_kg_ha": 29536.03892319685,
+          "potential_kg_ha": 32489.121943319937,
+          "source_actual_kg_ha": 29333.663797375582,
+          "source_potential_kg_ha": 32489.12194331841,
+          "actual_difference_kg_ha": 202.37512582126874,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 18,
+          "next_potential_cut": 18
+        },
+        {
+          "day": 922,
+          "actual_kg_ha": 29536.03892319685,
+          "potential_kg_ha": 32489.121943319937,
+          "source_actual_kg_ha": 29333.663797375582,
+          "source_potential_kg_ha": 32489.12194331841,
+          "actual_difference_kg_ha": 202.37512582126874,
+          "potential_difference_kg_ha": 1.5279510989785194e-09,
+          "next_cut": 18,
+          "next_potential_cut": 18
+        },
+        {
+          "day": 1096,
+          "actual_kg_ha": 33052.433473922494,
+          "potential_kg_ha": 39138.93924656995,
+          "source_actual_kg_ha": 32849.6420184,
+          "source_potential_kg_ha": 39138.93924657,
+          "actual_difference_kg_ha": 202.79145552249247,
+          "potential_difference_kg_ha": -5.093170329928398e-11,
+          "next_cut": 20,
+          "next_potential_cut": 20
+        },
+        {
+          "day": 1461,
+          "actual_kg_ha": 43976.68525529294,
+          "potential_kg_ha": 53763.618194606854,
+          "source_actual_kg_ha": 43722.06273485,
+          "source_potential_kg_ha": 53763.61819461,
+          "actual_difference_kg_ha": 254.6225204429429,
+          "potential_difference_kg_ha": -3.14321368932724e-09,
+          "next_cut": 25,
+          "next_potential_cut": 25
+        },
+        {
+          "day": 1474,
+          "actual_kg_ha": 43976.68525529294,
+          "potential_kg_ha": 53763.618194606854,
+          "source_actual_kg_ha": 43722.06273485,
+          "source_potential_kg_ha": 53763.61819461,
+          "actual_difference_kg_ha": 254.6225204429429,
+          "potential_difference_kg_ha": -3.14321368932724e-09,
+          "next_cut": 25,
+          "next_potential_cut": 25
+        },
+        {
+          "day": 1475,
+          "actual_kg_ha": 43976.68525529294,
+          "potential_kg_ha": 53763.618194606854,
+          "source_actual_kg_ha": 43722.06273485,
+          "source_potential_kg_ha": 53763.61819461,
+          "actual_difference_kg_ha": 254.6225204429429,
+          "potential_difference_kg_ha": -3.14321368932724e-09,
+          "next_cut": 25,
+          "next_potential_cut": 25
+        },
+        {
+          "day": 1786,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.87101233,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46624887095095,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        },
+        {
+          "day": 1787,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.87101233,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46624887095095,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        },
+        {
+          "day": 1800,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.87101233,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46624887095095,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        },
+        {
+          "day": 1827,
+          "actual_kg_ha": 54354.33726120095,
+          "potential_kg_ha": 66181.38473741093,
+          "source_actual_kg_ha": 54049.87101233,
+          "source_potential_kg_ha": 66181.38473741,
+          "actual_difference_kg_ha": 304.46624887095095,
+          "potential_difference_kg_ha": 9.313225746154785e-10,
+          "next_cut": 31,
+          "next_potential_cut": 31
+        }
+      ],
+      "nodal_profiles": {
+        "B0": {
+          "sampled_days": [
+            63,
+            71,
+            72,
+            73,
+            113,
+            140,
+            367,
+            731,
+            918,
+            922,
+            1096,
+            1461,
+            1800,
+            1827
+          ],
+          "maximum_over_sampled_profiles": {
+            "head_cm": 88.05210425892346,
+            "water_content": 0.0018655399075153678,
+            "temperature_c": 0.010338430616862126
+          },
+          "measurements": [
+            {
+              "day": 63,
+              "head_cm": {
+                "maximum_absolute_difference": 0.13306106515244664,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 9.785607804435603e-05,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.004617247217269416,
+                "node": 27
+              }
+            },
+            {
+              "day": 71,
+              "head_cm": {
+                "maximum_absolute_difference": 0.11029787301957583,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00010263013123085196,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0022434707357730233,
+                "node": 53
+              }
+            },
+            {
+              "day": 72,
+              "head_cm": {
+                "maximum_absolute_difference": 0.3733149866000076,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0005185384736791643,
+                "node": 26
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0011465237523662353,
+                "node": 63
+              }
+            },
+            {
+              "day": 73,
+              "head_cm": {
+                "maximum_absolute_difference": 1.1035518393275083,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00039145858604383577,
+                "node": 43
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.010338430616862126,
+                "node": 24
+              }
+            },
+            {
+              "day": 113,
+              "head_cm": {
+                "maximum_absolute_difference": 0.7596218047733032,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.000531240978387415,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.003394179817149734,
+                "node": 31
+              }
+            },
+            {
+              "day": 140,
+              "head_cm": {
+                "maximum_absolute_difference": 21.32287913420805,
+                "node": 7
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00017231587615958166,
+                "node": 8
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0034786411371712234,
+                "node": 50
+              }
+            },
+            {
+              "day": 367,
+              "head_cm": {
+                "maximum_absolute_difference": 0.24921004311590877,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00015880962532432985,
+                "node": 2
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.010065537952147707,
+                "node": 22
+              }
+            },
+            {
+              "day": 731,
+              "head_cm": {
+                "maximum_absolute_difference": 0.0010388626257054057,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 2.3546610428137882e-07,
+                "node": 2
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.006784244216670121,
+                "node": 54
+              }
+            },
+            {
+              "day": 918,
+              "head_cm": {
+                "maximum_absolute_difference": 54.040623803588005,
+                "node": 2
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0015222302492467477,
+                "node": 7
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.004467605059614854,
+                "node": 23
+              }
+            },
+            {
+              "day": 922,
+              "head_cm": {
+                "maximum_absolute_difference": 88.05210425892346,
+                "node": 3
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0018655399075153678,
+                "node": 9
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.006937142295132759,
+                "node": 17
+              }
+            },
+            {
+              "day": 1096,
+              "head_cm": {
+                "maximum_absolute_difference": 0.0012987557379346981,
+                "node": 2
+              },
+              "water_content": {
+                "maximum_absolute_difference": 1.3837778036762671e-06,
+                "node": 4
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.007075686938701864,
+                "node": 26
+              }
+            },
+            {
+              "day": 1461,
+              "head_cm": {
+                "maximum_absolute_difference": 0.13313352842034476,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00010169793295616847,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.00431748511578256,
+                "node": 25
+              }
+            },
+            {
+              "day": 1800,
+              "head_cm": {
+                "maximum_absolute_difference": 0.0066019515362540915,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 6.974294328998543e-06,
+                "node": 7
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.002863869826322585,
+                "node": 42
+              }
+            },
+            {
+              "day": 1827,
+              "head_cm": {
+                "maximum_absolute_difference": 0.13274093860407277,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00012578811161600978,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.005753542328376771,
+                "node": 21
+              }
+            }
+          ],
+          "scope": "Only actually retained checkpoint dates; no daily-profile or energy-equivalence claim"
+        },
+        "B1": {
+          "sampled_days": [
+            63,
+            71,
+            72,
+            73,
+            113,
+            140,
+            367,
+            731,
+            918,
+            922,
+            1096,
+            1461,
+            1800,
+            1827
+          ],
+          "maximum_over_sampled_profiles": {
+            "head_cm": 88.05209854633267,
+            "water_content": 0.001865540521809872,
+            "temperature_c": 0.010338430616862126
+          },
+          "measurements": [
+            {
+              "day": 63,
+              "head_cm": {
+                "maximum_absolute_difference": 0.13306106515244664,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 9.785607804435603e-05,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.004617247217269416,
+                "node": 27
+              }
+            },
+            {
+              "day": 71,
+              "head_cm": {
+                "maximum_absolute_difference": 0.11029787301957583,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00010263013123085196,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0022434707357730233,
+                "node": 53
+              }
+            },
+            {
+              "day": 72,
+              "head_cm": {
+                "maximum_absolute_difference": 0.3733149866000076,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0005185384736791643,
+                "node": 26
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0011465237523662353,
+                "node": 63
+              }
+            },
+            {
+              "day": 73,
+              "head_cm": {
+                "maximum_absolute_difference": 1.1035518393275083,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00039145858604383577,
+                "node": 43
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.010338430616862126,
+                "node": 24
+              }
+            },
+            {
+              "day": 113,
+              "head_cm": {
+                "maximum_absolute_difference": 0.7596218047733032,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.000531240978387415,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.003394179817149734,
+                "node": 31
+              }
+            },
+            {
+              "day": 140,
+              "head_cm": {
+                "maximum_absolute_difference": 21.322878996041254,
+                "node": 7
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00017231587396843162,
+                "node": 8
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.003478641139020411,
+                "node": 50
+              }
+            },
+            {
+              "day": 367,
+              "head_cm": {
+                "maximum_absolute_difference": 0.24921004310999706,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0001588096253200555,
+                "node": 2
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.010065537899005328,
+                "node": 22
+              }
+            },
+            {
+              "day": 731,
+              "head_cm": {
+                "maximum_absolute_difference": 0.0010388628414830237,
+                "node": 113
+              },
+              "water_content": {
+                "maximum_absolute_difference": 2.3546614952296707e-07,
+                "node": 2
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.00678424405202227,
+                "node": 54
+              }
+            },
+            {
+              "day": 918,
+              "head_cm": {
+                "maximum_absolute_difference": 54.040621210342124,
+                "node": 2
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0015222301221882173,
+                "node": 7
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.004467605191008417,
+                "node": 23
+              }
+            },
+            {
+              "day": 922,
+              "head_cm": {
+                "maximum_absolute_difference": 88.05209854633267,
+                "node": 3
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.001865540521809872,
+                "node": 9
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.006937143550043601,
+                "node": 17
+              }
+            },
+            {
+              "day": 1096,
+              "head_cm": {
+                "maximum_absolute_difference": 0.001298499823363386,
+                "node": 2
+              },
+              "water_content": {
+                "maximum_absolute_difference": 1.3835102380954645e-06,
+                "node": 4
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0070756873214103955,
+                "node": 26
+              }
+            },
+            {
+              "day": 1461,
+              "head_cm": {
+                "maximum_absolute_difference": 0.1331335284878321,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.00010169793300779384,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.00431748514828012,
+                "node": 25
+              }
+            },
+            {
+              "day": 1800,
+              "head_cm": {
+                "maximum_absolute_difference": 0.006601619154636751,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 6.973961144240981e-06,
+                "node": 7
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.0028638684648960577,
+                "node": 42
+              }
+            },
+            {
+              "day": 1827,
+              "head_cm": {
+                "maximum_absolute_difference": 0.13274094499880107,
+                "node": 1
+              },
+              "water_content": {
+                "maximum_absolute_difference": 0.0001257881176798814,
+                "node": 1
+              },
+              "temperature_c": {
+                "maximum_absolute_difference": 0.005753542457603178,
+                "node": 21
+              }
+            }
+          ],
+          "scope": "Only actually retained checkpoint dates; no daily-profile or energy-equivalence claim"
+        }
+      },
+      "scientific_equivalence": false,
+      "canonical_admission_claim": false
+    },
+    "harvest": {
+      "day": 1827,
+      "actual_kg_ha": 54354.33726120095,
+      "potential_kg_ha": 66181.38473741093,
+      "source_actual_kg_ha": 54049.8709469,
+      "source_potential_kg_ha": 66181.38473741,
+      "actual_difference_kg_ha": 304.46631430094567,
+      "potential_difference_kg_ha": 9.313225746154785e-10,
+      "next_cut": 31,
+      "next_potential_cut": 31
+    },
+    "capsule_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+    "integration_preservation": {
+      "status": "FULL_1827_DAY_INTEGRATION_PHYSICAL_PRESERVATION_PASS",
+      "daily_and_endpoint_outputs": {
+        "budget.csv": {
+          "exact": true,
+          "sha256": "96d23422772ee773835fa5de20bd901583ba441002c60044a92e5ad505460221"
+        },
+        "crop.csv": {
+          "exact": true,
+          "sha256": "658d3daece2ba751a7d5450f0e08b87cdd5714add4fedc4be06727a9eeedeaed"
+        },
+        "state.csv": {
+          "exact": true,
+          "sha256": "8f9413a4aed804eba2649f5a5db2957b69e3ed08ba13e8347b813e0890c84829"
+        },
+        "endpoint.csv": {
+          "exact": true,
+          "sha256": "bb158f4f207603f5e61fe723a0bf56ebebd2f43d3a07e0f09ebd1551685949eb"
+        }
+      },
+      "complete_native_physical_payload_exact": true,
+      "original_days": 1827,
+      "scope": "Distinct source/build identities; physical preservation comparison, not same-build restart."
+    },
+    "extracted_native_recovery": {
+      "status": "EXTRACTED_ARCHIVE_SAME_BINARY_NATIVE_RECOVERY_PASS",
+      "source_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+      "returncode": 0,
+      "seconds": 12.386475345003419,
+      "origin_day": 1800,
+      "end_day": 1827,
+      "complete_native_checkpoint_byte_exact": true,
+      "executable_sha256": "47a7fd29dc49c9b122e00fabb0cdf0bac3b61614e0ee80e8f7375685e9cf15ef",
+      "checkpoint_sha256": "d56815a66e75969faf1afcc221316b2ca857590a4345096abe3b6ec4859e634e",
+      "scope": "Copied only sealed binary, literal original input files, original application binding and native1800 checkpoint into a new directory; no source rebinding or old build objects."
+    }
+  },
+  "hupsel": {
+    "days": 1096,
+    "returncode": 0,
+    "seconds": 667.1761610629983,
+    "current_capsule": "integration/dataqual15_hupsel/UNION_C3_HUPSEL_RESULT.json",
+    "prior_canonical_merge": "2127bb93dc5158e34a5449a1a775d6f7e59fe440",
+    "original_reference_comparison": {
+      "source": "Original SWAP4.3.1 B111 highprecision scalar1096 output; output-only change manifest retained",
+      "water_stock_definition": "native global stock minus donor WTOT+PD_VOL+IC_VOL",
+      "maximum_signed_difference_water_solute_flux": {
+        "actual_transpiration_cm_day": {
+          "day": 582,
+          "signed_difference": -0.0015052758475284644
+        },
+        "soil_evaporation_cm_day": {
+          "day": 543,
+          "signed_difference": -0.004284196995126326
+        },
+        "solute_mg_cm2": {
+          "day": 349,
+          "signed_difference": 0.02497520805155773
+        },
+        "water_global_cm": {
+          "day": 930,
+          "signed_difference": 0.08242959814683104
+        }
+      },
+      "maximum_signed_difference_active_crop": {
+        "dvs": {
+          "day": 1025,
+          "signed_difference": 4.989342272665453e-13
+        },
+        "harvested_dry_matter": {
+          "day": 1033,
+          "signed_difference": -7.988626548723914
+        },
+        "lai": {
+          "day": 1096,
+          "signed_difference": -0.03679654548132216
+        },
+        "potential_harvested_dry_matter": {
+          "day": 1033,
+          "signed_difference": -2.622982719913125e-09
+        },
+        "pwlv": {
+          "day": 810,
+          "signed_difference": -5.115907697472721e-13
+        },
+        "pwrt": {
+          "day": 844,
+          "signed_difference": -5.115907697472721e-13
+        },
+        "pwso": {
+          "day": 617,
+          "signed_difference": -4.971298039890826e-09
+        },
+        "pwst": {
+          "day": 544,
+          "signed_difference": -5.115907697472721e-13
+        },
+        "rd": {
+          "day": 852,
+          "signed_difference": -0.005567578585978339
+        },
+        "tsum": {
+          "day": 593,
+          "signed_difference": 4.547473508864641e-13
+        },
+        "wlv": {
+          "day": 1096,
+          "signed_difference": -18.358408869500806
+        },
+        "wrt": {
+          "day": 862,
+          "signed_difference": -0.7324578487160807
+        },
+        "wso": {
+          "day": 582,
+          "signed_difference": -1.905109511887531
+        },
+        "wst": {
+          "day": 862,
+          "signed_difference": -1.1719325579470024
+        }
+      },
+      "endpoint1096": {
+        "day": 1096,
+        "water_global_cm": 0.00023407423407206807,
+        "solute_mg_cm2": 0.0033329144513754017,
+        "actual_transpiration_cm_day": -0.00014047591089092967,
+        "soil_evaporation_cm_day": 2.204869850036843e-05
+      },
+      "endpoint_active_crop": {
+        "day": 1096,
+        "dvs": 0.0,
+        "tsum": 4.547473508864641e-13,
+        "lai": -0.03679654548132216,
+        "rd": 0.0,
+        "wrt": -0.24106084869146116,
+        "wlv": -18.358408869500806,
+        "wst": -0.1993193555502586,
+        "wso": 0.0,
+        "pwrt": -2.8421709430404007e-13,
+        "pwlv": -4.547473508864641e-13,
+        "pwst": 5.684341886080802e-14,
+        "pwso": 0.0,
+        "harvested_dry_matter": 6.467163468036233,
+        "potential_harvested_dry_matter": 1.0350049706175923e-09
+      },
+      "inactive_DVS_scope": "Donor pre-emergence DVS is negative; native inactive-owner diagnostic is0. These are excluded from active development comparison.",
+      "terminal_donor_BALDEV_cm": -0.031255676876,
+      "terminal_donor_IC_VOL_cm": 0.031255683318,
+      "BALDEV_caveat": "Donor terminal BALDEV approximately equals negative remaining canopy storage. Keep the source field unchanged; compare total water including canopy, and do not equate donor BALDEV to native global residual.",
+      "scientific_equivalence": false,
+      "actual_harvest_event_days_native": [
+        868,
+        902,
+        930,
+        956,
+        989,
+        1033,
+        1077
+      ],
+      "actual_harvest_event_days_donor": [
+        868,
+        902,
+        930,
+        956,
+        989,
+        1033,
+        1077
+      ],
+      "actual_harvest_event_dates_equal": true,
+      "cut_index_output_caveat": "Source ICUT/ICUTPOT increments in the next daily output although HRVDM/PHRVDM already changes on the actual harvest day. Compare event dates using harvest increments, not raw counter timestamp."
+    }
+  },
+  "andelst": {
+    "sealed_experimental_days": 130,
+    "O0_O2_exact_days": 70,
+    "full_original_execution": false,
+    "current_source_canonically_admitted": false,
+    "evidence": "integration/dataqual15/ANDELST130_RESULT.json",
+    "scope": "Current proposed corrected partial-wall law and inherited0.0001cm entry ramp; explicit censor, not full481-day original execution. Near-saturated pressure temporal overrefinement is diagnosed with successful Newton/linear siblings. Literal sharp-entry contact remains unresolved. Seventy O0/O2 exact days refer to the immediate predecessor; current rain-edge causal replay is exact O0/O2.",
+    "censored": true,
+    "natural_terminal_solver_failure": false,
+    "last_accepted_time_day": 130.89000000000425,
+    "maximum_water_residual_cm": 3.31e-12
+  },
+  "scientific_equivalence": false,
+  "production_promoted": false,
+  "canonical_admission_of_this_successor": true,
+  "canonical_admission_scope": "Admitted by PR1478 at3a02db40a499b28b5f37e5cdd00b34b126d99a70; fetched exact qualified tree and current postimage verifiers PASS. Metadata-only admission receipt changes no scientific source or archived evidence.",
+  "canonical_merge": "3a02db40a499b28b5f37e5cdd00b34b126d99a70",
+  "canonical_qualified_tree": "db8dc692c6e8573d9e1c58ccadc91087aae6a1ad"
+}

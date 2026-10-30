@@ -1,0 +1,43 @@
+{
+  "status": "CANONICAL_MERGE_AND_POSTIMAGE_VERIFIED",
+  "pr": 1476,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1476",
+  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+  "qualified_head": "abbff931a4b35e2256f0fa07269de4d6260d7225",
+  "merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+  "qualified_and_merge_tree": "ead26788b5ad7f675fb7185e362d6b28cdbc1264",
+  "scientific_source_commit": "76d41a0e3554ce37bb195f6748c9db3e784804e5",
+  "evidence_sha256": "274233d3a251c405d1922826024bee552eb409d4dd39e1afa9dfa7e3f4898b42",
+  "postimage": {
+    "status": "SOURCE_BOUND_ORIGINAL_GRASS_EXECUTION_PASS",
+    "executed_days": 521,
+    "full_original_execution": false,
+    "scientific_equivalence": false,
+    "O0_O2_exact_days": 367,
+    "exact_restarts": [
+      "126->140 O2",
+      "365->367 O0/O2"
+    ],
+    "invalid_restart_controls_per_build": 11,
+    "native_preservation_contracts": 8,
+    "whole_original_grass_cases_per_build": 8,
+    "maximum_water_residual_cm": 4.360400929215302e-14
+  },
+  "github_selected_terminal": {
+    "canonical_selection_and_feedback": {
+      "run_id": 41028172342,
+      "conclusion": "success"
+    },
+    "production_bootstrap_owner": {
+      "run_id": 41028172661,
+      "conclusion": "success"
+    },
+    "documentation": {
+      "run_id": 41028172595,
+      "conclusion": "success"
+    }
+  },
+  "all_repository_workflows_green_claim": false,
+  "full_numerical_FCI": false,
+  "scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion."
+}

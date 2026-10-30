@@ -1,18 +1,10 @@
 # SWAP5 Status-A current status
 
-DATAQUAL15 candidate (not canonically admitted) removes the original Grassgrowth
-variable-groundwater, first mowing and annual crop/root continuation barriers.
-The same-build original history reaches521 days, with367-day O0/O2 physical
-continuation equality and exact126-to140 O2 and365-to367 O0/O2 disk restarts. Interrupted
-process exits are UNKNOWN; the1827-day target continues from unchanged atomic
-checkpoints. Actual biomass/water-stress differences from4.3.1 are measured;
-full scientific equivalence and production expansion are not claimed. Existing
-boundary, crop, potential, root and thermal owners remain authoritative.
-See `integration/dataqual15/STATUS.json`, `CONTRACT.md` and the single
-`integration/dataqual12/MIGRATION_MATRIX.json`. The isolated Hupsel candidate
-has365-day O0/O2 and494-day original execution evidence at source711f8ce,
-evidence commit132ccc7; its potato continuation is a separate integration task.
-Historical DATAQUAL12–14 paragraphs below describe their bounded admitted scope.
+DATAQUAL15 now completes two of the three independent original projects on the same qualified Fortran postimage: Grassgrowth1827 days and Hupsel1096 days, each executed from day1 with its original physical input files. Checked GNU Fortran13.3 O0/O2, exact native disk restarts, source comparisons and water/solute/observed heat ledgers are recorded. Grassgrowth has367 independent O0/O2 days and six exact restarts; Hupsel has exact current-source year, irrigation and post-mowing restarts. Neither whole scientific equivalence nor production promotion is claimed.
+
+The current full-period authorities are `integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json` and `integration/dataqual15_hupsel/UNION_C3_HUPSEL_RESULT.json`. Current-source portable verifiers bind the complete reviewed production postimage, input bytes, actual builds and native outputs. Grassgrowth actual harvest differs from literal4.3.1 by+0.5633%; potential harvest agrees at printed precision. Remaining stressed-growth attribution and whole energy qualification remain open.
+
+The single migration matrix is `integration/dataqual12/MIGRATION_MATRIX.json`. PR1477 is already admitted at2127bb9 with an exact qualified tree and verified postimage; its receipt is `integration/dataqual15_hupsel/CANONICAL_MERGE_RECEIPT.json`. The joint full-period successor is canonically admitted by PR1478 at3a02db4, with the fetched whole tree exactly qualified and both full-period postimage verifiers passing. Its actual receipt is `integration/dataqual15/CANONICAL_FULL_MERGE_RECEIPT.json`. Andelst has separately sealed experimental130-day O2 evidence, predecessor70-day O0/O2 identity and exact restarts; its proposed partial-wall correction and inherited0.0001cm ramp are explicit. The literal sharp-entry contact jump and full481-day original closure remain unresolved. Older DATAQUAL paragraphs below retain their historical bounded scope.
 
 DATAQUAL14 executes original Grassgrowth through active development:68days
 O0/O2 water and exact joint file restart, including5 active days after day63.

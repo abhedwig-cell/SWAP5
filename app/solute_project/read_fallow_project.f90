@@ -9,7 +9,8 @@ program read_fallow_project
  real(real64)::irrig(2048),ends(2048),source_soil(2048),source_pond(2048),source_air(2048),source_rain(2048),edge,irrigation_c
  real(real64)::rad(10000),tmn(10000),tmx(10000),hum(10000),wind(10000),rain(10000)
  real(real64)::soil(2048),pond(2048),air(2048),amount(2048),spacing,shape,wetper,dbot,entres,base,kh
- character(1024)::swp,met,dra,arg
+ character(1024)::swp,met,dra,arg,selection
+ logical::original_germination=.false.
  type(pmdirect_swetr0_weather_t)::weather
  type(pmdirect_swetr0_site_t)::site
  type(pmdirect_swetr0_canopy_t)::canopy
@@ -17,10 +18,13 @@ program read_fallow_project
  type(pmdirect_swetr0_diagnostics_t)::diagnostic
  call get_command_argument(1,swp);call get_command_argument(2,met);call get_command_argument(3,dra)
  call get_command_argument(4,arg);read(arg,*)days
+ call get_command_argument(5,selection)
+ if(len_trim(selection)>0.and.trim(selection)/='original-germination')error stop 'unknown source lifecycle selection'
+ original_germination=trim(selection)=='original-germination'
  if(days<1.or.days>2048)error stop 'prefix capacity'
  call rdinit(74,0,trim(swp));call rdstim('tstart',first);call rdstim('tend',last)
  call rdatim('cropstart',starts,64,nc)
- if(nc<1.or.first+days>minval(starts(:nc)).or.first+days>last+1d0)error stop 'prefix crosses original crop emergence/calendar'
+ if(nc<1.or.(.not.original_germination.and.first+days>minval(starts(:nc))).or.first+days>last+1d0)error stop 'prefix crosses original crop emergence/calendar'
  call rdsinr('swetr',0,1,mode);if(mode/=0)error stop 'original direct PM required'
  call rdsinr('swdivide',0,1,mode);if(mode/=1)error stop 'direct PM partition required'
  call rdsinr('swrain',0,3,mode);if(mode/=0)error stop 'daily source rainfall required'
@@ -118,7 +122,11 @@ program read_fallow_project
  end do
  days=nwindows
  open(newunit=u,file='input.nml',status='new',action='write')
+ if(original_germination)then
+  write(u,'(a)')'&column original_hupsel_germination=.true.,schema=2,nodes=0,fallow_only=.true.,source_bottom_mode=6,swp_water_bootstrap=.true.,'
+ else
  write(u,'(a)')'&column schema=2,nodes=0,fallow_only=.true.,source_bottom_mode=6,swp_water_bootstrap=.true.,'
+ end if
  write(u,'(a)')'swp_native_hydraulics=.true.,swp_heat_bootstrap=.true.,dynamic_temperature=.true.,'
  write(u,'(a)')'bottom_up_cm_day=0,temporal_tolerance=1d-4,retain_accepted_step_proposal=.true.,'// &
  'black_evaporation=.true.,native_drainage=.true.,drain_variant=2,'

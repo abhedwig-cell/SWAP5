@@ -8,6 +8,8 @@ from pathlib import Path
 import re
 import shlex
 import subprocess
+import struct
+import zlib
 import time
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -21,6 +23,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--exponent', type=float, default=1.0)
+    parser.add_argument('--black-rutter',action='store_true',help='Select the newly composed existing Black/Rutter/heat owner contract, without historical equivalence claims')
     parser.add_argument('--reuse-build', type=Path)
     parser.add_argument('--resume-compilation',type=Path)
     args = parser.parse_args()
@@ -136,35 +139,64 @@ def main():
             run(fc + flags + objects + ['-o', exe], build, 'link')
         report.setdefault('executables', {})[opt] = sha(exe)
         results = {}
-        for windows in [2, 4, 8, 16, 32, 64, 128, 256]:
+        prefix='rutter-'if args.black_rutter else''
+        marker='BLACK_RUTTER_HEAT_REACTIVE_MASS_RESTART=PASS'if args.black_rutter else'THERMAL_PHYSICAL_LITERAL_RESTART=PASS'
+        for windows in ([2]if args.black_rutter else[2, 4, 8, 16, 32, 64, 128, 256]):
             case = build / str(windows)
             case.mkdir()
             path, full, resumed = case / 'restart.bin', case / 'full.bin', case / 'resumed.bin'
             outputs = []
             for mode, endpoint in [('full', full), ('split', full), ('resume', resumed)]:
-                stdout = run([exe, mode, path, endpoint, windows, args.exponent], case, 'native')
-                assert 'THERMAL_PHYSICAL_LITERAL_RESTART=PASS' in stdout
+                stdout = run([exe, prefix+mode, path, endpoint, windows, args.exponent], case, 'native')
+                assert marker in stdout
                 outputs.append(stdout)
             assert full.read_bytes() == resumed.read_bytes(), 'fresh-process endpoint differs'
             results[str(windows)] = {'stdout': outputs, 'restart_sha256': sha(path), 'endpoint_sha256': sha(full)}
         controls = build / 'controls'
         controls.mkdir()
         endpoint = controls / 'control'
-        stdout = run([exe, 'controls', controls / 'unused', endpoint, 2, args.exponent], controls, 'native')
-        assert 'THERMAL_REJECTION_RETRY_HEAT_OFF=PASS' in stdout
-        assert (controls / 'control.before').read_bytes() == (controls / 'control.after').read_bytes()
-        assert (controls / 'control.initial').read_bytes() == (controls / 'control.hydraulic').read_bytes()
-        results['controls'] = stdout
+        if not args.black_rutter:
+            stdout = run([exe, 'controls', controls / 'unused', endpoint, 2, args.exponent], controls, 'native')
+            assert 'THERMAL_REJECTION_RETRY_HEAT_OFF=PASS' in stdout
+            assert (controls / 'control.before').read_bytes() == (controls / 'control.after').read_bytes()
+            assert (controls / 'control.initial').read_bytes() == (controls / 'control.hydraulic').read_bytes()
+            results['controls'] = stdout
         # CRC corruption and truncation never publish either owner.
         original = (build / '2/restart.bin').read_bytes()
         for label, raw in [('truncated', original[:-12]), ('crc', original[:20] + bytes([original[20] ^ 1]) + original[21:])]:
             path = controls / (label + '.bin')
             path.write_bytes(raw)
-            stdout = run([exe, 'reject', path, endpoint, 2, args.exponent], controls, 'native')
+            stdout = run([exe, prefix+'reject', path, endpoint, 2, args.exponent], controls, 'native')
             assert 'THERMAL_INVALID_RESTART=PASS' in stdout
         for mode in ['reject-id', 'reject-heat', 'reject-chemical']:
-            stdout = run([exe, mode, build / '2/restart.bin', endpoint, 2, args.exponent], controls, 'native')
+            stdout = run([exe, prefix+mode, build / '2/restart.bin', endpoint, 2, args.exponent], controls, 'native')
             assert 'THERMAL_INVALID_RESTART=PASS' in stdout
+        if args.black_rutter:
+            # Native S5PT0004 layout: scalar header, immutable heat vector,
+            # existing physical arrays, LDWET, micro carry, typed Rutter record.
+            assert original[:8]==b'S5PT0004'
+            n,history,physical_id,count=struct.unpack_from('=iiqi',original,148)
+            assert n==4 and history==0 and count>0
+            micro=168+8*count+8*(3*n+2)+8
+            canopy=micro+12
+            progress=canopy+12
+            params=progress+44
+            changes={
+                'canopy_nan':(canopy+4,struct.pack('=d',float('nan'))),
+                'canopy_negative':(canopy+4,struct.pack('=d',-1.0)),
+                'rutter_clock':(progress+36,struct.pack('=d',.0005)),
+                'rutter_clock_nan':(progress+36,struct.pack('=d',float('nan'))),
+                'source_aggregate_nan':(progress+28,struct.pack('=d',float('nan'))),
+                'canopy_cover_invalid':(params+4,struct.pack('=d',2.0)),
+                'micro_carry_nan':(micro+4,struct.pack('=d',float('nan'))),
+                'unexpected_micro_carry':(micro,struct.pack('=i',1)),
+            }
+            for label,(offset,replacement) in changes.items():
+                raw=bytearray(original);raw[offset:offset+len(replacement)]=replacement
+                raw[-4:]=struct.pack('=I',zlib.crc32(raw[:-4]));path=controls/(label+'.bin');path.write_bytes(raw)
+                stdout=run([exe,'rutter-reject',path,endpoint,2,args.exponent],controls,'native')
+                assert 'THERMAL_INVALID_RESTART=PASS'in stdout
+            results['new_codec_negative_controls']=list(changes)
         report['results'][opt] = results
         report['provider_count'] = len(ordered)
         print(opt + ' physical/literal/restart/rollback PASS', flush=True)
@@ -172,7 +204,7 @@ def main():
     assert all(sha(ROOT / p) == h for p, h in report['inputs'].items()), 'source changed during execution'
     report['cost_seconds'] = {category: sum(e['seconds'] for e in report['events'] if e['category'] == category)
                               for category in ['compile', 'link', 'native']}
-    report['status'] = 'FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED'
+    report['status'] = 'FOCUSED_BLACK_RUTTER_HEAT_REACTIVE_PASS_NOT_ADMITTED'if args.black_rutter else'FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED'
     (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
     print(report['status'])
 
