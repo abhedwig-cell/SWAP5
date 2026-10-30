@@ -12,11 +12,12 @@ p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--optimization',choices=['O0','O2'],required=True)
 p.add_argument('--reuse-build',type=Path)
+p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
 p.add_argument('--input-archive',type=Path,required=True)
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
 a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
-fc='/usr/bin/x86_64-linux-gnu-gfortran-13';archive=a.input_archive.resolve()
+fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
 assert archive.is_file()
 authority=ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(authority.read_bytes())),mode='r:gz')as t:

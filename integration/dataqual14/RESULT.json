@@ -1,0 +1,83 @@
+{
+  "work_unit": "DATAQUAL14",
+  "baseline": "a19103d448e2ca94926fb2e43c61941d01bd5ed0",
+  "canonical_admitted": false,
+  "project": "2.grassgrowth",
+  "independent_original_projects": 3,
+  "new_original_projects_this_work_unit": 0,
+  "executed_days": 113,
+  "active_growth_days_executed": 50,
+  "water_restart_qualified_days_O0_O2": 68,
+  "water_restart_qualified_days_O2": 113,
+  "full_original_migrations": 0,
+  "original_project_denominator": 3,
+  "original_inputs_sha256": {
+    "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+    "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+    "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+    "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+    "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+  },
+  "activated_functionality": [
+    "Original active grass actual biomass/development",
+    "Original potential crop biomass using incumbent optional owner",
+    "SWRD2/SWDMI2RD1 actual and potential daily root extension",
+    "Accepted physical oxygen gate for root extension",
+    "Atomic joint water/heat/actual/potential/root restartv2"
+  ],
+  "unchanged_processes": [
+    "Full Richards/MVG",
+    "PM/SWRAIN2",
+    "Boesten",
+    "Bartholomeus",
+    "DRAMET3 enabled (no new positive drain claim)"
+  ],
+  "maximum_water_residual_cm": 3.803207748731552e-14,
+  "maximum_heat_accounting_residual_j_cm2": 1.8082445263356561e-12,
+  "solute": "NOT_APPLICABLE source SWSOLU0",
+  "restart": {
+    "split63_68_exact_O0_O2": true,
+    "split78_113_stressed_exact_O2": true,
+    "split76_78_distinct_roots_exact_O2": true,
+    "invalid_restart_rejections_per_optimization": 6,
+    "actual_and_potential_biomass_distinct_at_stressed_checkpoint": true
+  },
+  "root_oracle": {
+    "cases_per_optimization": 108,
+    "maximum_depth_difference_cm": 0.0,
+    "scope": "Source SWRD2/SWDMI2RD1, positive/no root allocation, dry/wet oxygen gate, zero/partial/full uptake, maximum depth boundary; component controls, not additional original projects."
+  },
+  "preservation": "Six unchanged actual native groundwater/default bootstrap/physical oxygen contracts PASS O0/O2 after correcting new diagnostic at zero roots.",
+  "reference_comparison": {
+    "qualified_first68": {
+      "wrt": 3.694822225952521e-13,
+      "pwrt": 3.694822225952521e-13,
+      "wlv": 2.2737367544323206e-13,
+      "wst": 4.547473508864641e-13,
+      "wso": 0.0,
+      "rd": 0.0,
+      "rdpot": 0.0,
+      "dvs": 4.917177776064818e-13,
+      "tsum": 2.842170943040401e-14
+    },
+    "executed_first113": {
+      "wrt": 1.115741379706492,
+      "pwrt": 4.831690603168681e-13,
+      "wlv": 5.173236917732993,
+      "wst": 1.785186207530728,
+      "wso": 0.0,
+      "rd": 0.026891771997799907,
+      "rdpot": 0.0,
+      "dvs": 4.978240042419202e-13,
+      "tsum": 5.684341886080802e-14
+    },
+    "water_stock_max_difference_cm": 0.025266829804280633,
+    "potential_transpiration_max_difference_cm": 0.0007739896799437151
+  },
+  "reference_scope": "Original full1827-day execution, only output controls changed; potential endpoint organs match reference at printed12 decimals. Actual stress branch differences measured, not full historical equivalence.",
+  "remaining": [
+    "Wire original varying-groundwater callback beyond the conservative day113 prefix.",
+    "Original mowing/grazing and complete grass seasonal/rotation lifecycle.",
+    "Full original project periods and energy/physiology qualification; retain measured actual-branch historical differences."
+  ]
+}

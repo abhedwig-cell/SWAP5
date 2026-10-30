@@ -1,0 +1,171 @@
+{
+  "work_unit": "DATAQUAL14",
+  "baseline": "a19103d448e2ca94926fb2e43c61941d01bd5ed0",
+  "stage": "QUALIFIED_ACTIVE_GRASS_AND_STRESSED_JOINT_RESTART_READY_FOR_CANONICAL",
+  "scope": "Original Grassgrowth active days64 onward before first harvest and variable groundwater. Preserve original selectors and actual Full Richards runtime.",
+  "owners": [
+    "existing actual WOFOST crop owner",
+    "existing potential shadow owner",
+    "existing crop_root_depth_rate_state_t",
+    "existing water/thermal owners"
+  ],
+  "invariants": [
+    "No new physical state owner or model core",
+    "Stage actual/potential crop/root and water through whole-day commit",
+    "Exact same-build joint file restart and corruption rejection",
+    "No solver budget/tolerance increase"
+  ],
+  "selected": [
+    "Native original active grass component oracle O0/O2 (unchanged component composition)",
+    "Existing root depth and potential state contracts O0/O2",
+    "Actual original prefix across day64 O0/O2, split at committed day63; positive root growth and source comparison",
+    "Current groundwater/default/oxygen preservation only for new accepted oxygen diagnostic; same assertions",
+    "Original O2 stressed joint restart78-to113: required because actual/potential biomass and root depth first diverge after day68; reuse exact68 checkpoint, no prefix recomputation. Expected160s total capped120/240s.",
+    "Discriminating original76-to78 restart: actual/potential depths differ at76 but both hit30cm by78. Verify codec preserves distinct root owners, not only biomass. Reuse68 checkpoint; expected40s total."
+  ],
+  "costs": {
+    "cold_build_providers_expected": 205,
+    "cold_build_seconds_expected": 150,
+    "original_68day_execution_seconds_expected_per_build": 250,
+    "restart_suffix_seconds_expected": 40,
+    "original_O0_wall_cap_seconds": 420,
+    "wall_cap_justification": "420s bounded wall-time safety for essential original68-day state rollout and joint restart; actual final O0256.052s/O2183.989s, both under5min. No solver iteration or tolerance change.",
+    "provider_count": 203,
+    "full_native_seconds": {
+      "O0": 256.0519990730004,
+      "O2": 183.98886747799997
+    },
+    "restart_native_seconds": {
+      "O0": 30.322437787000126,
+      "O2": 20.560582652999983
+    }
+  },
+  "not_selected": [
+    "full F-CI",
+    "low-air stress",
+    "Andelst long stall"
+  ],
+  "remaining": [
+    "Wire original varying-groundwater callback beyond the conservative day113 prefix.",
+    "Original mowing/grazing and complete grass seasonal/rotation lifecycle.",
+    "Full original project periods and energy/physiology qualification; retain measured actual-branch historical differences."
+  ],
+  "discovery": "Discovery O0/O2 actual68-day runs and63+5 file comparisons completed; initial harness incorrectly required positive root allocation on first active day64 rather than within the active window. Actual positive allocation and extension occur65/68. Independent existing empty-root physical-oxygen control exposed new diagnostic index0; guard repaired and all six native controls plus final actual O0/O2 runs passed. All failed discovery logs retained, not counted as final qualification.",
+  "canonical_admitted": false,
+  "model_execution": {
+    "original_project": "2.grassgrowth",
+    "original_calendar_days": 1827,
+    "water_restart_qualified_days": 68,
+    "active_growth_days_qualified": 5,
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "restart_split_day": 63,
+    "restart_exact": true,
+    "invalid_restart_rejections_per_build": 6,
+    "full_project_migration": false,
+    "longer_original_O2_continuation": "TERMINAL:365 target stops before day114, original varying-groundwater callback guard; checkpoint113 retained.",
+    "executed_days": 113,
+    "active_growth_days_executed": 50,
+    "water_restart_qualified_days_O2": 113,
+    "stressed_restart_split_day": 78,
+    "distinct_roots_restart_split_day": 76,
+    "stressed_restart_exact": true,
+    "distinct_roots_restart_exact": true
+  },
+  "qualification": {
+    "O0": {
+      "status": "ACTIVE_ORIGINAL_GRASS_WATER_ROOT_AND_DISK_RESTART_PASS",
+      "days": 68,
+      "executable_sha256": "8a86c4a02234a43a960fc19ee932b80219d3b4ea686b8909b828371b7edbc90c",
+      "maximum_water_residual_cm": 3.803207748731552e-14,
+      "maximum_heat_accounting_residual_j_cm2": 1.8082445263356561e-12,
+      "restart_payload_exact": true,
+      "rejected_restart_controls": 6
+    },
+    "O2": {
+      "status": "ACTIVE_ORIGINAL_GRASS_WATER_ROOT_AND_DISK_RESTART_PASS",
+      "days": 68,
+      "executable_sha256": "0526cd235c9bfb5a1808a96c76a86700ed64565759b64c7b17962af09332a65b",
+      "maximum_water_residual_cm": 3.803207748731552e-14,
+      "maximum_heat_accounting_residual_j_cm2": 1.8082445263356561e-12,
+      "restart_payload_exact": true,
+      "rejected_restart_controls": 6
+    }
+  },
+  "root_oracle": {
+    "cases_per_optimization": 108,
+    "maximum_depth_difference_cm": 0.0,
+    "scope": "Source SWRD2/SWDMI2RD1, positive/no root allocation, dry/wet oxygen gate, zero/partial/full uptake, maximum depth boundary; component controls, not additional original projects."
+  },
+  "preservation": "Six unchanged actual native groundwater/default bootstrap/physical oxygen contracts PASS O0/O2 after correcting new diagnostic at zero roots.",
+  "toolchain": {
+    "compiler": "GNU Fortran13.3.0, Ubuntu13.3.0-6ubuntu2~24.04.1",
+    "recovery": "Downloaded original Ubuntu packages into local toolchain; no system package modification. Existing GCC linker/runtime used.",
+    "packages_sha256": {
+      "libgfortran-13-dev_13.3.0-6ubuntu2~24.04.1_amd64.deb": "ce0fdf0d9e7eadb33947ca7cdd0fc3477b570603cb721b108c96ebdfbb7cd80a",
+      "gfortran-13_13.3.0-6ubuntu2~24.04.1_amd64.deb": "23670555cfd600f46307adddedd65eba8fd21928c52a69d16a2e69755ae5c462",
+      "gfortran-13-x86-64-linux-gnu_13.3.0-6ubuntu2~24.04.1_amd64.deb": "82382cb8506616ef7df5b9927694bfaacf97bdfb317b1f995453cc17c96aa071"
+    }
+  },
+  "source_sha256": {
+    ".github/workflows/fci-canonical.yml": "b4402ec8a41241c275dfeac82de61ab14b919a4727fe4fe33261c8e066c08262",
+    "app/grass_project/initial_interval.f90": "3a556afe11548cd63e82adcb8fdf39390a18c83cd509f47bdf550b301792c9bb",
+    "app/grass_project/restart_file.f90": "314bde7ce0fbfd9aed3f6a894403cb2c41daa971fa70bc25f7699be404b6cb12",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "fb6e6970a4d4704f03b5ecdf1ffc2114cb92d5abf988ba2a0b45ce8012d01bdc",
+    "tests/dataqual14/collect_evidence.py": "5a9bc5333ab9106908195ed6ff747effb81606c2bd95ee760c226f9085bd420d",
+    "tests/dataqual14/continue_original.py": "17ac5b4bf5b8568ca87de9a2ac85a34b9d64a2de9473f61a62a420ec8a066359",
+    "tests/dataqual14/qualify_active_grass.py": "5ff20a26463bcfad6c4f7c241a6e08dc1917e0ec123e60854dc526336671c68c",
+    "tests/dataqual14/qualify_root_extension.py": "e6b06628c409c3c7cc8970901b500e3feca7636b9b78bf7b21f0610dd6374905",
+    "tests/dataqual14/qualify_runtime_preservation.py": "8b224bcd0cc7df66d889fca4ab547060df55eed4a08eb578f944952f6054c235",
+    "tests/dataqual14/root_extension_oracle.f90": "a2d4b1ce1ec26e989e1a20b223d97271f973ab0f9cadf3c10a07547d49cc2a2a",
+    "tests/dataqual14/verify_evidence.py": "fd235be7c535cb0f1e3f8c52dd504d9fe339e3e9ff2d251c7543a2ac5c757c42",
+    "tools/solute/build_grass_startup.py": "3cd8d8b120ae40bc2b44e7b4bb3075b478b6fd661a508569b63a845b64ca5400",
+    "tools/solute/qualify_grass_prefix.py": "b090b678fc0c800325c40be56fd9c4720053ef67347d8d6fe6cc57d86c3c2355"
+  },
+  "evidence_sha256": "4d7882da7f18b8531db19e93746307aa18ae24c5be8e4864701185c75fcf0d0b",
+  "reference_comparison": {
+    "qualified_first68": {
+      "wrt": 3.694822225952521e-13,
+      "pwrt": 3.694822225952521e-13,
+      "wlv": 2.2737367544323206e-13,
+      "wst": 4.547473508864641e-13,
+      "wso": 0.0,
+      "rd": 0.0,
+      "rdpot": 0.0,
+      "dvs": 4.917177776064818e-13,
+      "tsum": 2.842170943040401e-14
+    },
+    "executed_first113": {
+      "wrt": 1.115741379706492,
+      "pwrt": 4.831690603168681e-13,
+      "wlv": 5.173236917732993,
+      "wst": 1.785186207530728,
+      "wso": 0.0,
+      "rd": 0.026891771997799907,
+      "rdpot": 0.0,
+      "dvs": 4.978240042419202e-13,
+      "tsum": 5.684341886080802e-14
+    },
+    "water_stock_max_difference_cm": 0.025266829804280633,
+    "potential_transpiration_max_difference_cm": 0.0007739896799437151
+  },
+  "documentation_checks": {
+    "source_checker": "PASS",
+    "strict_mkdocs": "PASS12.67s"
+  },
+  "new_original_projects_this_work_unit": 0,
+  "original_project_denominator": 3,
+  "complete_original_migrations": 0,
+  "reviewed_production_delta": {
+    "app/grass_project/initial_interval.f90": "M",
+    "app/grass_project/restart_file.f90": "M",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "M"
+  },
+  "ci_feedback_reconciliation": {
+    "predecessor_failure": "DATAQUAL12 unreviewed delta scope guard; same rejection already present on baselinea191 (44 additional baseline paths).",
+    "current_feedback": "Current DATAQUAL14 closed production-delta and source/capsule verifier; existing native owning contracts retained.",
+    "scope": "Evidence/feedback only; no full F-CI or production expansion."
+  }
+}
