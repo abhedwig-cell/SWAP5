@@ -540,10 +540,12 @@
   "dataqual10_inherited": "Historical evidence retained separately; changed backend requalified only within explicit DATAQUAL12 selected scope.",
   "new_original_model_projects_executed": 2,
   "canonical_integration": {
-    "pr": 1477,
-    "merge": "2127bb93dc5158e34a5449a1a775d6f7e59fe440",
-    "scope": "Verified full original Hupsel1096 and bounded Grassgrowth367 postimage. Current joint full-period successor is sealed separately before its own canonical admission.",
-    "receipt": "integration/dataqual15_hupsel/CANONICAL_MERGE_RECEIPT.json"
+    "pr": 1478,
+    "merge": "3a02db40a499b28b5f37e5cdd00b34b126d99a70",
+    "qualified_tree": "db8dc692c6e8573d9e1c58ccadc91087aae6a1ad",
+    "postimage_verified": true,
+    "scope": "Two full original experimental projects: Grassgrowth1827 and Hupsel1096. Whole scientific equivalence and production promotion are not claimed.",
+    "receipt": "integration/dataqual15/CANONICAL_FULL_MERGE_RECEIPT.json"
   },
   "candidate_scope": {
     "work_unit": "DATAQUAL13",
@@ -576,8 +578,8 @@
     "qualified_source": "d6514abee5a85367a6b1fa181c011b6f2e9194ed",
     "canonical_baseline": "2127bb93dc5158e34a5449a1a775d6f7e59fe440",
     "qualification_guard_baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
-    "canonical_admitted": false,
-    "canonical_status_scope": "Status at evidence seal; actual successor merge and postimage must be recorded separately. Prior full Hupsel canonical merge is verified at2127bb9.",
+    "canonical_admitted": true,
+    "canonical_status_scope": "Model source admitted by PR1478; fetched exact whole-tree postimage and all current portable verifiers PASS. This metadata receipt changes no model/input/capsule bytes.",
     "complete_original_executions": 2,
     "fully_scientifically_qualified_projects": 0,
     "production_promoted": false,
@@ -601,7 +603,9 @@
     "portable_verifiers": [
       "tests/dataqual15/verify_grass_full_evidence.py",
       "tests/dataqual15_hupsel/verify_union_c3_hupsel.py"
-    ]
+    ],
+    "canonical_merge": "3a02db40a499b28b5f37e5cdd00b34b126d99a70",
+    "canonical_verified_tree": "db8dc692c6e8573d9e1c58ccadc91087aae6a1ad"
   },
   "dataqual15_removed_grass_blockers": [
     {

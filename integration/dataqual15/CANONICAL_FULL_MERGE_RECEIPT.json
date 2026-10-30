@@ -1,0 +1,59 @@
+{
+  "schema": 1,
+  "pr_url": "https://github.com/abhedwig-cell/SWAP5/pull/1478",
+  "qualified_local_commit": "4544d6df532905e6127f14b9d409cca189236b01",
+  "published_head": "7faeaf1efba890fc52893bebd4f584469bb8b4a9",
+  "canonical_merge": "3a02db40a499b28b5f37e5cdd00b34b126d99a70",
+  "qualified_whole_tree": "db8dc692c6e8573d9e1c58ccadc91087aae6a1ad",
+  "actual_fetched_canonical_tree": "db8dc692c6e8573d9e1c58ccadc91087aae6a1ad",
+  "whole_tree_exact": true,
+  "complete_original_executions": 2,
+  "grass_original_days": 1827,
+  "hupsel_original_days": 1096,
+  "fully_scientifically_qualified_projects": 0,
+  "production_promoted": false,
+  "selected_hosted_checks": [
+    {
+      "name": "F-CI canonical qualification",
+      "run_id": 41051329432,
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 124047834822,
+          "name": "selection-preflight",
+          "conclusion": "success"
+        },
+        {
+          "id": 124048073936,
+          "name": "modular-feedback",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "Documentation",
+      "run_id": 41051329463,
+      "conclusion": "success"
+    }
+  ],
+  "hosted_bootstrap_current_PR": "NOT_SELECTED_IMPACT: macro-only production delta; current-source runtime preservation includes actual O0/O2 bootstrap and physical oxygen. Prior Hupsel PR1477 hosted bootstrap succeeds.",
+  "full_fci": "NOT_SELECTED; no full historical F-CI or all-CI claim",
+  "postimage_checks": [
+    {
+      "command": "python -B tests/dataqual15/verify_grass_full_evidence.py --spec integration/dataqual15/GRASS_UNION_FULL_SPEC.json --capsule integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz --manifest integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+      "result": "PASS"
+    },
+    {
+      "command": "python -B tests/dataqual15_hupsel/verify_union_c3_hupsel.py",
+      "result": "PASS"
+    },
+    {
+      "command": "python -B tests/dataqual15/verify_andelst_diagnostics.py",
+      "result": "PASS; frozen experimental evidence, no current Andelst source admission"
+    }
+  ],
+  "grass_capsule_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+  "hupsel_capsule_sha256": "8913f30f80aab5c19d2b9f04c2ced4ca0d6e1bd1367f660372d68c1afe7d0504",
+  "admission_scope": "Full original experimental Grassgrowth/Hupsel execution, ledgers and exact physical restart. Whole scientific equivalence and complete energy qualification remain open.",
+  "receipt_scope": "Metadata-only admission continuation; no production, original input, executable or evidence-capsule bytes change."
+}
