@@ -375,7 +375,14 @@
       "full_original_execution": true,
       "full_functional_closure": true,
       "scientific_equivalence": false,
-      "current_evidence": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json"
+      "current_evidence": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+      "scientific_followup": {
+        "status": "implemented_not_executed",
+        "authority": "integration/dataqual15/STATUS.json",
+        "driver": "tests/dataqual15/qualify_stress.py",
+        "scope": "Identical-state original/current oxygen component and DTMAX refinement; full scientific qualification remains open",
+        "counts_unchanged": true
+      }
     },
     {
       "project": "3.macroporeflow",

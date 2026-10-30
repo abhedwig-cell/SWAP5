@@ -12,6 +12,26 @@ concurrency:
   group: dataqual15-grass-sprint-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
+  stress-attribution:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Paired real oxygen owners and timestep refinement
+        shell: bash
+        run: |
+          set -euo pipefail
+          FC=$(command -v gfortran-13)
+          python3 -B tests/dataqual15/qualify_stress.py --compiler "$FC" --output "$RUNNER_TEMP/stress"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dataqual15-stress-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/stress/
+          retention-days: 30
   recovery:
     runs-on: ubuntu-24.04
     timeout-minutes: 15

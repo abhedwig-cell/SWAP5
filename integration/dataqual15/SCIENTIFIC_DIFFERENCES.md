@@ -1,5 +1,25 @@
 # Grassgrowth measured reference differences
 
+The current canonical full-period authority is `GRASS_UNION_FULL_MANIFEST.json`
+and `CANONICAL_FULL_MERGE_RECEIPT.json`: all1827 original days are source-bound
+and complete. Current full-period actual harvest differs by+0.5633%; the maximum
+daily actual-transpiration difference is0.01128904cm and leaf-biomass difference
+is53.21609kg/ha. Whole scientific qualification remains open. The521-day
+measurements below are retained as historical evidence.
+
+The controlled follow-up is `tests/dataqual15/qualify_stress.py`. It observes
+daily left h/theta/T, root fractions/density, respiration and potential demand
+on days25,72,73 and127, and accepted durations/demand/uptake/deepest-root oxygen
+factors. Both real oxygen routines receive identical observed states in O0/O2.
+Separate checked day1 trajectories cap DTMAX at0.04,0.02 and0.01day through140;
+physical input bytes remain original. The coarse output-only postimage must
+exactly preserve the qualified daily budget/crop and native physical payload.
+This diagnostic changes no production owner or persistent field. Its results
+are pending; the inherited1e-4 oxygen-component SOLVE gate does not establish
+a crop/yield tolerance. Daily left temperatures do not claim the full accepted
+substep thermal trajectory, and the oxygen-component comparison does not yet
+certify the entire original uptake composition.
+
 Experimental comparison of the frozen contiguous original-input day1–521 history with the complete original SWAP4.3.1 scalar reference. This establishes measured differences, not whole-model scientific equivalence. Exact input, output and inspected-source hashes and day-level results are in `SCIENTIFIC_DIFFERENCES.json`.
 
 | Quantity | Largest absolute difference through521 | Day |

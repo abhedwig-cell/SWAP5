@@ -15,6 +15,7 @@ p.add_argument('--profile',choices=['checked','production'],default='checked')
 p.add_argument('--reuse-build',type=Path)
 p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
 p.add_argument('--input-archive',type=Path,required=True)
+p.add_argument('--driver',type=Path,help='Explicit diagnostic application source; production driver is the default')
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
 a=p.parse_args();fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
@@ -32,6 +33,7 @@ for name in ['afgen_2','rdadortb']:
  assert match;helpers+=match.group()+'\n'
 helper=out/'original_input_helpers.f90';helper.write_text(helpers)
 context=ROOT/'app/solute_column/link_context.f90';driver=ROOT/'app/grass_project/initial_interval.f90'
+if a.driver:driver=a.driver.resolve();assert driver.is_file()
 mapping={}
 for source in list((ROOT/'src').rglob('*.f90'))+[context,ROOT/'app/solute_column/read_swp_water.f90',ROOT/'app/solute_column/read_swp_heat.f90']+list((ROOT/'app/grass_project').glob('*.f90')):
  for name in re.findall(r'^\s*module\s+(\w+)\s*$',source.read_text(),re.M|re.I):

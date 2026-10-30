@@ -536,5 +536,10 @@
     "dq15-weighted-cont188-O0",
     "dq15-weighted-cont233-O0"
   ],
-  "O0_O2_exact_days": 367
+  "O0_O2_exact_days": 367,
+  "successor_full_evidence": {
+    "manifest": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "verifier": "tests/dataqual15/verify_grass_full_evidence.py",
+    "historical_archive_unchanged": true
+  }
 }

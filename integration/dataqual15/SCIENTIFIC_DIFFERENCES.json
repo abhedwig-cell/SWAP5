@@ -302,5 +302,17 @@
     "src/crop/mod_wofost_one_day_structural_evolution.f90": "50ea53989291d3b4abac299a254ffffb6b0c43c9171ec57a85bffb47983d9e39",
     "src/crop/mod_wofost_oxygen_respiration.f90": "e974551addebf739fd62044c55a51feb82993aba4e73377439ce0b7f501f2ba6",
     "src/crop/mod_crop_root_biomass_distribution.f90": "8254bb464d9e894243c1de7f4e7a69b81b1cd08b284b54534d20f797ee55d6c9"
+  },
+  "current_full_evidence": {
+    "days": 1827,
+    "authority": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "canonical_receipt": "integration/dataqual15/CANONICAL_FULL_MERGE_RECEIPT.json",
+    "scientific_equivalence": false,
+    "actual_harvest_relative_difference_percent": 0.5633,
+    "maximum_daily_actual_transpiration_difference_cm": 0.01128903608404791,
+    "maximum_leaf_biomass_difference_kg_ha": 53.216091338990054,
+    "causal_attribution": "OPEN",
+    "followup": "tests/dataqual15/qualify_stress.py",
+    "acceptance_scope": "Existing oxygen-component 1e-4 SOLVE gate only; no whole-yield equivalence threshold inferred"
   }
 }

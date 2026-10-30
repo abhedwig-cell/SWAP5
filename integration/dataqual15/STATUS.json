@@ -87,5 +87,40 @@
   "qualified_year_restart": "365->367 exact independently in O0 and O2",
   "canonical_receipt": "integration/dataqual15/MERGE_RECEIPT.json",
   "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
-  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion."
+  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion.",
+  "scientific_followup": {
+    "stage": "PAIRED_OXYGEN_AND_TIMESTEP_REFINEMENT_IMPLEMENTED_NOT_YET_EXECUTED",
+    "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
+    "full_original_days": 1827,
+    "full_proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "full_proof_local_verification": "PASS",
+    "recovery_linux_run": 41059647761,
+    "recovery_linux": "PASS",
+    "current_qualification": "FULLY_EXECUTED_SCIENTIFIC_QUALIFICATION_OPEN",
+    "paired_days": [
+      25,
+      72,
+      73,
+      127
+    ],
+    "refinement_caps_days": [
+      0.04,
+      0.02,
+      0.01
+    ],
+    "refinement_end_day": 140,
+    "physical_owners_changed": false,
+    "original_physical_inputs_changed": false,
+    "checkpoint_rebinding": false,
+    "invariants": [
+      7,
+      13,
+      21,
+      23,
+      25,
+      26
+    ],
+    "next_action": "Execute real day1 diagnostic trajectories and paired O0/O2 original/current oxygen owners; preserve raw observations and accepted durations",
+    "historical_status_scope": "The pre-existing 521-day fields above remain the PR1476 historical receipt. Current full-period authority is GRASS_UNION_FULL_MANIFEST.json and CANONICAL_FULL_MERGE_RECEIPT.json."
+  }
 }
