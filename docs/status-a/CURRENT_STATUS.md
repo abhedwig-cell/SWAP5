@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+DATAQUAL14 executes original Grassgrowth through active development:68days
+O0/O2 water and exact joint file restart, including5 active days after day63.
+Existing actual/potential WOFOST biomass and SWRD2 root-depth owners publish
+atomically with water/heat; no new physical state owner. Source root extension
+matches108 original compiled cases per optimization. The accepted-step oxygen
+factor is diagnostic-only and preserves empty-root/default production routes.
+Before first harvest and varying groundwater; no complete project/energy or
+whole-water historical equivalence claim. Authority: `integration/dataqual14/STATUS.json`,
+`EVIDENCE.tar.xz`, `tests/dataqual14/verify_evidence.py` and the unified
+`integration/dataqual12/MIGRATION_MATRIX.json`. Actual admission requires a merge receipt.
+
 DATAQUAL13 adds an experimental original113-node Grassgrowth application using
 Full Richards and existing water/crop/thermal owners. The unchanged original
 five-day dormant prefix qualifies water balance and exact same-build disk restart

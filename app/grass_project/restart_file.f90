@@ -10,13 +10,15 @@ module mod_grass_prefix_restart_file
  use mod_fmr_serialized_reference_backend,only:fmr_b110_physical_parameters_t,fmr_b110_boesten_evaporation_state_t
  use mod_soil_temperature_contract,only:soil_temperature_field_view_t,build_soil_temperature_field_view, &
    initialize_soil_temperature_state
+ use mod_wofost_potential_shadow_state
+ use mod_crop_root_depth_rate_owner
  use mod_wofost_crop_owner_state
  use mod_wofost_grass_development,only:grass_management_continuation_t
  use mod_age_joint_restart_file,only:crc32
  implicit none
  private
  public::write_grass_prefix_restart,read_grass_prefix_restart
- character(8),parameter::MAGIC='S5GRS001'
+ character(8),parameter::MAGIC='S5GRS002'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
   integer(c_int) function rename_c(a,b)bind(C,name='rename')
@@ -72,12 +74,15 @@ contains
   if(fd<0)return
   status=sync_c(fd);ignored=close_c(fd)
  end function
- subroutine write_grass_prefix_restart(path,water,crop,management,status)
+ subroutine write_grass_prefix_restart(path,water,crop,management,status,potential,roots)
   character(*),intent(in)::path
   type(kernel_committed_state_t),intent(in)::water
   type(wofost_crop_owner_state_t),intent(in)::crop
   type(grass_management_continuation_t),intent(in)::management
   integer,intent(out)::status
+  type(wofost_potential_shadow_state_t),intent(in)::potential
+  type(crop_root_depth_rate_state_t),intent(in)::roots
+  type(wofost_crop_owner_state_t)::potential_owner
   class(transaction_state_t),allocatable::physical
   type(kernel_parameter_identity_t)::identity
   type(soil_temperature_field_view_t)::heat
@@ -88,6 +93,9 @@ contains
   real(real64)::time
   logical::ok
   status=1
+  if(potential%validate()/=0.or..not.potential%active.or.roots%validate()/=0)return
+  call potential%materialize_owner(crop,potential_owner,ok,code)
+  if(code/=0.or..not.ok.or.allocated(potential_owner%b110_reference_compatibility))return
   if(.not.water%ready().or.crop%validate()/=WOFOST_CROP_OWNER_OK)return
   if(.not.crop%crop_emerged.or..not.allocated(crop%biomass).or..not.allocated(crop%evolution_continuation))return
   if(allocated(crop%b110_reference_compatibility))return
@@ -140,6 +148,8 @@ contains
     crop%evolution_continuation%temperature_sum,crop%evolution_continuation%anthesis_reached, &
     crop%evolution_continuation%minimum_temperature_history_count,crop%evolution_continuation%minimum_temperature_history, &
     management%warm_days,management%regrowth_delay_days
+   if(io==0)call write_crop(u,potential_owner,io)
+   if(io==0)write(u,iostat=io)roots%actual_root_depth_cm,roots%potential_root_depth_cm
    close(u)
    if(io/=0)return
    call read_bytes(pending,bytes,code);if(code/=0)return
@@ -155,7 +165,7 @@ contains
    return
   end select
  end subroutine
- subroutine read_grass_prefix_restart(path,parameters,water,crop,management,time,status)
+ subroutine read_grass_prefix_restart(path,parameters,water,crop,management,time,status,potential,roots,root_parameters)
   character(*),intent(in)::path
   type(fmr_b110_physical_parameters_t),intent(in)::parameters
   type(kernel_committed_state_t),intent(inout)::water
@@ -163,6 +173,12 @@ contains
   type(grass_management_continuation_t),intent(inout)::management
   real(real64),intent(out)::time
   integer,intent(out)::status
+  type(wofost_potential_shadow_state_t),intent(inout)::potential
+  type(crop_root_depth_rate_state_t),intent(inout)::roots
+  type(crop_root_depth_rate_parameters_t),intent(in)::root_parameters
+  type(wofost_crop_owner_state_t)::potential_owner
+  type(wofost_potential_shadow_state_t)::decoded_potential
+  type(crop_root_depth_rate_state_t)::decoded_roots
   type(kernel_committed_state_t)::restored
   type(wofost_crop_owner_state_t)::decoded
   type(grass_management_continuation_t)::m
@@ -224,14 +240,57 @@ contains
     decoded%evolution_continuation%minimum_temperature_history_count,decoded%evolution_continuation%minimum_temperature_history, &
     m%warm_days,m%regrowth_delay_days
    if(io/=0)exit decode
+   call read_crop(u,potential_owner,io);if(io/=0)exit decode
+   call initialize_wofost_potential_shadow_from_actual(potential_owner,decoded_potential,code)
+   if(code/=0)exit decode
+   read(u,iostat=io)decoded_roots%actual_root_depth_cm,decoded_roots%potential_root_depth_cm
+   if(io/=0.or.decoded_roots%validate()/=0.or..not.root_parameters%ready())exit decode
+   if(decoded_roots%potential_root_depth_cm>root_parameters%maximum_root_depth_cm)exit decode
    inquire(unit=u,pos=position)
    if(position/=size(bytes)-3)exit decode
    if(decoded%validate()/=WOFOST_CROP_OWNER_OK.or.min(m%warm_days,m%regrowth_delay_days)<0)exit decode
    call kernel_reconstruct_committed_state_trusted(restored,lineage,revision,physical,clock,.true.,ok,code, &
       parameters=parameters,persisted_identity=identity)
    if(.not.ok)exit decode
-   water=restored;crop=decoded;management=m;time=clock;status=0
+   water=restored;crop=decoded;management=m;potential=decoded_potential;roots=decoded_roots;time=clock;status=0
   end block decode
   close(u)
+ end subroutine
+ subroutine write_crop(u,crop,io)
+  integer,intent(in)::u
+  type(wofost_crop_owner_state_t),intent(in)::crop
+  integer,intent(out)::io
+  integer::leaf_count
+  leaf_count=crop%biomass%active_leaf_cohort_count()
+  write(u,iostat=io)crop%development_stage,leaf_count, &
+   crop%biomass%root_biomass,crop%biomass%stem_biomass,crop%biomass%storage_biomass, &
+   crop%biomass%cumulative_dead_root_biomass,crop%biomass%cumulative_dead_stem_biomass,crop%biomass%cumulative_dead_leaf_biomass, &
+   crop%biomass%exponential_leaf_area_index,crop%biomass%retained_dead_biomass, &
+   crop%biomass%leaf_biomass,crop%biomass%specific_leaf_area,crop%biomass%leaf_age, &
+   crop%evolution_continuation%temperature_sum,crop%evolution_continuation%anthesis_reached, &
+   crop%evolution_continuation%minimum_temperature_history_count,crop%evolution_continuation%minimum_temperature_history, &
+   0,0
+ end subroutine
+ subroutine read_crop(u,crop,io)
+  integer,intent(in)::u
+  type(wofost_crop_owner_state_t),intent(out)::crop
+  integer,intent(out)::io
+  integer::leaf_count,warm_days,delay_days
+  crop%crop_emerged=.true.;allocate(crop%biomass,crop%evolution_continuation)
+  read(u,iostat=io)crop%development_stage,leaf_count
+  if(io/=0)return
+  if(leaf_count<1.or.leaf_count>4096)then
+   io=1;return
+  end if
+  allocate(crop%biomass%leaf_biomass(leaf_count),crop%biomass%specific_leaf_area(leaf_count),crop%biomass%leaf_age(leaf_count))
+  read(u,iostat=io)crop%biomass%root_biomass,crop%biomass%stem_biomass,crop%biomass%storage_biomass, &
+   crop%biomass%cumulative_dead_root_biomass,crop%biomass%cumulative_dead_stem_biomass,crop%biomass%cumulative_dead_leaf_biomass, &
+   crop%biomass%exponential_leaf_area_index,crop%biomass%retained_dead_biomass, &
+   crop%biomass%leaf_biomass,crop%biomass%specific_leaf_area,crop%biomass%leaf_age, &
+   crop%evolution_continuation%temperature_sum,crop%evolution_continuation%anthesis_reached, &
+   crop%evolution_continuation%minimum_temperature_history_count,crop%evolution_continuation%minimum_temperature_history, &
+   warm_days,delay_days
+  if(io/=0)return
+  if(crop%validate()/=0.or.min(warm_days,delay_days)<0)io=1
  end subroutine
 end module

@@ -1,5 +1,9 @@
 # SWAP5 Status-A current architecture
 
+DATAQUAL14 active Grassgrowth composition reuses existing actual/potential crop,
+root-depth and water/thermal owners; its bounded evidence and admission authority
+are `integration/dataqual14/STATUS.json` and `tests/dataqual14/verify_evidence.py`.
+
 DATAQUAL13 adds an experimental original113-node Grassgrowth application using
 Full Richards and existing water/crop/thermal owners. The unchanged original
 five-day dormant prefix qualifies water balance and exact same-build disk restart

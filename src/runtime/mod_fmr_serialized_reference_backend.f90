@@ -578,6 +578,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: root_potential_cm_day = 0.0_real64
     real(real64) :: root_drought_reduction_cm_day = 0.0_real64
     real(real64) :: root_oxygen_reduction_cm_day = 0.0_real64
+    real(real64) :: deepest_root_oxygen_factor = 1.0_real64
     real(real64), allocatable :: root_pressure_head_start(:)
   end type fmr_water_flux_substep_trace_t
 
@@ -586,6 +587,7 @@ module mod_fmr_serialized_reference_backend
     integer :: bartholomeus_status = 0
     real(real64) :: root_oxygen_base_uptake = 0.0_real64
     real(real64) :: root_oxygen_final_uptake = 0.0_real64
+    real(real64) :: deepest_root_oxygen_factor = 1.0_real64
     real(real64), allocatable :: root_oxygen_final_sink(:)
     type(frost_low_air_drainage_result_t) :: frost_low_air_drainage
     logical :: frost_divdra_executed = .false., frost_divdra_mass_accounted_in_trial = .false.
@@ -5252,6 +5254,7 @@ contains
           self%last_observation%bartholomeus_status=oxygen_status
           self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
           if(oxygen_status/=FMR_BARTHOLOMEUS_EXEC_OK) return
+          if(oxygen_nodes>0)self%last_observation%deepest_root_oxygen_factor=oxygen_factors(oxygen_nodes)
           self%qrot=oxygen_final%root_extraction_sink
           self%last_observation%root_oxygen_final_uptake=oxygen_final%actual_uptake_total
           self%last_observation%root_oxygen_final_sink=oxygen_final%root_extraction_sink
@@ -6373,6 +6376,7 @@ contains
       step%root_drought_reduction_cm_day = self%substep_root_diagnostics%drought_reduction_total
       step%root_oxygen_reduction_cm_day = self%substep_root_diagnostics%oxygen_reduction_total
       if(self%last_observation%bartholomeus_executed)then
+        step%deepest_root_oxygen_factor=self%last_observation%deepest_root_oxygen_factor
         step%root_oxygen_reduction_cm_day=step%root_oxygen_reduction_cm_day+ &
           self%last_observation%root_oxygen_base_uptake-self%last_observation%root_oxygen_final_uptake
       end if

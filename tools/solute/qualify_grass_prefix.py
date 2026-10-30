@@ -18,7 +18,7 @@ assert sha(exe)==build['executable_sha256']
 assert all(sha(Path(s))==h for s,h in build['source_sha256'].items()),'stale build source'
 inputs=base/'original-interval';events=[]
 def checkpoint(path):
- b=path.read_bytes();assert b[:8]==b'S5GRS001'
+ b=path.read_bytes();assert b[:8] in (b'S5GRS001',b'S5GRS002')
  assert zlib.crc32(b[:-4])==struct.unpack('=I',b[-4:])[0]
  pos=8
  for i in range(6):
