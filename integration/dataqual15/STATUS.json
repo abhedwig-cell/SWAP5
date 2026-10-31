@@ -438,5 +438,18 @@
         "Initial portable consumer compared Windows backslash manifest keys literally against Linux keys; only key separator comparison corrected; no source bytes, evidence or bounds changed."
       ]
     }
+  },
+  "sprint03": {
+    "stage": "REGISTERED_DESIGN_BEFORE_IMPLEMENTATION",
+    "contract": "integration/dataqual15/SPRINT03_PREREGISTRATION.json",
+    "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+    "branch": "codex/grassgrowth-sprint03",
+    "canonical_untouched": true,
+    "production_delta_planned": [
+      "src/runtime/mod_fmr_serialized_reference_backend.f90",
+      "app/grass_project/initial_interval.f90",
+      "app/grass_project/restart_file.f90"
+    ],
+    "old_evidence_scope": "Immutable predecessor authority; production identity changes invalidate direct current-source claims. Do not replace hashes or checkpoint binding. Reuse only unchanged original/reference/component surfaces."
   }
 }

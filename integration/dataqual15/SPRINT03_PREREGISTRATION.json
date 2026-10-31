@@ -1,0 +1,279 @@
+{
+  "work_unit": "DATAQUAL15-SPRINT03",
+  "canonical_baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+  "predecessor_remote": "56026ceb3e1396ac82623f8e9d1b3769d8a5f242",
+  "predecessor_tree": "91cc0177af9ca6d10419281da8038a40b4f81e78",
+  "branch": "codex/grassgrowth-sprint03",
+  "canonical_must_remain_unchanged": true,
+  "owner": "F-MR serialized reference backend existing full/half transaction; existing Grassgrowth application",
+  "interfaces": [
+    "Explicit backend numerical-policy setter; default disabled, no generic canonical contract or physical parameter changes.",
+    "Grassgrowth command argument5 selects thermal-control; original five physical inputs unchanged.",
+    "Existing application.binding adds one numerical-profile marker for thermal-control; the app checks marker versus CLI before restart. Existing restart format and CRC unchanged; legacy bindings remain water-only."
+  ],
+  "invariants": [
+    3,
+    7,
+    8,
+    13,
+    21,
+    23,
+    25,
+    26
+  ],
+  "thermal_local_tolerance_c": 1e-05,
+  "tolerance_reason": "Conservative fixed absolute local profile accuracy of ten microkelvin, substantially below the existing 0.002772767C trajectory envelope; local defects do not prove global error. This value is registered before candidate results and will not be tuned to force PASS.",
+  "metric": "max(existing_water_indicator,water_tolerance*max_node_abs(Tfull-Thalf)/thermal_tolerance_c); no Richardson extrapolation and no weakening of water acceptance.",
+  "domain": "Explicit numerical heat without snow/frost, macropores, solute, alternative water-flux certificate; EXTERNAL_FULL_HALF only. Unsupported configurations reject before native trial.",
+  "new_profile_days": [
+    65,
+    75,
+    115,
+    129,
+    142,
+    369,
+    734,
+    920,
+    924,
+    1098,
+    1463,
+    1802
+  ],
+  "old_profile_days": [
+    63,
+    64,
+    71,
+    72,
+    73,
+    74,
+    113,
+    114,
+    128,
+    140,
+    141,
+    367,
+    368,
+    731,
+    733,
+    918,
+    919,
+    922,
+    923,
+    1096,
+    1097,
+    1461,
+    1462,
+    1800,
+    1801,
+    1827
+  ],
+  "native_capture_days": [
+    63,
+    64,
+    65,
+    71,
+    72,
+    73,
+    74,
+    75,
+    113,
+    114,
+    115,
+    117,
+    126,
+    127,
+    128,
+    129,
+    140,
+    141,
+    142,
+    365,
+    366,
+    367,
+    368,
+    369,
+    731,
+    732,
+    733,
+    734,
+    918,
+    919,
+    920,
+    922,
+    923,
+    924,
+    1096,
+    1097,
+    1098,
+    1461,
+    1462,
+    1463,
+    1474,
+    1475,
+    1786,
+    1787,
+    1800,
+    1801,
+    1802,
+    1827
+  ],
+  "criteria": {
+    "frozen_bounds": {
+      "WTOT": {
+        "unit": "cm",
+        "floor": 1e-09,
+        "training_change": 0.003415293315981671,
+        "limit": 0.010245880947945013
+      },
+      "TPOT": {
+        "unit": "cm/day",
+        "floor": 1e-09,
+        "training_change": 0.00041462382900003814,
+        "limit": 0.0012438724870001143
+      },
+      "TACT": {
+        "unit": "cm/day",
+        "floor": 1e-09,
+        "training_change": 0.0014430746029999997,
+        "limit": 0.004329224808999999
+      },
+      "TREDWET": {
+        "unit": "cm/day",
+        "floor": 1e-09,
+        "training_change": 0.0014407545720000053,
+        "limit": 0.004322264716000016
+      },
+      "TREDDRY": {
+        "unit": "cm/day",
+        "floor": 1e-09,
+        "training_change": 0.00017024156100003962,
+        "limit": 0.0005107256830001189
+      },
+      "WRT": {
+        "unit": "kg/ha",
+        "floor": 1e-06,
+        "training_change": 0.8755855436550064,
+        "limit": 2.6267576309650194
+      },
+      "WLV": {
+        "unit": "kg/ha",
+        "floor": 1e-06,
+        "training_change": 3.271113911778002,
+        "limit": 9.813342735334006
+      },
+      "WST": {
+        "unit": "kg/ha",
+        "floor": 1e-06,
+        "training_change": 1.1950988478050704,
+        "limit": 3.5852975434152112
+      },
+      "RD": {
+        "unit": "cm",
+        "floor": 1e-07,
+        "training_change": 0.001916772980997905,
+        "limit": 0.005750418942993715
+      },
+      "PWRT": {
+        "unit": "kg/ha",
+        "floor": 1e-06,
+        "training_change": 0.0,
+        "limit": 1e-06
+      },
+      "RDPOT": {
+        "unit": "cm",
+        "floor": 1e-07,
+        "training_change": 0.0,
+        "limit": 1e-07
+      },
+      "DVS": {
+        "unit": "dimensionless",
+        "floor": 1e-08,
+        "training_change": 0.0,
+        "limit": 1e-08
+      },
+      "TSUM": {
+        "unit": "degree day",
+        "floor": 1e-08,
+        "training_change": 0.0,
+        "limit": 1e-08
+      },
+      "LAI_DAY_START": {
+        "unit": "m2/m2",
+        "floor": 1e-08,
+        "training_change": 0.006993567931999678,
+        "limit": 0.020980713795999036
+      },
+      "HRVDM_PROJECT": {
+        "unit": "kg/ha",
+        "floor": 1e-06,
+        "training_change": 16.79684341999382,
+        "limit": 50.39053125998146
+      },
+      "PHRVDM_PROJECT": {
+        "unit": "kg/ha",
+        "floor": 1e-06,
+        "training_change": 0.0,
+        "limit": 1e-06
+      },
+      "NET_FLUX": {
+        "unit": "cm/day",
+        "floor": 1e-09,
+        "training_change": 0.0027525126220000473,
+        "limit": 0.008257538866000141
+      },
+      "PROFILE_head_cm": {
+        "unit": "normalized by max(1cm,abs(h))",
+        "floor": 1e-08,
+        "training_change": 0.0027652248538682636,
+        "limit": 0.00829568456160479
+      },
+      "PROFILE_water_content": {
+        "unit": "cm3/cm3",
+        "floor": 1e-12,
+        "training_change": 0.00013497163164899462,
+        "limit": 0.00040491489594698385
+      },
+      "PROFILE_temperature_c": {
+        "unit": "C",
+        "floor": 1e-09,
+        "training_change": 0.0009242553823938238,
+        "limit": 0.002772767147181471
+      }
+    },
+    "frozen_registration_sha256": "605750966013436061ce522a7852bf9c4ff953b261b4ac344e3ed304f0b1c6d1",
+    "full_days": 1827,
+    "water_residual_cm": 1e-10,
+    "heat_accounting_residual_j_cm2": 1e-08,
+    "same_executable_restart_payload_and_daily_rows_exact": true,
+    "new_reference_nodal_change_limit": "existing frozen profile bound /3 + existing registration floor, unchanged; compare original .000625 versus .0003125 on all old/new dates. This is an empirical reference-resolution test, not a universal error theorem.",
+    "original_gate_remains_failed": true,
+    "no_posthoc_relaxation": true
+  },
+  "selection": {
+    "local": "O0/O2 real runtime metric contract, old default groundwater/oxygen contracts; original heat kernels unchanged and prior component evidence retained only for same component surface.",
+    "linux": "Checked O0/O2 changed backend contract, original default140-day preservation O0/O2; adaptive1827 O2 fromday1 with unchanged physical inputs; adaptive140 O0 comparison; same-executable mowing/year/groundwater/final restarts.",
+    "reference": "Output-only expanded original collector .000625/.0003125, old scalar and26-profile output exact controls. Fresh full references justified because new dates are absent from sealed evidence.",
+    "cost_seconds": {
+      "local_build_expected": 200,
+      "full_adaptive_expected": 2400,
+      "full_adaptive_wall_cap": 7200,
+      "reference_expected": [
+        400,
+        800
+      ],
+      "reference_wall_caps": [
+        1500,
+        2700
+      ],
+      "default_prefix_expected_per_build": 150,
+      "build_wall_cap": 600
+    },
+    "not_selected": [
+      "Full F-CI; canonical admission explicitly excluded",
+      "Unrelated macro/solute/long low-air stress",
+      "Blind repetition of sealed original full native1827"
+    ]
+  },
+  "production_promotion": false,
+  "status": "REGISTERED_BEFORE_CANDIDATE_RESULTS"
+}
