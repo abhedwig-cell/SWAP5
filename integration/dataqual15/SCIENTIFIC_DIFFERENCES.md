@@ -1,8 +1,109 @@
 # Grassgrowth: full-period execution and scientific attribution
 
+## Sprint03: thermal control and a reproduced small-drainage domain defect
+
+**Current repaired code is locally tested, not fully qualified.** The canonical
+branch remains unchanged. The complete original1827-day proof still belongs to
+its immutable predecessor source. No new full-project scientific qualification
+or production promotion is claimed.
+
+Registration `015cc3cb84c2e6b2daee3f4ffc0141dfdd8ace38` fixes a named thermal
+profile before candidate results: preserve the incumbent water indicator and
+also require the full/half maximum-node temperature discrepancy to be at most
+1e-5C. The existing twenty trajectory envelopes remain unchanged. This is a
+local discrepancy budget, not a theorem about accumulated global error.
+The numerical setting belongs to the existing backend and is disabled by
+default. A fresh application binding records the selected profile before any
+committed step; replay never changes a checkpoint binding or CRC.
+
+The first implementation, source `980b824953a598cf356b8c88ce7ccfffff63e7ab`,
+passes the real runtime contracts in O0/O2 on Linux GNU13.3 and Windows GNU16.2.
+Its legacy numerical profile reproduces all140 original budget/crop rows and
+captured physical payloads exactly in both optimizations. The new profile's
+O0/O2 first140 rows and18 captured physical payloads also match exactly,
+independently checked after the failed full attempt. These are prefix claims.
+
+The requested1827-day checkedO2 execution stops on day1192. Its last complete
+committed day is1191, with native exit1, uncensored, after3860.9037seconds.
+The rejected1191->1191.04 segment reports3162 attempts,1412 solver rejections,
+1617 temporal rejections and zero mass rejections. The original-reference
+runs for the twelve newly selected profile dates have not yet started.
+A genuine same-executable replay1191->1192 reproduces the identical failure
+and counts in9.739seconds. Original source/executable/input bindings are
+unchanged. Its diagnostic workflow succeeds as a measurement of failure,
+not as a scientific qualification.
+
+On the existing finest original reference and already available profile dates,
+the valid1-1191 prefix fits all twenty frozen bounds. Maximum sampled
+profile-temperature error is0.000718502C against0.002772767C; harvest error is
+1.114112kg/ha against50.390531kg/ha; daily drought-reduction error is
+0.0000667810cm/day against0.000510726cm/day. No whole-period or new held-out
+profile claim follows from this incomplete trajectory.
+
+A separate operator-only probe uses the actual1191 pressure/moisture/temperature
+snapshot and real original/current heat routines. All seven unchanged component
+source hashes and the previously sealed WindowsO2 executable hash are checked
+before using that binary with96 new explicit inputs. With frozen water, changing
+mean air temperature from5.0 to5.9C gives a0.0554007C full/half defect at.04day;
+a few-millionths-day step is needed for the new1e-5C local criterion. Original
+and current operators agree. Isothermal controls have only roundoff defect.
+This is a same-state thermal counterfactual, not a restarted application or an
+observed accepted hydraulic substep.
+
+The replay exposes the immediate domain cliff: near the drain bottom-55cm,
+DRAMET3 computes finite nonzero exchange below the legacy DIVDRA admitted
+magnitude1e-10cm/day. The spatial owner returns unavailable instead of a nodal
+partition, causing an infinite temporal drainage certificate and further
+refinement. Groundwater diagnostics show this despite small ordinary water/head
+defects. No hard mass-balance failure is hidden.
+
+The repaired source extends only this explicitly selected numerical profile.
+For fixed geometry, single-level DIVDRA is homogeneous in its authoritative
+signed scalar. If the unchanged routine reports the formerly unsupported tiny
+nonzero magnitude, the repair evaluates its original signed unit geometry,
+scales by the true magnitude and closes the final active node to the full
+scalar. Exactly this helper serves the physical trial and the temporal drainage
+certificate. No flux, negative legacy edge weight or elapsed time is clipped.
+The default profile preserves the old domain; previously admitted magnitudes
+use the original route bit for bit. Physical water/heat equations, forcing,
+geometry, solver tolerances, thermal1e-5C and all twenty frozen bounds stay fixed.
+
+The repaired code passes local O0/O2 real-runtime contracts, including signed
+small-flux conservation, the original activity cutoff under the default policy,
+legacy edge geometry and exact unchanged admitted-magnitude results. The current
+repaired executable has not yet run the original full period. Its next full
+execution must start on day1; the first attempt's1191 checkpoint belongs to a
+different executable and is not rebound. Native and original-reference phases
+are separated so valid independent reference data can be reused if a native
+attempt fails. The final consumer recomputes the raw twenty-field test; it does
+not convert an earlier failure into a pass.
+
+The explicit profile is exposed through `tools/solute/build_grass_thermal.py`
+and `tests/dataqual15/run_thermal.py`, small hash-verified adapters over the
+unchanged sealed startup recipe and original-input runner. Their native smoke
+test and the supplemental groundwater restart113->117 are selected but pending.
+The existing original physical source component evidence remains a predecessor
+authority; its hashes and failed gates are not retargeted to this new postimage.
+
+Raw failed evidence is preserved locally in `SPRINT03_ATTEMPT01_EVIDENCE.tar.xz`
+and its original manifest, plus original Actions artifact13056865907 from
+run41232008608. The code-only diagnostic is run41239914565. An archive-content
+audit found only generated model/build data and twenty unchanged copies of
+already-public physical inputs, with no credential patterns or unrelated paths.
+Automatic review nevertheless rejected both raw-archive and repaired-code
+publication, requesting explicit authorization for the expanded payload/branch.
+The user subsequently explicitly authorized this exact Sprint03 publication and
+Linux qualification. The repaired-source full-period and independent-reference
+qualification can now start; no qualification result is assumed.
+
+The original coarse temperature gate and its earlier drought refinement failure
+remain failed. Whole energy qualification and production admission remain open;
+independent-project counts remain full original execution2/3, whole scientific0/3.
+
+
 ## Sprint02: independent thermal and trajectory qualification
 
-**VOLLEDIG UITGEVOERD — WETENSCHAPPELIJKE KWALIFICATIE OPEN.**
+**VOLLEDIG UITGEVOERD â€” WETENSCHAPPELIJKE KWALIFICATIE OPEN.**
 The complete original 1827-day execution is inherited unchanged. A separately
 registered finer numerical configuration now passes all twenty measured
 criteria; the original coarse configuration still fails temperature. Neither
@@ -13,7 +114,7 @@ Reconciliation starts from canonical `0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50`,
 review `3170aa1783872b90f121550803f5bfaaf902b0e8`, and scientific production
 postimage `d6514abee5a85367a6b1fa181c011b6f2e9194ed`. The five original inputs,
 113 nodes, six-metre profile, five seasons and physical selectors are unchanged.
-Issues1458/1386 and PRs1476–1480 were reconciled against the repository receipts;
+Issues1458/1386 and PRs1476â€“1480 were reconciled against the repository receipts;
 older issue text does not supersede the sealed full execution. The independent
 review's scientific and reproducibility concerns are addressed below. General
 architecture work remains outside this bounded sprint. Canonical is untouched;
@@ -342,7 +443,7 @@ unperformed paired/profile diagnostics refer to that historical stage; the
 full-period and accepted-state evidence above supersedes those limitations for
 its explicitly tested scope.
 
-Experimental comparison of the frozen contiguous original-input day1–521 history with the complete original SWAP4.3.1 scalar reference. This establishes measured differences, not whole-model scientific equivalence. Exact input, output and inspected-source hashes and day-level results are in `SCIENTIFIC_DIFFERENCES.json`.
+Experimental comparison of the frozen contiguous original-input day1â€“521 history with the complete original SWAP4.3.1 scalar reference. This establishes measured differences, not whole-model scientific equivalence. Exact input, output and inspected-source hashes and day-level results are in `SCIENTIFIC_DIFFERENCES.json`.
 
 | Quantity | Largest absolute difference through521 | Day |
 |---|---:|---:|

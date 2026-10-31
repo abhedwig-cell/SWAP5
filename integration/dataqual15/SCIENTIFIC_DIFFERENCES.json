@@ -1179,5 +1179,205 @@
       }
     },
     "energy_scope": "Independent checkpoint water stock/flux and identical-state conductive thermal capacity/flux accounting only; no advected-water enthalpy or complete surface-energy closure claim."
+  },
+  "sprint03": {
+    "branch": "codex/grassgrowth-sprint03",
+    "canonical_baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+    "canonical_modified": false,
+    "status": "REPAIRED_LOCAL_O0_O2_PASS_FULL_REQUALIFICATION_AWAITING_REQUIRED_PUBLICATION_AUTHORIZATION",
+    "current_source_full_execution_proven": false,
+    "current_source_scientific_qualification": false,
+    "historical_attempt01_source": "980b824953a598cf356b8c88ce7ccfffff63e7ab",
+    "historical_attempt01_days": 1191,
+    "historical_attempt01_requested_days": 1827,
+    "historical_attempt01_returncode": 1,
+    "historical_attempt01_censored": false,
+    "historical_attempt01_prefix_temperature_error_c": 0.0007185015032753483,
+    "original_preregistered_gate_pass": false,
+    "production_promotion": false,
+    "counts_unchanged": true,
+    "evidence_location": "Local integration/dataqual15/SPRINT03_ATTEMPT01_EVIDENCE.tar.xz and immutable original GitHub Actions artifact13056865907, run41232008608; raw repository publication was rejected by automatic review.",
+    "repair_scope": "Explicit thermal numerical profile only: keep authoritative small signed scalar using existing DIVDRA unit geometry and conservative final-node closure. Physical trial and temporal certificate agree. Default legacy and previously admitted magnitudes are unchanged.",
+    "remaining": "New repaired-source full day1-1827 execution, native restart windows, newly sampled original reference profiles, hard20quantity assessment. Source/executable differs from attempt01, so do not rebind its1191 checkpoint.",
+    "failed_attempt01": {
+      "manifest": "integration/dataqual15/SPRINT03_ATTEMPT01_MANIFEST.json",
+      "last_committed_day": 1191,
+      "failed_day": 1192,
+      "returncode": 1,
+      "censored": false,
+      "adaptive_O2_seconds": 3860.9037124789993,
+      "reason": "First source segment1191->1191.04 rejected after3162 attempts;1412 solver and1617 temporal rejections;0 mass rejections; actual solver cause pending authentic same-executable diagnostic.",
+      "default_140_O0_O2_exact": true,
+      "adaptive_O0_140_completed": true,
+      "reference_runs_started": false,
+      "adaptive_O0_O2_140_offline_exact": true,
+      "adaptive_O0_O2_matching_captured_payloads": 18
+    },
+    "authentic_failure_reproduction": {
+      "run": 41239914565,
+      "job": 124651496107,
+      "same_executable_sha256": "97302a32577571e21d90218aa48ca252b28e55c07df2356afd7e9269cd23fbec",
+      "origin_day": 1191,
+      "requested_end": 1192,
+      "native_returncode": 1,
+      "censored": false,
+      "seconds": 9.73898721400002,
+      "counts_match_original": true,
+      "no_binding_or_crc_rewrite": true
+    },
+    "local_contract_status": "SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS",
+    "prefix_science": {
+      "scope": "Historical failed attempt01 source980b only. Valid prefix1-1191 compared against inherited original finest scalar and already-available nodal data. Not whole-project qualification, not current repaired-source proof.",
+      "days": 1191,
+      "available_reference_profile_days": [
+        0,
+        63,
+        64,
+        71,
+        72,
+        73,
+        74,
+        113,
+        114,
+        128,
+        140,
+        141,
+        367,
+        368,
+        731,
+        733,
+        918,
+        919,
+        922,
+        923,
+        1096,
+        1097
+      ],
+      "metrics": {
+        "WTOT": {
+          "error": 0.000982653757347407,
+          "limit": 0.010245880947945013,
+          "inside": true,
+          "unit": "cm"
+        },
+        "TPOT": {
+          "error": 6.35182228133635e-05,
+          "limit": 0.0012438724870001143,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "TACT": {
+          "error": 0.00016044117612437625,
+          "limit": 0.004329224808999999,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "TREDWET": {
+          "error": 0.0001382438983836211,
+          "limit": 0.004322264716000016,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "TREDDRY": {
+          "error": 6.678102789275941e-05,
+          "limit": 0.0005107256830001189,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "WRT": {
+          "error": 0.09997420666934431,
+          "limit": 2.6267576309650194,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "WLV": {
+          "error": 0.5091946610348259,
+          "limit": 9.813342735334006,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "WST": {
+          "error": 0.16094250200478655,
+          "limit": 3.5852975434152112,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "RD": {
+          "error": 0.00022931039883644644,
+          "limit": 0.005750418942993715,
+          "inside": true,
+          "unit": "cm"
+        },
+        "PWRT": {
+          "error": 5.115907697472721e-13,
+          "limit": 1e-06,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "RDPOT": {
+          "error": 0.0,
+          "limit": 1e-07,
+          "inside": true,
+          "unit": "cm"
+        },
+        "DVS": {
+          "error": 4.989342272665453e-13,
+          "limit": 1e-08,
+          "inside": true,
+          "unit": "dimensionless"
+        },
+        "TSUM": {
+          "error": 4.547473508864641e-13,
+          "limit": 1e-08,
+          "inside": true,
+          "unit": "degree day"
+        },
+        "LAI_DAY_START": {
+          "error": 0.0010774272675191376,
+          "limit": 0.020980713795999036,
+          "inside": true,
+          "unit": "m2/m2"
+        },
+        "HRVDM_PROJECT": {
+          "error": 1.1141124070709338,
+          "limit": 50.39053125998146,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "PHRVDM_PROJECT": {
+          "error": 3.4506228985264897e-09,
+          "limit": 1e-06,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "NET_FLUX": {
+          "error": 0.0007998252659058291,
+          "limit": 0.008257538866000141,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "PROFILE_head_cm": {
+          "error": 0.0006691716199216133,
+          "limit": 0.00829568456160479,
+          "inside": true,
+          "unit": "normalized by max(1cm,abs(h))"
+        },
+        "PROFILE_water_content": {
+          "error": 5.0965969326022265e-05,
+          "limit": 0.00040491489594698385,
+          "inside": true,
+          "unit": "cm3/cm3"
+        },
+        "PROFILE_temperature_c": {
+          "error": 0.0007185015032753483,
+          "limit": 0.002772767147181471,
+          "inside": true,
+          "unit": "C"
+        }
+      },
+      "all20_prefix_bounds_inside": true,
+      "full_project_pass": false,
+      "new_disjoint_profile_test_executed": false
+    }
   }
 }

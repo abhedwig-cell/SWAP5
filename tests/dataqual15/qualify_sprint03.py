@@ -11,10 +11,10 @@ INPUTS=['input.swp','grass.crp','input.met','swap.bbc','swap.dra']
 rows=lambda raw:list(csv.DictReader(line for line in raw.decode().splitlines()if line.strip()and not line.startswith('*')))
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--phase',choices=['all','native','reference'],default='all');a=p.parse_args()
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);fc=str(a.compiler.resolve())
  planpath=ROOT/'integration/dataqual15/SPRINT03_PREREGISTRATION.json';plan=json.loads(planpath.read_text());(out/'PREREGISTRATION.json').write_bytes(planpath.read_bytes())
- report=dict(status='IN_PROGRESS',scope=__doc__,events=[],registration_sha256=file_sha(planpath),production_promoted=False,canonical_modified=False,original_gate_pass=False)
+ report=dict(status='IN_PROGRESS',implementation_revision='CONSERVATIVE_SUBTHRESHOLD_DRAINAGE',phase=a.phase,scope=__doc__,events=[],registration_sha256=file_sha(planpath),production_promoted=False,canonical_modified=False,original_gate_pass=False)
  def save():(out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
  def run(command,label,cwd=ROOT,timeout=240,expected=0,capture=None):
   print('SPRINT03_START',label,flush=True);start=time.monotonic();i=len(report['events']);censored=False;captured=set()
@@ -41,54 +41,57 @@ def main():
  full,old,prior=[archives[name]for name in ['GRASS_UNION_FULL','STRESS','SPRINT02']];get=lambda t,n:t.extractfile(n).read();spec=json.loads(get(full,'SPEC.json'))
  frozen=json.loads(get(old,'donor/PREREGISTRATION.json'));assert sha(get(old,'donor/PREREGISTRATION.json'))==plan['criteria']['frozen_registration_sha256'];assert frozen['bounds']==plan['criteria']['frozen_bounds']
  report['capsules_sha256']={name:file_sha(ROOT/f'integration/dataqual15/{name}_EVIDENCE.tar.xz')for name in archives};save()
- utilities=build_original(out/'original-utilities',fc,'O2',utilities_only=True);builds={};native={}
- def makecase(bundle,path,thermal):
-  path.mkdir();build=json.loads((bundle/'BUILD.json').read_text());exe=bundle/'swap5_grass_startup';assert file_sha(exe)==build['executable_sha256']
-  for name in INPUTS:
-   raw=(bundle/'original-interval'/name).read_bytes();assert sha(raw)==build['original_inputs_sha256'][name];(path/name).write_bytes(raw)
-  raw=(bundle/'original-interval/application.binding').read_bytes()
-  if thermal:
-   binding=json.loads(raw);binding['grass_numerical_profile']='thermal-control-1e-5C';raw=(json.dumps(binding,sort_keys=True)+'\n').encode()
-  (path/'application.binding').write_bytes(raw)
-  return exe
- def readnative(case):
-  budget=rows((case/'budget.csv').read_bytes());crop=rows((case/'crop.csv').read_bytes());points={}
-  for path in case.glob('checkpoint*.bin'):
-   raw=path.read_bytes();points[int(layout(raw)['clock'])]=raw
-  assert len(budget)==len(crop)>0
-  assert max(abs(float(r['residual_cm']))for r in budget)<=1e-10
-  assert max(abs(float(r['heat_residual_j_cm2']))for r in budget)<=1e-8
-  return dict(budget=budget,crop=crop,checkpoints=points)
- oldbudget=rows(get(full,spec['full']+'/budget.csv'));oldcrop=rows(get(full,spec['full']+'/crop.csv'))
- oldpoints={}
- for name in full.getnames():
-  if name.startswith(spec['full']+'/checkpoint')and name.endswith('.bin'):
-   raw=get(full,name);oldpoints[int(layout(raw)['clock'])]=raw
- for opt in ['O0','O2']:
-  bundle=out/('build-'+opt);run([sys.executable,'-B',ROOT/'tools/solute/build_grass_startup.py','--compiler',fc,'--input-archive',utilities/'ttobj/libttutil.a','--output',bundle,'--optimization',opt,'--profile','checked','--end','.01','--policy','retained'],'build-'+opt,timeout=600);builds[opt]=bundle
-  case=out/('default-'+opt);exe=makecase(bundle,case,False);run([exe,140,'retain-step',100000],'default-'+opt,cwd=case,timeout=900,capture=[63,71,72,73,113,117,126,127,140]);data=readnative(case)
-  assert len(data['budget'])==140 and data['budget']==oldbudget[:140]and data['crop']==oldcrop[:140]
-  assert all(payload(raw)==payload(oldpoints[day])for day,raw in data['checkpoints'].items());report['default_'+opt]='EXACT_PREDECESSOR140_SCALARS_AND_CAPTURED_PAYLOAD';save()
-  case=out/('adaptive-'+opt);exe=makecase(bundle,case,True);end=140 if opt=='O0'else 1827;capture=[d for d in plan['native_capture_days']if d<=end]
-  run([exe,end,'retain-step',100000,'','thermal-control'],'adaptive-'+opt,cwd=case,timeout=7200 if opt=='O2'else 1200,capture=capture);data=readnative(case);assert len(data['budget'])==end
-  assert set(capture)<=set(data['checkpoints']),('missed atomic observation',set(capture)-set(data['checkpoints']));native[opt]=data
- assert native['O0']['budget']==native['O2']['budget'][:140]and native['O0']['crop']==native['O2']['crop'][:140]
- assert all(payload(raw)==payload(native['O2']['checkpoints'][day])for day,raw in native['O0']['checkpoints'].items());report['adaptive_O0_O2_140_exact']=True;save()
- # Genuine same-executable restarts; origin bytes and source/application binding remain fixed.
- data=native['O2'];exe=builds['O2']/'swap5_grass_startup';report['restarts']=[]
- for origin,end in [(126,140),(365,367),(918,922),(1786,1787),(1800,1827)]:
-  case=out/f'restart-{origin}-{end}';makecase(builds['O2'],case,True);raw=data['checkpoints'][origin];(case/'origin.bin').write_bytes(raw)
-  run([exe,end,'retain-step',100000,case/'origin.bin','thermal-control'],f'restart-{origin}-{end}',cwd=case,timeout=180)
-  assert(case/'origin.bin').read_bytes()==raw and(case/'checkpoint.bin').read_bytes()==data['checkpoints'][end]
-  assert rows((case/'budget.csv').read_bytes())==data['budget'][origin:end]and rows((case/'crop.csv').read_bytes())==data['crop'][origin:end];report['restarts'].append([origin,end]);save()
- for label,thermal,flag in [('missing-profile-marker',False,True),('missing-profile-argument',True,False)]:
-  case=out/label;makecase(builds['O2'],case,thermal);(case/'origin.bin').write_bytes(data['checkpoints'][126]);cmd=[exe,127,'retain-step',100000,case/'origin.bin']+(['thermal-control']if flag else[])
-  run(cmd,label,cwd=case,expected='nonzero');assert not(case/'checkpoint.bin').exists()
- def stock(raw):
-  s=layout(raw);n=s['nodes'];dz=struct.unpack_from('='+str(n)+'d',raw,s['header']+48+8*n);theta=struct.unpack_from('='+str(n)+'d',raw,s['physical']+8*n);pond=struct.unpack_from('=d',raw,s['physical']+16*n)[0];return math.fsum(a*b for a,b in zip(dz,theta))+pond
- residuals=[];points=sorted(data['checkpoints'])
- for first,last in zip(points,points[1:]):residuals.append(stock(data['checkpoints'][last])-stock(data['checkpoints'][first])-math.fsum(float(r['input_cm'])-float(r['output_cm'])for r in data['budget'][first:last]))
- report['maximum_independent_stock_flux_residual_cm']=max(map(abs,residuals));assert report['maximum_independent_stock_flux_residual_cm']<1e-10;save()
+ if a.phase!='reference':
+  utilities=build_original(out/'original-utilities',fc,'O2',utilities_only=True);builds={};native={}
+  def makecase(bundle,path,thermal):
+   path.mkdir();build=json.loads((bundle/'BUILD.json').read_text());exe=bundle/'swap5_grass_startup';assert file_sha(exe)==build['executable_sha256']
+   for name in INPUTS:
+    raw=(bundle/'original-interval'/name).read_bytes();assert sha(raw)==build['original_inputs_sha256'][name];(path/name).write_bytes(raw)
+   raw=(bundle/'original-interval/application.binding').read_bytes()
+   if thermal:
+    binding=json.loads(raw);binding['grass_numerical_profile']='thermal-control-1e-5C';raw=(json.dumps(binding,sort_keys=True)+'\n').encode()
+   (path/'application.binding').write_bytes(raw)
+   return exe
+  def readnative(case):
+   budget=rows((case/'budget.csv').read_bytes());crop=rows((case/'crop.csv').read_bytes());points={}
+   for path in case.glob('checkpoint*.bin'):
+    raw=path.read_bytes();points[int(layout(raw)['clock'])]=raw
+   assert len(budget)==len(crop)>0
+   assert max(abs(float(r['residual_cm']))for r in budget)<=1e-10
+   assert max(abs(float(r['heat_residual_j_cm2']))for r in budget)<=1e-8
+   return dict(budget=budget,crop=crop,checkpoints=points)
+  oldbudget=rows(get(full,spec['full']+'/budget.csv'));oldcrop=rows(get(full,spec['full']+'/crop.csv'))
+  oldpoints={}
+  for name in full.getnames():
+   if name.startswith(spec['full']+'/checkpoint')and name.endswith('.bin'):
+    raw=get(full,name);oldpoints[int(layout(raw)['clock'])]=raw
+  for opt in ['O0','O2']:
+   bundle=out/('build-'+opt);run([sys.executable,'-B',ROOT/'tools/solute/build_grass_startup.py','--compiler',fc,'--input-archive',utilities/'ttobj/libttutil.a','--output',bundle,'--optimization',opt,'--profile','checked','--end','.01','--policy','retained'],'build-'+opt,timeout=600);builds[opt]=bundle
+   case=out/('default-'+opt);exe=makecase(bundle,case,False);run([exe,140,'retain-step',100000],'default-'+opt,cwd=case,timeout=900,capture=[63,71,72,73,113,117,126,127,140]);data=readnative(case)
+   assert len(data['budget'])==140 and data['budget']==oldbudget[:140]and data['crop']==oldcrop[:140]
+   assert all(payload(raw)==payload(oldpoints[day])for day,raw in data['checkpoints'].items());report['default_'+opt]='EXACT_PREDECESSOR140_SCALARS_AND_CAPTURED_PAYLOAD';save()
+   case=out/('adaptive-'+opt);exe=makecase(bundle,case,True);end=140 if opt=='O0'else 1827;capture=[d for d in plan['native_capture_days']if d<=end]
+   run([exe,end,'retain-step',100000,'','thermal-control'],'adaptive-'+opt,cwd=case,timeout=10000 if opt=='O2'else 1200,capture=capture);data=readnative(case);assert len(data['budget'])==end
+   assert set(capture)<=set(data['checkpoints']),('missed atomic observation',set(capture)-set(data['checkpoints']));native[opt]=data
+  assert native['O0']['budget']==native['O2']['budget'][:140]and native['O0']['crop']==native['O2']['crop'][:140]
+  assert all(payload(raw)==payload(native['O2']['checkpoints'][day])for day,raw in native['O0']['checkpoints'].items());report['adaptive_O0_O2_140_exact']=True;save()
+  # Genuine same-executable restarts; origin bytes and source/application binding remain fixed.
+  data=native['O2'];exe=builds['O2']/'swap5_grass_startup';report['restarts']=[]
+  for origin,end in [(126,140),(365,367),(918,922),(1786,1787),(1800,1827)]:
+   case=out/f'restart-{origin}-{end}';makecase(builds['O2'],case,True);raw=data['checkpoints'][origin];(case/'origin.bin').write_bytes(raw)
+   run([exe,end,'retain-step',100000,case/'origin.bin','thermal-control'],f'restart-{origin}-{end}',cwd=case,timeout=180)
+   assert(case/'origin.bin').read_bytes()==raw and(case/'checkpoint.bin').read_bytes()==data['checkpoints'][end]
+   assert rows((case/'budget.csv').read_bytes())==data['budget'][origin:end]and rows((case/'crop.csv').read_bytes())==data['crop'][origin:end];report['restarts'].append([origin,end]);save()
+  for label,thermal,flag in [('missing-profile-marker',False,True),('missing-profile-argument',True,False)]:
+   case=out/label;makecase(builds['O2'],case,thermal);(case/'origin.bin').write_bytes(data['checkpoints'][126]);cmd=[exe,127,'retain-step',100000,case/'origin.bin']+(['thermal-control']if flag else[])
+   run(cmd,label,cwd=case,expected='nonzero');assert not(case/'checkpoint.bin').exists()
+  def stock(raw):
+   s=layout(raw);n=s['nodes'];dz=struct.unpack_from('='+str(n)+'d',raw,s['header']+48+8*n);theta=struct.unpack_from('='+str(n)+'d',raw,s['physical']+8*n);pond=struct.unpack_from('=d',raw,s['physical']+16*n)[0];return math.fsum(a*b for a,b in zip(dz,theta))+pond
+  residuals=[];points=sorted(data['checkpoints'])
+  for first,last in zip(points,points[1:]):residuals.append(stock(data['checkpoints'][last])-stock(data['checkpoints'][first])-math.fsum(float(r['input_cm'])-float(r['output_cm'])for r in data['budget'][first:last]))
+  report['maximum_independent_stock_flux_residual_cm']=max(map(abs,residuals));assert report['maximum_independent_stock_flux_residual_cm']<1e-10;save()
+  if a.phase=='native':
+   report.update(status='SPRINT03_NATIVE_FULL_MEASURED',full_days=1827,registered_gate_pass=None);save();return
  # Only the original output collector date list changes. Verify every old output.
  reference=out/'reference';reference.mkdir();provider=build_original(reference/'providers',fc,'O2');original=get(prior,'heldout/reference/swapoutput_profiles.f90').decode();old_dates=sorted([0]+plan['old_profile_days']);needle='['+','.join(map(str,old_dates))+']';assert original.count(needle)==1
  all_dates=sorted(set(old_dates+plan['new_profile_days']));source=reference/'swapoutput_profiles.f90';source.write_text(original.replace(needle,'['+','.join(map(str,all_dates))+']'),newline='\n')
@@ -105,6 +108,8 @@ def main():
   profile=rows((case/'nodal_profiles.csv').read_bytes());assert [r for r in profile if int(r['day'])in old_dates]==rows(get(prior,base+'/nodal_profiles.csv'));nodal[cap]={}
   for row in profile:nodal[cap].setdefault(int(row['day']),[]).append(row)
   assert set(nodal[cap])==set(all_dates)
+ if a.phase=='reference':
+  report.update(status='SPRINT03_REFERENCE_PROFILES_MEASURED',full_days=1827,registered_gate_pass=None);save();return
  observed,ref,units,floors=vectors(scalar[.0003125],nodal[.0003125],**data);_,previous,_,_=vectors(scalar[.000625],nodal[.000625],**data)
  report['assessment']={}
  for key,bound in frozen['bounds'].items():

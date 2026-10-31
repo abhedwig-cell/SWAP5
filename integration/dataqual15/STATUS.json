@@ -227,7 +227,7 @@
     "production_promotion": false,
     "known_legacy_guard_failure": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json"
   },
-  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits.",
+  "record_scope": "Top-level inherited DATAQUAL15 admission fields describe their historical canonical receipts. Sprint03 is an unadmitted candidate; its repaired-source full-period qualification remains pending, and prior failed evidence is not rebound.",
   "sprint02": {
     "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
     "review_baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
@@ -440,7 +440,7 @@
     }
   },
   "sprint03": {
-    "stage": "LOCAL_O0_O2_PASS_LINUX_REGISTERED_EXPERIMENT_RUNNING",
+    "stage": "REPAIRED_LOCAL_O0_O2_PASS_PUBLICATION_EXPLICITLY_AUTHORIZED",
     "contract": "integration/dataqual15/SPRINT03_PREREGISTRATION.json",
     "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
     "branch": "codex/grassgrowth-sprint03",
@@ -483,6 +483,244 @@
       "registered_before_execution_utc": "2026-10-31T19:23:43.085051+00:00",
       "stage": "PLANNED_PENDING_OWN_SOURCE_BOUND_TRAJECTORY",
       "runner": "tests/dataqual15/recover_sprint03.py"
+    },
+    "fresh_profile_builder_selection": {
+      "adapter": "tools/solute/build_grass_thermal.py",
+      "sealed_recipe_unchanged": true,
+      "criterion": "Fresh correct numerical profile binding and exact original day1 budget/crop versus registered thermal full run. No checkpoint rebinding.",
+      "expected_seconds": 150,
+      "wall_cap_seconds": 600,
+      "stage": "PLANNED_BEFORE_INTERFACE_EXECUTION",
+      "registered_before_execution_utc": "2026-10-31T19:47:19.433898+00:00",
+      "runner_adapter": "tests/dataqual15/run_thermal.py; unchanged sealed run_original.py recipe"
+    },
+    "failed_attempt01": {
+      "manifest": "integration/dataqual15/SPRINT03_ATTEMPT01_MANIFEST.json",
+      "last_committed_day": 1191,
+      "failed_day": 1192,
+      "returncode": 1,
+      "censored": false,
+      "adaptive_O2_seconds": 3860.9037124789993,
+      "reason": "First source segment1191->1191.04 rejected after3162 attempts;1412 solver and1617 temporal rejections;0 mass rejections; actual solver cause pending authentic same-executable diagnostic.",
+      "default_140_O0_O2_exact": true,
+      "adaptive_O0_140_completed": true,
+      "reference_runs_started": false,
+      "adaptive_O0_O2_140_offline_exact": true,
+      "adaptive_O0_O2_matching_captured_payloads": 18
+    },
+    "diagnostic_selection": {
+      "same_executable_restart": "1191->1192 with existing SWAP5_DIAG_GROUNDWATER=1; no checkpoint/binding/CRC changes",
+      "frozen_water_heat_probe": "Actual1191 snapshot plus next-day forcing through unchanged paired real thermal owners; test local fast-mode defect across dt, not an application restart.",
+      "expected_seconds": 60,
+      "wall_cap_seconds": 300
+    },
+    "original_preregistered_gate_pass": false,
+    "registered_profile_full_pass": false,
+    "current_local_runtime": "SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS",
+    "current_local_runtime_path": "../grass-sprint03-runtime-Windows-drainage/RESULT.json",
+    "publication_block": null,
+    "authentic_failure_reproduction": {
+      "run": 41239914565,
+      "job": 124651496107,
+      "same_executable_sha256": "97302a32577571e21d90218aa48ca252b28e55c07df2356afd7e9269cd23fbec",
+      "origin_day": 1191,
+      "requested_end": 1192,
+      "native_returncode": 1,
+      "censored": false,
+      "seconds": 9.73898721400002,
+      "counts_match_original": true,
+      "no_binding_or_crc_rewrite": true
+    },
+    "failed_attempt01_prefix_assessment": {
+      "scope": "Historical failed attempt01 source980b only. Valid prefix1-1191 compared against inherited original finest scalar and already-available nodal data. Not whole-project qualification, not current repaired-source proof.",
+      "days": 1191,
+      "available_reference_profile_days": [
+        0,
+        63,
+        64,
+        71,
+        72,
+        73,
+        74,
+        113,
+        114,
+        128,
+        140,
+        141,
+        367,
+        368,
+        731,
+        733,
+        918,
+        919,
+        922,
+        923,
+        1096,
+        1097
+      ],
+      "metrics": {
+        "WTOT": {
+          "error": 0.000982653757347407,
+          "limit": 0.010245880947945013,
+          "inside": true,
+          "unit": "cm"
+        },
+        "TPOT": {
+          "error": 6.35182228133635e-05,
+          "limit": 0.0012438724870001143,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "TACT": {
+          "error": 0.00016044117612437625,
+          "limit": 0.004329224808999999,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "TREDWET": {
+          "error": 0.0001382438983836211,
+          "limit": 0.004322264716000016,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "TREDDRY": {
+          "error": 6.678102789275941e-05,
+          "limit": 0.0005107256830001189,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "WRT": {
+          "error": 0.09997420666934431,
+          "limit": 2.6267576309650194,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "WLV": {
+          "error": 0.5091946610348259,
+          "limit": 9.813342735334006,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "WST": {
+          "error": 0.16094250200478655,
+          "limit": 3.5852975434152112,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "RD": {
+          "error": 0.00022931039883644644,
+          "limit": 0.005750418942993715,
+          "inside": true,
+          "unit": "cm"
+        },
+        "PWRT": {
+          "error": 5.115907697472721e-13,
+          "limit": 1e-06,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "RDPOT": {
+          "error": 0.0,
+          "limit": 1e-07,
+          "inside": true,
+          "unit": "cm"
+        },
+        "DVS": {
+          "error": 4.989342272665453e-13,
+          "limit": 1e-08,
+          "inside": true,
+          "unit": "dimensionless"
+        },
+        "TSUM": {
+          "error": 4.547473508864641e-13,
+          "limit": 1e-08,
+          "inside": true,
+          "unit": "degree day"
+        },
+        "LAI_DAY_START": {
+          "error": 0.0010774272675191376,
+          "limit": 0.020980713795999036,
+          "inside": true,
+          "unit": "m2/m2"
+        },
+        "HRVDM_PROJECT": {
+          "error": 1.1141124070709338,
+          "limit": 50.39053125998146,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "PHRVDM_PROJECT": {
+          "error": 3.4506228985264897e-09,
+          "limit": 1e-06,
+          "inside": true,
+          "unit": "kg/ha"
+        },
+        "NET_FLUX": {
+          "error": 0.0007998252659058291,
+          "limit": 0.008257538866000141,
+          "inside": true,
+          "unit": "cm/day"
+        },
+        "PROFILE_head_cm": {
+          "error": 0.0006691716199216133,
+          "limit": 0.00829568456160479,
+          "inside": true,
+          "unit": "normalized by max(1cm,abs(h))"
+        },
+        "PROFILE_water_content": {
+          "error": 5.0965969326022265e-05,
+          "limit": 0.00040491489594698385,
+          "inside": true,
+          "unit": "cm3/cm3"
+        },
+        "PROFILE_temperature_c": {
+          "error": 0.0007185015032753483,
+          "limit": 0.002772767147181471,
+          "inside": true,
+          "unit": "C"
+        }
+      },
+      "all20_prefix_bounds_inside": true,
+      "full_project_pass": false,
+      "new_disjoint_profile_test_executed": false
+    },
+    "repair": "Explicit thermal profile only: complete signed nonzero scalar is distributed using original DIVDRA unit geometry, with final-node conservative closure. Legacy default domain and already admitted magnitudes retain exact previous route. Physical trial and temporal certificate use the same helper. No tolerance or physical forcing change.",
+    "failed_attempt01_heat_probe": {
+      "scope": "Actual1191 physical snapshot; frozen-water thermal operator diagnosis, not application restart",
+      "actual_snapshot_sha256": "51d5e45b564942f6ab7024584430a8b6c1012ab98ef9d439f9f9e17b0d3e4e97",
+      "executable_sha256": "9c26af431bd31fd19d6ff081b83692a432da94c28e761b3257759d10eb5f9eb7",
+      "source_sha256": {
+        "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+        "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+        "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+        "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+        "src/process/mod_restricted_soil_temperature.f90": "24932aeef598a52e2e5f7eb85bd981bb95f48f8d3c86fe2d2d3a7beb7bb1b6d1",
+        "app/solute_column/read_swp_heat.f90": "2d1ac41e3b5e594a1803baab4600abb9eabfebc97473780ad1703d4525d60ae3",
+        "tests/dataqual15/heat_oracle.f90": "d61e9539b6c2584ed0545d1be57e3144be3bec2c6156539b6dc851a71f855a0b"
+      },
+      "input_sha256": "045a69669783bd077dfee826b4501745ae061399fc2dc2afdf6f87e104a914dd",
+      "returncode": 0,
+      "seconds": 0.4051419000606984,
+      "previous_air_c": 5.0,
+      "next_air_c": 5.9,
+      "real_top_temperature_c": 4.997205325223237,
+      "unique_cases": 96
+    },
+    "new_full_run_selection": "Same unchanged20field bounds, prospective original12newdates; new source must startday1 because attempt01 checkpoint is bound to another executable. Native and original-reference phases parallel; old failed attempt retained.",
+    "repaired_local_source_sha256": {
+      "src/runtime/mod_fmr_serialized_reference_backend.f90": "67d8fad694ac700e3b6d2cdca80d3e3f430c0fac51eca47da9a5a900604bf37f",
+      "app/grass_project/initial_interval.f90": "cc1bc2982bc6f65cb4643a0c7c03d67e6e1bf3d95331aa2dd2aeb588802081fa",
+      "app/grass_project/restart_file.f90": "8f69de6a729cd1fb8cc7ace588a0ab7a4c625377f980ebf2560ed3214599c17a",
+      "tests/dataqual15/thermal_temporal_driver.f90": "8b8dd9ba5312370cb4139c81d32d560c79cf7a711ae50b9bfa0be936a7dbe6ac"
+    },
+    "documentation_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS34.67seconds; existing INFO anchor diagnostics, no strict warning failure"
+    },
+    "publication_authorization": {
+      "scope": "Repaired Sprint03 code/workflows and generated model evidence including failed archive, abhedwig-cell/SWAP5 codex/grassgrowth-sprint03; Linux qualification; canonical untouched",
+      "explicit_user_reply": "Ja, deze Sprint03-code en modelbewijzen publiceren en kwalificeren",
+      "recorded_utc": "2026-10-31T22:42:23.251974+00:00"
     }
   }
 }

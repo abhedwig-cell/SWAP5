@@ -32,30 +32,92 @@ jobs:
         with:
           name: sprint03-runtime
           path: ${{ runner.temp }}/runtime
-  registered-experiment:
+  native-experiment:
     needs: runtime-contract
     runs-on: ubuntu-24.04
-    timeout-minutes: 100
+    timeout-minutes: 240
     env:
       OMP_NUM_THREADS: '1'
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Original inputs full adaptive trajectory and independent heldout profiles
-        run: python3 -B tests/dataqual15/qualify_sprint03.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/sprint03"
-      - name: Package raw data including failed or interrupted experiments
+      - name: Native source-bound full trajectory and exact default and restart controls
+        run: python3 -B tests/dataqual15/qualify_sprint03.py --phase native --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/native"
+      - name: Preserve native data even after a failed or censored attempt
         if: always()
         run: |
-          if [ -f "$RUNNER_TEMP/sprint03/RESULT.json" ]; then
-            python3 -B tests/dataqual15/sprint03_evidence.py --package "$RUNNER_TEMP/sprint03"
+          if [ -f "$RUNNER_TEMP/native/RESULT.json" ]; then
+            python3 -B tests/dataqual15/sprint03_evidence.py --package "$RUNNER_TEMP/native"
           fi
-      - name: Preserve raw results and reject a failed registered gate
-        run: python3 -c "import json,os; from pathlib import Path; r=json.loads((Path(os.environ['RUNNER_TEMP'])/'sprint03/RESULT.json').read_text()); assert r['registered_gate_pass'], r['assessment']"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: sprint03-registered-experiment
+          name: sprint03-native
           path: |
             integration/dataqual15/SPRINT03_EVIDENCE.tar.xz
             integration/dataqual15/SPRINT03_EVIDENCE_MANIFEST.json
+  reference-experiment:
+    needs: runtime-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independent original reference at new dates, immutable old-output controls
+        run: python3 -B tests/dataqual15/qualify_sprint03.py --phase reference --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/reference"
+      - name: Preserve reference data even after a failed or censored attempt
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/reference/RESULT.json" ]; then
+            python3 -B tests/dataqual15/sprint03_evidence.py --package "$RUNNER_TEMP/reference"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sprint03-reference
+          path: |
+            integration/dataqual15/SPRINT03_EVIDENCE.tar.xz
+            integration/dataqual15/SPRINT03_EVIDENCE_MANIFEST.json
+  registered-assessment:
+    needs: [native-experiment, reference-experiment]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: sprint03-native
+          path: ${{ runner.temp }}/native-pack
+      - uses: actions/download-artifact@v4
+        with:
+          name: sprint03-reference
+          path: ${{ runner.temp }}/reference-pack
+      - name: Combine unchanged raw trajectories and recompute twenty registered criteria
+        run: python3 -B tests/dataqual15/sprint03_evidence.py --assemble "$RUNNER_TEMP/native-pack" "$RUNNER_TEMP/reference-pack" --output "$RUNNER_TEMP/combined"
+      - name: Package and independently verify source-bound raw data
+        run: |
+          python3 -B tests/dataqual15/sprint03_evidence.py --package "$RUNNER_TEMP/combined"
+          python3 -B tests/dataqual15/sprint03_evidence.py
+      - name: Authentic groundwater restart113 to117 with same bound executable
+        run: python3 -B tests/dataqual15/recover_sprint03.py --output "$RUNNER_TEMP/groundwater-restart"
+      - name: Fresh profile build and normal runner reproduce the registered first day
+        run: python3 -B tests/dataqual15/build_sprint03_profile.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/profile-build"
+      - name: Registered scientific gate remains hard
+        run: python3 -c "import json,os; from pathlib import Path; r=json.loads((Path(os.environ['RUNNER_TEMP'])/'combined/RESULT.json').read_text()); assert r['registered_gate_pass'], r['assessment']"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sprint03-combined-evidence
+          path: |
+            integration/dataqual15/SPRINT03_EVIDENCE.tar.xz
+            integration/dataqual15/SPRINT03_EVIDENCE_MANIFEST.json
+            ${{ runner.temp }}/groundwater-restart/RESULT.json
+            ${{ runner.temp }}/profile-build/RESULT.json

@@ -133,7 +133,7 @@ module mod_fmr_serialized_reference_backend
        FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW, FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_DRAMET3
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t, &
-       drainage_node_transfer_t, drainage_distribution_diagnostics_t, distribute_single_level_signed_divdra, DRAIN_DIST_OK
+       drainage_node_transfer_t, drainage_distribution_diagnostics_t, distribute_single_level_signed_divdra, DRAIN_DIST_OK, DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE
   use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
   use mod_drainage_extended_exchange, only: valid_extended_drainage_parameters, &
        EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE, &
@@ -1010,8 +1010,34 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_boesten_macropore_committed_state
   public :: fmr_new_b110_rfm_committed_state
 
-  public::attach_reactive_chemical,evaluate_fmr_thermal_temporal_error
+  public::attach_reactive_chemical,evaluate_fmr_thermal_temporal_error,distribute_fmr_scalar_drainage
 contains
+
+  ! Explicit thermal-profile numerical extension at the legacy activity cutoff.
+  ! DIVDRA is homogeneous in its authoritative scalar for a fixed geometry.
+  ! Evaluate unit weights only in the formerly unavailable tiny nonzero domain;
+  ! preserve its complete signed flux, including the legacy edge geometry.
+  subroutine distribute_fmr_scalar_drainage(parameters,view,scalar,nodes,diagnostics,allow_subthreshold)
+    type(drainage_distribution_parameters_t),intent(in)::parameters
+    type(process_hydraulic_view_t),intent(in)::view
+    real(real64),intent(in)::scalar
+    type(drainage_node_transfer_t),intent(out)::nodes
+    type(drainage_distribution_diagnostics_t),intent(out)::diagnostics
+    logical,intent(in)::allow_subthreshold
+    integer::last
+    real(real64)::raw_last
+    call distribute_single_level_signed_divdra(parameters,view,scalar,nodes,diagnostics)
+    if(.not.allow_subthreshold.or.diagnostics%status/=DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE)return
+    call distribute_single_level_signed_divdra(parameters,view,sign(1.0_real64,scalar),nodes,diagnostics)
+    if(diagnostics%status/=DRAIN_DIST_OK)return
+    nodes%soil_to_drain_rate=abs(scalar)*nodes%soil_to_drain_rate
+    diagnostics%raw_partition_sum=abs(scalar)*diagnostics%raw_partition_sum
+    diagnostics%closure_correction=abs(scalar)*diagnostics%closure_correction
+    last=diagnostics%discharge_bottom_node
+    raw_last=nodes%soil_to_drain_rate(last)
+    nodes%soil_to_drain_rate(last)=scalar-sum(nodes%soil_to_drain_rate(:last-1))
+    diagnostics%closure_correction=diagnostics%closure_correction+nodes%soil_to_drain_rate(last)-raw_last
+  end subroutine distribute_fmr_scalar_drainage
 
   subroutine attach_reactive_chemical(water,chemical,parameters,status)
     type(kernel_committed_state_t),intent(inout)::water
@@ -5707,8 +5733,8 @@ contains
           type(drainage_distribution_diagnostics_t)::diagnostic
           ! The existing response owns the scalar. DIVDRA owns its nodal
           ! partition. Exactly this qdra reaches Richards and its accepted trace.
-          call distribute_single_level_signed_divdra(self%drainage_trial_distribution,hydraulic_start, &
-            sum(self%qdra),partition,diagnostic)
+          call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,hydraulic_start, &
+            sum(self%qdra),partition,diagnostic,self%soil_temperature_temporal_tolerance_c>0.0_real64)
           if(diagnostic%status/=DRAIN_DIST_OK)return
           self%qdra(1,:)=partition%soil_to_drain_rate
         end block
@@ -7841,7 +7867,8 @@ contains
         call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
           view,lumped,response,substep_t1=endpoint)
         if(response%status/=FMR_DRAIN_BIND_OK)return
-        call distribute_single_level_signed_divdra(self%drainage_trial_distribution,view,sum(lumped),nodes,distribution)
+        call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,view,sum(lumped),nodes,distribution, &
+          self%soil_temperature_temporal_tolerance_c>0.0_real64)
         if(distribution%status/=DRAIN_DIST_OK)return
         q=nodes%soil_to_drain_rate
       end if

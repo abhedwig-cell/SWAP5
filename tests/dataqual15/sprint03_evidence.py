@@ -1,5 +1,5 @@
 """Compact raw Sprint03 archive and independent read-only consumer."""
-import argparse,csv,hashlib,io,json,math,struct,subprocess,tarfile
+import argparse,csv,hashlib,io,json,math,re,struct,subprocess,tarfile
 from pathlib import Path,PurePosixPath,PureWindowsPath
 from checkpoint_layout import layout,payload
 from qualify_donor_timestep import vectors,distance
@@ -9,14 +9,24 @@ META=CAP.with_name('SPRINT03_EVIDENCE_MANIFEST.json')
 sha=lambda b:hashlib.sha256(b).hexdigest()
 rows=lambda raw:list(csv.DictReader(line for line in raw.decode().splitlines()if line.strip()and not line.startswith('*')))
 
-def package(out):
+def package(out,runtime=None,windows=None):
  out=out.resolve();files={}
  for p in sorted(out.rglob('*')):
   if not p.is_file():continue
   rel=p.relative_to(out).as_posix()
   if any(x in rel.split('/')for x in ['source','selected','swobj','ttobj']):continue
-  if p.suffix in ['.json','.csv','.bin','.dat','.args','.stdout','.stderr','.swp','.crp','.met','.bbc','.dra','.f90']or p.name in ['application.binding','swap5_grass_startup','swap431','swap.ok']:
+  if p.suffix.lower() in ['.json','.csv','.bin','.dat','.args','.stdout','.stderr','.swp','.crp','.met','.bbc','.dra','.f90','.log','.err','.out','.msg']or p.name in ['application.binding','swap5_grass_startup','swap431','swap.ok']:
    files[rel]=p.read_bytes()
+ for label,folder in [('runtime-linux',runtime),('runtime-windows',windows)]:
+  if folder is None:continue
+  for p in sorted(folder.resolve().rglob('*')):
+   if not p.is_file():continue
+   if p.suffix in ['.json','.stdout','.stderr','.args','.f90']or p.stem in ['groundwater_runtime_driver','groundwater_table_runtime_driver','test_ppa_wu01_production_application_bootstrap','test_bartholomeus_application','thermal_temporal_driver']:
+    files[label+'/'+p.relative_to(folder.resolve()).as_posix()]=p.read_bytes()
+ failed=ROOT.parent/'grass-sprint03-runtime-Windows.log'
+ if failed.exists():
+  files['history/failed-private-model-contract-compile.log']=failed.read_bytes()
+  files['history/FAILED_ATTEMPT.json']=(json.dumps(dict(phase='Initial local contract-driver compilation',native_scientific_qualification=False,source_identity='UNCOMMITTED_DRIVER_PREIMAGE_NOT_RETAINED; offending import lines preserved in compiler log',reason='Driver imported private model type; final driver calls public production metric instead',log_sha256=sha(failed.read_bytes())),indent=2)+'\n').encode()
  files['MANIFEST.json']=(json.dumps({p:sha(raw)for p,raw in sorted(files.items())},indent=2)+'\n').encode()
  with tarfile.open(CAP,'w:xz',preset=6)as archive:
   for name,raw in sorted(files.items()):
@@ -26,12 +36,61 @@ def package(out):
   build=out/('build-'+opt)/'BUILD.json'
   if not build.exists():continue
   for path,digest in json.loads(build.read_text())['source_sha256'].items():
-   p=Path(path)
-   if p.is_relative_to(ROOT):sources[p.relative_to(ROOT).as_posix()]=digest
- for name in ['tests/dataqual15/qualify_sprint03.py','tests/dataqual15/sprint03_evidence.py','tests/dataqual15/qualify_thermal_runtime.py','tests/dataqual15/thermal_temporal_driver.f90','tests/dataqual15/qualify_donor_timestep.py','tests/dataqual15/checkpoint_layout.py','tests/dataqual15/original_sources.py','integration/dataqual15/SPRINT03_PREREGISTRATION.json']:
+   normalized=path.replace(chr(92),'/')
+   for prefix in ['/src/','/app/','/reference/']:
+    if prefix in normalized:
+     name=prefix[1:]+normalized.split(prefix,1)[1]
+     assert sha((ROOT/name).read_bytes())==digest;sources[name]=digest;break
+ for folder in [runtime,windows]:
+  if folder is None:continue
+  r=json.loads((folder/'RESULT.json').read_text())
+  for name,digest in r['source_sha256'].items():
+   normalized=name.replace(chr(92),'/')
+   for prefix in ['/src/','/tests/']:
+    if prefix in normalized:
+     name=normalized.split(prefix,1)[1];name=prefix[1:]+name
+     assert sha((ROOT/name).read_bytes())==digest;sources[name]=digest;break
+ for name in ['tests/dataqual15/run_thermal.py','tools/solute/build_grass_thermal.py','tests/dataqual15/build_sprint03_profile.py','.github/workflows/dataqual15-sprint03.yml','tests/dataqual15/recover_sprint03.py','tests/dataqual15/qualify_sprint03.py','tests/dataqual15/sprint03_evidence.py','tests/dataqual15/qualify_thermal_runtime.py','tests/dataqual15/thermal_temporal_driver.f90','tests/dataqual15/qualify_donor_timestep.py','tests/dataqual15/checkpoint_layout.py','tests/dataqual15/original_sources.py','integration/dataqual15/SPRINT03_PREREGISTRATION.json']:
   sources[name]=sha((ROOT/name).read_bytes())
  record=dict(archive_sha256=sha(CAP.read_bytes()),archive_files=len(files),source_sha256=sources,production_trees={name:subprocess.check_output(['git','rev-parse','HEAD:'+name],cwd=ROOT,text=True).strip()for name in ['src','app','reference']},predecessor_capsules={name:sha((ROOT/f'integration/dataqual15/{name}_EVIDENCE.tar.xz').read_bytes())for name in ['GRASS_UNION_FULL','STRESS','SPRINT02']},canonical_modified=False,production_promotion=False)
  META.write_text(json.dumps(record,indent=2)+'\n',newline='\n');print('PACKAGED',len(files),CAP.stat().st_size)
+
+def assemble(native_root,reference_root,out):
+ def unpack(root):
+  meta=json.loads((root/'SPRINT03_EVIDENCE_MANIFEST.json').read_text());cap=root/'SPRINT03_EVIDENCE.tar.xz';assert sha(cap.read_bytes())==meta['archive_sha256']
+  with tarfile.open(cap)as t:
+   f={v.name:t.extractfile(v).read()for v in t if v.isfile()}
+  assert json.loads(f.pop('MANIFEST.json'))=={name:sha(raw)for name,raw in f.items()}
+  return f,meta
+ native,nm=unpack(native_root);reference,rm=unpack(reference_root);assert nm['production_trees']==rm['production_trees']
+ n=json.loads(native['RESULT.json']);r=json.loads(reference['RESULT.json']);assert n['status']=='SPRINT03_NATIVE_FULL_MEASURED'and r['status']=='SPRINT03_REFERENCE_PROFILES_MEASURED'
+ assert native['PREREGISTRATION.json']==reference['PREREGISTRATION.json'];plan=json.loads(native['PREREGISTRATION.json']);f=dict(native)
+ f['NATIVE_RESULT.json']=native['RESULT.json'];f['REFERENCE_RESULT.json']=reference['RESULT.json']
+ for name,raw in reference.items():
+  if name in ['RESULT.json','PREREGISTRATION.json']:continue
+  if name.startswith('reference/'):f[name]=raw
+  elif name.endswith('.stdout')or name.endswith('.stderr'):f['reference-phase/'+name]=raw
+ for event in r['events']:
+  event['stdout']='reference-phase/'+event['stdout'];event['stderr']='reference-phase/'+event['stderr']
+ n['events']+=r['events'];n['reference_build']=r['reference_build'];n['phase']='assembled_native_and_reference'
+ budget=rows(f['adaptive-O2/budget.csv']);crop=rows(f['adaptive-O2/crop.csv']);points={}
+ for name,raw in f.items():
+  if name.startswith('adaptive-O2/checkpoint')and name.endswith('.bin'):points[int(layout(raw)['clock'])]=raw
+ scalar={};nodal={}
+ for cap in [.000625,.0003125]:
+  case='reference/'+str(cap);scalar[cap]=rows(f[case+'/result_output.csv']);nodal[cap]={}
+  for row in rows(f[case+'/nodal_profiles.csv']):nodal[cap].setdefault(int(row['day']),[]).append(row)
+ observed,ref,units,floors=vectors(scalar[.0003125],nodal[.0003125],budget,crop,points);_,previous,_,_=vectors(scalar[.000625],nodal[.000625],budget,crop,points)
+ n['assessment']={}
+ for key,bound in plan['criteria']['frozen_bounds'].items():
+  assert all(math.isfinite(v)for v in observed[key]+ref[key]+previous[key]);error=distance(key,observed[key],ref[key]);change=distance(key,previous[key],ref[key]);limit=bound['limit'];resolution_limit=limit/3+bound['floor']
+  n['assessment'][key]=dict(native_error=error,limit=limit,inside_frozen_envelope=error<=limit,reference_change=change,reference_resolution_limit=resolution_limit,reference_resolution_pass=not key.startswith('PROFILE_')or change<=resolution_limit,unit=units[key])
+ n.update(status='SPRINT03_THERMAL_POLICY_MEASURED',full_days=1827,registered_gate_pass=all(v['inside_frozen_envelope']and v['reference_resolution_pass']for v in n['assessment'].values()),original_gate_pass=False,production_promoted=False)
+ f['RESULT.json']=(json.dumps(n,indent=2)+'\n').encode();out.mkdir(parents=True,exist_ok=False)
+ for name,raw in f.items():
+  p=PurePosixPath(name);assert not p.is_absolute()and not PureWindowsPath(name).drive and '..'not in p.parts and chr(92)not in name
+  path=out.joinpath(*p.parts);path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)
+ print(json.dumps({'registered_gate_pass':n['registered_gate_pass'],'assessment':n['assessment']},indent=2))
 
 def verify():
  m=json.loads(META.read_text());assert sha(CAP.read_bytes())==m['archive_sha256']
@@ -52,6 +111,26 @@ def verify():
  assert all(not e['censored']and e['returncode']==(100 if e['label'].startswith('reference-0.')else e['returncode']if e['label'].startswith('missing-profile-')else 0)for e in result['events'])
  for event in result['events']:
   if event['label'].startswith('missing-profile-'):assert event['returncode']!=0
+ for label in ['runtime-linux','runtime-windows']:
+  if label+'/RESULT.json'not in f:continue
+  r=load(label+'/RESULT.json');assert r['status']=='SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS'
+  assert all(e['returncode']==0 for e in r['events'])
+  assert r['recipe_sha256']==sha((ROOT/'tests/dataqual15/qualify_runtime.py').read_bytes())
+  assert r['adapter_sha256']==sha((ROOT/'tests/dataqual15/qualify_thermal_runtime.py').read_bytes())
+  for opt in ['O0','O2']:
+   for program in ['groundwater_runtime_driver','groundwater_table_runtime_driver','test_ppa_wu01_production_application_bootstrap','test_bartholomeus_application','thermal_temporal_driver']:
+    output=f[label+'/'+opt+'/'+program+'.stdout'];assert b'PASS'in output
+    binary=label+'/'+opt+'/'+program+('.exe'if label=='runtime-windows'else'');assert binary in f
+  if label+'/COMPILER_BINARY_COMMENTS.json'in f:
+   c=load(label+'/COMPILER_BINARY_COMMENTS.json');raw=f[label+'/O2/thermal_temporal_driver'+('.exe'if label=='runtime-windows'else'')]
+   assert sha(raw)==c['binary_sha256']
+   assert sorted(set(v.decode(errors='replace')for v in re.findall(rb'GCC: [^\x00\r\n]{1,160}',raw)))==c['compiler_comments']
+  for name,digest in r['source_sha256'].items():
+   normalized=name.replace(chr(92),'/')
+   if normalized.endswith('/context.f90'):assert sha(f[label+'/context.f90'])==digest;continue
+   for prefix in ['/src/','/tests/']:
+    if prefix in normalized:
+     path=prefix[1:]+normalized.split(prefix,1)[1];assert sha((ROOT/path).read_bytes())==digest;break
  full,old,prior=[archives[name]for name in ['GRASS_UNION_FULL','STRESS','SPRINT02']];spec=json.loads(get(full,'SPEC.json'));frozen=json.loads(get(old,'donor/PREREGISTRATION.json'))
  assert frozen['bounds']==plan['criteria']['frozen_bounds']and sha(get(old,'donor/PREREGISTRATION.json'))==plan['criteria']['frozen_registration_sha256']
  original_budget=rows(get(full,spec['full']+'/budget.csv'));original_crop=rows(get(full,spec['full']+'/crop.csv'));original_points={}
@@ -61,6 +140,13 @@ def verify():
  native={}
  for opt in ['O0','O2']:
   build=load('build-'+opt+'/BUILD.json');assert sha(f['build-'+opt+'/swap5_grass_startup'])==build['executable_sha256'];assert all(e['returncode']==0 for e in build['events'])
+  for name,digest in build['source_sha256'].items():
+   normalized=name.replace(chr(92),'/')
+   if normalized.endswith('/original_input_helpers.f90'):
+    assert sha(f['build-'+opt+'/original_input_helpers.f90'])==digest;continue
+   for prefix in ['/src/','/app/','/reference/']:
+    if prefix in normalized:
+     path=prefix[1:]+normalized.split(prefix,1)[1];assert sha((ROOT/path).read_bytes())==digest;break
   for policy,end in [('default',140),('adaptive',140 if opt=='O0'else 1827)]:
    case=policy+'-'+opt;budget=rows(f[case+'/budget.csv']);crop=rows(f[case+'/crop.csv']);assert len(budget)==len(crop)==end
    binding=load(case+'/application.binding');assert binding['executable_sha256']==build['executable_sha256']and binding['source_sha256']==build['source_sha256']
@@ -108,6 +194,7 @@ def verify():
  print(json.dumps(answer,indent=2));return answer
 
 if __name__=='__main__':
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--package',type=Path);a=p.parse_args()
- if a.package:package(a.package)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--package',type=Path);p.add_argument('--runtime',type=Path);p.add_argument('--windows',type=Path);p.add_argument('--assemble',type=Path,nargs=2);p.add_argument('--output',type=Path);a=p.parse_args()
+ if a.assemble:assemble(*a.assemble,a.output)
+ elif a.package:package(a.package,a.runtime,a.windows)
  else:verify()

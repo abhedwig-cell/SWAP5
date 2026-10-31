@@ -403,6 +403,26 @@
           "branch": "codex/grassgrowth-sprint02",
           "scope": "96 paired heat component cases per O0/O2 on Linux13.3 and Windows16.2; 24 authentic same-executable one-day forks; 12 newly registered profile dates; all20 fine-configuration bounds and reference decrease criteria pass. Original coarse temperature fails and previous failed gate remains unchanged.",
           "counts_unchanged": true
+        },
+        "sprint03": {
+          "branch": "codex/grassgrowth-sprint03",
+          "canonical_baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+          "canonical_modified": false,
+          "status": "REPAIRED_LOCAL_O0_O2_PASS_FULL_REQUALIFICATION_AWAITING_REQUIRED_PUBLICATION_AUTHORIZATION",
+          "current_source_full_execution_proven": false,
+          "current_source_scientific_qualification": false,
+          "historical_attempt01_source": "980b824953a598cf356b8c88ce7ccfffff63e7ab",
+          "historical_attempt01_days": 1191,
+          "historical_attempt01_requested_days": 1827,
+          "historical_attempt01_returncode": 1,
+          "historical_attempt01_censored": false,
+          "historical_attempt01_prefix_temperature_error_c": 0.0007185015032753483,
+          "original_preregistered_gate_pass": false,
+          "production_promotion": false,
+          "counts_unchanged": true,
+          "evidence_location": "Local integration/dataqual15/SPRINT03_ATTEMPT01_EVIDENCE.tar.xz and immutable original GitHub Actions artifact13056865907, run41232008608; raw repository publication was rejected by automatic review.",
+          "repair_scope": "Explicit thermal numerical profile only: keep authoritative small signed scalar using existing DIVDRA unit geometry and conservative final-node closure. Physical trial and temporal certificate agree. Default legacy and previously admitted magnitudes are unchanged.",
+          "remaining": "New repaired-source full day1-1827 execution, native restart windows, newly sampled original reference profiles, hard20quantity assessment. Source/executable differs from attempt01, so do not rebind its1191 checkpoint."
         }
       }
     },
