@@ -17,7 +17,7 @@ module mod_grass_prefix_restart_file
  use mod_age_joint_restart_file,only:crc32
  implicit none
  private
- public::write_grass_prefix_restart,read_grass_prefix_restart
+ public::write_grass_prefix_restart,read_grass_prefix_restart,validate_grass_numerical_profile
  character(8),parameter::MAGIC='S5GRS003'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
@@ -40,6 +40,27 @@ module mod_grass_prefix_restart_file
   end function
  end interface
 contains
+ ! The existing opaque application binding also pins the explicit numerical
+ ! profile. A CLI switch cannot silently resume a checkpoint under another
+ ! temporal policy. Legacy bindings without this key keep water-only semantics.
+ subroutine validate_grass_numerical_profile(thermal_enabled,status)
+  logical,intent(in)::thermal_enabled
+  integer,intent(out)::status
+  character(:),allocatable::text
+  integer::code,pos
+  call file_text('application.binding',text,code)
+  status=1;if(code/=0)return
+  pos=index(text,'"grass_numerical_profile"')
+  if(.not.thermal_enabled)then
+   if(pos==0)status=0
+   return
+  end if
+  if(pos==0)return
+  if(index(text(pos+1:),'"grass_numerical_profile"')/=0)return
+  if(index(text,'"grass_numerical_profile": "thermal-control-1e-5C"')==0)return
+  status=0
+ end subroutine validate_grass_numerical_profile
+
  subroutine read_bytes(path,bytes,status)
   character(*),intent(in)::path
   integer(int8),allocatable,intent(out)::bytes(:)

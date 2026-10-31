@@ -1,0 +1,61 @@
+name: DATAQUAL15 sprint03 thermal accuracy
+on:
+  push:
+    branches: [codex/grassgrowth-sprint03]
+    paths:
+      - .github/workflows/dataqual15-sprint03.yml
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - app/grass_project/initial_interval.f90
+      - app/grass_project/restart_file.f90
+      - tests/dataqual15/thermal_temporal_driver.f90
+      - tests/dataqual15/qualify_thermal_runtime.py
+      - tests/dataqual15/qualify_sprint03.py
+permissions:
+  contents: read
+concurrency:
+  group: dataqual15-sprint03-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  runtime-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Real backend thermal policy and incumbent groundwater oxygen contracts O0 O2
+        run: python3 -B tests/dataqual15/qualify_thermal_runtime.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/runtime"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sprint03-runtime
+          path: ${{ runner.temp }}/runtime
+  registered-experiment:
+    needs: runtime-contract
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Original inputs full adaptive trajectory and independent heldout profiles
+        run: python3 -B tests/dataqual15/qualify_sprint03.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/sprint03"
+      - name: Package raw data including failed or interrupted experiments
+        if: always()
+        run: |
+          if [ -f "$RUNNER_TEMP/sprint03/RESULT.json" ]; then
+            python3 -B tests/dataqual15/sprint03_evidence.py --package "$RUNNER_TEMP/sprint03"
+          fi
+      - name: Preserve raw results and reject a failed registered gate
+        run: python3 -c "import json,os; from pathlib import Path; r=json.loads((Path(os.environ['RUNNER_TEMP'])/'sprint03/RESULT.json').read_text()); assert r['registered_gate_pass'], r['assessment']"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sprint03-registered-experiment
+          path: |
+            integration/dataqual15/SPRINT03_EVIDENCE.tar.xz
+            integration/dataqual15/SPRINT03_EVIDENCE_MANIFEST.json
