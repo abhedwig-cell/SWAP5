@@ -691,5 +691,493 @@
     },
     "followup_merge_receipt": "integration/dataqual15/SCIENTIFIC_FOLLOWUP_MERGE_RECEIPT.json",
     "experimental_followup_canonically_admitted": true
+  },
+  "sprint02": {
+    "authority": "integration/dataqual15/SPRINT02_EVIDENCE_MANIFEST.json",
+    "verifier": "tests/dataqual15/sprint02_evidence.py",
+    "archive_sha256": "26a15c2df478f2f2d403f6b9008a41c2b202d6a05327abd558462118c92b641d",
+    "registered_fine_configuration_pass": true,
+    "original_preregistered_gate_pass": false,
+    "coarse_configuration_pass": false,
+    "scientific_equivalence": false,
+    "production_promotion": false,
+    "canonically_admitted": false,
+    "canonical_untouched": true,
+    "branch": "codex/grassgrowth-sprint02",
+    "scope": "96 paired heat component cases per O0/O2 on Linux13.3 and Windows16.2; 24 authentic same-executable one-day forks; 12 newly registered profile dates; all20 fine-configuration bounds and reference decrease criteria pass. Original coarse temperature fails and previous failed gate remains unchanged.",
+    "reconciliation": {
+      "canonical": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+      "review": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+      "scientific_source": "d6514abee5a85367a6b1fa181c011b6f2e9194ed",
+      "period_days": 1827,
+      "full_original_execution": true,
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "executable_sha256": "47a7fd29dc49c9b122e00fabb0cdf0bac3b61614e0ee80e8f7375685e9cf15ef",
+      "flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-I/workspace/scratch/c3166a264227/dq15-union-oxygen-grass-O2",
+        "-J/workspace/scratch/c3166a264227/dq15-union-oxygen-grass-O2"
+      ],
+      "input_sha256": {
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+      },
+      "returncode": 0,
+      "censored": false,
+      "native_seconds": 1319.3188838360002,
+      "source_controls": {
+        "MAXIT": 30,
+        "MAXBACKTR": 3,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "DTMAX": 0.04,
+        "DTMIN": 1e-06
+      },
+      "native_acceptance": {
+        "temporal_mode": "external_full_half_water_metric",
+        "temporal_tolerance": 0.0001,
+        "mass_tolerance_cm": 1e-10,
+        "maximum_committed_substeps": 100000,
+        "retain_accepted_step_proposal": true
+      },
+      "independent_O0_O2_days": 367,
+      "qualified_same_executable_restarts": [
+        {
+          "folder": "dq15-union-oxygen-restart126-140-O2",
+          "optimization": "O2",
+          "purpose": "mowing",
+          "origin_day": 126,
+          "end_day": 140
+        },
+        {
+          "folder": "dq15-union-oxygen-restart365-367-O0",
+          "optimization": "O0",
+          "purpose": "year",
+          "origin_day": 365,
+          "end_day": 367
+        },
+        {
+          "folder": "dq15-union-oxygen-restart365-367-O2",
+          "optimization": "O2",
+          "purpose": "year",
+          "origin_day": 365,
+          "end_day": 367
+        },
+        {
+          "folder": "dq15-union-oxygen-restart918-922-O2",
+          "optimization": "O2",
+          "purpose": "distinct_delay",
+          "origin_day": 918,
+          "end_day": 922
+        },
+        {
+          "folder": "dq15-union-oxygen-restart1786-1827-O2",
+          "optimization": "O2",
+          "purpose": "oxygen",
+          "origin_day": 1786,
+          "end_day": 1827
+        },
+        {
+          "folder": "dq15-union-oxygen-restart1800-1827-O2",
+          "optimization": "O2",
+          "purpose": "final",
+          "origin_day": 1800,
+          "end_day": 1827
+        }
+      ],
+      "invalid_restart_cases_per_optimization": 11,
+      "first_remaining_blocker": "Original DTMAX0.04 temperature exceeds unchanged frozen envelope; no whole-energy qualification. New independently registered DTMAX0.01 configuration passes all20 criteria but does not promote original coarse route."
+    },
+    "material_differences": {
+      "input_or_programming_error": "No new concrete defect demonstrated in this sprint; no production correction justified.",
+      "demonstrated_numerical_difference": "Coarse water/thermal trajectories, oxygen/drought accumulation and actual growth/harvest: identical-state owners plus timestep-only studies support numerical attribution for measured quantities.",
+      "explicit_model_or_reporting_difference": "Native water-only full/half temporal policy differs from original adaptive control; LAI day-start versus source day-end and annual versus cumulative harvest require phase alignment.",
+      "unresolved": "Original coarse thermal accuracy gate fails; full physical energy closure and unobserved accepted thermal substeps are outside demonstrated scope."
+    },
+    "registered_assessments": {
+      "coarse": {
+        "fields": {
+          "WTOT": {
+            "native_error": 0.0021925674381577664,
+            "limit": 0.010245880947945013,
+            "reference_change": 0.0004081238130027032,
+            "previous_reference_change": 0.0008215894060015216,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TPOT": {
+            "native_error": 0.00013777658518621116,
+            "limit": 0.0012438724870001143,
+            "reference_change": 3.980566099998084e-05,
+            "previous_reference_change": 8.179632599997211e-05,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TACT": {
+            "native_error": 0.00025191565668308824,
+            "limit": 0.004329224808999999,
+            "reference_change": 0.00015477235200000994,
+            "previous_reference_change": 0.0003343058839999913,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TREDWET": {
+            "native_error": 0.00017358418141553804,
+            "limit": 0.004322264716000016,
+            "reference_change": 0.00013959467300000018,
+            "previous_reference_change": 0.0002942635069999996,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TREDDRY": {
+            "native_error": 0.00020144393309901032,
+            "limit": 0.0005107256830001189,
+            "reference_change": 3.668220100000452e-05,
+            "previous_reference_change": 9.028096500002247e-05,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "WRT": {
+            "native_error": 0.3905284442153061,
+            "limit": 2.6267576309650194,
+            "reference_change": 0.08473626644297383,
+            "previous_reference_change": 0.17190536244299892,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "WLV": {
+            "native_error": 1.7776620352210557,
+            "limit": 9.813342735334006,
+            "reference_change": 0.31563476627002274,
+            "previous_reference_change": 0.6482219980719037,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "WST": {
+            "native_error": 0.5298425260357362,
+            "limit": 3.5852975434152112,
+            "reference_change": 0.11273155511696586,
+            "previous_reference_change": 0.23204341983807808,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "RD": {
+            "native_error": 0.00033442485297641156,
+            "limit": 0.005750418942993715,
+            "reference_change": 0.00020870077400303444,
+            "previous_reference_change": 0.00041814340599799493,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PWRT": {
+            "native_error": 5.115907697472721e-13,
+            "limit": 1e-06,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "RDPOT": {
+            "native_error": 0.0,
+            "limit": 1e-07,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "DVS": {
+            "native_error": 4.989342272665453e-13,
+            "limit": 1e-08,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TSUM": {
+            "native_error": 4.547473508864641e-13,
+            "limit": 1e-08,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "LAI_DAY_START": {
+            "native_error": 0.0030725604036971887,
+            "limit": 0.020980713795999036,
+            "reference_change": 0.0006737252070001531,
+            "previous_reference_change": 0.0013838574939999404,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "HRVDM_PROJECT": {
+            "native_error": 3.429710699048883,
+            "limit": 50.39053125998146,
+            "reference_change": 1.8399955099957879,
+            "previous_reference_change": 3.6736076200031675,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PHRVDM_PROJECT": {
+            "native_error": 3.4506228985264897e-09,
+            "limit": 1e-06,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "NET_FLUX": {
+            "native_error": 0.0025481739457494657,
+            "limit": 0.008257538866000141,
+            "reference_change": 0.0003101042920001795,
+            "previous_reference_change": 0.0006243234269998066,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PROFILE_head_cm": {
+            "native_error": 0.0031544409000968422,
+            "limit": 0.00829568456160479,
+            "reference_change": 0.00036787647261616105,
+            "previous_reference_change": 0.0007349298325274901,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PROFILE_water_content": {
+            "native_error": 0.00014591371981798051,
+            "limit": 0.00040491489594698385,
+            "reference_change": 1.7298284249095408e-05,
+            "previous_reference_change": 3.4420447764166306e-05,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PROFILE_temperature_c": {
+            "native_error": 0.007265874268450823,
+            "limit": 0.002772767147181471,
+            "reference_change": 0.00017065470721089326,
+            "previous_reference_change": 0.0003411281652683229,
+            "inside_frozen_envelope": false,
+            "reference_change_decreases": true
+          }
+        },
+        "reference_change": {
+          "WTOT": 0.0004081238130027032,
+          "TPOT": 3.980566099998084e-05,
+          "TACT": 0.00015477235200000994,
+          "TREDWET": 0.00013959467300000018,
+          "TREDDRY": 3.668220100000452e-05,
+          "WRT": 0.08473626644297383,
+          "WLV": 0.31563476627002274,
+          "WST": 0.11273155511696586,
+          "RD": 0.00020870077400303444,
+          "PWRT": 0.0,
+          "RDPOT": 0.0,
+          "DVS": 0.0,
+          "TSUM": 0.0,
+          "LAI_DAY_START": 0.0006737252070001531,
+          "HRVDM_PROJECT": 1.8399955099957879,
+          "PHRVDM_PROJECT": 0.0,
+          "NET_FLUX": 0.0003101042920001795,
+          "PROFILE_head_cm": 0.00036787647261616105,
+          "PROFILE_water_content": 1.7298284249095408e-05,
+          "PROFILE_temperature_c": 0.00017065470721089326
+        },
+        "pass": false
+      },
+      "fine": {
+        "fields": {
+          "WTOT": {
+            "native_error": 0.0011754481654122628,
+            "limit": 0.010245880947945013,
+            "reference_change": 0.0004081238130027032,
+            "previous_reference_change": 0.0008215894060015216,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TPOT": {
+            "native_error": 9.727677855020378e-05,
+            "limit": 0.0012438724870001143,
+            "reference_change": 3.980566099998084e-05,
+            "previous_reference_change": 8.179632599997211e-05,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TACT": {
+            "native_error": 0.00016413142218901777,
+            "limit": 0.004329224808999999,
+            "reference_change": 0.00015477235200000994,
+            "previous_reference_change": 0.0003343058839999913,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TREDWET": {
+            "native_error": 0.00017193357913323267,
+            "limit": 0.004322264716000016,
+            "reference_change": 0.00013959467300000018,
+            "previous_reference_change": 0.0002942635069999996,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TREDDRY": {
+            "native_error": 0.00015226638120764105,
+            "limit": 0.0005107256830001189,
+            "reference_change": 3.668220100000452e-05,
+            "previous_reference_change": 9.028096500002247e-05,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "WRT": {
+            "native_error": 0.27244956813910903,
+            "limit": 2.6267576309650194,
+            "reference_change": 0.08473626644297383,
+            "previous_reference_change": 0.17190536244299892,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "WLV": {
+            "native_error": 1.2335737883381626,
+            "limit": 9.813342735334006,
+            "reference_change": 0.31563476627002274,
+            "previous_reference_change": 0.6482219980719037,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "WST": {
+            "native_error": 0.36649616650993266,
+            "limit": 3.5852975434152112,
+            "reference_change": 0.11273155511696586,
+            "previous_reference_change": 0.23204341983807808,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "RD": {
+            "native_error": 0.00029655554871510503,
+            "limit": 0.005750418942993715,
+            "reference_change": 0.00020870077400303444,
+            "previous_reference_change": 0.00041814340599799493,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PWRT": {
+            "native_error": 5.115907697472721e-13,
+            "limit": 1e-06,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "RDPOT": {
+            "native_error": 0.0,
+            "limit": 1e-07,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "DVS": {
+            "native_error": 4.989342272665453e-13,
+            "limit": 1e-08,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "TSUM": {
+            "native_error": 4.547473508864641e-13,
+            "limit": 1e-08,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "LAI_DAY_START": {
+            "native_error": 0.0021297653457512666,
+            "limit": 0.020980713795999036,
+            "reference_change": 0.0006737252070001531,
+            "previous_reference_change": 0.0013838574939999404,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "HRVDM_PROJECT": {
+            "native_error": 3.765616635333572,
+            "limit": 50.39053125998146,
+            "reference_change": 1.8399955099957879,
+            "previous_reference_change": 3.6736076200031675,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PHRVDM_PROJECT": {
+            "native_error": 3.4506228985264897e-09,
+            "limit": 1e-06,
+            "reference_change": 0.0,
+            "previous_reference_change": 0.0,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "NET_FLUX": {
+            "native_error": 0.0013835916397000325,
+            "limit": 0.008257538866000141,
+            "reference_change": 0.0003101042920001795,
+            "previous_reference_change": 0.0006243234269998066,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PROFILE_head_cm": {
+            "native_error": 0.001284442255223782,
+            "limit": 0.00829568456160479,
+            "reference_change": 0.00036787647261616105,
+            "previous_reference_change": 0.0007349298325274901,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PROFILE_water_content": {
+            "native_error": 6.952327750558984e-05,
+            "limit": 0.00040491489594698385,
+            "reference_change": 1.7298284249095408e-05,
+            "previous_reference_change": 3.4420447764166306e-05,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          },
+          "PROFILE_temperature_c": {
+            "native_error": 0.0021489944060011368,
+            "limit": 0.002772767147181471,
+            "reference_change": 0.00017065470721089326,
+            "previous_reference_change": 0.0003411281652683229,
+            "inside_frozen_envelope": true,
+            "reference_change_decreases": true
+          }
+        },
+        "reference_change": {
+          "WTOT": 0.0004081238130027032,
+          "TPOT": 3.980566099998084e-05,
+          "TACT": 0.00015477235200000994,
+          "TREDWET": 0.00013959467300000018,
+          "TREDDRY": 3.668220100000452e-05,
+          "WRT": 0.08473626644297383,
+          "WLV": 0.31563476627002274,
+          "WST": 0.11273155511696586,
+          "RD": 0.00020870077400303444,
+          "PWRT": 0.0,
+          "RDPOT": 0.0,
+          "DVS": 0.0,
+          "TSUM": 0.0,
+          "LAI_DAY_START": 0.0006737252070001531,
+          "HRVDM_PROJECT": 1.8399955099957879,
+          "PHRVDM_PROJECT": 0.0,
+          "NET_FLUX": 0.0003101042920001795,
+          "PROFILE_head_cm": 0.00036787647261616105,
+          "PROFILE_water_content": 1.7298284249095408e-05,
+          "PROFILE_temperature_c": 0.00017065470721089326
+        },
+        "pass": true
+      }
+    },
+    "energy_scope": "Independent checkpoint water stock/flux and identical-state conductive thermal capacity/flux accounting only; no advected-water enthalpy or complete surface-energy closure claim."
   }
 }

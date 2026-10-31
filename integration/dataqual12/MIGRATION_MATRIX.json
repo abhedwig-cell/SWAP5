@@ -388,7 +388,22 @@
         "canonical_merge": "51ee43e6037fd2402fa5c667b91228ac9a79bb46",
         "admitted_scope": "Experimental portability, authentic full-run recovery, source-bound accepted-state replay and measured numerical attribution only",
         "merge_receipt": "integration/dataqual15/SCIENTIFIC_FOLLOWUP_MERGE_RECEIPT.json",
-        "production_promotion": false
+        "production_promotion": false,
+        "sprint02": {
+          "authority": "integration/dataqual15/SPRINT02_EVIDENCE_MANIFEST.json",
+          "verifier": "tests/dataqual15/sprint02_evidence.py",
+          "archive_sha256": "26a15c2df478f2f2d403f6b9008a41c2b202d6a05327abd558462118c92b641d",
+          "registered_fine_configuration_pass": true,
+          "original_preregistered_gate_pass": false,
+          "coarse_configuration_pass": false,
+          "scientific_equivalence": false,
+          "production_promotion": false,
+          "canonically_admitted": false,
+          "canonical_untouched": true,
+          "branch": "codex/grassgrowth-sprint02",
+          "scope": "96 paired heat component cases per O0/O2 on Linux13.3 and Windows16.2; 24 authentic same-executable one-day forks; 12 newly registered profile dates; all20 fine-configuration bounds and reference decrease criteria pass. Original coarse temperature fails and previous failed gate remains unchanged.",
+          "counts_unchanged": true
+        }
       }
     },
     {

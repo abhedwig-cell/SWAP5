@@ -1,5 +1,127 @@
 # Grassgrowth: full-period execution and scientific attribution
 
+## Sprint02: independent thermal and trajectory qualification
+
+**VOLLEDIG UITGEVOERD — WETENSCHAPPELIJKE KWALIFICATIE OPEN.**
+The complete original 1827-day execution is inherited unchanged. A separately
+registered finer numerical configuration now passes all twenty measured
+criteria; the original coarse configuration still fails temperature. Neither
+result changes the failed predecessor gate or promotes the production model.
+This sprint changes no production, application or reference source.
+
+Reconciliation starts from canonical `0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50`,
+review `3170aa1783872b90f121550803f5bfaaf902b0e8`, and scientific production
+postimage `d6514abee5a85367a6b1fa181c011b6f2e9194ed`. The five original inputs,
+113 nodes, six-metre profile, five seasons and physical selectors are unchanged.
+Issues1458/1386 and PRs1476–1480 were reconciled against the repository receipts;
+older issue text does not supersede the sealed full execution. The independent
+review's scientific and reproducibility concerns are addressed below. General
+architecture work remains outside this bounded sprint. Canonical is untouched;
+all new work is on `codex/grassgrowth-sprint02`.
+
+### Identical-state heat comparison
+
+The real original `MOD_SoilTemperature` and current six-provider thermal owner
+are called with the same retained temperatures, pressure, geometry, forcing and
+water content. Criteria were fixed from the existing FVQ58 independent component
+contract before execution: temperature5e-10C, flux5e-10J/cm2/day and
+energy5e-9J/cm2. Each O0/O2 build executes96 cases:24 actual checkpoint states
+at .04/.02/.01day with frozen water, plus eight adjacent-state water changes
+at those three steps. Interpolating daily water changes is an explicit operator
+counterfactual; it is not a reconstruction of actual accepted water substeps.
+
+Linux GNU13.3 and Windows GNU16.2 both pass, with identical O0/O2 rows.
+Maximum original/current temperature difference is1.066e-14C, flux6.040e-12
+J/cm2/day, and independent capacity-stock/boundary discrepancy2.284e-12J/cm2.
+The native full-versus-two-half-step defect reaches2.5521e-4C. This isolates
+thermal integration sensitivity while finding no thermal formula discrepancy
+on the selected states. It does not establish every coupled thermal substep.
+
+### Registered new trajectory observations
+
+Registration was published in commit
+`1f63542b6bcbcba0bce5a41e858580134f2a9da8` before the new outputs.
+It preserves the old training-derived bounds and their immutable registration
+hash. Twelve new profile days64,74,114,128,141,368,733,919,923,1097,1462,1801
+are disjoint from the previous profile observations. Together the study covers
+26 profile dates,36 native checkpoint dates and all1827 daily scalar outputs.
+Original reference runs at DTMAX .00125/.000625/.0003125day complete uncensored
+with native exit100 and `swap.ok`, taking198.59/393.89/784.60seconds respectively.
+The first two reproduce all pre-existing scalar and nodal reference outputs
+exactly. Only the output collector's date list is expanded; original provider
+hashes and physical inputs are verified. Original DTMAX is the only changed
+numerical input. No checkpoint binding or CRC is replaced.
+
+Twenty-four one-day native forks start from byte-identical sealed coarse/fine
+checkpoints with their own unchanged executable and application binding. Every
+fork exits0 uncensored and reproduces the corresponding previously stored
+budget/crop row exactly. Independently recomputed water stock
+`sum(theta*dz)+pond` minus its original checkpoint and net boundary flux closes
+to2.310e-14cm; this check does not trust the application's residual column.
+
+The finer native DTMAX .01day configuration passes all twenty unchanged
+bounds and all new reference-change decrease criteria. The coarse .04day
+configuration fails only temperature in this new assessment:
+
+| Temperature profile criterion | Maximum error C | Frozen limit C | Result |
+|---|---:|---:|---|
+| Original coarse native configuration | 0.00726587426845 | 0.00277276714718 | FAIL |
+| Separately registered fine configuration | 0.00214899440600 | 0.00277276714718 | PASS |
+
+The finer configuration was selected after the earlier coarse failure, but
+before these new disjoint outputs. Its successful new test does not convert
+the original test into a pass. The old drought decrease failure also remains:
+.000176948895 exceeds the preceding .000170241561 at the same day942
+(1982-07-30), rather than through an argmax-date switch. Subsequent reference
+changes decrease to.000090280965 and.000036682201. This supports a numerical,
+non-asymptotic coarse regime without identifying an unobserved branch mechanism.
+
+### Material differences and scope
+
+| Quantity or process | Classification and evidence |
+|---|---|
+| Potential versus actual transpiration | Demonstrated numerical trajectory sensitivity: potential control agrees before actual canopy feedback; inherited2922 identical-state whole-uptake intervals reproduce the composed demand/reductions. All new fine TPOT/TACT bounds pass. |
+| Oxygen and drought | Original/current identical-state stressed owners reproduce within existing source-solver criteria. Accepted-time accumulation differs across adaptive trajectories; wet/dry daily reductions satisfy the transpiration attribution relation. Both new fine bounds pass; old drought gate remains FAIL. |
+| Temperature and moisture feedback | Real paired heat kernels agree; timestep-only refinement reduces profile error. Native F-MR39 explicitly preserves water-only temporal acceptance. This is an existing numerical-policy difference, with demonstrated coarse thermal underresolution, not a newly proven formula bug. |
+| Biomass, roots, mowing and regrowth | Actual water limitation propagates to assimilation, organ growth, root extension and harvest. Original potential controls, inherited exact mowing/year/regrowth restarts, and new fine organ/root/harvest bounds support numerical attribution within tested scope. No new management/input defect is demonstrated. |
+| LAI and cumulative harvest | Explicit reporting phase/counter difference: native LAI is day-start, source LAI day-end; annual source harvest is accumulated before project-total comparison. Unaligned maxima are excluded. |
+| Timestep, nonlinear control and process order | Explicit control-policy differences remain; current stricter nonlinear stopping and external full/half water acceptance are unchanged. Original/current identical-state process tests plus refinement support measured numerical attribution, without claiming identical accepted meshes or complete coupled process-order equivalence. |
+| Energy and unobserved states | Open scope: conductive thermal capacity/boundary accounting is independently checked. Complete surface energy, enthalpy carried by moving water, and every coupled accepted thermal substep are not qualified by small residuals or sampled profiles. |
+
+No concrete new programming or input error is demonstrated, so there is no
+production correction to make merely to force the old gate to pass. Production
+promotion would require a separately justified thermal acceptance policy and
+its affected-owner qualification, or a prospectively approved explicit coarse
+accuracy contract. This sprint neither adjusts tolerances after seeing results
+nor silently substitutes the fine configuration for the original one.
+
+### Durable evidence and reproduction
+
+`SPRINT02_EVIDENCE_MANIFEST.json` binds the compact raw capsule, all new source
+hashes, original production trees and both immutable predecessor capsules.
+It retains inputs, checkpoints, native/reference executables, raw scalar and
+profile outputs, build command/flag/compiler reports, native exit statuses,
+wall costs, and stdout/stderr. Expanded source/object duplicates are omitted;
+their provider hashes resolve to the existing pinned original authorities.
+Windows path separators are normalized only for manifest key comparison;
+source bytes and recorded hashes are not normalized or replaced.
+
+```bash
+python -B tests/dataqual15/sprint02_evidence.py
+```
+
+This read-only consumer recomputes raw heat criteria, checkpoint stock/flux,
+input/binding identities, output-only collector changes, both reference controls
+and every frozen bound/decrease check. A verified capsule is not a scientific
+PASS for the original coarse route. Full reruns, when justified, use
+`qualify_heat.py` and `qualify_sprint02_holdout.py`; their checked build reports
+retain complete commands. The new portable consumer needs no native rerun.
+Linux heat run41198744813 and registered-reference run41198100939 are successful;
+Windows paired builds take128.77seconds. All declared model runs are uncensored;
+there is no unfinished full-period model process. Full original experimental
+projects remain2/3 globally and whole scientific qualifications0/3.
+
+
 The original1827-day Grassgrowth execution is complete and source-bound in
 `GRASS_UNION_FULL_MANIFEST.json` and `CANONICAL_FULL_MERGE_RECEIPT.json`.
 The follow-up evidence is `STRESS_EVIDENCE_MANIFEST.json` with the portable

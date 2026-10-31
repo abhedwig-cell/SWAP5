@@ -233,7 +233,7 @@
     "review_baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
     "branch": "codex/grassgrowth-sprint02",
     "canonical_must_remain_unchanged": true,
-    "stage": "PAIRED_HEAT_PASS_REGISTERED_DISJOINT_PROFILES_SELECTED",
+    "stage": "COMPLETE_EXECUTION_FINE_CONFIGURATION_REGISTERED_PASS_ORIGINAL_COARSE_QUALIFICATION_OPEN",
     "full_original_execution": "INHERITED_SOURCE_BOUND1827_NOT_REPEATED",
     "proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
     "scientific_priorities": [
@@ -254,7 +254,7 @@
     "selection": {
       "driver": "tests/dataqual15/heat_oracle.f90",
       "runner": "tests/dataqual15/qualify_heat.py",
-      "cases": 72,
+      "cases": 96,
       "current_providers": 6,
       "original_provider_reason": "Real MOD_SoilTemperature and original TTUTIL/global providers; reconstruct from pinned authority instead of replacing by formulas or mocks",
       "expected_build_seconds": 240,
@@ -273,19 +273,170 @@
     "paired_heat": {
       "local": "PASS_O0_O2_GNU16.2",
       "linux": "PASS_O0_O2_GNU13.3",
-      "linux_run": 41197444139,
-      "linux_source": "d3960c7714ed4ef2c9431c2a8ae6f5ff46c4823b",
-      "cases_per_optimization": 72,
+      "linux_run": 41198744813,
+      "linux_source": "1b2c41eea37213cd9e59922a5e3ed42913a5d455",
+      "cases_per_optimization": 96,
       "maximum_local_profile_difference_c": 1.0658141036401503e-14,
       "maximum_local_flux_difference_j_cm2_day": 6.0396132539608516e-12,
       "maximum_local_energy_difference_j_cm2": 2.284172850863797e-12,
-      "full_half_local_discretization_defect_c": 0.0002552095058518944
+      "full_half_local_discretization_defect_c": 0.0002552095058518944,
+      "frozen_water_cases": 72,
+      "interpolated_water_cases": 24
     },
     "classification": {
       "thermal_operator": "No implementation discrepancy on selected actual states under pre-existing component criteria",
       "temperature_trajectory": "Demonstrated numerical sensitivity; original coarse gate remains FAIL",
       "runtime_policy": "Explicit existing F-MR39 contract deliberately preserves water-only temporal acceptance, not yet an implementation defect"
     },
-    "new_independent_validation": "integration/dataqual15/SPRINT02_HELDOUT_PREREGISTRATION.json"
+    "new_independent_validation": "integration/dataqual15/SPRINT02_HELDOUT_PREREGISTRATION.json",
+    "reconciliation": {
+      "canonical": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+      "review": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+      "scientific_source": "d6514abee5a85367a6b1fa181c011b6f2e9194ed",
+      "period_days": 1827,
+      "full_original_execution": true,
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "executable_sha256": "47a7fd29dc49c9b122e00fabb0cdf0bac3b61614e0ee80e8f7375685e9cf15ef",
+      "flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fopenmp",
+        "-fcheck=all",
+        "-fbacktrace",
+        "-ffpe-trap=invalid,zero,overflow",
+        "-I/workspace/scratch/c3166a264227/dq15-union-oxygen-grass-O2",
+        "-J/workspace/scratch/c3166a264227/dq15-union-oxygen-grass-O2"
+      ],
+      "input_sha256": {
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+      },
+      "returncode": 0,
+      "censored": false,
+      "native_seconds": 1319.3188838360002,
+      "source_controls": {
+        "MAXIT": 30,
+        "MAXBACKTR": 3,
+        "SWKMEAN": 2,
+        "SWKIMPL": 0,
+        "DTMAX": 0.04,
+        "DTMIN": 1e-06
+      },
+      "native_acceptance": {
+        "temporal_mode": "external_full_half_water_metric",
+        "temporal_tolerance": 0.0001,
+        "mass_tolerance_cm": 1e-10,
+        "maximum_committed_substeps": 100000,
+        "retain_accepted_step_proposal": true
+      },
+      "independent_O0_O2_days": 367,
+      "qualified_same_executable_restarts": [
+        {
+          "folder": "dq15-union-oxygen-restart126-140-O2",
+          "optimization": "O2",
+          "purpose": "mowing",
+          "origin_day": 126,
+          "end_day": 140
+        },
+        {
+          "folder": "dq15-union-oxygen-restart365-367-O0",
+          "optimization": "O0",
+          "purpose": "year",
+          "origin_day": 365,
+          "end_day": 367
+        },
+        {
+          "folder": "dq15-union-oxygen-restart365-367-O2",
+          "optimization": "O2",
+          "purpose": "year",
+          "origin_day": 365,
+          "end_day": 367
+        },
+        {
+          "folder": "dq15-union-oxygen-restart918-922-O2",
+          "optimization": "O2",
+          "purpose": "distinct_delay",
+          "origin_day": 918,
+          "end_day": 922
+        },
+        {
+          "folder": "dq15-union-oxygen-restart1786-1827-O2",
+          "optimization": "O2",
+          "purpose": "oxygen",
+          "origin_day": 1786,
+          "end_day": 1827
+        },
+        {
+          "folder": "dq15-union-oxygen-restart1800-1827-O2",
+          "optimization": "O2",
+          "purpose": "final",
+          "origin_day": 1800,
+          "end_day": 1827
+        }
+      ],
+      "invalid_restart_cases_per_optimization": 11,
+      "first_remaining_blocker": "Original DTMAX0.04 temperature exceeds unchanged frozen envelope; no whole-energy qualification. New independently registered DTMAX0.01 configuration passes all20 criteria but does not promote original coarse route."
+    },
+    "heldout": {
+      "linux_run": 41198100939,
+      "source": "1f63542b6bcbcba0bce5a41e858580134f2a9da8",
+      "native_same_executable_forks": 24,
+      "native_daily_output_exact": true,
+      "new_profile_dates": 12,
+      "total_profile_dates_excluding_initial": 26,
+      "total_native_checkpoint_dates": 36,
+      "full_daily_scalars": 1827,
+      "reference_dtmax_days": [
+        0.00125,
+        0.000625,
+        0.0003125
+      ],
+      "reference_seconds": [
+        198.591803505,
+        393.892983194,
+        784.601588245
+      ],
+      "reference_returncode": 100,
+      "reference_swap_ok": true,
+      "censored": false,
+      "first_two_reference_outputs_equal_sealed_predecessor": true,
+      "frozen_bounds_changed": false,
+      "registered_fine_configuration_pass": true,
+      "coarse_configuration_pass": false,
+      "original_preregistered_gate_pass": false,
+      "fine_maximum_temperature_error_c": 0.0021489944060011368,
+      "coarse_maximum_temperature_error_c": 0.007265874268450823,
+      "frozen_temperature_limit_c": 0.002772767147181471,
+      "maximum_independent_stock_flux_residual_cm": 2.3092638912203256e-14
+    },
+    "portable_evidence": "integration/dataqual15/SPRINT02_EVIDENCE_MANIFEST.json",
+    "portable_verifier": "tests/dataqual15/sprint02_evidence.py",
+    "portable_verification": "SOURCE_BOUND_SPRINT02_EVIDENCE_PASS",
+    "canonically_admitted": false,
+    "production_promotion": false,
+    "material_differences": {
+      "input_or_programming_error": "No new concrete defect demonstrated in this sprint; no production correction justified.",
+      "demonstrated_numerical_difference": "Coarse water/thermal trajectories, oxygen/drought accumulation and actual growth/harvest: identical-state owners plus timestep-only studies support numerical attribution for measured quantities.",
+      "explicit_model_or_reporting_difference": "Native water-only full/half temporal policy differs from original adaptive control; LAI day-start versus source day-end and annual versus cumulative harvest require phase alignment.",
+      "unresolved": "Original coarse thermal accuracy gate fails; full physical energy closure and unobserved accepted thermal substeps are outside demonstrated scope."
+    },
+    "checks": {
+      "documentation_source": "PASS using ../.venv-docs/Scripts/python.exe -B tools/docs/check_docs.py",
+      "mkdocs_strict": "PASS53.02seconds; existing INFO anchor diagnostics",
+      "inherited_full_original": "SOURCE_BOUND_FULL_ORIGINAL_GRASS_EXECUTION_PASS --spec integration/dataqual15/GRASS_UNION_FULL_SPEC.json",
+      "inherited_stress": "SOURCE_BOUND_STRESS_ATTRIBUTION_EVIDENCE_PASS; old gate false",
+      "new_portable": "SOURCE_BOUND_SPRINT02_EVIDENCE_PASS",
+      "production_trees": "UNCHANGED",
+      "full_FCI": "NOT_SELECTED_IMPACT",
+      "environment_attempts": [
+        "System Python lacks PyYAML; use existing docs venv, no package changes.",
+        "Full verifier default points to absent predecessor GRASS_FULL_MANIFEST; explicit current UNION spec selected.",
+        "Sandbox temporary extraction denied; rerun with TEMP/TMP under writable workspace succeeded.",
+        "Initial portable consumer compared Windows backslash manifest keys literally against Linux keys; only key separator comparison corrected; no source bytes, evidence or bounds changed."
+      ]
+    }
   }
 }

@@ -1,0 +1,31 @@
+{
+  "archive_sha256": "26a15c2df478f2f2d403f6b9008a41c2b202d6a05327abd558462118c92b641d",
+  "archive_files": 2639,
+  "source_sha256": {
+    "tests/dataqual15/heat_oracle.f90": "d61e9539b6c2584ed0545d1be57e3144be3bec2c6156539b6dc851a71f855a0b",
+    "tests/dataqual15/qualify_heat.py": "b15142d420d98a2235ab39ad1eb6be65dc73006e0e5b95ed3567429739cfa3d4",
+    "tests/dataqual15/qualify_sprint02_holdout.py": "5d376399cc5dbeeb95151c7ed6833e60f7f3da7b34905384b323997c380bc60c",
+    "tests/dataqual15/sprint02_evidence.py": "bcda6338d3063ce06b8ae977a9ef8a10f9c244a51f864233190a2b583ac9f983",
+    "tests/dataqual15/original_sources.py": "5b9d0045a0e2364a042898e35027611904630100e67c13760e8d7da162337142",
+    "tests/dataqual15/qualify_donor_timestep.py": "0369abb1d9cee24d714c60b7c0b76f9a694d19e0b9391444c979b01073c6b3a4",
+    "integration/dataqual15/SPRINT02_HELDOUT_PREREGISTRATION.json": "71c7a5d62cd766b5f857eb4aa7edf06c51997d9a1f0f36bf8b09ac96c2a1aae2",
+    "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+    "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+    "src/process/mod_restricted_soil_temperature.f90": "24932aeef598a52e2e5f7eb85bd981bb95f48f8d3c86fe2d2d3a7beb7bb1b6d1",
+    "app/solute_column/read_swp_heat.f90": "2d1ac41e3b5e594a1803baab4600abb9eabfebc97473780ad1703d4525d60ae3"
+  },
+  "inherited_capsules": {
+    "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+    "integration/dataqual15/STRESS_EVIDENCE.tar.xz": "1064b6814b7b7133951b556f808bb43c80dafe5f24ce9653550db2f59634417d"
+  },
+  "production_trees": {
+    "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+    "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "canonical_modified": false,
+  "original_preregistered_gate_pass": false,
+  "production_promotion": false
+}
