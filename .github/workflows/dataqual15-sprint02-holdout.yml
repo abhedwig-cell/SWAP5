@@ -1,0 +1,31 @@
+name: DATAQUAL15 sprint02 registered heldout
+on:
+  push:
+    branches: [codex/grassgrowth-sprint02]
+    paths:
+      - .github/workflows/dataqual15-sprint02-holdout.yml
+      - tests/dataqual15/qualify_sprint02_holdout.py
+      - integration/dataqual15/SPRINT02_HELDOUT_PREREGISTRATION.json
+permissions:
+  contents: read
+concurrency:
+  group: dataqual15-sprint02-heldout-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  registered-heldout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Authentic checkpoint forks and finer original reference, frozen criteria
+        run: python3 -B tests/dataqual15/qualify_sprint02_holdout.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/heldout"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dataqual15-sprint02-heldout-${{ github.sha }}
+          path: ${{ runner.temp }}/heldout/
+          retention-days: 30

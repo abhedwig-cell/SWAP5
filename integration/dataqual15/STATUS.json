@@ -233,7 +233,7 @@
     "review_baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
     "branch": "codex/grassgrowth-sprint02",
     "canonical_must_remain_unchanged": true,
-    "stage": "IDENTICAL_STATE_THERMAL_OPERATOR_QUALIFICATION_SELECTED",
+    "stage": "PAIRED_HEAT_PASS_REGISTERED_DISJOINT_PROFILES_SELECTED",
     "full_original_execution": "INHERITED_SOURCE_BOUND1827_NOT_REPEATED",
     "proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
     "scientific_priorities": [
@@ -269,6 +269,23 @@
         "Unrelated macro/solute/low-air campaigns"
       ]
     },
-    "closure": "VOLLEDIG UITGEVOERD \u2014 WETENSCHAPPELIJKE KWALIFICATIE OPEN"
+    "closure": "VOLLEDIG UITGEVOERD \u2014 WETENSCHAPPELIJKE KWALIFICATIE OPEN",
+    "paired_heat": {
+      "local": "PASS_O0_O2_GNU16.2",
+      "linux": "PASS_O0_O2_GNU13.3",
+      "linux_run": 41197444139,
+      "linux_source": "d3960c7714ed4ef2c9431c2a8ae6f5ff46c4823b",
+      "cases_per_optimization": 72,
+      "maximum_local_profile_difference_c": 1.0658141036401503e-14,
+      "maximum_local_flux_difference_j_cm2_day": 6.0396132539608516e-12,
+      "maximum_local_energy_difference_j_cm2": 2.284172850863797e-12,
+      "full_half_local_discretization_defect_c": 0.0002552095058518944
+    },
+    "classification": {
+      "thermal_operator": "No implementation discrepancy on selected actual states under pre-existing component criteria",
+      "temperature_trajectory": "Demonstrated numerical sensitivity; original coarse gate remains FAIL",
+      "runtime_policy": "Explicit existing F-MR39 contract deliberately preserves water-only temporal acceptance, not yet an implementation defect"
+    },
+    "new_independent_validation": "integration/dataqual15/SPRINT02_HELDOUT_PREREGISTRATION.json"
   }
 }

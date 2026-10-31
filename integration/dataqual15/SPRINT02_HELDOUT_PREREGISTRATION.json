@@ -1,0 +1,192 @@
+{
+  "status": "REGISTERED_BEFORE_NEW_PROFILE_OR_FINEST_REFERENCE_OUTPUT",
+  "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+  "scope": "Independent validation of the already executed experimental native DTMAX0.01 numerical configuration; original coarse preregistered gate remains FAIL",
+  "original_preregistered_gate_pass": false,
+  "production_change": false,
+  "original_physical_inputs_changed": false,
+  "new_profile_days": [
+    64,
+    74,
+    114,
+    128,
+    141,
+    368,
+    733,
+    919,
+    923,
+    1097,
+    1462,
+    1801
+  ],
+  "native_origin_days": [
+    63,
+    73,
+    113,
+    127,
+    140,
+    367,
+    732,
+    918,
+    922,
+    1096,
+    1461,
+    1800
+  ],
+  "native_policies": [
+    "sealed_original_coarse",
+    "sealed_diagnostic_dtmax0.01"
+  ],
+  "native_execution": "Same authentic executable and source/input/application binding as its existing day1->1827 history; one-day forks only; no checkpoint or CRC rebinding",
+  "original_reference_dtmax_days": [
+    0.00125,
+    0.000625,
+    0.0003125
+  ],
+  "reference_execution": "Pinned original model with output-only existing nodal collector date-list expansion. First two scalar series and old nodal dates must exactly equal sealed prior refinements; only the last reference is new scalar resolution.",
+  "frozen_registration_sha256": "605750966013436061ce522a7852bf9c4ff953b261b4ac344e3ed304f0b1c6d1",
+  "frozen_bounds": {
+    "WTOT": {
+      "unit": "cm",
+      "floor": 1e-09,
+      "training_change": 0.003415293315981671,
+      "limit": 0.010245880947945013
+    },
+    "TPOT": {
+      "unit": "cm/day",
+      "floor": 1e-09,
+      "training_change": 0.00041462382900003814,
+      "limit": 0.0012438724870001143
+    },
+    "TACT": {
+      "unit": "cm/day",
+      "floor": 1e-09,
+      "training_change": 0.0014430746029999997,
+      "limit": 0.004329224808999999
+    },
+    "TREDWET": {
+      "unit": "cm/day",
+      "floor": 1e-09,
+      "training_change": 0.0014407545720000053,
+      "limit": 0.004322264716000016
+    },
+    "TREDDRY": {
+      "unit": "cm/day",
+      "floor": 1e-09,
+      "training_change": 0.00017024156100003962,
+      "limit": 0.0005107256830001189
+    },
+    "WRT": {
+      "unit": "kg/ha",
+      "floor": 1e-06,
+      "training_change": 0.8755855436550064,
+      "limit": 2.6267576309650194
+    },
+    "WLV": {
+      "unit": "kg/ha",
+      "floor": 1e-06,
+      "training_change": 3.271113911778002,
+      "limit": 9.813342735334006
+    },
+    "WST": {
+      "unit": "kg/ha",
+      "floor": 1e-06,
+      "training_change": 1.1950988478050704,
+      "limit": 3.5852975434152112
+    },
+    "RD": {
+      "unit": "cm",
+      "floor": 1e-07,
+      "training_change": 0.001916772980997905,
+      "limit": 0.005750418942993715
+    },
+    "PWRT": {
+      "unit": "kg/ha",
+      "floor": 1e-06,
+      "training_change": 0.0,
+      "limit": 1e-06
+    },
+    "RDPOT": {
+      "unit": "cm",
+      "floor": 1e-07,
+      "training_change": 0.0,
+      "limit": 1e-07
+    },
+    "DVS": {
+      "unit": "dimensionless",
+      "floor": 1e-08,
+      "training_change": 0.0,
+      "limit": 1e-08
+    },
+    "TSUM": {
+      "unit": "degree day",
+      "floor": 1e-08,
+      "training_change": 0.0,
+      "limit": 1e-08
+    },
+    "LAI_DAY_START": {
+      "unit": "m2/m2",
+      "floor": 1e-08,
+      "training_change": 0.006993567931999678,
+      "limit": 0.020980713795999036
+    },
+    "HRVDM_PROJECT": {
+      "unit": "kg/ha",
+      "floor": 1e-06,
+      "training_change": 16.79684341999382,
+      "limit": 50.39053125998146
+    },
+    "PHRVDM_PROJECT": {
+      "unit": "kg/ha",
+      "floor": 1e-06,
+      "training_change": 0.0,
+      "limit": 1e-06
+    },
+    "NET_FLUX": {
+      "unit": "cm/day",
+      "floor": 1e-09,
+      "training_change": 0.0027525126220000473,
+      "limit": 0.008257538866000141
+    },
+    "PROFILE_head_cm": {
+      "unit": "normalized by max(1cm,abs(h))",
+      "floor": 1e-08,
+      "training_change": 0.0027652248538682636,
+      "limit": 0.00829568456160479
+    },
+    "PROFILE_water_content": {
+      "unit": "cm3/cm3",
+      "floor": 1e-12,
+      "training_change": 0.00013497163164899462,
+      "limit": 0.00040491489594698385
+    },
+    "PROFILE_temperature_c": {
+      "unit": "C",
+      "floor": 1e-09,
+      "training_change": 0.0009242553823938238,
+      "limit": 0.002772767147181471
+    }
+  },
+  "acceptance": {
+    "native_accuracy": "Every refined-native quantity inside the unchanged old envelope, across all1827 scalar rows and all retained+new checkpoint/profile dates",
+    "reference_resolution": "For all20 quantities, .000625->.0003125 sup-norm change no greater than .00125->.000625 change plus the unchanged original floor, on the same data coverage",
+    "controls": "Potential quantities use original floor-only limits; original water/heat hard checks and input/executable/checkpoint identity remain mandatory",
+    "failed_predecessor": "Do not rewrite or reinterpret the previously failed .0025->.00125 drought monotonicity or original coarse temperature gate"
+  },
+  "cost": {
+    "expected_reference_seconds": [
+      200,
+      400,
+      800
+    ],
+    "reference_wall_caps_seconds": [
+      900,
+      1500,
+      2700
+    ],
+    "expected_native_replay_seconds": 60,
+    "native_window_wall_cap_seconds": 180,
+    "reason": "No qualified data exists at these disjoint profile dates or new finest resolution. One-day exact native replays avoid repeating the full native project. A further reference halving tests asymptotic convergence after the recorded nonmonotone coarser check."
+  },
+  "whole_scientific_equivalence": false
+}
