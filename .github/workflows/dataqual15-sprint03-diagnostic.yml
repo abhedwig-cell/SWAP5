@@ -1,0 +1,26 @@
+name: DATAQUAL15 sprint03 authentic failed-window diagnostic
+on:
+  push:
+    branches: [codex/grassgrowth-sprint03]
+    paths:
+      - .github/workflows/dataqual15-sprint03-diagnostic.yml
+      - tests/dataqual15/diagnose_sprint03.py
+permissions:
+  contents: read
+  actions: read
+jobs:
+  failed-window:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 41232008608
+          name: sprint03-registered-experiment
+          path: ${{ runner.temp }}/attempt
+      - name: Same-executable1191 to1192 with existing groundwater diagnostics
+        run: python3 -B tests/dataqual15/diagnose_sprint03.py --capsule "$RUNNER_TEMP/attempt/SPRINT03_EVIDENCE.tar.xz" --manifest "$RUNNER_TEMP/attempt/SPRINT03_EVIDENCE_MANIFEST.json" --output "$RUNNER_TEMP/diagnostic"
