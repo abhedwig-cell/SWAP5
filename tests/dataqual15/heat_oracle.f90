@@ -22,15 +22,15 @@ program grass_heat_oracle
  type(soil_temperature_workspace_t)::workspace
  type(soil_temperature_result_t)::result,half_result
  type(soil_temperature_diagnostics_t)::diagnostics
- type(process_hydraulic_view_t)::water
+ type(process_hydraulic_view_t)::water,water_end,water_middle
  real(real64)::porosity(256),sand(256),silt(256),clay(256),organic(256)
- real(real64)::old(113),head(113),moisture(113),full_old(113),half_old(113)
+ real(real64)::old(113),head(113),moisture(113),moisture_end(113),full_old(113),half_old(113)
  real(real64),allocatable::current(:),refined(:)
  real(real64)::step,flux,stock,err_t,err_q,err_e,err_half
- integer::unit,io,status,day,nsub,i,k,j,ns,counts(256),layers(256)
+ integer::unit,io,status,day,kind,expected,nsub,i,k,j,ns,counts(256),layers(256)
  character(2048)::path
  call get_command_argument(1,path);open(newunit=unit,file=trim(path),status='old')
- read(unit,*)numnod;if(numnod/=113)error stop 'source geometry'
+ read(unit,*)numnod,expected;if(numnod/=113.or.expected/=96)error stop 'source geometry/case count'
  read(unit,*)z(:numnod);read(unit,*)dz(:numnod);read(unit,*)disnod(:numnod)
  call rdinit(74,0,'input.swp');call rdinne('isublay',nsub)
  call rdfinr('ncomp',1,256,counts,256,nsub);call rdfinr('isoillay',1,256,layers,256,nsub)
@@ -52,37 +52,41 @@ program grass_heat_oracle
  water%active_nodes=numnod;water%ponding_depth=0d0;water%groundwater_level=-100d0
  ns=0
  do
-  read(unit,*,iostat=io)day,step,tav
+  read(unit,*,iostat=io)day,kind,step,tav
   if(io<0)exit
   if(io/=0)error stop 'snapshot header'
-  read(unit,*)head;read(unit,*)moisture;read(unit,*)old
+  read(unit,*)head;read(unit,*)moisture;read(unit,*)moisture_end;read(unit,*)old
   water%pressure_head=head;water%water_content=moisture
-  theta(:numnod)=moisture;thetm1(:numnod)=moisture;tsoil(:numnod)=old;dt=step
+  water_end=water;water_end%water_content=moisture_end
+  water_middle=water;water_middle%water_content=.5d0*(moisture+moisture_end)
+  theta(:numnod)=moisture_end;thetm1(:numnod)=moisture;tsoil(:numnod)=old;dt=step
   call SoilTemperature(2);full_old=tsoil(:numnod)
   flux=heacon(1)*(tav-full_old(1))/disnod(1);stock=sum(heacap(:numnod)*dz(:numnod)*(full_old-old))
   call initialize_soil_temperature_state(old,initial,status)
   if(status/=0)error stop 'native initial snapshot'
   forcing%air_temperature_c=tav
-  call trial_restricted_soil_temperature(parameters,numerical,forcing,water,water,initial, &
+  call trial_restricted_soil_temperature(parameters,numerical,forcing,water,water_end,initial, &
    0d0,step,workspace,full,result,diagnostics)
   if(result%status/=0.or..not.result%produced)error stop 'native full heat rejected'
   call copy_soil_temperature_profile(full,current,status)
   err_t=maxval(abs(current-full_old));err_q=abs(result%top_heat_flux_into_soil_j_cm2_day-flux)
   err_e=max(abs(result%sensible_storage_change_j_cm2-stock),abs(stock-step*flux))
-  tsoil(:numnod)=old;dt=.5d0*step;call SoilTemperature(2);call SoilTemperature(2);half_old=tsoil(:numnod)
-  call trial_restricted_soil_temperature(parameters,numerical,forcing,water,water,initial, &
+  tsoil(:numnod)=old;dt=.5d0*step;theta(:numnod)=water_middle%water_content
+  call SoilTemperature(2);thetm1(:numnod)=water_middle%water_content;theta(:numnod)=moisture_end
+  call SoilTemperature(2);half_old=tsoil(:numnod)
+  call trial_restricted_soil_temperature(parameters,numerical,forcing,water,water_middle,initial, &
    0d0,.5d0*step,workspace,half,half_result,diagnostics)
   if(half_result%status/=0)error stop 'native half heat rejected'
-  call trial_restricted_soil_temperature(parameters,numerical,forcing,water,water,half, &
+  call trial_restricted_soil_temperature(parameters,numerical,forcing,water_middle,water_end,half, &
    .5d0*step,step,workspace,twice,half_result,diagnostics)
   if(half_result%status/=0)error stop 'native second half heat rejected'
   call copy_soil_temperature_profile(twice,refined,status);err_half=maxval(abs(refined-half_old))
   ns=ns+1
-  write(*,'(a,i0,7(a,es25.17e3))')'HEAT_PAIR,',day,',',step,',',err_t,',',err_q,',',err_e,',',err_half, &
-   ',',maxval(abs(current-refined)),',',maxval(abs(full_old-half_old))
+  write(*,'(a,i0,7(a,es25.17e3),a,i0)')'HEAT_PAIR,',day,',',step,',',err_t,',',err_q,',',err_e,',',err_half, &
+   ',',maxval(abs(current-refined)),',',maxval(abs(full_old-half_old)),',',kind
   ! Existing independent FVQ58 component limits, registered before execution.
   if(max(err_t,err_half)>5d-10.or.err_q>5d-10.or.err_e>5d-9)error stop 'source heat operator discrepancy'
  end do
- close(unit);if(ns/=72)error stop 'missing original snapshot/step cases'
+ close(unit);if(ns/=expected)error stop 'missing original snapshot/step cases'
  print '(a)','PAIRED_ORIGINAL_CURRENT_HEAT_SNAPSHOTS_PASS'
 end program
