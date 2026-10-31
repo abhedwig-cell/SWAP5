@@ -227,5 +227,48 @@
     "production_promotion": false,
     "known_legacy_guard_failure": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json"
   },
-  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits."
+  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits.",
+  "sprint02": {
+    "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+    "review_baseline": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+    "branch": "codex/grassgrowth-sprint02",
+    "canonical_must_remain_unchanged": true,
+    "stage": "IDENTICAL_STATE_THERMAL_OPERATOR_QUALIFICATION_SELECTED",
+    "full_original_execution": "INHERITED_SOURCE_BOUND1827_NOT_REPEATED",
+    "proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "scientific_priorities": [
+      "Original-route thermal failure under existing frozen trajectory bounds",
+      "Thermal implementation versus time integration on identical actual snapshots",
+      "Independent stock/flux evaluation and explicit material-difference classification"
+    ],
+    "interfaces_changed": [],
+    "production_delta": {},
+    "invariants": [
+      7,
+      13,
+      21,
+      23,
+      25,
+      26
+    ],
+    "selection": {
+      "driver": "tests/dataqual15/heat_oracle.f90",
+      "runner": "tests/dataqual15/qualify_heat.py",
+      "cases": 72,
+      "current_providers": 6,
+      "original_provider_reason": "Real MOD_SoilTemperature and original TTUTIL/global providers; reconstruct from pinned authority instead of replacing by formulas or mocks",
+      "expected_build_seconds": 240,
+      "expected_native_seconds": 2,
+      "temperature_limit_c": 5e-10,
+      "flux_limit_j_cm2_day": 5e-10,
+      "energy_limit_j_cm2": 5e-09,
+      "criteria_authority": "Existing FVQ58 independent heat component test, fixed before execution",
+      "not_selected": [
+        "Repeated full1827 trajectory",
+        "Full F-CI",
+        "Unrelated macro/solute/low-air campaigns"
+      ]
+    },
+    "closure": "VOLLEDIG UITGEVOERD \u2014 WETENSCHAPPELIJKE KWALIFICATIE OPEN"
+  }
 }

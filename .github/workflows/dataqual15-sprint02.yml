@@ -1,0 +1,29 @@
+name: DATAQUAL15 sprint02 thermal qualification
+on:
+  push:
+    branches: [codex/grassgrowth-sprint02]
+    paths:
+      - .github/workflows/dataqual15-sprint02.yml
+      - tests/dataqual15/heat_oracle.f90
+      - tests/dataqual15/qualify_heat.py
+permissions:
+  contents: read
+concurrency:
+  group: dataqual15-sprint02-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  real-thermal-owners:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Real original and current heat operators O0 O2
+        run: python3 -B tests/dataqual15/qualify_heat.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/heat"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dataqual15-sprint02-heat-${{ github.sha }}
+          path: ${{ runner.temp }}/heat/
+          retention-days: 30
