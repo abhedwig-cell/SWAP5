@@ -575,7 +575,7 @@
     "branch": "codex/grassgrowth-sprint03",
     "canonical_baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
     "canonical_modified": false,
-    "status": "REPAIRED_LOCAL_O0_O2_PASS_FULL_REQUALIFICATION_AWAITING_REQUIRED_PUBLICATION_AUTHORIZATION",
+    "status": "REPAIRED_SOURCE_PUBLISHED_LINUX_RUNTIME_PASS_FULL_QUALIFICATION_RUNNING",
     "current_source_full_execution_proven": false,
     "current_source_scientific_qualification": false,
     "historical_attempt01_source": "980b824953a598cf356b8c88ce7ccfffff63e7ab",
@@ -587,8 +587,41 @@
     "original_preregistered_gate_pass": false,
     "production_promotion": false,
     "counts_unchanged": true,
-    "evidence_location": "Local integration/dataqual15/SPRINT03_ATTEMPT01_EVIDENCE.tar.xz and immutable original GitHub Actions artifact13056865907, run41232008608; raw repository publication was rejected by automatic review.",
+    "evidence_location": "integration/dataqual15/SPRINT03_ATTEMPT01_EVIDENCE.tar.xz and immutable original Actions artifact13056865907, run41232008608; publication explicitly authorized and completed at2f15e783a2f3d36aa6f3f2186b0cdc4d8e29485b. Current repaired source qualification is separate and running.",
     "repair_scope": "Explicit thermal numerical profile only: keep authoritative small signed scalar using existing DIVDRA unit geometry and conservative final-node closure. Physical trial and temporal certificate agree. Default legacy and previously admitted magnitudes are unchanged.",
-    "remaining": "New repaired-source full day1-1827 execution, native restart windows, newly sampled original reference profiles, hard20quantity assessment. Source/executable differs from attempt01, so do not rebind its1191 checkpoint."
+    "remaining": "New repaired-source full day1-1827 execution, native restart windows, newly sampled original reference profiles, hard20quantity assessment. Source/executable differs from attempt01, so do not rebind its1191 checkpoint.",
+    "current_repaired_source_qualification": {
+      "source_commit": "2f15e783a2f3d36aa6f3f2186b0cdc4d8e29485b",
+      "run_id": 41249418778,
+      "run_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41249418778",
+      "status": "RUNNING_FULL_NATIVE_AND_INDEPENDENT_REFERENCE_NO_GATE_CLAIM",
+      "runtime_job": 124679606263,
+      "runtime_status": "PASS_O0_O2",
+      "runtime_seconds": 215.09231705999986,
+      "runtime_artifact_sha256": "31b55bc7fdb2d8926ed6331a47f2e6841f4f1c7c0a9d7e44270fb2fcf510a1d5",
+      "native_job": 124680556256,
+      "reference_job": 124680556194,
+      "canonical_modified": false,
+      "reference": {
+        "job": 124680556194,
+        "status": "SUCCESS_INDEPENDENT_REFERENCE_RAW_CONTROLS_PASS",
+        "artifact_id": 13060659436,
+        "artifact_zip_sha256": "e31bbafceabcc7bf57dba511ac1180bb81ea58880051ecde60fddc36b015387e",
+        "archive_sha256": "d13dd5144990f2a5fb32a8a4f887bd9e06df8f403c32ec023407b43fc190873d",
+        "full_days": 1827,
+        "nodal_dates_including_initial": 39,
+        "old_outputs": "EXACT_ALL1827_SCALARS_AND26_NONINITIAL_NODAL_DATES",
+        "native_exit_codes": [
+          100,
+          100
+        ],
+        "censored": false,
+        "seconds": [
+          394.81077927700005,
+          785.454144709
+        ],
+        "registered_gate_pass": null
+      }
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 ## Sprint03: thermal control and a reproduced small-drainage domain defect
 
-**Current repaired code is locally tested, not fully qualified.** The canonical
+**Current repaired code passes Linux/Windows runtime contracts; full qualification is running.** The canonical
 branch remains unchanged. The complete original1827-day proof still belongs to
 its immutable predecessor source. No new full-project scientific qualification
 or production promotion is claimed.
@@ -27,7 +27,7 @@ The requested1827-day checkedO2 execution stops on day1192. Its last complete
 committed day is1191, with native exit1, uncensored, after3860.9037seconds.
 The rejected1191->1191.04 segment reports3162 attempts,1412 solver rejections,
 1617 temporal rejections and zero mass rejections. The original-reference
-runs for the twelve newly selected profile dates have not yet started.
+runs for the twelve newly selected profile dates were not started in that failed attempt.
 A genuine same-executable replay1191->1192 reproduces the identical failure
 and counts in9.739seconds. Original source/executable/input bindings are
 unchanged. Its diagnostic workflow succeeds as a measurement of failure,
@@ -68,11 +68,11 @@ The default profile preserves the old domain; previously admitted magnitudes
 use the original route bit for bit. Physical water/heat equations, forcing,
 geometry, solver tolerances, thermal1e-5C and all twenty frozen bounds stay fixed.
 
-The repaired code passes local O0/O2 real-runtime contracts, including signed
+The repaired code passes Linux GNU13.3 and Windows GNU16.2 O0/O2 real-runtime contracts, including signed
 small-flux conservation, the original activity cutoff under the default policy,
 legacy edge geometry and exact unchanged admitted-magnitude results. The current
-repaired executable has not yet run the original full period. Its next full
-execution must start on day1; the first attempt's1191 checkpoint belongs to a
+repaired executable is running the original full period in Actions run41249418778.
+This fresh execution starts on day1; the first attempt's1191 checkpoint belongs to a
 different executable and is not rebound. Native and original-reference phases
 are separated so valid independent reference data can be reused if a native
 attempt fails. The final consumer recomputes the raw twenty-field test; it does
@@ -93,8 +93,18 @@ already-public physical inputs, with no credential patterns or unrelated paths.
 Automatic review nevertheless rejected both raw-archive and repaired-code
 publication, requesting explicit authorization for the expanded payload/branch.
 The user subsequently explicitly authorized this exact Sprint03 publication and
-Linux qualification. The repaired-source full-period and independent-reference
-qualification can now start; no qualification result is assumed.
+Linux qualification. All repaired source and failed evidence were published at
+`2f15e783a2f3d36aa6f3f2186b0cdc4d8e29485b` before the new measurement.
+Run41249418778 passes the Linux O0/O2 runtime contracts (215.0923seconds).
+The independent original .000625/.0003125-day references both complete1827days,
+uncensored, with the expected native exit100 and swap.ok, taking394.8108 and
+785.4541seconds. All1827 old scalar rows and26 noninitial old profile dates
+are exact; twelve new dates give38 noninitial dates plus initial state. Their
+physical inputs and provider source hashes are unchanged. Local raw controls
+independently pass. Reference archive SHA256 is
+`d13dd5144990f2a5fb32a8a4f887bd9e06df8f403c32ec023407b43fc190873d`.
+The native full trajectory and combined scientific assessment remain pending;
+no new full-source qualification result is assumed.
 
 The original coarse temperature gate and its earlier drought refinement failure
 remain failed. Whole energy qualification and production admission remain open;

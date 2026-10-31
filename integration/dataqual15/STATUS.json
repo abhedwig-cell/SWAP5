@@ -440,7 +440,7 @@
     }
   },
   "sprint03": {
-    "stage": "REPAIRED_LOCAL_O0_O2_PASS_PUBLICATION_EXPLICITLY_AUTHORIZED",
+    "stage": "REPAIRED_SOURCE_PUBLISHED_LINUX_RUNTIME_PASS_FULL_QUALIFICATION_RUNNING",
     "contract": "integration/dataqual15/SPRINT03_PREREGISTRATION.json",
     "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
     "branch": "codex/grassgrowth-sprint03",
@@ -472,7 +472,7 @@
     "linux_runtime_job": 124628007747,
     "linux_runtime_seconds": 175.7868102169999,
     "linux_experiment_job": 124628897894,
-    "linux_experiment_stage": "RUNNING_NO_PROJECT_GATE_CLAIM",
+    "linux_experiment_stage": "HISTORICAL_ATTEMPT01_FAILED_DAY1192_CURRENT_REPAIRED_RUN_IN_SEPARATE_RECORD",
     "runtime_artifact_sha256": "2374754c6ab3c4ad092475cce8f8ebe64fd08706c29928b6702c278f9eb54c3a",
     "prospective_groundwater_restart_supplement": {
       "origin": 113,
@@ -721,6 +721,39 @@
       "scope": "Repaired Sprint03 code/workflows and generated model evidence including failed archive, abhedwig-cell/SWAP5 codex/grassgrowth-sprint03; Linux qualification; canonical untouched",
       "explicit_user_reply": "Ja, deze Sprint03-code en modelbewijzen publiceren en kwalificeren",
       "recorded_utc": "2026-10-31T22:42:23.251974+00:00"
+    },
+    "current_repaired_source_qualification": {
+      "source_commit": "2f15e783a2f3d36aa6f3f2186b0cdc4d8e29485b",
+      "run_id": 41249418778,
+      "run_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41249418778",
+      "status": "RUNNING_FULL_NATIVE_AND_INDEPENDENT_REFERENCE_NO_GATE_CLAIM",
+      "runtime_job": 124679606263,
+      "runtime_status": "PASS_O0_O2",
+      "runtime_seconds": 215.09231705999986,
+      "runtime_artifact_sha256": "31b55bc7fdb2d8926ed6331a47f2e6841f4f1c7c0a9d7e44270fb2fcf510a1d5",
+      "native_job": 124680556256,
+      "reference_job": 124680556194,
+      "canonical_modified": false,
+      "reference": {
+        "job": 124680556194,
+        "status": "SUCCESS_INDEPENDENT_REFERENCE_RAW_CONTROLS_PASS",
+        "artifact_id": 13060659436,
+        "artifact_zip_sha256": "e31bbafceabcc7bf57dba511ac1180bb81ea58880051ecde60fddc36b015387e",
+        "archive_sha256": "d13dd5144990f2a5fb32a8a4f887bd9e06df8f403c32ec023407b43fc190873d",
+        "full_days": 1827,
+        "nodal_dates_including_initial": 39,
+        "old_outputs": "EXACT_ALL1827_SCALARS_AND26_NONINITIAL_NODAL_DATES",
+        "native_exit_codes": [
+          100,
+          100
+        ],
+        "censored": false,
+        "seconds": [
+          394.81077927700005,
+          785.454144709
+        ],
+        "registered_gate_pass": null
+      }
     }
   }
 }
