@@ -440,7 +440,7 @@
     }
   },
   "sprint03": {
-    "stage": "REGISTERED_DESIGN_BEFORE_IMPLEMENTATION",
+    "stage": "LOCAL_O0_O2_PASS_LINUX_REGISTERED_EXPERIMENT_RUNNING",
     "contract": "integration/dataqual15/SPRINT03_PREREGISTRATION.json",
     "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
     "branch": "codex/grassgrowth-sprint03",
@@ -450,6 +450,39 @@
       "app/grass_project/initial_interval.f90",
       "app/grass_project/restart_file.f90"
     ],
-    "old_evidence_scope": "Immutable predecessor authority; production identity changes invalidate direct current-source claims. Do not replace hashes or checkpoint binding. Reuse only unchanged original/reference/component surfaces."
+    "old_evidence_scope": "Immutable predecessor authority; production identity changes invalidate direct current-source claims. Do not replace hashes or checkpoint binding. Reuse only unchanged original/reference/component surfaces.",
+    "candidate_remote": "980b824953a598cf356b8c88ce7ccfffff63e7ab",
+    "linux_run": 41232008608,
+    "local_runtime_status": "SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS",
+    "local_runtime_seconds": 426.9478805004619,
+    "local_compiler": "GNU Fortran16.2.0",
+    "production_qualified": false,
+    "canonical_admitted": false,
+    "production_promoted": false,
+    "failed_attempts": [
+      {
+        "phase": "local contract compilation",
+        "reason": "First driver tried to import the intentionally private runtime model type; corrected to call the new production metric API without exposing internal model state. No physical calculation failed.",
+        "log_sha256": "981f28587aa8700f615e359e98bcbf0aeae871d5c267e0e64e527a22e4c92f3f",
+        "used_as_qualification": false
+      }
+    ],
+    "interface_note": "Per-backend configure_soil_temperature_temporal_tolerance(tolerance_c,ok), default0 disabled and reset on initialize; evaluate_fmr_thermal_temporal_error accepts real native thermal states plus incumbent water indicator and budgets. No generic canonical configuration change. Application binding marker is checked before initial committed state or restart, preserving the existing restart format and CRC.",
+    "linux_runtime_status": "SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS",
+    "linux_runtime_job": 124628007747,
+    "linux_runtime_seconds": 175.7868102169999,
+    "linux_experiment_job": 124628897894,
+    "linux_experiment_stage": "RUNNING_NO_PROJECT_GATE_CLAIM",
+    "runtime_artifact_sha256": "2374754c6ab3c4ad092475cce8f8ebe64fd08706c29928b6702c278f9eb54c3a",
+    "prospective_groundwater_restart_supplement": {
+      "origin": 113,
+      "end": 117,
+      "criterion": "Exact full checkpoint bytes and daily rows from the same new-source full trajectory; no binding or CRC changes.",
+      "reason": "Directly cover the early variable-groundwater transition in addition to the five registered mowing/year/regrowth/oxygen/final windows.",
+      "source": "980b824953a598cf356b8c88ce7ccfffff63e7ab",
+      "registered_before_execution_utc": "2026-10-31T19:23:43.085051+00:00",
+      "stage": "PLANNED_PENDING_OWN_SOURCE_BOUND_TRAJECTORY",
+      "runner": "tests/dataqual15/recover_sprint03.py"
+    }
   }
 }
