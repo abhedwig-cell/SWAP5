@@ -1,5 +1,5 @@
 """Observe actual Hupsel trials; pair only accepted receipts, preserving native bytes."""
-import argparse,csv,hashlib,io,json,re,subprocess,sys,tarfile,time
+import argparse,csv,hashlib,io,json,re,shutil,subprocess,sys,tarfile,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tests/dataqual15'))
@@ -54,7 +54,7 @@ def select_accepted(out):
  return dict(total_trial_records=total,accepted_cases=len(selection),accepted_intervals=selection,batch_sha256=sha((out/'accepted-inputs.dat').read_bytes()),rejected_and_sibling_records_retained=True)
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);fc=str(a.compiler.resolve());record=dict(status='IN_PROGRESS',events=[],production_changed=False,no_checkpoint_rebinding=True)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--reuse-bundle',type=Path);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);fc=str(a.compiler.resolve());record=dict(status='IN_PROGRESS',events=[],production_changed=False,no_checkpoint_rebinding=True)
  def save():(out/'RESULT.json').write_text(json.dumps(record,indent=2)+'\n',newline='\n')
  def run(cmd,label,cwd=out,timeout=240,expected=0):
   start=time.monotonic()
@@ -63,11 +63,29 @@ def main():
    except subprocess.TimeoutExpired:code=None;censored=True
   record['events'].append(dict(label=label,command=list(map(str,cmd)),seconds=time.monotonic()-start,returncode=code,censored=censored));save();assert code==expected and not censored,(label,code)
  generate(out)
- run([sys.executable,'-B',ROOT/'tests/dataqual15/original_sources.py','--output',out/'original-O2','--compiler',fc,'--optimization','O2'],'original-build')
- run([sys.executable,'-B',out/'builder.py','--driver',out/'observed_main.f90','--output',out/'build','--compiler',fc,'--optimization','O2','--ttutil-archive',out/'original-O2/ttobj/libttutil.a'],'native-build',timeout=600)
+ if a.reuse_bundle:
+  inherited=a.reuse_bundle.resolve();m=json.loads((inherited/'build/BUILD.json').read_text());assert m['status']=='BUILT'
+  assert m['compiler']==subprocess.check_output([fc,'--version'],text=True).splitlines()[0]
+  sys.path.insert(0,str(ROOT/'tools/solute'));from legacy_reader_sources import materialize
+  generated=out/'verified-generated';generated.mkdir();materialize(ROOT,generated)
+  for name,pin in m['source_sha256'].items():
+   if name.startswith('/home/runner/work/SWAP5/SWAP5/'):path=ROOT/name[len('/home/runner/work/SWAP5/SWAP5/'):]
+   elif Path(name).name in ['observed_backend.f90','observed_main.f90']:path=out/Path(name).name
+   else:
+    path=generated/Path(name).name;assert path.is_file(),('unreviewed generated source',name)
+   assert sha(path.read_bytes())==pin,('inherited source mismatch',name)
+  exe=inherited/'build/swap5_hupsel_germination';assert sha(exe.read_bytes())==m['executable_sha256']
+  assert json.loads((inherited/'RESULT.json').read_text())['events'][-1]['label']=='prepare'
+  folder=out/'build';folder.mkdir()
+  for name in ['swap5_hupsel_germination','read_fallow','BUILD.json','EVENTS.json']:shutil.copyfile(inherited/'build'/name,folder/name)
+  for name in ['swap5_hupsel_germination','read_fallow']:(folder/name).chmod(0o755)
+  record['inherited_clean_build']=dict(run=41331749941,source='b1479b1217676f50667e7a1a3c406cb671b87bee',source_and_compiler_verified=True,executable_sha256=m['executable_sha256'],reader_sha256=sha((folder/'read_fallow').read_bytes()),reason='Only failed input-reader mode selection corrected; no model execution occurred before that failure.');save()
+ else:
+  run([sys.executable,'-B',ROOT/'tests/dataqual15/original_sources.py','--output',out/'original-O2','--compiler',fc,'--optimization','O2'],'original-build')
+  run([sys.executable,'-B',out/'builder.py','--driver',out/'observed_main.f90','--output',out/'build','--compiler',fc,'--optimization','O2','--ttutil-archive',out/'original-O2/ttobj/libttutil.a'],'native-build',timeout=600)
  case=out/'case';case.mkdir()
  for name in ['swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra']:(case/name).write_bytes((ROOT/'reference/swap-4.3.1/projects/1.hupselbrook'/name).read_bytes())
- reader=out/'build/read_fallow';run([reader,'swap.swp','283.met','swap.dra','1096'],'prepare',case)
+ reader=out/'build/read_fallow';run([reader,'swap.swp','283.met','swap.dra','1096','original-germination'],'prepare',case)
  text=(case/'input.nml').read_text();assert text.count('&column ')==1;text=text.replace('&column ','&column original_hupsel_rotation=.true.,reactive_substep_chemistry=.true.,',1);(case/'input.nml').write_text(text,newline='\n')
  ends=[float(v)for v in re.search('^ends_day=(.*)$',text,re.M)[1].split(',')if v.strip()];stop=next(i+1 for i,v in enumerate(ends)if v==585)
  exe=out/'build/swap5_hupsel_germination';run([exe,'input.nml','-',stop,'swap.swp','maize.crp'],'native',case,timeout=1800)

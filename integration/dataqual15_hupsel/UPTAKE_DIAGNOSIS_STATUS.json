@@ -8,7 +8,11 @@
   "scientific_question": "Do original/current microscopic and oxygen routines differ on the actual identical accepted Hupsel inputs around irrigation days583/584? Separate owner differences from differing coupled trajectories.",
   "observation": {
     "fresh_day1_end": 585,
-    "selected_days": [583,584,585],
+    "selected_days": [
+      583,
+      584,
+      585
+    ],
     "build": "Clean checked GNU13 O2, exact sealed recipe plus explicit output-only generated main/backend sources; original TTUTIL authority",
     "acceptance_identity": "Select trial records by exact accepted t0/t1 receipts; verify nodal sink sum and demand match each receipt; exclude rejected/full sibling observations from replay",
     "unchanged_trajectory_required": "All native budget/crop rows byte-value exact to immutable C3 prefix through585, original six files byte-exact",
@@ -19,16 +23,32 @@
   "paired_criteria_before_execution": {
     "current_replay_nodal_sink_absolute_cm_day": 1e-12,
     "oxygen_factor_existing_source_gate": 0.0001,
-    "microscopic_existing_source_nodal_gate_cm_day": 0.00002,
+    "microscopic_existing_source_nodal_gate_cm_day": 2e-05,
     "tighter_solver_control": "Read-only same-input counterfactual residual_tolerance=min(TolConv,Tol_2), all physical parameters unchanged. Quantify original/current differences and duration-integrated contributions; this cannot retroactively pass the original full-period gate.",
     "classification": "No production defect or whole numerical attribution claimed until actual paired measurements support it. Preserve failed cases and bounds."
   },
   "test_selection": {
     "local": "Python syntax/anchor generation and narrow component O0/O2 where Windows toolchain supports it",
     "linux": "Real original/native fsync route; clean observer build and one fresh585-day output-only identity check; original/current component O0/O2 replay follows retained observations",
-    "not_selected": ["Full F-CI", "unmodified full1096 repetition", "new physical law", "old checkpoint identity patching"]
+    "not_selected": [
+      "Full F-CI",
+      "unmodified full1096 repetition",
+      "new physical law",
+      "old checkpoint identity patching"
+    ]
   },
   "scientific_qualification": false,
   "canonical_admitted": false,
-  "next_safe_step": "Capture actual accepted inputs, prove output identity, then replay real original/current owners on identical records."
+  "next_safe_step": "Capture actual accepted inputs, prove output identity, then replay real original/current owners on identical records.",
+  "development_failures": [
+    {
+      "run": 41331749941,
+      "source": "b1479b1217676f50667e7a1a3c406cb671b87bee",
+      "stage": "prepare",
+      "actual_model_execution": false,
+      "reason": "Original reader requires explicit original-germination mode for the historical long rotation. Missing final argument caused early refusal.",
+      "archive_sha256": "c04873f1924366607ce66d2775052cbf0f4a630f4a374c4a0786754a503bed1d",
+      "resolution": "Retain full failed attempt. Reuse clean source/compiler-bound binaries; correct reader argument only. No source/checkpoint rebinding or repeated compilation."
+    }
+  ]
 }
