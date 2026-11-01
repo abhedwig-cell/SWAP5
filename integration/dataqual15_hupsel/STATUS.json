@@ -182,6 +182,41 @@
         "scientific_qualification_claim": false,
         "source_preimage": "Initial uncommitted reader preimage not retained; not counted as qualification."
       }
-    ]
+    ],
+    "first_study": {
+      "run": 41310191296,
+      "source": "30cd5c6ca0ebf6df8d59148f36e052abe63f1c55",
+      "native1096_proof": "PASS_UNCHANGED",
+      "original_references": "ALL_SIX_COMPLETE_EXIT100_UNCENSORED",
+      "literal_reference_control": "EXACT1097SCALAR_ROWS",
+      "frozen_scientific_gate": false,
+      "bounds_unchanged": true,
+      "artifact_sha256": "a1eef4e969e90ad825a8a11874839287681e7febe157f6a64609b0ee24ddd042"
+    },
+    "diagnostic_selection": {
+      "registered_before_execution": true,
+      "scientific_question": "Separate SWAP5 timestep error from retained model/process differences: original-only refinement leaves water and actual crop residuals outside frozen bounds, while reference-only oxygen/solute changes are nonmonotone.",
+      "native_case": {
+        "dtmax_days": 0.01,
+        "period_days": 1096,
+        "original_binary": "Sealed current C3 O2 executable and original input reader; exact source/archive/executable validation, fresh day1 case, change only explicit numerical DTMAX.",
+        "expected_seconds": 1200,
+        "wall_cap_seconds": 2400,
+        "reason": "Full-period maximum lies late in grass and harvest progression, a short prefix cannot discriminate it. Existing literal native proof is not rerun."
+      },
+      "reference_cases": {
+        "dtmax_days": [
+          0.000625,
+          0.0003125
+        ],
+        "existing_binary": "Exact output-only original executable from study41310191296, preserving all previous reference outputs.",
+        "expected_seconds": 210,
+        "wall_cap_each_seconds": 300
+      },
+      "criteria": "All previous frozen bounds and failures remain unchanged. New runs are diagnostic; quantify direction and magnitude, never promote a reference change or new native trajectory to PASS by changing a bound.",
+      "no_new_physics": true,
+      "no_checkpoint_rebinding": true,
+      "no_full_fci": true
+    }
   }
 }
