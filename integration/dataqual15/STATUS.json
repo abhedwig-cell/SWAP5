@@ -916,5 +916,55 @@
       "local_runtime_seconds": 426.9478805004619
     },
     "closure": "VOLLEDIG UITGEVOERD \u2014 WETENSCHAPPELIJKE KWALIFICATIE OPEN"
+  },
+  "sprint04": {
+    "workstream": "VQ DATAQUAL15 energy claim reconciliation",
+    "baseline_local": "1a17c9c2d9af54607188d9be40735aee4eb709a1",
+    "baseline_remote": "f1be87f149cc01c09abbeed28233d0903dc9c018",
+    "branch": "codex/grassgrowth-sprint04",
+    "stage": "REGISTERED_BEFORE_EXECUTION",
+    "scope": "Independent endpoint sensible-energy stock audit of unchanged real numeric heat owner, sealed Sprint03 Grassgrowth113-node snapshots; distinguish Cmid*dT equation balance from change of C(theta)*T. Same-state component probes, not accepted trajectory replays.",
+    "owner": "Existing restricted soil-temperature owner and existing VQ acceptance; no new physical process or shared interface.",
+    "invariants": [
+      3,
+      7,
+      13,
+      21,
+      23,
+      25,
+      26
+    ],
+    "production_changes": false,
+    "canonical_must_remain_unchanged": true,
+    "criteria": {
+      "energy_abs_j_cm2": 5e-09,
+      "authority": "Unchanged FVQ58 independent component energy comparison limit",
+      "capacity_abs_j_cm3_k": 5e-12,
+      "capacity_reason": "Roundoff consistency check of explicit source constants against real workspace, not project trajectory gate",
+      "stock_identity": "E1-E0 = Cmid*(T1-T0) + (C1-C0)*Tmid for linear valid unsaturated heat capacity; all independently reconstructed from actual parameter/temperature output",
+      "claimed_physical_energy_closure": false
+    },
+    "cases": "All unique sealed Sprint03 O2 checkpoints; fixed-water .04/.02/.01day probes; adjacent-day interpolated water change at the same steps, plus zero-gradient5C and0C controls.",
+    "test_selection": {
+      "changed_dependency": "Only new observational driver and evidence/metadata; five production heat providers and original SWP adapter unchanged",
+      "local": "Fresh checked O0/O2 driver with five unchanged production providers and literal original texture arrays passed to public initializer; no external legacy runtime.",
+      "linux": "Same closed build and all real cases in O0/O2, independent raw consumer",
+      "expected_seconds_each_platform": 120,
+      "wall_cap_seconds_each_platform": 300,
+      "excluded": "No full project rerun, F-CI, new thermal physics, tolerance changes, old checkpoint rebinding or canonical admission.",
+      "reason": "Existing1827-day proof lacks total energy-stock accounting under changing water content; component probes isolate that exact claim."
+    },
+    "scientific_closure": false,
+    "failed_attempts": [
+      {
+        "source_commit": "f54a873ed",
+        "phase": "O0 link",
+        "returncode": 1,
+        "science_executed": false,
+        "reason": "Reader adapter requires original afgen_2/rdadortb helpers absent from TTUTIL-only closure.",
+        "evidence": "../grass-sprint04-energy-Windows/RESULT.json and8.stderr",
+        "resolution": "Use public production texture initializer directly with original SWP values, eliminating unrelated input-reader linkage."
+      }
+    ]
   }
 }

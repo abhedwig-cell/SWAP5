@@ -1,0 +1,38 @@
+name: DATAQUAL15 endpoint energy stock audit
+on:
+  push:
+    branches: [codex/grassgrowth-sprint04]
+    paths:
+      - .github/workflows/dataqual15-sprint04.yml
+      - tests/dataqual15/energy_stock_driver.f90
+      - tests/dataqual15/qualify_energy_stock.py
+permissions:
+  contents: read
+jobs:
+  energy-stock:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Real unchanged heat owner O0 O2 and independent endpoint stock oracle
+        run: python3 -B tests/dataqual15/qualify_energy_stock.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/energy"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sprint04-energy
+          path: |
+            ${{ runner.temp }}/energy/RESULT.json
+            ${{ runner.temp }}/energy/inputs.dat
+            ${{ runner.temp }}/energy/input.swp
+            ${{ runner.temp }}/energy/*.stdout
+            ${{ runner.temp }}/energy/*.stderr
+            ${{ runner.temp }}/energy/O0/energy
+            ${{ runner.temp }}/energy/O2/energy
+            ${{ runner.temp }}/energy/O0/native.stdout
+            ${{ runner.temp }}/energy/O2/native.stdout
+            ${{ runner.temp }}/energy/O0/link.args
+            ${{ runner.temp }}/energy/O2/link.args
