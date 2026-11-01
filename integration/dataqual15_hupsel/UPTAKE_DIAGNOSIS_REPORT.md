@@ -165,3 +165,7 @@ water/chemical conservation and qualified native restarts remain unchanged;
 the111 existing typed decoder controls retain their prior scope.
 
 Canonical admission requires the actual merge postimage and its recorded receipt.
+
+## Actual canonical admission
+
+PR1482 merged as `0fe2157a9f2a1f5e80811252a0ad3759b3642fc6`. The actual whole tree `c5ff9815a5f6012b8b5a99f571b019e7f1836a73` exactly equals the tested tree; actual-merge dossier run41338227886/job124942495486 PASS includes preserved literal failures. `UPTAKE_CANONICAL_RECEIPT.json` records the actual parents, qualification identities, both archive-part hashes,17 terminal PR workflow dispositions (16success, one reproduced old VQ failure), and two canonical DATAQUAL12 source-guard failures reproduced on baseline and candidate (151/165paths versus13expected; production trees identical). This admission is a bounded experimental numerical diagnosis; whole science and production promotion remain OPEN.

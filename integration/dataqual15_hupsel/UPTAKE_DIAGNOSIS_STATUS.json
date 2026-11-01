@@ -38,7 +38,7 @@
     ]
   },
   "scientific_qualification": false,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "next_safe_step": "Locate first material upstream state/forcing/crop divergence before day583; retain full scientific gate and literal component failures.",
   "development_failures": [
     {
@@ -137,5 +137,8 @@
     "refined_original_quadrature_oxygen_max_error": 7.879438482309188e-06,
     "current_oxygen_reconstruction_error": 0.0
   },
-  "classification": "Bounded component differences demonstrated numerical. No native physical defect/new model law demonstrated. Whole earlier coupled input trajectory remains unresolved."
+  "classification": "Bounded component differences demonstrated numerical. No native physical defect/new model law demonstrated. Whole earlier coupled input trajectory remains unresolved.",
+  "canonical_merge": "0fe2157a9f2a1f5e80811252a0ad3759b3642fc6",
+  "canonical_receipt": "UPTAKE_CANONICAL_RECEIPT.json",
+  "canonical_scope": "Actual-input numerical diagnosis only; complete science remains OPEN."
 }

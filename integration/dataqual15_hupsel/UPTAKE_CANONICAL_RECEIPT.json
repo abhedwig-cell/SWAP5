@@ -1,0 +1,290 @@
+{
+  "schema": "swap5.hupsel.actual-input-admission.v1",
+  "observed_utc": "2026-11-01T18:50:10.942492+00:00",
+  "pull_request": 1482,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1482",
+  "canonical_branch": "integration/f-ci-canonical",
+  "baseline": "a4af5cc116c551cc14e08ab6897466d72a427088",
+  "qualified_head": "cf52e30a7895540cfa3a0841099a82488286366c",
+  "actual_merge": "0fe2157a9f2a1f5e80811252a0ad3759b3642fc6",
+  "actual_merge_parents": [
+    "a4af5cc116c551cc14e08ab6897466d72a427088",
+    "cf52e30a7895540cfa3a0841099a82488286366c"
+  ],
+  "qualified_tree": "c5ff9815a5f6012b8b5a99f571b019e7f1836a73",
+  "actual_merge_tree": "c5ff9815a5f6012b8b5a99f571b019e7f1836a73",
+  "whole_merge_tree_equals_qualified_tree": true,
+  "production_changed": false,
+  "admission_scope": "Bounded actual accepted-input numerical diagnosis and portable raw evidence. Literal component/full-period failures retained. No native physical repair, complete scientific qualification or production promotion.",
+  "archive_sha256": "6c0af65bebeb5716bd32008cefb4e52e0664bbf8474c6e929ec80c50d1e54684",
+  "archive_bytes": 55364584,
+  "archive_parts": [
+    {
+      "path": "UPTAKE_EVIDENCE.tar.xz.part001",
+      "bytes": 33554432,
+      "sha256": "0762900c7cbfb7ae39e792091fa91c20d393040757f90f66d16266e7c6b76432"
+    },
+    {
+      "path": "UPTAKE_EVIDENCE.tar.xz.part002",
+      "bytes": 21810152,
+      "sha256": "f8aa1a435cc7ca711606d41a272355815519495daae6d347c20b36a8553a72e8"
+    }
+  ],
+  "distinct_actual_accepted_inputs": 5066,
+  "trial_records_retained": 65482,
+  "original_precision_variants_O0_O2": 16,
+  "local_portable_consumer": "PASS_after_automatic_exact_part_reassembly",
+  "strict_mkdocs": "PASS",
+  "hosted_branch_dossier": {
+    "run": 41337653960,
+    "job": 124940771496,
+    "conclusion": "success"
+  },
+  "hosted_pr_dossier": {
+    "run": 41337706926,
+    "job": 124940936289,
+    "conclusion": "success"
+  },
+  "hosted_actual_merge_dossier": {
+    "run": 41338227886,
+    "job": 124942495486,
+    "source": "0fe2157a9f2a1f5e80811252a0ad3759b3642fc6",
+    "conclusion": "success",
+    "marker": "SOURCE_BOUND_ACTUAL_UPTAKE_DIAGNOSIS_PASS",
+    "literal_oxygen_and_micro_failures_retained": true
+  },
+  "automatic_pr_workflows": [
+    {
+      "id": 41337706990,
+      "name": "VQ reference qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41337707007,
+      "name": "SWAP431 root constant LRV qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706977,
+      "name": "F-CI110 reconstructed performance admission",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706959,
+      "name": "F-MIG431 LOW08-A qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706908,
+      "name": "F-GC42 live whole-window service",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706926,
+      "name": "Hupsel accepted-state dossier integrity - science OPEN",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706949,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706951,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706944,
+      "name": "F-CI canonical qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706929,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706927,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706923,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706932,
+      "name": "SWAP431 crop CO2 response qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706925,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706893,
+      "name": "Documentation",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337706942,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "event": "pull_request",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41337653960,
+      "name": "Hupsel accepted-state dossier integrity - science OPEN",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "preexisting_vq_failure": {
+    "status": "BASELINE_FAILURE_REPRODUCED_NOT_A_PASS",
+    "baseline": "a4af5cc116c551cc14e08ab6897466d72a427088",
+    "candidate": "cf52e30a7895540cfa3a0841099a82488286366c",
+    "gate": "tools/vq/b1_11_admission_gate.py",
+    "all14baseline_dependencies_unchanged": true,
+    "dependency_sha256": {
+      "docs/performance/evidence/F-PE19_B1_11_FULL_REPLAY.json": "9f6b50cc4a1c578a5843a1f4216664fe6b703976f239fb0df7de1e2482941c8e",
+      "docs/performance/evidence/F-PE19_B1_11_source_manifest.sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2",
+      "docs/verification/expected-differences.json": "2df11f966ccee2e02003c4bdce6b9a9d76ef84ada56a9bea41db9dc635476691",
+      "docs/verification/legacy-differences.md": "1de5b7bf4a80cc2cb626cccde554e82e34312f202feeb186a86fb9a5a26c0d14",
+      "reference/swap-4.3.1/b0/file-manifest.sha256": "d923ac9aa474e9ef78cd8c5c51a9ca6ce6b4fb549a61180461da04ce1af4922f",
+      "reference/swap-4.3.1/b1-manifest.yml": "9666ba3cd3590ef8f0693b8aaf93e50649fcf61638d3b49424f6294683f327c2",
+      "reference/swap-4.3.1/patches/SWAP-011/ADMISSION_CHECKLIST.md": "8b727092fe4e74e486ca80802b683816b184a8706969bb93c0b32c347eb1fef5",
+      "reference/swap-4.3.1/patches/SWAP-011/PATCH_PROVENANCE.md": "7bd2c29cf870c32d95877fe8590d508d2af8eaf6642c68f22cfb418ba1f898f2",
+      "reference/swap-4.3.1/patches/SWAP-011/apply_and_verify.py": "65bbfe72304ff8d36a7e51475f052c37d82a1a1a5392321c28c40f3be162892c",
+      "reference/swap-4.3.1/patches/SWAP-011/fix.patch": "1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238",
+      "reference/swap-4.3.1/patches/SWAP-011/qualification.md": "c093be51bd340e4c27ca8ceaf9239430aa6d56ce00821f9db58058c91beb4399",
+      "reference/swap-4.3.1/snapshots/B1.11.yml": "bcf5312843981287b40e55558560c790e09167c945f0a2521b2281ba19b7bedf",
+      "tools/vq/b1_11_admission_gate.py": "84ebc330fc2b9981945c36ce8b5de17789461f1d063906aa2ccfe11610139054",
+      "tools/vq/b1_11_reconstruct.py": "9181a544ea84d485983f69c7aaa8e0977ef8cd81da693eaf12e50802e2543d30"
+    },
+    "assessment": {
+      "snapshot": "B1.11",
+      "status": "FAIL",
+      "checks": {
+        "current_manifest_snapshot": false,
+        "current_oracle_status": true,
+        "snapshot_definition": false,
+        "snapshot_declares_predecessor": true,
+        "patch_order_manifest": false,
+        "patch_order_snapshot": true,
+        "patch_identity_manifest_snapshot": false,
+        "ordered_patch_sha256": true,
+        "ordered_patch_target_set": true,
+        "manifest_swap011_identity": true,
+        "snapshot_swap011_identity": true,
+        "canonical_b0_target_preimages": true,
+        "snapshot_ordered_target_identities": true,
+        "source_tree_manifest_manifest": false,
+        "source_tree_manifest_snapshot": true,
+        "source_tree_shape_manifest": false,
+        "source_tree_shape_snapshot": true,
+        "frozen_source_manifest_file_sha256": true,
+        "frozen_source_manifest_member_count": true,
+        "frozen_source_manifest_targets": true,
+        "headcalc_unchanged": true,
+        "helper_pins_exact_authorities": true,
+        "reconstructor_pins_exact_authorities": true,
+        "replay_verdict": true,
+        "replay_input_authorities": true,
+        "replay_b1_11_identity": true,
+        "replay_target_identities": true,
+        "replay_nonproduction_contract": true,
+        "expected_difference_registry": false,
+        "human_ledger_admission": true,
+        "qualification_admitted": true,
+        "provenance_authorities": true,
+        "checklist_complete": true
+      },
+      "authorities": {
+        "ordered_patch_sha256": "1d3daab13d90036da3bc112ccd2c57ebcd56ac0970cce03d856cb6ede1249238",
+        "historical_e7_patch_sha256": "9ccf4ec48462ea5f84684e3ee5c93b72bcb2b1c584dc3bdff47a4a0ec0621110",
+        "b1_11_source_manifest_sha256": "24ce2768b3804ca1744457e8a7adcf101e37a4c1390049df23179e09816957e2"
+      }
+    }
+  },
+  "preexisting_canonical_dataqual12_guard_failures": {
+    "runs": [
+      41338227878,
+      41338227843
+    ],
+    "jobs": [
+      124942495656,
+      124942495463
+    ],
+    "exact_log_failure": "AssertionError: unreviewed delta",
+    "audit": {
+      "status": "BASELINE_SOURCE_GUARD_FAILURE_REPRODUCED_NOT_A_PASS",
+      "guard": "integration/audits/verify_dataqual12_current.py",
+      "guard_sha256": "29ffdf4abc310ced579166065d31fd1eef3e91421cc11e566347080962afcfa4",
+      "expected_delta_paths": 13,
+      "candidate_qualified_tree": "c5ff9815a5f6012b8b5a99f571b019e7f1836a73",
+      "actual_merge": "0fe2157a9f2a1f5e80811252a0ad3759b3642fc6",
+      "baseline": {
+        "ref": "a4af5cc116c551cc14e08ab6897466d72a427088",
+        "delta_paths": 151,
+        "first_guard_condition_pass": false
+      },
+      "candidate": {
+        "ref": "HEAD",
+        "delta_paths": 165,
+        "first_guard_condition_pass": false
+      },
+      "production_tree_oids": {
+        "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+        "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+        "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+      },
+      "actual_first_exception": "AssertionError: unreviewed delta"
+    }
+  },
+  "selected_fci_scope": "Current-source Grass1827/Hupsel1096 portable proof consumers and change-selector route pass; full heavy F-CI not selected/claimed.",
+  "remaining_automatic_at_receipt_creation": {
+    "run": 41338227844,
+    "scope": "Automatically triggered unchanged fixed-interface groundwater closeout; source-independent broader preservation, followed live to terminal."
+  },
+  "literal_component_gates_pass": false,
+  "whole_scientific_qualification": false,
+  "whole_energy_qualification": false,
+  "production_promoted": false,
+  "remaining_scientific_question": "First material upstream state/forcing/crop divergence before day583 and full-period growth/storage/export attribution.",
+  "metadata_successor_policy": "A receipt-only successor may publish these measured actual-merge facts. It does not relabel the failed literal gates, change model source or constitute a fresh full model execution."
+}

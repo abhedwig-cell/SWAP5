@@ -1537,3 +1537,5 @@ Actual Hupsel Sprint03 evidence admission: PR1481, merge `eaae4b62c830fa88aae146
 ## Hupsel actual accepted-input diagnosis
 
 `integration/dataqual15_hupsel/UPTAKE_EVIDENCE_MANIFEST.json` and its portable raw capsule extend the unchanged C3/full-period authority with5066 identical accepted-state owner replays and16 declared original precision controls. The source-bound consumer `tests/dataqual15_hupsel/uptake_evidence.py` reconstructs accepted selection from the full lossless trial journal, checks prefix/state receipts and original source/provider deltas, and recomputes numerical witnesses. Literal component and full-period failures remain failures. Current production, native restart scope and project denominator are unchanged; whole scientific qualification remains OPEN. Admission requires the actual merge receipt.
+
+Actual accepted-input diagnosis admission: PR1482, merge `0fe2157a9f2a1f5e80811252a0ad3759b3642fc6`, exact tested whole tree and actual-merge Linux dossier PASS. Receipt: `integration/dataqual15_hupsel/UPTAKE_CANONICAL_RECEIPT.json`. Literal component and full-period gates remain failed; whole science stays OPEN.
