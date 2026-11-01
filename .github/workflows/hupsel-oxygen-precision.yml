@@ -1,0 +1,44 @@
+name: Hupsel original oxygen precision diagnosis - literal gates retained
+on:
+  push:
+    branches: [codex/hupsel-uptake-diagnosis]
+    paths:
+      - tests/dataqual15_hupsel/refine_oxygen_owner.py
+      - tests/dataqual15_hupsel/inspect_uptake_case.py
+      - .github/workflows/hupsel-oxygen-precision.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-precision-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hupsel-actual-uptake-inputs
+          run-id: 41332269267
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/observations
+      - name: Declared accuracy controls through real O0 O2 original and current owners
+        run: python3 -B tests/dataqual15_hupsel/refine_oxygen_owner.py --compiler "$(command -v gfortran-13)" --observations "$RUNNER_TEMP/observations" --output "$RUNNER_TEMP/precision"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-original-oxygen-precision-controls
+          path: |
+            ${{ runner.temp }}/precision/RESULT.json
+            ${{ runner.temp }}/precision/detailed.f90
+            ${{ runner.temp }}/precision/*.stdout
+            ${{ runner.temp }}/precision/*.stderr
+            ${{ runner.temp }}/precision/O*/*
+            ${{ runner.temp }}/precision/components/RESULT.json
+            ${{ runner.temp }}/precision/components/*.stdout
+            ${{ runner.temp }}/precision/components/*.stderr
+            ${{ runner.temp }}/precision/components/O*/visible_original_rwu.f90
+            ${{ runner.temp }}/precision/components/original-O*/BUILD.json
+            ${{ runner.temp }}/precision/components/original-O*/*.stdout
+            ${{ runner.temp }}/precision/components/original-O*/*.stderr
