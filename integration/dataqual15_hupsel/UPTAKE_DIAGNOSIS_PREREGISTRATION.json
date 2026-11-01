@@ -1,0 +1,124 @@
+{
+  "schema": "swap5.hupsel.accepted-uptake-diagnosis.v1",
+  "baseline": "a4af5cc116c551cc14e08ab6897466d72a427088",
+  "stage": "PREREGISTERED_ACTUAL_INPUT_CAPTURE",
+  "production_changed": false,
+  "owner": "Existing microscopic uptake and Bartholomeus owners; observation only",
+  "invariants": "Single existing state, formula and publication owners; unchanged physical input bytes; no checkpoint rebinding; original frozen scientific failures retained.",
+  "scientific_question": "Do original/current microscopic and oxygen routines differ on the actual identical accepted Hupsel inputs around irrigation days583/584? Separate owner differences from differing coupled trajectories.",
+  "observation": {
+    "fresh_day1_end": 585,
+    "selected_days": [
+      583,
+      584,
+      585
+    ],
+    "build": "Clean checked GNU13 O2, exact sealed recipe plus explicit output-only generated main/backend sources; original TTUTIL authority",
+    "acceptance_identity": "Select trial records by exact accepted t0/t1 receipts; verify nodal sink sum and demand match each receipt; exclude rejected/full sibling observations from replay",
+    "unchanged_trajectory_required": "All native budget/crop rows byte-value exact to immutable C3 prefix through585, original six files byte-exact",
+    "expected_seconds": 600,
+    "native_wall_cap_seconds": 1800,
+    "reason_for_prefix": "Day583/584 uptake/stress extrema need actual input records not present in the16 daily profiles. Existing full1096 is preserved; no whole-run repetition is selected."
+  },
+  "paired_criteria_before_execution": {
+    "current_replay_nodal_sink_absolute_cm_day": 1e-12,
+    "oxygen_factor_existing_source_gate": 0.0001,
+    "microscopic_existing_source_nodal_gate_cm_day": 2e-05,
+    "tighter_solver_control": "Read-only same-input counterfactual residual_tolerance=min(TolConv,Tol_2), all physical parameters unchanged. Quantify original/current differences and duration-integrated contributions; this cannot retroactively pass the original full-period gate.",
+    "classification": "No production defect or whole numerical attribution claimed until actual paired measurements support it. Preserve failed cases and bounds."
+  },
+  "test_selection": {
+    "local": "Python syntax/anchor generation and narrow component O0/O2 where Windows toolchain supports it",
+    "linux": "Real original/native fsync route; clean observer build and one fresh585-day output-only identity check; original/current component O0/O2 replay follows retained observations",
+    "not_selected": [
+      "Full F-CI",
+      "unmodified full1096 repetition",
+      "new physical law",
+      "old checkpoint identity patching"
+    ]
+  },
+  "scientific_qualification": false,
+  "canonical_admitted": false,
+  "next_safe_step": "Capture actual accepted inputs, prove output identity, then replay real original/current owners on identical records.",
+  "development_failures": [
+    {
+      "run": 41331749941,
+      "source": "b1479b1217676f50667e7a1a3c406cb671b87bee",
+      "stage": "prepare",
+      "actual_model_execution": false,
+      "reason": "Original reader requires explicit original-germination mode for the historical long rotation. Missing final argument caused early refusal.",
+      "archive_sha256": "c04873f1924366607ce66d2775052cbf0f4a630f4a374c4a0786754a503bed1d",
+      "resolution": "Retain full failed attempt. Reuse clean source/compiler-bound binaries; correct reader argument only. No source/checkpoint rebinding or repeated compilation."
+    }
+  ],
+  "first_capture_result": {
+    "run": 41332269267,
+    "source": "36a711e15270253286de7912e559e4566211461a",
+    "prefix_days": 585,
+    "budget_crop_identity": true,
+    "trial_records": 65482,
+    "accepted_cases": 5066,
+    "accepted_batch_sha256": "d98212f2d392b7d2df97501900f0f7f10e7e323d5102644f38dac4f864c99f82",
+    "native_seconds": 425.891829164
+  },
+  "first_paired_result": {
+    "run": 41333057299,
+    "source": "9a7f9f3a20a4ec181e93b9579f310e0818dec937",
+    "actual_O0_O2_executions_complete": true,
+    "O0_O2_raw_stdout_exact": true,
+    "current_nodal_replay_error": 0.0,
+    "existing_oxygen_gate_pass": false,
+    "existing_micro_gate_pass": false,
+    "oxygen_max_difference": 0.00032752555263770855,
+    "micro_max_nodal_difference_cm_day": 9.919141887246297e-05,
+    "tighter_control_max_nodal_difference_cm_day": 9.974963280368065e-07
+  },
+  "oxygen_refinement_selection": {
+    "registered_before_execution": true,
+    "question": "Separate original SOLVE accuracy1e-4 and profile carry precision from a real oxygen formula/binding difference. Worst observed current reconstruction exactly reproduces observed factors; original differs by3.275e-4. Source accuracy is respiration-factor accuracy, not a uniform RWU-factor bound after division by(max_resp_factor-1).",
+    "cases": "All5066 retained accepted inputs, O0/O2. Local three extremal cases first.",
+    "original_accuracy_controls": [
+      1e-06,
+      1e-08,
+      1e-10
+    ],
+    "changed_source": "Only literal accuracy = 1.d-4 in the generated original oxygenstress provider. All model formulas/input values and current source unchanged. Original literal gate stays failed.",
+    "criteria": "Measure refinement response and same-input full original oxygen\u2192micro uptake. No retroactive gate/limit change. Retain nonmonotone/failed controls.",
+    "expected_seconds": 240,
+    "per_process_cap_seconds": 600,
+    "no_new_whole_native_trajectory": true,
+    "local_extremal_findings": {
+      "three_cases": [
+        2294,
+        2708,
+        2716
+      ],
+      "O0_O2_stdout_exact": true,
+      "original_accuracy_only_max_oxygen_errors": [
+        0.0003275255525364562,
+        0.00025255356800835127,
+        0.0002522616216902307,
+        0.0002522577550561067
+      ],
+      "current_reconstruction_matches_observed": true,
+      "interpretation": "Accuracy refinement alone plateaus. No complete numerical attribution yet."
+    },
+    "additional_control_before_execution": {
+      "source_inspection": "Original SOLVE returns ZBREND root without re-evaluating myfunc at that returned point, while profile propagation reads saved C_macro. Current owner explicitly refreshes concentration at published respiration factor.",
+      "controls": "Keep all four original accuracies. Additionally evaluate myfunc(SOLVE) once after the returned root at1e-4 and1e-10; no formula/input change. Diagnose stale concentration carry separately from stopping accuracy.",
+      "classification": "Legacy numerical-state candidate only; do not label a defect or accept corrected reference before measured discrimination.",
+      "expected_seconds_all_cases": 360
+    },
+    "published_macro_control_local_result": {
+      "literal_accuracy_max_error": 0.0003275255525364562,
+      "tight_accuracy_fresh_macro_max_error": 0.0002522577243375679,
+      "interpretation": "Fresh returned-point concentration and solve precision do not remove the plateau. No sole-cause or defect claim."
+    },
+    "quadrature_control_before_execution": {
+      "independent_witness": "Incomplete-beta change of variables and independent log-domain quadrature agree at50 and80 decimal digits on the actual three selected node7 states. First film truth1.1003976083804957e-5m; current1.1003966387414686e-5m, literal original1.1000810724961178e-5m. Current film is closer to the independent truth.",
+      "additional_original_only_variants": "Original standard-MvG QROMBD EPS1e-8 and1e-10 with accuracy1e-10 and published-root refresh. No source formula change, no current owner change.",
+      "purpose": "Test quadrature precision as the remaining oxygen difference; preserve failed literal1e-4 component gate.",
+      "expected_all_case_seconds": 480
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schema": "swap5.hupsel.accepted-uptake-diagnosis.v1",
   "baseline": "a4af5cc116c551cc14e08ab6897466d72a427088",
-  "stage": "PREREGISTERED_ACTUAL_INPUT_CAPTURE",
+  "stage": "ACTUAL_ACCEPTED_INPUTS_MEASURED_NUMERICAL_DIFFERENCES_QUALIFIED_SCIENCE_OPEN",
   "production_changed": false,
   "owner": "Existing microscopic uptake and Bartholomeus owners; observation only",
   "invariants": "Single existing state, formula and publication owners; unchanged physical input bytes; no checkpoint rebinding; original frozen scientific failures retained.",
@@ -39,7 +39,7 @@
   },
   "scientific_qualification": false,
   "canonical_admitted": false,
-  "next_safe_step": "Capture actual accepted inputs, prove output identity, then replay real original/current owners on identical records.",
+  "next_safe_step": "Locate first material upstream state/forcing/crop divergence before day583; retain full scientific gate and literal component failures.",
   "development_failures": [
     {
       "run": 41331749941,
@@ -120,5 +120,22 @@
       "purpose": "Test quadrature precision as the remaining oxygen difference; preserve failed literal1e-4 component gate.",
       "expected_all_case_seconds": 480
     }
-  }
+  },
+  "diagnosis_qualified": true,
+  "report": "UPTAKE_DIAGNOSIS_REPORT.md",
+  "manifest": "UPTAKE_EVIDENCE_MANIFEST.json",
+  "immutable_registration": "UPTAKE_DIAGNOSIS_PREREGISTRATION.json",
+  "consumer": "tests/dataqual15_hupsel/uptake_evidence.py",
+  "full_precision_result": {
+    "run": 41334987954,
+    "cases_per_variant": 5066,
+    "variants": 16,
+    "all_complete": true,
+    "all_original_checks_pass": true,
+    "corresponding_O0_O2_stdout_exact": true,
+    "literal_oxygen_max_error": 0.00032752555263770855,
+    "refined_original_quadrature_oxygen_max_error": 7.879438482309188e-06,
+    "current_oxygen_reconstruction_error": 0.0
+  },
+  "classification": "Bounded component differences demonstrated numerical. No native physical defect/new model law demonstrated. Whole earlier coupled input trajectory remains unresolved."
 }

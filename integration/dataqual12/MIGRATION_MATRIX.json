@@ -186,7 +186,9 @@
       "current_evidence": "integration/dataqual15_hupsel/UNION_C3_HUPSEL_RESULT.json",
       "scientific_followup_evidence": "integration/dataqual15_hupsel/SPRINT03_SCIENCE_MANIFEST.json",
       "scientific_followup_status": "FULL1096_EXECUTED_BALANCES_AND_RESTARTS_PRESERVED_SCIENTIFIC_GATE_FAILED_OPEN",
-      "remaining_science": "Eight full original DTMAX references and fresh native0.01 diagnostic retain unexplained actual-growth/water/export residuals outside immutable bounds. Whole energy open; no production promotion."
+      "remaining_science": "Eight full original DTMAX references and fresh native0.01 diagnostic retain unexplained actual-growth/water/export residuals outside immutable bounds. Whole energy open; no production promotion.",
+      "actual_input_followup_evidence": "integration/dataqual15_hupsel/UPTAKE_EVIDENCE_MANIFEST.json",
+      "actual_input_followup_scope": "5066 actual accepted states over583/584/585, current nodal replay exact, literal component gates FAIL retained;16 original precision controls and independent high-precision film witness explain bounded numerical differences. Earlier whole-trajectory input divergence and full scientific qualification remain open."
     },
     {
       "project": "2.grassgrowth",
@@ -792,5 +794,14 @@
     "report": "integration/dataqual15_hupsel/SPRINT03_SCIENTIFIC_REPORT.md",
     "canonical_merge": "eaae4b62c830fa88aae146e55aa1b1018e54755d",
     "canonical_receipt": "integration/dataqual15_hupsel/SPRINT03_MERGE_RECEIPT.json"
+  },
+  "dataqual15_hupsel_actual_input_followup": {
+    "distinct_accepted_cases": 5066,
+    "original_numeric_variants_O0_O2": 16,
+    "new_original_projects": 0,
+    "new_full_native_trajectories": 0,
+    "production_changed": false,
+    "whole_scientific_qualification": false,
+    "report": "integration/dataqual15_hupsel/UPTAKE_DIAGNOSIS_REPORT.md"
   }
 }
