@@ -2,10 +2,11 @@
 
 ## Sprint03: thermal control and a reproduced small-drainage domain defect
 
-**Current repaired code passes Linux/Windows runtime contracts; full qualification is running.** The canonical
-branch remains unchanged. The complete original1827-day proof still belongs to
-its immutable predecessor source. No new full-project scientific qualification
-or production promotion is claimed.
+**The explicit registered thermal profile completes all1827days and passes all twenty fixed criteria.** The canonical
+branch remains unchanged. The original baseline proof remains an immutable
+predecessor authority; this new profile has its own complete source-bound proof.
+This is a conditional numerical-resolution qualification. Whole-model scientific
+and energy equivalence and production admission remain open.
 
 Registration `015cc3cb84c2e6b2daee3f4ffc0141dfdd8ace38` fixes a named thermal
 profile before candidate results: preserve the incumbent water indicator and
@@ -71,7 +72,7 @@ geometry, solver tolerances, thermal1e-5C and all twenty frozen bounds stay fixe
 The repaired code passes Linux GNU13.3 and Windows GNU16.2 O0/O2 real-runtime contracts, including signed
 small-flux conservation, the original activity cutoff under the default policy,
 legacy edge geometry and exact unchanged admitted-magnitude results. The current
-repaired executable is running the original full period in Actions run41249418778.
+repaired executable completes the original full period in Actions run41249418778.
 This fresh execution starts on day1; the first attempt's1191 checkpoint belongs to a
 different executable and is not rebound. Native and original-reference phases
 are separated so valid independent reference data can be reused if a native
@@ -81,7 +82,11 @@ not convert an earlier failure into a pass.
 The explicit profile is exposed through `tools/solute/build_grass_thermal.py`
 and `tests/dataqual15/run_thermal.py`, small hash-verified adapters over the
 unchanged sealed startup recipe and original-input runner. Their native smoke
-test and the supplemental groundwater restart113->117 are selected but pending.
+test and the supplemental groundwater restart113->117 both pass with native exit0.
+The latter preserves the exact source-bound origin and reproduces the target
+checkpoint bytes and every daily budget/crop row in12.8426seconds. The fresh
+checkedO2 build completes in81.6750seconds and the ordinary runner reproduces
+the full trajectory's first day exactly in7.8323seconds.
 The existing original physical source component evidence remains a predecessor
 authority; its hashes and failed gates are not retargeted to this new postimage.
 
@@ -103,8 +108,54 @@ are exact; twelve new dates give38 noninitial dates plus initial state. Their
 physical inputs and provider source hashes are unchanged. Local raw controls
 independently pass. Reference archive SHA256 is
 `d13dd5144990f2a5fb32a8a4f887bd9e06df8f403c32ec023407b43fc190873d`.
-The native full trajectory and combined scientific assessment remain pending;
-no new full-source qualification result is assumed.
+The native checkedO2 full trajectory completes1827days with exit0, uncensored,
+in4568.7280seconds and1819204 accepted steps. Its executable SHA256 is
+`914c4fc1271fd800acee17f768e9821a3c568209a386ca48c1d5b068f8406c0f`.
+All five original physical inputs are byte-identical. Both O0/O2 default140-day
+controls match the predecessor budget, crop and physical checkpoint payloads;
+the thermal O0/O2 first140days also match exactly. Five authentic restart windows
+126->140,365->367,918->922,1786->1787 and1800->1827 reproduce exact target
+checkpoint bytes and daily outputs. Both missing-profile negative controls reject
+before creating a checkpoint. The independent stock/flux residual is at most
+2.44249e-14cm; daily mass residual3.94962e-14cm and heat accounting residual
+2.98409e-12J/cm2 do not establish whole energy equivalence.
+
+The native trajectory and two unchanged original references pass all twenty
+frozen envelopes. Maximum sampled temperature error is0.0007684663C against
+0.0027727671C; normalized pressure error0.000669172 against0.008295685;
+water-content error0.000050966 against0.000404915cm3/cm3. Daily actual
+transpiration differs by at most0.000160441cm/day, drought reduction by
+0.000152264cm/day, wet-stress reduction by0.000171453cm/day, and cumulative
+actual harvested biomass by2.763599kg/ha. Each is within its registered bound.
+All three reference-profile resolution tests pass on the38 noninitial dates;
+maximum temperature refinement change0.000170655C is below0.000924257C.
+
+The Linux source-bound raw consumer, authentic groundwater restart, fresh
+builder/normal runner and final hard scientific assertion all pass in
+job124699581482. All four jobs in run41249418778 finish SUCCESS. The locally
+assembled trajectory is exactly equal to the Linux combined result, then packed
+with the current Linux/Windows O0/O2 runtime binaries/logs and supplemental
+receipts. `sprint03_evidence.py` independently rechecks that complete archive.
+
+The small-drainage domain cliff is classified as a reproduced implementation
+domain defect, repaired only for the explicit numerical profile. The previously
+large temperature/stress/crop trajectory differences are demonstrated numerical
+differences within this unchanged resolution envelope; paired physical-owner
+proofs remain scoped to their unchanged source surfaces. This does not assert
+zero model error or general ecological equivalence. The profile is qualified
+for the selected processes and observations, not automatically for other
+physical combinations or compilers. No heat multirate/subcycling was introduced.
+
+The durable raw archive and manifest are `SPRINT03_EVIDENCE.tar.xz` and
+`SPRINT03_EVIDENCE_MANIFEST.json`. Recheck without rerunning the model:
+
+```bash
+python -B tests/dataqual15/sprint03_evidence.py
+```
+
+Fresh-build and authentic-restart commands remain in the unchanged qualification
+workflow and sealed raw event records. The failed attempt01 source and archive
+are preserved separately and never rebound to the repaired executable.
 
 The original coarse temperature gate and its earlier drought refinement failure
 remain failed. Whole energy qualification and production admission remain open;

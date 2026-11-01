@@ -575,8 +575,8 @@
     "branch": "codex/grassgrowth-sprint03",
     "canonical_baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
     "canonical_modified": false,
-    "status": "REPAIRED_SOURCE_PUBLISHED_LINUX_RUNTIME_PASS_FULL_QUALIFICATION_RUNNING",
-    "current_source_full_execution_proven": false,
+    "status": "REGISTERED_THERMAL_PROFILE_FULL1827_AND_TWENTY_CRITERIA_PASS",
+    "current_source_full_execution_proven": true,
     "current_source_scientific_qualification": false,
     "historical_attempt01_source": "980b824953a598cf356b8c88ce7ccfffff63e7ab",
     "historical_attempt01_days": 1191,
@@ -587,21 +587,40 @@
     "original_preregistered_gate_pass": false,
     "production_promotion": false,
     "counts_unchanged": true,
-    "evidence_location": "integration/dataqual15/SPRINT03_ATTEMPT01_EVIDENCE.tar.xz and immutable original Actions artifact13056865907, run41232008608; publication explicitly authorized and completed at2f15e783a2f3d36aa6f3f2186b0cdc4d8e29485b. Current repaired source qualification is separate and running.",
+    "evidence_location": "integration/dataqual15/SPRINT03_EVIDENCE.tar.xz and SPRINT03_EVIDENCE_MANIFEST.json; complete raw trajectory, original references, bound checkpoints/binaries, current Linux/Windows runtime and live supplemental receipts. Immutable failed attempt01 remains separately preserved.",
     "repair_scope": "Explicit thermal numerical profile only: keep authoritative small signed scalar using existing DIVDRA unit geometry and conservative final-node closure. Physical trial and temporal certificate agree. Default legacy and previously admitted magnitudes are unchanged.",
-    "remaining": "New repaired-source full day1-1827 execution, native restart windows, newly sampled original reference profiles, hard20quantity assessment. Source/executable differs from attempt01, so do not rebind its1191 checkpoint.",
+    "remaining": "Whole-model scientific/energy equivalence and canonical admission remain open. Original coarse temperature gate and earlier drought refinement failure remain failed; this explicitly selected numerical profile passes its unchanged registered criteria.",
     "current_repaired_source_qualification": {
+      "status": "REGISTERED_THERMAL_PROFILE_FULL1827_AND_TWENTY_CRITERIA_PASS",
+      "scope": "Explicit thermal-control-1e-5C numerical profile, literal original physical inputs/processes, sampled113-node profiles; conditional numerical-resolution envelope, not whole-model scientific or energy qualification.",
       "source_commit": "2f15e783a2f3d36aa6f3f2186b0cdc4d8e29485b",
       "run_id": 41249418778,
       "run_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41249418778",
-      "status": "RUNNING_FULL_NATIVE_AND_INDEPENDENT_REFERENCE_NO_GATE_CLAIM",
-      "runtime_job": 124679606263,
-      "runtime_status": "PASS_O0_O2",
-      "runtime_seconds": 215.09231705999986,
-      "runtime_artifact_sha256": "31b55bc7fdb2d8926ed6331a47f2e6841f4f1c7c0a9d7e44270fb2fcf510a1d5",
-      "native_job": 124680556256,
-      "reference_job": 124680556194,
-      "canonical_modified": false,
+      "all_jobs": "SUCCESS",
+      "jobs": {
+        "runtime": 124679606263,
+        "native": 124680556256,
+        "reference": 124680556194,
+        "assessment": 124699581482
+      },
+      "trajectory": {
+        "full_days": 1827,
+        "native_exit": 0,
+        "native_seconds": 4568.727975093,
+        "native_censored": false,
+        "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+        "executable_sha256": "914c4fc1271fd800acee17f768e9821a3c568209a386ca48c1d5b068f8406c0f",
+        "adaptive_application_binding_sha256": "78f3cdd48e02e37ad53949a3b004083f21df296e275fd6506fb0d73430f32481",
+        "maximum_daily_mass_residual_cm": 3.9496184101039944e-14,
+        "maximum_daily_heat_accounting_residual_j_cm2": 2.9840852011631114e-12,
+        "maximum_independent_stock_flux_residual_cm": 2.4424906541753444e-14,
+        "total_accepted_steps": 1819204,
+        "twenty_registered_criteria_pass": true,
+        "maximum_profile_temperature_error_c": 0.000768466258985967,
+        "original_gate_pass": false,
+        "production_promotion": false,
+        "canonical_modified": false
+      },
       "reference": {
         "job": 124680556194,
         "status": "SUCCESS_INDEPENDENT_REFERENCE_RAW_CONTROLS_PASS",
@@ -621,7 +640,135 @@
           785.454144709
         ],
         "registered_gate_pass": null
-      }
-    }
+      },
+      "reference_resolution": {
+        "status": "INDEPENDENT_REFERENCE_PROFILE_RESOLUTION_MEASURED",
+        "noninitial_profile_dates": 38,
+        "assessment": {
+          "PROFILE_head_cm": {
+            "reference_change": 0.00038988366170914293,
+            "reference_resolution_limit": 0.0027652381872015964,
+            "passed": true
+          },
+          "PROFILE_water_content": {
+            "reference_change": 1.7725660488410178e-05,
+            "reference_resolution_limit": 0.00013497163298232794,
+            "passed": true
+          },
+          "PROFILE_temperature_c": {
+            "reference_change": 0.00017065470721089326,
+            "reference_resolution_limit": 0.000924256715727157,
+            "passed": true
+          }
+        },
+        "all_pass": true,
+        "native_qualification_proven": false
+      },
+      "restarts": [
+        [
+          126,
+          140
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          918,
+          922
+        ],
+        [
+          1786,
+          1787
+        ],
+        [
+          1800,
+          1827
+        ],
+        [
+          113,
+          117
+        ]
+      ],
+      "restart_criterion": "Same executable and unchanged bound origin; target checkpoint bytes and all daily budget/crop rows exact.",
+      "default_O0_O2_140": "ALL_ROWS_AND_CAPTURED_PHYSICAL_PAYLOAD_EXACT_PREDECESSOR",
+      "thermal_O0_O2_140": "ALL_ROWS_AND_CAPTURED_PHYSICAL_PAYLOAD_EXACT",
+      "linux_runtime": {
+        "status": "PASS_O0_O2",
+        "events": 564,
+        "native_executions": 10,
+        "seconds": 215.09231705999986,
+        "artifact_zip_sha256": "31b55bc7fdb2d8926ed6331a47f2e6841f4f1c7c0a9d7e44270fb2fcf510a1d5"
+      },
+      "windows_runtime": {
+        "status": "PASS_O0_O2",
+        "events": 564,
+        "native_executions": 10,
+        "seconds": 353.77450289949775,
+        "compiler": "GNU16.2"
+      },
+      "supplemental_executions": {
+        "groundwater-restart": {
+          "seconds": 12.84260295,
+          "returncode": 0,
+          "censored": false,
+          "executable_sha256": "914c4fc1271fd800acee17f768e9821a3c568209a386ca48c1d5b068f8406c0f",
+          "origin_sha256": "bb047f1535564dfc48f9ea2d712d9cff780bd41e4e1baf0200f286523ccedeaa",
+          "target_sha256": "3ec479ed111aa3f6ebeea66bbc02ea419a0ca2ab98beba59662df5b4a8d76c59",
+          "status": "SPRINT03_AUTHENTIC_GROUNDWATER_RESTART113_117_EXACT",
+          "full_report": "supplemental/groundwater-restart-RESULT.json"
+        },
+        "profile-build": {
+          "seconds": 81.67498864000001,
+          "returncode": 0,
+          "censored": false,
+          "runner_seconds": 7.832339900999983,
+          "runner_returncode": 0,
+          "status": "SPRINT03_FRESH_PROFILE_BUILDER_ORIGINAL_DAY1_EXACT",
+          "executable_sha256": "3eb0a5dc387a95fb5aa8d0673ab26a05e98b24a17a663c3a8e697ea5b687d659",
+          "full_report": "supplemental/profile-build-RESULT.json"
+        }
+      },
+      "independent_water_stock_flux_residual_cm": 2.4424906541753444e-14,
+      "canonical_before_and_after": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+      "canonical_modified": false,
+      "production_promotion": false,
+      "original_gate_pass": false,
+      "whole_model_scientific_qualification": false,
+      "durable_evidence": {
+        "archive": "integration/dataqual15/SPRINT03_EVIDENCE.tar.xz",
+        "manifest": "integration/dataqual15/SPRINT03_EVIDENCE_MANIFEST.json",
+        "archive_sha256": "19f6f3f6dc45a115bf161ad7efff22006336ded20dbec047ad7abd859974ff2d",
+        "archive_bytes": 25987668,
+        "archive_files": 4215,
+        "raw_consumer": "SOURCE_BOUND_SPRINT03_RAW_EVIDENCE_PASS",
+        "verified_platform": "Windows read-only consumer; actual Linux execution in run41249418778",
+        "source_current": true
+      },
+      "event_costs_seconds": {
+        "build-O0": 21.412061281000007,
+        "default-O0": 77.22580028400002,
+        "adaptive-O0": 461.73204615300006,
+        "build-O2": 58.03377617299998,
+        "default-O2": 54.54945982800007,
+        "adaptive-O2": 4568.727975093,
+        "restart-126-140": 25.814395397000226,
+        "restart-365-367": 4.202786662000108,
+        "restart-918-922": 10.806332092999583,
+        "restart-1786-1787": 3.8027173529999345,
+        "restart-1800-1827": 77.84737745100028,
+        "missing-profile-marker": 0.20052393800051505,
+        "missing-profile-argument": 0.20055283200053964,
+        "reference-compile-profiles": 0.6009516129999923,
+        "reference-compile-main": 0.200933727000006,
+        "reference-link": 0.2006225340000043,
+        "reference-0.000625": 394.81077927700005,
+        "reference-0.0003125": 785.454144709
+      },
+      "event_commands_exits_and_censoring": "Sealed NATIVE_RESULT.json, REFERENCE_RESULT.json, RESULT.json and original Actions logs in durable archive; native and reference processes uncensored, negative controls deliberately nonzero.",
+      "twenty_field_assessment": "SCIENTIFIC_DIFFERENCES.json sprint03.current_repaired_source_qualification.assessment and independently recomputed archive RESULT.json"
+    },
+    "registered_thermal_profile_qualified": true,
+    "closure": "VOLLEDIG UITGEVOERD \u2014 WETENSCHAPPELIJKE KWALIFICATIE OPEN"
   }
 }
