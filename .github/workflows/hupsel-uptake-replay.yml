@@ -1,0 +1,51 @@
+name: Hupsel identical-input owners - full science OPEN
+on:
+  push:
+    branches: [codex/hupsel-uptake-diagnosis]
+    paths:
+      - tests/dataqual15_hupsel/paired_uptake.f90
+      - tests/dataqual15_hupsel/replay_uptake.py
+      - .github/workflows/hupsel-uptake-replay.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  paired-real-owners:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hupsel-actual-uptake-inputs
+          run-id: 41332269267
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/observations
+      - name: Compile and execute real original/current O0 O2 on identical accepted inputs
+        run: python3 -B tests/dataqual15_hupsel/replay_uptake.py --compiler "$(command -v gfortran-13)" --observations "$RUNNER_TEMP/observations" --output "$RUNNER_TEMP/paired"
+      - name: Retain the preregistered existing component gates
+        run: |
+          python3 -B - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads((Path(os.environ['RUNNER_TEMP'])/'paired/RESULT.json').read_text())
+          assert r['status']=='ACTUAL_ACCEPTED_IDENTICAL_INPUT_OWNERS_MEASURED'
+          for opt,m in r['paired'].items():
+              assert m['existing_oxygen_gate_pass'],(opt,'oxygen',m)
+              assert m['existing_micro_gate_pass'],(opt,'micro',m)
+              assert m['source_checks_all_three'],(opt,'source convergence',m)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-identical-input-owner-replay
+          path: |
+            ${{ runner.temp }}/paired/RESULT.json
+            ${{ runner.temp }}/paired/*.stdout
+            ${{ runner.temp }}/paired/*.stderr
+            ${{ runner.temp }}/paired/O*/*
+            ${{ runner.temp }}/paired/original-O*/BUILD.json
+            ${{ runner.temp }}/paired/original-O*/*.stdout
+            ${{ runner.temp }}/paired/original-O*/*.stderr
