@@ -1,0 +1,54 @@
+name: Hupsel sprint03 full-period scientific comparison
+on:
+  push:
+    branches: [codex/hupsel-sprint03]
+    paths:
+      - .github/workflows/hupsel-sprint03.yml
+      - tests/dataqual15_hupsel/scientific_followup.py
+      - tests/dataqual15_hupsel/inspect_profiles.py
+permissions:
+  contents: read
+concurrency:
+  group: hupsel-sprint03-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  scientific-reference:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Preserve existing full current-source execution and native decoder authority
+        run: python3 -B tests/dataqual15_hupsel/verify_union_c3_hupsel.py
+      - name: Real original refinements and independent full-period stock and profile comparison
+        run: python3 -B tests/dataqual15_hupsel/scientific_followup.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/hupsel-science"
+      - name: Frozen scientific gate
+        run: python3 -c "import json,os; from pathlib import Path; r=json.loads((Path(os.environ['RUNNER_TEMP'])/'hupsel-science/RESULT.json').read_text()); assert r['registered_gate_pass'],r['assessment']"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-sprint03-science
+          path: |
+            ${{ runner.temp }}/hupsel-science/RESULT.json
+            ${{ runner.temp }}/hupsel-science/PREREGISTRATION.json
+            ${{ runner.temp }}/hupsel-science/FROZEN_BOUNDS_BEFORE_HOLDOUT.json
+            ${{ runner.temp }}/hupsel-science/OUTPUT_ONLY.diff
+            ${{ runner.temp }}/hupsel-science/hupsel_output.f90
+            ${{ runner.temp }}/hupsel-science/swap431
+            ${{ runner.temp }}/hupsel-science/link.args
+            ${{ runner.temp }}/hupsel-science/*.stdout
+            ${{ runner.temp }}/hupsel-science/*.stderr
+            ${{ runner.temp }}/hupsel-science/original-O2/BUILD.json
+            ${{ runner.temp }}/hupsel-science/original-O2/*.stdout
+            ${{ runner.temp }}/hupsel-science/original-O2/*.stderr
+            ${{ runner.temp }}/hupsel-science/dtmax-*/*.csv
+            ${{ runner.temp }}/hupsel-science/dtmax-*/*.swp
+            ${{ runner.temp }}/hupsel-science/dtmax-*/*.crp
+            ${{ runner.temp }}/hupsel-science/dtmax-*/*.met
+            ${{ runner.temp }}/hupsel-science/dtmax-*/*.dra
+            ${{ runner.temp }}/hupsel-science/dtmax-*/swap.ok
+            ${{ runner.temp }}/hupsel-science/dtmax-*/swap.log
+            ${{ runner.temp }}/hupsel-science/dtmax-*/swap.wrn

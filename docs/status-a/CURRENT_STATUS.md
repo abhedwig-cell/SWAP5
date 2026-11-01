@@ -1,5 +1,7 @@
 # SWAP5 Status-A current status
 
+Hupsel Sprint03 full-period follow-up preserves the complete original1096-day execution and native restart authority. Eight real original timestep references plus a fresh full native DTMAX0.01 diagnostic do not remove actual-growth/storage/export differences outside the unchanged frozen bounds. Independent final chemical stock plus external export closes the literal48mg/cm2 application to8.896e-12mg/cm2. Scientific qualification and whole energy remain OPEN; no production promotion or project-count change. Authority: `integration/dataqual15_hupsel/SPRINT03_SCIENTIFIC_REPORT.md`, `SPRINT03_SCIENCE_MANIFEST.json` and `python -B tests/dataqual15_hupsel/verify_sprint03.py`. Canonical admission requires the actual merge receipt.
+
 Canonically admitted DATAQUAL15 experimental follow-up (PR1479, merge51ee43e) preserves the original production owners
 and replays2922 accepted native intervals through real original/current oxygen
 and whole uptake routines in O0/O2, including7661 stressed node evaluations.

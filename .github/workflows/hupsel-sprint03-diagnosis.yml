@@ -1,0 +1,53 @@
+name: Hupsel distinguishing timestep diagnosis
+on:
+  push:
+    branches: [codex/hupsel-sprint03]
+    paths:
+      - tests/dataqual15_hupsel/diagnose_refinement.py
+      - .github/workflows/hupsel-sprint03-diagnosis.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  native-refinement:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Fresh day1 numerical variant using exact sealed native executable
+        run: python3 -B tests/dataqual15_hupsel/diagnose_refinement.py --phase native --output "$RUNNER_TEMP/native"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-native-refinement
+          path: |
+            ${{ runner.temp }}/native/RESULT.json
+            ${{ runner.temp }}/native/*.stdout
+            ${{ runner.temp }}/native/*.stderr
+            ${{ runner.temp }}/native/swap5_hupsel
+            ${{ runner.temp }}/native/read_fallow
+            ${{ runner.temp }}/native/native-dtmax-0.01/*
+  original-refinement:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: hupsel-sprint03-science
+          run-id: 41310191296
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/observations
+      - name: Two finer original references without rerunning previous cases
+        run: python3 -B tests/dataqual15_hupsel/diagnose_refinement.py --phase reference --observations "$RUNNER_TEMP/observations" --output "$RUNNER_TEMP/original"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-original-refinement
+          path: ${{ runner.temp }}/original

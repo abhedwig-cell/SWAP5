@@ -1,5 +1,13 @@
 # Current union C3: original Hupsel preservation
 
+Scientific follow-up: [Sprint03 full-period report](SPRINT03_SCIENTIFIC_REPORT.md)
+adds eight full original references, a fresh native numerical diagnostic and
+independent water/chemical inventories. Its frozen scientific gate remains
+failed; scientific qualification is OPEN. It preserves this unchanged full-run
+and restart authority. The new portable capsule and its independent consumer
+are recorded in `SPRINT03_SCIENCE_MANIFEST.json`; admission is recorded only by
+the actual `SPRINT03_MERGE_RECEIPT.json`.
+
 The actual current union source (`d6514ab`; O2 build metadata `f73bbee`) completes the unchanged original Hupsel project **from day1 through day1096**, return0, in667.176s. This proof uses the current C3 provider bytes, including its macroscopic oxygen correction. It does not substitute the earlier ef9 macro-source hash.
 
 All eight full budget, crop, germination, endpoint, state, temperature and native files are byte-identical to the previously qualified Hupsel execution. Maximum residuals remain8.302e-14cm water,9.797e-12mg/cm² solute and1.918e-12J/cm² observed soil-heat accounting.

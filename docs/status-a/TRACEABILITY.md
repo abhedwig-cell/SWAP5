@@ -1527,3 +1527,7 @@ processes,48 extracting-sink disk cases,316 pristine predecessor controls and13
 current corruption controls. Original FSI35 is rerun on the composed source.
 Status/evidence: `integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json`.
 The separate actual merge receipt controls admission, not the checkpoint or PR.
+
+## Hupsel full-period scientific follow-up
+
+`integration/dataqual15_hupsel/SPRINT03_SCIENCE_MANIFEST.json` and its portable raw capsule extend the unchanged C3 full1096/restart authority. `tests/dataqual15_hupsel/verify_sprint03.py` recomputes the original FAILED scientific gate and both full-period distinguishing diagnostics. Dossier integrity PASS is not scientific-equivalence PASS. Full scientific qualification, whole energy and production promotion remain open; denominator remains2/3 full executions and0/3 full scientific qualification. See `SPRINT03_SCIENTIFIC_REPORT.md` and the actual merge receipt for admission.
