@@ -217,6 +217,18 @@
       "no_new_physics": true,
       "no_checkpoint_rebinding": true,
       "no_full_fci": true
-    }
+    },
+    "status": "FULLY_EXECUTED_SCIENTIFIC_QUALIFICATION_OPEN",
+    "execution_complete": true,
+    "water_ledger_qualified": true,
+    "selected_solute_mass_qualified": true,
+    "restarts_preserved": true,
+    "production_promoted": false,
+    "canonical_admitted": false,
+    "report": "SPRINT03_SCIENTIFIC_REPORT.md",
+    "manifest": "SPRINT03_SCIENCE_MANIFEST.json",
+    "consumer": "tests/dataqual15_hupsel/verify_sprint03.py",
+    "diagnosis_result": "Both original refinements and fresh native DTMAX0.01 full1096 completed uncensored. Actual growth/storage residuals persist. No causal production defect demonstrated; scientific classification4 remains OPEN.",
+    "next_safe_step": "Paired actual accepted-state original/current microscopic and oxygen input replay before any production repair; retain all failed frozen limits."
   }
 }

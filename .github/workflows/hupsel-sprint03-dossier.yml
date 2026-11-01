@@ -1,0 +1,26 @@
+name: Hupsel sprint03 dossier integrity - science OPEN
+on:
+  push:
+    branches: [codex/hupsel-sprint03, integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/full_period_analysis.py
+      - tests/dataqual15_hupsel/verify_sprint03.py
+      - integration/dataqual15_hupsel/SPRINT03_*
+      - .github/workflows/hupsel-sprint03-dossier.yml
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/full_period_analysis.py
+      - tests/dataqual15_hupsel/verify_sprint03.py
+      - integration/dataqual15_hupsel/SPRINT03_*
+      - .github/workflows/hupsel-sprint03-dossier.yml
+permissions:
+  contents: read
+jobs:
+  immutable-dossier:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Recompute full1096 evidence and retain failed frozen scientific gate
+        run: python3 -B tests/dataqual15_hupsel/verify_sprint03.py
