@@ -1,0 +1,50 @@
+name: Hupsel actual accepted uptake diagnosis
+on:
+  push:
+    branches: [codex/hupsel-uptake-diagnosis]
+    paths:
+      - tests/dataqual15_hupsel/observe_uptake.py
+      - tests/dataqual15_hupsel/uptake_observation.inc
+      - .github/workflows/hupsel-uptake-diagnosis.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  actual-inputs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check unchanged complete native authority
+        run: python3 -B tests/dataqual15_hupsel/verify_sprint03.py
+      - uses: actions/download-artifact@v4
+        with:
+          name: hupsel-actual-uptake-inputs
+          run-id: 41331749941
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/inherited
+      - name: Capture actual accepted microscopic and oxygen inputs
+        run: python3 -B tests/dataqual15_hupsel/observe_uptake.py --compiler "$(command -v gfortran-13)" --reuse-bundle "$RUNNER_TEMP/inherited" --output "$RUNNER_TEMP/uptake"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-actual-uptake-inputs
+          path: |
+            ${{ runner.temp }}/uptake/RESULT.json
+            ${{ runner.temp }}/uptake/*.stdout
+            ${{ runner.temp }}/uptake/*.stderr
+            ${{ runner.temp }}/uptake/accepted-inputs.dat
+            ${{ runner.temp }}/uptake/observed_*.f90
+            ${{ runner.temp }}/uptake/builder.py
+            ${{ runner.temp }}/uptake/case/*
+            ${{ runner.temp }}/uptake/build/BUILD.json
+            ${{ runner.temp }}/uptake/build/EVENTS.json
+            ${{ runner.temp }}/uptake/build/swap5_hupsel_germination
+            ${{ runner.temp }}/uptake/build/read_fallow
+            ${{ runner.temp }}/uptake/build/*.stdout
+            ${{ runner.temp }}/uptake/build/*.stderr
+            ${{ runner.temp }}/uptake/original-O2/BUILD.json
+            ${{ runner.temp }}/uptake/original-O2/*.stdout
+            ${{ runner.temp }}/uptake/original-O2/*.stderr

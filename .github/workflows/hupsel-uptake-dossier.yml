@@ -1,0 +1,31 @@
+name: Hupsel accepted-state dossier integrity - science OPEN
+on:
+  push:
+    branches: [codex/hupsel-uptake-diagnosis, integration/f-ci-canonical]
+    paths:
+      - integration/dataqual15_hupsel/UPTAKE_*
+      - tests/dataqual15_hupsel/uptake_evidence.py
+      - tests/dataqual15_hupsel/package_uptake.py
+      - .github/workflows/hupsel-uptake-dossier.yml
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - integration/dataqual15_hupsel/UPTAKE_*
+      - tests/dataqual15_hupsel/uptake_evidence.py
+      - tests/dataqual15_hupsel/package_uptake.py
+      - .github/workflows/hupsel-uptake-dossier.yml
+permissions:
+  contents: read
+jobs:
+  source-bound-diagnosis:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install isolated scientific witness dependency
+        run: python -m pip install --disable-pip-version-check -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Recompute raw accepted selection and numerical witnesses; retain failed literal gates
+        run: python -B tests/dataqual15_hupsel/uptake_evidence.py
