@@ -1,0 +1,29 @@
+{
+  "archive_sha256": "46ba4ef8101cf8a4b533f3d8c12761fb20d71488ea634e9f5f77862be29ed277",
+  "archive_files": 109,
+  "source_sha256": {
+    "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+    "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+    "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+    "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+    "src/process/mod_restricted_soil_temperature.f90": "24932aeef598a52e2e5f7eb85bd981bb95f48f8d3c86fe2d2d3a7beb7bb1b6d1",
+    "tests/dataqual15/energy_stock_driver.f90": "12d6258ef8315d4c74eb563f555418a431bd2f84ac0dea1e2d9c7eabb517d1ee",
+    "tests/dataqual15/qualify_energy_stock.py": "9cd8a267e5911c99a8b6196b921fd66386349c2d02f095f384669c0311bda54a",
+    "tests/dataqual15/checkpoint_layout.py": "0e626a5d92c2f6414da718b69d2bf4c922b0bb87da6034bb3d88e2aeaa4fe8be",
+    "tests/dataqual15/energy_stock_evidence.py": "35789d5fdaedfeca5a4fd44681c59ee1d48f78ce493830e4e15069ee79a95752",
+    ".github/workflows/dataqual15-sprint04.yml": "367fa1db42e898d026819fd25466e2f1f7f5c92bc02569ac5e48aefa52e767c2"
+  },
+  "predecessor_archive_sha256": "19f6f3f6dc45a115bf161ad7efff22006336ded20dbec047ad7abd859974ff2d",
+  "production_trees": {
+    "src": "a3689da0fa47e0b271cf3cf03c982d85ac651a7d",
+    "app": "14b5feeb7fe6d17a19560774b59557a2d14efe8a",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "measurement_commit": "d026fec23920778f2a2af4fa1891433e128f2df4",
+  "linux_run": 41290599242,
+  "linux_job": 124800855167,
+  "artifact_id": 13077086748,
+  "artifact_zip_sha256": "8ee2e6c6648df4db803a0b6d3e7a46f4e750d8b43cfc3e24dd6780e62d9acc22",
+  "whole_project_energy_qualified": false,
+  "canonical_modified": false
+}

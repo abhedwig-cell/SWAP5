@@ -558,6 +558,29 @@
             }
           },
           "registered_thermal_profile_qualified": true
+        },
+        "sprint04_energy": {
+          "branch": "codex/grassgrowth-sprint04",
+          "status": "REAL_OWNER_ENERGY_ACCOUNTING_SCOPE_RECONCILED",
+          "proof": {
+            "archive": "integration/dataqual15/SPRINT04_ENERGY_EVIDENCE.tar.xz",
+            "manifest": "integration/dataqual15/SPRINT04_ENERGY_MANIFEST.json",
+            "archive_sha256": "46ba4ef8101cf8a4b533f3d8c12761fb20d71488ea634e9f5f77862be29ed277",
+            "archive_files": 109,
+            "consumer": "python -B tests/dataqual15/energy_stock_evidence.py",
+            "linux_run": 41290599242,
+            "linux_job": 124800855167,
+            "measurement_commit": "d026fec23920778f2a2af4fa1891433e128f2df4",
+            "linux_status": "SUCCESS",
+            "source_bound_raw_consumer": "PASS"
+          },
+          "distinct_inputs": 432,
+          "native_case_evaluations": 1728,
+          "production_changed": false,
+          "whole_project_energy_qualified": false,
+          "counts_unchanged": true,
+          "classification": "RETAINED_CONDUCTION_EQUATION_ACCOUNTING_LIMITATION_NOT_A_NEWLY_DEMONSTRATED_IMPLEMENTATION_DIVERGENCE",
+          "remaining": "Specify and qualify variable-water energy stock and exchange terms under existing energy ownership; no promotion from conduction residual to whole-project energy closure."
         }
       }
     },

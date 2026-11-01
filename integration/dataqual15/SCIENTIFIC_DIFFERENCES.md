@@ -1,5 +1,100 @@
 # Grassgrowth: full-period execution and scientific attribution
 
+## Sprint04: conduction balance versus endpoint energy stock
+
+**The remaining energy claim is now isolated and measured.** The unchanged real
+heat owner passes432 explicit inputs per optimization on Linux GNU13.3 and
+Windows GNU16.2:1728 case evaluations in four native executions. All numerical
+observations match exactly across both compilers and optimizations. No production,
+application or reference source is changed. Canonical remains untouched; Sprint03's
+full1827-day and twenty-criterion proof remains valid on its unchanged dependency
+surface. This audit does not start another full historical simulation.
+
+The current operator evaluates heat capacity at the interval-average water
+content. Its reported sensible storage is `sum(Cmid * dz * (T1-T0))` and its
+boundary flux is calculated from the actual top temperature gradient and thermal
+conductivity. The independent observer reconstructs capacity from the explicit
+source constants and actual initialized texture fractions, then computes both
+endpoint stocks `sum(C(theta) * T * dz)`, relative to0C. For the valid linear
+unsaturated capacity law, the product identity is:
+
+```text
+Delta(C*T) = Cmid * DeltaT + DeltaC * Tmid
+```
+
+The last term is not part of the conduction-temperature increment. It must be
+accounted for explicitly before interpreting a small conduction residual as a
+complete physical energy budget for water whose thermal mass changes.
+The observer calls the production texture initializer and heat trial; it contains
+no replacement heat solver. Actual output temperatures/capacities/conductivities,
+all inputs, command lines, flags, binaries and independent stock calculations are
+retained for rechecking.
+
+| Explicit probe | Inputs per build | Maximum endpoint stock minus boundary heat, J/cm2 |
+|---|---:|---:|
+| Fixed water, original snapshot temperatures |144|5.14433e-12|
+| Interpolated adjacent-day water, snapshot temperatures |96|1.45032703|
+| Same variable water, uniform5C and air5C |96|1.12017292|
+| Same variable water, uniform0C and air0C |96|0|
+
+All432 trials satisfy the unchanged independent conduction-energy comparison
+limit5e-9J/cm2. The maximum residual in the independently reconstructed stock
+identity is3.422e-12J/cm2. The nonzero endpoint/boundary difference is therefore
+explained by the capacity-exchange term, rather than a failure of the linear
+solve or an unexplained floating-point balance residual. In the5C control,
+temperature remains constant to2.4e-14C while the stock changes with water
+content. The0C control also demonstrates the energy-reference dependence of
+that transport/capacity term. A complete stock/flux formulation must use the same
+reference datum for transported water energy.
+
+For example, the explicit day1461 .04-day variable-water probe reports conductive
+storage43.03918031J/cm2, endpoint stock change44.48950734J/cm2 and capacity
+exchange1.45032703J/cm2. The first two quantities are different definitions;
+subtracting them is not evidence that1.45J/cm2 was physically lost by the model.
+These are standalone same-state probes from48 real Sprint03 checkpoints. The
+adjacent-day water interpolation and uniform-temperature controls are deliberate
+counterfactuals, not recorded accepted hydraulic substeps. They do not apply the
+application's adaptive full/half acceptance and are not authentic disk restarts.
+No whole1827-day energy error is inferred from these cases.
+
+The inspected pinned original `temperature.f90` also uses average water content
+for DeVries capacity and multiplies that capacity by old/new temperatures in its
+conduction system. The earlier96-case real original/current heat comparison
+remains unchanged-source component evidence for its own scope. Sprint04 does
+not execute the original operator on these432 new inputs. The finding is an
+explicit retained model/accounting limitation; these probes demonstrate no new
+B0/B2 implementation divergence. Adding advected-water enthalpy or another energy
+process merely to force a closure claim would change the physical model and is
+not a numerical repair to this migration.
+
+**Remaining blocker:** specify the complete variable-water energy stock and its
+physical source/sink and donor/advective exchange terms under the existing energy
+owner. Then qualify those terms for the selected original-process composition.
+Checkpoint temperatures, water contents and a conduction residual alone do not
+provide the missing energy exchanges. The current diagnostic
+`energy_accounting_complete` means the component equation's accounting is
+complete; it is not evidence of a whole soil-water-plant-atmosphere energy budget.
+The separate existing EB-I25 authority/debt is not silently declared repaired.
+Original failed temperature/drought gates and global scientific0/3 remain unchanged.
+
+The native compile/link/run commands total5.5775seconds on Linux and7.3819seconds
+on Windows, excluding the immutable predecessor consumer. The first reader-based
+O0 link attempt failed before any native science because two original input
+helpers were outside that declared closure. The final five-provider public
+initializer closure removes that unrelated dependency. Its failed report, logs
+and exact source preimage are preserved. A local temporary-directory access
+failure in the archive consumer is also preserved separately from science.
+
+Durable authority: `SPRINT04_ENERGY_EVIDENCE.tar.xz` and
+`SPRINT04_ENERGY_MANIFEST.json`, including raw observations and both platform
+binaries. Linux measurement is run41290599242, job124800855167, source
+`d026fec23920778f2a2af4fa1891433e128f2df4`. Recompute without executing binaries
+or starting a full project:
+
+```bash
+python -B tests/dataqual15/energy_stock_evidence.py
+```
+
 ## Sprint03: thermal control and a reproduced small-drainage domain defect
 
 **The explicit registered thermal profile completes all1827days and passes all twenty fixed criteria.** The canonical

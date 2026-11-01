@@ -922,7 +922,7 @@
     "baseline_local": "1a17c9c2d9af54607188d9be40735aee4eb709a1",
     "baseline_remote": "f1be87f149cc01c09abbeed28233d0903dc9c018",
     "branch": "codex/grassgrowth-sprint04",
-    "stage": "REGISTERED_BEFORE_EXECUTION",
+    "stage": "ENERGY_ACCOUNTING_SCOPE_RECONCILED_WHOLE_PHYSICAL_ENERGY_OPEN",
     "scope": "Independent endpoint sensible-energy stock audit of unchanged real numeric heat owner, sealed Sprint03 Grassgrowth113-node snapshots; distinguish Cmid*dT equation balance from change of C(theta)*T. Same-state component probes, not accepted trajectory replays.",
     "owner": "Existing restricted soil-temperature owner and existing VQ acceptance; no new physical process or shared interface.",
     "invariants": [
@@ -965,6 +965,157 @@
         "evidence": "../grass-sprint04-energy-Windows/RESULT.json and8.stderr",
         "resolution": "Use public production texture initializer directly with original SWP values, eliminating unrelated input-reader linkage."
       }
-    ]
+    ],
+    "result": {
+      "status": "REAL_OWNER_ENERGY_ACCOUNTING_SCOPE_RECONCILED",
+      "distinct_explicit_inputs": 432,
+      "native_executions": 4,
+      "native_case_evaluations": 1728,
+      "cross_platform_and_O0_O2_observations_exact": true,
+      "platforms": {
+        "Windows": {
+          "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+          "compile_link_native_seconds": 7.381881900015287,
+          "events": 16
+        },
+        "Linux": {
+          "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+          "compile_link_native_seconds": 5.577463571000003,
+          "events": 16
+        }
+      },
+      "groups": {
+        "fixed_water": {
+          "cases": 144,
+          "maximum_stock_minus_boundary_j_cm2": 5.144329406903125e-12,
+          "maximum_stock_identity_residual_j_cm2": 3.4212632726848824e-12,
+          "maximum_independent_boundary_residual_j_cm2": 2.234656903965515e-12,
+          "maximum_temperature_change_c": 4.451846843157906,
+          "worst_case": {
+            "case": 423,
+            "day": 1801,
+            "kind": 0,
+            "dt": 0.01,
+            "equation_storage": -22.776817926216392,
+            "reported_storage": -22.77681792621641,
+            "boundary_energy": -22.776817926218115,
+            "reported_residual": 1.7053025658242404e-12,
+            "endpoint_stock_change": -22.77681792621297,
+            "capacity_exchange": 0.0,
+            "stock_identity_residual": 3.4212632726848824e-12,
+            "endpoint_stock_minus_boundary": 5.144329406903125e-12,
+            "independent_boundary_residual": 1.723066134218243e-12,
+            "maximum_capacity_difference": 8.881784197001252e-16,
+            "maximum_temperature_change": 3.0317171717365774,
+            "maximum_water_change": 0.0
+          }
+        },
+        "interpolated_water": {
+          "cases": 96,
+          "maximum_stock_minus_boundary_j_cm2": 1.4503270298500226,
+          "maximum_stock_identity_residual_j_cm2": 3.391606440139583e-12,
+          "maximum_independent_boundary_residual_j_cm2": 2.462030579408747e-12,
+          "maximum_temperature_change_c": 3.479318808117198,
+          "worst_case": {
+            "case": 347,
+            "day": 1461,
+            "kind": 1,
+            "dt": 0.04,
+            "equation_storage": 43.039180305775204,
+            "reported_storage": 43.03918030577521,
+            "boundary_energy": 43.03918030577558,
+            "reported_residual": -3.694822225952521e-13,
+            "endpoint_stock_change": 44.4895073356256,
+            "capacity_exchange": 1.4503270298505195,
+            "stock_identity_residual": -1.2034817586936697e-13,
+            "endpoint_stock_minus_boundary": 1.4503270298500226,
+            "independent_boundary_residual": -3.765876499528531e-13,
+            "maximum_capacity_difference": 8.881784197001252e-16,
+            "maximum_temperature_change": 3.479318808117198,
+            "maximum_water_change": 0.0013366020316899485
+          }
+        },
+        "isothermal_5C_variable_water": {
+          "cases": 96,
+          "maximum_stock_minus_boundary_j_cm2": 1.1201729162276999,
+          "maximum_stock_identity_residual_j_cm2": 1.57115813415043e-12,
+          "maximum_independent_boundary_residual_j_cm2": 1.5145259657583984e-12,
+          "maximum_temperature_change_c": 2.398081733190338e-14,
+          "worst_case": {
+            "case": 348,
+            "day": 1461,
+            "kind": 2,
+            "dt": 0.04,
+            "equation_storage": -1.7390425192585082e-13,
+            "reported_storage": -1.7390425192585087e-13,
+            "boundary_energy": -9.747182743155916e-14,
+            "reported_residual": -7.643242449429171e-14,
+            "endpoint_stock_change": 1.1201729162276024,
+            "capacity_exchange": 1.120172916227229,
+            "stock_identity_residual": 5.473399511402022e-13,
+            "endpoint_stock_minus_boundary": 1.1201729162276999,
+            "independent_boundary_residual": -7.643242449429166e-14,
+            "maximum_capacity_difference": 8.881784197001252e-16,
+            "maximum_temperature_change": 5.329070518200751e-15,
+            "maximum_water_change": 0.0013366020316899485
+          }
+        },
+        "isothermal_0C_variable_water": {
+          "cases": 96,
+          "maximum_stock_minus_boundary_j_cm2": 0.0,
+          "maximum_stock_identity_residual_j_cm2": 0.0,
+          "maximum_independent_boundary_residual_j_cm2": 0.0,
+          "maximum_temperature_change_c": 0.0,
+          "worst_case": {
+            "case": 4,
+            "day": 63,
+            "kind": 3,
+            "dt": 0.04,
+            "equation_storage": 0.0,
+            "reported_storage": 0.0,
+            "boundary_energy": 0.0,
+            "reported_residual": 0.0,
+            "endpoint_stock_change": 0.0,
+            "capacity_exchange": 0.0,
+            "stock_identity_residual": 0.0,
+            "endpoint_stock_minus_boundary": 0.0,
+            "independent_boundary_residual": 0.0,
+            "maximum_capacity_difference": 8.881784197001252e-16,
+            "maximum_temperature_change": 0.0,
+            "maximum_water_change": 0.00014541518642657847
+          }
+        }
+      },
+      "classification": "RETAINED_CONDUCTION_EQUATION_ACCOUNTING_LIMITATION_NOT_A_NEWLY_DEMONSTRATED_IMPLEMENTATION_DIVERGENCE",
+      "identity": "Delta(C*T) = Cmid*DeltaT + DeltaC*Tmid; reference temperature0C; valid linear unsaturated heat capacity.",
+      "scope": "Same-state component probes from48 real bound Sprint03 snapshots. Interpolated adjacent-day water inputs and isothermal controls are explicit counterfactuals, not recorded accepted substeps or an application restart.",
+      "established": "Real conduction storage and independently reconstructed top boundary heat agree within unchanged5e-9J/cm2; all endpoint stock differences are explained by capacity exchange to roundoff.",
+      "not_established": "No attribution of unmeasured donor/water enthalpy, no whole1827-day physical energy ledger, no atmospheric/vegetation energy closure or physical-model promotion.",
+      "next_contract": "Specify complete variable-water energy stock and its physical donor/advective exchange terms under existing energy ownership before claiming whole-project physical energy closure. Small conduction residual alone cannot supply those terms.",
+      "full_project_rerun": false,
+      "whole_project_energy_qualified": false,
+      "production_changed": false,
+      "canonical_modified": false,
+      "proof": {
+        "archive": "integration/dataqual15/SPRINT04_ENERGY_EVIDENCE.tar.xz",
+        "manifest": "integration/dataqual15/SPRINT04_ENERGY_MANIFEST.json",
+        "archive_sha256": "46ba4ef8101cf8a4b533f3d8c12761fb20d71488ea634e9f5f77862be29ed277",
+        "archive_files": 109,
+        "consumer": "python -B tests/dataqual15/energy_stock_evidence.py",
+        "linux_run": 41290599242,
+        "linux_job": 124800855167,
+        "measurement_commit": "d026fec23920778f2a2af4fa1891433e128f2df4",
+        "linux_status": "SUCCESS",
+        "source_bound_raw_consumer": "PASS"
+      }
+    },
+    "production_source_unchanged_from_sprint03": true,
+    "first_remaining_blocker": "A complete variable-water physical energy stock/exchange contract, including donor/advective enthalpy, is not established by the retained conduction equation. Such a contract must preserve the original physical model scope and use the existing energy owner before new whole-energy claims.",
+    "no_new_full_simulation": true,
+    "documentation_checks": {
+      "source": "PASS tools/docs/check_docs.py exit0",
+      "mkdocs_strict": "PASS exit0 35.19seconds"
+    },
+    "raw_consumer": "SOURCE_BOUND_ENERGY_ACCOUNTING_SCOPE_EVIDENCE_PASS"
   }
 }
