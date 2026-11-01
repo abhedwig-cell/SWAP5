@@ -77,5 +77,111 @@
     "highest low-air stress",
     "synthetic crop substitution",
     "potato chain guard removal without physical state composition"
-  ]
+  ],
+  "record_scope": "Historical365/494-day receipt retained below. Current full execution authority is UNION_C3_HUPSEL_RESULT.json and its immutable capsule, verified on canonical0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50. New full-period scientific work is sprint03.",
+  "sprint03": {
+    "baseline": "0c05d6f73c102d8a7e2ec11cc322f4b8f2c4ad50",
+    "branch": "codex/hupsel-sprint03",
+    "stage": "PREREGISTERED_FULL_PERIOD_SCIENTIFIC_COMPARISON",
+    "full_original_execution_exists": true,
+    "full_days": 1096,
+    "canonical_integration_authorized": true,
+    "worktree": "SWAP5-HUPSEL-SPRINT03",
+    "existing_capsule_sha256": "8913f30f80aab5c19d2b9f04c2ced4ca0d6e1bd1367f660372d68c1afe7d0504",
+    "existing_current_source_verifier": "PASS262repository_sources111typed_decoder_checks",
+    "coordination": {
+      "grass_chat": "Maak Grassgrowth sprint draagbaar (this active chat)",
+      "grass_unmerged_head": "75907a72b30e3d7180c6a715e1492eda3bf6197a",
+      "grass_shared_delta": "src/runtime/mod_fmr_serialized_reference_backend.f90 plus two Grassgrowth application adapters; no concurrent Hupsel production delta selected",
+      "coverage_chat": "Complete SWAP5 functional coverage",
+      "coverage_status": "Read-only idle heartbeat; coordination notice sent with explicit user authorization",
+      "no_run_interrupted": true
+    },
+    "scope": "Full literal Hupsel1096 scalar and retained native34-node profile comparison, independent water/solute stock and source/sink accounting, frozen original-reference time refinement. No full native rerun unless actual production dependency changes.",
+    "selected_processes": {
+      "SWSOLU": 1,
+      "SWSP": 0,
+      "SWDC": 0,
+      "TSCF": 0,
+      "SWBR": 0,
+      "CPRE": 0,
+      "SWBOTB": 6,
+      "SWHEA": 1,
+      "SWCALT": 2
+    },
+    "criteria": {
+      "hard_water_residual_cm": 1e-10,
+      "hard_solute_residual_mg_cm2": 1e-10,
+      "cumulative_accounting_cm_or_mg_cm2": 1e-08,
+      "reference_training_dtmax": [
+        0.01,
+        0.005
+      ],
+      "heldout_dtmax": [
+        0.0025,
+        0.00125
+      ],
+      "envelope": "Freeze3*supnorm(original .01 versus .005)+physical/source-print floor before executing either heldout. Potential controls use the floor alone. Original .04 scalar output must exactly reproduce the immutable reference before refinement. Observational comparison is not ecological validation.",
+      "floors": {
+        "water_cm": 1e-08,
+        "solute_mg_cm2": 1e-09,
+        "flux_cm_day": 1e-09,
+        "solute_flux_mg_cm2_day": 1e-09,
+        "biomass_kg_ha": 1e-06,
+        "development": 1e-08,
+        "root_cm": 1e-07,
+        "LAI": 1e-08,
+        "temperature_C": 1e-09,
+        "profile_theta": 1e-12,
+        "profile_normalized_head": 1e-08,
+        "profile_concentration_mg_cm3": 1e-10
+      },
+      "profile_days": [
+        120,
+        365,
+        494,
+        524,
+        537,
+        566,
+        584,
+        591,
+        603,
+        636,
+        730,
+        731,
+        868,
+        1058,
+        1077,
+        1096
+      ],
+      "breakthrough": "Independent daily external-export series, total export, mean exit day and10/50/90percent conditional-export dates; freeze same3*reference-training-change rule. Day metrics floor1day from actual daily output resolution. No subdaily breakthrough claim."
+    },
+    "test_selection": {
+      "owner": "VQ DATAQUAL15 Hupsel existing physical owners",
+      "changed_dependency": "Only diagnostic original output collector, comparison reader and proof/status; original physical kernel and current SWAP5 production unchanged.",
+      "local": "Existing current-source1096 raw verifier already PASS; independent decoder final profile exact to retained state.csv; stock/source audit.",
+      "linux": "Clean pinned original provider build and output-only collector, exact .04 control plus .02/.01/.005/.0025/.00125 full references; no rerun of unchanged native Hupsel or Grassgrowth.",
+      "expected_seconds": 240,
+      "per_process_cap_seconds": 240,
+      "unique_question": "Concentration distribution, solute breakthrough/export and full-rotation numerical differences cannot be qualified by stock residuals alone.",
+      "not_selected": [
+        "Full F-CI",
+        "highest low-air",
+        "new native1096 while production unchanged",
+        "new sorption/decay/advection physics"
+      ]
+    },
+    "whole_energy_qualified": false,
+    "scientific_qualification": false,
+    "local_inspection": "PASS16retained profiles: independently reconstructed water/solute stocks match daily receipts; all final primitive arrays match state.csv exactly. Ledger closure and literal48mg/cm2 application checked.",
+    "development_failures": [
+      {
+        "phase": "Initial observational byte-reader development",
+        "reason": "Template identity contains eight int64 fields and one integer, not one int64; first clock-offset assertion rejected before analysis.",
+        "resolution": "Field offsets derived from actual fmr_template_t and stream owner; final reader validated against16bound profiles and every final state field.",
+        "scientific_qualification_claim": false,
+        "source_preimage": "Initial uncommitted reader preimage not retained; not counted as qualification."
+      }
+    ]
+  }
 }
