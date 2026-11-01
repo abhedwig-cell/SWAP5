@@ -224,11 +224,15 @@
     "selected_solute_mass_qualified": true,
     "restarts_preserved": true,
     "production_promoted": false,
-    "canonical_admitted": false,
+    "canonical_admitted": true,
     "report": "SPRINT03_SCIENTIFIC_REPORT.md",
     "manifest": "SPRINT03_SCIENCE_MANIFEST.json",
     "consumer": "tests/dataqual15_hupsel/verify_sprint03.py",
     "diagnosis_result": "Both original refinements and fresh native DTMAX0.01 full1096 completed uncensored. Actual growth/storage residuals persist. No causal production defect demonstrated; scientific classification4 remains OPEN.",
-    "next_safe_step": "Paired actual accepted-state original/current microscopic and oxygen input replay before any production repair; retain all failed frozen limits."
+    "next_safe_step": "Paired actual accepted-state original/current microscopic and oxygen input replay before any production repair; retain all failed frozen limits.",
+    "canonical_merge": "eaae4b62c830fa88aae146e55aa1b1018e54755d",
+    "canonical_merge_tree": "9891961e63dfe34a4a4714b4b9e112d573bdb174",
+    "canonical_receipt": "SPRINT03_MERGE_RECEIPT.json",
+    "canonical_admission_scope": "Experimental evidence only; scientific qualification remains OPEN and production promotion false."
   }
 }

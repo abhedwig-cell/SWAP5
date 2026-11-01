@@ -211,3 +211,9 @@ these finer diagnostic comparisons cannot overturn the earlier failed gate.
 | profile_theta | 0.00102239115 | 0.000797882194 | 0.00406212672 |
 | profile_temperature_c | 0.00541525874 | 0.00221484242 | 0.0117990921 |
 | profile_concentration_mg_cm3 | 0.000658432636 | 0.000723318841 | 0.000773636244 |
+
+## Actual canonical admission
+
+PR1481 merged as `eaae4b62c830fa88aae146e55aa1b1018e54755d`. Its actual whole tree `9891961e63dfe34a4a4714b4b9e112d573bdb174` exactly equals the locally and Linux-tested tree. Actual-merge Linux run41314068427/job124870296181 passes dossier integrity while reproducing scientific FAIL/OPEN. `SPRINT03_MERGE_RECEIPT.json` retains the exact merge parents, qualification identities, all17 terminal PR workflow dispositions (16success,1pre-existing static reference failure), and the14 unchanged dependencies proving that failure is inherited. The scientific and production dispositions above are unchanged.
+
+Automatic canonical F-CI51P and F-CI58P runs41314068528/41314068428 also fail at the historical DATAQUAL12 `unreviewed delta` assertion. That same first condition fails on both the original canonical baseline and this candidate, with identical production trees and unchanged guard/status bytes. These failures are retained in the receipt and are not physical PASS claims. The selected current-source full Grass/Hupsel consumers and actual-merge Hupsel dossier pass. Historical successor routing remains a separate authority repair.

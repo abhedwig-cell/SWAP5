@@ -1531,3 +1531,5 @@ The separate actual merge receipt controls admission, not the checkpoint or PR.
 ## Hupsel full-period scientific follow-up
 
 `integration/dataqual15_hupsel/SPRINT03_SCIENCE_MANIFEST.json` and its portable raw capsule extend the unchanged C3 full1096/restart authority. `tests/dataqual15_hupsel/verify_sprint03.py` recomputes the original FAILED scientific gate and both full-period distinguishing diagnostics. Dossier integrity PASS is not scientific-equivalence PASS. Full scientific qualification, whole energy and production promotion remain open; denominator remains2/3 full executions and0/3 full scientific qualification. See `SPRINT03_SCIENTIFIC_REPORT.md` and the actual merge receipt for admission.
+
+Actual Hupsel Sprint03 evidence admission: PR1481, merge `eaae4b62c830fa88aae146e55aa1b1018e54755d`, exact qualified whole tree and actual-merge Linux consumer PASS. Receipt: `integration/dataqual15_hupsel/SPRINT03_MERGE_RECEIPT.json`. Scientific gate remains failed and production promotion false.
