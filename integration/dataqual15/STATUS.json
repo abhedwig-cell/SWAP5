@@ -547,6 +547,66 @@
       "invalid_streams_per_build": 11,
       "scope": "Archive manifest, current-build source/object/archive/executable/input identities, real367-day ledgers, exact restart boundaries and O0/O2 physical outputs; archived binaries are never executed",
       "environment_note": "First managed-sandbox TEMP extraction failed with permission denied; setting TEMP/TMP to the writable workspace parent completed the identical persisted verifier. Model sources and archived evidence were unchanged."
+    },
+    "admission": {
+      "predecessor": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+      "production_delta": {
+        "app/grass_project/restart_file.f90": {
+          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
+          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
+        },
+        "app/support/restart_publish.c": {
+          "before": null,
+          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        }
+      },
+      "preservation_restore": {
+        "app/grass_project/restart_file.f90": {
+          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
+          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
+        },
+        "app/support/restart_publish.c": {
+          "before": null,
+          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        },
+        "tools/solute/build_grass_startup.py": {
+          "before": "242692502b99be1c5f62484e571d4cfd3c196818",
+          "after": "88c839ab5b9fc8f97ae393362ae4ee144f325c00"
+        },
+        "tools/solute/build_grass_diagnostic.py": {
+          "before": "6a950fb202dc002a9ae46e4ccd1b0c9a71d5906e",
+          "after": "e376f32812f47a99d1cf16ebef4ca5c3f819322d"
+        },
+        "tests/dataqual15/qualify_restart.py": {
+          "before": "f3d9d8c1ed375f956b4495be4ab4503e8f51d1bf",
+          "after": "3039b449c2a556c595a3c626fe47d9841388b5a7"
+        },
+        "tests/dataqual15/run_original.py": {
+          "before": "7fa6dc10793e7f03b64b4c7c00891b4522796dac",
+          "after": "a3b5f5238c40bdf7d7752666468070f176ac4650"
+        }
+      },
+      "predecessor_production_trees": {
+        "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+        "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+        "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+      },
+      "gate_source_sha256": {
+        "tests/dataqual15/verify_native_restart_admission.py": "64a814be8e54a959a5dfd7b4ba054871767181cc97c7f542cac1c7b0735ce9d7",
+        "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
+        "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77"
+      },
+      "scope": "Admit exact native I/O delta only. Immutable1827/1096 science remains predecessor-source evidence; current native367-day qualification is separate. Failed original science gates remain failed.",
+      "test_selection": {
+        "expected_seconds": 600,
+        "authority": "docs/development/workstream-execution-protocol.md#autonomous-long-session-execution-standard-2026-10-08",
+        "owner": "REGIE/RT/VQ",
+        "changed_dependency": "Application I/O and exact build recipe; src/reference trees and physical driver unchanged",
+        "existing_evidence": "Native Windows367-day/O0/O2 and Linux native3-day proof already PASS; closed source predecessors must be revalidated unmodified in exact committed tree.",
+        "prior_execution": "NONE",
+        "full_fci": "NOT_SELECTED: no shared physical source or driver change; current closed F-CI feedback is composed explicitly with predecessor and current native I/O gates. No full-moving PASS inferred."
+      },
+      "status": "PERSISTED_NOT_YET_TESTED"
     }
   }
 }

@@ -78,7 +78,10 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          if [[ -f integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json ]]; then
+          if [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
+            python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+            python3 -B tests/dataqual15/verify_native_restart_admission.py --output "$RUNNER_TEMP/native-admission"
+          elif [[ -f integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json ]]; then
             # Actual full original1827/1096-day executions on the same current
             # closed source. No whole scientific-equivalence/production promotion.
             python3 -B tests/dataqual15/verify_grass_full_evidence.py --spec integration/dataqual15/GRASS_UNION_FULL_SPEC.json --capsule integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz --manifest integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json

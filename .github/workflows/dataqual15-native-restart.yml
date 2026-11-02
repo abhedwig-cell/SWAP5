@@ -26,6 +26,14 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - name: Admission boundary and modular runner controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install PyYAML==6.0.3
+          python3 -B tests/dataqual15/test_native_restart_admission.py
+          MODULAR_CONTROL_EVIDENCE_DIR="$RUNNER_TEMP/modular-controls" python3 -B tests/modularity/test_modular_controls.py
+          ADOPTION_CONTROL_EVIDENCE_DIR="$RUNNER_TEMP/adoption-controls" python3 -B tests/modularity/test_adoption_controls.py
       - name: Native file publication and real original disk continuation
         shell: bash
         run: |
