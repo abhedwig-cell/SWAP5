@@ -1,5 +1,6 @@
 """Verify exact sealed observations; never execute archived native binaries."""
 import hashlib
+import difflib
 import json
 from pathlib import Path
 import subprocess
@@ -59,7 +60,52 @@ def verify():
                 assert {r[2] for r in rows} == {0.,1.,2.}
                 assert len({tuple(r[:3]) for r in rows}) == 36
                 assert all(.118 < r[3] < .119 and abs(2*r[1]*r[4]-r[3])<1e-14 for r in rows)
-    print('SEALED CURRENT-OWNER DIAGNOSTICS VERIFIED; CONTACT REPAIR AND FULL ENERGY OPEN')
+    verify_stock_candidate(files)
+    print('SEALED CURRENT-OWNER DIAGNOSTICS AND ISOLATED STOCK CANDIDATE VERIFIED; CONTACT REPAIR AND FULL ENERGY OPEN')
+
+
+def verify_stock_candidate(original_files):
+    report = json.loads((ROOT/'integration/dataqual15/STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json').read_text(encoding='utf-8'))
+    assert not report['production_modified'] and not report['production_admitted']
+    assert not report['full_energy_balance_complete']
+    sha = lambda raw:hashlib.sha256(raw).hexdigest()
+    archive = ROOT/report['archive']
+    assert sha(archive.read_bytes()) == report['archive_sha256']
+    with tarfile.open(archive) as t:
+        members=t.getmembers()
+        assert len({m.name for m in members})==len(members)
+        assert all(m.isfile() and not Path(m.name).is_absolute() and '..' not in Path(m.name).parts for m in members)
+        files={m.name:t.extractfile(m).read() for m in members}
+    assert json.loads(files.pop('MANIFEST.json'))=={n:sha(raw) for n,raw in files.items()}
+    archived_report=json.loads(files['RESULT.json'])
+    assert all(report[k]==v for k,v in archived_report.items())
+    for path,blob in report['experiment_git_blob'].items():
+        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob
+        assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT)
+    module='src/process/mod_whole_column_sensible_energy_accounting.f90'
+    assert subprocess.check_output(['git','rev-parse','HEAD:'+module],cwd=ROOT,text=True).strip()==report['original_module_git_blob']
+    original=original_files['sources/'+module].decode().replace('\r\n','\n')
+    candidate=files['candidate/'+module].decode().replace('\r\n','\n')
+    patch=''.join(difflib.unified_diff(original.splitlines(True),candidate.splitlines(True),fromfile='a/'+module,tofile='b/'+module))
+    assert patch==files['candidate.patch'].decode().replace('\r\n','\n')
+    assert patch==(ROOT/'integration/dataqual15/STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch').read_text(encoding='utf-8')
+    assert sha(files['candidate/'+module])==report['patched_source_sha256']
+    injection='    roundoff_factor = (4.0_real64'
+    expected_fault=candidate.replace(injection,'    result%exact_storage_change_j_m2 = result%exact_storage_change_j_m2 + 1.0_real64\n'+injection)
+    assert files['faulty_stock.f90'].decode().replace('\r\n','\n')==expected_fault
+    for variant in ('candidate','fault'):
+        assert files['O0-'+variant+'/stdout']==files['O2-'+variant+'/stdout']
+        for opt in ('O0','O2'):
+            key=opt+'-'+variant
+            build=report['builds'][key]
+            raw=files[key+'/stdout']
+            assert sha(raw.replace(b'\r\n',b'\n'))==build['stdout_sha256']
+            assert sha(files[key+'/driver.exe'])==build['executable_sha256']
+            measured=observe(raw.decode(),inputs())
+            assert all(build[k]==v for k,v in measured.items())
+            assert measured['raw_storage_domain_rejections']==864
+            assert measured['projected_stock_roundoff_rejections']==(0 if variant=='candidate' else 864)
+            assert measured['counterfactual_max_residual_j_cm2']['kind1_gauge0']>1.45
 
 
 if __name__=='__main__':

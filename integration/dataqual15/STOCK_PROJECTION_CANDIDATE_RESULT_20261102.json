@@ -195,5 +195,9 @@
   },
   "status": "NUMERICAL_CANDIDATE_PASS_1J_FAULT_REJECTED_PHYSICAL_ENERGY_GAP_RETAINED",
   "archive": "integration/dataqual15/STOCK_PROJECTION_CANDIDATE_EVIDENCE_20261102.tar.xz",
-  "archive_sha256": "b1760b5cba12d903ddda897ba1d09bcb0da6a5414d4ab8794d6d7aa613a73548"
+  "archive_sha256": "b1760b5cba12d903ddda897ba1d09bcb0da6a5414d4ab8794d6d7aa613a73548",
+  "experiment_git_blob": {
+    "tests/dataqual15/qualify_stock_projection_candidate.py": "69736dd7b127607cf3ca0ee8d2e2accb90a28822",
+    "integration/dataqual15/STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch": "7c9c95092c327a1330d806a5e75dfd19ae28399b"
+  }
 }
