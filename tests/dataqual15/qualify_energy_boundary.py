@@ -54,20 +54,27 @@ def observe(text, raw):
     n, count = map(int, lines[0].split())
     assert (n, count) == (113, 432)
     dz, porosity = [[float(x) for x in lines[i].split()] for i in (2, 4)]
-    params, states, missing, counter = {}, {}, {}, {}
+    params, states, missing, counter, domains, ledger_status = {}, {}, {}, {}, {}, {}
     for line in text.splitlines():
         fields = line.split(',')
         if fields[0] == 'PARAM':
             params[int(fields[1])] = list(map(float, fields[2:]))
         elif fields[0] == 'NODE':
             states[int(fields[1]), int(fields[2])] = float(fields[3])
+        elif fields[0] == 'LEDGER_STATUS':
+            ledger_status[tuple(map(int,fields[1:3]))] = int(fields[3])
+        elif fields[0] == 'RAW_DOMAIN':
+            domains[tuple(map(int,fields[1:3]))] = int(fields[3])
         elif fields[0] in ('MISSING', 'ZERO_ADVECTION_COUNTERFACTUAL'):
             target = missing if fields[0] == 'MISSING' else counter
             key = tuple(map(int, fields[1:3]))
             assert key not in target
             target[key] = list(map(float, fields[3:]))
     assert len(params) == n and len(states) == n * count
-    assert len(missing) == len(counter) == count * 2
+    assert len(missing) == len(counter) == len(domains) == count * 2
+    assert len(ledger_status)==count*2 and set(ledger_status.values())<={0,4}
+    assert set(domains.values()) <= {2,3}
+    max_normalization = 0.
     worst = dict(independent_stock_error_j_m2=0., independent_composition_error_j_m2=0.,
                  counterfactual_residual_error_j_m2=0.)
     maxima = {}
@@ -75,12 +82,19 @@ def observe(text, raw):
         at = 9 + (case - 1) * 5
         day, kind, dt, air = map(float, lines[at].split())
         theta0, theta1, old = [[float(x) for x in lines[at + k].split()] for k in (2, 3, 4)]
+        raw_outside = any(x<0 or x>porosity[j] for data in (theta0,theta1) for j,x in enumerate(data))
         for gauge in (0, 1):
+            assert domains[case,gauge] == (2 if raw_outside else 3)
             reference = 5. * gauge
             stock = composition = 0.
             for j in range(n):
                 pdz, psat, quartz, clay, organic, distance = params[j + 1]
                 assert abs(pdz - dz[j]) < 1e-12 and abs(psat - porosity[j]) < 1e-12
+                a,b = theta0[j],theta1[j]
+                theta0[j] = min(porosity[j],max(0.,a))
+                theta1[j] = min(porosity[j],max(0.,b))
+                max_normalization=max(max_normalization,abs(a-theta0[j]),abs(b-theta1[j]))
+                assert max_normalization <= 64*2.220446049250313e-16
                 solid = quartz * 2.128 + clay * 2.385 + organic * 2.496
                 c0 = solid + theta0[j] * 4.18 + (porosity[j] - theta0[j]) * .001212
                 c1 = solid + theta1[j] * 4.18 + (porosity[j] - theta1[j]) * .001212
@@ -98,6 +112,9 @@ def observe(text, raw):
             key = f'kind{int(kind)}_gauge{int(reference)}'
             maxima[key] = max(maxima.get(key, 0.), abs(residual) / 1e4)
     return dict(cases=count, gauges_c= [0, 5], missing_boundary_rejections=count*2,
+                projected_stock_roundoff_rejections=sum(s==4 for s in ledger_status.values()),
+                raw_storage_domain_rejections=sum(s==2 for s in domains.values()),
+                max_accounting_only_normalization_theta=max_normalization,
                 counterfactual_max_residual_j_cm2=maxima, **worst)
 
 
@@ -109,12 +126,14 @@ def main():
     out.mkdir(parents=True, exist_ok=False)
     raw = inputs()
     (out/'inputs.dat').write_bytes(raw)
+    assert not subprocess.check_output(['git','diff','HEAD','--',*SOURCES],cwd=ROOT), 'persist source before qualification'
     compiler = shutil.which('gfortran')
     assert compiler, 'gfortran required'
     report = dict(scope='CURRENT_HEAT_OWNER_PLUS_EXACT_STOCK_AND_BOUNDARY_LEDGER_COMPONENT',
                   measurement_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   input_archive_sha256=ARCHIVE_SHA, input_sha256=INPUT_SHA,
                   source_sha256={p:sha((ROOT/p).read_bytes()) for p in SOURCES},
+                  source_git_blob={p:subprocess.check_output(['git','rev-parse','HEAD:'+p],cwd=ROOT,text=True).strip() for p in SOURCES},
                   compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],
                   full_energy_balance_complete=False, whole_application_qualified=False, builds={})
     for opt in ('O0', 'O2'):
@@ -135,7 +154,7 @@ def main():
                                      stdout_sha256=sha(run.stdout.encode()), **observe(run.stdout,raw))
     report['O0_O2_stdout_exact'] = (out/'O0/stdout').read_bytes() == (out/'O2/stdout').read_bytes()
     assert report['O0_O2_stdout_exact']
-    report['status'] = 'COMPONENT_COMPOSITION_PASS_FULL_ENERGY_OPEN'
+    report['status'] = 'DIAGNOSTIC_EVIDENCE_PASS_PRODUCTION_COMPOSITION_AND_FULL_ENERGY_OPEN'
     (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,indent=2))
 

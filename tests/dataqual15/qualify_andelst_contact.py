@@ -18,12 +18,14 @@ def main():
     parser.add_argument('--output',type=Path,required=True)
     out = parser.parse_args().output.resolve()
     out.mkdir(parents=True,exist_ok=False)
+    assert not subprocess.check_output(['git','diff','HEAD','--',*SOURCES],cwd=ROOT), 'persist source before qualification'
     compiler = shutil.which('gfortran')
     assert compiler
     sha = lambda raw: hashlib.sha256(raw).hexdigest()
     report = dict(scope='SYNTHETIC_DTO_REAL_OWNER_TOPOLOGY_CONTROL_NOT_COMPLETE_ANDELST_REPLAY',
                   measurement_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   source_sha256={p:sha((ROOT/p).read_bytes()) for p in SOURCES},
+                  source_git_blob={p:subprocess.check_output(['git','rev-parse','HEAD:'+p],cwd=ROOT,text=True).strip() for p in SOURCES},
                   repair_implemented=False, full_original_complete=False, builds={})
     for opt in ('O0','O2'):
         build = out/opt

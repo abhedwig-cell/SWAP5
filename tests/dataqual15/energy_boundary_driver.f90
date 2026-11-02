@@ -8,7 +8,7 @@ program grass_energy_stock
   trial_restricted_soil_temperature,copy_soil_temperature_profile,initialize_soil_temperature_from_texture
  use mod_whole_column_sensible_energy_accounting,only:whole_column_sensible_boundary_t, &
   whole_column_sensible_energy_result_t,evaluate_whole_column_sensible_energy, &
-  WCSA_OK,WCSA_INCOMPLETE_BOUNDARY
+  WCSA_OK,WCSA_INCOMPLETE_BOUNDARY,WCSA_STORAGE_FAILURE,WCSA_BALANCE_FAILURE
  use iso_fortran_env,only:int64
  implicit none
  type(soil_temperature_parameters_t)::p
@@ -24,7 +24,7 @@ program grass_energy_stock
  real(real64)::dt,air
  type(whole_column_sensible_boundary_t)::boundary
  type(whole_column_sensible_energy_result_t)::ledger
- real(real64),allocatable::solid(:)
+ real(real64),allocatable::solid(:),account_theta0(:),account_theta1(:)
  real(real64)::reference
  integer::n,cases,unit,id,day,kind,j,status,gauge
  character(2048)::path
@@ -74,7 +74,16 @@ program grass_energy_stock
    boundary%bottom_conductive_outward_j_m2=-dt*result%bottom_heat_flux_into_soil_j_cm2_day*1d4
    boundary%mass_carried_reference_available=.true.
    boundary%mass_carried_reference_temperature_c=reference
+   account_theta0=theta0;account_theta1=theta1
    call account()
+   write(*,'(a,i0,a,i0,a,i0)')'RAW_DOMAIN,',id,',',gauge,',',status
+   if(status==WCSA_STORAGE_FAILURE)then
+    if(maxval(theta0-porosity)>64d0*epsilon(1d0).or.maxval(theta1-porosity)>64d0*epsilon(1d0).or. &
+     minval(theta0)<-64d0*epsilon(1d0).or.minval(theta1)<-64d0*epsilon(1d0)) &
+     error stop 'beyond explicitly selected roundoff-only accounting diagnostic'
+    account_theta0=min(porosity,max(0d0,theta0));account_theta1=min(porosity,max(0d0,theta1))
+    call account()
+   end if
    if(status/=WCSA_INCOMPLETE_BOUNDARY.or.ledger%projected_balance%available.or. &
     ledger%sensible_scope_complete.or.ledger%full_energy_balance_complete) error stop 'missing water energy accepted'
    write(*,'(a,i0,a,i0,3(a,es25.17e3))')'MISSING,',id,',',gauge,',', &
@@ -83,8 +92,11 @@ program grass_energy_stock
    ! Explicit counterfactual only: supplied zeros are not measured water-energy receipts.
    boundary%top_advective_available=.true.;boundary%bottom_advective_available=.true.
    call account()
-   if(status/=WCSA_OK.or..not.ledger%projected_balance%available.or. &
+   write(*,'(a,i0,a,i0,a,i0)')'LEDGER_STATUS,',id,',',gauge,',',status
+   if((status/=WCSA_OK.and.status/=WCSA_BALANCE_FAILURE).or..not.ledger%projected_balance%available.or. &
     ledger%full_energy_balance_complete)error stop 'counterfactual ledger failure'
+   if(abs(ledger%exact_storage_change_j_m2-ledger%projected_balance%delta_storage_j_m2)>1d-6) &
+    error stop 'stock projection disagreement beyond diagnostic bound'
    if(abs(ledger%projected_balance%residual_j_m2-ledger%composition_change_component_j_m2)>1d-6) &
     error stop 'endpoint stock discrepancy not equal composition term'
    write(*,'(a,i0,a,i0,2(a,es25.17e3))')'ZERO_ADVECTION_COUNTERFACTUAL,',id,',',gauge, &
@@ -95,7 +107,7 @@ program grass_energy_stock
  print '(a)','REAL_HEAT_ENERGY_STOCK_OBSERVATIONS_COMPLETE'
 contains
  subroutine account()
-  call evaluate_whole_column_sensible_energy(101_int64,dz,porosity,solid,theta0,theta1,old,new, &
+  call evaluate_whole_column_sensible_energy(101_int64,dz,porosity,solid,account_theta0,account_theta1,old,new, &
    4.18d0,0.001212d0,reference,boundary,ledger,status)
  end subroutine
 end program grass_energy_stock
