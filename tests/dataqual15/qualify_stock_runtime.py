@@ -24,13 +24,15 @@ def main():
     assert match
     initial=[s.strip() for s in match[1].splitlines() if s.strip()]
     augment='tests/support/augment_bartholomeus_backend_sources.py'
-    sources=subprocess.check_output([sys.executable,str(ROOT/augment),'--all',*initial],cwd=ROOT,text=True).splitlines()
+    sources=list(dict.fromkeys(Path(s).as_posix() for s in subprocess.check_output(
+        [sys.executable,str(ROOT/augment),'--all',*initial],cwd=ROOT,text=True).splitlines()))
     assert len(sources)==len(set(sources)) and all((ROOT/s).is_file() for s in sources)
-    dependencies=[*sources,*TESTS,RECIPE,augment]
+    dependencies=[*sources,*TESTS,RECIPE,augment,'tests/dataqual15/qualify_stock_runtime.py']
     assert not subprocess.check_output(['git','diff','HEAD','--',*dependencies],cwd=ROOT)
     compiler=shutil.which('gfortran');assert compiler
     sha=lambda raw:hashlib.sha256(raw).hexdigest()
     record=dict(measurement_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+        compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],
         scope='UNCHANGED_EB_I23_I24_I25_RUNTIME_ORACLES_ON_CURRENT_PRODUCTION',
         source_git_blob={s:subprocess.check_output(['git','rev-parse','HEAD:'+s],cwd=ROOT,text=True).strip() for s in dependencies},
         source_sha256={s:sha((ROOT/s).read_bytes()) for s in dependencies},provider_count=len(sources),
