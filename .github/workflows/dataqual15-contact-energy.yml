@@ -1,0 +1,37 @@
+name: DATAQUAL15 current contact and energy diagnostics
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tests/dataqual15/*contact*'
+      - 'tests/dataqual15/*energy_boundary*'
+      - 'integration/dataqual15/CONTACT_ENERGY*'
+      - 'integration/dataqual15/SPRINT04_ENERGY_COMPONENT_INPUTS.tar.xz'
+      - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
+      - 'src/process/mod_linear_mixture_sensible_storage.f90'
+      - 'src/process/mod_restricted_soil_temperature.f90'
+      - 'src/process/macropore/mod_ppa_wu05a6*'
+      - '.github/workflows/dataqual15-contact-energy.yml'
+permissions:
+  contents: read
+jobs:
+  current-owner-composition:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compiler
+        run: gfortran --version
+      - name: Verify sealed Windows observations
+        run: python -B tests/dataqual15/verify_contact_energy_evidence.py
+      - name: Actual contact owner O0 and O2
+        run: python -B tests/dataqual15/qualify_andelst_contact.py --output ../contact-linux
+      - name: Actual heat and exact stock ledger O0 and O2
+        run: python -B tests/dataqual15/qualify_energy_boundary.py --output ../energy-linux
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: contact-energy-current-owner-observations
+          path: |
+            ../contact-linux
+            ../energy-linux
