@@ -65,6 +65,17 @@ def main():
             assert handle!=ctypes.c_void_p(-1).value
             try:assert publish(*paths)==5 and target.read_bytes()==old and pending.read_bytes()==new
             finally:assert kernel.CloseHandle(handle)
+            # A polling reader that permits deletion retains the old generation
+            # while publication replaces the name. It must not block the model.
+            handle=kernel.CreateFileW(str(target),0x80000000,1|2|4,None,3,0,None)
+            assert handle!=ctypes.c_void_p(-1).value
+            try:
+                assert publish(*paths)==0 and target.read_bytes()==new
+                buffer=ctypes.create_string_buffer(len(old));count=ctypes.c_uint32()
+                kernel.ReadFile.argtypes=[ctypes.c_void_p,ctypes.c_void_p,ctypes.c_uint32,ctypes.c_void_p,ctypes.c_void_p]
+                assert kernel.ReadFile(handle,buffer,len(old),ctypes.byref(count),None)
+                assert buffer.raw[:count.value]==old
+            finally:assert kernel.CloseHandle(handle)
         unicode_target=nested/'checkpoint-\u00e9.bin';unicode_pending=Path(str(unicode_target)+'.pending')
         unicode_pending.write_bytes(new)
         assert publish(str(unicode_pending).encode('utf8'),str(unicode_target).encode('utf8'))==0

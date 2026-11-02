@@ -1,6 +1,7 @@
 """Run exact-bound original Grassgrowth, capture selected atomic checkpoints."""
 import argparse,csv,hashlib,json,shutil,struct,subprocess,time,zlib
 from pathlib import Path
+from restart_snapshot import read_snapshot
 p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--end',type=int,required=True);p.add_argument('--restart',type=Path);p.add_argument('--capture',type=int,nargs='*',default=[]);p.add_argument('--timeout',type=int,default=7200);a=p.parse_args()
 b=a.bundle.resolve();out=a.output.resolve();out.mkdir();sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();build=json.loads((b/'BUILD.json').read_text());exe=b/build.get('executable','swap5_grass_startup')
 assert sha(exe)==build['executable_sha256'];exe.chmod(exe.stat().st_mode|0o100);assert all(sha(Path(s))==h for s,h in build['source_sha256'].items())
@@ -16,11 +17,11 @@ with (out/'stdout').open('wb')as so,(out/'stderr').open('wb')as se:
  proc=subprocess.Popen(cmd,cwd=out,stdout=so,stderr=se)
  while proc.poll() is None:
   try:
-   data=(out/'checkpoint.bin').read_bytes();assert zlib.crc32(data[:-4])==struct.unpack('=I',data[-4:])[0];pos=8
+   data=read_snapshot(out/'checkpoint.bin');assert zlib.crc32(data[:-4])==struct.unpack('=I',data[-4:])[0];pos=8
    for i in range(6):n=struct.unpack_from('=i',data,pos)[0];pos+=4+n
    nodes,clock=struct.unpack_from('=id',data,pos);assert nodes==113
    if clock in a.capture and clock not in captured:(out/f'checkpoint-{int(clock)}.bin').write_bytes(data);captured.add(clock);capture_seconds[int(clock)]=time.monotonic()-t;(out/'PROGRESS.json').write_text(json.dumps(dict(completed_days=int(clock),elapsed_seconds=capture_seconds[int(clock)],capture_seconds=capture_seconds),indent=2)+'\n')
-  except (FileNotFoundError,AssertionError,struct.error):pass
+  except (OSError,AssertionError,struct.error):pass
   if time.monotonic()-t>a.timeout:proc.kill();proc.wait();censored=True;break
   time.sleep(.03)
 rows=list(csv.DictReader((out/'budget.csv').open()))if(out/'budget.csv').exists()else[]
