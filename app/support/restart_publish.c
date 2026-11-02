@@ -7,6 +7,7 @@
  */
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 #ifdef _WIN32
 #include <windows.h>
 #define API __declspec(dllexport)
@@ -83,6 +84,26 @@ static int publish(const char *pending, const char *target, int failure) {
 
 API int swap5_restart_publish(const char *pending, const char *target) {
     return publish(pending, target, 0);
+}
+
+/* Same reflected CRC-32/ISO-HDLC bytes as the existing native stream codec.
+ * Keep the unsigned bit arithmetic explicit: GNU Fortran 16.2 on Windows
+ * miscompiles the legacy nested bit loop at O2 (isolated WP0 reproducer).
+ * No compiler optimization or physical model setting is relaxed here.
+ */
+API int32_t swap5_restart_crc32(const int8_t *bytes, size_t count) {
+    uint32_t crc = UINT32_MAX;
+    int32_t result;
+    size_t i;
+    unsigned int bit;
+    for (i = 0; i < count; ++i) {
+        crc ^= (uint8_t)bytes[i];
+        for (bit = 0; bit < 8; ++bit)
+            crc = (crc >> 1) ^ ((crc & 1) ? UINT32_C(0xedb88320) : 0);
+    }
+    crc = ~crc;
+    memcpy(&result, &crc, sizeof result);
+    return result;
 }
 
 /* Test-only entry; no environment switch or fault control in production. */

@@ -1,5 +1,5 @@
 """Native publication and I/O failure controls, independent of the model codec."""
-import argparse, ctypes, hashlib, json, os, shutil, subprocess, time
+import argparse, ctypes, hashlib, json, os, random, shutil, subprocess, sys, time, zlib
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -22,6 +22,12 @@ def main():
         native=ctypes.CDLL(str(library))
         publish=native.swap5_restart_publish;publish.argtypes=[ctypes.c_char_p,ctypes.c_char_p];publish.restype=ctypes.c_int
         inject=native.swap5_restart_publish_test;inject.argtypes=[ctypes.c_char_p,ctypes.c_char_p,ctypes.c_int];inject.restype=ctypes.c_int
+        crc=native.swap5_restart_crc32;crc.argtypes=[ctypes.c_void_p,ctypes.c_size_t];crc.restype=ctypes.c_uint32
+        rng=random.Random(431)
+        crc_vectors=[b'',b'123456789',bytes(range(256))]+[rng.randbytes(n)for n in [1,2,7,8,9,31,32,33,255,256,257,65535,65536,223790]]
+        for payload in crc_vectors:
+            buffer=ctypes.create_string_buffer(payload)
+            assert crc(buffer,len(payload))==zlib.crc32(payload)
         nested=folder/'nested directory';nested.mkdir()
         target=nested/'checkpoint.bin';pending=Path(str(target)+'.pending')
         paths=(str(pending).encode('utf8'),str(target).encode('utf8'))
@@ -30,7 +36,7 @@ def main():
         pending.write_bytes(old);assert publish(*paths)==0 and target.read_bytes()==old and not pending.exists()
         pending.write_bytes(new);assert publish(*paths)==0 and target.read_bytes()==new and not pending.exists()
         # A separate process observes disk contents, not a live model object.
-        observed=subprocess.check_output([shutil.which('python') or 'python','-c',
+        observed=subprocess.check_output([sys.executable,'-c',
             'from pathlib import Path;import hashlib,sys;print(hashlib.sha256(Path(sys.argv[1]).read_bytes()).hexdigest())',str(target)],text=True).strip()
         assert observed==sha(target)
         stages=[]
@@ -64,7 +70,7 @@ def main():
         assert publish(str(unicode_pending).encode('utf8'),str(unicode_target).encode('utf8'))==0
         assert unicode_target.read_bytes()==new
         events.append(dict(optimization=opt,seconds=time.monotonic()-begin,command=command,
-                           library_sha256=sha(library),fault_stages=stages,status='PASS'))
+                           library_sha256=sha(library),crc_vectors=len(crc_vectors),fault_stages=stages,status='PASS'))
     result=dict(status='NATIVE_RESTART_PUBLICATION_PASS',platform=os.name,
                 source_sha256={source.relative_to(ROOT).as_posix():sha(source)},
                 compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],events=events,

@@ -3,7 +3,7 @@
 ! binding and CRC are checked before either committed owner is replaced.
 module mod_grass_prefix_restart_file
  use iso_fortran_env,only:real64,int64,int32,int8
- use iso_c_binding,only:c_int,c_char,c_null_char
+ use iso_c_binding,only:c_int,c_char,c_null_char,c_int8_t,c_int32_t,c_size_t
  use ieee_arithmetic,only:ieee_is_finite
  use mod_transaction_reference,only:transaction_state_t
  use mod_kernel_transactions
@@ -14,19 +14,27 @@ module mod_grass_prefix_restart_file
  use mod_crop_root_depth_rate_owner
  use mod_wofost_crop_owner_state
  use mod_wofost_grass_development,only:grass_management_continuation_t
- use mod_age_joint_restart_file,only:crc32
  implicit none
  private
  public::write_grass_prefix_restart,read_grass_prefix_restart
  character(8),parameter::MAGIC='S5GRS003'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
+  integer(c_int32_t) function crc32_c(bytes,n)bind(C,name='swap5_restart_crc32')
+   import c_int8_t,c_int32_t,c_size_t
+   integer(c_int8_t),intent(in)::bytes(*)
+   integer(c_size_t),value::n
+  end function
   integer(c_int) function publish_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
   end function
  end interface
 contains
+ integer(int32) function crc32(bytes)result(crc)
+  integer(int8),intent(in)::bytes(:)
+  crc=crc32_c(bytes,int(size(bytes),c_size_t))
+ end function
  subroutine read_bytes(path,bytes,status)
   character(*),intent(in)::path
   integer(int8),allocatable,intent(out)::bytes(:)
