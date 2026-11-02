@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local production-contract feedback. Owning admission gates remain separate."""
 from __future__ import annotations
-import argparse, math, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, time
+import argparse, math, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, sys, time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -54,13 +54,13 @@ COMPONENTS={
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def digest(value): return hashlib.sha256(json.dumps(value,sort_keys=True).encode()).hexdigest()
 def write(path,value): Path(path).write_text(json.dumps(value,indent=2,sort_keys=True)+'\n')
-def relative(paths): return [str(p.relative_to(ROOT)) for p in paths]
+def relative(paths): return [p.relative_to(ROOT).as_posix() for p in paths]
 
 def original_boesten():
     text=(ROOT/'tests/fapp/run_ppa_wu04b_boesten_evaporation.sh').read_text()
     sources=re.search(r'MODULE_SRC=\(\n(.*?)\n\)',text,re.S).group(1).split()
-    result=subprocess.check_output(['python3',str(ROOT/'tests/support/augment_bartholomeus_backend_sources.py'),'--all',*sources],cwd=ROOT,text=True)
-    return result.splitlines()
+    result=subprocess.check_output([sys.executable,str(ROOT/'tests/support/augment_bartholomeus_backend_sources.py'),'--all',*sources],cwd=ROOT,text=True)
+    return [Path(path).as_posix() for path in result.splitlines()]
 
 def plan(case,broad=False):
     cfg=CASES[case]
@@ -245,7 +245,7 @@ def require_selection(record_path, group):
         raise ValueError('selection record required: set SWAP5_TEST_SELECTION_RECORD')
     record = Path(record_path)
     if not record.is_absolute(): record = ROOT / record
-    relative_record = str(record.resolve().relative_to(ROOT))
+    relative_record = record.resolve().relative_to(ROOT).as_posix()
     if git_text('ls-files', '--error-unmatch', relative_record) != relative_record:
         raise ValueError('selection must use a versioned existing work-unit record')
     data = json.loads(record.read_text())['test_selection']
@@ -263,7 +263,7 @@ def require_selection(record_path, group):
             raise ValueError('missing selection field: ' + key)
     authority = ROOT / decision['authority'].split('#')[0]
     if not authority.is_file(): raise ValueError('missing owning authority')
-    authority_path = str(authority.resolve().relative_to(ROOT))
+    authority_path = authority.resolve().relative_to(ROOT).as_posix()
     if git_text('diff', candidate, '--', authority_path):
         raise ValueError('owning authority changed since selection candidate')
     seconds = decision.get('expected_seconds')
