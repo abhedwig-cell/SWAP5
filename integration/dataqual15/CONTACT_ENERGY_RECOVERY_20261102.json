@@ -1,0 +1,29 @@
+{
+  "workstream": "DATAQUAL15 Andelst contact and whole energy",
+  "baseline": "972bfc237794caacbbecd3017a7769149ad0d32f",
+  "branch": "codex/andelst-energy-20261102",
+  "implementation": "Current-owner component drivers persisted; production/reference unchanged",
+  "test_status": "PENDING",
+  "qualified": false,
+  "canonical_admitted": false,
+  "invariants": ["unchanged physical laws and transactional rollback", "missing energy terms never silently zero", "component observations do not qualify full applications"],
+  "selection": {
+    "energy": "432 immutable explicit Sprint04 component inputs, O0/O2 current heat plus exact stock/ledger composition; reference gauges 0/5C, missing-advection rejection, explicit zero-advection counterfactual; independent Python stock calculation",
+    "contact": "36 explicit synthetic DTO controls per build on actual production absorption; observed Andelst head/topology pair; three timesteps, three entry widths, four perturbations; not complete Andelst replay",
+    "cost": "Two narrow direct compilation closures; expected under two minutes each. No long full-project rerun: neither physical repair nor missing energy receipts are implemented."
+  },
+  "immutable_inputs": {
+    "source_ref": "origin/codex/grassgrowth-sprint04",
+    "archive": "integration/dataqual15/SPRINT04_ENERGY_COMPONENT_INPUTS.tar.xz",
+    "sha256": "46ba4ef8101cf8a4b533f3d8c12761fb20d71488ea634e9f5f77862be29ed277",
+    "scope": "Exact historical archive only; no inheritance of old whole-production-tree qualification or overwritten status records"
+  },
+  "next_action": "Run both qualifiers locally with --output fresh workspace directories, persist measured evidence, run same gates on Linux",
+  "remaining": ["Andelst contact repair needs reference classification and coupled conservative acceptance/rejection evidence", "actual accepted hydraulic intervals with signed boundary/root/lateral donor energy receipts", "latent/vapor/radiation/freeze-thaw energy scope contract"],
+  "canonical_merge_ci": {
+    "merge": "bf99820474cad117b60b1d1285dd32c0db905495",
+    "all_terminal": true,
+    "success": [41424758938,41424758951,41424759098],
+    "retained_source_guard_failures": [41424758946,41424758966,41424758982,41424758992]
+  }
+}
