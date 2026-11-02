@@ -25,13 +25,13 @@ jobs:
       - name: Verify sealed Windows observations
         run: python -B tests/dataqual15/verify_contact_energy_evidence.py
       - name: Actual contact owner O0 and O2
-        run: python -B tests/dataqual15/qualify_andelst_contact.py --output ../contact-linux
+        run: python -B tests/dataqual15/qualify_andelst_contact.py --output contact-energy-ci/contact
       - name: Actual heat and exact stock ledger O0 and O2
-        run: python -B tests/dataqual15/qualify_energy_boundary.py --output ../energy-linux
+        run: python -B tests/dataqual15/qualify_energy_boundary.py --output contact-energy-ci/energy
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: contact-energy-current-owner-observations
           path: |
-            ../contact-linux
-            ../energy-linux
+            contact-energy-ci/contact
+            contact-energy-ci/energy
