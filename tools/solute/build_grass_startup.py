@@ -4,7 +4,7 @@
 Uses only TTUTIL and historical table-reading helpers from the original sources.
 The complete original SWAP model is never linked into this application.
 """
-import argparse,base64,hashlib,io,json,re,subprocess,tarfile,time
+import argparse,base64,hashlib,io,json,os,re,shutil,subprocess,tarfile,time
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
@@ -13,13 +13,13 @@ p.add_argument('--output',type=Path,required=True)
 p.add_argument('--optimization',choices=['O0','O2'],required=True)
 p.add_argument('--profile',choices=['checked','production'],default='checked')
 p.add_argument('--reuse-build',type=Path)
-p.add_argument('--compiler',type=Path,default=Path('/usr/bin/x86_64-linux-gnu-gfortran-13'))
-p.add_argument('--input-archive',type=Path,required=True)
+p.add_argument('--compiler',type=Path,default=Path(shutil.which('gfortran') or 'gfortran'))
+p.add_argument('--input-archive',type=Path,help='Optional already-built original TTUTIL archive; otherwise build from the pinned repository authority')
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
 a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
-fc=str(a.compiler.resolve());archive=a.input_archive.resolve()
-assert archive.is_file()
+fc=str(a.compiler.resolve());archive=a.input_archive.resolve() if a.input_archive else out/'libttutil.a'
+if a.input_archive:assert archive.is_file()
 authority=ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
 with tarfile.open(fileobj=io.BytesIO(base64.b64decode(authority.read_bytes())),mode='r:gz')as t:
  original=t.extractfile('SWAP/functions.f90').read().decode('latin1')
@@ -46,11 +46,14 @@ def visit(source):
  active.remove(source);seen.add(source);ordered.append(source)
 visit(driver);ordered.remove(driver)
 visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')
-ordered += [helper,driver]
+publication=ROOT/'app/support/restart_publish.c'
+ordered += [helper,publication,driver]
 flags=['-'+a.optimization,'-ffree-line-length-none','-fopenmp']+(['-fcheck=all']if a.profile=='checked'else[])+['-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out)]
+c_flags=['-'+a.optimization,'-std=c11','-Wall','-Wextra','-Werror']
 hashes={str(s):sha(s)for s in ordered}
 report=dict(status='BUILDING',profile=a.profile,compiler=subprocess.check_output([fc,'--version'],text=True).splitlines()[0],
- source_sha256=hashes,original_input_archive_sha256=sha(archive),source_authority_sha256=sha(authority),flags=flags,events=[])
+ source_sha256=hashes,original_input_archive_sha256=sha(archive) if a.input_archive else None,source_authority_sha256=sha(authority),flags=flags,
+ publication_c_flags=c_flags,build_recipe_sha256=sha(Path(__file__)),events=[])
 def save():(out/'BUILD.json').write_text(json.dumps(report,indent=2)+'\n')
 def run(command,label,cwd=out,timeout=120):
  start=time.perf_counter();i=len(report['events'])
@@ -59,11 +62,29 @@ def run(command,label,cwd=out,timeout=120):
  (out/(str(i)+'.stdout')).write_bytes(r.stdout or b'');(out/(str(i)+'.stderr')).write_bytes(r.stderr or b'')
  report['events'].append(dict(label=label,command=list(map(str,command)),seconds=time.perf_counter()-start,returncode=rc));save()
  return rc
+if not a.input_archive:
+ from legacy_reader_sources import materialize
+ _,providers=materialize(ROOT,out)
+ ttout=out/'ttobj';ttout.mkdir();ttobjects=[]
+ legacy_flags=['-'+a.optimization,'-std=legacy','-fallow-argument-mismatch','-ffree-line-length-none',
+               '-ffixed-line-length-none','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow',
+               '-I'+str(ttout),'-J'+str(ttout)]
+ report['original_input_sources_sha256']={str(s):sha(s)for s in providers}
+ report['original_input_flags']=legacy_flags
+ for i,source in enumerate(providers):
+  obj=ttout/(str(i)+'.o')
+  assert run([fc,*legacy_flags,'-c',source,'-o',obj],'compile_original_input')==0,source
+  ttobjects.append(obj)
+ ar=subprocess.check_output([fc,'-print-prog-name=ar'],text=True).strip()
+ assert run([ar,'rcs',archive,*[o.name for o in ttobjects]],'archive_original_input',ttout)==0
+ report['original_input_archive_sha256']=sha(archive)
+ report['original_input_objects_sha256']={str(o):sha(o)for o in ttobjects}
 objects=[];changed=set();reuse={};reused_artifacts={}
 if a.reuse_build:
  import shutil
  baseline=a.reuse_build.resolve();old=json.loads((baseline/'BUILD.json').read_text())
  assert old['compiler']==report['compiler']
+ assert old.get('publication_c_flags')==c_flags,'native publication compiler profile mismatch'
  assert [f for f in flags if not f.startswith(('-I','-J'))]==[f for f in old['flags']if not f.startswith(('-I','-J'))],'code-generation profile mismatch'
  assert all(sha(Path(o))==h for o,h in old['object_sha256'].items())
  old_objects=list(old['object_sha256'])
@@ -77,16 +98,17 @@ for i,source in enumerate(ordered):
  if key in reuse and reuse[key][0]==sha(source)and not dependencies&changed:
   obj=reuse[key][1];objects.append(obj);reused_artifacts[str(obj)]=sha(obj);continue
  changed.add(source)
- obj=out/(str(i)+'.o');command=[fc,*flags,'-c',source,'-o',obj]
+ source_flags=c_flags if source==publication else flags
+ obj=out/(str(i)+'.o');command=[fc,*source_flags,'-c',source,'-o',obj]
  rc=run(command,'compile')
  assert rc==0,(source,rc)
  if not obj.is_file()or obj.stat().st_size==0:rc=run(command,'retry_empty_artifact')
  assert rc==0 and obj.stat().st_size>0,(source,rc)
  objects.append(obj)
 assert all(sha(Path(s))==h for s,h in hashes.items()),'source changed during build'
-exe=out/'swap5_grass_startup'
+exe=out/('swap5_grass_startup.exe' if os.name=='nt' else 'swap5_grass_startup')
 assert run([fc,'-fopenmp',*objects,archive,'-o',exe],'link')==0
-report.update(status='BUILT',provider_count=len(ordered),executable_sha256=sha(exe),object_sha256={str(o):sha(o)for o in objects},reused_artifacts_sha256=reused_artifacts,module_sha256={str(f):sha(f)for f in out.glob('*.mod')});save()
+report.update(status='BUILT',provider_count=len(ordered),executable=exe.name,executable_sha256=sha(exe),object_sha256={str(o):sha(o)for o in objects},reused_artifacts_sha256=reused_artifacts,module_sha256={str(f):sha(f)for f in out.glob('*.mod')});save()
 project=ROOT/'reference/swap-4.3.1/projects/2.grassgrowth';case=out/'original-interval';case.mkdir()
 for source,target in [('swap.swp','input.swp'),('grass.crp','grass.crp'),('260.met','input.met'),('swap.bbc','swap.bbc'),('swap.dra','swap.dra')]:
  (case/target).write_bytes((project/source).read_bytes())

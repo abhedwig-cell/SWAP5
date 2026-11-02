@@ -21,22 +21,9 @@ module mod_grass_prefix_restart_file
  character(8),parameter::MAGIC='S5GRS003'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
-  integer(c_int) function rename_c(a,b)bind(C,name='rename')
+  integer(c_int) function publish_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
-  end function
-  integer(c_int) function open_c(a,b)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*)
-   integer(c_int),value::b
-  end function
-  integer(c_int) function sync_c(a)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::a
-  end function
-  integer(c_int) function close_c(a)bind(C,name='close')
-   import c_int
-   integer(c_int),value::a
   end function
  end interface
 contains
@@ -67,13 +54,6 @@ contains
   read(u,iostat=io)text;close(u)
   if(io==0)status=0
  end subroutine
- integer function synchronize(path)result(status)
-  character(*),intent(in)::path
-  integer(c_int)::fd,ignored
-  status=1;fd=open_c(trim(path)//c_null_char,0_c_int)
-  if(fd<0)return
-  status=sync_c(fd);ignored=close_c(fd)
- end function
  subroutine write_grass_prefix_restart(path,water,crop,management,status,potential,roots)
   character(*),intent(in)::path
   type(kernel_committed_state_t),intent(in)::water
@@ -170,16 +150,17 @@ contains
      management%potential_harvested_dry_matter,management%cut_index,management%potential_cut_index
    if(io==0)call write_compatibility(u,crop,io)
    if(io==0)call write_compatibility(u,potential_owner,io)
-   close(u)
+   close(u,iostat=code)
    if(io/=0)return
+   if(code/=0)return
    call read_bytes(pending,bytes,code);if(code/=0)return
    crc=crc32(bytes)
    open(newunit=u,file=pending,access='stream',form='unformatted',status='old',position='append',iostat=io)
    if(io/=0)return
-   write(u,iostat=io)crc;close(u);if(io/=0)return
-   if(synchronize(pending)/=0)return
-   if(rename_c(pending//c_null_char,trim(path)//c_null_char)/=0)return
-   if(synchronize('.')/=0)return
+   write(u,iostat=io)crc
+   close(u,iostat=code)
+   if(io/=0.or.code/=0)return
+   if(publish_c(pending//c_null_char,trim(path)//c_null_char)/=0)return
    status=0
   class default
    return

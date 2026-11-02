@@ -395,5 +395,64 @@
     ],
     "execution_notes": "Set TEMP/TMP to a writable workspace directory in the managed Windows sandbox. Point MODULAR_CONTROL_EVIDENCE_DIR and ADOPTION_CONTROL_EVIDENCE_DIR to fresh evidence directories. Adoption workflow controls require PyYAML (tested 6.0.3). Failed initial DLL lookup/oracle checkout and pre-reconciliation controls are retained in the archive. Final science inputs are unchanged from 82f1416dd through 7e99a5da1; only structural control assertions changed.",
     "canonical_admitted": false
+  },
+  "native_disk_restart_20261102": {
+    "work_unit": "DATAQUAL15-WP0-NATIVE-DISK-RESTART",
+    "baseline": "ed91871e98ef5f0ba64ccd25e7c9e18cfc173209",
+    "canonical_base": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+    "branch": "codex/swap5-migration-20261102",
+    "implemented": true,
+    "persisted": "Implementation checkpoint containing this record",
+    "tested": "Native C first/replacement publication and stages2..5 PASS O0/O2 before checkpoint; full original application NOT_RUN",
+    "qualified": false,
+    "invariants_affected": [
+      2,
+      3,
+      7,
+      13,
+      25,
+      26
+    ],
+    "contract": {
+      "owner": "Application I/O adapter only; no kernel/physical/committed-state owner",
+      "precondition": "Closed complete CRC-protected stream in a sibling pending file",
+      "windows": "CreateFileW(GENERIC_WRITE) + FlushFileBuffers + CloseHandle + MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH); UTF-8 paths; no copy/delete fallback",
+      "posix": "Open destination parent, fsync pending file, close, rename, fsync destination parent, close; nested destinations use their real parent",
+      "failure": "Never acknowledge durable success after any failed stage; before rename the previous file remains. A post-rename directory-sync failure returns failure without attempting to roll back the name.",
+      "format": "S5GRS003 bytes and physical/crop/root/management semantics unchanged",
+      "limitations": "OS/API durability contract only; no simulated power-loss/hardware-cache/OneDrive-cloud durability proof; same-build and same-platform codec, not binary cross-platform portability"
+    },
+    "relevant_paths": [
+      "app/support/restart_publish.c",
+      "app/grass_project/restart_file.f90",
+      "tools/solute/build_grass_startup.py",
+      "tools/solute/build_grass_diagnostic.py",
+      "tests/dataqual15/test_restart_publication.py",
+      "tests/dataqual15/qualify_native_disk_restart.py",
+      "tests/dataqual15/run_original.py"
+    ],
+    "dependency_surface": [
+      "Application publication and Fortran close errors",
+      "S5GRS003 decoder/encoder and application.binding",
+      "Original project inputs",
+      "Build recipe, original TTUTIL utilities, native compiler and executable",
+      "Existing real Richards/water/heat/crop/root composition"
+    ],
+    "test_selection": {
+      "scientific_claim": "Native platform publication and three original days, exact1->3 joint disk restart, all applicable short-stream corruptions",
+      "owner": "RT/VQ DATAQUAL15 application",
+      "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+      "expected_seconds_per_build": 180,
+      "existing_evidence": "Prior immutable scientific archives remain historical; their exact current-source guard is NOT inherited across the application/recipe change.",
+      "prior_execution": "NONE",
+      "not_selected": [
+        "Full1827-day rerun without a new scientific question",
+        "Full F-CI or highest low-air",
+        "Whole scientific equivalence"
+      ]
+    },
+    "next_action": "Push implementation checkpoint, build original utilities and real Grassgrowth from repository-only sources at checked O0/O2; execute three-day continuous/resume and invalid streams; continue independently with applicable migration steps.",
+    "blockers": [],
+    "canonical_admitted": false
   }
 }

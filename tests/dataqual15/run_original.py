@@ -2,7 +2,7 @@
 import argparse,csv,hashlib,json,shutil,struct,subprocess,time,zlib
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--end',type=int,required=True);p.add_argument('--restart',type=Path);p.add_argument('--capture',type=int,nargs='*',default=[]);p.add_argument('--timeout',type=int,default=7200);a=p.parse_args()
-b=a.bundle.resolve();out=a.output.resolve();out.mkdir();sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();build=json.loads((b/'BUILD.json').read_text());exe=b/'swap5_grass_startup'
+b=a.bundle.resolve();out=a.output.resolve();out.mkdir();sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest();build=json.loads((b/'BUILD.json').read_text());exe=b/build.get('executable','swap5_grass_startup')
 assert sha(exe)==build['executable_sha256'];exe.chmod(exe.stat().st_mode|0o100);assert all(sha(Path(s))==h for s,h in build['source_sha256'].items())
 for n,h in build['original_inputs_sha256'].items():
  f=b/'original-interval'/n;assert sha(f)==h;shutil.copyfile(f,out/n)
