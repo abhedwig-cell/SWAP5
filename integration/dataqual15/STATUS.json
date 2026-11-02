@@ -260,11 +260,9 @@
       26
     ],
     "interfaces_changed": "No production interface change; Windows runner fingerprints the real MinGW runtime DLL and tracks the actual .exe artifact. Linux runtime lookup remains required.",
-    "next_action": "WP0 full-project build/restart portability remains open: bind a supported Linux compiler host or implement and qualify native durable file-sync/replace semantics under the existing Grassgrowth restart owner. Then run one original project interval and valid/invalid same-build disk restart before any new full trajectory. For physics continuation use current DATAQUAL12 remaining-science/Andelst contact authorities; do not revive the superseded local typed-session queue.",
+    "next_action": "Native Grassgrowth fsync/disk-restart blocker resolved by native_disk_restart_20261102; retain this record as the earlier feedback-only checkpoint.",
     "recovery_point": "7e99a5da19ace8df6ec71695dbac76d5a42deb8b plus the evidence checkpoint containing this record",
-    "blockers": [
-      "WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."
-    ],
+    "blockers": [],
     "non_claims": [
       "No production/app/reference mutation",
       "No new original execution or scientific qualification",
@@ -394,7 +392,11 @@
       "python -B tests/modularity/test_adoption_controls.py"
     ],
     "execution_notes": "Set TEMP/TMP to a writable workspace directory in the managed Windows sandbox. Point MODULAR_CONTROL_EVIDENCE_DIR and ADOPTION_CONTROL_EVIDENCE_DIR to fresh evidence directories. Adoption workflow controls require PyYAML (tested 6.0.3). Failed initial DLL lookup/oracle checkout and pre-reconciliation controls are retained in the archive. Final science inputs are unchanged from 82f1416dd through 7e99a5da1; only structural control assertions changed.",
-    "canonical_admitted": false
+    "canonical_admitted": false,
+    "superseded_by": "native_disk_restart_20261102",
+    "historical_blockers": [
+      "WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."
+    ]
   },
   "native_disk_restart_20261102": {
     "work_unit": "DATAQUAL15-WP0-NATIVE-DISK-RESTART",
@@ -474,7 +476,7 @@
         "not_selected": "Full1827-day rerun, new physics, tolerance changes, full F-CI"
       }
     },
-    "next_action": "Seal raw evidence and final documentation; then reconcile DATAQUAL15 closed current-source capsule guards through the owning admission authority. Next scientific migration blockers are the literal Andelst discontinuous contact/B1 reference decision and the whole physical energy stock/exchange contract; do not smooth the source law, relabel conduction accounting as full energy or rerun full trajectories without a discriminating question.",
+    "next_action": "Verify the sealed dossier with tests/dataqual15/verify_native_restart_evidence.py, then owner reconciliation of affected closed-source guards/canonical admission. Scientific successor work requires the actual Andelst contact/B1-reference and physical energy stock/exchange authorities; no arbitrary smoothing, tolerance change or blind full rerun.",
     "blockers": [
       "Canonical admission and affected closed source guards are not established by the branch-local platform proof.",
       "Other POSIX-only snapshot adapters and consumers of the legacy Fortran CRC remain outside this bounded Grass route."
@@ -522,6 +524,20 @@
       "conclusion": "success",
       "scope": "Native publication/CRC controls and real original1->3 same-build disk restart O0/O2",
       "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41413503370"
-    }
+    },
+    "evidence": {
+      "path": "integration/dataqual15/NATIVE_DISK_RESTART_EVIDENCE_20261102.tar.xz",
+      "sha256": "00c02191754736923125a34cf44e6a631e3d70fd86231dac2ebb616ee7e5f288",
+      "bytes": 10667880,
+      "files": 3164,
+      "verifier": "tests/dataqual15/verify_native_restart_evidence.py"
+    },
+    "documentation_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS28.82seconds",
+      "page": "docs/audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md"
+    },
+    "recovery_point": "Scientific/native source550a2f3b5 and qualification62e890cbf; sealed evidence checkpoint containing this record",
+    "windows_fsync_blocker": "RESOLVED for the qualified native Grassgrowth route"
   }
 }
