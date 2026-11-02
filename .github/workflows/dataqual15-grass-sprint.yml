@@ -22,16 +22,28 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+      - name: Select closed predecessor view and current native I/O proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
+            python3 -B tests/dataqual15/verify_native_restart_admission.py --prepare-only --output "$RUNNER_TEMP/native-view"
+            printf 'OWNER_ROOT=%s\n' "$RUNNER_TEMP/native-view/predecessor" >> "$GITHUB_ENV"
+          else
+            printf 'OWNER_ROOT=%s\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          fi
       - name: Verify and export permanent scientific evidence, retaining failed gates
         shell: bash
         run: |
           set -euo pipefail
+          cd "$OWNER_ROOT"
           python3 -c 'import json; from pathlib import Path; assert json.loads(Path("integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json").read_text())["has_native_thermal"]'
           python3 -B tests/dataqual15/stress_evidence.py --extract "$RUNNER_TEMP/study"
       - name: Rebuild paired real owners and execute the diagnostic adapter
         shell: bash
         run: |
           set -euo pipefail
+          cd "$OWNER_ROOT"
           FC=$(command -v gfortran-13)
           python3 -B tests/dataqual15/qualify_stress.py --compiler "$FC" --output "$RUNNER_TEMP/stress" --paired-only --observations "$RUNNER_TEMP/study/observations/coarse/native"
           python3 -B tools/solute/build_grass_diagnostic.py --compiler "$FC" --input-archive "$RUNNER_TEMP/stress/original-O2/ttobj/libttutil.a" --output "$RUNNER_TEMP/stress/diagnostic-smoke" --optimization O2 --profile checked --driver "$RUNNER_TEMP/study/observations/coarse/observed_grass.f90" --provider-override "$RUNNER_TEMP/study/observations/observed_backend.f90" --end 1 --policy retained
@@ -50,8 +62,18 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+      - name: Select closed predecessor view and current native I/O proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
+            python3 -B tests/dataqual15/verify_native_restart_admission.py --prepare-only --output "$RUNNER_TEMP/native-view"
+            printf 'OWNER_ROOT=%s\n' "$RUNNER_TEMP/native-view/predecessor" >> "$GITHUB_ENV"
+          else
+            printf 'OWNER_ROOT=%s\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          fi
       - name: Verify inherited full original history and execute sealed recovery
-        run: python3 -B tests/dataqual15/recover_grass_full.py --output "$RUNNER_TEMP/recovery"
+        run: cd "$OWNER_ROOT" && python3 -B tests/dataqual15/recover_grass_full.py --output "$RUNNER_TEMP/recovery"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -66,10 +88,21 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
+      - name: Select closed predecessor view and current native I/O proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
+            python3 -B tests/dataqual15/verify_native_restart_admission.py --prepare-only --output "$RUNNER_TEMP/native-view"
+            printf 'OWNER_ROOT=%s\n' "$RUNNER_TEMP/native-view/predecessor" >> "$GITHUB_ENV"
+          else
+            printf 'OWNER_ROOT=%s\n' "$GITHUB_WORKSPACE" >> "$GITHUB_ENV"
+          fi
       - name: Whole original mowing and existing runtime owners
         shell: bash
         run: |
           set -euo pipefail
+          cd "$OWNER_ROOT"
           FC=$(command -v gfortran-13)
           python3 -B tests/dataqual15/qualify_mowing.py --compiler "$FC" --output "$RUNNER_TEMP/mowing"
           python3 -B tests/dataqual15/qualify_runtime.py --compiler "$FC" --output "$RUNNER_TEMP/runtime"

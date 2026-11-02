@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Fail-closed graph and actual compiler/artifact mutation controls."""
 import importlib.util,json,os,tempfile,unittest,shutil,hashlib
+from unittest.mock import patch
 from pathlib import Path
 SPEC=importlib.util.spec_from_file_location('runner',Path(__file__).with_name('run_modular_tests.py'))
 M=importlib.util.module_from_spec(SPEC);SPEC.loader.exec_module(M)
@@ -28,7 +29,11 @@ class DependencyControls(unittest.TestCase):
 
 class ProductionClosureControls(unittest.TestCase):
     def test_component_closure_budgets(self):
-        expected={'hydraulics':2,'richards':17,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':154}
+        # Reconciled fd3c3a69f -> canonical 1844fad45: Richards adds the
+        # dynamic-top adapter/provider and evaporation owner (3 providers).
+        # Runtime adds 18 admitted hydraulic/solute/drainage/trace providers.
+        # These are structural budgets, never scientific admission evidence.
+        expected={'hydraulics':2,'richards':20,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':172}
         for name,target in M.COMPONENTS.items():
             order,_=M.DEP.strict_closure(M.ROOT,[target],[M.STUB])
             self.assertEqual(len(order),expected[name],name+' closure changed: reassess contract and build budget')
@@ -37,6 +42,7 @@ class ProductionClosureControls(unittest.TestCase):
             for broad in [False,True]:
                 sources=M.plan(case,broad)
                 self.assertEqual(len(sources),len(set(sources)))
+                self.assertTrue(all('\\' not in source for source in sources),'repository paths must match Git identities')
     def test_zero_repeat_rejected(self):
         import subprocess
         with tempfile.TemporaryDirectory() as d:
@@ -71,6 +77,27 @@ class CompilerControls(unittest.TestCase):
         _,artifacts=next(iter(self.session.artifacts.values()))
         obj=next(p for p in artifacts if p.suffix=='.o');obj.write_bytes(obj.read_bytes()+b'corruption')
         with self.assertRaisesRegex(RuntimeError,'artifact identity'):self.session.execute('mvg',0,reuse=True)
+    def test_actual_executable_mutation_rejected(self):
+        self.session.execute('mvg',0)
+        exe,artifacts=next(iter(self.session.artifacts.values()))
+        self.assertIn(exe,artifacts)
+        self.assertEqual(exe.suffix,'.exe' if os.name=='nt' else '')
+        exe.write_bytes(exe.read_bytes()+b'corruption')
+        with self.assertRaisesRegex(RuntimeError,'artifact identity'):self.session.execute('mvg',0,reuse=True)
+    def test_runtime_library_is_fingerprinted(self):
+        runtime='libgfortran-5.dll' if os.name=='nt' else 'libgfortran.so.5'
+        identity=self.session.identity['-print-file-name='+runtime]
+        self.assertTrue(Path(identity['path']).is_absolute())
+        self.assertEqual(identity['sha256'],hashlib.sha256(Path(identity['path']).read_bytes()).hexdigest())
+    @unittest.skipUnless(os.name=='nt','MinGW runtime lookup')
+    def test_missing_windows_runtime_rejected(self):
+        original=M.subprocess.check_output
+        def query(args,**kwargs):
+            if args[-1]=='-print-file-name=libgfortran-5.dll':return 'libgfortran-5.dll\n'
+            return original(args,**kwargs)
+        with patch.object(M.subprocess,'check_output',side_effect=query), patch.object(M.os,'get_exec_path',return_value=[]):
+            with self.assertRaisesRegex(RuntimeError,'unresolved compiler input'):
+                self.session.toolchain_identity()
     def test_changed_source_recompiled(self):
         first=self.session.execute('mvg',0)
         p=self.root/'src/solver/mod_b110_default_mvg_provider.f90';p.write_text(p.read_text()+'\n! deliberate harmless mutation\n')

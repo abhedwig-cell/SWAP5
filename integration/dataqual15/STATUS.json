@@ -227,5 +227,439 @@
     "production_promotion": false,
     "known_legacy_guard_failure": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json"
   },
-  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits."
+  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits.",
+  "windows_feedback_continuation_20261102": {
+    "workstream": "RT/VQ migration WP0 execution infrastructure",
+    "work_unit": "DATAQUAL15-WP0-WINDOWS-FEEDBACK",
+    "baseline": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+    "branch": "codex/swap5-migration-20261102",
+    "implemented": true,
+    "persisted": "Implementation checkpoints ab18363fd, aac6135fc, 82f1416dd and 7e99a5da1; evidence checkpoint containing this record",
+    "tested": "PASS: six existing scientific drivers at O0/O2 (12 executions with per-driver byte-identical stdout); 18 compiler/dependency controls PASS; 18 adoption/selection controls PASS and one explicitly unexecuted POSIX shell test",
+    "qualified": "Bounded native Windows modular feedback only; no project, full-owner, physical-scope or canonical admission",
+    "authority_paths": [
+      "AGENTS.md",
+      "docs/development/workstream-execution-protocol.md",
+      "integration/dataqual12/MIGRATION_MATRIX.json"
+    ],
+    "relevant_paths": [
+      "tests/modularity/run_modular_tests.py",
+      "tests/modularity/test_modular_controls.py",
+      "tests/modularity/test_adoption_controls.py"
+    ],
+    "dependency_surface": [
+      "native compiler/runtime identity",
+      "executable artifact identity",
+      "same-session reuse guards",
+      "existing focused scientific drivers"
+    ],
+    "invariants_affected": [
+      5,
+      13,
+      25,
+      26
+    ],
+    "interfaces_changed": "No production interface change; Windows runner fingerprints the real MinGW runtime DLL and tracks the actual .exe artifact. Linux runtime lookup remains required.",
+    "next_action": "Native Grassgrowth fsync/disk-restart blocker resolved by native_disk_restart_20261102; retain this record as the earlier feedback-only checkpoint.",
+    "recovery_point": "7e99a5da19ace8df6ec71695dbac76d5a42deb8b plus the evidence checkpoint containing this record",
+    "blockers": [],
+    "non_claims": [
+      "No production/app/reference mutation",
+      "No new original execution or scientific qualification",
+      "No full F-CI inheritance or admission",
+      "No full Windows project/restart portability claim"
+    ],
+    "evidence": {
+      "candidate": "7e99a5da19ace8df6ec71695dbac76d5a42deb8b",
+      "science_head": "82f1416dd64b56c7d64e5bd18ab9497abf160f97",
+      "archive": "integration/dataqual15/WINDOWS_FEEDBACK_EVIDENCE_20261102.tar.xz",
+      "sha256": "f80168f9e0f54ff49da829e7d381628fc004b120f31b5797707a2d451c9f9ea4",
+      "bytes": 496864,
+      "files": 400,
+      "science_records": 12,
+      "science_seconds": 25.58612689981237,
+      "toolchain": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "compiler_controls": {
+        "tests": 18,
+        "passed": 18,
+        "seconds": 42.271
+      },
+      "adoption_controls": {
+        "tests": 19,
+        "passed": 18,
+        "skipped": 1,
+        "seconds": 62.166,
+        "skip_reason": "POSIX full-owner shell is outside native Windows feedback scope"
+      }
+    },
+    "closure_reconciliation": {
+      "baseline": "fd3c3a69f",
+      "current": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+      "components": {
+        "hydraulics": {
+          "previous": 2,
+          "current": 2,
+          "added": [],
+          "removed": []
+        },
+        "richards": {
+          "previous": 17,
+          "current": 20,
+          "added": [
+            "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+            "src/process/mod_restricted_surface_evaporation.f90",
+            "src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+          ],
+          "removed": []
+        },
+        "timestep": {
+          "previous": 2,
+          "current": 2,
+          "added": [],
+          "removed": []
+        },
+        "transaction": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "evaporation": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "root": {
+          "previous": 3,
+          "current": 3,
+          "added": [],
+          "removed": []
+        },
+        "drainage": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "crop": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "temperature": {
+          "previous": 5,
+          "current": 5,
+          "added": [],
+          "removed": []
+        },
+        "runtime": {
+          "previous": 154,
+          "current": 172,
+          "added": [
+            "src/process/mod_b111_persistent_pond.f90",
+            "src/process/mod_b111_pond_solute_exchange.f90",
+            "src/process/mod_b111_reactive_solute_substep.f90",
+            "src/process/mod_b111_solute_decay.f90",
+            "src/process/mod_b111_solute_sorption.f90",
+            "src/process/mod_drainage_b19_separate_infiltration_adapter.f90",
+            "src/process/mod_drainage_dramet3_response.f90",
+            "src/process/mod_frost_multilevel_divdra_effect.f90",
+            "src/process/mod_pond_water_temporal_difference.f90",
+            "src/process/mod_solute_compartment_state.f90",
+            "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+            "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+            "src/runtime/mod_fmr_water_flux_trace_contract.f90",
+            "src/solver/mod_b111_conductivity_power_tail.f90",
+            "src/solver/mod_b111_extended_hydraulic_provider.f90",
+            "src/solver/mod_b111_hysteresis_state.f90",
+            "src/solver/mod_b111_legacy_hydraulic_provider.f90",
+            "src/solver/mod_b111_linear_table_provider.f90"
+          ],
+          "removed": []
+        }
+      }
+    },
+    "test_paths": [
+      "tests/modularity/run_modular_tests.py",
+      "tests/modularity/test_modular_controls.py",
+      "tests/modularity/test_adoption_controls.py"
+    ],
+    "local_commands": [
+      "python -B tests/modularity/run_modular_tests.py --case drainage --case assimilation --case root_oxygen --case root_contract --case boesten --case mvg --output <new-output-directory>",
+      "python -B tests/modularity/test_modular_controls.py",
+      "python -B tests/modularity/test_adoption_controls.py"
+    ],
+    "execution_notes": "Set TEMP/TMP to a writable workspace directory in the managed Windows sandbox. Point MODULAR_CONTROL_EVIDENCE_DIR and ADOPTION_CONTROL_EVIDENCE_DIR to fresh evidence directories. Adoption workflow controls require PyYAML (tested 6.0.3). Failed initial DLL lookup/oracle checkout and pre-reconciliation controls are retained in the archive. Final science inputs are unchanged from 82f1416dd through 7e99a5da1; only structural control assertions changed.",
+    "canonical_admitted": false,
+    "superseded_by": "native_disk_restart_20261102",
+    "historical_blockers": [
+      "WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."
+    ]
+  },
+  "native_disk_restart_20261102": {
+    "work_unit": "DATAQUAL15-WP0-NATIVE-DISK-RESTART",
+    "baseline": "ed91871e98ef5f0ba64ccd25e7c9e18cfc173209",
+    "canonical_base": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+    "branch": "codex/swap5-migration-20261102",
+    "implemented": true,
+    "persisted": "Implementation checkpoint containing this record",
+    "tested": "Native C publication, transient/permanent locks,17 CRC vectors O0/O2 PASS; original Windows source-contiguous367 days and two exact disk-restart boundaries O0/O2 PASS;22 invalid-stream executions PASS.",
+    "qualified": true,
+    "invariants_affected": [
+      2,
+      3,
+      7,
+      13,
+      25,
+      26
+    ],
+    "contract": {
+      "owner": "Application I/O adapter only; no kernel/physical/committed-state owner",
+      "precondition": "Closed complete CRC-protected stream in a sibling pending file",
+      "windows": "CreateFileW(GENERIC_WRITE) + FlushFileBuffers + CloseHandle + MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH); UTF-8 paths; no copy/delete fallback; at most21 replace attempts with20x10ms waits for access/sharing/lock errors, then fail closed without copy/delete",
+      "posix": "Open destination parent, fsync pending file, close, rename, fsync destination parent, close; nested destinations use their real parent",
+      "failure": "Never acknowledge durable success after any failed stage; before rename the previous file remains. A post-rename directory-sync failure returns failure without attempting to roll back the name.",
+      "format": "S5GRS003 bytes and physical/crop/root/management semantics unchanged",
+      "limitations": "OS/API durability contract only; no simulated power-loss/hardware-cache/OneDrive-cloud durability proof; same-build and same-platform codec, not binary cross-platform portability"
+    },
+    "relevant_paths": [
+      "app/support/restart_publish.c",
+      "app/grass_project/restart_file.f90",
+      "tools/solute/build_grass_startup.py",
+      "tools/solute/build_grass_diagnostic.py",
+      "tests/dataqual15/test_restart_publication.py",
+      "tests/dataqual15/qualify_native_disk_restart.py",
+      "tests/dataqual15/run_original.py"
+    ],
+    "dependency_surface": [
+      "Application publication and Fortran close errors",
+      "S5GRS003 decoder/encoder and application.binding",
+      "Original project inputs",
+      "Build recipe, original TTUTIL utilities, native compiler and executable",
+      "Existing real Richards/water/heat/crop/root composition"
+    ],
+    "test_selection": {
+      "scientific_claim": "Native platform publication and three original days, exact1->3 joint disk restart, all applicable short-stream corruptions",
+      "owner": "RT/VQ DATAQUAL15 application",
+      "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+      "expected_seconds_per_build": 180,
+      "existing_evidence": "Prior immutable scientific archives remain historical; their exact current-source guard is NOT inherited across the application/recipe change.",
+      "prior_execution": "FAILED",
+      "not_selected": [
+        "Full1827-day rerun without a new scientific question",
+        "Full F-CI or highest low-air",
+        "Whole scientific equivalence"
+      ],
+      "diagnosis": "O2 original day reached1.0 but pending file lacked onlyCRC; exact standalone routine and optimizer controls isolated compiler loop miscompilation. Do not repeat the original executable; new native checksum implementation and new source/executable bindings are required.",
+      "management_prefix_120": {
+        "expected_seconds": 650,
+        "owner": "RT/VQ DATAQUAL15 native application portability",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "changed_dependency": "Native checkpoint publication and checksum, Windows snapshot readers",
+        "scientific_claim": "Bounded original first-mowing/LAIEXP disk continuation and invalid state rejection, not full project equivalence",
+        "existing_evidence": "Historical Linux117/140-day codec proof remains immutable; new Windows executable/source identity must establish actual platform I/O with active compatibility state.",
+        "prior_execution": "NONE",
+        "unique_coverage": "Three original days have no active LAIEXP compatibility field; the existing full11-corruption codec gate explicitly requires this actual first-season state.",
+        "not_selected": "No new1827-day run; no changed solver tolerance or physical input"
+      },
+      "year_boundary_367": {
+        "expected_seconds": 750,
+        "owner": "RT/VQ DATAQUAL15 native I/O",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "changed_dependency": "Native publish/checksum and same-build observation across original annual crop/root/management reset",
+        "scientific_claim": "Source-contiguous Windows original1->120->367, same-build365->367 exact disk restart, not full1827 or whole energy",
+        "existing_evidence": "Historical Linux367-day exact reset proof remains sealed. Windows120-day current-source prefix and117->120 exact restart are now PASS.",
+        "prior_execution": "NONE",
+        "unique_coverage": "Annual reset is not exercised in the120-day first-mowing prefix; retain original forcing and all physics. Measure one continuation per optimization then a2-day restart comparison.",
+        "not_selected": "Full1827-day rerun, new physics, tolerance changes, full F-CI"
+      }
+    },
+    "next_action": "Reconcile affected DATAQUAL15 closed current-source guards/canonical admission through the owning authority using this sealed branch-local platform evidence. The next scientific migration work still needs the literal Andelst contact/B1-reference and full physical energy stock/exchange authorities; do not infer broader migration closure or rerun full trajectories without a discriminating question.",
+    "blockers": [
+      "Canonical admission and affected closed source guards are not established by the branch-local platform proof.",
+      "Other POSIX-only snapshot adapters and consumers of the legacy Fortran CRC remain outside this bounded Grass route."
+    ],
+    "canonical_admitted": false,
+    "compiler_crc_diagnosis": {
+      "compiler": "GNU Fortran16.2 MSYS2 Windows",
+      "isolated_source": "Exact crc32 routine extracted from src/adapter/mod_age_joint_restart_file.f90, tested on the223790-byte real pending stream",
+      "O0": "PASS CRC93EBD5C8",
+      "O2": "TIMEOUT10s; repeated3s controls with no bounds checking and no vectorization also TIMEOUT",
+      "O2_no_tree_loop_optimize": "PASS0.142s CRC93EBD5C8; diagnostic only, not final model flags",
+      "repair": "Grass codec uses native C unsigned CRC-32/ISO-HDLC behind its existing local integer32 representation; no format change or shared scientific source mutation.17 independent zlib vectors per build include the real stream length.",
+      "remaining_shared_scope": "Other legacy Fortran CRC consumers are not changed or automatically qualified by this bounded Grass adapter repair."
+    },
+    "snapshot_observer_diagnosis": "This Windows filesystem returns AccessDenied while a target reader is open even with FILE_SHARE_DELETE. Native control now proves permanent lock rejection and bounded wait for a30ms reader, with old-reader bytes and new-name bytes exact. This is I/O retry only; solver/physics policy is unchanged.",
+    "management_prefix_120_result": {
+      "status": "PASS",
+      "O0_seconds": 114.04410229995847,
+      "O2_seconds": 92.1249489999609,
+      "original_days": 120,
+      "checkpoint117_captured": true,
+      "source_bound_117_to120_exact": true,
+      "invalid_streams_per_build": 11,
+      "active_compatibility_control": true,
+      "O0_O2_physical_payload_and_outputs": "BYTE_EXACT",
+      "independent_water_residual_cm": 3.7941871866564725e-14,
+      "whole_scientific_equivalence": false
+    },
+    "qualified_scope": "Branch-local Windows GNU Fortran16.2 same-build original Grassgrowth1->120->367; exact117->120 and365->367 disk restart, O0/O2 physical payload/output identity and11 corruption guards per build. Linux GNU Fortran13 O0/O2 three-day preservation at550a2f3b5. Not full1827, full energy, whole-model equivalence or canonical admission.",
+    "year_boundary_result": {
+      "status": "PASS",
+      "original_days": 367,
+      "source_segments": [
+        "1->120",
+        "121->367"
+      ],
+      "exact_restart": "365->367",
+      "O0_O2_physical_payload_and_outputs": "BYTE_EXACT",
+      "independent_water_residual_cm": 3.7941871866564725e-14
+    },
+    "linux_preservation": {
+      "run_id": 41413503370,
+      "job_id": 125171738772,
+      "head": "550a2f3b5bc5de743d5e518e120b25dfcb0c4ef1",
+      "conclusion": "success",
+      "scope": "Native publication/CRC controls and real original1->3 same-build disk restart O0/O2",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41413503370"
+    },
+    "evidence": {
+      "path": "integration/dataqual15/NATIVE_DISK_RESTART_EVIDENCE_20261102.tar.xz",
+      "sha256": "00c02191754736923125a34cf44e6a631e3d70fd86231dac2ebb616ee7e5f288",
+      "bytes": 10667880,
+      "files": 3164,
+      "verifier": "tests/dataqual15/verify_native_restart_evidence.py"
+    },
+    "documentation_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS31.47seconds on final documentation",
+      "page": "docs/audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md"
+    },
+    "recovery_point": "Scientific/native source550a2f3b5 and qualification62e890cbf; sealed evidence checkpoint containing this record",
+    "windows_fsync_blocker": "RESOLVED for the qualified native Grassgrowth route",
+    "sealed_evidence_verification": {
+      "status": "PASS",
+      "candidate": "d05b34f4c",
+      "command": "python -B tests/dataqual15/verify_native_restart_evidence.py",
+      "verified_original_days": 367,
+      "invalid_streams_per_build": 11,
+      "scope": "Archive manifest, current-build source/object/archive/executable/input identities, real367-day ledgers, exact restart boundaries and O0/O2 physical outputs; archived binaries are never executed",
+      "environment_note": "First managed-sandbox TEMP extraction failed with permission denied; setting TEMP/TMP to the writable workspace parent completed the identical persisted verifier. Model sources and archived evidence were unchanged."
+    },
+    "admission": {
+      "predecessor": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+      "production_delta": {
+        "app/grass_project/restart_file.f90": {
+          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
+          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
+        },
+        "app/support/restart_publish.c": {
+          "before": null,
+          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        }
+      },
+      "preservation_restore": {
+        "app/grass_project/restart_file.f90": {
+          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
+          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
+        },
+        "app/support/restart_publish.c": {
+          "before": null,
+          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        },
+        "tools/solute/build_grass_startup.py": {
+          "before": "242692502b99be1c5f62484e571d4cfd3c196818",
+          "after": "88c839ab5b9fc8f97ae393362ae4ee144f325c00"
+        },
+        "tools/solute/build_grass_diagnostic.py": {
+          "before": "6a950fb202dc002a9ae46e4ccd1b0c9a71d5906e",
+          "after": "e376f32812f47a99d1cf16ebef4ca5c3f819322d"
+        },
+        "tests/dataqual15/qualify_restart.py": {
+          "before": "f3d9d8c1ed375f956b4495be4ab4503e8f51d1bf",
+          "after": "3039b449c2a556c595a3c626fe47d9841388b5a7"
+        },
+        "tests/dataqual15/run_original.py": {
+          "before": "7fa6dc10793e7f03b64b4c7c00891b4522796dac",
+          "after": "a3b5f5238c40bdf7d7752666468070f176ac4650"
+        }
+      },
+      "predecessor_production_trees": {
+        "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+        "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+        "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+      },
+      "gate_source_sha256": {
+        "tests/dataqual15/verify_native_restart_admission.py": "64a814be8e54a959a5dfd7b4ba054871767181cc97c7f542cac1c7b0735ce9d7",
+        "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
+        "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77"
+      },
+      "scope": "Admit exact native I/O delta only. Immutable1827/1096 science remains predecessor-source evidence; current native367-day qualification is separate. Failed original science gates remain failed.",
+      "test_selection": {
+        "expected_seconds": 600,
+        "authority": "docs/development/workstream-execution-protocol.md#autonomous-long-session-execution-standard-2026-10-08",
+        "owner": "REGIE/RT/VQ",
+        "changed_dependency": "Application I/O and exact build recipe; src/reference trees and physical driver unchanged",
+        "existing_evidence": "Native Windows367-day/O0/O2 and Linux native3-day proof already PASS; closed source predecessors must be revalidated unmodified in exact committed tree.",
+        "prior_execution": "NONE",
+        "full_fci": "NOT_SELECTED: no shared physical source or driver change; current closed F-CI feedback is composed explicitly with predecessor and current native I/O gates. No full-moving PASS inferred."
+      },
+      "status": "LOCAL_PASS_REMOTE_ADMISSION_PENDING",
+      "local_qualification": {
+        "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+        "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
+        "projection": {
+          "tree": "f8eb156a80e8e4e8c8fb41c87ea1c6b12ccc2f63",
+          "commit": "0d4e10cde0d2521c274912fafe14f4d53cd18417",
+          "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+        },
+        "events": [
+          {
+            "label": "current-native",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15/verify_native_restart_evidence.py"
+            ]
+          },
+          {
+            "label": "predecessor-grass",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15/verify_grass_full_evidence.py",
+              "--spec",
+              "integration/dataqual15/GRASS_UNION_FULL_SPEC.json",
+              "--capsule",
+              "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz",
+              "--manifest",
+              "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json"
+            ]
+          },
+          {
+            "label": "predecessor-stress",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15/stress_evidence.py"
+            ]
+          },
+          {
+            "label": "predecessor-hupsel",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15_hupsel/uptake_evidence.py"
+            ]
+          }
+        ],
+        "full_current1827_execution": false,
+        "whole_scientific_qualification": false
+      },
+      "negative_controls": {
+        "tests": 8,
+        "result": "PASS",
+        "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
+        "scope": "Actual Git: unknown physics/codec/recipe/gate drift and dirty/untracked production fail closed; committed predecessor projection is exact and current remains unchanged."
+      }
+    }
+  }
 }

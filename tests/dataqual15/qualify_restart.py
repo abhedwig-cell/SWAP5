@@ -2,7 +2,7 @@
 import argparse,csv,hashlib,json,shutil,struct,subprocess,time,zlib
 from pathlib import Path
 from checkpoint_layout import layout,payload
-p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();base=a.bundle.resolve();out=a.output.resolve();out.mkdir();build=json.loads((base/'BUILD.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();exe=base/'swap5_grass_startup';assert sha(exe)==build['executable_sha256'];exe.chmod(exe.stat().st_mode|0o100);assert all(sha(Path(s))==h for s,h in build['source_sha256'].items())
+p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();base=a.bundle.resolve();out=a.output.resolve();out.mkdir();build=json.loads((base/'BUILD.json').read_text());sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest();exe=base/build.get('executable','swap5_grass_startup');assert sha(exe)==build['executable_sha256'];exe.chmod(exe.stat().st_mode|0o100);assert all(sha(Path(s))==h for s,h in build['source_sha256'].items())
 original=a.checkpoint.read_bytes();d=layout(original);events=[]
 for kind in ['crc','truncated','layout','clock','source','roots','delay','potential_delay','cut_index','yield_nan','compatibility_nan']:
  b=bytearray(original);folder=out/kind;folder.mkdir()

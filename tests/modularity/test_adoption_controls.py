@@ -3,6 +3,7 @@
 import importlib.util
 import os
 import subprocess
+import sys
 import tempfile
 import unittest
 from pathlib import Path
@@ -24,7 +25,7 @@ class Controls(unittest.TestCase):
         self.assertEqual(b['compiler_requests'],2)
         self.assertEqual(b['reused_compilations'],3)
         self.assertNotEqual(a['stdout_sha256'],b['stdout_sha256'])
-        self.assertEqual(sum(e['command'][0].endswith('/test') for e in s.events),2)
+        self.assertEqual(sum(Path(e['command'][0]).name in ('test','test.exe') for e in s.events),2)
         m.write(s.out/'CONTROL.json',{'status':'PASS','records':[a,b],'events':s.events})
 
     def test_shared_module_corruption_fails_closed(self):
@@ -159,6 +160,15 @@ class SelectionControls(unittest.TestCase):
         with self.assertRaisesRegex(ValueError,'persist selection'):
             m.require_selection(self.path, 'full_fci')
 
+    def test_native_preflight_rejects_before_science(self):
+        env=dict(os.environ);env.pop('SWAP5_TEST_SELECTION_RECORD',None)
+        for group in ['full_fci','irrigation_allocation']:
+            cp=subprocess.run([sys.executable,str(self.saved_root/'tests/modularity/run_modular_tests.py'),
+                               '--check-selection',group],env=env,capture_output=True)
+            self.assertNotEqual(cp.returncode,0);self.assertIn(b'selection record required',cp.stderr)
+            self.assertNotIn(b'MODULAR_PRODUCTION_DRIVERS=PASS',cp.stdout)
+
+    @unittest.skipIf(os.name=='nt','POSIX full-owner shell is outside native Windows feedback scope')
     def test_actual_full_runner_rejects_before_science(self):
         env=dict(os.environ);env.pop('SWAP5_TEST_SELECTION_RECORD',None)
         for args in [[], ['--mc-irr01-allocation-only']]:

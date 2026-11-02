@@ -1,0 +1,5 @@
+# Preserve the byte identity of the immutable independent drainage oracle.
+tests/modularity/oracles/fvq38_dramet2_scientific.py text eol=lf
+# The diagnostic adapter verifies the current build recipe's exact bytes.
+tools/solute/build_grass_startup.py text eol=lf
+tools/solute/build_grass_diagnostic.py text eol=lf

@@ -3,7 +3,7 @@
 ! binding and CRC are checked before either committed owner is replaced.
 module mod_grass_prefix_restart_file
  use iso_fortran_env,only:real64,int64,int32,int8
- use iso_c_binding,only:c_int,c_char,c_null_char
+ use iso_c_binding,only:c_int,c_char,c_null_char,c_int8_t,c_int32_t,c_size_t
  use ieee_arithmetic,only:ieee_is_finite
  use mod_transaction_reference,only:transaction_state_t
  use mod_kernel_transactions
@@ -14,32 +14,27 @@ module mod_grass_prefix_restart_file
  use mod_crop_root_depth_rate_owner
  use mod_wofost_crop_owner_state
  use mod_wofost_grass_development,only:grass_management_continuation_t
- use mod_age_joint_restart_file,only:crc32
  implicit none
  private
  public::write_grass_prefix_restart,read_grass_prefix_restart
  character(8),parameter::MAGIC='S5GRS003'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
-  integer(c_int) function rename_c(a,b)bind(C,name='rename')
+  integer(c_int32_t) function crc32_c(bytes,n)bind(C,name='swap5_restart_crc32')
+   import c_int8_t,c_int32_t,c_size_t
+   integer(c_int8_t),intent(in)::bytes(*)
+   integer(c_size_t),value::n
+  end function
+  integer(c_int) function publish_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
   end function
-  integer(c_int) function open_c(a,b)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*)
-   integer(c_int),value::b
-  end function
-  integer(c_int) function sync_c(a)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::a
-  end function
-  integer(c_int) function close_c(a)bind(C,name='close')
-   import c_int
-   integer(c_int),value::a
-  end function
  end interface
 contains
+ integer(int32) function crc32(bytes)result(crc)
+  integer(int8),intent(in)::bytes(:)
+  crc=crc32_c(bytes,int(size(bytes),c_size_t))
+ end function
  subroutine read_bytes(path,bytes,status)
   character(*),intent(in)::path
   integer(int8),allocatable,intent(out)::bytes(:)
@@ -67,13 +62,6 @@ contains
   read(u,iostat=io)text;close(u)
   if(io==0)status=0
  end subroutine
- integer function synchronize(path)result(status)
-  character(*),intent(in)::path
-  integer(c_int)::fd,ignored
-  status=1;fd=open_c(trim(path)//c_null_char,0_c_int)
-  if(fd<0)return
-  status=sync_c(fd);ignored=close_c(fd)
- end function
  subroutine write_grass_prefix_restart(path,water,crop,management,status,potential,roots)
   character(*),intent(in)::path
   type(kernel_committed_state_t),intent(in)::water
@@ -170,16 +158,17 @@ contains
      management%potential_harvested_dry_matter,management%cut_index,management%potential_cut_index
    if(io==0)call write_compatibility(u,crop,io)
    if(io==0)call write_compatibility(u,potential_owner,io)
-   close(u)
+   close(u,iostat=code)
    if(io/=0)return
+   if(code/=0)return
    call read_bytes(pending,bytes,code);if(code/=0)return
    crc=crc32(bytes)
    open(newunit=u,file=pending,access='stream',form='unformatted',status='old',position='append',iostat=io)
    if(io/=0)return
-   write(u,iostat=io)crc;close(u);if(io/=0)return
-   if(synchronize(pending)/=0)return
-   if(rename_c(pending//c_null_char,trim(path)//c_null_char)/=0)return
-   if(synchronize('.')/=0)return
+   write(u,iostat=io)crc
+   close(u,iostat=code)
+   if(io/=0.or.code/=0)return
+   if(publish_c(pending//c_null_char,trim(path)//c_null_char)/=0)return
    status=0
   class default
    return

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Local production-contract feedback. Owning admission gates remain separate."""
 from __future__ import annotations
-import argparse, math, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, time
+import argparse, math, hashlib, importlib.util, json, os, platform, re, shutil, subprocess, sys, time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -54,13 +54,13 @@ COMPONENTS={
 def sha(path): return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def digest(value): return hashlib.sha256(json.dumps(value,sort_keys=True).encode()).hexdigest()
 def write(path,value): Path(path).write_text(json.dumps(value,indent=2,sort_keys=True)+'\n')
-def relative(paths): return [str(p.relative_to(ROOT)) for p in paths]
+def relative(paths): return [p.relative_to(ROOT).as_posix() for p in paths]
 
 def original_boesten():
     text=(ROOT/'tests/fapp/run_ppa_wu04b_boesten_evaporation.sh').read_text()
     sources=re.search(r'MODULE_SRC=\(\n(.*?)\n\)',text,re.S).group(1).split()
-    result=subprocess.check_output(['python3',str(ROOT/'tests/support/augment_bartholomeus_backend_sources.py'),'--all',*sources],cwd=ROOT,text=True)
-    return result.splitlines()
+    result=subprocess.check_output([sys.executable,str(ROOT/'tests/support/augment_bartholomeus_backend_sources.py'),'--all',*sources],cwd=ROOT,text=True)
+    return [Path(path).as_posix() for path in result.splitlines()]
 
 def plan(case,broad=False):
     cfg=CASES[case]
@@ -73,7 +73,7 @@ def plan(case,broad=False):
 class Session:
     """Artifacts reusable only in this live transaction; no cross-run cache."""
     def __init__(self,out):
-        self.out=Path(out); self.out.mkdir(parents=True,exist_ok=False)
+        self.out=Path(out).resolve(); self.out.mkdir(parents=True,exist_ok=False)
         self.compiler=shutil.which('gfortran')
         if not self.compiler: raise RuntimeError('gfortran unavailable')
         self.identity=self.toolchain_identity()
@@ -84,8 +84,20 @@ class Session:
                 'version':subprocess.check_output([self.compiler,'--version'],text=True),
                 'environment_sha256':digest(dict(os.environ)), 'host':platform.uname()._asdict()}
         # Actual executable and helper/library bytes behind the launcher.
-        for option in ['-print-prog-name=f951','-print-file-name=libgfortran.a','-print-file-name=libgfortran.so.5','-print-libgcc-file-name']:
+        runtime='libgfortran-5.dll' if os.name=='nt' else 'libgfortran.so.5'
+        runtime_option='-print-file-name='+runtime
+        for option in ['-print-prog-name=f951','-print-file-name=libgfortran.a',runtime_option,'-print-libgcc-file-name']:
             path=Path(subprocess.check_output([self.compiler,option],text=True).strip())
+            # MinGW keeps the runtime DLL on PATH rather than in GCC's library
+            # search directories. Bind its actual bytes; never omit the runtime
+            # fingerprint when the compiler returns an unresolved basename.
+            if os.name=='nt' and option==runtime_option and str(path)==runtime:
+                # shutil.which applies PATHEXT executable filtering and can
+                # reject an existing DLL. DLL lookup needs an actual file.
+                resolved=next((Path(folder.strip('"'))/runtime for folder in os.get_exec_path()
+                               if folder and (Path(folder.strip('"'))/runtime).is_file()),None)
+                if resolved is None: raise RuntimeError(f'unresolved compiler input: {option}')
+                path=Path(resolved)
             if not path.is_file(): raise RuntimeError(f'unresolved compiler input: {option}')
             result[option]={'path':str(path.resolve()),'sha256':sha(path)}
         return result
@@ -152,7 +164,7 @@ class Session:
                     if self.share_modules:
                         files={p:sha(p) for p in build.glob('*.mod')};files[obj]=sha(obj)
                         self.module_artifacts[module_key]=(obj,files)
-            exe=build/'test'
+            exe=build/('test.exe' if os.name=='nt' else 'test')
             # Match incumbent process links: large original Boesten closure
             # is compiled but its process executable links only the process.
             linked=objects
@@ -233,7 +245,7 @@ def require_selection(record_path, group):
         raise ValueError('selection record required: set SWAP5_TEST_SELECTION_RECORD')
     record = Path(record_path)
     if not record.is_absolute(): record = ROOT / record
-    relative_record = str(record.resolve().relative_to(ROOT))
+    relative_record = record.resolve().relative_to(ROOT).as_posix()
     if git_text('ls-files', '--error-unmatch', relative_record) != relative_record:
         raise ValueError('selection must use a versioned existing work-unit record')
     data = json.loads(record.read_text())['test_selection']
@@ -251,7 +263,7 @@ def require_selection(record_path, group):
             raise ValueError('missing selection field: ' + key)
     authority = ROOT / decision['authority'].split('#')[0]
     if not authority.is_file(): raise ValueError('missing owning authority')
-    authority_path = str(authority.resolve().relative_to(ROOT))
+    authority_path = authority.resolve().relative_to(ROOT).as_posix()
     if git_text('diff', candidate, '--', authority_path):
         raise ValueError('owning authority changed since selection candidate')
     seconds = decision.get('expected_seconds')
@@ -317,8 +329,9 @@ def main():
             probe=build/'probe.f90';mod=DEP.MODULE_RE.findall((ROOT/path).read_text())[0]
             probe.write_text(f'program probe\nuse {mod}\nimplicit none\nend program\n')
             externals=[ROOT/'src/legacy/b1_10_port/headcalc.f90'] if STUB in relative(closure) else []
-            _,event=s.command([s.compiler,*COMMON,'-O0','-J',str(build),'-I',str(build),str(probe),*map(str,externals+objects),'-o',str(build/'probe')],build,'audit-link')
-            _,execute=s.command([str(build/'probe')],build,'audit-run')
+            probe_exe=build/('probe.exe' if os.name=='nt' else 'probe')
+            _,event=s.command([s.compiler,*COMMON,'-O0','-J',str(build),'-I',str(build),str(probe),*map(str,externals+objects),'-o',str(probe_exe)],build,'audit-link')
+            _,execute=s.command([str(probe_exe)],build,'audit-run')
             audit[name].update(build_seconds=time.perf_counter()-start,compile_seconds=sum(e['wall_seconds'] for e in events),link_seconds=event['wall_seconds'],compiler_requests=len(closure)+1,link_probe='PASS',external_sources=list(map(str,externals)))
         write(out/'AUDIT.json',audit)
     records=[];cases=list(dict.fromkeys(args.case)) if args.case else (['mvg','boesten','accepted_heat'] if args.benchmark else DEFAULT_CASES)
