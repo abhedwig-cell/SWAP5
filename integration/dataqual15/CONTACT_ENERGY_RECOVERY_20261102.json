@@ -1,0 +1,65 @@
+{
+  "workstream": "DATAQUAL15 Andelst contact and whole energy",
+  "baseline": "972bfc237794caacbbecd3017a7769149ad0d32f",
+  "branch": "codex/andelst-energy-20261102",
+  "implementation": "Current-owner component drivers persisted; production/reference unchanged",
+  "test_status": "Windows GNU Fortran16.2 checked O0/O2 final committed-postimage direct drivers complete; exact stdout each pair",
+  "qualified": false,
+  "canonical_admitted": false,
+  "invariants": [
+    "unchanged physical laws and transactional rollback",
+    "missing energy terms never silently zero",
+    "component observations do not qualify full applications"
+  ],
+  "selection": {
+    "energy": "432 immutable explicit Sprint04 component inputs, O0/O2 current heat plus exact stock/ledger composition; reference gauges 0/5C, missing-advection rejection, explicit zero-advection counterfactual; independent Python stock calculation",
+    "contact": "36 explicit synthetic DTO controls per build on actual production absorption; observed Andelst head/topology pair; three timesteps, three entry widths, four perturbations; not complete Andelst replay",
+    "cost": "Two narrow direct compilation closures; expected under two minutes each. No long full-project rerun: neither physical repair nor missing energy receipts are implemented."
+  },
+  "immutable_inputs": {
+    "source_ref": "origin/codex/grassgrowth-sprint04",
+    "archive": "integration/dataqual15/SPRINT04_ENERGY_COMPONENT_INPUTS.tar.xz",
+    "sha256": "46ba4ef8101cf8a4b533f3d8c12761fb20d71488ea634e9f5f77862be29ed277",
+    "scope": "Exact historical archive only; no inheritance of old whole-production-tree qualification or overwritten status records"
+  },
+  "next_action": "Verify sealed dossier and run unchanged direct gates in Linux CI; repair numerical stock projection check and qualify explicit energy transfer contract as subsequent units, without changing missing terms to zero",
+  "remaining": [
+    "Andelst contact repair needs reference classification and coupled conservative acceptance/rejection evidence",
+    "actual accepted hydraulic intervals with signed boundary/root/lateral donor energy receipts",
+    "latent/vapor/radiation/freeze-thaw energy scope contract"
+  ],
+  "canonical_merge_ci": {
+    "merge": "bf99820474cad117b60b1d1285dd32c0db905495",
+    "all_terminal": true,
+    "success": [
+      41424758938,
+      41424758951,
+      41424759098
+    ],
+    "retained_source_guard_failures": [
+      41424758946,
+      41424758966,
+      41424758982,
+      41424758992
+    ]
+  },
+  "findings": {
+    "raw_theta_domain_mismatch": "All432 raw inputs contain at most1.11e-16 theta excess; heat owner tolerance1e-12, exact stock domain strict. Raw rejection retained. Explicit diagnostic normalization only.",
+    "projected_stock_roundoff": "632/864 zero-advection counterfactual evaluations reject summed changes versus difference of large stock sums. Original WCSA_BALANCE_FAILURE retained; projected numerical values independently checked, no scope-complete promotion.",
+    "contact": "Real owner preserves finite topology jump at dt1e-3,1e-8,1e-13 under sharp and two smooth entry variants."
+  },
+  "measurement_commit": "176a33d58af9ddca1676e23fb9408d43ab94d2cd",
+  "qualification": "Diagnostic evidence only; raw current production stock composition fails; full Andelst/contact repair and whole energy remain OPEN",
+  "isolated_numerical_candidate": {
+    "patch": "integration/dataqual15/STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch",
+    "runner": "tests/dataqual15/qualify_stock_projection_candidate.py",
+    "test_status": "Windows16.2 checked O0/O2 PASS",
+    "scope": "Isolated fixture only. No current src change. Derived floating-point summation bound; all864 candidates should accept representation consistency, injected1J mismatch must still reject; missing receipts and physical residual remain.",
+    "measurement_commit": "e8a7de63a491c3d43da7b2aba5f61e3313bf9e1b",
+    "result": "integration/dataqual15/STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json",
+    "candidate_roundoff_rejections": 0,
+    "injected_1J_rejections": 864,
+    "production_modified": false,
+    "full_energy_balance_complete": false
+  }
+}

@@ -1,0 +1,49 @@
+--- a/src/process/mod_whole_column_sensible_energy_accounting.f90
++++ b/src/process/mod_whole_column_sensible_energy_accounting.f90
+@@ -80,7 +80,7 @@
+     type(energy_transfer_t) :: transfers(4)
+     integer(int64) :: component_ids(1)
+     real(real64) :: initial_energy(1), final_energy(1)
+-    real(real64) :: node_initial, node_final
++    real(real64) :: node_initial, node_final, absolute_stock_sum, roundoff_factor, stock_roundoff_bound
+     integer :: i, n, local_status
+ 
+     result = whole_column_sensible_energy_result_t()
+@@ -97,6 +97,7 @@
+     if (.not. boundary_values_finite(boundary)) return
+ 
+     result%node_count = n
++    absolute_stock_sum = 0.0_real64
+     do i = 1, n
+       call initialize_linear_mixture_sensible_storage_parameters(theta_sat(i), &
+            solid_heat_capacity_j_cm3_k(i), liquid_heat_capacity_j_cm3_k, gas_heat_capacity_j_cm3_k, &
+@@ -129,6 +130,7 @@
+         return
+       end if
+ 
++      absolute_stock_sum = absolute_stock_sum + abs(node_initial) + abs(node_final)
+       result%initial_storage_j_m2 = result%initial_storage_j_m2 + node_initial
+       result%final_storage_j_m2 = result%final_storage_j_m2 + node_final
+       result%exact_storage_change_j_m2 = result%exact_storage_change_j_m2 + change%exact_change_j_m2
+@@ -200,7 +202,20 @@
+       return
+     end if
+ 
+-    if (.not. nearly_same(result%exact_storage_change_j_m2, result%projected_balance%delta_storage_j_m2)) then
++    ! Compare two summation paths using the stock scale, not only the change.
++    ! gamma_(4n+4) conservatively bounds both n-term sums, n subtractions,
++    ! the final stock subtraction and rounding in the absolute stock scale.
++    ! This is representation consistency, not a physical energy residual gate.
++    roundoff_factor = (4.0_real64 * real(n, real64) + 4.0_real64) * epsilon(1.0_real64)
++    if (roundoff_factor >= 0.5_real64) then
++      status = WCSA_NUMERIC_FAILURE; result%status = status; return
++    end if
++    stock_roundoff_bound = roundoff_factor / (1.0_real64 - roundoff_factor) * absolute_stock_sum
++    if (.not. ieee_is_finite(stock_roundoff_bound)) then
++      status = WCSA_NUMERIC_FAILURE; result%status = status; return
++    end if
++    if (.not. nearly_same(result%exact_storage_change_j_m2, result%projected_balance%delta_storage_j_m2) .and. &
++        abs(result%exact_storage_change_j_m2 - result%projected_balance%delta_storage_j_m2) > stock_roundoff_bound) then
+       status = WCSA_BALANCE_FAILURE
+       result%status = status
+       return

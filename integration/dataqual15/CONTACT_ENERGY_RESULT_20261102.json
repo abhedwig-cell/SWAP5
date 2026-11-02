@@ -1,0 +1,31 @@
+{
+  "archive": "integration/dataqual15/CONTACT_ENERGY_EVIDENCE_20261102.tar.xz",
+  "archive_sha256": "471c8c29152c3e08d5cc4d29076010141fd39eb0c71f3c41c375e64f78a9965f",
+  "files": 33,
+  "measurement_commit": "176a33d58af9ddca1676e23fb9408d43ab94d2cd",
+  "dependency_git_blob": {
+    "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "bdb659ad8aa313c18c7f2331a0cdbd3683585d10",
+    "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "5ebda49671008e169fb7e9ce08e96907a4636b57",
+    "tests/dataqual15/andelst_contact_driver.f90": "e069be3b1763e623ea91bab88314a6ef629100b6",
+    "src/transaction/mod_transaction_reference.f90": "0a5ce4d122037048ab9372acdeae447cc085f2d3",
+    "src/solver/mod_soil_water_solver_contract.f90": "f41e789d6bd27bfbf7046c1226371356e3c7ed25",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/process/mod_soil_temperature_contract.f90": "2c358fa353226846ce6c6e4e561aa59e5de94620",
+    "src/process/mod_restricted_soil_temperature.f90": "bbae005fca4c5cda09315811f71aa218b0914dbb",
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+    "tests/dataqual15/energy_boundary_driver.f90": "b4a48a1e611ddb5322df03723713a65589d269bf",
+    "tests/dataqual15/qualify_andelst_contact.py": "dff1d45054a0f799ec2b34c3c9bb55d4774ec165",
+    "tests/dataqual15/qualify_energy_boundary.py": "c9210078e6e009fd68a87656ecfc011e9075e554"
+  },
+  "full_energy_balance_complete": false,
+  "andelst_repair_implemented": false,
+  "whole_application_qualified": false,
+  "canonical_admitted": false,
+  "status": "WINDOWS_DIAGNOSTIC_EVIDENCE_VERIFIED_PRODUCTION_GAPS_RETAINED",
+  "local_results": {
+    "contact": "TOPOLOGY_CONTROL_PASS_CONTACT_REPAIR_OPEN",
+    "energy": "DIAGNOSTIC_EVIDENCE_PASS_PRODUCTION_COMPOSITION_AND_FULL_ENERGY_OPEN"
+  }
+}
