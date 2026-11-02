@@ -864,7 +864,10 @@
     "windows_O0_O2_exact": true,
     "contact_repair_implemented": false,
     "full_energy_balance_complete": false,
-    "canonical_admitted": false,
-    "next": "stock summation numerical correction; explicit theta and donor-energy contracts; coupled contact treatment"
+    "canonical_admitted": true,
+    "next": "stock summation numerical correction; explicit theta and donor-energy contracts; coupled contact treatment",
+    "canonical_scope": "Diagnostic dossier and isolated candidate only; no production correction installed",
+    "merge": "ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8",
+    "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json"
   }
 }

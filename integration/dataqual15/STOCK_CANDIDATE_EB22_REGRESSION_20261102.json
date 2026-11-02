@@ -1,0 +1,51 @@
+{
+  "scope": "Existing EB-I22 complete/missing/reference/theta controls linked with isolated numerical candidate; current production unchanged",
+  "builds": {
+    "O0": {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-O0",
+        "-g",
+        "-fcheck=all",
+        "-ffree-line-length-none",
+        "-JC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-candidate-eb22\\O0",
+        "-IC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-candidate-eb22\\O0",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\kernel\\mod_energy_conservation_types.f90",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\process\\mod_linear_mixture_sensible_storage.f90",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-projection-candidate-01\\candidate\\src\\process\\mod_whole_column_sensible_energy_accounting.f90",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\eb\\test_eb_i22_whole_column_sensible_energy_accounting.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-candidate-eb22\\O0\\eb22.exe"
+      ],
+      "stdout": "EB-I22 whole-column sensible-energy accounting: PASS\n",
+      "returncode": 0,
+      "executable_sha256": "efa04733a6bcefc70bfccf89f10a8e519de7004247772d5effb2393f97d6b6a7"
+    },
+    "O2": {
+      "command": [
+        "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+        "-O2",
+        "-g",
+        "-fcheck=all",
+        "-ffree-line-length-none",
+        "-JC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-candidate-eb22\\O2",
+        "-IC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-candidate-eb22\\O2",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\kernel\\mod_energy_conservation_types.f90",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\process\\mod_linear_mixture_sensible_storage.f90",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-projection-candidate-01\\candidate\\src\\process\\mod_whole_column_sensible_energy_accounting.f90",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\eb\\test_eb_i22_whole_column_sensible_energy_accounting.f90",
+        "-o",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\stock-candidate-eb22\\O2\\eb22.exe"
+      ],
+      "stdout": "EB-I22 whole-column sensible-energy accounting: PASS\n",
+      "returncode": 0,
+      "executable_sha256": "616667af473bbb5cc2d543807197d4b497eda238ef3dd910137ff9fd4c0d1279"
+    }
+  },
+  "source_git_blob": {
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+    "tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90": "88a72af5017d58a97825661fd47e89e88c6af67f"
+  },
+  "candidate_module_sha256": "8340119ea30c4241b4a020726fb1e1e6fab70b29aeb79885ab096359f80d2603"
+}

@@ -1,6 +1,14 @@
 # DATAQUAL15 contact and exact energy composition, 2026-11-02
 
-Status: **Executed diagnostic evidence; contact repair and full energy OPEN.**
+Status: **Canonically admitted diagnostic evidence; contact repair and full energy OPEN.**
+
+PR1484 is admitted at `ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8`. All16
+PR workflows are terminal SUCCESS; actual whole tree equals the tested tree.
+The actual-merge sealed dossier verifier passes. Windows16.2 and Linux13.3
+O0/O2 stdout are exact for all three experiments. Receipt:
+`integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json`.
+Linux observations and artifact identity are retained in
+`CONTACT_ENERGY_LINUX_OBSERVATIONS_20261102.json`. No production patch is installed.
 
 Baseline is canonical `972bfc237794caacbbecd3017a7769149ad0d32f`, after
 Windows native restart admission in PR1483. Measurement postimage is

@@ -1,0 +1,146 @@
+{
+  "status": "ACTUAL_CANONICAL_DIAGNOSTIC_ADMISSION_VERIFIED",
+  "pull_request": 1484,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1484",
+  "base": "972bfc237794caacbbecd3017a7769149ad0d32f",
+  "qualified_head": "624138603af5b0ed875835d2484cfd2ce778d958",
+  "actual_merge": "ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8",
+  "qualified_tree": "5a0872dc2ef4d3197894382ffaf955836a04643e",
+  "actual_tree": "5a0872dc2ef4d3197894382ffaf955836a04643e",
+  "whole_tree_exact": true,
+  "production_and_reference_unchanged": true,
+  "canonical_admitted": true,
+  "scope": "Current-owner diagnostic evidence and isolated numerical candidate only; raw production failures retained. No production patch installed, Andelst repair or full-energy admission.",
+  "andelst_repair_implemented": false,
+  "full_energy_balance_complete": false,
+  "whole_scientific_qualification": false,
+  "isolated_stock_candidate_production_admitted": false,
+  "linux_run": 41428320069,
+  "linux_job": 125220276169,
+  "artifact_id": 13132967270,
+  "ci": [
+    {
+      "id": 41428320159,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320043,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320069,
+      "name": "DATAQUAL15 current contact and energy diagnostics",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320021,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320108,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320249,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320136,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320028,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320049,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320251,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320138,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320066,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320120,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320134,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320068,
+      "name": "DATAQUAL15 original Grassgrowth sprint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41428320278,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "local": {
+    "compiler": "Windows GNU Fortran16.2",
+    "checks": "Checked O0/O2 direct closures; frozen dossier verification; complete source exactness; independent storage; candidate and1J injection",
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS 29.87 seconds",
+    "existing_EB_I22_candidate_regression": "PASS checked O0/O2 Windows16.2, exact closure/missing boundary/reference gauge/invalid theta; STOCK_CANDIDATE_EB22_REGRESSION_20261102.json"
+  },
+  "next": "Promote tested numerical accounting correction only through explicit source dependency/admission reconciliation; resolve theta input contract; qualify conservative contact model/event treatment and actual interval donor-energy receipts. Full original Andelst481days and physical full energy remain OPEN.",
+  "post_merge_known_failures": [
+    {
+      "run": 41429143382,
+      "job": 125223037510,
+      "status": "failure",
+      "cause": "integration/audits/verify_dataqual12_current.py:13 AssertionError: unreviewed delta"
+    },
+    {
+      "run": 41429143159,
+      "job": 125223036142,
+      "status": "failure",
+      "cause": "integration/audits/verify_dataqual12_current.py:13 AssertionError: unreviewed delta"
+    }
+  ],
+  "post_merge_fci": {
+    "run": 41429143236,
+    "status": "success"
+  },
+  "receipt_delta": "Only status/documentation/observed-result metadata; no implementation, validator, input or sealed capsule bytes changed after qualified merge."
+}

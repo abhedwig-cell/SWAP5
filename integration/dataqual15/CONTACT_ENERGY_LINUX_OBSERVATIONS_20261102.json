@@ -1,0 +1,403 @@
+{
+  "head": "624138603af5b0ed875835d2484cfd2ce778d958",
+  "run": 41428320069,
+  "job": 125220276169,
+  "artifact": 13132967270,
+  "artifact_zip_sha256": "02083ed129f55f6ea245a5d0bebe6265b911380a51484292f11fdb31965cce87",
+  "compiler": "GNU Fortran13.3.0 Ubuntu24.04",
+  "source": "Decoded actual successful job log; report JSON retained verbatim, Windows source and observation capsules independently verified",
+  "reports": [
+    {
+      "scope": "SYNTHETIC_DTO_REAL_OWNER_TOPOLOGY_CONTROL_NOT_COMPLETE_ANDELST_REPLAY",
+      "measurement_commit": "e76b19d01d03a509ff3a85c86a3df4b9299c3b78",
+      "source_sha256": {
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "98cb4da7c906dd01525ca630707a8d5b4a11e4871b24b75126fbacf8a8e418ff",
+        "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "51043eddc6680fbc1039998435000b73c569c998c9e86cca8f10c9f077b0d35b",
+        "tests/dataqual15/andelst_contact_driver.f90": "022ca659888671f948df0eb99fafedd9c9705f1d34c663d4b53eb1ff8183a016"
+      },
+      "source_git_blob": {
+        "src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90": "bdb659ad8aa313c18c7f2331a0cdbd3683585d10",
+        "src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90": "5ebda49671008e169fb7e9ce08e96907a4636b57",
+        "tests/dataqual15/andelst_contact_driver.f90": "e069be3b1763e623ea91bab88314a6ef629100b6"
+      },
+      "repair_implemented": false,
+      "full_original_complete": false,
+      "builds": {
+        "O0": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O0",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/contact/O0",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/contact/O0",
+            "/home/runner/work/SWAP5/SWAP5/src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90",
+            "/home/runner/work/SWAP5/SWAP5/tests/dataqual15/andelst_contact_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/contact/O0/contact"
+          ],
+          "rows": 36,
+          "executable_sha256": "179efdb916cd9fceb1c87f1de772e7fdfc35c5d0ff87d1205b2f99aed426e360",
+          "stdout_sha256": "9749abbc4aa7489c5f514f4690cc1cfc697e64ec22263b1b9569696aa56974cd",
+          "jump_range_cm_day": [
+            0.11804975804645906,
+            0.11806975802645907
+          ]
+        },
+        "O2": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O2",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/contact/O2",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/contact/O2",
+            "/home/runner/work/SWAP5/SWAP5/src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90",
+            "/home/runner/work/SWAP5/SWAP5/tests/dataqual15/andelst_contact_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/contact/O2/contact"
+          ],
+          "rows": 36,
+          "executable_sha256": "38b283f2c7fb666a2acef0d6e0e1747e0533102ed11386b7ea808c6001b1a6a7",
+          "stdout_sha256": "9749abbc4aa7489c5f514f4690cc1cfc697e64ec22263b1b9569696aa56974cd",
+          "jump_range_cm_day": [
+            0.11804975804645906,
+            0.11806975802645907
+          ]
+        }
+      },
+      "O0_O2_stdout_exact": true,
+      "status": "TOPOLOGY_CONTROL_PASS_CONTACT_REPAIR_OPEN"
+    },
+    {
+      "scope": "CURRENT_HEAT_OWNER_PLUS_EXACT_STOCK_AND_BOUNDARY_LEDGER_COMPONENT",
+      "measurement_commit": "e76b19d01d03a509ff3a85c86a3df4b9299c3b78",
+      "input_archive_sha256": "46ba4ef8101cf8a4b533f3d8c12761fb20d71488ea634e9f5f77862be29ed277",
+      "input_sha256": "cc10198a7e5ed88037e49609fc85086e10f4a257299da4e89b3b2c31270b28c6",
+      "source_sha256": {
+        "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+        "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+        "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+        "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+        "src/process/mod_restricted_soil_temperature.f90": "24932aeef598a52e2e5f7eb85bd981bb95f48f8d3c86fe2d2d3a7beb7bb1b6d1",
+        "src/kernel/mod_energy_conservation_types.f90": "edd3a5e314624cbcf9f5b38a95717dd11694912d24374c2957389fba9056728e",
+        "src/process/mod_linear_mixture_sensible_storage.f90": "cff2eb4560f11bdd7e97107077eb51d1efd05a939e3271583cc69383ec231ebd",
+        "src/process/mod_whole_column_sensible_energy_accounting.f90": "d874e965c2f0cc9e338821ca35bf1fb0cf812403084a465cf8f257c72a74c274",
+        "tests/dataqual15/energy_boundary_driver.f90": "b6604de3f5532bf211c48459a731514d2186d11116d59edba0c8d06497b88520"
+      },
+      "source_git_blob": {
+        "src/transaction/mod_transaction_reference.f90": "0a5ce4d122037048ab9372acdeae447cc085f2d3",
+        "src/solver/mod_soil_water_solver_contract.f90": "f41e789d6bd27bfbf7046c1226371356e3c7ed25",
+        "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+        "src/process/mod_soil_temperature_contract.f90": "2c358fa353226846ce6c6e4e561aa59e5de94620",
+        "src/process/mod_restricted_soil_temperature.f90": "bbae005fca4c5cda09315811f71aa218b0914dbb",
+        "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+        "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+        "src/process/mod_whole_column_sensible_energy_accounting.f90": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+        "tests/dataqual15/energy_boundary_driver.f90": "b4a48a1e611ddb5322df03723713a65589d269bf"
+      },
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "full_energy_balance_complete": false,
+      "whole_application_qualified": false,
+      "builds": {
+        "O0": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O0",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-fbacktrace",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/energy/O0",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/energy/O0",
+            "/home/runner/work/SWAP5/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_soil_water_solver_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_process_hydraulic_view.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_soil_temperature_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_restricted_soil_temperature.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/kernel/mod_energy_conservation_types.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_linear_mixture_sensible_storage.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_whole_column_sensible_energy_accounting.f90",
+            "/home/runner/work/SWAP5/SWAP5/tests/dataqual15/energy_boundary_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/energy/O0/driver"
+          ],
+          "executable_sha256": "d020a25c61d15ca3b54b22f63b5a1022380fb2c9cd4ba8c01c6e4b6e009dfa8f",
+          "stdout_sha256": "592be8ce4c0353bef8c33b0d31e8586ad35ecf1f0f1b6921b312dd448cc9d263",
+          "cases": 432,
+          "gauges_c": [
+            0,
+            5
+          ],
+          "missing_boundary_rejections": 864,
+          "projected_stock_roundoff_rejections": 632,
+          "raw_storage_domain_rejections": 864,
+          "max_accounting_only_normalization_theta": 1.1102230246251565e-16,
+          "counterfactual_max_residual_j_cm2": {
+            "kind0_gauge0": 1.5745172277092935e-11,
+            "kind0_gauge5": 7.060589268803597e-12,
+            "kind1_gauge0": 1.4503270298455375,
+            "kind1_gauge5": 0.7408466930181603,
+            "kind2_gauge0": 1.1201729162261864,
+            "kind2_gauge5": 1.5145059361265133e-12,
+            "kind3_gauge0": 0,
+            "kind3_gauge5": 1.120172916226089
+          },
+          "independent_stock_error_j_m2": 6.853042577859014e-9,
+          "independent_composition_error_j_m2": 1.0174971976084635e-9,
+          "counterfactual_residual_error_j_m2": 1.7154647480310814e-7
+        },
+        "O2": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O2",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-fbacktrace",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/energy/O2",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/energy/O2",
+            "/home/runner/work/SWAP5/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_soil_water_solver_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_process_hydraulic_view.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_soil_temperature_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_restricted_soil_temperature.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/kernel/mod_energy_conservation_types.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_linear_mixture_sensible_storage.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_whole_column_sensible_energy_accounting.f90",
+            "/home/runner/work/SWAP5/SWAP5/tests/dataqual15/energy_boundary_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/energy/O2/driver"
+          ],
+          "executable_sha256": "651fa7bb9de09563ac66f8dfb067332585f96eaae7e60b1c889c36bd33df619f",
+          "stdout_sha256": "592be8ce4c0353bef8c33b0d31e8586ad35ecf1f0f1b6921b312dd448cc9d263",
+          "cases": 432,
+          "gauges_c": [
+            0,
+            5
+          ],
+          "missing_boundary_rejections": 864,
+          "projected_stock_roundoff_rejections": 632,
+          "raw_storage_domain_rejections": 864,
+          "max_accounting_only_normalization_theta": 1.1102230246251565e-16,
+          "counterfactual_max_residual_j_cm2": {
+            "kind0_gauge0": 1.5745172277092935e-11,
+            "kind0_gauge5": 7.060589268803597e-12,
+            "kind1_gauge0": 1.4503270298455375,
+            "kind1_gauge5": 0.7408466930181603,
+            "kind2_gauge0": 1.1201729162261864,
+            "kind2_gauge5": 1.5145059361265133e-12,
+            "kind3_gauge0": 0,
+            "kind3_gauge5": 1.120172916226089
+          },
+          "independent_stock_error_j_m2": 6.853042577859014e-9,
+          "independent_composition_error_j_m2": 1.0174971976084635e-9,
+          "counterfactual_residual_error_j_m2": 1.7154647480310814e-7
+        }
+      },
+      "O0_O2_stdout_exact": true,
+      "status": "DIAGNOSTIC_EVIDENCE_PASS_PRODUCTION_COMPOSITION_AND_FULL_ENERGY_OPEN"
+    },
+    {
+      "measurement_commit": "e76b19d01d03a509ff3a85c86a3df4b9299c3b78",
+      "scope": "ISOLATED_NUMERICAL_CANDIDATE_NOT_CURRENT_PRODUCTION",
+      "patch_sha256": "3f362aec63406dd6d5f2707bfa6e4623cedc2c7fe94287e4a3d0e58b06e576e8",
+      "original_module_git_blob": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+      "patched_source_sha256": "4e7c0779de10abff8bdc611014b34a661281031cb5f57fe087c58b50d2ba4940",
+      "production_modified": false,
+      "production_admitted": false,
+      "full_energy_balance_complete": false,
+      "builds": {
+        "O0-candidate": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O0",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O0-candidate",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O0-candidate",
+            "/home/runner/work/SWAP5/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_soil_water_solver_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_process_hydraulic_view.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_soil_temperature_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_restricted_soil_temperature.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/kernel/mod_energy_conservation_types.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_linear_mixture_sensible_storage.f90",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/candidate/src/process/mod_whole_column_sensible_energy_accounting.f90",
+            "/home/runner/work/SWAP5/SWAP5/tests/dataqual15/energy_boundary_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O0-candidate/driver"
+          ],
+          "executable_sha256": "deb518e92c09fc78a610b5c1c5056aed6657f7430527bd51cddca1907d080e19",
+          "stdout_sha256": "1ecffe9a23b8f0844b4a96a53d125efc769bbb79395ca6d1d3a387c29f953b48",
+          "cases": 432,
+          "gauges_c": [
+            0,
+            5
+          ],
+          "missing_boundary_rejections": 864,
+          "projected_stock_roundoff_rejections": 0,
+          "raw_storage_domain_rejections": 864,
+          "max_accounting_only_normalization_theta": 1.1102230246251565e-16,
+          "counterfactual_max_residual_j_cm2": {
+            "kind0_gauge0": 1.5745172277092935e-11,
+            "kind0_gauge5": 7.060589268803597e-12,
+            "kind1_gauge0": 1.4503270298455375,
+            "kind1_gauge5": 0.7408466930181603,
+            "kind2_gauge0": 1.1201729162261864,
+            "kind2_gauge5": 1.5145059361265133e-12,
+            "kind3_gauge0": 0,
+            "kind3_gauge5": 1.120172916226089
+          },
+          "independent_stock_error_j_m2": 6.853042577859014e-9,
+          "independent_composition_error_j_m2": 1.0174971976084635e-9,
+          "counterfactual_residual_error_j_m2": 1.7154647480310814e-7
+        },
+        "O0-fault": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O0",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O0-fault",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O0-fault",
+            "/home/runner/work/SWAP5/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_soil_water_solver_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_process_hydraulic_view.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_soil_temperature_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_restricted_soil_temperature.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/kernel/mod_energy_conservation_types.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_linear_mixture_sensible_storage.f90",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/faulty_stock.f90",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/fault_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O0-fault/driver"
+          ],
+          "executable_sha256": "6c7c2aaecf4d8bdece364510e2e72d6449e063606e70e4b82139de0ed33ff4d2",
+          "stdout_sha256": "4bb3ac65621cb621b9c8cc70a79df1840394f746530fd5d8ebc9856dfe1329ea",
+          "cases": 432,
+          "gauges_c": [
+            0,
+            5
+          ],
+          "missing_boundary_rejections": 864,
+          "projected_stock_roundoff_rejections": 864,
+          "raw_storage_domain_rejections": 864,
+          "max_accounting_only_normalization_theta": 1.1102230246251565e-16,
+          "counterfactual_max_residual_j_cm2": {
+            "kind0_gauge0": 1.5745172277092935e-11,
+            "kind0_gauge5": 7.060589268803597e-12,
+            "kind1_gauge0": 1.4503270298455375,
+            "kind1_gauge5": 0.7408466930181603,
+            "kind2_gauge0": 1.1201729162261864,
+            "kind2_gauge5": 1.5145059361265133e-12,
+            "kind3_gauge0": 0,
+            "kind3_gauge5": 1.120172916226089
+          },
+          "independent_stock_error_j_m2": 6.853042577859014e-9,
+          "independent_composition_error_j_m2": 1.0174971976084635e-9,
+          "counterfactual_residual_error_j_m2": 1.7154647480310814e-7
+        },
+        "O2-candidate": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O2",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O2-candidate",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O2-candidate",
+            "/home/runner/work/SWAP5/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_soil_water_solver_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_process_hydraulic_view.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_soil_temperature_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_restricted_soil_temperature.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/kernel/mod_energy_conservation_types.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_linear_mixture_sensible_storage.f90",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/candidate/src/process/mod_whole_column_sensible_energy_accounting.f90",
+            "/home/runner/work/SWAP5/SWAP5/tests/dataqual15/energy_boundary_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O2-candidate/driver"
+          ],
+          "executable_sha256": "0baa88f610b75d191b06e9bf7ab815b15709b639a673ddee40505a6b9bc87967",
+          "stdout_sha256": "1ecffe9a23b8f0844b4a96a53d125efc769bbb79395ca6d1d3a387c29f953b48",
+          "cases": 432,
+          "gauges_c": [
+            0,
+            5
+          ],
+          "missing_boundary_rejections": 864,
+          "projected_stock_roundoff_rejections": 0,
+          "raw_storage_domain_rejections": 864,
+          "max_accounting_only_normalization_theta": 1.1102230246251565e-16,
+          "counterfactual_max_residual_j_cm2": {
+            "kind0_gauge0": 1.5745172277092935e-11,
+            "kind0_gauge5": 7.060589268803597e-12,
+            "kind1_gauge0": 1.4503270298455375,
+            "kind1_gauge5": 0.7408466930181603,
+            "kind2_gauge0": 1.1201729162261864,
+            "kind2_gauge5": 1.5145059361265133e-12,
+            "kind3_gauge0": 0,
+            "kind3_gauge5": 1.120172916226089
+          },
+          "independent_stock_error_j_m2": 6.853042577859014e-9,
+          "independent_composition_error_j_m2": 1.0174971976084635e-9,
+          "counterfactual_residual_error_j_m2": 1.7154647480310814e-7
+        },
+        "O2-fault": {
+          "command": [
+            "/usr/bin/gfortran",
+            "-O2",
+            "-g",
+            "-fcheck=all",
+            "-ffree-line-length-none",
+            "-J/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O2-fault",
+            "-I/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O2-fault",
+            "/home/runner/work/SWAP5/SWAP5/src/transaction/mod_transaction_reference.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_soil_water_solver_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/solver/mod_process_hydraulic_view.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_soil_temperature_contract.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_restricted_soil_temperature.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/kernel/mod_energy_conservation_types.f90",
+            "/home/runner/work/SWAP5/SWAP5/src/process/mod_linear_mixture_sensible_storage.f90",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/faulty_stock.f90",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/fault_driver.f90",
+            "-o",
+            "/home/runner/work/SWAP5/SWAP5/contact-energy-ci/stock-candidate/O2-fault/driver"
+          ],
+          "executable_sha256": "c4dae4b7a98a95fcd4a62252e5ab5ef8239b4c4fca0c4b85fefab5318c7a5ff1",
+          "stdout_sha256": "4bb3ac65621cb621b9c8cc70a79df1840394f746530fd5d8ebc9856dfe1329ea",
+          "cases": 432,
+          "gauges_c": [
+            0,
+            5
+          ],
+          "missing_boundary_rejections": 864,
+          "projected_stock_roundoff_rejections": 864,
+          "raw_storage_domain_rejections": 864,
+          "max_accounting_only_normalization_theta": 1.1102230246251565e-16,
+          "counterfactual_max_residual_j_cm2": {
+            "kind0_gauge0": 1.5745172277092935e-11,
+            "kind0_gauge5": 7.060589268803597e-12,
+            "kind1_gauge0": 1.4503270298455375,
+            "kind1_gauge5": 0.7408466930181603,
+            "kind2_gauge0": 1.1201729162261864,
+            "kind2_gauge5": 1.5145059361265133e-12,
+            "kind3_gauge0": 0,
+            "kind3_gauge5": 1.120172916226089
+          },
+          "independent_stock_error_j_m2": 6.853042577859014e-9,
+          "independent_composition_error_j_m2": 1.0174971976084635e-9,
+          "counterfactual_residual_error_j_m2": 1.7154647480310814e-7
+        }
+      },
+      "status": "NUMERICAL_CANDIDATE_PASS_1J_FAULT_REJECTED_PHYSICAL_ENERGY_GAP_RETAINED"
+    }
+  ]
+}
