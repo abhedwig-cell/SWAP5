@@ -82,3 +82,24 @@ power-loss/hardware-cache or cloud-sync behaviour, whole physical energy closure
 or whole-project scientific equivalence. The original project denominator is
 unchanged. Hupsel/Andelst and other POSIX-only publication adapters remain under
 their own owners.
+
+## Canonical admission boundary
+
+`verify_native_restart_admission.py` checks the complete current production delta
+against exact Git blobs: only the Grassgrowth codec and native I/O adapter may
+differ from canonical predecessor `1844fad45`. Unknown, dirty or untracked
+production source is rejected. The known build/launcher changes are pinned too.
+
+The unchanged scientific verifiers run in a separate committed preservation
+view with exactly the predecessor `src`, `app` and `reference` trees and the
+five explicitly restored codec/build/launcher files. The native adapter is absent
+there. Old source guards and immutable manifests are not edited or bypassed.
+That leg verifies the actual historical 1827/1096-day evidence and retains every
+failed scientific gate. Its verdict is explicitly predecessor evidence.
+
+The independent current leg verifies the sealed native 367-day Windows evidence;
+fresh Linux publication/restart composition runs on the current source. F-CI
+feedback composes these two stated boundaries. The existing mowing, runtime,
+stress and same-binary recovery jobs retain their full bodies in the closed
+preservation view; the shared physical source tree is identical to current.
+Neither leg claims a new current-executable 1827-day run or full moving F-CI.

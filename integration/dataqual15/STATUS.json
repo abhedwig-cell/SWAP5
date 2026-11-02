@@ -606,7 +606,60 @@
         "prior_execution": "NONE",
         "full_fci": "NOT_SELECTED: no shared physical source or driver change; current closed F-CI feedback is composed explicitly with predecessor and current native I/O gates. No full-moving PASS inferred."
       },
-      "status": "PERSISTED_NOT_YET_TESTED"
+      "status": "LOCAL_PASS_REMOTE_ADMISSION_PENDING",
+      "local_qualification": {
+        "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+        "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
+        "projection": {
+          "tree": "f8eb156a80e8e4e8c8fb41c87ea1c6b12ccc2f63",
+          "commit": "0d4e10cde0d2521c274912fafe14f4d53cd18417",
+          "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+        },
+        "events": [
+          {
+            "label": "current-native",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15/verify_native_restart_evidence.py"
+            ]
+          },
+          {
+            "label": "predecessor-grass",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15/verify_grass_full_evidence.py",
+              "--spec",
+              "integration/dataqual15/GRASS_UNION_FULL_SPEC.json",
+              "--capsule",
+              "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz",
+              "--manifest",
+              "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json"
+            ]
+          },
+          {
+            "label": "predecessor-stress",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15/stress_evidence.py"
+            ]
+          },
+          {
+            "label": "predecessor-hupsel",
+            "returncode": 0,
+            "args": [
+              "tests/dataqual15_hupsel/uptake_evidence.py"
+            ]
+          }
+        ],
+        "full_current1827_execution": false,
+        "whole_scientific_qualification": false
+      },
+      "negative_controls": {
+        "tests": 8,
+        "result": "PASS",
+        "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
+        "scope": "Actual Git: unknown physics/codec/recipe/gate drift and dirty/untracked production fail closed; committed predecessor projection is exact and current remains unchanged."
+      }
     }
   }
 }
