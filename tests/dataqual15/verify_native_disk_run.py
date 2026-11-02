@@ -3,7 +3,7 @@ import argparse,csv,hashlib,json,math
 from pathlib import Path
 from checkpoint_layout import layout,payload
 
-def verify(continuous,resumed,paired=None):
+def verify(continuous,resumed,paired=None,prefix=None):
     load=lambda p:json.loads(p.read_text())
     original=load(continuous/'RESULT.json');suffix=load(resumed/'RESULT.json')
     assert original['returncode']==suffix['returncode']==0
@@ -19,6 +19,14 @@ def verify(continuous,resumed,paired=None):
         assert [r for r in rows(continuous,name)if int(r['day'])>clock]==rows(resumed,name),name
     budget=rows(continuous,'budget.csv')
     assert [int(r['day'])for r in budget]==list(range(int(budget[0]['day']),int(original['completed_days'])+1))
+    if prefix:
+        prior=load(prefix/'RESULT.json');assert prior['returncode']==0 and not prior['censored']
+        assert prior['source_sha256']==original['source_sha256']
+        assert prior['executable_sha256']==original['executable_sha256']
+        assert(continuous/'restart-origin.bin').read_bytes()==(prefix/'checkpoint.bin').read_bytes()
+        assert load(continuous/'LAUNCH.json')['restart_sha256']==hashlib.sha256((prefix/'checkpoint.bin').read_bytes()).hexdigest()
+        budget=rows(prefix,'budget.csv')+budget
+        assert[int(r['day'])for r in budget]==list(range(1,int(original['completed_days'])+1))
     maximum=0.0
     for r in budget:
         assert all(math.isfinite(float(v))for v in r.values())
@@ -32,7 +40,7 @@ def verify(continuous,resumed,paired=None):
             assert(continuous/name).read_bytes()==(paired/name).read_bytes(),name
         assert payload((continuous/'checkpoint.bin').read_bytes())==payload((paired/'checkpoint.bin').read_bytes())
     return dict(status='NATIVE_DISK_RUN_EXACT_AND_WATER_PASS',days=original['completed_days'],
-                restart_from_day=clock,paired_optimization_exact=bool(paired),
+                restart_from_day=clock,paired_optimization_exact=bool(paired),source_contiguous_prefix=bool(prefix),
                 maximum_independent_water_residual_cm=maximum,
                 maximum_reported_water_residual_cm=original['maximum_water_residual_cm'],
                 source_sha256=original['source_sha256'],executable_sha256=original['executable_sha256'],
@@ -41,7 +49,8 @@ def verify(continuous,resumed,paired=None):
 def main():
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--continuous',type=Path,required=True)
     p.add_argument('--resumed',type=Path,required=True);p.add_argument('--paired',type=Path)
+    p.add_argument('--prefix',type=Path,help='Earlier source-identical original segment whose checkpoint starts the continuous segment')
     p.add_argument('--output',type=Path,required=True);a=p.parse_args()
-    result=verify(a.continuous,a.resumed,a.paired);a.output.write_text(json.dumps(result,indent=2)+'\n')
+    result=verify(a.continuous,a.resumed,a.paired,a.prefix);a.output.write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps({k:v for k,v in result.items()if k!='source_sha256'},indent=2))
 if __name__=='__main__':main()
