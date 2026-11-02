@@ -1,6 +1,9 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
-CLOSURE16 follow-up is a candidate diagnostic dossier, not production admission.
+CLOSURE16 diagnostic evidence is admitted through PR1486 at58b89f37, with exact
+tested/actual merge trees and all three actual-merge verifiers passing. Sixteen
+PR workflows pass; the baseline-identical Hupsel source-pin failure remains
+FAILURE. This is diagnostic admission, not production promotion.
 On432 identical explicit inputs, unmodified B1.11 and current heat owners match
 at roundoff while sharing the variable-water energy limitation. Hupsel's four
 waterstock-bound peaks coincide with wet cuts and opposite-day canopy export;

@@ -270,3 +270,10 @@ fully executed project, whole energy qualification or denominator increment is
 claimed. The direct next Andelst implementation must give the discontinuous
 exchange a conservative numerical event/contact treatment, with one identical
 accepted exchange receipt for matrix and macropores and intact rollback/restart.
+
+CLOSURE16 actual admission: PR1486 merged at58b89f37 with the complete tree
+7aa11305 byte-exact to the qualified candidate. All three new evidence consumers
+pass on the actual merge. Sixteen of17 PR workflows pass; the remaining Hupsel
+Sprint03 source-pin failure is independently reproduced on unmodified canonical
+7a7f994d and retained as FAILURE. The existing recovery record owns the receipt
+under `closure16_canonical_receipt`. No production or full-scientific promotion.
