@@ -165,6 +165,15 @@
     "component_smoke": "PASS O0/O2 identical",
     "original_source_oracle": "PASS O0/O2 identical",
     "day1_search_control_complete_days": 538,
-    "day1_search_control_seconds": 392.0398929389994
+    "day1_search_control_seconds": 392.0398929389994,
+    "closure17_recovery": {
+      "baseline": "4d37b256dc60969dc58c9cc2ac26652082bdf001",
+      "implementation_pr_head": "65f5ca337b32217caebc4d5a177f1664df2b139e",
+      "stage": "CLEAN_NATIVE_BUILD_IN_PROGRESS",
+      "reason": "Prior full1096 execution was never sealed or published; old workspace absent. Repeat essential full trajectory, not inherited PASS.",
+      "selected": "Original1096 from day1 on reconciled production fixes; same-build native restart from868; unchanged frozen scientific bounds.",
+      "expected_seconds": 900,
+      "cap_seconds": 1800
+    }
   }
 }

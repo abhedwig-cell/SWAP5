@@ -1,5 +1,21 @@
 # SWAP5 Status-A current architecture
 
+CLOSURE16 diagnostic evidence is admitted through PR1486 at58b89f37, with exact
+tested/actual merge trees and all three actual-merge verifiers passing. Sixteen
+PR workflows pass; the baseline-identical Hupsel source-pin failure remains
+FAILURE. This is diagnostic admission, not production promotion.
+On432 identical explicit inputs, unmodified B1.11 and current heat owners match
+at roundoff while sharing the variable-water energy limitation. Hupsel's four
+waterstock-bound peaks coincide with wet cuts and opposite-day canopy export;
+exact event-state proof and endpoint publication repair remain open. Fresh
+canonical Andelst reproduces its contact barrier; the proposed stale-Jacobian
+hypothesis is not observed on that path. Counts stay2/3 complete original
+executions and0/3 fully scientific qualifications. See the existing
+[contact and energy dossier](../audits/DATAQUAL15_CONTACT_ENERGY_20261102.md),
+`integration/dataqual15_hupsel/SPRINT03_SCIENTIFIC_REPORT.md`, and the single
+`integration/dataqual12/MIGRATION_MATRIX.json`. PR1485 is a separate draft
+implementation line and is not treated as merged evidence here.
+
 Contact/energy diagnostic evidence is canonically admitted through PR1484 at `ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8`, with the actual whole tree equal to the tested tree and all16 PR workflows successful. Real-owner contact controls retain the topology jump;432 explicit heat inputs expose raw theta-domain and summed-stock representation failures. An isolated numerical stock-comparison patch accepts864 representations and rejects864 injected1J/m2 inconsistencies per build, with byte-identical Windows16.2/Linux13.3 O0/O2 output and unchanged physical energy gap. Current production/reference sources are unchanged. Andelst481days, production contact repair and full physical energy remain OPEN. Authority: `integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json` and [contact/energy scope](../audits/DATAQUAL15_CONTACT_ENERGY_20261102.md).
 
 Native Windows Grassgrowth disk restart is canonically admitted via PR #1483 at `bf99820474cad117b60b1d1285dd32c0db905495`. The actual merge tree equals the tested PR tree. Checked Windows O0/O2 cover source-contiguous original days1-367, exact117->120 and365->367 disk restart and eleven corruption controls per build; current POSIX composition and unchanged physical runtime owners pass. Immutable1827/1096 scientific evidence is verified in an exact committed predecessor view, separately from current native I/O proof. This does not claim a new1827-day current-executable run, full physical energy or whole scientific equivalence. Pre-existing DATAQUAL12 source-bound failures remain failures, including their MC-SOL01 and F-CI51P/58P callers. Authority: `integration/dataqual15/NATIVE_RESTART_CANONICAL_RECEIPT.json` and [native restart scope](../audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md).
