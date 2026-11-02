@@ -90,7 +90,7 @@ class CompilerControls(unittest.TestCase):
         def query(args,**kwargs):
             if args[-1]=='-print-file-name=libgfortran-5.dll':return 'libgfortran-5.dll\n'
             return original(args,**kwargs)
-        with patch.object(M.subprocess,'check_output',side_effect=query), patch.object(M.shutil,'which',return_value=None):
+        with patch.object(M.subprocess,'check_output',side_effect=query), patch.object(M.os,'get_exec_path',return_value=[]):
             with self.assertRaisesRegex(RuntimeError,'unresolved compiler input'):
                 self.session.toolchain_identity()
     def test_changed_source_recompiled(self):

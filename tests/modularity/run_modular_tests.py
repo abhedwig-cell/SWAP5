@@ -92,7 +92,10 @@ class Session:
             # search directories. Bind its actual bytes; never omit the runtime
             # fingerprint when the compiler returns an unresolved basename.
             if os.name=='nt' and option==runtime_option and str(path)==runtime:
-                resolved=shutil.which(runtime)
+                # shutil.which applies PATHEXT executable filtering and can
+                # reject an existing DLL. DLL lookup needs an actual file.
+                resolved=next((Path(folder.strip('"'))/runtime for folder in os.get_exec_path()
+                               if folder and (Path(folder.strip('"'))/runtime).is_file()),None)
                 if resolved is None: raise RuntimeError(f'unresolved compiler input: {option}')
                 path=Path(resolved)
             if not path.is_file(): raise RuntimeError(f'unresolved compiler input: {option}')
