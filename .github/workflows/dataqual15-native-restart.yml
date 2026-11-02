@@ -1,0 +1,48 @@
+name: DATAQUAL15 native disk restart
+on:
+  push:
+    branches: ['codex/swap5-migration-*']
+    paths:
+      - .github/workflows/dataqual15-native-restart.yml
+      - app/support/restart_publish.c
+      - app/grass_project/restart_file.f90
+      - tools/solute/build_grass_startup.py
+      - tests/dataqual15/test_restart_publication.py
+      - tests/dataqual15/qualify_native_disk_restart.py
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/dataqual15-native-restart.yml
+      - app/support/restart_publish.c
+      - app/grass_project/restart_file.f90
+      - tools/solute/build_grass_startup.py
+      - tests/dataqual15/test_restart_publication.py
+      - tests/dataqual15/qualify_native_disk_restart.py
+permissions:
+  contents: read
+jobs:
+  posix-preservation:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Native file publication and real original disk continuation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -B tests/dataqual15/test_restart_publication.py --output "$RUNNER_TEMP/publication"
+          for opt in O0 O2; do
+            python3 -B tools/solute/build_grass_startup.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/grass-$opt" --optimization "$opt" --end 1 --policy retained
+            python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/grass-$opt" --output "$RUNNER_TEMP/restart-$opt"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-restart-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/publication/
+            ${{ runner.temp }}/grass-O0/
+            ${{ runner.temp }}/grass-O2/
+            ${{ runner.temp }}/restart-O0/
+            ${{ runner.temp }}/restart-O2/
+          retention-days: 7
