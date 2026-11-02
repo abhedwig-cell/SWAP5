@@ -676,5 +676,47 @@
     "canonical_scope": "Diagnostic dossier and isolated candidate only; no production correction installed",
     "merge": "ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8",
     "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json"
+  },
+  "closure16": {
+    "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "stage": "IMPLEMENTED_NOT_YET_QUALIFIED",
+    "owners": [
+      "native original water adapter numerical controls",
+      "macropore storage normalization"
+    ],
+    "invariants": [
+      3,
+      7,
+      13,
+      23,
+      25
+    ],
+    "hypothesis": "Unconditional stock quantization loses or creates small real water amounts; original source numerical controls must not depend on corrected physics. Neither repair claims to remove discontinuous contact law.",
+    "selected": [
+      "real production stock+closed-bottom reconstruction O0/O2 with old-source negative control",
+      "current native sharp original481-day target bounded observation",
+      "same-build file restart",
+      "existing real Richards macro transaction driver O0/O2"
+    ],
+    "expected_seconds": {
+      "small_contract": 10,
+      "native_build": 180,
+      "sharp_run_cap": 180,
+      "runtime_preservation": 180
+    },
+    "excluded": [
+      "full unrelated F-CI",
+      "new entry smoothing",
+      "changing mass or temporal acceptance"
+    ],
+    "preimage_observation": {
+      "source": "7a7f994d8",
+      "target_days": 481,
+      "completed_days": 1,
+      "last_completed_interval_end": 1.9400000000023283,
+      "wall_cap_seconds": 90,
+      "status": "CENSORED_NOT_NATURAL_FAILURE"
+    },
+    "qualification": "PENDING"
   }
 }

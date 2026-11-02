@@ -1,4 +1,5 @@
 """Verify exact sealed observations; never execute archived native binaries."""
+import argparse
 import hashlib
 import difflib
 import json
@@ -11,7 +12,7 @@ from qualify_energy_boundary import inputs, observe
 ROOT = Path(__file__).resolve().parents[2]
 
 
-def verify():
+def verify(historical=False):
     metadata = json.loads((ROOT/'integration/dataqual15/CONTACT_ENERGY_RESULT_20261102.json').read_text(encoding='utf-8'))
     assert not metadata['full_energy_balance_complete']
     assert not metadata['andelst_repair_implemented']
@@ -26,9 +27,14 @@ def verify():
         files = {m.name:t.extractfile(m).read() for m in members}
     assert json.loads(files.pop('MANIFEST.json')) == {n:sha(b) for n,b in files.items()}
     for path, blob in metadata['dependency_git_blob'].items():
-        current = subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()
-        assert current == blob, ('dependency changed',path)
-        assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT)
+        # Immutable historical observations do not qualify changed current sources.
+        # Require the original Git object in either mode; current-source identity
+        # remains a separate explicitly selectable stronger claim.
+        subprocess.run(['git','cat-file','-e',blob+'^{blob}'],cwd=ROOT,check=True)
+        if not historical:
+            current = subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()
+            assert current == blob, ('dependency changed',path)
+            assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT)
     for scope in ('contact','energy'):
         report = json.loads(files[scope+'/RESULT.json'])
         for path, blob in report['source_git_blob'].items():
@@ -60,11 +66,14 @@ def verify():
                 assert {r[2] for r in rows} == {0.,1.,2.}
                 assert len({tuple(r[:3]) for r in rows}) == 36
                 assert all(.118 < r[3] < .119 and abs(2*r[1]*r[4]-r[3])<1e-14 for r in rows)
-    verify_stock_candidate(files)
-    print('SEALED CURRENT-OWNER DIAGNOSTICS AND ISOLATED STOCK CANDIDATE VERIFIED; CONTACT REPAIR AND FULL ENERGY OPEN')
+    verify_stock_candidate(files,historical)
+    if historical:
+        print('HISTORICAL_EVIDENCE_ONLY; CURRENT_SOURCE_QUALIFICATION_NOT_INHERITED')
+    label='PREDECESSOR' if historical else 'CURRENT-OWNER'
+    print('SEALED '+label+' DIAGNOSTICS AND ISOLATED STOCK CANDIDATE VERIFIED; CONTACT REPAIR AND FULL ENERGY OPEN')
 
 
-def verify_stock_candidate(original_files):
+def verify_stock_candidate(original_files,historical=False):
     report = json.loads((ROOT/'integration/dataqual15/STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json').read_text(encoding='utf-8'))
     assert not report['production_modified'] and not report['production_admitted']
     assert not report['full_energy_balance_complete']
@@ -80,10 +89,13 @@ def verify_stock_candidate(original_files):
     archived_report=json.loads(files['RESULT.json'])
     assert all(report[k]==v for k,v in archived_report.items())
     for path,blob in report['experiment_git_blob'].items():
-        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob
-        assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT)
+        subprocess.run(['git','cat-file','-e',blob+'^{blob}'],cwd=ROOT,check=True)
+        if not historical:
+            assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob
+            assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT)
     module='src/process/mod_whole_column_sensible_energy_accounting.f90'
-    assert subprocess.check_output(['git','rev-parse','HEAD:'+module],cwd=ROOT,text=True).strip()==report['original_module_git_blob']
+    if not historical:
+        assert subprocess.check_output(['git','rev-parse','HEAD:'+module],cwd=ROOT,text=True).strip()==report['original_module_git_blob']
     original=original_files['sources/'+module].decode().replace('\r\n','\n')
     candidate=files['candidate/'+module].decode().replace('\r\n','\n')
     patch=''.join(difflib.unified_diff(original.splitlines(True),candidate.splitlines(True),fromfile='a/'+module,tofile='b/'+module))
@@ -109,4 +121,6 @@ def verify_stock_candidate(original_files):
 
 
 if __name__=='__main__':
-    verify()
+    parser=argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--historical',action='store_true',help='Verify immutable predecessor observations without claiming current source equivalence')
+    verify(parser.parse_args().historical)

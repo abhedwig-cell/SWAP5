@@ -1,7 +1,8 @@
-"""Isolated numerical repair experiment; never patch the current production tree.
+"""Qualify the stock comparison correction and retain the injected 1J rejection.
 
-Applies the reviewable stock-comparison patch in a new isolated Git fixture,
-then compiles the real current component closure against that candidate module.
+Reconstruct the exact predecessor from its immutable Git blob, apply the
+reviewable patch, and require current production to equal either that original
+or the resulting correction. Current providers are compiled on both O0/O2.
 """
 import argparse
 import hashlib
@@ -26,22 +27,31 @@ def main():
     fixture = out/'candidate'
     target = fixture/MODULE
     target.parent.mkdir(parents=True)
-    target.write_bytes((ROOT/MODULE).read_bytes().replace(b'\r\n',b'\n'))
+    predecessor=json.loads((ROOT/'integration/dataqual15/STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json').read_text())
+    original_blob=predecessor['original_module_git_blob']
+    target.write_bytes(subprocess.check_output(['git','cat-file','blob',original_blob],cwd=ROOT))
     local_patch=out/'candidate.patch'
     local_patch.write_bytes((ROOT/PATCH).read_bytes().replace(b'\r\n',b'\n'))
     subprocess.run(['git','init','-q',str(fixture)],check=True)
     subprocess.run(['git','apply','--check',str(local_patch)],cwd=fixture,check=True)
     subprocess.run(['git','apply',str(local_patch)],cwd=fixture,check=True)
+    current=(ROOT/MODULE).read_bytes().replace(b'\r\n',b'\n')
+    corrected=target.read_bytes()
+    original=subprocess.check_output(['git','cat-file','blob',original_blob],cwd=ROOT)
+    assert current in (original,corrected),'current source is neither the qualified predecessor nor its exact correction'
+    promoted=current==corrected
     raw = inputs()
     (out/'inputs.dat').write_bytes(raw)
     compiler = shutil.which('gfortran')
     assert compiler
     sha = lambda b:hashlib.sha256(b).hexdigest()
     report = dict(measurement_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        scope='ISOLATED_NUMERICAL_CANDIDATE_NOT_CURRENT_PRODUCTION',
+        scope='CURRENT_PRODUCTION_NUMERICAL_CORRECTION' if promoted else 'ISOLATED_NUMERICAL_CANDIDATE_NOT_CURRENT_PRODUCTION',
         patch_sha256=sha((ROOT/PATCH).read_bytes()),
-        original_module_git_blob=subprocess.check_output(['git','rev-parse','HEAD:'+MODULE],cwd=ROOT,text=True).strip(),
-        patched_source_sha256=sha(target.read_bytes()),production_modified=False,
+        original_module_git_blob=original_blob,
+        current_module_git_blob=subprocess.check_output(['git','rev-parse','HEAD:'+MODULE],cwd=ROOT,text=True).strip(),
+        source_sha256={p:sha((ROOT/p).read_bytes()) for p in SOURCES},
+        patched_source_sha256=sha(target.read_bytes()),production_modified=promoted,
         production_admitted=False,full_energy_balance_complete=False,builds={})
     # Deliberate 1 J/m2 representation inconsistency, not a boundary residual.
     injection='    roundoff_factor = (4.0_real64'
@@ -86,7 +96,7 @@ def main():
                 stdout_sha256=sha(run.stdout.encode()),**measurement)
     for variant in ('candidate','fault'):
         assert (out/('O0-'+variant)/'stdout').read_bytes()==(out/('O2-'+variant)/'stdout').read_bytes()
-    assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT)
+    assert not subprocess.check_output(['git','diff','HEAD','--',*SOURCES,PATCH],cwd=ROOT)
     report['status']='NUMERICAL_CANDIDATE_PASS_1J_FAULT_REJECTED_PHYSICAL_ENERGY_GAP_RETAINED'
     (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,indent=2))

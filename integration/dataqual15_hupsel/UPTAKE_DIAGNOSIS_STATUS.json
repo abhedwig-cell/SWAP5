@@ -140,5 +140,40 @@
   "classification": "Bounded component differences demonstrated numerical. No native physical defect/new model law demonstrated. Whole earlier coupled input trajectory remains unresolved.",
   "canonical_merge": "0fe2157a9f2a1f5e80811252a0ad3759b3642fc6",
   "canonical_receipt": "UPTAKE_CANONICAL_RECEIPT.json",
-  "canonical_scope": "Actual-input numerical diagnosis only; complete science remains OPEN."
+  "canonical_scope": "Actual-input numerical diagnosis only; complete science remains OPEN.",
+  "closure16_search_termination": {
+    "stage": "PRODUCTION_SEARCH_REPAIRED_COMPONENT_O0_O2_PASS_FULL_EXECUTION_PENDING",
+    "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "production_changed": true,
+    "full_scientific_qualification": false,
+    "hypothesis": "Early exit on TolConv final flux admission rather than root-pressure search precision seeds coupled first-growth error.",
+    "controlled_result": "Identical unmodified494 checkpoint; baseline494->538 exactly reproduces immutable native budget/crop; pressure-search-only variant removes first524 uptake/growth discrepancy and reduces538 leaf mass error from0.193889 to0.000514728kg/ha; O0/O2 suffix budget,crop,checkpoint exact.",
+    "evidence_path": "integration/dataqual15_hupsel/CLOSURE16_FIRST_GROWTH_EVIDENCE.tar.xz",
+    "evidence_sha256": "f25c01a5dfd58a8dbbdd15a55f30fb1bce93de5180220ba6abe88faf0130acfc",
+    "selected_change": "Remove early TolConv residual exit in microscopic root-pressure search; retain pressure precision, iteration budget and all final soil/root and flux certificates.",
+    "test_selection": {
+      "changed_surface": "mod_root_micro_de_willigen_process search termination and transitive callers; no state/ABI/input/tolerance change",
+      "local": "Existing microscopic owner and original-source oracle O0/O2; actual common-state494->538 O0/O2 with mass and byte identity; inspect all failed outcomes.",
+      "full": "Fresh current-source1096 literal day1 run, complete original six input bytes and original scientific bounds; same-build native restart from selected accepted checkpoint.",
+      "expensive_justification": "Only a full day1 coupled trajectory can establish whether demonstrated seed removal resolves or shifts later growth, uptake and chemical export failures; a component or538 suffix cannot answer that question.",
+      "expected_seconds": 900,
+      "full_run_cap_seconds": 1800,
+      "invariants": "7 transactional state;13 conservation;21 same physical laws;23 numerical policy separated;25 reference mode; no accepted mass/crop/chemical check relaxed"
+    },
+    "implementation_commit": "330579c67",
+    "preimage_commit": "c45dd265e",
+    "component_smoke": "PASS O0/O2 identical",
+    "original_source_oracle": "PASS O0/O2 identical",
+    "day1_search_control_complete_days": 538,
+    "day1_search_control_seconds": 392.0398929389994,
+    "closure17_recovery": {
+      "baseline": "4d37b256dc60969dc58c9cc2ac26652082bdf001",
+      "implementation_pr_head": "65f5ca337b32217caebc4d5a177f1664df2b139e",
+      "stage": "CLEAN_NATIVE_BUILD_IN_PROGRESS",
+      "reason": "Prior full1096 execution was never sealed or published; old workspace absent. Repeat essential full trajectory, not inherited PASS.",
+      "selected": "Original1096 from day1 on reconciled production fixes; same-build native restart from868; unchanged frozen scientific bounds.",
+      "expected_seconds": 900,
+      "cap_seconds": 1800
+    }
+  }
 }

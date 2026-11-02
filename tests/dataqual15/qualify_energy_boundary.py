@@ -154,7 +154,10 @@ def main():
                                      stdout_sha256=sha(run.stdout.encode()), **observe(run.stdout,raw))
     report['O0_O2_stdout_exact'] = (out/'O0/stdout').read_bytes() == (out/'O2/stdout').read_bytes()
     assert report['O0_O2_stdout_exact']
-    report['status'] = 'DIAGNOSTIC_EVIDENCE_PASS_PRODUCTION_COMPOSITION_AND_FULL_ENERGY_OPEN'
+    rejected=report['builds']['O0']['projected_stock_roundoff_rejections']
+    assert report['builds']['O2']['projected_stock_roundoff_rejections']==rejected
+    report['status'] = ('DIAGNOSTIC_EVIDENCE_PASS_NUMERICAL_STOCK_CORRECTED_PHYSICAL_ENERGY_OPEN'
+                        if rejected==0 else 'DIAGNOSTIC_EVIDENCE_PASS_PRODUCTION_COMPOSITION_AND_FULL_ENERGY_OPEN')
     (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
     print(json.dumps(report,indent=2))
 

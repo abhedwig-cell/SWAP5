@@ -222,8 +222,12 @@ contains
       mid=0.5_real64*(lo+hi)
       call residual(mid,fm,ok)
       if(.not.ok) exit
-      if(abs(fm)<=parameters%residual_tolerance_cm_per_day.or. &
-         abs(hi-lo)<=parameters%pressure_tolerance_cm) exit
+      ! TolConv is the independent final flux certificate below, not a
+      ! root-search stopping target. An early exit at that looser tolerance
+      ! creates numerical drought/oxygen loss at low demand and feeds it into
+      ! the next accepted crop day. Resolve the existing root-pressure budget
+      ! first; neither the final certificate nor the iteration limit changes.
+      if(abs(hi-lo)<=parameters%pressure_tolerance_cm) exit
       if(flo*fm<=0.0_real64) then
         hi=mid
       else

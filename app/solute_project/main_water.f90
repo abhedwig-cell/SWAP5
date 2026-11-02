@@ -188,6 +188,8 @@ program swap5_native_water_project
   logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.,perched_jacobian=.false.
   logical::conservative_macro_storage=.false.
   logical::quiet_macro_stages=.false.
+  integer::source_maxit,source_maxbacktrack,source_swkmean,source_swkimpl
+  real(real64)::source_dtmin,source_dtmax
   namelist /rutter_daily/canopy_capacity,transpiration_dry,transpiration_wet,canopy_evaporation,vegetation_cover
   call get_command_argument(10,arg)
   if(len_trim(arg)>0)execution_mode=trim(arg)
@@ -461,7 +463,20 @@ program swap5_native_water_project
   p%parameter_set_id=671001_int64;p%active_nodes=numnod;p%z=z;p%dz=dz;p%node_distance=disnod(:numnod);p%cofgen=swp_cofgen
   ! Original hconduc deliberately excludes KSATEXM for SWMACRO1.
   p%ksatexm_extension_active=.false.;p%bottom_mode=3;p%swkimpl=0;p%swkmean=1
-  p%max_iterations=solver_max_iterations;p%max_backtracking=24;p%root_extraction_active=.true.;p%macropore_active=.true.
+  ! Numerical execution controls belong to the original SWP, independently
+  ! of any experimental physical contact law. Preserve stricter SWAP5 balance
+  ! and nonlinear stopping checks; an explicit iteration override stays explicit.
+  call rdinit(75,0,trim(legacy_swp))
+  call rdsinr('maxit',1,256,source_maxit);call rdsinr('maxbacktr',1,100,source_maxbacktrack)
+  call rdsinr('swkmean',1,2,source_swkmean);call rdsinr('swkimpl',0,1,source_swkimpl)
+  call rdsdor('dtmin',1d-12,1d0,source_dtmin);call rdsdor('dtmax',source_dtmin,1d0,source_dtmax)
+  close(75)
+  p%max_iterations=source_maxit
+  if(solver_max_iterations/=64)p%max_iterations=solver_max_iterations
+  p%max_backtracking=source_maxbacktrack;p%swkmean=source_swkmean;p%swkimpl=source_swkimpl
+  p%min_step_duration=source_dtmin;p%root_extraction_active=.true.;p%macropore_active=.true.
+  write(*,*)'ORIGINAL_NATIVE_NUMERICAL_CONTROLS',p%max_iterations,p%max_backtracking,source_dtmin,source_dtmax, &
+    p%swkmean,p%swkimpl
   p%compartment_balance_tolerance=1d-10;p%total_balance_tolerance=1d-10
   p%head_abs_tolerance=1d-8;p%head_rel_tolerance=1d-8;p%ponding_tolerance=1d-10
   allocate(p%macropore);p%macropore=macro_config
@@ -562,6 +577,9 @@ program swap5_native_water_project
         do while(rain_index<rain_count.and.rain_ends(rain_index)<=cursor+1d-12);rain_index=rain_index+1;end do
         endpoint=min(endpoint,rain_ends(rain_index));rain_rate=rain_rates(rain_index)
       end if
+      endpoint=min(endpoint,cursor+source_dtmax)
+      ! Snap only a roundoff-sized final remainder to the existing event.
+      if(ends_day(j)-endpoint<=64d0*epsilon(endpoint)*max(1d0,abs(ends_day(j))))endpoint=ends_day(j)
       call require(endpoint>cursor,'nonprogressing source interval')
       call initialize_interception_window(1000000_int64+int(j,int64)*MAX_RAIN_EVENTS+rain_index,cursor,endpoint, &
         rain_rate*(endpoint-cursor),forcing%rutter%source_window,code)
