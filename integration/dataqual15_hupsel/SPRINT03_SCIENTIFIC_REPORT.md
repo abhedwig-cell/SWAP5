@@ -217,3 +217,110 @@ these finer diagnostic comparisons cannot overturn the earlier failed gate.
 PR1481 merged as `eaae4b62c830fa88aae146e55aa1b1018e54755d`. Its actual whole tree `9891961e63dfe34a4a4714b4b9e112d573bdb174` exactly equals the locally and Linux-tested tree. Actual-merge Linux run41314068427/job124870296181 passes dossier integrity while reproducing scientific FAIL/OPEN. `SPRINT03_MERGE_RECEIPT.json` retains the exact merge parents, qualification identities, all17 terminal PR workflow dispositions (16success,1pre-existing static reference failure), and the14 unchanged dependencies proving that failure is inherited. The scientific and production dispositions above are unchanged.
 
 Automatic canonical F-CI51P and F-CI58P runs41314068528/41314068428 also fail at the historical DATAQUAL12 `unreviewed delta` assertion. That same first condition fails on both the original canonical baseline and this candidate, with identical production trees and unchanged guard/status bytes. These failures are retained in the receipt and are not physical PASS claims. The selected current-source full Grass/Hupsel consumers and actual-merge Hupsel dossier pass. Historical successor routing remains a separate authority repair.
+
+## CLOSURE16: wet cutting events explain the water-stock error peaks
+
+The full immutable daily ledgers now locate **all four** exceedances of the
+unchanged 0.0158941141 cm water-stock comparison bound: days930,956,989 and1033.
+Each is a grass cutting day. The first maximum is0.0960985586 cm on day930,
+compared with0.00864831192 cm before and0.00872088249 cm after it. The entire
+1,096-day series was inspected; an initial exploratory assertion that only one
+crossing existed failed and was corrected to retain all four observations.
+The original scientific gate remains failed. No day is excluded from it.
+
+| Cutting day | Stock difference before, cm | On cutting day, cm | Next day, cm | Canopy export difference on cutting day, cm | Next day, cm |
+| --- | ---: | ---: | ---: | ---: | ---: |
+|930|0.00864831|0.09609856|0.00872088|-0.08743221|0.08738288|
+|956|0.00890316|0.08573912|0.00893721|-0.07683754|0.07680745|
+|989|0.01045788|0.02329417|0.01051229|-0.01282394|0.01279836|
+|1033|0.01261269|0.06299043|0.01277899|-0.05035406|0.05022690|
+
+Differences are native minus the finest retained original DTMAX0.0003125
+trajectory. At these Rutter grass dates, canopy external export is independently
+reconstructed from total water output minus soil/pond evaporation, root uptake,
+drainage and runoff. It is compared with original EIC, rather than inferred from
+the stock residual. Native water certificates remain below1e-10 cm.
+The opposite-day canopy export differences largely cancel over the event pair.
+They accompany a temporary stock mismatch, rather than persistent water loss.
+
+Source inspection identifies a corresponding timing distinction. In the exact
+B1.11 authority, `MOD_cropdevelopment.f90` limits `sicact` to the new `siccap`
+when crop development reduces reservoir capacity. `integral.f90` task4 adds
+`siccaploss` to interception export before that day's reporting. The native
+backend applies `capacity_candidate` when preparing the **next hydraulic
+trial**, and includes the capacity export in that trial's Rutter evaporation.
+A wet cut can consequently appear in opposite daily bins. This establishes a
+specific event-accounting hypothesis supported by all four full-trajectory
+occurrences and both source paths. The exact native pre/post-cut canopy stock
+and capacity were not retained, so this is not an exact paired event-state
+proof or authority to change the crop/physical transaction silently.
+
+Initial total water already agrees within1.99e-13 cm. A much smaller hydrologic
+trajectory difference exists from day1: native drainage0.0621204467382 cm versus
+finest original0.0620682052050 cm. Eight retained original DTMAX controls are
+recorded, without treating a changing original time discretization as a new
+physical process. This early numerical difference, the later root/crop feedback,
+chemical export differences and whole physical energy still require their own
+causal evidence. The canopy timing observation does not explain them all.
+
+Reproduce the complete data and source checks without rerunning the model:
+
+```sh
+python -B tests/dataqual15_hupsel/canopy_event_ledger.py --output /tmp/hupsel-canopy-ledger.json
+```
+
+`CLOSURE16_CANOPY_EVENT_LEDGER.json` contains archive/source hashes, the initial
+water comparison, all eight day1 original controls and twelve event-adjacent
+daily observations. This is a new analysis of existing native evidence, with no
+new compiled model days, no production change, no full F-CI selection and no
+scientific promotion. The next discriminating implementation test is an explicit
+accepted crop-event capacity receipt, executed on both sides of a wet cut with
+water, restart and rollback checks. Moving the report boundary or broadening the
+water bound would conceal the issue and is not selected.
+
+### Exact implementation boundary for the canopy event
+
+The wet-cut correction belongs immediately after
+`active_trial%day_end(day_end,candidate_water,crop_window,...)` in
+`app/solute_project/main.f90:run_detailed_rain_day`, before irrigation/crop and
+`water=candidate_water` are published. This is already the staging boundary for
+the whole day: an unsuccessful crop, irrigation or hydrological candidate does
+not replace the application's committed water/crop/chemical state.
+
+The required capacity is derived from the **post-update** crop owner with
+`derive_actual_leaf_area_index(self%ssa,self%spa,...)`, multiplied by the
+original `siccaplai`. `self%canopy%lai` is a morning forcing value and must not
+be reused after mowing. Existing
+`rutter_source_state_t%capacity_candidate` supplies the nonmutating canopy
+proposal and exact external interception export. The daily water receipt must
+then reduce `storage_end` and increase `total_out` by that same amount,
+recompute `storage_change` and retain the existing residual tolerance. Soil,
+pond, heat and all chemical stocks are unchanged. A second application must
+produce zero export. The ordinary next-trial capacity path must consequently
+see the already bounded canopy and must not export it twice.
+
+There is presently no admitted public carrier operation that can publish this
+same-time physical endpoint correction. `candidate_water` is an opaque
+`kernel_committed_state_t`, not a mutable physical proposal. Its public snapshot
+is read-only. `kernel_reconstruct_committed_state_trusted` explicitly reserves
+its constructor for adapter-owned persistence and states that ordinary runtime
+must use transaction commit. Reconstructing a changed canopy at the same
+revision, resetting time/revision, or passing a fresh minted parameter identity
+would bypass that provenance contract. `kernel_candidate_state_t%ready` and
+`advance_interval` require a positive interval; the admitted
+`MC_CROP01_DAY_END_PRODUCTION_CONTRACT.md` also excludes zero-duration kernel
+operations. The existing `activate_potato_surface` trusted reconstruction is an
+initial surface-layout boundary, not authority for a repeated mass-export event.
+
+A safe repair therefore first needs a narrow endpoint-event commit contract
+owned by F-KT and the existing crop/day application. It must bind the exact
+pre-event lineage, revision, time and certified parameter identity; increase
+revision once without advancing time; validate the unchanged physical/chemical
+fields and exact canopy mass receipt; reject stale/foreign/duplicate publication;
+and remain inside the existing day candidate until every owner succeeds.
+It must then qualify an actual wet-cut suffix at O0/O2, exact file restart across
+the event, rejection/rollback, and no next-day double export. No such normal
+endpoint commit interface is silently introduced in this diagnostic change.
+The existing full-period archive contains checkpoints868 and1058 around the
+first wet-cut peak, not an authentic day929 checkpoint; a newly captured valid
+origin is required for a short paired day929 event test.

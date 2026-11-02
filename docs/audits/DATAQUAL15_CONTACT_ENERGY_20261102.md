@@ -145,3 +145,128 @@ Canonical restart merge CI is now terminal: runs41424758938,41424758951 and
 41424759098 pass. Runs41424758946,41424758966,41424758982 and41424758992 retain
 their existing DATAQUAL12 `unreviewed delta` source-guard failure. These failures
 are not converted into scientific PASS.
+
+## CLOSURE16 matched original/current heat owners
+
+The new test calls the **unmodified compiled B1.11** `temperature_numeric`
+and current `trial_restricted_soil_temperature` on identical explicit geometry,
+texture, old temperature, water endpoints, air temperature and duration. It uses
+all432 immutable Sprint04 inputs, not an inferred accepted application trajectory.
+The original source is reconstructed and manifest-verified from the existing
+B1.11 authority; no copied heat formula stands in for the original solver.
+
+Checked GNU Fortran13.3 O0/O2 each complete432 paired evaluations. Their complete
+stdout is byte-identical. Heat capacities agree exactly and the maximum nodal
+temperature difference is1.066e-14C. Independent endpoint storage evaluated from
+the **original** solved temperatures retains a1.450327029850J/cm2 variable-water
+gap,1.120172916227J/cm2 for isothermal5C and2.754e-12J/cm2 at fixed water.
+Original and current conductive boundary energies differ by at most4.832e-13J/cm2;
+the original boundary flux is evaluated directly from original `tetop`, `heacon`
+and solved `tsoil`, independently of the SWAP5 boundary ledger.
+Thus the selected heat equation and its variable-water energy limitation are
+shared with B1.11. They are not a new SWAP5 heat-solver implementation difference.
+This does not prove full coupled trajectory equivalence, explain every forcing
+route or establish physical completeness of the original formulation.
+
+Result, raw measurements, actual original build manifests and the first failed
+controller aggregation are retained in
+`integration/dataqual15/PAIRED_HEAT_OWNER_RESULT_20261102.json` and its named
+capsule. The first native O0 run completed but result aggregation incorrectly
+requested kind4 instead of the actual kinds0..3; no physical assertion failed.
+The corrected runner completed both optimization modes. Reproduction:
+
+```bash
+python -B tests/dataqual15/qualify_paired_heat_owner.py --compiler /usr/bin/gfortran --output /tmp/paired-heat-new
+```
+
+### Minimal physically complete coupling path
+
+The immediate blocker is **accepted interval donor-temperature provenance**,
+not absence of a water mass ledger. `app/grass_project/initial_interval.f90`
+already requests accepted water substeps and consumes their root sinks, but
+`fmr_water_flux_substep_trace_t` has no node temperature endpoints. The heat
+owner itself receives only start/end hydraulic views and has no face, root or
+lateral water-energy transfers. Endpoint water changes cannot uniquely recover
+those transfers or the temperature of external incoming water.
+
+| Existing owner | Reusable authority | Remaining change |
+| --- | --- | --- |
+| `mod_fmr_water_flux_trace_contract` | Accepted times, water endpoints, top/bottom rates, root and signed drainage/source vectors | Append matched pre/post node temperatures to the same rollback-selected trace; retain forcing and accepted-state identity. |
+| `mod_fmr_bottom_thermal_carrier` and external thermal provider | Accepted local outflow donor endpoints and explicit external inflow response | Bind real Grassgrowth bottom exchange; external incoming temperature must remain unavailable until supplied. |
+| `mod_eb_i25_multisubstep_sensible_boundary_runtime` | Rollback-safe multisubstep top conduction and explicit liquid inflow donor | Does not qualify soil-side top outflow or snow/melt mixing. Do not replace rainfall/irrigation water temperature with air temperature. |
+| `mod_liquid_water_sensible_enthalpy` | Existing signed water amount and donor-temperature sensible transport law | Reuse it for each accepted root/lateral/face transfer, selecting the upstream donor by sign. |
+| `mod_whole_column_sensible_energy_accounting` | Exact mixture stock and explicit top/bottom boundary projection | No root or lateral energy fields exist. Add explicitly available root/lateral and displaced-gas transfers before claiming the entire rooted/drained column balance. |
+
+First implement the accepted thermal endpoint capture in the existing trace,
+then assemble root extraction and outward drainage energy from those local
+accepted donors. For inward lateral/bottom/top water, require explicit external
+donor temperatures. Trace capture must be transactional: rejected full and half
+trials cannot publish receipts, and file restart must reproduce selected accepted
+intervals. Internal face contributions use one amount and one donor evaluation
+with equal and opposite signs, so they cancel exactly in column accounting.
+
+Next solve a conservative equation for the same exact mixture stock, driven by
+those independently obtained signed energy transfers and conduction. Merely
+adding endpoint composition change to a boundary ledger would manufacture
+closure and is excluded. The displaced pore-gas energy convention must match the
+gas capacity already included in exact storage; otherwise changing the reference
+temperature changes the alleged energy residual. Surface evaporation also needs
+a declared liquid/vapor/latent boundary convention. Grassgrowth has SWSNOW0 and
+SWFROST0, but root extraction and SWDRA1 are active, so omitting those sinks is
+not a valid simplification for this project.
+
+Installing advective heat physics changes the shared B1.11 conduction formulation.
+It therefore needs an explicit separately qualified SWAP5 model change, or a
+reference correction only if the intended original formulation is shown to have
+been implemented incorrectly under ADR0005. Literal-equivalence tolerances must
+not be broadened to hide this distinction. Thermal timestep-error control and
+the failed preregistered coarse-native temperature test remain separate from
+that physical development. No complete-project or scientific denominator changes.
+
+## CLOSURE16 current Andelst reconstruction
+
+A clean GNU Fortran13.3 checked O2 build of canonical7a7f994d executes the
+unchanged prepared original physical input from day1 with sharp entry (width0).
+The90-second bounded observation completes day1 and source intervals through
+1.9400000000023283days, then is censored. Its day1 water residual is
+-1.1442e-14cm. This is neither a natural solver failure nor a full project.
+An initial direct launch with literal CLI width0 was rejected by the existing
+positive-width grammar; the corrected invocation uses the existing empty
+argument for sharp entry. Both observations are retained.
+
+The separate authentic2.748-day historical payload is rebound only in its
+executable binding and CRC for a current-source diagnostic. That historical
+payload and control retain the0.0001cm entry ramp; this is not an original
+sharp-route restart qualification. Baseline failure takes18.08s and rejects
+with29874 nonlinear iterations,2523HeadCalc calls,416 accepted internal
+substeps and minimum accepted dt8.8818e-16day. The complete rejected stream
+is byte-exact to the diagnostic origin.
+
+A real HeadCalc observer tests a specific implementation hypothesis: the
+dynamic top boundary might refresh macropore residual flux while the existing
+freeze flag suppresses its derivative. The observer stops if that conjunction
+occurs. It does not occur anywhere on the failing replay; the unmodified
+failure is reproduced in17.73s with exact rollback. No speculative Jacobian
+change is installed. This negative result does not qualify all freezing routes.
+The independently measured sharp-entry and perched-topology discontinuities
+remain the direct blockers. Changing iteration limits or smoothing only the
+entry gate does not establish a conservative original contact solution.
+
+Exact fresh build manifests, observations, original bound commands, the
+observation source and rollback streams are sealed in
+`integration/dataqual15/CLOSURE16_CURRENT_ANDELST_EVIDENCE.tar.xz`.
+Machine-readable source/input scope is
+`integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json`.
+Validate with `python -B tests/dataqual15/verify_closure16_andelst.py`.
+The archived replay launcher records its original workspace paths; independent
+reproduction must first build the pinned source using
+`tools/solute/build_project.py --native-water --optimization O2`, then substitute
+the new build/root paths while preserving all scientific command arguments.
+No archived executable is required or executed by the verifier.
+
+The original481-day execution is still OPEN. The corrected-wall/ramped130-day
+result is retained under its prior, different physical/numerical scope. No new
+fully executed project, whole energy qualification or denominator increment is
+claimed. The direct next Andelst implementation must give the discontinuous
+exchange a conservative numerical event/contact treatment, with one identical
+accepted exchange receipt for matrix and macropores and intact rollback/restart.

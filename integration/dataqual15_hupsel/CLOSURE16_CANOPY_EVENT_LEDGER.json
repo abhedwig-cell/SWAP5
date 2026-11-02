@@ -1,0 +1,240 @@
+{
+  "scope": "IMMUTABLE_FULL_TRAJECTORY_LEDGER_AND_SOURCE_TIMING_DIAGNOSIS",
+  "native_full_days": 1096,
+  "new_native_executions": 0,
+  "production_changed": false,
+  "scientific_gate_reassessed": false,
+  "full_scientific_qualification": false,
+  "original_scientific_bounds_unchanged": true,
+  "scientific_archive_sha256": "b22758b72f94916a4d4c03bc9f472d1c957e81dc42c98cd7111bbda468ee484e",
+  "native_archive_sha256": "8913f30f80aab5c19d2b9f04c2ced4ca0d6e1bd1367f660372d68c1afe7d0504",
+  "b1_authority_sha256": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
+  "selected_original_source_sha256": {
+    "SWAP/MOD_cropdevelopment.f90": "aef69feef8561c1b9e52cff5a217a6155f949a039769e5d793df3038f86e4210",
+    "SWAP/integral.f90": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174"
+  },
+  "current_backend_sha256": "ea6459e347a89a427d2a6ecb61025b5f8484d4b5a287bbed39a143e2786dc724",
+  "initial_total_water_difference_cm": -1.9895196601282805e-13,
+  "first_day_native_drainage_cm": 0.06212044673821152,
+  "first_day_original_refinement": {
+    "0.04": {
+      "first_day_drainage_cm": 0.062355495037,
+      "first_day_water_cm": 75.125280406226
+    },
+    "0.02": {
+      "first_day_drainage_cm": 0.062218176264,
+      "first_day_water_cm": 75.125417726935
+    },
+    "0.01": {
+      "first_day_drainage_cm": 0.062144169322,
+      "first_day_water_cm": 75.12549173477
+    },
+    "0.005": {
+      "first_day_drainage_cm": 0.062105703236,
+      "first_day_water_cm": 75.125530200696
+    },
+    "0.0025": {
+      "first_day_drainage_cm": 0.062085909897,
+      "first_day_water_cm": 75.125549993037
+    },
+    "0.00125": {
+      "first_day_drainage_cm": 0.062075832787,
+      "first_day_water_cm": 75.125559686392
+    },
+    "0.000625": {
+      "first_day_drainage_cm": 0.062070745524,
+      "first_day_water_cm": 75.125564749814
+    },
+    "0.0003125": {
+      "first_day_drainage_cm": 0.062068205205,
+      "first_day_water_cm": 75.125567391053
+    }
+  },
+  "first_day_native_vs_finest_drainage_difference_cm": 5.2241533211525026e-05,
+  "frozen_whole_period_water_limit_cm": 0.015894114055035997,
+  "days_exceeding_unchanged_water_stock_bound": [
+    930,
+    956,
+    989,
+    1033
+  ],
+  "event_days": [
+    {
+      "day": 929,
+      "native_stock_cm": 68.27009395039099,
+      "original_stock_cm": 68.26144563847201,
+      "stock_difference_cm": 0.008648311918975082,
+      "native_inferred_canopy_external_out_cm": 0.23228353525069995,
+      "original_canopy_external_out_cm": 0.232308610095,
+      "canopy_external_out_difference_cm": -2.507484430006035e-05,
+      "native_water_residual_cm": -1.582067810090848e-14,
+      "original_reported_water_residual_cm": -1.377946090564e-10,
+      "native_leaf_kg_ha": 1838.6778167081134,
+      "original_leaf_kg_ha": 1839.264644470444,
+      "original_canopy_stock_cm": 0.109142111877
+    },
+    {
+      "day": 930,
+      "native_stock_cm": 68.42267421338984,
+      "original_stock_cm": 68.326575654798,
+      "stock_difference_cm": 0.0960985585918337,
+      "native_inferred_canopy_external_out_cm": 0.13180056929622763,
+      "original_canopy_external_out_cm": 0.219232779301,
+      "canopy_external_out_difference_cm": -0.08743221000477236,
+      "native_water_residual_cm": 2.0539125955565396e-15,
+      "original_reported_water_residual_cm": -6.863801272905e-07,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0270368
+    },
+    {
+      "day": 931,
+      "native_stock_cm": 68.04462677412859,
+      "original_stock_cm": 68.035905891634,
+      "stock_difference_cm": 0.008720882494586135,
+      "native_inferred_canopy_external_out_cm": 0.11441967804486292,
+      "original_canopy_external_out_cm": 0.0270368,
+      "canopy_external_out_difference_cm": 0.08738287804486292,
+      "native_water_residual_cm": 1.2212453270876722e-15,
+      "original_reported_water_residual_cm": -6.356852821909e-10,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0
+    },
+    {
+      "day": 955,
+      "native_stock_cm": 66.54629939614597,
+      "original_stock_cm": 66.537396231854,
+      "stock_difference_cm": 0.008903164291965027,
+      "native_inferred_canopy_external_out_cm": 0.1637783661735501,
+      "original_canopy_external_out_cm": 0.163790427288,
+      "canopy_external_out_difference_cm": -1.2061114449901655e-05,
+      "native_water_residual_cm": 5.495603971894525e-15,
+      "original_reported_water_residual_cm": -2.264873288915e-10,
+      "native_leaf_kg_ha": 1658.9576658741796,
+      "original_leaf_kg_ha": 1659.30751598834,
+      "original_canopy_stock_cm": 0.100914390108
+    },
+    {
+      "day": 956,
+      "native_stock_cm": 67.12393339240276,
+      "original_stock_cm": 67.03819427282201,
+      "stock_difference_cm": 0.08573911958075087,
+      "native_inferred_canopy_external_out_cm": 0.11237763059588403,
+      "original_canopy_external_out_cm": 0.189215169264,
+      "canopy_external_out_difference_cm": -0.07683753866811598,
+      "native_water_residual_cm": -4.912736883966318e-15,
+      "original_reported_water_residual_cm": -0.0,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0270368
+    },
+    {
+      "day": 957,
+      "native_stock_cm": 66.76989632302475,
+      "original_stock_cm": 66.760959117592,
+      "stock_difference_cm": 0.008937205432758333,
+      "native_inferred_canopy_external_out_cm": 0.1108132306681539,
+      "original_canopy_external_out_cm": 0.034005785153,
+      "canopy_external_out_difference_cm": 0.07680744551515391,
+      "native_water_residual_cm": 5.995204332975845e-15,
+      "original_reported_water_residual_cm": -1.429850127188e-10,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0
+    },
+    {
+      "day": 988,
+      "native_stock_cm": 66.16300413945127,
+      "original_stock_cm": 66.152546255468,
+      "stock_difference_cm": 0.010457883983278293,
+      "native_inferred_canopy_external_out_cm": 0.09618383536505232,
+      "original_canopy_external_out_cm": 0.096228727773,
+      "canopy_external_out_difference_cm": -4.4892407947680346e-05,
+      "native_water_residual_cm": 5.773159728050814e-15,
+      "original_reported_water_residual_cm": -0.0,
+      "native_leaf_kg_ha": 1635.9561781762923,
+      "original_leaf_kg_ha": 1636.745222710455,
+      "original_canopy_stock_cm": 0.0
+    },
+    {
+      "day": 989,
+      "native_stock_cm": 66.15051623030733,
+      "original_stock_cm": 66.127222060182,
+      "stock_difference_cm": 0.02329417012532531,
+      "native_inferred_canopy_external_out_cm": 0.09629058386378342,
+      "original_canopy_external_out_cm": 0.109114522942,
+      "canopy_external_out_difference_cm": -0.012823939078216579,
+      "native_water_residual_cm": -3.3029134982598407e-15,
+      "original_reported_water_residual_cm": -3.700737956913e-07,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0270368
+    },
+    {
+      "day": 990,
+      "native_stock_cm": 66.01187599946174,
+      "original_stock_cm": 66.001363705109,
+      "stock_difference_cm": 0.010512294352736262,
+      "native_inferred_canopy_external_out_cm": 0.03983515975826617,
+      "original_canopy_external_out_cm": 0.0270368,
+      "canopy_external_out_difference_cm": 0.012798359758266167,
+      "native_water_residual_cm": 5.2735593669694936e-15,
+      "original_reported_water_residual_cm": -0.0,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0
+    },
+    {
+      "day": 1032,
+      "native_stock_cm": 69.01813370794312,
+      "original_stock_cm": 69.00552101777,
+      "stock_difference_cm": 0.012612690173128271,
+      "native_inferred_canopy_external_out_cm": 0.035097893758926725,
+      "original_canopy_external_out_cm": 0.035122727773,
+      "canopy_external_out_difference_cm": -2.4834014073271682e-05,
+      "native_water_residual_cm": -7.216449660063518e-15,
+      "original_reported_water_residual_cm": -1.247315043196e-07,
+      "native_leaf_kg_ha": 1260.5779632670178,
+      "original_leaf_kg_ha": 1262.425587296406,
+      "original_canopy_stock_cm": 0.049115067785
+    },
+    {
+      "day": 1033,
+      "native_stock_cm": 69.52841726357182,
+      "original_stock_cm": 69.46542682925,
+      "stock_difference_cm": 0.06299043432181861,
+      "native_inferred_canopy_external_out_cm": 0.02487057814932459,
+      "original_canopy_external_out_cm": 0.075224636569,
+      "canopy_external_out_difference_cm": -0.050354058419675406,
+      "native_water_residual_cm": -1.5959455978986625e-16,
+      "original_reported_water_residual_cm": -2.690279388151e-10,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.0270368
+    },
+    {
+      "day": 1034,
+      "native_stock_cm": 69.45340220412217,
+      "original_stock_cm": 69.440623212464,
+      "stock_difference_cm": 0.012778991658166206,
+      "native_inferred_canopy_external_out_cm": 0.055548740018351944,
+      "original_canopy_external_out_cm": 0.005321836844,
+      "canopy_external_out_difference_cm": 0.050226903174351946,
+      "native_water_residual_cm": -3.427813588530171e-15,
+      "original_reported_water_residual_cm": -1.754441125622e-06,
+      "native_leaf_kg_ha": 420.00000000000006,
+      "original_leaf_kg_ha": 420.0,
+      "original_canopy_stock_cm": 0.021714963156
+    }
+  ],
+  "paired_event_canopy_external_out_difference_cm": {
+    "930": -4.933195990944328e-05,
+    "956": -3.0093152962068492e-05,
+    "989": -2.5579319950411183e-05,
+    "1033": -0.0001271552453234598
+  },
+  "development_failure": "Initial exploratory single-crossing assertion failed: actual complete raw series contains four crossings, all four on cutting days. Full observations retained; no gate changed.",
+  "classification": "Wet-cut event accounting is applied at different boundaries: original crop update versus next native hydraulic trial. Retained ledgers show opposite-day canopy export differences and recovery of the stock gap. Exact native canopy stock and capacity at the event were not retained; the amount attribution is not an exact paired state proof.",
+  "remaining": "Root-search first-growth cause is studied separately. The day1 small hydrologic difference and later crop/solute/energy differences are not repaired or scientifically qualified here."
+}
