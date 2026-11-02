@@ -5,6 +5,8 @@ on:
     paths:
       - 'tests/dataqual15/*contact*'
       - 'tests/dataqual15/*energy_boundary*'
+      - 'tests/dataqual15/qualify_stock_projection_candidate.py'
+      - 'integration/dataqual15/STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch'
       - 'integration/dataqual15/CONTACT_ENERGY*'
       - 'integration/dataqual15/SPRINT04_ENERGY_COMPONENT_INPUTS.tar.xz'
       - 'src/process/mod_whole_column_sensible_energy_accounting.f90'
@@ -28,6 +30,8 @@ jobs:
         run: python -B tests/dataqual15/qualify_andelst_contact.py --output contact-energy-ci/contact
       - name: Actual heat and exact stock ledger O0 and O2
         run: python -B tests/dataqual15/qualify_energy_boundary.py --output contact-energy-ci/energy
+      - name: Isolated numerical stock candidate and deliberate 1J inconsistency
+        run: python -B tests/dataqual15/qualify_stock_projection_candidate.py --output contact-energy-ci/stock-candidate
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -35,3 +39,4 @@ jobs:
           path: |
             contact-energy-ci/contact
             contact-energy-ci/energy
+            contact-energy-ci/stock-candidate

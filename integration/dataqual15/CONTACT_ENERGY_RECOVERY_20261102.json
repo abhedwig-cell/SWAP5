@@ -53,7 +53,13 @@
   "isolated_numerical_candidate": {
     "patch": "integration/dataqual15/STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch",
     "runner": "tests/dataqual15/qualify_stock_projection_candidate.py",
-    "test_status": "PENDING",
-    "scope": "Isolated fixture only. No current src change. Derived floating-point summation bound; all864 candidates should accept representation consistency, injected1J mismatch must still reject; missing receipts and physical residual remain."
+    "test_status": "Windows16.2 checked O0/O2 PASS",
+    "scope": "Isolated fixture only. No current src change. Derived floating-point summation bound; all864 candidates should accept representation consistency, injected1J mismatch must still reject; missing receipts and physical residual remain.",
+    "measurement_commit": "e8a7de63a491c3d43da7b2aba5f61e3313bf9e1b",
+    "result": "integration/dataqual15/STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json",
+    "candidate_roundoff_rejections": 0,
+    "injected_1J_rejections": 864,
+    "production_modified": false,
+    "full_energy_balance_complete": false
   }
 }

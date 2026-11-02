@@ -91,10 +91,36 @@ The gauge dependence is expected when the energy carried by changing water
 and displaced gas has not been supplied. Neither assigning zero nor inferring
 an advective receipt from the residual is acceptable physical closure.
 
+## Executed isolated numerical correction
+
+`STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch` supplies a concrete correction of
+the representation-consistency check. It accumulates absolute endpoint stocks
+and uses the floating-point summation bound gamma(4n+4), alongside the existing
+small-change comparison. It does not alter energy storage, boundary receipts,
+physical residuals, theta acceptance, heat solving or completeness scope.
+
+`qualify_stock_projection_candidate.py` applies that reviewable patch in an
+isolated Git fixture and links the resulting module into the same actual
+component driver. On persisted postimage `e8a7de63a`, Windows16.2 checked
+O0/O2 each accept all864 normalized stock representations, with zero
+roundoff rejections. A separate injected1J/m2 stock inconsistency is rejected
+in all864 evaluations per build. The raw864 theta-domain rejections remain;
+the physical1.45032703J/cm2 variable-water residual remains numerically exact.
+Both candidate and fault-control O0/O2 pairs have identical stdout.
+
+The immutable candidate experiment is in
+`STOCK_PROJECTION_CANDIDATE_EVIDENCE_20261102.tar.xz`, with build commands,
+actual source, patched/fault source, executables, logs and result metadata in
+`STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json`. The Linux workflow repeats
+the candidate and fault controls. This correction is implemented and tested
+as an isolated candidate; it is not applied to current production or called
+a full-energy qualification.
+
 ## Next executable implementation boundary
 
-The immediate accounting correction is numerical stock-summation comparison,
-with these actual113-node inputs as regressions. The theta-domain mismatch
+The candidate can next enter the numerical accounting owner through its
+explicit dependency/admission reconciliation, with these actual113-node inputs
+and the1J negative control as regressions. The theta-domain mismatch
 needs an explicit shared input contract before changing a production owner.
 Neither correction adds a water-energy transport law.
 
