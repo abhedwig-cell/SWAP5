@@ -227,5 +227,24 @@
     "production_promotion": false,
     "known_legacy_guard_failure": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json"
   },
-  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits."
+  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits.",
+  "windows_feedback_continuation_20261102": {
+    "workstream": "RT/VQ migration WP0 execution infrastructure",
+    "work_unit": "DATAQUAL15-WP0-WINDOWS-FEEDBACK",
+    "baseline": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+    "branch": "codex/swap5-migration-20261102",
+    "implemented": true,
+    "persisted": "Implementation checkpoint containing this record",
+    "tested": "NOT_RUN; baseline drainage invocation failed before compilation on unresolved libgfortran.so.5",
+    "qualified": false,
+    "authority_paths": ["AGENTS.md", "docs/development/workstream-execution-protocol.md", "integration/dataqual12/MIGRATION_MATRIX.json"],
+    "relevant_paths": ["tests/modularity/run_modular_tests.py", "tests/modularity/test_modular_controls.py", "tests/modularity/test_adoption_controls.py"],
+    "dependency_surface": ["native compiler/runtime identity", "executable artifact identity", "same-session reuse guards", "existing focused scientific drivers"],
+    "invariants_affected": [5, 13, 25, 26],
+    "interfaces_changed": "No production interface change; Windows runner fingerprints the real MinGW runtime DLL and tracks the actual .exe artifact. Linux runtime lookup remains required.",
+    "next_action": "Execute existing focused O0/O2 science and compiler/artifact/source/selection negative controls on the persisted postimage; record results and push checkpoints.",
+    "recovery_point": "Implementation checkpoint containing this record; parent is the pinned canonical baseline",
+    "blockers": ["WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."],
+    "non_claims": ["No production/app/reference mutation", "No new original execution or scientific qualification", "No full F-CI inheritance or admission", "No full Windows project/restart portability claim"]
+  }
 }
