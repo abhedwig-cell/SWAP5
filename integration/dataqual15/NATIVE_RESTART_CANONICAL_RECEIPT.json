@@ -1,0 +1,168 @@
+{
+  "status": "ACTUAL_CANONICAL_BOUNDED_ADMISSION_VERIFIED",
+  "pull_request": 1483,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1483",
+  "base": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+  "qualified_head": "cd7d5e1dd1e7297ebb82d63aeedccd3a89a3bb16",
+  "actual_merge": "bf99820474cad117b60b1d1285dd32c0db905495",
+  "qualified_tree": "161230be24c1ac6ee2bf9337630ecfd034567b39",
+  "actual_tree": "161230be24c1ac6ee2bf9337630ecfd034567b39",
+  "whole_tree_exact": true,
+  "scope": "Native Grassgrowth publication/checksum and bounded same-build disk restart only. Source-contiguous Windows367 days; exact117->120 and365->367; separate fresh POSIX3-day composition. Historical1827/1096 physics stays explicitly predecessor evidence.",
+  "full_current1827_execution": false,
+  "whole_scientific_qualification": false,
+  "production_promotion": false,
+  "canonical_admitted": true,
+  "ci": [
+    {
+      "id": 41423507812,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507974,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507866,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508109,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507977,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507980,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508134,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508025,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507881,
+      "name": "DATAQUAL15 original Grassgrowth sprint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507989,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507919,
+      "name": "DATAQUAL15 native disk restart",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508011,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507960,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508090,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507833,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41423507862,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508255,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423508067,
+      "name": "F-CI96 F-ROSS12 postimage preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41423507984,
+      "name": "MC-SOL01 original SWP chemistry",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "known_failures": {
+    "authority": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json",
+    "column": {
+      "run": 41423507833,
+      "job": 125204454355,
+      "native_file_restart": "PASS",
+      "failed_step": "Preserve existing surface age and accepted source authority",
+      "cause": "verify_dataqual12_current.py:13 unreviewed delta"
+    },
+    "reader": {
+      "run": 41423507984,
+      "job": 125204455224,
+      "native_input_demand_mass_restart": "PASS",
+      "failed_step": "Source bound admission and negative controls",
+      "cause": "pre-existing DATAQUAL12 global source boundary"
+    },
+    "disposition": "Retained failures, never reported as PASS; all owning physical sources/callers unchanged by this I/O slice. No guard weakened."
+  },
+  "post_merge_source_bound_callers": [
+    {
+      "run": 41424758946,
+      "job": 125208564760,
+      "workflow": "F-CI58P F-SI35",
+      "conclusion": "failure",
+      "cause": "unchanged verify_dataqual12_current.py:13 global unreviewed delta"
+    },
+    {
+      "run": 41424758966,
+      "job": 125208564950,
+      "workflow": "F-CI51P WOF43A",
+      "conclusion": "failure",
+      "cause": "unchanged verify_dataqual12_current.py:13 global unreviewed delta"
+    }
+  ],
+  "post_merge_fci_run": 41424758938,
+  "post_merge_fci_conclusion": "success"
+}

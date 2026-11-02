@@ -1,8 +1,8 @@
 # Native Grassgrowth disk restart, 2 November 2026
 
-**Status: implemented and branch-local bounded qualification.** Owning recovery,
+**Status: canonically admitted bounded native I/O**, PR [#1483](https://github.com/abhedwig-cell/SWAP5/pull/1483), merge `bf9982047`. Owning recovery,
 test selection and evidence are in
-[`integration/dataqual15/STATUS.json`](https://github.com/abhedwig-cell/SWAP5/blob/codex/swap5-migration-20261102/integration/dataqual15/STATUS.json),
+[`integration/dataqual15/STATUS.json`](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/integration/dataqual15/STATUS.json),
 field `native_disk_restart_20261102`. Canonical admission and full original-project
 scientific qualification are separate.
 

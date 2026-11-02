@@ -1,5 +1,7 @@
 # SWAP5 Status-A current architecture
 
+Native Windows Grassgrowth disk restart is canonically admitted via PR #1483 at `bf99820474cad117b60b1d1285dd32c0db905495`. The actual merge tree equals the tested PR tree. Checked Windows O0/O2 cover source-contiguous original days1-367, exact117->120 and365->367 disk restart and eleven corruption controls per build; current POSIX composition and unchanged physical runtime owners pass. Immutable1827/1096 scientific evidence is verified in an exact committed predecessor view, separately from current native I/O proof. This does not claim a new1827-day current-executable run, full physical energy or whole scientific equivalence. Pre-existing DATAQUAL12 source-bound failures remain failures, including their MC-SOL01 and F-CI51P/58P callers. Authority: `integration/dataqual15/NATIVE_RESTART_CANONICAL_RECEIPT.json` and [native restart scope](../audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md).
+
 Canonically admitted DATAQUAL15 experimental follow-up (PR1479, merge51ee43e) preserves the original production owners
 and replays2922 accepted native intervals through real original/current oxygen
 and whole uptake routines in O0/O2, including7661 stressed node evaluations.
