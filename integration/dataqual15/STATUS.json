@@ -234,17 +234,166 @@
     "baseline": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
     "branch": "codex/swap5-migration-20261102",
     "implemented": true,
-    "persisted": "Implementation checkpoint containing this record",
-    "tested": "NOT_RUN; baseline drainage invocation failed before compilation on unresolved libgfortran.so.5",
-    "qualified": false,
-    "authority_paths": ["AGENTS.md", "docs/development/workstream-execution-protocol.md", "integration/dataqual12/MIGRATION_MATRIX.json"],
-    "relevant_paths": ["tests/modularity/run_modular_tests.py", "tests/modularity/test_modular_controls.py", "tests/modularity/test_adoption_controls.py"],
-    "dependency_surface": ["native compiler/runtime identity", "executable artifact identity", "same-session reuse guards", "existing focused scientific drivers"],
-    "invariants_affected": [5, 13, 25, 26],
+    "persisted": "Implementation checkpoints ab18363fd, aac6135fc, 82f1416dd and 7e99a5da1; evidence checkpoint containing this record",
+    "tested": "PASS: six existing scientific drivers at O0/O2 (12 executions with per-driver byte-identical stdout); 18 compiler/dependency controls PASS; 18 adoption/selection controls PASS and one explicitly unexecuted POSIX shell test",
+    "qualified": "Bounded native Windows modular feedback only; no project, full-owner, physical-scope or canonical admission",
+    "authority_paths": [
+      "AGENTS.md",
+      "docs/development/workstream-execution-protocol.md",
+      "integration/dataqual12/MIGRATION_MATRIX.json"
+    ],
+    "relevant_paths": [
+      "tests/modularity/run_modular_tests.py",
+      "tests/modularity/test_modular_controls.py",
+      "tests/modularity/test_adoption_controls.py"
+    ],
+    "dependency_surface": [
+      "native compiler/runtime identity",
+      "executable artifact identity",
+      "same-session reuse guards",
+      "existing focused scientific drivers"
+    ],
+    "invariants_affected": [
+      5,
+      13,
+      25,
+      26
+    ],
     "interfaces_changed": "No production interface change; Windows runner fingerprints the real MinGW runtime DLL and tracks the actual .exe artifact. Linux runtime lookup remains required.",
-    "next_action": "Execute existing focused O0/O2 science and compiler/artifact/source/selection negative controls on the persisted postimage; record results and push checkpoints.",
-    "recovery_point": "Implementation checkpoint containing this record; parent is the pinned canonical baseline",
-    "blockers": ["WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."],
-    "non_claims": ["No production/app/reference mutation", "No new original execution or scientific qualification", "No full F-CI inheritance or admission", "No full Windows project/restart portability claim"]
+    "next_action": "WP0 full-project build/restart portability remains open: bind a supported Linux compiler host or implement and qualify native durable file-sync/replace semantics under the existing Grassgrowth restart owner. Then run one original project interval and valid/invalid same-build disk restart before any new full trajectory. For physics continuation use current DATAQUAL12 remaining-science/Andelst contact authorities; do not revive the superseded local typed-session queue.",
+    "recovery_point": "7e99a5da19ace8df6ec71695dbac76d5a42deb8b plus the evidence checkpoint containing this record",
+    "blockers": [
+      "WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."
+    ],
+    "non_claims": [
+      "No production/app/reference mutation",
+      "No new original execution or scientific qualification",
+      "No full F-CI inheritance or admission",
+      "No full Windows project/restart portability claim"
+    ],
+    "evidence": {
+      "candidate": "7e99a5da19ace8df6ec71695dbac76d5a42deb8b",
+      "science_head": "82f1416dd64b56c7d64e5bd18ab9497abf160f97",
+      "archive": "integration/dataqual15/WINDOWS_FEEDBACK_EVIDENCE_20261102.tar.xz",
+      "sha256": "f80168f9e0f54ff49da829e7d381628fc004b120f31b5797707a2d451c9f9ea4",
+      "bytes": 496864,
+      "files": 400,
+      "science_records": 12,
+      "science_seconds": 25.58612689981237,
+      "toolchain": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "compiler_controls": {
+        "tests": 18,
+        "passed": 18,
+        "seconds": 42.271
+      },
+      "adoption_controls": {
+        "tests": 19,
+        "passed": 18,
+        "skipped": 1,
+        "seconds": 62.166,
+        "skip_reason": "POSIX full-owner shell is outside native Windows feedback scope"
+      }
+    },
+    "closure_reconciliation": {
+      "baseline": "fd3c3a69f",
+      "current": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+      "components": {
+        "hydraulics": {
+          "previous": 2,
+          "current": 2,
+          "added": [],
+          "removed": []
+        },
+        "richards": {
+          "previous": 17,
+          "current": 20,
+          "added": [
+            "src/adapter/mod_b110_dynamic_top_boundary_solver_adapter.f90",
+            "src/process/mod_restricted_surface_evaporation.f90",
+            "src/solver/mod_b110_dynamic_top_boundary_provider.f90"
+          ],
+          "removed": []
+        },
+        "timestep": {
+          "previous": 2,
+          "current": 2,
+          "added": [],
+          "removed": []
+        },
+        "transaction": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "evaporation": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "root": {
+          "previous": 3,
+          "current": 3,
+          "added": [],
+          "removed": []
+        },
+        "drainage": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "crop": {
+          "previous": 1,
+          "current": 1,
+          "added": [],
+          "removed": []
+        },
+        "temperature": {
+          "previous": 5,
+          "current": 5,
+          "added": [],
+          "removed": []
+        },
+        "runtime": {
+          "previous": 154,
+          "current": 172,
+          "added": [
+            "src/process/mod_b111_persistent_pond.f90",
+            "src/process/mod_b111_pond_solute_exchange.f90",
+            "src/process/mod_b111_reactive_solute_substep.f90",
+            "src/process/mod_b111_solute_decay.f90",
+            "src/process/mod_b111_solute_sorption.f90",
+            "src/process/mod_drainage_b19_separate_infiltration_adapter.f90",
+            "src/process/mod_drainage_dramet3_response.f90",
+            "src/process/mod_frost_multilevel_divdra_effect.f90",
+            "src/process/mod_pond_water_temporal_difference.f90",
+            "src/process/mod_solute_compartment_state.f90",
+            "src/runtime/mod_fmr_b111_matrix_solute_route.f90",
+            "src/runtime/mod_fmr_b111_pond_solute_route.f90",
+            "src/runtime/mod_fmr_water_flux_trace_contract.f90",
+            "src/solver/mod_b111_conductivity_power_tail.f90",
+            "src/solver/mod_b111_extended_hydraulic_provider.f90",
+            "src/solver/mod_b111_hysteresis_state.f90",
+            "src/solver/mod_b111_legacy_hydraulic_provider.f90",
+            "src/solver/mod_b111_linear_table_provider.f90"
+          ],
+          "removed": []
+        }
+      }
+    },
+    "test_paths": [
+      "tests/modularity/run_modular_tests.py",
+      "tests/modularity/test_modular_controls.py",
+      "tests/modularity/test_adoption_controls.py"
+    ],
+    "local_commands": [
+      "python -B tests/modularity/run_modular_tests.py --case drainage --case assimilation --case root_oxygen --case root_contract --case boesten --case mvg --output <new-output-directory>",
+      "python -B tests/modularity/test_modular_controls.py",
+      "python -B tests/modularity/test_adoption_controls.py"
+    ],
+    "execution_notes": "Set TEMP/TMP to a writable workspace directory in the managed Windows sandbox. Point MODULAR_CONTROL_EVIDENCE_DIR and ADOPTION_CONTROL_EVIDENCE_DIR to fresh evidence directories. Adoption workflow controls require PyYAML (tested 6.0.3). Failed initial DLL lookup/oracle checkout and pre-reconciliation controls are retained in the archive. Final science inputs are unchanged from 82f1416dd through 7e99a5da1; only structural control assertions changed.",
+    "canonical_admitted": false
   }
 }

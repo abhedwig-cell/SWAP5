@@ -805,5 +805,19 @@
     "report": "integration/dataqual15_hupsel/UPTAKE_DIAGNOSIS_REPORT.md",
     "canonical_merge": "0fe2157a9f2a1f5e80811252a0ad3759b3642fc6",
     "canonical_receipt": "integration/dataqual15_hupsel/UPTAKE_CANONICAL_RECEIPT.json"
+  },
+  "windows_local_feedback_20261102": {
+    "baseline": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+    "branch": "codex/swap5-migration-20261102",
+    "status": "BOUNDED_FEEDBACK_PASS_BRANCH_LOCAL",
+    "scope": "WP0 native Windows compiler/runtime and executable identity, Git-normalized selection paths and immutable LF drainage oracle; six existing O0/O2 science drivers plus negative/selection controls",
+    "authority": "integration/dataqual15/STATUS.json#windows_feedback_continuation_20261102",
+    "evidence": "integration/dataqual15/WINDOWS_FEEDBACK_EVIDENCE_20261102.tar.xz",
+    "evidence_sha256": "f80168f9e0f54ff49da829e7d381628fc004b120f31b5797707a2d451c9f9ea4",
+    "original_project_executions_increment": 0,
+    "complete_project_migrations_increment": 0,
+    "full_scientific_qualification": false,
+    "full_windows_project_restart": false,
+    "remaining": "Grassgrowth durable restart remains POSIX-only; no installed WSL host. Current Grassgrowth/Hupsel science and literal Andelst contact blockers remain unchanged."
   }
 }
