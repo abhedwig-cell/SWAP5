@@ -7,6 +7,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tarfile
 
 from qualify_energy_boundary import ROOT, SOURCES, inputs, observe
 
@@ -22,7 +23,10 @@ def main():
     old = json.loads((ROOT/'integration/dataqual15/STOCK_PROJECTION_CANDIDATE_RESULT_20261102.json').read_text(encoding='utf-8'))
     sha = lambda raw:hashlib.sha256(raw).hexdigest()
     module_text=(ROOT/MODULE).read_text(encoding='utf-8')
-    assert sha(module_text.encode())==old['patched_source_sha256'], 'unreviewed numerical postimage'
+    with tarfile.open(ROOT/old['archive']) as archive:
+        candidate=archive.extractfile('candidate/'+MODULE).read()
+    assert sha(candidate)==old['patched_source_sha256']
+    assert module_text.encode()==candidate.replace(b'\r\n',b'\n'), 'unreviewed numerical postimage'
     compiler=shutil.which('gfortran')
     assert compiler
     subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15/qualify_energy_boundary.py'),
