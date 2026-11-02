@@ -2,6 +2,49 @@
 
 Status: **Canonically admitted diagnostic evidence; contact repair and full energy OPEN.**
 
+
+## CLOSURE16 current-source numerical successor
+
+The exact isolated stock-comparison correction is now installed in the current
+production accounting module on the CLOSURE16 development branch. Canonical
+admission is separate. Its raw measurements and consumer are
+`integration/dataqual15/STOCK_PRODUCTION_CORRECTION_20261102.json` and
+`python -B tests/dataqual15/verify_stock_correction.py`.
+
+Checked GNU13.3 O0/O2 each accept all864 corrected stock representations and
+reject all864 injected1J/m2 inconsistencies. The complete output equals the
+earlier isolated candidate byte for byte. All864 raw theta-domain rejections
+and all864 missing-advection rejections remain per build. The physical
+variable-water residual remains exactly1.4503270298455375J/cm2 at gauge0C.
+This is a numerical accounting repair, not a heat-equation or energy-transport
+repair, and it changes no water, crop, thermal state or restart schema.
+
+Current runtime preservation compiles186 real providers per optimization and
+executes unchanged EB-I22/I23/I24/I25 tests with both accounting objects.
+I22/I23/I24 pass at O0/O2. I25 fails with both objects on its external full-half
+outflow fixture, with identical complete stdout and ERROR STOP reason; the
+failure remains explicit. All eight paired old/new tests preserve behavior.
+The first runner invocation stopped before compilation because an independent
+shared source edit was not yet committed. The final measured run uses the
+persisted shared source; no numerical result is inferred from the failed launch.
+
+The original4.3.1 reference and current restricted numeric heat process both
+use average moisture-dependent heat capacity multiplying the temperature
+change. This is distinct from the endpoint change of `C(theta)*(T-Tref)`.
+Exact endpoint storage additionally contains
+`sum(dz*delta(C)*(Tmid-Tref))`. Conduction plus that identity cannot determine
+advective donor energy: accepted water fluxes, donor temperatures and root/lateral
+exports are required. Assigning that missing term from the residual would
+produce closure by construction. No such receipt is invented here.
+Full energy and the original failed whole-project scientific gate remain open.
+
+The commands below reproduce immutable predecessor observations in explicit
+historical mode. They do not inherit current-source qualification. Actual
+current production is compiled by the three successor qualification runners
+listed in the correction manifest. No full1827-day repeat was selected: this
+accounting module is absent from the executed Grassgrowth build inventory,
+and no Grassgrowth physical owner changes in this heat successor.
+
 PR1484 is admitted at `ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8`. All16
 PR workflows are terminal SUCCESS; actual whole tree equals the tested tree.
 The actual-merge sealed dossier verifier passes. Windows16.2 and Linux13.3
@@ -17,7 +60,7 @@ The source bindings and sealed measurements are in
 `integration/dataqual15/CONTACT_ENERGY_RESULT_20261102.json`. Reproduce with:
 
 ```bash
-python -B tests/dataqual15/verify_contact_energy_evidence.py
+python -B tests/dataqual15/verify_contact_energy_evidence.py --historical
 python -B tests/dataqual15/qualify_andelst_contact.py --output ../contact-fresh
 python -B tests/dataqual15/qualify_energy_boundary.py --output ../energy-fresh
 ```

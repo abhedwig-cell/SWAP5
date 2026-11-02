@@ -7,8 +7,8 @@ program test_ppa_micro02_de_willigen
   implicit none
   type(micro_matric_flux_table_t) :: synthetic(2)
   type(micro_matric_flux_table_t), allocatable :: real_tables(:)
-  type(micro_de_willigen_parameters_t) :: parameters
-  type(micro_de_willigen_result_t) :: result, repeat_result
+  type(micro_de_willigen_parameters_t) :: parameters, loose_parameters
+  type(micro_de_willigen_result_t) :: result, repeat_result, loose_result
   type(b110_default_mvg_parameters_t) :: hydraulics
   real(real64) :: samples(MICRO_TABLE_POINTS), cofgen(24,2), m, k
   real(real64) :: head(2), thickness(2), density(2), stress(2)
@@ -40,6 +40,18 @@ program test_ppa_micro02_de_willigen
   if(repeat_result%status/=MICRO_DW_OK) error stop 7
   if(any(result%root_extraction_sink/=repeat_result%root_extraction_sink)) error stop 8
   print '(A,3ES22.13)', 'SYNTHETIC ',result%actual_uptake_total,result%root_pressure_cm,result%leaf_pressure_cm
+
+  ! A final flux certificate must not set root-search precision. The first
+  ! original Hupsel potato day has this small potential demand; loose TolConv
+  ! previously seeded crop stress despite unchanged physical inputs.
+  loose_parameters=parameters
+  loose_parameters%residual_tolerance_cm_per_day=1.0e-3_real64
+  call evaluate_micro_de_willigen(parameters,head,thickness,density,stress,2,0.006459780392_real64,synthetic,result)
+  call evaluate_micro_de_willigen(loose_parameters,head,thickness,density,stress,2,0.006459780392_real64,synthetic,loose_result)
+  if(result%status/=MICRO_DW_OK.or.loose_result%status/=MICRO_DW_OK) error stop 19
+  if(result%root_pressure_cm/=loose_result%root_pressure_cm.or. &
+     any(result%root_extraction_sink/=loose_result%root_extraction_sink)) error stop 20
+  print '(A)', 'MICRO02_SEARCH_PRECISION_INDEPENDENT_OF_FINAL_CERTIFICATE_PASS'
 
   stress(2)=0.0_real64
   call evaluate_micro_de_willigen(parameters,head,thickness,density,stress,2,0.1_real64,synthetic,result)

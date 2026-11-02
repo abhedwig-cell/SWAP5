@@ -101,3 +101,27 @@ EB-I22 does not claim:
 - canonical admission.
 
 The next production-facing capability should bind the admitted soil-temperature top conductive result, the zero/nonzero bottom conductive contract, accepted bottom advective energy, and a newly qualified top mass-carried sensible-energy source into this accounting contract without weakening its fail-closed completeness or reference-gauge rules.
+
+## Numerical representation comparison, CLOSURE16 successor
+
+The sum of nodal endpoint changes and the difference of column endpoint sums
+represent the same storage change. Their comparison uses the existing
+small-change criterion plus a floating-point summation bound,
+`gamma(4n+4) * sum(abs(node_initial) + abs(node_final))`, where
+`gamma(k) = k*epsilon/(1-k*epsilon)`. This stock-scale bound accounts for
+cancellation when a small physical change is formed from large stocks.
+Nonfinite bounds fail with `WCSA_NUMERIC_FAILURE`.
+
+This comparison checks the consistency of two representations; it does not
+accept a physical energy residual. Storage values, thermal solving, strict
+theta domain, missing-boundary rejection, reference convention and all full
+energy nonclaims remain unchanged. The existing 432 explicit inputs, two
+reference temperatures and both O0/O2 builds must accept the exact corrected
+representation and reject an injected 1 J/m2 inconsistency. Existing EB-I22
+assertions and the unchanged current EB-I23/I24/I25 runtime tests remain part
+of the change-impact evidence. Pre-existing failures are retained explicitly.
+
+The former raw failures and isolated-candidate experiment remain immutable
+historical evidence. `verify_contact_energy_evidence.py --historical` verifies
+those observations without inheriting current-source qualification. Actual
+current-source checks compile and execute the production correction.
