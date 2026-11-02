@@ -272,6 +272,39 @@
         "conclusion": "success"
       }
     ],
-    "receipt_only_followup": "Administrative documentation/receipt only. Actual science/driver trees unchanged; source checks and strict MkDocs run locally. No broad numerical rerun selected for these metadata edits."
+    "receipt_only_followup": "Administrative documentation/receipt only. Actual science/driver trees unchanged; source checks and strict MkDocs run locally. No broad numerical rerun selected for these metadata edits.",
+    "canonical_ci_terminal": [
+      {
+        "id": 41448565046,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41448565256,
+        "name": "Hupsel sprint03 dossier integrity - science OPEN",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448564993,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448564949,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448565097,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "canonical_ci_all_terminal": true
   }
 }
