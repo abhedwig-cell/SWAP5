@@ -39,7 +39,7 @@ jobs:
         run: python -B tests/dataqual15/qualify_energy_boundary.py --output contact-energy-ci/energy
       - name: Isolated numerical stock candidate and deliberate 1J inconsistency
         working-directory: contact-energy-ci/preservation/predecessor
-        run: python -B tests/dataqual15/qualify_stock_projection_candidate.py --output contact-energy-ci/stock-candidate
+        run: python -B tests/dataqual15/qualify_stock_projection_candidate.py --output "${{ github.workspace }}/contact-energy-ci/stock-candidate"
       - name: Actual production stock owner and existing independent contracts
         run: python -B tests/dataqual15/qualify_stock_projection_production.py --output contact-energy-ci/stock-production
       - uses: actions/upload-artifact@v4
