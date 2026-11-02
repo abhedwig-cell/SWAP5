@@ -3,7 +3,7 @@
   "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
   "measurement_commit": "fd53b2d9",
   "archive": "integration/dataqual15/CLOSURE16_CURRENT_ANDELST_EVIDENCE.tar.xz",
-  "archive_sha256": "3d41d3a40b6fa47d55183d46fd97ac93de55afd7f8a74a2161f92eb1cf208f19",
+  "archive_sha256": "eff49eab42565dc5479d22a4d64760a2ddad05f42905d5874d72725b718a5696",
   "source_sha256": {
     "app/solute_column/link_context.f90": "418ab24436bc529eeafd4402d827935ccd6ee6a69426e60b99e9d1bda79bb811",
     "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
@@ -270,6 +270,5 @@
     "Discontinuous original sharp Darcy entry",
     "Near-saturated temporal conditioning in separate corrected/ramped variant"
   ],
-  "next_code_change": "Explicit conservative numerical event/contact treatment for original discontinuous exchange, including matching matrix/macro accepted receipts; no arbitrary smoothing or scalar tolerance relaxation.",
-  "native_provider_closure": "194 existing physical provider objects plus actual native application/helper/read providers; complete build manifests in capsule"
+  "next_code_change": "Explicit conservative numerical event/contact treatment for original discontinuous exchange, including matching matrix/macro accepted receipts; no arbitrary smoothing or scalar tolerance relaxation."
 }

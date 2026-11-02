@@ -95,5 +95,14 @@
     "result": "integration/dataqual15/PAIRED_HEAT_OWNER_RESULT_20261102.json",
     "classification": "B1.11 and current temperatures and conductive boundary match to rounding; variable-water physical stock discrepancy is shared formulation.",
     "full_energy_complete": false
+  },
+  "closure16_retained_failure": {
+    "workflow_run": 41447391079,
+    "test": "tests/dataqual15_hupsel/verify_sprint03.py",
+    "actual_failure": "checkout source differs: app/grass_project/restart_file.f90",
+    "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "baseline_reproduced": true,
+    "production_sources_changed_by_this_pr": false,
+    "classification": "Existing current-source guard mismatch after native restart admission; historical scientific evidence is not current native restart evidence. Failure retained, no assertion or source pin relaxed."
   }
 }
