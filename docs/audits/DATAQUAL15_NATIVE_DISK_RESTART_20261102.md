@@ -67,6 +67,15 @@ The Linux preservation workflow executes native publication/error controls and
 the real original three-day application with exact 1-to-3 disk continuation at
 O0/O2. Its current source-bound run is recorded in the owning status.
 
+Verify the sealed raw dossier without a compiler or execution of archived binaries:
+
+```text
+python -B tests/dataqual15/verify_native_restart_evidence.py
+```
+
+In a managed Windows sandbox, point `TEMP` and `TMP` at a writable scratch
+directory before this extraction-based verification.
+
 These tests qualify same-build native disk restart within their stated original
 trajectory. They do not establish cross-platform binary ABI compatibility,
 power-loss/hardware-cache or cloud-sync behaviour, whole physical energy closure,

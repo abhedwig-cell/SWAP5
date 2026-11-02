@@ -476,7 +476,7 @@
         "not_selected": "Full1827-day rerun, new physics, tolerance changes, full F-CI"
       }
     },
-    "next_action": "Verify the sealed dossier with tests/dataqual15/verify_native_restart_evidence.py, then owner reconciliation of affected closed-source guards/canonical admission. Scientific successor work requires the actual Andelst contact/B1-reference and physical energy stock/exchange authorities; no arbitrary smoothing, tolerance change or blind full rerun.",
+    "next_action": "Reconcile affected DATAQUAL15 closed current-source guards/canonical admission through the owning authority using this sealed branch-local platform evidence. The next scientific migration work still needs the literal Andelst contact/B1-reference and full physical energy stock/exchange authorities; do not infer broader migration closure or rerun full trajectories without a discriminating question.",
     "blockers": [
       "Canonical admission and affected closed source guards are not established by the branch-local platform proof.",
       "Other POSIX-only snapshot adapters and consumers of the legacy Fortran CRC remain outside this bounded Grass route."
@@ -534,10 +534,19 @@
     },
     "documentation_checks": {
       "source": "PASS",
-      "mkdocs_strict": "PASS28.82seconds",
+      "mkdocs_strict": "PASS31.47seconds on final documentation",
       "page": "docs/audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md"
     },
     "recovery_point": "Scientific/native source550a2f3b5 and qualification62e890cbf; sealed evidence checkpoint containing this record",
-    "windows_fsync_blocker": "RESOLVED for the qualified native Grassgrowth route"
+    "windows_fsync_blocker": "RESOLVED for the qualified native Grassgrowth route",
+    "sealed_evidence_verification": {
+      "status": "PASS",
+      "candidate": "d05b34f4c",
+      "command": "python -B tests/dataqual15/verify_native_restart_evidence.py",
+      "verified_original_days": 367,
+      "invalid_streams_per_build": 11,
+      "scope": "Archive manifest, current-build source/object/archive/executable/input identities, real367-day ledgers, exact restart boundaries and O0/O2 physical outputs; archived binaries are never executed",
+      "environment_note": "First managed-sandbox TEMP extraction failed with permission denied; setting TEMP/TMP to the writable workspace parent completed the identical persisted verifier. Model sources and archived evidence were unchanged."
+    }
   }
 }
