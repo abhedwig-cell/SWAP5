@@ -29,7 +29,11 @@ class DependencyControls(unittest.TestCase):
 
 class ProductionClosureControls(unittest.TestCase):
     def test_component_closure_budgets(self):
-        expected={'hydraulics':2,'richards':17,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':154}
+        # Reconciled fd3c3a69f -> canonical 1844fad45: Richards adds the
+        # dynamic-top adapter/provider and evaporation owner (3 providers).
+        # Runtime adds 18 admitted hydraulic/solute/drainage/trace providers.
+        # These are structural budgets, never scientific admission evidence.
+        expected={'hydraulics':2,'richards':20,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':172}
         for name,target in M.COMPONENTS.items():
             order,_=M.DEP.strict_closure(M.ROOT,[target],[M.STUB])
             self.assertEqual(len(order),expected[name],name+' closure changed: reassess contract and build budget')
@@ -38,6 +42,7 @@ class ProductionClosureControls(unittest.TestCase):
             for broad in [False,True]:
                 sources=M.plan(case,broad)
                 self.assertEqual(len(sources),len(set(sources)))
+                self.assertTrue(all('\\' not in source for source in sources),'repository paths must match Git identities')
     def test_zero_repeat_rejected(self):
         import subprocess
         with tempfile.TemporaryDirectory() as d:
