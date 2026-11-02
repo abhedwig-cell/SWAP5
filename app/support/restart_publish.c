@@ -19,6 +19,22 @@ static wchar_t *wide_path(const char *path) {
     }
     return wide;
 }
+static int replace_file(const wchar_t *src, const wchar_t *dst) {
+    unsigned int attempt;
+    for (attempt = 0; attempt < 21; ++attempt) {
+        DWORD error;
+        if (MoveFileExW(src, dst, MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH)) return 1;
+        error = GetLastError();
+        /* Short-lived readers, indexing and scanners can block replacement
+         * even with FILE_SHARE_DELETE. Bound only this I/O wait to 200 ms;
+         * never delete the target or fall back to non-atomic copy semantics.
+         */
+        if (attempt == 20 || (error != ERROR_ACCESS_DENIED &&
+                error != ERROR_SHARING_VIOLATION && error != ERROR_LOCK_VIOLATION)) return 0;
+        Sleep(10);
+    }
+    return 0;
+}
 #else
 #include <fcntl.h>
 #include <stdio.h>
@@ -52,8 +68,7 @@ static int publish(const char *pending, const char *target, int failure) {
         if (failure == 3 || !FlushFileBuffers(file)) status = 3;
         if (!CloseHandle(file) && !status) status = 4;
         if (failure == 4 && !status) status = 4;
-        if (!status && (failure == 5 || !MoveFileExW(src, dst,
-                MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH))) status = 5;
+        if (!status && (failure == 5 || !replace_file(src, dst))) status = 5;
     }
     free(src); free(dst);
     return status;

@@ -1,5 +1,5 @@
 """Native publication and I/O failure controls, independent of the model codec."""
-import argparse, ctypes, hashlib, json, os, random, shutil, subprocess, sys, time, zlib
+import argparse, ctypes, hashlib, json, os, random, shutil, subprocess, sys, threading, time, zlib
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -65,17 +65,22 @@ def main():
             assert handle!=ctypes.c_void_p(-1).value
             try:assert publish(*paths)==5 and target.read_bytes()==old and pending.read_bytes()==new
             finally:assert kernel.CloseHandle(handle)
-            # A polling reader that permits deletion retains the old generation
-            # while publication replaces the name. It must not block the model.
+            # A short polling reader can block MoveFileEx despite sharing flags.
+            # It observes the old generation; publication waits for it to close.
             handle=kernel.CreateFileW(str(target),0x80000000,1|2|4,None,3,0,None)
             assert handle!=ctypes.c_void_p(-1).value
+            closed=[];timer=None
             try:
-                assert publish(*paths)==0 and target.read_bytes()==new
                 buffer=ctypes.create_string_buffer(len(old));count=ctypes.c_uint32()
                 kernel.ReadFile.argtypes=[ctypes.c_void_p,ctypes.c_void_p,ctypes.c_uint32,ctypes.c_void_p,ctypes.c_void_p]
                 assert kernel.ReadFile(handle,buffer,len(old),ctypes.byref(count),None)
                 assert buffer.raw[:count.value]==old
-            finally:assert kernel.CloseHandle(handle)
+                timer=threading.Timer(.03,lambda:closed.append(kernel.CloseHandle(handle)))
+                timer.start()
+                assert publish(*paths)==0 and target.read_bytes()==new
+            finally:
+                if timer:timer.join();assert closed==[1]
+                else:assert kernel.CloseHandle(handle)
         unicode_target=nested/'checkpoint-\u00e9.bin';unicode_pending=Path(str(unicode_target)+'.pending')
         unicode_pending.write_bytes(new)
         assert publish(str(unicode_pending).encode('utf8'),str(unicode_target).encode('utf8'))==0

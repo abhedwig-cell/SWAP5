@@ -403,7 +403,7 @@
     "branch": "codex/swap5-migration-20261102",
     "implemented": true,
     "persisted": "Implementation checkpoint containing this record",
-    "tested": "Windows repaired current Grass O0/O2: native original1->3 exact disk resume,10 applicable invalid streams,17 independent CRC vectors, actual publication sharing/error controls PASS. Physics/crop/budget payloads agree O0/O2. Final Linux C30 job is pending.",
+    "tested": "Windows repaired current Grass O0/O2: native original1->3 exact disk resume,10 applicable invalid streams,17 independent CRC vectors, actual publication sharing/error controls PASS. Physics/crop/budget payloads agree O0/O2. Final Linux C30 job is pending. Native reader-sharing/CRC/publication O0/O2 controls PASS in win-publish-04.",
     "qualified": false,
     "invariants_affected": [
       2,
@@ -416,7 +416,7 @@
     "contract": {
       "owner": "Application I/O adapter only; no kernel/physical/committed-state owner",
       "precondition": "Closed complete CRC-protected stream in a sibling pending file",
-      "windows": "CreateFileW(GENERIC_WRITE) + FlushFileBuffers + CloseHandle + MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH); UTF-8 paths; no copy/delete fallback",
+      "windows": "CreateFileW(GENERIC_WRITE) + FlushFileBuffers + CloseHandle + MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH); UTF-8 paths; no copy/delete fallback; at most21 replace attempts with20x10ms waits for access/sharing/lock errors, then fail closed without copy/delete",
       "posix": "Open destination parent, fsync pending file, close, rename, fsync destination parent, close; nested destinations use their real parent",
       "failure": "Never acknowledge durable success after any failed stage; before rename the previous file remains. A post-rename directory-sync failure returns failure without attempting to roll back the name.",
       "format": "S5GRS003 bytes and physical/crop/root/management semantics unchanged",
@@ -474,6 +474,7 @@
       "O2_no_tree_loop_optimize": "PASS0.142s CRC93EBD5C8; diagnostic only, not final model flags",
       "repair": "Grass codec uses native C unsigned CRC-32/ISO-HDLC behind its existing local integer32 representation; no format change or shared scientific source mutation.17 independent zlib vectors per build include the real stream length.",
       "remaining_shared_scope": "Other legacy Fortran CRC consumers are not changed or automatically qualified by this bounded Grass adapter repair."
-    }
+    },
+    "snapshot_observer_diagnosis": "This Windows filesystem returns AccessDenied while a target reader is open even with FILE_SHARE_DELETE. Native control now proves permanent lock rejection and bounded wait for a30ms reader, with old-reader bytes and new-name bytes exact. This is I/O retry only; solver/physics policy is unchanged."
   }
 }
