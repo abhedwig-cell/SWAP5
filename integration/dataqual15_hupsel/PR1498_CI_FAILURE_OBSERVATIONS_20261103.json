@@ -1,0 +1,430 @@
+{
+  "status": "ALL_61_STABLE_SOURCE_WORKFLOWS_TERMINAL_FAILURES_ADJUDICATED_WITHOUT_RELABELING",
+  "no_full_moving_fci_success_claim": true,
+  "positive_scope": "CANOPY_ENDPOINT_EVENT_SCOPE_20261103.json",
+  "fresh_qualification": "CANOPY_ENDPOINT_FINAL_QUALIFICATION_20261103.json",
+  "failures": [
+    {
+      "job_id": 126205361785,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:07:09.5829795Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ],
+      "run_id": 41718691995,
+      "workflow": "PUB-P2E06 Reference local-balance scaling"
+    },
+    {
+      "job_id": 126205363584,
+      "classification": "HISTORICAL_SOURCE_PIN_REFUSES_PHYSICAL_SUCCESSOR",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:07:50.4162549Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ],
+      "run_id": 41718692498,
+      "workflow": "F-CI72 EB-I23 moving preservation"
+    },
+    {
+      "job_id": 126205363429,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:09:40.0799870Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:09:40.1424992Z subprocess.CalledProcessError: Command '['gfortran', '-std=f2008', '-ffree-line-length-none', '-fcheck=all', '-ffpe-trap=invalid,zero,overflow', '-O0', '-J/tmp/ppa-micro03-fswcll3x/O0', '-I/tmp/ppa-micro03-fswcll3x/O0', '-c', 'src/runtime/mod_fmr_drainage_response_binding.f90', '-o', '/tmp/ppa-micro03-fswcll3x/O0/mod_fmr_drainage_response_binding.o']' returned non-zero exit status 1."
+      ],
+      "run_id": 41718692287,
+      "workflow": "PPA MICRO06 stacked source and runtime qualification"
+    },
+    {
+      "job_id": 126205362557,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:12:36.4614689Z PPA_LOW02_GATE_FAIL admitted backend successor drift"
+      ],
+      "run_id": 41718692225,
+      "workflow": "PPA-LOW02-TIME legacy prescribed-qbot application"
+    },
+    {
+      "job_id": 126205365056,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:14:23.8641551Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ],
+      "run_id": 41718692856,
+      "workflow": "PUB-ME D1 transition authority"
+    },
+    {
+      "job_id": 126205362151,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:11:27.5047419Z FVQ87_SCOPE_FAIL unexpected path: .gitattributes"
+      ],
+      "run_id": 41718692191,
+      "workflow": "F-VQ87 F-GC25 MultiSWAP independent qualification"
+    },
+    {
+      "job_id": 126205364109,
+      "classification": "FROZEN_BOOTSTRAP_BLOB_FIXTURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:11:25.5528382Z     assert git_blob_sha(src_path) == rec[\"current_production_boundary\"][\"bootstrap_blob\"]",
+        "2026-11-03T21:11:25.5529499Z AssertionError"
+      ],
+      "run_id": 41718692488,
+      "workflow": "PUB-GC E7 current-canonical preservation"
+    },
+    {
+      "job_id": 126205362839,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:21:05.3769832Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ],
+      "run_id": 41718692430,
+      "workflow": "PUB-P2E08 Reference valid calibration domain"
+    },
+    {
+      "job_id": 126205364833,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:16:46.2666087Z F_PE_ELASTIC65_SOURCE_SCOPE_FAIL=['src/kernel/mod_kernel_transactions.f90', 'src/runtime/mod_fmr_serialized_reference_backend.f90']"
+      ],
+      "run_id": 41718692557,
+      "workflow": "F-PE-ELASTIC65 mode7 C-SAFE binding"
+    },
+    {
+      "job_id": 126205364068,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:16:44.8682985Z AssertionError: unreviewed delta"
+      ],
+      "run_id": 41718692226,
+      "workflow": "MC-SOL01 file-driven Reference column"
+    },
+    {
+      "job_id": 126205362968,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:18:09.9434503Z PUB_ME_D4_GATE_FAIL D4 changed production/reference source"
+      ],
+      "run_id": 41718692419,
+      "workflow": "PUB-ME D4 speculative restart"
+    },
+    {
+      "job_id": 126205364349,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:24:03.9942132Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ],
+      "run_id": 41718692662,
+      "workflow": "PUB-P2E04 Reference B/C sweeps"
+    },
+    {
+      "job_id": 126205365336,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:25:37.9374500Z AssertionError: unreviewed delta"
+      ],
+      "run_id": 41718692940,
+      "workflow": "PPA-WU04-A Black evaporation admission"
+    },
+    {
+      "job_id": 126205364494,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:27:32.2837961Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ],
+      "run_id": 41718692620,
+      "workflow": "PUB-P2E02 Reference uncertainty"
+    },
+    {
+      "job_id": 126205364754,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:26:47.7460310Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ],
+      "run_id": 41718692670,
+      "workflow": "PUB-P2E10 broad E0 paired matrix"
+    },
+    {
+      "job_id": 126205365111,
+      "classification": "FROZEN_HYST_EXACT_PATCH_FIXTURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:28:15.4294870Z     if not v: raise ValueError(why)",
+        "2026-11-03T21:28:15.4295773Z ValueError: unknown canonical layout contract"
+      ],
+      "run_id": 41718692358,
+      "workflow": "SWAP431 HYD/HYST hydraulic coverage"
+    },
+    {
+      "job_id": 126205365645,
+      "classification": "HISTORICAL_SOURCE_PIN_REFUSES_PHYSICAL_SUCCESSOR",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:28:48.1863168Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ],
+      "run_id": 41718692893,
+      "workflow": "F-CI74 EB-I24 moving preservation"
+    },
+    {
+      "job_id": 126205365477,
+      "classification": "HISTORICAL_SOURCE_PIN_REFUSES_PHYSICAL_SUCCESSOR",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:38:40.5706322Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ],
+      "run_id": 41718692697,
+      "workflow": "F-CI79 EB-I25 moving preservation"
+    },
+    {
+      "job_id": 126205365505,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:39:27.2815618Z F_SI39_FAIL unexpected production delta"
+      ],
+      "run_id": 41718692831,
+      "workflow": "F-SI39 B1.11 KSATEXM preservation"
+    },
+    {
+      "job_id": 126205364976,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:14:20.2604420Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:14:20.2619458Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692901,
+      "workflow": "F-PE-APPROX02 A2C production qualification"
+    },
+    {
+      "job_id": 126205365348,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:34:26.0575653Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:34:26.0590605Z APPROX02_A2_APPLICATION_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692901,
+      "workflow": "F-PE-APPROX02 A2C production qualification"
+    },
+    {
+      "job_id": 126205365580,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:31:14.5578497Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:31:14.5592996Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692901,
+      "workflow": "F-PE-APPROX02 A2C production qualification"
+    },
+    {
+      "job_id": 126205365607,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:29:54.1367024Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:29:54.1380157Z APPROX02_A2_MULTISTEP_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692901,
+      "workflow": "F-PE-APPROX02 A2C production qualification"
+    },
+    {
+      "job_id": 126205365676,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:29:03.0293899Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ],
+      "run_id": 41718692901,
+      "workflow": "F-PE-APPROX02 A2C production qualification"
+    },
+    {
+      "job_id": 126205365760,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:34:15.2566748Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:34:15.2577883Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692901,
+      "workflow": "F-PE-APPROX02 A2C production qualification"
+    },
+    {
+      "job_id": 126205363647,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:33:56.9093056Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory"
+      ],
+      "run_id": 41718692559,
+      "workflow": "PUB-P2E04 Reference failure census"
+    },
+    {
+      "job_id": 126205361522,
+      "classification": "HISTORICAL_SOURCE_PIN_REFUSES_PHYSICAL_SUCCESSOR",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:33:50.0870222Z CROP_FKT_CERT_KERNEL_BLOB_MISMATCH"
+      ],
+      "run_id": 41718692213,
+      "workflow": "SW431 crop F-KT B110 shared-owner scientific successor"
+    },
+    {
+      "job_id": 126205364010,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:35:30.0484032Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ],
+      "run_id": 41718692530,
+      "workflow": "PUB-P2E09 Reference-only threshold freeze"
+    },
+    {
+      "job_id": 126205365268,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:41:08.8505447Z AssertionError: unreviewed delta"
+      ],
+      "run_id": 41718692821,
+      "workflow": "PPA-WU04-B Boesten evaporation admission"
+    },
+    {
+      "job_id": 126205366161,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:29:41.8990030Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:29:41.8999511Z BALTOL02_G12_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692678,
+      "workflow": "F-PE-BALTOL02 scaled Reference balance-floor admission"
+    },
+    {
+      "job_id": 126205366706,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:41:29.6078321Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:41:29.6090297Z BALTOL01_P0_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692678,
+      "workflow": "F-PE-BALTOL02 scaled Reference balance-floor admission"
+    },
+    {
+      "job_id": 126205366803,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:37:58.0403937Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:37:58.0415029Z BALTOL01_P2_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692678,
+      "workflow": "F-PE-BALTOL02 scaled Reference balance-floor admission"
+    },
+    {
+      "job_id": 126205364308,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:29:44.7705897Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ],
+      "run_id": 41718692576,
+      "workflow": "PUB-ME D3 origin authority"
+    },
+    {
+      "job_id": 126205364980,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:30:28.5170259Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ],
+      "run_id": 41718692605,
+      "workflow": "PUB-P2E07 Reference cancellation floor"
+    },
+    {
+      "job_id": 126205366088,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:43:25.1317978Z FCI59P_FAIL postimage reconciliation changed production or reference source"
+      ],
+      "run_id": 41718693071,
+      "workflow": "F-CI59P current-canonical postimage reconciliation"
+    },
+    {
+      "job_id": 126207871104,
+      "classification": "PREEXISTING_DIAGNOSTIC_SAVE_GUARD",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:36:16.1762002Z FKT22_FMR_COMPILE_FAIL FD construction or persistent SAVE state detected"
+      ],
+      "run_id": 41718692039,
+      "workflow": "F-KT22 current-canonical qualification"
+    },
+    {
+      "job_id": 126223053903,
+      "classification": "FROZEN_NONOWNER_OR_PREEXISTING_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:49:16.1090881Z AssertionError: unreviewed production paths"
+      ],
+      "run_id": 41718692945,
+      "workflow": "F-CI canonical qualification"
+    },
+    {
+      "job_id": 126205367498,
+      "classification": "PREEXISTING_MANUAL_PROVIDER_CLOSURE",
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:46:39.2893729Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T21:46:39.2906971Z F_PE_ELASTIC08_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "run_id": 41718692986,
+      "workflow": "F-PE-ELASTIC08 runtime materialization"
+    }
+  ],
+  "terminal_counts": {
+    "success": 26,
+    "failure": 31,
+    "cancelled": 4
+  },
+  "failed_jobs": 38,
+  "all_failed_workflows_covered": true,
+  "cancellations": [
+    {
+      "id": 41718692930,
+      "name": "Hupsel canopy endpoint qualification",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41718692237,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41718692766,
+      "name": "DATAQUAL15 nonlinear contact and accepted thermal process data",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41718692540,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "cancelled"
+    }
+  ],
+  "adjudication_boundary": "No physical or numerical assertion failure was accepted as success. Unchanged manual closures and frozen historical/nonowner source-scope refusals remain failed. Exact predecessor authority and independently executed current endpoint, interval, thermal, native coupled, mass, rollback and restart gates on Windows/POSIX O0/O2 provide this bounded successor authority. Full moving F-CI stays failed."
+}

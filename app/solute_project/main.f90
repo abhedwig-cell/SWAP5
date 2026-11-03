@@ -23,7 +23,7 @@ program swap5_native_project_column
   use mod_fmr_runtime_core
   use mod_fmr_serialized_reference_backend
   use mod_kernel_transactions, only: kernel_committed_state_t,kernel_checkpoint_t,kernel_parameter_identity_t, &
-    kernel_reconstruct_committed_state_trusted
+    kernel_reconstruct_committed_state_trusted,kernel_candidate_state_t,kernel_result_t,kernel_diagnostics_t
   use mod_fixed_flux_top_boundary_provider, only: fixed_flux_top_boundary_provider_t
   use mod_b110_default_mvg_provider
   use mod_b111_reactive_solute_substep, only: b111_reactive_solute_substep_forcing_t
@@ -116,6 +116,7 @@ program swap5_native_project_column
   real(real64) :: soil_evaporation_cm_day(MAX_WINDOWS)=0d0,soil_evap_amount
   real(real64) :: rain_c=0d0,irrigation_c=0d0,runon_c=0d0,dry_mg_cm2_day=0d0
   real(real64) :: clock,t0,t1,water_amount,infiltration,runoff,runon_amount,evap_amount
+  real(real64) :: canopy_capacity_export_cm=0d0
   real(real64) :: surface_exfiltration_amount
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message,legacy_swp
@@ -695,7 +696,7 @@ program swap5_native_project_column
   if(historical_zero_solute_exfiltration)write(u,'(A)',advance='no') &
     ',surface_exfiltration_cm,surface_solute_exfiltration_mg_cm2'
   if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A)',advance='no')',bottom_up_cm'
-  if(original_hupsel_rotation)write(u,'(A)',advance='no')',salinity_reduction_cm'
+  if(original_hupsel_rotation)write(u,'(A)',advance='no')',salinity_reduction_cm,canopy_capacity_export_cm'
   if(native_drainage)write(u,'(A)',advance='no')',drainage_cm'
   if(detailed_rain)write(u,'(A)',advance='no')',rain_supplied_cm,rain_segments'
   if(dynamic_temperature)write(u,'(A)',advance='no')',observed_heat_residual_j_cm2'
@@ -910,7 +911,7 @@ program swap5_native_project_column
     if(historical_zero_solute_exfiltration)write(u,'(2(A,ES25.17E3))',advance='no') &
       ',',surface_exfiltration_amount,',',0d0
     if(seasonal_bottom.or.cauchy3_bottom)write(u,'(A,ES25.17E3)',advance='no')',',bottom_amount
-    if(original_hupsel_rotation)write(u,'(A,ES25.17E3)',advance='no')',',salinity_amount
+    if(original_hupsel_rotation)write(u,'(2(A,ES25.17E3))',advance='no')',',salinity_amount,',',canopy_capacity_export_cm
     if(native_drainage)write(u,'(A,ES25.17E3)',advance='no')',',drainage_amount
     if(detailed_rain)write(u,'(A,ES25.17E3,A,I0)',advance='no')',',rain_supplied_cm,',',rain_segments_completed
     if(dynamic_temperature)write(u,'(A,ES25.17E3)',advance='no')',',observed_heat_residual_j_cm2
@@ -1094,6 +1095,7 @@ contains
   end subroutine
   subroutine reset_day_totals()
     observed_heat_residual_j_cm2=0d0
+    canopy_capacity_export_cm=0d0
     bottom_amount=0d0
     drainage_amount=0d0
     infiltration=0d0;runoff=0d0;runon_amount=0d0;evap_amount=0d0;soil_evap_amount=0d0
@@ -1138,6 +1140,10 @@ contains
     type(matrix_joint_result_t),intent(out)::day_result
     type(matrix_joint_result_t)::part
     type(kernel_committed_state_t)::candidate_water
+    type(kernel_candidate_state_t)::capacity_candidate
+    type(kernel_result_t)::capacity_result
+    type(kernel_diagnostics_t)::capacity_diagnostics
+    type(wofost_crop_owner_state_t)::capacity_crop_owner
     type(matrix_solute_state_t)::candidate_solute
     type(fmr_b110_physical_forcing_t)::segment_forcing
     type(pond_step_t)::segment_supply
@@ -1147,6 +1153,7 @@ contains
     type(fmr_wofost_trial_contribution_t)::crop_contribution
     type(fmr_wofost_accepted_interval_certificate_t)::crop_certificate
     real(real64)::cursor,endpoint,segment_irrigation,source_start,source_end,total_potential,total_drought,total_salinity
+    real(real64)::accepted_lai,accepted_capacity
     integer::lineage_status,step_index,source_phase
     logical::lineage_ok
     integer::idx,left,right,middle,diagnostic_status
@@ -1302,6 +1309,42 @@ contains
             write(*,*)'ORIGINAL_POTATO_CROP_DAY_REJECTED',day_start,diagnostic_status
             day_result%status=JOINT_INVALID;return
           end if
+          ! Management updates the staged crop owner. Reconcile its resulting
+          ! capacity in the staged hydraulic owner at this SAME endpoint;
+          ! rejected days publish neither owner nor the event's mass export.
+          call active_trial%state%snapshot_owner(capacity_crop_owner,lineage_ok)
+          if(.not.lineage_ok)then;day_result%status=JOINT_INVALID;return;end if
+          accepted_lai=0d0
+          if(capacity_crop_owner%crop_emerged)then
+            call capacity_crop_owner%derive_actual_leaf_area_index(active_trial%ssa,active_trial%spa, &
+              accepted_lai,diagnostic_status)
+            if(diagnostic_status/=0)then;day_result%status=JOINT_INVALID;return;end if
+          end if
+          accepted_capacity=active_trial%siccaplai*accepted_lai
+          call backend%run_canopy_capacity_event(column_id,template,p,candidate_water,accepted_capacity,day_end, &
+            numerical,capacity_result,capacity_candidate,capacity_diagnostics)
+          if(.not.capacity_result%completed.or..not.capacity_result%mass%complete)then
+            write(*,*)'CANOPY_ENDPOINT_REJECTED',day_end,capacity_result%status
+            day_result%status=JOINT_INVALID;return
+          end if
+          if(abs(capacity_result%mass%storage_start-day_result%water%mass%storage_end)>1d-10)then
+            day_result%status=JOINT_INVALID;return
+          end if
+          call backend%commit_trial_candidate(candidate_water,capacity_candidate,capacity_diagnostics, &
+            lineage_ok,diagnostic_status)
+          if(.not.lineage_ok)then;day_result%status=JOINT_INVALID;return;end if
+          canopy_capacity_export_cm=capacity_result%mass%total_out
+          day_result%water%mass%storage_end=capacity_result%mass%storage_end
+          day_result%water%mass%total_out=day_result%water%mass%total_out+canopy_capacity_export_cm
+          day_result%water%mass%accepted_transaction_count=day_result%water%mass%accepted_transaction_count+1
+          day_result%diagnostics%candidate_materializations=day_result%diagnostics%candidate_materializations+ &
+            capacity_diagnostics%candidate_materializations
+          day_result%diagnostics%committed_state_mutations=day_result%diagnostics%committed_state_mutations+ &
+            capacity_diagnostics%committed_state_mutations
+          day_result%water%mass%storage_change=day_result%water%mass%storage_end-day_result%water%mass%storage_start
+          day_result%water%mass%residual=day_result%water%mass%storage_change- &
+            day_result%water%mass%total_in+day_result%water%mass%total_out
+          if(abs(day_result%water%mass%residual)>1d-10)then;day_result%status=JOINT_INVALID;return;end if
         end if
       else
         call maize_trial%day_end(day_end,air_temperature_c(j),candidate_water,diagnostic_status,transpiration_amount)

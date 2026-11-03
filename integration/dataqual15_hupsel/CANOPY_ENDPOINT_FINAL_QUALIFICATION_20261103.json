@@ -1,0 +1,126 @@
+{
+  "status": "EXACT_PREDECESSOR_AUTHORITY_AND_SEPARATE_CURRENT_CANOPY_PROOF_PASS",
+  "candidate": "d96629a944f2b16e329f6a77838826eb5011b8aa",
+  "projection": {
+    "tree": "bcca3b84a9a4fc50b0666a1776590091bcf629b1",
+    "commit": "c6f3c73f7793328a83136917629dc5c579d3d659",
+    "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+  },
+  "events": [
+    {
+      "label": "boundary-controls",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tests/dataqual15/test_native_restart_admission.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "label": "historical-seven-legs",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tests/dataqual15/verify_native_restart_admission.py",
+        "--output",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\ce-final\\historical-admission"
+      ],
+      "returncode": 0
+    }
+  ],
+  "whole_scientific_admission": false,
+  "historical_legs": {
+    "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+    "candidate": "c6f3c73f7793328a83136917629dc5c579d3d659",
+    "projection": {
+      "tree": "479aba29c265c7cc22ee9537d8874ee1aadc96fe",
+      "commit": "791a4156d9db38583146240a29a2477f2b3a5e9c",
+      "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+    },
+    "events": [
+      {
+        "label": "current-native",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_native_restart_evidence.py"
+        ]
+      },
+      {
+        "label": "current-hupsel-native",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15_hupsel/verify_native_publication_evidence.py"
+        ]
+      },
+      {
+        "label": "current-sensible-stock",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_stock_runtime_production.py"
+        ]
+      },
+      {
+        "label": "current-native-contact-observations",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_nonlinear_native_evidence.py"
+        ]
+      },
+      {
+        "label": "predecessor-grass",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_grass_full_evidence.py",
+          "--spec",
+          "integration/dataqual15/GRASS_UNION_FULL_SPEC.json",
+          "--capsule",
+          "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz",
+          "--manifest",
+          "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json"
+        ]
+      },
+      {
+        "label": "predecessor-stress",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/stress_evidence.py"
+        ]
+      },
+      {
+        "label": "predecessor-hupsel",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15_hupsel/uptake_evidence.py"
+        ]
+      }
+    ],
+    "full_current1827_execution": false,
+    "whole_scientific_qualification": false
+  },
+  "documentation": {
+    "source_checks": "PASS",
+    "mkdocs_strict": "PASS",
+    "retained_local_failure": "Generated site/ from earlier default mkdocs invocation was detected by docs guard; removed only this own generated directory after exact absolute path validation, then both documentation checks passed using an external own output directory."
+  },
+  "source_scope": "CANOPY_ENDPOINT_EVENT_SCOPE_20261103.json",
+  "source_postimages": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "cc33c56d4b6a09462426ec200c5638e34daa8d53",
+      "after": "d730a8b436d149f1d5e33275c0e25c330b76d2a2"
+    },
+    "app/solute_project/main.f90": {
+      "before": "40cb5207d78e10b682344ac1a6d14be67a63558b",
+      "after": "a94418d0001753d986f451473503e12c519ffdb4"
+    },
+    "src/kernel/mod_kernel_transactions.f90": {
+      "before": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+      "after": "ad6cd6f52460381847d4b493ca2dd291b25dfc98"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "a6ff0ff33124929424d95edff42ac5c5ce6629b6",
+      "after": "4744ab36c323a5a6a6f0dd1c8eb563c28b38ba48"
+    }
+  },
+  "posix_run": 41719913263,
+  "posix_conclusion": "SUCCESS"
+}

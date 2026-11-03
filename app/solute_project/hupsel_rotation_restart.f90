@@ -15,6 +15,8 @@ module mod_hupsel_rotation_restart
  use mod_b111_reactive_solute_substep,only:b111_reactive_solute_substep_forcing_t
  use mod_fmr_wofost_crop_transaction,only:fmr_wofost_crop_transaction_persistence_t
  use mod_wofost_crop_native_codec,only:serialize_wofost_crop_view
+ use mod_wofost_crop_owner_state,only:wofost_crop_owner_state_t
+ use mod_transaction_reference,only:transaction_state_t
  use mod_age_joint_restart_file,only:crc32
  implicit none
  private
@@ -32,6 +34,47 @@ module mod_hupsel_rotation_restart
   end function
  end interface
 contains
+ logical function canopy_matches_management(water,potato,grass,clock)result(ok)
+  type(kernel_committed_state_t),intent(in)::water
+  type(potato_crop_t),intent(in)::potato,grass
+  real(real64),intent(in)::clock
+  class(transaction_state_t),allocatable::physical
+  type(wofost_crop_owner_state_t)::owner
+  real(real64)::lai,capacity,siccaplai,stock
+  logical::available
+  integer::code
+  ok=.false.
+  if(.not.ieee_is_finite(clock))return
+  call water%snapshot(physical,available);if(.not.available)return
+  select type(q=>physical)
+  class is(fmr_b110_physical_state_t)
+   if(.not.allocated(q%rutter))then
+    ok=.true.;return
+   end if
+   ! The initialized crop-start state precedes its first management endpoint.
+   if(clock<=potato%crop_start)then;ok=.true.;return;end if
+   if(clock>grass%crop_start)then
+    call grass%state%snapshot_owner(owner,available);siccaplai=grass%siccaplai
+   else
+    call potato%state%snapshot_owner(owner,available);siccaplai=potato%siccaplai
+   end if
+   if(.not.available)return
+   lai=0d0
+   if(owner%crop_emerged)then
+    if(clock>grass%crop_start)then
+     call owner%derive_actual_leaf_area_index(grass%ssa,grass%spa,lai,code)
+    else
+     call owner%derive_actual_leaf_area_index(potato%ssa,potato%spa,lai,code)
+    end if
+    if(code/=0)return
+   end if
+   capacity=siccaplai*lai;stock=q%rutter%canopy_storage()
+   if(.not.all(ieee_is_finite([capacity,stock])))return
+   if(capacity<0d0.or.stock<0d0)return
+   ok=stock<=capacity
+  end select
+ end function
+
  function local_stage(path,label)result(stage)
   character(*),intent(in)::path,label
   character(:),allocatable::stage
@@ -105,6 +148,7 @@ contains
   status=1
   if(.not.water%ready().or..not.chemical%ready().or.p%active_nodes/=34)return
   call water%current_time(clock,ok);if(.not.ok)return
+  if(.not.canopy_matches_management(water,potato,grass,clock))return
   call potato%export_state(v,code);if(code/=0)return
   if(.not.crop_clock_matches(v,potato,clock))return
   call grass%export_state(g,code);if(code/=0)return
@@ -264,6 +308,7 @@ contains
   call m%read_restart(inner,column,template,water_id,chemical_id,p,chemistry,w,c,code)
   call remove_file(inner);if(code/=0)return
   call w%current_time(observed,ok);if(.not.ok.or.observed/=clock)return
+  if(.not.canopy_matches_management(w,crop,grass_next,clock))return
   water=w;chemical=c;maize=m;potato=crop;grass=grass_next;irrigation=irrigation_next;status=0
  end subroutine
 end module mod_hupsel_rotation_restart

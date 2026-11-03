@@ -8,7 +8,7 @@ module mod_kernel_transactions
   use mod_accepted_trajectory_directional_publication, only: accepted_trajectory_direction_result_t
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_interval_t, canonical_numerical_config_t, &
        canonical_mass_accounting_t, canonical_run_diagnostics_t, canonical_result_t, canonical_physical_model_t, &
-       CANONICAL_STATUS_INVALID_REQUEST
+       CANONICAL_STATUS_INVALID_REQUEST, CANONICAL_STATUS_COMPLETED
   use mod_canonical_interval_runtime, only: run_canonical_interval, canonical_subinterval_target_selector
   implicit none
   private
@@ -19,6 +19,8 @@ module mod_kernel_transactions
   integer, parameter, public :: KERNEL_STATUS_TIME_MISMATCH = 103
   integer, parameter, public :: KERNEL_STATUS_PARAMETER_MISMATCH = 105
   integer, parameter, public :: KERNEL_STATUS_CHECKPOINT_MISMATCH = 104
+  integer, parameter, public :: KERNEL_ENDPOINT_STATUS_EVENT_FAILED = 301
+  integer, parameter, public :: KERNEL_ENDPOINT_STATUS_MASS_FAILED = 302
 
   integer, parameter, public :: KERNEL_COMMIT_STATUS_COMMITTED = 0
   integer, parameter, public :: KERNEL_COMMIT_STATUS_INVALID_CANDIDATE = 1
@@ -113,6 +115,7 @@ module mod_kernel_transactions
     private
     class(transaction_state_t), allocatable :: state
     logical :: valid = .false.
+    logical :: endpoint_event = .false.
     real(real64) :: origin_t0 = 0.0_real64
     real(real64) :: origin_t1 = 0.0_real64
     integer(int64) :: origin_lineage_id_value = 0_int64
@@ -241,6 +244,8 @@ module mod_kernel_transactions
     procedure(configure_parameters_iface), deferred :: configure_parameters
     procedure(execution_admitted_iface), deferred :: execution_admitted
     procedure :: matches_committed_parameter_identity => kernel_model_uncertified_identity
+    procedure :: endpoint_event_admitted => kernel_endpoint_event_unavailable
+    procedure :: apply_endpoint_event => kernel_apply_endpoint_event_unavailable
   end type kernel_model_t
 
   ! One executor belongs to a worker/job. Its bound model may retain numerical
@@ -252,6 +257,7 @@ module mod_kernel_transactions
   contains
     procedure, public :: bind_model => kernel_bind_model
     procedure, public :: advance_interval => kernel_advance_interval
+    procedure, public :: sample_endpoint_event => kernel_sample_endpoint_event
     procedure, public :: commit_candidate => kernel_commit_candidate
     procedure, public :: rollback_candidate => kernel_rollback_candidate
     procedure, public :: sample_reference_floor_interval => kernel_sample_reference_floor_interval
@@ -275,6 +281,136 @@ module mod_kernel_transactions
   end interface
 
 contains
+  ! Endpoint commands have no default physical admission. An existing interval
+  ! model cannot acquire a same-time mutation merely by accepting its forcing.
+  logical function kernel_endpoint_event_unavailable(self, parameters, command, state) result(ok)
+    class(kernel_model_t), intent(in) :: self
+    class(kernel_parameters_t), intent(in) :: parameters
+    class(canonical_forcing_t), intent(in) :: command
+    class(transaction_state_t), intent(in) :: state
+    ok=.false.
+    if(.not.same_type_as(self,self).or..not.same_type_as(parameters,parameters).or. &
+       .not.same_type_as(command,command).or..not.same_type_as(state,state)) return
+  end function
+
+  subroutine kernel_apply_endpoint_event_unavailable(self, state, command, time, outcome)
+    class(kernel_model_t), intent(inout) :: self
+    class(transaction_state_t), intent(inout) :: state
+    class(canonical_forcing_t), intent(in) :: command
+    real(real64), intent(in) :: time
+    type(trial_outcome_t), intent(out) :: outcome
+    outcome=trial_outcome_t()
+    if(.not.same_type_as(self,self).or..not.same_type_as(state,state).or. &
+       .not.same_type_as(command,command).or..not.ieee_is_finite(time)) return
+  end subroutine
+
+  ! Materialize one guarded, zero-duration physical event. Publication remains
+  ! exclusively commit_candidate: no reconstruction, public state setter or
+  ! caller-supplied provenance is introduced. The model explicitly admits the
+  ! command type, applies it only to a clone and certifies its external mass.
+  subroutine kernel_sample_endpoint_event(self, parameters, committed_state, command, time, &
+                                         numerical_config, result, candidate_state, diagnostics)
+    class(kernel_executor_t), intent(inout) :: self
+    class(kernel_parameters_t), intent(in) :: parameters
+    type(kernel_committed_state_t), intent(in) :: committed_state
+    class(canonical_forcing_t), intent(in) :: command
+    real(real64), intent(in) :: time
+    type(canonical_numerical_config_t), intent(in) :: numerical_config
+    type(kernel_result_t), intent(out) :: result
+    type(kernel_candidate_state_t), intent(out) :: candidate_state
+    type(kernel_diagnostics_t), intent(out) :: diagnostics
+    class(transaction_state_t), allocatable :: working
+    type(kernel_parameter_identity_t) :: supplied
+    type(trial_outcome_t) :: outcome
+    real(real64) :: storage0,storage1,residual,tolerance
+    logical :: available,complete0,complete1
+    integer(int64) :: missing0,missing1,missing
+
+    result=kernel_result_t();candidate_state=kernel_candidate_state_t();diagnostics=kernel_diagnostics_t()
+    result%requested_t0=time;result%requested_t1=time;result%completed_t=time
+    if(.not.committed_state%ready().or..not.committed_state%parameter_identity%valid)then
+      result%status=KERNEL_STATUS_UNGUARDED_STATE;diagnostics%unguarded_state_rejections=1;return
+    end if
+    tolerance=numerical_config%transaction%mass_tolerance
+    if(.not.ieee_is_finite(time).or..not.ieee_is_finite(tolerance))return
+    if(tolerance<=0d0)return
+    if(.not.committed_state%time_bound)then
+      result%status=KERNEL_STATUS_TIME_MISMATCH;diagnostics%time_origin_rejections=1;return
+    end if
+    if(time/=committed_state%committed_time_value)then
+      result%status=KERNEL_STATUS_TIME_MISMATCH;diagnostics%time_origin_rejections=1;return
+    end if
+    if(.not.associated(self%model))then
+      result%status=KERNEL_STATUS_NOT_BOUND;return
+    end if
+    call parameters%capture_identity(supplied,available)
+    if(.not.available)then
+      result%status=KERNEL_STATUS_PARAMETER_MISMATCH;diagnostics%admission_rejections=1;return
+    end if
+    if(.not.committed_state%parameter_identity%matches(supplied))then
+      result%status=KERNEL_STATUS_PARAMETER_MISMATCH;diagnostics%admission_rejections=1;return
+    end if
+    if(.not.self%model%execution_admitted(parameters,numerical_config))then
+      result%status=KERNEL_STATUS_NOT_ADMITTED;diagnostics%admission_rejections=1;return
+    end if
+    call self%model%configure_parameters(parameters)
+    if(.not.self%model%endpoint_event_admitted(parameters,command,committed_state%physical_state))then
+      result%status=KERNEL_STATUS_NOT_ADMITTED;diagnostics%admission_rejections=1;return
+    end if
+    call committed_state%physical_state%clone(working)
+    storage0=self%model%storage(working)
+    call self%model%storage_accounting_status(working,complete0,missing0)
+    if(.not.ieee_is_finite(storage0).or..not.complete0.or.missing0/=TX_MASS_MISSING_NONE)then
+      result%status=KERNEL_ENDPOINT_STATUS_MASS_FAILED;diagnostics%mass_rejections=1;return
+    end if
+    call self%model%apply_endpoint_event(working,command,time,outcome)
+    if(.not.outcome%solver_ok)then
+      result%status=KERNEL_ENDPOINT_STATUS_EVENT_FAILED;diagnostics%solver_rejections=1;return
+    end if
+    ! An endpoint event is not a hidden hydraulic advance or numerical retry.
+    if(outcome%nonlinear_iterations/=0.or.outcome%internal_retries/=0.or.outcome%headcalc_calls/=0.or. &
+       outcome%jacobian_builds/=0.or.outcome%linear_solves/=0.or.outcome%backtracking_attempts/=0.or. &
+       outcome%alternative_solver_calls/=0)then
+      result%status=KERNEL_ENDPOINT_STATUS_EVENT_FAILED;diagnostics%solver_rejections=1;return
+    end if
+    storage1=self%model%storage(working)
+    call self%model%storage_accounting_status(working,complete1,missing1)
+    if(.not.all(ieee_is_finite([storage1,outcome%mass_in,outcome%mass_out])))then
+      result%mass%missing_contribution_mask=TX_MASS_MISSING_NONFINITE
+      result%status=KERNEL_ENDPOINT_STATUS_MASS_FAILED;diagnostics%mass_rejections=1;return
+    end if
+    residual=storage1-storage0-outcome%mass_in+outcome%mass_out
+    missing=ior(ior(missing0,missing1),outcome%missing_mass_contribution_mask)
+    if(.not.complete0)missing=ior(missing,TX_MASS_MISSING_STORAGE_START)
+    if(.not.complete1)missing=ior(missing,TX_MASS_MISSING_STORAGE_END)
+    if(.not.outcome%mass_accounting_complete)missing=ior(missing,TX_MASS_MISSING_EXTERNAL_FLUX)
+    if(.not.all(ieee_is_finite([storage0,storage1,outcome%mass_in,outcome%mass_out,residual]))) &
+      missing=ior(missing,TX_MASS_MISSING_NONFINITE)
+    result%mass%interval_t0=time;result%mass%interval_t1=time
+    result%mass%origin_lineage_id=committed_state%lineage_id;result%mass%origin_revision=committed_state%revision
+    result%mass%storage_start=storage0;result%mass%storage_end=storage1
+    result%mass%storage_change=storage1-storage0
+    result%mass%total_in=outcome%mass_in;result%mass%total_out=outcome%mass_out
+    result%mass%residual=residual;result%mass%missing_contribution_mask=missing
+    if(missing/=TX_MASS_MISSING_NONE.or.outcome%mass_in<0d0.or.outcome%mass_out<0d0)then
+      result%status=KERNEL_ENDPOINT_STATUS_MASS_FAILED;diagnostics%mass_rejections=1;return
+    end if
+    if(abs(residual)>tolerance)then
+      result%status=KERNEL_ENDPOINT_STATUS_MASS_FAILED;diagnostics%mass_rejections=1;return
+    end if
+    if(.not.self%model%matches_committed_parameter_identity(committed_state%parameter_identity,working))then
+      result%status=KERNEL_STATUS_PARAMETER_MISMATCH;diagnostics%admission_rejections=1;return
+    end if
+    result%mass%complete=.true.;result%mass%accepted_transaction_count=1
+    call move_alloc(working,candidate_state%state)
+    candidate_state%valid=.true.;candidate_state%endpoint_event=.true.
+    candidate_state%origin_t0=time;candidate_state%origin_t1=time
+    candidate_state%origin_lineage_id_value=committed_state%lineage_id
+    candidate_state%origin_revision_value=committed_state%revision;candidate_state%mass=result%mass
+    diagnostics%candidate_materializations=1
+    result%completed=.true.;result%status=CANONICAL_STATUS_COMPLETED
+  end subroutine
+
   ! Default implementations never issue or approve an identity. The SELECT
   ! TYPE guards deliberately consume abstract inputs under strict -Werror.
   logical function kernel_model_uncertified_identity(self,identity,state) result(ok)
@@ -578,10 +714,16 @@ contains
 
   logical function kernel_candidate_ready(self) result(is_ready)
     class(kernel_candidate_state_t), intent(in) :: self
-    is_ready = self%valid .and. allocated(self%state) .and. &
-         self%origin_lineage_id_value > 0_int64 .and. self%origin_revision_value >= 0_int64 .and. &
-         ieee_is_finite(self%origin_t0) .and. ieee_is_finite(self%origin_t1) .and. &
-         self%origin_t1 > self%origin_t0
+    is_ready=.false.
+    if(.not.self%valid.or..not.allocated(self%state))return
+    if(self%origin_lineage_id_value<=0_int64.or.self%origin_revision_value<0_int64)return
+    if(.not.all(ieee_is_finite([self%origin_t0,self%origin_t1])))return
+    if(self%endpoint_event)then
+      is_ready=self%origin_t1==self%origin_t0.and.self%mass%complete
+    else
+      ! Existing interval candidates still require strictly positive time.
+      is_ready=self%origin_t1>self%origin_t0
+    end if
   end function kernel_candidate_ready
 
   subroutine kernel_snapshot_candidate(self, copy, available)
@@ -1164,6 +1306,7 @@ contains
 
     if (allocated(candidate_state%state)) deallocate(candidate_state%state)
     candidate_state%valid = .false.
+    candidate_state%endpoint_event = .false.
     candidate_state%origin_t0 = 0.0_real64
     candidate_state%origin_t1 = 0.0_real64
     candidate_state%origin_lineage_id_value = 0_int64
