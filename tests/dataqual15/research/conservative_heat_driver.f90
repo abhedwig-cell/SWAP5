@@ -51,6 +51,13 @@ program conservative_heat_driver
  call setup(3,0d0);r%phase_change_active=.true.;call reject(CH_UNSUPPORTED_PHASE)
  call setup(3,0d0);r%vapor_active=.true.;call reject(CH_UNSUPPORTED_PHASE)
  call setup(3,0d0);r%boundary_heat_into_j_cm2=-1d5;call reject(CH_UNSUPPORTED_PHASE)
+ call setup(3,0d0);r%water_source_available(2)=.false.;call reject(CH_MISSING_DONOR)
+ call setup(3,0d0);deallocate(r%gas_face_cm);call reject(CH_INVALID)
+ call setup(3,0d0);r%root_water_out_cm(1)=-1d-3;call reject(CH_INVALID)
+ ! Reverse flow uses the soil-side donor, not an external inflow temperature.
+ call setup(4,0d0);r%water_boundary_available(1)=.false.;r%water_boundary_temperature_c(1)=nan
+ call trial_conservative_soil_heat(r,answer)
+ if(answer%status/=CH_OK)error stop 'outflow incorrectly consumed unavailable external inflow donor'
  call setup(5,0d0)
  r%water_boundary_available=.false.;r%gas_boundary_available=.false.
  r%water_boundary_temperature_c=nan;r%gas_boundary_temperature_c=nan

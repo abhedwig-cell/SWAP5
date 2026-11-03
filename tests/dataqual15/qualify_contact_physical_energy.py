@@ -81,7 +81,7 @@ def check_heat(raw):
         if f[0]=='FACE':faces[tuple(map(int,f[1:4]))]=list(map(float,f[4:]))
         if f[0]=='REFUSAL':refusals.append(int(f[1]))
     assert len(cases)==10 and len(temp)==30 and len(faces)==40
-    assert refusals==[4,4,4,4,4,5,2,3,6,6,6]
+    assert refusals==[4,4,4,4,4,5,2,3,6,6,6,4,1,1]
     max_local=max_global=0.
     for (scenario,gauge),values in cases.items():
         dz,t0,t1,old,w,g,roots,ws,gs,wt,gt,wst,gst,heat=case_input(scenario)
@@ -160,6 +160,21 @@ def main():
             assert cp.returncode==0,(name,cp.stdout,cp.stderr)
             result=check_contact(cp.stdout,rows,jump) if name=='contact' else check_heat(dest.read_bytes())
             events[name]=dict(command=command,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),**result)
+        contact_refusals=[]
+        for kind in ('fraction_above_one','negative_fraction'):
+            text=raw.decode().splitlines()
+            if kind=='fraction_above_one':text[0]=text[0].rsplit(' ',1)[0]+' 1e-6'
+            else:
+                for i in range(1,len(text)):
+                    values=text[i].split();values[1]=format(-float(values[1]),'.17g');text[i]=' '.join(values)
+            path=d/(kind+'.dat');path.write_text('\n'.join(text)+'\n',encoding='utf-8')
+            cp=subprocess.run([str(d/'contact.exe'),str(path)],cwd=d,capture_output=True,text=True,timeout=30)
+            (d/(kind+'.stdout')).write_text(cp.stdout,encoding='utf-8')
+            (d/(kind+'.stderr')).write_text(cp.stderr,encoding='utf-8')
+            assert cp.returncode!=0 and 'no bounded contact witness' in cp.stderr
+            assert 'CONTACT,' not in cp.stdout, 'inadmissible contact published a candidate'
+            contact_refusals.append(kind)
+        events['contact']['bounded_fraction_refusals']=contact_refusals
         transfer=events['contact']['exchange_amount_cm'];macro={}
         for variant in ('production','candidate'):
             folder=d/('macro-'+variant);folder.mkdir();exe=folder/'exchange.exe'
