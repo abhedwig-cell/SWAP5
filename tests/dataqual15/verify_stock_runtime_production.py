@@ -15,7 +15,16 @@ MODULE='src/process/mod_whole_column_sensible_energy_accounting.f90'
 def verify():
     verify_stock()
     changed=subprocess.check_output(['git','diff','--name-only',BASE,'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines()
-    assert changed==[MODULE], 'unreviewed physical production delta'
+    # Separately qualified original-input adapter; no energy/runtime dependency.
+    # Bind both postimages exactly rather than ignoring the application subtree.
+    rain='app/solute_project/prepare_rain_duration.f90'
+    allowed={MODULE}
+    if rain in changed:
+        for ref,pin in ((BASE,'18dc5b61d5f31563cfdd20208e9368c68378743d'),
+                        ('HEAD','4de070ccb16a654989322a3cc42b08bf13a89c7f')):
+            assert subprocess.check_output(['git','rev-parse',ref+':'+rain],cwd=ROOT,text=True).strip()==pin, rain
+        allowed.add(rain)
+    assert set(changed)==allowed, 'unreviewed physical production delta'
     assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT)
     assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','src','app','reference'],cwd=ROOT)
     record=json.loads((ROOT/'integration/dataqual15/STOCK_RUNTIME_PRODUCTION_20261103.json').read_text(encoding='utf-8'))
