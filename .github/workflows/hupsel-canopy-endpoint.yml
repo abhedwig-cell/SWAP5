@@ -1,6 +1,10 @@
 name: Hupsel canopy endpoint qualification
 on:
   workflow_dispatch:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-canopy-endpoint.yml
 permissions:
   contents: read
 jobs:
