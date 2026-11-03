@@ -37,7 +37,8 @@ def verify():
         for name,digest in r['rendered_overlay_sha256'].items():assert sha(files[opt+'/overlay/'+name])==digest
         u=json.loads(files[opt+'/utility/BUILD.json'])
         assert sha(files[opt+'/utility/libttutil.a'])==u['input_archive_sha256']
-        for name,digest in {**u['authority_sha256'],**u['manifest_sha256']}.items():assert sha(files['sources/'+name])==digest,name
+        for name,digest in {**u['authority_sha256'],**u['manifest_sha256']}.items():
+            assert sha(files['sources/'+name.replace('\\','/')])==digest,name
         for kind in ('contact-0','contact-1','actual-prefix'):
             prefix=opt+'/'+kind+'/'
             binding=sha(files[prefix+'input.nml']+files[prefix+'input.swp']+files[prefix+'macro.nml']+r['executable_sha256'].encode())
