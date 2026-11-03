@@ -7,7 +7,7 @@
   "status": "CURRENT_EB_I23_I24_I25_RUNTIME_O0_O2_PASS",
   "provider_count": 186,
   "full_energy_balance_complete": false,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "inherited_assets": {
     "tests/eb/EB-I23_CONTRACT.md": "56bfd4f1350e569e6f651ca4ada13550af93f986",
     "tests/eb/EB-I24_CONTRACT.md": "b7a504860ed027e87dad04731af63c933f668984",
@@ -26,5 +26,7 @@
     "tests/eb/EB-I25_CONTRACT.md": "48dfdd79c6336436177b44d1aede9cfaeb3f1efd"
   },
   "original_outflow_attribution": "integration/dataqual15/STOCK_RUNTIME_OUTFLOW_ATTRIBUTION_20261103.json",
-  "test_status": "Checked Windows16.2 O0/O2, six fresh executions, exact per-test stdout"
+  "test_status": "Checked Windows16.2 O0/O2, six fresh executions, exact per-test stdout",
+  "canonical_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+  "receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
 }

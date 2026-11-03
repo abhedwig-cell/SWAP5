@@ -18,7 +18,7 @@
     "tests/eb/test_f_vq88_eb_i22_independent.f90": "20384849b61304aa8f76a9e5cffaff2fca8a4734"
   },
   "full_energy_balance_complete": false,
-  "canonical_admitted": false,
+  "canonical_admitted": true,
   "status": "WINDOWS_O0_O2_EXECUTED_AND_SOURCE_BOUND",
   "test_selection": {
     "expected_seconds": 120,
@@ -26,5 +26,7 @@
     "changed_dependency": "Only numerical summation consistency comparison; no DTO or physical equation change",
     "selected": "Current432 explicit profiles at0/5C, existing EB-I22 and independent VQ88,1J representation-error injection, exact predecessor evidence, native source boundary negative controls",
     "full_original_runs": "NOT_SELECTED: no production runtime caller of this accounting procedure; unchanged heat/soil-water owners and all DTOs"
-  }
+  },
+  "canonical_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+  "receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
 }

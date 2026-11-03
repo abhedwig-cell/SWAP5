@@ -65,11 +65,13 @@
   "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json",
   "production_followup_20261103": {
     "branch": "codex/energy-stock-production-20261102",
-    "stage": "WINDOWS_NUMERICAL_AND_RUNTIME_PASS_LINUX_PENDING",
+    "stage": "CANONICALLY_ADMITTED_NUMERICAL_OWNER_AND_RUNTIME_PRESERVATION",
     "status_record": "integration/dataqual15/STATUS.json#stock_projection_production_20261102",
     "report": "docs/audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md",
     "scope": "Actual production numerical owner plus current EB runtime preservation; no physical energy/contact promotion",
-    "next_action": "Linux current owner/runtime and composed predecessor CI; exact-source admission; then accepted thermal interval receipts and explicit Andelst contact correction"
+    "next_action": "Actual accepted interval thermal/donor receipts; explicit conservative original Andelst sharp/contact treatment; reconcile separately owned draft1485 physical fixes before qualifying them.",
+    "canonical_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+    "canonical_receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
   },
   "closure16_andelst_continuation": {
     "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",

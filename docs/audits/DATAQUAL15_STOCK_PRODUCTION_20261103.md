@@ -1,6 +1,11 @@
 # Numerical stock comparison production successor
 
-Status: **Implemented and locally tested; canonical admission pending.**
+Status: **Canonically admitted numerical owner and runtime preservation.**
+
+PR1487 merge `c9ed8c8ca7ec9347c2b4319836036b061243c184` has exactly the tested
+whole tree. Windows16.2 and Linux13.3 checked O0/O2 qualify the bounded owner
+and current runtime cases. Receipt: `integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json`.
+Full physical energy and original Andelst481days remain OPEN.
 
 Base: `7a7f994d8b7fd0327f761a0db791726ab7a98e75`. The only production delta is
 `src/process/mod_whole_column_sensible_energy_accounting.f90`, byte-equivalent
@@ -106,3 +111,15 @@ closures. Original contact and isolated-candidate dossiers execute in the exact
 committed predecessor view. This unit does not qualify Andelst481days, change
 the macropore contact law, supply missing donor-energy receipts, increase the
 full scientific denominator or establish a complete physical energy balance.
+
+## Integrated outcomes and retained failures
+
+The exact PR head has40 terminal workflows:26 success and14 failure. Owning
+F-CI70/72/74/79, current Linux production/runtime, F-CI canonical composition,
+Grassgrowth preservation and documentation succeed. Eleven failed predicates
+or compilation recipes are already present at canonical4d37b256; three unit-scope
+firewalls(P2E09/P2E10/ELASTIC65) correctly refuse this production source delta in
+publication/performance-only work units. Those three are not baseline failures.
+All14 remain FAILURE; no publication or performance qualification is inferred.
+The exact predicate controls, including missing drainage compile dependencies,
+are retained in `STOCK_PRODUCTION_BASELINE_GUARD_CONTROLS_20261103.json`.
