@@ -8,6 +8,20 @@ after newline normalization to the previously measured isolated candidate.
 No public DTO, physical storage law, heat solver, water solver, restart format
 or reference source changes.
 
+Live-base reconciliation incorporates canonical `4d37b256dc60969dc58c9cc2ac26652082bdf001`
+and its admitted CLOSURE16 diagnostics. Both independent JSON status extensions
+are preserved. Those commits change no production/reference source, so all
+measured compile closures remain exact. Paired B1.11/current heat evidence
+confirms that the variable-water physical-energy limitation is a shared
+formulation; this numerical accounting correction does not repair it. Fresh
+Andelst evidence also retains the sharp contact barrier and does not observe
+the proposed stale-Jacobian cause on that path.
+
+The stock module is byte-identical in Git to the same isolated change on
+draft PR1485 (`codex/closure16-contact-energy@38d230c4`). This work independently
+admits only that measured numerical leaf and runtime preservation. Microscopic
+uptake, macropore stock and adapter changes from the draft are not merged here.
+
 ## Numerical correction and measured boundaries
 
 For nodal computed stocks a(i), b(i), the two representations
