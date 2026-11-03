@@ -1,0 +1,16 @@
+{
+  "scope": "Measured same-build compatible O2 continuation from day2 to931; original-input diagnostic DTMAX0.01 variant, not whole scientific admission",
+  "returncode": 0,
+  "seconds": 730.5970080000116,
+  "executable_sha256": "767097ee3062e8d78cd6ce66e37b0fd4ba9a0b780f0e1ab3524e42b5c2d84f58",
+  "restart_sha256": "2d925f5f6f7d56c491b24a920324c0cce396435403896ef0bc1e523fab344889",
+  "observations": [
+    {"day": 929, "cut_index": 3, "accepted_canopy_stock_cm": 0.109108918520689227, "prepared_capacity_cm": 0.109108918520689227, "post_management_capacity_cm": 0.114418658338822518},
+    {"day": 930, "cut_index": 4, "accepted_canopy_stock_cm": 0.114418658338822518, "prepared_capacity_cm": 0.114418658338822518, "post_management_capacity_cm": 0.0270368000000000032},
+    {"day": 931, "cut_index": 4, "accepted_canopy_stock_cm": 0.0, "prepared_capacity_cm": 0.0270368000000000032, "post_management_capacity_cm": 0.0270368000000000032}
+  ],
+  "finding": "Accepted day930 crop has cut index4 and reduced capacity, while committed hydraulic canopy still holds the pre-cut capacity. This directly establishes delayed capacity reconciliation on this measured trajectory.",
+  "production_correction": false,
+  "next": "Transactional management-end canopy capacity candidate and explicit export in the same accepted day water ledger; preserve rejected-day state and same-build restart",
+  "raw_directory": "../canopy-compatible-to931"
+}

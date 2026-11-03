@@ -582,6 +582,22 @@
         "src/runtime/mod_fmr_serialized_reference_backend.f90": {
           "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
           "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
+        },
+        "app/solute_project/hupsel_rotation_restart.f90": {
+          "before": "37b7222fcd522682a6de057461f2d175a841a5f7",
+          "after": "cc33c56d4b6a09462426ec200c5638e34daa8d53"
+        },
+        "app/solute_project/main.f90": {
+          "before": "8a27549054b818ae9015d0660c368878973c09db",
+          "after": "40cb5207d78e10b682344ac1a6d14be67a63558b"
+        },
+        "src/adapter/mod_age_joint_restart_file.f90": {
+          "before": "c035bd497a61209bbe4c66772261f0b63b7cbc16",
+          "after": "a3bed29cbc872d0d33a56e434667cfb3afbc9c41"
+        },
+        "src/adapter/mod_pond_thermal_restart_file.f90": {
+          "before": "c9418d4cdb8366e2069b0b03150526d625f522cd",
+          "after": "d25d8408bcdee96360ddd4f38defccf664762297"
         }
       },
       "preservation_restore": {
@@ -632,6 +648,46 @@
         "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
           "before": null,
           "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
+        },
+        "app/solute_project/hupsel_rotation_restart.f90": {
+          "before": "37b7222fcd522682a6de057461f2d175a841a5f7",
+          "after": "cc33c56d4b6a09462426ec200c5638e34daa8d53"
+        },
+        "app/solute_project/main.f90": {
+          "before": "8a27549054b818ae9015d0660c368878973c09db",
+          "after": "40cb5207d78e10b682344ac1a6d14be67a63558b"
+        },
+        "src/adapter/mod_age_joint_restart_file.f90": {
+          "before": "c035bd497a61209bbe4c66772261f0b63b7cbc16",
+          "after": "a3bed29cbc872d0d33a56e434667cfb3afbc9c41"
+        },
+        "src/adapter/mod_pond_thermal_restart_file.f90": {
+          "before": "c9418d4cdb8366e2069b0b03150526d625f522cd",
+          "after": "d25d8408bcdee96360ddd4f38defccf664762297"
+        },
+        "tools/solute/build_column.py": {
+          "before": "9b791fcfd4e46d6f45112c16cb3e1add7ca05735",
+          "after": "6c5f116198ea04351ca2feb261ebb8b7ba5aee1f"
+        },
+        "tools/solute/build_crop_column.py": {
+          "before": "98ed71cc3b1226c94ba8b6d720cf5022c71bf5aa",
+          "after": "f38fc65a97f2b7f1e23f69054b62211e7eedac68"
+        },
+        "tests/nut-sol/run_pond_thermal.py": {
+          "before": "d15b943c711d153b7821fe9fc7de4a7527707c17",
+          "after": "af89087187775acef612d98ce54e762ab5140f33"
+        },
+        "tests/dataqual15_hupsel/build_and_run.py": {
+          "before": "ca89cd4142c819120f8adf3a69c66e8e2cd1af2f",
+          "after": "05b513f74fef4da938f43e34e39036a8b12424cd"
+        },
+        "tests/dataqual15_hupsel/run.py": {
+          "before": "eb6af52b6258b12bd415d8d32cadcba1f64ad710",
+          "after": "22640ee8915863733ec4a4daeaaa34d1b5217911"
+        },
+        "tests/dataqual15_hupsel/qualify_rotation_restart_guards.py": {
+          "before": "416b09116e352775101c943ca5aa02f1b2a24a0c",
+          "after": "942246b10885c8a3a85b6c1e5a195b444a6e4300"
         }
       },
       "predecessor_production_trees": {
@@ -640,16 +696,17 @@
         "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
       },
       "gate_source_sha256": {
-        "tests/dataqual15/verify_native_restart_admission.py": "0ec77c75467c69a5d84a20788ead14cc89a77108c3df93281448a3df85d47992",
+        "tests/dataqual15/verify_native_restart_admission.py": "22f6aab7fc79c051d222ed394c2ca68e481989e22836ef6bed3ee199857bd76d",
         "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
         "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77",
         "tests/dataqual15/verify_stock_projection_production.py": "464a35c7bfb5fb8bf54453b74f9693ce23c4c25271d859b6e44809cd0be08dcc",
         "tests/dataqual15/qualify_stock_projection_production.py": "3b6d8db57461261bf3fb2bb72ae72069fe32248275bfb5399191003f98491b5b",
-        "tests/dataqual15/verify_stock_runtime_production.py": "295b44c5bf2bdc713a2cc6cab992a70d2b61f1ce26ad4666bf4854a36ef733ea",
+        "tests/dataqual15/verify_stock_runtime_production.py": "4bfd8441a84998f3f901d19423be7a0d650394fd77870c0e175e69f60a7c2fc2",
         "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c",
-        "tests/dataqual15/verify_thermal_receipts.py": "12dcdea273b8afa3991a1946d59979c55b6633a69691784cbf62003ff85a0485",
-        "tests/dataqual15/verify_nonlinear_native_evidence.py": "0873e6b52cce83ef942c34a5df4f5270fd28a8cf7bbe76e377ccbbba53503490",
-        "tests/dataqual15/analyze_native_thermal_receipts.py": "3bfeacddb37a23bb23b5cfed1c79dcb65b7d1aaac494b5c77a7f75a5f39b76d5"
+        "tests/dataqual15/verify_thermal_receipts.py": "20167172462639083c4647be0fc86dff743840851979a5329839c083bc5d70c2",
+        "tests/dataqual15/verify_nonlinear_native_evidence.py": "7f41ca24415d314ade35cd9a8a325bd9608235304f7c0dd58bb16315a0148bd0",
+        "tests/dataqual15/analyze_native_thermal_receipts.py": "3bfeacddb37a23bb23b5cfed1c79dcb65b7d1aaac494b5c77a7f75a5f39b76d5",
+        "tests/dataqual15_hupsel/verify_native_publication_evidence.py": "195fa9bb405e26c98f4a434842220575bb45c206ab18bc4a745ca74c2eb3813b"
       },
       "scope": "Exact native I/O successor plus separately qualified numerical sensible-stock comparison owner. Predecessor physics remains historical; no whole physical energy or current1827-day promotion.",
       "test_selection": {
@@ -727,6 +784,10 @@
         "verifier": "tests/dataqual15/verify_thermal_receipts.py",
         "scope": "Fresh current runtime observations and unchanged I23/I24/I25 oracles; inherited full scientific evidence remains exact predecessor only, no complete physical-energy claim",
         "native_verifier": "tests/dataqual15/verify_nonlinear_native_evidence.py"
+      },
+      "hupsel_native_publication_successor": {
+        "verifier": "tests/dataqual15_hupsel/verify_native_publication_evidence.py",
+        "scope": "Measured native I/O and accepted canopy observations; physical correction and whole science remain OPEN"
       }
     },
     "canonical_merge": "bf99820474cad117b60b1d1285dd32c0db905495",

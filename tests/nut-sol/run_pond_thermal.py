@@ -36,7 +36,12 @@ def main():
 
     def run(command, cwd, category):
         start = time.perf_counter()
-        r = subprocess.run(list(map(str, command)), cwd=cwd, capture_output=True)
+        actual = list(map(str, command))
+        if category == 'link' and os.name == 'nt':
+            response = cwd / 'link.args'
+            response.write_text('\n'.join('"' + v.replace('\\', '/').replace('"', '\\"') + '"' for v in actual[1:]) + '\n')
+            actual = [actual[0], '@' + str(response)]
+        r = subprocess.run(actual, cwd=cwd, capture_output=True)
         i = len(report['events'])
         (out / f'{i:04d}.stdout').write_bytes(r.stdout)
         (out / f'{i:04d}.stderr').write_bytes(r.stderr)
@@ -96,6 +101,8 @@ def main():
     for p in ordered + [driver, incumbent, fixture, Path(__file__).resolve()]:
         if p.is_relative_to(ROOT):
             report['inputs'][str(p.relative_to(ROOT))] = sha(p)
+    publication = ROOT / 'app/support/restart_publish.c'
+    report['inputs'][str(publication.relative_to(ROOT))] = sha(publication)
     for opt in ['O0', 'O2']:
         build = out / opt
         build.mkdir()
@@ -135,7 +142,11 @@ def main():
             assert sha(exe) == prior['executables'][opt], 'reused executable drift'
             report['reused_physical_sha256'] = sha(reused / 'result.json')
         else:
-            exe = build / 'thermal'
+            exe = build / ('thermal.exe' if os.name == 'nt' else 'thermal')
+            obj = build / 'restart_publish.o'
+            cc = subprocess.check_output(fc + ['-print-prog-name=gcc'], text=True).strip()
+            run([cc, '-' + opt, '-std=c11', '-c', publication, '-o', obj], build, 'compile-publication')
+            objects.append(obj)
             run(fc + flags + objects + ['-o', exe], build, 'link')
         report.setdefault('executables', {})[opt] = sha(exe)
         results = {}

@@ -185,17 +185,22 @@ contains
   function crc32(bytes) result(crc)
     integer(int8),intent(in)::bytes(:)
     integer(int32)::crc
-    integer::i,j
+    integer::i,j,k
+    integer(int32)::table(0:255),entry
+    ! Separate the fixed polynomial table from the byte stream. The previous
+    ! nested data/bit loop stalls under GNU Fortran16.2 Windows O2. This is the
+    ! same reflected CRC-32/ISO-HDLC polynomial and initial/final complement.
+    do k=0,255
+      entry=int(k,int32)
+      do j=1,8
+        entry=ieor(shiftr(entry,1),iand(-iand(entry,1_int32),int(z'EDB88320',int32)))
+      end do
+      table(k)=entry
+    end do
     crc=not(0_int32)
     do i=1,size(bytes)
-      crc=ieor(crc,iand(int(bytes(i),int32),int(z'FF',int32)))
-      do j=1,8
-        if(btest(crc,0))then
-          crc=ieor(shiftr(crc,1),int(z'EDB88320',int32))
-        else
-          crc=shiftr(crc,1)
-        end if
-      end do
+      k=int(iand(ieor(crc,int(bytes(i),int32)),255_int32))
+      crc=ieor(shiftr(crc,8),table(k))
     end do
     crc=not(crc)
   end function

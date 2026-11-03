@@ -23,22 +23,9 @@ module mod_pond_thermal_restart_file
  private
  public::write_pond_thermal_restart,read_pond_thermal_restart
  interface
-  integer(c_int) function rename_c(a,b)bind(C,name='rename')
+  integer(c_int) function rename_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
-  end function
-  integer(c_int) function open_c(a,b)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*)
-   integer(c_int),value::b
-  end function
-  integer(c_int) function sync_c(a)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::a
-  end function
-  integer(c_int) function close_c(a)bind(C,name='close')
-   import c_int
-   integer(c_int),value::a
   end function
  end interface
 contains
@@ -67,12 +54,6 @@ contains
    end if
    v=[v,-53020002d0,p%boesten_evaporation%cofred]
   end if
- end function
- integer function synchronize(path)result(st)
-  character(*),intent(in)::path
-  integer(c_int)::fd,rc
-  st=1;fd=open_c(path//c_null_char,0_c_int);if(fd<0)return
-  st=sync_c(fd);rc=close_c(fd);if(rc/=0)st=1
  end function
  subroutine bytes(path,a,st)
   character(*),intent(in)::path
@@ -206,12 +187,7 @@ contains
    write(u,iostat=io)crc32(a);if(io/=0)exit writing
    flush(u,iostat=io);if(io/=0)exit writing
    close(u,iostat=io);if(io/=0)exit writing
-   if(synchronize(pending)/=0)exit writing
    code=rename_c(pending//c_null_char,path//c_null_char);if(code/=0)exit writing
-   slash=index(path,'/',back=.true.);parent='.'
-   if(slash==1)parent='/'
-   if(slash>1)parent=path(:slash-1)
-   if(synchronize(parent)/=0)exit writing
    status=0
   end block writing
   inquire(unit=u,opened=opened)

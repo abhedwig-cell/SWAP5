@@ -4,6 +4,7 @@ import json
 from pathlib import Path,PurePosixPath,PureWindowsPath
 import struct
 import subprocess
+import sys
 import tarfile
 import zlib
 
@@ -24,12 +25,24 @@ def verify():
                    and '..' not in PurePosixPath(m.name).parts and '\\' not in m.name for m in members)
         files={m.name:t.extractfile(m).read() for m in members}
     assert json.loads(files.pop('MANIFEST.json'))=={n:sha(b) for n,b in files.items()}
+    io_successor={}
+    io_scope=ROOT/'integration/dataqual15_hupsel/NATIVE_PUBLICATION_SCOPE_20261103.json'
+    if io_scope.exists():
+        scope=json.loads(io_scope.read_text())
+        assert not scope['physical_correction'] and not scope['whole_scientific_admission']
+        io_successor=scope['production_delta']
+        for path,pins in io_successor.items():
+            assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==pins['after'],path
+        subprocess.run([sys.executable,'-B',scope['verifier']],cwd=ROOT,check=True)
     for path,blob in {**record['source_git_blob'],**record['auxiliary_git_blob']}.items():
         successor=record.get('uncompiled_orchestrator_successor',{})
         current=blob
         if path==successor.get('path'):
             assert path=='tests/dataqual15/qualify_nonlinear_native_contact.py' and successor['before']==blob
             current=successor['after']
+        if path in io_successor:
+            assert io_successor[path]['before']==blob,path
+            current=io_successor[path]['after']
         assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==current,path
         raw=files['sources/'+path].replace(b'\r\n',b'\n')
         assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==blob,path

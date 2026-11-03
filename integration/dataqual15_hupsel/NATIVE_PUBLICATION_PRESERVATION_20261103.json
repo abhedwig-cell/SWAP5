@@ -1,0 +1,74 @@
+{
+  "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+  "candidate": "805eee78bf239f3c7ea5414748a105d5583cc799",
+  "projection": {
+    "tree": "495eaae7ee8c8b03ec14c5dda467b831dd296db6",
+    "commit": "d535133c184370f7de75fc33509c44f44d26ca72",
+    "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+  },
+  "events": [
+    {
+      "label": "current-native",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15/verify_native_restart_evidence.py"
+      ]
+    },
+    {
+      "label": "current-hupsel-native",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15_hupsel/verify_native_publication_evidence.py"
+      ]
+    },
+    {
+      "label": "current-sensible-stock",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15/verify_stock_runtime_production.py"
+      ]
+    },
+    {
+      "label": "current-native-contact-observations",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15/verify_nonlinear_native_evidence.py"
+      ]
+    },
+    {
+      "label": "predecessor-grass",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15/verify_grass_full_evidence.py",
+        "--spec",
+        "integration/dataqual15/GRASS_UNION_FULL_SPEC.json",
+        "--capsule",
+        "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz",
+        "--manifest",
+        "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json"
+      ]
+    },
+    {
+      "label": "predecessor-stress",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15/stress_evidence.py"
+      ]
+    },
+    {
+      "label": "predecessor-hupsel",
+      "returncode": 0,
+      "args": [
+        "tests/dataqual15_hupsel/uptake_evidence.py"
+      ]
+    }
+  ],
+  "full_current1827_execution": false,
+  "whole_scientific_qualification": false,
+  "guard_controls": {
+    "tests": 10,
+    "status": "PASS",
+    "command": "python -B tests/dataqual15/test_native_restart_admission.py"
+  },
+  "source_delta_scope": "NATIVE_PUBLICATION_SCOPE_20261103.json"
+}
