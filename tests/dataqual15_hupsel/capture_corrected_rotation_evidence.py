@@ -18,9 +18,15 @@ for opt,folder in [('O0',a.o0),('O2',a.o2)]:
  folder=folder.resolve();build=json.loads((folder/'BUILD.json').read_text())
  assert all(sha(Path(n).read_bytes())==pin for n,pin in build['source_sha256'].items())
  assert all(sha(Path(n).read_bytes())==pin for n,pin in build['object_sha256'].items())
+ publisher=build['publication_provider']
+ assert sha(Path(publisher['source']).read_bytes())==publisher['source_sha256']
+ assert sha(Path(publisher['object']).read_bytes())==publisher['object_sha256']
+ archive=Path(build['ttutil_archive']);assert sha(archive.read_bytes())==build['archive_sha256']
  exe=folder/'swap5_hupsel_germination.exe';assert sha(exe.read_bytes())==build['executable_sha256']
  prefix='build'if opt=='O2'else'build-O0'
  for name in ('BUILD.json','EVENTS.json',exe.name):files[prefix+'/'+name]=(folder/name).read_bytes()
+ files[prefix+'/ttutil/libttutil.a']=archive.read_bytes()
+ source=Path(publisher['source']);dependencies[source.relative_to(ROOT).as_posix()]=sha(source.read_bytes().replace(b'\r\n',b'\n'))
  for name in build['source_sha256']:
   path=Path(name)
   if path.is_relative_to(ROOT):
