@@ -84,7 +84,7 @@ def main():
   utilities=prior/'original'
  else:utilities=native.build_original(out/'original',shutil.which('gfortran'),a.optimization,utilities_only=True)
  sources=[x.relative_to(ROOT).as_posix() for x in ordered if x.is_relative_to(ROOT) and not x.is_relative_to(out)]
- sources += list(shadow)+['tests/dataqual15/qualify_coupled_contact.py',native.SELF,native.RESEARCH+'coupled_headcalc_methods.inc',native.RESEARCH+'coupled_provider_methods.inc',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
+ sources += list(shadow)+['app/support/restart_publish.c',native.RESEARCH+'native_contact_platform.c','tests/dataqual15/research_native_build_cache.py','tests/dataqual15/original_sources.py','tools/solute/legacy_reader_sources.py','tools/vq/b0_source_runner.py','tests/dataqual15/qualify_coupled_contact.py',native.SELF,native.RESEARCH+'coupled_headcalc_methods.inc',native.RESEARCH+'coupled_provider_methods.inc',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
  assert not subprocess.check_output(['git','diff','HEAD','--',*sources]),'persist first'
  report['source_git_blob']={x:subprocess.check_output(['git','rev-parse','HEAD:'+x],text=True).strip() for x in set(sources)}
  report['rendered_sha256']={x:sha(y) for x,y in shadow.items()};report['generated_reader_sha256']=sha(original);save()

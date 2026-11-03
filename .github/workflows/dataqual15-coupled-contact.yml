@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - 'tests/dataqual15/qualify_coupled_contact.py'
+      - 'tests/dataqual15/verify_coupled_contact_evidence.py'
       - 'tests/dataqual15/qualify_transport_donors.py'
       - 'tests/dataqual15/analyze_transport_donors.py'
       - 'tests/dataqual15/research/coupled_*'
@@ -27,6 +28,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Verify sealed Windows full-column/history and transport evidence
+        run: python -B tests/dataqual15/verify_coupled_contact_evidence.py
       - name: Cold202-provider full native contact and transport observations
         run: python -B tests/dataqual15/qualify_coupled_contact.py --optimization ${{ matrix.optimization }} --output coupled-native-ci
       - name: Actual water ledger, endpoint donor scenarios and missing-data controls
