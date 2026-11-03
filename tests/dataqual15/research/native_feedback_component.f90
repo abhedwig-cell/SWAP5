@@ -48,11 +48,12 @@ program native_feedback_component
   end if
   call execute_native_coupled_transaction(model,accepted,0d0,1d-5,tx)
   print '(a,6i5,3es25.17e3)','TRANSACTION ',k,tx%status,tx%commits,tx%full_trials,tx%half_trials,model%water_calls, &
-   tx%full_mass_residual,tx%half_mass_residual,tx%temporal_indicator
+   tx%full_mass_residual,tx%half_mass_residual,tx%temporal_error
   select type(accepted)
   type is(native_coupled_state_t)
    if(k==1)then
     if(tx%status/=TX_STATUS_ACCEPTED.or.tx%commits/=1.or.tx%full_trials/=1.or.tx%half_trials/=2)error stop 'actual full-half acceptance'
+    if(tx%temporal_error>1d-6)error stop 'temporal guard'
     if(accepted%revision/=1.or.accepted%time/=1d-5)error stop 'atomic revision'
     if(accepted%matrix_temperature(1)<=10d0)error stop 'heat omitted from commit'
    else

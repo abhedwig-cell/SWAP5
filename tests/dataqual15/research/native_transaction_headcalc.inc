@@ -11,6 +11,9 @@ subroutine research_coupled_contact()
  integer::u,kind,id,n
  if(research_logged.or.NN/=112.or.storage_rank/=0.or..not.provider_constitutive_active)return
  call research_action_witness()
+ open(newunit=u,file="native-coupled-context.csv",status="replace")
+ write(u,*) native_feedback_context%ready,native_feedback_context%t0,native_feedback_context%t1,dt
+ close(u)
  if(.not.native_feedback_context%ready)return
  if(native_feedback_context%t1-native_feedback_context%t0/=dt)return
  saved_state=state;saved_workspace=fsi_ws;saved_context=ctx;saved_history=hist;saved_dt=dt
@@ -21,6 +24,9 @@ subroutine research_coupled_contact()
  class default
   return
  end select
+ open(newunit=u,file="native-coupled-context.csv",position="append")
+ write(u,*) research_base_macro%shrinkage%enabled,research_base_macro%geometry_config%top_node,pond_saved,state%pondm1
+ close(u)
  if(research_base_macro%shrinkage%enabled.or.research_base_macro%geometry_config%top_node/=1)return
  if(pond_saved/=0d0.or.state%pondm1/=0d0)return
  n=numnod
@@ -47,7 +53,7 @@ subroutine research_coupled_contact()
   end if
   call execute_native_coupled_transaction(model,accepted,native_feedback_context%t0,native_feedback_context%t1,tx)
   write(u,'(a,7(a,i0),7(a,es25.17e3))')'TRANSACTION',',',kind,',',tx%status,',',tx%commits,',',tx%full_trials,',',tx%half_trials, &
-    ',',model%water_calls,',',model%donor_refusals,',',tx%full_mass_residual,',',tx%half_mass_residual,',',tx%temporal_indicator, &
+    ',',model%water_calls,',',model%donor_refusals,',',tx%full_mass_residual,',',tx%half_mass_residual,',',tx%temporal_error, &
     ',',model%max_joint_residual,',',model%max_feedback,',',model%rain_temperature,',',model%groundwater_temperature
   select type(accepted)
   type is(native_coupled_state_t)
