@@ -39,7 +39,10 @@
     "O2_strict_day1_to2": "returncode0; no predecessor override; same executable/input bindings",
     "checkpoint_day1_sha256": "af6bf70db0007a0a39cfb5dc6ce168ce09b3d2e609a3f063f6efb0845bde9b3c",
     "next_run": "../canopy-compatible-to931; strict same-build continuation from day2; timeout7200seconds",
-    "qualification": "bounded O2 smoke only; corruption/O0/POSIX and composed admission still required"
+    "qualification": "bounded O2 smoke and7 real executable outer-envelope controls PASS; valid read plus CRC/schema/nodes/NaN clock/truncation/extra payload rejection before publication. O0/POSIX and composed admission still required",
+    "corruption_runner": "tests/dataqual15_hupsel/test_canopy_checkpoint.py",
+    "local_posix": "WSL not installed; use Linux CI rather than claim local POSIX execution",
+    "progress_observation": "Compatible continuation reached accepted day210; first mowing window930 not reached"
   },
   "physical_correction": false,
   "canonical_admission": false
