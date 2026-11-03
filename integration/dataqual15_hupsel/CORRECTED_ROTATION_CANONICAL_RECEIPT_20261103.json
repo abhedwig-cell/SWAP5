@@ -1,0 +1,51 @@
+{
+  "stage": "CANONICALLY_ADMITTED_CORRECTED_CURRENT_DIAGNOSTIC_ROTATION_EVIDENCE",
+  "pr": 1500,
+  "merge": "1888f814c05c925e28a80b8ca33f778448215ab1",
+  "qualified_head": "ae9a5db0d93e83fd78e01dba4e45a553b2f927f4",
+  "expected_merge_tree": "f71d34be8ba89ffb82b0ec9065eb0d354cfef02b",
+  "actual_merge_tree": "f71d34be8ba89ffb82b0ec9065eb0d354cfef02b",
+  "exact_tree_match": true,
+  "production_delta": [],
+  "actual_merge_verifier": "PASS: SEALED_CURRENT1096_DIAGNOSTIC_LEDGER_CANOPY_AND_OWN_BUILD_RESTART_PASS_NOT_WHOLE_SCIENCE",
+  "native_execution": {
+    "platform": "Windows GNU16.2 checked O2",
+    "days": 1096,
+    "source_windows": 1097,
+    "from_start": true,
+    "imported_checkpoint": false,
+    "seconds": 859.4032059999881,
+    "numerical_variant": "Registered original-source DTMAX0.01; other original bytes unchanged"
+  },
+  "frozen_water_error_cm": 0.01395272275907189,
+  "unchanged_frozen_water_limit_cm": 0.015894114055035997,
+  "water_error_inside_bound": true,
+  "frozen_selected_metrics_inside": 25,
+  "frozen_selected_metrics_outside": 12,
+  "complete_original_profile_schedule_qualified": false,
+  "full_physical_energy_qualified": false,
+  "own_build_restarts": [
+    "O2 1058->1096",
+    "O2 1077->1096",
+    "O0 1077->1096 after explicitly compatible O2 seed1058 and its own continuous tail"
+  ],
+  "cold_posix": {
+    "run": 41731053202,
+    "job": 126248184283,
+    "status": "success",
+    "python": "3.12.3",
+    "scope": "Remeasure sealed data; not a native POSIX1096 execution"
+  },
+  "ci_terminal": "CORRECTED_ROTATION_CI_TERMINAL_20261103.json",
+  "ci_counts": {
+    "success": 13,
+    "failure": 1,
+    "cancelled": 1
+  },
+  "full_moving_fci_success": false,
+  "whole_scientific_admission": false,
+  "counts_unchanged": {
+    "original_execution": "2/3",
+    "whole_scientific": "0/3"
+  }
+}

@@ -261,5 +261,17 @@
     "canonical_admission": true,
     "merge": "4dc509e4712f54afd02da9cdbebbd16341572823",
     "receipt": "CANOPY_ENDPOINT_CANONICAL_RECEIPT_20261103.json"
+  },
+  "corrected_current_rotation_20261103": {
+    "status": "CANONICALLY_ADMITTED_BOUNDED_DIAGNOSTIC_ROTATION",
+    "pr": 1500,
+    "merge": "1888f814c05c925e28a80b8ca33f778448215ab1",
+    "evidence": "CORRECTED_ROTATION_EVIDENCE_20261103.json",
+    "receipt": "CORRECTED_ROTATION_CANONICAL_RECEIPT_20261103.json",
+    "recovery": "CORRECTED_ROTATION_RECOVERY_20261103.json",
+    "days": 1096,
+    "water_error_inside_unchanged_frozen_bound": true,
+    "remaining_frozen_metric_failures": 12,
+    "whole_scientific_admission": false
   }
 }
