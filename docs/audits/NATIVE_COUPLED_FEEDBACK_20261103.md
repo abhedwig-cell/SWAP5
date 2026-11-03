@@ -1,6 +1,7 @@
 # Native coupled Andelst candidate, feedback and donor provenance
 
-Baseline: `c1ce8808b`. Status: contract for an explicit corrected native model.
+Baseline: `c1ce8808b`. Status: checked Windows O0/O2 qualified explicit corrected research model;
+fresh Linux/admission pending.
 
 The next owner must materialize real native matrix/macro water and action
 history, feed the identical signed macro heat into the real matrix heat equation,
@@ -71,3 +72,13 @@ incoming water temperatures are inactive. Strict and explicit-proxy scenarios
 must both report their policies and actual donor use; their acceptance cannot
 supply missing temperatures for other intervals. The small driver separately
 requires strict refusal for a nonzero missing top donor.
+
+Measured Windows result: both policies cover2.8486750544946977 to
+2.8486751145761797day with3 genuine full and6 half trials,2 provisional accepted
+leaves, one rejected coarse temporal attempt and exactly one published revision.
+Accepted temporal maximum7.7667280818e-7; cumulative water residual
+1.7605620281e-14cm; maximum selected joint heat residual8.5151729741e-13J/cm2.
+Both S5NC0001 accepted files restore exactly. Original rejected native restart
+bytes remain identical. The small route has11 Fortran providers plus one existing
+C publisher, including adaptive completion and failure after a provisional leaf.
+Evidence: `integration/dataqual15/NATIVE_COUPLED_WINDOWS_EVIDENCE_20261103.json`.
