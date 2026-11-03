@@ -1,0 +1,63 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_CANOPY_CAPACITY_ENDPOINT",
+  "pr": 1498,
+  "merge": "4dc509e4712f54afd02da9cdbebbd16341572823",
+  "qualified_head": "54ce3fb2c347933e5fe1c267e5150e5c18cdf129",
+  "expected_merge_tree": "fb0cc11f3f55e46d884abf1c36a7f79cec79e384",
+  "actual_merge_tree": "fb0cc11f3f55e46d884abf1c36a7f79cec79e384",
+  "exact_tree_match": true,
+  "production_delta": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "cc33c56d4b6a09462426ec200c5638e34daa8d53",
+      "after": "d730a8b436d149f1d5e33275c0e25c330b76d2a2"
+    },
+    "app/solute_project/main.f90": {
+      "before": "40cb5207d78e10b682344ac1a6d14be67a63558b",
+      "after": "a94418d0001753d986f451473503e12c519ffdb4"
+    },
+    "src/kernel/mod_kernel_transactions.f90": {
+      "before": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+      "after": "ad6cd6f52460381847d4b493ca2dd291b25dfc98"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "a6ff0ff33124929424d95edff42ac5c5ce6629b6",
+      "after": "4744ab36c323a5a6a6f0dd1c8eb563c28b38ba48"
+    }
+  },
+  "actual_merge_verifier": {
+    "command": "python -B tests/dataqual15_hupsel/verify_canopy_endpoint_evidence.py",
+    "status": "PASS",
+    "marker": "WINDOWS_POSIX_O0_O2_CANOPY_ENDPOINT_AND_CURRENT_SHARED_RUNTIME_PASS_NOT_WHOLE_SCIENCE"
+  },
+  "qualification": "CANOPY_ENDPOINT_FINAL_QUALIFICATION_20261103.json",
+  "posix": {
+    "run": 41719913263,
+    "job": 126209642374,
+    "conclusion": "success"
+  },
+  "stable_source_ci": {
+    "record": "PR1498_CI_TERMINAL_20261103.json",
+    "success": 26,
+    "failure": 31,
+    "cancelled": 4,
+    "failed_jobs_adjudicated": 38,
+    "full_moving_fci_success": false
+  },
+  "scope": "Same-day accepted post-management Rutter capacity export on original-source DTMAX0.01 diagnostic trajectory; four native wet cuts and coherent typed checkpoint boundary",
+  "preserved": [
+    "solver",
+    "retry",
+    "temporal and mass tolerances",
+    "source window identity",
+    "immutable parameters",
+    "kernel lineage/revision",
+    "all-or-none joint day",
+    "CRC/source/typed owner restart refusal"
+  ],
+  "whole_scientific_admission": false,
+  "counts": {
+    "original_execution": "2/3",
+    "whole_scientific": "0/3"
+  },
+  "next": "Reuse the closed endpoint/native publication evidence. Continue other executable migration capabilities without treating this bounded correction as full original-project science."
+}

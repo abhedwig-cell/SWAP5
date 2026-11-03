@@ -1,6 +1,6 @@
 # Hupsel accepted canopy capacity endpoint
 
-Status: qualified on Windows/POSIX O0/O2; canonical admission pending.
+Status: canonically admitted through PR1498 at `4dc509e4712f54afd02da9cdbebbd16341572823`.
 
 The previously measured wet mowing endpoint retained more Rutter water than
 the accepted crop capacity. The correction invokes the incumbent Rutter
@@ -62,5 +62,9 @@ their historical meaning; it cannot qualify current endpoint physics.
 This is a bounded physical correction on the registered diagnostic trajectory.
 It is not full-period scientific equivalence. Solver, retry, temporal and mass
 tolerances are unchanged. The original-project execution/scientific counts
-remain2/3 and0/3. PR1498 remains draft until the required remaining gates and
-canonical reconciliation succeed.
+remain2/3 and0/3. The actual canonical tree exactly matches the expected tested merge tree.
+`CANOPY_ENDPOINT_CANONICAL_RECEIPT_20261103.json` binds the actual merge and
+passing current-owner verifier. All61 stable-source workflows are terminal:
+26 success,31 retained failures and4 cancellations. All38 failed jobs are
+adjudicated; full moving F-CI success is not claimed. The old source-scope
+firewalls and preexisting manual-provider/fixture failures are retained.
