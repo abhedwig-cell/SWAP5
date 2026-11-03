@@ -1,6 +1,6 @@
 # Current accepted native-admission composition
 
-Status: Windows and cold POSIX qualified; canonical integration pending.
+Status: canonically admitted through PR1502; actual merge independently reverified.
 
 The old native-I/O inventory correctly rejects the later physical endpoint
 postimages. Its frozen validator and authority are retained. The current
@@ -44,3 +44,5 @@ Authority: `integration/dataqual15_hupsel/CURRENT_ADMISSION_PREREGISTRATION_2026
 `CURRENT_ADMISSION_RECOVERY_20261103.json`.
 
 Actual canonical run41737968410/job126272697279 passes the complete composition and all13 new boundary controls. Windows passes the same complete composition; both execute the unchanged ten historical controls and seven original legs. All15 triggered workflows are terminal:14 pass, one retains three original Grassgrowth prepare-only inventory refusals. The old selector and its workflow are byte-identical to baselinebe6d1aff; no refusal is relabeled or weakened. The POSIX raw reports and job log are sealed in the current admission evidence.
+
+PR1502 merged at `41c952af60af4f9e2f3a671377488d03e446776d`. The actual merge tree equals the final evidence checkpoint tree. A fresh complete actual-merge composition passes all current evidence checks, the unchanged ten controls and all seven historical legs. Its raw reports are archived with member hashes in `CURRENT_ADMISSION_CANONICAL_RECEIPT_20261103.json`. No current scientific or historical scope is enlarged.
