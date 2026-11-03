@@ -1,0 +1,31 @@
+{
+  "status": "IMPLEMENTED_WINDOWS_QUALIFIED_POSIX_AND_PRESERVATION_PENDING",
+  "predecessor": "b11a48cccea4c6b1aa9759c179ad68180e8057da",
+  "production_delta": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "cc33c56d4b6a09462426ec200c5638e34daa8d53",
+      "after": "d730a8b436d149f1d5e33275c0e25c330b76d2a2"
+    },
+    "app/solute_project/main.f90": {
+      "before": "40cb5207d78e10b682344ac1a6d14be67a63558b",
+      "after": "a94418d0001753d986f451473503e12c519ffdb4"
+    },
+    "src/kernel/mod_kernel_transactions.f90": {
+      "before": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+      "after": "ad6cd6f52460381847d4b493ca2dd291b25dfc98"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "a6ff0ff33124929424d95edff42ac5c5ce6629b6",
+      "after": "4744ab36c323a5a6a6f0dd1c8eb563c28b38ba48"
+    }
+  },
+  "predecessor_production_trees": {
+    "src": "8a5f7a8b4e90b0219f76c46e584ae21a67d6a4fd",
+    "app": "d7e3ced2e7734a223a1c119da131b85aef874855",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "physical_correction": true,
+  "whole_scientific_admission": false,
+  "canonical_admission": false,
+  "verifier": "tests/dataqual15_hupsel/verify_canopy_endpoint_evidence.py"
+}
