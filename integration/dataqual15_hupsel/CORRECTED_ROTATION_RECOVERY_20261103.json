@@ -1,0 +1,15 @@
+{
+  "stage": "PERSISTED_AUDITOR_FULL_CURRENT_NATIVE_O2_RUNNING",
+  "baseline": "baada36c4f717ca40057b6db663e20f60b9d2a62",
+  "preregistration": "CORRECTED_ROTATION_PREREGISTRATION_20261103.json",
+  "producer": "tests/dataqual15_hupsel/run_canopy_observation.py",
+  "auditor": "tests/dataqual15_hupsel/audit_corrected_rotation.py",
+  "continuation_gate": "tests/dataqual15_hupsel/qualify_corrected_rotation_restarts.py",
+  "case": "../canopy-corrected-fresh-1096",
+  "bundle_O2": "../canopy-endpoint-coherent-O2",
+  "bundle_O0": "../canopy-endpoint-coherent-O0",
+  "source_boundary": "All actual compiled providers match current bytes exactly; PR1498 production source remains unchanged. Only analysis/qualification code selected.",
+  "history": "First source rain day has two real windows (4->4.083333333333333->5). Auditor checks every window and stock continuity before inherited observational calendar grouping; no source or numerical tolerance changed.",
+  "next": "Wait for the existing full native1096 process, audit exact primitive stocks and unchanged original frozen comparisons, run final current own-build continuations O0/O2, seal evidence and integrate.",
+  "full_scientific_admission": false
+}

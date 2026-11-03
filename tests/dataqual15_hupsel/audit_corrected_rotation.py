@@ -68,6 +68,8 @@ def audit(case,bundle):
  assert windows[0]['t0_day']==0 and windows[-1]['t1_day']==1096
  assert all(a['t1_day']==b['t0_day']for a,b in zip(windows,windows[1:]))
  assert all(r['t1_day']>r['t0_day']for r in windows)
+ for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
+  assert max(abs(a[prefix+'_end_'+unit]-b[prefix+'_start_'+unit])for a,b in zip(windows,windows[1:]))<=1e-10
  grouped=collections.defaultdict(list)
  for r in windows:
   assert all(math.isfinite(x)for x in r.values())
