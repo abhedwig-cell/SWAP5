@@ -11,6 +11,8 @@ def verify():
  assert not record['whole_scientific_admission']
  changed=subprocess.check_output(['git','diff','--name-only',record['baseline'],'HEAD','--','src','app','reference'],cwd=ROOT,text=True)
  assert not changed,'unreviewed production successor'
+ assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT),'uncommitted production source'
+ assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','src','app','reference'],cwd=ROOT),'untracked production source'
  for name,pin in record['normalized_repository_dependency_sha256'].items():
   assert sha((ROOT/name).read_bytes().replace(b'\r\n',b'\n'))==pin,name
  archive=BASE/'CORRECTED_ROTATION_EVIDENCE_20261103.tar.xz'
