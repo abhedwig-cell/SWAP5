@@ -901,5 +901,16 @@
     "pull_request": 1486,
     "actual_merge": "58b89f37df4458ac28fd6b44226cc0af7e9e6e01",
     "receipt": "integration/dataqual15/CONTACT_ENERGY_RECOVERY_20261102.json#closure16_canonical_receipt"
+  },
+  "contact_physical_energy_research_20261103": {
+    "status": "experimental_executed",
+    "record": "integration/dataqual15/CONTACT_PHYSICAL_ENERGY_RESEARCH_20261103.json",
+    "production_changed": false,
+    "nonlinear_contact_repair": false,
+    "full_energy_balance_complete": false,
+    "windows_checked_O0_O2": "PASS",
+    "linux": "PENDING",
+    "scope": "actual frozen112-node contact constraint; manufactured macro stock control seeded by measured exchange; conservative warm phase/root sensible heat trials",
+    "next": "fresh Linux qualification, then actual nonlinear contact and accepted native heat receipts"
   }
 }

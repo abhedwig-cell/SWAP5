@@ -1,0 +1,186 @@
+{
+  "base": "2924fefaca25fa260147e7c16cd9493c27f57cd7",
+  "branch": "codex/contact-physical-energy-20261103",
+  "stage": "WINDOWS_BOUNDED_RESEARCH_PASS_LINUX_PENDING",
+  "scope": "Research contact constraint on actual failed linearization plus explicit-phase conservative warm-soil heat trial",
+  "report": "docs/audits/CONTACT_PHYSICAL_ENERGY_RESEARCH_20261103.md",
+  "production_changed": false,
+  "nonlinear_contact_repair": false,
+  "full_energy_balance_complete": false,
+  "canonical_admitted": false,
+  "invariants": [
+    "read-only physical input; no trial state published on refusal",
+    "independent liquid/gas nodal volume closure",
+    "no missing donor or boundary energy interpreted as zero",
+    "no arbitrary smoothing or relaxed original mass tolerance"
+  ],
+  "selected": [
+    "actual112-node Andelst frozen Jacobian and measured contact rate jump, real production tridiagonal solver versus70-digit independent solve",
+    "ten phase-volume heat trials, two energy gauges, independent nodal and column energy reconstruction",
+    "fourteen missing-donor, missing-heat, phase and phase-volume-balance attacks, two inadmissible contact fractions, plus exact-zero donor control",
+    "checked O0/O2 and exact output per experiment"
+  ],
+  "expected_seconds": 120,
+  "next_action": "Verify sealed Windows evidence and run fresh checked Linux O0/O2; continue with transactional nonlinear contact and actual interval receipts; no production admission from frozen linearization",
+  "remaining": [
+    "nonlinear coupled Andelst step and conservative macropore storage/exchange publication",
+    "accepted native hydraulic and thermal interval receipts",
+    "actual gas-phase volume/temperature provider",
+    "atmospheric radiation/latent, vapor and freezing owners for complete physical energy"
+  ],
+  "archive": "integration/dataqual15/CONTACT_PHYSICAL_ENERGY_EVIDENCE_20261103.tar.xz",
+  "archive_sha256": "881ff9b7e8351c8e05e987e90148e540fe4b2361b3bc6c5a4b772d16336c2c98",
+  "measurement_commit": "cf4b37421f0cfec817c8c5621105caea4780f832",
+  "macro_candidate_git_blob": "93f1260417b0aa6458d957a4de01689930f8fa77",
+  "windows_result": {
+    "O0": {
+      "contact": {
+        "command": [
+          "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+          "-O0",
+          "-g",
+          "-fcheck=all",
+          "-ffree-line-length-none",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-JC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O0",
+          "-IC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O0",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\solver\\mod_reference_linear_solver.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\dataqual15\\research\\contact_constraint_driver.f90",
+          "-o",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O0\\contact.exe"
+        ],
+        "executable_sha256": "03750f167bc9161617ef951ae53d204edc0db9e1a21cd8f40a0da1b88f1c3912",
+        "contact_fraction": 0.00023230694677420856,
+        "exchange_rate_cm_day": 5.187907441490165e-06,
+        "exchange_amount_cm": 3.1169716762453324e-13,
+        "linear_residual": 6.39927601386336e-22,
+        "contact_residual": 2.6469779601696886e-23,
+        "independent_precision_digits": 70,
+        "nonlinear_accepted_step": false,
+        "full_original_complete": false,
+        "bounded_fraction_refusals": [
+          "fraction_above_one",
+          "negative_fraction"
+        ]
+      },
+      "heat": {
+        "command": [
+          "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+          "-O0",
+          "-g",
+          "-fcheck=all",
+          "-ffree-line-length-none",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-JC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O0",
+          "-IC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O0",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\solver\\mod_reference_linear_solver.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\process\\mod_linear_mixture_sensible_storage.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\dataqual15\\research\\mod_conservative_soil_heat_trial.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\dataqual15\\research\\conservative_heat_driver.f90",
+          "-o",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O0\\heat.exe"
+        ],
+        "executable_sha256": "88884d3178739c0f9902819bf3ffde65024b23685fa682655da1087a9da80f50",
+        "cases": 10,
+        "refusals": 14,
+        "max_nodal_energy_residual_j_cm2": 2.3141211169530607e-14,
+        "max_column_energy_residual_j_cm2": 2.2176704916887502e-14,
+        "explicit_isothermal_storage_gain_j_cm2": 0.20893939999997674,
+        "root_extraction_storage_change_j_cm2": -0.167151520000014,
+        "full_swap_energy_balance": false
+      },
+      "macro_exchange": {
+        "production": {
+          "transfer_cm": 3.1169716762453324e-13,
+          "stock_before_view_cm": 0.09999999999968831,
+          "stock_after_view_cm": 0.1,
+          "combined_matrix_macro_water_residual_cm": 3.1169716762453324e-13
+        },
+        "candidate": {
+          "transfer_cm": 3.1169716762453324e-13,
+          "stock_before_view_cm": 0.09999999999968831,
+          "stock_after_view_cm": 0.09999999999968831,
+          "combined_matrix_macro_water_residual_cm": 2.053461020539366e-18
+        }
+      }
+    },
+    "O2": {
+      "contact": {
+        "command": [
+          "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+          "-O2",
+          "-g",
+          "-fcheck=all",
+          "-ffree-line-length-none",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-JC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O2",
+          "-IC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O2",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\solver\\mod_reference_linear_solver.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\dataqual15\\research\\contact_constraint_driver.f90",
+          "-o",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O2\\contact.exe"
+        ],
+        "executable_sha256": "721423b6f3f49781246b362c2f6afcebb2262fbd39a38650389a6d97681ec6c1",
+        "contact_fraction": 0.00023230694677420856,
+        "exchange_rate_cm_day": 5.187907441490165e-06,
+        "exchange_amount_cm": 3.1169716762453324e-13,
+        "linear_residual": 6.39927601386336e-22,
+        "contact_residual": 2.6469779601696886e-23,
+        "independent_precision_digits": 70,
+        "nonlinear_accepted_step": false,
+        "full_original_complete": false,
+        "bounded_fraction_refusals": [
+          "fraction_above_one",
+          "negative_fraction"
+        ]
+      },
+      "heat": {
+        "command": [
+          "C:\\msys64\\ucrt64\\bin\\gfortran.EXE",
+          "-O2",
+          "-g",
+          "-fcheck=all",
+          "-ffree-line-length-none",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-JC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O2",
+          "-IC:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O2",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\solver\\mod_reference_linear_solver.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\src\\process\\mod_linear_mixture_sensible_storage.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\dataqual15\\research\\mod_conservative_soil_heat_trial.f90",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-MIGRATION-CONTINUE\\tests\\dataqual15\\research\\conservative_heat_driver.f90",
+          "-o",
+          "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\contact-physical-energy-04\\O2\\heat.exe"
+        ],
+        "executable_sha256": "0d670de3fdb80a767b3181fc3cfc568ed4e503daa40359ea2afe6e63f109a3bf",
+        "cases": 10,
+        "refusals": 14,
+        "max_nodal_energy_residual_j_cm2": 2.3141211169530607e-14,
+        "max_column_energy_residual_j_cm2": 2.2176704916887502e-14,
+        "explicit_isothermal_storage_gain_j_cm2": 0.20893939999997674,
+        "root_extraction_storage_change_j_cm2": -0.167151520000014,
+        "full_swap_energy_balance": false
+      },
+      "macro_exchange": {
+        "production": {
+          "transfer_cm": 3.1169716762453324e-13,
+          "stock_before_view_cm": 0.09999999999968831,
+          "stock_after_view_cm": 0.1,
+          "combined_matrix_macro_water_residual_cm": 3.1169716762453324e-13
+        },
+        "candidate": {
+          "transfer_cm": 3.1169716762453324e-13,
+          "stock_before_view_cm": 0.09999999999968831,
+          "stock_after_view_cm": 0.09999999999968831,
+          "combined_matrix_macro_water_residual_cm": 2.053461020539366e-18
+        }
+      }
+    }
+  },
+  "canonical_branch": "integration/f-ci-canonical",
+  "pull_request": 1489,
+  "documentation_checks": {
+    "source_checks": "PASS",
+    "mkdocs_strict": "PASS",
+    "production_delta_from_base": []
+  }
+}
