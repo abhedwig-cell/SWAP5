@@ -6,8 +6,11 @@ on:
     paths:
       - .github/workflows/hupsel-corrected-rotation.yml
       - tests/dataqual15_hupsel/audit_corrected_rotation.py
+      - tests/dataqual15_hupsel/capture_corrected_rotation_evidence.py
       - tests/dataqual15_hupsel/qualify_corrected_rotation_restarts.py
       - tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py
+      - integration/dataqual15_hupsel/CORRECTED_ROTATION_EVIDENCE_20261103*
+      - integration/dataqual15_hupsel/CORRECTED_ROTATION_PREREGISTRATION_20261103.json
 permissions:
   contents: read
 jobs:
