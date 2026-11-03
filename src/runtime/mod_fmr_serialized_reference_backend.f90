@@ -509,6 +509,12 @@ module mod_fmr_serialized_reference_backend
     type(root_water_uptake_request_t) :: request
   end type
 
+  ! Internal immutable endpoint command. It cannot carry a replacement state
+  ! or caller-supplied transaction provenance.
+  type, extends(canonical_forcing_t) :: fmr_rutter_capacity_event_t
+    real(real64) :: capacity_cm=0d0,time=0d0
+  end type
+
   type, extends(canonical_forcing_t), public :: fmr_b110_physical_forcing_t
     ! DATAQUAL01: admission evidence only; never changes process equations or budgets.
     type(pond_step_t),allocatable::reactive_supply
@@ -946,6 +952,8 @@ module mod_fmr_serialized_reference_backend
     procedure :: matches_committed_parameter_identity => fmr_serialized_matches_committed_identity
     procedure :: configure_parameters => fmr_serialized_configure_parameters
     procedure :: execution_admitted => fmr_serialized_execution_admitted
+    procedure :: endpoint_event_admitted => fmr_capacity_event_admitted
+    procedure :: apply_endpoint_event => fmr_apply_capacity_event
     procedure :: prepare_interval => fmr_serialized_prepare_interval
     procedure :: advance => fmr_serialized_advance
     procedure :: storage => fmr_serialized_storage
@@ -965,6 +973,9 @@ module mod_fmr_serialized_reference_backend
     type(fmr_serialized_reference_model_t) :: model
     type(kernel_executor_t) :: kernel
     logical :: initialized = .false.
+    logical :: endpoint_origin_available = .false.
+    integer(int64) :: endpoint_origin_lineage=0_int64,endpoint_origin_revision=-1_int64
+    real(real64) :: endpoint_origin_time=0d0
     logical :: bottom_thermal_requested = .false.
     type(fmr_bottom_thermal_candidate_t) :: bottom_thermal_candidate
     logical :: top_sensible_boundary_requested = .false.
@@ -977,6 +988,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: configure_base_salt_temporal_policy => fmr_configure_base_salt_temporal_policy
     procedure, public :: configure_rfm_runtime => fmr_serialized_backend_configure_rfm_runtime
     procedure, public :: run_trial => fmr_serialized_backend_run_trial
+    procedure, public :: run_canopy_capacity_event => fmr_backend_capacity_event
     procedure, public :: run_reference_floor_sample => fmr_serialized_backend_run_reference_floor_sample
     procedure, public :: commit_reference_floor_candidate => fmr_serialized_backend_commit_reference_floor_candidate
     procedure, public :: discard_reference_floor_candidate => fmr_serialized_backend_discard_reference_floor_candidate
@@ -2162,6 +2174,7 @@ contains
     logical :: selection_ok
     integer :: selection_status
     self%initialized = .false.
+    self%endpoint_origin_available=.false.
     self%model%water_flux_temporal=water_flux_temporal_policy_t()
     if(present(water_flux_temporal))self%model%water_flux_temporal=water_flux_temporal
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
@@ -2453,12 +2466,108 @@ contains
     type(kernel_diagnostics_t), intent(inout) :: diagnostics
     logical, intent(out) :: did_commit
     integer, intent(out) :: status
+    real(real64) :: t0,t1
+    logical :: interval_available,time_available
 
     did_commit = .false.
     status = KERNEL_STATUS_NOT_ADMITTED
     if (.not. self%initialized) return
+    call candidate%origin_interval(t0,t1,interval_available)
     call fmr_commit_candidate(self%kernel, committed, candidate, diagnostics, did_commit, status)
+    if(did_commit)then
+      self%endpoint_origin_available=.false.
+      if(interval_available.and.t1>t0)then
+        self%endpoint_origin_lineage=committed%current_lineage_id()
+        self%endpoint_origin_revision=committed%current_revision()
+        call committed%current_time(self%endpoint_origin_time,time_available)
+        self%endpoint_origin_available=time_available
+      end if
+    end if
   end subroutine fmr_serialized_backend_commit_trial_candidate
+
+  subroutine fmr_backend_capacity_event(self,column,template,parameters,committed,capacity_cm,time,config, &
+                                      result,candidate,diagnostics)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    type(fmr_logical_column_t),intent(in)::column
+    type(fmr_template_t),intent(in)::template
+    type(fmr_b110_physical_parameters_t),intent(in)::parameters
+    type(kernel_committed_state_t),intent(in)::committed
+    real(real64),intent(in)::capacity_cm,time
+    type(canonical_numerical_config_t),intent(in)::config
+    type(kernel_result_t),intent(out)::result
+    type(kernel_candidate_state_t),intent(out)::candidate
+    type(kernel_diagnostics_t),intent(out)::diagnostics
+    type(fmr_rutter_capacity_event_t)::command
+    call reject_backend_trial(result,candidate,diagnostics)
+    if(.not.self%initialized.or..not.self%endpoint_origin_available)return
+    if(.not.ieee_is_finite(time).or..not.ieee_is_finite(capacity_cm))return
+    if(time/=self%endpoint_origin_time.or.capacity_cm<0d0)return
+    if(committed%current_lineage_id()/=self%endpoint_origin_lineage.or. &
+       committed%current_revision()/=self%endpoint_origin_revision)return
+    if(column%column_id/=self%endpoint_origin_lineage.or.column%backend_id/=FMR_BACKEND_SERIALIZED_REFERENCE.or. &
+       column%template_id/=template%template_id.or.template%compatible_backend_id/=FMR_BACKEND_SERIALIZED_REFERENCE)return
+    if(template%optional_state_layout_id/=FMR_OPTIONAL_STATE_LAYOUT_RUTTER_BLACK.or. &
+       template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
+       template%numerical_continuation_layout_id/=FMR_NUMERICAL_CONTINUATION_NONE)return
+    command%capacity_cm=capacity_cm;command%time=time
+    call self%kernel%sample_endpoint_event(parameters,committed,command,time,config,result,candidate,diagnostics)
+  end subroutine
+
+  logical function fmr_capacity_event_admitted(self,parameters,command,state)result(ok)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(kernel_parameters_t),intent(in)::parameters
+    class(canonical_forcing_t),intent(in)::command
+    class(transaction_state_t),intent(in)::state
+    ok=.false.
+    if(.not.self%state_profile_admitted.or..not.self%rutter_active.or..not.self%black_evaporation_active)return
+    if(.not.self%soil_water_selection%uses_reference())return
+    select type(parameters)
+    type is(fmr_b110_physical_parameters_t)
+      if(.not.parameters%black_evaporation_active.or.parameters%macropore_active.or.parameters%snow_active.or. &
+         parameters%frost_active.or.parameters%boesten_evaporation_active)return
+    class default
+      return
+    end select
+    select type(command)
+    type is(fmr_rutter_capacity_event_t)
+      if(.not.all(ieee_is_finite([command%capacity_cm,command%time])))return
+      if(command%capacity_cm<0d0)return
+      select type(state)
+      class is(fmr_b110_physical_state_t)
+        if(.not.allocated(state%rutter))return
+        if(.not.state%rutter%source_window_initialized())return
+        if(.not.ieee_is_finite(state%rutter%accepted_until()))return
+        if(state%rutter%accepted_until()/=command%time)return
+        ok=.true.
+      end select
+    end select
+  end function
+
+  subroutine fmr_apply_capacity_event(self,state,command,time,outcome)
+    class(fmr_serialized_reference_model_t),intent(inout)::self
+    class(transaction_state_t),intent(inout)::state
+    class(canonical_forcing_t),intent(in)::command
+    real(real64),intent(in)::time
+    type(trial_outcome_t),intent(out)::outcome
+    type(rutter_source_state_t)::proposal
+    real(real64)::export_cm
+    integer::status
+    outcome=trial_outcome_t()
+    if(.not.self%rutter_active.or..not.ieee_is_finite(time))return
+    select type(command)
+    type is(fmr_rutter_capacity_event_t)
+      if(command%time/=time)return
+      select type(state)
+      class is(fmr_b110_physical_state_t)
+        if(.not.allocated(state%rutter))return
+        call state%rutter%capacity_candidate(command%capacity_cm,proposal,export_cm,status)
+        if(status/=RUTTER_WINDOW_OK)return
+        state%rutter=proposal
+        outcome%mass_out=export_cm;outcome%mass_accounting_complete=.true.
+        outcome%missing_mass_contribution_mask=TX_MASS_MISSING_NONE;outcome%solver_ok=.true.
+      end select
+    end select
+  end subroutine
 
   subroutine fmr_serialized_backend_discard_trial_candidate(self, candidate, diagnostics)
     class(fmr_serialized_reference_backend_t), intent(inout) :: self
