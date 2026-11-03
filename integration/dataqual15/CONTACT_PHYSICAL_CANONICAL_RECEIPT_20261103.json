@@ -1,0 +1,111 @@
+{
+  "status": "COMPOSED_CANONICAL_RESEARCH_RETEST_PASS_GUARD_SUCCESSOR_PENDING",
+  "research_pr": 1489,
+  "base": "2924fefaca25fa260147e7c16cd9493c27f57cd7",
+  "qualified_head": "5607ee32d1625a146899d46dc64a5d55fc3acb6b",
+  "tested_merge": "ec417581e8759d5f1c43ded49462d5badf0daef0",
+  "tested_tree": "da1956d4a797bb4a744d0cfdcb5d515a4b69b724",
+  "actual_merge": "b2a2b290ba7c3e615398c293055e412845d639c6",
+  "actual_tree": "4967ef59dc4a2a327efa8cde551045b52d88d4a3",
+  "whole_tree_exact": false,
+  "composition": {
+    "separately_admitted_pr": 1488,
+    "separately_admitted_merge": "d37a9ba2f09e8ea65168b0f87cd6691ad372536f",
+    "production_leaf": "app/solute_project/prepare_rain_duration.f90",
+    "blob": "4de070ccb16a654989322a3cc42b08bf13a89c7f",
+    "all_research_compiled_dependencies_exact_at_actual_merge": true,
+    "guard_successor_commit": "0172a1d2aee7fbe7da3b5d1ac217fe018f13ecc0"
+  },
+  "linux": {
+    "zip_sha256": "19557c8d3eb75a6209faadadf43df6b68f4de15c6a09580658ed3681b91d013e",
+    "run": 41609363259,
+    "job": 125827085562,
+    "artifact": 13217604193,
+    "status": "INDEPENDENT_LINUX_O0_O2_VERIFIED",
+    "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+    "measurement_commit": "ec417581e8759d5f1c43ded49462d5badf0daef0",
+    "source_git_blob": {
+      "src/solver/mod_reference_linear_solver.f90": "a2eeeb951c5269068ed0c9e6cd47e22bfa736d7c",
+      "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+      "tests/dataqual15/research/contact_constraint_driver.f90": "f43adf2cd57914d0ca2d08b9f95b8e1ecdbbe9e0",
+      "tests/dataqual15/research/mod_conservative_soil_heat_trial.f90": "5ebe9c3008c8f377e848c9fc93c2822c394dd2d1",
+      "tests/dataqual15/research/conservative_heat_driver.f90": "d19666eb09c36643d5f23515a290e45f7b57d915",
+      "tests/dataqual15/research/contact_macro_exchange_driver.f90": "d3ae6ba18008383704a3ded0e0ad3e1aed2e8a33",
+      "src/runtime/mod_macropore_continuation_state.f90": "7b670c656998903f6c7da77182c2e2c6f5ab14ae",
+      "src/process/macropore/mod_ppa_wu05a5_top_partition.f90": "4796cbade0753a133ab2b1bb1f5a5f0ee3d62026",
+      "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90": "c78a2442a9b52f15e754c57445fd90be01aa9592",
+      "src/process/macropore/mod_macropore_standard_storage.f90": "4978d4797d4852529e83d5b9ab2b1e9ea4b96060",
+      "tests/dataqual15/research/macropore_stock_conservation.patch": "7b923f2f6f885563efde601002c0d9be532180b7",
+      "tests/dataqual15/qualify_contact_physical_energy.py": "8fe85fb71e8d1c9e6ddbab013e9aefd1d8dcff49",
+      "tests/support/augment_bartholomeus_backend_sources.py": "5fc907159bfa5fac766c6d4ee57982ed0a3e4d1c"
+    },
+    "archive": "integration/dataqual15/CONTACT_PHYSICAL_ENERGY_LINUX_20261103.zip"
+  },
+  "actual_merge_windows_retest": {
+    "archive": "integration/dataqual15/CONTACT_PHYSICAL_ACTUALMERGE_20261103.tar.xz",
+    "archive_sha256": "b91c82635ec6dd34161856da1287aa667209c1bf96a3fa0b80253e1a3fcc11cb",
+    "measurement_commit": "0172a1d2aee7fbe7da3b5d1ac217fe018f13ecc0",
+    "status": "BOUNDED_CONTACT_AND_CONSERVATIVE_HEAT_RESEARCH_PASS",
+    "source_git_blob": {
+      "src/solver/mod_reference_linear_solver.f90": "a2eeeb951c5269068ed0c9e6cd47e22bfa736d7c",
+      "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+      "tests/dataqual15/research/contact_constraint_driver.f90": "f43adf2cd57914d0ca2d08b9f95b8e1ecdbbe9e0",
+      "tests/dataqual15/research/mod_conservative_soil_heat_trial.f90": "5ebe9c3008c8f377e848c9fc93c2822c394dd2d1",
+      "tests/dataqual15/research/conservative_heat_driver.f90": "d19666eb09c36643d5f23515a290e45f7b57d915",
+      "tests/dataqual15/research/contact_macro_exchange_driver.f90": "d3ae6ba18008383704a3ded0e0ad3e1aed2e8a33",
+      "src/runtime/mod_macropore_continuation_state.f90": "7b670c656998903f6c7da77182c2e2c6f5ab14ae",
+      "src/process/macropore/mod_ppa_wu05a5_top_partition.f90": "4796cbade0753a133ab2b1bb1f5a5f0ee3d62026",
+      "src/process/macropore/mod_ppa_wu05a5_multi_domain_process.f90": "c78a2442a9b52f15e754c57445fd90be01aa9592",
+      "src/process/macropore/mod_macropore_standard_storage.f90": "4978d4797d4852529e83d5b9ab2b1e9ea4b96060",
+      "tests/dataqual15/research/macropore_stock_conservation.patch": "7b923f2f6f885563efde601002c0d9be532180b7",
+      "tests/dataqual15/qualify_contact_physical_energy.py": "8fe85fb71e8d1c9e6ddbab013e9aefd1d8dcff49",
+      "tests/support/augment_bartholomeus_backend_sources.py": "5fc907159bfa5fac766c6d4ee57982ed0a3e4d1c"
+    }
+  },
+  "verifier_negative_controls": [
+    {
+      "control": "false_full_energy_claim",
+      "result": "REJECTED"
+    },
+    {
+      "control": "archive_digest",
+      "result": "REJECTED"
+    },
+    {
+      "control": "candidate_identity",
+      "result": "REJECTED"
+    },
+    {
+      "control": "dirty_contact_source",
+      "result": "REJECTED"
+    }
+  ],
+  "retained_global_guard_failures": {
+    "2924fefaca25fa260147e7c16cd9493c27f57cd7": {
+      "predicate": "scientific delta equals DATAQUAL12 frozen scientific_delta",
+      "result": "FAIL",
+      "observed_count": 203,
+      "expected_count": 13,
+      "guard_blob": "2c4066c4c44baa02360fbfaf6bb5662bb2f59b87"
+    },
+    "d37a9ba2f": {
+      "predicate": "scientific delta equals DATAQUAL12 frozen scientific_delta",
+      "result": "FAIL",
+      "observed_count": 205,
+      "expected_count": 13,
+      "guard_blob": "2c4066c4c44baa02360fbfaf6bb5662bb2f59b87"
+    },
+    "b2a2b290b": {
+      "predicate": "scientific delta equals DATAQUAL12 frozen scientific_delta",
+      "result": "FAIL",
+      "observed_count": 213,
+      "expected_count": 13,
+      "guard_blob": "2c4066c4c44baa02360fbfaf6bb5662bb2f59b87"
+    }
+  },
+  "production_contact_repair": false,
+  "full_energy_balance_complete": false,
+  "full_original_andelst_complete": false,
+  "scientific_denominator_changed": false,
+  "next_action": "qualify exact composed source guard and publish successor; nonlinear contact state coupling and actual phase/thermal interval receipts remain open"
+}
