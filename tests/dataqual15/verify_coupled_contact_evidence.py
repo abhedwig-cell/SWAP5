@@ -9,6 +9,9 @@ def verify():
  record=json.loads((ROOT/'integration/dataqual15/COUPLED_CONTACT_WINDOWS_EVIDENCE_20261103.json').read_text(encoding='utf-8'))
  assert not git('diff','4600df4b695269fa1a36d79dbaffde8b7a547eff','HEAD','--','src','app','reference'),'production changed'
  assert not record['full_coupled_step_accepted'] and not record['full_energy_balance_complete'] and not record['history_memory_closure_available']
+ for name,blob in record['post_measurement_unchanged_helper_reconciliation'].items():assert git('rev-parse','HEAD:'+name)==git('rev-parse','4600df4b695269fa1a36d79dbaffde8b7a547eff:'+name)==blob
+ capsule=ROOT/'integration/dataqual15/ANDELST_CONTACT_DIAGNOSTIC.tar.xz';assert hashlib.sha256(capsule.read_bytes()).hexdigest()=='0e0c5a80e4481e98a4e74632a06cbdc813e8514a76508716c4d131f445b470e4'
+ with tarfile.open(capsule) as t:original={n:t.extractfile('run/'+n).read() for n in ['input.nml','input.swp','macro.nml','origin.bin']}
  wrapper=record['uncompiled_orchestrator_successor'];assert git('rev-parse','HEAD:'+wrapper['path'])==wrapper['current_blob']
  archive=ROOT/record['archive'];assert hashlib.sha256(archive.read_bytes()).hexdigest()==record['archive_sha256']
  with tarfile.open(archive) as t:files={m.name:t.extractfile(m).read() for m in t.getmembers() if m.isfile()}
@@ -37,6 +40,8 @@ def verify():
   nodes=[x.split(',') for x in rows if x.startswith('NODE,')];assert len(nodes)==336
   for case in ['contact-0/origin.bin','contact-0/diagnostic-rejected.bin','contact-1/diagnostic-rejected.bin','actual-prefix/restart.bin']:
    raw=files[opt+'/'+case];assert raw[:8]==b'S5WM0001' and zlib.crc32(raw[:-4])==struct.unpack('=I',raw[-4:])[0]
+  for name in ['input.nml','input.swp','macro.nml']:assert files[opt+'/contact-0/'+name]==original[name]
+  assert files[opt+'/contact-0/origin.bin'][72:-4]==original['origin.bin'][72:-4]
   assert files[opt+'/contact-0/origin.bin']==files[opt+'/contact-0/diagnostic-rejected.bin']==files[opt+'/contact-1/diagnostic-rejected.bin']
   analysis,cases=analyze(files[opt+'/actual-prefix/actual-thermal.csv'],files[opt+'/actual-prefix/actual-transport.csv']);assert analysis['intervals']==194 and not analysis['full_energy_balance_complete']
   assert thermal(files[opt+'/actual-prefix/actual-thermal.csv'])['intervals']==194

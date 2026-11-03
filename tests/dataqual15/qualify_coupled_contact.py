@@ -109,6 +109,7 @@ def main():
  for name,source in [('publish','app/support/restart_publish.c'),('platform',native.RESEARCH+'native_contact_platform.c')]:
   obj=build/(name+'.o');run(['gcc','-O2','-c',ROOT/source,'-o',obj],build,'compile-'+name);objects.append(obj)
  exe=build/'native.exe';run(['gfortran','-fopenmp',*objects,utilities/'ttobj/libttutil.a','-o',exe],build,'link');report['executable_sha256']=sha(exe);save()
+ capsule=ROOT/'integration/dataqual15/ANDELST_CONTACT_DIAGNOSTIC.tar.xz';assert sha(capsule)=='0e0c5a80e4481e98a4e74632a06cbdc813e8514a76508716c4d131f445b470e4';report['source_capsule_sha256']=sha(capsule);save()
  def case(name):
   folder=out/name;folder.mkdir()
   with tarfile.open(ROOT/'integration/dataqual15/ANDELST_CONTACT_DIAGNOSTIC.tar.xz') as t:
