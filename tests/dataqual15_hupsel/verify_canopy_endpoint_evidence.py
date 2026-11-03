@@ -43,6 +43,7 @@ def verify():
   assert json.loads(files['publication-'+opt+'/RESULT.json'])['status']=='NATIVE_TWO_DAY_PUBLICATION_RESTART_AND_CORRUPTION_PASS'
   assert json.loads(files['owner-'+opt+'/RESULT.json'])['status']=='ACTUAL_RUTTER_ENDPOINT_PHYSICAL_MASS_AND_COMPLETE_OWNER_BYTE_CONTROLS_PASS_NOT_WHOLE_SCIENCE'
  thermal_path=BASE/'CANOPY_CURRENT_THERMAL_20261103.tar.json'
+ assert thermal_path.is_file(),'fresh shared kernel/backend thermal preservation required'
  if thermal_path.exists():
   thermal=json.loads(thermal_path.read_text())
   archive=BASE/'CANOPY_CURRENT_THERMAL_20261103.tar.xz'

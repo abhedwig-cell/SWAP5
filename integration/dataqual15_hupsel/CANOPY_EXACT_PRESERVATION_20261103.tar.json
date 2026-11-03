@@ -1,0 +1,56 @@
+{
+  "status": "EXACT_PREDECESSOR_AUTHORITY_AND_SEPARATE_CURRENT_CANOPY_PROOF_PASS",
+  "candidate": "bd751c18537b2ba178f04d2d7ea9119c29522820",
+  "projection": {
+    "tree": "9ecd22cf4453485a48a608f33d86f367e4811796",
+    "commit": "dff7c9116a257cf62504413b691a9478b3d69624",
+    "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+  },
+  "events": [
+    {
+      "label": "boundary-controls",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tests/dataqual15/test_native_restart_admission.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "label": "historical-seven-legs",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tests/dataqual15/verify_native_restart_admission.py",
+        "--output",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\ce-pres02\\historical-admission"
+      ],
+      "returncode": 0
+    }
+  ],
+  "whole_scientific_admission": false,
+  "archive_sha256": "b493e2e7ddc7db957e4161135412328eb11699d752d584e1172e77bffae3abda",
+  "files_sha256": {
+    "boundary-controls.stderr": "be509cb0ca6c893e2dcabbe167250488255a284595d0ce39e2e8bcf0f0a495a9",
+    "boundary-controls.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-seven-legs.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-seven-legs.stdout": "cac0e0cffdf0ae4956f5cc5bb7a60c8cb907491467527aa9c659d0959eb1fe0e",
+    "RESULT.json": "f7bae32748ab7c4eb05b83a57c221a1d3fb74feda70cf78c2346c20f1f102c87",
+    "historical-admission/current-hupsel-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/current-hupsel-native.stdout": "3f976230b677cd539dd9f0ed7f12b234dfa4758584c13ef188ea673fad56a262",
+    "historical-admission/current-native-contact-observations.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/current-native-contact-observations.stdout": "4bb82844649d3c0b85a5631d4998fd125026a9df4bcd566fd4e2826e94b00e64",
+    "historical-admission/current-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/current-native.stdout": "4e04a1162ad535e928975beb5f6fee7b58162d0ddb09ebbacf29baf14dc096dc",
+    "historical-admission/current-sensible-stock.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/current-sensible-stock.stdout": "66aed74d64ac9d93464cc5158e89e2c2fc2b6703d8721737529117f7fd3eca42",
+    "historical-admission/predecessor-grass.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/predecessor-grass.stdout": "26c2ea13a1b897ee5c57d12d192cb13a9f798ce1aff6693605a98599adbefc88",
+    "historical-admission/predecessor-hupsel.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/predecessor-hupsel.stdout": "57b37011aedfe67240d9d7d839febfd1f67f7ffafd5d6d9607ef21a7032f316f",
+    "historical-admission/predecessor-stress.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "historical-admission/predecessor-stress.stdout": "30bcfc2324488d8e306c8d474f1eb1939f7c623b4f1fd61604a5f25c4efcf95c",
+    "historical-admission/RESULT.json": "cac0e0cffdf0ae4956f5cc5bb7a60c8cb907491467527aa9c659d0959eb1fe0e"
+  },
+  "retained_failure": "../canopy-exact-preservation: Windows nested checkout path failure before three historical legs; repeated in shorter path with inherited core.longpaths=true, unchanged validators"
+}
