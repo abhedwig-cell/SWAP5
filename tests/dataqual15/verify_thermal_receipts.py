@@ -15,8 +15,16 @@ def verify():
     assert record['baseline']=='538fb025e8702d4dd609bc30cc347743a0587145'
     assert record['status']=='ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS'
     assert record['full_energy_balance_complete'] is False
+    assert set(record['production_delta'])=={
+        'src/runtime/mod_fmr_thermal_substep_receipt.f90',
+        'src/runtime/mod_fmr_water_flux_trace_contract.f90',
+        'src/runtime/mod_fmr_serialized_reference_backend.f90'}
+    assert set(record.get('independent_adapters',{}))<= {'app/solute_project/inspect_historical.f90'}
     allowed=set(record['production_delta'])
     for path,adapter in record.get('independent_adapters',{}).items():
+        assert (adapter['before'],adapter['after'],adapter['admitted_merge'])==(
+            '0855b4014e18b32475d1d4a18c18d477413c0b7c','85933351e9a2bb1e3830485a0e3eb345a4369141',
+            'cbb4352702f576a244431655a2f89cfc02875709')
         subprocess.run(['git','merge-base','--is-ancestor',adapter['admitted_merge'],'HEAD'],cwd=ROOT,check=True)
         for ref,pin in ((record['baseline'],adapter['before']),('HEAD',adapter['after'])):
             assert subprocess.check_output(['git','rev-parse',ref+':'+path],cwd=ROOT,text=True).strip()==pin,path

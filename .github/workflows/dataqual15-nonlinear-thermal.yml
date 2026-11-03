@@ -11,6 +11,7 @@ on:
       - 'tests/dataqual15/research_native_build_cache.py'
       - 'tests/dataqual15/research/**'
       - 'integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS*'
+      - 'integration/dataqual15/NONLINEAR_NATIVE_EVIDENCE*'
       - '.github/workflows/dataqual15-nonlinear-thermal.yml'
 permissions:
   contents: read
@@ -27,6 +28,8 @@ jobs:
           fetch-depth: 0
       - name: Exact current thermal and inherited numerical owner qualification
         run: python -B tests/dataqual15/verify_stock_runtime_production.py
+      - name: Verify sealed Windows native research and actual-input observations
+        run: python -B tests/dataqual15/verify_nonlinear_native_evidence.py
       - name: Fresh actual accepted thermal receipt and unchanged EB runtime O0 and O2
         run: python -B tests/dataqual15/qualify_thermal_receipts.py --output thermal-receipts-ci
       - uses: actions/upload-artifact@v4

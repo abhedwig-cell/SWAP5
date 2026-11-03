@@ -61,7 +61,10 @@ def main():
     if record.get('sensible_stock_owner_admission'):
         run('current-sensible-stock',[record['sensible_stock_owner_admission']['verifier']],ROOT)
     if record.get('thermal_observation_successor'):
-        run('current-thermal-observations',[record['thermal_observation_successor']['verifier']],ROOT)
+        if not record.get('sensible_stock_owner_admission'):
+            run('current-thermal-observations',[record['thermal_observation_successor']['verifier']],ROOT)
+        if record['thermal_observation_successor'].get('native_verifier'):
+            run('current-native-contact-observations',[record['thermal_observation_successor']['native_verifier']],ROOT)
     view,projection=prepare(record,out)
     if a.prepare_only:
         (out/'PREPARED.json').write_text(json.dumps(projection,indent=2)+'\n')
