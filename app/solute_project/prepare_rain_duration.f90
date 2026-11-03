@@ -20,8 +20,8 @@ program prepare_rain_duration
  call rdfinr('dd',1,31,dd,n,n);call rdfinr('mm',1,12,mm,n,n)
  call rdfint('yyyy',yyyy,n,n);call rdfdor('rain',0d0,1000d0,rain,n,n)
  call rdfdor('wet',0d0,1d0,wet,n,n);close(74)
- open(newunit=u,file='rain_events.csv',status='new',action='write')
- write(u,'(a)')'end_day,rate_cm_day'
+ ! Validate the entire selected window before creating an externally visible
+ ! event stream. A late missing day or invalid wet event must leave no prefix.
  previous=first-1d0
  do i=1,n
   date=0;date(1:3)=[yyyy(i),mm(i),dd(i)];call dtardp(date,0.,t)
@@ -29,11 +29,18 @@ program prepare_rain_duration
   if(t/=previous+1d0)error stop 'original weather must cover consecutive project days'
   call resolve_daily_rain_duration(rain(i),wet(i),duration,rate,code)
   if(code/=0)error stop 'original RAIN and WET do not correspond'
-  if(duration>0d0)write(u,'(es25.16e3,a,es25.16e3)')t-first+duration,',',rate
-  if(duration<1d0)write(u,'(es25.16e3,a,es25.16e3)')t-first+1d0,',',0d0
   previous=t
  end do
  if(previous/=last)error stop 'incomplete original weather'
+ open(newunit=u,file='rain_events.csv',status='new',action='write')
+ write(u,'(a)')'end_day,rate_cm_day'
+ do i=1,n
+  date=0;date(1:3)=[yyyy(i),mm(i),dd(i)];call dtardp(date,0.,t)
+  if(t<first.or.t>last)cycle
+  call resolve_daily_rain_duration(rain(i),wet(i),duration,rate,code)
+  if(duration>0d0)write(u,'(es25.16e3,a,es25.16e3)')t-first+duration,',',rate
+  if(duration<1d0)write(u,'(es25.16e3,a,es25.16e3)')t-first+1d0,',',0d0
+ end do
  close(u)
  print '(a,i0)','SWP_ORIGINAL_DURATION_PREPARED_DAYS=',nint(last-first+1d0)
 end program prepare_rain_duration
