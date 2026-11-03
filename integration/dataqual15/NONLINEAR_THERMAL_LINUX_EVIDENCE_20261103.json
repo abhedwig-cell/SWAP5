@@ -1,0 +1,250 @@
+{
+  "status": "LINUX_COLD_O0_O2_NATIVE_AND_CURRENT_THERMAL_RUNTIME_PASS",
+  "qualified_head": "474cb02c4c2c604d52f06f1edcf0d261af1fc8d5",
+  "run": 41623851023,
+  "artifacts": {
+    "accepted-thermal-receipts": "408f8606b482f4976fc24f6e2948f912caaa58b9fe87df5b40f7e47de7cdbe3f",
+    "native-contact-O0": "f209230ca2ea6c535d20606784473aa0c21739298fa0658ea2a425f88ed2d6e7",
+    "native-contact-O2": "1bfb4807c8b4b0f180a733ff19793bb8471c8aa75bae4ac17963f9248e831f34"
+  },
+  "archive": "integration/dataqual15/NONLINEAR_THERMAL_LINUX_EVIDENCE_20261103.tar.xz",
+  "archive_sha256": "0f01e0349513c59dbeaffa46a067bb5a6c4aab56ab3bac103aa4f3cc13d21d44",
+  "observations": {
+    "runtime": {
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "measurement_commit": "e1f99b808edcbcd21f11395a83be200a0db5733f",
+      "scope": "ACTUAL_ACCEPTED_THERMAL_OBSERVATIONS_NOT_COMPLETE_PHYSICAL_ENERGY",
+      "status": "ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS"
+    },
+    "O0": {
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "measurement_commit": "e1f99b808edcbcd21f11395a83be200a0db5733f",
+      "thermal": {
+        "status": "ACTUAL_FIRST_DAY_THERMAL_DATA_INDEPENDENTLY_VERIFIED",
+        "intervals": 194,
+        "node_rows": 21728,
+        "independent_conductive_boundary_intervals": 194,
+        "max_capacity_reconstruction_error_j_cm3_k": 1.3322676295501878e-15,
+        "max_nodal_legacy_energy_error_j_cm2": 1.8951507030351422e-13,
+        "max_column_legacy_energy_error_j_cm2": 1.2347900479880991e-12,
+        "legacy_average_capacity_storage_change_j_cm2": 70.63532167981883,
+        "conductive_boundary_into_j_cm2": 70.6353216798409,
+        "raw_theta_domain_error_rows": 0,
+        "max_raw_theta_domain_error": 0.0,
+        "diagnostic_unclipped_theta_profile_stock_change_j_cm2": 69.52434400246109,
+        "diagnostic_profile_stock_minus_conduction_j_cm2": -1.1109776773798075,
+        "native_root_rate_integral_cm": 0.0020373806217216846,
+        "full_energy_balance_complete": false,
+        "diagnostic_scope": "Raw matrix theta-profile linear-mixture extension; not whole matrix/macro physical stock qualification. No heat flux inferred from residual.",
+        "missing": [
+          "gas flow and external gas donor temperatures",
+          "external liquid donor temperatures and advective time quadrature",
+          "macropore sensible-energy partition/transport",
+          "atmospheric latent/radiation, vapor and phase-change ownership"
+        ]
+      },
+      "contact_trials": [
+        [
+          "TRIAL",
+          "0",
+          "T",
+          "1",
+          "7",
+          "-3.90248789784582606E-001",
+          " 2.32310322779843981E-004",
+          "-4.05591703806816873E-012",
+          " 3.06061483542221943E-017"
+        ],
+        [
+          "TRIAL",
+          "1",
+          "T",
+          "2",
+          "13",
+          "-3.90248789784582606E-001",
+          " 2.32310141176686447E-004",
+          "-3.32970742264663691E-016",
+          " 3.10398292232163960E-017"
+        ],
+        [
+          "TRIAL",
+          "2",
+          "T",
+          "3",
+          "19",
+          "-3.90248789784582606E-001",
+          " 2.32310141174945056E-004",
+          "-2.94081765590324254E-016",
+          " 3.06061483542221943E-017"
+        ],
+        [
+          "TRIAL",
+          "3",
+          "F",
+          "0",
+          "5",
+          " 0.00000000000000000E+000",
+          " 0.00000000000000000E+000",
+          " 5.17684103173984390E-006",
+          " 1.14407715716394862E-009"
+        ],
+        [
+          "TRIAL",
+          "4",
+          "F",
+          "0",
+          "5",
+          " 0.00000000000000000E+000",
+          " 0.00000000000000000E+000",
+          "-2.23269462610848936E-002",
+          " 1.14407715716394862E-009"
+        ]
+      ],
+      "provider_count": 202,
+      "exact_Windows_Linux_observations": {
+        "contact": true,
+        "thermal": false
+      },
+      "exact_Windows_Linux_restart_physical_payload": false
+    },
+    "O2": {
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "measurement_commit": "e1f99b808edcbcd21f11395a83be200a0db5733f",
+      "thermal": {
+        "status": "ACTUAL_FIRST_DAY_THERMAL_DATA_INDEPENDENTLY_VERIFIED",
+        "intervals": 194,
+        "node_rows": 21728,
+        "independent_conductive_boundary_intervals": 194,
+        "max_capacity_reconstruction_error_j_cm3_k": 1.3322676295501878e-15,
+        "max_nodal_legacy_energy_error_j_cm2": 1.8951507030351422e-13,
+        "max_column_legacy_energy_error_j_cm2": 1.2347900479880991e-12,
+        "legacy_average_capacity_storage_change_j_cm2": 70.63532167981883,
+        "conductive_boundary_into_j_cm2": 70.6353216798409,
+        "raw_theta_domain_error_rows": 0,
+        "max_raw_theta_domain_error": 0.0,
+        "diagnostic_unclipped_theta_profile_stock_change_j_cm2": 69.52434400246109,
+        "diagnostic_profile_stock_minus_conduction_j_cm2": -1.1109776773798075,
+        "native_root_rate_integral_cm": 0.0020373806217216846,
+        "full_energy_balance_complete": false,
+        "diagnostic_scope": "Raw matrix theta-profile linear-mixture extension; not whole matrix/macro physical stock qualification. No heat flux inferred from residual.",
+        "missing": [
+          "gas flow and external gas donor temperatures",
+          "external liquid donor temperatures and advective time quadrature",
+          "macropore sensible-energy partition/transport",
+          "atmospheric latent/radiation, vapor and phase-change ownership"
+        ]
+      },
+      "contact_trials": [
+        [
+          "TRIAL",
+          "0",
+          "T",
+          "1",
+          "7",
+          "-3.90248789784582606E-001",
+          " 2.32310322779843981E-004",
+          "-4.05591703806816873E-012",
+          " 3.06061483542221943E-017"
+        ],
+        [
+          "TRIAL",
+          "1",
+          "T",
+          "2",
+          "13",
+          "-3.90248789784582606E-001",
+          " 2.32310141176686447E-004",
+          "-3.32970742264663691E-016",
+          " 3.10398292232163960E-017"
+        ],
+        [
+          "TRIAL",
+          "2",
+          "T",
+          "3",
+          "19",
+          "-3.90248789784582606E-001",
+          " 2.32310141174945056E-004",
+          "-2.94081765590324254E-016",
+          " 3.06061483542221943E-017"
+        ],
+        [
+          "TRIAL",
+          "3",
+          "F",
+          "0",
+          "5",
+          " 0.00000000000000000E+000",
+          " 0.00000000000000000E+000",
+          " 5.17684103173984390E-006",
+          " 1.14407715716394862E-009"
+        ],
+        [
+          "TRIAL",
+          "4",
+          "F",
+          "0",
+          "5",
+          " 0.00000000000000000E+000",
+          " 0.00000000000000000E+000",
+          "-2.23269462610848936E-002",
+          " 1.14407715716394862E-009"
+        ]
+      ],
+      "provider_count": 202,
+      "exact_Windows_Linux_observations": {
+        "contact": true,
+        "thermal": false
+      },
+      "exact_Windows_Linux_restart_physical_payload": false
+    }
+  },
+  "full_energy_balance_complete": false,
+  "production_contact_repair": false,
+  "windows_linux_comparison": {
+    "interval_and_node_keys_exact": true,
+    "node_rows": 21728,
+    "max_absolute_field_differences": {
+      "4": 8.881784197001252e-15,
+      "5": 8.881784197001252e-15,
+      "6": 1.1102230246251565e-16,
+      "7": 1.1102230246251565e-16,
+      "8": 0.0,
+      "9": 8.881784197001252e-16,
+      "10": 9.50350909079134e-14,
+      "11": 9.50350909079134e-14,
+      "12": 0.0,
+      "13": 0.0,
+      "14": 0.0,
+      "15": 2.3852447794681098e-18,
+      "16": 0.0,
+      "17": 0.0,
+      "18": 0.0,
+      "19": 0.0,
+      "20": 0.0,
+      "21": 0.0,
+      "22": 0.0
+    },
+    "field_order": [
+      "T0",
+      "T1",
+      "theta0",
+      "theta1",
+      "dz",
+      "Cavg",
+      "heat_left",
+      "heat_right",
+      "root",
+      "drain",
+      "lateral",
+      "macro_exchange",
+      "porosity",
+      "quartz",
+      "clay",
+      "organic",
+      "independent_boundary",
+      "solution",
+      "top_mode"
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # Nonlinear contact and accepted thermal receipt contract
 
-Status: **Windows16.2 checked O0/O2 tested; Linux/canonical admission pending.
+Status: **Windows16.2/Linux13.3 checked O0/O2 qualified; bounded observation API and isolated research admitted through PR1492 at `db3d102e2`.
 Full accepted contact and full physical energy remain OPEN.**
 
 Baseline is canonical `538fb025e`. The preceding contact witness held its
@@ -92,3 +92,34 @@ day0 from actual prepared112-node source input. Both disclose the existing
 original481-day trajectory. Canonical PR1491 independently changed only the
 input inspection adapter during this work. Its exact old/new blobs and canonical
 ancestry are checked separately, outside the compiled contact/thermal closure.
+
+
+Canonical admission and retained failures are recorded in
+`integration/dataqual15/NONLINEAR_THERMAL_CANONICAL_RECEIPT_20261103.json`.
+The actual merge tree equals the Linux-tested PR merge tree exactly. All61 PR
+workflows are terminal:36 success and25 retained failures. The owning native/
+thermal workflow, current I23/I24/I25, historical preservation and docs pass.
+Exact baseline predicates and failing job logs are retained in the PR CI and
+GUARD_CONTROLS receipts; no failing publication/performance firewall is relaxed.
+The current actual-merge source guards also pass. All14 automatic canonical
+push workflows are terminal:7 success and7 retained failures. The latter
+retain the same frozen DATAQUAL12 predicate or unchanged legacy drainage
+provider omission; exact jobs/controls are in the canonical failure receipt.
+
+Cold Linux O0/O2 independently reproduce the contact trials and194 native
+thermal intervals. Same-platform O0/O2 CSV and restart physical payloads are
+exact. Across Windows/Linux, contact records and interval/node keys agree;
+maximum endpoint-temperature difference is8.882e-15C and conductive-face
+energy difference9.504e-14J/cm2. Cross-platform binary restart payloads are
+not bit-identical and are not qualified as such. The Linux theta-profile stock
+minus conduction is-1.1109776773798075J/cm2. Sealed Linux data and independent
+reconstruction are in `NONLINEAR_THERMAL_LINUX_EVIDENCE_20261103.json` and its
+manifested archive under `integration/dataqual15/`.
+
+The next executable research step is a full coupled nonlinear trial including
+neighbour heads, macro vertical transport/storage and accepted sorptivity
+history, with opposite signed matrix/macro exchange and rejected-state rollback.
+The energy prerequisite is explicit independent liquid/gas/macro/atmospheric
+process ownership, external donor temperatures and temporal quadrature. Current
+observations expose missing information; they do not supply invented fluxes.
+Original execution/science counts remain2/3 and0/3.

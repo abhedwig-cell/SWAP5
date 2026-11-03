@@ -1,7 +1,7 @@
 {
   "baseline": "538fb025e8702d4dd609bc30cc347743a0587145",
   "branch": "codex/nonlinear-contact-thermal-receipts-20261103",
-  "stage": "WINDOWS_ALL_SELECTED_CHECKS_PASS_LINUX_QUALIFICATION_PENDING",
+  "stage": "WINDOWS_LINUX_O0_O2_QUALIFIED_BOUNDED_SCOPE_CANONICALLY_ADMITTED",
   "scope": "Actual nonlinear two-cell fixed-neighbour contact/real donor stock research; additive accepted thermal observations, actual112-node first-day source-input prefix; full native step/whole energy remain OPEN",
   "invariants": [
     "No original tolerance, entry law or default physical solver change",
@@ -25,11 +25,11 @@
   },
   "production_contact_repair": false,
   "full_energy_balance_complete": false,
-  "canonical_admitted": false,
-  "next": "Seal source-bound native data, complete Linux and current source preservation gates, reconcile and admit only qualified observational/research scope",
+  "canonical_admitted": true,
+  "next": "Extend the isolated two-cell candidate to a transactionally accepted full nonlinear matrix/macropore/storage/history step with exact donor conservation and original failure controls. Define independent liquid/gas/macro/atmospheric energy owners and external donor-temperature/time-quadrature contracts before claiming full energy.",
   "thermal_evidence": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json",
   "native_contact_checkpoint": "22c73d796",
-  "native_contact_run": "../nonlinear-native-contact-O0-02",
+  "native_contact_run": "../nonlinear-native-contact-O0-04",
   "cold_build_justification": "Actual112-node original input/rebound state must execute the complete native constitutive/macropore/runtime route, including153 source-verified TTUTIL reader providers; a mocked/small process driver cannot establish original-input accepted thermal data or real frozen-neighbour contact callbacks.",
   "pull_request": 1492,
   "native_windows_runs": {
@@ -44,5 +44,8 @@
     "source_admission_mutation_controls": 10,
     "documentation_source_checks": "PASS",
     "mkdocs_strict": "PASS"
-  }
+  },
+  "actual_merge": "db3d102e2afc5be3fb4fab35c5f97cb6048f78ca",
+  "receipt": "integration/dataqual15/NONLINEAR_THERMAL_CANONICAL_RECEIPT_20261103.json",
+  "linux": "PASS checked O0/O2 cold native and current runtime"
 }

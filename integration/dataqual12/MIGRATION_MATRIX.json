@@ -923,10 +923,14 @@
     "record": "integration/dataqual15/NONLINEAR_THERMAL_RECOVERY_20261103.json",
     "scope": "Nonlinear actual-process two-cell contact trial; accepted thermal runtime observation API; actual112-node first-day source-input194 thermal intervals",
     "windows_O0_O2": "PASS exact thermal/contact CSV and native checkpoint physical payload",
-    "linux": "PENDING",
+    "linux": "PASS checked O0/O2 cold native and current runtime",
     "production_contact_repair": false,
     "full_energy_balance_complete": false,
     "denominator_changed": false,
-    "native_profile_stock_minus_conduction_j_cm2": -1.1109776773798217
+    "native_profile_stock_minus_conduction_j_cm2": -1.1109776773798217,
+    "admission": "BOUNDED_OBSERVATIONAL_API_AND_ISOLATED_RESEARCH",
+    "pull_request": 1492,
+    "actual_merge": "db3d102e2afc5be3fb4fab35c5f97cb6048f78ca",
+    "receipt": "integration/dataqual15/NONLINEAR_THERMAL_CANONICAL_RECEIPT_20261103.json"
   }
 }

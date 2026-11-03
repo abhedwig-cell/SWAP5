@@ -1,0 +1,111 @@
+{
+  "actual_merge": "db3d102e2afc5be3fb4fab35c5f97cb6048f78ca",
+  "failures": [
+    {
+      "run_id": 41627966982,
+      "job_id": 125890045703,
+      "classification": "UNCHANGED_LEGACY_RECIPE_MISSING_DRAINAGE_PROVIDER",
+      "observed_error_lines": [
+        "2026-11-03T11:30:29.1909165Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T11:30:29.1922617Z PPA_WU05A7_REAL_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "baseline_predicate_receipt": "NONLINEAR_THERMAL_GUARD_CONTROLS_20261103.json",
+      "baseline_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41627966936,
+      "job_id": 125890043916,
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_SOURCE_INVENTORY",
+      "observed_error_lines": [
+        "2026-11-03T11:30:24.8204792Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'",
+        "2026-11-03T11:30:24.8205759Z AssertionError: unreviewed delta"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "baseline_predicate_receipt": "NONLINEAR_THERMAL_GUARD_CONTROLS_20261103.json",
+      "baseline_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41627967001,
+      "job_id": 125890043822,
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_SOURCE_INVENTORY",
+      "observed_error_lines": [
+        "2026-11-03T11:30:24.3986834Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'",
+        "2026-11-03T11:30:24.3988254Z AssertionError: unreviewed delta"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "baseline_predicate_receipt": "NONLINEAR_THERMAL_GUARD_CONTROLS_20261103.json",
+      "baseline_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41627967095,
+      "job_id": 125890044577,
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_SOURCE_INVENTORY",
+      "observed_error_lines": [
+        "2026-11-03T11:30:41.8303039Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'",
+        "2026-11-03T11:30:41.8304114Z AssertionError: unreviewed delta"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "baseline_predicate_receipt": "NONLINEAR_THERMAL_GUARD_CONTROLS_20261103.json",
+      "baseline_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41627967043,
+      "job_id": 125890044286,
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_SOURCE_INVENTORY",
+      "observed_error_lines": [
+        "2026-11-03T11:32:24.4856481Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'",
+        "2026-11-03T11:32:24.4857163Z AssertionError: unreviewed delta"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "earlier_step": "Build both optimizations and run actual file/restart qualification SUCCESS",
+      "baseline_predicate_receipt": "NONLINEAR_THERMAL_GUARD_CONTROLS_20261103.json",
+      "baseline_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41627967021,
+      "job_id": 125890044024,
+      "classification": "UNCHANGED_LEGACY_RECIPE_MISSING_DRAINAGE_PROVIDER",
+      "observed_error_lines": [
+        "2026-11-03T11:33:27.8747384Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T11:33:27.8757303Z PPA_WU05A7_REAL_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "baseline_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41627966995,
+      "job_id": 125890043677,
+      "classification": "UNCHANGED_LEGACY_RECIPE_MISSING_DRAINAGE_PROVIDER",
+      "observed_error_lines": [
+        "2026-11-03T11:31:46.6113957Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory",
+        "2026-11-03T11:31:46.6125871Z PPA_WU05_PERCH20_TX_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90"
+      ],
+      "verdict": "FAILURE_RETAINED",
+      "baseline_workflow_rerun_claim": false
+    }
+  ],
+  "exact_unchanged_recipe_controls": {
+    "tests/fpm/run_ppa_wu05a9_top_input.sh": {
+      "before": "dd71f9656d770614167f273ec62aa1316eabfda4",
+      "after": "dd71f9656d770614167f273ec62aa1316eabfda4",
+      "dramet_provider_named": false
+    },
+    "tests/fpm/run_ppa_wu05_perch20_transaction_continuation.sh": {
+      "before": "92bdf6b91181789905f4d05941b1d64c74587e81",
+      "after": "92bdf6b91181789905f4d05941b1d64c74587e81",
+      "dramet_provider_named": false
+    },
+    "tests/support/augment_bartholomeus_backend_sources.py": {
+      "before": "5fc907159bfa5fac766c6d4ee57982ed0a3e4d1c",
+      "after": "5fc907159bfa5fac766c6d4ee57982ed0a3e4d1c",
+      "dramet_provider_named": false
+    },
+    "src/runtime/mod_fmr_drainage_response_binding.f90": {
+      "before": "e42634aa1cbdf5091a0b0ccd5f5f7882e8c5e616",
+      "after": "e42634aa1cbdf5091a0b0ccd5f5f7882e8c5e616",
+      "dramet_provider_named": false
+    }
+  },
+  "scope": "Identical legacy recipes/dependent import and observed first missing module. No baseline full workflow rerun or downstream PASS claimed."
+}

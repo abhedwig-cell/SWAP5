@@ -1,0 +1,94 @@
+{
+  "baseline": "cbb4352702f576a244431655a2f89cfc02875709",
+  "candidate": "474cb02c4c2c604d52f06f1edcf0d261af1fc8d5",
+  "scope": "Exact failed predicates, unchanged first-failure dependencies and explicit work-unit-only scope; no failed workflow relabeled PASS",
+  "controls": {
+    "FKT22": {
+      "classification": "EXACT_SAME_PREEXISTING_FORBIDDEN_LINE_WITNESSES",
+      "witness": [
+        "integer,save::calls=0",
+        "integer,save::calls=0",
+        "logical,save::initialized=.false.,enabled=.false.",
+        "integer,save::calls=0"
+      ],
+      "baseline_and_candidate_predicate": "FAIL"
+    },
+    "CROP_FKT": {
+      "classification": "FROZEN_BACKEND_PIN_ALREADY_REFUSES_BASELINE_AND_CURRENT",
+      "expected": "b218ac657db52612bc12da671716c97430200f0a",
+      "actual_blobs": {
+        "cbb4352702f576a244431655a2f89cfc02875709": "722e2faedd019781423d8d444f40854da9ab6cf9",
+        "474cb02c4c2c604d52f06f1edcf0d261af1fc8d5": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
+      }
+    },
+    "LOW02_BACKEND": {
+      "classification": "FROZEN_BACKEND_PIN_ALREADY_REFUSES_BASELINE_AND_CURRENT",
+      "expected": "a5d472636f50a715cf64016ad9d500b401b0ebb1",
+      "actual_blobs": {
+        "cbb4352702f576a244431655a2f89cfc02875709": "722e2faedd019781423d8d444f40854da9ab6cf9",
+        "474cb02c4c2c604d52f06f1edcf0d261af1fc8d5": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
+      }
+    },
+    "E7": {
+      "classification": "UNCHANGED_BOOTSTRAP_ALREADY_REFUSES_FROZEN_PIN",
+      "path": "src/runtime/mod_fmr_production_application_bootstrap.f90",
+      "expected": "356b3825a8ba13af1fed385ab17ffdb330b1058f",
+      "actual": "2f42e0ee89cd0285f05a1bb1553f1bd7789061bd"
+    },
+    "HYST_LAYOUT": {
+      "classification": "HYST_WORK_UNIT_ADDITION_GUARD_DOES_NOT_ACCEPT_ALREADY_ADMITTED_PARENT_LAYOUT",
+      "unchanged_core_blob": "1225e86fd3dfd830f9bfa675fc0102c0748e5239",
+      "baseline_anchor_count": 1,
+      "baseline_case_before_count": 0,
+      "scope": "No HYST/core change by this work; retain workflow failure, no new HYST qualification claim"
+    },
+    "P2E06_REFERENCE": {
+      "classification": "EXACT_UNCHANGED_REFERENCE_ALREADY_REFUSES_FROZEN_TREE",
+      "expected": "684f1e2889b6992e5aedc88f52bb45f4558bb3e4",
+      "actual": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+    },
+    "DATAQUAL12": {
+      "classification": "RETAINED_GLOBAL_SOURCE_INVENTORY_REFUSAL_BEFORE_AND_AFTER",
+      "values": {
+        "cbb4352702f576a244431655a2f89cfc02875709": {
+          "predicate": "FAIL",
+          "observed_paths": 215,
+          "expected_paths": 13
+        },
+        "474cb02c4c2c604d52f06f1edcf0d261af1fc8d5": {
+          "predicate": "FAIL",
+          "observed_paths": 229,
+          "expected_paths": 13
+        }
+      },
+      "authority_unchanged": true
+    },
+    "P2E07": {
+      "classification": "HISTORICAL_WORK_UNIT_SOURCE_FIREWALL_ALREADY_REFUSES_BASELINE",
+      "recipe_blob": "6a7cb4a81b404a922373bfed23c5ce272b6b82e0",
+      "anchor": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+      "current_additional_observation_delta_retained_as_failure": true
+    },
+    "P2E08": {
+      "classification": "HISTORICAL_WORK_UNIT_SOURCE_FIREWALL_ALREADY_REFUSES_BASELINE",
+      "recipe_blob": "cccb5373d13cb045f1800677297cb3856a912eae",
+      "anchor": "878ca73649c9a2e98ca81d45c3ecec2717604ba3",
+      "current_additional_observation_delta_retained_as_failure": true
+    },
+    "DRAINAGE_BUILD_CLOSURE": {
+      "classification": "UNCHANGED_DEPENDENT_IMPORT_AND_LEGACY_RECIPES_FIRST_MISSING_MODULE",
+      "dependent_blob": "e42634aa1cbdf5091a0b0ccd5f5f7882e8c5e616",
+      "missing": "mod_drainage_dramet3_response.mod",
+      "recipes": {
+        "tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh": "3c4de496d4341844070d218c014debc6fd47973e",
+        "tests/publication/run_pub_p2e04_reference_bc_sweeps.sh": "cc190c97255f73bc95731573a955db3816b66578",
+        "tests/publication/run_pub_p2e04_reference_failure_census.sh": "1568ec219e2cff27d85eb812e44550fe20d25e77",
+        "tests/physics/run_ppa_micro03_runtime.py": "ac219d81a4ba0ecfdc31f745bc3f54bf21ca1293",
+        "tests/fpe/run_fpe_baltol02_effective_request.sh": "c71951d20ee942b9f18ba170eaac44ab2c3f6cbd",
+        "tests/fpe/run_fpe_baltol01_p2_oracle_recovery.sh": "86deafff15131846432b977a03f2ac0b874be0b6",
+        "tests/fpe/run_fpe_baltol01_p0_matrix.sh": "728fd1abccc437fce545f759c895df90ac6bdaf8"
+      },
+      "scope": "First failed module-dependency predicate only, not a baseline full workflow run. Original P2E02/04 omissions also have sealed prior exact controls."
+    }
+  }
+}
