@@ -1,0 +1,70 @@
+{
+  "baseline": "c1ce8808bdfc042577295811b5acccbd7608ebea",
+  "branch": "codex/native-coupled-acceptance-20261103",
+  "stage": "WINDOWS_O0_O2_NATIVE_FULL_WINDOW_ACCEPTED_LINUX_PENDING",
+  "production_changed": false,
+  "scope": "Explicit corrected native coupled substep owner, real matrix heat feedback and historical/proxy donor provenance",
+  "selection": [
+    "Small actual production heat feedback and all-or-none candidate tests O0/O2",
+    "Native112-head context and actual macro lifecycle with action history",
+    "Strict missing historical donor refusal and separately labeled source-derived proxy scenarios",
+    "Fresh Linux owning qualification"
+  ],
+  "expected_seconds": {
+    "component": 20,
+    "native": 300
+  },
+  "full_original_andelst_complete": false,
+  "full_energy_balance_complete": false,
+  "recovery_point": "dbb4392d7417585cb8b38a31522a80fbc6662fbe",
+  "component": {
+    "closure": 11,
+    "O0": "PASS",
+    "O2": "PASS",
+    "heat_feedback_c": 0.3071884359019386,
+    "joint_residual_j_cm2": 7.251144129583054e-16,
+    "temporal_error": 7.010193860720879e-09,
+    "commits": 1,
+    "rollback_controls": 3,
+    "boundary_combinations": 4,
+    "late_provisional_leaf_rollback": "PASS_O0_O2",
+    "typed_restart": "PASS_O0_O2",
+    "c_publisher_objects": 1
+  },
+  "native": {
+    "O0": "PASS",
+    "O2": "PASS",
+    "fortran_closure": 207,
+    "full112_water_heat_trial": "PASS",
+    "owned_full_window_accepted": true,
+    "original_outer_interval_accepted": false,
+    "time_window": [
+      2.8486750544946977,
+      2.8486751145761797
+    ],
+    "core_full_trials": 3,
+    "core_half_trials": 6,
+    "water_calls": 9,
+    "provisional_leaves": 2,
+    "published_revisions": 1,
+    "rejected_temporal": 3.0077504488135176e-06,
+    "accepted_temporal_max": 7.766728081781693e-07,
+    "whole_mass_residual_cm": 1.7605620280973644e-14,
+    "selected_joint_energy_max_j_cm2": 8.515172974059452e-13,
+    "typed_disk_restart": "EXACT_BOTH_POLICIES",
+    "initial_macro_temperature_policy": "EXPLICIT_LOCAL_EQUILIBRIUM_WITH_NATIVE_MATRIX",
+    "active_unmeasured_incoming_donors": 0
+  },
+  "historical_donors": {
+    "air_days": 481,
+    "initial_soil_c": 10.0,
+    "rain_measured": false,
+    "groundwater_measured": false
+  },
+  "remaining": [
+    "Fresh Linux affected qualification and source-bound evidence",
+    "Canonical bounded admission after owning gates",
+    "Original outer interval and full481-day Andelst execution",
+    "Complete physical energy and independent historical water donor measurements"
+  ]
+}
