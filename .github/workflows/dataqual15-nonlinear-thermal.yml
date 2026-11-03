@@ -1,0 +1,54 @@
+name: DATAQUAL15 nonlinear contact and accepted thermal process data
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'src/runtime/mod_fmr_thermal_substep_receipt.f90'
+      - 'src/runtime/mod_fmr_water_flux_trace_contract.f90'
+      - 'src/runtime/mod_fmr_serialized_reference_backend.f90'
+      - 'tests/dataqual15/*thermal_receipts.py'
+      - 'tests/dataqual15/*native_contact.py'
+      - 'tests/dataqual15/research_native_build_cache.py'
+      - 'tests/dataqual15/research/**'
+      - 'integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS*'
+      - '.github/workflows/dataqual15-nonlinear-thermal.yml'
+permissions:
+  contents: read
+env:
+  OMP_NUM_THREADS: '1'
+  PYTHONUTF8: '1'
+jobs:
+  thermal-runtime:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact current thermal and inherited numerical owner qualification
+        run: python -B tests/dataqual15/verify_stock_runtime_production.py
+      - name: Fresh actual accepted thermal receipt and unchanged EB runtime O0 and O2
+        run: python -B tests/dataqual15/qualify_thermal_receipts.py --output thermal-receipts-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: accepted-thermal-receipts
+          path: thermal-receipts-ci
+  actual-native-contact:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cold source-bound native build, nonlinear contact and original-input thermal prefix
+        run: python -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization ${{ matrix.optimization }} --output native-contact-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-contact-${{ matrix.optimization }}
+          path: native-contact-ci
