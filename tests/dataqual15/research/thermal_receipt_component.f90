@@ -46,6 +46,7 @@ program thermal_receipt_component
  call capture_fmr_thermal_substep(p,w,f,result,h0%water_content,h1%water_content,0d0,.001d0,r)
  if(.not.r%available.or.r%independent_boundary_heat)error stop 'storage-derived heat claimed independent'
  p%solution_mode=SOIL_TEMP_SOLUTION_ANALYTIC
+ p%analytic_damping_depth_cm=100d0
  call capture_fmr_thermal_substep(p,w,f,result,h0%water_content,h1%water_content,0d0,.001d0,r)
  if(.not.r%available.or.r%independent_boundary_heat.or.r%conductive_profile_available.or. &
     allocated(r%conductive_face_energy_j_cm2))error stop 'analytic energy promoted to conductive receipt'
