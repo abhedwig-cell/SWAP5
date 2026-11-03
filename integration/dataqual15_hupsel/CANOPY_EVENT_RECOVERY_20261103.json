@@ -1,0 +1,12 @@
+{
+  "work_unit": "Exact accepted canopy state around mowing",
+  "stage": "OBSERVATION_IMPLEMENTED_BUILD_IN_PROGRESS_NOT_QUALIFIED",
+  "scope": "Append committed Rutter canopy storage, just-completed prepared capacity and post-management LAI-derived capacity to crop diagnostics. No physical state mutation or correction.",
+  "driver": "app/solute_project/main.f90",
+  "output_columns": ["accepted_canopy_stock_cm", "prepared_canopy_capacity_cm", "post_management_capacity_cm"],
+  "measurement_required": "Actual original Hupsel accepted days around930,956,989,1033; compare pre/post cut index, stock and capacities, retain restart provenance",
+  "build": "tests/dataqual15_hupsel/build_and_run.py; ../canopy-event-measurement-O2",
+  "tested": false,
+  "physical_correction": false,
+  "canonical_admission": false
+}
