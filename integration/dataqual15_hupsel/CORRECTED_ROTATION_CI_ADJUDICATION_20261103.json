@@ -1,0 +1,50 @@
+{
+  "status": "PREEXISTING_CANONICAL_NATIVE_ADMISSION_SOURCE_INVENTORY_REFUSAL_RETAINED",
+  "run": 41731053218,
+  "job": 126249106616,
+  "error": "AssertionError: unreviewed production paths",
+  "baseline": "baada36c4f717ca40057b6db663e20f60b9d2a62",
+  "head": "349bb59db7868cb4fb19c922a65e7a14004e65f1",
+  "unchanged_gate_and_authority_blobs": {
+    "integration/dataqual15/STATUS.json": "720d5157307524630c8fa865cae1b8fc2b35d4ee",
+    "tests/dataqual15/verify_native_restart_admission.py": "f37dd93e176722048b9ff020d7532bef60f603b9"
+  },
+  "identical_baseline_candidate_production_delta": [
+    "app/grass_project/restart_file.f90",
+    "app/solute_project/hupsel_rotation_restart.f90",
+    "app/solute_project/inspect_historical.f90",
+    "app/solute_project/main.f90",
+    "app/solute_project/prepare_rain_duration.f90",
+    "app/support/restart_publish.c",
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_pond_thermal_restart_file.f90",
+    "src/kernel/mod_kernel_transactions.f90",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_thermal_substep_receipt.f90",
+    "src/runtime/mod_fmr_water_flux_trace_contract.f90"
+  ],
+  "frozen_admission_paths": [
+    "app/grass_project/restart_file.f90",
+    "app/solute_project/hupsel_rotation_restart.f90",
+    "app/solute_project/inspect_historical.f90",
+    "app/solute_project/main.f90",
+    "app/solute_project/prepare_rain_duration.f90",
+    "app/support/restart_publish.c",
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_pond_thermal_restart_file.f90",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90",
+    "src/runtime/mod_fmr_thermal_substep_receipt.f90",
+    "src/runtime/mod_fmr_water_flux_trace_contract.f90"
+  ],
+  "new_work_production_delta": [],
+  "full_moving_fci_success": false,
+  "positive_owning_gate": {
+    "run": 41731053202,
+    "job": 126248184283,
+    "status": "success",
+    "python": "3.12.3",
+    "scope": "Cold POSIX remeasurement of sealed actual Windows1096 data; not a native POSIX1096 execution"
+  }
+}

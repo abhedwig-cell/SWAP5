@@ -1,7 +1,7 @@
 # Corrected current Hupsel rotation ledger
 
-Status: actual Windows execution and portable local remeasurement qualified;
-cold POSIX remeasurement and canonical integration pending.
+Status: actual Windows execution, portable local and cold POSIX remeasurement
+qualified; canonical integration pending.
 
 After PR1498 the actual unchanged current O2 executable completed the entire
 1096-day diagnostic rotation from initialization in859.403seconds. No checkpoint
@@ -60,3 +60,10 @@ science. No production source, solver, retry or tolerance change is selected.
 Authority: `integration/dataqual15_hupsel/CORRECTED_ROTATION_PREREGISTRATION_20261103.json`,
 `CORRECTED_ROTATION_EVIDENCE_20261103.json` and
 `CORRECTED_ROTATION_RECOVERY_20261103.json`.
+
+Cold Ubuntu/Python3.12.3 run41731053202/job126248184283 remeasures the sealed
+data successfully. This is portable read-only verification, not a new native
+POSIX1096 execution. All15 PR workflows are terminal:13 success, one retained
+preexisting canonical native-admission inventory failure, and one cancelled
+automatic duplicate performance run whose unchanged dependencies already have
+a terminal qualified result. No full moving F-CI PASS is claimed.

@@ -1,5 +1,5 @@
 {
-  "stage": "WINDOWS_CURRENT1096_AND_O0_O2_CONTINUATION_PASS_PORTABLE_LOCAL_PASS_COLD_POSIX_PENDING",
+  "stage": "QUALIFIED_ALL_REQUIRED_GATES_PASS_READY_CANONICAL_INTEGRATION",
   "baseline": "baada36c4f717ca40057b6db663e20f60b9d2a62",
   "preregistration": "CORRECTED_ROTATION_PREREGISTRATION_20261103.json",
   "producer": "tests/dataqual15_hupsel/run_canopy_observation.py",
@@ -10,7 +10,7 @@
   "bundle_O0": "../canopy-endpoint-coherent-O0",
   "source_boundary": "All actual compiled providers match current bytes exactly; PR1498 production source remains unchanged. Only analysis/qualification code selected.",
   "history": "First source rain day has two real windows (4->4.083333333333333->5). Auditor checks every window and stock continuity before inherited observational calendar grouping; no source or numerical tolerance changed.",
-  "next": "Run cold POSIX portable verifier against the sealed data, reconcile unchanged canonical production bytes and integrate the bounded corrected-rotation ledger evidence without promoting whole science.",
+  "next": "Finish terminal automated dispositions, integrate PR1500 with exact no-production-delta reconciliation, verify actual merge capsule and publish canonical receipt. Whole science stays open.",
   "full_scientific_admission": false,
   "auditor_development_control": {
     "existing_admitted_prefix_days": 1034,
@@ -44,5 +44,16 @@
     "budget_and_crop_all_fields": "EXACT",
     "complete_typed_stream": "EXACT"
   },
-  "evidence": "CORRECTED_ROTATION_EVIDENCE_20261103.json"
+  "evidence": "CORRECTED_ROTATION_EVIDENCE_20261103.json",
+  "cold_posix": {
+    "run": 41731053202,
+    "job": 126248184283,
+    "head": "349bb59db7868cb4fb19c922a65e7a14004e65f1",
+    "status": "SUCCESS",
+    "python": "3.12.3",
+    "native_model_run_on_posix": false
+  },
+  "ci_adjudication": "CORRECTED_ROTATION_CI_ADJUDICATION_20261103.json",
+  "pr": 1500,
+  "ci_terminal": "CORRECTED_ROTATION_CI_TERMINAL_20261103.json"
 }
