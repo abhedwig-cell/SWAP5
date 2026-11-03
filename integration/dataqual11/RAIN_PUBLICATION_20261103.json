@@ -9,5 +9,6 @@
   "local_result": "PASS: real archived TTUTIL reader and production duration resolver, GNU Fortran Windows O0/O2; 22 executions including original 1827-day default/custom output with identical bytes, missing last day, late gap, positive rain with zero duration, existing default/custom output, missing input argument, empty/truncated output and excess arguments. Invalid inputs leave no event stream; existing output is preserved.",
   "qualification": "bounded adapter publication only; no whole-project or new physical admission",
   "canonical_admission": false,
+  "baseline_preservation": "Original adapter compiled from exact baseline Git blob in O0 and O2 using the same TTUTIL library. All default and explicit-path output bytes equal the corresponding baseline output across the full original 1827-day input.",
   "next_safe_step": "Reconcile remote canonical and submit bounded adapter change; retain existing physical qualification authority."
 }
