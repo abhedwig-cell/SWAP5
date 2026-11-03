@@ -1,14 +1,34 @@
 {
   "baseline": "538fb025e8702d4dd609bc30cc347743a0587145",
   "branch": "codex/nonlinear-contact-thermal-receipts-20261103",
-  "stage": "CONTRACT_PERSISTED_IMPLEMENTATION_PENDING",
+  "stage": "WINDOWS_ACCEPTED_THERMAL_O0_O2_PASS_NATIVE_CONTACT_RUNNING",
   "scope": "Nonlinear contact research using actual native process callbacks, and observational thermal data on selected accepted hydraulic substeps",
-  "invariants": ["No original tolerance, entry law or default physical solver change", "Rejected trials preserve committed state", "Thermal observations follow the selected accepted water trace, not discarded full/half siblings", "Unknown gas, vapor, latent and atmospheric heat remain unavailable", "No heat residual is used to manufacture a missing energy receipt"],
+  "invariants": [
+    "No original tolerance, entry law or default physical solver change",
+    "Rejected trials preserve committed state",
+    "Thermal observations follow the selected accepted water trace, not discarded full/half siblings",
+    "Unknown gas, vapor, latent and atmospheric heat remain unavailable",
+    "No heat residual is used to manufacture a missing energy receipt"
+  ],
   "interfaces": "Additive optional observational thermal receipt in existing water substep trace; no restart/state payload extension. Nonlinear contact code remains an isolated native research overlay.",
-  "selection": ["Small independent thermal receipt tests", "Current real runtime accepted single/full-half and rejected transaction tests at checked O0/O2", "Bounded native archived contact-state replay with reevaluated constitutive and macro rates; preserve failed controls and distinguish local/coupled/full scope", "Current original contact/heat evidence preservation; focused docs checks"],
-  "expected_seconds": {"component": 10, "runtime_per_optimization": 90, "native_contact_replay": 60},
+  "selection": [
+    "Small independent thermal receipt tests",
+    "Current real runtime accepted single/full-half and rejected transaction tests at checked O0/O2",
+    "Bounded native archived contact-state replay with reevaluated constitutive and macro rates; preserve failed controls and distinguish local/coupled/full scope",
+    "Current original contact/heat evidence preservation; focused docs checks"
+  ],
+  "expected_seconds": {
+    "component": 10,
+    "runtime_per_optimization": 90,
+    "native_contact_replay": 60,
+    "native_cold_build": 300
+  },
   "production_contact_repair": false,
   "full_energy_balance_complete": false,
   "canonical_admitted": false,
-  "next": "Implement accepted thermal receipt, validate transaction selection, then build actual nonlinear contact replay; commit implementation before native qualification."
+  "next": "Complete actual-input native contact/thermal replay and O2; qualify Linux and preserved source bounds before admission",
+  "thermal_evidence": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json",
+  "native_contact_checkpoint": "22c73d796",
+  "native_contact_run": "../nonlinear-native-contact-O0-02",
+  "cold_build_justification": "Actual112-node original input/rebound state must execute the complete native constitutive/macropore/runtime route, including153 source-verified TTUTIL reader providers; a mocked/small process driver cannot establish original-input accepted thermal data or real frozen-neighbour contact callbacks."
 }
