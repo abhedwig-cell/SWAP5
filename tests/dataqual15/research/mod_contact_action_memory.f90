@@ -19,6 +19,7 @@ contains
   real(real64)::tau,r,action,increment,coefficient
   integer::id,n,nd,ic
   ok=.false.
+  if(.not.ieee_is_finite(request%step_duration))return
   if(.not.request%valid().or..not.accepted%ready().or..not.off%ready().or..not.on%ready())return
   if(.not.ieee_is_finite(fraction))return
   if(fraction<0d0.or.fraction>1d0)return
@@ -42,11 +43,14 @@ contains
    if(any(off%absorption_time(:,ic)/=on%absorption_time(:,ic)).or. &
       any(off%sorptivity(:,ic)/=on%sorptivity(:,ic)).or.any(off%theta_sorption_ref(:,ic)/=on%theta_sorption_ref(:,ic)))return
   end do
+  if(.not.all(ieee_is_finite([request%wall_correction(node),request%diameter(node)])))return
+  if(any(.not.ieee_is_finite(request%wet_fraction(:,node))).or.any(.not.ieee_is_finite(request%domain_fraction(:,node))))return
   do id=1,nd
    if(active%end_event(id,node))cycle
    tau=accepted%absorption_time(id,node)
    if(.not.ieee_is_finite(tau))return
    if(tau<0d0)return
+   if(tau>huge(1d0)-request%step_duration)return
    if(.not.ieee_is_finite(active%seed_sorptivity(id,node)))return
    if(active%seed_sorptivity(id,node)<0d0)return
    if(.not.ieee_is_finite(active%seed_theta_ref(id,node)))return
