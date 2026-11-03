@@ -551,6 +551,10 @@
     "admission": {
       "predecessor": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
       "production_delta": {
+        "app/solute_project/inspect_historical.f90": {
+          "before": "0855b4014e18b32475d1d4a18c18d477413c0b7c",
+          "after": "85933351e9a2bb1e3830485a0e3eb345a4369141"
+        },
         "app/solute_project/prepare_rain_duration.f90": {
           "before": "18dc5b61d5f31563cfdd20208e9368c68378743d",
           "after": "4de070ccb16a654989322a3cc42b08bf13a89c7f"
@@ -569,6 +573,10 @@
         }
       },
       "preservation_restore": {
+        "app/solute_project/inspect_historical.f90": {
+          "before": "0855b4014e18b32475d1d4a18c18d477413c0b7c",
+          "after": "85933351e9a2bb1e3830485a0e3eb345a4369141"
+        },
         "app/solute_project/prepare_rain_duration.f90": {
           "before": "18dc5b61d5f31563cfdd20208e9368c68378743d",
           "after": "4de070ccb16a654989322a3cc42b08bf13a89c7f"
@@ -613,7 +621,7 @@
         "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77",
         "tests/dataqual15/verify_stock_projection_production.py": "464a35c7bfb5fb8bf54453b74f9693ce23c4c25271d859b6e44809cd0be08dcc",
         "tests/dataqual15/qualify_stock_projection_production.py": "3b6d8db57461261bf3fb2bb72ae72069fe32248275bfb5399191003f98491b5b",
-        "tests/dataqual15/verify_stock_runtime_production.py": "f0d7e9e1a6916d9c3ef966201a03b8edbfaf66a66215dae3ea7980257880b4b6",
+        "tests/dataqual15/verify_stock_runtime_production.py": "4a1634bde16ebe8de5146ed91d5bcb3cc1e348bc0f89fe75102a252df0001441",
         "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c"
       },
       "scope": "Exact native I/O successor plus separately qualified numerical sensible-stock comparison owner. Predecessor physics remains historical; no whole physical energy or current1827-day promotion.",
