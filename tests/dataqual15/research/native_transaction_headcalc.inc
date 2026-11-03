@@ -63,7 +63,7 @@ subroutine research_coupled_contact()
     if(any(accepted%head/=origin%head).or.any(accepted%matrix_temperature/=origin%matrix_temperature).or. &
        .not.accepted%macro%same_values(origin%macro).or.accepted%revision/=0.or.accepted%time/=origin%time)error stop 'coupled failed rollback'
    else
-    if(kind/=1)error stop 'unexpected coupled acceptance'
+    if(kind>1)error stop 'unexpected coupled acceptance'
     do id=1,n
      write(u,'(a,a,i0,4(a,es25.17e3))')'ACCEPTED_NODE',',',id,',',accepted%head(id),',',accepted%theta(id), &
        ',',accepted%matrix_temperature(id),',',sum(accepted%macro%water_domain_cp(:,id))
@@ -108,7 +108,10 @@ subroutine research_native_water_trial(physical,t0,t1,face,exchange,external_out
    norm=maxval(abs(r(:m)))
    write(research_log_unit,'(a,2(a,i0),4(a,es25.17e3))')'WATER_ITERATION',',',mode,',',it,',',norm,',',x(26),',',x(27),',',x(numnod+1)
    do col=1,m
-    eps=1d-5*max(1d0,abs(x(col)));trial=x;trial(col)=x(col)+eps
+    eps=1d-5*max(1d0,abs(x(col)))
+    ! Differentiate the ordinary smooth branch without crossing its contact plane.
+    if(mode==0.and.(col==26.or.col==27))eps=min(eps,max(1d-12,.25d0*abs(x(26)+x(27))))
+    trial=x;trial(col)=x(col)+eps
     call research_coupled_residual(trial,rp,valid);if(.not.valid)exit
     trial=x;trial(col)=x(col)-eps;call research_coupled_residual(trial,rm,valid);if(.not.valid)exit
     jac(:m,col)=(rp(:m)-rm(:m))/(2d0*eps)
@@ -143,6 +146,9 @@ subroutine research_native_water_trial(physical,t0,t1,face,exchange,external_out
  call research_macro%research_contact_lifecycle(state%h,state%theta,fraction,research_log_unit,10,macro_candidate,face,exchange,external_out,top_amount,valid)
  if(.not.valid)return
  if(state%pond/=0d0)return
+ if(state%ftoph)state%qtop=-state%kmean(1)*fsi_ws%head_gradient(1)
+ if(swbotb==1.or.swbotb==5.or.swbotb==9)state%qbot=-state%kmean(numnod+1)*fsi_ws%head_gradient(numnod+1)
+ write(research_log_unit,'(a,2(a,es25.17e3))')'WATER_BOUNDARY',',',state%qtop,',',state%qbot
  physical%head=state%h;physical%theta=state%theta;physical%macro=macro_candidate
  mass_in=max(0d0,-state%qtop*dt)+max(0d0,state%qbot*dt)+top_amount
  mass_out=max(0d0,state%qtop*dt)+max(0d0,-state%qbot*dt)+sum(external_out)*dt

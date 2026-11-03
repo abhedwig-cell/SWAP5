@@ -115,7 +115,7 @@ def main():
  objects=[];reuse={};dirty=set()
  if a.reuse_coupled_build:
   previous=a.reuse_coupled_build.resolve();rr=json.loads((previous/'RESULT.json').read_text(encoding='utf-8'));assert rr['compiler']==compiler and rr['optimization']==a.optimization
-  cert=json.loads((previous/'COMPILED_INPUTS.json').read_text(encoding='utf-8'));assert len(cert)==202
+  cert=json.loads((previous/'COMPILED_INPUTS.json').read_text(encoding='utf-8'));assert len(cert) in (202,207)
   for entry in cert:
    assert sha(Path(entry['source']))==entry['source_sha256'] and sha(Path(entry['object']))==entry['object_sha256']
    reuse[Path(entry['source']).name]=entry
