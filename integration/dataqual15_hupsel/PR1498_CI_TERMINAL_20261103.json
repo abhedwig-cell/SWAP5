@@ -1,0 +1,511 @@
+{
+  "status": "ALL_61_STABLE_PRODUCTION_SOURCE_WORKFLOWS_TERMINAL",
+  "source_head": "55ac96528779095ead3eb9b0eef5f24df8aa7a61",
+  "production_postimages": {
+    "app/solute_project/hupsel_rotation_restart.f90": "d730a8b436d149f1d5e33275c0e25c330b76d2a2",
+    "app/solute_project/main.f90": "a94418d0001753d986f451473503e12c519ffdb4",
+    "src/kernel/mod_kernel_transactions.f90": "ad6cd6f52460381847d4b493ca2dd291b25dfc98",
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": "4744ab36c323a5a6a6f0dd1c8eb563c28b38ba48"
+  },
+  "counts": {
+    "success": 26,
+    "failure": 31,
+    "cancelled": 4
+  },
+  "runs": [
+    {
+      "id": 41718692137,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692137",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718691995,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718691995",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692498,
+      "name": "F-CI72 EB-I23 moving preservation",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692498",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692057,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692057",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692287,
+      "name": "PPA MICRO06 stacked source and runtime qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692287",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692225,
+      "name": "PPA-LOW02-TIME legacy prescribed-qbot application",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692225",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692596,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692596",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692856,
+      "name": "PUB-ME D1 transition authority",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692856",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692191,
+      "name": "F-VQ87 F-GC25 MultiSWAP independent qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692191",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692488,
+      "name": "PUB-GC E7 current-canonical preservation",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692488",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718691987,
+      "name": "F-ROSS12 serialized production wiring",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718691987",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692930,
+      "name": "Hupsel canopy endpoint qualification",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692930",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692245,
+      "name": "PPA-WU01 production application bootstrap",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692245",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693075,
+      "name": "F-CI109R1 F-APP09 current canonical admission",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693075",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692430,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692430",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693068,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693068",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692752,
+      "name": "F-PE-ZERO-WASTE01 paired runtime",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692752",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692598,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692598",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692529,
+      "name": "F-MIG431-INT13 Rutter physics and production qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692529",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692845,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692845",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692557,
+      "name": "F-PE-ELASTIC65 mode7 C-SAFE binding",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692557",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692226,
+      "name": "MC-SOL01 file-driven Reference column",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692226",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692459,
+      "name": "F-GC44 real FMR participant",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692459",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692419,
+      "name": "PUB-ME D4 speculative restart",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692419",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693049,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693049",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692810,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692810",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692382,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692382",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692662,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692662",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692697,
+      "name": "F-CI79 EB-I25 moving preservation",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692697",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692831,
+      "name": "F-SI39 B1.11 KSATEXM preservation",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692831",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692901,
+      "name": "F-PE-APPROX02 A2C production qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692901",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692559,
+      "name": "PUB-P2E04 Reference failure census",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692559",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692213,
+      "name": "SW431 crop F-KT B110 shared-owner scientific successor",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692213",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692530,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692530",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692821,
+      "name": "PPA-WU04-B Boesten evaporation admission",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692821",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692528,
+      "name": "F-PERF-CANON01 D AHL50",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692528",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692678,
+      "name": "F-PE-BALTOL02 scaled Reference balance-floor admission",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692678",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692237,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692237",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692620,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692620",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692670,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692670",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692569,
+      "name": "F-CI96 F-ROSS12 postimage preservation",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692569",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693051,
+      "name": "PPA-WU05B bounded frost qualification and admission",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693051",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692358,
+      "name": "SWAP431 HYD/HYST hydraulic coverage",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692358",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692893,
+      "name": "F-CI74 EB-I24 moving preservation",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692893",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693060,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693060",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692576,
+      "name": "PUB-ME D3 origin authority",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692576",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692876,
+      "name": "F-GC44 real SWAP MODFLOW6 end-to-end",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692876",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692605,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692605",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692383,
+      "name": "PUB-P1E02 post-solver rollback",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692383",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692766,
+      "name": "DATAQUAL15 nonlinear contact and accepted thermal process data",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692766",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692837,
+      "name": "F-VQ116 F-GC44 independent qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692837",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692649,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692649",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692448,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692448",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692940,
+      "name": "PPA-WU04-A Black evaporation admission",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692940",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693030,
+      "name": "SW431 crop F-KT immutable B110 parameter identity qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693030",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693071,
+      "name": "F-CI59P current-canonical postimage reconciliation",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693071",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692039,
+      "name": "F-KT22 current-canonical qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692039",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692540,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692540",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692945,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692945",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718692986,
+      "name": "F-PE-ELASTIC08 runtime materialization",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718692986",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    },
+    {
+      "id": 41718693136,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41718693136",
+      "head_sha": "55ac96528779095ead3eb9b0eef5f24df8aa7a61"
+    }
+  ],
+  "separate_required_posix": {
+    "run": 41719913263,
+    "conclusion": "success",
+    "source_head": "2cee02563865e09e270bb42053cf77a47a69beaf"
+  },
+  "full_moving_fci_success": false
+}

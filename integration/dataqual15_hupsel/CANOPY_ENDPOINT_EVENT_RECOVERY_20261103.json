@@ -18,7 +18,7 @@
     "app/solute_project/main.f90",
     "app/solute_project/hupsel_rotation_restart.f90"
   ],
-  "next": "Finish terminal source-head CI adjudication, commit/push qualified authority, integrate PR1498 after exact canonical merge-source reconciliation, then continue next safe migration capability.",
+  "next": "Integrate qualified PR1498 after exact expected-head/merge-source reconciliation, verify actual canonical postimage, then publish the canonical receipt.",
   "physical_correction_tested": true,
   "production_admission": false,
   "canonical_admission": false,
@@ -44,7 +44,7 @@
     "status": "PASS_FROM_ORIGINAL_INPUTS_THROUGH_1034",
     "seconds": 854.3804863
   },
-  "status": "PHYSICAL_CORRECTION_AND_PRESERVATION_QUALIFIED_WINDOWS_POSIX_O0_O2_CANONICAL_PENDING",
+  "status": "QUALIFIED_READY_FOR_CANONICAL_INTEGRATION_ALL_STABLE_SOURCE_CI_TERMINAL",
   "actual_rutter_O0_O2": {
     "directories": [
       "../canopy-rutter-endpoint-final-O0",
@@ -104,5 +104,16 @@
     "job": 126209642374,
     "status": "SUCCESS",
     "source_head": "2cee02563865e09e270bb42053cf77a47a69beaf"
-  }
+  },
+  "ci": {
+    "terminal": "PR1498_CI_TERMINAL_20261103.json",
+    "adjudication": "PR1498_CI_FAILURE_OBSERVATIONS_20261103.json",
+    "counts": {
+      "success": 26,
+      "failure": 31,
+      "cancelled": 4
+    },
+    "full_moving_fci_success": false
+  },
+  "final_qualification": "CANOPY_ENDPOINT_FINAL_QUALIFICATION_20261103.json"
 }

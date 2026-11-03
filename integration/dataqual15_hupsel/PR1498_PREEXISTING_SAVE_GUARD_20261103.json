@@ -1,0 +1,11 @@
+{
+  "baseline": "b11a48cccea4c6b1aa9759c179ad68180e8057da",
+  "gate": "tests/fkt/run_fkt22_fmr_compile_gate.sh",
+  "finding": "Four persistent diagnostic SAVE declarations already present byte-for-byte in canonical predecessor; new endpoint introduces none. Actual O0/O2 compilation passed before the unchanged gate refusal. Failure retained.",
+  "matched_lines": [
+    "integer,save::calls=0",
+    "integer,save::calls=0",
+    "logical,save::initialized=.false.,enabled=.false.",
+    "integer,save::calls=0"
+  ]
+}
