@@ -39,7 +39,8 @@ module mod_native_coupled_transaction
   logical::inject_feedback_failure=.false.
   real(real64)::rain_temperature=0d0,groundwater_temperature=0d0
   real(real64)::max_joint_residual=0d0,max_feedback=0d0,max_temperature_change=0d0,last_indicator=huge(1d0)
-  integer::water_calls=0,feedback_calls=0,donor_refusals=0
+  integer::water_calls=0,feedback_calls=0,donor_refusals=0,provisional_leaves=0
+  real(real64)::max_attempted_temporal=0d0
  contains
   procedure::advance=>advance_native_coupled
   procedure::storage=>storage_native_coupled
@@ -184,14 +185,68 @@ contains
   real(real64),intent(in)::t0,t1
   type(transaction_result_t),intent(out)::result
   type(transaction_policy_t)::policy
+  class(transaction_state_t),allocatable::working
+  real(real64)::initial_storage,total_in,total_out,whole_mass
+  logical::complete
   policy%max_retries=0;policy%mass_tolerance=1d-10;policy%temporal_tolerance=1d-6
-  call execute_reference_interval(model,committed,t0,t1,policy,result)
-  if(result%status==TX_STATUS_ACCEPTED)then
-   select type(committed)
-   type is(native_coupled_state_t)
-    committed%revision=committed%revision+1
-   end select
+  result=transaction_result_t();result%status=TX_STATUS_RETRY_EXHAUSTED
+  result%full_mass_residual=0d0;result%half_mass_residual=0d0;result%temporal_error=0d0
+  result%requested_t0=t0;result%requested_t1=t1
+  model%provisional_leaves=0;model%max_attempted_temporal=0d0
+  total_in=0d0;total_out=0d0;initial_storage=model%storage(committed)
+  call committed%clone(working)
+  call advance_window(t0,t1,0,complete)
+  if(.not.complete)return
+  whole_mass=model%storage(working)-initial_storage-(total_in-total_out)
+  if(.not.ieee_is_finite(whole_mass).or.abs(whole_mass)>policy%mass_tolerance)then
+   result%mass_rejections=result%mass_rejections+1;result%rollbacks=result%rollbacks+1;return
   end if
+  select type(working)
+  type is(native_coupled_state_t)
+   working%revision=working%revision+1
+  end select
+  call move_alloc(working,committed)
+  result%status=TX_STATUS_ACCEPTED;result%commits=1
+  result%accepted_route=TX_ROUTE_TWO_HALF;result%temporal_acceptance_source=TX_TEMPORAL_EXTERNAL_FULL_HALF
+  result%accepted_mass_complete=.true.;result%accepted_missing_contribution_mask=TX_MASS_MISSING_NONE
+  result%accepted_storage_start=initial_storage;result%accepted_storage_end=model%storage(committed)
+  result%accepted_storage_change=result%accepted_storage_end-initial_storage
+  result%accepted_total_in=total_in;result%accepted_total_out=total_out;result%accepted_mass_residual=whole_mass
+  result%accepted_t1=t1;result%accepted_dt=t1-t0
+ contains
+  recursive subroutine advance_window(a,b,depth,ok)
+   real(real64),intent(in)::a,b
+   integer,intent(in)::depth
+   logical,intent(out)::ok
+   type(transaction_result_t)::trial
+   real(real64)::mid
+   call execute_reference_interval(model,working,a,b,policy,trial)
+   result%attempts=result%attempts+trial%attempts
+   result%full_trials=result%full_trials+trial%full_trials;result%half_trials=result%half_trials+trial%half_trials
+   result%solver_rejections=result%solver_rejections+trial%solver_rejections
+   result%mass_rejections=result%mass_rejections+trial%mass_rejections
+   result%temporal_rejections=result%temporal_rejections+trial%temporal_rejections
+   result%rollbacks=result%rollbacks+trial%rollbacks
+   write(*,'(a,2(a,i0),3(a,es25.17e3))')'NATIVE_CORE_ATTEMPT',',',depth,',',trial%status,',',a,',',b,',',trial%temporal_error
+   ok=trial%status==TX_STATUS_ACCEPTED
+   if(ok.or.trial%temporal_rejections>0)model%max_attempted_temporal=max(model%max_attempted_temporal,trial%temporal_error)
+   if(ok)then
+    model%provisional_leaves=model%provisional_leaves+1
+    total_in=total_in+trial%accepted_total_in;total_out=total_out+trial%accepted_total_out
+    result%full_mass_residual=max(result%full_mass_residual,abs(trial%full_mass_residual))
+    result%half_mass_residual=max(result%half_mass_residual,abs(trial%half_mass_residual))
+    result%temporal_error=max(result%temporal_error,trial%temporal_error)
+    return
+   end if
+   ! Refine a temporal failure, never replace missing donor/solver/mass evidence.
+   if(trial%temporal_rejections==0.or.depth>=12)return
+   mid=a+.5d0*(b-a)
+   if(mid<=a.or.mid>=b)return
+   result%retries=result%retries+1
+   call advance_window(a,mid,depth+1,ok)
+   if(.not.ok)return
+   call advance_window(mid,b,depth+1,ok)
+  end subroutine
  end subroutine
  include 'native_coupled_restart.inc'
 end module

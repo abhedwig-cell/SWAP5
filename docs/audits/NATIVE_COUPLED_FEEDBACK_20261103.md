@@ -53,3 +53,12 @@ explicit proxy policy in that binding. CRC is checked before bounded allocation;
 failed reads leave the destination untouched. Publication calls the existing
 Windows/POSIX durable atomic publisher. This is not an extension of the original
 S5WM0001 format or proof of original481-day continuation.
+
+The full/two-half comparison still rejected the first native window: its head
+error3.00775045e-6 exceeds1e-6. The new owner consequently bisects temporal
+failures and recomputes genuine full/two-half trials on each leaf (maximum12
+levels). It never refines away donor, solver or mass failure. Leaves advance a
+private working generation; only complete coverage of the requested window and
+an independent cumulative mass check can publish one outer revision. A failed
+later leaf discards the entire provisional generation. Rejected errors and
+leaf/trial counts are retained separately from accepted-leaf maxima.

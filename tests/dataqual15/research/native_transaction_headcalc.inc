@@ -65,6 +65,8 @@ subroutine research_coupled_contact()
   write(u,'(a,7(a,i0),7(a,es25.17e3))')'TRANSACTION',',',kind,',',tx%status,',',tx%commits,',',tx%full_trials,',',tx%half_trials, &
     ',',model%water_calls,',',model%donor_refusals,',',tx%full_mass_residual,',',tx%half_mass_residual,',',tx%temporal_error, &
     ',',model%max_joint_residual,',',model%max_feedback,',',model%rain_temperature,',',model%groundwater_temperature
+  write(u,'(a,3(a,i0),2(a,es25.17e3))')'WINDOW',',',kind,',',model%provisional_leaves,',',tx%temporal_rejections, &
+    ',',model%max_attempted_temporal,',',tx%accepted_mass_residual
   select type(accepted)
   type is(native_coupled_state_t)
    write(u,'(a,2(a,i0),a,es25.17e3)')'REVISION',',',kind,',',accepted%revision,',',accepted%time
