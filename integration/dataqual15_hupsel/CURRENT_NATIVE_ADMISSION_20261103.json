@@ -7,7 +7,6 @@
     "1888f814c05c925e28a80b8ca33f778448215ab1"
   ],
   "frozen_assets": {
-    "integration/dataqual15/STATUS.json": "720d5157307524630c8fa865cae1b8fc2b35d4ee",
     "integration/dataqual15_hupsel/CANOPY_CURRENT_NATIVE_COUPLED_20261103.tar.json": "9678b01da285bc63e7185e5602d32ac366cbcabc",
     "integration/dataqual15_hupsel/CANOPY_CURRENT_THERMAL_20261103.tar.json": "fb7b57bcdf2509230f3f5a38848cfaa279cbc3c2",
     "integration/dataqual15_hupsel/CANOPY_ENDPOINT_CANONICAL_RECEIPT_20261103.json": "34787e365bc705cb638f53719e81f390dac625ef",
@@ -23,11 +22,12 @@
     "tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py": "30f122fe9438736d77aaa5ea5d427fffc4f5221e"
   },
   "current_gate_sha256": {
-    "tests/dataqual15/test_current_native_admission.py": "36e739bce132006fb1a0bf22cb203d14a8ff4e5bcc5bcd9a8da6dc4f11ed1df2",
-    "tests/dataqual15/verify_current_native_admission.py": "f5aae6bd1956fcc4063cbc7b0fbf5baa2577943b597d19df6ef822060c0712d2"
+    "tests/dataqual15/verify_current_native_admission.py": "4a8f606a767e2a40ff2d85ef4ac43d3a46f49ff2899f9b7e2db7630200de79ae",
+    "tests/dataqual15/test_current_native_admission.py": "ecebf2786048f8171d71da12bd4770d4976b317b4920f6e9236c66cc28949bb7"
   },
   "whole_scientific_admission": false,
   "historical_guard_unchanged": true,
   "new_production_admission_from_source_only": false,
-  "scope": "Current accepted endpoint/shared runtime and full diagnostic data; exact historical native/source authority remains historical"
+  "scope": "Current accepted endpoint/shared runtime and full diagnostic data; exact historical native/source authority remains historical",
+  "frozen_native_status_sha256": "e1ae6e2d11717778a0747512918b4a9c315897dbfa342b47ea0b7d60d65e06a5"
 }

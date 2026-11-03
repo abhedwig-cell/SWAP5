@@ -13,6 +13,7 @@ class Boundary(unittest.TestCase):
   for path in m.ENDPOINT_PATHS:self.write(path,'original physical owner\n')
   self.write('reference/input','original input\n')
   for path in m.REQUIRED_ASSETS|m.CURRENT_GATES:self.write(path,'unchanged authority\n')
+  self.write_json(m.NATIVE_STATUS,{'native_disk_restart_20261102':{'admission':'immutable native inventory'},'other_chat':{}})
   self.commit();self.base=self.git('rev-parse','HEAD')
   for path in m.ENDPOINT_PATHS:self.write(path,'accepted exact endpoint successor\n')
   self.commit();self.merge=self.git('rev-parse','HEAD')
@@ -24,6 +25,7 @@ class Boundary(unittest.TestCase):
   self.write_json(m.ROTATION_RECEIPT,dict(merge=self.merge,whole_scientific_admission=False))
   self.commit()
   self.record=dict(schema=1,baseline=self.git('rev-parse','HEAD'),whole_scientific_admission=False,canonical_merges=[self.merge,self.merge],
+   frozen_native_status_sha256=m.native_status_pin(),
    frozen_assets={p:m.blob('HEAD',p)for p in m.REQUIRED_ASSETS},
    current_gate_sha256={p:hashlib.sha256((self.root/p).read_bytes()).hexdigest()for p in m.CURRENT_GATES})
  def tearDown(self):m.ROOT=self.previous;self.temp.cleanup()
@@ -56,8 +58,11 @@ class Boundary(unittest.TestCase):
   self.write(path,'weakened old gate\n');self.commit();self.record['frozen_assets'][path]=m.blob('HEAD',path)
   with self.assertRaisesRegex(AssertionError,'frozen origin'):m.guard(self.record)
  def test_frozen_authority_drift_rejected(self):
-  self.write('integration/dataqual15/STATUS.json','different inventory\n');self.commit()
+  self.write_json(m.NATIVE_STATUS,{'native_disk_restart_20261102':{'admission':'different inventory'},'other_chat':{}});self.commit()
   with self.assertRaises(AssertionError):m.guard(self.record)
+ def test_unrelated_chat_status_does_not_transfer_native_authority(self):
+  self.write_json(m.NATIVE_STATUS,{'native_disk_restart_20261102':{'admission':'immutable native inventory'},'other_chat':{'diagnostic':'new independently owned observation'}});self.commit()
+  m.guard(self.record)
  def test_omitted_authority_refused(self):
   self.record['frozen_assets'].pop(m.ENDPOINT_RECEIPT)
   with self.assertRaisesRegex(AssertionError,'frozen authority'):m.guard(self.record)

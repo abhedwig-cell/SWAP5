@@ -14,8 +14,8 @@ ENDPOINT_PATHS={'src/kernel/mod_kernel_transactions.f90',
 SCOPE='integration/dataqual15_hupsel/CANOPY_ENDPOINT_EVENT_SCOPE_20261103.json'
 ENDPOINT_RECEIPT='integration/dataqual15_hupsel/CANOPY_ENDPOINT_CANONICAL_RECEIPT_20261103.json'
 ROTATION_RECEIPT='integration/dataqual15_hupsel/CORRECTED_ROTATION_CANONICAL_RECEIPT_20261103.json'
+NATIVE_STATUS='integration/dataqual15/STATUS.json'
 REQUIRED_ASSETS={SCOPE,ENDPOINT_RECEIPT,ROTATION_RECEIPT,
- 'integration/dataqual15/STATUS.json',
  'tests/dataqual15/verify_native_restart_admission.py',
  'tests/dataqual15/test_native_restart_admission.py',
  'tests/dataqual15_hupsel/qualify_canopy_preservation.py',
@@ -30,6 +30,10 @@ CURRENT_GATES={'tests/dataqual15/verify_current_native_admission.py',
 
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def blob(ref,path):return git('rev-parse',ref+':'+path)
+def native_status_pin(ref=None):
+ raw=git('show',ref+':'+NATIVE_STATUS)if ref else (ROOT/NATIVE_STATUS).read_bytes()
+ owned=json.loads(raw)['native_disk_restart_20261102']
+ return hashlib.sha256(json.dumps(owned,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
 def guard(record):
  assert record['schema']==1 and record['whole_scientific_admission']is False
@@ -37,6 +41,11 @@ def guard(record):
  assert set(record['current_gate_sha256'])==CURRENT_GATES,'missing or unknown current gate'
  assert len(record['canonical_merges'])==2
  subprocess.run(['git','merge-base','--is-ancestor',record['baseline'],'HEAD'],cwd=ROOT,check=True,capture_output=True)
+ # Freeze this work unit's entire authority, not other chats' unrelated
+ # research/status fields in the shared DATAQUAL15 register.
+ pin=record['frozen_native_status_sha256']
+ assert native_status_pin(record['baseline'])==pin,'native authority origin drift'
+ assert native_status_pin('HEAD')==pin and native_status_pin()==pin,'native authority drift'
  for name,pin in record['frozen_assets'].items():
   assert blob(record['baseline'],name)==pin,'frozen origin drift: '+name
   assert blob('HEAD',name)==pin,name
