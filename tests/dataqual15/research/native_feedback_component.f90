@@ -7,7 +7,7 @@ program native_feedback_component
  use mod_transaction_reference
  implicit none
  type(native_coupled_model_t)::model
- type(native_coupled_state_t)::origin
+ type(native_coupled_state_t)::origin,restored
  class(transaction_state_t),allocatable::accepted
  type(transaction_result_t)::tx
  type(native_heat_feedback_result_t)::heat
@@ -17,7 +17,8 @@ program native_feedback_component
  type(soil_temperature_diagnostics_t)::diagnostic
  type(process_hydraulic_view_t)::h0,h1
  real(real64)::w0(1,2),w1(1,2),face(1,3),qx(1,2),outflow(1,2),temperature(1,2)
- integer::status,k
+ integer::status,k,u
+ integer(kind=1)::bad_byte
  logical::ok
  call initialize_soil_temperature_parameters([1d0,2d0],[.5d0,1.5d0], &
   [.45d0,.45d0],[.3d0,.3d0],[.2d0,.2d0],[.05d0,.05d0],model%heat_parameters,status)
@@ -79,6 +80,21 @@ program native_feedback_component
     if(tx%temporal_error>1d-6)error stop 'temporal guard'
     if(accepted%revision/=1.or.accepted%time/=1d-5)error stop 'atomic revision'
     if(accepted%matrix_temperature(1)<=10d0)error stop 'heat omitted from commit'
+    call write_native_coupled_restart('coupled.bin',repeat('a',64),accepted,status)
+    if(status/=0)error stop 'durable new model restart'
+    restored=origin
+    call read_native_coupled_restart('coupled.bin',repeat('b',64),restored,status)
+    if(status==0.or.restored%time/=origin%time)error stop 'restart binding rollback'
+    call read_native_coupled_restart('coupled.bin',repeat('a',64),restored,status)
+    if(status/=0.or.restored%revision/=accepted%revision.or.restored%time/=accepted%time)error stop 'typed restart header'
+    if(any(restored%head/=accepted%head).or.any(restored%theta/=accepted%theta).or. &
+     any(restored%area_dz/=accepted%area_dz).or.any(restored%matrix_temperature/=accepted%matrix_temperature).or. &
+     any(restored%macro_temperature/=accepted%macro_temperature).or..not.restored%macro%same_values(accepted%macro))error stop 'restart payload'
+    open(newunit=u,file='coupled.bin',access='stream',form='unformatted',status='old',action='readwrite')
+    bad_byte=0;write(u,pos=1)bad_byte;close(u)
+    call read_native_coupled_restart('coupled.bin',repeat('a',64),restored,status)
+    if(status==0.or.restored%revision/=accepted%revision.or.restored%time/=accepted%time)error stop 'CRC rollback'
+    print '(a)','TYPED_RESTART_BINDING_CRC_ROUNDTRIP_PASS'
    else
     if(tx%status==TX_STATUS_ACCEPTED.or.tx%commits/=0)error stop 'invalid acceptance'
     if(any(accepted%theta/=origin%theta).or.any(accepted%matrix_temperature/=origin%matrix_temperature).or. &

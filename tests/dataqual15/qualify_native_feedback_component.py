@@ -26,11 +26,14 @@ def main():
   (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
   assert cp.returncode==0,(label,cp.stderr.decode(errors='replace'))
   return cp.stdout.decode()
+ for key in ['tests/dataqual15/research/native_coupled_restart.inc','app/support/restart_publish.c']:
+  report['sources'][key]=subprocess.check_output(['git','rev-parse','HEAD:'+key],cwd=ROOT,text=True).strip()
  objects=[]
  for i,s in enumerate(ordered):
   key=s.relative_to(ROOT).as_posix();assert not subprocess.check_output(['git','diff','HEAD','--',key],cwd=ROOT)
   report['sources'][key]=subprocess.check_output(['git','rev-parse','HEAD:'+key],cwd=ROOT,text=True).strip()
-  obj=out/(str(i)+'.o');run(['gfortran','-'+a.optimization,'-ffree-line-length-none','-fcheck=all','-ffpe-trap=invalid,zero,overflow','-fbacktrace','-J'+str(out),'-I'+str(out),'-c',s,'-o',obj],'compile-'+str(i));objects.append(obj)
+  obj=out/(str(i)+'.o');run(['gfortran','-'+a.optimization,'-ffree-line-length-none','-fcheck=all','-ffpe-trap=invalid,zero,overflow','-fbacktrace','-J'+str(out),'-I'+str(out),'-I'+str(ROOT/'tests/dataqual15/research'),'-c',s,'-o',obj],'compile-'+str(i));objects.append(obj)
+ obj=out/'publish.o';run(['gcc','-O2','-c',ROOT/'app/support/restart_publish.c','-o',obj],'compile-publish');objects.append(obj)
  exe=out/'component.exe';run(['gfortran',*objects,'-o',exe],'link');stdout=run([exe],'execute')
  assert 'NATIVE_FEEDBACK_TRANSACTION_COMPONENT_PASS' in stdout
  report.update(status='PASS',compile_closure=len(ordered),stdout=stdout,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest())

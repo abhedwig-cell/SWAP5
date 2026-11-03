@@ -1,5 +1,6 @@
 module mod_native_coupled_transaction
- use iso_fortran_env,only:real64,int64
+ use iso_fortran_env,only:real64,int64,int32,int8
+ use iso_c_binding,only:c_int,c_int32_t,c_int8_t,c_char,c_size_t,c_null_char
  use ieee_arithmetic,only:ieee_is_finite
  use mod_transaction_reference
  use mod_macropore_continuation_state,only:macropore_continuation_state_t
@@ -44,7 +45,18 @@ module mod_native_coupled_transaction
   procedure::storage_accounting_status=>storage_status_native_coupled
   procedure::temporal_error=>temporal_native_coupled
  end type
- public::execute_native_coupled_transaction
+ public::execute_native_coupled_transaction,write_native_coupled_restart,read_native_coupled_restart
+ interface
+  integer(c_int) function native_publish(pending,target)bind(C,name='swap5_restart_publish')
+   import c_int,c_char
+   character(c_char),intent(in)::pending(*),target(*)
+  end function
+  integer(c_int32_t) function native_crc(bytes,count)bind(C,name='swap5_restart_crc32')
+   import c_int32_t,c_int8_t,c_size_t
+   integer(c_int8_t),intent(in)::bytes(*)
+   integer(c_size_t),value::count
+  end function
+ end interface
 contains
  subroutine clone_native_coupled(self,copy)
   class(native_coupled_state_t),intent(in)::self
@@ -165,4 +177,5 @@ contains
    end select
   end if
  end subroutine
+ include 'native_coupled_restart.inc'
 end module
