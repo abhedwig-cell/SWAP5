@@ -21,6 +21,12 @@ def verify():
              and '..'not in PurePosixPath(m.name).parts and '\\'not in m.name for m in members)
   files={m.name:t.extractfile(m).read()for m in members}
  assert {n:sha(b)for n,b in files.items()}==record['files_sha256']
+ for prefix in ('build','build-O0'):
+  build=json.loads(files[prefix+'/BUILD.json'])
+  assert sha(files[prefix+'/swap5_hupsel_germination.exe'])==build['executable_sha256']
+  assert sha(files[prefix+'/ttutil/libttutil.a'])==build['archive_sha256']
+  for i,pin in enumerate(build['source_sha256'].values()):
+   assert sha(files[prefix+'/compiled-source/'+str(i)+'.f90'])==pin
  assert sys.byteorder=='little','sealed native x86 stream ABI requires little endian'
  with tempfile.TemporaryDirectory(prefix='swap5-rotation-')as folder:
   out=Path(folder).resolve();assert out.parent==Path(tempfile.gettempdir()).resolve()

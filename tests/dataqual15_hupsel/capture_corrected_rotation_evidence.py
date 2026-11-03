@@ -27,8 +27,9 @@ for opt,folder in [('O0',a.o0),('O2',a.o2)]:
  for name in ('BUILD.json','EVENTS.json',exe.name):files[prefix+'/'+name]=(folder/name).read_bytes()
  files[prefix+'/ttutil/libttutil.a']=archive.read_bytes()
  source=Path(publisher['source']);dependencies[source.relative_to(ROOT).as_posix()]=sha(source.read_bytes().replace(b'\r\n',b'\n'))
- for name in build['source_sha256']:
+ for i,name in enumerate(build['source_sha256']):
   path=Path(name)
+  files[prefix+'/compiled-source/'+str(i)+'.f90']=path.read_bytes()
   if path.is_relative_to(ROOT):
    relative=path.relative_to(ROOT).as_posix();dependencies[relative]=sha(path.read_bytes().replace(b'\r\n',b'\n'))
 for name in ['tests/dataqual15_hupsel/audit_corrected_rotation.py',
