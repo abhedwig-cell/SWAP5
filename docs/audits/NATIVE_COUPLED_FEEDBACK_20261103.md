@@ -1,7 +1,8 @@
 # Native coupled Andelst candidate, feedback and donor provenance
 
-Baseline: `c1ce8808b`. Status: checked Windows O0/O2 qualified explicit corrected research model;
-fresh Linux/admission pending.
+Baseline: `c1ce8808b`. Status: canonically admitted through PR1495 at `aa611d0ca`; checked
+Windows16.2/Linux13.3 O0/O2 qualified explicit corrected research model.
+Tested merge `6966ab6a8` and actual merge have identical trees.
 
 The next owner must materialize real native matrix/macro water and action
 history, feed the identical signed macro heat into the real matrix heat equation,
@@ -82,3 +83,18 @@ Both S5NC0001 accepted files restore exactly. Original rejected native restart
 bytes remain identical. The small route has11 Fortran providers plus one existing
 C publisher, including adaptive completion and failure after a provisional leaf.
 Evidence: `integration/dataqual15/NATIVE_COUPLED_WINDOWS_EVIDENCE_20261103.json`.
+
+Fresh Linux O0/O2 compile207 main Fortran providers plus153 historical TTUTIL
+providers without object reuse. Native transaction CSV is byte-identical between
+Linux optimizations and identical to Windows after newline normalization.
+Source-bound Linux evidence is in
+`integration/dataqual15/NATIVE_COUPLED_LINUX_EVIDENCE_20261103.json`.
+Canonical preservation passed at the first PR head; its exact dependencies are
+unchanged at the admitted head (only new-workflow checkout and CI recovery changed).
+The current original contact-physics workflow was twice cancelled during full
+history checkout; the same scientific job passed at that earlier identical-source
+head. Those cancellations are retained as infrastructure outcomes, not fresh PASS.
+Current new-owner Linux gates pass. Central duplicate and canonical-push outcomes
+are recorded individually in the canonical receipt, never conflated with science.
+Next scope is an explicitly named application/runtime continuation route and
+complete energy/data ownership; original production remains the reference model.

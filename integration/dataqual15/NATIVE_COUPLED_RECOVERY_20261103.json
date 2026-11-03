@@ -1,7 +1,7 @@
 {
   "baseline": "c1ce8808bdfc042577295811b5acccbd7608ebea",
   "branch": "codex/native-coupled-acceptance-20261103",
-  "stage": "WINDOWS_O0_O2_NATIVE_FULL_WINDOW_ACCEPTED_LINUX_PENDING",
+  "stage": "CANONICALLY_ADMITTED_CLOSED_BOUNDED_RESEARCH",
   "production_changed": false,
   "scope": "Explicit corrected native coupled substep owner, real matrix heat feedback and historical/proxy donor provenance",
   "selection": [
@@ -16,7 +16,7 @@
   },
   "full_original_andelst_complete": false,
   "full_energy_balance_complete": false,
-  "recovery_point": "dbb4392d7417585cb8b38a31522a80fbc6662fbe",
+  "recovery_point": "aa611d0ca87abecb077036c2985511f0e4224b50",
   "component": {
     "closure": 11,
     "O0": "PASS",
@@ -62,9 +62,30 @@
     "groundwater_measured": false
   },
   "remaining": [
-    "Fresh Linux affected qualification and source-bound evidence",
-    "Canonical bounded admission after owning gates",
+    "Bind corrected named model to an explicit application/runtime continuation route while preserving original model",
     "Original outer interval and full481-day Andelst execution",
-    "Complete physical energy and independent historical water donor measurements"
-  ]
+    "Complete physical energy: variable-water matrix transport, gas/latent/radiative owners and independent historical incoming-water donor measurements"
+  ],
+  "pull_request": 1495,
+  "tested_merge": "6966ab6a837abd9cb2a44436f8273fd0b0697348",
+  "actual_merge": "aa611d0ca87abecb077036c2985511f0e4224b50",
+  "actual_tested_tree_exact": true,
+  "linux": {
+    "O0": "PASS_FRESH_COLD",
+    "O2": "PASS_FRESH_COLD",
+    "main_fortran_providers": 207,
+    "ttutil_fortran_providers": 153,
+    "reused_objects": 0,
+    "windows_linux_transaction_text_exact_after_newline_normalization": true
+  },
+  "all_existing_ci_terminal": true,
+  "pr_counts": {
+    "success": 17,
+    "cancelled": 1
+  },
+  "canonical_push_counts": {
+    "failure": 2,
+    "success": 2
+  },
+  "canonical_receipt": "integration/dataqual15/NATIVE_COUPLED_CANONICAL_RECEIPT_20261103.json"
 }

@@ -11,5 +11,39 @@
   },
   "retry_request": "403 run already running; no duplicate manual dispatch",
   "repair": "Shallow exact merge checkout; explicit one baseline fetch for source diff; component budget10min including checkout",
-  "compiled_source_or_threshold_change": false
+  "compiled_source_or_threshold_change": false,
+  "final_head": "819334f70fc13b62c4a9e44863e76f63ed38272d",
+  "new_owner_run": 41688523556,
+  "new_owner_final": "PASS_FOUR_JOBS",
+  "current_pr_all_terminal": true,
+  "current_pr_counts": {
+    "success": 17,
+    "cancelled": 1
+  },
+  "unchanged_contact_physics_checkout_cancellations": {
+    "workflow": 41688523433,
+    "attempt_jobs": [
+      126100611564,
+      126107322498
+    ],
+    "scientific_execution": "NOT_STARTED",
+    "inherited_success_run": 41687010666,
+    "inherited_success_job": 126095306975,
+    "inherited_head": "7e84556581e8a8499aafad23093da3b598fa6d6a",
+    "current_head": "819334f70fc13b62c4a9e44863e76f63ed38272d",
+    "dependency_identity": {
+      "src": "df992b74955dfa1be202a28ed8e4a7a41d4619d7",
+      "app": "4fbe52567e30474326ae03bc76bec0eac2e955c6",
+      "tests": "1c9a5adcdeab273fa4b6313398d52448997ebac1",
+      "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+      "tools": "c82d1759311d2e6c4aff2102d7d681bcfd61a72b",
+      "integration/audits": "9b074ca2758af03db9351ee6a16f5225189807d4",
+      ".github/workflows/fci-canonical.yml": "eaf9b8b69b1ae52e42692c1457308226cba00e1e",
+      ".github/workflows/dataqual15-contact-physical-energy.yml": "2cbb810b9f3be1bada1edfcf8f57e0336604cd92"
+    },
+    "whole_tracked_delta_from_inherited_head": [
+      ".github/workflows/dataqual15-native-coupled-feedback.yml",
+      "integration/dataqual15/NATIVE_COUPLED_CI_RECOVERY_20261103.json"
+    ]
+  }
 }
