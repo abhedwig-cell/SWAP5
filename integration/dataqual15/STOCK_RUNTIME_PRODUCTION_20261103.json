@@ -1,0 +1,32 @@
+{
+  "base": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+  "measurement_commit": "e5768aeccaed24dd257c0987e97c3bc0caabd918",
+  "archive": "integration/dataqual15/STOCK_RUNTIME_PRODUCTION_EVIDENCE_20261103.tar.xz",
+  "archive_sha256": "bc6e2338b8e69e51a06a36e8d3cf6eb2a0fdff24ae44ee9f23a967c1cd5fee20",
+  "scope": "CURRENT_RUNTIME_PRESERVATION_FOR_NUMERICAL_STOCK_SUCCESSOR",
+  "status": "CURRENT_EB_I23_I24_I25_RUNTIME_O0_O2_PASS",
+  "provider_count": 186,
+  "full_energy_balance_complete": false,
+  "canonical_admitted": true,
+  "inherited_assets": {
+    "tests/eb/EB-I23_CONTRACT.md": "56bfd4f1350e569e6f651ca4ada13550af93f986",
+    "tests/eb/EB-I24_CONTRACT.md": "b7a504860ed027e87dad04731af63c933f668984",
+    "tests/eb/F-VQ88_STATUS.json": "906e787a616c16a8dca339143fcbe06fc6a8ca5f",
+    "qualification/F-VQ90_STATUS.json": "c4255d910af0fa40d7a856ee8dad7d7791119cdd",
+    "qualification/F-VQ91_STATUS.json": "d81c331b6623df66e060f043255e8a3c9a9dc8b0",
+    "qualification/F-VQ93_STATUS.json": "6c8ca7093aae525b6fdfd34d76e5db24ba1d039c",
+    "integration/f-ci/F-CI70_STATUS.json": "074b405e4ac194a131838540ff83c6f920725d3f",
+    "integration/f-ci/F-CI72P_STATUS.json": "33aa8b902e7431320100acd1b090a5b4c5a58c66",
+    "integration/f-ci/F-CI74P_STATUS.json": "4754c25ee8bdbb74f26b489dd5aa3992af3281e2",
+    "integration/f-ci/F-CI79_STATUS.json": "d37abc96bebd3fe7aaaabaf52db464d7256268de",
+    "integration/f-ci/F-CI79P_STATUS.json": "31f461aaa93742a966ab970c8d6f58f7263c622f"
+  },
+  "revised_assets": {
+    "tests/eb/EB-I22_CONTRACT.md": "2e0d2a504e87132049d19ba02abe801cadb5db73",
+    "tests/eb/EB-I25_CONTRACT.md": "48dfdd79c6336436177b44d1aede9cfaeb3f1efd"
+  },
+  "original_outflow_attribution": "integration/dataqual15/STOCK_RUNTIME_OUTFLOW_ATTRIBUTION_20261103.json",
+  "test_status": "Checked Windows16.2 O0/O2, six fresh executions, exact per-test stdout",
+  "canonical_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+  "receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
+}

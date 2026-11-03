@@ -6,6 +6,10 @@ on:
       - 'tests/dataqual15/*contact*'
       - 'tests/dataqual15/*energy_boundary*'
       - 'tests/dataqual15/qualify_stock_projection_candidate.py'
+      - 'tests/dataqual15/*stock_projection_production.py'
+      - 'tests/dataqual15/*stock_runtime*.py'
+      - 'integration/dataqual15/STOCK_RUNTIME*'
+      - 'integration/dataqual15/STOCK_PROJECTION_PRODUCTION*'
       - 'integration/dataqual15/STOCK_PROJECTION_NUMERICAL_CANDIDATE.patch'
       - 'integration/dataqual15/CONTACT_ENERGY*'
       - 'integration/dataqual15/SPRINT04_ENERGY_COMPONENT_INPUTS.tar.xz'
@@ -22,16 +26,26 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Compiler
         run: gfortran --version
-      - name: Verify sealed Windows observations
+      - name: Prepare exact closed predecessor and verify current native and stock owners
+        run: python -B tests/dataqual15/verify_native_restart_admission.py --prepare-only --output contact-energy-ci/preservation
+      - name: Verify unchanged historical Windows observations in exact predecessor
+        working-directory: contact-energy-ci/preservation/predecessor
         run: python -B tests/dataqual15/verify_contact_energy_evidence.py
       - name: Actual contact owner O0 and O2
         run: python -B tests/dataqual15/qualify_andelst_contact.py --output contact-energy-ci/contact
       - name: Actual heat and exact stock ledger O0 and O2
         run: python -B tests/dataqual15/qualify_energy_boundary.py --output contact-energy-ci/energy
       - name: Isolated numerical stock candidate and deliberate 1J inconsistency
-        run: python -B tests/dataqual15/qualify_stock_projection_candidate.py --output contact-energy-ci/stock-candidate
+        working-directory: contact-energy-ci/preservation/predecessor
+        run: python -B tests/dataqual15/qualify_stock_projection_candidate.py --output "${{ github.workspace }}/contact-energy-ci/stock-candidate"
+      - name: Actual production stock owner and existing independent contracts
+        run: python -B tests/dataqual15/qualify_stock_projection_production.py --output contact-energy-ci/stock-production
+      - name: Current EB-I23 I24 I25 runtime oracles
+        run: python -B tests/dataqual15/qualify_stock_runtime.py --output contact-energy-ci/stock-runtime
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -40,3 +54,5 @@ jobs:
             contact-energy-ci/contact
             contact-energy-ci/energy
             contact-energy-ci/stock-candidate
+            contact-energy-ci/stock-production
+            contact-energy-ci/stock-runtime

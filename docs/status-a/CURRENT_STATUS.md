@@ -1,5 +1,7 @@
 # SWAP5 Status-A current status
 
+Numerical whole-column stock comparison is now production-admitted through PR1487 at `c9ed8c8ca7ec9347c2b4319836036b061243c184`, with exact tested/actual merge trees. Checked Windows16.2/Linux13.3 O0/O2 pass the current numerical owner and I23/I24/I25 runtime contracts. All864 normalized representations pass and all864 injected1J/m2 errors are rejected per build; missing donor energy and invalid theta remain refusals. The accepted-outflow fixture tests unavailable energy authority directly while preserving water balance and rollback. No physical law, DTO, solver, state or restart changes. Variable-water physical energy and Andelst481days remain OPEN; counts stay2/3 original executions and0/3 whole scientific qualifications. CI records26 success and14 retained failures, including three non-owner scope firewalls on the intentional stock delta. Authority: `integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json` and [production stock scope](../audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md).
+
 CLOSURE16 diagnostic evidence is admitted through PR1486 at58b89f37, with exact
 tested/actual merge trees and all three actual-merge verifiers passing. Sixteen
 PR workflows pass; the baseline-identical Hupsel source-pin failure remains

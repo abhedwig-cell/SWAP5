@@ -1,0 +1,370 @@
+{
+  "status": "ACTUAL_CANONICAL_NUMERICAL_OWNER_ADMISSION_TREE_VERIFIED",
+  "pull_request": 1487,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1487",
+  "base": "4d37b256dc60969dc58c9cc2ac26652082bdf001",
+  "qualified_head": "6f98911a9b5256cabd7573086a0ede60026613f2",
+  "actual_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+  "qualified_tree": "dfd5548662ad42c6c85a1ac7f2f3c005368b1884",
+  "actual_tree": "dfd5548662ad42c6c85a1ac7f2f3c005368b1884",
+  "whole_tree_exact": true,
+  "scope": "Numerical stock representation comparison only; current I23/I24/I25 runtime and fail-closed outflow energy evidence. No physics law, solver, DTO, state or restart change.",
+  "production_owner_admitted": true,
+  "whole_scientific_qualification": false,
+  "full_energy_balance_complete": false,
+  "andelst_full_original_complete": false,
+  "scientific_denominator_change": false,
+  "linux": {
+    "run": 41599824008,
+    "job": 125795665942,
+    "artifact": 13214207822,
+    "artifact_zip_sha256": "11bff7ddc85afd7981cdf9db348017261d9081e31f5739ba6fd8fb323bdb1823",
+    "status": "CURRENT_NUMERICAL_AND_RUNTIME_O0_O2_PASS"
+  },
+  "local": {
+    "windows": "GNU Fortran16.2 checked O0/O2;186-provider current runtime closures; six fresh I23/I24/I25 executions; exact stdout per test",
+    "stock": "864 representations accepted;864 injected1J errors rejected per build; missing terms/raw theta rejection retained",
+    "negative_source_controls": 10,
+    "predecessor_science_and_restart": "PASS exact committed view; immutable original tests/capsules unchanged",
+    "documentation": "Source checks PASS; strict MkDocs PASS44.01seconds",
+    "documentation_receipt": "Source checks PASS; strict MkDocs PASS39.41seconds"
+  },
+  "ci_counts": {
+    "success": 26,
+    "failure": 14
+  },
+  "ci": [
+    {
+      "id": 41599823896,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823991,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823675,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823971,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823796,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823898,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823813,
+      "name": "PUB-P2E04 Reference failure census",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599824008,
+      "name": "DATAQUAL15 current contact and energy diagnostics",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823874,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599824113,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823690,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823759,
+      "name": "F-CI96 F-ROSS12 postimage preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823920,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823750,
+      "name": "F-PE-ELASTIC65 mode7 C-SAFE binding",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823890,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823835,
+      "name": "F-CI74 EB-I24 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823847,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823612,
+      "name": "F-CI79 EB-I25 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823731,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823761,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823868,
+      "name": "MC-NUT01 focused native qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823977,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823993,
+      "name": "PUB-ME D3 origin authority",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599824106,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823926,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599824018,
+      "name": "F-CI72 EB-I23 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599824021,
+      "name": "F-CI75 F-KT21 current-canonical admission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823946,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823900,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823695,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823797,
+      "name": "F-CI70 EB-I22 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599824060,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599824132,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823907,
+      "name": "PUB-ME D1 transition authority",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599823944,
+      "name": "PUB-P1E02 post-solver rollback",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823893,
+      "name": "F-KT22 current-canonical qualification",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41599824029,
+      "name": "DATAQUAL15 original Grassgrowth sprint",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823930,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823878,
+      "name": "F-PERF-CANON01 D AHL50",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41599823892,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "failed_predicate_controls": "integration/dataqual15/STOCK_PRODUCTION_BASELINE_GUARD_CONTROLS_20261103.json",
+  "failure_disposition": "Eleven baseline-identical failed predicates or source recipes; three intentional non-owner unit-scope refusals on the stock source delta(P2E09/P2E10/ELASTIC65). All remain FAILURE. No publication/performance gate or assertion relaxed.",
+  "remaining": "Shared B1.11/current variable-water energy formulation remains incomplete; actual accepted interval donor heat receipts and an explicit conservative Andelst contact treatment remain open. Draft1485 microscopic/macropore/adapter changes are separate.",
+  "actual_merge_verification": {
+    "head": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+    "checkout": "Exact detached committed tree with core.autocrlf=false; no projection or source patch",
+    "current_stock_and_runtime": "PASS",
+    "paired_B111_current_heat": "PASS shared physical limitation retained",
+    "fresh_canonical_Andelst_capsule": "PASS contact barrier and rejected stale-Jacobian hypothesis retained"
+  },
+  "receipt_delta": "Administrative status, documentation and observed-outcome metadata only; implementation, test, workflow, input, capsule and reference bytes remain the qualified postimage.",
+  "post_merge_retained_failures": [
+    {
+      "run": 41601796382,
+      "cause": "DATAQUAL12 global source refusal at verify_dataqual12_current.py:13; unreviewed delta"
+    },
+    {
+      "run": 41601796639,
+      "cause": "Same DATAQUAL12 source refusal"
+    },
+    {
+      "run": 41601796436,
+      "cause": "Same DATAQUAL12 source refusal"
+    }
+  ],
+  "post_merge_ci_terminal": [
+    {
+      "id": 41601796571,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41601796382,
+      "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41601796639,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41601796436,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41601796509,
+      "name": "F-CI70 EB-I22 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41601796473,
+      "name": "F-CI74 EB-I24 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41601796511,
+      "name": "F-CI72 EB-I23 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41601796459,
+      "name": "F-CI79 EB-I25 moving preservation",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41601796523,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41601796364,
+      "name": "F-CI96 F-ROSS12 postimage preservation",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "post_merge_ci_counts": {
+    "success": 7,
+    "failure": 3
+  },
+  "post_merge_all_terminal": true
+}
