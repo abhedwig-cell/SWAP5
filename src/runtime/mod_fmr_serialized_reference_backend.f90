@@ -38,7 +38,7 @@ module mod_fmr_serialized_reference_backend
   use mod_interception_source_window_runtime, only: interception_source_window_t
   use mod_rutter_interception_process, only: rutter_interval_input_t, rutter_interval_result_t, rutter_diagnostics_t, &
        RUTTER_OK
-  use mod_rutter_source_window_processor, only: rutter_source_state_t, rutter_source_trial_t, &
+  use mod_rutter_source_window_processor, only: rutter_source_state_t, rutter_source_trial_t,rutter_source_restart_t, &
        initialize_rutter_source_state, initialize_rutter_canopy_state, prepare_rutter_source_trial, &
        accept_rutter_source_trial, RUTTER_WINDOW_OK
   use mod_fmr_bottom_thermal_carrier, only: fmr_bottom_thermal_carrier_t, fmr_bottom_thermal_candidate_t
@@ -2518,6 +2518,8 @@ contains
     class(kernel_parameters_t),intent(in)::parameters
     class(canonical_forcing_t),intent(in)::command
     class(transaction_state_t),intent(in)::state
+    type(rutter_source_restart_t)::source_record
+    integer::source_status
     ok=.false.
     if(.not.self%state_profile_admitted.or..not.self%rutter_active.or..not.self%black_evaporation_active)return
     if(.not.self%soil_water_selection%uses_reference())return
@@ -2538,6 +2540,11 @@ contains
         if(.not.state%rutter%source_window_initialized())return
         if(.not.ieee_is_finite(state%rutter%accepted_until()))return
         if(state%rutter%accepted_until()/=command%time)return
+        call state%rutter%export_restart(source_record,source_status)
+        if(source_status/=RUTTER_WINDOW_OK)return
+        ! Management may not split a source window whose physical canopy
+        ! parameters are still bound for the remaining forcing.
+        if(source_record%source_progress%t1/=command%time)return
         ok=.true.
       end select
     end select
