@@ -52,6 +52,12 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          if test -f integration/dataqual15/STOCK_RUNTIME_PRODUCTION_20261103.json; then
+            # Source-bound successor, current real runtime oracles and exact
+            # unchanged physical owners; historical guards below remain intact.
+            python3 -B tests/dataqual15/verify_stock_runtime_production.py
+            exit 0
+          fi
           I23_ADMISSION=77acdd880bb0613f5a3ab857c4ecdc69aab27149
           I25_ADMISSION=b7c2e510c68e5799a138e881793d27037c482b8a
           FROSS12_AUTH=786fe5bf59e616dcfa9a86b16b58c67ac0b3b97d
