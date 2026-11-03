@@ -22,12 +22,17 @@ def verify():
     # was merging. It is outside the research compile closure. Bind its exact
     # two postimages and canonical admission; never ignore the app subtree.
     rain='app/solute_project/prepare_rain_duration.f90'
-    if changed:
-        assert changed==[rain], 'unreviewed production delta'
+    allowed=set()
+    if (ROOT/'integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json').exists():
+        from verify_thermal_receipts import verify as verify_thermal
+        allowed.update(verify_thermal()['production_delta'])
+    if rain in changed:
+        allowed.add(rain)
         subprocess.run(['git','merge-base','--is-ancestor','d37a9ba2f09e8ea65168b0f87cd6691ad372536f','HEAD'],cwd=ROOT,check=True)
         for ref,blob in ((BASE,'18dc5b61d5f31563cfdd20208e9368c68378743d'),
                          ('HEAD','4de070ccb16a654989322a3cc42b08bf13a89c7f')):
             assert subprocess.check_output(['git','rev-parse',ref+':'+rain],cwd=ROOT,text=True).strip()==blob
+    assert set(changed)==allowed, 'unreviewed production delta'
     assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT)
     archive=ROOT/record['archive'];assert sha(archive.read_bytes())==record['archive_sha256']
     with tarfile.open(archive) as t:

@@ -15,6 +15,10 @@ def verify():
     assert record['baseline']=='538fb025e8702d4dd609bc30cc347743a0587145'
     assert record['status']=='ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS'
     assert record['full_energy_balance_complete'] is False
+    assert set(subprocess.check_output(['git','diff','--name-only',record['baseline'],'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines())==set(record['production_delta'])
+    for path,pins in record['production_delta'].items():
+        old=subprocess.run(['git','rev-parse',record['baseline']+':'+path],cwd=ROOT,capture_output=True,text=True)
+        assert (old.stdout.strip() if old.returncode==0 else None)==pins['before'],path
     archive=ROOT/record['archive'];assert sha(archive.read_bytes())==record['archive_sha256']
     with tarfile.open(archive) as t:
         members=t.getmembers();assert len({m.name for m in members})==len(members)
@@ -52,6 +56,7 @@ def verify():
             assert abs(independent-flux)<1e-10
         assert files[opt+'/receipts.csv']==files['O0/receipts.csv']
     print('SOURCE-BOUND THERMAL SINGLE/TWO-HALF/REJECTION/OFF-ON AND EXISTING EB RUNTIME PASS; ORIGINAL INPUT AND FULL ENERGY NOT QUALIFIED')
+    return record
 
 
 if __name__=='__main__':verify()

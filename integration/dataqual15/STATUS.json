@@ -566,6 +566,18 @@
         "src/process/mod_whole_column_sensible_energy_accounting.f90": {
           "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
           "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
+        },
+        "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
+          "before": null,
+          "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
+        },
+        "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
+          "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
+          "after": "808874309456031ff65d620d54db55f478456d0a"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
+          "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
         }
       },
       "preservation_restore": {
@@ -600,6 +612,18 @@
         "src/process/mod_whole_column_sensible_energy_accounting.f90": {
           "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
           "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
+        },
+        "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
+          "before": null,
+          "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
+        },
+        "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
+          "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
+          "after": "808874309456031ff65d620d54db55f478456d0a"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
+          "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
         }
       },
       "predecessor_production_trees": {
@@ -608,13 +632,14 @@
         "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
       },
       "gate_source_sha256": {
-        "tests/dataqual15/verify_native_restart_admission.py": "7eea84afec5039247a03f0986517232ecf2af79918db8a49c7ee12f384c377df",
+        "tests/dataqual15/verify_native_restart_admission.py": "cd7bab440de9e5d6d6ffff1e9ba2b56dcc37392bb6b4659c1f2ea3250581592e",
         "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
         "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77",
         "tests/dataqual15/verify_stock_projection_production.py": "464a35c7bfb5fb8bf54453b74f9693ce23c4c25271d859b6e44809cd0be08dcc",
         "tests/dataqual15/qualify_stock_projection_production.py": "3b6d8db57461261bf3fb2bb72ae72069fe32248275bfb5399191003f98491b5b",
-        "tests/dataqual15/verify_stock_runtime_production.py": "f0d7e9e1a6916d9c3ef966201a03b8edbfaf66a66215dae3ea7980257880b4b6",
-        "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c"
+        "tests/dataqual15/verify_stock_runtime_production.py": "52076f9a5aa13078139b1e39ed68381f43ce706993b397c066a2f2df6b6ae28c",
+        "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c",
+        "tests/dataqual15/verify_thermal_receipts.py": "3fed149f12f7aea7845270f2bba38e26ad3cad9398016ba23560386b150af12e"
       },
       "scope": "Exact native I/O successor plus separately qualified numerical sensible-stock comparison owner. Predecessor physics remains historical; no whole physical energy or current1827-day promotion.",
       "test_selection": {
@@ -686,6 +711,11 @@
         "status": "CANONICALLY_ADMITTED_NUMERICAL_STOCK_AND_RUNTIME",
         "merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
         "receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
+      },
+      "thermal_observation_successor": {
+        "record": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json",
+        "verifier": "tests/dataqual15/verify_thermal_receipts.py",
+        "scope": "Fresh current runtime observations and unchanged I23/I24/I25 oracles; inherited full scientific evidence remains exact predecessor only, no complete physical-energy claim"
       }
     },
     "canonical_merge": "bf99820474cad117b60b1d1285dd32c0db905495",
