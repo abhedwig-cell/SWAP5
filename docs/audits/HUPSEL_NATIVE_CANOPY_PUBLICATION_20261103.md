@@ -52,6 +52,17 @@ ignore an application subtree or accept arbitrary later codec modifications.
 
 ## Direct accepted event observation
 
+All36 stable-source PR workflows reached terminal status:19 success,13 retained
+failures and4 cancellations. The unchanged-source publication firewalls reject
+the intentional codec delta; historical work-unit/reference firewalls and three
+unchanged incomplete provider closures remain explicit failures. The old CI
+recipe-restoration failure is repaired by the exact metadata map and freshly
+requalified on Linux at `03d03a6d4`: run41698875607 passes native O0/O2, all seven
+preservation legs and ten boundary controls. No full moving F-CI success is
+claimed. Exact errors and predicate controls are recorded in
+`PR1496_CI_FAILURE_ADJUDICATION_20261103.json` and
+`PR1496_NONOWNER_GUARD_CONTROLS_20261103.json`.
+
 The compatible same-build O2 continuation completed day931 in730.597seconds,
 using the explicitly recorded diagnostic DTMAX0.01 input variant. At accepted
 cut930 the crop cut index changes from3 to4 while the hydraulic canopy retains

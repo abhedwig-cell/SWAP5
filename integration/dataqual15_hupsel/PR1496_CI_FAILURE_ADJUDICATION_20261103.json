@@ -1,0 +1,127 @@
+{
+  "all_13_failures_retained": true,
+  "guard_controls": "PR1496_NONOWNER_GUARD_CONTROLS_20261103.json",
+  "positive_current_owner_qualification": "NATIVE_PUBLICATION_POSIX_PRESERVATION_20261103.tar.json",
+  "no_full_moving_fci_success_claim": true,
+  "failures": [
+    {
+      "run_id": 41695205180,
+      "job_id": 126123788616,
+      "classification": "NONOWNER_UNCHANGED_SOURCE_FIREWALL",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:37:39.6293117Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "run_id": 41695205261,
+      "job_id": 126123789832,
+      "classification": "FROZEN_HISTORICAL_WORK_UNIT_SOURCE_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:38:13.2485508Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "run_id": 41695205511,
+      "job_id": 126123791515,
+      "classification": "UNCHANGED_MANUAL_PROVIDER_CLOSURE_MISSING_DRAMET3",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:38:56.4657725Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 41695205547,
+      "job_id": 126123790496,
+      "classification": "UNCHANGED_MANUAL_PROVIDER_CLOSURE_MISSING_DRAMET3",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:42:57.6080850Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 41695205537,
+      "job_id": 126123790856,
+      "classification": "UNCHANGED_MANUAL_PROVIDER_CLOSURE_MISSING_DRAMET3",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:43:08.0266232Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 41695205747,
+      "job_id": 126123791156,
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_INVENTORY",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:44:06.4407939Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "run_id": 41695205583,
+      "job_id": 126123791256,
+      "classification": "NONOWNER_UNCHANGED_SOURCE_FIREWALL",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:50:15.5691308Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "run_id": 41695205190,
+      "job_id": 126124600582,
+      "classification": "PHYSICAL_AND_APPLICATION_STEPS_PASS_FROZEN_DATAQUAL12_INVENTORY_FAIL",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:50:50.2213331Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "run_id": 41695205654,
+      "job_id": 126123792255,
+      "classification": "FROZEN_HISTORICAL_WORK_UNIT_SOURCE_SCOPE",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:51:20.6291593Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "run_id": 41695205646,
+      "job_id": 126123791303,
+      "classification": "NONOWNER_UNCHANGED_SOURCE_FIREWALL",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:52:05.0742607Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    },
+    {
+      "run_id": 41695205574,
+      "job_id": 126123791136,
+      "classification": "FROZEN_P2E05_REFERENCE_TREE_AUTHORITY",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:53:07.8554596Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "run_id": 41695205448,
+      "job_id": 126131928196,
+      "classification": "OLD_RECIPE_MAP_FAILURE_FIXED_IN_805EEE_AND_REQUALIFIED_POSIX_03D03",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:56:37.4759802Z AssertionError: ('predecessor-hupsel', 'Traceback (most recent call last):",
+        "    assert sha((root/name).read_bytes()) == digest, \\'checkout source differs: \\'+name",
+        "AssertionError: checkout source differs: tests/dataqual15_hupsel/build_and_run.py"
+      ]
+    },
+    {
+      "run_id": 41695205188,
+      "job_id": 126123788763,
+      "classification": "NONOWNER_UNCHANGED_SOURCE_FIREWALL",
+      "verdict": "FAILURE_RETAINED",
+      "error_lines": [
+        "2026-11-03T18:57:25.8082334Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    }
+  ]
+}

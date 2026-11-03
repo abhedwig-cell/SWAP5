@@ -1,0 +1,199 @@
+{
+  "ci_head": "21e6d1fa4b7975757f029e312722ed586b640806",
+  "counts": {
+    "success": 19,
+    "failure": 13,
+    "cancelled": 4
+  },
+  "all_terminal": true,
+  "runs": [
+    {
+      "id": 41695205443,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205296,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205229,
+      "name": "PUB-P1E02 post-solver rollback",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205301,
+      "name": "DATAQUAL15 current contact and energy diagnostics",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41695205535,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205537,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205177,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205747,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205669,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205331,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205583,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205190,
+      "name": "MC-SOL01 dynamic thermal pond and file application",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205654,
+      "name": "PUB-ME D1 transition authority",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205239,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205646,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205180,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205261,
+      "name": "PUB-ME D3 origin authority",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205495,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205511,
+      "name": "PUB-P2E04 Reference failure census",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205346,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205649,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205629,
+      "name": "Hupsel native checkpoint publication",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205234,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205547,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205574,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205265,
+      "name": "F-PERF-CANON01 D AHL50",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205448,
+      "name": "F-CI canonical qualification",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205188,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41695205441,
+      "name": "MC-SOL01 file-driven Reference column",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41695205121,
+      "name": "DATAQUAL15 nonlinear contact and accepted thermal process data",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41695205450,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205497,
+      "name": "MC-SOL01 original SWP chemistry",
+      "conclusion": "cancelled"
+    },
+    {
+      "id": 41695205517,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205366,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205223,
+      "name": "MC-SOL01 SURFACE-AGE01 isolated native process",
+      "conclusion": "success"
+    },
+    {
+      "id": 41695205260,
+      "name": "DATAQUAL15 original Grassgrowth sprint",
+      "conclusion": "success"
+    }
+  ],
+  "targeted_current_qualification": {
+    "run_id": 41698875607,
+    "head": "03d03a6d459c45f1171391b023be411409831700",
+    "job_id": 126136603513,
+    "artifact_id": 13263302650,
+    "conclusion": "success",
+    "scope": "Checked POSIX O0/O2 native I/O plus exact predecessor/current-successor admission and ten refusal controls; replaces earlier missing recipe metadata failure without asserting whole F-CI success"
+  }
+}
