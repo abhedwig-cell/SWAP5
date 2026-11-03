@@ -1,0 +1,58 @@
+{
+  "work_unit": "Corrected current Hupsel full-rotation endpoint and ledger qualification",
+  "stage": "PREREGISTERED_NOT_EXECUTED",
+  "baseline": "baada36c4f717ca40057b6db663e20f60b9d2a62",
+  "owning_workstream": "This isolated Hupsel application/canopy workstream; no changes to other chat contact/thermal research",
+  "production_dependency": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "cc33c56d4b6a09462426ec200c5638e34daa8d53",
+      "after": "d730a8b436d149f1d5e33275c0e25c330b76d2a2"
+    },
+    "app/solute_project/main.f90": {
+      "before": "40cb5207d78e10b682344ac1a6d14be67a63558b",
+      "after": "a94418d0001753d986f451473503e12c519ffdb4"
+    },
+    "src/kernel/mod_kernel_transactions.f90": {
+      "before": "da7a00b6aec996cff504d8d30a90e51a8cce2162",
+      "after": "ad6cd6f52460381847d4b493ca2dd291b25dfc98"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "a6ff0ff33124929424d95edff42ac5c5ce6629b6",
+      "after": "4744ab36c323a5a6a6f0dd1c8eb563c28b38ba48"
+    }
+  },
+  "production_change_selected": false,
+  "implementation": "Independent current-trajectory canopy/storage and complete water/solute ledger auditor plus exact current-build continuation qualification; no scientific bound changes",
+  "unique_question": "After the admitted physical endpoint correction, does a fresh actual current native trajectory complete all1096 diagnostic days with coherent post-management canopy and complete mass ledgers, and reproduce exact strict current-build restart through the final grass period? The old whole-period trajectory predates the physical change.",
+  "selected": {
+    "fresh_O2_days": 1096,
+    "input_variant": "Original-source registered DTMAX0.01 only; all other original input bytes unchanged",
+    "timeout_seconds": 2400,
+    "expected_seconds": 920,
+    "capture_days": [
+      930,
+      956,
+      989,
+      1033,
+      1058,
+      1077,
+      1096
+    ],
+    "O2_strict_restart": [
+      1058,
+      1077
+    ],
+    "O0": "Explicit cross-opt compatible seed control followed by own-build exact continuous/split suffix; do not call the imported seed same-build proof"
+  },
+  "frozen_acceptance": {
+    "daily_water_cm": 1e-10,
+    "daily_solute_mg_cm2": 1e-10,
+    "cumulative_water_or_solute": 1e-08,
+    "canopy_stock": "Finite, nonnegative and at most accepted actual crop capacity; zero repeated cut export next day",
+    "restart": "Exact final whole typed stream and daily budget/crop output for own-build split vs continuous suffix"
+  },
+  "inherited": "PR1498 actual kernel/Rutter/CRC/corruption/current shared thermal/native coupled proof remains bound to unchanged production bytes; no repeat of those closed measurements.",
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution;0/3 whole science",
+  "next": "Persist auditor, run fresh full current diagnostic trajectory once, qualify independent mass/canopy ledger and actual continuation, then seal and integrate bounded evidence."
+}
