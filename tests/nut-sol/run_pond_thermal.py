@@ -96,6 +96,8 @@ def main():
     for p in ordered + [driver, incumbent, fixture, Path(__file__).resolve()]:
         if p.is_relative_to(ROOT):
             report['inputs'][str(p.relative_to(ROOT))] = sha(p)
+    publication = ROOT / 'app/support/restart_publish.c'
+    report['inputs'][str(publication.relative_to(ROOT))] = sha(publication)
     for opt in ['O0', 'O2']:
         build = out / opt
         build.mkdir()
@@ -136,6 +138,10 @@ def main():
             report['reused_physical_sha256'] = sha(reused / 'result.json')
         else:
             exe = build / 'thermal'
+            obj = build / 'restart_publish.o'
+            cc = subprocess.check_output(fc + ['-print-prog-name=gcc'], text=True).strip()
+            run([cc, '-' + opt, '-std=c11', '-c', publication, '-o', obj], build, 'compile-publication')
+            objects.append(obj)
             run(fc + flags + objects + ['-o', exe], build, 'link')
         report.setdefault('executables', {})[opt] = sha(exe)
         results = {}
