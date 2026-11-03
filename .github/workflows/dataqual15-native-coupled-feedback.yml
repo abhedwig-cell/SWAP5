@@ -1,0 +1,54 @@
+name: DATAQUAL15 native coupled heat feedback and acceptance
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tests/dataqual15/qualify_native_coupled.py'
+      - 'tests/dataqual15/qualify_native_feedback_component.py'
+      - 'tests/dataqual15/audit_native_donors.py'
+      - 'tests/dataqual15/research/native_*'
+      - 'tests/dataqual15/research/mod_native_*'
+      - '.github/workflows/dataqual15-native-coupled-feedback.yml'
+permissions:
+  contents: read
+env:
+  OMP_NUM_THREADS: '1'
+  PYTHONUTF8: '1'
+jobs:
+  real-heat-and-transaction:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python -B tests/dataqual15/audit_native_donors.py --output historical-donors.json
+      - run: python -B tests/dataqual15/qualify_native_feedback_component.py --optimization ${{ matrix.optimization }} --output feedback-component-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-feedback-component-${{ matrix.optimization }}
+          path: |
+            feedback-component-ci
+            historical-donors.json
+  native-coupled:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python -B tests/dataqual15/qualify_native_coupled.py --optimization ${{ matrix.optimization }} --output native-coupled-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-coupled-${{ matrix.optimization }}
+          path: native-coupled-ci
