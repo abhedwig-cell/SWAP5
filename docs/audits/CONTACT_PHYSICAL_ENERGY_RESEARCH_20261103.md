@@ -1,7 +1,7 @@
 # Contact and physical heat-transport research contract
 
-Status: **Windows O0/O2 bounded research PASS; Linux qualification pending.
-Not production admission.**
+Status: **Windows16.2/Linux13.3 checked O0/O2 research PASS; admitted research
+through PR1489. Not production physics admission.**
 
 Base is canonical2924fefac. Two bounded executable advances are selected before
 changing an original physical law. Current source and historical reference
@@ -92,3 +92,37 @@ energy seam needs actual accepted interval temperatures and conductive,
 liquid, gas and root receipts. Atmospheric radiation/latent, vapor and freezing
 owners remain separate missing scope. No residual may supply a missing physical
 flux; no tolerance, original entry law or scientific denominator changes here.
+
+## Canonical composition and provenance
+
+All17 PR1489 workflows completed successfully. Linux artifact13217604193 from
+run41609363259/job125827085562 is retained as
+`integration/dataqual15/CONTACT_PHYSICAL_ENERGY_LINUX_20261103.zip`.
+Its SHA256 is19557c8d3eb75a6209faadadf43df6b68f4de15c6a09580658ed3681b91d013e.
+Independent local reconstruction confirms source identities, executable hashes,
+all nodal/column budgets and O0/O2 equality. Scientific output is exact across
+Windows16.2 and Linux13.3 after newline normalization. Four evidence attacks
+(false full-energy claim, archive digest, candidate identity and dirty contact
+source) are refused.
+
+The tested merge was `ec417581`/tree `da1956d4`. Actual merge `b2a2b290`/tree
+`4967ef59` also includes independently admitted PR1488, which raced with our
+merge. Whole-tree identity is therefore **false**, not presumed. The five
+additional paths belong to the input-publication adapter, its evidence/status,
+test and exact stock-preservation guard. Every compiled research dependency is
+identical at the actual merge. A fresh checked Windows O0/O2 compile and replay
+of those exact dependencies passes, sealed in
+`integration/dataqual15/CONTACT_PHYSICAL_ACTUALMERGE_20261103.tar.xz`.
+The research verifier initially refused the additional adapter delta. Its
+successor permits only the exact reviewed old/new adapter blobs and requires
+the PR1488 canonical merge in ancestry; all other production changes still fail.
+Authority and receipts are in
+`integration/dataqual15/CONTACT_PHYSICAL_CANONICAL_RECEIPT_20261103.json`.
+
+Input provenance is bounded: the112-node Jacobian is from the archived diagnostic
+built at `e3ea9ac`, rebound to the historical2.748-day physical payload, with
+MAXIT64/MAXBACKTR24 rather than original30/4. Its measured jump is the actual
+archived0.022332123569824055cm/day jump, not the later synthetic topology probe's
+0.11805cm/day jump. This experiment neither regenerates the complete original
+sharp-input trajectory nor reevaluates nonlinear rates at the constrained head.
+A coupled accepted step remains required.

@@ -909,8 +909,12 @@
     "nonlinear_contact_repair": false,
     "full_energy_balance_complete": false,
     "windows_checked_O0_O2": "PASS",
-    "linux": "PENDING",
+    "linux": "PASS",
     "scope": "actual frozen112-node contact constraint; manufactured macro stock control seeded by measured exchange; conservative warm phase/root sensible heat trials",
-    "next": "fresh Linux qualification, then actual nonlinear contact and accepted native heat receipts"
+    "next": "fresh Linux qualification, then actual nonlinear contact and accepted native heat receipts",
+    "research_admitted_pr": 1489,
+    "receipt": "integration/dataqual15/CONTACT_PHYSICAL_CANONICAL_RECEIPT_20261103.json",
+    "composed_source_retest": "PASS checked O0/O2",
+    "whole_tree_exact": false
   }
 }
