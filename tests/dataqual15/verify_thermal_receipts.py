@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path,PurePosixPath,PureWindowsPath
 import subprocess
+import sys
 import tarfile
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -29,6 +30,17 @@ def verify():
         for ref,pin in ((record['baseline'],adapter['before']),('HEAD',adapter['after'])):
             assert subprocess.check_output(['git','rev-parse',ref+':'+path],cwd=ROOT,text=True).strip()==pin,path
         allowed.add(path)
+    io_successor={}
+    io_scope=ROOT/'integration/dataqual15_hupsel/NATIVE_PUBLICATION_SCOPE_20261103.json'
+    if io_scope.exists():
+        scope=json.loads(io_scope.read_text())
+        assert not scope['physical_correction'] and not scope['whole_scientific_admission']
+        io_successor=scope['production_delta']
+        for path,pins in io_successor.items():
+            for ref,key in ((record['baseline'],'before'),('HEAD','after')):
+                assert subprocess.check_output(['git','rev-parse',ref+':'+path],cwd=ROOT,text=True).strip()==pins[key],path
+        subprocess.run([sys.executable,'-B',scope['verifier']],cwd=ROOT,check=True)
+        allowed.update(io_successor)
     assert set(subprocess.check_output(['git','diff','--name-only',record['baseline'],'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines())==allowed
     for path,pins in record['production_delta'].items():
         old=subprocess.run(['git','rev-parse',record['baseline']+':'+path],cwd=ROOT,capture_output=True,text=True)
@@ -43,7 +55,11 @@ def verify():
     r=json.loads(files['RESULT.json']);assert r['status']==record['status']
     assert not r['full_energy_balance_complete'] and r['measurement_commit']==record['measurement_commit']
     for path,blob in r['source_git_blob'].items():
-        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob,path
+        current=blob
+        if path in io_successor:
+            assert io_successor[path]['before']==blob,path
+            current=io_successor[path]['after']
+        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==current,path
         raw=files['sources/'+path].replace(b'\r\n',b'\n')
         assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==blob,path
     assert not subprocess.check_output(['git','diff','HEAD','--',*r['source_git_blob']],cwd=ROOT)
