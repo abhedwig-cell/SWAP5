@@ -11,7 +11,10 @@ program native_feedback_component
  class(transaction_state_t),allocatable::accepted
  type(transaction_result_t)::tx
  type(native_heat_feedback_result_t)::heat
- type(soil_temperature_state_t)::initial
+ type(soil_temperature_state_t)::initial,baseline
+ type(soil_temperature_workspace_t)::workspace
+ type(soil_temperature_result_t)::base_result
+ type(soil_temperature_diagnostics_t)::diagnostic
  type(process_hydraulic_view_t)::h0,h1
  real(real64)::w0(1,2),w1(1,2),face(1,3),qx(1,2),outflow(1,2),temperature(1,2)
  integer::status,k
@@ -31,6 +34,26 @@ program native_feedback_component
  if(heat%matrix_temperature_c(1)<=10d0)error stop 'no native heat feedback'
  if(abs(heat%joint_residual_j_cm2)>1d-9)error stop 'joint heat balance'
  print '(a,2es25.17e3)','FEEDBACK_PASS ',heat%matrix_temperature_c(1),heat%joint_residual_j_cm2
+ ! With zero macro exchange the companion must reproduce the actual native matrix
+ ! for both accepted top modes and both bottom modes.
+ qx=0d0;w1=w0;h1=h0
+ do k=1,4
+  model%heat_forcing%top_boundary_mode=SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX
+  if(mod(k,2)==0)model%heat_forcing%top_boundary_mode=SOIL_TEMP_TOP_AIR_TEMPERATURE
+  model%heat_forcing%air_temperature_c=8d0
+  model%heat_forcing%bottom_boundary_mode=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
+  if(k>2)model%heat_forcing%bottom_boundary_mode=SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE
+  model%heat_forcing%prescribed_bottom_temperature_c=12d0
+  call trial_restricted_soil_temperature(model%heat_parameters,model%heat_numerical,model%heat_forcing,h0,h1,initial, &
+   0d0,.001d0,workspace,baseline,base_result,diagnostic)
+  call trial_native_macro_heat_feedback(model%heat_parameters,model%heat_numerical,model%heat_forcing,h0,h1,initial, &
+   w0,w1,face,qx,outflow,temperature,reshape([.true.,.true.],[1,2]),[0d0],[0d0],[.false.], &
+   [0d0],[0d0],[.false.],0d0,.001d0,16,heat)
+  if(.not.heat%produced.or.base_result%status/=SOIL_TEMP_OK)error stop 'zero feedback baseline'
+  if(maxval(abs(heat%matrix_temperature_c-workspace%solution))>1d-12)error stop 'native assembly differs'
+ end do
+ model%heat_forcing%top_boundary_mode=SOIL_TEMP_TOP_PRESCRIBED_HEAT_FLUX
+ model%heat_forcing%bottom_boundary_mode=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
  origin%head=[-10d0,-10d0];origin%theta=[.2d0,.2d0];origin%area_dz=[1d0,1d0]
  origin%matrix_temperature=[10d0,10d0];allocate(origin%macro_temperature(1,2));origin%macro_temperature=20d0
  call origin%macro%initialize(1,2,ok)
