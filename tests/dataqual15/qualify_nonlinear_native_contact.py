@@ -72,13 +72,15 @@ def overlays(folder):
           if(s%thermal%available.and.s%thermal%conductive_profile_available)then
             open(newunit=heat_unit,file='actual-thermal.csv',status='unknown',position='append')
             do heat_node=1,numnod
-              write(heat_unit,'(a,2(a,es25.17e3),a,i0,12(a,es25.17e3))')'THERMAL',',',s%t0,',',s%t1,',',heat_node, &
+              write(heat_unit,'(a,2(a,es25.17e3),a,i0,16(a,es25.17e3),3(a,i0))')'THERMAL',',',s%t0,',',s%t1,',',heat_node, &
                 ',',s%thermal%temperature_start_c(heat_node),',',s%thermal%temperature_end_c(heat_node), &
                 ',',s%water_start(heat_node),',',s%water_end(heat_node),',',s%thermal%dz_cm(heat_node), &
                 ',',s%thermal%heat_capacity_average_j_cm3_k(heat_node), &
                 ',',s%thermal%conductive_face_energy_j_cm2(heat_node),',',s%thermal%conductive_face_energy_j_cm2(heat_node+1), &
                 ',',s%root_sink(heat_node),',',s%drainage_sink(heat_node),',',s%subsurface_source(heat_node), &
-                ',',s%macropore_matrix_exchange(heat_node)
+                ',',s%macropore_matrix_exchange(heat_node),',',s%thermal%theta_sat(heat_node), &
+                ',',s%thermal%f_quartz(heat_node),',',s%thermal%f_clay(heat_node),',',s%thermal%f_organic(heat_node), &
+                ',',merge(1,0,s%thermal%independent_boundary_heat),',',s%thermal%solution_mode,',',s%thermal%top_boundary_mode
             end do
             close(heat_unit)
           end if
@@ -173,6 +175,12 @@ def main():
         objects=[]
         for i,source in enumerate(ordered):
             obj=build/(str(i)+'.o');run([fc,*flags,'-c',source,'-o',obj],build,'compile-'+str(i));objects.append(obj)
+    else:
+        for i,obj in enumerate(objects):
+            if obj is None:
+                assert ordered[i]==shadow[DRIVER]
+                objects[i]=build/(str(i)+'.o')
+                run([fc,*flags,'-I'+str(args.reuse_build.resolve()/'build'),'-c',ordered[i],'-o',objects[i]],build,'recompile-driver')
     cc=shutil.which('gcc');assert cc;cobj=build/'publish.o'
     run([cc,'-O2','-c',ROOT/'app/support/restart_publish.c','-o',cobj],build,'compile-publish')
     platform=build/'platform.o'
