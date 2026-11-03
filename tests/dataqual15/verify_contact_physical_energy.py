@@ -17,7 +17,17 @@ def verify():
     assert record['base']==BASE
     for flag in ('production_changed','nonlinear_contact_repair','full_energy_balance_complete','canonical_admitted'):
         assert record[flag] is False, flag
-    assert not subprocess.check_output(['git','diff',BASE,'HEAD','--','src','app','reference'],cwd=ROOT)
+    changed=subprocess.check_output(['git','diff','--name-only',BASE,'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines()
+    # PR1488 independently admitted this input-publication adapter while PR1489
+    # was merging. It is outside the research compile closure. Bind its exact
+    # two postimages and canonical admission; never ignore the app subtree.
+    rain='app/solute_project/prepare_rain_duration.f90'
+    if changed:
+        assert changed==[rain], 'unreviewed production delta'
+        subprocess.run(['git','merge-base','--is-ancestor','d37a9ba2f09e8ea65168b0f87cd6691ad372536f','HEAD'],cwd=ROOT,check=True)
+        for ref,blob in ((BASE,'18dc5b61d5f31563cfdd20208e9368c68378743d'),
+                         ('HEAD','4de070ccb16a654989322a3cc42b08bf13a89c7f')):
+            assert subprocess.check_output(['git','rev-parse',ref+':'+rain],cwd=ROOT,text=True).strip()==blob
     assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT)
     archive=ROOT/record['archive'];assert sha(archive.read_bytes())==record['archive_sha256']
     with tarfile.open(archive) as t:
