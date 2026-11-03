@@ -24,7 +24,8 @@ for opt in ('O0', 'O2'):
                     str(ROOT / 'src/process/mod_daily_rain_duration.f90'),
                     str(ROOT / 'app/solute_project/prepare_rain_duration.f90'),
                     str(a.ttutil.resolve()), '-o', str(exe)], check=True, cwd=build)
-    for name in ('valid', 'missing_last', 'late_gap', 'invalid_last', 'existing'):
+    for name in ('valid', 'custom', 'missing_last', 'late_gap', 'invalid_last', 'existing',
+                 'custom_existing', 'missing_argument', 'empty_output', 'long_output', 'extra_argument'):
         run = build / name
         run.mkdir()
         (run / 'input.swp').write_bytes((case / 'swap.swp').read_bytes())
@@ -38,17 +39,33 @@ for opt in ('O0', 'O2'):
             fields[-1] = '0.0'  # positive rainfall without duration
             lines[records[-1]] = ','.join(fields)
         (run / 'input.met').write_text('\n'.join(lines) + '\n')
-        target = run / 'rain_events.csv'
-        if name == 'existing':
+        target = run / ('selected events.csv' if name.startswith('custom') else 'rain_events.csv')
+        if name in ('existing', 'custom_existing'):
             target.write_bytes(b'existing-authority\n')
-        r = subprocess.run([str(exe), 'input.swp', 'input.met'], cwd=run,
+        args = [str(exe), 'input.swp', 'input.met']
+        if name.startswith('custom'):
+            args.append(target.name)
+        if name == 'missing_argument':
+            args.pop()
+        if name == 'empty_output':
+            args.append('')
+        if name == 'long_output':
+            args.append('x' * 1025)
+        if name == 'extra_argument':
+            args.extend(['out.csv', 'unexpected'])
+        r = subprocess.run(args, cwd=run,
                            capture_output=True, timeout=60)
         (run / 'stdout.txt').write_bytes(r.stdout)
         (run / 'stderr.txt').write_bytes(r.stderr)
-        assert (r.returncode == 0) == (name == 'valid'), (opt, name, r.stderr)
-        if name == 'valid':
+        assert (r.returncode == 0) == (name in ('valid', 'custom')), (opt, name, r.stderr)
+        if name in ('valid', 'custom'):
             digest = hashlib.sha256(target.read_bytes()).hexdigest()
-        elif name == 'existing':
+            if name == 'valid':
+                default_digest = digest
+            else:
+                assert digest == default_digest
+                assert not (run / 'rain_events.csv').exists()
+        elif name in ('existing', 'custom_existing'):
             assert target.read_bytes() == b'existing-authority\n'
         else:
             assert not target.exists(), (opt, name, 'partial stream published')
