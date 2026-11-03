@@ -1,0 +1,99 @@
+{
+  "pull_request": 1493,
+  "qualified_head": "7518cd7abb2d51804a4753c4d886f5c252421455",
+  "tested_merge": "64008b3faff5159e866f42adc145e1fc9f3f4f99",
+  "actual_merge": "388c89cbb8d0840e2de884487b290f30db5e188d",
+  "tested_tree": "e9800e715c3e722741be6064b12aa7316391dfb5",
+  "actual_tree": "e9800e715c3e722741be6064b12aa7316391dfb5",
+  "whole_tree_exact": true,
+  "canonical_admitted": true,
+  "scope": "Research full112-head contact residual, conservative macro storage/vertical candidate, nonunique memory counterexample, actual process transport and donor-data inventory",
+  "production_changed": false,
+  "full_coupled_step_accepted": false,
+  "contact_memory_closure_available": false,
+  "full_energy_balance_complete": false,
+  "original_execution_count": "2/3",
+  "whole_scientific_qualification_count": "0/3",
+  "windows_checked_O0_O2": "PASS",
+  "linux_checked_O0_O2": "PASS cold202+153 source/object verified",
+  "pr_workflows": {
+    "all_terminal": true,
+    "success": 19,
+    "failure": 0
+  },
+  "canonical_push_workflows": {
+    "all_terminal": true,
+    "counts": {
+      "failure": 2,
+      "success": 2
+    },
+    "runs": [
+      {
+        "id": 41645674566,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41645674566"
+      },
+      {
+        "id": 41645674534,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41645674534"
+      },
+      {
+        "id": 41645674499,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41645674499"
+      },
+      {
+        "id": 41645674671,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41645674671"
+      }
+    ],
+    "failure_receipt": "integration/dataqual15/COUPLED_CONTACT_CANONICAL_FAILURES_20261103.json",
+    "failed_verdicts_retained": true
+  },
+  "same_platform_O0_O2_csv_restart_physical_exact": true,
+  "cross_platform_contact_csv_exact": true,
+  "cross_platform_binary_restart_bit_exact": false,
+  "documentation_source_checks": "PASS",
+  "mkdocs_strict": "PASS",
+  "unchanged_production_trees": {
+    "src": "df992b74955dfa1be202a28ed8e4a7a41d4619d7",
+    "app": "4fbe52567e30474326ae03bc76bec0eac2e955c6",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "final_metadata_unchanged_executable_trees": {
+    "src": "df992b74955dfa1be202a28ed8e4a7a41d4619d7",
+    "app": "4fbe52567e30474326ae03bc76bec0eac2e955c6",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+    "tests": "013ba8aa46bf9fd239395315806d625623710726",
+    "tools": "c82d1759311d2e6c4aff2102d7d681bcfd61a72b",
+    ".github": "da5c1db8fdc1968378d12f007789de19c4eefa89"
+  },
+  "gate_source_sha256": "d75891cbd95d94322f4419d0d3f7559f2291a0c4f0c794e5310806f7d3c93243",
+  "evidence_sha256": {
+    "COUPLED_CONTACT_CANONICAL_FAILURES_20261103.json": "7e6b6e5e11929d1208e1cb0fc45083fd75649cca488ea787b8f9b4d072b2e545",
+    "COUPLED_CONTACT_CANONICAL_GUARD_CONTROLS_20261103.json": "bac188fd44f9e23df5984ae6f61c7cfb0c23d623a4580a60ed51fa1db4907df5",
+    "COUPLED_CONTACT_CI_RECOVERY_20261103.json": "e718af9f7fd3f6e18d9865bece39debb98ef1fc676befb91a0722be69b0c2979",
+    "COUPLED_CONTACT_EXTRA_CONTROLS_20261103.json": "e2c39cd484704bb3d7c618aa5c6752cae80ff60612d1ce09a8db2ad4310573c3",
+    "COUPLED_CONTACT_LINUX_EVIDENCE_20261103.json": "5d330f33c731d914cf40e0799b691cffd2204c0d92d9fb94ca9a301caf8e4ac6",
+    "COUPLED_CONTACT_LINUX_EVIDENCE_20261103.tar.xz": "4911cc3d6ff7d96dcb194fd564c84e3511f1092dadbee9c4f5812328cc86a0a1",
+    "COUPLED_CONTACT_PR_CI_20261103.json": "3bffe5dfae62021d2f1865f771b4b7d686e4a239fe2dba3adea6b57b29e0158d",
+    "COUPLED_CONTACT_WINDOWS_EVIDENCE_20261103.json": "55563878c03f0d4218ff5ed70bc7bff6f1c86edb0a193c3d49e797062574b73a",
+    "COUPLED_CONTACT_WINDOWS_EVIDENCE_20261103.tar.xz": "8b8880a08b3c460e6785b9a9495b5137a2bb7cd5db54a2208595736dc4614b47"
+  },
+  "actual_merge_evidence_verifier": "PASS",
+  "final_checkpoint_kind": "METADATA_DOCUMENTATION_AND_MEASURED_LINUX_EVIDENCE_ONLY",
+  "local_docs_logs_sha256": {
+    "coupled-final-doc-source.log": "f1d4798e9e81b657a787f8dbb15d82f6b4f248d4827fce9ba9ccbeb9d424bf0e",
+    "coupled-final-mkdocs.log": "7ab386138e01c726a64ad97c89985a6cc2258633033e1fee2a1547b475741cfa"
+  }
+}

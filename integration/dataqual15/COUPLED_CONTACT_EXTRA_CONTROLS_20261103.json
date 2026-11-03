@@ -1,0 +1,19 @@
+{
+  "source_analyzer_sha256": "a43b33db5bf7861317d67edbf7b5ee56b8cd3bb164fe8fd1711d1d318ed482f4",
+  "actual_transport_sha256": "cc93877a462056567eaaafae4cf4ffb263841105fbdc80fd953f7dd5c87d22e0",
+  "controls": {
+    "actual_macro_left_face_rate": {
+      "verdict": "REJECTED",
+      "csv_column": 7,
+      "perturbation_cm_day": 1.0,
+      "mutated_data_sha256": "64dab1597875068c87cbc0832d1ae0a4d1f1102503414024332357ba6ba2f117"
+    },
+    "actual_macro_right_face_rate": {
+      "verdict": "REJECTED",
+      "csv_column": 8,
+      "perturbation_cm_day": 1.0,
+      "mutated_data_sha256": "0ec47d285411505bded895b63f8e02a0d13926a3f38c0d0b3bd3daf108763fa4"
+    }
+  },
+  "frozen_control_label_clarification": "The sealed donor qualifier label macro-face changed CSV column6, macro water_end, not a face rate. Its actual stock-perturbation refusal is retained; these two additional actual face-rate perturbations independently test the face ledgers. No original verdict relabeled as a different test."
+}

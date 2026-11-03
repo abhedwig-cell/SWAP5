@@ -1,6 +1,6 @@
 # Coupled contact and transport donor research
 
-Status: proposed isolated research, baseline `4600df4b6`.
+Status: Windows16.2/Linux13.3 checked O0/O2 qualified isolated research; bounded admission through PR1493 at `388c89cbb`. Baseline `4600df4b6`.
 
 The contact experiment solves all112 matrix heads plus one bounded contact
 fraction, with h26+h27=0 as the proposed topology completion. Each residual
@@ -50,3 +50,48 @@ absent from the current macro continuation contract. Matrix root endpoint-mean
 enthalpy is a scenario (0.0902260J/cm2), not measured temporal quadrature;
 the real liquid enthalpy owner tests its units/sign and refuses unknown donors.
 No missing energy is fitted to the observed heat-storage difference.
+
+
+The matrix-area weighted stock and equal-matrix-temperature macro stock are
+explicit inventory scenarios. They do not qualify the required material/area
+partition or assign a temperature to macro water. External input temperatures
+and point-temperature quadrature are not inferred from atmospheric air or
+conductive boundary conditions. The missing-process inventory remains a required
+physical closure contract, independent of the observed numerical heat ledger.
+
+Fresh Linux cold builds compile202 current/overlay Fortran providers and153
+original TTUTIL providers. Source, object, executable, input and artifact digests
+are independently verified. Cold O0/O2 reproduce the full-column/storage/
+vertical/history result and the real endpoint donor and corrupt-data controls.
+Both Windows and Linux retain exact native rejected-state rollback and exact
+same-platform O0/O2 contact/thermal/transport records and restart physical bytes.
+No cross-platform binary restart equivalence is claimed.
+
+
+The actual canonical tree equals the tested PR merge tree exactly. All19 latest
+PR workflows succeed, including the repeated infrastructure-censored native
+preservation job. Superseded compiler-path failure and the canceled partial
+attempt remain explicit in `COUPLED_CONTACT_CI_RECOVERY_20261103.json`.
+Canonical authority and preservation scope are in
+`integration/dataqual15/COUPLED_CONTACT_CANONICAL_RECEIPT_20261103.json`.
+Source-bound Windows/Linux evidence is independently manifested and verified;
+current production sources remain unchanged. The full contact step and physical
+energy completeness flags remain false.
+
+
+The negative matrix net top water flux cannot be classified automatically as
+liquid sensible export: gross rain/irrigation/pond flow and evaporation/runoff
+need their own phase receipts. Existing EB-I23 external bottom and EB-I24 top
+liquid-temperature contracts are reusable interfaces, but do not supply missing
+historical donor measurements. Required owner bindings are recorded explicitly
+in the recovery record.
+
+
+All four automatic canonical push workflows are terminal: ordinary canonical
+qualification and groundwater closeout pass; the two existing DATAQUAL12 frozen
+inventory callers retain FAILURE. Their exact first predicate is false both
+before and after this work (229/237 observed paths versus13 expected); no baseline
+whole-workflow rerun is claimed. Jobs, controls and retained errors are in the
+canonical receipt and failure/control records. No scientific assertion or source
+firewall was relaxed. The final receipt checkpoint changes metadata/docs and
+sealed measurements only; all executable source/test/workflow trees are preserved.

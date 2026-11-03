@@ -1,7 +1,7 @@
 {
   "baseline": "4600df4b695269fa1a36d79dbaffde8b7a547eff",
   "branch": "codex/coupled-contact-energy-20261103",
-  "stage": "WINDOWS_FULL_COLUMN_STORAGE_VERTICAL_PASS_HISTORY_NONUNIQUE_REFUSED_LINUX_RUNNING",
+  "stage": "BOUNDED_COUPLED_CONTACT_COUNTEREXAMPLE_AND_TRANSPORT_DATA_CANONICALLY_ADMITTED",
   "scope": "Isolated full112-head nonlinear contact and complete existing macro candidate lifecycle; independent transport/donor data capture",
   "selection": [
     "Native full nonlinear residual with all heads and current constitutive/conductivity and boundary callbacks",
@@ -25,5 +25,42 @@
   "windows_O0_O2_exact": true,
   "full_coupled_step_accepted": false,
   "contact_memory_closure_available": false,
-  "history_absorption_time_difference_day": 6.008148201175345e-08
+  "history_absorption_time_difference_day": 6.008148201175345e-08,
+  "linux_O0_O2": "PASS cold202+153 native, actual transport and real donor driver",
+  "windows_evidence": "integration/dataqual15/COUPLED_CONTACT_WINDOWS_EVIDENCE_20261103.json",
+  "linux_evidence": "integration/dataqual15/COUPLED_CONTACT_LINUX_EVIDENCE_20261103.json",
+  "native_rollback_exact": true,
+  "docs_source_checks": "PASS",
+  "mkdocs_strict": "PASS",
+  "canonical_admitted": true,
+  "actual_merge": "388c89cbb8d0840e2de884487b290f30db5e188d",
+  "receipt": "integration/dataqual15/COUPLED_CONTACT_CANONICAL_RECEIPT_20261103.json",
+  "required_energy_process_bindings": [
+    {
+      "pathway": "matrix bottom inflow",
+      "observed_water_cm": 0.03352257254908282,
+      "existing_owner": "mod_fmr_bottom_external_thermal_binding / EB-I23",
+      "missing": "Independent groundwater donor temperature provider and per-selected-substep quadrature"
+    },
+    {
+      "pathway": "top matrix and macro water",
+      "existing_owner": "EB-I24 / accepted water surface receipt",
+      "missing": "Gross liquid phase split versus evaporation/runoff, separate rain/irrigation/pond donor temperature; net water is not a liquid heat receipt"
+    },
+    {
+      "pathway": "macro transport and macro-to-matrix",
+      "existing_owner": "macropore continuation / accepted macro face and exchange trace",
+      "missing": "Independent macro temperature/sensible-energy state and thermal transport contract"
+    },
+    {
+      "pathway": "root/drain/lateral outflow",
+      "existing_owner": "selected accepted matrix trace / liquid water enthalpy",
+      "missing": "Declared temporal donor-temperature quadrature, incoming lateral donor temperature where nonzero"
+    },
+    {
+      "pathway": "gas and atmosphere",
+      "existing_owner": "not currently supplied by accepted thermal observation",
+      "missing": "Gas flow/density/donor, vapor/latent/radiation/phase receipts"
+    }
+  ]
 }
