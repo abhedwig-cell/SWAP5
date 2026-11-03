@@ -98,6 +98,7 @@ subroutine research_native_water_trial(physical,t0,t1,face,exchange,external_out
  do mode=0,1
   research_branch=merge(-1,0,mode==0);m=numnod+merge(0,1,mode==0)
   x(:numnod)=physical%head;x(numnod+1)=2.3d-4;converged=.false.
+  if(mode==1)x(26)=-x(27)
   do it=0,24
    call research_coupled_residual(x,r,valid)
    if(.not.valid)exit
@@ -105,6 +106,7 @@ subroutine research_native_water_trial(physical,t0,t1,face,exchange,external_out
     converged=.true.;exit
    end if
    norm=maxval(abs(r(:m)))
+   write(research_log_unit,'(a,2(a,i0),4(a,es25.17e3))')'WATER_ITERATION',',',mode,',',it,',',norm,',',x(26),',',x(27),',',x(numnod+1)
    do col=1,m
     eps=1d-5*max(1d0,abs(x(col)));trial=x;trial(col)=x(col)+eps
     call research_coupled_residual(trial,rp,valid);if(.not.valid)exit
@@ -124,6 +126,7 @@ subroutine research_native_water_trial(physical,t0,t1,face,exchange,external_out
     end if
     alpha=alpha*.5d0
    end do
+   write(research_log_unit,'(a,2(a,i0),3(a,es25.17e3))')'WATER_LINESEARCH',',',mode,',',ls,',',alpha,',',delta(numnod+1),',',trial(numnod+1)
    if(ls>30)exit
    x=trial
   end do
