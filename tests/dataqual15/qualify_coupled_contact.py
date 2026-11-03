@@ -6,9 +6,9 @@ from research_native_build_cache import verified_objects
 ROOT=native.ROOT
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--prior-build',type=Path,required=True);p.add_argument('--reuse-coupled-build',type=Path);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--prior-build',type=Path);p.add_argument('--reuse-coupled-build',type=Path);a=p.parse_args()
  out=a.output.resolve();out.mkdir(exist_ok=False);build=out/'build';build.mkdir()
- prior=a.prior_build.resolve();old=json.loads((prior/'RESULT.json').read_text(encoding='utf-8'))
+ prior=a.prior_build.resolve() if a.prior_build else None;old=json.loads((prior/'RESULT.json').read_text(encoding='utf-8')) if prior else None
  report=dict(baseline=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),optimization=a.optimization,events=[],scope='FULL_COLUMN_NONLINEAR_RESEARCH_NOT_COMMITTED',full_energy_balance_complete=False)
  sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
  def save():(out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
@@ -46,17 +46,19 @@ def main():
 """
  assert s.count(marker)==1;s=s.replace(marker,marker+'\n'+export);driver.write_text(s,encoding='utf-8')
  original,tt=native.materialize(ROOT,build)
- old_order=[Path(e['command'][-3]) for e in old['events'] if e['label'].startswith('compile-') and e['label'][8:].isdigit()]
- assert len(old_order)==202
+ old_order=[Path(e['command'][-3]) for e in old['events'] if e['label'].startswith('compile-') and e['label'][8:].isdigit()] if old else []
  ordered=[]
- for source in old_order:
-  selected=None
-  for key in shadow:
-   if source.as_posix().endswith('/'+key):selected=shadow[key];break
-  if selected is None:
-   if source.name=='legacy_swp_original.f90':selected=original
-   else:selected=source
-  ordered.append(selected)
+ if old:
+  assert len(old_order)==202
+  for source in old_order:
+   selected=None
+   for key in shadow:
+    if source.as_posix().endswith('/'+key):selected=shadow[key];break
+   if selected is None:selected=original if source.name=='legacy_swp_original.f90' else source
+   ordered.append(selected)
+ else:
+  for source in [*ROOT.glob('src/**/*.f90'),*ROOT.glob('app/solute_column/*.f90'),original,ROOT/(native.RESEARCH+'mod_nonlinear_contact_pair.f90'),ROOT/native.DRIVER]:
+   key=source.relative_to(ROOT).as_posix() if source.is_relative_to(ROOT) else None;ordered.append(shadow.get(key,source))
  # Topological order follows the actual new imports; the complete202-provider closure stays present.
  providers={};uses={}
  for source in ordered:
@@ -69,13 +71,18 @@ def main():
   for name in uses[source]:
    if name.lower() in providers and providers[name.lower()]!=source:visit(providers[name.lower()])
   sorted_sources.append(source)
- for source in ordered:visit(source)
+ if old:
+  for source in ordered:visit(source)
+ else:
+  for source in [shadow[native.DRIVER],shadow[native.HEAD],original]:visit(source)
  ordered=sorted_sources;assert len(ordered)==202
  compiler=subprocess.check_output(['gfortran','--version'],text=True).splitlines()[0];report['compiler']=compiler
  # Existing helper verifies every original compile input, object and TTUTIL authority.
- old_shadow={key:prior/'overlay'/key for key in shadow}
- verified_objects(prior,ROOT,old_order,old_shadow,a.optimization,compiler)
- utilities=prior/'original'
+ if prior:
+  old_shadow={key:prior/'overlay'/key for key in shadow}
+  verified_objects(prior,ROOT,old_order,old_shadow,a.optimization,compiler)
+  utilities=prior/'original'
+ else:utilities=native.build_original(out/'original','gfortran',a.optimization,utilities_only=True)
  sources=[x.relative_to(ROOT).as_posix() for x in ordered if x.is_relative_to(ROOT)]
  sources += list(shadow)+['tests/dataqual15/qualify_coupled_contact.py',native.SELF,native.RESEARCH+'coupled_headcalc_methods.inc',native.RESEARCH+'coupled_provider_methods.inc',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
  assert not subprocess.check_output(['git','diff','HEAD','--',*sources]),'persist first'
@@ -114,7 +121,14 @@ def main():
   folder,binding=case('contact-'+str(enabled));cp=run([exe,'input.nml','origin.bin','5','input.swp','macro.nml',binding,'5.0','anchored-cauchy','0.0001','experimental','source-surface-demand','perched-jacobian','conservative-macro-storage'],folder,'contact-'+str(enabled),env=dict(os.environ,OMP_NUM_THREADS='1',SWAP5_RESEARCH_CONTACT=str(enabled)),check=False)
   assert cp.returncode!=0,'inspect unexpected full continuation'
  assert (out/'contact-0/origin.bin').read_bytes()==(out/'contact-0/diagnostic-rejected.bin').read_bytes()==(out/'contact-1/diagnostic-rejected.bin').read_bytes()
- report['contact_rows']=(out/'contact-1/coupled-contact.csv').read_text(encoding='utf-8').splitlines();report['native_rollback_exact']=True;save()
+ report['contact_rows']=(out/'contact-1/coupled-contact.csv').read_text(encoding='utf-8').splitlines();report['native_rollback_exact']=True
+ trials=[row.split(',') for row in report['contact_rows'] if row.startswith('COUPLED,')]
+ assert len(trials)==5 and [r[2] for r in trials]==['T','T','T','F','F']
+ assert max(float(r[-2]) for r in trials[:3])<=1e-10 and max(abs(float(r[-1])) for r in trials[:3])<=1e-11
+ for tag in ('MACRO_STORAGE','MACRO_VERTICAL'):
+  rows=[row.split(',') for row in report['contact_rows'] if row.startswith(tag+',')];assert len(rows)==3 and all(row[2]=='T' for row in rows),rows
+ history=[row.split(',') for row in report['contact_rows'] if row.startswith('HISTORY_BRANCHES,')];assert len(history)==3 and all(row[2:4]==['T','T'] for row in history)
+ report['history_branch_unique']=all(row[4]=='T' for row in history);save()
  folder,binding=case('actual-prefix');run([exe,'input.nml','-','1','input.swp','macro.nml',binding,'1.0','anchored-cauchy','0.0001','experimental','source-surface-demand','perched-jacobian','conservative-macro-storage'],folder,'actual-prefix',env=dict(os.environ,OMP_NUM_THREADS='1',SWAP5_RESEARCH_CONTACT='0'))
  report['status']='EXECUTED_FULL_COLUMN_CONTACT_AND_TRANSPORT_OBSERVATIONS';save();print(report['status']);print('\n'.join(x for x in report['contact_rows'] if x.startswith('COUPLED')))
 if __name__=='__main__':main()
