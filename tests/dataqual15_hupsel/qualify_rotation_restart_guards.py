@@ -44,7 +44,7 @@ def locations(raw):
              grass_flag=flag,grass=management,irrigation=irrigation,grass_state=state)
 def main():
  p=argparse.ArgumentParser();p.add_argument('--bundle',type=Path,required=True);p.add_argument('--case',type=Path,required=True);p.add_argument('--checkpoint',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
- bundle=a.bundle.resolve();base=a.case.resolve();out=a.output.resolve();out.mkdir();build=json.loads((bundle/'BUILD.json').read_text());exe=bundle/'swap5_hupsel_germination';assert sha(exe)==build['executable_sha256']
+ bundle=a.bundle.resolve();base=a.case.resolve();out=a.output.resolve();out.mkdir();build=json.loads((bundle/'BUILD.json').read_text());exe=bundle/('swap5_hupsel_germination.exe' if os.name=='nt' else 'swap5_hupsel_germination');assert sha(exe)==build['executable_sha256']
  # A live worktree may have advanced since this exact executable was built.
  # Verify all Git-owned provider bytes against its recorded commit instead.
  verified={}

@@ -16,9 +16,11 @@ nml=(out/'input.nml').read_text()
 ends=[float(v)for v in re.search('^ends_day=(.*)$',nml,re.M)[1].split(',')if v.strip()]
 stop=next(i+1 for i,v in enumerate(ends)if v==a.end)
 env=os.environ.copy()
+env.pop('SWAP5_DIAG_PREDECESSOR',None)
 if not a.from_start and not a.strict_restart:env['SWAP5_DIAG_PREDECESSOR']='1'
 cmd=[str(a.exe.resolve()),'input.nml','-' if a.from_start else str(restart),str(stop),'swap.swp','maize.crp']
-record=dict(scope='DIAGNOSTIC_PREDECESSOR_SUFFIX_NOT_QUALIFICATION',command=cmd,
+scope='STRICT_SAME_BUILD_RESTART_MEASUREMENT' if a.strict_restart else ('FROM_INPUT_MEASUREMENT' if a.from_start else 'DIAGNOSTIC_PREDECESSOR_SUFFIX_NOT_QUALIFICATION')
+record=dict(scope=scope,command=cmd,
             executable_sha256=sha(a.exe),restart_sha256=None if a.from_start else sha(restart),from_start=a.from_start,
             inputs={f.name:sha(f)for f in files},scientific_admission=False)
 (out/'START.json').write_text(json.dumps(record,indent=2))

@@ -1,5 +1,5 @@
 """Actual original Hupsel hydrological germination build and model execution."""
-import argparse,csv,hashlib,json,re,shutil,subprocess,time,sys
+import argparse,csv,hashlib,json,os,re,shutil,subprocess,time,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];W=ROOT.parent;sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest()
 p=argparse.ArgumentParser();p.add_argument('--driver',type=Path);p.add_argument('--output',type=Path,required=True);p.add_argument('--reuse',type=Path,help='Optional verified BUILD.json/object baseline; omit for a clean source build');p.add_argument('--ttutil-archive',type=Path,default=Path('/workspace/scratch/f29d9f3066a3/dq13-reference431/providers/ttobj/libttutil.a'),help='Original compiled TTUTIL provider archive');p.add_argument('--compiler',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--end',type=int,default=365);a=p.parse_args();out=a.output.resolve();out.mkdir();fc=a.compiler.resolve();reuse=a.reuse.resolve()if a.reuse else None;old=None;events=[]
@@ -48,7 +48,7 @@ for i,s in enumerate(order):
 publisher=ROOT/'app/support/restart_publish.c';publisher_object=out/'restart_publish.o'
 cc=fc.with_name('gcc'+fc.suffix)
 run([cc,'-'+a.optimization,'-std=c11','-c',publisher,'-o',publisher_object],'compile-publisher')
-exe=out/'swap5_hupsel_germination';run([fc,'-fopenmp',*objects,publisher_object,archive,'-o',exe],'link')
+exe=out/('swap5_hupsel_germination.exe' if os.name=='nt' else 'swap5_hupsel_germination');run([fc,'-fopenmp',*objects,publisher_object,archive,'-o',exe],'link')
 reader=out/'read_fallow';run([fc,*flags,ROOT/'src/process/mod_pmdirect_swetr0_process.f90',ROOT/'app/solute_project/read_fallow_project.f90',archive,'-o',reader],'reader')
 build=dict(status='BUILT',candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=compiler,build_mode='verified-reuse'if reuse else'clean-source',reuse_candidate=old['candidate']if old else None,ttutil_archive=str(archive),flags=flags,source_sha256=hashes,executable_sha256=sha(exe),provider_count=len(order),changed=[str(s)for s in changed],object_sha256={str(o):sha(o)for o in objects},archive_sha256=sha(archive),publication_provider=dict(source=str(publisher),source_sha256=sha(publisher),object=str(publisher_object),object_sha256=sha(publisher_object),compiler=subprocess.check_output([cc,'--version'],text=True).splitlines()[0]))
 (out/'BUILD.json').write_text(json.dumps(build,indent=2)+'\n')
