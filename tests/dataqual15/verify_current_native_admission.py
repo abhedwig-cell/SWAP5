@@ -4,7 +4,7 @@ The original native I/O guard is unchanged and still refuses these successor
 bytes directly. Current executable evidence and its historical projection have
 distinct verdicts; neither confers whole scientific qualification.
 """
-import argparse,hashlib,json,subprocess,sys
+import argparse,hashlib,json,os,subprocess,sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 AREAS=['src','app','reference']
@@ -77,7 +77,10 @@ def main():
  record=json.loads((ROOT/'integration/dataqual15_hupsel/CURRENT_NATIVE_ADMISSION_20261103.json').read_text())
  guard(record);events=[]
  def run(label,args):
-  command=[sys.executable,'-B',*args];cp=subprocess.run(command,cwd=ROOT,capture_output=True)
+  command=[sys.executable,'-B',*args]
+  # Match the repository/CI UTF8 text contract while keeping every frozen
+  # validator byte and assertion intact, including nested historical calls.
+  cp=subprocess.run(command,cwd=ROOT,capture_output=True,env=dict(os.environ,PYTHONUTF8='1'))
   (out/(label+'.stdout')).write_bytes(cp.stdout);(out/(label+'.stderr')).write_bytes(cp.stderr)
   events.append(dict(label=label,command=command,returncode=cp.returncode))
   (out/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n')
