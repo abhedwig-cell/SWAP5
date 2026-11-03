@@ -42,6 +42,26 @@ def verify():
   assert len(corrupt['events'])==37 and all(e['status']=='PASS'for e in corrupt['events'])
   assert json.loads(files['publication-'+opt+'/RESULT.json'])['status']=='NATIVE_TWO_DAY_PUBLICATION_RESTART_AND_CORRUPTION_PASS'
   assert json.loads(files['owner-'+opt+'/RESULT.json'])['status']=='ACTUAL_RUTTER_ENDPOINT_PHYSICAL_MASS_AND_COMPLETE_OWNER_BYTE_CONTROLS_PASS_NOT_WHOLE_SCIENCE'
+ thermal_path=BASE/'CANOPY_CURRENT_THERMAL_20261103.tar.json'
+ if thermal_path.exists():
+  thermal=json.loads(thermal_path.read_text())
+  archive=BASE/'CANOPY_CURRENT_THERMAL_20261103.tar.xz'
+  assert sha(archive.read_bytes())==thermal['archive_sha256']
+  with tarfile.open(archive)as t:
+   members=t.getmembers();assert len({m.name for m in members})==len(members)
+   assert all(m.isfile()and not PurePosixPath(m.name).is_absolute()and not PureWindowsPath(m.name).drive
+              and '..'not in PurePosixPath(m.name).parts and '\\'not in m.name for m in members)
+   tf={m.name:t.extractfile(m).read()for m in members}
+  assert {n:sha(b)for n,b in tf.items()}==thermal['files_sha256']
+  tr=json.loads(tf['RESULT.json'])
+  assert tr['status']=='ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS'
+  assert not tr['full_energy_balance_complete']
+  for name,blob in tr['source_git_blob'].items():
+   assert subprocess.check_output(['git','rev-parse','HEAD:'+name],cwd=ROOT,text=True).strip()==blob,name
+  assert tf['O0/receipts.csv']==tf['O2/receipts.csv']
+  for i in range(4):
+   assert tf['O0/test-'+str(i)+'.stdout']==tf['O2/test-'+str(i)+'.stdout']
+   assert b'PASS'in tf['O0/test-'+str(i)+'.stdout']
  print('FOUR_NATIVE_CANOPY_ENDPOINTS_O0_O2_AND_COHERENT_RESTART_PASS_NOT_WHOLE_SCIENCE')
  return record
 
