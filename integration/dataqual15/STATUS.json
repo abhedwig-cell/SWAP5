@@ -664,6 +664,30 @@
         "src/adapter/mod_pond_thermal_restart_file.f90": {
           "before": "c9418d4cdb8366e2069b0b03150526d625f522cd",
           "after": "d25d8408bcdee96360ddd4f38defccf664762297"
+        },
+        "tools/solute/build_column.py": {
+          "before": "9b791fcfd4e46d6f45112c16cb3e1add7ca05735",
+          "after": "6c5f116198ea04351ca2feb261ebb8b7ba5aee1f"
+        },
+        "tools/solute/build_crop_column.py": {
+          "before": "98ed71cc3b1226c94ba8b6d720cf5022c71bf5aa",
+          "after": "f38fc65a97f2b7f1e23f69054b62211e7eedac68"
+        },
+        "tests/nut-sol/run_pond_thermal.py": {
+          "before": "d15b943c711d153b7821fe9fc7de4a7527707c17",
+          "after": "af89087187775acef612d98ce54e762ab5140f33"
+        },
+        "tests/dataqual15_hupsel/build_and_run.py": {
+          "before": "ca89cd4142c819120f8adf3a69c66e8e2cd1af2f",
+          "after": "05b513f74fef4da938f43e34e39036a8b12424cd"
+        },
+        "tests/dataqual15_hupsel/run.py": {
+          "before": "eb6af52b6258b12bd415d8d32cadcba1f64ad710",
+          "after": "22640ee8915863733ec4a4daeaaa34d1b5217911"
+        },
+        "tests/dataqual15_hupsel/qualify_rotation_restart_guards.py": {
+          "before": "416b09116e352775101c943ca5aa02f1b2a24a0c",
+          "after": "942246b10885c8a3a85b6c1e5a195b444a6e4300"
         }
       },
       "predecessor_production_trees": {
