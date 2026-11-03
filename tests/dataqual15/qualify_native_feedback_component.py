@@ -26,7 +26,7 @@ def main():
   (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
   assert cp.returncode==0,(label,cp.stderr.decode(errors='replace'))
   return cp.stdout.decode()
- for key in ['tests/dataqual15/research/native_coupled_restart.inc','app/support/restart_publish.c']:
+ for key in ['tests/dataqual15/research/native_coupled_restart.inc','app/support/restart_publish.c','tests/dataqual15/qualify_native_feedback_component.py']:
   report['sources'][key]=subprocess.check_output(['git','rev-parse','HEAD:'+key],cwd=ROOT,text=True).strip()
  objects=[]
  for i,s in enumerate(ordered):

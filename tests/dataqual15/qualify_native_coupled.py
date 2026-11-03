@@ -155,7 +155,23 @@ def main():
  assert all(row[4]=='F' and float(row[5])>0 for row in history)
  completed=[row.split(',') for row in report['contact_rows'] if row.startswith('ACTION_HISTORY,')];assert len(completed)==3 and all(row[2:4]==['T','T'] for row in completed)
  report['native_transaction_rows']=(out/'contact-1/native-coupled-transaction.csv').read_text(encoding='utf-8').splitlines()
+ rows=[x.split(',') for x in report['native_transaction_rows'] if x.startswith('TRANSACTION,')]
+ assert len(rows)==4 and [int(x[1]) for x in rows]==list(range(4))
+ for row in rows[:2]:
+  assert list(map(int,row[2:7]))==[0,1,1,2,3],row
+  assert max(abs(float(row[8])),abs(float(row[9])))<=1e-10 and float(row[10])<=1e-6,row
+  assert float(row[11])<=1e-9 and float(row[12])>0,row
+ for row in rows[2:]:assert int(row[2])!=0 and int(row[3])==0,row
+ revisions=[x.split(',') for x in report['native_transaction_rows'] if x.startswith('REVISION,')]
+ assert [int(x[2]) for x in revisions]==[1,1,0,0]
+ for kind in [0,1]:
+  raw=(out/('contact-1/native-coupled-accepted-'+str(kind)+'.bin')).read_bytes()
+  assert raw[:8]==b'S5NC0001' and zlib.crc32(raw[:-4])==struct.unpack('=I',raw[-4:])[0]
+  assert 'NATIVE_TYPED_DISK_RESTART_EXACT,'+str(kind) in report['native_transaction_rows']
+ report['owned_native_substep_accepted']=True;report['original_outer_interval_accepted']=False
+ report['temporal_component_rows']=[x for x in (out/'contact-1.stdout').read_text(encoding='utf-8').splitlines() if x.startswith('NATIVE_TEMPORAL_COMPONENTS')]
+ assert len(report['temporal_component_rows'])==2
  report['private_coupled_candidate_history_complete']=True;report['full_coupled_step_accepted']=False;report['contact_memory_closure_available']=True;report['policy']='EXPLICIT_CORRECTED_ACTION_CLOCK_NOT_ORIGINAL_BINARY_MODEL';save()
  folder,binding=case('actual-prefix');run([exe,'input.nml','-','1','input.swp','macro.nml',binding,'1.0','anchored-cauchy','0.0001','experimental','source-surface-demand','perched-jacobian','conservative-macro-storage'],folder,'actual-prefix',env=dict(os.environ,OMP_NUM_THREADS='1',SWAP5_RESEARCH_CONTACT='0'))
- report['status']='NATIVE_COUPLED_TRANSACTION_EXECUTED_INSPECT_ACCEPTANCE';save();print(report['status']);print('\n'.join(x for x in report['native_transaction_rows'] if x.startswith(('TRANSACTION','REVISION','WATER_TRIAL'))))
+ report['status']='CORRECTED_NATIVE_SUBSTEP_HEAT_HISTORY_FULL_HALF_AND_DISK_ACCEPTED';save();print(report['status']);print('\n'.join(x for x in report['native_transaction_rows'] if x.startswith(('TRANSACTION','REVISION','WATER_TRIAL'))))
 if __name__=='__main__':main()
