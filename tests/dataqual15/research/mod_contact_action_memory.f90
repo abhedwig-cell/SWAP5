@@ -20,7 +20,8 @@ contains
   integer::id,n,nd,ic
   ok=.false.
   if(.not.request%valid().or..not.accepted%ready().or..not.off%ready().or..not.on%ready())return
-  if(.not.ieee_is_finite(fraction).or.fraction<0d0.or.fraction>1d0)return
+  if(.not.ieee_is_finite(fraction))return
+  if(fraction<0d0.or.fraction>1d0)return
   n=request%num_nodes;nd=request%num_domains
   if(node<request%top_node.or.node>n)return
   if(accepted%num_nodes/=n.or.off%num_nodes/=n.or.on%num_nodes/=n.or.accepted%num_domains/=nd)return
@@ -44,8 +45,10 @@ contains
   do id=1,nd
    if(active%end_event(id,node))cycle
    tau=accepted%absorption_time(id,node)
-   if(.not.ieee_is_finite(tau).or.tau<0d0)return
-   if(.not.ieee_is_finite(active%seed_sorptivity(id,node)).or.active%seed_sorptivity(id,node)<0d0)return
+   if(.not.ieee_is_finite(tau))return
+   if(tau<0d0)return
+   if(.not.ieee_is_finite(active%seed_sorptivity(id,node)))return
+   if(active%seed_sorptivity(id,node)<0d0)return
    if(.not.ieee_is_finite(active%seed_theta_ref(id,node)))return
   end do
   call copy_macropore_continuation_state(off,candidate,ok)
