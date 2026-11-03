@@ -46,6 +46,13 @@ program contact_memory_driver
  on%absorption_time(1,2)=99d0
  call complete_contact_action_memory(r,accepted,a,off,on,1,.5d0,candidate,ok)
  if(ok.or.candidate%ready())error stop 'unhandled branch disagreement'
+ on=accepted;a%end_event(1,1)=.true.
+ call apply_sorptivity_history_update(r,accepted,a,on,ok)
+ call complete_contact_action_memory(r,accepted,a,off,on,1,.5d0,candidate,ok)
+ if(.not.ok.or..not.candidate%same_values(on))error stop 'Darcy ended memory changed'
+ a%end_event(1,1)=.false.;a%seed_sorptivity(1,1)=ieee_value(0d0,ieee_quiet_nan)
+ call complete_contact_action_memory(r,accepted,a,off,on,1,.5d0,candidate,ok)
+ if(ok.or.candidate%ready())error stop 'unknown active seed'
  if(.not.accepted%same_values(snapshot))error stop 'modified accepted state'
  write(*,'(a)')'ACTION_MEMORY_101_FRACTIONS_LEGACY_ENDPOINTS_UNIQUE_AND_REFUSAL_ROLLBACK_PASS'
 end program
