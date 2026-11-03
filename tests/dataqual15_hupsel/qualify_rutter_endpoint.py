@@ -46,7 +46,7 @@ objects=[o for s,o in zip(build['source_sha256'],build['object_sha256'])if not s
 exe=out/'endpoint.exe';stack=['-Wl,--stack,16777216']if os.name=='nt'else[];cmd=[fc,*flags,*stack,driver,*extra,*objects,publisher['object'],build['ttutil_archive'],'-o',exe]
 response=out/'link.args';response.write_text('\n'.join('"'+str(v).replace('\\','/').replace('"','\\"')+'"'for v in cmd[1:])+'\n');run([fc,'@'+str(response)],'link')
 stdout=run([exe,'rutter-full',out/'unused.bin',out/'endpoint',2,1],'native');assert 'ACTUAL_RUTTER_ENDPOINT_EXPORT_ROLLBACK_LINEAGE_SOURCE_WINDOW_AND_STALE_CONTROLS_PASS'in stdout
-before=(out/'endpoint.event-before').read_bytes();rolled=(out/'endpoint.event-rollback').read_bytes();after=(out/'endpoint.event-after').read_bytes();assert before==rolled,'discarded/rejected event changed complete typed owners';assert len(before)==len(after)
+before=(out/'endpoint.event-before').read_bytes();rolled=(out/'endpoint.event-rollback').read_bytes();late=(out/'endpoint.event-late-abort').read_bytes();after=(out/'endpoint.event-after').read_bytes();assert before==rolled==late,'discarded/rejected event or aborted staged day changed complete typed owners';assert len(before)==len(after)
 for raw in [before,after]:assert raw[:8]==b'S5PT0004'and zlib.crc32(raw[:-4])==struct.unpack_from('=I',raw,len(raw)-4)[0]
 n,history,identity,count=struct.unpack_from('=iiqi',before,148);assert n==4 and history==0 and count>0
 canopy=168+8*count+8*(3*n+2)+8+12+4

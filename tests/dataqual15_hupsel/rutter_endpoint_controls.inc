@@ -18,6 +18,7 @@
   type(matrix_solute_state_t),intent(inout)::c
   real(real64),intent(in)::b
   type(kernel_candidate_state_t)::candidate,stale
+  type(kernel_committed_state_t)::day_candidate
   type(kernel_result_t)::event
   type(kernel_diagnostics_t)::diagnostics
   type(fmr_logical_column_t)::wrong_column
@@ -61,6 +62,15 @@
   call backend%run_canopy_capacity_event(column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,w,.005d0,b, &
     cfg%numerical,event,candidate,diagnostics)
   call require(event%completed,'resample same current event origin')
+  ! A later joint-day failure discards this complete staged water generation.
+  ! Intrinsic committed-state cloning must not alias any persistent owner.
+  day_candidate=w
+  call backend%commit_trial_candidate(day_candidate,candidate,diagnostics,ok,code)
+  call require(ok.and.day_candidate%current_revision()==revision+1,'event accepted only in staged day')
+  call require(w%current_revision()==revision,'late day rejection preserves global revision')
+  call write_pond_thermal_restart(trim(endpoint)//'.event-late-abort',column,cfg%tiles(1)%template,670001_int64, &
+    cfg%tiles(1)%parameters,w,c,code);call require(code==0,'global owners after discarded staged event')
+  candidate=stale
   call backend%commit_trial_candidate(w,candidate,diagnostics,ok,code)
   call require(ok.and.code==0.and.w%current_revision()==revision+1,'one accepted event revision')
   call w%current_time(time,ok);call require(ok.and.time==b,'event does not advance physical time')
