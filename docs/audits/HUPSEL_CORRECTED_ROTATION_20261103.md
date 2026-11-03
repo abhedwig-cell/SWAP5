@@ -1,7 +1,8 @@
 # Corrected current Hupsel rotation ledger
 
-Status: actual Windows execution, portable local and cold POSIX remeasurement
-qualified; canonical integration pending.
+Status: canonically admitted by PR1500 at `1888f814c05c925e28a80b8ca33f778448215ab1`.
+The actual tree equals the expected tested tree and actual-merge portable
+remeasurement passes.
 
 After PR1498 the actual unchanged current O2 executable completed the entire
 1096-day diagnostic rotation from initialization in859.403seconds. No checkpoint
@@ -67,3 +68,6 @@ POSIX1096 execution. All15 PR workflows are terminal:13 success, one retained
 preexisting canonical native-admission inventory failure, and one cancelled
 automatic duplicate performance run whose unchanged dependencies already have
 a terminal qualified result. No full moving F-CI PASS is claimed.
+
+The actual canonical receipt is
+`integration/dataqual15_hupsel/CORRECTED_ROTATION_CANONICAL_RECEIPT_20261103.json`.
