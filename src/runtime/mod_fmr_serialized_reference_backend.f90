@@ -1,5 +1,6 @@
 module mod_fmr_serialized_reference_backend
   use mod_fmr_water_flux_trace_contract,only:fmr_water_flux_substep_trace_t
+  use mod_fmr_thermal_substep_receipt,only:fmr_thermal_substep_receipt_t,capture_fmr_thermal_substep
   use mod_fmr_b111_matrix_solute_route,only:matrix_solute_state_t,matrix_solute_receipt_t,MATRIX_OK
   use mod_fmr_b111_pond_solute_route,only:consume_reactive_thermal_substep
   use mod_b111_persistent_pond,only:pond_step_t
@@ -4737,6 +4738,7 @@ contains
     type(process_hydraulic_view_t) :: hydraulic_start, hydraulic_end
     type(soil_temperature_state_t) :: soil_temperature_trial
     type(soil_temperature_result_t) :: soil_temperature_result
+    type(fmr_thermal_substep_receipt_t)::thermal_receipt
     type(soil_temperature_diagnostics_t) :: soil_temperature_diagnostics
     type(soil_temperature_field_view_t) :: oxygen_thermal, frost_thermal
     type(root_water_uptake_flux_result_t) :: oxygen_base,oxygen_final
@@ -6191,6 +6193,14 @@ contains
         self%last_observation%soil_temperature_storage_change_j_cm2 = soil_temperature_result%sensible_storage_change_j_cm2
         self%last_observation%soil_temperature_boundary_energy_j_cm2 = soil_temperature_result%boundary_energy_into_soil_j_cm2
         if (soil_temperature_result%status /= SOIL_TEMP_OK .or. .not. soil_temperature_result%produced) return
+        if(self%accepted_water_flux_trace_enabled)then
+          call capture_fmr_thermal_substep(self%soil_temperature_parameters,self%soil_temperature_workspace, &
+               self%soil_temperature_forcing,soil_temperature_result,hydraulic_start%water_content, &
+               hydraulic_end%water_content,t0,t1,thermal_receipt)
+          if(.not.thermal_receipt%available)then
+            self%accepted_water_flux_trace_failed=.true.
+          end if
+        end if
         call commit_soil_temperature_state(physical%soil_temperature, soil_temperature_trial, soil_temperature_status)
         if (soil_temperature_status /= SOIL_TEMP_OK) then
           self%last_observation%soil_temperature_status = soil_temperature_status
@@ -6350,6 +6360,13 @@ contains
         end if
       else if (.not. append_accepted_water_flux_substep(self,request,solve_result,t0,t1,salt_receipt=salt_receipt)) then
         self%accepted_water_flux_trace_failed = .true.
+      end if
+    end if
+    if(self%accepted_water_flux_trace_enabled.and.self%soil_temperature_active.and. &
+       .not.self%accepted_water_flux_trace_failed)then
+      if(self%trace_tail>0.and.allocated(self%trace_arena))then
+        if(allocated(self%trace_arena(self%trace_tail)%payload)) &
+          self%trace_arena(self%trace_tail)%payload%thermal=thermal_receipt
       end if
     end if
     if(self%rutter_active.and.self%black_evaporation_active)then

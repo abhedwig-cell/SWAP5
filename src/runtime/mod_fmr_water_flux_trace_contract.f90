@@ -2,10 +2,12 @@
 ! This contract contains no serialized solver/backend dependency or new state.
 module mod_fmr_water_flux_trace_contract
   use iso_fortran_env,only:real64
+  use mod_fmr_thermal_substep_receipt,only:fmr_thermal_substep_receipt_t
   use mod_solute_mobile_macro_salt_transport,only:mobile_macro_salt_receipt_t
   implicit none
   private
   type, public :: fmr_water_flux_substep_trace_t
+    type(fmr_thermal_substep_receipt_t)::thermal
     real(real64) :: t0 = 0.0_real64, t1 = 0.0_real64
     real(real64) :: top_flux = 0.0_real64, bottom_flux = 0.0_real64
     logical :: pond_storage_available = .false.
