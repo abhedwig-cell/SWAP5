@@ -28,7 +28,8 @@ for name,end,restart in [('day1',1,None),('continuous',2,None),('restart',2,out/
  assert report['maximum_water_residual_cm']<=1e-10 and report['maximum_solute_residual_mg_cm2']<=1e-10,report
 raw=(out/'continuous/checkpoint.bin').read_bytes()
 assert raw==(out/'restart/checkpoint.bin').read_bytes(),'strict continuation differs from uninterrupted endpoint'
-run('qualify_rotation_restart_guards.py',['--bundle',bundle,'--case',out/'continuous','--checkpoint',out/'continuous/checkpoint.bin','--output',out/'decoder'])
+exe=bundle/('swap5_hupsel_germination.exe'if os.name=='nt'else'swap5_hupsel_germination')
+run('test_canopy_checkpoint.py',['--exe',exe,'--case',out/'day1','--output',out/'decoder'])
 run('qualify_crc.py',['--build',bundle,'--output',out/'crc'])
 build=json.loads((bundle/'BUILD.json').read_text())
 result=dict(status='NATIVE_TWO_DAY_PUBLICATION_RESTART_AND_CORRUPTION_PASS',build=build,checkpoint_sha256=hashlib.sha256(raw).hexdigest(),decoder=json.loads((out/'decoder/RESULT.json').read_text()),crc=json.loads((out/'crc/RESULT.json').read_text()),scope='Literal input two-day native I/O only; no canopy correction or whole scientific admission')
