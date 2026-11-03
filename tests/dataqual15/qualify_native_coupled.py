@@ -46,6 +46,7 @@ def main():
 ''')
  s=s.replace('   use mod_nonlinear_contact_pair','''   use mod_nonlinear_contact_pair
    use mod_native_feedback_context
+   use mod_macropore_continuation_state,only:macropore_continuation_state_t
    use mod_native_coupled_transaction
    use mod_transaction_reference
    use mod_macropore_standard_storage,only:derive_macropore_standard_storage_view
