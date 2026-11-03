@@ -80,9 +80,7 @@ contains
   status=1
   call input_bytes(crp,raw,n);if(n/=0)return
   call input_bytes(swp,rawswp,n);if(n/=0)return
-  write(*,*)'CANOPY_DIAG_BEFORE_CRC';flush(6)
   self%source_crc=crc32([rawswp,raw])
-  write(*,*)'CANOPY_DIAG_AFTER_CRC';flush(6)
   call rdinit(74,0,swp);call rdstim('tstart',start);call rdstim('tend',finish)
   self%simulation_days=finish-start+1d0
   call rdatim('cropstart',dates,64,n)

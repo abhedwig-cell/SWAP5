@@ -23,19 +23,6 @@ module mod_hupsel_rotation_restart
  character(10),parameter::INPUTS(6)=[character(10)::'swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra']
  integer,parameter::MAX_FILE_BYTES=16777216
  interface
-  integer(c_int) function open_c(path,mode)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::path(*)
-   integer(c_int),value::mode
-  end function
-  integer(c_int) function fsync_c(fd)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::fd
-  end function
-  integer(c_int) function close_c(fd)bind(C,name='close')
-   import c_int
-   integer(c_int),value::fd
-  end function
   integer(c_int) function rename_c(old,new)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::old(*),new(*)

@@ -27,19 +27,6 @@ module mod_pond_thermal_restart_file
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
   end function
-  integer(c_int) function open_c(a,b)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*)
-   integer(c_int),value::b
-  end function
-  integer(c_int) function sync_c(a)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::a
-  end function
-  integer(c_int) function close_c(a)bind(C,name='close')
-   import c_int
-   integer(c_int),value::a
-  end function
  end interface
 contains
  function heat_vector(p)result(v)
@@ -67,12 +54,6 @@ contains
    end if
    v=[v,-53020002d0,p%boesten_evaporation%cofred]
   end if
- end function
- integer function synchronize(path)result(st)
-  character(*),intent(in)::path
-  integer(c_int)::fd,rc
-  st=1;fd=open_c(path//c_null_char,0_c_int);if(fd<0)return
-  st=sync_c(fd);rc=close_c(fd);if(rc/=0)st=1
  end function
  subroutine bytes(path,a,st)
   character(*),intent(in)::path

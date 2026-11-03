@@ -239,13 +239,10 @@ program swap5_native_project_column
   end do
   close(u)
   call require(schema==1.or.schema==2,'unsupported schema')
-  write(*,*)'CANOPY_DIAG_BEFORE_FALLOW';flush(6)
   if(fallow_only)call validate_original_fallow()
-  write(*,*)'CANOPY_DIAG_AFTER_FALLOW';flush(6)
   if(original_hupsel_germination)then
     call require(fallow_only.and.len_trim(original_crop)>0,'source germination requires fallow physical route and original crop')
     call hupsel_germination%initialize(trim(legacy_swp),trim(original_crop),code)
-    write(*,*)'CANOPY_DIAG_AFTER_GERMINATION';flush(6)
     call require(code==0,'source germination initialization')
   end if
   call require(all(ieee_is_finite(air_temperature_c)),'nonfinite air temperature')

@@ -45,9 +45,12 @@ for i,s in enumerate(order):
  else:
   changed.add(s);obj=out/f'{i}.o';run([fc,*flags,'-c',s,'-o',obj],'compile')
  objects.append(obj)
-exe=out/'swap5_hupsel_germination';run([fc,'-fopenmp',*objects,archive,'-o',exe],'link')
+publisher=ROOT/'app/support/restart_publish.c';publisher_object=out/'restart_publish.o'
+cc=fc.with_name('gcc'+fc.suffix)
+run([cc,'-'+a.optimization,'-std=c11','-c',publisher,'-o',publisher_object],'compile-publisher')
+exe=out/'swap5_hupsel_germination';run([fc,'-fopenmp',*objects,publisher_object,archive,'-o',exe],'link')
 reader=out/'read_fallow';run([fc,*flags,ROOT/'src/process/mod_pmdirect_swetr0_process.f90',ROOT/'app/solute_project/read_fallow_project.f90',archive,'-o',reader],'reader')
-build=dict(status='BUILT',candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=compiler,build_mode='verified-reuse'if reuse else'clean-source',reuse_candidate=old['candidate']if old else None,ttutil_archive=str(archive),flags=flags,source_sha256=hashes,executable_sha256=sha(exe),provider_count=len(order),changed=[str(s)for s in changed],object_sha256={str(o):sha(o)for o in objects},archive_sha256=sha(archive))
+build=dict(status='BUILT',candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),compiler=compiler,build_mode='verified-reuse'if reuse else'clean-source',reuse_candidate=old['candidate']if old else None,ttutil_archive=str(archive),flags=flags,source_sha256=hashes,executable_sha256=sha(exe),provider_count=len(order),changed=[str(s)for s in changed],object_sha256={str(o):sha(o)for o in objects},archive_sha256=sha(archive),publication_provider=dict(source=str(publisher),source_sha256=sha(publisher),object=str(publisher_object),object_sha256=sha(publisher_object),compiler=subprocess.check_output([cc,'--version'],text=True).splitlines()[0]))
 (out/'BUILD.json').write_text(json.dumps(build,indent=2)+'\n')
 case=out/'full';case.mkdir();source=ROOT/'reference/swap-4.3.1/projects/1.hupselbrook'
 for n in ['swap.swp','maize.crp','swap.dra']:
