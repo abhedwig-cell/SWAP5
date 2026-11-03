@@ -414,5 +414,11 @@
     "actual-prefix/actual-thermal.csv",
     "contact-1/nonlinear-contact.csv"
   ],
-  "next": "Linux cold build/replay; preserve observational API source bounds; then full nonlinear contact/macro trial and complete advective/gas/atmospheric energy owners"
+  "next": "Linux cold build/replay; preserve observational API source bounds; then full nonlinear contact/macro trial and complete advective/gas/atmospheric energy owners",
+  "uncompiled_orchestrator_successor": {
+    "path": "tests/dataqual15/qualify_nonlinear_native_contact.py",
+    "before": "0497f25d2e8fc5c7a964f320c5004a1a7e94f380",
+    "after": "492aa2f30d9d1ffaffb546eb35e1804283e7d08f",
+    "scope": "Output-directory Git provenance classification, generated reader hash and preparation-only diagnostic. Actual compiled Fortran/physics and rendered overlays unchanged. Fresh Linux native executions required for current wrapper."
+  }
 }
