@@ -1,5 +1,5 @@
 {
-  "status": "IMPLEMENTED_WINDOWS_QUALIFIED_POSIX_AND_PRESERVATION_PENDING",
+  "status": "QUALIFIED_WINDOWS_POSIX_O0_O2_PENDING_CANONICAL_INTEGRATION",
   "predecessor": "b11a48cccea4c6b1aa9759c179ad68180e8057da",
   "production_delta": {
     "app/solute_project/hupsel_rotation_restart.f90": {
@@ -27,5 +27,12 @@
   "physical_correction": true,
   "whole_scientific_admission": false,
   "canonical_admission": false,
-  "verifier": "tests/dataqual15_hupsel/verify_canopy_endpoint_evidence.py"
+  "verifier": "tests/dataqual15_hupsel/verify_canopy_endpoint_evidence.py",
+  "qualification": [
+    "CANOPY_ENDPOINT_WINDOWS_20261103.tar.json",
+    "CANOPY_ENDPOINT_POSIX_20261103.tar.json",
+    "CANOPY_CURRENT_THERMAL_20261103.tar.json",
+    "CANOPY_CURRENT_NATIVE_COUPLED_20261103.tar.json",
+    "CANOPY_EXACT_PRESERVATION_20261103.tar.json"
+  ]
 }

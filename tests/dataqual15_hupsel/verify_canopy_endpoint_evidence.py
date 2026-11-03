@@ -81,7 +81,30 @@ def verify():
   assert not cr['original_outer_interval_accepted']and not cr['full_energy_balance_complete']
   entries=json.loads(cf[opt+'/COMPILED_INPUTS.json']);assert len(entries)==207
   for i,entry in enumerate(entries):assert sha(cf[opt+'/compiled-source/'+str(i)+'.f90'])==entry['source_sha256']
- print('FOUR_NATIVE_CANOPY_ENDPOINTS_O0_O2_AND_COHERENT_RESTART_PASS_NOT_WHOLE_SCIENCE')
+ posix=json.loads((BASE/'CANOPY_ENDPOINT_POSIX_20261103.tar.json').read_text())
+ assert posix['status']=='POSIX_CHECKED_O0_O2_ACTUAL_ENDPOINT_PUBLICATION_THERMAL_NATIVE_COUPLED_AND_EXACT_AUTHORITY_PASS'
+ assert not posix['whole_scientific_admission']
+ assert posix['normalized_repository_source_sha256']==record['normalized_repository_source_sha256']
+ archive=BASE/'CANOPY_ENDPOINT_POSIX_20261103.tar.xz'
+ assert sha(archive.read_bytes())==posix['archive_sha256']
+ with tarfile.open(archive)as t:
+  members=t.getmembers();assert len({m.name for m in members})==len(members)
+  assert all(m.isfile()and not PurePosixPath(m.name).is_absolute()and not PureWindowsPath(m.name).drive
+             and '..'not in PurePosixPath(m.name).parts and '\\'not in m.name for m in members)
+  pf={m.name:t.extractfile(m).read()for m in members}
+ assert {n:sha(b)for n,b in pf.items()}==posix['files_sha256']
+ for opt in ('O0','O2'):
+  build=json.loads(pf['hupsel-'+opt+'/BUILD.json'])
+  for name,pin in posix['normalized_repository_source_sha256'].items():
+   measured=[h for path,h in build['source_sha256'].items()if path.endswith('/'+name)]
+   assert measured==[pin],name
+  assert json.loads(pf['rutter-'+opt+'/RESULT.json'])['status']=='ACTUAL_RUTTER_ENDPOINT_PHYSICAL_MASS_AND_COMPLETE_OWNER_BYTE_CONTROLS_PASS_NOT_WHOLE_SCIENCE'
+  assert json.loads(pf['publication-'+opt+'/RESULT.json'])['status']=='NATIVE_TWO_DAY_PUBLICATION_RESTART_AND_CORRUPTION_PASS'
+  assert pf['publication-'+opt+'/continuous/checkpoint.bin']==pf['publication-'+opt+'/restart/checkpoint.bin']
+  assert json.loads(pf['coupled-'+opt+'/RESULT.json'])['status']=='CORRECTED_NATIVE_SUBSTEP_HEAT_HISTORY_FULL_HALF_AND_DISK_ACCEPTED'
+ assert json.loads(pf['thermal-preservation/RESULT.json'])['status']=='ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS'
+ assert json.loads(pf['canopy-preservation/RESULT.json'])['status']=='EXACT_PREDECESSOR_AUTHORITY_AND_SEPARATE_CURRENT_CANOPY_PROOF_PASS'
+ print('WINDOWS_POSIX_O0_O2_CANOPY_ENDPOINT_AND_CURRENT_SHARED_RUNTIME_PASS_NOT_WHOLE_SCIENCE')
  return record
 
 if __name__=='__main__':verify()

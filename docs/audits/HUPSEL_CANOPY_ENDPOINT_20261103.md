@@ -1,6 +1,6 @@
 # Hupsel accepted canopy capacity endpoint
 
-Status: implemented and checked on Windows O0/O2; POSIX and canonical admission pending.
+Status: qualified on Windows/POSIX O0/O2; canonical admission pending.
 
 The previously measured wet mowing endpoint retained more Rutter water than
 the accepted crop capacity. The correction invokes the incumbent Rutter
@@ -43,7 +43,11 @@ refused by the corrected decoder before any physical output publication.
 The two current native builds also pass literal-input day1/day2 publication,
 exact restart, independent CRC controls and37 nested decoder controls each.
 The actual composed Rutter/Black/heat/reactive owner and actual kernel drivers
-pass O0/O2, including complete-state rollback and incumbent interval checks.
+pass Windows/POSIX O0/O2, including complete-state rollback and incumbent interval checks.
+The current shared kernel/backend also passes fresh thermal receipts, unchanged
+EB-I23/I24/I25 runtime, and native112-node coupled full/two-half, rollback and
+typed disk controls on both platforms. Exact historical authority and ten
+negative boundary controls pass separately. POSIX run41719913263 is terminal SUCCESS.
 
 ## Evidence and limits
 
