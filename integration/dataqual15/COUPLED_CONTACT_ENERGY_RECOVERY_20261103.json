@@ -1,0 +1,29 @@
+{
+  "baseline": "4600df4b695269fa1a36d79dbaffde8b7a547eff",
+  "branch": "codex/coupled-contact-energy-20261103",
+  "stage": "WINDOWS_FULL_COLUMN_STORAGE_VERTICAL_PASS_HISTORY_NONUNIQUE_REFUSED_LINUX_RUNNING",
+  "scope": "Isolated full112-head nonlinear contact and complete existing macro candidate lifecycle; independent transport/donor data capture",
+  "selection": [
+    "Native full nonlinear residual with all heads and current constitutive/conductivity and boundary callbacks",
+    "Original rejected interval/control exact rollback",
+    "Existing macro candidate storage, sorptivity history and vertical transport checks",
+    "Source-bound actual first-day matrix/macro transport and donor-temperature observations",
+    "Windows checked O0/O2 then Linux owning scope"
+  ],
+  "expected_seconds": {
+    "native_compile_per_optimization": 300,
+    "native_probe": 120
+  },
+  "production_changed": false,
+  "full_original_andelst_complete": false,
+  "full_energy_balance_complete": false,
+  "next": "Qualify the full-column/history counterexample and transport data on Linux; define and test an explicit event-resolved or sliding-contact memory rule before any accepted full-step promotion. Bind macro temperature/energy and external donor-temperature/quadrature to independent process receipts.",
+  "pull_request": 1493,
+  "windows_native_O0": "../coupled-native-O0-02",
+  "windows_native_O2": "../coupled-native-O2-01",
+  "windows_donor_driver": "../coupled-donors-02",
+  "windows_O0_O2_exact": true,
+  "full_coupled_step_accepted": false,
+  "contact_memory_closure_available": false,
+  "history_absorption_time_difference_day": 6.008148201175345e-08
+}
