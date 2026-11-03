@@ -24,4 +24,6 @@ jobs:
       - name: Obtain exact production predecessor tree
         run: git fetch --no-tags --depth=1 origin baada36c4f717ca40057b6db663e20f60b9d2a62
       - name: Remeasure every ledger, typed stock, frozen comparison and exact suffix
-        run: python3 -B tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py
+        run: |
+          python3 --version
+          python3 -B tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py
