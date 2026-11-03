@@ -1336,6 +1336,11 @@ contains
           canopy_capacity_export_cm=capacity_result%mass%total_out
           day_result%water%mass%storage_end=capacity_result%mass%storage_end
           day_result%water%mass%total_out=day_result%water%mass%total_out+canopy_capacity_export_cm
+          day_result%water%mass%accepted_transaction_count=day_result%water%mass%accepted_transaction_count+1
+          day_result%diagnostics%candidate_materializations=day_result%diagnostics%candidate_materializations+ &
+            capacity_diagnostics%candidate_materializations
+          day_result%diagnostics%committed_state_mutations=day_result%diagnostics%committed_state_mutations+ &
+            capacity_diagnostics%committed_state_mutations
           day_result%water%mass%storage_change=day_result%water%mass%storage_end-day_result%water%mass%storage_start
           day_result%water%mass%residual=day_result%water%mass%storage_change- &
             day_result%water%mass%total_in+day_result%water%mass%total_out
