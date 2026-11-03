@@ -4,7 +4,7 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(exist_ok=False)
- sources=['src/runtime/mod_macropore_continuation_state.f90','src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90','src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90','src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90','src/solver/mod_reference_linear_solver.f90','tests/dataqual15/research/mod_contact_action_memory.f90','tests/dataqual15/research/mod_macro_liquid_thermal.f90']
+ sources=['src/runtime/mod_macropore_continuation_state.f90','src/process/macropore/mod_ppa_wu05a6_sorptivity_rate.f90','src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90','src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90','src/solver/mod_reference_linear_solver.f90','src/process/mod_liquid_water_sensible_enthalpy.f90','tests/dataqual15/research/mod_contact_action_memory.f90','tests/dataqual15/research/mod_macro_liquid_thermal.f90']
  drivers=['contact_memory_driver','macro_thermal_driver'];paths=sources+['tests/dataqual15/research/'+d+'.f90' for d in drivers]+['tests/dataqual15/qualify_memory_energy.py']
  git=lambda *x:subprocess.check_output(['git',*x],cwd=ROOT,text=True).strip()
  assert not git('diff','HEAD','--',*paths),'persist first';report=dict(measurement_commit=git('rev-parse','HEAD'),source_git_blob={n:git('rev-parse','HEAD:'+n) for n in paths},compiler=subprocess.check_output(['gfortran','--version'],text=True).splitlines()[0],builds={},full_energy_balance_complete=False)
