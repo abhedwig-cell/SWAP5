@@ -121,6 +121,7 @@ def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',type=Path,required=True)
     ap.add_argument('--optimization',choices=['O0','O2'],required=True)
     ap.add_argument('--reuse-build',type=Path,help='Exact compiled inputs/objects after a recorded link failure')
+    ap.add_argument('--prepare-only',action='store_true',help='Validate the real source graph and provenance without compiling')
     args=ap.parse_args()
     out=args.output.resolve();out.mkdir(parents=True,exist_ok=False);fc=shutil.which('gfortran');assert fc
     sha=lambda raw:hashlib.sha256(raw).hexdigest()
@@ -155,7 +156,7 @@ def main():
             if name.lower() in mapping and mapping[name.lower()]!=source:visit(mapping[name.lower()])
         active.remove(source);seen.add(source);ordered.append(source)
     visit(shadow[DRIVER]);ordered.remove(shadow[DRIVER]);visit(shadow[HEAD]);visit(original);ordered.append(shadow[DRIVER])
-    deps=[p.relative_to(ROOT).as_posix() for p in ordered if p.is_relative_to(ROOT)]
+    deps=[p.relative_to(ROOT).as_posix() for p in ordered if p.is_relative_to(ROOT) and not p.is_relative_to(out)]
     deps=list(dict.fromkeys([*deps,*shadow,RESEARCH+'contact_headcalc_methods.inc',RESEARCH+'contact_provider_methods.inc',
           RESEARCH+'mod_nonlinear_contact_pair.f90',SELF,'app/support/restart_publish.c','tools/solute/legacy_reader_sources.py',
           'tests/dataqual15/original_sources.py','tools/vq/b0_source_runner.py',
@@ -163,7 +164,11 @@ def main():
     assert not subprocess.check_output(['git','diff','HEAD','--',*deps],cwd=ROOT),'persist first'
     report['source_git_blob']={p:subprocess.check_output(['git','rev-parse','HEAD:'+p],cwd=ROOT,text=True).strip() for p in deps}
     report['rendered_overlay_sha256']={p:sha(q.read_bytes()) for p,q in shadow.items()}
+    report['generated_reader_sha256']=sha(original.read_bytes())
     report['compiler']=subprocess.check_output([fc,'--version'],text=True).splitlines()[0];save()
+    if args.prepare_only:
+        report['status']='SOURCE_PLAN_READY_NOT_EXECUTED';report['provider_count']=len(ordered);save()
+        print('NATIVE_SOURCE_PROVENANCE_READY_GENERATED_FILES_NOT_GIT_INPUTS');return
     if args.reuse_build:
         objects,utilities,proof=verified_objects(args.reuse_build.resolve(),ROOT,ordered,shadow,args.optimization,report['compiler'])
         report['exact_reused_objects']=proof

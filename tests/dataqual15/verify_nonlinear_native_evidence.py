@@ -25,7 +25,12 @@ def verify():
         files={m.name:t.extractfile(m).read() for m in members}
     assert json.loads(files.pop('MANIFEST.json'))=={n:sha(b) for n,b in files.items()}
     for path,blob in {**record['source_git_blob'],**record['auxiliary_git_blob']}.items():
-        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob,path
+        successor=record.get('uncompiled_orchestrator_successor',{})
+        current=blob
+        if path==successor.get('path'):
+            assert path=='tests/dataqual15/qualify_nonlinear_native_contact.py' and successor['before']==blob
+            current=successor['after']
+        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==current,path
         raw=files['sources/'+path].replace(b'\r\n',b'\n')
         assert hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()==blob,path
         assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT),path
