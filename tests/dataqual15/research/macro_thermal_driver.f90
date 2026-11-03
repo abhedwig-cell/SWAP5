@@ -34,7 +34,11 @@ program macro_thermal_driver
  w0=0d0;w1=0d0;q=1d0;tt0=12d0;tt1=12d0;initial=.false.
  call advance_macro_liquid_thermal(w0,w1,q,x,sink,t0,initial,tm0,tm1,ma,tt0,tt1,ta,bt,bt,ba,1d0,1,4.18d0,r)
  if(.not.r%produced.or.maxval(abs(r%temperature_c-12d0))>1d-12)error stop 'dry conduit'
- ta=.false.
+ if(.not.all(r%temperature_available))error stop 'dry conduit availability'
+ q=0d0
+ call advance_macro_liquid_thermal(w0,w1,q,x,sink,t0,initial,tm0,tm1,ma,tt0,tt1,ta,bt,bt,ba,1d0,1,4.18d0,r)
+ if(.not.r%produced.or.any(r%temperature_available))error stop 'isolated dry invented temperature'
+ q=1d0;ta=.false.
  call advance_macro_liquid_thermal(w0,w1,q,x,sink,t0,initial,tm0,tm1,ma,tt0,tt1,ta,bt,bt,ba,1d0,1,4.18d0,r)
  if(r%produced.or.allocated(r%temperature_c))error stop 'missing external donor'
  ta=.true.;w0=1d0;w1=1d0;q=0d0

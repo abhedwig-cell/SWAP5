@@ -7,6 +7,7 @@ module mod_macro_liquid_thermal
  private
  type,public::macro_liquid_thermal_result_t
   logical::produced=.false.
+  logical,allocatable::temperature_available(:,:)
   real(real64),allocatable::temperature_c(:,:),matrix_energy_j_cm2(:,:)
   real(real64)::external_net_into_j_cm2=0d0,stock_change_j_cm2=0d0,residual_j_cm2=0d0
  end type
@@ -23,6 +24,7 @@ contains
   type(macro_liquid_thermal_result_t),intent(out)::result
   real(real64),allocatable::temperature(:,:),before(:),after(:),old(:),new(:),lower(:),diagonal(:),upper(:),rhs(:),gamma(:),qenergy(:),matrix_energy(:,:)
   real(real64)::h,s0,s1,tm,tt,tb,external_energy,stock0,stock1,from_matrix,boundary,ledger,source_scale
+  logical,allocatable::defined(:,:)
   integer::nd,n,id,node,k,error
   result=macro_liquid_thermal_result_t();nd=size(w0,1);n=size(w0,2)
   if(nd<=0.or.n<=0.or.substeps<=0)return
@@ -60,6 +62,7 @@ contains
    end if
   end do
   allocate(temperature(nd,n),matrix_energy(nd,n),before(n),after(n),old(n),new(n),lower(n),diagonal(n),upper(n),rhs(n),gamma(n),qenergy(n+1))
+  allocate(defined(nd,n));defined=.false.
   temperature=0d0;matrix_energy=0d0
   where(w0>0d0)temperature=t_initial
   stock0=capacity*sum(w0*temperature);external_energy=0d0;h=dt/real(substeps,real64)
@@ -82,6 +85,7 @@ contains
     if(face(id,n+1)<0d0)then
      tb=(1d0-s1)*bottom_t0(id)+s1*bottom_t1(id);rhs(n)=rhs(n)-h*face(id,n+1)*tb
     end if
+    defined(id,:)=diagonal>0d0
     do node=1,n
      if(diagonal(node)==0d0)then
       if(rhs(node)/=0d0.or.lower(node)/=0d0.or.upper(node)/=0d0)return
@@ -116,6 +120,7 @@ contains
   result%stock_change_j_cm2=stock1-stock0;result%external_net_into_j_cm2=external_energy
   result%residual_j_cm2=stock1-stock0+sum(matrix_energy)-external_energy
   if(abs(result%residual_j_cm2)>1d-10*max(1d0,abs(stock0),abs(stock1),abs(external_energy)))return
+  result%temperature_available=defined
   result%temperature_c=temperature;result%matrix_energy_j_cm2=matrix_energy;result%produced=.true.
  end subroutine
 end module
