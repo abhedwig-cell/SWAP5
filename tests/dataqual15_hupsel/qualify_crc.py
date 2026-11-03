@@ -6,17 +6,18 @@ a=p.parse_args();b=a.build.resolve();out=a.output.resolve();out.mkdir(exist_ok=F
 events=json.loads((b/'EVENTS.json').read_text())
 compile=next(e['command'] for e in events if e['label']=='compile' and any(str(v).endswith('mod_age_joint_restart_file.f90')for v in e['command']))
 main=next(e['command'][-1] for e in events if e['label']=='compile' and any(str(v).endswith('main.f90')for v in e['command']))
-link=[v for v in events[-1]['command'] if v!=main]
+link=[v for v in next(e['command'] for e in events if e['label']=='link') if v!=main]
 results=[]
 fixtures=[b'',b'123456789',bytes(range(256))*300,
           (ROOT/'reference/swap-4.3.1/projects/1.hupselbrook/swap.swp').read_bytes()]
 for opt in ('O0','O2'):
-    cmd=[('-'+opt if v=='-O2' else v)for v in compile]
+    obj=out/(opt+'.o')
+    cmd=[('-'+opt if v in ('-O0','-O2') else '-J'+str(out) if v.startswith('-J') else v)for v in compile]
+    cmd[cmd.index('-o')+1]=str(obj)
     subprocess.run(cmd,cwd=b,check=True,timeout=60)
     exe=out/(opt+'.exe')
-    cmd=link.copy();cmd[cmd.index('-o')+1]=str(exe)
+    cmd=[str(obj) if v==compile[-1] else v for v in link];cmd[cmd.index('-o')+1]=str(exe)
     cmd[1:1]=['-I'+str(b),'-J'+str(out),str(ROOT/'tests/dataqual15_hupsel/crc_driver.f90')]
-    cmd.insert(cmd.index('-o'),str(b/'platform.o'))
     subprocess.run(cmd,cwd=b,check=True,timeout=60)
     for i,raw in enumerate(fixtures):
         f=out/str(i);f.write_bytes(raw)
