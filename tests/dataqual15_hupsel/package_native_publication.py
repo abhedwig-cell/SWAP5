@@ -33,6 +33,6 @@ for f in a.measurement.iterdir():
 with tarfile.open(a.output,'w:xz')as t:
  for name,raw in sorted(files.items()):
   info=tarfile.TarInfo(name);info.size=len(raw);info.mode=0o644;t.addfile(info,io.BytesIO(raw))
-manifest=dict(status='WINDOWS_NATIVE_IO_QUALIFIED_PHYSICAL_CORRECTION_OPEN',archive_sha256=sha(a.output.read_bytes()),files_sha256={n:sha(r)for n,r in sorted(files.items())},repository_source_sha256=sources,results=summaries,measurement_scope=measurement['scope'],measurement_seconds=measurement['seconds'],scientific_admission=False,canonical_admission=False,posix='PENDING_PR1496',physical_correction=False)
+manifest=dict(status='WINDOWS_NATIVE_IO_QUALIFIED_PHYSICAL_CORRECTION_OPEN',archive_sha256=sha(a.output.read_bytes()),files_sha256={n:sha(r)for n,r in sorted(files.items())},repository_source_sha256=sources,normalized_repository_source_sha256={n:sha((ROOT/n).read_bytes().replace(b'\r\n',b'\n'))for n in sources},results=summaries,measurement_scope=measurement['scope'],measurement_seconds=measurement['seconds'],scientific_admission=False,canonical_admission=False,posix='PENDING_PR1496',physical_correction=False)
 a.output.with_suffix('.json').write_text(json.dumps(manifest,indent=2)+'\n')
 print(json.dumps(summaries))

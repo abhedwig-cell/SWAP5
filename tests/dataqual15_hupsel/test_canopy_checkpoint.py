@@ -24,8 +24,10 @@ for kind in ('valid','crc','schema','nodes','clock_nan','truncated','extra'):
     r=subprocess.run([str(a.exe.resolve()),'input.nml',str(checkpoint),'1','swap.swp','maize.crp'],cwd=folder,env=env,capture_output=True,timeout=10)
     (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
     reached=b'no requested windows remain'in r.stdout+r.stderr
+    rejected=any(marker in r.stdout for marker in (b'source rotation envelope rejected before publication',b'restart rejected'))
+    assert r.returncode==1 and (reached if kind=='valid' else rejected),(kind,r.returncode,r.stdout,r.stderr)
     assert reached==(kind=='valid'),(kind,r.stdout,r.stderr)
-    assert not(folder/'checkpoint.bin').exists()and not(folder/'budget.csv').exists()
+    assert not any((folder/name).exists()for name in ('checkpoint.bin','budget.csv','crop.csv','germination.csv'))
     results.append(dict(case=kind,returncode=r.returncode,decoded=reached))
 (out/'RESULT.json').write_text(json.dumps(dict(executable_sha256=hashlib.sha256(a.exe.read_bytes()).hexdigest(),cases=results),indent=2))
 print('CANOPY_NATIVE_OUTER_CHECKPOINT_CONTROLS_PASS')

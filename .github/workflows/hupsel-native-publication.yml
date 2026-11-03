@@ -1,11 +1,5 @@
 name: Hupsel native checkpoint publication
 on:
-  push:
-    branches: [codex/autonomous-migration-20261103]
-    paths:
-      - .github/workflows/hupsel-native-publication.yml
-      - tests/dataqual15_hupsel/qualify_native_publication.py
-      - tests/dataqual15_hupsel/build_and_run.py
   pull_request:
     branches: [integration/f-ci-canonical]
     paths:
@@ -31,6 +25,7 @@ jobs:
             python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler "$(command -v gfortran-13)" --optimization "$opt" --output "$RUNNER_TEMP/hupsel-$opt"
             python3 -B tests/dataqual15_hupsel/qualify_native_publication.py --bundle "$RUNNER_TEMP/hupsel-$opt" --output "$RUNNER_TEMP/publication-$opt"
           done
+          python3 -B tests/dataqual15_hupsel/verify_native_publication_evidence.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
