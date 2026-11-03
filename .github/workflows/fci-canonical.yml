@@ -78,7 +78,13 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          if [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
+          if [[ -f tests/dataqual15/verify_current_native_admission.py ]]; then
+            # Current accepted endpoint/runtime proof and exact historical
+            # authority have separate verdicts. No whole-science promotion.
+            python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+            python3 -B tests/dataqual15/test_current_native_admission.py
+            python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/native-admission"
+          elif [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
             python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
             python3 -B tests/dataqual15/verify_native_restart_admission.py --output "$RUNNER_TEMP/native-admission"
           elif [[ -f integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json ]]; then
@@ -107,6 +113,22 @@ jobs:
           else
             python3 tests/modularity/run_modular_tests.py --changed-since "$BASE" --output "$RUNNER_TEMP/modular-feedback"
           fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: current-native-admission-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/native-admission/RESULT.json
+            ${{ runner.temp }}/native-admission/EVENTS.json
+            ${{ runner.temp }}/native-admission/*.stdout
+            ${{ runner.temp }}/native-admission/*.stderr
+            ${{ runner.temp }}/native-admission/composition/RESULT.json
+            ${{ runner.temp }}/native-admission/composition/*.stdout
+            ${{ runner.temp }}/native-admission/composition/*.stderr
+            ${{ runner.temp }}/native-admission/composition/historical-admission/*.json
+            ${{ runner.temp }}/native-admission/composition/historical-admission/*.stdout
+            ${{ runner.temp }}/native-admission/composition/historical-admission/*.stderr
+          retention-days: 14
   historical-fci03-through-fci18:
     if: github.event_name == 'workflow_dispatch' && inputs.replay_historical
     needs: selection-preflight

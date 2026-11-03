@@ -1,0 +1,69 @@
+{
+  "status": "CURRENT_ACCEPTED_ENDPOINT_AND_EXACT_HISTORICAL_NATIVE_AUTHORITY_PASS",
+  "candidate": "c3c552cfc40880ec028dfa3a3891277d51494c5a",
+  "events": [
+    {
+      "label": "current-corrected-rotation",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py"
+      ],
+      "returncode": 0
+    },
+    {
+      "label": "current-endpoint-and-exact-history",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tests/dataqual15_hupsel/qualify_canopy_preservation.py",
+        "--output",
+        "C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\ca-current-final\\composition"
+      ],
+      "returncode": 0
+    }
+  ],
+  "historical_projection": {
+    "tree": "89aee054de294598a3e2e07af1edf951a5f4c0d5",
+    "commit": "cd3672aefb1ec5094142152abf4a7dd89c2aa497",
+    "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+  },
+  "historical_scope": "Exact predecessor science and I/O only; not current endpoint execution",
+  "current_scope": "Separately admitted endpoint/shared runtime and corrected diagnostic1096 evidence",
+  "full_current_literal1827_execution": false,
+  "whole_scientific_admission": false,
+  "archive_sha256": "abf22f6b344445c443e1a6ac7dd9749ac30734dd27e3545ecf22c3e99e7b7589",
+  "files_sha256": {
+    "current-corrected-rotation.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current-corrected-rotation.stdout": "722081f39cb22c5b3bd32e584dc6339d69c0d5806434da84017fe01cae15ff2e",
+    "current-endpoint-and-exact-history.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current-endpoint-and-exact-history.stdout": "348af9c2d6013900fe315114f38f1f6c9647ac727dea36123cdd35932002e702",
+    "EVENTS.json": "15ab85e409d99dc4a7ada05053c7b1b2a4f2d91caf5febfb5277ce40373610db",
+    "RESULT.json": "1e560127e9e789ab74df4bb1d9afe96f6227e4cc94875b34f6cf9390f0a2d064",
+    "composition/boundary-controls.stderr": "a4684aa4083f39c99a501f1bceeb90d182bbfeaf4d2663065aba705c7b7feb1d",
+    "composition/boundary-controls.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-seven-legs.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-seven-legs.stdout": "2bc9d4405e0cb26a5280470a1a9c72c998361785c8627f0aa8e72482e3367bd2",
+    "composition/RESULT.json": "17a60d245a7fbac255e82484637aab61d6fab3c0ade3f2a246fb7c57ae55c8fe",
+    "composition/historical-admission/current-hupsel-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-hupsel-native.stdout": "3f976230b677cd539dd9f0ed7f12b234dfa4758584c13ef188ea673fad56a262",
+    "composition/historical-admission/current-native-contact-observations.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-native-contact-observations.stdout": "4bb82844649d3c0b85a5631d4998fd125026a9df4bcd566fd4e2826e94b00e64",
+    "composition/historical-admission/current-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-native.stdout": "4e04a1162ad535e928975beb5f6fee7b58162d0ddb09ebbacf29baf14dc096dc",
+    "composition/historical-admission/current-sensible-stock.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-sensible-stock.stdout": "66aed74d64ac9d93464cc5158e89e2c2fc2b6703d8721737529117f7fd3eca42",
+    "composition/historical-admission/predecessor-grass.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/predecessor-grass.stdout": "26c2ea13a1b897ee5c57d12d192cb13a9f798ce1aff6693605a98599adbefc88",
+    "composition/historical-admission/predecessor-hupsel.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/predecessor-hupsel.stdout": "57b37011aedfe67240d9d7d839febfd1f67f7ffafd5d6d9607ef21a7032f316f",
+    "composition/historical-admission/predecessor-stress.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/predecessor-stress.stdout": "30bcfc2324488d8e306c8d474f1eb1939f7c623b4f1fd61604a5f25c4efcf95c",
+    "composition/historical-admission/RESULT.json": "2bc9d4405e0cb26a5280470a1a9c72c998361785c8627f0aa8e72482e3367bd2",
+    "current-boundary-controls.log": "15ff5a04dc939d594286f2cb60a8f563e50c6942b72046b16b333715b8df0ff8"
+  },
+  "current_boundary_tests": 13,
+  "historical_boundary_tests": 10,
+  "platform": "Windows",
+  "scope": "Complete current-data and exact historical evidence composition; no model rerun; no whole-science qualification"
+}
