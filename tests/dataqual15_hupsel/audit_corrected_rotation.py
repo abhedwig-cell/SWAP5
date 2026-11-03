@@ -26,14 +26,22 @@ def ledger(daily,crops,points,days):
   assert abs(cumulative)<=1e-8
   checks[prefix]=dict(maximum_independent_daily_defect=max(map(abs,defects)),maximum_continuity_defect=continuity,cumulative_independent_defect=cumulative)
  byday={int(r['day']):r for r in crops};assert len(byday)==len(crops)
- assert all(1<=d<=days for d in byday)
+ # Literal original potato start is day495; accepted crop observations then
+ # continue through the grass rotation. A missing owner row is not a dry day.
+ assert sorted(byday)==list(range(495,days+1))
  for r in crops:
   stock,capacity=float(r['accepted_canopy_stock_cm']),float(r['post_management_capacity_cm'])
   assert math.isfinite(stock)and math.isfinite(capacity)and 0<=stock<=capacity
  for r in daily:
   export=r['canopy_capacity_export_cm'];assert export>=0
-  canopy_out=r['water_out_cm']-math.fsum(r[k]for k in ['soil_evaporation_cm','pond_evaporation_cm','actual_transpiration_cm','drainage_cm','runoff_cm'])
-  assert export<=canopy_out+1e-10
+  assert export<=r['water_out_cm']+1e-10
+  if int(r['t1_day'])in byday:
+   # This decomposition belongs to the staged Rutter crop composition.
+   # Earlier prescribed-boundary maize receipts may encode evaporation as
+   # negative external input; their complete signed ledger is checked above.
+   canopy_out=r['water_out_cm']-math.fsum(r[k]for k in ['soil_evaporation_cm','pond_evaporation_cm','actual_transpiration_cm','drainage_cm','runoff_cm'])
+   assert export<=canopy_out+1e-10
+  else:assert export==0
  cuts=[]
  for day in (930,956,989,1033):
   r=daily[day-1];crop=byday[day]
@@ -96,12 +104,13 @@ def audit(case,bundle):
  if (case/'checkpoint-1096.bin').exists():assert (case/'checkpoint.bin').read_bytes()==(case/'checkpoint-1096.bin').read_bytes()
  proof=ledger(daily,crops,points,1096)
  negatives=[]
- for name in ('water_export','solute_export','continuity','canopy_bound','duplicate_cut_export','primitive_stock'):
+ for name in ('water_export','solute_export','continuity','canopy_bound','crop_gap','duplicate_cut_export','primitive_stock'):
   d,c,p=copy.deepcopy((daily,crops,points))
   if name=='water_export':d[100]['water_out_cm']+=1e-6
   elif name=='solute_export':d[100]['solute_out_mg_cm2']+=1e-6
   elif name=='continuity':d[100]['water_start_cm']+=1e-6;d[100]['water_end_cm']+=1e-6
   elif name=='canopy_bound':c[-1]['accepted_canopy_stock_cm']=str(float(c[-1]['post_management_capacity_cm'])+1e-6)
+  elif name=='crop_gap':c.pop(100)
   elif name=='duplicate_cut_export':d[930]['water_in_cm']+=1e-6;d[930]['water_out_cm']+=1e-6;d[930]['canopy_capacity_export_cm']=1e-6
   else:p[1096]['water_stock_cm']+=1e-6
   try:ledger(d,c,p,1096)
