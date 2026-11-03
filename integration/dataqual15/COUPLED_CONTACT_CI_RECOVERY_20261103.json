@@ -1,0 +1,25 @@
+{
+  "qualified_head": "7518cd7abb2d51804a4753c4d886f5c252421455",
+  "superseded_failure": {
+    "head": "fe0c2e519fd00b572dc0244bb4080b37a21fdfda",
+    "run_id": 41642050163,
+    "job_id": 125937747684,
+    "classification": "UNCOMPILED_COLD_ORCHESTRATOR_COMPILER_PATH",
+    "observed_error": "FileNotFoundError: repository/gfortran",
+    "resolution": "Pass shutil.which(gfortran) to the original-source builder",
+    "failure_retained": true
+  },
+  "infrastructure_recovery": {
+    "run_id": 41643170926,
+    "attempt": 1,
+    "job_id": 125941567463,
+    "checkout_started": "2026-11-03T13:18:32Z",
+    "checkout_completed": "2026-11-03T13:29:11Z",
+    "cancellation": "Requested after repeated checkout-stall snapshots; checkout completed before cancellation landed, so48seconds of compiler work was also censored",
+    "status": "CANCELLED_CENSORED_NOT_SCIENCE_FAILURE_OR_PASS",
+    "partial_artifact_id": 13234611995,
+    "retried_job_id": 125947602942,
+    "rerun_scope": "Single canceled job; unchanged source",
+    "force_cancel_request": "409 already completed; no force action occurred"
+  }
+}

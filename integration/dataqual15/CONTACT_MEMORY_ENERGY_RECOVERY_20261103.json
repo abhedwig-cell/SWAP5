@@ -1,0 +1,57 @@
+{
+  "baseline": "65d881cc9678ec8c6d7b0cb7c92207f3ed5f7043",
+  "branch": "codex/contact-memory-macro-energy-20261103",
+  "stage": "CORRECTED_RESEARCH_ACTION_MEMORY_AND_MACRO_THERMAL_MODEL_CANONICALLY_ADMITTED",
+  "production_changed": false,
+  "scope": "Explicit action-clock contact memory and conservative independent macro liquid temperature research",
+  "selection": [
+    "Small real legacy-history endpoint/action/refusal driver O0/O2",
+    "Native112-head contact plus macro lifecycle and completed unique history O0/O2",
+    "Small real finite-volume macro liquid thermal solve and refined actual hydraulic replay with explicit donor scenarios O0/O2",
+    "Fresh Linux owning gates and unchanged source preservation"
+  ],
+  "expected_seconds": {
+    "component": 10,
+    "native_per_optimization": 180,
+    "actual_thermal_replay": 45
+  },
+  "full_original_andelst_complete": false,
+  "full_energy_balance_complete": false,
+  "contact_memory_closure_available": true,
+  "policy": "EXPLICIT_CORRECTED_ACTION_CLOCK_NOT_ORIGINAL_BINARY_MODEL",
+  "native_private_candidate_history_complete": true,
+  "native_full_step_committed": false,
+  "macro_liquid_temperature_component": true,
+  "external_donor_inputs": "Explicit caller supplied temperatures; actual replay uses declared8+4*t research forcing",
+  "historical_external_donors_available": false,
+  "matrix_heat_feedback_in_native": false,
+  "gas_latent_radiation_receipts_available": false,
+  "windows_native_runs": {
+    "O0": "../memory-native-O0-02",
+    "O2": "../memory-native-O2-02"
+  },
+  "components": "../memory-energy-component-06",
+  "actual_macro_temperature_replay": "../macro-thermal-replay-02",
+  "thermal_refinement": [
+    1,
+    4,
+    16,
+    64
+  ],
+  "next": "Integrate the declared contact policy through an explicit owned runtime candidate and test actual accepted continuation/restart; couple independent macro heat back into matrix heat and bind declared external donor histories plus gas/latent/radiation receipts before full physical-energy promotion.",
+  "pull_request": 1494,
+  "windows_evidence": "integration/dataqual15/CONTACT_MEMORY_WINDOWS_EVIDENCE_20261103.json",
+  "linux_evidence": "integration/dataqual15/CONTACT_MEMORY_LINUX_EVIDENCE_20261103.json",
+  "linux_O0_O2": "PASS cold203+153 and focused liquid thermal gates",
+  "canonical_admitted": true,
+  "actual_merge": "9bb77c1c7928a6844b779ae823825126b46ecf23",
+  "receipt": "integration/dataqual15/CONTACT_MEMORY_CANONICAL_RECEIPT_20261103.json",
+  "runtime_admission_prerequisites": {
+    "physical_model_identity_and_parameter_binding": true,
+    "corrected_history_restart_qualified": false,
+    "macro_conserved_enthalpy_owner_and_initial_provenance": true,
+    "selected_interval_lineage_donor_binding": true,
+    "opposite_heat_feedback_into_both_owners": true,
+    "separate_gas_latent_radiation_phase_receipts": true
+  }
+}

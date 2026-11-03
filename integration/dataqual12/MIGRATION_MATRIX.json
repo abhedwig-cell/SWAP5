@@ -932,5 +932,42 @@
     "pull_request": 1492,
     "actual_merge": "db3d102e2afc5be3fb4fab35c5f97cb6048f78ca",
     "receipt": "integration/dataqual15/NONLINEAR_THERMAL_CANONICAL_RECEIPT_20261103.json"
+  },
+  "coupled_contact_transport_20261103": {
+    "status": "experimental_executed",
+    "pull_request": 1493,
+    "record": "integration/dataqual15/COUPLED_CONTACT_ENERGY_RECOVERY_20261103.json",
+    "windows_O0_O2": "PASS",
+    "linux_O0_O2": "PASS cold202+153 native and donor gates",
+    "production_changed": false,
+    "full_coupled_step_accepted": false,
+    "full_energy_balance_complete": false,
+    "history_memory_closure_available": false,
+    "max_full_column_rate_residual_cm_day": 1.5523235474823593e-11,
+    "history_branch_absorption_time_difference_day": 6.008148201175345e-08,
+    "actual_macro_transport_node_rows": 108640,
+    "denominator_changed": false,
+    "admission": "BOUNDED_RESEARCH_COUNTEREXAMPLE_AND_PROCESS_DATA_ONLY",
+    "actual_merge": "388c89cbb8d0840e2de884487b290f30db5e188d",
+    "receipt": "integration/dataqual15/COUPLED_CONTACT_CANONICAL_RECEIPT_20261103.json"
+  },
+  "contact_memory_macro_temperature_20261103": {
+    "status": "explicit_corrected_research_executed",
+    "pull_request": 1494,
+    "record": "integration/dataqual15/CONTACT_MEMORY_ENERGY_RECOVERY_20261103.json",
+    "production_changed": false,
+    "windows_O0_O2": "PASS",
+    "linux_O0_O2": "PASS cold203+153 native and component/thermal gates",
+    "private_contact_history_complete": true,
+    "policy": "CONVEX_SORPTIVITY_ACTION_CLOCK_NOT_ORIGINAL_BINARY_HISTORY",
+    "macro_liquid_temperature_and_explicit_donor_quadrature": true,
+    "historical_external_donors_available": false,
+    "native_heat_feedback": false,
+    "native_full_interval_committed": false,
+    "full_energy_balance_complete": false,
+    "denominator_changed": false,
+    "admission": "EXPLICIT_CORRECTED_RESEARCH_POLICY_AND_LIQUID_THERMAL_MODEL_ONLY",
+    "actual_merge": "9bb77c1c7928a6844b779ae823825126b46ecf23",
+    "receipt": "integration/dataqual15/CONTACT_MEMORY_CANONICAL_RECEIPT_20261103.json"
   }
 }

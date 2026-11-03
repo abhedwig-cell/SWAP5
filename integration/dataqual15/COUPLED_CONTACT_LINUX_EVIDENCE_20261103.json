@@ -1,0 +1,242 @@
+{
+  "run_id": 41643171078,
+  "qualified_head": "7518cd7abb2d51804a4753c4d886f5c252421455",
+  "artifacts": {
+    "O0": 13232464610,
+    "O2": 13233254970
+  },
+  "downloaded_zip_sha256": {
+    "O0": "14da4e8b249f21be4b8cea7356fe1ba5ec91a04c73c67e6ce83b5112c668b898",
+    "O2": "eec154e6bf762fd96c7a9017bb9ce22dfcd1d503066850c7062ff39951199920"
+  },
+  "archive": "integration/dataqual15/COUPLED_CONTACT_LINUX_EVIDENCE_20261103.tar.xz",
+  "archive_sha256": "4911cc3d6ff7d96dcb194fd564c84e3511f1092dadbee9c4f5812328cc86a0a1",
+  "observations": {
+    "O0": {
+      "measurement_commit": "64008b3faff5159e866f42adc145e1fc9f3f4f99",
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "status": "FULL_COLUMN_STORAGE_VERTICAL_PASS_HISTORY_NONUNIQUE_FULL_STEP_REFUSED",
+      "history_branch_unique": false,
+      "full_coupled_step_accepted": false,
+      "transport": {
+        "status": "ACTUAL_TRANSPORT_LEDGER_AND_MISSING_DONORS_VERIFIED",
+        "intervals": 194,
+        "matrix_node_rows": 21728,
+        "macro_node_rows": 108640,
+        "max_macro_cell_amount_residual_cm": 2.367291455970724e-16,
+        "max_macro_internal_face_rate_mismatch_cm_day": 0.0,
+        "max_matrix_reconstructed_boundary_residual_cm": 2.4354118982559606e-15,
+        "whole_liquid_water_residual_cm": 1.2802259252708836e-14,
+        "integrals": {
+          "matrix_top_net_into_cm": -0.017830318855908477,
+          "matrix_liquid_storage_change_cm": -0.025442436464056726,
+          "root_out_cm": 0.0020373806217216846,
+          "drain_out_cm": 0.0,
+          "lateral_net_into_cm": 0.0,
+          "root_endpoint_mean_enthalpy_out_j_cm2": 0.09022600083360555,
+          "macro_liquid_storage_change_cm": -0.02282079753266884,
+          "macro_to_matrix_positive_cm": 0.004531164545964796,
+          "matrix_to_macro_positive_cm": 0.04362847408148798,
+          "macro_external_out_cm": 0.06315158203032413,
+          "macro_top_net_into_cm": 0.0012334749621331006,
+          "matrix_bottom_net_into_cm": 0.03352257254908282,
+          "macro_bottom_net_out_cm": 0.0,
+          "matrix_internal_abs_reconstructed_transport_cm": 1.561791004584935
+        },
+        "counts": {
+          "macro_positive_exchange_missing_macro_temperature": 1682,
+          "macro_negative_exchange_matrix_endpoint_temperature_only": 6864,
+          "macro_nonzero_vertical_missing_donor_temperature": 25164
+        },
+        "matrix_area_weighted_profile_stock_change_j_cm2": 66.8573248713499,
+        "macro_liquid_stock_equal_matrix_temperature_scenario_j_cm2": -0.9348602540262062,
+        "root_enthalpy_scope": "Endpoint-mean donor-temperature scenario through real liquid enthalpy owner; not measured temporal quadrature",
+        "matrix_face_scope": "Reconstructed from accepted water ledger, not independently measured Darcy faces",
+        "full_energy_balance_complete": false,
+        "missing": [
+          "Macro temperature/state and independent macro thermal transport",
+          "External rain/irrigation/lateral/bottom liquid donor temperature and substep quadrature",
+          "Gas flow/density and external donor temperature",
+          "Radiation/latent/vapor/phase process receipts"
+        ]
+      },
+      "thermal": {
+        "status": "ACTUAL_FIRST_DAY_THERMAL_DATA_INDEPENDENTLY_VERIFIED",
+        "intervals": 194,
+        "node_rows": 21728,
+        "independent_conductive_boundary_intervals": 194,
+        "max_capacity_reconstruction_error_j_cm3_k": 1.3322676295501878e-15,
+        "max_nodal_legacy_energy_error_j_cm2": 1.8951507030351422e-13,
+        "max_column_legacy_energy_error_j_cm2": 1.2347900479880991e-12,
+        "legacy_average_capacity_storage_change_j_cm2": 70.63532167981883,
+        "conductive_boundary_into_j_cm2": 70.6353216798409,
+        "raw_theta_domain_error_rows": 0,
+        "max_raw_theta_domain_error": 0.0,
+        "diagnostic_unclipped_theta_profile_stock_change_j_cm2": 69.52434400246109,
+        "diagnostic_profile_stock_minus_conduction_j_cm2": -1.1109776773798075,
+        "native_root_rate_integral_cm": 0.0020373806217216846,
+        "full_energy_balance_complete": false,
+        "diagnostic_scope": "Raw matrix theta-profile linear-mixture extension; not whole matrix/macro physical stock qualification. No heat flux inferred from residual.",
+        "missing": [
+          "gas flow and external gas donor temperatures",
+          "external liquid donor temperatures and advective time quadrature",
+          "macropore sensible-energy partition/transport",
+          "atmospheric latent/radiation, vapor and phase-change ownership"
+        ]
+      },
+      "source_object_and_ttutil_digests": "PASS cold202 Fortran and153 TTUTIL",
+      "rendered_sha256": {
+        "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90": "259d9728771fa6c66ed8b27d4eb7bdd19bd4ccd23f8e6370b717c710b4ed646b",
+        "src/legacy/b1_10_port/headcalc.f90": "ae91c40cab64b1f70c348e8105082998ec313fe75f0a210ba0648ec0a01abe50",
+        "app/solute_project/main_water.f90": "d5a9c9a557f91d871d67e5aff3a5fb1a2a6f9edbbd80e364517e0f40ecca0206",
+        "app/solute_column/macro_water_restart.f90": "42cc711756e20502e9a8fb0c401754dd42d7a210b67f78888f738fd5511a55f9"
+      }
+    },
+    "O2": {
+      "measurement_commit": "64008b3faff5159e866f42adc145e1fc9f3f4f99",
+      "compiler": "GNU Fortran (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "status": "FULL_COLUMN_STORAGE_VERTICAL_PASS_HISTORY_NONUNIQUE_FULL_STEP_REFUSED",
+      "history_branch_unique": false,
+      "full_coupled_step_accepted": false,
+      "transport": {
+        "status": "ACTUAL_TRANSPORT_LEDGER_AND_MISSING_DONORS_VERIFIED",
+        "intervals": 194,
+        "matrix_node_rows": 21728,
+        "macro_node_rows": 108640,
+        "max_macro_cell_amount_residual_cm": 2.367291455970724e-16,
+        "max_macro_internal_face_rate_mismatch_cm_day": 0.0,
+        "max_matrix_reconstructed_boundary_residual_cm": 2.4354118982559606e-15,
+        "whole_liquid_water_residual_cm": 1.2802259252708836e-14,
+        "integrals": {
+          "matrix_top_net_into_cm": -0.017830318855908477,
+          "matrix_liquid_storage_change_cm": -0.025442436464056726,
+          "root_out_cm": 0.0020373806217216846,
+          "drain_out_cm": 0.0,
+          "lateral_net_into_cm": 0.0,
+          "root_endpoint_mean_enthalpy_out_j_cm2": 0.09022600083360555,
+          "macro_liquid_storage_change_cm": -0.02282079753266884,
+          "macro_to_matrix_positive_cm": 0.004531164545964796,
+          "matrix_to_macro_positive_cm": 0.04362847408148798,
+          "macro_external_out_cm": 0.06315158203032413,
+          "macro_top_net_into_cm": 0.0012334749621331006,
+          "matrix_bottom_net_into_cm": 0.03352257254908282,
+          "macro_bottom_net_out_cm": 0.0,
+          "matrix_internal_abs_reconstructed_transport_cm": 1.561791004584935
+        },
+        "counts": {
+          "macro_positive_exchange_missing_macro_temperature": 1682,
+          "macro_negative_exchange_matrix_endpoint_temperature_only": 6864,
+          "macro_nonzero_vertical_missing_donor_temperature": 25164
+        },
+        "matrix_area_weighted_profile_stock_change_j_cm2": 66.8573248713499,
+        "macro_liquid_stock_equal_matrix_temperature_scenario_j_cm2": -0.9348602540262062,
+        "root_enthalpy_scope": "Endpoint-mean donor-temperature scenario through real liquid enthalpy owner; not measured temporal quadrature",
+        "matrix_face_scope": "Reconstructed from accepted water ledger, not independently measured Darcy faces",
+        "full_energy_balance_complete": false,
+        "missing": [
+          "Macro temperature/state and independent macro thermal transport",
+          "External rain/irrigation/lateral/bottom liquid donor temperature and substep quadrature",
+          "Gas flow/density and external donor temperature",
+          "Radiation/latent/vapor/phase process receipts"
+        ]
+      },
+      "thermal": {
+        "status": "ACTUAL_FIRST_DAY_THERMAL_DATA_INDEPENDENTLY_VERIFIED",
+        "intervals": 194,
+        "node_rows": 21728,
+        "independent_conductive_boundary_intervals": 194,
+        "max_capacity_reconstruction_error_j_cm3_k": 1.3322676295501878e-15,
+        "max_nodal_legacy_energy_error_j_cm2": 1.8951507030351422e-13,
+        "max_column_legacy_energy_error_j_cm2": 1.2347900479880991e-12,
+        "legacy_average_capacity_storage_change_j_cm2": 70.63532167981883,
+        "conductive_boundary_into_j_cm2": 70.6353216798409,
+        "raw_theta_domain_error_rows": 0,
+        "max_raw_theta_domain_error": 0.0,
+        "diagnostic_unclipped_theta_profile_stock_change_j_cm2": 69.52434400246109,
+        "diagnostic_profile_stock_minus_conduction_j_cm2": -1.1109776773798075,
+        "native_root_rate_integral_cm": 0.0020373806217216846,
+        "full_energy_balance_complete": false,
+        "diagnostic_scope": "Raw matrix theta-profile linear-mixture extension; not whole matrix/macro physical stock qualification. No heat flux inferred from residual.",
+        "missing": [
+          "gas flow and external gas donor temperatures",
+          "external liquid donor temperatures and advective time quadrature",
+          "macropore sensible-energy partition/transport",
+          "atmospheric latent/radiation, vapor and phase-change ownership"
+        ]
+      },
+      "source_object_and_ttutil_digests": "PASS cold202 Fortran and153 TTUTIL",
+      "rendered_sha256": {
+        "src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90": "259d9728771fa6c66ed8b27d4eb7bdd19bd4ccd23f8e6370b717c710b4ed646b",
+        "src/legacy/b1_10_port/headcalc.f90": "ae91c40cab64b1f70c348e8105082998ec313fe75f0a210ba0648ec0a01abe50",
+        "app/solute_project/main_water.f90": "d5a9c9a557f91d871d67e5aff3a5fb1a2a6f9edbbd80e364517e0f40ecca0206",
+        "app/solute_column/macro_water_restart.f90": "42cc711756e20502e9a8fb0c401754dd42d7a210b67f78888f738fd5511a55f9"
+      }
+    }
+  },
+  "windows_linux_comparison": {
+    "actual-prefix/actual-thermal.csv": {
+      "rows": 21728,
+      "exact": false,
+      "max_absolute_by_csv_column": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 8.881784197001252e-15,
+        "5": 8.881784197001252e-15,
+        "6": 1.1102230246251565e-16,
+        "7": 1.1102230246251565e-16,
+        "8": 0.0,
+        "9": 8.881784197001252e-16,
+        "10": 9.50350909079134e-14,
+        "11": 9.50350909079134e-14,
+        "12": 0.0,
+        "13": 0.0,
+        "14": 0.0,
+        "15": 2.3852447794681098e-18,
+        "16": 0.0,
+        "17": 0.0,
+        "18": 0.0,
+        "19": 0.0,
+        "20": 0.0,
+        "21": 0.0,
+        "22": 0.0
+      }
+    },
+    "actual-prefix/actual-transport.csv": {
+      "rows": 130368,
+      "exact": false,
+      "max_absolute_by_csv_column": {
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 1.3552527156068805e-20,
+        "6": 1.3552527156068805e-20,
+        "7": 2.3852447794681098e-18,
+        "8": 8.673617379884035e-19,
+        "9": 2.3852447794681098e-18,
+        "10": 0.0,
+        "11": 2.3852447794681098e-18
+      }
+    },
+    "contact-1/coupled-contact.csv": {
+      "rows": 354,
+      "exact": true,
+      "max_absolute_by_csv_column": {
+        "1": 0.0,
+        "3": 0.0,
+        "4": 0.0,
+        "5": 0.0,
+        "6": 0.0,
+        "7": 0.0,
+        "8": 0.0,
+        "9": 0.0,
+        "2": 0.0
+      }
+    }
+  },
+  "cross_platform_restart_bit_exact": false,
+  "same_platform_O0_O2_csv_and_restart_physical_payload_exact": true,
+  "full_coupled_step_accepted": false,
+  "full_energy_balance_complete": false
+}

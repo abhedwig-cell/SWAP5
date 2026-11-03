@@ -1,0 +1,29 @@
+{
+  "actual_merge": "388c89cbb8d0840e2de884487b290f30db5e188d",
+  "failures": [
+    {
+      "run_id": 41645674566,
+      "job_id": 125950241139,
+      "verdict": "FAILURE_RETAINED",
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_INVENTORY",
+      "observed_error_lines": [
+        "2026-11-03T13:36:20.7863443Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'",
+        "2026-11-03T13:36:20.7864364Z AssertionError: unreviewed delta"
+      ],
+      "guard_controls": "integration/dataqual15/COUPLED_CONTACT_CANONICAL_GUARD_CONTROLS_20261103.json",
+      "baseline_full_workflow_rerun_claim": false
+    },
+    {
+      "run_id": 41645674499,
+      "job_id": 125950241203,
+      "verdict": "FAILURE_RETAINED",
+      "classification": "PREEXISTING_FROZEN_DATAQUAL12_INVENTORY",
+      "observed_error_lines": [
+        "2026-11-03T13:36:14.9984430Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'",
+        "2026-11-03T13:36:14.9985189Z AssertionError: unreviewed delta"
+      ],
+      "guard_controls": "integration/dataqual15/COUPLED_CONTACT_CANONICAL_GUARD_CONTROLS_20261103.json",
+      "baseline_full_workflow_rerun_claim": false
+    }
+  ]
+}
