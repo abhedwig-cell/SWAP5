@@ -15,7 +15,8 @@ subroutine research_coupled_contact()
  write(u,*) native_feedback_context%ready,native_feedback_context%t0,native_feedback_context%t1,dt
  close(u)
  if(.not.native_feedback_context%ready)return
- if(native_feedback_context%t1-native_feedback_context%t0/=dt)return
+ if(abs((native_feedback_context%t1-native_feedback_context%t0)-dt)> &
+    8d0*epsilon(dt)*max(1d0,abs(native_feedback_context%t0)))return
  saved_state=state;saved_workspace=fsi_ws;saved_context=ctx;saved_history=hist;saved_dt=dt
  pond_saved=evaluation_context%macropore%candidate_pond_lateral()
  select type(mp=>evaluation_context%macropore)
