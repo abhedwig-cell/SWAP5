@@ -6,6 +6,15 @@ EB-I22 establishes one bounded conservation-accounting capability for the SWAP5 
 
 This capability is deliberately narrower than a full SWAP5 Energy Balance.
 
+Numerical successor (DATAQUAL15 stock projection, November2026): consistency
+between the sum of nodal endpoint-stock changes and the difference of column
+stock sums is checked against a floating-point summation bound on absolute
+endpoint stocks. The existing small-change comparison remains valid as well.
+This check establishes representation consistency; it is not a tolerance on the
+physical energy residual. Missing boundary terms, reference-gauge mismatches,
+the strict theta domain and all full-energy nonclaims remain unchanged. See
+`integration/dataqual15/STOCK_PROJECTION_PRODUCTION_20261102.json`.
+
 Canonical base:
 
 `integration/f-ci-canonical@366a4d9b4afddb9e1f878a6d371fdff836babaac`
