@@ -1,0 +1,45 @@
+{
+  "baseline": "538fb025e8702d4dd609bc30cc347743a0587145",
+  "status": "ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS",
+  "measurement_commit": "0b460cef895a37d7f69883b695e1a6f7cf85a702",
+  "archive": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_EVIDENCE_20261103.tar.xz",
+  "archive_sha256": "79ba50f2efe48407e05e15e54853f0c90ff6f7eb464679c385f0535c33656e59",
+  "scope": "Constructed4-node actual runtime single/two-half accepted observations; NOT original-input project qualification",
+  "full_energy_balance_complete": false,
+  "canonical_admitted": false,
+  "production_delta": {
+    "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
+      "before": null,
+      "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
+    },
+    "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
+      "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
+      "after": "808874309456031ff65d620d54db55f478456d0a"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
+      "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
+    }
+  },
+  "result": {
+    "O0": {
+      "node_rows": 12,
+      "accepted_intervals": 3,
+      "max_nodal_error_j_cm2": 6.240320376071086e-13
+    },
+    "O2": {
+      "node_rows": 12,
+      "accepted_intervals": 3,
+      "max_nodal_error_j_cm2": 6.240320376071086e-13
+    }
+  },
+  "independent_adapters": {
+    "app/solute_project/inspect_historical.f90": {
+      "before": "0855b4014e18b32475d1d4a18c18d477413c0b7c",
+      "after": "85933351e9a2bb1e3830485a0e3eb345a4369141",
+      "admitted_merge": "cbb4352702f576a244431655a2f89cfc02875709",
+      "pr": 1491,
+      "scope": "Independent original-input inspection publication; not part of compiled thermal/contact dependency closure"
+    }
+  }
+}

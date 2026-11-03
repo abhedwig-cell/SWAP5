@@ -917,5 +917,16 @@
     "composed_source_retest": "PASS checked O0/O2",
     "whole_tree_exact": false,
     "guard_successor_pr": 1490
+  },
+  "nonlinear_contact_thermal_20261103": {
+    "status": "experimental_executed",
+    "record": "integration/dataqual15/NONLINEAR_THERMAL_RECOVERY_20261103.json",
+    "scope": "Nonlinear actual-process two-cell contact trial; accepted thermal runtime observation API; actual112-node first-day source-input194 thermal intervals",
+    "windows_O0_O2": "PASS exact thermal/contact CSV and native checkpoint physical payload",
+    "linux": "PENDING",
+    "production_contact_repair": false,
+    "full_energy_balance_complete": false,
+    "denominator_changed": false,
+    "native_profile_stock_minus_conduction_j_cm2": -1.1109776773798217
   }
 }

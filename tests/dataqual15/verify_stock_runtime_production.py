@@ -19,6 +19,12 @@ def verify():
     # Bind both postimages exactly rather than ignoring the application subtree.
     rain='app/solute_project/prepare_rain_duration.f90'
     allowed={MODULE}
+    thermal=None
+    thermal_path=ROOT/'integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json'
+    if thermal_path.exists():
+        from verify_thermal_receipts import verify as verify_thermal
+        thermal=verify_thermal()
+        allowed.update(thermal['production_delta'])
     if rain in changed:
         for ref,pin in ((BASE,'18dc5b61d5f31563cfdd20208e9368c68378743d'),
                         ('HEAD','4de070ccb16a654989322a3cc42b08bf13a89c7f')):
@@ -47,7 +53,12 @@ def verify():
     assert report['status']=='CURRENT_EB_I23_I24_I25_RUNTIME_O0_O2_PASS'
     assert not report['full_energy_balance_complete']
     for path,blob in report['source_git_blob'].items():
-        assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob,path
+        if thermal and path in thermal['production_delta']:
+            # Historical bytes remain checked below. The changed runtime has
+            # separately sealed fresh executions of all three unchanged oracles.
+            assert thermal['production_delta'][path]['before']==blob,path
+        else:
+            assert subprocess.check_output(['git','rev-parse','HEAD:'+path],cwd=ROOT,text=True).strip()==blob,path
         assert not subprocess.check_output(['git','diff','HEAD','--',path],cwd=ROOT),path
         raw=files['sources/'+path]
         assert sha(raw)==report['source_sha256'][path],path

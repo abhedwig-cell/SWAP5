@@ -1,0 +1,48 @@
+{
+  "baseline": "538fb025e8702d4dd609bc30cc347743a0587145",
+  "branch": "codex/nonlinear-contact-thermal-receipts-20261103",
+  "stage": "WINDOWS_ALL_SELECTED_CHECKS_PASS_LINUX_QUALIFICATION_PENDING",
+  "scope": "Actual nonlinear two-cell fixed-neighbour contact/real donor stock research; additive accepted thermal observations, actual112-node first-day source-input prefix; full native step/whole energy remain OPEN",
+  "invariants": [
+    "No original tolerance, entry law or default physical solver change",
+    "Rejected trials preserve committed state",
+    "Thermal observations follow the selected accepted water trace, not discarded full/half siblings",
+    "Unknown gas, vapor, latent and atmospheric heat remain unavailable",
+    "No heat residual is used to manufacture a missing energy receipt"
+  ],
+  "interfaces": "Additive optional observational thermal receipt in existing water substep trace; no restart/state payload extension. Nonlinear contact code remains an isolated native research overlay.",
+  "selection": [
+    "Small independent thermal receipt tests",
+    "Current real runtime accepted single/full-half and rejected transaction tests at checked O0/O2",
+    "Bounded native archived contact-state replay with reevaluated constitutive and macro rates; preserve failed controls and distinguish local/coupled/full scope",
+    "Current original contact/heat evidence preservation; focused docs checks"
+  ],
+  "expected_seconds": {
+    "component": 10,
+    "runtime_per_optimization": 90,
+    "native_contact_replay": 60,
+    "native_cold_build": 300
+  },
+  "production_contact_repair": false,
+  "full_energy_balance_complete": false,
+  "canonical_admitted": false,
+  "next": "Seal source-bound native data, complete Linux and current source preservation gates, reconcile and admit only qualified observational/research scope",
+  "thermal_evidence": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json",
+  "native_contact_checkpoint": "22c73d796",
+  "native_contact_run": "../nonlinear-native-contact-O0-02",
+  "cold_build_justification": "Actual112-node original input/rebound state must execute the complete native constitutive/macropore/runtime route, including153 source-verified TTUTIL reader providers; a mocked/small process driver cannot establish original-input accepted thermal data or real frozen-neighbour contact callbacks.",
+  "pull_request": 1492,
+  "native_windows_runs": {
+    "O0": "../nonlinear-native-contact-O0-04",
+    "O2": "../nonlinear-native-contact-O2-02"
+  },
+  "local_preservation": {
+    "record": "../nonlinear-observation-admission-02/RESULT.json",
+    "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+    "immutable_predecessor_science": "PASS",
+    "current_native_numerical_runtime_and_nonlinear_thermal_capsules": "PASS",
+    "source_admission_mutation_controls": 10,
+    "documentation_source_checks": "PASS",
+    "mkdocs_strict": "PASS"
+  }
+}
