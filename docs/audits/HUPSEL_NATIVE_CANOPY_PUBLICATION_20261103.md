@@ -1,8 +1,11 @@
 # Hupsel native publication and accepted wet-cut observation
 
-Status: checked native I/O qualification complete; PR1496 canonical admission
-and physical canopy correction remain open. No whole scientific denominator
-increment is supported by this work.
+Status: bounded native I/O and accepted observation canonically admitted by
+PR1496 at `53359b78f`. The actual merge tree equals the final reviewed head;
+qualified production dependencies equal the fresh Linux qualification head.
+Physical canopy correction remains open. No whole scientific denominator
+increment is supported by this work. Receipt:
+`integration/dataqual15_hupsel/NATIVE_PUBLICATION_CANONICAL_RECEIPT_20261103.json`.
 
 ## Problem and bounded change
 
