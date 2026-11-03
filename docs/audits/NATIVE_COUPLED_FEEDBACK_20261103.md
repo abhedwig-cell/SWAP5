@@ -29,3 +29,27 @@ Selection: small real heat/feedback/rollback drivers O0/O2; actual native112-nod
 water/history/heat context and owned acceptance controls O0/O2; donor input audit;
 fresh Linux affected gates. Expected component20s, bounded native build/run300s.
 Counts remain2/3 original executions and0/3 whole scientific qualifications.
+
+The new research owner's temporal norm uses fixed physical scales with the
+unchanged reference core tolerance1e-6: head1cm (relative above1cm), water
+fraction1, water/pore stock1cm, matrix temperature1C (relative above1C), macro
+enthalpy proxy1cm*C (relative above1), sqrt(action clock)1sqrt(day), sorption
+reference1 water fraction and sorptivity1cm/sqrt(day). Both physical sorption
+reference and clock are checked, as are dynamic/static pore volumes. These are
+absolute tolerances near zero, rather than dividing a newborn clock by1e-12.
+This norm is specific to the newly introduced research owner; it changes no
+accepted production policy. The exploratory relative-only clock guard rejected
+3.2423884936e-15 versus2.9423939770e-15day (4.974%relative sqrt-clock error),
+although their absolute sqrt-clock difference is2.70e-9sqrt(day) and their
+physical sorption-reference difference is1.48e-14. Its rejection/rollback is
+retained as a failed development attempt. Raw relative clock error remains a
+reported diagnostic. Separate negative controls require rejection of finite
+clock, sorptivity and sorption-reference perturbations above the fixed scale.
+
+The corrected state now has a distinct S5NC0001 research disk schema, carrying
+model identity, input/forcing/policy binding, revision/time, all water/history,
+independent matrix/macro temperatures and geometry. The caller must bind any
+explicit proxy policy in that binding. CRC is checked before bounded allocation;
+failed reads leave the destination untouched. Publication calls the existing
+Windows/POSIX durable atomic publisher. This is not an extension of the original
+S5WM0001 format or proof of original481-day continuation.

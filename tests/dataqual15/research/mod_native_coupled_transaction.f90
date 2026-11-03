@@ -146,19 +146,33 @@ contains
  function temporal_native_coupled(self,full_state,half_state)result(value)
   class(native_coupled_model_t),intent(in)::self
   class(transaction_state_t),intent(in)::full_state,half_state
-  real(real64)::value
+  real(real64)::value,errors(9),raw_relative_clock
   value=huge(1d0)
   select type(full_state)
   type is(native_coupled_state_t)
    select type(half_state)
    type is(native_coupled_state_t)
-    value=max(maxval(abs(full_state%head-half_state%head)/max(1d0,abs(half_state%head))), &
-      maxval(abs(full_state%theta-half_state%theta)),maxval(abs(full_state%macro%water_domain_cp-half_state%macro%water_domain_cp)), &
-      maxval(abs(full_state%matrix_temperature-half_state%matrix_temperature)/max(1d0,abs(half_state%matrix_temperature))), &
-      maxval(abs(full_state%macro%water_domain_cp*full_state%macro_temperature-half_state%macro%water_domain_cp*half_state%macro_temperature)/ &
-       max(1d0,abs(half_state%macro%water_domain_cp*half_state%macro_temperature))))
-    value=max(value,maxval(abs(sqrt(full_state%macro%absorption_time)-sqrt(half_state%macro%absorption_time))/ &
-      max(1d-12,sqrt(half_state%macro%absorption_time))))
+    if(any(full_state%macro%absorption_time<0d0).or.any(half_state%macro%absorption_time<0d0))return
+    ! Fixed physical scales: cm, water fraction, cm water, C, cm*C,
+    ! sqrt(day), water fraction, cm/sqrt(day), cm pore volume.
+    ! Near-zero action clocks need an absolute tolerance, like other states.
+    errors(1)=maxval(abs(full_state%head-half_state%head)/max(1d0,abs(half_state%head)))
+    errors(2)=maxval(abs(full_state%theta-half_state%theta))
+    errors(3)=maxval(abs(full_state%macro%water_domain_cp-half_state%macro%water_domain_cp))
+    errors(4)=maxval(abs(full_state%matrix_temperature-half_state%matrix_temperature)/max(1d0,abs(half_state%matrix_temperature)))
+    errors(5)=maxval(abs(full_state%macro%water_domain_cp*full_state%macro_temperature-half_state%macro%water_domain_cp*half_state%macro_temperature)/ &
+       max(1d0,abs(half_state%macro%water_domain_cp*half_state%macro_temperature)))
+    errors(6)=maxval(abs(sqrt(full_state%macro%absorption_time)-sqrt(half_state%macro%absorption_time))/ &
+      max(1d0,sqrt(half_state%macro%absorption_time)))
+    errors(7)=maxval(abs(full_state%macro%theta_sorption_ref-half_state%macro%theta_sorption_ref))
+    errors(8)=maxval(abs(full_state%macro%sorptivity-half_state%macro%sorptivity)/max(1d0,abs(half_state%macro%sorptivity)))
+    errors(9)=max(maxval(abs(full_state%macro%volume_domain_cp-half_state%macro%volume_domain_cp)), &
+      maxval(abs(full_state%macro%dynamic_volume_cp-half_state%macro%dynamic_volume_cp)))
+    raw_relative_clock=maxval(abs(sqrt(full_state%macro%absorption_time)-sqrt(half_state%macro%absorption_time))/ &
+      max(1d-12,sqrt(half_state%macro%absorption_time)))
+    write(*,'(a,10(a,es25.17e3))')'NATIVE_TEMPORAL_COMPONENTS',',',errors(1),',',errors(2),',',errors(3), &
+      ',',errors(4),',',errors(5),',',errors(6),',',errors(7),',',errors(8),',',errors(9),',',raw_relative_clock
+    if(all(ieee_is_finite(errors)))value=maxval(errors)
    end select
   end select
  end function

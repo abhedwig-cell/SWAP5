@@ -103,6 +103,12 @@ program native_feedback_component
    end if
   end select
  end do
+ restored=origin;restored%macro%absorption_time=4d-12
+ if(model%temporal_error(origin,restored)<=1d-6)error stop 'finite clock error not rejected'
+ restored=origin;restored%macro%theta_sorption_ref=1d-5
+ if(model%temporal_error(origin,restored)<=1d-6)error stop 'physical sorption error not rejected'
+ restored=origin;restored%macro%sorptivity=1d-5
+ if(model%temporal_error(origin,restored)<=1d-6)error stop 'sorptivity error not rejected'
  print '(a)','NATIVE_FEEDBACK_TRANSACTION_COMPONENT_PASS'
 contains
  subroutine water(state,t0,t1,faces,exchange,external_out,mass_in,mass_out,has_bottom_in,valid)
