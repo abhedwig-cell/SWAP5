@@ -1,0 +1,33 @@
+{
+  "schema": 1,
+  "stage": "PREREGISTERED_CURRENT_EXECUTABLE_COMPOSITION_NOT_YET_QUALIFIED",
+  "baseline": "be6d1afffed3fd7b3ed4052507c2bfdaae75e9cd",
+  "canonical_merges": [
+    "4dc509e4712f54afd02da9cdbebbd16341572823",
+    "1888f814c05c925e28a80b8ca33f778448215ab1"
+  ],
+  "frozen_assets": {
+    "integration/dataqual15/STATUS.json": "720d5157307524630c8fa865cae1b8fc2b35d4ee",
+    "integration/dataqual15_hupsel/CANOPY_CURRENT_NATIVE_COUPLED_20261103.tar.json": "9678b01da285bc63e7185e5602d32ac366cbcabc",
+    "integration/dataqual15_hupsel/CANOPY_CURRENT_THERMAL_20261103.tar.json": "fb7b57bcdf2509230f3f5a38848cfaa279cbc3c2",
+    "integration/dataqual15_hupsel/CANOPY_ENDPOINT_CANONICAL_RECEIPT_20261103.json": "34787e365bc705cb638f53719e81f390dac625ef",
+    "integration/dataqual15_hupsel/CANOPY_ENDPOINT_EVENT_SCOPE_20261103.json": "3c5118d2db5a557a785047f018df9b105b3215bd",
+    "integration/dataqual15_hupsel/CANOPY_ENDPOINT_POSIX_20261103.tar.json": "db7e17641be690492e44f9353225a3790a9f1826",
+    "integration/dataqual15_hupsel/CANOPY_ENDPOINT_WINDOWS_20261103.tar.json": "fdf12b3c5baeaf402303c2dd18014eeae7724bc1",
+    "integration/dataqual15_hupsel/CORRECTED_ROTATION_CANONICAL_RECEIPT_20261103.json": "b89d0925e6fff30e4a1ccacbf096b6192377b5c8",
+    "integration/dataqual15_hupsel/CORRECTED_ROTATION_EVIDENCE_20261103.json": "59a0bb1762966bb9de56d65c97518ead66e61c0f",
+    "tests/dataqual15/test_native_restart_admission.py": "60a1df660e7ac6fa47ee8b40ec266156b47651a5",
+    "tests/dataqual15/verify_native_restart_admission.py": "f37dd93e176722048b9ff020d7532bef60f603b9",
+    "tests/dataqual15_hupsel/qualify_canopy_preservation.py": "321940a125c4841db26ae9050a1f20667661e30c",
+    "tests/dataqual15_hupsel/verify_canopy_endpoint_evidence.py": "820ae6dd45c2db7e5e12523a47c9fcaa67aa09f5",
+    "tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py": "30f122fe9438736d77aaa5ea5d427fffc4f5221e"
+  },
+  "current_gate_sha256": {
+    "tests/dataqual15/test_current_native_admission.py": "f5c84082d031b1c36b2005440bf489bbfc5045ac02a8b8d63bfeff12ada0d387",
+    "tests/dataqual15/verify_current_native_admission.py": "f2efd4bc70faaa2fb41eef9f9180cd0f001300f1ebfed71a847bc61cbed00678"
+  },
+  "whole_scientific_admission": false,
+  "historical_guard_unchanged": true,
+  "new_production_admission_from_source_only": false,
+  "scope": "Current accepted endpoint/shared runtime and full diagnostic data; exact historical native/source authority remains historical"
+}
