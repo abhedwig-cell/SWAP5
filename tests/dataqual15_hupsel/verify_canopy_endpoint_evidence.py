@@ -63,6 +63,24 @@ def verify():
   for i in range(4):
    assert tf['O0/test-'+str(i)+'.stdout']==tf['O2/test-'+str(i)+'.stdout']
    assert b'PASS'in tf['O0/test-'+str(i)+'.stdout']
+ coupled=json.loads((BASE/'CANOPY_CURRENT_NATIVE_COUPLED_20261103.tar.json').read_text())
+ archive=BASE/'CANOPY_CURRENT_NATIVE_COUPLED_20261103.tar.xz'
+ assert sha(archive.read_bytes())==coupled['archive_sha256']
+ with tarfile.open(archive)as t:
+  members=t.getmembers();assert len({m.name for m in members})==len(members)
+  assert all(m.isfile()and not PurePosixPath(m.name).is_absolute()and not PureWindowsPath(m.name).drive
+             and '..'not in PurePosixPath(m.name).parts and '\\'not in m.name for m in members)
+  cf={m.name:t.extractfile(m).read()for m in members}
+ assert {n:sha(b)for n,b in cf.items()}==coupled['files_sha256']
+ for name,blob in coupled['source_git_blob'].items():
+  assert subprocess.check_output(['git','rev-parse','HEAD:'+name],cwd=ROOT,text=True).strip()==blob,name
+ for opt in ('O0','O2'):
+  cr=json.loads(cf[opt+'/RESULT.json'])
+  assert cr['status']=='CORRECTED_NATIVE_SUBSTEP_HEAT_HISTORY_FULL_HALF_AND_DISK_ACCEPTED'
+  assert cr['native_rollback_exact']and cr['owned_native_substep_accepted']
+  assert not cr['original_outer_interval_accepted']and not cr['full_energy_balance_complete']
+  entries=json.loads(cf[opt+'/COMPILED_INPUTS.json']);assert len(entries)==207
+  for i,entry in enumerate(entries):assert sha(cf[opt+'/compiled-source/'+str(i)+'.f90'])==entry['source_sha256']
  print('FOUR_NATIVE_CANOPY_ENDPOINTS_O0_O2_AND_COHERENT_RESTART_PASS_NOT_WHOLE_SCIENCE')
  return record
 

@@ -1,0 +1,55 @@
+{
+  "status": "PARTIAL_NOT_TERMINAL_ADJUDICATION",
+  "failures": [
+    {
+      "job_id": 126205361785,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:07:09.5829795Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "job_id": 126205363584,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:07:50.4162549Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ]
+    },
+    {
+      "job_id": 126205363429,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:09:40.0799870Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "job_id": 126205362557,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:12:36.4614689Z PPA_LOW02_GATE_FAIL admitted backend successor drift"
+      ]
+    },
+    {
+      "job_id": 126205365056,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:14:23.8641551Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "job_id": 126205362151,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:11:27.5047419Z FVQ87_SCOPE_FAIL unexpected path: .gitattributes"
+      ]
+    },
+    {
+      "job_id": 126205364109,
+      "verdict": "FAILURE_RETAINED",
+      "failure_lines": [
+        "2026-11-03T21:11:25.5528382Z     assert git_blob_sha(src_path) == rec[\"current_production_boundary\"][\"bootstrap_blob\"]",
+        "2026-11-03T21:11:25.5529499Z AssertionError"
+      ]
+    }
+  ]
+}
