@@ -19,7 +19,7 @@ program native_feedback_component
  real(real64)::w0(1,2),w1(1,2),face(1,3),qx(1,2),outflow(1,2),temperature(1,2)
  integer::status,k,u
  integer(kind=1)::bad_byte
- logical::ok
+ logical::ok,manufactured_nonlinear=.false.,fail_after_leaf=.false.
  call initialize_soil_temperature_parameters([1d0,2d0],[.5d0,1.5d0], &
   [.45d0,.45d0],[.3d0,.3d0],[.2d0,.2d0],[.05d0,.05d0],model%heat_parameters,status)
  if(status/=SOIL_TEMP_OK)error stop 'parameters'
@@ -107,6 +107,27 @@ program native_feedback_component
    end if
   end select
  end do
+ ! Exercise real adaptive full/half trials and rollback after a provisional leaf.
+ manufactured_nonlinear=.true.;origin%source_proxy_policy=.true.
+ model%allow_source_proxies=.true.;model%inject_feedback_failure=.false.
+ do k=0,1
+  fail_after_leaf=k==1
+  call origin%clone(accepted)
+  call execute_native_coupled_transaction(model,accepted,0d0,1d-5,tx)
+  if(tx%temporal_rejections<1.or.model%provisional_leaves<1)error stop 'adaptive path not exercised'
+  select type(accepted)
+  type is(native_coupled_state_t)
+   if(k==0)then
+    if(tx%status/=TX_STATUS_ACCEPTED.or.tx%commits/=1.or.accepted%revision/=1.or.accepted%time/=1d-5)error stop 'complete refined window'
+   else
+    if(tx%status==TX_STATUS_ACCEPTED.or.tx%commits/=0.or.accepted%revision/=0.or.accepted%time/=0d0.or. &
+     any(accepted%head/=origin%head).or.any(accepted%theta/=origin%theta).or. &
+     any(accepted%matrix_temperature/=origin%matrix_temperature).or.any(accepted%macro_temperature/=origin%macro_temperature).or. &
+     .not.accepted%macro%same_values(origin%macro))error stop 'partial window leaked'
+   end if
+  end select
+ end do
+ print '(a)','ADAPTIVE_COMPLETE_WINDOW_AND_LATE_FAILURE_ROLLBACK_PASS'
  restored=origin;restored%macro%absorption_time=4d-12
  if(model%temporal_error(origin,restored)<=1d-6)error stop 'finite clock error not rejected'
  restored=origin;restored%macro%theta_sorption_ref=1d-5
@@ -121,6 +142,9 @@ contains
   real(real64),allocatable,intent(out)::faces(:,:),exchange(:,:),external_out(:,:)
   real(real64),intent(out)::mass_in,mass_out
   logical,intent(out)::has_bottom_in,valid
+  valid=.false.
+  if(fail_after_leaf.and.model%provisional_leaves>0)return
+  if(manufactured_nonlinear)state%head=state%head+1d6*(t1-t0)**2
   allocate(faces(1,3),exchange(1,2),external_out(1,2));faces=0d0;exchange=0d0;external_out=0d0
   faces(1,1)=.1d0;exchange(1,1)=.2d0
   state%macro%water_domain_cp(1,1)=state%macro%water_domain_cp(1,1)-.1d0*(t1-t0)
