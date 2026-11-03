@@ -9,7 +9,7 @@ module mod_macro_liquid_thermal
   logical::produced=.false.
   logical,allocatable::temperature_available(:,:)
   real(real64),allocatable::temperature_c(:,:),matrix_energy_j_cm2(:,:)
-  real(real64)::external_net_into_j_cm2=0d0,stock_change_j_cm2=0d0,residual_j_cm2=0d0
+  real(real64)::external_net_into_j_cm2=0d0,stock_change_j_cm2=0d0,residual_j_cm2=0d0,water_ledger_roundoff_energy_j_cm2=0d0
  end type
  public::advance_macro_liquid_thermal
 contains
@@ -23,7 +23,7 @@ contains
   integer,intent(in)::substeps
   type(macro_liquid_thermal_result_t),intent(out)::result
   real(real64),allocatable::temperature(:,:),before(:),after(:),old(:),new(:),lower(:),diagonal(:),upper(:),rhs(:),gamma(:),qenergy(:),matrix_energy(:,:)
-  real(real64)::h,s0,s1,tm,tt,tb,external_energy,stock0,stock1,from_matrix,boundary,ledger,source_scale
+  real(real64)::h,s0,s1,tm,tt,tb,external_energy,stock0,stock1,from_matrix,boundary,ledger,source_scale,roundoff_energy
   logical,allocatable::defined(:,:)
   integer::nd,n,id,node,k,error
   result=macro_liquid_thermal_result_t();nd=size(w0,1);n=size(w0,2)
@@ -65,14 +65,17 @@ contains
   allocate(defined(nd,n));defined=.false.
   temperature=0d0;matrix_energy=0d0
   where(w0>0d0)temperature=t_initial
-  stock0=capacity*sum(w0*temperature);external_energy=0d0;h=dt/real(substeps,real64)
+  stock0=capacity*sum(w0*temperature);external_energy=0d0;roundoff_energy=0d0;h=dt/real(substeps,real64)
   do k=1,substeps
    s0=real(k-1,real64)/substeps;s1=real(k,real64)/substeps
    do id=1,nd
     before=(1d0-s0)*w0(id,:)+s0*w1(id,:);after=(1d0-s1)*w0(id,:)+s1*w1(id,:);old=temperature(id,:)
     lower=0d0;diagonal=after;upper=0d0;rhs=before*old
     do node=1,n
-     diagonal(node)=diagonal(node)+h*(max(0d0,-face(id,node))+max(0d0,face(id,node+1))+max(0d0,exchange(id,node))+external_out(id,node))
+     ! Incoming-storage form preserves a constant donor temperature even for a
+     ! certified roundoff water defect at an otherwise dry terminal cell.
+     ! Its energy contribution is measured separately, never an external heat flux.
+     diagonal(node)=before(node)+h*(max(0d0,face(id,node))+max(0d0,-face(id,node+1))+max(0d0,-exchange(id,node)))
      if(node>1)lower(node)=-h*max(0d0,face(id,node))
      if(node<n)upper(node)=-h*max(0d0,-face(id,node+1))
      if(exchange(id,node)<0d0)then
@@ -85,7 +88,9 @@ contains
     if(face(id,n+1)<0d0)then
      tb=(1d0-s1)*bottom_t0(id)+s1*bottom_t1(id);rhs(n)=rhs(n)-h*face(id,n+1)*tb
     end if
-    defined(id,:)=diagonal>0d0
+    do node=1,n
+     defined(id,node)=after(node)>0d0.or.max(0d0,-face(id,node))+max(0d0,face(id,node+1))+max(0d0,exchange(id,node))+external_out(id,node)>0d0
+    end do
     do node=1,n
      if(diagonal(node)==0d0)then
       if(rhs(node)/=0d0.or.lower(node)/=0d0.or.upper(node)/=0d0)return
@@ -95,6 +100,10 @@ contains
     call reference_tridag(n,lower,diagonal,upper,rhs,new,gamma,error,capture_in_gamma_requested=.false.)
     if(error/=0.or.any(.not.ieee_is_finite(new)))return
     temperature(id,:)=new
+    do node=1,n
+     ledger=after(node)-before(node)-h*(face(id,node)-face(id,node+1)-exchange(id,node)-external_out(id,node))
+     roundoff_energy=roundoff_energy+capacity*ledger*new(node)
+    end do
     do node=1,n
      if(exchange(id,node)>=0d0)then
       matrix_energy(id,node)=matrix_energy(id,node)+capacity*h*exchange(id,node)*new(node)
@@ -119,7 +128,8 @@ contains
   stock1=capacity*sum(w1*temperature)
   result%stock_change_j_cm2=stock1-stock0;result%external_net_into_j_cm2=external_energy
   result%residual_j_cm2=stock1-stock0+sum(matrix_energy)-external_energy
-  if(abs(result%residual_j_cm2)>1d-10*max(1d0,abs(stock0),abs(stock1),abs(external_energy)))return
+  result%water_ledger_roundoff_energy_j_cm2=roundoff_energy
+  if(abs(result%residual_j_cm2-roundoff_energy)>1d-10*max(1d0,abs(stock0),abs(stock1),abs(external_energy)))return
   result%temperature_available=defined
   result%temperature_c=temperature;result%matrix_energy_j_cm2=matrix_energy;result%produced=.true.
  end subroutine

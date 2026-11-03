@@ -31,3 +31,12 @@ manufactured mixing/closed transfer tests qualify the numerical transport rule.
 Full physical energy still needs matrix feedback, gas/latent/radiation and
 phase-specific top receipts. Native contact continuation may be promoted only
 through the owning existing transaction gates. Counts remain2/3 and0/3.
+
+
+The native hydraulic ledger has terminal dry-cell face residuals at roundoff
+(maximum measured water amount about2.4e-16cm). The thermal solve uses the
+algebraically equivalent incoming-storage form. It reports the predetermined
+water-ledger defect times computed local liquid enthalpy separately from physical
+external heat. This is not a heat residual fitted to close the energy gap.
+The original strict input-water balance check is unchanged; dry inactive cells
+retain unavailable temperature, and larger inconsistent water ledgers refuse.
