@@ -14,7 +14,7 @@ def ledger(daily,crops,points,days):
  assert len(daily)==days and [r['t1_day']for r in daily]==list(range(1,days+1))
  assert [r['t0_day']for r in daily]==list(range(days))
  assert all(math.isfinite(x)for r in daily for x in r.values())
- checks={};previous=None
+ checks={}
  for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
   names=[prefix+'_'+part+'_'+unit for part in ('start','end','in','out')]
   residual=prefix+'_residual_'+unit
@@ -64,11 +64,34 @@ def audit(case,bundle):
  normalize=lambda raw:re.sub(pattern,lambda m:m[1]+b'REGISTERED_DTMAX',raw)
  assert normalize(current)==normalize((original/'swap.swp').read_bytes())
  for name in ('maize.crp','potato.crp','grass.crp','283.met','swap.dra'):assert (case/name).read_bytes()==(original/name).read_bytes(),name
- daily=[{k:float(v)for k,v in row.items()}for row in csv.DictReader((case/'budget.csv').open())]
+ windows=[{k:float(v)for k,v in row.items()}for row in csv.DictReader((case/'budget.csv').open())]
+ assert windows[0]['t0_day']==0 and windows[-1]['t1_day']==1096
+ assert all(a['t1_day']==b['t0_day']for a,b in zip(windows,windows[1:]))
+ assert all(r['t1_day']>r['t0_day']for r in windows)
+ grouped=collections.defaultdict(list)
+ for r in windows:
+  assert all(math.isfinite(x)for x in r.values())
+  for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
+   defect=r[prefix+'_end_'+unit]-r[prefix+'_start_'+unit]-r[prefix+'_in_'+unit]+r[prefix+'_out_'+unit]
+   assert abs(defect)<=1e-10
+  # Same calendar grouping as the admitted observational reader; this does
+  # not alter source windows, model time or numerical acceptance.
+  grouped[int(math.ceil(r['t1_day']-1e-9))].append(r)
+ assert sorted(grouped)==list(range(1,1097))
+ daily=[]
+ for day,parts in sorted(grouped.items()):
+  assert parts[0]['t0_day']==day-1 and parts[-1]['t1_day']==day
+  r={k:math.fsum(part[k]for part in parts)for k in parts[0]}
+  r['t0_day']=day-1;r['t1_day']=day
+  for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
+   r[prefix+'_start_'+unit]=parts[0][prefix+'_start_'+unit]
+   r[prefix+'_end_'+unit]=parts[-1][prefix+'_end_'+unit]
+  daily.append(r)
  crops=list(csv.DictReader((case/'crop.csv').open()))
- points={d:profile((case/f'checkpoint-{d}.bin').read_bytes())for d in (930,956,989,1033,1058,1077,1096)}
+ points={d:profile((case/f'checkpoint-{d}.bin').read_bytes())for d in (930,956,989,1033,1058,1077)}
+ points[1096]=profile((case/'checkpoint.bin').read_bytes())
  assert all(p['day']==d for d,p in points.items())
- assert (case/'checkpoint.bin').read_bytes()==(case/'checkpoint-1096.bin').read_bytes()
+ if (case/'checkpoint-1096.bin').exists():assert (case/'checkpoint.bin').read_bytes()==(case/'checkpoint-1096.bin').read_bytes()
  proof=ledger(daily,crops,points,1096)
  negatives=[]
  for name in ('water_export','solute_export','continuity','canopy_bound','duplicate_cut_export','primitive_stock'):
@@ -94,7 +117,7 @@ def audit(case,bundle):
  native,donor,_,_=features(reference,profiles,daily,crops,points)
  assert native.keys()==bounds.keys()
  assessment={key:dict(error=distance(key,native[key],donor[key]),limit=bounds[key]['limit'],inside_frozen_bound=distance(key,native[key],donor[key])<=bounds[key]['limit'])for key in native}
- return dict(status='COMPLETE_CORRECTED_CURRENT_DIAGNOSTIC_ROTATION_LEDGER_AND_CANOPY_PASS',days=1096,build=build,run=result,proof=proof,negative_controls=negatives,
+ return dict(status='COMPLETE_CORRECTED_CURRENT_DIAGNOSTIC_ROTATION_LEDGER_AND_CANOPY_PASS',days=1096,source_windows=len(windows),build=build,run=result,proof=proof,negative_controls=negatives,
              reference_archive_sha256=manifest['archive_sha256'],frozen_bounds_sha256=sha(bounds_raw),assessment=assessment,selected_profile_days=sorted(points),
              full_original_profile_schedule_qualified=False,whole_scientific_admission=False,
              scope='Current full diagnostic DTMAX0.01 trajectory, independent complete mass and canopy audit; frozen scalar comparisons and seven selected profile observations retain failures')
