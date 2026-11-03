@@ -1,7 +1,7 @@
 {
   "baseline": "65d881cc9678ec8c6d7b0cb7c92207f3ed5f7043",
   "branch": "codex/contact-memory-macro-energy-20261103",
-  "stage": "CONTRACT_PERSISTED",
+  "stage": "WINDOWS_CHECKED_O0_O2_PASS_LINUX_PENDING",
   "production_changed": false,
   "scope": "Explicit action-clock contact memory and conservative independent macro liquid temperature research",
   "selection": [
@@ -16,5 +16,27 @@
     "actual_thermal_replay": 45
   },
   "full_original_andelst_complete": false,
-  "full_energy_balance_complete": false
+  "full_energy_balance_complete": false,
+  "contact_memory_closure_available": true,
+  "policy": "EXPLICIT_CORRECTED_ACTION_CLOCK_NOT_ORIGINAL_BINARY_MODEL",
+  "native_private_candidate_history_complete": true,
+  "native_full_step_committed": false,
+  "macro_liquid_temperature_component": true,
+  "external_donor_inputs": "Explicit caller supplied temperatures; actual replay uses declared8+4*t research forcing",
+  "historical_external_donors_available": false,
+  "matrix_heat_feedback_in_native": false,
+  "gas_latent_radiation_receipts_available": false,
+  "windows_native_runs": {
+    "O0": "../memory-native-O0-02",
+    "O2": "../memory-native-O2-02"
+  },
+  "components": "../memory-energy-component-06",
+  "actual_macro_temperature_replay": "../macro-thermal-replay-02",
+  "thermal_refinement": [
+    1,
+    4,
+    16,
+    64
+  ],
+  "next": "Qualify fresh Linux cold native and refined thermal replay, seal source-bound evidence and admit only corrected research policy. Integrate independent macro heat into matrix heat feedback and obtain declared historical external donors before full physical-energy promotion."
 }

@@ -40,3 +40,32 @@ water-ledger defect times computed local liquid enthalpy separately from physica
 external heat. This is not a heat residual fitted to close the energy gap.
 The original strict input-water balance check is unchanged; dry inactive cells
 retain unavailable temperature, and larger inconsistent water ledgers refuse.
+
+
+Windows16.2 checked O0/O2 small and native gates pass. On the actual112-head
+contact candidate, all three starts retain the full-column residual bound and
+conservative macro lifecycle; the action-clock continuation is single-valued
+and repeatable. The central fraction2.323069518e-4 gives an equivalent clock
+3.242388493e-15day. The original off/on histories remain unequal as a retained
+control; native rejected-state streams remain origin-byte-exact. This is private
+candidate closure under the declared corrected rule, not a committed original
+native interval or a full481-day qualification.
+
+On194 actual hydraulic intervals (five domains,112 cells), independent macro
+liquid temperature evolves from explicitly declared initial equilibrium. The
+prescribed external donor is8+4*t C and the matrix donor path is explicitly
+linear between archived endpoints. At64 slices per hydraulic interval the macro
+stock change is-0.9454197402J/cm2, external net heat-2.5792600595J/cm2 and signed
+heat delivered to matrix-1.6338403193J/cm2. Maximum interval energy residual is
+1.219e-13J/cm2, with separately exposed total hydraulic-roundoff enthalpy about
+-3.710e-13J/cm2. The macro/matrix temperature departure reaches1.8222C.
+Matrix-transfer refinement differences contract approximately by four for each
+fourfold refinement. These are modeled thermal replay results, not measured
+historical macro/donor temperatures and not feedback into the legacy heat solve.
+
+The independent production liquid-storage owner also verifies a closed two-owner
+matrix/macro transfer. Missing actual nonzero top and matrix donors refuse;
+invalid initial macro temperatures and inconsistent water ledgers refuse.
+The small tests additionally cover time-dependent donor convergence, dry
+through-flow and unavailable isolated-dry temperature. Full physical energy,
+gas/latent/radiation and original native commit flags remain false.
