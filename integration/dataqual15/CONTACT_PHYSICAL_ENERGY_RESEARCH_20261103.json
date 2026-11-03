@@ -1,0 +1,16 @@
+{
+  "base": "2924fefaca25fa260147e7c16cd9493c27f57cd7",
+  "branch": "codex/contact-physical-energy-20261103",
+  "stage": "IMPLEMENTED_NOT_YET_TESTED",
+  "scope": "Research contact constraint on actual failed linearization plus explicit-phase conservative warm-soil heat trial",
+  "report": "docs/audits/CONTACT_PHYSICAL_ENERGY_RESEARCH_20261103.md",
+  "production_changed": false,
+  "nonlinear_contact_repair": false,
+  "full_energy_balance_complete": false,
+  "canonical_admitted": false,
+  "invariants": ["read-only physical input; no trial state published on refusal", "independent liquid/gas nodal volume closure", "no missing donor or boundary energy interpreted as zero", "no arbitrary smoothing or relaxed original mass tolerance"],
+  "selected": ["actual112-node Andelst frozen Jacobian and measured contact rate jump, real production tridiagonal solver versus70-digit independent solve", "ten phase-volume heat trials, two energy gauges, independent nodal and column energy reconstruction", "eleven missing-donor, missing-heat, phase and phase-volume-balance attacks, plus exact-zero donor control", "checked O0/O2 and exact output per experiment"],
+  "expected_seconds": 120,
+  "next_action": "Run qualify_contact_physical_energy.py with a fresh output directory; inspect both successful and failed outcomes; seal source/input/build/output identities and qualify on Linux",
+  "remaining": ["nonlinear coupled Andelst step and conservative macropore storage/exchange publication", "accepted native hydraulic and thermal interval receipts", "actual gas-phase volume/temperature provider", "atmospheric radiation/latent, vapor and freezing owners for complete physical energy"]
+}
