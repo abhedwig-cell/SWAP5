@@ -1,12 +1,12 @@
 """Source-bound full-column contact experiment; original acceptance stays authoritative."""
-import argparse,hashlib,json,os,subprocess,sys,tarfile,time,zlib,struct,shutil
+import argparse,hashlib,json,os,subprocess,sys,tarfile,time,zlib,struct,shutil,re
 from pathlib import Path
 import qualify_nonlinear_native_contact as native
 from research_native_build_cache import verified_objects
 ROOT=native.ROOT
 
 def main():
- p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--prior-build',type=Path,required=True);a=p.parse_args()
+ p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--prior-build',type=Path,required=True);p.add_argument('--reuse-coupled-build',type=Path);a=p.parse_args()
  out=a.output.resolve();out.mkdir(exist_ok=False);build=out/'build';build.mkdir()
  prior=a.prior_build.resolve();old=json.loads((prior/'RESULT.json').read_text(encoding='utf-8'))
  report=dict(baseline=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),optimization=a.optimization,events=[],scope='FULL_COLUMN_NONLINEAR_RESEARCH_NOT_COMMITTED',full_energy_balance_complete=False)
@@ -19,6 +19,14 @@ def main():
   if check:assert cp.returncode==0,(label,cp.stderr.decode(errors='replace')[-3000:])
   return cp
  shadow=native.overlays(out/'overlay')
+ provider=shadow[native.MACRO];s=provider.read_text(encoding='utf-8');s=s.replace('    procedure,public::research_contact_rates','    procedure,public::research_contact_lifecycle\n    procedure,public::research_contact_rates')
+ imports='''  use mod_macropore_standard_storage,only:macropore_standard_candidate_receipt_t,build_macropore_standard_candidate
+  use mod_ppa_wu05a5_top_partition,only:macropore_top_partition_result_t
+  use mod_ppa_wu05a6_sorptivity_history,only:sorptivity_history_update_request_t,apply_sorptivity_history_update
+  use mod_macropore_standard_rate_adapter,only:prepare_standard_sorptivity_history_request
+  use mod_ppa_wu05a6_vertical_flux_reconstruction,only:vertical_flux_reconstruction_request_t,vertical_flux_reconstruction_result_t,reconstruct_vertical_flux
+'''
+ s=s.replace('  implicit none',imports+'  implicit none',1);s=s.replace('\ncontains\n','\ncontains\n'+(ROOT/(native.RESEARCH+'coupled_provider_methods.inc')).read_text(encoding='utf-8'),1);provider.write_text(s,encoding='utf-8')
  head=shadow[native.HEAD];s=head.read_text(encoding='utf-8');s=s.replace((ROOT/(native.RESEARCH+'contact_headcalc_methods.inc')).read_text(encoding='utf-8'),(ROOT/(native.RESEARCH+'coupled_headcalc_methods.inc')).read_text(encoding='utf-8').replace('research_coupled_contact()','research_nonlinear_contact()'));head.write_text(s,encoding='utf-8')
  driver=shadow[native.DRIVER];s=driver.read_text(encoding='utf-8');s=s.replace('integer::heat_unit,heat_node','integer::heat_unit,heat_node,domain_id,transport_unit')
  marker="            close(heat_unit)"
@@ -49,20 +57,48 @@ def main():
    if source.name=='legacy_swp_original.f90':selected=original
    else:selected=source
   ordered.append(selected)
+ # Topological order follows the actual new imports; the complete202-provider closure stays present.
+ providers={};uses={}
+ for source in ordered:
+  text=source.read_text(encoding='utf-8');uses[source]=re.findall(r'^\s*use\s*(?:,\s*(?:non_)?intrinsic\s*::\s*|::\s*)?(\w+)',text,re.M|re.I)
+  for name in re.findall(r'^\s*module\s+(\w+)\s*$',text,re.M|re.I):providers[name.lower()]=source
+ sorted_sources=[];seen=set()
+ def visit(source):
+  if source in seen:return
+  seen.add(source)
+  for name in uses[source]:
+   if name.lower() in providers and providers[name.lower()]!=source:visit(providers[name.lower()])
+  sorted_sources.append(source)
+ for source in ordered:visit(source)
+ ordered=sorted_sources;assert len(ordered)==202
  compiler=subprocess.check_output(['gfortran','--version'],text=True).splitlines()[0];report['compiler']=compiler
  # Existing helper verifies every original compile input, object and TTUTIL authority.
  old_shadow={key:prior/'overlay'/key for key in shadow}
  verified_objects(prior,ROOT,old_order,old_shadow,a.optimization,compiler)
  utilities=prior/'original'
  sources=[x.relative_to(ROOT).as_posix() for x in ordered if x.is_relative_to(ROOT)]
- sources += list(shadow)+['tests/dataqual15/qualify_coupled_contact.py',native.SELF,native.RESEARCH+'coupled_headcalc_methods.inc',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
+ sources += list(shadow)+['tests/dataqual15/qualify_coupled_contact.py',native.SELF,native.RESEARCH+'coupled_headcalc_methods.inc',native.RESEARCH+'coupled_provider_methods.inc',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
  assert not subprocess.check_output(['git','diff','HEAD','--',*sources]),'persist first'
  report['source_git_blob']={x:subprocess.check_output(['git','rev-parse','HEAD:'+x],text=True).strip() for x in set(sources)}
  report['rendered_sha256']={x:sha(y) for x,y in shadow.items()};report['generated_reader_sha256']=sha(original);save()
  flags=['-'+a.optimization,'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build),'-I'+str(utilities/'ttobj')]
- objects=[]
+ objects=[];reuse={};dirty=set()
+ if a.reuse_coupled_build:
+  previous=a.reuse_coupled_build.resolve();rr=json.loads((previous/'RESULT.json').read_text(encoding='utf-8'));assert rr['compiler']==compiler and rr['optimization']==a.optimization
+  cert=json.loads((previous/'COMPILED_INPUTS.json').read_text(encoding='utf-8'));assert len(cert)==202
+  for entry in cert:
+   assert sha(Path(entry['source']))==entry['source_sha256'] and sha(Path(entry['object']))==entry['object_sha256']
+   reuse[Path(entry['source']).name]=entry
+  for module in (previous/'build').glob('*.mod'):shutil.copy2(module,build/module.name)
+ compiled=[]
  for i,source in enumerate(ordered):
-  obj=build/(str(i)+'.o');run(['gfortran',*flags,'-c',source,'-o',obj],build,'compile-'+str(i));objects.append(obj)
+  entry=reuse.get(source.name);affected=entry is None or sha(source)!=entry['source_sha256'] or any(name.lower() in dirty for name in uses[source])
+  if affected:
+   obj=build/(str(i)+'.o');run(['gfortran',*flags,'-c',source,'-o',obj],build,'compile-'+str(i))
+   for name in re.findall(r'^\s*module\s+(\w+)\s*$',source.read_text(encoding='utf-8'),re.M|re.I):dirty.add(name.lower())
+  else:obj=Path(entry['object'])
+  objects.append(obj);compiled.append(dict(source=str(source),source_sha256=sha(source),object=str(obj),object_sha256=sha(obj),reused=not affected))
+ (out/'COMPILED_INPUTS.json').write_text(json.dumps(compiled,indent=2)+'\n',encoding='utf-8');report['reused_objects']=sum(x['reused'] for x in compiled);save()
  for name,source in [('publish','app/support/restart_publish.c'),('platform',native.RESEARCH+'native_contact_platform.c')]:
   obj=build/(name+'.o');run(['gcc','-O2','-c',ROOT/source,'-o',obj],build,'compile-'+name);objects.append(obj)
  exe=build/'native.exe';run(['gfortran','-fopenmp',*objects,utilities/'ttobj/libttutil.a','-o',exe],build,'link');report['executable_sha256']=sha(exe);save()

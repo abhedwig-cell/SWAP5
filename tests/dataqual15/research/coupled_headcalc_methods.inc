@@ -62,6 +62,10 @@ subroutine research_coupled_contact()
       write(u,'(a,a,i0,a,l1,2(a,i0),5(a,es25.17e3))')'COUPLED',',',kind,',',produced,',',it,',',calls, &
            ',',x(26),',',x(27),',',x(numnod+1),',',maxval(abs(r(:numnod))),',',r(numnod+1)
       if(produced)then
+         select type(mp=>evaluation_context%macropore)
+         type is(ppa_wu05a16_inner_macropore_provider_t)
+            call mp%research_contact_lifecycle(state%h,state%theta,x(numnod+1),u,kind)
+         end select
          do col=1,numnod
             write(u,'(a,2(a,i0),3(a,es25.17e3))')'NODE',',',kind,',',col,',',x(col),',',state%theta(col),',',r(col)
          end do
