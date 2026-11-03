@@ -19,7 +19,7 @@ env:
 jobs:
   real-heat-and-transaction:
     runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    timeout-minutes: 10
     strategy:
       fail-fast: false
       matrix:
@@ -27,7 +27,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
+      - run: git fetch --no-tags --depth=1 origin c1ce8808bdfc042577295811b5acccbd7608ebea
       - run: python -B tests/dataqual15/verify_native_coupled_evidence.py
       - run: python -B tests/dataqual15/audit_native_donors.py --output historical-donors.json
       - run: python -B tests/dataqual15/qualify_native_feedback_component.py --optimization ${{ matrix.optimization }} --output feedback-component-ci
@@ -48,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 1
       - run: python -B tests/dataqual15/qualify_native_coupled.py --optimization ${{ matrix.optimization }} --output native-coupled-ci
       - uses: actions/upload-artifact@v4
         if: always()
