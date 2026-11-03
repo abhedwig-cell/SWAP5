@@ -36,11 +36,11 @@ def check_contact(stdout,rows,jump):
     mp.mp.dps=70
     a=mp.matrix(112);rhs=mp.matrix(112,1);force=mp.matrix(112,1)
     for i,row in enumerate(rows):
-        a[i,i]=mp.mpf(str(row[8]));rhs[i]=mp.mpf(str(row[5]))
-        if i:a[i,i-1]=mp.mpf(str(row[7]))
-        if i<111:a[i,i+1]=mp.mpf(str(row[9]))
-    force[25]=mp.mpf(str(jump));u=mp.lu_solve(a,rhs);v=mp.lu_solve(a,force)
-    psi=mp.mpf(str(rows[25][1]))+mp.mpf(str(rows[26][1]))
+        a[i,i]=mp.mpf(row[8]);rhs[i]=mp.mpf(row[5])
+        if i:a[i,i-1]=mp.mpf(row[7])
+        if i<111:a[i,i+1]=mp.mpf(row[9])
+    force[25]=mp.mpf(jump);u=mp.lu_solve(a,rhs);v=mp.lu_solve(a,force)
+    psi=mp.mpf(rows[25][1])+mp.mpf(rows[26][1])
     fraction=(u[25]+u[26]-psi)/(v[25]+v[26])
     fields=next(l.split(',')[1:] for l in stdout.splitlines() if l.startswith('CONTACT,'))
     values=list(map(float,fields));assert abs(values[0]-float(fraction))<1e-15
