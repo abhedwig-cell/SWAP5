@@ -19,7 +19,7 @@ def main():
   if check:assert cp.returncode==0,(label,cp.stderr.decode(errors='replace')[-3000:])
   return cp
  shadow=native.overlays(out/'overlay')
- provider=shadow[native.MACRO];s=provider.read_text(encoding='utf-8');s=s.replace('    procedure,public::research_contact_rates','    procedure,public::research_contact_lifecycle\n    procedure,public::research_contact_selector\n    procedure,public::research_contact_rates')
+ provider=shadow[native.MACRO];s=provider.read_text(encoding='utf-8');s=s.replace((ROOT/(native.RESEARCH+'contact_provider_methods.inc')).read_text(encoding='utf-8'),(ROOT/(native.RESEARCH+'native_transaction_rates.inc')).read_text(encoding='utf-8'));s=s.replace('    procedure,public::research_contact_rates','    procedure,public::research_contact_lifecycle\n    procedure,public::research_contact_selector\n    procedure,public::research_contact_rates')
  imports='''  use mod_contact_action_memory,only:complete_contact_action_memory
   use mod_macropore_standard_storage,only:macropore_standard_candidate_receipt_t,build_macropore_standard_candidate
   use mod_ppa_wu05a5_top_partition,only:macropore_top_partition_result_t
@@ -107,7 +107,7 @@ def main():
   utilities=prior/'original'
  else:utilities=native.build_original(out/'original',shutil.which('gfortran'),a.optimization,utilities_only=True)
  sources=[x.relative_to(ROOT).as_posix() for x in ordered if x.is_relative_to(ROOT) and not x.is_relative_to(out)]
- sources += list(shadow)+['app/support/restart_publish.c',native.RESEARCH+'native_contact_platform.c','tests/dataqual15/research_native_build_cache.py','tests/dataqual15/original_sources.py','tools/solute/legacy_reader_sources.py','tools/vq/b0_source_runner.py','tests/dataqual15/qualify_native_coupled.py',native.SELF,native.RESEARCH+'native_transaction_headcalc.inc',native.RESEARCH+'native_transaction_provider.inc',native.RESEARCH+'mod_contact_action_memory.f90',*[native.RESEARCH+n for n in ['mod_macro_liquid_thermal.f90', 'mod_native_macro_heat_feedback.f90', 'mod_native_coupled_transaction.f90', 'mod_native_feedback_context.f90']],'tests/dataqual15/qualify_contact_memory.py','tests/dataqual15/qualify_coupled_contact.py',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
+ sources += list(shadow)+['app/support/restart_publish.c',native.RESEARCH+'native_contact_platform.c','tests/dataqual15/research_native_build_cache.py','tests/dataqual15/original_sources.py','tools/solute/legacy_reader_sources.py','tools/vq/b0_source_runner.py','tests/dataqual15/qualify_native_coupled.py',native.SELF,native.RESEARCH+'native_transaction_headcalc.inc',native.RESEARCH+'native_transaction_provider.inc',native.RESEARCH+'native_transaction_rates.inc',native.RESEARCH+'mod_contact_action_memory.f90',*[native.RESEARCH+n for n in ['mod_macro_liquid_thermal.f90', 'mod_native_macro_heat_feedback.f90', 'mod_native_coupled_transaction.f90', 'mod_native_feedback_context.f90']],'tests/dataqual15/qualify_contact_memory.py','tests/dataqual15/qualify_coupled_contact.py',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
  assert not subprocess.check_output(['git','diff','HEAD','--',*sources]),'persist first'
  report['source_git_blob']={x:subprocess.check_output(['git','rev-parse','HEAD:'+x],text=True).strip() for x in set(sources)}
  report['rendered_sha256']={x:sha(y) for x,y in shadow.items()};report['generated_reader_sha256']=sha(original);save()

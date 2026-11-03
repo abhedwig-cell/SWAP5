@@ -18,7 +18,7 @@
     type(vertical_flux_reconstruction_request_t)::vertical
     type(vertical_flux_reconstruction_result_t)::faces
     type(macropore_top_partition_result_t)::top
-    real(real64),allocatable::exchange(:,:),rapid(:)
+    real(real64),allocatable::exchange(:,:),rapid(:),returned(:,:)
     real(real64)::history_difference
     logical::ok,aok,bok,unique
     integer::nd,n
@@ -33,6 +33,11 @@
     call evaluate_macropore_rate_bundle(request,on)
     if(.not.off%valid.or..not.on%valid)error stop 'full lifecycle branch rates'
     exchange=(1d0-fraction)*off%qexc_to_matrix_rate+fraction*on%qexc_to_matrix_rate
+    if(self%shrinkage%enabled)then
+      call evaluate_macropore_geometry_return(self%accepted_macro,geometry,returned,ok)
+      if(.not.ok)return
+      exchange=exchange+returned/self%step_duration
+    end if
     rapid=(1d0-fraction)*off%rapid_outflow_cp_cm+fraction*on%rapid_outflow_cp_cm
     top=off%top_partition
     top%accepted_vertical_cm=(1d0-fraction)*off%top_partition%accepted_vertical_cm+fraction*on%top_partition%accepted_vertical_cm

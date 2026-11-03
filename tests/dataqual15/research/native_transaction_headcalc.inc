@@ -28,7 +28,7 @@ subroutine research_coupled_contact()
  open(newunit=u,file="native-coupled-context.csv",position="append")
  write(u,*) research_base_macro%shrinkage%enabled,research_base_macro%geometry_config%top_node,pond_saved,state%pondm1
  close(u)
- if(research_base_macro%shrinkage%enabled.or.research_base_macro%geometry_config%top_node/=1)return
+ if(research_base_macro%geometry_config%top_node/=1)return
  if(pond_saved/=0d0.or.state%pondm1/=0d0)return
  n=numnod
  origin%head=state%hm1;origin%theta=state%thetm1;allocate(origin%area_dz(n))
