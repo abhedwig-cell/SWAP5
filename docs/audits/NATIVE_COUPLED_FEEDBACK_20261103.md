@@ -62,3 +62,12 @@ private working generation; only complete coverage of the requested window and
 an independent cumulative mass check can publish one outer revision. A failed
 later leaf discards the entire provisional generation. Rejected errors and
 leaf/trial counts are retained separately from accepted-leaf maxima.
+
+Initial macro temperature is explicitly initialized in local equilibrium with
+the archived native matrix profile; it is not a historical macro measurement.
+At the qualified contact window the actual matrix top/bottom fluxes are outward
+(0.00564279845 and-0.8776762223cm/day under native signs), so missing historical
+incoming water temperatures are inactive. Strict and explicit-proxy scenarios
+must both report their policies and actual donor use; their acceptance cannot
+supply missing temperatures for other intervals. The small driver separately
+requires strict refusal for a nonzero missing top donor.

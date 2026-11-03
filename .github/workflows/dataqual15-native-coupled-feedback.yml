@@ -6,6 +6,8 @@ on:
       - 'tests/dataqual15/qualify_native_coupled.py'
       - 'tests/dataqual15/qualify_native_feedback_component.py'
       - 'tests/dataqual15/audit_native_donors.py'
+      - 'tests/dataqual15/verify_native_coupled_evidence.py'
+      - 'integration/dataqual15/NATIVE_COUPLED_*'
       - 'tests/dataqual15/research/native_*'
       - 'tests/dataqual15/research/mod_native_*'
       - '.github/workflows/dataqual15-native-coupled-feedback.yml'
@@ -26,6 +28,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - run: python -B tests/dataqual15/verify_native_coupled_evidence.py
       - run: python -B tests/dataqual15/audit_native_donors.py --output historical-donors.json
       - run: python -B tests/dataqual15/qualify_native_feedback_component.py --optimization ${{ matrix.optimization }} --output feedback-component-ci
       - uses: actions/upload-artifact@v4
