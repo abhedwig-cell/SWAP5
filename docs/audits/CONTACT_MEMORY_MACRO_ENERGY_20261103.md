@@ -1,6 +1,6 @@
 # Contact memory and macro liquid thermal transport
 
-Status: proposed explicit research model; baseline `65d881cc9`.
+Status: explicit corrected research model, Windows/Linux checked O0/O2 qualified; canonically admitted through PR1494 at `9bb77c1c7`. Baseline `65d881cc9`.
 
 The original binary sorptivity-history branches remain immutable. For the
 research sliding-contact completion, a positive fraction uses the active
@@ -69,3 +69,54 @@ invalid initial macro temperatures and inconsistent water ledgers refuse.
 The small tests additionally cover time-dependent donor convergence, dry
 through-flow and unavailable isolated-dry temperature. Full physical energy,
 gas/latent/radiation and original native commit flags remain false.
+
+
+Fresh Linux13.3 cold builds execute203 current/overlay Fortran providers and153
+original TTUTIL providers; sources, objects, executable and downloaded artifact
+digests are independently checked. The contact/action-memory records and all
+modeled macro-temperature/refinement records agree with Windows16.2 exactly
+after line-ending normalization. Native legacy matrix thermal observations
+retain only roundoff cross-platform differences. Same-platform O0/O2 CSV and
+native restart physical bytes are exact; no cross-platform binary restart
+qualification is inferred.
+
+Input scope is inherited explicitly from PR1493: the archived historical2.748day
+contact payload is rebound without physical-byte edits, the thermal replay uses
+the actual112-node first-day hydraulic trace, and the native recipe retains the
+disclosed0.0001cm entry ramp and experimental numerical policy. This is not a
+literal sharp-law481day trajectory or a native accepted continuation. The new
+clock rule supplies a corrected private candidate, not an implicit default-model
+change. Recovery and evidence stay separate from the Status-A denominator.
+
+
+All19 PR workflows are terminal SUCCESS at head `8b41cb99c`. Failed local
+nonfinite-guard and dry-terminal-roundoff attempts remain recorded in the Windows
+capsule record, followed by source-bound successful successor runs. The final
+admission receipt binds the actual canonical merge separately from this tested
+PR postimage. No scientific assertion or historical source guard is relaxed.
+
+
+Canonical admission uses the exact tested merge commit, not just an equal tree.
+The GitHub merge endpoint timed out and then reported a merge in progress while
+the remote base remained unchanged. A normal, non-force Git fast-forward of the
+exact tested merge commit completed admission; GitHub confirms PR1494 merged at
+that same commit. Source-bound actual-merge verification passes independently.
+The final receipt checkpoint retains the fresh Linux evidence and terminal CI
+verdicts while preserving every executable/source/test/workflow tree.
+
+
+Runtime admission prerequisites remain explicit. Action memory is a corrected
+physical constitutive choice, not Newton damping or an automatic failure retry.
+Its equivalent clock reuses a private memory representation but has different
+semantics from original elapsed absorption time. An owned physical-model identity
+and parameter/restart binding are required before persistent production use.
+The existing native restart proof concerns unchanged ordinary prefix state,
+not restart of a committed corrected-history candidate.
+
+A native coupled thermal successor must own conserved macro liquid enthalpy and
+its initial-condition provenance, retain unavailable dry temperature and bind
+external donors and quadrature to the same selected hydraulic interval/lineage.
+Signed macro/matrix heat must enter both owners once; matrix feedback cannot be
+replaced by post-hoc stock correction. Separate gas/latent/radiation and phase
+receipts remain required. The research CSV replay does not constitute that
+transaction/publication/restart contract.
