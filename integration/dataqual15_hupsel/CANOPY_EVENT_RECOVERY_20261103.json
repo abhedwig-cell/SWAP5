@@ -13,7 +13,11 @@
   },
   "scope": "Append committed Rutter canopy storage, just-completed prepared capacity and post-management LAI-derived capacity to crop diagnostics. No physical state mutation or correction.",
   "driver": "app/solute_project/main.f90",
-  "output_columns": ["accepted_canopy_stock_cm", "prepared_canopy_capacity_cm", "post_management_capacity_cm"],
+  "output_columns": [
+    "accepted_canopy_stock_cm",
+    "prepared_canopy_capacity_cm",
+    "post_management_capacity_cm"
+  ],
   "measurement_required": "Actual original Hupsel accepted days around930,956,989,1033; compare pre/post cut index, stock and capacities, retain restart provenance",
   "build": "tests/dataqual15_hupsel/build_and_run.py; ../canopy-event-measurement-O2",
   "initialization_diagnosis": {
@@ -46,15 +50,22 @@
   },
   "current_recovery": {
     "pr": 1496,
-    "canonical_reconciled": "c1ce8808bdfc042577295811b5acccbd7608ebea",
+    "canonical_reconciled": "aa611d0ca87abecb077036c2985511f0e4224b50",
     "overlap": "Canonical delta changes contact/action-memory/thermal research and status records; no overlap with this chat's Hupsel canopy or codec implementation. Merged canonical without altering the other worktree.",
     "native_publication": "Actual C atomic publisher linked by source builders; no diagnostic fsync shim. Unconditional localization stdout removed. Checked O0 Windows decoder required explicit 16MiB PE stack reserve; no checkpoint check or physical tolerance relaxed.",
     "windows": "GNU16.2 checked O0/O2: literal input day1 and day2; checkpoint replacement; strict restarted and uninterrupted day2 streams byte identical; seven explicit outer decoder controls and37 full day931 nested controls per build; eight independent zlib CRC witnesses per build.",
     "posix": "GNU13.3 Linux checked O0/O2: same literal input publication/restart and seven outer controls plus eight CRC witnesses. Actions run41693014543 succeeded; raw artifact13258580659 sealed, actual compiled source bytes reconciled.",
-    "seals": ["NATIVE_CANOPY_PUBLICATION_WINDOWS_20261103.tar.json", "NATIVE_CANOPY_PUBLICATION_POSIX_20261103.tar.json"],
+    "seals": [
+      "NATIVE_CANOPY_PUBLICATION_WINDOWS_20261103.tar.json",
+      "NATIVE_CANOPY_PUBLICATION_POSIX_20261103.tar.json"
+    ],
     "verifier": "python -B tests/dataqual15_hupsel/verify_native_publication_evidence.py",
     "measurement": "Compatible O2 continuation completed931 in730.597seconds. At accepted cut930 stock0.114418658338822518cm exceeds post-management capacity0.0270368000000000032cm. Direct excess0.087381858338822515cm; physical correction remains unimplemented.",
-    "next": "Finish current composed thermal/publication preservation and PR1496 adjudication. Then preregister guarded same-time kernel endpoint-event interface; apply incumbent Rutter capacity_candidate after staged crop day_end and before joint publication, with explicit same-day water export. Never reinitialize kernel state or relax source/checkpoint admission."
+    "next": "Finish current composed thermal/publication preservation and PR1496 adjudication. Then preregister guarded same-time kernel endpoint-event interface; apply incumbent Rutter capacity_candidate after staged crop day_end and before joint publication, with explicit same-day water export. Never reinitialize kernel state or relax source/checkpoint admission.",
+    "composed_preservation": "Windows checked O0/O2 Black/Rutter/heat/reactive literal/restart/rollback and eight resealed owner-corruption controls PASS; sealed COMPOSED_PUBLICATION_WINDOWS_20261103.tar.json",
+    "exact_preservation": "NATIVE_PUBLICATION_PRESERVATION_20261103.json: candidate805eee78b passes all seven current/predecessor verifier legs, exact historical production trees and restored historical build recipes. Ten negative boundary controls PASS.",
+    "latest_canonical_delta": "Native contact feedback research, documentation and evidence only; all compiled src/app/reference dependency bytes unchanged",
+    "qualification_wait": "PR1496 stable native CI21e6d1fa4; completed POSIX evidence from earlier identical compiled owner closure already sealed. Local exact preservation805eee78b differs only by record restoration map; aggregate PR verdict still pending."
   },
   "physical_correction": false,
   "canonical_admission": false
