@@ -59,11 +59,15 @@ def ledger(daily,crops,points,days):
   stock_checks.append(dict(day=day,independent_water_stock_error_cm=dw,independent_solute_stock_error_mg_cm2=ds))
  return dict(ledgers=checks,wet_cuts=cuts,typed_primitive_stock_checks=stock_checks,total_capacity_export_cm=math.fsum(r['canopy_capacity_export_cm']for r in daily))
 
-def audit(case,bundle):
+def audit(case,bundle,live_providers=True):
  result=json.loads((case/'RESULT.json').read_text());build=json.loads((bundle/'BUILD.json').read_text())
  assert result['returncode']==0 and result['from_start']and result['restart_sha256']is None
  assert result['executable_sha256']==build['executable_sha256']
- for path,pin in build['source_sha256'].items():assert sha(Path(path).read_bytes())==pin,path
+ if live_providers:
+  for path,pin in build['source_sha256'].items():assert sha(Path(path).read_bytes())==pin,path
+ # A portable caller first validates the sealed capsule and every normalized
+ # repository dependency; unavailable original Windows paths are not a source
+ # of authority. The ordinary live CLI always checks actual compiled providers.
  assert all(sha((case/n).read_bytes())==pin for n,pin in result['inputs'].items())
  original=ROOT/'reference/swap-4.3.1/projects/1.hupselbrook'
  pattern=rb'(?im)^(\s*DTMAX\s*=\s*)([\d.eE+\-]+)'
