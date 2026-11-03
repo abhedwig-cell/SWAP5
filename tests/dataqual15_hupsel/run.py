@@ -1,21 +1,22 @@
 import os,argparse,csv,hashlib,json,re,shutil,subprocess,time,struct,zlib
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sha=lambda f:hashlib.sha256(f.read_bytes()).hexdigest()
-p=argparse.ArgumentParser();p.add_argument('--rotation',action='store_true');p.add_argument('--diagnostic-predecessor',action='store_true');p.add_argument('--reactive',action='store_true');p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--end',type=int,default=365);p.add_argument('--prepare-days',type=int,default=365);p.add_argument('--restart',type=Path);p.add_argument('--capture',type=int,nargs='*',default=[]);p.add_argument('--timeout',type=int,default=900);a=p.parse_args();b=a.bundle.resolve();o=a.output.resolve();o.mkdir();build=json.loads((b/'BUILD.json').read_text());assert all(sha(Path(s))==h for s,h in build['source_sha256'].items());assert sha(b/'swap5_hupsel_germination')==build['executable_sha256']
+p=argparse.ArgumentParser();p.add_argument('--rotation',action='store_true');p.add_argument('--diagnostic-predecessor',action='store_true');p.add_argument('--reactive',action='store_true');p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--end',type=int,default=365);p.add_argument('--prepare-days',type=int,default=365);p.add_argument('--restart',type=Path);p.add_argument('--capture',type=int,nargs='*',default=[]);p.add_argument('--timeout',type=int,default=900);a=p.parse_args();b=a.bundle.resolve();o=a.output.resolve();o.mkdir();build=json.loads((b/'BUILD.json').read_text());assert all(sha(Path(s))==h for s,h in build['source_sha256'].items());exe=b/('swap5_hupsel_germination.exe'if os.name=='nt'else'swap5_hupsel_germination');reader=b/('read_fallow.exe'if os.name=='nt'else'read_fallow');assert sha(exe)==build['executable_sha256']
 source=ROOT/'reference/swap-4.3.1/projects/1.hupselbrook'
 original_inputs=['swap.swp','283.met','swap.dra']+sorted(f.name for f in source.glob('*.crp'))
 for n in original_inputs:shutil.copyfile(source/n,o/n)
-r=subprocess.run([str(b/'read_fallow'),'swap.swp','283.met','swap.dra',str(a.prepare_days),'original-germination'],cwd=o,capture_output=True);(o/'prepare.stdout').write_bytes(r.stdout);(o/'prepare.stderr').write_bytes(r.stderr);assert r.returncode==0
+r=subprocess.run([str(reader),'swap.swp','283.met','swap.dra',str(a.prepare_days),'original-germination'],cwd=o,capture_output=True);(o/'prepare.stdout').write_bytes(r.stdout);(o/'prepare.stderr').write_bytes(r.stderr);assert r.returncode==0
 nml=(o/'input.nml').read_text()
 if a.rotation:
  nml=nml.replace('&column ','&column original_hupsel_rotation=.true.,reactive_substep_chemistry=.true.,',1);(o/'input.nml').write_text(nml)
 elif a.reactive:
  nml=nml.replace('&column ','&column reactive_substep_chemistry=.true.,',1);(o/'input.nml').write_text(nml)
 ends=[float(v)for v in re.search('^ends_day=(.*)$',nml,re.M)[1].split(',')if v.strip()];stop=next(i+1 for i,v in enumerate(ends)if v==a.end)
-cmd=[str(b/'swap5_hupsel_germination'),'input.nml',str(a.restart.resolve())if a.restart else'-',str(stop),'swap.swp','maize.crp'];t=time.monotonic()
+cmd=[str(exe),'input.nml',str(a.restart.resolve())if a.restart else'-',str(stop),'swap.swp','maize.crp'];t=time.monotonic()
 captured=set();censored=False
 with(o/'stdout').open('wb')as so,(o/'stderr').open('wb')as se:
  env=os.environ.copy()
+ env.pop('SWAP5_DIAG_PREDECESSOR',None)
  if a.diagnostic_predecessor:
   assert a.rotation and a.restart;env['SWAP5_DIAG_PREDECESSOR']='1'
  r=subprocess.Popen(cmd,cwd=o,stdout=so,stderr=se,env=env)
