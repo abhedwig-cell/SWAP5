@@ -1,0 +1,53 @@
+name: DATAQUAL15 contact action memory and macro liquid temperature
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'tests/dataqual15/qualify_contact_memory.py'
+      - 'tests/dataqual15/qualify_memory_energy.py'
+      - 'tests/dataqual15/qualify_macro_thermal_replay.py'
+      - 'tests/dataqual15/verify_memory_thermal_evidence.py'
+      - 'tests/dataqual15/research/*memory*'
+      - 'tests/dataqual15/research/*macro*thermal*'
+      - 'integration/dataqual15/CONTACT_MEMORY_*'
+      - '.github/workflows/dataqual15-action-memory-thermal.yml'
+permissions:
+  contents: read
+env:
+  OMP_NUM_THREADS: '1'
+  PYTHONUTF8: '1'
+jobs:
+  components-and-thermal:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python -B tests/dataqual15/verify_memory_thermal_evidence.py
+      - run: python -B tests/dataqual15/qualify_memory_energy.py --output action-components-ci
+      - run: python -B tests/dataqual15/qualify_macro_thermal_replay.py --output macro-temperature-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: action-components-and-macro-temperature
+          path: |
+            action-components-ci
+            macro-temperature-ci
+  native-memory:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python -B tests/dataqual15/qualify_contact_memory.py --optimization ${{ matrix.optimization }} --output action-native-ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: action-native-${{ matrix.optimization }}
+          path: action-native-ci

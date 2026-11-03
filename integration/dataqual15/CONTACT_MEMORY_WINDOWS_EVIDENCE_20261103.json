@@ -1,0 +1,44 @@
+{
+  "archive": "integration/dataqual15/CONTACT_MEMORY_WINDOWS_EVIDENCE_20261103.tar.xz",
+  "archive_sha256": "fe1d9952ba6c1aa61d9996a5acd77ffd2b41ec4fe8d80f0c50869c8cc66bbe6e",
+  "measurements": {
+    "native-O0": {
+      "commit": "fab0555343126648bbcd00ddb33cfce6f354ad5b",
+      "status": "FULL_COLUMN_STORAGE_VERTICAL_AND_UNIQUE_ACTION_MEMORY_PASS_NATIVE_COMMIT_NOT_PROMOTED",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0"
+    },
+    "native-O2": {
+      "commit": "fab0555343126648bbcd00ddb33cfce6f354ad5b",
+      "status": "FULL_COLUMN_STORAGE_VERTICAL_AND_UNIQUE_ACTION_MEMORY_PASS_NATIVE_COMMIT_NOT_PROMOTED",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0"
+    },
+    "components": {
+      "commit": "7924c0c8187f1ef9fb3edced8b2e18773f029dc4",
+      "status": "SMALL_ACTION_MEMORY_AND_MACRO_LIQUID_THERMAL_O0_O2_PASS",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0"
+    },
+    "thermal": {
+      "commit": "e2b0654f6eca28fcae8231c6463f4938bbbda3bc",
+      "status": "ACTUAL_HYDRAULIC_REPLAY_INDEPENDENT_MACRO_TEMPERATURE_AND_REFINED_EXPLICIT_DONORS_PASS",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0"
+    }
+  },
+  "production_changed": false,
+  "contact_action_memory": "EXPLICIT_CORRECTED_RESEARCH_POLICY",
+  "native_private_candidate_history_complete": true,
+  "native_full_step_committed": false,
+  "historical_external_donors_available": false,
+  "full_energy_balance_complete": false,
+  "prior_failed_attempts": [
+    {
+      "folder": "../contact-action-component-01",
+      "status": "FAILED",
+      "reason": "Nonfinite fraction ordered comparison trapped before refusal; sequential finite guard fixed"
+    },
+    {
+      "folder": "../macro-thermal-replay-01",
+      "status": "FAILED",
+      "reason": "Certified dry terminal hydraulic roundoff made outgoing-storage operator singular; incoming-storage form plus separately measured water roundoff enthalpy fixed"
+    }
+  ]
+}
