@@ -32,5 +32,14 @@
       "accepted_intervals": 3,
       "max_nodal_error_j_cm2": 6.240320376071086e-13
     }
+  },
+  "independent_adapters": {
+    "app/solute_project/inspect_historical.f90": {
+      "before": "0855b4014e18b32475d1d4a18c18d477413c0b7c",
+      "after": "85933351e9a2bb1e3830485a0e3eb345a4369141",
+      "admitted_merge": "cbb4352702f576a244431655a2f89cfc02875709",
+      "pr": 1491,
+      "scope": "Independent original-input inspection publication; not part of compiled thermal/contact dependency closure"
+    }
   }
 }

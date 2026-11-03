@@ -1,35 +1,56 @@
 {
-  "work_unit": "DATAQUAL15",
-  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
-  "stage": "FULL_ORIGINAL_EXECUTION_PASS_SCIENTIFIC_ATTRIBUTION_MEASURED_THERMAL_RESOLUTION_OPEN",
+  "canonical_receipt": "integration/dataqual15/MERGE_RECEIPT.json",
+  "portable_verifier": "tests/dataqual15/verify_evidence.py",
+  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion.",
+  "contact_energy_diagnostics_20261102": {
+    "scope": "CURRENT_OWNER_DIAGNOSTICS_ONLY",
+    "result": "integration/dataqual15/CONTACT_ENERGY_RESULT_20261102.json",
+    "report": "docs/audits/DATAQUAL15_CONTACT_ENERGY_20261102.md",
+    "windows_O0_O2_exact": true,
+    "contact_repair_implemented": false,
+    "full_energy_balance_complete": false,
+    "canonical_admitted": true,
+    "next": "stock summation numerical correction; explicit theta and donor-energy contracts; coupled contact treatment",
+    "canonical_scope": "Diagnostic dossier and isolated candidate only; no production correction installed",
+    "merge": "ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8",
+    "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json"
+  },
+  "qualified_year_restart": "365->367 exact independently in O0 and O2",
+  "pull_request": 1476,
+  "stock_projection_production_20261102": {
+    "base": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "stage": "CANONICALLY_ADMITTED_NUMERICAL_OWNER_AND_RUNTIME_PRESERVATION",
+    "module": "src/process/mod_whole_column_sensible_energy_accounting.f90",
+    "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+    "after": "1e8761e09e24d247991832d582a77b8903ebdc5b",
+    "interfaces_changed": false,
+    "physical_equations_changed": false,
+    "full_energy_balance_complete": false,
+    "test_selection": {
+      "expected_seconds": 360,
+      "scope": "Stock432 profiles,1J negative control, EB-I22/VQ88 and current186-provider EB-I23/I24/I25 oracles O0/O2. Runtime closure specifically selected because shared public boundary type participates in all three wrappers; original outflow fixture attribution and strict negative energy-authority assertion reconciled.",
+      "next": "Persist, qualify current owner, seal source-bound evidence; original immutable contact/stock experiments execute in exact committed predecessor view."
+    },
+    "runtime_fixture_attribution": "Original I25 outflow test failure reproduced with baseline stock owner on identical current objects. Water accepted, mass residual-2.22e-16; energy top status5/unavailable. Test now asserts existing documented outflow fail-closed branch rather than accidental historical water rejection; no runtime physics change.",
+    "local_native_preservation": {
+      "status": "PASS",
+      "record": "../stock-production-admission-01/RESULT.json",
+      "source_checkpoint": "15823e137c95ee2ea937fd9f68b5a73ca46012fb",
+      "controls": 10
+    },
+    "runtime_record": "integration/dataqual15/STOCK_RUNTIME_PRODUCTION_20261103.json",
+    "report": "docs/audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md",
+    "canonical_admitted": true,
+    "next_action": "Actual accepted interval thermal/donor receipts; explicit conservative original Andelst sharp/contact treatment; reconcile separately owned draft1485 physical fixes before qualifying them.",
+    "canonical_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
+    "canonical_receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
+  },
+  "portable_evidence": "integration/dataqual15/EVIDENCE_MANIFEST.json",
   "owners": [
     "existing SWBOTB1 Richards boundary",
     "immutable existing fmr_hbot5_control_t table",
     "existing joint grass owners"
   ],
-  "invariants": [
-    "No tolerance or solver budget change",
-    "Trial endpoint table sample is pure; rejected trials retain state",
-    "Original input bytes retained"
-  ],
-  "selected": [
-    "O0/O2 current native original Grassgrowth from day1 through variable groundwater and first management boundary",
-    "Same-build disk restart across changing groundwater",
-    "Existing groundwater/default/oxygen preservation"
-  ],
-  "expected_seconds": {
-    "compile_per_build": 150,
-    "original_full_year": 1300
-  },
-  "expensive_selection_reason": "User explicitly requires full original project. Actual joint runtime closure203 providers; a small table test cannot establish full/half water and joint restart composition.",
-  "not_selected": [
-    "full FCI unless affected owner scope requires it",
-    "highest low air stress",
-    "repeated long Andelst stall"
-  ],
-  "candidate_source_commit": "76d41a0",
-  "published_identical_tree_commit": "05e4fad65c4e2ff931c00aa3851984e4cad2119d",
-  "local_and_remote_tree": "15f90f757ac5628ac3455835960156d3d9d0f7df",
   "expensive_selections": {
     "original_O2_full1827": {
       "expected_seconds": 7200,
@@ -52,182 +73,25 @@
       "reason": "Direct original continuation across source annual crop/root reset and same-build year-boundary restart, changed lifecycle branch not covered by140days."
     }
   },
-  "qualified_components": {
-    "whole_original_grass_body_and_mowing_O0_O2": "8 donor whole-routine cases per build exact; final rerun after cut compatibility reset also PASS",
-    "existing_reference_groundwater_default_oxygen_preservation": "8 native contracts PASS O0/O2 including time-varying table"
-  },
-  "implemented_blocks": [
-    "Source BBC actual per-trial endpoint callback",
-    "Moving-groundwater algebraic temporal metric repair",
-    "Fixed-date mowing actual/potential",
-    "Separate actual/potential regrowth continuation",
-    "Full LAIEXP compatibility persistence",
-    "Original annual crop/root reset and calendar day-of-year"
-  ],
+  "work_unit": "DATAQUAL15",
   "scope_correction": {
     "predecessor_SWKMEAN1": "Superseded experimental numerical executions, full O2 stopped173days, diagnostic predecessor continuation stopped211; excluded from original-controls qualification. O0/O2 and126->140 restart were exact within that predecessor.",
     "current_face_mean": "Source SWKMEAN2 imported; actual Richards and temporal interior Darcy certificate both weighted by dz. Source MAXIT30/MAXBACKTR3/DTMIN1e-6/DTMAX.04/SWKIMPL0 retained.",
     "accuracy_policy": "Canonical SWAP5 stricter nonlinear/pond tolerances and external full-half temporal/mass acceptance are retained; no claim of identical original adaptive timestep or nonlinear stopping settings."
   },
-  "latest_verified_original_days": 1827,
-  "exact_year_transition": "365->367 checkpoint and daily budgets/crop byte exact",
-  "runtime_interruption": "Processes absent after user-turn recovery; checkpoint chain original1->438->521 verified unchanged, native exit statuses of interrupted segments UNKNOWN; continuing to1827.",
+  "local_and_remote_tree": "15f90f757ac5628ac3455835960156d3d9d0f7df",
   "measured_first_year_harvest_difference_kg_ha": 89.2828696426659,
-  "completed_original_projects": 1,
+  "expected_seconds": {
+    "compile_per_build": 150,
+    "original_full_year": 1300
+  },
   "fully_scientifically_qualified_projects": 0,
-  "portable_evidence": "integration/dataqual15/EVIDENCE_MANIFEST.json",
-  "portable_verifier": "tests/dataqual15/verify_evidence.py",
-  "pull_request": 1476,
-  "canonical_admitted": true,
-  "docs_checks": {
-    "source": "PASS",
-    "mkdocs_strict": "PASS14.60sec; existing INFO anchor diagnostics, no strict warning failure"
+  "expensive_selection_reason": "User explicitly requires full original project. Actual joint runtime closure203 providers; a small table test cannot establish full/half water and joint restart composition.",
+  "qualified_components": {
+    "whole_original_grass_body_and_mowing_O0_O2": "8 donor whole-routine cases per build exact; final rerun after cut compatibility reset also PASS",
+    "existing_reference_groundwater_default_oxygen_preservation": "8 native contracts PASS O0/O2 including time-varying table"
   },
-  "O0_O2_exact_original_days": 367,
-  "qualified_year_restart": "365->367 exact independently in O0 and O2",
-  "canonical_receipt": "integration/dataqual15/MERGE_RECEIPT.json",
-  "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
-  "canonical_scope": "Experimental original Grassgrowth521 days;367 O0/O2 and exact disk restarts. Original1827 target remains active; no complete project/scientific equivalence/production scope expansion.",
-  "scientific_followup": {
-    "stage": "NUMERICAL_ATTRIBUTION_MEASURED_REFINED_NATIVE_WITHIN_FROZEN_ENVELOPES_ORIGINAL_GATE_FAILED",
-    "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
-    "full_original_days": 1827,
-    "full_proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
-    "full_proof_local_verification": "PASS",
-    "recovery_linux_run": 41059647761,
-    "recovery_linux": "PASS",
-    "current_qualification": "FULLY_EXECUTED_SCIENTIFIC_QUALIFICATION_OPEN",
-    "paired_days": [
-      25,
-      72,
-      73,
-      127
-    ],
-    "refinement_caps_days": [
-      0.04,
-      0.02,
-      0.01
-    ],
-    "refinement_end_day": 140,
-    "physical_owners_changed": false,
-    "original_physical_inputs_changed": false,
-    "checkpoint_rebinding": false,
-    "invariants": [
-      7,
-      13,
-      21,
-      23,
-      25,
-      26
-    ],
-    "next_action": "Retain original coarse-native thermal and whole energy qualification as open; any successor thermal temporal-error contract belongs at the existing shared runtime authority and requires its own registered acceptance and preservation scope.",
-    "historical_status_scope": "The pre-existing 521-day fields above remain the PR1476 historical receipt. Current full-period authority is GRASS_UNION_FULL_MANIFEST.json and CANONICAL_FULL_MERGE_RECEIPT.json.",
-    "paired_accepted_cases": 2922,
-    "stressed_node_evaluations": 7661,
-    "paired_oxygen_O0_O2": "PASS",
-    "whole_uptake_O0_O2": "PASS_SELECTED_ORIGINAL_OPTIONS_AND_NATIVE_ACCEPTED_STATES",
-    "maximum_owner_only_daily_uptake_difference_cm": 1.770613985291325e-10,
-    "whole_uptake_run": 41071975005,
-    "initial_donor_dtmax_days": [
-      0.04,
-      0.02,
-      0.01,
-      0.005,
-      0.0025
-    ],
-    "held_out_profile_gate": "integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json",
-    "donor_held_out_run": 41074182323,
-    "numerical_resolution_gate_pass": false,
-    "frozen_gate_failures": {
-      "0.00125": {
-        "TREDDRY": {
-          "native_error": 0.0003284070990990373,
-          "limit": 0.0005107256830001189,
-          "reference_change": 0.00017694889499997313,
-          "previous_reference_change": 0.00017024156100003962,
-          "inside_frozen_envelope": true,
-          "reference_change_decreases": false
-        },
-        "PROFILE_temperature_c": {
-          "native_error": 0.006918903794463915,
-          "limit": 0.002772767147181471,
-          "reference_change": 0.00046271838770595153,
-          "previous_reference_change": 0.0009242553823938238,
-          "inside_frozen_envelope": false,
-          "reference_change_decreases": true
-        }
-      },
-      "0.000625": {
-        "PROFILE_temperature_c": {
-          "native_error": 0.007150261391404289,
-          "limit": 0.002772767147181471,
-          "reference_change": 0.00023142940943010615,
-          "previous_reference_change": 0.00046271838770595153,
-          "inside_frozen_envelope": false,
-          "reference_change_decreases": true
-        }
-      }
-    },
-    "portable_science_evidence": "integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json",
-    "portable_science_verifier": "tests/dataqual15/stress_evidence.py",
-    "scientific_equivalence": false,
-    "native_thermal_selection": {
-      "status": "SOURCE_BOUND_FULL1827_DIAGNOSTIC_EXECUTED",
-      "script": "tests/dataqual15/qualify_native_thermal.py",
-      "expected_seconds": 2400,
-      "wall_cap_seconds": 7200,
-      "dtmax_day": 0.01,
-      "scope": "Fresh day1->1827 diagnostic numerical counterfactual; original physical files and existing process owners; separate executable binding; no checkpoint rebinding; no new original-project count",
-      "reason": "Held-out donor gate rejects native temperature at late retained profile dates. Existing140-day native refinements reduce maximum day140 temperature error. Prefix cannot resolve worst day1096 difference.",
-      "frozen_limit_unchanged": true,
-      "github_run": 41082719394,
-      "job": 124155753874,
-      "source_commit": "ad2edfd849559993ba45f08a522e4ecfa9743721",
-      "measured_native_seconds": 1606.596995257,
-      "returncode": 0,
-      "censored": false,
-      "maximum_water_residual_cm": 4.923839114212569e-14,
-      "maximum_heat_accounting_residual_j_cm2": 3.03817734859102e-12
-    },
-    "windows_self_contained_reproduction": {
-      "status": "PASS_REAL_ORIGINAL_CURRENT_OWNERS_O0_O2",
-      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project)16.2.0",
-      "accepted_cases": 2922,
-      "O0_O2_identical": true,
-      "paired_compile_link_native_seconds": 34.24877959955484,
-      "original_provider_build_seconds": "UNKNOWN",
-      "result_sha256": "0e459dff1f9943d2187a6291060c56e25dd377a96adbd88d8f6893de0c947e5a",
-      "scope": "Component/oracle reproduction only; native full application fsync remains the supported Linux route"
-    },
-    "original_options": {
-      "SWSOLU": 0,
-      "SWMACRO": 0,
-      "SWHEA": 1,
-      "SWCALT": 2,
-      "SWDROUGHT": 1,
-      "SWOXYGEN": 2,
-      "solute_balance": "not_applicable"
-    },
-    "refined_native_all20_envelopes_inside": true,
-    "refined_native_temperature_error_c": 0.0016146006338564334,
-    "frozen_temperature_limit_c": 0.002772767147181471,
-    "full_scientific_qualification": "OPEN",
-    "final_local_checks": {
-      "original_full1827": "PASS",
-      "Hupsel_inherited1096": "PASS_EXACT_SHARED_RECIPES_RETAINED",
-      "portable_scientific_evidence": "PASS_INCLUDING_FAILED_ORIGINAL_GATE_AND_REFINED_DIAGNOSTIC",
-      "documentation_source": "PASS",
-      "mkdocs_strict": "PASS31.70sec",
-      "production_delta": "NONE"
-    },
-    "canonically_admitted": true,
-    "canonical_merge": "51ee43e6037fd2402fa5c667b91228ac9a79bb46",
-    "canonical_scope": "Experimental portability, authentic full-run recovery, source-bound accepted-state replay and measured numerical attribution only",
-    "merge_receipt": "integration/dataqual15/SCIENTIFIC_FOLLOWUP_MERGE_RECEIPT.json",
-    "production_promotion": false,
-    "known_legacy_guard_failure": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json"
-  },
-  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits.",
+  "latest_verified_original_days": 1827,
   "windows_feedback_continuation_20261102": {
     "workstream": "RT/VQ migration WP0 execution infrastructure",
     "work_unit": "DATAQUAL15-WP0-WINDOWS-FEEDBACK",
@@ -398,48 +262,177 @@
       "WSL is not installed. Grassgrowth native disk restart still uses POSIX fsync; this feedback-runner repair does not qualify Windows full-project restart."
     ]
   },
-  "native_disk_restart_20261102": {
-    "work_unit": "DATAQUAL15-WP0-NATIVE-DISK-RESTART",
-    "baseline": "ed91871e98ef5f0ba64ccd25e7c9e18cfc173209",
-    "canonical_base": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
-    "branch": "codex/swap5-migration-20261102",
-    "implemented": true,
-    "persisted": "Implementation checkpoint containing this record",
-    "tested": "Native C publication, transient/permanent locks,17 CRC vectors O0/O2 PASS; original Windows source-contiguous367 days and two exact disk-restart boundaries O0/O2 PASS;22 invalid-stream executions PASS.",
-    "qualified": true,
-    "invariants_affected": [
-      2,
-      3,
+  "scientific_followup": {
+    "stage": "NUMERICAL_ATTRIBUTION_MEASURED_REFINED_NATIVE_WITHIN_FROZEN_ENVELOPES_ORIGINAL_GATE_FAILED",
+    "baseline": "d4f48ff3fb63dc81523bdbb17523b1dd8d0b7af3",
+    "full_original_days": 1827,
+    "full_proof": "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json",
+    "full_proof_local_verification": "PASS",
+    "recovery_linux_run": 41059647761,
+    "recovery_linux": "PASS",
+    "current_qualification": "FULLY_EXECUTED_SCIENTIFIC_QUALIFICATION_OPEN",
+    "paired_days": [
+      25,
+      72,
+      73,
+      127
+    ],
+    "refinement_caps_days": [
+      0.04,
+      0.02,
+      0.01
+    ],
+    "refinement_end_day": 140,
+    "physical_owners_changed": false,
+    "original_physical_inputs_changed": false,
+    "checkpoint_rebinding": false,
+    "invariants": [
       7,
       13,
+      21,
+      23,
       25,
       26
     ],
-    "contract": {
-      "owner": "Application I/O adapter only; no kernel/physical/committed-state owner",
-      "precondition": "Closed complete CRC-protected stream in a sibling pending file",
-      "windows": "CreateFileW(GENERIC_WRITE) + FlushFileBuffers + CloseHandle + MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH); UTF-8 paths; no copy/delete fallback; at most21 replace attempts with20x10ms waits for access/sharing/lock errors, then fail closed without copy/delete",
-      "posix": "Open destination parent, fsync pending file, close, rename, fsync destination parent, close; nested destinations use their real parent",
-      "failure": "Never acknowledge durable success after any failed stage; before rename the previous file remains. A post-rename directory-sync failure returns failure without attempting to roll back the name.",
-      "format": "S5GRS003 bytes and physical/crop/root/management semantics unchanged",
-      "limitations": "OS/API durability contract only; no simulated power-loss/hardware-cache/OneDrive-cloud durability proof; same-build and same-platform codec, not binary cross-platform portability"
+    "next_action": "Retain original coarse-native thermal and whole energy qualification as open; any successor thermal temporal-error contract belongs at the existing shared runtime authority and requires its own registered acceptance and preservation scope.",
+    "historical_status_scope": "The pre-existing 521-day fields above remain the PR1476 historical receipt. Current full-period authority is GRASS_UNION_FULL_MANIFEST.json and CANONICAL_FULL_MERGE_RECEIPT.json.",
+    "paired_accepted_cases": 2922,
+    "stressed_node_evaluations": 7661,
+    "paired_oxygen_O0_O2": "PASS",
+    "whole_uptake_O0_O2": "PASS_SELECTED_ORIGINAL_OPTIONS_AND_NATIVE_ACCEPTED_STATES",
+    "maximum_owner_only_daily_uptake_difference_cm": 1.770613985291325e-10,
+    "whole_uptake_run": 41071975005,
+    "initial_donor_dtmax_days": [
+      0.04,
+      0.02,
+      0.01,
+      0.005,
+      0.0025
+    ],
+    "held_out_profile_gate": "integration/dataqual15/STRESS_ATTRIBUTION_PREREGISTRATION.json",
+    "donor_held_out_run": 41074182323,
+    "numerical_resolution_gate_pass": false,
+    "frozen_gate_failures": {
+      "0.00125": {
+        "TREDDRY": {
+          "native_error": 0.0003284070990990373,
+          "limit": 0.0005107256830001189,
+          "reference_change": 0.00017694889499997313,
+          "previous_reference_change": 0.00017024156100003962,
+          "inside_frozen_envelope": true,
+          "reference_change_decreases": false
+        },
+        "PROFILE_temperature_c": {
+          "native_error": 0.006918903794463915,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00046271838770595153,
+          "previous_reference_change": 0.0009242553823938238,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      },
+      "0.000625": {
+        "PROFILE_temperature_c": {
+          "native_error": 0.007150261391404289,
+          "limit": 0.002772767147181471,
+          "reference_change": 0.00023142940943010615,
+          "previous_reference_change": 0.00046271838770595153,
+          "inside_frozen_envelope": false,
+          "reference_change_decreases": true
+        }
+      }
     },
-    "relevant_paths": [
-      "app/support/restart_publish.c",
-      "app/grass_project/restart_file.f90",
-      "tools/solute/build_grass_startup.py",
-      "tools/solute/build_grass_diagnostic.py",
-      "tests/dataqual15/test_restart_publication.py",
-      "tests/dataqual15/qualify_native_disk_restart.py",
-      "tests/dataqual15/run_original.py"
-    ],
-    "dependency_surface": [
-      "Application publication and Fortran close errors",
-      "S5GRS003 decoder/encoder and application.binding",
-      "Original project inputs",
-      "Build recipe, original TTUTIL utilities, native compiler and executable",
-      "Existing real Richards/water/heat/crop/root composition"
-    ],
+    "portable_science_evidence": "integration/dataqual15/STRESS_EVIDENCE_MANIFEST.json",
+    "portable_science_verifier": "tests/dataqual15/stress_evidence.py",
+    "scientific_equivalence": false,
+    "native_thermal_selection": {
+      "status": "SOURCE_BOUND_FULL1827_DIAGNOSTIC_EXECUTED",
+      "script": "tests/dataqual15/qualify_native_thermal.py",
+      "expected_seconds": 2400,
+      "wall_cap_seconds": 7200,
+      "dtmax_day": 0.01,
+      "scope": "Fresh day1->1827 diagnostic numerical counterfactual; original physical files and existing process owners; separate executable binding; no checkpoint rebinding; no new original-project count",
+      "reason": "Held-out donor gate rejects native temperature at late retained profile dates. Existing140-day native refinements reduce maximum day140 temperature error. Prefix cannot resolve worst day1096 difference.",
+      "frozen_limit_unchanged": true,
+      "github_run": 41082719394,
+      "job": 124155753874,
+      "source_commit": "ad2edfd849559993ba45f08a522e4ecfa9743721",
+      "measured_native_seconds": 1606.596995257,
+      "returncode": 0,
+      "censored": false,
+      "maximum_water_residual_cm": 4.923839114212569e-14,
+      "maximum_heat_accounting_residual_j_cm2": 3.03817734859102e-12
+    },
+    "windows_self_contained_reproduction": {
+      "status": "PASS_REAL_ORIGINAL_CURRENT_OWNERS_O0_O2",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project)16.2.0",
+      "accepted_cases": 2922,
+      "O0_O2_identical": true,
+      "paired_compile_link_native_seconds": 34.24877959955484,
+      "original_provider_build_seconds": "UNKNOWN",
+      "result_sha256": "0e459dff1f9943d2187a6291060c56e25dd377a96adbd88d8f6893de0c947e5a",
+      "scope": "Component/oracle reproduction only; native full application fsync remains the supported Linux route"
+    },
+    "original_options": {
+      "SWSOLU": 0,
+      "SWMACRO": 0,
+      "SWHEA": 1,
+      "SWCALT": 2,
+      "SWDROUGHT": 1,
+      "SWOXYGEN": 2,
+      "solute_balance": "not_applicable"
+    },
+    "refined_native_all20_envelopes_inside": true,
+    "refined_native_temperature_error_c": 0.0016146006338564334,
+    "frozen_temperature_limit_c": 0.002772767147181471,
+    "full_scientific_qualification": "OPEN",
+    "final_local_checks": {
+      "original_full1827": "PASS",
+      "Hupsel_inherited1096": "PASS_EXACT_SHARED_RECIPES_RETAINED",
+      "portable_scientific_evidence": "PASS_INCLUDING_FAILED_ORIGINAL_GATE_AND_REFINED_DIAGNOSTIC",
+      "documentation_source": "PASS",
+      "mkdocs_strict": "PASS31.70sec",
+      "production_delta": "NONE"
+    },
+    "canonically_admitted": true,
+    "canonical_merge": "51ee43e6037fd2402fa5c667b91228ac9a79bb46",
+    "canonical_scope": "Experimental portability, authentic full-run recovery, source-bound accepted-state replay and measured numerical attribution only",
+    "merge_receipt": "integration/dataqual15/SCIENTIFIC_FOLLOWUP_MERGE_RECEIPT.json",
+    "production_promotion": false,
+    "known_legacy_guard_failure": "integration/dataqual15/LEGACY_SOLUTE_GUARD_RECONCILIATION.json"
+  },
+  "O0_O2_exact_original_days": 367,
+  "selected": [
+    "O0/O2 current native original Grassgrowth from day1 through variable groundwater and first management boundary",
+    "Same-build disk restart across changing groundwater",
+    "Existing groundwater/default/oxygen preservation"
+  ],
+  "exact_year_transition": "365->367 checkpoint and daily budgets/crop byte exact",
+  "native_disk_restart_20261102": {
+    "management_prefix_120_result": {
+      "status": "PASS",
+      "O0_seconds": 114.04410229995847,
+      "O2_seconds": 92.1249489999609,
+      "original_days": 120,
+      "checkpoint117_captured": true,
+      "source_bound_117_to120_exact": true,
+      "invalid_streams_per_build": 11,
+      "active_compatibility_control": true,
+      "O0_O2_physical_payload_and_outputs": "BYTE_EXACT",
+      "independent_water_residual_cm": 3.7941871866564725e-14,
+      "whole_scientific_equivalence": false
+    },
+    "linux_preservation": {
+      "run_id": 41413503370,
+      "job_id": 125171738772,
+      "head": "550a2f3b5bc5de743d5e518e120b25dfcb0c4ef1",
+      "conclusion": "success",
+      "scope": "Native publication/CRC controls and real original1->3 same-build disk restart O0/O2",
+      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41413503370"
+    },
+    "canonical_receipt": "integration/dataqual15/NATIVE_RESTART_CANONICAL_RECEIPT.json",
+    "qualified": true,
+    "windows_fsync_blocker": "RESOLVED for the qualified native Grassgrowth route",
     "test_selection": {
       "scientific_claim": "Native platform publication and three original days, exact1->3 joint disk restart, all applicable short-stream corruptions",
       "owner": "RT/VQ DATAQUAL15 application",
@@ -476,36 +469,16 @@
         "not_selected": "Full1827-day rerun, new physics, tolerance changes, full F-CI"
       }
     },
-    "next_action": "Proceed under separate source-bound workunits with Andelst contact and full physical energy. Preserve immutable B0 and distinguish a model change from an ADR0005 numerical correction. Bind existing whole-column energy owners before creating new accounting.",
-    "blockers": [
-      "Whole scientific equivalence/full physical energy remain OPEN; legacy MC-SOL01 source-bound failures are retained in the canonical receipt.",
-      "Other POSIX-only adapters and legacy Fortran CRC consumers are not qualified by this Grassgrowth admission."
-    ],
-    "canonical_admitted": true,
-    "compiler_crc_diagnosis": {
-      "compiler": "GNU Fortran16.2 MSYS2 Windows",
-      "isolated_source": "Exact crc32 routine extracted from src/adapter/mod_age_joint_restart_file.f90, tested on the223790-byte real pending stream",
-      "O0": "PASS CRC93EBD5C8",
-      "O2": "TIMEOUT10s; repeated3s controls with no bounds checking and no vectorization also TIMEOUT",
-      "O2_no_tree_loop_optimize": "PASS0.142s CRC93EBD5C8; diagnostic only, not final model flags",
-      "repair": "Grass codec uses native C unsigned CRC-32/ISO-HDLC behind its existing local integer32 representation; no format change or shared scientific source mutation.17 independent zlib vectors per build include the real stream length.",
-      "remaining_shared_scope": "Other legacy Fortran CRC consumers are not changed or automatically qualified by this bounded Grass adapter repair."
+    "contract": {
+      "owner": "Application I/O adapter only; no kernel/physical/committed-state owner",
+      "precondition": "Closed complete CRC-protected stream in a sibling pending file",
+      "windows": "CreateFileW(GENERIC_WRITE) + FlushFileBuffers + CloseHandle + MoveFileExW(REPLACE_EXISTING|WRITE_THROUGH); UTF-8 paths; no copy/delete fallback; at most21 replace attempts with20x10ms waits for access/sharing/lock errors, then fail closed without copy/delete",
+      "posix": "Open destination parent, fsync pending file, close, rename, fsync destination parent, close; nested destinations use their real parent",
+      "failure": "Never acknowledge durable success after any failed stage; before rename the previous file remains. A post-rename directory-sync failure returns failure without attempting to roll back the name.",
+      "format": "S5GRS003 bytes and physical/crop/root/management semantics unchanged",
+      "limitations": "OS/API durability contract only; no simulated power-loss/hardware-cache/OneDrive-cloud durability proof; same-build and same-platform codec, not binary cross-platform portability"
     },
-    "snapshot_observer_diagnosis": "This Windows filesystem returns AccessDenied while a target reader is open even with FILE_SHARE_DELETE. Native control now proves permanent lock rejection and bounded wait for a30ms reader, with old-reader bytes and new-name bytes exact. This is I/O retry only; solver/physics policy is unchanged.",
-    "management_prefix_120_result": {
-      "status": "PASS",
-      "O0_seconds": 114.04410229995847,
-      "O2_seconds": 92.1249489999609,
-      "original_days": 120,
-      "checkpoint117_captured": true,
-      "source_bound_117_to120_exact": true,
-      "invalid_streams_per_build": 11,
-      "active_compatibility_control": true,
-      "O0_O2_physical_payload_and_outputs": "BYTE_EXACT",
-      "independent_water_residual_cm": 3.7941871866564725e-14,
-      "whole_scientific_equivalence": false
-    },
-    "qualified_scope": "Branch-local Windows GNU Fortran16.2 same-build original Grassgrowth1->120->367; exact117->120 and365->367 disk restart, O0/O2 physical payload/output identity and11 corruption guards per build. Linux GNU Fortran13 O0/O2 three-day preservation at550a2f3b5. Not full1827, full energy, whole-model equivalence or canonical admission.",
+    "branch": "codex/swap5-migration-20261102",
     "year_boundary_result": {
       "status": "PASS",
       "original_days": 367,
@@ -517,14 +490,16 @@
       "O0_O2_physical_payload_and_outputs": "BYTE_EXACT",
       "independent_water_residual_cm": 3.7941871866564725e-14
     },
-    "linux_preservation": {
-      "run_id": 41413503370,
-      "job_id": 125171738772,
-      "head": "550a2f3b5bc5de743d5e518e120b25dfcb0c4ef1",
-      "conclusion": "success",
-      "scope": "Native publication/CRC controls and real original1->3 same-build disk restart O0/O2",
-      "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41413503370"
-    },
+    "canonical_base": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+    "canonical_admitted": true,
+    "qualified_scope": "Branch-local Windows GNU Fortran16.2 same-build original Grassgrowth1->120->367; exact117->120 and365->367 disk restart, O0/O2 physical payload/output identity and11 corruption guards per build. Linux GNU Fortran13 O0/O2 three-day preservation at550a2f3b5. Not full1827, full energy, whole-model equivalence or canonical admission.",
+    "canonical_merge": "bf99820474cad117b60b1d1285dd32c0db905495",
+    "work_unit": "DATAQUAL15-WP0-NATIVE-DISK-RESTART",
+    "persisted": "Implementation checkpoint containing this record",
+    "blockers": [
+      "Whole scientific equivalence/full physical energy remain OPEN; legacy MC-SOL01 source-bound failures are retained in the canonical receipt.",
+      "Other POSIX-only adapters and legacy Fortran CRC consumers are not qualified by this Grassgrowth admission."
+    ],
     "evidence": {
       "path": "integration/dataqual15/NATIVE_DISK_RESTART_EVIDENCE_20261102.tar.xz",
       "sha256": "00c02191754736923125a34cf44e6a631e3d70fd86231dac2ebb616ee7e5f288",
@@ -532,13 +507,26 @@
       "files": 3164,
       "verifier": "tests/dataqual15/verify_native_restart_evidence.py"
     },
-    "documentation_checks": {
-      "source": "PASS",
-      "mkdocs_strict": "PASS31.47seconds on final documentation",
-      "page": "docs/audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md"
-    },
     "recovery_point": "Scientific/native source550a2f3b5 and qualification62e890cbf; sealed evidence checkpoint containing this record",
-    "windows_fsync_blocker": "RESOLVED for the qualified native Grassgrowth route",
+    "invariants_affected": [
+      2,
+      3,
+      7,
+      13,
+      25,
+      26
+    ],
+    "tested": "Native C publication, transient/permanent locks,17 CRC vectors O0/O2 PASS; original Windows source-contiguous367 days and two exact disk-restart boundaries O0/O2 PASS;22 invalid-stream executions PASS.",
+    "compiler_crc_diagnosis": {
+      "compiler": "GNU Fortran16.2 MSYS2 Windows",
+      "isolated_source": "Exact crc32 routine extracted from src/adapter/mod_age_joint_restart_file.f90, tested on the223790-byte real pending stream",
+      "O0": "PASS CRC93EBD5C8",
+      "O2": "TIMEOUT10s; repeated3s controls with no bounds checking and no vectorization also TIMEOUT",
+      "O2_no_tree_loop_optimize": "PASS0.142s CRC93EBD5C8; diagnostic only, not final model flags",
+      "repair": "Grass codec uses native C unsigned CRC-32/ISO-HDLC behind its existing local integer32 representation; no format change or shared scientific source mutation.17 independent zlib vectors per build include the real stream length.",
+      "remaining_shared_scope": "Other legacy Fortran CRC consumers are not changed or automatically qualified by this bounded Grass adapter repair."
+    },
+    "baseline": "ed91871e98ef5f0ba64ccd25e7c9e18cfc173209",
     "sealed_evidence_verification": {
       "status": "PASS",
       "candidate": "d05b34f4c",
@@ -548,109 +536,14 @@
       "scope": "Archive manifest, current-build source/object/archive/executable/input identities, real367-day ledgers, exact restart boundaries and O0/O2 physical outputs; archived binaries are never executed",
       "environment_note": "First managed-sandbox TEMP extraction failed with permission denied; setting TEMP/TMP to the writable workspace parent completed the identical persisted verifier. Model sources and archived evidence were unchanged."
     },
+    "dependency_surface": [
+      "Application publication and Fortran close errors",
+      "S5GRS003 decoder/encoder and application.binding",
+      "Original project inputs",
+      "Build recipe, original TTUTIL utilities, native compiler and executable",
+      "Existing real Richards/water/heat/crop/root composition"
+    ],
     "admission": {
-      "predecessor": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
-      "production_delta": {
-        "app/solute_project/prepare_rain_duration.f90": {
-          "before": "18dc5b61d5f31563cfdd20208e9368c68378743d",
-          "after": "4de070ccb16a654989322a3cc42b08bf13a89c7f"
-        },
-        "app/grass_project/restart_file.f90": {
-          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
-          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
-        },
-        "app/support/restart_publish.c": {
-          "before": null,
-          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
-        },
-        "src/process/mod_whole_column_sensible_energy_accounting.f90": {
-          "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
-          "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
-        },
-        "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
-          "before": null,
-          "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
-        },
-        "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
-          "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
-          "after": "808874309456031ff65d620d54db55f478456d0a"
-        },
-        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
-          "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
-          "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
-        }
-      },
-      "preservation_restore": {
-        "app/solute_project/prepare_rain_duration.f90": {
-          "before": "18dc5b61d5f31563cfdd20208e9368c68378743d",
-          "after": "4de070ccb16a654989322a3cc42b08bf13a89c7f"
-        },
-        "app/grass_project/restart_file.f90": {
-          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
-          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
-        },
-        "app/support/restart_publish.c": {
-          "before": null,
-          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
-        },
-        "tools/solute/build_grass_startup.py": {
-          "before": "242692502b99be1c5f62484e571d4cfd3c196818",
-          "after": "88c839ab5b9fc8f97ae393362ae4ee144f325c00"
-        },
-        "tools/solute/build_grass_diagnostic.py": {
-          "before": "6a950fb202dc002a9ae46e4ccd1b0c9a71d5906e",
-          "after": "e376f32812f47a99d1cf16ebef4ca5c3f819322d"
-        },
-        "tests/dataqual15/qualify_restart.py": {
-          "before": "f3d9d8c1ed375f956b4495be4ab4503e8f51d1bf",
-          "after": "3039b449c2a556c595a3c626fe47d9841388b5a7"
-        },
-        "tests/dataqual15/run_original.py": {
-          "before": "7fa6dc10793e7f03b64b4c7c00891b4522796dac",
-          "after": "a3b5f5238c40bdf7d7752666468070f176ac4650"
-        },
-        "src/process/mod_whole_column_sensible_energy_accounting.f90": {
-          "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
-          "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
-        },
-        "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
-          "before": null,
-          "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
-        },
-        "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
-          "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
-          "after": "808874309456031ff65d620d54db55f478456d0a"
-        },
-        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
-          "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
-          "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
-        }
-      },
-      "predecessor_production_trees": {
-        "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
-        "app": "2714b206bea297852e6bbb9a58f792da4862838b",
-        "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
-      },
-      "gate_source_sha256": {
-        "tests/dataqual15/verify_native_restart_admission.py": "cd7bab440de9e5d6d6ffff1e9ba2b56dcc37392bb6b4659c1f2ea3250581592e",
-        "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
-        "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77",
-        "tests/dataqual15/verify_stock_projection_production.py": "464a35c7bfb5fb8bf54453b74f9693ce23c4c25271d859b6e44809cd0be08dcc",
-        "tests/dataqual15/qualify_stock_projection_production.py": "3b6d8db57461261bf3fb2bb72ae72069fe32248275bfb5399191003f98491b5b",
-        "tests/dataqual15/verify_stock_runtime_production.py": "52076f9a5aa13078139b1e39ed68381f43ce706993b397c066a2f2df6b6ae28c",
-        "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c",
-        "tests/dataqual15/verify_thermal_receipts.py": "3fed149f12f7aea7845270f2bba38e26ad3cad9398016ba23560386b150af12e"
-      },
-      "scope": "Exact native I/O successor plus separately qualified numerical sensible-stock comparison owner. Predecessor physics remains historical; no whole physical energy or current1827-day promotion.",
-      "test_selection": {
-        "expected_seconds": 600,
-        "authority": "docs/development/workstream-execution-protocol.md#autonomous-long-session-execution-standard-2026-10-08",
-        "owner": "REGIE/RT/VQ",
-        "changed_dependency": "Application I/O and exact build recipe; src/reference trees and physical driver unchanged",
-        "existing_evidence": "Native Windows367-day/O0/O2 and Linux native3-day proof already PASS; closed source predecessors must be revalidated unmodified in exact committed tree.",
-        "prior_execution": "NONE",
-        "full_fci": "NOT_SELECTED: no shared physical source or driver change; current closed F-CI feedback is composed explicitly with predecessor and current native I/O gates. No full-moving PASS inferred."
-      },
       "status": "CANONICALLY_ADMITTED_BOUNDED_IO_AND_NUMERICAL_STOCK_OWNER",
       "local_qualification": {
         "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
@@ -699,12 +592,7 @@
         "full_current1827_execution": false,
         "whole_scientific_qualification": false
       },
-      "negative_controls": {
-        "tests": 8,
-        "result": "PASS",
-        "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
-        "scope": "Actual Git: unknown physics/codec/recipe/gate drift and dirty/untracked production fail closed; committed predecessor projection is exact and current remains unchanged."
-      },
+      "scope": "Exact native I/O successor plus separately qualified numerical sensible-stock comparison owner. Predecessor physics remains historical; no whole physical energy or current1827-day promotion.",
       "sensible_stock_owner_admission": {
         "verifier": "tests/dataqual15/verify_stock_runtime_production.py",
         "record": "integration/dataqual15/STOCK_PROJECTION_PRODUCTION_20261102.json",
@@ -712,56 +600,151 @@
         "merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
         "receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
       },
+      "predecessor": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+      "test_selection": {
+        "expected_seconds": 600,
+        "authority": "docs/development/workstream-execution-protocol.md#autonomous-long-session-execution-standard-2026-10-08",
+        "owner": "REGIE/RT/VQ",
+        "changed_dependency": "Application I/O and exact build recipe; src/reference trees and physical driver unchanged",
+        "existing_evidence": "Native Windows367-day/O0/O2 and Linux native3-day proof already PASS; closed source predecessors must be revalidated unmodified in exact committed tree.",
+        "prior_execution": "NONE",
+        "full_fci": "NOT_SELECTED: no shared physical source or driver change; current closed F-CI feedback is composed explicitly with predecessor and current native I/O gates. No full-moving PASS inferred."
+      },
+      "negative_controls": {
+        "tests": 8,
+        "result": "PASS",
+        "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
+        "scope": "Actual Git: unknown physics/codec/recipe/gate drift and dirty/untracked production fail closed; committed predecessor projection is exact and current remains unchanged."
+      },
       "thermal_observation_successor": {
         "record": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json",
         "verifier": "tests/dataqual15/verify_thermal_receipts.py",
         "scope": "Fresh current runtime observations and unchanged I23/I24/I25 oracles; inherited full scientific evidence remains exact predecessor only, no complete physical-energy claim"
+      },
+      "preservation_restore": {
+        "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
+          "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
+          "after": "808874309456031ff65d620d54db55f478456d0a"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
+          "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
+        },
+        "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
+          "before": null,
+          "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
+        },
+        "app/solute_project/inspect_historical.f90": {
+          "before": "0855b4014e18b32475d1d4a18c18d477413c0b7c",
+          "after": "85933351e9a2bb1e3830485a0e3eb345a4369141"
+        },
+        "src/process/mod_whole_column_sensible_energy_accounting.f90": {
+          "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+          "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
+        },
+        "app/grass_project/restart_file.f90": {
+          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
+          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
+        },
+        "app/solute_project/prepare_rain_duration.f90": {
+          "before": "18dc5b61d5f31563cfdd20208e9368c68378743d",
+          "after": "4de070ccb16a654989322a3cc42b08bf13a89c7f"
+        },
+        "tools/solute/build_grass_startup.py": {
+          "before": "242692502b99be1c5f62484e571d4cfd3c196818",
+          "after": "88c839ab5b9fc8f97ae393362ae4ee144f325c00"
+        },
+        "tests/dataqual15/run_original.py": {
+          "before": "7fa6dc10793e7f03b64b4c7c00891b4522796dac",
+          "after": "a3b5f5238c40bdf7d7752666468070f176ac4650"
+        },
+        "tests/dataqual15/qualify_restart.py": {
+          "before": "f3d9d8c1ed375f956b4495be4ab4503e8f51d1bf",
+          "after": "3039b449c2a556c595a3c626fe47d9841388b5a7"
+        },
+        "tools/solute/build_grass_diagnostic.py": {
+          "before": "6a950fb202dc002a9ae46e4ccd1b0c9a71d5906e",
+          "after": "e376f32812f47a99d1cf16ebef4ca5c3f819322d"
+        },
+        "app/support/restart_publish.c": {
+          "before": null,
+          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        }
+      },
+      "production_delta": {
+        "app/grass_project/restart_file.f90": {
+          "before": "068608b622b1f7046d20b3ec102c8832c2bca9d4",
+          "after": "0f4b425ed0818bf51d21de2fa6b4cdff35a6ee28"
+        },
+        "app/solute_project/prepare_rain_duration.f90": {
+          "before": "18dc5b61d5f31563cfdd20208e9368c68378743d",
+          "after": "4de070ccb16a654989322a3cc42b08bf13a89c7f"
+        },
+        "src/runtime/mod_fmr_water_flux_trace_contract.f90": {
+          "before": "623ceb4196b84ef11d3e3e58979e730596e02d7b",
+          "after": "808874309456031ff65d620d54db55f478456d0a"
+        },
+        "src/runtime/mod_fmr_thermal_substep_receipt.f90": {
+          "before": null,
+          "after": "b3b41f47956aaabf53ed7d7d192f5e0545e2c3a1"
+        },
+        "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+          "before": "722e2faedd019781423d8d444f40854da9ab6cf9",
+          "after": "a6ff0ff33124929424d95edff42ac5c5ce6629b6"
+        },
+        "app/solute_project/inspect_historical.f90": {
+          "before": "0855b4014e18b32475d1d4a18c18d477413c0b7c",
+          "after": "85933351e9a2bb1e3830485a0e3eb345a4369141"
+        },
+        "src/process/mod_whole_column_sensible_energy_accounting.f90": {
+          "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+          "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
+        },
+        "app/support/restart_publish.c": {
+          "before": null,
+          "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        }
+      },
+      "predecessor_production_trees": {
+        "src": "1855808ffefc49c9b7fbecdbcd8a01dcb97f48f3",
+        "app": "2714b206bea297852e6bbb9a58f792da4862838b",
+        "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+      },
+      "gate_source_sha256": {
+        "tests/dataqual15/verify_stock_projection_production.py": "464a35c7bfb5fb8bf54453b74f9693ce23c4c25271d859b6e44809cd0be08dcc",
+        "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
+        "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c",
+        "tests/dataqual15/verify_thermal_receipts.py": "5380a197c6e4199f06f0c52775bc8351473b7ee91bcb92cc08fb51b418f4590c",
+        "tests/dataqual15/qualify_stock_projection_production.py": "3b6d8db57461261bf3fb2bb72ae72069fe32248275bfb5399191003f98491b5b",
+        "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77",
+        "tests/dataqual15/verify_native_restart_admission.py": "cd7bab440de9e5d6d6ffff1e9ba2b56dcc37392bb6b4659c1f2ea3250581592e",
+        "tests/dataqual15/verify_stock_runtime_production.py": "295b44c5bf2bdc713a2cc6cab992a70d2b61f1ce26ad4666bf4854a36ef733ea"
       }
     },
-    "canonical_merge": "bf99820474cad117b60b1d1285dd32c0db905495",
-    "canonical_receipt": "integration/dataqual15/NATIVE_RESTART_CANONICAL_RECEIPT.json"
-  },
-  "contact_energy_diagnostics_20261102": {
-    "scope": "CURRENT_OWNER_DIAGNOSTICS_ONLY",
-    "result": "integration/dataqual15/CONTACT_ENERGY_RESULT_20261102.json",
-    "report": "docs/audits/DATAQUAL15_CONTACT_ENERGY_20261102.md",
-    "windows_O0_O2_exact": true,
-    "contact_repair_implemented": false,
-    "full_energy_balance_complete": false,
-    "canonical_admitted": true,
-    "next": "stock summation numerical correction; explicit theta and donor-energy contracts; coupled contact treatment",
-    "canonical_scope": "Diagnostic dossier and isolated candidate only; no production correction installed",
-    "merge": "ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8",
-    "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json"
-  },
-  "stock_projection_production_20261102": {
-    "base": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
-    "stage": "CANONICALLY_ADMITTED_NUMERICAL_OWNER_AND_RUNTIME_PRESERVATION",
-    "module": "src/process/mod_whole_column_sensible_energy_accounting.f90",
-    "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
-    "after": "1e8761e09e24d247991832d582a77b8903ebdc5b",
-    "interfaces_changed": false,
-    "physical_equations_changed": false,
-    "full_energy_balance_complete": false,
-    "test_selection": {
-      "expected_seconds": 360,
-      "scope": "Stock432 profiles,1J negative control, EB-I22/VQ88 and current186-provider EB-I23/I24/I25 oracles O0/O2. Runtime closure specifically selected because shared public boundary type participates in all three wrappers; original outflow fixture attribution and strict negative energy-authority assertion reconciled.",
-      "next": "Persist, qualify current owner, seal source-bound evidence; original immutable contact/stock experiments execute in exact committed predecessor view."
+    "next_action": "Proceed under separate source-bound workunits with Andelst contact and full physical energy. Preserve immutable B0 and distinguish a model change from an ADR0005 numerical correction. Bind existing whole-column energy owners before creating new accounting.",
+    "documentation_checks": {
+      "source": "PASS",
+      "mkdocs_strict": "PASS31.47seconds on final documentation",
+      "page": "docs/audits/DATAQUAL15_NATIVE_DISK_RESTART_20261102.md"
     },
-    "runtime_fixture_attribution": "Original I25 outflow test failure reproduced with baseline stock owner on identical current objects. Water accepted, mass residual-2.22e-16; energy top status5/unavailable. Test now asserts existing documented outflow fail-closed branch rather than accidental historical water rejection; no runtime physics change.",
-    "local_native_preservation": {
-      "status": "PASS",
-      "record": "../stock-production-admission-01/RESULT.json",
-      "source_checkpoint": "15823e137c95ee2ea937fd9f68b5a73ca46012fb",
-      "controls": 10
-    },
-    "runtime_record": "integration/dataqual15/STOCK_RUNTIME_PRODUCTION_20261103.json",
-    "report": "docs/audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md",
-    "canonical_admitted": true,
-    "next_action": "Actual accepted interval thermal/donor receipts; explicit conservative original Andelst sharp/contact treatment; reconcile separately owned draft1485 physical fixes before qualifying them.",
-    "canonical_merge": "c9ed8c8ca7ec9347c2b4319836036b061243c184",
-    "canonical_receipt": "integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json"
+    "implemented": true,
+    "relevant_paths": [
+      "app/support/restart_publish.c",
+      "app/grass_project/restart_file.f90",
+      "tools/solute/build_grass_startup.py",
+      "tools/solute/build_grass_diagnostic.py",
+      "tests/dataqual15/test_restart_publication.py",
+      "tests/dataqual15/qualify_native_disk_restart.py",
+      "tests/dataqual15/run_original.py"
+    ],
+    "snapshot_observer_diagnosis": "This Windows filesystem returns AccessDenied while a target reader is open even with FILE_SHARE_DELETE. Native control now proves permanent lock rejection and bounded wait for a30ms reader, with old-reader bytes and new-name bytes exact. This is I/O retry only; solver/physics policy is unchanged."
   },
+  "canonical_merge": "3170aa1783872b90f121550803f5bfaaf902b0e8",
+  "docs_checks": {
+    "source": "PASS",
+    "mkdocs_strict": "PASS14.60sec; existing INFO anchor diagnostics, no strict warning failure"
+  },
+  "stage": "FULL_ORIGINAL_EXECUTION_PASS_SCIENTIFIC_ATTRIBUTION_MEASURED_THERMAL_RESOLUTION_OPEN",
   "contact_physical_energy_research_20261103": {
     "status": "BOUNDED_RESEARCH_AND_EXACT_COMPOSED_GUARD_CANONICALLY_ADMITTED",
     "receipt": "integration/dataqual15/CONTACT_PHYSICAL_CANONICAL_RECEIPT_20261103.json",
@@ -772,5 +755,30 @@
     "whole_scientific_qualification": false,
     "next": "actual nonlinear contact/macro transactional publication; accepted native thermal/phase receipts and gas/atmospheric owners",
     "guard_successor_pr": 1490
-  }
+  },
+  "record_scope": "Current full-period authority and follow-up are explicit below. Earlier build, interrupted-prefix and merge fields retain historical521-day provenance, not current execution limits.",
+  "candidate_source_commit": "76d41a0",
+  "completed_original_projects": 1,
+  "runtime_interruption": "Processes absent after user-turn recovery; checkpoint chain original1->438->521 verified unchanged, native exit statuses of interrupted segments UNKNOWN; continuing to1827.",
+  "baseline": "d541180b32df692fa67c5fc795cc6b15e6812ed6",
+  "invariants": [
+    "No tolerance or solver budget change",
+    "Trial endpoint table sample is pure; rejected trials retain state",
+    "Original input bytes retained"
+  ],
+  "implemented_blocks": [
+    "Source BBC actual per-trial endpoint callback",
+    "Moving-groundwater algebraic temporal metric repair",
+    "Fixed-date mowing actual/potential",
+    "Separate actual/potential regrowth continuation",
+    "Full LAIEXP compatibility persistence",
+    "Original annual crop/root reset and calendar day-of-year"
+  ],
+  "published_identical_tree_commit": "05e4fad65c4e2ff931c00aa3851984e4cad2119d",
+  "not_selected": [
+    "full FCI unless affected owner scope requires it",
+    "highest low air stress",
+    "repeated long Andelst stall"
+  ],
+  "canonical_admitted": true
 }

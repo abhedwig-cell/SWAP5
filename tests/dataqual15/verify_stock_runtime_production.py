@@ -30,6 +30,12 @@ def verify():
                         ('HEAD','4de070ccb16a654989322a3cc42b08bf13a89c7f')):
             assert subprocess.check_output(['git','rev-parse',ref+':'+rain],cwd=ROOT,text=True).strip()==pin, rain
         allowed.add(rain)
+    inspect='app/solute_project/inspect_historical.f90'
+    if inspect in changed:
+        for ref,pin in ((BASE,'0855b4014e18b32475d1d4a18c18d477413c0b7c'),
+                        ('HEAD','85933351e9a2bb1e3830485a0e3eb345a4369141')):
+            assert subprocess.check_output(['git','rev-parse',ref+':'+inspect],cwd=ROOT,text=True).strip()==pin, inspect
+        allowed.add(inspect)
     assert set(changed)==allowed, 'unreviewed physical production delta'
     assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT)
     assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','src','app','reference'],cwd=ROOT)

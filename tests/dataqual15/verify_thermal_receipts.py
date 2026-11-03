@@ -15,7 +15,13 @@ def verify():
     assert record['baseline']=='538fb025e8702d4dd609bc30cc347743a0587145'
     assert record['status']=='ACTUAL_THERMAL_RECEIPTS_O0_O2_AND_EXISTING_EB_RUNTIME_PASS'
     assert record['full_energy_balance_complete'] is False
-    assert set(subprocess.check_output(['git','diff','--name-only',record['baseline'],'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines())==set(record['production_delta'])
+    allowed=set(record['production_delta'])
+    for path,adapter in record.get('independent_adapters',{}).items():
+        subprocess.run(['git','merge-base','--is-ancestor',adapter['admitted_merge'],'HEAD'],cwd=ROOT,check=True)
+        for ref,pin in ((record['baseline'],adapter['before']),('HEAD',adapter['after'])):
+            assert subprocess.check_output(['git','rev-parse',ref+':'+path],cwd=ROOT,text=True).strip()==pin,path
+        allowed.add(path)
+    assert set(subprocess.check_output(['git','diff','--name-only',record['baseline'],'HEAD','--','src','app','reference'],cwd=ROOT,text=True).splitlines())==allowed
     for path,pins in record['production_delta'].items():
         old=subprocess.run(['git','rev-parse',record['baseline']+':'+path],cwd=ROOT,capture_output=True,text=True)
         assert (old.stdout.strip() if old.returncode==0 else None)==pins['before'],path

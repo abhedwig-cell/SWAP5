@@ -25,7 +25,9 @@ def verify():
     allowed=set()
     if (ROOT/'integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json').exists():
         from verify_thermal_receipts import verify as verify_thermal
-        allowed.update(verify_thermal()['production_delta'])
+        thermal=verify_thermal()
+        allowed.update(thermal['production_delta'])
+        allowed.update(thermal.get('independent_adapters',{}))
     if rain in changed:
         allowed.add(rain)
         subprocess.run(['git','merge-base','--is-ancestor','d37a9ba2f09e8ea65168b0f87cd6691ad372536f','HEAD'],cwd=ROOT,check=True)
