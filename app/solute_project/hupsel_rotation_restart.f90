@@ -36,7 +36,7 @@ module mod_hupsel_rotation_restart
    import c_int
    integer(c_int),value::fd
   end function
-  integer(c_int) function rename_c(old,new)bind(C,name='rename')
+  integer(c_int) function rename_c(old,new)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::old(*),new(*)
   end function
@@ -152,10 +152,6 @@ contains
    write(u,iostat=io)crc;close(u)
   end if
   if(io/=0)then;call remove_file(pending);return;end if
-  fd=open_c(pending//c_null_char,0_c_int)
-  if(fd<0)then;call remove_file(pending);return;end if
-  rc=fsync_c(fd);code=close_c(fd)
-  if(rc/=0)then;call remove_file(pending);return;end if
   rc=rename_c(pending//c_null_char,trim(path)//c_null_char)
   if(rc/=0)then;call remove_file(pending);return;end if
   status=0

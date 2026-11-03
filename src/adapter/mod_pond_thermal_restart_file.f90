@@ -23,7 +23,7 @@ module mod_pond_thermal_restart_file
  private
  public::write_pond_thermal_restart,read_pond_thermal_restart
  interface
-  integer(c_int) function rename_c(a,b)bind(C,name='rename')
+  integer(c_int) function rename_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
   end function
@@ -206,12 +206,7 @@ contains
    write(u,iostat=io)crc32(a);if(io/=0)exit writing
    flush(u,iostat=io);if(io/=0)exit writing
    close(u,iostat=io);if(io/=0)exit writing
-   if(synchronize(pending)/=0)exit writing
    code=rename_c(pending//c_null_char,path//c_null_char);if(code/=0)exit writing
-   slash=index(path,'/',back=.true.);parent='.'
-   if(slash==1)parent='/'
-   if(slash>1)parent=path(:slash-1)
-   if(synchronize(parent)/=0)exit writing
    status=0
   end block writing
   inquire(unit=u,opened=opened)
