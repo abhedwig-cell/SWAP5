@@ -1,7 +1,7 @@
 {
   "baseline": "538fb025e8702d4dd609bc30cc347743a0587145",
   "branch": "codex/nonlinear-contact-thermal-receipts-20261103",
-  "stage": "WINDOWS_NONLINEAR_PAIR_AND_ACTUAL_NATIVE_THERMAL_O0_O2_PASS_LINUX_PENDING",
+  "stage": "WINDOWS_ALL_SELECTED_CHECKS_PASS_LINUX_QUALIFICATION_PENDING",
   "scope": "Actual nonlinear two-cell fixed-neighbour contact/real donor stock research; additive accepted thermal observations, actual112-node first-day source-input prefix; full native step/whole energy remain OPEN",
   "invariants": [
     "No original tolerance, entry law or default physical solver change",
@@ -35,5 +35,14 @@
   "native_windows_runs": {
     "O0": "../nonlinear-native-contact-O0-04",
     "O2": "../nonlinear-native-contact-O2-02"
+  },
+  "local_preservation": {
+    "record": "../nonlinear-observation-admission-02/RESULT.json",
+    "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+    "immutable_predecessor_science": "PASS",
+    "current_native_numerical_runtime_and_nonlinear_thermal_capsules": "PASS",
+    "source_admission_mutation_controls": 10,
+    "documentation_source_checks": "PASS",
+    "mkdocs_strict": "PASS"
   }
 }
