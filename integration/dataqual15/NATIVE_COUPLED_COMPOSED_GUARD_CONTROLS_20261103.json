@@ -1,0 +1,35 @@
+{
+  "status": "EXACT_ADMITTED_IO_ONLY_GUARD_CONTROLS_PASS",
+  "positive_log": "native-coupled-composed-guard.log",
+  "negative_cases": [
+    {
+      "name": "physical_claim",
+      "status": "REFUSED",
+      "returncode": 1,
+      "stderr_tail": [
+        "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "AssertionError"
+      ]
+    },
+    {
+      "name": "unknown_source",
+      "status": "REFUSED",
+      "returncode": 1,
+      "stderr_tail": [
+        "     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "AssertionError"
+      ]
+    },
+    {
+      "name": "wrong_after_pin",
+      "status": "REFUSED",
+      "returncode": 1,
+      "stderr_tail": [
+        "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+        "AssertionError: src/adapter/mod_age_joint_restart_file.f90"
+      ]
+    }
+  ],
+  "peer_scope_restored_exact": true,
+  "numerical_or_physical_options_changed": false
+}

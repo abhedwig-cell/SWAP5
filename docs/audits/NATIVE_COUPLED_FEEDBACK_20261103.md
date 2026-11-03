@@ -98,3 +98,18 @@ Current new-owner Linux gates pass. Central duplicate and canonical-push outcome
 are recorded individually in the canonical receipt, never conflated with science.
 Next scope is an explicitly named application/runtime continuation route and
 complete energy/data ownership; original production remains the reference model.
+
+A concurrent canonical advance through PR1496/1497 introduced an admitted Hupsel
+I/O successor. The final metadata push correctly refused a non-fast-forward.
+The reconciliation preserves both status updates and all original immutable
+archives. Only an exact four-file admitted I/O substitution is accepted by the
+research source guard; its sealed peer verifier remains mandatory. Physical
+claims, unknown files and wrong after-pins are separate refusal controls.
+The corrected research Fortran is unchanged. Rebuilt affected I/O providers and
+users (3, with204 verified providers reused) pass fresh Windows O0/O2 execution;
+fresh cold Linux207+153 and both small contract builds pass at composed merge
+`849e9a296`. Transaction output is identical to the original qualification.
+Only the last small O2 job was retried after a censored checkout. No mass,
+temporal, energy, physical-option or original-model requirement was relaxed.
+The composed receipt is
+`integration/dataqual15/NATIVE_COUPLED_COMPOSED_RECEIPT_20261103.json`.

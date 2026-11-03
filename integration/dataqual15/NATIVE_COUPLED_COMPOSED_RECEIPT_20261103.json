@@ -1,0 +1,103 @@
+{
+  "status": "COMPOSED_ADMITTED_IO_AND_CORRECTED_NATIVE_OWNER_QUALIFIED",
+  "original_pr": 1495,
+  "original_canonical_merge": "aa611d0ca87abecb077036c2985511f0e4224b50",
+  "overlapping_canonical": "e95499d7ad733dfc01828727764c299c6a250405",
+  "tested_composed_merge": "849e9a296b5bcb04aee4b43618499c35c8e0ee78",
+  "tested_production_trees": {
+    "src": "8a5f7a8b4e90b0219f76c46e584ae21a67d6a4fd",
+    "app": "d7e3ced2e7734a223a1c119da131b85aef874855",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "physical_or_numerical_change_by_reconciliation": false,
+  "own_research_source_unchanged": true,
+  "shared_io_successor": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "37b7222fcd522682a6de057461f2d175a841a5f7",
+      "after": "cc33c56d4b6a09462426ec200c5638e34daa8d53"
+    },
+    "app/solute_project/main.f90": {
+      "before": "8a27549054b818ae9015d0660c368878973c09db",
+      "after": "40cb5207d78e10b682344ac1a6d14be67a63558b"
+    },
+    "src/adapter/mod_age_joint_restart_file.f90": {
+      "before": "c035bd497a61209bbe4c66772261f0b63b7cbc16",
+      "after": "a3bed29cbc872d0d33a56e434667cfb3afbc9c41"
+    },
+    "src/adapter/mod_pond_thermal_restart_file.f90": {
+      "before": "c9418d4cdb8366e2069b0b03150526d625f522cd",
+      "after": "d25d8408bcdee96360ddd4f38defccf664762297"
+    }
+  },
+  "shared_io_scope_blob": "40c4084dffe40ccd6ec613897fe17e294d943149",
+  "shared_io_verifier_blob": "116821914fb129a5f7c24a775de04ac656853612",
+  "guard_successor_path": "tests/dataqual15/verify_native_coupled_evidence.py",
+  "guard_successor_blob": "e0c61dfd4228a4bef2dded4ee80a6d0baf5d344a",
+  "guard_controls": "NATIVE_COUPLED_COMPOSED_GUARD_CONTROLS_20261103.json",
+  "windows_native_O0_O2": "PASS fresh execution with3 changed modules/users rebuilt;204 unchanged verified providers reused",
+  "linux_native_O0_O2": "PASS fresh cold207+153 both",
+  "linux_contract_O0_O2": "PASS both on composed source",
+  "linux_run": 41705007996,
+  "linux_run_attempt": 2,
+  "retained_infrastructure_attempt": {
+    "job": 126157874234,
+    "stage": "Git checkout",
+    "science_execution": "NOT_STARTED",
+    "next": "Only cancelled job rerun; all four final jobs PASS"
+  },
+  "native_csv_exact_against_original_qualification": true,
+  "original_evidence_retained": true,
+  "original_outer_interval_accepted": false,
+  "fresh_process_application_continuation_qualified": false,
+  "full_physical_energy_complete": false,
+  "original_execution_count": "2/3",
+  "whole_scientific_qualification_count": "0/3",
+  "current_qualification_scope": "Corrected research complete window, initial macro LTE, independent measured water donors unavailable/inactive; unchanged numeric gates",
+  "evidence_sha256": {
+    "NATIVE_COUPLED_COMPOSED_WINDOWS_20261103.json": "f0e83050312a3dd0783e4bb4d8844b19b77fedc489d75538f64ffa4610f89d6b",
+    "NATIVE_COUPLED_COMPOSED_WINDOWS_20261103.tar.xz": "202905128b5c69577a43f902e668fbea69dffcafb276fd8d2864a71aa68f369e",
+    "NATIVE_COUPLED_COMPOSED_LINUX_20261103.json": "1b9ac356848a22f3845e7d4ec0a506eeb5220c1568a4571fc2d2888d33880422",
+    "NATIVE_COUPLED_COMPOSED_LINUX_20261103.tar.xz": "e57e24fc71f92ccca5c44b5f92e0ee8d7b3dffb60b6d3ffd7a0f2b6aac8ef7b0",
+    "NATIVE_COUPLED_COMPOSED_GUARD_CONTROLS_20261103.json": "e4b3f57f8d46bd0daa92bce6fa3fcfc42770bb185bbc2168001709eb1ae10faf"
+  },
+  "linux_workflow": {
+    "run_id": 41705007996,
+    "qualified_head": "849e9a296b5bcb04aee4b43618499c35c8e0ee78",
+    "run_attempt": 2,
+    "all_final_jobs_pass": true,
+    "jobs": [
+      {
+        "id": 126165599755,
+        "name": "real-heat-and-transaction (O2)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126165602013,
+        "name": "native-coupled (O0)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126165602960,
+        "name": "real-heat-and-transaction (O0)",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126165603764,
+        "name": "native-coupled (O2)",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "initial_checkout_cancelled_job": 126157874234
+  },
+  "evidence_sha256_basis": "Canonical LF Git blobs for JSON; exact binary bytes for archives",
+  "documentation_source_checks": "PASS",
+  "mkdocs_strict": "PASS",
+  "docs_logs_sha256": {
+    "native-coupled-composed-docs-check.log": "f1d4798e9e81b657a787f8dbb15d82f6b4f248d4827fce9ba9ccbeb9d424bf0e",
+    "native-coupled-composed-mkdocs.log": "0f109c48b9e4516d65879f27c3bc4a915bf9c82c28a7709938aaec5a42a4b231"
+  }
+}
