@@ -15,10 +15,11 @@
   "production_files": [
     "src/kernel/mod_kernel_transactions.f90",
     "src/runtime/mod_fmr_serialized_reference_backend.f90",
-    "app/solute_project/main.f90"
+    "app/solute_project/main.f90",
+    "app/solute_project/hupsel_rotation_restart.f90"
   ],
-  "next": "Compile and exercise actual backend endpoint path, then measure native cut930 and the other preregistered wet cuts; strict current-profile restart, corruption and O0/POSIX qualification before canonical integration. Existing preservation guards must continue to refuse this unqualified shared-source delta.",
-  "physical_correction_tested": false,
+  "next": "Finish O0 native four-cut pairs and POSIX actual kernel/owner/publication qualification; bind portable evidence and exact preservation before canonical admission.",
+  "physical_correction_tested": true,
   "production_admission": false,
   "canonical_admission": false,
   "actual_rutter_O2": {
@@ -40,6 +41,33 @@
     "end": 1034,
     "timeout_seconds": 2400,
     "previous_build_compatibility_control": "../canopy-endpoint-window-compat-933 passed without override; explicitly NOT same-build qualification",
-    "status": "RUNNING"
+    "status": "PASS_FROM_ORIGINAL_INPUTS_THROUGH_1034",
+    "seconds": 854.3804863
+  },
+  "status": "FOUR_NATIVE_WET_CUTS_O2_PASS_O0_AND_POSIX_QUALIFICATION_PENDING",
+  "actual_rutter_O0_O2": {
+    "directories": [
+      "../canopy-rutter-endpoint-final-O0",
+      "../canopy-rutter-endpoint-final-O2"
+    ],
+    "status": "PASS_COMPLETE_OWNER_BYTES_AND_LATE_JOINT_ABORT"
+  },
+  "four_native_cuts_O2": {
+    "directory": "../canopy-four-native-cuts-O2-02",
+    "status": "PASS",
+    "cuts": [
+      930,
+      956,
+      989,
+      1033
+    ],
+    "scope": "Same-day physical export, all other owner bytes exact, own-build strict restart, CRC-valid incoherent old checkpoint refused"
+  },
+  "corruption_O0_O2": {
+    "directories": [
+      "../canopy-coherent-corruption-O0",
+      "../canopy-coherent-corruption-O2-02"
+    ],
+    "status": "PASS_37_EACH"
   }
 }

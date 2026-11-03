@@ -1,0 +1,38 @@
+name: Hupsel canopy endpoint qualification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  posix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Actual kernel contract and incumbent interval O0 and O2
+        run: python3 -B tests/dataqual15_hupsel/qualify_kernel_endpoint.py --compiler "$(command -v gfortran-13)" --output "$RUNNER_TEMP/kernel-endpoint"
+      - name: Actual native composition, publication and corruptions O0 and O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler "$(command -v gfortran-13)" --optimization "$opt" --output "$RUNNER_TEMP/hupsel-$opt"
+            python3 -B tests/dataqual15_hupsel/qualify_rutter_endpoint.py --bundle "$RUNNER_TEMP/hupsel-$opt" --output "$RUNNER_TEMP/rutter-$opt"
+            python3 -B tests/dataqual15_hupsel/qualify_native_publication.py --bundle "$RUNNER_TEMP/hupsel-$opt" --output "$RUNNER_TEMP/publication-$opt"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel-canopy-endpoint-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/kernel-endpoint/
+            ${{ runner.temp }}/hupsel-*/BUILD.json
+            ${{ runner.temp }}/hupsel-*/EVENTS.json
+            ${{ runner.temp }}/hupsel-*/*.stderr
+            ${{ runner.temp }}/rutter-*/
+            ${{ runner.temp }}/publication-*/
+          retention-days: 14
