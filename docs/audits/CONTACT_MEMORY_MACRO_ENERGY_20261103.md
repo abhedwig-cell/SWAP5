@@ -120,3 +120,12 @@ Signed macro/matrix heat must enter both owners once; matrix feedback cannot be
 replaced by post-hoc stock correction. Separate gas/latent/radiation and phase
 receipts remain required. The research CSV replay does not constitute that
 transaction/publication/restart contract.
+
+
+All four canonical push workflows are terminal: ordinary canonical qualification
+and groundwater closeout pass. The two existing DATAQUAL12 frozen-inventory
+callers retain FAILURE. Their exact first predicate is false before and after
+this work (237/249 observed paths versus13 expected); no whole baseline workflow
+rerun is claimed. Exact jobs/errors and predicate controls are retained in the
+canonical receipt and failure/control records. All executable/source/test/
+workflow trees are unchanged by the final metadata/evidence checkpoint.

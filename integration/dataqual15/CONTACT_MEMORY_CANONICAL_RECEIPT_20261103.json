@@ -27,7 +27,45 @@
     "success": 19,
     "failure": 0
   },
-  "canonical_push_workflows": "PENDING",
+  "canonical_push_workflows": {
+    "all_terminal": true,
+    "counts": {
+      "failure": 2,
+      "success": 2
+    },
+    "runs": [
+      {
+        "id": 41670134797,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41670134797"
+      },
+      {
+        "id": 41670134851,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41670134851"
+      },
+      {
+        "id": 41670134783,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "failure",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41670134783"
+      },
+      {
+        "id": 41670135195,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success",
+        "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/41670135195"
+      }
+    ],
+    "failure_receipt": "integration/dataqual15/CONTACT_MEMORY_CANONICAL_FAILURES_20261103.json",
+    "failed_verdicts_retained": true
+  },
   "same_platform_O0_O2_exact": true,
   "cross_platform_contact_and_modeled_macro_thermal_records_exact_after_newline_normalization": true,
   "cross_platform_binary_restart_equivalence": false,
@@ -55,11 +93,19 @@
   "same_platform_restart_scope": "Unchanged ordinary first-day native prefix only; private corrected candidate was not committed",
   "evidence_sha256_basis": "Canonical LF Git blob content for JSON, exact binary bytes for archives",
   "evidence_sha256": {
+    "CONTACT_MEMORY_CANONICAL_FAILURES_20261103.json": "c462cabc7781dad124aff85eaf863d0b347f991b627c6def9b6ecef08d8c9ab3",
     "CONTACT_MEMORY_CANONICAL_GUARD_CONTROLS_20261103.json": "b340080220244ad95606337f394cb80524f22ec5311317e36f7a0ae32f38c0e3",
     "CONTACT_MEMORY_LINUX_EVIDENCE_20261103.json": "8ce509f72a76cb052fdf4290b832b4d0b0c21d1d9505c4dff91eafe32be2f1ce",
     "CONTACT_MEMORY_LINUX_EVIDENCE_20261103.tar.xz": "4fba118659eae20f8844b89e361c776047899d2e4e66ef43d5417bc84a3a90cd",
     "CONTACT_MEMORY_PR_CI_20261103.json": "c9581413446b9358281303823c30940cab3bb280ede549328cc799d1af3639dc",
     "CONTACT_MEMORY_WINDOWS_EVIDENCE_20261103.json": "6c4d10a9960382d845d10ce020596b36109a9b72398aeb90cc8d2150dc37888a",
     "CONTACT_MEMORY_WINDOWS_EVIDENCE_20261103.tar.xz": "fe1d9952ba6c1aa61d9996a5acd77ffd2b41ec4fe8d80f0c50869c8cc66bbe6e"
+  },
+  "final_checkpoint_kind": "METADATA_DOCUMENTATION_AND_SEALED_MEASURED_EVIDENCE_ONLY",
+  "documentation_source_checks": "PASS",
+  "mkdocs_strict": "PASS",
+  "local_docs_logs_sha256": {
+    "memory-thermal-final-doc-source.log": "f1d4798e9e81b657a787f8dbb15d82f6b4f248d4827fce9ba9ccbeb9d424bf0e",
+    "memory-thermal-final-mkdocs.log": "0f10202a8b0ea740a925ea33916178490da9e244b11f69d36ca74b97fbc80be1"
   }
 }
