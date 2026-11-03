@@ -36,7 +36,9 @@ def guard(record):
  assert set(record['frozen_assets'])==REQUIRED_ASSETS,'missing or unknown frozen authority'
  assert set(record['current_gate_sha256'])==CURRENT_GATES,'missing or unknown current gate'
  assert len(record['canonical_merges'])==2
+ subprocess.run(['git','merge-base','--is-ancestor',record['baseline'],'HEAD'],cwd=ROOT,check=True,capture_output=True)
  for name,pin in record['frozen_assets'].items():
+  assert blob(record['baseline'],name)==pin,'frozen origin drift: '+name
   assert blob('HEAD',name)==pin,name
   assert not git('diff','HEAD','--',name),'dirty admission asset: '+name
  for name,pin in record['current_gate_sha256'].items():
