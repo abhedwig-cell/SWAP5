@@ -64,6 +64,10 @@ program native_feedback_component
   model%water_trial=>water
   model%allow_source_proxies=k/=0;model%inject_feedback_failure=k==2
   model%rain_temperature=15d0;model%water_calls=0;model%feedback_calls=0;model%donor_refusals=0
+  select type(accepted)
+  type is(native_coupled_state_t)
+   accepted%source_proxy_policy=model%allow_source_proxies
+  end select
   if(k==3)then
    select type(accepted)
    type is(native_coupled_state_t)

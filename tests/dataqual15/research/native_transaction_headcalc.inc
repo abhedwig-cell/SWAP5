@@ -4,11 +4,15 @@ subroutine research_coupled_contact()
  type(a23bu_worker_context_t)::saved_context
  type(a23bu_solver_history_t)::saved_history
  type(native_coupled_model_t)::model
- type(native_coupled_state_t)::origin
+ type(native_coupled_state_t)::origin,restored
  class(transaction_state_t),allocatable::accepted
  type(transaction_result_t)::tx
  real(8)::saved_dt,pond_saved
- integer::u,kind,id,n
+ real(8),allocatable::saved_exchange(:)
+ logical::saved_flags(6)
+ character(64)::binding
+ character(40)::restart_path
+ integer::u,kind,id,n,restart_status
  if(research_logged.or.NN/=112.or.storage_rank/=0.or..not.provider_constitutive_active)return
  call research_action_witness()
  open(newunit=u,file="native-coupled-context.csv",status="replace")
@@ -30,6 +34,10 @@ subroutine research_coupled_contact()
  close(u)
  if(research_base_macro%geometry_config%top_node/=1)return
  if(pond_saved/=0d0.or.state%pondm1/=0d0)return
+ saved_exchange=provider_macropore_exchange
+ saved_flags=[provider_macropore_rate_active,provider_macropore_partition_evaluated, &
+  provider_tuple_valid,provider_tuple_from_candidate,provider_runoff_resolved,typed_bottom_invalid]
+ call get_command_argument(6,binding)
  n=numnod
  origin%head=state%hm1;origin%theta=state%thetm1;allocate(origin%area_dz(n))
  do id=1,n;origin%area_dz(id)=matrix_fraction(id)*grid_dz(id);end do
@@ -45,6 +53,7 @@ subroutine research_coupled_contact()
   model%rain_temperature=model%heat_forcing%air_temperature_c
   model%groundwater_temperature=origin%matrix_temperature(n)
   model%allow_source_proxies=kind/=0;model%inject_feedback_failure=kind==2
+  origin%source_proxy_policy=model%allow_source_proxies
   call origin%clone(accepted)
   if(kind==3)then
    select type(accepted)
@@ -64,6 +73,17 @@ subroutine research_coupled_contact()
        .not.accepted%macro%same_values(origin%macro).or.accepted%revision/=0.or.accepted%time/=origin%time)error stop 'coupled failed rollback'
    else
     if(kind>1)error stop 'unexpected coupled acceptance'
+    write(restart_path,'(a,i0,a)')'native-coupled-accepted-',kind,'.bin'
+    call write_native_coupled_restart(trim(restart_path),binding,accepted,restart_status)
+    if(restart_status/=0)error stop 'native coupled durable restart'
+    restored=origin
+    call read_native_coupled_restart(trim(restart_path),binding,restored,restart_status)
+    if(restart_status/=0)error stop 'native coupled typed restart read'
+    if(restored%revision/=accepted%revision.or.restored%time/=accepted%time.or. &
+      any(restored%head/=accepted%head).or.any(restored%theta/=accepted%theta).or. &
+      any(restored%matrix_temperature/=accepted%matrix_temperature).or.any(restored%macro_temperature/=accepted%macro_temperature).or. &
+      .not.restored%macro%same_values(accepted%macro))error stop 'native coupled restart equality'
+    write(u,'(a,a,i0)')'NATIVE_TYPED_DISK_RESTART_EXACT',',',kind
     do id=1,n
      write(u,'(a,a,i0,4(a,es25.17e3))')'ACCEPTED_NODE',',',id,',',accepted%head(id),',',accepted%theta(id), &
        ',',accepted%matrix_temperature(id),',',sum(accepted%macro%water_domain_cp(:,id))
@@ -72,6 +92,10 @@ subroutine research_coupled_contact()
   end select
  end do
  state=saved_state;fsi_ws=saved_workspace;ctx=saved_context;hist=saved_history;dt=saved_dt
+ provider_macropore_exchange=saved_exchange
+ provider_macropore_rate_active=saved_flags(1);provider_macropore_partition_evaluated=saved_flags(2)
+ provider_tuple_valid=saved_flags(3);provider_tuple_from_candidate=saved_flags(4)
+ provider_runoff_resolved=saved_flags(5);typed_bottom_invalid=saved_flags(6)
  call evaluation_context%macropore%set_candidate_pond_lateral(pond_saved)
  write(u,'(a)')'ORIGINAL_NATIVE_CONTEXT_RESTORED_EXPERIMENTAL_OWNER_SEPARATE'
  close(u)

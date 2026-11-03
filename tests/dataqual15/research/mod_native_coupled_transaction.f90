@@ -12,6 +12,7 @@ module mod_native_coupled_transaction
  character(len=*),parameter,public::NATIVE_COUPLED_MODEL_ID='ANDELST_ACTION_NATIVE_FEEDBACK_V1'
  type,extends(transaction_state_t),public::native_coupled_state_t
   character(len=64)::model_id=NATIVE_COUPLED_MODEL_ID
+  logical::source_proxy_policy=.false.
   integer(int64)::revision=0
   real(real64)::time=0d0
   real(real64),allocatable::head(:),theta(:),area_dz(:),matrix_temperature(:),macro_temperature(:,:)
@@ -64,7 +65,7 @@ contains
   allocate(native_coupled_state_t::copy)
   select type(copy)
   type is(native_coupled_state_t)
-   copy%model_id=self%model_id;copy%revision=self%revision;copy%time=self%time
+   copy%source_proxy_policy=self%source_proxy_policy;copy%model_id=self%model_id;copy%revision=self%revision;copy%time=self%time
    copy%head=self%head;copy%theta=self%theta;copy%area_dz=self%area_dz
    copy%matrix_temperature=self%matrix_temperature;copy%macro_temperature=self%macro_temperature;copy%macro=self%macro
   end select
@@ -87,6 +88,7 @@ contains
   select type(state)
   type is(native_coupled_state_t)
    if(state%model_id/=NATIVE_COUPLED_MODEL_ID.or.state%time/=t0)return
+   if(state%source_proxy_policy.neqv.self%allow_source_proxies)return
    n=size(state%head);nd=state%macro%num_domains
    h0%active_nodes=n;h0%pressure_head=state%head;h0%water_content=state%theta
    matrix0=state%matrix_temperature;macro0=state%macro_temperature;w0=state%macro%water_domain_cp
