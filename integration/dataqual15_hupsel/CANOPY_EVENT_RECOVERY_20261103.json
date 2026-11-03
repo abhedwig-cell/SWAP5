@@ -16,6 +16,13 @@
   "output_columns": ["accepted_canopy_stock_cm", "prepared_canopy_capacity_cm", "post_management_capacity_cm"],
   "measurement_required": "Actual original Hupsel accepted days around930,956,989,1033; compare pre/post cut index, stock and capacities, retain restart provenance",
   "build": "tests/dataqual15_hupsel/build_and_run.py; ../canopy-event-measurement-O2",
+  "initialization_diagnosis": {
+    "O2": "Short marker probe enters CRC in hupsel_germination initialization but never returns before cap",
+    "single_module_O0_control": "Only mod_age_joint_restart_file recompiled O0; same physical O2 objects pass CRC and initialization in0.8393seconds, then fail closed with diagnostic predecessor source checkpoint rejected",
+    "control_executable_sha256": "3796abdd98723c061f8e961e78263da3db4c15035c0df02e8fea8d815b3b8d0d",
+    "scope": "Diagnostic localization only; mixed-optimization control is not production qualification or a repair",
+    "next": "Discriminating real CRC-byte test before portable implementation repair; retain incompatible predecessor rejection and obtain compatible event provenance"
+  },
   "tested": false,
   "physical_correction": false,
   "canonical_admission": false
