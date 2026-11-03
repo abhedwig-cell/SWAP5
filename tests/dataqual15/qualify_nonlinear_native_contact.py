@@ -205,7 +205,7 @@ def main():
     assert max(float(r[6]) for r in trials[:3])-min(float(r[6]) for r in trials[:3])<1e-7
     assert 'NATIVE_STATE_UNCHANGED_NONLINEAR_PAIR_ONLY_FULL_STEP_OPEN' in contact
     folder,binding=case('actual-prefix')
-    cmd=[exe,'input.nml','-','1','input.swp','macro.nml',binding,'.01','anchored-cauchy','0.0001','experimental',
+    cmd=[exe,'input.nml','-','1','input.swp','macro.nml',binding,'1.0','anchored-cauchy','0.0001','experimental',
          'source-surface-demand','perched-jacobian','conservative-macro-storage']
     run(cmd,folder,'actual-prefix',timeout=90,env=dict(os.environ,SWAP5_RESEARCH_CONTACT='0'))
     rows=[l.split(',') for l in (folder/'actual-thermal.csv').read_text(encoding='utf-8').splitlines()]
