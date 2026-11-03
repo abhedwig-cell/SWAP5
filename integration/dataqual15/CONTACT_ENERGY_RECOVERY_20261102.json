@@ -63,6 +63,14 @@
     "full_energy_balance_complete": false
   },
   "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json",
+  "production_followup_20261103": {
+    "branch": "codex/energy-stock-production-20261102",
+    "stage": "WINDOWS_NUMERICAL_AND_RUNTIME_PASS_LINUX_PENDING",
+    "status_record": "integration/dataqual15/STATUS.json#stock_projection_production_20261102",
+    "report": "docs/audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md",
+    "scope": "Actual production numerical owner plus current EB runtime preservation; no physical energy/contact promotion",
+    "next_action": "Linux current owner/runtime and composed predecessor CI; exact-source admission; then accepted thermal interval receipts and explicit Andelst contact correction"
+  },
   "closure16_andelst_continuation": {
     "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
     "branch": "codex/closure16-andelst-native",

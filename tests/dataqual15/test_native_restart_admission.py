@@ -42,6 +42,22 @@ class Boundary(unittest.TestCase):
     def test_validator_drift_rejected(self):
         (self.root/'tests/gate.py').write_text('unbound gate\n')
         with self.assertRaises(AssertionError):m.guard(self.record)
+    def test_exact_accounting_extension_is_preserved_as_predecessor(self):
+        path='src/stock.f90';(self.root/path).write_text('reviewed stock comparison\n');self.commit()
+        pin=dict(before=None,after=m.blob('HEAD',path))
+        self.record['production_delta'][path]=pin;self.record['preservation_restore'][path]=pin
+        m.guard(self.record)
+        out=Path(self.temp.name)/'stock-view';out.mkdir();view,result=m.prepare(self.record,out)
+        try:
+            self.assertFalse((view/path).exists())
+            self.assertEqual(m.git('rev-parse','HEAD:src',cwd=view),self.record['predecessor_production_trees']['src'])
+        finally:subprocess.run(['git','worktree','remove',str(view)],cwd=self.root,check=True)
+    def test_accounting_extension_rejects_different_postimage(self):
+        path='src/stock.f90';(self.root/path).write_text('reviewed stock comparison\n');self.commit()
+        pin=dict(before=None,after=m.blob('HEAD',path))
+        self.record['production_delta'][path]=pin;self.record['preservation_restore'][path]=pin
+        (self.root/path).write_text('unreviewed energy law\n');self.commit()
+        with self.assertRaises(AssertionError):m.guard(self.record)
     def test_committed_projection_is_exact_and_does_not_change_current(self):
         out=Path(self.temp.name)/'view';out.mkdir();view,result=m.prepare(self.record,out)
         try:

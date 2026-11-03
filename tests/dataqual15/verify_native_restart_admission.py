@@ -58,6 +58,8 @@ def main():
         events.append(dict(label=label,returncode=cp.returncode,args=args))
         assert cp.returncode==0,(label,cp.stderr.decode(errors='replace')[-2000:])
     run('current-native',['tests/dataqual15/verify_native_restart_evidence.py'],ROOT)
+    if record.get('sensible_stock_owner_admission'):
+        run('current-sensible-stock',[record['sensible_stock_owner_admission']['verifier']],ROOT)
     view,projection=prepare(record,out)
     if a.prepare_only:
         (out/'PREPARED.json').write_text(json.dumps(projection,indent=2)+'\n')

@@ -558,6 +558,10 @@
         "app/support/restart_publish.c": {
           "before": null,
           "after": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+        },
+        "src/process/mod_whole_column_sensible_energy_accounting.f90": {
+          "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+          "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
         }
       },
       "preservation_restore": {
@@ -584,6 +588,10 @@
         "tests/dataqual15/run_original.py": {
           "before": "7fa6dc10793e7f03b64b4c7c00891b4522796dac",
           "after": "a3b5f5238c40bdf7d7752666468070f176ac4650"
+        },
+        "src/process/mod_whole_column_sensible_energy_accounting.f90": {
+          "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+          "after": "1e8761e09e24d247991832d582a77b8903ebdc5b"
         }
       },
       "predecessor_production_trees": {
@@ -592,11 +600,15 @@
         "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
       },
       "gate_source_sha256": {
-        "tests/dataqual15/verify_native_restart_admission.py": "64a814be8e54a959a5dfd7b4ba054871767181cc97c7f542cac1c7b0735ce9d7",
+        "tests/dataqual15/verify_native_restart_admission.py": "7eea84afec5039247a03f0986517232ecf2af79918db8a49c7ee12f384c377df",
         "tests/dataqual15/verify_native_restart_evidence.py": "11d492d0b8526d5807febd17c6cfefe832a18d01d15635bc3807e01b412562af",
-        "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77"
+        "tests/dataqual15/verify_native_disk_run.py": "40bb9060af7cbfcd15485584cadf3b22f9ebe1c59d1d3eff660c3c1f490c1a77",
+        "tests/dataqual15/verify_stock_projection_production.py": "464a35c7bfb5fb8bf54453b74f9693ce23c4c25271d859b6e44809cd0be08dcc",
+        "tests/dataqual15/qualify_stock_projection_production.py": "3b6d8db57461261bf3fb2bb72ae72069fe32248275bfb5399191003f98491b5b",
+        "tests/dataqual15/verify_stock_runtime_production.py": "2a33c1ed73ac6e142c4067ec1b9682313c1ef3f0d5152e1192396cb0e0970a54",
+        "tests/dataqual15/qualify_stock_runtime.py": "bc471b681d35a3c0b3b3ec7e827d5ca67ee75bfba126f1335ef781d35269a07c"
       },
-      "scope": "Admit exact native I/O delta only. Immutable1827/1096 science remains predecessor-source evidence; current native367-day qualification is separate. Failed original science gates remain failed.",
+      "scope": "Exact native I/O successor plus separately qualified numerical sensible-stock comparison owner. Predecessor physics remains historical; no whole physical energy or current1827-day promotion.",
       "test_selection": {
         "expected_seconds": 600,
         "authority": "docs/development/workstream-execution-protocol.md#autonomous-long-session-execution-standard-2026-10-08",
@@ -659,6 +671,11 @@
         "result": "PASS",
         "candidate": "5b8eb2649d1a96f27e1756529486b0f5e2346e4a",
         "scope": "Actual Git: unknown physics/codec/recipe/gate drift and dirty/untracked production fail closed; committed predecessor projection is exact and current remains unchanged."
+      },
+      "sensible_stock_owner_admission": {
+        "verifier": "tests/dataqual15/verify_stock_runtime_production.py",
+        "record": "integration/dataqual15/STOCK_PROJECTION_PRODUCTION_20261102.json",
+        "status": "WINDOWS_NUMERICAL_AND_RUNTIME_PASS_LINUX_PENDING"
       }
     },
     "canonical_merge": "bf99820474cad117b60b1d1285dd32c0db905495",
@@ -676,5 +693,31 @@
     "canonical_scope": "Diagnostic dossier and isolated candidate only; no production correction installed",
     "merge": "ff7a2a7a808720ded0a11e7f000dc25a03e3b8b8",
     "receipt": "integration/dataqual15/CONTACT_ENERGY_CANONICAL_RECEIPT_20261102.json"
+  },
+  "stock_projection_production_20261102": {
+    "base": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "stage": "WINDOWS_NUMERICAL_AND_RUNTIME_PASS_LINUX_PENDING",
+    "module": "src/process/mod_whole_column_sensible_energy_accounting.f90",
+    "before": "c00efd8cdb4de947de16e1d32ae4c9f4d0590850",
+    "after": "1e8761e09e24d247991832d582a77b8903ebdc5b",
+    "interfaces_changed": false,
+    "physical_equations_changed": false,
+    "full_energy_balance_complete": false,
+    "test_selection": {
+      "expected_seconds": 360,
+      "scope": "Stock432 profiles,1J negative control, EB-I22/VQ88 and current186-provider EB-I23/I24/I25 oracles O0/O2. Runtime closure specifically selected because shared public boundary type participates in all three wrappers; original outflow fixture attribution and strict negative energy-authority assertion reconciled.",
+      "next": "Persist, qualify current owner, seal source-bound evidence; original immutable contact/stock experiments execute in exact committed predecessor view."
+    },
+    "runtime_fixture_attribution": "Original I25 outflow test failure reproduced with baseline stock owner on identical current objects. Water accepted, mass residual-2.22e-16; energy top status5/unavailable. Test now asserts existing documented outflow fail-closed branch rather than accidental historical water rejection; no runtime physics change.",
+    "local_native_preservation": {
+      "status": "PASS",
+      "record": "../stock-production-admission-01/RESULT.json",
+      "source_checkpoint": "15823e137c95ee2ea937fd9f68b5a73ca46012fb",
+      "controls": 10
+    },
+    "runtime_record": "integration/dataqual15/STOCK_RUNTIME_PRODUCTION_20261103.json",
+    "report": "docs/audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md",
+    "canonical_admitted": false,
+    "next_action": "Linux current owner/runtime and composed predecessor CI; exact-source admission; then accepted thermal interval receipts and explicit Andelst contact correction"
   }
 }

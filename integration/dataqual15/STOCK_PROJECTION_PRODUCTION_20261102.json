@@ -1,0 +1,30 @@
+{
+  "scope": "NUMERICAL_STOCK_REPRESENTATION_ONLY",
+  "base": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+  "measurement_commit": "61bdd61aeb0f079deae7e60fdd22810d3803fb92",
+  "archive": "integration/dataqual15/STOCK_PROJECTION_PRODUCTION_EVIDENCE_20261102.tar.xz",
+  "archive_sha256": "6cce0eb3f532ac671a59c5dd18d56251eaef3c07b5e8dfcf98a6851fb83bb4c0",
+  "source_git_blob": {
+    "src/transaction/mod_transaction_reference.f90": "0a5ce4d122037048ab9372acdeae447cc085f2d3",
+    "src/solver/mod_soil_water_solver_contract.f90": "f41e789d6bd27bfbf7046c1226371356e3c7ed25",
+    "src/solver/mod_process_hydraulic_view.f90": "d7d85fe71ced0d94b29c8d9395859ae1834f7dd6",
+    "src/process/mod_soil_temperature_contract.f90": "2c358fa353226846ce6c6e4e561aa59e5de94620",
+    "src/process/mod_restricted_soil_temperature.f90": "bbae005fca4c5cda09315811f71aa218b0914dbb",
+    "src/kernel/mod_energy_conservation_types.f90": "15a6a9c5c5da6ad0d535c27772e57a23e618658d",
+    "src/process/mod_linear_mixture_sensible_storage.f90": "0403c23454a879356ce8d2345006df130484067d",
+    "src/process/mod_whole_column_sensible_energy_accounting.f90": "1e8761e09e24d247991832d582a77b8903ebdc5b",
+    "tests/dataqual15/energy_boundary_driver.f90": "b4a48a1e611ddb5322df03723713a65589d269bf",
+    "tests/eb/test_eb_i22_whole_column_sensible_energy_accounting.f90": "88a72af5017d58a97825661fd47e89e88c6af67f",
+    "tests/eb/test_f_vq88_eb_i22_independent.f90": "20384849b61304aa8f76a9e5cffaff2fca8a4734"
+  },
+  "full_energy_balance_complete": false,
+  "canonical_admitted": false,
+  "status": "WINDOWS_O0_O2_EXECUTED_AND_SOURCE_BOUND",
+  "test_selection": {
+    "expected_seconds": 120,
+    "owner": "DATAQUAL15 / EB-I22",
+    "changed_dependency": "Only numerical summation consistency comparison; no DTO or physical equation change",
+    "selected": "Current432 explicit profiles at0/5C, existing EB-I22 and independent VQ88,1J representation-error injection, exact predecessor evidence, native source boundary negative controls",
+    "full_original_runs": "NOT_SELECTED: no production runtime caller of this accounting procedure; unchanged heat/soil-water owners and all DTOs"
+  }
+}

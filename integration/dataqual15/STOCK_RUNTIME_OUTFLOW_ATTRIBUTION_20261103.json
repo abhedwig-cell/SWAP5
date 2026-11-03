@@ -1,0 +1,9 @@
+{
+  "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+  "scope": "Same current runtime objects and original test object, replacing only accounting owner by baseline source",
+  "baseline_and_current_original_test_stdout_exact": true,
+  "baseline_returncode": 1,
+  "current_original_stdout": "EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS\nEB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS\nEB_I25_TEST_FAIL external full-half outflow fixture rejected before commit\n",
+  "observed_current": "EB_I25_TWO_HALF_ACCEPTED_AGGREGATION=PASS\nEB_I25_MISSING_TOP_DONOR_FAIL_CLOSED=PASS\n OUTFLOW_OBS T T           1                    1 T           5 F T  -2.2204460492503131E-016\nEB_I25_TEST_FAIL external full-half outflow fixture rejected before commit\n",
+  "provider_count": 186
+}
