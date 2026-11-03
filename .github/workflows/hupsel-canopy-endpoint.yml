@@ -28,6 +28,16 @@ jobs:
             python3 -B tests/dataqual15_hupsel/qualify_rutter_endpoint.py --bundle "$RUNNER_TEMP/hupsel-$opt" --output "$RUNNER_TEMP/rutter-$opt"
             python3 -B tests/dataqual15_hupsel/qualify_native_publication.py --bundle "$RUNNER_TEMP/hupsel-$opt" --output "$RUNNER_TEMP/publication-$opt"
           done
+      - name: Exact historical authority and fresh shared runtime preservation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+          python3 -B tests/dataqual15_hupsel/qualify_canopy_preservation.py --output "$RUNNER_TEMP/canopy-preservation"
+          python3 -B tests/dataqual15/qualify_thermal_receipts.py --output "$RUNNER_TEMP/thermal-preservation"
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15/qualify_native_coupled.py --optimization "$opt" --output "$RUNNER_TEMP/coupled-$opt"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -39,4 +49,7 @@ jobs:
             ${{ runner.temp }}/hupsel-*/*.stderr
             ${{ runner.temp }}/rutter-*/
             ${{ runner.temp }}/publication-*/
+            ${{ runner.temp }}/canopy-preservation/
+            ${{ runner.temp }}/thermal-preservation/
+            ${{ runner.temp }}/coupled-*/
           retention-days: 14
