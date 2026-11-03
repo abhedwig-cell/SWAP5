@@ -1,0 +1,59 @@
+{
+  "stage": "QUALIFIED_ALL_REQUIRED_GATES_PASS_READY_CANONICAL_INTEGRATION",
+  "baseline": "baada36c4f717ca40057b6db663e20f60b9d2a62",
+  "preregistration": "CORRECTED_ROTATION_PREREGISTRATION_20261103.json",
+  "producer": "tests/dataqual15_hupsel/run_canopy_observation.py",
+  "auditor": "tests/dataqual15_hupsel/audit_corrected_rotation.py",
+  "continuation_gate": "tests/dataqual15_hupsel/qualify_corrected_rotation_restarts.py",
+  "case": "../canopy-corrected-fresh-1096",
+  "bundle_O2": "../canopy-endpoint-coherent-O2",
+  "bundle_O0": "../canopy-endpoint-coherent-O0",
+  "source_boundary": "All actual compiled providers match current bytes exactly; PR1498 production source remains unchanged. Only analysis/qualification code selected.",
+  "history": "First source rain day has two real windows (4->4.083333333333333->5). Auditor checks every window and stock continuity before inherited observational calendar grouping; no source or numerical tolerance changed.",
+  "next": "Finish terminal automated dispositions, integrate PR1500 with exact no-production-delta reconciliation, verify actual merge capsule and publish canonical receipt. Whole science stays open.",
+  "full_scientific_admission": false,
+  "auditor_development_control": {
+    "existing_admitted_prefix_days": 1034,
+    "status": "PASS_READER_CONTROL_NOT_FULL_CURRENT_EXECUTION",
+    "retained_failure": "Initial derived canopy-out inequality failed on227 earlier maize days because that prescribed-boundary ledger encodes evaporation as negative external input. Complete signed mass checks remain universal; decomposed canopy-out check is now explicitly limited to the actual Rutter crop owner, with zero capacity export required outside it. No physical or frozen scientific assertion changed.",
+    "coverage": "Every original crop observation495 through endpoint is mandatory; deleting an owner row refuses."
+  },
+  "full_current_execution": {
+    "directory": "../canopy-corrected-fresh-1096",
+    "days": 1096,
+    "source_windows": 1097,
+    "seconds": 859.4032059999881,
+    "from_start": true,
+    "imported_checkpoint": false
+  },
+  "audit": {
+    "water_max_error_cm": 0.01395272275907189,
+    "unchanged_water_error_limit_cm": 0.015894114055035997,
+    "water_error_inside_frozen_bound": true,
+    "frozen_metrics_inside": 25,
+    "frozen_metrics_outside": 12,
+    "whole_science": false
+  },
+  "restarts": {
+    "directory": "../canopy-corrected-final-restarts",
+    "O2": [
+      "1058->1096 exact",
+      "1077->1096 exact"
+    ],
+    "O0": "Explicit cross-opt1058 compatibility seed; exact own-build1077->1096 against its own continuous tail",
+    "budget_and_crop_all_fields": "EXACT",
+    "complete_typed_stream": "EXACT"
+  },
+  "evidence": "CORRECTED_ROTATION_EVIDENCE_20261103.json",
+  "cold_posix": {
+    "run": 41731053202,
+    "job": 126248184283,
+    "head": "349bb59db7868cb4fb19c922a65e7a14004e65f1",
+    "status": "SUCCESS",
+    "python": "3.12.3",
+    "native_model_run_on_posix": false
+  },
+  "ci_adjudication": "CORRECTED_ROTATION_CI_ADJUDICATION_20261103.json",
+  "pr": 1500,
+  "ci_terminal": "CORRECTED_ROTATION_CI_TERMINAL_20261103.json"
+}

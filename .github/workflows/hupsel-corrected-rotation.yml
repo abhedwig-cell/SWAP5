@@ -1,0 +1,29 @@
+name: Hupsel corrected rotation portable evidence
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-corrected-rotation.yml
+      - tests/dataqual15_hupsel/audit_corrected_rotation.py
+      - tests/dataqual15_hupsel/capture_corrected_rotation_evidence.py
+      - tests/dataqual15_hupsel/qualify_corrected_rotation_restarts.py
+      - tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py
+      - integration/dataqual15_hupsel/CORRECTED_ROTATION_EVIDENCE_20261103*
+      - integration/dataqual15_hupsel/CORRECTED_ROTATION_PREREGISTRATION_20261103.json
+permissions:
+  contents: read
+jobs:
+  remeasure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Obtain exact production predecessor tree
+        run: git fetch --no-tags --depth=1 origin baada36c4f717ca40057b6db663e20f60b9d2a62
+      - name: Remeasure every ledger, typed stock, frozen comparison and exact suffix
+        run: |
+          python3 --version
+          python3 -B tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py
