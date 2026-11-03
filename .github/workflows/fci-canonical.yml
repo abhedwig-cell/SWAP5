@@ -78,7 +78,13 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          if [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
+          if [[ -f tests/dataqual15/verify_current_native_admission.py ]]; then
+            # Current accepted endpoint/runtime proof and exact historical
+            # authority have separate verdicts. No whole-science promotion.
+            python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+            python3 -B tests/dataqual15/test_current_native_admission.py
+            python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/native-admission"
+          elif [[ -f tests/dataqual15/verify_native_restart_admission.py ]]; then
             python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
             python3 -B tests/dataqual15/verify_native_restart_admission.py --output "$RUNNER_TEMP/native-admission"
           elif [[ -f integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json ]]; then

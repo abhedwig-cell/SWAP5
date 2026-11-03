@@ -1,0 +1,31 @@
+name: Current canonical native admission
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/current-native-admission.yml
+      - tests/dataqual15/verify_current_native_admission.py
+      - tests/dataqual15/test_current_native_admission.py
+      - integration/dataqual15_hupsel/CURRENT_NATIVE_ADMISSION_20261103.json
+permissions:
+  contents: read
+jobs:
+  composed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact boundary mutation controls and composed current admission
+        run: |
+          python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+          python3 -B tests/dataqual15/test_current_native_admission.py
+          python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/current-native-admission"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: current-native-admission-${{ github.sha }}
+          path: ${{ runner.temp }}/current-native-admission/
+          retention-days: 14
