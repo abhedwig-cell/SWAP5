@@ -21,6 +21,7 @@ ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT/'tools/solute'))
 from legacy_reader_sources import materialize
 from original_sources import build_original
+from research_native_build_cache import verified_objects
 
 RESEARCH='tests/dataqual15/research/'
 MACRO='src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90'
@@ -116,7 +117,9 @@ def overlays(folder):
 
 def main():
     ap=argparse.ArgumentParser(description=__doc__);ap.add_argument('--output',type=Path,required=True)
-    ap.add_argument('--optimization',choices=['O0','O2'],required=True);args=ap.parse_args()
+    ap.add_argument('--optimization',choices=['O0','O2'],required=True)
+    ap.add_argument('--reuse-build',type=Path,help='Exact compiled inputs/objects after a recorded link failure')
+    args=ap.parse_args()
     out=args.output.resolve();out.mkdir(parents=True,exist_ok=False);fc=shutil.which('gfortran');assert fc
     sha=lambda raw:hashlib.sha256(raw).hexdigest()
     capsule=ROOT/'integration/dataqual15/ANDELST_CONTACT_DIAGNOSTIC.tar.xz'
@@ -153,20 +156,28 @@ def main():
     deps=[p.relative_to(ROOT).as_posix() for p in ordered if p.is_relative_to(ROOT)]
     deps=list(dict.fromkeys([*deps,*shadow,RESEARCH+'contact_headcalc_methods.inc',RESEARCH+'contact_provider_methods.inc',
           RESEARCH+'mod_nonlinear_contact_pair.f90',SELF,'app/support/restart_publish.c','tools/solute/legacy_reader_sources.py',
-          'tests/dataqual15/original_sources.py','tools/vq/b0_source_runner.py']))
+          'tests/dataqual15/original_sources.py','tools/vq/b0_source_runner.py',
+          'tests/dataqual15/research_native_build_cache.py',RESEARCH+'native_contact_platform.c']))
     assert not subprocess.check_output(['git','diff','HEAD','--',*deps],cwd=ROOT),'persist first'
     report['source_git_blob']={p:subprocess.check_output(['git','rev-parse','HEAD:'+p],cwd=ROOT,text=True).strip() for p in deps}
     report['rendered_overlay_sha256']={p:sha(q.read_bytes()) for p,q in shadow.items()}
     report['compiler']=subprocess.check_output([fc,'--version'],text=True).splitlines()[0];save()
-    utilities=build_original(out/'original',fc,args.optimization,utilities_only=True)
+    if args.reuse_build:
+        objects,utilities,proof=verified_objects(args.reuse_build.resolve(),ROOT,ordered,shadow,args.optimization,report['compiler'])
+        report['exact_reused_objects']=proof
+    else:
+        utilities=build_original(out/'original',fc,args.optimization,utilities_only=True)
     flags=['-'+args.optimization,'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace',
            '-ffpe-trap=invalid,zero,overflow','-J'+str(build),'-I'+str(build),'-I'+str(utilities/'ttobj')]
-    objects=[]
-    for i,source in enumerate(ordered):
-        obj=build/(str(i)+'.o');run([fc,*flags,'-c',source,'-o',obj],build,'compile-'+str(i));objects.append(obj)
+    if not args.reuse_build:
+        objects=[]
+        for i,source in enumerate(ordered):
+            obj=build/(str(i)+'.o');run([fc,*flags,'-c',source,'-o',obj],build,'compile-'+str(i));objects.append(obj)
     cc=shutil.which('gcc');assert cc;cobj=build/'publish.o'
     run([cc,'-O2','-c',ROOT/'app/support/restart_publish.c','-o',cobj],build,'compile-publish')
-    exe=build/'native.exe';run([fc,'-fopenmp',*objects,cobj,utilities/'ttobj/libttutil.a','-o',exe],build,'link')
+    platform=build/'platform.o'
+    run([cc,'-O2','-c',ROOT/(RESEARCH+'native_contact_platform.c'),'-o',platform],build,'compile-platform')
+    exe=build/'native.exe';run([fc,'-fopenmp',*objects,cobj,platform,utilities/'ttobj/libttutil.a','-o',exe],build,'link')
     report['executable_sha256']=sha(exe.read_bytes());report['provider_count']=len(ordered);save()
     def case(name):
         folder=out/name;folder.mkdir()
