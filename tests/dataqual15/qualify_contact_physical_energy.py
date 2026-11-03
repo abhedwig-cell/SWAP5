@@ -1,6 +1,7 @@
 """Actual Andelst linear-contact witness and conservative warm-energy research."""
 import argparse
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import shutil
@@ -11,7 +12,9 @@ ROOT=Path(__file__).resolve().parents[2]
 RESEARCH='tests/dataqual15/research/'
 SOURCES=['src/solver/mod_reference_linear_solver.f90','src/process/mod_linear_mixture_sensible_storage.f90',
          RESEARCH+'contact_constraint_driver.f90',RESEARCH+'mod_conservative_soil_heat_trial.f90',
-         RESEARCH+'conservative_heat_driver.f90']
+         RESEARCH+'conservative_heat_driver.f90',RESEARCH+'contact_macro_exchange_driver.f90']
+MACRO='src/process/macropore/mod_macropore_standard_storage.f90'
+PATCH=RESEARCH+'macropore_stock_conservation.patch'
 
 
 def contact_input():
@@ -126,9 +129,21 @@ def main():
     assert not subprocess.check_output(['git','diff','HEAD','--',*SOURCES],cwd=ROOT), 'persist first'
     raw,rows,jump=contact_input();(out/'contact.dat').write_bytes(raw)
     compiler=shutil.which('gfortran');assert compiler
+    spec=importlib.util.spec_from_file_location('closure',ROOT/'tests/support/augment_bartholomeus_backend_sources.py')
+    closure=importlib.util.module_from_spec(spec);spec.loader.exec_module(closure)
+    macro_sources,_=closure.strict_closure(ROOT,[ROOT/SOURCES[5]])
+    fixture=out/'macro-candidate';target=fixture/MACRO;target.parent.mkdir(parents=True)
+    target.write_bytes((ROOT/MACRO).read_bytes().replace(b'\r\n',b'\n'))
+    local_patch=out/'macro.patch';local_patch.write_bytes((ROOT/PATCH).read_bytes().replace(b'\r\n',b'\n'))
+    subprocess.run(['git','init','-q',str(fixture)],check=True)
+    subprocess.run(['git','-c','core.autocrlf=false','apply','--check',str(local_patch)],cwd=fixture,check=True)
+    subprocess.run(['git','-c','core.autocrlf=false','apply',str(local_patch)],cwd=fixture,check=True)
+    dependencies=list(dict.fromkeys([*SOURCES,*[p.relative_to(ROOT).as_posix() for p in macro_sources],PATCH,
+        'tests/dataqual15/qualify_contact_physical_energy.py','tests/support/augment_bartholomeus_backend_sources.py']))
+    assert not subprocess.check_output(['git','diff','HEAD','--',*dependencies],cwd=ROOT)
     report=dict(scope='RESEARCH_CONTACT_LINEARIZATION_AND_WARM_SENSIBLE_TRANSPORT_ONLY',
         measurement_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        source_git_blob={s:subprocess.check_output(['git','rev-parse','HEAD:'+s],cwd=ROOT,text=True).strip() for s in SOURCES},
+        source_git_blob={s:subprocess.check_output(['git','rev-parse','HEAD:'+s],cwd=ROOT,text=True).strip() for s in dependencies},
         compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],
         full_energy_balance_complete=False,nonlinear_contact_repair=False,builds={})
     for opt in ('O0','O2'):
@@ -145,9 +160,30 @@ def main():
             assert cp.returncode==0,(name,cp.stdout,cp.stderr)
             result=check_contact(cp.stdout,rows,jump) if name=='contact' else check_heat(dest.read_bytes())
             events[name]=dict(command=command,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),**result)
+        transfer=events['contact']['exchange_amount_cm'];macro={}
+        for variant in ('production','candidate'):
+            folder=d/('macro-'+variant);folder.mkdir();exe=folder/'exchange.exe'
+            selected=[target if variant=='candidate' and p==ROOT/MACRO else p for p in macro_sources]
+            command=[compiler,'-'+opt,'-fcheck=all','-ffree-line-length-none',
+                '-J'+str(folder),'-I'+str(folder),*map(str,selected),'-o',str(exe)]
+            cp=subprocess.run(command,cwd=folder,capture_output=True,text=True,timeout=90)
+            assert cp.returncode==0,cp.stderr
+            cp=subprocess.run([str(exe),format(transfer,'.17g')],cwd=folder,capture_output=True,text=True,timeout=30)
+            (folder/'stdout').write_text(cp.stdout,encoding='utf-8');(folder/'stderr').write_text(cp.stderr,encoding='utf-8')
+            assert cp.returncode==0,cp.stderr
+            values=list(map(float,cp.stdout.strip().split(',')[1:]))
+            assert len(values)==4 and values[0]==transfer
+            if variant=='production':assert values[3]>transfer/2, 'old quantization failure not observed'
+            else:assert abs(values[3])<64*2.220446049250313e-16*.1
+            macro[variant]=dict(command=command,executable_sha256=hashlib.sha256(exe.read_bytes()).hexdigest(),
+                transfer_cm=transfer,stock_before_view_cm=values[1],stock_after_view_cm=values[2],
+                combined_matrix_macro_water_residual_cm=values[3])
+        events['macro_exchange']=macro
         report['builds'][opt]=events
     assert (out/'O0/contact.stdout').read_bytes()==(out/'O2/contact.stdout').read_bytes()
     assert (out/'O0/heat.csv').read_bytes()==(out/'O2/heat.csv').read_bytes()
+    for variant in ('production','candidate'):
+        assert (out/('O0/macro-'+variant)/'stdout').read_bytes()==(out/('O2/macro-'+variant)/'stdout').read_bytes()
     report['status']='BOUNDED_CONTACT_AND_CONSERVATIVE_HEAT_RESEARCH_PASS'
     (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8');print(json.dumps(report,indent=2))
 

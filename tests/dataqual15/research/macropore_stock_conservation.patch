@@ -1,0 +1,73 @@
+diff --git a/src/process/macropore/mod_macropore_standard_storage.f90 b/src/process/macropore/mod_macropore_standard_storage.f90
+index 4978d4797..93f126041 100644
+--- a/src/process/macropore/mod_macropore_standard_storage.f90
++++ b/src/process/macropore/mod_macropore_standard_storage.f90
+@@ -43,8 +43,7 @@ contains
+     type(macropore_standard_storage_view_t),intent(out)::view
+ 
+     integer::nd,n,id,ic,bottom,topw
+-    real(real64)::total,capacity,remaining,vol,frac,zbottom,amount
+-    logical::degenerate_tip
++    real(real64)::total,capacity,remaining,vol,zbottom,amount
+ 
+     view=macropore_standard_storage_view_t()
+     if(.not.state%ready())return
+@@ -67,7 +66,6 @@ contains
+       if(any(state%water_domain_cp(id,top_node:bottom)<-1.0e-12_real64))return
+ 
+       total=sum(max(0.0_real64,state%water_domain_cp(id,top_node:bottom)))
+-      degenerate_tip=state%volume_domain_cp(id,bottom)<=1.0e-8_real64
+       capacity=sum(state%volume_domain_cp(id,top_node:bottom))
+       if(total>capacity+1.0e-10_real64)return
+       total=min(max(total,0.0_real64),capacity)
+@@ -75,11 +73,11 @@ contains
+ 
+       remaining=total
+       topw=bottom
+-      if(degenerate_tip.and.total>0.0_real64)then
+-        ! A tapered original IC domain can have a zero-volume terminal cell.
+-        ! Fill bottom-up without dividing by that tip. Zero-volume cells below
+-        ! the actual water front are wet, as in source MACROSTATE; only positive
+-        ! capacities receive water. Preserve even sub-quantum positive stocks.
++      if(total>0.0_real64)then
++        ! Redistribute the actual domain stock, without a water-depth quantum.
++        ! Rounding a small positive stock to zero or a nearly full cell upward
++        ! changes mass and creates a fictitious closed-bottom reconstruction flux.
++        ! Zero-volume cells below the water front are wet but store no water.
+         do ic=bottom,top_node,-1
+           vol=state%volume_domain_cp(id,ic)
+           if(vol<=0.0_real64)then
+@@ -93,32 +91,10 @@ contains
+           topw=ic
+           if(remaining<=0.0_real64)exit
+         end do
+-      else
+-      do ic=bottom,top_node,-1
+-        vol=state%volume_domain_cp(id,ic)
+-        if(vol<=1.0e-12_real64)then
+-          if(remaining>1.0e-12_real64)return
+-          cycle
+-        end if
+-        if(remaining>=vol-1.0e-12_real64)then
+-          view%normalized_water_cm(id,ic)=vol
+-          view%wet_fraction(id,ic)=1.0_real64
+-          remaining=max(0.0_real64,remaining-vol)
+-          topw=ic
+-          if(remaining<=1.0e-12_real64)exit
+-        else
+-          view%normalized_water_cm(id,ic)=remaining
+-          frac=remaining/vol
+-          view%wet_fraction(id,ic)=max(0.0_real64,min(1.0_real64,frac))
+-          topw=ic
+-          remaining=0.0_real64
+-          exit
+-        end if
+-      end do
+       end if
+       if(remaining>1.0e-10_real64)return
+ 
+-      if(total<=1.0e-12_real64.and.(.not.degenerate_tip.or.total<=0.0_real64))then
++      if(total<=0.0_real64)then
+         topw=bottom
+         view%normalized_water_cm(id,:)=0.0_real64
+         view%wet_fraction(id,:)=0.0_real64
