@@ -13,7 +13,8 @@ program thermal_receipt_component
  type(soil_temperature_diagnostics_t)::d
  type(process_hydraulic_view_t)::h0,h1
  type(fmr_thermal_substep_receipt_t)::r,copy
- real(real64)::temperatures(3),error,storage,flux
+ real(real64),allocatable::temperatures(:)
+ real(real64)::error,storage,flux
  integer::status,i
  call initialize_soil_temperature_parameters([1d0,2d0,3d0],[.5d0,1.5d0,2.5d0], &
       [.45d0,.45d0,.45d0],[.3d0,.3d0,.3d0],[.2d0,.2d0,.2d0],[.05d0,.05d0,.05d0],p,status)
