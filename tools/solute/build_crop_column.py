@@ -119,12 +119,20 @@ def main():
         run(fc + (legacy_flags if source == original else flags) + ['-c', source, '-o', obj], 'compile')
         objects.append(obj)
     exe = output / 'swap5_solute_column'
+    publication = ROOT / 'app/support/restart_publish.c'
+    needs_publication = any('swap5_restart_publish' in s.read_text() for s in ordered)
+    if needs_publication:
+        report['input_sha256'][str(publication.relative_to(ROOT))] = sha(publication)
+        obj = output / 'restart_publish.o'
+        cc = subprocess.check_output(fc + ['-print-prog-name=gcc'], text=True).strip()
+        run([cc, '-' + args.optimization, '-std=c11', '-c', publication, '-o', obj], 'compile')
+        objects.append(obj)
     run(fc + flags + objects + [archive, '-o', exe], 'link')
     if any(sha(ROOT / p) != h for p, h in report['input_sha256'].items()):
         raise RuntimeError('build input changed during compilation')
     if any(sha(output / p) != h for p, h in report['generated_input_sha256'].items()):
         raise RuntimeError('generated original source changed during compilation')
-    report.update(original_input_provider_count=len(ttutil), status='BUILT', executable_sha256=sha(exe), provider_count=len(ordered))
+    report.update(original_input_provider_count=len(ttutil), status='BUILT', executable_sha256=sha(exe), provider_count=len(objects))
     (output / 'build-complete.json').write_text(json.dumps(report, indent=2) + '\n')
     print(json.dumps({k: report[k] for k in ['status', 'provider_count', 'executable_sha256']}))
 

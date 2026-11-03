@@ -702,7 +702,7 @@ program swap5_native_project_column
   write(u,'(A)')''
   if(original_hupsel_rotation)then
     open(newunit=crop_output,file='crop.csv',status='new')
-    write(crop_output,'(a)')'day,dvs,tsum,lai,wrt,wlv,wst,wso,pwrt,pwlv,pwst,pwso,rd,rdpot,germination_tsum,pressure_average_cm,mean_air_c,harvested_dry_matter,potential_harvested_dry_matter,cut_index,regrowth_delay_days'
+    write(crop_output,'(a)')'day,dvs,tsum,lai,wrt,wlv,wst,wso,pwrt,pwlv,pwst,pwso,rd,rdpot,germination_tsum,pressure_average_cm,mean_air_c,harvested_dry_matter,potential_harvested_dry_matter,cut_index,regrowth_delay_days,accepted_canopy_stock_cm,prepared_canopy_capacity_cm,post_management_capacity_cm'
   end if
   if(original_hupsel_germination)then
     open(newunit=germination_log,file='germination.csv',status='new')
@@ -1000,7 +1000,8 @@ contains
     type(wofost_potential_shadow_state_t)::potential
     type(crop_root_depth_rate_state_t)::depth
     type(crop_lifecycle_continuation_t)::life
-    real(real64)::v(20)
+    real(real64)::v(20),canopy_stock,prepared_capacity,event_capacity
+    class(transaction_state_t),allocatable::canopy_snapshot
     type(fmr_wofost_crop_transaction_persistence_t)::diagnostic_view
     logical::available
     integer::st
@@ -1027,7 +1028,23 @@ contains
       v(10)=potential%biomass%stem_biomass;v(11)=potential%biomass%storage_biomass
       v(12)=depth%actual_root_depth_cm;v(13)=depth%potential_root_depth_cm
     end if
-    write(crop_output,'(i0,20(a,es25.17e3))')int(time),(',',v(st),st=1,20)
+    ! Observe the committed hydraulic reservoir independently of the updated
+    ! crop owner. Prepared capacity belongs to the just-completed water day;
+    ! event capacity is derived from the accepted post-management leaf area.
+    call water%snapshot(canopy_snapshot,available)
+    call require(available,'canopy event committed state unavailable')
+    canopy_stock=0d0
+    select type(q=>canopy_snapshot)
+    class is(fmr_b110_physical_state_t)
+      call require(allocated(q%rutter),'canopy event reservoir unavailable')
+      canopy_stock=q%rutter%canopy_storage()
+    class default
+      call require(.false.,'canopy event physical state type')
+    end select
+    prepared_capacity=active_crop%siccaplai*active_crop%canopy%lai
+    event_capacity=active_crop%siccaplai*v(3)
+    write(crop_output,'(i0,23(a,es25.17e3))')int(time),(',',v(st),st=1,20), &
+      ',',canopy_stock,',',prepared_capacity,',',event_capacity
     flush(crop_output)
   end subroutine
   subroutine original_rotation_weather(time,weather)

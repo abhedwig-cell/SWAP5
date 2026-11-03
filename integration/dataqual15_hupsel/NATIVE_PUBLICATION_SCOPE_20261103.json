@@ -1,0 +1,28 @@
+{
+  "status": "CANONICALLY_ADMITTED_BOUNDED_NATIVE_IO_AND_ACCEPTED_OBSERVATION_PHYSICAL_CORRECTION_OPEN",
+  "predecessor": "1844fad4522dbd15aa01db15720a4aec3eb7f7cd",
+  "production_delta": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "37b7222fcd522682a6de057461f2d175a841a5f7",
+      "after": "cc33c56d4b6a09462426ec200c5638e34daa8d53"
+    },
+    "app/solute_project/main.f90": {
+      "before": "8a27549054b818ae9015d0660c368878973c09db",
+      "after": "40cb5207d78e10b682344ac1a6d14be67a63558b"
+    },
+    "src/adapter/mod_age_joint_restart_file.f90": {
+      "before": "c035bd497a61209bbe4c66772261f0b63b7cbc16",
+      "after": "a3bed29cbc872d0d33a56e434667cfb3afbc9c41"
+    },
+    "src/adapter/mod_pond_thermal_restart_file.f90": {
+      "before": "c9418d4cdb8366e2069b0b03150526d625f522cd",
+      "after": "d25d8408bcdee96360ddd4f38defccf664762297"
+    }
+  },
+  "verifier": "tests/dataqual15_hupsel/verify_native_publication_evidence.py",
+  "qualification": "Sealed actual Windows16.2/Linux13.3 checked O0/O2 native publication, strict checkpoint continuation, independent CRC and refusal controls; no diagnostic shim. This does not establish whole scientific equivalence.",
+  "physical_correction": false,
+  "whole_scientific_admission": false,
+  "canonical_admission": true,
+  "canonical_merge": "53359b78f41e5dda24f660b22024e842a00b291d"
+}

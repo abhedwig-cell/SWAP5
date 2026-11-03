@@ -3,6 +3,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import sys
 import tarfile
 
 from verify_stock_projection_production import verify as verify_stock
@@ -36,6 +37,15 @@ def verify():
                         ('HEAD','85933351e9a2bb1e3830485a0e3eb345a4369141')):
             assert subprocess.check_output(['git','rev-parse',ref+':'+inspect],cwd=ROOT,text=True).strip()==pin, inspect
         allowed.add(inspect)
+    canopy_path=ROOT/'integration/dataqual15_hupsel/NATIVE_PUBLICATION_SCOPE_20261103.json'
+    if canopy_path.exists():
+        canopy=json.loads(canopy_path.read_text())
+        assert not canopy['physical_correction'] and not canopy['whole_scientific_admission']
+        for path,pins in canopy['production_delta'].items():
+            for ref,key in ((BASE,'before'),('HEAD','after')):
+                assert subprocess.check_output(['git','rev-parse',ref+':'+path],cwd=ROOT,text=True).strip()==pins[key],path
+        subprocess.run([sys.executable,'-B',canopy['verifier']],cwd=ROOT,check=True)
+        allowed.update(canopy['production_delta'])
     assert set(changed)==allowed, 'unreviewed physical production delta'
     assert not subprocess.check_output(['git','diff','HEAD','--','src','app','reference'],cwd=ROOT)
     assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','src','app','reference'],cwd=ROOT)

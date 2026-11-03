@@ -23,20 +23,7 @@ module mod_hupsel_rotation_restart
  character(10),parameter::INPUTS(6)=[character(10)::'swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra']
  integer,parameter::MAX_FILE_BYTES=16777216
  interface
-  integer(c_int) function open_c(path,mode)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::path(*)
-   integer(c_int),value::mode
-  end function
-  integer(c_int) function fsync_c(fd)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::fd
-  end function
-  integer(c_int) function close_c(fd)bind(C,name='close')
-   import c_int
-   integer(c_int),value::fd
-  end function
-  integer(c_int) function rename_c(old,new)bind(C,name='rename')
+  integer(c_int) function rename_c(old,new)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::old(*),new(*)
   end function
@@ -152,10 +139,6 @@ contains
    write(u,iostat=io)crc;close(u)
   end if
   if(io/=0)then;call remove_file(pending);return;end if
-  fd=open_c(pending//c_null_char,0_c_int)
-  if(fd<0)then;call remove_file(pending);return;end if
-  rc=fsync_c(fd);code=close_c(fd)
-  if(rc/=0)then;call remove_file(pending);return;end if
   rc=rename_c(pending//c_null_char,trim(path)//c_null_char)
   if(rc/=0)then;call remove_file(pending);return;end if
   status=0

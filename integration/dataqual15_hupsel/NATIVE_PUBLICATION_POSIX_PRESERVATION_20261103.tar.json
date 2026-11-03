@@ -1,0 +1,100 @@
+{
+  "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+  "run_id": 41698875607,
+  "job_id": 126136603513,
+  "artifact_id": 13263302650,
+  "qualified_head": "03d03a6d459c45f1171391b023be411409831700",
+  "artifact_sha256": "c2c400f0345c814bdbdcb3792a97c5affac326a3d2e013163fabd6701c9a9930",
+  "archive_sha256": "f07b9fcbdbc0cdd08f5a191f916aef45e75251dff1c8f2d03729e28bdfdcce53",
+  "files_sha256": {
+    "native-admission/RESULT.json": "3fabdedadc2a91783e2a68ad6bd07e6553fd1b05bf2076109c16992aebc2a314",
+    "native-admission/current-hupsel-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/current-hupsel-native.stdout": "dce5016e0a7adca1ee71b3a9f4a33e3045287a8302a816e90afe7441c9d29b89",
+    "native-admission/current-native-contact-observations.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/current-native-contact-observations.stdout": "2124bd3104e15250b44bfd7e61abad1d3822deac370aac7e1b3b72e176f8fa30",
+    "native-admission/current-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/current-native.stdout": "c2fe5f45c86bae292487e31d8eaf3a39486cefba32033feb1f3c79f97fd6dc12",
+    "native-admission/current-sensible-stock.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/current-sensible-stock.stdout": "50c11b6063d65d8069a642360c855a47f072f78a7485495f7c7676acfadc2672",
+    "native-admission/predecessor-grass.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/predecessor-grass.stdout": "86000a7e63da627f8b27b65aba44e15a859f3eff532af16beaa8e06dd96aad18",
+    "native-admission/predecessor-hupsel.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/predecessor-hupsel.stdout": "8cfcdad2e832d09bbef1c5472eaa5afdfe32cdce068dd1b66d3bdeedfe99fe97",
+    "native-admission/predecessor-stress.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-admission/predecessor-stress.stdout": "75645984cf8b4134eca52360e12e182e6d550c3872273d8f494195bd5bcc145b"
+  },
+  "result": {
+    "status": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS",
+    "candidate": "03d03a6d459c45f1171391b023be411409831700",
+    "projection": {
+      "tree": "beeb334df8b7021eb5f71e4b42beed3d8e3f11cc",
+      "commit": "dbd935056259e1d64b513db4a9de90edf5d5a018",
+      "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+    },
+    "events": [
+      {
+        "label": "current-native",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_native_restart_evidence.py"
+        ]
+      },
+      {
+        "label": "current-hupsel-native",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15_hupsel/verify_native_publication_evidence.py"
+        ]
+      },
+      {
+        "label": "current-sensible-stock",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_stock_runtime_production.py"
+        ]
+      },
+      {
+        "label": "current-native-contact-observations",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_nonlinear_native_evidence.py"
+        ]
+      },
+      {
+        "label": "predecessor-grass",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/verify_grass_full_evidence.py",
+          "--spec",
+          "integration/dataqual15/GRASS_UNION_FULL_SPEC.json",
+          "--capsule",
+          "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz",
+          "--manifest",
+          "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json"
+        ]
+      },
+      {
+        "label": "predecessor-stress",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15/stress_evidence.py"
+        ]
+      },
+      {
+        "label": "predecessor-hupsel",
+        "returncode": 0,
+        "args": [
+          "tests/dataqual15_hupsel/uptake_evidence.py"
+        ]
+      }
+    ],
+    "full_current1827_execution": false,
+    "whole_scientific_qualification": false
+  },
+  "guard_controls": {
+    "tests": 10,
+    "status": "PASS"
+  },
+  "full_moving_fci_success": false,
+  "physical_correction": false
+}

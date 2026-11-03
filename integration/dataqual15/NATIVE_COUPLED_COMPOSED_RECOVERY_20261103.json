@@ -1,0 +1,19 @@
+{
+  "status": "COMPOSED_IO_REQUALIFICATION_SELECTED",
+  "original_admission": "aa611d0ca87abecb077036c2985511f0e4224b50",
+  "canonical_overlap": "e95499d7ad733dfc01828727764c299c6a250405",
+  "original_evidence_retained": true,
+  "physical_or_numerical_change": false,
+  "shared_compiled_io_successor": [
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_pond_thermal_restart_file.f90"
+  ],
+  "selection": [
+    "Fresh composed checked Windows native O0/O2",
+    "Fresh composed checked Linux native O0/O2",
+    "Exact admitted I/O successor and predecessor evidence verification"
+  ],
+  "expected_seconds": 300,
+  "original_outer_interval_accepted": false,
+  "full_physical_energy_complete": false
+}

@@ -1,11 +1,23 @@
 """Verify actual corrected native accept/rollback/disk evidence without promoting legacy scope."""
-import hashlib,json,math,struct,subprocess,tarfile,zlib
+import hashlib,json,math,struct,subprocess,sys,tarfile,zlib
 from pathlib import Path
 from audit_native_donors import audit
 ROOT=Path(__file__).resolve().parents[2]
 def verify():
  git=lambda *args:subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
- assert not git('diff','c1ce8808bdfc042577295811b5acccbd7608ebea','HEAD','--','src','app','reference')
+ successor={}
+ scope_path=ROOT/'integration/dataqual15_hupsel/NATIVE_PUBLICATION_SCOPE_20261103.json'
+ if scope_path.exists():
+  scope=json.loads(scope_path.read_text(encoding='utf-8'))
+  assert scope['canonical_admission'] and not scope['physical_correction'] and not scope['whole_scientific_admission']
+  successor=scope['production_delta']
+  assert set(successor)=={'app/solute_project/hupsel_rotation_restart.f90','app/solute_project/main.f90',
+   'src/adapter/mod_age_joint_restart_file.f90','src/adapter/mod_pond_thermal_restart_file.f90'}
+  for path,pins in successor.items():
+   assert git('rev-parse','c1ce8808bdfc042577295811b5acccbd7608ebea:'+path)==pins['before'],path
+   assert git('rev-parse','HEAD:'+path)==pins['after'],path
+  subprocess.run([sys.executable,'-B',scope['verifier']],cwd=ROOT,check=True)
+ assert set(git('diff','--name-only','c1ce8808bdfc042577295811b5acccbd7608ebea','HEAD','--','src','app','reference').splitlines())==set(successor)
  record=json.loads((ROOT/'integration/dataqual15/NATIVE_COUPLED_WINDOWS_EVIDENCE_20261103.json').read_text(encoding='utf-8'))
  path=ROOT/record['archive'];digest=lambda data:hashlib.sha256(data).hexdigest()
  assert digest(path.read_bytes())==record['archive_sha256']
@@ -16,7 +28,11 @@ def verify():
  for folder in ['native-o0','native-o2','component-o0','component-o2']:
   r=json.loads(files[folder+'/RESULT.json'])
   for name,blob in r.get('source_git_blob',r.get('sources',{})).items():
-   assert git('rev-parse','HEAD:'+name)==blob,name
+   expected=blob
+   if name in successor:
+    assert successor[name]['before']==blob,name
+    expected=successor[name]['after']
+   assert git('rev-parse','HEAD:'+name)==expected,name
    assert not git('diff','HEAD','--',name),name
   if folder.startswith('component'):
    assert r['status']=='PASS' and r['compile_closure']==11
