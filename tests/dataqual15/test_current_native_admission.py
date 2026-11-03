@@ -31,8 +31,8 @@ class Boundary(unittest.TestCase):
  def tearDown(self):m.ROOT=self.previous;self.temp.cleanup()
  def git(self,*args):return m.git(*args)
  def write(self,p,text):
-  path=self.root/p;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,newline='\n')
- def write_json(self,p,value):self.write(p,json.dumps(value,indent=2)+'\n')
+  path=self.root/p;path.parent.mkdir(parents=True,exist_ok=True);path.write_text(text,encoding='utf-8',newline='\n')
+ def write_json(self,p,value):self.write(p,json.dumps(value,indent=2,ensure_ascii=False)+'\n')
  def commit(self):self.git('add','.');self.git('commit','-qm','fixture')
  def test_exact_accepted_source_boundary(self):m.guard(self.record)
  def test_unknown_committed_production_rejected(self):
@@ -61,7 +61,7 @@ class Boundary(unittest.TestCase):
   self.write_json(m.NATIVE_STATUS,{'native_disk_restart_20261102':{'admission':'different inventory'},'other_chat':{}});self.commit()
   with self.assertRaises(AssertionError):m.guard(self.record)
  def test_unrelated_chat_status_does_not_transfer_native_authority(self):
-  self.write_json(m.NATIVE_STATUS,{'native_disk_restart_20261102':{'admission':'immutable native inventory'},'other_chat':{'diagnostic':'new independently owned observation'}});self.commit()
+  self.write_json(m.NATIVE_STATUS,{'native_disk_restart_20261102':{'admission':'immutable native inventory'},'other_chat':{'diagnostic':'new independently owned observation \u00b5 \u201d'}});self.commit()
   m.guard(self.record)
  def test_omitted_authority_refused(self):
   self.record['frozen_assets'].pop(m.ENDPOINT_RECEIPT)

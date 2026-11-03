@@ -31,7 +31,7 @@ CURRENT_GATES={'tests/dataqual15/verify_current_native_admission.py',
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def blob(ref,path):return git('rev-parse',ref+':'+path)
 def native_status_pin(ref=None):
- raw=git('show',ref+':'+NATIVE_STATUS)if ref else (ROOT/NATIVE_STATUS).read_bytes()
+ raw=subprocess.check_output(['git','show',ref+':'+NATIVE_STATUS],cwd=ROOT)if ref else (ROOT/NATIVE_STATUS).read_bytes()
  owned=json.loads(raw)['native_disk_restart_20261102']
  return hashlib.sha256(json.dumps(owned,sort_keys=True,separators=(',',':')).encode()).hexdigest()
 
