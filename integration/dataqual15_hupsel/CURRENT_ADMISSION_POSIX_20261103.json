@@ -1,0 +1,73 @@
+{
+  "run": 41737968410,
+  "job": 126272697279,
+  "head": "c3c552cfc40880ec028dfa3a3891277d51494c5a",
+  "tested_merge": "7a4be7ea37fe18fe3989f1e50283124790d94f76",
+  "conclusion": "success",
+  "archive": "CURRENT_ADMISSION_POSIX_20261103.zip",
+  "sha256": "855bcf51b060bea6974d79b72c88f9c5e77e0ac0a9d2b21f842de61a7d9933ca",
+  "artifact": 13280930471,
+  "members": {
+    "EVENTS.json": "6b01e7728e36acdf8ffe26ec5360e710ed9f58bfbfb1f1784c4dc47fd5e88745",
+    "RESULT.json": "c567ef8ee06287b9e1780a6548a8ac2481660af5c01603d9513c6d1d79eb63f6",
+    "composition/RESULT.json": "79d0a038264201a5600adac15af79a160e6106750076cfa5a527354a9630c6a4",
+    "composition/boundary-controls.stderr": "1efcd3b8f4653eba9d97d831a49b6e7d7710757e5b18a5201ca4851c3ac59f7c",
+    "composition/boundary-controls.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/RESULT.json": "5f691ab961b592da380eac2ed5ac87b2aaf015184f5a9a0df3f39724ee2d285b",
+    "composition/historical-admission/current-hupsel-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-hupsel-native.stdout": "dce5016e0a7adca1ee71b3a9f4a33e3045287a8302a816e90afe7441c9d29b89",
+    "composition/historical-admission/current-native-contact-observations.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-native-contact-observations.stdout": "2124bd3104e15250b44bfd7e61abad1d3822deac370aac7e1b3b72e176f8fa30",
+    "composition/historical-admission/current-native.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-native.stdout": "c2fe5f45c86bae292487e31d8eaf3a39486cefba32033feb1f3c79f97fd6dc12",
+    "composition/historical-admission/current-sensible-stock.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/current-sensible-stock.stdout": "50c11b6063d65d8069a642360c855a47f072f78a7485495f7c7676acfadc2672",
+    "composition/historical-admission/predecessor-grass.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/predecessor-grass.stdout": "86000a7e63da627f8b27b65aba44e15a859f3eff532af16beaa8e06dd96aad18",
+    "composition/historical-admission/predecessor-hupsel.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/predecessor-hupsel.stdout": "8cfcdad2e832d09bbef1c5472eaa5afdfe32cdce068dd1b66d3bdeedfe99fe97",
+    "composition/historical-admission/predecessor-stress.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-admission/predecessor-stress.stdout": "75645984cf8b4134eca52360e12e182e6d550c3872273d8f494195bd5bcc145b",
+    "composition/historical-seven-legs.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "composition/historical-seven-legs.stdout": "5f691ab961b592da380eac2ed5ac87b2aaf015184f5a9a0df3f39724ee2d285b",
+    "current-corrected-rotation.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current-corrected-rotation.stdout": "14542131388eac51ebe782888faa9b6f67e18b4e01b889af7f0836ca5c5e421a",
+    "current-endpoint-and-exact-history.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "current-endpoint-and-exact-history.stdout": "8695f19438b46b3c79aad2624fdbf7c61fcd7c2b8f73e0189f359272d64b4454"
+  },
+  "result": {
+    "status": "CURRENT_ACCEPTED_ENDPOINT_AND_EXACT_HISTORICAL_NATIVE_AUTHORITY_PASS",
+    "candidate": "7a4be7ea37fe18fe3989f1e50283124790d94f76",
+    "events": [
+      {
+        "label": "current-corrected-rotation",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "tests/dataqual15_hupsel/verify_corrected_rotation_evidence.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "current-endpoint-and-exact-history",
+        "command": [
+          "/usr/bin/python3",
+          "-B",
+          "tests/dataqual15_hupsel/qualify_canopy_preservation.py",
+          "--output",
+          "/home/runner/work/_temp/native-admission/composition"
+        ],
+        "returncode": 0
+      }
+    ],
+    "historical_projection": {
+      "tree": "549e59dad808f35ff64f340c498f037efc659ffb",
+      "commit": "4b53c1ec015a1b8c2c61af41b1f967ac65fbe94c",
+      "scope": "EXACT_PREDECESSOR_PRODUCTION_NOT_CURRENT_NATIVE_EXECUTION"
+    },
+    "historical_scope": "Exact predecessor science and I/O only; not current endpoint execution",
+    "current_scope": "Separately admitted endpoint/shared runtime and corrected diagnostic1096 evidence",
+    "full_current_literal1827_execution": false,
+    "whole_scientific_admission": false
+  }
+}

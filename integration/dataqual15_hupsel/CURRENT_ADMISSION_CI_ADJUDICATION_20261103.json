@@ -1,0 +1,21 @@
+{
+  "successful_workflows": 14,
+  "retained_failed_workflows": 1,
+  "current_canonical_composition": "PASS",
+  "retained_failure": {
+    "run": 41737968588,
+    "jobs": [
+      126271966459,
+      126271966782,
+      126271967183
+    ],
+    "reason": "Unchanged historical prepare-only selector rejects later canonical endpoint production inventory. No failed check relabeled or waived.",
+    "baseline": "be6d1afffed3fd7b3ed4052507c2bfdaae75e9cd",
+    "unchanged_paths": [
+      "tests/dataqual15/verify_native_restart_admission.py",
+      "tests/dataqual15/test_native_restart_admission.py",
+      ".github/workflows/dataqual15-grass-sprint.yml"
+    ]
+  },
+  "whole_scientific_admission": false
+}
