@@ -1,8 +1,8 @@
 {
   "baseline": "538fb025e8702d4dd609bc30cc347743a0587145",
   "branch": "codex/nonlinear-contact-thermal-receipts-20261103",
-  "stage": "WINDOWS_ACCEPTED_THERMAL_O0_O2_PASS_NATIVE_CONTACT_RUNNING",
-  "scope": "Nonlinear contact research using actual native process callbacks, and observational thermal data on selected accepted hydraulic substeps",
+  "stage": "WINDOWS_NONLINEAR_PAIR_AND_ACTUAL_NATIVE_THERMAL_O0_O2_PASS_LINUX_PENDING",
+  "scope": "Actual nonlinear two-cell fixed-neighbour contact/real donor stock research; additive accepted thermal observations, actual112-node first-day source-input prefix; full native step/whole energy remain OPEN",
   "invariants": [
     "No original tolerance, entry law or default physical solver change",
     "Rejected trials preserve committed state",
@@ -26,9 +26,14 @@
   "production_contact_repair": false,
   "full_energy_balance_complete": false,
   "canonical_admitted": false,
-  "next": "Complete actual-input native contact/thermal replay and O2; qualify Linux and preserved source bounds before admission",
+  "next": "Seal source-bound native data, complete Linux and current source preservation gates, reconcile and admit only qualified observational/research scope",
   "thermal_evidence": "integration/dataqual15/THERMAL_ACCEPTED_RECEIPTS_20261103.json",
   "native_contact_checkpoint": "22c73d796",
   "native_contact_run": "../nonlinear-native-contact-O0-02",
-  "cold_build_justification": "Actual112-node original input/rebound state must execute the complete native constitutive/macropore/runtime route, including153 source-verified TTUTIL reader providers; a mocked/small process driver cannot establish original-input accepted thermal data or real frozen-neighbour contact callbacks."
+  "cold_build_justification": "Actual112-node original input/rebound state must execute the complete native constitutive/macropore/runtime route, including153 source-verified TTUTIL reader providers; a mocked/small process driver cannot establish original-input accepted thermal data or real frozen-neighbour contact callbacks.",
+  "pull_request": 1492,
+  "native_windows_runs": {
+    "O0": "../nonlinear-native-contact-O0-04",
+    "O2": "../nonlinear-native-contact-O2-02"
+  }
 }

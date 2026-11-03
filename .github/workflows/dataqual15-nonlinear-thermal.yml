@@ -47,6 +47,8 @@ jobs:
           fetch-depth: 0
       - name: Cold source-bound native build, nonlinear contact and original-input thermal prefix
         run: python -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization ${{ matrix.optimization }} --output native-contact-ci
+      - name: Independently reconstruct actual native heat capacity and interval budgets
+        run: python -B tests/dataqual15/analyze_native_thermal_receipts.py native-contact-ci/actual-prefix/actual-thermal.csv --output native-contact-ci/THERMAL_ANALYSIS.json
       - uses: actions/upload-artifact@v4
         if: always()
         with:
