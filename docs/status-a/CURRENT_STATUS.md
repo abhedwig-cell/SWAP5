@@ -1,6 +1,6 @@
 # SWAP5 Status-A current status
 
-[Contact and physical heat research](../audits/CONTACT_PHYSICAL_ENERGY_RESEARCH_20261103.md) is admitted through PR1489: Windows16.2/Linux13.3 checked O0/O2 pass the actual archived frozen Andelst contact constraint, manufactured macro conservation control and ten explicit-phase warm sensible budgets with fourteen refusal cases. All17 PR workflows pass. The actual merge includes separately admitted PR1488; whole-tree identity is false, compiled research dependencies are exact and a fresh composed-source O0/O2 retest passes. The exact adapter-only source-guard successor is being qualified. Nonlinear Andelst and full physical energy remain OPEN; the migration denominator is unchanged. Authority: `integration/dataqual15/CONTACT_PHYSICAL_CANONICAL_RECEIPT_20261103.json`.
+[Contact and physical heat research](../audits/CONTACT_PHYSICAL_ENERGY_RESEARCH_20261103.md) is admitted through PR1489: Windows16.2/Linux13.3 checked O0/O2 pass the actual archived frozen Andelst contact constraint, manufactured macro conservation control and ten explicit-phase warm sensible budgets with fourteen refusal cases. All17 PR workflows pass. The actual merge includes separately admitted PR1488; whole-tree identity is false, compiled research dependencies are exact and a fresh composed-source O0/O2 retest passes. The exact adapter-only source-guard successor is admitted through PR1490 with identical tested/actual trees and all17 workflows successful. Nonlinear Andelst and full physical energy remain OPEN; the migration denominator is unchanged. Authority: `integration/dataqual15/CONTACT_PHYSICAL_CANONICAL_RECEIPT_20261103.json`.
 
 Numerical whole-column stock comparison is now production-admitted through PR1487 at `c9ed8c8ca7ec9347c2b4319836036b061243c184`, with exact tested/actual merge trees. Checked Windows16.2/Linux13.3 O0/O2 pass the current numerical owner and I23/I24/I25 runtime contracts. All864 normalized representations pass and all864 injected1J/m2 errors are rejected per build; missing donor energy and invalid theta remain refusals. The accepted-outflow fixture tests unavailable energy authority directly while preserving water balance and rollback. No physical law, DTO, solver, state or restart changes. Variable-water physical energy and Andelst481days remain OPEN; counts stay2/3 original executions and0/3 whole scientific qualifications. CI records26 success and14 retained failures, including three non-owner scope firewalls on the intentional stock delta. Authority: `integration/dataqual15/STOCK_PRODUCTION_CANONICAL_RECEIPT_20261103.json` and [production stock scope](../audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md).
 
@@ -148,9 +148,9 @@ DATAQUAL07 canonically integrated by PR1467 (actual merge
 macropore stock policy: outgoing fluxes respect available water and redistributed
 input respects remaining capacity. The reproduced1.33 trace rejection is repaired
 without relaxed balance/trace/temporal tolerances. Final-source53 scenario rows/60
-native processes yield6 extra water-qualified configurations,77â†’83; all6 also pass
+native processes yield6 extra water-qualified configurations,77→83; all6 also pass
 paired legacy policy at the same60s budget, so this count gain is expanded execution,
-not code-only attribution. Deduplicated DATAQUAL05â€“07 days83.050â†’93.6185;151 distinct
+not code-only attribution. Deduplicated DATAQUAL05–07 days83.050→93.6185;151 distinct
 configurations started, all variants of one original project. Two O0/O2 and split
 restarts are exact; both2day predecessor routes remain exact. Original integral
 reaches2.748 but still fails the next window with exact rollback. No full431 parity,
@@ -164,7 +164,7 @@ Selected hosted canonical feedback and documentation pass; no full numerical F-C
 Original MPVOLUME variable surface conductivity now uses residual candidate area;
 production fixed-cap streams/payload remain exact.76 primary executions yield49
 extra successful configurations, taking the DATAQUAL05+06 distinct water-qualified
-count28â†’77 and distinct started85â†’151. Six initially uncapped THETCRMP0 cases also
+count28→77 and distinct started85→151. Six initially uncapped THETCRMP0 cases also
 complete the wet target, including positive pond transfer and exact selected O0/O2/restart. All32 new root/LAI/drainage compositions
 complete1.054days; stronger rain cases remain censored/failed. Current full/split
 and O0/O2 endpoints, eight native controls and affected FCI93 oracles pass.
@@ -1144,7 +1144,7 @@ The current Status-A denominator includes the following capability families with
 | Groundwater Coupling v1 | The admitted groundwater chain includes the bounded internal coupling contract and the current external gateway boundary. Coupling publication follows the accepted-state contract. |
 | External groundwater gateway | Gateway v1 is the admitted structural external-coupling seam. Its existence does not itself admit a broad concrete MODFLOW backend or arbitrary external-backend semantics. |
 | F-PE11 performance closure | F-PE11 preserves the already admitted call-local surface-evaporation allocation/scaling semantics. Its current-head closure was a `NO_OP`: no production/reference mutation was required. It is not a blanket whole-model, MultiSWAP or portable speed guarantee. |
-| Permanent testbank / qualification | The current Status-A release-readiness authority inherits same-tree permanent baseline, smoke, kernel, transactional, independent-oracle, mixed-smoke and numerical suites plus capability-specific moving-current evidence. Earlier [`F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md`](../testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md) remains an important permanent-testbank architecture/snapshot, but it is explicitly bound to older canonical `379afd11â€¦` and is not itself the preservation authority for `992a5c657â€¦`. |
+| Permanent testbank / qualification | The current Status-A release-readiness authority inherits same-tree permanent baseline, smoke, kernel, transactional, independent-oracle, mixed-smoke and numerical suites plus capability-specific moving-current evidence. Earlier [`F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md`](../testbank/F-TB11_CURRENT_CANONICAL_PERMANENT_PRESERVATION.md) remains an important permanent-testbank architecture/snapshot, but it is explicitly bound to older canonical `379afd11…` and is not itself the preservation authority for `992a5c657…`. |
 
 ## Current preservation authority
 
@@ -1158,7 +1158,7 @@ For the pinned scientific production tree, the release-readiness record inherits
 - `tests/run-mixed-smoke.sh`
 - `tests/run-numerical.sh`
 
-Restricted Snow also has an exact-head preservation workflow on `50346642â€¦`. F-PE11 uses dependency-aware current-head preservation: its close authority records no relevant production/reference dependency change and therefore no duplicate admission or benchmark rerun was required.
+Restricted Snow also has an exact-head preservation workflow on `50346642…`. F-PE11 uses dependency-aware current-head preservation: its close authority records no relevant production/reference dependency change and therefore no duplicate admission or benchmark rerun was required.
 
 This distinction matters because a permanent-testbank document can be architecturally authoritative for its recorded snapshot while not automatically covering a later canonical head.
 

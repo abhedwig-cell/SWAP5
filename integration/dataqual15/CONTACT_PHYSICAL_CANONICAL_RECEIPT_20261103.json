@@ -1,5 +1,5 @@
 {
-  "status": "COMPOSED_CANONICAL_RESEARCH_RETEST_PASS_GUARD_SUCCESSOR_PENDING",
+  "status": "BOUNDED_RESEARCH_AND_COMPOSED_GUARD_CANONICALLY_ADMITTED_ALL_CHECKS_TERMINAL",
   "research_pr": 1489,
   "base": "2924fefaca25fa260147e7c16cd9493c27f57cd7",
   "qualified_head": "5607ee32d1625a146899d46dc64a5d55fc3acb6b",
@@ -101,11 +101,130 @@
       "observed_count": 213,
       "expected_count": 13,
       "guard_blob": "2c4066c4c44baa02360fbfaf6bb5662bb2f59b87"
+    },
+    "435157337e537b3b131e34b554f7eea7697b0833": {
+      "predicate": "scientific delta equals DATAQUAL12 frozen scientific_delta",
+      "result": "FAIL",
+      "observed_count": 213,
+      "expected_count": 13,
+      "guard_blob": "2c4066c4c44baa02360fbfaf6bb5662bb2f59b87"
     }
   },
   "production_contact_repair": false,
   "full_energy_balance_complete": false,
   "full_original_andelst_complete": false,
   "scientific_denominator_changed": false,
-  "next_action": "qualify exact composed source guard and publish successor; nonlinear contact state coupling and actual phase/thermal interval receipts remain open"
+  "next_action": "Coupled nonlinear contact exchange/macro storage trial with immutable rollback; native accepted thermal/liquid/gas/root interval receipts; atmospheric/latent/vapor/freezing owners. Full Andelst and energy remain open.",
+  "guard_successor": {
+    "pr": 1490,
+    "qualified_head": "fcdcc620c3329f0b74ee221af993fc4b9ea065d2",
+    "tested_merge": "1f9b5c5c52796a4ac9bcf145482b75b4d5d5f67d",
+    "actual_merge": "435157337e537b3b131e34b554f7eea7697b0833",
+    "tested_tree": "f990e9765a860528e0a2add9a41751952ec975f2",
+    "actual_tree": "f990e9765a860528e0a2add9a41751952ec975f2",
+    "whole_tree_exact": true,
+    "actual_merge_source_verifier": "PASS",
+    "ci_record": "integration/dataqual15/CONTACT_PHYSICAL_PR1490_CI_20261103.json"
+  },
+  "pr1489_ci_record": "integration/dataqual15/CONTACT_PHYSICAL_PR1489_CI_20261103.json",
+  "pr1489_actual_merge_ci": [
+    {
+      "id": 41610145873,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41610145695,
+      "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41610145616,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41610145698,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "pr1489_actual_merge_ci_counts": {
+    "success": 2,
+    "failure": 2
+  },
+  "successor_postcheck_failures": [
+    {
+      "run": 41611628321,
+      "job": 125834677954,
+      "authority": "integration/audits/verify_dataqual12_current.py:13",
+      "message": "AssertionError: unreviewed delta",
+      "classification": "RETAINED_BASELINE_GLOBAL_INVENTORY_FAILURE"
+    },
+    {
+      "run": 41611628748,
+      "job": 125834679236,
+      "authority": "integration/audits/verify_dataqual12_current.py:13",
+      "message": "AssertionError: unreviewed delta",
+      "classification": "RETAINED_BASELINE_GLOBAL_INVENTORY_FAILURE"
+    }
+  ],
+  "local_documentation_checks": {
+    "source_checks": "PASS",
+    "mkdocs_strict": "PASS"
+  },
+  "final_receipt_preservation": {
+    "basis": "435157337e537b3b131e34b554f7eea7697b0833",
+    "metadata_only": true,
+    "unchanged_trees": {
+      "src": "09021c83b11b23bf67958aa10583d93780455983",
+      "app": "e951e70bb12e0733a85e02182c489c656c356149",
+      "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+      "tests": "1016038acd5bcd3080dd4a87cec44da99fcc2c49",
+      ".github": "b89a9790e0fdbc805debd8912a24fb5d00f6b462"
+    },
+    "unchanged_capsule_git_blobs": {
+      "CONTACT_PHYSICAL_ENERGY_EVIDENCE_20261103.tar.xz": "2640b08a220b48a6e79295ed61643991c67b34cb",
+      "CONTACT_PHYSICAL_ACTUALMERGE_20261103.tar.xz": "c9a9900f8a8b4201fdf49ecf969eeea81544c563",
+      "CONTACT_PHYSICAL_ENERGY_LINUX_20261103.zip": "f9505c7c3b0762367b9cc480af8fe2f4b95589e8"
+    },
+    "documentation": "source checks and strict MkDocs PASS after exact UTF8 baseline restoration",
+    "ci_policy": "metadata-only receipt uses skip ci; all source/workflow/test/sealed evidence unchanged; terminal owning PR and canonical checks retained separately"
+  },
+  "successor_actual_merge_ci": [
+    {
+      "id": 41611628933,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 41611628748,
+      "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41611628321,
+      "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 41611628485,
+      "name": "F-GC fixed-interface groundwater closeout",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "successor_actual_merge_ci_counts": {
+    "success": 2,
+    "failure": 2
+  },
+  "all_selected_runs_terminal": true,
+  "production_physics_admitted_by_this_work": false
 }

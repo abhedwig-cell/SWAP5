@@ -126,3 +126,14 @@ archived0.022332123569824055cm/day jump, not the later synthetic topology probe'
 0.11805cm/day jump. This experiment neither regenerates the complete original
 sharp-input trajectory nor reevaluates nonlinear rates at the constrained head.
 A coupled accepted step remains required.
+
+The exact source-guard successor is admitted through PR1490 at `435157337`.
+Its actual tree `f990e976` equals tested merge `1f9b5c5c`; all17 PR workflows
+succeeded, including a fresh Linux research rebuild and the composed source
+verifier. The actual canonical verifier also passes locally. The first merge's
+four automatic postchecks terminated with two successes (canonical selection
+and groundwater) and two retained DATAQUAL12 global-inventory refusals. These
+failures are preserved as failures, not physical-equivalence passes. Final
+successor postcheck outcomes belong to the JSON canonical receipt. The final
+receipt checkpoint changes only documentation/registration and retains all
+implementation, workflow, source and sealed-evidence identities.
