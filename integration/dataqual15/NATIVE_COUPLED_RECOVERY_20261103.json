@@ -1,7 +1,7 @@
 {
   "baseline": "c1ce8808bdfc042577295811b5acccbd7608ebea",
   "branch": "codex/native-coupled-acceptance-20261103",
-  "stage": "CONTRACT_PERSISTED",
+  "stage": "REAL_HEAT_COMPONENT_PASS_NATIVE_FULL_TRIAL_PASS_HALF_SOLVER_UNDER_REPAIR",
   "production_changed": false,
   "scope": "Explicit corrected native coupled substep owner, real matrix heat feedback and historical/proxy donor provenance",
   "selection": [
@@ -15,5 +15,37 @@
     "native": 300
   },
   "full_original_andelst_complete": false,
-  "full_energy_balance_complete": false
+  "full_energy_balance_complete": false,
+  "recovery_point": "91b181ec35adfa6cfdac2c93ae9ab6b97a837b6f",
+  "component": {
+    "closure": 11,
+    "O0": "PASS",
+    "O2": "PASS",
+    "heat_feedback_c": 0.3071884359019386,
+    "joint_residual_j_cm2": 7.251144129583054e-16,
+    "temporal_error": 7.010193860720879e-09,
+    "commits": 1,
+    "rollback_controls": 3,
+    "boundary_combinations": 4
+  },
+  "native": {
+    "full112_water_heat_trial": "PASS",
+    "full_half_acceptance": false,
+    "full_trial_joint_residual_j_cm2": 8.515172974059452e-13,
+    "feedback_j_cm2": 6.370470975580351e-07,
+    "pending": "Smooth-branch finite differences for first half; actual boundary receipts"
+  },
+  "historical_donors": {
+    "air_days": 481,
+    "initial_soil_c": 10.0,
+    "rain_measured": false,
+    "groundwater_measured": false
+  },
+  "remaining": [
+    "Native full/two-half acceptance with unchanged mass/temporal gates",
+    "Source-bound Windows and Linux qualification evidence",
+    "Canonical admission after owning gates",
+    "Typed disk restart for corrected model",
+    "Complete physical energy and independent historical water donor measurements"
+  ]
 }
