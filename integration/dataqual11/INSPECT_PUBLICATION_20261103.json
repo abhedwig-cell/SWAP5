@@ -1,0 +1,10 @@
+{
+  "scope": "Read-only original project capability inspection; validate all fields before output creation; optional output path",
+  "baseline": "d37a9ba2f09e8ea65168b0f87cd6691ad372536f",
+  "test": "tests/dataqual11/test_inspect_publication.py",
+  "result": "HISTORICAL_INSPECTION_PUBLICATION_O0_O2_PASS; 14 executions using archived TTUTIL, exact baseline output comparison, missing late crop field, existing output, missing argument and overlong output rejection",
+  "physical_execution": false,
+  "canonical_admission": false,
+  "next": "Register exact inspection delta with composed admission evidence before canonical integration",
+  "previous_cluster_local_composition": "EXACT_PREDECESSOR_AND_NATIVE_IO_SUCCESSOR_PASS on 963b7f5334d098c0bf00f8df11bb5fbf237122f3 after installing declared mpmath1.3.0; all five events returned0"
+}
