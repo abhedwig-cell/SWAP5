@@ -70,5 +70,249 @@
     "report": "docs/audits/DATAQUAL15_STOCK_PRODUCTION_20261103.md",
     "scope": "Actual production numerical owner plus current EB runtime preservation; no physical energy/contact promotion",
     "next_action": "Linux current owner/runtime and composed predecessor CI; exact-source admission; then accepted thermal interval receipts and explicit Andelst contact correction"
+  },
+  "closure16_andelst_continuation": {
+    "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "branch": "codex/closure16-andelst-native",
+    "status": "FRESH_CANONICAL_FAILURE_REPRODUCED_NO_SPECULATIVE_REPAIR",
+    "invariants_affected": [
+      7,
+      13,
+      23,
+      25
+    ],
+    "hypothesis": "Canonical source reproduces original contact barrier; fresh exact source build is needed before implementing a numerical treatment. A corrected ramped 130-day variant is not an original checkpoint.",
+    "selection": {
+      "native_build": {
+        "expected_seconds": 180,
+        "reason": "First current canonical main_water coupled build, reuse stock original readers only within same verified build; original contact full coupled replay is not replaced by synthetic component evidence."
+      },
+      "replay": {
+        "expected_seconds": 60,
+        "reason": "Rebind only executable identity and CRC of historical 2.748 payload for diagnostic baseline; do not call it qualified current-source restart. Sharp gate=0, ramp .0001 historical control separately disclosed."
+      }
+    },
+    "qualification": false,
+    "next": "Conservative original sharp/contact event treatment; retain both independent discontinuities and separate ramped130-day temporal limitation.",
+    "evidence": "integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json",
+    "new_full_days": 1,
+    "last_completed_original_sharp_interval_day": 1.9400000000023283,
+    "qualified": false,
+    "alternative_route_reconciliation": "Existing outer exchange corrector is not a safe drop-in alternative: runtime explicitly rejects enabled dynamic shrinkage with inner_richards_exchange_enabled=false before geometry/rate processing. That protects dynamic geometry and exchange consistency, not merely missing qualification evidence; the guard is retained."
+  },
+  "closure16_paired_heat": {
+    "result": "integration/dataqual15/PAIRED_HEAT_OWNER_RESULT_20261102.json",
+    "classification": "B1.11 and current temperatures and conductive boundary match to rounding; variable-water physical stock discrepancy is shared formulation.",
+    "full_energy_complete": false
+  },
+  "closure16_retained_failure": {
+    "workflow_run": 41447391079,
+    "test": "tests/dataqual15_hupsel/verify_sprint03.py",
+    "actual_failure": "checkout source differs: app/grass_project/restart_file.f90",
+    "baseline": "7a7f994d8b7fd0327f761a0db791726ab7a98e75",
+    "baseline_reproduced": true,
+    "production_sources_changed_by_this_pr": false,
+    "classification": "Existing current-source guard mismatch after native restart admission; historical scientific evidence is not current native restart evidence. Failure retained, no assertion or source pin relaxed."
+  },
+  "closure16_canonical_receipt": {
+    "pull_request": 1486,
+    "actual_merge": "58b89f37df4458ac28fd6b44226cc0af7e9e6e01",
+    "tested_head": "c6c4557d45d6759cc6056c63a2ee7249fa04d6ef",
+    "qualified_tree": "7aa11305c2a3078c594ffa9661e98a5d6f18da58",
+    "actual_tree": "7aa11305c2a3078c594ffa9661e98a5d6f18da58",
+    "whole_tree_exact": true,
+    "actual_merge_verifiers": [
+      "verify_closure16_andelst.py PASS",
+      "verify_paired_heat_owner.py PASS",
+      "canopy_event_ledger.py PASS"
+    ],
+    "production_changed": false,
+    "full_original_executions": 2,
+    "fully_scientifically_qualified_projects": 0,
+    "ci": [
+      {
+        "id": 41447742263,
+        "name": "F-MIG431-INT12-D Gash qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742324,
+        "name": "F-GC42 live whole-window service",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742433,
+        "name": "F-MIG431-INT12-P0 qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742548,
+        "name": "SWAP431 crop CO2 response qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742593,
+        "name": "F-MIG431-INT12-E detailed interception qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742505,
+        "name": "Hupsel sprint03 dossier integrity - science OPEN",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41447742329,
+        "name": "F-CI110 reconstructed performance admission",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742276,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742663,
+        "name": "DATAQUAL15 current contact and energy diagnostics",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742417,
+        "name": "SWAP431 crop rootgrow DVS qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742298,
+        "name": "DATAQUAL15 original Grassgrowth sprint",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742480,
+        "name": "SWAP431 empirical root oxygen qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742308,
+        "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742587,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742297,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742316,
+        "name": "SWAP431 root constant LRV qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41447742730,
+        "name": "F-MIG431 LOW08-A qualification",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "scope": "Canonically admitted diagnostic evidence only; physical energy, Andelst481 and whole coupled scientific equivalence remain open.",
+    "canonical_retained_failures": [
+      {
+        "run": 41448565256,
+        "cause": "Historical Hupsel full-inventory restart_file source mismatch; same canonical baseline refusal retained."
+      },
+      {
+        "run": 41448564993,
+        "cause": "F-CI51P caller retains DATAQUAL12 unreviewed delta source refusal; independently reproduced on baseline7a7f994d."
+      },
+      {
+        "run": 41448564949,
+        "cause": "F-CI58P caller retains same DATAQUAL12 unreviewed delta source refusal."
+      }
+    ],
+    "canonical_ci_at_capture": [
+      {
+        "id": 41448565046,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "in_progress",
+        "conclusion": null
+      },
+      {
+        "id": 41448565256,
+        "name": "Hupsel sprint03 dossier integrity - science OPEN",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448564993,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448564949,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448565097,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "receipt_only_followup": "Administrative documentation/receipt only. Actual science/driver trees unchanged; source checks and strict MkDocs run locally. No broad numerical rerun selected for these metadata edits.",
+    "canonical_ci_terminal": [
+      {
+        "id": 41448565046,
+        "name": "F-GC fixed-interface groundwater closeout",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 41448565256,
+        "name": "Hupsel sprint03 dossier integrity - science OPEN",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448564993,
+        "name": "F-CI51P R3 WOF43A moving current-canonical preservation",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448564949,
+        "name": "F-CI58P F-SI35 postimage reconciliation and preservation",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "id": 41448565097,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "canonical_ci_all_terminal": true
   }
 }
