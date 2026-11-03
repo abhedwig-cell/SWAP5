@@ -83,7 +83,7 @@ def main():
   verified_objects(prior,ROOT,old_order,old_shadow,a.optimization,compiler)
   utilities=prior/'original'
  else:utilities=native.build_original(out/'original','gfortran',a.optimization,utilities_only=True)
- sources=[x.relative_to(ROOT).as_posix() for x in ordered if x.is_relative_to(ROOT)]
+ sources=[x.relative_to(ROOT).as_posix() for x in ordered if x.is_relative_to(ROOT) and not x.is_relative_to(out)]
  sources += list(shadow)+['tests/dataqual15/qualify_coupled_contact.py',native.SELF,native.RESEARCH+'coupled_headcalc_methods.inc',native.RESEARCH+'coupled_provider_methods.inc',native.RESEARCH+'contact_headcalc_methods.inc',native.RESEARCH+'contact_provider_methods.inc']
  assert not subprocess.check_output(['git','diff','HEAD','--',*sources]),'persist first'
  report['source_git_blob']={x:subprocess.check_output(['git','rev-parse','HEAD:'+x],text=True).strip() for x in set(sources)}
@@ -128,7 +128,7 @@ def main():
  for tag in ('MACRO_STORAGE','MACRO_VERTICAL'):
   rows=[row.split(',') for row in report['contact_rows'] if row.startswith(tag+',')];assert len(rows)==3 and all(row[2]=='T' for row in rows),rows
  history=[row.split(',') for row in report['contact_rows'] if row.startswith('HISTORY_BRANCHES,')];assert len(history)==3 and all(row[2:4]==['T','T'] for row in history)
- report['history_branch_unique']=all(row[4]=='T' for row in history);save()
+ report['history_branch_unique']=all(row[4]=='T' for row in history);report['full_coupled_step_accepted']=False;report['contact_memory_closure_available']=False;assert all(row[4]=='F' and float(row[5])>0 for row in history);save()
  folder,binding=case('actual-prefix');run([exe,'input.nml','-','1','input.swp','macro.nml',binding,'1.0','anchored-cauchy','0.0001','experimental','source-surface-demand','perched-jacobian','conservative-macro-storage'],folder,'actual-prefix',env=dict(os.environ,OMP_NUM_THREADS='1',SWAP5_RESEARCH_CONTACT='0'))
- report['status']='EXECUTED_FULL_COLUMN_CONTACT_AND_TRANSPORT_OBSERVATIONS';save();print(report['status']);print('\n'.join(x for x in report['contact_rows'] if x.startswith('COUPLED')))
+ report['status']='FULL_COLUMN_STORAGE_VERTICAL_PASS_HISTORY_NONUNIQUE_FULL_STEP_REFUSED';save();print(report['status']);print('\n'.join(x for x in report['contact_rows'] if x.startswith('COUPLED')))
 if __name__=='__main__':main()
