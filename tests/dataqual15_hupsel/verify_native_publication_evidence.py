@@ -29,4 +29,11 @@ with tarfile.open(base/'NATIVE_CANOPY_PUBLICATION_POSIX_20261103.tar.xz')as t:
 for r in posix['results']:
  assert r['outer_controls']==7 and r['crc_cases']==8
  assert r['checkpoint_sha256']==m['results'][0]['checkpoint_sha256']
+composed=json.loads((base/'COMPOSED_PUBLICATION_WINDOWS_20261103.tar.json').read_text())
+assert composed['status']=='FOCUSED_BLACK_RUTTER_HEAT_REACTIVE_PASS_NOT_ADMITTED'
+assert sha((base/'COMPOSED_PUBLICATION_WINDOWS_20261103.tar.xz').read_bytes())==composed['archive_sha256']
+for name,digest in composed['normalized_repository_source_sha256'].items():
+ assert sha((ROOT/name).read_bytes().replace(b'\r\n',b'\n'))==digest,name
+with tarfile.open(base/'COMPOSED_PUBLICATION_WINDOWS_20261103.tar.xz')as t:
+ assert {x.name:sha(t.extractfile(x).read())for x in t.getmembers()if x.isfile()}==composed['files_sha256']
 print('SEALED_NATIVE_CANOPY_IO_EVIDENCE_PASS_PHYSICS_OPEN')
