@@ -1,0 +1,21 @@
+name: Hupsel accepted root oxygen receipts
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-root-oxygen.yml
+      - tests/dataqual15_hupsel/root_oxygen_observer.py
+      - tests/dataqual15_hupsel/root_oxygen_evidence.py
+      - integration/dataqual15_hupsel/ROOT_OXYGEN_*
+permissions:
+  contents: read
+jobs:
+  cold-root-receipts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remeasure accepted receipts and reject injected defects
+        run: python3 -B tests/dataqual15_hupsel/root_oxygen_evidence.py
