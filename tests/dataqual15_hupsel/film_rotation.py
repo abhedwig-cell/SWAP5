@@ -29,11 +29,12 @@ def closure_files(opt,platform):
             assert len(names)==len(set(names));files={n.removeprefix('film-runtime/'):z.read(n)for n in names}
         assert all(sha(raw)==record['files_sha256'][n]for n,raw in files.items())
     assert all(not PurePosixPath(n).is_absolute()and not PureWindowsPath(n).drive and '..'not in PurePosixPath(n).parts for n in files)
-    return files,dict(manifest=manifest.name,manifest_sha256=sha(manifest.read_bytes()),archive=archive.name,archive_sha256=sha(raw if isinstance(raw,bytes)else archive.read_bytes()))
+    return files,dict(manifest=manifest.name,manifest_sha256=sha(manifest.read_bytes()),archive=archive.name,archive_sha256=sha(archive.read_bytes()))
 
 
 def materialize(out,opt,platform,compiler):
     files,origin=closure_files(opt,platform);out.mkdir();builds={}
+    (out/'INHERITED_MANIFEST.json').write_bytes((BASE/origin['manifest']).read_bytes())
     for observed in ([False,True]if opt=='O2'else[False]):
         original=inherited.source_binding(files,opt,observed)
         assert subprocess.check_output([str(compiler),'--version'],text=True).splitlines()[0]==original['compiler']
