@@ -16,7 +16,10 @@ GATES = (ENTRY,'tests/dataqual15_hupsel/production_diagnostic_admission.py',
          'tests/dataqual15_hupsel/qualify_rotation_restart_guards.py',
          'tests/dataqual15_hupsel/build_and_run.py',
          'tests/dataqual15_hupsel/test_production_diagnostic_admission.py',
-         '.github/workflows/hupsel-production-diagnostic.yml')
+         '.github/workflows/hupsel-production-diagnostic.yml',
+         '.github/workflows/dataqual15-grass-sprint.yml',
+         'tools/vq/select_grass_sprint.py',
+         'tests/dataqual15_hupsel/test_grass_sprint_selection.py')
 
 
 def process_env(env=None):

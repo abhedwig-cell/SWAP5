@@ -8,13 +8,34 @@ on:
       - tools/solute/build_grass_startup.py
       - tools/solute/build_grass_diagnostic.py
       - integration/dataqual15/STRESS_EVIDENCE*
+      - tools/vq/select_grass_sprint.py
+      - tests/dataqual15_hupsel/test_grass_sprint_selection.py
 permissions:
   contents: read
 concurrency:
   group: dataqual15-grass-sprint-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
+  owner-selection:
+    runs-on: ubuntu-24.04
+    outputs:
+      run_grass: ${{ steps.select.outputs.run_grass }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - run: python3 -B tests/dataqual15_hupsel/test_grass_sprint_selection.py
+      - name: Exact owner impact and current route authority; never a science PASS
+        id: select
+        run: python3 -B tools/vq/select_grass_sprint.py --base "${{ github.event.pull_request.base.sha }}" --output "$RUNNER_TEMP/grass-selection.json" --github-output "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dataqual15-owner-selection-${{ github.event.pull_request.head.sha }}
+          path: ${{ runner.temp }}/grass-selection.json
   stress-attribution:
+    needs: owner-selection
+    if: needs.owner-selection.outputs.run_grass == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 25
     steps:
@@ -55,6 +76,8 @@ jobs:
           path: ${{ runner.temp }}/stress/
           retention-days: 30
   recovery:
+    needs: owner-selection
+    if: needs.owner-selection.outputs.run_grass == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -81,6 +104,8 @@ jobs:
           path: ${{ runner.temp }}/recovery/
           retention-days: 30
   preservation:
+    needs: owner-selection
+    if: needs.owner-selection.outputs.run_grass == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
