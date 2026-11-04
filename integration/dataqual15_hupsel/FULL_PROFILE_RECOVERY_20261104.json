@@ -1,5 +1,5 @@
 {
-  "stage": "ACTUAL_FROM_INPUT_COMPLETE_WINDOWS_CAPTURE_PASS_COLD_PENDING",
+  "stage": "WINDOWS_AND_COLD_POSIX_QUALIFIED_ALL15_CI_SUCCESS_CANONICAL_INTEGRATION_PENDING",
   "baseline": "4416bde2f3b1fbf04bac9edfe36ab7d758ad69b1",
   "registration": "FULL_PROFILE_PREREGISTRATION_20261104.json",
   "source": "tests/dataqual15_hupsel/full_profile_evidence.py",
@@ -14,7 +14,7 @@
     "log": "../full-profile-boundary-20261104.log"
   },
   "compiled_provider_check": "236 raw source postimages exact",
-  "next": "Finish portable Windows remeasurement and selected cold POSIX job, adjudicate then integrate exact dependencies.",
+  "next": "Integrate PR1504 and remeasure actual canonical postimage; then close receipt and update current bounded status.",
   "whole_scientific_admission": false,
   "actual_run_seconds": 870.1719516000012,
   "all_original_profile_metrics_inside_frozen_bounds": true,
@@ -31,5 +31,27 @@
     "crop_wso",
     "crop_rd",
     "crop_harvested_dry_matter"
-  ]
+  ],
+  "cold_posix": {
+    "run": 41745974776,
+    "job": 126298941279,
+    "head": "e59c40b75bdd9595844018b3554783b5819613ec",
+    "status": "success",
+    "data_remeasurement_only": true,
+    "native_execution_platform": "Windows GNU16.2 checked O2",
+    "raw_job_log": "FULL_PROFILE_COLD_POSIX_20261104.log",
+    "normalized_log_sha256": "3952ceb53005947f203ab17cba416c5d3203c4d2d998f78dfd00cc5fd80e1b3f",
+    "controls": 7,
+    "measured_current_defect_controls": 6,
+    "profile_dates": 16,
+    "nodes_per_date": 34,
+    "whole_scientific_admission": false
+  },
+  "canonical_composition_job": {
+    "run": 41745974727,
+    "job": 126299534764,
+    "status": "success",
+    "head": "e59c40b75bdd9595844018b3554783b5819613ec"
+  },
+  "ci_terminal": "FULL_PROFILE_CI_TERMINAL_20261104.json"
 }
