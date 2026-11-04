@@ -1,6 +1,6 @@
 # Accepted oxygen diagnosis on the pressure runtime variant, 4 November 2026
 
-**Local Windows O0/O2 qualification PASS; canonical admission pending.** This
+**Windows/native and cold original O0/O2 qualification PASS; canonical admission pending.** This
 work implements `PRESSURE_OXYGEN_PREREGISTRATION_20261104.json` in
 `integration/dataqual15_hupsel`, against baseline `549963539` after PR1522/1523.
 It observes the actual pressure-stopping research trajectory, not the incumbent
@@ -69,7 +69,17 @@ explanation or permission to relax the full-series condition.
 Evidence: `PRESSURE_OXYGEN_EVIDENCE_20261104.json` and sealed capsule. Verifier:
 `tests/dataqual15_hupsel/pressure_oxygen_evidence.py`. Cold POSIX compiles and
 executes the original factor/partition experiments on actual Windows inputs;
-this is distinct from native POSIX coupled-runtime qualification.
+this is distinct from native POSIX coupled-runtime qualification. PR1524 head
+`dec97087d` passes all15 triggered workflows. Cold run41814937376/job126523193555
+executes both original-source experiments (factor max1.2106736175798716e-6,
+partition0). Canonical preservation run41814937321/job126523449589 passes the
+unchanged compositor/13 guards and exact historical guard/ten controls/seven
+preservation legs. Optional historical F-CI stages remain skipped.
+
+The same immutable archive is stored in seven individually hashed parts; its
+whole-archive SHA and every member SHA are verified after concatenation. This
+transport envelope changes no scientific payload. Exact local Git object
+identities and non-force ancestry are retained despite Git transport server errors.
 
 Next investigation must distinguish coupled state/forcing chronology and
 temporal quadrature from remaining microscopic rate differences. Prior temporal
