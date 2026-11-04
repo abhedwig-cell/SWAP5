@@ -133,7 +133,9 @@ def main():
   record=dict(status=measured['status'],baseline='4416bde2f3b1fbf04bac9edfe36ab7d758ad69b1',candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
               archive_sha256=sha(archive.read_bytes()),files_sha256={n:sha(b) for n,b in files.items()},
               normalized_repository_dependency_sha256=deps,prior_manifest_sha256=normalized(BASE/'CORRECTED_ROTATION_EVIDENCE_20261103.json'),
-              full_schedule_measured=True,retained_failures=measured['retained_failures'],whole_scientific_admission=False)
+              full_schedule_measured=True,
+              registered_diagnostic_original_profile_schedule_inside_bounds=measured['full_schedule_inside_all_frozen_bounds'],
+              retained_failures=measured['retained_failures'],whole_scientific_admission=False)
   (BASE/(STEM+'.json')).write_text(json.dumps(record,indent=2)+'\n',encoding='utf-8')
  else:
   record=json.loads((BASE/(STEM+'.json')).read_text());assert not record['whole_scientific_admission']
@@ -148,6 +150,7 @@ def main():
    measured=measure(root/'case',root/'build',old,False)
   assert measured==json.loads(files['MEASURED.json'])
   assert measured['retained_failures']==record['retained_failures'] and measured['full_schedule_measured'] is True
+  assert measured['full_schedule_inside_all_frozen_bounds']==record['registered_diagnostic_original_profile_schedule_inside_bounds']
  print('SEALED_ORIGINAL16_PROFILE_MEASUREMENT_PASS_NOT_WHOLE_SCIENCE')
  print(json.dumps(measured['retained_failures']))
 
