@@ -93,7 +93,10 @@ def measure(files,prior,builds,reference):
  source=rows(reference['original/dtmax-0.0003125/result_output.csv'])
  bounds=json.loads(reference['science/FROZEN_BOUNDS_BEFORE_HOLDOUT.json']);limit=bounds['oxygen']['limit']
  original=dict(enumerate(source));assert len(original)==1097
- native=table(prior['case/budget.csv']);errors=[(abs(float(r['oxygen_reduction_cm'])-float(original[int(float(r['t1_day']))]['TREDWET'])),int(float(r['t1_day']))) for r in native]
+ grouped=collections.defaultdict(list)
+ for r in table(prior['case/budget.csv']):grouped[int(math.ceil(float(r['t1_day'])-1e-9))].append(float(r['oxygen_reduction_cm']))
+ assert sorted(grouped)==list(range(1,1097))
+ errors=[(abs(math.fsum(parts)-float(original[day]['TREDWET'])),day) for day,parts in sorted(grouped.items())]
  crossing=next(d for e,d in errors if e>limit);worst=max(errors)
  assert crossing==525 and worst[1]==584
  profiles=collections.defaultdict(list)
