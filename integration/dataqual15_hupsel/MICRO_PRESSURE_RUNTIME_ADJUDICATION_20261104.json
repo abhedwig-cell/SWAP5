@@ -1,0 +1,28 @@
+{
+  "stage": "QUALIFIED_RUNTIME_RESEARCH_AND_COLD_DATA_ADJUDICATION",
+  "evidence_archive_sha256": "e41058fa718caeb44dde8cae6b1fbc890a9d1975cba8954b3410292262efb0d7",
+  "original_reference_member_sha256": "f93a8d891b90b6861d3cd8bae93319e399081dd42494f92c35f144bc7f41587a",
+  "inside_frozen_comparisons": 36,
+  "total_comparisons": 37,
+  "retained_failure": "oxygen",
+  "first_outside": {
+    "day": 584,
+    "actual": 0.0033488600867843843,
+    "original": 0.003593541147,
+    "error": 0.00024468106021561555
+  },
+  "maximum_error": {
+    "day": 584,
+    "actual": 0.0033488600867843843,
+    "original": 0.003593541147,
+    "error": 0.00024468106021561555,
+    "unchanged_limit": 5.371840000016327e-07
+  },
+  "next_safe_cluster": "Measure same-variant accepted root/oxygen state around these days and compare the original complete oxygen reporting/attribution path on identical forcing. Preserve the frozen TREDWET comparison and qualify any semantic or process correction separately. Do not substitute an intermediate oxygen factor or a nodal root uptake test for full reported oxygen agreement.",
+  "default_production_unchanged": true,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "pr": 1522,
+  "qualified_head": "0f66c21a30fbb7cb9bc17f6a27f955f7588adf72",
+  "all15_triggered_workflows_success": true
+}

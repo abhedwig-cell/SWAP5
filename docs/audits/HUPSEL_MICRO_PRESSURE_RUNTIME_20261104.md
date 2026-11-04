@@ -1,6 +1,6 @@
 # Source-bound MICRO pressure runtime research, 4 November 2026
 
-**Qualified locally; canonical admission pending. Research only.** The owning
+**Qualified Windows runtime and cold POSIX data; canonical admission pending. Research only.** The owning
 registration is `MICRO_PRESSURE_RUNTIME_PREREGISTRATION_20261104.json` in
 `integration/dataqual15_hupsel`. Baseline is `fe731944f`, after PR1520/1521.
 Production sources, default execution and the Status-A denominator are unchanged.
@@ -54,6 +54,10 @@ harvested dry matter. Oxygen remains FAILED and slightly worsens. This controlle
 full-trajectory intervention supports the stopping criterion as sufficient for
 those eleven improvements in this registered diagnostic experiment; it does not
 establish universal model equivalence or justify moving the oxygen limit.
+The new trajectory's first and maximum frozen oxygen-bound crossing is day584:
+actual0.0033488600867843843 versus original0.003593541147cm/day. The former
+day525 crossing is absent. `MICRO_PRESSURE_RUNTIME_ADJUDICATION_20261104.json`
+pins this observation to the sealed experiment and original reference member.
 
 Six inherited actual-data defect controls and nine new source/compile,
 foreign-seed, CRC and repeated-export controls pass. The portable verifier
@@ -64,8 +68,12 @@ portable data validation is distinct from native POSIX runtime qualification.
 
 Evidence: `MICRO_PRESSURE_RUNTIME_EVIDENCE_20261104.json` and its sealed capsule.
 Verifier: `tests/dataqual15_hupsel/micro_pressure_runtime_evidence.py`.
-CI, canonical preservation and actual-merge receipts will identify the admitted
-postimage separately from the locally qualified experiment.
+PR1522 qualified head `0f66c21a3` passes all15 triggered workflows. Cold portable
+data run41807663908/job126498631611 passes; current canonical preservation
+run41807663823/job126498966481 passes the unchanged compositor/13 guards and
+exact historical guard/ten controls/seven preservation legs. Optional historical
+F-CI jobs remain skipped; full moving F-CI success is not claimed. The actual-merge
+receipt will identify the admitted postimage separately.
 
 The incumbent production trajectory still has its original twelve failed
 comparisons; the research variant has one. Neither set is overwritten. Oxygen
