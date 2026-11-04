@@ -1,0 +1,8 @@
+{
+  "scope": "Selected Bartholomeus factor stage, not the final accepted uptake composition",
+  "actual_finding": "The first selected actual frame has intermediate oxygen reduction0.0007753985376635648cm/day, while the accepted MICRO-attributed oxygen reduction is1.18585922918162945e-7cm/day. They must not be equated.",
+  "source_boundary": "After Bartholomeus, the incumbent micro_de_willigen path combines oxygen/salinity factors, recomputes the sink and attributes final stress losses. The accepted receipt uses micro_oxygen_loss and root_potential_transpiration. Backend substep_root diagnostics are inactive on this route.",
+  "selection": "Join selected immutable accepted time pairs plus exact34-node start head/theta and deepest oxygen factor. Require unique identical raw factor/forcing payloads per complete34-node profile; refuse missing or ambiguous payloads. Complete actual accepted traces, node receipts, daily outputs and typed endpoints must remain byte-identical to PR1514.",
+  "retained_open": "Agreement of the intermediate factor process does not qualify final MICRO composition, whole trajectory equivalence, causal oxygen discrepancy correction or diagnostic persistence.",
+  "production_changes": false
+}
