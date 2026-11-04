@@ -1,7 +1,7 @@
 # Original-state waterfilm accuracy fixture
 
 Status: implemented reference-component experiment; local Windows O0/O2
-measurements complete, final refusal qualification and cold POSIX pending.
+measurements and refusal qualification complete; cold POSIX pending.
 Production physics, the original reference trajectory and whole science are
 not admitted by this fixture.
 
@@ -48,3 +48,10 @@ and the older parent dependency is verified from committed predecessor bytes.
 
 Authority: `integration/dataqual15_hupsel/FILM_ACCURACY_PREREGISTRATION_20261104.json`.
 Implementation: `tests/dataqual15_hupsel/film_accuracy.py`.
+
+The sealed Windows dossier retains both complete baseline/treatment outputs,
+all copied/compiled sources, executables, certified table, independent witnesses
+and native refusal logs. Twelve actual compiled fixture corruptions, seven
+data/promotion defects and ten source/input boundary tests are rejected. The
+data auditor recomputes complete row coverage, source identities and both error
+maxima. Native physics, oxygen target and all admission flags remain unchanged.

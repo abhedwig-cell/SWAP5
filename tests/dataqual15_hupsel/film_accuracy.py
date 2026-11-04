@@ -146,6 +146,7 @@ def main():
   refusals=native_refusals(exe,out/'original_factor_inputs.dat',table,build)
   result['builds'][opt]=dict(original_binding_max=binding,unchanged_original_typed_max=before,certified_original_typed_max=after,inside_unchanged_assembled_bound=after<=1e-4,native_refusals=refusals,executable_sha256=sha(exe.read_bytes()),source_sha256={str(x.relative_to(ROOT))if x.is_relative_to(ROOT)else x.name:sha(x.read_bytes())for x in inputs})
   (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
+  assert before>1e-4 and after<=1e-4,'component hypothesis failed; raw measurement retained, no qualification'
  result['status']='COMPONENT_REFERENCE_ACCURACY_MEASURED_NOT_TRAJECTORY_ADMISSION';result['seconds']=time.monotonic()-start
  (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result,indent=2))
 if __name__=='__main__':main()

@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/hupsel-film-accuracy.yml
       - tests/dataqual15_hupsel/film_accuracy.py
+      - tests/dataqual15_hupsel/film_accuracy_evidence.py
       - tests/dataqual15_hupsel/test_film_accuracy.py
       - integration/dataqual15_hupsel/FILM_ACCURACY_*
       - docs/science/HUPSEL_FILM_ACCURACY.md
@@ -20,6 +21,7 @@ jobs:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - run: python3 -B tests/dataqual15_hupsel/test_film_accuracy.py
+      - run: python3 -B tests/dataqual15_hupsel/film_accuracy_evidence.py
       - name: All3206 accepted original profiles, independent beta and logarithmic witnesses, O0 O2 literal replay
         run: python3 -B tests/dataqual15_hupsel/film_accuracy.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/film-accuracy"
       - name: Preserve complete current and unchanged predecessor authority
