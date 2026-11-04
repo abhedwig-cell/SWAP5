@@ -1,5 +1,5 @@
 """Current public writer atomic refusal and actual new-envelope owner controls."""
-import argparse, csv, hashlib, json, os, re, shutil, subprocess, sys, tarfile, time
+import argparse, csv, hashlib, json, os, re, shutil, struct, subprocess, sys, tarfile, time, zipfile, zlib
 from pathlib import Path
 from production_diagnostic_guards import ROOT, qualify as nested, windows_bundle
 
@@ -110,13 +110,90 @@ def measure(exe, probe, inputs, out):
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');return whole
 
 
+def mature_case(bundle,out,windows):
+    if windows:
+        case=bundle.parent/'measurement/uninterrupted525'
+        assert (case/'checkpoint.bin').is_file();return case
+    # This is a nonadvancing input-bound prior-build codec control, never a
+    # substitute for the separate own-build day1-to2 continuation above.
+    manifest=json.loads((BASE/'DEFAULT_DIAGNOSTIC_POSIX_20261104.json').read_text())
+    archive=BASE/'DEFAULT_DIAGNOSTIC_POSIX_20261104.zip';assert sha(archive)==manifest['artifact_zip_sha256']
+    current=json.loads((bundle/'BUILD.json').read_text())
+    opt=next(p[1:] for p in current['flags']if p in ('-O0','-O2'))
+    prefix='measurement-'+opt+'/uninterrupted525/'
+    case=out/'prior-default-525';case.mkdir()
+    with zipfile.ZipFile(archive)as z:
+        old=json.loads(z.read('build-'+opt+'/BUILD.json'))
+        assert old['compiler']==current['compiler']
+        clean=lambda flags:[p for p in flags if not p.startswith(('-I','-J'))]
+        assert clean(old['flags'])==clean(current['flags'])
+        for name,digest in old['source_sha256'].items():
+            relative=next((area+'/'+name.split('/'+area+'/',1)[1]for area in ('src','app')if '/'+area+'/'in name),None)
+            if relative:
+                assert hashlib.sha256((ROOT/relative).read_bytes().replace(b'\r\n',b'\n')).hexdigest()==digest,relative
+        for name in z.namelist():
+            if name.startswith(prefix)and not name.endswith('/'):
+                leaf=name[len(prefix):];assert '/'not in leaf and leaf not in ('.','..')
+                (case/leaf).write_bytes(z.read(name))
+    (case/'COMPATIBILITY_SCOPE.json').write_text(json.dumps(dict(
+        scope='NONADVANCING_INPUT_BOUND_SAME_PLATFORM_PRIOR_BUILD_CODEC_CONTROLS_NOT_OWN_TRAJECTORY',
+        actual_artifact_zip_sha256=sha(archive),compiler=current['compiler'],numerical_policy='unchanged default'))+'\n')
+    return case
+
+
+def app_refusals(exe,case,out):
+    out.mkdir();original=(case/'checkpoint.bin').read_bytes();events=[]
+    assert original[:8]==b'S5HR0004'
+    mutations=['legacy3','missing','extra','crc','changed_input']+[
+        f'{field}_{kind}'for field in (0,1)for kind in ('nan','posinf','neginf')]
+    env=os.environ.copy();env.pop('SWAP5_DIAG_PREDECESSOR',None)
+    ends=[float(v)for v in re.search(r'^ends_day=(.*)$',(case/'input.nml').read_text(),re.M)[1].split(',')if v.strip()]
+    stop=next(i+1 for i,v in enumerate(ends)if v==2)
+    for kind in mutations:
+        folder=out/kind;folder.mkdir()
+        for p in case.iterdir():
+            if p.suffix.lower()in('.swp','.crp','.met','.dra','.nml'):shutil.copyfile(p,folder/p.name)
+        data=bytearray(original)
+        if kind=='legacy3':data[:8]=b'S5HR0003'
+        elif kind=='missing':del data[-20:-4]
+        elif kind=='extra':data[-4:-4]=b'unsupported'
+        elif kind=='crc':data[-20]^=1
+        elif kind=='changed_input':
+            p=folder/'grass.crp';p.write_bytes(p.read_bytes()+b'\n')
+        else:
+            field,value=kind.split('_');value={'nan':float('nan'),'posinf':float('inf'),'neginf':-float('inf')}[value]
+            struct.pack_into('=d',data,len(data)-20+8*int(field),value)
+        if kind!='crc':struct.pack_into('=I',data,len(data)-4,zlib.crc32(data[:-4]))
+        seed=folder/'input.bin';seed.write_bytes(data)
+        command=[str(exe),'input.nml',str(seed),str(stop),'swap.swp','maize.crp']
+        r=subprocess.run(command,cwd=folder,env=env,capture_output=True,timeout=30)
+        (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
+        assert r.returncode==1 and b'source rotation envelope rejected before publication'in r.stdout,kind
+        assert not any((folder/n).exists()for n in ('budget.csv','crop.csv','checkpoint.bin'))
+        events.append(dict(case=kind,returncode=r.returncode,command=command))
+    (out/'RESULT.json').write_text(json.dumps(dict(status='CURRENT_APP_LEGACY_SOURCE_CRC_AND_SIX_NONFINITE_REFUSALS_PASS',events=events),indent=2)+'\n')
+
+
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     for name in ('bundle','compiler','inputs','output'):p.add_argument('--'+name,type=Path,required=True)
-    a=p.parse_args();bundle=a.bundle.resolve();out=a.output.resolve();out.mkdir()
-    probe=writer_build(bundle,out/'writer-build',a.compiler,windows=os.name=='nt')
-    qualified=windows_bundle(bundle,out/'ordinary-bundle')if os.name=='nt'else bundle
+    a=p.parse_args();bundle=a.bundle.resolve();out=a.output.resolve();out.mkdir(exist_ok=True)
+    probe_dir=out/'writer-build'
+    if (probe_dir/'BUILD.json').is_file():
+        old=json.loads((probe_dir/'BUILD.json').read_text());probe=probe_dir/('writer-probe.exe'if os.name=='nt'else'writer-probe')
+        assert sha(probe)==old['executable_sha256']
+        assert old['instrumented_main_sha256']==hashlib.sha256(instrument((ROOT/'app/solute_project/main.f90').read_text()).encode()).hexdigest()
+        assert old['current_app_source_sha256']==hashlib.sha256((ROOT/'app/solute_project/hupsel_rotation_restart.f90').read_bytes().replace(b'\r\n',b'\n')).hexdigest()
+    else:probe=writer_build(bundle,probe_dir,a.compiler,windows=os.name=='nt')
+    qualified=out/'ordinary-bundle'if os.name=='nt'else bundle
+    if os.name=='nt'and not qualified.exists():qualified=windows_bundle(bundle,qualified)
     exe=qualified/('swap5_hupsel_germination.exe'if os.name=='nt'else'swap5_hupsel_germination')
-    case=measure(exe,probe,a.inputs.resolve(),out/'publication')
-    nested(qualified,case,case/'checkpoint.bin',out/'nested')
+    if (out/'publication/RESULT.json').is_file():
+        old=json.loads((out/'publication/RESULT.json').read_text())
+        assert old['executable_sha256']==sha(exe)and old['probe_executable_sha256']==sha(probe)
+        assert old['status']=='CURRENT_S5HR4_TWO_DAY_OWN_RESTART_AND_SIX_PUBLIC_WRITER_REFUSALS_PASS'
+    else:measure(exe,probe,a.inputs.resolve(),out/'publication')
+    app_refusals(exe,out/'publication/continuous2',out/'app-refusals')
+    case=mature_case(bundle,out,os.name=='nt')
+    nested(qualified,case,case/'checkpoint.bin',out/'nested-mature')
     print('CURRENT_PRODUCTION_ENVELOPE_PUBLICATION_WRITER_AND_37_OWNER_CONTROLS_PASS')

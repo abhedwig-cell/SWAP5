@@ -1,0 +1,54 @@
+{
+  "schema": 1,
+  "status": "IMPLEMENTED_NATIVE_WINDOWS_QUALIFIED_CURRENT_POSIX_AND_PRESERVATION_PENDING_NOT_ADMITTED",
+  "predecessor": "507d2521889028b7e890b8c9ce5ee05e29b2cfec",
+  "production_delta": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "d730a8b436d149f1d5e33275c0e25c330b76d2a2",
+      "after": "7238380c05a3ac245568b6b359992e65fc3adcd9"
+    }
+  },
+  "bridge_restore": {
+    "app/solute_project/hupsel_rotation_restart.f90": {
+      "before": "d730a8b436d149f1d5e33275c0e25c330b76d2a2",
+      "after": "7238380c05a3ac245568b6b359992e65fc3adcd9"
+    },
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "before": "e84ab04a9f6d7fc6d39ac91a4fab2403d0ae20dc",
+      "after": "376e6547685b309d9bdd198d7859264a2c8ad14f"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "before": "720d5157307524630c8fa865cae1b8fc2b35d4ee",
+      "after": "33db0b7dd20c94fb2abebb1df1bf6b08a54cb92d"
+    }
+  },
+  "predecessor_production_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "ece4f0dee2a766c3f9921cbb004c87e4c553b210",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "unchanged_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+    "tools/solute": "6b4c6844099403c1c724d9e8bcc943560bc9615b"
+  },
+  "compiled_app_postimage_sha256": "2db8cd9859400071f2a54956edfadc310c396a52e45813a7670208ffd29f9d83",
+  "gate_source_sha256": {
+    "tests/dataqual15/verify_current_native_admission.py": "d1bdebbc981c0b1897cf714ffce53d0f1464cac663f264531e9b1fbc9bac0832",
+    "tests/dataqual15_hupsel/production_diagnostic_admission.py": "05cbbed37157c320437ad93590d853cb42bb93f99e9cce4913621abc7f1af1f2",
+    "tests/dataqual15_hupsel/production_diagnostic_evidence.py": "4ff147f7bb534d2fcd3b910556690fa66b8e05f2e9130af3019251cae1248bf3",
+    "tests/dataqual15_hupsel/production_diagnostic_native.py": "79cfb24d7ccd29b83f435e7f42baca84b154e3172a103a3485b34447c9d75d0c",
+    "tests/dataqual15_hupsel/production_diagnostic_guards.py": "130803cf9f5794555843377e2772cf1935c15cdeba12412e5e941cd81f104f83",
+    "tests/dataqual15_hupsel/production_diagnostic_posix.py": "05113e85e9ccefe5e39f812e6313be72072728e513943da0568159873f57a069",
+    "tests/dataqual15_hupsel/qualify_rotation_restart_guards.py": "e8eca2c7e7bc138087537c5a4f16d281f7bf2d7f91bf2e086e7885945c3aeef9",
+    "tests/dataqual15_hupsel/build_and_run.py": "9b1b46bd74252d7db497b2793398691576451db9f1d3af475b1e9a259729bed1",
+    "tests/dataqual15_hupsel/test_production_diagnostic_admission.py": "59636ce82c44999ddc3175949bab0d240d192e15e4b3ed0332befe5e1f1634d4",
+    ".github/workflows/hupsel-production-diagnostic.yml": "4fbeb5245d7de7065320535649e7df52506595ea12b7fe48206aaab9b9576b22"
+  },
+  "qualified_default_runtime": "DEFAULT_DIAGNOSTIC_CANONICAL_RECEIPT_20261104.json",
+  "current_windows_evidence": "PRODUCTION_DIAGNOSTIC_WINDOWS_20261104.json",
+  "legacy_schema": "S5HR0003 rejected; never coerced or filled with invented history",
+  "nested_scope": "Actual mature S5PT0004 accepted day525 S5HR0004 checkpoint. POSIX is explicit nonadvancing same-platform prior-build codec control, not own trajectory. Own-build day1-to2 publication is independent; initial S5PT0003 is not coerced into the mature locator.",
+  "whole_scientific_admission": false,
+  "production_admission": false
+}

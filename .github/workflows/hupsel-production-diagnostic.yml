@@ -1,0 +1,58 @@
+name: Hupsel production diagnostic source successor
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-production-diagnostic.yml
+      - app/solute_project/hupsel_rotation_restart.f90
+      - tests/dataqual15/verify_current_native_admission.py
+      - tests/dataqual15_hupsel/production_diagnostic_*.py
+      - tests/dataqual15_hupsel/test_production_diagnostic_admission.py
+      - integration/dataqual15_hupsel/PRODUCTION_DIAGNOSTIC_*
+      - integration/dataqual15/STATUS.json
+permissions:
+  contents: read
+jobs:
+  current-source-posix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cold actual current app O0 O2 publication, writer and owner qualification
+        run: python3 -B tests/dataqual15_hupsel/production_diagnostic_posix.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/production-diagnostic"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-diagnostic-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/production-diagnostic/build-*/BUILD.json
+            ${{ runner.temp }}/production-diagnostic/build-*/EVENTS.json
+            ${{ runner.temp }}/production-diagnostic/native-*/
+          retention-days: 14
+  exact-current-and-predecessor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Real Git scope refusals and exact predecessor/current composition
+        run: |
+          python3 -B tests/dataqual15_hupsel/test_production_diagnostic_admission.py
+          python3 -B tests/dataqual15/test_current_native_admission.py
+          python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/production-admission"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-admission-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/production-admission/RESULT.json
+            ${{ runner.temp }}/production-admission/*.stdout
+            ${{ runner.temp }}/production-admission/*.stderr
+            ${{ runner.temp }}/production-admission/old-admission/
+          retention-days: 14

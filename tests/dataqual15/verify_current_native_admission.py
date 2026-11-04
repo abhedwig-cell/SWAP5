@@ -73,7 +73,14 @@ def guard(record):
 
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
- out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+ out=a.output.resolve()
+ if json.loads((ROOT/NATIVE_STATUS).read_text()).get('project_diagnostic_restart_successor_20261104'):
+  # Fixed reviewed current route; the exact old entrypoint is retained in
+  # the committed predecessor view, with every old assertion unchanged.
+  subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15_hupsel/production_diagnostic_admission.py'),
+                  '--output',str(out)],cwd=ROOT,check=True)
+  return
+ out.mkdir(parents=True,exist_ok=False)
  record=json.loads((ROOT/'integration/dataqual15_hupsel/CURRENT_NATIVE_ADMISSION_20261103.json').read_text())
  guard(record);events=[]
  def run(label,args):
