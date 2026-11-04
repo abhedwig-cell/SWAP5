@@ -19,8 +19,19 @@ GATES = (ENTRY,'tests/dataqual15_hupsel/production_diagnostic_admission.py',
          '.github/workflows/hupsel-production-diagnostic.yml')
 
 
+def process_env(env=None):
+    result=dict(os.environ if env is None else env)
+    # Filesystem capability only: descendant UNMODIFIED historical worktree
+    # builders must also be able to materialize their full exact trees on Win.
+    count=int(result.get('GIT_CONFIG_COUNT','0'))
+    result.update(GIT_CONFIG_COUNT=str(count+1))
+    result['GIT_CONFIG_KEY_'+str(count)]='core.longpaths'
+    result['GIT_CONFIG_VALUE_'+str(count)]='true'
+    return result
+
+
 def git(*args, env=None, cwd=None):
-    return subprocess.check_output(['git',*args],cwd=cwd or ROOT,env=env,text=True).strip()
+    return subprocess.check_output(['git',*args],cwd=cwd or ROOT,env=process_env(env),text=True).strip()
 
 
 def blob(ref,path):
@@ -77,7 +88,9 @@ def prepare(record,out):
     assert blob(tree,STATUS)==record['bridge_restore'][STATUS]['before']
     commit=git('-c','user.name=Codex','-c','user.email=codex@users.noreply.github.com',
                'commit-tree',tree,'-p',git('rev-parse','HEAD'),'-m','Exact pre-S5HR4 predecessor authority; not current runtime evidence')
-    subprocess.run(['git','-c','core.autocrlf=false','worktree','add','--detach',str(view),commit],cwd=ROOT,check=True,capture_output=True)
+    made=subprocess.run(['git','-c','core.autocrlf=false','worktree','add','--detach',str(view),commit],cwd=ROOT,env=process_env(),capture_output=True)
+    (out/'worktree-add.stdout').write_bytes(made.stdout);(out/'worktree-add.stderr').write_bytes(made.stderr)
+    assert made.returncode==0,made.stderr.decode(errors='replace')[-3000:]
     return view,dict(tree=tree,commit=commit,scope='EXACT_PREDECESSOR_PRODUCTION_AND_UNMODIFIED_ADMISSION_AUTHORITY')
 
 
@@ -90,7 +103,7 @@ def main():
     if a.prepare_only:
         (out/'PREPARED.json').write_text(json.dumps(projection,indent=2)+'\n');print(view);return
     def run(label,args):
-        r=subprocess.run([sys.executable,'-B',*args],cwd=view,capture_output=True,env=dict(os.environ,PYTHONUTF8='1'))
+        r=subprocess.run([sys.executable,'-B',*args],cwd=view,capture_output=True,env=process_env(dict(os.environ,PYTHONUTF8='1')))
         (out/(label+'.stdout')).write_bytes(r.stdout);(out/(label+'.stderr')).write_bytes(r.stderr)
         events.append(dict(label=label,args=args,returncode=r.returncode));assert r.returncode==0,(label,r.stderr.decode(errors='replace')[-2000:])
     try:
@@ -103,7 +116,7 @@ def main():
         (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'])
     finally:
         assert view.resolve().parent==out.resolve()
-        subprocess.run(['git','worktree','remove',str(view)],cwd=ROOT,check=True,capture_output=True)
+        subprocess.run(['git','worktree','remove',str(view)],cwd=ROOT,env=process_env(),check=True,capture_output=True)
 
 
 if __name__=='__main__':main()

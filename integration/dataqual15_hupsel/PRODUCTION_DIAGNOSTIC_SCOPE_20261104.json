@@ -35,7 +35,7 @@
   "compiled_app_postimage_sha256": "2db8cd9859400071f2a54956edfadc310c396a52e45813a7670208ffd29f9d83",
   "gate_source_sha256": {
     "tests/dataqual15/verify_current_native_admission.py": "d1bdebbc981c0b1897cf714ffce53d0f1464cac663f264531e9b1fbc9bac0832",
-    "tests/dataqual15_hupsel/production_diagnostic_admission.py": "05cbbed37157c320437ad93590d853cb42bb93f99e9cce4913621abc7f1af1f2",
+    "tests/dataqual15_hupsel/production_diagnostic_admission.py": "8f600dbe36012a51c04c11a49f94237c64ecc2644aa9cbabeff84815a48d8ecd",
     "tests/dataqual15_hupsel/production_diagnostic_evidence.py": "4ff147f7bb534d2fcd3b910556690fa66b8e05f2e9130af3019251cae1248bf3",
     "tests/dataqual15_hupsel/production_diagnostic_native.py": "79cfb24d7ccd29b83f435e7f42baca84b154e3172a103a3485b34447c9d75d0c",
     "tests/dataqual15_hupsel/production_diagnostic_guards.py": "130803cf9f5794555843377e2772cf1935c15cdeba12412e5e941cd81f104f83",
@@ -50,5 +50,6 @@
   "legacy_schema": "S5HR0003 rejected; never coerced or filled with invented history",
   "nested_scope": "Actual mature S5PT0004 accepted day525 S5HR0004 checkpoint. POSIX is explicit nonadvancing same-platform prior-build codec control, not own trajectory. Own-build day1-to2 publication is independent; initial S5PT0003 is not coerced into the mature locator.",
   "whole_scientific_admission": false,
-  "production_admission": false
+  "production_admission": false,
+  "filesystem_contract": "Per-process Git core.longpaths=true permits exact full predecessor trees and nested unchanged builders on Windows. No source path exclusions, numerical changes or global Git configuration edits."
 }
