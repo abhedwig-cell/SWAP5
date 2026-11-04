@@ -28,6 +28,9 @@ jobs:
       - name: Audit retained Windows native source object and raw runtime evidence
         if: matrix.optimization == 'O2'
         run: python3 -B tests/dataqual15_hupsel/film_runtime_evidence.py
+      - name: Audit both original cold POSIX artifacts without numerical replay
+        if: matrix.optimization == 'O2'
+        run: python3 -B tests/dataqual15_hupsel/film_runtime_evidence.py --posix
       - name: Clean default baseline without numerical reuse
         run: |
           mkdir -p "$RUNNER_TEMP/film-runtime"
