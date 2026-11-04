@@ -87,6 +87,9 @@ def main():
  origin=subprocess.check_output(['git','show',ORIGIN+':integration/dataqual15_hupsel/SOLUTE_ROUTE_EVIDENCE_20261104.json'],cwd=ROOT)
  assert sha(origin.replace(b'\r\n',b'\n'))==norm(BASE/'SOLUTE_ROUTE_EVIDENCE_20261104.json')
  prior=json.loads(origin);old=unpack(BASE/'SOLUTE_ROUTE_EVIDENCE_20261104.tar.xz',prior['files_sha256'])
+ for path in (GENERATOR,INVERSE):
+  committed=subprocess.check_output(['git','show',ORIGIN+':'+path.relative_to(ROOT).as_posix()],cwd=ROOT)
+  assert sha(committed.replace(b'\r\n',b'\n'))==norm(path),'literal collector origin'
  with tempfile.TemporaryDirectory(prefix='swap5-literal-generator-') as temp:original_oracle=literal(Path(temp))
  if a.capture:
   folder=a.capture.resolve();fresh={};reused={}
