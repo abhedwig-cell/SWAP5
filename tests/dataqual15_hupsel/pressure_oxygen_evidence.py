@@ -10,6 +10,19 @@ ROOT=owner.ROOT;BASE=owner.BASE;STEM='PRESSURE_OXYGEN_EVIDENCE_20261104'
 sha=lambda b:hashlib.sha256(b).hexdigest()
 norm=lambda p:sha(p.read_bytes().replace(b'\r\n',b'\n'))
 
+def evidence_parts(record):
+ parts=record['archive_parts'];assert parts
+ result=[]
+ for i,part in enumerate(parts):
+  assert part['name']==STEM+'.tar.xz.part'+str(i).zfill(2)
+  raw=(BASE/part['name']).read_bytes()
+  assert len(raw)==part['bytes'] and sha(raw)==part['sha256']
+  result.append(raw)
+ raw=b''.join(result);assert sha(raw)==record['archive_sha256']
+ with tempfile.TemporaryDirectory(prefix='swap5-oxygen-capsule-') as temp:
+  path=Path(temp)/'evidence.tar.xz';path.write_bytes(raw)
+  return unpack(path,record['files_sha256'])
+
 def final_select(raw,nodes,accepted,reg):
  assert len(raw)%34==0
  frames=[raw[i:i+34] for i in range(0,len(raw),34)];result=[]
@@ -72,7 +85,7 @@ def native(files,parent,manifest):
    assert sha(f[name+'/observed.exe'])==b['executable_sha256']
    assert sha(f[name+'/link.args'])==b['link_response_sha256']
    assert len(b['link_arguments'])==242
-   assert f[name+'/link.args'].decode()=='\n'.join('"'+s.replace('\\','/')+'"' for s in b['link_arguments'])+'\n'
+   assert f[name+'/link.args'].decode().replace('\r\n','\n')=='\n'.join('"'+s.replace('\\','/')+'"' for s in b['link_arguments'])+'\n'
    for patch in b['patches'].values():
     command=next(e['command'] for e in b['events'] if '-c' in e['command'] and e['command'][e['command'].index('-c')+1].replace('\\','/').endswith('/'+patch['source']))
     flags=command[1:command.index('-c')]
@@ -159,7 +172,7 @@ def main():
  else:
   m=json.loads((BASE/(STEM+'.json')).read_text())
   for n,h in m['normalized_repository_dependency_sha256'].items():assert norm(ROOT/n)==h,n
-  path=BASE/(STEM+'.tar.xz');assert sha(path.read_bytes())==m['archive_sha256'];files=unpack(path,m['files_sha256'])
+  files=evidence_parts(m)
  reports,selections=native(files,parent,manifest)
  maxima={}
  with tempfile.TemporaryDirectory(prefix='swap5-pressure-oxygen-') as temp:
@@ -199,7 +212,11 @@ def main():
             'integration/dataqual15_hupsel/MICRO_PRESSURE_RUNTIME_EVIDENCE_20261104.json','integration/dataqual15_hupsel/MICRO_PRESSURE_RUNTIME_CANONICAL_RECEIPT_20261104.json',
             'integration/dataqual15_hupsel/PRESSURE_OXYGEN_PREREGISTRATION_20261104.json','.github/workflows/hupsel-pressure-oxygen.yml'):
    deps[n]=norm(ROOT/n)
-  (BASE/(STEM+'.json')).write_text(json.dumps(dict(status=result['status'],archive_sha256=sha(path.read_bytes()),files_sha256={n:sha(b) for n,b in files.items()},normalized_repository_dependency_sha256=deps,production_admission=False,whole_scientific_admission=False),indent=2)+'\n')
+  raw=path.read_bytes();parts=[]
+  for i,start in enumerate(range(0,len(raw),4*1024*1024)):
+   content=raw[start:start+4*1024*1024];name=STEM+'.tar.xz.part'+str(i).zfill(2)
+   (BASE/name).write_bytes(content);parts.append(dict(name=name,bytes=len(content),sha256=sha(content)))
+  (BASE/(STEM+'.json')).write_text(json.dumps(dict(status=result['status'],archive_sha256=sha(raw),archive_parts=parts,files_sha256={n:sha(b) for n,b in files.items()},normalized_repository_dependency_sha256=deps,production_admission=False,whole_scientific_admission=False),indent=2)+'\n')
  else:
   saved=json.loads(files['AUDIT.json']);assert result['native']==saved['native']
   # Fresh POSIX process values can differ at roundoff. Each is independently
