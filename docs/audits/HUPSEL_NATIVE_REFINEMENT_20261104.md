@@ -1,6 +1,6 @@
 # Complete native temporal-refinement controls
 
-Status: both actual complete trajectories, own O0/O2 tails and independent audits pass; cold qualification pending.
+Status: both actual complete trajectories, own O0/O2 tails and cold POSIX data qualification pass; canonical integration pending.
 
 The accepted matched-forcing experiment reproduces the original transport process at roundoff on the selected native states. This control measures whether complete-trajectory discrepancy changes with a smaller registered maximum-time cap. It uses the exact admitted checked O2 executable at DTMAX0.005 and0.0025, starting each1096-day run from original initial inputs. Only the unique numeric DTMAX value in copied source SWP changes. Every other source/input/window byte, physical equation, solver selection, retry, tolerance and ownership rule stays unchanged.
 
@@ -24,3 +24,7 @@ The same twelve scalar/crop metrics remain outside their original frozen limits 
 | potential_transpiration | 0.000681624527328 | 0.000690788338378 | 0.000698543149556 | 7.22775699999e-06 |
 | oxygen | 0.000244517614347 | 0.000244467060858 | 0.000244427923748 | 5.37184000002e-07 |
 | crop_lai | 0.0386972603282 | 0.0390376668932 | 0.039269543156 | 0.000206103856001 |
+
+Cold POSIX run41775494687/job126394759520 independently reproduces the complete two-variant report, all37 frozen comparisons and eight refusal controls per variant. Documentation source checks and strict build pass.
+
+All15 triggered workflows are terminal and successful, including actual canonical composed qualification run41775494488/job126395125401. Final metadata changes preserve every cold-qualified executable dependency hash. These successful measurement gates do not relabel the twelve failed scientific comparisons as passes.
