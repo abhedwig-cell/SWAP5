@@ -87,7 +87,10 @@ def measure(files,reference):
  for x in rows(reference['original/dtmax-0.0003125/hupsel_profiles.csv']):donor[int(x['day'])].append(x)
  points={d:profile(files[f'case/checkpoint-{d}.bin']) for d in DAYS}
  ledger=difference_identity(native,source);primitive=primitives(points,donor,source)
- assert ledger['native_external_input']==48 and ledger['reference_external_input']==48
+ # Keep the observed floating-point input difference in the identity above.
+ # The inherited complete cumulative mass threshold is1e-8, not exact decimal
+ # equality after summing independent adaptive substeps.
+ assert abs(ledger['native_external_input']-48)<=1e-8 and abs(ledger['reference_external_input']-48)<=1e-8
  assert ledger['reference_uptake_export']==0
  bounds=json.loads(reference['science/FROZEN_BOUNDS_BEFORE_HOLDOUT.json'])
  accepted=json.loads(files['MEASURED.json']);history=ledger['history']
