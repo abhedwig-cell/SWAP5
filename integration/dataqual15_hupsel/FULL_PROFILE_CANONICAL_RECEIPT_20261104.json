@@ -1,0 +1,96 @@
+{
+  "stage": "CANONICALLY_ADMITTED_COMPLETE_ORIGINAL_PROFILE_SCHEDULE_DIAGNOSTIC_EVIDENCE",
+  "pr": 1504,
+  "merge": "de2bd856bae3eef1626656270fa4e4138f16849f",
+  "qualified_head": "e59c40b75bdd9595844018b3554783b5819613ec",
+  "final_evidence_head": "801ea005dbe85578f4a54853adce617ffbba8233",
+  "actual_merge_tree": "81d10049d91274a7e6832ec0b018e072ec1bda91",
+  "final_head_tree": "81d10049d91274a7e6832ec0b018e072ec1bda91",
+  "exact_tree_match": true,
+  "qualified_executable_dependency_delta": [],
+  "production_delta": [],
+  "actual_merge_verifier": "SEALED_ORIGINAL16_PROFILE_MEASUREMENT_PASS_NOT_WHOLE_SCIENCE",
+  "actual_merge_log": "FULL_PROFILE_ACTUAL_CANONICAL_20261104.log",
+  "actual_merge_normalized_log_sha256": "fde2b32b7ccfed61eaa070e2689f592f7fd20248229c6f37714ccccfd435144c",
+  "actual_execution": {
+    "platform": "Windows GNU16.2 checked O2",
+    "days": 1096,
+    "from_start": true,
+    "imported_checkpoint": false,
+    "seconds": 870.1719516000012,
+    "executable_sha256": "dff1d3c554ea9dc847b6820e71e437a8788c43ac90441d8f796c60c4a9f770d5",
+    "compiled_providers": 236,
+    "exact_accepted_endpoint_and_complete_output_files": 7
+  },
+  "original_profile_days": [
+    120,
+    365,
+    494,
+    524,
+    537,
+    566,
+    584,
+    591,
+    603,
+    636,
+    730,
+    731,
+    868,
+    1058,
+    1077,
+    1096
+  ],
+  "nodes_per_day": 34,
+  "all_original_profile_metrics_inside_unchanged_frozen_bounds": true,
+  "profile_assessment": {
+    "profile_head_cm": {
+      "error": 0.0534787302927881,
+      "limit": 0.0609334605585312,
+      "inside_frozen_bound": true
+    },
+    "profile_theta": {
+      "error": 0.0007979360114517553,
+      "limit": 0.004062126723952531,
+      "inside_frozen_bound": true
+    },
+    "profile_temperature_c": {
+      "error": 0.0022148423174677134,
+      "limit": 0.01179909208101329,
+      "inside_frozen_bound": true
+    },
+    "profile_concentration_mg_cm3": {
+      "error": 0.0007225979638719737,
+      "limit": 0.0007736362436448958,
+      "inside_frozen_bound": true
+    }
+  },
+  "cold_posix": {
+    "run": 41745974776,
+    "job": 126298941279,
+    "status": "success",
+    "data_remeasurement_only": true
+  },
+  "canonical_composition": {
+    "run": 41745974727,
+    "job": 126299534764,
+    "status": "success"
+  },
+  "all15_triggered_workflows_successful": true,
+  "retained_scalar_crop_failures": [
+    "solute_stock",
+    "potential_transpiration",
+    "oxygen",
+    "export_total",
+    "export_fraction_applied",
+    "crop_lai",
+    "crop_wrt",
+    "crop_wlv",
+    "crop_wst",
+    "crop_wso",
+    "crop_rd",
+    "crop_harvested_dry_matter"
+  ],
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution,0/3 whole science",
+  "numerical_scope": "Registered original-source DTMAX0.01 diagnostic variant; no production promotion or full physical energy claim"
+}

@@ -1,6 +1,6 @@
 # Complete original Hupsel profile schedule
 
-Status: Windows actual execution and cold POSIX remeasurement qualified; canonical integration pending.
+Status: canonically admitted through PR1504; actual canonical postimage reverified.
 
 The admitted corrected1096-day diagnostic trajectory previously retained seven late typed profiles. This work measures the original16-date schedule:120,365,494,524,537,566,584,591,603,636,730,731,868,1058,1077 and1096. It uses the exact admitted Windows checked O2 executable and all236 compiled provider postimages. Original physical inputs and the already registered DTMAX0.01 diagnostic variant remain unchanged.
 
@@ -26,3 +26,5 @@ Cold POSIX run41745974776/job126298941279 passes independent capsule remeasureme
 The maximum primitive water and solute stock differences from the daily owner are2.84217e-14cm and7.10543e-15mg/cm2. The largest theta discrepancy occurs at day636/node8, which was absent from the earlier seven-profile evidence. Frozen head error is normalized as in the original authority; the other errors retain their original absolute units.
 
 All15 triggered PR workflows are terminal and successful. The final qualification checkpoint adds only evidence and documentation; every cold-qualified executable dependency remains exact.
+
+PR1504 merged at `de2bd856bae3eef1626656270fa4e4138f16849f`, with actual and final qualified checkpoint trees both `81d10049d91274a7e6832ec0b018e072ec1bda91`. The complete actual-merge portable verifier passes. The canonical receipt preserves the twelve failures, exact diagnostic scope and unchanged whole-science refusal.
