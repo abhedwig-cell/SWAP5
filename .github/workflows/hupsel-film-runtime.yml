@@ -26,7 +26,9 @@ jobs:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Clean default baseline without numerical reuse
-        run: python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/film-runtime/baseline-${{ matrix.optimization }}" --end 0
+        run: |
+          mkdir -p "$RUNNER_TEMP/film-runtime"
+          python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/film-runtime/baseline-${{ matrix.optimization }}" --end 0
       - name: Baseline ownership and malformed stream refusals
         env:
           FILM_RUNTIME_TEST_BASELINE: ${{ runner.temp }}/film-runtime/baseline-${{ matrix.optimization }}
