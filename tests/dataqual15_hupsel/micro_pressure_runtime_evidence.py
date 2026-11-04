@@ -84,6 +84,12 @@ def audit(files,prior,reference,incumbent_builds):
     crops=records(files['full-O2/crop.csv'])
     selected={d:profile(files[f'full-O2/checkpoint-{d}.bin']) for d in reg['checkpoints']}
     assert all(p['day']==d for d,p in selected.items())
+    state=records(files['full-O2/state.csv']);assert len(state)==34
+    for key in ('z_cm','dz_cm','head_cm','theta','concentration_mg_cm3','dissolved_mg_cm2','sorbed_mg_cm2'):
+        assert selected[1096][key]==[float(r[key]) for r in state],key
+    for phase in ('full-O2','strict-O2-1088','compatible-O0-1077','strict-O0-1088'):
+        start=json.loads(files[phase+'/START.json']);end=json.loads(files[phase+'/RESULT.json'])
+        assert all(start[k]==end[k] for k in start)
     # The independent wet-cut owner needs crop observations (available day495+).
     physical=ledger(daily,crops,{d:p for d,p in selected.items() if d>=495},1096)
     for d in (120,365,494):
