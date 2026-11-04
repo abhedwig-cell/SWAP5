@@ -1,0 +1,35 @@
+{
+  "stage": "CANONICALLY_ADMITTED_BOUNDED_ROOT_RECEIPTS_WITH_RETAINED_DIAGNOSTIC_FAILURE",
+  "pr": 1514,
+  "merge": "cfa8ead6ac5d85b0073ca9c28fa54371051c0a8c",
+  "qualified_head": "1f363b43463c936d34cfe405e7ce95a6a57befa4",
+  "final_evidence_head": "2a4cd0770c67d6a69a281889b2a832be1a03f76f",
+  "actual_merge_tree": "f1770638b883e93813744b101876ecd214d3d050",
+  "final_head_tree": "f1770638b883e93813744b101876ecd214d3d050",
+  "exact_tree_match": true,
+  "qualified_executable_dependency_delta": [],
+  "production_delta": [],
+  "actual_merge_verifier": "ACCEPTED_ROOT_OXYGEN_RECEIPTS_AND_STRICT_CONTINUATIONS_PASS",
+  "actual_merge_normalized_log_sha256": "b4b0ca41524ce50753c242af3607bf6d3c377c1c3059b60ce433e5addf92fd3e",
+  "actual_native_scope": "Checked Windows16.2 O0/O2 actual524->584 suffixes, corresponding unobserved controls and strict own537 continuations",
+  "accepted_leaves_each": 31264,
+  "node_observations_each": 162180,
+  "defect_refusals_each": 7,
+  "maximum_independent_daily_defect_cm": 2.7755575615628914e-15,
+  "cold_POSIX": {
+    "run": 41778191556,
+    "job": 126403345896,
+    "scope": "Data remeasurement only"
+  },
+  "canonical_preservation": {
+    "run": 41778191528,
+    "job": 126403892562
+  },
+  "all15_triggered_workflows_success": true,
+  "retained_full_from_start_crop_output_comparison": "FAILED: all60 pressure_average_cm values differ; complete budget, all other crop fields and typed endpoint exact",
+  "retained_scientific_failures": 12,
+  "production_correction_qualified": false,
+  "execution_count": "2/3",
+  "whole_scientific_count": "0/3",
+  "whole_scientific_admission": false
+}
