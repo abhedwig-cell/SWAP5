@@ -38,7 +38,7 @@ def output(raw,frame):
   assert abs(r[1]-r[2])<=1e-4,'unchanged assembled source factor bound'
  return max(r[3] for r in values)
 def replay(frames,opt,out,fc):
- out.mkdir();m=json.loads((ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text());literal=gzip.decompress(base64.b64decode(m['gzip_base64']));assert sha(literal)==m['sha256']
+ out.mkdir(exist_ok=True);m=json.loads((ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text());literal=gzip.decompress(base64.b64decode(m['gzip_base64']));assert sha(literal)==m['sha256']
  (out/'oxygenstress.f90').write_bytes(literal)
  inputs=[ROOT/'tests/dataqual15_hupsel/matched_oxygen_owners.f90',out/'oxygenstress.f90',ROOT/'tests/dataqual15_hupsel/matched_oxygen_driver.f90']
  exe=out/'oracle.exe';cmd=[str(fc),'-'+opt,'-ffree-line-length-none','-fcheck=all','-fbacktrace','-J'+str(out),'-I'+str(out),*map(str,inputs),'-o',str(exe)]
@@ -46,7 +46,7 @@ def replay(frames,opt,out,fc):
  record=dict(command=cmd,compiler=subprocess.check_output([str(fc),'--version'],text=True).splitlines()[0],source_sha256=m['sha256'],executable_sha256=sha(exe.read_bytes()),runs=[])
  worst=0
  for i,f in enumerate(frames):
-  payload='\n'.join(' '.join(f'{x:.17e}' for x in row) for row in f)+'\n';(out/f'{i}.input').write_text(payload)
+  payload='\n'.join(' '.join(f'{x:.17e}' for x in row) for row in f)+'\n';(out/f'{i}.input').write_text(payload,encoding='utf-8',newline='\n')
   p=subprocess.run([str(exe)],input=payload.encode(),cwd=out,capture_output=True,timeout=60)
   (out/f'{i}.stdout').write_bytes(p.stdout);(out/f'{i}.stderr').write_bytes(p.stderr);assert p.returncode==0,(p.stdout,p.stderr)
   worst=max(worst,output(p.stdout,f));record['runs'].append(dict(profile=i,returncode=p.returncode,input_sha256=sha(payload.encode()),output_sha256=sha(p.stdout)))
@@ -100,6 +100,7 @@ def main():
  if a.capture:files={f.relative_to(a.capture.resolve()).as_posix():f.read_bytes() for f in a.capture.resolve().rglob('*') if f.is_file() and f.suffix!='.mod'}
  else:
   record=json.loads((BASE/(STEM+'.json')).read_text())
+  assert record['whole_scientific_admission'] is False
   for n,h in record['normalized_repository_dependency_sha256'].items():assert norm(ROOT/n)==h,n
   path=BASE/(STEM+'.tar.xz');assert sha(path.read_bytes())==record['archive_sha256'];files=unpack(path,record['files_sha256'])
  result,selected=native(files,old,reg)
@@ -113,9 +114,13 @@ def main():
   else:
    for opt in ('O0','O2'):
     replay_record=json.loads(files['literal-'+opt+'/REPLAY.json']);assert sha(files['literal-'+opt+'/oracle.exe'])==replay_record['executable_sha256']
+    carrier=json.loads((ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text())
+    assert replay_record['source_sha256']==carrier['sha256']
     assert sha(files['literal-'+opt+'/oxygenstress.f90'])==replay_record['source_sha256']
     for i,f in enumerate(selected[opt]):
      output(files[f'literal-{opt}/{i}.stdout'],f)
+     expected='\n'.join(' '.join(f'{x:.17e}' for x in row) for row in f)+'\n'
+     assert files[f'literal-{opt}/{i}.input'].decode()==expected
      assert sha(files[f'literal-{opt}/{i}.input'])==replay_record['runs'][i]['input_sha256']
  # Refuse a falsified literal result independently of the Fortran process exit.
  f=selected['O0'][0];fake='\n'.join(f'{i+1} {row[18]+.001} {row[18]} .001' for i,row in enumerate(f[:int(f[0][10])])).encode()
@@ -127,7 +132,7 @@ def main():
   with tarfile.open(path,'w:xz') as t:
    for n,b in sorted(files.items()):entry=tarfile.TarInfo(n);entry.size=len(b);entry.mtime=0;t.addfile(entry,io.BytesIO(b))
   deps=dict(r['normalized_repository_dependency_sha256'])
-  for n in ('tests/dataqual15_hupsel/matched_oxygen_observer.py','tests/dataqual15_hupsel/matched_oxygen_evidence.py','tests/dataqual15_hupsel/matched_oxygen_owners.f90','tests/dataqual15_hupsel/matched_oxygen_driver.f90','.github/workflows/hupsel-matched-oxygen.yml','integration/dataqual15_hupsel/MATCHED_OXYGEN_PREREGISTRATION_20261104.json','integration/dataqual15_hupsel/MATCHED_OXYGEN_STAGE_FINDING_20261104.json','integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json'):deps[n]=norm(ROOT/n)
+  for n in ('tests/dataqual15_hupsel/matched_oxygen_observer.py','tests/dataqual15_hupsel/matched_oxygen_evidence.py','tests/dataqual15_hupsel/matched_oxygen_owners.f90','tests/dataqual15_hupsel/matched_oxygen_driver.f90','.github/workflows/hupsel-matched-oxygen.yml','integration/dataqual15_hupsel/MATCHED_OXYGEN_PREREGISTRATION_20261104.json','integration/dataqual15_hupsel/MATCHED_OXYGEN_STAGE_FINDING_20261104.json','integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json','tests/physics/test_bartholomeus_b111_assembled.f90','tests/physics/support/c3a_b111_oxygen_owners.f90'):deps[n]=norm(ROOT/n)
   (BASE/(STEM+'.json')).write_text(json.dumps(dict(status='MATCHED_ACTUAL_ORIGINAL_OXYGEN_FACTOR_REPLAY_PASS',archive_sha256=sha(path.read_bytes()),files_sha256={n:sha(b) for n,b in files.items()},normalized_repository_dependency_sha256=deps,whole_scientific_admission=False),indent=2)+'\n')
  print('MATCHED_ACTUAL_ORIGINAL_OXYGEN_FACTOR_REPLAY_PASS');print(json.dumps(dict(native=result,actual_current_factor_differences=maxima)))
 if __name__=='__main__':main()
