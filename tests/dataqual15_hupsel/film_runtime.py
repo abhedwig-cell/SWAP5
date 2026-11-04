@@ -17,6 +17,8 @@ def inputs(out):
 def validate_baseline(baseline,old):
  assert old['status']=='BUILT'and old['build_mode']=='clean-source'and old['reuse_candidate']is None
  assert len(old['source_sha256'])==len(old['object_sha256'])==len(old['changed'])==236
+ opts=[x for x in old['flags']if x.startswith('-O')];assert len(opts)==1 and opts[0]in ('-O0','-O2')
+ assert [x for x in old['flags']if not x.startswith(('-I','-J'))]==[opts[0],'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow']
  assert Path(list(old['source_sha256'])[-1])==ROOT/counter.MAIN
  external=[]
  for name in old['source_sha256']:
