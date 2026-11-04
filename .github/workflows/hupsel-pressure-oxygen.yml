@@ -1,0 +1,20 @@
+name: Hupsel same-pressure-variant oxygen diagnosis
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-pressure-oxygen.yml
+      - tests/dataqual15_hupsel/pressure_oxygen*
+      - integration/dataqual15_hupsel/PRESSURE_OXYGEN_*
+permissions:
+  contents: read
+jobs:
+  cold-original-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify actual accepted carriers and compile original O0 O2 physics and partition
+        run: python3 -B tests/dataqual15_hupsel/pressure_oxygen_evidence.py
