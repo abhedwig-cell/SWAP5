@@ -1,0 +1,55 @@
+{
+  "stage": "CANONICALLY_ADMITTED_ACTUAL_MATCHED_LITERAL_TRANSPORT_PROCESS_COMPARISON",
+  "pr": 1510,
+  "merge": "392e9e49a428cb8023726402c49c385010052494",
+  "qualified_head": "8fd7e3f36147648fbf5d20da7a5ad40b0114bf8a",
+  "final_evidence_head": "fda2939704cb14fba49016c08b29f557b1b10a01",
+  "actual_merge_tree": "e91d0ed90c07ab2b43ff6f1e282d4019a72f12e1",
+  "final_head_tree": "e91d0ed90c07ab2b43ff6f1e282d4019a72f12e1",
+  "exact_tree_match": true,
+  "qualified_executable_dependency_delta": [],
+  "production_delta": [],
+  "actual_merge_verifier": "ACTUAL_MATCHED_NATIVE_LITERAL_TRANSPORT_O0_O2_PASS",
+  "actual_merge_normalized_log_sha256": "95571ac70ff914a3d815067e33ec1de9ca3195d4878143722bd5989c1c5f4415",
+  "actual_native_execution": "Windows GNU16.2 checked O0/O2 1077->1096, own1088 strict continuation",
+  "literal_original_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+  "selected_substeps_per_optimization": 14338,
+  "node_process_comparisons_per_optimization": 487492,
+  "maxima": {
+    "O0": {
+      "concentration_mg_cm3": 2.710505431213761e-20,
+      "node_total_mass_mg_cm2": 4.440892098500626e-16,
+      "surface_mass_mg_cm2": 0.0,
+      "decay_mg_cm2": 0.0,
+      "signed_net_export_mg_cm2": 1.0842021724855044e-19
+    },
+    "O2": {
+      "concentration_mg_cm3": 2.710505431213761e-20,
+      "node_total_mass_mg_cm2": 4.440892098500626e-16,
+      "surface_mass_mg_cm2": 0.0,
+      "decay_mg_cm2": 0.0,
+      "signed_net_export_mg_cm2": 1.0842021724855044e-19
+    }
+  },
+  "unchanged_literal_dynamic_heat_bound": 1e-12,
+  "defect_controls_per_optimization": 7,
+  "exact_prior_raw_trials_accepted_carriers_and_typed_daily_endpoints": true,
+  "cold_posix": {
+    "run": 41765414394,
+    "job": 126362510551,
+    "status": "success",
+    "data_remeasurement_only": true
+  },
+  "canonical_composition": {
+    "run": 41765414508,
+    "job": 126362938295,
+    "status": "success"
+  },
+  "all15_triggered_workflows_successful": true,
+  "matched_pointwise_process_agreement": true,
+  "whole_trajectory_equivalence_qualified": false,
+  "global_causal_transport_mechanism_qualified": false,
+  "production_correction_qualified": false,
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution,0/3 whole science"
+}

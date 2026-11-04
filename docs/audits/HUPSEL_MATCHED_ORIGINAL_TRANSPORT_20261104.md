@@ -1,6 +1,6 @@
 # Actual matched-forcing original transport comparison
 
-Status: actual Windows checked O0/O2 and cold POSIX qualification pass; canonical integration pending.
+Status: canonically admitted through PR1510; actual canonical postimage reverified.
 
 The original/native solute discrepancy can arise from different trajectories and temporal integration as well as a process implementation defect. This experiment compares the actual current process to the immutable B1.11 source on identical incoming34-node concentration, total mass, surface mass and forcing. It uses the already accepted literal source collector, pinned solute SHA2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2, and exact source slices. The existing independent inverse provider remains unchanged; the measured Hupsel regime is explicitly Frexp1/Kf0.
 
@@ -19,3 +19,5 @@ Authority: `integration/dataqual15_hupsel/MATCHED_SOLUTE_PREREGISTRATION_2026110
 Cold POSIX run41765414394/job126362510551 reconstructs the immutable literal source and reproduces every selected comparison, exact continuation and seven defect refusals per optimization. Documentation source checks and strict build pass.
 
 All15 triggered workflows are terminal and successful, including actual canonical composed qualification run41765414508/job126362938295. Final evidence/documentation changes preserve every cold-qualified executable dependency hash.
+
+PR1510 merged at `392e9e49a428cb8023726402c49c385010052494`; final evidence and actual merge trees both equal `e91d0ed90c07ab2b43ff6f1e282d4019a72f12e1`. Actual-merge independent comparison passes. This bounded receipt preserves every full scientific failure and does not authorize a physical correction.
