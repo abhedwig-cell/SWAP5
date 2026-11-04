@@ -1,0 +1,18 @@
+{
+  "baseline": "20e7d5ea4e49da5787d69581756ac148a9ce3802",
+  "workstream": "Hupsel original-source diagnostic qualification",
+  "scope": "Accepted root/oxygen receipt measurement, days524->584, original DTMAX0.01 identity",
+  "reason": "Original daily oxygen first exceeds the unchanged frozen comparison bound at525 and has its largest discrepancy at584. Smaller time caps retain the same twelve scientific failures.",
+  "implementation": "Output-only copied application source consumes existing accepted water/root receipts. No production source, interface, checkpoint, parameter or physical law changes. Record every accepted scalar receipt and actual34-node start head/theta and final root sink for days525 and584.",
+  "qualification": [
+    "Checked Windows O0/O2 actual runs from the input-bound original day524 checkpoint; this cross-build initial seed is explicitly compatibility-only",
+    "Same-build strict own537 continuation to584 must reproduce typed endpoint, daily budget/crop and accepted root trace exactly",
+    "Actual unobserved O0 and admitted O2 controls must reproduce the corresponding observed endpoint and daily budget/crop exactly",
+    "Every accepted leaf must cover the interval without gaps/duplicates; independent integration must reconstruct daily potential, drought, oxygen, salinity and actual root uptake under unchanged1e-10 daily limits",
+    "First-crossing and maximum-discrepancy days must be supported by immutable original daily outputs; no start-state/end-state comparison is labeled identical forcing",
+    "Mutation controls reject missing/duplicated leaves, wrong oxygen, wrong root sink, nonfinite values and wrong daily ledger",
+    "Cold POSIX data verification, exact source/object/executable/input/seed binding, current native admission preservation, canonical integration"
+  ],
+  "invariants": "Solver/retry/tolerance/mass/restart/ownership/fail-closed contracts unchanged; rejected trials excluded by using the existing accepted collector only",
+  "admission": "Measurement only; no causal explanation, physical correction, full O0 trajectory or whole scientific admission. Twelve existing failures and2/3 execution,0/3 science remain open."
+}
