@@ -39,6 +39,15 @@ times the unchanged oxygen bound. No pressure, clock, soil or crop state is
 altered or reconstructed by this fixture; no native physics is fitted to the
 underresolved daily reference.
 
+The assembled-factor result does not establish uniform accuracy of the typed
+waterfilm itself. Across active nodes its measured maximum absolute film error
+is1.65006e-7m and maximum relative error is0.00388780; the original film maxima
+are4.19396e-9m and0.000336121 respectively. The auditor retains both optima and
+the largest absolute typed-film case, including its factors. Oxygen responses
+can be insensitive to a film discrepancy. This additional numerical limitation
+requires separate source diagnosis and qualification; the factor PASS must
+not hide it or become a general typed-film accuracy admission.
+
 The first local preparation rejected a CRLF source seam before compilation.
 The adapter now handles only newline representation before proving the exact
 reversible source substitution. The failed directory is retained. Input,

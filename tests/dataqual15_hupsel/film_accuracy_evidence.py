@@ -15,6 +15,7 @@ def audit(files):
  assert sum(int(row[1])for row in table)==41678
  c=json.loads((f.ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text());literal=gzip.decompress(base64.b64decode(c['gzip_base64']))
  assert f.sha(literal)==r['source_sha256']=='8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87'
+ limits={};values=[float(x)for row in table for x in row[2:]]
  for opt in ('O0','O2'):
   b=r['builds'][opt];assert f.sha(files[opt+'/compare.exe'])==b['executable_sha256']
   assert files[opt+'/oxygen.f90'].decode().replace('\r\n','\n')==f.adapted_source(literal.decode())
@@ -35,9 +36,16 @@ def audit(files):
   before=max(abs(x[4]-x[5])for x in old);after=max(abs(x[4]-x[5])for x in new);binding=max(abs(x[4]-x[6])for x in old)
   assert before==b['unchanged_original_typed_max']>1e-4 and after==b['certified_original_typed_max']<=1e-4
   assert binding==b['original_binding_max']<1e-9 and b['inside_unchanged_assembled_bound']is True
+  active=[(value,row)for value,row in zip(values,old)if value>0]
+  worst=max(active,key=lambda x:abs(x[0]-x[1][8]))
+  limits[opt]=dict(typed_film_maximum_absolute_error_m=max(abs(value-row[8])for value,row in active),
+   typed_film_maximum_relative_error=max(abs(value-row[8])/value for value,row in active),
+   original_film_maximum_absolute_error_m=max(abs(value-row[7])for value,row in active),
+   original_film_maximum_relative_error=max(abs(value-row[7])/value for value,row in active),
+   maximum_absolute_typed_film_case=dict(record=int(worst[1][0]),node=int(worst[1][1]),certified_film_m=worst[0],typed_film_m=worst[1][8],original_factor=worst[1][4],typed_factor=worst[1][5]))
   assert {x['name']for x in b['native_refusals']}=={'wrong-record','wrong-node-count','nonfinite','negative','truncated','extra'}
   for x in b['native_refusals']:assert x['returncode']!=0 and f.sha(files[opt+'/'+x['name']+'.stderr'])==x['stderr_sha256']
- return dict(status='COMPLETE_ORIGINAL_STATE_FILM_COMPONENT_DATA_PASS',profiles=3206,rooted_nodes=41678,native_refusals=12,production_admission=False,whole_scientific_admission=False)
+ return dict(status='COMPLETE_ORIGINAL_STATE_FILM_COMPONENT_DATA_PASS',profiles=3206,rooted_nodes=41678,native_refusals=12,film_accuracy_limits=limits,typed_waterfilm_accuracy_admission=False,production_admission=False,whole_scientific_admission=False)
 
 def controls(files):
  trials=[]
@@ -71,7 +79,9 @@ def main():
   manifest=dict(result,archive=archive.name,archive_sha256=f.sha(archive.read_bytes()),files_sha256={n:f.sha(raw)for n,raw in files.items()},measured=result)
   (BASE/(STEM+'.json')).write_text(json.dumps(manifest,indent=2)+'\n')
  else:
-  r=json.loads((BASE/(STEM+'.json')).read_text());raw=(BASE/r['archive']).read_bytes();assert f.sha(raw)==r['archive_sha256']
+  r=json.loads((BASE/(STEM+'.json')).read_text())
+  assert all(r[k]is False for k in ('production_admission','whole_scientific_admission','typed_waterfilm_accuracy_admission'))
+  raw=(BASE/r['archive']).read_bytes();assert f.sha(raw)==r['archive_sha256']
   with tarfile.open(fileobj=io.BytesIO(raw))as t:
    members=t.getmembers();assert len(members)==len(r['files_sha256']) and all(m.isfile()and not PurePosixPath(m.name).is_absolute()and '..'not in PurePosixPath(m.name).parts for m in members)
    files={m.name:t.extractfile(m).read()for m in members}

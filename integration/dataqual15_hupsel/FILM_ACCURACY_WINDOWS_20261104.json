@@ -3,6 +3,37 @@
   "profiles": 3206,
   "rooted_nodes": 41678,
   "native_refusals": 12,
+  "film_accuracy_limits": {
+    "O0": {
+      "typed_film_maximum_absolute_error_m": 1.650058840720002e-07,
+      "typed_film_maximum_relative_error": 0.003887797502577453,
+      "original_film_maximum_absolute_error_m": 4.193955285489159e-09,
+      "original_film_maximum_relative_error": 0.00033612086335206077,
+      "maximum_absolute_typed_film_case": {
+        "record": 1248,
+        "node": 13,
+        "certified_film_m": 4.244199549040503e-05,
+        "typed_film_m": 4.227698960633303e-05,
+        "original_factor": 1.0,
+        "typed_factor": 1.0
+      }
+    },
+    "O2": {
+      "typed_film_maximum_absolute_error_m": 1.650058840720002e-07,
+      "typed_film_maximum_relative_error": 0.003887797502577453,
+      "original_film_maximum_absolute_error_m": 4.193955285489159e-09,
+      "original_film_maximum_relative_error": 0.00033612086335206077,
+      "maximum_absolute_typed_film_case": {
+        "record": 1248,
+        "node": 13,
+        "certified_film_m": 4.244199549040503e-05,
+        "typed_film_m": 4.227698960633303e-05,
+        "original_factor": 1.0,
+        "typed_factor": 1.0
+      }
+    }
+  },
+  "typed_waterfilm_accuracy_admission": false,
   "production_admission": false,
   "whole_scientific_admission": false,
   "data_refusals": 7,
@@ -70,6 +101,37 @@
     "profiles": 3206,
     "rooted_nodes": 41678,
     "native_refusals": 12,
+    "film_accuracy_limits": {
+      "O0": {
+        "typed_film_maximum_absolute_error_m": 1.650058840720002e-07,
+        "typed_film_maximum_relative_error": 0.003887797502577453,
+        "original_film_maximum_absolute_error_m": 4.193955285489159e-09,
+        "original_film_maximum_relative_error": 0.00033612086335206077,
+        "maximum_absolute_typed_film_case": {
+          "record": 1248,
+          "node": 13,
+          "certified_film_m": 4.244199549040503e-05,
+          "typed_film_m": 4.227698960633303e-05,
+          "original_factor": 1.0,
+          "typed_factor": 1.0
+        }
+      },
+      "O2": {
+        "typed_film_maximum_absolute_error_m": 1.650058840720002e-07,
+        "typed_film_maximum_relative_error": 0.003887797502577453,
+        "original_film_maximum_absolute_error_m": 4.193955285489159e-09,
+        "original_film_maximum_relative_error": 0.00033612086335206077,
+        "maximum_absolute_typed_film_case": {
+          "record": 1248,
+          "node": 13,
+          "certified_film_m": 4.244199549040503e-05,
+          "typed_film_m": 4.227698960633303e-05,
+          "original_factor": 1.0,
+          "typed_factor": 1.0
+        }
+      }
+    },
+    "typed_waterfilm_accuracy_admission": false,
     "production_admission": false,
     "whole_scientific_admission": false,
     "data_refusals": 7
