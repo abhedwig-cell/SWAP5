@@ -1,0 +1,26 @@
+{
+  "stage": "PREREGISTERED_NOT_IMPLEMENTED",
+  "baseline": "b78ae8c8673814b497fa5612bfee0c3cf423c494",
+  "work_unit": "Independent mass and primitive-state attribution of retained Hupsel solute stock/export failure",
+  "problem": "The current registered diagnostic final solute stock differs from the immutable fine reference by about-0.007223mg/cm2, outside the unchanged0.006478mg/cm2 stock limit, despite exact native mass closure and all original profile metrics passing. A physical correction cannot be chosen from source or an aggregate error alone.",
+  "implementation": "Reuse the admitted actual full-profile capsule and immutable fine-reference data. Audit both complete1096-day solute ledgers at the already accepted1e-10 daily and1e-8 cumulative thresholds. Independently reconstruct reference stock from all34 primitive theta/concentration nodes at all16 dates. Prove the exact initial/input/export/closure difference identity and a symmetric theta/concentration product decomposition, retaining per-node contributions, first frozen-bound crossing and peak discrepancy. No aggregate native export is relabeled a measured drainage component.",
+  "dependencies": [
+    "FULL_PROFILE_EVIDENCE_20261104.json",
+    "FULL_PROFILE_CANONICAL_RECEIPT_20261104.json",
+    "SPRINT03_SCIENCE_MANIFEST.json",
+    "CORRECTED_ROTATION_EVIDENCE_20261103.json"
+  ],
+  "qualification": [
+    "Real-data daily/cumulative identities and all16 primitive profile reconstructions",
+    "Frozen stock/export verdicts remain unchanged",
+    "Injected missing/shifted day, boundary flux, primitive donor, decomposition and input corruptions refused",
+    "Cold POSIX independent data remeasurement and current canonical entry",
+    "Exact canonical dependency reconciliation and actual merge remeasurement"
+  ],
+  "production_changes": false,
+  "model_rerun_selected": false,
+  "solver_retry_tolerance_mass_restart_ownership_unchanged": true,
+  "not_claimed": "No native export route separation, physical transport mechanism or production correction follows from algebraic state attribution alone. Thermal/contact research is other chat scope.",
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution,0/3 whole science"
+}
