@@ -71,6 +71,11 @@ def native(files,parent,manifest):
    assert sha(f[name+'/observed.exe'])==b['executable_sha256']
    assert sha(f[name+'/link.args'])==b['link_response_sha256']
    assert len(b['link_arguments'])==242
+   assert f[name+'/link.args'].decode()=='\n'.join('"'+s.replace('\\','/')+'"' for s in b['link_arguments'])+'\n'
+   for patch in b['patches'].values():
+    command=next(e['command'] for e in b['events'] if '-c' in e['command'] and e['command'][e['command'].index('-c')+1].replace('\\','/').endswith('/'+patch['source']))
+    flags=command[1:command.index('-c')]
+    assert [x for x in flags if not x.startswith(('-I','-J'))]==[x for x in original_build['baseline']['flags'] if not x.startswith(('-I','-J'))]
    for i,arg in enumerate(b['link_arguments'][2:238]):
     if str(i)+'.o' not in {p['object'] for p in b['patches'].values()}:
      assert arg.replace('\\','/').endswith('/build-'+opt+'/'+str(i)+'.o')
@@ -105,6 +110,9 @@ def native(files,parent,manifest):
    assert len(diffs)==60 and all(set(x['fields'])=={'pressure_average_cm'} for x in diffs)
    assert diffs==json.loads(f['RETAINED_DIAGNOSTIC_FAILURE.json'])
   budget=table(f['whole/budget.csv']);report=root_audit(trace,nodes,budget);controls=[]
+  for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
+   residuals=[float(r[prefix+'_end_'+unit])-float(r[prefix+'_start_'+unit])-float(r[prefix+'_in_'+unit])+float(r[prefix+'_out_'+unit]) for r in budget]
+   assert max(map(abs,residuals))<=1e-10 and abs(math.fsum(residuals))<=1e-8
   def refuse(label,fn):
    try:fn()
    except (AssertionError,StopIteration):controls.append(label)
@@ -162,6 +170,10 @@ def main():
     for kind,frames in [('factor',factors),('partition',finals)]:
      directory=kind+'-'+opt;record=json.loads(files[directory+'/'+('REPLAY.json')]);exe='oracle.exe' if kind=='factor' else 'partition.exe'
      assert sha(files[directory+'/'+exe])==record['executable_sha256']
+     if kind=='partition':assert files[directory+'/literal.f90'].decode()==literal_source()[0]
+     else:
+      carrier=json.loads((ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text())
+      assert sha(files[directory+'/oxygenstress.f90'])==record['source_sha256']==carrier['sha256']
      for i,frame in enumerate(frames):
       expected=('\n'.join(' '.join(f'{v:.17e}' for v in row) for row in frame)+'\n').encode()
       assert files[f'{directory}/{i}.input']==expected
