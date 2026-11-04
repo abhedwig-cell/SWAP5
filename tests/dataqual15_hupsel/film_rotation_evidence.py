@@ -7,6 +7,16 @@ from film_runtime_profiles import profile4
 BASE=audit.BASE;ROOT=audit.ROOT;sha=audit.sha;STEM='FILM_ROTATION_WINDOWS_20261104'
 
 
+def qualification_dependencies():
+    names=['film_rotation.py','film_rotation_audit.py','film_rotation_evidence.py','test_film_rotation.py',
+           'film_runtime.py','film_runtime_audit.py','film_runtime_profiles.py','film_runtime_counter.py',
+           'film_runtime_evidence.py','film_refinement_candidate.py','audit_corrected_rotation.py',
+           'scientific_followup.py','production_diagnostic_native.py','production_diagnostic_guards.py',
+           'qualify_rotation_restart_guards.py','inspect_profiles.py']
+    paths=['tests/dataqual15_hupsel/'+n for n in names]+['integration/dataqual15_hupsel/'+audit.runner.REG]
+    return {p:sha((ROOT/p).read_bytes().replace(b'\r\n',b'\n'))for p in paths}
+
+
 def controls(folder,opt):
     case=folder/'unobserved1096';native=json.loads((folder/'native/build/BUILD.json').read_text());original=(case/'checkpoint.bin').read_bytes()
     owner=json.loads((folder/'owner-controls/RESULT.json').read_text());app=json.loads((folder/'app-refusals/RESULT.json').read_text())
@@ -63,7 +73,7 @@ def verify(folder,platform,opts=('O0','O2')):
     for opt in opts:
         place=folder/opt;marker=json.loads((place/'EXECUTED.json').read_text());assert marker['production_admission']is False and marker['whole_scientific_admission']is False
         proof=audit.audit(place,opt,platform);proof['native_controls']=controls(place,opt);proof['data_refusals']=data_controls(place);result[opt]=proof
-    return dict(status='ACTUAL_PRIVATE_FULL1096_MASS_WET_CUT_RESTART_PROFILE_OBSERVATION_AND_UNCHANGED_SCIENCE_ASSESSMENT_COMPLETE',platform=platform,builds=result,production_admission=False,whole_scientific_admission=False)
+    return dict(status='ACTUAL_PRIVATE_FULL1096_MASS_WET_CUT_RESTART_PROFILE_OBSERVATION_AND_UNCHANGED_SCIENCE_ASSESSMENT_COMPLETE',platform=platform,builds=result,qualification_dependencies=qualification_dependencies(),production_admission=False,whole_scientific_admission=False)
 
 
 def safe(name):
@@ -91,7 +101,14 @@ def posix(paths):
 
 
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--capture',type=Path);parser.add_argument('--posix-zips',nargs=2,type=Path);parser.add_argument('--posix',action='store_true');args=parser.parse_args()
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--capture',type=Path);parser.add_argument('--posix-zips',nargs=2,type=Path);parser.add_argument('--posix',action='store_true');parser.add_argument('--native-mode',action='store_true');args=parser.parse_args()
+    if args.native_mode:
+        path=BASE/'FILM_ROTATION_POSIX_20261104.json'
+        if not path.exists():print('reused=false');return
+        record=json.loads(path.read_text());assert record['qualification_dependencies']==qualification_dependencies()
+        paths=[BASE/record['original_artifacts'][o]['archive']for o in ('O0','O2')]
+        assert all(sha(p.read_bytes())==record['original_artifacts'][o]['archive_sha256']for o,p in zip(('O0','O2'),paths))
+        assert posix(paths)==record;print('reused=true');return
     if args.posix_zips:
         result=posix(args.posix_zips);(BASE/'FILM_ROTATION_POSIX_20261104.json').write_text(json.dumps(result,indent=2)+'\n')
     elif args.posix:
