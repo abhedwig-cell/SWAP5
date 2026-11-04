@@ -1,0 +1,50 @@
+{
+  "stage": "CANONICALLY_ADMITTED_CONTROLLED_POINTWISE_RESEARCH_ONLY",
+  "pr": 1520,
+  "merge": "74a84aa1f9546e8bda3fb3b3922d1fee7748b641",
+  "qualified_head": "a03471468d1bb11750f2d2cd0b7b30b63e054b75",
+  "final_evidence_head": "83da713a2789cd6e44cc7e8848b8cad8efbf6a4b",
+  "actual_merge_tree": "ed94fa8e634594c5237e4923a077eb3efef5f858",
+  "final_head_tree": "ed94fa8e634594c5237e4923a077eb3efef5f858",
+  "exact_tree_match": true,
+  "qualified_executable_dependency_delta": [],
+  "production_delta": [],
+  "actual_merge_verifier": "CONTROLLED_MICRO_PRESSURE_PROBE_COMPLETE_NOT_PRODUCTION_ADMISSION",
+  "actual_merge_normalized_log_sha256": "db0816871faf3c780b0887cbbe724a05b4aa93a6a3d71f8e43c36a0c84c65c6f",
+  "scope": "Eight immutable actual profiles, standalone incumbent/candidate source O0/O2 Windows and cold POSIX; no coupled runtime trajectory",
+  "exact_observed_coefficients_both_variants": true,
+  "constructor_mismatches_Windows_POSIX": 0,
+  "maximum_incumbent_leaf_remainder_Windows": 7.005502897766691e-05,
+  "maximum_candidate_leaf_remainder_Windows": 2.4104255813561792e-09,
+  "maximum_candidate_leaf_remainder_POSIX": 2.410425803400784e-09,
+  "maximum_incumbent_original_node_difference": 9.564008104867572e-06,
+  "maximum_candidate_original_node_difference": 2.9725243794187506e-10,
+  "unchanged_original_node_bound": 2e-05,
+  "maximum_incumbent_bisections": 11,
+  "maximum_candidate_bisections": 31,
+  "unchanged_max_iterations": 500,
+  "unchanged_configured_tolerances": true,
+  "negative_controls": [
+    "unconverged bracket",
+    "forged iteration count",
+    "changed tolerance tag",
+    "changed incumbent sink",
+    "malformed coefficient execution"
+  ],
+  "cold_POSIX": {
+    "run": 41799810425,
+    "job": 126472526174
+  },
+  "canonical_preservation": {
+    "run": 41799810388,
+    "job": 126473518405
+  },
+  "all15_triggered_workflows_success": true,
+  "retained_science_failures": 12,
+  "retained_pressure_diagnostic_failure": true,
+  "runtime_variant_qualified": false,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "execution_count": "2/3",
+  "whole_scientific_count": "0/3"
+}
