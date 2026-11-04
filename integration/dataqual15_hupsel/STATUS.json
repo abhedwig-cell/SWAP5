@@ -369,5 +369,23 @@
     "runtime_variant_qualified": false,
     "production_admission": false,
     "whole_scientific_admission": false
+  },
+  "controlled_micro_pressure_runtime_20261104": {
+    "stage": "QUALIFIED_WINDOWS_RUNTIME_AND_COLD_POSIX_DATA_ALL15_CI_PASS_CANONICAL_PENDING",
+    "registration": "MICRO_PRESSURE_RUNTIME_PREREGISTRATION_20261104.json",
+    "recovery": "MICRO_PRESSURE_RUNTIME_RECOVERY_20261104.json",
+    "evidence": "MICRO_PRESSURE_RUNTIME_EVIDENCE_20261104.json",
+    "actual_O2_full_days": 1096,
+    "inside_frozen_comparisons": 36,
+    "total_frozen_comparisons": 37,
+    "retained_failures": [
+      "oxygen"
+    ],
+    "production_admission": false,
+    "whole_scientific_admission": false,
+    "canonical_admitted_research": false,
+    "pr": 1522,
+    "qualified_head": "0f66c21a30fbb7cb9bc17f6a27f955f7588adf72",
+    "all15_triggered_workflows_success": true
   }
 }
