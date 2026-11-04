@@ -1,7 +1,7 @@
 # Default-runtime historical pressure restart qualification
 
-Status: actual Windows and cold POSIX O0/O2 native commands completed;
-PR1532 workflow finalization remains pending despite successful job steps.
+Status: actual Windows and cold POSIX O0/O2 qualification and data replay
+canonically integrated through PR1532 and PR1533.
 This qualifies a copied app-envelope candidate. Production source and admission
 are unchanged.
 
@@ -47,11 +47,13 @@ Authority and entry points:
 - `tests/dataqual15_hupsel/default_diagnostic_evidence.py`
 
 The native POSIX artifact is retained under its GitHub ZIP digest and replayed
-independently by the read-only data gate. All native model and decoder command
-results are complete. The pending overall GitHub workflow is not called a
-terminal PASS or used to authorize current-source integration. The separate
-data-only branch keeps that external finalization delay from triggering another
-unchanged525-day native sweep or blocking executable evidence qualification.
+independently by the read-only data gate. During the Actions incident, native
+commands completed before the workflow parent finalized; no pending status was
+called PASS. Data qualified on a separate ref without duplicating model sweeps.
+All14 code and all15 data workflows subsequently reached terminal success.
+The actual joined merge preserves both qualified dependency surfaces and all
+production/input-recipe trees. Receipt:
+`integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_CANONICAL_RECEIPT_20261104.json`.
 
 Production adoption still requires an exact current-source successor and
 predecessor preservation projection, with the affected nested owner-decoder
