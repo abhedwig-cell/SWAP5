@@ -1,7 +1,7 @@
 # Hupsel historical germination pressure restart experiment
 
-Status: copied-source research candidate; actual Windows O0/O2 qualified,
-cold POSIX qualification in progress.
+Status: copied-source research candidate qualified on Windows and POSIX O0/O2;
+research evidence integrated by PR1530.
 Production application source and restart admission are unchanged.
 
 The retained `pressure_average_cm` CSV column reports the last soil pressure
@@ -58,3 +58,10 @@ admit the research pressure solver. All37 frozen science bounds and the existing
 day584 oxygen failure remain unchanged. Applying the candidate to production
 still requires an explicit current-source restart successor and preservation
 qualification; accepting research evidence alone cannot authorize that change.
+
+Canonical receipt: `integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_CANONICAL_RECEIPT_20261104.json`.
+All16 triggered workflows pass. Cold POSIX repeats both actual525-day prefixes,
+strict own continuations,22 refusal controls and both diagnostic sentinel controls.
+The canonical compositor runs13 boundary tests and accepts the exact historical
+authority; separate conditional historical jobs are skipped. Default application
+restart admission remains a separate executable successor capability.

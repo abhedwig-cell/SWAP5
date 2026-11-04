@@ -1,0 +1,149 @@
+{
+  "status": "CANONICALLY_INTEGRATED_QUALIFIED_RESEARCH_DIAGNOSTIC_CANDIDATE_NOT_PRODUCTION_ADMISSION",
+  "pr": 1530,
+  "qualified_head": "9d5adde0e936959bf3e6cfe82bae1a8f82cb9856",
+  "actual_merge": "bd2309f347e5fdc667deadf8a69247c4b8e78bf7",
+  "exact_qualified_tree": "1bed15128cd32b768a7fd5a74726568c389817bf",
+  "qualification_surface_sha256": {
+    ".github/workflows/hupsel-pressure-diagnostic.yml": "0a2762bc451d143fd226a4e279c458cfbb908953603a4b09d7d4032cfef1ef52",
+    "tests/dataqual15_hupsel/pressure_diagnostic_candidate.py": "d33787589f570c2cab2aacfbced965a8f3e00c63405edd2fdc8d0eb0abfacb96",
+    "tests/dataqual15_hupsel/qualify_pressure_diagnostic_candidate.py": "cf7160917b5c80dc4106f1148c29800cbf784dd20e4e68954ee61cefd2232d2a",
+    "tests/dataqual15_hupsel/pressure_diagnostic_posix.py": "69eafafb90808695d7638c6a67e11502e534a619faa345646250b3c9c8131a56",
+    "tests/dataqual15_hupsel/pressure_diagnostic_evidence.py": "1efa900b814e9049c537ddecf7a69d90ce57bb716864504696208591c7d3bc85",
+    "tests/dataqual15_hupsel/build_and_run.py": "9b1b46bd74252d7db497b2793398691576451db9f1d3af475b1e9a259729bed1",
+    "tests/dataqual15_hupsel/micro_pressure_probe.py": "4cdef60eb648436d6d82a591ecbb546e7719b00562b26368ce8ae66a098e30ee",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.json": "8688c03f98221895624ea74ef42064bd6b40edcb0680733cb53ec224f2f93904",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.tar.xz": "7663b5e2837106e37741728c85ba1357a91952d7256048e50bf20788966d8577",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_EVIDENCE_20261104.json": "87b0d62297e573d09cf885b1123300e28c702d82429dbb4bc3ef544fabec34f1",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_EVIDENCE_20261104.tar.xz": "ef2e6b0fde404aeada704a1556da41464205acda945300acabee81b5816a15e3"
+  },
+  "production_trees_unchanged_from": "2509ef8f204ac1b33d0e2536388f313ce530bed5",
+  "unchanged_production_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "ece4f0dee2a766c3f9921cbb004c87e4c553b210",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "all16_workflows": [
+    {
+      "id": 41852700830,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700932,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700919,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700837,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852701578,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700854,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700741,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852701140,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700828,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852701484,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852701480,
+      "name": "Hupsel original chronology and reference accuracy prerequisite",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700818,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700803,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700916,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852700771,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41852701060,
+      "name": "Hupsel copied pressure diagnostic restart",
+      "conclusion": "success"
+    }
+  ],
+  "native_posix_run": 41852701060,
+  "native_posix_job": 126652949398,
+  "cold_windows_evidence_job": 126652948978,
+  "canonical_run": 41852701578,
+  "canonical_modular_job": 126653946623,
+  "canonical_evidence": "13 actual boundary tests and CURRENT_ACCEPTED_ENDPOINT_AND_EXACT_HISTORICAL_NATIVE_AUTHORITY_PASS; separate conditional historical jobs skipped",
+  "windows_native": "O0/O2 from-input525 plus own524-to525 strict restart,22 explicit refusals and2 finite diagnostic noninterference controls",
+  "posix_native": "Cold rebuilt236-source O0/O2 from-input525 plus own524-to525 strict restart,22 explicit refusals and2 finite diagnostic noninterference controls",
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "next": "Preregister and qualify the default numerical runtime envelope successor before changing production source. The copied pressure-parent proof is not default-runtime admission. Windows candidate and parent rotation .mod interfaces are byte-exact at both optimizations; all236 original default object providers remain available. Validate exact provider/source pins before any reuse; never import research checkpoint state into default physics.",
+  "posix_artifact": {
+    "id": 13337431533,
+    "zip_sha256": "61f3d323ab06829845551ef234e1f0217f6824a4eeada1601f007a1129469b97",
+    "qualified_head": "9d5adde0e936959bf3e6cfe82bae1a8f82cb9856",
+    "local_retained": "../pressure-diagnostic-posix-final-20261104",
+    "cases": {
+      "O0": {
+        "result_sha256": "08153962fd17861818c44c1a1f1488287ad8d8315df91107dc7f36309436c3d3",
+        "pressure_at524_cm": [
+          -66.10498169126944,
+          0.0
+        ],
+        "refusals": 11,
+        "all_refusals_normal_error_stop_1": true,
+        "own_endpoint_and_all_suffix_columns_exact": true
+      },
+      "O2": {
+        "result_sha256": "0e872493206e07be402677b77da14651638d6b79b7fb745f06431f4d425d5c39",
+        "pressure_at524_cm": [
+          -66.10498169126944,
+          0.0
+        ],
+        "refusals": 11,
+        "all_refusals_normal_error_stop_1": true,
+        "own_endpoint_and_all_suffix_columns_exact": true
+      }
+    }
+  },
+  "all44_native_refusals_normal_error_stop_1": true,
+  "cross_platform_trajectory_identity_claimed": false
+}
