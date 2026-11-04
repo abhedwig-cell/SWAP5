@@ -1,5 +1,5 @@
 """Exact current app postimage plus unmodified committed predecessor authority."""
-import argparse, hashlib, json, os, subprocess, sys
+import argparse, hashlib, json, os, shutil, subprocess, sys, tarfile, tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -99,7 +99,15 @@ def main():
     p.add_argument('--prepare-only',action='store_true');a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True)
     record=json.loads((ROOT/SCOPE).read_text());current_guard(record)
     from production_diagnostic_evidence import verify
-    proof=verify(record);view,projection=prepare(record,out);events=[]
+    proof=verify(record)
+    # Git can materialize long Windows paths, but untouched historical Python
+    # readers may still inherit the Win32 path limit. Keep the entire nested
+    # validation in a fresh short TEMP workspace; retain its full logs below.
+    short_workspace=os.name=='nt' and not a.prepare_only
+    workspace=Path(tempfile.mkdtemp(prefix='s5d-')).resolve() if short_workspace else out
+    if short_workspace:
+        assert workspace.parent==Path(tempfile.gettempdir()).resolve() and workspace.name.startswith('s5d-')
+    view,projection=prepare(record,workspace);events=[]
     if a.prepare_only:
         (out/'PREPARED.json').write_text(json.dumps(projection,indent=2)+'\n');print(view);return
     def run(label,args):
@@ -107,16 +115,23 @@ def main():
         (out/(label+'.stdout')).write_bytes(r.stdout);(out/(label+'.stderr')).write_bytes(r.stderr)
         events.append(dict(label=label,args=args,returncode=r.returncode));assert r.returncode==0,(label,r.stderr.decode(errors='replace')[-2000:])
     try:
-        run('unmodified-predecessor-admission',[ENTRY,'--output',str(out/'old-admission')])
+        run('unmodified-predecessor-admission',[ENTRY,'--output',str(workspace/'old-admission')])
         run('qualified-default-runtime',['tests/dataqual15_hupsel/default_diagnostic_evidence.py'])
         current_guard(record)
+        if short_workspace:
+            with tarfile.open(out/'predecessor-validation.tar.xz','w:xz')as t:
+                t.add(workspace/'old-admission',arcname='old-admission')
+            shutil.copyfile(workspace/'old-admission/RESULT.json',out/'predecessor-current-result.json')
         result=dict(status='EXACT_CURRENT_S5HR4_NATIVE_BOUNDARY_AND_UNMODIFIED_PREDECESSOR_AUTHORITY_PASS',
                     current=git('rev-parse','HEAD'),projection=projection,current_native=proof,events=events,
                     whole_scientific_admission=False,oxygen_reference_correction=False)
         (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'])
     finally:
-        assert view.resolve().parent==out.resolve()
+        assert view.resolve().parent==workspace.resolve()
         subprocess.run(['git','worktree','remove',str(view)],cwd=ROOT,env=process_env(),check=True,capture_output=True)
+        if short_workspace:
+            assert workspace.resolve().parent==Path(tempfile.gettempdir()).resolve() and workspace.name.startswith('s5d-')
+            shutil.rmtree(workspace)
 
 
 if __name__=='__main__':main()
