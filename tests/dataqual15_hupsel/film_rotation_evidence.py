@@ -13,7 +13,7 @@ def qualification_dependencies():
            'film_runtime_evidence.py','film_refinement_candidate.py','audit_corrected_rotation.py',
            'scientific_followup.py','production_diagnostic_native.py','production_diagnostic_guards.py',
            'qualify_rotation_restart_guards.py','inspect_profiles.py']
-    paths=['tests/dataqual15_hupsel/'+n for n in names]+['integration/dataqual15_hupsel/'+audit.runner.REG]
+    paths=['tests/dataqual15_hupsel/'+n for n in names]+['integration/dataqual15_hupsel/'+audit.runner.REG,'.github/workflows/hupsel-film-rotation.yml']
     return {p:sha((ROOT/p).read_bytes().replace(b'\r\n',b'\n'))for p in paths}
 
 

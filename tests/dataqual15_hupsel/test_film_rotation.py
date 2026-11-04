@@ -1,7 +1,9 @@
 """Actual retained closure and relocation defects, no model substitute."""
-import json,os,shutil,tempfile,unittest
+import contextlib,io,json,os,shutil,tempfile,unittest
+from unittest import mock
 from pathlib import Path
 import film_rotation_audit as audit
+import film_rotation_evidence as evidence
 
 
 class Closure(unittest.TestCase):
@@ -32,5 +34,20 @@ class Closure(unittest.TestCase):
             for field in ('production_admission','whole_scientific_admission'):
                 record=json.loads((audit.BASE/audit.runner.REG).read_text());record[field]=True;(folder/'REGISTRATION.json').write_text(json.dumps(record))
                 with self.assertRaises(AssertionError):audit.audit(folder,'O0',self.platform)
+
+    def test_missing_full_posix_proof_requires_actual_execution(self):
+        with tempfile.TemporaryDirectory(prefix='film-rotation-reuse-')as name:
+            folder=Path(name).resolve();assert folder.parent==Path(tempfile.gettempdir()).resolve()and folder.name.startswith('film-rotation-reuse-')
+            result=io.StringIO()
+            with mock.patch.object(evidence,'BASE',folder),mock.patch('sys.argv',['film_rotation_evidence.py','--native-mode']),contextlib.redirect_stdout(result):evidence.main()
+            self.assertEqual(result.getvalue(),'reused=false\n')
+
+    def test_changed_dependency_cannot_reuse_full_posix_proof(self):
+        with tempfile.TemporaryDirectory(prefix='film-rotation-reuse-')as name:
+            folder=Path(name).resolve();assert folder.parent==Path(tempfile.gettempdir()).resolve()and folder.name.startswith('film-rotation-reuse-')
+            dependencies=evidence.qualification_dependencies();dependencies[next(iter(dependencies))]='0'*64
+            (folder/'FILM_ROTATION_POSIX_20261104.json').write_text(json.dumps(dict(qualification_dependencies=dependencies)))
+            with mock.patch.object(evidence,'BASE',folder),mock.patch('sys.argv',['film_rotation_evidence.py','--native-mode']):
+                with self.assertRaises(AssertionError):evidence.main()
 
 if __name__=='__main__':unittest.main(verbosity=2)
