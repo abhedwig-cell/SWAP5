@@ -1,0 +1,35 @@
+name: Hupsel default runtime diagnostic restart
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-default-diagnostic-native.yml
+      - tests/dataqual15_hupsel/default_diagnostic_candidate.py
+      - tests/dataqual15_hupsel/default_diagnostic_posix.py
+      - tests/dataqual15_hupsel/qualify_pressure_diagnostic_candidate.py
+      - tests/dataqual15_hupsel/pressure_diagnostic_candidate.py
+      - integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_PREREGISTRATION_20261104.json
+      - integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.*
+permissions:
+  contents: read
+jobs:
+  cold-default-posix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cold unchanged default solver O0 O2 and exact app restart
+        run: python3 -B tests/dataqual15_hupsel/default_diagnostic_posix.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/default-diagnostic"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: default-diagnostic-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/default-diagnostic/build-*/BUILD.json
+            ${{ runner.temp }}/default-diagnostic/build-*/EVENTS.json
+            ${{ runner.temp }}/default-diagnostic/measurement-*/
+          retention-days: 14
