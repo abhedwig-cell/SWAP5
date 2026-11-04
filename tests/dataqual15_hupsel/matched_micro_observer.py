@@ -62,9 +62,9 @@ def instrument(source,reg):
 '''.replace('CONDITION',condition)
  anchor='          physical%micro_drought_factor_carry=self%last_observation%micro_drought_factor\n';assert source.count(anchor)==1
  result=source.replace(anchor,block+anchor)
- module='module mod_fmr_serialized_reference_backend\n';assert result.count(module)==1
+ module='module mod_fmr_serialized_reference_backend\n';assert result.splitlines().count(module.strip())==1
  use='  use mod_root_micro_matric_flux_table,only:observe_micro_table\n'
- result=result.replace(module,module+use)
+ result=result.replace(module,module+use,1)
  assert result.replace(block,'').replace(use,'')==source
  return result
 def build(bundle,out,fc):
@@ -73,7 +73,9 @@ def build(bundle,out,fc):
  for key in ('source_sha256','object_sha256'):assert all(sha(Path(p))==h for p,h in r[key].items())
  assert sha(Path(r['ttutil_archive']))==r['archive_sha256']
  pub=r['publication_provider'];assert sha(Path(pub['source']))==pub['source_sha256'] and sha(Path(pub['object']))==pub['object_sha256']
- for f in bundle.glob('*.mod'):shutil.copyfile(f,out/f.name)
+ # The copied table gains a test-only public observer. Rebuild the complete
+ # ordered module closure: incumbent compiled .mod/vtable identities cannot
+ # safely be mixed with this changed observation interface.
  reg=json.loads((BASE/'MATCHED_MICRO_PREREGISTRATION_20261104.json').read_text())
  replacements={TABLE:table_instrument((ROOT/TABLE).read_text()),BACKEND:instrument((ROOT/BACKEND).read_text(),reg),MAIN:prior.instrument((ROOT/MAIN).read_text())}
  flags=[v for v in r['flags'] if not v.startswith(('-I','-J'))]+['-I'+str(out),'-J'+str(out)]
@@ -88,10 +90,12 @@ def build(bundle,out,fc):
    relative=path.relative_to(ROOT).as_posix();src=out/path.name;src.write_text(replacements[relative],encoding='utf-8',newline='\n')
    obj=out/(str(i)+'.o');run([fc,*flags,'-c',src,'-o',obj]);objects[i]=obj
    patches[relative]=dict(source=src.name,source_sha256=sha(src),object=obj.name,object_sha256=sha(obj))
+  else:
+   obj=out/(str(i)+'.o');run([fc,*flags,'-c',path,'-o',obj]);objects[i]=obj
  assert set(patches)=={TABLE,MAIN,BACKEND}
  exe=out/'observed.exe';args=['-fopenmp','-Wl,--stack,16777216',*map(str,objects),pub['object'],r['ttutil_archive'],'-o',str(exe)]
  response=out/'link.args';response.write_text('\n'.join('"'+v.replace('\\','/')+'"' for v in args)+'\n',encoding='utf-8');run([fc,'@'+str(response)])
- (out/'BUILD.json').write_text(json.dumps(dict(baseline=r,patches=patches,executable_sha256=sha(exe),link_response_sha256=sha(response),link_arguments=args,events=events),indent=2)+'\n');return exe
+ (out/'BUILD.json').write_text(json.dumps(dict(baseline=r,patches=patches,compiled_objects_sha256={p.name:sha(p) for p in objects},complete_module_closure_rebuilt=True,executable_sha256=sha(exe),link_response_sha256=sha(response),link_arguments=args,events=events),indent=2)+'\n');return exe
 def qualify(opt,bundle,case,baseline,out,fc):
  out.mkdir();exe=build(bundle,out/'build',fc)
  prior.run(exe,case,case/'checkpoint-524.bin',out/'whole',537,True)
