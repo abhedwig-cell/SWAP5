@@ -1,0 +1,20 @@
+{
+  "baseline": "7f38d369409d8d0a88320f3f3efd2f397b203cc7",
+  "question": "Does the corrected-pressure native coupled prefix converge toward the actual original accepted oxygen pulse when only the existing DTMAX cap is refined?",
+  "measured_witness": "Original accepted day584 has3206 steps, oxygen0.0035935411471249503cm; pressure variant has4126 leaves and0.0033488600867843843. Exact accepted-rate union attributes9.079020512818644e-9cm of the difference to potential forcing and-0.00024469013936108104cm to the stress fraction. Native start583 theta differs from original by at most2.3242812087403975e-5. This is state/chronology attribution, not yet a causal correction.",
+  "variants": [0.005,0.0025],
+  "execution": "Actual original-input pressure-criterion O2 prefixes1->584 with own checkpoints, same executable/source/flags/provider and original inputs except preregistered numeric cap. No checkpoint seeds. Reuse qualified0.01 trajectory, original source chronology and all original bounds. If a prefix supports a correction, qualify complete1096 and owning O0/POSIX/restart/admission before production promotion.",
+  "test_selection": {
+    "candidate": "7f38d369409d8d0a88320f3f3efd2f397b203cc7",
+    "changed_dependency": "New pressure-only root criterion changes feedback; old incumbent temporal refinement cannot qualify this trajectory",
+    "scientific_claim": "Discriminate accepted coupled-state/time resolution from final reporting and potential-forcing differences",
+    "owner": "isolated Hupsel migration worker",
+    "authority": "AGENTS.md proportional execution; PRESSURE_OXYGEN_RECOVERY_20261104.json",
+    "expected_seconds": 1500,
+    "existing_evidence": "Reuse both coherent pressure O0/O2 builds and unchanged originals. Earlier incumbent cap refinements retain12 failures and are not repeated. Only two changed-pressure original-input prefixes are selected first.",
+    "prior_execution": "NONE"
+  },
+  "unchanged_controls": "All solver, retry, tolerance, iteration, mass, restart, ownership and fail-closed contracts; no full oxygen-bound change, fitted reference or production admission from prefixes",
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
