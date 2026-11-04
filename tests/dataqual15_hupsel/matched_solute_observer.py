@@ -78,7 +78,11 @@ def build(bundle,out,fc):
    patches[relative]=dict(before=base['source_sha256'][n],after=sha(post),postimage=post.name)
  assert set(patches)=={owner.ROUTE,owner.MAIN}
  extras=[out/'matrix_nonlinear_oracle.o',out/'b111_literal_oracle.o'];exe=out/'observed.exe'
- run([fc,'-fopenmp','-Wl,--stack,16777216',*objects,*extras,pub['object'],base['ttutil_archive'],'-o',exe])
+ arguments=['-fopenmp','-Wl,--stack,16777216',*objects,*extras,pub['object'],base['ttutil_archive'],'-o',exe]
+ # Preserve the exact link inputs while avoiding the Windows argv limit.
+ response=out/'link.args';response.write_text('\n'.join('"'+str(x).replace('\\','/')+'"' for x in arguments),encoding='utf-8',newline='\n')
+ (out/'LINK.json').write_text(json.dumps(dict(arguments=list(map(str,arguments)),response_sha256=sha(response)),indent=2)+'\n')
+ run([fc,'@'+str(response)])
  record=dict(baseline_build=base,source_patches=patches,executable_sha256=sha(exe),
              object_sha256={str(p):sha(p) for p in objects+extras},events=events,
              literal_source_sha256=sha(source),inverse_source_sha256=sha(inverse),generator_sha256=sha(GENERATOR),
