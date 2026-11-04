@@ -1,12 +1,12 @@
 {
-  "status": "OWNED_READ_ONLY_DATA_QUALIFIED_UNRELATED_PARENT_STATUS_PENDING_CODE_NOT_ADMITTED",
+  "status": "CANONICALLY_INTEGRATED_DEFAULT_RUNTIME_DIAGNOSTIC_QUALIFICATION_NOT_PRODUCTION_ADMISSION",
   "code_pr": 1532,
   "code_head": "e8935a2fd92a3f115934537fe976467d60f1d454",
   "native_run": 41859948068,
   "native_job": 126678671531,
   "all_native_model_and_decoder_steps": "completed/success",
-  "native_workflow_status": "in_progress",
-  "native_workflow_conclusion": null,
+  "native_workflow_status": "completed",
+  "native_workflow_conclusion": "success",
   "windows_archive": "DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.tar.xz",
   "posix_artifact": "DEFAULT_DIAGNOSTIC_POSIX_20261104.zip",
   "native_refusals": 44,
@@ -16,13 +16,13 @@
   "data_defect_controls": 7,
   "production_admission": false,
   "science_counts_unchanged": true,
-  "next": "Admit only data PR1533 after exact9-dependency/metadata and expected-head checks. Keep code PR1532 held until its OWN native workflow reports terminal success; no inheritance from a pending native job. After data admission do not merge canonical into the primary branch and retrigger unchanged native prefixes; eventual code integration joins both histories. Continue separate production successor/nested owner controls only under its explicit contract.",
+  "next": "Preregister exact production S5HR0004 postimage and preservation successor. Reuse completed default prefixes; run affected nested owner-decoder controls and current publication/legacy-schema refusal on exact postimage. Preserve old frozen verifiers in an exact committed predecessor projection rather than adding broad source exceptions. Do not seed default physics with research pressure state or promote oxygen/reference science.",
   "data_pr": 1533,
   "data_branch": "codex/default-diagnostic-data-20261104",
   "qualifying_code_head": "e8935a2fd92a3f115934537fe976467d60f1d454",
   "qualifying_data_head": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f",
-  "code_merge": false,
-  "data_merge": false,
+  "code_merge": "135e811eda48399443f8a5df6dec6096d637cb57",
+  "data_merge": "c43ac3b6f44390a50c1c659da7277cbfd50ec792",
   "github_incident": {
     "id": "xr3myzj7ms51",
     "name": "Incident with Actions and Pages",
@@ -100,5 +100,8 @@
       }
     ],
     "impact": "NOT_SELECTED_IMPACT: src/app/reference/input recipe, tests/fpe, TG workflow and performance docs are byte-exact to canonical. All four direct TG jobs are terminal success; workflow-parent pending is retained, never called PASS."
-  }
+  },
+  "all_code_workflows_terminal_success": 14,
+  "all_data_workflows_terminal_success": 15,
+  "receipt": "DEFAULT_DIAGNOSTIC_CANONICAL_RECEIPT_20261104.json"
 }

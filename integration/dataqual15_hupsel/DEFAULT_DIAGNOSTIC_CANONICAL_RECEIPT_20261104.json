@@ -1,0 +1,283 @@
+{
+  "status": "CANONICALLY_INTEGRATED_DEFAULT_RUNTIME_DIAGNOSTIC_QUALIFICATION_NOT_PRODUCTION_ADMISSION",
+  "code_pr": 1532,
+  "code_qualified_head": "e8935a2fd92a3f115934537fe976467d60f1d454",
+  "code_actual_merge": "135e811eda48399443f8a5df6dec6096d637cb57",
+  "data_pr": 1533,
+  "data_qualified_head": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f",
+  "data_final_head": "4617eec8426a445d6021d48c9398cbb4e40b762a",
+  "data_actual_merge": "c43ac3b6f44390a50c1c659da7277cbfd50ec792",
+  "data_actual_tree": "9689343dfc10942db3136c0991387e2edf1b2b57",
+  "actual_joined_tree": "20a96d144cc99b903361956d2ed2b05733a3d129",
+  "actual_code_merge_parents": [
+    "c43ac3b6f44390a50c1c659da7277cbfd50ec792",
+    "e8935a2fd92a3f115934537fe976467d60f1d454"
+  ],
+  "qualification_surface_sha256": {
+    "tests/dataqual15_hupsel/default_diagnostic_candidate.py": "de4a54737755458722d25dcf380fcd635a17c7065bbfe0dff5b417586bf37ac4",
+    "tests/dataqual15_hupsel/default_diagnostic_posix.py": "bb4592ab9dfd41b6038ab339973d154a4972c0550a82685e246ad3e939de9214",
+    ".github/workflows/hupsel-default-diagnostic-native.yml": "c90dd1372f19058cfec1eb571d1870a99ba08c0cb9af6a3f3fc59428ee79cbfc",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_PREREGISTRATION_20261104.json": "fab4f3858dd24305bfefdee42bd56d8a8d576264ecb817577f1772e94f8f3b4b",
+    "tests/dataqual15_hupsel/pressure_diagnostic_candidate.py": "d33787589f570c2cab2aacfbced965a8f3e00c63405edd2fdc8d0eb0abfacb96",
+    "tests/dataqual15_hupsel/qualify_pressure_diagnostic_candidate.py": "cf7160917b5c80dc4106f1148c29800cbf784dd20e4e68954ee61cefd2232d2a",
+    "tests/dataqual15_hupsel/build_and_run.py": "9b1b46bd74252d7db497b2793398691576451db9f1d3af475b1e9a259729bed1",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.json": "8688c03f98221895624ea74ef42064bd6b40edcb0680733cb53ec224f2f93904",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.tar.xz": "7663b5e2837106e37741728c85ba1357a91952d7256048e50bf20788966d8577",
+    ".github/workflows/hupsel-default-diagnostic-evidence.yml": "193ec73e4d993a6e18b675e352c1c5e00ca8012dff6b11a3629800bbfad80b51",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.json": "9f257a950776b2584de6367c6ed60acfb7fa39c271c7185950e87ec1a14b4afb",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.tar.xz": "2c43ee530b2d868bae6aa2ffc21b0e332c172c05e9fd8793c30df9af0b7bb864",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_POSIX_20261104.json": "d847b1ebe46daf59406a82de63a82b72913fdc69b224ad9765b893aba8dc4bb4",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_POSIX_20261104.zip": "63759e50a06596b26f9a16242c38bc310371ef6ff9977bfe326d35f560123599",
+    "tests/dataqual15_hupsel/default_diagnostic_evidence.py": "53efc1157a9638cc66af4ca7e4b048d13c5c4194af3e2dd68f7b645acd73cf18"
+  },
+  "unchanged_production_and_input_recipe_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "ece4f0dee2a766c3f9921cbb004c87e4c553b210",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+    "tools/solute": "6b4c6844099403c1c724d9e8bcc943560bc9615b"
+  },
+  "source_base": "f10258d903ce045d6e9adb175ed55f8684e2247a",
+  "terminal_workflows": {
+    "code": [
+      {
+        "id": 41859947726,
+        "name": "F-CI110 reconstructed performance admission",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947759,
+        "name": "F-MIG431 LOW08-A qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947722,
+        "name": "F-GC42 live whole-window service",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947731,
+        "name": "SWAP431 crop CO2 response qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947416,
+        "name": "F-MIG431-INT12-P0 qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947795,
+        "name": "F-MIG431-INT12-D Gash qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947746,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947727,
+        "name": "F-MIG431-INT12-E detailed interception qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947799,
+        "name": "SWAP431 empirical root oxygen qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947747,
+        "name": "SWAP431 crop rootgrow DVS qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947744,
+        "name": "SWAP431 root constant LRV qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947734,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859947730,
+        "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      },
+      {
+        "id": 41859948068,
+        "name": "Hupsel default runtime diagnostic restart",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "e8935a2fd92a3f115934537fe976467d60f1d454"
+      }
+    ],
+    "data": [
+      {
+        "id": 41865053773,
+        "name": "SWAP431 empirical root oxygen qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053636,
+        "name": "F-MIG431-INT12-D Gash qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053729,
+        "name": "F-CI110 reconstructed performance admission",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053919,
+        "name": "Hupsel default diagnostic evidence",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053723,
+        "name": "F-CI canonical qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053681,
+        "name": "F-GC42 live whole-window service",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053822,
+        "name": "SWAP431 crop rootgrow DVS qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053871,
+        "name": "F-MIG431-INT12-P0 qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865054145,
+        "name": "SWAP431 crop CO2 response qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053997,
+        "name": "F-MIG431-INT12-E detailed interception qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053981,
+        "name": "SWAP431 root constant LRV qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053700,
+        "name": "F-MIG431 LOW08-A qualification",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865054037,
+        "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053632,
+        "name": "Documentation",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      },
+      {
+        "id": 41865053827,
+        "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+        "status": "completed",
+        "conclusion": "success",
+        "head_sha": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f"
+      }
+    ]
+  },
+  "native_run": 41859948068,
+  "native_job": 126678671531,
+  "cold_data_run": 41865053919,
+  "cold_data_job": 126697057432,
+  "canonical_run": 41865053723,
+  "canonical_modular_job": 126697800484,
+  "canonical_marker": "13 actual boundary tests and CURRENT_ACCEPTED_ENDPOINT_AND_EXACT_HISTORICAL_NATIVE_AUTHORITY_PASS; separate conditional historical jobs skipped",
+  "data_admission_timing": "At data merge the unrelated TG parent was pending with all4 direct jobs PASS and unchanged complete source/test/workflow footprint, explicitly NOT_SELECTED_IMPACT. It subsequently reached terminal success. Current snapshots contain all14 code and all15 data workflows terminal success.",
+  "merge_verification": "GitHub PR metadata/virtual source merge ref retained the old base after data admission. Actual source merge parents are the canonical data merge and exact qualified code head; actual joined tree verified. Relative to data merge only2 default builders and1 native workflow are added. No claim that stale virtual tree equals joined actual tree.",
+  "native_cases": {
+    "platforms": [
+      "Windows GNU16.2",
+      "POSIX GNU13.3"
+    ],
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "fresh_prefix_days": 525,
+    "own_restore_day": 524,
+    "strict_endpoint_and_all_suffix_columns_exact": true,
+    "native_refusals_normal_exit1": 44,
+    "finite_sentinel_noninterference": 4,
+    "O2_prescribed_budget_windows_equal_default_parent": 526,
+    "O2_crop_rows_equal_default_parent": 31,
+    "data_defect_controls": 7
+  },
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "counts": {
+    "original_execution": "2/3",
+    "whole_scientific": "0/3"
+  },
+  "next": "Preregister exact production S5HR0004 postimage and preservation successor. Reuse completed default prefixes; run affected nested owner-decoder controls and current publication/legacy-schema refusal on exact postimage. Preserve old frozen verifiers in an exact committed predecessor projection rather than adding broad source exceptions. Do not seed default physics with research pressure state or promote oxygen/reference science."
+}
