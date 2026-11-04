@@ -1,0 +1,65 @@
+{
+  "status": "CANONICALLY_ADMITTED_PRODUCTION_DIAGNOSTIC_PERSISTENCE",
+  "pr": 1535,
+  "qualified_head": "525ac381c74fba21f5a9d92a0d7a9190e35d1459",
+  "qualified_virtual_merge": "d9be5b003e2206471ba1e70627989a89a2f30c3e",
+  "canonical_merge": "6e66841e21e91d543b2917db6fe3be577f1d2df4",
+  "canonical_tree": "7988e5a6e8766af1621e72b9a5daf4472796c070",
+  "native_run": 41886687993,
+  "native_jobs": [
+    126772930849,
+    126772931283
+  ],
+  "canonical_run": 41886688077,
+  "grass_selection_run": 41886688002,
+  "production_admission": true,
+  "whole_scientific_admission": false,
+  "oxygen_reference_correction": false,
+  "original_execution": "2/3",
+  "whole_science": "0/3",
+  "actual_canonical_scope": "PASS",
+  "actual_canonical_tree_equals_qualified_head": true,
+  "local_guard_controls": 11,
+  "grass_selection_controls": 10,
+  "windows_optimizations": [
+    "O0",
+    "O2"
+  ],
+  "posix_optimizations": [
+    "O0",
+    "O2"
+  ],
+  "controls_per_build": {
+    "owner_decoder": 37,
+    "public_nonfinite_writer": 6,
+    "app_refusal": 11
+  },
+  "artifacts": [
+    {
+      "id": 13352171860,
+      "github_zip_sha256": "7080e897458bcc7623e9479df075ed9667dc6d5fed291c59430bd19b3bd2bc32",
+      "retained": "PRODUCTION_DIAGNOSTIC_POSIX_13352171860_20261104.tar.xz",
+      "retained_sha256": "5c7b91ced1aebd765e54dac44e5cec42836e5045580f32da62e0876b90239d40",
+      "bytes": 15871704
+    },
+    {
+      "id": 13350604797,
+      "github_zip_sha256": "7931ada603fd7c1f69487d67105caff43e4779672c12cc2e7072e0cef13ff7c5",
+      "retained": "PRODUCTION_DIAGNOSTIC_POSIX_13350604797_20261104.tar.xz",
+      "retained_sha256": "ce03dc2d32e73b7be3fecde9bc1d60a4a9099326248cb0b40cb3cdac3de7e9f5",
+      "bytes": 6324
+    }
+  ],
+  "unrelated_failed_checks": [
+    {
+      "run": 41886688114,
+      "job": 126772931347,
+      "scope": "Existing B1.11 metadata consistency failure; full reference tree and every gate/reconstructor/replay/manifest/difference-ledger dependency unchanged from507d. Not a PASS. No weakening or unrelated repair."
+    },
+    {
+      "run": 41884893199,
+      "scope": "Historical TEMPORAL11 owner guard requires exactly its own src delta; actual src delta empty. Not scientific authority."
+    }
+  ],
+  "preservation": "Complete unmodified predecessor composition PASS locally and cold POSIX; prior full default525 native prefixes reused only under exact source identity. No research trajectory seed."
+}
