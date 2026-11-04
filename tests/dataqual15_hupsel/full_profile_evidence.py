@@ -3,7 +3,7 @@
 Actual Windows execution and portable data remeasurement remain distinct.
 Neither a profile comparison nor its frozen-bound failure promotes physics.
 """
-import argparse,collections,copy,csv,hashlib,io,json,subprocess,sys,tarfile,tempfile
+import argparse,collections,copy,csv,hashlib,io,json,math,subprocess,sys,tarfile,tempfile
 from pathlib import Path,PurePosixPath,PureWindowsPath
 from audit_corrected_rotation import audit
 from inspect_profiles import profile
@@ -50,7 +50,7 @@ def measure(case,bundle,prior_files,live):
  assert (case/'checkpoint-1096.bin').read_bytes()==(case/'checkpoint.bin').read_bytes()
  grouped=collections.defaultdict(list)
  for r in csv.DictReader((case/'budget.csv').open()):
-  grouped[int(__import__('math').ceil(float(r['t1_day'])-1e-9))].append(r)
+  grouped[int(math.ceil(float(r['t1_day'])-1e-9))].append(r)
  daily=[{k:float(parts[-1][k]) for k in ('water_end_cm','solute_end_mg_cm2')} for _,parts in sorted(grouped.items())]
  geometry=profile(prior_files['case/checkpoint.bin']);proof=check_points(points,daily,geometry)
  controls=[]
@@ -80,7 +80,6 @@ def measure(case,bundle,prior_files,live):
  # Profile feature extraction needs the accepted full daily rows; retain the
  # same original clock grouping and all original scalar/crop comparisons.
  full=[]
- import math
  for day,parts in sorted(grouped.items()):
   r={k:math.fsum(float(p[k]) for p in parts) for k in parts[0]}
   for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
@@ -114,7 +113,8 @@ def main():
    for n,b in sorted(files.items()):
     m=tarfile.TarInfo(n);m.size=len(b);m.mtime=0;t.addfile(m,io.BytesIO(b))
   deps=dict(prior['normalized_repository_dependency_sha256'])
-  for n in ('tests/dataqual15_hupsel/full_profile_evidence.py','integration/dataqual15_hupsel/FULL_PROFILE_PREREGISTRATION_20261104.json'):
+  for n in ('tests/dataqual15_hupsel/full_profile_evidence.py','tests/dataqual15_hupsel/test_full_profile_evidence.py',
+            '.github/workflows/hupsel-full-profile.yml','integration/dataqual15_hupsel/FULL_PROFILE_PREREGISTRATION_20261104.json'):
    deps[n]=normalized(ROOT/n)
   record=dict(status=measured['status'],baseline='4416bde2f3b1fbf04bac9edfe36ab7d758ad69b1',candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
               archive_sha256=sha(archive.read_bytes()),files_sha256={n:sha(b) for n,b in files.items()},
