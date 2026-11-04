@@ -1,6 +1,6 @@
 # Complete native temporal-refinement controls
 
-Status: implemented and persisted; two selected actual from-input trajectories are running.
+Status: both actual complete trajectories, own O0/O2 tails and independent audits pass; cold qualification pending.
 
 The accepted matched-forcing experiment reproduces the original transport process at roundoff on the selected native states. This control measures whether complete-trajectory discrepancy changes with a smaller registered maximum-time cap. It uses the exact admitted checked O2 executable at DTMAX0.005 and0.0025, starting each1096-day run from original initial inputs. Only the unique numeric DTMAX value in copied source SWP changes. Every other source/input/window byte, physical equation, solver selection, retry, tolerance and ownership rule stays unchanged.
 
@@ -11,3 +11,16 @@ The independent auditor checks complete source-window and daily water/solute led
 Mutation controls reject missing days/profiles, water/solute export defects, primitive stock defects, canopy-bound violations and substituted foreign-variant input ledgers. Portable cold qualification remeasures sealed actual Windows outputs; it does not claim Linux native execution or promote either numerical variant into production. Original execution/science counts remain2/3 and0/3. Thermal/contact research stays separately owned.
 
 Authority: `integration/dataqual15_hupsel/NATIVE_REFINEMENT_PREREGISTRATION_20261104.json` and `NATIVE_REFINEMENT_RECOVERY_20261104.json`. The owning audit is `tests/dataqual15_hupsel/native_refinement_evidence.py`.
+
+Both new trajectories complete1096 days from original initial state: DTMAX0.005 in1486.261s and0.0025 in2220.667s. Six ledger/profile defect controls and two foreign-variant input/checkpoint provenance controls pass per variant. Original source-input/CRC/owner readers remain active; foreign provenance refusal is an evidence-boundary check, not a new production codec restriction.
+
+The same twelve scalar/crop metrics remain outside their original frozen limits in both variants. The solute stock/export discrepancies do not improve under these registered refinements, so this control supplies no basis for a time-cap-only correction or scientific promotion. Other trends, including nonmonotone changes, remain explicit in the sealed all37-field report.
+
+| Metric | DTMAX0.01 error | DTMAX0.005 error | DTMAX0.0025 error | Unchanged bound |
+| --- | ---: | ---: | ---: | ---: |
+| solute_stock | 0.0072229332435 | 0.00743328334557 | 0.00755707935406 | 0.00647751050201 |
+| export_total | 0.00722293398712 | 0.00743328407899 | 0.00755708013159 | 0.00263315952966 |
+| water_global | 0.0139527227591 | 0.0139960068381 | 0.0139397864645 | 0.015894114055 |
+| potential_transpiration | 0.000681624527328 | 0.000690788338378 | 0.000698543149556 | 7.22775699999e-06 |
+| oxygen | 0.000244517614347 | 0.000244467060858 | 0.000244427923748 | 5.37184000002e-07 |
+| crop_lai | 0.0386972603282 | 0.0390376668932 | 0.039269543156 | 0.000206103856001 |

@@ -1,5 +1,5 @@
 {
-  "stage": "CAP0_005_ACTUAL_COMPLETE_AND_INDEPENDENT_AUDIT_PASS_CAP0_0025_STILL_RUNNING",
+  "stage": "BOTH_FULL_NATIVE_RUNS_OWN_TAILS_AND_INDEPENDENT_AUDIT_PASS_SEALED",
   "baseline": "a95ce8f1ccf145374def7b13d2e0feaf1136f2e6",
   "registration": "NATIVE_REFINEMENT_PREREGISTRATION_20261104.json",
   "qualifier": "tests/dataqual15_hupsel/qualify_native_refinement.py",
@@ -12,7 +12,7 @@
   "first_phase": "Each full-O2 starts with no checkpoint under its own copied source input identity; no foreign-source restart",
   "source_executable": "Admitted coherent current checked O2; O0 only for explicit compatible tail then own strict restart",
   "recovery": "Do not relaunch active cases. Read each START/RESULT/checkpoint clock and this isolated output root; wait for existing commands to finish, then audit, qualify and integrate. Other chat worktree remains untouched.",
-  "next": "Await selected complete native runs and own-build tails; seal independent all37-field/refinement report, retaining every frozen failure and nonmonotone trend. Cold data and canonical qualification follow.",
+  "next": "Finish portable Windows remeasurement, cold POSIX and canonical qualification; integrate exact dependency postimage and close unchanged-bound negative refinement result.",
   "production_changes": false,
   "whole_scientific_admission": false,
   "completed_variant_0_005": {
@@ -46,5 +46,64 @@
     },
     "preliminary_report": "../native-refinement-preflight-0.005.json",
     "interpretation": "Finer .005 cap does not improve the inherited .01 solute stock/export errors; no convergence or correction admitted. Await the independently registered .0025 control."
+  },
+  "record": "NATIVE_REFINEMENT_EVIDENCE_20261104.json",
+  "variants": {
+    "0.005": {
+      "full_O2_seconds": 1486.2607867999468,
+      "strict_own_O0_O2_tails": true,
+      "retained_failures": [
+        "solute_stock",
+        "potential_transpiration",
+        "oxygen",
+        "export_total",
+        "export_fraction_applied",
+        "crop_lai",
+        "crop_wrt",
+        "crop_wlv",
+        "crop_wst",
+        "crop_wso",
+        "crop_rd",
+        "crop_harvested_dry_matter"
+      ],
+      "solute_stock": {
+        "error": 0.007433283345571695,
+        "limit": 0.006477510502005319,
+        "inside_frozen_bound": false
+      },
+      "export_total": {
+        "error": 0.007433284078985025,
+        "limit": 0.0026331595296617276,
+        "inside_frozen_bound": false
+      }
+    },
+    "0.0025": {
+      "full_O2_seconds": 2220.6668596999953,
+      "strict_own_O0_O2_tails": true,
+      "retained_failures": [
+        "solute_stock",
+        "potential_transpiration",
+        "oxygen",
+        "export_total",
+        "export_fraction_applied",
+        "crop_lai",
+        "crop_wrt",
+        "crop_wlv",
+        "crop_wst",
+        "crop_wso",
+        "crop_rd",
+        "crop_harvested_dry_matter"
+      ],
+      "solute_stock": {
+        "error": 0.007557079354063134,
+        "limit": 0.006477510502005319,
+        "inside_frozen_bound": false
+      },
+      "export_total": {
+        "error": 0.00755708013159051,
+        "limit": 0.0026331595296617276,
+        "inside_frozen_bound": false
+      }
+    }
   }
 }
