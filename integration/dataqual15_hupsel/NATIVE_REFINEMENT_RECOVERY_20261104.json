@@ -1,0 +1,131 @@
+{
+  "stage": "BOTH_ACTUAL_FULL_VARIANTS_AND_COLD_POSIX_QUALIFIED_ALL15_WORKFLOWS_PASS",
+  "baseline": "a95ce8f1ccf145374def7b13d2e0feaf1136f2e6",
+  "registration": "NATIVE_REFINEMENT_PREREGISTRATION_20261104.json",
+  "qualifier": "tests/dataqual15_hupsel/qualify_native_refinement.py",
+  "auditor": "tests/dataqual15_hupsel/native_refinement_evidence.py",
+  "actual_root": "../native-refinement-20261104",
+  "active_variants": [
+    "cap-0.005",
+    "cap-0.0025"
+  ],
+  "first_phase": "Each full-O2 starts with no checkpoint under its own copied source input identity; no foreign-source restart",
+  "source_executable": "Admitted coherent current checked O2; O0 only for explicit compatible tail then own strict restart",
+  "recovery": "Do not relaunch active cases. Read each START/RESULT/checkpoint clock and this isolated output root; wait for existing commands to finish, then audit, qualify and integrate. Other chat worktree remains untouched.",
+  "next": "Integrate PR1512 exact postimage and remeasure actual canonical refinement result; close the negative time-cap-only correction finding without changing any frozen verdict.",
+  "production_changes": false,
+  "whole_scientific_admission": false,
+  "completed_variant_0_005": {
+    "full1096_from_start": true,
+    "actual_O2_seconds": 1486.2607867999468,
+    "strict_own_O0_O2_tails": true,
+    "independent_ledger_profile_audit": "PASS",
+    "retained_failures": [
+      "solute_stock",
+      "potential_transpiration",
+      "oxygen",
+      "export_total",
+      "export_fraction_applied",
+      "crop_lai",
+      "crop_wrt",
+      "crop_wlv",
+      "crop_wst",
+      "crop_wso",
+      "crop_rd",
+      "crop_harvested_dry_matter"
+    ],
+    "solute_stock_error": {
+      "error": 0.007433283345571695,
+      "limit": 0.006477510502005319,
+      "inside_frozen_bound": false
+    },
+    "export_error": {
+      "error": 0.007433284078985025,
+      "limit": 0.0026331595296617276,
+      "inside_frozen_bound": false
+    },
+    "preliminary_report": "../native-refinement-preflight-0.005.json",
+    "interpretation": "Finer .005 cap does not improve the inherited .01 solute stock/export errors; no convergence or correction admitted. Await the independently registered .0025 control."
+  },
+  "record": "NATIVE_REFINEMENT_EVIDENCE_20261104.json",
+  "variants": {
+    "0.005": {
+      "full_O2_seconds": 1486.2607867999468,
+      "strict_own_O0_O2_tails": true,
+      "retained_failures": [
+        "solute_stock",
+        "potential_transpiration",
+        "oxygen",
+        "export_total",
+        "export_fraction_applied",
+        "crop_lai",
+        "crop_wrt",
+        "crop_wlv",
+        "crop_wst",
+        "crop_wso",
+        "crop_rd",
+        "crop_harvested_dry_matter"
+      ],
+      "solute_stock": {
+        "error": 0.007433283345571695,
+        "limit": 0.006477510502005319,
+        "inside_frozen_bound": false
+      },
+      "export_total": {
+        "error": 0.007433284078985025,
+        "limit": 0.0026331595296617276,
+        "inside_frozen_bound": false
+      }
+    },
+    "0.0025": {
+      "full_O2_seconds": 2220.6668596999953,
+      "strict_own_O0_O2_tails": true,
+      "retained_failures": [
+        "solute_stock",
+        "potential_transpiration",
+        "oxygen",
+        "export_total",
+        "export_fraction_applied",
+        "crop_lai",
+        "crop_wrt",
+        "crop_wlv",
+        "crop_wst",
+        "crop_wso",
+        "crop_rd",
+        "crop_harvested_dry_matter"
+      ],
+      "solute_stock": {
+        "error": 0.007557079354063134,
+        "limit": 0.006477510502005319,
+        "inside_frozen_bound": false
+      },
+      "export_total": {
+        "error": 0.00755708013159051,
+        "limit": 0.0026331595296617276,
+        "inside_frozen_bound": false
+      }
+    }
+  },
+  "cold_posix": {
+    "run": 41775494687,
+    "job": 126394759520,
+    "head": "5b7460ccfea7a97baa16333b22a251e41001f9a6",
+    "status": "success",
+    "data_remeasurement_only": true,
+    "native_execution": "Windows GNU16.2 checked O2 complete trajectories, checked O0/O2 own-build tails",
+    "raw_job_log": "NATIVE_REFINEMENT_COLD_POSIX_20261104.log",
+    "normalized_log_sha256": "3532ff8cc87ec64043da3ed9fd60f02201f0a9701716eb26f42269306cbf81f4",
+    "variants": [
+      0.005,
+      0.0025
+    ],
+    "controls_per_variant": 8,
+    "whole_scientific_admission": false
+  },
+  "canonical_composition": {
+    "run": 41775494488,
+    "job": 126395125401,
+    "status": "success",
+    "head": "5b7460ccfea7a97baa16333b22a251e41001f9a6"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "stage": "PREREGISTERED_NOT_IMPLEMENTED",
+  "baseline": "a95ce8f1ccf145374def7b13d2e0feaf1136f2e6",
+  "work_unit": "Actual native complete-trajectory temporal refinement control after matched-process agreement",
+  "hypothesis": "Pointwise native/original chemistry agrees on matched actual input, so compare whole native trajectories under source-preserving registered maximum-time caps before considering a process correction.",
+  "caps_day": [
+    0.005,
+    0.0025
+  ],
+  "inherited_cap_day": 0.01,
+  "implementation": "Use the exact admitted current checked O2 executable for two full1096-day from-input runs. Change only the unique DTMAX numeric value in copied original-source SWP; every other original physical input and NML/window byte stays exact. Never import/rebind/edit a checkpoint across these different source-input identities. Retain all16 original profile dates, four wet cuts and1088. Independently audit complete ledgers, primitive states, all37 immutable fine-reference metrics and unchanged frozen limits. Observe refinement changes without fitting limits or asserting convergence a priori.",
+  "qualification": [
+    "Actual complete Windows checked O2 .005 and .0025 runs from original initial inputs",
+    "Same236 compiled providers, executable and archive; no solver/retry/tolerance or physical equation changes",
+    "Exact original input-byte normalization excluding only registered DTMAX; new valid source identities",
+    "Complete1096-day water/solute ledgers under existing1e-10 daily/1e-8 cumulative limits and independent16-profile stocks",
+    "All37 original fine-reference comparisons with unchanged frozen limits and retained failures",
+    "Each variant own O2 strict1088 continuation, plus explicit O2->O0 compatible1077 tail followed by own O0 strict1088 continuation",
+    "Invalid/missing input, ledger, profile or foreign-variant source/checkpoint relationships refused",
+    "Cold POSIX data qualification and exact canonical postimage verification"
+  ],
+  "production_changes": false,
+  "numerical_policy_scope": "Registered diagnostic maximum-time-cap variants only; incumbent .01 proof and literal original-source controls stay unchanged",
+  "not_claimed": "No production admission, source identity override, tolerance relaxation, whole scientific success or convergence conclusion is assumed from refinement.",
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution,0/3 whole science"
+}
