@@ -141,7 +141,7 @@ def main():
  # compare error trends, not a newly fitted acceptance limit.
  comparison={k:dict(unchanged_limit=bounds[k]['limit'],baseline_0_01_error=baseline['assessment'][k]['error'],
                    refined_0_005_error=reports['0.005']['assessment'][k]['error'],refined_0_0025_error=reports['0.0025']['assessment'][k]['error'],
-                   error_decreases_each_refinement=baseline['assessment'][k]['error']>=reports['0.005']['assessment'][k]['error']>=reports['0.0025']['assessment'][k]['error']) for k in bounds}
+                   error_nonincreasing_each_refinement=baseline['assessment'][k]['error']>=reports['0.005']['assessment'][k]['error']>=reports['0.0025']['assessment'][k]['error']) for k in bounds}
  result=dict(status='ACTUAL_FULL_NATIVE_TEMPORAL_REFINEMENT_CONTROLS_AND_LEDGER_AUDITS_PASS',variants=reports,
              original_frozen_error_comparison=comparison,production_correction_qualified=False,whole_scientific_admission=False)
  if a.capture:
