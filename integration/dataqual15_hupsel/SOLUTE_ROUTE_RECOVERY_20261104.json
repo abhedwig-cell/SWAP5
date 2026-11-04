@@ -1,5 +1,5 @@
 {
-  "stage": "ACTUAL_WINDOWS_O0_O2_SUFFIX_AND_STRICT_RESTART_PASS_SEALED",
+  "stage": "ACTUAL_WINDOWS_AND_COLD_POSIX_QUALIFIED_ALL15_WORKFLOWS_PASS",
   "record": "SOLUTE_ROUTE_EVIDENCE_20261104.json",
   "baseline": "7dbab607e6088550fea1593d64aafe4de69dd9e4",
   "scope": "Output-only two-source research copies; production unchanged",
@@ -11,7 +11,25 @@
   "controls_per_optimization": 6,
   "strict_own_1088_restart_exact": true,
   "all_other_typed_and_daily_fields_exact": true,
-  "next": "Finish portable Windows and cold POSIX data gate, existing canonical qualification and terminal adjudication; integrate exact postimage and close receipt.",
+  "next": "Integrate PR1508 exact postimage and verify actual canonical route report, then close scoped receipt.",
   "production_correction_qualified": false,
-  "whole_scientific_admission": false
+  "whole_scientific_admission": false,
+  "cold_posix": {
+    "run": 41759370887,
+    "job": 126343124020,
+    "head": "2cd3433e82278de1863e6cf1cff4acec0267c5c3",
+    "status": "success",
+    "data_remeasurement_only": true,
+    "native_execution_platform": "Windows GNU16.2 checked O0/O2",
+    "raw_job_log": "SOLUTE_ROUTE_COLD_POSIX_20261104.log",
+    "normalized_log_sha256": "1ba2080ad5af4a3d87b0b982643fd5d982b3ff9ba33941839a20a7bdfc0283f7",
+    "controls_per_optimization": 6,
+    "whole_scientific_admission": false
+  },
+  "canonical_composition": {
+    "run": 41759370878,
+    "job": 126343496769,
+    "status": "success",
+    "head": "2cd3433e82278de1863e6cf1cff4acec0267c5c3"
+  }
 }

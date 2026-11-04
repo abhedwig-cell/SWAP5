@@ -1,6 +1,6 @@
 # Actual accepted Hupsel solute export routes
 
-Status: actual Windows checked O0/O2 suffixes and strict own-build continuations pass; cold data qualification pending.
+Status: actual Windows checked O0/O2 and cold POSIX data qualification pass; canonical integration pending.
 
 The prior solute discrepancy proof deliberately left native export routes unmeasured. This experiment runs the real1077-to1096 suffix on both checked builds. Output-only observers are inserted into copied pond-reactive and application sources. All other compiled source/object/archive origins stay exact. Production sources, public APIs, solver policy, retry, tolerance, mass and checkpoint control remain unchanged.
 
@@ -15,3 +15,7 @@ Six injected defects per optimization reject missing/shifted/ambiguous accepted 
 This closes the native aggregate-export blind spot for the selected nineteen days. It does not yet prove why original and native transport differ, authorize a physical correction or turn any frozen scientific failure into a pass. The registered DTMAX0.01 scope and2/3 execution/0/3 whole-science counts remain explicit; thermal/contact work remains separately owned.
 
 Authority: `integration/dataqual15_hupsel/SOLUTE_ROUTE_PREREGISTRATION_20261104.json`, `SOLUTE_ROUTE_EVIDENCE_20261104.json` and `SOLUTE_ROUTE_RECOVERY_20261104.json`. The executable qualification is `tests/dataqual15_hupsel/solute_route_evidence.py`.
+
+Cold POSIX run41759370887/job126343124020 independently selects the accepted carriers and reproduces all O0/O2 route totals, strict continuation checks and six defect refusals per build. Documentation source checks and strict build pass.
+
+All15 triggered workflows are terminal and successful, including actual canonical composed qualification run41759370878/job126343496769. Final evidence/documentation changes preserve all qualified executable dependency hashes. Maximum daily lateral q-times-concentration reconstruction difference is6.93889e-18mg/cm2 on each optimization. Measured bottom input4.25994e-13mg/cm2 and bottom output2.17407e-13mg/cm2 remain explicit; lateral input is exactly zero.
