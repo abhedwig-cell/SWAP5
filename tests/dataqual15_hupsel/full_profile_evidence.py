@@ -87,8 +87,20 @@ def measure(case,bundle,prior_files,live):
   full.append(r)
  native,original,_,_=features(reference,donor,full,list(csv.DictReader((case/'crop.csv').open())),points)
  assessment={k:dict(error=distance(k,native[k],original[k]),limit=bounds[k]['limit'],inside_frozen_bound=distance(k,native[k],original[k])<=bounds[k]['limit']) for k in native}
+ per_day={}
+ for day,p in sorted(points.items()):
+  values=sorted(donor[day],key=lambda r:int(r['node']));assert len(values)==34
+  per_day[str(day)]={}
+  for key,column in [('head_cm','head_cm'),('theta','water_content'),('temperature_c','temperature_c'),('concentration_mg_cm3','concentration_mg_cm3')]:
+   metric='profile_'+key;a=p[key];b=[float(r[column]) for r in values]
+   errors=[distance(metric,[x],[y]) for x,y in zip(a,b)]
+   index=max(range(34),key=errors.__getitem__)
+   per_day[str(day)][key]=dict(maximum_error=errors[index],node=index+1,z_cm=p['z_cm'][index],
+                              actual=a[index],reference=b[index],limit=bounds[metric]['limit'],
+                              inside_frozen_bound=errors[index]<=bounds[metric]['limit'])
  return dict(status='COMPLETE_ORIGINAL16_PROFILE_MEASUREMENT_AND_EXACT_TRAJECTORY_PASS',days=list(DAYS),
              nodes_per_day=34,primitive_stock_proof=proof,negative_controls=controls,
+             original_reference_profile_errors_by_day=per_day,
              assessment=assessment,retained_failures=[k for k,v in assessment.items() if not v['inside_frozen_bound']],
              reference_archive_sha256=manifest['archive_sha256'],frozen_bounds_sha256=sha(bounds_raw),
              accepted_seven_profile_audit=inherited,full_schedule_measured=True,
