@@ -25,6 +25,9 @@ jobs:
         with:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Audit retained Windows native source object and raw runtime evidence
+        if: matrix.optimization == 'O2'
+        run: python3 -B tests/dataqual15_hupsel/film_runtime_evidence.py
       - name: Clean default baseline without numerical reuse
         run: |
           mkdir -p "$RUNNER_TEMP/film-runtime"
@@ -39,6 +42,9 @@ jobs:
         run: python3 -B tests/dataqual15_hupsel/film_runtime_audit.py --runtime "$RUNNER_TEMP/film-runtime/${{ matrix.optimization }}"
       - name: Current and unchanged predecessor preservation
         run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/film-preservation"
+      - name: Retain exact native source providers with raw evidence
+        if: always()
+        run: python3 -B tests/dataqual15_hupsel/film_runtime_evidence.py --snapshot "$RUNNER_TEMP/film-runtime"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
