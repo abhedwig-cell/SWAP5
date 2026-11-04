@@ -58,5 +58,20 @@ The raw Windows capsule retains original sources, all changed-variant objects,
 executables, compiler events, inputs, checkpoints and real control output.
 Read-only qualification regenerates private interventions and writer probes,
 binds actual linked providers, independently recomputes ledgers, and refuses
-eleven source/object/build/data or false-promotion defects. Cold POSIX
-qualification and canonical admission remain governed by the recovery record.
+eleven source/object/build/data or false-promotion defects.
+
+Cold POSIX O0/O2 passed the same scope and all real controls. Their maximum
+interval water defect was4.103e-14 and solute defect9.740e-12. The POSIX O2
+observer recorded946275 attempted calls and789 discarded isolated-pass events,
+again with maximum level11 and no exhaustion or invalid calls. Exactness is
+within each platform's own restart and observation control; these counts and
+trajectories are not asserted identical across compilers/platforms.
+
+All15 final-head workflows passed, including native run41917578659 and complete
+current/predecessor preservation. PR1541 integrated the bounded runtime cluster;
+actual canonical merge tree equals the qualified head tree. Both original
+POSIX artifact ZIPs are permanently retained and independently re-audited with
+their original GitHub digests. Authority:
+`integration/dataqual15_hupsel/FILM_RUNTIME_CANONICAL_RECEIPT_20261104.json`.
+Full1096 and the later wet cuts remain separate required qualifications before
+any production-source adoption or broader scientific claim.
