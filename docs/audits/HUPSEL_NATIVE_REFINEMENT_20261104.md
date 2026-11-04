@@ -1,6 +1,6 @@
 # Complete native temporal-refinement controls
 
-Status: both actual complete trajectories, own O0/O2 tails and cold POSIX data qualification pass; canonical integration pending.
+Status: canonically admitted through PR1512; actual canonical postimage reverified.
 
 The accepted matched-forcing experiment reproduces the original transport process at roundoff on the selected native states. This control measures whether complete-trajectory discrepancy changes with a smaller registered maximum-time cap. It uses the exact admitted checked O2 executable at DTMAX0.005 and0.0025, starting each1096-day run from original initial inputs. Only the unique numeric DTMAX value in copied source SWP changes. Every other source/input/window byte, physical equation, solver selection, retry, tolerance and ownership rule stays unchanged.
 
@@ -28,3 +28,5 @@ The same twelve scalar/crop metrics remain outside their original frozen limits 
 Cold POSIX run41775494687/job126394759520 independently reproduces the complete two-variant report, all37 frozen comparisons and eight refusal controls per variant. Documentation source checks and strict build pass.
 
 All15 triggered workflows are terminal and successful, including actual canonical composed qualification run41775494488/job126395125401. Final metadata changes preserve every cold-qualified executable dependency hash. These successful measurement gates do not relabel the twelve failed scientific comparisons as passes.
+
+PR1512 merged at `7091854a34acfb1f23a3ba53808da86aff600f1f`; final evidence and actual merge trees both equal `9857c4a8a02855a015e14e6fc086c8e07ead199b`. Actual-merge independent verification passes. The negative scientific finding, all twelve failures and unchanged frozen limits remain explicit in the canonical receipt.
