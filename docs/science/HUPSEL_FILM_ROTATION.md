@@ -59,3 +59,29 @@ Authority: `integration/dataqual15_hupsel/FILM_ROTATION_PREREGISTRATION_20261104
 Live recovery: `integration/dataqual15_hupsel/FILM_ROTATION_RECOVERY_20261104.json`.
 Only the completed native, independent audit and canonical records establish
 qualification; a running process or a successful syntax check does not.
+
+Windows O0/O2 completed the original-initialized1096 days, every selected
+capture, all nine strict own cut/final windows and mature controls. No capture
+recovery was needed. The O2 observed counterpart retained exact physical
+output bytes, with9617154 attempted calls,93174525 refinements and6524
+discarded isolated-pass events, maximum level11 and zero exhausted/invalid
+calls. Independent interval water/solute defects were at most3.399e-14cm and
+9.628e-12mg/cm2, below the unchanged1e-10 limits. All four wet cuts exported
+capacity excess and retained0.0270368cm accepted stock, without repeating the
+same export on the following day.
+
+Five boundary tests and thirteen actual-data defect checks pass. The initial
+mature decoder controls are retained; they were rerun under explicit single
+thread/no-predecessor environment without repeating or changing any full model
+trajectory. Both sets use the same unchanged executable and genuine final
+stream. All model legs already had the explicit registered environment.
+
+The film safeguard alone leaves25/37 original comparisons inside their frozen
+bounds. The twelve failures are solute stock, potential transpiration, oxygen,
+total/fractional solute export, crop LAI/root/leaf/stem/storage weights, actual
+root depth and harvested dry matter. Oxygen remains worst on584: native
+0.0033490518487160315cm, original0.003593541147cm, error0.00024448929828396835cm
+against the unchanged5.371840000016327e-7cm limit. This does not establish
+oxygen correction or production readiness. A separate coherent composition
+with the already qualified pressure-stopping candidate remains future work;
+it is not silently included in these measurements.
