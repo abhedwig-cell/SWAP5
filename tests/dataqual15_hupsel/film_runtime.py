@@ -14,8 +14,22 @@ def inputs(out):
   for m in members:(out/m.name).write_bytes(t.extractfile(m).read())
  assert all(sha(out/n)==pin for n,pin in record['files_sha256'].items());return out
 
+def validate_baseline(baseline,old):
+ assert old['status']=='BUILT'and old['build_mode']=='clean-source'and old['reuse_candidate']is None
+ assert len(old['source_sha256'])==len(old['object_sha256'])==len(old['changed'])==236
+ assert Path(list(old['source_sha256'])[-1])==ROOT/counter.MAIN
+ external=[]
+ for name in old['source_sha256']:
+  path=Path(name)
+  if path.is_relative_to(ROOT):assert path.relative_to(ROOT).as_posix().startswith(('src/','app/'))
+  else:external.append(path)
+ assert len(external)==1 and external[0].name=='legacy_swp_original.f90'
+ assert Path(old['ttutil_archive'])==baseline/'libttutil.a'
+ assert Path(old['publication_provider']['source'])==ROOT/'app/support/restart_publish.c'
+ assert Path(old['publication_provider']['object'])==baseline/'restart_publish.o'
+
 def build(baseline,out,compiler,observed=False):
- out.mkdir();old=json.loads((baseline/'BUILD.json').read_text());assert old['status']=='BUILT'and len(old['source_sha256'])==236
+ out.mkdir();old=json.loads((baseline/'BUILD.json').read_text());validate_baseline(baseline,old)
  assert subprocess.check_output([str(compiler),'--version'],text=True).splitlines()[0]==old['compiler']
  for part in ('source_sha256','object_sha256'):assert all(sha(Path(p))==pin for p,pin in old[part].items())
  provider=old['publication_provider'];assert all(sha(Path(provider[k]))==provider[k+'_sha256']for k in ('source','object'))
@@ -86,6 +100,7 @@ def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--baseline',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);a=p.parse_args()
  out=a.output.resolve();out.mkdir();compiler=a.compiler.resolve();os.environ.pop('SWAP5_DIAG_PREDECESSOR',None);os.environ['OMP_NUM_THREADS']='1'
  scope=json.loads((ROOT/SCOPE).read_text());current_guard(scope);case_inputs=inputs(out/'inputs')
+ baseline_record=json.loads((a.baseline.resolve()/'BUILD.json').read_text());assert '-'+a.optimization in baseline_record['flags']
  plain=out/'build';exe=build(a.baseline.resolve(),plain,compiler);observed_exe=None
  if a.optimization=='O2':observed_exe=build(a.baseline.resolve(),out/'build-observed',compiler,True)
  first=execute(exe,case_inputs,out/'unobserved584',584,capture=(525,583));strict=restart(exe,first,out/'strict584')

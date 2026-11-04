@@ -4,6 +4,7 @@ from inspect_profiles import checked
 
 def profile4(raw):
  checked(raw);assert raw[:8]==b'S5HR0004';clock,n=struct.unpack_from('=di',raw,8);assert n==34 and clock==int(clock)
+ assert all(math.isfinite(x)for x in struct.unpack_from('=2d',raw,len(raw)-20))
  off=20
  for _ in range(6):
   size=struct.unpack_from('=i',raw,off)[0];assert 0<size<16777216;off+=4+size
