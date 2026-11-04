@@ -48,6 +48,9 @@ def candidate(source):
 def build(bundle, out, fc):
     parent = json.loads((bundle/'BUILD.json').read_text())
     record = parent['baseline']
+    opt = next(x[1:] for x in record['flags'] if x in ('-O0', '-O2'))
+    authority = json.loads((ROOT/'integration/dataqual15_hupsel/MICRO_PRESSURE_RUNTIME_EVIDENCE_20261104.json').read_text())
+    assert sha(bundle/'BUILD.json') == authority['files_sha256']['build-'+opt+'/BUILD.json']
     assert subprocess.check_output([str(fc), '--version'], text=True).splitlines()[0] == record['compiler']
     for name, digest in parent['source_sha256'].items():
         assert sha(Path(name)) == digest, name
@@ -89,6 +92,7 @@ def build(bundle, out, fc):
     run([fc, '@'+str(response)])
     result = dict(status='COPIED_SOURCE_BUILT_NOT_ADMITTED', parent_build_sha256=sha(bundle/'BUILD.json'),
                   parent=parent, changed_source=REL, source_sha256=sources,
+                  compiled_objects_sha256={p.name: sha(p) for p in objects},
                   executable_sha256=sha(exe), events=events, production_admission=False)
     (out/'BUILD.json').write_text(json.dumps(result, indent=2)+'\n')
     return exe

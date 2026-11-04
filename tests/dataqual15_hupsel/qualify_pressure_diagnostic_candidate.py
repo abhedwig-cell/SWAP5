@@ -6,6 +6,9 @@ sha = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
 
 
 def qualify(exe, inputs, out):
+    root = Path(__file__).resolve().parents[2]
+    pins = json.loads((root/'integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.json').read_text())
+    for name, digest in pins['files_sha256'].items(): assert sha(inputs/name) == digest, name
     out.mkdir()
     env = os.environ.copy(); env.pop('SWAP5_DIAG_PREDECESSOR', None)
     events = []

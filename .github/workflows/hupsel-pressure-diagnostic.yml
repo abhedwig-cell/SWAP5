@@ -9,6 +9,13 @@ on:
 permissions:
   contents: read
 jobs:
+  cold-windows-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replay sealed Windows observations, exact parent and all decoder refusals
+        run: python3 -B tests/dataqual15_hupsel/pressure_diagnostic_evidence.py
   cold-posix-restart:
     runs-on: ubuntu-24.04
     timeout-minutes: 40
