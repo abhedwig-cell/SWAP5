@@ -1,5 +1,5 @@
 {
-  "stage": "IMPLEMENTED_PERSISTED_ACTUAL_FROM_INPUT_EXECUTION_RUNNING",
+  "stage": "ACTUAL_FROM_INPUT_COMPLETE_WINDOWS_CAPTURE_PASS_COLD_PENDING",
   "baseline": "4416bde2f3b1fbf04bac9edfe36ab7d758ad69b1",
   "registration": "FULL_PROFILE_PREREGISTRATION_20261104.json",
   "source": "tests/dataqual15_hupsel/full_profile_evidence.py",
@@ -14,6 +14,22 @@
     "log": "../full-profile-boundary-20261104.log"
   },
   "compiled_provider_check": "236 raw source postimages exact",
-  "next": "Await selected actual1096 measurement; require all16 profile dates, exact accepted complete trajectory, seal and cold remeasure, adjudicate and integrate.",
-  "whole_scientific_admission": false
+  "next": "Finish portable Windows remeasurement and selected cold POSIX job, adjudicate then integrate exact dependencies.",
+  "whole_scientific_admission": false,
+  "actual_run_seconds": 870.1719516000012,
+  "all_original_profile_metrics_inside_frozen_bounds": true,
+  "retained_metric_failures": [
+    "solute_stock",
+    "potential_transpiration",
+    "oxygen",
+    "export_total",
+    "export_fraction_applied",
+    "crop_lai",
+    "crop_wrt",
+    "crop_wlv",
+    "crop_wst",
+    "crop_wso",
+    "crop_rd",
+    "crop_harvested_dry_matter"
+  ]
 }
