@@ -1,5 +1,5 @@
 {
-  "stage": "SEALED_ACTUAL_WINDOWS_MEASUREMENT_AND_RETAINED_DIAGNOSTIC_FAILURE",
+  "stage": "WINDOWS_AND_COLD_POSIX_QUALIFIED_ALL15_CI_SUCCESS_PENDING_CANONICAL_INTEGRATION",
   "baseline": "20e7d5ea4e49da5787d69581756ac148a9ce3802",
   "preregistration": "ROOT_OXYGEN_PREREGISTRATION_20261104.json",
   "actual_root": "../root-oxygen-observation-20261104",
@@ -13,5 +13,9 @@
   "nodes_per_leaf": 34,
   "defect_refusals_each": 7,
   "maximum_independent_daily_defect_cm": 2.7755575615628914e-15,
-  "full_from_start_crop_diagnostic_preservation": "FAILED: pressure_average_cm differs on all60 rows; retained raw differences, not production admission"
+  "full_from_start_crop_diagnostic_preservation": "FAILED: pressure_average_cm differs on all60 rows; retained raw differences, not production admission",
+  "pr": 1514,
+  "qualified_head": "1f363b43463c936d34cfe405e7ce95a6a57befa4",
+  "cold_run": 41778191556,
+  "canonical_run": 41778191528
 }
