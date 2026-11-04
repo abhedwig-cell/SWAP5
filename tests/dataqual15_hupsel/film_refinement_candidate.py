@@ -56,6 +56,8 @@ def observation(folder,source,cases,raw):
  return result
 
 def errors(rows,corpus,table):
+ assert len(rows)==41678 and all(len(row)==9 and all(math.isfinite(x)for x in row)for row in rows)
+ assert [(row[0],row[1])for row in rows]==[(i+1,j+1)for i,g in enumerate(corpus)for j in range(len(g))]
  values=[]
  for row in rows:
   i,j=int(row[0])-1,int(row[1])-1;fields=corpus[i][j];reference=table[i][j];current=row[8]
@@ -69,8 +71,8 @@ def errors(rows,corpus,table):
  worst=max(values)
  return dict(maximum_relative_integral_error=worst[0],maximum_relative_film_error=max(x[1]for x in values),maximum_absolute_film_error_m=max(x[2]for x in values),maximum_integral_error_case=list(worst[3:]),active_cases=len(values))
 
-def fault_controls(out,source,fields,compiler,opt):
- out.mkdir();c=list(map(float,fields));n=c[26];m=c[27];alpha=c[24]*.01;cap=(c[22]-c[21])*alpha*n*m;sigma=.07275*(1-.002*(c[13]+273-291));p=-100*c[11]
+def probe_source(fields):
+ c=list(map(float,fields));n=c[26];m=c[27];alpha=c[24]*.01;cap=(c[22]-c[21])*alpha*n*m;sigma=.07275*(1-.002*(c[13]+273-291));p=-100*c[11]
  vals=','.join(format(x,'.17e')+'_real64'for x in [cap,n-1,m+1,alpha,n,sigma])
  driver='''program probe
  use iso_fortran_env,only:real64
@@ -97,12 +99,16 @@ def fault_controls(out,source,fields,compiler,opt):
  write(*,'(l1,1x,es25.17e3)')ok,y
 end program
 '''.replace('VALUES',vals).replace('PRESSURE',format(p,'.17e')+'_real64')
- (out/'probe.f90').write_text(driver,encoding='utf-8');records=[]
+ return driver
+
+def fault_controls(out,source,fields,compiler,opt):
+ out.mkdir();(out/'probe.f90').write_text(probe_source(fields),encoding='utf-8');records=[]
  variants={'candidate':source,'candidate-cap2':source.replace('do level = 2, 24','do level = 2, 2'),'incumbent-cap2':(f.ROOT/owner.SOURCE).read_text().replace('do level = 2, 24','do level = 2, 2')}
  for name,body in variants.items():
   folder=out/name;folder.mkdir();(folder/'waterfilm.f90').write_text(body,encoding='utf-8');exe=folder/'probe.exe'
   cmd=[compiler,'-'+opt,'-ffree-line-length-none','-fcheck=all','-ffpe-trap=invalid,zero,overflow','-J'+str(folder),'-I'+str(folder),str(f.ROOT/'src/physics/oxygen/mod_bartholomeus_waterfilm.f90'),str(folder/'waterfilm.f90'),str(out/'probe.f90'),'-o',str(exe)]
   r=subprocess.run(cmd,cwd=folder,capture_output=True,timeout=180);(folder/'compile.stderr').write_bytes(r.stderr);assert r.returncode==0,r.stderr.decode(errors='replace')[-1000:]
+  (folder/'BUILD.json').write_text(json.dumps(dict(command=cmd,compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],source_sha256={p.name:f.sha(p.read_bytes())for p in [f.ROOT/'src/physics/oxygen/mod_bartholomeus_waterfilm.f90',folder/'waterfilm.f90',out/'probe.f90']},executable_sha256=f.sha(exe.read_bytes())),indent=2)+'\n')
   modes=['ordinary','nan-head','inf-head','nan-alpha','inf-sigma','zero-head','dry']if name=='candidate'else['ordinary']
   for mode in modes:
    r=subprocess.run([str(exe),mode],cwd=folder,capture_output=True,timeout=30);(folder/(mode+'.stdout')).write_bytes(r.stdout);(folder/(mode+'.stderr')).write_bytes(r.stderr);assert r.returncode==0
@@ -120,12 +126,14 @@ def main():
  with tarfile.open(fileobj=io.BytesIO((f.BASE/record['archive']).read_bytes()))as t:oracle={opt:[list(map(float,line.split()))for line in t.extractfile(opt+'/certified.stdout').read().decode().splitlines()]for opt in ('O0','O2')}
  report=dict(status='PRIVATE_REFINEMENT_CANDIDATE_MEASUREMENT_PENDING',source_sha256=f.sha(source.encode()),candidate_sha256=f.sha(body.encode()),input_sha256=f.sha(raw),production_admission=False,whole_scientific_admission=False,reference_trajectory_accuracy_qualified=False,builds={})
  for opt in ('O0','O2'):
-  folder=out/opt;exe=owner.build(folder,body,scope,a.compiler,opt);_,stderr,rows,seconds=owner.run(exe,frame,folder);assert not stderr
+  folder=out/opt;exe=owner.build(folder,body,scope,a.compiler,opt);stdout,stderr,rows,seconds=owner.run(exe,frame,folder);assert not stderr
   assert all(x[:5]==y[:5]and x[6:8]==y[6:8]for x,y in zip(rows,base[opt])),'original physics side changed'
+  tokens=[line.split()for line in stdout.splitlines()];old_tokens=[line.split()for line in (a.observation/(opt+'-plain')/'comparison.stdout').read_bytes().splitlines()]
+  assert all(x[:5]+x[6:8]==y[:5]+y[6:8]for x,y in zip(tokens,old_tokens)),'original side token drift'
   before=errors(base[opt],corpus,table);after=errors(rows,corpus,table)
   factor=max(abs(x[5]-y[4])for x,y in zip(rows,oracle[opt]))
   probes=fault_controls(out/(opt+'-faults'),body,corpus[1247][12],a.compiler,opt)
-  report['builds'][opt]=dict(before=before,after=after,certified_original_factor_maximum=factor,fault_controls=probes,seconds=seconds)
+  report['builds'][opt]=dict(before=before,after=after,certified_original_factor_maximum=factor,fault_controls=probes,original_side_tokens_exact=True,seconds=seconds)
   (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n')
   assert before['maximum_relative_integral_error']>1e-5 and after['maximum_relative_integral_error']<=1e-5
   assert factor<=1e-4
