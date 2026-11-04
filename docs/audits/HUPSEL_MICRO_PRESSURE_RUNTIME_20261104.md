@@ -1,6 +1,6 @@
 # Source-bound MICRO pressure runtime research, 4 November 2026
 
-**Qualified Windows runtime and cold POSIX data; canonical admission pending. Research only.** The owning
+**Canonically admitted research through PR1522 at `7dfbf9312`.** The owning
 registration is `MICRO_PRESSURE_RUNTIME_PREREGISTRATION_20261104.json` in
 `integration/dataqual15_hupsel`. Baseline is `fe731944f`, after PR1520/1521.
 Production sources, default execution and the Status-A denominator are unchanged.
@@ -72,8 +72,10 @@ PR1522 qualified head `0f66c21a3` passes all15 triggered workflows. Cold portabl
 data run41807663908/job126498631611 passes; current canonical preservation
 run41807663823/job126498966481 passes the unchanged compositor/13 guards and
 exact historical guard/ten controls/seven preservation legs. Optional historical
-F-CI jobs remain skipped; full moving F-CI success is not claimed. The actual-merge
-receipt will identify the admitted postimage separately.
+F-CI jobs remain skipped; full moving F-CI success is not claimed. The actual merge has the exact final evidence tree
+`e887efcaff48e79766fb99e9cba9a6f27d0ee766`; its verifier passes with zero
+qualified dependency delta. Authority:
+`MICRO_PRESSURE_RUNTIME_CANONICAL_RECEIPT_20261104.json`.
 
 The incumbent production trajectory still has its original twelve failed
 comparisons; the research variant has one. Neither set is overwritten. Oxygen
