@@ -48,6 +48,19 @@ def instrument(source):
  assert result.replace(USE,'').replace(DECL,'').replace(BEFORE,'').replace(AFTER,'')==source
  return result
 
+def reconcile(out,provider):
+ def physical_csv(raw):
+  pattern=rb'(?m)^\* Generated at: [^\n]*\n'
+  assert len(re.findall(pattern,raw))==1
+  return re.sub(pattern,b'* Generated at: ACTUAL_RUN_TIMESTAMP\n',raw)
+ assert physical_csv((out/'observed/result_output.csv').read_bytes())==physical_csv((out/'unobserved/result_output.csv').read_bytes())
+ assert (out/'observed/hupsel_profiles.csv').read_bytes()==(out/'unobserved/hupsel_profiles.csv').read_bytes()
+ assert (out/'swap.f90').read_text()==instrument((provider/'selected/swap.f90').read_text())
+ for variant in ('observed','unobserved'):
+  r=json.loads((out/variant/'RUN.json').read_text());assert sha(out/(variant+'.exe'))==r['executable_sha256']
+  assert all(sha(out/variant/n)==h for n,h in r['inputs'].items())
+ (out/'COMPLETE.json').write_text(json.dumps(dict(exact_full_physical_output_control=True,only_metadata_exclusion='single actual Generated at timestamp; all other bytes checked',profile_bytes_exact=True,provider=json.loads((provider/'BUILD.json').read_text()),observed_executable_sha256=sha(out/'observed.exe'),source_sha256=sha(out/'swap.f90')),indent=2)+'\n')
+
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--reuse-provider',type=Path);a=p.parse_args()
  out=a.output.resolve();out.mkdir();fc=a.compiler.resolve();provider=a.reuse_provider.resolve() if a.reuse_provider else build_original(out/'provider',fc,'O2')
@@ -80,7 +93,6 @@ def main():
   for name,raw in inputs.items():(case/name).write_bytes(raw)
   run([exe],case,100,600);assert (case/'swap.ok').exists()
   (case/'RUN.json').write_text(json.dumps(dict(executable_sha256=sha(exe),inputs={n:sha(case/n) for n in ('swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra')}),indent=2)+'\n')
- for name in ('result_output.csv','hupsel_profiles.csv'):assert (out/'observed'/name).read_bytes()==(out/'unobserved'/name).read_bytes(),name
- (out/'COMPLETE.json').write_text(json.dumps(dict(exact_full_output_control=True,provider=record,observed_executable_sha256=sha(out/'observed.exe'),source_sha256=sha(swap)),indent=2)+'\n')
+ reconcile(out,provider)
 
 if __name__=='__main__':main()
