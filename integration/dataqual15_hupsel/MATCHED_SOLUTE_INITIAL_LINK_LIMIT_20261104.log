@@ -1,0 +1,36 @@
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\OneDrive - Wageningen University & Research\Documents\ChatGPT\SWAP5-finaliseren\SWAP5-AUTONOMOUS\tests\dataqual15_hupsel\matched_solute_observer.py", line 97, in <module>
+    folder=out/opt;folder.mkdir();owner.qualify(opt,bundle.resolve(),seed.resolve(),a.case.resolve(),baseline.resolve(),folder,a.compiler.resolve())
+                                  ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\OneDrive - Wageningen University & Research\Documents\ChatGPT\SWAP5-finaliseren\SWAP5-AUTONOMOUS\tests\dataqual15_hupsel\solute_route_observer.py", line 77, in qualify
+    exe=build(bundle,out/'build',fc);events=[]
+  File "C:\Users\Veldh012\OneDrive - Wageningen University & Research\Documents\ChatGPT\SWAP5-finaliseren\SWAP5-AUTONOMOUS\tests\dataqual15_hupsel\matched_solute_observer.py", line 81, in build
+    run([fc,'-fopenmp','-Wl,--stack,16777216',*objects,*extras,pub['object'],base['ttutil_archive'],'-o',exe])
+    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\OneDrive - Wageningen University & Research\Documents\ChatGPT\SWAP5-finaliseren\SWAP5-AUTONOMOUS\tests\dataqual15_hupsel\matched_solute_observer.py", line 64, in run
+    begin=time.monotonic();cp=subprocess.run(list(map(str,cmd)),cwd=out,capture_output=True,timeout=180);i=len(events)
+                              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1039, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py", line 1554, in _execute_child
+    hp, ht, pid, tid = _winapi.CreateProcess(executable, args,
+                       ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+                             # no special security
+                             ^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+                             cwd,
+                             ^^^^
+                             startupinfo)
+                             ^^^^^^^^^^^^
+FileNotFoundError: [WinError 206] The filename or extension is too long

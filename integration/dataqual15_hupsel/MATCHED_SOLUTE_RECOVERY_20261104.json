@@ -1,0 +1,36 @@
+{
+  "stage": "ACTUAL_WINDOWS_AND_COLD_POSIX_QUALIFIED_ALL15_WORKFLOWS_PASS",
+  "baseline": "0fdfc407a2ed62660e1272106d6b28eb34a97ba8",
+  "record": "MATCHED_SOLUTE_EVIDENCE_20261104.json",
+  "actual_observation": "../matched-solute-observation-final-20261104",
+  "qualified_literal_original_sha256": "2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2",
+  "selected_substeps_per_build": 14338,
+  "node_process_comparisons_per_build": 487492,
+  "controls_per_build": 7,
+  "source_collector_origin": "Immutable accepted generator and inverse provider pinned to canonical origin",
+  "resolved_build_trial": "Windows argv206 before model execution; exact linker arguments retained through response file, no source or compiler flag relaxation",
+  "production_changes": false,
+  "production_correction_qualified": false,
+  "whole_scientific_admission": false,
+  "next": "Integrate PR1510 exact dependency postimage, remeasure actual canonical result and close bounded process-comparison receipt.",
+  "cold_posix": {
+    "run": 41765414394,
+    "job": 126362510551,
+    "head": "8fd7e3f36147648fbf5d20da7a5ad40b0114bf8a",
+    "status": "success",
+    "data_remeasurement_only": true,
+    "native_execution": "Windows GNU16.2 checked O0/O2",
+    "raw_job_log": "MATCHED_SOLUTE_COLD_POSIX_20261104.log",
+    "normalized_log_sha256": "2167c2f221e16718147220d76b68ff2019d9707ecac2cffdf766594cb2582f22",
+    "controls_per_optimization": 7,
+    "selected_substeps_per_optimization": 14338,
+    "node_process_comparisons_per_optimization": 487492,
+    "whole_scientific_admission": false
+  },
+  "canonical_composition": {
+    "run": 41765414508,
+    "job": 126362938295,
+    "status": "success",
+    "head": "8fd7e3f36147648fbf5d20da7a5ad40b0114bf8a"
+  }
+}
