@@ -12,6 +12,7 @@ ROOT=runner.ROOT;BASE=runner.BASE;sha=runner.sha
 
 def native_binding(folder,opt,platform):
     files,origin=runner.closure_files(opt,platform)
+    assert files['source-snapshot/app/support/restart_publish.c'].replace(b'\r\n',b'\n')==(ROOT/'app/support/restart_publish.c').read_bytes().replace(b'\r\n',b'\n')
     for observed in ([False,True]if opt=='O2'else[False]):
         original=runner.inherited.source_binding(files,opt,observed);variant='build-observed'if observed else'build';build=folder/'native'/variant
         receipt=json.loads((build/'MATERIALIZATION.json').read_text());assert all(receipt[k]==v for k,v in origin.items()if k!='manifest_sha256')
