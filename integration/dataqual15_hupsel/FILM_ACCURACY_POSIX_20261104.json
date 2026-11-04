@@ -1,0 +1,197 @@
+{
+  "artifact": 13353663598,
+  "run": 41893205324,
+  "qualified_head": "84165e9c22a4b52f87924f6d141008203fe5b6cb",
+  "github_virtual_merge": "00d4d20ea5214f2629b0e8ec8f97b65ba48f2899",
+  "archive": "FILM_ACCURACY_POSIX_20261104.zip",
+  "archive_sha256": "efe61dc07b7f25213bcdf1c03dbfe2508fc93d02f50632a24ac93dd7516c3d21",
+  "actual_native": {
+    "status": "COMPONENT_REFERENCE_ACCURACY_MEASURED_NOT_TRAJECTORY_ADMISSION",
+    "profiles": 3206,
+    "rooted_nodes": 41678,
+    "input_sha256": "70232a44072f546f2abde62bda2db52faeaff4df04b72a9442a49afb9fcd8148",
+    "source_sha256": "8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87",
+    "fixture_sha256": "b2211774ad07e87bf0af5d859498ed7728ea5a3dcde29746a75b5d58bb3a817a",
+    "selected_independent_witnesses": 6,
+    "builds": {
+      "O0": {
+        "original_binding_max": 7.257083822764798e-12,
+        "unchanged_original_typed_max": 0.00029362118342246557,
+        "certified_original_typed_max": 4.945945115808481e-05,
+        "inside_unchanged_assembled_bound": true,
+        "native_refusals": [
+          {
+            "name": "wrong-record",
+            "returncode": 1,
+            "stderr_sha256": "02cfd595f06e8f0b271cdca22e47260848979cd11e25ab4e4571634a2327885c"
+          },
+          {
+            "name": "wrong-node-count",
+            "returncode": 1,
+            "stderr_sha256": "6af447e73d411a76f577e1630313ad042f3fca2d69dc92248afe0d0257d8fb7f"
+          },
+          {
+            "name": "nonfinite",
+            "returncode": -8,
+            "stderr_sha256": "3cf6674446b7ef3c1917973c5c5575bfa634bba226cfd89dd0c7da35d8552664"
+          },
+          {
+            "name": "negative",
+            "returncode": 1,
+            "stderr_sha256": "cb906ac4924597fe9d48156d377f839be313cf7a5cc750629532c080c4cca782"
+          },
+          {
+            "name": "truncated",
+            "returncode": 1,
+            "stderr_sha256": "9d63e93b59786869c9335c86b5fa55fb700d257d030ea92d4710db367454aaa9"
+          },
+          {
+            "name": "extra",
+            "returncode": 1,
+            "stderr_sha256": "cf6e968c9a31c8e3a56cb86f295cc7be6d1c0978481a2893ac180d523dab905b"
+          }
+        ],
+        "executable_sha256": "4c7d1c63911ad7770afc1428132e81027905a5111a97fbdb8f46006f70f6d4d5",
+        "source_sha256": {
+          "fixture.f90": "650ffb8d348faf7b98ef1b4e2cc3b640a43769bd7ae101c82938380898fad414",
+          "tests/dataqual15_hupsel/matched_oxygen_owners.f90": "7a1925f4e76650e66f60dc68591a7d1cf287c2370086f2592f81dd9c093017c5",
+          "oxygen.f90": "a274a9ee5d1a4475eb9c55b849779cfeb32c2c75afe50b2f19b79d903e02ed4a",
+          "src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90": "f8ee306cbdf277d1b9fd296628567b68ea08c07f7c395aa9a855346727d505f7",
+          "src/physics/oxygen/mod_bartholomeus_parameter_contract.f90": "9e71144aa62c3bb3a1b186457e43f5f213b7a90f212619eb4890c5a1ebeab122",
+          "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+          "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+          "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+          "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+          "src/process/mod_bartholomeus_runtime_input.f90": "ff905a0a1a19350a80d156bfaf4c3967a587f90d2c867a8585a3f155d7a5cc97",
+          "src/physics/oxygen/mod_bartholomeus_micro.f90": "9dae62dc9c7990e700acb979ea0994b7640e0473cd49fd2154acfcc52fb539d6",
+          "src/physics/oxygen/mod_oxygen_macro_zero_depth.f90": "2b2f3896b44767f15dbd2099ed21d3f77c828899efdaf4c2bc1e77f3f4082b1f",
+          "src/physics/oxygen/mod_bartholomeus_macro.f90": "69260aa8dfde150853d09ee243efb164d82205d8be4cff6f6fffb07a0aed4dd4",
+          "src/physics/oxygen/mod_oxygen_scalar_bracket.f90": "8d4e53cfe14a91c34ffa74c7cad55bda83bf3d2abab2b938d61a68cee6a22ade",
+          "src/physics/oxygen/mod_bartholomeus_response.f90": "fb7a5325c46660300de077a41e83b0ac46554e4ac22a0260a7b322e614c48cd6",
+          "src/physics/oxygen/mod_bartholomeus_temperature.f90": "03576b59a1903aa97c5e2de939d60710074b80ddbe1619c140af121a29064a4f",
+          "src/physics/oxygen/mod_bartholomeus_microbial.f90": "2056fcee48425d543daaf3a28e7eb7f58346a5566c8a74c458456fb73774bea3",
+          "src/physics/oxygen/mod_bartholomeus_response_assembly.f90": "5db54d54f7e5cafa641512bd5c2409b1d0d9f4b257e4f575c09ff93e4265a6fc",
+          "src/physics/oxygen/mod_bartholomeus_waterfilm.f90": "878a2a15d178f8516e9f6f3fa433e695c6db2593a007f7a31de85eb469e51f3b",
+          "src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90": "566bf63d98deb4b080c4a73ea11f3acc3c7531d6dfb49d4193130fd0dc02ba7b",
+          "src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90": "489736b45944486921068de06fd3e41d495f090dab29f10a4b1e7582a71536c7",
+          "src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90": "c3fff3222e11ba39ee73b727f56fd12fab4e48b8c811348b9be2cf8cfbc27afc",
+          "src/physics/oxygen/mod_bartholomeus_profile_response.f90": "76f8bde09cd0b283608ff60e76b42f635d937af725d4be134094b902686b24df",
+          "src/physics/oxygen/mod_bartholomeus_factor_provider.f90": "da3991936914a41a1bd96dd771494abf8ba981c8535013f371be0e45301d07a0",
+          "driver.f90": "70705b36c2e4d290ca77a980dc20e4d3365be4b06182976e31d3a87ce7a83225"
+        }
+      },
+      "O2": {
+        "original_binding_max": 7.257083822764798e-12,
+        "unchanged_original_typed_max": 0.00029362118342246557,
+        "certified_original_typed_max": 4.945945115808481e-05,
+        "inside_unchanged_assembled_bound": true,
+        "native_refusals": [
+          {
+            "name": "wrong-record",
+            "returncode": 1,
+            "stderr_sha256": "28d0805c878844860c0517f9416f3318e38dffa776390173fafff6c25680816c"
+          },
+          {
+            "name": "wrong-node-count",
+            "returncode": 1,
+            "stderr_sha256": "fa02f28b6e940a03432796ce928cffd62f9a4a94c1e3485c5c8edfaa8c22eeaf"
+          },
+          {
+            "name": "nonfinite",
+            "returncode": -8,
+            "stderr_sha256": "479ecc21cbfc827a732a0117dc7468305227f182f04c89db9f4b11c6b07dae5b"
+          },
+          {
+            "name": "negative",
+            "returncode": 1,
+            "stderr_sha256": "aafc6f5e21c777588f64bd96af40e64822a12e925055c31a386e2fb703f42869"
+          },
+          {
+            "name": "truncated",
+            "returncode": 1,
+            "stderr_sha256": "349c0d0dedc32589b365a1566cf9d93f54a1af89b807d7f54f0a5656fcd4a1f0"
+          },
+          {
+            "name": "extra",
+            "returncode": 1,
+            "stderr_sha256": "95b9ef51b2ffa5785a942ee33de06bc9fd7fadcb9214f104eb986673ecbee7d2"
+          }
+        ],
+        "executable_sha256": "a7c6cc25cf4dbbc9252ba7b5ff78dcc3675ab65148fbefb314cda3059533cb3a",
+        "source_sha256": {
+          "fixture.f90": "650ffb8d348faf7b98ef1b4e2cc3b640a43769bd7ae101c82938380898fad414",
+          "tests/dataqual15_hupsel/matched_oxygen_owners.f90": "7a1925f4e76650e66f60dc68591a7d1cf287c2370086f2592f81dd9c093017c5",
+          "oxygen.f90": "a274a9ee5d1a4475eb9c55b849779cfeb32c2c75afe50b2f19b79d903e02ed4a",
+          "src/physics/oxygen/mod_bartholomeus_soil_diffusivity.f90": "f8ee306cbdf277d1b9fd296628567b68ea08c07f7c395aa9a855346727d505f7",
+          "src/physics/oxygen/mod_bartholomeus_parameter_contract.f90": "9e71144aa62c3bb3a1b186457e43f5f213b7a90f212619eb4890c5a1ebeab122",
+          "src/solver/mod_soil_water_solver_contract.f90": "91471a4dd3085adfa9eefc9e0dfce6fcee43a342557efc1dec33d8b1d4e21d9c",
+          "src/solver/mod_process_hydraulic_view.f90": "3bcf3c334a897635e5e395eae46cd43a7921d0be173bb101c314891109564c35",
+          "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+          "src/process/mod_soil_temperature_contract.f90": "b138e5156847a90d1eefb7b43c32545465456891e9048d17b6ec22ea29dcad09",
+          "src/process/mod_bartholomeus_runtime_input.f90": "ff905a0a1a19350a80d156bfaf4c3967a587f90d2c867a8585a3f155d7a5cc97",
+          "src/physics/oxygen/mod_bartholomeus_micro.f90": "9dae62dc9c7990e700acb979ea0994b7640e0473cd49fd2154acfcc52fb539d6",
+          "src/physics/oxygen/mod_oxygen_macro_zero_depth.f90": "2b2f3896b44767f15dbd2099ed21d3f77c828899efdaf4c2bc1e77f3f4082b1f",
+          "src/physics/oxygen/mod_bartholomeus_macro.f90": "69260aa8dfde150853d09ee243efb164d82205d8be4cff6f6fffb07a0aed4dd4",
+          "src/physics/oxygen/mod_oxygen_scalar_bracket.f90": "8d4e53cfe14a91c34ffa74c7cad55bda83bf3d2abab2b938d61a68cee6a22ade",
+          "src/physics/oxygen/mod_bartholomeus_response.f90": "fb7a5325c46660300de077a41e83b0ac46554e4ac22a0260a7b322e614c48cd6",
+          "src/physics/oxygen/mod_bartholomeus_temperature.f90": "03576b59a1903aa97c5e2de939d60710074b80ddbe1619c140af121a29064a4f",
+          "src/physics/oxygen/mod_bartholomeus_microbial.f90": "2056fcee48425d543daaf3a28e7eb7f58346a5566c8a74c458456fb73774bea3",
+          "src/physics/oxygen/mod_bartholomeus_response_assembly.f90": "5db54d54f7e5cafa641512bd5c2409b1d0d9f4b257e4f575c09ff93e4265a6fc",
+          "src/physics/oxygen/mod_bartholomeus_waterfilm.f90": "878a2a15d178f8516e9f6f3fa433e695c6db2593a007f7a31de85eb469e51f3b",
+          "src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90": "566bf63d98deb4b080c4a73ea11f3acc3c7531d6dfb49d4193130fd0dc02ba7b",
+          "src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90": "489736b45944486921068de06fd3e41d495f090dab29f10a4b1e7582a71536c7",
+          "src/physics/oxygen/mod_bartholomeus_no_stress_gate.f90": "c3fff3222e11ba39ee73b727f56fd12fab4e48b8c811348b9be2cf8cfbc27afc",
+          "src/physics/oxygen/mod_bartholomeus_profile_response.f90": "76f8bde09cd0b283608ff60e76b42f635d937af725d4be134094b902686b24df",
+          "src/physics/oxygen/mod_bartholomeus_factor_provider.f90": "da3991936914a41a1bd96dd771494abf8ba981c8535013f371be0e45301d07a0",
+          "driver.f90": "70705b36c2e4d290ca77a980dc20e4d3365be4b06182976e31d3a87ce7a83225"
+        }
+      }
+    },
+    "production_admission": false,
+    "whole_scientific_admission": false,
+    "reference_trajectory_accuracy_qualified": false,
+    "seconds": 57.75732386599998
+  },
+  "actual_preservation": {
+    "status": "EXACT_CURRENT_S5HR4_NATIVE_BOUNDARY_AND_UNMODIFIED_PREDECESSOR_AUTHORITY_PASS",
+    "current": "00d4d20ea5214f2629b0e8ec8f97b65ba48f2899",
+    "projection": {
+      "tree": "7ad06d07040da777d3197224c62f8e3357ebb4f2",
+      "commit": "b8fbe740f02aa9b8cece61e9e3186b8e0e583497",
+      "scope": "EXACT_PREDECESSOR_PRODUCTION_AND_UNMODIFIED_ADMISSION_AUTHORITY"
+    },
+    "current_native": {
+      "status": "ACTUAL_CURRENT_APP_PUBLICATION_OWN_RESTART_74_OWNER_CONTROLS_12_WRITER_22_APP_REFUSALS_PASS",
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "owner_controls": 74,
+      "nonfinite_writer_refusals": 12,
+      "app_refusals": 22,
+      "whole_scientific_admission": false
+    },
+    "events": [
+      {
+        "label": "unmodified-predecessor-admission",
+        "args": [
+          "tests/dataqual15/verify_current_native_admission.py",
+          "--output",
+          "/home/runner/work/_temp/film-preservation/old-admission"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "qualified-default-runtime",
+        "args": [
+          "tests/dataqual15_hupsel/default_diagnostic_evidence.py"
+        ],
+        "returncode": 0
+      }
+    ],
+    "whole_scientific_admission": false,
+    "oxygen_reference_correction": false
+  },
+  "production_admission": false,
+  "whole_scientific_admission": false
+}

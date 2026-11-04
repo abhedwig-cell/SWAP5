@@ -1,7 +1,7 @@
 # Original-state waterfilm accuracy fixture
 
-Status: implemented reference-component experiment; local Windows O0/O2
-measurements and refusal qualification complete; cold POSIX pending.
+Status: canonically admitted component experiment at PR1537 (`634a6b05e`).
+Windows and cold POSIX O0/O2 complete; all15 triggered workflows pass.
 Production physics, the original reference trajectory and whole science are
 not admitted by this fixture.
 
@@ -64,3 +64,5 @@ and native refusal logs. Twelve actual compiled fixture corruptions, seven
 data/promotion defects and ten source/input boundary tests are rejected. The
 data auditor recomputes complete row coverage, source identities and both error
 maxima. Native physics, oxygen target and all admission flags remain unchanged.
+
+Canonical authority: `integration/dataqual15_hupsel/FILM_ACCURACY_CANONICAL_RECEIPT_20261104.json`.

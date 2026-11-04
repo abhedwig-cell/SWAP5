@@ -1,5 +1,5 @@
 """Audit the complete measured film component dossier, without promoting a trajectory."""
-import argparse,base64,gzip,io,json,math,tarfile
+import argparse,base64,gzip,io,json,math,tarfile,zipfile
 from pathlib import Path,PurePosixPath
 import film_accuracy as f
 BASE=f.BASE;STEM='FILM_ACCURACY_WINDOWS_20261104'
@@ -60,6 +60,39 @@ def controls(files):
   else:raise AssertionError('false component authority accepted')
  return len(trials)
 
+def verify_posix(record=None):
+ r=record if record is not None else json.loads((BASE/'FILM_ACCURACY_POSIX_20261104.json').read_text())
+ assert r['production_admission']is False and r['whole_scientific_admission']is False
+ assert r['archive']=='FILM_ACCURACY_POSIX_20261104.zip'
+ raw=(BASE/r['archive']).read_bytes();assert f.sha(raw)==r['archive_sha256']
+ with zipfile.ZipFile(io.BytesIO(raw))as z:
+  n=json.loads(z.read('film-accuracy/RESULT.json'));p=json.loads(z.read('film-preservation/RESULT.json'))
+  assert n==r['actual_native']and p==r['actual_preservation']
+  assert all(n[k]is False for k in ('production_admission','whole_scientific_admission','reference_trajectory_accuracy_qualified'))
+  assert n['profiles']==3206 and n['rooted_nodes']==41678 and n['input_sha256']=='70232a44072f546f2abde62bda2db52faeaff4df04b72a9442a49afb9fcd8148'
+  assert p['status']=='EXACT_CURRENT_S5HR4_NATIVE_BOUNDARY_AND_UNMODIFIED_PREDECESSOR_AUTHORITY_PASS'
+  assert f.sha(z.read('film-accuracy/certified-film.dat'))==n['fixture_sha256']
+  table=[line.split()for line in z.read('film-accuracy/certified-film.dat').decode().splitlines()]
+  assert len(table)==3206 and all(int(row[0])==i+1 and len(row)==int(row[1])+2 and 1<=int(row[1])<=34 for i,row in enumerate(table))
+  identities=[(i+1,j+1)for i,row in enumerate(table)for j in range(int(row[1]))];assert len(identities)==41678
+  for opt in ('O0','O2'):
+   b=n['builds'][opt];rows=[]
+   for path,pin in b['source_sha256'].items():
+    path=path.replace('\\','/')
+    source=(f.ROOT/path).read_bytes().replace(b'\r\n',b'\n')if '/'in path else z.read('film-accuracy/'+opt+'/'+path)
+    assert f.sha(source)==pin,path
+   for mode in ('baseline','certified'):
+    data=[list(map(float,line.split()))for line in z.read('film-accuracy/'+opt+'/'+mode+'.stdout').decode().splitlines()]
+    assert len(data)==41678 and all(len(x)==9 and all(math.isfinite(y)for y in x)for x in data)
+    assert [(int(x[0]),int(x[1]))for x in data]==identities;rows.append(data)
+   old,new=rows;assert all(x[:4]==y[:4]and x[5:7]==y[5:7]and x[8]==y[8]for x,y in zip(old,new))
+   assert max(abs(x[4]-x[5])for x in old)==b['unchanged_original_typed_max']>1e-4
+   assert max(abs(x[4]-x[5])for x in new)==b['certified_original_typed_max']<=1e-4
+   assert max(abs(x[4]-x[6])for x in old)==b['original_binding_max']<1e-9
+   assert {x['name']for x in b['native_refusals']}=={'wrong-record','wrong-node-count','nonfinite','negative','truncated','extra'}
+   for x in b['native_refusals']:assert x['returncode']!=0 and f.sha(z.read('film-accuracy/'+opt+'/'+x['name']+'.stderr'))==x['stderr_sha256']
+ return 'RETAINED_COLD_POSIX_RAW_COMPONENT_AND_PRESERVATION_PASS'
+
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--capture',type=Path);a=p.parse_args()
  if a.capture:
@@ -87,5 +120,14 @@ def main():
    files={m.name:t.extractfile(m).read()for m in members}
   assert set(files)==set(r['files_sha256']) and all(f.sha(raw)==r['files_sha256'][n]for n,raw in files.items())
   result=audit(files);result['data_refusals']=controls(files)
+ if (BASE/'FILM_ACCURACY_CANONICAL_RECEIPT_20261104.json').exists():
+  result['retained_posix']=verify_posix()
+  record=json.loads((BASE/'FILM_ACCURACY_POSIX_20261104.json').read_text())
+  for key in ('production_admission','whole_scientific_admission','reference_trajectory_accuracy_qualified'):
+   wrong=json.loads(json.dumps(record));wrong['actual_native'][key]=True
+   try:verify_posix(wrong)
+   except AssertionError:pass
+   else:raise AssertionError('false POSIX promotion accepted')
+  result['posix_promotion_refusals']=3
  print(json.dumps(result))
 if __name__=='__main__':main()

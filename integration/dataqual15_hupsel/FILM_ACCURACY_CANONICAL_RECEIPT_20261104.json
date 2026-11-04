@@ -1,0 +1,39 @@
+{
+  "status": "CANONICALLY_ADMITTED_COMPLETE_ORIGINAL_STATE_COMPONENT_EXPERIMENT_ONLY",
+  "pr": 1537,
+  "qualified_head": "84165e9c22a4b52f87924f6d141008203fe5b6cb",
+  "actual_merge": "634a6b05e845d6116666df18927c3d15c2bf57d9",
+  "actual_tree": "a9dd1149844e5b13170a396b820e72978b8a0857",
+  "actual_tree_equals_qualified_head": true,
+  "all_triggered_workflows": 15,
+  "all_terminal": "success",
+  "native_run": 41893205324,
+  "canonical_run": 41893205257,
+  "posix": "FILM_ACCURACY_POSIX_20261104.zip",
+  "posix_sha256": "efe61dc07b7f25213bcdf1c03dbfe2508fc93d02f50632a24ac93dd7516c3d21",
+  "windows": "FILM_ACCURACY_WINDOWS_20261104.json",
+  "profiles": 3206,
+  "rooted_nodes": 41678,
+  "source_input_boundary_tests": 10,
+  "native_refusals_per_platform": 12,
+  "data_refusals": 7,
+  "qualification_surface_sha256": {
+    "tests/dataqual15_hupsel/film_accuracy.py": "541edd5e9bd3a42556bbc91a60243871c719d2374b0eaefe7434091c258cbadc",
+    "tests/dataqual15_hupsel/film_accuracy_evidence.py": "3b2da69fd38d7bd3015c1c3b496977851c55aba1f4cc6ba2ad5ddd927f64fa3f",
+    "tests/dataqual15_hupsel/test_film_accuracy.py": "dd0d6c4a2d8ef66895e08b86c9a2a51522f73ac6bd922ab74649bb0022680044",
+    ".github/workflows/hupsel-film-accuracy.yml": "f62b355b25c1d1d25844d7e5365876fba4086cb4b8503d323bc1570b26b5127d"
+  },
+  "production_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "admission_scope": "Independent frozen-state film component experiment and numerical limitation evidence only. No production algorithm, changed original trajectory, uniform typed-film accuracy or whole science admitted.",
+  "typed_waterfilm_accuracy_admission": false,
+  "reference_trajectory_accuracy_qualified": false,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "original_execution": "2/3",
+  "whole_science": "0/3",
+  "next": "Use complete-corpus independent witnesses to diagnose the existing typed film integration error and conditioning at record1248/node13. Preserve the current integral criterion,24-level budget and fail-closed ownership. Preregister any changed-runtime research; a factor plateau PASS cannot establish film accuracy. Original trajectory time-grid/balance accuracy remains a separate prerequisite, never fit native physics to its underresolved target."
+}
