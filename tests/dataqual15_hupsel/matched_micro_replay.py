@@ -79,3 +79,7 @@ def replay(selected,opt,out,fc):
   assert p.returncode==0,(i,p.stdout,p.stderr)
   result=analyze(p.stdout,frame);record['profiles'].append(dict(profile=i,input_sha256=sha(payload.encode()),output_sha256=sha(p.stdout),returncode=p.returncode,**result))
  (out/'REPLAY.json').write_text(json.dumps(record,indent=2)+'\n');return record
+def require_uptake_gate(profiles):
+ # Raw original outputs remain on disk if this fails. A retained discrepancy
+ # is evidence to adjudicate, never an admitted original-uptake PASS.
+ assert all(p['inside_unchanged_node_bound'] and all(p['source_checks']) for p in profiles)

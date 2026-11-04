@@ -5,7 +5,7 @@ from full_profile_evidence import unpack
 from root_oxygen_evidence import data,table
 import root_oxygen_observer as owner
 from matched_micro_observer import instrument,table_instrument,MAIN,BACKEND,TABLE
-from matched_micro_replay import select,replay,source,analyze
+from matched_micro_replay import select,replay,source,analyze,require_uptake_gate
 ROOT=owner.ROOT;BASE=ROOT/'integration/dataqual15_hupsel';STEM='MATCHED_MICRO_EVIDENCE_20261104'
 sha=lambda b:hashlib.sha256(b).hexdigest()
 norm=lambda p:sha(p.read_bytes().replace(b'\r\n',b'\n'))
@@ -66,6 +66,7 @@ def main():
  with tempfile.TemporaryDirectory(prefix='swap5-actual-micro-') as temp:
   root=a.capture.resolve() if a.capture else Path(temp)
   for opt in ('O0','O2'):replays[opt]=replay(frames[opt],opt,root/('literal-'+opt),a.compiler)
+  for opt in ('O0','O2'):require_uptake_gate(replays[opt]['profiles'])
   if a.capture:
    for f in root.glob('literal-*/*'):
     if f.is_file() and f.suffix!='.mod':files[f.relative_to(root).as_posix()]=f.read_bytes()
@@ -85,6 +86,12 @@ def main():
   try:analyze(('\n'.join(lines)+'\n').encode(),frames['O0'][0][0])
   except AssertionError:pass
   else:raise AssertionError('accepted falsified literal attribution')
+  lines=raw.decode().splitlines();i=next(i for i,l in enumerate(lines) if l.startswith('NODE '));r=lines[i].split()
+  r[2]=str(float(r[3])+.001);r[4]=str(abs(float(r[2])-float(r[3])));lines[i]=' '.join(r)
+  changed=analyze(('\n'.join(lines)+'\n').encode(),frames['O0'][0][0])
+  try:require_uptake_gate([changed])
+  except AssertionError:pass
+  else:raise AssertionError('accepted out-of-bound original uptake')
  result=dict(native=report,windows_replay=replays,whole_scientific_admission=False)
  if a.capture:
   files['AUDIT.json']=(json.dumps(result,indent=2)+'\n').encode();path=BASE/(STEM+'.tar.xz')
