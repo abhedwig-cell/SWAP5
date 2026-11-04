@@ -1,8 +1,9 @@
 # Actual waterfilm refinement and private safeguard
 
-Status: Windows checked O0/O2 diagnosis, complete-corpus private candidate and
-fault controls pass. Cold POSIX and canonical preservation are pending. The
-production source is unchanged; changed-runtime and whole science are open.
+Status: canonically admitted private research at PR1539 (`3bea57360`).
+Windows and cold POSIX O0/O2 diagnosis, candidate and refusal controls pass;
+all15 workflows and complete canonical preservation pass. Production source
+is unchanged; changed-runtime and whole science remain open.
 
 The previous independent film experiment identified record1248/node13 as the
 largest typed-film error. A reversible observer now records actual preceding
@@ -58,3 +59,5 @@ both error maxima and rejects false runtime/whole-science promotion.
 Authority: `integration/dataqual15_hupsel/FILM_REFINEMENT_PREREGISTRATION_20261104.json`.
 Diagnosis: `integration/dataqual15_hupsel/FILM_REFINEMENT_DIAGNOSIS_20261104.json`.
 Evidence: `integration/dataqual15_hupsel/FILM_REFINEMENT_WINDOWS_20261104.json`.
+
+Canonical authority: `integration/dataqual15_hupsel/FILM_REFINEMENT_CANONICAL_RECEIPT_20261104.json`.

@@ -1,6 +1,6 @@
 """Source-bound complete-corpus private safeguard audit; never runtime admission."""
-import argparse,base64,gzip,io,json,tarfile
-from pathlib import Path,PurePosixPath
+import argparse,base64,gzip,io,json,tarfile,zipfile
+from pathlib import Path,PurePosixPath,PureWindowsPath
 import film_refinement_candidate as c
 f=c.f;STEM='FILM_REFINEMENT_WINDOWS_20261104'
 
@@ -72,6 +72,32 @@ def controls(files,context):
   else:raise AssertionError('false private convergence authority accepted')
  return len(trials)
 
+def retained_posix(context):
+ record=json.loads((f.BASE/'FILM_REFINEMENT_POSIX_20261104.json').read_text())
+ assert all(record[k]is False for k in ('production_admission','whole_scientific_admission','changed_runtime_qualified'))
+ assert record['archive']=='FILM_REFINEMENT_POSIX_20261104.zip'
+ raw=(f.BASE/record['archive']).read_bytes();assert f.sha(raw)==record['archive_sha256'];files={}
+ with zipfile.ZipFile(io.BytesIO(raw))as z:
+  assert len(z.namelist())==len(set(z.namelist()))and all(not PurePosixPath(n).is_absolute()and not PureWindowsPath(n).drive and '..'not in PurePosixPath(n).parts and '\\'not in n for n in z.namelist())
+  assert json.loads(z.read('film-preservation/RESULT.json'))==record['actual_preservation']
+  assert record['actual_preservation']['status']=='EXACT_CURRENT_S5HR4_NATIVE_BOUNDARY_AND_UNMODIFIED_PREDECESSOR_AUTHORITY_PASS'
+  for name in z.namelist():
+   if name.endswith('/'):continue
+   if name.startswith('film-observation/'):key='observation/'+name.removeprefix('film-observation/')
+   elif name.startswith('film-candidate/'):
+    key='candidate/'+name.removeprefix('film-candidate/')
+    for opt in ('O0','O2'):
+     prefix='film-candidate/'+opt+'-faults/'
+     if name.startswith(prefix):key='faults/'+opt+'/'+name.removeprefix(prefix)
+   else:continue
+   assert key not in files;files[key]=z.read(name)
+ # Reconstruct only external source bytes. audit() requires every byte's hash
+ # to equal its original cold BUILD identity; no observation is synthesized.
+ for path in context[0]['factor_repository_order']+['tests/dataqual15_hupsel/matched_oxygen_owners.f90']:
+  files['compiled-source/'+path]=(f.ROOT/path).read_bytes().replace(b'\r\n',b'\n')
+ result=audit(files,context);result['data_refusals']=controls(files,context);assert result==record['verified']
+ return result
+
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--observation',type=Path);p.add_argument('--candidate',type=Path);p.add_argument('--faults',type=Path);a=p.parse_args();context=c.owner.load()
  if a.observation:
@@ -95,5 +121,6 @@ def main():
    files={m.name:t.extractfile(m).read()for m in members}
   assert set(files)==set(record['files_sha256'])and all(f.sha(raw)==record['files_sha256'][n]for n,raw in files.items())
   result=audit(files,context);result['data_refusals']=controls(files,context)
+ if (f.BASE/'FILM_REFINEMENT_CANONICAL_RECEIPT_20261104.json').exists():result['retained_posix']=retained_posix(context)
  print(json.dumps(result))
 if __name__=='__main__':main()
