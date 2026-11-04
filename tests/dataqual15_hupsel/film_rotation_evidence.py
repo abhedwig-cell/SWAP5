@@ -79,7 +79,7 @@ def verify(folder,platform,opts=('O0','O2')):
 
 
 def safe(name):
-    return not PurePosixPath(name).is_absolute()and not PureWindowsPath(name).drive and '..'not in PurePosixPath(name).parts
+    return not PurePosixPath(name).is_absolute()and not PureWindowsPath(name).drive and not PureWindowsPath(name).root and '..'not in PurePosixPath(name).parts and '..'not in PureWindowsPath(name).parts
 
 
 def extract_verify(files,platform,opts=('O0','O2')):
