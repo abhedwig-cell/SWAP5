@@ -71,6 +71,18 @@ def science(daily,crops,points):
     return dict(reference_archive_sha256=manifest['archive_sha256'],frozen_bounds_sha256=sha(frozen),assessment=assessment,passing=sum(v['inside_frozen_bound']for v in assessment.values()),total=37,whole_scientific_admission=False)
 
 
+def profile_checks(points,daily,state):
+    registration=json.loads((BASE/runner.REG).read_text());assert sorted(points)==sorted(set(registration['profile_days']+registration['additional_capture_days']))
+    geometry=points[1096]
+    for day,p in points.items():
+        assert p['day']==day
+        for key in ('z_cm','dz_cm'):assert p[key]==geometry[key]
+        assert abs(p['water_stock_cm']-daily[day-1]['water_end_cm'])<=1e-10 and abs(p['solute_stock_mg_cm2']-daily[day-1]['solute_end_mg_cm2'])<=1e-10
+        if day<495:assert p['canopy_cm']==0
+    assert len(state)==34
+    for key in ('z_cm','dz_cm','head_cm','theta','concentration_mg_cm3','dissolved_mg_cm2','sorbed_mg_cm2'):assert points[1096][key]==[float(r[key])for r in state]
+
+
 def audit(folder,opt,platform):
     registration=json.loads((folder/'REGISTRATION.json').read_text());assert registration==json.loads((BASE/runner.REG).read_text())
     assert registration['production_admission']is False and registration['whole_scientific_admission']is False
@@ -82,14 +94,7 @@ def audit(folder,opt,platform):
     points={d:profile4((case/f'checkpoint-{d}.bin').read_bytes())for d in days}
     assert(case/'checkpoint-1096.bin').read_bytes()==(case/'checkpoint.bin').read_bytes()
     proof=ledger(daily,crops,{d:p for d,p in points.items()if d>=495},1096)
-    geometry=points[1096]
-    for day,p in points.items():
-        assert p['day']==day
-        for key in ('z_cm','dz_cm'):assert p[key]==geometry[key]
-        assert abs(p['water_stock_cm']-daily[day-1]['water_end_cm'])<=1e-10 and abs(p['solute_stock_mg_cm2']-daily[day-1]['solute_end_mg_cm2'])<=1e-10
-        if day<495:assert p['canopy_cm']==0
-    state=rows(case/'state.csv');assert len(state)==34
-    for key in ('z_cm','dz_cm','head_cm','theta','concentration_mg_cm3','dissolved_mg_cm2','sorbed_mg_cm2'):assert points[1096][key]==[float(r[key])for r in state]
+    profile_checks(points,daily,rows(case/'state.csv'))
     assert(case/'checkpoint-584.bin').read_bytes()==inherited[opt+'/unobserved584/checkpoint.bin']
     for name in ('budget.csv','crop.csv'):
         old=raw_rows(inherited[opt+'/unobserved584/'+name]);assert rows(case/name)[:len(old)]==old
