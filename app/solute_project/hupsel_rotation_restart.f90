@@ -21,7 +21,7 @@ module mod_hupsel_rotation_restart
  implicit none
  private
  public::write_hupsel_rotation_restart,read_hupsel_rotation_restart,peek_hupsel_rotation_clock
- character(8),parameter::MAGIC='S5HR0003'
+ character(8),parameter::MAGIC='S5HR0004'
  character(10),parameter::INPUTS(6)=[character(10)::'swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra']
  integer,parameter::MAX_FILE_BYTES=16777216
  interface
@@ -154,6 +154,7 @@ contains
   call grass%export_state(g,code);if(code/=0)return
   if(.not.crop_clock_matches(g,grass,clock))return
   if(.not.irrigation%valid().or.irrigation%clock/=clock)return
+  if(.not.all(ieee_is_finite([potato%last_pressure,grass%last_pressure])))return
   irrigation_copy=irrigation
   inner=local_stage(path,'water-stage');pending=local_stage(path,'pending')
   call maize%write_restart(inner,column,template,water_id,p,water,chemical,code)
@@ -173,6 +174,7 @@ contains
   if(io==0)call serialize_wofost_crop_view(u,.false.,v,io,source_clipped_schema=.true.,grass_schema=.true.)
   if(io==0)call serialize_wofost_crop_view(u,.false.,g,io,source_clipped_schema=.true.,grass_schema=.true.)
   if(io==0)call irrigation_native_view(u,.false.,irrigation_copy,io)
+  if(io==0)write(u,iostat=io)potato%last_pressure,grass%last_pressure
   close(u)
   if(io/=0)then;call remove_file(pending);return;end if
   call file_bytes(pending,raw,code)
@@ -187,12 +189,13 @@ contains
   if(rc/=0)then;call remove_file(pending);return;end if
   status=0
  end subroutine
- subroutine decode_envelope(path,clock,blob,v,g,irrigation,status)
+ subroutine decode_envelope(path,clock,blob,v,g,irrigation,pressure,status)
   character(*),intent(in)::path
   real(real64),intent(out)::clock
   integer(int8),allocatable,intent(out)::blob(:)
   type(fmr_wofost_crop_transaction_persistence_t),intent(out)::v,g
   type(original_potato_irrigation_t),intent(out)::irrigation
+  real(real64),intent(out)::pressure(2)
   real(real64)::origin
   integer,intent(out)::status
   integer(int8),allocatable::raw(:),input(:),bound(:)
@@ -247,6 +250,10 @@ contains
    if(code/=0)io=1
   end if
   if(io==0)call irrigation_native_view(u,.true.,irrigation,io)
+  if(io==0)read(u,iostat=io)pressure
+  if(io==0)then
+   if(.not.all(ieee_is_finite(pressure)))io=1
+  end if
   if(io==0)then
    if(irrigation%clock/=clock)io=1
   end if
@@ -266,7 +273,8 @@ contains
   integer(int8),allocatable::blob(:)
   type(fmr_wofost_crop_transaction_persistence_t)::v,g
   type(original_potato_irrigation_t)::irrigation
-  call decode_envelope(path,clock,blob,v,g,irrigation,status)
+  real(real64)::pressure(2)
+  call decode_envelope(path,clock,blob,v,g,irrigation,pressure,status)
  end subroutine
  subroutine read_hupsel_rotation_restart(path,column,template,water_id,chemical_id,p,chemistry,water,chemical,maize,potato,grass,irrigation,status)
   character(*),intent(in)::path
@@ -289,16 +297,17 @@ contains
   type(fmr_wofost_crop_transaction_persistence_t)::v,g
   integer(int8),allocatable::blob(:)
   character(:),allocatable::inner
-  real(real64)::clock,observed
+  real(real64)::clock,observed,pressure(2)
   integer::io,code,u
   logical::ok
   status=1
   if(water%ready().or.chemical%ready())return
-  call decode_envelope(path,clock,blob,v,g,irrigation_next,code);if(code/=0)return
+  call decode_envelope(path,clock,blob,v,g,irrigation_next,pressure,code);if(code/=0)return
   if(.not.crop_clock_matches(v,potato,clock))return
   crop=potato;call crop%restore_state(v,code);if(code/=0)return
   if(.not.crop_clock_matches(g,grass,clock))return
   grass_next=grass;call grass_next%restore_state(g,code);if(code/=0)return
+  crop%last_pressure=pressure(1);grass_next%last_pressure=pressure(2)
   inner=local_stage(path,'read-stage');call remove_file(inner)
   open(newunit=u,file=inner,status='new',access='stream',form='unformatted',action='write',iostat=io)
   if(io/=0)return
