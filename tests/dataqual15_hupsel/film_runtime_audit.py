@@ -56,12 +56,20 @@ def audit(folder):
  result=ledger(windows,rows(case/'crop.csv'),profile4((case/'checkpoint.bin').read_bytes()),rows(case/'state.csv'))
  strict=folder/'strict584';restart=json.loads((strict/'RESULT.json').read_text())
  assert restart['scope']=='STRICT_OWN_BUILD_RESTART'and restart['executable_sha256']==run['executable_sha256']and restart['returncode']==0 and not restart['diagnostic_override']
+ seed=case/'checkpoint-583.bin'
+ if not seed.exists():seed=folder/'recovered-own583/checkpoint.bin'
+ assert profile4(seed.read_bytes())['day']==583 and sha(seed)==restart['restart_sha256']
+ assert restart['inputs']==run['inputs']and all(sha(strict/n)==pin for n,pin in restart['inputs'].items())
+ for stage in (case,strict):
+  begin=json.loads((stage/'START.json').read_text());end=json.loads((stage/'RESULT.json').read_text());assert all(end[k]==v for k,v in begin.items())
  assert (strict/'checkpoint.bin').read_bytes()==(case/'checkpoint.bin').read_bytes()
  for name in ('budget.csv','crop.csv'):
   suffix=rows(strict/name);assert suffix;key=next(iter(suffix[0]));whole={r[key]:r for r in rows(case/name)};assert all(r==whole[r[key]]for r in suffix)
  result['strict_own583_endpoint_and_suffix_exact']=True
  if(folder/'observed584').exists():
   observed=folder/'observed584'
+  measured=json.loads((observed/'RESULT.json').read_text());assert measured['scope']=='ORIGINAL_INPUT_INITIALIZATION'and measured['returncode']==0 and measured['restart_sha256']is None and measured['inputs']==run['inputs']and not measured['diagnostic_override']
+  observed_build=json.loads((folder/'build-observed/BUILD.json').read_text());assert measured['executable_sha256']==observed_build['executable_sha256']
   for name in ('checkpoint.bin','budget.csv','crop.csv','state.csv'):assert (case/name).read_bytes()==(observed/name).read_bytes()
   receipts=rows(observed/'film_runtime_receipts.csv');last=receipts[-1];assert float(last['time_day'])==584 and int(last['calls'])>0
   assert int(last['max_level'])<=24 and int(last['refinements'])<=23*int(last['calls'])
