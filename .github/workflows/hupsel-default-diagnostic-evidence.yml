@@ -1,0 +1,19 @@
+name: Hupsel default diagnostic evidence
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-default-diagnostic-evidence.yml
+      - tests/dataqual15_hupsel/default_diagnostic_evidence.py
+      - integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.*
+      - integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_POSIX_20261104.*
+permissions:
+  contents: read
+jobs:
+  cold-default-evidence:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify default ancestry, exact physical prefix, restart and seven defect controls
+        run: python3 -B tests/dataqual15_hupsel/default_diagnostic_evidence.py

@@ -1,0 +1,104 @@
+{
+  "status": "OWNED_READ_ONLY_DATA_QUALIFIED_UNRELATED_PARENT_STATUS_PENDING_CODE_NOT_ADMITTED",
+  "code_pr": 1532,
+  "code_head": "e8935a2fd92a3f115934537fe976467d60f1d454",
+  "native_run": 41859948068,
+  "native_job": 126678671531,
+  "all_native_model_and_decoder_steps": "completed/success",
+  "native_workflow_status": "in_progress",
+  "native_workflow_conclusion": null,
+  "windows_archive": "DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.tar.xz",
+  "posix_artifact": "DEFAULT_DIAGNOSTIC_POSIX_20261104.zip",
+  "native_refusals": 44,
+  "finite_sentinel_controls": 4,
+  "uninterrupted_O2_parent_budget_windows": 526,
+  "uninterrupted_O2_parent_crop_rows": 31,
+  "data_defect_controls": 7,
+  "production_admission": false,
+  "science_counts_unchanged": true,
+  "next": "Admit only data PR1533 after exact9-dependency/metadata and expected-head checks. Keep code PR1532 held until its OWN native workflow reports terminal success; no inheritance from a pending native job. After data admission do not merge canonical into the primary branch and retrigger unchanged native prefixes; eventual code integration joins both histories. Continue separate production successor/nested owner controls only under its explicit contract.",
+  "data_pr": 1533,
+  "data_branch": "codex/default-diagnostic-data-20261104",
+  "qualifying_code_head": "e8935a2fd92a3f115934537fe976467d60f1d454",
+  "qualifying_data_head": "15a51f0a8d3e8bf9bc511e16661467e4330ae69f",
+  "code_merge": false,
+  "data_merge": false,
+  "github_incident": {
+    "id": "xr3myzj7ms51",
+    "name": "Incident with Actions and Pages",
+    "status": "investigating",
+    "actions_status": "degraded_performance",
+    "started_at": "2026-11-04T16:05:31.572Z",
+    "source": "https://www.githubstatus.com/api/v2/summary.json",
+    "source_sha256": "cd7dbed609e566564deabd7243f3c13655cd7b9558696d79d2e4a519098049e0",
+    "captured_at": "2026-11-04T16:17:39.399929+00:00"
+  },
+  "allowed_metadata_delta": [
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_RECOVERY_20261104.json"
+  ],
+  "qualification_surface_sha256": {
+    ".github/workflows/hupsel-default-diagnostic-evidence.yml": "193ec73e4d993a6e18b675e352c1c5e00ca8012dff6b11a3629800bbfad80b51",
+    "docs/science/HUPSEL_DEFAULT_DIAGNOSTIC_RESTART.md": "30bf7a8dc1d7bf26f54ae17ec2694fc7ec2759b396f4f918cc1d8d2a8355b967",
+    "docs/science/HUPSEL_PRESSURE_DIAGNOSTIC_RESTART.md": "64889c0472c4e84afda3c0562249cb9f413df025d406796c50347e060a4ce7cb",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.json": "9f257a950776b2584de6367c6ed60acfb7fa39c271c7185950e87ec1a14b4afb",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_EVIDENCE_20261104.tar.xz": "2c43ee530b2d868bae6aa2ffc21b0e332c172c05e9fd8793c30df9af0b7bb864",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_POSIX_20261104.json": "d847b1ebe46daf59406a82de63a82b72913fdc69b224ad9765b893aba8dc4bb4",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_POSIX_20261104.zip": "63759e50a06596b26f9a16242c38bc310371ef6ff9977bfe326d35f560123599",
+    "integration/dataqual15_hupsel/DEFAULT_DIAGNOSTIC_PREREGISTRATION_20261104.json": "fab4f3858dd24305bfefdee42bd56d8a8d576264ecb817577f1772e94f8f3b4b",
+    "tests/dataqual15_hupsel/default_diagnostic_evidence.py": "53efc1157a9638cc66af4ca7e4b048d13c5c4194af3e2dd68f7b645acd73cf18"
+  },
+  "data_scope": "Read-only measured evidence and adjudication only; all owning cold data/docs/canonical gates terminal PASS. No production source or native code admission.",
+  "owned_terminal_gates": [
+    {
+      "run": 41865053919,
+      "name": "Hupsel default diagnostic evidence",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "run": 41865053723,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "run": 41865053632,
+      "name": "Documentation",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "unrelated_pending_workflow": {
+    "run": 41865053827,
+    "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+    "status": "completed",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "id": 126697057658,
+        "name": "startup-attribution",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126697058029,
+        "name": "smooth-mechanism",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126697058085,
+        "name": "inverse-qualification",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 126697058166,
+        "name": "provider-consistent-stage",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ],
+    "impact": "NOT_SELECTED_IMPACT: src/app/reference/input recipe, tests/fpe, TG workflow and performance docs are byte-exact to canonical. All four direct TG jobs are terminal success; workflow-parent pending is retained, never called PASS."
+  }
+}
