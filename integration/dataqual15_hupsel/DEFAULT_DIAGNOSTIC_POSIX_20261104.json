@@ -1,0 +1,20 @@
+{
+  "status": "ACTUAL_NATIVE_COMMANDS_COMPLETE_GITHUB_WORKFLOW_FINALIZATION_PENDING",
+  "code_pr": 1532,
+  "code_head": "e8935a2fd92a3f115934537fe976467d60f1d454",
+  "run": 41859948068,
+  "job": 126678671531,
+  "artifact_id": 13339719025,
+  "artifact_zip_sha256": "63759e50a06596b26f9a16242c38bc310371ef6ff9977bfe326d35f560123599",
+  "all_native_model_and_decoder_steps": "completed/success",
+  "workflow_status": "in_progress",
+  "workflow_conclusion": null,
+  "production_admission": false,
+  "limits": "Do not call the workflow a terminal PASS. This immutable native-command artifact is independently replayed by the read-only data gate; current source-code integration remains pending native workflow finalization.",
+  "production_and_input_recipe_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "ece4f0dee2a766c3f9921cbb004c87e4c553b210",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+    "tools/solute": "6b4c6844099403c1c724d9e8bcc943560bc9615b"
+  }
+}

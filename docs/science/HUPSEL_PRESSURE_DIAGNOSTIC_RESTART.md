@@ -38,7 +38,7 @@ Both actual Windows prefixes completed. The restored potato pressure is
 `-66.10498258152407`cm. Strict continuation reproduces the complete day525
 checkpoint and every crop/budget suffix column. All22 refusal controls pass,
 and both finite sentinel controls leave the physical endpoint and budget
-unchanged. The O2 experiment reproduces all525 daily physical budget rows of
+unchanged. The O2 experiment reproduces all526 prescribed physical budget windows through day525 of
 the immutable research pressure parent exactly. The483-file capsule is replayed
 by `tests/dataqual15_hupsel/pressure_diagnostic_evidence.py`; its3.54MB archive
 includes the actual executables, coherent build records, checkpoints, original
