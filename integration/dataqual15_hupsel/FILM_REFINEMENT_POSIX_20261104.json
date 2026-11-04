@@ -1,0 +1,113 @@
+{
+  "artifact": 13358199935,
+  "run": 41903584441,
+  "qualified_head": "1afe4125d19e4f0fe6793027aab35c3f23e63779",
+  "qualified_virtual_merge": "54cf9cd592d25354230f9fc9b5f28e41147866d9",
+  "archive": "FILM_REFINEMENT_POSIX_20261104.zip",
+  "archive_sha256": "13fc438b7887f0b14d88b8746744c15b129054b304d29ad2e1b307744c195673",
+  "verified": {
+    "status": "ACTUAL_REFINEMENT_DIAGNOSIS_PRIVATE_SAFEGUARD_AND_FAIL_CLOSED_DATA_PASS",
+    "profiles": 3206,
+    "rooted_nodes": 41678,
+    "builds": {
+      "O0": {
+        "before": {
+          "maximum_relative_integral_error": 0.0063319074320057145,
+          "maximum_relative_film_error": 0.003887797502577453,
+          "maximum_absolute_film_error_m": 1.650058840720002e-07,
+          "maximum_integral_error_case": [
+            1248,
+            13
+          ],
+          "active_cases": 41678
+        },
+        "after": {
+          "maximum_relative_integral_error": 8.328427774506938e-07,
+          "maximum_relative_film_error": 5.073349770558875e-07,
+          "maximum_absolute_film_error_m": 1.4688188425954207e-09,
+          "maximum_integral_error_case": [
+            1255,
+            5
+          ],
+          "active_cases": 41678
+        },
+        "certified_original_factor_maximum": 4.8818500681502286e-05,
+        "actual_observer_exact": true,
+        "native_refusals": 6
+      },
+      "O2": {
+        "before": {
+          "maximum_relative_integral_error": 0.0063319074320057145,
+          "maximum_relative_film_error": 0.003887797502577453,
+          "maximum_absolute_film_error_m": 1.650058840720002e-07,
+          "maximum_integral_error_case": [
+            1248,
+            13
+          ],
+          "active_cases": 41678
+        },
+        "after": {
+          "maximum_relative_integral_error": 8.328427774506938e-07,
+          "maximum_relative_film_error": 5.073349770558875e-07,
+          "maximum_absolute_film_error_m": 1.4688188425954207e-09,
+          "maximum_integral_error_case": [
+            1255,
+            5
+          ],
+          "active_cases": 41678
+        },
+        "certified_original_factor_maximum": 4.8818500681502286e-05,
+        "actual_observer_exact": true,
+        "native_refusals": 6
+      }
+    },
+    "production_admission": false,
+    "whole_scientific_admission": false,
+    "changed_runtime_qualified": false,
+    "data_refusals": 10
+  },
+  "actual_preservation": {
+    "status": "EXACT_CURRENT_S5HR4_NATIVE_BOUNDARY_AND_UNMODIFIED_PREDECESSOR_AUTHORITY_PASS",
+    "current": "54cf9cd592d25354230f9fc9b5f28e41147866d9",
+    "projection": {
+      "tree": "819ea4148bca1326a58365078b772077899b8eed",
+      "commit": "2de8cefb1dc17c2b2e3cb471c0f29bc90204d47c",
+      "scope": "EXACT_PREDECESSOR_PRODUCTION_AND_UNMODIFIED_ADMISSION_AUTHORITY"
+    },
+    "current_native": {
+      "status": "ACTUAL_CURRENT_APP_PUBLICATION_OWN_RESTART_74_OWNER_CONTROLS_12_WRITER_22_APP_REFUSALS_PASS",
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "owner_controls": 74,
+      "nonfinite_writer_refusals": 12,
+      "app_refusals": 22,
+      "whole_scientific_admission": false
+    },
+    "events": [
+      {
+        "label": "unmodified-predecessor-admission",
+        "args": [
+          "tests/dataqual15/verify_current_native_admission.py",
+          "--output",
+          "/home/runner/work/_temp/film-preservation/old-admission"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "qualified-default-runtime",
+        "args": [
+          "tests/dataqual15_hupsel/default_diagnostic_evidence.py"
+        ],
+        "returncode": 0
+      }
+    ],
+    "whole_scientific_admission": false,
+    "oxygen_reference_correction": false
+  },
+  "source_view": "Only external repository source bytes are reconstructed as LF after matching their original BUILD SHA256; all actual raw ZIP bytes, copied interventions, executables and numerical observations remain unchanged.",
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "changed_runtime_qualified": false
+}
