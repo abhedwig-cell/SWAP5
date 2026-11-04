@@ -1,0 +1,18 @@
+name: Hupsel original grid and nonlinear closure evidence
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-original-grid.yml
+      - tests/dataqual15_hupsel/original_oxygen_grid_*.py
+      - integration/dataqual15_hupsel/ORIGINAL_OXYGEN_GRID_*
+permissions:
+  contents: read
+jobs:
+  cold-input-grid-qualification:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify actual source runs, physical inputs, stocks and resealed corruptions
+        run: python3 -B tests/dataqual15_hupsel/original_oxygen_grid_evidence.py

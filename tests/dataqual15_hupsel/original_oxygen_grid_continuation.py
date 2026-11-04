@@ -6,9 +6,16 @@ CAPS=(.000078125,.0000390625)
 INPUTS=('swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra')
 STRICT={'CRITDEVBALCP':'1e-8','CRITDEVBALTOT':'1e-7','CRITDEVH1CP':'1e-6','CRITDEVH2CP':'1e-6','CRITDEVPONDDT':'1e-6'}
 sha=lambda raw:hashlib.sha256(raw).hexdigest()
+PARENT_ARCHIVE='99adab40cc703f4533abc89befa5d16d76d6a36d1b7a09ef3e463becf997c1db'
+ORIGINAL_EXECUTABLE='dc331cd6fe9bb0ef9cbf815f804283bed9e7d8841bf32262c9a844da6d5211b9'
+
+def require_parent_identity(record):
+ # These are the actual PR1526 source carriers, not caller-resealable pins.
+ assert record['archive_sha256']==PARENT_ARCHIVE and not record['production_admission']
 
 def parent_files():
  r=json.loads((BASE/'ORIGINAL_CHRONOLOGY_EVIDENCE_20261104.json').read_text());parts=[]
+ require_parent_identity(r)
  for p in r['archive_parts']:
   raw=(BASE/p['name']).read_bytes();assert len(raw)==p['bytes'] and sha(raw)==p['sha256'];parts.append(raw)
  raw=b''.join(parts);assert sha(raw)==r['archive_sha256']
@@ -25,6 +32,7 @@ def parent_files():
     if set(files)==wanted:break
  assert set(files)==wanted
  assert all(sha(b)==r['files_sha256'][n] for n,b in files.items())
+ assert json.loads(files['original/unobserved/RUN.json'])['executable_sha256']==ORIGINAL_EXECUTABLE
  return files
 
 def changes(cap,precision):
@@ -81,6 +89,7 @@ def audit(files,sealed,cap,precision='legacy'):
  assert record['from_initialization'] and record['checkpoint_seed'] is None
  assert record['executable_sha256']==json.loads(sealed['original/unobserved/RUN.json'])['executable_sha256']
  assert result['status']=='EXECUTED' and result['returncode']==100 and result['swap_ok']
+ assert b'simulation succesfully terminated' in files['case/swap.ok']
  for n,raw in inputs(sealed,cap,precision).items():assert files['case/'+n]==raw and sha(raw)==record['inputs_sha256'][n]
  assert set(result['output_sha256'])=={'result_output.csv','hupsel_profiles.csv'}
  for n,h in result['output_sha256'].items():assert sha(files['case/'+n])==h
@@ -106,8 +115,11 @@ def audit(files,sealed,cap,precision='legacy'):
   # certificate. This is not a model balance/accuracy tolerance.
   gamma=36*sys.float_info.epsilon/(1-36*sys.float_info.epsilon)
   assert error<=.5e-12+gamma*stock
+ balances=[abs(float(r['BALDEV'])) for r in daily]
  return dict(cap_day=cap,precision=precision,actual_prefix_days=584,primitive_stock_maximum_publication_error_cm=largest,
-  day584_oxygen_cm=float(daily[584]['TREDWET']),maximum_original_reported_balance_error_cm=max(abs(float(r['BALDEV'])) for r in daily),
+  day584_oxygen_cm=float(daily[584]['TREDWET']),maximum_original_reported_balance_error_cm=max(balances),
+  maximum_original_balance_error_day=balances.index(max(balances)),cumulative_original_reported_balance_error_cm=math.fsum(float(r['BALDEV']) for r in daily),
+  original_warning_lines=sum(bool(l.strip()) for l in files['case/swap.wrn'].splitlines()),
   original_model_source_changed=False,production_admission=False,whole_scientific_admission=False)
 
 if __name__=='__main__':

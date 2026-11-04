@@ -3,14 +3,14 @@ import argparse,copy,hashlib,io,json,math,tarfile
 from pathlib import Path
 import original_oxygen_grid_continuation as owner
 ROOT=owner.ROOT;BASE=owner.BASE;STEM='ORIGINAL_OXYGEN_GRID_EVIDENCE_20261104';sha=owner.sha
-NAMES=['REGISTRATION.json','RESULT.json','stdout','stderr',*['case/'+n for n in owner.INPUTS],
-       'case/result_output.csv','case/hupsel_profiles.csv']
+NAMES=['REGISTRATION.json','RESULT.json','stdout','stderr','case/swap.ok',*['case/'+n for n in owner.INPUTS],
+       'case/result_output.csv','case/hupsel_profiles.csv','case/swap.log','case/swap.wrn','case/result.bal','case/result.blc']
 
-def refuse(files,parent,cap):
+def refuse(files,parent,cap,precision):
  count=0
  def rejected(f):
   nonlocal count
-  try:owner.audit(f,parent,cap)
+  try:owner.audit(f,parent,cap,precision)
   except (AssertionError,ValueError,KeyError):count+=1
   else:raise AssertionError('corrupted original refinement accepted')
  def change_json(f,name,edit):
@@ -24,33 +24,50 @@ def refuse(files,parent,cap):
  f=dict(files);change_json(f,'REGISTRATION.json',lambda r:r.__setitem__('checkpoint_seed','foreign.bin'));rejected(f)
  f=dict(files);change_json(f,'REGISTRATION.json',lambda r:r.__setitem__('cap_day',owner.CAPS[1] if cap==owner.CAPS[0] else owner.CAPS[0]));rejected(f)
  f=dict(files);lines=f['case/hupsel_profiles.csv'].splitlines();lines[1],lines[2]=lines[2],lines[1];f['case/hupsel_profiles.csv']=b'\n'.join(lines)+b'\n';reseal(f,'hupsel_profiles.csv');rejected(f)
- assert count==8
+ f=dict(files);f['case/swap.ok']=b'simulation failed';rejected(f)
+ f=dict(files);change_json(f,'RESULT.json',lambda r:r.__setitem__('production_admission',True));rejected(f)
+ assert count==10
  return count
 
 def qualify(files,parent):
- summaries=[];series=[owner.rows(parent['reference-refinement/case/result_output.csv'])]
- for i,cap in enumerate(owner.CAPS):
+ identity=json.loads((BASE/'ORIGINAL_CHRONOLOGY_EVIDENCE_20261104.json').read_text());parent_refusals=0
+ for field,value in [('archive_sha256','0'*64),('production_admission',True)]:
+  bad=dict(identity);bad[field]=value
+  try:owner.require_parent_identity(bad)
+  except AssertionError:parent_refusals+=1
+  else:raise AssertionError('resealed parent authority accepted')
+ assert parent_refusals==2
+ summaries=[];series=[]
+ for i in range(4):
+  cap=owner.CAPS[i%2];precision='legacy' if i<2 else 'strict'
   subset={n[len(str(i))+1:]:raw for n,raw in files.items() if n.startswith(str(i)+'/')}
-  result=owner.audit(subset,parent,cap);result['refusal_controls']=refuse(subset,parent,cap);summaries.append(result)
+  result=owner.audit(subset,parent,cap,precision);result['refusal_controls']=refuse(subset,parent,cap,precision);summaries.append(result)
   series.append(owner.rows(subset['case/result_output.csv']))
- changes=[];days=[]
- for a,b in zip(series,series[1:]):
+ def delta(a,b):
   errors=[abs(float(x['TREDWET'])-float(y['TREDWET'])) for x,y in zip(a,b)]
-  assert len(errors)==585;changes.append(max(errors));days.append(errors.index(max(errors)))
+  assert len(errors)==585
+  return dict(maximum_cm=max(errors),day=errors.index(max(errors)))
+ legacy=[owner.rows(parent['reference-refinement/case/result_output.csv']),*series[:2]]
+ changes=[delta(a,b) for a,b in zip(legacy,legacy[1:])]
+ strict_change=delta(series[2],series[3]);precision_effects=[delta(series[i],series[i+2]) for i in range(2)]
  bound=5.371840000016327e-7
  # Convergence observations are not an extrapolated oracle, a physical
  # correction, or permission to erase the predecessor's retained failures.
- report=dict(actual_prefix_days=584,step_caps_day=[.00015625,*owner.CAPS],
-  day584_oxygen_cm=[float(s[584]['TREDWET']) for s in series],
-  successive_prefix_maximum_oxygen_changes_cm=changes,maximum_change_days=days,
-  unchanged_oxygen_bound_cm=bound,observed_refinement_changes_within_bound=all(x<=bound for x in changes),
+ report=dict(actual_prefix_days=584,design='two grids by original nonlinear input precision; same original executable and physics',
+  legacy_step_caps_day=[.00015625,*owner.CAPS],legacy_day584_oxygen_cm=[float(s[584]['TREDWET']) for s in legacy],
+  legacy_successive_oxygen_changes=changes,strict_step_caps_day=list(owner.CAPS),
+  strict_day584_oxygen_cm=[float(s[584]['TREDWET']) for s in series[2:]],strict_grid_oxygen_change=strict_change,
+  nonlinear_precision_oxygen_effects=precision_effects,
+  interpretation='Input criteria can change the original adaptive sequence; this factorial response is not an isolated causal term or a rigorous error estimate.',
+  unchanged_oxygen_bound_cm=bound,observed_last_grid_changes_within_bound=changes[-1]['maximum_cm']<=bound and strict_change['maximum_cm']<=bound,
   no_extrapolated_or_replaced_oracle=True,reference_promoted=False,production_admission=False,
   whole_scientific_admission=False,original_model_source_changed=False,runs=summaries)
- if min(changes)>0:report['observed_change_ratio']=changes[0]/changes[1]
+ report['immutable_parent_refusal_controls']=parent_refusals
+ if changes[1]['maximum_cm']>0:report['legacy_observed_change_ratio']=changes[0]['maximum_cm']/changes[1]['maximum_cm']
  return report
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--capture',type=Path);p.add_argument('--runs',type=Path,nargs=2)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--capture',type=Path);p.add_argument('--runs',type=Path,nargs=4)
  p.add_argument('--archive',type=Path);a=p.parse_args();parent=owner.parent_files()
  if a.capture:
   assert a.runs and a.archive;out=a.capture.resolve();out.mkdir();files={}
