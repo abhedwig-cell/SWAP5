@@ -89,12 +89,20 @@ def profile_checks(points,daily,state):
     for key in ('z_cm','dz_cm','head_cm','theta','concentration_mg_cm3','dissolved_mg_cm2','sorbed_mg_cm2'):assert points[1096][key]==[float(r[key])for r in state]
 
 
+def run_record(place):
+    start=json.loads((place/'START.json').read_text());end=json.loads((place/'RESULT.json').read_text())
+    assert all(end[k]==v for k,v in start.items())
+    assert end['command'][1]=='input.nml'and end['command'][-2:]==['swap.swp','maize.crp']
+    if end['restart_sha256']is None:assert end['command'][2]=='-'
+    return end
+
+
 def audit(folder,opt,platform):
     registration=json.loads((folder/'REGISTRATION.json').read_text());assert registration==json.loads((BASE/runner.REG).read_text())
     assert registration['production_admission']is False and registration['whole_scientific_admission']is False
     inherited=native_binding(folder,opt,platform);case=folder/'unobserved1096';build=json.loads((folder/'native/build/BUILD.json').read_text())
     original_inputs=json.loads((BASE/'PRESSURE_DIAGNOSTIC_INPUTS_20261104.json').read_text())['files_sha256']
-    run=json.loads((case/'RESULT.json').read_text());assert run['scope']=='ORIGINAL_INPUT_INITIALIZATION'and run['returncode']==0 and run['restart_sha256']is None and not run['diagnostic_override']and run['inputs']==original_inputs
+    run=run_record(case);assert run['scope']=='ORIGINAL_INPUT_INITIALIZATION'and run['returncode']==0 and run['restart_sha256']is None and not run['diagnostic_override']and run['inputs']==original_inputs
     assert run['executable_sha256']==build['executable_sha256']and all(sha((case/n).read_bytes())==pin for n,pin in original_inputs.items())
     windows,daily,interval=daily_data(case);crops=rows(case/'crop.csv');days=sorted(set(registration['profile_days']+registration['additional_capture_days']))
     points={d:profile4((case/f'checkpoint-{d}.bin').read_bytes())for d in days}
@@ -106,12 +114,12 @@ def audit(folder,opt,platform):
         old=raw_rows(inherited[opt+'/unobserved584/'+name]);assert rows(case/name)[:len(old)]==old
     pairs=[p for cut in registration['wet_cuts']for p in ((cut-1,cut),(cut,cut+1))]+[(1095,1096)]
     for first,last in pairs:
-        strict=folder/'restarts'/f'{first}-to-{last}';rr=json.loads((strict/'RESULT.json').read_text())
+        strict=folder/'restarts'/f'{first}-to-{last}';rr=run_record(strict)
         assert rr['returncode']==0 and rr['scope']=='STRICT_OWN_BUILD_RESTART'and rr['restart_sha256']==sha((case/f'checkpoint-{first}.bin').read_bytes())and rr['executable_sha256']==run['executable_sha256']and not rr['diagnostic_override']and rr['inputs']==original_inputs
         assert all(sha((strict/n).read_bytes())==pin for n,pin in original_inputs.items());runner.exact_window(case,strict,last)
     result=dict(status='COMPLETE_PRIVATE_DEFAULT1096_LEDGER_WET_CUTS_PROFILES_AND_STRICT_OWN_RESTARTS_PASS',optimization=opt,platform=platform,days=1096,intervals=len(windows),interval_ledger=interval,proof=proof,selected_profiles=days,strict_windows=len(pairs),science=science(daily,crops,points),production_admission=False,whole_scientific_admission=False)
     if opt=='O2':
-        observed=folder/'observed1096';rr=json.loads((observed/'RESULT.json').read_text());ob=json.loads((folder/'native/build-observed/BUILD.json').read_text())
+        observed=folder/'observed1096';rr=run_record(observed);ob=json.loads((folder/'native/build-observed/BUILD.json').read_text())
         assert rr['scope']=='ORIGINAL_INPUT_INITIALIZATION'and rr['returncode']==0 and rr['restart_sha256']is None and rr['executable_sha256']==ob['executable_sha256']and rr['inputs']==original_inputs and not rr['diagnostic_override']
         for name in ('checkpoint.bin','budget.csv','crop.csv','state.csv'):assert(case/name).read_bytes()==(observed/name).read_bytes()
         receipts=rows(observed/'film_runtime_receipts.csv');last=receipts[-1];assert float(last['time_day'])==1096 and int(last['calls'])>0 and int(last['max_level'])<=24 and int(last['refinements'])<=23*int(last['calls'])
