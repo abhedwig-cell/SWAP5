@@ -1,0 +1,19 @@
+{
+  "stage": "IMPLEMENTED_PERSISTED_ACTUAL_FROM_INPUT_EXECUTION_RUNNING",
+  "baseline": "4416bde2f3b1fbf04bac9edfe36ab7d758ad69b1",
+  "registration": "FULL_PROFILE_PREREGISTRATION_20261104.json",
+  "source": "tests/dataqual15_hupsel/full_profile_evidence.py",
+  "workflow": ".github/workflows/hupsel-full-profile.yml",
+  "actual_case": "../canopy-full-profile-20261104",
+  "exe": "../canopy-endpoint-coherent-O2/swap5_hupsel_germination.exe",
+  "exe_sha256": "dff1d3c554ea9dc847b6820e71e437a8788c43ac90441d8f796c60c4a9f770d5",
+  "tests": {
+    "controls": 7,
+    "status": "PASS",
+    "data": "Actual original immutable16-profile trajectory, not a substitute model",
+    "log": "../full-profile-boundary-20261104.log"
+  },
+  "compiled_provider_check": "236 raw source postimages exact",
+  "next": "Await selected actual1096 measurement; require all16 profile dates, exact accepted complete trajectory, seal and cold remeasure, adjudicate and integrate.",
+  "whole_scientific_admission": false
+}

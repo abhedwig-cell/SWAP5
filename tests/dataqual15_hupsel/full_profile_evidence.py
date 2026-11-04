@@ -90,6 +90,8 @@ def measure(case,bundle,prior_files,live):
  per_day={}
  for day,p in sorted(points.items()):
   values=sorted(donor[day],key=lambda r:int(r['node']));assert len(values)==34
+  assert [int(r['node']) for r in values]==list(range(1,35))
+  for key in ('z_cm','dz_cm'):assert p[key]==[float(r[key]) for r in values],key+' reference alignment'
   per_day[str(day)]={}
   for key,column in [('head_cm','head_cm'),('theta','water_content'),('temperature_c','temperature_c'),('concentration_mg_cm3','concentration_mg_cm3')]:
    metric='profile_'+key;a=p[key];b=[float(r[column]) for r in values]
