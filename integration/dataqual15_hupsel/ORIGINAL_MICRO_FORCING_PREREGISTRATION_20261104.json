@@ -1,0 +1,7 @@
+{
+  "purpose": "Check whole-model original MICRO parameter, table and rate inputs rather than infer them from native-state component replays.",
+  "capture": "Output-only body hook in exact original full-input trajectory; complete accepted day584 34-node inputs and once-only actual horizon-indexed original private M/K tables, including original wet-branch Ksat indexing.",
+  "qualification": "Fresh full run must preserve every physical daily output byte except its one generated timestamp, every profile byte, and the prior accepted/node journals. The original uninitialized unused K430 remains raw; it must not be used as evidence of a physical value.",
+  "limits": "No change to scientific bound, solver, tolerances, restart, ownership or production source. A match on original MICRO inputs alone does not admit whole-series equivalence.",
+  "production_admission": false
+}

@@ -1,0 +1,25 @@
+name: Hupsel original chronology and reference accuracy prerequisite
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-original-chronology.yml
+      - tests/dataqual15_hupsel/original_*
+      - tests/dataqual15_hupsel/collect_original_chronology.py
+      - tests/dataqual15_hupsel/seal_original_chronology.py
+      - tests/dataqual15_hupsel/oxygen_frozen_k_runtime.py
+      - integration/dataqual15_hupsel/ORIGINAL_*
+      - integration/dataqual15_hupsel/OXYGEN_*CONTROL*
+      - integration/dataqual15_hupsel/OXYGEN_FROZEN_K_*
+permissions:
+  contents: read
+jobs:
+  cold-reference-prerequisite:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Reconcile original accepted steps and compile O0 O2 MICRO and oxygen owners
+        run: python3 -B tests/dataqual15_hupsel/original_chronology_evidence.py
