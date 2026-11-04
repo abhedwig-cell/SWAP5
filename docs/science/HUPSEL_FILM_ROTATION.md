@@ -85,3 +85,18 @@ against the unchanged5.371840000016327e-7cm limit. This does not establish
 oxygen correction or production readiness. A separate coherent composition
 with the already qualified pressure-stopping candidate remains future work;
 it is not silently included in these measurements.
+
+Cold POSIX O0/O2 actual full execution, all strict own windows, four wet cuts,
+selected profiles and mature controls also pass. The O2 observed counterpart
+retains exact physical bytes, with9592025 attempted calls,92945664 refinements,
+6478 discarded isolated-pass events and maximum level11, without exhaustion
+or invalid calls. Largest independent interval water/solute defects are
+4.103e-14cm and9.740e-12mg/cm2. Its original science assessment also retains
+25/37 passes and all twelve failures; no cross-platform bitwise trajectory
+identity is claimed.
+
+All fifteen workflows on native head58221e70a passed, including actual native
+run41932806346 and complete current/predecessor preservation. Original O0/O2
+artifacts13374201698/13374472383 are retained byte-for-byte and independently
+re-audited. Final metadata qualification must reuse them only through the
+exact dependency-bound complete audit. Canonical closure is recorded separately.
