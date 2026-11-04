@@ -1,6 +1,6 @@
 # Retained Hupsel solute discrepancy attribution
 
-Status: Windows and cold POSIX qualified; canonical integration pending.
+Status: canonically admitted through PR1506; actual canonical postimage reverified.
 
 The accepted corrected diagnostic trajectory retains a final solute-stock error of-0.007222933243499mg/cm2 against the immutable fine original reference. The unchanged stock limit is0.006477510502005319mg/cm2. The first daily crossing occurs at day1088; the largest error occurs at day1096. This work audits the existing actual data rather than rerunning either model or changing production physics.
 
@@ -17,3 +17,5 @@ Authority: `integration/dataqual15_hupsel/SOLUTE_ATTRIBUTION_PREREGISTRATION_202
 Cold POSIX run41752348137/job126320224111 reproduces the full sealed report and all nine defect refusals. Maximum daily native/reference closure errors are9.62704e-12 and2.99965e-11mg/cm2. Across all1096 days, the maximum difference-identity residual is2.07029e-16mg/cm2. The final cumulative native/reference export difference is+0.007222933987118mg/cm2; the measured input and closure differences account for the small remainder.
 
 All15 triggered workflows are terminal and successful, including actual canonical composed qualification run41752348097/job126320501101. Final metadata changes leave the cold-qualified executable dependencies exact. Documentation source checks and strict build pass.
+
+PR1506 merged at `133d1f1c0df5e9b31603e3a45582688a124d61f2`; final evidence and actual merge trees both equal `c82843b2a0babfaa63ecc22dfe12c0988d10d022`. Actual-merge independent remeasurement passes. No physical correction or scientific failure is promoted by this diagnostic receipt.
