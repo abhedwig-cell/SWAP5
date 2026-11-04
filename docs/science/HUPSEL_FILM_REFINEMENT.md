@@ -45,7 +45,7 @@ fault-injected convergence exhaustion. Two positive controls retain ordinary
 and extremely dry branches. The deliberately reduced two-level fault copy
 exposes the incumbent's fall-through success and the candidate's refusal; the
 qualified candidate's real budget remains24. These fault copies are not
-production settings. Seven policy/coverage/trace tests and nine source/data/
+production settings. Seven policy/coverage/trace tests and ten source/data/
 promotion defects protect the evidence boundary.
 
 The unchanged complete observation and positive candidate matrices are reused

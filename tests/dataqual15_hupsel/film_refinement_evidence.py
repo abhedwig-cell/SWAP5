@@ -13,6 +13,7 @@ def audit(files,context):
  assert trial['candidate_sha256']==f.sha(body.encode()) and observed['input_sha256']==trial['input_sha256']==f.sha(raw)
  assert all(x['production_admission']is False and x['whole_scientific_admission']is False for x in (observed,trial))
  assert trial['reference_trajectory_accuracy_qualified']is False
+ assert trial.get('changed_runtime_qualified',False)is False
  carrier=json.loads((f.ROOT/'integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json').read_text());literal=gzip.decompress(base64.b64decode(carrier['gzip_base64']));assert f.sha(literal)=='8c0c27c780b797c829c207a5e96bcb8951dd5399182c55094ffbb88165711a87'
  parent=json.loads((f.BASE/'FILM_ACCURACY_WINDOWS_20261104.json').read_text())
  with tarfile.open(fileobj=io.BytesIO((f.BASE/parent['archive']).read_bytes()))as t:oracle={opt:[list(map(float,line.split()))for line in t.extractfile(opt+'/certified.stdout').read().decode().splitlines()]for opt in ('O0','O2')}
@@ -60,7 +61,7 @@ def audit(files,context):
 
 def controls(files,context):
  trials=[]
- for flag in ('production_admission','whole_scientific_admission','reference_trajectory_accuracy_qualified'):
+ for flag in ('production_admission','whole_scientific_admission','reference_trajectory_accuracy_qualified','changed_runtime_qualified'):
   r=json.loads(files['candidate/RESULT.json']);r[flag]=True;trials.append(dict(files,**{'candidate/RESULT.json':json.dumps(r).encode()}))
  for path in ('candidate/O0/comparison.stdout','observation/O2-observed/comparison.stderr','candidate/O2/waterfilm.f90','faults/O0/candidate-cap2/waterfilm.f90','faults/O2/probe.f90'):
   changed=dict(files);changed[path]=files[path][:-30];trials.append(changed)
@@ -87,7 +88,7 @@ def main():
   manifest=dict(result,archive=archive.name,archive_sha256=f.sha(archive.read_bytes()),files_sha256={n:f.sha(raw)for n,raw in files.items()})
   (f.BASE/(STEM+'.json')).write_text(json.dumps(manifest,indent=2)+'\n')
  else:
-  record=json.loads((f.BASE/(STEM+'.json')).read_text());assert record['production_admission']is False and record['whole_scientific_admission']is False
+  record=json.loads((f.BASE/(STEM+'.json')).read_text());assert record['production_admission']is False and record['whole_scientific_admission']is False and record['changed_runtime_qualified']is False
   raw=(f.BASE/record['archive']).read_bytes();assert f.sha(raw)==record['archive_sha256']
   with tarfile.open(fileobj=io.BytesIO(raw))as t:
    members=t.getmembers();assert len(members)==len(record['files_sha256'])and all(m.isfile()and not PurePosixPath(m.name).is_absolute()and '..'not in PurePosixPath(m.name).parts for m in members)
