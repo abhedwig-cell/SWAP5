@@ -57,6 +57,11 @@ def audit(files):
   meta=json.loads(files[prefix+'RESULT.json']);build=json.loads(files[prefix+'build/BUILD.json'])
   assert meta['strict_own_restart'] and meta['exact_unobserved_endpoint'] and meta['exact_daily_budget_crop']
   assert sha(files[prefix+'build/observed.exe'])==build['executable_sha256']
+  object_files=[n for n in files if n.startswith(prefix+'build/') and n.endswith('.o')]
+  assert len(object_files)==2
+  for n in object_files:
+   pins=[h for path,h in build['object_sha256'].items() if path.replace('\\','/').endswith('/'+n)]
+   assert pins==[sha(files[n])],'actual observer object'
   assert build['source_patches'].keys()=={ROUTE,MAIN}
   expected=instrument((ROOT/ROUTE).read_text(),(ROOT/MAIN).read_text())
   for name,post in zip((ROUTE,MAIN),expected):
@@ -111,7 +116,7 @@ def main():
    assert build['baseline_build']==inherited
    assert all(sha(Path(n).read_bytes())==h for n,h in build['object_sha256'].items())
    for path in folder.rglob('*'):
-    if path.is_file() and path.suffix in ('.json','.dat','.bin','.csv','.f90','.exe','.stdout','.stderr'):
+    if path.is_file() and (path.suffix in ('.json','.dat','.bin','.csv','.f90','.exe','.o','.stdout','.stderr','.nml','.swp','.crp','.met','.dra') or path.name in ('stdout','stderr')):
      files[opt+'/'+path.relative_to(folder).as_posix()]=path.read_bytes()
   result=audit(files);files['AUDIT.json']=(json.dumps(result,indent=2)+'\n').encode()
   archive=BASE/(STEM+'.tar.xz')
@@ -135,6 +140,17 @@ def main():
  for opt,prefix in [('O0','restart/O0-compatible-tail/'),('O2','case/')]:
   build=json.loads(files[opt+'/build/BUILD.json']);assert build['baseline_build']==json.loads(old[('build-O0' if opt=='O0' else 'build')+'/BUILD.json'])
   assert files[opt+'/whole/checkpoint.bin']==old[prefix+'checkpoint.bin']
+  for phase in ('whole','strict-own-1088'):
+   run=json.loads(files[opt+'/'+phase+'/RESULT.json'])
+   assert run['returncode']==0 and run['from_start'] is False
+   assert run['executable_sha256']==build['executable_sha256']
+   expected_seed=old[prefix+'checkpoint-1077.bin'] if phase=='whole' else files[opt+'/whole/checkpoint-1088.bin']
+   assert run['restart_sha256']==sha(expected_seed)
+   expected_scope='INPUT_BOUND_SAME_PLATFORM_PRIOR_BUILD_CODEC_CONTROL_NOT_RESTART_QUALIFICATION' if phase=='whole' else 'STRICT_SAME_BUILD_RESTART_MEASUREMENT'
+   assert run['scope']==expected_scope
+   for name,pin in run['inputs'].items():
+    raw=files[opt+'/'+phase+'/'+name];assert sha(raw)==pin
+    assert raw==old['case/'+name],'unchanged physical/input-window source bytes'
   for name,clock in [('budget.csv','t1_day'),('crop.csv','day')]:
    assert read_csv(files[opt+'/whole/'+name])==[r for r in read_csv(old[prefix+name]) if float(r[clock])>1077]
  print(result['status']);print(json.dumps({opt:r['export_components'] for opt,r in result['optimizations'].items()}))
