@@ -117,6 +117,7 @@ def exact_window(case,strict,end):
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--optimization',choices=['O0','O2'],required=True);parser.add_argument('--compiler',type=Path,required=True);parser.add_argument('--output',type=Path,required=True)
     args=parser.parse_args();out=args.output.resolve();out.mkdir();platform='windows'if os.name=='nt'else'posix'
+    os.environ.pop('SWAP5_DIAG_PREDECESSOR',None);os.environ['OMP_NUM_THREADS']='1'
     registration=json.loads((BASE/REG).read_text());(out/'REGISTRATION.json').write_bytes((BASE/REG).read_bytes())
     scope=json.loads((ROOT/runtime.SCOPE).read_text());runtime.current_guard(scope)
     builds=materialize(out/'native',args.optimization,platform,args.compiler.resolve());inputs=runtime.inputs(out/'inputs');exe=builds['build']
