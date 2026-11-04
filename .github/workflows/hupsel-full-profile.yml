@@ -1,0 +1,23 @@
+name: Hupsel complete original profile evidence
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-full-profile.yml
+      - tests/dataqual15_hupsel/full_profile_evidence.py
+      - tests/dataqual15_hupsel/test_full_profile_evidence.py
+      - integration/dataqual15_hupsel/FULL_PROFILE_*
+permissions:
+  contents: read
+jobs:
+  cold-profile-remeasurement:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remeasure all original profile dates and retain frozen failures
+        run: |
+          python3 -B tests/dataqual15_hupsel/test_full_profile_evidence.py
+          python3 -B tests/dataqual15_hupsel/full_profile_evidence.py
