@@ -68,7 +68,12 @@ def science(daily,crops,points):
         for key in ('z_cm','dz_cm'):assert p[key]==[float(r[key])for r in donor]
     native,donor,_,_=features(reference,profiles,daily,crops,selected);assert set(native)==set(bounds)and len(bounds)==37
     assessment={k:dict(error=distance(k,native[k],donor[k]),limit=bounds[k]['limit'],inside_frozen_bound=distance(k,native[k],donor[k])<=bounds[k]['limit'])for k in native}
-    return dict(reference_archive_sha256=manifest['archive_sha256'],frozen_bounds_sha256=sha(frozen),assessment=assessment,passing=sum(v['inside_frozen_bound']for v in assessment.values()),total=37,whole_scientific_admission=False)
+    for key in ('potential_transpiration','actual_transpiration','drought','oxygen','salinity','water_global','solute_stock'):
+        errors=[distance(key,[a],[b])for a,b in zip(native[key],donor[key])];index=max(range(len(errors)),key=errors.__getitem__)
+        assessment[key]['worst_day']=index+1
+    oxygen584=dict(day=584,native=daily[583]['oxygen_reduction_cm'],original=float(reference[584]['TREDWET']),limit=bounds['oxygen']['limit'])
+    oxygen584['absolute_error']=abs(oxygen584['native']-oxygen584['original'])
+    return dict(reference_archive_sha256=manifest['archive_sha256'],frozen_bounds_sha256=sha(frozen),assessment=assessment,oxygen_day584=oxygen584,passing=sum(v['inside_frozen_bound']for v in assessment.values()),total=37,whole_scientific_admission=False)
 
 
 def profile_checks(points,daily,state):
