@@ -55,6 +55,7 @@ def native(files,parent,manifest):
  reports={};selected={}
  for opt in ('O0','O2'):
   f={n[len(opt)+1:]:b for n,b in files.items() if n.startswith(opt+'/')};reg=json.loads(f['SELECTED.json'])
+  complete=json.loads(f['COMPLETE.json']);assert complete['actual_observation'] and complete['exact_unobserved'] and complete['own_strict_537']
   trace=data(f['whole/root_accepted.dat'],9);nodes=data(f['whole/root_nodes.dat'],104)
   assert reg==owner.selected(trace)
   original_build=json.loads(parent['build-'+opt+'/BUILD.json'])
@@ -108,6 +109,7 @@ def native(files,parent,manifest):
    original=[r for r in table(parent['full-O2/crop.csv']) if 524<float(r['day'])<=584]
    diffs=[dict(day=x['day'],fields={k:dict(restarted=x[k],full=y[k]) for k in x if x[k]!=y[k]}) for x,y in zip(table(f['whole/crop.csv']),original)]
    assert len(diffs)==60 and all(set(x['fields'])=={'pressure_average_cm'} for x in diffs)
+   assert all(float(x['fields']['pressure_average_cm']['restarted'])==0 and float(x['fields']['pressure_average_cm']['full'])!=0 for x in diffs)
    assert diffs==json.loads(f['RETAINED_DIAGNOSTIC_FAILURE.json'])
   budget=table(f['whole/budget.csv']);report=root_audit(trace,nodes,budget);controls=[]
   for prefix,unit in [('water','cm'),('solute','mg_cm2')]:
@@ -194,6 +196,7 @@ def main():
             'tests/dataqual15_hupsel/root_oxygen_observer.py','tests/dataqual15_hupsel/root_oxygen_evidence.py','tests/dataqual15_hupsel/matched_oxygen_observer.py','tests/dataqual15_hupsel/matched_micro_observer.py',
             'tests/dataqual15_hupsel/matched_oxygen_evidence.py','tests/dataqual15_hupsel/matched_micro_replay.py','tests/dataqual15_hupsel/matched_oxygen_owners.f90','tests/dataqual15_hupsel/matched_oxygen_driver.f90',
             'tests/physics/run_ppa_micro02_source_oracle.py','integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json',
+            'integration/dataqual15_hupsel/MICRO_PRESSURE_RUNTIME_EVIDENCE_20261104.json','integration/dataqual15_hupsel/MICRO_PRESSURE_RUNTIME_CANONICAL_RECEIPT_20261104.json',
             'integration/dataqual15_hupsel/PRESSURE_OXYGEN_PREREGISTRATION_20261104.json','.github/workflows/hupsel-pressure-oxygen.yml'):
    deps[n]=norm(ROOT/n)
   (BASE/(STEM+'.json')).write_text(json.dumps(dict(status=result['status'],archive_sha256=sha(path.read_bytes()),files_sha256={n:sha(b) for n,b in files.items()},normalized_repository_dependency_sha256=deps,production_admission=False,whole_scientific_admission=False),indent=2)+'\n')
