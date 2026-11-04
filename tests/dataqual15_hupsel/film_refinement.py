@@ -15,7 +15,7 @@ def load():
  record=json.loads((f.BASE/'FILM_ACCURACY_WINDOWS_20261104.json').read_text());packet=(f.BASE/record['archive']).read_bytes();assert f.sha(packet)==record['archive_sha256']
  with tarfile.open(fileobj=io.BytesIO(packet))as t:prior={n:t.extractfile(n).read()for n in t.getnames()}
  evidence.audit(prior)
- table=[[mp.mpf(x)for x in line.split()[2:]]for line in prior['certified-film.dat'].decode().splitlines()]
+ table=[[float(x)for x in line.split()[2:]]for line in prior['certified-film.dat'].decode().splitlines()]
  return scope,raw,corpus,table
 
 def selected(corpus):

@@ -1,0 +1,23 @@
+{
+  "status": "WINDOWS_O0_O2_ACTUAL_DIAGNOSIS_EXACT_CONTROLS_PASS_NOT_PRODUCTION",
+  "preregistered": "56978fb4a",
+  "observer_checkpoint": "792d6309a48e1bac7ae0702e2da8af0c79025253",
+  "observations": "../film-refinement-observation-20261104",
+  "complete_same_build_observer_controls": "Unobserved and observed complete41678-row outputs byte-identical for O0 and O2; all3206 fixed original accepted profiles, no physical/state/time-step change.",
+  "record1248_node13": {
+    "exit_level": 3,
+    "accepted_successive_relative_change": 0.000008294788682200957,
+    "independent_relative_integral_error": 0.006331907432005843,
+    "relative_film_subtraction_condition": 0.6169153155770302,
+    "interpretation": "Actual early successive-grid cancellation, not cap exhaustion or ill-conditioned film subtraction. The current delta criterion passes while true integral error exceeds the same1e-5 criterion."
+  },
+  "record115_node6": {
+    "exit_level": 9,
+    "accepted_successive_relative_change": 0.000004620362248907143,
+    "independent_relative_integral_error": 0.0000014819072238591203
+  },
+  "conditional_design_decision": "Test two consecutive successful refinements before accepting the unchanged1e-5 delta criterion. A lone early crossing is not sufficient. Keep24 levels; explicitly return failure on exhausted convergence and reject nonfinite public inputs before arithmetic. This safeguard is a research candidate, not a universal mathematical certificate; qualify true integral error against every complete-corpus independent witness, assembled factors against the existing1e-4 bound and fault-injected cap exhaustion. No production source change or relaxed tolerance.",
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "reference_trajectory_accuracy_qualified": false
+}
