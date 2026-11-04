@@ -1,0 +1,55 @@
+name: Hupsel private default film runtime
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-film-runtime.yml
+      - tests/dataqual15_hupsel/film_runtime*.py
+      - tests/dataqual15_hupsel/test_film_runtime.py
+      - integration/dataqual15_hupsel/FILM_RUNTIME_*
+      - docs/science/HUPSEL_FILM_RUNTIME.md
+permissions:
+  contents: read
+jobs:
+  original-initialization-own-restart:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Audit retained Windows native source object and raw runtime evidence
+        if: matrix.optimization == 'O2'
+        run: python3 -B tests/dataqual15_hupsel/film_runtime_evidence.py
+      - name: Clean default baseline without numerical reuse
+        run: |
+          mkdir -p "$RUNNER_TEMP/film-runtime"
+          python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/film-runtime/baseline-${{ matrix.optimization }}" --end 0
+      - name: Baseline ownership and malformed stream refusals
+        env:
+          FILM_RUNTIME_TEST_BASELINE: ${{ runner.temp }}/film-runtime/baseline-${{ matrix.optimization }}
+        run: python3 -B tests/dataqual15_hupsel/test_film_runtime.py
+      - name: Actual changed default584 and strict own583 suffix plus public refusals
+        run: python3 -B tests/dataqual15_hupsel/film_runtime.py --baseline "$RUNNER_TEMP/film-runtime/baseline-${{ matrix.optimization }}" --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/film-runtime/${{ matrix.optimization }}"
+      - name: Independent complete bounded ledger and exact state audit
+        run: python3 -B tests/dataqual15_hupsel/film_runtime_audit.py --runtime "$RUNNER_TEMP/film-runtime/${{ matrix.optimization }}"
+      - name: Current and unchanged predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/film-preservation"
+      - name: Retain exact native source providers with raw evidence
+        if: always()
+        run: python3 -B tests/dataqual15_hupsel/film_runtime_evidence.py --snapshot "$RUNNER_TEMP/film-runtime"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: film-runtime-${{ matrix.optimization }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/film-runtime/
+            ${{ runner.temp }}/film-preservation/RESULT.json
+          retention-days: 14
