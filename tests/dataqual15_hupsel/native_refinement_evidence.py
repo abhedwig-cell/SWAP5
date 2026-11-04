@@ -136,6 +136,12 @@ def main():
   try:inputs(changed,cap,prior)
   except AssertionError:reports[str(cap)]['foreign_variant_input_rejected']=True
   else:raise AssertionError('accepted foreign refinement source')
+  changed=dict(subset);run=json.loads(changed['strict-O2-1088/RESULT.json'])
+  run['restart_sha256']=sha(files['cap-'+str(other)+'/full-O2/checkpoint-1088.bin'])
+  changed['strict-O2-1088/RESULT.json']=json.dumps(run).encode()
+  try:inputs(changed,cap,prior)
+  except AssertionError:reports[str(cap)]['foreign_variant_checkpoint_provenance_rejected']=True
+  else:raise AssertionError('accepted foreign refinement checkpoint provenance')
  baseline=json.loads(prior['MEASURED.json']);bounds=json.loads(ref['science/FROZEN_BOUNDS_BEFORE_HOLDOUT.json'])
  # Baseline feature values are reconstructed with the same original collector;
  # compare error trends, not a newly fitted acceptance limit.
