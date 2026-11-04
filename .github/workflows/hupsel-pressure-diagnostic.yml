@@ -1,0 +1,31 @@
+name: Hupsel copied pressure diagnostic restart
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-pressure-diagnostic.yml
+      - tests/dataqual15_hupsel/*pressure_diagnostic*.py
+      - integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_*
+permissions:
+  contents: read
+jobs:
+  cold-posix-restart:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Cold checked O0 and O2 real restart and corruption controls
+        run: python3 -B tests/dataqual15_hupsel/pressure_diagnostic_posix.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/pressure-diagnostic"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pressure-diagnostic-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/pressure-diagnostic/build-*/BUILD.json
+            ${{ runner.temp }}/pressure-diagnostic/build-*/EVENTS.json
+            ${{ runner.temp }}/pressure-diagnostic/measurement-*/
+          retention-days: 14

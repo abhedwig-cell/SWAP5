@@ -90,7 +90,7 @@ def qualify(exe, inputs, out):
     sr = (sentinel/'checkpoint.bin').read_bytes(); wr = (whole/'checkpoint.bin').read_bytes()
     assert sr[:-20] == wr[:-20] and sr[-12:-4] == wr[-12:-4]
     assert (sentinel/'budget.csv').read_bytes() == (whole/'budget.csv').read_bytes()
-    result = dict(status='WINDOWS_COPIED_APP_DIAGNOSTIC_RESTART_AND_REFUSALS_PASS',
+    result = dict(status='NATIVE_COPIED_APP_DIAGNOSTIC_RESTART_AND_REFUSALS_PASS', platform=os.name,
                   executable_sha256=sha(exe), pressures_at524=pressures, exact_suffix_rows=comparisons,
                   uninterrupted_endpoint_sha256=sha(uninterrupted/'checkpoint.bin'),
                   refusal_count=len(mutations), finite_sentinel_restored=True,
