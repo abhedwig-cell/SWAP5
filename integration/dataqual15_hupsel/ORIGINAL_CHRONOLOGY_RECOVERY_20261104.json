@@ -219,6 +219,7 @@
       "app/solute_project/hupsel_potato.f90:480"
     ],
     "finding": "CSV reads active_crop%last_pressure. The app samples it during germination and retains it after emergence; export/restore currently transfer only the crop transaction state, leaving this app observation at its default0 after restart. Do not invent history by recomputing it from current soil or silently replacing it with0.",
-    "required_boundary": "Preregister an explicit diagnostic persistence/availability contract under the existing owning project envelope; preserve physical crop owner, source identity, CRC, finite-value checks, atomic publication and fail-closed legacy/schema handling. Do not change generic physical DTOs merely to store an app observation. Actual same-variant Windows/POSIX O0/O2 restore/corruption qualification remains required."
+    "required_boundary": "Preregister an explicit diagnostic persistence/availability contract under the existing owning project envelope; preserve physical crop owner, source identity, CRC, finite-value checks, atomic publication and fail-closed legacy/schema handling. Do not change generic physical DTOs merely to store an app observation. Actual same-variant Windows/POSIX O0/O2 restore/corruption qualification remains required.",
+    "successor": "PRESSURE_DIAGNOSTIC_RECOVERY_20261104.json"
   }
 }

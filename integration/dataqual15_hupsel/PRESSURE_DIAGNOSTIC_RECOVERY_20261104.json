@@ -1,0 +1,24 @@
+{
+  "status": "WINDOWS_QUALIFIED_COPIED_SOURCE_RESEARCH_CANDIDATE_POSIX_RUNNING_NOT_PRODUCTION_ADMISSION",
+  "base": "2509ef8f204ac1b33d0e2536388f313ce530bed5",
+  "pr": 1530,
+  "registration": "PRESSURE_DIAGNOSTIC_PREREGISTRATION_20261104.json",
+  "evidence": "PRESSURE_DIAGNOSTIC_EVIDENCE_20261104.json",
+  "windows": {
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "fresh_prefix_days": 525,
+    "actual_pressure_at524_cm": -66.10498258152407,
+    "strict_own_restart_day": 524,
+    "endpoint_and_all_suffix_columns_exact": true,
+    "refusals": 22,
+    "sentinel_noninterference_controls": 2,
+    "all525_O2_physical_budget_rows_equal_immutable_parent": true
+  },
+  "posix_run": 41850324551,
+  "posix_job": 126644584262,
+  "scope": "Only copied app envelope changed. Production app, generic DTO, physical algorithm, all37 frozen science bounds and oxygen/reference failure unchanged.",
+  "next": "Await all existing qualification runs to terminal, fix any failed controls, bind exact current dependencies and merge research-evidence cluster only after qualified. Production application needs an explicit default-runtime current-source successor qualification; do not promote from this pressure-variant proof alone."
+}
