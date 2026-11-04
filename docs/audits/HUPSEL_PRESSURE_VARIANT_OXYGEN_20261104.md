@@ -1,6 +1,6 @@
 # Accepted oxygen diagnosis on the pressure runtime variant, 4 November 2026
 
-**Windows/native and cold original O0/O2 qualification PASS; canonical admission pending.** This
+**Canonically admitted bounded diagnosis through PR1524 at `09fa3dbc1`.** This
 work implements `PRESSURE_OXYGEN_PREREGISTRATION_20261104.json` in
 `integration/dataqual15_hupsel`, against baseline `549963539` after PR1522/1523.
 It observes the actual pressure-stopping research trajectory, not the incumbent
@@ -80,6 +80,10 @@ The same immutable archive is stored in seven individually hashed parts; its
 whole-archive SHA and every member SHA are verified after concatenation. This
 transport envelope changes no scientific payload. Exact local Git object
 identities and non-force ancestry are retained despite Git transport server errors.
+The actual merge equals final evidence tree
+`ff47825619be29c97551fb14ff406f5966efc79c`; actual-merge source replay and
+normalized dependency checks pass. Authority:
+`PRESSURE_OXYGEN_CANONICAL_RECEIPT_20261104.json`.
 
 Next investigation must distinguish coupled state/forcing chronology and
 temporal quadrature from remaining microscopic rate differences. Prior temporal

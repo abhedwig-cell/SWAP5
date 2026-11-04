@@ -391,7 +391,7 @@
     "canonical_receipt": "MICRO_PRESSURE_RUNTIME_CANONICAL_RECEIPT_20261104.json"
   },
   "pressure_variant_oxygen_20261104": {
-    "stage": "QUALIFIED_NATIVE_O0_O2_AND_COLD_ORIGINAL_SOURCE_ALL15_CI_PASS_CANONICAL_PENDING",
+    "stage": "CANONICALLY_ADMITTED_SAME_VARIANT_OXYGEN_DIAGNOSIS_ONLY",
     "registration": "PRESSURE_OXYGEN_PREREGISTRATION_20261104.json",
     "recovery": "PRESSURE_OXYGEN_RECOVERY_20261104.json",
     "evidence": "PRESSURE_OXYGEN_EVIDENCE_20261104.json",
@@ -400,11 +400,13 @@
     "selected_profiles_per_build": 9,
     "rooted_node_comparisons_per_build": 109,
     "retained_full_oxygen_failure": true,
-    "canonical_admitted_research": false,
+    "canonical_admitted_research": true,
     "production_admission": false,
     "whole_scientific_admission": false,
     "pr": 1524,
     "qualified_head": "dec97087daed74c49d21cf65a708153bdd5a3f43",
-    "all15_triggered_workflows_success": true
+    "all15_triggered_workflows_success": true,
+    "merge": "09fa3dbc1dd5332acf1cba5bee3791afad904955",
+    "canonical_receipt": "PRESSURE_OXYGEN_CANONICAL_RECEIPT_20261104.json"
   }
 }
