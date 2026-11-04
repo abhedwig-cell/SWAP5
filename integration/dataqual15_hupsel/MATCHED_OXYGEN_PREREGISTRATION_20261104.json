@@ -1,0 +1,151 @@
+{
+  "baseline": "369b1d0bbc53ac4343a3a502a9469e6208daa2a0",
+  "scope": "Read-only matched original Bartholomeus process replay on deterministically selected actual accepted states at first/worst oxygen discrepancy",
+  "selected_profiles": [
+    {
+      "day": 525,
+      "receipt": [
+        524.0,
+        524.000078125,
+        0.00637564892811852,
+        0.0,
+        1.1858592291816294e-07,
+        0.0,
+        0.006375530342195602,
+        0.0,
+        1.0
+      ],
+      "selection_reasons": [
+        "first",
+        "minimum_deep_factor"
+      ]
+    },
+    {
+      "day": 525,
+      "receipt": [
+        524.999610809914,
+        525.0,
+        0.018570740220776604,
+        0.0,
+        2.111498770558662e-06,
+        0.0,
+        0.018568628722006045,
+        0.918367029079404,
+        1.0
+      ],
+      "selection_reasons": [
+        "last",
+        "maximum_oxygen_rate",
+        "maximum_deep_factor"
+      ]
+    },
+    {
+      "day": 525,
+      "receipt": [
+        524.9049999999992,
+        524.9099999999992,
+        0.018570740220776604,
+        0.0,
+        1.9935869567735964e-06,
+        0.0,
+        0.01856874663381983,
+        0.8757952373879309,
+        1.0
+      ],
+      "selection_reasons": [
+        "maximum_oxygen_amount"
+      ]
+    },
+    {
+      "day": 584,
+      "receipt": [
+        583.0,
+        583.000625,
+        0.22261548109067486,
+        0.00029532761445968947,
+        0.0,
+        0.0,
+        0.22232015347621517,
+        1.0,
+        1.0
+      ],
+      "selection_reasons": [
+        "first",
+        "maximum_deep_factor"
+      ]
+    },
+    {
+      "day": 584,
+      "receipt": [
+        583.9977777777774,
+        584.0,
+        0.49395409275322794,
+        0.0008119194565670562,
+        0.0,
+        0.0,
+        0.4931421732966609,
+        1.0,
+        1.0
+      ],
+      "selection_reasons": [
+        "last"
+      ]
+    },
+    {
+      "day": 584,
+      "receipt": [
+        583.0409643154657,
+        583.0409843585037,
+        0.2226154810906749,
+        0.0,
+        0.2226154810906749,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "selection_reasons": [
+        "maximum_oxygen_rate"
+      ]
+    },
+    {
+      "day": 584,
+      "receipt": [
+        583.0498581902185,
+        583.0498836376963,
+        0.22261548109067486,
+        0.0,
+        0.22261548109067486,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "selection_reasons": [
+        "maximum_oxygen_amount"
+      ]
+    },
+    {
+      "day": 584,
+      "receipt": [
+        583.0306940116393,
+        583.0307110708234,
+        0.22261548109067486,
+        0.0,
+        6.070310228878384e-05,
+        0.0,
+        0.22255477798838608,
+        0.0,
+        1.0
+      ],
+      "selection_reasons": [
+        "minimum_deep_factor"
+      ]
+    }
+  ],
+  "selection_authority": "ROOT_OXYGEN_EVIDENCE_20261104",
+  "qualification": "Actual checked Windows O0/O2 same524->584 protocol, exact prior accepted/node/daily/typed endpoints; exact accepted join with ambiguous payload refusal; unchanged B1.11 oxygen source, analytical unimodal owner fixture adapted to actual34-node parameters; existing1e-4 assembled factor bound; cold POSIX source replay and current native preservation",
+  "invariants": "Output-only copied backend/application; no production/interface/checkpoint/physics/tolerance changes; raw rejected trial outputs never count as accepted evidence",
+  "retained_open": "All12 science failures, full-from-start pressure diagnostic failure, physical correction and whole-science admission",
+  "whole_scientific_admission": false
+}
