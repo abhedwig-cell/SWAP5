@@ -1,0 +1,20 @@
+name: Hupsel accepted solute route observation
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-solute-route.yml
+      - tests/dataqual15_hupsel/solute_route_*.py
+      - integration/dataqual15_hupsel/SOLUTE_ROUTE_*
+permissions:
+  contents: read
+jobs:
+  cold-accepted-route:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Select exact accepted receipts and remeasure route quadrature
+        run: python3 -B tests/dataqual15_hupsel/solute_route_evidence.py

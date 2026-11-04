@@ -54,6 +54,7 @@ def build(bundle,out,fc):
  for f in bundle.glob('*.mod'):shutil.copyfile(f,out/f.name)
  route,main=instrument((ROOT/ROUTE).read_text(),(ROOT/MAIN).read_text())
  replacements={ROUTE:route,MAIN:main};objects=list(map(Path,record['object_sha256']));events=[];patches={}
+ assert len(objects)==len(record['source_sha256'])
  flags=[f for f in record['flags'] if not f.startswith(('-I','-J'))]+['-I'+str(out),'-J'+str(out)]
  def run(cmd):
   t=time.monotonic();p=subprocess.run(list(map(str,cmd)),cwd=out,capture_output=True,timeout=180)
