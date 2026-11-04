@@ -69,7 +69,7 @@ def parse(raw,frame,variant):
   coefficient_reconstruction_mismatches=sum(int(r[1]) for r in tables),
   coefficient_reconstruction_maximum_difference=max(float(r[2]) for r in tables))
 def run(opt,variant,payloads,out,fc):
- out.mkdir();table,process=sources(variant);(out/'table.f90').write_text(table,encoding='utf-8',newline='\n');(out/'process.f90').write_text(process,encoding='utf-8',newline='\n')
+ out.mkdir(exist_ok=True);table,process=sources(variant);(out/'table.f90').write_text(table,encoding='utf-8',newline='\n');(out/'process.f90').write_text(process,encoding='utf-8',newline='\n')
  exe=out/'probe.exe';cmd=[str(fc),'-'+opt,'-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out),str(out/'table.f90'),str(out/'process.f90'),str(ROOT/'tests/dataqual15_hupsel/micro_pressure_probe_driver.f90'),'-o',str(exe)]
  p=subprocess.run(cmd,cwd=out,capture_output=True,timeout=180);(out/'compile.stdout').write_bytes(p.stdout);(out/'compile.stderr').write_bytes(p.stderr);assert p.returncode==0,p.stderr
  reports=[]
@@ -110,18 +110,34 @@ def main():
   try:parse(('\n'.join(lines)+'\n').encode(),frame,'pressure')
   except AssertionError:pass
   else:raise AssertionError('accepted unconverged candidate bracket')
+  for label in ('iteration_cap','tolerance_tag'):
+   lines=raw.splitlines();i=next(i for i,l in enumerate(lines) if l.startswith('GLOBAL '));v=lines[i].split()
+   if label=='iteration_cap':v[1]=str(int(frame[0][24])+1)
+   else:v[6]=str(frame[0][21]*2)
+   lines[i]=' '.join(v)
+   try:parse(('\n'.join(lines)+'\n').encode(),frame,'pressure')
+   except AssertionError:pass
+   else:raise AssertionError('accepted forged '+label)
+  lines=(root/'O0-incumbent/0.stdout').read_text().splitlines();i=next(i for i,l in enumerate(lines) if l.startswith('NODE '));v=lines[i].split();v[2]=str(float(v[2])+1e-6);lines[i]=' '.join(v)
+  try:parse(('\n'.join(lines)+'\n').encode(),frame,'incumbent')
+  except AssertionError:pass
+  else:raise AssertionError('accepted altered incumbent sink')
+  lines=old['literal-O0/0.input'].decode().splitlines();v=lines[35].split();v[4]='-1';lines[35]=' '.join(v)
+  bad=subprocess.run([str(root/'O0-incumbent/probe.exe')],input=('\n'.join(lines)+'\n').encode(),capture_output=True,timeout=60)
+  (root/'O0-incumbent/CONTROL_BAD_TABLE.stdout').write_bytes(bad.stdout);(root/'O0-incumbent/CONTROL_BAD_TABLE.stderr').write_bytes(bad.stderr)
+  assert bad.returncode!=0,'accepted malformed observed coefficient table'
   if a.capture:
    for f in root.rglob('*'):
     if f.is_file() and f.suffix!='.mod':files[f.relative_to(root).as_posix()]=f.read_bytes()
  summary={}
  for opt,r in results.items():
-  original=[list(map(float,l.split()[2:])) for l in old[f'literal-{opt}/0.stdout'].decode().splitlines() if l.startswith('NODE ')]
   summary[opt]={v:dict(maximum_leaf_remainder=max(abs(p['leaf_demand_remainder'] or 0) for p in x['profiles']),maximum_iterations=max([int(p['global_trace'][0][0]) if p['global_trace'] else 0 for p in x['profiles']]),constructor_mismatches=sum(p['coefficient_reconstruction_mismatches'] for p in x['profiles'])) for v,x in r.items()}
   for variant,x in r.items():
    errors=[]
    for i,profile in enumerate(x['profiles']):
     expected=[float(l.split()[2]) for l in old[f'literal-{opt}/{i}.stdout'].decode().splitlines() if l.startswith('NODE ')];errors.extend(abs(a-b) for a,b in zip(profile['node_sinks'],expected))
    summary[opt][variant]['maximum_original_node_difference']=max(errors)
+   assert max(errors)<=2e-5,'unchanged original-source nodal bound exceeded'
  if a.capture:
   files['AUDIT.json']=(json.dumps(dict(results=results,summary=summary,production_admission=False),indent=2)+'\n').encode();path=BASE/(STEM+'.tar.xz')
   with tarfile.open(path,'w:xz') as t:
