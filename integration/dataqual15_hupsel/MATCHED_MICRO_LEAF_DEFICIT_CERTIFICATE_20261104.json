@@ -1,0 +1,142 @@
+{
+  "scope": "Algebraic decomposition on actual accepted profiles with zero drought/salinity loss and active Campbell uptake; no global causal claim or production admission",
+  "formula": "oxygen_loss=(potential-leaf_demand_at_recorded_pressure)+(leaf_demand_at_recorded_pressure-actual)",
+  "source_archive_sha256": "56b96e437720cb30f21af0f525155b71ecf0d2255e640e95e2ca3dcc6206f88d",
+  "existing_partition_identity_bound": 1e-14,
+  "certificates": {
+    "O0": [
+      {
+        "profile": 0,
+        "time": [
+          524.0,
+          524.000078125
+        ],
+        "input_sha256": "36bf5040036758a6c54eb76caa3ddfd20a90c37af1ba18170b1e732d7b874ccf",
+        "potential_cm_day": 0.00637564892811852,
+        "actual_cm_day": 0.006375530342195602,
+        "observed_oxygen_loss_cm_day": 1.1858592291816294e-07,
+        "leaf_demand_at_native_pressure_cm_day": 0.006375648913371513,
+        "leaf_deficit_cm_day": 1.4747006567283893e-11,
+        "numerical_remainder_cm_day": 1.1857117591159566e-07,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": 0.9998756428570577
+      },
+      {
+        "profile": 1,
+        "time": [
+          524.999610809914,
+          525.0
+        ],
+        "input_sha256": "56b632c1326b1fa6651e59a221da06328f2d250c2df532417f83cefbc9e04107",
+        "potential_cm_day": 0.018570740220776604,
+        "actual_cm_day": 0.018568628722006045,
+        "observed_oxygen_loss_cm_day": 2.111498770558662e-06,
+        "leaf_demand_at_native_pressure_cm_day": 0.018570735405708184,
+        "leaf_deficit_cm_day": 4.815068420371826e-09,
+        "numerical_remainder_cm_day": 2.10668370213829e-06,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": 0.9977195968628967
+      },
+      {
+        "profile": 2,
+        "time": [
+          524.9049999999992,
+          524.9099999999992
+        ],
+        "input_sha256": "ffe7c76b0f96c05f42486ac99370ed3d2f0e831ada430acf696a14e031771989",
+        "potential_cm_day": 0.018570740220776604,
+        "actual_cm_day": 0.01856874663381983,
+        "observed_oxygen_loss_cm_day": 1.9935869567735964e-06,
+        "leaf_demand_at_native_pressure_cm_day": 0.018570735435510386,
+        "leaf_deficit_cm_day": 4.78526621799924e-09,
+        "numerical_remainder_cm_day": 1.988801690555597e-06,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": 0.9975996701815587
+      },
+      {
+        "profile": 7,
+        "time": [
+          583.0306940116393,
+          583.0307110708234
+        ],
+        "input_sha256": "5142a87aa46e30d73f523c372bc3641c78ac484273197ee15700e64704f96c83",
+        "potential_cm_day": 0.22261548109067486,
+        "actual_cm_day": 0.22255477798838608,
+        "observed_oxygen_loss_cm_day": 6.070310228878384e-05,
+        "leaf_demand_at_native_pressure_cm_day": 0.2225408853753133,
+        "leaf_deficit_cm_day": 7.45957153615584e-05,
+        "numerical_remainder_cm_day": -1.3892613072774562e-05,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": -0.2288616652025956
+      }
+    ],
+    "O2": [
+      {
+        "profile": 0,
+        "time": [
+          524.0,
+          524.000078125
+        ],
+        "input_sha256": "36bf5040036758a6c54eb76caa3ddfd20a90c37af1ba18170b1e732d7b874ccf",
+        "potential_cm_day": 0.00637564892811852,
+        "actual_cm_day": 0.006375530342195602,
+        "observed_oxygen_loss_cm_day": 1.1858592291816294e-07,
+        "leaf_demand_at_native_pressure_cm_day": 0.006375648913371513,
+        "leaf_deficit_cm_day": 1.4747006567283893e-11,
+        "numerical_remainder_cm_day": 1.1857117591159566e-07,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": 0.9998756428570577
+      },
+      {
+        "profile": 1,
+        "time": [
+          524.999610809914,
+          525.0
+        ],
+        "input_sha256": "56b632c1326b1fa6651e59a221da06328f2d250c2df532417f83cefbc9e04107",
+        "potential_cm_day": 0.018570740220776604,
+        "actual_cm_day": 0.018568628722006045,
+        "observed_oxygen_loss_cm_day": 2.111498770558662e-06,
+        "leaf_demand_at_native_pressure_cm_day": 0.018570735405708184,
+        "leaf_deficit_cm_day": 4.815068420371826e-09,
+        "numerical_remainder_cm_day": 2.10668370213829e-06,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": 0.9977195968628967
+      },
+      {
+        "profile": 2,
+        "time": [
+          524.9049999999992,
+          524.9099999999992
+        ],
+        "input_sha256": "ffe7c76b0f96c05f42486ac99370ed3d2f0e831ada430acf696a14e031771989",
+        "potential_cm_day": 0.018570740220776604,
+        "actual_cm_day": 0.01856874663381983,
+        "observed_oxygen_loss_cm_day": 1.9935869567735964e-06,
+        "leaf_demand_at_native_pressure_cm_day": 0.018570735435510386,
+        "leaf_deficit_cm_day": 4.78526621799924e-09,
+        "numerical_remainder_cm_day": 1.988801690555597e-06,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": 0.9975996701815587
+      },
+      {
+        "profile": 7,
+        "time": [
+          583.0306940116393,
+          583.0307110708234
+        ],
+        "input_sha256": "5142a87aa46e30d73f523c372bc3641c78ac484273197ee15700e64704f96c83",
+        "potential_cm_day": 0.22261548109067486,
+        "actual_cm_day": 0.22255477798838608,
+        "observed_oxygen_loss_cm_day": 6.070310228878384e-05,
+        "leaf_demand_at_native_pressure_cm_day": 0.2225408853753133,
+        "leaf_deficit_cm_day": 7.45957153615584e-05,
+        "numerical_remainder_cm_day": -1.3892613072774562e-05,
+        "identity_error_cm_day": 0.0,
+        "signed_remainder_fraction_of_observed_oxygen_loss": -0.2288616652025956
+      }
+    ]
+  },
+  "interpretation": "Signed numerical remainder is permitted by the existing1e-4 root residual tolerance. Its sensitivity to a different stopping/certificate rule requires a separate registered intervention with unchanged limits.",
+  "whole_scientific_admission": false
+}
