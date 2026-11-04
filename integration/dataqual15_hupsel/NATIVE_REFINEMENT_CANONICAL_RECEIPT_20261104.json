@@ -1,0 +1,93 @@
+{
+  "stage": "CANONICALLY_ADMITTED_COMPLETE_NATIVE_REFINEMENT_CONTROLS_NEGATIVE_SCIENTIFIC_RESULT",
+  "pr": 1512,
+  "merge": "7091854a34acfb1f23a3ba53808da86aff600f1f",
+  "qualified_head": "5b7460ccfea7a97baa16333b22a251e41001f9a6",
+  "final_evidence_head": "290e8f4019d6d5b2c36ff866644cb1611771c1b2",
+  "actual_merge_tree": "9857c4a8a02855a015e14e6fc086c8e07ead199b",
+  "final_head_tree": "9857c4a8a02855a015e14e6fc086c8e07ead199b",
+  "exact_tree_match": true,
+  "qualified_executable_dependency_delta": [],
+  "production_delta": [],
+  "actual_merge_verifier": "ACTUAL_FULL_NATIVE_TEMPORAL_REFINEMENT_CONTROLS_AND_LEDGER_AUDITS_PASS",
+  "actual_merge_normalized_log_sha256": "57b62099be9af827a8462c90edd2429a3aca6a0b0fb9751f52363b5547e94cf7",
+  "actual_native_execution": "Two Windows GNU16.2 checked O2 full1096-day from-input runs; each own O2 strict1088 tail and explicitly compatible1077 O0 tail followed by own O0 strict1088 tail",
+  "variants": {
+    "0.005": {
+      "actual_full_seconds": 1486.2607867999468,
+      "retained_failures": [
+        "solute_stock",
+        "potential_transpiration",
+        "oxygen",
+        "export_total",
+        "export_fraction_applied",
+        "crop_lai",
+        "crop_wrt",
+        "crop_wlv",
+        "crop_wst",
+        "crop_wso",
+        "crop_rd",
+        "crop_harvested_dry_matter"
+      ],
+      "solute_stock": {
+        "error": 0.007433283345571695,
+        "limit": 0.006477510502005319,
+        "inside_frozen_bound": false
+      },
+      "export_total": {
+        "error": 0.007433284078985025,
+        "limit": 0.0026331595296617276,
+        "inside_frozen_bound": false
+      },
+      "complete_ledger_profile_and_restart_audits": true
+    },
+    "0.0025": {
+      "actual_full_seconds": 2220.6668596999953,
+      "retained_failures": [
+        "solute_stock",
+        "potential_transpiration",
+        "oxygen",
+        "export_total",
+        "export_fraction_applied",
+        "crop_lai",
+        "crop_wrt",
+        "crop_wlv",
+        "crop_wst",
+        "crop_wso",
+        "crop_rd",
+        "crop_harvested_dry_matter"
+      ],
+      "solute_stock": {
+        "error": 0.007557079354063134,
+        "limit": 0.006477510502005319,
+        "inside_frozen_bound": false
+      },
+      "export_total": {
+        "error": 0.00755708013159051,
+        "limit": 0.0026331595296617276,
+        "inside_frozen_bound": false
+      },
+      "complete_ledger_profile_and_restart_audits": true
+    }
+  },
+  "frozen_metrics": 37,
+  "controls_per_variant": 8,
+  "no_foreign_variant_initial_checkpoint": true,
+  "cold_posix": {
+    "run": 41775494687,
+    "job": 126394759520,
+    "status": "success",
+    "data_remeasurement_only": true
+  },
+  "canonical_composition": {
+    "run": 41775494488,
+    "job": 126395125401,
+    "status": "success"
+  },
+  "all15_triggered_workflows_successful": true,
+  "time_cap_only_correction_supported": false,
+  "convergence_qualified": false,
+  "production_correction_qualified": false,
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution,0/3 whole science"
+}
