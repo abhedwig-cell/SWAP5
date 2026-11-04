@@ -1,0 +1,7 @@
+{
+  "purpose": "Test original holdout self-convergence before attributing day584 comparison failure to native physics.",
+  "existing_observation": "Sealed original DTMAX0.000625 day584 TREDWET0.003886660957 versus DTMAX0.0003125 0.003593541147: delta0.000293119810, larger than unchanged5.371840000016327e-7 oxygen bound. Bound was frozen from training days before holdout, not from convergence on this held-out pulse.",
+  "experiment": "Unmodified exact original provider/executable, fresh inputs through2003-08-07 (day584), reduce DTMAX only to0.00015625. Preserve original SWKIMPL0, root routines, all original tolerances/iterations and physical inputs. No checkpoint import or synthetic continuation.",
+  "adjudication": "Add a fail-closed reference self-convergence requirement. It may retain an underresolved-reference disposition and forbid physical promotion; it cannot enlarge frozen bounds, erase the failed native comparison or turn it into PASS. Further numerical reference work requires an explicit qualified successor.",
+  "production_admission": false
+}

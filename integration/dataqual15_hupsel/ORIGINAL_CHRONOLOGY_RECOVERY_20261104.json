@@ -1,5 +1,5 @@
 {
-  "stage": "ORIGINAL_ACCEPTED_CHRONOLOGY_MEASURED_HYDRAULIC_POLICY_DISCRIMINATION_RUNNING",
+  "stage": "LOCAL_ORIGINAL_CHRONOLOGY_REFERENCE_PREREQUISITE_QUALIFIED_CANONICAL_PENDING",
   "base": "7f38d369409d8d0a88320f3f3efd2f397b203cc7",
   "branch": "codex/autonomous-migration-20261103",
   "worktree": "SWAP5-AUTONOMOUS",
@@ -46,33 +46,68 @@
     "original_implicit_k": {
       "root": "../original-oxygen-k-jacobian-control-20261104",
       "day584_oxygen_cm": 0.003340311515,
-      "status": "Day584 measured, full1096 completion pending at checkpoint",
+      "status": "Actual full1096 complete, original-only research derivative/control; not production admission",
       "derivative_check": "../original-k-jacobian-check-smooth-20261104/RESULT.json",
       "derivative_check_cases": 170,
       "derivative_max_scaled_difference": 7.735985707855392e-07
-    }
-  },
-  "active": {
-    "native_frozen_k": {
-      "root": "../oxygen-frozen-k-runtime-20261104",
-      "session": 92702,
-      "fresh_prefix_target": 584
     },
     "original_implicit_strict_balance": {
       "root": "../original-oxygen-implicit-balanced-20261104",
-      "session": 98062,
-      "full_target": 1096
+      "full_days": 1096,
+      "day584_oxygen_cm": 0.003346775977
     },
-    "original_implicit_k_session": 53456
+    "native_backend_flag_control": {
+      "root": "../oxygen-frozen-k-runtime-20261104",
+      "fresh_prefix_days": 584,
+      "compiled_source_objects": 236,
+      "all_budget_records_equal_pressure_parent_prefix": true,
+      "maximum_native_water_residual_cm": 2.99482660892636e-14,
+      "interpretation": "No observable treatment response. Do not infer a native consistent-conductivity defect or policy cause from the source SWKIMPL1 control alone."
+    }
   },
+  "active": {},
   "retained_failures": [
     "Original repository S_CONC output recipe unsupported: use exact sealed archive inputs, failure retained in ../original-oxygen-chronology-20261104.",
     "Original timestamp raw-byte comparison failed on one generated header only; all physical bytes subsequently checked without model rerun.",
     "Original SWKIMPL1 unchanged source refuses missing KSATEXM derivative, return0/swap.err; failed control ../original-oxygen-implicit-k-control-20261104 is not PASS.",
     "First MICRO capture compiled against non-public alias, rejected before execution; corrected variables owner in bound capture.",
     "First MICRO comparison parser rejected explicit GLOBAL trace; final comparison removes only read-only trace from pressure probe and asserts exact pressure-only source postimage.",
-    "First derivative witness included non-differentiable hcrit and cancellation-sized differences; retained failures, corrected smooth branch witness with adequately sized differences; no model acceptance bound changed."
+    "First derivative witness included non-differentiable hcrit and cancellation-sized differences; retained failures, corrected smooth branch witness with adequately sized differences; no model acceptance bound changed.",
+    "Original literal QPROSUM nodal sum exceeds PTRA by one ulp on fully oxygen-limited leaves. Diagnostic checks now preserve those raw values and use the standard gamma(n+2) positive-summation certificate for34 nodes, not a physical tolerance or clipping.",
+    "Portable verifier initially rejected Windows source CRLF/key separators. It now matches the original Path.read_text newline treatment and normalizes only metadata path separators; all raw source and artifact SHA checks remain exact.",
+    "Initial artifact collection and audit were launched before collection completed. A complete collection marker/config SHA is now required; final audits run after completed collection and all model outputs remain unchanged."
   ],
-  "next": "Poll running actual controls through completion. Diagnose conductivity-time-discretization delta without treating the accepted native consistent policy as a defect by assumption. No production promotion or oracle/bound replacement from source-only/closer-output evidence. Seal and independently remeasure completed evidence; qualify any physical correction on its full native O0/POSIX/restart/corruption/preservation surface before canonical admission.",
-  "guard": "All frozen37 bounds and 5.371840000016327e-7 oxygen bound remain unchanged. No production SRC changed; all experiments use copied research bodies, exact sources/objects/executables, original physical inputs, or explicitly registered numerical input controls. No foreign numerical checkpoint seed."
+  "next": "Finish cold POSIX component/reference-prerequisite and canonical preservation qualification, then expected-head integrate this bounded diagnostic/qualification correction. Physical oxygen compatibility remains blocked by the underresolved original holdout reference and retained assembled-factor failure. A future physical correction needs an accuracy-qualified reference and full native runtime O0/POSIX/restart/corruption qualification; do not tune the runtime to the old fine value, relax frozen bounds, reclassify native FAIL as PASS, or replay already completed broad controls.",
+  "guard": "All frozen37 bounds and 5.371840000016327e-7 oxygen bound remain unchanged. No production SRC changed; all experiments use copied research bodies, exact sources/objects/executables, original physical inputs, or explicitly registered numerical input controls. No foreign numerical checkpoint seed.",
+  "reference_accuracy": {
+    "status": "REFERENCE_UNDERRESOLVED",
+    "caps": [
+      0.000625,
+      0.0003125,
+      0.00015625
+    ],
+    "day584_amounts_cm": [
+      0.003886660957,
+      0.003593541147,
+      0.003453844588
+    ],
+    "successive_changes_cm": [
+      0.00029311981,
+      0.000139696559
+    ],
+    "unchanged_bound_cm": 5.371840000016327e-07,
+    "fresh_original_prefix": "../original-oxygen-self-convergence-20261104",
+    "unmodified_original_executable": true,
+    "physical_native_comparison_retained_failed": true,
+    "new_gate": "tests/dataqual15_hupsel/original_oxygen_reference_gate.py",
+    "no_extrapolated_or_replaced_oracle": true
+  },
+  "qualification": {
+    "local": "Actual observed/unobserved original physical output and provider authority exact;3206 actual original MICRO profiles and41678 rooted oxygen rows cold O0/O2;11 refusal controls; complete236-object private native control bound and unchanged budget prefix; documentation source checks and strict mkdocs passed.",
+    "native_full_POSIX_runtime": false,
+    "production_correction_admitted": false,
+    "docs": "docs/science/HUPSEL_ORIGINAL_OXYGEN_CHRONOLOGY.md",
+    "capsule": "ORIGINAL_CHRONOLOGY_EVIDENCE_20261104.json",
+    "canonical": "PENDING"
+  }
 }
