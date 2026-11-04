@@ -1,5 +1,5 @@
 """Sealed original chronology and cold typed MICRO/oxygen replays; no scientific promotion."""
-import argparse,base64,gzip,hashlib,io,json,os,subprocess,tarfile,tempfile,sys
+import argparse,base64,gzip,hashlib,io,json,os,re,subprocess,tarfile,tempfile,sys
 from pathlib import Path
 import original_chronology_audit as audit
 import original_micro_comparison as micro
@@ -26,6 +26,18 @@ def execution_controls(files):
  for mode in ('observed','unobserved'):
   r=json.loads(files['original/'+mode+'/RUN.json']);assert sha(files['original/'+mode+'.exe'])==r['executable_sha256']
   assert all(sha(files['original/'+mode+'/'+n])==h for n,h in r['inputs'].items())
+ science=json.loads((BASE/'SPRINT03_SCIENCE_MANIFEST.json').read_text());archive=BASE/science['archive']
+ assert sha(archive.read_bytes())==science['archive_sha256']
+ with tarfile.open(archive) as t:
+  for name in ('swap.swp','maize.crp','potato.crp','grass.crp','283.met','swap.dra'):
+   a=t.extractfile('original/dtmax-0.000625/'+name).read()
+   b=t.extractfile('original/dtmax-0.0003125/'+name).read()
+   assert b==files['original/unobserved/'+name]
+   if name=='swap.swp':
+    pattern=rb'(?m)^(\s*DTMAX\s*=\s*)[\d.eE+\-]+'
+    assert len(re.findall(pattern,a))==len(re.findall(pattern,b))==1
+    assert re.sub(pattern,rb'\g<1>CAP',a)==re.sub(pattern,rb'\g<1>CAP',b)
+   else:assert a==b
  for label in ('reference-eps1e8','reference-eps1e10','reference-continuous-k','reference-implicit-k'):
   events=json.loads(files[label+'/EVENTS.json']);complete=json.loads(files[label+'/COMPLETE.json'])
   assert len(events)==3 and [e['returncode'] for e in events]==[0,0,100]
@@ -142,6 +154,13 @@ def main():
  assert not result['reference_gate']['scientific_admission_permitted']
  refinement=json.loads(files['reference-refinement/PREREGISTRATION.json'])
  assert refinement['unmodified_original_executable_sha256']==sha(files['original/unobserved.exe'])
+ for n,h in refinement['inputs_sha256'].items():
+  raw=files['reference-refinement/case/'+n];assert sha(raw)==h
+  expected=files['original/unobserved/'+n]
+  if n=='swap.swp':
+   expected,count=re.subn(rb'(?m)^(\s*DTMAX\s*=\s*)[\d.eE+\-]+',rb'\g<1>0.00015625',expected);assert count==1
+   expected,count=re.subn(rb'(?m)^(\s*TEND\s*=\s*)2004-12-31',rb'\g<1>2003-08-07',expected);assert count==1
+  assert raw==expected
  assert json.loads(files['reference-refinement/RESULT.json'])['swap_ok']
  # A strict source/body identity check supplements the observed equality of
  # every physical output; metadata receipts alone are not sufficient.
