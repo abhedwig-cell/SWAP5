@@ -1,0 +1,7 @@
+{
+  "purpose": "Complete the failed reference-only fully implicit conductivity discrimination without suppressing its unsupported-derivative error.",
+  "retained_failure": "../original-oxygen-implicit-k-control-20261104: SWKIMPL1 source refuses KSATEXM derivative, return0 and swap.err, no swap.ok; not a completed trajectory.",
+  "implementation": "Research copy only: implement the missing exact chain-rule derivative of the already existing linear KSATEXM conductivity branch: (KSATEXM-KSATTHR)/(1-Se_threshold)/(theta_s-theta_r) * dtheta/dh for h<0; zero for saturated h. Preserve all other derivative branches, frost multiplier, original physical K, solver controls and iterations.",
+  "independent_check": "Validate actual K(h) and the new derivative on the real original soil with central differences at nonsingular unsaturated branch points and the saturated constant branch, before full trajectory adjudication. No alteration of native production or frozen source/oracle.",
+  "production_admission": false
+}

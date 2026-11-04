@@ -8,18 +8,18 @@ program original_factor_comparison
  use MOD_cropdevelopment
  use MOD_texture_orgmat
  use MOD_SoilTemperature
- use O2_pars,only:c_top
+ use O2_pars,only:c_top,waterfilm_thickness
  use mod_bartholomeus_parameter_contract
  use mod_bartholomeus_runtime_input
  use mod_bartholomeus_factor_provider
- use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFERENCE
+ use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFERENCE,evaluate_bartholomeus_waterfilm
  implicit none
  type(BartholomeusImmutableDataset)::dataset
  type(BartholomeusCropParameters)::crop
  type(bartholomeus_runtime_view_t)::view
- real(8)::x(41,34),original(34),w100(34),w500(34),wr(34)
- real(8),allocatable::current(:)
- integer::i,n,io,record,u
+ real(8)::x(41,34),original(34),w100(34),w500(34),wr(34),original_film(34)
+ real(8),allocatable::current(:),film(:)
+ integer::i,n,io,record,u,status
  logical::ok
  character(4096)::name
  call get_command_argument(1,name);open(newunit=u,file=trim(name),status='old')
@@ -45,6 +45,7 @@ program original_factor_comparison
   c_top=0d0
   do i=1,n
    call OxygenStress(i,original(i))
+   original_film(i)=waterfilm_thickness
   end do
   crop%c_mroot=c_mroot;crop%f_senes=f_senes;crop%q10_root=q10_root
   crop%specific_resp_humus=specific_resp_humus;crop%q10_microbial=q10_microbial
@@ -56,10 +57,12 @@ program original_factor_comparison
   call evaluate_bartholomeus_factors_from_state(view,dataset,crop,wr(:n),wroot_node_top(:n), &
    x(20,1),BARTHOLOMEUS_WATERFILM_REFERENCE,current,ok)
   if(.not.ok)error stop 'actual original current factor refusal'
+  call evaluate_bartholomeus_waterfilm(view,dataset,BARTHOLOMEUS_WATERFILM_REFERENCE,film,status)
+  if(status/=0)error stop 'actual original waterfilm refusal'
   do i=1,n
-   write(*,'(i0,1x,i0,5(1x,es25.17e3))')record,i,x(1,1),x(2,1),original(i),current(i),x(19,i)
+   write(*,'(i0,1x,i0,7(1x,es25.17e3))')record,i,x(1,1),x(2,1),original(i),current(i),x(19,i),original_film(i),film(i)
   end do
-  deallocate(current,dataset%soil)
+  deallocate(current,dataset%soil,film)
  end do
  if(record==0)error stop 'empty original forcing'
 end program

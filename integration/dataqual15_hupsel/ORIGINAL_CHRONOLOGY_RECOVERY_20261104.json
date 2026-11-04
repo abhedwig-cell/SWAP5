@@ -1,0 +1,78 @@
+{
+  "stage": "ORIGINAL_ACCEPTED_CHRONOLOGY_MEASURED_HYDRAULIC_POLICY_DISCRIMINATION_RUNNING",
+  "base": "7f38d369409d8d0a88320f3f3efd2f397b203cc7",
+  "branch": "codex/autonomous-migration-20261103",
+  "worktree": "SWAP5-AUTONOMOUS",
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "original": {
+    "root": "../original-oxygen-chronology-bound-20261104",
+    "forcing": "../original-oxygen-forcing-20261104",
+    "micro": "../original-micro-forcing-bound-20261104",
+    "accepted_steps_day584": 3206,
+    "oxygen_day584_cm": 0.0035935411471249503,
+    "full_days": 1096,
+    "controls": "Physical CSV byte equality excluding exactly one generated timestamp; profiles, original accepted and node journals byte exact on successive output-only captures."
+  },
+  "native_reuse": {
+    "root": "../pressure-oxygen-observation-20261104",
+    "accepted_steps_day584": 4126,
+    "oxygen_day584_cm": 0.0033488600867843843
+  },
+  "decomposition": {
+    "total_native_minus_original_cm": -0.00024468106034056833,
+    "potential_contribution_cm": 9.079020512818644e-09,
+    "stress_fraction_contribution_cm": -0.00024469013936108104,
+    "interpretation": "Exact union-of-accepted-intervals algebra, not interpolation or causal admission."
+  },
+  "completed_controls": {
+    "native_dtmax_005": 0.003348842029956282,
+    "native_dtmax_0025": 0.0033487940236954397,
+    "original_qrombd_eps1e8": 0.003593541065,
+    "original_qrombd_eps1e10": 0.003593541061,
+    "original_continuous_k": 0.003593541147,
+    "original_strict_balance": 0.003547079198,
+    "original_micro_O0_O2": {
+      "root": "../original-micro-comparison-bound-20261104",
+      "actual_steps": 3206,
+      "max_node_sink_error": 5.841958236607603e-10,
+      "max_total_sink_error": 4.733936853629217e-09,
+      "integrated_delta_cm": 2.7670030685397436e-11
+    },
+    "original_factor_max_error": 0.0002936211862689664,
+    "original_factor_source_vs_stored_error": 7.252642930666298e-12,
+    "original_factor_status": "Unchanged assembled1e-4 bound FAILS on actual original states; earlier nine native profiles do not generalize.",
+    "high_precision_witness": "../original-factor-comparison-20261104/HIGH_PRECISION.json",
+    "original_implicit_k": {
+      "root": "../original-oxygen-k-jacobian-control-20261104",
+      "day584_oxygen_cm": 0.003340311515,
+      "status": "Day584 measured, full1096 completion pending at checkpoint",
+      "derivative_check": "../original-k-jacobian-check-smooth-20261104/RESULT.json",
+      "derivative_check_cases": 170,
+      "derivative_max_scaled_difference": 7.735985707855392e-07
+    }
+  },
+  "active": {
+    "native_frozen_k": {
+      "root": "../oxygen-frozen-k-runtime-20261104",
+      "session": 92702,
+      "fresh_prefix_target": 584
+    },
+    "original_implicit_strict_balance": {
+      "root": "../original-oxygen-implicit-balanced-20261104",
+      "session": 98062,
+      "full_target": 1096
+    },
+    "original_implicit_k_session": 53456
+  },
+  "retained_failures": [
+    "Original repository S_CONC output recipe unsupported: use exact sealed archive inputs, failure retained in ../original-oxygen-chronology-20261104.",
+    "Original timestamp raw-byte comparison failed on one generated header only; all physical bytes subsequently checked without model rerun.",
+    "Original SWKIMPL1 unchanged source refuses missing KSATEXM derivative, return0/swap.err; failed control ../original-oxygen-implicit-k-control-20261104 is not PASS.",
+    "First MICRO capture compiled against non-public alias, rejected before execution; corrected variables owner in bound capture.",
+    "First MICRO comparison parser rejected explicit GLOBAL trace; final comparison removes only read-only trace from pressure probe and asserts exact pressure-only source postimage.",
+    "First derivative witness included non-differentiable hcrit and cancellation-sized differences; retained failures, corrected smooth branch witness with adequately sized differences; no model acceptance bound changed."
+  ],
+  "next": "Poll running actual controls through completion. Diagnose conductivity-time-discretization delta without treating the accepted native consistent policy as a defect by assumption. No production promotion or oracle/bound replacement from source-only/closer-output evidence. Seal and independently remeasure completed evidence; qualify any physical correction on its full native O0/POSIX/restart/corruption/preservation surface before canonical admission.",
+  "guard": "All frozen37 bounds and 5.371840000016327e-7 oxygen bound remain unchanged. No production SRC changed; all experiments use copied research bodies, exact sources/objects/executables, original physical inputs, or explicitly registered numerical input controls. No foreign numerical checkpoint seed."
+}

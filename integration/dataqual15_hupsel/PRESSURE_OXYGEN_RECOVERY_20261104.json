@@ -32,5 +32,6 @@
   },
   "merge": "09fa3dbc1dd5332acf1cba5bee3791afad904955",
   "receipt": "PRESSURE_OXYGEN_CANONICAL_RECEIPT_20261104.json",
-  "integration_note": "REST non-force branch ref advanced correctly, but the existing PR snapshot retained the earlier qualified head. Close/reopen refreshed its snapshot to the exact final metadata head; expected-head merge then succeeded. Actual merge has the exact final tree and source replays pass. No head check or scientific control was bypassed."
+  "integration_note": "REST non-force branch ref advanced correctly, but the existing PR snapshot retained the earlier qualified head. Close/reopen refreshed its snapshot to the exact final metadata head; expected-head merge then succeeded. Actual merge has the exact final tree and source replays pass. No head check or scientific control was bypassed.",
+  "successor_recovery": "ORIGINAL_CHRONOLOGY_RECOVERY_20261104.json"
 }
