@@ -19,7 +19,7 @@ def audit(trace,nodes,budget):
  assert all(a[1]==b[0] for a,b in zip(trace,trace[1:]))
  assert all(r[1]>r[0] and r[8]==1 and -1e-12<=r[7]<=1+1e-12 for r in trace)
  assert all(all(map(math.isfinite,r)) for r in trace+nodes)
- assert all(abs(r[2]-r[3]-r[4]-r[5]-r[6])<=1e-10 for r in trace)
+ assert all(abs(r[2]-r[3]-r[4]-r[5]-r[6])<=1e-12 for r in trace)
  byday=collections.defaultdict(list)
  for r in trace:byday[int(math.ceil(r[1]))].append(r)
  assert sorted(byday)==list(range(525,585))
@@ -66,7 +66,14 @@ def measure(files,prior,builds,reference):
   for name,clock in [('budget.csv','t1_day'),('crop.csv','day')]:
    whole=table(f['whole/'+name]);assert whole==table(f['unobserved/'+name])
    assert [r for r in whole if float(r[clock])>537]==table(f['strict-own-537/'+name])
-   if opt=='O2':assert whole==[r for r in table(prior['case/'+name]) if 524<float(r[clock])<=584]
+   if opt=='O2':
+    original=[r for r in table(prior['case/'+name]) if 524<float(r[clock])<=584]
+    if name=='budget.csv':assert whole==original
+    else:
+     differences=[dict(day=x['day'],fields={k:dict(restarted=x[k],full=y[k]) for k in x if x[k]!=y[k]}) for x,y in zip(whole,original)]
+     assert len(differences)==60 and all(set(r['fields'])=={'pressure_average_cm'} for r in differences)
+     assert all(float(r['fields']['pressure_average_cm']['restarted'])==0 and float(r['fields']['pressure_average_cm']['full'])!=0 for r in differences)
+     assert json.loads(f['RETAINED_FULL_CROP_DIAGNOSTIC_FAILURE.json'])==dict(exact_full_crop_comparison=False,differences=differences)
   if opt=='O2':assert f['whole/checkpoint.bin']==prior['case/checkpoint-584.bin']
   for n in ('root_accepted.dat','root_nodes.dat'):
    assert [r for r in f['whole/'+n].splitlines() if float(r.split()[0])>=537]==f['strict-own-537/'+n].splitlines()
@@ -89,7 +96,9 @@ def measure(files,prior,builds,reference):
    try:audit(t,n,b)
    except AssertionError:controls.append(label)
    else:raise AssertionError('accepted injected root defect '+label)
-  report['rejected_defect_controls']=controls;reports[opt]=report
+  report['rejected_defect_controls']=controls
+  if opt=='O2':report['retained_full_crop_diagnostic_failure']=json.loads(f['RETAINED_FULL_CROP_DIAGNOSTIC_FAILURE.json'])
+  reports[opt]=report
  source=rows(reference['original/dtmax-0.0003125/result_output.csv'])
  bounds=json.loads(reference['science/FROZEN_BOUNDS_BEFORE_HOLDOUT.json']);limit=bounds['oxygen']['limit']
  original=dict(enumerate(source));assert len(original)==1097
@@ -138,7 +147,7 @@ def main():
    for n,b in sorted(files.items()):
     entry=tarfile.TarInfo(n);entry.size=len(b);entry.mtime=0;t.addfile(entry,io.BytesIO(b))
   deps=dict(json.loads((BASE/'NATIVE_REFINEMENT_EVIDENCE_20261104.json').read_text())['normalized_repository_dependency_sha256'])
-  for n in ('tests/dataqual15_hupsel/root_oxygen_observer.py','tests/dataqual15_hupsel/root_oxygen_evidence.py','.github/workflows/hupsel-root-oxygen.yml','integration/dataqual15_hupsel/ROOT_OXYGEN_PREREGISTRATION_20261104.json'):deps[n]=norm(ROOT/n)
+  for n in ('tests/dataqual15_hupsel/root_oxygen_observer.py','tests/dataqual15_hupsel/root_oxygen_evidence.py','.github/workflows/hupsel-root-oxygen.yml','integration/dataqual15_hupsel/ROOT_OXYGEN_PREREGISTRATION_20261104.json','integration/dataqual15_hupsel/ROOT_OXYGEN_SCOPE_FINDING_20261104.json'):deps[n]=norm(ROOT/n)
   (BASE/(STEM+'.json')).write_text(json.dumps(dict(status=result['status'],archive_sha256=sha(path.read_bytes()),files_sha256={n:sha(b) for n,b in files.items()},normalized_repository_dependency_sha256=deps,whole_scientific_admission=False),indent=2)+'\n')
  else:assert result==json.loads(files['AUDIT.json'])
  print(result['status']);print(json.dumps({o:dict(accepted_leaves=r['accepted_leaves'],maximum_daily_defect=r['maximum_independent_daily_defect_cm']) for o,r in result['builds'].items()}))

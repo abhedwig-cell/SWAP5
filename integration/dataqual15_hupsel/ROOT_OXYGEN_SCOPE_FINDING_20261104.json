@@ -1,0 +1,9 @@
+{
+  "stage": "ACTUAL_MEASUREMENT_RETAINED_NEGATIVE_CONTROL",
+  "initial_exact_full_crop_expectation": "FAILED: all60 restarted rows have pressure_average_cm=0, while the full trajectory retains -66.1049825815240695. Every other crop field, the complete budget and typed endpoint match exactly.",
+  "actual_runs": "All six existing checked O0/O2 unobserved, observed and own537 continuations completed successfully. The new qualifier's additional cross-protocol full-crop assertion failed after these runs; no model rerun, checkpoint editing or production correction is substituted.",
+  "source_localization": "main.f90 write_rotation_crop_row v(15) reads active_crop%last_pressure. hupsel_potato.f90 initializes last_pressure=0 and computes it in preparation. The rotation restart does not persist this diagnostic. This is evidence localization, not an admitted codec fix.",
+  "retained_assertions": "Exact complete daily crop equality remains mandatory between corresponding observed/unobserved restart controls and their strict own537 tails. O2 full-trajectory budget and typed endpoint remain exact. The full-crop comparison remains explicitly false with all60 raw field differences retained; no arbitrary field or numerical tolerance is relaxed.",
+  "bounded_admission": "Accepted root receipt measurement only. Full-from-start versus restarted crop diagnostic preservation and a diagnostic persistence correction remain OPEN, separately from the twelve existing scientific failures.",
+  "next": "Qualify the source-bound persistence/diagnostic contract separately before claiming complete cross-protocol crop-output preservation; continue matched-forcing oxygen analysis without overlapping the other chat."
+}

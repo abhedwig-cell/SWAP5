@@ -66,6 +66,9 @@ def qualify(opt,bundle,case,out,fc):
  plain=out/'unobserved';run(bundle/'swap5_hupsel_germination.exe',case,seed,plain,compatible=True)
  whole=out/'whole';run(exe,case,seed,whole,537,True)
  tail=out/'strict-own-537';run(exe,case,whole/'checkpoint-537.bin',tail)
+ reconcile(opt,case,out)
+def reconcile(opt,case,out):
+ plain=out/'unobserved';whole=out/'whole';tail=out/'strict-own-537'
  assert (whole/'checkpoint.bin').read_bytes()==(plain/'checkpoint.bin').read_bytes()==(tail/'checkpoint.bin').read_bytes()
  for name,clock in [('budget.csv','t1_day'),('crop.csv','day')]:
   assert daily(whole/name)==daily(plain/name)
@@ -74,14 +77,22 @@ def qualify(opt,bundle,case,out,fc):
   lines=(whole/name).read_text().splitlines()
   assert (tail/name).read_text().splitlines()==[v for v in lines if float(v.split()[0])>=537]
  if opt=='O2':
-  for name,clock in [('budget.csv','t1_day'),('crop.csv','day')]:
-   assert daily(whole/name)==[r for r in daily(case/name) if 524<float(r[clock])<=584]
+  assert daily(whole/'budget.csv')==[r for r in daily(case/'budget.csv') if 524<float(r['t1_day'])<=584]
+  old=[r for r in daily(case/'crop.csv') if 524<float(r['day'])<=584]
+  differences=[dict(day=x['day'],fields={k:dict(restarted=x[k],full=y[k]) for k in x if x[k]!=y[k]}) for x,y in zip(daily(whole/'crop.csv'),old)]
+  assert len(differences)==60 and all(set(r['fields'])=={'pressure_average_cm'} for r in differences)
+  assert all(float(r['fields']['pressure_average_cm']['restarted'])==0 and float(r['fields']['pressure_average_cm']['full'])!=0 for r in differences)
   assert (whole/'checkpoint.bin').read_bytes()==(case/'checkpoint-584.bin').read_bytes()
+  (out/'RETAINED_FULL_CROP_DIAGNOSTIC_FAILURE.json').write_text(json.dumps(dict(exact_full_crop_comparison=False,differences=differences),indent=2)+'\n')
  (out/'RESULT.json').write_text(json.dumps(dict(optimization=opt,exact_unobserved_endpoint=True,exact_daily=True,
   strict_own_537=True,exact_accepted_trace=True,initial_seed_scope='input-bound prior-build compatibility only',
   scientific_admission=False),indent=2)+'\n')
 if __name__=='__main__':
- p=argparse.ArgumentParser(description=__doc__)
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--reconcile-existing',action='store_true')
  for n in ('o0','o2','case','output','compiler'):p.add_argument('--'+n,type=Path,required=True)
- a=p.parse_args();out=a.output.resolve();out.mkdir()
- for opt,bundle in [('O0',a.o0),('O2',a.o2)]:qualify(opt,bundle.resolve(),a.case.resolve(),out/opt,a.compiler.resolve())
+ a=p.parse_args();out=a.output.resolve()
+ if a.reconcile_existing:
+  for opt in ('O0','O2'):reconcile(opt,a.case.resolve(),out/opt)
+ else:
+  out.mkdir()
+  for opt,bundle in [('O0',a.o0),('O2',a.o2)]:qualify(opt,bundle.resolve(),a.case.resolve(),out/opt,a.compiler.resolve())
