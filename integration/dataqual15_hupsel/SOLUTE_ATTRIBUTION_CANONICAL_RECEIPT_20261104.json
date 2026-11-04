@@ -1,0 +1,40 @@
+{
+  "stage": "CANONICALLY_ADMITTED_RETAINED_SOLUTE_DISCREPANCY_DIAGNOSTIC_ATTRIBUTION",
+  "pr": 1506,
+  "merge": "133d1f1c0df5e9b31603e3a45582688a124d61f2",
+  "qualified_head": "9edbd113c41b704acfaa44a4e02b6e686406a8a0",
+  "final_evidence_head": "29dd60f1aca12a12f566f960352ee9133f34d805",
+  "actual_merge_tree": "c82843b2a0babfaa63ecc22dfe12c0988d10d022",
+  "final_head_tree": "c82843b2a0babfaa63ecc22dfe12c0988d10d022",
+  "exact_tree_match": true,
+  "qualified_executable_dependency_delta": [],
+  "production_delta": [],
+  "model_rerun": false,
+  "actual_merge_verifier": "RETAINED_SOLUTE_DISCREPANCY_LEDGER_AND_PRIMITIVE_ATTRIBUTION_PASS",
+  "actual_merge_normalized_log_sha256": "c8f7642e92bddfd5d28918fb61caf8d7d54cbf25e4e81a18268a5fbb322335e6",
+  "cold_posix": {
+    "run": 41752348137,
+    "job": 126320224111,
+    "status": "success"
+  },
+  "canonical_composition": {
+    "run": 41752348097,
+    "job": 126320501101,
+    "status": "success"
+  },
+  "all15_triggered_workflows_successful": true,
+  "defect_controls": 9,
+  "actual_days": 1096,
+  "primitive_profile_dates": 16,
+  "nodes_per_date": 34,
+  "maximum_difference_identity_error": 2.0702840483610707e-16,
+  "first_frozen_stock_crossing_day": 1088,
+  "final_stock_difference": -0.007222933243498986,
+  "final_concentration_component": -0.007223342524514132,
+  "final_water_content_component": 4.0928150115998294e-07,
+  "native_export_route_separation_measured": false,
+  "physical_transport_mechanism_qualified": false,
+  "production_correction_qualified": false,
+  "whole_scientific_admission": false,
+  "counts_unchanged": "2/3 original execution,0/3 whole science"
+}
