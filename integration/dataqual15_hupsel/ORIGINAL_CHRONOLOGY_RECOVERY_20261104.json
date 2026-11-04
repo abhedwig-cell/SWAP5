@@ -123,7 +123,7 @@
   "canonical_receipt": "ORIGINAL_CHRONOLOGY_CANONICAL_RECEIPT_20261104.json",
   "next_precision_cluster": {
     "base": "982965034d87d7fc2a9c5f0c47df0ef1b3480672",
-    "status": "ACTUAL_FROM_INPUT_RUNS_IN_PROGRESS",
+    "status": "DEFAULT_GRID_EXECUTIONS_COMPLETE_NONLINEAR_CONTROL_PREREGISTERED",
     "question": "Whether original holdout oxygen approaches a stable value under two further fresh unmodified-source global time refinements; quantify observed convergence without a fitted or substituted oracle.",
     "caps": [
       7.8125e-05,
@@ -146,6 +146,40 @@
     "sessions": [
       16400,
       7324
-    ]
+    ],
+    "default_run_seconds": [
+      280.6390778,
+      494.8847009
+    ],
+    "default_day584_oxygen_cm": [
+      0.003387737174,
+      0.003362952709
+    ],
+    "default_max_reported_balance_errors_cm": [
+      6.443490252828e-05,
+      0.00013984133
+    ],
+    "precision_extension": {
+      "question": "Separate global time-grid change from original nonlinear convergence error: reported original daily balance error grows while grid changes remain above the frozen oxygen bound.",
+      "scope": "Same two caps, same exact original executable/physical inputs, same SWKIMPL0 and iteration/retry bounds. Apply only the already exercised stronger original input criteria from canonical reference-strict-balance control; no production tolerance change.",
+      "parameters": {
+        "CRITDEVBALCP": "1e-8",
+        "CRITDEVBALTOT": "1e-7",
+        "CRITDEVH1CP": "1e-6",
+        "CRITDEVH2CP": "1e-6",
+        "CRITDEVPONDDT": "1e-6"
+      },
+      "actual_roots": [
+        "../original-oxygen-grid-strict-000078125-20261104",
+        "../original-oxygen-grid-strict-0000390625-20261104"
+      ],
+      "expected_seconds": [
+        400,
+        750
+      ],
+      "timeout_seconds": 1800,
+      "short_test_insufficient": "Accumulated state/root/crop history requires fresh584-day prefixes. Existing pointwise physics/owner qualifications are unchanged and reused.",
+      "production_admission": false
+    }
   }
 }
