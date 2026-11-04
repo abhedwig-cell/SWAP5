@@ -114,10 +114,36 @@ def exact_window(case,strict,end):
         assert all(r==whole[r[key]]for r in suffix)
 
 
+def control_environment(out):
+    assert os.environ.get('OMP_NUM_THREADS')=='1'and not os.environ.get('SWAP5_DIAG_PREDECESSOR')
+    (out/'CONTROL_ENVIRONMENT.json').write_text(json.dumps(dict(OMP_NUM_THREADS='1',predecessor_override=False,scope='REAL_NONADVANCING_DECODER_CONTROLS_NO_MODEL_WINDOWS'),indent=2)+'\n')
+
+
+def controls_only(out,opt,platform,compiler):
+    # Complete original trajectories are never repeated or altered to repair
+    # control-environment provenance. Preserve every first control output.
+    assert(out/'EXECUTED.json').is_file()
+    from film_rotation_audit import native_binding
+    from production_diagnostic_native import app_refusals
+    from production_diagnostic_guards import qualify
+    native_binding(out,opt,platform)
+    build=json.loads((out/'native/build/BUILD.json').read_text());assert subprocess.check_output([str(compiler),'--version'],text=True).splitlines()[0]==build['compiler']
+    case=out/'unobserved1096';assert json.loads((case/'RESULT.json').read_text())['returncode']==0 and profile4((case/'checkpoint.bin').read_bytes())['day']==1096
+    for name in ('app-refusals','owner-controls'):
+        source=(out/name).resolve();target=(out/('initial-'+name)).resolve()
+        assert source.parent==target.parent==out.resolve()and source.is_dir()and not target.exists()
+        source.rename(target)
+    exe=out/'native/build'/('swap5_hupsel_germination.exe'if platform=='windows'else'swap5_hupsel_germination')
+    app_refusals(exe,case,out/'app-refusals');qualify(exe.parent,case,case/'checkpoint.bin',out/'owner-controls');control_environment(out)
+    print('EXACT_SAME_EXECUTABLE_MATURE_DECODER_CONTROLS_SINGLE_THREAD_REQUALIFIED',opt,flush=True)
+
+
 def main():
-    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--optimization',choices=['O0','O2'],required=True);parser.add_argument('--compiler',type=Path,required=True);parser.add_argument('--output',type=Path,required=True)
-    args=parser.parse_args();out=args.output.resolve();out.mkdir();platform='windows'if os.name=='nt'else'posix'
+    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--optimization',choices=['O0','O2'],required=True);parser.add_argument('--compiler',type=Path,required=True);parser.add_argument('--output',type=Path,required=True);parser.add_argument('--controls-only',action='store_true')
+    args=parser.parse_args();out=args.output.resolve();platform='windows'if os.name=='nt'else'posix'
     os.environ.pop('SWAP5_DIAG_PREDECESSOR',None);os.environ['OMP_NUM_THREADS']='1'
+    if args.controls_only:controls_only(out,args.optimization,platform,args.compiler.resolve());return
+    out.mkdir()
     registration=json.loads((BASE/REG).read_text());(out/'REGISTRATION.json').write_bytes((BASE/REG).read_bytes())
     scope=json.loads((ROOT/runtime.SCOPE).read_text());runtime.current_guard(scope)
     builds=materialize(out/'native',args.optimization,platform,args.compiler.resolve());inputs=runtime.inputs(out/'inputs');exe=builds['build']
@@ -137,7 +163,7 @@ def main():
         for name in ('checkpoint.bin','budget.csv','crop.csv','state.csv'):assert(case/name).read_bytes()==(observed/name).read_bytes(),name
     from production_diagnostic_native import app_refusals
     from production_diagnostic_guards import qualify
-    app_refusals(exe,case,out/'app-refusals');qualify(exe.parent,case,case/'checkpoint.bin',out/'owner-controls')
+    app_refusals(exe,case,out/'app-refusals');qualify(exe.parent,case,case/'checkpoint.bin',out/'owner-controls');control_environment(out)
     runtime.current_guard(scope)
     (out/'EXECUTED.json').write_text(json.dumps(dict(status='ACTUAL_FULL1096_PRIVATE_DEFAULT_AND_STRICT_CUT_RESTARTS_EXECUTED_AUDIT_PENDING',optimization=args.optimization,platform=platform,production_admission=False,whole_scientific_admission=False),indent=2)+'\n')
     print('ACTUAL_FULL1096_AND_STRICT_CUT_RESTARTS_EXECUTED',args.optimization,flush=True)

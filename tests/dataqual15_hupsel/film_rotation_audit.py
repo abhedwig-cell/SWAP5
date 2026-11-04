@@ -118,6 +118,7 @@ def audit(folder,opt,platform):
         assert all(int(b['calls'])>=int(a['calls'])for a,b in zip(receipts,receipts[1:]))
         result['attempted_counter_observation']=dict(physical_outputs_exact=True,scope='ATTEMPTED_CALLS_INCLUDE_REJECTED_TRIALS_NOT_ACCEPTED_FLUX',final=last)
     owner=json.loads((folder/'owner-controls/RESULT.json').read_text());app=json.loads((folder/'app-refusals/RESULT.json').read_text())
+    env=json.loads((folder/'CONTROL_ENVIRONMENT.json').read_text());assert env['OMP_NUM_THREADS']=='1'and env['predecessor_override']is False
     assert owner['executable_sha256']==run['executable_sha256']and owner['checkpoint_sha256']==sha((case/'checkpoint.bin').read_bytes())and owner['clock']==1096
     assert len(owner['events'])==37 and all(e['status']=='PASS'and e['returncode']==1 for e in owner['events'])and len(app['events'])==11 and all(e['returncode']==1 for e in app['events'])
     result['real_mature_controls']=dict(owner=37,app=11,public_writer='EXACT_UNCHANGED_EXECUTABLE_PREFIX_BOUNDARY_EVIDENCE_INHERITED')
