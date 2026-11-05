@@ -1,0 +1,85 @@
+{
+  "head": "5b315852849b8abed76879a4eb91a7da5101efcd",
+  "run_id": 42093414646,
+  "job_id": 127477098584,
+  "artifact_id": 13445549485,
+  "artifact_zip_sha256": "8b4657f5bbbb3362a93f388fd3be0695d297672992041728927741a5bd146057",
+  "artifact_bytes": 48302123,
+  "artifact_parts": [
+    {
+      "path": "NATIVE_N_PRODUCTION_POSIX_20261105.zip.part1",
+      "bytes": 47185920,
+      "sha256": "d40c56df192c81968f24ed20688c82b89f097f27e346c51e2a235891deb7b07e"
+    },
+    {
+      "path": "NATIVE_N_PRODUCTION_POSIX_20261105.zip.part2",
+      "bytes": 1116203,
+      "sha256": "e773dcb4ccc4121507f33d2b95ee05c37ece12328fa64b49af019e425426b1d4"
+    }
+  ],
+  "report": {
+    "O0": {
+      "audit": {
+        "status": "COMPLETE_NATIVE_N_MODULE_SOURCE_BUILD_AND_DATA_REMEASURED",
+        "optimization": "O0",
+        "results": {
+          "current": {
+            "mineral": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            },
+            "reactive_n": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            }
+          }
+        },
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "controls": [
+        "binary",
+        "source",
+        "native",
+        "negative",
+        "raw"
+      ],
+      "exact_admitted_private_native_bytes": true
+    },
+    "O2": {
+      "audit": {
+        "status": "COMPLETE_NATIVE_N_MODULE_SOURCE_BUILD_AND_DATA_REMEASURED",
+        "optimization": "O2",
+        "results": {
+          "current": {
+            "mineral": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            },
+            "reactive_n": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            }
+          }
+        },
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "controls": [
+        "binary",
+        "source",
+        "native",
+        "negative",
+        "raw"
+      ],
+      "exact_admitted_private_native_bytes": true
+    }
+  },
+  "current_admitted_private_native_byte_identity": true,
+  "current_cross_optimization_native_identity": true,
+  "whole_scientific_admission": false
+}

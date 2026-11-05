@@ -1,0 +1,68 @@
+{
+  "scope": "CURRENT_NATIVE_MINERAL_REACTIVE_CRC32_ISO_HDLC_ONLY",
+  "predecessor": "b41e1cda439a370a7e1966387412bdf55ca1b096",
+  "phase": "QUALIFIED_CURRENT_WINDOWS_AND_POSIX",
+  "production_delta": {
+    "src/adapter/mod_mineral_joint_restart_file.f90": {
+      "before": "08862083e419b472b2d5c8a078c45d3c6e4f4824",
+      "after": "ad9dd6bcf7618750189396346fd231c33835162e"
+    },
+    "src/adapter/mod_reactive_n_joint_restart_file.f90": {
+      "before": "b2b3af4103d21a4d5eedb021346bc49101d52333",
+      "after": "2e9b86416eb12286b71f5b67ab34e91ebbae1597"
+    }
+  },
+  "bridge_restore": {
+    "src/adapter/mod_mineral_joint_restart_file.f90": {
+      "before": "08862083e419b472b2d5c8a078c45d3c6e4f4824",
+      "after": "ad9dd6bcf7618750189396346fd231c33835162e"
+    },
+    "src/adapter/mod_reactive_n_joint_restart_file.f90": {
+      "before": "b2b3af4103d21a4d5eedb021346bc49101d52333",
+      "after": "2e9b86416eb12286b71f5b67ab34e91ebbae1597"
+    },
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "before": "c895255f1657195dcd41312e17cad6c2773cb9a4",
+      "after": "6f826f0494b39bedb195427c7dc63fb8b86eb914"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "before": "d47b7eb1ef9215bccb3346b4aca4a1168423a19d",
+      "after": "8ec0241bfce48c5a728cef0b164d87fbf501abbb"
+    },
+    ".github/workflows/native-n-crc.yml": {
+      "before": "a76f0399c47825e30fd07336dd75ab579b1f3b56",
+      "after": "cf47665f937187f85e1f96cba93cbe847944a91c"
+    }
+  },
+  "predecessor_production_trees": {
+    "src": "d058d1aeb61745365f4e07b04e49401ec902e3f3",
+    "app": "d24fcaa71724ccea7e1cf5f6317176b8068f611f",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "gate_source_sha256": {
+    "tests/dataqual15/verify_current_native_admission.py": "723f5c9a79eb366db3b4af124cb457f83c7aacc6702d55a6ff408b22cbf0e4d4",
+    "tests/dataqual15_hupsel/native_n_production.py": "4be2a9b9cefa66afa433b8333f5d91f81a356ddacc90e821d480056078de3ebe",
+    "tests/dataqual15_hupsel/native_n_production_runtime.py": "7b1ff36192bb7061c6ff9b30b9565796903bcdf2eb03ca48b8dcc4ec08cb33ab",
+    "tests/dataqual15_hupsel/native_n_production_evidence.py": "9183d689bb7ac47c49f47354836c7fafa06159fdae6927ddb796430e70cb208f",
+    "tests/dataqual15_hupsel/test_native_n_production.py": "ddc928ecddb5f4fcff3eb0ac6900c79ecb25e60dc55df0278a42ae5df31ae9ad",
+    ".github/workflows/native-n-production.yml": "96613c72c10971c0352609e246dd539fef73c720e4d3aaa4a739805929be751b",
+    ".github/workflows/native-n-crc.yml": "3a90c429560f2ff57547a70718d71224717a32b403f9bab40b8b4e4fc3b4a75c",
+    "tests/dataqual15_hupsel/native_n_crc_runtime.py": "215ccdf747b2ca046888210ad37b009f2855e13b3c629aa5006defd7e13d504d",
+    "tests/dataqual15_hupsel/native_n_crc_evidence.py": "f76b18a28fc59faf41bf9c0e8678e40f300800ad60c0872670c7723385d8bff5",
+    "tests/dataqual15_hupsel/crc_family_runtime.py": "0a90ae5fc80c396e11329348d2a153fd3461f26acadff6bbda99cfed1ca49f16",
+    "tests/dataqual15_hupsel/production_crop_logical_admission.py": "3787a672c9e2216087aa66be0933c5488b2e341e14d3a8398c59c69efed57a53",
+    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_PREREGISTRATION_20261105.json": "2c2f77eb6e30a6100c79644995f61c05a001fcb0fdf89bd14c2a442c85fe6cf9",
+    "integration/dataqual15_hupsel/NATIVE_N_CRC_WINDOWS_20261105_O0.json": "2648d59825f510945765138bc735ebb314ec24662b91fbc7f2171e7a424f78d8",
+    "integration/dataqual15_hupsel/NATIVE_N_CRC_WINDOWS_20261105_O2.json": "44d3b67e8248e78183e8f088a9706a01aa1c6b72daf330b05051ac8ad06cc69e",
+    "integration/dataqual15_hupsel/NATIVE_N_CRC_POSIX_20261105.json": "4c16358d7f0a1998368e17d32686f9df4cc1bf82ece93b9ef867527cede4211e"
+  },
+  "qualified_artifact_records": {
+    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_WINDOWS_20261105_O0.json": "b9e8f4255ba2e79923db9e1a1badd67bb851029d74f0900151043c486cea4e7b",
+    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_WINDOWS_20261105_O2.json": "68b964307b5da7bc1f18259d8a3b7d8817db1834458270fc3f2d9e58d71f3f35",
+    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_POSIX_20261105.json": "5e1b2eeee357ce226b9e7d6f06b31099acc3b4aac000fb27f846d358a22c98bf"
+  },
+  "whole_scientific_admission": false,
+  "migration_complete": false,
+  "counts": "Execution2/3, whole science0/3 unchanged",
+  "production_admission_boundary": "Actual current native mineral/reactive modules and bounded original physical tests plus exact preimage entire prior entry/status/source authority; no source-only production admission"
+}

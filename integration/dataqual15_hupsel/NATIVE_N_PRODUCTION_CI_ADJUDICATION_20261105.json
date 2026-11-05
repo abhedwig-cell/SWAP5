@@ -1,0 +1,356 @@
+{
+  "pr": 1572,
+  "qualified_source_head": "829c82892ff652460b21597040835e90a2b65fb1",
+  "authority": "docs/development/workstream-execution-protocol.md Autonomous long-session rules7/8",
+  "decision": "BOUNDED_CURRENT_NATIVE_N_CRC_QUALIFIED_OLD_RED_VERDICTS_RETAINED",
+  "all_36_workflows_terminal": true,
+  "successful_workflows": 21,
+  "failed_broader_workflows": 15,
+  "all_ci_pass": false,
+  "current_owner_run": 42095375578,
+  "actual_current_cold_run": 42093414646,
+  "current_windows_posix_and_owning_predecessor_qualified": true,
+  "baseline": "b41e1cda439a370a7e1966387412bdf55ca1b096",
+  "baseline_run": 42094797789,
+  "baseline_artifact": 13447790766,
+  "baseline_artifact_zip_sha256": "fd8fab7924aa7d266cd2d8dd790be9bccd49b66ceaf0843276095f2175d3c0e6",
+  "baseline_verdict": "All15 actual before-source commands fail uncensored; recorded as failed observations, not old PASS. The two outer P2E09/P2E10 source refusals now precede their existing nested reference/solver-policy failures; this distinction is explicit and supplies no current numerical verdict.",
+  "failures": [
+    {
+      "run_id": 42095375709,
+      "workflow": "Hupsel production native crop logical successor",
+      "baseline_case": "logical-owner",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483879139,
+          "name": "current-native",
+          "failed_steps": [
+            "Select exact unmodified logical-codec authority"
+          ],
+          "current_signal": "splitlines())=={SOURCE}",
+          "current_signal_excerpt": "2026-11-05T19:37:05.0209968Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15_hupsel/rotation_native_admission.py\", line 53, in main\n2026-11-05T19:37:05.0216847Z     r=json.loads((ROOT/SCOPE).read_text());guard(r)\n2026-11-05T19:37:05.0217357Z                                            ^^^^^^^^\n2026-11-05T19:37:05.0218181Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15_hupsel/rotation_native_admission.py\", line 32, in guard\n2026-11-05T19:37:05.0219334Z     assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE}\n2026-11-05T19:37:05.0220258Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "full_downloaded_log_sha256": "c7a28c9e01a903e1da50c8995b228447debe70d47b4754f898a9fff8d20e6601",
+          "baseline_signal": "splitlines())=={SOURCE}"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375699,
+      "workflow": "PUB-P2E06 Reference local-balance scaling",
+      "baseline_case": "p2e06",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483878716,
+          "name": "reference-local-balance-scaling",
+          "failed_steps": [
+            "Diagnose exact P2E03 Reference local-balance scaling"
+          ],
+          "current_signal": "reference tree differs from P2E05 canonical base",
+          "current_signal_excerpt": "2026-11-05T19:37:18.6306104Z ##[group]Run bash tests/publication/run_pub_p2e06_reference_local_balance_scaling.sh\n2026-11-05T19:37:18.6306974Z \u001b[36;1mbash tests/publication/run_pub_p2e06_reference_local_balance_scaling.sh\u001b[0m\n2026-11-05T19:37:18.6329032Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:37:18.6329376Z ##[endgroup]\n2026-11-05T19:37:18.7729177Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base\n2026-11-05T19:37:18.7766641Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "7247f98395705c170038ea50fd1cc4a34af53a1eefabcb50c1054775e9e563ff",
+          "baseline_signal": "reference tree differs from P2E05 canonical base"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375321,
+      "workflow": "Registered Grassgrowth thermal production profile",
+      "baseline_case": "thermal-owner",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877159,
+          "name": "native",
+          "failed_steps": [
+            "Verify exact current source and retained native evidence"
+          ],
+          "current_signal": "splitlines())==PATHS",
+          "current_signal_excerpt": "2026-11-05T19:38:07.5803553Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15/thermal_profile_production.py\", line 139, in main\n2026-11-05T19:38:07.5804220Z     r=json.loads((ROOT/SCOPE).read_text());guard(r);files=unpack(r);proof=verify(r,files);proof['data_refusals']=data_controls(r,files)\n2026-11-05T19:38:07.5804700Z                                            ^^^^^^^^\n2026-11-05T19:38:07.5805112Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15/thermal_profile_production.py\", line 26, in guard\n2026-11-05T19:38:07.5805718Z     assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())==PATHS\n2026-11-05T19:38:07.5806211Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "full_downloaded_log_sha256": "d1326911536334c30a3fe4d075a6e51a86d86e414267f98a891b40470839242d",
+          "baseline_signal": "splitlines())==PATHS"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375428,
+      "workflow": "PUB-ME D1 transition authority",
+      "baseline_case": "d1",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483876770,
+          "name": "d1-transition-authority",
+          "failed_steps": [
+            "Run preregistered D1 gate"
+          ],
+          "current_signal": "D1 workunit changed production/reference source",
+          "current_signal_excerpt": "2026-11-05T19:38:08.7220628Z ##[group]Run bash tests/publication/run_pub_me_d1_transition_authority.sh\n2026-11-05T19:38:08.7221145Z \u001b[36;1mbash tests/publication/run_pub_me_d1_transition_authority.sh\u001b[0m\n2026-11-05T19:38:08.7234806Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:38:08.7235062Z ##[endgroup]\n2026-11-05T19:38:08.8423867Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source\n2026-11-05T19:38:08.8450777Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "0ab53d5b8b92c882c4a5465d5c4bb6d470208bd08bdbd3afab0e2092782908c9",
+          "baseline_signal": "D1 workunit changed production/reference source"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375475,
+      "workflow": "PUB-P2E04 Reference failure census",
+      "baseline_case": "census",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877118,
+          "name": "reference-failure-census",
+          "failed_steps": [
+            "Census exact P2E03 Reference failure classes"
+          ],
+          "current_signal": "Cannot open module file",
+          "current_signal_excerpt": "2026-11-05T19:38:35.9499602Z src/runtime/mod_fmr_drainage_response_binding.f90:27:7:\n2026-11-05T19:38:35.9500096Z \n2026-11-05T19:38:35.9500513Z    27 |   use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &\n2026-11-05T19:38:35.9501213Z       |       1\n2026-11-05T19:38:35.9502461Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory\n2026-11-05T19:38:35.9503199Z compilation terminated.",
+          "full_downloaded_log_sha256": "ddc0da2d146f0de5fab695614734d9b9d59f541608c3075d47887c677a5e9445",
+          "baseline_signal": "Cannot open module file"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375590,
+      "workflow": "PUB-ME D3 origin authority",
+      "baseline_case": "d3",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877397,
+          "name": "d3-origin-authority",
+          "failed_steps": [
+            "Run preregistered D3 gate"
+          ],
+          "current_signal": "D3 changed production/reference source",
+          "current_signal_excerpt": "2026-11-05T19:37:40.4051409Z ##[group]Run bash tests/publication/run_pub_me_d3_origin_authority.sh\n2026-11-05T19:37:40.4051898Z \u001b[36;1mbash tests/publication/run_pub_me_d3_origin_authority.sh\u001b[0m\n2026-11-05T19:37:40.4066907Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:37:40.4067184Z ##[endgroup]\n2026-11-05T19:37:40.5461247Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source\n2026-11-05T19:37:40.5488788Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "fc4a0df2fa005d1bce7abe7bed8bffdf341952f272b668713e8a4a01444ec1c6",
+          "baseline_signal": "D3 changed production/reference source"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375463,
+      "workflow": "SWAP5-PERF01 exact implementation admission",
+      "baseline_case": "performance",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877037,
+          "name": "exact-successor",
+          "failed_steps": [
+            "Validate native evidence and unchanged original predecessor authority"
+          ],
+          "current_signal": "AssertionError: unreviewed delta",
+          "current_signal_excerpt": "2026-11-05T19:39:41.6618217Z     ^^^^^^^^\n2026-11-05T19:39:41.6618688Z   File \"/home/runner/work/SWAP5/SWAP5/integration/audits/verify_dataqual12_current.py\", line 13, in source\n2026-11-05T19:39:41.6619239Z     assert dict((r.split('\\t')[1],r.split('\\t')[0])for r in delta.splitlines())==s['scientific_delta'],'unreviewed delta'\n2026-11-05T19:39:41.6619652Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-11-05T19:39:41.6619931Z AssertionError: unreviewed delta\n2026-11-05T19:39:41.6719495Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "3c51a03c6f4c3c75f2a784e65388a36a0984a7af7d1fc3a110c4e5ef9a0a9e4c",
+          "baseline_signal": "AssertionError: unreviewed delta"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375760,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "baseline_case": "native-layout",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127485973898,
+          "name": "preservation",
+          "failed_steps": [
+            "Select closed predecessor view and current native I/O proof"
+          ],
+          "current_signal": "AssertionError: unreviewed production paths",
+          "current_signal_excerpt": "2026-11-05T19:43:30.4645709Z     ^^^^^^^^^^^^^\n2026-11-05T19:43:30.4646494Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15/verify_native_restart_admission.py\", line 23, in guard\n2026-11-05T19:43:30.4647642Z     assert changed==set(record['production_delta']),'unreviewed production paths'\n2026-11-05T19:43:30.4648325Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-11-05T19:43:30.4649106Z AssertionError: unreviewed production paths\n2026-11-05T19:43:30.4804056Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "64f58c3b71a30eca74473951dbaa9cf4157a75d283454b643f46bb7166ec6b6e",
+          "baseline_signal": "AssertionError: unreviewed production paths"
+        },
+        {
+          "job_id": 127485973923,
+          "name": "recovery",
+          "failed_steps": [
+            "Select closed predecessor view and current native I/O proof"
+          ],
+          "current_signal": "AssertionError: unreviewed production paths",
+          "current_signal_excerpt": "2026-11-05T19:42:55.7929633Z     ^^^^^^^^^^^^^\n2026-11-05T19:42:55.7930145Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15/verify_native_restart_admission.py\", line 23, in guard\n2026-11-05T19:42:55.7938444Z     assert changed==set(record['production_delta']),'unreviewed production paths'\n2026-11-05T19:42:55.7948460Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-11-05T19:42:55.7948835Z AssertionError: unreviewed production paths\n2026-11-05T19:42:55.8063605Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "f6024799e6ca95256cec0172587e2e9f94b305ed8de09129991270184c9f58b4",
+          "baseline_signal": "AssertionError: unreviewed production paths"
+        },
+        {
+          "job_id": 127485973948,
+          "name": "stress-attribution",
+          "failed_steps": [
+            "Select closed predecessor view and current native I/O proof"
+          ],
+          "current_signal": "AssertionError: unreviewed production paths",
+          "current_signal_excerpt": "2026-11-05T19:41:41.4556907Z     ^^^^^^^^^^^^^\n2026-11-05T19:41:41.4557359Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15/verify_native_restart_admission.py\", line 23, in guard\n2026-11-05T19:41:41.4558010Z     assert changed==set(record['production_delta']),'unreviewed production paths'\n2026-11-05T19:41:41.4558421Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-11-05T19:41:41.4558734Z AssertionError: unreviewed production paths\n2026-11-05T19:41:41.4744768Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "5f5cd20d3a9dc636104627d9d366e708fd1d54bedb514f0cffee8e8005519fce",
+          "baseline_signal": "AssertionError: unreviewed production paths"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375575,
+      "workflow": "PUB-P2E08 Reference valid calibration domain",
+      "baseline_case": "p2e08",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877722,
+          "name": "reference-valid-calibration-domain",
+          "failed_steps": [
+            "Construct Reference-only common calibration domain"
+          ],
+          "current_signal": "P2E08 mutated src or reference relative to reconciled canonical",
+          "current_signal_excerpt": "2026-11-05T19:40:24.6859747Z ##[group]Run bash tests/publication/run_pub_p2e08_reference_valid_calibration_domain.sh\n2026-11-05T19:40:24.6860401Z \u001b[36;1mbash tests/publication/run_pub_p2e08_reference_valid_calibration_domain.sh\u001b[0m\n2026-11-05T19:40:24.6881686Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:40:24.6881958Z ##[endgroup]\n2026-11-05T19:40:24.8156361Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical\n2026-11-05T19:40:24.8190289Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "4b973c521cccb73823d5e65dbdd83734a24711fc693d1c74d1cff55864736c50",
+          "baseline_signal": "P2E08 mutated src or reference relative to reconciled canonical"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375538,
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "baseline_case": "p2e02",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483878613,
+          "name": "reference-uncertainty-gate",
+          "failed_steps": [
+            "Run Reference-only temporal refinement pilot"
+          ],
+          "current_signal": "Cannot open module file",
+          "current_signal_excerpt": "2026-11-05T19:41:30.9471337Z src/runtime/mod_fmr_drainage_response_binding.f90:27:7:\n2026-11-05T19:41:30.9472158Z \n2026-11-05T19:41:30.9472574Z    27 |   use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &\n2026-11-05T19:41:30.9473199Z       |       1\n2026-11-05T19:41:30.9474166Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory\n2026-11-05T19:41:30.9475297Z compilation terminated.",
+          "full_downloaded_log_sha256": "6c5c74194dedab553ac17f5ee14f0ad344141aecbed189f8d4c1ccd06de8531b",
+          "baseline_signal": "Cannot open module file"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375322,
+      "workflow": "PUB-P2E07 Reference cancellation floor",
+      "baseline_case": "p2e07",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877304,
+          "name": "reference-cancellation-floor",
+          "failed_steps": [
+            "Diagnose exact P2E06 Reference cancellation floor"
+          ],
+          "current_signal": "P2E07 mutated src or reference",
+          "current_signal_excerpt": "2026-11-05T19:40:42.8441547Z ##[group]Run bash tests/publication/run_pub_p2e07_reference_cancellation_floor.sh\n2026-11-05T19:40:42.8442144Z \u001b[36;1mbash tests/publication/run_pub_p2e07_reference_cancellation_floor.sh\u001b[0m\n2026-11-05T19:40:42.8464377Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:40:42.8464662Z ##[endgroup]\n2026-11-05T19:40:42.9328546Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference\n2026-11-05T19:40:42.9368435Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "0cc74cae6a2a032a4aec953568574fe9ed50b6271d8cd09e2ebbbf9d27f22608",
+          "baseline_signal": "P2E07 mutated src or reference"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375405,
+      "workflow": "Hupsel production diagnostic source successor",
+      "baseline_case": "logical-owner",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877001,
+          "name": "current-source-posix",
+          "failed_steps": [
+            "Select exact diagnostic authority when crop codec has a successor"
+          ],
+          "current_signal": "splitlines())=={SOURCE}",
+          "current_signal_excerpt": "2026-11-05T19:41:36.3668770Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15_hupsel/rotation_native_admission.py\", line 53, in main\n2026-11-05T19:41:36.3669295Z     r=json.loads((ROOT/SCOPE).read_text());guard(r)\n2026-11-05T19:41:36.3669587Z                                            ^^^^^^^^\n2026-11-05T19:41:36.3670135Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15_hupsel/rotation_native_admission.py\", line 32, in guard\n2026-11-05T19:41:36.3671091Z     assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE}\n2026-11-05T19:41:36.3671786Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "full_downloaded_log_sha256": "be5e5a243480f9d5e540520d65d6ec9d72e0a69d0eb16bb857d2f0ea00093c8c",
+          "baseline_signal": "splitlines())=={SOURCE}"
+        },
+        {
+          "job_id": 127483877454,
+          "name": "exact-current-and-predecessor",
+          "failed_steps": [
+            "Select exact unmodified diagnostic tests"
+          ],
+          "current_signal": "splitlines())=={SOURCE}",
+          "current_signal_excerpt": "2026-11-05T19:41:34.3272122Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15_hupsel/rotation_native_admission.py\", line 53, in main\n2026-11-05T19:41:34.3272599Z     r=json.loads((ROOT/SCOPE).read_text());guard(r)\n2026-11-05T19:41:34.3272999Z                                            ^^^^^^^^\n2026-11-05T19:41:34.3273366Z   File \"/home/runner/work/SWAP5/SWAP5/tests/dataqual15_hupsel/rotation_native_admission.py\", line 32, in guard\n2026-11-05T19:41:34.3273871Z     assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE}\n2026-11-05T19:41:34.3274245Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+          "full_downloaded_log_sha256": "e3b941b372f6a43c1be69747def6bc1d2ca4870e36d07d10d234ae282a80ab07",
+          "baseline_signal": "splitlines())=={SOURCE}"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375503,
+      "workflow": "PUB-P2E09 Reference-only threshold freeze",
+      "baseline_case": "p2e09",
+      "classification": "EARLIER_EXACT_SOURCE_ENVELOPE_REFUSAL_WITH_PREEXISTING_NESTED_POLICY_FAILURE",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483877392,
+          "name": "reference-threshold-freeze",
+          "failed_steps": [
+            "Replay Reference calibration and validate frozen thresholds"
+          ],
+          "current_signal": "PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base",
+          "current_signal_excerpt": "2026-11-05T19:41:07.1447319Z ##[group]Run bash tests/publication/run_pub_p2e09_reference_threshold_freeze.sh\n2026-11-05T19:41:07.1447927Z \u001b[36;1mbash tests/publication/run_pub_p2e09_reference_threshold_freeze.sh\u001b[0m\n2026-11-05T19:41:07.1468564Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:41:07.1468841Z ##[endgroup]\n2026-11-05T19:41:07.2274579Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base\n2026-11-05T19:41:07.2301852Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "89c54710e905e39e2e4ecc6384b5c5bceb4042038be5823b4f16e69e00438e34",
+          "baseline_signal": "PUB_P2E09_GATE_FAIL admitted P2E08 Reference replay"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375616,
+      "workflow": "PUB-P2E10 broad E0 paired matrix",
+      "baseline_case": "p2e10",
+      "classification": "EARLIER_EXACT_SOURCE_ENVELOPE_REFUSAL_WITH_PREEXISTING_NESTED_POLICY_FAILURE",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483878377,
+          "name": "broad-e0-paired-matrix",
+          "failed_steps": [
+            "Execute preregistered broad E0 paired matrix"
+          ],
+          "current_signal": "PUB_P2E10_GATE_FAIL P2E10 mutated src or reference",
+          "current_signal_excerpt": "2026-11-05T19:42:37.6614745Z ##[group]Run bash tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh\n2026-11-05T19:42:37.6615384Z \u001b[36;1mbash tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh\u001b[0m\n2026-11-05T19:42:37.6638163Z shell: /usr/bin/bash -e {0}\n2026-11-05T19:42:37.6638447Z ##[endgroup]\n2026-11-05T19:42:37.6853777Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference\n2026-11-05T19:42:37.6886141Z ##[error]Process completed with exit code 1.",
+          "full_downloaded_log_sha256": "f930c34eecdeface36976227d1bebe6113ab6214a5f67d947b30168da7bc9196",
+          "baseline_signal": "PUB_P2E10_GATE_FAIL solver contract drift"
+        }
+      ]
+    },
+    {
+      "run_id": 42095375526,
+      "workflow": "PUB-P2E04 Reference B/C sweeps",
+      "baseline_case": "p2e04",
+      "classification": "ACTUAL_UNCHANGED_PREDECESSOR_FAILURE_REPRODUCED",
+      "legacy_verdict": "FAILED_NOT_RELABELLED_PASS",
+      "jobs": [
+        {
+          "job_id": 127483878271,
+          "name": "reference-bc-sweeps",
+          "failed_steps": [
+            "Run preregistered Reference Stage B and C sweeps"
+          ],
+          "current_signal": "Cannot open module file",
+          "current_signal_excerpt": "2026-11-05T19:42:12.4807046Z src/runtime/mod_fmr_drainage_response_binding.f90:27:7:\n2026-11-05T19:42:12.4807339Z \n2026-11-05T19:42:12.4808029Z    27 |   use mod_drainage_dramet3_response, only: dramet3_level_parameters_t, dramet3_channel_control_t, &\n2026-11-05T19:42:12.4808416Z       |       1\n2026-11-05T19:42:12.4809198Z Fatal Error: Cannot open module file \u2018mod_drainage_dramet3_response.mod\u2019 for reading at (1): No such file or directory\n2026-11-05T19:42:12.4809671Z compilation terminated.",
+          "full_downloaded_log_sha256": "4af89a9016efb548fb7590a67c9f94d1b67b87093dfeb239f888ac54a488749b",
+          "baseline_signal": "Cannot open module file"
+        }
+      ]
+    }
+  ],
+  "production_scope": "Two exact shared-CRC imports only. Current332-provider O0/O2 Windows/POSIX full native model/state/corruption evidence and exact predecessor entry execute separately. No legacy gate, tolerance or reference policy weakened.",
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}

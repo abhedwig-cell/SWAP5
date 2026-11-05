@@ -1,5 +1,5 @@
 {
-  "status": "CANONICAL_BOUNDED_FULL_NATIVE_PRIVATE_RESEARCH_ADMITTED_RECEIPT_QUALIFICATION_PENDING",
+  "status": "CANONICAL_BOUNDED_FULL_NATIVE_PRIVATE_RESEARCH_CLOSED",
   "baseline": "fa4867340a4b1bde88e943f94df4658fdbaecc52",
   "branch": "codex/autonomous-migration-20261103",
   "worktree": "SWAP5-AUTONOMOUS",
@@ -15,7 +15,7 @@
   "production_admission": false,
   "whole_scientific_admission": false,
   "migration_complete": false,
-  "next": "Observe receipt replay/preservation and all final workflows to terminal; merge exact receipt. Then owning production successor for the two CRC modules remains executable; full affected admission is required. Matrix and output/saved-generation duplicates remain separate unqualified full-native scopes.",
+  "next": "Production successor preregistered in NATIVE_N_PRODUCTION_PREREGISTRATION_20261105.json. Matrix/output/saved generation full-native scopes remain separate.",
   "cold_setup_failure": {
     "head": "4fa6a0086f381d576a10f38708451fa3974917ee",
     "run": 42082680783,
@@ -31,5 +31,9 @@
   "actual_merge": "ffe1863cdfc645e2607a43ff56451c3bc85f877c",
   "qualified_head": "d2197bdd20d775094eca68f4cb4473dde31ec778",
   "qualified_and_merge_tree": "079443c4a707ed07c70c1f446117fe67d9acd73d",
-  "source_workflows": "All16 terminal success"
+  "source_workflows": "All16 terminal success",
+  "receipt_pr": 1571,
+  "receipt_merge": "b41e1cda439a370a7e1966387412bdf55ca1b096",
+  "receipt_tree": "b18e71e79de61b482e1b2ff7779f1c1ee995d9d3",
+  "receipt_workflows": "All13 terminal success at3973d2d53d12790dcf87949cbe33559471ccac70; native replay/current predecessor preservation42086972045"
 }

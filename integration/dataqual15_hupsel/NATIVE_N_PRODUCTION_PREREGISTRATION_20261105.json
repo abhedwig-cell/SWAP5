@@ -1,0 +1,20 @@
+{
+  "status": "PREREGISTERED_BEFORE_PRODUCTION_SOURCE_EDIT_AND_CURRENT_NATIVE_EXECUTION",
+  "baseline": "b41e1cda439a370a7e1966387412bdf55ca1b096",
+  "production_delta": [
+    "src/adapter/mod_mineral_joint_restart_file.f90",
+    "src/adapter/mod_reactive_n_joint_restart_file.f90"
+  ],
+  "correction": "Remove only duplicated crc32 functions and import existing public mod_age_joint_restart_file::crc32. Append/check, bounds, schemas, status comparisons, payloads and all science unchanged.",
+  "selection": "Fresh coherent real current full-module mineral/reactive drivers O0/O2 Windows/POSIX; all original/projected physical assertions, native/opaque/fresh/cross-opt bytes,22 reader controls; exact prior private native byte witnesses and current-source/predecessor authority; reject evidence/guard mutations. Existing broad CI through terminal with actual baseline counterfactual only for attributable unrelated failures.",
+  "invariants": "No solver/retry/tolerance/mass/restart/state/ownership/CRC fail-closed relaxation. Legitimate zero CRC not blanket rejected. No whole science or full seasonal promotion.",
+  "prior_research_prs": [
+    1570,
+    1571
+  ],
+  "prior_research_merge": "b41e1cda439a370a7e1966387412bdf55ca1b096",
+  "source_only_admission": false,
+  "whole_scientific_admission": false,
+  "migration_complete": false,
+  "nonoverlap": "Only two native N disk CRC modules and owned new scope/entry/status key. Peer numerical/thermal/Andelst ownership unchanged."
+}
