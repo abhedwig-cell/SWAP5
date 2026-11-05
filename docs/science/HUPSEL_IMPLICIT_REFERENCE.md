@@ -70,3 +70,13 @@ source/derivative/executable/input/profile proof, current/unmodified predecessor
 preservation and all15 initial-head workflows pass. It does not execute new
 POSIX/O0 scientific trajectories. Final metadata qualification must retain the
 same exact evidence and explicit scientific failure before bounded integration.
+
+All15 final-head workflows PASS, including exact retained source/data/refusal
+remeasurement and current/unmodified predecessor preservation. PR1553 is
+canonically integrated ateef0c31e22346324ff85e2bf7483d4527dd14878; actual tree
+f2d083312a4db83bc751011475c1ae9310b2cb1f equals the qualified test-merge tree.
+Production src/app/reference trees are unchanged. Actual authority is
+IMPLICIT_REFERENCE_CANONICAL_RECEIPT_20261105.json. This closes a bounded
+negative reference-family experiment, while its scientific screen explicitly
+FAILS. Original reference accuracy, native physical correction and production/
+whole-science admission stay open. No blind follow-up grid sweep is selected.
