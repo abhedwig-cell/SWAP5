@@ -29,7 +29,7 @@ the literal original oxygen source under unchanged1e-4; final MICRO attribution
 replays against the literal original no-frost partition under1e-14. Intermediate
 oxygen loss and final accepted MICRO loss are retained separately.
 
-Six source/selection/scope tests and twelve actual trace/forcing/output defects
+Eight source/selection/scope/transport tests and twelve actual trace/forcing/output defects
 protect the observations and audit. These are distinct from the parent's full
 original37-comparison verdict. A pointwise operator or attribution PASS cannot
 explain the whole discrepancy, establish reference accuracy or admit a physical
@@ -41,3 +41,28 @@ changed proof fails closed. Production and whole-science admission remain false.
 
 Selection/cost: COMPOSED_OXYGEN_PREREGISTRATION_20261105.json.
 Recovery: COMPOSED_OXYGEN_RECOVERY_20261105.json.
+
+Both Windows O0/O2 experiments now pass all selected actual controls. Each
+retains31346 accepted leaves, nine freshly selected profiles and109 rooted-node
+comparisons. Complete root-only and forcing closures each rebuild236 providers.
+Unobserved, root-observed, forcing-observed and both strict own537 tails equal
+the platform/optimization-own full584 endpoint. All crop/budget fields, including
+persisted pressure diagnostics, agree; the historical schema3 diagnostic-loss
+exception is not used. Twelve actual trace/frame/output defects per opt are
+refused; current/unmodified predecessor preservation also passes.
+
+Independent daily root-integral defect is at most2.1094237467877974e-15cm.
+The literal original same-state oxygen factor differs by at most
+1.131552356259391e-6 under unchanged1e-4; final original MICRO partition
+difference is0 under1e-14. Yet oxygen584 remains0.0033488614852679407cm
+against original0.003593541147cm, outside unchanged5.371840000016327e-7cm.
+These selected pointwise/attribution results do not explain or remove that
+full-series discrepancy. Intermediate factor loss is retained separately from
+final accepted MICRO loss. No physical correction or admission is inferred.
+
+Two verifier transport faults were corrected without repeating or altering the
+completed numeric histories: exact JSON representation of literal-source metadata
+and retention of original process .input payloads. Eight focused tests now cover
+them, and both full raw source/object/input/data/control/replay capsules are
+sealed and independently re-read. Cold actual POSIX O0/O2 and final canonical
+qualification are still required.
