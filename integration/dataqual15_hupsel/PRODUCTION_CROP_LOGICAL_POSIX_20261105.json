@@ -1,0 +1,53 @@
+{
+  "artifact_id": 13410889330,
+  "run_id": 42018674069,
+  "head": "433fca1fb13963e8f47953693927ea90efe83f33",
+  "artifact_zip_sha256": "f7db650380ec34c54ea63e2a3e3c4c7eb0c9a079d3d50395726bb0bee29a3c7e",
+  "archive_parts": {
+    "PRODUCTION_CROP_LOGICAL_POSIX_20261105.zip.part00": "e0d68d280ee3d192f7453b39d74eea1b106512d0f0d0d3f80079a82a324760f9",
+    "PRODUCTION_CROP_LOGICAL_POSIX_20261105.zip.part01": "234dde5e0af94c678bc872c2c3abe3ce37f037f0de6ad1528a5851b5783742be",
+    "PRODUCTION_CROP_LOGICAL_POSIX_20261105.zip.part02": "5f65833b295e3b09ad259ad0616010dcfda59cbc94e2d3a0cecb67b989bcaf93",
+    "PRODUCTION_CROP_LOGICAL_POSIX_20261105.zip.part03": "fd13b60d375df9edaafc1787b5c2b9fa94195d659f598e946be6ab768ac0e088"
+  },
+  "production_source_sha256": "c33b82afc8284232a4ecb96f329840f6af349caa151b7157f49e53a9d317b8c6",
+  "report": {
+    "O0": {
+      "audit": {
+        "status": "ACTUAL_PRODUCTION_HUPSEL_WEATHER_NATIVE_BYTE_AND_REFUSAL_GATES_PASS",
+        "optimization": "O0",
+        "whole_scientific_admission": false,
+        "rotation_qualified": false
+      },
+      "data_refusals": [
+        "binary",
+        "own_restart",
+        "writer_faults",
+        "owner",
+        "old_encoder",
+        "schema",
+        "weather_native",
+        "promoted"
+      ]
+    },
+    "O2": {
+      "audit": {
+        "status": "ACTUAL_PRODUCTION_HUPSEL_WEATHER_NATIVE_BYTE_AND_REFUSAL_GATES_PASS",
+        "optimization": "O2",
+        "whole_scientific_admission": false,
+        "rotation_qualified": false
+      },
+      "data_refusals": [
+        "binary",
+        "own_restart",
+        "writer_faults",
+        "owner",
+        "old_encoder",
+        "schema",
+        "weather_native",
+        "promoted"
+      ]
+    }
+  },
+  "whole_scientific_admission": false,
+  "rotation_qualified": false
+}

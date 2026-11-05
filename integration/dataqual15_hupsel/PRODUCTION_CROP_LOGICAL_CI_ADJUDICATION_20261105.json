@@ -1,0 +1,656 @@
+{
+  "head": "433fca1fb13963e8f47953693927ea90efe83f33",
+  "pr": 1561,
+  "admission": "HELD_ALL_FAILED_CHECKS_REMAIN_FAILURE_NO_WAIVER",
+  "failures": [
+    {
+      "run_id": 42018674232,
+      "jobs": [
+        {
+          "id": 127215551441,
+          "name": "d1-transition-authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018674232,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install GNU Fortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run preregistered D1 gate",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:25:56.5306779Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "run_id": 42018674094,
+      "jobs": [
+        {
+          "id": 127215551293,
+          "name": "reference-bc-sweeps",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018674094,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run preregistered Reference Stage B and C sweeps",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:26:35.8818369Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 42018673766,
+      "jobs": [
+        {
+          "id": 127215549458,
+          "name": "reference-cancellation-floor",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673766,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Diagnose exact P2E06 Reference cancellation floor",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:25:02.5934265Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "run_id": 42018673890,
+      "jobs": [
+        {
+          "id": 127215550485,
+          "name": "d3-origin-authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673890,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install GNU Fortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run preregistered D3 gate",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:24:57.9289741Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "run_id": 42018673769,
+      "jobs": [
+        {
+          "id": 127215549581,
+          "name": "reference-threshold-freeze",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673769,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Replay Reference calibration and validate frozen thresholds",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:25:15.5993166Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    },
+    {
+      "run_id": 42018673770,
+      "jobs": [
+        {
+          "id": 127215550189,
+          "name": "broad-e0-paired-matrix",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673770,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Execute preregistered broad E0 paired matrix",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:25:09.5289687Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "run_id": 42018673775,
+      "jobs": [
+        {
+          "id": 127215549960,
+          "name": "reference-local-balance-scaling",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673775,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Diagnose exact P2E03 Reference local-balance scaling",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:25:52.3402137Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "run_id": 42018673870,
+      "jobs": [
+        {
+          "id": 127215550798,
+          "name": "reference-uncertainty-gate",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673870,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run Reference-only temporal refinement pilot",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:25:40.2229447Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 42018674062,
+      "jobs": [
+        {
+          "id": 127215550865,
+          "name": "Verify current corrected reference",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018674062,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Check out repository",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Set up Python",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Install gate dependency",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Check B1.10 predecessor identity",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Check pinned B1.11 corrected-reference identity",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Check B1.11 SWAP-011 admission consistency",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 7
+            },
+            {
+              "name": "Recheck SWAP-012 predecessor inverse evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8
+            },
+            {
+              "name": "Check SWAP-002 source-bound compiled tillage-start gate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9
+            },
+            {
+              "name": "Check VQ gate unit tests",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 10
+            },
+            {
+              "name": "Check deterministic B1.11 reconstruction tooling syntax",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 11
+            },
+            {
+              "name": "Post Set up Python",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 21
+            },
+            {
+              "name": "Post Check out repository",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:26:32.4106879Z     \"current_manifest_snapshot\": false,",
+        "2026-11-05T11:26:32.4107650Z     \"expected_difference_registry\": false,",
+        "2026-11-05T11:26:32.4112520Z     \"patch_identity_manifest_snapshot\": false,",
+        "2026-11-05T11:26:32.4112941Z     \"patch_order_manifest\": false,",
+        "2026-11-05T11:26:32.4117318Z     \"snapshot_definition\": false,",
+        "2026-11-05T11:26:32.4118685Z     \"source_tree_manifest_manifest\": false,",
+        "2026-11-05T11:26:32.4119673Z     \"source_tree_shape_manifest\": false,",
+        "2026-11-05T11:26:32.4121376Z   \"status\": \"FAIL\""
+      ]
+    },
+    {
+      "run_id": 42018673922,
+      "jobs": [
+        {
+          "id": 127215551408,
+          "name": "reference-valid-calibration-domain",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018673922,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Construct Reference-only common calibration domain",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:28:02.2706348Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    },
+    {
+      "run_id": 42018674590,
+      "jobs": [
+        {
+          "id": 127215551987,
+          "name": "reference-failure-census",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42018674590,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Census exact P2E03 Reference failure classes",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T11:28:47.9584908Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    }
+  ]
+}

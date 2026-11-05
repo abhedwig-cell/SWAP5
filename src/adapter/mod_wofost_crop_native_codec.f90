@@ -16,6 +16,38 @@ module mod_wofost_crop_native_codec
     module procedure weather_native_crop_view
   end interface
 contains
+  ! Preserve native stream bytes, but never evaluate a malformed logical.
+  subroutine scalar_logical_io(u,reading,value,io)
+    use iso_fortran_env,only:int8
+    integer,intent(in)::u
+    logical,intent(in)::reading
+    logical,intent(inout)::value
+    integer,intent(out)::io
+    integer(int8)::raw(storage_size(value)/8),yes(storage_size(value)/8),no(storage_size(value)/8)
+    io=0
+    yes=transfer(.true.,yes);no=transfer(.false.,no)
+    if(reading)then
+      read(u,iostat=io)raw
+      if(io/=0)return
+    else
+      raw=transfer(value,raw)
+    end if
+    if(.not.all(raw==yes).and..not.all(raw==no))then
+      io=1;return
+    end if
+    if(reading)then
+      value=all(raw==yes)
+    else
+      write(u,iostat=io)raw
+    end if
+  end subroutine
+  logical function logical_bytes_valid(value)result(valid)
+    use iso_fortran_env,only:int8
+    logical,intent(in)::value
+    integer(int8)::raw(storage_size(value)/8),yes(storage_size(value)/8),no(storage_size(value)/8)
+    raw=transfer(value,raw);yes=transfer(.true.,yes);no=transfer(.false.,no)
+    valid=all(raw==yes).or.all(raw==no)
+  end function
   subroutine weather_native_event(u,reading,v,io,source_clipped_schema)
     integer,intent(in)::u
     logical,intent(in)::reading
@@ -28,6 +60,11 @@ contains
     type(fmr_wofost_crop_event_identity_persistence_t)::event
     io=0;clipped_schema=.false.
     if(present(source_clipped_schema))clipped_schema=source_clipped_schema
+    if(.not.reading)then
+      if(.not.logical_bytes_valid(v%root_layer_reduction_clipped))then
+        io=1;return
+      end if
+    end if
     if(.not.clipped_schema)then
       if(reading)then
         v%root_layer_reduction_clipped=.false.
@@ -35,18 +72,10 @@ contains
         io=1;return
       end if
     else
-      if(reading)then
-        read(u,iostat=io)v%root_layer_reduction_clipped
-      else
-        write(u,iostat=io)v%root_layer_reduction_clipped
-      end if
+      call scalar_logical_io(u,reading,v%root_layer_reduction_clipped,io)
       if(io/=0)return
     end if
-    if(reading)then
-      read(u,iostat=io)v%valid
-    else
-      write(u,iostat=io)v%valid
-    end if
+    call scalar_logical_io(u,reading,v%valid,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%lineage_id
@@ -84,11 +113,7 @@ contains
       write(u,iostat=io)v%potential_transpiration_integral
     end if
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%deepest_root_oxygen_factor_available
-    else
-      write(u,iostat=io)v%deepest_root_oxygen_factor_available
-    end if
+    call scalar_logical_io(u,reading,v%deepest_root_oxygen_factor_available,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%deepest_root_oxygen_factor_integral
@@ -96,11 +121,7 @@ contains
       write(u,iostat=io)v%deepest_root_oxygen_factor_integral
     end if
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%rootzone_drought_uptake_factor_available
-    else
-      write(u,iostat=io)v%rootzone_drought_uptake_factor_available
-    end if
+    call scalar_logical_io(u,reading,v%rootzone_drought_uptake_factor_available,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%rootzone_drought_uptake_factor_integral
@@ -109,11 +130,7 @@ contains
     end if
     if(io/=0)return
     present_value=allocated(v%potential_root_sink_integral)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       n=0
@@ -135,11 +152,7 @@ contains
       if(io/=0)return
     end if
     present_value=allocated(v%root_sink_reduction_integral)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       n=0
@@ -213,11 +226,7 @@ contains
     end if
     if(io/=0)return
     present_value=allocated(v%leaf_biomass)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       n=0
@@ -239,11 +248,7 @@ contains
       if(io/=0)return
     end if
     present_value=allocated(v%specific_leaf_area)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       n=0
@@ -265,11 +270,7 @@ contains
       if(io/=0)return
     end if
     present_value=allocated(v%leaf_age)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       n=0
@@ -300,11 +301,7 @@ contains
     integer::n,st
     type(fmr_wofost_crop_event_identity_persistence_t)::event
     io=0
-    if(reading)then
-      read(u,iostat=io)v%crop_emerged
-    else
-      write(u,iostat=io)v%crop_emerged
-    end if
+    call scalar_logical_io(u,reading,v%crop_emerged,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%development_stage
@@ -313,11 +310,7 @@ contains
     end if
     if(io/=0)return
     present_value=allocated(v%biomass)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       if(reading)allocate(v%biomass,stat=io)
@@ -325,27 +318,31 @@ contains
       call weather_native_biomass(u,reading,v%biomass,io);if(io/=0)return
     end if
     present_value=allocated(v%evolution_continuation)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       if(reading)then
         allocate(v%evolution_continuation,stat=io);if(io/=0)return
-        read(u,iostat=io)v%evolution_continuation
+      end if
+      if(reading)then
+        read(u,iostat=io)v%evolution_continuation%temperature_sum
       else
-        write(u,iostat=io)v%evolution_continuation
+        write(u,iostat=io)v%evolution_continuation%temperature_sum
+      end if
+      if(io/=0)return
+      call scalar_logical_io(u,reading,v%evolution_continuation%anthesis_reached,io)
+      if(io/=0)return
+      if(reading)then
+        read(u,iostat=io)v%evolution_continuation%minimum_temperature_history_count, &
+          v%evolution_continuation%minimum_temperature_history
+      else
+        write(u,iostat=io)v%evolution_continuation%minimum_temperature_history_count, &
+          v%evolution_continuation%minimum_temperature_history
       end if
       if(io/=0)return
     end if
     present_value=allocated(v%b110_reference_compatibility)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       if(reading)then
@@ -369,35 +366,24 @@ contains
     type(fmr_wofost_crop_event_identity_persistence_t)::event
     io=0;clipped_schema=.false.;with_grass=.false.
     if(present(grass_schema))with_grass=grass_schema
+    if(.not.reading)then
+      if(.not.logical_bytes_valid(v%grass_management_present))then
+        io=1;return
+      end if
+    end if
     if(.not.reading.and..not.with_grass.and.v%grass_management_present)then
       io=1;return
     end if
     if(present(source_clipped_schema))clipped_schema=source_clipped_schema
-    if(reading)then
-      read(u,iostat=io)v%valid
-    else
-      write(u,iostat=io)v%valid
-    end if
+    call scalar_logical_io(u,reading,v%valid,io)
     if(io/=0)return
     call weather_native_owner(u,reading,v%owner,io);if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%potential_shadow_present
-    else
-      write(u,iostat=io)v%potential_shadow_present
-    end if
+    call scalar_logical_io(u,reading,v%potential_shadow_present,io)
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%potential_shadow%active
-    else
-      write(u,iostat=io)v%potential_shadow%active
-    end if
+    call scalar_logical_io(u,reading,v%potential_shadow%active,io)
     if(io/=0)return
     present_value=allocated(v%potential_shadow%biomass)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       if(reading)allocate(v%potential_shadow%biomass,stat=io)
@@ -405,11 +391,7 @@ contains
       call weather_native_biomass(u,reading,v%potential_shadow%biomass,io);if(io/=0)return
     end if
     present_value=allocated(v%potential_shadow%b110_reference_compatibility)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       if(reading)then
@@ -420,23 +402,19 @@ contains
       end if
       if(io/=0)return
     end if
-    if(reading)then
-      read(u,iostat=io)v%root_growth_carrier_present
-    else
-      write(u,iostat=io)v%root_growth_carrier_present
-    end if
+    call scalar_logical_io(u,reading,v%root_growth_carrier_present,io)
     if(io/=0)return
     if(reading)then
-      read(u,iostat=io)v%root_growth_carrier
+      read(u,iostat=io)v%root_growth_carrier%actual_gross_root_growth, &
+        v%root_growth_carrier%potential_gross_root_growth
     else
-      write(u,iostat=io)v%root_growth_carrier
+      write(u,iostat=io)v%root_growth_carrier%actual_gross_root_growth, &
+        v%root_growth_carrier%potential_gross_root_growth
     end if
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%root_depth_present
-    else
-      write(u,iostat=io)v%root_depth_present
-    end if
+    call scalar_logical_io(u,reading,v%root_growth_carrier%valid,io)
+    if(io/=0)return
+    call scalar_logical_io(u,reading,v%root_depth_present,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%root_depth
@@ -444,18 +422,10 @@ contains
       write(u,iostat=io)v%root_depth
     end if
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%root_profile_present
-    else
-      write(u,iostat=io)v%root_profile_present
-    end if
+    call scalar_logical_io(u,reading,v%root_profile_present,io)
     if(io/=0)return
     present_value=allocated(v%root_profile%root_biomass_by_node)
-    if(reading)then
-      read(u,iostat=io)present_value
-    else
-      write(u,iostat=io)present_value
-    end if
+    call scalar_logical_io(u,reading,present_value,io)
     if(io/=0)return
     if(present_value)then
       n=0
@@ -476,17 +446,9 @@ contains
       end if
       if(io/=0)return
     end if
-    if(reading)then
-      read(u,iostat=io)v%receipt_present
-    else
-      write(u,iostat=io)v%receipt_present
-    end if
+    call scalar_logical_io(u,reading,v%receipt_present,io)
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle_present
-    else
-      write(u,iostat=io)v%lifecycle_present
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle_present,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%lifecycle_schema_version
@@ -494,11 +456,7 @@ contains
       write(u,iostat=io)v%lifecycle_schema_version
     end if
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%valid
-    else
-      write(u,iostat=io)v%lifecycle%valid
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%valid,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%lifecycle%revision
@@ -518,35 +476,15 @@ contains
       call reconstruct_wofost_crop_event_identity_from_persistence(event,v%lifecycle%last_event_identity,st)
       if(st/=0)then;io=1;return;end if
     end if
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%prepared
-    else
-      write(u,iostat=io)v%lifecycle%prepared
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%prepared,io)
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%sown
-    else
-      write(u,iostat=io)v%lifecycle%sown
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%sown,io)
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%germinated
-    else
-      write(u,iostat=io)v%lifecycle%germinated
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%germinated,io)
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%emerged
-    else
-      write(u,iostat=io)v%lifecycle%emerged
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%emerged,io)
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%harvested
-    else
-      write(u,iostat=io)v%lifecycle%harvested
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%harvested,io)
     if(io/=0)return
     if(reading)then
       read(u,iostat=io)v%lifecycle%preparation_delay
@@ -572,21 +510,13 @@ contains
       write(u,iostat=io)v%lifecycle%initialization_profile
     end if
     if(io/=0)return
-    if(reading)then
-      read(u,iostat=io)v%lifecycle%task2_initialized
-    else
-      write(u,iostat=io)v%lifecycle%task2_initialized
-    end if
+    call scalar_logical_io(u,reading,v%lifecycle%task2_initialized,io)
     if(io/=0)return
     call weather_native_event(u,reading,v%receipt,io,clipped_schema);if(io/=0)return
     ! Explicit opt-in extension: legacy native streams retain their bytes.
     if(present(grass_schema))then
       if(grass_schema)then
-        if(reading)then
-          read(u,iostat=io)v%grass_management_present
-        else
-          write(u,iostat=io)v%grass_management_present
-        end if
+        call scalar_logical_io(u,reading,v%grass_management_present,io)
         if(io/=0)return
         if(v%grass_management_present)then
           if(reading)then
