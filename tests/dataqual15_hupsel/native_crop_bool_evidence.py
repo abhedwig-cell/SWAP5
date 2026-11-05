@@ -16,6 +16,11 @@ def audit(files):
         assert result['opaque_derived_logicals_qualified'] is False and result['scalar_sites']==32
         build=json.loads(get('build/BUILD.json'));assert build['provider_count']==236 and build['complete_module_closure_rebuilt'] is True
         assert build['interventions']==[policy.SOURCE] and '-'+opt in build['flags']
+        current_sources={name.replace('\\','/').split('/SWAP5-AUTONOMOUS/',1)[1]:digest for name,digest in build['source_sha256'].items()if '/SWAP5-AUTONOMOUS/'in name.replace('\\','/')}
+        assert len(current_sources)==234 and policy.SOURCE not in current_sources
+        for name,digest in current_sources.items():
+            body=(ROOT/name).read_bytes().replace(b'\r\n',b'\n')
+            assert digest in (sha(body),sha(body.replace(b'\n',b'\r\n'))),name
         for name,digest in build['object_sha256'].items():assert sha(get('build/'+Path(name.replace('\\','/')).name))==digest
         assert sha(get('build/swap5_hupsel_germination.exe'))==build['executable_sha256']
         assert get('build/private_mod_wofost_crop_native_codec.f90').decode()==policy.candidate((ROOT/policy.SOURCE).read_text(encoding='utf-8'))
