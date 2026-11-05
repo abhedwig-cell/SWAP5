@@ -74,6 +74,9 @@ def guard(record):
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
  out=a.output.resolve()
+ if json.loads((ROOT/NATIVE_STATUS).read_text()).get('native_crop_logical_successor_20261105'):
+  subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15_hupsel/production_crop_logical_admission.py'),'--output',str(out)],cwd=ROOT,check=True)
+  return
  if json.loads((ROOT/NATIVE_STATUS).read_text()).get('project_diagnostic_restart_successor_20261104'):
   # Fixed reviewed current route; the exact old entrypoint is retained in
   # the committed predecessor view, with every old assertion unchanged.
