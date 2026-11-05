@@ -1,6 +1,9 @@
 # Explicit Hupsel pressure and film numerical policy
 
-Status: qualified Windows and cold POSIX production candidate, PR #1567.
+Status: admitted by PR #1567 at canonical
+`e9bc89274e8069a24a641f192e4669be58ac7b29`. The verified actual merge parents
+and identical tested production tree are recorded in
+`integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_CANONICAL_RECEIPT_20261105.json`.
 Cold run42060651941 passes every step on exact production source head
 `f4d7bae3bf56241cf4618c6b71766e613565255e`. The retained capsule and its raw
 artifact digest are recorded in
@@ -25,8 +28,8 @@ refuses the existing stream. No schema, physics parameter or persistent state
 is added. Cross-version or cross-optimization restart portability is unqualified.
 
 The serialized worker owns immutable per-instance numerical configuration and
-resets it on initialization. Its guard refuses unsupported macropore, thermal,
-snow/frost and alternative-solver combinations. MICRO requires configured
+resets it on initialization. Its guard refuses unsupported macropore, snow/frost and alternative-solver
+combinations, and simultaneous thermal temporal control. MICRO requires configured
 pressure-bracket accuracy before stopping its search; its separate final flux
 certificate,500-iteration cap, demand cap and physical parameters stay unchanged.
 The independent film kernel requires two consecutive successful relative1e-5
