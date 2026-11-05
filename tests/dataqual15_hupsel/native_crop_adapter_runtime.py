@@ -41,7 +41,9 @@ def prepare(out):
     providers=[ROOT/p for p in raw.splitlines()];assert len(providers)==len(set(providers))and ROOT/policy.SOURCE in providers
     names=['astro','daily_meteo','crop_germination','initial_owner','task2','preparation','sowing','oxygen','co2']
     external=[ROOT/'src/legacy/b1_10_port/headcalc.f90',*[fixture/(n+'_oracle.f90')for n in names]]
-    inputs={str(p.relative_to(ROOT)):sha(p)for p in [*providers,*[p for p in external if p.is_relative_to(ROOT)],rotation,matrix,ROOT/'tests/nut-crop/crop_fixture.inc',ROOT/'tests/fmig431/run_crop_file_weather_production.sh',ROOT/'tests/support/augment_bartholomeus_backend_sources.py']}
+    from native_crop_adapter_fixture import prepare as rotation_fixture
+    external+=rotation_fixture(ROOT,fixture)
+    inputs={str(p.relative_to(ROOT)):sha(p)for p in [*providers,*[p for p in external if p.is_relative_to(ROOT)],rotation,matrix,*[ROOT/p for p in ('tests/nut-crop/crop_fixture.inc','tests/nut-material/material_fixture.inc','tests/nut-senescence/run_senescence.py','tests/nut-reactive/reactive_oracle.inc','tests/physics/test_ppa_wu05d2_mixed_application.f90')],ROOT/'tests/fmig431/run_crop_file_weather_production.sh',ROOT/'tests/support/augment_bartholomeus_backend_sources.py']}
     for module in list(sys.modules.values()):
         path=getattr(module,'__file__',None)
         if path:
@@ -50,22 +52,39 @@ def prepare(out):
     (out/'PREPARED.json').write_text(json.dumps(dict(providers=[str(p.relative_to(ROOT))for p in providers],externals=[str(p)for p in external],inputs_sha256=inputs,drivers=dict(w= str(weather),r=str(rotation),m=str(matrix)),events=events),indent=2)+'\n')
     return providers,external,dict(w=weather,r=rotation,m=matrix),inputs
 
-def build(out,compiler,opt,providers,external,drivers,fixture,candidate):
-    out.mkdir();events=[];flags=[*FLAGS,'-'+opt,'-I'+str(out),'-J'+str(out)];objects=[];sources={}
+def build(out,compiler,opt,providers,external,drivers,fixture,candidate,recover=False):
+    flags=[*FLAGS,'-'+opt,'-I'+str(out),'-J'+str(out)];objects=[];sources={};reused=0;recovery=None
+    if recover:
+        assert not candidate and not (out/'BUILD.json').exists()
+        events=json.loads((out/'EVENTS.json').read_text());raw_events=(out/'EVENTS.json').read_bytes()
+        assert events[-1]['label']=='driver'and events[-1]['returncode']!=0
+        assert b'material_fixture.inc'in (out/events[-1]['stderr']).read_bytes()
+        assert all(e['label']in ('provider','driver','link')and e['returncode']==0 for e in events[:-1])
+        assert not any((out/n).exists()for n in ('first.bin','end.bin','schema-0-0.bin')),'native inheritance forbidden'
+        reused=next(i for i,e in enumerate(events)if e['label']!='provider');assert reused==len(providers)+10
+        recovery=dict(scope='EXACT_SUCCESSFUL_COMPILER_PREFIX_ONLY_ZERO_NATIVE_INHERITANCE',events_sha256=__import__('hashlib').sha256(raw_events).hexdigest(),bindings={str(p):sha(p)for p in [*out.glob('*.o'),*out.glob('*.mod')]},reused_provider_compiles=reused)
+        (out/'FAILED_COMPILER_EVENTS.json').write_bytes(raw_events)
+    else:out.mkdir();events=[]
     for i,before in enumerate([*providers,*external]):
         source=fixture/'grid_stubs.f90'if before==ROOT/'tests/fsi/fsi04_real_headcalc_stubs.f90'else before
         if before==ROOT/policy.SOURCE and candidate:
             source=out/'private_codec.f90';source.write_text(policy.candidate(before.read_text()),encoding='utf-8',newline='\n')
-        obj=out/(str(i)+'.o');command([compiler,*flags,'-c',source,'-o',obj],out,events,'provider')
+        obj=out/(str(i)+'.o');args=list(map(str,[compiler,*flags,'-c',source,'-o',obj]))
+        if i<reused:
+            assert events[i]['command']==args and obj.is_file(),'unbound compiler prefix'
+        else:command(args,out,events,'provider')
         objects.append(obj);sources[str(source)]=sha(source)
     executables={}
     for name,source in drivers.items():
-        includes=['-I'+str(ROOT/'tests/nut-crop')]if name=='r'else[]
+        includes=['-I'+str(fixture),'-I'+str(ROOT/'tests/nut-crop'),'-I'+str(ROOT/'tests/nut-material')]if name=='r'else[]
         obj=out/(name+'.o');command([compiler,*flags,*includes,'-c',source,'-o',obj],out,events,'driver')
         exe=out/(name+('.exe'if os.name=='nt'else''));args=[*flags]+(['-Wl,--stack,16777216']if os.name=='nt'else[])+[str(obj),*map(str,objects),'-o',str(exe)]
         response=out/(name+'.args');response.write_text('\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n')
         command([compiler,'@'+str(response)],out,events,'link');executables[name]=exe
-    b=dict(status='FRESH_COMPLETE_SHARED_ADAPTER_CLOSURE_BUILT',candidate=candidate,compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],flags=flags,providers=len(providers),sources_sha256=sources,objects_sha256={str(p):sha(p)for p in objects},drivers_sha256={str(p):sha(p)for p in drivers.values()},executables_sha256={n:sha(p)for n,p in executables.items()},events=events,production_admission=False)
+    if recovery:
+        assert all(sha(Path(p))==digest for p,digest in recovery['bindings'].items()if p.endswith('.mod')or Path(p).name in {str(i)+'.o'for i in range(reused)})
+        (out/'COMPILER_RECOVERY.json').write_text(json.dumps(recovery,indent=2)+'\n')
+    b=dict(status='COMPLETE_SHARED_ADAPTER_CLOSURE_BUILT',candidate=candidate,compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],flags=flags,providers=len(providers),sources_sha256=sources,objects_sha256={str(p):sha(p)for p in objects},drivers_sha256={str(p):sha(p)for p in drivers.values()},executables_sha256={n:sha(p)for n,p in executables.items()},events=events,compiler_prefix_recovery=recovery,production_admission=False)
     (out/'BUILD.json').write_text(json.dumps(b,indent=2)+'\n');return executables
 
 def execute(exes,fixture,out):
@@ -87,12 +106,29 @@ def execute(exes,fixture,out):
     return events
 
 def main():
-    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('--out',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);p.add_argument('--optimization',choices=['O0','O2'],required=True);p.add_argument('--resume-compiler-prefix',action='store_true');a=p.parse_args()
     os.environ['OMP_NUM_THREADS']='1';out=a.out.resolve();compiler=a.compiler.resolve()
-    providers,external,drivers,inputs=prepare(out)
+    if a.resume_compiler_prefix:
+        assert os.name=='nt'
+        original=(out/'PREPARED.json').read_bytes();old=json.loads(original)
+        controller='tests/dataqual15_hupsel/native_crop_adapter_runtime.py'
+        committed=subprocess.check_output(['git','show','607e65083:'+controller],cwd=ROOT)
+        for name,digest in old['inputs_sha256'].items():
+            if name.replace('\\','/')==controller:
+                assert digest in (hashlib.sha256(committed).hexdigest(),hashlib.sha256(committed.replace(b'\n',b'\r\n')).hexdigest())
+            else:assert sha(ROOT/name)==digest,name
+        assert subprocess.check_output(['git','rev-parse','607e65083:src'],cwd=ROOT)==subprocess.check_output(['git','rev-parse','HEAD:src'],cwd=ROOT)
+        (out/'COMPILER_PREFIX_PREPARED.json').write_bytes(original)
+        providers=[ROOT/name for name in old['providers']];external=[Path(p)for p in old['externals']];drivers={n:Path(p)for n,p in old['drivers'].items()}
+        from native_crop_adapter_fixture import prepare as rotation_fixture
+        external+=rotation_fixture(ROOT,out/'fixture')
+        inputs={name:sha(ROOT/name)for name in old['inputs_sha256']}
+        for name in ('tests/dataqual15_hupsel/native_crop_adapter_fixture.py','tests/nut-crop/prepare_oracle.py','tests/nut-crop/crop_fixture.inc','tests/nut-material/material_fixture.inc','tests/nut-senescence/run_senescence.py','tests/nut-reactive/reactive_oracle.inc','tests/physics/test_ppa_wu05d2_mixed_application.f90'):inputs[name]=sha(ROOT/name)
+        (out/'CURRENT_INPUTS.json').write_text(json.dumps(dict(inputs_sha256=inputs,scope='Bound compiler prefix; no native result inherited'),indent=2)+'\n')
+    else:providers,external,drivers,inputs=prepare(out)
     variants={}
     for name,candidate in (('incumbent',False),('candidate',True)):
-        exes=build(out/name,compiler,a.optimization,providers,external,drivers,out/'fixture',candidate)
+        exes=build(out/name,compiler,a.optimization,providers,external,drivers,out/'fixture',candidate,recover=a.resume_compiler_prefix and not candidate)
         events=execute(exes,out/'fixture',out/name);variants[name]=dict(events=events)
         assert all(sha(ROOT/p)==digest for p,digest in inputs.items()),'source drift'
     names=['first.bin','end.bin','end.bin.opaque','end.bin.retired','end.bin.fallow',*[f'schema-{mode}-{j}.bin'for mode in range(4)for j in range(2)]]
