@@ -50,8 +50,8 @@ contains
     if(size(w_root)/=view%rooted_nodes .or. size(w_root_z0)/=view%rooted_nodes) return
     if(any(.not.ieee_is_finite(w_root)) .or. any(.not.ieee_is_finite(w_root_z0))) return
     if(any(w_root<0) .or. any(w_root_z0<0)) return
-    ! PERF02: fail-closed sufficient condition. Only the admitted REFERENCE mode
-    ! may bypass waterfilm, and only when every rooted node is proven no-stress.
+    ! PERF02: both reference numerical modes retain the same physical sufficient
+    ! condition: every rooted node must be proven no-stress before bypassing film.
     if(waterfilm_mode==BARTHOLOMEUS_WATERFILM_REFERENCE.or.waterfilm_mode==BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE) then
       if(bartholomeus_macro_supply_bound_no_stress(view,data,crop,w_root,w_root_z0,atmospheric_ctop)) then
         allocate(factors(view%rooted_nodes)); factors=1.0_real64; ok=.true.; return
