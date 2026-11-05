@@ -7,7 +7,7 @@ module mod_bartholomeus_factor_provider
   use mod_bartholomeus_response, only: BartholomeusResponseInput
   use mod_bartholomeus_response_assembly, only: assemble_bartholomeus_response_inputs
   use mod_bartholomeus_waterfilm_provider, only: evaluate_bartholomeus_waterfilm, BARTHOLOMEUS_WATERFILM_OK, &
-       BARTHOLOMEUS_WATERFILM_REFERENCE
+       BARTHOLOMEUS_WATERFILM_REFERENCE,BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE
   use mod_bartholomeus_no_stress_gate, only: bartholomeus_macro_supply_bound_no_stress
   use mod_bartholomeus_profile_response, only: bartholomeus_profile_factors
   implicit none
@@ -52,7 +52,7 @@ contains
     if(any(w_root<0) .or. any(w_root_z0<0)) return
     ! PERF02: fail-closed sufficient condition. Only the admitted REFERENCE mode
     ! may bypass waterfilm, and only when every rooted node is proven no-stress.
-    if(waterfilm_mode==BARTHOLOMEUS_WATERFILM_REFERENCE) then
+    if(waterfilm_mode==BARTHOLOMEUS_WATERFILM_REFERENCE.or.waterfilm_mode==BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE) then
       if(bartholomeus_macro_supply_bound_no_stress(view,data,crop,w_root,w_root_z0,atmospheric_ctop)) then
         allocate(factors(view%rooted_nodes)); factors=1.0_real64; ok=.true.; return
       end if
