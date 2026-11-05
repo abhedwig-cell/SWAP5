@@ -52,6 +52,8 @@ def verify(r,files=None):
  mapping=j('SOURCE_MAP.json')
  for name,member in mapping.items():assert sha(f[member])==j('SOURCE_HASHES.json')[name],name
  artifacts=j('ARTIFACT_MAP.json')
+ for member in set(artifacts.values()):
+  assert member.startswith('artifacts/')and sha(f[member])==member.split('/')[-1],member
  for entry in j('BUILDS.json'):
   meta=j(entry['metadata'])
   for name,pin in meta['source_sha256'].items():assert sha(f[mapping[name]])==pin,name
