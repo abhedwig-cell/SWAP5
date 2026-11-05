@@ -41,7 +41,7 @@ def prepare(out):
     providers=[ROOT/p for p in raw.splitlines()];assert len(providers)==len(set(providers))and ROOT/policy.SOURCE in providers
     names=['astro','daily_meteo','crop_germination','initial_owner','task2','preparation','sowing','oxygen','co2']
     external=[ROOT/'src/legacy/b1_10_port/headcalc.f90',*[fixture/(n+'_oracle.f90')for n in names]]
-    inputs={str(p.relative_to(ROOT)):sha(p)for p in [*providers,*[p for p in external if p.is_relative_to(ROOT)],rotation,matrix,ROOT/'tests/fmig431/run_crop_file_weather_production.sh',ROOT/'tests/support/augment_bartholomeus_backend_sources.py']}
+    inputs={str(p.relative_to(ROOT)):sha(p)for p in [*providers,*[p for p in external if p.is_relative_to(ROOT)],rotation,matrix,ROOT/'tests/nut-crop/crop_fixture.inc',ROOT/'tests/fmig431/run_crop_file_weather_production.sh',ROOT/'tests/support/augment_bartholomeus_backend_sources.py']}
     for module in list(sys.modules.values()):
         path=getattr(module,'__file__',None)
         if path:
@@ -60,7 +60,8 @@ def build(out,compiler,opt,providers,external,drivers,fixture,candidate):
         objects.append(obj);sources[str(source)]=sha(source)
     executables={}
     for name,source in drivers.items():
-        obj=out/(name+'.o');command([compiler,*flags,'-c',source,'-o',obj],out,events,'driver')
+        includes=['-I'+str(ROOT/'tests/nut-crop')]if name=='r'else[]
+        obj=out/(name+'.o');command([compiler,*flags,*includes,'-c',source,'-o',obj],out,events,'driver')
         exe=out/(name+('.exe'if os.name=='nt'else''));args=[*flags]+(['-Wl,--stack,16777216']if os.name=='nt'else[])+[str(obj),*map(str,objects),'-o',str(exe)]
         response=out/(name+'.args');response.write_text('\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n')
         command([compiler,'@'+str(response)],out,events,'link');executables[name]=exe
