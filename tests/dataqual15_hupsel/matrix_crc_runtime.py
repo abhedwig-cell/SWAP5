@@ -15,6 +15,10 @@ def postimage(text=None):
  body=old[:start]+old[end:];marker='  use iso_fortran_env,only:real64,int64,int32,int8,iostat_end\n';assert body.count(marker)==1
  return body.replace(marker,marker+'  use mod_age_joint_restart_file,only:crc32\n',1)
 def guard():
+ delta=subprocess.check_output(['git','diff','--name-only',BASE,'--','src','app','reference'],cwd=ROOT,text=True).splitlines()
+ if delta:
+  import matrix_crc_admission
+  matrix_crc_admission.guard();return json.loads((ROOT/REGISTER).read_text())
  r=json.loads((ROOT/REGISTER).read_text());assert r['baseline']==BASE and r['production_delta']==[]
  for area in ('src','app','reference'):
   assert subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT)==subprocess.check_output(['git','rev-parse',BASE+':'+area],cwd=ROOT)

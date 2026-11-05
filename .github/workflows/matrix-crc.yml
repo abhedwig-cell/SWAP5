@@ -25,6 +25,9 @@ jobs:
           test -x /usr/bin/gfortran
           /usr/bin/gfortran --version
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Exact deployed source and malformed admission record controls
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_SCOPE_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/test_matrix_crc_admission.py
       - name: Actual complete Windows source/native evidence remeasurement
         run: python3 -B tests/dataqual15_hupsel/matrix_crc_evidence.py
       - name: Cold original and exact complete postimage POSIX O0/O2
