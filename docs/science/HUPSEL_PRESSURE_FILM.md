@@ -77,3 +77,13 @@ separate. Any next coupled-state/temporal-quadrature experiment must be freshly
 preregistered for this composed variant, with its own numerical histories and
 explicit cost; no third intervention, changed forcing or fitted limit is hidden
 in these runs. Production and whole-science admission remain false.
+
+Cold POSIX O0/O2 now complete the same actual full1096 and nine strict own
+windows per build, with all native controls and current/unmodified predecessor
+preservation passing. All15 workflows pass at native head142735ce3. Original
+GitHub artifacts13380351408 (O0) and13379422232 (O2) are retained byte-for-byte,
+then independently remeasured from complete source/object/input/raw/control
+capsules. Both POSIX builds pass36/37 original bounds; oxygen584 error remains
+0.0002446796897271103cm against5.371840000016327e-7cm. Final metadata-head
+qualification must revalidate the exact evidence dependency surface before
+canonical integration; production and whole-science admission stay false.
