@@ -1619,3 +1619,5 @@ Actual Hupsel Sprint03 evidence admission: PR1481, merge `eaae4b62c830fa88aae146
 Actual accepted-input diagnosis admission: PR1482, merge `0fe2157a9f2a1f5e80811252a0ad3759b3642fc6`, exact tested whole tree and actual-merge Linux dossier PASS. Receipt: `integration/dataqual15_hupsel/UPTAKE_CANONICAL_RECEIPT.json`. Literal component and full-period gates remain failed; whole science stays OPEN.
 
 Registered thermal production authority: `integration/dataqual15/THERMAL_PROFILE_PRODUCTION_SCOPE_20261105.json`, sealed Windows evidence, exact predecessor proof, CI adjudication and `THERMAL_PROFILE_CANONICAL_RECEIPT_20261105.json`; #1563 actual canonical `f0939f4cbc44`. This does not close original Andelst481 or whole-energy/scientific equivalence.
+
+Hupsel numerical-profile production authority: `integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_SCOPE_20261105.json`, sealed Windows full trajectories/builds/controls, retained cold POSIX capsule and `ROOT_ACCURACY_PRODUCTION_CI_ADJUDICATION_20261105.json`. Existing source guards remain immutable; their new-scope refusals are distinct from the current owner qualification and unchanged baseline defects.

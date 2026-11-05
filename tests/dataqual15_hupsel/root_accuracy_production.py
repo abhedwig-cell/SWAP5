@@ -106,9 +106,41 @@ def data_controls(f):
   else:raise AssertionError('accepted corrupted evidence '+label)
  return refused
 
+def verify_posix(r):
+ p=r['cold_posix'];raw=(ROOT/p['archive']).read_bytes();assert sha(raw)==p['archive_sha256']
+ with tarfile.open(fileobj=io.BytesIO(raw))as t:
+  members=t.getmembers();assert all(m.isfile()and not Path(m.name).is_absolute()and '..'not in Path(m.name).parts for m in members)
+  assert len(members)==len({m.name for m in members});f={m.name:t.extractfile(m).read()for m in members}
+ assert json.loads(f.pop('RETAINED_MANIFEST.json'))=={n:sha(b)for n,b in f.items()}
+ j=lambda n:json.loads(f[n])
+ assert j('root-component/RESULT.json')['status']=='CURRENT_ROOT_API_DEFAULT_AND_REFINED_FROZEN_ALGORITHM_CONTRACTS_PASS'
+ thermal=j('thermal-preservation/RESULT.json');assert thermal['status']=='SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS'
+ assert sum(e['label']=='native_existing_contract'for e in thermal['events'])==10 and all(e['returncode']==0 for e in thermal['events'])
+ for opt in ('O0','O2'):
+  base='root-smoke-'+opt+'/';meta=j('root-native-'+opt+'/BUILD.json')
+  assert meta['provider_count']==236 and '-'+opt in meta['flags']and '-fcheck=all'in meta['flags']
+  assert sha(f['root-native-'+opt+'/swap5_hupsel_germination'])==meta['executable_sha256']
+  for name,pin in meta['source_sha256'].items():
+   rel=next((area+'/'+name.split('/'+area+'/',1)[1]for area in ('src','app')if'/'+area+'/'in name),None)
+   if rel:assert sha((ROOT/rel).read_bytes().replace(b'\r\n',b'\n'))==pin,rel
+  assert j(base+'RESULT.json')['status']=='COLD_CURRENT_ROOT_PROFILE_ORIGINAL7_OWN_RESTART_AND_PUBLIC_CONTROLS_PASS'
+  assert j(base+'full7/RESULT.json')['returncode']==0 and j(base+'full7/START.json')['restart_sha256']is None
+  assert b'HUPSEL_ROOT_NUMERICAL_PROFILE=PRESSURE_FILM_REFINED'in f[base+'full7/stdout']
+  for first,last in ((1,2),(6,7)):
+   assert f[base+f'own{first}-{last}/checkpoint.bin']==f[base+f'full7/checkpoint-{last}.bin']
+   for name,key in (('budget.csv','t1_day'),('crop.csv','day')):
+    rows=lambda path:list(csv.DictReader(io.StringIO(f[path].decode())))
+    assert rows(base+f'own{first}-{last}/'+name)==[x for x in rows(base+'full7/'+name)if first<float(x[key])<=last]
+  controls=j(base+'controls/RESULT.json');assert(controls['writer'],controls['owner'],controls['app'])==(6,0,11)and len(controls['profile'])==2
+  assert all(e['returncode']!=0 and e['prior_target_preserved']for e in controls['profile'])
+  assert j(base+'controls/publication/RESULT.json')['finite_writer_refusals']==6
+  app=j(base+'controls/app-refusals/RESULT.json')['events'];assert len(app)==11 and all(e['returncode']==1 for e in app)
+ return dict(native_days_per_optimization=7,own_windows_per_optimization=2,default_and_thermal_contracts=10,full_posix1096=False)
+
 def main():
  p=argparse.ArgumentParser();p.add_argument('--output',type=Path);p.add_argument('--verify-only',action='store_true');a=p.parse_args()
  r=json.loads((ROOT/SCOPE).read_text());guard(r);f=unpack(r);proof=verify(f);proof['actual_data_refusals']=data_controls(f)
+ if r.get('phase')=='WINDOWS_AND_COLD_POSIX_OWNER_PASS':proof['cold_posix']=verify_posix(r)
  if a.verify_only:print(json.dumps(proof));return
  assert a.output is not None;a.output.mkdir(parents=True,exist_ok=False)
  (a.output/'RESULT.json').write_text(json.dumps(dict(status='CURRENT_ROOT_NUMERICAL_PROFILE_NATIVE_EVIDENCE_AND_EXACT_SOURCE_PASS',current=proof,predecessor=BASE,whole_scientific_admission=False),indent=2)+'\n')

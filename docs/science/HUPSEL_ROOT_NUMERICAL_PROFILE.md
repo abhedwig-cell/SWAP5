@@ -1,6 +1,14 @@
 # Explicit Hupsel pressure and film numerical policy
 
-Status: qualified Windows production candidate; cold POSIX admission pending.
+Status: qualified Windows and cold POSIX production candidate, PR #1567.
+Cold run42060651941 passes every step on exact production source head
+`f4d7bae3bf56241cf4618c6b71766e613565255e`. The retained capsule and its raw
+artifact digest are recorded in
+`integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_POSIX_20261105.json`.
+Cold O0/O2 original7-day executions, own1-to2 and6-to7 restarts, six writer,
+eleven app and two profile refusals per build pass. The ten default/thermal
+contracts and64-state pressure/film comparisons also pass. This is not a new
+full POSIX1096-day run.
 The recovery and exact source scopes are
 `integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_RECOVERY_20261105.json`
 and `ROOT_ACCURACY_PRODUCTION_SCOPE_20261105.json` in the same directory.
