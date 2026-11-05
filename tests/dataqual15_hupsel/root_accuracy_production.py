@@ -1,8 +1,8 @@
 """Exact opt-in root numerical successor; no scientific tolerance promotion."""
-import argparse,csv,hashlib,io,json,subprocess,tarfile
+import argparse,csv,hashlib,io,json,math,subprocess,tarfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
-BASE='77f3736198bdc54caa5d7d5ad2894413c0edb535'
+BASE='f0939f4cbc4410a9e7fd88c38e47f61310d39fb6'
 SCOPE='integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_SCOPE_20261105.json'
 KEY='root_numerical_accuracy_successor_20261105'
 ENTRY='tests/dataqual15/verify_current_native_admission.py'
@@ -61,6 +61,15 @@ def verify(f):
   assert selected.endswith(delta)and sha(selected[:-len(delta)])==profile['original_swp_sha256']and sha(selected)==profile['selected_swp_sha256']
   full='runtime-'+opt+'/full1096/'
   assert j(full+'RESULT.json')['returncode']==0 and j(full+'START.json')['restart_sha256']is None
+  water=[{k:float(v)for k,v in x.items()}for x in rows(full+'budget.csv')]
+  assert water[0]['t0_day']==0 and water[-1]['t1_day']==1096
+  assert all(x['t1_day']>x['t0_day']and all(math.isfinite(v)for v in x.values())for x in water)
+  assert all(a['t1_day']==b['t0_day']for a,b in zip(water,water[1:]))
+  for kind,unit in [('water','cm'),('solute','mg_cm2')]:
+   start,end,inp,output=[kind+'_'+k+'_'+unit for k in ('start','end','in','out')]
+   assert max(abs(x[end]-x[start]-x[inp]+x[output])for x in water)<=1e-10
+   assert max(abs(a[end]-b[start])for a,b in zip(water,water[1:]))<=1e-10
+   assert abs(water[-1][end]-water[0][start]-math.fsum(x[inp]for x in water)+math.fsum(x[output]for x in water))<=1e-8
   pairs=run['strict_windows'];assert len(pairs)==10 and [365,367]in pairs and [1095,1096]in pairs
   for first,last in pairs:
    strict='runtime-'+opt+f'/restarts/{first}-to-{last}/'
@@ -75,6 +84,8 @@ def verify(f):
   for label,total in [('app-refusals',11),('owner-controls',37)]:
    events=j('controls-'+opt+'/'+label+'/RESULT.json')['events'];assert len(events)==total and all(e['returncode']==1 for e in events)
   assert j('controls-'+opt+'/publication/RESULT.json')['finite_writer_refusals']==6
+ thermal=j('thermal-preservation/RESULT.json');assert thermal['status']=='SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS'and all(e['returncode']==0 for e in thermal['events'])
+ assert sum(e['label']=='native_existing_contract'for e in thermal['events'])==10
  component=j('component/RESULT.json');assert component['status']=='CURRENT_ROOT_API_DEFAULT_AND_REFINED_FROZEN_ALGORITHM_CONTRACTS_PASS'
  assert len(component['selected_original_nodes'])==64 and len(component['results'])==8
  return dict(full_original_days={'O0':1096,'O2':1096},strict_own_windows_per_build=10,original_science='36/37; oxygen FAILED',whole_scientific_admission=False)
