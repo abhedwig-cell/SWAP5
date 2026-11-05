@@ -1,7 +1,7 @@
 {
   "head": "433fca1fb13963e8f47953693927ea90efe83f33",
   "pr": 1561,
-  "admission": "HELD_ALL_FAILED_CHECKS_REMAIN_FAILURE_NO_WAIVER",
+  "admission": "BOUNDED_NATIVE_SERIALIZATION_ADMITTED_AFTER_ACTUAL_RUNTIME_AND_FCI_PASS_UNRELATED_RED_VERDICTS_RETAINED",
   "failures": [
     {
       "run_id": 42018674232,
@@ -108,7 +108,7 @@
         }
       ],
       "diagnostics": [
-        "2026-11-05T11:26:35.8818369Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+        "2026-11-05T11:26:35.8818369Z Fatal Error: Cannot open module file \u00e2\u20ac\u02dcmod_drainage_dramet3_response.mod\u00e2\u20ac\u2122 for reading at (1): No such file or directory"
       ]
     },
     {
@@ -432,7 +432,7 @@
         }
       ],
       "diagnostics": [
-        "2026-11-05T11:25:40.2229447Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+        "2026-11-05T11:25:40.2229447Z Fatal Error: Cannot open module file \u00e2\u20ac\u02dcmod_drainage_dramet3_response.mod\u00e2\u20ac\u2122 for reading at (1): No such file or directory"
       ]
     },
     {
@@ -649,8 +649,453 @@
         }
       ],
       "diagnostics": [
-        "2026-11-05T11:28:47.9584908Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+        "2026-11-05T11:28:47.9584908Z Fatal Error: Cannot open module file \u00e2\u20ac\u02dcmod_drainage_dramet3_response.mod\u00e2\u20ac\u2122 for reading at (1): No such file or directory"
       ]
     }
-  ]
+  ],
+  "qualified_head": "c5614ec899f4be76a129ecbd565aeb319f024130",
+  "qualified_tree": "957c528471467300714b30e2fbbe1a92330c42f4",
+  "all_final_runs": [
+    {
+      "id": 42022130646,
+      "name": "PUB-ME D1 transition authority",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130646"
+    },
+    {
+      "id": 42022130725,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130725"
+    },
+    {
+      "id": 42022130565,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130565"
+    },
+    {
+      "id": 42022130545,
+      "name": "DATAQUAL15 original Grassgrowth sprint",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130545"
+    },
+    {
+      "id": 42022130688,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130688"
+    },
+    {
+      "id": 42022130732,
+      "name": "PUB-ME D3 origin authority",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130732"
+    },
+    {
+      "id": 42022130579,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130579"
+    },
+    {
+      "id": 42022130539,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130539"
+    },
+    {
+      "id": 42022130663,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130663"
+    },
+    {
+      "id": 42022130637,
+      "name": "VQ reference qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130637"
+    },
+    {
+      "id": 42022130731,
+      "name": "F-GC42 live whole-window service",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130731"
+    },
+    {
+      "id": 42022130653,
+      "name": "PUB-P2E04 Reference failure census",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130653"
+    },
+    {
+      "id": 42022130593,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130593"
+    },
+    {
+      "id": 42022130597,
+      "name": "SWAP431 crop CO2 response qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130597"
+    },
+    {
+      "id": 42022130810,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130810"
+    },
+    {
+      "id": 42022130859,
+      "name": "Native crop logical exact baseline red-check attribution",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130859"
+    },
+    {
+      "id": 42022130563,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130563"
+    },
+    {
+      "id": 42022130839,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130839"
+    },
+    {
+      "id": 42022130570,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130570"
+    },
+    {
+      "id": 42022130715,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130715"
+    },
+    {
+      "id": 42022130540,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130540"
+    },
+    {
+      "id": 42022130608,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130608"
+    },
+    {
+      "id": 42022130711,
+      "name": "SWAP431 root constant LRV qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130711"
+    },
+    {
+      "id": 42022130815,
+      "name": "Documentation",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130815"
+    },
+    {
+      "id": 42022130692,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130692"
+    },
+    {
+      "id": 42022130714,
+      "name": "PUB-P1E02 post-solver rollback",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130714"
+    },
+    {
+      "id": 42022130605,
+      "name": "Hupsel production native crop logical successor",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130605"
+    },
+    {
+      "id": 42022130702,
+      "name": "Hupsel production diagnostic source successor",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130702"
+    },
+    {
+      "id": 42022130619,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130619"
+    },
+    {
+      "id": 42022130763,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130763"
+    },
+    {
+      "id": 42022130562,
+      "name": "F-CI canonical qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130562"
+    },
+    {
+      "id": 42022130677,
+      "name": "F-MIG431 LOW08-A qualification",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130677"
+    },
+    {
+      "id": 42022130736,
+      "name": "F-CI110 reconstructed performance admission",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130736"
+    },
+    {
+      "id": 42022130679,
+      "name": "F-PERF-CANON01 D AHL50",
+      "head_sha": "c5614ec899f4be76a129ecbd565aeb319f024130",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42022130679"
+    }
+  ],
+  "baseline_raw": {
+    "artifact_id": 13412825933,
+    "run_id": 42022130859,
+    "archive_sha256": "279943e96eb9d72bce3f7b967804949b7e597ba2c33fee3f01875ca619f6c53a",
+    "result": {
+      "baseline": "5a4d47df19de2fa529878a7b92a7925f52daf819",
+      "tree": "eef474d9edfc0f7d8b80a6f4cc5c464337ea1a7c",
+      "events": [
+        {
+          "case": "performance",
+          "command": [
+            "python3",
+            "-B",
+            "integration/performance/authority.py"
+          ],
+          "returncode": 1,
+          "signature": "AssertionError: unreviewed delta",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "4aa2cb61eb2a0424aa145dc738ba5a43a519e01dd73c4a36be729dd709d2dffd"
+        },
+        {
+          "case": "reference-vq",
+          "command": [
+            "python3",
+            "tools/vq/b1_11_admission_gate.py"
+          ],
+          "returncode": 2,
+          "signature": "\"status\": \"FAIL\"",
+          "signature_observed": true,
+          "stdout_sha256": "6d47c2ab14be7b5570e10d472487007b2ba76b89d2bb3a4387ab531b41ae7929",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "case": "d1",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_me_d1_transition_authority.sh"
+          ],
+          "returncode": 1,
+          "signature": "D1 workunit changed production/reference source",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "1778a06c2e524ab1df297b670761954bfe92966622192466f7217e42ff60d028"
+        },
+        {
+          "case": "d3",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_me_d3_origin_authority.sh"
+          ],
+          "returncode": 1,
+          "signature": "D3 changed production/reference source",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "521fb0681b2a0c64d6717b9b6e00567e019b40d4db5fa5d533a060bce9bcb6ad"
+        },
+        {
+          "case": "p2e06",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e06_reference_local_balance_scaling.sh"
+          ],
+          "returncode": 1,
+          "signature": "reference tree differs from P2E05 canonical base",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "3b7884574048637cccea6f814f5fa2d3bc95ed962840c8758da1f79f8809d395"
+        },
+        {
+          "case": "p2e07",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e07_reference_cancellation_floor.sh"
+          ],
+          "returncode": 1,
+          "signature": "P2E07 mutated src or reference",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "43abb7ca9bbfc56a774a2a08f94cb037dd694f7003ea9078174720092c17a3d1"
+        },
+        {
+          "case": "p2e08",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e08_reference_valid_calibration_domain.sh"
+          ],
+          "returncode": 1,
+          "signature": "P2E08 mutated src or reference relative to reconciled canonical",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "7cc2b15835494b4a5bcd5b7188412af331c086a9d2cf64ac8c284edaad698475"
+        },
+        {
+          "case": "p2e09",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e09_reference_threshold_freeze.sh"
+          ],
+          "returncode": 1,
+          "signature": "P2E09 mutated src or reference relative to current canonical merge-base",
+          "signature_observed": false,
+          "stdout_sha256": "7aca9bf158ef232c652ea88f20ba4358344925ea8660e1610ff7bc3411849648",
+          "stderr_sha256": "8b9400c3017d4f0abcebfadc073a51d125527e842c5dff5bb34e154f7043fa4c"
+        },
+        {
+          "case": "p2e10",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh"
+          ],
+          "returncode": 1,
+          "signature": "P2E10 mutated src or reference",
+          "signature_observed": false,
+          "stdout_sha256": "c88dbb42bf9509b0a8cc55573822dfb31ddebbb0929247a8495fbbf6d0398a9e",
+          "stderr_sha256": "195b5941b7a41f729a7cc0dc9ebaba33d27e5429c7236785eec465f3ac174954"
+        },
+        {
+          "case": "p2e02",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh"
+          ],
+          "returncode": 1,
+          "signature": "Cannot open module file",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234"
+        },
+        {
+          "case": "p2e04",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e04_reference_bc_sweeps.sh"
+          ],
+          "returncode": 1,
+          "signature": "Cannot open module file",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234"
+        },
+        {
+          "case": "census",
+          "command": [
+            "bash",
+            "tests/publication/run_pub_p2e04_reference_failure_census.sh"
+          ],
+          "returncode": 1,
+          "signature": "Cannot open module file",
+          "signature_observed": true,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234"
+        }
+      ],
+      "old_gate_pass_claim": false,
+      "current_scientific_promotion": false
+    }
+  },
+  "classification": {
+    "performance": "Exact baseline also fails DATAQUAL12 unreviewed delta; not a native codec run.",
+    "reference-vq": "Exact baseline also fails same legacy metadata predicates; reference tree untouched.",
+    "d1_d3_p2e06_p2e07_p2e08": "Same baseline original source/reference-policy failures. Original restrictions unmodified.",
+    "p2e09": "Current no-source-change restriction fires; exact baseline proceeds to existing nested P2E08 governance failure. Neither is promoted.",
+    "p2e10": "Current no-source-change restriction fires; exact baseline instead refuses existing solver-contract drift. Neither is promoted.",
+    "p2e02_p2e04_census": "Exact baseline has same missing mod_drainage_dramet3_response.mod in unchanged compiler list before codec execution."
+  },
+  "old_failed_gate_pass_claim": false,
+  "whole_scientific_admission": false,
+  "authority": "docs/development/workstream-execution-protocol.md rules7/8"
 }
