@@ -35,3 +35,24 @@ actual execution; altered proof fails closed. Cost and selection authority are
 COMPOSED_TEMPORAL_PREREGISTRATION_20261105.json; recovery is
 COMPOSED_TEMPORAL_RECOVERY_20261105.json. Production/whole-science admission and
 migration completion remain false.
+
+Both Windows prefixes and all selected own-state/control gates pass. Actual
+execution cost was708.47s at0.005 and911.58s at0.0025, excluding proof
+remeasurement and short own/control legs. Original raw capsules are sealed and
+independently re-read; all nine actual-data/CRC defects per case are refused.
+
+| DTMAX | Oxygen584 (cm) | Original discrepancy (cm) | Change from0.01 (cm) |
+| --- | ---: | ---: | ---: |
+|0.01 qualified parent|0.0033488614852679407|0.00024467966173205916|0|
+|0.005|0.003348843964541625|0.0002446971824583747|-1.752072631552512e-8|
+|0.0025|0.00334879597684248|0.0002447451701575198|-6.550842546063432e-8|
+
+All use the same unchanged original0.003593541147cm and limit
+5.371840000016327e-7cm. Six other selected daily series stay inside their old
+limits over the prefix; oxygen still fails at584. The selected refinements
+move oxygen slightly farther from the original comparison, with a maximum
+change far smaller than the retained discrepancy. This excludes these two
+refinements as a correction; it does not prove asymptotic convergence, isolate
+a causal process, or qualify the original reference. The full37-series
+parent adjudication remains36/37. Actual cold POSIX diagnosis and final
+canonical qualification are still required; no correction or promotion follows.
