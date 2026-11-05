@@ -90,26 +90,30 @@ def overlays(folder):
     # The macro codec still uses POSIX-only fsync. The research executable uses
     # the already admitted sibling-file C publisher/CRC, with identical bytes.
     s=(ROOT/IO).read_text(encoding='utf-8')
-    s=replace_one(s,' use mod_age_joint_restart_file,only:crc32',' use iso_c_binding,only:c_size_t,c_int32_t,c_int8_t')
-    start=s.index('  integer(c_int) function rename_c');end=s.index(' end interface',start)
-    s=s[:start]+'''  integer(c_int) function publish_c(a,b)bind(C,name='swap5_restart_publish')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*),b(*)
-  end function
-  integer(c_int32_t) function crc_c(a,n)bind(C,name='swap5_restart_crc32')
-   import c_int32_t,c_int8_t,c_size_t
-   integer(c_int8_t),intent(in)::a(*)
-   integer(c_size_t),value::n
-  end function
-'''+s[end:]
-    start=s.index("  fd=open_c(path//'.tmp'");end=s.index('  status=0',start)
-    s=s[:start]+"  rc=publish_c(path//'.tmp'//c_null_char,path//c_null_char);if(rc/=0)return\n"+s[end:]
-    s=replace_one(s,'contains\n','''contains
- integer(int32) function crc32(bytes)result(crc)
-  integer(int8),intent(in)::bytes(:)
-  crc=crc_c(bytes,int(size(bytes),c_size_t))
- end function
-''')
+    if "bind(C,name='swap5_restart_publish')" not in s:
+        s=replace_one(s,' use mod_age_joint_restart_file,only:crc32',' use iso_c_binding,only:c_size_t,c_int32_t,c_int8_t')
+        start=s.index('  integer(c_int) function rename_c');end=s.index(' end interface',start)
+        s=s[:start]+'''  integer(c_int) function publish_c(a,b)bind(C,name='swap5_restart_publish')
+       import c_int,c_char
+       character(c_char),intent(in)::a(*),b(*)
+      end function
+      integer(c_int32_t) function crc_c(a,n)bind(C,name='swap5_restart_crc32')
+       import c_int32_t,c_int8_t,c_size_t
+       integer(c_int8_t),intent(in)::a(*)
+       integer(c_size_t),value::n
+      end function
+    '''+s[end:]
+        start=s.index("  fd=open_c(path//'.tmp'");end=s.index('  status=0',start)
+        s=s[:start]+"  rc=publish_c(path//'.tmp'//c_null_char,path//c_null_char);if(rc/=0)return\n"+s[end:]
+        s=replace_one(s,'contains\n','''contains
+     integer(int32) function crc32(bytes)result(crc)
+      integer(int8),intent(in)::bytes(:)
+      crc=crc_c(bytes,int(size(bytes),c_size_t))
+     end function
+    ''')
+    else:
+        assert 'open_c(' not in s and 'fsync_c(' not in s
+        assert "rc=publish_c(path//'.tmp'//c_null_char,path//c_null_char)" in s
     rendered[IO]=s
     result={}
     for name,text in rendered.items():
