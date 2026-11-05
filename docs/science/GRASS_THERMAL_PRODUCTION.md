@@ -1,6 +1,11 @@
 # Registered Grassgrowth numerical profile and original Andelst input
 
-Status: candidate qualification on canonical predecessor `8367ca0c9`.
+Status: qualified production candidate, reconciled to canonical predecessor `ecf9c55b9` (#1564).
+The actual linked203 Grassgrowth and201 Andelst sources exclude the new joint
+crop/soil-N CRC owner. The complete unmodified new predecessor authority was
+executed successfully; the exact original source/evidence qualification remains
+separate from the CI adjudication in
+`integration/dataqual15/THERMAL_PROFILE_CI_ADJUDICATION_20261105.json`.
 The recovery authority is
 `integration/dataqual15/CONTINUATION_RECOVERY_20261105.json`.
 This work changes numerical execution and native publication, not heat physics.
