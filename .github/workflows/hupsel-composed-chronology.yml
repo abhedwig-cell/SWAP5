@@ -1,0 +1,26 @@
+name: Hupsel composed original grid reconciliation
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-composed-chronology.yml
+      - tests/dataqual15_hupsel/composed_chronology.py
+      - tests/dataqual15_hupsel/test_composed_chronology.py
+      - integration/dataqual15_hupsel/COMPOSED_CHRONOLOGY_*
+      - docs/science/HUPSEL_COMPOSED_CHRONOLOGY.md
+permissions:
+  contents: read
+jobs:
+  exact-actual-grid-data:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: python3 -B tests/dataqual15_hupsel/test_composed_chronology.py
+      - name: Actual original scoped proof and four current native source object data proofs
+        run: python3 -B tests/dataqual15_hupsel/composed_chronology.py --verify integration/dataqual15_hupsel/COMPOSED_CHRONOLOGY_EVIDENCE_20261105.json
+      - name: Current and unmodified predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/composed-chronology-preservation"
