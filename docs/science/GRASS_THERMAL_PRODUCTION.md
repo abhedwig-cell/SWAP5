@@ -1,6 +1,8 @@
 # Registered Grassgrowth numerical profile and original Andelst input
 
-Status: qualified production candidate, reconciled to canonical predecessor `ecf9c55b9` (#1564).
+Status: admitted by PR #1563 at canonical `f0939f4cbc4410a9e7fd88c38e47f61310d39fb6`, preserving #1564/#1565.
+The actual merge parents and identical tested production tree are recorded in
+`integration/dataqual15/THERMAL_PROFILE_CANONICAL_RECEIPT_20261105.json`.
 The actual linked203 Grassgrowth and201 Andelst sources exclude the new joint
 crop/soil-N CRC owner. The complete unmodified new predecessor authority was
 executed successfully; the exact original source/evidence qualification remains
