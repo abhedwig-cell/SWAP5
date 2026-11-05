@@ -1,6 +1,6 @@
 {
   "status": "PREREGISTERED_BEFORE_EXTRACTED_PRIMITIVE_EXECUTION",
-  "baseline": "771ff741b01b867e4ac21d1dafbe28b99756fefd",
+  "baseline": "f0939f4cbc4410a9e7fd88c38e47f61310d39fb6",
   "scope": "Five exact extracted local CRC functions plus three exact native append/check primitive pairs; current admitted shared-table body as private candidate",
   "source_sha256": {
     "src/adapter/mod_matrix_joint_restart_file.f90": "b61b2c062abdb5f4ff5e6e7ca644229193bb664397fdf7cb034f1669a9eb02cf",
@@ -18,5 +18,7 @@
   "nonoverlap": "No source/runtime/entry/status changes; peer PR1563 owns numerical/thermal/Andelst. New isolated research controller, evidence and docs only.",
   "whole_scientific_admission": false,
   "production_admission": false,
-  "migration_complete": false
+  "migration_complete": false,
+  "original_preregistered_baseline": "771ff741b01b867e4ac21d1dafbe28b99756fefd",
+  "canonical_reconciliation": "Peer PR1563 admitted while qualification ran. All six measured source blobs and every wrapper remain exact; preserve both actual platform results. Only production guard baseline follows canonical peer; no primitive/algorithm/driver/oracle changes."
 }
