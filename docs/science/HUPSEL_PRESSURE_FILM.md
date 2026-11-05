@@ -49,3 +49,31 @@ Authority: `integration/dataqual15_hupsel/PRESSURE_FILM_PREREGISTRATION_20261105
 Recovery: `integration/dataqual15_hupsel/PRESSURE_FILM_RECOVERY_20261105.json`.
 Running, executed, audited, qualified and canonically integrated are distinct
 states; only completed owning records establish their respective claims.
+
+Windows O0/O2 complete original-initialized1096 runs, all selected genuine
+captures, nine strict own cut/final windows and every fresh native control pass.
+Independent complete ledger/profile/canopy checks and13 injected data defects
+pass, as do eight coherent-source/build/provenance/promotion/reuse tests. The
+unchanged current and historical production preservation gate passes locally.
+The original raw source/object/link/executable/input/case/control capsules are
+retained per optimization and independently re-read before cold qualification.
+
+The composed variant closes eleven prior comparison failures. Both Windows
+optimizations retain36/37 passes under exactly the old limits:
+
+| Maximum original discrepancy | Film-only | Composition | Unchanged bound |
+| --- | ---: | ---: | ---: |
+| Water stock (cm) |0.0139531|0.00124502|0.0158941|
+| Solute stock (mg/cm2) |0.00722307|0.000756741|0.00647751|
+| Crop LAI |0.0386972|0.0000688760|0.000206104|
+| Harvested dry matter |7.96565|0.00768923|0.00924139|
+| Oxygen reduction (cm) |0.000244489|0.000244680|0.000000537184|
+
+The remaining oxygen maximum is still on584: native0.0033488614852679407cm,
+original0.003593541147cm, error0.00024467966173205916cm. This confirms that the
+two independently identified safeguards are not an oxygen solution. Existing
+same-state/operator evidence and original grid-resolution limitations remain
+separate. Any next coupled-state/temporal-quadrature experiment must be freshly
+preregistered for this composed variant, with its own numerical histories and
+explicit cost; no third intervention, changed forcing or fitted limit is hidden
+in these runs. Production and whole-science admission remain false.

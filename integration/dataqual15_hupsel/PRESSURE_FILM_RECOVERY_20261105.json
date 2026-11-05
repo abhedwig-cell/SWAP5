@@ -1,14 +1,20 @@
 {
-  "status": "COHERENT_COMPOSED_WINDOWS_O0_O2_FULL_RUNS_ACTIVE_NOT_QUALIFIED",
+  "status": "WINDOWS_COHERENT_COMPOSED_FULL1096_AND_NATIVE_CONTROLS_AUDITED_COLD_POSIX_PENDING",
   "branch": "codex/autonomous-migration-20261103",
   "worktree": "SWAP5-AUTONOMOUS",
   "canonical_base": "8b397921ee8917ae57f286dd271980543e8b147a",
   "preregistration": "PRESSURE_FILM_PREREGISTRATION_20261105.json",
   "native_execution_driver": "521665b98",
-  "checkpoint": "6d3be3063",
+  "checkpoint": "95b31d9f2",
   "workspace": "../pressure-film-20261105",
-  "baselines": ["../film-runtime-20261104/baseline-O0", "../film-runtime-20261104/baseline-O2"],
-  "sessions": {"O0": 53679, "O2": 1730},
+  "baselines": [
+    "../film-runtime-20261104/baseline-O0",
+    "../film-runtime-20261104/baseline-O2"
+  ],
+  "sessions": {
+    "O0": 53679,
+    "O2": 1730
+  },
   "implementation": "Two exact independent previously qualified copied-source transformations only: pressure.OLD->NEW predicate (no trace/table fixture) and film_refinement_candidate.candidate. All236 native providers rebuilt coherently per optimization; compiler/flags/source/object/publisher/TTUTIL/link/executable metadata retained. Root production source and original inputs unchanged. All full trajectories start without a checkpoint; no old film-only, pressure-only, legacy or cross-optimization state is imported.",
   "qualification": "Eight focused coherent-source/build/provenance/promotion/reuse-policy tests PASS against actual O0 compiled closure. Full runtime and scientific assessment still pending. Cold POSIX workflow requires actual fresh complete builds/runs if no exact full native proof exists, and always requires full current/predecessor preservation.",
   "known_science": "Film-only25/37 and pressure-only36/37 are historical distinct variants. Pressure-only oxygen584 error0.00024468106021561555 and film-only0.00024448929828396835 both exceed frozen5.371840000016327e-7cm. Do not assume composition solves oxygen, do not change reference limits, and do not add a third intervention silently.",
@@ -16,5 +22,23 @@
   "production_admission": false,
   "whole_scientific_admission": false,
   "migration_complete": false,
-  "next": "Wait existing actual O0/O2 full1096; qualify selected genuine checkpoints,9 strict own cut/final windows per build,37+11 mature controls plus6 fresh public writer refusals each, full independent interval/daily/cumulative/canopy/typed ledger and37 unchanged original comparisons. Seal per-optimization source/object/raw capsules and reread them. Then cold POSIX equivalent actual execution/preservation and canonical research closure. Retain every science failure explicitly; diagnose oxygen using existing independent source/state/grid evidence rather than retuning."
+  "next": "Wait existing cold actual POSIX O0/O2 coherent full scope and preservation; retain original capsules/artifacts and revalidate unchanged dependencies/raw native proof on final head; adjudicate36/37 with oxygen584 FAILED and integrate bounded research. A separate composed-variant coupled-state/temporal quadrature study is next; no third intervention or bound adjustment here.",
+  "windows_evidence": [
+    "PRESSURE_FILM_WINDOWS_O0_20261105.json",
+    "PRESSURE_FILM_WINDOWS_O2_20261105.json"
+  ],
+  "sessions_completed": true,
+  "windows_qualification": "Both original-initialized O0/O2 full1096, all selected genuine captures,9 exact strict own cut/final restarts per build, complete mass/canopy/typed/37 original comparison audit,37 owner controls+11 app refusals+6 fresh writer refusals each PASS. Eight source/build/provenance/promotion/reuse tests and13 real-data ledger/profile defects PASS. Raw per-optimization source/object/input/executable/control capsules sealed and re-read. Complete current/predecessor preservation PASS locally.",
+  "original_science": {
+    "passing": 36,
+    "total": 37,
+    "closed_prior_failures": 11,
+    "retained_failures": [
+      "oxygen"
+    ],
+    "worst_oxygen_day": 584,
+    "error": 0.00024467966173205916,
+    "unchanged_limit": 5.371840000016327e-07,
+    "whole_scientific_admission": false
+  }
 }
