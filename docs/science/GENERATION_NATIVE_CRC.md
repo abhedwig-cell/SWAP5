@@ -37,7 +37,7 @@ cohorts, is retained byte-for-byte in a separately identified TAR/XZ member
 capsule. Its container identity is distinct from the original ZIP. The versioned
 manifest binds every member to the verified original artifact.
 
-The next preregistered gate executes32 additional real public-reader launches on
+The preregistered follow-up gate passes32 additional real public-reader launches on
 those exact binaries: proper valid resealing, an incorrect zero footer, and a bad
 nested CRC beneath a correctly repaired outer CRC, including empty/live-state
 refusal and exact authority preservation. A zero CRC remains legitimate when its
@@ -49,3 +49,5 @@ Authority: `GENERATION_CRC_RECOVERY_20261105.json`,
 `GENERATION_CRC_PREREGISTRATION_20261105.json` and the original raw platform records
 under `integration/dataqual15_hupsel`. Full-season science and the migration's
 whole scientific counts remain open.
+
+Actual native-control run42120477526 passes32 launches:8 proper valid reexports and24 decoder refusals with exact live authority. Three independent binary/authority/nested-CRC proof mutations refuse. All15 second-head workflows pass; all15 fresh exact-f12 baseline diagnostics remain FAILED and uncensored. Production deployment remains gated by the dedicated deployment preregistration.
