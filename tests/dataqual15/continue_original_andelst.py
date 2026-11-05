@@ -14,11 +14,17 @@ def main():
  p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
  p.add_argument('--seconds',type=int,default=90);a=p.parse_args()
  out=a.output.resolve();out.mkdir()
- bundle=a.bundle.resolve();meta=json.loads((bundle/'column/build-complete.json').read_text())
- exe=bundle/'column/swap5_solute_project'
- if not exe.exists():exe=exe.with_suffix('.exe')
+ bundle=a.bundle.resolve()
+ if(bundle/'BUILD.json').exists():
+  meta=json.loads((bundle/'BUILD.json').read_text());exe=bundle/'swap5_hupsel_germination.exe'
+  assert Path(next(reversed(meta['source_sha256']))).resolve()==ROOT/'app/solute_project/main_water.f90'
+  pins={str(Path(n).relative_to(ROOT)):h for n,h in meta['source_sha256'].items()if Path(n).is_relative_to(ROOT)}
+ else:
+  meta=json.loads((bundle/'column/build-complete.json').read_text());exe=bundle/'column/swap5_solute_project'
+  if not exe.exists():exe=exe.with_suffix('.exe')
+  pins=meta['input_sha256']
  assert sha(exe.read_bytes())==meta['executable_sha256']
- assert all(sha((ROOT/n).read_bytes())==h for n,h in meta['input_sha256'].items())
+ assert all(sha((ROOT/n).read_bytes())==h for n,h in pins.items())
  historical=json.loads((ROOT/'integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json').read_text())
  with tarfile.open(ROOT/'integration/dataqual15/CLOSURE16_CURRENT_ANDELST_EVIDENCE.tar.xz')as t:
   launch=json.loads(t.extractfile('sharp/LAUNCH.json').read())
@@ -34,7 +40,7 @@ def main():
  assert command[2]=='-' and command[3]=='481' and command[9]==''
  record=dict(candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
   command=command,original_sharp_entry=True,original_initialization=True,source_numerical_controls=True,
-  original_input_sha256=launch['physical_input_sha256'],source_sha256=meta['input_sha256'],
+  original_input_sha256=launch['physical_input_sha256'],source_sha256=pins,
   executable_sha256=sha(exe.read_bytes()),timeout_seconds=a.seconds,full_original_complete=False,
   historical_scope=historical['scope'])
  (out/'LAUNCH.json').write_text(json.dumps(record,indent=2)+'\n')
