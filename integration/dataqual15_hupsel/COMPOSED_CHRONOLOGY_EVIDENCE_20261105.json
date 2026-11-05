@@ -1,0 +1,384 @@
+{
+  "result": {
+    "status": "ACTUAL_ORIGINAL_COMPOSED_GRID_ATTRIBUTION_AND_STATE_WITNESSES_QUALIFIED_NOT_CAUSAL_ADMISSION",
+    "original": {
+      "archive_sha256": "99adab40cc703f4533abc89befa5d16d76d6a36d1b7a09ef3e463becf997c1db",
+      "scope": "IMMUTABLE_ORIGINAL_RUNTIME_ONLY_NOT_OLD_TYPED_CODEC_ENVELOPE",
+      "physical_output_and_profile_controls": true,
+      "generated_source_body_controls": true
+    },
+    "composed": {
+      "windows-O0": {
+        "platform": "windows",
+        "optimization": "O0",
+        "archive_sha256": "e4b5110f094d5125f97884710780e64c941291739fb2883fae72701700af563c",
+        "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+      },
+      "windows-O2": {
+        "platform": "windows",
+        "optimization": "O2",
+        "archive_sha256": "a23c1c7222635d4d3be8fdeac3e9578fbfde52cc95e924de4f4c8e1f4fca1300",
+        "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+      },
+      "posix-O0": {
+        "platform": "posix",
+        "optimization": "O0",
+        "archive_sha256": "52daba43856882c578f201ef8b20055a03776e3207766460ceccf7ffccb9b720",
+        "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+      },
+      "posix-O2": {
+        "platform": "posix",
+        "optimization": "O2",
+        "archive_sha256": "1de9e762d15af577797df22b4ec049403efb7399a5b65f4148ca323c7c28e116",
+        "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+      }
+    },
+    "results": {
+      "windows-O0": {
+        "original_accepted_steps": 3206,
+        "native_accepted_steps": 4080,
+        "overlap_cells": 7285,
+        "original_oxygen_cm": 0.003593541147124953,
+        "native_oxygen_cm": 0.0033488614852679407,
+        "decomposition": {
+          "potential_contribution_cm": 9.078308902085395e-09,
+          "stress_fraction_contribution_cm": -0.00024468874016591414,
+          "total_delta_cm": -0.00024467966185701216
+        },
+        "accepted_start_state_witness": {
+          "head_cm": {
+            "duration_node_mean_absolute_start_difference": 0.19129370476097304,
+            "maximum_overlapping_start_difference": 318.60031717001766,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0027600116255,
+                583.0029681976711
+              ],
+              "native_interval_day": [
+                583.0025,
+                583.0028402294131
+              ],
+              "overlap_duration_day": 8.021778762858827e-05,
+              "original_accepted_start": -1315.4048889393941,
+              "native_accepted_start": -1634.0052061094118
+            }
+          },
+          "theta": {
+            "duration_node_mean_absolute_start_difference": 5.321887508237735e-05,
+            "maximum_overlapping_start_difference": 0.011980404262697364,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0031763837167,
+                583.0033845697624
+              ],
+              "native_interval_day": [
+                583.0028402294131,
+                583.003180458826
+              ],
+              "overlap_duration_day": 4.075109307192289e-06,
+              "original_accepted_start": 0.1631918634622263,
+              "native_accepted_start": 0.15121145919952894
+            }
+          }
+        },
+        "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+        "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+        "inside_unchanged_scientific_bound": false,
+        "reference_accuracy_qualified": false,
+        "production_admission": false,
+        "whole_scientific_admission": false,
+        "migration_complete": false,
+        "rejected_actual_data_controls": [
+          "missing_native_leaf",
+          "duplicate_native_leaf",
+          "nonfinite_rate",
+          "wrong_native_clock",
+          "wrong_native_node_clock",
+          "wrong_original_node_clock",
+          "wrong_root_sink",
+          "wrong_daily_oxygen",
+          "wrong_geometry",
+          "nonfinite_original_state",
+          "wrong_original_daily"
+        ]
+      },
+      "windows-O2": {
+        "original_accepted_steps": 3206,
+        "native_accepted_steps": 4080,
+        "overlap_cells": 7285,
+        "original_oxygen_cm": 0.003593541147124953,
+        "native_oxygen_cm": 0.0033488614852679407,
+        "decomposition": {
+          "potential_contribution_cm": 9.078308902085395e-09,
+          "stress_fraction_contribution_cm": -0.00024468874016591414,
+          "total_delta_cm": -0.00024467966185701216
+        },
+        "accepted_start_state_witness": {
+          "head_cm": {
+            "duration_node_mean_absolute_start_difference": 0.19129370476097304,
+            "maximum_overlapping_start_difference": 318.60031717001766,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0027600116255,
+                583.0029681976711
+              ],
+              "native_interval_day": [
+                583.0025,
+                583.0028402294131
+              ],
+              "overlap_duration_day": 8.021778762858827e-05,
+              "original_accepted_start": -1315.4048889393941,
+              "native_accepted_start": -1634.0052061094118
+            }
+          },
+          "theta": {
+            "duration_node_mean_absolute_start_difference": 5.321887508237735e-05,
+            "maximum_overlapping_start_difference": 0.011980404262697364,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0031763837167,
+                583.0033845697624
+              ],
+              "native_interval_day": [
+                583.0028402294131,
+                583.003180458826
+              ],
+              "overlap_duration_day": 4.075109307192289e-06,
+              "original_accepted_start": 0.1631918634622263,
+              "native_accepted_start": 0.15121145919952894
+            }
+          }
+        },
+        "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+        "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+        "inside_unchanged_scientific_bound": false,
+        "reference_accuracy_qualified": false,
+        "production_admission": false,
+        "whole_scientific_admission": false,
+        "migration_complete": false,
+        "rejected_actual_data_controls": [
+          "missing_native_leaf",
+          "duplicate_native_leaf",
+          "nonfinite_rate",
+          "wrong_native_clock",
+          "wrong_native_node_clock",
+          "wrong_original_node_clock",
+          "wrong_root_sink",
+          "wrong_daily_oxygen",
+          "wrong_geometry",
+          "nonfinite_original_state",
+          "wrong_original_daily"
+        ]
+      },
+      "posix-O0": {
+        "original_accepted_steps": 3206,
+        "native_accepted_steps": 4060,
+        "overlap_cells": 7265,
+        "original_oxygen_cm": 0.003593541147124953,
+        "native_oxygen_cm": 0.003348861457272886,
+        "decomposition": {
+          "potential_contribution_cm": 9.078296459789e-09,
+          "stress_fraction_contribution_cm": -0.00024468876814852657,
+          "total_delta_cm": -0.0002446796898520669
+        },
+        "accepted_start_state_witness": {
+          "head_cm": {
+            "duration_node_mean_absolute_start_difference": 0.19127841535380746,
+            "maximum_overlapping_start_difference": 318.6003178772619,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0027600116255,
+                583.0029681976711
+              ],
+              "native_interval_day": [
+                583.0025,
+                583.0028402294133
+              ],
+              "overlap_duration_day": 8.021778785596194e-05,
+              "original_accepted_start": -1315.4048889393941,
+              "native_accepted_start": -1634.005206816656
+            }
+          },
+          "theta": {
+            "duration_node_mean_absolute_start_difference": 5.3216784523847755e-05,
+            "maximum_overlapping_start_difference": 0.01198040427242364,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0031763837167,
+                583.0033845697624
+              ],
+              "native_interval_day": [
+                583.0028402294133,
+                583.0031804588267
+              ],
+              "overlap_duration_day": 4.075109989313316e-06,
+              "original_accepted_start": 0.1631918634622263,
+              "native_accepted_start": 0.15121145918980267
+            }
+          }
+        },
+        "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+        "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+        "inside_unchanged_scientific_bound": false,
+        "reference_accuracy_qualified": false,
+        "production_admission": false,
+        "whole_scientific_admission": false,
+        "migration_complete": false,
+        "rejected_actual_data_controls": [
+          "missing_native_leaf",
+          "duplicate_native_leaf",
+          "nonfinite_rate",
+          "wrong_native_clock",
+          "wrong_native_node_clock",
+          "wrong_original_node_clock",
+          "wrong_root_sink",
+          "wrong_daily_oxygen",
+          "wrong_geometry",
+          "nonfinite_original_state",
+          "wrong_original_daily"
+        ]
+      },
+      "posix-O2": {
+        "original_accepted_steps": 3206,
+        "native_accepted_steps": 4060,
+        "overlap_cells": 7265,
+        "original_oxygen_cm": 0.003593541147124953,
+        "native_oxygen_cm": 0.003348861457272886,
+        "decomposition": {
+          "potential_contribution_cm": 9.078296459789e-09,
+          "stress_fraction_contribution_cm": -0.00024468876814852657,
+          "total_delta_cm": -0.0002446796898520669
+        },
+        "accepted_start_state_witness": {
+          "head_cm": {
+            "duration_node_mean_absolute_start_difference": 0.19127841535380746,
+            "maximum_overlapping_start_difference": 318.6003178772619,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0027600116255,
+                583.0029681976711
+              ],
+              "native_interval_day": [
+                583.0025,
+                583.0028402294133
+              ],
+              "overlap_duration_day": 8.021778785596194e-05,
+              "original_accepted_start": -1315.4048889393941,
+              "native_accepted_start": -1634.005206816656
+            }
+          },
+          "theta": {
+            "duration_node_mean_absolute_start_difference": 5.3216784523847755e-05,
+            "maximum_overlapping_start_difference": 0.01198040427242364,
+            "maximum_witness": {
+              "node": 1,
+              "original_interval_day": [
+                583.0031763837167,
+                583.0033845697624
+              ],
+              "native_interval_day": [
+                583.0028402294133,
+                583.0031804588267
+              ],
+              "overlap_duration_day": 4.075109989313316e-06,
+              "original_accepted_start": 0.1631918634622263,
+              "native_accepted_start": 0.15121145918980267
+            }
+          }
+        },
+        "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+        "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+        "inside_unchanged_scientific_bound": false,
+        "reference_accuracy_qualified": false,
+        "production_admission": false,
+        "whole_scientific_admission": false,
+        "migration_complete": false,
+        "rejected_actual_data_controls": [
+          "missing_native_leaf",
+          "duplicate_native_leaf",
+          "nonfinite_rate",
+          "wrong_native_clock",
+          "wrong_native_node_clock",
+          "wrong_original_node_clock",
+          "wrong_root_sink",
+          "wrong_daily_oxygen",
+          "wrong_geometry",
+          "nonfinite_original_state",
+          "wrong_original_daily"
+        ]
+      }
+    },
+    "production_admission": false,
+    "whole_scientific_admission": false,
+    "migration_complete": false
+  },
+  "qualification_dependencies": {
+    "tests/dataqual15_hupsel/film_rotation.py": "34a9c7592f7ee45ab878fd8e27722e946e30bbbec447946821f8fafb1521ccef",
+    "tests/dataqual15_hupsel/film_rotation_audit.py": "4bc9a40945dd8a2ed72e82d6b1a4f655212b3748b26edd3f3f1bbb3d74fd155f",
+    "tests/dataqual15_hupsel/film_rotation_evidence.py": "55a69e4112a720925a50acfa29213e31654bad3a2d79db18c5e6b1b1086a3ffc",
+    "tests/dataqual15_hupsel/test_film_rotation.py": "8e3add028f73831a0b7a662e65bdf9ade1ed45f7c910ad501bfa49795ccd5270",
+    "tests/dataqual15_hupsel/film_runtime.py": "15b391e998778c603a238510459cd96f875cff4e173a49c5f462d598a9dfc7a9",
+    "tests/dataqual15_hupsel/film_runtime_audit.py": "d4488717d9f2482f24a7715385317bf12b7c0dfd0a8acb7d165abbd56be66ffb",
+    "tests/dataqual15_hupsel/film_runtime_profiles.py": "8ee237d26e952fb73ac963386fe82a350109e615b087d0b0aac81bd2aca40a0e",
+    "tests/dataqual15_hupsel/film_runtime_counter.py": "580c75869d78e52270bf5c930146e14f4442e4246ef3c285a0fb9d76378b8204",
+    "tests/dataqual15_hupsel/film_runtime_evidence.py": "0a22001a92e65fcd22339b98ef91d7b3b4f265663d1f43ae9f3c06c2af2adc98",
+    "tests/dataqual15_hupsel/film_refinement_candidate.py": "e7600c2c1c2abd0e6263c81e747f874a2fa23438b87b667b06319317a1906e68",
+    "tests/dataqual15_hupsel/audit_corrected_rotation.py": "fc6b36b7e6eba97c6232a2902cd78df404fa49b0948c72b954ec026e005687ba",
+    "tests/dataqual15_hupsel/scientific_followup.py": "ccae726d49526a0ee1dbf119e7f5c177a60129cd3f7284e9758e1c117f4dabf2",
+    "tests/dataqual15_hupsel/production_diagnostic_native.py": "79cfb24d7ccd29b83f435e7f42baca84b154e3172a103a3485b34447c9d75d0c",
+    "tests/dataqual15_hupsel/production_diagnostic_guards.py": "130803cf9f5794555843377e2772cf1935c15cdeba12412e5e941cd81f104f83",
+    "tests/dataqual15_hupsel/qualify_rotation_restart_guards.py": "e8eca2c7e7bc138087537c5a4f16d281f7bf2d7f91bf2e086e7885945c3aeef9",
+    "tests/dataqual15_hupsel/inspect_profiles.py": "48b6a4c6e0eeaad02d309c746e5fb484da297e60bf9497a87e7cbc47fe8f404e",
+    "integration/dataqual15_hupsel/FILM_ROTATION_PREREGISTRATION_20261104.json": "33fed70031364257a40f236cc4eecb462f271fff03a7750a592cc3312d194b25",
+    ".github/workflows/hupsel-film-rotation.yml": "722071767ae5873ed3a8b8b08334bf7934088bb599f8ab62e1766ab5946f748a",
+    "app/support/restart_publish.c": "3da212d69c504da63e98a157f7d8a61fab018bc7bdd7ec5d73ef61405ee61d23",
+    "tests/dataqual15_hupsel/build_and_run.py": "9b1b46bd74252d7db497b2793398691576451db9f1d3af475b1e9a259729bed1",
+    "tests/dataqual15/original_sources.py": "5b9d0045a0e2364a042898e35027611904630100e67c13760e8d7da162337142",
+    "tests/dataqual15/verify_current_native_admission.py": "d1bdebbc981c0b1897cf714ffce53d0f1464cac663f264531e9b1fbc9bac0832",
+    "tests/dataqual15_hupsel/production_diagnostic_admission.py": "8c67554d37d0740eaeb008cb7e2ab6072a61e8e270c720d8a0944009453e31a2",
+    "tests/dataqual15_hupsel/pressure_film.py": "13da406696eb5d2707eae06f3de796cc2c82f03bdf945479d24c9ad2f3cfbe4c",
+    "tests/dataqual15_hupsel/pressure_film_audit.py": "fe106ce46c2cc67c8dcf746fe3ba9dcc67f9d5ecfb0024765a626d7d43bb027e",
+    "tests/dataqual15_hupsel/pressure_film_evidence.py": "3e5911b29c5354d6f3fa4902776eaefed3cc7584a2852a93ae5d465889d5a44d",
+    "tests/dataqual15_hupsel/test_pressure_film.py": "bcdc8d63b1d7b238b1f0646ede892fb1b3f6be5b245e0d5d0624fffca46c71aa",
+    "tests/dataqual15_hupsel/micro_pressure_probe.py": "4cdef60eb648436d6d82a591ecbb546e7719b00562b26368ce8ae66a098e30ee",
+    "integration/dataqual15_hupsel/PRESSURE_FILM_PREREGISTRATION_20261105.json": "554ef55b05c86dab71bee74b0019d3b61061f7bb1ad88c2cfc2e525652017a62",
+    ".github/workflows/hupsel-pressure-film.yml": "d704d6a5c722818ca7b2d8bba3f721ecb2847610c7f712e7052f39e79e969928",
+    "tests/dataqual15_hupsel/composed_oxygen.py": "b423767768b79f0c98413a8b4a9810bdd338b8cd86984b0fbb0217b48ca75d01",
+    "tests/dataqual15_hupsel/composed_oxygen_audit.py": "b3d90b7e78dc220c465268d1bab37e1f3bc935529227e6a051e1ba9b2040c902",
+    "tests/dataqual15_hupsel/composed_oxygen_evidence.py": "58ba87d3229e16ab5f1af44344a08633acd5d24db3dfb2f73e849b4aad91e771",
+    "tests/dataqual15_hupsel/test_composed_oxygen.py": "c075c8dfad6592c1cf4203a24cabc7c8c9650d0eabfc75af548c5453529f7c23",
+    "tests/dataqual15_hupsel/pressure_oxygen_observer.py": "118a920a324fce18ffb26e68712a85a2b6c092c96fe1047657298a0b44dcf168",
+    "tests/dataqual15_hupsel/root_oxygen_observer.py": "12236dd175f31bc9866b5c856f630617c1ce262394fa281f1ce3c6f5abe1c68f",
+    "tests/dataqual15_hupsel/root_oxygen_evidence.py": "68e872d7d790de4053bd8b3d7fdb182e0e694d7832825fb51abfd18a0e7e5314",
+    "tests/dataqual15_hupsel/matched_oxygen_observer.py": "20e79d8a7cb846c3dcf95e3381b7d25decc65f271b5e2d6b6ed2d57ff5f16287",
+    "tests/dataqual15_hupsel/matched_micro_observer.py": "03e1176ab41872251ae4814e8198debb12df463366e2727e3fcbf9dce63d1986",
+    "tests/dataqual15_hupsel/matched_oxygen_evidence.py": "2ba7f43ca7edc22d6f1ccdd083a95bd03e93841bb6ebc521ed4387e89d79a9c5",
+    "tests/dataqual15_hupsel/pressure_oxygen_evidence.py": "cb8d32df01717ddb5bd2f70464b241ebdc3bd786ef50fc5c161bef48f7f9912e",
+    "tests/dataqual15_hupsel/matched_micro_replay.py": "ce25af85066137b49019536c8cc8558245d04ffc1c3aef8498b4f1c36dc8c964",
+    "tests/dataqual15_hupsel/matched_oxygen_owners.f90": "7a1925f4e76650e66f60dc68591a7d1cf287c2370086f2592f81dd9c093017c5",
+    "tests/dataqual15_hupsel/matched_oxygen_driver.f90": "78f0185c9db78cd0e2d99b18a63eed4bcbebe0753c605dd967a2c38f937545e9",
+    "tests/dataqual15_hupsel/pressure_oxygen_partition_driver.f90": "3e100f716cff4f68bb29a8b66af773d5f8f2d29b5f84d3819d3beb11fc36cd00",
+    "tests/physics/run_ppa_micro02_source_oracle.py": "47009d6aa4cc9b6eaf5ce01bdccf2c65950fe31fb681f2104738d9cbbc1d5c73",
+    "integration/audits/PPA_WU05C3A_B111_OXYGEN_SOURCE.json": "c9a327d316499e081c25bdb4ff785cf9280d326b30ea4b5582c11a8ef587b716",
+    "integration/dataqual15_hupsel/COMPOSED_OXYGEN_PREREGISTRATION_20261105.json": "1afd08b5a06ca71eb6ec16e1691a91e42222e0fea8474b8e48de87e71d2074f5",
+    ".github/workflows/hupsel-composed-oxygen.yml": "a164bbdaf06964ddd6863dc98c4d4cb28d64721df3bbe55e6077733f5132d03c",
+    "tests/dataqual15_hupsel/composed_chronology.py": "676ed2569d3ed99f6aee69ba5c303b73bb512f885a31052527cb65a3d463eb3f",
+    "tests/dataqual15_hupsel/test_composed_chronology.py": "8c1480713fe43614b3b03fc6dc46420261ec76753fd47d6115d0ff738bb61d8b",
+    "tests/dataqual15_hupsel/original_chronology_evidence.py": "51980eb1c146fcdd2a801dad1a16f02f6a8806610bc8942cad973d089d7fb16f",
+    "tests/dataqual15_hupsel/original_chronology_audit.py": "fa278a130f71bd6f8713afdc1d643c2e3fec159e480fa8550afe8e01e48850c7",
+    "tests/dataqual15_hupsel/original_oxygen_chronology.py": "0da232da7993c6df3015eabe0e96782f65d6886337379470968d725623e4024a",
+    "tests/dataqual15_hupsel/original_micro_forcing.py": "98d338e2a9386c9666507e52021450ec634c5228d6b6a75f55cfaca7b4c11537",
+    "tests/dataqual15_hupsel/original_oxygen_forcing.py": "980a8719513415e60d90fb295597202a96b0739bb0b4c10b3bfa05046915f559",
+    "tools/vq/b0_source_runner.py": "7c4816af392fc6c70a906d522084d61eabee5c0893dbc1b97122a80ecc1c9b78",
+    "integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64": "d28c2def250392ff62c37c20eae5c3bffca03870915baf88b4816a0084bc17dc",
+    "integration/dataqual15_hupsel/COMPOSED_CHRONOLOGY_PREREGISTRATION_20261105.json": "38a2f8a35462e4b9c5032e3e9f5fca5f2b96b3fbcdf4bee49815338f886cc839",
+    ".github/workflows/hupsel-composed-chronology.yml": "328471b1e591aebb2b0d66c9e2097e0e379806397702abbf346ccf4a2c0c7ce8"
+  }
+}
