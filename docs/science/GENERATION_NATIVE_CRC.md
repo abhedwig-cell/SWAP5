@@ -53,3 +53,5 @@ whole scientific counts remain open.
 Actual native-control run42120477526 passes32 launches:8 proper valid reexports and24 decoder refusals with exact live authority. Three independent binary/authority/nested-CRC proof mutations refuse. All15 second-head workflows pass; all15 fresh exact-f12 baseline diagnostics remain FAILED and uncensored. Production deployment remains gated by the dedicated deployment preregistration.
 
 Deployment checkpoint: exactly the two executed complete postimages now occupy the production source paths, with dedicated supported-POSIX admission and exact f12 predecessor views. All other production/application/reference source is unchanged. Canonical production admission remains pending current/predecessor and source-head qualification.
+
+Local deployed-source qualification passes: actual source/scope and13 malformed-record refusals, full independent current evidence replay, and the entire unmodified exact-f12 admission route. Only two production CRC imports changed. Source-head qualification and canonical integration remain pending.
