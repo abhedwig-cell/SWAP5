@@ -1,0 +1,37 @@
+# Composed-variant temporal diagnosis
+
+PR1545/1546 qualifies the coherent pressure-stopping/film research variant,
+with36/37 original comparisons passing and oxygen584 still failing. Earlier
+temporal experiments used different stopping/film operators and cannot establish
+convergence of this variant. This separately registered experiment therefore
+uses its exact qualified O2 native executables on two genuine original-input
+initializations through584, with only SWP DTMAX changed from0.01 to0.005/0.0025.
+No physical forcing, tolerance, iteration cap, production source or target changes.
+
+All other seven-file input bytes and complete inherited236-provider source,
+object, link, executable, raw-data and native-control proof are verified before
+execution. Each cap creates its own numerical history; no checkpoint is imported
+from another cap, build, optimization, schema or numerical variant. Own583-to584
+continuation must match endpoint bytes and all budget/crop suffix rows exactly.
+Using its valid seed with the other cap must fail before output publication.
+
+The read-only audit checks complete584 interval/daily/cumulative water and
+solute ledgers, canopy capacity/export, eight typed captures, final34-node
+primitive fields and CRC. Existing1e-10 local/primitive and1e-8 cumulative bounds
+remain unchanged. Nine injected real-data/CRC defects must fail. Six focused
+cap/input/scope tests precede costly execution. Seven original daily series
+are compared over the actual prefix using the old unchanged limits, with
+day584 oxygen and maximum cap0.01 differences explicit. These prefix diagnostics
+do not replace the full37-comparison authority, establish an accurate original
+reference, or admit a physical correction. Changes in a coupled trajectory
+alone do not isolate the causal operator.
+
+Windows O2 is selected first; cold POSIX O2 independently repeats the two
+original-initialized prefixes after local diagnosis. No O0 refinement is selected:
+there is no compiled algorithm change or portable runtime adoption here. The
+already qualified O0/O2 runtime and current/predecessor preservation remain
+separate required inherited authorities. Missing exact native proof requires
+actual execution; altered proof fails closed. Cost and selection authority are
+COMPOSED_TEMPORAL_PREREGISTRATION_20261105.json; recovery is
+COMPOSED_TEMPORAL_RECOVERY_20261105.json. Production/whole-science admission and
+migration completion remain false.
