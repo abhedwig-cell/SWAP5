@@ -1,0 +1,33 @@
+name: Matrix CRC exact predecessor diagnostics
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/matrix_crc_baseline*.py
+      - integration/dataqual15_hupsel/MATRIX_CRC_BASELINE_*
+      - .github/workflows/matrix-crc-baseline.yml
+permissions:
+  contents: read
+jobs:
+  exact-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual immutable pre-matrix source observations, never current science
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_BASELINE_POSIX_20261105.zip') == '' }}
+        run: |
+          test -x /usr/bin/gfortran
+          git worktree add --detach "$RUNNER_TEMP/matrix-exact-baseline" 5284091c34a44d14c2d837f7a5d2a5b217437101
+          python3 -B tests/dataqual15_hupsel/matrix_crc_baseline.py --baseline "$RUNNER_TEMP/matrix-exact-baseline" --output "$RUNNER_TEMP/matrix-baseline-observations"
+      - name: Exact retained predecessor raw failures
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_BASELINE_POSIX_20261105.zip') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/matrix_crc_baseline_evidence.py
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_BASELINE_POSIX_20261105.zip') == '' }}
+        with:
+          name: exact-matrix-baseline-outcomes
+          path: ${{ runner.temp }}/matrix-baseline-observations
