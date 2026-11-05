@@ -1,0 +1,44 @@
+{
+  "head": "bcf759eccf6c359b1c95e51074953e0298f123f9",
+  "run_id": 42057130853,
+  "artifact_id": 13429933220,
+  "artifact_zip_sha256": "96334ac9670b60e189ba5a6b63692672cb1cc34129a3c1732f036c72514591c9",
+  "report": {
+    "O0": {
+      "audit": {
+        "status": "EXACT_EXTRACTED_CRC_COMPONENT_AND_NATIVE_IO_ORACLES_REMEASURED",
+        "optimization": "O0",
+        "incumbent_failed_sources": [],
+        "candidate_all_oracles_pass": true,
+        "production_admission": false,
+        "full_adapter_qualified": false
+      },
+      "data_refusals": [
+        "binary",
+        "projection",
+        "native",
+        "payload",
+        "promotion"
+      ]
+    },
+    "O2": {
+      "audit": {
+        "status": "EXACT_EXTRACTED_CRC_COMPONENT_AND_NATIVE_IO_ORACLES_REMEASURED",
+        "optimization": "O2",
+        "incumbent_failed_sources": [],
+        "candidate_all_oracles_pass": true,
+        "production_admission": false,
+        "full_adapter_qualified": false
+      },
+      "data_refusals": [
+        "binary",
+        "projection",
+        "native",
+        "payload",
+        "promotion"
+      ]
+    }
+  },
+  "production_admission": false,
+  "full_adapter_qualified": false
+}

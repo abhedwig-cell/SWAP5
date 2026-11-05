@@ -1,0 +1,24 @@
+{
+  "status": "PREREGISTERED_BEFORE_EXTRACTED_PRIMITIVE_EXECUTION",
+  "baseline": "f0939f4cbc4410a9e7fd88c38e47f61310d39fb6",
+  "scope": "Five exact extracted local CRC functions plus three exact native append/check primitive pairs; current admitted shared-table body as private candidate",
+  "source_sha256": {
+    "src/adapter/mod_matrix_joint_restart_file.f90": "b61b2c062abdb5f4ff5e6e7ca644229193bb664397fdf7cb034f1669a9eb02cf",
+    "src/adapter/mod_mineral_joint_restart_file.f90": "1364feaec7de5d3b9f6ec3aad6d234c3be56e9f07917e85a668a23ff118f0b78",
+    "src/adapter/mod_reactive_n_joint_restart_file.f90": "ebe6a205031b42a8730f78925299d302842b09ecaae39afeed347267a00cde16",
+    "src/adapter/mod_crop_n_output_generation.f90": "6b271eca740422429cc09fdd5b6de5ef8154c4625913b6674dd05ff950d138e0",
+    "src/adapter/mod_crop_n_saved_generation.f90": "2ae87a1acd42fca642537836d599652de9d7a4dd4f093d2908b12672c84d8d81",
+    "src/adapter/mod_age_joint_restart_file.f90": "f49c04dc08eb31700246310c628debac0605652c71571f21006aabc0873623e3"
+  },
+  "production_delta": [],
+  "oracle": "Python zlib CRC32/ISO-HDLC, empty legitimate zero and deterministic length/byte corpus; no expected value fit",
+  "candidate": "Only exact admitted shared crc32 function body substituted inside extracted primitive wrapper. Original append/check I/O unchanged.",
+  "qualification": "Windows/POSIX O0/O2 actual compiled code, raw results and native files, external CRC/semantic corruption results. Incumbent mismatches retained rather than treated PASS. Every candidate result and native refusal must meet unchanged oracle.",
+  "limitations": "Extracted primitive evidence only: not full adapter/public writer, model restart, mass, solver, numerical or production admission. Actual full module/affected runtime still required before any source successor.",
+  "nonoverlap": "No source/runtime/entry/status changes; peer PR1563 owns numerical/thermal/Andelst. New isolated research controller, evidence and docs only.",
+  "whole_scientific_admission": false,
+  "production_admission": false,
+  "migration_complete": false,
+  "original_preregistered_baseline": "771ff741b01b867e4ac21d1dafbe28b99756fefd",
+  "canonical_reconciliation": "Peer PR1563 admitted while qualification ran. All six measured source blobs and every wrapper remain exact; preserve both actual platform results. Only production guard baseline follows canonical peer; no primitive/algorithm/driver/oracle changes."
+}
