@@ -16,6 +16,7 @@ def postimage(name):
  marker='  use iso_fortran_env,only:real64,int64,int32,int8,iostat_end\n';assert body.count(marker)==1
  return body.replace(marker,marker+'  use mod_age_joint_restart_file,only:crc32\n',1)
 def guard(development=False):
+ subprocess.run(['git','merge-base','--is-ancestor',BASE,'HEAD'],cwd=ROOT,check=True,capture_output=True)
  assert set(git('diff','--name-only','--no-renames',BASE,'--','src','app','reference').splitlines())==set(SOURCES)
  assert not git('ls-files','--others','--exclude-standard','--','src','app','reference')
  for n in SOURCES:assert (ROOT/n).read_bytes().replace(b'\r\n',b'\n')==postimage(n).encode()

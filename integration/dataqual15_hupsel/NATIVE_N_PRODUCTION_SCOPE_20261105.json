@@ -1,7 +1,7 @@
 {
   "scope": "CURRENT_NATIVE_MINERAL_REACTIVE_CRC32_ISO_HDLC_ONLY",
   "predecessor": "b41e1cda439a370a7e1966387412bdf55ca1b096",
-  "phase": "QUALIFIED_CURRENT_WINDOWS_POSIX_PENDING",
+  "phase": "QUALIFIED_CURRENT_WINDOWS_AND_POSIX",
   "production_delta": {
     "src/adapter/mod_mineral_joint_restart_file.f90": {
       "before": "08862083e419b472b2d5c8a078c45d3c6e4f4824",
@@ -41,7 +41,7 @@
   },
   "gate_source_sha256": {
     "tests/dataqual15/verify_current_native_admission.py": "723f5c9a79eb366db3b4af124cb457f83c7aacc6702d55a6ff408b22cbf0e4d4",
-    "tests/dataqual15_hupsel/native_n_production.py": "4f19ca783b0d1a37bcc939db96c94b2c913dd6bcd55cc3aca06b79cfbffb8439",
+    "tests/dataqual15_hupsel/native_n_production.py": "4be2a9b9cefa66afa433b8333f5d91f81a356ddacc90e821d480056078de3ebe",
     "tests/dataqual15_hupsel/native_n_production_runtime.py": "7b1ff36192bb7061c6ff9b30b9565796903bcdf2eb03ca48b8dcc4ec08cb33ab",
     "tests/dataqual15_hupsel/native_n_production_evidence.py": "9183d689bb7ac47c49f47354836c7fafa06159fdae6927ddb796430e70cb208f",
     "tests/dataqual15_hupsel/test_native_n_production.py": "ddc928ecddb5f4fcff3eb0ac6900c79ecb25e60dc55df0278a42ae5df31ae9ad",
@@ -58,7 +58,8 @@
   },
   "qualified_artifact_records": {
     "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_WINDOWS_20261105_O0.json": "b9e8f4255ba2e79923db9e1a1badd67bb851029d74f0900151043c486cea4e7b",
-    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_WINDOWS_20261105_O2.json": "68b964307b5da7bc1f18259d8a3b7d8817db1834458270fc3f2d9e58d71f3f35"
+    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_WINDOWS_20261105_O2.json": "68b964307b5da7bc1f18259d8a3b7d8817db1834458270fc3f2d9e58d71f3f35",
+    "integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_POSIX_20261105.json": "5e1b2eeee357ce226b9e7d6f06b31099acc3b4aac000fb27f846d358a22c98bf"
   },
   "whole_scientific_admission": false,
   "migration_complete": false,

@@ -1,6 +1,6 @@
 # Current native mineral and reactive-N CRC successor
 
-Status: implemented and actual Windows O0/O2 current-source qualification; cold POSIX, owning preservation and canonical admission pending.
+Status: actual Windows/POSIX O0/O2 current-source and owning preservation qualification; canonical adjudication pending.
 
 Two production disk adapters now import the already admitted public `mod_age_joint_restart_file::crc32`, removing only their duplicated CRC functions. Append/check, error-status comparisons, file-size bounds, schemas and payload construction remain exact. No solver, retry, tolerance, mass, restart, physical-input, state or ownership boundary changes. This follows the full-module [native N CRC research](NATIVE_N_CRC.md), whose original Windows O2 failures remain retained evidence.
 
@@ -9,3 +9,5 @@ Actual current-source Windows O0/O2 fresh coherent332-provider builds call the c
 The additive current route is guarded by exactly two source postimages, the fixed entrypoint, one owned status key and exact gate/artifact records. It constructs a source-identical predecessor view for all original prior admission bodies; it does not weaken them. The historical native N research workflow executes its unchanged scripts in that same verified preimage view, while the new workflow measures real current production modules. Those verdicts are distinct. Production admission requires the current native proof and owning predecessor preservation; whole science, full seasonal coverage and the other three CRC duplicates remain open. Legitimate CRC zero is still allowed when it is the computed checksum; invalid zero trailers are refused through the unchanged comparison.
 
 Authority: `integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_PREREGISTRATION_20261105.json`, `NATIVE_N_PRODUCTION_SCOPE_20261105.json`, `NATIVE_N_PRODUCTION_RECOVERY_20261105.json` and original raw platform archives.
+
+Cold actual current POSIX run42093414646/job127477098584 passes full332-provider O0/O2 builds, independent native/source/object/data audit, private native byte comparators and the complete current/unmodified-predecessor admission route. Original artifact13445549485 is retained as two lossless parts, original ZIP SHA256 `8b4657f5bbbb3362a93f388fd3be0695d297672992041728927741a5bd146057`. Old broad red checks require exact pre-successor counterfactual attribution; their FAILED verdicts are not relabelled as PASS.
