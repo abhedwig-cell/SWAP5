@@ -1,6 +1,6 @@
 {
   "status": "PREREGISTERED_BEFORE_EXTRACTED_PRIMITIVE_EXECUTION",
-  "baseline": "f0939f4cbc4410a9e7fd88c38e47f61310d39fb6",
+  "baseline": "6226cbb6c1539127890cc1c635e883f868bf0760",
   "scope": "Five exact extracted local CRC functions plus three exact native append/check primitive pairs; current admitted shared-table body as private candidate",
   "source_sha256": {
     "src/adapter/mod_matrix_joint_restart_file.f90": "b61b2c062abdb5f4ff5e6e7ca644229193bb664397fdf7cb034f1669a9eb02cf",
@@ -20,5 +20,5 @@
   "production_admission": false,
   "migration_complete": false,
   "original_preregistered_baseline": "771ff741b01b867e4ac21d1dafbe28b99756fefd",
-  "canonical_reconciliation": "Peer PR1563 admitted while qualification ran. All six measured source blobs and every wrapper remain exact; preserve both actual platform results. Only production guard baseline follows canonical peer; no primitive/algorithm/driver/oracle changes."
+  "canonical_reconciliation": "Peer PR1563 admitted while qualification ran. All six measured source blobs and every wrapper remain exact; preserve both actual platform results. Only production guard baseline follows canonical peer; no primitive/algorithm/driver/oracle changes. Peer PR1567/1568 landed during the final merge race. Actual merge tree differs from preflight tree by that admitted peer delta. All six measured blobs remain identical; exact actual combined-tree preservation and replay are selected on the receipt head before closure. No source/oracle change."
 }
