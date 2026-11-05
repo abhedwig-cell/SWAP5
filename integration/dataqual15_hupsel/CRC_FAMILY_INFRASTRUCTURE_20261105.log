@@ -1,0 +1,16 @@
+2026-11-05T15:57:52.6501729Z ##[group]Run sudo apt-get update && sudo apt-get install -y gfortran
+2026-11-05T15:57:52.6502162Z [36;1msudo apt-get update && sudo apt-get install -y gfortran[0m
+2026-11-05T15:57:52.6523486Z shell: /usr/bin/bash -e {0}
+2026-11-05T15:57:52.6523708Z ##[endgroup]
+2026-11-05T15:57:52.7763853Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-11-05T15:57:52.7950576Z Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]
+2026-11-05T15:57:52.8769424Z Get:7 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [732 kB]
+2026-11-05T15:57:52.9060226Z Get:8 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [663 kB]
+2026-11-05T15:58:25.9135519Z Ign:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-11-05T15:58:59.0439393Z Ign:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease
+2026-11-05T15:59:33.1751214Z Ign:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease
+2026-11-05T15:59:33.1806184Z Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+2026-11-05T15:59:33.1829713Z Hit:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease
+2026-11-05T15:59:33.1837741Z Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+2026-11-05T16:27:06.4164113Z ##[error]The operation was canceled.
+2026-11-05T16:27:06.4801764Z

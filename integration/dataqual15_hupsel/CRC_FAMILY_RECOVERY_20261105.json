@@ -15,5 +15,12 @@
   "pr": 1566,
   "original_baseline": "771ff741b01b867e4ac21d1dafbe28b99756fefd",
   "reconciliation": "PR1563 canonical source changes merged without conflict; all6 measured sources byte-exact, no production delta relative new canonical; inherited actual wrappers/binaries/data dependency unchanged.",
-  "posix": "Cold O0/O2 all incumbents and candidates pass GNU13 independent oracle. Original artifact13429933220 retained and independently replayed with5 data refusals per optimization. Windows O2-only incumbent failures remain explicit."
+  "posix": "Cold O0/O2 all incumbents and candidates pass GNU13 independent oracle. Original artifact13429933220 retained and independently replayed with5 data refusals per optimization. Windows O2-only incumbent failures remain explicit.",
+  "infrastructure": {
+    "run": 42058878688,
+    "job": 127354690349,
+    "result": "TIMED_OUT_BEFORE_ANY_QUALIFICATION",
+    "cause": "Ubuntu mirror apt update hung before compilation or replay; no PASS inferred. Raw setup log retained.",
+    "correction": "Use existing executable GNU Fortran when present, bounded mirror access only when missing. All evidence and preservation steps unchanged."
+  }
 }
