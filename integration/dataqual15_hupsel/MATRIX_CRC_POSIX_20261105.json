@@ -1,0 +1,211 @@
+{
+  "head": "778078a0f38406e2fae32159e55e5d9f07055816",
+  "run_id": 42106624518,
+  "job_id": 127523015813,
+  "artifact_id": 13452107992,
+  "artifact_zip_sha256": "771ada4705645279aba657df3c79175be8d438311b6ffded681fea6b04e1f38c",
+  "artifact_bytes": 48055907,
+  "artifact_parts": [
+    {
+      "path": "MATRIX_CRC_POSIX_20261105.zip.part1",
+      "bytes": 47185920,
+      "sha256": "5495ae18fce0e6194f41bf7469290dc9cc91cbd890dc3347cf8027d53d502447"
+    },
+    {
+      "path": "MATRIX_CRC_POSIX_20261105.zip.part2",
+      "bytes": 869987,
+      "sha256": "6d6ee9a87d053d0aaa4cda08a8d1d0232ef470e976e5e3241fc4a35d46353d6b"
+    }
+  ],
+  "report": {
+    "O0": {
+      "audit": {
+        "status": "COMPLETE_MATRIX_ROUTE_NATIVE_SOURCE_AND_DATA_REMEASURED",
+        "optimization": "O0",
+        "results": {
+          "incumbent": {
+            "1": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.8": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.0005": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "2": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            }
+          },
+          "candidate": {
+            "1": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.8": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.0005": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "2": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            }
+          }
+        },
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "controls": [
+        "binary",
+        "source",
+        "native",
+        "semantic",
+        "raw"
+      ]
+    },
+    "O2": {
+      "audit": {
+        "status": "COMPLETE_MATRIX_ROUTE_NATIVE_SOURCE_AND_DATA_REMEASURED",
+        "optimization": "O2",
+        "results": {
+          "incumbent": {
+            "1": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.8": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.0005": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "2": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            }
+          },
+          "candidate": {
+            "1": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "0.8": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.0005": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "1.5": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            },
+            "2": {
+              "independent_crc_pass": true,
+              "base_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 10
+            }
+          }
+        },
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "controls": [
+        "binary",
+        "source",
+        "native",
+        "semantic",
+        "raw"
+      ]
+    }
+  },
+  "candidate_cross_optimization_native_identity": true,
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
