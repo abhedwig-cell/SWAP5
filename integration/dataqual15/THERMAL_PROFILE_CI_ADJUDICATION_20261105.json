@@ -1,0 +1,490 @@
+{
+  "tested_head": "34b8adf88b7194aaaec74d2ba13a97f5ecb83373",
+  "terminal_workflows": {
+    "success": 30,
+    "failure": 34
+  },
+  "not_all_CI_pass": true,
+  "baseline_evidence": "integration/dataqual15_hupsel/PRODUCTION_CROP_LOGICAL_CI_ADJUDICATION_20261105.json",
+  "authority": "New exact five-file thermal/Andelst successor guard, real fresh native runtime/restarts and cold POSIX. Legacy scope guards unchanged and continue to refuse the new source footprint; no automatic promotion of failed old gates.",
+  "failures": [
+    {
+      "workflow": "PUB-GC E7 current-canonical preservation",
+      "run": 42031309069,
+      "job": 127258165336,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Validate E7 against current canonical application envelope",
+      "signals": [
+        "2026-11-05T13:00:33.5317677Z AssertionError"
+      ]
+    },
+    {
+      "workflow": "PPA-WU04-B Boesten evaporation admission",
+      "run": 42031309289,
+      "job": 127258166739,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "PPA-WU04-B qualification",
+      "signals": [
+        "2026-11-05T13:00:51.5341779Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E06 Reference local-balance scaling",
+      "run": 42031309062,
+      "job": 127258165310,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Diagnose exact P2E03 Reference local-balance scaling",
+      "signals": [
+        "2026-11-05T13:02:11.4937106Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "workflow": "F-CI79 EB-I25 moving preservation",
+      "run": 42031309060,
+      "job": 127258166437,
+      "classification": "UNCHANGED_PREEXISTING_APP_POSTIMAGE_PIN_REFUSAL",
+      "failed_step": "Preserve admitted EB-I25 authority surface with F-ROSS12 backend successor",
+      "signals": [
+        "2026-11-05T13:02:37.2238095Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ]
+    },
+    {
+      "workflow": "PPA MICRO06 stacked source and runtime qualification",
+      "run": 42031309299,
+      "job": 127258166530,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "MICRO03 through MICRO06 production trial and preservation",
+      "signals": [
+        "2026-11-05T13:02:53.5900600Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "PUB-ME D3 origin authority",
+      "run": 42031309124,
+      "job": 127258165481,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Run preregistered D3 gate",
+      "signals": [
+        "2026-11-05T13:03:00.7150081Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "workflow": "PPA-WU04-A Black evaporation admission",
+      "run": 42031308775,
+      "job": 127258164552,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "PPA-WU04-A qualification",
+      "signals": [
+        "2026-11-05T13:00:05.5424133Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "run": 42031309112,
+      "job": 127258165923,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run Reference-only temporal refinement pilot",
+      "signals": [
+        "2026-11-05T13:01:37.2833186Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "F-PE-BALTOL02 scaled Reference balance-floor admission",
+      "run": 42031308665,
+      "job": 127258163893,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_baltol01_p2_oracle_recovery.sh",
+      "signals": [
+        "2026-11-05T12:59:51.4719079Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T12:59:51.4730297Z BALTOL01_P2_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "F-PE-BALTOL02 scaled Reference balance-floor admission",
+      "run": 42031308665,
+      "job": 127258164672,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_baltol02_effective_request.sh",
+      "signals": [
+        "2026-11-05T13:00:41.5635079Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:00:41.5647650Z BALTOL02_G12_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "F-PE-BALTOL02 scaled Reference balance-floor admission",
+      "run": 42031308665,
+      "job": 127258164676,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_baltol01_p0_matrix.sh",
+      "signals": [
+        "2026-11-05T13:01:56.2166862Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:01:56.2183377Z BALTOL01_P0_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "PPA-LOW02-TIME legacy prescribed-qbot application",
+      "run": 42031309172,
+      "job": 127258166120,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "PPA-LOW02-TIME owner qualification",
+      "signals": [
+        "2026-11-05T13:02:00.8781980Z PPA_LOW02_GATE_FAIL admitted backend successor drift"
+      ]
+    },
+    {
+      "workflow": "F-CI74 EB-I24 moving preservation",
+      "run": 42031309104,
+      "job": 127258165557,
+      "classification": "UNCHANGED_PREEXISTING_APP_POSTIMAGE_PIN_REFUSAL",
+      "failed_step": "Preserve EB-I24 under admitted EB-I25 and F-ROSS12 backend successors",
+      "signals": [
+        "2026-11-05T13:02:17.2395856Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ]
+    },
+    {
+      "workflow": "F-CI72 EB-I23 moving preservation",
+      "run": 42031308730,
+      "job": 127258164377,
+      "classification": "UNCHANGED_PREEXISTING_APP_POSTIMAGE_PIN_REFUSAL",
+      "failed_step": "Preserve EB-I23 under admitted EB-I25 and F-ROSS12 backend successors",
+      "signals": [
+        "2026-11-05T13:02:25.5331034Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 native disk restart",
+      "run": 42031309105,
+      "job": 127258166177,
+      "classification": "BASELINE_AND_CANDIDATE_STRUCTURAL_BUDGET_173_FIXED_EXPECTATION",
+      "failed_step": "Admission boundary and modular runner controls",
+      "signals": [
+        "2026-11-05T13:03:11.2337864Z AssertionError: 173 != 172 : runtime closure changed: reassess contract and build budget"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E04 Reference failure census",
+      "run": 42031309378,
+      "job": 127258166398,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Census exact P2E03 Reference failure classes",
+      "signals": [
+        "2026-11-05T13:03:44.0973124Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E09 Reference-only threshold freeze",
+      "run": 42031309032,
+      "job": 127258165287,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Replay Reference calibration and validate frozen thresholds",
+      "signals": [
+        "2026-11-05T12:56:46.3412374Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    },
+    {
+      "workflow": "SW431 crop F-KT B110 shared-owner scientific successor",
+      "run": 42031309413,
+      "job": 127258166525,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Run bash tests/fci/run_crop_fkt_b110_exact_source_successor.sh --verify-only",
+      "signals": [
+        "2026-11-05T12:58:05.2679776Z CROP_FKT_CERT_KERNEL_BLOB_MISMATCH"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E04 Reference B/C sweeps",
+      "run": 42031309421,
+      "job": 127258166661,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run preregistered Reference Stage B and C sweeps",
+      "signals": [
+        "2026-11-05T13:06:15.1199432Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E10 broad E0 paired matrix",
+      "run": 42031309126,
+      "job": 127258165601,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Execute preregistered broad E0 paired matrix",
+      "signals": [
+        "2026-11-05T13:06:23.2122203Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E08 Reference valid calibration domain",
+      "run": 42031309149,
+      "job": 127258165739,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Construct Reference-only common calibration domain",
+      "signals": [
+        "2026-11-05T13:05:24.4299891Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    },
+    {
+      "workflow": "PUB-P2E07 Reference cancellation floor",
+      "run": 42031309241,
+      "job": 127258166623,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Diagnose exact P2E06 Reference cancellation floor",
+      "signals": [
+        "2026-11-05T13:05:35.2927458Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "workflow": "Hupsel production native crop logical successor",
+      "run": 42031309175,
+      "job": 127258166072,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Run python3 -B tests/dataqual15_hupsel/test_production_crop_logical.py",
+      "signals": [
+        "2026-11-05T13:05:58.0603703Z AssertionError"
+      ]
+    },
+    {
+      "workflow": "F-SI39 B1.11 KSATEXM preservation",
+      "run": 42031309191,
+      "job": 127258166230,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Run bash tests/fsi/run_fsi39_b110_ksatexm.sh",
+      "signals": [
+        "2026-11-05T13:09:20.6298522Z F_SI39_FAIL unexpected production delta"
+      ]
+    },
+    {
+      "workflow": "MC-SOL01 file-driven Reference column",
+      "run": 42031309255,
+      "job": 127260280732,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Preserve existing surface age and accepted source authority",
+      "signals": [
+        "2026-11-05T13:08:29.0848775Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "workflow": "F-PE-ELASTIC65 mode7 C-SAFE binding",
+      "run": 42031309293,
+      "job": 127258172601,
+      "classification": "UNCHANGED_CANONICAL_TRACE_SAVE_REGEX_REFUSAL_BOTH_COMPILES_PASS",
+      "failed_step": "Preserve F-KT22 serialized compile closure",
+      "signals": [
+        "2026-11-05T13:08:44.1414333Z FKT22_FMR_COMPILE_FAIL FD construction or persistent SAVE state detected"
+      ]
+    },
+    {
+      "workflow": "MC-SOL01 original SWP chemistry",
+      "run": 42031309232,
+      "job": 127262331492,
+      "classification": "UNCHANGED_READER_STATIC_LINK_RECIPE_INCLUDES_MAIN_AND_OMITS_PUBLISHER",
+      "failed_step": "Original native input and real application",
+      "signals": [
+        "-reader/O0/0192.o'), PosixPath('/home/runner/work/_temp/swp-reader/O0/libttutil.a'), '-o', PosixPath('/home/runner/work/_temp/swp-reader/native/O0/reader')], '', \"/usr/bin/ld: /home/runner/work/_temp/swp-reader/O0/0192.o: in function `main':\\nmain.f90:(.text+0x1760c): multiple definition of `main'; /tmp/cctIC5fx.o:test_swp_reader.f90:(.text+0xeb0): first defined here\\n/usr/bin/ld: warning: /home/runner/work/_temp/swp-reader/O0/0085.o: requires executable stack (because the .note.GNU-stack section is executable)\\n/usr/bin/ld: /home/runner/work/_temp/swp-reader/O0/0185.o: in function `__mod_pond_thermal_restart_file_MOD_write_pond_thermal_restart':\\nmod_pond_thermal_restart_file.f90:(.text+0xda9d): undefined reference to `swap5_restart_publish'\\ncollect2: error: ld returned 1 exit status\\n\")"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 nonlinear contact and accepted thermal process data",
+      "run": 42031309128,
+      "job": 127258166165,
+      "classification": "UNCHANGED_PREEXISTING_APP_POSTIMAGE_PIN_REFUSAL",
+      "failed_step": "Exact current thermal and inherited numerical owner qualification",
+      "signals": [
+        "2026-11-05T13:01:28.0400113Z AssertionError: app/solute_project/hupsel_rotation_restart.f90"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 nonlinear contact and accepted thermal process data",
+      "run": 42031309128,
+      "job": 127258166574,
+      "classification": "NEW_RESEARCH_OVERLAY_PUBLISHER_COMPATIBILITY_FIXED_77F3736_CURRENT_REPLAY_CENSORED_90S",
+      "failed_step": "Cold source-bound native build, nonlinear contact and original-input thermal prefix",
+      "signals": [
+        "2026-11-05T13:03:41.3489016Z ValueError: substring not found"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 nonlinear contact and accepted thermal process data",
+      "run": 42031309128,
+      "job": 127258166879,
+      "classification": "NEW_RESEARCH_OVERLAY_PUBLISHER_COMPATIBILITY_FIXED_77F3736_CURRENT_REPLAY_CENSORED_90S",
+      "failed_step": "Cold source-bound native build, nonlinear contact and original-input thermal prefix",
+      "signals": [
+        "2026-11-05T13:11:23.4352647Z ValueError: substring not found"
+      ]
+    },
+    {
+      "workflow": "F-PE-ELASTIC08 runtime materialization",
+      "run": 42031308978,
+      "job": 127258171456,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Qualify ELASTIC08 preparation/materialization",
+      "signals": [
+        "2026-11-05T13:12:23.2893718Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:12:23.2909381Z F_PE_ELASTIC08_FAIL compile O0 src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "run": 42031309064,
+      "job": 127261527374,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Select closed predecessor view and current native I/O proof",
+      "signals": [
+        "2026-11-05T13:04:52.6501040Z AssertionError: unreviewed production paths"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "run": 42031309064,
+      "job": 127261527524,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Select closed predecessor view and current native I/O proof",
+      "signals": [
+        "2026-11-05T13:10:23.5292202Z AssertionError: unreviewed production paths"
+      ]
+    },
+    {
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "run": 42031309064,
+      "job": 127261527601,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Select closed predecessor view and current native I/O proof",
+      "signals": [
+        "2026-11-05T13:10:22.9549132Z AssertionError: unreviewed production paths"
+      ]
+    },
+    {
+      "workflow": "F-KT22 current-canonical qualification",
+      "run": 42031309093,
+      "job": 127260877399,
+      "classification": "UNCHANGED_CANONICAL_TRACE_SAVE_REGEX_REFUSAL_BOTH_COMPILES_PASS",
+      "failed_step": "Compile serialized FMR production seam",
+      "signals": [
+        "2026-11-05T13:16:04.7044911Z FKT22_FMR_COMPILE_FAIL FD construction or persistent SAVE state detected"
+      ]
+    },
+    {
+      "workflow": "F-PE-APPROX02 A2C production qualification",
+      "run": 42031309198,
+      "job": 127258166215,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_approx02_a2_application_sequence.sh",
+      "signals": [
+        "2026-11-05T13:14:51.8597222Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:14:51.8610750Z APPROX02_A2_APPLICATION_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "F-PE-APPROX02 A2C production qualification",
+      "run": 42031309198,
+      "job": 127258166416,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_approx02_a2_multistep.sh",
+      "signals": [
+        "2026-11-05T13:13:25.3548084Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:13:25.3608202Z APPROX02_A2_MULTISTEP_FAIL compile src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "F-PE-APPROX02 A2C production qualification",
+      "run": 42031309198,
+      "job": 127258166419,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_approx02_a2_modflow_e2e.sh",
+      "signals": [
+        "2026-11-05T13:13:21.8468982Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:13:21.8478154Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "F-PE-APPROX02 A2C production qualification",
+      "run": 42031309198,
+      "job": 127258166496,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_approx02_a2c_production_binding.sh",
+      "signals": [
+        "2026-11-05T13:13:40.6254020Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "workflow": "F-PE-APPROX02 A2C production qualification",
+      "run": 42031309198,
+      "job": 127258166498,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_approx02_a2_modflow_e2e.sh",
+      "signals": [
+        "2026-11-05T13:12:51.6679172Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:12:51.6695960Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "F-PE-APPROX02 A2C production qualification",
+      "run": 42031309198,
+      "job": 127258166757,
+      "classification": "UNCHANGED_STATIC_BUILD_LIST_MISSING_CURRENT_DRAINAGE_PROVIDER",
+      "failed_step": "Run bash tests/fpe/run_fpe_approx02_a2_modflow_e2e.sh",
+      "signals": [
+        "2026-11-05T13:14:46.1485299Z Fatal Error: Cannot open module file ‘mod_drainage_dramet3_response.mod’ for reading at (1): No such file or directory",
+        "2026-11-05T13:14:46.1497297Z APPROX02_A2_E2E_FAIL compile exact src/runtime/mod_fmr_drainage_response_binding.f90"
+      ]
+    },
+    {
+      "workflow": "SWAP5-PERF01 exact implementation admission",
+      "run": 42031308838,
+      "job": 127258165091,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Validate native evidence and unchanged original predecessor authority",
+      "signals": [
+        "2026-11-05T13:14:32.3810030Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "workflow": "PUB-ME D1 transition authority",
+      "run": 42031308607,
+      "job": 127258164055,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Run preregistered D1 gate",
+      "signals": [
+        "2026-11-05T12:59:33.0120168Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "workflow": "Hupsel production diagnostic source successor",
+      "run": 42031308588,
+      "job": 127258163670,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Select exact diagnostic authority when crop codec has a successor",
+      "signals": [
+        "2026-11-05T13:02:22.9587189Z AssertionError"
+      ]
+    },
+    {
+      "workflow": "Hupsel production diagnostic source successor",
+      "run": 42031308588,
+      "job": 127258163998,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Select exact unmodified diagnostic tests",
+      "signals": [
+        "2026-11-05T13:03:22.5529829Z AssertionError"
+      ]
+    },
+    {
+      "workflow": "SWAP431 HYD/HYST hydraulic coverage",
+      "run": 42031308552,
+      "job": 127258163217,
+      "classification": "EXACT_SOURCE_OR_LAYOUT_POLICY_REFUSAL_NO_CURRENT_NUMERICAL_VERDICT",
+      "failed_step": "Current-source scientific successor and immutable NUT owner preservation",
+      "signals": [
+        "2026-11-05T13:08:48.5755803Z ValueError: unknown canonical layout contract"
+      ]
+    }
+  ],
+  "new_contact_replay": {
+    "head": "77f3736198bdc54caa5d7d5ad2894413c0edb535",
+    "jobs": [
+      127297255537,
+      127297257081
+    ],
+    "result": "Cold compile/link succeeds; first existing research contact leg exceeds unchanged90second cap. CENSORED, not PASS. Original sharp481 completion stays false. No broader corrected contact replay claimed."
+  },
+  "whole_scientific_admission": false
+}

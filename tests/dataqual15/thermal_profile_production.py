@@ -14,7 +14,7 @@ GATES={ENTRY,'tests/dataqual15/thermal_profile_production.py','tests/dataqual15/
  'tests/dataqual15/run_original.py','tests/dataqual15/continue_original_andelst.py','tools/solute/build_grass_startup.py',
  'tests/dataqual15/seal_thermal_profile_production.py','tests/dataqual15/test_thermal_profile_production.py',
  '.github/workflows/grass-thermal-production.yml','tests/dataqual15/qualify_andelst_codec.py',
- 'tests/modularity/test_modular_controls.py'}
+ 'tests/modularity/test_modular_controls.py','tests/dataqual15/qualify_nonlinear_native_contact.py'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def blob(ref,path):return git('rev-parse',ref+':'+path)
