@@ -3,7 +3,7 @@ import argparse,csv,hashlib,io,json,os,subprocess,sys,tarfile,tempfile
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
-BASE='8367ca0c9'
+BASE='ecf9c55b9e0f028c0f6c7392098f99fe546dd917'
 SCOPE='integration/dataqual15/THERMAL_PROFILE_PRODUCTION_SCOPE_20261105.json'
 KEY='registered_thermal_profile_successor_20261105'
 ENTRY='tests/dataqual15/verify_current_native_admission.py'
@@ -13,7 +13,8 @@ GATES={ENTRY,'tests/dataqual15/thermal_profile_production.py','tests/dataqual15/
  'tests/dataqual15/qualify_thermal_runtime.py','tests/dataqual15/qualify_native_disk_restart.py',
  'tests/dataqual15/run_original.py','tests/dataqual15/continue_original_andelst.py','tools/solute/build_grass_startup.py',
  'tests/dataqual15/seal_thermal_profile_production.py','tests/dataqual15/test_thermal_profile_production.py',
- '.github/workflows/grass-thermal-production.yml','tests/dataqual15/qualify_andelst_codec.py'}
+ '.github/workflows/grass-thermal-production.yml','tests/dataqual15/qualify_andelst_codec.py',
+ 'tests/modularity/test_modular_controls.py'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def blob(ref,path):return git('rev-parse',ref+':'+path)
@@ -33,7 +34,7 @@ def guard(r):
  assert route=={'scope':SCOPE}
  before=json.loads(subprocess.check_output(['git','show',BASE+':integration/dataqual15/STATUS.json'],cwd=ROOT))
  current=json.loads((ROOT/'integration/dataqual15/STATUS.json').read_text())
- for key in ('native_disk_restart_20261102','project_diagnostic_restart_successor_20261104','native_crop_logical_successor_20261105'):
+ for key in ('native_disk_restart_20261102','project_diagnostic_restart_successor_20261104','native_crop_logical_successor_20261105','native_rotation_crc_successor_20261105'):
   assert current.get(key)==before.get(key),key
 
 def unpack(r):

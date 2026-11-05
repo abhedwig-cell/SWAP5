@@ -26,8 +26,12 @@ jobs:
         shell: bash
         run: |
           owner="$GITHUB_WORKSPACE"
-          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_crop_logical_successor_20261105')))"; then
-            python3 -B tests/dataqual15_hupsel/production_crop_logical_admission.py --prepare-only --output "$RUNNER_TEMP/diagnostic-source-view"
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_rotation_crc_successor_20261105')))"; then
+            python3 -B tests/dataqual15_hupsel/rotation_native_admission.py --prepare-only --output "$RUNNER_TEMP/crc-diagnostic-view"
+            owner="$RUNNER_TEMP/crc-diagnostic-view/predecessor"
+          fi
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('$owner/integration/dataqual15/STATUS.json')).get('native_crop_logical_successor_20261105')))"; then
+            python3 -B "$owner/tests/dataqual15_hupsel/production_crop_logical_admission.py" --prepare-only --output "$RUNNER_TEMP/diagnostic-source-view"
             owner="$RUNNER_TEMP/diagnostic-source-view/predecessor"
           fi
           echo "DIAGNOSTIC_OWNER_ROOT=$owner" >> "$GITHUB_ENV"
@@ -55,8 +59,12 @@ jobs:
         shell: bash
         run: |
           owner="$GITHUB_WORKSPACE"
-          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_crop_logical_successor_20261105')))"; then
-            python3 -B tests/dataqual15_hupsel/production_crop_logical_admission.py --prepare-only --output "$RUNNER_TEMP/diagnostic-test-view"
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_rotation_crc_successor_20261105')))"; then
+            python3 -B tests/dataqual15_hupsel/rotation_native_admission.py --prepare-only --output "$RUNNER_TEMP/crc-diagnostic-view"
+            owner="$RUNNER_TEMP/crc-diagnostic-view/predecessor"
+          fi
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('$owner/integration/dataqual15/STATUS.json')).get('native_crop_logical_successor_20261105')))"; then
+            python3 -B "$owner/tests/dataqual15_hupsel/production_crop_logical_admission.py" --prepare-only --output "$RUNNER_TEMP/diagnostic-test-view"
             owner="$RUNNER_TEMP/diagnostic-test-view/predecessor"
           fi
           echo "DIAGNOSTIC_OWNER_ROOT=$owner" >> "$GITHUB_ENV"
