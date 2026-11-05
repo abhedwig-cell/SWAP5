@@ -56,12 +56,12 @@ def audit(get,windows):
     assert sha(get('rotation.f90'))==r['successor_driver_sha256']
     assert sha(get('rotation.o'))==r['driver_object_sha256']and sha(get('rotation'+suffix))==r['executable_sha256']
     b=json.loads(get('build/BUILD.json'));assert b['status']=='COMPLETE_SHARED_ADAPTER_CLOSURE_BUILT'and b['candidate']is False
-    assert b['providers']==324 and len(b['objects_sha256'])==342
+    assert b['providers']==331 and len(b['objects_sha256'])==349
     assert '-'+r['optimization']in b['flags']and all(x in b['flags']for x in policy.common.FLAGS)
-    assert all(e['returncode']==0 for e in b['events'])and len(b['events'])==344
+    assert all(e['returncode']==0 for e in b['events'])and len(b['events'])==351
     for name,h in b['sources_sha256'].items():
         raw=source(get,name);assert h in hashes(raw),name
-    assert len(b['sources_sha256'])==342
+    assert len(b['sources_sha256'])==349
     for name,h in b['objects_sha256'].items():assert sha(get('build/'+Path(name.replace('\\','/')).name))==h
     for name,h in b['drivers_sha256'].items():assert h in hashes(source(get,name))
     assert sha(get('build/r'+suffix))==b['executables_sha256']['r']
@@ -120,7 +120,25 @@ def verify_windows():
             assert len(t.getnames())==len(set(t.getnames()));files={m.name:t.extractfile(m).read()for m in t.getmembers()if m.isfile()}
         assert {n:sha(b)for n,b in files.items()}==r['files_sha256']
         get=lambda n:files[n];report=dict(audit=audit(get,True),data_refusals=refusals(get,True));assert report==r['report'];reports[opt]=report
+    reports['unchanged_hupsel']=verify_hupsel_dependency()
     return reports
+
+def verify_hupsel_dependency():
+    """Actual admitted 236-provider Hupsel evidence excludes the changed module."""
+    changed='src/adapter/mod_crop_soil_n_joint_restart_file.f90'
+    for opt in ('O0','O2'):
+        stem='PRODUCTION_CROP_LOGICAL_WINDOWS_20261105_'+opt
+        name='integration/dataqual15_hupsel/'+stem+'.json'
+        assert subprocess.check_output(['git','rev-parse',policy.BASE+':'+name],cwd=ROOT)==subprocess.check_output(['git','rev-parse','HEAD:'+name],cwd=ROOT)
+        r=json.loads((BASE/(stem+'.json')).read_text());raw=(BASE/(stem+'.tar.xz')).read_bytes();assert sha(raw)==r['archive_sha256']
+        with tarfile.open(fileobj=io.BytesIO(raw))as t:data=t.extractfile('hupsel/build/BUILD.json').read()
+        assert sha(data)==r['files_sha256']['hupsel/build/BUILD.json']
+        b=json.loads(data);assert b['provider_count']==236
+        for name,h in b['source_sha256'].items():
+            name=name.replace('\\','/');relative=next((area+'/'+name.split('/'+area+'/',1)[1]for area in ('src','app','tests')if '/'+area+'/'in name),None)
+            assert relative and relative!=changed
+            assert h in hashes((ROOT/relative).read_bytes())
+    return 'ADMITTED_ACTUAL_HUPSEL_236_SOURCE_DEPENDENCY_UNCHANGED_CHANGED_CRC_MODULE_NOT_LINKED_PREDECESSOR_RAW_GATE_REQUIRED'
 
 def verify_posix():
     r=json.loads((BASE/'ROTATION_NATIVE_POSIX_20261105.json').read_text());parts=r['archive_parts']
