@@ -1621,3 +1621,5 @@ Actual accepted-input diagnosis admission: PR1482, merge `0fe2157a9f2a1f5e808112
 Registered thermal production authority: `integration/dataqual15/THERMAL_PROFILE_PRODUCTION_SCOPE_20261105.json`, sealed Windows evidence, exact predecessor proof, CI adjudication and `THERMAL_PROFILE_CANONICAL_RECEIPT_20261105.json`; #1563 actual canonical `f0939f4cbc44`. This does not close original Andelst481 or whole-energy/scientific equivalence.
 
 Hupsel numerical-profile production authority: `integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_SCOPE_20261105.json`, sealed Windows full trajectories/builds/controls, retained cold POSIX capsule and `ROOT_ACCURACY_PRODUCTION_CI_ADJUDICATION_20261105.json`. Existing source guards remain immutable; their new-scope refusals are distinct from the current owner qualification and unchanged baseline defects.
+
+Actual #1567 merge authority: `integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_CANONICAL_RECEIPT_20261105.json`, canonical `e9bc89274e80`, verified parents and production trees equal to merged head and cold tested head. Original Andelst481 remains open; no whole-scientific promotion.
