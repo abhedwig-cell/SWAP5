@@ -1,6 +1,6 @@
 # Production native crop logical successor
 
-Status: implemented and qualified on fresh current production Windows/POSIX O0/O2; canonical admission awaits exact-head qualification and red-check attribution.
+Status: bounded production serialization scope canonically admitted by PR1561, actual merge8367ca0c9 and qualified source tree957c528471467300714b30e2fbbe1a92330c42f4.
 
 The generic crop native codec rejects logical words other than the compiler's exact native true and false representations. This covers 34 scalar and embedded logical I/O sites, including branch flags before interpretation. Embedded continuation and root-carrier values retain their declared component order. Valid unformatted STREAM bytes remain identical to the accepted predecessor encoder. The scope is native endian and the recorded compiler cohorts; no other file mode or compiler portability is asserted.
 
@@ -15,3 +15,5 @@ No rotation qualification, oxygen-reference accuracy, whole-scientific admission
 Authority: `integration/dataqual15_hupsel/PRODUCTION_CROP_LOGICAL_PREREGISTRATION_20261105.json`, `PRODUCTION_CROP_LOGICAL_SCOPE_20261105.json` and `PRODUCTION_CROP_LOGICAL_RECOVERY_20261105.json`.
 
 Twelve other broad checks are red on initial head433fca1fb. They are retained as failures, including governance-only no-production-change firewalls, missing-module compile lists, legacy reference metadata and the historical performance authority. The latter is also reproduced at exact pre-codec canonical5a4d47df1. An unchanged exact-baseline diagnostic run is preregistered to finish attribution; no old check is changed, disabled or claimed as passing.
+
+Final adjudication: all34 qualified-head workflows reached terminal status,22 successful and12 still FAILED. Exact cold pre-codec baseline execution reproduces ten same failure signatures; P2E09/P2E10 instead hit existing nested-policy/solver-contract restrictions. Raw baseline artifact13412825933 and its complete streams are retained and independently verified. Under execution protocol rules7/8 these unrelated failures confer no scientific promotion and do not replace the actual current native and F-CI PASS required for this bounded production scope. No old gate is edited or disabled.
