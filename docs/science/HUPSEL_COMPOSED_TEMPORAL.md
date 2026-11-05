@@ -56,3 +56,15 @@ refinements as a correction; it does not prove asymptotic convergence, isolate
 a causal process, or qualify the original reference. The full37-series
 parent adjudication remains36/37. Actual cold POSIX diagnosis and final
 canonical qualification are still required; no correction or promotion follows.
+
+Cold POSIX independently executes both original-initialized prefixes on the
+exact qualified O2 binary. All own-state, mass, data-defect, cross-cap refusal
+and current/unmodified predecessor gates pass, as do all15 native-head
+workflows. Original artifacts13382043855/13382328851 are retained unchanged
+and independently remeasured. Oxygen584 discrepancies remain
+0.0002446971600366214cm (0.005) and0.00024474516187759227cm (0.0025),
+with maximum selected change6.547215048195373e-8cm from the platform-own
+qualified0.01 trajectory. This agrees with the bounded negative Windows
+diagnosis, without turning it into causal isolation or full-series admission.
+Final metadata qualification must revalidate retained exact proof; production
+and whole-science admission remain false.
