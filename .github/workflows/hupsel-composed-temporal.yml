@@ -1,0 +1,50 @@
+name: Hupsel composed temporal diagnosis
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-composed-temporal.yml
+      - tests/dataqual15_hupsel/composed_temporal*.py
+      - tests/dataqual15_hupsel/test_composed_temporal.py
+      - integration/dataqual15_hupsel/COMPOSED_TEMPORAL_*
+      - docs/science/HUPSEL_COMPOSED_TEMPORAL.md
+permissions:
+  contents: read
+jobs:
+  cap-specific-original-initialization:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        cap: ['0.005', '0.0025']
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: python3 -B tests/dataqual15_hupsel/test_composed_temporal.py
+      - name: Exact complete Windows raw proof
+        run: python3 -B tests/dataqual15_hupsel/composed_temporal_evidence.py --windows
+      - name: Exact native proof or execution required
+        id: native
+        run: python3 -B tests/dataqual15_hupsel/composed_temporal_evidence.py --native-mode >> "$GITHUB_OUTPUT"
+      - name: Actual fresh cap-specific original initialization
+        if: steps.native.outputs.reused != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/composed-temporal"
+          python3 -B tests/dataqual15_hupsel/composed_temporal.py --cap ${{ matrix.cap }} --output "$RUNNER_TEMP/composed-temporal/${{ matrix.cap }}"
+          python3 -B tests/dataqual15_hupsel/composed_temporal_evidence.py --capture "$RUNNER_TEMP/composed-temporal/${{ matrix.cap }}"
+      - name: Current and unmodified predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/composed-temporal-preservation"
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.native.outputs.reused != 'true'
+        with:
+          name: composed-temporal-${{ matrix.cap }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/composed-temporal/${{ matrix.cap }}/CAPSULE.json
+            ${{ runner.temp }}/composed-temporal/${{ matrix.cap }}/CAPSULE.tar.xz
+            ${{ runner.temp }}/composed-temporal-preservation/RESULT.json
+          retention-days: 14

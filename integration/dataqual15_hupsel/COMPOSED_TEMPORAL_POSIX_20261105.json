@@ -1,0 +1,276 @@
+{
+  "status": "ACTUAL_COMPOSED_TEMPORAL_O2_PREFIX_DIAGNOSIS_COMPLETE",
+  "builds": {
+    "0.005": {
+      "status": "ACTUAL_CAP_SPECIFIC_ORIGINAL_INITIALIZATION584_LEDGER_TYPED_OWN_RESTART_AND_CROSS_CAP_REFUSAL_PASS",
+      "platform": "posix",
+      "optimization": "O2",
+      "cap": 0.005,
+      "proof": {
+        "status": "COMPLETE584_INTERVAL_DAILY_MASS_CROP_AND_TYPED_PRIMITIVES_PASS",
+        "days": 584,
+        "intervals": 585,
+        "crop_rows": 90,
+        "ledgers": {
+          "water": {
+            "maximum_interval_defect": 2.7283730830163222e-14,
+            "maximum_reported_residual": 2.7283730830163222e-14,
+            "maximum_continuity_defect": 0.0,
+            "maximum_daily_defect": 2.7283730830163222e-14,
+            "cumulative_defect": 5.684341886080802e-14
+          },
+          "solute": {
+            "maximum_interval_defect": 9.810846579583199e-12,
+            "maximum_reported_residual": 9.810846579583199e-12,
+            "maximum_continuity_defect": 0.0,
+            "maximum_daily_defect": 9.810846579583199e-12,
+            "cumulative_defect": -9.950085200216563e-11
+          }
+        },
+        "wet_cut_scope": "930/956/989/1033_OUTSIDE_PREFIX_NOT_EXERCISED",
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "science": {
+        "reference_archive_sha256": "b22758b72f94916a4d4c03bc9f472d1c957e81dc42c98cd7111bbda468ee484e",
+        "frozen_bounds_sha256": "9fad4d3d5fab026ca97251fc47f3aa08a93eaf082fbd8af9b975b585de71a528",
+        "scope": "SEVEN_DAILY_SERIES_PREFIX_ONLY_NOT_FULL37_SCIENCE_ADMISSION",
+        "series": {
+          "water_global": {
+            "prefix_maximum_original_error": 0.0006855310574707119,
+            "worst_day": 584,
+            "unchanged_original_limit": 0.015894114055035997,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.0005580046466064914
+          },
+          "solute_stock": {
+            "prefix_maximum_original_error": 0.0003502017348111508,
+            "worst_day": 129,
+            "unchanged_original_limit": 0.006477510502005319,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 9.585556703228804e-05
+          },
+          "potential_transpiration": {
+            "prefix_maximum_original_error": 2.9624380037951425e-07,
+            "worst_day": 583,
+            "unchanged_original_limit": 7.227756999989536e-06,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 4.041101235863209e-07
+          },
+          "actual_transpiration": {
+            "prefix_maximum_original_error": 0.00024497654240113187,
+            "worst_day": 584,
+            "unchanged_original_limit": 0.0008978675050000667,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.00015835459344692993
+          },
+          "drought": {
+            "prefix_maximum_original_error": 0.00011971774281518618,
+            "worst_day": 582,
+            "unchanged_original_limit": 0.000897208738000002,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.0001582344822474921
+          },
+          "oxygen": {
+            "prefix_maximum_original_error": 0.0002446971600366214,
+            "worst_day": 584,
+            "unchanged_original_limit": 5.371840000016327e-07,
+            "inside_original_limit_on_prefix": false,
+            "maximum_change_from_qualified_cap001": 2.9027070082846574e-08
+          },
+          "salinity": {
+            "prefix_maximum_original_error": 0.0,
+            "worst_day": 1,
+            "unchanged_original_limit": 1e-09,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.0
+          }
+        },
+        "oxygen584": {
+          "native": 0.0033488439869633784,
+          "qualified_cap001": 0.0033488614572728895,
+          "original": 0.003593541147,
+          "change_from_cap001": -1.7470309511113252e-08,
+          "absolute_original_error": 0.0002446971600366214,
+          "unchanged_limit": 5.371840000016327e-07
+        },
+        "whole_scientific_admission": false
+      },
+      "production_admission": false,
+      "whole_scientific_admission": false,
+      "migration_complete": false,
+      "actual_data_refusals": [
+        "water_export",
+        "solute_export",
+        "continuity",
+        "nonfinite",
+        "canopy_bound",
+        "missing_crop",
+        "primitive_stock",
+        "state_mismatch",
+        "CRC"
+      ]
+    },
+    "0.0025": {
+      "status": "ACTUAL_CAP_SPECIFIC_ORIGINAL_INITIALIZATION584_LEDGER_TYPED_OWN_RESTART_AND_CROSS_CAP_REFUSAL_PASS",
+      "platform": "posix",
+      "optimization": "O2",
+      "cap": 0.0025,
+      "proof": {
+        "status": "COMPLETE584_INTERVAL_DAILY_MASS_CROP_AND_TYPED_PRIMITIVES_PASS",
+        "days": 584,
+        "intervals": 585,
+        "crop_rows": 90,
+        "ledgers": {
+          "water": {
+            "maximum_interval_defect": 4.6879167214797235e-14,
+            "maximum_reported_residual": 4.6879167214797235e-14,
+            "maximum_continuity_defect": 0.0,
+            "maximum_daily_defect": 4.6879167214797235e-14,
+            "cumulative_defect": 5.684341886080802e-14
+          },
+          "solute": {
+            "maximum_interval_defect": 9.783555909859132e-12,
+            "maximum_reported_residual": 9.783555909859132e-12,
+            "maximum_continuity_defect": 0.0,
+            "maximum_daily_defect": 9.783555909859132e-12,
+            "cumulative_defect": -1.184332631964935e-10
+          }
+        },
+        "wet_cut_scope": "930/956/989/1033_OUTSIDE_PREFIX_NOT_EXERCISED",
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "science": {
+        "reference_archive_sha256": "b22758b72f94916a4d4c03bc9f472d1c957e81dc42c98cd7111bbda468ee484e",
+        "frozen_bounds_sha256": "9fad4d3d5fab026ca97251fc47f3aa08a93eaf082fbd8af9b975b585de71a528",
+        "scope": "SEVEN_DAILY_SERIES_PREFIX_ONLY_NOT_FULL37_SCIENCE_ADMISSION",
+        "series": {
+          "water_global": {
+            "prefix_maximum_original_error": 0.00046479013656153256,
+            "worst_day": 584,
+            "unchanged_original_limit": 0.015894114055035997,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.0007787455675156707
+          },
+          "solute_stock": {
+            "prefix_maximum_original_error": 0.00036951365101600686,
+            "worst_day": 129,
+            "unchanged_original_limit": 0.006477510502005319,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.00013211068529273007
+          },
+          "potential_transpiration": {
+            "prefix_maximum_original_error": 1.6035003297387718e-07,
+            "worst_day": 543,
+            "unchanged_original_limit": 7.227756999989536e-06,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 5.798395960043834e-07
+          },
+          "actual_transpiration": {
+            "prefix_maximum_original_error": 0.0002448793321782605,
+            "worst_day": 584,
+            "unchanged_original_limit": 0.0008978675050000667,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.00022619867262529958
+          },
+          "drought": {
+            "prefix_maximum_original_error": 5.19275910252949e-05,
+            "worst_day": 582,
+            "unchanged_original_limit": 0.000897208738000002,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.00022602463403738338
+          },
+          "oxygen": {
+            "prefix_maximum_original_error": 0.00024474516187759227,
+            "worst_day": 584,
+            "unchanged_original_limit": 5.371840000016327e-07,
+            "inside_original_limit_on_prefix": false,
+            "maximum_change_from_qualified_cap001": 6.547215048195373e-08
+          },
+          "salinity": {
+            "prefix_maximum_original_error": 0.0,
+            "worst_day": 1,
+            "unchanged_original_limit": 1e-09,
+            "inside_original_limit_on_prefix": true,
+            "maximum_change_from_qualified_cap001": 0.0
+          }
+        },
+        "oxygen584": {
+          "native": 0.0033487959851224076,
+          "qualified_cap001": 0.0033488614572728895,
+          "original": 0.003593541147,
+          "change_from_cap001": -6.547215048195373e-08,
+          "absolute_original_error": 0.00024474516187759227,
+          "unchanged_limit": 5.371840000016327e-07
+        },
+        "whole_scientific_admission": false
+      },
+      "production_admission": false,
+      "whole_scientific_admission": false,
+      "migration_complete": false,
+      "actual_data_refusals": [
+        "water_export",
+        "solute_export",
+        "continuity",
+        "nonfinite",
+        "canopy_bound",
+        "missing_crop",
+        "primitive_stock",
+        "state_mismatch",
+        "CRC"
+      ]
+    }
+  },
+  "original_artifacts": {
+    "0.005": {
+      "archive": "COMPOSED_TEMPORAL_POSIX_0.005_20261105.zip",
+      "archive_sha256": "1e458aee8a60e26778f3b19058c5c1d587341dc32a2aa71c4705be7eed52ba99"
+    },
+    "0.0025": {
+      "archive": "COMPOSED_TEMPORAL_POSIX_0.0025_20261105.zip",
+      "archive_sha256": "1379d98f7e059595e5b351d4cf9f10b2d985376590c810da80b03f513c14192c"
+    }
+  },
+  "qualification_dependencies": {
+    "tests/dataqual15_hupsel/film_rotation.py": "34a9c7592f7ee45ab878fd8e27722e946e30bbbec447946821f8fafb1521ccef",
+    "tests/dataqual15_hupsel/film_rotation_audit.py": "4bc9a40945dd8a2ed72e82d6b1a4f655212b3748b26edd3f3f1bbb3d74fd155f",
+    "tests/dataqual15_hupsel/film_rotation_evidence.py": "55a69e4112a720925a50acfa29213e31654bad3a2d79db18c5e6b1b1086a3ffc",
+    "tests/dataqual15_hupsel/test_film_rotation.py": "8e3add028f73831a0b7a662e65bdf9ade1ed45f7c910ad501bfa49795ccd5270",
+    "tests/dataqual15_hupsel/film_runtime.py": "15b391e998778c603a238510459cd96f875cff4e173a49c5f462d598a9dfc7a9",
+    "tests/dataqual15_hupsel/film_runtime_audit.py": "d4488717d9f2482f24a7715385317bf12b7c0dfd0a8acb7d165abbd56be66ffb",
+    "tests/dataqual15_hupsel/film_runtime_profiles.py": "8ee237d26e952fb73ac963386fe82a350109e615b087d0b0aac81bd2aca40a0e",
+    "tests/dataqual15_hupsel/film_runtime_counter.py": "580c75869d78e52270bf5c930146e14f4442e4246ef3c285a0fb9d76378b8204",
+    "tests/dataqual15_hupsel/film_runtime_evidence.py": "0a22001a92e65fcd22339b98ef91d7b3b4f265663d1f43ae9f3c06c2af2adc98",
+    "tests/dataqual15_hupsel/film_refinement_candidate.py": "e7600c2c1c2abd0e6263c81e747f874a2fa23438b87b667b06319317a1906e68",
+    "tests/dataqual15_hupsel/audit_corrected_rotation.py": "fc6b36b7e6eba97c6232a2902cd78df404fa49b0948c72b954ec026e005687ba",
+    "tests/dataqual15_hupsel/scientific_followup.py": "ccae726d49526a0ee1dbf119e7f5c177a60129cd3f7284e9758e1c117f4dabf2",
+    "tests/dataqual15_hupsel/production_diagnostic_native.py": "79cfb24d7ccd29b83f435e7f42baca84b154e3172a103a3485b34447c9d75d0c",
+    "tests/dataqual15_hupsel/production_diagnostic_guards.py": "130803cf9f5794555843377e2772cf1935c15cdeba12412e5e941cd81f104f83",
+    "tests/dataqual15_hupsel/qualify_rotation_restart_guards.py": "e8eca2c7e7bc138087537c5a4f16d281f7bf2d7f91bf2e086e7885945c3aeef9",
+    "tests/dataqual15_hupsel/inspect_profiles.py": "48b6a4c6e0eeaad02d309c746e5fb484da297e60bf9497a87e7cbc47fe8f404e",
+    "integration/dataqual15_hupsel/FILM_ROTATION_PREREGISTRATION_20261104.json": "33fed70031364257a40f236cc4eecb462f271fff03a7750a592cc3312d194b25",
+    ".github/workflows/hupsel-film-rotation.yml": "722071767ae5873ed3a8b8b08334bf7934088bb599f8ab62e1766ab5946f748a",
+    "app/support/restart_publish.c": "3da212d69c504da63e98a157f7d8a61fab018bc7bdd7ec5d73ef61405ee61d23",
+    "tests/dataqual15_hupsel/build_and_run.py": "9b1b46bd74252d7db497b2793398691576451db9f1d3af475b1e9a259729bed1",
+    "tests/dataqual15/original_sources.py": "5b9d0045a0e2364a042898e35027611904630100e67c13760e8d7da162337142",
+    "tests/dataqual15/verify_current_native_admission.py": "d1bdebbc981c0b1897cf714ffce53d0f1464cac663f264531e9b1fbc9bac0832",
+    "tests/dataqual15_hupsel/production_diagnostic_admission.py": "8c67554d37d0740eaeb008cb7e2ab6072a61e8e270c720d8a0944009453e31a2",
+    "tests/dataqual15_hupsel/pressure_film.py": "13da406696eb5d2707eae06f3de796cc2c82f03bdf945479d24c9ad2f3cfbe4c",
+    "tests/dataqual15_hupsel/pressure_film_audit.py": "fe106ce46c2cc67c8dcf746fe3ba9dcc67f9d5ecfb0024765a626d7d43bb027e",
+    "tests/dataqual15_hupsel/pressure_film_evidence.py": "3e5911b29c5354d6f3fa4902776eaefed3cc7584a2852a93ae5d465889d5a44d",
+    "tests/dataqual15_hupsel/test_pressure_film.py": "bcdc8d63b1d7b238b1f0646ede892fb1b3f6be5b245e0d5d0624fffca46c71aa",
+    "tests/dataqual15_hupsel/micro_pressure_probe.py": "4cdef60eb648436d6d82a591ecbb546e7719b00562b26368ce8ae66a098e30ee",
+    "integration/dataqual15_hupsel/PRESSURE_FILM_PREREGISTRATION_20261105.json": "554ef55b05c86dab71bee74b0019d3b61061f7bb1ad88c2cfc2e525652017a62",
+    ".github/workflows/hupsel-pressure-film.yml": "d704d6a5c722818ca7b2d8bba3f721ecb2847610c7f712e7052f39e79e969928",
+    "tests/dataqual15_hupsel/composed_temporal.py": "8cc115b03a2cc57141103974957b3520645fd5f51ed5d5802318375673bf71e3",
+    "tests/dataqual15_hupsel/composed_temporal_audit.py": "0674e256ca9c4ebbe04ba247975170ec07e647af5fa0e3bad54b4e54f330676a",
+    "tests/dataqual15_hupsel/composed_temporal_evidence.py": "fb3041e7e6ac28773feabdb145b3cae06002af0bef68ee6c1ff38bdbcb93248b",
+    "tests/dataqual15_hupsel/test_composed_temporal.py": "25e318defd2069fc6d5cc40bb5af5fdac0fa5c43a8c69f705db7f2373eaea9c2",
+    "integration/dataqual15_hupsel/COMPOSED_TEMPORAL_PREREGISTRATION_20261105.json": "e75438c6d33b0db60a91d653ad3421eb96a1d1c23b015af15e144a08d22e241c",
+    ".github/workflows/hupsel-composed-temporal.yml": "cb8a3e02c860b1181519dca34bab2253cdcf4e307afe26fcc6d58feb2def62a4"
+  },
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}
