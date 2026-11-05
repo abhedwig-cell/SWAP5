@@ -49,7 +49,10 @@ def posix(paths):
     return dict(status='ACTUAL_COMPOSED_ACCEPTED_STATE_O0_O2_ORIGINAL_OPERATOR_QUALIFICATION_COMPLETE',builds=result,original_artifacts=original,qualification_dependencies=dependencies(),production_admission=False,whole_scientific_admission=False,migration_complete=False)
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--capture',type=Path);p.add_argument('--windows',action='store_true');p.add_argument('--posix-zips',type=Path,nargs=2);p.add_argument('--native-mode',action='store_true');a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--capture',type=Path);p.add_argument('--audit-existing',type=Path);p.add_argument('--windows',action='store_true');p.add_argument('--posix-zips',type=Path,nargs=2);p.add_argument('--native-mode',action='store_true');a=p.parse_args()
+    if a.audit_existing:
+        folder=a.audit_existing.resolve();origin=json.loads((folder/'ORIGIN.json').read_text());native,pin=run.inherited(origin['optimization'],origin['platform']);assert origin==pin
+        result,_,_=check.audit(folder,native,origin);(folder/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status']);return
     if a.capture:
         folder=a.capture.resolve();files=collect(folder);origin=json.loads(files['ORIGIN.json']);result=verify(files,origin);archive=folder/'CAPSULE.tar.xz'
         with tarfile.open(archive,'w:xz',preset=3)as t:

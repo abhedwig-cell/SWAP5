@@ -47,7 +47,7 @@ def replay_binding(folder,factors,finals,opt,compiler):
         worst=max(worst,factor_output(output,frame))
     assert worst==r['maximum_factor_difference']
     partition=folder/'partition-replay';r=json.loads((partition/'REPLAY.json').read_text());source,metadata=literal_source()
-    assert(partition/'literal.f90').read_text(encoding='utf-8')==source and r['metadata']==metadata and r['source_sha256']==sha(source.encode())and sha((partition/'partition.exe').read_bytes())==r['executable_sha256']
+    assert(partition/'literal.f90').read_text(encoding='utf-8')==source and r['metadata']==json.loads(json.dumps(metadata)) and r['source_sha256']==sha(source.encode())and sha((partition/'partition.exe').read_bytes())==r['executable_sha256']
     assert '-'+opt in r['command']and '-fcheck=all'in r['command']and '-ffpe-trap=invalid,zero,overflow'in r['command']and len(r['runs'])==len(finals)
     maximum=0
     for i,(frame,event)in enumerate(zip(finals,r['runs'])):

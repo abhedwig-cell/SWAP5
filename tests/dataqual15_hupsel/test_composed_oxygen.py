@@ -18,5 +18,8 @@ class Policy(unittest.TestCase):
     def test_scope_is_registered_nonpromotion(self):
         r=json.loads((run.BASE/run.REG).read_text());self.assertIn('own537',r['execution'])
         for k in ('production_admission','whole_scientific_admission','migration_complete'):self.assertIs(r[k],False)
+    def test_literal_metadata_exact_json_representation(self):
+        from matched_micro_replay import source
+        _,m=source();loaded=json.loads(json.dumps(m));self.assertEqual(loaded['reference_sha256'],m['reference_sha256']);self.assertEqual(loaded['attribution_reference_sha256'],m['attribution_reference_sha256']);self.assertEqual([tuple(p)for p in loaded['explicit_patches']],m['explicit_patches'])
 
 if __name__=='__main__':unittest.main()
