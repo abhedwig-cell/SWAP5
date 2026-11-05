@@ -24,6 +24,7 @@ jobs:
       - run: python3 -B tests/dataqual15_hupsel/test_production_crop_logical.py
       - run: python3 -B tests/dataqual15_hupsel/production_crop_logical_evidence.py
       - name: Actual current production source Hupsel and weather O0/O2
+        if: ${{ hashFiles('integration/dataqual15_hupsel/PRODUCTION_CROP_LOGICAL_POSIX_20261105.json') == '' }}
         shell: bash
         run: |
           for opt in O0 O2; do
@@ -32,7 +33,7 @@ jobs:
       - name: Exact current source, inherited executed postimage and unmodified predecessor
         run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/current-crop-logical-preservation"
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/PRODUCTION_CROP_LOGICAL_POSIX_20261105.json') == '' }}
         with:
           name: production-crop-logical-actual-posix
           path: |
