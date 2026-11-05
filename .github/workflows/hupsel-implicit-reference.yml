@@ -1,0 +1,26 @@
+name: Hupsel strict implicit reference screen
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-implicit-reference.yml
+      - tests/dataqual15_hupsel/implicit_reference*.py
+      - tests/dataqual15_hupsel/test_implicit_reference.py
+      - integration/dataqual15_hupsel/IMPLICIT_REFERENCE_*
+      - docs/science/HUPSEL_IMPLICIT_REFERENCE.md
+permissions:
+  contents: read
+jobs:
+  actual-reference-data:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: python3 -B tests/dataqual15_hupsel/test_implicit_reference.py
+      - name: Real source-bound strict implicit reference prefixes and refusal controls
+        run: python3 -B tests/dataqual15_hupsel/implicit_reference_evidence.py
+      - name: Current and unmodified predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/implicit-reference-preservation"
