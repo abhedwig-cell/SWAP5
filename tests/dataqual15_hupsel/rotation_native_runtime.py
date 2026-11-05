@@ -2,6 +2,7 @@
 import argparse,hashlib,json,os,re,struct,subprocess,sys,time,zlib
 from pathlib import Path
 import native_crop_adapter_runtime as common
+import native_crop_weather_runtime as actual_weather
 ROOT=common.ROOT
 BASE='5921f7dc89871e68e394302a2c62958b691699ac'
 PREREG='integration/dataqual15_hupsel/ROTATION_NATIVE_PREREGISTRATION_20261105.json'
@@ -21,13 +22,13 @@ def projection(original,donor):
     return changed
 
 def guard():
-    r=json.loads((ROOT/PREREG).read_text());assert r['baseline']==BASE and r['production_delta']==[]
+    r=json.loads((ROOT/PREREG).read_text());assert r['baseline']==BASE and r['production_delta']==['src/adapter/mod_crop_soil_n_joint_restart_file.f90']
     subprocess.run(['git','merge-base','--is-ancestor',BASE,'HEAD'],cwd=ROOT,check=True,capture_output=True)
-    for area in ('src','app','reference'):
-        assert subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT)==subprocess.check_output(['git','rev-parse',BASE+':'+area],cwd=ROOT)
-        assert not subprocess.check_output(['git','diff','HEAD','--',area],cwd=ROOT)
-        assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--',area],cwd=ROOT)
-    for name,h in r['source_sha256'].items():assert sha((ROOT/name).read_bytes().replace(b'\r\n',b'\n'))==h,name
+    import rotation_native_admission as admission
+    admission.guard(json.loads((ROOT/admission.SCOPE).read_text()))
+    for name,h in r['source_sha256'].items():
+        assert sha(subprocess.check_output(['git','show',BASE+':'+name],cwd=ROOT).replace(b'\r\n',b'\n'))==h,name
+        assert sha((ROOT/name).read_bytes().replace(b'\r\n',b'\n'))==h,name
     return r
 
 def run(args,out,events,label,expected=0):
@@ -58,6 +59,26 @@ def original_compact_controls(exe,out,events):
             names.append(name)
     return names
 
+def weather(bundle,out,compiler,opt,fixture,drivers):
+    """Same coherent current 342 objects; fresh original weather/schema drivers."""
+    out.mkdir();b=json.loads((bundle/'BUILD.json').read_text());events=[];executables={}
+    flags=[x for x in b['flags']if not x.startswith(('-I','-J'))]+['-I'+str(bundle),'-J'+str(out)]
+    for name in ('w','m'):
+        obj=out/(name+'.o');run([compiler,*flags,'-c',drivers[name],'-o',obj],out,events,name+'-compile')
+        exe=out/(name+('.exe'if os.name=='nt'else''));args=[*flags]+(['-Wl,--stack,16777216']if os.name=='nt'else[])+[str(obj),*b['objects_sha256'],'-o',str(exe)]
+        response=out/(name+'.args');response.write_text('\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n')
+        run([compiler,'@'+str(response)],out,events,name+'-link');executables[name]=exe
+    record=dict(b,flags=flags,drivers_sha256={str(drivers[n]):common.sha(drivers[n])for n in ('w','m')},executables_sha256={n:common.sha(p)for n,p in executables.items()},events=events,coherent_shared_objects=True)
+    (out/'BUILD.json').write_text(json.dumps(record,indent=2)+'\n');actual_weather.verify_build(out)
+    actual_weather.execute(executables,fixture,out,opt);actual_weather.verify_build(out)
+    native={}
+    for phase in ('morning','dayend'):
+        for kind in ('full','opaque','resumed','active.resumed'):
+            path=Path(str(executables['w'])+'.'+phase+'.'+kind);raw=path.read_bytes()
+            assert zlib.crc32(raw[:-4])==struct.unpack_from('<I',raw,len(raw)-4)[0]
+            native[path.name]=common.sha(path)
+    (out/'RESULT.json').write_text(json.dumps(dict(status='CURRENT_SHARED_WEATHER_PHYSICS_OWN_NATIVE_36_REFUSALS_AND_INDEPENDENT_CRC_PASS',native_sha256=native,whole_scientific_admission=False),indent=2)+'\n')
+
 def qualify(out,compiler,opt):
     r=guard();out.mkdir(parents=True)
     providers,external,drivers,inputs=common.prepare(out/'prepared')
@@ -83,15 +104,24 @@ def qualify(out,compiler,opt):
     controls=original_compact_controls(exe,out,events)
     for phase in ('first.bin','end.bin','end.bin.retired','end.bin.fallow'):
         raw=(out/phase).read_bytes()
-        for label,bad in (('crc',raw[:-1]+bytes([raw[-1]^1])),('truncated',raw[:-5])):
+        for label,bad in (('crc',raw[:-1]+bytes([raw[-1]^1])),('truncated',raw[:-5]),('zero-crc',raw[:-4]+b'\0'*4)):
             name=phase+'.'+label;(out/name).write_bytes(bad)
             assert b'INVALID_DISK=PASS'in run([exe,'reject',name,'unused'],out,events,label+'-'+phase)
             controls.append(name)
-    assert len(controls)==20
+    assert len(controls)==24
+    if os.name=='nt':
+        old=json.loads((ROOT/'integration/dataqual15_hupsel/ROTATION_NATIVE_CRC_FAILED_OBSERVATIONS_20261105.json').read_text())
+        for name in old[opt]['native_files']:
+            before=bytes.fromhex(old[opt]['native_files'][name]);after=(out/name).read_bytes()
+            assert before[:-4]==after[:-4]
+            assert zlib.crc32(after[:-4])==struct.unpack_from('<I',after,len(after)-4)[0]
+            if opt=='O0':assert before==after
+            else:assert before[-4:]==b'\0'*4 and before!=after
+    weather(bundle,out/'weather',compiler,opt,fixture,drivers)
     assert all(common.sha(ROOT/p)==h for p,h in inputs.items())
     assert all(common.sha(Path(p))==h for p,h in b['objects_sha256'].items())
     guard()
-    report=dict(status='ACTUAL_CURRENT_ROTATION_ALL_ASSERTIONS_ADMITTED_EXHAUSTION_NATIVE_LIFECYCLE_AND_20_REFUSALS_PASS',optimization=opt,production_transform=False,production_trees={area:subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT,text=True).strip()for area in ('src','app','reference')},original_driver_sha256=sha((ROOT/ORIGINAL).read_bytes().replace(b'\r\n',b'\n')),donor_sha256=sha((ROOT/DONOR).read_bytes().replace(b'\r\n',b'\n')),successor_driver_sha256=common.sha(source),driver_object_sha256=common.sha(obj),executable_sha256=common.sha(exe),inputs_sha256=inputs,controls=controls,native_sha256={name:common.sha(out/name)for name in ('first.bin','end.bin','end.bin.opaque','end.bin.retired','end.bin.fallow','resume.bin','resume-retired.bin','resume-fallow.bin','roundtrip-successor.bin')},whole_scientific_admission=False,migration_complete=False)
+    report=dict(status='ACTUAL_CURRENT_ROTATION_CRC_SUCCESSOR_LIFECYCLE_AND_24_REFUSALS_PASS',optimization=opt,production_transform=False,production_trees={area:subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT,text=True).strip()for area in ('src','app','reference')},original_driver_sha256=sha((ROOT/ORIGINAL).read_bytes().replace(b'\r\n',b'\n')),donor_sha256=sha((ROOT/DONOR).read_bytes().replace(b'\r\n',b'\n')),successor_driver_sha256=common.sha(source),driver_object_sha256=common.sha(obj),executable_sha256=common.sha(exe),inputs_sha256=inputs,controls=controls,native_sha256={name:common.sha(out/name)for name in ('first.bin','end.bin','end.bin.opaque','end.bin.retired','end.bin.fallow','resume.bin','resume-retired.bin','resume-fallow.bin','roundtrip-successor.bin')},whole_scientific_admission=False,migration_complete=False)
     (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n');print(report['status'],opt,flush=True)
 
 def main():

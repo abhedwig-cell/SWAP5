@@ -1,0 +1,73 @@
+{
+  "predecessor": "5921f7dc89871e68e394302a2c62958b691699ac",
+  "phase": "SOURCE_CANDIDATE_RUNTIME_PENDING",
+  "scope": "CURRENT_NATIVE_ROTATION_AND_WEATHER_CRC32_ISO_HDLC_ONLY",
+  "production_delta": {
+    "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+      "before": "18225d340195eb102f9770b99c7a34580402feab",
+      "after": "c9d4d25254f0a88a500072a214f248437e899cf8"
+    }
+  },
+  "bridge_restore": {
+    "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
+      "before": "18225d340195eb102f9770b99c7a34580402feab",
+      "after": "c9d4d25254f0a88a500072a214f248437e899cf8"
+    },
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "before": "222aa0e27df3d6aae61c558e0d3753ebc30e5df8",
+      "after": "2707028f51d6fdc856d209a5741aaed9a27fa249"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "before": "9a8d07236e2321ba73e2dcc656cf863fc0d2ac68",
+      "after": "94cacc45a330f831097f0926c03736cc8bece4eb"
+    },
+    ".github/workflows/hupsel-production-diagnostic.yml": {
+      "before": "433f745245a58014ea24673b8b09572a73e9b5ee",
+      "after": "cf33ed2cea2e1f4478b03b8fada5e12e3f6e8477"
+    },
+    ".github/workflows/hupsel-production-crop-logical.yml": {
+      "before": "57823483ecdec7b238fb2f6a2699d06c91e7fcc8",
+      "after": "4000720aef826b59fc2c088838eccc736fe81729"
+    },
+    "tools/vq/select_grass_sprint.py": {
+      "before": "1f05889d4bd377e8495364c4b5cf403f22b24540",
+      "after": "69d04f415e0cc8304ecf4da64d0768b869063a97"
+    },
+    "tests/dataqual15_hupsel/test_grass_sprint_selection.py": {
+      "before": "d3bcfc6c7c4a6129fda8d5a87ba51cf5e3688359",
+      "after": "89fe63aeac20a5bf2094a4039fff359d121f94ba"
+    }
+  },
+  "predecessor_production_trees": {
+    "src": "865a80b085dac4f80a596bbcd6f0bac5e2eefe4b",
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "unchanged_trees": {
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "postimage_sha256": "955b5b5528d2be58c420dfa1546e8802eee6a8291e9dcbe6810c82443a71c033",
+  "gate_source_sha256": {
+    "integration/dataqual15_hupsel/ROTATION_NATIVE_CRC_FAILED_OBSERVATIONS_20261105.json": "89fdf7c0fcfd1886402b60497b08cee21f025ee7ade9daf36337ab9e6f06001b",
+    "integration/dataqual15_hupsel/ROTATION_NATIVE_CRC_PREREGISTRATION_20261105.json": "3a095c2bfa01f55c3aca198bffdb1dc8f02b09fa311606f50e00eae8801dd6d7",
+    "tests/dataqual15_hupsel/native_crop_adapter_runtime.py": "30e5d9b48718eea10a5cc313720446134a0d61f6a4fbded445e93f2aa5fc526f",
+    "tests/dataqual15_hupsel/native_crop_adapter_fixture.py": "a37fa424a513db0b7cd6be57feeef64c959ff331c2c9ff136bc1786be7f9f42c",
+    "tests/dataqual15_hupsel/native_crop_weather_runtime.py": "f86db539f35b67d6f01f4c0754dfef1fb3b4a52b178f6e18431fd9193f1f19b0",
+    "tests/mc-irr01/tcs6_native_controls.py": "62b6b122da675cdcfd3ba345ab48bd6c311b094547673ef73820d87090eb8fd8",
+    "tests/support/augment_bartholomeus_backend_sources.py": "ca9897855f845a4ec5bcf79f06c4dd19251e2cbb25b7f5c29564abab2e1a02b2",
+    "tests/dataqual15/verify_current_native_admission.py": "6409c631e90df6d9f6229085c0fe587ed47140c98b95b882575904874092efa5",
+    "tests/dataqual15_hupsel/rotation_native_admission.py": "6d1769d7bd0e30d0e6160ea196f7281deb04c1a46b5cf077c8c978f091bc066c",
+    "tests/dataqual15_hupsel/rotation_native_runtime.py": "6f4469d1615a701978d8af0f3bb973825adcd5aa9b463291a65c858396c2a180",
+    "tests/dataqual15_hupsel/rotation_native_evidence.py": "06157bfb83841a011ab4b9039a9477a7232f91cb907e9ae7341aef388c120076",
+    "tests/dataqual15_hupsel/test_rotation_native.py": "6439b68f0d0c1453217f251de9a90d18c5f2acdba5d9cfe1ac44a01d7c84bafa",
+    ".github/workflows/hupsel-rotation-native.yml": "747be31af27a8abfa7d465580e5b1bc6fa2ea45dd5d29fb20b9ba55bb6af4f0f",
+    ".github/workflows/hupsel-production-diagnostic.yml": "7b67e773f82eef72958eec52091050b6aceefc260cd9830b9b9682ec1be2ea78",
+    ".github/workflows/hupsel-production-crop-logical.yml": "48caef309109e0db89d9e1955ccb743399d95de895d3dac30541d007c338c684",
+    "tools/vq/select_grass_sprint.py": "7d9bca402c939f763c466820e0546ae53df97f2adba0f857465a15d23877a763",
+    "tests/dataqual15_hupsel/test_grass_sprint_selection.py": "c8c95ce3ace2e3736b0f3c8d5bec9c2130b5fb0ec49fb7befefc2221464e0e74"
+  },
+  "unit_profile": "Native unformatted STREAM; CRC32/ISO-HDLC; recorded Windows/POSIX compiler cohorts only",
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}
