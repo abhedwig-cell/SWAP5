@@ -1,0 +1,222 @@
+{
+  "status": "COMPLETE_PRIVATE_COHERENT_FULL1096_NATIVE_RESEARCH_CANONICALLY_INTEGRATED",
+  "pull_request": 1545,
+  "base": "8b397921ee8917ae57f286dd271980543e8b147a",
+  "actual_native_head": "142735ce3e014263ca2461ef5dcbf7b4ff5dd15c",
+  "actual_native_workflow": 41945436670,
+  "final_qualified_head": "5b1acd39b242f553153b916b01448ff55ee64ba6",
+  "final_workflow_merge": "2f1c7f5b36772b5ed7c9022085ec241b9ce8a3bf",
+  "actual_canonical_merge": "130e91a0ed6dffa83acecd2e5594671e15c97b28",
+  "actual_and_qualified_tree": "9ae358a2773763fba3c30f613080de4e66eccef6",
+  "original_actual_native_workflows": [
+    {
+      "id": 41945435841,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436206,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436004,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436096,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436119,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436141,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436154,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945435990,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436108,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436111,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436360,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436091,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436029,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436095,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41945436670,
+      "name": "Hupsel coherent pressure-film composition",
+      "conclusion": "success"
+    }
+  ],
+  "final_qualified_workflows": [
+    {
+      "id": 41949499503,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499493,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499544,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499447,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499427,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499429,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499568,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499586,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499494,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499431,
+      "name": "Hupsel coherent pressure-film composition",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499566,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499576,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499426,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499492,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 41949499557,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    }
+  ],
+  "source_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "windows_evidence": [
+    "PRESSURE_FILM_WINDOWS_O0_20261105.json",
+    "PRESSURE_FILM_WINDOWS_O2_20261105.json"
+  ],
+  "posix_evidence": "PRESSURE_FILM_POSIX_20261105.json",
+  "original_posix_artifacts": {
+    "O0": {
+      "archive": "PRESSURE_FILM_POSIX_O0_20261105.zip",
+      "archive_sha256": "4278cae8df4c89bb3cabc749ed5297c98164fe54ca6debea2141ae487d494e1c"
+    },
+    "O2": {
+      "archive": "PRESSURE_FILM_POSIX_O2_20261105.zip",
+      "archive_sha256": "3679d763d79ee599a4e377e98ddca778dcd0c5916c19deeed5e7c81f2ab039bc"
+    }
+  },
+  "original_artifact_ids": {
+    "O0": 13380351408,
+    "O2": 13379422232
+  },
+  "native_scope": "Actual Windows and cold POSIX O0/O2 original-initialized1096, complete236-provider rebuilt source/object/link closure, complete mass/canopy/typed data, nine exact strict own cut/final restarts per build,37 mature owner controls+11 app refusals+6 fresh public writer refusals per build. No new observed full counterpart.",
+  "source_proof": "Original artifact ZIPs retained unchanged; all dependencies/source/object/link/executable/input/raw/control proof remeasured on final qualified head. No numeric replay for unchanged metadata.",
+  "focused_tests": 8,
+  "data_defects_per_build": 13,
+  "original_science": {
+    "windows_passing": 36,
+    "posix_passing": 36,
+    "total": 37,
+    "closed_film_only_failures": 11,
+    "failures": [
+      "oxygen"
+    ],
+    "windows_oxygen584": {
+      "day": 584,
+      "native": 0.0033488614852679407,
+      "original": 0.003593541147,
+      "limit": 5.371840000016327e-07,
+      "absolute_error": 0.00024467966173205916
+    },
+    "posix_oxygen584": {
+      "day": 584,
+      "native": 0.0033488614572728895,
+      "original": 0.003593541147,
+      "limit": 5.371840000016327e-07,
+      "absolute_error": 0.0002446796897271103
+    }
+  },
+  "production_source_change": false,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "migration_complete": false,
+  "counts": "Production execution2/3; whole science0/3 unchanged",
+  "next": "Separately preregister composed-variant coupled-state/temporal quadrature investigation with its own genuine histories and explicit cost. Existing original grid-resolution limits are not qualified for this composed variant; no foreign seed, target fitting, third silent intervention or relaxed bounds."
+}

@@ -87,3 +87,11 @@ capsules. Both POSIX builds pass36/37 original bounds; oxygen584 error remains
 0.0002446796897271103cm against5.371840000016327e-7cm. Final metadata-head
 qualification must revalidate the exact evidence dependency surface before
 canonical integration; production and whole-science admission stay false.
+
+All15 final-head workflows PASS, including complete exact native proof reuse
+and current/unmodified predecessor preservation. PR1545 is canonically
+integrated at130e91a0ed6dffa83acecd2e5594671e15c97b28; its actual tree
+9ae358a2773763fba3c30f613080de4e66eccef6 equals the qualified merge tree.
+Production src/app/reference trees are unchanged from the preregistered base.
+Actual authority: PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json. This closes
+bounded private composition research only; oxygen and whole science remain open.
