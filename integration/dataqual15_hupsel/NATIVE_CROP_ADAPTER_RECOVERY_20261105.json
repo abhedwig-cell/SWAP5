@@ -1,0 +1,32 @@
+{
+  "status": "INITIAL_COMPILER_FAILURES_RETAINED_FRESH_CORRECTED_CLOSURES_RUNNING",
+  "baseline": "5468645af18a73f833ef67b37a12242f6b10de44",
+  "branch": "codex/autonomous-migration-20261103",
+  "worktree": "SWAP5-AUTONOMOUS",
+  "preregistration": "NATIVE_CROP_ADAPTER_PREREGISTRATION_20261105.json",
+  "workspace": "../nca-20261105",
+  "initial_failures": {
+    "O0": {
+      "events": 337,
+      "seconds": 146.9927808023058,
+      "failure": "original rotation include search path omitted in new harness",
+      "native_results_inherited": false
+    },
+    "O2": {
+      "events": 337,
+      "seconds": 326.0215735991951,
+      "failure": "original rotation include search path omitted in new harness",
+      "native_results_inherited": false
+    }
+  },
+  "correction": "Use original tests/nut-crop include directory and pin crop_fixture.inc; no source/physical/driver/assertion change, no failed native result inherited; fresh coherent complete builds selected",
+  "sessions": {
+    "O0": 66529,
+    "O2": 63882
+  },
+  "next": "Finish actual Windows O0/O2 controls, run retained native corruption requirements, seal and adjudicate; then actual cold POSIX and canonical integration. Production successor remains separate until shared-adapter evidence exists.",
+  "production_source_changed": false,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}
