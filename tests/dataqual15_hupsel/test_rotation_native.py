@@ -2,8 +2,13 @@
 import copy,json,unittest
 import rotation_native_runtime as runtime
 import rotation_native_admission as admission
+import rotation_native_evidence as evidence
 
 class Projection(unittest.TestCase):
+    def test_windows_posix_evidence_names_are_same_bounded_source(self):
+        self.assertEqual(evidence.relative_file('tests\\fsi\\fsi04_real_headcalc_stubs.f90'),evidence.relative_file('tests/fsi/fsi04_real_headcalc_stubs.f90'))
+        for name in ('../src/escape.f90','/outside','C:\\outside'):
+            with self.assertRaises(AssertionError):evidence.relative_file(name)
     def test_current_crc_scope_and_real_git_bound_defects(self):
         record=json.loads((runtime.ROOT/admission.SCOPE).read_text());admission.guard(record)
         for label in ('source','before','after','missing','gate','body','promotion'):

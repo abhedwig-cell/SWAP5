@@ -1,9 +1,14 @@
 """Independent raw-byte rotation native replay and evidence corruption controls."""
 import argparse,io,json,struct,subprocess,tarfile,zipfile,zlib
-from pathlib import Path
+from pathlib import Path,PurePosixPath
 import rotation_native_runtime as policy
 ROOT=policy.ROOT;BASE=ROOT/'integration/dataqual15_hupsel';sha=policy.sha
 hashes=lambda raw:(sha(raw),sha(raw.replace(b'\r\n',b'\n')),sha(raw.replace(b'\r\n',b'\n').replace(b'\n',b'\r\n')))
+
+def relative_file(name):
+    parts=PurePosixPath(name.replace('\\','/'))
+    assert not parts.is_absolute()and '..'not in parts.parts and ':'not in parts.parts[0]
+    return ROOT.joinpath(*parts.parts)
 
 def source(get,name):
     name=name.replace('\\','/')
@@ -66,7 +71,7 @@ def audit(get,windows):
     for name,h in b['drivers_sha256'].items():assert h in hashes(source(get,name))
     assert sha(get('build/r'+suffix))==b['executables_sha256']['r']
     for name,h in r['inputs_sha256'].items():
-        raw=(ROOT/name).read_bytes();assert h in(sha(raw),sha(raw.replace(b'\r\n',b'\n')),sha(raw.replace(b'\r\n',b'\n').replace(b'\n',b'\r\n'))),name
+        raw=relative_file(name).read_bytes();assert h in hashes(raw),name
     events=json.loads(get('EXECUTED.json'));assert len(events)==32
     assert events[0]['label']=='original-obsolete-premise'and events[0]['returncode']==events[0]['expected_returncode']==1
     assert b'FAIL reaction rejects after actual crop preparation'in get(events[0]['stdout'])
