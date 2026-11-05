@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "predecessor": "f0939f4cbc4410a9e7fd88c38e47f61310d39fb6",
+  "profile": "pressure-film-refined",
+  "thermal_tolerance_c": 1e-05,
+  "scope": "EXPLICIT_NUMERICAL_POLICY_ONLY_ORDINARY_PHYSICAL_INPUTS_UNCHANGED",
+  "phase": "WINDOWS_FULL_AND_DEFAULT_PRESERVATION_PASS_POSIX_PENDING",
+  "whole_scientific_admission": false,
+  "production_delta": {
+    "src/physics/oxygen/mod_bartholomeus_factor_provider.f90": {
+      "before": "ffb4094d3d80c152218ca2e82164c64ed5827393",
+      "after": "1dd8e17f0da0e5fcde753c00bcb73a44867376df"
+    },
+    "app/solute_project/main.f90": {
+      "before": "a94418d0001753d986f451473503e12c519ffdb4",
+      "after": "5b3a234d9e638a75f5e64313272d8391144d07b6"
+    },
+    "src/physics/oxygen/mod_bartholomeus_waterfilm_independent.f90": {
+      "before": "5f2c774f2aa72876521274e64b35f495cf1e8553",
+      "after": "6231d7cadd0a5d52a2336d5b961d89ecb07aa1e2"
+    },
+    "src/runtime/mod_fmr_bartholomeus_execution.f90": {
+      "before": "bbb54add00a52fdb4acefafaea2129f814ccdff7",
+      "after": "09eaefd923c5662c1a01da1e93d40b803cb5d1d1"
+    },
+    "src/process/mod_root_micro_de_willigen_process.f90": {
+      "before": "a5156af14b2df8aee196e769dcc1a4fa076718fb",
+      "after": "740a6f6b3b42ba91b07a35c13c836d703eb24e37"
+    },
+    "src/runtime/mod_fmr_serialized_reference_backend.f90": {
+      "before": "cc5fc499b6cce05abbb80c989249b42d00ad5c73",
+      "after": "674c880d4bfdb12324cb16b1bf58b423c38a2d8c"
+    },
+    "src/physics/oxygen/mod_bartholomeus_waterfilm_provider.f90": {
+      "before": "b6f7c7ed7ece16e149072abdf48a5478a00e3e48",
+      "after": "9a1de78c6a39904bbc565769f1ba75edd886b8d5"
+    }
+  },
+  "gate_sha256": {
+    "tests/dataqual15_hupsel/root_accuracy_production_runtime.py": "420ad9da1c58e55ffe7ee374bcdf564e1795d52e02c74ecc901f4c41a2f33408",
+    "tests/dataqual15_hupsel/test_root_accuracy_production.py": "631dbbc1bf0ee6c55fa45fd1ad798051667dba0a24a9ee1a225de36fc8a2f7b8",
+    "tests/dataqual15_hupsel/root_accuracy_component_driver.f90": "582a02f42ecb4bbf1c49c160f615cc82a40271e9abc32a90030a6d1fd17f692f",
+    "tests/dataqual15_hupsel/qualify_root_runtime_preservation.py": "0d7bba31a1fd7c74cb3315a9f5eda5d1dc076635f27d46e54d9c96c3bb507822",
+    "tests/dataqual15_hupsel/qualify_root_profile_controls.py": "12456989c8431a6a6173ba9b9df6714eb8aae74b4b4d74d123c5749a4b8d7c39",
+    "tests/dataqual15_hupsel/root_accuracy_native_smoke.py": "bb98898663812f9f31b82d06490e5b1602fc479edd3b618dc68833147e8ef7da",
+    "tests/dataqual15_hupsel/qualify_root_accuracy_component.py": "8341cd3c6b4b6bdd4fa3504dacd2b6c33730bddc12f3dd93d2a03c22cf834038",
+    ".github/workflows/hupsel-root-accuracy-production.yml": "e3f029a7153264bc406922c230baac033af55a04c5f956b639cfb815e3bd04c0",
+    "tests/dataqual15_hupsel/root_accuracy_production.py": "904084f042dcfbc445e75e9e08d4410235932b885fd57246af686c2dc1b15c89",
+    "tests/dataqual15/verify_current_native_admission.py": "9d77fab99e7acc5bb40940636fba28ad3b1edf6baf16fffde3f9846368faf305",
+    "tests/dataqual15_hupsel/seal_root_accuracy_production.py": "080594dc4821550ff316abbde3584b4610f2ff27d1dca72de4afbdebccceaeec"
+  },
+  "frozen_predecessor_assets": {
+    "tests/dataqual15/thermal_profile_production.py": "4f0bb9f93a17eb459ad2c896924070c337fb2475",
+    "integration/dataqual15/THERMAL_PROFILE_PRODUCTION_SCOPE_20261105.json": "5d0701c814f4a1d3d2a5646165e58bcbee8b5406",
+    "integration/dataqual15/THERMAL_PROFILE_PRODUCTION_WINDOWS_20261105.tar.xz": "24007dc0150a233186e1fc8af82e2ad4b0cdb850",
+    "integration/dataqual15/THERMAL_PROFILE_PREDECESSOR_20261105.tar.xz": "158fd5c3b46b6f1ea7897258ba5a69f133cfff87",
+    "tests/dataqual15_hupsel/film_runtime.py": "9f4c6419f969aec67d0759604c200c0dde0ac223",
+    "tests/dataqual15_hupsel/film_rotation.py": "fc3bdfb0e82b8d85b619534dd47348906f51d89e",
+    "tests/dataqual15_hupsel/film_rotation_audit.py": "9f3395193ca20cd132f6b064af7b590e03dae20f",
+    "tests/dataqual15_hupsel/scientific_followup.py": "7da3326bac08316fbde635ae8e662908cc253f07",
+    "tests/dataqual15_hupsel/audit_corrected_rotation.py": "08550adee1c23f3a7bfc58ce80aa7045ba1c0741",
+    "tests/dataqual15_hupsel/film_runtime_profiles.py": "ffdcd040c5bef662e1b34b347f8f79516447cc77",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.json": "dee1192e13e71681b52a2e7707a4b21e348962ff",
+    "integration/dataqual15_hupsel/PRESSURE_DIAGNOSTIC_INPUTS_20261104.tar.xz": "d6bd6e55b0ac29a3ba2a8094794d0d973a3fd2af",
+    "integration/dataqual15_hupsel/SPRINT03_SCIENCE_MANIFEST.json": "1dea3a0353073c839196bca88003cd0dc61ed291",
+    "app/support/restart_publish.c": "785dc60a8f5a153538c42ce8af4b3f6574372465"
+  },
+  "archive": "integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_WINDOWS_20261105.tar.xz",
+  "archive_sha256": "cde4d0c8540d1b385612b0999203894b715a5e141fb89f283e14e217d2e14bb7",
+  "bytes": 32837944,
+  "files": 6646,
+  "proof": {
+    "full_original_days": {
+      "O0": 1096,
+      "O2": 1096
+    },
+    "strict_own_windows_per_build": 10,
+    "original_science": "36/37; oxygen FAILED",
+    "whole_scientific_admission": false,
+    "actual_data_refusals": [
+      "changed-linked-object",
+      "changed-year-restart",
+      "promoted-science",
+      "erased-oxygen-failure",
+      "missing-owner-controls"
+    ]
+  }
+}

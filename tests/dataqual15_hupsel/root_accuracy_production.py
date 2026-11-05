@@ -30,7 +30,9 @@ def guard(r):
  assert now[KEY]=={'scope':SCOPE}
  for key,value in old.items():
   if key.endswith(('20261102','20261104','20261105')):assert now.get(key)==value,key
- for p,pin in r.get('frozen_predecessor_assets',{}).items():assert sha((ROOT/p).read_bytes())==pin,p
+ for p,pin in r.get('frozen_predecessor_assets',{}).items():
+  assert blob('HEAD',p)==pin,p
+  assert (ROOT/p).read_bytes().replace(b'\r\n',b'\n')==subprocess.check_output(['git','show','HEAD:'+p],cwd=ROOT)if not p.endswith(('.xz','.zip'))else sha((ROOT/p).read_bytes())==sha(subprocess.check_output(['git','show','HEAD:'+p],cwd=ROOT)),p
 
 def unpack(r):
  raw=(ROOT/r['archive']).read_bytes();assert sha(raw)==r['archive_sha256']
