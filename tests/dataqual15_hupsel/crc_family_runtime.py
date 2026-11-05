@@ -1,7 +1,7 @@
 """Exact extracted CRC/native-I/O primitives; no full-adapter admission."""
 import argparse,hashlib,json,os,re,struct,subprocess,time,zlib
 from pathlib import Path
-ROOT=Path(__file__).resolve().parents[2];BASE='f0939f4cbc4410a9e7fd88c38e47f61310d39fb6'
+ROOT=Path(__file__).resolve().parents[2];BASE='6226cbb6c1539127890cc1c635e883f868bf0760'
 REGISTER='integration/dataqual15_hupsel/CRC_FAMILY_PREREGISTRATION_20261105.json'
 sha=lambda b:hashlib.sha256(b).hexdigest()
 
