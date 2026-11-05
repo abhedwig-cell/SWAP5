@@ -1,0 +1,17 @@
+{
+  "status": "PREREGISTERED_BEFORE_PRODUCTION_DEPLOYMENT",
+  "baseline": "5284091c34a44d14c2d837f7a5d2a5b217437101",
+  "target": "src/adapter/mod_matrix_joint_restart_file.f90",
+  "qualification": "Exact complete source postimage already actually compiled and executed with both original drivers, six exponents, Windows/POSIX O0/O2. Full source snapshots must equal deployed bytes; no extracted wrapper or source-only production admission.",
+  "windows_records": [
+    "MATRIX_CRC_WINDOWS_20261105_O0.json",
+    "MATRIX_CRC_WINDOWS_20261105_O2.json"
+  ],
+  "posix_record": "MATRIX_CRC_POSIX_20261105.json",
+  "posix_run": 42106624518,
+  "posix_artifact": 13452107992,
+  "correction": "Only local CRC removal and admitted shared import; payload/schema/physical/solver/retry/tolerance/mass/state/restart/ownership unchanged.",
+  "admission": "Exactly one deployed source postimage, fixed entrypoint and owned key; all current full-postimage evidence and entire unmodified prior admission must pass. Historical NativeN workflow executes source-identical verified preimage, not relaxed scripts.",
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}

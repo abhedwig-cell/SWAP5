@@ -1,0 +1,51 @@
+name: Complete matrix native CRC qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/matrix_crc_*.py
+      - integration/dataqual15_hupsel/MATRIX_CRC_*
+      - .github/workflows/matrix-crc.yml
+permissions:
+  contents: read
+jobs:
+  native-matrix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require executable GNU Fortran
+        run: |
+          if ! command -v gfortran >/dev/null; then
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y gfortran
+          fi
+          test -x /usr/bin/gfortran
+          /usr/bin/gfortran --version
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Exact deployed source and malformed admission record controls
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_SCOPE_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/test_matrix_crc_admission.py
+      - name: Actual complete Windows source/native evidence remeasurement
+        run: python3 -B tests/dataqual15_hupsel/matrix_crc_evidence.py
+      - name: Cold original and exact complete postimage POSIX O0/O2
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_POSIX_20261105.json') == '' }}
+        run: |
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/matrix_crc_runtime.py --compiler /usr/bin/gfortran --optimization "$opt" --output "$RUNNER_TEMP/matrix-crc-$opt"
+            python3 -B tests/dataqual15_hupsel/matrix_crc_evidence.py --audit-directory "$RUNNER_TEMP/matrix-crc-$opt"
+          done
+      - name: Exact retained POSIX source/native proof on receipt heads
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_POSIX_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/matrix_crc_evidence.py --posix
+      - name: Current and entire unchanged predecessor admission
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/matrix-crc-preservation"
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_POSIX_20261105.json') == '' }}
+        with:
+          name: exact-matrix-crc-posix
+          path: |
+            ${{ runner.temp }}/matrix-crc-O0
+            ${{ runner.temp }}/matrix-crc-O2
