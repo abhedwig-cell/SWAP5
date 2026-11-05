@@ -1,0 +1,33 @@
+name: Complete output saved generation CRC qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/generation_crc_*.py
+      - integration/dataqual15_hupsel/GENERATION_CRC_*
+      - .github/workflows/generation-crc.yml
+permissions:
+  contents: read
+jobs:
+  native-generations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          test -x /usr/bin/gfortran
+          python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Remeasure complete Windows O0/O2 compilation, no publication claim
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_evidence.py
+      - name: Actual POSIX full-module public output and saved generation O0/O2
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') == '' }}
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_runtime.py --posix --output "$RUNNER_TEMP/generation-crc"
+      - name: Current complete matrix and entire prior admission
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/generation-crc-preservation"
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') == '' }}
+        with:
+          name: exact-generation-crc-posix
+          path: ${{ runner.temp }}/generation-crc
