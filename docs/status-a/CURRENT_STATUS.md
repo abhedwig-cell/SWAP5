@@ -1579,3 +1579,9 @@ NUT78 HIST processes,30 coupled runs/60 restarts and48 sink disk cases pass;
 Authority: `integration/mc-sol01/drainage/DAY470_CURRENT_STATUS.json` and its
 separate actual merge admission receipt. Full original Andelst and wet4x day7
 remain open; no frozen master row is promoted.
+
+The registered Grassgrowth thermal numerical profile is admitted by #1563 (`f0939f4cbc44`), with current367-day and exact own365-to367 evidence plus qualified historical1827 reuse. Original Andelst sharp-entry481 remains incomplete at the1.958-day barrier. See [numerical profile qualification](../science/GRASS_THERMAL_PRODUCTION.md).
+
+The registered Grassgrowth thermal numerical profile is admitted by #1563 (`f0939f4cbc44`), with current367-day and exact own365-to367 evidence plus qualified historical1827 reuse. Original Andelst sharp-entry481 remains incomplete at the1.958-day barrier. See [numerical profile qualification](../science/GRASS_THERMAL_PRODUCTION.md).
+
+The explicit Hupsel pressure/film numerical policy is qualified for bounded production integration by PR #1567: actual original-initialized1096 O0/O2, ten exact own windows each, unchanged36/37 original comparisons with oxygen FAILED, and current cold POSIX components/default-thermal/native original7/restarts/publication controls. See [root numerical policy](../science/HUPSEL_ROOT_NUMERICAL_PROFILE.md). Whole-project counts stay2/3 complete and0/3 whole-scientifically qualified.

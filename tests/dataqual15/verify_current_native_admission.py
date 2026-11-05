@@ -74,6 +74,9 @@ def guard(record):
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
  out=a.output.resolve()
+ if json.loads((ROOT/NATIVE_STATUS).read_text()).get('root_numerical_accuracy_successor_20261105'):
+  subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15_hupsel/root_accuracy_production.py'),'--output',str(out)],cwd=ROOT,check=True)
+  return
  if json.loads((ROOT/NATIVE_STATUS).read_text()).get('registered_thermal_profile_successor_20261105'):
   subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15/thermal_profile_production.py'),'--output',str(out)],cwd=ROOT,check=True)
   return

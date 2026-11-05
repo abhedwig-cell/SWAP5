@@ -54,6 +54,7 @@ program swap5_native_project_column
   use mod_root_water_uptake_process,only:root_water_uptake_request_t,evaluate_macro_feddes_drought_uptake
   use mod_drainage_hooghoudt_equivalent_depth
   implicit none
+  logical::root_accuracy_enabled=.false.,root_accuracy_ok
   type(hupsel_germination_t)::hupsel_germination,maize_trial
   type(potato_crop_t),target::potato,potato_trial,grass,grass_trial
   type(potato_crop_t),pointer::active_crop,active_trial
@@ -614,6 +615,13 @@ program swap5_native_project_column
     diagnostic_predecessor=code==0.and.trim(diagnostic_environment)=='1'
   end if
   call backend%initialize(top,water_flux_policy)
+  call read_source_root_accuracy(trim(legacy_swp),root_accuracy_enabled)
+  if(root_accuracy_enabled)then
+    call require(original_hupsel_rotation,'root accuracy profile requires original Hupsel rotation')
+    call backend%configure_root_numerical_accuracy(.true.,root_accuracy_ok)
+    call require(root_accuracy_ok,'configured source root numerical profile')
+    write(*,'(a)')'HUPSEL_ROOT_NUMERICAL_PROFILE=PRESSURE_FILM_REFINED'
+  end if
   if(trim(restart_path)/='-')then
     if(original_hupsel_rotation)then
       if(diagnostic_predecessor)then
@@ -976,6 +984,20 @@ program swap5_native_project_column
     end select
   end if
 contains
+  ! SWP already owns original numerical controls and is bound byte-for-byte by
+  ! the existing rotation restart. No physical selector enables this profile.
+  subroutine read_source_root_accuracy(path,enabled)
+    character(*),intent(in)::path
+    logical,intent(out)::enabled
+    logical::rdinqr
+    integer::mode
+    enabled=.false.;mode=0
+    if(len_trim(path)==0)return
+    call rdinit(75,0,path)
+    if(rdinqr('swap5_root_accuracy'))call rdsinr('swap5_root_accuracy',0,1,mode)
+    close(75)
+    enabled=mode==1
+  end subroutine
   subroutine validate_original_fallow()
     real(real64)::source_first,source_last,emergence(64),source_cofred
     integer::n,selector

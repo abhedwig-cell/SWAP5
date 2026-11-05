@@ -877,6 +877,7 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: temporal_tolerance_cm = 0.0_real64
     ! Explicit per-backend numerical policy; zero preserves the incumbent route.
     real(real64) :: soil_temperature_temporal_tolerance_c = 0.0_real64
+    logical :: root_accuracy_enabled = .false.
     type(water_flux_temporal_policy_t) :: water_flux_temporal
     integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
     type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
@@ -986,6 +987,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: water_flux_temporal_enabled => fmr_water_flux_temporal_enabled
     procedure, public :: configure_soil_temperature_temporal_tolerance => fmr_configure_thermal_temporal_tolerance
+    procedure, public :: configure_root_numerical_accuracy => fmr_configure_root_numerical_accuracy
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
     procedure, public :: configure_base_salt_temporal_policy => fmr_configure_base_salt_temporal_policy
@@ -2206,6 +2208,7 @@ contains
     self%endpoint_origin_available=.false.
     self%model%water_flux_temporal=water_flux_temporal_policy_t()
     self%model%soil_temperature_temporal_tolerance_c=0.0_real64
+    self%model%root_accuracy_enabled=.false.
     if(present(water_flux_temporal))self%model%water_flux_temporal=water_flux_temporal
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
@@ -2254,6 +2257,16 @@ contains
     self%model%soil_temperature_temporal_tolerance_c=tolerance_c
     ok=.true.
   end subroutine fmr_configure_thermal_temporal_tolerance
+
+  subroutine fmr_configure_root_numerical_accuracy(self,enabled,ok)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    logical,intent(in)::enabled
+    logical,intent(out)::ok
+    ok=.false.
+    if(.not.self%initialized)return
+    self%model%root_accuracy_enabled=enabled
+    ok=.true.
+  end subroutine
 
   logical function fmr_water_flux_temporal_enabled(self) result(enabled)
     class(fmr_serialized_reference_backend_t),intent(in)::self
@@ -2738,6 +2751,20 @@ contains
     type(rutter_diagnostics_t) :: rutter_diagnostics
     class(transaction_state_t), allocatable :: accepted_snapshot
 
+    ! The root profile is numerical policy; it cannot admit new physical combinations.
+    if(self%model%root_accuracy_enabled)then
+      if(parameters%macropore_active.or.parameters%snow_active.or.parameters%frost_active.or. &
+          parameters%root_frost%active.or.self%model%rfm_configuration%enabled.or. &
+          self%model%soil_temperature_temporal_tolerance_c>0d0)then
+        call reject_backend_trial(result,candidate,diagnostics);return
+      end if
+      if(allocated(parameters%micro_de_willigen).neqv.allocated(parameters%bartholomeus))then
+        call reject_backend_trial(result,candidate,diagnostics);return
+      end if
+      if(allocated(parameters%micro_de_willigen).and..not.parameters%reactive_solute_active)then
+        call reject_backend_trial(result,candidate,diagnostics);return
+      end if
+    end if
     ! Sprint03 opts in only to the explicitly tested numeric-heat composition.
     ! Reject unsupported policies before preparing a trial or touching state.
     if(self%model%soil_temperature_temporal_tolerance_c>0.0_real64)then
@@ -5324,7 +5351,8 @@ contains
         if(self%rutter_active)self%root_potential_transpiration=rutter_process_result%potential_transpiration_cm_per_day
         call evaluate_micro_de_willigen(self%micro_de_willigen, physical%pressure_head, self%soil_parameters%dz, &
              self%micro_root_length_density, spread(1.0_real64,1,physical%active_nodes), &
-             self%micro_rooted_nodes, self%root_potential_transpiration, self%micro_tables, micro_result)
+             self%micro_rooted_nodes, self%root_potential_transpiration, self%micro_tables, micro_result, &
+             precise_pressure_search=self%root_accuracy_enabled)
         if (micro_result%status /= MICRO_DW_OK) return
         self%qrot = micro_result%root_extraction_sink
         self%root_potential_sink = micro_result%potential_root_sink
@@ -5618,7 +5646,8 @@ contains
           end if
           call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
                self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
-               self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors)
+               self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors, &
+               refined_waterfilm=self%root_accuracy_enabled)
           self%last_observation%bartholomeus_executed=.true.
           self%last_observation%bartholomeus_status=oxygen_status
           self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
@@ -5714,7 +5743,7 @@ contains
           end if
           call evaluate_micro_de_willigen(self%micro_de_willigen,physical%pressure_head,self%soil_parameters%dz, &
                self%micro_root_length_density,combined,self%micro_rooted_nodes,self%root_potential_transpiration, &
-               self%micro_tables,coupled)
+               self%micro_tables,coupled,precise_pressure_search=self%root_accuracy_enabled)
           if(coupled%status/=MICRO_DW_OK)return
           optimal_actual=micro_result%actual_uptake_total
           call attribute_micro_root_stress_losses(self%soil_parameters%dz,self%micro_root_length_density,oxygen,salinity, &

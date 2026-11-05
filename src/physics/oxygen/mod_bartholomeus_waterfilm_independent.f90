@@ -1,5 +1,6 @@
 module mod_bartholomeus_waterfilm_independent
    use iso_fortran_env, only : real64
+   use ieee_arithmetic,only:ieee_is_finite
    use mod_bartholomeus_waterfilm, only : BartholomeusWaterfilmMvgInput, &
                                            bartholomeus_waterfilm_mvg_integrand, &
                                            bartholomeus_waterfilm_from_length_density
@@ -9,15 +10,26 @@ module mod_bartholomeus_waterfilm_independent
 
 contains
 
-   function bartholomeus_waterfilm_mvg_independent(matric_potential_pa,p,ok) result(thickness)
+   function bartholomeus_waterfilm_mvg_independent(matric_potential_pa,p,ok,require_two_refinements) result(thickness)
       real(real64), intent(in) :: matric_potential_pa
       type(BartholomeusWaterfilmMvgInput), intent(in) :: p
       logical, intent(out) :: ok
+      logical,optional,intent(in)::require_two_refinements
       real(real64) :: thickness
       real(real64) :: integral, previous
-      integer :: level
+      integer :: level,stable_levels
+      logical::refined,converged
 
       ok = .false.
+      refined=.false.;converged=.false.;stable_levels=0
+      if(present(require_two_refinements))refined=require_two_refinements
+      if(refined)then
+         if(.not.all(ieee_is_finite([matric_potential_pa,p%capac_term,p%n_minus_1,p%m_plus_1, &
+                     p%alpha_per_pa,p%gen_n,p%surface_tension_water])))then
+            thickness=huge(1.0_real64)
+            return
+         end if
+      end if
       if (matric_potential_pa <= 0.0_real64 .or. p%surface_tension_water <= 0.0_real64) then
          thickness = huge(1.0_real64)
          return
@@ -35,9 +47,25 @@ contains
       do level = 2, 24
          previous = integral
          integral = trapezoid_refine(1.0e-10_real64,matric_potential_pa,p,level,previous)
+         if(refined)then
+            if(abs(integral-previous)<=1.0e-5_real64*max(abs(integral),tiny(1.0_real64)))then
+               stable_levels=stable_levels+1
+            else
+               stable_levels=0
+            end if
+            if(stable_levels>=2)then
+               converged=.true.
+               exit
+            end if
+         else
          if (abs(integral-previous) <= 1.0e-5_real64*max(abs(integral),tiny(1.0_real64))) exit
+         end if
       end do
 
+      if(refined.and..not.converged)then
+         thickness=huge(1.0_real64)
+         return
+      end if
       if (integral <= 0.0_real64) then
          thickness = huge(1.0_real64)
          return

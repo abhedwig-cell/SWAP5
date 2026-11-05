@@ -115,21 +115,24 @@ contains
   end subroutine attribute_micro_root_stress_losses
 
   subroutine evaluate_micro_de_willigen(parameters, pressure_head, thickness, root_length_density, stress_factor, &
-                                       rooted_nodes, potential_transpiration, tables, result)
+                                       rooted_nodes, potential_transpiration, tables, result, precise_pressure_search)
     type(micro_de_willigen_parameters_t), intent(in) :: parameters
     real(real64), intent(in) :: pressure_head(:), thickness(:), root_length_density(:), stress_factor(:)
     integer, intent(in) :: rooted_nodes
     real(real64), intent(in) :: potential_transpiration
     type(micro_matric_flux_table_t), intent(in) :: tables(:)
     type(micro_de_willigen_result_t), intent(out) :: result
+    logical,optional,intent(in)::precise_pressure_search
     integer, allocatable :: node_of(:)
     real(real64), allocatable :: pav(:), phiav(:), q(:), s(:), x(:), delta(:), candidate_sink(:)
     real(real64) :: total_length, r1, rho, fg, phi, conductivity, stem, dpl
     real(real64) :: sumq, lo, hi, mid, flo, fhi, fm, actual, value, soil_total, rounding_bound
     integer :: n, j, m, active_count, iteration, table_status, balance_attempt
-    logical :: ok, bracketed
+    logical :: ok, bracketed,refine_search
 
     result=micro_de_willigen_result_t()
+    refine_search=.false.
+    if(present(precise_pressure_search))refine_search=precise_pressure_search
     n=size(pressure_head)
     if(n<=0.or.rooted_nodes<0.or.rooted_nodes>n) return
     if(size(thickness)/=n.or.size(root_length_density)/=n.or.size(stress_factor)/=n.or.size(tables)/=n) return
@@ -222,8 +225,13 @@ contains
       mid=0.5_real64*(lo+hi)
       call residual(mid,fm,ok)
       if(.not.ok) exit
+      if(refine_search)then
+        ! Search accuracy is independent of the unchanged final flux certificate.
+        if(abs(hi-lo)<=parameters%pressure_tolerance_cm)exit
+      else
       if(abs(fm)<=parameters%residual_tolerance_cm_per_day.or. &
          abs(hi-lo)<=parameters%pressure_tolerance_cm) exit
+      end if
       if(flo*fm<=0.0_real64) then
         hi=mid
       else

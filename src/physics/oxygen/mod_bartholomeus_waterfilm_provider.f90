@@ -11,6 +11,7 @@ module mod_bartholomeus_waterfilm_provider
 
   integer,parameter,public::BARTHOLOMEUS_WATERFILM_REFERENCE=1
   integer,parameter,public::BARTHOLOMEUS_WATERFILM_PRACTICAL=2
+  integer,parameter,public::BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE=3
   integer,parameter,public::BARTHOLOMEUS_WATERFILM_OK=0
   integer,parameter,public::BARTHOLOMEUS_WATERFILM_INVALID=1
   integer,parameter,public::BARTHOLOMEUS_WATERFILM_MODE_NOT_ADMITTED=2
@@ -36,7 +37,7 @@ contains
     if(mode==BARTHOLOMEUS_WATERFILM_PRACTICAL) then
       status=BARTHOLOMEUS_WATERFILM_MODE_NOT_ADMITTED; return
     end if
-    if(mode/=BARTHOLOMEUS_WATERFILM_REFERENCE) return
+    if(mode/=BARTHOLOMEUS_WATERFILM_REFERENCE.and.mode/=BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE) return
     allocate(waterfilm(n))
     do i=1,n
       ! Legacy OxygenStress skips waterfilm and respiration at GFP < 1e-4.
@@ -53,7 +54,8 @@ contains
       p%alpha_per_pa=data%soil(i)%waterfilm_alpha_per_pa
       p%gen_n=data%soil(i)%waterfilm_gen_n
       p%surface_tension_water=t%surface_tension_water
-      waterfilm(i)=bartholomeus_waterfilm_mvg_independent(mp,p,ok)
+      waterfilm(i)=bartholomeus_waterfilm_mvg_independent(mp,p,ok, &
+           require_two_refinements=mode==BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE)
       if(.not.ok .or. .not.ieee_is_finite(waterfilm(i))) return
       if(waterfilm(i)<0.0_real64) return
     end do
