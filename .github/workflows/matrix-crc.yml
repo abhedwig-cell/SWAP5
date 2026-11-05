@@ -16,7 +16,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Exact unmodified pre-generation matrix authority
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_admission.py --prepare-only --output "$RUNNER_TEMP/generation-matrix-view"
       - name: Require executable GNU Fortran
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
         run: |
           if ! command -v gfortran >/dev/null; then
             sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
@@ -25,13 +28,17 @@ jobs:
           test -x /usr/bin/gfortran
           /usr/bin/gfortran --version
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
       - name: Exact deployed source and malformed admission record controls
         if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_SCOPE_20261105.json') != '' }}
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
         run: python3 -B tests/dataqual15_hupsel/test_matrix_crc_admission.py
       - name: Actual complete Windows source/native evidence remeasurement
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_crc_evidence.py
       - name: Cold original and exact complete postimage POSIX O0/O2
         if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_POSIX_20261105.json') == '' }}
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
         run: |
           for opt in O0 O2; do
             python3 -B tests/dataqual15_hupsel/matrix_crc_runtime.py --compiler /usr/bin/gfortran --optimization "$opt" --output "$RUNNER_TEMP/matrix-crc-$opt"
@@ -39,8 +46,10 @@ jobs:
           done
       - name: Exact retained POSIX source/native proof on receipt heads
         if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_POSIX_20261105.json') != '' }}
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_crc_evidence.py --posix
       - name: Current and entire unchanged predecessor admission
+        working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor
         run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/matrix-crc-preservation"
       - uses: actions/upload-artifact@v4
         if: ${{ always() && hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_POSIX_20261105.json') == '' }}

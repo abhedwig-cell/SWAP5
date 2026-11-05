@@ -1,0 +1,68 @@
+name: Complete output saved generation CRC qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/generation_crc_*.py
+      - integration/dataqual15_hupsel/GENERATION_CRC_*
+      - .github/workflows/generation-crc.yml
+permissions:
+  contents: read
+jobs:
+  native-generations:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: |
+          test -x /usr/bin/gfortran
+          python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Exact deployed full modules and corrupted admission-record refusals
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_SCOPE_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/test_generation_crc_admission.py
+      - name: Remeasure complete Windows O0/O2 compilation, no publication claim
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_evidence.py
+      - name: Actual POSIX full-module public output and saved generation O0/O2
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') == '' }}
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_runtime.py --posix --output "$RUNNER_TEMP/generation-crc"
+      - name: Remeasure every exact original POSIX artifact member and independent nested CRC
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_posix_evidence.py
+      - name: Actual proper-resealed, zero-footer and resealed-outer bad-inner public readers
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_native_controls.py --output "$RUNNER_TEMP/generation-crc-controls"
+      - name: Current complete matrix and entire prior admission
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/generation-crc-preservation"
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') == '' }}
+        with:
+          name: exact-generation-crc-posix
+          path: ${{ runner.temp }}/generation-crc
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json') != '' }}
+        with:
+          name: exact-generation-crc-native-controls
+          path: ${{ runner.temp }}/generation-crc-controls
+  exact-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual exact predecessor diagnostic observations, never old PASS
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_BASELINE_POSIX_20261105.zip') == '' }}
+        run: |
+          git worktree add --detach "$RUNNER_TEMP/generation-exact-before" f12ae68d123ff374cc22ac56e378f6b974640312
+          python3 -B tests/dataqual15_hupsel/generation_crc_baseline.py --baseline "$RUNNER_TEMP/generation-exact-before" --output "$RUNNER_TEMP/generation-baseline-outcomes"
+      - name: Independently remeasure retained original predecessor failures
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_BASELINE_POSIX_20261105.zip') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_baseline_evidence.py
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_BASELINE_POSIX_20261105.zip') == '' }}
+        with:
+          name: exact-generation-predecessor
+          path: ${{ runner.temp }}/generation-baseline-outcomes
