@@ -1,0 +1,37 @@
+name: Hupsel private native scalar logical codec
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-native-crop-bool.yml
+      - tests/dataqual15_hupsel/native_crop_bool*.py
+      - tests/dataqual15_hupsel/test_native_crop_bool.py
+      - integration/dataqual15_hupsel/NATIVE_CROP_BOOL_*
+permissions:
+  contents: read
+jobs:
+  cold-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: python3 -B tests/dataqual15_hupsel/test_native_crop_bool.py
+      - run: python3 -B tests/dataqual15_hupsel/native_crop_bool_evidence.py
+      - name: Fresh unmodified baseline and coherent private candidate O0/O2
+        shell: bash
+        run: |
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler /usr/bin/gfortran --optimization "$opt" --end 2 --output "$RUNNER_TEMP/bool-baseline-$opt"
+            python3 -B tests/dataqual15_hupsel/native_crop_bool_runtime.py --compiler /usr/bin/gfortran --baseline "$RUNNER_TEMP/bool-baseline-$opt" --out "$RUNNER_TEMP/bool-candidate-$opt"
+          done
+      - name: Current and unmodified predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/bool-preservation"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-crop-bool-actual-posix
+          path: ${{ runner.temp }}/bool-candidate-*
