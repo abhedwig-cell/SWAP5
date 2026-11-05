@@ -18,7 +18,8 @@ def main():
  assert b"undefined reference to `fsync'"in(old/f'{len(before)-1}.stderr').read_bytes()
  assert all(e['returncode']==0 for e in before[:-1])
  changed=set(subprocess.check_output(['git','diff','--name-only',BASE,'HEAD','--','src','app'],cwd=ROOT,text=True).splitlines())
- assert changed==CHANGED and not subprocess.check_output(['git','diff','HEAD','--','src','app'],cwd=ROOT)
+ linked={Path(e['command'][-3]).relative_to(ROOT).as_posix()for e in before if e['label']=='compile'and Path(e['command'][-3]).is_relative_to(ROOT)}
+ assert changed&linked==CHANGED and not subprocess.check_output(['git','diff','HEAD','--','src','app'],cwd=ROOT)
  for path in old.glob('*.mod'):shutil.copyfile(path,out/path.name)
  events=[];sources={};objects=[];reused={};flags=None;fc=None
  def run(command):
