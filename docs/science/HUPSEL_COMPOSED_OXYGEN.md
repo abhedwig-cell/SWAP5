@@ -66,3 +66,15 @@ and retention of original process .input payloads. Eight focused tests now cover
 them, and both full raw source/object/input/data/control/replay capsules are
 sealed and independently re-read. Cold actual POSIX O0/O2 and final canonical
 qualification are still required.
+
+Cold actual POSIX O0/O2 independently passes the same selected observation,
+strict-own-tail and original-process controls. Each has31328 accepted leaves
+and nine fresh profiles/109 rooted nodes; no toolchain-identical time grid is
+assumed. Maximum daily root-integral defect is2.0539125955565396e-15cm,
+original factor discrepancy1.131673310283965e-6 under1e-4, and literal final
+partition difference0 under1e-14. Actual endpoints and all crop/budget fields
+match the platform-own full history. Full oxygen still fails. Eight tests,
+twelve real-data defects per opt, complete current/predecessor preservation
+and all15 native-head workflows pass. Original artifacts13385925815 (O0)
+and13384708241 (O2) are retained unchanged and remeasured. Final metadata
+qualification must revalidate exact proof before bounded canonical integration.
