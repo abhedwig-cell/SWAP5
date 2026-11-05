@@ -1,0 +1,36 @@
+name: Hupsel private opaque logical and atomic writer codec
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-native-crop-opaque.yml
+      - tests/dataqual15_hupsel/native_crop_opaque*
+      - integration/dataqual15_hupsel/NATIVE_CROP_OPAQUE_*
+permissions:
+  contents: read
+jobs:
+  cold-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: python3 -B tests/dataqual15_hupsel/test_native_crop_bool.py
+      - run: python3 -B tests/dataqual15_hupsel/native_crop_opaque_evidence.py
+      - name: Coherent private opaque codec, component and public writer fault controls O0/O2
+        shell: bash
+        run: |
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler /usr/bin/gfortran --optimization "$opt" --end 2 --output "$RUNNER_TEMP/opaque-baseline-$opt"
+            python3 -B tests/dataqual15_hupsel/native_crop_opaque_runtime.py --compiler /usr/bin/gfortran --baseline "$RUNNER_TEMP/opaque-baseline-$opt" --out "$RUNNER_TEMP/opaque-candidate-$opt"
+          done
+      - name: Current and unmodified predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/opaque-preservation"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-crop-opaque-actual-posix
+          path: ${{ runner.temp }}/opaque-candidate-*
