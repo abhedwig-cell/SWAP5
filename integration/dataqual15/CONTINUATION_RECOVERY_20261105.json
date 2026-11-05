@@ -2,14 +2,49 @@
   "workstream": "RT/HY original-project continuation and bounded production successors",
   "baseline": "5a4d47df19de2fa529878a7b92a7925f52daf819",
   "branch": "codex/andelst-conservative-events-20261105",
-  "implemented": false,
+  "implemented": true,
   "tested": false,
   "qualified": false,
-  "invariants": [7, 13, 23, 25],
-  "authority_paths": ["docs/architecture/invariants.md", "docs/status-a/CURRENT_STATUS.md", "integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json"],
+  "invariants": [
+    7,
+    13,
+    23,
+    25
+  ],
+  "authority_paths": [
+    "docs/architecture/invariants.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json"
+  ],
   "scope": "Original Andelst numerical input independently of physical experiments; registered Grassgrowth thermal policy reconciled with current backend; pressure/film production successor only after affected qualification.",
   "interface_contract": "Thermal tolerance is per-backend numerical configuration, disabled by default. Enabled policy requires numerical heat and the existing external full/half water gate. The indicator is max(water_error, water_budget*temperature_difference/temperature_budget); missing or incompatible state refuses. No physical heat equation or committed schema changes. Application binding pins the named profile; current C atomic publisher is retained. Andelst source MAXIT/MAXBACKTR/SWKMEAN/SWKIMPL/DTMIN/DTMAX belong to numerical input, with existing stricter water and nonlinear certificates retained.",
-  "selection": {"native_builds": {"expected_seconds": 240, "reason": "Changed shared backend and affected native callers require fresh checked O0/O2 compile closures; existing historical full trajectories are comparison authority only."}, "andelst_original": {"expected_seconds": 90, "reason": "Read original numerical controls before assessing sharp contact failure; source-bound original initialization, no rebound checkpoint."}, "grass": {"expected_seconds": 300, "reason": "Focused thermal contract, default preservation and own year-boundary restart; full execution selected only if fresh dependency reconciliation requires it."}},
+  "selection": {
+    "native_builds": {
+      "expected_seconds": 240,
+      "reason": "Changed shared backend and affected native callers require fresh checked O0/O2 compile closures; existing historical full trajectories are comparison authority only."
+    },
+    "andelst_original": {
+      "expected_seconds": 90,
+      "reason": "Read original numerical controls before assessing sharp contact failure; source-bound original initialization, no rebound checkpoint."
+    },
+    "grass": {
+      "expected_seconds": 300,
+      "reason": "Focused thermal contract, default preservation and own year-boundary restart; full execution selected only if fresh dependency reconciliation requires it."
+    },
+    "grass_current367": {
+      "changed_dependency": "Current shared backend observations, native C publisher and profile selection compared with exact Sprint03 postimage",
+      "scientific_claim": "Fresh original-initialized current-profile prefix, exact own year boundary restart; old1827 evidence remains scoped inherited physics evidence",
+      "owner": "RT registered thermal profile",
+      "authority": "integration/dataqual15/CONTINUATION_RECOVERY_20261105.json#interface_contract",
+      "expected_seconds": 2400,
+      "existing_evidence": "Sprint03 exact immutable1827 plus own365 restart; fresh Windows current-prefix needed for changed application and backend composition",
+      "prior_execution": "NONE"
+    }
+  },
   "next_action": "Implement numerical input and reconcile the existing registered thermal policy, persist, compile and run focused native checks.",
-  "remaining": ["Original sharp Andelst discontinuous exchange and perched topology require a conservative joint solution; existing fixed-window corrected research is not original continuation.", "Full original Andelst481 and own year restart remain unproved.", "Whole scientific qualification remains 0/3; execution remains 2/3."]
+  "remaining": [
+    "Original sharp Andelst discontinuous exchange and perched topology require a conservative joint solution; existing fixed-window corrected research is not original continuation.",
+    "Full original Andelst481 and own year restart remain unproved.",
+    "Whole scientific qualification remains 0/3; execution remains 2/3."
+  ]
 }
