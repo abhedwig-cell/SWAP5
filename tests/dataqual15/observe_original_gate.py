@@ -23,14 +23,16 @@ HOOK='''
               write(ou,*)'STATE',onode,state%hm1(onode),state%h(onode),entry,state%theta(onode),oq(onode),fsi_ws%residual(onode)
               if(abs(state%h(onode)-entry)>1d-2.and.abs(state%h(onode))>1d-2)cycle
               oh=state%h;oh(onode)=oh(onode)-1d-7
+              if(abs(state%h(onode)-entry)<1d-2)oh(onode)=entry-1d-8-1d-10
               call evaluation_context%constitutive%evaluate(oh,ot,okc,oc,odk)
               call evaluation_context%macropore%evaluate_rate(oh,ot,qm,oactive)
               if(.not.oactive)cycle
               oh=state%h;oh(onode)=oh(onode)+1d-7
+              if(abs(state%h(onode)-entry)<1d-2)oh(onode)=entry-1d-8+1d-10
               call evaluation_context%constitutive%evaluate(oh,ot,okc,oc,odk)
               call evaluation_context%macropore%evaluate_rate(oh,ot,qp,oactive)
               if(.not.oactive)cycle
-              write(ou,*)'PERTURB',onode,state%h(onode),entry,maxval(abs(qp-qm)),sum(qm),sum(qp),qm(onode),qp(onode)
+              write(ou,*)'GATE_BRACKET',onode,state%h(onode),entry,maxval(abs(qp-qm)),sum(qm),sum(qp),qm(onode),qp(onode)
             end do
           end select
           close(ou)
