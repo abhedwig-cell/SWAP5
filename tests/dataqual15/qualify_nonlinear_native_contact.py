@@ -113,7 +113,7 @@ def overlays(folder):
     ''')
     else:
         assert 'open_c(' not in s and 'fsync_c(' not in s
-        assert "rc=publish_c(path//'.tmp'//c_null_char,path//c_null_char)" in s
+        assert "if(publish_c(path//'.tmp'//c_null_char,path//c_null_char)/=0)return" in s
     rendered[IO]=s
     result={}
     for name,text in rendered.items():
