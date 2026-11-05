@@ -21,8 +21,19 @@ jobs:
           fetch-depth: 0
       - run: sudo apt-get update && sudo apt-get install -y gfortran
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Select exact unmodified logical-codec authority
+        shell: bash
+        run: |
+          owner="$GITHUB_WORKSPACE"
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_rotation_crc_successor_20261105')))"; then
+            python3 -B tests/dataqual15_hupsel/rotation_native_admission.py --prepare-only --output "$RUNNER_TEMP/crc-logical-view"
+            owner="$RUNNER_TEMP/crc-logical-view/predecessor"
+          fi
+          echo "LOGICAL_OWNER_ROOT=$owner" >> "$GITHUB_ENV"
       - run: python3 -B tests/dataqual15_hupsel/test_production_crop_logical.py
+        working-directory: ${{ env.LOGICAL_OWNER_ROOT }}
       - run: python3 -B tests/dataqual15_hupsel/production_crop_logical_evidence.py
+        working-directory: ${{ env.LOGICAL_OWNER_ROOT }}
       - name: Actual current production source Hupsel and weather O0/O2
         if: ${{ hashFiles('integration/dataqual15_hupsel/PRODUCTION_CROP_LOGICAL_POSIX_20261105.json') == '' }}
         shell: bash

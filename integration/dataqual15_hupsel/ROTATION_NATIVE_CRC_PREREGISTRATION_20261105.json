@@ -1,0 +1,12 @@
+{
+  "status": "PREREGISTERED_BEFORE_PRODUCTION_CRC_CHANGE",
+  "baseline": "5921f7dc89871e68e394302a2c62958b691699ac",
+  "source": "src/adapter/mod_crop_soil_n_joint_restart_file.f90",
+  "defect": "GNU16.2 Windows O2 local nested CRC loop writes and accepts zero trailer for all native lifecycle files; independent CRC32 rejects. O0 correct. Original flags retained.",
+  "implementation": "Only replace local duplicate crc32 with use of already admitted public mod_age_joint_restart_file crc32. Same CRC-32/ISO-HDLC polynomial, initial/final complement and exact existing append/check guards. No auto repair/acceptance of zero trailers.",
+  "qualification": "Fresh complete Windows/POSIX O0/O2 current rotation lifecycle + weather. Every positive native CRC must equal independent Python zlib; resealed semantic controls must reach decoder, 0-trailer/CRC/truncation refused atomically. Exact old Win O0 bytes preserved; old Win O2 bad-zero bodies preserved but stored CRC corrected. Native files from faulty baseline retained as refused observations. Current Hupsel has no changed module in its236-provider closure; inherit only by complete raw source/objects equality and execute unchanged predecessor authority in pinned restored view.",
+  "preservation": "New exact SRC/ENTRY/owned-status successor on top of admitted logical codec. Original old gate sources execute unmodified in exact predecessor view. No controls weakened.",
+  "nonoverlap": "CRC adapter and new lifecycle/current admission controller; other chat owns numerical/thermal/Andelst app changes.",
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}
