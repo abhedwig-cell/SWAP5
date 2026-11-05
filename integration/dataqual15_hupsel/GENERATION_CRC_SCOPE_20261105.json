@@ -1,0 +1,80 @@
+{
+  "predecessor": "f12ae68d123ff374cc22ac56e378f6b974640312",
+  "scope": "EXISTING_SUPPORTED_POSIX_OUTPUT_SAVED_GENERATION_CRC32_ONLY",
+  "phase": "QUALIFIED_COMPLETE_POSIX_O0_O2_AND32_PUBLIC_NATIVE_CONTROLS",
+  "production_delta": {
+    "src/adapter/mod_crop_n_saved_generation.f90": {
+      "before": "eb75ad9403c0287616918d908c908997ee44bda1",
+      "after": "347fe63a2d1c8f4df0a1b75be87c2375d92dea18"
+    },
+    "src/adapter/mod_crop_n_output_generation.f90": {
+      "before": "317c45d24c774fdbb7892cdc8a7a1ea1dc72a43d",
+      "after": "768c78c5cedbadda2a1a06798256736c9ce2b97c"
+    }
+  },
+  "bridge_restore": {
+    "src/adapter/mod_crop_n_output_generation.f90": {
+      "before": "317c45d24c774fdbb7892cdc8a7a1ea1dc72a43d",
+      "after": "768c78c5cedbadda2a1a06798256736c9ce2b97c"
+    },
+    "src/adapter/mod_crop_n_saved_generation.f90": {
+      "before": "eb75ad9403c0287616918d908c908997ee44bda1",
+      "after": "347fe63a2d1c8f4df0a1b75be87c2375d92dea18"
+    },
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "before": "6b3fb44a51cd1ef858cee4a035b2f121f0bff677",
+      "after": "de81456ecca57871ef926e23fe71c7fd5ddefa05"
+    },
+    ".github/workflows/native-n-production.yml": {
+      "before": "815f60dec440eac4217a15b014d3df3180c6a82b",
+      "after": "a1c7f7aa8bc8876ff449cfb3db28afc7c7a8b424"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "before": "4b39d6d1d6995d35536252879c03445981e7c006",
+      "after": "34b4976a28bbea6576320f112fbeaf8622c41a6c"
+    },
+    ".github/workflows/matrix-crc.yml": {
+      "before": "a26961721cf0d35c0a44ae25831be4126fdb60d6",
+      "after": "0614865f9333cfbf5611a9918c9929c33d9527ac"
+    }
+  },
+  "predecessor_production_trees": {
+    "src": "e1ae972dda7d13453d450e5fc02e9160b154f03d",
+    "app": "d24fcaa71724ccea7e1cf5f6317176b8068f611f",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "qualified_full_postimage_sha256": {
+    "src/adapter/mod_crop_n_saved_generation.f90": "86210e74072468884c0d404f8b4e146d36a879eb4b0cc5af8214d54306b4d60f",
+    "src/adapter/mod_crop_n_output_generation.f90": "fd3b8a32081c8b2d2173bdd3e2d9cf439662b4f6457a441fe04a37a5051549f7"
+  },
+  "gate_source_sha256": {
+    ".github/workflows/generation-crc.yml": "62ff23b06b14c0051c05d934cb1d59d371d0456afcad48cefa65d31cc1087ec4",
+    "integration/dataqual15_hupsel/GENERATION_CRC_PREREGISTRATION_20261105.json": "e0b2debe6ffbdf5edc0b7ceacde2068d6d43f6cd7dba31e4ae224d761173179f",
+    "tests/dataqual15_hupsel/generation_crc_admission.py": "a75a021e1abecac69f72f4df8deecc5c8ea07363039acef77ac1f86ebfc0c8f7",
+    "tests/dataqual15/verify_current_native_admission.py": "703340498efec6cae732f8f209fa30ca5c12a3640c767936168948490ac6b73a",
+    "tests/dataqual15_hupsel/generation_crc_native_controls.py": "72bd188307ea0eaf2f570fd6915c2685646041c74a9ec853ef7284414ed4344f",
+    "tests/dataqual15_hupsel/native_n_crc_evidence.py": "f76b18a28fc59faf41bf9c0e8678e40f300800ad60c0872670c7723385d8bff5",
+    "tests/dataqual15_hupsel/test_generation_crc_admission.py": "2266d9369433b205d213e7fc3e9aa097c255bad4f0754b1bb50c7fdf2964bb3c",
+    ".github/workflows/matrix-crc.yml": "60ae75ca8618639e8ef245304da6af1970a49f40bd306a9100aae0acb4f7adb8",
+    "tests/dataqual15_hupsel/generation_crc_posix_evidence.py": "5709d69324d5957126d010bd4c2dfaedd026aa239c9b52b964b00795f428c3fa",
+    "tests/dataqual15_hupsel/native_n_crc_runtime.py": "215ccdf747b2ca046888210ad37b009f2855e13b3c629aa5006defd7e13d504d",
+    "integration/dataqual15_hupsel/GENERATION_CRC_DEPLOYMENT_PREREGISTRATION_20261105.json": "f6107104576895034fed5821202f97178d88f97ba7941ddf5502a1f4838936fa",
+    "tests/dataqual15_hupsel/crc_family_runtime.py": "0a90ae5fc80c396e11329348d2a153fd3461f26acadff6bbda99cfed1ca49f16",
+    "integration/dataqual15_hupsel/GENERATION_CRC_CONTROLS_PREREGISTRATION_20261105.json": "bebcea307835f1d78446f41ccf67dbd936ababe1d56285559daad7dd882c799a",
+    "tests/dataqual15_hupsel/generation_crc_controls_evidence.py": "34a6c440e1d86c9af7b531874b8fca606d3e31301beec0d18d4da5b03c11c0a0",
+    ".github/workflows/native-n-production.yml": "8e9b0e7a88664fa2394da42a96a91fa363dd61ea2c6095c3f745dbc490b20d50",
+    "tests/dataqual15_hupsel/generation_crc_evidence.py": "6782ba3eaf6e5db879b563e0ce3d450845d54ac246aee4964b2cd5fec0e2a049",
+    "tests/dataqual15_hupsel/generation_crc_runtime.py": "a889c0eb351809735c347ce6f7fd14da9514a6ae689d28610ec92d1a5efff626"
+  },
+  "qualified_artifact_records": {
+    "integration/dataqual15_hupsel/GENERATION_CRC_WINDOWS_20261105_O2.json": "4e569d214676d524d19ab86c0d1b156e70643f5299d71a63970a5825f82f6469",
+    "integration/dataqual15_hupsel/GENERATION_CRC_WINDOWS_20261105_O0.json": "e448f90ffe285604b4ce276ac900a010bbd17afcd27f8335532db390a7c780cf",
+    "integration/dataqual15_hupsel/GENERATION_CRC_POSIX_20261105.json": "df684ac52508ab570ef796338ff5f0f5c1ec4e02abc4cd29cc70ddb10d0874b4",
+    "integration/dataqual15_hupsel/GENERATION_CRC_NATIVE_CONTROLS_20261105.json": "60ad9eb34d37fce434de3a9b9fecc81770778005ca33801227aa2e57a2ea8297"
+  },
+  "whole_scientific_admission": false,
+  "windows_native_publication_admission": false,
+  "windows_evidence_scope": "COMPLETE_MODULE_COMPILATION_ONLY",
+  "source_only_admission": false,
+  "migration_complete": false
+}

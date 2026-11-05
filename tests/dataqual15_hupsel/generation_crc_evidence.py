@@ -15,8 +15,8 @@ def local_audit(files):
  for name,h in m['logs_sha256'].items():assert sha(files[name])==h
  for name,row in m['sources'].items():
   raw=files[row['snapshot']];assert sha(raw)==row['sha256']
-  if row['kind']=='repository':assert normal(raw)==normal((ROOT/row['path']).read_bytes())
-  elif row['kind']=='candidate':assert normal(raw).decode()==policy.postimage((ROOT/row['path']).read_text())
+  if row['kind']=='repository':assert normal(raw)==normal(policy.before(row['path'])if row['path']in policy.SOURCES.values()else(ROOT/row['path']).read_bytes())
+  elif row['kind']=='candidate':assert normal(raw).decode()==policy.postimage(policy.before(row['path']).decode())
   else:assert row['kind']=='generated'and normal(raw)==normal(files[row['path']])
  for role in ('incumbent','candidate'):
   b=json.loads(files[role+'/BUILD.json']);events=json.loads(files[role+'/EVENTS.json'])

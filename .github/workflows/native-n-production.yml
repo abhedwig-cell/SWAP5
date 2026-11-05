@@ -19,7 +19,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Exact unmodified pre-generation source authority
+        run: python3 -B tests/dataqual15_hupsel/generation_crc_admission.py --prepare-only --output "$RUNNER_TEMP/generation-native-n-view"
       - name: Exact prior NativeN source admission view
+        working-directory: ${{ runner.temp }}/generation-native-n-view/predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_crc_admission.py --prepare-only --output "$RUNNER_TEMP/matrix-native-n-view"
       - name: Require executable GNU Fortran
         working-directory: ${{ runner.temp }}/matrix-native-n-view/predecessor

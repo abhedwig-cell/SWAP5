@@ -74,6 +74,9 @@ def guard(record):
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
  out=a.output.resolve()
+ if json.loads((ROOT/NATIVE_STATUS).read_text()).get('generation_native_crc_successor_20261105'):
+  subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15_hupsel/generation_crc_admission.py'),'--output',str(out)],cwd=ROOT,check=True)
+  return
  if json.loads((ROOT/NATIVE_STATUS).read_text()).get('matrix_native_crc_successor_20261105'):
   subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15_hupsel/matrix_crc_admission.py'),'--output',str(out)],cwd=ROOT,check=True)
   return

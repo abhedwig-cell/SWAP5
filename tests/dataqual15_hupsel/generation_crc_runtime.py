@@ -12,7 +12,11 @@ def postimage(text):
  old=primitive.procedure(text,'function','crc32');assert text.count(old)==1
  anchor=' use iso_fortran_env,only:real64,int64,int32,int8\n';assert text.count(anchor)==1
  return text.replace(old,'',1).replace(anchor,anchor+' use mod_age_joint_restart_file,only:crc32\n',1)
+def before(path):return subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
 def guard():
+ if subprocess.check_output(['git','diff','--name-only',BASE,'--','src','app','reference'],cwd=ROOT,text=True).strip():
+  import generation_crc_admission
+  generation_crc_admission.guard();return json.loads((ROOT/REGISTER).read_text())
  r=json.loads((ROOT/REGISTER).read_text());assert r['baseline']==BASE and r['production_delta']==[]
  for a in ('src','app','reference'):
   assert git('rev-parse','HEAD:'+a)==git('rev-parse',BASE+':'+a)
@@ -20,6 +24,7 @@ def guard():
  for p,h in r['input_sha256'].items():assert sha((ROOT/p).read_bytes().replace(b'\r\n',b'\n'))==h,p
  return r
 def compile_local(out,compiler,opt):
+ assert all((ROOT/p).read_bytes().replace(b'\r\n',b'\n')==before(p)for p in SOURCES.values()),'Historical pre-deployment compile cohort requires its own preregistration'
  out.mkdir(parents=True);fixture=out/'fixture';fixture.mkdir();grid=fixture/'grid.f90';grid.write_text((ROOT/'tests/modularity/low_air_consistent_grid_stubs.f90').read_text())
  mapping={}
  for p in [*sorted((ROOT/'src').rglob('*.f90')),grid]:
@@ -53,7 +58,7 @@ def execute_posix(out):
   try:
    sources={}
    for name,path in SOURCES.items():
-    text=(ROOT/path).read_text();data=postimage(text)if role=='candidate'else text
+    text=before(path).decode();data=postimage(text)if role=='candidate'else text
     if role=='candidate':(view/path).write_text(data)
     sources[path]=sha(data.encode());(target/(name+'.f90')).write_text(data)
    assert set(subprocess.check_output(['git','diff','--name-only'],cwd=view,text=True).splitlines())==(set(SOURCES.values())if role=='candidate'else set())

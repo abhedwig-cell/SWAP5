@@ -30,13 +30,13 @@ def audit(files):
  native={};compiles={};root=events[0]['command'][-1].removesuffix('/incumbent/accepted')
  for role in ('incumbent','candidate'):
   for n,p in policy.SOURCES.items():
-   expected=policy.postimage((ROOT/p).read_text())if role=='candidate'else(ROOT/p).read_text();raw=files[role+'/'+n+'.f90'];assert normal(raw).decode()==expected and r['roles'][role]['sources'][p]==sha(normal(raw))
+   expected=policy.postimage(policy.before(p).decode())if role=='candidate'else policy.before(p).decode();raw=files[role+'/'+n+'.f90'];assert normal(raw).decode()==expected and r['roles'][role]['sources'][p]==sha(normal(raw))
   for step,status in STEPS.items():
    report=json.loads(files[role+'/'+step+'/result.json']);assert report==r['roles'][role]['results'][step]and report['status']==status
    for key in ('input_sha256','physical_input_sha256','cold_input_sha256'):
     for p,h in report.get(key,{}).items():
-     expected=(ROOT/p).read_bytes()
-     if role=='candidate'and p in policy.SOURCES.values():expected=policy.postimage((ROOT/p).read_text()).encode()
+     expected=policy.before(p)if p in policy.SOURCES.values()else(ROOT/p).read_bytes()
+     if role=='candidate'and p in policy.SOURCES.values():expected=policy.postimage(policy.before(p).decode()).encode()
      assert sha(normal(expected))==h,(role,step,p)
    assert sha(files[role+'/'+step+'/driver.f90'])==report['generated_driver_sha256']
    for key in ('pinned_object_sha256','pinned_artifacts'):

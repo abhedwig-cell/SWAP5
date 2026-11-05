@@ -1,6 +1,7 @@
 ! Same-platform POSIX joint physical/diagnostic/reporting generation.
 module mod_crop_n_output_generation
  use iso_fortran_env,only:real64,int64,int32,int8
+ use mod_age_joint_restart_file,only:crc32
  use iso_c_binding,only:c_int,c_char,c_null_char
  use mod_soil_n_crop_extended_output
  use mod_crop_soil_n_joint_restart_file
@@ -104,23 +105,6 @@ contains
   call restore_crop_ext(v,probe,code);if(code/=0)return
   call chemical%snapshot(soil,crop);call soil%snapshot(clock,theta,pools,rev)
   ok=clock==v(1)
- end function
- function crc32(bytes)result(crc)
-  integer(int8),intent(in)::bytes(:)
-  integer(int32)::crc
-  integer::i,j
-  crc=not(0_int32)
-  do i=1,size(bytes)
-   crc=ieor(crc,iand(int(bytes(i),int32),int(z'FF',int32)))
-   do j=1,8
-    if(btest(crc,0))then
-     crc=ieor(shiftr(crc,1),int(z'EDB88320',int32))
-    else
-     crc=shiftr(crc,1)
-    end if
-   end do
-  end do
-  crc=not(crc)
  end function
  subroutine erase(path)
   character(*),intent(in)::path

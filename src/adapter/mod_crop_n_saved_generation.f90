@@ -2,6 +2,7 @@
 ! unchanged S5NO0001 generation and its explicitly owned diagnostic memory.
 module mod_crop_n_saved_generation
  use iso_fortran_env,only:real64,int64,int32,int8
+ use mod_age_joint_restart_file,only:crc32
  use iso_c_binding,only:c_int,c_char,c_null_char
  use mod_crop_n_output_generation
  use mod_crop_ext_saved_residue
@@ -46,23 +47,6 @@ module mod_crop_n_saved_generation
   end function
  end interface
 contains
- function crc32(bytes)result(crc)
-  integer(int8),intent(in)::bytes(:)
-  integer(int32)::crc
-  integer::i,j
-  crc=not(0_int32)
-  do i=1,size(bytes)
-   crc=ieor(crc,iand(int(bytes(i),int32),int(z'FF',int32)))
-   do j=1,8
-    if(btest(crc,0))then
-     crc=ieor(shiftr(crc,1),int(z'EDB88320',int32))
-    else
-     crc=shiftr(crc,1)
-    end if
-   end do
-  end do
-  crc=not(crc)
- end function
  subroutine erase(path)
   character(*),intent(in)::path
   integer::u,io
