@@ -1,0 +1,69 @@
+{
+  "workstream": "RT/HY original-project continuation and bounded production successors",
+  "baseline": "5a4d47df19de2fa529878a7b92a7925f52daf819",
+  "branch": "codex/andelst-conservative-events-20261105",
+  "implemented": true,
+  "tested": "WINDOWS_O0_O2_CONTRACTS_NATIVE_RESTARTS_DEFAULT140_AND_THERMAL367_PASS",
+  "qualified": false,
+  "invariants": [
+    7,
+    13,
+    23,
+    25
+  ],
+  "authority_paths": [
+    "docs/architecture/invariants.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json"
+  ],
+  "scope": "integration/dataqual15/THERMAL_PROFILE_PRODUCTION_SCOPE_20261105.json",
+  "interface_contract": "Thermal tolerance is per-backend numerical configuration, disabled by default. Enabled policy requires numerical heat and the existing external full/half water gate. The indicator is max(water_error, water_budget*temperature_difference/temperature_budget); missing or incompatible state refuses. No physical heat equation or committed schema changes. Application binding pins the named profile; current C atomic publisher is retained. Andelst source MAXIT/MAXBACKTR/SWKMEAN/SWKIMPL/DTMIN/DTMAX belong to numerical input, with existing stricter water and nonlinear certificates retained.",
+  "selection": {
+    "native_builds": {
+      "expected_seconds": 240,
+      "reason": "Changed shared backend and affected native callers require fresh checked O0/O2 compile closures; existing historical full trajectories are comparison authority only."
+    },
+    "andelst_original": {
+      "expected_seconds": 90,
+      "reason": "Read original numerical controls before assessing sharp contact failure; source-bound original initialization, no rebound checkpoint."
+    },
+    "grass": {
+      "expected_seconds": 300,
+      "reason": "Focused thermal contract, default preservation and own year-boundary restart; full execution selected only if fresh dependency reconciliation requires it."
+    },
+    "grass_current367": {
+      "changed_dependency": "Current shared backend observations, native C publisher and profile selection compared with exact Sprint03 postimage",
+      "scientific_claim": "Fresh original-initialized current-profile prefix, exact own year boundary restart; old1827 evidence remains scoped inherited physics evidence",
+      "owner": "RT registered thermal profile",
+      "authority": "integration/dataqual15/CONTINUATION_RECOVERY_20261105.json#interface_contract",
+      "expected_seconds": 2400,
+      "existing_evidence": "Sprint03 exact immutable1827 plus own365 restart; fresh Windows current-prefix needed for changed application and backend composition",
+      "prior_execution": "NONE"
+    },
+    "andelst_own_continuation": {
+      "changed_dependency": "Source numerical controls now actually read; native macro C publication repaired",
+      "scientific_claim": "Original sharp-entry continuation beyond censored1.958 toward481 with strict own day1 restart, unchanged physical inputs and tolerances",
+      "owner": "HY/RT original Andelst",
+      "authority": "integration/dataqual15/CONTINUATION_RECOVERY_20261105.json#interface_contract",
+      "expected_seconds": 600,
+      "existing_evidence": "New genuine own day1 checkpoint and90-second prefix; no full481 or natural terminal failure yet",
+      "prior_execution": "UNEXPECTED_LONG",
+      "diagnosis": "Previous bounded observation was censored, not a solver failure. Source DTMAX crossed1.94 to1.958. Preserve original prefix, resume own day1; suppress only existing per-trial stage printing to isolate numerical cost."
+    }
+  },
+  "next_action": "Cold POSIX O0/O2 affected qualification, unmodified predecessor admission and canonical integration; original Andelst entry constraint remains unresolved.",
+  "remaining": [
+    "Original sharp Andelst discontinuous exchange and perched topology require a conservative joint solution; existing fixed-window corrected research is not original continuation.",
+    "Full original Andelst481 and own year restart remain unproved.",
+    "Whole scientific qualification remains 0/3; execution remains 2/3."
+  ],
+  "reconciled_canonical": "8367ca0c9",
+  "persisted": true,
+  "current_prefix_days": 367,
+  "own_year_restart": "365->367 exact",
+  "andelst_last_interval": 1.9580000000023283,
+  "andelst_censored_seconds": [
+    90.32849920005538,
+    600.2411629001144
+  ]
+}

@@ -32,8 +32,11 @@ class ProductionClosureControls(unittest.TestCase):
         # Reconciled fd3c3a69f -> canonical 1844fad45: Richards adds the
         # dynamic-top adapter/provider and evaporation owner (3 providers).
         # Runtime adds 18 admitted hydraulic/solute/drainage/trace providers.
+        # Canonical8367ca0c9 already has173 runtime providers, including the
+        # read-only thermal substep receipt. This candidate adds no provider.
+        # Exact paired closure: integration/dataqual15/THERMAL_PROFILE_CLOSURE_BASELINE_20261105.json.
         # These are structural budgets, never scientific admission evidence.
-        expected={'hydraulics':2,'richards':20,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':172}
+        expected={'hydraulics':2,'richards':20,'timestep':2,'transaction':1,'evaporation':1,'root':3,'drainage':1,'crop':1,'temperature':5,'runtime':173}
         for name,target in M.COMPONENTS.items():
             order,_=M.DEP.strict_closure(M.ROOT,[target],[M.STUB])
             self.assertEqual(len(order),expected[name],name+' closure changed: reassess contract and build budget')

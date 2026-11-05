@@ -11,7 +11,12 @@ shutil.copyfile(b/'original-interval/application.binding',out/'application.bindi
 origin=None
 if a.restart:
  origin=a.restart.resolve();shutil.copyfile(origin,out/'restart-origin.bin')
-cmd=[str(exe),str(a.end),'retain-step','100000']+([str(origin)]if origin else[]);t=time.monotonic();captured=set();capture_seconds={};censored=False
+cmd=[str(exe),str(a.end),'retain-step','100000']+([str(origin)]if origin else[])
+if build.get('grass_numerical_profile','water-only')!='water-only':
+ assert build['grass_numerical_profile']=='thermal-control-1e-5C'
+ assert json.loads((out/'application.binding').read_text())['grass_numerical_profile']==build['grass_numerical_profile']
+ cmd=[str(exe),str(a.end),'retain-step','100000',str(origin)if origin else'','thermal-control']
+t=time.monotonic();captured=set();capture_seconds={};censored=False
 with (out/'stdout').open('wb')as so,(out/'stderr').open('wb')as se:
  (out/'LAUNCH.json').write_text(json.dumps(dict(command=cmd,source_sha256=build['source_sha256'],executable_sha256=sha(exe),restart_sha256=sha(origin)if origin else None),indent=2)+'\n')
  proc=subprocess.Popen(cmd,cwd=out,stdout=so,stderr=se)
