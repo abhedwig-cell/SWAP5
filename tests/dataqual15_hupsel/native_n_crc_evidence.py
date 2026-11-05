@@ -134,23 +134,32 @@ def seal(out):
  return reports
 
 def replay():
- reports={}
+ reports={};cohorts={}
  for opt in ('O0','O2'):
   stem='NATIVE_N_CRC_WINDOWS_20261105_'+opt;r=json.loads((BASE/(stem+'.json')).read_text());raw=(BASE/(stem+'.tar.xz')).read_bytes();assert sha(raw)==r['archive_sha256']
   with tarfile.open(fileobj=io.BytesIO(raw))as t:
    assert len(t.getnames())==len(set(t.getnames()));files={m.name:t.extractfile(m).read()for m in t.getmembers()if m.isfile()}
-  assert {n:sha(b)for n,b in files.items()}==r['files_sha256'];report=dict(audit=audit(files),controls=controls(files));assert report==r['report'];reports[opt]=report
+  assert {n:sha(b)for n,b in files.items()}==r['files_sha256'];report=dict(audit=audit(files),controls=controls(files));assert report==r['report'];reports[opt]=report;cohorts[opt]=files
+ cross(cohorts)
  return reports
 
+def cross(cohorts):
+ for name in policy.DRIVERS:
+  for endpoint in ('restart.bin','end.bin'):
+   path='candidate/'+name+'/'+endpoint;assert cohorts['O0'][path]==cohorts['O2'][path],path
+
 def posix():
- r=json.loads((BASE/'NATIVE_N_CRC_POSIX_20261105.json').read_text());raw=(BASE/'NATIVE_N_CRC_POSIX_20261105.zip').read_bytes();assert sha(raw)==r['artifact_zip_sha256'];reports={}
+ r=json.loads((BASE/'NATIVE_N_CRC_POSIX_20261105.json').read_text());chunks=[]
+ for part in r['artifact_parts']:
+  data=(BASE/part['path']).read_bytes();assert len(data)==part['bytes']and sha(data)==part['sha256'];chunks.append(data)
+ raw=b''.join(chunks);assert sha(raw)==r['artifact_zip_sha256'];reports={};cohorts={}
  with zipfile.ZipFile(io.BytesIO(raw))as z:
   assert len(z.namelist())==len(set(z.namelist()))
   for opt in ('O0','O2'):
    prefix='native-n-'+opt+'/'
    files={n[len(prefix):]:z.read(n)for n in z.namelist()if n.startswith(prefix)and not n.endswith('/')}
-   reports[opt]=dict(audit=audit(files),controls=controls(files))
- assert reports==r['report'];return reports
+   reports[opt]=dict(audit=audit(files),controls=controls(files));cohorts[opt]=files
+ cross(cohorts);assert reports==r['report'];return reports
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--seal',type=Path);p.add_argument('--audit-directory',type=Path);p.add_argument('--posix',action='store_true');a=p.parse_args();policy.guard()
