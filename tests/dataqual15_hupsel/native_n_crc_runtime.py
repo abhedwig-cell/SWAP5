@@ -96,7 +96,7 @@ def build(out,compiler,opt,fixture,ordered,drivers,incumbent=None):
  for name,p in drivers.items():
   if incumbent and name=='reactive_original':continue
   obj=out/(name+'.o');run([compiler,*flags,'-c',p,'-o',obj],out,events,'driver')
-  exe=out/(name+('.exe'if os.name=='nt'else''));args=[*flags]+(['-Wl,--stack,16777216']if os.name=='nt'else[])+[str(obj),*map(str,objects),'-o',str(exe)]
+  exe=out/(name+('.exe'if os.name=='nt'else'-driver'));args=[*flags]+(['-Wl,--stack,16777216']if os.name=='nt'else[])+[str(obj),*map(str,objects),'-o',str(exe)]
   response=out/(name+'.args');response.write_text('\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n')
   run([compiler,'@'+str(response)],out,events,'link');exes[name]=exe
  (out/'BUILD.json').write_text(json.dumps(dict(flags=flags,provider_count=len(ordered),candidate=bool(incumbent),sources_sha256=sources,objects_sha256={str(p):sha(p.read_bytes())for p in objects},drivers_sha256={n:sha(p.read_bytes())for n,p in drivers.items()},executables_sha256={n:sha(p.read_bytes())for n,p in exes.items()}),indent=2)+'\n')

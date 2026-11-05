@@ -1,5 +1,5 @@
 """Independent native file, full-source/build and raw process evidence replay."""
-import argparse,hashlib,io,json,struct,tarfile,zipfile,zlib
+import argparse,ast,base64,hashlib,io,json,struct,tarfile,zipfile,zlib
 from pathlib import Path
 import native_n_crc_runtime as policy
 ROOT=policy.ROOT;BASE=ROOT/'integration/dataqual15_hupsel'
@@ -22,6 +22,13 @@ def audit(files):
  assert normal(get('fixture/matrix_fixture.inc')).decode()==fixture[start:end]+'\n'
  grid=(ROOT/'tests/modularity/low_air_consistent_grid_stubs.f90').read_text();grid=grid.replace('[-0.25d0, -0.75d0, -1.50d0, -2.50d0]','[-2.5d0, -7.5d0, -15d0, -25d0]').replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]','[5d0, 5d0, 10d0, 10d0]').replace('[0.25d0, 0.50d0, 0.75d0, 1.0d0, 0.50d0]','[2.5d0, 5d0, 7.5d0, 10d0, 5d0]')
  assert normal(get('fixture/grid.f90')).decode()==grid[:grid.index('subroutine swap_error(origin, message)')]
+ tree=ast.parse((ROOT/'tests/nut-reactive/run_reactive.py').read_text());pins=next(ast.literal_eval(n.value)for n in tree.body if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='pins'for t in n.targets))
+ with tarfile.open(fileobj=io.BytesIO(base64.b64decode((ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64').read_bytes())),mode='r:gz')as t:
+  for name,h in pins.items():
+   raw=t.extractfile('SWAP/'+name).read();assert sha(raw)==h
+   if name=='wofost_soil_orgmatn.f90':
+    old=b'NFracFOM(fn) - AsfaFOM_Bio(fn) * NFracBio - AsfaFOM_Bio(fn) * NFracBio';new=b'NFracFOM(fn) - AsfaFOM_Bio(fn) * NFracBio - AsfaFOM_Hum(fn) * NFracHum';assert raw.count(old)==1;raw=raw.replace(old,new)
+   assert get('fixture/'+name)==raw
  # Every input snapshot is bound to the actual compiler source hash; compare
  # complete production and generated source bytes, never only imported names.
  for name,row in meta['sources'].items():
@@ -40,7 +47,7 @@ def audit(files):
   for path,h in b['sources_sha256'].items():assert meta['sources'][path]['sha256']==h
   for path,h in b['objects_sha256'].items():assert sha(get(local_name(path,meta['root'])))==h
   for n,h in b['executables_sha256'].items():
-   path=role+'/'+n+('.exe'if meta['windows']else'');assert sha(get(path))==h
+   path=role+'/'+n+('.exe'if meta['windows']else'-driver');assert sha(get(path))==h
   for e in events:
    assert role+'/'+e['stdout']in files and role+'/'+e['stderr']in files
    if e['label']in ('provider','driver','link'):assert e['returncode']==0
@@ -83,7 +90,7 @@ def audit(files):
 
 def controls(files):
  refused=[]
- for label,name in [('binary','candidate/mineral.exe'if'candidate/mineral.exe'in files else'candidate/mineral'),('source','candidate/mod_mineral_joint_restart_file.f90'),('native','candidate/mineral/restart.bin'),('negative','candidate/mineral/negative_N.bin'),('raw','candidate/'+next(e['stdout']for e in json.loads(files['candidate/EVENTS.json'])if e['label']=='mineral-resume'))]:
+ for label,name in [('binary','candidate/mineral.exe'if'candidate/mineral.exe'in files else'candidate/mineral-driver'),('source','candidate/mod_mineral_joint_restart_file.f90'),('native','candidate/mineral/restart.bin'),('negative','candidate/mineral/negative_N.bin'),('raw','candidate/'+next(e['stdout']for e in json.loads(files['candidate/EVENTS.json'])if e['label']=='mineral-resume'))]:
   bad=dict(files);bad[name]=bad[name]+b'changed'
   try:audit(bad)
   except(AssertionError,KeyError,ValueError):refused.append(label)
