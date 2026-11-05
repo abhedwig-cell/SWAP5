@@ -1,0 +1,996 @@
+{
+  "qualified_head": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+  "qualified_tree": "3765a334fb2ee90c720b25639a77f971af21e946",
+  "pr": 1564,
+  "decision": "BOUNDED_ACTUAL_CRC_LIFECYCLE_WEATHER_ADMITTED_OLD_RED_VERDICTS_RETAINED",
+  "authority": "docs/development/workstream-execution-protocol.md rules7/8",
+  "failures": [
+    {
+      "run_id": 42036000222,
+      "jobs": [
+        {
+          "id": 127274203655,
+          "name": "exact-successor",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000222,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Recover exact historical evidence owners",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Validate native evidence and unchanged original predecessor authority",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:29:40.8550511Z AssertionError: unreviewed delta"
+      ]
+    },
+    {
+      "run_id": 42036000206,
+      "jobs": [
+        {
+          "id": 127274203725,
+          "name": "reference-valid-calibration-domain",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000206,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Construct Reference-only common calibration domain",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:32:00.0802334Z PUB_P2E08_GATE_FAIL P2E08 mutated src or reference relative to reconciled canonical"
+      ]
+    },
+    {
+      "run_id": 42036000014,
+      "jobs": [
+        {
+          "id": 127274203098,
+          "name": "reference-failure-census",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000014,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Census exact P2E03 Reference failure classes",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:33:24.1448236Z Fatal Error: Cannot open module file \u00e2\u20ac\u02dcmod_drainage_dramet3_response.mod\u00e2\u20ac\u2122 for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 42036000123,
+      "jobs": [
+        {
+          "id": 127274204236,
+          "name": "reference-cancellation-floor",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000123,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Diagnose exact P2E06 Reference cancellation floor",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:33:47.6602006Z PUB_P2E07_GATE_FAIL P2E07 mutated src or reference"
+      ]
+    },
+    {
+      "run_id": 42036000201,
+      "jobs": [
+        {
+          "id": 127274203885,
+          "name": "reference-bc-sweeps",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000201,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run preregistered Reference Stage B and C sweeps",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:34:53.0787146Z Fatal Error: Cannot open module file \u00e2\u20ac\u02dcmod_drainage_dramet3_response.mod\u00e2\u20ac\u2122 for reading at (1): No such file or directory"
+      ]
+    },
+    {
+      "run_id": 42036000189,
+      "jobs": [
+        {
+          "id": 127274204401,
+          "name": "d3-origin-authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000189,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install GNU Fortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run preregistered D3 gate",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:35:54.5445666Z PUB_ME_D3_GATE_FAIL D3 changed production/reference source"
+      ]
+    },
+    {
+      "run_id": 42036000120,
+      "jobs": [
+        {
+          "id": 127274203778,
+          "name": "d1-transition-authority",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000120,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install GNU Fortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run preregistered D1 gate",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Checkout candidate",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:39:41.1211318Z PUB_ME_D1_GATE_FAIL D1 workunit changed production/reference source"
+      ]
+    },
+    {
+      "run_id": 42036000244,
+      "jobs": [
+        {
+          "id": 127274203881,
+          "name": "broad-e0-paired-matrix",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000244,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Execute preregistered broad E0 paired matrix",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:41:14.1411805Z PUB_P2E10_GATE_FAIL P2E10 mutated src or reference"
+      ]
+    },
+    {
+      "run_id": 42036000240,
+      "jobs": [
+        {
+          "id": 127274203977,
+          "name": "reference-threshold-freeze",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000240,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Replay Reference calibration and validate frozen thresholds",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:37:46.1426030Z PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base"
+      ]
+    },
+    {
+      "run_id": 42036000232,
+      "jobs": [
+        {
+          "id": 127274204462,
+          "name": "Verify current corrected reference",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000232,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Check out repository",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Set up Python",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Install gate dependency",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4
+            },
+            {
+              "name": "Check B1.10 predecessor identity",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5
+            },
+            {
+              "name": "Check pinned B1.11 corrected-reference identity",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6
+            },
+            {
+              "name": "Check B1.11 SWAP-011 admission consistency",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 7
+            },
+            {
+              "name": "Recheck SWAP-012 predecessor inverse evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 8
+            },
+            {
+              "name": "Check SWAP-002 source-bound compiled tillage-start gate",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 9
+            },
+            {
+              "name": "Check VQ gate unit tests",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 10
+            },
+            {
+              "name": "Check deterministic B1.11 reconstruction tooling syntax",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 11
+            },
+            {
+              "name": "Post Set up Python",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 21
+            },
+            {
+              "name": "Post Check out repository",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:44:13.9116874Z   \"status\": \"FAIL\""
+      ]
+    },
+    {
+      "run_id": 42036000057,
+      "jobs": [
+        {
+          "id": 127274204373,
+          "name": "reference-local-balance-scaling",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42036000057,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Diagnose exact P2E03 Reference local-balance scaling",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:45:06.6876783Z PUB_P2E06_GATE_FAIL reference tree differs from P2E05 canonical base"
+      ]
+    },
+    {
+      "run_id": 42035999983,
+      "jobs": [
+        {
+          "id": 127274202939,
+          "name": "reference-uncertainty-gate",
+          "status": "completed",
+          "conclusion": "failure",
+          "run_id": 42035999983,
+          "logs_url": null,
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2
+            },
+            {
+              "name": "Install gfortran",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3
+            },
+            {
+              "name": "Run Reference-only temporal refinement pilot",
+              "status": "completed",
+              "conclusion": "failure",
+              "number": 4
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9
+            }
+          ]
+        }
+      ],
+      "diagnostics": [
+        "2026-11-05T13:42:55.7345794Z Fatal Error: Cannot open module file \u00e2\u20ac\u02dcmod_drainage_dramet3_response.mod\u00e2\u20ac\u2122 for reading at (1): No such file or directory"
+      ]
+    }
+  ],
+  "baseline": {
+    "head": "5921f7dc89871e68e394302a2c62958b691699ac",
+    "run_id": 42036000115,
+    "artifact_id": 13419391626,
+    "sha256": "95dd26c04e73948f939006e75709899765c4ca817990e9a78b35995db5758e7a",
+    "result": "All12 also fail;10 same signatures, P2E09 existing nested P2E08 replay and P2E10 solver-contract drift."
+  },
+  "old_failed_gate_pass_claim": false,
+  "whole_scientific_admission": false,
+  "all_terminal_runs": [
+    {
+      "id": 42036000222,
+      "name": "SWAP5-PERF01 exact implementation admission",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000222"
+    },
+    {
+      "id": 42036000094,
+      "name": "Documentation",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000094"
+    },
+    {
+      "id": 42036000102,
+      "name": "SWAP431 root constant LRV qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000102"
+    },
+    {
+      "id": 42036000206,
+      "name": "PUB-P2E08 Reference valid calibration domain",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000206"
+    },
+    {
+      "id": 42035999962,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42035999962"
+    },
+    {
+      "id": 42036000014,
+      "name": "PUB-P2E04 Reference failure census",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000014"
+    },
+    {
+      "id": 42036000126,
+      "name": "PUB-P2E01 E0 paired pilot",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000126"
+    },
+    {
+      "id": 42036000123,
+      "name": "PUB-P2E07 Reference cancellation floor",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000123"
+    },
+    {
+      "id": 42036000209,
+      "name": "DATAQUAL15 original Grassgrowth sprint",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000209"
+    },
+    {
+      "id": 42036000251,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000251"
+    },
+    {
+      "id": 42036000201,
+      "name": "PUB-P2E04 Reference B/C sweeps",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000201"
+    },
+    {
+      "id": 42036000010,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000010"
+    },
+    {
+      "id": 42036000189,
+      "name": "PUB-ME D3 origin authority",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000189"
+    },
+    {
+      "id": 42036000154,
+      "name": "Hupsel production native crop logical successor",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000154"
+    },
+    {
+      "id": 42036000258,
+      "name": "SWAP431 crop CO2 response qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000258"
+    },
+    {
+      "id": 42036000120,
+      "name": "PUB-ME D1 transition authority",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000120"
+    },
+    {
+      "id": 42036000244,
+      "name": "PUB-P2E10 broad E0 paired matrix",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000244"
+    },
+    {
+      "id": 42035999980,
+      "name": "Actual current WOFOST81 native rotation lifecycle",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42035999980"
+    },
+    {
+      "id": 42036000105,
+      "name": "F-GC42 live whole-window service",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000105"
+    },
+    {
+      "id": 42036000240,
+      "name": "PUB-P2E09 Reference-only threshold freeze",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000240"
+    },
+    {
+      "id": 42036000191,
+      "name": "F-CI canonical qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000191"
+    },
+    {
+      "id": 42036000115,
+      "name": "Native crop CRC exact baseline red-check attribution",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000115"
+    },
+    {
+      "id": 42036000236,
+      "name": "Hupsel production diagnostic source successor",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000236"
+    },
+    {
+      "id": 42036000232,
+      "name": "VQ reference qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000232"
+    },
+    {
+      "id": 42036000057,
+      "name": "PUB-P2E06 Reference local-balance scaling",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000057"
+    },
+    {
+      "id": 42035999983,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "failure",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42035999983"
+    },
+    {
+      "id": 42036000205,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000205"
+    },
+    {
+      "id": 42036000091,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000091"
+    },
+    {
+      "id": 42036000022,
+      "name": "PUB-P1E02 post-solver rollback",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000022"
+    },
+    {
+      "id": 42035999970,
+      "name": "F-PERF-CANON01 D AHL50",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42035999970"
+    },
+    {
+      "id": 42036000138,
+      "name": "F-MIG431 LOW08-A qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000138"
+    },
+    {
+      "id": 42036000132,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000132"
+    },
+    {
+      "id": 42036000114,
+      "name": "F-PERF-CANON01 B1 recomposition",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000114"
+    },
+    {
+      "id": 42036000353,
+      "name": "F-CI110 reconstructed performance admission",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42036000353"
+    },
+    {
+      "id": 42035999888,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "head_sha": "8917971a5447e7b65254c3a4bfd824d153a6a614",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42035999888"
+    }
+  ]
+}
