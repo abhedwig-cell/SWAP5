@@ -1,0 +1,54 @@
+name: Hupsel root numerical accuracy production profile
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - src/process/mod_root_micro_de_willigen_process.f90
+      - src/physics/oxygen/**
+      - src/runtime/mod_fmr_bartholomeus_execution.f90
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - app/solute_project/main.f90
+      - tests/dataqual15_hupsel/*root*accuracy*
+      - tests/dataqual15_hupsel/qualify_root_profile_controls.py
+      - integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION*
+      - .github/workflows/hupsel-root-accuracy-production.yml
+permissions:
+  contents: read
+concurrency:
+  group: hupsel-root-production-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran-13
+      - name: Exact current source and actual complete Windows evidence
+        run: |
+          python3 -B tests/dataqual15_hupsel/test_root_accuracy_production.py
+          python3 -B tests/dataqual15_hupsel/root_accuracy_production.py --verify-only
+      - name: Cold O0/O2 frozen default and refined pressure-film contracts
+        run: python3 -B tests/dataqual15_hupsel/qualify_root_accuracy_component.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/root-component"
+      - name: Cold default and registered thermal shared-runtime preservation
+        run: python3 -B tests/dataqual15_hupsel/qualify_root_runtime_preservation.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/thermal-preservation"
+      - name: Cold complete native builds and real original profile disk controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/build_and_run.py --compiler /usr/bin/gfortran-13 --optimization "$opt" --output "$RUNNER_TEMP/root-native-$opt"
+            python3 -B tests/dataqual15_hupsel/root_accuracy_native_smoke.py --compiler /usr/bin/gfortran-13 --build "$RUNNER_TEMP/root-native-$opt" --output "$RUNNER_TEMP/root-smoke-$opt"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: root-accuracy-current-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/root-component
+            ${{ runner.temp }}/thermal-preservation
+            ${{ runner.temp }}/root-native-*
+            ${{ runner.temp }}/root-smoke-*
