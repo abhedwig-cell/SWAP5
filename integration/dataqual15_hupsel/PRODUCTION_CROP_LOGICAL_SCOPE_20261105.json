@@ -1,0 +1,75 @@
+{
+  "predecessor": "5a4d47df19de2fa529878a7b92a7925f52daf819",
+  "phase": "QUALIFIED_CURRENT_WINDOWS_AND_POSIX",
+  "scope": "NATIVE_CROP_HOST_LOGICAL_WORDS_HUPSEL_WEATHER_STREAM_ONLY",
+  "unit_profile": "Unformatted STREAM; native endian; recorded compiler cohorts only",
+  "production_delta": {
+    "src/adapter/mod_wofost_crop_native_codec.f90": {
+      "before": "925ab82ac1a255df2b4adc47792904791ddf89e9",
+      "after": "a12d314be7a2e6fc3acccb79ec3cbc3945a6dd5d"
+    }
+  },
+  "bridge_restore": {
+    "src/adapter/mod_wofost_crop_native_codec.f90": {
+      "before": "925ab82ac1a255df2b4adc47792904791ddf89e9",
+      "after": "a12d314be7a2e6fc3acccb79ec3cbc3945a6dd5d"
+    },
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "before": "376e6547685b309d9bdd198d7859264a2c8ad14f",
+      "after": "222aa0e27df3d6aae61c558e0d3753ebc30e5df8"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "before": "33db0b7dd20c94fb2abebb1df1bf6b08a54cb92d",
+      "after": "9a8d07236e2321ba73e2dcc656cf863fc0d2ac68"
+    },
+    ".github/workflows/hupsel-production-diagnostic.yml": {
+      "before": "93d7d6ed4c4f78dc1a7cf136ef221364cdf69bc1",
+      "after": "433f745245a58014ea24673b8b09572a73e9b5ee"
+    },
+    "tools/vq/select_grass_sprint.py": {
+      "before": "1ac616a0775ee2e3f957a8524cdd31902235b028",
+      "after": "1f05889d4bd377e8495364c4b5cf403f22b24540"
+    },
+    "tests/dataqual15_hupsel/test_grass_sprint_selection.py": {
+      "before": "6c91969ca07feb63966ffaffff70d6e84f12ef89",
+      "after": "d3bcfc6c7c4a6129fda8d5a87ba51cf5e3688359"
+    }
+  },
+  "postimage_sha256": "c33b82afc8284232a4ecb96f329840f6af349caa151b7157f49e53a9d317b8c6",
+  "predecessor_production_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "unchanged_trees": {
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "gate_source_sha256": {
+    "tests/dataqual15_hupsel/production_crop_logical_posix.py": "cc58a78a2490e3f947947661bdc35bb3513e49675abdd331daf44a72bf90ebc3",
+    "tests/dataqual15/verify_current_native_admission.py": "33f79df121d658a7784c2ef88b98ea1293a8cb1e04d33c17f73603e8bac0e300",
+    "tests/dataqual15_hupsel/production_crop_logical_admission.py": "3787a672c9e2216087aa66be0933c5488b2e341e14d3a8398c59c69efed57a53",
+    "tests/dataqual15_hupsel/production_crop_logical_native.py": "51e4f3ba755c76daabed181a3c7dfc3f84bb293ef71c849b2178b8668b531387",
+    "tests/dataqual15_hupsel/production_crop_logical_evidence.py": "78993eec33f629cb5b64edda4aa903b56b2140f024cd7f26d950c3196ea64ec8",
+    "tests/dataqual15_hupsel/native_crop_bool.py": "56f84cff9fbf9ca08a1681d6a3191fdf4bd558992d059ad4491806399014a624",
+    "tests/dataqual15_hupsel/native_crop_opaque.py": "f9b6e94d0f82121e0a2b8dcb78923134b01396a2f2d1c37e8a22c94433f65a19",
+    "tests/dataqual15_hupsel/native_crop_opaque_writer.py": "c38f49187f34bfc1329b8e1d1d817db22c3d86a850da5eb6d63289646cb24375",
+    "tests/dataqual15_hupsel/native_crop_bool_runtime.py": "d7ae1aa44b6b3e37cd7087f3536898dd7e3e5fe5aa7ef7f590b3575acc3d4e70",
+    "tests/dataqual15_hupsel/native_crop_adapter_runtime.py": "30e5d9b48718eea10a5cc313720446134a0d61f6a4fbded445e93f2aa5fc526f",
+    "tests/dataqual15_hupsel/native_crop_adapter_fixture.py": "a37fa424a513db0b7cd6be57feeef64c959ff331c2c9ff136bc1786be7f9f42c",
+    "tests/dataqual15_hupsel/native_crop_weather_runtime.py": "f86db539f35b67d6f01f4c0754dfef1fb3b4a52b178f6e18431fd9193f1f19b0",
+    "tests/dataqual15_hupsel/production_diagnostic_native.py": "79cfb24d7ccd29b83f435e7f42baca84b154e3172a103a3485b34447c9d75d0c",
+    "tests/dataqual15_hupsel/production_diagnostic_guards.py": "130803cf9f5794555843377e2772cf1935c15cdeba12412e5e941cd81f104f83",
+    "tests/dataqual15_hupsel/qualify_rotation_restart_guards.py": "e8eca2c7e7bc138087537c5a4f16d281f7bf2d7f91bf2e086e7885945c3aeef9",
+    "tests/dataqual15_hupsel/build_and_run.py": "9b1b46bd74252d7db497b2793398691576451db9f1d3af475b1e9a259729bed1",
+    "tests/dataqual15_hupsel/test_production_crop_logical.py": "343eaf14fd1e52bc52c66ef7d5969e619035f077b7c9dbd24363ac4e75d15e84",
+    ".github/workflows/hupsel-production-crop-logical.yml": "5c9d51a186e871944764b47ae5d07ab3ed64878894a915b3de5ee4002507fea3",
+    ".github/workflows/hupsel-production-diagnostic.yml": "0b7451824ff584a694a30dda638cad11d5ef3d763d53b1e0b4382c59cf6e62f0",
+    "tools/vq/select_grass_sprint.py": "6a8aea17e8ffeb841f84facc8e2f76e9985d0b7798421baa77bb433949f7c7c6",
+    "tests/dataqual15_hupsel/test_grass_sprint_selection.py": "0df9cee830d34f4ce8dde2491f5f54be3b0c16d63a3ed07907c5aa98e9350f4e"
+  },
+  "posix_inheritance": "Actual qualified opaque/Hupsel and weather POSIX native runs reverified in exact predecessor; current postimage identical and every other production provider unchanged; fresh current-source cold CI required before canonical merge",
+  "whole_scientific_admission": false,
+  "rotation_qualified": false,
+  "migration_complete": false
+}

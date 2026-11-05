@@ -22,7 +22,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Cold actual current app O0 O2 publication, writer and owner qualification
+      - name: Select exact diagnostic authority when crop codec has a successor
+        shell: bash
+        run: |
+          owner="$GITHUB_WORKSPACE"
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_crop_logical_successor_20261105')))"; then
+            python3 -B tests/dataqual15_hupsel/production_crop_logical_admission.py --prepare-only --output "$RUNNER_TEMP/diagnostic-source-view"
+            owner="$RUNNER_TEMP/diagnostic-source-view/predecessor"
+          fi
+          echo "DIAGNOSTIC_OWNER_ROOT=$owner" >> "$GITHUB_ENV"
+      - name: Cold source-bound diagnostic app O0 O2 publication, writer and owner qualification
+        working-directory: ${{ env.DIAGNOSTIC_OWNER_ROOT }}
         run: python3 -B tests/dataqual15_hupsel/production_diagnostic_posix.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/production-diagnostic"
       - uses: actions/upload-artifact@v4
         if: always()
@@ -41,11 +51,23 @@ jobs:
         with:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Select exact unmodified diagnostic tests
+        shell: bash
+        run: |
+          owner="$GITHUB_WORKSPACE"
+          if python3 -c "import json;import sys;sys.exit(not bool(json.load(open('integration/dataqual15/STATUS.json')).get('native_crop_logical_successor_20261105')))"; then
+            python3 -B tests/dataqual15_hupsel/production_crop_logical_admission.py --prepare-only --output "$RUNNER_TEMP/diagnostic-test-view"
+            owner="$RUNNER_TEMP/diagnostic-test-view/predecessor"
+          fi
+          echo "DIAGNOSTIC_OWNER_ROOT=$owner" >> "$GITHUB_ENV"
       - name: Real Git scope refusals and exact predecessor/current composition
+        working-directory: ${{ env.DIAGNOSTIC_OWNER_ROOT }}
         run: |
           python3 -B tests/dataqual15_hupsel/test_production_diagnostic_admission.py
           python3 -B tests/dataqual15/test_current_native_admission.py
           python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/production-admission"
+      - name: Current complete native successor is independently required
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/complete-current-admission"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
