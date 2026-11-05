@@ -1,0 +1,496 @@
+{
+  "status": "COMPLETE_SCOPED_ORIGINAL_COMPOSED_ACCEPTED_GRID_RECONCILIATION_CANONICALLY_INTEGRATED",
+  "pull_request": 1551,
+  "base": "b79441ca42597ea4af215334a2bcee4e69878f58",
+  "initial_qualified_head": "900247ccc1aabc42fe3b6de28a4c1052235b6b71",
+  "cold_data_workflow": 41965761219,
+  "cold_data_job": 127042275331,
+  "final_qualified_head": "b9cab2e55e4cede0a322a8403721e9b342866266",
+  "final_workflow_merge": "edf40d10803509e9a8ca62f7819ef510d95fb076",
+  "actual_canonical_merge": "872e789c371ee3d817e3803f7fd976f1cb96668d",
+  "actual_and_qualified_tree": "3ead5540e140ad4c2c39648c64005ef96351d8d8",
+  "initial_qualified_workflows": [
+    {
+      "id": 41965761036,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965760962,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761032,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965760937,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965760990,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761195,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761035,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965760965,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761051,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761204,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761219,
+      "name": "Hupsel composed original grid reconciliation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761121,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761166,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761091,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41965761077,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    }
+  ],
+  "final_qualified_workflows": [
+    {
+      "id": 41966447511,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447489,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447524,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447495,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447483,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447479,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447530,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447499,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447572,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447568,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447443,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447538,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447484,
+      "name": "Hupsel composed original grid reconciliation",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447550,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 41966447571,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    }
+  ],
+  "source_trees": {
+    "src": "95e92bb442792e03f8c773b630637a5c0c95128d",
+    "app": "5fc6833cb747e1c0e3c4403637b7aa8bc6a70751",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "evidence": "COMPOSED_CHRONOLOGY_EVIDENCE_20261105.json",
+  "original_binding": {
+    "archive_sha256": "99adab40cc703f4533abc89befa5d16d76d6a36d1b7a09ef3e463becf997c1db",
+    "scope": "IMMUTABLE_ORIGINAL_RUNTIME_ONLY_NOT_OLD_TYPED_CODEC_ENVELOPE",
+    "physical_output_and_profile_controls": true,
+    "generated_source_body_controls": true
+  },
+  "composed_bindings": {
+    "windows-O0": {
+      "platform": "windows",
+      "optimization": "O0",
+      "archive_sha256": "e4b5110f094d5125f97884710780e64c941291739fb2883fae72701700af563c",
+      "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+    },
+    "windows-O2": {
+      "platform": "windows",
+      "optimization": "O2",
+      "archive_sha256": "a23c1c7222635d4d3be8fdeac3e9578fbfde52cc95e924de4f4c8e1f4fca1300",
+      "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+    },
+    "posix-O0": {
+      "platform": "posix",
+      "optimization": "O0",
+      "archive_sha256": "52daba43856882c578f201ef8b20055a03776e3207766460ceccf7ffccb9b720",
+      "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+    },
+    "posix-O2": {
+      "platform": "posix",
+      "optimization": "O2",
+      "archive_sha256": "1de9e762d15af577797df22b4ec049403efb7399a5b65f4148ca323c7c28e116",
+      "scope": "COMPLETE_CURRENT_COMPOSED_NATIVE_SOURCE_OBJECT_CONTROL_REPLAY_PROOF_REMEASURED"
+    }
+  },
+  "measurements": {
+    "windows-O0": {
+      "original_accepted_steps": 3206,
+      "native_accepted_steps": 4080,
+      "overlap_cells": 7285,
+      "original_oxygen_cm": 0.003593541147124953,
+      "native_oxygen_cm": 0.0033488614852679407,
+      "decomposition": {
+        "potential_contribution_cm": 9.078308902085395e-09,
+        "stress_fraction_contribution_cm": -0.00024468874016591414,
+        "total_delta_cm": -0.00024467966185701216
+      },
+      "accepted_start_state_witness": {
+        "head_cm": {
+          "duration_node_mean_absolute_start_difference": 0.19129370476097304,
+          "maximum_overlapping_start_difference": 318.60031717001766,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0027600116255,
+              583.0029681976711
+            ],
+            "native_interval_day": [
+              583.0025,
+              583.0028402294131
+            ],
+            "overlap_duration_day": 8.021778762858827e-05,
+            "original_accepted_start": -1315.4048889393941,
+            "native_accepted_start": -1634.0052061094118
+          }
+        },
+        "theta": {
+          "duration_node_mean_absolute_start_difference": 5.321887508237735e-05,
+          "maximum_overlapping_start_difference": 0.011980404262697364,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0031763837167,
+              583.0033845697624
+            ],
+            "native_interval_day": [
+              583.0028402294131,
+              583.003180458826
+            ],
+            "overlap_duration_day": 4.075109307192289e-06,
+            "original_accepted_start": 0.1631918634622263,
+            "native_accepted_start": 0.15121145919952894
+          }
+        }
+      },
+      "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+      "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+      "inside_unchanged_scientific_bound": false,
+      "reference_accuracy_qualified": false,
+      "production_admission": false,
+      "whole_scientific_admission": false,
+      "migration_complete": false,
+      "rejected_actual_data_controls": [
+        "missing_native_leaf",
+        "duplicate_native_leaf",
+        "nonfinite_rate",
+        "wrong_native_clock",
+        "wrong_native_node_clock",
+        "wrong_original_node_clock",
+        "wrong_root_sink",
+        "wrong_daily_oxygen",
+        "wrong_geometry",
+        "nonfinite_original_state",
+        "wrong_original_daily"
+      ]
+    },
+    "windows-O2": {
+      "original_accepted_steps": 3206,
+      "native_accepted_steps": 4080,
+      "overlap_cells": 7285,
+      "original_oxygen_cm": 0.003593541147124953,
+      "native_oxygen_cm": 0.0033488614852679407,
+      "decomposition": {
+        "potential_contribution_cm": 9.078308902085395e-09,
+        "stress_fraction_contribution_cm": -0.00024468874016591414,
+        "total_delta_cm": -0.00024467966185701216
+      },
+      "accepted_start_state_witness": {
+        "head_cm": {
+          "duration_node_mean_absolute_start_difference": 0.19129370476097304,
+          "maximum_overlapping_start_difference": 318.60031717001766,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0027600116255,
+              583.0029681976711
+            ],
+            "native_interval_day": [
+              583.0025,
+              583.0028402294131
+            ],
+            "overlap_duration_day": 8.021778762858827e-05,
+            "original_accepted_start": -1315.4048889393941,
+            "native_accepted_start": -1634.0052061094118
+          }
+        },
+        "theta": {
+          "duration_node_mean_absolute_start_difference": 5.321887508237735e-05,
+          "maximum_overlapping_start_difference": 0.011980404262697364,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0031763837167,
+              583.0033845697624
+            ],
+            "native_interval_day": [
+              583.0028402294131,
+              583.003180458826
+            ],
+            "overlap_duration_day": 4.075109307192289e-06,
+            "original_accepted_start": 0.1631918634622263,
+            "native_accepted_start": 0.15121145919952894
+          }
+        }
+      },
+      "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+      "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+      "inside_unchanged_scientific_bound": false,
+      "reference_accuracy_qualified": false,
+      "production_admission": false,
+      "whole_scientific_admission": false,
+      "migration_complete": false,
+      "rejected_actual_data_controls": [
+        "missing_native_leaf",
+        "duplicate_native_leaf",
+        "nonfinite_rate",
+        "wrong_native_clock",
+        "wrong_native_node_clock",
+        "wrong_original_node_clock",
+        "wrong_root_sink",
+        "wrong_daily_oxygen",
+        "wrong_geometry",
+        "nonfinite_original_state",
+        "wrong_original_daily"
+      ]
+    },
+    "posix-O0": {
+      "original_accepted_steps": 3206,
+      "native_accepted_steps": 4060,
+      "overlap_cells": 7265,
+      "original_oxygen_cm": 0.003593541147124953,
+      "native_oxygen_cm": 0.003348861457272886,
+      "decomposition": {
+        "potential_contribution_cm": 9.078296459789e-09,
+        "stress_fraction_contribution_cm": -0.00024468876814852657,
+        "total_delta_cm": -0.0002446796898520669
+      },
+      "accepted_start_state_witness": {
+        "head_cm": {
+          "duration_node_mean_absolute_start_difference": 0.19127841535380746,
+          "maximum_overlapping_start_difference": 318.6003178772619,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0027600116255,
+              583.0029681976711
+            ],
+            "native_interval_day": [
+              583.0025,
+              583.0028402294133
+            ],
+            "overlap_duration_day": 8.021778785596194e-05,
+            "original_accepted_start": -1315.4048889393941,
+            "native_accepted_start": -1634.005206816656
+          }
+        },
+        "theta": {
+          "duration_node_mean_absolute_start_difference": 5.3216784523847755e-05,
+          "maximum_overlapping_start_difference": 0.01198040427242364,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0031763837167,
+              583.0033845697624
+            ],
+            "native_interval_day": [
+              583.0028402294133,
+              583.0031804588267
+            ],
+            "overlap_duration_day": 4.075109989313316e-06,
+            "original_accepted_start": 0.1631918634622263,
+            "native_accepted_start": 0.15121145918980267
+          }
+        }
+      },
+      "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+      "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+      "inside_unchanged_scientific_bound": false,
+      "reference_accuracy_qualified": false,
+      "production_admission": false,
+      "whole_scientific_admission": false,
+      "migration_complete": false,
+      "rejected_actual_data_controls": [
+        "missing_native_leaf",
+        "duplicate_native_leaf",
+        "nonfinite_rate",
+        "wrong_native_clock",
+        "wrong_native_node_clock",
+        "wrong_original_node_clock",
+        "wrong_root_sink",
+        "wrong_daily_oxygen",
+        "wrong_geometry",
+        "nonfinite_original_state",
+        "wrong_original_daily"
+      ]
+    },
+    "posix-O2": {
+      "original_accepted_steps": 3206,
+      "native_accepted_steps": 4060,
+      "overlap_cells": 7265,
+      "original_oxygen_cm": 0.003593541147124953,
+      "native_oxygen_cm": 0.003348861457272886,
+      "decomposition": {
+        "potential_contribution_cm": 9.078296459789e-09,
+        "stress_fraction_contribution_cm": -0.00024468876814852657,
+        "total_delta_cm": -0.0002446796898520669
+      },
+      "accepted_start_state_witness": {
+        "head_cm": {
+          "duration_node_mean_absolute_start_difference": 0.19127841535380746,
+          "maximum_overlapping_start_difference": 318.6003178772619,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0027600116255,
+              583.0029681976711
+            ],
+            "native_interval_day": [
+              583.0025,
+              583.0028402294133
+            ],
+            "overlap_duration_day": 8.021778785596194e-05,
+            "original_accepted_start": -1315.4048889393941,
+            "native_accepted_start": -1634.005206816656
+          }
+        },
+        "theta": {
+          "duration_node_mean_absolute_start_difference": 5.3216784523847755e-05,
+          "maximum_overlapping_start_difference": 0.01198040427242364,
+          "maximum_witness": {
+            "node": 1,
+            "original_interval_day": [
+              583.0031763837167,
+              583.0033845697624
+            ],
+            "native_interval_day": [
+              583.0028402294133,
+              583.0031804588267
+            ],
+            "overlap_duration_day": 4.075109989313316e-06,
+            "original_accepted_start": 0.1631918634622263,
+            "native_accepted_start": 0.15121145918980267
+          }
+        }
+      },
+      "witness_scope": "OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION",
+      "unchanged_oxygen_bound_cm": 5.371840000016327e-07,
+      "inside_unchanged_scientific_bound": false,
+      "reference_accuracy_qualified": false,
+      "production_admission": false,
+      "whole_scientific_admission": false,
+      "migration_complete": false,
+      "rejected_actual_data_controls": [
+        "missing_native_leaf",
+        "duplicate_native_leaf",
+        "nonfinite_rate",
+        "wrong_native_clock",
+        "wrong_native_node_clock",
+        "wrong_original_node_clock",
+        "wrong_root_sink",
+        "wrong_daily_oxygen",
+        "wrong_geometry",
+        "nonfinite_original_state",
+        "wrong_original_daily"
+      ]
+    }
+  },
+  "qualification_scope": "Read-only original-only source/input/executable/own physical/profile/journal controls and complete four current Windows/POSIX O0/O2 composed source/object/control/original-replay proof remeasured locally and cold. Exact overlap rate algebra and own accepted-start state witnesses; seven tests and eleven actual-data refusals per carrier; current/unmodified predecessor preservation. No new numeric model execution or compilation.",
+  "dependency_reconciliation": "Do not re-admit older broad chronology typed codec envelope: hupsel_rotation_restart changed after qualified schema4 persistence. Immutable original-runtime-only members and generated original source/physical controls are separately checked. Current composed/native/restart authority is independently exact. No foreign numeric checkpoint or old pressure-only model state used.",
+  "adjudication": "Potential-rate contribution about9.078e-9cm and stress-fraction contribution about-2.4468875e-4cm algebraically sum to actual oxygen difference about-2.4467967e-4cm. This is not causal process attribution or a correction. Exact node/clock/value accepted-start witnesses are descriptive, not interpolated continuous-state error. Same5.371840000016327e-7cm oxygen comparison still FAILS; original reference accuracy and whole science remain unqualified.",
+  "production_source_change": false,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "reference_accuracy_qualified": false,
+  "migration_complete": false,
+  "counts": "Production execution2/3; whole science0/3 unchanged",
+  "next": "Select actual loss-contributing original/composed overlap cells and their own forcing/state/phase provenance for a causal discrimination study; preserve original and composed histories separately. Do not infer a physical defect from stress-fraction algebra or head/theta start witnesses alone. No fitted target, forced grid, state rebinding, relaxed bound or production admission without independent qualified evidence."
+}

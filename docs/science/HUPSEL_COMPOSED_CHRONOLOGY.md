@@ -73,3 +73,15 @@ unmodified predecessor preservation, and all15 initial-head workflows pass.
 No new native/original model execution or compilation is claimed. Final
 metadata-head qualification must remeasure the same exact proof before bounded
 canonical integration. Scientific and production non-admission remain explicit.
+
+All15 final-head workflows PASS, including cold exact data/source/native-proof
+remeasurement and current/unmodified predecessor preservation. PR1551 is
+canonically integrated at872e789c371ee3d817e3803f7fd976f1cb96668d; actual tree
+3ead5540e140ad4c2c39648c64005ef96351d8d8 equals the qualified test-merge tree.
+Production src/app/reference trees are unchanged. Actual authority is
+COMPOSED_CHRONOLOGY_CANONICAL_RECEIPT_20261105.json. This closes bounded
+scoped accepted-grid evidence, with no new numerical run, causal correction,
+reference-accuracy or production/whole-science promotion. Next select actual
+loss-contributing overlap cells with their own forcing/state/phase provenance;
+algebraic stress attribution and descriptive head witnesses alone do not
+identify a physical defect.
