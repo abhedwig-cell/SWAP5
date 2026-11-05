@@ -26,6 +26,9 @@ jobs:
       - name: Exact retained predecessor raw failures
         if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_BASELINE_POSIX_20261105.zip') != '' }}
         run: python3 -B tests/dataqual15_hupsel/matrix_crc_baseline_evidence.py
+      - name: Independently remeasure actual current file-driven column qualification
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_COLUMN_POSIX_20261105.zip') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/matrix_crc_column_evidence.py
       - uses: actions/upload-artifact@v4
         if: ${{ always() && hashFiles('integration/dataqual15_hupsel/MATRIX_CRC_BASELINE_POSIX_20261105.zip') == '' }}
         with:
