@@ -1,5 +1,5 @@
 {
-  "status": "CURRENT_OWNER_QUALIFIED_ALL36_TERMINAL_RED_CHECKS_ADJUDICATED",
+  "status": "CANONICAL_BOUNDED_NATIVE_N_CRC_ADMITTED_RECEIPT_QUALIFICATION_PENDING",
   "baseline": "b41e1cda439a370a7e1966387412bdf55ca1b096",
   "branch": "codex/autonomous-migration-20261103",
   "worktree": "SWAP5-AUTONOMOUS",
@@ -12,7 +12,7 @@
   "qualification_sequencing": "An early seal invocation completed O0 then refused missing O2 BUILD while O2 compilation still ran; no partial O2 PASS claimed. Successful complete seal rerun after actual O2 termination; all raw native results retained.",
   "whole_scientific_admission": false,
   "migration_complete": false,
-  "next": "Observe final retained/adjudicated exact head through terminal; require owner and F-CI success, same15 explicitly attributed old red workflows only, no unknown failures; verify canonical/proposed tree, merge bounded CRC scope and exact receipt.",
+  "next": "Wait exact receipt proof/current predecessor preservation and all metadata-head workflows to terminal; merge exact receipt. Remaining CRC families matrix/output/saved require their own full native qualification; broader scientific/seasonal scope remains open.",
   "pr": 1572,
   "initial_head": "5b315852849b8abed76879a4eb91a7da5101efcd",
   "cold_posix_run": 42093414646,
@@ -36,5 +36,8 @@
     "zip_sha256": "fd8fab7924aa7d266cd2d8dd790be9bccd49b66ceaf0843276095f2175d3c0e6",
     "actual_failures": 15,
     "old_gate_pass_claim": false
-  }
+  },
+  "actual_merge": "ee34d3ae275ac6e60e11b4f2530d5ba7ccb4f493",
+  "qualified_head": "503d3189cfd779d822478601a2967f75a5ba92c6",
+  "qualified_and_actual_tree": "86d5adf34578db6d296f6901224328b488bed475"
 }

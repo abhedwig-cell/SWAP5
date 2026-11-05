@@ -1,6 +1,6 @@
 # Current native mineral and reactive-N CRC successor
 
-Status: actual Windows/POSIX O0/O2 current-source and owning preservation qualification; canonical adjudication pending.
+Status: actual Windows/POSIX O0/O2 current-source and owning preservation qualification; bounded production CRC admission at PR1572 (`ee34d3ae2`).
 
 Two production disk adapters now import the already admitted public `mod_age_joint_restart_file::crc32`, removing only their duplicated CRC functions. Append/check, error-status comparisons, file-size bounds, schemas and payload construction remain exact. No solver, retry, tolerance, mass, restart, physical-input, state or ownership boundary changes. This follows the full-module [native N CRC research](NATIVE_N_CRC.md), whose original Windows O2 failures remain retained evidence.
 
@@ -11,3 +11,5 @@ The additive current route is guarded by exactly two source postimages, the fixe
 Authority: `integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_PREREGISTRATION_20261105.json`, `NATIVE_N_PRODUCTION_SCOPE_20261105.json`, `NATIVE_N_PRODUCTION_RECOVERY_20261105.json` and original raw platform archives.
 
 Cold actual current POSIX run42093414646/job127477098584 passes full332-provider O0/O2 builds, independent native/source/object/data audit, private native byte comparators and the complete current/unmodified-predecessor admission route. Original artifact13445549485 is retained as two lossless parts, original ZIP SHA256 `8b4657f5bbbb3362a93f388fd3be0695d297672992041728927741a5bd146057`. Old broad red checks require exact pre-successor counterfactual attribution; their FAILED verdicts are not relabelled as PASS.
+
+Canonical production receipt: `NATIVE_N_PRODUCTION_CANONICAL_RECEIPT_20261105.json`. Actual merge `ee34d3ae275ac6e60e11b4f2530d5ba7ccb4f493` has tree `86d5adf34578db6d296f6901224328b488bed475`, exactly the qualified source tree. All36 final source-head workflows are terminal:21 SUCCESS and15 broader FAILED. Each final red signature matches explicit actual-baseline adjudication; P2E09/P2E10 now refuse the outer source envelope before their already-failing nested baseline policy. These remain FAILED, with no current numerical/publication verdict inferred. The current native owner and entire prior admission chain pass; all physics and source constraints remain intact. Whole science and remaining CRC families are still open.
