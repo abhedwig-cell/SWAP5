@@ -17,7 +17,9 @@ p.add_argument('--compiler',type=Path,default=Path(shutil.which('gfortran') or '
 p.add_argument('--input-archive',type=Path,help='Optional already-built original TTUTIL archive; otherwise build from the pinned repository authority')
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
+p.add_argument('--numerical-profile',choices=['water-only','thermal-control-1e-5C'],default='water-only')
 a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
+assert a.numerical_profile=='water-only' or a.policy=='retained','thermal profile requires retained proposal policy'
 fc=str(a.compiler.resolve());archive=a.input_archive.resolve() if a.input_archive else out/'libttutil.a'
 if a.input_archive:assert archive.is_file()
 authority=ROOT/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
@@ -113,10 +115,15 @@ project=ROOT/'reference/swap-4.3.1/projects/2.grassgrowth';case=out/'original-in
 for source,target in [('swap.swp','input.swp'),('grass.crp','grass.crp'),('260.met','input.met'),('swap.bbc','swap.bbc'),('swap.dra','swap.dra')]:
  (case/target).write_bytes((project/source).read_bytes())
 report['original_inputs_sha256']={s.name:sha(s)for s in case.iterdir()}
-binding=json.dumps(dict(executable_sha256=sha(exe),compiler=report['compiler'],source_sha256=hashes),sort_keys=True).encode()
+binding_data=dict(executable_sha256=sha(exe),compiler=report['compiler'],source_sha256=hashes)
+if a.numerical_profile!='water-only':binding_data['grass_numerical_profile']=a.numerical_profile
+binding=json.dumps(binding_data,sort_keys=True).encode()
 (case/'application.binding').write_bytes(binding)
 report['application_binding_sha256']=sha(case/'application.binding')
-rc=run([exe,str(a.end)]+(['retain-step']if a.policy=='retained'else[]),'native_original_initial_interval',case,60)
+command=[exe,str(a.end)]+(['retain-step']if a.policy=='retained'else[])
+if a.numerical_profile!='water-only':command=[exe,str(a.end),'retain-step','100000','','thermal-control']
+rc=run(command,'native_original_initial_interval',case,60)
+report['grass_numerical_profile']=a.numerical_profile
 report['native_returncode']=rc
 report['original_project_completed_days']=a.end if rc==0 else 0
 report['requested_end']=a.end;report['numerical_policy']=a.policy

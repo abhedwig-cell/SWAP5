@@ -16,22 +16,9 @@ module mod_macro_water_restart
  private
  public::write_macro_water_restart,read_macro_water_restart
  interface
-  integer(c_int) function rename_c(a,b)bind(C,name='rename')
+  integer(c_int) function publish_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
-  end function
-  integer(c_int) function open_c(a,b)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*)
-   integer(c_int),value::b
-  end function
-  integer(c_int) function sync_c(a)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::a
-  end function
-  integer(c_int) function close_c(a)bind(C,name='close')
-   import c_int
-   integer(c_int),value::a
   end function
  end interface
 contains
@@ -46,9 +33,7 @@ contains
  type(fmr_committed_restart_bundle_t)::b
  type(soil_temperature_field_view_t)::heat
  type(rutter_source_restart_t)::rutter
- integer::u,io,n,nd,st,size_bytes,slash
- character(:),allocatable::directory
- integer(c_int)::fd,rc
+ integer::u,io,n,nd,st,size_bytes
  integer(int8),allocatable::bytes(:)
  integer(int32)::crc
  logical::ok,rutter_bound
@@ -82,15 +67,8 @@ contains
   if(io/=0)then;close(u);return;end if
   inquire(unit=u,size=size_bytes);allocate(bytes(size_bytes));read(u,pos=1,iostat=io)bytes
   if(io==0)then;crc=crc32(bytes);write(u,pos=size_bytes+1,iostat=io)crc;end if
-  close(u);if(io/=0)return
-  fd=open_c(path//'.tmp'//c_null_char,0_c_int);if(fd<0)return
-  rc=sync_c(fd);st=close_c(fd);if(rc/=0.or.st/=0)return
-  rc=rename_c(path//'.tmp'//c_null_char,path//c_null_char);if(rc/=0)return
-  slash=index(path,'/',back=.true.);directory='.'
-  if(slash==1)directory='/'
-  if(slash>1)directory=path(:slash-1)
-  fd=open_c(directory//c_null_char,0_c_int);if(fd<0)return
-  rc=sync_c(fd);st=close_c(fd);if(rc/=0.or.st/=0)return
+  close(u,iostat=st);if(io/=0.or.st/=0)return
+  if(publish_c(path//'.tmp'//c_null_char,path//c_null_char)/=0)return
   status=0
  class default
   return
