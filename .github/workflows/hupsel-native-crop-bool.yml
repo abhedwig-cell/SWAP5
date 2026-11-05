@@ -21,6 +21,7 @@ jobs:
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - run: python3 -B tests/dataqual15_hupsel/test_native_crop_bool.py
       - run: python3 -B tests/dataqual15_hupsel/native_crop_bool_evidence.py
+      - run: python3 -B tests/dataqual15_hupsel/native_crop_bool_posix.py
       - name: Fresh unmodified baseline and coherent private candidate O0/O2
         shell: bash
         run: |
