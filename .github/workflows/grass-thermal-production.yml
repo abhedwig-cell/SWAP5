@@ -1,0 +1,53 @@
+name: Registered Grassgrowth thermal production profile
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/grass-thermal-production.yml
+      - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - app/grass_project/**
+      - app/solute_project/main_water.f90
+      - app/solute_column/macro_water_restart.f90
+      - tests/dataqual15/*thermal*
+      - tests/dataqual15/qualify_native_disk_restart.py
+      - tests/dataqual15/continue_original_andelst.py
+      - tests/dataqual15/verify_current_native_admission.py
+      - integration/dataqual15/THERMAL_PROFILE_PRODUCTION*
+      - tools/solute/build_grass_startup.py
+permissions:
+  contents: read
+concurrency:
+  group: grass-thermal-production-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran-13
+      - name: Verify exact current source and retained native evidence
+        run: python3 -B tests/dataqual15/thermal_profile_production.py --verify-only
+      - name: Cold O0/O2 numerical and incumbent runtime contracts
+        run: python3 -B tests/dataqual15/qualify_thermal_runtime.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/thermal-contract"
+      - name: Current original-input application and own disk restart on both optimizations
+        shell: bash
+        run: |
+          set -euo pipefail
+          for opt in O0 O2; do
+            python3 -B tools/solute/build_grass_startup.py --compiler /usr/bin/gfortran-13 --optimization "$opt" --policy retained --numerical-profile thermal-control-1e-5C --end 1 --output "$RUNNER_TEMP/grass-$opt"
+            python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/grass-$opt" --output "$RUNNER_TEMP/thermal-disk-$opt"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: registered-thermal-native-${{ github.event.pull_request.head.sha }}
+          path: |
+            ${{ runner.temp }}/thermal-contract
+            ${{ runner.temp }}/grass-O0
+            ${{ runner.temp }}/grass-O2
+            ${{ runner.temp }}/thermal-disk-O0
+            ${{ runner.temp }}/thermal-disk-O2
