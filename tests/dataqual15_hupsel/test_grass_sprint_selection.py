@@ -2,13 +2,18 @@
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools/vq'))
-from select_grass_sprint import APP,ENTRY,POLICY,classify
+from select_grass_sprint import APP,ENTRY,NATIVE_CROP_CODEC,POLICY,classify
 
 class Selection(unittest.TestCase):
     def test_exact_route_only_needs_source_guard_not_science_rerun(self):
         r=classify([APP,ENTRY,'integration/dataqual15/STATUS.json'],True)
         self.assertFalse(r['run_grass']);self.assertTrue(r['requires_current_source_guard']);self.assertFalse(r['scientific_pass'])
     def test_any_physics_change_selected(self):self.assertTrue(classify(['src/process/grass.f90'],True)['run_grass'])
+    def test_native_crop_codec_requires_exact_registered_source_guard(self):
+        r=classify([NATIVE_CROP_CODEC],True)
+        self.assertFalse(r['run_grass']);self.assertTrue(r['requires_current_source_guard']);self.assertFalse(r['scientific_pass'])
+    def test_codec_exception_cannot_hide_grass_physics(self):
+        self.assertTrue(classify([NATIVE_CROP_CODEC,'src/process/grass.f90'],True)['run_grass'])
     def test_other_application_change_selected(self):self.assertTrue(classify(['app/solute_column/main.f90'],True)['run_grass'])
     def test_grass_test_change_selected(self):self.assertTrue(classify(['tests/dataqual15/qualify_mowing.py'],True)['run_grass'])
     def test_old_native_guard_change_selected(self):self.assertTrue(classify(['tests/dataqual15/verify_native_restart_admission.py'],True)['run_grass'])

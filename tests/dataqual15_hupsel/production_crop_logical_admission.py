@@ -7,7 +7,8 @@ ROOT=predecessor.ROOT;SOURCE=candidate.SOURCE;ENTRY=predecessor.ENTRY;STATUS=pre
 SCOPE='integration/dataqual15_hupsel/PRODUCTION_CROP_LOGICAL_SCOPE_20261105.json'
 KEY='native_crop_logical_successor_20261105';BASELINE='5a4d47df19de2fa529878a7b92a7925f52daf819'
 AREAS=('src','app','reference')
-GATES=(ENTRY,'tests/dataqual15_hupsel/production_crop_logical_admission.py','tests/dataqual15_hupsel/production_crop_logical_native.py','tests/dataqual15_hupsel/production_crop_logical_evidence.py','tests/dataqual15_hupsel/native_crop_bool.py','tests/dataqual15_hupsel/native_crop_opaque.py','tests/dataqual15_hupsel/native_crop_opaque_writer.py','tests/dataqual15_hupsel/native_crop_bool_runtime.py','tests/dataqual15_hupsel/native_crop_adapter_runtime.py','tests/dataqual15_hupsel/native_crop_adapter_fixture.py','tests/dataqual15_hupsel/native_crop_weather_runtime.py','tests/dataqual15_hupsel/production_diagnostic_native.py','tests/dataqual15_hupsel/production_diagnostic_guards.py','tests/dataqual15_hupsel/qualify_rotation_restart_guards.py','tests/dataqual15_hupsel/build_and_run.py','tests/dataqual15_hupsel/test_production_crop_logical.py','.github/workflows/hupsel-production-crop-logical.yml')
+CONTROL_BRIDGE=('.github/workflows/hupsel-production-diagnostic.yml','tools/vq/select_grass_sprint.py','tests/dataqual15_hupsel/test_grass_sprint_selection.py')
+GATES=(ENTRY,'tests/dataqual15_hupsel/production_crop_logical_admission.py','tests/dataqual15_hupsel/production_crop_logical_native.py','tests/dataqual15_hupsel/production_crop_logical_evidence.py','tests/dataqual15_hupsel/native_crop_bool.py','tests/dataqual15_hupsel/native_crop_opaque.py','tests/dataqual15_hupsel/native_crop_opaque_writer.py','tests/dataqual15_hupsel/native_crop_bool_runtime.py','tests/dataqual15_hupsel/native_crop_adapter_runtime.py','tests/dataqual15_hupsel/native_crop_adapter_fixture.py','tests/dataqual15_hupsel/native_crop_weather_runtime.py','tests/dataqual15_hupsel/production_diagnostic_native.py','tests/dataqual15_hupsel/production_diagnostic_guards.py','tests/dataqual15_hupsel/qualify_rotation_restart_guards.py','tests/dataqual15_hupsel/build_and_run.py','tests/dataqual15_hupsel/test_production_crop_logical.py','.github/workflows/hupsel-production-crop-logical.yml',*CONTROL_BRIDGE)
 sha=lambda b:hashlib.sha256(b).hexdigest()
 git=predecessor.git;blob=predecessor.blob
 
@@ -19,8 +20,9 @@ def owned(raw):
 def guard(r):
     assert r['predecessor']==BASELINE and r['whole_scientific_admission']is False
     assert r['scope']=='NATIVE_CROP_HOST_LOGICAL_WORDS_HUPSEL_WEATHER_STREAM_ONLY'and r['rotation_qualified']is False
+    assert r['unit_profile']=='Unformatted STREAM; native endian; recorded compiler cohorts only'
     subprocess.run(['git','merge-base','--is-ancestor',BASELINE,'HEAD'],cwd=ROOT,check=True,capture_output=True)
-    assert set(r['production_delta'])=={SOURCE} and set(r['bridge_restore'])=={SOURCE,ENTRY,STATUS}
+    assert set(r['production_delta'])=={SOURCE} and set(r['bridge_restore'])=={SOURCE,ENTRY,STATUS,*CONTROL_BRIDGE}
     assert set(r['gate_source_sha256'])==set(GATES)
     assert set(git('diff','--name-only','--no-renames',BASELINE,'HEAD','--',*AREAS).splitlines())=={SOURCE}
     assert not git('diff','HEAD','--',*AREAS) and not git('ls-files','--others','--exclude-standard','--',*AREAS)
