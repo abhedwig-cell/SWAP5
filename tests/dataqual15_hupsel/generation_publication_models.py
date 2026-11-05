@@ -70,6 +70,11 @@ def main(args):
   steps=[('accepted','run_accepted_output.py',[]),('csv','run_accepted_output_csv.py',['--physical',out/'accepted']),('joint','run_joint_output_generation.py',['--physical',out/'accepted','--csv',out/'csv']),('cold','run_native_output_project.py',[]),('saved','run_saved_output.py',['--cold',out/'cold'])]
   for label,recipe,more in steps:
    completed=out/label/'result.json'
+   if args.resume and args.role=='incumbent' and os.name=='nt' and label=='csv' and (out/'csv.stderr').exists():
+    failure=(out/'csv.stderr').read_bytes()
+    if b'FAIL actual accepted complete CSV generation' in failure:
+     results[label]=dict(status='ACTUAL_ORIGINAL_WINDOWS_CSV_PUBLIC_WRITER_FAILED',stderr_sha256=sha(failure),physical_first_day_pass=b'ACCEPTED_SOIL_N_OUTPUT_FIRST_DAY_ATOMIC_CONTINUATION=PASS' in failure,qualification=False)
+     events.append(dict(label=label,scope='RETAINED_ACTUAL_FAILED_PUBLIC_WRITER_NO_RERUN',returncode=1));break
    if args.resume and completed.exists():
     report=json.loads(completed.read_text())
     for key in ('input_sha256','physical_input_sha256','cold_input_sha256'):
@@ -85,7 +90,7 @@ def main(args):
    for stream in ('stdout','stderr'):(out/(label+'.'+stream)).write_bytes(getattr(r,stream))
    events.append(dict(label=label,command=cmd,returncode=r.returncode,seconds=time.monotonic()-start));(out/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n')
    if r.returncode:
-    if args.role=='incumbent'and os.name=='nt'and label in ('joint','cold','saved'):
+    if args.role=='incumbent'and os.name=='nt'and label in ('csv','joint','cold','saved'):
      results[label]=dict(status='ACTUAL_ORIGINAL_WINDOWS_PUBLICATION_FAILURE_RETAINED',returncode=r.returncode);break
     raise AssertionError((label,r.stdout[-2000:],r.stderr[-5000:]))
    results[label]=json.loads((out/label/'result.json').read_text())
