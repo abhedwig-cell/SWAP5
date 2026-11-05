@@ -62,3 +62,11 @@ No extrapolation or closer-to-native target is selected; the immutable original
 oracle,37 scientific conditions and native physics remain untouched. Cold
 source/data qualification and final canonical integration are still required
 for this bounded negative experiment. Further blind refinement is not selected.
+
+Cold POSIX data/source qualification independently reproduces the complete
+retained report, including the FAILED unchanged-bound self-convergence screen.
+Seven tests, all ten actual resealed/data/admission refusals per case, exact
+source/derivative/executable/input/profile proof, current/unmodified predecessor
+preservation and all15 initial-head workflows pass. It does not execute new
+POSIX/O0 scientific trajectories. Final metadata qualification must retain the
+same exact evidence and explicit scientific failure before bounded integration.
