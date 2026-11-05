@@ -1,0 +1,48 @@
+name: Full native mineral reactive CRC research
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/native_n_crc_*.py
+      - integration/dataqual15_hupsel/NATIVE_N_CRC_*
+      - .github/workflows/native-n-crc.yml
+permissions:
+  contents: read
+jobs:
+  full-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require executable GNU Fortran
+        run: |
+          if ! command -v gfortran >/dev/null; then
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 update
+            sudo apt-get -o Acquire::Retries=2 -o Acquire::http::Timeout=30 -o Acquire::https::Timeout=30 install -y gfortran
+          fi
+          test -x /usr/bin/gfortran
+          /usr/bin/gfortran --version
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Remeasure original Windows complete module evidence
+        run: python3 -B tests/dataqual15_hupsel/native_n_crc_evidence.py
+      - name: Actual cold native POSIX O0/O2 and independent raw evidence audit
+        if: ${{ hashFiles('integration/dataqual15_hupsel/NATIVE_N_CRC_POSIX_20261105.json') == '' }}
+        run: |
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/native_n_crc_runtime.py --compiler /usr/bin/gfortran --optimization "$opt" --output "$RUNNER_TEMP/native-n-$opt"
+            python3 -B tests/dataqual15_hupsel/native_n_crc_evidence.py --audit-directory "$RUNNER_TEMP/native-n-$opt"
+          done
+      - name: Remeasure exact retained POSIX evidence on receipt heads
+        if: ${{ hashFiles('integration/dataqual15_hupsel/NATIVE_N_CRC_POSIX_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/native_n_crc_evidence.py --posix
+      - name: Preserve current and unmodified predecessor authority
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/native-n-preservation"
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/NATIVE_N_CRC_POSIX_20261105.json') == '' }}
+        with:
+          name: exact-native-n-crc-posix
+          path: |
+            ${{ runner.temp }}/native-n-O0
+            ${{ runner.temp }}/native-n-O2

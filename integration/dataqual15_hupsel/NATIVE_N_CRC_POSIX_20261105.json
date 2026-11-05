@@ -1,0 +1,107 @@
+{
+  "head": "bcefacf0f539765f39e1212b0a6aa7580658681b",
+  "run_id": 42083779393,
+  "job_id": 127443364380,
+  "artifact_id": 13442024709,
+  "artifact_zip_sha256": "078fe24add95204c99cb04a011d9d94627d501c4b2d20bb56f504d283fe5d82a",
+  "artifact_bytes": 58197935,
+  "artifact_parts": [
+    {
+      "path": "NATIVE_N_CRC_POSIX_20261105.zip.part1",
+      "bytes": 47185920,
+      "sha256": "7e45badd520c7c9bd2ce8fa2b9d0ea8135a2af73391ce022957205fc133ce7f5"
+    },
+    {
+      "path": "NATIVE_N_CRC_POSIX_20261105.zip.part2",
+      "bytes": 11012015,
+      "sha256": "1a5652eb59ae096dca6de0774fc9795652d21be59c3e497c428a53ec727a5cbe"
+    }
+  ],
+  "report": {
+    "O0": {
+      "audit": {
+        "status": "COMPLETE_NATIVE_N_MODULE_SOURCE_BUILD_AND_DATA_REMEASURED",
+        "optimization": "O0",
+        "results": {
+          "incumbent": {
+            "mineral": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            },
+            "reactive_n": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            }
+          },
+          "candidate": {
+            "mineral": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            },
+            "reactive_n": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            }
+          }
+        },
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "controls": [
+        "binary",
+        "source",
+        "native",
+        "negative",
+        "raw"
+      ]
+    },
+    "O2": {
+      "audit": {
+        "status": "COMPLETE_NATIVE_N_MODULE_SOURCE_BUILD_AND_DATA_REMEASURED",
+        "optimization": "O2",
+        "results": {
+          "incumbent": {
+            "mineral": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            },
+            "reactive_n": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            }
+          },
+          "candidate": {
+            "mineral": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            },
+            "reactive_n": {
+              "independent_crc_pass": true,
+              "correct_valid_resume": true,
+              "refused": 11
+            }
+          }
+        },
+        "production_admission": false,
+        "whole_scientific_admission": false
+      },
+      "controls": [
+        "binary",
+        "source",
+        "native",
+        "negative",
+        "raw"
+      ]
+    }
+  },
+  "candidate_cross_optimization_native_identity": true,
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
