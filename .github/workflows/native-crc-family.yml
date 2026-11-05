@@ -1,0 +1,40 @@
+name: Extracted native CRC family qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/crc_family_*.py
+      - integration/dataqual15_hupsel/CRC_FAMILY_*
+      - .github/workflows/native-crc-family.yml
+permissions:
+  contents: read
+jobs:
+  current-components:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Independent retained Windows primitive remeasurement
+        run: python3 -B tests/dataqual15_hupsel/crc_family_evidence.py
+      - name: Cold exact POSIX primitives O0/O2
+        if: ${{ hashFiles('integration/dataqual15_hupsel/CRC_FAMILY_POSIX_20261105.json') == '' }}
+        run: |
+          for opt in O0 O2; do
+            python3 -B tests/dataqual15_hupsel/crc_family_runtime.py --compiler /usr/bin/gfortran --optimization "$opt" --output "$RUNNER_TEMP/crc-family-$opt"
+          done
+      - name: Remeasure original retained POSIX on receipt heads
+        if: ${{ hashFiles('integration/dataqual15_hupsel/CRC_FAMILY_POSIX_20261105.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/crc_family_evidence.py --posix
+      - name: Preserve current and unmodified predecessor authority
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/crc-family-preservation"
+      - uses: actions/upload-artifact@v4
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/CRC_FAMILY_POSIX_20261105.json') == '' }}
+        with:
+          name: exact-crc-family-posix
+          path: |
+            ${{ runner.temp }}/crc-family-O0
+            ${{ runner.temp }}/crc-family-O2
