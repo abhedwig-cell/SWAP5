@@ -21,6 +21,7 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y gfortran
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - run: python3 -B tests/dataqual15_hupsel/native_crop_weather_evidence.py
+      - run: python3 -B tests/dataqual15_hupsel/native_crop_weather_posix.py
       - name: Fresh complete default weather native adapter and schema matrix O0/O2
         shell: bash
         run: |
@@ -33,4 +34,6 @@ jobs:
         if: always()
         with:
           name: native-crop-weather-actual-posix
-          path: ${{ runner.temp }}/weather-adapter-*
+          path: |
+            ${{ runner.temp }}/weather-adapter-O0
+            ${{ runner.temp }}/weather-adapter-O2
