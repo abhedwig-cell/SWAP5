@@ -38,3 +38,27 @@ runs separately at the stable candidate boundary.
 
 Selection and measured/expected cost: IMPLICIT_REFERENCE_PREREGISTRATION_20261105.json.
 Recovery: IMPLICIT_REFERENCE_RECOVERY_20261105.json.
+
+Both registered584 prefixes complete from original initialization. The actual
+execution times are1143.16s and1538.46s. Each has585 daily rows and19890
+primitive profile rows; publication stock errors are5.116e-13/5.258e-13cm
+under the unchanged decimal/gamma certificate. Exact input/executable/source/
+derivative binding, ten actual resealed/data/admission refusals per case and
+current/unmodified predecessor preservation pass. Complete raw outputs are
+sealed and independently re-read.
+
+| Reference-family DTMAX | Oxygen584 (cm) | Successive prefix max change (cm) |
+| --- | ---: | ---: |
+|0.0003125 existing strict implicit baseline|0.003346775977| |
+|0.00015625|0.003338923548|7.852429e-6|
+|0.000078125|0.003333997436|4.926112e-6|
+
+Both changes exceed unchanged5.371840000016327e-7cm; the latest is about9.17
+times that limit. This independently motivated source-modified family therefore
+fails its self-convergence screen. Shrinking changes alone do not qualify an
+accurate reference. Reported maximum BALDEV is1.90475e-5/6.44030e-5cm and is
+retained as an original diagnostic, not promoted to exact native mass closure.
+No extrapolation or closer-to-native target is selected; the immutable original
+oracle,37 scientific conditions and native physics remain untouched. Cold
+source/data qualification and final canonical integration are still required
+for this bounded negative experiment. Further blind refinement is not selected.

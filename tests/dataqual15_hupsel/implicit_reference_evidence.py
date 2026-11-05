@@ -38,7 +38,7 @@ def controls(files,parent,cap,binding):
 def qualify(files):
     parent,_=run.inherited.original();initial,exe,binding=run.source_control(parent);reports={};levels=[run.csv_rows(parent['reference-implicit-balanced/case/result_output.csv'])]
     for cap,name in zip(run.CAPS,('half','quarter')):
-        f={n.removeprefix(name+'/'):b for n,b in files.items()if n.startswith(name+'/')};report,daily=run.audit(f,parent,cap,binding);report['rejected_actual_data_controls']=controls(f,parent,cap,binding);reports[name]=report;levels.append(daily)
+        f={n.removeprefix(name+'/'):b for n,b in files.items()if n.startswith(name+'/')};report,daily=run.audit(f,parent,cap,binding);assert report==json.loads(f['AUDIT.json']);report['rejected_actual_data_controls']=controls(f,parent,cap,binding);reports[name]=report;levels.append(daily)
     return dict(status='ACTUAL_STRICT_IMPLICIT_REFERENCE_FAMILY_SCREEN_QUALIFIED_NOT_ORACLE_ADMISSION',source_binding=binding,cases=reports,screen=run.screen(levels),production_admission=False,whole_scientific_admission=False,original_oracle_replaced=False,migration_complete=False)
 
 def main():
