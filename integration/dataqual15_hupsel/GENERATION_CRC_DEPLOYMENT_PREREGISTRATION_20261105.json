@@ -1,0 +1,26 @@
+{
+  "baseline": "f12ae68d123ff374cc22ac56e378f6b974640312",
+  "phase": "PREREGISTERED_AFTER_ACTUAL_FULL_POSTIMAGE_POSIX_PASS_BEFORE_PRODUCTION_DEPLOYMENT",
+  "production_delta": [
+    "src/adapter/mod_crop_n_output_generation.f90",
+    "src/adapter/mod_crop_n_saved_generation.f90"
+  ],
+  "qualified_full_postimage_sha256": {
+    "src/adapter/mod_crop_n_output_generation.f90": "fd3b8a32081c8b2d2173bdd3e2d9cf439662b4f6457a441fe04a37a5051549f7",
+    "src/adapter/mod_crop_n_saved_generation.f90": "86210e74072468884c0d404f8b4e146d36a879eb4b0cc5af8214d54306b4d60f"
+  },
+  "scope": "EXISTING_SUPPORTED_POSIX_OUTPUT_SAVED_GENERATION_CRC32_ONLY",
+  "platform_boundary": "Windows coherent full-module compilation and inherited isolated CRC proof; Windows native publication remains unqualified. Existing supported native API scope is POSIX.",
+  "requirements": [
+    "Actual complete original/private full modules and five original native recipes O0/O2 PASS",
+    "Independent every-member/source/object/native/nestedCRC/data-mutation replay PASS",
+    "Actual32 proper-resealed/zero-footer/resealed-outer-bad-inner public reader controls PASS",
+    "Exact current deployed full module bytes equal executed postimages",
+    "Strict source/admission-record corruption controls PASS",
+    "Entire unchanged exact predecessor admission PASS",
+    "Exact-head owning and F-CI qualification terminal, attributable old red verdicts preserved, safe exact canonical tree integration"
+  ],
+  "invariants": "No solver/retry/tolerance/mass/restart/ownership/schema/size/row/publication rule changes; mechanical CRC imports only.",
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
