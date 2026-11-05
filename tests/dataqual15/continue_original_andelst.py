@@ -3,7 +3,7 @@
 Prepared forcing is reused byte for byte; no archived executable or checkpoint
 is executed. A time-censored prefix never qualifies the 481-day request.
 """
-import argparse,csv,hashlib,json,os,subprocess,tarfile,time
+import argparse,csv,hashlib,json,math,os,subprocess,tarfile,time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -13,6 +13,7 @@ def main():
  p=argparse.ArgumentParser(description=__doc__)
  p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
  p.add_argument('--restart',type=Path);p.add_argument('--quiet-stages',action='store_true')
+ p.add_argument('--end',type=float,default=481)
  p.add_argument('--seconds',type=int,default=90);a=p.parse_args()
  out=a.output.resolve();out.mkdir()
  bundle=a.bundle.resolve()
@@ -39,6 +40,8 @@ def main():
  binding=sha(b''.join((out/n).read_bytes()for n in ['input.nml','input.swp','macro.nml'])+sha(exe.read_bytes()).encode())
  command=launch['command'];command[0]=str(exe);command[6]=binding
  assert command[2]=='-' and command[3]=='481' and command[9]==''
+ assert 0<a.end<=481
+ command[3]=str(math.ceil(a.end));command[7]=str(a.end)
  origin=None
  if a.restart:
   origin=a.restart.resolve();prior=json.loads((origin.parent/'LAUNCH.json').read_text())
@@ -48,7 +51,7 @@ def main():
  if a.quiet_stages:command.append('quiet-macro-stages')
  record=dict(candidate=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
   command=command,original_sharp_entry=True,original_initialization=origin is None,source_numerical_controls=True,
-  strict_own_restart_sha256=sha(origin.read_bytes())if origin else None,
+  strict_own_restart_sha256=sha(origin.read_bytes())if origin else None,requested_end=a.end,
   original_input_sha256=launch['physical_input_sha256'],source_sha256=pins,
   executable_sha256=sha(exe.read_bytes()),timeout_seconds=a.seconds,full_original_complete=False,
   historical_scope=historical['scope'])
