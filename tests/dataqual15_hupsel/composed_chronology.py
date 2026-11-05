@@ -94,11 +94,14 @@ def reconcile(original_rows,original_nodes,native_trace,native_nodes,budget,orig
     decomposition=algebra.attribution(a,b);assert abs(decomposition['total_delta_cm']-(native_amount-original_amount))<=1e-13
     witnesses={}
     for key,start in [('head_cm',2),('theta',36)]:
-        weighted=[];maximum=0
+        weighted=[];maximum=0;witness=None
         for i,j,dt in cells:
             diff=[abs(x-y)for x,y in zip(original_nodes[i][start:start+34],bn[j][start:start+34])]
-            weighted.append(dt*math.fsum(diff)/34);maximum=max(maximum,max(diff))
-        witnesses[key]=dict(duration_node_mean_absolute_start_difference=math.fsum(weighted),maximum_overlapping_start_difference=maximum)
+            weighted.append(dt*math.fsum(diff)/34)
+            if max(diff)>maximum:
+                node=max(range(34),key=diff.__getitem__);maximum=diff[node]
+                witness=dict(node=node+1,original_interval_day=[583+a[i][0],583+a[i][1]],native_interval_day=[583+b[j][0],583+b[j][1]],overlap_duration_day=dt,original_accepted_start=original_nodes[i][start+node],native_accepted_start=bn[j][start+node])
+        witnesses[key]=dict(duration_node_mean_absolute_start_difference=math.fsum(weighted),maximum_overlapping_start_difference=maximum,maximum_witness=witness)
     return dict(original_accepted_steps=len(a),native_accepted_steps=len(b),overlap_cells=len(cells),original_oxygen_cm=original_amount,native_oxygen_cm=native_amount,decomposition=decomposition,accepted_start_state_witness=witnesses,witness_scope='OWN_ACCEPTED_PRE_ROOT_START_STATES_ON_EXACT_OVERLAPS_NOT_INTERPOLATED_CONTINUOUS_STATE_OR_CAUSAL_ATTRIBUTION',unchanged_oxygen_bound_cm=5.371840000016327e-7,inside_unchanged_scientific_bound=abs(native_amount-original_amount)<=5.371840000016327e-7,reference_accuracy_qualified=False,production_admission=False,whole_scientific_admission=False,migration_complete=False)
 
 def refusal_controls(args):
