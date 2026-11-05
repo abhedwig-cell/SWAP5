@@ -64,3 +64,12 @@ production or whole-science admission follows.
 
 Selection: COMPOSED_CHRONOLOGY_PREREGISTRATION_20261105.json.
 Recovery: COMPOSED_CHRONOLOGY_RECOVERY_20261105.json.
+
+Cold POSIX data qualification at head900247ccc independently reproduces the
+complete retained report, including all original-only source/input/physical
+controls and four current composed native source/object/control/original-replay
+proofs. Seven tests, all eleven actual-data refusals per carrier, current and
+unmodified predecessor preservation, and all15 initial-head workflows pass.
+No new native/original model execution or compilation is claimed. Final
+metadata-head qualification must remeasure the same exact proof before bounded
+canonical integration. Scientific and production non-admission remain explicit.
