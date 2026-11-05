@@ -1,0 +1,50 @@
+name: Hupsel composed accepted oxygen diagnosis
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - .github/workflows/hupsel-composed-oxygen.yml
+      - tests/dataqual15_hupsel/composed_oxygen*.py
+      - tests/dataqual15_hupsel/test_composed_oxygen.py
+      - integration/dataqual15_hupsel/COMPOSED_OXYGEN_*
+      - docs/science/HUPSEL_COMPOSED_OXYGEN.md
+permissions:
+  contents: read
+jobs:
+  actual-accepted-state:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: python3 -B tests/dataqual15_hupsel/test_composed_oxygen.py
+      - name: Complete actual Windows observation and original-source proof
+        run: python3 -B tests/dataqual15_hupsel/composed_oxygen_evidence.py --windows
+      - name: Complete retained native proof or execution required
+        id: native
+        run: python3 -B tests/dataqual15_hupsel/composed_oxygen_evidence.py --native-mode >> "$GITHUB_OUTPUT"
+      - name: Actual coherent accepted-state and original-operator execution
+        if: steps.native.outputs.reused != 'true'
+        run: |
+          mkdir -p "$RUNNER_TEMP/composed-oxygen"
+          python3 -B tests/dataqual15_hupsel/composed_oxygen.py --optimization ${{ matrix.optimization }} --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/composed-oxygen/${{ matrix.optimization }}"
+          python3 -B tests/dataqual15_hupsel/composed_oxygen_evidence.py --capture "$RUNNER_TEMP/composed-oxygen/${{ matrix.optimization }}"
+      - name: Current and unmodified predecessor preservation
+        run: python3 -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/composed-oxygen-preservation"
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.native.outputs.reused != 'true'
+        with:
+          name: composed-oxygen-${{ matrix.optimization }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/composed-oxygen/${{ matrix.optimization }}/CAPSULE.json
+            ${{ runner.temp }}/composed-oxygen/${{ matrix.optimization }}/CAPSULE.tar.xz
+            ${{ runner.temp }}/composed-oxygen-preservation/RESULT.json
+          retention-days: 14
