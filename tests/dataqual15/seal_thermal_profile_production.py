@@ -40,12 +40,18 @@ def main():
    if 'source_sha256'not in data:continue
    for name,pin in data['source_sha256'].items():source(name,pin)
    for name,pin in data.get('object_sha256',{}).items():assert sha(Path(name).read_bytes())==pin;binary(name)
+   if 'publication_provider'in data:
+    pub=data['publication_provider'];source(pub['source'],pub['source_sha256'])
+    assert sha(Path(pub['object']).read_bytes())==pub['object_sha256'];binary(pub['object'])
+   if 'ttutil_archive'in data:
+    assert sha(Path(data['ttutil_archive']).read_bytes())==data['archive_sha256'];binary(data['ttutil_archive'])
    exe=folder/data.get('executable','swap5_hupsel_germination.exe')
    assert sha(exe.read_bytes())==data['executable_sha256']
    builds.append(dict(metadata=label+'/BUILD.json',executable=binary(exe)))
  # The real shared-runtime tests use generated hydraulic stubs, not archived model binaries.
  for name,pin in json.loads(files['thermal-contract/RESULT.json'])['source_sha256'].items():source(name,pin)
  for name in owner.PATHS:files['sources/'+name]=(ROOT/name).read_bytes()
+ files['failed-native-link/original_macro_writer.f90']=subprocess.check_output(['git','show','1a784a27a:app/solute_column/macro_water_restart.f90'],cwd=ROOT)
  old_ref=subprocess.check_output(['git','rev-parse','origin/codex/grassgrowth-sprint03'],cwd=ROOT,text=True).strip()
  raw=subprocess.check_output(['git','show',old_ref+':integration/dataqual15/SPRINT03_EVIDENCE.tar.xz'],cwd=ROOT)
  assert sha(raw)=='19f6f3f6dc45a115bf161ad7efff22006336ded20dbec047ad7abd859974ff2d'

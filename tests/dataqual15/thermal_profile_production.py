@@ -57,6 +57,10 @@ def verify(r,files=None):
   for name,pin in meta['source_sha256'].items():assert sha(f[mapping[name]])==pin,name
   for name,pin in meta.get('object_sha256',{}).items():assert sha(f[artifacts[name]])==pin,name
   assert sha(f[entry['executable']])==meta['executable_sha256']
+  if 'publication_provider'in meta:
+   pub=meta['publication_provider'];assert sha(f[mapping[pub['source']]])==pub['source_sha256']
+   assert sha(f[artifacts[pub['object']]])==pub['object_sha256']
+  if 'ttutil_archive'in meta:assert sha(f[artifacts[meta['ttutil_archive']]])==meta['archive_sha256']
  for p in PATHS:assert f['sources/'+p].replace(b'\r\n',b'\n')==(ROOT/p).read_bytes().replace(b'\r\n',b'\n'),p
  contracts=j('thermal-contract/RESULT.json')
  assert contracts['status']=='SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS'
