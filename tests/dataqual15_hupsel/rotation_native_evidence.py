@@ -131,13 +131,20 @@ def verify_hupsel_dependency():
         name='integration/dataqual15_hupsel/'+stem+'.json'
         assert subprocess.check_output(['git','rev-parse',policy.BASE+':'+name],cwd=ROOT)==subprocess.check_output(['git','rev-parse','HEAD:'+name],cwd=ROOT)
         r=json.loads((BASE/(stem+'.json')).read_text());raw=(BASE/(stem+'.tar.xz')).read_bytes();assert sha(raw)==r['archive_sha256']
-        with tarfile.open(fileobj=io.BytesIO(raw))as t:data=t.extractfile('hupsel/build/BUILD.json').read()
+        with tarfile.open(fileobj=io.BytesIO(raw))as t:
+            data=t.extractfile('hupsel/build/BUILD.json').read()
+            generated=t.extractfile('hupsel/build/legacy_swp_original.f90').read()
         assert sha(data)==r['files_sha256']['hupsel/build/BUILD.json']
         b=json.loads(data);assert b['provider_count']==236
         for name,h in b['source_sha256'].items():
             name=name.replace('\\','/');relative=next((area+'/'+name.split('/'+area+'/',1)[1]for area in ('src','app','tests')if '/'+area+'/'in name),None)
-            assert relative and relative!=changed
-            assert h in hashes((ROOT/relative).read_bytes())
+            if relative is None:
+                assert name.endswith('/legacy_swp_original.f90')and sha(generated)==h
+                helper='tools/solute/legacy_reader_sources.py'
+                assert (ROOT/helper).read_bytes().replace(b'\r\n',b'\n')==subprocess.check_output(['git','show',policy.BASE+':'+helper],cwd=ROOT)
+            else:
+                assert relative!=changed
+                assert h in hashes((ROOT/relative).read_bytes())
     return 'ADMITTED_ACTUAL_HUPSEL_236_SOURCE_DEPENDENCY_UNCHANGED_CHANGED_CRC_MODULE_NOT_LINKED_PREDECESSOR_RAW_GATE_REQUIRED'
 
 def verify_posix():

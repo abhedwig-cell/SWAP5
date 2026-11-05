@@ -1,6 +1,6 @@
 {
   "predecessor": "5921f7dc89871e68e394302a2c62958b691699ac",
-  "phase": "SOURCE_CANDIDATE_RUNTIME_PENDING",
+  "phase": "QUALIFIED_CURRENT_WINDOWS_POSIX_PENDING",
   "scope": "CURRENT_NATIVE_ROTATION_AND_WEATHER_CRC32_ISO_HDLC_ONLY",
   "production_delta": {
     "src/adapter/mod_crop_soil_n_joint_restart_file.f90": {
@@ -59,7 +59,7 @@
     "tests/dataqual15/verify_current_native_admission.py": "6409c631e90df6d9f6229085c0fe587ed47140c98b95b882575904874092efa5",
     "tests/dataqual15_hupsel/rotation_native_admission.py": "6d1769d7bd0e30d0e6160ea196f7281deb04c1a46b5cf077c8c978f091bc066c",
     "tests/dataqual15_hupsel/rotation_native_runtime.py": "6f4469d1615a701978d8af0f3bb973825adcd5aa9b463291a65c858396c2a180",
-    "tests/dataqual15_hupsel/rotation_native_evidence.py": "574096a710cf47b404d682d4f4923df4274fb218bcf4c61ac00566669356406f",
+    "tests/dataqual15_hupsel/rotation_native_evidence.py": "5c2cdba44940a3573d4e00a1f8d27930430d86da3dc46fcefea0648896c3b60b",
     "tests/dataqual15_hupsel/test_rotation_native.py": "6439b68f0d0c1453217f251de9a90d18c5f2acdba5d9cfe1ac44a01d7c84bafa",
     ".github/workflows/hupsel-rotation-native.yml": "747be31af27a8abfa7d465580e5b1bc6fa2ea45dd5d29fb20b9ba55bb6af4f0f",
     ".github/workflows/hupsel-production-diagnostic.yml": "7b67e773f82eef72958eec52091050b6aceefc260cd9830b9b9682ec1be2ea78",
