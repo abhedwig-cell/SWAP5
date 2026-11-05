@@ -1,0 +1,27 @@
+name: Native crop CRC exact baseline red-check attribution
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/rotation_native_baseline.py
+      - .github/workflows/hupsel-rotation-native-baseline.yml
+permissions:
+  contents: read
+jobs:
+  unchanged-baseline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: sudo apt-get update && sudo apt-get install -y gfortran
+      - run: python3 -m pip install PyYAML==6.0.2
+      - run: git worktree add --detach "$RUNNER_TEMP/pre-codec-baseline" 5921f7dc89871e68e394302a2c62958b691699ac
+      - name: Reproduce unchanged failures without relaxing or editing gates
+        run: python3 -B tests/dataqual15_hupsel/rotation_native_baseline.py --baseline "$RUNNER_TEMP/pre-codec-baseline" --output "$RUNNER_TEMP/codec-baseline-attribution"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: crc-exact-baseline-failure-attribution
+          path: ${{ runner.temp }}/codec-baseline-attribution
