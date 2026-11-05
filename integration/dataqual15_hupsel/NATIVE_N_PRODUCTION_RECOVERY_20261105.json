@@ -1,5 +1,5 @@
 {
-  "status": "CANONICAL_BOUNDED_NATIVE_N_CRC_ADMITTED_RECEIPT_QUALIFICATION_PENDING",
+  "status": "CANONICAL_BOUNDED_NATIVE_N_CRC_CLOSED",
   "baseline": "b41e1cda439a370a7e1966387412bdf55ca1b096",
   "branch": "codex/autonomous-migration-20261103",
   "worktree": "SWAP5-AUTONOMOUS",
@@ -12,7 +12,7 @@
   "qualification_sequencing": "An early seal invocation completed O0 then refused missing O2 BUILD while O2 compilation still ran; no partial O2 PASS claimed. Successful complete seal rerun after actual O2 termination; all raw native results retained.",
   "whole_scientific_admission": false,
   "migration_complete": false,
-  "next": "Wait exact receipt proof/current predecessor preservation and all metadata-head workflows to terminal; merge exact receipt. Remaining CRC families matrix/output/saved require their own full native qualification; broader scientific/seasonal scope remains open.",
+  "next": "Complete matrix CRC runtime preregistered in MATRIX_CRC_PREREGISTRATION_20261105.json. Output/saved generation remain separate actual-native scopes.",
   "pr": 1572,
   "initial_head": "5b315852849b8abed76879a4eb91a7da5101efcd",
   "cold_posix_run": 42093414646,
@@ -39,5 +39,9 @@
   },
   "actual_merge": "ee34d3ae275ac6e60e11b4f2530d5ba7ccb4f493",
   "qualified_head": "503d3189cfd779d822478601a2967f75a5ba92c6",
-  "qualified_and_actual_tree": "86d5adf34578db6d296f6901224328b488bed475"
+  "qualified_and_actual_tree": "86d5adf34578db6d296f6901224328b488bed475",
+  "receipt_pr": 1573,
+  "receipt_merge": "5284091c34a44d14c2d837f7a5d2a5b217437101",
+  "receipt_tree": "f11bda4934fb1d0ec32a4d40349a495d5f2a82b9",
+  "receipt_workflows": "All13 terminal success at991e3f743c9b603a74a804f7506c90e69cbeed28; current/old admission42101553964"
 }
