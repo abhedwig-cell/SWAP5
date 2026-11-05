@@ -16,7 +16,7 @@ module mod_grass_prefix_restart_file
  use mod_wofost_grass_development,only:grass_management_continuation_t
  implicit none
  private
- public::write_grass_prefix_restart,read_grass_prefix_restart
+ public::write_grass_prefix_restart,read_grass_prefix_restart,validate_grass_numerical_profile
  character(8),parameter::MAGIC='S5GRS003'
  character(24),parameter::FILES(6)=[character(24)::'input.swp','grass.crp','input.met','swap.bbc','swap.dra','application.binding']
  interface
@@ -31,6 +31,23 @@ module mod_grass_prefix_restart_file
   end function
  end interface
 contains
+ subroutine validate_grass_numerical_profile(thermal_enabled,status)
+  logical,intent(in)::thermal_enabled
+  integer,intent(out)::status
+  character(:),allocatable::text
+  integer::code,pos
+  call file_text('application.binding',text,code)
+  status=1;if(code/=0)return
+  pos=index(text,'"grass_numerical_profile"')
+  if(.not.thermal_enabled)then
+   if(pos==0)status=0
+   return
+  end if
+  if(pos==0)return
+  if(index(text(pos+1:),'"grass_numerical_profile"')/=0)return
+  if(index(text,'"grass_numerical_profile": "thermal-control-1e-5C"')==0)return
+  status=0
+ end subroutine validate_grass_numerical_profile
  integer(int32) function crc32(bytes)result(crc)
   integer(int8),intent(in)::bytes(:)
   crc=crc32_c(bytes,int(size(bytes),c_size_t))

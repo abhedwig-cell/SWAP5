@@ -289,6 +289,15 @@ program grass_initial_interval
  if(len_trim(arg)>0)read(arg,*)numerical%max_committed_substeps
  call require(numerical%max_committed_substeps>0.and.numerical%max_committed_substeps<=100000,'bounded substep policy')
  call backend%initialize(top)
+ call get_command_argument(5,arg)
+ call validate_grass_numerical_profile(len_trim(arg)>0,code)
+ call require(code==0,'numerical profile matches immutable application binding')
+ if(len_trim(arg)>0)then
+  call require(trim(arg)=='thermal-control','explicit supported numerical heat profile')
+  call backend%configure_soil_temperature_temporal_tolerance(1d-5,available)
+  call require(available,'configured thermal temporal accuracy')
+  write(*,*)'ORIGINAL_GRASS_THERMAL_TOLERANCE_C',1d-5
+ end if
  call fmr_new_b110_boesten_evaporation_committed_state(water,column%column_id,initial,boesten_evaporation_state_t(),0d0,available,p)
  call require(available,'source joint initial owner')
  call water%capture_checkpoint(checkpoint,available);call require(available,'initial checkpoint')

@@ -134,7 +134,7 @@ module mod_fmr_serialized_reference_backend
        FMR_DRAIN_VARIANT_EMPIRICAL_INTERFLOW, FMR_DRAIN_VARIANT_EXTENDED_SIGNED
   use mod_fmr_drainage_response_binding, only: FMR_DRAIN_VARIANT_DRAMET3
   use mod_drainage_spatial_distribution, only: drainage_distribution_parameters_t, &
-       drainage_node_transfer_t, drainage_distribution_diagnostics_t, distribute_single_level_signed_divdra, DRAIN_DIST_OK
+       drainage_node_transfer_t, drainage_distribution_diagnostics_t, distribute_single_level_signed_divdra, DRAIN_DIST_OK, DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE
   use mod_drainage_empirical_interflow_response, only: valid_empirical_interflow_parameters
   use mod_drainage_extended_exchange, only: valid_extended_drainage_parameters, &
        EXT_DRAIN_TUBE, EXT_DRAIN_OPEN_CHANNEL, EXT_DRAIN_TOP_NONE, &
@@ -875,6 +875,8 @@ module mod_fmr_serialized_reference_backend
     real(real64) :: saltslope_cm3_mg = 0.0_real64
     real(real64) :: salt_temporal_tolerance_mg_cm2 = 0.0_real64
     real(real64) :: temporal_tolerance_cm = 0.0_real64
+    ! Explicit per-backend numerical policy; zero preserves the incumbent route.
+    real(real64) :: soil_temperature_temporal_tolerance_c = 0.0_real64
     type(water_flux_temporal_policy_t) :: water_flux_temporal
     integer(int64) :: solute_state_layout_id = FMR_SOLUTE_STATE_LAYOUT_NONE
     type(fmr_base_salt_temporal_policy_t) :: base_salt_temporal_policy
@@ -983,6 +985,7 @@ module mod_fmr_serialized_reference_backend
   contains
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: water_flux_temporal_enabled => fmr_water_flux_temporal_enabled
+    procedure, public :: configure_soil_temperature_temporal_tolerance => fmr_configure_thermal_temporal_tolerance
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
     procedure, public :: configure_base_salt_temporal_policy => fmr_configure_base_salt_temporal_policy
@@ -1020,8 +1023,34 @@ module mod_fmr_serialized_reference_backend
   public :: fmr_new_b110_boesten_macropore_committed_state
   public :: fmr_new_b110_rfm_committed_state
 
-  public::attach_reactive_chemical
+  public::attach_reactive_chemical,evaluate_fmr_thermal_temporal_error,distribute_fmr_scalar_drainage
 contains
+
+  ! Explicit thermal-profile numerical extension at the legacy activity cutoff.
+  ! DIVDRA is homogeneous in its authoritative scalar for a fixed geometry.
+  ! Evaluate unit weights only in the formerly unavailable tiny nonzero domain;
+  ! preserve its complete signed flux, including the legacy edge geometry.
+  subroutine distribute_fmr_scalar_drainage(parameters,view,scalar,nodes,diagnostics,allow_subthreshold)
+    type(drainage_distribution_parameters_t),intent(in)::parameters
+    type(process_hydraulic_view_t),intent(in)::view
+    real(real64),intent(in)::scalar
+    type(drainage_node_transfer_t),intent(out)::nodes
+    type(drainage_distribution_diagnostics_t),intent(out)::diagnostics
+    logical,intent(in)::allow_subthreshold
+    integer::last
+    real(real64)::raw_last
+    call distribute_single_level_signed_divdra(parameters,view,scalar,nodes,diagnostics)
+    if(.not.allow_subthreshold.or.diagnostics%status/=DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE)return
+    call distribute_single_level_signed_divdra(parameters,view,sign(1.0_real64,scalar),nodes,diagnostics)
+    if(diagnostics%status/=DRAIN_DIST_OK)return
+    nodes%soil_to_drain_rate=abs(scalar)*nodes%soil_to_drain_rate
+    diagnostics%raw_partition_sum=abs(scalar)*diagnostics%raw_partition_sum
+    diagnostics%closure_correction=abs(scalar)*diagnostics%closure_correction
+    last=diagnostics%discharge_bottom_node
+    raw_last=nodes%soil_to_drain_rate(last)
+    nodes%soil_to_drain_rate(last)=scalar-sum(nodes%soil_to_drain_rate(:last-1))
+    diagnostics%closure_correction=diagnostics%closure_correction+nodes%soil_to_drain_rate(last)-raw_last
+  end subroutine distribute_fmr_scalar_drainage
 
   subroutine attach_reactive_chemical(water,chemical,parameters,status)
     type(kernel_committed_state_t),intent(inout)::water
@@ -2176,6 +2205,7 @@ contains
     self%initialized = .false.
     self%endpoint_origin_available=.false.
     self%model%water_flux_temporal=water_flux_temporal_policy_t()
+    self%model%soil_temperature_temporal_tolerance_c=0.0_real64
     if(present(water_flux_temporal))self%model%water_flux_temporal=water_flux_temporal
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
     if (.not. selection_ok) return
@@ -2210,6 +2240,20 @@ contains
     call self%kernel%bind_model(self%model)
     self%initialized = .true.
   end subroutine fmr_serialized_backend_initialize
+
+  ! Numerical configuration belongs to this backend instance, never to physical
+  ! parameters or committed state. Failed configuration leaves the old policy.
+  subroutine fmr_configure_thermal_temporal_tolerance(self,tolerance_c,ok)
+    class(fmr_serialized_reference_backend_t),intent(inout)::self
+    real(real64),intent(in)::tolerance_c
+    logical,intent(out)::ok
+    ok=.false.
+    if(.not.self%initialized)return
+    if(.not.ieee_is_finite(tolerance_c))return
+    if(tolerance_c<0.0_real64)return
+    self%model%soil_temperature_temporal_tolerance_c=tolerance_c
+    ok=.true.
+  end subroutine fmr_configure_thermal_temporal_tolerance
 
   logical function fmr_water_flux_temporal_enabled(self) result(enabled)
     class(fmr_serialized_reference_backend_t),intent(in)::self
@@ -2693,6 +2737,26 @@ contains
     type(rutter_interval_result_t) :: rutter_result
     type(rutter_diagnostics_t) :: rutter_diagnostics
     class(transaction_state_t), allocatable :: accepted_snapshot
+
+    ! Sprint03 opts in only to the explicitly tested numeric-heat composition.
+    ! Reject unsupported policies before preparing a trial or touching state.
+    if(self%model%soil_temperature_temporal_tolerance_c>0.0_real64)then
+      if(.not.ieee_is_finite(config%transaction%temporal_tolerance))then
+        call reject_backend_trial(result,candidate,diagnostics);return
+      end if
+      bottom_thermal_ok=.false.
+      if(parameters%soil_temperature_active.and.allocated(parameters%soil_temperature))then
+        bottom_thermal_ok=parameters%soil_temperature%solution_mode==SOIL_TEMP_SOLUTION_NUMERIC
+      end if
+      if(.not.bottom_thermal_ok.or.parameters%snow_active.or.parameters%frost_active.or. &
+          parameters%macropore_active.or.parameters%root_frost%active.or.template%solute_state_layout_id/=FMR_SOLUTE_STATE_LAYOUT_NONE.or. &
+          self%model%water_flux_temporal%enabled.or.self%model%rfm_configuration%enabled.or. &
+          config%transaction%temporal_mode/=TX_TEMPORAL_EXTERNAL_FULL_HALF.or. &
+          config%transaction%temporal_tolerance<=0.0_real64)then
+        call reject_backend_trial(result,candidate,diagnostics)
+        return
+      end if
+    end if
 
     if(self%model%water_flux_temporal%enabled)then
       if(.not.water_flux_trial_admitted(self,parameters,forcing,template,config))then
@@ -5787,8 +5851,8 @@ contains
           type(drainage_distribution_diagnostics_t)::diagnostic
           ! The existing response owns the scalar. DIVDRA owns its nodal
           ! partition. Exactly this qdra reaches Richards and its accepted trace.
-          call distribute_single_level_signed_divdra(self%drainage_trial_distribution,hydraulic_start, &
-            sum(self%qdra),partition,diagnostic)
+          call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,hydraulic_start, &
+            sum(self%qdra),partition,diagnostic,self%soil_temperature_temporal_tolerance_c>0.0_real64)
           if(diagnostic%status/=DRAIN_DIST_OK)return
           self%qdra(1,:)=partition%soil_to_drain_rate
         end block
@@ -7503,7 +7567,70 @@ contains
     persists=rain+forcing%process%surface_irrigation_cm_per_day-evaporation>significant_wetting
   end function full_canopy_wetting_persists
 
-  real(real64) function fmr_serialized_temporal_identity(self, full_state, half_state) result(value)
+  ! The incumbent indicator is in its existing water units. Scale the thermal
+  ! ratio by that same acceptance budget so BOTH independent limits must pass.
+  ! No Richardson extrapolation, new physical state, or relaxed water gate.
+  real(real64) function fmr_serialized_temporal_identity(self,full_state,half_state) result(value)
+    class(fmr_serialized_reference_model_t),intent(in)::self
+    class(transaction_state_t),intent(in)::full_state,half_state
+    value=evaluate_fmr_thermal_temporal_error(full_state,half_state, &
+      fmr_serialized_water_temporal_error(self,full_state,half_state), &
+      self%temporal_tolerance_cm,self%soil_temperature_temporal_tolerance_c)
+  end function fmr_serialized_temporal_identity
+
+  real(real64) function evaluate_fmr_thermal_temporal_error(full_state,half_state, &
+      water_indicator,water_tolerance,thermal_tolerance_c) result(value)
+    class(transaction_state_t),intent(in)::full_state,half_state
+    real(real64),intent(in)::water_indicator,water_tolerance,thermal_tolerance_c
+    type(soil_temperature_field_view_t)::full_view,half_view
+    integer::status
+    real(real64)::difference,tolerance
+    value=water_indicator
+    tolerance=thermal_tolerance_c
+    if(.not.ieee_is_finite(tolerance))then
+      value=huge(0.0_real64);return
+    end if
+    if(tolerance==0.0_real64)return
+    if(.not.ieee_is_finite(water_tolerance))then
+      value=huge(0.0_real64);return
+    end if
+    if(tolerance<0.0_real64.or.water_tolerance<=0.0_real64)then
+      value=huge(0.0_real64);return
+    end if
+    if(.not.ieee_is_finite(value))then
+      value=huge(0.0_real64);return
+    end if
+    thermal_profile: block
+    select type(full=>full_state)
+    class is(fmr_b110_physical_state_t)
+      select type(half=>half_state)
+      class is(fmr_b110_physical_state_t)
+        if(full%active_nodes/=half%active_nodes)exit thermal_profile
+        if(.not.allocated(full%soil_temperature).or..not.allocated(half%soil_temperature))exit thermal_profile
+        call build_soil_temperature_field_view(full%soil_temperature,full_view,status)
+        if(status/=SOIL_TEMP_OK)exit thermal_profile
+        call build_soil_temperature_field_view(half%soil_temperature,half_view,status)
+        if(status/=SOIL_TEMP_OK)exit thermal_profile
+        if(full_view%active_nodes/=full%active_nodes.or.half_view%active_nodes/=full%active_nodes)exit thermal_profile
+        if(.not.all(ieee_is_finite(full_view%temperature_c)).or. &
+            .not.all(ieee_is_finite(half_view%temperature_c)))exit thermal_profile
+        difference=maxval(abs(full_view%temperature_c-half_view%temperature_c))
+        if(tolerance<1.0_real64)then
+          if(difference>huge(0.0_real64)*tolerance)exit thermal_profile
+        end if
+        difference=difference/tolerance
+        if(difference>1.0_real64.and.water_tolerance>1.0_real64)then
+          if(difference>huge(0.0_real64)/water_tolerance)exit thermal_profile
+        end if
+        value=max(value,water_tolerance*difference)
+        return
+      end select
+    end select
+    end block thermal_profile
+    value=huge(0.0_real64)
+  end function evaluate_fmr_thermal_temporal_error
+
+  real(real64) function fmr_serialized_water_temporal_error(self, full_state, half_state) result(value)
     class(fmr_serialized_reference_model_t), intent(in) :: self
     class(transaction_state_t), intent(in) :: full_state, half_state
     logical :: same
@@ -7731,7 +7858,7 @@ contains
     else
       value = huge(0.0_real64)
     end if
-  end function fmr_serialized_temporal_identity
+  end function fmr_serialized_water_temporal_error
 
   ! Mixed Richards states are differential in theta but algebraic in h once
   ! saturated. Across that event use equivalent water depths, including every
@@ -7873,7 +8000,8 @@ contains
         call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels,self%drainage_response_controls, &
           view,lumped,response,substep_t1=endpoint)
         if(response%status/=FMR_DRAIN_BIND_OK)return
-        call distribute_single_level_signed_divdra(self%drainage_trial_distribution,view,sum(lumped),nodes,distribution)
+        call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,view,sum(lumped),nodes,distribution, &
+          self%soil_temperature_temporal_tolerance_c>0.0_real64)
         if(distribution%status/=DRAIN_DIST_OK)return
         q=nodes%soil_to_drain_rate
       end if
