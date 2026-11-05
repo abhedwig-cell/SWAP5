@@ -18,7 +18,7 @@ def main():
  out=a.output.resolve();out.mkdir()
  bundle=a.bundle.resolve()
  if(bundle/'BUILD.json').exists():
-  meta=json.loads((bundle/'BUILD.json').read_text());exe=bundle/'swap5_hupsel_germination.exe'
+  meta=json.loads((bundle/'BUILD.json').read_text());exe=bundle/('swap5_hupsel_germination.exe'if os.name=='nt'else'swap5_hupsel_germination')
   assert Path(next(reversed(meta['source_sha256']))).resolve()==ROOT/'app/solute_project/main_water.f90'
   pins={str(Path(n).relative_to(ROOT)):h for n,h in meta['source_sha256'].items()if Path(n).is_relative_to(ROOT)}
  else:

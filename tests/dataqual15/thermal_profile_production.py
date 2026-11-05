@@ -13,7 +13,7 @@ GATES={ENTRY,'tests/dataqual15/thermal_profile_production.py','tests/dataqual15/
  'tests/dataqual15/qualify_thermal_runtime.py','tests/dataqual15/qualify_native_disk_restart.py',
  'tests/dataqual15/run_original.py','tests/dataqual15/continue_original_andelst.py','tools/solute/build_grass_startup.py',
  'tests/dataqual15/seal_thermal_profile_production.py','tests/dataqual15/test_thermal_profile_production.py',
- '.github/workflows/grass-thermal-production.yml'}
+ '.github/workflows/grass-thermal-production.yml','tests/dataqual15/qualify_andelst_codec.py'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def blob(ref,path):return git('rev-parse',ref+':'+path)
@@ -87,6 +87,14 @@ def verify(r,files=None):
  historical=j('HISTORICAL_THERMAL_REUSE.json')
  assert historical['days']==1827 and historical['original_gate_remains_failed']and not historical['whole_scientific_admission']
  assert historical['archive_sha256']=='19f6f3f6dc45a115bf161ad7efff22006336ded20dbec047ad7abd859974ff2d'
+ macro=j('andelst-codec/RESULT.json')
+ assert macro['status']=='NATIVE_MACRO_O0_O2_OWN_BYTES_AND_REFUSALS_PASS'and macro['optimization_physical_payload_exact']and not macro['full481']
+ for opt in ('O0','O2'):
+  assert len(macro['builds'][opt]['events'])==3 and all(e['returncode']!=0 for e in macro['builds'][opt]['events'])
+  assert f['andelst-own-'+opt+'/restart.bin']==f['andelst-prefix-'+opt+'/restart.bin']
+  assert j('andelst-prefix-'+opt+'/RESULT.json')['original_sharp_entry']
+ assert j('andelst-continue-O2/RESULT.json')['censored']and not j('andelst-continue-O2/RESULT.json')['full_original_complete']
+ assert j('andelst-continue-O2/RESULT.json')['last_completed_source_interval']==1.9580000000023283
  return dict(current_days=367,default_exact_days=140,own_year_restart='365->367 exact',
   maximum_water_residual_cm=max(abs(float(x['residual_cm']))for x in daily),
   inherited_historical_days=1827,whole_scientific_admission=False,full_original_andelst=False)

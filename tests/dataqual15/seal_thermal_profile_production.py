@@ -14,7 +14,8 @@ def main():
   'andelst-original-O2':'andelst-original-O2','andelst-continue-O2':'andelst-continue-O2',
   'andelst-own-O0':'andelst-own-exact-O0','andelst-own-O2':'andelst-own-exact-O2',
   'andelst-prefix-O0':'andelst-prefix-exact-O0','andelst-prefix-O2':'andelst-prefix-exact-O2',
-  'andelst-day1-O0':'andelst-day1-O0','gate-observer':'gate-observer','gate-bracket':'gate-bracket',
+  'andelst-day1-O0':'andelst-day1-O0','gate-observer':'gate-observer','gate-bracket':'gate-bracket','gate-residual':'gate-residual',
+  'andelst-codec':'andelst-codec',
   'failed-project-builder':'native-O2','failed-native-link':'andelst-O2',
   'refused-rounded-event-O0':'andelst-own-O0','refused-rounded-event-O2':'andelst-own-O2',
   'refused-rounded-prefix-O0':'andelst-prefix-O0','refused-rounded-prefix-O2':'andelst-prefix-O2'}.items()}
