@@ -100,3 +100,11 @@ run41932806346 and complete current/predecessor preservation. Original O0/O2
 artifacts13374201698/13374472383 are retained byte-for-byte and independently
 re-audited. Final metadata qualification must reuse them only through the
 exact dependency-bound complete audit. Canonical closure is recorded separately.
+
+All fifteen final-head workflows also passed at9c37cdc62, including complete
+retained-proof revalidation and current/predecessor preservation. Actual PR1543
+merge8edb2e377 has exactly that qualified tree; production/reference source
+trees are unchanged. Canonical authority:
+`integration/dataqual15_hupsel/FILM_ROTATION_CANONICAL_RECEIPT_20261104.json`.
+This closes the private full-runtime preservation experiment. The twelve
+original-science failures, production adoption and overall migration remain open.
