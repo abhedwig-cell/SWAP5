@@ -5,7 +5,7 @@
   "thermal_tolerance_c": 1e-05,
   "whole_scientific_admission": false,
   "full_original_andelst": false,
-  "phase": "WINDOWS_QUALIFIED_COLD_POSIX_PENDING",
+  "phase": "WINDOWS_AND_COLD_POSIX_NATIVE_PASS",
   "production_delta": {
     "app/solute_project/main_water.f90": {
       "before": "fd0d34b367dcc9e5d5b973ee8ea9524ee84f1d5b",
@@ -29,18 +29,19 @@
     }
   },
   "gate_sha256": {
+    "tests/dataqual15/qualify_andelst_codec.py": "8cc49b2d79feb5e87fe044ba65f34c731e5fef9a1323dd2d669ca4e5744ba649",
     "tests/dataqual15/seal_thermal_profile_production.py": "c686d18adb4ba7894c5b7c6a8201c128460550cffb73af1648b949615cc32b52",
     "tests/dataqual15/verify_current_native_admission.py": "c1ecd37b96bc833f9983f95d340b3a83f1ace6a4cb37bb8dd2317bef735b321f",
-    "tests/dataqual15/thermal_profile_production.py": "48db56d0fd88251035c7d8e8b1950a191f8532f70b96979c187a72d2ae8183c4",
-    "tests/dataqual15/qualify_native_disk_restart.py": "9a4645a0419c5dfa4f32b52f2c2dadf82641055b2caf06630a4524b5f5c64afc",
-    "tests/dataqual15/qualify_andelst_codec.py": "8cc49b2d79feb5e87fe044ba65f34c731e5fef9a1323dd2d669ca4e5744ba649",
-    "tests/dataqual15/qualify_thermal_runtime.py": "6b9836ffbd396ecebbfe12ae9fe4ed51b7a6915bec7607ad546964de64dccc24",
-    "tests/dataqual15/run_original.py": "10b5c1df1ecd40b87bf15e4c93cf54e1f0eacf462571498064bfadee3f840b8c",
+    "tools/solute/build_grass_startup.py": "4931310c38a22bf9b81e9b060a3e497c60bf95fc6131b962f4013c9525aa1448",
     "tests/dataqual15/test_thermal_profile_production.py": "8d5760d9d9a03ccb509780a53efc8b7bbc5e33f07c78240a91b2e193e1478618",
     "tests/dataqual15/thermal_temporal_driver.f90": "8b8dd9ba5312370cb4139c81d32d560c79cf7a711ae50b9bfa0be936a7dbe6ac",
+    ".github/workflows/grass-thermal-production.yml": "467fff5333f2b2926fd69f66415b9060754fcaf6f8c55f156e87e3fa4c5a3c35",
+    "tests/dataqual15/run_original.py": "10b5c1df1ecd40b87bf15e4c93cf54e1f0eacf462571498064bfadee3f840b8c",
     "tests/dataqual15/continue_original_andelst.py": "dae1c70f9bd551486b3169e2168891a93dbb9b6716e4d1147da67d29f3af88a1",
-    "tools/solute/build_grass_startup.py": "4931310c38a22bf9b81e9b060a3e497c60bf95fc6131b962f4013c9525aa1448",
-    ".github/workflows/grass-thermal-production.yml": "467fff5333f2b2926fd69f66415b9060754fcaf6f8c55f156e87e3fa4c5a3c35"
+    "tests/dataqual15/qualify_thermal_runtime.py": "6b9836ffbd396ecebbfe12ae9fe4ed51b7a6915bec7607ad546964de64dccc24",
+    "tests/modularity/test_modular_controls.py": "8f14014bb1e6177cb9ebe7ea572c9175a488e5f2fae29909b0bb7de424018f28",
+    "tests/dataqual15/thermal_profile_production.py": "93cba2492e41faf4be0d570c40f979c24a82c1b64756e81295b12b7a7eab7a18",
+    "tests/dataqual15/qualify_native_disk_restart.py": "9a4645a0419c5dfa4f32b52f2c2dadf82641055b2caf06630a4524b5f5c64afc"
   },
   "archive": "integration/dataqual15/THERMAL_PROFILE_PRODUCTION_WINDOWS_20261105.tar.xz",
   "archive_sha256": "93ecd262aec84cba1b86e65d46b67c971812f3226ff4b0106f3ad80de42e7957",
@@ -54,5 +55,12 @@
     "inherited_historical_days": 1827,
     "whole_scientific_admission": false,
     "full_original_andelst": false
+  },
+  "posix": {
+    "run_id": 42031309497,
+    "job_id": 127258174154,
+    "head": "34b8adf88b7194aaaec74d2ba13a97f5ecb83373",
+    "status": "SUCCESS",
+    "scope": "Cold O0/O2 shared runtime, explicit Grassgrowth native profile/restart/refusals, original Andelst numerical input and macro writer/restart/refusals"
   }
 }
