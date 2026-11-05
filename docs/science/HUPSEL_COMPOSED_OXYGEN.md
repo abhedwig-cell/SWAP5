@@ -78,3 +78,14 @@ twelve real-data defects per opt, complete current/predecessor preservation
 and all15 native-head workflows pass. Original artifacts13385925815 (O0)
 and13384708241 (O2) are retained unchanged and remeasured. Final metadata
 qualification must revalidate exact proof before bounded canonical integration.
+
+All15 final-head workflows PASS, including complete exact retained native/raw/
+original-process proof revalidation and current/unmodified predecessor
+preservation. PR1549 is canonically integrated atf93954b04e56de1a99ed1173e0a077b4d6362262;
+actual treef13b8dc4aaa5414de068da96b685a63a2d8011f2 equals the qualified
+test-merge tree. Production src/app/reference trees are unchanged. Actual
+authority is COMPOSED_OXYGEN_CANONICAL_RECEIPT_20261105.json. This closes
+bounded accepted-state/operator evidence; oxygen and whole science stay open.
+Next source-bound original-runtime accepted-clock/state observations must
+preserve each original/typed grid and independently integrate its own root
+loss. No grid equivalence, state rebinding or fitted correction is implied.
