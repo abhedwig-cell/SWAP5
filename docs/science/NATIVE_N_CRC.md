@@ -1,6 +1,6 @@
 # Complete mineral and reactive-N native CRC research
 
-Status: actual Windows O0/O2 complete-module private-candidate execution; cold POSIX full-module execution and preservation pass; final canonical research qualification pending. No production source or admission changes.
+Status: actual Windows O0/O2 complete-module private-candidate execution; cold POSIX full-module execution and preservation pass; bounded research canonically integrated at PR1570 (`ffe1863cd`), all16 final source-head workflows successful. No production source or admission changes.
 
 This follows the extracted-component evidence in [Native CRC family](NATIVE_CRC_FAMILY.md) with real complete `mod_mineral_joint_restart_file` and `mod_reactive_n_joint_restart_file` modules. Each optimization has a fresh coherent 325-provider closure and the original bounded two-day Richards/N physical drivers. The private candidate replaces only each local CRC function with the exact already admitted table body. Its other 323 provider objects are the byte-verified objects from that same fresh optimization-specific closure. Original hard mass bounds, temporal settings, assertions, opaque restore, native publication and separate-process continuation remain intact.
 
@@ -15,3 +15,5 @@ This research does not qualify the other three CRC duplicates, full seasonal pro
 Authority: `integration/dataqual15_hupsel/NATIVE_N_CRC_PREREGISTRATION_20261105.json`, `NATIVE_N_CRC_RECOVERY_20261105.json` and retained raw platform archives.
 
 Actual cold POSIX GNU13 O0/O2 coherent325-provider builds pass all original/projected physical assertions, valid and correctly resealed native reconstruction,22 refusals per variant, opaque and separate-process equality, and candidate cross-optimization native byte identity. Both incumbent and candidate CRCs are correct on this cohort; Windows O2 failures remain explicit. Original artifact13442024709 (run42083779393), SHA256 `078fe24add95204c99cb04a011d9d94627d501c4b2d20bb56f504d283fe5d82a`, is retained verbatim as two lossless parts and independently remeasured. Current/unmodified-predecessor preservation passes. The initial POSIX executable/data-directory collision remains an explicit failed setup result; only the POSIX binary suffix changed.
+
+Canonical authority: `NATIVE_N_CRC_CANONICAL_RECEIPT_20261105.json` records actual merge `ffe1863cdfc645e2607a43ff56451c3bc85f877c` and its exact qualified source tree `079443c4a707ed07c70c1f446117fe67d9acd73d`. All16 source-head workflows are terminal SUCCESS. Receipt replay/preservation remains selected before receipt integration. This is admitted research evidence; production replacement and broader owning admission remain future work.
