@@ -1,0 +1,15 @@
+{
+  "baseline": "f12ae68d123ff374cc22ac56e378f6b974640312",
+  "original_full_postimage_run": 42114915281,
+  "original_artifact": 13457242717,
+  "original_zip_sha256": "624cb896460227634dc5501c467b70c52c682c853919f58006ae35acd7cc13bf",
+  "input_sha256": {
+    "tests/dataqual15_hupsel/generation_crc_native_controls.py": "72bd188307ea0eaf2f570fd6915c2685646041c74a9ec853ef7284414ed4344f",
+    "tests/dataqual15_hupsel/generation_crc_posix_evidence.py": "0063d08be28406c93275aa595278d5fc8e6efd2dd741fb89c56ef3e056560a2c"
+  },
+  "scope": "Execute exact retained complete POSIX public decoder binaries, no recompilation or shim",
+  "cases": "Both original/private, O0/O2, both output/saved families: proper resealed valid read/re-export; wrong zero footer; deliberately corrupt nested CRC with repaired outer CRC; empty/live rejection and exact authority bytes.32 actual native launches. Legitimate CRC zero is not globally forbidden.",
+  "production_source_changed": false,
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
