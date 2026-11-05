@@ -18,7 +18,7 @@ def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip(
 def blob(ref,p):return git('rev-parse',ref+':'+p)
 def guard(r):
  assert r['predecessor']==git('rev-parse',BASE)and r['whole_scientific_admission']is False
- assert r['profile']=='pressure-film-refined'and r['thermal_tolerance_c']==1e-5
+ assert r['profile']=='pressure-film-refined'and r['film_relative_tolerance']==1e-5
  assert set(r['production_delta'])==PATHS and set(r['gate_sha256'])==GATES
  assert set(git('diff','--name-only',BASE,'HEAD','--','src','app','reference').splitlines())==PATHS
  assert not git('diff','HEAD','--','src','app','reference')and not git('ls-files','--others','--exclude-standard','--','src','app','reference')

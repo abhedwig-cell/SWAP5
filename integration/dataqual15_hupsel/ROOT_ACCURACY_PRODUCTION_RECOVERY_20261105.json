@@ -2,14 +2,52 @@
   "workstream": "RT/PHY Hupsel root numerical accuracy production successor",
   "baseline": "34b8adf88b7194aaaec74d2ba13a97f5ecb83373",
   "branch": "codex/hupsel-root-accuracy-production-20261105",
-  "implemented": false,
-  "tested": false,
-  "qualified": false,
+  "implemented": true,
+  "tested": true,
+  "qualified": "WINDOWS_COMPLETE_COLD_POSIX_PENDING",
   "contract": "An explicit per-backend numerical profile selects pressure-bracket stopping independently of the unchanged final MICRO flux certificate, and the existing two-consecutive-level film safeguard at unchanged1e-5/24 limits. Default selection preserves the incumbent algorithms. No physical parameter, persisted state, mass or rollback criterion changes. The native application reads a separate SWAP5_ROOT_ACCURACY=1 numerical SWP selector only for the original Hupsel rotation; the existing exact SWP restart binding refuses switching that profile. Own current-executable restarts are qualified; cross-version restart is not inferred.",
-  "affected_interfaces": ["Optional numerical argument on MICRO evaluation", "Optional film refinement argument and provider numerical mode", "Optional numerical argument on Bartholomeus runtime execution", "Per-backend numerical-policy setter"],
-  "invariants": [3, 7, 13, 23, 25],
-  "authorities": ["integration/dataqual15_hupsel/PRESSURE_FILM_RECOVERY_20261105.json", "integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json", "docs/architecture/invariants.md"],
-  "selection": {"component": {"expected_seconds": 120, "reason": "Original default and explicit refined root/film contracts with unchanged certificates, finite/cap refusals and unsupported-profile controls."}, "native": {"expected_seconds": 300, "reason": "Fresh current-source coherent checked O0/O2 Hupsel builds; existing exact TTUTIL archive can be reused within its recorded compiler cohort."}, "full1096": {"expected_seconds": 1200, "reason": "Actual named-profile source feedback, complete ledgers and strict own cut/year/final restarts. Existing research1096 trajectories are comparison authority, not current-executable evidence."}},
+  "affected_interfaces": [
+    "Optional numerical argument on MICRO evaluation",
+    "Optional film refinement argument and provider numerical mode",
+    "Optional numerical argument on Bartholomeus runtime execution",
+    "Per-backend numerical-policy setter"
+  ],
+  "invariants": [
+    3,
+    7,
+    13,
+    23,
+    25
+  ],
+  "authorities": [
+    "integration/dataqual15_hupsel/PRESSURE_FILM_RECOVERY_20261105.json",
+    "integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json",
+    "docs/architecture/invariants.md"
+  ],
+  "selection": {
+    "component": {
+      "expected_seconds": 120,
+      "reason": "Original default and explicit refined root/film contracts with unchanged certificates, finite/cap refusals and unsupported-profile controls."
+    },
+    "native": {
+      "expected_seconds": 300,
+      "reason": "Fresh current-source coherent checked O0/O2 Hupsel builds; existing exact TTUTIL archive can be reused within its recorded compiler cohort."
+    },
+    "full1096": {
+      "expected_seconds": 1200,
+      "reason": "Actual named-profile source feedback, complete ledgers and strict own cut/year/final restarts. Existing research1096 trajectories are comparison authority, not current-executable evidence."
+    }
+  },
   "scientific_scope": "Production numerical profile only; original oxygen/reference failure remains explicit, no tolerance or target changes.",
-  "next_action": "Implement the optional numerical interfaces and current application selector, persist, then compile and qualify. Reconcile PR1563 and any newer canonical source before admission."
+  "next_action": "Wait actual cold POSIX workflow42059366476; reconcile terminal results and canonical delta, integrate exact seven-file numerical policy if current owner gates pass, retain oxygen failure and Andelst barrier.",
+  "canonical_predecessor": "f0939f4cbc4410a9e7fd88c38e47f61310d39fb6",
+  "pr": 1567,
+  "evidence_scope": "integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_SCOPE_20261105.json",
+  "current_candidate_source": "e7606bb9465448fbf95f70b44aff10eebffe42a3 all236 provider hashes match after canonical #1563/#1564/#1565 reconciliation",
+  "whole_scientific_admission": false,
+  "actual_full_runs": {
+    "O0": 3241.404774800176,
+    "O2": 2055.1115484000184
+  },
+  "actual_full_and_own_result": "1096 days and ten exact own windows per build;37+11+6+2 controls each;36/37 science; current default/thermal O0/O2 runtime contracts pass"
 }

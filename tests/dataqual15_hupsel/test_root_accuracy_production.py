@@ -15,7 +15,7 @@ class Boundary(unittest.TestCase):
   for p in m.PATHS:self.write(p,'bounded numerical successor\n')
   self.write('integration/dataqual15/STATUS.json',json.dumps({'native_disk_restart_20261102':{'immutable':True},m.KEY:{'scope':m.SCOPE}}))
   self.commit()
-  self.record=dict(predecessor=m.BASE,whole_scientific_admission=False,profile='pressure-film-refined',thermal_tolerance_c=1e-5,
+  self.record=dict(predecessor=m.BASE,whole_scientific_admission=False,profile='pressure-film-refined',film_relative_tolerance=1e-5,
    production_delta={p:dict(before=m.blob(m.BASE,p),after=m.blob('HEAD',p))for p in m.PATHS},
    gate_sha256={p:m.sha((self.root/p).read_bytes())for p in m.GATES})
  def tearDown(self):m.ROOT,m.BASE=self.previous;self.temp.cleanup()
