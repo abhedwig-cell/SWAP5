@@ -73,6 +73,10 @@ def verify(r,files=None):
   assert '-'+opt in build['flags']and '-fcheck=all'in build['flags']
   assert disk['status']=='NATIVE_ORIGINAL_DISK_RESTART_PASS'and len(disk['invalid_restart_controls'])>=10
   assert len(disk['profile_controls'])==5 and all(e['returncode']!=0 for e in disk['profile_controls'])
+  assert {e['case']for e in disk['profile_controls']}=={'missing-marker','wrong-marker','duplicate-marker','missing-switch','wrong-switch'}
+  for kind in disk['invalid_restart_controls']:
+   assert b'bound grass prefix restart rejected'in f['thermal-disk-'+opt+'/'+kind+'/stdout']
+   assert 'thermal-disk-'+opt+'/'+kind+'/checkpoint.bin'not in f
   assert f['thermal-disk-'+opt+'/continuous/checkpoint.bin']==f['thermal-disk-'+opt+'/resume/checkpoint.bin']
  default=rows('default-140/budget.csv');incumbent=rows('incumbent-140/budget.csv')
  assert default==incumbent and len(default)==140
@@ -95,17 +99,41 @@ def verify(r,files=None):
  assert macro['status']=='NATIVE_MACRO_O0_O2_OWN_BYTES_AND_REFUSALS_PASS'and macro['optimization_physical_payload_exact']and not macro['full481']
  for opt in ('O0','O2'):
   assert len(macro['builds'][opt]['events'])==3 and all(e['returncode']!=0 for e in macro['builds'][opt]['events'])
+  assert {e['kind']for e in macro['builds'][opt]['events']}=={'crc','truncated','binding'}
   assert f['andelst-own-'+opt+'/restart.bin']==f['andelst-prefix-'+opt+'/restart.bin']
   assert j('andelst-prefix-'+opt+'/RESULT.json')['original_sharp_entry']
+  origin=f['andelst-'+('day1-O0'if opt=='O0'else'original-O2')+'/restart.bin']
+  for kind in ('crc','truncated','binding'):
+   prefix='andelst-codec/'+opt+'-'+kind+'/'
+   assert b'native macro water restart rejected'in f[prefix+'stdout']and prefix+'budget.csv'not in f
+   assert f[prefix+'restart.bin']==origin
  assert j('andelst-continue-O2/RESULT.json')['censored']and not j('andelst-continue-O2/RESULT.json')['full_original_complete']
  assert j('andelst-continue-O2/RESULT.json')['last_completed_source_interval']==1.9580000000023283
  return dict(current_days=367,default_exact_days=140,own_year_restart='365->367 exact',
   maximum_water_residual_cm=max(abs(float(x['residual_cm']))for x in daily),
   inherited_historical_days=1827,whole_scientific_admission=False,full_original_andelst=False)
 
+def data_controls(r,files):
+ cases={
+  'changed-current-source':('sources/'+sorted(PATHS)[0],lambda b:b+b'changed'),
+  'changed-linked-object':(next(iter(json.loads(files['ARTIFACT_MAP.json']).values())),lambda b:b+b'changed'),
+  'default-regression':('default-140/budget.csv',lambda b:b+b'changed'),
+  'year-restart-mismatch':('grass-year-restart/checkpoint.bin',lambda b:b[:-1]+bytes([b[-1]^1])),
+  'macro-restart-mismatch':('andelst-own-O0/restart.bin',lambda b:b[:-1]+bytes([b[-1]^1])),
+  'missing-native-refusal':('andelst-codec/RESULT.json',lambda b:json.dumps({**json.loads(b),'optimization_physical_payload_exact':False}).encode()),
+  'promoted-historical-science':('HISTORICAL_THERMAL_REUSE.json',lambda b:json.dumps({**json.loads(b),'whole_scientific_admission':True}).encode()),
+  'missing-full-prefix':('grass-367/RESULT.json',lambda b:json.dumps({**json.loads(b),'completed_days':366}).encode())}
+ refused=[]
+ for label,(name,change)in cases.items():
+  bad=files.copy();bad[name]=change(files[name])
+  try:verify(r,bad)
+  except(AssertionError,KeyError,ValueError):refused.append(label)
+  else:raise AssertionError('accepted actual evidence defect '+label)
+ return refused
+
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path);p.add_argument('--verify-only',action='store_true');a=p.parse_args()
- r=json.loads((ROOT/SCOPE).read_text());guard(r);proof=verify(r)
+ r=json.loads((ROOT/SCOPE).read_text());guard(r);files=unpack(r);proof=verify(r,files);proof['data_refusals']=data_controls(r,files)
  if a.verify_only:print(json.dumps(proof));return
  assert a.output is not None
  out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)

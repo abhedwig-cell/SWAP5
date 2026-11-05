@@ -3,7 +3,7 @@
   "baseline": "5a4d47df19de2fa529878a7b92a7925f52daf819",
   "branch": "codex/andelst-conservative-events-20261105",
   "implemented": true,
-  "tested": false,
+  "tested": "WINDOWS_O0_O2_CONTRACTS_NATIVE_RESTARTS_DEFAULT140_AND_THERMAL367_PASS",
   "qualified": false,
   "invariants": [
     7,
@@ -16,7 +16,7 @@
     "docs/status-a/CURRENT_STATUS.md",
     "integration/dataqual15/CLOSURE16_CURRENT_ANDELST_RESULT.json"
   ],
-  "scope": "Original Andelst numerical input independently of physical experiments; registered Grassgrowth thermal policy reconciled with current backend; pressure/film production successor only after affected qualification.",
+  "scope": "integration/dataqual15/THERMAL_PROFILE_PRODUCTION_SCOPE_20261105.json",
   "interface_contract": "Thermal tolerance is per-backend numerical configuration, disabled by default. Enabled policy requires numerical heat and the existing external full/half water gate. The indicator is max(water_error, water_budget*temperature_difference/temperature_budget); missing or incompatible state refuses. No physical heat equation or committed schema changes. Application binding pins the named profile; current C atomic publisher is retained. Andelst source MAXIT/MAXBACKTR/SWKMEAN/SWKIMPL/DTMIN/DTMAX belong to numerical input, with existing stricter water and nonlinear certificates retained.",
   "selection": {
     "native_builds": {
@@ -51,11 +51,19 @@
       "diagnosis": "Previous bounded observation was censored, not a solver failure. Source DTMAX crossed1.94 to1.958. Preserve original prefix, resume own day1; suppress only existing per-trial stage printing to isolate numerical cost."
     }
   },
-  "next_action": "Implement numerical input and reconcile the existing registered thermal policy, persist, compile and run focused native checks.",
+  "next_action": "Cold POSIX O0/O2 affected qualification, unmodified predecessor admission and canonical integration; original Andelst entry constraint remains unresolved.",
   "remaining": [
     "Original sharp Andelst discontinuous exchange and perched topology require a conservative joint solution; existing fixed-window corrected research is not original continuation.",
     "Full original Andelst481 and own year restart remain unproved.",
     "Whole scientific qualification remains 0/3; execution remains 2/3."
   ],
-  "reconciled_canonical": "8367ca0c9"
+  "reconciled_canonical": "8367ca0c9",
+  "persisted": true,
+  "current_prefix_days": 367,
+  "own_year_restart": "365->367 exact",
+  "andelst_last_interval": 1.9580000000023283,
+  "andelst_censored_seconds": [
+    90.32849920005538,
+    600.2411629001144
+  ]
 }
