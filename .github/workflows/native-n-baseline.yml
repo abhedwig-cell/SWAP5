@@ -1,0 +1,29 @@
+name: Native N CRC exact predecessor diagnostics
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/native_n_production_baseline.py
+      - integration/dataqual15_hupsel/NATIVE_N_PRODUCTION_BASELINE_PREREGISTRATION_20261105.json
+      - .github/workflows/native-n-baseline.yml
+permissions:
+  contents: read
+jobs:
+  pre-successor:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Exact immutable predecessor, not current scientific qualification
+        run: |
+          test -x /usr/bin/gfortran
+          git worktree add --detach "$RUNNER_TEMP/native-n-exact-baseline" b41e1cda439a370a7e1966387412bdf55ca1b096
+          python3 -B tests/dataqual15_hupsel/native_n_production_baseline.py --baseline "$RUNNER_TEMP/native-n-exact-baseline" --output "$RUNNER_TEMP/native-n-baseline-observations"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-native-n-baseline-outcomes
+          path: ${{ runner.temp }}/native-n-baseline-observations
