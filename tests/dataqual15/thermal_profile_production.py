@@ -11,7 +11,9 @@ PATHS={'src/runtime/mod_fmr_serialized_reference_backend.f90','app/grass_project
  'app/grass_project/restart_file.f90','app/solute_project/main_water.f90','app/solute_column/macro_water_restart.f90'}
 GATES={ENTRY,'tests/dataqual15/thermal_profile_production.py','tests/dataqual15/thermal_temporal_driver.f90',
  'tests/dataqual15/qualify_thermal_runtime.py','tests/dataqual15/qualify_native_disk_restart.py',
- 'tests/dataqual15/run_original.py','tests/dataqual15/continue_original_andelst.py','tools/solute/build_grass_startup.py'}
+ 'tests/dataqual15/run_original.py','tests/dataqual15/continue_original_andelst.py','tools/solute/build_grass_startup.py',
+ 'tests/dataqual15/seal_thermal_profile_production.py','tests/dataqual15/test_thermal_profile_production.py',
+ '.github/workflows/grass-thermal-production.yml'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*args):return subprocess.check_output(['git',*args],cwd=ROOT,text=True).strip()
 def blob(ref,path):return git('rev-parse',ref+':'+path)
@@ -29,6 +31,10 @@ def guard(r):
  for p,pin in r['gate_sha256'].items():assert sha((ROOT/p).read_bytes().replace(b'\r\n',b'\n'))==pin,p
  route=json.loads((ROOT/'integration/dataqual15/STATUS.json').read_text())[KEY]
  assert route=={'scope':SCOPE}
+ before=json.loads(subprocess.check_output(['git','show',BASE+':integration/dataqual15/STATUS.json'],cwd=ROOT))
+ current=json.loads((ROOT/'integration/dataqual15/STATUS.json').read_text())
+ for key in ('native_disk_restart_20261102','project_diagnostic_restart_successor_20261104','native_crop_logical_successor_20261105'):
+  assert current.get(key)==before.get(key),key
 
 def unpack(r):
  raw=(ROOT/r['archive']).read_bytes();assert sha(raw)==r['archive_sha256']
