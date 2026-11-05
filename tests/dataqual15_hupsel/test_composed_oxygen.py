@@ -1,5 +1,6 @@
 """Reversible real source seams and explicit accepted-state selection policy."""
-import copy,json,unittest
+import copy,json,tempfile,unittest
+from pathlib import Path
 import composed_oxygen as run
 
 class Policy(unittest.TestCase):
@@ -21,5 +22,10 @@ class Policy(unittest.TestCase):
     def test_literal_metadata_exact_json_representation(self):
         from matched_micro_replay import source
         _,m=source();loaded=json.loads(json.dumps(m));self.assertEqual(loaded['reference_sha256'],m['reference_sha256']);self.assertEqual(loaded['attribution_reference_sha256'],m['attribution_reference_sha256']);self.assertEqual([tuple(p)for p in loaded['explicit_patches']],m['explicit_patches'])
+    def test_actual_oracle_payload_is_retained(self):
+        from composed_oxygen_evidence import collect
+        with tempfile.TemporaryDirectory(prefix='composed-payload-contract-')as temp:
+            p=Path(temp);(p/'0.input').write_bytes(b'original process payload\n');(p/'unused.mod').write_bytes(b'compiler module')
+            self.assertEqual(collect(p),{'0.input':b'original process payload\n'})
 
 if __name__=='__main__':unittest.main()

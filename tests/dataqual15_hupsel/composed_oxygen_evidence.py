@@ -14,7 +14,7 @@ def dependencies():
     return d
 
 def collect(folder):
-    keep={'.json','.bin','.csv','.dat','.nml','.swp','.crp','.met','.dra','.exe','.f90','.o','.a','.args','.stdout','.stderr'}
+    keep={'.json','.bin','.csv','.dat','.nml','.swp','.crp','.met','.dra','.exe','.f90','.o','.a','.args','.stdout','.stderr','.input'}
     return {p.relative_to(folder).as_posix():p.read_bytes()for p in folder.rglob('*')if p.is_file()and(p.suffix in keep or p.name in ('model','observed','stdout','stderr'))and p.name!='CAPSULE.json'}
 
 def verify(files,origin):
