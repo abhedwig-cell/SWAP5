@@ -68,3 +68,13 @@ qualified0.01 trajectory. This agrees with the bounded negative Windows
 diagnosis, without turning it into causal isolation or full-series admission.
 Final metadata qualification must revalidate retained exact proof; production
 and whole-science admission remain false.
+
+All15 final-head workflows PASS, including full retained dependency/native/raw
+proof revalidation and current/unmodified predecessor preservation. PR1547 is
+canonically integrated atd182d484410f5c2fe9e1e7a56834e7f2c17a7e94; actual tree
+1ab70c4b68759e767a4821a23f860ba0dba943b9 equals the qualified test-merge tree.
+Production src/app/reference trees remain unchanged. Actual authority is
+COMPOSED_TEMPORAL_CANONICAL_RECEIPT_20261105.json. The cluster closes a bounded
+negative temporal diagnosis; oxygen, accurate-reference and whole science stay
+open. Next actual composed accepted-state/forcing observations must retain exact
+original operators and independent clock/state provenance, not fit the target.
