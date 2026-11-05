@@ -9,9 +9,9 @@ ROOT=inherited.builder.ROOT
 
 def fixture(bundle,baseline,compiler,out):
     out.mkdir();events=[]
+    program=out/'SOURCE.f90';program.write_bytes((ROOT/'tests/dataqual15_hupsel/native_crop_opaque_fixture.f90').read_bytes())
     def build(b,directory):
         directory.mkdir();record=json.loads((b/'BUILD.json').read_text());objects=list(record['object_sha256'])[:-1]
-        program=ROOT/'tests/dataqual15_hupsel/native_crop_opaque_fixture.f90'
         exe=directory/('fixture.exe'if os.name=='nt'else'fixture')
         flags=[x for x in record['flags']if not x.startswith(('-I','-J'))]+['-I'+str(b),'-J'+str(directory)]
         args=[*flags,str(program),*objects,record['publication_provider']['object'],record['ttutil_archive'],'-o',str(exe)]
@@ -32,7 +32,7 @@ def fixture(bundle,baseline,compiler,out):
         for bad in (2,-1,256,2147483647):
             raw=bytearray(original);struct.pack_into('=i',raw,offset,bad);(out/'candidate/input.bin').write_bytes(raw)
             run(new,out/'candidate','read-'+kind)
-    (out/'RESULT.json').write_text(json.dumps(dict(status='OPAQUE_VALID_COMPONENT_ORDER_BYTES_AND_16_WRITER_8_READ_REFUSALS_PASS',events=events),indent=2)+'\n')
+    (out/'RESULT.json').write_text(json.dumps(dict(status='OPAQUE_VALID_COMPONENT_ORDER_BYTES_AND_16_WRITER_8_READ_REFUSALS_PASS',source_sha256=inherited.builder.native.sha(program),executables_sha256={str(p.relative_to(out)):inherited.builder.native.sha(p)for p in (old,new)},events=events),indent=2)+'\n')
 
 def main():
     p=argparse.ArgumentParser();p.add_argument('--baseline',type=Path,required=True);p.add_argument('--out',type=Path,required=True);p.add_argument('--compiler',type=Path,required=True);a=p.parse_args()
@@ -42,6 +42,8 @@ def main():
     if os.name=='nt':case=ROOT.parent/'pressure-film-20261105/O2/full1096'
     else:case=mature_case(out/'build',out,False)
     qualify(out/'build',case,case/'checkpoint.bin',out/'mature-owner-controls')
-    (out/'OPAQUE_RESULT.json').write_text(json.dumps(dict(status='OPAQUE_COMPONENT_AND_MATURE37_CONTROLS_PASS_WRITER_FAULT_PROBE_PENDING',source_sites=34,production_admission=False),indent=2)+'\n')
+    from native_crop_opaque_writer import qualify as writer_qualify
+    writer_qualify(out/'build',out/'inputs',out/'fault-writer',compiler)
+    (out/'OPAQUE_RESULT.json').write_text(json.dumps(dict(status='OPAQUE_COMPONENT_MATURE37_AND_PUBLIC_WRITER32_DTO_FAULT_CONTROLS_PASS',source_sites=34,production_admission=False),indent=2)+'\n')
 
 if __name__=='__main__':main()
