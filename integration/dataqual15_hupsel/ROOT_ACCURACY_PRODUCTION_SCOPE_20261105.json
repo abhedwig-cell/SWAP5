@@ -36,17 +36,17 @@
     }
   },
   "gate_sha256": {
-    "tests/dataqual15_hupsel/root_accuracy_production_runtime.py": "420ad9da1c58e55ffe7ee374bcdf564e1795d52e02c74ecc901f4c41a2f33408",
-    "tests/dataqual15_hupsel/qualify_root_profile_controls.py": "12456989c8431a6a6173ba9b9df6714eb8aae74b4b4d74d123c5749a4b8d7c39",
-    "tests/dataqual15_hupsel/qualify_root_accuracy_component.py": "8341cd3c6b4b6bdd4fa3504dacd2b6c33730bddc12f3dd93d2a03c22cf834038",
-    "tests/dataqual15_hupsel/root_accuracy_component_driver.f90": "582a02f42ecb4bbf1c49c160f615cc82a40271e9abc32a90030a6d1fd17f692f",
-    "tests/dataqual15_hupsel/seal_root_accuracy_production.py": "080594dc4821550ff316abbde3584b4610f2ff27d1dca72de4afbdebccceaeec",
-    "tests/dataqual15_hupsel/root_accuracy_native_smoke.py": "bb98898663812f9f31b82d06490e5b1602fc479edd3b618dc68833147e8ef7da",
-    "tests/dataqual15_hupsel/qualify_root_runtime_preservation.py": "0d7bba31a1fd7c74cb3315a9f5eda5d1dc076635f27d46e54d9c96c3bb507822",
-    "tests/dataqual15_hupsel/test_root_accuracy_production.py": "c4f4b14e864308eafde8d2acc7f2906f502e29a76599860a94a366d7e87bf47b",
-    "tests/dataqual15_hupsel/root_accuracy_production.py": "958f38b61c5deb4770be2812cdea195921d57db08554357af4561c7d9dd1d3a1",
     "tests/dataqual15/verify_current_native_admission.py": "9d77fab99e7acc5bb40940636fba28ad3b1edf6baf16fffde3f9846368faf305",
-    ".github/workflows/hupsel-root-accuracy-production.yml": "e3f029a7153264bc406922c230baac033af55a04c5f956b639cfb815e3bd04c0"
+    "tests/dataqual15_hupsel/test_root_accuracy_production.py": "c4f4b14e864308eafde8d2acc7f2906f502e29a76599860a94a366d7e87bf47b",
+    "tests/dataqual15_hupsel/root_accuracy_native_smoke.py": "bb98898663812f9f31b82d06490e5b1602fc479edd3b618dc68833147e8ef7da",
+    "tests/dataqual15_hupsel/root_accuracy_component_driver.f90": "582a02f42ecb4bbf1c49c160f615cc82a40271e9abc32a90030a6d1fd17f692f",
+    "tests/dataqual15_hupsel/qualify_root_runtime_preservation.py": "0d7bba31a1fd7c74cb3315a9f5eda5d1dc076635f27d46e54d9c96c3bb507822",
+    "tests/dataqual15_hupsel/root_accuracy_production_runtime.py": "420ad9da1c58e55ffe7ee374bcdf564e1795d52e02c74ecc901f4c41a2f33408",
+    ".github/workflows/hupsel-root-accuracy-production.yml": "0311d61ff9bae289ef0d606246ba60d8226b556886838bce754176b32336a407",
+    "tests/dataqual15_hupsel/root_accuracy_production.py": "958f38b61c5deb4770be2812cdea195921d57db08554357af4561c7d9dd1d3a1",
+    "tests/dataqual15_hupsel/qualify_root_accuracy_component.py": "8341cd3c6b4b6bdd4fa3504dacd2b6c33730bddc12f3dd93d2a03c22cf834038",
+    "tests/dataqual15_hupsel/seal_root_accuracy_production.py": "080594dc4821550ff316abbde3584b4610f2ff27d1dca72de4afbdebccceaeec",
+    "tests/dataqual15_hupsel/qualify_root_profile_controls.py": "12456989c8431a6a6173ba9b9df6714eb8aae74b4b4d74d123c5749a4b8d7c39"
   },
   "frozen_predecessor_assets": {
     "tests/dataqual15/thermal_profile_production.py": "4f0bb9f93a17eb459ad2c896924070c337fb2475",
@@ -84,5 +84,14 @@
       "missing-owner-controls"
     ]
   },
-  "film_relative_tolerance": 1e-05
+  "film_relative_tolerance": 1e-05,
+  "cold_posix_initial_failure": {
+    "run": 42059366476,
+    "job": 127356431127,
+    "head": "6616fbea08f5bdc4dbfe3bb6504034998ae2b7d2",
+    "stage": "Python fixture import before Fortran compilation",
+    "error": "ModuleNotFoundError: No module named 'mpmath'",
+    "fix": "Install pinned mpmath1.3.0, same version as Windows measurement and existing repository workflow. No model/tolerance change.",
+    "actual_native_models_executed": 0
+  }
 }

@@ -27,6 +27,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
       - run: sudo apt-get update && sudo apt-get install -y gfortran-13
+      - run: python3 -m pip install mpmath==1.3.0
       - name: Exact current source and actual complete Windows evidence
         run: |
           python3 -B tests/dataqual15_hupsel/test_root_accuracy_production.py
