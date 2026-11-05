@@ -1,6 +1,7 @@
 ! Same-platform bounded disk adapter. Existing FMR/kernel restore owns water.
 module mod_crop_soil_n_joint_restart_file
   use iso_fortran_env,only:real64,int64,int32,int8,iostat_end
+  use mod_age_joint_restart_file,only:crc32
   use mod_wofost_crop_native_codec,only:weather_native_event,weather_native_biomass,weather_native_owner,weather_native_crop_view
   use ieee_arithmetic,only:ieee_is_finite
   use mod_transaction_reference,only:transaction_state_t
@@ -900,23 +901,6 @@ contains
 
 
 
-  function crc32(bytes) result(crc)
-    integer(int8),intent(in)::bytes(:)
-    integer(int32)::crc
-    integer::i,j
-    crc=not(0_int32)
-    do i=1,size(bytes)
-      crc=ieor(crc,iand(int(bytes(i),int32),int(z'FF',int32)))
-      do j=1,8
-        if(btest(crc,0))then
-          crc=ieor(shiftr(crc,1),int(z'EDB88320',int32))
-        else
-          crc=shiftr(crc,1)
-        end if
-      end do
-    end do
-    crc=not(crc)
-  end function
 
   subroutine append_crc(path,status)
     character(*),intent(in)::path
