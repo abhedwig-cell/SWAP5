@@ -1,5 +1,5 @@
 {
-  "status": "BOUNDED_MATRIX_CRC_CANONICALLY_ADMITTED_RECEIPT_QUALIFICATION_PENDING",
+  "status": "BOUNDED_MATRIX_CRC_CANONICAL_RECEIPT_CLOSED",
   "baseline": "5284091c34a44d14c2d837f7a5d2a5b217437101",
   "branch": "codex/autonomous-migration-20261103",
   "worktree": "SWAP5-AUTONOMOUS",
@@ -13,7 +13,7 @@
     "O0_original_complete": 91.4,
     "O2_original_complete": 191.8
   },
-  "next": "Qualify and integrate this exact canonical receipt; remaining output/saved-generation CRC and broader physical/seasonal scope remain open.",
+  "next": "Closed. Remaining output/saved-generation full native qualification is owned by GENERATION_CRC_RECOVERY_20261105.json.",
   "pr": 1574,
   "production_source": "src/adapter/mod_matrix_joint_restart_file.f90",
   "source_change": "Exact complete shared-import postimage already actually compiled/executed O0/O2 on both platforms, not source-only inference.",
@@ -34,5 +34,10 @@
   "owning_column_physics": "Actual194-provider O0/O2 build and86 original file/restart launches PASS; historical surface preservation assertion retains FAILED, explicitly attributed to unchanged existing source guard; not an all-green workflow.",
   "actual_merge": "f9bfca80b12c0b2ca7e6f4dafbecf781ae480416",
   "qualified_head": "dc2d4fabb994902fa8222ab18729926e8b2b67ae",
-  "qualified_and_actual_tree": "9b1e916ae70c6830316f2f6c2e0bd7846d0cc739"
+  "qualified_and_actual_tree": "9b1e916ae70c6830316f2f6c2e0bd7846d0cc739",
+  "receipt_pr": 1575,
+  "actual_receipt_merge": "f12ae68d123ff374cc22ac56e378f6b974640312",
+  "receipt_qualified_head": "4ed57c6f598d3796dcb91a271458de5543b85632",
+  "receipt_qualified_and_actual_tree": "053ad6c3f397c12b7da519f6a8727c913c98abcb",
+  "receipt_workflows_all13_pass": true
 }

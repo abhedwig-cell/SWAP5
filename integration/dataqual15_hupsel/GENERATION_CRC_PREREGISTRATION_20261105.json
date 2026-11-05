@@ -1,0 +1,25 @@
+{
+  "baseline": "f12ae68d123ff374cc22ac56e378f6b974640312",
+  "scope": "PRIVATE_COMPLETE_OUTPUT_AND_SAVED_GENERATION_CRC_POSTIMAGE_QUALIFICATION",
+  "production_delta": [],
+  "input_sha256": {
+    "src/adapter/mod_crop_n_output_generation.f90": "6b271eca740422429cc09fdd5b6de5ef8154c4625913b6674dd05ff950d138e0",
+    "src/adapter/mod_crop_n_saved_generation.f90": "2ae87a1acd42fca642537836d599652de9d7a4dd4f093d2908b12672c84d8d81",
+    "src/adapter/mod_age_joint_restart_file.f90": "f49c04dc08eb31700246310c628debac0605652c71571f21006aabc0873623e3",
+    "tests/nut-output/run_accepted_output.py": "110e4ad70cb420fef11c53765631d876cb153c23b697b459b11eae44d18fd2f2",
+    "tests/nut-output/run_accepted_output_csv.py": "e196ec9404656c9bb3d38b7021594f0e71f716815240b54868e205a54234c50f",
+    "tests/nut-output/run_joint_output_generation.py": "bca7a39fc60507b36f34170b0afcd06ea017b8b86c88d42f303d6b29f5b40987",
+    "tests/nut-output/run_native_output_project.py": "623d8a8e8740b0be3acf9b82a62f010d51f4dce128b512883b9b917cd7b56cab",
+    "tests/nut-output/run_saved_output.py": "1bf28da6b39409ffc9031a46f3fd2057f146ad1a436a30ea7622f7ca6c40ab78",
+    "tests/nut-output/joint_generation_proof.inc": "2d244aab8bd8e21c0a8c3e05ea9956a5137bfe67a1205d9e3336e2bfa15430e9",
+    "tests/nut-output/saved_output_proof.inc": "8846146b98b99c2b364d1283bec3fd78bb923143c169824bb6895dab7def3d9c",
+    "tests/nut-output/rename_stop.c": "bf287c6c87fd3f4ccab856a160b38070a1ed2b6bcff0da19098824579c2ee0bc",
+    "tests/dataqual15_hupsel/generation_crc_runtime.py": "3b50884c77c601d52818687e23c47820d557ec230bdcbabf42487cc4e4ebe015"
+  },
+  "interfaces_changed": false,
+  "invariants": "Retain all physical owner/clock/mass/rollback/history/harvest/fallow/restart/fsync/rename/crash contracts. Exact private full modules replace only localCRC with shared import. No source-only admission.",
+  "local_first": "Fresh complete dependency-union Windows O0/O2 compilation; actual native POSIX publication is separate. Local Windows has no installed WSL; no shim or Windows publication claim.",
+  "posix": "Both unchanged original five-stage recipes, both O0/O2, both baseline/private exact full postimages. Real physical two-day routes, literal oracles, TRUE/FALSE, native fresh restart, corrupt files/live rollback, automatic output, saved harvest/fallow, SIGKILL on both sides of sole publication. Keep any failures raw.",
+  "whole_scientific_admission": false,
+  "production_admission": false
+}
