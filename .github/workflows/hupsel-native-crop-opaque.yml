@@ -20,6 +20,7 @@ jobs:
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - run: python3 -B tests/dataqual15_hupsel/test_native_crop_bool.py
       - run: python3 -B tests/dataqual15_hupsel/native_crop_opaque_evidence.py
+      - run: python3 -B tests/dataqual15_hupsel/native_crop_opaque_posix.py
       - name: Coherent private opaque codec, component and public writer fault controls O0/O2
         shell: bash
         run: |
