@@ -47,7 +47,7 @@
     }
   },
   "controller": "tests/dataqual15_hupsel/joint_logical.py",
-  "controller_sha256": "9ee241609a40818ffcd9938083496cbff4d18d75fe2b136e3f9c594b045d8ae7",
+  "controller_sha256": "c39d6ea868d3d2db293f81547436f318c44094a8a64a796bb683718e2ac1379e",
   "retained_setup_failures": [
     {
       "optimization": "O0",
@@ -66,6 +66,20 @@
       "path": "O0-v2",
       "verdict": "FAILED_BEFORE_ANY_BUILD",
       "reason": "Fixture source indentation anchor mismatched original compact Python style. Preserve original indentation rather than assuming four spaces."
+    },
+    {
+      "optimization": "O0",
+      "path": "O0-v3",
+      "verdict": "FAILED_AFTER_ORIGINAL_BASELINE_NATIVE_EXECUTION_BEFORE_CANDIDATE",
+      "reason": "Controller expected S5RN tag; actual immutable reactive format is S5NR0001. Fixed exact tag check. Original baseline raw time_bound/history corruptions admit noncanonical values; failed rejection observations retained. AGE plain negative probes in this snapshot used a foreign history template and are not logical-proof evidence."
+    },
+    {
+      "optimization": "O2",
+      "path": "O2-v3",
+      "verdict": "FAILED_AFTER_ORIGINAL_BASELINE_NATIVE_EXECUTION_BEFORE_CANDIDATE",
+      "reason": "Controller expected S5RN tag; actual immutable reactive format is S5NR0001. Fixed exact tag check. Original baseline raw time_bound/history corruptions admit noncanonical values; failed rejection observations retained. AGE plain negative probes in this snapshot used a foreign history template and are not logical-proof evidence."
     }
-  ]
+  ],
+  "plain_reader_control": "Additional body-only AGE plain read/reject modes use the exact existing base_codec_contract template. Proper base read and byte-exact reexport must pass before any malformed plain probe counts; all original driver assertions remain unchanged.",
+  "provider_reuse": "Reuse only v3 baseline cold provider objects after every source/object/compiler/flags equality check; regenerate exact unchanged fixtures, retain actual original compile logs and copy exact module/object bytes. Fresh driver and complete private module recompilation remain required."
 }

@@ -61,14 +61,50 @@ def prepare(out):
  before="for p in [*sorted((ROOT/'src').rglob('*.f90')),grid,oracle_fixture,decl]:"
  assert text.count(before)==1;text=text.replace(before,"for p in [*sorted((ROOT/'src').rglob('*.f90')),grid,oracle_fixture,decl,age_oracle]:")
  namespace=dict(prior.__dict__,age_literal=age_literal);exec(text,namespace)
- return namespace['prepare'](out)
+ fixture,ordered,drivers=namespace['prepare'](out)
+ source=normal((ROOT/'tests/nut-sol/test_age_joint.f90').read_bytes()).decode()
+ anchor="  if(trim(mode)=='reject')then"
+ branch='''  if(trim(mode)=='plain-read'.or.trim(mode)=='plain-reject')then
+    cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    call read_age_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template,670001_int64,9001_int64,p, &
+         water,solute,status)
+    if(trim(mode)=='plain-read')then
+      call require(status==JOINT_OK.and.water%ready().and.solute%ready(),'proper own base-family reconstruction')
+      call write_age_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template,670001_int64,water,solute,status)
+      call require(status==JOINT_OK,'base-family exact reexport')
+      print '(A)','AGE_PLAIN_READ=PASS'
+    else
+      call require(status/=JOINT_OK.and..not.water%ready().and..not.solute%ready(),'invalid base-family atomic refusal')
+      print '(A)','AGE_INVALID_DISK=PASS'
+    end if
+    stop
+  end if
+'''
+ assert source.count(anchor)==1
+ projected=source.replace(anchor,branch+anchor);assert projected.replace(branch,'',1)==source
+ drivers['age']=fixture/'age_driver.f90';drivers['age'].write_bytes(projected.encode())
+ return fixture,ordered,drivers
 
-def build(out,fc,opt,fixture,ordered,drivers,baseline=None):
+def build(out,fc,opt,fixture,ordered,drivers,baseline=None,reuse=None):
  out.mkdir();events=[];objects=[];sources={};flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out),'-I'+str(fixture),'-I'+str(ROOT/'tests/nut-reactive')]
  if baseline:flags+=['-I'+str(baseline)]
+ reused=None
+ if reuse:
+  reused=json.loads((reuse/'BUILD.json').read_text());assert reused['provider_count']==len(ordered)
+  assert reused['compiler']==subprocess.check_output([fc,'--version'],text=True).splitlines()[0]
+  assert [f for f in reused['flags'] if not f.startswith(('-I','-J'))]==[f for f in flags if not f.startswith(('-I','-J'))]
+  old_sources=list(reused['sources_sha256']);assert len(old_sources)==len(ordered)
+  old_events=json.loads((reuse/'EVENTS.json').read_text());provider_events=[e for e in old_events if e['label']=='provider'];assert len(provider_events)==len(ordered) and all(e['returncode']==0 for e in provider_events)
+  for p in reuse.glob('*.mod'):shutil.copyfile(p,out/p.name)
+  (out/'REUSED_PROVIDERS.json').write_text(json.dumps(dict(build=reused,events=provider_events),indent=2)+'\n')
+  for e in provider_events:
+   for stream in ('stdout','stderr'):shutil.copyfile(reuse/e[stream],out/('reused-'+e[stream]))
  for i,p in enumerate(ordered):
   obj=out/('%03d.o'%i);source=p;name=next((n for n,path in SOURCES.items() if p==ROOT/path),None)
-  if baseline and not name:obj=baseline/obj.name
+  if reused:
+   source=Path(old_sources[i]);assert sha(source.read_bytes())==reused['sources_sha256'][str(source)]==sha(p.read_bytes())
+   oldobj=reuse/obj.name;assert sha(oldobj.read_bytes())==reused['objects_sha256'][str(oldobj)];shutil.copyfile(oldobj,obj)
+  elif baseline and not name:obj=baseline/obj.name
   else:
    if baseline:source=out/p.name;source.write_bytes(candidate(name))
    prior.run([fc,*flags,'-c',source,'-o',obj],out,events,'provider')
@@ -93,26 +129,29 @@ def measure(out,exes,events,role):
   paths=[out/name/'restart.bin']
   if name=='age':assert Path(str(paths[0])+'.base').is_file();paths.append(Path(str(paths[0])+'.base'))
   for path in paths:
-   blob=path.read_bytes();assert blob[:8] in (b'S5AJ0001',b'S5NJ0001',b'S5RN0001')
+   blob=path.read_bytes();assert blob[:8]=={'age':b'S5AJ0001','mineral':b'S5NJ0001','reactive_n':b'S5NR0001'}[name]
    assert zlib.crc32(blob[:-4])==struct.unpack('<I',blob[-4:])[0]
    assert struct.unpack_from('<i',blob,152)[0]==4 and struct.unpack_from('<i',blob,144)[0]in(0,1) and struct.unpack_from('<i',blob,156)[0]in(0,1)
    proper.append(dict(path=str(path),sha256=sha(blob),mode=struct.unpack_from('<i',blob,148)[0],history=struct.unpack_from('<i',blob,156)[0]))
+   if path.name.endswith('.base'):
+    output=out/name/'proper-base-reexport.bin';prior.run([exes[name],'plain-read',path,output],out,events,'age-proper-base');assert output.read_bytes()==blob
    for field,offset in [('time_bound',144),('history',156)]:
     for word in (2,-1,2147483647):
      payload=bytearray(blob[:-4]);struct.pack_into('<i',payload,offset,word);bad=bytes(payload)+struct.pack('<I',zlib.crc32(payload))
      target=out/name/(path.name+'.'+field+'.'+str(word)+'.bin');target.write_bytes(bad)
-     result=prior.run([exes[name],'reject',target,out/name/'unused.bin'],out,events,'logical-'+name+'-'+field,False)
+     mode='plain-reject'if path.name.endswith('.base')else'reject'
+     result=prior.run([exes[name],mode,target,out/name/'unused.bin'],out,events,'logical-'+name+'-'+field,False)
      refused=result.returncode==0 and b'INVALID_DISK=PASS'in result.stdout
      if role=='candidate':assert refused,(name,field,word,result.stdout,result.stderr)
      observations.append(dict(codec=name,proper=path.name,field=field,word=word,path=str(target),returncode=result.returncode,refused=refused))
  return dict(unchanged_native_n=old,proper=proper,logical=observations)
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--compiler',default=shutil.which('gfortran'));a=p.parse_args();guard();os.environ['OMP_NUM_THREADS']='1'
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--compiler',default=shutil.which('gfortran'));p.add_argument('--reuse-providers',type=Path);a=p.parse_args();guard();os.environ['OMP_NUM_THREADS']='1'
  out=a.output.resolve();prior.guard=guard;prior.DRIVERS=dict(prior.DRIVERS,age='tests/nut-sol/test_age_joint.f90')
  fixture,ordered,drivers=prepare(out);result=dict(status='RUNNING',baseline=BASE,optimization=a.optimization,production_admission=False,whole_scientific_admission=False,roles={})
  for role in ('baseline','candidate'):
-  builddir=out/role;exes,events=build(builddir,Path(a.compiler).resolve(),a.optimization,fixture,ordered,drivers,out/'baseline'if role=='candidate'else None)
+  builddir=out/role;exes,events=build(builddir,Path(a.compiler).resolve(),a.optimization,fixture,ordered,drivers,out/'baseline'if role=='candidate'else None,a.reuse_providers.resolve()if role=='baseline'and a.reuse_providers else None)
   result['roles'][role]=measure(builddir,exes,events,role)
   (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(role,'complete original physical/native and logical observations',flush=True)
   if role=='candidate':
