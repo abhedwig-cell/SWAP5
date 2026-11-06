@@ -638,5 +638,57 @@
     "day1_physical_payload_exact_previous_public": true,
     "maximum_water_residual_cm": 1.1053441148489718e-15,
     "interpretation": "TIME_CENSORED_FIRST_ENTRY_NOT_TWO_DAY_PASS_OR_TERMINAL_MODEL_REFUSAL"
+  },
+  "event_aligned_own_year_selection": {
+    "expected_seconds": 60,
+    "timeout_seconds": 300,
+    "period": [
+      365,
+      367
+    ],
+    "reason": "User-required exact own year boundary. Launch only after current executable publishes untouched own365 and complete reference367; verify all source rows and entire native checkpoint, preserving binding and original inputs."
+  },
+  "event_aligned_terminal": {
+    "source": "d32ebe55cd2ed8ee9e9d8ebe237a19994c1cdc57",
+    "executable_sha256": "8f7f310ea2785ff00822a47f100b938824bde42e678a6431eea509fde69b5fe1",
+    "completed_days": 142,
+    "returncode": 3,
+    "censored": false,
+    "seconds": 2574.283073999919,
+    "last_completed_source_interval": 142.83200000000215,
+    "next_interval_completed": false,
+    "maximum_daily_water_residual_cm": 3.392259196288776e-12,
+    "whole481": false,
+    "year365": false,
+    "failure": "SIGFPE; original addresses mapped to actual standard top inflow limiter, then rate bundle and runtime. Strict own142 reproduces crash in1.4048801s.",
+    "next_discriminating_action": "Read-only real limiter request capture before original potentially overflowing ratio; no tolerance change, DT cap change or checkpoint rebinding.",
+    "expected_diagnostic_seconds": 5,
+    "timeout_diagnostic_seconds": 30
+  },
+  "event_aligned_own142_refusal": {
+    "scope": "STRICT_SAME_EXE_OWN142_REPRODUCES_SIGFPE_NOT_SUCCESSFUL143",
+    "seconds": 1.4048800999298692,
+    "all416_common_progress_rows_exact": true,
+    "input_checkpoint142_sha256": "f6f81eb3efacd1aa5de7dbd4ef41746fbdf85197b29edb31805ccb207338af46",
+    "returncode": 3,
+    "origin_unchanged": true,
+    "no_day143_completion": true
+  },
+  "event_aligned142_evidence": {
+    "archive": "EVENT_ALIGNED142_EVIDENCE_20261106.zip",
+    "sha256": "8f555b68875e04bda2a7037c2b4339a03bf08d7ee9703581f5a970ba781be250",
+    "bytes": 7777674,
+    "members": 384
+  },
+  "limiter_ratio_repair": {
+    "cause": "Positive subnormal4.94065645841246544e-324cm demand versus8.51498143972058989e-7cm available water overflows quotient BEFORE min(1,...). Actual domain4 of5 request captured unchanged.",
+    "contract": "Keep existing one fraction with sufficient stock, divide only when demand exceeds nonnegative available amount. Quotient then in[0,1]; zero demand and legacy route unchanged. No amount, tolerance, state or retry change.",
+    "actual_baseline": "SIGFPE reproduced O0/O2",
+    "fixed": "Actual request plus seven exact stock/zero/subnormal cases O0/O2 PASS; original DATAQUAL07 1919-case owner unchanged stdout exact.",
+    "diagnostic_build_error": "Initial observer omitted --driver main_water.f90 and built237-provider general project driver; no native result used.65events114.56s retained; corrected202-provider25-recompiled observer used.",
+    "native_O0_O2_pending": true,
+    "expected_compile_seconds": 90,
+    "expected_native_seconds": 5,
+    "timeout_native_seconds": 30
   }
 }
