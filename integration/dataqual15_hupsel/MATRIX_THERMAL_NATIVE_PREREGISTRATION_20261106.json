@@ -1,0 +1,48 @@
+{
+  "baseline": "52a9513b7975dbe7f922f635f771d2d781da8a3d",
+  "workstream": "DATAQUAL15_NATIVE_MATRIX_THERMAL",
+  "scope": "PRIVATE_S5MT0001_FULL_NATIVE_LOGICAL_AND_PUBLICATION_QUALIFICATION",
+  "production_delta": [],
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "source_sha256": {
+    "src/adapter/mod_matrix_thermal_restart_file.f90": "c79014047c28778554788712bdf41806243ca5ddec5ce8a671cd715ef29fc4cc",
+    "app/support/restart_publish.c": "29d4a47904a8c45eaee2f20a9eb92af0eb46ae2a58a5b43225481cabe536425e",
+    "tests/nut-sol/run_matrix_thermal.py": "95b5e5d8b31f1f76318ada9638583d2eb463c1629d2bb3f58f3470a0436634e0",
+    "tests/nut-sol/test_matrix_thermal.f90": "5f2a4792b30825a2dae094c9d910888fecc34430f749d485aae0af94df9cf398",
+    "integration/audits/qualify_matrix_thermal.py": "2b2102a1a5e577ff6a2f6253e80f592f85ae6fd72ee19c08993ef119fb1ebdfd",
+    "tests/dataqual15_hupsel/matrix_thermal_native_policy.py": "cf56db601c48a62537e70b9b9e1d4449c1808d6d10e2e96e3fe3733be638d9a0"
+  },
+  "proposed_postimage_sha256": "f4b2d12b3285b9517ad2ca2bc29cb47b8cd9bc129acb2825bd0e51d6f98d33be",
+  "proposed_delta": [
+    "src/adapter/mod_matrix_thermal_restart_file.f90"
+  ],
+  "overlap": "Canonical unchanged at52a9513b7. Open peer1485 has24 files and no matrix_thermal overlap; no shared numeric/thermal execution redesign.",
+  "contract": "Validate both native logical byte sites before interpretation; writer validates without evaluating malformed bits. Preserve exact valid native bytes. Replace POSIX publication with existing restart API, preserving file flush/atomic replace/directory-sync postcommit-failure semantics (not generation precommit-only API). Windows qualification limited to actual ASCII-path cases.",
+  "invariants": [
+    "solver/retry/tolerance/mass unchanged",
+    "valid native schema/bytes unchanged",
+    "all reader validation before destination assignment",
+    "original numerical/physical assertions unchanged",
+    "restart stage6 post-replacement failure retained",
+    "no source-only production admission"
+  ],
+  "selection": "Actual original full matrix/heat/solute O0/O2 four-node driver and original refinement/negative controls; expected full provider compile5-10min. Essential uncovered risk: two logical bytes can affect continuation branch and certified owner reconstruction; component-only tests cannot establish staged native authority. Reuse exact incumbent/candidate provider prefixes; no unrelated full seasonal/low-air stress.",
+  "required": [
+    "actual original and candidate O0/O2 full native physical/refinement/restart assertions",
+    "properly resealed native invalid logical tokens at both sites before branch",
+    "writer refusal seam with exact authority",
+    "POSIX original semantic negatives and before/after SIGKILL; Windows actual event/termination without POSIX signal claim",
+    "all prior restart API C behavior unchanged (existing canonical evidence, source C unchanged)",
+    "source/object/CRC/native-byte independent remeasurement and data refusals",
+    "current entire unmodified predecessor admission and canonical exact-tree qualification"
+  ],
+  "blocked_claims": [
+    "full seasonal science",
+    "oxygen584 reference accuracy",
+    "arbitrary Unicode Windows Fortran paths",
+    "power-loss/concurrent-writer guarantees"
+  ],
+  "publication_only_counterfactual_sha256": "c54680b239a80e2825c35edbe1f2d525a48f9f305abcf5b963516bb0632acea4",
+  "counterfactual": "Actual original Windows module cannot link: unresolved POSIX fsync. A separately labelled publication-only exact module variant leaves both original logical decode sites unchanged, reuses the coherent current provider cohort and recompiles only this module. It isolates logical validation from the necessary native-publication bridge; it is never labelled original baseline native PASS."
+}
