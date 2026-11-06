@@ -1,7 +1,7 @@
 ! Explicit corrected joint sharp-entry and perched-action graph. No production caller includes this file.
 subroutine joint_entry_candidate(produced)
  type(b111_profile_groundwater_projection_t)::gwl_view
- real(8),allocatable::gwl_distance(:)
+ real(8),allocatable::gwl_distance(:),gwl_z(:)
  type(reference_richards_state_binding_t)::saved_state
  type(reference_richards_workspace_t)::saved_ws
  type(a23bu_worker_context_t)::saved_ctx
@@ -62,9 +62,10 @@ subroutine joint_entry_candidate(produced)
    end if
    lambda(k)=min(1d0,max(0d0,-rp(i)/(rm(i)-rp(i))))
   end do
-  allocate(gwl_distance(n));gwl_distance=0d0
-  gwl_distance(2:n)=abs(grid_z(2:n)-grid_z(1:n-1))
-  call evaluate_b111_profile_groundwater_projection(grid_z(:n),gwl_distance,x,state%pond,gwl_view)
+  allocate(gwl_distance(n),gwl_z(n));gwl_distance=0d0
+  do i=1,n;gwl_z(i)=grid_z(i);end do
+  gwl_distance(2:n)=abs(gwl_z(2:n)-gwl_z(1:n-1))
+  call evaluate_b111_profile_groundwater_projection(gwl_z,gwl_distance,x,state%pond,gwl_view)
   if(k==0.and..not.(gwl_view%valid.and.gwl_view%level_present))goto 990
   allocate(border(n,k),ctest(n,k),corner(k,k),g(k),dh(n),dl(k),a(n),b(n),c(n))
   ctest=0d0;corner=0d0
@@ -94,7 +95,7 @@ subroutine joint_entry_candidate(produced)
      end if
     end if
    end do
-   call evaluate_b111_profile_groundwater_projection(grid_z(:n),gwl_distance,x,state%pond,gwl_view)
+   call evaluate_b111_profile_groundwater_projection(gwl_z,gwl_distance,x,state%pond,gwl_view)
    if(.not.gwl_view%valid)exit
    i=gwl_view%crossing_lower_node
    if(gwl_view%level_present)then
