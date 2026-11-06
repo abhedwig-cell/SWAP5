@@ -270,6 +270,12 @@
     "expected_compile_seconds": 30,
     "expected_prefix_native_seconds": 45,
     "expected_probe_seconds": 30,
-    "main_full481_still_active": true
+    "main_full481_still_active": true,
+    "jacobian_audit": {
+      "question": "Actual linear bordered solves pass, but bounded Newton line search refuses at perched contact52. Compare all112 actual centered head derivatives and local fraction derivative with assembled lowrank/border columns at first failing contact. Distinguish omitted process dependency from full-endpoint fraction secant; no physical/numerical tolerance change or trial fix.",
+      "expected_compile_seconds": 15,
+      "expected_native_seconds": 30,
+      "prior_probe": "240-advance telemetry capped; all first50 actual refusals are bounded line search, not linear solver."
+    }
   }
 }
