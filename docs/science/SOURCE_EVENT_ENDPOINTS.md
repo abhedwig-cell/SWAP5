@@ -39,3 +39,26 @@ already passed that choice. Original-initialization481 and exact own year restar
 remain separate gates, with no stream rebinding.
 
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
+
+## Completed bounded evidence
+
+Strict real-source O0/O2 endpoint contracts and the entire unmodified INT13
+composition pass with their original flags, assertions and exact output identity.
+The first new invalid-huge-extent test caught an overflowing time subtraction;
+its failed receipt is retained and the representability guard now precedes the
+shared comparison. No physical/source tolerance or existing owner behaviour changes.
+
+The actual day80 native replay starts before the capped predecessor and reproduces
+all211 preceding source rows exactly at O0/O2. The selected step runs from
+80.421000000001399 to the exact existing event80.423000000002503, accounts
+`7.4473684250715201e-4 cm` rain, and passes in one attempt with water residual
+`1.501929006511582e-14 cm`. All original independent macro-cell, matrix and trace
+guards execute before the diagnostic stop. The immutable origin is unchanged;
+no native restart is published. Measured O0/O2 times are3.132s and1.215s.
+The diagnostic builder changes only the caller and reuses all201 unchanged,
+validated physical objects; it does not change their cache/source eligibility.
+
+Fresh day-one O0/O2 physical payloads remain byte-exact; all four O0 output CSVs
+are exact. The new original-initialization481 request is active. Exact own80-to81
+and365-to367 checkpoints remain separate current-executable gates; the earlier
+private-model own64-to66 result remains a source-bound historical receipt.
