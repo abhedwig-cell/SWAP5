@@ -1,0 +1,107 @@
+{
+  "status": "EXACT_EXECUTED_SINGLE_PRODUCTION_POSTIMAGE_PERSISTED_LOCAL_COMPLETE_PRESERVATION_PASS_SOURCE_CI_NEXT",
+  "baseline": "fba220aede6b8e4a64f7c48d55065a50855943de",
+  "production_delta": [
+    "src/adapter/mod_matrix_thermal_restart_file.f90"
+  ],
+  "postimage_sha256": "f4b2d12b3285b9517ad2ca2bc29cb47b8cd9bc129acb2825bd0e51d6f98d33be",
+  "local_complete_native_and_old_entry": {
+    "status": "CURRENT_EXACT_COMPLETE_S5MT_NATIVE_POSTIMAGE_AND_UNMODIFIED_PREDECESSOR_PASS",
+    "current_source_head": "7d5d410c51a7cf1d8897e0cef5811c0187dc8465",
+    "current_source_sha256": "f4b2d12b3285b9517ad2ca2bc29cb47b8cd9bc129acb2825bd0e51d6f98d33be",
+    "events": [
+      {
+        "label": "windows-current-build",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_build_evidence.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "posix-current-build",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_build_evidence.py",
+          "--stem",
+          "MATRIX_THERMAL_BUILD_POSIX_20261106"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "broad-science-refusal",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_build_adjudication.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "prepare-private",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_build.py",
+          "--prepare-only",
+          "--output",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-production-20261106\\local-v1\\private-authority"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "windows-reader-writer-termination",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_native_evidence.py"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "posix-original-refinement-sigkill",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_native_evidence.py",
+          "--posix"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "posix-postcommit-failure",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15_hupsel/matrix_thermal_native_evidence.py",
+          "--posix-writer"
+        ],
+        "returncode": 0
+      },
+      {
+        "label": "exact-unmodified-predecessor",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tests/dataqual15/verify_current_native_admission.py",
+          "--output",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-production-20261106\\local-v1\\old-admission"
+        ],
+        "returncode": 0
+      }
+    ],
+    "old_entry_returncode": 0,
+    "whole_scientific_admission": false,
+    "broad_mc_source_gate": "FAILED_RETAINED",
+    "binary_abi": "SAME_PLATFORM_ONLY"
+  },
+  "local_archive_sha256": "bf088da59249490735e48c142d7bc0495b27cee0c01c55ec3b0a73ac9219b9e1",
+  "scope_refusals": 17,
+  "actual_source_status_refusals": 4,
+  "unchanged_old_boundary_tests": 13,
+  "whole_scientific_admission": false,
+  "canonical_admission": false,
+  "next": "Qualify this exact source tree and the strict admission/predecessor bridges. Collect actual exact-fba broad diagnostics and current failed-job logs, retain all failed verdicts, then adjudicate and integrate only the bounded S5MT native source scope. No seasonal science or oxygen584 promotion."
+}
