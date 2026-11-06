@@ -1,8 +1,8 @@
 {
-  "phase": "PROPOSED_DEPLOYMENT_REQUIRES_COMPLETE_NATIVE_QUALIFICATION",
+  "phase": "QUALIFIED_POSTIMAGES_IMPLEMENTED_CURRENT_ADMISSION_PENDING",
   "baseline": "57849a4d3a02abeb54a297be0fde215160309bfd",
   "required_private_pr": 1578,
-  "production_changed": false,
+  "production_changed": true,
   "production_admission": false,
   "scope": "EXISTING_POSIX_AND_BOUNDED_ASCII_WINDOWS_COMPLETE_GENERATION_PUBLICATION",
   "proposed_full_postimage_sha256": {
@@ -26,5 +26,10 @@
     "Actual source-head qualification and precise unchanged-predecessor attribution of broader failures before canonical deployment"
   ],
   "selected_cost": "Reuse immutable actual full postimage O0/O2 model proof from PR1578. Do not rebuild unchanged full providers solely for production deployment; strict source/data/postimage/current-predecessor gates remain required.",
-  "next": "Finish private PR1578 qualification and exact-tree integration, then pin its actual canonical merge as deployment predecessor and implement only these four qualified postimages with the strict successor gate."
+  "next": "Finish private PR1578 qualification and exact-tree integration, then pin its actual canonical merge as deployment predecessor and implement only these four qualified postimages with the strict successor gate.",
+  "deployment_predecessor": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
+  "private_canonical_qualified_head": "eeb9f0e3cf73ac7080412bfcbff498e62d7aab68",
+  "private_canonical_actual_tree": "0abc22b8775e897608bcb05d89ea7e23901eb270",
+  "private_final_workflows": 16,
+  "private_all_success": true
 }

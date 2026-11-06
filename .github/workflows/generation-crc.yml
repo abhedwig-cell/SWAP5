@@ -12,10 +12,16 @@ jobs:
   native-generations:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ${{ runner.temp }}/publication-generation-crc-native-generations-view/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Exact unmodified pre-publication admission authority
+        working-directory: ${{ github.workspace }}
+        run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-generation-crc-native-generations-view"
       - run: |
           test -x /usr/bin/gfortran
           python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
@@ -48,10 +54,16 @@ jobs:
   exact-before:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ${{ runner.temp }}/publication-generation-crc-exact-before-view/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Exact unmodified pre-publication admission authority
+        working-directory: ${{ github.workspace }}
+        run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-generation-crc-exact-before-view"
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Actual exact predecessor diagnostic observations, never old PASS
         if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_CRC_BASELINE_POSIX_20261105.zip') == '' }}
