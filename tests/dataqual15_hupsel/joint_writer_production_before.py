@@ -46,4 +46,3 @@ if __name__=='__main__':
  import sys
  if '--verify'in sys.argv:print(json.dumps(verify(),sort_keys=True))
  else:main()
-
