@@ -38,3 +38,10 @@ admission guard remains untouched: actual exact db42 canonical and this cluster
 both fail its strict production-footprint check. These are retained FAILED
 observations, not current production admission. This private evidence does not
 waive that separate production reconciliation.
+
+Actual POSIX O0/O2 run42240946880 also passes120 refusals per cohort. Its
+SHA-verified artifact is retained as complete capsules and independently audited
+on Windows, including five actual mutations per cohort. Windows capsules are
+independently audited on POSIX. Producer-specific path algebra preserves exact
+Windows and POSIX command/path checks rather than using the auditor host's path
+syntax. The first cross-host audit failure remains retained and corrected.
