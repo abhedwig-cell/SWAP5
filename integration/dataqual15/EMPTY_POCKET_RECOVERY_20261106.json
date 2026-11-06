@@ -1,0 +1,48 @@
+{
+  "workstream": "HY/RT conservative macropore storage normalization",
+  "baseline": "db42f99e2de9cae43dfe04bbf291e8e214edd6f7",
+  "branch": "codex/andelst-empty-pocket-20261106",
+  "implemented": false,
+  "tested": false,
+  "qualified": false,
+  "invariants": [
+    3,
+    5,
+    7,
+    13,
+    22,
+    23,
+    25
+  ],
+  "observed_case": {
+    "source_interval": [
+      43.33800000000041,
+      43.340000000000416
+    ],
+    "domain": 5,
+    "cell": 40,
+    "old_and_new_water_cm": 0,
+    "unbooked_incoming_face_rate_cm_day": 4.5278384241650544e-10,
+    "cell_depth_residual_cm": 9.055676848341176e-13,
+    "receipt_valid": true,
+    "cell_balance_valid": false,
+    "rutter_preparation_ok": true,
+    "actual_failure": "Accepted append cell-water certificate, not Rutter clock, not thermal receipt."
+  },
+  "root_cause": "derive_macropore_standard_storage_view discards positive total<=1e-12 for nondegenerate domains and uses1e-12 packing quanta. Previous special tapered-tip fix preserves tiny stocks only at degenerate tips. This maps a real positive candidate stock tozero and leaves an unbooked terminal face flux.",
+  "contract": "Use the same bottom-up bounded min(remaining,positive capacity) packing for ALL positive stocks/capacities. Zero-volume tips remain wet below the water front as existing qualified branch. Exactly empty domains stayempty. Do not add fluxes, sources, heat or relax trace/mass/timing gates. Same actual candidate drives matrix/macro/history/vertical reconstruction.",
+  "selection": {
+    "component": {
+      "expected_seconds": 30,
+      "reason": "Real production derive/build and vertical reconstruction; regular positive sub-quantum pockets, tapered tips, full/partial domains and invalid controls O0/O2."
+    },
+    "native": {
+      "expected_seconds": 600,
+      "reason": "Concrete new shared physical defect. Corrected original-input481 from initial state and own restart; unchanged historical sharp case remains separately named. No unrelated fullFCI or lowair."
+    }
+  },
+  "next_action": "Remove storage quanta in production owner, execute small real closure O0/O2, then build coherent current original and V2 native closures.",
+  "original481_complete": false,
+  "corrected481_complete": false,
+  "year_restart_complete": false
+}
