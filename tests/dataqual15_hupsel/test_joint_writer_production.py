@@ -30,9 +30,11 @@ def main():
  change('changed-current-reference',lambda d:d['frozen_blobs'].update({'integration/dataqual15_hupsel/JOINT_LIMITER_WRITER_WINDOWS_O0_20261106.json':'0'*40}))
  change('missing-original-consumers',lambda d:d['consumer_sha256'].clear())
  change('changed-original-consumers',lambda d:d['consumer_sha256'].update({next(iter(d['consumer_sha256'])):'0'*64}))
+ change('missing-exact-current-before',lambda d:d['before_sha256'].clear())
+ change('changed-exact-current-before',lambda d:d['before_sha256'].update({next(iter(d['before_sha256'])):'0'*64}))
  for label,bad in cases.items():
   try:g.validate_record(bad)
   except(AssertionError,KeyError,ValueError,TypeError):pass
   else:raise AssertionError('malformed admission accepted: '+label)
- print(json.dumps(dict(status='EXACT_THREE_WRITER_SOURCE_AND_24_SCOPE_REFUSALS_PASS',scope_refusals=len(cases),whole_scientific_admission=False),sort_keys=True))
+ print(json.dumps(dict(status='EXACT_THREE_WRITER_SOURCE_AND_26_SCOPE_REFUSALS_PASS',scope_refusals=len(cases),whole_scientific_admission=False),sort_keys=True))
 if __name__=='__main__':main()
