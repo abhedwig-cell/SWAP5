@@ -157,5 +157,21 @@
     "scope": "EXPLICIT_PRIVATE_RESEARCH_NOT_PRODUCTION_DEFAULT_OR_HISTORICAL_EQUIVALENCE",
     "full481": "PENDING actual quiet run",
     "year_restart": false
+  },
+  "early_v4_diagnosis": {
+    "source_endpoint": 2.923999999999573,
+    "source_sha256": "fc3d243ab60d460def87ed6bdaadf59e1af4ed75b44b80be4877ccd058684f2f",
+    "seed_replay_seconds": 406.33789719990455,
+    "seed_replay_progress_rows_exact": 471,
+    "observer_seconds": 11.520507300039753,
+    "diagnostic_advance_limit": 240,
+    "last_internal_t0": 2.9240011450248597,
+    "last_internal_dt": 5.95719029661268e-11,
+    "entry_node": 34,
+    "implementation_cause": "ctest is allocated aszero, but g=C^T h-threshold is assessed before contact rows are filled on Newton iteration0. This creates artificial10cm constraint error despite h already pinned to threshold. Native telemetry shows1495 k1 refusals among1546 calls, mostlyiteration0, even when nonlinear residual alreadybelow1e-8. Fix initialization order, retain exact same graph and acceptance bounds. Do not change graph selection/physics as previously hypothesized.",
+    "next_action": "Initialize actual border constraint before first g assessment; replay same2924 and65 gates, then fresh original initialization with unchanged model/controls.",
+    "expected_compile_seconds": 15,
+    "expected_probe_seconds": 40,
+    "expected_fresh481_seconds": 1800
   }
 }

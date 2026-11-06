@@ -69,6 +69,17 @@ subroutine joint_entry_candidate(produced)
   if(k==0.and..not.(gwl_view%valid.and.gwl_view%level_present))goto 990
   allocate(border(n,k),ctest(n,k),corner(k,k),g(k),dh(n),dl(k),a(n),b(n),c(n))
   ctest=0d0;corner=0d0
+  ! Form the physical constraint BEFORE its first residual assessment.
+  ! A zero row would report -threshold instead of h-threshold and force
+  ! a spurious ten-centimetre border correction on the first Newton solve.
+  do j=1,k
+   i=abs(nodes(j))
+   if(nodes(j)>0)then
+    ctest(i,j)=1d0
+   else
+    ctest(i,j)=weights(i);ctest(i+1,j)=1d0-weights(i)
+   end if
+  end do
   do it=0,25
    call joint_entry_residual(x,lambda(:k),nodes(:k),r,valid);if(.not.valid)exit
    norm=maxval(abs(r));g=matmul(transpose(ctest),x)
