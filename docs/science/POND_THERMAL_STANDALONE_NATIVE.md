@@ -28,8 +28,8 @@ are refused. Actual POSIX GNU13 execution also passes at source
 `0acf2d234a644531ba6c475192cf0ac1f7575bd4`, workflow42181141849. The downloaded
 artifact digest is checked, and independent remeasurement plus all five evidence
 corruptions pass against its complete provider dependency. Exact final-head
-integration remains required; neither this fixture nor source-only evidence
-admits production.
+qualification and canonical integration are recorded above; neither this fixture
+nor source-only evidence admits production.
 
 Authority: `integration/dataqual15_hupsel/POND_THERMAL_LAYOUT_RECOVERY_20261106.json`.
 The preceding full Windows/POSIX source/object capsules remain immutable

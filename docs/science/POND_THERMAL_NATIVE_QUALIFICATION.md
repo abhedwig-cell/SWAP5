@@ -1,5 +1,9 @@
 # Private pond thermal native logical qualification
 
+Canonical private qualification: PR1584, merge `89a9e1cffc40b65339f9eba4b9451e7a574ccda6`.
+All17 final workflows succeed. The actual merge tree equals qualified source
+`1372a8b47c504102c87119114c2e5d9600ac8f08`. Production admission remains false.
+
 This work qualifies a private native-reader integrity candidate against canonical
 `9a55a1780de67db95a6003ab397f332ed2c0e965`. It does not deploy that candidate or
 change scientific admission. The existing
