@@ -35,6 +35,7 @@ def audit(files):
  for name,digest in json.loads(files['INPUTS.json']).items():assert sha(p.normal(original(name)))==digest
  for name,row in meta['sources'].items():
   raw=files[row['snapshot']];assert sha(raw)==row['sha256']
+  if name.replace('\\','/').startswith(root.replace('\\','/').rstrip('/')+'/'):assert raw==files[local(name,root)]
   if row['kind']=='repository':assert p.normal(raw)==original(row['path'])
   elif row['kind']=='candidate':assert raw==p.candidate(row['path'])
   else:assert raw==files[row['path']]
@@ -144,7 +145,16 @@ def verify(stem,controls=False):
    finally:files[name]=old
  return m['measurement']
 
+def cross(platform):
+ a,b=[json.loads((STORE/('JOINT_LOGICAL_'+platform+'_'+opt+'_20261106.json')).read_text())['members'] for opt in ('O0','O2')]
+ paths=[role+'/'+name+'/'+leaf for role in ('baseline','candidate') for name in p.NAMES for leaf in ('restart.bin','end.bin','fresh.bin')]
+ paths += [role+'/age/'+leaf for role in ('baseline','candidate') for leaf in ('restart.bin.base','proper-base-reexport.bin')]
+ assert all(a[path]==b[path] for path in paths)
+ return dict(same_platform=platform,exact_cross_optimization_files=len(paths),production_admission=False)
+
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--stem',required=True);parser.add_argument('--pack',type=Path);parser.add_argument('--self-test',action='store_true');a=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--stem');parser.add_argument('--pack',type=Path);parser.add_argument('--self-test',action='store_true');parser.add_argument('--cross',choices=('WINDOWS','POSIX'));a=parser.parse_args()
+ if a.cross:print(json.dumps(cross(a.cross),sort_keys=True));raise SystemExit
+ assert a.stem
  if a.pack:pack(a.pack.resolve(),a.stem)
  print(json.dumps(verify(a.stem,a.self_test),sort_keys=True))

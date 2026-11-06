@@ -1,0 +1,52 @@
+name: Private complete age and native N logical reader qualification
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/joint_logical*'
+      - 'tests/dataqual15_hupsel/joint_logical_candidates/**'
+      - 'integration/dataqual15_hupsel/JOINT_LOGICAL*'
+      - '.github/workflows/joint-logical.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: joint-logical-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  complete-readers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact current private boundary and independent Windows raw evidence
+        run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_logical as p;p.guard()"
+          python -B tests/dataqual15_hupsel/joint_logical_evidence.py --stem JOINT_LOGICAL_WINDOWS_O0_20261106 --self-test
+          python -B tests/dataqual15_hupsel/joint_logical_evidence.py --stem JOINT_LOGICAL_WINDOWS_O2_20261106 --self-test
+          python -B tests/dataqual15_hupsel/joint_logical_evidence.py --cross WINDOWS
+      - name: Actual complete POSIX O0/O2 original and private full-module execution
+        run: |
+          for opt in O0 O2; do
+            stem="JOINT_LOGICAL_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_logical_evidence.py --stem "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_logical.py --compiler /usr/bin/gfortran-13 --optimization "$opt" --output "$RUNNER_TEMP/joint-logical/$opt"
+              python -B tests/dataqual15_hupsel/joint_logical_evidence.py --pack "$RUNNER_TEMP/joint-logical/$opt" --stem "$stem" --self-test
+            fi
+          done
+          python -B tests/dataqual15_hupsel/joint_logical_evidence.py --cross POSIX
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: joint-logical-complete-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_LOGICAL_POSIX_*
+            ${{ runner.temp }}/joint-logical/**/RESULT.json
+            ${{ runner.temp }}/joint-logical/**/EVENTS.json
+            ${{ runner.temp }}/joint-logical/**/*.stderr
