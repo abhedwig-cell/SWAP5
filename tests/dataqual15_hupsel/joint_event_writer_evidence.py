@@ -1,5 +1,5 @@
 """Independent deployed source, object, command, native and owner remeasurement."""
-import argparse,io,json,lzma,re,struct,tarfile,zlib
+import argparse,ast,io,json,lzma,re,struct,tarfile,zlib
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import joint_production as g
 import joint_event_writer_runtime as runtime
@@ -52,9 +52,26 @@ def origin(r):
  assert r['production_trees']=={a:g.blob(ref,a)for a in ('src','app','reference')}==writer.guard()
  runner='tests/dataqual15_hupsel/joint_event_writer_runtime.py'
  assert r['runner_sha256']==g.sha(g.raw(ref,runner))==g.sha(g.normal((g.ROOT/runner).read_bytes()))
- for name in ('joint_writer','joint_writer_probe','joint_event_writer','joint_event_writer_runtime'):
+ for name in ('joint_writer','joint_writer_probe','joint_event_writer_runtime'):
   path='tests/dataqual15_hupsel/'+name+'.py'
   assert g.raw(ref,path)==g.raw('HEAD',path)==g.normal((g.ROOT/path).read_bytes())
+ # The helper also contains the independent archive consumer. Consumer-only
+ # path handling/cache changes cannot change already executed cold recipes.
+ # Bind every producer function and top-level runtime assignment literally;
+ # retain full-byte binding for the actual runner and original probe modules.
+ path='tests/dataqual15_hupsel/joint_event_writer.py'
+ def producer(raw):
+  text=g.normal(raw).decode();tree=ast.parse(text);result=[]
+  for node in tree.body:
+   if isinstance(node,ast.FunctionDef)and node.name in('guard','source_record','cold'):result.append(ast.get_source_segment(text,node))
+   elif isinstance(node,ast.Assign):result.append(ast.get_source_segment(text,node))
+   elif isinstance(node,(ast.Import,ast.ImportFrom)):
+    assert all(a.name in('json','subprocess','functools','Path','PureWindowsPath','PurePosixPath','joint_production','joint_production_runtime','joint_writer','joint_logical')for a in node.names)
+    aliases=[(a.name,a.asname)for a in node.names if a.name not in('functools','PureWindowsPath','PurePosixPath')]
+    if aliases:result.append((getattr(node,'module',None),aliases))
+  assert sum(isinstance(n,ast.FunctionDef)and n.name in('guard','source_record','cold')for n in tree.body)==3
+  return result
+ assert producer(g.raw(ref,path))==producer(g.raw('HEAD',path))==producer((g.ROOT/path).read_bytes())
  for name in g.NAMES:
   path='tests/dataqual15_hupsel/joint_writer_candidates/'+Path(g.SOURCES[name]).name
   assert g.raw(ref,path)==g.raw('HEAD',path)==writer.candidate(name)
