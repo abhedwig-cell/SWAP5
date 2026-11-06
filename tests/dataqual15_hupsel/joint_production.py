@@ -10,7 +10,7 @@ ENTRY='tests/dataqual15/verify_current_native_admission.py'
 STATUS='integration/dataqual15/STATUS.json'
 KEY='joint_native_logical_successor_20261106'
 SCOPE='integration/dataqual15_hupsel/JOINT_PRODUCTION_SCOPE_20261106.json'
-GATES={ENTRY,'tests/dataqual15_hupsel/joint_production.py','tests/dataqual15_hupsel/joint_production_runtime.py','tests/dataqual15_hupsel/joint_production_evidence.py','tests/dataqual15_hupsel/test_joint_production.py','.github/workflows/joint-production.yml'}
+GATES={'tests/dataqual15_hupsel/joint_production_before.py',ENTRY,'tests/dataqual15_hupsel/joint_production.py','tests/dataqual15_hupsel/joint_production_runtime.py','tests/dataqual15_hupsel/joint_production_evidence.py','tests/dataqual15_hupsel/test_joint_production.py','.github/workflows/joint-production.yml'}
 normal=lambda b:b.replace(b'\r\n',b'\n')
 sha=lambda b:hashlib.sha256(b).hexdigest()
 canonical=lambda v:json.dumps(v,sort_keys=True,separators=(',',':'))
@@ -37,9 +37,9 @@ def references():
     else:result.add('integration/dataqual15_hupsel/'+m['archive'])
  return result
 def frozen():
- return references()|{'tests/dataqual15_hupsel/'+n+'.py'for n in ('joint_current','joint_current_evidence','joint_current_owner','joint_logical','native_n_crc_runtime','crc_family_runtime')}|{'tests/dataqual15_hupsel/joint_logical_candidates/'+Path(p).name for p in SOURCES.values()}
+ return references()|{'tests/dataqual15_hupsel/'+n+'.py'for n in ('joint_current','joint_current_evidence','joint_current_owner','joint_logical','native_n_crc_runtime','crc_family_runtime','rotation_native_baseline')}|{'tests/dataqual15_hupsel/joint_logical_candidates/'+Path(p).name for p in SOURCES.values()}
 def record_guard(r):
- assert set(r)=={'schema','phase','current_baseline','native_history','scope','whole_scientific_admission','writer_publication_change','peer_source_change','binary_abi','windows_path_scope','predecessor_scope','baseline_production_trees','historical_production_trees','production_delta','postimage_sha256','gate_sha256','frozen_blobs','execution_sha256'}
+ assert set(r)=={'schema','phase','current_baseline','native_history','scope','whole_scientific_admission','writer_publication_change','peer_source_change','binary_abi','windows_path_scope','predecessor_scope','baseline_production_trees','historical_production_trees','production_delta','postimage_sha256','gate_sha256','frozen_blobs','execution_sha256','before_sha256'}
  assert type(r['schema'])is int and r['schema']==1 and r['phase']=='DEPLOYED_WINDOWS_POSIX_QUALIFIED','complete deployed execution required'
  assert r['current_baseline']==BASE and r['native_history']==HISTORY
  assert r['scope']=='SAME_PLATFORM_NATIVE_RAW_LOGICAL_READERS_ONLY'
@@ -53,6 +53,7 @@ def record_guard(r):
  assert r['postimage_sha256']=={n:sha(postimage(n))for n in NAMES}
  records={'integration/dataqual15_hupsel/JOINT_PRODUCTION_'+platform+'_'+opt+'_20261106'+suffix for platform in ('WINDOWS','POSIX')for opt in ('O0','O2')for suffix in ('.json','.tar.xz')}
  assert set(r['execution_sha256'])==records
+ assert set(r['before_sha256'])=={'integration/dataqual15_hupsel/JOINT_PRODUCTION_EXACT_BEFORE_20261106.zip'}
  return True
 def validate_record(r):
  source_guard();record_guard(r)
@@ -62,7 +63,7 @@ def validate_record(r):
   content=(ROOT/name).read_bytes()
   if name.endswith(('.py','.f90','.json')):content=normal(content)
   assert content==raw(BASE,name),'dirty frozen authority: '+name
- for name,digest in r['execution_sha256'].items():
+ for name,digest in {**r['execution_sha256'],**r['before_sha256']}.items():
   content=(ROOT/name).read_bytes()
   if name.endswith('.json'):content=normal(content)
   assert sha(content)==digest and content==raw('HEAD',name),'deployed execution identity: '+name
@@ -88,6 +89,8 @@ def run(out,label,args,cwd,timeout=3000):
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);a=parser.parse_args();guard();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  import joint_production_evidence as evidence
+ import joint_production_before
+ before=joint_production_before.verify()
  measured={};events=[]
  for platform in ('WINDOWS','POSIX'):
   for opt in ('O0','O2'):measured[platform+'_'+opt]=evidence.verify('JOINT_PRODUCTION_'+platform+'_'+opt+'_20261106',True)
@@ -100,7 +103,7 @@ def main():
     events.append(run(out,'reference-owner-'+platform+'-'+opt,['tests/dataqual15_hupsel/joint_current_owner.py','--verify','JOINT_CURRENT_OWNER_'+platform+'_'+opt+'_20261106','--self-test'],reference))
   history=immutable_view(parent,'native-history',HISTORY);views.append(history)
   events.append(run(out,'entire-unmodified-native-history',[ENTRY,'--output',out/'native-history'],history))
-  guard();(out/'RESULT.json').write_text(json.dumps(dict(status='DEPLOYED_THREE_NATIVE_READERS_CURRENT_EXECUTION_AND_IMMUTABLE_HISTORY_PASS',head=git('rev-parse','HEAD'),production_trees=source_guard(),current=measured,history=HISTORY,history_scope='EXACT_PRE_PEER_NATIVE_AUTHORITY_NOT_CURRENT_PEER_PHYSICS',events=events,whole_scientific_admission=False),indent=2)+'\n')
+  guard();(out/'RESULT.json').write_text(json.dumps(dict(status='DEPLOYED_THREE_NATIVE_READERS_CURRENT_EXECUTION_AND_IMMUTABLE_HISTORY_PASS',head=git('rev-parse','HEAD'),production_trees=source_guard(),current=measured,exact_before_diagnostics=before,history=HISTORY,history_scope='EXACT_PRE_PEER_NATIVE_AUTHORITY_NOT_CURRENT_PEER_PHYSICS',events=events,whole_scientific_admission=False),indent=2)+'\n')
  finally:
   for view in reversed(views):subprocess.run(['git','worktree','remove',str(view)],cwd=ROOT,capture_output=True,check=True)
 if __name__=='__main__':main()

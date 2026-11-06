@@ -55,3 +55,27 @@ jobs:
             ${{ runner.temp }}/joint-production-admission/EVENTS.jsonl
             ${{ runner.temp }}/joint-production-admission/*.stdout
             ${{ runner.temp }}/joint-production-admission/*.stderr
+
+  exact-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Actual exact current-baseline broad diagnostic outcomes
+        run: |
+          if test -f integration/dataqual15_hupsel/JOINT_PRODUCTION_EXACT_BEFORE_20261106.zip; then
+            python -B tests/dataqual15_hupsel/joint_production_before.py --verify
+          else
+            python -B tests/dataqual15_hupsel/joint_production_before.py --output "$RUNNER_TEMP/joint-production-before"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-joint-production-before
+          path: |
+            integration/dataqual15_hupsel/JOINT_PRODUCTION_EXACT_BEFORE_20261106.zip
+            ${{ runner.temp }}/joint-production-before/*.stdout
+            ${{ runner.temp }}/joint-production-before/*.stderr
+            ${{ runner.temp }}/joint-production-before/RESULT.json

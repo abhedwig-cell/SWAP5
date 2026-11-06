@@ -40,12 +40,13 @@
     "reactive_n": "b0d5a303a11741d50120b13cd7af6a9bc35b75659d53bb89ad033b0cc3787fc1"
   },
   "gate_sha256": {
-    ".github/workflows/joint-production.yml": "58c95733d6d166209496e9e9412dc051cfbd9c2a99cdae329af1fa838017fc6a",
+    ".github/workflows/joint-production.yml": "47247492a9b477d3ca815a1105ebb166f982617a040dc10d092a47eb97a4637c",
     "tests/dataqual15/verify_current_native_admission.py": "33a703fe1ab2868418856c666340d1cee10852d54839cd11fc31b49a11dd425a",
-    "tests/dataqual15_hupsel/joint_production.py": "b7fe1a3c3ebac766162f38de837a52b58e8fbc0250819fe0fe072c8d1f939787",
+    "tests/dataqual15_hupsel/joint_production.py": "2f891f00f0185a9f872a724e5942d52675e58213be490c8bbee3ed883939052d",
+    "tests/dataqual15_hupsel/joint_production_before.py": "41a532c52bc3f05f8998b5d363338d1e27a38ea6ee4ca36cffb2563c4bb05cdc",
     "tests/dataqual15_hupsel/joint_production_evidence.py": "0b364dc0c1ed9b8889a631f973773d2f33995ef0af274c99134a32c3e89fd366",
     "tests/dataqual15_hupsel/joint_production_runtime.py": "682a06a0eeb48ff0079926274c1f381c52e2cf1968b49babbb7b1275f517cd01",
-    "tests/dataqual15_hupsel/test_joint_production.py": "036606783d76746d0ac85fa30ac21ccf0da6ececa897e2c448fafb5fc6624bcf"
+    "tests/dataqual15_hupsel/test_joint_production.py": "b2312a74307318126af39e94ef078abb693b6b1f484c47982679d2fd3b4bec5c"
   },
   "frozen_blobs": {
     "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_POSIX_O0_20261106.json": "8c2c641fce54afbdc94789bf8c4c4f36863563a1",
@@ -72,7 +73,9 @@
     "tests/dataqual15_hupsel/joint_logical_candidates/mod_age_joint_restart_file.f90": "2f689f646a6dde2835b43f96d59b9f4d0e0b8eda",
     "tests/dataqual15_hupsel/joint_logical_candidates/mod_mineral_joint_restart_file.f90": "5f353e03d636edb4b1fad7a84098bb1b76c42e31",
     "tests/dataqual15_hupsel/joint_logical_candidates/mod_reactive_n_joint_restart_file.f90": "1040620a513b3b628cd77a950c9e103ae23b9efd",
-    "tests/dataqual15_hupsel/native_n_crc_runtime.py": "ab086917dce9a968e428e57eb9e95e709d5e5b93"
+    "tests/dataqual15_hupsel/native_n_crc_runtime.py": "ab086917dce9a968e428e57eb9e95e709d5e5b93",
+    "tests/dataqual15_hupsel/rotation_native_baseline.py": "64f0999a763cf467783898493782024a3044b828"
   },
-  "execution_sha256": {}
+  "execution_sha256": {},
+  "before_sha256": {}
 }

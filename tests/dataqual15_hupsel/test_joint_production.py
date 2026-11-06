@@ -26,9 +26,11 @@ def main():
  change('changed-reference',lambda d:d['frozen_blobs'].update({next(iter(d['frozen_blobs'])):'0'*40}))
  change('missing-execution',lambda d:d['execution_sha256'].pop(next(iter(d['execution_sha256']))))
  change('changed-execution',lambda d:d['execution_sha256'].update({next(iter(d['execution_sha256'])):'0'*64}))
+ change('missing-exact-before',lambda d:d['before_sha256'].clear())
+ change('changed-exact-before',lambda d:d['before_sha256'].update({next(iter(d['before_sha256'])):'0'*64}))
  for label,bad in cases.items():
   try:g.validate_record(bad)
   except(AssertionError,KeyError,ValueError,TypeError):pass
   else:raise AssertionError('malformed admission accepted: '+label)
- print(json.dumps(dict(status='EXACT_THREE_READER_SOURCE_AND_20_SCOPE_REFUSALS_PASS',scope_refusals=len(cases),whole_scientific_admission=False),sort_keys=True))
+ print(json.dumps(dict(status='EXACT_THREE_READER_SOURCE_AND_22_SCOPE_REFUSALS_PASS',scope_refusals=len(cases),whole_scientific_admission=False),sort_keys=True))
 if __name__=='__main__':main()
