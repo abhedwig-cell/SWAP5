@@ -1,5 +1,11 @@
 # Exact complete pond thermal native production successor
 
+Bounded production scope is canonical at PR1588, merge `b4107989d`. Actual merge
+tree equals qualified head `7ede78b1c`. All41 final workflows are terminal:
+25 SUCCESS and16 explicitly adjudicated FAILED, with all19 actual final failed
+job logs retained. Complete Windows/POSIX current and unchanged predecessor
+admission passes. No old failure is relabelled PASS; scientific counts stay unchanged.
+
 This work unit deploys only the complete S5PT0001/2/3/4 adapter postimage
 `91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b`.
 Its predecessor is canonical PR1587 (`46505d617`). The accepted thermal pond
