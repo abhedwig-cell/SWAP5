@@ -24,7 +24,9 @@ def guard():
    stem='integration/dataqual15_hupsel/JOINT_WRITER_'+platform+'_'+opt+'_20261106'
    paths|={stem+'.json',stem+'.tar.xz'}
  for path in paths:
-  assert g.raw('HEAD',path)==g.raw(FROZEN,path)==g.normal((g.ROOT/path).read_bytes())if not path.endswith(('.xz','.zip'))else g.raw('HEAD',path)==g.raw(FROZEN,path)==(g.ROOT/path).read_bytes()
+  raw=(g.ROOT/path).read_bytes()
+  if path.endswith(('.py','.json','.yml','.f90')):raw=g.normal(raw)
+  assert g.raw('HEAD',path)==g.raw(FROZEN,path)==raw,path
  try:writer.guard()
  except AssertionError as error:
   assert str(error)=='exact three-reader production footprint'
