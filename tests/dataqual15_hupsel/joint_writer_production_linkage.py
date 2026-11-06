@@ -5,11 +5,11 @@ import joint_writer_production as g
 import joint_logical as native
 
 def delta(path):
- before=g.raw(g.BASE,path).decode();after=g.runner_postimage(path).decode()
+ before=g.raw(g.BASE,path).decode().splitlines(keepends=True);after=g.runner_postimage(path).decode().splitlines(keepends=True)
  changes=[(tag,a,b,c,d)for tag,a,b,c,d in difflib.SequenceMatcher(None,before,after,autojunk=False).get_opcodes()if tag!='equal']
  assert len(changes)==1 and changes[0][0]=='insert'
  _,a,b,c,d=changes[0];assert a==b and after[:c]+after[d:]==before
- return textwrap.dedent(after[c:d])
+ return textwrap.dedent(''.join(after[c:d]))
 
 def execute(out):
  g.guard_source();r=json.loads((out/'RESULT.json').read_text());assert r['production_trees']==g.guard_source()
