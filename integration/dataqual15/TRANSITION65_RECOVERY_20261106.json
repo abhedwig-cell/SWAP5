@@ -1,0 +1,29 @@
+{
+  "baseline": "6545e21d12d23d7d22f53d7e2f20a43ad5276d61",
+  "branch": "codex/andelst-transition65-20261106",
+  "workstream": "HY/RT corrected original-input Andelst full481 continuation",
+  "source": "4aa0d810f2624f4d07b78b1602ea0a01ea6a8b44",
+  "source_tree_matches_canonical": true,
+  "completed_days": 65,
+  "last_accepted_source_endpoint": 65.17299999999756,
+  "last_attempted_endpoint": 65.17499999999755,
+  "seconds": 700.3719995000865,
+  "censored": false,
+  "maximum_daily_water_residual_cm": 1.1061381684936018e-12,
+  "failure": "Kernel transaction status2 after45 attempts,6solver rejects,38temporal rejects,1 accepted partial substep; no external commit. Do not infer Rutter clock failure: printed accepted clock equalscursor.",
+  "own3to4": {
+    "byte_exact": true,
+    "progress_rows_exact": 504
+  },
+  "year365": false,
+  "whole481": false,
+  "original_historical_equivalence": false,
+  "next_action": "Read-only one-source temporal/full-half and nonlinear observations at immutable actual65.173 diagnostic seed. Distinguish head/contact failure, topology mismatch and numerical-policy floor before changing any physics or tolerance.",
+  "selection": {
+    "expected_compile_seconds": 60,
+    "expected_native_seconds": 30,
+    "reason": "Discriminating one-source readonly replay of current terminal failure; no repeated full native campaign."
+  },
+  "new_storage_pr": 1593,
+  "actual_storage_merge": "6545e21d12d23d7d22f53d7e2f20a43ad5276d61"
+}
