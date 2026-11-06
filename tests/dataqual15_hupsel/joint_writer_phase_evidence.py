@@ -10,6 +10,7 @@ def audit(files):
  assert r['production_admission']is False and r['whole_scientific_admission']is False
  assert r['production_trees']=={p:producer.git(ROOT,'rev-parse',producer.SOURCE+':'+p)for p in('src','app','reference')}
  path='tests/dataqual15_hupsel/joint_writer_phase_cold.py'
+ if subprocess.run(['git','cat-file','-e',r['producer_head']+'^{commit}'],cwd=ROOT,capture_output=True).returncode:subprocess.run(['git','fetch','--no-tags','origin',r['producer_head']],cwd=ROOT,check=True,capture_output=True)
  assert r['producer_sha256']==sha(subprocess.check_output(['git','show',r['producer_head']+':'+path],cwd=ROOT))
  b=json.loads(files['baseline/BUILD.json']);events=json.loads(files['baseline/EVENTS.json']);q=PureWindowsPath if r['platform']=='WINDOWS'else PurePosixPath
  assert r['platform']in('WINDOWS','POSIX')and r['optimization']in('O0','O2')and b['provider_count']==335
