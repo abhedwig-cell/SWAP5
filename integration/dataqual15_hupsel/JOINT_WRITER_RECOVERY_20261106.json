@@ -1,5 +1,5 @@
 {
-  "phase": "FROZEN_PRIVATE_RESEARCH_QUALIFIED_FINAL_CI_PENDING",
+  "phase": "FROZEN_PRIVATE_RESEARCH_QUALIFIED",
   "baseline": "3620ae01e9be7bb0ea8e6348ba50c0474307a586",
   "canonical_reconciled": "d32ebe55cd2ed8ee9e9d8ebe237a19994c1cdc57",
   "pr": 1600,
@@ -36,7 +36,7 @@
       "outcome": "Initial guard refused compressed part00 treated as text; fixed binary-exact comparison only, then entire four-cohort immutable replay passed."
     }
   ],
-  "pending": "Complete final CI and integrate frozen private research only. Next current-source capability requires actual new interception-provider graph qualification before any production writer admission.",
+  "pending": "Next current-source capability requires actual new interception-provider graph qualification before any production writer admission.",
   "production_admission": false,
   "whole_scientific_admission": false,
   "counts": {
@@ -64,5 +64,12 @@
   },
   "frozen_writer_qualification": "5264f3e0335b40df5aa5223cca84e028f5ae617d",
   "peer_delta_reconciliation": "JOINT_WRITER_PEER_RECONCILIATION_20261106.json",
-  "current_physics_qualified": false
+  "current_physics_qualified": false,
+  "reconciled_head": "b365ecf9c1e0aa2c6303c55703b1da532581a9df",
+  "reconciled_workflows": {
+    "success": 14,
+    "retained_failed": 2,
+    "active": 0
+  },
+  "reconciled_adjudication": "JOINT_WRITER_RECONCILED_ADJUDICATION_20261106.json"
 }

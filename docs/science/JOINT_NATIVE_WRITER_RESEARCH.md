@@ -6,7 +6,10 @@ Independent PR1601 subsequently changed the interception endpoint owner and
 solute caller. Those changes are preserved, and this evidence does not qualify
 their current physics. The old current-source guard still refuses that delta;
 a separate typed immutable replay executes every original guard unchanged.
-Canonical private integration remains pending final workflows.
+The qualified private scope is represented by PR1600 and its merge receipt.
+All16 pre-peer workflows passed; after explicit peer reconciliation14 pass
+and2 unchanged current-source guard failures remain FAILED. Their complete logs
+and actual exact-canonical before refusals are retained. No guard is relaxed.
 
 This work unit qualifies complete private age, mineral-N and reactive-N writer
 postimages. Production remains the PR1597/1599 reader successor. No production
@@ -22,7 +25,7 @@ replacement; Windows retains its existing stage6 outcome. This does not adopt
 the generation writer's different precommit-only failure contract.
 
 Qualification reuses only exact source/object/compiler/flag verified unchanged
-providers from the current335 graph. All three private modules and ten complete
+providers from the pinned pre-event335 graph. All three private modules and ten complete
 drivers are freshly compiled. The original four native drivers, obsolete
 reactive witness,24 malformed logical refusals and120 occupied-target controls
 remain executed. All native output bytes must equal the qualified reader
