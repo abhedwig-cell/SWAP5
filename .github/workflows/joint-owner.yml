@@ -1,0 +1,39 @@
+name: Complete joint occupied target atomic refusal
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/joint_owner.py'
+      - 'integration/dataqual15_hupsel/JOINT_OWNER_*'
+      - '.github/workflows/joint-owner.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  complete-occupied:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Four real layouts and three occupied target combinations
+        run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_owner;joint_owner.guard()"
+          for opt in O0 O2; do
+            python -B tests/dataqual15_hupsel/joint_owner.py --verify "JOINT_OWNER_WINDOWS_${opt}_20261106" --self-test
+            stem="JOINT_OWNER_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_owner.py --verify "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_owner.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-owner/$opt"
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: complete-joint-occupied-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_OWNER_POSIX_*
+            ${{ runner.temp }}/joint-owner/**/RESULT.json
+            ${{ runner.temp }}/joint-owner/**/EVENTS.json
+            ${{ runner.temp }}/joint-owner/**/*.stderr
