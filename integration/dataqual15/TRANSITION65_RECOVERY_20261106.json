@@ -1167,5 +1167,30 @@
     "seed_sha256": "4b991f286ad3791f631bfdafe0f02cf0ac8c9f43f1b8d7841cee33978fe06e3a",
     "whole481": false,
     "own_year": false
+  },
+  "lower_contact_v5_contract": {
+    "status": "COMPONENT_O0_O2_PASS_NATIVE_PENDING",
+    "model": "ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5",
+    "real_two_sided_bottom_jump_cm_day": 0.0016855287077411096,
+    "constitutive_capacity_cm_inverse": 4.6659640222812745e-07,
+    "independent_increment_derivative_cm_inverse": 4.665964025005579e-07,
+    "nonlinear_diagnostic_seconds": 808.650228299899,
+    "constitutive_diagnostic_seconds": 62.35224110004492,
+    "bottom_bracket_seconds": 49.95613309997134,
+    "immutable_source_origin_sha256": "1d8428a7e3a65030028dec1732e862c580d467dd258a330d70cf061ac63e696a",
+    "all305_prefix_rows_exact": true,
+    "physical_DT_tolerances_state_schema_unchanged": true,
+    "native_selection": {
+      "scope": "READ_ONLY_ACTUAL_SOURCE245594_TO245596_AFTER_ALL_ORIGINAL_GUARDS",
+      "optimizations": [
+        "O0",
+        "O2"
+      ],
+      "expected_seconds_each": 90,
+      "timeout_seconds_each": 180
+    },
+    "whole481": false,
+    "own_year": false,
+    "historical_original_equivalence": false
   }
 }

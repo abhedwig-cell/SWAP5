@@ -19,6 +19,29 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
+### Proposed lower perched-contact successor
+
+The exact-phase V4 original-initialization run passes the previous245.379
+drainage refusal, then stagnates in source245.594-to245.596. An immutable own245
+observer reproduces all305 preceding source rows exactly and stops deliberately
+at a nonlinear refusal with dt5.841258143846062e-9day. The largest residual is
+9.832380954977182e-6 at node28. The actual constitutive capacity agrees with an
+independent storage-increment derivative. A two-sided probe of the lower perched
+face between nodes27/28 instead finds a0-to0.0016855287077411096cm/day transfer
+jump. This positive-to-negative face is absent from the earlier upper-contact
+graph. It is a distinct implementation gap; neither481 nor year restart passes.
+
+V5 is a proposed private research successor. A separate trial-local lower-contact
+fraction acts on the first cell below that pocket, with the same weighted
+head-plane equality solved in the existing bordered system. Both Newton sides
+must expose that action; the accepted response must use the identical fraction,
+transfer and sorptivity action history. The existing1e-12 publication-plane
+guard, mass/temporal/nonlinear controls, default route and restart schema remain
+unchanged. Fractions are scratch solver coordinates, never persisted state or
+averages of elapsed clocks. Owning implementation:
+`tests/dataqual15/build_joint_bottom_contact_candidate.py`. Qualification remains
+pending; the live V4 stagnation and all diagnostic costs are retained separately.
+
 The quotient-repaired original-initialization request terminates after245 complete
 days and4727.031s, at last completed source245.3769999999992. Maximum daily water
 residual is3.392259196288776e-12cm. Its strict own142-to143 result is byte-exact
