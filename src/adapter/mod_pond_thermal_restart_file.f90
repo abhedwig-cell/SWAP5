@@ -29,6 +29,18 @@ module mod_pond_thermal_restart_file
   end function
  end interface
 contains
+ logical function logical_raw_valid(raw)result(ok)
+  integer(int8),intent(in)::raw(:)
+  integer(int8)::yes(storage_size(.true.)/8),no(storage_size(.false.)/8)
+  yes=transfer(.true.,yes);no=transfer(.false.,no)
+  ok=.false.;if(size(raw)/=size(yes))return
+  ok=all(raw==yes).or.all(raw==no)
+ end function
+ logical function logical_value_valid(value)result(ok)
+  logical,intent(in)::value
+  integer(int8)::raw(storage_size(value)/8)
+  raw=transfer(value,raw);ok=logical_raw_valid(raw)
+ end function
  function heat_vector(p)result(v)
   type(fmr_b110_physical_parameters_t),intent(in)::p
   real(real64),allocatable::v(:)
@@ -156,6 +168,11 @@ contains
    return
   end select
   if(code/=0)return
+  if(.not.logical_value_valid(b%records(1)%time_bound))return
+  if(rutter)then
+   if(.not.logical_value_valid(rutter_record%parameters%bound))return
+   if(.not.logical_value_valid(rutter_record%parameters%surface_irrigation_is_intercepted))return
+  end if
   n=size(theta);pending=path//'.pending'
   open(newunit=u,file=pending,access='stream',form='unformatted',status='new',iostat=io);if(io/=0)return
   writing:block
@@ -220,6 +237,7 @@ contains
   character(8)::tag
   integer::u,io,n,count,code,micro_present
   logical::ok,history,boesten,black,rutter
+  integer(int8)::bound_raw(storage_size(.true.)/8),history_raw(storage_size(.true.)/8)
   type(boesten_evaporation_state_t)::pair
   type(black_evaporation_state_t)::black_pair
   type(rutter_source_restart_t)::rutter_record
@@ -244,10 +262,13 @@ contains
   decoding:block
    associate(r=>b%records(1))
     read(u,iostat=io)tag,b%schema_version,b%parameter_set_identity,r%schema_version,r%kernel_schema_version, &
-     r%column_id,r%parameter_ref,r%forcing_handle,r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
-     n,history,physical_id,count
+     r%column_id,r%parameter_ref,r%forcing_handle,r%template_identity,r%lineage_id,r%revision,r%committed_time,bound_raw, &
+     n,history_raw,physical_id,count
     if(io/=0)exit decoding
     io=1
+    if(.not.logical_raw_valid(bound_raw).or..not.logical_raw_valid(history_raw))exit decoding
+    r%time_bound=all(bound_raw==transfer(.true.,bound_raw))
+    history=all(history_raw==transfer(.true.,history_raw))
     if(.not.ieee_is_finite(r%committed_time))exit decoding
     if(n<1.or.n>256.or.n/=parameters%active_nodes)exit decoding
     if((rutter.and.tag/='S5PT0004').or.(black.and..not.rutter.and.tag/='S5PT0003').or.(boesten.and.tag/='S5PT0002').or. &
@@ -272,6 +293,8 @@ contains
     if(rutter)then
      read(u,iostat=io)micro_present,micro_carry,rutter_record;if(io/=0)exit decoding
      io=1
+     if(.not.logical_value_valid(rutter_record%parameters%bound))exit decoding
+     if(.not.logical_value_valid(rutter_record%parameters%surface_irrigation_is_intercepted))exit decoding
      if(micro_present/=0.and.micro_present/=1)exit decoding
      if(.not.ieee_is_finite(micro_carry))exit decoding
      if(micro_carry<0d0.or.micro_carry>1d0)exit decoding

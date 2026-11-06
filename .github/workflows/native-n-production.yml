@@ -24,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Exact unmodified pre-S5MT admission authority
         working-directory: ${{ github.workspace }}
-        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$GITHUB_WORKSPACE/.s5mt-thermal-native-n-production-current-native"
+        run: python3 -B tests/dataqual15_hupsel/pond_thermal_production.py --prepare-legacy-matrix --output "$GITHUB_WORKSPACE/.s5mt-thermal-native-n-production-current-native"
       - name: Exact unmodified pre-publication admission authority
         working-directory: ${{ github.workspace }}/.s5mt-thermal-native-n-production-current-native/predecessor
         run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-native-n-production-current-native-view"
