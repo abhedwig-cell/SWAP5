@@ -85,3 +85,35 @@ Its day-one physical payload remains byte-exact to the public predecessor;
 maximum completed daily water residual is1.1053441148489718e-15cm. This preserves
 the default control evidence; it is neither a two-day PASS nor a terminal model
 refusal. Corrected contact completion cannot be reported as historical equivalence.
+
+## Exact committed rain phases
+
+An independent integral of the actual2630-event input finds three early phase
+changes in the later245-day run. The legacy caller uses `event_end<=cursor+1e-12`
+at startup and before each window. At32.75699999999695, this switches from
+0.32236842104868124 to9.423076923794186cm/day before the actual event
+32.75699999999779. That assigns7.6304019339372755e-12cm extra rain. Two similar
+cases at19.002 and19.60599999999928 remove smaller packets. Net over245 days is
+6.789230663813371e-12cm extra allocation; the internally closed water budget
+cannot detect a consistently wrong input rate. This negative is retained, with
+no new tolerance or PASS label.
+
+The pure `select_interception_event_index` validates the finite, ordered event
+curve and current index, then changes phase only at the actual committed event
+endpoint. Stale early indices, exhausted curves and invalid inputs return zero
+index and `INTWIN_INVALID`. Both native caller sites use a separate output index.
+Existing64-epsilon source identity, endpoint selection, mass/temporal/nonlinear
+gates, physical DT controls, input files, state and schema remain unchanged.
+
+The literal original caller loop reproduces all three defects in real Fortran
+at O0/O2. The corrected phase owner preserves each actual tiny packet whole and
+over two accepted halves, selects the next phase at its exact endpoint, and passes
+ordinary/refusal controls. The entire unmodified INT13 composition retains its
+original strict flags and exact O0/O2 output. Fresh O0 day-one physical payload
+and all four CSVs, and O2 day-one payload, remain byte-exact to the predecessor.
+The new original-initialization481 request and strict own19-to20,32-to33 and
+365-to367 are separate current-executable gates; no older stream is rebound.
+
+Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`,
+`TRANSITION245_EVIDENCE_20261106.zip` and `CURRENT245_RECOVERY_EVIDENCE_20261106.zip`
+in `integration/dataqual15/`.

@@ -103,3 +103,12 @@ the final qualified candidate. Focused Linux contracts and combined strict
 documentation pass; the peer private-writer evidence changes no relevant
 Andelst source or test. The full native O0/O2 probe/build/day-one evidence is
 retained in `integration/dataqual15/LIMITER_RATIO_EVIDENCE_20261106.zip`.
+
+The subsequent corrected V4 request completes245 days, then encounters the
+existing small-drainage availability gate. The [current-drainage successor](ANDELST_JOINT_CONTACT_RESEARCH.md#current-drainage-through-zero-and-exact-source-phases)
+explicitly reuses the already admitted homogeneous signed distribution in the
+private coupled model. It retains the full nonzero transfer and preserves the
+public default refusal. Actual same-state O0/O2 source continuations pass with
+all195 rows exact. The separate early rain-phase correction requires a fresh
+original-initialization481 request; this is not a completed historical run or
+whole-science promotion.

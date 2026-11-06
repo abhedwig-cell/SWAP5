@@ -906,7 +906,8 @@
       "seconds": 19.781546499812976,
       "physical_payload_exact_previous": true,
       "all4CSV_exact": true
-    }
+    },
+    "O2_day1_payload_exact_previous": true
   },
   "current245_repair_selection": {
     "implementation": "Private V4 explicitly reuses existing homogeneous signed DIVDRA tiny-transfer extension in callback, trial entry and directional response; default/public legacy guard remains unchanged. Real scalar is retained, not clamped to zero.",
@@ -1014,5 +1015,11 @@
     "last_completed_source_interval": 245.3769999999992,
     "maximum_daily_water_residual_cm": 3.392259196288776e-12,
     "checkpoint245_sha256": "db130380dc9b53a3de557cd2d2fb1b589f25e6cc5e79ea109919d79141faac11"
+  },
+  "current245_recovery_evidence": {
+    "archive": "CURRENT245_RECOVERY_EVIDENCE_20261106.zip",
+    "sha256": "0cacd7ad95c50765ee241c31fce2317386abe1106b5cfef063a0bc6fa32204dd",
+    "bytes": 7445364,
+    "members": 930
   }
 }
