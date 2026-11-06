@@ -40,3 +40,13 @@ negative-current guard launches are retained separately. Their old workflow
 verdicts remain FAILED on the new source; they are not current production gates
 and are not rewritten to accept a source-only exception. Full deployed execution
 and the strict new typed production route are mandatory instead.
+
+Canonical production admission closes at PR1597 (`fe39e148b`), with the actual
+merge tree exactly equal to qualified head84281370e and the tested merge.
+Windows and POSIX complete typed gates pass, including22 scope refusals, all
+original reference auditors and the entire unchanged6bc native history. All38
+source-head workflows are terminal:20 SUCCESS and18 explicitly adjudicated
+FAILED, with all21 actual final failed-job logs preserved. Scientific counts
+remain2/3 execution and0/3 scientific. The admission is only the three deployed
+same-platform readers; writer/publication, peer numerical physics and whole
+scientific accuracy are not expanded.
