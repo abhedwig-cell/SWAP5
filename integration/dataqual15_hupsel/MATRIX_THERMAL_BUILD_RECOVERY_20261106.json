@@ -1,5 +1,5 @@
 {
-  "status": "ACTUAL_WINDOWS_POSIX_COMPLETE_BUILD_AND_NATIVE_EVIDENCE_PASS_BROAD_MC_SOURCE_REFUSAL_ADJUDICATED_FINAL_TREE_NEXT",
+  "status": "QUALIFIED_PORTABLE_COMPLETE_NATIVE_BUILD_CANONICALLY_CLOSED",
   "baseline": "60700e1bd3f934bbf28b486f7019c707a2f2dda5",
   "runner": "tests/nut-sol/run_matrix_thermal.py",
   "owner": "tests/dataqual15_hupsel/matrix_thermal_build.py",
@@ -11,7 +11,7 @@
   "production_source_changed": false,
   "production_admission": false,
   "whole_scientific_admission": false,
-  "next": "Wait final source workflows to terminal, inspect and retain the actual final MC failed-job diagnostic without relabelling it PASS. Check all focused build/preservation gates, independent full Windows/POSIX archive replay and exact proposed merge tree, then canonically integrate this build-only prerequisite. Production module/admission remain unchanged.",
+  "next": "Implement the separately preregistered single-module S5MT0001 production successor from canonical fba220aed, with a strict exact predecessor admission projection and no broad scientific promotion. The actual portable full native build and immutable Windows/POSIX evidence are complete; do not repeat those unchanged full compiles.",
   "pr": 1582,
   "qualified_build_head": "684ad5b236b3acf36c1a273540ae71eb1640572e",
   "full_posix_run": 42159449308,
@@ -25,5 +25,15 @@
     "failed": 1,
     "failed_verdict": "MC-SOL01 broad DATAQUAL12 source gate remains FAILED; current full six-case native/refinement/SIGKILL stages pass; actual predecessor reaches same first unreviewed-delta refusal, not identical full source delta or later science pass"
   },
-  "source_footprint_refusals": 2
+  "source_footprint_refusals": 2,
+  "canonical_receipt": "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_CANONICAL_RECEIPT_20261106.json",
+  "canonical_merge": "fba220aede6b8e4a64f7c48d55065a50855943de",
+  "qualified_head": "233cc222f79ef42055723a1964feeb2c75f4f71f",
+  "qualified_tree": "ac02481fd882553771ee893a42e2646aaca5f874",
+  "final_source_checks": {
+    "total": 16,
+    "success": 15,
+    "failed": 1,
+    "failed_verdict": "Actual final MC broad DATAQUAL12 source refusal retained;426 native binary members and six input sets exactly match the retained initial native/refinement evidence. No broad science PASS."
+  }
 }

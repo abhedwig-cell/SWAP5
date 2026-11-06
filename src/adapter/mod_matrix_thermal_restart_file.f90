@@ -1,4 +1,4 @@
-! S5MT0001: one POSIX generation, water/heat/solute, same-platform ABI.
+! S5MT0001: one native generation, water/heat/solute, same-platform ABI.
 module mod_matrix_thermal_restart_file
  use iso_fortran_env,only:real64,int64,int32,int8,iostat_end
  use iso_c_binding,only:c_int,c_char,c_null_char
@@ -20,25 +20,24 @@ module mod_matrix_thermal_restart_file
  private
  public::write_matrix_thermal_restart,read_matrix_thermal_restart
  interface
-  integer(c_int) function rename_c(a,b)bind(C,name='rename')
+  integer(c_int) function rename_c(a,b)bind(C,name='swap5_restart_publish')
    import c_int,c_char
    character(c_char),intent(in)::a(*),b(*)
   end function
-  integer(c_int) function open_c(a,b)bind(C,name='open')
-   import c_int,c_char
-   character(c_char),intent(in)::a(*)
-   integer(c_int),value::b
-  end function
-  integer(c_int) function sync_c(a)bind(C,name='fsync')
-   import c_int
-   integer(c_int),value::a
-  end function
-  integer(c_int) function close_c(a)bind(C,name='close')
-   import c_int
-   integer(c_int),value::a
-  end function
  end interface
 contains
+ logical function logical_raw_valid(raw)result(ok)
+  integer(int8),intent(in)::raw(:)
+  integer(int8)::yes(storage_size(.true.)/8),no(storage_size(.false.)/8)
+  yes=transfer(.true.,yes);no=transfer(.false.,no)
+  ok=.false.;if(size(raw)/=size(yes))return
+  ok=all(raw==yes).or.all(raw==no)
+ end function
+ logical function logical_value_valid(value)result(ok)
+  logical,intent(in)::value
+  integer(int8)::raw(storage_size(value)/8)
+  raw=transfer(value,raw);ok=logical_raw_valid(raw)
+ end function
  function heat_vector(p)result(v)
   type(fmr_b110_physical_parameters_t),intent(in)::p
   real(real64),allocatable::v(:)
@@ -51,12 +50,6 @@ contains
     h%f_quartz,h%f_clay,h%f_organic,h%fkk_qco_dry,h%fk_qco_dry,h%fkk_qco_wet,h%fk_qco_wet, &
     h%analytic_mean_temperature_c,h%analytic_amplitude_c,h%analytic_reference_day,h%analytic_damping_depth_cm]
   end associate
- end function
- integer function synchronize(path)result(st)
-  character(*),intent(in)::path
-  integer(c_int)::fd,rc
-  st=1;fd=open_c(path//c_null_char,0_c_int);if(fd<0)return
-  st=sync_c(fd);rc=close_c(fd);if(rc/=0)st=1
  end function
  subroutine bytes(path,a,st)
   character(*),intent(in)::path
@@ -116,6 +109,7 @@ contains
   open(newunit=u,file=pending,access='stream',form='unformatted',status='new',iostat=io);if(io/=0)return
   writing:block
    associate(r=>b%records(1))
+    if(.not.logical_value_valid(r%time_bound).or..not.logical_value_valid(history))exit writing
     write(u,iostat=io)'S5MT0001',b%schema_version,b%parameter_set_identity,r%schema_version,r%kernel_schema_version, &
      r%column_id,r%parameter_ref,r%forcing_handle,r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
      n,history,identity%parameter_set_id,size(hv),hv
@@ -138,12 +132,7 @@ contains
    write(u,iostat=io)crc32(a);if(io/=0)exit writing
    flush(u,iostat=io);if(io/=0)exit writing
    close(u,iostat=io);if(io/=0)exit writing
-   if(synchronize(pending)/=0)exit writing
    code=rename_c(pending//c_null_char,path//c_null_char);if(code/=0)exit writing
-   slash=index(path,'/',back=.true.);parent='.'
-   if(slash==1)parent='/'
-   if(slash>1)parent=path(:slash-1)
-   if(synchronize(parent)/=0)exit writing
    status=0
   end block writing
   inquire(unit=u,opened=opened)
@@ -169,6 +158,7 @@ contains
   integer(int8),allocatable::a(:)
   integer(int32)::checksum
   integer(int8)::extra
+  integer(int8)::bound_raw(storage_size(.true.)/8),history_raw(storage_size(.true.)/8)
   real(real64),allocatable::v(:),expected(:),hv(:),want_heat(:),temperature(:),derivative(:), &
    theta(:),concentration(:),dissolved(:),sorbed(:)
   real(real64)::time
@@ -190,10 +180,13 @@ contains
   decoding:block
    associate(r=>b%records(1))
     read(u,iostat=io)tag,b%schema_version,b%parameter_set_identity,r%schema_version,r%kernel_schema_version, &
-     r%column_id,r%parameter_ref,r%forcing_handle,r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
-     n,history,physical_id,count
+     r%column_id,r%parameter_ref,r%forcing_handle,r%template_identity,r%lineage_id,r%revision,r%committed_time,bound_raw, &
+     n,history_raw,physical_id,count
     if(io/=0)exit decoding
     io=1
+    if(.not.logical_raw_valid(bound_raw).or..not.logical_raw_valid(history_raw))exit decoding
+    r%time_bound=all(bound_raw==transfer(.true.,bound_raw))
+    history=all(history_raw==transfer(.true.,history_raw))
     if(tag/='S5MT0001'.or.n<1.or.n>256.or.n/=parameters%active_nodes)exit decoding
     if(physical_id/=parameters%parameter_set_id.or.count/=size(want_heat))exit decoding
     allocate(hv(count));read(u,iostat=io)hv;if(io/=0)exit decoding

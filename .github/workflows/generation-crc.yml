@@ -12,12 +12,18 @@ jobs:
   native-generations:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/.s5mt-thermal-generation-crc-native-generations/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Exact unmodified pre-publication admission authority
+      - name: Exact unmodified pre-S5MT admission authority
         working-directory: ${{ github.workspace }}
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$GITHUB_WORKSPACE/.s5mt-thermal-generation-crc-native-generations"
+      - name: Exact unmodified pre-publication admission authority
+        working-directory: ${{ github.workspace }}/.s5mt-thermal-generation-crc-native-generations/predecessor
         run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-generation-crc-native-generations-view"
       - working-directory: ${{ runner.temp }}/publication-generation-crc-native-generations-view/predecessor
         run: |
@@ -58,12 +64,18 @@ jobs:
   exact-before:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/.s5mt-thermal-generation-crc-exact-before/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Exact unmodified pre-publication admission authority
+      - name: Exact unmodified pre-S5MT admission authority
         working-directory: ${{ github.workspace }}
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$GITHUB_WORKSPACE/.s5mt-thermal-generation-crc-exact-before"
+      - name: Exact unmodified pre-publication admission authority
+        working-directory: ${{ github.workspace }}/.s5mt-thermal-generation-crc-exact-before/predecessor
         run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-generation-crc-exact-before-view"
       - working-directory: ${{ runner.temp }}/publication-generation-crc-exact-before-view/predecessor
         run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt

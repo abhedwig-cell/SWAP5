@@ -1,0 +1,182 @@
+{
+  "before_zip_sha256": "ce66b593b516b5e4a64286c44d60106afc233fd5287c2b1b183b507a7f800293",
+  "source_failure_zip_sha256": "baccef39f8553c8962f33d385a24d904a764312ee73e6a31a02a02c84b85b385",
+  "deployed_mc_zip_sha256": "75ed91f749ee855d9029583f06e06b712a857dfd38101b27dcfc8c5cd690d121",
+  "adjudicated": [
+    {
+      "run": 42167152783,
+      "job": 127726165157,
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "case": "p2e02",
+      "current_signature": "mod_drainage_dramet3_response.mod",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167152795,
+      "job": 127726165156,
+      "workflow": "SWAP5-PERF01 exact implementation admission",
+      "case": "performance",
+      "current_signature": "AssertionError: unreviewed delta",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151011,
+      "job": 127726159291,
+      "workflow": "PUB-P2E07 Reference cancellation floor",
+      "case": "p2e07",
+      "current_signature": "P2E07 mutated src or reference",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151180,
+      "job": 127726159721,
+      "workflow": "PUB-ME D1 transition authority",
+      "case": "d1",
+      "current_signature": "D1 workunit changed production/reference source",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151224,
+      "job": 127726159910,
+      "workflow": "PUB-ME D3 origin authority",
+      "case": "d3",
+      "current_signature": "D3 changed production/reference source",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167150949,
+      "job": 127726159630,
+      "workflow": "Hupsel production native crop logical successor",
+      "case": "logical-owner",
+      "current_signature": "rotation_native_admission.py",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151032,
+      "job": 127726159773,
+      "workflow": "Registered Grassgrowth thermal production profile",
+      "case": "thermal-owner",
+      "current_signature": "thermal_profile_production.py",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167150989,
+      "job": 127726159490,
+      "workflow": "PUB-P2E04 Reference B/C sweeps",
+      "case": "p2e04",
+      "current_signature": "mod_drainage_dramet3_response.mod",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151679,
+      "job": 127726161355,
+      "workflow": "PUB-P2E06 Reference local-balance scaling",
+      "case": "p2e06",
+      "current_signature": "reference tree differs from P2E05 canonical base",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167150980,
+      "job": 127726159392,
+      "workflow": "PUB-P2E04 Reference failure census",
+      "case": "census",
+      "current_signature": "mod_drainage_dramet3_response.mod",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151575,
+      "job": 127726161144,
+      "workflow": "PUB-P2E10 broad E0 paired matrix",
+      "case": "p2e10",
+      "current_signature": "PUB_P2E10_GATE_FAIL P2E10 mutated src or reference",
+      "classification": "EARLIER_CURRENT_SOURCE_REFUSAL_DISTINCT_FROM_LATER_PREDECESSOR_FAILURE",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167152774,
+      "job": 127726165588,
+      "workflow": "PUB-P2E08 Reference valid calibration domain",
+      "case": "p2e08",
+      "current_signature": "P2E08 mutated src or reference relative to reconciled canonical",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167152823,
+      "job": 127726165026,
+      "workflow": "PUB-P2E09 Reference-only threshold freeze",
+      "case": "p2e09",
+      "current_signature": "PUB_P2E09_GATE_FAIL P2E09 mutated src or reference relative to current canonical merge-base",
+      "classification": "EARLIER_CURRENT_SOURCE_REFUSAL_DISTINCT_FROM_LATER_PREDECESSOR_FAILURE",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151614,
+      "job": 127726161584,
+      "workflow": "Hupsel production diagnostic source successor",
+      "case": "logical-owner",
+      "current_signature": "rotation_native_admission.py",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151614,
+      "job": 127726161837,
+      "workflow": "Hupsel production diagnostic source successor",
+      "case": "logical-owner",
+      "current_signature": "rotation_native_admission.py",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151017,
+      "job": 127726159581,
+      "workflow": "MC-SOL01 dynamic accepted temperature decay",
+      "case": "mc-source",
+      "current_signature": "AssertionError: unreviewed delta",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151211,
+      "job": 127727286290,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151211,
+      "job": 127727286315,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42167151211,
+      "job": 127727286394,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "ACTUAL_SAME_FIRST_REFUSAL_NOT_OLD_PASS",
+      "verdict": "FAILED_RETAINED"
+    }
+  ],
+  "deployed_six_cases": true,
+  "all426_native_files_exact": true,
+  "whole_scientific_admission": false,
+  "old_red_pass_claim": false
+}
