@@ -61,7 +61,7 @@ def origin(r):
 def audit(files):
  r=json.loads(files['RESULT.json']);assert r['status']=='PRIVATE_THREE_WRITER_PUBLICATION_PASS'and r['baseline']==writer.BASE
  assert r['production_admission']is False and r['whole_scientific_admission']is False;origin(r)
- platform=r['platform'];assert platform in ('WINDOWS','POSIX')and r['optimization']in ('O0','O2');q=PureWindowsPath if platform=='WINDOWS'else PurePosixPath;root=q(r['root']);repo=q(r['repo_root']);old={k.removeprefix('providers/'):v for k,v in files.items()if k.startswith('providers/')};writer.audit_cold(old,platform,r['optimization']);b=json.loads(old['baseline/BUILD.json']);meta=json.loads(old['PROVENANCE.json']);before=json.loads(old['candidate/EVENTS.json']);oldroot=meta['root']
+ platform=r['platform'];assert platform in ('WINDOWS','POSIX')and r['optimization']in ('O0','O2');q=PureWindowsPath if platform=='WINDOWS'else PurePosixPath;root=q(r['root']);repo=q(r['repo_root']);old={k.removeprefix('providers/'):v for k,v in files.items()if k.startswith('providers/')};writer.audit_cold(old,platform,r['optimization']);b=json.loads(old['baseline/BUILD.json']);meta=json.loads(old['PROVENANCE.json']);before=json.loads(old['baseline/EVENTS.json']);oldroot=meta['root']
  assert r['compiler']==b['compiler'];expected_flags=[f for f in b['flags']if not f.startswith(('-I','-J'))]+['-I'+str(root/'build'),'-I'+str(root/'providers'/'baseline'),'-I'+str(root/'providers'/'fixture'),'-I'+str(repo/'tests/nut-reactive'),'-J'+str(root/'build')];assert r['flags']==expected_flags
  sources=runtime.driver_sources(old);events=json.loads(files['EVENTS.json']);bindings=r['bindings'];assert len(bindings)==335
  expected_objects=[];new_objects=[]
@@ -98,18 +98,18 @@ def audit(files):
  assert len([e for e in events if e['label'].endswith('-driver')])==10 and len([e for e in events if e['label'].endswith('-link')])==10
  def translated(arg):
   for name in (*g.NAMES,'reactive_original'):
-   oldexe=str(q(oldroot)/'candidate'/(name+('.exe'if platform=='WINDOWS'else'-driver')))
+   oldexe=str(q(oldroot)/'baseline'/(name+('.exe'if platform=='WINDOWS'else'-driver')))
    if arg==oldexe:return str(root/r['executables']['native-'+name]['executable'])
-  prefix=str(q(oldroot)/'candidate')
+  prefix=str(q(oldroot)/'baseline')
   if arg.replace('\\','/').startswith(prefix.replace('\\','/')+'/'):return str(root/runtime.local(arg,prefix))
   return arg
  prior=[e for e in before if e['label']not in ('provider','driver','link')];actual=[e for e in events[:r['native_events']]if e['label']not in ('provider','native-driver','native-link','publisher','shim')];assert len(prior)==len(actual)
  for a,c in zip(prior,actual):
   assert c['label']==a['label']and c['command']==[translated(x)for x in a['command']]and c['returncode']==a['returncode']
   if c['label']=='original-reactive':assert c['returncode']!=0 and b'organic-process rejection rolls water back'in files[c['stdout']]
-  else:assert c['returncode']==0 and g.normal(files[c['stdout']])==g.normal(old['candidate/'+a['stdout']])
+  else:assert c['returncode']==0 and g.normal(files[c['stdout']])==g.normal(old['baseline/'+a['stdout']])
  for name in g.NAMES:
-  retained={k.removeprefix('candidate/'):v for k,v in old.items()if k.startswith('candidate/'+name+'/')}
+  retained={k.removeprefix('baseline/'):v for k,v in old.items()if k.startswith('baseline/'+name+'/')}
   deployed={k:v for k,v in files.items()if k.startswith(name+'/')};assert retained==deployed,'complete original native files: '+name
  proper=r['native']['proper'];logical=r['native']['logical'];assert len(proper)==4 and len(logical)==24
  for row in proper:
@@ -145,6 +145,11 @@ def verify(stem,controls=False):
  assert {n:g.sha(b)for n,b in files.items()}==m['members'];assert audit(files)==m['measurement']
  if controls:
   r=json.loads(files['RESULT.json']);obj=next(x for x in r['bindings']if x['replacement']=='age');paths=[r['source_snapshots']['age']['path'],runtime.local(obj['object'],r['root']),r['executables']['native-age']['source'],r['executables']['owner-age']['source'],'age/restart.bin.history.2.bin',r['occupied'][0]['key']+'.after','EVENTS.json',r['executables']['native-age']['executable'],'publisher.c','shim.c','publication-age-history/2/authority.pending','publication-age-history/before/fresh'];assert len(set(paths))==12
+  cold=json.loads(files['providers/PROVENANCE.json']);build=json.loads(files['providers/baseline/BUILD.json'])
+  changed=next((source,row)for source,row in cold['sources'].items()if row['path']=='src/runtime/mod_interception_source_window_runtime.f90')
+  index=list(build['sources_sha256']).index(changed[0]);cold_object=list(build['objects_sha256'])[index]
+  paths+=['providers/'+changed[1]['snapshot'],'providers/'+runtime.local(cold_object,cold['root'])]
+  assert len(set(paths))==14
   for name in paths:
    old=files[name];files[name]=b''
    try:audit(files)
