@@ -31,6 +31,7 @@ jobs:
               python -B tests/dataqual15_hupsel/joint_writer_production_evidence.py --stem "$stem" --self-test
             else
               python -B tests/dataqual15_hupsel/joint_writer_production_runtime.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-writer-production/$opt"
+              python -B tests/dataqual15_hupsel/joint_writer_production_linkage.py --output "$RUNNER_TEMP/joint-writer-production/$opt"
             fi
           done
       - name: Typed admission and entire unchanged admitted native authority

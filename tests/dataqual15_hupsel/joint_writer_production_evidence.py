@@ -125,7 +125,11 @@ def audit(files):
  assert all(e['stdout']in files and e['stderr']in files for e in events)
  assert all(e['returncode']==0 for e in events if e['label']!='original-reactive')
  publication_audit(files,r,root)
- return dict(deployed_modules=3,publication_cases=24,actual_process_terminations=8,qualified_current_cold_graph=335,unchanged_provider_objects_from_current_cold_graph=332,complete_drivers=10,logical_refusals=24,occupied_refusals=120,original_native_events=len(prior),whole_scientific_admission=False)
+ normal_launches=0
+ if 'production-linkage/RESULT.json'in files:
+  import joint_writer_production_linkage as linkage
+  normal_launches=linkage.audit(files,r,root)
+ return dict(deployed_modules=3,publication_cases=24,actual_process_terminations=8,qualified_current_cold_graph=335,unchanged_provider_objects_from_current_cold_graph=332,complete_drivers=10,logical_refusals=24,occupied_refusals=120,original_native_events=len(prior),production_linkage_native_launches=normal_launches,whole_scientific_admission=False)
 def pack(out,stem):
  files={p.relative_to(out).as_posix():p.read_bytes()for p in out.rglob('*')if p.is_file()and not p.is_relative_to(out/'providers')};measured=audit(files);buffer=io.BytesIO();seen={}
  with tarfile.open(fileobj=buffer,mode='w:xz')as t:
@@ -143,6 +147,10 @@ def verify(stem,controls=False):
   other=next(x for x in r['bindings']if x['replacement']=='mineral')
   paths += [r['source_snapshots']['mineral']['path'],r['source_snapshots']['reactive_n']['path'],runtime.local(other['object'],r['root']),r['executables']['publication-age']['source']]
   assert len(set(paths))==16
+  if 'production-linkage/RESULT.json'in files:
+   link=json.loads(files['production-linkage/RESULT.json'])
+   paths+=['production-linkage/publisher.c','production-linkage/'+link['rows'][0]['executable'],'production-linkage/native/EVENTS.json','production-linkage/native/age/end.bin']
+   assert len(set(paths))==20
   for name in paths:
    old=files[name];files[name]=b''
    try:audit(files)

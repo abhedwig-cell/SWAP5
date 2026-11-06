@@ -15,6 +15,7 @@ SCOPE='integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_SCOPE_20261106.json
 GATES={ENTRY,'tests/dataqual15_hupsel/joint_writer_production.py','tests/dataqual15_hupsel/joint_writer_production_runtime.py','tests/dataqual15_hupsel/joint_writer_production_evidence.py','tests/dataqual15_hupsel/test_joint_writer_production.py','.github/workflows/joint-writer-production.yml'}
 RUNNERS={'tests/nut-sol/run_age.py','tests/nut-mineral/run_mineral.py','tests/nut-reactive/run_reactive.py'}
 GATES|=RUNNERS
+GATES.add('tests/dataqual15_hupsel/joint_writer_production_linkage.py')
 git=old.git
 raw=old.raw
 blob=old.blob
@@ -95,6 +96,7 @@ def validate_record(r):
   content=(ROOT/p).read_bytes()
   if p.endswith('.json'):content=normal(content)
   assert sha(content)==digest and content==raw('HEAD',p),'deployed execution identity '+p
+  if p.endswith('.json'):assert json.loads(content)['measurement']['production_linkage_native_launches']==56,'complete uninstrumented production linkage required'
  current=json.loads((ROOT/STATUS).read_text());addition=current.pop(KEY)
  assert old.canonical(addition)==old.canonical(expected_status())
  assert old.canonical(current)==old.canonical(json.loads(raw(BASE,STATUS))),'previous status and types preserved'
