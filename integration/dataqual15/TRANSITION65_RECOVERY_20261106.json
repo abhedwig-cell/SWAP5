@@ -317,6 +317,22 @@
       "expected_compile_seconds": 15,
       "expected_native_seconds": 60,
       "timeout_seconds": 180
+    },
+    "complete_jacobian_terminal": {
+      "censored": true,
+      "seconds": 180.5083796000108,
+      "last_internal_cursor": 64.41579717254925,
+      "full_source_complete": false,
+      "scope": "DIAGNOSTIC_NOT_REPAIR",
+      "origin_unchanged": true
     }
+  },
+  "source64_ordinary_contact_extension": {
+    "cause": "CALCGWL crossing52 is ordinary groundwater table; separate perched crossing22 and bottom27. Active fraction52 overrides perched exclusions but ordinary matrix_top_saturated_node still clips both sorptivity evaluation and outer absorption loop. Candidate-head FD and line search therefore sample different discontinuous extensions.",
+    "change": "With active algebraic contact fraction at the ordinary top cell, expose that cell in the local sorptivity request and use this same adjusted top for the absorption loop. On the exact constraint plane the existing1e-10 geometry classification already selects the open adjacent cell; candidate publication keeps its unchanged1e-12 plane gate. No default-route change, face smoothing, elapsed-time interpolation or tolerance change.",
+    "expected_component_seconds": 10,
+    "expected_compile_seconds": 15,
+    "expected_native_probe_seconds": 30,
+    "next_action": "Real O0/O2 two-sided operator endpoints/unchanged ordinary route; native same64 source before any new full campaign."
   }
 }

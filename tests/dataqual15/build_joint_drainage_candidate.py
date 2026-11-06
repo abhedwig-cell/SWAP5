@@ -109,6 +109,10 @@ def render(folder):
    end if
 '''+marker)
  shadow[ROOT/name].write_text(s,newline='\n')
+ name='src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90';s=shadow[ROOT/name].read_text()
+ s=once(s,'    call evaluate_sorptivity_rate(sorp_request,sorp_result)', '    ! A graph fraction also needs a consistent off-constraint extension when\n    ! a trial pressure puts the ordinary water-table face in the adjacent cell.\n    ! On the constrained face the existing 1e-10 geometry convention already\n    ! selects this same open cell. Publication still requires the exact plane.\n    if(allocated(request%perched_graph_fraction))then\n      ic=sorp_request%matrix_top_saturated_node\n      if(ic>=1.and.ic<=sorp_request%num_nodes)then\n        if(request%perched_graph_fraction(ic)>=0d0)sorp_request%matrix_top_saturated_node=ic+1\n      end if\n    end if\n    call evaluate_sorptivity_rate(sorp_request,sorp_result)')
+ s=once(s,'request%sorptivity%matrix_top_saturated_node-1','sorp_request%matrix_top_saturated_node-1')
+ shadow[ROOT/name].write_text(s,newline='\n')
  p=folder/'MODEL.json';record=json.loads(p.read_text());record.update(model=MODEL,
   drainage='Real DRAMET3 and signed DIVDRA from the same current heads as macro exchange. Scoped local source callback; same final rate precedes mass and accepted trace.',
   rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})

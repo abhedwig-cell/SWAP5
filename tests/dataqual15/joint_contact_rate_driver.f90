@@ -12,7 +12,8 @@ program joint_contact_rate_driver
  type(macropore_continuation_state_t)::accepted,candidate
  real(real64)::point,lower,upper,weight,action,expected
  logical::ok
- integer::i
+ integer::i,side
+ character(40)::contract
  r%sorptivity%num_domains=1;r%sorptivity%num_nodes=2
  r%sorptivity%matrix_top_saturated_node=3;r%sorptivity%step_duration=.001d0
  r%sorptivity%bottom_domain=[2];r%sorptivity%top_water_node=[1]
@@ -83,6 +84,35 @@ program joint_contact_rate_driver
   end if
   if(any(candidate%water_domain_cp/=accepted%water_domain_cp))error stop 'contact history changed water'
  end do
+ if(command_argument_count()>0)then
+  call get_command_argument(1,contract)
+  if(trim(contract)/='ordinary-contact-extension')error stop 'unknown contract'
+  r%perched_graph_fraction=-1d0;r%sorptivity%perched_active=.false.
+  r%sorptivity%matrix_top_saturated_node=1
+  call evaluate_unsat_absorption(r,closed)
+  r%sorptivity%matrix_top_saturated_node=2
+  call evaluate_unsat_absorption(r,opened)
+  if(.not.closed%valid.or..not.opened%valid)error stop 'ordinary boundary endpoints'
+  if(closed%selected_amount_cm(1,1)/=0d0.or.opened%selected_amount_cm(1,1)<=0d0) &
+    error stop 'ordinary boundary exclusion witness'
+  do i=0,4
+   weight=real(i,real64)/4d0;r%perched_graph_fraction(1)=weight
+   do side=1,2
+    r%sorptivity%matrix_top_saturated_node=side
+    call evaluate_unsat_absorption(r,graph)
+    if(.not.graph%valid)error stop 'ordinary extension invalid'
+    if(abs(graph%selected_amount_cm(1,1)-weight*opened%selected_amount_cm(1,1))>1d-15) &
+      error stop 'ordinary contact changes between Newton sides'
+    if(abs(graph%selected_amount_cm(1,1)-r%sorptivity%step_duration*graph%selected_rate_cm_per_day(1,1))>1d-15) &
+      error stop 'ordinary contact amount/rate'
+    candidate=accepted;call apply_sorptivity_history_update(h,accepted,graph,candidate,ok)
+    if(.not.ok.or.any(candidate%water_domain_cp/=accepted%water_domain_cp))error stop 'ordinary history water'
+   end do
+  end do
+  r%perched_graph_fraction=-1d0;r%sorptivity%matrix_top_saturated_node=1
+  call evaluate_unsat_absorption(r,normal)
+  if(any(normal%selected_amount_cm/=closed%selected_amount_cm))error stop 'ordinary unselected route changed'
+ end if
  r%perched_graph_fraction(1)=ieee_value(0d0,ieee_quiet_nan)
  call evaluate_unsat_absorption(r,graph)
  if(graph%valid)error stop 'nonfinite perched graph admitted'
