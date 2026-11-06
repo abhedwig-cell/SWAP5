@@ -1,6 +1,6 @@
 """Occupied-target qualification using complete admitted private reader objects."""
 import argparse,functools,io,json,lzma,os,re,shutil,struct,subprocess,tarfile,zlib
-from pathlib import Path
+from pathlib import Path,PureWindowsPath,PurePosixPath
 import joint_logical as p
 import joint_logical_evidence as evidence
 ROOT=p.ROOT
@@ -116,16 +116,16 @@ def audit(files):
  assert r['production_admission']is False and r['whole_scientific_admission']is False
  assert r['input_stem']=='JOINT_LOGICAL_'+r['platform']+'_'+r['optimization']+'_20261106'
  assert sha(p.normal((STORE/(r['input_stem']+'.json')).read_bytes()))==r['input_manifest_sha256']
- _,old=load(r['input_stem']);root=r['root'];build=json.loads(old['candidate/BUILD.json']);origin=json.loads(old['PROVENANCE.json'])['root']
- expected_objects={str(Path(root)/'providers'/evidence.local(s,origin)):h for s,h in build['objects_sha256'].items()}
+ _,old=load(r['input_stem']);root=r['root'];q=PureWindowsPath if r['platform']=='WINDOWS'else PurePosixPath;build=json.loads(old['candidate/BUILD.json']);origin=json.loads(old['PROVENANCE.json'])['root']
+ expected_objects={str(q(root)/'providers'/evidence.local(s,origin)):h for s,h in build['objects_sha256'].items()}
  assert r['objects']==expected_objects
  flags=[f for f in build['flags']if not f.startswith(('-I','-J'))];assert [f for f in r['flags']if not f.startswith(('-I','-J'))]==flags
  events=json.loads(files['EVENTS.json']);assert len([e for e in events if e['label']=='driver'])==3 and len([e for e in events if e['label']=='link'])==3
  for name in p.NAMES:
   source=driver(driver_source(old,name),name);assert files[name+'.f90']==source and r['sources'][name]==sha(source)
-  event=next(e for e in events if e['label']=='driver'and e['command'][e['command'].index('-c')+1]==str(Path(root)/(name+'.f90')))
-  assert event['command'][1:-4]==r['flags'] and event['command'][-2:]==['-o',str(Path(root)/(name+'.o'))]
-  args=re.findall(r'^"(.*)"$',files[name+'.args'].decode().replace('\r\n','\n'),re.M);assert [s for s in args if s.endswith('.o')]==[str(Path(root)/(name+'.o')).replace('\\','/'),*[s.replace('\\','/')for s in expected_objects]]
+  event=next(e for e in events if e['label']=='driver'and e['command'][e['command'].index('-c')+1]==str(q(root)/(name+'.f90')))
+  assert event['command'][1:-4]==r['flags'] and event['command'][-2:]==['-o',str(q(root)/(name+'.o'))]
+  args=re.findall(r'^"(.*)"$',files[name+'.args'].decode().replace('\r\n','\n'),re.M);assert [s for s in args if s.endswith('.o')]==[str(q(root)/(name+'.o')).replace('\\','/'),*[s.replace('\\','/')for s in expected_objects]]
   exe=name+('.exe'if r['platform']=='WINDOWS'else'-driver');assert files[exe][:2]==b'MZ'if r['platform']=='WINDOWS'else files[exe][:4]==b'\x7fELF'
   assert files[name+'.o']
  expected=[]
@@ -135,7 +135,7 @@ def audit(files):
     key=f'{name}-{Path(seed).name}-{probe}-{occupied}';expected.append((name,seed,probe,occupied,key));row=r['rows'][len(expected)-1];assert tuple(row[k]for k in ('codec','seed','probe','occupancy','key'))==expected[-1]
     assert files.get(key+'.input')==raw and files[key+'.before']==files[key+'.after']==old[seed]
     e=events[row['event']];exe=name+('.exe'if r['platform']=='WINDOWS'else'-driver')
-    assert e['label']=='occupied'and e['command']==[str(Path(root)/exe),'occupied',str(Path(root)/'providers'/seed),str(Path(root)/(key+'.input')),str(Path(root)/(key+'.before')),str(Path(root)/(key+'.after')),occupied,'plain'if seed.endswith('.base')else'history']
+    assert e['label']=='occupied'and e['command']==[str(q(root)/exe),'occupied',str(q(root)/'providers'/seed),str(q(root)/(key+'.input')),str(q(root)/(key+'.before')),str(q(root)/(key+'.after')),occupied,'plain'if seed.endswith('.base')else'history']
     assert e['returncode']==0 and b'OCCUPIED_ATOMIC_REFUSAL=PASS'in files[e['stdout']]
  assert len(r['rows'])==len(expected)==120
  assert len(events)==126 and all(e['returncode']==0 and e['stdout']in files and e['stderr']in files for e in events)

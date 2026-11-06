@@ -1,0 +1,20 @@
+{
+  "status": "RETAINED_FAILED_PRODUCTION_GUARDS_NO_WAIVER",
+  "cause": "Canonical PR1591 adds unreferenced source outside existing exact production footprint. Both exact canonical before and current fail unchanged production guard before execution. New occupied-target evidence is private only; no current production admission is asserted.",
+  "observations": {
+    "exact_canonical_before": {
+      "head": "db42f99e2de9cae43dfe04bbf291e8e214edd6f7",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_production;p=pond_thermal_production;p.guard()\r\n                                                                                                                     ~~~~~~~^^\r\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-joint-owner-before-db42\\tests/dataqual15_hupsel\\pond_thermal_production.py\", line 33, in guard\r\n    assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE},'production footprint'\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: production footprint\r\n",
+      "script_sha256": "6735d63f767d06d1680a7ffdea643dd3ccfc1bc8c9c2550dd5f6a5a63c453f25"
+    },
+    "current_private_cluster": {
+      "head": "fdcdf0f146567fe3994ef51a2bd8f006520df8ba",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_production;p=pond_thermal_production;p.guard()\r\n                                                                                                                     ~~~~~~~^^\r\n  File \"C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-AUTONOMOUS\\tests/dataqual15_hupsel\\pond_thermal_production.py\", line 33, in guard\r\n    assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE},'production footprint'\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: production footprint\r\n",
+      "script_sha256": "6735d63f767d06d1680a7ffdea643dd3ccfc1bc8c9c2550dd5f6a5a63c453f25"
+    }
+  }
+}

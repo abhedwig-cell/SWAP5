@@ -29,3 +29,12 @@ streams and before/after native files are retained. Independent remeasurement
 reconstructs the exact probe matrix and rejects evidence mutations.
 
 Authority: `integration/dataqual15_hupsel/JOINT_OWNER_RECOVERY_20261106.json`.
+
+Canonical PR1591 added the separate, unreferenced bordered solver while this
+cluster was executing. No existing335-provider source changed. The private
+boundary pins the full reconciled db42f99e2 production trees and requires absence
+of a production USE dependency on that new module. The inherited production
+admission guard remains untouched: actual exact db42 canonical and this cluster
+both fail its strict production-footprint check. These are retained FAILED
+observations, not current production admission. This private evidence does not
+waive that separate production reconciliation.

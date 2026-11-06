@@ -43,12 +43,18 @@
     }
   },
   "controller": "tests/dataqual15_hupsel/joint_owner.py",
-  "controller_sha256": "c4357ef84c262de0bb555ba7ada1ab17e501a76009ee6b560f58470c61490482",
+  "controller_sha256": "3dbed9fba7a634593dc9eebea6c3b0666682c20104f9e475508adbf1549710f3",
   "qualification": "120 public-reader refusals each O0/O2; full before/after native equality; five independent evidence corruptions; exact verified source/object/compiler/flags reused without model rebuild",
   "reconciled_canonical": "db42f99e2de9cae43dfe04bbf291e8e214edd6f7",
   "peer_delta": {
     "pr": 1591,
     "source": "src/solver/mod_reference_bordered_solver.f90",
     "disposition": "Exact canonical unreferenced addition, no existing production source changed. Private guard pins entire reconciled production trees and checks no production USE dependency. All retained335-provider input sources/objects independently match original evidence. Prior production guards remain unchanged and may separately refuse the peer addition; no admission waiver."
+  },
+  "retained_cross_host_audit_failure": {
+    "run": 42240319185,
+    "job": 127968560994,
+    "verdict": "FAILED_BEFORE_POSIX_EXECUTION",
+    "reason": "Host Path reconstructed Windows producer paths with POSIX separators; replace audit path algebra with explicit PureWindowsPath/PurePosixPath selected from producer platform. Preserve exact hash/path/command assertions and actual execution capsules."
   }
 }
