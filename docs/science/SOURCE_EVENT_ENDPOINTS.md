@@ -100,7 +100,7 @@ no new tolerance or PASS label.
 
 The pure `select_interception_event_index` validates the finite, ordered event
 curve and current index, then changes phase only at the actual committed event
-endpoint. Stale early indices, exhausted curves and invalid inputs return zero
+endpoint. Premature indices that skip an uncommitted event, exhausted curves and invalid inputs return zero
 index and `INTWIN_INVALID`. Both native caller sites use a separate output index.
 Existing64-epsilon source identity, endpoint selection, mass/temporal/nonlinear
 gates, physical DT controls, input files, state and schema remain unchanged.
@@ -113,6 +113,16 @@ original strict flags and exact O0/O2 output. Fresh O0 day-one physical payload
 and all four CSVs, and O2 day-one payload, remain byte-exact to the predecessor.
 The new original-initialization481 request and strict own19-to20,32-to33 and
 365-to367 are separate current-executable gates; no older stream is rebound.
+
+The actual new trajectory passes all three tiny windows in one attempt each,
+without solver, temporal or mass refusal. Maximum residual across those windows
+is2.955236320612685e-14cm. Strict own19-to20 and32-to33 complete in8.962s and16.066s:
+all508/507 progress rows and complete day20/day33 streams are byte-exact. An
+independent120-digit integral over the first58 completed days and29123 continuous
+source windows gives exactly the same8.9513cm rain from the original input phases
+and actual caller-window allocation. Mathematical and rounded aggregate
+differences are zero; no new tolerance is used. This is actual source/amount and
+restart evidence, not full481, own year or historical scientific equivalence.
 
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`,
 `TRANSITION245_EVIDENCE_20261106.zip` and `CURRENT245_RECOVERY_EVIDENCE_20261106.zip`

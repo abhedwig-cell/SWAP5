@@ -907,7 +907,42 @@
       "physical_payload_exact_previous": true,
       "all4CSV_exact": true
     },
-    "O2_day1_payload_exact_previous": true
+    "O2_day1_payload_exact_previous": true,
+    "actual_native_tiny_windows": [
+      {
+        "day": "20",
+        "segment": "2",
+        "t0": " 1.90019999999999989E+001",
+        "t1": " 1.90020000000004075E+001",
+        "attempts": "1",
+        "solver_rejections": "0",
+        "temporal_rejections": "0",
+        "mass_rejections": "0",
+        "residual_cm": " 2.06783434788130184E-014"
+      },
+      {
+        "day": "20",
+        "segment": "310",
+        "t0": " 1.96059999999992804E+001",
+        "t1": " 1.96059999999997672E+001",
+        "attempts": "1",
+        "solver_rejections": "0",
+        "temporal_rejections": "0",
+        "mass_rejections": "0",
+        "residual_cm": " 2.95523632061268506E-014"
+      },
+      {
+        "day": "33",
+        "segment": "381",
+        "t0": " 3.27569999999969497E+001",
+        "t1": " 3.27569999999977881E+001",
+        "attempts": "1",
+        "solver_rejections": "0",
+        "temporal_rejections": "0",
+        "mass_rejections": "0",
+        "residual_cm": " 1.04768551385574113E-014"
+      }
+    ]
   },
   "current245_repair_selection": {
     "implementation": "Private V4 explicitly reuses existing homogeneous signed DIVDRA tiny-transfer extension in callback, trial entry and directional response; default/public legacy guard remains unchanged. Real scalar is retained, not clamped to zero.",
@@ -1021,5 +1056,63 @@
     "sha256": "0cacd7ad95c50765ee241c31fce2317386abe1106b5cfef063a0bc6fa32204dd",
     "bytes": 7445364,
     "members": 930
+  },
+  "phase_exact_native_own": {
+    "19-20": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN19_TO20",
+      "seconds": 8.961646199924871,
+      "executable_sha256": "82ac31bd1a6aca62a6b818d8f1fd0969cd37139a39a82d49dec496a4d9db040c",
+      "input_restart_sha256": "4130abc44cb93c0f4becc6e51bcc01ca70a31e411b65aa3568f2b8beb960dded",
+      "all_progress_rows_exact": true,
+      "progress_rows": 508,
+      "entire_checkpoint20_byte_exact": true,
+      "checkpoint20_sha256": "8d55501c37c0a552be3fdcf79b24542e23472ba6b187a95004ece1a9e38e25f2",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "32-33": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN32_TO33",
+      "seconds": 16.06567359995097,
+      "executable_sha256": "82ac31bd1a6aca62a6b818d8f1fd0969cd37139a39a82d49dec496a4d9db040c",
+      "input_restart_sha256": "2f765da9ea008a0564af22d03b4ff14ec84ac4d31dbf385dbe58d13d29cfe9e3",
+      "all_progress_rows_exact": true,
+      "progress_rows": 507,
+      "entire_checkpoint33_byte_exact": true,
+      "checkpoint33_sha256": "617abdf561e1bd0d17a75b7c30e03406a3a44aa6d94d81fc4840ed27a13dabb2",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    }
+  },
+  "phase_exact_independent_rain_prefix": {
+    "scope": "INDEPENDENT_PREPARED_RAIN_INTEGRAL_AND_ACTUAL_CALLER_WINDOW_ALLOCATION_NOT_WHOLE_ENERGY_OR_REFERENCE_PARITY",
+    "completed_through": 58.0,
+    "continuous_time_coverage": true,
+    "source_windows": 29123,
+    "prepared_rain_events": 2630,
+    "exact_binary_input_mathematical_integral_cm": "8.95130000000000078036505363549195816246919659415581631278779894955732743255794048309326171875",
+    "exact_binary_window_allocation_integral_cm": "8.9513000000000007803650536354919581624691965941558163127877989495573274325579404830932617187500000000000000",
+    "exact_integral_difference_cm": "0E-106",
+    "integrals_exact": true,
+    "rounded_native_amount_sum_cm": 8.951300000000002,
+    "rounded_input_phase_sum_cm": 8.951300000000002,
+    "rounded_sum_difference_cm": 0.0,
+    "new_tolerance_introduced": false
+  },
+  "phase_exact_ci": {
+    "component_run": 42300447659,
+    "component_job": 128176536842,
+    "tested_head": "2fa7b1e0ac0d06799e6227130419fc4d892da3e8",
+    "component_status": "PASS Linux O0/O2 all original gates plus actual exact phases",
+    "docs_run": 42300450030,
+    "docs_job": 128176546875,
+    "docs_status": "PASS Linux; local source28.612s/strict31.723s",
+    "physical_full_and_year_not_promoted": true,
+    "component_inputs_unchanged_after_receipt_docs_only": true
+  },
+  "exact_source_own_evidence": {
+    "archive": "EXACT_SOURCE_OWN_EVIDENCE_20261106.zip",
+    "sha256": "6939b8bd2af7b69753e4f41a685eb0a1a41016174ba36f5e4b3d94dc7d45f5f3",
+    "bytes": 1110090,
+    "members": 72
   }
 }

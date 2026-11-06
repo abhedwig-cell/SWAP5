@@ -53,6 +53,10 @@ repairs those without changing forcing files or source-time identity. A fresh
 original-initialization481 request is therefore required on the new executable,
 with exact own source-event and year continuations. This remains corrected
 research; original historical/scientific counts are unchanged.
+The new exact-phase trajectory completes58 days; actual tiny packets pass all
+independent native guards, own19-to20/32-to33 are byte-exact and the independent
+original-rain integral has zero difference. The source-bound full481 and own
+year remain separate active gates.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
 
 The implementation starts at canonical `b4107989d5f31e4f051dfbbf5b98bd182e152d64`.
