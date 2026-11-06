@@ -192,7 +192,38 @@ def posix(archive=None,materialize=None):
  else:assert members==record['members'] and report==record['audit']
  print('COMPLETE_POSIX_NATIVE_COHORT_INDEPENDENT_REPLAY_PASS')
 
+def posix_writer(archive=None):
+ stem='MATRIX_THERMAL_NATIVE_POSIX_WRITER_20261106';record_path=DEST/(stem+'.json');zip_path=DEST/(stem+'.zip')
+ if archive:raw=archive.read_bytes()
+ else:
+  record=json.loads(record_path.read_text());raw=zip_path.read_bytes();assert p.sha(raw)==record['archive_sha256']
+ with tempfile.TemporaryDirectory(prefix='s5-mt-writer-') as tmp:
+  root=Path(tmp)/'cohort';posix(materialize=root);writer=root/'writer-posix';writer.mkdir();members={}
+  with zipfile.ZipFile(io.BytesIO(raw)) as zip:
+   for name in zip.namelist():
+    assert name not in members and not Path(name).is_absolute() and '..' not in Path(name).parts
+    if name.endswith('/'):continue
+    data=zip.read(name);members[name]=p.sha(data);file=writer/name;file.parent.mkdir(parents=True,exist_ok=True);file.write_bytes(data)
+  report=posix_audit(root)['posix_writer']
+  for opt in ('O0','O2'):
+   assert (writer/opt/'publication.c').read_bytes()==before('app/support/restart_publish.c').encode()
+   ledger=json.loads((writer/opt/'BUILD.json').read_text());assert len(ledger)==5 and all(event['returncode']==0 for event in ledger)
+  # Refuse a spurious success claim for the real postcommit directory-sync
+  # failure, independently of the immutable archive's outer integrity check.
+  text=writer/'6.stdout';original=text.read_bytes();text.write_bytes(original.replace(b'WRITE_STATUS=1',b'WRITE_STATUS=0',1))
+  try:
+   refused=False
+   try:posix_audit(root)
+   except AssertionError:refused=True
+   assert refused
+  finally:text.write_bytes(original)
+ if archive:
+  zip_path.write_bytes(raw);record_path.write_text(json.dumps(dict(archive_sha256=p.sha(raw),archive_bytes=len(raw),members=members,audit=report,production_admission=False,whole_scientific_admission=False),indent=2)+'\n')
+ else:assert report==record['audit'] and members==record['members']
+ print('COMPLETE_POSIX_NATIVE_WRITER_POSTCOMMIT_REFUSAL_AND_EVIDENCE_REFUSAL_PASS')
+
 if __name__=='__main__':
- a=argparse.ArgumentParser();a.add_argument('--seal',type=Path);a.add_argument('--stem',default='MATRIX_THERMAL_NATIVE_WINDOWS_20261106');a.add_argument('--seal-posix',type=Path);a.add_argument('--posix',action='store_true');a.add_argument('--materialize-posix',type=Path);args=a.parse_args();p.guard()
- if args.seal_posix or args.posix or args.materialize_posix:posix(args.seal_posix,args.materialize_posix)
+ a=argparse.ArgumentParser();a.add_argument('--seal',type=Path);a.add_argument('--stem',default='MATRIX_THERMAL_NATIVE_WINDOWS_20261106');a.add_argument('--seal-posix',type=Path);a.add_argument('--posix',action='store_true');a.add_argument('--materialize-posix',type=Path);a.add_argument('--seal-posix-writer',type=Path);a.add_argument('--posix-writer',action='store_true');args=a.parse_args();p.guard()
+ if args.seal_posix_writer or args.posix_writer:posix_writer(args.seal_posix_writer)
+ elif args.seal_posix or args.posix or args.materialize_posix:posix(args.seal_posix,args.materialize_posix)
  else:seal(args.seal,args.stem) if args.seal else replay(args.stem)

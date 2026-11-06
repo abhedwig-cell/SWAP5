@@ -27,6 +27,8 @@ jobs:
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_posix_faults.py --candidate "$RUNNER_TEMP/matrix-thermal/candidate-v2" --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/writer-posix"
       - name: Independently replay retained complete Windows native cohort
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py
+      - name: Replay sealed actual POSIX writer and refuse false postcommit success evidence
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py --posix-writer
       - uses: actions/upload-artifact@v4
         if: always()
         with:

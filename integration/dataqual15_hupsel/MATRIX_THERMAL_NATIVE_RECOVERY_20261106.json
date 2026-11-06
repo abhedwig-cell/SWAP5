@@ -1,10 +1,10 @@
 {
-  "status": "FULL_WINDOWS_POSIX_PRIVATE_NATIVE_EVIDENCE_REPLAYED_FINAL_POSIX_WRITER_QUALIFICATION_NEXT",
+  "status": "COMPLETE_PRIVATE_NATIVE_QUALIFICATION_AND_LOSSLESS_REPLAY_PASS_FINAL_TREE_CI_NEXT",
   "baseline": "52a9513b7975dbe7f922f635f771d2d781da8a3d",
   "production_source_changed": false,
   "production_admission": false,
   "whole_scientific_admission": false,
-  "next": "Qualify remaining actual POSIX writer stage2-6 failures using the retained exact complete provider cohort; stage6 must report failure after replacement. Wait final exact-tree workflows, adjudicate, and integrate private evidence only. Production source remains baseline.",
+  "next": "Wait all final exact-tree workflows, compare proposed merge tree to qualified head tree, and merge private PR1581. Then preregister the single-source production successor and required full native build/admission bridges using these immutable complete Windows/POSIX cohorts. No repeated broad or physical-model qualification while the exact dependency surface remains unchanged.",
   "windows": {
     "candidate": "candidate-v2: complete original physical O0/O2 assertions passed (608 events)",
     "original": "incumbent-v2: actual O0 link fails undefined fsync; no original Windows pass",
@@ -36,5 +36,16 @@
     "exact_predecessor": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
     "old_admission_returncode": 0,
     "whole_scientific_admission": false
-  }
+  },
+  "posix_writer": {
+    "head": "acea9ece20cbb3d9229f3287e42a1813b5296663",
+    "run": 42151984059,
+    "artifact": 13473096311,
+    "archive_sha256": "4f3a36d9d2c82cd57bde3502eab1ec2488531bf3bca4a77d360a20b6854f1cdd",
+    "raw_logical_refusals": 4,
+    "precommit_io_refusals": 8,
+    "postcommit_dirsync_refusals": 2,
+    "false_success_evidence_refused": true
+  },
+  "proper_posix_before_after_native_files_identical": 24
 }
