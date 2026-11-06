@@ -9,7 +9,7 @@ a=p.parse_args();bundle=a.bundle.resolve();origin=a.origin.resolve();out=a.outpu
 assert meta['contact_model']=='ANDELST_SHARP_ENTRY_GRAPH_V1'
 assert all(sha(n)==h for n,h in meta['source_sha256'].items())and all(sha(n)==h for n,h in meta['object_sha256'].items())
 sources=list(meta['source_sha256']);objects=list(meta['object_sha256']);index=next(i for i,n in enumerate(sources)if n.replace('\\','/').endswith('/src/legacy/b1_10_port/headcalc.f90'))
-body=Path(sources[index]).read_text();hook=HOOK.replace('dt<=1d-8','obs_source_start>=2.7799d0')
+body=Path(sources[index]).read_text();hook=HOOK.replace('dt<=1d-8','obs_source_start>=2.7799d0.and.dt<=1d-8')
 body=body.replace('   use mod_reference_bordered_solver,only:reference_bordered_solve','   use mod_reference_bordered_solver,only:reference_bordered_solve\n   use mod_entry_observation_clock')
 hook=hook.replace('entry\n','entry,plane,w\n')
 needle="              write(ou,*)'SOURCE_CACHE',onode,provider_macropore_exchange(onode),oq(onode)"
@@ -40,7 +40,6 @@ def run(command,folder,timeout):
   censored=True;r=subprocess.CompletedProcess(command,-999,e.stdout or b'',e.stderr or b'')
  i=len(events);(out/f'{i}.stdout').write_bytes(r.stdout);(out/f'{i}.stderr').write_bytes(r.stderr);events.append(dict(command=list(map(str,command)),returncode=r.returncode,seconds=time.monotonic()-start,censored=censored));(out/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n');return r
 clock=out/'clock.f90';clock.write_text('module mod_entry_observation_clock\nreal(8)::obs_source_start=0d0,obs_last_t0=0d0,obs_last_t1=0d0\ninteger::obs_samples=0\nend module\n')
-r=run([fc,*flags,'-c',clock,'-o',out/'clock.o'],out,60);assert r.returncode==0,r.stderr.decode()
 backend_index=next(i for i,n in enumerate(sources)if n.replace('\\','/').endswith('/src/runtime/mod_fmr_serialized_reference_backend.f90'))
 backend=Path(sources[backend_index]).read_text();backend=backend.replace('  implicit none','  use mod_entry_observation_clock\n  implicit none',1)
 start=backend.index('  subroutine fmr_serialized_advance(');pos=backend.index('    outcome = trial_outcome_t()',start)
@@ -71,19 +70,17 @@ probe="""        if(obs_source_start>=2.7799d0)then
         end if
 """
 backend=backend[:pos]+probe+backend[pos:];backend_source=out/'backend_observed.f90';backend_source.write_text(backend,newline='\n')
-r=run([fc,*flags,'-c',backend_source,'-o',out/'backend.o'],out,300);assert r.returncode==0,r.stderr.decode();objects[backend_index]=str(out/'backend.o')
 main=Path(sources[-1]).read_text();main=main.replace('  implicit none','  use mod_entry_observation_clock\n  implicit none',1)
 marker='      call backend%run_trial(column_id,template,p,water,forcing,numerical,cursor,endpoint,checkpoint, &'
 assert main.count(marker)==1;main=main.replace(marker,'      obs_source_start=cursor\n'+marker)
 main_source=out/'main_observed.f90';main_source.write_text(main,newline='\n')
-r=run([fc,*flags,'-c',main_source,'-o',out/'main.o'],out,300);assert r.returncode==0,r.stderr.decode();objects[-1]=str(out/'main.o')
-objects.insert(0,str(out/'clock.o'));index=index+1
-obj=out/'headcalc.o';r=run([fc,*flags,'-c',source,'-o',obj],out,300);assert r.returncode==0,r.stderr.decode()
-objects[index]=str(obj);exe=out/'observe.exe';r=run([fc,'-fopenmp','-Wl,--stack,16777216',*objects,meta['publication_provider']['object'],meta['ttutil_archive'],'-o',exe],out,120);assert r.returncode==0,r.stderr.decode()
-case=out/'case';case.mkdir();launch=json.loads((origin.parent/'LAUNCH.json').read_text());before=origin.read_bytes()
-for n in launch['original_input_sha256']:shutil.copyfile(origin.parent/n,case/n)
-command=launch['command'].copy();command[0]=str(exe);command[2]=str(origin)
-r=run(command,case,300)
-report=dict(scope='READ_ONLY_NEXT_BARRIER_STOP_NOT_RESTART_OR_TRAJECTORY_QUALIFICATION',events=events,origin_sha256=sha(origin),origin_unchanged=origin.read_bytes()==before,compiled_graph_source_sha256=meta['source_sha256'],observed_source_sha256=sha(source),executable_sha256=sha(exe),observation_stop=b'ORIGINAL_GATE_OBSERVATION_STOP'in r.stderr or b'NEXT_TEMPORAL_OBSERVATION_STOP'in r.stderr)
-(out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n');assert report['origin_unchanged']and report['observation_stop'],r.stderr[-2000:]
-observed=case/('original-gate.csv'if(case/'original-gate.csv').exists()else'next-temporal.csv');print(observed.read_text()[:700])
+# Changing module interfaces requires the real transitive dependency rebuild.
+import sys
+built=out/'coherent-build'
+command=[sys.executable,ROOT/'tests/dataqual15/build_joint_entry_observer.py','--prepared',out,
+ '--reuse',bundle,'--output',built,'--compiler',fc,'--optimization',
+ 'O2'if '-O2'in meta['flags']else'O0','--driver',ROOT/'app/solute_project/main_water.f90',
+ '--ttutil-archive',meta['ttutil_archive']]
+r=run(command,ROOT,300);assert r.returncode==0,r.stderr.decode()
+r=run([sys.executable,ROOT/'tests/dataqual15/run_joint_entry_observer.py','--bundle',built,
+ '--origin',origin,'--output',out/'case'],ROOT,330);assert r.returncode==0,r.stderr.decode()
