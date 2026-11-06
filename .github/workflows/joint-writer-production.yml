@@ -14,6 +14,36 @@ on:
 permissions:
   contents: read
 jobs:
+  original-posix-consumers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Original unchanged age surface triplet and mineral assertions at O0 O2
+        env:
+          FC: /usr/bin/gfortran-13
+          OMP_NUM_THREADS: '1'
+          AGE_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/age
+          MINERAL_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/mineral
+        run: |
+          if test -f integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_POSIX_CONSUMERS_20261106.json; then
+            python -B tests/dataqual15_hupsel/joint_writer_production_consumers.py
+          else
+            python -B tests/nut-sol/run_age.py
+            python -B tests/nut-mineral/run_mineral.py
+            python -B tests/dataqual15_hupsel/joint_writer_production_consumers.py --capture "$RUNNER_TEMP/original-writer-consumers"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-posix-writer-consumers
+          path: |
+            integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_POSIX_CONSUMERS_20261106.*
+            ${{ runner.temp }}/original-writer-consumers/**/result.json
+            ${{ runner.temp }}/original-writer-consumers/**/events.json
+            ${{ runner.temp }}/original-writer-consumers/**/*.stderr
   actual-deployed:
     runs-on: ubuntu-24.04
     timeout-minutes: 90

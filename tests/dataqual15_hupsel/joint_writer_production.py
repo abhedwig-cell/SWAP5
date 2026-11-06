@@ -16,6 +16,7 @@ GATES={ENTRY,'tests/dataqual15_hupsel/joint_writer_production.py','tests/dataqua
 RUNNERS={'tests/nut-sol/run_age.py','tests/nut-mineral/run_mineral.py','tests/nut-reactive/run_reactive.py'}
 GATES|=RUNNERS
 GATES.add('tests/dataqual15_hupsel/joint_writer_production_linkage.py')
+GATES.add('tests/dataqual15_hupsel/joint_writer_production_consumers.py')
 git=old.git
 raw=old.raw
 blob=old.blob
@@ -64,14 +65,15 @@ def frozen():
  return (old.frozen()|old.GATES|predecessors|reference_paths()|{'tests/dataqual15_hupsel/'+n+'.py'for n in('joint_limiter_writer','joint_limiter_writer_runtime','joint_limiter_writer_evidence','joint_writer','joint_writer_probe','joint_writer_runtime','joint_writer_evidence','joint_production_runtime')}|{'tests/dataqual15_hupsel/joint_writer_candidates/'+Path(p).name for p in SOURCES.values()}|{'integration/dataqual15_hupsel/JOINT_LIMITER_WRITER_RECONCILIATION_20261106'+s for s in('.json','.zip')})-{ENTRY}
 
 def execution_paths():return {'integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_'+p+'_'+o+'_20261106'+s for p in('WINDOWS','POSIX')for o in('O0','O2')for s in('.json','.tar.xz')}
+def consumer_paths():return {'integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_POSIX_CONSUMERS_20261106'+s for s in('.json','.zip')}
 
 def expected_status():return dict(scope=SCOPE,current_baseline=BASE,native_history=HISTORY,whole_scientific_admission=False)
 
 def make_record(phase):
- return dict(schema=1,phase=phase,current_baseline=BASE,native_history=HISTORY,scope='EXACT_CURRENT_NATIVE_WRITER_PUBLICATION_ONLY',whole_scientific_admission=False,peer_source_change=False,binary_abi='SAME_PLATFORM_ONLY',windows_path_scope='ASCII_ONLY',predecessor_scope='IMMUTABLE_HISTORY_NOT_CURRENT_PEER_PHYSICS',baseline_production_trees={a:blob(BASE,a)for a in('src','app','reference')},production_delta={p:dict(before=blob(BASE,p),after=blob('HEAD',p))for p in SOURCES.values()},postimage_sha256={n:sha(postimage(n))for n in NAMES},gate_sha256={p:sha(normal((ROOT/p).read_bytes()))for p in GATES},frozen_blobs={p:blob(BASE,p)for p in frozen()},execution_sha256={p:sha(normal((ROOT/p).read_bytes())if p.endswith('.json')else(ROOT/p).read_bytes())for p in execution_paths()if(ROOT/p).is_file()})
+ return dict(schema=1,phase=phase,current_baseline=BASE,native_history=HISTORY,scope='EXACT_CURRENT_NATIVE_WRITER_PUBLICATION_ONLY',whole_scientific_admission=False,peer_source_change=False,binary_abi='SAME_PLATFORM_ONLY',windows_path_scope='ASCII_ONLY',predecessor_scope='IMMUTABLE_HISTORY_NOT_CURRENT_PEER_PHYSICS',baseline_production_trees={a:blob(BASE,a)for a in('src','app','reference')},production_delta={p:dict(before=blob(BASE,p),after=blob('HEAD',p))for p in SOURCES.values()},postimage_sha256={n:sha(postimage(n))for n in NAMES},gate_sha256={p:sha(normal((ROOT/p).read_bytes()))for p in GATES},frozen_blobs={p:blob(BASE,p)for p in frozen()},execution_sha256={p:sha(normal((ROOT/p).read_bytes())if p.endswith('.json')else(ROOT/p).read_bytes())for p in execution_paths()if(ROOT/p).is_file()},consumer_sha256={p:sha(normal((ROOT/p).read_bytes())if p.endswith('.json')else(ROOT/p).read_bytes())for p in consumer_paths()if(ROOT/p).is_file()})
 
 def record_guard(r):
- fields={'schema','phase','current_baseline','native_history','scope','whole_scientific_admission','peer_source_change','binary_abi','windows_path_scope','predecessor_scope','baseline_production_trees','production_delta','postimage_sha256','gate_sha256','frozen_blobs','execution_sha256'}
+ fields={'schema','phase','current_baseline','native_history','scope','whole_scientific_admission','peer_source_change','binary_abi','windows_path_scope','predecessor_scope','baseline_production_trees','production_delta','postimage_sha256','gate_sha256','frozen_blobs','execution_sha256','consumer_sha256'}
  assert set(r)==fields and type(r['schema'])is int and r['schema']==1
  assert r['phase']=='DEPLOYED_WINDOWS_POSIX_QUALIFIED','complete deployed execution required'
  assert r['current_baseline']==BASE and r['native_history']==HISTORY and r['scope']=='EXACT_CURRENT_NATIVE_WRITER_PUBLICATION_ONLY'
@@ -81,6 +83,7 @@ def record_guard(r):
  assert r['production_delta']=={p:dict(before=blob(BASE,p),after=blob('HEAD',p))for p in SOURCES.values()}
  assert r['postimage_sha256']=={n:sha(postimage(n))for n in NAMES}
  assert set(r['gate_sha256'])==GATES and set(r['frozen_blobs'])==frozen()and set(r['execution_sha256'])==execution_paths()
+ assert set(r['consumer_sha256'])==consumer_paths()
 
 def validate_record(r):
  guard_source();record_guard(r)
@@ -97,6 +100,10 @@ def validate_record(r):
   if p.endswith('.json'):content=normal(content)
   assert sha(content)==digest and content==raw('HEAD',p),'deployed execution identity '+p
   if p.endswith('.json'):assert json.loads(content)['measurement']['production_linkage_native_launches']==56,'complete uninstrumented production linkage required'
+ for p,digest in r['consumer_sha256'].items():
+  content=(ROOT/p).read_bytes()
+  if p.endswith('.json'):content=normal(content)
+  assert sha(content)==digest and content==raw('HEAD',p),'original consumer identity '+p
  current=json.loads((ROOT/STATUS).read_text());addition=current.pop(KEY)
  assert old.canonical(addition)==old.canonical(expected_status())
  assert old.canonical(current)==old.canonical(json.loads(raw(BASE,STATUS))),'previous status and types preserved'
@@ -121,6 +128,8 @@ def reference(platform,opt):
 def main(out):
  guard();out.mkdir(parents=True,exist_ok=False)
  import joint_writer_production_evidence as evidence
+ import joint_writer_production_consumers as consumers
+ consumer_results=consumers.verify()
  measured={}
  for p in('WINDOWS','POSIX'):
   for o in('O0','O2'):measured[p+'_'+o]=evidence.verify('JOINT_WRITER_PRODUCTION_'+p+'_'+o+'_20261106',True)
@@ -132,7 +141,7 @@ def main(out):
    for o in('O0','O2'):events.append(old.run(out,'current-private-'+p+'-'+o,['tests/dataqual15_hupsel/joint_limiter_writer_evidence.py','--stem','JOINT_LIMITER_WRITER_'+p+'_'+o+'_20261106','--self-test'],reference_view))
   history=old.immutable_view(parent,'entire-native-history',HISTORY);views.append(history)
   events.append(old.run(out,'entire-unmodified-admitted-native-history',[ENTRY,'--output',out/'native-history'],history,6000))
-  guard();(out/'RESULT.json').write_text(json.dumps(dict(status='EXACT_DEPLOYED_WRITERS_AND_CURRENT_CODECS_WITH_IMMUTABLE_HISTORY_PASS',head=git('rev-parse','HEAD'),production_trees=guard_source(),current=measured,events=events,current_reference=BASE,native_history=HISTORY,history_qualifies_current_peer_physics=False,whole_scientific_admission=False),indent=2)+'\n')
+  guard();(out/'RESULT.json').write_text(json.dumps(dict(status='EXACT_DEPLOYED_WRITERS_AND_CURRENT_CODECS_WITH_IMMUTABLE_HISTORY_PASS',head=git('rev-parse','HEAD'),production_trees=guard_source(),current=measured,original_consumers=consumer_results,events=events,current_reference=BASE,native_history=HISTORY,history_qualifies_current_peer_physics=False,whole_scientific_admission=False),indent=2)+'\n')
  finally:
   for view in reversed(views):subprocess.run(['git','worktree','remove','--force',str(view)],cwd=ROOT,check=True,capture_output=True)
 
