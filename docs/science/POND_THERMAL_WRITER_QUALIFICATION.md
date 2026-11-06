@@ -33,9 +33,13 @@ corruptions are refused. The original two setup failures were exact textual-anch
 assertions before native measurement; they remain recorded as failed attempts.
 They do not establish a model or writer verdict.
 
-Actual POSIX SIGSTOP/SIGKILL and post-replacement stage6 failure qualification are
-required separately. POSIX stage6 must remain a failure after replacement; it must
-never be treated as a precommit refusal or relabelled successful. All source and
+Actual POSIX GNU13 O0/O2 execution passes at source
+`d946698f9a6c8a6bb9d9dd20fa75273a57862326`, workflow42186207440. It retains
+eight post-replacement stage6 FAILED writer results,32 precommit refusals,12
+malformed-logical refusals,40 pending retry refusals and16 actual SIGKILL/fresh
+reconstruction controls. Independent downloaded-capsule remeasurement and all six
+evidence mutations pass. All16 workflows at that execution head succeed. POSIX
+stage6 is never treated as a precommit refusal or relabelled successful. All source and
 scientific exclusions remain unchanged. Production deployment requires its own
 actual-build and admission qualification.
 

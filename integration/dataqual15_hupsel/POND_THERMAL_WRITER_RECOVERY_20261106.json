@@ -3,7 +3,7 @@
   "unit": "Complete private S5PT0001/2/3/4 malformed writer, publication fault and actual termination qualification",
   "baseline": "f20d39b58afb5ee5d5a8ad70e747b3b892bf75bd",
   "canonical_baseline": "8428323b15b126ba2a3422ef32d4d914b070db2f",
-  "status": "LOCAL_WINDOWS_COMPLETE_WRITER_QUALIFIED_POSIX_PENDING",
+  "status": "WINDOWS_POSIX_COMPLETE_WRITER_QUALIFIED_FINAL_HEAD_PENDING",
   "production_delta": [],
   "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "dependencies": [
@@ -25,7 +25,7 @@
     "POSIX O0/O2 actual SIGSTOP/SIGKILL and stage6-after-replacement qualification",
     "Observe selected exact-head gates to terminal, reconcile actual merge tree, integrate only qualified private scope"
   ],
-  "next": "Push exact complete Windows source/object/writer/crash evidence. Run actual POSIX O0/O2, preserve post-replacement stage6 failure and retained pending semantics, remeasure raw evidence and observe all exact-head gates before private-scope canonical integration.",
+  "next": "Observe final exact-head preservation/evidence gates and canonically integrate only the qualified private writer scope. In parallel, measure the actual unmodified public runner against the complete private postimage, without the qualification-only Windows stack seam. Preserve all failures and distinguish actual build delivery from production admission.",
   "failed_setup_attempts": [
     {
       "attempt": "windows-v1",
@@ -61,5 +61,25 @@
     "retained_pending_retry_refusals": 40,
     "evidence_corruptions_refused": 6,
     "production_admission": false
+  },
+  "posix_qualification": {
+    "status": "PRIVATE_COMPLETE_S5PT_WRITER_FAULTS_AND_ACTUAL_CRASHES_PASS",
+    "normal_publications": 8,
+    "malformed_logical_refusals": 12,
+    "precommit_io_refusals": 32,
+    "post_replacement_stage6_failures": 8,
+    "actual_SIGKILL_terminations": 16,
+    "fresh_crash_reconstructions": 16,
+    "retained_pending_retry_refusals": 40,
+    "evidence_corruptions_refused": 6,
+    "production_admission": false
+  },
+  "ci": {
+    "pr": 1586,
+    "execution_head": "d946698f9a6c8a6bb9d9dd20fa75273a57862326",
+    "complete_writer_run": 42186207440,
+    "artifact": 13488015974,
+    "artifact_zip_sha256": "d176b446330d4c03cb7d5029983818472fe1f235686268da934fa3da42ad1241",
+    "all16_execution_head_workflows_success": true
   }
 }
