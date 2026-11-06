@@ -173,5 +173,42 @@
     "expected_compile_seconds": 15,
     "expected_probe_seconds": 40,
     "expected_fresh481_seconds": 1800
+  },
+  "border_initialization_fix": {
+    "source": "9da92a3fc7a5297c7e1fe7e476c83f389cf1fe2b",
+    "scope": "NUMERICAL_ORDER_FIX_SAME_V4_PHYSICS_AND_GATES_PRIVATE_ONLY",
+    "current_physics_contract_unchanged": true,
+    "source2924": {
+      "seconds": 1.1207516000140458,
+      "status": 0,
+      "attempts": 8,
+      "solver_refusals": 0,
+      "temporal_refusals": 4,
+      "internal_steps": 4
+    },
+    "source65": {
+      "seconds": 1.32346610003151,
+      "status": 0,
+      "attempts": 8,
+      "solver_refusals": 0,
+      "temporal_refusals": 4,
+      "internal_steps": 4
+    },
+    "O0_day1_physical_payload_and_four_output_csv_exact": true,
+    "O2_day1_physical_payload_exact": true,
+    "archive": "BORDER_INITIALIZATION_EVIDENCE_20261106.zip",
+    "archive_sha256": "75adea75ff27e24e11eab7847657264d03275b94908f822dad177451f17edea1",
+    "archive_bytes": 3756756,
+    "archive_members": 1143,
+    "older_quiet_failed_implementation": {
+      "classification": "INTENTIONAL_CENSOR_CONFIRMED_BORDER_INITIALIZATION_DEFECT",
+      "seconds": 1719.9447520000394,
+      "last_external_accepted_endpoint": 2.923999999999573,
+      "raw_returncode": 4294967295,
+      "raw_censored_flag": false,
+      "intentional_stop_record_retained": true
+    },
+    "full_fixed481": "RUNNING fresh original initialization",
+    "O0_own1to3": "RUNNING"
   }
 }
