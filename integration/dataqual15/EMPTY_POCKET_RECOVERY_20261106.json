@@ -58,5 +58,29 @@
     "max_full_cell_residual_cm": 4.418687638013523e-17,
     "origin_unchanged": true,
     "own_restart_qualification": false
-  }
+  },
+  "bounded_storage_qualified": true,
+  "qualification_scope": "Positive-stock normalization, unchanged acceptance gates, actual43 interval and own3to4. No original481/full corrected481/year/whole energy claim.",
+  "own3to4": {
+    "completed": true,
+    "checkpoint_byte_exact": true,
+    "progress_rows_exact": 504,
+    "seconds": 77.45146019989625,
+    "archive_sha256": "856e744c6d0aec04568d366fb9d625f55f06d272dceaedc3e45dc4e6a9437445"
+  },
+  "CI": {
+    "component": {
+      "run": 42241056524,
+      "job": 127971136648,
+      "conclusion": "success"
+    },
+    "docs": {
+      "run": 42241056414,
+      "job": 127971136580,
+      "conclusion": "success"
+    },
+    "qualified_source": "403b3a9e2aca819696df9ba2ef46a9f74213eb51"
+  },
+  "day1_incumbent_physical_payload_exact": true,
+  "whole481_status": "RUNNING_NOT_QUALIFIED"
 }
