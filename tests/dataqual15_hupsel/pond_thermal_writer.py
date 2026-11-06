@@ -79,7 +79,7 @@ def probe_driver(layout):
     source=source.replace(' logical::ok',' logical::ok,seed_old',1)
     source=source.replace(' character(512)::mode,path,target',' character(512)::mode,path,target,recovery',1)
     anchor=" if(trim(mode)=='create')then"
-    assert source.count(anchor)==2
+    assert source.count(anchor)==1
     branch=''' seed_old=trim(mode)=='create-old'
  if(seed_old)mode='create'
  if(trim(mode)=='probe-writer')then
@@ -144,7 +144,9 @@ def build(inputs,opt,out,fc):
     flags=[p[:2]+remap(p[2:]) if p.startswith(('-I','-J')) else p for p in old_driver[1:old_driver.index('-c')]]
     flags=[p for p in flags if not p.startswith('-J')]+['-J'+str(out),'-I'+str(out)]
     events=[]
-    def run(cmd,label):events.append(execute(cmd,out,label))
+    def run(cmd,label):
+        events.append(execute(cmd,out,label))
+        (out/'BUILD.json').write_text(json.dumps(events,indent=2)+'\n')
     f=out/'writer-test.f90';f.write_text(injected_source());obj=out/'writer-test.o'
     run([fc,*flags,'-c',f,'-o',obj],'codec')
     cc=subprocess.check_output([fc,'-print-prog-name=gcc'],text=True).strip()
@@ -206,9 +208,24 @@ def terminate(cmd,case,phase,target):
 
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True)
+    p.add_argument('--reuse-prepared',type=Path);a=p.parse_args()
     native.guard();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
-    inputs,stem=layouts.unpack(out)
+    if a.reuse_prepared:
+        inputs=a.reuse_prepared.resolve();stem='POND_THERMAL_NATIVE_'+('WINDOWS' if os.name=='nt' else 'POSIX')+'_20261106'
+        manifest=json.loads((previous.STORE/(stem+'.json')).read_text())
+        def prepared_guard():
+            seen=set()
+            for path in inputs.rglob('*'):
+                if path.is_file():
+                    key=path.relative_to(inputs).as_posix();seen.add(key)
+                    assert key in manifest['members'] and native.sha(path)==manifest['members'][key],key
+            required={key for key in manifest['members'] if len(Path(key).parts)>1 and Path(key).parts[0] in ('baseline','candidate') and Path(key).parts[1] in ('source','base','RESULT.json')}
+            assert required<=seen
+        for part in manifest['parts']:
+            assert native.sha(previous.STORE/part['path'])==part['sha256']
+        prepared_guard()
+    else:inputs,stem=layouts.unpack(out)
     manifest=json.loads((previous.STORE/(stem+'.json')).read_text());raw=b''.join((previous.STORE/x['path']).read_bytes() for x in manifest['parts'])
     with tarfile.open(fileobj=io.BytesIO(raw),mode='r:xz') as tar:
         for member in tar.getmembers():
@@ -270,6 +287,7 @@ def main():
     assert len(result['events'])==60 and len(result['crashes'])==16
     result['status']='PRIVATE_COMPLETE_S5PT_WRITER_FAULTS_AND_ACTUAL_CRASHES_PASS'
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');native.guard()
+    if a.reuse_prepared:prepared_guard()
 
 
 if __name__=='__main__':main()
