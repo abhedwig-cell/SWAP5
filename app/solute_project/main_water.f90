@@ -44,7 +44,7 @@ program swap5_native_water_project
   use mod_fmr_macropore_configuration
   use mod_macropore_single_column_runtime,only:macropore_runtime_policy_t
   use mod_interception_source_window_runtime,only:initialize_interception_window,interception_source_window_t, &
-    select_interception_event_endpoint,INTWIN_OK
+    select_interception_event_endpoint,select_interception_event_index,INTWIN_OK
   use mod_rutter_source_window_processor,only:initialize_rutter_canopy_state
   use mod_kernel_transactions,only:kernel_checkpoint_t,kernel_candidate_state_t,kernel_result_t,kernel_diagnostics_t
   implicit none
@@ -184,7 +184,7 @@ program swap5_native_water_project
   real(real64)::pond_macro_amount,max_pond_depth,direct_macro_amount,max_net_source_check,net_source_check
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
-  integer::rain_index,step_index,uv,us,ut,up,uc,ud,part,commit_status
+  integer::rain_index,next_rain_index,step_index,uv,us,ut,up,uc,ud,part,commit_status
   real(real64)::oxygen_reduction_amount
   logical::did_commit,policy_ok,anchored_ceiling=.false.,source_surface_demand=.false.,perched_jacobian=.false.
   logical::conservative_macro_storage=.false.
@@ -553,7 +553,11 @@ program swap5_native_water_project
     't0,t1,completed,nonlinear_iterations,headcalc_calls,linear_solves,backtracking_attempts,accepted_substeps,min_accepted_dt,max_accepted_dt'
   open(newunit=ud,file='diagnostics.csv',status='new');write(ud,'(a)')'day,t0,t1,oxygen_reduction_cm,groundwater_cm'
   rain_index=1
-  do while(rain_index<rain_count.and.rain_ends(rain_index)<=clock+1d-12);rain_index=rain_index+1;end do
+  if(detailed_rain)then
+    call select_interception_event_index(clock,rain_ends(:rain_count),rain_index,next_rain_index,code)
+    call require(code==INTWIN_OK,'source committed rain phase')
+    rain_index=next_rain_index
+  end if
   daily_loop:do j=first,min(windows,stop_after)
     call select_project_profile(profile_index(j));crop_input=fmr_root_uptake_crop_input_t()
     if(crop_active(j))then
@@ -575,7 +579,9 @@ program swap5_native_water_project
     do while(cursor<ends_day(j))
       part=part+1;endpoint=ends_day(j);rain_rate=rain_cm_day(j)
       if(detailed_rain)then
-        do while(rain_index<rain_count.and.rain_ends(rain_index)<=cursor+1d-12);rain_index=rain_index+1;end do
+        call select_interception_event_index(cursor,rain_ends(:rain_count),rain_index,next_rain_index,code)
+        call require(code==INTWIN_OK,'source committed rain phase')
+        rain_index=next_rain_index
         endpoint=min(endpoint,rain_ends(rain_index));rain_rate=rain_rates(rain_index)
       end if
       source_event_endpoint=endpoint

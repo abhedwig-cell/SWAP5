@@ -33,7 +33,7 @@ jobs:
         run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output current-view-contracts
       - name: Scoped candidate source callback and refusal O0/O2
         run: python -B tests/dataqual15/run_joint_source_callback_contract.py --compiler /usr/bin/gfortran --output current-source-contracts
-      - name: Exact source events and original INT13 owner O0/O2
+      - name: Exact committed rain phases, source events and original INT13 owner O0/O2
         run: python -B tests/dataqual15/run_source_event_contracts.py --compiler /usr/bin/gfortran --output source-event-contracts
       - uses: actions/upload-artifact@v4
         if: always()

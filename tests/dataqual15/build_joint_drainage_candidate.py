@@ -88,8 +88,11 @@ def render(folder):
       call evaluate_fmr_drainage_response_bottom_lumped(self%drainage_response_levels, &
         self%drainage_response_controls,view,qdra,response,substep_t1=t1)
       if(response%status/=FMR_DRAIN_BIND_OK)return
+      ! The coupled response crosses zero inside Newton. Keep every signed
+      ! scalar through the existing homogeneous DIVDRA extension; never drop
+      ! a small nonzero transfer or change the public legacy activity gate.
       call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,view,sum(qdra),partition, &
-        distribution,self%soil_temperature_temporal_tolerance_c>0d0)
+        distribution,.true.)
       if(distribution%status/=DRAIN_DIST_OK)return
       qdra(1,:)=partition%soil_to_drain_rate
       joint_drain_diagnostics=response
@@ -97,6 +100,12 @@ def render(folder):
     end subroutine coupled_profile_drainage
 '''
  s=s[:begin]+body+s[end:]
+ # The same functional partition is needed at trial entry and in the existing
+ # directional response. This extension is confined to the private macro model.
+ s=once(s,'sum(self%qdra),partition,diagnostic,self%soil_temperature_temporal_tolerance_c>0.0_real64)',
+  'sum(self%qdra),partition,diagnostic,self%soil_temperature_temporal_tolerance_c>0.0_real64.or.self%macropore_active)')
+ s=once(s,'call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,view,sum(lumped),nodes,distribution, &\n          self%soil_temperature_temporal_tolerance_c>0.0_real64)',
+  'call distribute_fmr_scalar_drainage(self%drainage_trial_distribution,view,sum(lumped),nodes,distribution, &\n          self%soil_temperature_temporal_tolerance_c>0.0_real64.or.self%macropore_active)')
  target=folder/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(s,newline='\n');shadow[ROOT/name]=target
  name='src/legacy/b1_10_port/headcalc.f90';s=shadow[ROOT/name].read_text()
  marker='   ! The constitutive provider owns the storage increment for every explicit'
@@ -114,7 +123,7 @@ def render(folder):
  s=once(s,'request%sorptivity%matrix_top_saturated_node-1','sorp_request%matrix_top_saturated_node-1')
  shadow[ROOT/name].write_text(s,newline='\n')
  p=folder/'MODEL.json';record=json.loads(p.read_text());record.update(model=MODEL,
-  drainage='Real DRAMET3 and signed DIVDRA from the same current heads as macro exchange. Scoped local source callback; same final rate precedes mass and accepted trace.',
+  drainage='Real DRAMET3 and signed DIVDRA from the same current heads as macro exchange. Existing homogeneous unit weights retain every tiny nonzero scalar in callback, trial entry and directional response. Scoped local callback; same final rate precedes mass and trace. Public legacy activity gate unchanged.',
   rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
  p.write_text(json.dumps(record,indent=2)+'\n');return shadow
 
