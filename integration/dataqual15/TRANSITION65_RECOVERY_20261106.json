@@ -277,5 +277,32 @@
       "expected_native_seconds": 30,
       "prior_probe": "240-advance telemetry capped; all first50 actual refusals are bounded line search, not linear solver."
     }
+  },
+  "source64_jacobian_audit": {
+    "native_seconds": 2.479534699814394,
+    "origin_unchanged": true,
+    "source_head": 64.41400000000266,
+    "trial_width": 0.0002500000000509317,
+    "active_perched_contact_node": 52,
+    "actual_fraction": 0.749648343704002,
+    "linear_solver": "PASS",
+    "failure": "Bounded Newton line search refuses",
+    "largest_head_column_error": {
+      "node": 46,
+      "row": 46,
+      "value": 0.00018192936107208624
+    },
+    "next_head_column_error": {
+      "node": 37,
+      "row": 37,
+      "value": 9.09587130566436e-05
+    },
+    "largest_off_diagonal_error": 2.6551205678515544e-11,
+    "fraction_local_vs_full_range_secant_error": 5.535068930972997e-15,
+    "rejected_hypothesis": "No evidence for omitted nonlocal process columns or nonlinear fraction secant. Measured differences are diagonal.",
+    "implementation_cause": "joint_entry_residual refreshes theta and provider_capacity but leaves state%dimoca at the old external Newton head. jacobian_F and macro derivatives consume this stale capacity. Refresh state%dimoca from the same current constitutive tuple; retain existing floor and every equation/gate.",
+    "next_action": "Same-source64 replay first, then earlier2924/65 regressions atO0/O2 and original-init481/own-year if successful.",
+    "expected_compile_seconds": 15,
+    "expected_probe_seconds": 30
   }
 }
