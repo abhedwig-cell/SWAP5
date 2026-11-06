@@ -1,7 +1,7 @@
 {
   "unit": "Complete age/mineral/reactive-N occupied-target atomic refusal qualification",
   "baseline": "0c85785b65653155718e17ecc5d5590cc2de52c6",
-  "status": "FOUR_OCCUPIED_TARGET_COHORTS_QUALIFIED_FINAL_HEAD_PENDING",
+  "status": "FROZEN_COMPLETE_OWNER_COHORTS_QUALIFIED_COMBINED_METADATA_PENDING",
   "production_delta": [],
   "production_admission": false,
   "whole_scientific_admission": false,
@@ -43,9 +43,9 @@
     }
   },
   "controller": "tests/dataqual15_hupsel/joint_owner.py",
-  "controller_sha256": "3dbed9fba7a634593dc9eebea6c3b0666682c20104f9e475508adbf1549710f3",
+  "controller_sha256": "3b2727dfc1bf502ececea9de323734380444ee3a5f3c8ecaac241a9b4ec26273",
   "qualification": "120 public-reader refusals each O0/O2; full before/after native equality; five independent evidence corruptions; exact verified source/object/compiler/flags reused without model rebuild",
-  "reconciled_canonical": "db42f99e2de9cae43dfe04bbf291e8e214edd6f7",
+  "reconciled_canonical": "6545e21d12d23d7d22f53d7e2f20a43ad5276d61",
   "peer_delta": {
     "pr": 1591,
     "source": "src/solver/mod_reference_bordered_solver.f90",
@@ -81,5 +81,10 @@
   },
   "predecessor_verdict": "FAILED_RETAINED: exact canonical db42 and current unchanged production guard refuse peer PR1591 additional source at production footprint. Original private-reader guard likewise refuses whole src tree. No guard altered, no production admission claim.",
   "workflow": ".github/workflows/joint-owner.yml",
-  "workflow_sha256": "753a62cd9ac44cdd3f11c1747e65b074f8c0147ab35683b98fadc166c185ff41"
+  "workflow_sha256": "753a62cd9ac44cdd3f11c1747e65b074f8c0147ab35683b98fadc166c185ff41",
+  "later_peer_delta": {
+    "pr": 1593,
+    "source": "src/process/macropore/mod_macropore_standard_storage.f90",
+    "scope": "Canonical physical source changed during final qualification. Retained owner executions remain exact frozen PR1590/db42 complete-source capsules, NOT current macropore source qualification. Private evidence admission only; any production successor must recompile/reexecute the changed dependency. Entire integration production tree is pinned to6545e21d1 and remains untouched."
+  }
 }

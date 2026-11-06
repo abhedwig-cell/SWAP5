@@ -6,7 +6,7 @@ import joint_logical_evidence as evidence
 ROOT=p.ROOT
 STORE=evidence.STORE
 BASE='0c85785b65653155718e17ecc5d5590cc2de52c6'
-RECONCILED='db42f99e2de9cae43dfe04bbf291e8e214edd6f7'
+RECONCILED='6545e21d12d23d7d22f53d7e2f20a43ad5276d61'
 PEER='src/solver/mod_reference_bordered_solver.f90'
 sha=p.sha
 
@@ -15,7 +15,7 @@ def guard():
   assert subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT)==subprocess.check_output(['git','rev-parse',RECONCILED+':'+area],cwd=ROOT)
   assert not subprocess.check_output(['git','diff','HEAD','--',area],cwd=ROOT)
  assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','src','app','reference'],cwd=ROOT)
- assert subprocess.check_output(['git','diff','--name-only',BASE,RECONCILED,'--','src','app','reference'],cwd=ROOT,text=True).splitlines()==[PEER]
+ assert subprocess.check_output(['git','diff','--name-only',BASE,RECONCILED,'--','src','app','reference'],cwd=ROOT,text=True).splitlines()==['src/process/macropore/mod_macropore_standard_storage.f90',PEER]
  assert subprocess.run(['git','grep','-i','-n','use mod_reference_bordered_solver',RECONCILED,'--','src','app'],cwd=ROOT,capture_output=True).returncode==1
  assert subprocess.run(['git','merge-base','--is-ancestor',RECONCILED,'HEAD'],cwd=ROOT,capture_output=True).returncode==0
  assert subprocess.run(['git','merge-base','--is-ancestor',BASE,'HEAD'],cwd=ROOT,capture_output=True).returncode==0

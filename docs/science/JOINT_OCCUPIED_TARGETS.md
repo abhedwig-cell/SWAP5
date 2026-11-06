@@ -45,3 +45,10 @@ on Windows, including five actual mutations per cohort. Windows capsules are
 independently audited on POSIX. Producer-specific path algebra preserves exact
 Windows and POSIX command/path checks rather than using the auditor host's path
 syntax. The first cross-host audit failure remains retained and corrected.
+
+While final qualification was running, canonical PR1593 changed macropore
+storage. These retained executions are explicitly frozen PR1590/db42 complete
+source evidence, not qualification of the newer macropore body. The integration
+boundary now pins the complete6545e21d1 production trees and changes no source.
+A production successor must rebuild and execute the changed dependency before
+admission; this private research cannot supply that current physical proof.
