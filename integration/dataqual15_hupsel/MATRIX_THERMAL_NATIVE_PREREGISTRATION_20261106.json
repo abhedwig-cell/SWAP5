@@ -11,7 +11,7 @@
     "tests/nut-sol/run_matrix_thermal.py": "95b5e5d8b31f1f76318ada9638583d2eb463c1629d2bb3f58f3470a0436634e0",
     "tests/nut-sol/test_matrix_thermal.f90": "5f2a4792b30825a2dae094c9d910888fecc34430f749d485aae0af94df9cf398",
     "integration/audits/qualify_matrix_thermal.py": "2b2102a1a5e577ff6a2f6253e80f592f85ae6fd72ee19c08993ef119fb1ebdfd",
-    "tests/dataqual15_hupsel/matrix_thermal_native_policy.py": "96bebd2a2cd8fdda38ebfb1724b960e446669615d089e2679f0c721b61a51dbe"
+    "tests/dataqual15_hupsel/matrix_thermal_native_policy.py": "cf56db601c48a62537e70b9b9e1d4449c1808d6d10e2e96e3fe3733be638d9a0"
   },
   "proposed_postimage_sha256": "f4b2d12b3285b9517ad2ca2bc29cb47b8cd9bc129acb2825bd0e51d6f98d33be",
   "proposed_delta": [
@@ -42,5 +42,7 @@
     "oxygen584 reference accuracy",
     "arbitrary Unicode Windows Fortran paths",
     "power-loss/concurrent-writer guarantees"
-  ]
+  ],
+  "publication_only_counterfactual_sha256": "c54680b239a80e2825c35edbe1f2d525a48f9f305abcf5b963516bb0632acea4",
+  "counterfactual": "Actual original Windows module cannot link: unresolved POSIX fsync. A separately labelled publication-only exact module variant leaves both original logical decode sites unchanged, reuses the coherent current provider cohort and recompiles only this module. It isolates logical validation from the necessary native-publication bridge; it is never labelled original baseline native PASS."
 }

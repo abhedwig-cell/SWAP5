@@ -6,7 +6,7 @@ SOURCE='src/adapter/mod_matrix_thermal_restart_file.f90'
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def before(n):return subprocess.check_output(['git','show',BASE+':'+n],cwd=ROOT).decode()
 
-def candidate():
+def candidate(validate=True):
  s=before(SOURCE).replace('one POSIX generation','one native generation')
  s=s.replace("function rename_c(a,b)bind(C,name='rename')", "function rename_c(a,b)bind(C,name='swap5_restart_publish')")
  for name in ('open_c','sync_c','close_c'):
@@ -14,6 +14,7 @@ def candidate():
  a=s.index(' integer function synchronize(');z=s.index(' subroutine bytes(',a);s=s[:a]+s[z:]
  s=s.replace('   if(synchronize(pending)/=0)exit writing\n','')
  a=s.index("   slash=index(path,'/',back=.true.)");z=s.index('   status=0',a);s=s[:a]+s[z:]
+ if not validate:return s
  # Never evaluate malformed host logicals, including before a history branch.
  s=s.replace('  integer(int8)::extra','  integer(int8)::extra\n  integer(int8)::bound_raw(storage_size(.true.)/8),history_raw(storage_size(.true.)/8)')
  old='r%committed_time,r%time_bound, &\n     n,history,physical_id,count';assert s.count(old)==1
