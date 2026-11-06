@@ -52,3 +52,10 @@ source evidence, not qualification of the newer macropore body. The integration
 boundary now pins the complete6545e21d1 production trees and changes no source.
 A production successor must rebuild and execute the changed dependency before
 admission; this private research cannot supply that current physical proof.
+
+PR1592 canonically integrates this frozen owner proof at5a6cde28d. Its actual
+merge tree exactly matches qualified head8b6a2014f and the tested merge. All16
+final workflows are terminal:14 SUCCESS and two explicitly retained FAILED
+whole-source guards. Actual final job logs and exact canonical-before refusal
+observations are preserved. Neither failed guard is relabelled PASS, and no
+current production or macropore qualification is inferred from this closure.

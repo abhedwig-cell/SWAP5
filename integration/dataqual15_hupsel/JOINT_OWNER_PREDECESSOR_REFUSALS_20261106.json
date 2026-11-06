@@ -40,5 +40,39 @@
         "crc_family_runtime.py": "0a90ae5fc80c396e11329348d2a153fd3461f26acadff6bbda99cfed1ca49f16"
       }
     }
+  },
+  "latest_canonical_actual_refusals": {
+    "pond_thermal_production": {
+      "exact_canonical_before": {
+        "head": "6545e21d12d23d7d22f53d7e2f20a43ad5276d61",
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_production;pond_thermal_production.guard()\r\n                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\r\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-joint-owner-before-6545\\tests/dataqual15_hupsel\\pond_thermal_production.py\", line 33, in guard\r\n    assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE},'production footprint'\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: production footprint\r\n",
+        "script_sha256": "6735d63f767d06d1680a7ffdea643dd3ccfc1bc8c9c2550dd5f6a5a63c453f25"
+      },
+      "current_private_cluster": {
+        "head": "8b6a2014f5901e2411f05b56a70c395a629e442f",
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_production;pond_thermal_production.guard()\r\n                                                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^\r\n  File \"C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-AUTONOMOUS\\tests/dataqual15_hupsel\\pond_thermal_production.py\", line 33, in guard\r\n    assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE},'production footprint'\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError: production footprint\r\n",
+        "script_sha256": "6735d63f767d06d1680a7ffdea643dd3ccfc1bc8c9c2550dd5f6a5a63c453f25"
+      }
+    },
+    "joint_logical": {
+      "exact_canonical_before": {
+        "head": "6545e21d12d23d7d22f53d7e2f20a43ad5276d61",
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_logical;joint_logical.guard()\r\n                                                                                 ~~~~~~~~~~~~~~~~~~~^^\r\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-joint-owner-before-6545\\tests/dataqual15_hupsel\\joint_logical.py\", line 22, in guard\r\n    assert subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT)==subprocess.check_output(['git','rev-parse',BASE+':'+area],cwd=ROOT)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError\r\n",
+        "script_sha256": "c39d6ea868d3d2db293f81547436f318c44094a8a64a796bb683718e2ac1379e"
+      },
+      "current_private_cluster": {
+        "head": "8b6a2014f5901e2411f05b56a70c395a629e442f",
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\r\n  File \"<string>\", line 1, in <module>\r\n    import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_logical;joint_logical.guard()\r\n                                                                                 ~~~~~~~~~~~~~~~~~~~^^\r\n  File \"C:\\Users\\Veldh012\\OneDrive - Wageningen University & Research\\Documents\\ChatGPT\\SWAP5-finaliseren\\SWAP5-AUTONOMOUS\\tests/dataqual15_hupsel\\joint_logical.py\", line 22, in guard\r\n    assert subprocess.check_output(['git','rev-parse','HEAD:'+area],cwd=ROOT)==subprocess.check_output(['git','rev-parse',BASE+':'+area],cwd=ROOT)\r\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\r\nAssertionError\r\n",
+        "script_sha256": "c39d6ea868d3d2db293f81547436f318c44094a8a64a796bb683718e2ac1379e"
+      }
+    }
   }
 }
