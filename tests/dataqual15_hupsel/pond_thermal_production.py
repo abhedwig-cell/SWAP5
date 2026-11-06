@@ -10,6 +10,7 @@ STATUS='integration/dataqual15/STATUS.json'
 KEY='pond_thermal_native_successor_20261106'
 SCOPE='integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_SCOPE_20261106.json'
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
+BRIDGES.add('.github/workflows/pond-thermal-original.yml')
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/pond_thermal_production.py','tests/dataqual15_hupsel/test_pond_thermal_production.py','.github/workflows/pond-thermal-production.yml'}
 GATES.add('tests/dataqual15_hupsel/pond_thermal_production_baseline.py')
 normal=lambda b:b.replace(b'\r\n',b'\n')
@@ -79,7 +80,8 @@ def current_build(out):
  (out/'CURRENT_BUILD_RESULT.json').write_text(json.dumps(dict(status='ACTUAL_CURRENT_SOURCE_ORIGINAL_COLD_RESUMED_O0_O2_PASS',head=head,production_trees={p:blob(head,p) for p in ('src','app','reference')},source_sha256=sha((view/SOURCE).read_bytes()),events=events,whole_scientific_admission=False),indent=2)+'\n');guard()
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--current-build',action='store_true');p.add_argument('--prepare-legacy-matrix',action='store_true');a=p.parse_args();guard();out=a.output.resolve()
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--current-build',action='store_true');p.add_argument('--prepare-only',action='store_true');p.add_argument('--prepare-legacy-matrix',action='store_true');a=p.parse_args();guard();out=a.output.resolve()
+ if a.prepare_only:print(prepare(out));return
  if a.current_build:current_build(out);return
  if a.prepare_legacy_matrix:
   view=prepare(out/'exact-s5pt-predecessor')
@@ -91,6 +93,7 @@ def main():
  for host,platform in [('WINDOWS','nt'),('POSIX','posix')]:
   stem='POND_THERMAL_PRODUCTION_'+host+'_20261106';m,files=evidence.load(stem)
   result=json.loads(files['CURRENT_BUILD_RESULT.json'])
+  subprocess.run(['git','merge-base','--is-ancestor',result['head'],'HEAD'],cwd=ROOT,capture_output=True,check=True)
   assert result['status']=='ACTUAL_CURRENT_SOURCE_ORIGINAL_COLD_RESUMED_O0_O2_PASS' and result['whole_scientific_admission'] is False
   assert result['source_sha256']==sha(normal((ROOT/SOURCE).read_bytes()))
   assert result['production_trees']=={p:blob('HEAD',p) for p in ('src','app','reference')}

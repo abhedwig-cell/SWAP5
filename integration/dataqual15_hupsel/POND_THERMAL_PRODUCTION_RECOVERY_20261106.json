@@ -85,5 +85,15 @@
     "PR1485": "Shared STATUS.json only; all old fields/types preserved and only own new key appended. No shared production source.",
     "PR1465": "No directly overlapping changed file",
     "PR1457": "No directly overlapping changed file"
-  }
+  },
+  "retained_initial_ci_refusals": [
+    {
+      "head": "6603af42f6e138b06146e049c30eba6a58f240e0",
+      "run": 42218433777,
+      "job": 127894174055,
+      "verdict": "FAILED_RETAINED",
+      "signature": "AssertionError: input drift: src/adapter/mod_pond_thermal_restart_file.f90",
+      "correction": "Original research workflow now executes its exact unchanged predecessor behind the strict new source guard. No old assertion is modified."
+    }
+  ]
 }
