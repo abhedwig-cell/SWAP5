@@ -1,5 +1,5 @@
 """Independent complete source/object/command audit of the PR1605 cold graph."""
-import argparse,hashlib,io,json,lzma,subprocess,tarfile
+import argparse,hashlib,io,json,lzma,struct,subprocess,tarfile,zlib
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import joint_writer_phase_cold as producer
 ROOT=producer.ROOT
@@ -16,7 +16,10 @@ def audit(files):
  assert '-'+r['optimization']in b['flags']and'-ffpe-trap=invalid,zero,overflow'in b['flags']and'-fcheck=all'in b['flags']
  rows={x['source']:x for x in r['sources']};source_keys=list(b['sources_sha256']);objects=list(b['objects_sha256']);assert len(source_keys)==len(objects)==335
  provider_events=[e for e in events if e['label']=='provider'];assert len(provider_events)==335
- def local(path):return 'baseline/'+q(path).name
+ buildroot=q(objects[0]).parent
+ def local(path):
+  p=q(path)
+  return 'baseline/'+(p.relative_to(buildroot).as_posix()if p.is_absolute()else p.as_posix())
  for i,(source,obj)in enumerate(zip(source_keys,objects)):
   row=rows[source];raw=files[row['snapshot']];assert sha(raw)==row['sha256']==b['sources_sha256'][source]
   if row['repository']:assert raw.replace(b'\r\n',b'\n')==subprocess.check_output(['git','show',producer.SOURCE+':'+row['path']],cwd=ROOT)
@@ -34,6 +37,16 @@ def audit(files):
   for stream in('stdout','stderr'):assert local(e[stream])in files
   assert e['returncode']!=0 if e['label']=='original-reactive'else e['returncode']==0
  assert len(r['native']['logical'])==24 and all(x['refused']is True for x in r['native']['logical'])
+ import joint_production_runtime as reference
+ _,frozen=reference.reference(r['platform'],r['optimization'])
+ for name in ('age','mineral','reactive_n'):
+  expected={k.removeprefix('candidate/'):v for k,v in frozen.items()if k.startswith('candidate/'+name+'/')}
+  actual={k.removeprefix('baseline/'):v for k,v in files.items()if k.startswith('baseline/'+name+'/')}
+  assert expected==actual,'independent exact native payload '+name
+ for row in r['native']['logical']:
+  good=files['baseline/'+row['codec']+'/'+row['proper']];payload=bytearray(good[:-4]);assert row['word']in(2,-1,2147483647)
+  struct.pack_into('<i',payload,{'time_bound':144,'history':156}[row['field']],row['word'])
+  assert files[local(row['path'])]==bytes(payload)+struct.pack('<I',zlib.crc32(payload))and row['returncode']==0
  return dict(cold_provider_compiles=335,reused_objects=0,complete_original_drivers=4,logical_refusals=24,production_admission=False,whole_scientific_admission=False)
 def pack(out):
  files={p.relative_to(out).as_posix():p.read_bytes()for p in out.rglob('*')if p.is_file()};measurement=audit(files)
