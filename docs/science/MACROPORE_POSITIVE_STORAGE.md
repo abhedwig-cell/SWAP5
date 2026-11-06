@@ -94,3 +94,21 @@ This bounded public arithmetic correction does not activate the private contact
 model or qualify whole481, an own year restart or historical equivalence.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json` and
 `integration/dataqual15/EVENT_ALIGNED142_EVIDENCE_20261106.zip`.
+
+PR1602 production-admits this bounded quotient at actual merge
+`111ed331ad457e3a82d9d677cd9697a3c4501cea`, with parents
+`5a9cc9ab6fa2f45bb5c4689999cddfe7384d8f30` and
+`80a5582b70320aab72e84969a126b75bc6b1f1b7`. Its actual full tree is exact to
+the final qualified candidate. Focused Linux contracts and combined strict
+documentation pass; the peer private-writer evidence changes no relevant
+Andelst source or test. The full native O0/O2 probe/build/day-one evidence is
+retained in `integration/dataqual15/LIMITER_RATIO_EVIDENCE_20261106.zip`.
+
+The subsequent corrected V4 request completes245 days, then encounters the
+existing small-drainage availability gate. The [current-drainage successor](ANDELST_JOINT_CONTACT_RESEARCH.md#current-drainage-through-zero-and-exact-source-phases)
+explicitly reuses the already admitted homogeneous signed distribution in the
+private coupled model. It retains the full nonzero transfer and preserves the
+public default refusal. Actual same-state O0/O2 source continuations pass with
+all195 rows exact. The separate early rain-phase correction requires a fresh
+original-initialization481 request; this is not a completed historical run or
+whole-science promotion.

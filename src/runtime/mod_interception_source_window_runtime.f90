@@ -48,9 +48,34 @@ module mod_interception_source_window_runtime
 
   public :: initialize_interception_window, initialize_interception_progress
   public :: select_interception_event_endpoint
+  public :: select_interception_event_index
   public :: prepare_interception_trial, accept_interception_trial
   public :: export_interception_restart, restore_interception_restart
 contains
+  pure subroutine select_interception_event_index(cursor,event_ends,current_index,event_index,status)
+    real(real64),intent(in)::cursor,event_ends(:)
+    integer,intent(in)::current_index
+    integer,intent(out)::event_index,status
+    integer::candidate,n
+    event_index=0;status=INTWIN_INVALID;n=size(event_ends)
+    if(.not.ieee_is_finite(cursor).or.n<1)return
+    if(current_index<1.or.current_index>n)return
+    if(any(.not.ieee_is_finite(event_ends)))return
+    if(any(event_ends(2:n)<=event_ends(1:n-1)))return
+    ! An event changes the rate only after its actual endpoint is committed.
+    ! Time identity belongs to window apportionment, not early phase selection.
+    if(current_index>1)then
+      if(event_ends(current_index-1)>cursor)return
+    end if
+    candidate=current_index
+    do while(candidate<=n)
+      if(event_ends(candidate)>cursor)exit
+      candidate=candidate+1
+    end do
+    if(candidate>n)return
+    event_index=candidate;status=INTWIN_OK
+  end subroutine select_interception_event_index
+
   pure subroutine select_interception_event_endpoint(cursor,event_end,max_step,endpoint,status)
     real(real64),intent(in)::cursor,event_end,max_step
     real(real64),intent(out)::endpoint

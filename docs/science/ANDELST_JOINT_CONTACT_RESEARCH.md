@@ -13,9 +13,51 @@ limiter. Maximum completed daily water residual is3.392259196288776e-12cm.
 Strict own80-to81 is exact across all504 progress rows and the full day81 stream.
 Strict own142 reproduces all416 preceding rows and the same crash in1.405s.
 The [bounded quotient successor](MACROPORE_POSITIVE_STORAGE.md#bounded-outflow-quotient-successor)
-passes the actual failed source at O0/O2. A new executable-bound full request
-starts from original initialization; earlier streams are never rebound. The
-source record distinguishes this current gate from all previous negative runs.
+passes the actual failed source at O0/O2. Its full successor completes245 days
+before the separate small-drainage admission refusal below. Earlier streams
+are never rebound. The source record distinguishes every generation and gate.
+
+## Current drainage through zero and exact source phases
+
+The quotient-repaired original-initialization request terminates after245 complete
+days and4727.031s, at last completed source245.3769999999992. Maximum daily water
+residual is3.392259196288776e-12cm. Its strict own142-to143 result is byte-exact
+across all501 progress rows and the complete day143 stream. Whole481 and own year
+are not completed by that generation.
+
+An immutable own245 diagnostic replay reproduces all193 preceding source rows
+exactly. The failure is inside the current-profile callback at245.378-to245.379:
+DRAMET3 succeeds, but DIVDRA returns `DRAIN_DIST_TRANSFER_BELOW_ADMITTED_MAGNITUDE`
+for7.08279799255251422e-11cm/day at groundwater-74.99999996458601cm. This is an
+explicit availability boundary at1e-10, not a failed mass or geometry certificate.
+
+The shared backend already implements a homogeneous unit-weight signed DIVDRA
+extension, admitted for the thermal numerical profile at PR1563. Its complete
+function body and spatial/hydraulic dependencies are unchanged. The private V4
+builder now explicitly selects that existing extension in its current callback,
+trial-entry partition and directional response whenever the private macro model
+is active. The authoritative tiny scalar is retained in the same residual and
+accepted trace; it is not set to zero or corrected after solving. Public default
+activity refusal, all other invalid-input/geometry guards and all tolerances stay
+unchanged. No state, schema or production-default graph activation is added.
+
+Actual own245 read-only O0/O2 replays reproduce all193 prior rows exactly, then
+complete both formerly refused and following source windows. All195 output rows
+are byte-exact across modes. Measured times are519.298s and262.172s; origins are
+unchanged and no restart is published. Every original independent macro-cell,
+matrix and trace guard executes before the diagnostic stop.
+
+An independent original-rain integral also detects three early phase changes in
+the245-day generation. The [exact committed-phase successor](SOURCE_EVENT_ENDPOINTS.md#exact-committed-rain-phases)
+repairs those without changing forcing files or source-time identity. A fresh
+original-initialization481 request is therefore required on the new executable,
+with exact own source-event and year continuations. This remains corrected
+research; original historical/scientific counts are unchanged.
+The new exact-phase trajectory completes58 days; actual tiny packets pass all
+independent native guards, own19-to20/32-to33 are byte-exact and the independent
+original-rain integral has zero difference. The source-bound full481 and own
+year remain separate active gates.
+Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
 
 The implementation starts at canonical `b4107989d5f31e4f051dfbbf5b98bd182e152d64`.
 The later `6bcacb0af5890db0d54fa9b24a7f322f36de76c2` delta contains pond-thermal
