@@ -54,8 +54,9 @@ def age_literal():
 
 def prepare(out):
  text=inspect.getsource(prior.prepare)
- anchor="    decl=fixture/'wofost_soil_declarations.f90';mapping={}"
- insert="    age_oracle=fixture/'age_literal.f90';age_oracle.write_bytes(age_literal().encode())\n"
+ anchor=next(line for line in text.splitlines() if "decl=fixture/'wofost_soil_declarations.f90';mapping={}" in line)
+ indent=anchor[:len(anchor)-len(anchor.lstrip())]
+ insert=indent+"age_oracle=fixture/'age_literal.f90';age_oracle.write_bytes(age_literal().encode())\n"
  assert text.count(anchor)==1;text=text.replace(anchor,insert+anchor)
  before="for p in [*sorted((ROOT/'src').rglob('*.f90')),grid,oracle_fixture,decl]:"
  assert text.count(before)==1;text=text.replace(before,"for p in [*sorted((ROOT/'src').rglob('*.f90')),grid,oracle_fixture,decl,age_oracle]:")

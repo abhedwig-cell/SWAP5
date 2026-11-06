@@ -47,7 +47,7 @@
     }
   },
   "controller": "tests/dataqual15_hupsel/joint_logical.py",
-  "controller_sha256": "9d4e35d9edcfa091ccfb33c6d0a39fda5b51065437e37fc23bd04f03323db120",
+  "controller_sha256": "9ee241609a40818ffcd9938083496cbff4d18d75fe2b136e3f9c594b045d8ae7",
   "retained_setup_failures": [
     {
       "optimization": "O0",
@@ -60,6 +60,12 @@
       "path": "C:/Users/Veldh012/AppData/Local/Temp/s5-joint-logical-20261106/O2-v1",
       "verdict": "FAILED_BEFORE_ANY_BUILD",
       "reason": "Original age driver requires historical_age_oracle. Added exact original run_age.py literal immutable B1.11 oracle generation and dependency registration; no replacement oracle or removed assertion."
+    },
+    {
+      "optimization": "O0",
+      "path": "O0-v2",
+      "verdict": "FAILED_BEFORE_ANY_BUILD",
+      "reason": "Fixture source indentation anchor mismatched original compact Python style. Preserve original indentation rather than assuming four spaces."
     }
   ]
 }
