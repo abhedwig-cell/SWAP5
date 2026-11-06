@@ -446,6 +446,18 @@
         366,
         367
       ]
+    },
+    "own_restart_selection": {
+      "own64to66": {
+        "expected_seconds": 300,
+        "timeout_seconds": 600,
+        "reason": "Mandatory same-executable own continuation through repaired ordinary contact with actual active macro history; old profile own3to4 cannot qualify this new executable. Compare entire native checkpoint66 and all source rows to fresh run."
+      },
+      "own365to367": {
+        "expected_seconds": 60,
+        "timeout_seconds": 300,
+        "reason": "User-required exact own year-boundary continuation on same native executable/input binding; compare full checkpoint367 and all source rows to fresh run. No rebinding or numerical-policy changes."
+      }
     }
   }
 }
