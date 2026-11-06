@@ -20,7 +20,7 @@ def worker(a):
   if compiler:
    ledger.append(dict(declared=cmd,effective=effective,executed=actual,returncode=r.returncode,seconds=time.monotonic()-start,response_sha256=sha(response.read_bytes())if response else None));(a.output.parent/'COMPILER.json').write_text(json.dumps(ledger,indent=2)+'\n')
   return r
- subprocess.run=run;os.environ['FC']=str(a.compiler);os.environ['OMP_NUM_THREADS']='1';sys.argv=[str(script),'--output',str(a.output)]
+ subprocess.run=run;os.environ['FC']=a.compiler.as_posix();os.environ['OMP_NUM_THREADS']='1';sys.argv=[str(script),'--output',str(a.output)]
  (a.output.parent/'RECIPE.json').write_text(json.dumps(dict(original_sha256=sha(raw.encode()),projected_sha256=sha(source.encode()),source_projection=source,platform=os.name,scope='Original physical/numerical/native/refusal assertions unchanged; Windows executable suffix/response/64MiB PE stack and matching C support object are explicit build seams'),indent=2)+'\n')
  exec(compile(source,str(script),'exec'),{'__file__':str(script),'__name__':'__main__'})
 
