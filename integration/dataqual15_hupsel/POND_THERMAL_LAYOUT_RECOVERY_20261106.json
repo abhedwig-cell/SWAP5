@@ -1,0 +1,62 @@
+{
+  "workstream": "MC-SOL01 native restart integrity",
+  "unit": "Standalone S5PT0002/0003 actual typed-owner layout qualification",
+  "baseline": "89a9e1cffc40b65339f9eba4b9451e7a574ccda6",
+  "status": "WINDOWS_POSIX_STANDALONE_NATIVE_QUALIFIED_FINAL_HEAD_PENDING",
+  "production_delta": [],
+  "private_candidate": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
+  "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
+  "authority": "PR1584 complete immutable Windows/POSIX source/object/native capsules; original test_composed_heat_restart.f90 at baseline89a9",
+  "driver_projection": [
+    "Reuse already compiled exact four-node grid instead of compiling conflicting application legacy context",
+    "Preserve original Boesten pair/heat/owner/native assertions",
+    "Add explicit standalone Black derivative with LDWET=2, existing Black parameter and thermal opt-in; no modeled evolution or historical-equivalence claim"
+  ],
+  "qualification": [
+    "Require exact compiler identity and full previously qualified provider objects/C publication object",
+    "Compile and link actual typed-owner public-API driver O0/O2 for both layouts and both original/private codecs",
+    "Create/fresh-read/reexport byte-exact proper files",
+    "CRC-reseal both malformed native header flags at four words, require atomic candidate refusal",
+    "Preserve original CRC/truncation/wrong immutable parameter controls",
+    "Compare all proper original/candidate bytes exactly",
+    "Archive complete new source/object/link/native bytes with exact dependency capsule identities; independently remeasure and qualify POSIX before integration"
+  ],
+  "invariants": "No production/numerical/schema/mass/ownership/default/admission change. Prior capsule provenance and qualified objects are immutable. No malformed-writer qualification is claimed.",
+  "next": "Observe final exact-head gates and integrate only this native layout evidence. Together with PR1584 this covers actual native reader layouts1/2/3/4, not corrupted writers or production deployment. Next executable unit: malformed writer and publication-fault qualification of the complete private postimage, preserving all current source/object/native evidence.",
+  "local_windows": {
+    "status": "PRIVATE_STANDALONE_S5PT0002_0003_NATIVE_PASS",
+    "new_compiled_drivers": 8,
+    "exact_inherited_objects_per_link": 285,
+    "proper_files": 16,
+    "measured_controls_both_codecs": 88,
+    "candidate_refusals": 44,
+    "original_failed_header_reject_assertions": 12,
+    "evidence_mutations_refused": 5,
+    "production_admission": false
+  },
+  "qualified_private_scope": {
+    "platforms": [
+      "Windows GNU O0/O2",
+      "POSIX GNU13 O0/O2"
+    ],
+    "actual_native_layouts": [
+      "S5PT0002 Boesten",
+      "S5PT0003 standalone Black"
+    ],
+    "proper_files_per_host": 16,
+    "measured_controls_per_host": 88,
+    "candidate_refusals_per_host": 44,
+    "original_failed_header_reject_assertions_per_host": 12,
+    "new_compiled_drivers_per_host": 8,
+    "evidence_mutations_refused_per_host": 5,
+    "modeled_evolution_claim": false,
+    "production_admission": false
+  },
+  "ci": {
+    "pr": 1585,
+    "execution_head": "0acf2d234a644531ba6c475192cf0ac1f7575bd4",
+    "complete_layout_run": 42181141849,
+    "artifact": 13485382167,
+    "artifact_zip_sha256": "20fcb2f2644dad73abf7986ccb17e43b23bdb5c39a3be26def5ba0f268bc6174"
+  }
+}

@@ -1,0 +1,166 @@
+{
+  "scope": "PRIVATE_NATIVE_QUALIFICATION_ONLY",
+  "pr": 1584,
+  "qualified_head": "1372a8b47c504102c87119114c2e5d9600ac8f08",
+  "qualified_tree": "b05914cd9886fe50c0aa4b7ebb6c87ebdb7aaff7",
+  "canonical_merge": "89a9e1cffc40b65339f9eba4b9451e7a574ccda6",
+  "canonical_tree": "b05914cd9886fe50c0aa4b7ebb6c87ebdb7aaff7",
+  "latest_runs": [
+    {
+      "id": 42178866578,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866543,
+      "name": "Private complete matrix thermal native qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866321,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866466,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866266,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866328,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866357,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866317,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866343,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866272,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866393,
+      "name": "Exact complete matrix thermal native production admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866340,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866437,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866375,
+      "name": "Private pond thermal native logical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866339,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866310,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 42178866342,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    }
+  ],
+  "duplicate_cancellations": [
+    {
+      "workflow": "Private complete matrix thermal native qualification",
+      "canceled_identical_earlier_run": 42178779437,
+      "required_later_exact_head_run": 42178866543
+    },
+    {
+      "workflow": "F-GC42 live whole-window service",
+      "canceled_identical_earlier_run": 42178779617,
+      "required_later_exact_head_run": 42178866578
+    },
+    {
+      "workflow": "F-CI110 reconstructed performance admission",
+      "canceled_identical_earlier_run": 42178779317,
+      "required_later_exact_head_run": 42178866310
+    },
+    {
+      "workflow": "SWAP431 empirical root oxygen qualification",
+      "canceled_identical_earlier_run": 42178779528,
+      "required_later_exact_head_run": 42178866340
+    },
+    {
+      "workflow": "F-MIG431-INT12-E detailed interception qualification",
+      "canceled_identical_earlier_run": 42178779459,
+      "required_later_exact_head_run": 42178866357
+    },
+    {
+      "workflow": "F-MIG431-INT12-P0 qualification",
+      "canceled_identical_earlier_run": 42178779733,
+      "required_later_exact_head_run": 42178866328
+    },
+    {
+      "workflow": "SWAP431 root constant LRV qualification",
+      "canceled_identical_earlier_run": 42178779296,
+      "required_later_exact_head_run": 42178866317
+    },
+    {
+      "workflow": "F-MIG431-INT12-D Gash qualification",
+      "canceled_identical_earlier_run": 42178779862,
+      "required_later_exact_head_run": 42178866321
+    },
+    {
+      "workflow": "Exact complete matrix thermal native production admission",
+      "canceled_identical_earlier_run": 42178779541,
+      "required_later_exact_head_run": 42178866393
+    },
+    {
+      "workflow": "F-MIG431 LOW08-A qualification",
+      "canceled_identical_earlier_run": 42178779474,
+      "required_later_exact_head_run": 42178866272
+    },
+    {
+      "workflow": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "canceled_identical_earlier_run": 42178779467,
+      "required_later_exact_head_run": 42178866339
+    },
+    {
+      "workflow": "SWAP431 crop rootgrow DVS qualification",
+      "canceled_identical_earlier_run": 42178779396,
+      "required_later_exact_head_run": 42178866437
+    },
+    {
+      "workflow": "F-CI canonical qualification",
+      "canceled_identical_earlier_run": 42178779334,
+      "required_later_exact_head_run": 42178866342
+    }
+  ],
+  "all34_runs_terminal": true,
+  "duplicate_canceled_is_pass": false,
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
