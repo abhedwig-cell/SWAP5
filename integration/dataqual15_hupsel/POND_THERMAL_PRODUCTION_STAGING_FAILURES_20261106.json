@@ -1,0 +1,22 @@
+{
+  "head": "dd344f87b3f99f8428c5934a72924a12fdf45799",
+  "run_id": 42220598324,
+  "job_id": 127901377960,
+  "verdict": "FAILED_RETAINED",
+  "zip_sha256": "9276581ceb7e906da306c2930efe44a0dd85631f985ddd2d2811498772ebdb19",
+  "members": {
+    "127901377960.log": "a17a411a33a30b4b7f6a642e73cf29888547e4d605f387d549d00a48d0bb98b5"
+  },
+  "signature": "merge-base', '--is-ancestor', 'cf7f0c1da4b6f7c0ca840a7a7e37995097b7c19e'",
+  "cause": "Actual original POSIX build ran on GitHub test merge cf7f0c1, with exact parents canonical46505d617 and actual source6603af42f. Temporary merge object was not available in the later checkout. Strict fetch, both-parent provenance and exact current/executed production-tree checks replace the incorrect ordinary-ancestor assumption.",
+  "workflow_validation_failure": {
+    "run_id": 42220588535,
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": 0,
+    "workflow": ".github/workflows/pond-thermal-original.yml",
+    "correction": "Use github.workspace in job defaults and corresponding exact predecessor output."
+  },
+  "old_red_pass_claim": false,
+  "whole_scientific_admission": false
+}

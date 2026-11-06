@@ -19,10 +19,16 @@ jobs:
     env:
       FC: gfortran-13
       PYTHONDONTWRITEBYTECODE: '1'
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}/.s5pt-original-authority/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Preserve exact unmodified original-build predecessor authority
+        working-directory: ${{ github.workspace }}
+        run: python -B tests/dataqual15_hupsel/pond_thermal_production.py --prepare-only --output "$GITHUB_WORKSPACE/.s5pt-original-authority"
       - name: Exact private scope and original Windows build evidence
         run: |
           python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_native as p;p.guard()"

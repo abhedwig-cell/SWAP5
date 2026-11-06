@@ -1,0 +1,28 @@
+{
+  "zip_sha256": "fadf0b73813d566372bdc8c272f086a390504f5ade7e85b18f3b400ae420bb60",
+  "head": "dd344f87b3f99f8428c5934a72924a12fdf45799",
+  "run_id": 42220598324,
+  "job_id": 127901378082,
+  "artifact_id": 13504150245,
+  "result": {
+    "baseline": "46505d617d4dae3053e6e72d63fae1c59baec2ab",
+    "tree": "52ea4424116201e314f9a42579b92a62327712ba",
+    "events": [
+      {
+        "case": "pond-source",
+        "command": [
+          "python3",
+          "-B",
+          "integration/audits/verify_pond_thermal.py"
+        ],
+        "returncode": 1,
+        "censored": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "534c0fdf59933d4cd6515903f639c9ab23db587dfe383a2d425d5e0403870f4b"
+      }
+    ],
+    "old_gate_pass_claim": false,
+    "whole_scientific_admission": false
+  },
+  "old_gate_pass_claim": false
+}

@@ -1,0 +1,75 @@
+name: Exact complete pond thermal native production admission
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - src/adapter/mod_pond_thermal_restart_file.f90
+      - tests/dataqual15_hupsel/pond_thermal_production.py
+      - tests/dataqual15_hupsel/test_pond_thermal_production.py
+      - integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_*
+      - .github/workflows/pond-thermal-production.yml
+permissions:
+  contents: read
+jobs:
+  complete-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Exact one-file source and malformed admission refusals
+        run: python3 -B tests/dataqual15_hupsel/test_pond_thermal_production.py
+      - name: Actual original current POSIX source O0/O2 and native archives
+        run: |
+          if test -f integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_POSIX_20261106.json; then
+            python3 -B tests/dataqual15_hupsel/pond_thermal_original_evidence.py --stem POND_THERMAL_PRODUCTION_POSIX_20261106 --platform posix --self-test
+          else
+            python3 -B tests/dataqual15_hupsel/pond_thermal_production.py --current-build --output "$RUNNER_TEMP/pond-current"
+            python3 -B tests/dataqual15_hupsel/pond_thermal_original_evidence.py --pack "$RUNNER_TEMP/pond-current" --stem POND_THERMAL_PRODUCTION_POSIX_20261106 --platform posix --self-test
+          fi
+      - name: Current and immutable reader writer fault termination proof and unchanged predecessor
+        run: python3 -B tests/dataqual15_hupsel/pond_thermal_production.py --output "$RUNNER_TEMP/pond-admission"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: complete-pond-thermal-production-admission
+          path: |
+            integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_POSIX_20261106*
+            ${{ runner.temp }}/pond-current/CURRENT_BUILD_RESULT.json
+            ${{ runner.temp }}/pond-current/*.stderr
+            ${{ runner.temp }}/pond-admission/*.json*
+            ${{ runner.temp }}/pond-admission/*.stdout
+            ${{ runner.temp }}/pond-admission/*.stderr
+  exact-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual exact predecessor broad diagnostic verdicts
+        if: ${{ hashFiles('integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json') == '' }}
+        run: python3 -B tests/dataqual15_hupsel/pond_thermal_production_baseline.py --output "$RUNNER_TEMP/pond-exact-before"
+      - name: Actual exact predecessor pond scientific source verdict
+        if: ${{ hashFiles('integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_BEFORE_POND_SOURCE_20261106.json') == '' }}
+        run: python3 -B tests/dataqual15_hupsel/pond_thermal_production_baseline.py --pond-only --output "$RUNNER_TEMP/pond-source-before"
+      - name: Independently retain actual before source and six-case verdicts
+        if: ${{ hashFiles('integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_BEFORE_POND_SOURCE_20261106.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/pond_thermal_production_diagnostics.py --self-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-exact-pre-S5PT-source-diagnostics
+          path: |
+            ${{ runner.temp }}/pond-exact-before/RESULT.json
+            ${{ runner.temp }}/pond-exact-before/*.stdout
+            ${{ runner.temp }}/pond-exact-before/*.stderr
+            ${{ runner.temp }}/pond-source-before/RESULT.json
+            ${{ runner.temp }}/pond-source-before/*.stdout
+            ${{ runner.temp }}/pond-source-before/*.stderr

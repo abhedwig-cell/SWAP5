@@ -1,0 +1,203 @@
+{
+  "predecessor": "46505d617d4dae3053e6e72d63fae1c59baec2ab",
+  "before_cases": 17,
+  "all_before_verdicts": "FAILED_RETAINED_UNCENSORED",
+  "source_head": "6603af42f6e138b06146e049c30eba6a58f240e0",
+  "adjudicated": [
+    {
+      "run": 42218433669,
+      "job": 127894174016,
+      "workflow": "MC-SOL01 dynamic thermal pond and file application",
+      "case": "pond-source",
+      "current_signature": "AssertionError: unreviewed delta",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433701,
+      "job": 127894173774,
+      "workflow": "PUB-P2E06 Reference local-balance scaling",
+      "case": "p2e06",
+      "current_signature": "reference tree differs from P2E05 canonical base",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433702,
+      "job": 127894174104,
+      "workflow": "PUB-P2E08 Reference valid calibration domain",
+      "case": "p2e08",
+      "current_signature": "P2E08 mutated src or reference relative to reconciled canonical",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433725,
+      "job": 127894174238,
+      "workflow": "Hupsel production native crop logical successor",
+      "case": "logical-owner",
+      "current_signature": ".splitlines())=={SOURCE}",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433737,
+      "job": 127894174356,
+      "workflow": "PUB-ME D3 origin authority",
+      "case": "d3",
+      "current_signature": "D3 changed production/reference source",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433738,
+      "job": 127894173416,
+      "workflow": "PUB-P2E10 broad E0 paired matrix",
+      "case": "p2e10",
+      "current_signature": "P2E10 mutated src or reference",
+      "classification": "EARLIER_CURRENT_SOURCE_REFUSAL_DISTINCT_FROM_LATER_PREDECESSOR_FAILURE",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433742,
+      "job": 127895547830,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433742,
+      "job": 127895547957,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433742,
+      "job": 127895548105,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433757,
+      "job": 127894174152,
+      "workflow": "Hupsel production diagnostic source successor",
+      "case": "logical-owner",
+      "current_signature": ".splitlines())=={SOURCE}",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433757,
+      "job": 127894174387,
+      "workflow": "Hupsel production diagnostic source successor",
+      "case": "logical-owner",
+      "current_signature": ".splitlines())=={SOURCE}",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433803,
+      "job": 127894174155,
+      "workflow": "SWAP5-PERF01 exact implementation admission",
+      "case": "performance",
+      "current_signature": "AssertionError: unreviewed delta",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433807,
+      "job": 127894173853,
+      "workflow": "PUB-P2E04 Reference failure census",
+      "case": "census",
+      "current_signature": "Cannot open module file",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433890,
+      "job": 127894174573,
+      "workflow": "Registered Grassgrowth thermal production profile",
+      "case": "thermal-owner",
+      "current_signature": ".splitlines())==PATHS",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433960,
+      "job": 127894174521,
+      "workflow": "PUB-P2E07 Reference cancellation floor",
+      "case": "p2e07",
+      "current_signature": "P2E07 mutated src or reference",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433967,
+      "job": 127894174878,
+      "workflow": "PUB-P2E09 Reference-only threshold freeze",
+      "case": "p2e09",
+      "current_signature": "P2E09 mutated src or reference relative to current canonical merge-base",
+      "classification": "EARLIER_CURRENT_SOURCE_REFUSAL_DISTINCT_FROM_LATER_PREDECESSOR_FAILURE",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433990,
+      "job": 127894174550,
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "case": "p2e02",
+      "current_signature": "Cannot open module file",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218434004,
+      "job": 127894175971,
+      "workflow": "PUB-ME D1 transition authority",
+      "case": "d1",
+      "current_signature": "D1 workunit changed production/reference source",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218434071,
+      "job": 127894175318,
+      "workflow": "PUB-P2E04 Reference B/C sweeps",
+      "case": "p2e04",
+      "current_signature": "Cannot open module file",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    }
+  ],
+  "initial_staging_refusals": [
+    {
+      "job": 127894174055,
+      "reason": "UNCHANGED_PRIVATE_SOURCE_GUARD_REFUSAL_CORRECTED_BY_EXACT_PREDECESSOR_PROJECTION",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "job": 127896291746,
+      "reason": "POSIX_EXECUTION_CAPSULE_NOT_YET_VERSIONED_AT_INITIAL_HEAD",
+      "verdict": "FAILED_RETAINED"
+    }
+  ],
+  "current_physical": {
+    "six_actual_exponents": true,
+    "proper_native_crc": 96,
+    "exact_fresh_endpoints": 96,
+    "semantic_refusals": 96,
+    "original_incumbent_events": 86,
+    "annual_physical_events": 30,
+    "annual_accuracy_admission": false,
+    "whole_scientific_admission": false
+  },
+  "old_red_pass_claim": false,
+  "whole_scientific_admission": false
+}
