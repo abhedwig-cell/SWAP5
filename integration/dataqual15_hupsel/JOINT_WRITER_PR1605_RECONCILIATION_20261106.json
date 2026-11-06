@@ -1,5 +1,5 @@
 {
-  "phase": "EXACT_CURRENT_WINDOWS_O0_O2_COLD335_PASS_POSIX_PENDING",
+  "phase": "EXACT_CURRENT_WINDOWS_POSIX_O0_O2_COLD335_INDEPENDENTLY_QUALIFIED",
   "canonical": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
   "previous_canonical": "7ae182b5da936ddf6c2937c9f79a7d1ff6a42d8c",
   "peer_pr": 1605,
@@ -36,5 +36,24 @@
   "failed_initial_trials": {
     "v1": "Original fixture builder exclusively owns output creation; wrapper duplicated mkdir and refused before compilation.",
     "v2": "Original fixture builder requires exact source_sha256 mapping. Strict current source guard now supplies this mapping; no old guard or physical assertion changed."
+  },
+  "posix": {
+    "run": 42306379784,
+    "job": 128196644156,
+    "artifact": 13546594703,
+    "zip_sha256": "463de03f09bf618420f94f5f99c58ca3d43226a86b4f795e352e40e2d530b993",
+    "actual_cold_provider_compiles_per_optimization": 335,
+    "reused_objects": 0,
+    "independent_current_archive_remeasurement": "Actual POSIX source/object/native bytes reaudited locally with all6 corruptions; original archive bytes unchanged, manifest measurement extends only after actual controls pass."
+  },
+  "evidence_sha256": {
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_WINDOWS_O0_20261106.json": "20164c674c817feb5128da47282285ddcf8882ca1d65963ec6064090b3172b24",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_WINDOWS_O0_20261106.tar.xz": "c8f1e5d180628f7645cd33a59c43065ebf381ca2293595536716ff8a88ee6a06",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_WINDOWS_O2_20261106.json": "2ce2e42c2ef14a00694270400d53a2a79366c98c1363053fd22087edca84db4c",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_WINDOWS_O2_20261106.tar.xz": "7ae69d0e2c6d9c762eaafe6a6083565c9825b8ede33126a3ab5592bc6def4828",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_POSIX_O0_20261106.json": "3eac7927e6c3a7c1f2b77371670becc8dd0446d068aaebf65bc58074265ad0c2",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_POSIX_O0_20261106.tar.xz": "c3db509ebf1f00d4621a24d3f67a76b56a6dc4f145c60e744464aee8353674e6",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_POSIX_O2_20261106.json": "4fa7219a381d89696e58cf432ed0ad215a5756636be82eea4568bed35351bd97",
+    "integration/dataqual15_hupsel/JOINT_WRITER_PR1605_POSIX_O2_20261106.tar.xz": "8189af8a8e84380d2578e0eece3329cc8580e90193be1d8030c9b2ddcbe9dfa6"
   }
 }
