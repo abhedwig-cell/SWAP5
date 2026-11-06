@@ -40,7 +40,9 @@ def guard():
    if key=='qualified_artifact_records' and subprocess.run(['git','cat-file','-e',BASE+':'+path],cwd=ROOT,capture_output=True).returncode==0:
     assert data==subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
  status=json.loads((ROOT/STATUS).read_text());previous=json.loads(subprocess.check_output(['git','show',BASE+':'+STATUS],cwd=ROOT))
- assert status.pop(KEY)==dict(scope=r['scope'],predecessor=BASE,whole_scientific_admission=False,windows_path_scope='ASCII_ONLY',posix_stage6='FAILURE_AFTER_REPLACEMENT') and status==previous
+ canonical=lambda value:json.dumps(value,sort_keys=True,separators=(',',':'))
+ expected_status=dict(scope=r['scope'],predecessor=BASE,whole_scientific_admission=False,windows_path_scope='ASCII_ONLY',posix_stage6='FAILURE_AFTER_REPLACEMENT')
+ assert canonical(status.pop(KEY))==canonical(expected_status) and canonical(status)==canonical(previous)
  return r
 
 def prepare(out):

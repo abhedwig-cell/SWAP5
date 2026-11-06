@@ -24,6 +24,15 @@ class ThermalAdmission(unittest.TestCase):
    return raw
   with patch.object(p.Path,'read_text',new=changed):
    with self.assertRaises(AssertionError):p.guard()
+ def test_status_boolean_type_change_refused(self):
+  original=p.Path.read_text
+  def changed(path,*args,**kwargs):
+   raw=original(path,*args,**kwargs)
+   if path==p.ROOT/p.STATUS:
+    record=json.loads(raw);record[p.KEY]['whole_scientific_admission']=0;return json.dumps(record)
+   return raw
+  with patch.object(p.Path,'read_text',new=changed):
+   with self.assertRaises(AssertionError):p.guard()
  def test_scope_refusals(self):
   cases={
    'origin':lambda r:r.update(predecessor='0'*40),
