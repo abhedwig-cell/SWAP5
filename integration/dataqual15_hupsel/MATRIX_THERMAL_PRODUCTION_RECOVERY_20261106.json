@@ -1,5 +1,5 @@
 {
-  "status": "EXACT_PRODUCTION_POSTIMAGE_LOCAL_AND_POSIX_ADMISSION_PASS_SOURCE40_TERMINAL_ADJUDICATED_FINAL_TREE_NEXT",
+  "status": "BOUNDED_COMPLETE_NATIVE_PRODUCTION_SCOPE_CANONICALLY_CLOSED",
   "baseline": "fba220aede6b8e4a64f7c48d55065a50855943de",
   "production_delta": [
     "src/adapter/mod_matrix_thermal_restart_file.f90"
@@ -102,8 +102,8 @@
   "actual_source_status_refusals": 4,
   "unchanged_old_boundary_tests": 13,
   "whole_scientific_admission": false,
-  "canonical_admission": false,
-  "next": "Wait all final source checks, retain the actual final failed-job logs and compare their exact first refusals with these uncensored before/current records. Require focused current admission and all unmodified predecessor routes to pass; then merge only the exact qualified tree and close canonical receipt.",
+  "canonical_admission": true,
+  "next": "This native integrity/publication capability is closed. Reconcile another independently executable migration capability; preserve all existing scientific exclusions and actual failed verdicts. Do not repeat the completed exact native, build or predecessor qualifications.",
   "pr": 1583,
   "source_head": "4cb5b1b175ef4bf28a4a8b162b54c301565aba96",
   "source_checks": {
@@ -129,5 +129,17 @@
     "only_changed_input": "src/adapter/mod_matrix_thermal_restart_file.f90",
     "whole_scientific_admission": false
   },
-  "adjudication": "integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json"
+  "adjudication": "integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json",
+  "canonical_merge": "9a55a1780de67db95a6003ab397f332ed2c0e965",
+  "qualified_head": "1f313eced0a4aefe1380bc9d5b4cb71a320723cc",
+  "qualified_tree": "2364510b8c663904b5d7b4156d362c73742369d4",
+  "canonical_receipt": "integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_CANONICAL_RECEIPT_20261106.json",
+  "final_source_checks": {
+    "total": 40,
+    "success": 24,
+    "failed": 16,
+    "failed_jobs": 19,
+    "all_terminal": true,
+    "old_red_pass_claim": false
+  }
 }
