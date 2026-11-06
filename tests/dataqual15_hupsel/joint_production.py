@@ -37,7 +37,7 @@ def references():
     else:result.add('integration/dataqual15_hupsel/'+m['archive'])
  return result
 def frozen():
- return references()|{'tests/dataqual15_hupsel/'+n+'.py'for n in ('joint_current','joint_current_evidence','joint_current_owner','joint_logical','native_n_crc_runtime','crc_family_runtime','rotation_native_baseline')}|{'tests/dataqual15_hupsel/joint_logical_candidates/'+Path(p).name for p in SOURCES.values()}
+ return references()|{'tests/dataqual15_hupsel/'+n+'.py'for n in ('joint_current','joint_current_evidence','joint_current_owner','joint_logical','native_n_crc_runtime','crc_family_runtime','rotation_native_baseline','joint_owner','joint_logical_evidence')}|{'tests/dataqual15_hupsel/joint_logical_candidates/'+Path(p).name for p in SOURCES.values()}
 def record_guard(r):
  assert set(r)=={'schema','phase','current_baseline','native_history','scope','whole_scientific_admission','writer_publication_change','peer_source_change','binary_abi','windows_path_scope','predecessor_scope','baseline_production_trees','historical_production_trees','production_delta','postimage_sha256','gate_sha256','frozen_blobs','execution_sha256','before_sha256'}
  assert type(r['schema'])is int and r['schema']==1 and r['phase']=='DEPLOYED_WINDOWS_POSIX_QUALIFIED','complete deployed execution required'
@@ -86,17 +86,28 @@ def run(out,label,args,cwd,timeout=3000):
  event=dict(label=label,command=command,returncode=cp.returncode,seconds=time.monotonic()-start)
  with(out/'EVENTS.jsonl').open('a')as f:f.write(json.dumps(event)+'\n')
  assert cp.returncode==0,cp.stderr[-4000:];print(label,'PASS',flush=True);return event
+def frozen_source_refusal(out,label,module):
+ command=[sys.executable,'-B','-c',"import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import "+module+';'+module+'.guard()']
+ cp=subprocess.run(command,cwd=ROOT,capture_output=True,env=dict(os.environ,PYTHONUTF8='1',PYTHONDONTWRITEBYTECODE='1'))
+ for stream in ('stdout','stderr'):(out/(label+'.'+stream)).write_bytes(getattr(cp,stream))
+ assert cp.returncode!=0 and b'AssertionError'in cp.stderr and b'rev-parse'in cp.stderr,'frozen source guard refusal must stay explicit'
+ event=dict(label=label,command=command,returncode=cp.returncode,old_gate_pass_claim=False,scope='FROZEN_SOURCE_GUARD_REFUSES_DEPLOYED_POSTIMAGES')
+ with(out/'EVENTS.jsonl').open('a')as f:f.write(json.dumps(event)+'\n')
+ return event
+
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);a=parser.parse_args();guard();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
  import joint_production_evidence as evidence
  import joint_production_before
  before=joint_production_before.verify()
- measured={};events=[]
+ measured={};events=[frozen_source_refusal(out,'unchanged-current-source-refusal','joint_current'),frozen_source_refusal(out,'unchanged-frozen-owner-source-refusal','joint_owner')]
  for platform in ('WINDOWS','POSIX'):
   for opt in ('O0','O2'):measured[platform+'_'+opt]=evidence.verify('JOINT_PRODUCTION_'+platform+'_'+opt+'_20261106',True)
  parent=Path(tempfile.mkdtemp(prefix='s5jp-views-')).resolve();views=[]
  try:
   reference=immutable_view(parent,'reference',BASE);views.append(reference)
+  for module in ('joint_current','joint_owner'):
+   events.append(run(out,'reference-source-guard-'+module,['-c',"import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import "+module+';'+module+'.guard()'],reference))
   for platform in ('WINDOWS','POSIX'):
    for opt in ('O0','O2'):
     events.append(run(out,'reference-'+platform+'-'+opt,['tests/dataqual15_hupsel/joint_current_evidence.py','--stem',reference_name(platform,opt),'--self-test'],reference))

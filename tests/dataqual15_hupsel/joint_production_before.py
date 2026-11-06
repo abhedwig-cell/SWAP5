@@ -40,6 +40,7 @@ def verify():
  for row,(name,command)in zip(r['events'],commands.items()):
   assert row['case']==name and row['command']==command and row['censored']is False and type(row['returncode'])is int
   for stream in ('stdout','stderr'):assert g.sha(files[name+'.'+stream])==row[stream+'_sha256']
+  joined=files[name+'.stdout']+files[name+'.stderr'];assert b'ModuleNotFoundError'not in joined and b'ImportError'not in joined,'dependency failure cannot establish existing source refusal'
  return {e['case']:e['returncode']for e in r['events']}
 if __name__=='__main__':
  import sys

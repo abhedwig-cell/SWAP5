@@ -32,3 +32,11 @@ diagnostics and final job logs must support any adjudication. No failure is
 relabelled PASS, and no writer/publication or portable ABI claim is introduced.
 
 Authority: `integration/dataqual15_hupsel/JOINT_PRODUCTION_RECOVERY_20261106.json`.
+
+The original current-private and frozen-owner whole-source guards also stay
+unchanged: both pass at the immutable reference baseline and deliberately refuse
+the deployed three postimages in the current tree. Actual positive-reference and
+negative-current guard launches are retained separately. Their old workflow
+verdicts remain FAILED on the new source; they are not current production gates
+and are not rewritten to accept a source-only exception. Full deployed execution
+and the strict new typed production route are mandatory instead.
