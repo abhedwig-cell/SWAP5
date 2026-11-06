@@ -19,6 +19,13 @@ module mod_mineral_joint_restart_file
   integer,parameter::MAX_BYTES=10485760
   public::write_mineral_joint_restart_file,read_mineral_joint_restart_file
 contains
+  logical function logical_raw_valid(raw)result(ok)
+    integer(int8),intent(in)::raw(:)
+    integer(int8)::yes(storage_size(.true.)/8),no(storage_size(.false.)/8)
+    yes=transfer(.true.,yes);no=transfer(.false.,no)
+    ok=.false.;if(size(raw)/=size(yes))return
+    ok=all(raw==yes).or.all(raw==no)
+  end function
   subroutine write_mineral_joint_restart_file(path,column,template,water_parameter_id,water,chemical,status)
     character(*),intent(in)::path
     type(fmr_logical_column_t),intent(in)::column
@@ -105,6 +112,7 @@ contains
     integer(int8)::extra
     character(8)::tag
     logical::ok,has_history
+    integer(int8)::bound_raw(storage_size(.true.)/8),history_raw(storage_size(.true.)/8)
     status=JOINT_INVALID
     if(column%state_handle/=1)return
     if(water%ready())return
@@ -123,10 +131,13 @@ contains
       associate(r=>b%records(1))
         read(u,iostat=io)tag,b%schema_version,b%parameter_set_identity, &
              r%schema_version,r%kernel_schema_version,r%column_id,r%parameter_ref,r%forcing_handle, &
-             r%template_identity,r%lineage_id,r%revision,r%committed_time,r%time_bound, &
-             mode,n,has_history
+             r%template_identity,r%lineage_id,r%revision,r%committed_time,bound_raw, &
+             mode,n,history_raw
         if(io/=0)exit decoding
         io=1
+        if(.not.logical_raw_valid(bound_raw).or..not.logical_raw_valid(history_raw))exit decoding
+        r%time_bound=all(bound_raw==transfer(.true.,bound_raw))
+        has_history=all(history_raw==transfer(.true.,history_raw))
         if(tag/=MAGIC.or.n/=size(p%dz_cm).or.n<1.or.(mode/=0.and.mode/=1))exit decoding
         if(mode==0.and.has_history)exit decoding
         physical%active_nodes=n

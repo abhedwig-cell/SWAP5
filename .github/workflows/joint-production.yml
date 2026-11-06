@@ -1,0 +1,83 @@
+name: Exact deployed three joint native readers and immutable history
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_age_joint_restart_file.f90'
+      - 'src/adapter/mod_mineral_joint_restart_file.f90'
+      - 'src/adapter/mod_reactive_n_joint_restart_file.f90'
+      - 'tests/dataqual15_hupsel/joint_production*.py'
+      - 'tests/dataqual15_hupsel/test_joint_production.py'
+      - 'integration/dataqual15_hupsel/JOINT_PRODUCTION_*'
+      - '.github/workflows/joint-production.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  deployed-current:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual deployed POSIX modules and all native and owner controls
+        run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_production;joint_production.source_guard()"
+          for opt in O0 O2; do
+            python -B tests/dataqual15_hupsel/joint_production_evidence.py --stem "JOINT_PRODUCTION_WINDOWS_${opt}_20261106" --self-test
+            stem="JOINT_PRODUCTION_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_production_evidence.py --stem "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_production_runtime.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-production/$opt"
+            fi
+          done
+      - name: Strict complete admission scope and entire unchanged native history
+        run: |
+          phase=$(python -B -c "import json;print(json.load(open('integration/dataqual15_hupsel/JOINT_PRODUCTION_SCOPE_20261106.json'))['phase'])")
+          if test "$phase" = DEPLOYED_WINDOWS_POSIX_QUALIFIED; then
+            python -B tests/dataqual15_hupsel/test_joint_production.py
+            python -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/joint-production-admission"
+          else
+            test "$phase" = EXECUTION_PENDING
+            echo 'DEPLOYED_EXECUTION_ONLY_NO_PRODUCTION_ADMISSION'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-deployed-joint-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_PRODUCTION_POSIX_*
+            ${{ runner.temp }}/joint-production/**/RESULT.json
+            ${{ runner.temp }}/joint-production/**/EVENTS.json
+            ${{ runner.temp }}/joint-production/**/*.stderr
+            ${{ runner.temp }}/joint-production-admission/RESULT.json
+            ${{ runner.temp }}/joint-production-admission/EVENTS.jsonl
+            ${{ runner.temp }}/joint-production-admission/*.stdout
+            ${{ runner.temp }}/joint-production-admission/*.stderr
+
+  exact-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual exact current-baseline broad diagnostic outcomes
+        run: |
+          if test -f integration/dataqual15_hupsel/JOINT_PRODUCTION_EXACT_BEFORE_20261106.zip; then
+            python -B tests/dataqual15_hupsel/joint_production_before.py --verify
+          else
+            python -B tests/dataqual15_hupsel/joint_production_before.py --output "$RUNNER_TEMP/joint-production-before"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-joint-production-before
+          path: |
+            integration/dataqual15_hupsel/JOINT_PRODUCTION_EXACT_BEFORE_20261106.zip
+            ${{ runner.temp }}/joint-production-before/*.stdout
+            ${{ runner.temp }}/joint-production-before/*.stderr
+            ${{ runner.temp }}/joint-production-before/RESULT.json

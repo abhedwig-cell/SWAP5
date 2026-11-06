@@ -42,3 +42,10 @@ remain retained on both platforms. All16 initial workflows are terminal:15
 SUCCESS and the unchanged global production footprint guard FAILED. Actual exact
 baseline5a6cde28d and current guard failures, gate identity and production tree
 identity are retained separately; this is no production-admission waiver.
+
+PR1594 canonically integrates the current complete-source proof atdafb351da.
+The actual merge tree exactly equals qualified head49f34de4d and the tested
+merge. All16 final workflows are terminal:15 SUCCESS and the unchanged global
+production-footprint guard FAILED with its actual final log retained. Current
+native execution and owner qualification are complete for this bounded scope;
+production successor admission and macropore scientific accuracy remain separate.
