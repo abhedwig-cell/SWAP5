@@ -17,6 +17,7 @@ RUNNERS={'tests/nut-sol/run_age.py','tests/nut-sol/run_pond_joint.py','tests/nut
 GATES|=RUNNERS
 GATES.add('tests/dataqual15_hupsel/joint_writer_production_linkage.py')
 GATES.add('tests/dataqual15_hupsel/joint_writer_production_consumers.py')
+GATES.add('tests/dataqual15_hupsel/joint_writer_production_before.py')
 git=old.git
 raw=old.raw
 blob=old.blob
