@@ -1,15 +1,40 @@
 {
-  "status": "WINDOWS_COMPLETE_PRIVATE_NATIVE_QUALIFICATION_PASS_POSIX_NEXT",
+  "status": "FULL_WINDOWS_POSIX_PRIVATE_NATIVE_EVIDENCE_REPLAYED_FINAL_POSIX_WRITER_QUALIFICATION_NEXT",
   "baseline": "52a9513b7975dbe7f922f635f771d2d781da8a3d",
   "production_source_changed": false,
   "production_admission": false,
   "whole_scientific_admission": false,
-  "next": "Run existing private POSIX CI qualification for both complete native provider contexts and original refinement/semantic/SIGKILL assertions. Preserve all artifacts; no production deployment before qualification and evidence adjudication.",
+  "next": "Qualify remaining actual POSIX writer stage2-6 failures using the retained exact complete provider cohort; stage6 must report failure after replacement. Wait final exact-tree workflows, adjudicate, and integrate private evidence only. Production source remains baseline.",
   "windows": {
     "candidate": "candidate-v2: complete original physical O0/O2 assertions passed (608 events)",
     "original": "incumbent-v2: actual O0 link fails undefined fsync; no original Windows pass",
     "readers": "controls-v1: six exact positive reexports; sixty malformed candidate refusals; publication-only counterfactual accepts 24/30 at O0 and 30/30 at O2",
     "writers": "writer-windows-v3: four raw-logical refusals, eight precommit I/O refusals, two Windows stage6 successful publications, four actual terminations with exact fresh reconstruction",
     "failed_probes": "First FC backslash projection and injection anchor failures retained; TRANSFER assignment normalized poison in v2; v3 raw scratch-stream read proves bits=2 and rejection. No checks relaxed."
+  },
+  "pr": 1581,
+  "qualified_source_head": "867cb28bc6b327d35f01029341380e0fda660890",
+  "full_posix_run": 42149101019,
+  "full_posix_artifact": 13471348212,
+  "full_posix_artifact_sha256": "69da436ddebb058ac05b67f31870a3017be81b02aaade17fa168ffb7c9620213",
+  "source_head_terminal_workflows": 15,
+  "source_head_all_success": true,
+  "independent_replay": {
+    "windows": "complete source/object/native CRC/reader/reexport/writer/termination remeasurement plus four evidence refusals passed",
+    "posix": "both complete provider cohorts, original monotone refinement/semantic negatives/SIGKILL and three evidence refusals passed"
+  },
+  "preservation": {
+    "status": "CURRENT_PORTABLE_GENERATION_FULL_POSTIMAGE_AND_EXACT_PREDECESSOR_PASS",
+    "current": {
+      "actual_windows_posix_full_postimages": true,
+      "actual_windows_precommit_failures": 20,
+      "actual_windows_terminations": 8,
+      "original_posix_kill_assertions": true,
+      "evidence_refusals_per_platform": 4,
+      "whole_scientific_admission": false
+    },
+    "exact_predecessor": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
+    "old_admission_returncode": 0,
+    "whole_scientific_admission": false
   }
 }

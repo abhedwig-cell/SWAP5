@@ -6,6 +6,7 @@ on:
       - tests/dataqual15_hupsel/matrix_thermal_native_*.py
       - integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_*
       - .github/workflows/matrix-thermal-native.yml
+      - tests/nut-sol/matrix_thermal_*_test.c
 permissions:
   contents: read
 jobs:
@@ -17,18 +18,17 @@ jobs:
         with:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
-      - name: Actual exact current original and complete private native postimage
-        # Selected essential risk: complete thermal/chemical state reconstruction,
-        # two native logical branch sites and publication. Expected10-20min.
-        run: |
-          python3 -B tests/dataqual15_hupsel/matrix_thermal_native_runtime.py --role incumbent --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/incumbent-v2"
-          python3 -B tests/dataqual15_hupsel/matrix_thermal_native_runtime.py --role candidate --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/candidate-v2"
-      - name: Real full native reader malformed logicals and proper complete reexports
-        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_controls.py --models "$RUNNER_TEMP/matrix-thermal" --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/controls"
-      - name: Original full refinement, semantic negatives and before/after SIGKILL
-        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_qualification.py --models "$RUNNER_TEMP/matrix-thermal" --output "$RUNNER_TEMP/matrix-thermal/qualification"
+      - name: Independently remeasure exact qualified complete POSIX cohorts
+        # Run42149101019 at867cb28 executed both full providers, malformed-reader
+        # corpus and original refinement/SIGKILL qualifier. Preserve that actual
+        # evidence when the entire relevant input surface is byte-identical.
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py --materialize-posix "$RUNNER_TEMP/matrix-thermal"
+      - name: Actual full POSIX writer failures including postcommit directory-sync refusal
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_posix_faults.py --candidate "$RUNNER_TEMP/matrix-thermal/candidate-v2" --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/writer-posix"
+      - name: Independently replay retained complete Windows native cohort
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: complete-matrix-thermal-native-posix
-          path: ${{ runner.temp }}/matrix-thermal
+          name: complete-matrix-thermal-native-posix-writer
+          path: ${{ runner.temp }}/matrix-thermal/writer-posix
