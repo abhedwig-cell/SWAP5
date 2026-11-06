@@ -20,8 +20,12 @@ Windows execution produces 16 proper files and 88 measured controls across both
 codecs. The private codec rejects all44 controls:32 resealed malformed header
 values and12 CRC/truncation/immutable-parameter controls. The original codec's12
 failed header-reject assertions remain uncensored. Five evidence corruptions
-are refused. POSIX qualification and exact-head integration are separately
-required; neither this fixture nor source-only evidence admits production.
+are refused. Actual POSIX GNU13 execution also passes at source
+`0acf2d234a644531ba6c475192cf0ac1f7575bd4`, workflow42181141849. The downloaded
+artifact digest is checked, and independent remeasurement plus all five evidence
+corruptions pass against its complete provider dependency. Exact final-head
+integration remains required; neither this fixture nor source-only evidence
+admits production.
 
 Authority: `integration/dataqual15_hupsel/POND_THERMAL_LAYOUT_RECOVERY_20261106.json`.
 The preceding full Windows/POSIX source/object capsules remain immutable
