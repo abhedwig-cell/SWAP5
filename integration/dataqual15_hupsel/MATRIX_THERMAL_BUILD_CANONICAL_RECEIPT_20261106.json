@@ -1,0 +1,109 @@
+{
+  "pr": 1582,
+  "scope": "ACTUAL_PORTABLE_COMPLETE_MATRIX_THERMAL_BUILD_DELIVERY_ONLY",
+  "merge": "fba220aede6b8e4a64f7c48d55065a50855943de",
+  "qualified_head": "233cc222f79ef42055723a1964feeb2c75f4f71f",
+  "qualified_and_actual_tree": "ac02481fd882553771ee893a42e2646aaca5f874",
+  "final_source_workflows": [
+    {
+      "id": 42161431460,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431449,
+      "name": "Private complete matrix thermal native qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431468,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431493,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431465,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431510,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431451,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431452,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431472,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431535,
+      "name": "MC-SOL01 dynamic accepted temperature decay",
+      "conclusion": "failure"
+    },
+    {
+      "id": 42161431521,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431455,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431512,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431450,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431642,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42161431487,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    }
+  ],
+  "success": 15,
+  "failed": 1,
+  "failed_mc": {
+    "run": 42161431535,
+    "job": 127707778276,
+    "verdict": "FAILED_RETAINED_DATAQUAL12_FIRST_SOURCE_DENOMINATOR_REFUSAL",
+    "actual_native_refinement_semantic_and_six_case_stages": "PASS_NOT_WHOLE_SCIENTIFIC_ADMISSION",
+    "native_binary_members_exact_to_versioned_initial_case": 426,
+    "all_six_compiled_input_sets_exact": true,
+    "same_full_source_delta_claim": false,
+    "raw_final_files_sha256": {
+      "MATRIX_THERMAL_BUILD_FINAL_MC_20261106.zip": "9c6dd94a800aa9be3acffd9acaf3748f682b032488dcaa06518558b2d51506bb",
+      "MATRIX_THERMAL_BUILD_FINAL_MC_20261106.log.gz": "bfb203ed8378a7dce9a7d9592a18cf84d94849f40c0b80305a96eb680f525cd8"
+    }
+  },
+  "initial_actual_adjudication": "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_ADJUDICATION_20261106.json",
+  "original_windows_fsync_link": "FAILED_RETAINED_NOT_PASS",
+  "production_source_changed": false,
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
