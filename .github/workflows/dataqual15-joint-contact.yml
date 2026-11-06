@@ -6,10 +6,12 @@ on:
       - 'src/solver/mod_reference_bordered_solver.f90'
       - 'src/solver/mod_reference_linear_solver.f90'
       - 'src/process/macropore/mod_macropore_standard_storage.f90'
+      - 'src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90'
       - 'src/runtime/mod_interception_source_window_runtime.f90'
       - 'app/solute_project/main_water.f90'
       - 'tests/dataqual15/*source_event*'
       - 'tests/dataqual15/*empty_pocket*'
+      - 'tests/dataqual15/*limiter_ratio*'
       - 'tests/dataqual15/*joint*'
       - 'tests/dataqual15/research/joint_*'
       - '.github/workflows/dataqual15-joint-contact.yml'
@@ -25,6 +27,8 @@ jobs:
         run: python -B tests/dataqual15/run_joint_entry_contracts.py --current-drainage --compiler /usr/bin/gfortran --output joint-contracts
       - name: Real positive-pocket candidate and vertical closure O0/O2
         run: python -B tests/dataqual15/run_empty_pocket_contract.py --compiler /usr/bin/gfortran --output pocket-contracts
+      - name: Actual subnormal demand and unchanged storage owner O0/O2
+        run: python -B tests/dataqual15/run_limiter_ratio_contracts.py --compiler /usr/bin/gfortran --output limiter-ratio-contracts
       - name: Real current groundwater view O0/O2
         run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output current-view-contracts
       - name: Scoped candidate source callback and refusal O0/O2
@@ -38,6 +42,7 @@ jobs:
           path: |
             joint-contracts
             pocket-contracts
+            limiter-ratio-contracts
             current-view-contracts
             current-source-contracts
             source-event-contracts

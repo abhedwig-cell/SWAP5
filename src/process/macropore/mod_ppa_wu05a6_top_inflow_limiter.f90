@@ -188,8 +188,11 @@ contains
           result%accepted_interflow_sat_cm(id)+result%accepted_matrix_sat_cm(id) - &
           request%minimum_storage_cm(id))
         outflow_excess(id)=max(0.0_real64,request%potential_outflow_cm(id)-available_outflow)
-        if(request%potential_outflow_cm(id)>0.0_real64) &
-          result%outflow_fraction(id)=min(1.0_real64,available_outflow/request%potential_outflow_cm(id))
+        ! With sufficient stock the fraction is already one. Divide only for
+        ! a genuine shortage, so a positive subnormal demand cannot overflow
+        ! an intermediate quotient that would subsequently be clipped to one.
+        if(request%potential_outflow_cm(id)>available_outflow) &
+          result%outflow_fraction(id)=available_outflow/request%potential_outflow_cm(id)
       end if
       result%residual_outflow_excess_cm(id)=outflow_excess(id)
       if (.not.request%conservative_storage_bounds.and.outflow_excess(id)>1.0e-7_real64) then

@@ -1,10 +1,10 @@
 # Source-event step endpoints
 
-## Proposed interface and owning scope
+## Admitted interface and owning scope
 
 The source-window owner `mod_interception_source_window_runtime` defines time
 identity with64 machine epsilons at the actual clock scale. The native water
-caller currently snaps only daily remainders, while capping against detailed rain
+caller previously snapped only daily remainders, while capping against detailed rain
 events can leave an unresolvable final source window. Actual Andelst input at
 80.423000000001394 to80.423000000002503 carries4.127505354993751e-13cm rain.
 Both endpoint values identify the source origin under the existing convention;
@@ -13,8 +13,8 @@ correctly refuses admission before any Richards attempt. The accepted Rutter clo
 matches the caller. The original-init corrected run completes80 days; strict own
 80 replay reproduces all213 rows and the diagnostic committed stream exactly.
 
-Add pure `select_interception_event_endpoint(cursor,event_end,max_step,endpoint,status)`
-to that existing owner. It validates finite ordered clocks and a positive step
+The pure `select_interception_event_endpoint(cursor,event_end,max_step,endpoint,status)`
+belongs to that existing owner. It validates finite ordered clocks and a positive step
 ceiling, proposes the bounded endpoint, then selects the exact existing event if
 its remainder lies inside the owner's unchanged time-identity convention. An
 already committed cursor indistinguishable from the event refuses; it is never
@@ -59,6 +59,29 @@ The diagnostic builder changes only the caller and reuses all201 unchanged,
 validated physical objects; it does not change their cache/source eligibility.
 
 Fresh day-one O0/O2 physical payloads remain byte-exact; all four O0 output CSVs
-are exact. The new original-initialization481 request is active. Exact own80-to81
-and365-to367 checkpoints remain separate current-executable gates; the earlier
-private-model own64-to66 result remains a source-bound historical receipt.
+are exact. PR1601 admits this public endpoint selector at actual merge
+`d32ebe55cd2ed8ee9e9d8ebe237a19994c1cdc57`, with parents
+`8485765a4d548191627f68f5ea0ea765b62c8eaa` and
+`df1bedd74b0febab2ae8528025f7a1eaed802182`. Focused Linux O0/O2 contracts,
+the unmodified INT13 composition and combined strict documentation all pass.
+The final merge preserves the exact relevant qualified source tree.
+
+The new corrected-model original-initialization481 request passes the former
+day80 barrier. Its strict same-executable own80-to81 continuation completes in
+7.631s: all504 source progress rows and the complete day81 checkpoint are
+byte-exact. The executable SHA256 is
+`8f7f310ea2785ff00822a47f100b938824bde42e678a6431eea509fde69b5fe1`;
+no checkpoint binding or byte is rewritten. That full request then completes142
+days and encounters a separate public limiter SIGFPE, documented in the
+[bounded outflow quotient successor](MACROPORE_POSITIVE_STORAGE.md#bounded-outflow-quotient-successor).
+Whole481 and365-to367 remain separate gates on the repaired executable.
+The earlier private-model own64-to66 result remains a source-bound
+historical receipt.
+
+A distinct original-input current-public-source control uses no private contact,
+groundwater or drainage override. Requested0-to2, it is time-censored after120.165s
+with one complete day and last completed source endpoint1.9580000000023283.
+Its day-one physical payload remains byte-exact to the public predecessor;
+maximum completed daily water residual is1.1053441148489718e-15cm. This preserves
+the default control evidence; it is neither a two-day PASS nor a terminal model
+refusal. Corrected contact completion cannot be reported as historical equivalence.
