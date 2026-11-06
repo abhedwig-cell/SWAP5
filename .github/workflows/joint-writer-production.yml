@@ -1,0 +1,58 @@
+name: Exact deployed current native writer publication and immutable authority
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_age_joint_restart_file.f90'
+      - 'src/adapter/mod_mineral_joint_restart_file.f90'
+      - 'src/adapter/mod_reactive_n_joint_restart_file.f90'
+      - 'tests/dataqual15_hupsel/joint_writer_production*.py'
+      - 'tests/dataqual15_hupsel/test_joint_writer_production.py'
+      - 'tests/dataqual15/verify_current_native_admission.py'
+      - 'integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_*'
+      - '.github/workflows/joint-writer-production.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  actual-deployed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual deployed modules and complete native owner publication controls
+        run: |
+          for opt in O0 O2; do
+            python -B tests/dataqual15_hupsel/joint_writer_production_evidence.py --stem "JOINT_WRITER_PRODUCTION_WINDOWS_${opt}_20261106" --self-test
+            stem="JOINT_WRITER_PRODUCTION_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_writer_production_evidence.py --stem "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_writer_production_runtime.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-writer-production/$opt"
+            fi
+          done
+      - name: Typed admission and entire unchanged admitted native authority
+        run: |
+          phase=$(python -B -c "import json;print(json.load(open('integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_SCOPE_20261106.json'))['phase'])")
+          if test "$phase" = DEPLOYED_WINDOWS_POSIX_QUALIFIED; then
+            python -B tests/dataqual15_hupsel/test_joint_writer_production.py
+            python -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/joint-writer-production-admission"
+          else
+            test "$phase" = EXECUTION_PENDING
+            echo 'ACTUAL_DEPLOYED_EXECUTION_ONLY_NO_PRODUCTION_ADMISSION'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-deployed-writer-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_POSIX_*
+            ${{ runner.temp }}/joint-writer-production/**/RESULT.json
+            ${{ runner.temp }}/joint-writer-production/**/EVENTS.json
+            ${{ runner.temp }}/joint-writer-production/**/*.stderr
+            ${{ runner.temp }}/joint-writer-production-admission/RESULT.json
+            ${{ runner.temp }}/joint-writer-production-admission/EVENTS.jsonl
+            ${{ runner.temp }}/joint-writer-production-admission/*.stdout
+            ${{ runner.temp }}/joint-writer-production-admission/*.stderr
