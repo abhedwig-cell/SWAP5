@@ -1,5 +1,5 @@
 {
-  "phase": "SOURCE_QUALIFIED_ALL41_TERMINAL_ADJUDICATED_FINAL_METADATA_CI_PENDING",
+  "phase": "PHYSICAL_SOURCE_QUALIFIED_EOF_ONLY_GATE_BYTE_REQUALIFICATION_RUNNING",
   "branch": "codex/autonomous-migration-20261103",
   "canonical": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
   "cold_reference": "05d2df1e937f1f6257d0d47709696c8d1e321391",
@@ -128,7 +128,16 @@
       "tests/nut-sol/run_age.py": "d23ed0fb618d4c08196dbd31bd0a963c2edc8ca6",
       "tests/nut-sol/run_pond_joint.py": "6e0e132c8606b44328da2da63e1ed37f797f8df7"
     },
-    "predicate": "All production/runtime/gate/scope/status/current execution/reference/consumer/before/preservation blobs remain exactly qualified; only owning docs and execution/adjudication/recovery receipts are added."
+    "predicate": "Production/runtime/linkage/current execution/reference/consumer/before/preservation data are unchanged. Before-consumer trailing blank lines were normalized with exact AST equality; the new strict scope binds those bytes and its complete current gate is being requalified.",
+    "gate_byte_normalization_declared": true
   },
-  "final_ci": "Required at final persisted metadata head before expected-head canonical integration."
+  "final_ci": "Required at final persisted metadata head before expected-head canonical integration.",
+  "gate_normalization": {
+    "record": "JOINT_WRITER_PHASE_PRODUCTION_GATE_NORMALIZATION_20261107.json",
+    "source_checkpoint": "b7be629f0e4cfdf849e1dd2f33a2d8b820c62b0e",
+    "complete_AST_unchanged": true,
+    "scope_regenerated": true,
+    "scope_controls_and_Windows_current_entry": "RUNNING",
+    "final_CI_required": true
+  }
 }
