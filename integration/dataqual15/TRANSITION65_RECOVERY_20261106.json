@@ -582,5 +582,36 @@
     "O0_day1_seconds": 27.47809729981236,
     "O0_day1_payload_and4CSV_exact": true,
     "O2_day1_payload_exact": true
+  },
+  "event81_production_admission": {
+    "pr": 1601,
+    "actual_merge": "d32ebe55cd2ed8ee9e9d8ebe237a19994c1cdc57",
+    "parents": [
+      "8485765a4d548191627f68f5ea0ea765b62c8eaa",
+      "df1bedd74b0febab2ae8528025f7a1eaed802182"
+    ],
+    "final_candidate": "df1bedd74b0febab2ae8528025f7a1eaed802182",
+    "component_tested_head": "4d254831d03c38faabcffa32fa4bc5d550652848",
+    "relevant_component_inputs_exact_after_peer_doc_receipts": true,
+    "component_run": 42276522199,
+    "component_job": 128094139065,
+    "component": "PASS Linux O0/O2 plus full unmodified INT13",
+    "combined_docs_run": 42277404347,
+    "combined_docs_job": 128097213421,
+    "combined_docs": "PASS Linux and local strict30.98s",
+    "actual_relevant_merge_tree_exact": true,
+    "physics_or_source_input_changed": false,
+    "new_source_state_or_restart_field": false
+  },
+  "current_public_sharp_control_selection": {
+    "baseline": "d32ebe55cd2ed8ee9e9d8ebe237a19994c1cdc57",
+    "expected_compile_seconds": 60,
+    "expected_native_seconds": 30,
+    "timeout_seconds": 120,
+    "period": [
+      0,
+      2
+    ],
+    "reason": "Original input on actual current public source with no private graph/groundwater/drainage overrides. Check default day1 against recorded public predecessor and locate sharp-law barrier rather than treating corrected research completion as historical equivalence. Bounded first-entry control only, no unrelated full campaign."
   }
 }
