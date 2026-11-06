@@ -28,3 +28,18 @@ jobs:
         with:
           name: complete-matrix-thermal-production-admission
           path: ${{ runner.temp }}/thermal-production
+  exact-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual exact predecessor broad diagnostics without pass claims
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production_baseline.py --output "$RUNNER_TEMP/thermal-exact-before"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-exact-pre-S5MT-source-diagnostics
+          path: ${{ runner.temp }}/thermal-exact-before

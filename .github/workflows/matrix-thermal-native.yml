@@ -19,14 +19,14 @@ jobs:
     timeout-minutes: 40
     defaults:
       run:
-        working-directory: ${{ runner.temp }}/thermal-matrix-thermal-native-native-posix/predecessor
+        working-directory: ${{ github.workspace }}/.s5mt-thermal-matrix-thermal-native-native-posix/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Exact unmodified pre-S5MT admission authority
         working-directory: ${{ github.workspace }}
-        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$RUNNER_TEMP/thermal-matrix-thermal-native-native-posix"
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$GITHUB_WORKSPACE/.s5mt-thermal-matrix-thermal-native-native-posix"
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Preserve exact admitted private authority in its unchanged predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_build.py --prepare-only --output "$RUNNER_TEMP/matrix-build-authority"
@@ -55,14 +55,14 @@ jobs:
     timeout-minutes: 35
     defaults:
       run:
-        working-directory: ${{ runner.temp }}/thermal-matrix-thermal-native-portable-build/predecessor
+        working-directory: ${{ github.workspace }}/.s5mt-thermal-matrix-thermal-native-portable-build/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Exact unmodified pre-S5MT admission authority
         working-directory: ${{ github.workspace }}
-        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$RUNNER_TEMP/thermal-matrix-thermal-native-portable-build"
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production.py --prepare-only --output "$GITHUB_WORKSPACE/.s5mt-thermal-matrix-thermal-native-portable-build"
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Build scope promotion and source postimage refusals
         run: python3 -B tests/dataqual15_hupsel/test_matrix_thermal_build.py

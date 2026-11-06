@@ -3,10 +3,10 @@ import argparse,hashlib,json,os,subprocess,sys,tempfile
 from pathlib import Path
 import matrix_thermal_native_policy as private
 ROOT=private.ROOT;BASE='fba220aede6b8e4a64f7c48d55065a50855943de'
-SOURCE=private.SOURCE;ENTRY='tests/dataqual15/verify_current_native_admission.py';STATUS='integration/dataqual15/STATUS.json'
+SOURCE='src/adapter/mod_matrix_thermal_restart_file.f90';ENTRY='tests/dataqual15/verify_current_native_admission.py';STATUS='integration/dataqual15/STATUS.json'
 KEY='matrix_thermal_native_successor_20261106';SCOPE='integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_SCOPE_20261106.json'
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
-GATES={ENTRY,*BRIDGES,'.github/workflows/matrix-thermal-production.yml','tests/dataqual15_hupsel/matrix_thermal_production.py','tests/dataqual15_hupsel/test_matrix_thermal_production.py'}
+GATES={ENTRY,*BRIDGES,'.github/workflows/matrix-thermal-production.yml','tests/dataqual15_hupsel/matrix_thermal_production.py','tests/dataqual15_hupsel/test_matrix_thermal_production.py','tests/dataqual15_hupsel/matrix_thermal_production_baseline.py'}
 RECORDS={'integration/dataqual15_hupsel/'+n+'_20261106.json' for n in ('MATRIX_THERMAL_NATIVE_PREREGISTRATION','MATRIX_THERMAL_NATIVE_WINDOWS','MATRIX_THERMAL_NATIVE_POSIX','MATRIX_THERMAL_NATIVE_POSIX_WRITER','MATRIX_THERMAL_NATIVE_CANONICAL_RECEIPT','MATRIX_THERMAL_BUILD_PREREGISTRATION','MATRIX_THERMAL_BUILD_WINDOWS','MATRIX_THERMAL_BUILD_POSIX','MATRIX_THERMAL_BUILD_ADJUDICATION','MATRIX_THERMAL_BUILD_CANONICAL_RECEIPT')}
 normal=lambda b:b.replace(b'\r\n',b'\n')
 sha=lambda b:hashlib.sha256(b).hexdigest()
@@ -15,6 +15,9 @@ def blob(ref,path):return git('rev-parse',ref+':'+path)
 
 def guard():
  subprocess.run(['git','merge-base','--is-ancestor',BASE,'HEAD'],cwd=ROOT,capture_output=True,check=True)
+ assert private.SOURCE==SOURCE
+ for path in ('tests/dataqual15_hupsel/matrix_thermal_native_policy.py','tests/dataqual15_hupsel/rotation_native_baseline.py'):
+  assert normal((ROOT/path).read_bytes())==subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
  assert set(git('diff','--name-only','--no-renames',BASE,'HEAD','--','src','app','reference').splitlines())=={SOURCE}
  assert not git('diff','HEAD','--','src','app','reference') and not git('ls-files','--others','--exclude-standard','--','src','app','reference')
  raw=normal((ROOT/SCOPE).read_bytes());assert raw==subprocess.check_output(['git','show','HEAD:'+SCOPE],cwd=ROOT);r=json.loads(raw)
@@ -34,6 +37,8 @@ def guard():
  for key in ('gate_source_sha256','qualified_artifact_records'):
   for path,pin in r[key].items():
    data=normal((ROOT/path).read_bytes());assert sha(data)==pin and data==subprocess.check_output(['git','show','HEAD:'+path],cwd=ROOT)
+   if key=='qualified_artifact_records' and subprocess.run(['git','cat-file','-e',BASE+':'+path],cwd=ROOT,capture_output=True).returncode==0:
+    assert data==subprocess.check_output(['git','show',BASE+':'+path],cwd=ROOT)
  status=json.loads((ROOT/STATUS).read_text());previous=json.loads(subprocess.check_output(['git','show',BASE+':'+STATUS],cwd=ROOT))
  assert status.pop(KEY)==dict(scope=r['scope'],predecessor=BASE,whole_scientific_admission=False,windows_path_scope='ASCII_ONLY',posix_stage6='FAILURE_AFTER_REPLACEMENT') and status==previous
  return r
