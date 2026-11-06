@@ -1,5 +1,5 @@
 """Exact executed S5PT production successor and unchanged predecessor authority."""
-import argparse,hashlib,json,os,subprocess,sys,time
+import argparse,hashlib,json,os,re,subprocess,sys,time
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -12,7 +12,7 @@ SCOPE='integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_SCOPE_20261106.json
 CURRENT_CAPSULES={'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_'+host+'_20261106'+suffix for host in ('WINDOWS','POSIX') for suffix in ('.json','.tar.xz.part00')}
 RECORDS={'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_'+name+'_20261106'+suffix for name,suffix in (
  ('DIAGNOSTICS','.json'),('EXACT_BEFORE','.zip'),('BEFORE_POND_SOURCE','.json'),('BEFORE_POND_SOURCE','.zip'),
- ('INITIAL_FAILURES','.json'),('INITIAL_FAILURES','.zip'),('CURRENT_MC','.zip'),('EXECUTION_RECEIPT','.json'),('EXECUTION_LOGS','.zip'))}
+ ('INITIAL_FAILURES','.json'),('INITIAL_FAILURES','.zip'),('CURRENT_MC','.zip'),('EXECUTION_RECEIPT','.json'),('EXECUTION_LOGS','.zip'),('STAGING_FAILURES','.json'),('STAGING_FAILURES','.zip'))}
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
 BRIDGES.add('.github/workflows/pond-thermal-original.yml')
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/pond_thermal_production.py','tests/dataqual15_hupsel/test_pond_thermal_production.py','.github/workflows/pond-thermal-production.yml'}
@@ -81,6 +81,19 @@ def execute(out,label,args,cwd=ROOT,timeout=2400):
  assert cp.returncode==0,cp.stderr[-4000:];print(label,'PASS',flush=True)
  return event
 
+def execution_origin(result):
+ ref=result['head'];assert re.fullmatch('[0-9a-f]{40}',ref),'invalid execution commit'
+ if subprocess.run(['git','cat-file','-e',ref+'^{commit}'],cwd=ROOT,capture_output=True).returncode:
+  subprocess.run(['git','fetch','--no-tags','origin',ref],cwd=ROOT,capture_output=True,check=True)
+ assert result['production_trees']=={p:blob(ref,p) for p in ('src','app','reference')},'executed tree metadata'
+ assert result['production_trees']=={p:blob('HEAD',p) for p in ('src','app','reference')},'executed/current production tree drift'
+ if subprocess.run(['git','merge-base','--is-ancestor',ref,'HEAD'],cwd=ROOT,capture_output=True).returncode:
+  # Actions tests an ephemeral merge, not necessarily an ancestor of a later
+  # branch head. Fetch its exact object and require both recorded real parents.
+  receipt=json.loads((ROOT/'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_EXECUTION_RECEIPT_20261106.json').read_text())
+  assert git('show','-s','--format=%P',ref).split()==[BASE,receipt['head']],'unqualified test-merge parents'
+  subprocess.run(['git','merge-base','--is-ancestor',receipt['head'],'HEAD'],cwd=ROOT,capture_output=True,check=True)
+
 def current_build(out):
  guard();out.mkdir(parents=True,exist_ok=False);view=out/'source';head=git('rev-parse','HEAD')
  subprocess.run(['git','-c','core.autocrlf=false','worktree','add','--detach','--no-checkout',str(view),head],cwd=ROOT,capture_output=True,check=True)
@@ -109,7 +122,7 @@ def main():
  for host,platform in [('WINDOWS','nt'),('POSIX','posix')]:
   stem='POND_THERMAL_PRODUCTION_'+host+'_20261106';m,files=evidence.load(stem)
   result=json.loads(files['CURRENT_BUILD_RESULT.json'])
-  subprocess.run(['git','merge-base','--is-ancestor',result['head'],'HEAD'],cwd=ROOT,capture_output=True,check=True)
+  execution_origin(result)
   assert result['status']=='ACTUAL_CURRENT_SOURCE_ORIGINAL_COLD_RESUMED_O0_O2_PASS' and result['whole_scientific_admission'] is False
   assert result['source_sha256']==sha(normal((ROOT/SOURCE).read_bytes()))
   assert result['production_trees']=={p:blob('HEAD',p) for p in ('src','app','reference')}

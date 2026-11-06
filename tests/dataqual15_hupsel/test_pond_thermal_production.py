@@ -1,8 +1,20 @@
-import copy,json,unittest
+import copy,json,unittest,zipfile
 from unittest.mock import patch
 import pond_thermal_production as p
 
 class PondAdmission(unittest.TestCase):
+ def test_actual_test_merge_origin_and_refusals(self):
+  with zipfile.ZipFile(p.ROOT/'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_EXECUTION_LOGS_20261106.zip') as z:
+   result=json.loads(z.read(next(n for n in z.namelist() if n.endswith('CURRENT_BUILD_RESULT.json'))))
+  p.execution_origin(result)
+  corrupt=copy.deepcopy(result);corrupt['production_trees']['src']='0'*40
+  with self.assertRaises(AssertionError):p.execution_origin(corrupt)
+  original=p.git;head=original('rev-parse','HEAD')
+  def changed(*args):
+   if args[:3]==('show','-s','--format=%P'):return p.BASE+' '+head
+   return original(*args)
+  with patch.object(p,'git',side_effect=changed):
+   with self.assertRaises(AssertionError):p.execution_origin(result)
  def test_complete_current_source(self):self.assertTrue(p.guard())
  def test_actual_dirty_source_refusal(self):
   path=p.ROOT/p.SOURCE;before=path.read_bytes()
