@@ -2,7 +2,7 @@
   "workstream": "MC-SOL01 native restart integrity",
   "unit": "S5PT private full-composition host-logical qualification",
   "baseline": "9a55a1780de67db95a6003ab397f332ed2c0e965",
-  "status": "PRIVATE_WINDOWS_POSIX_NATIVE_SCOPE_QUALIFIED_FINAL_HEAD_PENDING",
+  "status": "BOUNDED_PRIVATE_NATIVE_SCOPE_CANONICALLY_CLOSED",
   "production_delta": [],
   "candidate": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
   "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
@@ -34,7 +34,7 @@
   "invariants": "No changes to solver/retry/tolerance/mass/ownership/schema/CRC/publication or scientific admission. Malformed native logical representations fail closed before interpretation. Valid native bytes remain unchanged.",
   "reconciliation": "Canonical9a55 unchanged; open PR1485 owns numerical uptake/accounting,1465 conductivity,1457 historical orchestration. This private candidate touches none of their production files. No peer source reset or overlay.",
   "estimated_cost": "Four full original driver builds, O0/O2 each, approximately10min; native runs under5min; record actual costs.",
-  "next": "Observe final exact-head qualification after committing POSIX capsule. Admit private qualification evidence only by exact expected-head canonical merge after all gates succeed; then close remaining standalone-layout and malformed-writer requirements before any production postimage deployment.",
+  "next": "Close standalone S5PT0002/0003 native layout and malformed-writer qualification without changing production admission. Existing Windows/POSIX complete source/object/native proofs remain immutable.",
   "local_raw_input_sha256": {
     "src/adapter/mod_pond_thermal_restart_file.f90": "c1bd59efa11cb03120830b3c83ff1512f2f47636413585d1c94c6a35f9d1ee3c",
     "src/runtime/mod_rutter_source_window_processor.f90": "c71453b91639ac4b7643197f2abfa5c93eb3597f8aa784f60f270fb6e5f13ad8",
@@ -63,7 +63,7 @@
     "first_controller_process_verdicts": "Both exited1 at final guard after hash-policy record changed while processes were running. All four original physical drivers and48 candidate native controls completed. Original process failures retained; current canonical LF/raw-input reconciliation and complete capsule remeasurement required before qualification."
   },
   "production_admission": false,
-  "canonical_admission": false,
+  "canonical_admission": true,
   "qualified_private_scope": {
     "platforms": [
       "Windows GNU O0/O2",
@@ -97,5 +97,9 @@
     "current_matrix_thermal_production_guard": "PASS",
     "unchanged_native_admission_boundary_tests": 13,
     "all_pass": true
-  }
+  },
+  "canonical_merge": "89a9e1cffc40b65339f9eba4b9451e7a574ccda6",
+  "qualified_head": "1372a8b47c504102c87119114c2e5d9600ac8f08",
+  "qualified_tree": "b05914cd9886fe50c0aa4b7ebb6c87ebdb7aaff7",
+  "canonical_receipt": "integration/dataqual15_hupsel/POND_THERMAL_NATIVE_CANONICAL_RECEIPT_20261106.json"
 }
