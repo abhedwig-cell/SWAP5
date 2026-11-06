@@ -4,7 +4,7 @@
   "branch": "codex/andelst-joint-entry-20261106",
   "implemented": true,
   "persisted": true,
-  "tested": false,
+  "tested": true,
   "qualified": false,
   "invariants": [
     3,
@@ -85,5 +85,47 @@
     "restart_published": false,
     "scope": "READ_ONLY_DIAGNOSIS_NOT_OWN_RESTART_QUALIFICATION"
   },
-  "proposed_v2_contract": "Explicit corrected graph includes dynamically located perched top cell: constraint w*h(i)+(1-w)*h(i+1)=0, w=1-dz(i)/(2*disnod(i+1)). Solve all heads and active fractions in the same bordered system; finite-difference both constraint head columns while retaining all shared-storage factors. Same signed domain exchange feeds matrix, macro, reconstruction and history. Positive perched fraction scales sorptivity action sqrt(tau+dt)-sqrt(tau), never clock interpolation; zero fraction ends event. No historical equivalence or production-default change."
+  "proposed_v2_contract": "Explicit corrected graph includes dynamically located perched top cell: constraint w*h(i)+(1-w)*h(i+1)=0, w=1-dz(i)/(2*disnod(i+1)). Solve all heads and active fractions in the same bordered system; finite-difference both constraint head columns while retaining all shared-storage factors. Same signed domain exchange feeds matrix, macro, reconstruction and history. Positive perched fraction scales sorptivity action sqrt(tau+dt)-sqrt(tau), never clock interpolation; zero fraction ends event. No historical equivalence or production-default change.",
+  "canonical_reconciled": "6bcacb0af5890db0d54fa9b24a7f322f36de76c2",
+  "evidence_archive_sha256": "34fb01cf77f4d262b14706c8a382b7e54fba08408e8124c32076badc14ed83f0",
+  "common_day3_rows_exact_O0_O2_own": 399,
+  "efficient_corrected_entry_prefix": [
+    {
+      "candidate": "543289d257f616318288ce0c760cf28f03560ec4",
+      "strict_own_restart_sha256": null,
+      "executable_sha256": "aca5692c798ecdcedcf3ff846521c806ce27752345a7e7d0c0ed2d27320caa95",
+      "censored": true,
+      "seconds": 180.60113910003565,
+      "completed_days": 2,
+      "last_completed_source_interval": 2.779999999999589,
+      "maximum_water_residual_cm": 9.452341605008484e-14
+    },
+    {
+      "candidate": "f46045a1797253cffc224f77d8608b31d712b8fc",
+      "strict_own_restart_sha256": null,
+      "executable_sha256": "e741f9dab1eba448317a408a4739c3bca66e291aa97384171cdf22070280042f",
+      "censored": true,
+      "seconds": 300.4513620999642,
+      "completed_days": 2,
+      "last_completed_source_interval": 2.779999999999589,
+      "maximum_water_residual_cm": 9.452341605008484e-14
+    },
+    {
+      "candidate": "f46045a1797253cffc224f77d8608b31d712b8fc",
+      "strict_own_restart_sha256": "2a0d17c3cf3463c65242ce98fd45deba2f756a2b13da4c625727c8ad70d55437",
+      "executable_sha256": "aca5692c798ecdcedcf3ff846521c806ce27752345a7e7d0c0ed2d27320caa95",
+      "censored": true,
+      "seconds": 240.07988759991713,
+      "completed_days": 0,
+      "last_completed_source_interval": 2.779999999999589,
+      "maximum_water_residual_cm": null
+    }
+  ],
+  "component_contracts": {
+    "status": "O0_O2_PASS",
+    "repeatable_command": "python tests/dataqual15/run_joint_entry_contracts.py --joint-contact --compiler <gfortran> --output <new-output>",
+    "seconds": 9.937152300029993,
+    "actual_production_border": true,
+    "private_corrected_contact_history": true
+  }
 }
