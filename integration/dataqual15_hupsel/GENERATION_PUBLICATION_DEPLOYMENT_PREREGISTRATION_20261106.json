@@ -36,6 +36,8 @@
   "build_integration": [
     "tools/solute/build_column.py",
     "tools/solute/build_crop_column.py",
-    "tests/nut-crop/run_hist_complete.py"
-  ]
+    "tests/nut-crop/run_hist_complete.py",
+    "tests/nut-sol/qualify_swp_reader.py"
+  ],
+  "build_integration_reason": "Use actual recorded compile objects including non-numbered native support, exclude exactly the application main, preserve every original SWP science/provenance/restart assertion and pin reused objects. Existing native reader link failure exposed during source qualification is retained."
 }

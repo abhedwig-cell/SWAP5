@@ -1,0 +1,126 @@
+{
+  "archive_sha256": "4b948cf67a8ef1eb53707d61e274b7eb5d4b6cc288f06fde35633c66d0b7b52c",
+  "members": {
+    "RESULT.json": "c22d9b57a64b88f382fd99e5690a9f1a9b42c431a54b32876951c3cf0ca7f2ed",
+    "census.stderr": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234",
+    "census.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "d1.stderr": "1778a06c2e524ab1df297b670761954bfe92966622192466f7217e42ff60d028",
+    "d1.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "d3.stderr": "521fb0681b2a0c64d6717b9b6e00567e019b40d4db5fa5d533a060bce9bcb6ad",
+    "d3.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logical-owner.stderr": "390583ee3df49bc14171ed8e09fb006b2d15d258a9a94ba12ca43309e6688f50",
+    "logical-owner.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "native-layout.stderr": "2eed59ecfc3d91a861ba2e36b7e79faa3dd972b676aa23125cdba2c17a258669",
+    "native-layout.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2e02.stderr": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234",
+    "p2e02.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2e04.stderr": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234",
+    "p2e04.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2e06.stderr": "3b7884574048637cccea6f814f5fa2d3bc95ed962840c8758da1f79f8809d395",
+    "p2e06.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2e07.stderr": "43abb7ca9bbfc56a774a2a08f94cb037dd694f7003ea9078174720092c17a3d1",
+    "p2e07.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2e08.stderr": "7cc2b15835494b4a5bcd5b7188412af331c086a9d2cf64ac8c284edaad698475",
+    "p2e08.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "p2e09.stdout": "3d5d1c56fb27db8b103145a6b24c1292cf255776cfbc395d6c995efc233c9666",
+    "p2e09.stderr": "8b9400c3017d4f0abcebfadc073a51d125527e842c5dff5bb34e154f7043fa4c",
+    "p2e10.stderr": "195b5941b7a41f729a7cc0dc9ebaba33d27e5429c7236785eec465f3ac174954",
+    "p2e10.stdout": "064a09af82e07e1ba71fdf72dd8a0a2b2c8059b29102f61fab509dbe20de6357",
+    "performance.stderr": "3cc05171cdd1264f1fa4a890b9b6a94817552143769d4537b7eb4f369063ad18",
+    "performance.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reference-vq.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "reference-vq.stdout": "6d47c2ab14be7b5570e10d472487007b2ba76b89d2bb3a4387ab531b41ae7929",
+    "thermal-owner.stderr": "6eade1a165df8d0a17f78af46c777a607c34f400376b2584bd55907808f6024e",
+    "thermal-owner.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "report": {
+    "performance": {
+      "returncode": 1,
+      "signature": "AssertionError: unreviewed delta",
+      "censored": false
+    },
+    "reference-vq": {
+      "returncode": 2,
+      "signature": "\"status\": \"FAIL\"",
+      "censored": false
+    },
+    "d1": {
+      "returncode": 1,
+      "signature": "D1 workunit changed production/reference source",
+      "censored": false
+    },
+    "d3": {
+      "returncode": 1,
+      "signature": "D3 changed production/reference source",
+      "censored": false
+    },
+    "p2e06": {
+      "returncode": 1,
+      "signature": "reference tree differs from P2E05 canonical base",
+      "censored": false
+    },
+    "p2e07": {
+      "returncode": 1,
+      "signature": "P2E07 mutated src or reference",
+      "censored": false
+    },
+    "p2e08": {
+      "returncode": 1,
+      "signature": "P2E08 mutated src or reference relative to reconciled canonical",
+      "censored": false
+    },
+    "p2e09": {
+      "returncode": 1,
+      "signature": "PUB_P2E09_GATE_FAIL admitted P2E08 Reference replay",
+      "censored": false
+    },
+    "p2e10": {
+      "returncode": 1,
+      "signature": "PUB_P2E10_GATE_FAIL solver contract drift",
+      "censored": false
+    },
+    "p2e02": {
+      "returncode": 1,
+      "signature": "mod_drainage_dramet3_response",
+      "censored": false
+    },
+    "p2e04": {
+      "returncode": 1,
+      "signature": "mod_drainage_dramet3_response",
+      "censored": false
+    },
+    "census": {
+      "returncode": 1,
+      "signature": "mod_drainage_dramet3_response",
+      "censored": false
+    },
+    "thermal-owner": {
+      "returncode": 1,
+      "signature": "==PATHS",
+      "censored": false
+    },
+    "logical-owner": {
+      "returncode": 1,
+      "signature": "=={SOURCE}",
+      "censored": false
+    },
+    "native-layout": {
+      "returncode": 1,
+      "signature": "unreviewed production paths",
+      "censored": false
+    }
+  },
+  "actual_refusals": [
+    "stream",
+    "baseline",
+    "verdict",
+    "promotion"
+  ],
+  "baseline": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
+  "run": 42138604204,
+  "job": 127632927702,
+  "artifact": 13466564350,
+  "execution_source_head": "769881b4a29ed1da2fe7ac0dd4f426816b54857d",
+  "old_gate_pass_claim": false,
+  "current_scientific_promotion": false
+}

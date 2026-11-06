@@ -64,7 +64,13 @@ def main():
   for p,h in meta['generated_input_sha256'].items():assert sha(build/p)==h,p
   report.setdefault('builds',{})[opt]=meta;directory=out/opt;directory.mkdir()
   fc=meta['compiler_command'];driver=directory/'reader'
-  objects=[build/f'{i:04d}.o' for i in range(meta['provider_count']-1)]
+  # The actual compile ledger includes non-numbered native support objects.
+  # Exclude exactly the application main, retaining the publisher and all
+  # original Fortran providers without guessing names from provider_count.
+  objects=[Path(e['command'][-1]) for e in meta['events'] if e['category']=='compile' and e['command'][-3]!=str(ROOT/'app/solute_column/main.f90')]
+  assert len(objects)==meta['provider_count']-1
+  provider_sha256={str(p):sha(p) for p in objects}
+  report.setdefault('reused_provider_sha256',{})[opt]=provider_sha256
   run(fc+meta['flags']+[ROOT/'tests/nut-sol/test_swp_reader.f90']+objects+[build/'libttutil.a','-o',driver],directory)
   for name,text in variants.items():
    case=directory/name;case.mkdir();swp=case/'source.swp';swp.write_text(text)
@@ -118,6 +124,7 @@ def main():
    case=directory/('bad-'+name);case.mkdir();swp=case/'source.swp';swp.write_text(BASE.replace(old,new));target=case/'output'
    run([sys.executable,ROOT/'tools/solute/run_column.py','--exe',build/'swap5_solute_column','--input',ROOT/'examples/solute_column/positive_pond.nml','--swp',swp,'--output',target],case,False);assert not target.exists()
   assert (directory/'layered/full/state.csv').read_bytes()==(directory/'heat_off_decay/full/state.csv').read_bytes()
+  assert all(sha(Path(p))==h for p,h in provider_sha256.items()),'reader relink changed provider objects'
  for name in variants:assert report['cases']['O0-'+name]==report['cases']['O2-'+name],name
  report['status']='ORIGINAL_SWP_CHEMISTRY_O0_O2_MAPPING_BALANCE_RESTART_REJECTION_PASS';persist();print(report['status'])
 if __name__=='__main__':main()

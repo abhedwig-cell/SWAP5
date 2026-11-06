@@ -11,6 +11,10 @@ BRIDGES={'.github/workflows/'+n for n in ('generation-publication.yml','generati
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/generation_publication_admission.py','tests/dataqual15_hupsel/test_generation_publication_admission.py','tests/dataqual15_hupsel/generation_publication_policy.py','tests/dataqual15_hupsel/generation_publication_audit.py','tests/dataqual15_hupsel/generation_publication_capsule.py','tests/dataqual15_hupsel/generation_publication_models.py','tests/dataqual15_hupsel/generation_publication_c_probe.py','tests/dataqual15_hupsel/generation_publication_windows_faults.py','tests/dataqual15_hupsel/generation_publication_windows_crt.py','tests/nut-output/generation_publication_windows_test.c'}
 RECORDS={'integration/dataqual15_hupsel/GENERATION_PUBLICATION_'+n+'_20261106.json' for n in ('WINDOWS','WINDOWS_COMPONENT','POSIX','PREREGISTRATION','DEPLOYMENT_PREREGISTRATION')}
 GATES|={'tools/solute/build_column.py','tools/solute/build_crop_column.py','tests/nut-crop/run_hist_complete.py','tests/dataqual15_hupsel/generation_publication_deployed_models.py','tests/dataqual15_hupsel/generation_publication_baseline.py','tests/dataqual15_hupsel/rotation_native_baseline.py','tests/dataqual15_hupsel/test_generation_publication_build.py'}
+GATES|={'tests/nut-sol/qualify_swp_reader.py','tests/dataqual15_hupsel/generation_publication_build_evidence.py','tests/dataqual15_hupsel/generation_publication_baseline_evidence.py'}
+RECORDS|={'integration/dataqual15_hupsel/GENERATION_PUBLICATION_BASELINE_POSIX_20261106.json'}
+BUILD_RECORD='integration/dataqual15_hupsel/GENERATION_PUBLICATION_BUILD_POSIX_20261106.json'
+if (ROOT/BUILD_RECORD).exists():RECORDS.add(BUILD_RECORD)
 sha=lambda b:hashlib.sha256(b).hexdigest()
 normal=lambda b:b.replace(b'\r\n',b'\n')
 
@@ -55,6 +59,11 @@ def prepare(out):
 def current_proof():
  import generation_publication_capsule as evidence
  evidence.replay();evidence.posix()
+ import generation_publication_baseline_evidence as baseline
+ baseline.run()
+ if (ROOT/'integration/dataqual15_hupsel/GENERATION_PUBLICATION_BUILD_POSIX_20261106.json').exists():
+  import generation_publication_build_evidence as deployed
+  deployed.run()
  return dict(actual_windows_posix_full_postimages=True,actual_windows_precommit_failures=20,actual_windows_terminations=8,original_posix_kill_assertions=True,evidence_refusals_per_platform=4,whole_scientific_admission=False)
 
 def main():

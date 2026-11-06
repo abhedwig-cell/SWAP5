@@ -15,9 +15,6 @@ jobs:
   current-native:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
-    defaults:
-      run:
-        working-directory: ${{ runner.temp }}/publication-native-n-production-current-native-view/predecessor
     steps:
       - uses: actions/checkout@v4
         with:
@@ -26,6 +23,7 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-native-n-production-current-native-view"
       - name: Exact unmodified pre-generation source authority
+        working-directory: ${{ runner.temp }}/publication-native-n-production-current-native-view/predecessor
         run: python3 -B tests/dataqual15_hupsel/generation_crc_admission.py --prepare-only --output "$RUNNER_TEMP/generation-native-n-view"
       - name: Exact prior NativeN source admission view
         working-directory: ${{ runner.temp }}/generation-native-n-view/predecessor
