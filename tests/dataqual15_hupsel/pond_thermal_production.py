@@ -41,7 +41,10 @@ def guard():
  assert r['production_delta'][SOURCE]==r['bridge_restore'][SOURCE]
  assert set(r['gate_source_sha256'])==GATES and set(r['frozen_authority'])==frozen()
  for path,pin in r['gate_source_sha256'].items():assert sha(normal((ROOT/path).read_bytes()))==pin and normal((ROOT/path).read_bytes())==raw('HEAD',path),path
- for path,pin in r['frozen_authority'].items():assert blob(BASE,path)==pin==blob('HEAD',path) and normal((ROOT/path).read_bytes())==raw(BASE,path),path
+ for path,pin in r['frozen_authority'].items():
+  content=(ROOT/path).read_bytes()
+  if path.endswith(('.py','.f90','.json')):content=normal(content)
+  assert blob(BASE,path)==pin==blob('HEAD',path) and content==raw(BASE,path),path
  current=json.loads((ROOT/STATUS).read_text());old=json.loads(raw(BASE,STATUS));canonical=lambda v:json.dumps(v,sort_keys=True,separators=(',',':'))
  addition=dict(scope=r['scope'],predecessor=BASE,whole_scientific_admission=False,binary_abi='SAME_PLATFORM_ONLY',windows_path_scope='ASCII_ONLY',posix_stage6='FAILURE_AFTER_REPLACEMENT')
  assert canonical(current.pop(KEY))==canonical(addition) and canonical(current)==canonical(old),'previous status/type authority'

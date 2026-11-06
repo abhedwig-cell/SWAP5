@@ -20,5 +20,12 @@
   ],
   "next": "Persist source and strict gates, execute focused admission refusals and actual Windows original current O0/O2 cold/resumed builds, independently pack/remeasure. Push and execute actual POSIX current source and unchanged predecessor gates; retain all source-head CI failures for precise adjudication before integration.",
   "whole_scientific_admission": false,
-  "production_admission": false
+  "production_admission": false,
+  "retained_setup_failures": [
+    {
+      "head": "8cd19306f",
+      "test": "test_complete_current_source",
+      "reason": "Text CRLF normalization incorrectly applied to binary evidence archive; reject preserved. Corrected to exact binary bytes, text-only transport normalization."
+    }
+  ]
 }
