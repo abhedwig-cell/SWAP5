@@ -48,8 +48,23 @@ def audit(files):
   struct.pack_into('<i',payload,{'time_bound':144,'history':156}[row['field']],row['word'])
   assert files[local(row['path'])]==bytes(payload)+struct.pack('<I',zlib.crc32(payload))and row['returncode']==0
  return dict(cold_provider_compiles=335,reused_objects=0,complete_original_drivers=4,logical_refusals=24,production_admission=False,whole_scientific_admission=False)
+def corruption_tests(files):
+ r=json.loads(files['RESULT.json']);b=json.loads(files['baseline/BUILD.json']);cases={}
+ def corrupt(label,path):
+  changed=dict(files);raw=changed[path];assert raw;changed[path]=bytes([raw[0]^1])+raw[1:];cases[label]=changed
+ corrupt('source-snapshot',r['sources'][0]['snapshot'])
+ q=PureWindowsPath if r['platform']=='WINDOWS'else PurePosixPath
+ corrupt('provider-object','baseline/'+q(next(iter(b['objects_sha256']))).name)
+ corrupt('native-payload','baseline/age/restart.bin')
+ for label,change in [('wrong-current-source',lambda d:d.update(source_head='0'*40)),('reused-object-claim',lambda d:d.update(provider_objects_reused=1)),('scientific-promotion',lambda d:d.update(whole_scientific_admission=True))]:
+  changed=dict(files);bad=json.loads(files['RESULT.json']);change(bad);changed['RESULT.json']=json.dumps(bad).encode();cases[label]=changed
+ for label,bad in cases.items():
+  try:audit(bad)
+  except(AssertionError,KeyError,ValueError):pass
+  else:raise AssertionError('corrupt current evidence admitted: '+label)
+ return len(cases)
 def pack(out):
- files={p.relative_to(out).as_posix():p.read_bytes()for p in out.rglob('*')if p.is_file()};measurement=audit(files)
+ files={p.relative_to(out).as_posix():p.read_bytes()for p in out.rglob('*')if p.is_file()};measurement=audit(files);measurement['corruption_refusals']=corruption_tests(files)
  buffer=io.BytesIO()
  with tarfile.open(fileobj=buffer,mode='w')as t:
   for name,raw in files.items():info=tarfile.TarInfo(name);info.size=len(raw);t.addfile(info,io.BytesIO(raw))
