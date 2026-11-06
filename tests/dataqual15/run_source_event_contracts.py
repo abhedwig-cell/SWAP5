@@ -25,6 +25,7 @@ for mode in ['O0','O2']:
    start=time.monotonic();r=subprocess.run(command,cwd=case,capture_output=True,timeout=90)
    (case/(label+'.stdout')).write_bytes(r.stdout);(case/(label+'.stderr')).write_bytes(r.stderr)
    report['events'].append({'optimization':mode,'case':name,'label':label,'command':command,'seconds':time.monotonic()-start,'returncode':r.returncode})
+   if r.returncode!=0:report['status']='FAILED_'+mode+'_'+name+'_'+label
    (out/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n');assert r.returncode==0,r.stderr.decode(errors='replace')
 for name in cases:assert (out/('O0-'+name)/'native.stdout').read_bytes()==(out/('O2-'+name)/'native.stdout').read_bytes()
 report['status']='SOURCE_EVENT_SELECTION_AND_ORIGINAL_INT13_O0_O2_PASS'

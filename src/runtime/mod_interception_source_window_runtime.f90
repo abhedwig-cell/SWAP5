@@ -59,11 +59,12 @@ contains
     endpoint=0.0_real64;status=INTWIN_INVALID
     if(.not.ieee_is_finite(cursor).or..not.ieee_is_finite(event_end).or..not.ieee_is_finite(max_step))return
     if(event_end<=cursor.or.max_step<=0.0_real64)return
-    ! Never relabel a previously accepted cursor at an indistinguishable event.
-    if(same_time(cursor,event_end))return
     if(cursor<0.0_real64.and.event_end>0.0_real64)then
       if(event_end>huge(event_end)+cursor)return
     end if
+    ! Check representability before the shared time comparison subtracts clocks.
+    ! Never relabel a previously accepted cursor at an indistinguishable event.
+    if(same_time(cursor,event_end))return
     remaining=event_end-cursor
     if(max_step>=remaining)then
       endpoint=event_end
