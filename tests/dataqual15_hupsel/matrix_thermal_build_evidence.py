@@ -11,6 +11,7 @@ def audit(root):
  answer={}
  for role in ('candidate','incumbent'):
   base=root/role;summary=json.loads((base/'RESULT.json').read_text());r=json.loads((base/'physical/result.json').read_text());windows=summary['platform']=='nt'
+  assert summary['platform'] in ('nt','posix')
   pins={name.replace('\\','/'):digest for name,digest in r['inputs'].items()}
   assert summary['role']==role and summary['runner_sha256']==pins[owner.RUNNER] and summary['module_sha256']==pins[p.SOURCE]
   assert summary['baseline']==owner.BASE and summary['production_admission'] is False and summary['whole_scientific_admission'] is False
@@ -24,6 +25,9 @@ def audit(root):
    cmd=event['command'];category=event['category']
    if category in ('compile','compile_support'):
     assert event['returncode']==0 and event['executed_command']==cmd
+    opt=cmd[-1].replace('\\','/').split('/physical/',1)[1].split('/')[0];assert opt in ('O0','O2') and '-'+opt in cmd
+    assert ('-O2' if opt=='O0' else '-O0') not in cmd
+    if category=='compile_support':assert '-std=c11' in cmd and cmd[-3].replace('\\','/').endswith('/app/support/restart_publish.c')
     obj=relocate(cmd[-1]);assert obj.is_file() and obj.stat().st_size>0;objects[obj.relative_to(root).as_posix()]=p.sha(obj.read_bytes())
    elif category=='link':
     opt=next(x[1:] for x in cmd if x in ('-O0','-O2'));compiled={name for name in objects if '/physical/'+opt+'/' in name};linked={relocate(x).relative_to(root).as_posix() for x in cmd if x.endswith('.o')};assert r.get('provider_count',284)==284 and linked==compiled and len(compiled)==286
@@ -38,6 +42,7 @@ def audit(root):
     assert event['returncode']==0;binary=relocate(cmd[-1]).read_bytes();assert p.sha(binary)==r['executables'][opt];executables[opt]=p.sha(binary)
     if windows:
      offset=struct.unpack_from('<I',binary,0x3c)[0];assert binary[offset:offset+4]==b'PE\0\0' and struct.unpack_from('<Q',binary,offset+24+72)[0]==67108864
+    else:assert binary[:4]==b'\x7fELF'
   native={}
   if not(windows and role=='incumbent'):
    assert summary['status']=='ACTUAL_PORTABLE_BUILD_COMPLETE_O0_O2_NATIVE_PHYSICAL_PASS' and set(executables)=={'O0','O2'}

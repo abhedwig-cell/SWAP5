@@ -2,9 +2,18 @@
 import copy,json,unittest
 from unittest.mock import patch
 import matrix_thermal_build as owner
+import subprocess
 
 class BuildScope(unittest.TestCase):
  def test_actual_scope(self):self.assertTrue(owner.guard())
+ def test_source_and_frozen_authority_refusals(self):
+  original=subprocess.check_output
+  for marker in ('src','tests/dataqual15_hupsel/matrix_thermal_native_*.py'):
+   def changed(command,*args,**kwargs):
+    if command[:3]==['git','diff',owner.BASE] and marker in command:return b'M\tunexpected-owned-change\n'
+    return original(command,*args,**kwargs)
+   with self.subTest(marker=marker),patch.object(owner.subprocess,'check_output',side_effect=changed):
+    with self.assertRaises(AssertionError):owner.guard()
  def test_scope_refusals(self):
   mutations={
    'baseline':lambda r:r.update(baseline='0'*40),
