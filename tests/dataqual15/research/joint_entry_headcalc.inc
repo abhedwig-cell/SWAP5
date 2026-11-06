@@ -12,7 +12,7 @@ subroutine joint_entry_candidate(produced)
  logical,intent(out)::produced
  logical::valid,restored_flags(6)
  produced=.false.;n=NN
- if(.not.provider_macropore_active.or..not.provider_constitutive_active.or.swkimpl/=0.or.storage_rank/=0)return
+ if(.not.provider_macropore_active.or..not.provider_constitutive_active.or.swkimpl/=0)return
  if(consistent_provider_conductivity.or.picard_conductivity_iteration)return
  select type(mp=>evaluation_context%macropore)
  type is(ppa_wu05a16_inner_macropore_provider_t)
@@ -42,21 +42,36 @@ subroutine joint_entry_candidate(produced)
    lambda(k)=min(1d0,max(0d0,-rp(i)/(rm(i)-rp(i))))
   end do
   if(k==0)goto 990
-  allocate(jac(n,n),border(n,k),ctest(n,k),corner(k,k),g(k),dh(n),dl(k),a(n),b(n),c(n),left(n,n),right(n,n))
-  ctest=0d0;corner=0d0;right=0d0
+  allocate(border(n,k),ctest(n,k),corner(k,k),g(k),dh(n),dl(k),a(n),b(n),c(n))
+  ctest=0d0;corner=0d0
   do i=1,k;ctest(nodes(i),i)=1d0;end do
-  do i=1,n;right(i,i)=1d0;end do
   do it=0,25
    call joint_entry_residual(x,lambda(:k),nodes(:k),r,valid);if(.not.valid)exit
    norm=maxval(abs(r));g=x(nodes(:k))-threshold(nodes(:k))
    if(norm<=min(CritDevBalCp,1d-8).and.maxval(abs(g))<=1d-12)then
     produced=.true.;exit
    end if
-   do j=1,n
-    eps=1d-5*max(1d0,abs(x(j)));trial=x;trial(j)=x(j)+eps
+   ! Use the existing complete soil Jacobian and shared-storage factors.
+   ! Only active contact columns need a local extension derivative.
+   call jacobian_F()
+   if(typed_bottom_invalid)exit
+   a=fsi_ws%dfdh_upper(:n);b=fsi_ws%dfdh_main(:n);c=fsi_ws%dfdh_lower(:n)
+   rank=storage_rank
+   if(allocated(left))deallocate(left,right)
+   allocate(left(n,rank+k),right(n,rank+k));left=0d0;right=0d0
+   if(rank>0)then
+    left(:,:rank)=storage_left(:n,:);right(:,:rank)=storage_right(:n,:)
+   end if
+   do j=1,k
+    i=nodes(j);eps=1d-5*max(1d0,abs(x(i)));trial=x;trial(i)=x(i)+eps
     call joint_entry_residual(trial,lambda(:k),nodes(:k),rp,valid);if(.not.valid)exit
-    trial(j)=x(j)-eps;call joint_entry_residual(trial,lambda(:k),nodes(:k),rm,valid);if(.not.valid)exit
-    jac(:,j)=(rp-rm)/(2d0*eps)
+    trial(i)=x(i)-eps;call joint_entry_residual(trial,lambda(:k),nodes(:k),rm,valid);if(.not.valid)exit
+    left(:,rank+j)=(rp-rm)/(2d0*eps)
+    left(i,rank+j)=left(i,rank+j)-b(i)
+    if(i>1)left(i-1,rank+j)=left(i-1,rank+j)-c(i-1)
+    if(i<n)left(i+1,rank+j)=left(i+1,rank+j)-a(i+1)
+    if(rank>0)left(:,rank+j)=left(:,rank+j)-matmul(left(:,:rank),right(i,:rank))
+    right(i,rank+j)=1d0
    end do
    if(.not.valid)exit
    do j=1,k
@@ -66,17 +81,6 @@ subroutine joint_entry_candidate(produced)
     border(:,j)=rp-rm
    end do
    if(.not.valid)exit
-   ! Preserve every off-band derivative in worker-local low-rank factors.
-   left=jac;a=0d0;b=0d0;c=0d0
-   do j=1,n
-    b(j)=jac(j,j);left(j,j)=0d0
-    if(j>1)then
-     a(j)=jac(j,j-1);left(j,j-1)=0d0
-    end if
-    if(j<n)then
-     c(j)=jac(j,j+1);left(j,j+1)=0d0
-    end if
-   end do
    call reference_bordered_solve(a,b,c,r,border,ctest,corner,g,dh,dl,code,extra,left,right)
    if(code/=0)exit
    alpha=1d0
