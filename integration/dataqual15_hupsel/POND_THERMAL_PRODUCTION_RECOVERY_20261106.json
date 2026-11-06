@@ -1,7 +1,7 @@
 {
   "unit": "S5PT0001/2/3/4 complete executed native production successor",
   "baseline": "46505d617d4dae3053e6e72d63fae1c59baec2ab",
-  "status": "IMPLEMENTED_NOT_YET_CURRENT_SOURCE_QUALIFIED",
+  "status": "CURRENT_WINDOWS_O0_O2_SOURCE_EXECUTION_AND_NATIVE_CORRUPTIONS_PASS_POSIX_AND_PREDECESSOR_PENDING",
   "source": "src/adapter/mod_pond_thermal_restart_file.f90",
   "postimage_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "production_scope": "SAME_PLATFORM_S5PT_NATIVE_LOGICAL_AND_PUBLICATION",
@@ -18,7 +18,7 @@
     27,
     29
   ],
-  "next": "Persist source and strict gates, execute focused admission refusals and actual Windows original current O0/O2 cold/resumed builds, independently pack/remeasure. Push and execute actual POSIX current source and unchanged predecessor gates; retain all source-head CI failures for precise adjudication before integration.",
+  "next": "Execute actual POSIX current cold/resumed O0/O2, independently archive, verify full prior pond reader/layout/writer/termination evidence, execute unchanged full predecessor admission, capture exact-predecessor diagnostics, and adjudicate all terminal source-head workflows before canonical integration.",
   "whole_scientific_admission": false,
   "production_admission": false,
   "retained_setup_failures": [
@@ -27,5 +27,63 @@
       "test": "test_complete_current_source",
       "reason": "Text CRLF normalization incorrectly applied to binary evidence archive; reject preserved. Corrected to exact binary bytes, text-only transport normalization."
     }
-  ]
+  ],
+  "windows_current_execution": {
+    "status": "ACTUAL_CURRENT_SOURCE_ORIGINAL_COLD_RESUMED_O0_O2_PASS",
+    "head": "b4aaa11b072e9dcc604c1b7901a54064f93c5183",
+    "production_trees": {
+      "src": "a74388f77f0f03fa47d76917739020a2f4779785",
+      "app": "0abdce76c50cd9bb507909e2c6ab1c3124e2ce5c",
+      "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+    },
+    "source_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
+    "events": [
+      {
+        "label": "physical",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-production-20261106\\windows-v1\\source\\tests\\nut-sol\\run_pond_thermal.py",
+          "--output",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-production-20261106\\windows-v1\\physical"
+        ],
+        "returncode": 0,
+        "seconds": 449.54179070005193
+      },
+      {
+        "label": "black-rutter",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-production-20261106\\windows-v1\\source\\tests\\nut-sol\\run_pond_thermal.py",
+          "--output",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-production-20261106\\windows-v1\\black-rutter",
+          "--black-rutter",
+          "--resume-compilation",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-production-20261106\\windows-v1\\physical"
+        ],
+        "returncode": 0,
+        "seconds": 274.1591049002018
+      }
+    ],
+    "whole_scientific_admission": false
+  },
+  "windows_manifest": "integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_WINDOWS_20261106.json",
+  "windows_independent_remeasurement": {
+    "compiler_objects": 576,
+    "coherent_resumed_objects": 568,
+    "proper_native_files": 54,
+    "default_windows_stack": 2097152,
+    "actual_original_runner": true,
+    "runner_changed": false,
+    "production_admission": false,
+    "whole_scientific_admission": false
+  },
+  "focused_admission_refusals": 19,
+  "existing_current_boundary_tests": 13,
+  "overlap_reconciliation": {
+    "PR1485": "Shared STATUS.json only; all old fields/types preserved and only own new key appended. No shared production source.",
+    "PR1465": "No directly overlapping changed file",
+    "PR1457": "No directly overlapping changed file"
+  }
 }
