@@ -63,12 +63,19 @@ def origin(r):
  def producer(raw):
   text=g.normal(raw).decode();tree=ast.parse(text);result=[]
   for node in tree.body:
-   if isinstance(node,ast.FunctionDef)and node.name in('guard','source_record','cold'):result.append(ast.get_source_segment(text,node))
+   if isinstance(node,ast.FunctionDef)and node.name in('guard','source_record','cold'):
+    assert not node.decorator_list
+    result.append(ast.get_source_segment(text,node))
    elif isinstance(node,ast.Assign):result.append(ast.get_source_segment(text,node))
    elif isinstance(node,(ast.Import,ast.ImportFrom)):
+    if isinstance(node,ast.ImportFrom):assert node.module=='pathlib'and node.level==0
     assert all(a.name in('json','subprocess','functools','Path','PureWindowsPath','PurePosixPath','joint_production','joint_production_runtime','joint_writer','joint_logical')for a in node.names)
     aliases=[(a.name,a.asname)for a in node.names if a.name not in('functools','PureWindowsPath','PurePosixPath')]
     if aliases:result.append((getattr(node,'module',None),aliases))
+   elif isinstance(node,ast.FunctionDef):
+    assert node.name in('baseline_source','audit_cold')
+    assert [ast.unparse(d)for d in node.decorator_list]==(['functools.lru_cache(maxsize=None)']if node.name=='baseline_source'else[])
+   else:assert isinstance(node,ast.Expr)and isinstance(node.value,ast.Constant)and isinstance(node.value.value,str)
   assert sum(isinstance(n,ast.FunctionDef)and n.name in('guard','source_record','cold')for n in tree.body)==3
   return result
  assert producer(g.raw(ref,path))==producer(g.raw('HEAD',path))==producer((g.ROOT/path).read_bytes())
