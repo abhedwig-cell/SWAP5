@@ -1,5 +1,5 @@
 {
-  "phase": "WINDOWS_COLD_NATIVE_PUBLICATION_QUALIFIED_POSIX_PENDING",
+  "phase": "WINDOWS_QUALIFIED_SOURCE_BOUND_SUPERSEDED_BY_LIMITER",
   "baseline": "50bd76792c46780b4499bc0b398e0485ecd4d1dd",
   "canonical_reconciled": "5a9cc9ab6fa2f45bb5c4689999cddfe7384d8f30",
   "production_delta": [],
@@ -25,5 +25,7 @@
   "production_admission": false,
   "whole_scientific_admission": false,
   "current_whole_project_physics_qualified": false,
-  "evidence_corruption_refusals_each_cohort": 14
+  "evidence_corruption_refusals_each_cohort": 14,
+  "canonical_delta": "PR1602 changes the included top-inflow limiter provider; old executed objects remain source-bound. No current eligibility is claimed.",
+  "successor": "JOINT_LIMITER_WRITER_PREREGISTRATION_20261106.json"
 }
