@@ -26,7 +26,9 @@ class PondAdmission(unittest.TestCase):
    lambda r:r['predecessor_production_trees'].update(app='0'*40),lambda r:r['gate_source_sha256'].pop(p.ENTRY),
    lambda r:r['frozen_authority'].pop(next(iter(r['frozen_authority']))),
    lambda r:r['current_capsule_sha256'].pop(next(iter(r['current_capsule_sha256']))),
-   lambda r:r['current_capsule_sha256'].update({next(iter(r['current_capsule_sha256'])):'0'*64})]
+   lambda r:r['current_capsule_sha256'].update({next(iter(r['current_capsule_sha256'])):'0'*64}),
+   lambda r:r['qualified_record_sha256'].pop(next(iter(r['qualified_record_sha256']))),
+   lambda r:r['qualified_record_sha256'].update({next(iter(r['qualified_record_sha256'])):'0'*64})]
   original=json.loads
   for i,mutate in enumerate(cases):
    def changed(raw,*args,**kw):

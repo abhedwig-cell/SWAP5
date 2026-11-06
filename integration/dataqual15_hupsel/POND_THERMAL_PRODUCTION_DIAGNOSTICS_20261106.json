@@ -1,201 +1,203 @@
 {
-  "status": "ACTUAL_EXACT_BEFORE16_PERSISTED_ADJUDICATION_PENDING",
-  "baseline": "46505d617d4dae3053e6e72d63fae1c59baec2ab",
-  "tree": "52ea4424116201e314f9a42579b92a62327712ba",
-  "events": [
+  "predecessor": "46505d617d4dae3053e6e72d63fae1c59baec2ab",
+  "before_cases": 17,
+  "all_before_verdicts": "FAILED_RETAINED_UNCENSORED",
+  "source_head": "6603af42f6e138b06146e049c30eba6a58f240e0",
+  "adjudicated": [
     {
-      "case": "performance",
-      "command": [
-        "python3",
-        "-B",
-        "integration/performance/authority.py"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "880f4426e187fca373aafcdd39a5fdeb087184a8c0cd2acc7d53f93aa2e095bb"
+      "run": 42218433669,
+      "job": 127894174016,
+      "workflow": "MC-SOL01 dynamic thermal pond and file application",
+      "case": "pond-source",
+      "current_signature": "AssertionError: unreviewed delta",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
     },
     {
-      "case": "reference-vq",
-      "command": [
-        "python3",
-        "tools/vq/b1_11_admission_gate.py"
-      ],
-      "returncode": 2,
-      "censored": false,
-      "stdout_sha256": "6d47c2ab14be7b5570e10d472487007b2ba76b89d2bb3a4387ab531b41ae7929",
-      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-    },
-    {
-      "case": "d1",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_me_d1_transition_authority.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "1778a06c2e524ab1df297b670761954bfe92966622192466f7217e42ff60d028"
-    },
-    {
-      "case": "d3",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_me_d3_origin_authority.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "521fb0681b2a0c64d6717b9b6e00567e019b40d4db5fa5d533a060bce9bcb6ad"
-    },
-    {
+      "run": 42218433701,
+      "job": 127894173774,
+      "workflow": "PUB-P2E06 Reference local-balance scaling",
       "case": "p2e06",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e06_reference_local_balance_scaling.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "3b7884574048637cccea6f814f5fa2d3bc95ed962840c8758da1f79f8809d395"
+      "current_signature": "reference tree differs from P2E05 canonical base",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
     },
     {
-      "case": "p2e07",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e07_reference_cancellation_floor.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "43abb7ca9bbfc56a774a2a08f94cb037dd694f7003ea9078174720092c17a3d1"
-    },
-    {
+      "run": 42218433702,
+      "job": 127894174104,
+      "workflow": "PUB-P2E08 Reference valid calibration domain",
       "case": "p2e08",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e08_reference_valid_calibration_domain.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "7cc2b15835494b4a5bcd5b7188412af331c086a9d2cf64ac8c284edaad698475"
+      "current_signature": "P2E08 mutated src or reference relative to reconciled canonical",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
     },
     {
-      "case": "p2e09",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e09_reference_threshold_freeze.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "2db24234090ac6fb8bf34fa98da8f21316d434deafaf2c6def5c8b96eb88409c",
-      "stderr_sha256": "8b9400c3017d4f0abcebfadc073a51d125527e842c5dff5bb34e154f7043fa4c"
-    },
-    {
-      "case": "p2e10",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e10_e0_broad_paired_matrix.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "6202e394b4043f5e6810e993edfc0e15715e6e043735ba6dd9c9d23dad8f8adc",
-      "stderr_sha256": "195b5941b7a41f729a7cc0dc9ebaba33d27e5429c7236785eec465f3ac174954"
-    },
-    {
-      "case": "p2e02",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234"
-    },
-    {
-      "case": "p2e04",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e04_reference_bc_sweeps.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234"
-    },
-    {
-      "case": "census",
-      "command": [
-        "bash",
-        "tests/publication/run_pub_p2e04_reference_failure_census.sh"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "fca953dab9cd24d18bc39bdc3a2d162aa883ce56c07aacc8ef7cd88f61125234"
-    },
-    {
-      "case": "thermal-owner",
-      "command": [
-        "python3",
-        "-B",
-        "tests/dataqual15/thermal_profile_production.py",
-        "--output",
-        "/home/runner/work/_temp/pond-exact-before/thermal"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "6b7993ad36ada4316c10a39f185883c1da163192cbbbcfdc14058cf24cade8af"
-    },
-    {
+      "run": 42218433725,
+      "job": 127894174238,
+      "workflow": "Hupsel production native crop logical successor",
       "case": "logical-owner",
-      "command": [
-        "python3",
-        "-B",
-        "tests/dataqual15_hupsel/rotation_native_admission.py",
-        "--prepare-only",
-        "--output",
-        "/home/runner/work/_temp/pond-exact-before/logical"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "e230179b06a1860f5920ec16ead5e7b941c7a4dfafd82ca560caced72db02868"
+      "current_signature": ".splitlines())=={SOURCE}",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
     },
     {
+      "run": 42218433737,
+      "job": 127894174356,
+      "workflow": "PUB-ME D3 origin authority",
+      "case": "d3",
+      "current_signature": "D3 changed production/reference source",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433738,
+      "job": 127894173416,
+      "workflow": "PUB-P2E10 broad E0 paired matrix",
+      "case": "p2e10",
+      "current_signature": "P2E10 mutated src or reference",
+      "classification": "EARLIER_CURRENT_SOURCE_REFUSAL_DISTINCT_FROM_LATER_PREDECESSOR_FAILURE",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433742,
+      "job": 127895547830,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
       "case": "native-layout",
-      "command": [
-        "python3",
-        "-B",
-        "tests/dataqual15/verify_native_restart_admission.py",
-        "--prepare-only",
-        "--output",
-        "/home/runner/work/_temp/pond-exact-before/layout"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "4754eca32861d11e29cb44b896793327bf592a59fa159f4e69b7fa4c74c173d1"
+      "current_signature": "unreviewed production paths",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
     },
     {
-      "case": "mc-source",
-      "command": [
-        "python3",
-        "-B",
-        "integration/audits/verify_matrix_thermal.py"
-      ],
-      "returncode": 1,
-      "censored": false,
-      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "stderr_sha256": "05cdd35ae1994ea1165114da121029418e48ced64b8196a20eb5bae51711d6e3"
+      "run": 42218433742,
+      "job": 127895547957,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433742,
+      "job": 127895548105,
+      "workflow": "DATAQUAL15 original Grassgrowth sprint",
+      "case": "native-layout",
+      "current_signature": "unreviewed production paths",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433757,
+      "job": 127894174152,
+      "workflow": "Hupsel production diagnostic source successor",
+      "case": "logical-owner",
+      "current_signature": ".splitlines())=={SOURCE}",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433757,
+      "job": 127894174387,
+      "workflow": "Hupsel production diagnostic source successor",
+      "case": "logical-owner",
+      "current_signature": ".splitlines())=={SOURCE}",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433803,
+      "job": 127894174155,
+      "workflow": "SWAP5-PERF01 exact implementation admission",
+      "case": "performance",
+      "current_signature": "AssertionError: unreviewed delta",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433807,
+      "job": 127894173853,
+      "workflow": "PUB-P2E04 Reference failure census",
+      "case": "census",
+      "current_signature": "Cannot open module file",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433890,
+      "job": 127894174573,
+      "workflow": "Registered Grassgrowth thermal production profile",
+      "case": "thermal-owner",
+      "current_signature": ".splitlines())==PATHS",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433960,
+      "job": 127894174521,
+      "workflow": "PUB-P2E07 Reference cancellation floor",
+      "case": "p2e07",
+      "current_signature": "P2E07 mutated src or reference",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433967,
+      "job": 127894174878,
+      "workflow": "PUB-P2E09 Reference-only threshold freeze",
+      "case": "p2e09",
+      "current_signature": "P2E09 mutated src or reference relative to current canonical merge-base",
+      "classification": "EARLIER_CURRENT_SOURCE_REFUSAL_DISTINCT_FROM_LATER_PREDECESSOR_FAILURE",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218433990,
+      "job": 127894174550,
+      "workflow": "PUB-P2E02 Reference uncertainty",
+      "case": "p2e02",
+      "current_signature": "Cannot open module file",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218434004,
+      "job": 127894175971,
+      "workflow": "PUB-ME D1 transition authority",
+      "case": "d1",
+      "current_signature": "D1 workunit changed production/reference source",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "run": 42218434071,
+      "job": 127894175318,
+      "workflow": "PUB-P2E04 Reference B/C sweeps",
+      "case": "p2e04",
+      "current_signature": "Cannot open module file",
+      "classification": "SAME_ACTUAL_PREDECESSOR_FAILURE_RETAINED",
+      "verdict": "FAILED_RETAINED"
     }
   ],
-  "zip_sha256": "a893a1432822ac0a9801169ec7aa21ed3c49773c453da2dd0057bb7cc9d86f20",
-  "run_id": 42218433935,
-  "artifact_id": 13502821892,
-  "old_gate_pass_claim": false,
+  "initial_staging_refusals": [
+    {
+      "job": 127894174055,
+      "reason": "UNCHANGED_PRIVATE_SOURCE_GUARD_REFUSAL_CORRECTED_BY_EXACT_PREDECESSOR_PROJECTION",
+      "verdict": "FAILED_RETAINED"
+    },
+    {
+      "job": 127896291746,
+      "reason": "POSIX_EXECUTION_CAPSULE_NOT_YET_VERSIONED_AT_INITIAL_HEAD",
+      "verdict": "FAILED_RETAINED"
+    }
+  ],
+  "current_physical": {
+    "six_actual_exponents": true,
+    "proper_native_crc": 96,
+    "exact_fresh_endpoints": 96,
+    "semantic_refusals": 96,
+    "original_incumbent_events": 86,
+    "annual_physical_events": 30,
+    "annual_accuracy_admission": false,
+    "whole_scientific_admission": false
+  },
+  "old_red_pass_claim": false,
   "whole_scientific_admission": false
 }

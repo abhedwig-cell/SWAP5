@@ -10,10 +10,14 @@ STATUS='integration/dataqual15/STATUS.json'
 KEY='pond_thermal_native_successor_20261106'
 SCOPE='integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_SCOPE_20261106.json'
 CURRENT_CAPSULES={'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_'+host+'_20261106'+suffix for host in ('WINDOWS','POSIX') for suffix in ('.json','.tar.xz.part00')}
+RECORDS={'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_'+name+'_20261106'+suffix for name,suffix in (
+ ('DIAGNOSTICS','.json'),('EXACT_BEFORE','.zip'),('BEFORE_POND_SOURCE','.json'),('BEFORE_POND_SOURCE','.zip'),
+ ('INITIAL_FAILURES','.json'),('INITIAL_FAILURES','.zip'),('CURRENT_MC','.zip'),('EXECUTION_RECEIPT','.json'),('EXECUTION_LOGS','.zip'))}
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
 BRIDGES.add('.github/workflows/pond-thermal-original.yml')
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/pond_thermal_production.py','tests/dataqual15_hupsel/test_pond_thermal_production.py','.github/workflows/pond-thermal-production.yml'}
 GATES.add('tests/dataqual15_hupsel/pond_thermal_production_baseline.py')
+GATES.add('tests/dataqual15_hupsel/pond_thermal_production_diagnostics.py')
 normal=lambda b:b.replace(b'\r\n',b'\n')
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
@@ -48,6 +52,11 @@ def guard():
   content=(ROOT/path).read_bytes()
   if path.endswith('.json'):content=normal(content)
   assert sha(content)==pin and content==raw('HEAD',path),'current execution evidence identity: '+path
+ assert set(r['qualified_record_sha256'])==RECORDS,'qualified record inventory'
+ for path,pin in r['qualified_record_sha256'].items():
+  content=(ROOT/path).read_bytes()
+  if path.endswith('.json'):content=normal(content)
+  assert sha(content)==pin and content==raw('HEAD',path),'qualified record identity: '+path
  for path,pin in r['gate_source_sha256'].items():assert sha(normal((ROOT/path).read_bytes()))==pin and normal((ROOT/path).read_bytes())==raw('HEAD',path),path
  for path,pin in r['frozen_authority'].items():
   content=(ROOT/path).read_bytes()
@@ -95,6 +104,7 @@ def main():
  out.mkdir(parents=True,exist_ok=True);view=prepare(out)
  import pond_thermal_original_evidence as evidence
  events=[]
+ events.append(execute(out,'actual-source-before-diagnostics',['tests/dataqual15_hupsel/pond_thermal_production_diagnostics.py','--self-test']))
  # Exact current full source bytes, all unchanged dependencies, actual native files.
  for host,platform in [('WINDOWS','nt'),('POSIX','posix')]:
   stem='POND_THERMAL_PRODUCTION_'+host+'_20261106';m,files=evidence.load(stem)
