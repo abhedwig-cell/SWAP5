@@ -208,7 +208,41 @@
       "raw_censored_flag": false,
       "intentional_stop_record_retained": true
     },
-    "full_fixed481": "RUNNING fresh original initialization",
-    "O0_own1to3": "RUNNING"
+    "full_fixed481": "ACTIVE fresh original initialization, completed3days; native/strict own3to4 ongoing, no481 or year claim",
+    "O0_own1to3": {
+      "classification": "TIME_CENSORED_PREFIX_NOT_DAY3_PASS",
+      "seconds": 240.04326039995067,
+      "completed_days": 2,
+      "last_completed_source": 2.4200000000022683,
+      "common_O0_O2_progress_exact": 723,
+      "full_original_or_research481_claim": false,
+      "next_action": "Reuse exact overlapping trajectory and real O0 source2924/65 probes; do not repeat expensive day2 prefix merely for component proof."
+    },
+    "admission": {
+      "pr": 1596,
+      "merge": "16c0c72b438ad75ae791d96075925902df7ca8ab",
+      "parents": [
+        "267a0771481cd23b4f7da94492816573e6581514",
+        "308e5c8423fc7e3989e9075338c63c52147cafe1"
+      ],
+      "tested_head": "308e5c8423fc7e3989e9075338c63c52147cafe1",
+      "relevant_tree_exact": true,
+      "selected_component_run": 42256872337,
+      "selected_component_job": 128026277749,
+      "component_result": "PASS",
+      "selected_docs_run": 42256876196,
+      "selected_docs_job": 128026288797,
+      "docs_result": "PASS",
+      "production_src_app_changed": false
+    },
+    "O0_probes": {
+      "source2924_seconds": 2.4639687000308186,
+      "source65_seconds": 1.0798363001085818,
+      "both_kernel_status": 0,
+      "both_attempts": 8,
+      "both_solver_refusals": 0,
+      "both_temporal_refusals": 4,
+      "both_internal_steps": 4
+    }
   }
 }
