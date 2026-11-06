@@ -1,5 +1,10 @@
 # Private three-codec native writer publication
 
+Private research is canonical at PR1600 (`5a9cc9ab6`), with actual merge tree
+identical to qualified head `86db8f8a2`. Final16 workflows are terminal:
+14 SUCCESS and2 explicitly retained current-source guard failures. Full final
+logs and merge proof: `JOINT_WRITER_CLOSE_RECEIPT_20261106.json`.
+
 Actual Windows/POSIX O0/O2 execution and independent archive qualification pass
 for this private cluster on the exact immutable production tree0cda6baac.
 Independent PR1601 subsequently changed the interception endpoint owner and
