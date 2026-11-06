@@ -9,6 +9,7 @@ on:
       - tests/nut-sol/matrix_thermal_*_test.c
       - tests/nut-sol/run_matrix_thermal.py
       - tests/dataqual15_hupsel/matrix_thermal_build*.py
+      - tests/dataqual15_hupsel/test_matrix_thermal_build.py
       - integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_*
 permissions:
   contents: read
@@ -51,6 +52,10 @@ jobs:
         with:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Build scope promotion and source postimage refusals
+        run: python3 -B tests/dataqual15_hupsel/test_matrix_thermal_build.py
+      - name: Remeasure actual full Windows compiler, response files and native bytes
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_build_evidence.py
       - name: Actual updated runner and complete original/private native O0/O2 builds
         # Essential changed boundary is the real compiler/link path. Reuse the
         # admitted science/refinement evidence; qualify only this full build

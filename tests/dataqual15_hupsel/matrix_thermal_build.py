@@ -8,6 +8,10 @@ REGISTER='integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_PREREGISTRATION_202
 
 def guard():
  r=json.loads((ROOT/REGISTER).read_text());assert r['baseline']==BASE and r['production_admission'] is False and r['whole_scientific_admission'] is False
+ assert r['scope']=='ACTUAL_PORTABLE_COMPLETE_BUILD_INTEGRATION_WITHOUT_PRODUCTION_MODULE_DEPLOYMENT' and r['production_delta']==[]
+ assert r['private_module_sha256']=='f4b2d12b3285b9517ad2ca2bc29cb47b8cd9bc129acb2825bd0e51d6f98d33be'
+ frozen=['tests/dataqual15_hupsel/matrix_thermal_native_policy.py',*['integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_'+n+'_20261106.json' for n in ('PREREGISTRATION','WINDOWS','POSIX','POSIX_WRITER')]]
+ assert not subprocess.check_output(['git','diff',BASE,'--',*frozen],cwd=ROOT)
  assert not subprocess.check_output(['git','diff',BASE,'--','src','app','reference'],cwd=ROOT)
  assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard','--','src','app','reference'],cwd=ROOT)
  assert private.sha((ROOT/RUNNER).read_bytes().replace(b'\r\n',b'\n'))==r['runner_postimage_sha256']
