@@ -731,7 +731,12 @@
       "tested_head": "eb7c5c1df29a42f891b593657f4778ee3fdc9f08",
       "qualified_inputs_unchanged_after_peer1600": true
     },
-    "local_docs": "Clean detached f7f8af824 source checks and strict build PASS34.00s; generated site output outside checkout."
+    "local_docs": "Clean detached f7f8af824 source checks and strict build PASS34.00s; generated site output outside checkout.",
+    "own142_to143_selection": {
+      "expected_seconds": 5,
+      "timeout_seconds": 120,
+      "reason": "Exact current-executable native roundtrip across the actual subnormal tail, after capture143 exists. Compare whole day143 checkpoint and all source rows to full run; no old executable rebinding."
+    }
   },
   "peer1600_reconciliation": {
     "actual_canonical": "5a9cc9ab6fa2f45bb5c4689999cddfe7384d8f30",
