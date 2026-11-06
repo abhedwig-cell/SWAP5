@@ -459,5 +459,45 @@
         "reason": "User-required exact own year-boundary continuation on same native executable/input binding; compare full checkpoint367 and all source rows to fresh run. No rebinding or numerical-policy changes."
       }
     }
+  },
+  "ordinary_profile_own64to66": {
+    "status": "COMPLETE_STRICT_SAME_EXE_BYTE_EXACT",
+    "period": [
+      64,
+      66
+    ],
+    "seconds": 500.29115259996615,
+    "all1036_progress_rows_exact": true,
+    "entire_checkpoint66_byte_exact": true,
+    "checkpoint_sha256": "dd53594b3e59acf06bece53b7d2f47c8a6e53b79f35700a0ae675bd6fe526854",
+    "maximum_daily_water_residual_cm": 3.3844560848305505e-12,
+    "stream_rebound": false
+  },
+  "ordinary_profile_terminal80": {
+    "scope": "CORRECTED_RESEARCH_ORIGINAL_INPUT_NOT_HISTORICAL_EQUIVALENCE",
+    "seconds": 2201.2637344000395,
+    "returncode": 1,
+    "censored": false,
+    "completed_days": 80,
+    "last_accepted": 80.4230000000014,
+    "attempted_end": 80.4230000000025,
+    "kernel_status": 101,
+    "solver_attempts": 0,
+    "maximum_daily_water_residual_cm": 3.3844560848305505e-12,
+    "rain_index": 400,
+    "rain_rate_cm_day": 0.37236842104806855,
+    "unresolved_rain_amount_cm": 4.1275053549937507e-13,
+    "source_time_identity_tolerance_day": 1.1428795687607263e-12,
+    "preflight_mass_bound_cm": 2.2737367544323206e-13,
+    "cause": "Caller caps dt just before an existing rain event; remainder lies inside source-window time equivalence. Full source endpoint apportions as source origin and mass guard rejects correctly. Rutter accepted clock equalscursor. Not nonlinear stagnation or dtmin tuning.",
+    "next_action": "Replay strict own80 refusal; align preceding step to event BEFORE solve using existing64epsilon source-time convention, retain all rain and guards. Fresh original initialization and own year still mandatory."
+  },
+  "event81_selection": {
+    "baseline": "14a937d0babd0345f5daa2a7d64f419805f9271b",
+    "own80_refusal_expected_seconds": 5,
+    "small_real_window_contract_expected_seconds": 10,
+    "native_compile_expected_seconds": 180,
+    "native_preceding_source_probe_expected_seconds": 10,
+    "reason": "Necessary source-event alignment bug now blocks requested481. Test actual source primitive and predecessor interval; no source/physical tolerance weakening, no clock relabelling or skipped forcing volume."
   }
 }
