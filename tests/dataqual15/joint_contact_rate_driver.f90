@@ -107,6 +107,13 @@ program joint_contact_rate_driver
       error stop 'ordinary contact amount/rate'
     candidate=accepted;call apply_sorptivity_history_update(h,accepted,graph,candidate,ok)
     if(.not.ok.or.any(candidate%water_domain_cp/=accepted%water_domain_cp))error stop 'ordinary history water'
+    if(weight==0d0)then
+     if(candidate%absorption_time(1,1)/=0d0)error stop 'ordinary zero-action history'
+    else
+     action=weight*h%step_duration/(sqrt(.5d0+h%step_duration)+sqrt(.5d0))
+     expected=.5d0+action*(2d0*sqrt(.5d0)+action)
+     if(abs(candidate%absorption_time(1,1)-expected)>1d-15)error stop 'ordinary action history'
+    end if
    end do
   end do
   r%perched_graph_fraction=-1d0;r%sorptivity%matrix_top_saturated_node=1

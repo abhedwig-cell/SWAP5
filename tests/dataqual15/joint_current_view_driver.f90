@@ -16,6 +16,18 @@ program joint_current_view_driver
  matrix%pressure_head=-1d0
  call derive_matrix_saturated_zone_view(matrix,z,dz,view)
  if(.not.view%valid.or.view%active.or.view%bottom_node/=0)error stop 'typed absent groundwater'
+ ! The exact ordinary face belongs to the open adjacent cell; Newton
+ ! perturbations can classify either side, while a published graph stays on it.
+ matrix%pressure_head=[-2d0,-.4d0,.4d0,1.4d0]
+ call derive_matrix_saturated_zone_view(matrix,z,dz,view)
+ if(.not.view%valid.or.view%top_node/=3.or.view%groundwater_level_cm/=-2d0) &
+   error stop 'exact ordinary face convention'
+ matrix%pressure_head(2)=-.4d0+1d-5
+ call derive_matrix_saturated_zone_view(matrix,z,dz,view)
+ if(.not.view%valid.or.view%top_node/=2)error stop 'ordinary face upper Newton side'
+ matrix%pressure_head(2)=-.4d0-1d-5
+ call derive_matrix_saturated_zone_view(matrix,z,dz,view)
+ if(.not.view%valid.or.view%top_node/=3)error stop 'ordinary face lower Newton side'
  matrix%pressure_head=1d0;matrix%ponding_depth=.2d0
  call derive_matrix_saturated_zone_view(matrix,z,dz,view)
  if(.not.view%valid.or..not.view%active.or.view%top_node/=1.or.view%groundwater_level_cm/=.2d0) &
