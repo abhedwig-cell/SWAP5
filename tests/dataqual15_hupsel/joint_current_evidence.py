@@ -30,7 +30,7 @@ def snapshot(folder):
 
 def audit(files):
  r=json.loads(files['RESULT.json']);meta=json.loads(files['PROVENANCE.json']);root=meta['root']
- assert r['status']=='COMPLETE_PRIVATE_JOINT_CURRENT_READER_CLUSTER_PASS' and r['baseline']==p.BASE
+ assert r['status']=='COMPLETE_PRIVATE_JOINT_LOGICAL_READER_CLUSTER_PASS' and r['baseline']==p.BASE
  assert r['production_admission'] is False and r['whole_scientific_admission'] is False
  for name,digest in json.loads(files['INPUTS.json']).items():assert sha(p.normal(original(name)))==digest
  for name,row in meta['sources'].items():
@@ -62,11 +62,15 @@ def audit(files):
  for role in ('baseline','candidate'):
   b=json.loads(files[role+'/BUILD.json']);events=json.loads(files[role+'/EVENTS.json']);result=r['roles'][role]
   assert b['role']==role and b['provider_count']==335
+  compiled_paths={meta['sources'][name]['path']for name in b['sources_sha256']}
+  assert 'src/process/macropore/mod_macropore_standard_storage.f90'in compiled_paths
+  assert 'src/solver/mod_reference_bordered_solver.f90'not in compiled_paths
   assert all(f in b['flags'] for f in ('-'+r['optimization'],'-std=f2008','-fcheck=all','-fopenmp','-ffpe-trap=invalid,zero,overflow'))
   for name,digest in b['sources_sha256'].items():assert meta['sources'][name]['sha256']==digest
   for name,digest in b['objects_sha256'].items():assert sha(files[local(name,root)])==digest;summary['provider_objects']+=1
   compiled=[e for e in events if e['label']=='provider']
   reused=files.get(role+'/REUSED_PROVIDERS.json')
+  assert not reused,'Current complete baseline requires actual cold provider compilation'
   if reused:
    old=json.loads(reused);assert role=='baseline' and not compiled and len(old['events'])==b['provider_count']
    assert old['build']['compiler']==b['compiler']
@@ -149,6 +153,11 @@ def verify(stem,controls=False):
  assert {n:sha(b)for n,b in files.items()}==m['members'];assert audit(files)==m['measurement']
  if controls:
   paths=['candidate/mod_age_joint_restart_file.f90','baseline/000.o','candidate/age/restart.bin.history.2.bin','candidate/mineral/restart.bin','fixture/age_driver.f90']
+  meta=json.loads(files['PROVENANCE.json']);b=json.loads(files['baseline/BUILD.json'])
+  source=next(n for n in b['sources_sha256']if meta['sources'][n]['path']=='src/process/macropore/mod_macropore_standard_storage.f90')
+  index=list(b['sources_sha256']).index(source)
+  paths += [meta['sources'][source]['snapshot'],local(list(b['objects_sha256'])[index],meta['root'])]
+  assert len(set(paths))==7
   for name in paths:
    old=files[name];files[name]=b''
    try:audit(files)
@@ -164,8 +173,19 @@ def cross(platform):
  assert all(a[path]==b[path] for path in paths)
  return dict(same_platform=platform,exact_cross_optimization_files=len(paths),production_admission=False)
 
+def compare_previous(platform):
+ count=0
+ for opt in ('O0','O2'):
+  old=json.loads((STORE/('JOINT_LOGICAL_'+platform+'_'+opt+'_20261106.json')).read_text())['members']
+  new=json.loads((STORE/('JOINT_CURRENT_'+platform+'_'+opt+'_20261106.json')).read_text())['members']
+  paths=[role+'/'+name+'/'+leaf for role in ('baseline','candidate') for name in p.NAMES for leaf in ('restart.bin','end.bin','fresh.bin')]
+  paths += [role+'/age/'+leaf for role in ('baseline','candidate') for leaf in ('restart.bin.base','proper-base-reexport.bin')]
+  assert all(old[path]==new[path]for path in paths);count+=len(paths)
+ return dict(same_platform=platform,exact_previous_to_current_files=count,production_admission=False)
+
 if __name__=='__main__':
- parser=argparse.ArgumentParser();parser.add_argument('--stem');parser.add_argument('--pack',type=Path);parser.add_argument('--self-test',action='store_true');parser.add_argument('--cross',choices=('WINDOWS','POSIX'));a=parser.parse_args()
+ parser=argparse.ArgumentParser();parser.add_argument('--stem');parser.add_argument('--pack',type=Path);parser.add_argument('--self-test',action='store_true');parser.add_argument('--cross',choices=('WINDOWS','POSIX'));parser.add_argument('--compare-previous',choices=('WINDOWS','POSIX'));a=parser.parse_args()
+ if a.compare_previous:print(json.dumps(compare_previous(a.compare_previous),sort_keys=True));raise SystemExit
  if a.cross:print(json.dumps(cross(a.cross),sort_keys=True));raise SystemExit
  assert a.stem
  if a.pack:pack(a.pack.resolve(),a.stem)

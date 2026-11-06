@@ -37,6 +37,8 @@ jobs:
           done
           python -B tests/dataqual15_hupsel/joint_current_evidence.py --cross WINDOWS
           python -B tests/dataqual15_hupsel/joint_current_evidence.py --cross POSIX
+          python -B tests/dataqual15_hupsel/joint_current_evidence.py --compare-previous WINDOWS
+          python -B tests/dataqual15_hupsel/joint_current_evidence.py --compare-previous POSIX
       - uses: actions/upload-artifact@v4
         if: always()
         with:

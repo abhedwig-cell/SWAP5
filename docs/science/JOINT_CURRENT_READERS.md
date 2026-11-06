@@ -14,7 +14,8 @@ observations and the obsolete original reactive witness remain retained.
 Proper native, opaque and fresh files must agree;22 complete same-platform files
 must match across optimizations. Full source snapshots, compiler objects, modules,
 drivers, links, executables and native/process data are retained and independently
-remeasured against this exact current baseline, including five evidence defects.
+remeasured against this exact current baseline, including seven evidence defects: the inherited five plus the changed macropore
+source snapshot and actual compiled object.
 
 The actual new current capsules then provide335 hash-verified providers for three
 fresh complete occupied-target drivers. Their120 public-reader refusals per
