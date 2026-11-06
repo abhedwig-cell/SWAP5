@@ -333,6 +333,44 @@
     "expected_component_seconds": 10,
     "expected_compile_seconds": 15,
     "expected_native_probe_seconds": 30,
-    "next_action": "Real O0/O2 two-sided operator endpoints/unchanged ordinary route; native same64 source before any new full campaign."
+    "next_action": "Real O0/O2 two-sided operator endpoints/unchanged ordinary route; native same64 source before any new full campaign.",
+    "same_source_O2": {
+      "seconds": 8.713292199885473,
+      "kernel_status": 0,
+      "attempts": 52,
+      "solver_refusals": 0,
+      "temporal_refusals": 27,
+      "accepted_internal_steps": 25,
+      "actual_end": 64.41600000000265,
+      "origin_unchanged": true,
+      "restart_published": false
+    },
+    "O2_regressions": {
+      "source2924_seconds": 0.9163968998473138,
+      "source65_seconds": 1.0390347000211477,
+      "both_kernel_status": 0,
+      "both_attempts": 8,
+      "both_solver_refusals": 0,
+      "both_temporal_refusals": 4,
+      "both_internal_steps": 4
+    },
+    "fresh481_selection": {
+      "reason": "Same actual64 source now completes with identical equation/gates; need fresh original initialization for changed numerical implementation and exact own365-year continuation. No stream rebinding/cross-model continuation. Prior full64 prefix has proven implementation stagnation; costs retained.",
+      "expected_seconds": 3000,
+      "timeout_seconds": 5400,
+      "capture_days": [
+        1,
+        3,
+        4,
+        64,
+        65,
+        66,
+        365,
+        366,
+        367,
+        481
+      ],
+      "unrelated_campaigns": false
+    }
   }
 }
