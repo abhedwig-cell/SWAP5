@@ -20,20 +20,15 @@ jobs:
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Actual private modules, original controls and real fault and termination cases
         run: |
-          for opt in O0 O2; do
-            python -B tests/dataqual15_hupsel/joint_writer_evidence.py --stem "JOINT_WRITER_WINDOWS_${opt}_20261106" --self-test
-            stem="JOINT_WRITER_POSIX_${opt}_20261106"
-            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
-              python -B tests/dataqual15_hupsel/joint_writer_evidence.py --stem "$stem" --self-test
-            else
-              python -B tests/dataqual15_hupsel/joint_writer_runtime.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-writer/$opt"
-            fi
-          done
+          python -B tests/dataqual15_hupsel/joint_writer_frozen.py --output "$RUNNER_TEMP/joint-writer-frozen"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: joint-writer-posix
           path: |
+            ${{ runner.temp }}/joint-writer-frozen/*.json
+            ${{ runner.temp }}/joint-writer-frozen/*.stdout
+            ${{ runner.temp }}/joint-writer-frozen/*.stderr
             integration/dataqual15_hupsel/JOINT_WRITER_POSIX_*
             ${{ runner.temp }}/joint-writer/**/RESULT.json
             ${{ runner.temp }}/joint-writer/**/EVENTS.json

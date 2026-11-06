@@ -1,7 +1,12 @@
 # Private three-codec native writer publication
 
 Actual Windows/POSIX O0/O2 execution and independent archive qualification pass
-for this private cluster. Canonical integration remains pending final workflows.
+for this private cluster on the exact immutable production tree0cda6baac.
+Independent PR1601 subsequently changed the interception endpoint owner and
+solute caller. Those changes are preserved, and this evidence does not qualify
+their current physics. The old current-source guard still refuses that delta;
+a separate typed immutable replay executes every original guard unchanged.
+Canonical private integration remains pending final workflows.
 
 This work unit qualifies complete private age, mineral-N and reactive-N writer
 postimages. Production remains the PR1597/1599 reader successor. No production
