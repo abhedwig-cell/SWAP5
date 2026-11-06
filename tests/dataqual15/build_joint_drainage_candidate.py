@@ -98,6 +98,17 @@ def render(folder):
 '''
  s=s[:begin]+body+s[end:]
  target=folder/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_text(s,newline='\n');shadow[ROOT/name]=target
+ name='src/legacy/b1_10_port/headcalc.f90';s=shadow[ROOT/name].read_text()
+ marker='   ! The constitutive provider owns the storage increment for every explicit'
+ s=once(s,marker,'''   ! V4's current drainage is a functional source of this exact candidate.
+   ! The ordinary F-SI10 source was constant; refresh the research callback
+   ! before every residual rather than merely at HeadCalc initialization.
+   if(provider_source_sink_active)then
+      call evaluation_context%source_sink%evaluate(state%h(1:numnod),state%theta(1:numnod), &
+           fsi_ws%source(1:numnod),fsi_ws%sink(1:numnod))
+   end if
+'''+marker)
+ shadow[ROOT/name].write_text(s,newline='\n')
  p=folder/'MODEL.json';record=json.loads(p.read_text());record.update(model=MODEL,
   drainage='Real DRAMET3 and signed DIVDRA from the same current heads as macro exchange. Scoped local source callback; same final rate precedes mass and accepted trace.',
   rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
