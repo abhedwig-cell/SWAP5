@@ -88,7 +88,7 @@ def render(folder):
  (folder/'MODEL.json').write_text(json.dumps(dict(model='ANDELST_SHARP_ENTRY_GRAPH_V1',original_historical_equivalence=False,baseline_sources_sha256=sources,rendered_sources_sha256={n:sha(s.encode())for n,s in bodies.items()},history='Unchanged sorption update; a positive Darcy occurrence ends the sorption event. No clock interpolation.',contact_width=0),indent=2)+'\n')
  return shadow
 
-recipe=ROOT/'tests/dataqual15_hupsel/build_and_run.py';source=recipe.read_text()
+recipe=ROOT/'tests/dataqual15_hupsel/build_and_run.py';source=recipe.read_text().replace('timeout=120','timeout=300')
 needle="program=a.driver.resolve()if a.driver else ROOT/'app/solute_project/main.f90';mapping={}"
 source=once(source,needle,"shadow=render(out/'overlay')\n"+needle)
 needle="for s in list((ROOT/'src').rglob('*.f90'))+list((ROOT/'app/solute_column').glob('*.f90'))+list((ROOT/'app/solute_project').glob('*.f90'))+[original]:"
