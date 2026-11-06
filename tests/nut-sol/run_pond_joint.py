@@ -138,7 +138,7 @@ for opt in ('O0','O2'):
         obj=build/('original'+str(j)+'.o');original_objects.append(obj)
         run(FC+flags+['-c',source,'-o',obj],build,'preservation_compile')
     original_exe=build/'original'
-    run(FC+flags+[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+original_objects+['-o',original_exe],build,'preservation_link')
+    run(FC+flags+[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+[publication_obj]+original_objects+['-o',original_exe],build,'preservation_link')
     original_stdout=run([original_exe,'write',build/'old-restart.bin',build/'old-expected.bin'],build,'preservation_native')
     original_resume=run([original_exe,'resume',build/'old-restart.bin',build/'old-fresh.bin'],build,'preservation_native')
     assert b'SURFACE_JOINT_ATOMIC_BALANCE_LITERAL_RESTART=PASS' in original_stdout

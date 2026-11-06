@@ -40,7 +40,12 @@ def runner_postimage(path):
   anchor="  obj=build/(category+'-driver.o');exe=build/driver.stem"
   block="  if any('swap5_restart_publish' in p.read_text() for p in ordered):\n   publication=ROOT/'app/support/restart_publish.c';inputs[str(publication.relative_to(ROOT))]=sha(publication)\n   cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'\n   cmd([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile');objects.append(publication_obj)\n"
  assert text.count(anchor)==1
- return text.replace(anchor,block+anchor,1).encode()
+ result=text.replace(anchor,block+anchor,1)
+ if path=='tests/nut-sol/run_pond_joint.py':
+  before="[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+original_objects+['-o',original_exe]"
+  assert result.count(before)==1
+  result=result.replace(before,"[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+[publication_obj]+original_objects+['-o',original_exe]",1)
+ return result.encode()
 
 def successor_entry():
  text=raw(BASE,ENTRY).decode();anchor=" if json.loads((ROOT/NATIVE_STATUS).read_text()).get('joint_native_logical_successor_20261106'):"
