@@ -4,9 +4,10 @@ from pathlib import Path
 import generation_publication_policy as policy
 ROOT=policy.ROOT;sha=policy.sha
 
-def projected(raw,name):
+def projected(raw,name,windows=None):
  s=raw
- if os.name=='nt':
+ if windows is None:windows=os.name=='nt'
+ if windows:
   s=s.replace(',resource,',',')
   if name=='run_accepted_output.py':
    a=s.index('stack_before=resource.getrlimit');z=s.index('prior=[]',a);s=s[:a]+'# Windows stack is allocated in the actual PE link; no POSIX resource claim.\n'+s[z:]
