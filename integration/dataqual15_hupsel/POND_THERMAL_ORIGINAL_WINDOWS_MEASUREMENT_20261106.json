@@ -1,5 +1,5 @@
 {
-  "status": "LOSSLESS_ACTUAL_ORIGINAL_WINDOWS_MEASUREMENT_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "ACTUAL_ORIGINAL_BUILD_INDEPENDENTLY_QUALIFIED",
   "postimage_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "unmodified_runner": true,
   "stack_reserve_each_optimization": 2097152,
@@ -4370,5 +4370,16 @@
       "sha256": "302877291d5f53b41789081e1507e20c19d0b1e64570d4d6f941e086649149c8",
       "size": 19170320
     }
-  ]
+  ],
+  "remeasurement": {
+    "compiler_objects": 576,
+    "coherent_resumed_objects": 568,
+    "proper_native_files": 54,
+    "default_windows_stack": 2097152,
+    "actual_original_runner": true,
+    "runner_changed": false,
+    "production_admission": false,
+    "whole_scientific_admission": false
+  },
+  "corruption_refusals": 5
 }

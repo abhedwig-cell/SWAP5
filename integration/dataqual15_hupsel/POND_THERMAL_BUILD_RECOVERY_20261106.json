@@ -1,13 +1,13 @@
 {
   "unit": "Actual unmodified original pond thermal runner build measurement",
   "baseline": "8428323b15b126ba2a3422ef32d4d914b070db2f",
-  "status": "WINDOWS_ORIGINAL_BUILD_INDEPENDENTLY_QUALIFIED_POSIX_IMPLEMENTED_PENDING_EXECUTION",
+  "status": "ACTUAL_ORIGINAL_WINDOWS_POSIX_COLD_RESUMED_EXECUTIONS_PASS_FINAL_HEAD_QUALIFICATION_PENDING",
   "source_postimage": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
   "postimage_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "method": "Exact detached9a55 provider view, complete private postimage, original tests/nut-sol/run_pond_thermal.py restored byte-exact from Git. Execute the unmodified original runner cold O0/O2 without the explicit private64MiB Windows link projection; preserve full reports, sources, objects, response, PE stack and all native diagnostics. No production source change.",
   "planned_output": "C:/Users/Veldh012/AppData/Local/Temp/s5-pond-original-build-20261106/windows-v1",
   "estimated_cost": "Cold complete O0/O2 driver build and original eight meshes, approximately3min. This measures actual delivery; original failures are never relabelled PASS.",
-  "next": "Execute persisted .github/workflows/pond-thermal-original.yml on the exact PR head, retain actual POSIX source/object/native archive and failures, independently remeasure, then qualify and integrate this bounded build scope. Production source/admission remains OPEN.",
+  "next": "Observe all final persisted evidence-head workflows through terminal verdict, reconcile the exact canonical tree, integrate only the qualified original-build scope. Production source/admission remains OPEN; no scientific promotion.",
   "windows_base": {
     "status": "ACTUAL_UNMODIFIED_ORIGINAL_RUNNER_O0_O2_PASS",
     "baseline": "9a55a1780de67db95a6003ab397f332ed2c0e965",
@@ -53,13 +53,28 @@
   "lossless_members": 4356,
   "proper_native_files_exact_to_private64MiB": 54,
   "evidence_qualification": {
-    "windows": "PASS: original runner/source inputs,576 compiler objects,568 coherent resumed objects,54 exact native files,default2MiB PE and5 corruption refusals",
-    "posix": "PENDING actual original cold/resumed O0/O2 execution"
+    "windows": "PASS: complete source/object/link/PE/native archive and5 corruption refusals",
+    "posix": "PASS: actual original POSIX cold/resumed O0/O2 source/object/link/ELF/native archive; independently remeasured on Windows with5 corruption refusals"
   },
   "production_admission": false,
   "implementation": [
     "tests/dataqual15_hupsel/pond_thermal_original_build.py",
     "tests/dataqual15_hupsel/pond_thermal_original_evidence.py",
     ".github/workflows/pond-thermal-original.yml"
-  ]
+  ],
+  "pr": 1587,
+  "posix_execution": {
+    "head": "f86fe6867f6e363aefae809fb7141bc3a5b96027",
+    "run_id": 42212776895,
+    "job_id": 127875241938,
+    "artifact_id": 13500700980,
+    "artifact_zip_sha256": "8082100a894ef1643e283b4139060e7f5c83f9d99c52ebb23a9fa3bb0cf40825",
+    "status": "ACTUAL_UNMODIFIED_ORIGINAL_COLD_AND_RESUMED_O0_O2_PASS",
+    "manifest": "integration/dataqual15_hupsel/POND_THERMAL_ORIGINAL_POSIX_20261106.json",
+    "members": 4350
+  },
+  "initial_head_qualification": {
+    "head": "f86fe6867f6e363aefae809fb7141bc3a5b96027",
+    "all16_workflows": "SUCCESS"
+  }
 }

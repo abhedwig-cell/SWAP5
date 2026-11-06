@@ -37,6 +37,7 @@ def audit(files,platform):
                  actual_original_runner=True,runner_changed=False,production_admission=False,whole_scientific_admission=False)
     for recipe,old_recipe in [('physical','base'),('black-rutter','rutter')]:
         report=json.loads(files[recipe+'/result.json'])
+        assert report['compiler']==json.loads(files['physical/result.json'])['compiler']
         assert report['results']['O0']==report['results']['O2']
         assert all(e['returncode']==0 for e in report['events'])
         assert report['provider_count']>270
@@ -55,6 +56,11 @@ def audit(files,platform):
             if event['category'] in ('compile','compile-publication'):
                 cmd=event['command'];source=mapped(cmd[cmd.index('-c')+1]);obj=mapped(cmd[cmd.index('-o')+1])
                 assert files[source] and files[obj];summary['compiler_objects']+=1
+                opt=obj.split('/')[1]
+                assert opt in ('O0','O2') and '-'+opt in cmd
+                if event['category']=='compile':
+                    assert all(flag in cmd for flag in ('-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow'))
+                else:assert '-std=c11' in cmd and source=='source/app/support/restart_publish.c'
         for opt in ('O0','O2'):
             link=next(e['command'] for e in report['events'] if e['category']=='link' and '-'+opt in e['command'])
             objects=[p for p in link if p.endswith('.o')]
@@ -69,6 +75,7 @@ def audit(files,platform):
                         assert files[mapped(obj)]==files['physical/'+opt+'/'+name]
                         summary['coherent_resumed_objects']+=1
             exe=files[mapped(link[-1])]
+            assert sha(exe)==report['executables'][opt]
             if platform=='nt':
                 pe=struct.unpack_from('<I',exe,0x3c)[0];assert exe[pe:pe+4]==b'PE\0\0'
                 assert struct.unpack_from('<Q',exe,pe+24+72)[0]==2097152
