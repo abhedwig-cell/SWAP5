@@ -1,11 +1,52 @@
 {
   "unit": "Actual unmodified original pond thermal runner build measurement",
   "baseline": "8428323b15b126ba2a3422ef32d4d914b070db2f",
-  "status": "PREREGISTERED_NOT_TESTED_NOT_ADMITTED",
+  "status": "ACTUAL_ORIGINAL_WINDOWS_BUILD_MEASURED_PASS_EVIDENCE_NOT_YET_QUALIFIED",
   "source_postimage": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
   "postimage_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "method": "Exact detached9a55 provider view, complete private postimage, original tests/nut-sol/run_pond_thermal.py restored byte-exact from Git. Execute the unmodified original runner cold O0/O2 without the explicit private64MiB Windows link projection; preserve full reports, sources, objects, response, PE stack and all native diagnostics. No production source change.",
   "planned_output": "C:/Users/Veldh012/AppData/Local/Temp/s5-pond-original-build-20261106/windows-v1",
   "estimated_cost": "Cold complete O0/O2 driver build and original eight meshes, approximately3min. This measures actual delivery; original failures are never relabelled PASS.",
-  "next": "Run native.prepare with candidate, restore runner exact Git blob, persist command/result/source hashes and classify the actual observed build/native verdict before proposing any runner changes. Production actual-build/admission remains OPEN."
+  "next": "Persist the complete actual default2MiB Windows original-runner source/object/native evidence, independently remeasure source/commands/PE/native bytes and exact private64MiB positive equivalence, then measure the original POSIX entrypoint. No runner change is currently justified by these observed passing cold/resume results. Keep production admission OPEN until its own strict scope and predecessor qualification.",
+  "windows_base": {
+    "status": "ACTUAL_UNMODIFIED_ORIGINAL_RUNNER_O0_O2_PASS",
+    "baseline": "9a55a1780de67db95a6003ab397f332ed2c0e965",
+    "private_source_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
+    "original_runner_sha256": "6d310fd226b0ebdc28b537a84a9ef9041972b316c75c5ec8c611649d6978c53a",
+    "command": [
+      "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-original-build-20261106\\windows-v1\\source\\tests\\nut-sol\\run_pond_thermal.py",
+      "--output",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-original-build-20261106\\windows-v1\\physical"
+    ],
+    "projection": "Private complete postimage only; original runner byte-exact, no Windows stack seam",
+    "production_admission": false,
+    "returncode": 0,
+    "seconds": 258.0256909998134,
+    "observed_original_status": "FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED",
+    "failed_events": [],
+    "stack_reserves": {
+      "O0": 2097152,
+      "O2": 2097152
+    }
+  },
+  "windows_black_rutter": {
+    "command": [
+      "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-original-build-20261106\\windows-v1\\source\\tests\\nut-sol\\run_pond_thermal.py",
+      "--output",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-original-build-20261106\\windows-v1\\black-rutter",
+      "--black-rutter",
+      "--resume-compilation",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-pond-original-build-20261106\\windows-v1\\physical"
+    ],
+    "returncode": 0,
+    "seconds": 166.81614540005103,
+    "production_admission": false,
+    "status": "ACTUAL_UNMODIFIED_RUTTER_RUNNER_PASS"
+  },
+  "runner_changed": false,
+  "private_stack_projection_used": false
 }
