@@ -1,5 +1,8 @@
 # Private three-codec native writer publication
 
+Actual Windows/POSIX O0/O2 execution and independent archive qualification pass
+for this private cluster. Canonical integration remains pending final workflows.
+
 This work unit qualifies complete private age, mineral-N and reactive-N writer
 postimages. Production remains the PR1597/1599 reader successor. No production
 admission guard, solver, owner, numerical recipe, native layout or CRC is changed.
