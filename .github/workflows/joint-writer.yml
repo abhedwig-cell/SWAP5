@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
-      - name: Actual private modules, original controls and real fault and termination cases
+      - name: Immutable qualified writer cohorts and explicit current-peer refusal
         run: |
           python -B tests/dataqual15_hupsel/joint_writer_frozen.py --output "$RUNNER_TEMP/joint-writer-frozen"
       - uses: actions/upload-artifact@v4
