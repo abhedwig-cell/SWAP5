@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Continue active current-executable original-initialization481 through terminal; own142-to143 is exact. Await untouched365/367 and strict current own year. Bounded public ratio already admitted at1602; no historical promotion.",
+  "next_action": "Localize actual current-drainage callback refusal at245.377 from immutable own245; separately repair three concrete early rain-index advances with exact committed-time ownership. No tolerance/DT changes. New full and strict own year after both bounded repairs.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -754,7 +754,7 @@
     "model": "ANDELST_JOINT_CURRENT_GROUNDWATER_DRAINAGE_GRAPH_V4",
     "executable_sha256": "2330b075cc8a244fff0c6489845c85708b2f34c12338d6fd35891e10faf3a026",
     "original_initialization": true,
-    "status": "RUNNING_ORIGINAL_INPUT_481",
+    "status": "TERMINAL_CURRENT_DRAINAGE_CALLBACK_REFUSAL",
     "run": "s5-limiter-bounded-original481-O2",
     "capture": "s5-limiter-bounded-captured-own-O2",
     "whole481": false,
@@ -780,7 +780,14 @@
       "historical_original_equivalence": false
     },
     "original_input_files_unchanged": true,
-    "corrected_contact_groundwater_drainage": true
+    "corrected_contact_groundwater_drainage": true,
+    "completed_days": 245,
+    "seconds": 4727.030623300001,
+    "returncode": 1,
+    "censored": false,
+    "last_completed_source_interval": 245.3769999999992,
+    "maximum_daily_water_residual_cm": 3.392259196288776e-12,
+    "checkpoint245_sha256": "db130380dc9b53a3de557cd2d2fb1b589f25e6cc5e79ea109919d79141faac11"
   },
   "limiter_ratio_admission_selection": {
     "pr": 1602,
@@ -818,5 +825,82 @@
     "all202_running_actual_source_pins_exact": true,
     "reconciled_head": "58d7282627efac3be2e20caa075630dd060ef4f3",
     "physical_reexecution_required": false
+  },
+  "forcing_phase_audit": {
+    "scope": "EXACT_INPUT_RAIN_VS_ACTUAL_CALLER_PHASE_ASSIGNMENT",
+    "complete_through": 245.0,
+    "nonzero_cases": 3,
+    "difference_cm": "6.7892306638133712554349039631491075853036594174409745772180713174748234450817108154296875E-12",
+    "cases": [
+      {
+        "t0": 19.002,
+        "t1": 19.003999999999998,
+        "caller_rain_index": 123,
+        "true_rain_index": 122,
+        "caller_rate": 1.0425531915190585,
+        "parts": [
+          [
+            19.002,
+            19.002000000000407,
+            2.333333333262191
+          ],
+          [
+            19.002000000000407,
+            19.003999999999998,
+            1.0425531915190585
+          ]
+        ],
+        "difference_cm": "-5.273638105779107256690311006327230509978419505275060163995703987893648445606231689453125E-13",
+        "last_committed_rain_event": 19.002000000000407
+      },
+      {
+        "t0": 19.60599999999928,
+        "t1": 19.60799999999928,
+        "caller_rain_index": 133,
+        "true_rain_index": 132,
+        "caller_rate": 0.0,
+        "parts": [
+          [
+            19.60599999999928,
+            19.605999999999767,
+            0.6447368420973625
+          ],
+          [
+            19.605999999999767,
+            19.60799999999928,
+            0.0
+          ]
+        ],
+        "difference_cm": "-3.13807459545993553209864759558869369096578173794487298664535046555101871490478515625E-13",
+        "last_committed_rain_event": 19.605999999999767
+      },
+      {
+        "t0": 32.75699999999695,
+        "t1": 32.75899999999695,
+        "caller_rain_index": 165,
+        "true_rain_index": 164,
+        "caller_rate": 9.423076923794186,
+        "parts": [
+          [
+            32.75699999999695,
+            32.75699999999779,
+            0.32236842104868124
+          ],
+          [
+            32.75699999999779,
+            32.75899999999695,
+            9.423076923794186
+          ]
+        ],
+        "difference_cm": "7.630401933937275534313799823340700005398079541762967892282176762819290161132812500000E-12",
+        "last_committed_rain_event": 32.75699999999779
+      }
+    ]
+  },
+  "current245_observation_selection": {
+    "expected_compile_seconds": 30,
+    "expected_native_seconds": 240,
+    "timeout_native_seconds": 600,
+    "scope": "Readonly actual callback failure from own245, stage reason+head/theta/response/distribution; no own qualifier or state rebinding."
   }
 }
