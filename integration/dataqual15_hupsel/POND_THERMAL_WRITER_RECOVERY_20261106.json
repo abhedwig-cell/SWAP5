@@ -1,0 +1,29 @@
+{
+  "workstream": "MC-SOL01 native writer integrity/publication",
+  "unit": "Complete private S5PT0001/2/3/4 malformed writer, publication fault and actual termination qualification",
+  "baseline": "f20d39b58afb5ee5d5a8ad70e747b3b892bf75bd",
+  "canonical_baseline": "8428323b15b126ba2a3422ef32d4d914b070db2f",
+  "status": "PREREGISTERED_IMPLEMENTED_NOT_TESTED_NOT_ADMITTED",
+  "production_delta": [],
+  "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
+  "dependencies": [
+    "PR1584 complete immutable Windows/POSIX source/object/native capsules",
+    "PR1585 actual standalone Boesten/Black typed-owner fixture and exact provider-object reuse"
+  ],
+  "scope": [
+    "Actual complete private writer with qualification-only raw injection after trusted export at each of its three input validation sites; fixed history is always assigned FALSE by existing code and is not an external writer input",
+    "All4 native layouts, O0/O2, exact existing publication C plus test-only interposer",
+    "12 malformed logical refusals,32 precommit I/O refusals,8 platform-specific stage6 results and8 normal publications per host",
+    "16 actual before/after process terminations per host, fresh reconstruction and40 retained-pending writer retry refusals"
+  ],
+  "invariants": "Preserve retained pending files fail-closed. Stages2..5 preserve old authority. POSIX stage6 returns failure after replacement; Windows stage6 succeeds. No solver/retry/tolerance/mass/schema/ownership/scientific or production admission changes. Test-only hooks never enter production.",
+  "positive_seeds": "Use actual complete original thermal/Black-Rutter states for layouts1/4. For2/3 use the admitted typed-owner fixture with two explicitly different valid initial chemical inventories; no modeled evolution claim.",
+  "cost_estimate": "Reuse immutable coherent provider objects. Compile12 new complete codec/C/driver objects and6 links; approximately3min verification/extraction plus native controls under2min. No broad physics rerun.",
+  "qualification_plan": [
+    "Local Windows O0/O2 first, persist all raw source/object/link/native/termination evidence",
+    "Independent source/postimage, inherited-object, raw CRC, authority, orphan-pending and recovery remeasurement with corruption controls",
+    "POSIX O0/O2 actual SIGSTOP/SIGKILL and stage6-after-replacement qualification",
+    "Observe selected exact-head gates to terminal, reconcile actual merge tree, integrate only qualified private scope"
+  ],
+  "next": "Commit prerequisite and complete writer test controller before compilation, execute Windows qualification and resolve any actual failure without weakening original boundaries."
+}
