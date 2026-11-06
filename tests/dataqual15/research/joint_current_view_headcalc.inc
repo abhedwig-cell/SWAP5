@@ -236,6 +236,9 @@ subroutine joint_entry_residual(x,fraction,nodes,r,ok)
   state%h(:NN)=x
   call evaluation_context%constitutive%evaluate(state%h(:NN),state%theta(:NN),fsi_ws%provider_k, &
                                                fsi_ws%provider_capacity,fsi_ws%provider_dkdh)
+  ! jacobian_F consumes state%dimoca, so refresh it with the same current
+  ! constitutive tuple as the residual, including the existing capacity floor.
+  state%dimoca(:NN)=fsi_ws%provider_capacity(:NN)
   provider_tuple_valid=.false.;fsi_ws%unsaturated_flags(3)=.false.
   do j=2,NN
    fsi_ws%head_gradient(j)=(state%h(j-1)-state%h(j))/grid_disnod(j)+1d0

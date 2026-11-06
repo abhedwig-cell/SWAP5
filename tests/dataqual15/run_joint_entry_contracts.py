@@ -7,11 +7,15 @@ p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--compiler', required=True, type=Path)
 p.add_argument('--output', required=True, type=Path)
 p.add_argument('--joint-contact', action='store_true')
+p.add_argument('--current-drainage', action='store_true')
 a = p.parse_args()
 out = a.output.resolve()
 out.mkdir()
 if a.joint_contact:
     from build_joint_contact_candidate import render
+if a.current_drainage:
+    from build_joint_drainage_candidate import render
+    a.joint_contact = True
 shadow = render(out / 'overlay')
 contracts = {
     'border': ['src/solver/mod_reference_linear_solver.f90',
@@ -24,6 +28,8 @@ contracts = {
              'tests/dataqual15/joint_entry_rate_driver.f90']}
 if a.joint_contact:
     contracts['perched'] = contracts['rate'][:-1] + ['tests/dataqual15/joint_contact_rate_driver.f90']
+if a.current_drainage:
+    contracts['ordinary'] = contracts['perched']
 report = dict(status='RUNNING', scope='COMPONENT_ONLY_NOT_TRAJECTORY_OR_HISTORICAL_EQUIVALENCE',
               events=[], source_sha256={})
 for mode in ('O0', 'O2'):
@@ -36,7 +42,7 @@ for mode in ('O0', 'O2'):
         exe = case / (name + '.exe')
         commands = [[str(a.compiler.resolve()), '-' + mode, '-ffree-line-length-none',
                      '-fcheck=all', '-ffpe-trap=invalid,zero,overflow', '-J' + str(case),
-                     *map(str, sources), '-o', str(exe)], [str(exe)]]
+                     *map(str, sources), '-o', str(exe)], [str(exe)] + (['ordinary-contact-extension'] if name == 'ordinary' else [])]
         for label, command in zip(('compile-link', 'native'), commands):
             start = time.monotonic()
             r = subprocess.run(command, cwd=case, capture_output=True, timeout=60)
