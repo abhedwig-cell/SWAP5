@@ -1,7 +1,7 @@
 {
   "unit": "Full private age/mineral/reactive-N native raw-logical reader cluster",
   "baseline": "6bcacb0af5890db0d54fa9b24a7f322f36de76c2",
-  "status": "PREREGISTERED_NOT_IMPLEMENTED",
+  "status": "PRIVATE_COMPLETE_READER_POSTIMAGES_IMPLEMENTED_NOT_YET_EXECUTED",
   "production_delta": [],
   "sources": [
     "src/adapter/mod_age_joint_restart_file.f90",
@@ -28,8 +28,24 @@
     29
   ],
   "qualification": "Windows O0/O2 first, independent raw source/object/command/native audit and corrupt evidence refusals, then full POSIX O0/O2 and exact current/predecessor preservation. No production admission from this private research.",
-  "next": "Implement exact reversible source postimages and complete real-driver cohort; persist before full builds. Skip peer-owned numerical/microscopic uptake surfaces.",
+  "next": "Run current full Windows O0 and O2 native three-codec private reader cohorts, retain all baseline outcomes and exact valid/opaque/fresh data, then build independent archive/object/source/logical auditor and cold POSIX/current/predecessor qualification. Writer-input and filesystem publication changes remain outside this scope.",
   "production_admission": false,
   "whole_scientific_admission": false,
-  "migration_complete": false
+  "migration_complete": false,
+  "candidate_postimages": {
+    "age": {
+      "path": "tests/dataqual15_hupsel/joint_logical_candidates/mod_age_joint_restart_file.f90",
+      "sha256": "b80a8ff46a78476078b028a537b05907c79ebdfc7dc1169e617826f6d474f843"
+    },
+    "mineral": {
+      "path": "tests/dataqual15_hupsel/joint_logical_candidates/mod_mineral_joint_restart_file.f90",
+      "sha256": "88efc0b9b48d50b1b0ecec0094865dcc69af4d3c16fe3e7e562aa7b232972f53"
+    },
+    "reactive_n": {
+      "path": "tests/dataqual15_hupsel/joint_logical_candidates/mod_reactive_n_joint_restart_file.f90",
+      "sha256": "b0d5a303a11741d50120b13cd7af6a9bc35b75659d53bb89ad033b0cc3787fc1"
+    }
+  },
+  "controller": "tests/dataqual15_hupsel/joint_logical.py",
+  "controller_sha256": "54291fbf533dceaacaeeaf4954434e436ced383f77b66c7795d543d00ab9d601"
 }
