@@ -1,0 +1,98 @@
+{
+  "pr": 1581,
+  "scope": "PRIVATE_COMPLETE_S5MT0001_NATIVE_QUALIFICATION_ONLY",
+  "merge": "60700e1bd3f934bbf28b486f7019c707a2f2dda5",
+  "qualified_head": "544d11b8473b6d2ee948fa456d831c8ede0ec357",
+  "qualified_and_actual_tree": "646ed8666a4624f481671e1954f0f52f3dbc2b76",
+  "final_workflows": [
+    {
+      "id": 42152453025,
+      "name": "Private complete matrix thermal native qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453041,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453011,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152452969,
+      "name": "Private portable generation publication qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453002,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152452993,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453001,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453101,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453066,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453020,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453047,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152452977,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453063,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152452980,
+      "name": "SWAP431 crop CO2 response qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42152453015,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    }
+  ],
+  "all15_final_workflows_success": true,
+  "production_source_changed": false,
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "superseded_intermediate_canonical_run": {
+    "id": 42151984230,
+    "head": "acea9ece20cbb3d9229f3287e42a1813b5296663",
+    "verdict": "CANCELLED_NOT_A_PASS",
+    "reason": "Superseded OUR PR intermediate replay stalled in checkout; release same-PR concurrency for required final exact-tree qualification. All15 final checks then passed; no check suppressed or admission inferred from cancellation."
+  },
+  "original_windows_baseline": "ACTUAL_UNDEFINED_FSYNC_LINK_FAILURE_RETAINED_NOT_PASS",
+  "complete_posix_execution_run": 42149101019,
+  "posix_writer_execution_run": 42151984059,
+  "final_private_native_run": 42152453025
+}
