@@ -1,5 +1,5 @@
 """Full independent joint-reader source/object/native archive remeasurement."""
-import argparse,hashlib,io,json,re,struct,subprocess,tarfile,zlib
+import argparse,ast,base64,hashlib,io,json,re,struct,subprocess,tarfile,zlib
 from pathlib import Path
 import joint_logical as p
 STORE=p.ROOT/'integration/dataqual15_hupsel'
@@ -40,6 +40,18 @@ def audit(files):
   elif row['kind']=='candidate':assert raw==p.candidate(row['path'])
   else:assert raw==files[row['path']]
  assert files['fixture/age_literal.f90']==p.age_literal().encode()
+ grid=original('tests/modularity/low_air_consistent_grid_stubs.f90').decode()
+ grid=grid.replace('[-0.25d0, -0.75d0, -1.50d0, -2.50d0]','[-2.5d0, -7.5d0, -15d0, -25d0]').replace('[0.50d0, 0.50d0, 1.00d0, 1.00d0]','[5d0, 5d0, 10d0, 10d0]').replace('[0.25d0, 0.50d0, 0.75d0, 1.0d0, 0.50d0]','[2.5d0, 5d0, 7.5d0, 10d0, 5d0]')
+ assert p.normal(files['fixture/grid.f90']).decode()==grid[:grid.index('subroutine swap_error(origin, message)')]
+ fixture=original('tests/physics/test_ppa_wu05d2_mixed_application.f90').decode();start=fixture.index('  subroutine initialize_application_config');end=fixture.index('  end subroutine initialize_state_and_forcing')+len('  end subroutine initialize_state_and_forcing')
+ assert p.normal(files['fixture/matrix_fixture.inc']).decode()==fixture[start:end]+'\n'
+ tree=ast.parse(original('tests/nut-reactive/run_reactive.py').decode());pins=next(ast.literal_eval(n.value) for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='pins' for t in n.targets))
+ with tarfile.open(fileobj=io.BytesIO(base64.b64decode(original('integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'))),mode='r:gz') as archive:
+  for name,digest in pins.items():
+   raw=archive.extractfile('SWAP/'+name).read();assert sha(raw)==digest
+   if name=='wofost_soil_orgmatn.f90':
+    before=b'NFracFOM(fn) - AsfaFOM_Bio(fn) * NFracBio - AsfaFOM_Bio(fn) * NFracBio';after=b'NFracFOM(fn) - AsfaFOM_Bio(fn) * NFracBio - AsfaFOM_Hum(fn) * NFracHum';assert raw.count(before)==1;raw=raw.replace(before,after)
+   assert files['fixture/'+name]==raw
  assert p.normal(files['fixture/reactive_driver.f90']).decode()==p.prior.projected_driver()
  source=original('tests/nut-sol/test_age_joint.f90')
  projected=p.normal(files['fixture/age_driver.f90'])

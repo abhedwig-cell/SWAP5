@@ -1,7 +1,7 @@
 {
   "unit": "Full private age/mineral/reactive-N native raw-logical reader cluster",
   "baseline": "6bcacb0af5890db0d54fa9b24a7f322f36de76c2",
-  "status": "WINDOWS_PRIVATE_COMPLETE_READER_COHORTS_INDEPENDENTLY_QUALIFIED_POSIX_PENDING",
+  "status": "FOUR_PRIVATE_COMPLETE_READER_COHORTS_QUALIFIED_FINAL_HEAD_PENDING",
   "production_delta": [],
   "sources": [
     "src/adapter/mod_age_joint_restart_file.f90",
@@ -28,7 +28,7 @@
     29
   ],
   "qualification": "Windows O0/O2 first, independent raw source/object/command/native audit and corrupt evidence refusals, then full POSIX O0/O2 and exact current/predecessor preservation. No production admission from this private research.",
-  "next": "Execute persisted cold POSIX O0/O2 workflow and retain actual source/object/native capsules; independently remeasure on Windows, qualify all exact-head workflows including current/predecessor admission, then integrate bounded private reader proof. Production source and admission remain unchanged.",
+  "next": "Qualify final exact head with all existing workflows, reconcile canonical merge tree, integrate private reader research and preserve production admission unchanged.",
   "production_admission": false,
   "whole_scientific_admission": false,
   "migration_complete": false,
@@ -99,7 +99,7 @@
     }
   },
   "auditor": "tests/dataqual15_hupsel/joint_logical_evidence.py",
-  "auditor_sha256": "5d9442c83d47bafe442aff824a89792062dd384d09da1b64c89e71fff658070e",
+  "auditor_sha256": "bcf32c2f4eb4257e6dcc68b99797320d60f492d0a37c7e80e7b1ed344f7e36ea",
   "retained_audit_failure": {
     "stage": "Initial archive mutation qualification, both Windows cohorts",
     "verdict": "FAILED_RETAINED",
@@ -111,5 +111,34 @@
   "windows_manifests": [
     "JOINT_LOGICAL_WINDOWS_O0_20261106.json",
     "JOINT_LOGICAL_WINDOWS_O2_20261106.json"
-  ]
+  ],
+  "immutable_fixture_audit": "Independent exact baseline grid transformation, complete fixture include, literal original age source, original WOFOST hashes and the accepted MC-NUT01-R1 correction are mandatory; actual execution data reused unchanged.",
+  "posix": {
+    "O0": {
+      "provider_objects": 670,
+      "new_candidate_modules": 3,
+      "proper_files": 8,
+      "candidate_refusals": 24,
+      "baseline_failed_refusals": 17,
+      "whole_scientific_admission": false,
+      "production_admission": false
+    },
+    "O2": {
+      "provider_objects": 670,
+      "new_candidate_modules": 3,
+      "proper_files": 8,
+      "candidate_refusals": 24,
+      "baseline_failed_refusals": 21,
+      "whole_scientific_admission": false,
+      "production_admission": false
+    }
+  },
+  "posix_cold_provenance": {
+    "run": 42234270288,
+    "head": "00dfe02054099ad8fd60d4c0c1930160be4078f3",
+    "artifact": 13512500159,
+    "zip_sha256": "7fad572f79cc1dbb5e9c45e290782084b9dcefe5f99e95265c0fe2d20c6e1787",
+    "status": "SUCCESS",
+    "independent_windows_remeasurement": "PASS including five evidence mutations per cohort and 22 exact cross-optimization files"
+  }
 }

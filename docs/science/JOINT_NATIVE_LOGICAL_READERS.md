@@ -39,9 +39,15 @@ Valid native endpoints also match exactly across the two optimizations.
 
 Full source snapshots, objects, module files, link responses, executables,
 oracles, native data and process streams are retained and independently audited.
-Five actual evidence mutations per cohort must refuse. Cold POSIX O0/O2 and
-owning current/predecessor preservation remain required before canonical private
-qualification. Separate writer-input and filesystem publication qualification
+Five actual evidence mutations per cohort refuse. Actual cold POSIX O0/O2
+completed in run42234270288, using335 original providers and three complete
+private modules per optimization. All24 malformed logical probes refuse in each
+private cohort; incumbent failed refusal counts remain17 O0 and21 O2. Full
+POSIX capsules were independently remeasured on Windows, including five evidence
+mutations per cohort and22 same-platform cross-optimization exact files.
+Original WOFOST hashes, accepted correction, grid and include transformations
+are independently checked against baseline source. Final exact-head owning
+current/predecessor preservation remains required before canonical integration. Separate writer-input and filesystem publication qualification
 are outside this reader scope; existing direct-write behavior is not promoted
 to a new atomic-publication guarantee.
 
