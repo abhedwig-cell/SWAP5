@@ -6,6 +6,9 @@ on:
       - 'src/solver/mod_reference_bordered_solver.f90'
       - 'src/solver/mod_reference_linear_solver.f90'
       - 'src/process/macropore/mod_macropore_standard_storage.f90'
+      - 'src/runtime/mod_interception_source_window_runtime.f90'
+      - 'app/solute_project/main_water.f90'
+      - 'tests/dataqual15/*source_event*'
       - 'tests/dataqual15/*empty_pocket*'
       - 'tests/dataqual15/*joint*'
       - 'tests/dataqual15/research/joint_*'
@@ -26,6 +29,8 @@ jobs:
         run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output current-view-contracts
       - name: Scoped candidate source callback and refusal O0/O2
         run: python -B tests/dataqual15/run_joint_source_callback_contract.py --compiler /usr/bin/gfortran --output current-source-contracts
+      - name: Exact source events and original INT13 owner O0/O2
+        run: python -B tests/dataqual15/run_source_event_contracts.py --compiler /usr/bin/gfortran --output source-event-contracts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -35,3 +40,4 @@ jobs:
             pocket-contracts
             current-view-contracts
             current-source-contracts
+            source-event-contracts
