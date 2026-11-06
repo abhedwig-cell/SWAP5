@@ -208,7 +208,7 @@
       "raw_censored_flag": false,
       "intentional_stop_record_retained": true
     },
-    "full_fixed481": "ACTIVE fresh original initialization, completed3days; native/strict own3to4 ongoing, no481 or year claim",
+    "full_fixed481": "ACTIVE, at least4 complete original-input days; exact strict own3to4 complete. Await terminal481 and365-year continuation.",
     "O0_own1to3": {
       "classification": "TIME_CENSORED_PREFIX_NOT_DAY3_PASS",
       "seconds": 240.04326039995067,
@@ -243,6 +243,23 @@
       "both_solver_refusals": 0,
       "both_temporal_refusals": 4,
       "both_internal_steps": 4
+    },
+    "strict_own3to4": {
+      "status": "COMPLETE_BYTE_EXACT",
+      "seconds": 203.2092752000317,
+      "progress_rows": 504,
+      "progress_rows_exact": true,
+      "whole_native_checkpoint_byte_exact": true,
+      "checkpoint_sha256": "590bb71cc94ac46bfa71d36c40a9b2dd5b72f5d64d6f4b634b9efce260ab085d",
+      "maximum_daily_water_residual_cm": 2.2148012474949632e-12,
+      "same_executable_binding": true,
+      "stream_rebound": false
+    },
+    "prefix_archive": {
+      "path": "CURRENT_DRAINAGE_OWN_PREFIX_20261106.zip",
+      "sha256": "80241605dd8fe24432a69d4cb6cef2bf522544def774b933fc79fca5eba2644e",
+      "bytes": 1572249,
+      "members": 302
     }
   }
 }
