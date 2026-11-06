@@ -18,6 +18,7 @@ jobs:
           fetch-depth: 0
       - name: Four real layouts and three occupied target combinations
         run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_owner;joint_owner.guard()"
           for opt in O0 O2; do
             python -B tests/dataqual15_hupsel/joint_owner.py --verify "JOINT_OWNER_WINDOWS_${opt}_20261106" --self-test
             stem="JOINT_OWNER_POSIX_${opt}_20261106"
