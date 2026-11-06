@@ -64,17 +64,17 @@
     }
   },
   "gate_source_sha256": {
-    ".github/workflows/generation-crc.yml": "b7e3b77ac33bd6dd351321ee63eb23284c4d640931b1da74c7994cfb5ba9ecfa",
-    ".github/workflows/matrix-thermal-native.yml": "88a66acda433fcc392698a9df3b52c458e22315ba575a4ac8fc4418a72990ce6",
-    "tests/dataqual15/verify_current_native_admission.py": "c0775f4254877905e3ac10a3958988d8ff1d8050d4016d3e67efc6a76eebe5bf",
-    ".github/workflows/pond-thermal-original.yml": "1c73924bb79f5fe34e1c5d0339d32f73df27caa6dd0972081a1423802b8337ca",
-    "tests/dataqual15_hupsel/pond_thermal_production_baseline.py": "3ba4c0c428d23494f9e9af621569b6359eb6dc5c415339ca8f2d6aa5ad3305d1",
-    "tests/dataqual15_hupsel/test_pond_thermal_production.py": "7cb108421d3370d0a55f6bd6ad248de8084f452fcaeb950c9590fbd1102e6c34",
-    ".github/workflows/generation-publication.yml": "88999e61931c713d2ac7522eeecd777d2b18ca0274d054aa1561cd802d0e1400",
-    "tests/dataqual15_hupsel/pond_thermal_production.py": "0329c85263174e483d1a958841a0381bc23deec0250d1b9a4b9b281a4b948a18",
-    ".github/workflows/pond-thermal-production.yml": "f23f47688a8918cb6c3d82fa885653747fbc6ec8694d81a1a042fab0ac6b199e",
     ".github/workflows/native-n-production.yml": "d957c9a2e8c1f0a597f6ee9803cd24215df8fc67b60b9cefc7b7d2b70a656a95",
-    ".github/workflows/matrix-crc.yml": "1127a144a3d2a960cbbef58bdedaa00475723504fa0c9cce3473d0f4d34b3ddd"
+    "tests/dataqual15_hupsel/pond_thermal_production_baseline.py": "f3de7f800811c88ea4cfb1747578e4da7830831884cd1f3053f12ba7ea9a50c0",
+    ".github/workflows/generation-publication.yml": "88999e61931c713d2ac7522eeecd777d2b18ca0274d054aa1561cd802d0e1400",
+    ".github/workflows/matrix-crc.yml": "1127a144a3d2a960cbbef58bdedaa00475723504fa0c9cce3473d0f4d34b3ddd",
+    ".github/workflows/pond-thermal-original.yml": "1c73924bb79f5fe34e1c5d0339d32f73df27caa6dd0972081a1423802b8337ca",
+    ".github/workflows/generation-crc.yml": "b7e3b77ac33bd6dd351321ee63eb23284c4d640931b1da74c7994cfb5ba9ecfa",
+    ".github/workflows/pond-thermal-production.yml": "6d476e91edd4ad5709429e7bee03a83f6bbf0cf83f6e4a1ac2d4dd8404db5ead",
+    ".github/workflows/matrix-thermal-native.yml": "88a66acda433fcc392698a9df3b52c458e22315ba575a4ac8fc4418a72990ce6",
+    "tests/dataqual15_hupsel/pond_thermal_production.py": "519d81bd80a76df23ffe0aee8bc59f6ab3f3f1e1c8d8fe77497bca260b6bf357",
+    "tests/dataqual15_hupsel/test_pond_thermal_production.py": "939e1378b145e13d7f0bea71868f1ead5598ad7f199e7d2046f7f26bff49a829",
+    "tests/dataqual15/verify_current_native_admission.py": "c0775f4254877905e3ac10a3958988d8ff1d8050d4016d3e67efc6a76eebe5bf"
   },
   "frozen_authority": {
     "tests/dataqual15_hupsel/pond_thermal_native_evidence.py": "36e1ae87d8882a95b612efeb4575cb9c88417110",
@@ -112,5 +112,11 @@
     "integration/dataqual15_hupsel/POND_THERMAL_NATIVE_CANONICAL_RECEIPT_20261106.json": "af429d433cbbed4b976fccddc198db834bbf2af3",
     "integration/dataqual15_hupsel/POND_THERMAL_NATIVE_POSIX_20261106.tar.xz.part00": "d1d24a76c13268e920f4690563702476dc730d32",
     "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90": "64124fefd6c41234d7901a4a9650e8f543bafeb5"
+  },
+  "current_capsule_sha256": {
+    "integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_WINDOWS_20261106.tar.xz.part00": "90603c2ab6bfc58f44e01ae87e397044e32c209511932c8fce685cc2f8a20683",
+    "integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_WINDOWS_20261106.json": "b61645386f8bd69c32dc6060709c275a8bb1a5f3c81d9d2e2424c62354b393f2",
+    "integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_POSIX_20261106.json": "e82ececebccb88ac596aeb9bf80564c628159216ef9f161ed99d5387f15ef28d",
+    "integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_POSIX_20261106.tar.xz.part00": "9df7568f27c822688cfb26ce69b9a0eeb3ee8b779bf4cf862a4dc90f91d588ac"
   }
 }

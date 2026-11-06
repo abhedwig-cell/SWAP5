@@ -56,6 +56,9 @@ jobs:
       - name: Actual exact predecessor broad diagnostic verdicts
         if: ${{ hashFiles('integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json') == '' }}
         run: python3 -B tests/dataqual15_hupsel/pond_thermal_production_baseline.py --output "$RUNNER_TEMP/pond-exact-before"
+      - name: Actual exact predecessor pond scientific source verdict
+        if: ${{ hashFiles('integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_BEFORE_POND_SOURCE_20261106.json') == '' }}
+        run: python3 -B tests/dataqual15_hupsel/pond_thermal_production_baseline.py --pond-only --output "$RUNNER_TEMP/pond-source-before"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -64,3 +67,6 @@ jobs:
             ${{ runner.temp }}/pond-exact-before/RESULT.json
             ${{ runner.temp }}/pond-exact-before/*.stdout
             ${{ runner.temp }}/pond-exact-before/*.stderr
+            ${{ runner.temp }}/pond-source-before/RESULT.json
+            ${{ runner.temp }}/pond-source-before/*.stdout
+            ${{ runner.temp }}/pond-source-before/*.stderr

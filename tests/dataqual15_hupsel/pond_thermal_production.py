@@ -9,6 +9,7 @@ ENTRY='tests/dataqual15/verify_current_native_admission.py'
 STATUS='integration/dataqual15/STATUS.json'
 KEY='pond_thermal_native_successor_20261106'
 SCOPE='integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_SCOPE_20261106.json'
+CURRENT_CAPSULES={'integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_'+host+'_20261106'+suffix for host in ('WINDOWS','POSIX') for suffix in ('.json','.tar.xz.part00')}
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
 BRIDGES.add('.github/workflows/pond-thermal-original.yml')
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/pond_thermal_production.py','tests/dataqual15_hupsel/test_pond_thermal_production.py','.github/workflows/pond-thermal-production.yml'}
@@ -42,6 +43,11 @@ def guard():
  for path,pins in r['bridge_restore'].items():assert pins==dict(before=blob(BASE,path),after=blob('HEAD',path)),path
  assert r['production_delta'][SOURCE]==r['bridge_restore'][SOURCE]
  assert set(r['gate_source_sha256'])==GATES and set(r['frozen_authority'])==frozen()
+ assert set(r['current_capsule_sha256'])==CURRENT_CAPSULES,'current execution evidence inventory'
+ for path,pin in r['current_capsule_sha256'].items():
+  content=(ROOT/path).read_bytes()
+  if path.endswith('.json'):content=normal(content)
+  assert sha(content)==pin and content==raw('HEAD',path),'current execution evidence identity: '+path
  for path,pin in r['gate_source_sha256'].items():assert sha(normal((ROOT/path).read_bytes()))==pin and normal((ROOT/path).read_bytes())==raw('HEAD',path),path
  for path,pin in r['frozen_authority'].items():
   content=(ROOT/path).read_bytes()
