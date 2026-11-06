@@ -1,5 +1,13 @@
 # Native writer qualification through event and limiter successors
 
+Actual latest Windows/POSIX O0/O2 and independent16-corruption archive audits
+pass. All335 providers are freshly compiled at each cohort; original native
+bytes and complete private owner/publication/termination controls pass. Source
+head17 workflows are terminal:14 SUCCESS and3 explicitly retained source-scope
+failures. Authority: `JOINT_LIMITER_WRITER_QUALIFICATION_20261106.json` and
+`JOINT_LIMITER_WRITER_SOURCE_ADJUDICATION_20261106.json`. The private integration
+is represented by PR1603 and its merge receipt; no production admission follows.
+
 This is the latest current-source phase of PR1603. While its first event-source
 Windows graph was being measured, independent PR1602 changed the included
 top-inflow limiter provider. The first335 cold object graph and every executed
