@@ -1,0 +1,55 @@
+{
+  "archives": {
+    "MATRIX_THERMAL_BUILD_MC_SOURCE_20261106.zip": "4617cbed502023e3f76ef2c93d4ed05d834a858477d61cfbb61ca90f3aa533a7",
+    "MATRIX_THERMAL_BUILD_MC_SOURCE_20261106.log.gz": "4c66695f848d0879641644659a750b8c79b838cd4f5011c4b159646f20925d5b",
+    "MATRIX_THERMAL_BUILD_BASELINE_20261106.zip": "2ce0a7d3ecf39624bcfa580373ea6404b38d4814d9230594392dc8ddfaf924b8"
+  },
+  "cases": {
+    "thermal": {
+      "exponent": 1.0,
+      "physical_sha256": "3e4ae249677219551def2bc251a77d266a992cbdfde7727ad83e53c281718766",
+      "qualified_sha256": "4ec635a9c6e9a567ecac2e5340e67c7b6359f8e153b19ee7083bddbeb906cc80",
+      "status": "DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED"
+    },
+    "nonlinear-0.5": {
+      "exponent": 0.5,
+      "physical_sha256": "ca66247fd413df80e10b7a0941ae003be9330543813d3cb13de94d7523fd17b5",
+      "qualified_sha256": "040f79e5fe6c1f708d63f5793f0f3e58743551388be10bd917ba7b473be058a5",
+      "status": "DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED"
+    },
+    "nonlinear-0.8": {
+      "exponent": 0.8,
+      "physical_sha256": "949cb069f8253d1ea6b69a8b84897de8a026e3630433859e56d33c12d318500e",
+      "qualified_sha256": "6e01a5d6514697fb855435b2bc14b9ccdb59e610c2f31a990fec120b1cbcba53",
+      "status": "DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED"
+    },
+    "nonlinear-1.0005": {
+      "exponent": 1.0005,
+      "physical_sha256": "4890660142ad3f87c6411a3a432334e1bc1bccb53ebf4a7c9d7e4e2b5ae532c3",
+      "qualified_sha256": "2b4210c2f0fcd2468fcec441e505d7b8bfca0343d588f9eabf11cc12cebcc262",
+      "status": "DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED"
+    },
+    "nonlinear-1.5": {
+      "exponent": 1.5,
+      "physical_sha256": "34ef3e367407e6f6b48eac3db6df228b303590d116ce14ffaaa2eb879d87fd87",
+      "qualified_sha256": "44fc63080eae03be644dc703a285c9667700b3624c402ccb9af619d8730cca3f",
+      "status": "DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED"
+    },
+    "nonlinear-2": {
+      "exponent": 2.0,
+      "physical_sha256": "361a995bf508bc778f5211259a4a0878f4b02410068a5edd297203b692894e60",
+      "qualified_sha256": "288f5f440dc02bbd246808c00da7fd9cdbded6339bef82adb47156becfded411",
+      "status": "DYNAMIC_ACCEPTED_ENDPOINT_DECAY_O0_O2_RESTART_REFINEMENT_CRASH_PASS_NOT_ADMITTED"
+    }
+  },
+  "proper_native_files_checked": 144,
+  "broad_source_gate": "FAILED_RETAINED",
+  "baseline_first_refusal": "DATAQUAL12_SOURCE_DELTA",
+  "current_first_refusal": "DATAQUAL12_SOURCE_DELTA",
+  "classification": "SAME_FIRST_DENOMINATOR_REFUSAL_NOT_IDENTICAL_FULL_DELTA_OR_LATER_SCIENCE_PASS",
+  "source_run": 42159449130,
+  "source_job": 127701351017,
+  "source_head": "684ad5b236b3acf36c1a273540ae71eb1640572e",
+  "production_admission": false,
+  "whole_scientific_admission": false
+}

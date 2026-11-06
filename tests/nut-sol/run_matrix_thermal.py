@@ -31,12 +31,23 @@ def main():
               'status': 'RUNNING', 'inputs': {}, 'events': [], 'results': {}, 'exponent': args.exponent}
 
     def run(command, cwd, category):
+        declared = list(map(str, command))
+        executed = declared
+        response_digest = None
+        if os.name == 'nt' and category == 'link':
+            # Preserve every declared input in the report while using the
+            # compiler's native response-file path beyond CreateProcess limits.
+            response = cwd / 'link.args'
+            response.write_text('\n'.join('"' + x.replace('\\', '/') + '"' for x in declared[1:]) + '\n')
+            response_digest = sha(response)
+            executed = [declared[0], '@' + str(response)]
         start = time.perf_counter()
-        r = subprocess.run(list(map(str, command)), cwd=cwd, capture_output=True)
+        r = subprocess.run(executed, cwd=cwd, capture_output=True)
         i = len(report['events'])
         (out / f'{i:04d}.stdout').write_bytes(r.stdout)
         (out / f'{i:04d}.stderr').write_bytes(r.stderr)
-        report['events'].append({'command': list(map(str, command)), 'category': category,
+        report['events'].append({'command': declared, 'executed_command': executed,
+                                 'response_sha256': response_digest, 'category': category,
                                  'seconds': time.perf_counter() - start, 'returncode': r.returncode})
         (out / 'result.json').write_text(json.dumps(report, indent=2) + '\n')
         if r.returncode:
@@ -89,7 +100,8 @@ def main():
     visit(driver)
     ordered.remove(driver)
     ordered.append(ROOT / 'src/legacy/b1_10_port/headcalc.f90')
-    for p in ordered + [driver, incumbent, fixture, Path(__file__).resolve()]:
+    publication = ROOT / 'app/support/restart_publish.c'
+    for p in ordered + [driver, incumbent, fixture, publication, Path(__file__).resolve()]:
         if p.is_relative_to(ROOT):
             report['inputs'][str(p.relative_to(ROOT))] = sha(p)
     for opt in ['O0', 'O2']:
@@ -107,12 +119,19 @@ def main():
             prior = json.loads((reused / 'result.json').read_text())
             assert prior['inputs'] == report['inputs'], 'reused build input drift'
             assert prior['status'] == 'FOCUSED_PHYSICAL_PASS_REFINEMENT_ASSESSMENT_PENDING_NOT_ADMITTED'
-            exe = reused / opt / 'thermal'
+            exe = reused / opt / ('thermal.exe' if os.name == 'nt' else 'thermal')
             assert sha(exe) == prior['executables'][opt], 'reused executable drift'
             report['reused_physical_sha256'] = sha(reused / 'result.json')
         else:
-            exe = build / 'thermal'
-            run(fc + flags + objects + ['-o', exe], build, 'link')
+            # This is the existing native restart API, not the distinct
+            # precommit-only generation publisher. No publication semantics
+            # or physical/numerical assertions are selected by this build seam.
+            cc = subprocess.check_output(fc + ['-print-prog-name=gcc'], text=True).strip()
+            support = build / 'restart_publish.o'
+            run([cc, '-' + opt, '-std=c11', '-c', publication, '-o', support], build, 'compile_support')
+            exe = build / ('thermal.exe' if os.name == 'nt' else 'thermal')
+            native_flags = ['-Wl,--stack,67108864'] if os.name == 'nt' else []
+            run(fc + flags + native_flags + objects + [support, '-o', exe], build, 'link')
         report.setdefault('executables', {})[opt] = sha(exe)
         results = {}
         for windows in [2, 4, 8, 16]:
