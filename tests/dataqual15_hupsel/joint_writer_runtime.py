@@ -3,7 +3,7 @@ import argparse,functools,io,json,lzma,os,re,shutil,struct,subprocess,tarfile,zl
 from pathlib import Path,PurePosixPath
 import joint_production as g
 import joint_writer as writer
-import joint_writer_probe as probe
+import joint_writer_probe as publication_probe
 import joint_logical as native
 from joint_current_owner import driver as occupied_driver,inputs as occupied_inputs
 STORE=g.ROOT/'integration/dataqual15_hupsel'
@@ -45,7 +45,7 @@ def execute(out,platform,opt,fc):
   bindings.append(dict(source_key=source_key,input_object=old,object=str(obj),sha256=g.sha(obj.read_bytes()),replacement=name))
  cc=subprocess.check_output([fc,'-print-prog-name=gcc'],text=True).strip()
  c=out/'publisher.c';c.write_bytes((g.ROOT/'app/support/restart_publish.c').read_bytes());real=build/'publisher.o'
- shim=out/'shim.c';shim.write_text(probe.publication.shim_source());shim_obj=build/'shim.o'
+ shim=out/'shim.c';shim.write_text(publication_probe.publication.shim_source());shim_obj=build/'shim.o'
  native.prior.run([cc,'-'+opt,'-std=c11','-DSWAP5_RESTART_TESTING','-Dswap5_restart_publish=swap5_restart_publish_real','-c',c,'-o',real],out,events,'publisher')
  native.prior.run([cc,'-'+opt,'-std=c11','-c',shim,'-o',shim_obj],out,events,'shim')
  objects=[b['object']for b in bindings]+[str(real),str(shim_obj)];sources=driver_sources(files);executables={}
@@ -68,8 +68,8 @@ def execute(out,platform,opt,fc):
     assert b'OCCUPIED_ATOMIC_REFUSAL=PASS'in cp.stdout and before.read_bytes()==after.read_bytes()==native_files[seed]
     rows.append(dict(codec=name,seed=seed,probe=probe,occupancy=occupancy,key=key,event=len(events)-1))
  assert len(rows)==120;assert trees==writer.guard()
- publication_exes={n:compile_driver(n,probe.driver(sources[n],n),'publication')for n in g.NAMES}
- publication=probe.measure(out,publication_exes,events)
+ publication_exes={n:compile_driver(n,publication_probe.driver(sources[n],n),'publication')for n in g.NAMES}
+ publication=publication_probe.measure(out,publication_exes,events)
  result=dict(status='PRIVATE_THREE_WRITER_PUBLICATION_PASS',publication=publication,baseline=g.BASE,head=g.git('rev-parse','HEAD'),production_trees=trees,repo_root=str(g.ROOT),root=str(out),platform=platform,optimization=opt,compiler=compiler,flags=flags,source_snapshots=snapshots,bindings=bindings,executables=executables,native=measured,native_events=native_events,occupied=rows,runner_sha256=g.sha(g.normal(Path(__file__).read_bytes())),production_admission=False,whole_scientific_admission=False)
  (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
  import joint_writer_evidence as evidence
