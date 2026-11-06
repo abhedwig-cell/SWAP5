@@ -1,0 +1,42 @@
+name: Private pond thermal native logical qualification
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/pond_thermal_native*'
+      - 'integration/dataqual15_hupsel/POND_THERMAL_NATIVE*'
+      - '.github/workflows/pond-thermal-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pond-native-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  complete-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact current source and versioned Windows raw evidence
+        run: |
+          python -B -c "import sys; sys.path.insert(0,'tests/dataqual15_hupsel'); import pond_thermal_native as p; p.guard()"
+          python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py
+      - name: Full original baseline and candidate native O0/O2
+        run: |
+          python -B tests/dataqual15_hupsel/pond_thermal_native.py --role baseline --output "$RUNNER_TEMP/pond-native/baseline"
+          python -B tests/dataqual15_hupsel/pond_thermal_native.py --role candidate --output "$RUNNER_TEMP/pond-native/candidate"
+          python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py --pack "$RUNNER_TEMP/pond-native" --stem POND_THERMAL_NATIVE_POSIX_20261106
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pond-native-posix
+          path: |
+            integration/dataqual15_hupsel/POND_THERMAL_NATIVE_POSIX_20261106*
+            ${{ runner.temp }}/pond-native/**/RESULT.json
+            ${{ runner.temp }}/pond-native/*.stdout
+            ${{ runner.temp }}/pond-native/*.stderr

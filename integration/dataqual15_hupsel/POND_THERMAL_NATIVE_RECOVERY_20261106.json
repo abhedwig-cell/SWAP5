@@ -2,16 +2,16 @@
   "workstream": "MC-SOL01 native restart integrity",
   "unit": "S5PT private full-composition host-logical qualification",
   "baseline": "9a55a1780de67db95a6003ab397f332ed2c0e965",
-  "status": "PREREGISTERED_NOT_TESTED_NOT_ADMITTED",
+  "status": "LOCAL_NATIVE_EXECUTION_COMPLETE_CAPSULE_QUALIFICATION_IN_PROGRESS",
   "production_delta": [],
   "candidate": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
   "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "inputs": {
-    "src/adapter/mod_pond_thermal_restart_file.f90": "c1bd59efa11cb03120830b3c83ff1512f2f47636413585d1c94c6a35f9d1ee3c",
-    "src/runtime/mod_rutter_source_window_processor.f90": "c71453b91639ac4b7643197f2abfa5c93eb3597f8aa784f60f270fb6e5f13ad8",
-    "src/runtime/mod_interception_source_window_runtime.f90": "9979983085ed3210a4b7028e812764269dba92cbff2d0101f845452b834ff782",
-    "tests/nut-sol/run_pond_thermal.py": "901c8e9e72a1f6705ac7668c432d6810deb6884c647090d7af7c58e035a6895d",
-    "tests/nut-sol/test_pond_thermal.f90": "bcc2b988a4fa79d882eb5622fc6c46de2f7819712081323246dcddef24d820c7",
+    "src/adapter/mod_pond_thermal_restart_file.f90": "68086f1d715738842087af98d921986e2840204c9b08f927c5cb54ebcca99fb2",
+    "src/runtime/mod_rutter_source_window_processor.f90": "8a9ae57b3956ec7e5418d0b450f3158a7cf947a3f25367d0f397270f633c25f5",
+    "src/runtime/mod_interception_source_window_runtime.f90": "de63c45945cb6d249628da9e786b4755210ae7e9a0aa2c7dcaeb3a94b6dea14b",
+    "tests/nut-sol/run_pond_thermal.py": "6d310fd226b0ebdc28b537a84a9ef9041972b316c75c5ec8c611649d6978c53a",
+    "tests/nut-sol/test_pond_thermal.f90": "7212f8ffe8450a734d69ed89830c73b33595c73abde4927f695f4d04688c6de6",
     "app/support/restart_publish.c": "29d4a47904a8c45eaee2f20a9eb92af0eb46ae2a58a5b43225481cabe536425e"
   },
   "scope": [
@@ -34,5 +34,32 @@
   "invariants": "No changes to solver/retry/tolerance/mass/ownership/schema/CRC/publication or scientific admission. Malformed native logical representations fail closed before interpretation. Valid native bytes remain unchanged.",
   "reconciliation": "Canonical9a55 unchanged; open PR1485 owns numerical uptake/accounting,1465 conductivity,1457 historical orchestration. This private candidate touches none of their production files. No peer source reset or overlay.",
   "estimated_cost": "Four full original driver builds, O0/O2 each, approximately10min; native runs under5min; record actual costs.",
-  "next": "Implement private proof controller, commit before compilation, execute local baseline and candidate, adjudicate all actual failures."
+  "next": "Seal and independently remeasure complete Windows native/source/object capsule, retain original failure diagnostics, run complete POSIX baseline/candidate O0/O2 and evidence controls, then adjudicate private scope and safely integrate qualification evidence only. Production postimage remains unadmitted.",
+  "local_raw_input_sha256": {
+    "src/adapter/mod_pond_thermal_restart_file.f90": "c1bd59efa11cb03120830b3c83ff1512f2f47636413585d1c94c6a35f9d1ee3c",
+    "src/runtime/mod_rutter_source_window_processor.f90": "c71453b91639ac4b7643197f2abfa5c93eb3597f8aa784f60f270fb6e5f13ad8",
+    "src/runtime/mod_interception_source_window_runtime.f90": "9979983085ed3210a4b7028e812764269dba92cbff2d0101f845452b834ff782",
+    "tests/nut-sol/run_pond_thermal.py": "901c8e9e72a1f6705ac7668c432d6810deb6884c647090d7af7c58e035a6895d",
+    "tests/nut-sol/test_pond_thermal.f90": "bcc2b988a4fa79d882eb5622fc6c46de2f7819712081323246dcddef24d820c7",
+    "app/support/restart_publish.c": "29d4a47904a8c45eaee2f20a9eb92af0eb46ae2a58a5b43225481cabe536425e"
+  },
+  "input_hash_policy": "Exact baseline Git blob bytes; working checkout inputs allow only CRLF-to-LF transport normalization. Original local raw hashes retained separately. Actual compiler input hashes remain raw in native reports.",
+  "local_native": {
+    "platform": "Windows GNU Fortran",
+    "recipes": [
+      "actual S5PT0001 base",
+      "actual S5PT0004 Black/Rutter"
+    ],
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "proper_generation_files": 54,
+    "resealed_malformed_reader_cases": 48,
+    "candidate_rejections": 48,
+    "baseline_failed_reject_assertions": 28,
+    "production_admission": false,
+    "writer_malformed_and_standalone_S5PT0002_0003": "NOT_QUALIFIED",
+    "first_controller_process_verdicts": "Both exited1 at final guard after hash-policy record changed while processes were running. All four original physical drivers and48 candidate native controls completed. Original process failures retained; current canonical LF/raw-input reconciliation and complete capsule remeasurement required before qualification."
+  }
 }

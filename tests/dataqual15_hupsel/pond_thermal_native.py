@@ -25,7 +25,7 @@ def guard():
     record = json.loads(RECORD.read_text())
     assert sha(CANDIDATE) == record['candidate_sha256'], 'candidate drift'
     for name, digest in record['inputs'].items():
-        assert sha(ROOT / name) == digest, 'input drift: ' + name
+        assert hashlib.sha256((ROOT / name).read_bytes().replace(b'\r\n', b'\n')).hexdigest() == digest, 'input drift: ' + name
     delta = subprocess.check_output(['git', 'diff', '--name-only', record['baseline'], '--', 'src', 'app', 'reference'], cwd=ROOT, text=True)
     assert not delta.strip(), 'production source changed'
     untracked = subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard', '--', 'src', 'app', 'reference'], cwd=ROOT, text=True)
