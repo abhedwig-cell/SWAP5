@@ -180,9 +180,16 @@ subroutine joint_entry_candidate(produced)
    if(ls>24)exit
    x=trial;lambda(:k)=candidate(:k)
   end do
-  open(newunit=u,file='entry-contact.csv',status='unknown',position='append')
-  write(u,*)'CANDIDATE',dt,produced,k,it,maxval(abs(r)),nodes(:k),lambda(:k)
-  close(u)
+  block
+   character(8)::logging
+   integer::logging_status
+   call get_environment_variable('SWAP5_JOINT_CONTACT_DIAGNOSTICS',logging,status=logging_status)
+   if(logging_status==0.and.trim(logging)=='1')then
+    open(newunit=u,file='entry-contact.csv',status='unknown',position='append')
+    write(u,*)'CANDIDATE',dt,produced,k,it,maxval(abs(r)),nodes(:k),lambda(:k)
+    close(u)
+   end if
+  end block
   if(produced)then
    call joint_entry_residual(x,lambda(:k),nodes(:k),r,valid)
    produced=valid.and.maxval(abs(r))<=CritDevBalCp
