@@ -3,7 +3,7 @@ import argparse,io,json,zipfile,subprocess
 from pathlib import Path
 import joint_writer_production as g
 STEM='integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_POSIX_CONSUMERS_20261106'
-RUNNERS={'age':'tests/nut-sol/run_age.py','mineral':'tests/nut-mineral/run_mineral.py'}
+RUNNERS={'age':'tests/nut-sol/run_age.py','pond':'tests/nut-sol/run_pond_joint.py','mineral':'tests/nut-mineral/run_mineral.py'}
 
 def audit(files,r):
  if subprocess.run(['git','cat-file','-e',r['head']+'^{commit}'],cwd=g.ROOT,capture_output=True).returncode:subprocess.run(['git','fetch','--no-tags','origin',r['head']],cwd=g.ROOT,check=True,capture_output=True)
@@ -11,7 +11,7 @@ def audit(files,r):
  for name,runner in RUNNERS.items():
   assert g.raw(r['head'],runner)==g.runner_postimage(runner)
   result=json.loads(files[name+'/result.json']);assert result['source_tree']==r['production_trees']['src']
-  expected='PHYSICAL_PASS_NOT_ADMITTED'if name=='age'else'SCOPED_LOCAL_QUALIFICATION_PASS_NOT_ADMITTED'
+  expected='SCOPED_LOCAL_QUALIFICATION_PASS_NOT_ADMITTED'if name=='mineral'else'PHYSICAL_PASS_NOT_ADMITTED'
   assert result['status']==expected and set(result['runs'])=={'O0','O2'}
   for path,digest in result['input_sha256'].items():assert g.sha(g.raw(r['head'],path))==digest,'actual consumer input '+path
   events=json.loads(files[name+'/events.json']);assert events and all(e['returncode']==0 for e in events)
@@ -25,7 +25,7 @@ def audit(files,r):
   for event in events:
    so=event.get('stdout',event.get('stdout_file'));se=event.get('stderr',event.get('stderr_file'))
    assert name+'/'+so in files and name+'/'+se in files
- return dict(original_runners=2,optimizations=2,surface_triplet_preserved=True,original_assertions_unchanged=True,whole_scientific_admission=False)
+ return dict(original_runners=3,optimizations=2,surface_triplet_preserved=True,pond_rollback_consumer_preserved=True,original_assertions_unchanged=True,whole_scientific_admission=False)
 
 def capture(out):
  g.guard_source();files={}

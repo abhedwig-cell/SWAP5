@@ -27,12 +27,14 @@ jobs:
           OMP_NUM_THREADS: '1'
           AGE_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/age
           MINERAL_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/mineral
+          POND_JOINT_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/pond
         run: |
           if test -f integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_POSIX_CONSUMERS_20261106.json; then
             python -B tests/dataqual15_hupsel/joint_writer_production_consumers.py
           else
             python -B tests/nut-sol/run_age.py
             python -B tests/nut-mineral/run_mineral.py
+            python -B tests/nut-sol/run_pond_joint.py
             python -B tests/dataqual15_hupsel/joint_writer_production_consumers.py --capture "$RUNNER_TEMP/original-writer-consumers"
           fi
       - uses: actions/upload-artifact@v4

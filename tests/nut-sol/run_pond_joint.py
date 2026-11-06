@@ -97,6 +97,10 @@ for opt in ('O0','O2'):
     for i,p in enumerate(ordered+[driver]):
         obj=build/f'joint{i}.o';objects.append(obj);bind(p)
         run(FC+flags+['-c',p,'-o',obj],build,'physical_compile')
+    publication=ROOT/'app/support/restart_publish.c';bind(publication)
+    cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'
+    run([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile')
+    objects.insert(-1,publication_obj)  # Keep the original main object last for the unchanged surface link.
     exe=build/'joint';run(FC+flags+objects+['-o',exe],build,'physical_link')
     restart=build/'restart.bin';expected=build/'expected.bin';fresh=build/'fresh.bin'
     stdout=run([exe,'write',restart,expected],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in stdout
