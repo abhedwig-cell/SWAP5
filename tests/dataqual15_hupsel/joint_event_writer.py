@@ -1,5 +1,5 @@
 """Cold exact current335 graph; unchanged complete private writer postimages."""
-import json,subprocess
+import json,subprocess,functools
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import joint_production as g
 import joint_production_runtime as reference_runtime
@@ -52,6 +52,9 @@ def cold(out,platform,opt,fc):
   assert old_native==current,'exact frozen/current native files: '+name
  return files
 
+@functools.lru_cache(maxsize=None)
+def baseline_source(path):return g.raw(BASE,path)
+
 def audit_cold(files,platform,opt):
  """Remeasure all current source, fixture, object and successful cold commands."""
  current=json.loads(files['CURRENT.json']);assert current['status']=='COLD_CURRENT335_NATIVE_PASS'and current['baseline']==BASE
@@ -65,7 +68,7 @@ def audit_cold(files,platform,opt):
  for i,(source,obj,previous)in enumerate(zip(keys,objects,prior)):
   row=meta['sources'][source];before=old_meta['sources'][previous];assert row['path']==before['path']and row['kind']==before['kind']
   raw=files[row['snapshot']];assert g.sha(raw)==row['sha256']==b['sources_sha256'][source]
-  if row['kind']=='repository':assert g.normal(raw)==g.raw(BASE,row['path'])
+  if row['kind']=='repository':assert g.normal(raw)==baseline_source(row['path'])
   else:assert raw==files[row['path']]==old[before['snapshot']]
   event=provider_events[i];assert event['returncode']==0 and event['command'][1:]==[*b['flags'],'-c',source,'-o',obj]
   assert g.sha(files[reference_runtime.local(obj,meta['root'])])==b['objects_sha256'][obj]

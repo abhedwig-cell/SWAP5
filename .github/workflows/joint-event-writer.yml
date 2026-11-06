@@ -1,0 +1,40 @@
+name: Cold current event graph native writer publication
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/joint_event_writer*.py'
+      - 'integration/dataqual15_hupsel/JOINT_EVENT_WRITER_*'
+      - '.github/workflows/joint-event-writer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  current-cold:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Cold current335 source and complete original native, owner and publication controls
+        run: |
+          for opt in O0 O2; do
+            python -B tests/dataqual15_hupsel/joint_event_writer_evidence.py --stem "JOINT_EVENT_WRITER_WINDOWS_${opt}_20261106" --self-test
+            stem="JOINT_EVENT_WRITER_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_event_writer_evidence.py --stem "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_event_writer_runtime.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-event-writer/$opt"
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: joint-event-writer-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_EVENT_WRITER_POSIX_*
+            ${{ runner.temp }}/joint-event-writer/**/RESULT.json
+            ${{ runner.temp }}/joint-event-writer/**/CURRENT.json
+            ${{ runner.temp }}/joint-event-writer/**/EVENTS.json
+            ${{ runner.temp }}/joint-event-writer/**/*.stderr
