@@ -1,0 +1,46 @@
+name: Private complete pond thermal writer qualification
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/pond_thermal_writer*.py'
+      - 'integration/dataqual15_hupsel/POND_THERMAL_WRITER*'
+      - '.github/workflows/pond-thermal-writer.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pond-writer-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  complete-writer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact current private scope and independent Windows writer evidence
+        run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_native as p;p.guard()"
+          python -B tests/dataqual15_hupsel/pond_thermal_writer_evidence.py --self-test
+      - name: Complete actual POSIX O0/O2 writer, retained pending and SIGKILL
+        run: |
+          if test -f integration/dataqual15_hupsel/POND_THERMAL_WRITER_POSIX_20261106.json; then
+            python -B tests/dataqual15_hupsel/pond_thermal_writer_evidence.py --stem POND_THERMAL_WRITER_POSIX_20261106 --self-test
+          else
+            python -B tests/dataqual15_hupsel/pond_thermal_writer.py --output "$RUNNER_TEMP/pond-writer"
+            python -B tests/dataqual15_hupsel/pond_thermal_writer_evidence.py --pack "$RUNNER_TEMP/pond-writer" --stem POND_THERMAL_WRITER_POSIX_20261106 --self-test
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pond-writer-posix
+          path: |
+            integration/dataqual15_hupsel/POND_THERMAL_WRITER_POSIX_20261106*
+            ${{ runner.temp }}/pond-writer/RESULT.json
+            ${{ runner.temp }}/pond-writer/**/BUILD.json
+            ${{ runner.temp }}/pond-writer/**/crash.stderr
+            ${{ runner.temp }}/pond-writer/**/writer.stderr
