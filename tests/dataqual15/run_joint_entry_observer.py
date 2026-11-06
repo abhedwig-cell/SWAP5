@@ -40,8 +40,9 @@ report.update(seconds=time.monotonic() - start, returncode=code, censored=censor
               origin_unchanged=sha(origin) == before,
               nonlinear_stop=b'ORIGINAL_GATE_OBSERVATION_STOP' in err,
               temporal_stop=b'NEXT_TEMPORAL_OBSERVATION_STOP' in err,
+              admission_stop=b'ADMISSION_OBSERVATION_STOP' in err,
               no_restart_published=not (out / 'restart.bin').exists())
 (out / 'RESULT.json').write_text(json.dumps(report, indent=2) + '\n')
 print(json.dumps({k: v for k, v in report.items() if k not in ('source_sha256', 'command')}))
 assert report['origin_unchanged'] and report['no_restart_published']
-assert report['nonlinear_stop'] or report['temporal_stop'], err[-2000:]
+assert report['nonlinear_stop'] or report['temporal_stop'] or report['admission_stop'], err[-2000:]

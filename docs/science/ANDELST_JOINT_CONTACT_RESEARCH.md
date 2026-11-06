@@ -69,6 +69,22 @@ solution exists. The diagnostic seed stays immutable, publishes no restart, and
 does not qualify a cross-executable own restart. Earlier censored observers and
 the rejected mixed-module diagnostic build remain in the evidence archive.
 
-Full V2 execution and its exact own restart must be judged from terminal results
-in the recovery record. Component PASS alone does not admit that model or close
+V2 original-initialization runs complete three days at O0 and four at O2 before
+300-second censoring. The common 1,529 progress rows are exact. A strict own O0
+day-three continuation repeats 326 overlapping rows before its 120-second limit;
+a strict own O2 day-four continuation repeats all 383 overlapping original-run
+rows exactly and completes through day43. The largest completed daily water
+residual is `1.1061381684936018e-12 cm`. The latter run fails after314.145 seconds,
+rather than timing out, at attempted endpoint43.340000000000416; the last accepted
+endpoint is43.33800000000041. The accepted-flux-trace materializer refuses
+publication. A read-only instrumented native run confirms Rutter preparation
+succeeds; the earlier generic Rutter-clock diagnostic is not the cause. The
+precise trace failure is under observation. The sealed raw old result incorrectly
+labels the attempted endpoint as completed; its `cost.csv` marks that row false.
+The execution reporter now distinguishes attempted and completed endpoints.
+
+These results establish bounded corrected-model progress and exact overlapping
+own continuations. They do not complete corrected481, a year-boundary restart,
 original Andelst481, energy equivalence or historical scientific qualification.
+The research model remains explicitly selected by a separate source-bound build;
+ordinary production source callers and physical contact laws are unchanged.

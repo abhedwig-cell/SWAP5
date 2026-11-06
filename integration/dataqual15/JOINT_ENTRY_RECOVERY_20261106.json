@@ -43,6 +43,10 @@
     "continuation": {
       "expected_seconds": 180,
       "reason": "Discriminate whether joint entry implementation passes original1.958 barrier; longer full481 only after actual progress and hard-ledger controls"
+    },
+    "continuation_v2": {
+      "expected_seconds": 600,
+      "reason": "Explicit user-selected full481 research continuation; joint entry/perched implementation passes old barrier; preserve actual cell/whole-water and restart gates. Terminal failure at314.145seconds, not timeout."
     }
   },
   "remaining": [
@@ -51,7 +55,7 @@
     "Perched topology and action memory must use the same accepted candidate"
   ],
   "current_canonical_delta": "Since2347 only publication/codec source corrections; physical Richards and contact owners unchanged. Other active worktrees preserved.",
-  "next_action": "Implement and qualify joint dynamic perched graph V2 on actual next24/25 barrier, then original-init and strict own execution.",
+  "next_action": "Locate failed accepted trace certificate at exact day43.338 diagnostic seed before any shared runtime repair.",
   "border_contract": "Actual Reference core O0/O2 pass, including shared rank2,2 contact variables and singular/nonfinite/incomplete refusal",
   "first_corrected_native": {
     "build": "s5-entry-graph-O0",
@@ -127,5 +131,38 @@
     "seconds": 9.937152300029993,
     "actual_production_border": true,
     "private_corrected_contact_history": true
+  },
+  "joint_v2_evidence": {
+    "archive": "JOINT_CONTACT_PREFIX_EVIDENCE_20261106.zip",
+    "archive_sha256": "857b0444484f30afb3388efe7e5db3a273565a341c5074b19c40d3c268c47855",
+    "common_O0_O2_progress_rows_exact": 1529,
+    "own_O0_day3_prefix_rows_exact": 326,
+    "own_O2_day4_prefix_rows_exact": 383,
+    "original_initialization_days_O0": 3,
+    "original_initialization_days_O2": 4,
+    "completed_prefix_via_strict_own_O2": 43,
+    "accepted_source_endpoint": 43.33800000000041,
+    "rejected_source_endpoint": 43.340000000000416,
+    "maximum_daily_water_residual_cm": 1.1061381684936018e-12,
+    "original481_complete": false,
+    "corrected481_complete": false,
+    "own_year_restart_complete": false,
+    "original_equivalence": false,
+    "terminal_native_costs_seconds": {
+      "s5-joint-contact-original481-O0": 300.5477990000509,
+      "s5-joint-contact-original481-O2": 300.2959616999142,
+      "s5-joint-contact-own3-prefix-O0": 0.0844686001073569,
+      "s5-joint-contact-own3-4-O0": 120.07986599998549,
+      "s5-joint-contact-own4-481-O2": 314.14459510007873
+    }
+  },
+  "actual_next_failure": {
+    "outer_rejection_site": "src/runtime/mod_fmr_serialized_reference_backend.f90:3359",
+    "rutter_prepare_status": 0,
+    "rutter_diagnostics_status": 0,
+    "rutter_result_produced": true,
+    "operation": "materialize_accepted_water_flux_trace",
+    "cause": "Under observation; do not infer a Rutter clock or salt-physics failure from generic variable names/messages.",
+    "reporting_erratum": "Earlier terminal RESULT.last_completed_source_interval includes the rejected progress endpoint43.340; cost.csv completed=F proves last accepted endpoint43.338. Shared execution reporter now separates last attempted and last completed endpoints."
   }
 }
