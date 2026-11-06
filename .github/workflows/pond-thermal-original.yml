@@ -1,0 +1,46 @@
+name: Unmodified original pond thermal build qualification
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/pond_thermal_original*.py'
+      - 'integration/dataqual15_hupsel/POND_THERMAL_ORIGINAL*'
+      - 'integration/dataqual15_hupsel/POND_THERMAL_BUILD_RECOVERY*'
+      - '.github/workflows/pond-thermal-original.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pond-original-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact private scope and original Windows build evidence
+        run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import pond_thermal_native as p;p.guard()"
+          python -B tests/dataqual15_hupsel/pond_thermal_original_evidence.py --platform nt --self-test
+      - name: Actual unmodified original POSIX cold and coherent resumed builds
+        run: |
+          if test -f integration/dataqual15_hupsel/POND_THERMAL_ORIGINAL_POSIX_20261106.json; then
+            python -B tests/dataqual15_hupsel/pond_thermal_original_evidence.py --stem POND_THERMAL_ORIGINAL_POSIX_20261106 --platform posix --self-test
+          else
+            python -B tests/dataqual15_hupsel/pond_thermal_original_build.py --output "$RUNNER_TEMP/pond-original"
+            python -B tests/dataqual15_hupsel/pond_thermal_original_evidence.py --pack "$RUNNER_TEMP/pond-original" --stem POND_THERMAL_ORIGINAL_POSIX_20261106 --platform posix --self-test
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pond-original-posix
+          path: |
+            integration/dataqual15_hupsel/POND_THERMAL_ORIGINAL_POSIX_20261106*
+            ${{ runner.temp }}/pond-original/ORIGINAL_BUILD_RESULT.json
+            ${{ runner.temp }}/pond-original/*.stderr
+            ${{ runner.temp }}/pond-original/*/result.json

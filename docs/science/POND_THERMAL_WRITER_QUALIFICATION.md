@@ -1,5 +1,9 @@
 # Private complete pond thermal writer qualification
 
+Canonical private scope: PR1586, merge `88b66a5c604ac04df18d011eb659265ede3214d6`.
+All16 final workflows succeed; actual merge tree equals qualified source
+`5237c34350bf9138e9bac75244960539a301a543`. Production admission remains false.
+
 This extends the [complete native reader proof](POND_THERMAL_NATIVE_QUALIFICATION.md)
 and [standalone layout proof](POND_THERMAL_STANDALONE_NATIVE.md). It qualifies
 the same complete private writer for actual S5PT0001/2/3/4 owners. No production
