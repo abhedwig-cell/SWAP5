@@ -1,0 +1,43 @@
+name: Private standalone pond thermal native layouts
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/pond_thermal_native_layouts.py'
+      - 'tests/dataqual15_hupsel/pond_thermal_layout_evidence.py'
+      - 'integration/dataqual15_hupsel/POND_THERMAL_LAYOUT*'
+      - '.github/workflows/pond-thermal-layouts.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pond-layouts-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: false
+jobs:
+  complete-layouts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      FC: gfortran-13
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Independent Windows source/object/native layout evidence
+        run: python -B tests/dataqual15_hupsel/pond_thermal_layout_evidence.py --self-test
+      - name: Actual standalone Boesten and Black native O0/O2
+        run: |
+          if test -f integration/dataqual15_hupsel/POND_THERMAL_LAYOUT_POSIX_20261106.json; then
+            python -B tests/dataqual15_hupsel/pond_thermal_layout_evidence.py --stem POND_THERMAL_LAYOUT_POSIX_20261106 --self-test
+          else
+            python -B tests/dataqual15_hupsel/pond_thermal_native_layouts.py --output "$RUNNER_TEMP/pond-layouts"
+            python -B tests/dataqual15_hupsel/pond_thermal_layout_evidence.py --pack "$RUNNER_TEMP/pond-layouts" --stem POND_THERMAL_LAYOUT_POSIX_20261106 --self-test
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pond-layouts-posix
+          path: |
+            integration/dataqual15_hupsel/POND_THERMAL_LAYOUT_POSIX_20261106*
+            ${{ runner.temp }}/pond-layouts/RESULT.json
+            ${{ runner.temp }}/pond-layouts/**/build-*.stderr
