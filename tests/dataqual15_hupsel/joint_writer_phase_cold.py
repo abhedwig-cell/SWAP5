@@ -20,7 +20,7 @@ def execute(view,out,opt,compiler,producer):
    assert not git(view,'diff','HEAD','--',area)
    assert not git(view,'ls-files','--others','--exclude-standard','--',area)
   return {area:git(view,'rev-parse','HEAD:'+area)for area in('src','app','reference')}
- trees=guard();out.mkdir(parents=True,exist_ok=False)
+ trees=guard();assert not out.exists();out.parent.mkdir(parents=True,exist_ok=True)
  # prepare() owns fixture construction; its caller supplies the exact current
  # source guard instead of claiming the old frozen source guard passed.
  native.prior.guard=guard
