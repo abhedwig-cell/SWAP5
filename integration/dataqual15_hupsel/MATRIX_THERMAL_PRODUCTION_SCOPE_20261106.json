@@ -1,0 +1,93 @@
+{
+  "binary_abi": "SAME_PLATFORM_ONLY",
+  "bridge_restore": {
+    ".github/workflows/generation-crc.yml": {
+      "after": "1cf041ab4d2b1a04cde10d31abdfb60b5e887b65",
+      "before": "561b4bc61f0618b3c217d3d933dfed754cf1ff45"
+    },
+    ".github/workflows/generation-publication.yml": {
+      "after": "7557d70c1f24a4d6e58cb77f203b3ded2fe861bc",
+      "before": "6bc0ba6e525217215004b3988d55ab95f36fbdfb"
+    },
+    ".github/workflows/matrix-crc.yml": {
+      "after": "829fa12e90d296921ea0c9276393aed4ab9d1b52",
+      "before": "8a47522ab4f17b159cad6ea6be64206bb6de687e"
+    },
+    ".github/workflows/matrix-thermal-native.yml": {
+      "after": "33de950d67e4195a36f876ee2b4894f2c3ad011e",
+      "before": "7e8b1bd803e58b6fe5acd1c3439fc80513e20698"
+    },
+    ".github/workflows/native-n-production.yml": {
+      "after": "017bef77256a411c7ac6e07ee885d2e02b7592d0",
+      "before": "1ae2a638f93a6d65cd1a9f2b05f909bc344a6eab"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "after": "fd1ce9c4672c76e48bb2f381512b3a576956f985",
+      "before": "f7b2931208cea80e6fec8e3d561a00ed7bc6e77c"
+    },
+    "src/adapter/mod_matrix_thermal_restart_file.f90": {
+      "after": "08b66abbbd399eb6728b60daf997d2424f82880b",
+      "before": "7459cf4f06cecc380c72717845a148e6bc33b65a"
+    },
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "after": "64f4543ca1ad1ecc876f8963448964a263c33699",
+      "before": "331600c6024000f764297997c647a8d6fb5ac117"
+    }
+  },
+  "build_canonical": {
+    "broad_mc_verdict": "FAILED_RETAINED",
+    "failed": 1,
+    "merge": "fba220aede6b8e4a64f7c48d55065a50855943de",
+    "pr": 1582,
+    "success": 15,
+    "tree": "ac02481fd882553771ee893a42e2646aaca5f874"
+  },
+  "gate_source_sha256": {
+    ".github/workflows/generation-crc.yml": "4c7ad4f8f111ac24b21835ad7f64507b13e8f59212246b20e878d9982f7b839c",
+    ".github/workflows/generation-publication.yml": "78f21f589173eae6307202079b3ce8050d5dafa2e3b5327494ac35e284e435a1",
+    ".github/workflows/matrix-crc.yml": "2948dfea9a69105d45d04ce9f7e29af7f86cf2e8c9862e210d98cbc4a0755ae4",
+    ".github/workflows/matrix-thermal-native.yml": "187d40ac608210728d1b9e879506a16df3a74f7ed00b4a1e120adfadea1181e9",
+    ".github/workflows/matrix-thermal-production.yml": "2ed20bc5a6c6109bd7773689e7f530331a3952a7381200b092a146140c63c420",
+    ".github/workflows/native-n-production.yml": "94cd2f436d95b8144ec2dbe2c1cabf3e4ad196a70abbf4aba6e44e0be98a36a9",
+    "tests/dataqual15/verify_current_native_admission.py": "9e535cad3d42cd8f1095e2eb5d423566bda0b7a032e196f3d400a787b21756d4",
+    "tests/dataqual15_hupsel/matrix_thermal_production.py": "b72e33408d76d4d916befee660f11ddc74cdf91a59159b43adfc5cb4f497e932",
+    "tests/dataqual15_hupsel/test_matrix_thermal_production.py": "dbe6e844bb3249b53bef419133d8841666cea186c1b15ce6cf3b87b4a6526bfa"
+  },
+  "phase": "EXECUTED_COMPLETE_WINDOWS_POSIX_O0_O2_NATIVE_POSTIMAGE",
+  "posix_stage6": "FAILURE_AFTER_REPLACEMENT",
+  "postimage_sha256": "f4b2d12b3285b9517ad2ca2bc29cb47b8cd9bc129acb2825bd0e51d6f98d33be",
+  "predecessor": "fba220aede6b8e4a64f7c48d55065a50855943de",
+  "predecessor_production_trees": {
+    "app": "0abdce76c50cd9bb507909e2c6ab1c3124e2ce5c",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+    "src": "46a822a4a42b9a528e8a73d8d8f648917e00c477"
+  },
+  "private_canonical": {
+    "all15_success": true,
+    "merge": "60700e1bd3f934bbf28b486f7019c707a2f2dda5",
+    "pr": 1581,
+    "tree": "646ed8666a4624f481671e1954f0f52f3dbc2b76"
+  },
+  "production_delta": {
+    "src/adapter/mod_matrix_thermal_restart_file.f90": {
+      "after": "08b66abbbd399eb6728b60daf997d2424f82880b",
+      "before": "7459cf4f06cecc380c72717845a148e6bc33b65a"
+    }
+  },
+  "qualified_artifact_records": {
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_ADJUDICATION_20261106.json": "e46dbe6b4e5e27e03d7d10d2e3abf526b7425115a6700e8edb37465a1792be38",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_CANONICAL_RECEIPT_20261106.json": "1c753ac41a25e1c981823dc76e103f6c7936d739cfa90aa7c014a169a4b36b8e",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_POSIX_20261106.json": "bab28fac07bd2a5a2e9008658f05a88a3e5fd1533f11190a898b78c24394980e",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_PREREGISTRATION_20261106.json": "c2482fd1c0e3f762e5ac18cb765a5bdbe1218c0c7af9f09c205760e6911ea335",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_WINDOWS_20261106.json": "ceed7cddf3d12be72ced530ba65c499b6e262a4c7d56751fe607d4691236ea4e",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_CANONICAL_RECEIPT_20261106.json": "bd3e73f19d0004a2ace119d604d15f088a8a23b7648e0313b3519bc441bb0972",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_POSIX_20261106.json": "c42ba4ef31343fe0a23c8d7399203bbca70c918fb60659ac902945dc55662ada",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_POSIX_WRITER_20261106.json": "1eed8b827ddb1a364fcdc398c3de6dedd5476a5901c0a833463c8f9d0f84de2b",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_PREREGISTRATION_20261106.json": "5339c9117c0af739e90cdbbb3f949eb97ce3a24b0089f62352b6ce25d72ea7cf",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_WINDOWS_20261106.json": "e7afda1e00cdc0d9d059a7b306a0adc8458d811b594a2e8ccb5b5532f21a779f"
+  },
+  "scope": "SAME_PLATFORM_S5MT0001_NATIVE_LOGICAL_AND_RESTART_PUBLICATION",
+  "whole_scientific_admission": false,
+  "windows_path_scope": "ASCII_ONLY",
+  "windows_stage6": "UNCHANGED_RESTART_API_SUCCESS"
+}

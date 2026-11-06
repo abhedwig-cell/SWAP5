@@ -4,6 +4,26 @@ import matrix_thermal_production as p
 
 class ThermalAdmission(unittest.TestCase):
  def test_complete_current_source(self):self.assertTrue(p.guard())
+ def test_actual_dirty_and_untracked_source_refusals(self):
+  target=p.ROOT/p.SOURCE;original=target.read_bytes()
+  try:
+   target.write_bytes(original+b'\n! qualification-only dirty-source refusal\n')
+   with self.assertRaises(AssertionError):p.guard()
+  finally:target.write_bytes(original)
+  probe=p.ROOT/'src/__s5mt_owned_scope_probe__.f90';assert probe.resolve().parent==(p.ROOT/'src').resolve() and not probe.exists()
+  try:
+   with probe.open('xb') as stream:stream.write(b'! unknown production owner\n')
+   with self.assertRaises(AssertionError):p.guard()
+  finally:probe.unlink()
+ def test_old_status_promotion_refused(self):
+  original=p.Path.read_text
+  def changed(path,*args,**kwargs):
+   raw=original(path,*args,**kwargs)
+   if path==p.ROOT/p.STATUS:
+    record=json.loads(raw);record['unreviewed_old_owner_promotion']=True;return json.dumps(record)
+   return raw
+  with patch.object(p.Path,'read_text',new=changed):
+   with self.assertRaises(AssertionError):p.guard()
  def test_scope_refusals(self):
   cases={
    'origin':lambda r:r.update(predecessor='0'*40),
