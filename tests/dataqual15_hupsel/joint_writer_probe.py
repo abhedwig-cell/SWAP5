@@ -1,5 +1,5 @@
 """Reversible native public-writer probe and actual publication fault/kill matrix."""
-import os,json
+import os,json,struct,zlib,math
 from pathlib import Path
 import joint_production as g
 import pond_thermal_writer as publication
@@ -30,15 +30,25 @@ def driver(source,name):
  result=text.replace(anchor,branch+anchor,1);assert result.replace(branch,'',1)==text
  return result.encode()
 
+def previous_generation(good):
+ # A bounded positive chemical inventory difference, accepted and byte-exactly
+ # re-exported by the public codec before use as the surviving old authority.
+ old=bytearray(good[:-4]);amount=struct.unpack_from('<d',old,len(old)-8)[0]
+ assert math.isfinite(amount)and amount>0
+ struct.pack_into('<d',old,len(old)-8,amount*.5)
+ return bytes(old)+struct.pack('<I',zlib.crc32(old))
+
 def measure(out,exes,events):
  rows=[];crashes=[]
  for name in g.NAMES:
   for layout in (('history','plain')if name=='age'else('history',)):
    seed=out/name/('restart.bin.base'if layout=='plain'else'restart.bin');good=seed.read_bytes()
    # A distinct *valid* old generation is required, not an arbitrary sentinel.
-   old_path=out/name/('restart.bin'if layout=='plain'else'full.bin')
-   old=old_path.read_bytes();assert old!=good
+   old=previous_generation(good)
    home=out/('publication-'+name+'-'+layout);home.mkdir()
+   old_seed=home/'old-native';old_seed.write_bytes(old)
+   publication.execute([exes[name],'probe-writer',old_seed,home/'old-reexport',home/'old-reexport-again',layout],home,'old-origin')
+   assert(home/'old-reexport').read_bytes()==old==(home/'old-reexport-again').read_bytes()
    def command(target,recovery):return [exes[name],'probe-writer',seed,target,recovery,layout]
    for stage in (0,2,3,4,5,6):
     case=home/str(stage);case.mkdir();target=case/'authority';target.write_bytes(old);recovery=case/'recovered'

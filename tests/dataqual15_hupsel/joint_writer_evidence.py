@@ -16,7 +16,8 @@ def publication_audit(files,r,root):
  for name,layout in layouts:
   home='publication-'+name+'-'+layout
   good=files[name+('/restart.bin.base'if layout=='plain'else'/restart.bin')]
-  old=files[name+('/restart.bin'if layout=='plain'else'/full.bin')];assert old!=good
+  old=probe.previous_generation(good);assert old!=good
+  assert files[home+'/old-native']==files[home+'/old-reexport']==files[home+'/old-reexport-again']==old
   exe=str(root/r['executables']['publication-'+name]['executable'])
   seed=str(root/name/('restart.bin.base'if layout=='plain'else'restart.bin'))
   for row in [x for x in rows if x['codec']==name and x['layout']==layout]:
@@ -71,7 +72,7 @@ def audit(files):
   expected_objects.append(str(obj))
  assert len(new_objects)==3 and len([e for e in events if e['label']=='provider'])==3
  expected_objects += [str(root/'build'/'publisher.o'),str(root/'build'/'shim.o')]
- assert files['publisher.c']==g.raw(writer.BASE,'app/support/restart_publish.c')
+ assert g.normal(files['publisher.c'])==g.raw(writer.BASE,'app/support/restart_publish.c')
  assert g.normal(files['shim.c'])==probe.publication.shim_source('nt'if platform=='WINDOWS'else'posix').encode()
  assert len([e for e in events if e['label']=='publisher'])==len([e for e in events if e['label']=='shim'])==1
  assert set(r['executables'])=={'native-'+n for n in (*g.NAMES,'reactive_original')}|{'owner-'+n for n in g.NAMES}|{'publication-'+n for n in g.NAMES}
