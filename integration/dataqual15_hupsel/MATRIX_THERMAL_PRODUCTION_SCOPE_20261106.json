@@ -47,11 +47,12 @@
     ".github/workflows/generation-publication.yml": "549f8bb00903f1259d6b1f2e56b87be1052af27659f605d9b9436942ef5e5ff2",
     ".github/workflows/matrix-crc.yml": "585261fd2bea005c732265215505ad4b1eeb98f0df11d132394bb14518b07670",
     ".github/workflows/matrix-thermal-native.yml": "6b4c9505bde0755097df671fd22f66e344bd1d5fa413165febc96b376dc02445",
-    ".github/workflows/matrix-thermal-production.yml": "d335e9afc76e5765f92f430616b39da19765c0126a455e9d848662cb493a1141",
+    ".github/workflows/matrix-thermal-production.yml": "e5526a61e52d5a76c0a48f3efe346d6abf28320b0e3621bfd314235789b5da85",
     ".github/workflows/native-n-production.yml": "cac3d43791e86edbec40dafe06a4b3dbbf49c85a54b398026fa085ab552eaa99",
     "tests/dataqual15/verify_current_native_admission.py": "9e535cad3d42cd8f1095e2eb5d423566bda0b7a032e196f3d400a787b21756d4",
-    "tests/dataqual15_hupsel/matrix_thermal_production.py": "c14e40c3b82695a946cf54abde959826caec4c09c11d22585839b459cd40862d",
+    "tests/dataqual15_hupsel/matrix_thermal_production.py": "7e2b628a28ac8d0609edd3441ba20adb0b00ae6d4d3ba1b48b43ad89d302d9ad",
     "tests/dataqual15_hupsel/matrix_thermal_production_baseline.py": "3ac8a2f45b9aa751d1f76213d12192ddc736d035488214e0f22dc806aa668906",
+    "tests/dataqual15_hupsel/matrix_thermal_production_diagnostics.py": "62fbc5999c45dbab7e47cd181c378dadcbdc5d77ef248be30bb35d6f1003d600",
     "tests/dataqual15_hupsel/test_matrix_thermal_production.py": "3e9640dca09030cbc357e1af901c9233f9a20f9d1d6f21357a49a3c7863e1de4"
   },
   "phase": "EXECUTED_COMPLETE_WINDOWS_POSIX_O0_O2_NATIVE_POSTIMAGE",
@@ -85,7 +86,9 @@
     "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_POSIX_20261106.json": "c42ba4ef31343fe0a23c8d7399203bbca70c918fb60659ac902945dc55662ada",
     "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_POSIX_WRITER_20261106.json": "1eed8b827ddb1a364fcdc398c3de6dedd5476a5901c0a833463c8f9d0f84de2b",
     "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_PREREGISTRATION_20261106.json": "5339c9117c0af739e90cdbbb3f949eb97ce3a24b0089f62352b6ce25d72ea7cf",
-    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_WINDOWS_20261106.json": "e7afda1e00cdc0d9d059a7b306a0adc8458d811b594a2e8ccb5b5532f21a779f"
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_WINDOWS_20261106.json": "e7afda1e00cdc0d9d059a7b306a0adc8458d811b594a2e8ccb5b5532f21a779f",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json": "5756b9a989f4bd73501c35cd8d2fd743e4bee2baf12268019fea9c2f8ab786b2",
+    "integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_FAILURES_20261106.json": "da92116aae4661c96d7daf7ba78c28d78bac6cb078408c064ec8a97e63bfea5a"
   },
   "scope": "SAME_PLATFORM_S5MT0001_NATIVE_LOGICAL_AND_RESTART_PUBLICATION",
   "whole_scientific_admission": false,

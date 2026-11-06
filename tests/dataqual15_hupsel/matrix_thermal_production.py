@@ -7,7 +7,9 @@ SOURCE='src/adapter/mod_matrix_thermal_restart_file.f90';ENTRY='tests/dataqual15
 KEY='matrix_thermal_native_successor_20261106';SCOPE='integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_SCOPE_20261106.json'
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
 GATES={ENTRY,*BRIDGES,'.github/workflows/matrix-thermal-production.yml','tests/dataqual15_hupsel/matrix_thermal_production.py','tests/dataqual15_hupsel/test_matrix_thermal_production.py','tests/dataqual15_hupsel/matrix_thermal_production_baseline.py'}
+GATES.add('tests/dataqual15_hupsel/matrix_thermal_production_diagnostics.py')
 RECORDS={'integration/dataqual15_hupsel/'+n+'_20261106.json' for n in ('MATRIX_THERMAL_NATIVE_PREREGISTRATION','MATRIX_THERMAL_NATIVE_WINDOWS','MATRIX_THERMAL_NATIVE_POSIX','MATRIX_THERMAL_NATIVE_POSIX_WRITER','MATRIX_THERMAL_NATIVE_CANONICAL_RECEIPT','MATRIX_THERMAL_BUILD_PREREGISTRATION','MATRIX_THERMAL_BUILD_WINDOWS','MATRIX_THERMAL_BUILD_POSIX','MATRIX_THERMAL_BUILD_ADJUDICATION','MATRIX_THERMAL_BUILD_CANONICAL_RECEIPT')}
+RECORDS|={'integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_'+n+'_20261106.json' for n in ('DIAGNOSTICS','FAILURES')}
 normal=lambda b:b.replace(b'\r\n',b'\n')
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
@@ -65,6 +67,7 @@ def main():
   run('windows-current-build',['tests/dataqual15_hupsel/matrix_thermal_build_evidence.py'])
   run('posix-current-build',['tests/dataqual15_hupsel/matrix_thermal_build_evidence.py','--stem','MATRIX_THERMAL_BUILD_POSIX_20261106'])
   run('broad-science-refusal',['tests/dataqual15_hupsel/matrix_thermal_build_adjudication.py'])
+  run('actual-current-source-diagnostics',['tests/dataqual15_hupsel/matrix_thermal_production_diagnostics.py'],cwd=ROOT)
   historical=out/'private-authority'
   run('prepare-private',['tests/dataqual15_hupsel/matrix_thermal_build.py','--prepare-only','--output',str(historical)])
   private_view=historical/'predecessor'

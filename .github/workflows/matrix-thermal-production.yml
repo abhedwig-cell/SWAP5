@@ -37,9 +37,13 @@ jobs:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Actual exact predecessor broad diagnostics without pass claims
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json') == '' }}
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production_baseline.py --output "$RUNNER_TEMP/thermal-exact-before"
+      - name: Remeasure exact before and source failures without repeating immutable diagnostics
+        if: ${{ hashFiles('integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_production_diagnostics.py
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/MATRIX_THERMAL_PRODUCTION_DIAGNOSTICS_20261106.json') == '' }}
         with:
           name: actual-exact-pre-S5MT-source-diagnostics
           path: ${{ runner.temp }}/thermal-exact-before
