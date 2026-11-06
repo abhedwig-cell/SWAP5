@@ -2,8 +2,8 @@
   "workstream": "HY/RT conservative macropore storage normalization",
   "baseline": "db42f99e2de9cae43dfe04bbf291e8e214edd6f7",
   "branch": "codex/andelst-empty-pocket-20261106",
-  "implemented": false,
-  "tested": false,
+  "implemented": true,
+  "tested": true,
   "qualified": false,
   "invariants": [
     3,
@@ -37,12 +37,26 @@
       "reason": "Real production derive/build and vertical reconstruction; regular positive sub-quantum pockets, tapered tips, full/partial domains and invalid controls O0/O2."
     },
     "native": {
-      "expected_seconds": 600,
+      "expected_seconds": 900,
       "reason": "Concrete new shared physical defect. Corrected original-input481 from initial state and own restart; unchanged historical sharp case remains separately named. No unrelated fullFCI or lowair."
     }
   },
-  "next_action": "Remove storage quanta in production owner, execute small real closure O0/O2, then build coherent current original and V2 native closures.",
+  "next_action": "Await fresh original-input corrected-contact481 run and captured strict own day3/year365 continuations; original sharp route day1 remains separately qualified.",
   "original481_complete": false,
   "corrected481_complete": false,
-  "year_restart_complete": false
+  "year_restart_complete": false,
+  "source": "4aa0d810f2624f4d07b78b1602ea0a01ea6a8b44",
+  "evidence_archive": "EMPTY_POCKET_EVIDENCE_20261106.zip",
+  "evidence_archive_sha256": "33ff7111051127fe363f2e1762c226afb1bba7b011dcf64cf56b11d1577c83ef",
+  "small_contract": "BASELINE_O0_O2_FAIL_AND_CORRECTED_O0_O2_PASS",
+  "original_native_initial": "112_NODE_5_DOMAIN_O0_O2_PASS",
+  "day1_original_vs_joint_physical_payload_exact": true,
+  "actual43_diagnostic_replay": {
+    "status": 0,
+    "attempts": 1,
+    "trace_halves": 2,
+    "max_full_cell_residual_cm": 4.418687638013523e-17,
+    "origin_unchanged": true,
+    "own_restart_qualification": false
+  }
 }
