@@ -127,5 +127,88 @@
     "members": 2063,
     "bytes": 5619652,
     "scope": "Terminal component/probe/day1 and intentionally censored redundant noisy run. Active quiet481 excluded until terminal."
+  },
+  "early_v4_stagnation_selection": {
+    "observed_last_source": 2.923999999999573,
+    "original_full_native_active_cpu_seconds": 950,
+    "purpose": "Current V4 trajectory stalls inside next source. Capture unchanged caller-committed source state in a separate diagnostic replay from immutable own day2, stopping BEFORE that expensive interval. Then inspect accepted internal progress rather than blind timestep changes. Full request continues to its terminal budget.",
+    "expected_compile_seconds": 10,
+    "expected_native_seconds": 350,
+    "scope": "DIAGNOSTIC_NOT_OWN_RESTART_QUALIFICATION",
+    "origin": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-v4-stagnation-own2\\restart.bin"
+  },
+  "v4_research_admission": {
+    "pr": 1595,
+    "actual_merge": "267a0771481cd23b4f7da94492816573e6581514",
+    "parents": [
+      "dafb351da2279cfa9a2a261481f06518329ba175",
+      "73d97b8a07ae28fe2d371c9518ab96886280ee1b"
+    ],
+    "tested_head": "73d97b8a07ae28fe2d371c9518ab96886280ee1b",
+    "relevant_tree_exact": true,
+    "src_app_unchanged_from6545": true,
+    "linux_component_run": 42254141424,
+    "linux_component_job": 128016747486,
+    "linux_component": "PASS border/contact/pockets/currentGWL/sourcecallback O0/O2",
+    "docs_run": 42254102179,
+    "docs_job": 128016562357,
+    "docs": "PASS strict local clean checkout and Linux; original workspace generated site guard correctly refuses",
+    "workflow_selection": "Only two manual workflows dispatched; skip-ci commits avoided unrelated campaigns",
+    "scope": "EXPLICIT_PRIVATE_RESEARCH_NOT_PRODUCTION_DEFAULT_OR_HISTORICAL_EQUIVALENCE",
+    "full481": "PENDING actual quiet run",
+    "year_restart": false
+  },
+  "early_v4_diagnosis": {
+    "source_endpoint": 2.923999999999573,
+    "source_sha256": "fc3d243ab60d460def87ed6bdaadf59e1af4ed75b44b80be4877ccd058684f2f",
+    "seed_replay_seconds": 406.33789719990455,
+    "seed_replay_progress_rows_exact": 471,
+    "observer_seconds": 11.520507300039753,
+    "diagnostic_advance_limit": 240,
+    "last_internal_t0": 2.9240011450248597,
+    "last_internal_dt": 5.95719029661268e-11,
+    "entry_node": 34,
+    "implementation_cause": "ctest is allocated aszero, but g=C^T h-threshold is assessed before contact rows are filled on Newton iteration0. This creates artificial10cm constraint error despite h already pinned to threshold. Native telemetry shows1495 k1 refusals among1546 calls, mostlyiteration0, even when nonlinear residual alreadybelow1e-8. Fix initialization order, retain exact same graph and acceptance bounds. Do not change graph selection/physics as previously hypothesized.",
+    "next_action": "Initialize actual border constraint before first g assessment; replay same2924 and65 gates, then fresh original initialization with unchanged model/controls.",
+    "expected_compile_seconds": 15,
+    "expected_probe_seconds": 40,
+    "expected_fresh481_seconds": 1800
+  },
+  "border_initialization_fix": {
+    "source": "9da92a3fc7a5297c7e1fe7e476c83f389cf1fe2b",
+    "scope": "NUMERICAL_ORDER_FIX_SAME_V4_PHYSICS_AND_GATES_PRIVATE_ONLY",
+    "current_physics_contract_unchanged": true,
+    "source2924": {
+      "seconds": 1.1207516000140458,
+      "status": 0,
+      "attempts": 8,
+      "solver_refusals": 0,
+      "temporal_refusals": 4,
+      "internal_steps": 4
+    },
+    "source65": {
+      "seconds": 1.32346610003151,
+      "status": 0,
+      "attempts": 8,
+      "solver_refusals": 0,
+      "temporal_refusals": 4,
+      "internal_steps": 4
+    },
+    "O0_day1_physical_payload_and_four_output_csv_exact": true,
+    "O2_day1_physical_payload_exact": true,
+    "archive": "BORDER_INITIALIZATION_EVIDENCE_20261106.zip",
+    "archive_sha256": "75adea75ff27e24e11eab7847657264d03275b94908f822dad177451f17edea1",
+    "archive_bytes": 3756756,
+    "archive_members": 1143,
+    "older_quiet_failed_implementation": {
+      "classification": "INTENTIONAL_CENSOR_CONFIRMED_BORDER_INITIALIZATION_DEFECT",
+      "seconds": 1719.9447520000394,
+      "last_external_accepted_endpoint": 2.923999999999573,
+      "raw_returncode": 4294967295,
+      "raw_censored_flag": false,
+      "intentional_stop_record_retained": true
+    },
+    "full_fixed481": "RUNNING fresh original initialization",
+    "O0_own1to3": "RUNNING"
   }
 }

@@ -132,3 +132,33 @@ budget/progress/cost/diagnostic rows prove the logging-only change at O0.
 The separate quiet O2 full481 request is pending its terminal result and own
 continuations; the read-only probe establishes neither of those claims.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
+
+## First-iteration border initialization repair
+
+The private V4 recipe is integrated through PR1595 at actual merge
+`267a0771481cd23b4f7da94492816573e6581514`, with focused Linux O0/O2 and
+strict docs PASS. Its first quiet full request exposes a separate implementation
+defect at source2.923999999999573 to2.925999999999573. A diagnostic own-day2
+replay reproduces all471 common source rows exactly and captures the caller state
+without altering its origin. Within the next interval, the solver repeatedly
+retreats to roughly1e-11day steps at the sharp node34 entry plane.
+
+The contact constraint matrix is initialized to zero, then its first residual
+is assessed before the rows are filled. This reports `-threshold` instead of
+`head-threshold`, producing an artificial10cm equality error while the head is
+already pinned. The repair forms the exact existing constraint rows before the
+first assessment. Contact physics, graph selection, accepted mass and all
+numerical limits stay unchanged. The same actual source now completes in1.121s;
+the prior65 source also completes in1.323s. Both require eight attempts, no solver
+refusal, four temporal refusals and four accepted internal substeps. These are
+read-only backend proofs, with immutable origins and no published restart.
+
+O0 day-one physical payload and all four budget/progress/cost/diagnostic files
+are byte-exact; O2 day-one payload is exact. The defective full request is
+intentionally censored after1719.945s, with its raw result, costs and explicit
+stop reason retained. Its censor does not count as completed481. The repaired
+fresh original-input O2 full request and O0 strict own continuation remain pending
+until their actual terminal results. The archived negative implementation remains
+failed; its repair does not establish historical equivalence.
+Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json` and
+`integration/dataqual15/BORDER_INITIALIZATION_EVIDENCE_20261106.zip`.
