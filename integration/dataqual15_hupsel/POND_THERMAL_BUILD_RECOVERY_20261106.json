@@ -1,13 +1,13 @@
 {
   "unit": "Actual unmodified original pond thermal runner build measurement",
   "baseline": "8428323b15b126ba2a3422ef32d4d914b070db2f",
-  "status": "ACTUAL_ORIGINAL_WINDOWS_COLD_AND_RESUMED_BUILD_MEASURED_AND_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "WINDOWS_ORIGINAL_BUILD_INDEPENDENTLY_QUALIFIED_POSIX_IMPLEMENTED_PENDING_EXECUTION",
   "source_postimage": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
   "postimage_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
   "method": "Exact detached9a55 provider view, complete private postimage, original tests/nut-sol/run_pond_thermal.py restored byte-exact from Git. Execute the unmodified original runner cold O0/O2 without the explicit private64MiB Windows link projection; preserve full reports, sources, objects, response, PE stack and all native diagnostics. No production source change.",
   "planned_output": "C:/Users/Veldh012/AppData/Local/Temp/s5-pond-original-build-20261106/windows-v1",
   "estimated_cost": "Cold complete O0/O2 driver build and original eight meshes, approximately3min. This measures actual delivery; original failures are never relabelled PASS.",
-  "next": "Use the versioned original Windows measurement rather than repeating its cold model builds. Independently qualify source/object/command/PE/native evidence, then execute the original byte-exact POSIX runner against the complete private postimage (coherent qualified object reuse is permitted when source/flags/compiler identity match). The Windows original cold and Black/Rutter resume paths both pass at their actual default2MiB PE stack; no runner modification is justified. Production admission remains OPEN until exact source/predecessor scope and affected current qualification succeed. Preserve all solver/retry/tolerance/mass/restart/ownership/fail-closed boundaries and scientific exclusions.",
+  "next": "Execute persisted .github/workflows/pond-thermal-original.yml on the exact PR head, retain actual POSIX source/object/native archive and failures, independently remeasure, then qualify and integrate this bounded build scope. Production source/admission remains OPEN.",
   "windows_base": {
     "status": "ACTUAL_UNMODIFIED_ORIGINAL_RUNNER_O0_O2_PASS",
     "baseline": "9a55a1780de67db95a6003ab397f332ed2c0e965",
@@ -52,6 +52,14 @@
   "measurement_manifest": "integration/dataqual15_hupsel/POND_THERMAL_ORIGINAL_WINDOWS_MEASUREMENT_20261106.json",
   "lossless_members": 4356,
   "proper_native_files_exact_to_private64MiB": 54,
-  "evidence_qualification": false,
-  "production_admission": false
+  "evidence_qualification": {
+    "windows": "PASS: original runner/source inputs,576 compiler objects,568 coherent resumed objects,54 exact native files,default2MiB PE and5 corruption refusals",
+    "posix": "PENDING actual original cold/resumed O0/O2 execution"
+  },
+  "production_admission": false,
+  "implementation": [
+    "tests/dataqual15_hupsel/pond_thermal_original_build.py",
+    "tests/dataqual15_hupsel/pond_thermal_original_evidence.py",
+    ".github/workflows/pond-thermal-original.yml"
+  ]
 }
