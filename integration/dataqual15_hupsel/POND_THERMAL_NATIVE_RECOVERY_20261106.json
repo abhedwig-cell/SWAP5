@@ -1,0 +1,38 @@
+{
+  "workstream": "MC-SOL01 native restart integrity",
+  "unit": "S5PT private full-composition host-logical qualification",
+  "baseline": "9a55a1780de67db95a6003ab397f332ed2c0e965",
+  "status": "PREREGISTERED_NOT_TESTED_NOT_ADMITTED",
+  "production_delta": [],
+  "candidate": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
+  "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
+  "inputs": {
+    "src/adapter/mod_pond_thermal_restart_file.f90": "c1bd59efa11cb03120830b3c83ff1512f2f47636413585d1c94c6a35f9d1ee3c",
+    "src/runtime/mod_rutter_source_window_processor.f90": "c71453b91639ac4b7643197f2abfa5c93eb3597f8aa784f60f270fb6e5f13ad8",
+    "src/runtime/mod_interception_source_window_runtime.f90": "9979983085ed3210a4b7028e812764269dba92cbff2d0101f845452b834ff782",
+    "tests/nut-sol/run_pond_thermal.py": "901c8e9e72a1f6705ac7668c432d6810deb6884c647090d7af7c58e035a6895d",
+    "tests/nut-sol/test_pond_thermal.f90": "bcc2b988a4fa79d882eb5622fc6c46de2f7819712081323246dcddef24d820c7",
+    "app/support/restart_publish.c": "29d4a47904a8c45eaee2f20a9eb92af0eb46ae2a58a5b43225481cabe536425e"
+  },
+  "scope": [
+    "two scalar header flags in actual S5PT0001 and S5PT0004",
+    "two nested Rutter parameter flags in actual S5PT0004"
+  ],
+  "excluded": [
+    "S5PT0002/3 standalone physical qualification",
+    "production deployment",
+    "whole scientific admission",
+    "mature Hupsel field equivalence"
+  ],
+  "plan": [
+    "execute full original base and Black/Rutter drivers O0/O2 on coherent provider DAG",
+    "apply same explicit Windows PE64MiB link seam to both baseline and private candidate, preserve runner assertions",
+    "independently CRC-reseal malformed logical words and launch actual public reader; preserve actual original verdicts",
+    "compare complete positive original/candidate generations byte-exact",
+    "retain full source/object/compiler/command/native evidence; qualify POSIX separately before any production deployment"
+  ],
+  "invariants": "No changes to solver/retry/tolerance/mass/ownership/schema/CRC/publication or scientific admission. Malformed native logical representations fail closed before interpretation. Valid native bytes remain unchanged.",
+  "reconciliation": "Canonical9a55 unchanged; open PR1485 owns numerical uptake/accounting,1465 conductivity,1457 historical orchestration. This private candidate touches none of their production files. No peer source reset or overlay.",
+  "estimated_cost": "Four full original driver builds, O0/O2 each, approximately10min; native runs under5min; record actual costs.",
+  "next": "Implement private proof controller, commit before compilation, execute local baseline and candidate, adjudicate all actual failures."
+}
