@@ -4,7 +4,7 @@ from pathlib import Path,PureWindowsPath,PurePosixPath
 import joint_production as g
 import joint_writer_runtime as runtime
 import joint_writer as writer
-import joint_writer_probe as probe
+import joint_writer_probe as publication_probe
 STORE=runtime.STORE
 
 def publication_audit(files,r,root):
@@ -16,7 +16,7 @@ def publication_audit(files,r,root):
  for name,layout in layouts:
   home='publication-'+name+'-'+layout
   good=files[name+('/restart.bin.base'if layout=='plain'else'/restart.bin')]
-  old=probe.previous_generation(good);assert old!=good
+  old=publication_probe.previous_generation(good);assert old!=good
   assert files[home+'/old-native']==files[home+'/old-reexport']==files[home+'/old-reexport-again']==old
   exe=str(root/r['executables']['publication-'+name]['executable'])
   seed=str(root/name/('restart.bin.base'if layout=='plain'else'restart.bin'))
@@ -52,6 +52,12 @@ def origin(r):
  assert r['production_trees']=={a:g.blob(ref,a)for a in ('src','app','reference')}==writer.guard()
  runner='tests/dataqual15_hupsel/joint_writer_runtime.py'
  assert r['runner_sha256']==g.sha(g.raw(ref,runner))==g.sha(g.normal((g.ROOT/runner).read_bytes()))
+ for name in ('joint_writer','joint_writer_probe','joint_writer_runtime'):
+  path='tests/dataqual15_hupsel/'+name+'.py'
+  assert g.raw(ref,path)==g.raw('HEAD',path)==g.normal((g.ROOT/path).read_bytes())
+ for name in g.NAMES:
+  path='tests/dataqual15_hupsel/joint_writer_candidates/'+Path(g.SOURCES[name]).name
+  assert g.raw(ref,path)==g.raw('HEAD',path)==writer.candidate(name)
 def audit(files):
  r=json.loads(files['RESULT.json']);assert r['status']=='PRIVATE_THREE_WRITER_PUBLICATION_PASS'and r['baseline']==g.BASE
  assert r['production_admission']is False and r['whole_scientific_admission']is False;origin(r)
@@ -73,11 +79,15 @@ def audit(files):
  assert len(new_objects)==3 and len([e for e in events if e['label']=='provider'])==3
  expected_objects += [str(root/'build'/'publisher.o'),str(root/'build'/'shim.o')]
  assert g.normal(files['publisher.c'])==g.raw(writer.BASE,'app/support/restart_publish.c')
- assert g.normal(files['shim.c'])==probe.publication.shim_source('nt'if platform=='WINDOWS'else'posix').encode()
+ assert g.normal(files['shim.c'])==publication_probe.publication.shim_source('nt'if platform=='WINDOWS'else'posix').encode()
  assert len([e for e in events if e['label']=='publisher'])==len([e for e in events if e['label']=='shim'])==1
+ publisher=next(e for e in events if e['label']=='publisher');shim=next(e for e in events if e['label']=='shim')
+ assert publisher['command'][1:]==['-'+r['optimization'],'-std=c11','-DSWAP5_RESTART_TESTING','-Dswap5_restart_publish=swap5_restart_publish_real','-c',str(root/'publisher.c'),'-o',str(root/'build'/'publisher.o')]
+ assert shim['command'][1:]==['-'+r['optimization'],'-std=c11','-c',str(root/'shim.c'),'-o',str(root/'build'/'shim.o')]
+ assert files['build/publisher.o']and files['build/shim.o']
  assert set(r['executables'])=={'native-'+n for n in (*g.NAMES,'reactive_original')}|{'owner-'+n for n in g.NAMES}|{'publication-'+n for n in g.NAMES}
  for key,item in r['executables'].items():
-  label,name=key.split('-',1);expected=sources[name]if label=='native'else runtime.occupied_driver(sources[name],name)if label=='owner'else probe.driver(sources[name],name);assert files[item['source']]==expected
+  label,name=key.split('-',1);expected=sources[name]if label=='native'else runtime.occupied_driver(sources[name],name)if label=='owner'else publication_probe.driver(sources[name],name);assert files[item['source']]==expected
   drivers=[e for e in events if e['label']==label+'-driver'and e['command'][e['command'].index('-c')+1]==str(root/item['source'])];assert len(drivers)==1
   assert drivers[0]['command'][1:]==[*expected_flags,'-c',str(root/item['source']),'-o',str(root/item['object'])]
   assert files[item['object']]
@@ -134,7 +144,7 @@ def verify(stem,controls=False):
  with tarfile.open(fileobj=io.BytesIO(lzma.decompress(raw)),mode='r:')as t:files={v.name:t.extractfile(v).read()for v in t.getmembers()}
  assert {n:g.sha(b)for n,b in files.items()}==m['members'];assert audit(files)==m['measurement']
  if controls:
-  r=json.loads(files['RESULT.json']);obj=next(x for x in r['bindings']if x['replacement']=='age');paths=[r['source_snapshots']['age']['path'],runtime.local(obj['object'],r['root']),r['executables']['native-age']['source'],r['executables']['owner-age']['source'],'age/restart.bin.history.2.bin',r['occupied'][0]['key']+'.after','EVENTS.json',r['executables']['native-age']['executable']];assert len(set(paths))==8
+  r=json.loads(files['RESULT.json']);obj=next(x for x in r['bindings']if x['replacement']=='age');paths=[r['source_snapshots']['age']['path'],runtime.local(obj['object'],r['root']),r['executables']['native-age']['source'],r['executables']['owner-age']['source'],'age/restart.bin.history.2.bin',r['occupied'][0]['key']+'.after','EVENTS.json',r['executables']['native-age']['executable'],'publisher.c','shim.c','publication-age-history/2/authority.pending','publication-age-history/before/fresh'];assert len(set(paths))==12
   for name in paths:
    old=files[name];files[name]=b''
    try:audit(files)
