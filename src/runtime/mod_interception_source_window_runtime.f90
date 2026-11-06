@@ -47,9 +47,38 @@ module mod_interception_source_window_runtime
   end type
 
   public :: initialize_interception_window, initialize_interception_progress
+  public :: select_interception_event_endpoint
   public :: prepare_interception_trial, accept_interception_trial
   public :: export_interception_restart, restore_interception_restart
 contains
+  pure subroutine select_interception_event_endpoint(cursor,event_end,max_step,endpoint,status)
+    real(real64),intent(in)::cursor,event_end,max_step
+    real(real64),intent(out)::endpoint
+    integer,intent(out)::status
+    real(real64)::remaining
+    endpoint=0.0_real64;status=INTWIN_INVALID
+    if(.not.ieee_is_finite(cursor).or..not.ieee_is_finite(event_end).or..not.ieee_is_finite(max_step))return
+    if(event_end<=cursor.or.max_step<=0.0_real64)return
+    if(cursor<0.0_real64.and.event_end>0.0_real64)then
+      if(event_end>huge(event_end)+cursor)return
+    end if
+    ! Check representability before the shared time comparison subtracts clocks.
+    ! Never relabel a previously accepted cursor at an indistinguishable event.
+    if(same_time(cursor,event_end))return
+    remaining=event_end-cursor
+    if(max_step>=remaining)then
+      endpoint=event_end
+    else
+      endpoint=cursor+max_step
+      ! Choose the exact existing source event BEFORE evaluating its water.
+      if(same_time(endpoint,event_end))endpoint=event_end
+    end if
+    if(endpoint<=cursor.or.endpoint>event_end)then
+      endpoint=0.0_real64;return
+    end if
+    status=INTWIN_OK
+  end subroutine select_interception_event_endpoint
+
   subroutine initialize_interception_window(id,t0,t1,aggregate,window,status)
     integer(int64),intent(in)::id
     real(real64),intent(in)::t0,t1,aggregate

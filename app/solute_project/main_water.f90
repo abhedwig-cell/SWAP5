@@ -43,7 +43,8 @@ program swap5_native_water_project
   use mod_macro_water_restart
   use mod_fmr_macropore_configuration
   use mod_macropore_single_column_runtime,only:macropore_runtime_policy_t
-  use mod_interception_source_window_runtime,only:initialize_interception_window,interception_source_window_t
+  use mod_interception_source_window_runtime,only:initialize_interception_window,interception_source_window_t, &
+    select_interception_event_endpoint,INTWIN_OK
   use mod_rutter_source_window_processor,only:initialize_rutter_canopy_state
   use mod_kernel_transactions,only:kernel_checkpoint_t,kernel_candidate_state_t,kernel_result_t,kernel_diagnostics_t
   implicit none
@@ -179,7 +180,7 @@ program swap5_native_water_project
   real(real64)::canopy_evaporation(MAX_WINDOWS)=0d0,vegetation_cover(MAX_WINDOWS)=0d0
   real(real64)::entry_ramp_width_cm=0d0
   real(real64)::stop_time=huge(1d0),day_start
-  real(real64)::cursor,endpoint,rain_rate,day_residual,root_amount,drain_amount,rapid_amount,runoff_amount,bottom_amount_day
+  real(real64)::cursor,endpoint,source_event_endpoint,rain_rate,day_residual,root_amount,drain_amount,rapid_amount,runoff_amount,bottom_amount_day
   real(real64)::pond_macro_amount,max_pond_depth,direct_macro_amount,max_net_source_check,net_source_check
   real(real64)::potential_root_amount,observed_heat,dt_check,delta_check,expected_check,cell_check,matrix_check,gross_check
   real(real64)::max_cell_check,max_matrix_check,max_gross_check
@@ -577,9 +578,9 @@ program swap5_native_water_project
         do while(rain_index<rain_count.and.rain_ends(rain_index)<=cursor+1d-12);rain_index=rain_index+1;end do
         endpoint=min(endpoint,rain_ends(rain_index));rain_rate=rain_rates(rain_index)
       end if
-      endpoint=min(endpoint,cursor+source_dtmax)
-      ! Snap only a roundoff-sized final remainder to the existing event.
-      if(ends_day(j)-endpoint<=64d0*epsilon(endpoint)*max(1d0,abs(ends_day(j))))endpoint=ends_day(j)
+      source_event_endpoint=endpoint
+      call select_interception_event_endpoint(cursor,source_event_endpoint,source_dtmax,endpoint,code)
+      call require(code==INTWIN_OK,'source event step endpoint')
       call require(endpoint>cursor,'nonprogressing source interval')
       call initialize_interception_window(1000000_int64+int(j,int64)*MAX_RAIN_EVENTS+rain_index,cursor,endpoint, &
         rain_rate*(endpoint-cursor),forcing%rutter%source_window,code)
