@@ -751,7 +751,7 @@
   },
   "scope_note": "Initial root65-day fields retain original V2 failure; event_aligned_terminal is later V4 event-aligned142-day negative. Current authoritative executable and full/year gates are in current_execution; no historical scientific promotion.",
   "current_execution": {
-    "status": "RUNNING_PHASE_EXACT_TINY_DRAIN_ORIGINAL_INPUT481",
+    "status": "RUNNING_AFTER_OLD245379_REFUSAL_OBSERVING_NEW245594_STAGNATION",
     "model": "ANDELST_JOINT_CURRENT_GROUNDWATER_DRAINAGE_GRAPH_V4",
     "executable_sha256": "82ac31bd1a6aca62a6b818d8f1fd0969cd37139a39a82d49dec496a4d9db040c",
     "original_initialization": true,
@@ -763,7 +763,9 @@
     "run": "s5-phase-exact-tiny-drain-original481-O2",
     "capture": "s5-phase-exact-tiny-drain-captured-own-O2",
     "whole481": false,
-    "own365_to367": false
+    "own365_to367": false,
+    "last_observed_completed_source_interval": 245.59399999999692,
+    "previous245379_refusal_passed": true
   },
   "limiter_ratio_admission_selection": {
     "pr": 1602,
@@ -1156,5 +1158,14 @@
     "production_scope": "Pure committed-phase selector and two actual native caller sites; no physical/state/schema/tolerance change.",
     "research_scope": "Private V4 selects unchanged homogeneous tiny signed DIVDRA in all three macro response contexts; public legacy/default magnitude refusal and graph activation unchanged.",
     "whole481_and_year_not_promoted": true
+  },
+  "source245594_observation_selection": {
+    "reason": "Original-init exact-phase V4 passes previous245.379 refusal but source245.594-to245.596 has not completed for over8min while CPU advances. Distinguish nonlinear contact failure from temporal plateau using immutable own245 read-only replay. No parameter/tolerance/DT changes or cross-executable own-restart claim. Primary remains running.",
+    "expected_seconds": 1200,
+    "timeout_seconds": 1800,
+    "seed": "s5-phase-exact-tiny-drain-captured-own-O2/245/restart.bin",
+    "seed_sha256": "4b991f286ad3791f631bfdafe0f02cf0ac8c9f43f1b8d7841cee33978fe06e3a",
+    "whole481": false,
+    "own_year": false
   }
 }
