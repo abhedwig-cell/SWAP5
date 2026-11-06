@@ -303,6 +303,20 @@
     "implementation_cause": "joint_entry_residual refreshes theta and provider_capacity but leaves state%dimoca at the old external Newton head. jacobian_F and macro derivatives consume this stale capacity. Refresh state%dimoca from the same current constitutive tuple; retain existing floor and every equation/gate.",
     "next_action": "Same-source64 replay first, then earlier2924/65 regressions atO0/O2 and original-init481/own-year if successful.",
     "expected_compile_seconds": 15,
-    "expected_probe_seconds": 30
+    "expected_probe_seconds": 30,
+    "capacity_fix_probe": {
+      "seconds": 37.698532099835575,
+      "origin_unchanged": true,
+      "diagnostic_advance_limit_reached": 240,
+      "full_source_complete": false,
+      "last_internal_cursor": 64.41579740035827,
+      "meaning": "Capacity refresh alone does not resolve contact stagnation. Retain negative result; no full native rerun yet."
+    },
+    "complete_jacobian_selection": {
+      "purpose": "Numerical diagnosis only: substitute every actual residual head derivative while retaining the source equations, constraint/border, original shared-storage factors and all existing certificates. Distinguish Jacobian approximation/regularization from absence of a graph solution. No new model law or tolerance.",
+      "expected_compile_seconds": 15,
+      "expected_native_seconds": 60,
+      "timeout_seconds": 180
+    }
   }
 }
