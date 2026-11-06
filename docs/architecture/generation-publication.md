@@ -43,3 +43,19 @@ reservation is verified; actual compiler response files avoid CreateProcess206
 without changing numerical flags. Completed compiler/source cohorts may be
 reused only with exact provenance and preserved original failures. Canonical
 admission requires complete current/predecessor qualification and adjudication.
+
+The retained local Windows private execution now passes all five original native
+recipes at O0/O2, with 14 actual links and 2126 pinned provider/module artifacts.
+Independent checks validate 24 complete positive generation files and nested
+checksums. Twenty actual public-writer precommit failures preserve authority;
+eight real process terminations on the two publication sides reconstruct the
+expected complete old/new authority. Raw source, compiler response, PE stack and
+data controls are retained losslessly in the dated Windows publication capsule.
+These are private runtime results, with production unchanged. POSIX execution
+and current/canonical qualification remain separate requirements.
+
+The original Windows CSV writer fails its unchanged public assertion. A focused
+native UCRT measurement isolates `rename` returning EEXIST when the target name
+already exists, including when the complete CSV bytes are identical. The new
+private publisher passes actual replacement. The original failure is retained;
+unexecuted later original Windows recipes are not labelled passed.
