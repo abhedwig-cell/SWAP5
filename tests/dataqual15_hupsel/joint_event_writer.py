@@ -1,6 +1,6 @@
 """Cold exact current335 graph; unchanged complete private writer postimages."""
 import json,subprocess
-from pathlib import Path
+from pathlib import Path,PureWindowsPath,PurePosixPath
 import joint_production as g
 import joint_production_runtime as reference_runtime
 import joint_writer as original_writer
@@ -78,12 +78,12 @@ def audit_cold(files,platform,opt):
   path=event['command'][event['command'].index('-c')+1];row=meta['sources'][path]
   assert g.normal(files[row['snapshot']])==g.normal(expected),'unchanged complete original driver '+name
   assert event['command'][1:]==[*b['flags'],'-c',path,'-o',event['command'][-1]]
-  obj=event['command'][-1];exe=next(p for n,p in b['executables_sha256'].items()if n==name)
+  obj=event['command'][-1];q=PureWindowsPath if platform=='WINDOWS'else PurePosixPath
   # BUILD records executable hashes keyed by driver name, not absolute path.
   leaf=name+('.exe'if platform=='WINDOWS'else'-driver')
   assert g.sha(files['baseline/'+leaf])==b['executables_sha256'][name]
   response=files['baseline/'+name+'.args'].decode().replace('\r\n','\n')
-  expected_args=b['flags']+(['-Wl,--stack,16777216']if platform=='WINDOWS'else[])+[obj,*objects,'-o',str(Path(obj).with_name(leaf))]
+  expected_args=b['flags']+(['-Wl,--stack,16777216']if platform=='WINDOWS'else[])+[obj,*objects,'-o',str(q(obj).with_name(leaf))]
   assert response=='\n'.join('"'+p.replace('\\','/')+'"'for p in expected_args)+'\n'
  for name in g.NAMES:
   assert {k.removeprefix('baseline/'):v for k,v in files.items()if k.startswith('baseline/'+name+'/')}=={k.removeprefix('candidate/'):v for k,v in old.items()if k.startswith('candidate/'+name+'/')}
