@@ -1,0 +1,34 @@
+name: Private complete matrix thermal native qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/matrix_thermal_native_*.py
+      - integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_*
+      - .github/workflows/matrix-thermal-native.yml
+permissions:
+  contents: read
+jobs:
+  native-posix:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual exact current original and complete private native postimage
+        # Selected essential risk: complete thermal/chemical state reconstruction,
+        # two native logical branch sites and publication. Expected10-20min.
+        run: |
+          python3 -B tests/dataqual15_hupsel/matrix_thermal_native_runtime.py --role incumbent --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/incumbent-v2"
+          python3 -B tests/dataqual15_hupsel/matrix_thermal_native_runtime.py --role candidate --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/candidate-v2"
+      - name: Real full native reader malformed logicals and proper complete reexports
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_controls.py --models "$RUNNER_TEMP/matrix-thermal" --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/controls"
+      - name: Original full refinement, semantic negatives and before/after SIGKILL
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_qualification.py --models "$RUNNER_TEMP/matrix-thermal" --output "$RUNNER_TEMP/matrix-thermal/qualification"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: complete-matrix-thermal-native-posix
+          path: ${{ runner.temp }}/matrix-thermal
