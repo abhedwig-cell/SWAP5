@@ -120,7 +120,7 @@ def main():
         objects.append(obj)
     exe = output / 'swap5_solute_column'
     publication = ROOT / 'app/support/restart_publish.c'
-    needs_publication = any('swap5_restart_publish' in s.read_text() for s in ordered)
+    needs_publication = any(any(symbol in s.read_text() for symbol in ('swap5_restart_publish', 'swap5_generation_publish')) for s in ordered)
     if needs_publication:
         report['input_sha256'][str(publication.relative_to(ROOT))] = sha(publication)
         obj = output / 'restart_publish.o'

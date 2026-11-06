@@ -10,6 +10,7 @@ SCOPE='integration/dataqual15_hupsel/GENERATION_PUBLICATION_SCOPE_20261106.json'
 BRIDGES={'.github/workflows/'+n for n in ('generation-publication.yml','generation-crc.yml','matrix-crc.yml','native-n-production.yml')}
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/generation_publication_admission.py','tests/dataqual15_hupsel/test_generation_publication_admission.py','tests/dataqual15_hupsel/generation_publication_policy.py','tests/dataqual15_hupsel/generation_publication_audit.py','tests/dataqual15_hupsel/generation_publication_capsule.py','tests/dataqual15_hupsel/generation_publication_models.py','tests/dataqual15_hupsel/generation_publication_c_probe.py','tests/dataqual15_hupsel/generation_publication_windows_faults.py','tests/dataqual15_hupsel/generation_publication_windows_crt.py','tests/nut-output/generation_publication_windows_test.c'}
 RECORDS={'integration/dataqual15_hupsel/GENERATION_PUBLICATION_'+n+'_20261106.json' for n in ('WINDOWS','WINDOWS_COMPONENT','POSIX','PREREGISTRATION','DEPLOYMENT_PREREGISTRATION')}
+GATES|={'tools/solute/build_column.py','tools/solute/build_crop_column.py','tests/nut-crop/run_hist_complete.py','tests/dataqual15_hupsel/generation_publication_deployed_models.py','tests/dataqual15_hupsel/generation_publication_baseline.py','tests/dataqual15_hupsel/rotation_native_baseline.py','tests/dataqual15_hupsel/test_generation_publication_build.py'}
 sha=lambda b:hashlib.sha256(b).hexdigest()
 normal=lambda b:b.replace(b'\r\n',b'\n')
 
