@@ -1,6 +1,7 @@
 # Complete-generation publication contract
 
-Status: proposed private successor; production source and admission unchanged.
+Status: qualified private successor; final canonical qualification pending.
+Production source and admission remain unchanged.
 Authority: GENERATION_PUBLICATION_PREREGISTRATION_20261106.json.
 
 A complete physical/diagnostic/history generation is the single persistent
@@ -51,8 +52,14 @@ checksums. Twenty actual public-writer precommit failures preserve authority;
 eight real process terminations on the two publication sides reconstruct the
 expected complete old/new authority. Raw source, compiler response, PE stack and
 data controls are retained losslessly in the dated Windows publication capsule.
-These are private runtime results, with production unchanged. POSIX execution
-and current/canonical qualification remain separate requirements.
+These are private runtime results, with production unchanged. Actual POSIX
+O0/O2 execution of the same five original recipes also passes, including original
+SIGKILL controls before/after publication and unchanged restart stage6 behavior.
+All 24 selected positive generation files are byte-identical across the two
+measured platforms. Independent source/object/data remeasurement and four
+corrupted-evidence controls pass. Final current/canonical qualification remains
+a separate requirement. The exact original POSIX artifact ZIP and every Windows
+cohort member are retained losslessly in dated publication evidence capsules.
 
 The original Windows CSV writer fails its unchanged public assertion. A focused
 native UCRT measurement isolates `rename` returning EEXIST when the target name

@@ -20,13 +20,19 @@ jobs:
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
       - name: Actual incumbent/candidate native API file states and independent CRC
         run: python3 -B tests/dataqual15_hupsel/generation_publication_c_probe.py --compiler /usr/bin/gcc --output "$RUNNER_TEMP/publication-c"
+      - name: Remeasure retained full Windows source/object/native/fault/termination evidence
+        run: python3 -B tests/dataqual15_hupsel/generation_publication_capsule.py
       - name: Actual private full native output/saved physical and process assertions O0/O2
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_PUBLICATION_POSIX_20261106.json') == '' }}
         # Essential uncovered risk: changed publication boundary in complete real
         # owners. Selected full cold provider/model closure, expected 10-15min;
         # a component probe cannot establish staged owner or fresh-process state.
         run: python3 -B tests/dataqual15_hupsel/generation_publication_models.py --role candidate --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/publication-models"
+      - name: Remeasure complete immutable original POSIX native model and process evidence
+        if: ${{ hashFiles('integration/dataqual15_hupsel/GENERATION_PUBLICATION_POSIX_20261106.json') != '' }}
+        run: python3 -B tests/dataqual15_hupsel/generation_publication_capsule.py --posix
       - uses: actions/upload-artifact@v4
-        if: always()
+        if: ${{ always() && hashFiles('integration/dataqual15_hupsel/GENERATION_PUBLICATION_POSIX_20261106.json') == '' }}
         with:
           name: private-publication-posix-originals
           path: |
