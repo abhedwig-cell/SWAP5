@@ -5,6 +5,8 @@ on:
     paths:
       - 'src/solver/mod_reference_bordered_solver.f90'
       - 'src/solver/mod_reference_linear_solver.f90'
+      - 'src/process/macropore/mod_macropore_standard_storage.f90'
+      - 'tests/dataqual15/*empty_pocket*'
       - 'tests/dataqual15/*joint*'
       - 'tests/dataqual15/research/joint_*'
       - '.github/workflows/dataqual15-joint-contact.yml'
@@ -18,8 +20,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Real border and corrected entry/perched action O0/O2
         run: python -B tests/dataqual15/run_joint_entry_contracts.py --joint-contact --compiler /usr/bin/gfortran --output joint-contracts
+      - name: Real positive-pocket candidate and vertical closure O0/O2
+        run: python -B tests/dataqual15/run_empty_pocket_contract.py --compiler /usr/bin/gfortran --output pocket-contracts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: joint-contact-component
-          path: joint-contracts
+          path: |
+            joint-contracts
+            pocket-contracts
