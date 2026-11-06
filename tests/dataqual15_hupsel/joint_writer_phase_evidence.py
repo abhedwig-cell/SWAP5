@@ -70,5 +70,14 @@ def pack(out):
   for name,raw in files.items():info=tarfile.TarInfo(name);info.size=len(raw);t.addfile(info,io.BytesIO(raw))
  raw=lzma.compress(buffer.getvalue());stem=out.parent/(out.name+'-evidence');stem.with_suffix('.tar.xz').write_bytes(raw)
  stem.with_suffix('.json').write_text(json.dumps(dict(sha256=sha(raw),members={p:sha(b)for p,b in files.items()},measurement=measurement),indent=2)+'\n');print(json.dumps(measurement))
+def verify(stem):
+ r=json.loads(stem.with_suffix('.json').read_text());raw=stem.with_suffix('.tar.xz').read_bytes();assert sha(raw)==r['sha256']
+ with tarfile.open(fileobj=io.BytesIO(lzma.decompress(raw)),mode='r:')as t:
+  members=t.getmembers();assert all(m.isfile()for m in members)and len({m.name for m in members})==len(members)
+  files={m.name:t.extractfile(m).read()for m in members}
+ assert {p:sha(b)for p,b in files.items()}==r['members']
+ measurement=audit(files);measurement['corruption_refusals']=corruption_tests(files);assert measurement==r['measurement'];print(json.dumps(measurement))
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);a=p.parse_args();pack(a.output.resolve())
+ p=argparse.ArgumentParser();group=p.add_mutually_exclusive_group(required=True);group.add_argument('--output',type=Path);group.add_argument('--stem',type=Path);a=p.parse_args()
+ if a.output:pack(a.output.resolve())
+ else:verify(a.stem.resolve())

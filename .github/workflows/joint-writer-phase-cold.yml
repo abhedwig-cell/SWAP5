@@ -19,8 +19,13 @@ jobs:
       - name: Actual immutable current source O0 O2 and independent source object audit
         run: |
           for opt in O0 O2; do
-            python -B tests/dataqual15_hupsel/joint_writer_phase_cold.py --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/pr1605-cold/$opt"
-            python -B tests/dataqual15_hupsel/joint_writer_phase_evidence.py --output "$RUNNER_TEMP/pr1605-cold/$opt"
+            stem="integration/dataqual15_hupsel/JOINT_WRITER_PR1605_POSIX_${opt}_20261106"
+            if test -f "${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_writer_phase_evidence.py --stem "$stem"
+            else
+              python -B tests/dataqual15_hupsel/joint_writer_phase_cold.py --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/pr1605-cold/$opt"
+              python -B tests/dataqual15_hupsel/joint_writer_phase_evidence.py --output "$RUNNER_TEMP/pr1605-cold/$opt"
+            fi
           done
       - uses: actions/upload-artifact@v4
         if: always()
