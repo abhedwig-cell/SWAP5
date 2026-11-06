@@ -31,3 +31,14 @@ scientific qualification remain separate decisions. Original global production
 guards retain their failed peer-source footprint observations unchanged.
 
 Authority: `integration/dataqual15_hupsel/JOINT_CURRENT_RECOVERY_20261106.json`.
+
+Actual Windows and cold POSIX O0/O2 now all pass. The POSIX run42249262550
+artifact was SHA-verified and independently remeasured on Windows. Each native
+cohort rejects24 malformed logical headers and seven evidence mutations; each
+current-object owner cohort rejects120 occupied reads and five evidence defects.
+All22 same-platform cross-optimization files and44 previous-to-current files per
+platform match exactly. Original17 O0/21 O2 failed baseline refusal observations
+remain retained on both platforms. All16 initial workflows are terminal:15
+SUCCESS and the unchanged global production footprint guard FAILED. Actual exact
+baseline5a6cde28d and current guard failures, gate identity and production tree
+identity are retained separately; this is no production-admission waiver.
