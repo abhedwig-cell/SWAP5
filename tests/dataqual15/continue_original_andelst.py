@@ -62,8 +62,12 @@ def main():
   except subprocess.TimeoutExpired:code=None;censored=True
  rows=lambda n:list(csv.DictReader((out/n).open()))if(out/n).exists()else[]
  daily=rows('budget.csv');progress=rows('progress.csv');cost=rows('cost.csv')
+ assert len(progress)==len(cost),'one cost receipt per attempted source interval'
+ completed_progress=[row for row,receipt in zip(progress,cost)if receipt['completed'].strip()=='T']
  record.update(returncode=code,censored=censored,seconds=time.monotonic()-start,
-  completed_days=int(float(daily[-1]['t1']))if daily else 0,last_completed_source_interval=float(progress[-1]['t1'])if progress else 0,
+  completed_days=int(float(daily[-1]['t1']))if daily else 0,
+  last_attempted_source_interval=float(progress[-1]['t1'])if progress else 0,
+  last_completed_source_interval=float(completed_progress[-1]['t1'])if completed_progress else 0,
   maximum_water_residual_cm=max((abs(float(r['water_residual_cm']))for r in daily),default=None),cost=cost,
   full_original_complete=code==0 and bool(daily)and float(daily[-1]['t1'])==481)
  record['numerical_controls_observed']=[s for s in(out/'stdout').read_text().splitlines()if 'ORIGINAL_NATIVE_NUMERICAL_CONTROLS'in s]
