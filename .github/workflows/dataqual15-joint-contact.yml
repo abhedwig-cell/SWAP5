@@ -22,6 +22,10 @@ jobs:
         run: python -B tests/dataqual15/run_joint_entry_contracts.py --joint-contact --compiler /usr/bin/gfortran --output joint-contracts
       - name: Real positive-pocket candidate and vertical closure O0/O2
         run: python -B tests/dataqual15/run_empty_pocket_contract.py --compiler /usr/bin/gfortran --output pocket-contracts
+      - name: Real current groundwater view O0/O2
+        run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output current-view-contracts
+      - name: Scoped candidate source callback and refusal O0/O2
+        run: python -B tests/dataqual15/run_joint_source_callback_contract.py --compiler /usr/bin/gfortran --output current-source-contracts
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -29,3 +33,5 @@ jobs:
           path: |
             joint-contracts
             pocket-contracts
+            current-view-contracts
+            current-source-contracts

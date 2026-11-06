@@ -79,7 +79,8 @@ rather than timing out, at attempted endpoint43.340000000000416; the last accept
 endpoint is43.33800000000041. The accepted-flux-trace materializer refuses
 publication. A read-only instrumented native run confirms Rutter preparation
 succeeds; the earlier generic Rutter-clock diagnostic is not the cause. The
-precise trace failure is under observation. The sealed raw old result incorrectly
+trace failure is resolved by the separately admitted positive-stock packing
+correction described in [positive macropore storage](MACROPORE_POSITIVE_STORAGE.md). The sealed raw old result incorrectly
 labels the attempted endpoint as completed; its `cost.csv` marks that row false.
 The execution reporter now distinguishes attempted and completed endpoints.
 
@@ -88,3 +89,76 @@ own continuations. They do not complete corrected481, a year-boundary restart,
 original Andelst481, energy equivalence or historical scientific qualification.
 The research model remains explicitly selected by a separate source-bound build;
 ordinary production source callers and physical contact laws are unchanged.
+
+## Admission and current-profile coupling successor
+
+The bounded solver and private V1/V2 research sources are canonical through PR1591,
+actual merge `db42f99e2de9cae43dfe04bbf291e8e214edd6f7`, with parents
+`0c85785b65653155718e17ecc5d5590cc2de52c6` and
+`0aba566443bf7a7ab013f33e4c44051076edc1b5`. Focused Linux border/contact O0/O2
+contracts and strict documentation pass. This admits a numerical library and
+explicit research recipe, without activating the private contact model in production.
+PR1593 subsequently admits the positive-pocket correction. V2 then completes
+65 original-input days before a separate temporal rejection at65.17499999999755.
+
+At this transition the old full/half head discrepancy approaches
+`0.08219235171827655 cm`, above the unchanged0.01cm gate, even at a
+`1.4210854715202004e-14 day` assessment width. The current Richards heads and
+lagged groundwater-dependent process views disagree across a desaturating pocket.
+Private V3 recomputes the existing CALCGWL projection from the current candidate
+and adds its complete crossing-head Jacobian columns. The actual native replay
+still fails, now with `0.03402854927105636 cm` at node86. A frozen-drainage
+intervention isolates the remaining lag; it is diagnostic evidence only and is
+explicitly rejected as a physical successor.
+
+Private `ANDELST_JOINT_CURRENT_GROUNDWATER_DRAINAGE_GRAPH_V4` evaluates the real
+DRAMET3 response and signed DIVDRA partition from that same current profile inside
+every nonlinear residual. A synchronous worker-local callback returns candidate
+rates without changing bound drainage during Newton. The identical functional
+rate is recomputed before final transport, mass and accepted-trace publication.
+Its lifetime ends with the advance; it adds no committed field or restart schema.
+The complete current-groundwater Jacobian columns retain the shared-storage factors.
+No temporal, nonlinear, water, rollback or restart limit changes.
+
+The actual read-only65 source replay passes unchanged backend certificates:
+eight attempts, zero solver refusals, four temporal refusals and four accepted
+internal substeps in2.9275 seconds. Its origin remains immutable and it publishes
+no restart. O0/O2 current-view physical interfaces and scoped callback/refusal
+contracts pass; the callback driver alone does not qualify DRAMET3 science.
+A fresh original-input O0 day completes with maximum water residual
+`9.546109427027369e-14 cm`. Per-Newton file logging is now opt-in via
+`SWAP5_JOINT_CONTACT_DIAGNOSTICS=1`; unchanged day-one physical payload and all
+budget/progress/cost/diagnostic rows prove the logging-only change at O0.
+The separate quiet O2 full481 request is pending its terminal result and own
+continuations; the read-only probe establishes neither of those claims.
+Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
+
+## First-iteration border initialization repair
+
+The private V4 recipe is integrated through PR1595 at actual merge
+`267a0771481cd23b4f7da94492816573e6581514`, with focused Linux O0/O2 and
+strict docs PASS. Its first quiet full request exposes a separate implementation
+defect at source2.923999999999573 to2.925999999999573. A diagnostic own-day2
+replay reproduces all471 common source rows exactly and captures the caller state
+without altering its origin. Within the next interval, the solver repeatedly
+retreats to roughly1e-11day steps at the sharp node34 entry plane.
+
+The contact constraint matrix is initialized to zero, then its first residual
+is assessed before the rows are filled. This reports `-threshold` instead of
+`head-threshold`, producing an artificial10cm equality error while the head is
+already pinned. The repair forms the exact existing constraint rows before the
+first assessment. Contact physics, graph selection, accepted mass and all
+numerical limits stay unchanged. The same actual source now completes in1.121s;
+the prior65 source also completes in1.323s. Both require eight attempts, no solver
+refusal, four temporal refusals and four accepted internal substeps. These are
+read-only backend proofs, with immutable origins and no published restart.
+
+O0 day-one physical payload and all four budget/progress/cost/diagnostic files
+are byte-exact; O2 day-one payload is exact. The defective full request is
+intentionally censored after1719.945s, with its raw result, costs and explicit
+stop reason retained. Its censor does not count as completed481. The repaired
+fresh original-input O2 full request and O0 strict own continuation remain pending
+until their actual terminal results. The archived negative implementation remains
+failed; its repair does not establish historical equivalence.
+Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json` and
+`integration/dataqual15/BORDER_INITIALIZATION_EVIDENCE_20261106.zip`.
