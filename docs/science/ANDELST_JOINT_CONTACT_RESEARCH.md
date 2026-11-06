@@ -7,6 +7,16 @@ equivalence or a production-default contact law. The original sharp model still
 has its recorded 1.958-day barrier. Original Andelst481 and an exact own
 year-boundary restart remain open. Grassgrowth and Hupsel admissions are separate.
 
+The event-aligned V4 research run subsequently completes142 days in2574.283s,
+then encounters a positive-subnormal outflow quotient SIGFPE in the public
+limiter. Maximum completed daily water residual is3.392259196288776e-12cm.
+Strict own80-to81 is exact across all504 progress rows and the full day81 stream.
+Strict own142 reproduces all416 preceding rows and the same crash in1.405s.
+The [bounded quotient successor](MACROPORE_POSITIVE_STORAGE.md#bounded-outflow-quotient-successor)
+passes the actual failed source at O0/O2. A new executable-bound full request
+starts from original initialization; earlier streams are never rebound. The
+source record distinguishes this current gate from all previous negative runs.
+
 The implementation starts at canonical `b4107989d5f31e4f051dfbbf5b98bd182e152d64`.
 The later `6bcacb0af5890db0d54fa9b24a7f322f36de76c2` delta contains pond-thermal
 evidence and documentation, with no changed Richards or macropore implementation.

@@ -71,8 +71,11 @@ day80 barrier. Its strict same-executable own80-to81 continuation completes in
 7.631s: all504 source progress rows and the complete day81 checkpoint are
 byte-exact. The executable SHA256 is
 `8f7f310ea2785ff00822a47f100b938824bde42e678a6431eea509fde69b5fe1`;
-no checkpoint binding or byte is rewritten. Whole481 and365-to367 remain separate
-gates. The earlier private-model own64-to66 result remains a source-bound
+no checkpoint binding or byte is rewritten. That full request then completes142
+days and encounters a separate public limiter SIGFPE, documented in the
+[bounded outflow quotient successor](MACROPORE_POSITIVE_STORAGE.md#bounded-outflow-quotient-successor).
+Whole481 and365-to367 remain separate gates on the repaired executable.
+The earlier private-model own64-to66 result remains a source-bound
 historical receipt.
 
 A distinct original-input current-public-source control uses no private contact,

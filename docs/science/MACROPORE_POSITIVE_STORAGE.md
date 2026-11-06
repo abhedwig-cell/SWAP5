@@ -60,3 +60,37 @@ repeats all91 rows, including refusal, and the diagnostic committed state exactl
 This is not a storage-repair regression or a completed481-day result.
 Authority: `integration/dataqual15/EMPTY_POCKET_RECOVERY_20261106.json` and
 `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
+
+## Bounded outflow quotient successor
+
+The later V4 corrected-model original-input run reaches142 complete days before
+a SIGFPE. The actual five-domain limiter request has8.51498143972058989e-7cm
+available stock in domain4 and4.94065645841246544e-324cm requested outflow.
+The request is valid and all values are finite. `min(1,available/demand)`
+overflows before its result can be clipped. Positive subnormal pockets are real
+represented stocks; deleting them or raising a cutoff would not repair this
+arithmetic defect.
+
+The conservative limiter already initializes each fraction to one. It now divides
+only when demand exceeds available stock; then demand is positive and the ratio
+lies in[0,1]. With sufficient stock it retains one, including zero demand. The
+signed outgoing amount, all stock bounds, the legacy deadband route, tolerance,
+retry, persistent state and stream schema stay unchanged.
+
+The immutable actual request reproduces the previous SIGFPE at O0/O2. The repair
+passes that request and seven exact zero/subnormal/stock cases at both modes.
+The entire unchanged1919-case DATAQUAL07 owner also passes with byte-exact prior
+stdout. Real native read-only own-day142 probes reproduce all416 prior progress
+rows exactly, then complete142.832000000002154 to142.834000000002163 in three
+attempts, zero solver refusals, one temporal refusal and two accepted substeps.
+Water residual is4.60779418093304471e-14cm; all original independent macro-cell,
+matrix and trace guards run before the diagnostic stop. O0/O2 times are4.100s
+and2.382s, origins are unchanged and no restart is published.
+
+Fresh corrected-model day-one physical payloads remain byte-exact at O0/O2;
+all four O0 output CSVs remain byte-exact. Linux focused O0/O2 contracts pass
+at run42282650813, source `eb7c5c1df29a42f891b593657f4778ee3fdc9f08`.
+This bounded public arithmetic correction does not activate the private contact
+model or qualify whole481, an own year restart or historical equivalence.
+Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json` and
+`integration/dataqual15/EVENT_ALIGNED142_EVIDENCE_20261106.zip`.
