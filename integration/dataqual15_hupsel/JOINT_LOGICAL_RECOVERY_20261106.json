@@ -47,5 +47,19 @@
     }
   },
   "controller": "tests/dataqual15_hupsel/joint_logical.py",
-  "controller_sha256": "54291fbf533dceaacaeeaf4954434e436ced383f77b66c7795d543d00ab9d601"
+  "controller_sha256": "9d4e35d9edcfa091ccfb33c6d0a39fda5b51065437e37fc23bd04f03323db120",
+  "retained_setup_failures": [
+    {
+      "optimization": "O0",
+      "path": "C:/Users/Veldh012/AppData/Local/Temp/s5-joint-logical-20261106/O0-v1",
+      "verdict": "FAILED_BEFORE_ANY_BUILD",
+      "reason": "Original age driver requires historical_age_oracle. Added exact original run_age.py literal immutable B1.11 oracle generation and dependency registration; no replacement oracle or removed assertion."
+    },
+    {
+      "optimization": "O2",
+      "path": "C:/Users/Veldh012/AppData/Local/Temp/s5-joint-logical-20261106/O2-v1",
+      "verdict": "FAILED_BEFORE_ANY_BUILD",
+      "reason": "Original age driver requires historical_age_oracle. Added exact original run_age.py literal immutable B1.11 oracle generation and dependency registration; no replacement oracle or removed assertion."
+    }
+  ]
 }

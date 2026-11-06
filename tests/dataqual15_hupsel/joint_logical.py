@@ -1,5 +1,5 @@
 """Complete private S5AJ/S5NJ/S5RN raw-logical reader observation."""
-import argparse,hashlib,json,os,shutil,struct,subprocess,time,zlib
+import argparse,base64,hashlib,inspect,io,json,os,shutil,struct,subprocess,tarfile,time,zlib
 from pathlib import Path
 import native_n_crc_runtime as prior
 ROOT=prior.ROOT
@@ -44,6 +44,23 @@ def candidate(name):
  for before,after in reversed(replacements):restored=restored.replace(after,before,1)
  assert restored==text
  return result.encode()
+
+def age_literal():
+ text=(ROOT/'tests/nut-sol/run_age.py').read_text()
+ prefix=text[text.index("archive = ROOT/"):text.index('results = dict(')]
+ namespace=dict(ROOT=ROOT,tarfile=tarfile,io=io,base64=base64,hashlib=hashlib)
+ exec(prefix,namespace)
+ return namespace['oracle']
+
+def prepare(out):
+ text=inspect.getsource(prior.prepare)
+ anchor="    decl=fixture/'wofost_soil_declarations.f90';mapping={}"
+ insert="    age_oracle=fixture/'age_literal.f90';age_oracle.write_bytes(age_literal().encode())\n"
+ assert text.count(anchor)==1;text=text.replace(anchor,insert+anchor)
+ before="for p in [*sorted((ROOT/'src').rglob('*.f90')),grid,oracle_fixture,decl]:"
+ assert text.count(before)==1;text=text.replace(before,"for p in [*sorted((ROOT/'src').rglob('*.f90')),grid,oracle_fixture,decl,age_oracle]:")
+ namespace=dict(prior.__dict__,age_literal=age_literal);exec(text,namespace)
+ return namespace['prepare'](out)
 
 def build(out,fc,opt,fixture,ordered,drivers,baseline=None):
  out.mkdir();events=[];objects=[];sources={};flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(out),'-J'+str(out),'-I'+str(fixture),'-I'+str(ROOT/'tests/nut-reactive')]
@@ -92,7 +109,7 @@ def measure(out,exes,events,role):
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);p.add_argument('--optimization',choices=('O0','O2'),required=True);p.add_argument('--compiler',default=shutil.which('gfortran'));a=p.parse_args();guard();os.environ['OMP_NUM_THREADS']='1'
  out=a.output.resolve();prior.guard=guard;prior.DRIVERS=dict(prior.DRIVERS,age='tests/nut-sol/test_age_joint.f90')
- fixture,ordered,drivers=prior.prepare(out);result=dict(status='RUNNING',baseline=BASE,optimization=a.optimization,production_admission=False,whole_scientific_admission=False,roles={})
+ fixture,ordered,drivers=prepare(out);result=dict(status='RUNNING',baseline=BASE,optimization=a.optimization,production_admission=False,whole_scientific_admission=False,roles={})
  for role in ('baseline','candidate'):
   builddir=out/role;exes,events=build(builddir,Path(a.compiler).resolve(),a.optimization,fixture,ordered,drivers,out/'baseline'if role=='candidate'else None)
   result['roles'][role]=measure(builddir,exes,events,role)
