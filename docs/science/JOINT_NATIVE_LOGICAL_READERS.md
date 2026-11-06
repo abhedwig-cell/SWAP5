@@ -46,8 +46,9 @@ private cohort; incumbent failed refusal counts remain17 O0 and21 O2. Full
 POSIX capsules were independently remeasured on Windows, including five evidence
 mutations per cohort and22 same-platform cross-optimization exact files.
 Original WOFOST hashes, accepted correction, grid and include transformations
-are independently checked against baseline source. Final exact-head owning
-current/predecessor preservation remains required before canonical integration. Separate writer-input and filesystem publication qualification
+are independently checked against baseline source. All16 final exact-head workflows succeed, including owning current/predecessor
+preservation. PR1590 is canonical at0c85785b6; its actual tree equals qualified
+head4ccf0a0ca and the tested merge. This admits private reader evidence only. Separate writer-input and filesystem publication qualification
 are outside this reader scope; existing direct-write behavior is not promoted
 to a new atomic-publication guarantee.
 
