@@ -24,7 +24,7 @@ def injected_source():
     declaration='  integer::u,io,code,n,slash,micro_present'
     assert source.count(declaration)==1
     source=source.replace(declaration,declaration+',test_unit',1)
-    anchor=' interface\n';assert source.count(anchor)==1
+    anchor='\n interface\n';assert source.count(anchor)==1
     source=source.replace(anchor,anchor+'''  integer(c_int) function bad_logical()bind(C,name='matrix_bad_logical')
    import c_int
   end function
