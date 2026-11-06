@@ -1,0 +1,85 @@
+{
+  "workstream": "MC-SOL01 native writer integrity/publication",
+  "unit": "Complete private S5PT0001/2/3/4 malformed writer, publication fault and actual termination qualification",
+  "baseline": "f20d39b58afb5ee5d5a8ad70e747b3b892bf75bd",
+  "canonical_baseline": "8428323b15b126ba2a3422ef32d4d914b070db2f",
+  "status": "WINDOWS_POSIX_COMPLETE_WRITER_QUALIFIED_FINAL_HEAD_PENDING",
+  "production_delta": [],
+  "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
+  "dependencies": [
+    "PR1584 complete immutable Windows/POSIX source/object/native capsules",
+    "PR1585 actual standalone Boesten/Black typed-owner fixture and exact provider-object reuse"
+  ],
+  "scope": [
+    "Actual complete private writer with qualification-only raw injection after trusted export at each of its three input validation sites; fixed history is always assigned FALSE by existing code and is not an external writer input",
+    "All4 native layouts, O0/O2, exact existing publication C plus test-only interposer",
+    "12 malformed logical refusals,32 precommit I/O refusals,8 platform-specific stage6 results and8 normal publications per host",
+    "16 actual before/after process terminations per host, fresh reconstruction and40 retained-pending writer retry refusals"
+  ],
+  "invariants": "Preserve retained pending files fail-closed. Stages2..5 preserve old authority. POSIX stage6 returns failure after replacement; Windows stage6 succeeds. No solver/retry/tolerance/mass/schema/ownership/scientific or production admission changes. Test-only hooks never enter production.",
+  "positive_seeds": "Use actual complete original thermal/Black-Rutter states for layouts1/4. For2/3 use the admitted typed-owner fixture with two explicitly different valid initial chemical inventories; no modeled evolution claim.",
+  "cost_estimate": "Reuse immutable coherent provider objects. Compile12 new complete codec/C/driver objects and6 links; approximately3min verification/extraction plus native controls under2min. No broad physics rerun.",
+  "qualification_plan": [
+    "Local Windows O0/O2 first, persist all raw source/object/link/native/termination evidence",
+    "Independent source/postimage, inherited-object, raw CRC, authority, orphan-pending and recovery remeasurement with corruption controls",
+    "POSIX O0/O2 actual SIGSTOP/SIGKILL and stage6-after-replacement qualification",
+    "Observe selected exact-head gates to terminal, reconcile actual merge tree, integrate only qualified private scope"
+  ],
+  "next": "Observe final exact-head preservation/evidence gates and canonically integrate only the qualified private writer scope. In parallel, measure the actual unmodified public runner against the complete private postimage, without the qualification-only Windows stack seam. Preserve all failures and distinguish actual build delivery from production admission.",
+  "failed_setup_attempts": [
+    {
+      "attempt": "windows-v1",
+      "verdict": "FAILED_PRE_NATIVE_SETUP",
+      "reason": "Unanchored interface token also matched end interface; exact line anchor fixes the generator."
+    },
+    {
+      "attempt": "windows-v2",
+      "verdict": "FAILED_PRE_NATIVE_SETUP",
+      "reason": "Original typed fixture has one create-then anchor, plus a distinct inline create selection. Exact first-branch generator assertion corrected; no original assertion weakened."
+    }
+  ],
+  "windows_qualification": {
+    "status": "PRIVATE_COMPLETE_S5PT_WRITER_FAULTS_AND_ACTUAL_CRASHES_PASS",
+    "layouts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "optimizations": [
+      "O0",
+      "O2"
+    ],
+    "new_compiler_objects": 12,
+    "new_links": 6,
+    "normal_publications": 8,
+    "malformed_logical_refusals": 12,
+    "precommit_io_refusals": 32,
+    "stage6_windows_successes": 8,
+    "actual_process_terminations": 16,
+    "fresh_crash_reconstructions": 16,
+    "retained_pending_retry_refusals": 40,
+    "evidence_corruptions_refused": 6,
+    "production_admission": false
+  },
+  "posix_qualification": {
+    "status": "PRIVATE_COMPLETE_S5PT_WRITER_FAULTS_AND_ACTUAL_CRASHES_PASS",
+    "normal_publications": 8,
+    "malformed_logical_refusals": 12,
+    "precommit_io_refusals": 32,
+    "post_replacement_stage6_failures": 8,
+    "actual_SIGKILL_terminations": 16,
+    "fresh_crash_reconstructions": 16,
+    "retained_pending_retry_refusals": 40,
+    "evidence_corruptions_refused": 6,
+    "production_admission": false
+  },
+  "ci": {
+    "pr": 1586,
+    "execution_head": "d946698f9a6c8a6bb9d9dd20fa75273a57862326",
+    "complete_writer_run": 42186207440,
+    "artifact": 13488015974,
+    "artifact_zip_sha256": "d176b446330d4c03cb7d5029983818472fe1f235686268da934fa3da42ad1241",
+    "all16_execution_head_workflows_success": true
+  }
+}
