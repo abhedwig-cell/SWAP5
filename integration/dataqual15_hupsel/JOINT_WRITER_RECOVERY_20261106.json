@@ -1,5 +1,5 @@
 {
-  "phase": "FROZEN_PRIVATE_RESEARCH_QUALIFIED",
+  "phase": "FROZEN_PRIVATE_RESEARCH_CANONICAL_CLOSED",
   "baseline": "3620ae01e9be7bb0ea8e6348ba50c0474307a586",
   "canonical_reconciled": "d32ebe55cd2ed8ee9e9d8ebe237a19994c1cdc57",
   "pr": 1600,
@@ -71,5 +71,14 @@
     "retained_failed": 2,
     "active": 0
   },
-  "reconciled_adjudication": "JOINT_WRITER_RECONCILED_ADJUDICATION_20261106.json"
+  "reconciled_adjudication": "JOINT_WRITER_RECONCILED_ADJUDICATION_20261106.json",
+  "canonical": "5a9cc9ab6fa2f45bb5c4689999cddfe7384d8f30",
+  "qualified_head": "86db8f8a22d0b9c879c01798b266a1b82a38ae11",
+  "final_workflows": {
+    "success": 14,
+    "retained_failed": 2,
+    "active": 0
+  },
+  "close_receipt": "JOINT_WRITER_CLOSE_RECEIPT_20261106.json",
+  "migration_complete": false
 }
