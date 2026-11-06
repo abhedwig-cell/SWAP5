@@ -1,0 +1,78 @@
+{
+  "schema": 1,
+  "phase": "EXECUTION_PENDING",
+  "current_baseline": "dafb351da2279cfa9a2a261481f06518329ba175",
+  "native_history": "6bcacb0af5890db0d54fa9b24a7f322f36de76c2",
+  "scope": "SAME_PLATFORM_NATIVE_RAW_LOGICAL_READERS_ONLY",
+  "whole_scientific_admission": false,
+  "writer_publication_change": false,
+  "peer_source_change": false,
+  "binary_abi": "SAME_PLATFORM_ONLY",
+  "windows_path_scope": "ASCII_ONLY",
+  "predecessor_scope": "IMMUTABLE_PRE_PEER_NATIVE_AUTHORITY_NOT_CURRENT_PEER_PHYSICS",
+  "baseline_production_trees": {
+    "src": "c8e20079812515689f28075ec3b54074d57c052c",
+    "app": "0abdce76c50cd9bb507909e2c6ab1c3124e2ce5c",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "historical_production_trees": {
+    "src": "a74388f77f0f03fa47d76917739020a2f4779785",
+    "app": "0abdce76c50cd9bb507909e2c6ab1c3124e2ce5c",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "production_delta": {
+    "src/adapter/mod_age_joint_restart_file.f90": {
+      "before": "a3bed29cbc872d0d33a56e434667cfb3afbc9c41",
+      "after": "2f689f646a6dde2835b43f96d59b9f4d0e0b8eda"
+    },
+    "src/adapter/mod_mineral_joint_restart_file.f90": {
+      "before": "ad9dd6bcf7618750189396346fd231c33835162e",
+      "after": "5f353e03d636edb4b1fad7a84098bb1b76c42e31"
+    },
+    "src/adapter/mod_reactive_n_joint_restart_file.f90": {
+      "before": "2e9b86416eb12286b71f5b67ab34e91ebbae1597",
+      "after": "1040620a513b3b628cd77a950c9e103ae23b9efd"
+    }
+  },
+  "postimage_sha256": {
+    "age": "b80a8ff46a78476078b028a537b05907c79ebdfc7dc1169e617826f6d474f843",
+    "mineral": "88efc0b9b48d50b1b0ecec0094865dcc69af4d3c16fe3e7e562aa7b232972f53",
+    "reactive_n": "b0d5a303a11741d50120b13cd7af6a9bc35b75659d53bb89ad033b0cc3787fc1"
+  },
+  "gate_sha256": {
+    ".github/workflows/joint-production.yml": "58c95733d6d166209496e9e9412dc051cfbd9c2a99cdae329af1fa838017fc6a",
+    "tests/dataqual15/verify_current_native_admission.py": "33a703fe1ab2868418856c666340d1cee10852d54839cd11fc31b49a11dd425a",
+    "tests/dataqual15_hupsel/joint_production.py": "b7fe1a3c3ebac766162f38de837a52b58e8fbc0250819fe0fe072c8d1f939787",
+    "tests/dataqual15_hupsel/joint_production_evidence.py": "0b364dc0c1ed9b8889a631f973773d2f33995ef0af274c99134a32c3e89fd366",
+    "tests/dataqual15_hupsel/joint_production_runtime.py": "682a06a0eeb48ff0079926274c1f381c52e2cf1968b49babbb7b1275f517cd01",
+    "tests/dataqual15_hupsel/test_joint_production.py": "036606783d76746d0ac85fa30ac21ccf0da6ececa897e2c448fafb5fc6624bcf"
+  },
+  "frozen_blobs": {
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_POSIX_O0_20261106.json": "8c2c641fce54afbdc94789bf8c4c4f36863563a1",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_POSIX_O0_20261106.tar.xz": "4259596d13489c9e58f8e085a0925718402dc982",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_POSIX_O2_20261106.json": "588f52f4585ad66ddbe53ef5e8d1fc3117bc09db",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_POSIX_O2_20261106.tar.xz": "0eb36939b214b0b407220f2c272008c6d9bed104",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_WINDOWS_O0_20261106.json": "3cc17292f39ff146d4370b5ee4f3df9048446eb9",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_WINDOWS_O0_20261106.tar.xz": "9f920c483df5c6d4d24afb5b8aac4b2709602284",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_WINDOWS_O2_20261106.json": "402c3e06784de3cc9917c207686b29b3a7813d19",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_OWNER_WINDOWS_O2_20261106.tar.xz": "05aafc03166e34402a64e5920a93d51791e460ba",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_POSIX_O0_20261106.json": "2f381a701918ddbcb502f812fe5b183a5c158802",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_POSIX_O0_20261106.tar.xz.part00": "a787526a3984f66465abcf4cf1e083a212badb43",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_POSIX_O2_20261106.json": "b24c1914fa882e4be4c154ed1347df4dd1ddc554",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_POSIX_O2_20261106.tar.xz.part00": "1d61fe24f10b27c4d2f78bb5d3a1561caef68d23",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_WINDOWS_O0_20261106.json": "f08bcb2fe4f866723656edbab16a56e10733a17c",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_WINDOWS_O0_20261106.tar.xz.part00": "8100fcb0d9ef448efe54461aa6b4bef40c0c6578",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_WINDOWS_O2_20261106.json": "b79df130eb8b32541e6cb9244096c2cf950021d7",
+    "integration/dataqual15_hupsel/JOINT_CURRENT_WINDOWS_O2_20261106.tar.xz.part00": "e99d6d510c63d788ff25d7920ee06cbd15e8e799",
+    "tests/dataqual15_hupsel/crc_family_runtime.py": "c91b7964d5548e480451df25ce769073fdd0bed5",
+    "tests/dataqual15_hupsel/joint_current.py": "b01bf8b28f6c0aae0261b7e91d1bcec2d961abaa",
+    "tests/dataqual15_hupsel/joint_current_evidence.py": "b7ee10dbf319ab13a3b43c5fd25fe20379b7f8e6",
+    "tests/dataqual15_hupsel/joint_current_owner.py": "a969a401f7975b548cb00b2103074872a89aaae4",
+    "tests/dataqual15_hupsel/joint_logical.py": "adec526435d63b11e4aee7c827fe265fe7dfbceb",
+    "tests/dataqual15_hupsel/joint_logical_candidates/mod_age_joint_restart_file.f90": "2f689f646a6dde2835b43f96d59b9f4d0e0b8eda",
+    "tests/dataqual15_hupsel/joint_logical_candidates/mod_mineral_joint_restart_file.f90": "5f353e03d636edb4b1fad7a84098bb1b76c42e31",
+    "tests/dataqual15_hupsel/joint_logical_candidates/mod_reactive_n_joint_restart_file.f90": "1040620a513b3b628cd77a950c9e103ae23b9efd",
+    "tests/dataqual15_hupsel/native_n_crc_runtime.py": "ab086917dce9a968e428e57eb9e95e709d5e5b93"
+  },
+  "execution_sha256": {}
+}
