@@ -28,9 +28,14 @@ jobs:
           python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py
       - name: Full original baseline and candidate native O0/O2
         run: |
-          python -B tests/dataqual15_hupsel/pond_thermal_native.py --role baseline --output "$RUNNER_TEMP/pond-native/baseline"
-          python -B tests/dataqual15_hupsel/pond_thermal_native.py --role candidate --output "$RUNNER_TEMP/pond-native/candidate"
-          python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py --pack "$RUNNER_TEMP/pond-native" --stem POND_THERMAL_NATIVE_POSIX_20261106
+          if test -f integration/dataqual15_hupsel/POND_THERMAL_NATIVE_POSIX_20261106.json; then
+            python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py --self-test
+            python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py --stem POND_THERMAL_NATIVE_POSIX_20261106 --self-test
+          else
+            python -B tests/dataqual15_hupsel/pond_thermal_native.py --role baseline --output "$RUNNER_TEMP/pond-native/baseline"
+            python -B tests/dataqual15_hupsel/pond_thermal_native.py --role candidate --output "$RUNNER_TEMP/pond-native/candidate"
+            python -B tests/dataqual15_hupsel/pond_thermal_native_evidence.py --pack "$RUNNER_TEMP/pond-native" --stem POND_THERMAL_NATIVE_POSIX_20261106
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

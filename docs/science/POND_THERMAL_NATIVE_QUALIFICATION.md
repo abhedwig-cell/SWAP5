@@ -39,7 +39,13 @@ Authority and recovery:
 `integration/dataqual15_hupsel/POND_THERMAL_NATIVE_RECOVERY_20261106.json`.
 `pond_thermal_native_evidence.py` independently remeasures the complete capsule
 and refuses source, missing-object, CRC, diagnostic and positive-file mutations.
-The POSIX baseline/candidate full O0/O2 proof is separately required. This private
+The full POSIX GNU13 baseline/candidate O0/O2 proof also passes at source
+`bb42005f947b6fd94857db227921a67bd946fe5d`, workflow42176939194. Its
+lossless capsule independently reproduces the same54 positive files,48 malformed
+refusals,28 retained baseline failed reject assertions and2,288 compiler objects.
+All17 workflows at that execution head succeed. Five evidence mutations per host
+are refused. Each native ABI remains same-platform; no portable file-format
+claim follows from these two host proofs. This private
 scope covers actual S5PT0001 and S5PT0004 compositions; it does not qualify
 standalone S5PT0002/0003, mature Hupsel equivalence or arbitrary corrupt writers.
 All four layouts, corrupt-writer controls and affected production preservation
