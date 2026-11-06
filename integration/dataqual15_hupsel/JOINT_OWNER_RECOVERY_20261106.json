@@ -43,6 +43,12 @@
     }
   },
   "controller": "tests/dataqual15_hupsel/joint_owner.py",
-  "controller_sha256": "7b2863248269abf8e466ab9a5ca91dc7d65d2da66f0519020cb63f8a194515aa",
-  "qualification": "120 public-reader refusals each O0/O2; full before/after native equality; five independent evidence corruptions; exact verified source/object/compiler/flags reused without model rebuild"
+  "controller_sha256": "c4357ef84c262de0bb555ba7ada1ab17e501a76009ee6b560f58470c61490482",
+  "qualification": "120 public-reader refusals each O0/O2; full before/after native equality; five independent evidence corruptions; exact verified source/object/compiler/flags reused without model rebuild",
+  "reconciled_canonical": "db42f99e2de9cae43dfe04bbf291e8e214edd6f7",
+  "peer_delta": {
+    "pr": 1591,
+    "source": "src/solver/mod_reference_bordered_solver.f90",
+    "disposition": "Exact canonical unreferenced addition, no existing production source changed. Private guard pins entire reconciled production trees and checks no production USE dependency. All retained335-provider input sources/objects independently match original evidence. Prior production guards remain unchanged and may separately refuse the peer addition; no admission waiver."
+  }
 }
