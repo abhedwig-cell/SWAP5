@@ -18,8 +18,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Real border and corrected entry/perched action O0/O2
-        run: python -B tests/dataqual15/run_joint_entry_contracts.py --joint-contact --compiler /usr/bin/gfortran --output joint-contracts
+      - name: Real border and entry/perched/ordinary contact O0/O2
+        run: python -B tests/dataqual15/run_joint_entry_contracts.py --current-drainage --compiler /usr/bin/gfortran --output joint-contracts
       - name: Real positive-pocket candidate and vertical closure O0/O2
         run: python -B tests/dataqual15/run_empty_pocket_contract.py --compiler /usr/bin/gfortran --output pocket-contracts
       - name: Real current groundwater view O0/O2

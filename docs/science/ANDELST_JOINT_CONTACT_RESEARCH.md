@@ -162,3 +162,51 @@ until their actual terminal results. The archived negative implementation remain
 failed; its repair does not establish historical equivalence.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json` and
 `integration/dataqual15/BORDER_INITIALIZATION_EVIDENCE_20261106.zip`.
+
+## Current tuple and ordinary water-table Newton extension
+
+PR1596 admits the first-constraint initialization repair at actual merge
+`16c0c72b438ad75ae791d96075925902df7ca8ab`, with both selected Linux gates PASS.
+The resulting original-input execution completes64 days and a strict own3-to4
+restart: all504 source rows and the complete native checkpoint are byte-exact.
+It then stalls within64.41400000000266 to64.41600000000265. The run is intentionally
+censored after3170.781s once a targeted repair passes that same source. Its raw
+result and explicit stop reason remain unchanged; maximum daily water residual
+is `3.222162798079478e-12 cm`.
+
+An immutable own-day64 replay reproduces all214 source rows exactly. Every initial
+linear bordered solve passes, while bounded Newton line search fails. A complete
+112-column residual audit isolates diagonal capacity discrepancies; the fraction
+column agrees with its local measured derivative to `5.54e-15`. The corrector now
+refreshes worker `dimoca` from the same current constitutive tuple as the residual,
+retaining the existing capacity floor. That correction alone is insufficient. A
+full finite-difference head Jacobian is also insufficient and censored after180.508s;
+it remains diagnostic evidence, not an admitted numerical replacement.
+
+The actual profile has an ordinary groundwater crossing at52 and a separate
+perched zone near22-to27. At an active contact, the original private operator
+extends perched eligibility across Newton trial sides but still clips the ordinary
+water-table cell in both sorptivity evaluation and the outer absorption loop.
+The proposed numerical repair exposes that active cell in the local sorptivity
+request and uses that same adjusted top for the outer loop. The exact constrained
+face already belongs to the open adjacent cell under the existing1e-10cm geometry
+convention. The unchanged1e-12cm publication-plane gate therefore retains the same
+on-constraint graph. This changes the off-constraint Newton extension, without
+smoothing the physical face, relaxing a gate, interpolating elapsed clocks, adding
+water, or activating the private model in production.
+
+Real O0/O2 operator controls reproduce the old two-sided inconsistency, then pass
+both new trial sides, all fraction endpoints, amount/rate, action-history, unchanged
+water stocks, nonfinite refusal and exact unselected-route controls. Real current
+projection tests verify the constrained-face convention and both ordinary trial
+classifications. The same actual64 source completes at O2 in8.713s and O0 in9.971s:
+52 attempts, zero solver refusals,27 temporal refusals and25 accepted internal
+substeps. The former2.924 and65 sources also pass at both optimizations. Every
+origin stays unchanged and those diagnostic probes publish no restart.
+
+Fresh day-one O0/O2 payloads remain byte-exact; all four O0 output CSVs are exact.
+A new source-pinned original-initialization481 request is active, with untouched
+own streams being captured for64-to66 and365-to367 continuation. It is still an
+explicit corrected research model. Whole481 and year restart are claimed only
+after their actual terminal results. Authority:
+`integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
