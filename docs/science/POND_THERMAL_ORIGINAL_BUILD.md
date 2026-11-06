@@ -1,5 +1,9 @@
 # Original pond thermal build delivery
 
+Bounded private scope is canonical at PR1587, merge `46505d617`. All16 final
+workflows succeed; actual merge tree equals qualified source `cdc0b4355`.
+Production admission remains open.
+
 This bounded qualification executes the byte-exact original
 `tests/nut-sol/run_pond_thermal.py` from `9a55a1780`, against the complete private
 pond postimage `91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b`.
