@@ -613,5 +613,30 @@
       2
     ],
     "reason": "Original input on actual current public source with no private graph/groundwater/drainage overrides. Check default day1 against recorded public predecessor and locate sharp-law barrier rather than treating corrected research completion as historical equivalence. Bounded first-entry control only, no unrelated full campaign."
+  },
+  "event_aligned_own80_to81": {
+    "scope": "STRICT_CURRENT_EXECUTABLE_OWN80_TO81",
+    "seconds": 7.631384199950844,
+    "executable_sha256": "8f7f310ea2785ff00822a47f100b938824bde42e678a6431eea509fde69b5fe1",
+    "input_restart_sha256": "6b8c3980839ab829c073f6c38331b6ba8200796890e0748aa96908465dd1a83a",
+    "all_progress_rows_exact": true,
+    "progress_rows": 504,
+    "entire_checkpoint81_byte_exact": true,
+    "checkpoint81_sha256": "dfd087256baffc560c303940d811e2cfdb8f355a383d9b5d18da2497887363bf",
+    "same_input_binding": true,
+    "historical_original_equivalence": false
+  },
+  "current_public_sharp_control": {
+    "scope": "CURRENT_PUBLIC_SOURCES_NO_PRIVATE_MODEL_OVERRIDES",
+    "seconds": 120.16509140003473,
+    "censored": true,
+    "returncode": null,
+    "completed_days": 1,
+    "last_completed_source_interval": 1.9580000000023283,
+    "requested_end": 2.0,
+    "executable_sha256": "ace64ba8e5d30e4413967de7bdeae24d8e94e435197c6a985aca9f3e9ea7f957",
+    "day1_physical_payload_exact_previous_public": true,
+    "maximum_water_residual_cm": 1.1053441148489718e-15,
+    "interpretation": "TIME_CENSORED_FIRST_ENTRY_NOT_TWO_DAY_PASS_OR_TERMINAL_MODEL_REFUSAL"
   }
 }

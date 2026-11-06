@@ -129,8 +129,9 @@ A fresh original-input O0 day completes with maximum water residual
 `9.546109427027369e-14 cm`. Per-Newton file logging is now opt-in via
 `SWAP5_JOINT_CONTACT_DIAGNOSTICS=1`; unchanged day-one physical payload and all
 budget/progress/cost/diagnostic rows prove the logging-only change at O0.
-The separate quiet O2 full481 request is pending its terminal result and own
-continuations; the read-only probe establishes neither of those claims.
+That quiet O2 full481 request was subsequently intentionally censored at2.924
+after1719.945s when the first-iteration defect below was established. The read-only
+probe establishes neither whole481 nor an own year continuation.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
 
 ## First-iteration border initialization repair
@@ -157,8 +158,10 @@ O0 day-one physical payload and all four budget/progress/cost/diagnostic files
 are byte-exact; O2 day-one payload is exact. The defective full request is
 intentionally censored after1719.945s, with its raw result, costs and explicit
 stop reason retained. Its censor does not count as completed481. The repaired
-fresh original-input O2 full request and O0 strict own continuation remain pending
-until their actual terminal results. The archived negative implementation remains
+fresh original-input O2 full request subsequently completes64 days before the
+separate ordinary water-table stall below. The O0 own1-to3 request is time-censored
+after240.043s at2.420; all723 common O0/O2 progress rows are exact, but day3 is not
+completed at O0. The archived negative implementation remains
 failed; its repair does not establish historical equivalence.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json` and
 `integration/dataqual15/BORDER_INITIALIZATION_EVIDENCE_20261106.zip`.
@@ -187,7 +190,7 @@ The actual profile has an ordinary groundwater crossing at52 and a separate
 perched zone near22-to27. At an active contact, the original private operator
 extends perched eligibility across Newton trial sides but still clips the ordinary
 water-table cell in both sorptivity evaluation and the outer absorption loop.
-The proposed numerical repair exposes that active cell in the local sorptivity
+The numerical repair admitted at PR1598 exposes that active cell in the local sorptivity
 request and uses that same adjusted top for the outer loop. The exact constrained
 face already belongs to the open adjacent cell under the existing1e-10cm geometry
 convention. The unchanged1e-12cm publication-plane gate therefore retains the same
@@ -205,8 +208,12 @@ substeps. The former2.924 and65 sources also pass at both optimizations. Every
 origin stays unchanged and those diagnostic probes publish no restart.
 
 Fresh day-one O0/O2 payloads remain byte-exact; all four O0 output CSVs are exact.
-A new source-pinned original-initialization481 request is active, with untouched
-own streams being captured for64-to66 and365-to367 continuation. It is still an
-explicit corrected research model. Whole481 and year restart are claimed only
-after their actual terminal results. Authority:
+That source-pinned original-initialization481 request terminates after80 days,
+2201.264s, with maximum daily water residual3.3844560848305505e-12cm. It refuses
+source admission before any Richards attempt at80.423000000001394 to
+80.423000000002503. The strict same-executable own64-to66 request passes in500.291s:
+all1036 progress rows and the complete day66 checkpoint are byte-exact. This is
+still an explicit corrected research model. The separate public source-event
+repair and its current-executable evidence are documented in
+[Source-event step endpoints](SOURCE_EVENT_ENDPOINTS.md). Authority:
 `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
