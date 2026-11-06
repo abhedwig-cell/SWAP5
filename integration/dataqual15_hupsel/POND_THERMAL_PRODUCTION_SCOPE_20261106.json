@@ -60,15 +60,16 @@
     }
   },
   "gate_source_sha256": {
-    ".github/workflows/generation-crc.yml": "b7e3b77ac33bd6dd351321ee63eb23284c4d640931b1da74c7994cfb5ba9ecfa",
-    ".github/workflows/matrix-crc.yml": "1127a144a3d2a960cbbef58bdedaa00475723504fa0c9cce3473d0f4d34b3ddd",
-    "tests/dataqual15_hupsel/pond_thermal_production.py": "f6df3724681d651fdfeb7b457c67d75e353aae4169611ca59419b274b3424eda",
     ".github/workflows/generation-publication.yml": "88999e61931c713d2ac7522eeecd777d2b18ca0274d054aa1561cd802d0e1400",
-    ".github/workflows/pond-thermal-production.yml": "2a2027147c21f9c149256fa66d09917571e15cc997002ac60631b0f2d29d56ae",
     ".github/workflows/native-n-production.yml": "d957c9a2e8c1f0a597f6ee9803cd24215df8fc67b60b9cefc7b7d2b70a656a95",
-    "tests/dataqual15/verify_current_native_admission.py": "c0775f4254877905e3ac10a3958988d8ff1d8050d4016d3e67efc6a76eebe5bf",
+    "tests/dataqual15_hupsel/pond_thermal_production.py": "9f03dcbffcd733493eebac8d930311984154b2b46579c527469a2d4b734e000a",
     "tests/dataqual15_hupsel/test_pond_thermal_production.py": "7cb108421d3370d0a55f6bd6ad248de8084f452fcaeb950c9590fbd1102e6c34",
-    ".github/workflows/matrix-thermal-native.yml": "88a66acda433fcc392698a9df3b52c458e22315ba575a4ac8fc4418a72990ce6"
+    ".github/workflows/pond-thermal-production.yml": "f23f47688a8918cb6c3d82fa885653747fbc6ec8694d81a1a042fab0ac6b199e",
+    "tests/dataqual15/verify_current_native_admission.py": "c0775f4254877905e3ac10a3958988d8ff1d8050d4016d3e67efc6a76eebe5bf",
+    "tests/dataqual15_hupsel/pond_thermal_production_baseline.py": "3ba4c0c428d23494f9e9af621569b6359eb6dc5c415339ca8f2d6aa5ad3305d1",
+    ".github/workflows/matrix-thermal-native.yml": "88a66acda433fcc392698a9df3b52c458e22315ba575a4ac8fc4418a72990ce6",
+    ".github/workflows/matrix-crc.yml": "1127a144a3d2a960cbbef58bdedaa00475723504fa0c9cce3473d0f4d34b3ddd",
+    ".github/workflows/generation-crc.yml": "b7e3b77ac33bd6dd351321ee63eb23284c4d640931b1da74c7994cfb5ba9ecfa"
   },
   "frozen_authority": {
     "tests/dataqual15_hupsel/pond_thermal_native_evidence.py": "36e1ae87d8882a95b612efeb4575cb9c88417110",

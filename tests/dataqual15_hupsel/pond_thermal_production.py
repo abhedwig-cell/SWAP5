@@ -11,6 +11,7 @@ KEY='pond_thermal_native_successor_20261106'
 SCOPE='integration/dataqual15_hupsel/POND_THERMAL_PRODUCTION_SCOPE_20261106.json'
 BRIDGES={'.github/workflows/'+n+'.yml' for n in ('generation-publication','generation-crc','matrix-crc','native-n-production','matrix-thermal-native')}
 GATES={ENTRY,*BRIDGES,'tests/dataqual15_hupsel/pond_thermal_production.py','tests/dataqual15_hupsel/test_pond_thermal_production.py','.github/workflows/pond-thermal-production.yml'}
+GATES.add('tests/dataqual15_hupsel/pond_thermal_production_baseline.py')
 normal=lambda b:b.replace(b'\r\n',b'\n')
 sha=lambda b:hashlib.sha256(b).hexdigest()
 def git(*a):return subprocess.check_output(['git',*a],cwd=ROOT,text=True).strip()
