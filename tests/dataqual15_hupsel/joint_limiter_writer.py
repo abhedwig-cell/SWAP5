@@ -80,6 +80,7 @@ def audit_cold(files,platform,opt):
   event=next(e for e in events if e['label']=='driver'and Path(e['command'][-1].replace('\\','/')).stem==name)
   path=event['command'][event['command'].index('-c')+1];row=meta['sources'][path]
   assert g.normal(files[row['snapshot']])==g.normal(expected),'unchanged complete original driver '+name
+  assert g.sha(files[row['snapshot']])==b['drivers_sha256'][name]
   assert event['command'][1:]==[*b['flags'],'-c',path,'-o',event['command'][-1]]
   obj=event['command'][-1];q=PureWindowsPath if platform=='WINDOWS'else PurePosixPath
   # BUILD records executable hashes keyed by driver name, not absolute path.
@@ -88,6 +89,9 @@ def audit_cold(files,platform,opt):
   response=files['baseline/'+name+'.args'].decode().replace('\r\n','\n')
   expected_args=b['flags']+(['-Wl,--stack,16777216']if platform=='WINDOWS'else[])+[obj,*objects,'-o',str(q(obj).with_name(leaf))]
   assert response=='\n'.join('"'+p.replace('\\','/')+'"'for p in expected_args)+'\n'
+  links=[e for e in events if e['label']=='link'and e['command'][1]=='@'+str(q(obj).with_name(name+'.args'))]
+  assert len(links)==1 and len(links[0]['command'])==2 and links[0]['returncode']==0
+ assert len([e for e in events if e['label']=='driver'])==len([e for e in events if e['label']=='link'])==4
  for name in g.NAMES:
   assert {k.removeprefix('baseline/'):v for k,v in files.items()if k.startswith('baseline/'+name+'/')}=={k.removeprefix('candidate/'):v for k,v in old.items()if k.startswith('candidate/'+name+'/')}
  assert len(current['native']['logical'])==24 and all(r['refused']is True for r in current['native']['logical'])
