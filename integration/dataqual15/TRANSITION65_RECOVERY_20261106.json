@@ -686,9 +686,37 @@
     "actual_baseline": "SIGFPE reproduced O0/O2",
     "fixed": "Actual request plus seven exact stock/zero/subnormal cases O0/O2 PASS; original DATAQUAL07 1919-case owner unchanged stdout exact.",
     "diagnostic_build_error": "Initial observer omitted --driver main_water.f90 and built237-provider general project driver; no native result used.65events114.56s retained; corrected202-provider25-recompiled observer used.",
-    "native_O0_O2_pending": true,
+    "native_O0_O2_pending": false,
     "expected_compile_seconds": 90,
     "expected_native_seconds": 5,
-    "timeout_native_seconds": 30
+    "timeout_native_seconds": 30,
+    "fresh481_selection": {
+      "expected_seconds": 3600,
+      "timeout_seconds": 7200,
+      "reason": "Public bounded-quotient repair passes actual immutable142 source O0/O2. Original initialization and strict own365-to367 must be rerun with new executable, without rebinding older streams. Capture own1/80/81/142/143/365/366/367/481; preserve all prior costs and failures."
+    },
+    "native_probes": {
+      "O0": {
+        "seconds": 4.099869699915871,
+        "all416_previous_source_rows_exact": true,
+        "new_completed_source_row": "143,417, 1.42832000000002154E+002, 1.42834000000002163E+002,3,0,1,0, 4.60779418093304471E-014",
+        "origin_unchanged": true,
+        "no_restart_published": true,
+        "all_independent_native_guards_before_stop": true
+      },
+      "O2": {
+        "seconds": 2.3816525998990983,
+        "all416_previous_source_rows_exact": true,
+        "new_completed_source_row": "143,417, 1.42832000000002154E+002, 1.42834000000002163E+002,3,0,1,0, 4.60779418093304471E-014",
+        "origin_unchanged": true,
+        "no_restart_published": true,
+        "all_independent_native_guards_before_stop": true
+      }
+    }
+  },
+  "peer1600_reconciliation": {
+    "actual_canonical": "5a9cc9ab6fa2f45bb5c4689999cddfe7384d8f30",
+    "scope": "Only private joint writer candidates/evidence/docs and workflow; production src/app and relevant Andelst build/test inputs unchanged.",
+    "reconciled_head": "f91e150e53ae332fd0d5036fd6769ea2e128b452"
   }
 }
