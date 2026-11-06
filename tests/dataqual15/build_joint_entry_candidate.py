@@ -88,12 +88,15 @@ def render(folder):
  (folder/'MODEL.json').write_text(json.dumps(dict(model='ANDELST_SHARP_ENTRY_GRAPH_V1',original_historical_equivalence=False,baseline_sources_sha256=sources,rendered_sources_sha256={n:sha(s.encode())for n,s in bodies.items()},history='Unchanged sorption update; a positive Darcy occurrence ends the sorption event. No clock interpolation.',contact_width=0),indent=2)+'\n')
  return shadow
 
-recipe=ROOT/'tests/dataqual15_hupsel/build_and_run.py';source=recipe.read_text().replace('timeout=120','timeout=300')
-needle="program=a.driver.resolve()if a.driver else ROOT/'app/solute_project/main.f90';mapping={}"
-source=once(source,needle,"shadow=render(out/'overlay')\n"+needle)
-needle="for s in list((ROOT/'src').rglob('*.f90'))+list((ROOT/'app/solute_column').glob('*.f90'))+list((ROOT/'app/solute_project').glob('*.f90'))+[original]:"
-source=once(source,needle,needle.replace('for s in','for original_source in')+'\n s=shadow.get(original_source,original_source)')
-source=once(source,"visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')","visit(shadow[ROOT/'src/legacy/b1_10_port/headcalc.f90'])")
-namespace={'__name__':'__main__','__file__':str(recipe),'render':render}
-exec(compile(source,str(recipe)+'[explicit joint entry candidate]', 'exec'),namespace)
-build=namespace['out']/'BUILD.json';record=json.loads(build.read_text());record['contact_model']='ANDELST_SHARP_ENTRY_GRAPH_V1';record['original_historical_equivalence']=False;build.write_text(json.dumps(record,indent=2)+'\n')
+def main():
+ recipe=ROOT/'tests/dataqual15_hupsel/build_and_run.py';source=recipe.read_text().replace('timeout=120','timeout=300')
+ needle="program=a.driver.resolve()if a.driver else ROOT/'app/solute_project/main.f90';mapping={}"
+ source=once(source,needle,"shadow=render(out/'overlay')\n"+needle)
+ needle="for s in list((ROOT/'src').rglob('*.f90'))+list((ROOT/'app/solute_column').glob('*.f90'))+list((ROOT/'app/solute_project').glob('*.f90'))+[original]:"
+ source=once(source,needle,needle.replace('for s in','for original_source in')+'\n s=shadow.get(original_source,original_source)')
+ source=once(source,"visit(ROOT/'src/legacy/b1_10_port/headcalc.f90')","visit(shadow[ROOT/'src/legacy/b1_10_port/headcalc.f90'])")
+ namespace={'__name__':'__main__','__file__':str(recipe),'render':render}
+ exec(compile(source,str(recipe)+'[explicit joint entry candidate]', 'exec'),namespace)
+ build=namespace['out']/'BUILD.json';record=json.loads(build.read_text());record['contact_model']='ANDELST_SHARP_ENTRY_GRAPH_V1';record['original_historical_equivalence']=False;build.write_text(json.dumps(record,indent=2)+'\n')
+
+if __name__=='__main__':main()
