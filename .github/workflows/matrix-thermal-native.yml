@@ -7,6 +7,9 @@ on:
       - integration/dataqual15_hupsel/MATRIX_THERMAL_NATIVE_*
       - .github/workflows/matrix-thermal-native.yml
       - tests/nut-sol/matrix_thermal_*_test.c
+      - tests/nut-sol/run_matrix_thermal.py
+      - tests/dataqual15_hupsel/matrix_thermal_build*.py
+      - integration/dataqual15_hupsel/MATRIX_THERMAL_BUILD_*
 permissions:
   contents: read
 jobs:
@@ -18,19 +21,45 @@ jobs:
         with:
           fetch-depth: 0
       - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Preserve exact admitted private authority in its unchanged predecessor
+        run: python3 -B tests/dataqual15_hupsel/matrix_thermal_build.py --prepare-only --output "$RUNNER_TEMP/matrix-build-authority"
       - name: Independently remeasure exact qualified complete POSIX cohorts
+        working-directory: ${{ runner.temp }}/matrix-build-authority/predecessor
         # Run42149101019 at867cb28 executed both full providers, malformed-reader
         # corpus and original refinement/SIGKILL qualifier. Preserve that actual
         # evidence when the entire relevant input surface is byte-identical.
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py --materialize-posix "$RUNNER_TEMP/matrix-thermal"
       - name: Actual full POSIX writer failures including postcommit directory-sync refusal
+        working-directory: ${{ runner.temp }}/matrix-build-authority/predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_posix_faults.py --candidate "$RUNNER_TEMP/matrix-thermal/candidate-v2" --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-thermal/writer-posix"
       - name: Independently replay retained complete Windows native cohort
+        working-directory: ${{ runner.temp }}/matrix-build-authority/predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py
       - name: Replay sealed actual POSIX writer and refuse false postcommit success evidence
+        working-directory: ${{ runner.temp }}/matrix-build-authority/predecessor
         run: python3 -B tests/dataqual15_hupsel/matrix_thermal_native_evidence.py --posix-writer
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: complete-matrix-thermal-native-posix-writer
           path: ${{ runner.temp }}/matrix-thermal/writer-posix
+  portable-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual updated runner and complete original/private native O0/O2 builds
+        # Essential changed boundary is the real compiler/link path. Reuse the
+        # admitted science/refinement evidence; qualify only this full build
+        # integration and original native assertions, expected8-12min.
+        run: |
+          python3 -B tests/dataqual15_hupsel/matrix_thermal_build.py --role incumbent --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-build/incumbent"
+          python3 -B tests/dataqual15_hupsel/matrix_thermal_build.py --role candidate --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/matrix-build/candidate"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matrix-thermal-actual-portable-build-posix
+          path: ${{ runner.temp }}/matrix-build
