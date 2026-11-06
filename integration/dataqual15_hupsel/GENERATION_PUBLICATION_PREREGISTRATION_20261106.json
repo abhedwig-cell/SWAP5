@@ -1,0 +1,34 @@
+{
+  "baseline": "57849a4d3a02abeb54a297be0fde215160309bfd",
+  "scope": "PRIVATE_PORTABLE_GENERATION_PRECOMMIT_PUBLICATION_QUALIFICATION",
+  "production_delta": [],
+  "source_sha256": {
+    "src/adapter/mod_crop_n_output_generation.f90": "fd3b8a32081c8b2d2173bdd3e2d9cf439662b4f6457a441fe04a37a5051549f7",
+    "src/adapter/mod_crop_n_saved_generation.f90": "86210e74072468884c0d404f8b4e146d36a879eb4b0cc5af8214d54306b4d60f",
+    "src/adapter/mod_crop_ext_csv_file.f90": "91652f4c7ee265a8f8df7da7df3c9d3a0385282b8d544933b2f768f9b6253a84",
+    "app/support/restart_publish.c": "3da212d69c504da63e98a157f7d8a61fab018bc7bdd7ec5d73ef61405ee61d23",
+    "tests/dataqual15_hupsel/generation_publication_policy.py": "48204d61d666367a4fd46e82fd74ab4b0313f868ae536011527043006726e6b9",
+    "tests/nut-output/run_accepted_output.py": "110e4ad70cb420fef11c53765631d876cb153c23b697b459b11eae44d18fd2f2",
+    "tests/nut-output/run_accepted_output_csv.py": "e196ec9404656c9bb3d38b7021594f0e71f716815240b54868e205a54234c50f",
+    "tests/nut-output/run_joint_output_generation.py": "bca7a39fc60507b36f34170b0afcd06ea017b8b86c88d42f303d6b29f5b40987",
+    "tests/nut-output/run_native_output_project.py": "623d8a8e8740b0be3acf9b82a62f010d51f4dce128b512883b9b917cd7b56cab",
+    "tests/nut-output/run_saved_output.py": "1bf28da6b39409ffc9031a46f3fd2057f146ad1a436a30ea7622f7ca6c40ab78"
+  },
+  "proposed_paths": [
+    "src/adapter/mod_crop_n_output_generation.f90",
+    "src/adapter/mod_crop_n_saved_generation.f90",
+    "src/adapter/mod_crop_ext_csv_file.f90",
+    "app/support/restart_publish.c"
+  ],
+  "contract": "Existing generation success means file closed/flushed and complete atomic name publication, with no fallible post-replace operation. The separate existing restart API retains directory fsync and its stage6 published-but-not-durable failure unchanged. No solver, physical state, schema, CRC, retry or tolerance change.",
+  "platform_scope": "Existing POSIX bytes/publication contract; proposed Windows ASCII-path native publication only. Non-ASCII Windows generation paths fail closed; existing restart UTF8 behavior preserved.",
+  "qualification": [
+    "Local O0/O2 actual old/new C API and CRC behavior, old stage2..6 and new precommit2..5 failures; real target/temporary file states",
+    "Fresh original physical Windows O0/O2 control and full private public output/saved native physics, proper/corrupt/live/failure tests and actual before/after publication process termination",
+    "POSIX original qualified cohorts reused only by exact source/object/binary provenance; full candidate public model/native/fault/crash requalification",
+    "Exact unmodified current/predecessor admission and source/record/data mutation refusals before any production admission"
+  ],
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "migration_complete": false
+}

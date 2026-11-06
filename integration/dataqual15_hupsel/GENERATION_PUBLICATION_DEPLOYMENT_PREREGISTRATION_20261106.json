@@ -1,0 +1,30 @@
+{
+  "phase": "PROPOSED_DEPLOYMENT_REQUIRES_COMPLETE_NATIVE_QUALIFICATION",
+  "baseline": "57849a4d3a02abeb54a297be0fde215160309bfd",
+  "required_private_pr": 1578,
+  "production_changed": false,
+  "production_admission": false,
+  "scope": "EXISTING_POSIX_AND_BOUNDED_ASCII_WINDOWS_COMPLETE_GENERATION_PUBLICATION",
+  "proposed_full_postimage_sha256": {
+    "src/adapter/mod_crop_n_output_generation.f90": "05efdc919b71e29d04f8f74b800277ed90b796a8db0a050b9a73f0d204371bfc",
+    "src/adapter/mod_crop_n_saved_generation.f90": "6136c94641e076d92d0672b77423279b9f0a587ce0b02accc9a3713521fb73c6",
+    "src/adapter/mod_crop_ext_csv_file.f90": "c614c8e1ee4d6c6db1e69fe3be162c07277cfb6406129f52310e22ab80b1ae12",
+    "app/support/restart_publish.c": "29d4a47904a8c45eaee2f20a9eb92af0eb46ae2a58a5b43225481cabe536425e"
+  },
+  "invariants": [
+    "Every reported generation failure precedes authoritative replacement",
+    "Existing restart directory-sync stage6 semantics and UTF8 behavior unchanged",
+    "No solver, physical retry, tolerance, mass, restart schema or ownership change",
+    "No copy/delete replacement fallback",
+    "Windows generation paths ASCII only; existing restart UTF8 scope preserved"
+  ],
+  "requirements": [
+    "Complete current private Windows and POSIX actual model/CRC/failure/termination evidence and independent mutation refusals",
+    "Private evidence PR1578 canonical exact qualified tree after all workflows terminal",
+    "Strict exact four-path production successor and additive Status-A owner; no change to old admission guards",
+    "Entire unmodified previous admission in exact predecessor view, current qualified postimage evidence and current owning preservation",
+    "Actual source-head qualification and precise unchanged-predecessor attribution of broader failures before canonical deployment"
+  ],
+  "selected_cost": "Reuse immutable actual full postimage O0/O2 model proof from PR1578. Do not rebuild unchanged full providers solely for production deployment; strict source/data/postimage/current-predecessor gates remain required.",
+  "next": "Finish private PR1578 qualification and exact-tree integration, then pin its actual canonical merge as deployment predecessor and implement only these four qualified postimages with the strict successor gate."
+}
