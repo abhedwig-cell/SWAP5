@@ -1,7 +1,8 @@
 # Complete-generation publication contract
 
-Status: qualified private successor; final canonical qualification pending.
-Production source and admission remain unchanged.
+Status: private native evidence is canonical at PR1578 (`8da740df7`).
+The exact production successor is implemented in PR1579; canonical production
+admission remains pending its complete source/build qualification.
 Authority: GENERATION_PUBLICATION_PREREGISTRATION_20261106.json.
 
 A complete physical/diagnostic/history generation is the single persistent
@@ -60,6 +61,22 @@ measured platforms. Independent source/object/data remeasurement and four
 corrupted-evidence controls pass. Final current/canonical qualification remains
 a separate requirement. The exact original POSIX artifact ZIP and every Windows
 cohort member are retained losslessly in dated publication evidence capsules.
+
+Production integration uses exactly the four measured full source postimages,
+with a strict current source/record gate and the entire unmodified private-base
+admission in an isolated predecessor view. The existing old guards are unchanged.
+Sixteen malformed-scope controls cover path/scope expansion, reported-failure
+semantics, restart stage6, missing evidence, changed gates and extra production
+paths. Real solute builders now recognize both native publisher bindings.
+
+The HIST build records the native C support object and keeps the Fortran driver
+last, allowing original follow-on CSV/joint/saved recipes to inherit the complete
+provider set. The original SWP-reader qualifier likewise takes objects from the
+actual compile ledger, retaining non-numbered native support and excluding
+exactly the application main. It pins every reused object. Numerical flags,
+physical assertions, restart checks and refusal controls are unchanged. A fresh
+current-tree O0/O2 five-recipe execution is explicitly selected to qualify this
+delivery path; a component C probe cannot detect omitted inherited link objects.
 
 The original Windows CSV writer fails its unchanged public assertion. A focused
 native UCRT measurement isolates `rename` returning EEXIST when the target name

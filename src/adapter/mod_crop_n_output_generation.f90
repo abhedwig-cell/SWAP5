@@ -1,4 +1,4 @@
-! Same-platform POSIX joint physical/diagnostic/reporting generation.
+! Same-platform native joint physical/diagnostic/reporting generation.
 module mod_crop_n_output_generation
  use iso_fortran_env,only:real64,int64,int32,int8
  use mod_age_joint_restart_file,only:crc32
@@ -24,25 +24,9 @@ module mod_crop_n_output_generation
    import c_int
    integer(c_int)::pid
   end function
-  function c_rename(old,new)bind(C,name='rename')result(code)
+  function c_publish(old,new)bind(C,name='swap5_generation_publish')result(code)
    import c_int,c_char
    character(c_char),intent(in)::old(*),new(*)
-   integer(c_int)::code
-  end function
-  function c_open(path,flags)bind(C,name='open')result(fd)
-   import c_int,c_char
-   character(c_char),intent(in)::path(*)
-   integer(c_int),value::flags
-   integer(c_int)::fd
-  end function
-  function c_fsync(fd)bind(C,name='fsync')result(code)
-   import c_int
-   integer(c_int),value::fd
-   integer(c_int)::code
-  end function
-  function c_close(fd)bind(C,name='close')result(code)
-   import c_int
-   integer(c_int),value::fd
    integer(c_int)::code
   end function
  end interface
@@ -178,11 +162,7 @@ contains
   close(u,iostat=close_io)
   if(io==0)io=close_io
   if(io/=0)then;call erase(pending);return;end if
-  fd=c_open(pending//c_null_char,0_c_int)
-  if(fd<0)then;call erase(pending);return;end if
-  io=c_fsync(fd);ignored=c_close(fd)
-  if(io/=0.or.ignored/=0)then;call erase(pending);return;end if
-  io=c_rename(pending//c_null_char,trim(path)//c_null_char)
+  io=c_publish(pending//c_null_char,trim(path)//c_null_char)
   if(io/=0)then;call erase(pending);return;end if
   status=CROP_EXT_OK
  end subroutine

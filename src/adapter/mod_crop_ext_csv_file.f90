@@ -1,4 +1,4 @@
-! POSIX complete-file exporter; caller owns accepted row history and checkpoint.
+! Complete-file exporter; caller owns accepted row history and checkpoint.
 module mod_crop_ext_csv_file
  use iso_c_binding,only:c_int,c_char,c_null_char
  use mod_soil_n_crop_extended_output
@@ -10,7 +10,7 @@ module mod_crop_ext_csv_file
    import c_int
    integer(c_int)::pid
   end function
-  function c_rename(old,new)bind(C,name='rename')result(code)
+  function c_publish(old,new)bind(C,name='swap5_generation_publish')result(code)
    import c_int,c_char
    character(c_char),intent(in)::old(*),new(*)
    integer(c_int)::code
@@ -56,7 +56,7 @@ contains
    close(u,status='delete',iostat=close_io);return
   end if
   close(u,iostat=io)
-  if(io==0)io=c_rename(temporary//c_null_char,trim(path)//c_null_char)
+  if(io==0)io=c_publish(temporary//c_null_char,trim(path)//c_null_char)
   if(io/=0)then
    open(newunit=u,file=temporary,status='old',iostat=close_io)
    if(close_io==0)close(u,status='delete',iostat=close_io)

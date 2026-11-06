@@ -64,6 +64,12 @@ for opt in ['O0','O2']:
  for i,p in enumerate(ordered):
   o=b/f'{i}.o';run(['gfortran',*flags,'-c',p,'-o',o],b,'compile');objects.append(o)
   if p.is_relative_to(ROOT):inputs[str(p.relative_to(ROOT))]=sha(p)
+ # Complete-generation/CSV adapters share the native file publisher. Keep the
+ # driver last: downstream native recipes reuse objects[:-1] verbatim.
+ publication=ROOT/'app/support/restart_publish.c';publication_object=b/'restart_publish.o'
+ cc=subprocess.check_output(['gfortran','-print-prog-name=gcc'],text=True).strip()
+ run([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_object],b,'publication_compile')
+ inputs[str(publication.relative_to(ROOT))]=sha(publication);objects.insert(len(objects)-1,publication_object)
  exe=b/'hist';run(['gfortran',*flags,*objects,'-o',exe],b,'link')
  trace_driver=ROOT/'tests/nut-crop/test_historical_atmosphere_trace.f90'
  trace_object=b/'atmosphere-trace.o';trace_exe=b/'atmosphere-trace'

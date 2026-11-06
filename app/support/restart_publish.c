@@ -51,7 +51,7 @@ static size_t parent_length(const char *path) {
     return last ? (size_t)(last - path + 1) : 0;
 }
 
-static int publish(const char *pending, const char *target, int failure) {
+static int publish(const char *pending, const char *target, int failure, int directory_sync) {
     size_t parent;
     if (!pending || !target || !*pending || !*target || !strcmp(pending, target)) return 1;
     parent = parent_length(target);
@@ -75,14 +75,17 @@ static int publish(const char *pending, const char *target, int failure) {
 #else
     int fd, directory, status = 0;
     char *folder;
-    /* Open the destination directory before altering the published name. */
-    folder = malloc(parent + 2);
-    if (!folder) return 1;
-    if (parent) { memcpy(folder, target, parent); folder[parent] = '\0'; }
-    else { folder[0] = '.'; folder[1] = '\0'; }
-    directory = open(folder, O_RDONLY);
-    free(folder);
-    if (directory < 0) return 2;
+    directory = -1;
+    if (directory_sync) {
+        /* Open the destination directory before altering the published name. */
+        folder = malloc(parent + 2);
+        if (!folder) return 1;
+        if (parent) { memcpy(folder, target, parent); folder[parent] = '\0'; }
+        else { folder[0] = '.'; folder[1] = '\0'; }
+        directory = open(folder, O_RDONLY);
+        free(folder);
+        if (directory < 0) return 2;
+    }
     fd = failure == 2 ? -1 : open(pending, O_RDONLY);
     if (fd < 0) status = 2;
     else {
@@ -90,16 +93,44 @@ static int publish(const char *pending, const char *target, int failure) {
         if (close(fd) && !status) status = 4;
         if (failure == 4 && !status) status = 4;
         if (!status && (failure == 5 || rename(pending, target))) status = 5;
-        if (!status && (failure == 6 || fsync(directory))) status = 6;
+        if (!status && directory_sync && (failure == 6 || fsync(directory))) status = 6;
     }
-    if (close(directory) && !status) status = 6;
+    if (directory_sync && close(directory) && !status) status = 6;
     return status;
 #endif
 }
 
 API int swap5_restart_publish(const char *pending, const char *target) {
-    return publish(pending, target, 0);
+    return publish(pending, target, 0, 1);
 }
+
+/* Complete generation callers publish their staged owners only after success.
+ * Retain their existing file-flush + atomic-name contract: no fallible step
+ * after replacement. Directory durability remains the restart API contract.
+ * Windows Fortran path handling is qualified only for ASCII in this scope.
+ */
+static int generation_paths(const char *pending, const char *target) {
+#ifdef _WIN32
+    const unsigned char *p;
+    if (!pending || !target) return 0;
+    for (p=(const unsigned char *)pending; *p; ++p) if (*p>127) return 0;
+    for (p=(const unsigned char *)target; *p; ++p) if (*p>127) return 0;
+#else
+    (void)pending; (void)target;
+#endif
+    return 1;
+}
+API int swap5_generation_publish(const char *pending, const char *target) {
+    if (!generation_paths(pending,target)) return 1;
+    return publish(pending,target,0,0);
+}
+#ifdef SWAP5_RESTART_TESTING
+API int swap5_generation_publish_test(const char *pending, const char *target, int failure) {
+    if (failure && (failure<2 || failure>5)) return 1;
+    if (!generation_paths(pending,target)) return 1;
+    return publish(pending,target,failure,0);
+}
+#endif
 
 /* Same reflected CRC-32/ISO-HDLC bytes as the existing native stream codec.
  * Keep the unsigned bit arithmetic explicit: GNU Fortran 16.2 on Windows
@@ -124,6 +155,6 @@ API int32_t swap5_restart_crc32(const int8_t *bytes, size_t count) {
 /* Test-only entry; no environment switch or fault control in production. */
 #ifdef SWAP5_RESTART_TESTING
 API int swap5_restart_publish_test(const char *pending, const char *target, int failure) {
-    return publish(pending, target, failure);
+    return publish(pending, target, failure, 1);
 }
 #endif

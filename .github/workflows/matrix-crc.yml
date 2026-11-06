@@ -16,7 +16,11 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - name: Exact unmodified pre-publication admission authority
+        working-directory: ${{ github.workspace }}
+        run: python3 -B tests/dataqual15_hupsel/generation_publication_admission.py --prepare-only --output "$RUNNER_TEMP/publication-matrix-crc-native-matrix-view"
       - name: Exact unmodified pre-generation matrix authority
+        working-directory: ${{ runner.temp }}/publication-matrix-crc-native-matrix-view/predecessor
         run: python3 -B tests/dataqual15_hupsel/generation_crc_admission.py --prepare-only --output "$RUNNER_TEMP/generation-matrix-view"
       - name: Require executable GNU Fortran
         working-directory: ${{ runner.temp }}/generation-matrix-view/predecessor

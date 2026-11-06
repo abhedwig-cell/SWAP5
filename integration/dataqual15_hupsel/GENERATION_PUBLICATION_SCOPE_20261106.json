@@ -1,0 +1,124 @@
+{
+  "predecessor": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
+  "scope": "POSIX_AND_ASCII_WINDOWS_PRECOMMIT_COMPLETE_GENERATION_PUBLICATION",
+  "phase": "QUALIFIED_FULL_NATIVE_WINDOWS_POSIX_O0_O2_AND_AUTHORITY_TERMINATION",
+  "whole_scientific_admission": false,
+  "windows_path_scope": "ASCII_ONLY",
+  "generation_reported_failure_contract": "BEFORE_AUTHORITATIVE_REPLACEMENT",
+  "restart_directory_sync_stage6": "UNCHANGED_POST_REPLACEMENT_FAILURE",
+  "private_canonical": {
+    "pr": 1578,
+    "merge": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
+    "qualified_head": "eeb9f0e3cf73ac7080412bfcbff498e62d7aab68",
+    "tree": "0abc22b8775e897608bcb05d89ea7e23901eb270",
+    "final_workflows": 16,
+    "all_success": true
+  },
+  "production_delta": {
+    "src/adapter/mod_crop_ext_csv_file.f90": {
+      "before": "cdef348e50596bf49265aeb8ea7fe8a7fb9f1d3a",
+      "after": "ac99333bfc96f7896b0a909c3c08eaa0f7f5be14"
+    },
+    "app/support/restart_publish.c": {
+      "before": "785dc60a8f5a153538c42ce8af4b3f6574372465",
+      "after": "ca7185e8d0a085d0025a1900df372b1580c058c4"
+    },
+    "src/adapter/mod_crop_n_saved_generation.f90": {
+      "before": "347fe63a2d1c8f4df0a1b75be87c2375d92dea18",
+      "after": "d17c9e5f666475c120947b3f3db587bc18266597"
+    },
+    "src/adapter/mod_crop_n_output_generation.f90": {
+      "before": "768c78c5cedbadda2a1a06798256736c9ce2b97c",
+      "after": "6bc71002d10c932a78aa8db2dd1c2705159ad834"
+    }
+  },
+  "bridge_restore": {
+    "tests/dataqual15/verify_current_native_admission.py": {
+      "before": "de81456ecca57871ef926e23fe71c7fd5ddefa05",
+      "after": "331600c6024000f764297997c647a8d6fb5ac117"
+    },
+    "app/support/restart_publish.c": {
+      "before": "785dc60a8f5a153538c42ce8af4b3f6574372465",
+      "after": "ca7185e8d0a085d0025a1900df372b1580c058c4"
+    },
+    "src/adapter/mod_crop_ext_csv_file.f90": {
+      "before": "cdef348e50596bf49265aeb8ea7fe8a7fb9f1d3a",
+      "after": "ac99333bfc96f7896b0a909c3c08eaa0f7f5be14"
+    },
+    "src/adapter/mod_crop_n_output_generation.f90": {
+      "before": "768c78c5cedbadda2a1a06798256736c9ce2b97c",
+      "after": "6bc71002d10c932a78aa8db2dd1c2705159ad834"
+    },
+    ".github/workflows/generation-crc.yml": {
+      "before": "8b08d033a270b23ef0ed77ae55d0cebb31700f3d",
+      "after": "561b4bc61f0618b3c217d3d933dfed754cf1ff45"
+    },
+    ".github/workflows/matrix-crc.yml": {
+      "before": "0614865f9333cfbf5611a9918c9929c33d9527ac",
+      "after": "8a47522ab4f17b159cad6ea6be64206bb6de687e"
+    },
+    ".github/workflows/generation-publication.yml": {
+      "before": "b4ba18c8530a885357a82b17881e01cd3a483b04",
+      "after": "6bc0ba6e525217215004b3988d55ab95f36fbdfb"
+    },
+    "src/adapter/mod_crop_n_saved_generation.f90": {
+      "before": "347fe63a2d1c8f4df0a1b75be87c2375d92dea18",
+      "after": "d17c9e5f666475c120947b3f3db587bc18266597"
+    },
+    ".github/workflows/native-n-production.yml": {
+      "before": "a1c7f7aa8bc8876ff449cfb3db28afc7c7a8b424",
+      "after": "1ae2a638f93a6d65cd1a9f2b05f909bc344a6eab"
+    },
+    "integration/dataqual15/STATUS.json": {
+      "before": "34b4976a28bbea6576320f112fbeaf8622c41a6c",
+      "after": "f7b2931208cea80e6fec8e3d561a00ed7bc6e77c"
+    }
+  },
+  "predecessor_production_trees": {
+    "src": "9da7d75070d4b0238b594166da1d8e7a858c22be",
+    "app": "d24fcaa71724ccea7e1cf5f6317176b8068f611f",
+    "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf"
+  },
+  "qualified_full_postimage_sha256": {
+    "src/adapter/mod_crop_n_saved_generation.f90": "6136c94641e076d92d0672b77423279b9f0a587ce0b02accc9a3713521fb73c6",
+    "app/support/restart_publish.c": "29d4a47904a8c45eaee2f20a9eb92af0eb46ae2a58a5b43225481cabe536425e",
+    "src/adapter/mod_crop_ext_csv_file.f90": "c614c8e1ee4d6c6db1e69fe3be162c07277cfb6406129f52310e22ab80b1ae12",
+    "src/adapter/mod_crop_n_output_generation.f90": "05efdc919b71e29d04f8f74b800277ed90b796a8db0a050b9a73f0d204371bfc"
+  },
+  "gate_source_sha256": {
+    ".github/workflows/generation-publication.yml": "bab49a9e864531961a93ca5f6b433fa26b298f573b99b2f1269a8598e980d6f8",
+    "tests/dataqual15_hupsel/generation_publication_audit.py": "26a94e41843fb21d5bb4a5929e4fe8ca265d7ac14660be1aab8723547f409c87",
+    "tests/dataqual15_hupsel/generation_publication_admission.py": "9f5b6bc1aee17f76d354998570e3fc8b905899e0ac0d69f782eddd7351169c7d",
+    "tests/nut-output/generation_publication_windows_test.c": "c397ff23fbf029734992d0bef833681da0e847b0703ce6611007d85aa769f900",
+    "tests/dataqual15_hupsel/rotation_native_baseline.py": "00ffffec42d9a4e5c85f2a0b03aad205896cf016d16adeb5cd3874ac146d37b6",
+    "tests/dataqual15_hupsel/generation_publication_windows_faults.py": "fe084b1c7da88c90b38e322710757a7a5f36ce9848ad6bb234365e5f90637754",
+    "tools/solute/build_column.py": "e618a7e0679fe594273f943ff274a80b8c9823d6168935b3b55ab81147ff1a85",
+    "tools/solute/build_crop_column.py": "6fa52ef09ae6b1f4b70ac62673447b08f1ea5b98d3e01a1fc6ed20cb9f75abf6",
+    "tests/nut-crop/run_hist_complete.py": "e32aa469ac6067318a5d65430b14cf98c30024f5468bde63f3a84c7eae48ab7b",
+    "tests/dataqual15_hupsel/generation_publication_baseline_evidence.py": "f9d17aa56c5be7ce51563a3c2e1fa82c07585c26d2e2f21b5c89a7d0003586d4",
+    ".github/workflows/generation-crc.yml": "505eacc9dbd6609f07ad143dee18a05a60f56898b68caad050e44a86db43f7f6",
+    "tests/dataqual15_hupsel/generation_publication_c_probe.py": "aac701356c92033bc28ba4e39233531e2b3090f1aadf4554073c2609602b9ca0",
+    "tests/dataqual15/verify_current_native_admission.py": "0329b8979db8155c622b000827595eadf2f8ae4bc56ef9ca4c65ad60096a1317",
+    "tests/dataqual15_hupsel/test_generation_publication_build.py": "2a2f0cf0b96df73d93c14ff6c9361122946952576f4a0b6df384ff89bc6612c2",
+    "tests/dataqual15_hupsel/generation_publication_deployed_models.py": "4d2d892f07c1708c419d6ffffd62a7fa36b4723c4e2bf50698ab643131286091",
+    "tests/dataqual15_hupsel/test_generation_publication_admission.py": "a128bfc762adf62853b66e99a32b8dfa67529ee3fa0e32a5874d3d050b9d309f",
+    ".github/workflows/matrix-crc.yml": "4e154d46489fab4ae2aff1046cf965133fb4e5bbe4035cea7da2fe59e1ac1864",
+    "tests/dataqual15_hupsel/generation_publication_windows_crt.py": "70758face7a521e7f7a898baa30a1e1d7e7e34ec5f26b8b838f6dab9828fbfe0",
+    "tests/nut-sol/qualify_swp_reader.py": "6b378c8baeb975ef730a225ce7cd48592d205ec83dc62565607baa129db358e8",
+    "tests/dataqual15_hupsel/generation_publication_capsule.py": "5c18393f3bae2e347a9bcc031d5ee0cfc85469afaaad1f5c7c1a7ebe2b98c132",
+    "tests/dataqual15_hupsel/generation_publication_baseline.py": "0647f84f2c6f3910975e99153023c0e08730c383c9a83ef91e79dfe8061a676d",
+    "tests/dataqual15_hupsel/generation_publication_build_evidence.py": "015ec8077bf90fff38b5ee93a8ffbfa4b6adfc9a69aeda2b84f488d2eb3bc185",
+    "tests/dataqual15_hupsel/generation_publication_policy.py": "48204d61d666367a4fd46e82fd74ab4b0313f868ae536011527043006726e6b9",
+    ".github/workflows/native-n-production.yml": "eb46d660e027558e2d20a59772c9be6819216c4763971b7748e686281571811c",
+    "tests/dataqual15_hupsel/generation_publication_models.py": "f357699d377473dbd67e1d491f75eaf7a84f9f02b265fe7ddc489a5d3d26b489"
+  },
+  "qualified_artifact_records": {
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_WINDOWS_20261106.json": "f25bb5866b0c595e1a7997906f91fad6f21c2fb08cef4b55100b8bbb99a18b83",
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_DEPLOYMENT_PREREGISTRATION_20261106.json": "0bde6faf46130ff3b9d911c8b829f8ca680bfa4d35a62159d1b85af961ad5c06",
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_PREREGISTRATION_20261106.json": "5d0950a01b9d7c5cb330b0eb92972bc1e3f9188741a24e2992d52bb34fe276e8",
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_POSIX_20261106.json": "06e43a992ac978532046ea8a5b535dc839fc8cfbf8df57bd904362721667d7c4",
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_WINDOWS_COMPONENT_20261106.json": "b6cbc2854c4a8086713fa181b13114c7aac537e1f11b4522494037e0c4bff425",
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_BUILD_POSIX_20261106.json": "360a1b4cdd209f1296c5cb96ac55cd4c8c9cfbde77e19b084e0ace485b98dfe3",
+    "integration/dataqual15_hupsel/GENERATION_PUBLICATION_BASELINE_POSIX_20261106.json": "df21e187302475f7bfe24768e72681a76c678fc74078fcb9bee6ef6337cbdfff"
+  }
+}
