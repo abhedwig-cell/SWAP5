@@ -1,5 +1,9 @@
 # Standalone Boesten and Black native layouts
 
+Canonical private qualification: PR1585, merge `8428323b15b126ba2a3422ef32d4d914b070db2f`.
+All16 final workflows succeed. The actual merge tree equals qualified source
+`954940af575cea77901d4f4f9c3f12584fb8709a`. Production admission remains false.
+
 This extends the [private native qualification](POND_THERMAL_NATIVE_QUALIFICATION.md)
 with actual S5PT0002 and S5PT0003 public writer/reader launches. Production source
 and admission remain unchanged. The original composed-heat restart fixture at

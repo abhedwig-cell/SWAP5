@@ -2,7 +2,7 @@
   "workstream": "MC-SOL01 native restart integrity",
   "unit": "Standalone S5PT0002/0003 actual typed-owner layout qualification",
   "baseline": "89a9e1cffc40b65339f9eba4b9451e7a574ccda6",
-  "status": "WINDOWS_POSIX_STANDALONE_NATIVE_QUALIFIED_FINAL_HEAD_PENDING",
+  "status": "BOUNDED_PRIVATE_STANDALONE_NATIVE_SCOPE_CANONICALLY_CLOSED",
   "production_delta": [],
   "private_candidate": "tests/dataqual15_hupsel/pond_thermal_native_candidate.f90",
   "candidate_sha256": "91f397f612570d4dfac96bcacfc938d033f5325bfcce175e413960a8534d826b",
@@ -22,7 +22,7 @@
     "Archive complete new source/object/link/native bytes with exact dependency capsule identities; independently remeasure and qualify POSIX before integration"
   ],
   "invariants": "No production/numerical/schema/mass/ownership/default/admission change. Prior capsule provenance and qualified objects are immutable. No malformed-writer qualification is claimed.",
-  "next": "Observe final exact-head gates and integrate only this native layout evidence. Together with PR1584 this covers actual native reader layouts1/2/3/4, not corrupted writers or production deployment. Next executable unit: malformed writer and publication-fault qualification of the complete private postimage, preserving all current source/object/native evidence.",
+  "next": "Execute malformed-writer and publication-fault qualification against the complete private postimage. Reuse PR1584 and1585 full source/object/native evidence; never rerun broad analysis or relax prior guards. Preserve all solver/retry/tolerance/mass/restart/ownership/fail-closed contracts. Writer corruption and production deployment remain OPEN; source-only production admission is forbidden.",
   "local_windows": {
     "status": "PRIVATE_STANDALONE_S5PT0002_0003_NATIVE_PASS",
     "new_compiled_drivers": 8,
@@ -58,5 +58,30 @@
     "complete_layout_run": 42181141849,
     "artifact": 13485382167,
     "artifact_zip_sha256": "20fcb2f2644dad73abf7986ccb17e43b23bdb5c39a3be26def5ba0f268bc6174"
+  },
+  "canonical_admission": true,
+  "canonical_merge": "8428323b15b126ba2a3422ef32d4d914b070db2f",
+  "qualified_head": "954940af575cea77901d4f4f9c3f12584fb8709a",
+  "qualified_tree": "e7ae17b8526224bfabc0d79c2b7102dc2b819ef8",
+  "canonical_receipt": "integration/dataqual15_hupsel/POND_THERMAL_LAYOUT_CANONICAL_RECEIPT_20261106.json",
+  "final_workflows": {
+    "total": 16,
+    "success": 16,
+    "all_terminal": true
+  },
+  "combined_private_native_coverage": {
+    "actual_layouts": [
+      "S5PT0001",
+      "S5PT0002",
+      "S5PT0003",
+      "S5PT0004"
+    ],
+    "hosts": [
+      "Windows GNU O0/O2",
+      "POSIX GNU13 O0/O2"
+    ],
+    "resealed_host_logical_refusals_per_host": 80,
+    "whole_scientific_admission": false,
+    "production_admission": false
   }
 }
