@@ -261,5 +261,15 @@
       "bytes": 1572249,
       "members": 302
     }
+  },
+  "current_source64_observation_selection": {
+    "source_endpoint": 64.41400000000266,
+    "own_day64_sha256": "a564426613418d6e49e4043a9dc8b55e08ec5544cb34dd4d04c88f6ea4674266",
+    "main_native_cpu_seconds": 1597.25,
+    "purpose": "Current corrected trajectory repeats no external progress for over60s at one interval after normally short neighboring intervals. Capture exact immutable day64 then diagnostic-only stop before affected source; inspect full/half and complete contact solve rather than blind dt changes. Main full run stays active until terminal/confirmed defect.",
+    "expected_compile_seconds": 30,
+    "expected_prefix_native_seconds": 45,
+    "expected_probe_seconds": 30,
+    "main_full481_still_active": true
   }
 }
