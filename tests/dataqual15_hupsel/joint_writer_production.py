@@ -13,6 +13,8 @@ STATUS=old.STATUS
 KEY='joint_native_writer_successor_20261106'
 SCOPE='integration/dataqual15_hupsel/JOINT_WRITER_PRODUCTION_SCOPE_20261106.json'
 GATES={ENTRY,'tests/dataqual15_hupsel/joint_writer_production.py','tests/dataqual15_hupsel/joint_writer_production_runtime.py','tests/dataqual15_hupsel/joint_writer_production_evidence.py','tests/dataqual15_hupsel/test_joint_writer_production.py','.github/workflows/joint-writer-production.yml'}
+RUNNERS={'tests/nut-sol/run_age.py','tests/nut-mineral/run_mineral.py','tests/nut-reactive/run_reactive.py'}
+GATES|=RUNNERS
 git=old.git
 raw=old.raw
 blob=old.blob
@@ -21,6 +23,21 @@ sha=old.sha
 
 def postimage(name):return raw(BASE,'tests/dataqual15_hupsel/joint_writer_candidates/'+Path(SOURCES[name]).name)
 candidate=postimage
+
+def runner_postimage(path):
+ text=raw(BASE,path).decode()
+ if path=='tests/nut-sol/run_age.py':
+  anchor="    exe=build/'joint';run(FC+flags+objects+['-o',exe],build,'physical_link')"
+  block="    publication=ROOT/'app/support/restart_publish.c';bind(publication)\n    cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'\n    run([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile')\n    objects.insert(-1,publication_obj)  # Keep the original main object last for the unchanged surface link.\n"
+ elif path=='tests/nut-mineral/run_mineral.py':
+  anchor=" obj=build/'joint.o';exe=build/'joint'"
+  block=" publication=ROOT/'app/support/restart_publish.c';inputs[str(publication.relative_to(ROOT))]=sha(publication)\n cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'\n cmd([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile');objects.append(publication_obj)\n"
+ else:
+  assert path=='tests/nut-reactive/run_reactive.py'
+  anchor="  obj=build/(category+'-driver.o');exe=build/driver.stem"
+  block="  if any('swap5_restart_publish' in p.read_text() for p in ordered):\n   publication=ROOT/'app/support/restart_publish.c';inputs[str(publication.relative_to(ROOT))]=sha(publication)\n   cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'\n   cmd([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile');objects.append(publication_obj)\n"
+ assert text.count(anchor)==1
+ return text.replace(anchor,block+anchor,1).encode()
 
 def successor_entry():
  text=raw(BASE,ENTRY).decode();anchor=" if json.loads((ROOT/NATIVE_STATUS).read_text()).get('joint_native_logical_successor_20261106'):"
@@ -67,6 +84,7 @@ def record_guard(r):
 def validate_record(r):
  guard_source();record_guard(r)
  assert normal((ROOT/ENTRY).read_bytes())==raw('HEAD',ENTRY)==successor_entry(),'exact additive successor entry'
+ for p in RUNNERS:assert normal((ROOT/p).read_bytes())==raw('HEAD',p)==runner_postimage(p),'original runner plus publisher linkage only '+p
  for p,digest in r['gate_sha256'].items():assert sha(normal((ROOT/p).read_bytes()))==digest and normal((ROOT/p).read_bytes())==raw('HEAD',p),'gate identity '+p
  for p,pin in r['frozen_blobs'].items():
   assert blob(BASE,p)==pin==blob('HEAD',p),'frozen origin '+p
