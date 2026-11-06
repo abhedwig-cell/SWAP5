@@ -1,0 +1,21 @@
+{
+  "status": "BOUNDED_PORTABLE_GENERATION_PUBLICATION_CANONICAL_SOURCE_CLOSED_RECEIPT_QUALIFICATION_PENDING",
+  "source_pr": 1579,
+  "actual_source_merge": "2eaf9c76f6c990358204d2ddc3e83c8357fe89f2",
+  "qualified_source_head": "521629d66592adeb58a9cd1f60b30fc89ff6628a",
+  "qualified_and_actual_tree": "b2706d6c549af77d223b0f2042aa39c62a07cacc",
+  "private_pr": 1578,
+  "actual_private_merge": "8da740df7b106d72045f34fa7cb5f351e129e1d5",
+  "source_workflows_terminal": 41,
+  "source_success": 24,
+  "source_failed": 17,
+  "failed_jobs_individually_adjudicated": 20,
+  "all_ci_pass": false,
+  "production_admission": true,
+  "production_scope": "POSIX_AND_ASCII_WINDOWS_PRECOMMIT_COMPLETE_GENERATION_PUBLICATION",
+  "whole_scientific_admission": false,
+  "raw_source_adjudication_sha256": "f9681827d063e6a9509d45f491b0e3d5baf884e477c1abc3e8c16e744b6600b1",
+  "raw_source_logs_zip_sha256": "c7b80304d06738df4204c5a577fc506881edae8e7fab7a3b49356762a8b42d16",
+  "swp_reader_record_sha256": "4f7fd38f2e017ed11a51bc9c91a13ae1e63d9997a0b2489082d6442ce5b087f7",
+  "note": "All owning current/native/build/predecessor gates PASS. Broader legacy failures remain FAILED; P2E09/P2E10 refuse the new4-path change earlier than their already-failed exact predecessor. All4 SWP physical stages now PASS, while its broader performance source gate remains FAILED."
+}

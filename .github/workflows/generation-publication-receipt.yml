@@ -1,0 +1,23 @@
+name: Canonical portable generation publication receipt
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - tests/dataqual15_hupsel/generation_publication_receipt.py
+      - integration/dataqual15_hupsel/GENERATION_PUBLICATION_CANONICAL_RECEIPT_*
+      - integration/dataqual15_hupsel/GENERATION_PUBLICATION_SOURCE_*
+      - integration/dataqual15_hupsel/GENERATION_PUBLICATION_SWP_READER_*
+      - .github/workflows/generation-publication-receipt.yml
+permissions:
+  contents: read
+jobs:
+  exact-receipt:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Exact canonical tree, all actual broader failures and native SWP stages
+        run: python3 -B tests/dataqual15_hupsel/generation_publication_receipt.py

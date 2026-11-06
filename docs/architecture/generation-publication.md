@@ -1,8 +1,10 @@
 # Complete-generation publication contract
 
-Status: private native evidence is canonical at PR1578 (`8da740df7`).
-The exact production successor is implemented in PR1579; canonical production
-admission remains pending its complete source/build qualification.
+Status: private native evidence is canonical at PR1578 (`8da740df7`); the exact
+bounded production successor is canonical at PR1579 (`2eaf9c76f`). The actual
+production merge tree equals qualified source `521629d66`. All41 source workflows
+are terminal:24 SUCCESS and17 explicitly adjudicated FAILED. Broader Reference
+publication and whole-science admission remain outside this scope.
 Authority: GENERATION_PUBLICATION_PREREGISTRATION_20261106.json.
 
 A complete physical/diagnostic/history generation is the single persistent
@@ -77,6 +79,21 @@ exactly the application main. It pins every reused object. Numerical flags,
 physical assertions, restart checks and refusal controls are unchanged. A fresh
 current-tree O0/O2 five-recipe execution is explicitly selected to qualify this
 delivery path; a component C probe cannot detect omitted inherited link objects.
+
+That actual current-tree run passes all five original O0/O2 model/native recipes:
+14 links,4 native support compiles,2130 pinned artifacts and24 positive complete
+generation files exactly equal to the qualified private bytes. The full original
+ZIP is retained and independently remeasured, including a native-data refusal.
+The repaired SWP-reader build also passes all4 original physical workflow stages;
+its complete3902-member artifact is retained. Its outer broader performance
+source gate remains FAILED.
+
+Every one of20 failed source-head jobs is retained with raw logs and actual
+exact-predecessor observations. P2E09/P2E10 now refuse earlier at their unchanged
+no-production-delta predicates; exact8da before had already failed later at
+P2E08 replay/solver-contract drift. These distinct stages are explicitly recorded,
+and no FAILED verdict is relabelled PASS. Authority:
+`integration/dataqual15_hupsel/GENERATION_PUBLICATION_CANONICAL_RECEIPT_20261106.json`.
 
 The original Windows CSV writer fails its unchanged public assertion. A focused
 native UCRT measurement isolates `rename` returning EEXIST when the target name
