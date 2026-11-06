@@ -10,7 +10,8 @@ def audit(files,r):
  assert r['status']=='ORIGINAL_POSIX_AGE_SURFACE_AND_MINERAL_CONSUMERS_PASS'and r['production_trees']=={a:g.blob(r['head'],a)for a in('src','app','reference')}==g.guard_source()
  for name,runner in RUNNERS.items():
   assert g.raw(r['head'],runner)==g.runner_postimage(runner)
-  result=json.loads(files[name+'/result.json']);assert result['source_tree']==r['production_trees']['src']
+  result=json.loads(files[name+'/result.json']);assert result['baseline']==r['head']
+  if name=='mineral':assert result['source_tree']==r['production_trees']['src']
   expected='SCOPED_LOCAL_QUALIFICATION_PASS_NOT_ADMITTED'if name=='mineral'else'PHYSICAL_PASS_NOT_ADMITTED'
   assert result['status']==expected and set(result['runs'])=={'O0','O2'}
   for path,digest in result['input_sha256'].items():assert g.sha(g.raw(r['head'],path))==digest,'actual consumer input '+path
