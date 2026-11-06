@@ -23,7 +23,10 @@ def execute(view,out,opt,compiler,producer):
  trees=guard();assert not out.exists();out.parent.mkdir(parents=True,exist_ok=True)
  # prepare() owns fixture construction; its caller supplies the exact current
  # source guard instead of claiming the old frozen source guard passed.
- native.prior.guard=guard
+ def fixture_guard():
+  guard()
+  return dict(source_sha256={p:sha((view/p).read_bytes().replace(b'\r\n',b'\n'))for p in native.SOURCES.values()})
+ native.prior.guard=fixture_guard
  native.prior.DRIVERS=dict(native.prior.DRIVERS,age='tests/nut-sol/test_age_joint.f90')
  fixture,ordered,drivers=native.prepare(out);assert len(ordered)==335
  build=out/'baseline';executables,events=native.build(build,Path(compiler),opt,fixture,ordered,drivers)
