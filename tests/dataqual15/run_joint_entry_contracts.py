@@ -6,9 +6,12 @@ from build_joint_entry_candidate import render, ROOT
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('--compiler', required=True, type=Path)
 p.add_argument('--output', required=True, type=Path)
+p.add_argument('--joint-contact', action='store_true')
 a = p.parse_args()
 out = a.output.resolve()
 out.mkdir()
+if a.joint_contact:
+    from build_joint_contact_candidate import render
 shadow = render(out / 'overlay')
 contracts = {
     'border': ['src/solver/mod_reference_linear_solver.f90',
@@ -19,6 +22,8 @@ contracts = {
              'src/process/macropore/mod_ppa_wu05a6_unsat_absorption_rate.f90',
              'src/process/macropore/mod_ppa_wu05a6_sorptivity_history.f90',
              'tests/dataqual15/joint_entry_rate_driver.f90']}
+if a.joint_contact:
+    contracts['perched'] = contracts['rate'][:-1] + ['tests/dataqual15/joint_contact_rate_driver.f90']
 report = dict(status='RUNNING', scope='COMPONENT_ONLY_NOT_TRAJECTORY_OR_HISTORICAL_EQUIVALENCE',
               events=[], source_sha256={})
 for mode in ('O0', 'O2'):
