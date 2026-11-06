@@ -490,7 +490,13 @@
     "source_time_identity_tolerance_day": 1.1428795687607263e-12,
     "preflight_mass_bound_cm": 2.2737367544323206e-13,
     "cause": "Caller caps dt just before an existing rain event; remainder lies inside source-window time equivalence. Full source endpoint apportions as source origin and mass guard rejects correctly. Rutter accepted clock equalscursor. Not nonlinear stagnation or dtmin tuning.",
-    "next_action": "Replay strict own80 refusal; align preceding step to event BEFORE solve using existing64epsilon source-time convention, retain all rain and guards. Fresh original initialization and own year still mandatory."
+    "next_action": "Replay strict own80 refusal; align preceding step to event BEFORE solve using existing64epsilon source-time convention, retain all rain and guards. Fresh original initialization and own year still mandatory.",
+    "own_reproduction": {
+      "seconds": 1.3212953999172896,
+      "progress_rows_exact_including_refusal": 213,
+      "diagnostic_committed_state_byte_exact": true,
+      "diagnostic_sha256": "abae595c0aed3f97b4eec9baac43b81c5738ad1a4bf8d21ed5b1b91e9eda135e"
+    }
   },
   "event81_selection": {
     "baseline": "14a937d0babd0345f5daa2a7d64f419805f9271b",
@@ -498,6 +504,16 @@
     "small_real_window_contract_expected_seconds": 10,
     "native_compile_expected_seconds": 180,
     "native_preceding_source_probe_expected_seconds": 10,
-    "reason": "Necessary source-event alignment bug now blocks requested481. Test actual source primitive and predecessor interval; no source/physical tolerance weakening, no clock relabelling or skipped forcing volume."
+    "reason": "Necessary source-event alignment bug now blocks requested481. Test actual source primitive and predecessor interval; no source/physical tolerance weakening, no clock relabelling or skipped forcing volume.",
+    "canonical_reconciliation": {
+      "head": "fe39e148b5ea414811f7ad4a9e749402df01fc88",
+      "delta": "Three independently admitted joint N native logical adapters plus evidence; no soil/macro/drainage/source-window or macro-water restart changes."
+    }
+  },
+  "event81_baseline_evidence": {
+    "archive": "EVENT81_BASELINE_EVIDENCE_20261106.zip",
+    "sha256": "af84717ee1ac37eecfbd32040f979d72a84061f2b6ae016ce49df59c581a2e88",
+    "bytes": 3465825,
+    "members": 97
   }
 }
