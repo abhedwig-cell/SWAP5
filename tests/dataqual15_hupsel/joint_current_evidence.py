@@ -1,4 +1,4 @@
-"""Independent current336-provider source/object/native archive remeasurement."""
+"""Independent current335-provider source/object/native archive remeasurement."""
 import argparse,ast,base64,hashlib,io,json,lzma,re,struct,subprocess,tarfile,zlib
 from pathlib import Path
 import joint_current as p
@@ -61,7 +61,7 @@ def audit(files):
  summary=dict(provider_objects=0,new_candidate_modules=0,proper_files=0,candidate_refusals=0,baseline_failed_refusals=0,whole_scientific_admission=False,production_admission=False)
  for role in ('baseline','candidate'):
   b=json.loads(files[role+'/BUILD.json']);events=json.loads(files[role+'/EVENTS.json']);result=r['roles'][role]
-  assert b['role']==role and b['provider_count']==336
+  assert b['role']==role and b['provider_count']==335
   assert all(f in b['flags'] for f in ('-'+r['optimization'],'-std=f2008','-fcheck=all','-fopenmp','-ffpe-trap=invalid,zero,overflow'))
   for name,digest in b['sources_sha256'].items():assert meta['sources'][name]['sha256']==digest
   for name,digest in b['objects_sha256'].items():assert sha(files[local(name,root)])==digest;summary['provider_objects']+=1

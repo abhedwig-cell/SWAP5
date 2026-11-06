@@ -17,12 +17,12 @@ def guard():
 def main():
  parser=argparse.ArgumentParser();parser.add_argument('--output',type=Path,required=True);parser.add_argument('--optimization',choices=('O0','O2'),required=True);parser.add_argument('--compiler',default=shutil.which('gfortran'));a=parser.parse_args()
  guard();os.environ['OMP_NUM_THREADS']='1';out=a.output.resolve();prior.guard=guard;prior.DRIVERS=dict(prior.DRIVERS,age='tests/nut-sol/test_age_joint.f90')
- fixture,ordered,drivers=prepare(out);assert len(ordered)==336
+ fixture,ordered,drivers=prepare(out);assert len(ordered)==335
  result=dict(status='RUNNING',baseline=BASE,optimization=a.optimization,production_admission=False,whole_scientific_admission=False,roles={})
  for role in ('baseline','candidate'):
   directory=out/role;exes,events=build(directory,Path(a.compiler).resolve(),a.optimization,fixture,ordered,drivers,out/'baseline'if role=='candidate'else None)
   result['roles'][role]=measure(directory,exes,events,role)
-  (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(role,'complete current336-provider native and physical execution',flush=True)
+  (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(role,'complete current335-provider native and physical execution',flush=True)
  for name in NAMES:
   for leaf in ('restart.bin','end.bin','fresh.bin'):assert(out/'baseline'/name/leaf).read_bytes()==(out/'candidate'/name/leaf).read_bytes()
  result['status']='COMPLETE_PRIVATE_JOINT_LOGICAL_READER_CLUSTER_PASS';(out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');guard()

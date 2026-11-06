@@ -30,5 +30,15 @@
     "expected_seconds_per_optimization": 420,
     "reason": "PR1591/1593 changed actual complete-source inputs; prior335-provider proof is frozen and cannot establish current physical-source execution. Rebuild all current providers rather than reuse changed objects. Original untouched source qualification is reused only as byte-comparison evidence."
   },
-  "next": "Persist controller and auditor, run complete local current graph O0/O2 then independent POSIX; adjudicate and canonically integrate current bounded private reader proof."
+  "next": "Persist controller and auditor, run complete local current graph O0/O2 then independent POSIX; adjudicate and canonically integrate current bounded private reader proof.",
+  "retained_setup_failures": {
+    "outputs": [
+      "O0-v1",
+      "O2-v1"
+    ],
+    "status": "FAILED_BEFORE_ANY_BUILD",
+    "reason": "Initially assumed unused new bordered solver entered dependency DAG. Exact DAG contains335 providers; changed macropore module is present and new unreferenced solver is correctly excluded. Pin actual335 count; preserve all existing provider, compiler and driver assertions."
+  },
+  "provider_count": 335,
+  "cold_rebuild_reason": "Changed macropore provider participates in exact dependency DAG; every provider is cold rebuilt. Unreferenced peer bordered module remains outside this graph."
 }
