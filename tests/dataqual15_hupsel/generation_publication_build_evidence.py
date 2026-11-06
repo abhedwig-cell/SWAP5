@@ -39,7 +39,7 @@ def audit(folder):
      if selected:raw=p.read_bytes();valid_generation(raw);positives[p.relative_to(folder).as_posix()]=sha(raw)
  assert len(positives)==24 and len(pinned)>2000 and c_compiles==4 and links==14
  private=json.loads((DEST/'GENERATION_PUBLICATION_POSIX_20261106.json').read_text())
- expected={n.split('/publication-models/',1)[1]:h for n,h in private['model_report']['positive_generation_sha256'].items()};assert positives==expected,'current build changed native authority bytes'
+ expected={n.replace('\\','/').split('/publication-models/',1)[1]:h for n,h in private['model_report']['positive_generation_sha256'].items()};assert positives==expected,'current build changed native authority bytes'
  return dict(positive_generation_sha256=positives,pinned_objects=len(pinned),c_compiles=c_compiles,actual_links=links,original_process_assertions=True,whole_scientific_admission=False)
 
 def run(archive=None):
