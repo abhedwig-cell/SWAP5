@@ -1,6 +1,6 @@
 # Positive macropore storage preservation
 
-## Proposed production correction
+## Canonically admitted production correction
 
 On baseline `db42f99e2de9cae43dfe04bbf291e8e214edd6f7`, the standard storage
 normalizer applies a `1e-12 cm` packing quantum to ordinary domains. Positive
@@ -42,3 +42,21 @@ Full original-input continuation with the corrected contact research model is a
 separate execution claim, recorded only after its terminal result. The storage
 repair does not turn that contact law into historical equivalence, complete
 original Andelst481 or qualify atmospheric/donor energy contributions.
+
+## Admission and original-input continuation
+
+PR1593 admits this bounded production correction at actual merge
+`6545e21d12d23d7d22f53d7e2f20a43ad5276d61`, with parents
+`db42f99e2de9cae43dfe04bbf291e8e214edd6f7` and
+`1c1a5e50612fb6232b7e1962684be41f56a0e241`. Focused Linux O0/O2 contracts
+and strict documentation pass. The corrected V2 original-input run then completes
+65 days in700.372 seconds, with maximum daily water residual
+`1.1061381684936018e-12 cm`. Its strict own day3-to4 continuation reproduces
+all504 progress rows and the complete day4 checkpoint byte for byte.
+
+The next failure is a distinct coupled groundwater/drainage transition at accepted
+65.17299999999756, attempted65.17499999999755. Strict own day65 continuation
+repeats all91 rows, including refusal, and the diagnostic committed state exactly.
+This is not a storage-repair regression or a completed481-day result.
+Authority: `integration/dataqual15/EMPTY_POCKET_RECOVERY_20261106.json` and
+`integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
