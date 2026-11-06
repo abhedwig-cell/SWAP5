@@ -1,0 +1,51 @@
+name: Current complete joint native and occupied target qualification
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/joint_current*.py'
+      - 'integration/dataqual15_hupsel/JOINT_CURRENT_*'
+      - '.github/workflows/joint-current.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  current-complete:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Exact current production boundary and actual complete native proof
+        run: |
+          python -B -c "import sys;sys.path.insert(0,'tests/dataqual15_hupsel');import joint_current;joint_current.guard()"
+          for opt in O0 O2; do
+            python -B tests/dataqual15_hupsel/joint_current_evidence.py --stem "JOINT_CURRENT_WINDOWS_${opt}_20261106" --self-test
+            python -B tests/dataqual15_hupsel/joint_current_owner.py --verify "JOINT_CURRENT_OWNER_WINDOWS_${opt}_20261106" --self-test
+            stem="JOINT_CURRENT_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_current_evidence.py --stem "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_current.py --compiler /usr/bin/gfortran-13 --optimization "$opt" --output "$RUNNER_TEMP/joint-current/$opt"
+            fi
+            stem="JOINT_CURRENT_OWNER_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_current_owner.py --verify "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_current_owner.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-current-owner/$opt"
+            fi
+          done
+          python -B tests/dataqual15_hupsel/joint_current_evidence.py --cross WINDOWS
+          python -B tests/dataqual15_hupsel/joint_current_evidence.py --cross POSIX
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: current-complete-joint-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_CURRENT_*POSIX_*
+            ${{ runner.temp }}/joint-current/**/RESULT.json
+            ${{ runner.temp }}/joint-current/**/EVENTS.json
+            ${{ runner.temp }}/joint-current/**/*.stderr
+            ${{ runner.temp }}/joint-current-owner/**/RESULT.json
+            ${{ runner.temp }}/joint-current-owner/**/EVENTS.json
+            ${{ runner.temp }}/joint-current-owner/**/*.stderr
