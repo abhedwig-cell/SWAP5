@@ -33,6 +33,8 @@ jobs:
         run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output current-view-contracts
       - name: Real positive pond donor owners and groundwater projection O0/O2
         run: python -B tests/dataqual15/run_joint_current_view_contract.py --positive-pond --compiler /usr/bin/gfortran --output positive-pond-contracts
+      - name: Real pore volume drainage projection O0/O2
+        run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output contact-pore-volume --pore-volume
       - name: Scoped candidate source callback and refusal O0/O2
         run: python -B tests/dataqual15/run_joint_source_callback_contract.py --compiler /usr/bin/gfortran --output current-source-contracts
       - name: Exact committed rain phases, source events and original INT13 owner O0/O2
@@ -47,5 +49,6 @@ jobs:
             limiter-ratio-contracts
             current-view-contracts
             positive-pond-contracts
+            contact-pore-volume
             current-source-contracts
             source-event-contracts
