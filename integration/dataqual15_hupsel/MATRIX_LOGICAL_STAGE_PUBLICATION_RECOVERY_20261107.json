@@ -1,0 +1,1712 @@
+{
+  "phase": "PRIVATE_STAGE_FAULT_FOCUSED_GATES_PASS",
+  "canonical_base": "d8b33a22b3538d152f7a6d2a6a69d833c5f85871",
+  "tested_head": "b111974299a4cf44209657bf33c5ef737e0e6294",
+  "pull_request": 1612,
+  "scope": "Same matrix writer object and all four owner fixtures. Separate executable linked to real publisher test stages. Windows stages 2-5. POSIX additionally tests stage 6 after replacement.",
+  "predecessor": "MATRIX_LOGICAL_TEMPORAL_PUBLICATION_RECOVERY_20261107.json",
+  "predecessor_low08a": {
+    "run": 42354504646,
+    "job": 128349508583,
+    "conclusion": "success"
+  },
+  "production_admission": false,
+  "windows": {
+    "O0": {
+      "native_archive_sha256": "b7c3fdf05a853bfcaf96f0776bf6d4825216282d6be0d5a99a5e53a22dc74c1c",
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "publication_faults": [
+        {
+          "fixture": "1",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1-2",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 1.206648100167513,
+            "stdout": "publication-fault-1-2.stdout",
+            "stderr": "publication-fault-1-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1-3",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.04354889993555844,
+            "stdout": "publication-fault-1-3.stdout",
+            "stderr": "publication-fault-1-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1-4",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.044411699986085296,
+            "stdout": "publication-fault-1-4.stdout",
+            "stderr": "publication-fault-1-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1-5",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.051586000015959144,
+            "stdout": "publication-fault-1-5.stdout",
+            "stderr": "publication-fault-1-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1t-2",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.04397809994406998,
+            "stdout": "publication-fault-1t-2.stdout",
+            "stderr": "publication-fault-1t-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1t-3",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.044984799809753895,
+            "stdout": "publication-fault-1t-3.stdout",
+            "stderr": "publication-fault-1t-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1t-4",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.04683739994652569,
+            "stdout": "publication-fault-1t-4.stdout",
+            "stderr": "publication-fault-1t-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-1t-5",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.04219709988683462,
+            "stdout": "publication-fault-1t-5.stdout",
+            "stderr": "publication-fault-1t-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-2-2",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.04110799985937774,
+            "stdout": "publication-fault-2-2.stdout",
+            "stderr": "publication-fault-2-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-2-3",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.04207350010983646,
+            "stdout": "publication-fault-2-3.stdout",
+            "stderr": "publication-fault-2-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-2-4",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.04148159991018474,
+            "stdout": "publication-fault-2-4.stdout",
+            "stderr": "publication-fault-2-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-2-5",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.04282120009884238,
+            "stdout": "publication-fault-2-5.stdout",
+            "stderr": "publication-fault-2-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-3-2",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.04726279992610216,
+            "stdout": "publication-fault-3-2.stdout",
+            "stderr": "publication-fault-3-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-3-3",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.04296209989115596,
+            "stdout": "publication-fault-3-3.stdout",
+            "stderr": "publication-fault-3-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-3-4",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.044029399985447526,
+            "stdout": "publication-fault-3-4.stdout",
+            "stderr": "publication-fault-3-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O0-20261107\\candidate\\fault-3-5",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.04136340017430484,
+            "stdout": "publication-fault-3-5.stdout",
+            "stderr": "publication-fault-3-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        }
+      ],
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              -1
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "3": [
+            [
+              144,
+              -1
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 106
+    },
+    "O2": {
+      "native_archive_sha256": "c10ad236e209fec1d2a1ffc359ff4e09c4d4d70d094874cbad4fe0cec1f5b839",
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "publication_faults": [
+        {
+          "fixture": "1",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1-2",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.46826260001398623,
+            "stdout": "publication-fault-1-2.stdout",
+            "stderr": "publication-fault-1-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1-3",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.03802559990435839,
+            "stdout": "publication-fault-1-3.stdout",
+            "stderr": "publication-fault-1-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1-4",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0412578999530524,
+            "stdout": "publication-fault-1-4.stdout",
+            "stderr": "publication-fault-1-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1-5",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.044275099877268076,
+            "stdout": "publication-fault-1-5.stdout",
+            "stderr": "publication-fault-1-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1t-2",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.04087569983676076,
+            "stdout": "publication-fault-1t-2.stdout",
+            "stderr": "publication-fault-1t-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1t-3",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.04155720002017915,
+            "stdout": "publication-fault-1t-3.stdout",
+            "stderr": "publication-fault-1t-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1t-4",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.03786420007236302,
+            "stdout": "publication-fault-1t-4.stdout",
+            "stderr": "publication-fault-1t-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-1t-5",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.039793899981305,
+            "stdout": "publication-fault-1t-5.stdout",
+            "stderr": "publication-fault-1t-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-2-2",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.04314019996672869,
+            "stdout": "publication-fault-2-2.stdout",
+            "stderr": "publication-fault-2-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-2-3",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.042912299977615476,
+            "stdout": "publication-fault-2-3.stdout",
+            "stderr": "publication-fault-2-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-2-4",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0385715002194047,
+            "stdout": "publication-fault-2-4.stdout",
+            "stderr": "publication-fault-2-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-2-5",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.037793399998918176,
+            "stdout": "publication-fault-2-5.stdout",
+            "stderr": "publication-fault-2-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 2,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-3-2",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.044380699982866645,
+            "stdout": "publication-fault-3-2.stdout",
+            "stderr": "publication-fault-3-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 3,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-3-3",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.040818699868395925,
+            "stdout": "publication-fault-3-3.stdout",
+            "stderr": "publication-fault-3-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 4,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-3-4",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.039627799997106194,
+            "stdout": "publication-fault-3-4.stdout",
+            "stderr": "publication-fault-3-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 5,
+          "event": {
+            "command": [
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-stages-O2-20261107\\candidate\\fault-3-5",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.04244360001757741,
+            "stdout": "publication-fault-3-5.stdout",
+            "stderr": "publication-fault-3-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        }
+      ],
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "3": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 106
+    }
+  },
+  "posix": {
+    "O0": {
+      "native_archive_sha256": "d01d5a92ce30a092d6809f119f3ccdaa00474d85c5c640bdff56ec381ead6ffe",
+      "platform": "POSIX",
+      "optimization": "O0",
+      "publication_faults": [
+        {
+          "fixture": "1",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1-2",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0018100869999670977,
+            "stdout": "publication-fault-1-2.stdout",
+            "stderr": "publication-fault-1-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1-3",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.001738388999910967,
+            "stdout": "publication-fault-1-3.stdout",
+            "stderr": "publication-fault-1-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1-4",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.002133445000026768,
+            "stdout": "publication-fault-1-4.stdout",
+            "stderr": "publication-fault-1-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1-5",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.002315578999969148,
+            "stdout": "publication-fault-1-5.stdout",
+            "stderr": "publication-fault-1-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1-6",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.002186263999988114,
+            "stdout": "publication-fault-1-6.stdout",
+            "stderr": "publication-fault-1-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1t-2",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.0018497659999638927,
+            "stdout": "publication-fault-1t-2.stdout",
+            "stderr": "publication-fault-1t-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1t-3",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.0017428559999643767,
+            "stdout": "publication-fault-1t-3.stdout",
+            "stderr": "publication-fault-1t-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1t-4",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.0021619170000803933,
+            "stdout": "publication-fault-1t-4.stdout",
+            "stderr": "publication-fault-1t-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1t-5",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.0020543649999353875,
+            "stdout": "publication-fault-1t-5.stdout",
+            "stderr": "publication-fault-1t-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-1t-6",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.002118231999929776,
+            "stdout": "publication-fault-1t-6.stdout",
+            "stderr": "publication-fault-1t-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-2-2",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0017743140000447966,
+            "stdout": "publication-fault-2-2.stdout",
+            "stderr": "publication-fault-2-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-2-3",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.001754203000018606,
+            "stdout": "publication-fault-2-3.stdout",
+            "stderr": "publication-fault-2-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-2-4",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0022132849999252358,
+            "stdout": "publication-fault-2-4.stdout",
+            "stderr": "publication-fault-2-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-2-5",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.002070019000029788,
+            "stdout": "publication-fault-2-5.stdout",
+            "stderr": "publication-fault-2-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-2-6",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0022083169999405072,
+            "stdout": "publication-fault-2-6.stdout",
+            "stderr": "publication-fault-2-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-3-2",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0017867720000595,
+            "stdout": "publication-fault-3-2.stdout",
+            "stderr": "publication-fault-3-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-3-3",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0018426160000899472,
+            "stdout": "publication-fault-3-3.stdout",
+            "stderr": "publication-fault-3-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-3-4",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.002227765999919029,
+            "stdout": "publication-fault-3-4.stdout",
+            "stderr": "publication-fault-3-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-3-5",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.002036639000039031,
+            "stdout": "publication-fault-3-5.stdout",
+            "stderr": "publication-fault-3-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O0/candidate/fault-3-6",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.002141576999974859,
+            "stdout": "publication-fault-3-6.stdout",
+            "stderr": "publication-fault-3-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        }
+      ],
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              -1
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "3": [
+            [
+              144,
+              -1
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "job": 128363648138,
+      "artifact": 13568837852,
+      "artifact_sha256": "ab0718822bc9a65e311be5ee3b255587c6e8c8d8cf851fe57b465c43908ff385",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 106
+    },
+    "O2": {
+      "native_archive_sha256": "1e3526e83567c0fcb95a2201d8cfccb1aa889efbe3886f0c8d498317cbda251f",
+      "platform": "POSIX",
+      "optimization": "O2",
+      "publication_faults": [
+        {
+          "fixture": "1",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1-2",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0015912900000216723,
+            "stdout": "publication-fault-1-2.stdout",
+            "stderr": "publication-fault-1-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1-3",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0015858009999760725,
+            "stdout": "publication-fault-1-3.stdout",
+            "stderr": "publication-fault-1-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1-4",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0021263140000087333,
+            "stdout": "publication-fault-1-4.stdout",
+            "stderr": "publication-fault-1-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1-5",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0020425090000344426,
+            "stdout": "publication-fault-1-5.stdout",
+            "stderr": "publication-fault-1-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1-6",
+              "1"
+            ],
+            "returncode": 0,
+            "seconds": 0.0020447349999699327,
+            "stdout": "publication-fault-1-6.stdout",
+            "stderr": "publication-fault-1-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1t-2",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.0015634690000183582,
+            "stdout": "publication-fault-1t-2.stdout",
+            "stderr": "publication-fault-1t-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1t-3",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.001585689000023649,
+            "stdout": "publication-fault-1t-3.stdout",
+            "stderr": "publication-fault-1t-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1t-4",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.002115184999979647,
+            "stdout": "publication-fault-1t-4.stdout",
+            "stderr": "publication-fault-1t-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1t-5",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.00207444900001974,
+            "stdout": "publication-fault-1t-5.stdout",
+            "stderr": "publication-fault-1t-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "1t",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-1t-6",
+              "1t"
+            ],
+            "returncode": 0,
+            "seconds": 0.002092131999972935,
+            "stdout": "publication-fault-1t-6.stdout",
+            "stderr": "publication-fault-1t-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-2-2",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0015663130000120873,
+            "stdout": "publication-fault-2-2.stdout",
+            "stderr": "publication-fault-2-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-2-3",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0016066790000195397,
+            "stdout": "publication-fault-2-3.stdout",
+            "stderr": "publication-fault-2-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-2-4",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.002169254000023102,
+            "stdout": "publication-fault-2-4.stdout",
+            "stderr": "publication-fault-2-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-2-5",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0022710860000074717,
+            "stdout": "publication-fault-2-5.stdout",
+            "stderr": "publication-fault-2-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "2",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-2-6",
+              "2"
+            ],
+            "returncode": 0,
+            "seconds": 0.0021554200000082346,
+            "stdout": "publication-fault-2-6.stdout",
+            "stderr": "publication-fault-2-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 2,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-3-2",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0015684379999925113,
+            "stdout": "publication-fault-3-2.stdout",
+            "stderr": "publication-fault-3-2.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 3,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-3-3",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0015600119999703566,
+            "stdout": "publication-fault-3-3.stdout",
+            "stderr": "publication-fault-3-3.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 4,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-3-4",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0022113659999831725,
+            "stdout": "publication-fault-3-4.stdout",
+            "stderr": "publication-fault-3-4.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 5,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-3-5",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0020917900000085865,
+            "stdout": "publication-fault-3-5.stdout",
+            "stderr": "publication-fault-3-5.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        },
+        {
+          "fixture": "3",
+          "stage": 6,
+          "event": {
+            "command": [
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/publication-fault.exe",
+              "surface-write-refuse",
+              "unused",
+              "/home/runner/work/_temp/matrix-surface-O2/candidate/fault-3-6",
+              "3"
+            ],
+            "returncode": 0,
+            "seconds": 0.0020912719999728324,
+            "stdout": "publication-fault-3-6.stdout",
+            "stderr": "publication-fault-3-6.stderr",
+            "observed_stdout": "SURFACE_PUBLICATION_REFUSED\n"
+          }
+        }
+      ],
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "3": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "job": 128363647960,
+      "artifact": 13568658274,
+      "artifact_sha256": "cf67e5006d9138cb678eb31829d8a17c5441f62c4399aab58d727ff878509425",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 106
+    }
+  },
+  "workflows": [
+    {
+      "id": 42359163267,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163264,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163321,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163353,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163285,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163259,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163452,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163275,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163272,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163300,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163288,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163311,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163269,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42359163319,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "workflow_failure": {
+    "job": 128363648263,
+    "observed": [
+      "2026-11-07T09:20:36.1955279Z OSError: /home/runner/work/_temp/swap5-fgc49d-context-42359163319-2485/o0/libfgc49d_application.so: cannot enable executable stack as shared object requires: Invalid argument",
+      "2026-11-07T09:20:36.1956105Z FGC49D_CONTEXT_FAIL runtime O0",
+      "2026-11-07T09:20:36.2091717Z ##[error]Process completed with exit code 1."
+    ]
+  },
+  "adjudication": "All 72 injected faults return refusal. Stages 2-5 preserve the prior valid checkpoint and complete pending bytes. Stage 6 on POSIX retains the replaced checkpoint while reporting refusal. Normal publisher and continuation gates pass independently. F-CI110 retains its FGC49D executable-stack loader failure.",
+  "next": "Qualify process termination before and after replacement using the same writer object and existing synchronization shims. Other physical continuation envelopes and deployed admission remain open."
+}
