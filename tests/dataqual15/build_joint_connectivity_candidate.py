@@ -1,0 +1,140 @@
+"""Private V7 experiment: complete the single-node connectivity graph at h=0."""
+import json, sys
+from pathlib import Path
+import build_joint_saturation_contact_candidate as previous
+from build_joint_entry_candidate import ROOT, once, sha
+
+MODEL = 'ANDELST_JOINT_SINGLE_NODE_CONNECTIVITY_GRAPH_V7'
+
+
+def render(folder):
+    shadow = previous.render(folder)
+    name = 'src/solver/mod_b110_source_sink_provider.f90'
+    s = shadow[ROOT/name].read_text()
+    s = once(s, '     integer :: active_nodes = 0', '''     integer :: connection_node = 0
+     real(real64) :: connection_fraction = 0d0
+     integer :: active_nodes = 0''')
+    shadow[ROOT/name].write_text(s,newline='\n')
+
+    name = 'src/legacy/b1_10_port/headcalc.f90'
+    s = shadow[ROOT/name].read_text()
+    s = once(s,'   use mod_reference_bordered_solver,only:reference_bordered_solve',
+        '   use mod_reference_bordered_solver,only:reference_bordered_solve\n   use mod_b110_source_sink_provider,only:b110_source_sink_provider_t')
+    s = once(s,' real(8)::saved_surface_area',' real(8)::saved_surface_area,saved_connection_fraction,increment\n integer::saved_connection_node')
+    s = once(s,'  saved_surface_area=provider_macropore_surface_area_fraction','''  saved_surface_area=provider_macropore_surface_area_fraction
+  saved_connection_node=0;saved_connection_fraction=0d0
+  if(associated(evaluation_context%source_sink))then
+   select type(drain=>evaluation_context%source_sink)
+   type is(b110_source_sink_provider_t)
+    saved_connection_node=drain%connection_node;saved_connection_fraction=drain%connection_fraction
+   end select
+  end if''')
+    marker='  allocate(gwl_distance(n),gwl_z(n));gwl_distance=0d0'
+    s = once(s,marker,'''  ! A single zero-head node can disconnect two otherwise saturated regions.
+  ! Its drainage jump is nonlocal: use the whole bordered residual to decide
+  ! whether the bounded contact exists, not a one-row endpoint sign test.
+  if(k==0.and.associated(evaluation_context%source_sink))then
+   select type(drain=>evaluation_context%source_sink)
+   type is(b110_source_sink_provider_t)
+    i=minloc(x,dim=1)
+    if(associated(drain%current_drainage).and.i>1.and.i<n.and.abs(x(i))<=1d-3)then
+     if(all(x(:i-1)>0d0).and.all(x(i+1:)>0d0))then
+      k=1;nodes(k)=3*n+i;x(i)=0d0;lambda(k)=0d0
+     end if
+    end if
+   end select
+  end if
+'''+marker)
+    for j in ('j','jj'):
+        s=s.replace(f'i=abs(nodes({j}));if(i>2*n)i=i-n\n    if(i>n)i=i-n',f'i=mod(abs(nodes({j}))-1,n)+1')
+    s = once(s,'''    candidate(:k)=lambda(:k);candidate(j)=1d0''','''    if(nodes(j)>3*n)then
+     increment=1d-5
+     if(lambda(j)>1d0-increment)increment=-increment
+     candidate(:k)=lambda(:k);candidate(j)=lambda(j)+increment
+     call joint_entry_residual(x,candidate(:k),nodes(:k),rp,valid);if(.not.valid)exit
+     border(:,j)=(rp-r)/increment
+     cycle
+    end if
+    candidate(:k)=lambda(:k);candidate(j)=1d0''')
+    s = once(s,'  provider_macropore_surface_area_fraction=saved_surface_area','''  provider_macropore_surface_area_fraction=saved_surface_area
+  if(associated(evaluation_context%source_sink))then
+   select type(drain=>evaluation_context%source_sink)
+   type is(b110_source_sink_provider_t)
+    drain%connection_node=saved_connection_node;drain%connection_fraction=saved_connection_fraction
+   end select
+  end if''')
+    s = once(s,''' integer::j
+ ok=.false.
+ select type(mp=>evaluation_context%macropore)''',''' integer::j,connection
+ ok=.false.;r=0d0;connection=0
+ if(associated(evaluation_context%source_sink))then
+  select type(drain=>evaluation_context%source_sink)
+  type is(b110_source_sink_provider_t)
+   drain%connection_node=0;drain%connection_fraction=0d0
+   do j=1,size(nodes)
+    if(nodes(j)<=3*NN)cycle
+    connection=nodes(j)-3*NN
+    if(any(x(:connection-1)<=0d0).or.any(x(connection+1:)<=0d0))return
+    drain%connection_node=connection;drain%connection_fraction=fraction(j)
+   end do
+  end select
+ end if
+ select type(mp=>evaluation_context%macropore)''')
+    s = once(s,'''   if(nodes(j)>2*NN)then
+    mp%zero_head_fraction(nodes(j)-2*NN)=fraction(j)''','''   if(nodes(j)>3*NN)then
+    mp%zero_head_fraction(nodes(j)-3*NN)=fraction(j)
+   else if(nodes(j)>2*NN)then
+    mp%zero_head_fraction(nodes(j)-2*NN)=fraction(j)''')
+    shadow[ROOT/name].write_text(s,newline='\n')
+
+    name='src/runtime/mod_fmr_serialized_reference_backend.f90';s=shadow[ROOT/name].read_text()
+    s=once(s,'    logical::joint_drain_active,joint_drain_ok','    logical::joint_drain_active,joint_drain_ok\n    real(real64)::joint_drain_level')
+    s=once(s,'      allocate(joint_final_qdra(size(self%qdra,1),size(self%qdra,2)))','''      if(joint_drain_source%connection_node>0)then
+        block
+          integer::ic
+          ic=joint_drain_source%connection_node
+          if(abs(solve_result%candidate_state%pressure_head(ic))>1d-12)return
+          if(any(solve_result%candidate_state%pressure_head(:ic-1)<=0d0).or. &
+             any(solve_result%candidate_state%pressure_head(ic+1:)<=0d0))return
+        end block
+      end if
+      allocate(joint_final_qdra(size(self%qdra,1),size(self%qdra,2)))''')
+    s=once(s,'      if(profile_projection%level_present)solve_result%candidate_state%groundwater_level=profile_projection%level_cm',
+      '''      if(profile_projection%level_present)solve_result%candidate_state%groundwater_level=profile_projection%level_cm
+      if(joint_drain_active.and.joint_drain_source%connection_node>0) &
+        solve_result%candidate_state%groundwater_level=joint_drain_level''')
+    begin=s.index('    subroutine coupled_profile_drainage(');end=s.index('    end subroutine coupled_profile_drainage',begin)
+    body=s[begin:end]
+    body=once(body,'      ok=.false.;qdra=0d0','''      real(real64)::projected_head(size(head)),fraction
+      integer::ic
+      ok=.false.;qdra=0d0;joint_drain_level=999d0''')
+    body=once(body,'''      call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+        head,hydraulic_start%ponding_depth,projection)''','''      projected_head=head
+      ic=joint_drain_source%connection_node
+      if(ic>0)then
+        if(any(head(:ic-1)<=0d0).or.any(head(ic+1:)<=0d0))ic=0
+      end if
+      if(ic>0)projected_head(ic)=0d0
+      call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
+        projected_head,hydraulic_start%ponding_depth,projection)''')
+    body=once(body,'      view%active_nodes=size(head);view%pressure_head=head;view%water_content=theta','''      if(ic>0)then
+        fraction=joint_drain_source%connection_fraction
+        if(.not.ieee_is_finite(fraction))return
+        if(fraction<0d0.or.fraction>1d0)return
+        projection%level_cm=(1d0-fraction)*self%soil_parameters%z(ic)+fraction*projection%level_cm
+      end if
+      joint_drain_level=projection%level_cm
+      view%active_nodes=size(head);view%pressure_head=head;view%water_content=theta''')
+    s=s[:begin]+body+s[end:]
+    shadow[ROOT/name].write_text(s,newline='\n')
+    p=folder/'MODEL.json';r=json.loads(p.read_text())
+    r.update(model=MODEL,connection='At a single interior zero head with all other heads positive, solve a bounded level between actual disconnected/connected limits; evaluate DRAMET3/DIVDRA at that same level in the residual and its accepted receipt. Trial scratch only.',rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
+    p.write_text(json.dumps(r,indent=2)+'\n')
+    return shadow
+
+
+if __name__=='__main__':
+    previous.previous.drainage.current.contact.base.render=render
+    previous.previous.drainage.current.contact.base.main()
+    p=Path(sys.argv[sys.argv.index('--output')+1])/'BUILD.json'
+    r=json.loads(p.read_text());r['contact_model']=MODEL;p.write_text(json.dumps(r,indent=2)+'\n')

@@ -1894,5 +1894,24 @@
     "maximum_daily_water_residual_cm": 3.394925574690817e-12,
     "year_control": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION",
     "next_action": "Fresh V6 original-input481 plus unchanged own stream captures and exact year; retain V5 natural failure256."
+  },
+  "source256873_connectivity_diagnosis": {
+    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
+    "quiet_reproduction_seconds": 51.74983269977383,
+    "cost_row_exact": true,
+    "late_clock": 256.8737384443374,
+    "last_negative_node": 12,
+    "last_negative_head_cm": -1.5315382942040064e-12,
+    "fully_connected_one_sided_groundwater_jump_cm": [
+      -11.50000000000196,
+      4.539858749346055e-08
+    ],
+    "same_macro_rate_sum_cm_day": 1.502359255276939,
+    "signed_drainage_rate_endpoints_cm_day": [
+      0.1269999999999961,
+      0.15000000009077058
+    ],
+    "probe_seconds": 33.402910299832,
+    "probe_scope": "Actual two-sided residual/drain/macro audit; not a one-row residual bracket. The jump is nonlocal. Current V7 experiment solves a bounded projection coordinate at exact zero head with the real DRAMET3/DIVDRA; UNTESTED."
   }
 }
