@@ -50,6 +50,8 @@ FIXTURE = """
         forcing%potential_bare_soil_evaporation_cm_per_day=.1d0
         forcing%potential_pond_evaporation_cm_per_day=.1d0
         forcing%ponding_max_cm=1d0
+        forcing%runoff_resistance_day=1d0
+        forcing%runoff_exponent=1d0
       end associate
       cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
       cfg%numerical%transaction%temporal_tolerance=1d-6
