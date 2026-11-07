@@ -1245,6 +1245,19 @@
       "checkpoint4_sha256": "f3c67bb4302ec21ae6ae0b27140a67bd7f4cc4bd12a000735ce5fc4e828c6fda",
       "same_input_binding": true,
       "historical_original_equivalence": false
+    },
+    "own256_to257": true,
+    "own256_to257_receipt": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
+      "seconds": 306.7012215000577,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "7e3768c56cd61e8b88d6e9d33cfcbf5a510044fa770a36f43df549ffaca89442",
+      "all_progress_rows_exact": true,
+      "progress_rows": 514,
+      "entire_checkpoint257_byte_exact": true,
+      "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
     }
   },
   "bottom_contact481_selection": {
@@ -2141,6 +2154,44 @@
         "bytes": 180730,
         "members": 16
       }
+    },
+    "fresh_prior_refusal_source_pass": {
+      "progress": {
+        "day": "257",
+        "segment": "448",
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "attempts": "1467",
+        "solver_rejections": "0",
+        "temporal_rejections": "733",
+        "mass_rejections": "2",
+        "residual_cm": "-6.57730467312767075E-012"
+      },
+      "cost": {
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "completed": "T",
+        "nonlinear_iterations": "17252",
+        "headcalc_calls": "4401",
+        "linear_solves": "17252",
+        "backtracking_attempts": "51196",
+        "accepted_substeps": "732",
+        "min_accepted_dt": " 2.41584530158434063E-013",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      },
+      "from_unchanged_original_initialization": true
+    },
+    "strict_own256_to257": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
+      "seconds": 306.7012215000577,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "7e3768c56cd61e8b88d6e9d33cfcbf5a510044fa770a36f43df549ffaca89442",
+      "all_progress_rows_exact": true,
+      "progress_rows": 514,
+      "entire_checkpoint257_byte_exact": true,
+      "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
     }
   },
   "predecessor_v6_terminal_execution": {
