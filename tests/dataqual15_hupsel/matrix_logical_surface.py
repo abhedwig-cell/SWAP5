@@ -11,7 +11,7 @@ import matrix_logical_header as header
 from native_n_crc_runtime import run
 
 ENTRY = """
-  if (trim(mode)=='surface-write'.or.trim(mode)=='surface-read') then
+  if (index(trim(mode),'surface-')==1) then
     call surface_checkpoint()
     stop
   end if
@@ -48,6 +48,7 @@ FIXTURE = """
       end if
       call require(water%ready().and.solute%ready(),'both targets restored')
       print '(A)','SURFACE_ACCEPTED'
+      if (trim(mode)=='surface-probe') return
     end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
       670001_int64,water,solute,status,allow_surface_mass=.true.)
@@ -113,7 +114,7 @@ def execute(native, output, compiler):
                     struct.pack_into('<i', body, offset, value)
                     path = output / role / f'malformed-{tag}-{offset}-{value}'
                     path.write_bytes(body + struct.pack('<I', zlib.crc32(body)))
-                    observed = run([executable, 'surface-read', path, restored, tag], output, events, role + '-malformed')
+                    observed = run([executable, 'surface-probe', path, restored, tag], output, events, role + '-malformed')
                     accepted = b'SURFACE_ACCEPTED' in observed.stdout
                     assert accepted != (b'SURFACE_REFUSED_EMPTY' in observed.stdout)
                     if accepted:
