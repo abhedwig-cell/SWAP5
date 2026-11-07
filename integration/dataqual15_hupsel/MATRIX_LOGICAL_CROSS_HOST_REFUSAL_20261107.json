@@ -1,0 +1,8 @@
+{
+  "command": "python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --stem integration/dataqual15_hupsel/MATRIX_LOGICAL_POSIX_O0_20261107",
+  "returncode": 1,
+  "stage": "Actual downloaded native archive/member SHA checks pass, driver local-raw-byte identity refuses.",
+  "cause": "Windows checkout has281 CRLF lines in complete original driver; POSIX archive has LF. Same-platform driver check incorrectly compared archived exact bytes to current-host checkout bytes.",
+  "repair": "Require normalized archived driver bytes to equal exact frozen Git blob, and its unnormalized raw SHA to equal actual producer-recorded hash. Preserve all archived bytes/hashes and every criterion. No native rerun selected for this consumer-only correction; independently re-audit all four actual cohorts.",
+  "production_admission": false
+}

@@ -50,9 +50,28 @@ and malformed-input contracts pass O0/O2 with all prior contact contracts.
 Final202-provider native builds pass the actual failed source and two following
 sources through256.747 in14.580s/6.166s, with byte-exact progress and cost rows
 and all original app guards. These immutable-seed diagnostics do not qualify
-an own restart. A fresh original-input481 request and strict own3-to4,
-256-to257 and365-to367 checks are running separately; none is yet reported as
-completed. V6 bounded private contact/rollback research is admitted at PR1610 (`3aa9b8ee3`), whose actual parents are51b3e7305 and033fdea9e. The entire actual tree equals the qualified final head. Reconciled contact and documentation workflows both pass; no full481 or own-year claim follows.
+an own restart. V6 strict own3-to4 passes in168.399s, with all504 progress
+rows and the complete day4 stream byte-exact. Day-one O0/O2 all four CSVs and
+physical payload match; the V5 physical/budget/diagnostic/progress prefix is
+exact on day one, with an explicit difference in solver work.
+
+V6 bounded private contact/rollback research is admitted at PR1610
+(`3aa9b8ee3`), whose actual parents are51b3e7305 and033fdea9e. Its actual tree
+equals the qualified final head, and reconciled contact/docs workflows pass.
+The fresh original-initialization run passes256.742-to256.743 with63 accepted
+substeps, no solver/mass rejection and residual1.18048e-14cm. It later naturally
+refuses256.873-to256.875 in6141.923s, with256 completed days and maximum daily
+water residual3.366893197438576e-12cm. Own256-to257 and365-to367 never launch.
+
+The immutable V6 rollback reproduces the new cost row exactly. At the late
+state only node12 is negative (about-1.53e-12cm). A two-sided native probe
+changes the groundwater projection from-11.5cm to near zero; total drainage
+changes from0.127 to0.150cm/day and the nodal distribution changes, while the
+macro exchange sum is unchanged. The audit establishes a nonlocal coupling
+jump, not a local residual sign bracket or an admitted repair. Raw costs,
+seeds, profiles and source postimages are retained in
+`V6_TERMINAL256873_EVIDENCE_20261107.zip` and
+`V6_CONNECTIVITY_DIAGNOSIS_20261107.zip`. Whole481 and own year remain open.
 
 Authority: `ZERO_HEAD256_EVIDENCE_20261107.zip`, the unchanged V5 negative
 `V5_TERMINAL256_EVIDENCE_20261107.zip`, exact V5 own proof

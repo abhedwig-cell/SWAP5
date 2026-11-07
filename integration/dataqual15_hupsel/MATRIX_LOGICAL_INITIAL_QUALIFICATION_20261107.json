@@ -1,0 +1,138 @@
+{
+  "qualified_native_head": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4",
+  "posix_producer": "3b67e30dabd78ec9305ff52eb0e360c58de0084a",
+  "workflows": [
+    {
+      "id": 42333450710,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450728,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450720,
+      "name": "Current Reference uncertainty build qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450678,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450677,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450664,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450714,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450658,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450716,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450757,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450732,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450661,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450754,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450681,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    },
+    {
+      "id": 42333450752,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "33e6edad72b8662b995c47d1ae8eaee70dcf1ae4"
+    }
+  ],
+  "peer_canonical": "3aa9b8ee3a23c9495a6db17e68c05147166d92f7",
+  "peer_delta": [
+    ".github/workflows/dataqual15-joint-contact.yml",
+    "docs/science/ANDELST_JOINT_CONTACT_RESEARCH.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/TRACEABILITY.md",
+    "integration/dataqual15/BOTTOM_CONTACT_OWN245_EVIDENCE_20261107.zip",
+    "integration/dataqual15/TRANSITION65_RECOVERY_20261106.json",
+    "integration/dataqual15/V5_AUTOMATIC_CI_SCOPE_PROOF_20261107.json",
+    "integration/dataqual15/V5_AUTOMATIC_MERGE_CI_20261107.zip",
+    "integration/dataqual15/V5_TERMINAL256_EVIDENCE_20261107.zip",
+    "integration/dataqual15/ZERO_HEAD256_EVIDENCE_20261107.zip",
+    "integration/dataqual15/ZERO_HEAD_OWN3_DAY1_EVIDENCE_20261107.zip",
+    "integration/dataqual15/ZERO_HEAD_RECONCILED_CI_20261107.zip",
+    "integration/dataqual15/ZERO_HEAD_SELECTED_CI_20261107.zip",
+    "tests/dataqual15/build_joint_saturation_contact_candidate.py",
+    "tests/dataqual15/continue_joint_entry.py",
+    "tests/dataqual15/joint_saturation_contact_driver.f90",
+    "tests/dataqual15/run_joint_entry_contracts.py"
+  ],
+  "peer_own_dependency_intersection": [],
+  "source_trees_unchanged": true,
+  "consumer_correction": "Exact frozen Git driver bytes are checked after line-ending normalization; exact unnormalized producer-byte hash remains required. Actual first cross-host refusal retained. Exact missing synthetic merge producer fetched before dependency validation.",
+  "reuse": "All four native cohorts independently re-audited using final consumer and exact unchanged runtime/helper identity. Updated CI reuses those immutable actual source/object/native cohorts for consumer-only changes, refusing changed executable dependencies. No repeated native run selected solely for consumer/receipt changes.",
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
