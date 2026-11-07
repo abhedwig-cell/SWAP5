@@ -4,8 +4,9 @@
 
 This is an explicitly corrected research model, not historical SWAP 4.3.1
 equivalence or a production-default contact law. The original sharp model still
-has its recorded 1.958-day barrier. Original Andelst481 and an exact own
-year-boundary restart remain open. Grassgrowth and Hupsel admissions are separate.
+has its recorded 1.958-day barrier. The corrected original-input execution
+and exact own-year continuation are reported below. Grassgrowth and Hupsel
+admissions are separate.
 
 The event-aligned V4 research run subsequently completes142 days in2574.283s,
 then encounters a positive-subnormal outflow quotient SIGFPE in the public
@@ -37,8 +38,24 @@ source completes in 83 attempts with no solver or mass rejection, and O0/O2
 progress and cost are exact. Read-only replays accept all 69 windows through
 day 257 and all 349 through day 301; no restart is published. Original
 initialization day one is exact O0/O2 across all four CSVs and the physical
-payload. The new full481 and four exact own windows remain separate. No
+payload. The full execution and four own restarts are documented below. No
 numerical gate, publication rule or historical/default route changes.
+
+The private Andelst V9 research executable admitted through PR1617 completes
+481 days (1998-01-01 through 1999-04-26 inclusive) from the unchanged
+original inputs and initialization in 11218.890 s. All 241,566 source
+intervals complete. The maximum absolute daily water residual is 4.731912e-12
+cm. Strict same-executable own day 365 to 367 reproduces all 1,005 progress
+rows and the complete native checkpoint byte for byte. The original sharp
+historical model remains open, and production-default and whole-science gates
+remain separate. The signed sum of daily water residuals is -1.796198e-10 cm.
+Independent integration of the original rain phases and accepted source
+intervals gives 139.6508 cm with exact equality. Each strict own restart
+matches the complete ending checkpoint and every progress row: 3-4 (504
+rows), 256-257 (514 rows), 300-301 (513 rows), 365-367 (1,005 rows). The year
+restart starts 1999-01-01 and ends at model clock 367 (1999-01-03).
+
+Terminal authority: `V9_FULL481_EVIDENCE_20261107.zip`.
 
 ### Pore volume, same-owner flux and current surface successor
 
