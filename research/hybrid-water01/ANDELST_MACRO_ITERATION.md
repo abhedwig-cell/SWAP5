@@ -94,3 +94,31 @@ only the residual took 777/777 steps; updating only the Jacobian took
 774/772. These deliberately inconsistent Newton variants are diagnostic
 controls. Their timestep reductions prevent attribution of the
 same-grid pressure effect to either edit in isolation.
+
+## Acceptance-time refresh
+
+Generate the private HeadCalc with
+`python render_macro_acceptance_probe.py ORIGINAL_HEADCALC GENERATED_HEADCALC`.
+Compile and substitute the generated object as above. This variant
+keeps the fast frozen-exchange iterations until provisional
+convergence. It then recomputes the full residual, including ponding
+and the macropore exchange. If the existing residual limits fail, it
+continues the same Newton attempt with fresh exchange and derivative.
+The legacy timestep retry remains available. Once the check has run,
+an unresolved attempt reaching the legacy nonconverged fallback
+terminates the worker instead of publishing that step.
+
+The O2 paired half-day replay completed in 4246/4473 steps. Inward
+bottom exchanges were 0.07928720266/0.07899789128 cm and water
+residuals were +1.68e-7/-1.52e-7 cm. The original replay took
+820/778 steps and yielded 0.1081205403/0.1081968256 cm. The guard
+therefore does not recover the original flux response or step cost.
+
+At -50 cm the live driver measured full-versus-split defects of
+1.3725309344e-4 cm in total stock, 9.4344813332e-5 cm in the largest
+component, and 3.0756075284e-5 cm in bottom exchange. The latter two
+passed the existing 1e-4 cm gate. Total stock failed, so the driver
+rejected before the first MF6 solve, accepted revision remained zero,
+and the origin checkpoint hashes were unchanged. The head criterion
+was never reached. The experiment is a negative result for replacing
+the donor iteration with this acceptance check.
