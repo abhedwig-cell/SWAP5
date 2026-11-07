@@ -19,6 +19,49 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
+### Proposed lower perched-contact successor
+
+The exact-phase V4 original-initialization run passes the previous245.379
+drainage refusal, then stagnates in source245.594-to245.596. An immutable own245
+observer reproduces all305 preceding source rows exactly and stops deliberately
+at a nonlinear refusal with dt5.841258143846062e-9day. The largest residual is
+9.832380954977182e-6 at node28. The actual constitutive capacity agrees with an
+independent storage-increment derivative. A two-sided probe of the lower perched
+face between nodes27/28 instead finds a0-to0.0016855287077411096cm/day transfer
+jump. This positive-to-negative face is absent from the earlier upper-contact
+graph. It is a distinct implementation gap; neither481 nor year restart passes.
+
+V5 is a proposed private research successor. A separate trial-local lower-contact
+fraction acts on the first cell below that pocket, with the same weighted
+head-plane equality solved in the existing bordered system. Both Newton sides
+must expose that action; the accepted response must use the identical fraction,
+transfer and sorptivity action history. The existing1e-12 publication-plane
+guard, mass/temporal/nonlinear controls, default route and restart schema remain
+unchanged. Fractions are scratch solver coordinates, never persisted state or
+averages of elapsed clocks. Owning implementation:
+`tests/dataqual15/build_joint_bottom_contact_candidate.py`. The real lower-contact operator, both Newton sides, action history and refusals
+pass O0/O2 together with all unchanged border/entry/upper/ordinary contracts.
+The actual failed source passes every original native guard in47.277s at O0
+and20.918s at O2. Three consecutive sources through245.600 pass in123.357s/43.315s,
+with byte-identical progress and cost rows. Fresh O0 day-one physical payload and
+all four CSVs, and O2 day-one payload, are exact to V4. No diagnostic restart is
+promoted to an own-restart qualification.
+
+The V4 run is intentionally stopped after7805.630s with245 complete days and
+maximum daily residual3.394925574690817e-12cm. Its actual return4294967295 and
+raw runner censored=false remain unchanged; `CENSOR_ADJUDICATION.json` explicitly
+records external termination after the discriminating repair. This is neither a
+natural model failure nor a481-day PASS. The exact old own19-to20/32-to33
+results retain their V4 executable identity. V5 strict own3-to4 then completes in160.888s: all504 source rows and the
+complete day4 stream are byte-exact, using its own unchanged binding and binary.
+Its original-initialization481 and own year365-to367 remain separate pending
+gates. The new prefix through4.922 is also byte-exact to the V4 progress prefix;
+this is bounded preservation, not a full-trajectory equivalence claim.
+
+Authority: `LOWER_PERCHED245594_EVIDENCE_20261107.zip` (SHA-256
+`6e1048762b8005a11ad230955b00a4b8d39ae5e88a16225450de0dce790a4e84`)
+and `TRANSITION65_RECOVERY_20261106.json` in `integration/dataqual15/`.
+
 The quotient-repaired original-initialization request terminates after245 complete
 days and4727.031s, at last completed source245.3769999999992. Maximum daily water
 residual is3.392259196288776e-12cm. Its strict own142-to143 result is byte-exact
