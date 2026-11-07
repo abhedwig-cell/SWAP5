@@ -54,3 +54,30 @@ not transfer those macro fields and `Swap` calls `MacroPore(1)`/MacroInit on
 the restored head. The binary legacy file cannot serve as a transparent
 hybrid checkpoint. The measured stock jump is one necessary restoration
 target, not a proof that these two totals are sufficient.
+
+## Experimental macropore sidecar
+
+```sh
+python research/hybrid-water01/probe_macro_checkpoint.py \
+  --reference-work /tmp/hybrid-b0 --day-return-work /tmp/hybrid-day-return \
+  --output /tmp/hybrid-macro-restart
+```
+
+The probe preserves B0 initialization and adds a versioned, host-native
+macropore stream alongside the day-2 legacy end file. It reads the stream
+after MacroInit and before output or the first resumed step. Its schema is
+specific to the verified GNU B0 research build. The stream includes
+macropore storage, event history and module-owned calculation state. The
+stored clock and grid/domain counts must match the initialized run. The
+sidecar is an experimental input in a private run directory. It is not a
+general restart format, nor is it paired to the end file by a content hash.
+
+All five domain stocks are bit-identical at write and restore. The total
+stock components in the unrounded audit also match at that point. Days 3 and
+4 still diverge, so exact transfer of macropore state does not establish
+full continuation. In particular, the existing legacy end file still
+controls non-macropore state, and the split-run control ends the first
+simulation on day 2. A useful next discrimination is to write the day-2
+snapshot without ending the original run and compare the first accepted
+substep of day 3, including donor clock/dt and matrix, surface and forcing
+state. No SWAP5 production path consumes this stream.
