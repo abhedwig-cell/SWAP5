@@ -29,7 +29,7 @@ def render(folder):
     j = s.index('      joint_drain_level=projection%level_cm', i)
     s = s[:i] + '''      ok=.false.;qdra=0d0;joint_drain_level=999d0
       if(size(qdra,1)/=1.or.size(qdra,2)/=size(head).or.size(theta)/=size(head))return
-      call evaluate_pore_volume_profile(self,head,theta,hydraulic_start%ponding_depth,projection)
+      call evaluate_pore_volume_profile(self,head,theta,joint_drain_source%connection_pond_cm,projection)
       if(.not.projection%valid)return
       joint_drain_diagnostics=fmr_drainage_response_diagnostics_t()
       if(.not.projection%level_present)then
@@ -71,6 +71,43 @@ def render(folder):
       self%soil_parameters%dz,head,theta,self%macropore_config%rate_template%unsaturated%sorptivity%theta_s, &
       pond,self%macropore_config%rate_template%critical_under_saturated_volume_cm,projection)
   end subroutine evaluate_pore_volume_profile''' + s[j:]
+    s = once(s, '      view%ponding_depth=hydraulic_start%ponding_depth;view%groundwater_level=projection%level_cm',
+             '      view%ponding_depth=joint_drain_source%connection_pond_cm;view%groundwater_level=projection%level_cm')
+    p.write_text(s, newline='\n')
+
+    # Resolve the top boundary first. Then the coupled drainage owner sees
+    # exactly the surface from the current residual and its accepted receipt.
+    name = 'src/legacy/b1_10_port/headcalc.f90'
+    p = shadow[ROOT / name]
+    s = p.read_text()
+    s = once(s, ' real(8)::saved_surface_area,saved_connection_fraction,increment',
+             ' real(8)::saved_surface_area,saved_connection_fraction,increment,saved_connection_pond')
+    s = once(s, '    saved_connection_node=drain%connection_node;saved_connection_fraction=drain%connection_fraction',
+             '''    saved_connection_node=drain%connection_node;saved_connection_fraction=drain%connection_fraction
+    saved_connection_pond=drain%connection_pond_cm''')
+    s = once(s, '    drain%connection_node=saved_connection_node;drain%connection_fraction=saved_connection_fraction',
+             '''    drain%connection_node=saved_connection_node;drain%connection_fraction=saved_connection_fraction
+    drain%connection_pond_cm=saved_connection_pond''')
+    i = s.index("   ! V4's current drainage", s.index('subroutine vector_F(iTask)'))
+    j = s.index('   ! The constitutive provider', i)
+    s = s[:i] + s[j:]
+    top = '''!  top layer
+   fsi_ws%residual(1) = fsi_ws%provider_water_content_increment(1) * matrix_fraction(1) * grid_dz(1) / dt + &
+        fsi_ws%sink(1) - fsi_ws%source(1) + root_sink_term(1) + state%kmean(2) * fsi_ws%head_gradient(2)
+'''
+    s = once(s, top, '')
+    marker = '!  first layer, continued'
+    s = once(s, marker, '''   ! Groundwater projection consumes this candidate's surface, including
+   ! the exact dry endpoint, instead of the preceding half step's pond.
+   if(provider_source_sink_active)then
+      select type(drain=>evaluation_context%source_sink)
+      type is(b110_source_sink_provider_t)
+        if(associated(drain%current_drainage))drain%connection_pond_cm=state%pond
+      end select
+      call evaluation_context%source_sink%evaluate(state%h(1:numnod),state%theta(1:numnod), &
+           fsi_ws%source(1:numnod),fsi_ws%sink(1:numnod))
+   end if
+''' + top + '\n' + marker)
     p.write_text(s, newline='\n')
 
     # Reuse the converged inner rate owner for the published macro receipt.
@@ -113,6 +150,7 @@ def render(folder):
     receipt = json.loads(m.read_text())
     receipt.update(model=MODEL,
                    connection='Use the existing physical pore-deficit scale for bounded drainage connectivity between saturated regions; keep the exact zero-head transfer graph for macropore flow.',
+                   surface='Resolve the same current surface before drainage and carry its exact pond through receipt and rollback.',
                    macro_receipt='The converged inner rate evaluator also supplies the accepted macropore rate bundle and its top partition; no post-solve rate reconstruction.',
                    rendered_sources_sha256={str(n.relative_to(ROOT)): sha(p.read_bytes()) for n, p in shadow.items()})
     m.write_text(json.dumps(receipt, indent=2) + '\n')
