@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Reproduce actual source300.317-to300.319 from immutable read-only rollback and isolate the unchanged nonlinear, temporal and mass gates.",
+  "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1228,7 +1228,7 @@
     "own365_to367": false,
     "run": "s5-connectivity-final-original481-O2",
     "capture": "s5-connectivity-final-captured-own-O2",
-    "next_action": "Reproduce actual source300.317-to300.319 from immutable read-only rollback and isolate the unchanged nonlinear, temporal and mass gates.",
+    "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
     "own3_to4": true,
     "own3_to4_receipt": {
       "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
@@ -1293,7 +1293,7 @@
       },
       "immutable_rollback_sha256": "2d2fece2271ef1251cbff45e5b883b5aa89a21073b7e71395fa3a82282f6073f",
       "last_daily_checkpoint_sha256": "c938555368bb60e1482e35ffe2caf372c81c6e410ffe460e06856aa09a881c9a",
-      "reason": "Native transaction incomplete; Rutter line reports unchanged committed rollback clock and is printed on any incomplete transaction. Causal gate not yet isolated."
+      "reason": "At node11 exact zero vs tiny negative selects different drainage branches in full/half. Real rate trace also finds lagged macro groundwater geometry. Causal shared current-view correction is under test; the Rutter line only reports unchanged rollback."
     }
   },
   "bottom_contact481_selection": {
@@ -2312,5 +2312,174 @@
     "sha256": "c6b208e58aafbac6c672ff21b3b153cda39957761d6bbea4a6e24b4c1ff64ab5",
     "bytes": 8404313,
     "members": 85
+  },
+  "v7_source300317_diagnosis": {
+    "scope": "READ_ONLY_REAL_ROLLBACK_NO_REBIND_OR_OWN_PROOF",
+    "exact_v7_caller_refuses_non_event_diagnostic_seed": true,
+    "exact_clock_observer_native_refusal": true,
+    "quiet_progress_and_cost_match": true,
+    "full_half_min_head_node": 11,
+    "full_head_cm": 0.0,
+    "half_head_cm": -2.6828996281439377e-11,
+    "full_groundwater_cm": -8.057337470945638,
+    "half_groundwater_cm": -10.500000024680421,
+    "temporal_value_cm": 2.442662553734783,
+    "compared_width_days": 2.2737367544323206e-13,
+    "max_macro_stock_difference_cm": 1.2434497875801753e-14,
+    "experiments": {
+      "quiet-observer-run-O2": {
+        "seconds": 38.25669030006975,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "13446",
+          "headcalc_calls": "3137",
+          "linear_solves": "13446",
+          "backtracking_attempts": "34925",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "trace-observer-run-O2": {
+        "seconds": 38.64415399986319,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "13446",
+          "headcalc_calls": "3137",
+          "linear_solves": "13446",
+          "backtracking_attempts": "34925",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "diagnostic-run-O2": {
+        "seconds": 26.55760969989933,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "13446",
+          "headcalc_calls": "3137",
+          "linear_solves": "13446",
+          "backtracking_attempts": "34925",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "early-graph-run-O2": {
+        "seconds": 38.87491249991581,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "8379",
+          "headcalc_calls": "3137",
+          "linear_solves": "8379",
+          "backtracking_attempts": "22571",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "ordinary-first-run-O2": {
+        "seconds": 4.939405400073156,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "165",
+          "solver_rejections": "68",
+          "temporal_rejections": "49",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "2134",
+          "headcalc_calls": "334",
+          "linear_solves": "2134",
+          "backtracking_attempts": "2858",
+          "accepted_substeps": "46",
+          "min_accepted_dt": " 2.41584530158434063E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      }
+    },
+    "archive": {
+      "name": "V7_SOURCE300317_DIAGNOSIS_20261107.zip",
+      "sha256": "01376bd875f16dd27b0d25262bf3d936097f272b352e538869dc178ca6a02a4a",
+      "bytes": 8099397,
+      "members": 102
+    },
+    "lagged_macro_view": {
+      "seconds": 24.954571000067517,
+      "exact_cost_match": true,
+      "start_gwl_cm": -10.50000007670762,
+      "full_candidate_gwl_cm": -8.057337470945638,
+      "full_macro_groundwater_input_cm": -10.50000007670762,
+      "full_drainage_cm_day": 0.1338853250581087,
+      "full_inner_macro_exchange_cm_day": -0.180127959084902,
+      "half_disconnected_drainage_cm_day": 0.12899999995063915,
+      "half_inner_macro_exchange_cm_day": -0.1834220248087805,
+      "archive": {
+        "name": "V7_SOURCE300317_LAGGED_VIEW_EVIDENCE_20261107.zip",
+        "sha256": "c692433dd0cfe7c6d493c72eb6ae0eccbad2c12ba802644db58a2b1e2d90f63b",
+        "bytes": 1955673,
+        "members": 20
+      }
+    }
   }
 }
