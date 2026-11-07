@@ -1,5 +1,5 @@
 """Independent current source, compiler-command and original-output audit."""
-import argparse,functools,hashlib,io,json,lzma,struct,tarfile
+import argparse,functools,hashlib,io,json,lzma,struct,subprocess,tarfile
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import reference_drainage_build as g
 sha=g.sha
@@ -7,6 +7,7 @@ sha=g.sha
 def origin(ref,path):return g.raw(ref,path)
 def audit(files):
  r=json.loads(files['RESULT.json']);assert r['baseline']==g.BASE and r['production_admission']is False and r['whole_scientific_admission']is False
+ if subprocess.run(['git','cat-file','-e',r['head']+'^{commit}'],cwd=g.ROOT,capture_output=True).returncode:subprocess.run(['git','fetch','--no-tags','origin',r['head']],cwd=g.ROOT,check=True,capture_output=True)
  assert r['production_trees']=={a:g.git('rev-parse',r['head']+':'+a)for a in('src','app','reference')}=={a:g.git('rev-parse',g.BASE+':'+a)for a in('src','app','reference')}
  for p,h in r['script_sha256'].items():assert sha(origin(r['head'],p))==h and origin(r['head'],p)==g.postimage(p)
  events=json.loads(files['EVENTS.json']);assert len(events)==200;cursor=0;all_pass=True
@@ -58,7 +59,9 @@ def pack(out,stem):
  raw=lzma.compress(buffer.getvalue());stem.with_suffix('.tar.xz').write_bytes(raw);stem.with_suffix('.json').write_text(json.dumps(dict(archive=stem.name+'.tar.xz',sha256=sha(raw),members={p:sha(b)for p,b in files.items()},measurement=measured),indent=2)+'\n');print(json.dumps(measured))
 def verify(stem):
  m=json.loads(stem.with_suffix('.json').read_text());raw=stem.with_suffix('.tar.xz').read_bytes();assert sha(raw)==m['sha256']
- with tarfile.open(fileobj=io.BytesIO(lzma.decompress(raw)),mode='r:')as t:files={p.name:t.extractfile(p).read()for p in t.getmembers()}
+ with tarfile.open(fileobj=io.BytesIO(lzma.decompress(raw)),mode='r:')as t:
+  members=t.getmembers();assert all(p.isfile()for p in members)and len({p.name for p in members})==len(members)
+  files={p.name:t.extractfile(p).read()for p in members}
  assert {p:sha(b)for p,b in files.items()}==m['members'];measured=audit(files);assert {k:v for k,v in m['measurement'].items()if k!='evidence_corruption_refusals'}==measured;assert m['measurement']['evidence_corruption_refusals']==6;print(json.dumps(measured))
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--output',type=Path);p.add_argument('--stem',type=Path,required=True);a=p.parse_args()
