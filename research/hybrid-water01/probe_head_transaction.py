@@ -14,7 +14,7 @@ from probe_macro_checkpoint import compare_daily_ledger, render
 from run_day_return import records, replace, sha
 
 
-def build_worker(reference, audit, output):
+def build_worker(reference, audit, output, subday=False):
     build = reference / "build"
     objects = build / "swap-obj"
     ttutil = build / "ttutil-obj"
@@ -27,6 +27,16 @@ def build_worker(reference, audit, output):
     source = replace(source, "floutputshort, flzerointr,", "floutputshort, flzerointr, flZeroCumu,")
     source = source.replace("dtold, checkpoint_canopy)", "dtold, checkpoint_canopy, flZeroCumu)")
     source = source.replace("dtold, sicact)", "dtold, sicact, flZeroCumu)")
+    if subday:
+        source = replace(source, "      do while(fldtreduce)", """      do while(fldtreduce)
+         if (swinco == 3 .and. tstart == 35799d0) dt = min(dt, 35799.5d0-t1900)""")
+        source = replace(source, "      call TimeControl(3)", """      call TimeControl(3)
+      if (swinco == 3 .and. tstart == 35799d0 .and. t1900 >= 35799.5d0) then
+        if (t1900 /= 35799.5d0 .or. flDayEnd) error stop 'Invalid subday endpoint'
+        call SoilWaterOutput(2)
+        write(*,'(a,1x,f16.6)') 'HYBRID_SUBDAY_ENDPOINT', t1900
+        return
+      end if""")
     swap.write_text(source, encoding="cp1252")
     macro = output / "macropore.f90"
     source = macro.read_text(encoding="cp1252")
@@ -75,7 +85,7 @@ def build_worker(reference, audit, output):
 
 
 def run_worker(case, executable, directory, origin=None, head=None,
-               start="1998-01-03", end="1998-01-04"):
+               start="1998-01-03", end="1998-01-04", subday=False):
     if start not in ("1998-01-03", "1998-01-05") or end not in ("1998-01-04", "1998-01-06"):
         raise ValueError("Unsupported experimental window")
     shutil.copytree(case, directory)
@@ -103,6 +113,32 @@ def run_worker(case, executable, directory, origin=None, head=None,
     (directory / "stderr").write_text(run.stderr)
     if run.returncode != 100 or not (directory / "swap.ok").is_file():
         raise RuntimeError(f"Worker failed: {directory}")
+    if subday:
+        lines = run.stdout.splitlines()
+        endpoints = [float(line.split()[1]) for line in lines if line.startswith("HYBRID_SUBDAY_ENDPOINT ")]
+        if endpoints != [35799.5]:
+            raise RuntimeError(f"Invalid worker end time: {endpoints}")
+        def last_values(prefix):
+            return next([float(value) for value in line.split()[1:]]
+                        for line in reversed(lines) if line.startswith(prefix))
+        levels = last_values("HYBRID_STOCK_FLUX ")
+        fluxes = last_values("HYBRID_EXTERNAL_FLUX ")
+        residual = math.fsum([*fluxes[:7], *(-v for v in fluxes[7:]),
+                              *levels[6:], *(-v for v in levels[:6])])
+        if not math.isfinite(residual) or abs(residual) > 1e-6:
+            raise RuntimeError(f"Subday ledger does not close: {residual}")
+        steps = [line for line in lines if line.startswith("HYBRID_ACCEPTED_TRAJECTORY ")]
+        if not steps:
+            raise RuntimeError("Missing subday accepted-step audit")
+        return {
+            "head_cm": head,
+            "end_clock": endpoints[0],
+            "accepted_steps": len(steps),
+            "trajectory_sha256": hashlib.sha256("\n".join(steps).encode()).hexdigest(),
+            "bottom_inward_cm": fluxes[6] - fluxes[15],
+            "water_residual_cm": residual,
+            "endpoint_files": {name: sha(directory / name) for name in ("result.end", "macro.bin")},
+        }
     rows = records((directory / "result_output.csv").read_text().splitlines())
     if [line.split(",")[0] for line in rows[-2:]] != [end[:-2] + f"{int(end[-2:])-1:02}", end]:
         raise RuntimeError("Worker did not reach both requested days")

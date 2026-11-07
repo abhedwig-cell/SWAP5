@@ -1,0 +1,49 @@
+{
+  "scope": "PROCESS_ISOLATED_ANDELST_HALF_DAY",
+  "start_clock": 35799.0,
+  "duration_days": 0.5,
+  "executable_sha256": "a3e96fc60d526ff9c19c43b57e0ccf9739c1ad0ce305b5c240e677ba901b60ab",
+  "origin_day4": {
+    "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
+    "macro.bin": "3cd86d786a1b0ad8a699547080f114f5df5e9ed0e5f60e6261c391aa2cd10e3c"
+  },
+  "trials": {
+    "clean": {
+      "head_cm": -50.0,
+      "end_clock": 35799.5,
+      "accepted_steps": 818,
+      "trajectory_sha256": "0f617c26e89fbd1f911938a6579147e4220af8ab39554d867df6ac06f24d28e2",
+      "bottom_inward_cm": 0.10841860947695803,
+      "water_residual_cm": 5.491855677088476e-10,
+      "endpoint_files": {
+        "result.end": "cda6c852f0f5e512a6fd04f071761fd454ce29688c7246ca8b27c3169bebfd27",
+        "macro.bin": "26a0ae5c58c2eb42042b6953822c452a9c83c4d7b2d91b66ae8d5e6ab7c60186"
+      }
+    },
+    "discarded": {
+      "head_cm": -90.0,
+      "end_clock": 35799.5,
+      "accepted_steps": 278,
+      "trajectory_sha256": "81b0eb440b9e26df68f14221d5e12ef2db441eccbaa732c4b333352ab2e9b5cf",
+      "bottom_inward_cm": -0.4414653876099927,
+      "water_residual_cm": 6.073517826388425e-09,
+      "endpoint_files": {
+        "result.end": "2f696127f16725704919cb493e358bfcb33e8ad7a8c5c7bed9a53429863d8e56",
+        "macro.bin": "0941e3b5d20ae8945ea957fc41866de1c5ed1e2bb1e94a6529d6be1081b1d058"
+      }
+    },
+    "selected": {
+      "head_cm": -50.0,
+      "end_clock": 35799.5,
+      "accepted_steps": 818,
+      "trajectory_sha256": "0f617c26e89fbd1f911938a6579147e4220af8ab39554d867df6ac06f24d28e2",
+      "bottom_inward_cm": 0.10841860947695803,
+      "water_residual_cm": 5.491855677088476e-10,
+      "endpoint_files": {
+        "result.end": "cda6c852f0f5e512a6fd04f071761fd454ce29688c7246ca8b27c3169bebfd27",
+        "macro.bin": "26a0ae5c58c2eb42042b6953822c452a9c83c4d7b2d91b66ae8d5e6ab7c60186"
+      }
+    }
+  },
+  "selected_matches_clean": true
+}

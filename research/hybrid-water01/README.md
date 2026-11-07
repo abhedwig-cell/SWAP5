@@ -135,3 +135,25 @@ balance reset flag. Without this flag, restart resets the cumulative
 macropore counters and their initial stock. The physical trajectory still
 matches, but the next sidecar differs. The flag belongs to the checkpoint
 because it determines the reporting state of the next window.
+
+## Half-day Cauchy trials
+
+```sh
+python research/hybrid-water01/probe_subday_transaction.py \
+  --reference-work /tmp/hybrid-b0 --day-return-work /tmp/hybrid-day-return \
+  --output /tmp/hybrid-subday-transaction
+```
+
+The experimental worker caps the attempted step at the remaining time
+to noon on day 5, including internal retries, and returns after the
+accepted step reaches noon. It checks that the donor did not process
+a day end. The existing stock and flux audit is sampled at that
+endpoint for the half-day water ledger.
+
+A clean trial at -50 cm precedes an independent rejected trial at -90 cm
+and a selected repetition at -50 cm. The day-4 origin hashes remain fixed
+and the clean and selected trajectories and endpoint bytes agree.
+The selected result is atomically published by the research harness.
+The resulting files provide endpoint comparison evidence. Reopening a
+fractional endpoint, sharing one Fortran process between columns and
+committing through the SWAP5 kernel API remain separate tests.
