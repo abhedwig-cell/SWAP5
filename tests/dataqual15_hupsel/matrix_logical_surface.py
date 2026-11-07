@@ -22,7 +22,6 @@ ENTRY = """
 FIXTURE = """
   subroutine surface_checkpoint()
     use mod_restricted_surface_evaporation, only: boesten_evaporation_state_t
-    use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
     type(boesten_evaporation_state_t) :: pair
     type(mobile_salt_state_t) :: mobile
     type(solute_compartment_state_t) :: stores
@@ -83,18 +82,14 @@ FIXTURE = """
       print '(A)','SURFACE_OCCUPIED_REFUSED'
     end if
     if (trim(mode)=='surface-write-advance'.or.trim(mode)=='surface-read-advance') then
-      call require(.not.surface_enabled,'matrix continuation fixture')
-      if (.not.temporal) then
-        cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
-        cfg%numerical%transaction%temporal_tolerance=1d-6
-      end if
+      call require(temporal,'temporal continuation fixture')
       call backend%initialize(top)
       call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
         cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
       call require(result%status==JOINT_OK,'accepted physical continuation')
       call require(abs(result%chemical%residual)<1d-11,'continued chemical balance')
       call require(abs(result%water%mass%residual)<HARD_MASS_GATE,'continued water balance')
-      print '(A)','MATRIX_CONTINUATION_PASS'
+      print '(A)','TEMPORAL_CONTINUATION_PASS'
     end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
       670001_int64,water,solute,status,allow_surface_mass=surface_enabled)
@@ -186,12 +181,12 @@ def execute(native, output, compiler, qualify_publication=False):
                                output, events, role + '-' + refused_mode)
                 assert b'SURFACE_REFUSED_EMPTY' in observed.stdout
                 assert restored.read_bytes() == raw
-            if tag in ('1', '1t'):
-                direct = output / role / f'advance-{tag}-direct'
-                resumed = output / role / f'advance-{tag}-resumed'
+            if tag == '1t':
+                direct = output / role / 'temporal-direct'
+                resumed = output / role / 'temporal-resumed'
                 for mode, target in (('surface-write-advance', direct), ('surface-read-advance', resumed)):
                     observed = run([executable, mode, original, target, tag], output, events, role + '-advance')
-                    assert b'MATRIX_CONTINUATION_PASS' in observed.stdout
+                    assert b'TEMPORAL_CONTINUATION_PASS' in observed.stdout
                 assert direct.read_bytes() == resumed.read_bytes()
             admissions = []
             for offset in (144, 156):
@@ -277,9 +272,7 @@ def execute(native, output, compiler, qualify_publication=False):
 
     for tag in ('1', '1t', '2', '3'):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
-    for tag in ('1', '1t'):
-        endpoint = f'advance-{tag}-direct'
-        assert (output / 'incumbent' / endpoint).read_bytes() == (output / 'candidate' / endpoint).read_bytes()
+    assert (output / 'incumbent/temporal-direct').read_bytes() == (output / 'candidate/temporal-direct').read_bytes()
     assert pond_endpoints['incumbent'] == pond_endpoints['candidate']
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
