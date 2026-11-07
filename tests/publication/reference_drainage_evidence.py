@@ -56,5 +56,11 @@ def pack(out,stem):
  with tarfile.open(fileobj=buffer,mode='w')as t:
   for p,b in files.items():info=tarfile.TarInfo(p);info.size=len(b);t.addfile(info,io.BytesIO(b))
  raw=lzma.compress(buffer.getvalue());stem.with_suffix('.tar.xz').write_bytes(raw);stem.with_suffix('.json').write_text(json.dumps(dict(archive=stem.name+'.tar.xz',sha256=sha(raw),members={p:sha(b)for p,b in files.items()},measurement=measured),indent=2)+'\n');print(json.dumps(measured))
+def verify(stem):
+ m=json.loads(stem.with_suffix('.json').read_text());raw=stem.with_suffix('.tar.xz').read_bytes();assert sha(raw)==m['sha256']
+ with tarfile.open(fileobj=io.BytesIO(lzma.decompress(raw)),mode='r:')as t:files={p.name:t.extractfile(p).read()for p in t.getmembers()}
+ assert {p:sha(b)for p,b in files.items()}==m['members'];measured=audit(files);assert {k:v for k,v in m['measurement'].items()if k!='evidence_corruption_refusals'}==measured;assert m['measurement']['evidence_corruption_refusals']==6;print(json.dumps(measured))
 if __name__=='__main__':
- p=argparse.ArgumentParser();p.add_argument('--output',type=Path,required=True);p.add_argument('--stem',type=Path,required=True);a=p.parse_args();pack(a.output.resolve(),a.stem.resolve())
+ p=argparse.ArgumentParser();p.add_argument('--output',type=Path);p.add_argument('--stem',type=Path,required=True);a=p.parse_args()
+ if a.output:pack(a.output.resolve(),a.stem.resolve())
+ else:verify(a.stem.resolve())

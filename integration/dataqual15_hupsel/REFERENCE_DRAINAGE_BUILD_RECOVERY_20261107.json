@@ -1,0 +1,16 @@
+{
+  "phase": "WINDOWS_COMPLETE_BUILDS_AND_NEGATIVE_EQUALITY_WITNESSES_RETAINED_POSIX_PENDING",
+  "baseline": "af758371e796978f542a7f091419ff4089dfe618",
+  "source_before": "REFERENCE_DRAINAGE_BUILD_BEFORE_20261107.zip",
+  "windows": "REFERENCE_DRAINAGE_BUILD_WINDOWS_20261107.json",
+  "windows_results": "All four original executables return0 and required markers/counts pass; both original O0/O2 byte equality criteria FAIL. Neither gate is relabelled PASS. Original Windows v1 stopped at first equality failure; v2 records both full failures and still exits1.",
+  "build_measurement": {
+    "actual_provider_compiles": 188,
+    "complete_original_drivers": 4,
+    "evidence_corruption_refusals": 6
+  },
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "deferred": "P2E02 serialized current closure requires a separate full-fixture qualification; no partial repair is presented as admission.",
+  "next": "Actual POSIX original shell gates plus full independent current build/negative outcome qualification, then focused adjudication and bounded build-repair integration."
+}
