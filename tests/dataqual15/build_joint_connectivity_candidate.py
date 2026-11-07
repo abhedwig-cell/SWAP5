@@ -13,6 +13,7 @@ def render(folder):
     s = shadow[ROOT/name].read_text()
     s = once(s, '     integer :: active_nodes = 0', '''     integer :: connection_node = 0
      real(real64) :: connection_fraction = 0d0
+     real(real64) :: connection_pond_cm = 0d0
      integer :: active_nodes = 0''')
     shadow[ROOT/name].write_text(s,newline='\n')
 
@@ -21,6 +22,9 @@ def render(folder):
     s = once(s,'   use mod_reference_bordered_solver,only:reference_bordered_solve',
         '   use mod_reference_bordered_solver,only:reference_bordered_solve\n   use mod_b110_source_sink_provider,only:b110_source_sink_provider_t')
     s = once(s,' real(8)::saved_surface_area',' real(8)::saved_surface_area,saved_connection_fraction,increment\n integer::saved_connection_node')
+    s = once(s,' integer::saved_connection_node',''' integer::saved_connection_node,contact_trial,old_contact,hit_node
+ real(8)::active_alpha,hit_alpha,contact_level,connection_pond
+ logical::contact_swap,contact_trial_valid''')
     s = once(s,'  saved_surface_area=provider_macropore_surface_area_fraction','''  saved_surface_area=provider_macropore_surface_area_fraction
   saved_connection_node=0;saved_connection_fraction=0d0
   if(associated(evaluation_context%source_sink))then
@@ -56,6 +60,65 @@ def render(folder):
      cycle
     end if
     candidate(:k)=lambda(:k);candidate(j)=1d0''')
+    s = once(s,'''   alpha=1d0
+   do ls=0,24
+    candidate(:k)=lambda(:k)-alpha*dl''','''   alpha=1d0
+   do ls=0,24
+    contact_swap=.false.;contact_trial_valid=.true.
+    candidate(:k)=lambda(:k)-alpha*dl''')
+    s = once(s,'''     call joint_entry_residual(trial,candidate(:k),nodes(:k),rp,valid)
+     if(valid)then
+      if(maxval(abs(rp))<norm)exit
+     end if''','''     if(k==1)then
+      if(nodes(1)>3*n)then
+       old_contact=nodes(1)-3*n;hit_node=0;active_alpha=alpha
+       do jj=2,n-1
+        if(jj==old_contact.or.dh(jj)<=0d0)cycle
+        if(trial(jj)>=0d0)cycle
+        hit_alpha=x(jj)/dh(jj)
+        if(hit_alpha>=0d0.and.hit_alpha<active_alpha)then
+         hit_node=jj;active_alpha=hit_alpha
+        end if
+       end do
+       if(hit_node>0.and.active_alpha>0d0)then
+        ! The first other node to reach zero becomes the constraint. Carry
+        ! the same physical level through this exact boundary intersection.
+        trial=x-active_alpha*dh;trial(old_contact)=0d0;trial(hit_node)=0d0
+        candidate(1)=lambda(1)-active_alpha*dl(1)
+        select type(drain=>evaluation_context%source_sink)
+        type is(b110_source_sink_provider_t)
+         connection_pond=drain%connection_pond_cm
+        class default
+         connection_pond=state%pondm1
+        end select
+        call evaluate_b111_profile_groundwater_projection(gwl_z,gwl_distance,trial,connection_pond,gwl_view)
+        contact_trial_valid=gwl_view%valid.and.gwl_view%level_present.and.all(trial>=0d0)
+        if(contact_trial_valid)then
+         contact_level=(1d0-candidate(1))*gwl_z(old_contact)+candidate(1)*gwl_view%level_cm
+         contact_trial_valid=gwl_view%level_cm>gwl_z(hit_node)
+         if(contact_trial_valid)then
+          candidate(1)=(contact_level-gwl_z(hit_node))/(gwl_view%level_cm-gwl_z(hit_node))
+          contact_trial_valid=candidate(1)>=0d0.and.candidate(1)<=1d0
+         end if
+        end if
+        contact_trial=3*n+hit_node;contact_swap=.true.
+       end if
+      end if
+     end if
+     if(contact_trial_valid)then
+      if(contact_swap)then
+       call joint_entry_residual(trial,candidate(:1),[contact_trial],rp,valid)
+      else
+       call joint_entry_residual(trial,candidate(:k),nodes(:k),rp,valid)
+      end if
+      if(valid)then
+       if(maxval(abs(rp))<norm)exit
+      end if
+     end if''')
+    s = once(s,'   x=trial;lambda(:k)=candidate(:k)','''   if(contact_swap)then
+    nodes(1)=contact_trial;ctest(:,1)=0d0;ctest(contact_trial-3*n,1)=1d0
+   end if
+   x=trial;lambda(:k)=candidate(:k)''')
     s = once(s,'  provider_macropore_surface_area_fraction=saved_surface_area','''  provider_macropore_surface_area_fraction=saved_surface_area
   if(associated(evaluation_context%source_sink))then
    select type(drain=>evaluation_context%source_sink)
@@ -74,7 +137,7 @@ def render(folder):
    do j=1,size(nodes)
     if(nodes(j)<=3*NN)cycle
     connection=nodes(j)-3*NN
-    if(any(x(:connection-1)<=0d0).or.any(x(connection+1:)<=0d0))return
+    if(any(x(:connection-1)<0d0).or.any(x(connection+1:)<0d0))return
     drain%connection_node=connection;drain%connection_fraction=fraction(j)
    end do
   end select
@@ -89,13 +152,15 @@ def render(folder):
 
     name='src/runtime/mod_fmr_serialized_reference_backend.f90';s=shadow[ROOT/name].read_text()
     s=once(s,'    logical::joint_drain_active,joint_drain_ok','    logical::joint_drain_active,joint_drain_ok\n    real(real64)::joint_drain_level')
+    s=once(s,'      joint_drain_source=self%source_sink','''      joint_drain_source=self%source_sink
+      joint_drain_source%connection_pond_cm=hydraulic_start%ponding_depth''')
     s=once(s,'      allocate(joint_final_qdra(size(self%qdra,1),size(self%qdra,2)))','''      if(joint_drain_source%connection_node>0)then
         block
           integer::ic
           ic=joint_drain_source%connection_node
           if(abs(solve_result%candidate_state%pressure_head(ic))>1d-12)return
-          if(any(solve_result%candidate_state%pressure_head(:ic-1)<=0d0).or. &
-             any(solve_result%candidate_state%pressure_head(ic+1:)<=0d0))return
+          if(any(solve_result%candidate_state%pressure_head(:ic-1)<0d0).or. &
+             any(solve_result%candidate_state%pressure_head(ic+1:)<0d0))return
         end block
       end if
       allocate(joint_final_qdra(size(self%qdra,1),size(self%qdra,2)))''')
@@ -112,7 +177,7 @@ def render(folder):
         head,hydraulic_start%ponding_depth,projection)''','''      projected_head=head
       ic=joint_drain_source%connection_node
       if(ic>0)then
-        if(any(head(:ic-1)<=0d0).or.any(head(ic+1:)<=0d0))ic=0
+        if(any(head(:ic-1)<0d0).or.any(head(ic+1:)<0d0))ic=0
       end if
       if(ic>0)projected_head(ic)=0d0
       call evaluate_b111_profile_groundwater_projection(self%soil_parameters%z,self%soil_parameters%node_distance, &
@@ -128,7 +193,7 @@ def render(folder):
     s=s[:begin]+body+s[end:]
     shadow[ROOT/name].write_text(s,newline='\n')
     p=folder/'MODEL.json';r=json.loads(p.read_text())
-    r.update(model=MODEL,connection='At a single interior zero head with all other heads positive, solve a bounded level between actual disconnected/connected limits; evaluate DRAMET3/DIVDRA at that same level in the residual and its accepted receipt. Trial scratch only.',rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
+    r.update(model=MODEL,connection='At a limiting interior zero head with the other heads nonnegative, solve a bounded level between actual disconnected/connected limits; evaluate DRAMET3/DIVDRA at that same level in the residual and its accepted receipt. An exact first boundary intersection can change the limiting node while carrying the same physical level. Trial scratch only.',rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
     p.write_text(json.dumps(r,indent=2)+'\n')
     return shadow
 
