@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Follow active original-input481 and the four exact own windows to terminal. Diagnose only actual evidence-backed barriers.",
+  "next_action": "Strict own year and other three V9 continuations exact. Follow active original-input481 to terminal and admit the full execution receipt only if all source windows and the original forcing audit pass.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1225,7 +1225,7 @@
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
     "whole481": false,
-    "own365_to367": false,
+    "own365_to367": true,
     "whole_science": false,
     "production_default_contact_law_admitted": false,
     "run": "s5-upper-support-final-original481-O2",
@@ -1238,7 +1238,7 @@
       "300-301",
       "365-367"
     ],
-    "next_action": "Follow active original-input481 and the four exact own windows to terminal. Diagnose only actual evidence-backed barriers.",
+    "next_action": "Strict own year and other three V9 continuations exact. Follow active original-input481 to terminal and admit the full execution receipt only if all source windows and the original forcing audit pass.",
     "own3_to4": true,
     "own256_to257": true,
     "own256_to257_receipt": {
@@ -1263,6 +1263,18 @@
       "progress_rows": 513,
       "entire_ending_checkpoint_byte_exact": true,
       "ending_checkpoint_sha256": "01227212330f7cd5f0b2d792ef0b9914839fdb61f1c6579714c04c668d11d816",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "own365_to367_receipt": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN365_TO367",
+      "seconds": 21.387022900162265,
+      "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+      "input_restart_sha256": "1ee453329a650b0fdf4017b59bd6d1f2b4927de0b8aefeff2b51c21fee08f1d5",
+      "all_progress_rows_exact": true,
+      "progress_rows": 1005,
+      "entire_ending_checkpoint_byte_exact": true,
+      "ending_checkpoint_sha256": "751f8d492304e61157e2e8b2583ac42b3bdc837bf10231880d70b4c3c9d1a1e7",
       "same_input_binding": true,
       "historical_original_equivalence": false
     }
@@ -2987,7 +2999,20 @@
       "ending_checkpoint_sha256": "01227212330f7cd5f0b2d792ef0b9914839fdb61f1c6579714c04c668d11d816",
       "same_input_binding": true,
       "historical_original_equivalence": false
-    }
+    },
+    "strict_own365_to367": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN365_TO367",
+      "seconds": 21.387022900162265,
+      "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+      "input_restart_sha256": "1ee453329a650b0fdf4017b59bd6d1f2b4927de0b8aefeff2b51c21fee08f1d5",
+      "all_progress_rows_exact": true,
+      "progress_rows": 1005,
+      "entire_ending_checkpoint_byte_exact": true,
+      "ending_checkpoint_sha256": "751f8d492304e61157e2e8b2583ac42b3bdc837bf10231880d70b4c3c9d1a1e7",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "own_year": true
   },
   "predecessor_v8_stagnation_execution": {
     "status": "INTENTIONAL_STAGNATION_CENSOR_SOURCE256869_TO256871",
