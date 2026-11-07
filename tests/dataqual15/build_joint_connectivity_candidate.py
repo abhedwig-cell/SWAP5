@@ -22,6 +22,10 @@ def render(folder):
     s = shadow[ROOT/name].read_text()
     s = once(s,'   use mod_reference_bordered_solver,only:reference_bordered_solve',
         '   use mod_reference_bordered_solver,only:reference_bordered_solve\n   use mod_b110_source_sink_provider,only:b110_source_sink_provider_t')
+    s = once(s,'        if(entry_produced)then','''        if(entry_produced)then
+          ! Apply the unchanged total-balance gate to this accepted tuple,
+          ! not the preceding ordinary Newton trial's residual.
+          sum1=sum(fsi_ws%residual(:NN))''')
     s = once(s,' real(8)::saved_surface_area',' real(8)::saved_surface_area,saved_connection_fraction,increment\n integer::saved_connection_node')
     s = once(s,' integer::saved_connection_node',''' integer::saved_connection_node,contact_trial,old_contact,hit_node
  real(8)::active_alpha,hit_alpha,contact_level,connection_pond

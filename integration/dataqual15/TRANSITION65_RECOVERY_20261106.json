@@ -1947,6 +1947,17 @@
       "sha256": "846d75d06c2528cc6c691c211c44b7c331fcbe0fa51f1cbd8f5075a3c9320b98",
       "bytes": 14043644,
       "members": 1528
+    },
+    "stale_total_certificate": {
+      "actual_step_dt_day": 5.95719029661268e-11,
+      "ordinary_iteration": 4,
+      "old_total": -8.767903502853851e-06,
+      "actual_coupled_total": 1.845420612967814e-07,
+      "unchanged_limit": 4.700202378279084e-06,
+      "max_actual_nodal_residual": 7.125851707312503e-09,
+      "all_previous_iteration_gates_pass": true,
+      "actual_audit_seconds": 2.611251699971035,
+      "correction": "Recompute the same total residual only after the joint candidate produces its actual accepted numerical tuple; all limits and original final checks retained. Actual source causal probe pending."
     }
   }
 }
