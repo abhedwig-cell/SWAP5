@@ -26,8 +26,9 @@ FIXTURE = """
     real(real64), allocatable :: theta(:)
     real(real64) :: clock
     integer(int64) :: revision, parameter_id
-    logical :: boesten
+    logical :: boesten, surface_enabled
     boesten=trim(exponent_argument)=='3'
+    surface_enabled=trim(exponent_argument)/='1'
     cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     if (boesten) cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
     if (index(trim(mode),'surface-write')==1) then
@@ -43,18 +44,20 @@ FIXTURE = """
       call initialize_matrix_solute(p,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
         spread(.2d0,1,numnod),solute,status)
       call require(status==0,'surface chemical owner')
-      call solute%snapshot(clock,theta,mobile,stores,revision)
-      call reconstruct_matrix_solute_trusted(p,9001_int64,revision,clock,theta, &
+      if (surface_enabled) then
+        call solute%snapshot(clock,theta,mobile,stores,revision)
+        call reconstruct_matrix_solute_trusted(p,9001_int64,revision,clock,theta, &
         mobile%concentration_mg_cm3,mobile%mass_mg_cm2,stores%sorbed_matrix_mass, &
         solute,status,surface_mass=.25d0)
-      call require(status==MATRIX_OK,'positive surface solute store')
+        call require(status==MATRIX_OK,'positive surface solute store')
+      end if
     else
       call observe_header()
       parameter_id=9001_int64
       if (trim(mode)=='surface-wrong-owner') parameter_id=9002_int64
       call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template, &
         670001_int64,parameter_id,p,water,solute,status, &
-        allow_surface_mass=trim(mode)/='surface-disabled')
+        allow_surface_mass=surface_enabled.and.trim(mode)/='surface-disabled')
       if (status/=JOINT_OK) then
         call require(.not.water%ready().and..not.solute%ready(),'both targets empty')
         print '(A)','SURFACE_REFUSED_EMPTY'
@@ -64,14 +67,14 @@ FIXTURE = """
       print '(A)','SURFACE_ACCEPTED'
       if (trim(mode)=='surface-probe') return
       call solute%snapshot(clock,theta,mobile,stores,revision)
-      call require(stores%pond_mass==.25d0,'positive surface store restored exactly')
+      call require(stores%pond_mass==merge(.25d0,0d0,surface_enabled),'surface store restored exactly')
       call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template, &
-        670001_int64,9001_int64,p,water,solute,status,allow_surface_mass=.true.)
+        670001_int64,9001_int64,p,water,solute,status,allow_surface_mass=surface_enabled)
       call require(status/=JOINT_OK.and.water%ready().and.solute%ready(),'occupied owners preserved')
       print '(A)','SURFACE_OCCUPIED_REFUSED'
     end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
-      670001_int64,water,solute,status,allow_surface_mass=.true.)
+      670001_int64,water,solute,status,allow_surface_mass=surface_enabled)
     if (trim(mode)=='surface-write-refuse') then
       call require(status/=JOINT_OK,'publication must fail closed')
       print '(A)','SURFACE_PUBLICATION_REFUSED'
@@ -87,7 +90,7 @@ def project(raw):
     source = source.replace("  call backend%initialize(top);", ENTRY + "  call backend%initialize(top);", 1)
     source = source.replace("\ncontains\n", "\ncontains\n" + FIXTURE, 1)
     source = source.replace("if(len_trim(exponent_argument)>0)read", "if(index(trim(mode),'surface-')/=1.and.len_trim(exponent_argument)>0)read")
-    source = source.replace("tag=='S5MJ0001'", "(tag=='S5MJ0002'.or.tag=='S5MJ0003')")
+    source = source.replace("tag=='S5MJ0001'", "tag==('S5MJ000'//trim(exponent_argument))")
     return source.replace("merge(0,1,trim(mode)=='header-base')", "merge(2,0,trim(exponent_argument)=='3')").encode()
 
 
@@ -134,7 +137,7 @@ def execute(native, output, compiler, qualify_publication=False):
         response.write_text('\n'.join('"' + arg.replace('\\', '/') + '"' for arg in args))
         run([compiler, '@' + str(response)], output, events, role + '-link')
         outcomes[role] = {}
-        for tag in ('2', '3'):
+        for tag in ('1', '2', '3'):
             original = output / role / ('original-' + tag)
             run([executable, 'surface-write', 'unused', original, tag], output, events, role + '-write')
             raw = original.read_bytes()
@@ -145,7 +148,10 @@ def execute(native, output, compiler, qualify_publication=False):
             assert b'SURFACE_ACCEPTED' in observed.stdout and restored.read_bytes() == raw
             assert b'MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156' in observed.stdout
             assert b'SURFACE_OCCUPIED_REFUSED' in observed.stdout
-            for refused_mode in ('surface-disabled', 'surface-wrong-owner'):
+            refused_modes = ['surface-wrong-owner']
+            if tag != '1':
+                refused_modes.append('surface-disabled')
+            for refused_mode in refused_modes:
                 observed = run([executable, refused_mode, original, restored, tag],
                                output, events, role + '-' + refused_mode)
                 assert b'SURFACE_REFUSED_EMPTY' in observed.stdout
@@ -185,7 +191,7 @@ def execute(native, output, compiler, qualify_publication=False):
                     output, events, 'publication-replace-success')
                 assert fresh.read_bytes() == raw and not fresh.with_suffix('.pending').exists()
 
-    for tag in ('2', '3'):
+    for tag in ('1', '2', '3'):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
