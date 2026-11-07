@@ -1,0 +1,126 @@
+{
+  "qualified_head": "871dd235e10dd33337922d52250c006b16a061ff",
+  "workflows": [
+    {
+      "id": 42327928898,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928887,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928953,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928919,
+      "name": "PUB-P2E02 Reference uncertainty",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928911,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928886,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327929003,
+      "name": "Current Reference uncertainty build qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928925,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928901,
+      "name": "Current Reference drainage build qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928904,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928947,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928895,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928866,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928851,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928857,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    },
+    {
+      "id": 42327928831,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "success",
+      "head_sha": "871dd235e10dd33337922d52250c006b16a061ff"
+    }
+  ],
+  "decision": "ORIGINAL_REFERENCE_UNCERTAINTY_BUILD_AND_EXECUTION_QUALIFIED",
+  "windows": "94 fresh provider compiles, two unchanged complete original drivers, both actual executions, original markers and exact optimization-output comparison PASS; six actual evidence corruptions refused.",
+  "posix": "Same94 fresh providers/two complete original drivers and six corruption refusals PASS; original shell gate additionally PASS. Downloaded artifact SHA verified then full independent source/object/command audit rerun locally.",
+  "original_gate": "REFERENCE_UNCERTAINTY_BUILD_ORIGINAL_POSIX_20261107.json",
+  "impact": "Only literal compile source list changes in original recipe. Complete Fortran, flags, criteria, source/app/reference trees unchanged. Full serialized backend and numerical RossFast modules are not required by this direct Reference driver and are excluded. No production-source or admitted-gate dependency intersection.",
+  "metadata_inheritance": "Following evidence-only receipt additions inherit exact executed code/gate identities; no broad rerun solely for receipt metadata.",
+  "limits": "No RossFast threshold calibration, production solver admission or original-project scientific closure. Both prior P2E04 Windows equality failures remain FAILED.",
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
