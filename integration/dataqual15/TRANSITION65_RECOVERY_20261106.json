@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Build final202-provider main_water O0/O2 with finite-input guard and complete trial restoration. Verify actual failed source and following source windows with original guards, then fresh original initialization481 and exact own year.",
+  "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1217,7 +1217,7 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "ACTIVE_ORIGINAL_INPUT481_V6_NOT_COMPLETED",
+    "status": "TERMINAL_NEW_SOURCE256873_TO256875_REFUSAL",
     "model": "ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6",
     "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
     "binding": "416a72cc2e61778ef3228b471863edd7f84247b58c00e76c75c8c5cccf922489",
@@ -1228,7 +1228,7 @@
     "own365_to367": false,
     "run": "s5-zero-head-original481-O2",
     "capture": "s5-zero-head-captured-own-O2",
-    "next_action": "Actively follow fresh original-input481 to terminal. Validate own3-4,256-257,365-367 only under this exact binary/binding. Do not promote previous V5 own proofs.",
+    "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
     "own3_to4": {
       "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
       "seconds": 168.39868279988877,
@@ -1240,7 +1240,58 @@
       "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
       "same_input_binding": true,
       "historical_original_equivalence": false
-    }
+    },
+    "fresh_original_initialization_passed_v5_barrier": {
+      "progress": {
+        "day": "257",
+        "segment": "379",
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "attempts": "128",
+        "solver_rejections": "0",
+        "temporal_rejections": "65",
+        "mass_rejections": "0",
+        "residual_cm": " 1.18047932540221723E-014"
+      },
+      "cost": {
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "completed": "T",
+        "nonlinear_iterations": "1572",
+        "headcalc_calls": "384",
+        "linear_solves": "1572",
+        "backtracking_attempts": "2222",
+        "accepted_substeps": "63",
+        "min_accepted_dt": " 7.62940999265993014E-009",
+        "max_accepted_dt": " 6.25001266598701477E-005"
+      },
+      "following_committed_source_observed_through": 256.8729999999988,
+      "checkpoint256_sha256": "f95819c51a69a3f2880f5d2aa314e4cc4844fc243fe0938ea110a1fc53bd8d1a",
+      "qualification_scope": "Actual fresh original initialization path, still pending481 and own year; separate O0/O2 three-source proof used the immutable V5 rollback seed."
+    },
+    "seconds": 6141.92303960002,
+    "returncode": 1,
+    "censored": false,
+    "completed_days": 256,
+    "last_completed_source_interval": 256.8729999999988,
+    "last_attempted_source_interval": 256.8749999999988,
+    "maximum_water_residual_cm": 3.3668931974385757e-12,
+    "last_source_cost": {
+      "t0": " 2.56872999999998797E+002",
+      "t1": " 2.56874999999998806E+002",
+      "completed": "F",
+      "nonlinear_iterations": "1956",
+      "headcalc_calls": "228",
+      "linear_solves": "1956",
+      "backtracking_attempts": "4181",
+      "accepted_substeps": "33",
+      "min_accepted_dt": " 2.27373675443232059E-013",
+      "max_accepted_dt": " 6.25000000127329258E-005"
+    },
+    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
+    "own256_to257": false,
+    "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
+    "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1657,7 +1708,7 @@
     "unique_source_postimages": 207
   },
   "zero_head_contact_v6": {
-    "implementation": "LOCAL_O0_O2_ACTUAL_SOURCE_AND_COMPONENTS_PASS_FRESH481_SELECTED",
+    "implementation": "BOUNDED_PRIVATE_CANONICAL_V6_FRESH_BARRIER_PASSES_LATER_SOURCE256873_REFUSES",
     "original_historical_equivalence": false,
     "whole481": false,
     "own_year": false,
@@ -1674,7 +1725,7 @@
       "restored_surface_probe_seconds": 9.188234500121325,
       "surface_provenance": "Without restoration: rejected joint trial changes pond by1.2723798891501367e-12 and top flux by5.3072567118839231e-6, failing unchanged receipt guard. Restoring actual saved top result, boundary and surface area with saved state passes ALL original guards and reaches intentional source-complete observation stop. No fabricated receipt."
     },
-    "next_action": "Build final202-provider main_water O0/O2 with finite-input guard and complete trial restoration. Verify actual failed source and following source windows with original guards, then fresh original initialization481 and exact own year.",
+    "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
     "three_source_windows": {
       "O0_seconds": 14.580202599987388,
       "O2_seconds": 6.166069499915466,
@@ -1753,6 +1804,53 @@
       "canonical_age_dependency": "All3 imports in202-source closure use ONLY crc32: pond_thermal_restart_file, matrix_joint_restart_file and macro_water_restart; crc32 body unchanged. Changed age-writer functions are outside this application call surface. Exact qualified native executable/binding retained; no stream rebound.",
       "archive": "ZERO_HEAD_RECONCILED_CI_20261107.zip",
       "sha256": "e29794349179a1138a8a4bc5856dc3e5ce6646141e2f563b484194cbc5b46402"
+    },
+    "canonical_admission": {
+      "pr": 1610,
+      "actual_merge": "3aa9b8ee3a23c9495a6db17e68c05147166d92f7",
+      "actual_parents": [
+        "51b3e7305b7da4af58a5427f86166a570a9cef69",
+        "033fdea9e7439720456815e53746db7a7a92cdde"
+      ],
+      "entire_actual_tree_exact_qualified_final_head": true,
+      "production_src_app_delta_to_actual_parent": "NONE",
+      "scope": "BOUNDED_PRIVATE_CONTACT_RESEARCH_AND_TRIAL_ROLLBACK_ONLY_NOT_FULL481_OR_OWN_YEAR",
+      "full481_and_year_active_not_pass": true
+    },
+    "native_control_worktrees": {
+      "native_root": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-andelst-joint-entry-20261106",
+      "native_branch": "codex/andelst-v6-native-full481-20261107",
+      "compiled_public_sources": "Frozen exact202-provider bundle source hashes remain unchanged while native full/own jobs run. Do not fast-forward this worktree to canonical age-writer changes. Only unchanged crc32 is used.",
+      "canonical_receipt_root": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-zero-head-canonical-admission",
+      "receipt_branch": "codex/andelst-v6-full481-receipt-20261107",
+      "next_integration": "After terminal native evidence, copy exact result record/archive into receipt worktree; preserve current canonical peer changes. Do not push native branch to the closed PR1610 branch."
+    },
+    "terminal_evidence": {
+      "archive": "V6_TERMINAL256873_EVIDENCE_20261107.zip",
+      "sha256": "7e76dd7285e908dfece630254e1ac60affd17deff08e5d4fcb3ecae844bbba7c",
+      "bytes": 6990816,
+      "members": 63
+    },
+    "terminal_receipt_validation": {
+      "pr": 1613,
+      "head": "1097949e53d53dee2a4b267e3850c81582eb60fe",
+      "local_source_and_strict_docs": [
+        {
+          "label": "source",
+          "seconds": 27.43797460012138,
+          "returncode": 0
+        },
+        {
+          "label": "strict",
+          "seconds": 24.878026799997315,
+          "returncode": 0
+        }
+      ],
+      "documentation_run": 42338961026,
+      "documentation_job": 128302155433,
+      "terminal_success": true,
+      "source_FCI_low_air": "NOT_SELECTED_METADATA_ONLY",
+      "canonical_base": "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c"
     }
   },
   "predecessor_v5_terminal_execution": {
@@ -1817,5 +1915,31 @@
     "maximum_daily_water_residual_cm": 3.394925574690817e-12,
     "year_control": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION",
     "next_action": "Fresh V6 original-input481 plus unchanged own stream captures and exact year; retain V5 natural failure256."
+  },
+  "source256873_connectivity_diagnosis": {
+    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
+    "quiet_reproduction_seconds": 51.74983269977383,
+    "cost_row_exact": true,
+    "late_clock": 256.8737384443374,
+    "last_negative_node": 12,
+    "last_negative_head_cm": -1.5315382942040064e-12,
+    "fully_connected_one_sided_groundwater_jump_cm": [
+      -11.50000000000196,
+      4.539858749346055e-08
+    ],
+    "same_macro_rate_sum_cm_day": 1.502359255276939,
+    "signed_drainage_rate_endpoints_cm_day": [
+      0.1269999999999961,
+      0.15000000009077058
+    ],
+    "probe_seconds": 33.402910299832,
+    "probe_scope": "Actual two-sided residual/drain/macro audit. The jump is nonlocal; there is no one-row residual bracket. Separate projected-coordinate experiments are not admitted by this record.",
+    "archive": {
+      "name": "V6_CONNECTIVITY_DIAGNOSIS_20261107.zip",
+      "sha256": "be16dd958f54b72409b8e3e3b6c5e206d2fb398248eefd9de516bc1435b8d04a",
+      "bytes": 5488907,
+      "members": 666,
+      "unique_source_postimages": 203
+    }
   }
 }
