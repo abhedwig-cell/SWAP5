@@ -5,6 +5,7 @@ on:
     paths:
       - .github/workflows/fgc49d-private-oxygen-context.yml
       - tests/fgc/fgc49d_oxygen_context_projection.py
+      - tests/fgc/fgc49d_selector_context_projection.py
       - tests/fahl/run_fahl49_application_optin.sh
       - src/physics/oxygen/**
   workflow_dispatch:

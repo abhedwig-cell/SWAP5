@@ -287,19 +287,28 @@ if os.environ.get("FGC49D_PRIVATE_OXYGEN_CONTEXT") == "1":
     runner = runner.replace(sources, sources + '''
 projection="$BUILD/private-oxygen"
 python3 -B tests/fgc/fgc49d_oxygen_context_projection.py src/physics/oxygen "$projection"
-for module in mod_oxygen_scalar_bracket mod_bartholomeus_response; do
-  original="src/physics/oxygen/$module.f90"
+python3 -B tests/fgc/fgc49d_selector_context_projection.py src "$projection"
+for relative in oxygen/mod_oxygen_scalar_bracket.f90 oxygen/mod_bartholomeus_response.f90 \
+    runtime/mod_canonical_interval_runtime.f90 kernel/mod_kernel_transactions.f90 \
+    runtime/mod_fmr_checkpoint_orchestrator.f90 \
+    runtime/mod_fmr_serialized_reference_backend.f90; do
+  original="src/$relative"
+  projected="$projection/$relative"
+  if [[ "$relative" == oxygen/* ]]; then
+    original="src/physics/$relative"
+    projected="$projection/${relative##*/}"
+  fi
   matches=0
   for idx in "${!MODULE_SRC[@]}"; do
     if [[ "${MODULE_SRC[idx]}" == "$original" ]]; then
-      MODULE_SRC[idx]="$projection/$module.f90"
+      MODULE_SRC[idx]="$projected"
       matches=$((matches + 1))
     fi
   done
-  [[ "$matches" == 1 ]] || fail "private oxygen module source $module"
+  [[ "$matches" == 1 ]] || fail "private module source $original"
 done
 ''')
-    runner = runner.replace(link, '''
+    runner = runner.replace(link, r'''
   for obj in "${objects[@]}"; do
     sections="$(readelf -W -S "$obj")" || fail "read object sections O$opt $obj"
     stack="$(printf '%s\n' "$sections" | awk '
