@@ -39,8 +39,18 @@ def worker():
     destination = job / "resumed"
     origin, case, half, full = (Path(configuration[key]) for key in ("origin", "case", "half", "full"))
     prior = None
-    if (t0, t1, origin_ticket) == (35799.0, 35799.5, 0):
-        run_worker(case, half, destination, origin, head, start="1998-01-05", end="1998-01-06", subday=True)
+    if t0 == 35799.0 and t0 < t1 <= 35799.5 and origin_ticket == 0:
+        run_worker(case, half, destination, origin, head, start="1998-01-05", end="1998-01-06", subday=True, fraction=t1)
+    elif 35799.0 < t0 < t1 <= 35799.5 and origin_ticket > 0:
+        previous = root / f"job_{origin_ticket:03}"
+        prior = json.loads((previous / "job.json").read_text())
+        if prior["column"] != column or prior["t1"] != t0 or prior["head"] != head:
+            raise RuntimeError("Wrong quarter-day origin")
+        run_worker(case, half, destination, origin, head, start="1998-01-05",
+                   end="1998-01-06", subday=True, fraction=t1, split_clock=t0)
+        prefix = [line for line in steps(destination) if float(line.split()[1]) < t0]
+        if not prefix or prefix != steps(previous / "resumed"):
+            raise RuntimeError("Quarter replay did not reproduce its origin")
     elif (t0, t1) == (35799.5, 35800.0) and origin_ticket > 0:
         previous = root / f"job_{origin_ticket:03}"
         prior = json.loads((previous / "job.json").read_text())
@@ -63,8 +73,12 @@ def worker():
     (job / "job.json").write_text(json.dumps({"column": column, "head": head, "t1": t1,
                                             "previous": origin_ticket}))
     terminal = -float(audit(destination, "HYBRID_TERMINAL_BOTTOM_INWARD ")[-1].split()[1])
+    pressure = audit(destination, "HYBRID_ENDPOINT_HEAD ")
+    values = pressure[-1].split()[1:] if pressure else steps(destination)[-1].split()[6:118]
+    if len(values) != 112:
+        raise RuntimeError("Missing pressure state for the kernel")
     (root / "reply").write_text(
-        f"{ticket} {ending:.17g} {incoming:.17g} {outgoing:.17g} {bottom:.17g} {terminal:.17g}\n"
+        f"{ticket} {ending:.17g} {incoming:.17g} {outgoing:.17g} {bottom:.17g} {terminal:.17g}\n" + " ".join(values) + "\n"
     )
 
 
@@ -74,6 +88,7 @@ def main():
     parser.add_argument("--day-return-work", type=Path, required=True)
     parser.add_argument("--noon-work", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--temporal", action="store_true")
     args = parser.parse_args()
     reference, audit_work, noon, output = (p.resolve() for p in (
         args.reference_work, args.day_return_work, args.noon_work, args.output))
@@ -96,18 +111,46 @@ def main():
     shell.chmod(0o700)
 
     source_list = (ROOT / "tests/fgc/run_fgc43_production_swap_participant.sh").read_text()
-    sources = source_list.split("SOURCES=(\n", 1)[1].split("\n)", 1)[0].split()[:7]
+    sources = source_list.split("SOURCES=(\n", 1)[1].split("\n)", 1)[0].split()[:-1]
     executable = output / "kernel_donor"
     subprocess.run(["gfortran", "-O2", "-ffree-line-length-none", "-fcheck=all",
                     *[str(ROOT / source) for source in sources],
                     str(Path(__file__).with_suffix(".f90").resolve()), "-o", str(executable)],
                    cwd=output, check=True)
-    run = subprocess.run([executable], cwd=output, input=f"{stock:.17g}\n",
+    run = subprocess.run([executable, "temporal"] if args.temporal else [executable], cwd=output, input=f"{stock:.17g}\n",
                          capture_output=True, text=True, timeout=240)
     (output / "kernel.stdout").write_text(run.stdout)
     (output / "kernel.stderr").write_text(run.stderr)
     if run.returncode:
         raise RuntimeError(run.stdout + run.stderr)
+    if args.temporal:
+        if hashes != {name: sha(origin / name) for name in names}:
+            raise RuntimeError("Temporal trials mutated the day-4 checkpoint")
+        defects = [float(line.split()[1]) for line in run.stdout.splitlines()
+                   if line.strip().startswith("TEMPORAL_HEAD_DEFECT_CM ")]
+        rejections = [line.split()[1:] for line in run.stdout.splitlines()
+                      if line.startswith("TEMPORAL_REJECTED ")]
+        if len(defects) != 3 or len(rejections) != 3:
+            raise RuntimeError("Missing full-versus-two-half evidence")
+        windows = []
+        for i, (defect, rejection) in enumerate(zip(defects, rejections, strict=True)):
+            first, quarter, split = [output / f"job_{i*3+j:03}/resumed" for j in (1, 2, 3)]
+            stock0, *_ = ledger(first)[0]
+            balances = []
+            for candidate in (first, quarter, split):
+                ending, incoming, outgoing, bottom = ledger(candidate)[-1]
+                balances.append({"residual_cm": ending-stock0-incoming+outgoing, "bottom_outward_cm": bottom})
+            if any(abs(row["residual_cm"]) > 1e-6 for row in balances):
+                raise RuntimeError("Temporal probe also failed mass closure")
+            windows.append({"duration_days": float(rejection[0]), "head_defect_cm": defect,
+                            "participant_status": int(rejection[1]), "committed_revision": 0,
+                            "full": balances[0], "first_half": balances[1], "split": balances[2]})
+        receipt = {"scope": "NORMAL_SWAP5_GROUNDWATER_PARTICIPANT_TEMPORAL_REJECTION",
+                   "imposed_head_cm": -50.0, "probe_head_tolerance_cm": 0.05,
+                   "origin_checkpoint": hashes, "windows": windows}
+        (output / "RESULT.json").write_text(json.dumps(receipt, indent=2) + "\n")
+        print(json.dumps(receipt, indent=2))
+        return
     decisions = [row.split()[1:] for row in run.stdout.splitlines() if row.startswith("DONOR ")]
     if [row[:4] for row in decisions] != [
         ["1", "1", "F", "0"], ["2", "2", "T", "1"], ["1", "3", "T", "1"],

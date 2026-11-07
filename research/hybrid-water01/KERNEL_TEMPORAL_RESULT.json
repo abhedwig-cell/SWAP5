@@ -1,0 +1,65 @@
+{
+  "scope": "NORMAL_SWAP5_GROUNDWATER_PARTICIPANT_TEMPORAL_REJECTION",
+  "imposed_head_cm": -50.0,
+  "probe_head_tolerance_cm": 0.05,
+  "origin_checkpoint": {
+    "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
+    "macro.bin": "3cd86d786a1b0ad8a699547080f114f5df5e9ed0e5f60e6261c391aa2cd10e3c"
+  },
+  "windows": [
+    {
+      "duration_days": 0.5,
+      "head_defect_cm": 0.32858530843161304,
+      "participant_status": 6,
+      "committed_revision": 0,
+      "full": {
+        "residual_cm": -5.49178369446679e-10,
+        "bottom_outward_cm": -0.10841860947695803
+      },
+      "first_half": {
+        "residual_cm": -1.2470923738128192e-09,
+        "bottom_outward_cm": -0.04695276537432582
+      },
+      "split": {
+        "residual_cm": -9.714774540370286e-10,
+        "bottom_outward_cm": -0.10841557474685155
+      }
+    },
+    {
+      "duration_days": 0.0625,
+      "head_defect_cm": 1.7513055593373608,
+      "participant_status": 6,
+      "committed_revision": 0,
+      "full": {
+        "residual_cm": -1.3552816577333537e-09,
+        "bottom_outward_cm": -0.010335017514118573
+      },
+      "first_half": {
+        "residual_cm": -5.543884483427686e-10,
+        "bottom_outward_cm": -0.00510134400624524
+      },
+      "split": {
+        "residual_cm": -9.193956151953842e-10,
+        "bottom_outward_cm": -0.010336021397135046
+      }
+    },
+    {
+      "duration_days": 0.000244140625,
+      "head_defect_cm": 0.8216876637882748,
+      "participant_status": 6,
+      "committed_revision": 0,
+      "full": {
+        "residual_cm": -5.401278653938829e-13,
+        "bottom_outward_cm": -3.7623908262695586e-05
+      },
+      "first_half": {
+        "residual_cm": -1.0694339836435363e-12,
+        "bottom_outward_cm": -1.917380402371045e-05
+      },
+      "split": {
+        "residual_cm": -1.0883854852528768e-12,
+        "bottom_outward_cm": -3.7461490041672415e-05
+      }
+    }
+  ]
+}

@@ -243,3 +243,23 @@ That previous fraction is already in the macro checkpoint. The change
 resolves two reporting-array discrepancies observed in otherwise exact
 day-6 trajectories, while leaving the audited hydraulic behavior exact.
 No canonical solver, input guard or runtime contract is modified.
+
+## Regular coupling participant temporal check
+
+Add `--temporal` to the kernel donor command to use the existing
+groundwater SWAP participant and ordinary kernel interval executor.
+The physical adapter supplies the real full window and both half
+windows. For the second half it replays the first from the immutable
+day-4 origin and requires exact agreement with the first-half audit.
+A narrow research assessment compares maximum absolute nodal pressure
+head at the endpoint against 0.05 cm. It is not a production tolerance.
+
+At the -50 cm boundary, 0.5, 0.0625 and 0.000244140625 day windows
+all close the water ledger within 1e-6 cm. The pressure head defects
+are 0.328585 cm at node 77, 1.751306 cm at node 60 and 0.821688 cm
+at node 57, respectively. The half-day integrated bottom exchanges
+differ by about 3.03e-6 cm even though the pressure criterion fails.
+The participant rejects all three with no live candidate or time,
+revision or origin-checkpoint mutation. The run has zero automatic
+retries so each tested window is separately observable. The test
+does not establish an acceptable temporal metric or MODFLOW coupling.

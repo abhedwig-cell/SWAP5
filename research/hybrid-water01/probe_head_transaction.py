@@ -34,7 +34,7 @@ def build_worker(reference, audit, output, subday=False, handoff=False, kernel_f
       if (swinco == 3 .and. tstart == 35799d0 .and. t1900 >= 35799.5d0) then
         if (t1900 /= 35799.5d0 .or. flDayEnd) error stop 'Invalid subday endpoint'
         call SoilWaterOutput(2)
-        write(*,'(a,1x,f16.6)') 'HYBRID_SUBDAY_ENDPOINT', t1900
+        write(*,'(a,1x,f24.15)') 'HYBRID_SUBDAY_ENDPOINT', t1900
         return
       end if""")
     if handoff:
@@ -84,6 +84,34 @@ end module
 
 !  Close swap""")
         (output / "swap_main.f90").write_text(main, encoding="cp1252")
+    if subday and kernel_flux:
+        source = replace(source, "logical :: flError", """logical :: flError
+integer :: trial_status
+real(8), save :: stop_clock = 35799.5d0
+real(8), save :: split_clock = 35799d0
+character(len=32) :: trial_text""")
+        source = replace(source, "if (iTask == 1) then", """if (iTask == 1) then
+   call get_environment_variable('SWAP_TRIAL_FRACTION',trial_text,status=trial_status)
+   if (trial_status == 0) then
+      read(trial_text,*,iostat=trial_status) stop_clock
+      if (trial_status /= 0) error stop 'Invalid probe stop clock'
+      if (stop_clock <= 35799d0 .or. stop_clock > 35799.5d0) error stop 'Unsupported probe clock'
+   end if
+   call get_environment_variable('SWAP_TRIAL_SPLIT_CLOCK',trial_text,status=trial_status)
+   if (trial_status == 0) then
+      read(trial_text,*,iostat=trial_status) split_clock
+      if (trial_status /= 0) error stop 'Invalid split clock'
+      if (split_clock <= 35799d0 .or. split_clock >= stop_clock) error stop 'Unsupported split clock'
+   end if""")
+        source = replace(source, "dt = min(dt, 35799.5d0-t1900)", """dt = min(dt, stop_clock-t1900)
+         if (swinco == 3 .and. tstart == 35799d0 .and. t1900 < split_clock) &
+           dt = min(dt, split_clock-t1900)""")
+        source = replace(source, "t1900 >= 35799.5d0", "t1900 >= stop_clock")
+        source = replace(source, "t1900 /= 35799.5d0", "t1900 /= stop_clock")
+        source = replace(source, "\n        call SoilWaterOutput(2)\n", """
+        call SoilWaterOutput(2)
+        write(*,'(a,*(1x,es25.17e3))') 'HYBRID_ENDPOINT_HEAD', h(1:numnod)
+""")
     if kernel_flux:
         source = replace(source, "dtold, h, theta, pond, qrot", "dtold, h, theta, pond, qrot, qbot")
         source = replace(source, "      call SoilWater(3)", """      call SoilWater(3)
@@ -147,7 +175,7 @@ end module
 
 
 def run_worker(case, executable, directory, origin=None, head=None,
-               start="1998-01-03", end="1998-01-04", subday=False, handoff=False, afternoon_head=None):
+               start="1998-01-03", end="1998-01-04", subday=False, handoff=False, afternoon_head=None, fraction=None, split_clock=None):
     if start not in ("1998-01-03", "1998-01-05", "1998-01-06") or end not in ("1998-01-04", "1998-01-05", "1998-01-06"):
         raise ValueError("Unsupported experimental window")
     shutil.copytree(case, directory)
@@ -160,6 +188,12 @@ def run_worker(case, executable, directory, origin=None, head=None,
     if handoff:
         environment["SWAP_TRIAL_NOON_HANDOFF"] = "1"
     environment.pop("SWAP_TRIAL_AFTERNOON_HEAD_CM", None)
+    environment.pop("SWAP_TRIAL_FRACTION", None)
+    environment.pop("SWAP_TRIAL_SPLIT_CLOCK", None)
+    if fraction is not None:
+        environment["SWAP_TRIAL_FRACTION"] = str(fraction)
+    if split_clock is not None:
+        environment["SWAP_TRIAL_SPLIT_CLOCK"] = str(split_clock)
     if afternoon_head is not None:
         if not math.isfinite(afternoon_head):
             raise ValueError("Afternoon head must be finite")
@@ -186,7 +220,7 @@ def run_worker(case, executable, directory, origin=None, head=None,
     if subday:
         lines = run.stdout.splitlines()
         endpoints = [float(line.split()[1]) for line in lines if line.startswith("HYBRID_SUBDAY_ENDPOINT ")]
-        if endpoints != [35799.5]:
+        if endpoints != [35799.5 if fraction is None else fraction]:
             raise RuntimeError(f"Invalid worker end time: {endpoints}")
         def last_values(prefix):
             return next([float(value) for value in line.split()[1:]]

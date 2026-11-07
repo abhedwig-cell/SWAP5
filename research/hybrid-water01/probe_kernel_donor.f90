@@ -3,15 +3,24 @@ module probe_kernel_donor
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts
   use mod_kernel_transactions
+  use mod_groundwater_swap_forcing_adapter, only: groundwater_swap_forcing_materializer_t, GW_SWAP_FORCING_OK
+  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
+  use mod_groundwater_swap_transaction_participant, only: groundwater_swap_transaction_participant_t, &
+       groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK, GW_SWAP_PARTICIPANT_TRIAL_FAILED
   implicit none
   type, extends(canonical_state_t) :: state_t
     integer :: column = 0, ticket = 0
-    real(real64) :: stock = 0
+    real(real64) :: stock = 0, pressure(112) = 0
   contains
     procedure :: clone
   end type
   type, extends(canonical_forcing_t) :: forcing_t
     real(real64) :: head = 0
+  end type
+  type, extends(groundwater_swap_forcing_materializer_t) :: materializer_t
+  contains
+    procedure :: profile_admitted
+    procedure :: materialize
   end type
   type, extends(kernel_parameters_t) :: parameters_t
   end type
@@ -27,6 +36,21 @@ module probe_kernel_donor
     procedure :: temporal_error
   end type
 contains
+  logical function profile_admitted(self, parameters) result(ok)
+    class(materializer_t), intent(in) :: self
+    class(kernel_parameters_t), intent(in) :: parameters
+    ok = same_type_as(parameters,parameters_t())
+  end function
+  subroutine materialize(self, interface_head_m, datum, forcing, status)
+    class(materializer_t), intent(in) :: self
+    real(real64), intent(in) :: interface_head_m
+    type(groundwater_head_datum_t), intent(in) :: datum
+    class(canonical_forcing_t), allocatable, intent(out) :: forcing
+    integer, intent(out) :: status
+    if (.not. datum%valid()) error stop 'invalid test datum'
+    allocate(forcing, source=forcing_t(head=100*interface_head_m))
+    status = GW_SWAP_FORCING_OK
+  end subroutine
   subroutine clone(self, copy)
     class(state_t), intent(in) :: self
     class(transaction_state_t), allocatable, intent(out) :: copy
@@ -62,7 +86,7 @@ contains
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
     integer :: unit, status, command_status, ticket
-    real(real64) :: ending, water_in, water_out, bottom, terminal
+    real(real64) :: ending, water_in, water_out, bottom, terminal, pressure(112)
     outcome = trial_outcome_t()
     select type(state)
     type is(state_t)
@@ -74,10 +98,11 @@ contains
       if (command_status /= 0 .or. status /= 0) return
       open(newunit=unit,file='reply',status='old',action='read',iostat=status)
       if (status /= 0) return
-      read(unit,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal
+      read(unit,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal, pressure
       close(unit)
       if (status /= 0) return
       state%stock = ending
+      state%pressure = pressure
       state%ticket = ticket
       outcome%solver_ok = .true.
       outcome%mass_accounting_complete = .true.
@@ -112,6 +137,14 @@ contains
     class(transaction_state_t), intent(in) :: full_state, half_state
     real(real64) :: value
     value = huge(0.0_real64)
+    select type(full_state)
+    type is(state_t)
+      select type(half_state)
+      type is(state_t)
+        value = maxval(abs(full_state%pressure - half_state%pressure))
+        print *, 'TEMPORAL_HEAD_DEFECT_CM', value
+      end select
+    end select
   end function
 end module
 
@@ -131,6 +164,17 @@ program run_kernel_donor
   integer :: i
   real(real64) :: stock
 
+  character(len=32) :: mode
+  type(materializer_t) :: materializer
+  type(groundwater_head_datum_t) :: datum
+  type(groundwater_coupling_window_t) :: window
+  type(groundwater_swap_transaction_participant_t) :: participant
+  type(groundwater_swap_trial_t) :: exchange
+  integer :: status
+  type(canonical_numerical_config_t) :: numerical
+  real(real64) :: time
+
+  call get_command_argument(1,mode)
   read(*,*) stock
   call executor%bind_model(model)
   do i=1,2
@@ -139,6 +183,37 @@ program run_kernel_donor
     if (.not. ok) error stop 'initialization'
     deallocate(initial)
   end do
+  if (mode == 'temporal') then
+    numerical%transaction%mass_tolerance = 1e-6_real64
+    numerical%transaction%max_retries = 0
+    numerical%max_committed_substeps = 1
+    numerical%transaction%temporal_tolerance = 0.05_real64
+    datum%available = .true.
+    datum%datum_id = 91_int64
+    datum%bottom_boundary_elevation_m = -1d0
+    call participant%capture_origin(committed(1),status)
+    if (status /= GW_SWAP_PARTICIPANT_OK) error stop 'capture temporal origin'
+    window%t0 = 35799d0
+    do i=1,3
+      select case (i)
+      case (1)
+        window%t1 = 35799.5d0
+      case (2)
+        window%t1 = 35799.0625d0
+      case (3)
+        window%t1 = 35799.000244140625d0
+      end select
+      call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
+                                        datum,window,-0.5d0,exchange,status)
+      if (status /= GW_SWAP_PARTICIPANT_TRIAL_FAILED .or. exchange%valid .or. &
+          participant%has_live_candidate()) error stop 'expected normal participant rejection'
+      call committed(1)%current_time(time,ok)
+      if (.not. ok .or. time /= window%t0 .or. committed(1)%current_revision() /= 0 .or. &
+          committed(2)%current_revision() /= 0) error stop 'temporal rejection mutated state'
+      print '(a,1x,f24.15,1x,i0)', 'TEMPORAL_REJECTED', window%t1-window%t0, status
+    end do
+    stop
+  end if
   call trial(1,35799d0,35799.5d0,-90d0,.false.)
   if (any([committed(1)%current_revision(),committed(2)%current_revision()] /= 0)) error stop 'discard changed origin'
   call trial(2,35799d0,35799.5d0,-90d0,.true.)
