@@ -219,11 +219,11 @@ program run_kernel_donor
     if (.not. ok) error stop 'initialization'
     deallocate(initial)
   end do
-  if (mode == 'temporal' .or. mode == 'water-metric' .or. mode == 'coupled') then
+  if (mode == 'temporal' .or. mode == 'water-metric' .or. mode == 'coupled' .or. mode == 'bracketed') then
     numerical%transaction%mass_tolerance = 1e-6_real64
     numerical%transaction%max_retries = 0
     numerical%max_committed_substeps = 1
-    model%water_metric = mode == 'water-metric' .or. mode == 'coupled'
+    model%water_metric = mode == 'water-metric' .or. mode == 'coupled' .or. mode == 'bracketed'
     numerical%transaction%temporal_tolerance = 0.05_real64
     if (model%water_metric) numerical%transaction%temporal_tolerance = 1e-4_real64
     datum%available = .true.
@@ -232,7 +232,7 @@ program run_kernel_donor
     call participant%capture_origin(committed(1),status)
     if (status /= GW_SWAP_PARTICIPANT_OK) error stop 'capture temporal origin'
     window%t0 = 35799d0
-    if (mode == 'coupled') then
+    if (mode == 'coupled' .or. mode == 'bracketed') then
       call coupled_window()
       stop
     end if
@@ -301,6 +301,7 @@ contains
     type(groundwater_interface_lineage_t) :: lineage
     real(real64), parameter :: head_tolerance = 1e-8_real64, initial_head = -0.493_real64
     real(real64) :: guess, response, volume, native_exchange, native_storage, last_feasible
+    real(real64) :: lower, upper, residual
     integer :: iteration, unit, rc, selected, discarded, gw_solves
     logical :: converged
 
@@ -313,13 +314,16 @@ contains
     discarded = 0
     gw_solves = 0
     last_feasible = guess
+    lower = -huge(guess)
+    upper = huge(guess)
     do iteration=1,14
       call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
                                         datum,window,guess,exchange,status)
       if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. exchange%valid) then
         print '(a,1x,i0,1x,es24.16,1x,i0)', 'COUPLED_TEMPORAL_REJECTION', iteration,guess,status
         if (status /= GW_SWAP_PARTICIPANT_TRIAL_FAILED .or. participant%has_live_candidate() .or. &
-            committed(1)%current_revision() /= 0 .or. gw_solves == 0) error stop 'corrector failure'
+            committed(1)%current_revision() /= 0) error stop 'corrector failure'
+        if (gw_solves == 0) exit
         guess = 0.5d0*(last_feasible+guess)
         cycle
       end if
@@ -348,6 +352,16 @@ contains
       call ledger%discard_trial(status)
       discarded = discarded + 1
       if (status /= GW_MASS_LEDGER_OK .or. committed(1)%current_revision() /= 0) error stop 'discard changed origin'
+      if (mode == 'bracketed') then
+        residual = response-guess
+        ! Residual orientation is defined for this one-cell storage experiment.
+        if (residual > 0d0 .and. guess < upper) lower = max(lower,guess)
+        if (residual < 0d0 .and. guess > lower) upper = min(upper,guess)
+        if (lower /= -huge(guess) .and. upper /= huge(guess)) then
+          guess = lower + 0.5d0*(upper-lower)
+          cycle
+        end if
+      end if
       guess = response
     end do
     if (.not. converged) then

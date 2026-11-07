@@ -113,6 +113,24 @@ character(len=32) :: trial_text""")
         write(*,'(a,*(1x,es25.17e3))') 'HYBRID_ENDPOINT_HEAD', h(1:numnod)
 """)
     if kernel_flux:
+        source = replace(source, "logical :: flError", """logical :: flError
+integer :: step_cap_status
+real(8), save :: step_cap = 0d0
+character(len=32) :: step_cap_text""")
+        source = replace(source, "if (iTask == 1) then", """if (iTask == 1) then
+   call get_environment_variable('SWAP_TRIAL_MAX_STEP_DAYS',step_cap_text,status=step_cap_status)
+   if (step_cap_status == 0) then
+      read(step_cap_text,*,iostat=step_cap_status) step_cap
+      if (step_cap_status /= 0) error stop 'Invalid probe step cap'
+      if (step_cap < 0.0001d0 .or. step_cap > 0.002d0) error stop 'Unsupported probe step cap'
+   else if (step_cap_status /= 1) then
+      error stop 'Cannot read probe step cap'
+   end if""")
+        source = replace(source, "      if (iCaller /= 2) then\n         ! process weather", """      if (step_cap > 0d0) dt = min(dt, step_cap)
+      if (iCaller /= 2) then
+         ! process weather""")
+        source = replace(source, "      call SoilWater(3)", """      if (step_cap > 0d0 .and. dt > step_cap) error stop 'Accepted step exceeds probe cap'
+      call SoilWater(3)""")
         source = replace(source, "dtold, h, theta, pond, qrot", "dtold, h, theta, pond, qrot, qbot")
         source = replace(source, "      call SoilWater(3)", """      call SoilWater(3)
       if (t1900 >= 35799d0 .and. t1900 < 35801d0) &
@@ -175,14 +193,19 @@ character(len=32) :: trial_text""")
 
 
 def run_worker(case, executable, directory, origin=None, head=None,
-               start="1998-01-03", end="1998-01-04", subday=False, handoff=False, afternoon_head=None, fraction=None, split_clock=None):
+               start="1998-01-03", end="1998-01-04", subday=False, handoff=False, afternoon_head=None, fraction=None, split_clock=None, max_step_days=None):
     if start not in ("1998-01-03", "1998-01-05", "1998-01-06") or end not in ("1998-01-04", "1998-01-05", "1998-01-06"):
         raise ValueError("Unsupported experimental window")
     shutil.copytree(case, directory)
     control = directory / "swap.swp"
     text = replace(control.read_text(encoding="cp1252"), "TEND = 1999-04-26", f"TEND = {end}")
+    if max_step_days is not None:
+        text = replace(text, "DTMAX = 0.002 ", f"DTMAX = {max_step_days:.17g} ")
     text += "\nSWENDTYPE = 2\n"
     environment = os.environ.copy()
+    environment.pop("SWAP_TRIAL_MAX_STEP_DAYS", None)
+    if max_step_days is not None:
+        environment["SWAP_TRIAL_MAX_STEP_DAYS"] = str(max_step_days)
     environment.pop("SWAP_TRIAL_CAUCHY_HEAD_CM", None)
     environment.pop("SWAP_TRIAL_NOON_HANDOFF", None)
     if handoff:

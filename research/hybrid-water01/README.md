@@ -310,3 +310,42 @@ run did not meet that target. Ten groundwater solves closed their
 native budget, four Andelst correctors were refused, and no coupled
 state or interface exchange was committed. The best head mismatch
 was about 2.26e-6 m.
+
+### Step-size and corrector sensitivity
+
+Run the same command with `--max-step-days` set to 0.002, 0.001,
+0.0005 or 0.00025. The probe sets the case's DTMAX and clips the
+proposed step before weather processing, because the legacy restart
+can otherwise retain an initial step above DTMAX. The worker checks
+the cap again after the retry loop. For 0.002 and 0.001, repeat with
+`--bracketed` to bisect between feasible opposite-sign residuals
+when such a bracket exists. A sign bracket alone cannot authorize
+publication. The same temporal and head criteria and 14-trial
+budget apply. A refusal before the first feasible SWAP trial ends
+without an MF6 solve or a commit.
+
+All six runs ended at accepted revision zero. The best result was
+3.54e-7 m with the bracket and 0.002 day cap, against 1e-8 m required.
+At 0.0005 and 0.00025 days the initial trial already failed the
+component-stock temporal check. The untuned two-column midnight
+restart probe still reproduced both day-6 trajectories and files.
+
+To reproduce the paired replay, use `run_worker` from
+`probe_head_transaction.py` with each run's
+`half/andelst_transaction_worker`, the same Andelst input and day-4
+checkpoint, a fresh destination, dates 1998-01-05 through 1998-01-06,
+`subday=True`, `fraction=35799.5`, `split_clock=35799.25`, the
+recorded cap as `max_step_days` and each of the recorded heads in cm.
+Pair each accepted trajectory record's clock and step size with the
+following bottom-inward rate. Integrate by summing rate times step.
+Compare the shared prefix only while both clocks and step sizes agree.
+
+The two inputs differ by 2.90e-6 m. At the 0.002-day cap their first
+149 accepted clocks and step sizes agree, but they have already
+accumulated a 9.87e-5 cm difference in bottom exchange before the
+grids separate. The result rules out different accepted time grids
+as the sole explanation. It does not identify the upstream state
+transition responsible for the growth. The donor's Cauchy flux uses
+the modelled water table at the beginning of a step, and SoilWater(3)
+updates that water table after each accepted solve. This feedback and
+the matrix/macropore iterations are the next targeted comparison.

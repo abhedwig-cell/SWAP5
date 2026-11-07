@@ -46,16 +46,17 @@ def worker():
     job = root / f"job_{ticket:03}"
     destination = job / "resumed"
     origin, case, half, full = (Path(configuration[key]) for key in ("origin", "case", "half", "full"))
+    max_step = configuration.get("max_step_days")
     prior = None
     if t0 == 35799.0 and t0 < t1 <= 35799.5 and origin_ticket == 0:
-        run_worker(case, half, destination, origin, head, start="1998-01-05", end="1998-01-06", subday=True, fraction=t1)
+        run_worker(case, half, destination, origin, head, start="1998-01-05", end="1998-01-06", subday=True, fraction=t1, max_step_days=max_step)
     elif 35799.0 < t0 < t1 <= 35799.5 and origin_ticket > 0:
         previous = root / f"job_{origin_ticket:03}"
         prior = json.loads((previous / "job.json").read_text())
         if prior["column"] != column or prior["t1"] != t0 or prior["head"] != head:
             raise RuntimeError("Wrong quarter-day origin")
         run_worker(case, half, destination, origin, head, start="1998-01-05",
-                   end="1998-01-06", subday=True, fraction=t1, split_clock=t0)
+                   end="1998-01-06", subday=True, fraction=t1, split_clock=t0, max_step_days=max_step)
         prefix = [line for line in steps(destination) if float(line.split()[1]) < t0]
         if not prefix or prefix != steps(previous / "resumed"):
             raise RuntimeError("Quarter replay did not reproduce its origin")
@@ -65,7 +66,7 @@ def worker():
         if prior["column"] != column or prior["t1"] != t0:
             raise RuntimeError("Wrong committed origin")
         run_worker(case, full, destination, origin, prior["head"], start="1998-01-05",
-                   end="1998-01-05", handoff=True, afternoon_head=head)
+                   end="1998-01-05", handoff=True, afternoon_head=head, max_step_days=max_step)
         prefix = steps(destination, before_noon=True)
         if not prefix or prefix != steps(previous / "resumed"):
             raise RuntimeError("Replay did not reproduce the committed first half")
@@ -101,7 +102,14 @@ def main():
     mode.add_argument("--temporal", action="store_true")
     mode.add_argument("--water-metric", action="store_true")
     mode.add_argument("--mf6", type=Path)
+    parser.add_argument("--bracketed", action="store_true", help="Safeguard the live corrector with a sign bracket")
+    parser.add_argument("--max-step-days", type=float, help="Diagnostic DTMAX override for coupled runs")
     args = parser.parse_args()
+    if args.bracketed and args.mf6 is None:
+        parser.error("--bracketed requires --mf6")
+    if args.max_step_days is not None and (
+            args.mf6 is None or not 0.0001 <= args.max_step_days <= 0.002):
+        parser.error("--max-step-days requires --mf6 and must be in [0.0001, 0.002]")
     reference, audit_work, noon, output = (p.resolve() for p in (
         args.reference_work, args.day_return_work, args.noon_work, args.output))
     output.mkdir()
@@ -118,6 +126,7 @@ def main():
     stock = ledger(noon / "fixed/resumed")[0][0]
     configuration = {"origin": str(origin), "case": str(case), "half": str(half), "full": str(full)}
     if args.mf6 is not None:
+        configuration["max_step_days"] = args.max_step_days
         configuration["mf6"] = str(args.mf6.resolve())
     (output / "worker.json").write_text(json.dumps(configuration))
     shell = output / "worker"
@@ -133,7 +142,7 @@ def main():
                    cwd=output, check=True)
     command = [executable]
     if args.mf6 is not None:
-        command.append("coupled")
+        command.append("bracketed" if args.bracketed else "coupled")
     if args.temporal:
         command.append("temporal")
     if args.water_metric:
@@ -151,14 +160,21 @@ def main():
         correctors = [[float(v) for v in line.split()[2:]] for line in rows
                       if line.startswith("COUPLED_CORRECTOR ")]
         rejected = [line.split()[1:] for line in rows if line.startswith("COUPLED_TEMPORAL_REJECTION ")]
+        defects = [[float(v) for v in line.split()[1:]] for line in rows
+                   if line.strip().startswith("TEMPORAL_WATER_DEFECTS_CM ")]
+        if len(defects) != len(correctors) + len(rejected):
+            raise RuntimeError("Missing temporal results for coupled trials")
         evidence = {
             "scope": "LIVE_MODFLOW6_SINGLE_CELL_AND_ANDELST_HALF_DAY",
             "mf6_sha256": sha(args.mf6.resolve()), "origin_checkpoint": hashes,
+            "corrector": "bracketed" if args.bracketed else "fixed_point",
+            "max_step_days": args.max_step_days if args.max_step_days is not None else 0.002,
             "head_tolerance_m": 1e-8, "water_metric_tolerance_cm": 1e-4,
             "columns": ["swap_head_m", "modflow_head_m", "modflow_inward_m3", "modflow_storage_outward_m3"],
             "correctors": correctors, "temporal_rejections": rejected,
-            "best_head_mismatch_m": min(abs(row[0]-row[1]) for row in correctors),
-            "max_modflow_balance_residual_m3": max(abs(row[2]+row[3]) for row in correctors),
+            "temporal_water_defects_cm": defects,
+            "best_head_mismatch_m": min((abs(row[0]-row[1]) for row in correctors), default=None),
+            "max_modflow_balance_residual_m3": max((abs(row[2]+row[3]) for row in correctors), default=None),
         }
         if "COUPLED_NO_COMMIT" in rows:
             receipt = {**evidence, "committed": False, "accepted_revision": 0}
