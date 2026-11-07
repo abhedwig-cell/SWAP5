@@ -29,8 +29,15 @@ jobs:
             python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --stem "$STEM"
             python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --stem "integration/dataqual15_hupsel/MATRIX_LOGICAL_WINDOWS_${{ matrix.optimization }}_20261107"
           else
+            STEM="$RUNNER_TEMP/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107"
             python -B tests/dataqual15_hupsel/matrix_logical_runtime.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}"
-            python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}" --stem "$RUNNER_TEMP/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107"
+            python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}" --stem "$STEM"
+          fi
+          HEADER="integration/dataqual15_hupsel/MATRIX_LOGICAL_HEADER_POSIX_${{ matrix.optimization }}_20261107"
+          if [[ -f "$HEADER.json" ]]; then
+            python -B tests/dataqual15_hupsel/matrix_logical_header.py --native "$STEM" --stem "$HEADER"
+          else
+            python -B tests/dataqual15_hupsel/matrix_logical_header.py --native "$STEM" --stem "$RUNNER_TEMP/MATRIX_LOGICAL_HEADER_POSIX_${{ matrix.optimization }}_20261107" --output "$RUNNER_TEMP/matrix-logical-header-${{ matrix.optimization }}" --compiler /usr/bin/gfortran-13
           fi
       - uses: actions/upload-artifact@v4
         if: always()
@@ -38,6 +45,7 @@ jobs:
           name: matrix-logical-${{ matrix.optimization }}
           path: |
             ${{ runner.temp }}/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107.*
+            ${{ runner.temp }}/MATRIX_LOGICAL_HEADER_POSIX_${{ matrix.optimization }}_20261107.*
             ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/RESULT.json
             ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/incumbent/*.stderr
             ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/candidate/*.stderr
