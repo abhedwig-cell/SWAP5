@@ -1,5 +1,5 @@
 {
-  "phase": "PRIVATE_WINDOWS_O0_O2_QUALIFIED_POSIX_PENDING",
+  "phase": "FOUR_NATIVE_COHORTS_QUALIFIED_FINAL_CROSS_HOST_CONSUMER_CI_PENDING",
   "scope": "Private complete S5MJ0001/2 reader raw-logical validation. No production codec edits or admission.",
   "preregistration": "MATRIX_LOGICAL_PREREGISTRATION_20261107.json",
   "windows": {
@@ -10,5 +10,11 @@
   "limits": "S5MJ0003 Boesten-specific application cohort is not selected here. No production/writer/interface/layout/CRC/solver/tolerance/retry/mass/restart/owner changes. Prior P2E04 Windows numerical equality failures remain FAILED. Scientific counts unchanged.",
   "production_admission": false,
   "whole_scientific_admission": false,
-  "next": "Execute POSIX O0/O2 same full native qualification; independent artifact audit, focused final adjudication, integrate private qualification only. Separate deployed successor required for production admission."
+  "next": "Await final exact cross-host consumer reuse qualification and other selected CI through terminal, then bounded private qualification canonical integration with PR1610 metadata preserved. Separate Boesten-specific S5MJ0003 and deployed production admission remain open.",
+  "posix": {
+    "O0": "MATRIX_LOGICAL_POSIX_O0_20261107.json",
+    "O2": "MATRIX_LOGICAL_POSIX_O2_20261107.json"
+  },
+  "native_qualification": "MATRIX_LOGICAL_INITIAL_QUALIFICATION_20261107.json",
+  "pr": 1611
 }
