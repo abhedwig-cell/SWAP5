@@ -15,6 +15,8 @@ def expected():
   return sources,{n:(p.relative_to(g.ROOT).as_posix(),p.read_bytes())for n,p in drivers.items()}
 def audit(files):
  r=json.loads(files['RESULT.json']);assert r['baseline']==g.guard()['baseline']and r['production_admission']is False and r['whole_scientific_admission']is False
+ for path in ('tests/dataqual15_hupsel/matrix_logical_runtime.py','tests/dataqual15_hupsel/matrix_crc_runtime.py','tests/dataqual15_hupsel/native_n_crc_runtime.py'):
+  assert (g.ROOT/path).read_bytes().replace(b'\r\n',b'\n')==origin(r['head'],path),'runtime dependency changed; fresh native qualification required: '+path
  sources,drivers=expected();assert r['provider_count']==len(sources);q=PureWindowsPath if r['platform']=='WINDOWS'else PurePosixPath
  for role in ('incumbent','candidate'):
   b=json.loads(files[role+'/BUILD.json']);assert b['provider_count']==len(sources)and len(b['bindings'])==len(sources)

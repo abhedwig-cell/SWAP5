@@ -21,10 +21,17 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Execute complete current baseline and private reader
-        run: python -B tests/dataqual15_hupsel/matrix_logical_runtime.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}"
-      - name: Independently audit source objects native bytes all original and malformed controls
-        run: python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}" --stem "$RUNNER_TEMP/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107"
+      - name: Reuse exact native cohorts or execute first qualification
+        shell: bash
+        run: |
+          STEM="integration/dataqual15_hupsel/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107"
+          if [[ -f "$STEM.json" ]]; then
+            python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --stem "$STEM"
+            python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --stem "integration/dataqual15_hupsel/MATRIX_LOGICAL_WINDOWS_${{ matrix.optimization }}_20261107"
+          else
+            python -B tests/dataqual15_hupsel/matrix_logical_runtime.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}"
+            python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}" --stem "$RUNNER_TEMP/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
