@@ -9,6 +9,7 @@ p.add_argument('--output', required=True, type=Path)
 p.add_argument('--joint-contact', action='store_true')
 p.add_argument('--current-drainage', action='store_true')
 p.add_argument('--bottom-contact', action='store_true')
+p.add_argument('--saturation-contact', action='store_true')
 a = p.parse_args()
 out = a.output.resolve()
 out.mkdir()
@@ -20,6 +21,9 @@ if a.current_drainage:
 if a.bottom_contact:
     from build_joint_bottom_contact_candidate import render
     a.joint_contact = a.current_drainage = True
+if a.saturation_contact:
+    from build_joint_saturation_contact_candidate import render
+    a.bottom_contact = a.joint_contact = a.current_drainage = True
 shadow = render(out / 'overlay')
 contracts = {
     'border': ['src/solver/mod_reference_linear_solver.f90',
@@ -36,6 +40,9 @@ if a.current_drainage:
     contracts['ordinary'] = contracts['perched']
 if a.bottom_contact:
     contracts['bottom'] = contracts['rate'][:-1] + ['tests/dataqual15/joint_bottom_contact_driver.f90']
+if a.saturation_contact:
+    contracts['saturation'] = ['src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90',
+                             'tests/dataqual15/joint_saturation_contact_driver.f90']
 report = dict(status='RUNNING', scope='COMPONENT_ONLY_NOT_TRAJECTORY_OR_HISTORICAL_EQUIVALENCE',
               events=[], source_sha256={})
 for mode in ('O0', 'O2'):
