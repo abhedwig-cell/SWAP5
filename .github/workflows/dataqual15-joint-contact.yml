@@ -24,13 +24,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Real border and entry/both perched/ordinary/zero-head contact O0/O2
-        run: python -B tests/dataqual15/run_joint_entry_contracts.py --saturation-contact --compiler /usr/bin/gfortran --output joint-contracts
+        run: python -B tests/dataqual15/run_joint_entry_contracts.py --connectivity-contact --compiler /usr/bin/gfortran --output joint-contracts
       - name: Real positive-pocket candidate and vertical closure O0/O2
         run: python -B tests/dataqual15/run_empty_pocket_contract.py --compiler /usr/bin/gfortran --output pocket-contracts
       - name: Actual subnormal demand and unchanged storage owner O0/O2
         run: python -B tests/dataqual15/run_limiter_ratio_contracts.py --compiler /usr/bin/gfortran --output limiter-ratio-contracts
       - name: Real current groundwater view O0/O2
         run: python -B tests/dataqual15/run_joint_current_view_contract.py --compiler /usr/bin/gfortran --output current-view-contracts
+      - name: Real positive pond donor owners and groundwater projection O0/O2
+        run: python -B tests/dataqual15/run_joint_current_view_contract.py --positive-pond --compiler /usr/bin/gfortran --output positive-pond-contracts
       - name: Scoped candidate source callback and refusal O0/O2
         run: python -B tests/dataqual15/run_joint_source_callback_contract.py --compiler /usr/bin/gfortran --output current-source-contracts
       - name: Exact committed rain phases, source events and original INT13 owner O0/O2
@@ -44,5 +46,6 @@ jobs:
             pocket-contracts
             limiter-ratio-contracts
             current-view-contracts
+            positive-pond-contracts
             current-source-contracts
             source-event-contracts

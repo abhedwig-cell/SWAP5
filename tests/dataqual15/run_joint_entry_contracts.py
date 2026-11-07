@@ -10,6 +10,7 @@ p.add_argument('--joint-contact', action='store_true')
 p.add_argument('--current-drainage', action='store_true')
 p.add_argument('--bottom-contact', action='store_true')
 p.add_argument('--saturation-contact', action='store_true')
+p.add_argument('--connectivity-contact', action='store_true')
 a = p.parse_args()
 out = a.output.resolve()
 out.mkdir()
@@ -24,6 +25,9 @@ if a.bottom_contact:
 if a.saturation_contact:
     from build_joint_saturation_contact_candidate import render
     a.bottom_contact = a.joint_contact = a.current_drainage = True
+if a.connectivity_contact:
+    from build_joint_connectivity_candidate import render
+    a.saturation_contact = a.bottom_contact = a.joint_contact = a.current_drainage = True
 shadow = render(out / 'overlay')
 contracts = {
     'border': ['src/solver/mod_reference_linear_solver.f90',
