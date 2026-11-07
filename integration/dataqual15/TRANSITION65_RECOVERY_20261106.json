@@ -1240,7 +1240,8 @@
       "checkpoint4_sha256": "fed132bfb472efd4b37f8daf60ff6ac5e52f90605349ffbc1fb1d30a0eba95f8",
       "same_input_binding": true,
       "historical_original_equivalence": false
-    }
+    },
+    "own245_to246": false
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1261,7 +1262,12 @@
       367,
       481
     ],
-    "own_year_seconds": 900
+    "own_year_seconds": 900,
+    "own245_to246": {
+      "expected_seconds": 1200,
+      "timeout_seconds": 1800,
+      "reason": "New physical lower-contact action must also survive exact actual own continuation across its real245.594 transition. Earlier own3-4 does not establish active lower-action persistence. Immutable diagnostic replay costs809s; one day is sufficient, no extra full campaign. Same new executable/binding, compare every source row and entire day246 native stream."
+    }
   },
   "lower_perched245594_evidence": {
     "archive": "LOWER_PERCHED245594_EVIDENCE_20261107.zip",
@@ -1310,7 +1316,13 @@
     "publisher_ttutil_pins_exact": true,
     "production_src_app_tree_unchanged_vs_canonical": true,
     "original481_and_year_not_promoted": true,
-    "current_executable_own3_to4_exact": true
+    "current_executable_own3_to4_exact": true,
+    "combined_docs_run": 42317008166,
+    "combined_docs_job": 128231989250,
+    "combined_docs_head": "ba3550984179e612c62cf72e6d806bdc449aea14",
+    "combined_docs_status": "PASS",
+    "later_delta_receipts_and_original_full_test_selection_only": true,
+    "active_contact_own245_to246_pending_and_not_promoted": true
   },
   "bottom_contact_own3_evidence": {
     "archive": "BOTTOM_CONTACT_OWN3_EVIDENCE_20261107.zip",
