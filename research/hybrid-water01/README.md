@@ -180,3 +180,32 @@ residual for both days and verifies that the original day-4 checkpoint
 was unchanged. This qualifies re-entry into one live donor. Fractional
 restart from disk, multiple donor instances within one process and
 SWAP5 transaction API ownership are outside this control.
+
+## Two resident donors in one GNU process
+
+This Linux/glibc research probe requires the verified B0 distribution and
+position-independent objects. Build the ordinary reference with the
+existing B0 runner through a compiler wrapper named `gfortran` that adds
+`-fPIC` to each compiler invocation. Keep that wrapper on PATH for the
+commands below. The unmodified reference input and audit are the same
+as in the previous probes.
+
+```sh
+python research/hybrid-water01/probe_resident_donors.py \
+  --reference-work /tmp/hybrid-b0-pic --day-return-work /tmp/hybrid-day-return \
+  --noon-work /tmp/hybrid-noon-handoff --output /tmp/hybrid-resident
+```
+
+The probe links one shared library and loads it into two glibc loader
+namespaces. Each namespace has its own Fortran runtime and donor state.
+The host calls both instances serially within a single process, switching
+directories and stdout around each call. Both instances remain live at
+noon and receive a different external head. They must reproduce their
+separate runs exactly, including daily stocks, fluxes, the accepted-step
+audit and both day-6 endpoint files. A also matches the endpoint files of
+the previous standalone -50 cm control. The water ledger closes for both.
+
+This demonstrates resident isolation by loader namespace, with serial
+process-wide directory changes. It is platform specific and does not
+qualify threads, fractional disk restart, or transaction ownership
+through the SWAP5 kernel API.

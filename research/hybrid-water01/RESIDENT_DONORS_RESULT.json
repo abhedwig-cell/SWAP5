@@ -1,0 +1,88 @@
+{
+  "scope": "TWO_SERIAL_GNU_NAMESPACED_DONORS_ONE_PROCESS",
+  "library_sha256": "62c339defdaba1c1d954468f7c0383f82b28800cc59857cb1300627244ea4973",
+  "source_checkpoint": {
+    "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
+    "macro.bin": "3cd86d786a1b0ad8a699547080f114f5df5e9ed0e5f60e6261c391aa2cd10e3c"
+  },
+  "a_head_cm": -50,
+  "b_head_cm": -90,
+  "a_audited_steps": 3901,
+  "b_audited_steps": 3087,
+  "a_daily_water_residual_cm": [
+    1.253201288104128e-08,
+    -4.2173149737614185e-08
+  ],
+  "b_daily_water_residual_cm": [
+    4.188401377439553e-08,
+    -1.232455572146296e-08
+  ],
+  "a_standalone_endpoint_exact": true,
+  "a_endpoint": {
+    "result.end": "9bc169db4802fa7d5f441d61fb36a1811f8f214cedddbe677fd3ac397b38258d",
+    "macro.bin": "79d5815fa4d31a53be61457689b0f1e5dcef08793d9491a1acb89d7022184480"
+  },
+  "b_endpoint": {
+    "result.end": "5d088c0f5b0ef62f6e0f424cc2757e354eff1ac906d00ccf91e86e31d4fb2e32",
+    "macro.bin": "310eb2ffc2a88d988850778d9a826e9c7289b898e3f0bdc685b46a1540030c60"
+  },
+  "independent_controls_exact": true,
+  "interleaved_calls": [
+    {
+      "pid": 34,
+      "column": "a_interleaved",
+      "task": 1,
+      "clock": 35799.0,
+      "namespace": 1
+    },
+    {
+      "pid": 34,
+      "column": "b_interleaved",
+      "task": 1,
+      "clock": 35799.0,
+      "namespace": 2
+    },
+    {
+      "pid": 34,
+      "column": "a_interleaved",
+      "task": 2,
+      "clock": 35799.5,
+      "namespace": 1
+    },
+    {
+      "pid": 34,
+      "column": "b_interleaved",
+      "task": 2,
+      "clock": 35799.5,
+      "namespace": 2
+    },
+    {
+      "pid": 34,
+      "column": "a_interleaved",
+      "task": 2,
+      "clock": 35801.0,
+      "namespace": 1
+    },
+    {
+      "pid": 34,
+      "column": "b_interleaved",
+      "task": 2,
+      "clock": 35801.0,
+      "namespace": 2
+    },
+    {
+      "pid": 34,
+      "column": "a_interleaved",
+      "task": 3,
+      "clock": 35801.0,
+      "namespace": 1
+    },
+    {
+      "pid": 34,
+      "column": "b_interleaved",
+      "task": 3,
+      "clock": 35801.0,
+      "namespace": 2
+    }
+  ]
+}
