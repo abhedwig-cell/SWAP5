@@ -22,7 +22,11 @@ ENTRY = """
 FIXTURE = """
   subroutine surface_checkpoint()
     use mod_restricted_surface_evaporation, only: boesten_evaporation_state_t
+    use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
+    use mod_b111_persistent_pond, only: pond_step_t
+    use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
     type(boesten_evaporation_state_t) :: pair
+    type(pond_step_t) :: supply
     type(mobile_salt_state_t) :: mobile
     type(solute_compartment_state_t) :: stores
     real(real64), allocatable :: theta(:)
@@ -35,7 +39,25 @@ FIXTURE = """
     cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     if (temporal) &
       cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
-    if (boesten) cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+    if (boesten) then
+      cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
+      cfg%tiles(1)%initial_state%ponding_depth=.5d0
+      cfg%tiles(1)%parameters%boesten_evaporation_active=.true.
+      allocate(cfg%tiles(1)%parameters%boesten_evaporation,cfg%tiles(1)%base_forcing%boesten_evaporation)
+      cfg%tiles(1)%parameters%boesten_evaporation%cofred=.79d0
+      associate(forcing=>cfg%tiles(1)%base_forcing%boesten_evaporation)
+        forcing%precipitation_rate_cm_per_day=.25d0
+        forcing%potential_bare_soil_evaporation_cm_per_day=.1d0
+        forcing%potential_pond_evaporation_cm_per_day=.1d0
+        forcing%ponding_max_cm=1d0
+      end associate
+      cfg%numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+      cfg%numerical%transaction%temporal_tolerance=1d-6
+      supply%t0=T0
+      supply%t1=T1
+      supply%rain_rate=.25d0
+      supply%rain_c=.125d0
+    end if
     if (index(trim(mode),'surface-write')==1) then
       if (boesten) then
         pair%spev=2d0
@@ -82,14 +104,20 @@ FIXTURE = """
       print '(A)','SURFACE_OCCUPIED_REFUSED'
     end if
     if (trim(mode)=='surface-write-advance'.or.trim(mode)=='surface-read-advance') then
-      call require(temporal,'temporal continuation fixture')
+      call require(temporal.or.boesten,'supported continuation fixture')
       call backend%initialize(top)
-      call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
-        cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
+      if (boesten) then
+        call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+          cfg%tiles(1)%base_forcing,cfg%numerical,solute,supply,T0,T1,result)
+        if (result%status/=JOINT_OK) print *, 'BOESTEN_STATUS',result%status,result%water%status,result%chemical%status
+      else
+        call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+          cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
+      end if
       call require(result%status==JOINT_OK,'accepted physical continuation')
       call require(abs(result%chemical%residual)<1d-11,'continued chemical balance')
       call require(abs(result%water%mass%residual)<HARD_MASS_GATE,'continued water balance')
-      print '(A)','TEMPORAL_CONTINUATION_PASS'
+      print '(A)','MATRIX_CONTINUATION_PASS'
     end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
       670001_int64,water,solute,status,allow_surface_mass=surface_enabled)
@@ -152,6 +180,9 @@ def execute(native, output, compiler, qualify_publication=False):
                        if binding['original'].replace(chr(92), '/').endswith('/' + runtime.SOURCE)]
             assert len(indices) == 1
             objects[indices[0]] = replacement
+        pond_endpoints[role] = pond.qualify(compiler, flags, objects, output, role, events)
+        flags.append('-I' + str(output))
+        objects.insert(-1, output / 'gross-pond.o')
         executable = output / role / 'surface.exe'
         response = output / role / 'surface.args'
         args = flags + [str(source), *map(str, objects), '-o', str(executable)]
@@ -160,7 +191,6 @@ def execute(native, output, compiler, qualify_publication=False):
         if qualify_publication and role == 'candidate':
             fault_executable = publication.build_fault_executable(
                 compiler, flags, source, objects, output, events, result['optimization'])
-        pond_endpoints[role] = pond.qualify(compiler, flags, objects, output, role, events)
         outcomes[role] = {}
         for tag in ('1', '1t', '2', '3'):
             original = output / role / ('original-' + tag)
@@ -181,12 +211,12 @@ def execute(native, output, compiler, qualify_publication=False):
                                output, events, role + '-' + refused_mode)
                 assert b'SURFACE_REFUSED_EMPTY' in observed.stdout
                 assert restored.read_bytes() == raw
-            if tag == '1t':
-                direct = output / role / 'temporal-direct'
-                resumed = output / role / 'temporal-resumed'
+            if tag in ('1t', '3'):
+                direct = output / role / f'advance-{tag}-direct'
+                resumed = output / role / f'advance-{tag}-resumed'
                 for mode, target in (('surface-write-advance', direct), ('surface-read-advance', resumed)):
                     observed = run([executable, mode, original, target, tag], output, events, role + '-advance')
-                    assert b'TEMPORAL_CONTINUATION_PASS' in observed.stdout
+                    assert b'MATRIX_CONTINUATION_PASS' in observed.stdout
                 assert direct.read_bytes() == resumed.read_bytes()
             admissions = []
             for offset in (144, 156):
@@ -272,7 +302,9 @@ def execute(native, output, compiler, qualify_publication=False):
 
     for tag in ('1', '1t', '2', '3'):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
-    assert (output / 'incumbent/temporal-direct').read_bytes() == (output / 'candidate/temporal-direct').read_bytes()
+    for tag in ('1t', '3'):
+        endpoint = f'advance-{tag}-direct'
+        assert (output / 'incumbent' / endpoint).read_bytes() == (output / 'candidate' / endpoint).read_bytes()
     assert pond_endpoints['incumbent'] == pond_endpoints['candidate']
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
