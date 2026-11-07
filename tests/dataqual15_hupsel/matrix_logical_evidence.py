@@ -30,6 +30,15 @@ def audit(files):
   for name,(path,raw)in drivers.items():
    d=b['drivers'][name];assert raw.replace(b'\r\n',b'\n')==g.raw(r['baseline'],path);assert files[role+'/'+d['source']]==raw and sha(raw)==d['source_sha256'];assert sha(files[role+'/'+d['executable']])==d['executable_sha256']
   assert files[role+'/publisher.c'].replace(b'\r\n',b'\n')==g.raw(r['baseline'],'app/support/restart_publish.c')
+  by_label={e['label']:e for e in events if e['label']not in ('provider','publisher','driver','link','logical')}
+  expected_labels=set()
+  for exponent,row in r['results'][role]['original'].items():
+   for label,marker in [('route-'+exponent,b'MATRIX_ACTUAL_RICHARDS_ORACLE_ROLLBACK_RESTART=PASS'),('write-'+exponent,b'MATRIX_JOINT_COMMIT_ROLLBACK_OPAQUE_DISK=PASS'),('resume-'+exponent,b'MATRIX_JOINT_FRESH_PROCESS=PASS'),('correct-'+exponent,b'MATRIX_JOINT_FRESH_PROCESS=PASS')]:
+    expected_labels.add(label);event=by_label[label];assert marker in files[role+'/'+event['stdout']]
+   assert len(row['refusals'])==10
+   for negative in row['refusals']:
+    label=exponent+'-'+negative['case'];expected_labels.add(label);event=by_label[label];assert b'MATRIX_JOINT_INVALID_FILE=PASS'in files[role+'/'+event['stdout']]and negative['returncode']==event['returncode']==0
+  assert set(by_label)==expected_labels and len(expected_labels)==84
   assert len(r['results'][role]['logical'])==72
   logical_events=[e for e in events if e['label']=='logical'];assert len(logical_events)==72
   for row,event in zip(r['results'][role]['logical'],logical_events):
