@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
+  "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1217,81 +1217,18 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "TERMINAL_NEW_SOURCE256873_TO256875_REFUSAL",
-    "model": "ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6",
-    "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
-    "binding": "416a72cc2e61778ef3228b471863edd7f84247b58c00e76c75c8c5cccf922489",
+    "status": "ACTIVE_FRESH_ORIGINAL_INPUT481_V7_NOT_COMPLETED",
+    "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
+    "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+    "binding": "5b0960078f2b9363a11974b5288c03dafc86c348737bd33d6aae61954fdb128c",
     "original_initialization": true,
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
     "whole481": false,
     "own365_to367": false,
-    "run": "s5-zero-head-original481-O2",
-    "capture": "s5-zero-head-captured-own-O2",
-    "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
-    "own3_to4": {
-      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
-      "seconds": 168.39868279988877,
-      "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
-      "input_restart_sha256": "625619993dc8b0dd9d7296157c1ae71b7296cf7cb7d9143bf42a5a71c75ac772",
-      "all_progress_rows_exact": true,
-      "progress_rows": 504,
-      "entire_checkpoint4_byte_exact": true,
-      "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
-      "same_input_binding": true,
-      "historical_original_equivalence": false
-    },
-    "fresh_original_initialization_passed_v5_barrier": {
-      "progress": {
-        "day": "257",
-        "segment": "379",
-        "t0": " 2.56742000000003657E+002",
-        "t1": " 2.56743000000002212E+002",
-        "attempts": "128",
-        "solver_rejections": "0",
-        "temporal_rejections": "65",
-        "mass_rejections": "0",
-        "residual_cm": " 1.18047932540221723E-014"
-      },
-      "cost": {
-        "t0": " 2.56742000000003657E+002",
-        "t1": " 2.56743000000002212E+002",
-        "completed": "T",
-        "nonlinear_iterations": "1572",
-        "headcalc_calls": "384",
-        "linear_solves": "1572",
-        "backtracking_attempts": "2222",
-        "accepted_substeps": "63",
-        "min_accepted_dt": " 7.62940999265993014E-009",
-        "max_accepted_dt": " 6.25001266598701477E-005"
-      },
-      "following_committed_source_observed_through": 256.8729999999988,
-      "checkpoint256_sha256": "f95819c51a69a3f2880f5d2aa314e4cc4844fc243fe0938ea110a1fc53bd8d1a",
-      "qualification_scope": "Actual fresh original initialization path, still pending481 and own year; separate O0/O2 three-source proof used the immutable V5 rollback seed."
-    },
-    "seconds": 6141.92303960002,
-    "returncode": 1,
-    "censored": false,
-    "completed_days": 256,
-    "last_completed_source_interval": 256.8729999999988,
-    "last_attempted_source_interval": 256.8749999999988,
-    "maximum_water_residual_cm": 3.3668931974385757e-12,
-    "last_source_cost": {
-      "t0": " 2.56872999999998797E+002",
-      "t1": " 2.56874999999998806E+002",
-      "completed": "F",
-      "nonlinear_iterations": "1956",
-      "headcalc_calls": "228",
-      "linear_solves": "1956",
-      "backtracking_attempts": "4181",
-      "accepted_substeps": "33",
-      "min_accepted_dt": " 2.27373675443232059E-013",
-      "max_accepted_dt": " 6.25000000127329258E-005"
-    },
-    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
-    "own256_to257": false,
-    "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
-    "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
+    "run": "s5-connectivity-final-original481-O2",
+    "capture": "s5-connectivity-final-captured-own-O2",
+    "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds."
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1972,7 +1909,7 @@
   },
   "connectivity_v7": {
     "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
-    "status": "DIAGNOSTIC_O2_THREE_SOURCES_ALL_ORIGINAL_GUARDS_PASS_FINAL_O0_O2_PENDING",
+    "status": "FINAL_NATIVE_O0_O2_SOURCE_CONTROLS_PASS_FRESH481_SELECTED",
     "original_historical_equivalence": false,
     "whole481": false,
     "own_year": false,
@@ -2070,6 +2007,101 @@
       "no_published_restart": true,
       "not_own_or_original_initialization_proof": true
     },
-    "positive_pond_contracts": "Actual10-provider closure passes Windows O0/O2: both donor owners, same physical threshold, conservation, positive free surface and exact dry endpoint. Original default source untouched."
+    "positive_pond_contracts": "Actual10-provider closure passes Windows O0/O2: both donor owners, same physical threshold, conservation, positive free surface and exact dry endpoint. Original default source untouched.",
+    "final_controls": {
+      "new_three_O0_seconds": 151.53868979983963,
+      "new_three_O2_seconds": 73.06905540009029,
+      "progress_cost_O0_O2_exact": true,
+      "prior_three_O2_seconds": 14.444124599918723,
+      "prior_cost_V6_exact": true,
+      "prior_progress_V6_exact": false,
+      "O0_original_init_day1_seconds": 42.34332940005697,
+      "O0_day1_max_water_residual_cm": 9.546109427027369e-14
+    },
+    "fresh_full_selection": {
+      "expected_seconds": 10500,
+      "maximum_seconds": 14400,
+      "own3_seconds": 900,
+      "own256_seconds": 3600,
+      "own_year_seconds": 3600,
+      "impact": "Physically closed scoped connectivity, original current balance gate, positive pond owners/projection. Requested original-input481 and exact own year require this native run. No unrelated F-CI/low-air."
+    }
+  },
+  "predecessor_v6_terminal_execution": {
+    "status": "TERMINAL_NEW_SOURCE256873_TO256875_REFUSAL",
+    "model": "ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6",
+    "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
+    "binding": "416a72cc2e61778ef3228b471863edd7f84247b58c00e76c75c8c5cccf922489",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "whole481": false,
+    "own365_to367": false,
+    "run": "s5-zero-head-original481-O2",
+    "capture": "s5-zero-head-captured-own-O2",
+    "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
+    "own3_to4": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 168.39868279988877,
+      "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
+      "input_restart_sha256": "625619993dc8b0dd9d7296157c1ae71b7296cf7cb7d9143bf42a5a71c75ac772",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "fresh_original_initialization_passed_v5_barrier": {
+      "progress": {
+        "day": "257",
+        "segment": "379",
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "attempts": "128",
+        "solver_rejections": "0",
+        "temporal_rejections": "65",
+        "mass_rejections": "0",
+        "residual_cm": " 1.18047932540221723E-014"
+      },
+      "cost": {
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "completed": "T",
+        "nonlinear_iterations": "1572",
+        "headcalc_calls": "384",
+        "linear_solves": "1572",
+        "backtracking_attempts": "2222",
+        "accepted_substeps": "63",
+        "min_accepted_dt": " 7.62940999265993014E-009",
+        "max_accepted_dt": " 6.25001266598701477E-005"
+      },
+      "following_committed_source_observed_through": 256.8729999999988,
+      "checkpoint256_sha256": "f95819c51a69a3f2880f5d2aa314e4cc4844fc243fe0938ea110a1fc53bd8d1a",
+      "qualification_scope": "Actual fresh original initialization path, still pending481 and own year; separate O0/O2 three-source proof used the immutable V5 rollback seed."
+    },
+    "seconds": 6141.92303960002,
+    "returncode": 1,
+    "censored": false,
+    "completed_days": 256,
+    "last_completed_source_interval": 256.8729999999988,
+    "last_attempted_source_interval": 256.8749999999988,
+    "maximum_water_residual_cm": 3.3668931974385757e-12,
+    "last_source_cost": {
+      "t0": " 2.56872999999998797E+002",
+      "t1": " 2.56874999999998806E+002",
+      "completed": "F",
+      "nonlinear_iterations": "1956",
+      "headcalc_calls": "228",
+      "linear_solves": "1956",
+      "backtracking_attempts": "4181",
+      "accepted_substeps": "33",
+      "min_accepted_dt": " 2.27373675443232059E-013",
+      "max_accepted_dt": " 6.25000000127329258E-005"
+    },
+    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
+    "own256_to257": false,
+    "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
+    "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
   }
 }
