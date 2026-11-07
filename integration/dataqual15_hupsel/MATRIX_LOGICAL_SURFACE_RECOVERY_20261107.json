@@ -1,5 +1,5 @@
 {
-  "phase": "WINDOWS_SURFACE_AND_BOESTEN_CONTROLS_PASS_POSIX_PENDING",
+  "phase": "PRIVATE_SURFACE_AND_BOESTEN_HEADER_CONTROLS_QUALIFIED",
   "base": "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c",
   "tested_code": "8ebba972e9ba8b512eebf3141e08e9c68f8aca3d",
   "pull_request": 1612,
@@ -1088,5 +1088,20 @@
     }
   },
   "posix_run": 42337190578,
-  "production_admission": false
+  "production_admission": false,
+  "posix": {
+    "O0": {
+      "job": 128296672171,
+      "artifact": 13560326482,
+      "incumbent_admissions": 2,
+      "candidate_refusals": 12
+    },
+    "O2": {
+      "job": 128296672629,
+      "artifact": 13559613577,
+      "incumbent_admissions": 6,
+      "candidate_refusals": 12
+    }
+  },
+  "adjudication": "On Windows and POSIX, both canonical fixtures round-trip byte for byte at O0 and O2. Incumbent readers admit 16 of 48 CRC-correct malformed files. The private reader refuses all 48 with both owners empty. Qualification covers the specific owner fixtures, not positive surface solute storage, physical continuation, writer publication or deployed admission."
 }
