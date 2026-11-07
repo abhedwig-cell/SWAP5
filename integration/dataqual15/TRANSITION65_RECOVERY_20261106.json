@@ -2633,11 +2633,36 @@
         "bytes": 405505
       }
     },
-    "canonical_admission_pending": {
+    "canonical_admission": {
       "pr": 1616,
-      "checked_head": "bf377fa56147b3bf7ee6ea6a5ff311cb0ce728f1",
-      "contact_run": 42352243032,
-      "docs_run": 42352242955
+      "qualified_head": "bf377fa56147b3bf7ee6ea6a5ff311cb0ce728f1",
+      "base": "9fb3705b94b93d9181125a678bd6dd853623c368",
+      "contact": {
+        "run": 42352243032,
+        "job": 128342666764,
+        "conclusion": "success"
+      },
+      "documentation": {
+        "run": 42352242955,
+        "job": 128342666932,
+        "conclusion": "success"
+      },
+      "local_source_and_strict_docs_pass": true,
+      "local_strict_build_reported_seconds": 29.84,
+      "raw_ci": {
+        "name": "V8_RECONCILED_CI_20261107.zip",
+        "sha256": "e17ebd1118359153847b1b3526ea62bed93723a5007a8e26dbb9639a07480d3d",
+        "bytes": 38137
+      },
+      "scope": "Bounded private research. No default change, complete trajectory, historical equivalence or whole-science claim.",
+      "full481_and_year_active_not_pass": true,
+      "merge": "d8b33a22b3538d152f7a6d2a6a69d833c5f85871",
+      "parents": [
+        "9fb3705b94b93d9181125a678bd6dd853623c368",
+        "3d7857830fdce0f6f97ba0ada7d648c873cfa38f"
+      ],
+      "full_tree_exact_final_head": true,
+      "production_src_app_delta": false
     }
   },
   "predecessor_v7_terminal_execution": {
