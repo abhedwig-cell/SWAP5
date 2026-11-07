@@ -1,7 +1,7 @@
 {
   "scope": "EXPERIMENTAL_MACROPORE_SIDECAR_ONLY",
-  "executable_sha256": "b562ab52c386cc9c5ccd122f17c0d25aca133b1f52783eaca3ab35372fca2f46",
-  "sidecar_sha256": "9decea0e3c3a650ba63e01b3a06b42a892548a1d84a8845b2cb537caadee3409",
+  "executable_sha256": "dbeec2056a2bf117f7e71f3709aa66fe28aa5c042dde81d3286c7050a7e2dff2",
+  "sidecar_sha256": "f6db6881aff16fa88c49aef975a655c6ab3de6c3f30b05936d7cd9ed024b37eb",
   "fields": [
     "FlEndSrpEvt",
     "ICpBtDm",
@@ -135,13 +135,65 @@
     "3F710C60C06825B2"
   ],
   "stock_exact_before_first_step": true,
+  "first_trial_input_max_abs_delta": {
+    "rain_cm": 0.0,
+    "head": 0.0,
+    "theta": 0.0,
+    "root_sink": 0.0,
+    "drainage_sink": 0.0
+  },
+  "first_accepted_columns": [
+    "clock",
+    "dt",
+    "dtold",
+    "pond",
+    "gwl",
+    "epond",
+    "peva",
+    "ptra",
+    "ptra_dry",
+    "ptra_wet",
+    "wfrac"
+  ],
+  "first_accepted_continuous": [
+    "3.57970000000000000E+004",
+    "2.00000000000000004E-003",
+    "1.41421356237309508E-004",
+    "0.00000000000000000E+000",
+    "-6.57625622603471101E+001",
+    "5.87791505135065815E-003",
+    "5.64279844929663210E-003",
+    "1.48600775351684394E-004",
+    "2.97201550703368787E-004",
+    "1.48600775351684394E-004",
+    "1.00000000000000000E+000"
+  ],
+  "first_accepted_resumed": [
+    "3.57970000000000000E+004",
+    "2.00000000000000004E-003",
+    "1.41421356237309508E-004",
+    "0.00000000000000000E+000",
+    "-6.57625622603471101E+001",
+    "5.87791505135065815E-003",
+    "5.64279844929663210E-003",
+    "1.48600775351684394E-004",
+    "2.97201550703368787E-004",
+    "1.48600775351684394E-004",
+    "1.00000000000000000E+000"
+  ],
+  "first_accepted_head_max_delta_cm": 0.0,
+  "accepted_step_counts": [
+    3442,
+    3442
+  ],
+  "accepted_step_audit_exact": true,
   "continuous_day3_4": [
     "1998-01-03,1.68560,.65540,-47.85008",
     "1998-01-04,.36120,.60125,-63.38009"
   ],
   "resumed_day3_4": [
-    "1998-01-03,1.68560,.65475,-49.45176",
-    "1998-01-04,.36120,.60075,-63.34886"
+    "1998-01-03,1.68560,.65540,-47.85008",
+    "1998-01-04,.36120,.60125,-63.38009"
   ],
-  "published_day3_4_exact": false
+  "published_day3_4_exact": true
 }

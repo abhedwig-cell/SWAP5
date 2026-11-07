@@ -72,12 +72,15 @@ stored clock and grid/domain counts must match the initialized run. The
 sidecar is an experimental input in a private run directory. It is not a
 general restart format, nor is it paired to the end file by a content hash.
 
-All five domain stocks are bit-identical at write and restore. The total
-stock components in the unrounded audit also match at that point. Days 3 and
-4 still diverge, so exact transfer of macropore state does not establish
-full continuation. In particular, the existing legacy end file still
-controls non-macropore state, and the split-run control ends the first
-simulation on day 2. A useful next discrimination is to write the day-2
-snapshot without ending the original run and compare the first accepted
-substep of day 3, including donor clock/dt and matrix, surface and forcing
-state. No SWAP5 production path consumes this stream.
+The continuous donor writes the day-2 checkpoint in place and continues to
+day 4. The fresh process restores all five domain stocks and the previous
+step size. The first resumed crop rotation resets the canopy reservoir even
+though the legacy end file read it correctly. The sidecar preserves the
+canopy stock and applies it once after that rotation, before forcing and
+the first solve. This restores the wet-canopy branch and root uptake.
+
+The two trajectories have 3,442 identical audited accepted steps over days
+3 and 4, including time, step size, potential transpiration, pond and canopy
+stock, and all nodal heads, water contents and temperatures at the audit
+point. The daily standard series is exact. This does not compare all hidden
+Fortran state or establish arbitrary-boundary or SWAP5 transaction restart.
