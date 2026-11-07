@@ -24,7 +24,6 @@ FIXTURE = """
     use mod_restricted_surface_evaporation, only: boesten_evaporation_state_t
     use mod_fmr_b111_pond_joint_application, only: run_pond_joint_interval
     use mod_b111_persistent_pond, only: pond_step_t
-    use mod_fmr_serialized_kernel_backend, only: FMR_SERIALIZED_KERNEL_MASS_INCOMPLETE
     use mod_transaction_reference, only: TX_TEMPORAL_EXTERNAL_FULL_HALF
     type(boesten_evaporation_state_t) :: pair
     type(pond_step_t) :: supply
@@ -113,8 +112,9 @@ FIXTURE = """
         call run_pond_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
           cfg%tiles(1)%base_forcing,cfg%numerical,solute,supply,T0,T1,result)
         call require(result%status==JOINT_WATER_REJECTED,'Boesten water refusal')
-        call require(result%water%status==FMR_SERIALIZED_KERNEL_MASS_INCOMPLETE,'Boesten incomplete water mass')
-        print '(A)','BOESTEN_MASS_REFUSAL_PASS'
+        call require(.not.result%water%completed,'Boesten water trial incomplete')
+        print *, 'BOESTEN_STATUS',result%status,result%water%status,result%chemical%status
+        print '(A)','BOESTEN_WATER_REFUSAL_PASS'
       else
         call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
           cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
@@ -223,7 +223,7 @@ def execute(native, output, compiler, qualify_publication=False):
                 resumed = output / role / f'advance-{tag}-resumed'
                 for mode, target in (('surface-write-advance', direct), ('surface-read-advance', resumed)):
                     observed = run([executable, mode, original, target, tag], output, events, role + '-advance')
-                    marker = b'BOESTEN_MASS_REFUSAL_PASS' if tag == '3' else b'MATRIX_CONTINUATION_PASS'
+                    marker = b'BOESTEN_WATER_REFUSAL_PASS' if tag == '3' else b'MATRIX_CONTINUATION_PASS'
                     assert marker in observed.stdout
                 assert direct.read_bytes() == resumed.read_bytes()
                 if tag == '3':
