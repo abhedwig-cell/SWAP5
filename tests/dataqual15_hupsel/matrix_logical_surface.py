@@ -26,10 +26,13 @@ FIXTURE = """
     real(real64), allocatable :: theta(:)
     real(real64) :: clock
     integer(int64) :: revision, parameter_id
-    logical :: boesten, surface_enabled
+    logical :: boesten, surface_enabled, temporal
     boesten=trim(exponent_argument)=='3'
-    surface_enabled=trim(exponent_argument)/='1'
+    temporal=trim(exponent_argument)=='1t'
+    surface_enabled=exponent_argument(1:1)/='1'
     cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
+    if (temporal) &
+      cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_RICHARDS_TEMPORAL_HISTORY
     if (boesten) cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
     if (index(trim(mode),'surface-write')==1) then
       if (boesten) then
@@ -37,6 +40,9 @@ FIXTURE = """
         pair%saev=.5d0
         call fmr_new_b110_boesten_evaporation_committed_state(water,column%column_id, &
           cfg%tiles(1)%initial_state,pair,T0,ok)
+      else if (temporal) then
+        call fmr_new_b110_temporal_indicator_committed_state(water,column%column_id, &
+          cfg%tiles(1)%initial_state,T0,ok,spread(0d0,1,numnod))
       else
         call fmr_new_b110_committed_state(water,column%column_id,cfg%tiles(1)%initial_state,T0,ok)
       end if
@@ -73,6 +79,15 @@ FIXTURE = """
       call require(status/=JOINT_OK.and.water%ready().and.solute%ready(),'occupied owners preserved')
       print '(A)','SURFACE_OCCUPIED_REFUSED'
     end if
+    if (trim(mode)=='surface-write-advance'.or.trim(mode)=='surface-read-advance') then
+      call require(temporal,'temporal continuation fixture')
+      call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
+        cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
+      call require(result%status==JOINT_OK,'accepted physical continuation')
+      call require(abs(result%chemical%residual)<1d-11,'continued chemical balance')
+      call require(abs(result%water%mass%residual)<HARD_MASS_GATE,'continued water balance')
+      print '(A)','TEMPORAL_CONTINUATION_PASS'
+    end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
       670001_int64,water,solute,status,allow_surface_mass=surface_enabled)
     if (trim(mode)=='surface-write-refuse') then
@@ -90,8 +105,8 @@ def project(raw):
     source = source.replace("  call backend%initialize(top);", ENTRY + "  call backend%initialize(top);", 1)
     source = source.replace("\ncontains\n", "\ncontains\n" + FIXTURE, 1)
     source = source.replace("if(len_trim(exponent_argument)>0)read", "if(index(trim(mode),'surface-')/=1.and.len_trim(exponent_argument)>0)read")
-    source = source.replace("tag=='S5MJ0001'", "tag==('S5MJ000'//trim(exponent_argument))")
-    return source.replace("merge(0,1,trim(mode)=='header-base')", "merge(2,0,trim(exponent_argument)=='3')").encode()
+    source = source.replace("tag=='S5MJ0001'", "tag==('S5MJ000'//exponent_argument(1:1))")
+    return source.replace("merge(0,1,trim(mode)=='header-base')", "merge(2,merge(1,0,trim(exponent_argument)=='1t'),trim(exponent_argument)=='3')").encode()
 
 
 def execute(native, output, compiler, qualify_publication=False):
@@ -137,11 +152,11 @@ def execute(native, output, compiler, qualify_publication=False):
         response.write_text('\n'.join('"' + arg.replace('\\', '/') + '"' for arg in args))
         run([compiler, '@' + str(response)], output, events, role + '-link')
         outcomes[role] = {}
-        for tag in ('1', '2', '3'):
+        for tag in ('1', '1t', '2', '3'):
             original = output / role / ('original-' + tag)
             run([executable, 'surface-write', 'unused', original, tag], output, events, role + '-write')
             raw = original.read_bytes()
-            assert raw[:8] == ('S5MJ000' + tag).encode()
+            assert raw[:8] == ('S5MJ000' + tag[0]).encode()
             assert zlib.crc32(raw[:-4]) == struct.unpack('<I', raw[-4:])[0]
             restored = output / role / ('restored-' + tag)
             observed = run([executable, 'surface-read', original, restored, tag], output, events, role + '-read')
@@ -149,13 +164,20 @@ def execute(native, output, compiler, qualify_publication=False):
             assert b'MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156' in observed.stdout
             assert b'SURFACE_OCCUPIED_REFUSED' in observed.stdout
             refused_modes = ['surface-wrong-owner']
-            if tag != '1':
+            if tag[0] != '1':
                 refused_modes.append('surface-disabled')
             for refused_mode in refused_modes:
                 observed = run([executable, refused_mode, original, restored, tag],
                                output, events, role + '-' + refused_mode)
                 assert b'SURFACE_REFUSED_EMPTY' in observed.stdout
                 assert restored.read_bytes() == raw
+            if tag == '1t':
+                direct = output / role / 'temporal-direct'
+                resumed = output / role / 'temporal-resumed'
+                for mode, target in (('surface-write-advance', direct), ('surface-read-advance', resumed)):
+                    observed = run([executable, mode, original, target, tag], output, events, role + '-advance')
+                    assert b'TEMPORAL_CONTINUATION_PASS' in observed.stdout
+                assert direct.read_bytes() == resumed.read_bytes()
             admissions = []
             for offset in (144, 156):
                 for value in (2, -1, 256):
@@ -191,8 +213,9 @@ def execute(native, output, compiler, qualify_publication=False):
                     output, events, 'publication-replace-success')
                 assert fresh.read_bytes() == raw and not fresh.with_suffix('.pending').exists()
 
-    for tag in ('1', '2', '3'):
+    for tag in ('1', '1t', '2', '3'):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
+    assert (output / 'incumbent/temporal-direct').read_bytes() == (output / 'candidate/temporal-direct').read_bytes()
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
         'admitted_malformed': outcomes, 'surface_mass': 0.25, 'private_publication': qualify_publication, 'production_admission': False
