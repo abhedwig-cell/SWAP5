@@ -6,6 +6,7 @@ on:
       - .github/workflows/fgc49d-private-oxygen-context.yml
       - tests/fgc/fgc49d_oxygen_context_projection.py
       - tests/fgc/fgc49d_selector_context_projection.py
+      - tests/fgc/test_fgc49d_oxygen_context_parity.f90
       - tests/fahl/run_fahl49_application_optin.sh
       - src/physics/oxygen/**
   workflow_dispatch:
@@ -21,4 +22,14 @@ jobs:
         with:
           python-version: '3.12'
       - run: python -m pip install numpy
+      - name: Compare incumbent and contextual bisection traces
+        run: |
+          build="$RUNNER_TEMP/fgc49d-oxygen-bracket"
+          python -B tests/fgc/fgc49d_oxygen_context_projection.py src/physics/oxygen "$build"
+          for opt in 0 2; do
+            gfortran -std=f2008 -Wall -Wextra -Werror -fcheck=all -O"$opt" -J "$build" \
+              "$build/mod_oxygen_scalar_bracket.f90" tests/fgc/test_fgc49d_oxygen_context_parity.f90 \
+              -o "$build/bracket-$opt"
+            "$build/bracket-$opt"
+          done
       - run: bash tests/fahl/run_fahl49_application_optin.sh
