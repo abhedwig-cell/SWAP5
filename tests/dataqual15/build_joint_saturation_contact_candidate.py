@@ -62,6 +62,17 @@ def render(folder):
     shadow[ROOT/name].write_text(s,newline='\n')
 
     name='src/legacy/b1_10_port/headcalc.f90';s=shadow[ROOT/name].read_text()
+    s=once(s,' type(reference_richards_state_binding_t)::saved_state',''' type(soil_water_top_boundary_result_t)::saved_top_result
+ type(soil_water_boundary_conditions_t)::saved_boundary
+ real(8)::saved_surface_area
+ type(reference_richards_state_binding_t)::saved_state''')
+    s=once(s,'  saved_state=state;saved_ws=fsi_ws;saved_ctx=ctx;saved_hist=hist','''  saved_top_result=provider_dynamic_top_result;saved_boundary=evaluated_boundary_conditions
+  saved_surface_area=provider_macropore_surface_area_fraction
+  saved_state=state;saved_ws=fsi_ws;saved_ctx=ctx;saved_hist=hist''')
+    s=once(s,'  state=saved_state;fsi_ws=saved_ws;ctx=saved_ctx;hist=saved_hist','''  ! A rejected joint trial must restore the surface provenance with its state.
+  provider_dynamic_top_result=saved_top_result;evaluated_boundary_conditions=saved_boundary
+  provider_macropore_surface_area_fraction=saved_surface_area
+  state=saved_state;fsi_ws=saved_ws;ctx=saved_ctx;hist=saved_hist''')
     s=once(s,'saved_bottom(:),weights(:)','saved_bottom(:),saved_zero(:),weights(:)')
     s=once(s,'  saved_bottom=mp%bottom_fraction','  saved_zero=mp%zero_head_fraction\n  saved_bottom=mp%bottom_fraction')
     s=once(s,'allocate(nodes(2*n),threshold(n),x(n),lambda(2*n),r(n),rp(n),rm(n),trial(n),candidate(2*n)',
