@@ -15,12 +15,17 @@ def qualify(compiler, flags, objects, output, role, events):
     assert pond_object.is_file()
     case = output / role
     original = driver.read_text()
-    anchor = "  if(trim(mode)=='gross-resume')then\n    call verify_gross_dynamic()"
-    assert original.count(anchor) == 1
+    # Select the gross branch. The separate trace oracle uses a different
+    # literal interface and is outside this restart continuation witness.
+    start = original.index("  if(trim(mode)=='gross-resume')then")
+    routines = original.index("\ncontains", start)
+    trace = original.index('  subroutine verify_actual_trace(', routines)
+    parameters = original.index('  subroutine parameters(', trace)
+    projected = (original[:start].replace('  use b111_literal_oracle\n', '', 1)
+                 + '  call verify_gross_dynamic()\n' + original[routines:trace]
+                 + original[parameters:])
     source = case / 'gross_pond.f90'
-    source.write_text(original.replace(
-        anchor, "  if(trim(mode)=='gross-write'.or.trim(mode)=='gross-resume')then\n    call verify_gross_dynamic()",
-        1))
+    source.write_text(projected)
     executable = case / 'gross-pond.exe'
     response = executable.with_suffix('.args')
     args = [*flags, '-I' + str(output), str(source), *map(str, objects),
