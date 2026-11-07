@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Shared current macro and drainage view does not change the actual refusal. Test continuous contact according to real unsaturated pore volume on the immutable source window.",
+  "next_action": "Observe current surface dry endpoint in the same drainage residual; test exact predecessor and later source windows without changing any guard.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -2504,5 +2504,74 @@
     "production_and_test_delta": false,
     "docs_run": 42349879411,
     "docs_job": 128335542703
+  },
+  "pore_volume_v8_research": {
+    "status": "TWO_ACTUAL_WINDOWS_PASS_LATER_DRY_ENDPOINT_REFUSES",
+    "qualified_full_run": false,
+    "strict_own_proof": false,
+    "actual_source300317": {
+      "day": "301",
+      "segment": "1",
+      "t0": " 3.00317000000001940E+002",
+      "t1": " 3.00319000000001950E+002",
+      "attempts": "67",
+      "solver_rejections": "0",
+      "temporal_rejections": "35",
+      "mass_rejections": "0",
+      "residual_cm": "-5.65832103394114938E-014"
+    },
+    "actual_source300375": {
+      "day": "301",
+      "segment": "32",
+      "t0": " 3.00374999999999204E+002",
+      "t1": " 3.00376999999999214E+002",
+      "attempts": "1",
+      "solver_rejections": "0",
+      "temporal_rejections": "0",
+      "mass_rejections": "0",
+      "residual_cm": "-2.56739074444567450E-014"
+    },
+    "later_failure_progress": {
+      "day": "301",
+      "segment": "118",
+      "t0": " 3.00541999999999007E+002",
+      "t1": " 3.00543999999999016E+002",
+      "attempts": "91",
+      "solver_rejections": "34",
+      "temporal_rejections": "46",
+      "mass_rejections": "0",
+      "residual_cm": " 0.00000000000000000E+000"
+    },
+    "later_failure_cost": {
+      "t0": " 3.00541999999999007E+002",
+      "t1": " 3.00543999999999016E+002",
+      "completed": "F",
+      "nonlinear_iterations": "474",
+      "headcalc_calls": "174",
+      "linear_solves": "474",
+      "backtracking_attempts": "474",
+      "accepted_substeps": "11",
+      "min_accepted_dt": " 3.72524233682725026E-012",
+      "max_accepted_dt": " 1.95312486539478414E-006"
+    },
+    "successful_windows": 117,
+    "archive": {
+      "name": "V8_PORE_VOLUME_AND_EXCHANGE_EVIDENCE_20261107.zip",
+      "sha256": "6cc6af51461b7240f881ac5765ea43bf856908461be83b5db3458ec15014a943",
+      "bytes": 16731125,
+      "members": 246
+    },
+    "max_residual_explained_by_rebuilt_exchange": true,
+    "next_action": "Observe current surface dry endpoint in the same drainage residual; test exact predecessor and later source windows without changing any guard.",
+    "source300317-three": {
+      "O0_seconds": 2.493940999964252,
+      "O2_seconds": 1.0966739000286907,
+      "exact_progress_cost": true
+    },
+    "source256873": {
+      "O0_seconds": 1.9962024001870304,
+      "O2_seconds": 1.1200782000087202,
+      "exact_progress_cost": true
+    }
   }
 }
