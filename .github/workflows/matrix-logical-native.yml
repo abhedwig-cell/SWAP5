@@ -1,0 +1,36 @@
+name: Private matrix native logical qualification
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'tests/dataqual15_hupsel/matrix_logical_*.py'
+      - 'integration/dataqual15_hupsel/MATRIX_LOGICAL_*'
+      - '.github/workflows/matrix-logical-native.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  full-native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Execute complete current baseline and private reader
+        run: python -B tests/dataqual15_hupsel/matrix_logical_runtime.py --compiler /usr/bin/gfortran-13 --optimization ${{ matrix.optimization }} --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}"
+      - name: Independently audit source objects native bytes all original and malformed controls
+        run: python -B tests/dataqual15_hupsel/matrix_logical_evidence.py --output "$RUNNER_TEMP/matrix-logical-${{ matrix.optimization }}" --stem "$RUNNER_TEMP/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: matrix-logical-${{ matrix.optimization }}
+          path: |
+            ${{ runner.temp }}/MATRIX_LOGICAL_POSIX_${{ matrix.optimization }}_20261107.*
+            ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/RESULT.json
+            ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/incumbent/*.stderr
+            ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/candidate/*.stderr
