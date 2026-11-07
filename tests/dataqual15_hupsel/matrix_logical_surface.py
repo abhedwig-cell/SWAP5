@@ -81,6 +81,7 @@ FIXTURE = """
     end if
     if (trim(mode)=='surface-write-advance'.or.trim(mode)=='surface-read-advance') then
       call require(temporal,'temporal continuation fixture')
+      call backend%initialize(top)
       call run_matrix_joint_interval(backend,column,cfg%tiles(1)%template,cfg%tiles(1)%parameters,water, &
         cfg%tiles(1)%base_forcing,cfg%numerical,solute,T0,T1,result)
       call require(result%status==JOINT_OK,'accepted physical continuation')
