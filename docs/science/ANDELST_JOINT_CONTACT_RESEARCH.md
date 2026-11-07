@@ -19,6 +19,27 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
+### Continuous upper wet support successor
+
+V8 is admitted as bounded private research at PR1616. Its fresh original-
+input run preserves the earlier V7 physical trajectory through day 256, then
+stagnates inside source 256.869–256.871. The run is deliberately censored
+after 6228.331 s; the same-executable opt-in replay also reaches its wall
+limit. The own event checkpoint at the actual source boundary reproduces all
+445 progress rows and keeps the original binding. No later own restart
+starts.
+
+The node trace shows the first head crossing zero above eleven unsaturated
+nodes. Full pore-volume connectivity activates too abruptly at that sign
+crossing. The connected contribution now grows with the linearly interpolated
+upper wet support while the next resolved node remains negative. The exact
+source completes in 83 attempts with no solver or mass rejection, and O0/O2
+progress and cost are exact. Read-only replays accept all 69 windows through
+day 257 and all 349 through day 301; no restart is published. Original
+initialization day one is exact O0/O2 across all four CSVs and the physical
+payload. The new full481 and four exact own windows remain separate. No
+numerical gate, publication rule or historical/default route changes.
+
 ### Pore volume, same-owner flux and current surface successor
 
 Private V8 addresses three actual transitions. At 300.317 the full and half
