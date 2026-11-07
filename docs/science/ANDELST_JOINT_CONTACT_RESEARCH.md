@@ -52,7 +52,7 @@ sources through256.747 in14.580s/6.166s, with byte-exact progress and cost rows
 and all original app guards. These immutable-seed diagnostics do not qualify
 an own restart. A fresh original-input481 request and strict own3-to4,
 256-to257 and365-to367 checks are running separately; none is yet reported as
-completed. V6 remains local research pending its selected qualification.
+completed. V6 bounded private contact/rollback research is admitted at PR1610 (`3aa9b8ee3`), whose actual parents are51b3e7305 and033fdea9e. The entire actual tree equals the qualified final head. Reconciled contact and documentation workflows both pass; no full481 or own-year claim follows.
 
 Authority: `ZERO_HEAD256_EVIDENCE_20261107.zip`, the unchanged V5 negative
 `V5_TERMINAL256_EVIDENCE_20261107.zip`, exact V5 own proof
