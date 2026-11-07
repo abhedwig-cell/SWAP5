@@ -1,0 +1,19 @@
+name: FGC49D private oxygen context qualification
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/fgc49d-private-oxygen-context.yml
+      - tests/fgc/fgc49d_oxygen_context_projection.py
+      - tests/fahl/run_fahl49_application_optin.sh
+      - src/physics/oxygen/**
+  workflow_dispatch:
+
+jobs:
+  private-oxygen-context:
+    runs-on: ubuntu-latest
+    env:
+      FGC49D_PRIVATE_OXYGEN_CONTEXT: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash tests/fahl/run_fahl49_application_optin.sh

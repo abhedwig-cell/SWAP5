@@ -266,6 +266,7 @@ PY
 
 python3 - "$TMP_RUN" "$TMP_FIX" "$TMP_PY" <<'PY'
 from pathlib import Path
+import os
 import sys
 runner=Path("tests/fgc/run_fgc49d_production_application_context.sh").read_text()
 runner=runner.replace("tests/fgc/support/mod_fgc49d_application_context_fixture.f90",sys.argv[2])
@@ -277,6 +278,34 @@ if "src/solver/mod_b110_direct_retention_core.f90" not in runner:
         raise SystemExit("FGC49D compile seam missing")
     runner=runner.replace(provider_needle,provider_needle+"  src/solver/mod_b110_direct_retention_core.f90\n",1)
     runner=runner.replace(directional_needle,directional_needle+"  src/solver/mod_b110_direct_retention_provider.f90\n",1)
+if os.environ.get("FGC49D_PRIVATE_OXYGEN_CONTEXT") == "1":
+    sources = 'mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")'
+    link = '  gfortran -shared -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/libfgc49d_application.so" || fail "link O$opt"'
+    for anchor in (sources, link):
+        if runner.count(anchor) != 1:
+            raise SystemExit("FGC49D private oxygen projection seam missing")
+    runner = runner.replace(sources, sources + '''
+projection="$BUILD/private-oxygen"
+python3 -B tests/fgc/fgc49d_oxygen_context_projection.py src/physics/oxygen "$projection"
+for module in mod_oxygen_scalar_bracket mod_bartholomeus_response; do
+  original="src/physics/oxygen/$module.f90"
+  matches=0
+  for idx in "${!MODULE_SRC[@]}"; do
+    if [[ "${MODULE_SRC[idx]}" == "$original" ]]; then
+      MODULE_SRC[idx]="$projection/$module.f90"
+      matches=$((matches + 1))
+    fi
+  done
+  [[ "$matches" == 1 ]] || fail "private oxygen module source $module"
+done
+''')
+    runner = runner.replace(link, link + '''
+  readelf -W -l "$OUT/libfgc49d_application.so" | awk '
+    $1 == "GNU_STACK" { ++count; if ($(NF-1) != "RW") bad=1 }
+    END { exit(count != 1 || bad) }
+  ' || fail "private oxygen stack permissions O$opt"
+  echo "FGC49D_PRIVATE_OXYGEN_NONEXEC_STACK_O$opt=PASS"
+''')
 Path(sys.argv[1]).write_text(runner)
 PY
 
