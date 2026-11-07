@@ -127,3 +127,15 @@ restart evidence, not full481, own year or historical scientific equivalence.
 Authority: `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`,
 `TRANSITION245_EVIDENCE_20261106.zip` and `CURRENT245_RECOVERY_EVIDENCE_20261106.zip`
 in `integration/dataqual15/`.
+
+## Subsequent lower pocket-contact execution
+
+The exact-phase V4 trajectory later completes245 days and passes the old
+245.379 drainage refusal, but is intentionally censored at245.594 after7805.630s.
+The subsequent nonlinear diagnosis isolates a lower perched-pocket contact,
+not an early rain-phase switch. V5 adds that private coupled action and passes
+the actual failed source plus two following windows at O0/O2; new day-one
+controls remain exact. Its fresh original-initialization481 and own3-to4/year
+runs are distinct current-executable gates. The V4 own19-to20/32-to33 evidence
+above remains bound to V4 and is never rebound. See the
+[joint contact research authority](ANDELST_JOINT_CONTACT_RESEARCH.md).

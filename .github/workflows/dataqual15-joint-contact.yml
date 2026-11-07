@@ -23,8 +23,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Real border and entry/perched/ordinary contact O0/O2
-        run: python -B tests/dataqual15/run_joint_entry_contracts.py --current-drainage --compiler /usr/bin/gfortran --output joint-contracts
+      - name: Real border and entry/both perched/ordinary contact O0/O2
+        run: python -B tests/dataqual15/run_joint_entry_contracts.py --bottom-contact --compiler /usr/bin/gfortran --output joint-contracts
       - name: Real positive-pocket candidate and vertical closure O0/O2
         run: python -B tests/dataqual15/run_empty_pocket_contract.py --compiler /usr/bin/gfortran --output pocket-contracts
       - name: Actual subnormal demand and unchanged storage owner O0/O2
