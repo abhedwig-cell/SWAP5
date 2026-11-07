@@ -5,7 +5,10 @@ module probe_kernel_donor
   use mod_canonical_contracts
   use mod_kernel_transactions
   use mod_groundwater_swap_forcing_adapter, only: groundwater_swap_forcing_materializer_t, GW_SWAP_FORCING_OK
-  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t
+  use mod_groundwater_coupling_contract, only: groundwater_head_datum_t, groundwater_coupling_window_t, &
+       groundwater_interface_lineage_t
+  use mod_groundwater_interface_mass_ledger, only: groundwater_interface_mass_ledger_t, &
+       groundwater_interface_mass_snapshot_t, groundwater_interface_mass_prepared_t, GW_MASS_LEDGER_OK
   use mod_groundwater_swap_transaction_participant, only: groundwater_swap_transaction_participant_t, &
        groundwater_swap_trial_t, GW_SWAP_PARTICIPANT_OK, GW_SWAP_PARTICIPANT_TRIAL_FAILED
   implicit none
@@ -216,11 +219,11 @@ program run_kernel_donor
     if (.not. ok) error stop 'initialization'
     deallocate(initial)
   end do
-  if (mode == 'temporal' .or. mode == 'water-metric') then
+  if (mode == 'temporal' .or. mode == 'water-metric' .or. mode == 'coupled') then
     numerical%transaction%mass_tolerance = 1e-6_real64
     numerical%transaction%max_retries = 0
     numerical%max_committed_substeps = 1
-    model%water_metric = mode == 'water-metric'
+    model%water_metric = mode == 'water-metric' .or. mode == 'coupled'
     numerical%transaction%temporal_tolerance = 0.05_real64
     if (model%water_metric) numerical%transaction%temporal_tolerance = 1e-4_real64
     datum%available = .true.
@@ -229,6 +232,10 @@ program run_kernel_donor
     call participant%capture_origin(committed(1),status)
     if (status /= GW_SWAP_PARTICIPANT_OK) error stop 'capture temporal origin'
     window%t0 = 35799d0
+    if (mode == 'coupled') then
+      call coupled_window()
+      stop
+    end if
     if (model%water_metric) then
       window%t1 = 35799.0625d0
       call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
@@ -287,6 +294,92 @@ program run_kernel_donor
   call trial(2,35799.5d0,35800d0,-50d0,.true.)
   if (any([committed(1)%current_revision(),committed(2)%current_revision()] /= 2)) error stop 'revision'
 contains
+  subroutine coupled_window()
+    type(groundwater_interface_mass_ledger_t) :: ledger
+    type(groundwater_interface_mass_snapshot_t) :: ledger_snapshot
+    type(groundwater_interface_mass_prepared_t) :: prepared
+    type(groundwater_interface_lineage_t) :: lineage
+    real(real64), parameter :: head_tolerance = 1e-8_real64, initial_head = -0.493_real64
+    real(real64) :: guess, response, volume, native_exchange, native_storage, last_feasible
+    integer :: iteration, unit, rc, selected, discarded, gw_solves
+    logical :: converged
+
+    window%t1 = 35799.5d0
+    lineage = groundwater_interface_lineage_t(1_int64,1_int64,0_int64,2_int64,0_int64,1_int64)
+    call ledger%bind_identity(1_int64,status)
+    if (status /= GW_MASS_LEDGER_OK) error stop 'ledger identity'
+    guess = -0.5d0
+    converged = .false.
+    discarded = 0
+    gw_solves = 0
+    last_feasible = guess
+    do iteration=1,14
+      call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
+                                        datum,window,guess,exchange,status)
+      if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. exchange%valid) then
+        print '(a,1x,i0,1x,es24.16,1x,i0)', 'COUPLED_TEMPORAL_REJECTION', iteration,guess,status
+        if (status /= GW_SWAP_PARTICIPANT_TRIAL_FAILED .or. participant%has_live_candidate() .or. &
+            committed(1)%current_revision() /= 0 .or. gw_solves == 0) error stop 'corrector failure'
+        guess = 0.5d0*(last_feasible+guess)
+        cycle
+      end if
+      last_feasible = guess
+      gw_solves = gw_solves + 1
+      volume = exchange%bottom_outward_exchange_cm*0.01d0 ! Unit-area groundwater cell.
+      open(newunit=unit,file='request',status='replace',action='write')
+      write(unit,*) 'GW ', iteration, initial_head, volume
+      close(unit)
+      call execute_command_line('./worker',exitstat=rc)
+      if (rc /= 0) error stop 'MODFLOW worker failed'
+      open(newunit=unit,file='reply',status='old',action='read')
+      read(unit,*) response,native_exchange,native_storage
+      close(unit)
+      if (.not. all(ieee_is_finite([response,native_exchange,native_storage]))) error stop 'nonfinite MODFLOW result'
+      if (abs(native_exchange-volume) > 1e-12_real64 .or. &
+          abs(native_storage+native_exchange) > 1e-10_real64) error stop 'MODFLOW water budget'
+      call ledger%stage_exchange(window,lineage,native_exchange,status)
+      if (status /= GW_MASS_LEDGER_OK) error stop 'stage interface'
+      print '(a,1x,i0,4(1x,es24.16))', 'COUPLED_CORRECTOR',iteration,guess,response,native_exchange,native_storage
+      if (abs(response-guess) <= head_tolerance) then
+        converged = .true.
+        exit
+      end if
+      call participant%discard_candidate(executor)
+      call ledger%discard_trial(status)
+      discarded = discarded + 1
+      if (status /= GW_MASS_LEDGER_OK .or. committed(1)%current_revision() /= 0) error stop 'discard changed origin'
+      guess = response
+    end do
+    if (.not. converged) then
+      call ledger%snapshot(ledger_snapshot)
+      if (ledger_snapshot%committed_exchange_count /= 0 .or. participant%has_live_candidate() .or. &
+          committed(1)%current_revision() /= 0) error stop 'unconverged corrector changed accepted state'
+      print '(a)', 'COUPLED_NO_COMMIT'
+      return
+    end if
+    if (gw_solves <= 1) error stop 'expected coupled correction'
+    if (.not. participant%publication_ready(committed(1),window)) error stop 'coupled publication preflight'
+    call ledger%prepare_trial(prepared,status)
+    if (status /= GW_MASS_LEDGER_OK .or. .not. ledger%prepared_ready_for_commit(prepared)) error stop 'ledger preflight'
+    call participant%commit_candidate(executor,committed(1),window,ok,status)
+    if (.not. ok .or. status /= GW_SWAP_PARTICIPANT_OK) error stop 'coupled commit'
+    call ledger%commit_prepared(prepared)
+    call ledger%snapshot(ledger_snapshot)
+    if (ledger_snapshot%committed_exchange_count /= 1 .or. &
+        ledger_snapshot%discarded_trial_count /= discarded .or. &
+        abs(ledger_snapshot%conservation_residual_m) > 1e-12_real64) error stop 'interface ledger'
+    call committed(1)%current_time(time,ok)
+    if (.not. ok .or. time /= window%t1 .or. committed(1)%current_revision() /= 1) error stop 'coupled endpoint'
+    call committed(1)%snapshot(snapshot,ok)
+    if (.not. ok) error stop 'coupled snapshot'
+    select type(snapshot)
+    type is(state_t)
+      selected = snapshot%ticket
+    class default
+      error stop 'coupled snapshot type'
+    end select
+    print '(a,2(1x,i0),1x,es24.16)', 'COUPLED_COMMITTED',iteration,selected,ledger_snapshot%conservation_residual_m
+  end subroutine
   subroutine trial(column,t0,t1,head,accept)
     integer, intent(in) :: column
     real(real64), intent(in) :: t0,t1,head

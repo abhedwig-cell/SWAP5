@@ -31,7 +31,15 @@ def steps(directory, before_noon=False):
 def worker():
     root = Path.cwd()
     configuration = json.loads((root / "worker.json").read_text())
-    column, origin_ticket, t0, t1, head = (root / "request").read_text().split()
+    request = (root / "request").read_text().split()
+    if request[0] == "GW":
+        from probe_modflow_cell import solve_cell
+        _, iteration, initial, exchange = request
+        result = solve_cell(root / f"gw_{int(iteration):03}", configuration["mf6"],
+                            float(initial), float(exchange))
+        (root / "reply").write_text(" ".join(f"{value:.17g}" for value in result) + "\n")
+        return
+    column, origin_ticket, t0, t1, head = request
     origin_ticket, t0, t1, head = int(origin_ticket), float(t0), float(t1), float(head)
     paths = sorted(root.glob("job_*"))
     ticket = len(paths) + 1
@@ -92,6 +100,7 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--temporal", action="store_true")
     mode.add_argument("--water-metric", action="store_true")
+    mode.add_argument("--mf6", type=Path)
     args = parser.parse_args()
     reference, audit_work, noon, output = (p.resolve() for p in (
         args.reference_work, args.day_return_work, args.noon_work, args.output))
@@ -108,19 +117,23 @@ def main():
         raise RuntimeError("Unexpected day-4 checkpoint")
     stock = ledger(noon / "fixed/resumed")[0][0]
     configuration = {"origin": str(origin), "case": str(case), "half": str(half), "full": str(full)}
+    if args.mf6 is not None:
+        configuration["mf6"] = str(args.mf6.resolve())
     (output / "worker.json").write_text(json.dumps(configuration))
     shell = output / "worker"
     shell.write_text("#!/bin/sh\nexec " + shlex.join([sys.executable, str(Path(__file__).resolve()), "--worker"]) + "\n")
     shell.chmod(0o700)
 
     source_list = (ROOT / "tests/fgc/run_fgc43_production_swap_participant.sh").read_text()
-    sources = source_list.split("SOURCES=(\n", 1)[1].split("\n)", 1)[0].split()[:-1]
+    sources = source_list.split("SOURCES=(\n", 1)[1].split("\n)", 1)[0].split()[:-1] + ["src/runtime/mod_groundwater_interface_mass_ledger.f90"]
     executable = output / "kernel_donor"
     subprocess.run(["gfortran", "-O2", "-ffree-line-length-none", "-fcheck=all",
                     *[str(ROOT / source) for source in sources],
                     str(Path(__file__).with_suffix(".f90").resolve()), "-o", str(executable)],
                    cwd=output, check=True)
     command = [executable]
+    if args.mf6 is not None:
+        command.append("coupled")
     if args.temporal:
         command.append("temporal")
     if args.water_metric:
@@ -131,6 +144,40 @@ def main():
     (output / "kernel.stderr").write_text(run.stderr)
     if run.returncode:
         raise RuntimeError(run.stdout + run.stderr)
+    if args.mf6 is not None:
+        if hashes != {name: sha(origin / name) for name in names}:
+            raise RuntimeError("Coupling mutated the day-4 checkpoint")
+        rows = run.stdout.splitlines()
+        correctors = [[float(v) for v in line.split()[2:]] for line in rows
+                      if line.startswith("COUPLED_CORRECTOR ")]
+        rejected = [line.split()[1:] for line in rows if line.startswith("COUPLED_TEMPORAL_REJECTION ")]
+        evidence = {
+            "scope": "LIVE_MODFLOW6_SINGLE_CELL_AND_ANDELST_HALF_DAY",
+            "mf6_sha256": sha(args.mf6.resolve()), "origin_checkpoint": hashes,
+            "head_tolerance_m": 1e-8, "water_metric_tolerance_cm": 1e-4,
+            "columns": ["swap_head_m", "modflow_head_m", "modflow_inward_m3", "modflow_storage_outward_m3"],
+            "correctors": correctors, "temporal_rejections": rejected,
+            "best_head_mismatch_m": min(abs(row[0]-row[1]) for row in correctors),
+            "max_modflow_balance_residual_m3": max(abs(row[2]+row[3]) for row in correctors),
+        }
+        if "COUPLED_NO_COMMIT" in rows:
+            receipt = {**evidence, "committed": False, "accepted_revision": 0}
+            (output / "RESULT.json").write_text(json.dumps(receipt, indent=2) + "\n")
+            print(json.dumps(receipt, indent=2))
+            return
+        commit = next(line.split()[1:] for line in rows if line.startswith("COUPLED_COMMITTED "))
+        iterations, ticket, residual = int(commit[0]), int(commit[1]), float(commit[2])
+        if iterations != len(correctors) + len(rejected) or ticket != 3*iterations:
+            raise RuntimeError("Unexpected accepted trial lineage")
+        selected = output / f"job_{ticket:03}/resumed"
+        selected_gw = output / f"gw_{iterations:03}"
+        receipt = {**evidence, "committed": True, "accepted_revision": 1, "selected_ticket": ticket,
+                   "interface_residual_m": residual,
+                   "swap_endpoint": {name: sha(selected / name) for name in names},
+                   "modflow_endpoint": {name: sha(selected_gw / name) for name in ("cell.hds", "cell.cbc")}}
+        (output / "RESULT.json").write_text(json.dumps(receipt, indent=2) + "\n")
+        print(json.dumps(receipt, indent=2))
+        return
     if args.water_metric:
         if hashes != {name: sha(origin / name) for name in names}:
             raise RuntimeError("Water-metric trials mutated the day-4 checkpoint")

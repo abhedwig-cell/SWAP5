@@ -285,3 +285,28 @@ establishes an accepted normal SWAP5 participant window in the
 experimental donor adapter. It does not qualify the tolerance across
 other regimes, replace the pressure criterion in production, or run
 MODFLOW.
+
+## Live MODFLOW 6 corrector
+
+Pass `--mf6 /path/to/mf6` to the kernel donor command with FloPy
+installed. The tested binary is MODFLOW 6.8.0 from the F-GC44 release
+archive (SHA-256 `33edf988b672a9f282d6773304c079d0f180541f6fe0c6555265d9c71841256e`).
+
+The probe uses a confined, unit-area, unit-thickness cell with specific
+storage 0.15 per metre and initial head -0.493 m. In each half-day
+corrector the regular SWAP participant supplies the integrated bottom
+exchange to a fresh MODFLOW 6 WEL trial. The host reads native heads,
+WEL and STO-SS volumes, checks the native cell budget and stages the
+equal-and-opposite exchange in the SWAP5 interface ledger. MODFLOW
+starts each trial at the same accepted origin. This is a batch
+corrector, not the prepared XMI live service.
+
+The experimental water-metric tolerance stays at 1e-4 cm. A failed
+SWAP candidate is retried halfway between the last feasible head and
+the refused head. A successful but nonconverged candidate and its
+staged interface entry are discarded. Publication requires head
+agreement within 1e-8 m in at most fourteen correctors. The measured
+run did not meet that target. Ten groundwater solves closed their
+native budget, four Andelst correctors were refused, and no coupled
+state or interface exchange was committed. The best head mismatch
+was about 2.26e-6 m.
