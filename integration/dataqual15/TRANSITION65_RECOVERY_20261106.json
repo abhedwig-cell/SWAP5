@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
+  "next_action": "Shared current macro and drainage view does not change the actual refusal. Test continuous contact according to real unsaturated pore volume on the immutable source window.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1228,7 +1228,7 @@
     "own365_to367": false,
     "run": "s5-connectivity-final-original481-O2",
     "capture": "s5-connectivity-final-captured-own-O2",
-    "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
+    "next_action": "Shared current macro and drainage view does not change the actual refusal. Test continuous contact according to real unsaturated pore volume on the immutable source window.",
     "own3_to4": true,
     "own3_to4_receipt": {
       "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
@@ -2480,6 +2480,29 @@
         "bytes": 1955673,
         "members": 20
       }
+    },
+    "current_macro_view_control": {
+      "seconds": 39.4700727998279,
+      "same_progress_and_cost_exact": true,
+      "native_refusal": true,
+      "archive": {
+        "name": "V7_SOURCE300317_SHARED_VIEW_CONTROL_20261107.zip",
+        "sha256": "78786f3b28925f59fdc4aabade3bdc990d6ee4c3aa8a94ede76de09dcf1f404f",
+        "bytes": 2042234,
+        "members": 25
+      }
     }
+  },
+  "v7_terminal300317_canonical_receipt": {
+    "pr": 1615,
+    "merge": "9fb3705b94b93d9181125a678bd6dd853623c368",
+    "parents": [
+      "1940cebc0bfae1dcb9eb3158727147b29612583f",
+      "8121e6eac6e0277664c92dd2df8da1ad52df2c3e"
+    ],
+    "full_tree_exact_final_head": true,
+    "production_and_test_delta": false,
+    "docs_run": 42349879411,
+    "docs_job": 128335542703
   }
 }
