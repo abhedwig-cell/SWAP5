@@ -14,7 +14,7 @@ from probe_macro_checkpoint import compare_daily_ledger, render
 from run_day_return import records, replace, sha
 
 
-def build_worker(reference, audit, output, subday=False):
+def build_worker(reference, audit, output, subday=False, handoff=False):
     build = reference / "build"
     objects = build / "swap-obj"
     ttutil = build / "ttutil-obj"
@@ -37,6 +37,53 @@ def build_worker(reference, audit, output, subday=False):
         write(*,'(a,1x,f16.6)') 'HYBRID_SUBDAY_ENDPOINT', t1900
         return
       end if""")
+    if handoff:
+        source = """module andelst_noon_forcing
+  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite
+  implicit none
+  logical :: afternoon_active = .false.
+  real(8) :: afternoon_head_cm = 0d0
+contains
+  subroutine set_afternoon_head()
+    character(len=40) :: text
+    integer :: status
+    call get_environment_variable('SWAP_TRIAL_AFTERNOON_HEAD_CM',text,status=status)
+    if (status == 1) return
+    if (status /= 0) error stop 'Cannot read afternoon head'
+    read(text,*,iostat=status) afternoon_head_cm
+    if (status /= 0) error stop 'Invalid afternoon head'
+    if (.not. ieee_is_finite(afternoon_head_cm)) error stop 'Nonfinite afternoon head'
+    afternoon_active = .true.
+  end subroutine
+end module
+
+""" + source
+        source = replace(source, "use MOD_swap_base,       only: pathwork",
+                         "use andelst_noon_forcing, only: set_afternoon_head\nuse MOD_swap_base,       only: pathwork")
+        source = replace(source, "logical :: flError", "logical :: flError\ninteger :: handoff_status")
+        source = replace(source, "      do while(fldtreduce)", """      do while(fldtreduce)
+         if (swinco == 3 .and. tstart == 35799d0 .and. t1900 < 35799.5d0) &
+           dt = min(dt, 35799.5d0-t1900)""")
+        source = replace(source, "      call TimeControl(3)", """      call TimeControl(3)
+      if (swinco == 3 .and. tstart == 35799d0 .and. t1900 == 35799.5d0) then
+        if (flDayEnd) error stop 'Noon executed a day-end transition'
+        write(*,'(a,1x,f16.6)') 'HYBRID_NOON_BOUNDARY', t1900
+        call get_environment_variable('SWAP_TRIAL_NOON_HANDOFF',status=handoff_status)
+        if (handoff_status == 0) return
+        if (handoff_status /= 1) error stop 'Cannot read handoff control'
+        call set_afternoon_head()
+      end if""")
+        main = (build / "swap-selected/swap_main.f90").read_text(encoding="cp1252")
+        main = replace(main, "use MOD_swap_base, only:", "use andelst_noon_forcing, only: set_afternoon_head\nuse variables, only: t1900\nuse MOD_swap_base, only:")
+        main = replace(main, "!  Close swap", """   if (iCaller == 0 .and. t1900 == 35799.5d0) then
+      write(*,'(a,1x,f16.6)') 'HYBRID_DRIVER_RESUME', t1900
+      call set_afternoon_head()
+      call swap(iCaller, iTask, tstart_in, tend_in)
+      if (t1900 <= 35799.5d0) error stop 'Driver did not advance after noon'
+   end if
+
+!  Close swap""")
+        (output / "swap_main.f90").write_text(main, encoding="cp1252")
     swap.write_text(source, encoding="cp1252")
     macro = output / "macropore.f90"
     source = macro.read_text(encoding="cp1252")
@@ -69,8 +116,16 @@ def build_worker(reference, audit, output, subday=False):
         gwlmean = hdrain + shape_3*(gwl - hdrain)""")
     source = replace(source, "! ---   determine C-value (vertical resistance)",
                      "        if (head_mode == 1) deepgw = forced_head\n\n! ---   determine C-value (vertical resistance)")
+    if handoff:
+        source = replace(source, "      use MOD_grid,",
+                         "      use andelst_noon_forcing, only: afternoon_active, afternoon_head_cm\n      use MOD_grid,")
+        source = replace(source, "        if (head_mode == 1) deepgw = forced_head",
+                         "        if (head_mode == 1) deepgw = forced_head\n"
+                         "        if (afternoon_active) deepgw = afternoon_head_cm")
     (output / "boundbottom.f90").write_text(source, encoding="cp1252")
     patched = ("macropore", "swap", "boundbottom")
+    if handoff:
+        patched += ("swap_main",)
     for name in patched:
         subprocess.run(["gfortran", "-O2", "-cpp", "-Dlinux", "-finit-local-zero",
                         "-ffree-line-length-none", "-fallow-argument-mismatch",
@@ -85,7 +140,7 @@ def build_worker(reference, audit, output, subday=False):
 
 
 def run_worker(case, executable, directory, origin=None, head=None,
-               start="1998-01-03", end="1998-01-04", subday=False):
+               start="1998-01-03", end="1998-01-04", subday=False, handoff=False, afternoon_head=None):
     if start not in ("1998-01-03", "1998-01-05") or end not in ("1998-01-04", "1998-01-06"):
         raise ValueError("Unsupported experimental window")
     shutil.copytree(case, directory)
@@ -94,6 +149,14 @@ def run_worker(case, executable, directory, origin=None, head=None,
     text += "\nSWENDTYPE = 2\n"
     environment = os.environ.copy()
     environment.pop("SWAP_TRIAL_CAUCHY_HEAD_CM", None)
+    environment.pop("SWAP_TRIAL_NOON_HANDOFF", None)
+    if handoff:
+        environment["SWAP_TRIAL_NOON_HANDOFF"] = "1"
+    environment.pop("SWAP_TRIAL_AFTERNOON_HEAD_CM", None)
+    if afternoon_head is not None:
+        if not math.isfinite(afternoon_head):
+            raise ValueError("Afternoon head must be finite")
+        environment["SWAP_TRIAL_AFTERNOON_HEAD_CM"] = str(afternoon_head)
     if origin is not None:
         (directory.parent / "first").symlink_to(origin, target_is_directory=True)
         text = replace(text, "TSTART = 1998-01-01", f"TSTART = {start}")

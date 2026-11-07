@@ -157,3 +157,26 @@ The selected result is atomically published by the research harness.
 The resulting files provide endpoint comparison evidence. Reopening a
 fractional endpoint, sharing one Fortran process between columns and
 committing through the SWAP5 kernel API remain separate tests.
+
+## Live handoff at noon
+
+```sh
+python research/hybrid-water01/probe_noon_handoff.py \
+  --reference-work /tmp/hybrid-b0 --day-return-work /tmp/hybrid-day-return \
+  --output /tmp/hybrid-noon-handoff
+```
+
+A single donor returns to its Fortran caller at noon on day 5, keeping
+the initialized state live. The caller applies the second external head
+and calls the donor again. The reference uses the same noon step cap and
+applies the same head inside its uninterrupted call. A fixed-head run
+provides an independent check that the new head changes only the
+second half of the day.
+
+The switched head is -50 cm before noon and -90 cm afterward. The
+probe requires exact audited steps, unrounded daily stocks and fluxes,
+daily records and both day-6 checkpoint files. It checks the water
+residual for both days and verifies that the original day-4 checkpoint
+was unchanged. This qualifies re-entry into one live donor. Fractional
+restart from disk, multiple donor instances within one process and
+SWAP5 transaction API ownership are outside this control.
