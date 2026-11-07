@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
+  "next_action": "Reproduce actual source300.317-to300.319 from immutable read-only rollback and isolate the unchanged nonlinear, temporal and mass gates.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1217,7 +1217,7 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "ACTIVE_FRESH_ORIGINAL_INPUT481_V7_NOT_COMPLETED",
+    "status": "TERMINAL_SOURCE300317_TO300319_REFUSAL",
     "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
     "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
     "binding": "5b0960078f2b9363a11974b5288c03dafc86c348737bd33d6aae61954fdb128c",
@@ -1228,7 +1228,7 @@
     "own365_to367": false,
     "run": "s5-connectivity-final-original481-O2",
     "capture": "s5-connectivity-final-captured-own-O2",
-    "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
+    "next_action": "Reproduce actual source300.317-to300.319 from immutable read-only rollback and isolate the unchanged nonlinear, temporal and mass gates.",
     "own3_to4": true,
     "own3_to4_receipt": {
       "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
@@ -1258,6 +1258,42 @@
       "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
       "same_input_binding": true,
       "historical_original_equivalence": false
+    },
+    "completed_days": 300,
+    "seconds": 6787.053232599981,
+    "returncode": 1,
+    "censored": false,
+    "maximum_daily_water_residual_cm": 9.41628933885599e-12,
+    "last_completed_source_interval": 300.31700000000194,
+    "last_attempted_source_interval": 300.31900000000195,
+    "own_year_not_started": true,
+    "terminal_source": {
+      "cost": {
+        "t0": " 3.00317000000001940E+002",
+        "t1": " 3.00319000000001950E+002",
+        "completed": "F",
+        "nonlinear_iterations": "13446",
+        "headcalc_calls": "3137",
+        "linear_solves": "13446",
+        "backtracking_attempts": "34925",
+        "accepted_substeps": "509",
+        "min_accepted_dt": " 2.27373675443232059E-013",
+        "max_accepted_dt": " 3.12500000063664629E-005"
+      },
+      "progress": {
+        "day": "301",
+        "segment": "165",
+        "t0": " 3.00317000000001940E+002",
+        "t1": " 3.00319000000001950E+002",
+        "attempts": "1091",
+        "solver_rejections": "54",
+        "temporal_rejections": "526",
+        "mass_rejections": "2",
+        "residual_cm": " 0.00000000000000000E+000"
+      },
+      "immutable_rollback_sha256": "2d2fece2271ef1251cbff45e5b883b5aa89a21073b7e71395fa3a82282f6073f",
+      "last_daily_checkpoint_sha256": "c938555368bb60e1482e35ffe2caf372c81c6e410ffe460e06856aa09a881c9a",
+      "reason": "Native transaction incomplete; Rutter line reports unchanged committed rollback clock and is printed on any incomplete transaction. Causal gate not yet isolated."
     }
   },
   "bottom_contact481_selection": {
@@ -1939,7 +1975,7 @@
   },
   "connectivity_v7": {
     "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
-    "status": "FINAL_NATIVE_O0_O2_SOURCE_CONTROLS_PASS_FRESH481_SELECTED",
+    "status": "TERMINAL_SOURCE300317_TO300319_REFUSAL",
     "original_historical_equivalence": false,
     "whole481": false,
     "own_year": false,
@@ -2027,7 +2063,7 @@
     "actual_positive_pond_projection_jump_cm": 0.4825250261789667,
     "old_positive_donor_only_time_censored_seconds": 180.6930166000966,
     "old_positive_donor_only_internal_clock": 256.8742584350721,
-    "next_action": "Native original-init 481 and own256-257/365-367 remain active or waiting for checkpoints. Actual O0/O2 native source controls, strict own3-4 and bounded canonical admission passed; long unchanged-pond-quanta control time-censored.",
+    "next_action": "Reproduce actual source300.317-to300.319 from immutable read-only rollback and isolate the unchanged nonlinear, temporal and mass gates.",
     "read_only_through257": {
       "completed_source_windows": 67,
       "seconds": 53.30071960017085,
@@ -2270,5 +2306,11 @@
     "own256_to257": false,
     "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
     "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
+  },
+  "v7_terminal300317_evidence": {
+    "name": "V7_TERMINAL300317_EVIDENCE_20261107.zip",
+    "sha256": "c6b208e58aafbac6c672ff21b3b153cda39957761d6bbea4a6e24b4c1ff64ab5",
+    "bytes": 8404313,
+    "members": 85
   }
 }
