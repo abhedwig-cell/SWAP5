@@ -1,0 +1,11 @@
+{
+  "phase": "PREREGISTERED",
+  "baseline": "3f4a2a70773d84a02ee20b57cf2dab7346f7dd97",
+  "canonical": "dc8bb41e749bcf4ea55ec2e3349f500c2869b13f",
+  "scope": "Restore original P2E02 complete Reference uncertainty driver with the already measured47-provider direct Reference closure. Remove unused serialized backend and alternative solver compile dependencies, not driver calls or assertions. Original driver uses the direct Reference solver, fixed boundary, MVG/source-sink providers and RossFast material/policy constants only.",
+  "allowed_change": "Only literal MODULE_SRC block in original shell recipe; all compiler flags, original Fortran, markers, byte-equality criteria and source trees frozen. Add portable runner and independent source/object/command evidence verifier.",
+  "qualification": "Fresh Windows/POSIX O0/O2 actual47-provider compiles per optimization, unchanged complete driver/executable, original markers and exact output comparison; original POSIX shell gate. Retain any actual failed criteria. Six real evidence corruptions refused per cohort. Expected local bounded build cost under five minutes; no broad solver qualification selected for unchanged production source.",
+  "invariants": "No solver/retry/tolerance/mass/restart/ownership/fail-closed changes. No alternative solver execution or production admission inferred from source closure.",
+  "production_admission": false,
+  "whole_scientific_admission": false
+}
