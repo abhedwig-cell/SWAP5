@@ -32,3 +32,25 @@ HeadCalc's retained memory, BoundTop's atmospheric state, macro event
 history, the crop and thermal continuations, and meteorological and output
 cursors. The external Cauchy head, kernel rollback and SWAP5-owned commit
 are also open. No canonical model or test gate has been altered.
+
+## Legacy restart negative control
+
+After both commands above, run:
+
+```sh
+python research/hybrid-water01/probe_legacy_restart.py \
+  --reference-work /tmp/hybrid-b0 --day-return-work /tmp/hybrid-day-return \
+  --output /tmp/hybrid-legacy-restart
+```
+
+The fresh unmodified B0 control completes all 481 days, with the published
+daily series exact to the frozen reference. The split diagnostic requests
+the original binary `.end` at day 2 and reads it into a fresh process. Both
+segments return normal success. Matrix, canopy, pond and snow stock match at
+the boundary. The first macropore domain gains 0.04000136 cm and the remaining
+domains lose 0.01962962 cm before the first resumed numerical step. The
+day-3 drainage and groundwater outputs then diverge. B0's `inoutend` does
+not transfer those macro fields and `Swap` calls `MacroPore(1)`/MacroInit on
+the restored head. The binary legacy file cannot serve as a transparent
+hybrid checkpoint. The measured stock jump is one necessary restoration
+target, not a proof that these two totals are sufficient.

@@ -1,0 +1,55 @@
+{
+  "scope": "B0_LEGACY_END_RESTART_CONTROL",
+  "full_b0_days": 481,
+  "full_b0_series_exact": true,
+  "full_b0_executable_sha256": "18a0f5bfeb036ec649368027b11f04bb7423a130c1fbba0699d5e063ae89fd86",
+  "restart_audit_executable_sha256": "521d1e65662985a844c4f285eb2123637140d54d9750a87d361fbe1ae17dd71f",
+  "legacy_checkpoint_sha256": "eb69ba955aa4f5765731e9af659fee82b8652ca8d4328e12c7d8f95edf07f112",
+  "stock_order": [
+    "matrix",
+    "pond",
+    "snow",
+    "canopy",
+    "macro_domain_1",
+    "macro_other_domains"
+  ],
+  "day2_end_stock_cm": [
+    153.84132610682627,
+    0.0,
+    0.0,
+    0.0025926018136122326,
+    1.8445225014565783,
+    0.17798550005566957
+  ],
+  "resumed_initial_stock_cm": [
+    153.84132610682627,
+    0.0,
+    0.0,
+    0.0025926018136122326,
+    1.8845238585886994,
+    0.1583558790622226
+  ],
+  "resumed_minus_day2_end_stock_cm": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.04000135713212116,
+    -0.019629620993446978
+  ],
+  "series_columns": [
+    "DATE",
+    "RAIN",
+    "DRN",
+    "GWL"
+  ],
+  "continuous_day3_4": [
+    "1998-01-03,1.68560,.65540,-47.85008",
+    "1998-01-04,.36120,.60125,-63.38009"
+  ],
+  "resumed_day3_4": [
+    "1998-01-03,1.68560,.66398,-48.84463",
+    "1998-01-04,.36120,.60022,-63.31460"
+  ],
+  "legacy_restart_exact": false
+}
