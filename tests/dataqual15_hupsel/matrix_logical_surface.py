@@ -1,6 +1,8 @@
 """Exercise surface and Boesten matrix checkpoint readers against real owners."""
 import argparse
 import json
+import os
+import subprocess
 import struct
 import zlib
 from pathlib import Path
@@ -74,6 +76,8 @@ def execute(native, output, compiler):
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
     result = json.loads(files['RESULT.json'])
+    assert result['platform'] == ('WINDOWS' if os.name == 'nt' else 'POSIX')
+    assert subprocess.check_output([compiler, '--version'], text=True).splitlines()[0] == result['compiler']
     events = []
     outcomes = {}
     for role in ('incumbent', 'candidate'):
