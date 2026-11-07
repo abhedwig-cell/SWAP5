@@ -1252,6 +1252,19 @@
       "ending_checkpoint_sha256": "7283af9577aae1252daf583455daa2caeb3c59ce127dd240650d26f880517525",
       "same_input_binding": true,
       "historical_original_equivalence": false
+    },
+    "own300_to301": true,
+    "own300_to301_receipt": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN300_TO301",
+      "seconds": 157.5181893000845,
+      "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+      "input_restart_sha256": "7009738b9e137f0681e7c8971676eec30619fd95c119f8850bb0398678b176de",
+      "all_progress_rows_exact": true,
+      "progress_rows": 513,
+      "entire_ending_checkpoint_byte_exact": true,
+      "ending_checkpoint_sha256": "01227212330f7cd5f0b2d792ef0b9914839fdb61f1c6579714c04c668d11d816",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
     }
   },
   "bottom_contact481_selection": {
@@ -2880,6 +2893,98 @@
       "progress_rows": 514,
       "entire_ending_checkpoint_byte_exact": true,
       "ending_checkpoint_sha256": "7283af9577aae1252daf583455daa2caeb3c59ce127dd240650d26f880517525",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "fresh_day301_prior_refusals_pass": [
+      {
+        "progress": {
+          "day": "301",
+          "segment": "165",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "67",
+          "solver_rejections": "0",
+          "temporal_rejections": "35",
+          "mass_rejections": "0",
+          "residual_cm": "-2.53547183248770125E-014"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "T",
+          "nonlinear_iterations": "532",
+          "headcalc_calls": "201",
+          "linear_solves": "532",
+          "backtracking_attempts": "532",
+          "accepted_substeps": "32",
+          "min_accepted_dt": " 6.24999998137809598E-005",
+          "max_accepted_dt": " 6.25000000127329258E-005"
+        },
+        "from_unchanged_original_initialization": true
+      },
+      {
+        "progress": {
+          "day": "301",
+          "segment": "196",
+          "t0": " 3.00374999999999204E+002",
+          "t1": " 3.00376999999999214E+002",
+          "attempts": "1",
+          "solver_rejections": "0",
+          "temporal_rejections": "0",
+          "mass_rejections": "0",
+          "residual_cm": " 5.73846525853127787E-015"
+        },
+        "cost": {
+          "t0": " 3.00374999999999204E+002",
+          "t1": " 3.00376999999999214E+002",
+          "completed": "T",
+          "nonlinear_iterations": "6",
+          "headcalc_calls": "3",
+          "linear_solves": "36",
+          "backtracking_attempts": "6",
+          "accepted_substeps": "1",
+          "min_accepted_dt": " 2.00000000000954969E-003",
+          "max_accepted_dt": " 2.00000000000954969E-003"
+        },
+        "from_unchanged_original_initialization": true
+      },
+      {
+        "progress": {
+          "day": "301",
+          "segment": "282",
+          "t0": " 3.00541999999999007E+002",
+          "t1": " 3.00543999999999016E+002",
+          "attempts": "91",
+          "solver_rejections": "0",
+          "temporal_rejections": "47",
+          "mass_rejections": "0",
+          "residual_cm": "-6.96127183674732919E-014"
+        },
+        "cost": {
+          "t0": " 3.00541999999999007E+002",
+          "t1": " 3.00543999999999016E+002",
+          "completed": "T",
+          "nonlinear_iterations": "861",
+          "headcalc_calls": "273",
+          "linear_solves": "861",
+          "backtracking_attempts": "861",
+          "accepted_substeps": "44",
+          "min_accepted_dt": " 2.44140608174348017E-007",
+          "max_accepted_dt": " 6.24999956926330924E-005"
+        },
+        "from_unchanged_original_initialization": true
+      }
+    ],
+    "strict_own300_to301": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN300_TO301",
+      "seconds": 157.5181893000845,
+      "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+      "input_restart_sha256": "7009738b9e137f0681e7c8971676eec30619fd95c119f8850bb0398678b176de",
+      "all_progress_rows_exact": true,
+      "progress_rows": 513,
+      "entire_ending_checkpoint_byte_exact": true,
+      "ending_checkpoint_sha256": "01227212330f7cd5f0b2d792ef0b9914839fdb61f1c6579714c04c668d11d816",
       "same_input_binding": true,
       "historical_original_equivalence": false
     }
