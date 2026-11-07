@@ -20,6 +20,11 @@ FIXTURE = """
   subroutine surface_checkpoint()
     use mod_restricted_surface_evaporation, only: boesten_evaporation_state_t
     type(boesten_evaporation_state_t) :: pair
+    type(mobile_salt_state_t) :: mobile
+    type(solute_compartment_state_t) :: stores
+    real(real64), allocatable :: theta(:)
+    real(real64) :: clock
+    integer(int64) :: revision, parameter_id
     logical :: boesten
     boesten=trim(exponent_argument)=='3'
     cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
@@ -37,10 +42,18 @@ FIXTURE = """
       call initialize_matrix_solute(p,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
         spread(.2d0,1,numnod),solute,status)
       call require(status==0,'surface chemical owner')
+      call solute%snapshot(clock,theta,mobile,stores,revision)
+      call reconstruct_matrix_solute_trusted(p,9001_int64,revision,clock,theta, &
+        mobile%concentration_mg_cm3,mobile%mass_mg_cm2,stores%sorbed_matrix_mass, &
+        solute,status,surface_mass=.25d0)
+      call require(status==MATRIX_OK,'positive surface solute store')
     else
       call observe_header()
+      parameter_id=9001_int64
+      if (trim(mode)=='surface-wrong-owner') parameter_id=9002_int64
       call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template, &
-        670001_int64,9001_int64,p,water,solute,status,allow_surface_mass=.true.)
+        670001_int64,parameter_id,p,water,solute,status, &
+        allow_surface_mass=trim(mode)/='surface-disabled')
       if (status/=JOINT_OK) then
         call require(.not.water%ready().and..not.solute%ready(),'both targets empty')
         print '(A)','SURFACE_REFUSED_EMPTY'
@@ -49,6 +62,12 @@ FIXTURE = """
       call require(water%ready().and.solute%ready(),'both targets restored')
       print '(A)','SURFACE_ACCEPTED'
       if (trim(mode)=='surface-probe') return
+      call solute%snapshot(clock,theta,mobile,stores,revision)
+      call require(stores%pond_mass==.25d0,'positive surface store restored exactly')
+      call read_matrix_joint_restart_file(trim(restart_path),column,cfg%tiles(1)%template, &
+        670001_int64,9001_int64,p,water,solute,status,allow_surface_mass=.true.)
+      call require(status/=JOINT_OK.and.water%ready().and.solute%ready(),'occupied owners preserved')
+      print '(A)','SURFACE_OCCUPIED_REFUSED'
     end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
       670001_int64,water,solute,status,allow_surface_mass=.true.)
@@ -107,6 +126,12 @@ def execute(native, output, compiler):
             observed = run([executable, 'surface-read', original, restored, tag], output, events, role + '-read')
             assert b'SURFACE_ACCEPTED' in observed.stdout and restored.read_bytes() == raw
             assert b'MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156' in observed.stdout
+            assert b'SURFACE_OCCUPIED_REFUSED' in observed.stdout
+            for refused_mode in ('surface-disabled', 'surface-wrong-owner'):
+                observed = run([executable, refused_mode, original, restored, tag],
+                               output, events, role + '-' + refused_mode)
+                assert b'SURFACE_REFUSED_EMPTY' in observed.stdout
+                assert restored.read_bytes() == raw
             admissions = []
             for offset in (144, 156):
                 for value in (2, -1, 256):
@@ -124,7 +149,7 @@ def execute(native, output, compiler):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
-        'admitted_malformed': outcomes, 'production_admission': False
+        'admitted_malformed': outcomes, 'surface_mass': 0.25, 'production_admission': False
     }, indent=2) + '\n')
     assert not any(outcomes['candidate'].values()), outcomes
     print(outcomes)
