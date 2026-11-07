@@ -1228,7 +1228,19 @@
     "own365_to367": false,
     "run": "s5-zero-head-original481-O2",
     "capture": "s5-zero-head-captured-own-O2",
-    "next_action": "Actively follow fresh original-input481 to terminal. Validate own3-4,256-257,365-367 only under this exact binary/binding. Do not promote previous V5 own proofs."
+    "next_action": "Actively follow fresh original-input481 to terminal. Validate own3-4,256-257,365-367 only under this exact binary/binding. Do not promote previous V5 own proofs.",
+    "own3_to4": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 168.39868279988877,
+      "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
+      "input_restart_sha256": "625619993dc8b0dd9d7296157c1ae71b7296cf7cb7d9143bf42a5a71c75ac772",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    }
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1720,7 +1732,13 @@
       "archive": "ZERO_HEAD_SELECTED_CI_20261107.zip",
       "sha256": "38e2c4e1cdfde3c3ba4837e1323ad7a25e436fd04c778abc21bf2aae4b8394bc"
     },
-    "pull_request": 1610
+    "pull_request": 1610,
+    "own3_day1_evidence": {
+      "archive": "ZERO_HEAD_OWN3_DAY1_EVIDENCE_20261107.zip",
+      "sha256": "41dfe4d843f9116a5ba3a64c225041f1437d261e2e229fb9c27bbd4546bcd0c7",
+      "bytes": 1004258,
+      "members": 62
+    }
   },
   "predecessor_v5_terminal_execution": {
     "status": "TERMINAL_SOURCE256742_TO256743_REFUSAL",
