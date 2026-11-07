@@ -55,11 +55,13 @@ def execute(out,compiler):
    obj=build/'test.o';cp=run([compiler,*flags,'-'+opt,'-J',build,'-I',build,'-c',ROOT/test,'-o',obj],'driver');assert cp.returncode==0,cp.stderr[-4000:]
    exe=build/('test.exe'if os.name=='nt'else'test');cp=run([compiler,'-fopenmp','-'+opt,*objects,obj,'-o',exe],'link');assert cp.returncode==0,cp.stderr[-4000:]
    cp=run([exe],'original-test');valid=False
-   if cp.returncode==0:validate_output(case,cp.stdout);valid=True
+   marker_failure=None
+   if cp.returncode==0:
+    try:validate_output(case,cp.stdout);valid=True
+    except AssertionError as error:marker_failure=str(error)or'Original marker/count criterion failed'
    rows[opt]=dict(provider_count=len(compiled),providers=compiled,driver=test,driver_sha256=sha((ROOT/test).read_bytes()),executable=exe.relative_to(out).as_posix(),executable_sha256=sha(exe.read_bytes()),returncode=cp.returncode,markers_pass=valid,stdout_sha256=sha(cp.stdout),stdout=events[-1]['stdout'])
-  assert rows['O0']['stdout_sha256']==rows['O2']['stdout_sha256'],'original O0/O2 output equality criterion'
-  results[case]=rows
- status='BUILD_REPAIRED_ORIGINAL_GATES_PASS'if all(x['markers_pass']for rows in results.values()for x in rows.values())else'BUILD_REPAIRED_ORIGINAL_NUMERICAL_FAILURE_RETAINED'
+  results[case]=dict(optimizations=rows,outputs_equal=rows['O0']['stdout_sha256']==rows['O2']['stdout_sha256'])
+ status='BUILD_REPAIRED_ORIGINAL_GATES_PASS'if all(case['outputs_equal']and all(x['markers_pass']for x in case['optimizations'].values())for case in results.values())else'BUILD_REPAIRED_ORIGINAL_NUMERICAL_FAILURE_RETAINED'
  assert trees==guard();result=dict(status=status,baseline=BASE,head=git('rev-parse','HEAD'),production_trees=trees,platform='WINDOWS'if os.name=='nt'else'POSIX',compiler=subprocess.check_output([compiler,'--version'],text=True).splitlines()[0],seconds=time.monotonic()-start,script_sha256={p:sha(raw('HEAD',p))for p in SCRIPTS.values()},results=results,production_admission=False,whole_scientific_admission=False)
  (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(status,flush=True)
  if status!='BUILD_REPAIRED_ORIGINAL_GATES_PASS':raise SystemExit(1)
