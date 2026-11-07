@@ -1240,6 +1240,34 @@
       "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
       "same_input_binding": true,
       "historical_original_equivalence": false
+    },
+    "fresh_original_initialization_passed_v5_barrier": {
+      "progress": {
+        "day": "257",
+        "segment": "379",
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "attempts": "128",
+        "solver_rejections": "0",
+        "temporal_rejections": "65",
+        "mass_rejections": "0",
+        "residual_cm": " 1.18047932540221723E-014"
+      },
+      "cost": {
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "completed": "T",
+        "nonlinear_iterations": "1572",
+        "headcalc_calls": "384",
+        "linear_solves": "1572",
+        "backtracking_attempts": "2222",
+        "accepted_substeps": "63",
+        "min_accepted_dt": " 7.62940999265993014E-009",
+        "max_accepted_dt": " 6.25001266598701477E-005"
+      },
+      "following_committed_source_observed_through": 256.8729999999988,
+      "checkpoint256_sha256": "f95819c51a69a3f2880f5d2aa314e4cc4844fc243fe0938ea110a1fc53bd8d1a",
+      "qualification_scope": "Actual fresh original initialization path, still pending481 and own year; separate O0/O2 three-source proof used the immutable V5 rollback seed."
     }
   },
   "bottom_contact481_selection": {
