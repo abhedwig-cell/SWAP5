@@ -750,23 +750,6 @@
     "members": 889
   },
   "scope_note": "Initial root65-day fields retain original V2 failure; event_aligned_terminal is later V4 event-aligned142-day negative. Current authoritative executable and full/year gates are in current_execution; no historical scientific promotion.",
-  "current_execution": {
-    "status": "RUNNING_AFTER_OLD245379_REFUSAL_OBSERVING_NEW245594_STAGNATION",
-    "model": "ANDELST_JOINT_CURRENT_GROUNDWATER_DRAINAGE_GRAPH_V4",
-    "executable_sha256": "82ac31bd1a6aca62a6b818d8f1fd0969cd37139a39a82d49dec496a4d9db040c",
-    "original_initialization": true,
-    "original_input_files_unchanged": true,
-    "historical_original_equivalence": false,
-    "corrected_contact_groundwater_drainage": true,
-    "phase_selection": "exact committed event endpoint, no early1e-12 switch",
-    "tiny_drainage": "existing homogeneous signed DIVDRA in all three private macro contexts",
-    "run": "s5-phase-exact-tiny-drain-original481-O2",
-    "capture": "s5-phase-exact-tiny-drain-captured-own-O2",
-    "whole481": false,
-    "own365_to367": false,
-    "last_observed_completed_source_interval": 245.59399999999692,
-    "previous245379_refusal_passed": true
-  },
   "limiter_ratio_admission_selection": {
     "pr": 1602,
     "final_qualified_head": "888bafb2933202fc882a0d5ecaae82aa9c1cb620",
@@ -1169,7 +1152,7 @@
     "own_year": false
   },
   "lower_contact_v5_contract": {
-    "status": "COMPONENT_O0_O2_PASS_NATIVE_PENDING",
+    "status": "ACTUAL_THREE_SOURCE_WINDOWS_O0_O2_AND_DAY1_PRESERVATION_PASS",
     "model": "ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5",
     "real_two_sided_bottom_jump_cm_day": 0.0016855287077411096,
     "constitutive_capacity_cm_inverse": 4.6659640222812745e-07,
@@ -1191,6 +1174,81 @@
     },
     "whole481": false,
     "own_year": false,
-    "historical_original_equivalence": false
+    "historical_original_equivalence": false,
+    "native_O0_seconds": 47.27680029999465,
+    "native_O2_seconds": 20.91779790003784,
+    "all_progress_and_cost_rows_O0_O2_byte_exact": true,
+    "actual_source_progress": "246,1, 2.45593999999996925E+002, 2.45595999999996934E+002,45,3,20,0,-3.02639857618913766E-014",
+    "unchanged_origin_no_external_restart": true,
+    "following_selection": {
+      "reason": "Verify the accepted contact action is recomputed conservatively in subsequent source calls without persisting the scratch fraction. Same initial source-origin; three windows through245.600.",
+      "expected_seconds_each": 90,
+      "timeout_seconds_each": 240
+    },
+    "following_O0_seconds": 123.35749890003353,
+    "following_O2_seconds": 43.31473260000348,
+    "all_three_progress_and_cost_rows_O0_O2_byte_exact": true,
+    "day1_O0_seconds": 26.102049100212753,
+    "day1_physical_payload_and_all4CSV_exact": true
+  },
+  "phase_exact245594_terminal": {
+    "status": "INTENTIONALLY_TIME_CENSORED_SOURCE245594_STAGNATION_AFTER_POSITIVE_V5_REPAIR",
+    "model": "ANDELST_JOINT_CURRENT_GROUNDWATER_DRAINAGE_GRAPH_V4",
+    "executable_sha256": "82ac31bd1a6aca62a6b818d8f1fd0969cd37139a39a82d49dec496a4d9db040c",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "corrected_contact_groundwater_drainage": true,
+    "phase_selection": "exact committed event endpoint, no early1e-12 switch",
+    "tiny_drainage": "existing homogeneous signed DIVDRA in all three private macro contexts",
+    "run": "s5-phase-exact-tiny-drain-original481-O2",
+    "capture": "s5-phase-exact-tiny-drain-captured-own-O2",
+    "whole481": false,
+    "own365_to367": false,
+    "last_observed_completed_source_interval": 245.59399999999692,
+    "previous245379_refusal_passed": true,
+    "seconds": 7805.62981120008,
+    "raw_returncode": 4294967295,
+    "raw_runner_censored": false,
+    "manual_censor_adjudication": "CENSOR_ADJUDICATION.json",
+    "completed_days": 245,
+    "maximum_daily_water_residual_cm": 3.394925574690817e-12,
+    "last_completed_source_interval": 245.59399999999692,
+    "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
+  },
+  "current_execution": {
+    "status": "SELECTED_NEW_V5_ORIGINAL_INPUT481",
+    "model": "ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5",
+    "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "corrected_contact_groundwater_drainage": true,
+    "lower_perched_contact": true,
+    "run": "s5-bottom-contact-original481-O2",
+    "capture": "s5-bottom-contact-captured-own-O2",
+    "whole481": false,
+    "own365_to367": false
+  },
+  "bottom_contact481_selection": {
+    "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
+    "expected_seconds": 10000,
+    "timeout_seconds": 14400,
+    "capture_days": [
+      1,
+      3,
+      4,
+      19,
+      20,
+      32,
+      33,
+      245,
+      246,
+      365,
+      366,
+      367,
+      481
+    ],
+    "own_year_seconds": 900
   }
 }
