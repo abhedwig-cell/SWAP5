@@ -1830,6 +1830,16 @@
       "sha256": "7e76dd7285e908dfece630254e1ac60affd17deff08e5d4fcb3ecae844bbba7c",
       "bytes": 6990816,
       "members": 63
+    },
+    "terminal_receipt_canonical": {
+      "pr": 1613,
+      "actual_merge": "d05478e8c30bba9f3d8b63b411859b06c026beb0",
+      "parents": [
+        "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c",
+        "ce163b577dd34aca70b8c98964a857c5e964f023"
+      ],
+      "entire_actual_tree_exact": true,
+      "production_src_app_tests_delta": "NONE"
     }
   },
   "predecessor_v5_terminal_execution": {
@@ -1919,6 +1929,24 @@
       "bytes": 5488907,
       "members": 666,
       "unique_source_postimages": 203
+    },
+    "v7_experiments": {
+      "fixed_node_status": "NATURAL_REFUSAL",
+      "fixed_node_seconds": 18.532311300048605,
+      "verbose_newton_time_censored_seconds": 100.47012499999255,
+      "actual_limit_probe_seconds": 9.231400400167331,
+      "actual_limit_neighbor_node": 11,
+      "actual_limit_head_cm": 2.648284926505478e-12,
+      "proposed_decrease_cm": 0.00022095949774567035,
+      "pivot_status": "NATURAL_REFUSAL_AFTER_FURTHER_INTERNAL_ADVANCEMENT",
+      "pivot_seconds": 41.866500300122425,
+      "pivot_last_internal_clock": 256.8737389673805,
+      "pivot_accepted_internal_substeps": 381,
+      "seed_consistency_revision": "89e26cfe5 UNTESTED; build/actual source probe selected",
+      "archive": "V7_CONNECTIVITY_INITIAL_EXPERIMENTS_20261107.zip",
+      "sha256": "846d75d06c2528cc6c691c211c44b7c331fcbe0fa51f1cbd8f5075a3c9320b98",
+      "bytes": 14043644,
+      "members": 1528
     }
   }
 }
