@@ -209,3 +209,37 @@ This demonstrates resident isolation by loader namespace, with serial
 process-wide directory changes. It is platform specific and does not
 qualify threads, fractional disk restart, or transaction ownership
 through the SWAP5 kernel API.
+
+## SWAP5 owned acceptance and next day restart
+
+```sh
+python research/hybrid-water01/probe_kernel_donor.py \
+  --reference-work /tmp/hybrid-b0 --day-return-work /tmp/hybrid-day-return \
+  --noon-work /tmp/hybrid-noon-handoff --output /tmp/hybrid-kernel-donor
+```
+
+The Fortran driver binds the real donor adapter to the existing SWAP5
+kernel reference-floor executor. Two committed columns carry distinct
+lineages and revisions. Each trial runs the Andelst solver in a fresh
+worker. The executor checks the donor stock and external water ledger,
+discards the first candidate for column 1 and commits four accepted
+half-day candidates. The original checkpoint stays byte-identical.
+The reference-floor path qualifies mass and state ownership. The normal
+coupling participant's temporal controller and a MODFLOW call are outside
+this test.
+
+The afternoon trial replays the already accepted morning from the day-4
+checkpoint and requires exact agreement for the full morning step audit
+before accepting the afternoon ledger. This uses process isolation and
+recomputation. It does not load a fractional checkpoint or use the
+separate resident namespace prototype. At midnight, a fresh worker
+starts from the actual selected checkpoint of each column. Day 6 must
+match an independent continuous run, including audited states, the
+water ledger and both endpoint files.
+
+The donor build used by this adapter removes the local declaration that
+shadows the module-owned previous wet-wall fraction in MacroIntegral.
+That previous fraction is already in the macro checkpoint. The change
+resolves two reporting-array discrepancies observed in otherwise exact
+day-6 trajectories, while leaving the audited hydraulic behavior exact.
+No canonical solver, input guard or runtime contract is modified.

@@ -1,0 +1,69 @@
+{
+  "scope": "SWAP5_REFERENCE_FLOOR_WITH_ISOLATED_REPLAY_DONORS",
+  "origin_checkpoint": {
+    "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
+    "macro.bin": "3cd86d786a1b0ad8a699547080f114f5df5e9ed0e5f60e6261c391aa2cd10e3c"
+  },
+  "decisions": [
+    [
+      "1",
+      "1",
+      "F",
+      "0",
+      "-6.0735307894077550E-09",
+      "4.4146538760999271E-01"
+    ],
+    [
+      "2",
+      "2",
+      "T",
+      "1",
+      "-6.0735307894077550E-09",
+      "4.4146538760999271E-01"
+    ],
+    [
+      "1",
+      "3",
+      "T",
+      "1",
+      "-5.4917836944667897E-10",
+      "-1.0841860947695803E-01"
+    ],
+    [
+      "1",
+      "4",
+      "T",
+      "2",
+      "-1.2869630028333745E-08",
+      "6.2929812857184442E-01"
+    ],
+    [
+      "2",
+      "5",
+      "T",
+      "2",
+      "-1.2683798900070542E-08",
+      "-5.9682902089067624E-02"
+    ]
+  ],
+  "next_day_restarts": [
+    {
+      "column": 1,
+      "day6_steps_exact": 1419,
+      "day6_ledger_exact": true,
+      "endpoint_file_exact": {
+        "result.end": true,
+        "macro.bin": true
+      }
+    },
+    {
+      "column": 2,
+      "day6_steps_exact": 1918,
+      "day6_ledger_exact": true,
+      "endpoint_file_exact": {
+        "result.end": true,
+        "macro.bin": true
+      }
+    }
+  ]
+}

@@ -14,7 +14,7 @@ from probe_macro_checkpoint import compare_daily_ledger, render
 from run_day_return import records, replace, sha
 
 
-def build_worker(reference, audit, output, subday=False, handoff=False):
+def build_worker(reference, audit, output, subday=False, handoff=False, kernel_flux=False):
     build = reference / "build"
     objects = build / "swap-obj"
     ttutil = build / "ttutil-obj"
@@ -84,6 +84,11 @@ end module
 
 !  Close swap""")
         (output / "swap_main.f90").write_text(main, encoding="cp1252")
+    if kernel_flux:
+        source = replace(source, "dtold, h, theta, pond, qrot", "dtold, h, theta, pond, qrot, qbot")
+        source = replace(source, "      call SoilWater(3)", """      call SoilWater(3)
+      if (t1900 >= 35799d0 .and. t1900 < 35801d0) &
+        write(*,'(a,1x,es25.17e3)') 'HYBRID_TERMINAL_BOTTOM_INWARD', qbot""")
     swap.write_text(source, encoding="cp1252")
     macro = output / "macropore.f90"
     source = macro.read_text(encoding="cp1252")
@@ -95,6 +100,8 @@ end module
                      "stored_clock, old_step, canopy_stock, zero_cumu")
     source = replace(source, "NumDm, clock, old_step, canopy_stock",
                      "NumDm, clock, old_step, canopy_stock, zero_cumu")
+    if kernel_flux:
+        source = replace(source, "      real(8) FrMpWalWetOld(MaDm,MaCp) \n", "")
     macro.write_text(source.replace("S5MAC003", "S5MAC004"), encoding="cp1252")
     source = (build / "swap-selected/boundbottom.f90").read_text(encoding="cp1252")
     source = replace(source, "      integer node, nodnumgwl", """      integer node, nodnumgwl
@@ -141,7 +148,7 @@ end module
 
 def run_worker(case, executable, directory, origin=None, head=None,
                start="1998-01-03", end="1998-01-04", subday=False, handoff=False, afternoon_head=None):
-    if start not in ("1998-01-03", "1998-01-05") or end not in ("1998-01-04", "1998-01-06"):
+    if start not in ("1998-01-03", "1998-01-05", "1998-01-06") or end not in ("1998-01-04", "1998-01-05", "1998-01-06"):
         raise ValueError("Unsupported experimental window")
     shutil.copytree(case, directory)
     control = directory / "swap.swp"
