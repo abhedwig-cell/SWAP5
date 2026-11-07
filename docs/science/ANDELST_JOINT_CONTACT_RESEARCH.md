@@ -57,7 +57,23 @@ read-only67-source test reaches257 in53.301s with no restart publication. The
 previous256.742 three-source control passes at O2 with exact V6 cost rows; its
 progress values are not byte-exact. Original-initialization day-one O0/O2
 matches all four CSVs and physical payload, including V6 physical preservation.
-The fresh full481 and strict own3–4,256–257,365–367 tests are active separately.
+The private Andelst V7 research source is admitted at PR1614 (`1940cebc0`).
+The fresh original-input run passes the V6 refusal at 256.873 and naturally
+refuses at 300.317 to 300.319 after 300 complete days in 6787.053 s. Maximum
+absolute daily water residual is 9.41629e-12 cm. Strict own 3–4 and 256–257
+reproduce all 504 and 514 progress rows respectively, plus the complete final
+checkpoints. The year continuation did not start. Full481, historical
+equivalence, production-default and whole-science claims remain open.
+
+The unchanged original-input V7 run also passes the V6 failed source with
+1,467 attempts and a signed water residual of -6.577304673127671e-12 cm. The
+V7 rejection at day 301 has 1,091 attempts, 54 solver, 526 temporal and two
+mass rejections, and 509 accepted internal substeps rolled back. The printed
+Rutter clock is the unchanged committed rollback clock, not a separate
+failure cause. The old-pond-quantum read-only control ends at the 1,800 s
+limit without a terminal model outcome.
+
+Terminal authority: `V7_TERMINAL300317_EVIDENCE_20261107.zip` and `V7_ORIGINAL_POND_QUANTA_LONG_CONTROL_20261107.zip`.
 
 Authority: `V7_FINAL_SOURCE_EVIDENCE_20261107.zip`,
 `V7_SURFACE_CAUSAL_EVIDENCE_20261107.zip`,

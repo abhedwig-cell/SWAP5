@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
+  "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -749,7 +749,7 @@
     "bytes": 7015201,
     "members": 889
   },
-  "scope_note": "Initial root65-day fields retain the original V2 failure. Later named V4 records retain142/245 failures and the exact-phase245.594 intentional stagnation censor. current_execution is the authoritative active V7 original-input run; bounded V5 admission is in lower_contact_v5_canonical_admission. Root historical false gates and all negative verdicts are never promoted by corrected-model progress.",
+  "scope_note": "Named V2 through V7 records preserve actual failures and censors. current_execution is the terminal corrected V7 result. Historical/default, full481, own year and whole-science gates remain separate.",
   "limiter_ratio_admission_selection": {
     "pr": 1602,
     "final_qualified_head": "888bafb2933202fc882a0d5ecaae82aa9c1cb620",
@@ -1217,7 +1217,7 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "ACTIVE_FRESH_ORIGINAL_INPUT481_V7_NOT_COMPLETED",
+    "status": "TERMINAL_SOURCE300317_TO300319_REFUSAL",
     "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
     "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
     "binding": "5b0960078f2b9363a11974b5288c03dafc86c348737bd33d6aae61954fdb128c",
@@ -1228,7 +1228,7 @@
     "own365_to367": false,
     "run": "s5-connectivity-final-original481-O2",
     "capture": "s5-connectivity-final-captured-own-O2",
-    "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
+    "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
     "own3_to4": true,
     "own3_to4_receipt": {
       "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
@@ -1245,6 +1245,55 @@
       "checkpoint4_sha256": "f3c67bb4302ec21ae6ae0b27140a67bd7f4cc4bd12a000735ce5fc4e828c6fda",
       "same_input_binding": true,
       "historical_original_equivalence": false
+    },
+    "own256_to257": true,
+    "own256_to257_receipt": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
+      "seconds": 306.7012215000577,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "7e3768c56cd61e8b88d6e9d33cfcbf5a510044fa770a36f43df549ffaca89442",
+      "all_progress_rows_exact": true,
+      "progress_rows": 514,
+      "entire_checkpoint257_byte_exact": true,
+      "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "completed_days": 300,
+    "seconds": 6787.053232599981,
+    "returncode": 1,
+    "censored": false,
+    "maximum_daily_water_residual_cm": 9.41628933885599e-12,
+    "last_completed_source_interval": 300.31700000000194,
+    "last_attempted_source_interval": 300.31900000000195,
+    "own_year_not_started": true,
+    "terminal_source": {
+      "cost": {
+        "t0": " 3.00317000000001940E+002",
+        "t1": " 3.00319000000001950E+002",
+        "completed": "F",
+        "nonlinear_iterations": "13446",
+        "headcalc_calls": "3137",
+        "linear_solves": "13446",
+        "backtracking_attempts": "34925",
+        "accepted_substeps": "509",
+        "min_accepted_dt": " 2.27373675443232059E-013",
+        "max_accepted_dt": " 3.12500000063664629E-005"
+      },
+      "progress": {
+        "day": "301",
+        "segment": "165",
+        "t0": " 3.00317000000001940E+002",
+        "t1": " 3.00319000000001950E+002",
+        "attempts": "1091",
+        "solver_rejections": "54",
+        "temporal_rejections": "526",
+        "mass_rejections": "2",
+        "residual_cm": " 0.00000000000000000E+000"
+      },
+      "immutable_rollback_sha256": "2d2fece2271ef1251cbff45e5b883b5aa89a21073b7e71395fa3a82282f6073f",
+      "last_daily_checkpoint_sha256": "c938555368bb60e1482e35ffe2caf372c81c6e410ffe460e06856aa09a881c9a",
+      "reason": "At node11 exact zero vs tiny negative selects different drainage branches in full/half. Real rate trace also finds lagged macro groundwater geometry. Causal shared current-view correction is under test; the Rutter line only reports unchanged rollback."
     }
   },
   "bottom_contact481_selection": {
@@ -1947,7 +1996,7 @@
   },
   "connectivity_v7": {
     "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
-    "status": "FINAL_NATIVE_O0_O2_SOURCE_CONTROLS_PASS_FRESH481_SELECTED",
+    "status": "TERMINAL_SOURCE300317_TO300319_REFUSAL",
     "original_historical_equivalence": false,
     "whole481": false,
     "own_year": false,
@@ -2035,7 +2084,7 @@
     "actual_positive_pond_projection_jump_cm": 0.4825250261789667,
     "old_positive_donor_only_time_censored_seconds": 180.6930166000966,
     "old_positive_donor_only_internal_clock": 256.8742584350721,
-    "next_action": "Final202-provider O0/O2 coherent builds and real physical contracts; replay actual failed source plus2 neighbors and predecessor256.742. Bounded read-only observation through day257 selected before fresh original481. Long unchanged-quantum control remains active; no cross-executable own proof.",
+    "next_action": "Reproduce actual source300.317-to300.319 from immutable read-only rollback and isolate the unchanged nonlinear, temporal and mass gates.",
     "read_only_through257": {
       "completed_source_windows": 67,
       "seconds": 53.30071960017085,
@@ -2133,7 +2182,74 @@
         "sha256": "01d34d28d528316519614d75565c6e804ec55e913fdcdc2e5918f6eda2163048",
         "bytes": 38115
       },
-      "full481_and_year_active_not_pass": true
+      "full481_and_year_active_not_pass": true,
+      "merge": "1940cebc0bfae1dcb9eb3158727147b29612583f",
+      "parents": [
+        "d05478e8c30bba9f3d8b63b411859b06c026beb0",
+        "332658b326f57e860a7a447739e0cb6e44832c39"
+      ],
+      "full_tree_exact_final_head": true,
+      "production_src_app_delta": false
+    },
+    "unchanged_pond_quanta_long_control": {
+      "scope": "READ_ONLY_DIAGNOSIS_NOT_OWN_RESTART_QUALIFICATION",
+      "origin_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
+      "build_sha256": "cc96f5a046f892ee94290b7783727aa2f15b813ca753311a8c143ff5301d3d49",
+      "executable_sha256": "4ca0a7b0a999bad0c315d4b1d302196be0ee1798889216fc6edb539b62f7fbc7",
+      "seconds": 1800.295957800001,
+      "returncode": -999,
+      "censored": true,
+      "origin_unchanged": true,
+      "nonlinear_stop": false,
+      "temporal_stop": false,
+      "admission_stop": false,
+      "no_restart_published": true,
+      "status": "TIME_CENSORED_NO_TERMINAL_MODEL_OUTCOME",
+      "source_progress_bytes": 0,
+      "archive": {
+        "name": "V7_ORIGINAL_POND_QUANTA_LONG_CONTROL_20261107.zip",
+        "sha256": "c26c09435dd5f717c3b3afa57459b506198df9cc7e43fb16afc7097ee2826dc7",
+        "bytes": 180730,
+        "members": 16
+      }
+    },
+    "fresh_prior_refusal_source_pass": {
+      "progress": {
+        "day": "257",
+        "segment": "448",
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "attempts": "1467",
+        "solver_rejections": "0",
+        "temporal_rejections": "733",
+        "mass_rejections": "2",
+        "residual_cm": "-6.57730467312767075E-012"
+      },
+      "cost": {
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "completed": "T",
+        "nonlinear_iterations": "17252",
+        "headcalc_calls": "4401",
+        "linear_solves": "17252",
+        "backtracking_attempts": "51196",
+        "accepted_substeps": "732",
+        "min_accepted_dt": " 2.41584530158434063E-013",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      },
+      "from_unchanged_original_initialization": true
+    },
+    "strict_own256_to257": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
+      "seconds": 306.7012215000577,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "7e3768c56cd61e8b88d6e9d33cfcbf5a510044fa770a36f43df549ffaca89442",
+      "all_progress_rows_exact": true,
+      "progress_rows": 514,
+      "entire_checkpoint257_byte_exact": true,
+      "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
     }
   },
   "predecessor_v6_terminal_execution": {
@@ -2212,5 +2328,194 @@
     "own256_to257": false,
     "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
     "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
+  },
+  "v7_terminal300317_evidence": {
+    "name": "V7_TERMINAL300317_EVIDENCE_20261107.zip",
+    "sha256": "c6b208e58aafbac6c672ff21b3b153cda39957761d6bbea4a6e24b4c1ff64ab5",
+    "bytes": 8404313,
+    "members": 85
+  },
+  "v7_source300317_diagnosis": {
+    "scope": "READ_ONLY_REAL_ROLLBACK_NO_REBIND_OR_OWN_PROOF",
+    "exact_v7_caller_refuses_non_event_diagnostic_seed": true,
+    "exact_clock_observer_native_refusal": true,
+    "quiet_progress_and_cost_match": true,
+    "full_half_min_head_node": 11,
+    "full_head_cm": 0.0,
+    "half_head_cm": -2.6828996281439377e-11,
+    "full_groundwater_cm": -8.057337470945638,
+    "half_groundwater_cm": -10.500000024680421,
+    "temporal_value_cm": 2.442662553734783,
+    "compared_width_days": 2.2737367544323206e-13,
+    "max_macro_stock_difference_cm": 1.2434497875801753e-14,
+    "experiments": {
+      "quiet-observer-run-O2": {
+        "seconds": 38.25669030006975,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "13446",
+          "headcalc_calls": "3137",
+          "linear_solves": "13446",
+          "backtracking_attempts": "34925",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "trace-observer-run-O2": {
+        "seconds": 38.64415399986319,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "13446",
+          "headcalc_calls": "3137",
+          "linear_solves": "13446",
+          "backtracking_attempts": "34925",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "diagnostic-run-O2": {
+        "seconds": 26.55760969989933,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "13446",
+          "headcalc_calls": "3137",
+          "linear_solves": "13446",
+          "backtracking_attempts": "34925",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "early-graph-run-O2": {
+        "seconds": 38.87491249991581,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "1091",
+          "solver_rejections": "54",
+          "temporal_rejections": "526",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "8379",
+          "headcalc_calls": "3137",
+          "linear_solves": "8379",
+          "backtracking_attempts": "22571",
+          "accepted_substeps": "509",
+          "min_accepted_dt": " 2.27373675443232059E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      },
+      "ordinary-first-run-O2": {
+        "seconds": 4.939405400073156,
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "165",
+          "solver_rejections": "68",
+          "temporal_rejections": "49",
+          "mass_rejections": "2",
+          "residual_cm": " 0.00000000000000000E+000"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "F",
+          "nonlinear_iterations": "2134",
+          "headcalc_calls": "334",
+          "linear_solves": "2134",
+          "backtracking_attempts": "2858",
+          "accepted_substeps": "46",
+          "min_accepted_dt": " 2.41584530158434063E-013",
+          "max_accepted_dt": " 3.12500000063664629E-005"
+        }
+      }
+    },
+    "archive": {
+      "name": "V7_SOURCE300317_DIAGNOSIS_20261107.zip",
+      "sha256": "01376bd875f16dd27b0d25262bf3d936097f272b352e538869dc178ca6a02a4a",
+      "bytes": 8099397,
+      "members": 102
+    },
+    "lagged_macro_view": {
+      "seconds": 24.954571000067517,
+      "exact_cost_match": true,
+      "start_gwl_cm": -10.50000007670762,
+      "full_candidate_gwl_cm": -8.057337470945638,
+      "full_macro_groundwater_input_cm": -10.50000007670762,
+      "full_drainage_cm_day": 0.1338853250581087,
+      "full_inner_macro_exchange_cm_day": -0.180127959084902,
+      "half_disconnected_drainage_cm_day": 0.12899999995063915,
+      "half_inner_macro_exchange_cm_day": -0.1834220248087805,
+      "archive": {
+        "name": "V7_SOURCE300317_LAGGED_VIEW_EVIDENCE_20261107.zip",
+        "sha256": "c692433dd0cfe7c6d493c72eb6ae0eccbad2c12ba802644db58a2b1e2d90f63b",
+        "bytes": 1955673,
+        "members": 20
+      }
+    }
+  },
+  "v7_terminal300317_canonical_receipt": {
+    "pr": 1615,
+    "qualified_docs_head": "8ab23f4d4c73c7cabf9fb8ec89acfe96e6b8445d",
+    "local_documentation_source_and_strict_pass": true,
+    "selected_docs_run": 42349879411,
+    "selected_docs_job": 128335542703,
+    "selected_docs_conclusion": "success",
+    "raw_ci": {
+      "name": "V7_TERMINAL_DOCS_CI_20261107.zip",
+      "sha256": "02f99f6a4ab3c34a7a0dea45fc9fcb697273f25f57f5a9242e23c8a6f09dd5b8",
+      "bytes": 29386
+    },
+    "scope": "Documentation and read-only execution evidence only; no production or test code changes."
   }
 }
