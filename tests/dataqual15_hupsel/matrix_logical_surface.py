@@ -9,6 +9,7 @@ from pathlib import Path
 
 import matrix_logical_header as header
 import matrix_logical_publication as publication
+import matrix_logical_pond as pond
 import pond_thermal_writer as fault_support
 from native_n_crc_runtime import run
 
@@ -131,6 +132,7 @@ def execute(native, output, compiler, qualify_publication=False):
     assert subprocess.check_output([compiler, '--version'], text=True).splitlines()[0] == result['compiler']
     events = []
     outcomes = {}
+    pond_endpoints = {}
     publication_faults = []
     publication_terminations = []
     for role in ('incumbent', 'candidate'):
@@ -163,6 +165,7 @@ def execute(native, output, compiler, qualify_publication=False):
         if qualify_publication and role == 'candidate':
             fault_executable = publication.build_fault_executable(
                 compiler, flags, source, objects, output, events, result['optimization'])
+        pond_endpoints[role] = pond.qualify(compiler, flags, objects, output, role, events)
         outcomes[role] = {}
         for tag in ('1', '1t', '2', '3'):
             original = output / role / ('original-' + tag)
@@ -277,6 +280,7 @@ def execute(native, output, compiler, qualify_publication=False):
     for tag in ('1', '1t'):
         endpoint = f'advance-{tag}-direct'
         assert (output / 'incumbent' / endpoint).read_bytes() == (output / 'candidate' / endpoint).read_bytes()
+    assert pond_endpoints['incumbent'] == pond_endpoints['candidate']
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
         'publication_terminations': publication_terminations,
