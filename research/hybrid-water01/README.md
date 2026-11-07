@@ -263,3 +263,25 @@ The participant rejects all three with no live candidate or time,
 revision or origin-checkpoint mutation. The run has zero automatic
 retries so each tested window is separately observable. The test
 does not establish an acceptable temporal metric or MODFLOW coupling.
+
+## Experimental water-based temporal assessment
+
+Use `--water-metric` with the kernel donor command. The regular
+groundwater participant uses the larger of three sibling differences
+in centimetres: total column water stock, the maximum water stock
+difference across matrix, pond, snow, canopy and two macropore groups,
+and integrated bottom exchange. The mass gate is still 1e-6 cm.
+The research tolerance of 1e-4 cm is confined to this specific case,
+head and origin. The original pressure diagnostic remains available
+via `--temporal`.
+
+At -50 cm, the 0.0625-day negative control is rejected because one
+component differs by 5.50e-4 cm. From the unchanged origin, the 0.5-day
+window is accepted: whole-column stock differs by 2.77e-6 cm, the
+largest component by 5.38e-5 cm and the bottom exchange by 3.03e-6 cm.
+The participant publishes the two-half candidate and converts its
+bottom exchange to the signed groundwater interface flux. This
+establishes an accepted normal SWAP5 participant window in the
+experimental donor adapter. It does not qualify the tolerance across
+other regimes, replace the pressure criterion in production, or run
+MODFLOW.

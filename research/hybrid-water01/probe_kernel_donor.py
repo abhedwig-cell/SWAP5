@@ -77,8 +77,9 @@ def worker():
     values = pressure[-1].split()[1:] if pressure else steps(destination)[-1].split()[6:118]
     if len(values) != 112:
         raise RuntimeError("Missing pressure state for the kernel")
+    components = audit(destination, "HYBRID_STOCK_FLUX ")[-1].split()[1:7]
     (root / "reply").write_text(
-        f"{ticket} {ending:.17g} {incoming:.17g} {outgoing:.17g} {bottom:.17g} {terminal:.17g}\n" + " ".join(values) + "\n"
+        f"{ticket} {ending:.17g} {incoming:.17g} {outgoing:.17g} {bottom:.17g} {terminal:.17g}\n" + " ".join(values + components) + "\n"
     )
 
 
@@ -88,7 +89,9 @@ def main():
     parser.add_argument("--day-return-work", type=Path, required=True)
     parser.add_argument("--noon-work", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--temporal", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--temporal", action="store_true")
+    mode.add_argument("--water-metric", action="store_true")
     args = parser.parse_args()
     reference, audit_work, noon, output = (p.resolve() for p in (
         args.reference_work, args.day_return_work, args.noon_work, args.output))
@@ -117,12 +120,43 @@ def main():
                     *[str(ROOT / source) for source in sources],
                     str(Path(__file__).with_suffix(".f90").resolve()), "-o", str(executable)],
                    cwd=output, check=True)
-    run = subprocess.run([executable, "temporal"] if args.temporal else [executable], cwd=output, input=f"{stock:.17g}\n",
+    command = [executable]
+    if args.temporal:
+        command.append("temporal")
+    if args.water_metric:
+        command.append("water-metric")
+    run = subprocess.run(command, cwd=output, input=f"{stock:.17g}\n",
                          capture_output=True, text=True, timeout=240)
     (output / "kernel.stdout").write_text(run.stdout)
     (output / "kernel.stderr").write_text(run.stderr)
     if run.returncode:
         raise RuntimeError(run.stdout + run.stderr)
+    if args.water_metric:
+        if hashes != {name: sha(origin / name) for name in names}:
+            raise RuntimeError("Water-metric trials mutated the day-4 checkpoint")
+        lines = run.stdout.splitlines()
+        defects = [[float(value) for value in line.split()[1:]] for line in lines
+                   if line.strip().startswith("TEMPORAL_WATER_DEFECTS_CM ")]
+        committed = next(line.split()[1:] for line in lines if line.startswith("WATER_COMMITTED "))
+        ticket, exchange, interface_flux = int(committed[0]), float(committed[1]), float(committed[2])
+        selected = output / f"job_{ticket:03}/resumed"
+        if ticket != 6 or len(defects) != 2 or max(defects[0]) <= 1e-4 or max(defects[1]) > 1e-4:
+            raise RuntimeError("Unexpected water-metric acceptance results")
+        if not math.isclose(exchange, ledger(selected)[-1][3], abs_tol=1e-13):
+            raise RuntimeError("Kernel did not publish the selected donor exchange")
+        if not math.isclose(interface_flux, exchange*0.01/(0.5*86400), abs_tol=1e-15):
+            raise RuntimeError("Groundwater interface flux conversion is inconsistent")
+        receipt = {"scope": "EXPERIMENTAL_WATER_METRIC_VIA_NORMAL_GROUNDWATER_PARTICIPANT",
+                   "tolerance_cm": 1e-4, "imposed_head_cm": -50.0,
+                   "defect_columns": ["whole_column_stock", "max_component_stock", "bottom_exchange"],
+                   "rejected_0_0625_day_cm": defects[0], "accepted_0_5_day_cm": defects[1],
+                   "selected_ticket": ticket, "bottom_outward_cm": exchange,
+                   "interface_outward_m_per_s": interface_flux,
+                   "selected_endpoint": {name: sha(selected / name) for name in names},
+                   "origin_checkpoint": hashes}
+        (output / "RESULT.json").write_text(json.dumps(receipt, indent=2) + "\n")
+        print(json.dumps(receipt, indent=2))
+        return
     if args.temporal:
         if hashes != {name: sha(origin / name) for name in names}:
             raise RuntimeError("Temporal trials mutated the day-4 checkpoint")

@@ -1,5 +1,6 @@
 module probe_kernel_donor
   use iso_fortran_env, only: real64, int64
+  use ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts
   use mod_kernel_transactions
@@ -10,7 +11,7 @@ module probe_kernel_donor
   implicit none
   type, extends(canonical_state_t) :: state_t
     integer :: column = 0, ticket = 0
-    real(real64) :: stock = 0, pressure(112) = 0
+    real(real64) :: stock = 0, pressure(112) = 0, component_stock(6) = 0
   contains
     procedure :: clone
   end type
@@ -26,6 +27,7 @@ module probe_kernel_donor
   end type
   type, extends(kernel_model_t) :: model_t
     real(real64) :: head = 0
+    logical :: water_metric = .false.
   contains
     procedure :: configure_parameters
     procedure :: execution_admitted
@@ -34,6 +36,7 @@ module probe_kernel_donor
     procedure :: storage
     procedure :: storage_accounting_status
     procedure :: temporal_error
+    procedure :: temporal_assessment
   end type
 contains
   logical function profile_admitted(self, parameters) result(ok)
@@ -86,7 +89,7 @@ contains
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
     integer :: unit, status, command_status, ticket
-    real(real64) :: ending, water_in, water_out, bottom, terminal, pressure(112)
+    real(real64) :: ending, water_in, water_out, bottom, terminal, pressure(112), components(6)
     outcome = trial_outcome_t()
     select type(state)
     type is(state_t)
@@ -98,11 +101,12 @@ contains
       if (command_status /= 0 .or. status /= 0) return
       open(newunit=unit,file='reply',status='old',action='read',iostat=status)
       if (status /= 0) return
-      read(unit,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal, pressure
+      read(unit,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal, pressure, components
       close(unit)
       if (status /= 0) return
       state%stock = ending
       state%pressure = pressure
+      state%component_stock = components
       state%ticket = ticket
       outcome%solver_ok = .true.
       outcome%mass_accounting_complete = .true.
@@ -146,6 +150,35 @@ contains
       end select
     end select
   end function
+  function temporal_assessment(self, full_state, half_state, full_outcome, half1_outcome, half2_outcome, &
+                               attempt_dt) result(value)
+    class(model_t), intent(in) :: self
+    class(transaction_state_t), intent(in) :: full_state, half_state
+    type(trial_outcome_t), intent(in) :: full_outcome, half1_outcome, half2_outcome
+    real(real64), intent(in) :: attempt_dt
+    real(real64) :: value, pressure_defect, defects(3)
+    pressure_defect = self%temporal_error(full_state, half_state)
+    value = pressure_defect
+    if (.not. self%water_metric) return
+    value = huge(0.0_real64)
+    if (attempt_dt <= 0 .or. .not. ieee_is_finite(attempt_dt)) return
+    if (.not. full_outcome%bottom_interface_exchange_available .or. &
+        .not. half1_outcome%bottom_interface_exchange_available .or. &
+        .not. half2_outcome%bottom_interface_exchange_available) return
+    select type(full_state)
+    type is(state_t)
+      select type(half_state)
+      type is(state_t)
+        defects = [abs(full_state%stock-half_state%stock), &
+                   maxval(abs(full_state%component_stock-half_state%component_stock)), &
+                   abs(full_outcome%bottom_outward_exchange_native - &
+                       (half1_outcome%bottom_outward_exchange_native + half2_outcome%bottom_outward_exchange_native))]
+        if (.not. all(ieee_is_finite(defects))) return
+        value = maxval(defects)
+        print *, 'TEMPORAL_WATER_DEFECTS_CM', defects
+      end select
+    end select
+  end function
 end module
 
 program run_kernel_donor
@@ -183,17 +216,49 @@ program run_kernel_donor
     if (.not. ok) error stop 'initialization'
     deallocate(initial)
   end do
-  if (mode == 'temporal') then
+  if (mode == 'temporal' .or. mode == 'water-metric') then
     numerical%transaction%mass_tolerance = 1e-6_real64
     numerical%transaction%max_retries = 0
     numerical%max_committed_substeps = 1
+    model%water_metric = mode == 'water-metric'
     numerical%transaction%temporal_tolerance = 0.05_real64
+    if (model%water_metric) numerical%transaction%temporal_tolerance = 1e-4_real64
     datum%available = .true.
     datum%datum_id = 91_int64
     datum%bottom_boundary_elevation_m = -1d0
     call participant%capture_origin(committed(1),status)
     if (status /= GW_SWAP_PARTICIPANT_OK) error stop 'capture temporal origin'
     window%t0 = 35799d0
+    if (model%water_metric) then
+      window%t1 = 35799.0625d0
+      call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
+                                        datum,window,-0.5d0,exchange,status)
+      if (status /= GW_SWAP_PARTICIPANT_TRIAL_FAILED .or. exchange%valid .or. &
+          participant%has_live_candidate()) error stop 'water defect negative control'
+      call committed(1)%current_time(time,ok)
+      if (.not. ok .or. time /= window%t0 .or. committed(1)%current_revision() /= 0) error stop 'changed origin'
+      print '(a,1x,i0)', 'WATER_REJECTED', status
+      window%t1 = 35799.5d0
+      call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
+                                        datum,window,-0.5d0,exchange,status)
+      if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. exchange%valid) error stop 'water positive control'
+      if (.not. participant%publication_ready(committed(1),window)) error stop 'water publication preflight'
+      if (committed(1)%current_revision() /= 0) error stop 'candidate published early'
+      call participant%commit_candidate(executor,committed(1),window,ok,status)
+      if (.not. ok .or. status /= GW_SWAP_PARTICIPANT_OK) error stop 'water commit'
+      call committed(1)%current_time(time,ok)
+      if (.not. ok .or. time /= window%t1 .or. committed(1)%current_revision() /= 1) error stop 'water endpoint'
+      call committed(1)%snapshot(snapshot,ok)
+      if (.not. ok) error stop 'water snapshot'
+      select type(snapshot)
+      type is(state_t)
+        print '(a,1x,i0,2(1x,es24.16))', 'WATER_COMMITTED', snapshot%ticket, &
+            exchange%bottom_outward_exchange_cm, exchange%q_swap_m_per_s
+      class default
+        error stop 'water snapshot type'
+      end select
+      stop
+    end if
     do i=1,3
       select case (i)
       case (1)
