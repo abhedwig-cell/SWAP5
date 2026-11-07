@@ -9,6 +9,7 @@ from pathlib import Path
 
 import matrix_logical_header as header
 import matrix_logical_publication as publication
+import pond_thermal_writer as fault_support
 from native_n_crc_runtime import run
 
 ENTRY = """
@@ -48,7 +49,7 @@ FIXTURE = """
       end if
       call require(ok,'surface water owner')
       call initialize_matrix_solute(p,9001_int64,T0,cfg%tiles(1)%initial_state%water_content, &
-        spread(.2d0,1,numnod),solute,status)
+        spread(merge(.3d0,.2d0,trim(mode)=='surface-write-previous'),1,numnod),solute,status)
       call require(status==0,'surface chemical owner')
       if (surface_enabled) then
         call solute%snapshot(clock,theta,mobile,stores,revision)
@@ -125,6 +126,7 @@ def execute(native, output, compiler, qualify_publication=False):
     assert subprocess.check_output([compiler, '--version'], text=True).splitlines()[0] == result['compiler']
     events = []
     outcomes = {}
+    publication_faults = []
     for role in ('incumbent', 'candidate'):
         build = json.loads(files[role + '/BUILD.json'])
         path_type = header.PureWindowsPath if result['platform'] == 'WINDOWS' else header.PurePosixPath
@@ -152,6 +154,9 @@ def execute(native, output, compiler, qualify_publication=False):
         args = flags + [str(source), *map(str, objects), '-o', str(executable)]
         response.write_text('\n'.join('"' + arg.replace('\\', '/') + '"' for arg in args))
         run([compiler, '@' + str(response)], output, events, role + '-link')
+        if qualify_publication and role == 'candidate':
+            fault_executable = publication.build_fault_executable(
+                compiler, flags, source, objects, output, events, result['optimization'])
         outcomes[role] = {}
         for tag in ('1', '1t', '2', '3'):
             original = output / role / ('original-' + tag)
@@ -213,13 +218,38 @@ def execute(native, output, compiler, qualify_publication=False):
                 run([executable, 'surface-write', 'unused', fresh, tag],
                     output, events, 'publication-replace-success')
                 assert fresh.read_bytes() == raw and not fresh.with_suffix('.pending').exists()
+                previous = output / role / ('previous-' + tag)
+                run([executable, 'surface-write-previous', 'unused', previous, tag],
+                    output, events, 'publication-previous-generation')
+                old_bytes = previous.read_bytes()
+                assert old_bytes != raw
+                assert zlib.crc32(old_bytes[:-4]) == struct.unpack('<I', old_bytes[-4:])[0]
+                previous_restore = output / role / ('previous-restored-' + tag)
+                run([executable, 'surface-read', previous, previous_restore, tag],
+                    output, events, 'publication-previous-restore')
+                assert previous_restore.read_bytes() == old_bytes
+                for stage in range(2, 6 if os.name == 'nt' else 7):
+                    target = output / role / f'fault-{tag}-{stage}'
+                    target.write_bytes(old_bytes)
+                    label = f'publication-fault-{tag}-{stage}'
+                    event = fault_support.execute(
+                        [fault_executable, 'surface-write-refuse', 'unused', target, tag],
+                        output, label, {'MTPUB_TARGET': str(target), 'MTPUB_FAIL': str(stage)})
+                    assert b'SURFACE_PUBLICATION_REFUSED' in (output / event['stdout']).read_bytes()
+                    pending = target.with_suffix('.pending')
+                    if stage == 6:
+                        assert target.read_bytes() == raw and not pending.exists()
+                    else:
+                        assert target.read_bytes() == old_bytes and pending.read_bytes() == raw
+                    publication_faults.append({'fixture': tag, 'stage': stage, 'event': event})
+
 
     for tag in ('1', '1t', '2', '3'):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
     assert (output / 'incumbent/temporal-direct').read_bytes() == (output / 'candidate/temporal-direct').read_bytes()
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
-        'admitted_malformed': outcomes, 'surface_mass': 0.25, 'private_publication': qualify_publication, 'production_admission': False
+        'publication_faults': publication_faults, 'admitted_malformed': outcomes, 'surface_mass': 0.25, 'private_publication': qualify_publication, 'production_admission': False
     }, indent=2) + '\n')
     assert not any(outcomes['candidate'].values()), outcomes
     print(outcomes)

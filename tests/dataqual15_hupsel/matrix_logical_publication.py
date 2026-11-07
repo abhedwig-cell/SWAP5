@@ -43,3 +43,32 @@ contains
                        '    if(io==0)flush(u,iostat=io)\n    close(u,iostat=close_status)\n'
                        '    if(io==0.and.close_status==0)status=0')
     return (source[:first] + crc + source[last:]).encode()
+
+
+def build_fault_executable(compiler, flags, driver, objects, output, events, optimization):
+    """Link the same writer object to a separately instrumented publisher."""
+    import subprocess
+    from native_n_crc_runtime import run
+    from pond_thermal_writer import ROOT, shim_source
+
+    compiler_c = subprocess.check_output(
+        [compiler, '-print-prog-name=gcc'], text=True).strip()
+    source = ROOT / 'app/support/restart_publish.c'
+    real = output / 'publication-fault-real.o'
+    shim = output / 'publication-fault-shim.c'
+    shim_object = shim.with_suffix('.o')
+    shim.write_text(shim_source(), encoding='utf-8')
+    cflags = ['-' + optimization, '-std=c11']
+    run([compiler_c, *cflags, '-DSWAP5_RESTART_TESTING',
+         '-Dswap5_restart_publish=swap5_restart_publish_real',
+         '-c', source, '-o', real], output, events, 'publication-fault-real')
+    run([compiler_c, *cflags, '-c', shim, '-o', shim_object],
+        output, events, 'publication-fault-shim')
+    assert objects[-1] == output / 'candidate/publisher.o'
+    executable = output / 'candidate/publication-fault.exe'
+    response = executable.with_suffix('.args')
+    args = [*flags, str(driver), *map(str, objects[:-1]),
+            str(real), str(shim_object), '-o', str(executable)]
+    response.write_text('\n'.join('"' + arg.replace('\\', '/') + '"' for arg in args))
+    run([compiler, '@' + str(response)], output, events, 'publication-fault-link')
+    return executable
