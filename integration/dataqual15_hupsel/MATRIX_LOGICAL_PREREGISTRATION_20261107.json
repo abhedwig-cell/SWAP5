@@ -1,0 +1,13 @@
+{
+  "phase": "PREREGISTERED_PRIVATE_MATRIX_RAW_LOGICAL_READER",
+  "baseline": "2aa48743a85009734ea22f9bc610cc104e801cc7",
+  "canonical": "51b3e7305b7da4af58a5427f86166a570a9cef69",
+  "source": "src/adapter/mod_matrix_joint_restart_file.f90",
+  "source_sha256": "c240b8efd994e4a3f1408e2d86fba371a6568af978c5985973cf2b13fb34ae3e",
+  "finding": "S5MJ0001/2/3 header reads time_bound and has_history directly as host logical values before any canonical raw-byte validation. Sibling age/mineral/reactive-N readers already validate raw representations; matrix reader does not.",
+  "scope": "Private complete matrix reader postimage only. Validate both raw host logical byte arrays against actual compiler true/false representations before interpretation. No production src/app/reference edits, writer/layout/CRC/interface/tolerance/retry/mass/restart-owner changes.",
+  "qualification": "Fresh coherent current-provider baseline Windows/POSIX O0/O2. Full original matrix route and native driver six exponents plus all original semantic/CRC refusals; exact own fresh endpoints. Recompile complete private matrix source, identical .mod interface, rerun all original controls. Malformed valid-CRC logical bytes at both fields for temporal/surface and base files must refuse with both targets empty. Retain actual baseline admissions/refusals. Expected focused fresh builds under five minutes per optimization, no long original-project trajectories.",
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "next": "Implement and execute private bounded reader qualification, independent evidence/corruption validation, integrate qualification cluster only. Deployment requires separate admission successor."
+}
