@@ -39,8 +39,25 @@ transfer and sorptivity action history. The existing1e-12 publication-plane
 guard, mass/temporal/nonlinear controls, default route and restart schema remain
 unchanged. Fractions are scratch solver coordinates, never persisted state or
 averages of elapsed clocks. Owning implementation:
-`tests/dataqual15/build_joint_bottom_contact_candidate.py`. Qualification remains
-pending; the live V4 stagnation and all diagnostic costs are retained separately.
+`tests/dataqual15/build_joint_bottom_contact_candidate.py`. The real lower-contact operator, both Newton sides, action history and refusals
+pass O0/O2 together with all unchanged border/entry/upper/ordinary contracts.
+The actual failed source passes every original native guard in47.277s at O0
+and20.918s at O2. Three consecutive sources through245.600 pass in123.357s/43.315s,
+with byte-identical progress and cost rows. Fresh O0 day-one physical payload and
+all four CSVs, and O2 day-one payload, are exact to V4. No diagnostic restart is
+promoted to an own-restart qualification.
+
+The V4 run is intentionally stopped after7805.630s with245 complete days and
+maximum daily residual3.394925574690817e-12cm. Its actual return4294967295 and
+raw runner censored=false remain unchanged; `CENSOR_ADJUDICATION.json` explicitly
+records external termination after the discriminating repair. This is neither a
+natural model failure nor a481-day PASS. The exact old own19-to20/32-to33
+results retain their V4 executable identity. New V5 original-initialization481
+and strict own3-to4/year365-to367 are separate pending gates.
+
+Authority: `LOWER_PERCHED245594_EVIDENCE_20261107.zip` (SHA-256
+`6e1048762b8005a11ad230955b00a4b8d39ae5e88a16225450de0dce790a4e84`)
+and `TRANSITION65_RECOVERY_20261106.json` in `integration/dataqual15/`.
 
 The quotient-repaired original-initialization request terminates after245 complete
 days and4727.031s, at last completed source245.3769999999992. Maximum daily water

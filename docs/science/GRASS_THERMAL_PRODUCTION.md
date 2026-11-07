@@ -94,13 +94,14 @@ rank0. This local bracket is not a proof about every possible full-column root.
 It does locate the remaining discontinuous entry barrier after source numerical
 input was restored, rather than supporting a speculative stale-source repair.
 
-The next implementation must solve the active entry/contact constraint and
-domain transfers jointly with Richards and macropore storage, publishing one
-identical conservative transfer on both sides. Perched topology and sorptivity
-action history must remain in that same accepted solution. A graph-completed or
-otherwise corrected contact model must be explicitly named and qualified;
-smoothing or an outer scalar correction is not original historical equivalence.
-No Andelst481-day or own year-boundary completion is claimed.
+The subsequent [joint-contact research](ANDELST_JOINT_CONTACT_RESEARCH.md)
+implements the active head/contact and transfer solve without changing this
+Grassgrowth admission. Its V4 original-input trajectory completes245 days, then
+is intentionally censored at a distinct lower perched-contact stagnation. V5
+completes that missing contact in the same bordered solve and passes the actual
+failed source and following windows on O0/O2. Its new481-day and exact own-year
+execution gates remain open. These corrected research results do not establish
+historical sharp-law equivalence or change the production-default contact law.
 
 ## Admission evidence
 
