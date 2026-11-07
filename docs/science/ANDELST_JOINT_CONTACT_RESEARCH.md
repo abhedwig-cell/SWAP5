@@ -19,6 +19,35 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
+### Pore volume, same-owner flux and current surface successor
+
+Private V8 addresses three actual transitions. At 300.317 the full and half
+solves choose zero and tiny negative pressure at node 11, changing the
+drainage level by 2.44 cm with negligible stock difference. Two branch-order
+changes and a shared current macro-view control still refuse. V8 uses bounded
+disconnection weights based on the original physical undersaturation-volume
+scale within its positive-upper-region and saturated-bottom scope. A
+vanishing pocket contributes zero weight. The ordinary projection outside
+this scope and the zero-head macropore transfer graph are retained.
+
+The first volume replay passes 300.317 and reaches a separate source-level
+matrix mass refusal at 300.375. The converged Richards residual is near
+roundoff; re-evaluating the final rates through a separately reconstructed
+pond view changes the booked matrix exchange. The same inner rate owner now
+supplies the converged macro receipt, including the domain and top partition.
+The unchanged mass and receipt checks pass.
+
+At 300.542 both endpoint ponds are dry but one solve's drainage still
+consumes a positive incoming pond. V8 uses the current surface in the same
+residual and restores it on failed joint trials. The final read-only O2
+replay accepts all 349 source intervals through day 301 in 103.440 s, with
+maximum source water residual 8.392e-14 cm and no restart publication. The
+actual 256.873 and 300.317 three-source O0/O2 controls have exact progress
+and cost, and original-init day one matches across O0/O2 in all four CSVs and
+the physical checkpoint payload. The fresh original-input 481-day run and own
+3–4, 256–257, 300–301 and 365–367 remain separate. The production-default and
+historical sharp model are unchanged.
+
 ### Connectivity and positive pond research successor
 
 The V6 actual rollback isolates a nonlocal drainage jump at the last negative

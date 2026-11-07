@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
+  "next_action": "Follow active original-input481 and all exact own windows to terminal; correct new evidence-backed failures if encountered.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -749,7 +749,7 @@
     "bytes": 7015201,
     "members": 889
   },
-  "scope_note": "Named V2 through V7 records preserve actual failures and censors. current_execution is the terminal corrected V7 result. Historical/default, full481, own year and whole-science gates remain separate.",
+  "scope_note": "Named V2 through V7 preserve actual failures or censors. current_execution is the active corrected V8 run. Historical/default, full481, own year and whole-science gates remain separate.",
   "limiter_ratio_admission_selection": {
     "pr": 1602,
     "final_qualified_head": "888bafb2933202fc882a0d5ecaae82aa9c1cb620",
@@ -1217,84 +1217,28 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "TERMINAL_SOURCE300317_TO300319_REFUSAL",
-    "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
-    "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
-    "binding": "5b0960078f2b9363a11974b5288c03dafc86c348737bd33d6aae61954fdb128c",
+    "status": "ACTIVE_FRESH_CORRECTED_V8_ORIGINAL_INPUT481",
+    "model": "ANDELST_JOINT_PORE_VOLUME_CONNECTIVITY_V8",
+    "executable_sha256": "4b69d1fdd0925aafa9f1de6878624519ffc07d7392f1f14867c9ebd3146e552a",
+    "binding": "d50601f57e2142e1f2472421d1a42dfcca9a1c59d073c9fdcc42bea53b1ec11d",
     "original_initialization": true,
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
     "whole481": false,
     "own365_to367": false,
-    "run": "s5-connectivity-final-original481-O2",
-    "capture": "s5-connectivity-final-captured-own-O2",
-    "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
-    "own3_to4": true,
-    "own3_to4_receipt": {
-      "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
-      "sha256": "d52e6cf6d99ae8ff464505618982b15c935bea8adb6809434bd4e0116802332b",
-      "bytes": 405594,
-      "members": 31,
-      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
-      "seconds": 162.6260969999712,
-      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
-      "input_restart_sha256": "bc0e8336f0af1ec0e16a936f999314f5e6a7e97fec753293dc3cc13f555fb723",
-      "all_progress_rows_exact": true,
-      "progress_rows": 504,
-      "entire_checkpoint4_byte_exact": true,
-      "checkpoint4_sha256": "f3c67bb4302ec21ae6ae0b27140a67bd7f4cc4bd12a000735ce5fc4e828c6fda",
-      "same_input_binding": true,
-      "historical_original_equivalence": false
-    },
-    "own256_to257": true,
-    "own256_to257_receipt": {
-      "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
-      "seconds": 306.7012215000577,
-      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
-      "input_restart_sha256": "7e3768c56cd61e8b88d6e9d33cfcbf5a510044fa770a36f43df549ffaca89442",
-      "all_progress_rows_exact": true,
-      "progress_rows": 514,
-      "entire_checkpoint257_byte_exact": true,
-      "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
-      "same_input_binding": true,
-      "historical_original_equivalence": false
-    },
-    "completed_days": 300,
-    "seconds": 6787.053232599981,
-    "returncode": 1,
-    "censored": false,
-    "maximum_daily_water_residual_cm": 9.41628933885599e-12,
-    "last_completed_source_interval": 300.31700000000194,
-    "last_attempted_source_interval": 300.31900000000195,
-    "own_year_not_started": true,
-    "terminal_source": {
-      "cost": {
-        "t0": " 3.00317000000001940E+002",
-        "t1": " 3.00319000000001950E+002",
-        "completed": "F",
-        "nonlinear_iterations": "13446",
-        "headcalc_calls": "3137",
-        "linear_solves": "13446",
-        "backtracking_attempts": "34925",
-        "accepted_substeps": "509",
-        "min_accepted_dt": " 2.27373675443232059E-013",
-        "max_accepted_dt": " 3.12500000063664629E-005"
-      },
-      "progress": {
-        "day": "301",
-        "segment": "165",
-        "t0": " 3.00317000000001940E+002",
-        "t1": " 3.00319000000001950E+002",
-        "attempts": "1091",
-        "solver_rejections": "54",
-        "temporal_rejections": "526",
-        "mass_rejections": "2",
-        "residual_cm": " 0.00000000000000000E+000"
-      },
-      "immutable_rollback_sha256": "2d2fece2271ef1251cbff45e5b883b5aa89a21073b7e71395fa3a82282f6073f",
-      "last_daily_checkpoint_sha256": "c938555368bb60e1482e35ffe2caf372c81c6e410ffe460e06856aa09a881c9a",
-      "reason": "At node11 exact zero vs tiny negative selects different drainage branches in full/half. Real rate trace also finds lagged macro groundwater geometry. Causal shared current-view correction is under test; the Rutter line only reports unchanged rollback."
-    }
+    "whole_science": false,
+    "production_default_contact_law_admitted": false,
+    "run": "s5-pore-volume-current-surface-original481-O2",
+    "capture": "s5-pore-volume-current-surface-captured-own-O2",
+    "native_source_candidate": "7acfa9e89f492e2661d7c8a177a39259e48583b2",
+    "timeout_seconds": 16000,
+    "own_selected": [
+      "3-4",
+      "256-257",
+      "300-301",
+      "365-367"
+    ],
+    "next_action": "Follow active original-input481 and all exact own windows to terminal; correct new evidence-backed failures if encountered."
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -2502,6 +2446,17 @@
         "bytes": 1955673,
         "members": 20
       }
+    },
+    "current_macro_view_control": {
+      "seconds": 39.4700727998279,
+      "same_progress_and_cost_exact": true,
+      "native_refusal": true,
+      "archive": {
+        "name": "V7_SOURCE300317_SHARED_VIEW_CONTROL_20261107.zip",
+        "sha256": "78786f3b28925f59fdc4aabade3bdc990d6ee4c3aa8a94ede76de09dcf1f404f",
+        "bytes": 2042234,
+        "members": 25
+      }
     }
   },
   "v7_terminal300317_canonical_receipt": {
@@ -2516,6 +2471,263 @@
       "sha256": "02f99f6a4ab3c34a7a0dea45fc9fcb697273f25f57f5a9242e23c8a6f09dd5b8",
       "bytes": 29386
     },
-    "scope": "Documentation and read-only execution evidence only; no production or test code changes."
+    "scope": "Documentation and read-only execution evidence only; no production or test code changes.",
+    "merge": "9fb3705b94b93d9181125a678bd6dd853623c368",
+    "parents": [
+      "1940cebc0bfae1dcb9eb3158727147b29612583f",
+      "8121e6eac6e0277664c92dd2df8da1ad52df2c3e"
+    ],
+    "full_tree_exact_final_head": true,
+    "production_and_test_delta": false,
+    "docs_run": 42349879411,
+    "docs_job": 128335542703
+  },
+  "predecessor_v7_terminal_execution": {
+    "status": "TERMINAL_SOURCE300317_TO300319_REFUSAL",
+    "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
+    "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+    "binding": "5b0960078f2b9363a11974b5288c03dafc86c348737bd33d6aae61954fdb128c",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "whole481": false,
+    "own365_to367": false,
+    "run": "s5-connectivity-final-original481-O2",
+    "capture": "s5-connectivity-final-captured-own-O2",
+    "next_action": "Test the same current physical groundwater view in drainage and both matrix/macropore rate evaluations on the exact source300.317 rollback.",
+    "own3_to4": true,
+    "own3_to4_receipt": {
+      "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
+      "sha256": "d52e6cf6d99ae8ff464505618982b15c935bea8adb6809434bd4e0116802332b",
+      "bytes": 405594,
+      "members": 31,
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 162.6260969999712,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "bc0e8336f0af1ec0e16a936f999314f5e6a7e97fec753293dc3cc13f555fb723",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "f3c67bb4302ec21ae6ae0b27140a67bd7f4cc4bd12a000735ce5fc4e828c6fda",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "own256_to257": true,
+    "own256_to257_receipt": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
+      "seconds": 306.7012215000577,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "7e3768c56cd61e8b88d6e9d33cfcbf5a510044fa770a36f43df549ffaca89442",
+      "all_progress_rows_exact": true,
+      "progress_rows": 514,
+      "entire_checkpoint257_byte_exact": true,
+      "checkpoint257_sha256": "0c12aaf7e3542aa76c9bb16ad861d4401f987cd3890846733c0adfa52a63f87b",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "completed_days": 300,
+    "seconds": 6787.053232599981,
+    "returncode": 1,
+    "censored": false,
+    "maximum_daily_water_residual_cm": 9.41628933885599e-12,
+    "last_completed_source_interval": 300.31700000000194,
+    "last_attempted_source_interval": 300.31900000000195,
+    "own_year_not_started": true,
+    "terminal_source": {
+      "cost": {
+        "t0": " 3.00317000000001940E+002",
+        "t1": " 3.00319000000001950E+002",
+        "completed": "F",
+        "nonlinear_iterations": "13446",
+        "headcalc_calls": "3137",
+        "linear_solves": "13446",
+        "backtracking_attempts": "34925",
+        "accepted_substeps": "509",
+        "min_accepted_dt": " 2.27373675443232059E-013",
+        "max_accepted_dt": " 3.12500000063664629E-005"
+      },
+      "progress": {
+        "day": "301",
+        "segment": "165",
+        "t0": " 3.00317000000001940E+002",
+        "t1": " 3.00319000000001950E+002",
+        "attempts": "1091",
+        "solver_rejections": "54",
+        "temporal_rejections": "526",
+        "mass_rejections": "2",
+        "residual_cm": " 0.00000000000000000E+000"
+      },
+      "immutable_rollback_sha256": "2d2fece2271ef1251cbff45e5b883b5aa89a21073b7e71395fa3a82282f6073f",
+      "last_daily_checkpoint_sha256": "c938555368bb60e1482e35ffe2caf372c81c6e410ffe460e06856aa09a881c9a",
+      "reason": "At node11 exact zero vs tiny negative selects different drainage branches in full/half. Real rate trace also finds lagged macro groundwater geometry. Causal shared current-view correction is under test; the Rutter line only reports unchanged rollback."
+    }
+  },
+  "pore_volume_v8_research": {
+    "status": "FINAL_SOURCE_O0_O2_PASS_AND_READ_ONLY_THROUGH301_FRESH481_ACTIVE",
+    "qualified_full_run": false,
+    "strict_own_proof": false,
+    "actual_source300317": {
+      "day": "301",
+      "segment": "1",
+      "t0": " 3.00317000000001940E+002",
+      "t1": " 3.00319000000001950E+002",
+      "attempts": "67",
+      "solver_rejections": "0",
+      "temporal_rejections": "35",
+      "mass_rejections": "0",
+      "residual_cm": "-5.65832103394114938E-014"
+    },
+    "actual_source300375": {
+      "day": "301",
+      "segment": "32",
+      "t0": " 3.00374999999999204E+002",
+      "t1": " 3.00376999999999214E+002",
+      "attempts": "1",
+      "solver_rejections": "0",
+      "temporal_rejections": "0",
+      "mass_rejections": "0",
+      "residual_cm": "-2.56739074444567450E-014"
+    },
+    "later_failure_progress": {
+      "day": "301",
+      "segment": "118",
+      "t0": " 3.00541999999999007E+002",
+      "t1": " 3.00543999999999016E+002",
+      "attempts": "91",
+      "solver_rejections": "34",
+      "temporal_rejections": "46",
+      "mass_rejections": "0",
+      "residual_cm": " 0.00000000000000000E+000"
+    },
+    "later_failure_cost": {
+      "t0": " 3.00541999999999007E+002",
+      "t1": " 3.00543999999999016E+002",
+      "completed": "F",
+      "nonlinear_iterations": "474",
+      "headcalc_calls": "174",
+      "linear_solves": "474",
+      "backtracking_attempts": "474",
+      "accepted_substeps": "11",
+      "min_accepted_dt": " 3.72524233682725026E-012",
+      "max_accepted_dt": " 1.95312486539478414E-006"
+    },
+    "successful_windows": 117,
+    "archive": {
+      "name": "V8_PORE_VOLUME_AND_EXCHANGE_EVIDENCE_20261107.zip",
+      "sha256": "6cc6af51461b7240f881ac5765ea43bf856908461be83b5db3458ec15014a943",
+      "bytes": 16731125,
+      "members": 246
+    },
+    "max_residual_explained_by_rebuilt_exchange": true,
+    "next_action": "Follow active original-input481 and all exact own windows to terminal; correct new evidence-backed failures if encountered.",
+    "source300317-three": {
+      "O0_seconds": 2.493940999964252,
+      "O2_seconds": 1.0966739000286907,
+      "exact_progress_cost": true
+    },
+    "source256873": {
+      "O0_seconds": 1.9962024001870304,
+      "O2_seconds": 1.1200782000087202,
+      "exact_progress_cost": true
+    },
+    "surface_published_from_same_candidate": true,
+    "compiled_providers_exact_to_349_source_probe": 201,
+    "read_only_through301": {
+      "seconds": 103.4403367000632,
+      "accepted_source_intervals": 349,
+      "maximum_abs_source_water_residual_cm": 8.391551342690207e-14,
+      "all_original_guards": true,
+      "no_restart_published": true,
+      "not_full_or_own_proof": true
+    },
+    "final_three_sources": [
+      {
+        "progress": {
+          "day": "301",
+          "segment": "1",
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "attempts": "67",
+          "solver_rejections": "0",
+          "temporal_rejections": "35",
+          "mass_rejections": "0",
+          "residual_cm": "-5.58060542221738842E-014"
+        },
+        "cost": {
+          "t0": " 3.00317000000001940E+002",
+          "t1": " 3.00319000000001950E+002",
+          "completed": "T",
+          "nonlinear_iterations": "532",
+          "headcalc_calls": "201",
+          "linear_solves": "532",
+          "backtracking_attempts": "532",
+          "accepted_substeps": "32",
+          "min_accepted_dt": " 6.24999998137809598E-005",
+          "max_accepted_dt": " 6.25000000127329258E-005"
+        }
+      },
+      {
+        "progress": {
+          "day": "301",
+          "segment": "32",
+          "t0": " 3.00374999999999204E+002",
+          "t1": " 3.00376999999999214E+002",
+          "attempts": "1",
+          "solver_rejections": "0",
+          "temporal_rejections": "0",
+          "mass_rejections": "0",
+          "residual_cm": " 1.51822998617490157E-014"
+        },
+        "cost": {
+          "t0": " 3.00374999999999204E+002",
+          "t1": " 3.00376999999999214E+002",
+          "completed": "T",
+          "nonlinear_iterations": "6",
+          "headcalc_calls": "3",
+          "linear_solves": "36",
+          "backtracking_attempts": "6",
+          "accepted_substeps": "1",
+          "min_accepted_dt": " 2.00000000000954969E-003",
+          "max_accepted_dt": " 2.00000000000954969E-003"
+        }
+      },
+      {
+        "progress": {
+          "day": "301",
+          "segment": "118",
+          "t0": " 3.00541999999999007E+002",
+          "t1": " 3.00543999999999016E+002",
+          "attempts": "91",
+          "solver_rejections": "0",
+          "temporal_rejections": "47",
+          "mass_rejections": "0",
+          "residual_cm": "-4.55451648617710703E-014"
+        },
+        "cost": {
+          "t0": " 3.00541999999999007E+002",
+          "t1": " 3.00543999999999016E+002",
+          "completed": "T",
+          "nonlinear_iterations": "861",
+          "headcalc_calls": "273",
+          "linear_solves": "861",
+          "backtracking_attempts": "861",
+          "accepted_substeps": "44",
+          "min_accepted_dt": " 2.44140608174348017E-007",
+          "max_accepted_dt": " 6.24999956926330924E-005"
+        }
+      }
+    ],
+    "original_init_day1": {
+      "seconds_O0": 29.522089600097388,
+      "all_4_CSVs_O0_O2_exact": true,
+      "physical_payload_exact": true
+    },
+    "final_source_evidence": {
+      "name": "V8_CURRENT_SURFACE_FINAL_SOURCE_EVIDENCE_20261107.zip",
+      "sha256": "924ca56b0440966f0f024118fb041b765cc5ed4a43aa613ada939ae74ac73f4e",
+      "bytes": 7580206,
+      "members": 322
+    },
+    "canonical_scope_base": "9fb3705b94b93d9181125a678bd6dd853623c368"
   }
 }
