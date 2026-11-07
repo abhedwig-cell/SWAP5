@@ -1,0 +1,30 @@
+{
+  "status": "METADATA_ONLY_PEER_RECONCILIATION_EXACT_QUALIFICATION_INHERITED",
+  "prior_canonical": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
+  "current_canonical": "912f1dabbe5b764a8a47e54a8a3a1749b572b2c3",
+  "peer_pr": 1606,
+  "qualified_gate_head": "310c90be94686c9d6e8bd4e5d0ee36a3906a4082",
+  "incoming_paths": [
+    ".github/workflows/dataqual15-joint-contact.yml",
+    "docs/science/ANDELST_JOINT_CONTACT_RESEARCH.md",
+    "docs/science/GRASS_THERMAL_PRODUCTION.md",
+    "docs/science/SOURCE_EVENT_ENDPOINTS.md",
+    "docs/status-a/CURRENT_ARCHITECTURE.md",
+    "docs/status-a/CURRENT_STATUS.md",
+    "docs/status-a/TRACEABILITY.md",
+    "integration/dataqual15/BOTTOM_CONTACT_OWN3_EVIDENCE_20261107.zip",
+    "integration/dataqual15/LOWER_PERCHED245594_EVIDENCE_20261107.zip",
+    "integration/dataqual15/TRANSITION65_RECOVERY_20261106.json",
+    "tests/dataqual15/build_joint_bottom_contact_candidate.py",
+    "tests/dataqual15/continue_joint_entry.py",
+    "tests/dataqual15/joint_bottom_contact_driver.f90",
+    "tests/dataqual15/run_joint_entry_contracts.py"
+  ],
+  "intersection_with_qualified_gate_status_scope_data_surface": [],
+  "production_trees_unchanged": true,
+  "all_bound_blobs_unchanged": true,
+  "docs_resolution": "Kept the complete new writer paragraph and the complete latest peer document body in all three Status-A fronts. Exact original/body comparisons were checked; no peer text was dropped.",
+  "no_existing_gate_or_qualification_relaxed": true,
+  "current_branch_merge": "874cfe2ad7d851d3a8c15e14228b46d1536ef1e2",
+  "required": "Focused documentation and selected final metadata CI; no production/runtime or executable qualification input changed."
+}

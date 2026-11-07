@@ -1,5 +1,5 @@
 {
-  "phase": "PHYSICAL_SOURCE_QUALIFIED_EOF_ONLY_GATE_BYTE_REQUALIFICATION_RUNNING",
+  "phase": "QUALIFIED_GATE_INHERITED_AFTER_METADATA_ONLY_CANONICAL_RECONCILIATION_FINAL_CI_PENDING",
   "branch": "codex/autonomous-migration-20261103",
   "canonical": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
   "cold_reference": "05d2df1e937f1f6257d0d47709696c8d1e321391",
@@ -133,11 +133,18 @@
   },
   "final_ci": "Required at final persisted metadata head before expected-head canonical integration.",
   "gate_normalization": {
-    "record": "JOINT_WRITER_PHASE_PRODUCTION_GATE_NORMALIZATION_20261107.json",
-    "source_checkpoint": "b7be629f0e4cfdf849e1dd2f33a2d8b820c62b0e",
+    "status": "PASS28 scope refusals and full Windows v2 current shared entry at310; actual POSIX owning/F-CI also PASS final310",
     "complete_AST_unchanged": true,
-    "scope_regenerated": true,
-    "scope_controls_and_Windows_current_entry": "RUNNING",
-    "final_CI_required": true
+    "scope_regenerated": true
+  },
+  "canonical_reconciled": "912f1dabbe5b764a8a47e54a8a3a1749b572b2c3",
+  "physical_baseline": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
+  "qualified_gate_head": "310c90be94686c9d6e8bd4e5d0ee36a3906a4082",
+  "canonical_race": {
+    "caught_before_merge": true,
+    "merge_called": false,
+    "source_app_reference_delta": false,
+    "bound_gate_scope_status_data_delta": false,
+    "record": "JOINT_WRITER_PHASE_PRODUCTION_PEER_METADATA_RECONCILIATION_20261107.json"
   }
 }
