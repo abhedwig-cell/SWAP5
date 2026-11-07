@@ -101,6 +101,16 @@ def audit(native,files,archive_sha):
  events=json.loads(files['EVENTS.json']);assert len(events)==172 and all(e['returncode']==0 for e in events);seen=set();counts={}
  for role in ('incumbent','candidate'):
   b=json.loads(native[role+'/BUILD.json']);m=r['builds'][role];assert g.sha(files[m['executable']])==m['executable_sha256'];source=files[role+'/header.f90'];assert source==projection(native[role+'/'+b['drivers']['joint']['source']])and g.sha(source)==m['source_sha256'];assert len(m['objects'])==284 and all(g.sha(native[p])==h for p,h in m['objects'].items());counts[role]=dict(canonical=0,accepted_malformed=0,refused_malformed=0)
+ q=PureWindowsPath if r['platform']=='WINDOWS'else PurePosixPath
+ for role in ('incumbent','candidate'):
+  build=json.loads(native[role+'/BUILD.json']);oldroot=q(build['bindings'][0]['object']).parent.parent
+  paths=[q(x['object']).relative_to(oldroot).as_posix()for x in build['bindings']]+[role+'/publisher.o'];assert list(r['builds'][role]['objects'])==paths
+  compile_event=next(e for e in events if e['label']==role+'-compile');link_event=next(e for e in events if e['label']==role+'-link')
+  fc=compile_event['command'][0];root=q(compile_event['command'][-1]).parent.parent;work=root/role;providers=root/'providers';obj=work/'header.o'
+  flags=[f for f in build['flags']if not f.startswith(('-I','-J'))]+['-I'+str(providers/role),'-I'+str(providers/'fixture'),'-I'+str(providers/'incumbent'),'-J'+str(work)]
+  assert compile_event['command']==[fc,*flags,'-c',str(work/'header.f90'),'-o',str(obj)]
+  args=flags+(['-Wl,--stack,16777216']if r['platform']=='WINDOWS'else[])+[str(obj),*map(str,(providers/p for p in paths)),'-o',str(root/r['builds'][role]['executable'])]
+  response='\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n';assert files[role+'/header.args'].replace(b'\r\n',b'\n')==response.encode();assert link_event['command']==[fc,'@'+str(work/'header.args')]
  for row in r['rows']:
   key=(row['role'],row['exponent'],row['kind'],row['field'],row['value']);assert key not in seen;seen.add(key)
   role,exponent,kind,field,value=key;assert role in counts and exponent in g.original.EXPONENTS and kind in ('base','temporal')
