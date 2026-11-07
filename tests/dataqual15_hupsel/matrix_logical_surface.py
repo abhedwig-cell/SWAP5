@@ -8,6 +8,7 @@ import zlib
 from pathlib import Path
 
 import matrix_logical_header as header
+import matrix_logical_publication as publication
 from native_n_crc_runtime import run
 
 ENTRY = """
@@ -29,7 +30,7 @@ FIXTURE = """
     boesten=trim(exponent_argument)=='3'
     cfg%tiles(1)%template%numerical_continuation_layout_id=FMR_NUMERICAL_CONTINUATION_NONE
     if (boesten) cfg%tiles(1)%template%optional_state_layout_id=FMR_OPTIONAL_STATE_LAYOUT_BOESTEN_EVAPORATION
-    if (trim(mode)=='surface-write') then
+    if (index(trim(mode),'surface-write')==1) then
       if (boesten) then
         pair%spev=2d0
         pair%saev=.5d0
@@ -71,7 +72,12 @@ FIXTURE = """
     end if
     call write_matrix_joint_restart_file(trim(endpoint_path),column,cfg%tiles(1)%template, &
       670001_int64,water,solute,status,allow_surface_mass=.true.)
-    call require(status==JOINT_OK,'surface checkpoint written')
+    if (trim(mode)=='surface-write-refuse') then
+      call require(status/=JOINT_OK,'publication must fail closed')
+      print '(A)','SURFACE_PUBLICATION_REFUSED'
+    else
+      call require(status==JOINT_OK,'surface checkpoint written')
+    end if
   end subroutine
 """
 
@@ -85,7 +91,7 @@ def project(raw):
     return source.replace("merge(0,1,trim(mode)=='header-base')", "merge(2,0,trim(exponent_argument)=='3')").encode()
 
 
-def execute(native, output, compiler):
+def execute(native, output, compiler, qualify_publication=False):
     files, digest = header.source_files(native)
     output.mkdir(parents=True)
     for name, data in files.items():
@@ -110,6 +116,18 @@ def execute(native, output, compiler):
         source.write_bytes(project(files[role + '/' + build['drivers']['joint']['source']]))
         flags = [flag for flag in build['flags'] if not flag.startswith(('-I', '-J'))]
         flags.extend('-I' + str(output / directory) for directory in (role, 'fixture', 'incumbent'))
+        if qualify_publication and role == 'candidate':
+            runtime = header.g
+            original = runtime.raw(runtime.guard()['baseline'], runtime.SOURCE)
+            writer = output / role / 'matrix_publication.f90'
+            writer.write_bytes(publication.postimage(runtime.postimage(original)))
+            replacement = output / role / 'matrix_publication.o'
+            run([compiler, *flags, '-J' + str(output / role), '-c', writer,
+                 '-o', replacement], output, events, 'publication-compile')
+            indices = [i for i, binding in enumerate(build['bindings'])
+                       if binding['original'].replace(chr(92), '/').endswith('/' + runtime.SOURCE)]
+            assert len(indices) == 1
+            objects[indices[0]] = replacement
         executable = output / role / 'surface.exe'
         response = output / role / 'surface.args'
         args = flags + [str(source), *map(str, objects), '-o', str(executable)]
@@ -145,11 +163,33 @@ def execute(native, output, compiler):
                     if accepted:
                         admissions.append([offset, value])
             outcomes[role][tag] = admissions
+            if qualify_publication and role == 'candidate':
+                target = output / role / ('publish-' + tag)
+                pending = target.with_suffix('.pending')
+                target.write_bytes(raw)
+                pending.write_bytes(b'occupied pending')
+                run([executable, 'surface-write-refuse', 'unused', target, tag],
+                    output, events, 'publication-occupied-pending')
+                assert target.read_bytes() == raw and pending.read_bytes() == b'occupied pending'
+                failed = output / role / ('directory-' + tag)
+                failed.mkdir()
+                marker = failed / 'preserved'
+                marker.write_bytes(b'destination marker')
+                run([executable, 'surface-write-refuse', 'unused', failed, tag],
+                    output, events, 'publication-replace-refused')
+                assert marker.read_bytes() == b'destination marker'
+                assert failed.with_suffix('.pending').read_bytes() == raw
+                fresh = output / role / ('replace-' + tag)
+                fresh.write_bytes(b'previous generation')
+                run([executable, 'surface-write', 'unused', fresh, tag],
+                    output, events, 'publication-replace-success')
+                assert fresh.read_bytes() == raw and not fresh.with_suffix('.pending').exists()
+
     for tag in ('2', '3'):
         assert (output / 'incumbent' / ('original-' + tag)).read_bytes() == (output / 'candidate' / ('original-' + tag)).read_bytes()
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
-        'admitted_malformed': outcomes, 'surface_mass': 0.25, 'production_admission': False
+        'admitted_malformed': outcomes, 'surface_mass': 0.25, 'private_publication': qualify_publication, 'production_admission': False
     }, indent=2) + '\n')
     assert not any(outcomes['candidate'].values()), outcomes
     print(outcomes)
@@ -160,5 +200,7 @@ if __name__ == '__main__':
     parser.add_argument('native', type=Path)
     parser.add_argument('output', type=Path)
     parser.add_argument('compiler')
+    parser.add_argument('--qualify-publication', action='store_true')
     arguments = parser.parse_args()
-    execute(arguments.native.resolve(), arguments.output.resolve(), arguments.compiler)
+    execute(arguments.native.resolve(), arguments.output.resolve(), arguments.compiler,
+            arguments.qualify_publication)
