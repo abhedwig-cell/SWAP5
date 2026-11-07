@@ -19,6 +19,46 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
+### Zero-head saturated-transfer research successor
+
+V5 naturally terminates after256 completed days in6297.016s, at source
+256.742-to256.743. Maximum completed daily water residual is
+3.394925574690817e-12cm. Its strict own245-to246 passes in1060.016s:
+all512 progress rows and the complete day246 stream are byte-exact. Its year
+restart never starts. Neither the failed full request nor the exact one-day
+restart establishes481-day completion.
+
+The unchanged native rollback seed isolates a distinct saturated-transfer
+discontinuity at zero matrix head. Five actual trial states have opposite-sign
+residuals between the zero and0.4342826cm/day transfer endpoints at node21.
+The top Jacobian agrees with independent differences within1.44e-11; adding
+that column does not repair the source. Stable sorptivity differences, a head
+correction certificate and the positive analytic pond donor also do not repair
+it. These failed and diagnostic-only experiments retain their actual costs.
+
+Private V6 adds a trial-local zero-head fraction to the existing conservative
+bordered solve. It scales the same signed saturated transfer in the residual
+and accepted response, with an unchanged1e-12 zero-head publication guard.
+No default source, physical endpoint, numerical tolerance or persisted schema
+changes. A rejected joint trial also restores its saved dynamic surface result,
+boundary and surface area with its saved state. Without that restoration the
+native source solves but fails the original surface-provenance guard; restoring
+the actual tuple closes the guard without inventing a receipt.
+
+The real saturated operator's endpoint, action, conservation, inactive-route
+and malformed-input contracts pass O0/O2 with all prior contact contracts.
+Final202-provider native builds pass the actual failed source and two following
+sources through256.747 in14.580s/6.166s, with byte-exact progress and cost rows
+and all original app guards. These immutable-seed diagnostics do not qualify
+an own restart. A fresh original-input481 request and strict own3-to4,
+256-to257 and365-to367 checks are running separately; none is yet reported as
+completed. V6 remains local research pending its selected qualification.
+
+Authority: `ZERO_HEAD256_EVIDENCE_20261107.zip`, the unchanged V5 negative
+`V5_TERMINAL256_EVIDENCE_20261107.zip`, exact V5 own proof
+`BOTTOM_CONTACT_OWN245_EVIDENCE_20261107.zip`, and
+`TRANSITION65_RECOVERY_20261106.json` in `integration/dataqual15/`.
+
 ### Lower perched-contact research successor
 
 The exact-phase V4 original-initialization run passes the previous245.379
@@ -56,8 +96,8 @@ records external termination after the discriminating repair. This is neither a
 natural model failure nor a481-day PASS. The exact old own19-to20/32-to33
 results retain their V4 executable identity. V5 strict own3-to4 then completes in160.888s: all504 source rows and the
 complete day4 stream are byte-exact, using its own unchanged binding and binary.
-Its original-initialization481 and own year365-to367 remain separate pending
-gates. The new prefix through4.922 is also byte-exact to the V4 progress prefix;
+Its original-initialization481 subsequently fails at256.742; its own year never
+starts, as recorded above. The prefix through4.922 is also byte-exact to the V4 progress prefix;
 this is bounded preservation, not a full-trajectory equivalence claim.
 
 Authority: `LOWER_PERCHED245594_EVIDENCE_20261107.zip` (SHA-256
