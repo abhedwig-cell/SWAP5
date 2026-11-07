@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Strict own year and other three V9 continuations exact. Follow active original-input481 to terminal and admit the full execution receipt only if all source windows and the original forcing audit pass.",
+  "next_action": "Corrected original-input481 and exact own3-4/256-257/300-301/365-367 execution gates closed. Admit this full execution receipt after actual canonical reconciliation and selected docs validation. Historical sharp-law equivalence, production-default graph admission and whole physical science remain separate.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1217,14 +1217,14 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "ACTIVE_FRESH_CORRECTED_V9_ORIGINAL_INPUT481",
+    "status": "COMPLETE_CORRECTED_ORIGINAL_INPUT481_AND_EXACT_OWN_YEAR",
     "model": "ANDELST_JOINT_PORE_VOLUME_UPPER_SUPPORT_V9",
     "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
     "binding": "e4c7bf6cead265c45a10228fdea1a965db948177f75ee407f00d8db3cc13c91d",
     "original_initialization": true,
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
-    "whole481": false,
+    "whole481": true,
     "own365_to367": true,
     "whole_science": false,
     "production_default_contact_law_admitted": false,
@@ -1238,7 +1238,7 @@
       "300-301",
       "365-367"
     ],
-    "next_action": "Strict own year and other three V9 continuations exact. Follow active original-input481 to terminal and admit the full execution receipt only if all source windows and the original forcing audit pass.",
+    "next_action": "Corrected original-input481 and exact own3-4/256-257/300-301/365-367 execution gates closed. Admit this full execution receipt after actual canonical reconciliation and selected docs validation. Historical sharp-law equivalence, production-default graph admission and whole physical science remain separate.",
     "own3_to4": true,
     "own256_to257": true,
     "own256_to257_receipt": {
@@ -1277,6 +1277,107 @@
       "ending_checkpoint_sha256": "751f8d492304e61157e2e8b2583ac42b3bdc837bf10231880d70b4c3c9d1a1e7",
       "same_input_binding": true,
       "historical_original_equivalence": false
+    },
+    "completed_days": 481,
+    "seconds": 11218.889587000012,
+    "returncode": 0,
+    "censored": false,
+    "maximum_daily_water_residual_cm": 4.7319123896327385e-12,
+    "sum_daily_water_residuals_cm": -1.7961975887239273e-10,
+    "source_intervals": 241566,
+    "all_source_intervals_completed": true,
+    "unchanged_numerical_controls": [
+      " ORIGINAL_NATIVE_NUMERICAL_CONTROLS          30           4   1.0000000000000001E-005   2.0000000000000000E-003           1           0"
+    ],
+    "own_restarts": {
+      "3-4": {
+        "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+        "seconds": 160.9640003000386,
+        "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+        "input_restart_sha256": "1c06e9a3c2df7fc4e97f23a22ec18ee8a648aff06073c3089bd2b8dcd55ea16b",
+        "all_progress_rows_exact": true,
+        "progress_rows": 504,
+        "entire_ending_checkpoint_byte_exact": true,
+        "ending_checkpoint_sha256": "e9125de07889d4ad275765a311e19b62922c152e6896effb4e42812c4ffdcf72",
+        "same_input_binding": true,
+        "historical_original_equivalence": false
+      },
+      "256-257": {
+        "scope": "STRICT_CURRENT_EXECUTABLE_OWN256_TO257",
+        "seconds": 295.4925222999882,
+        "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+        "input_restart_sha256": "abe234fd7d7092d8d20fb8df4670c9c742735f484bc4909aa70ab6449b503560",
+        "all_progress_rows_exact": true,
+        "progress_rows": 514,
+        "entire_ending_checkpoint_byte_exact": true,
+        "ending_checkpoint_sha256": "7283af9577aae1252daf583455daa2caeb3c59ce127dd240650d26f880517525",
+        "same_input_binding": true,
+        "historical_original_equivalence": false
+      },
+      "300-301": {
+        "scope": "STRICT_CURRENT_EXECUTABLE_OWN300_TO301",
+        "seconds": 157.5181893000845,
+        "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+        "input_restart_sha256": "7009738b9e137f0681e7c8971676eec30619fd95c119f8850bb0398678b176de",
+        "all_progress_rows_exact": true,
+        "progress_rows": 513,
+        "entire_ending_checkpoint_byte_exact": true,
+        "ending_checkpoint_sha256": "01227212330f7cd5f0b2d792ef0b9914839fdb61f1c6579714c04c668d11d816",
+        "same_input_binding": true,
+        "historical_original_equivalence": false
+      },
+      "365-367": {
+        "scope": "STRICT_CURRENT_EXECUTABLE_OWN365_TO367",
+        "seconds": 21.387022900162265,
+        "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+        "input_restart_sha256": "1ee453329a650b0fdf4017b59bd6d1f2b4927de0b8aefeff2b51c21fee08f1d5",
+        "all_progress_rows_exact": true,
+        "progress_rows": 1005,
+        "entire_ending_checkpoint_byte_exact": true,
+        "ending_checkpoint_sha256": "751f8d492304e61157e2e8b2583ac42b3bdc837bf10231880d70b4c3c9d1a1e7",
+        "same_input_binding": true,
+        "historical_original_equivalence": false
+      }
+    },
+    "independent_original_rain_integral": {
+      "scope": "INDEPENDENT_PREPARED_RAIN_INTEGRAL_AND_ACTUAL_CALLER_WINDOW_ALLOCATION_NOT_WHOLE_ENERGY_OR_REFERENCE_PARITY",
+      "completed_through": 481.0,
+      "continuous_time_coverage": true,
+      "no_source_interval_crosses_rain_phase": true,
+      "source_windows": 241566,
+      "prepared_rain_events": 2630,
+      "exact_binary_input_mathematical_integral_cm": "139.65080000000001237422918564386935814763358018459585459247751515476920758374035358428955078125",
+      "exact_binary_window_allocation_integral_cm": "139.6508000000000123742291856438693581476335801845958545924775151547692075837403535842895507812500000000000000",
+      "exact_integral_difference_cm": "0E-106",
+      "integrals_exact": true,
+      "rounded_native_amount_sum_cm": 139.6508,
+      "rounded_input_phase_sum_cm": 139.6508,
+      "rounded_sum_difference_cm": 0.0,
+      "new_tolerance_introduced": false,
+      "input_nml_sha256": "88b0816089b75fbdf82e121155ecd5b62d889838438553fb2983c12bf7f81fe7",
+      "supplied_progress_file_sha256": "ed5ee9227892d01445bef432b334978c58b047e60bd5ba2eecc57f1a9325fe33",
+      "declared_executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501"
+    },
+    "all202_actual_source_pins_exact": true,
+    "publication_and_ttutil_pins_exact": true,
+    "native_cost_totals": {
+      "nonlinear_iterations": 8649258,
+      "headcalc_calls": 2493897,
+      "linear_solves": 9059683,
+      "backtracking_attempts": 8837475,
+      "accepted_substeps": 520337
+    },
+    "maximum_component_residuals_cm": {
+      "max_macro_cell_cm": 1.1358800865097676e-15,
+      "max_matrix_cm": 9.990727863062876e-14,
+      "max_combined_cm": 9.991177806964457e-14,
+      "max_net_source_cm": 9.991177806964457e-14
+    },
+    "own_year_calendar": {
+      "original_start": "1998-01-01",
+      "original_end_inclusive": "1999-04-26",
+      "own365_start": "1999-01-01",
+      "own367_end": "1999-01-03"
     }
   },
   "bottom_contact481_selection": {
@@ -2790,7 +2891,7 @@
     }
   },
   "upper_support_v9_research": {
-    "status": "FINAL_NATIVE_O0_O2_SOURCE_PASS_READ_ONLY257_AND301_FRESH481_ACTIVE",
+    "status": "CORRECTED_ORIGINAL_INPUT481_AND_EXACT_OWN_YEAR_EXECUTION_COMPLETE",
     "source_seed": "65b4c365fe242d6d845cbba5e792cfb494cfdce0751e789ff399a96636ff98fd",
     "source_start": 256.8689999999988,
     "first_source_attempts": 83,
@@ -2822,7 +2923,7 @@
     "exact_source256869_progress_and_cost_O0_O2": true,
     "original_init_day1_O0_O2_all4CSV_and_payload_exact": true,
     "model_provider_hashes_exact_to_actual_source_controls": 201,
-    "next_action": "Follow active original-input481 and the four exact own windows to terminal. Diagnose only actual evidence-backed barriers.",
+    "next_action": "Corrected original-input481 and exact own3-4/256-257/300-301/365-367 execution gates closed. Admit this full execution receipt after actual canonical reconciliation and selected docs validation. Historical sharp-law equivalence, production-default graph admission and whole physical science remain separate.",
     "canonical_admission": {
       "pr": 1617,
       "qualified_head": "d3f8a1d46bf58bc7012a693e7c5577793ae2f929",
@@ -2845,14 +2946,14 @@
         "bytes": 37980
       },
       "scope": "Bounded private research. No default change, complete trajectory, historical equivalence or whole-science claim.",
-      "full481_and_year_active_not_pass": true,
       "merge": "158515440d6071273c7c10e8b7aa3f84a271bc76",
       "parents": [
         "d8b33a22b3538d152f7a6d2a6a69d833c5f85871",
         "480ab523c43be009ee81652cdd74a43884fc33a2"
       ],
       "full_tree_exact_final_head": true,
-      "production_src_app_delta": false
+      "production_src_app_delta": false,
+      "at_admission_full481_and_year_active_not_pass": true
     },
     "strict_own3_to4": {
       "name": "V9_OWN3_DAY4_EVIDENCE_20261107.zip",
@@ -3012,7 +3113,8 @@
       "same_input_binding": true,
       "historical_original_equivalence": false
     },
-    "own_year": true
+    "own_year": true,
+    "whole481": true
   },
   "predecessor_v8_stagnation_execution": {
     "status": "INTENTIONAL_STAGNATION_CENSOR_SOURCE256869_TO256871",
@@ -3053,5 +3155,11 @@
     },
     "own256_to257": false,
     "own300_to301": false
+  },
+  "v9_full481_evidence": {
+    "archive": "V9_FULL481_EVIDENCE_20261107.zip",
+    "sha256": "053f0fe589ed27fead47c816f2e36b6efbbe47126bf9ae01bb74a87abae7c2f7",
+    "bytes": 14025689,
+    "members": 180
   }
 }
