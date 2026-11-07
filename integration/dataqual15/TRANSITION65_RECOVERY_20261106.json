@@ -749,7 +749,7 @@
     "bytes": 7015201,
     "members": 889
   },
-  "scope_note": "Initial root65-day fields retain the original V2 failure. Later named V4 records retain142/245 failures and the exact-phase245.594 intentional stagnation censor. current_execution is the authoritative active V5 original-input run; bounded V5 admission is in lower_contact_v5_canonical_admission. Root historical false gates and all negative verdicts are never promoted by corrected-model progress.",
+  "scope_note": "Initial root65-day fields retain the original V2 failure. Later named V4 records retain142/245 failures and the exact-phase245.594 intentional stagnation censor. current_execution is the authoritative active V7 original-input run; bounded V5 admission is in lower_contact_v5_canonical_admission. Root historical false gates and all negative verdicts are never promoted by corrected-model progress.",
   "limiter_ratio_admission_selection": {
     "pr": 1602,
     "final_qualified_head": "888bafb2933202fc882a0d5ecaae82aa9c1cb620",
@@ -1228,7 +1228,24 @@
     "own365_to367": false,
     "run": "s5-connectivity-final-original481-O2",
     "capture": "s5-connectivity-final-captured-own-O2",
-    "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds."
+    "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
+    "own3_to4": true,
+    "own3_to4_receipt": {
+      "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
+      "sha256": "d52e6cf6d99ae8ff464505618982b15c935bea8adb6809434bd4e0116802332b",
+      "bytes": 405594,
+      "members": 31,
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 162.6260969999712,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "bc0e8336f0af1ec0e16a936f999314f5e6a7e97fec753293dc3cc13f555fb723",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "f3c67bb4302ec21ae6ae0b27140a67bd7f4cc4bd12a000735ce5fc4e828c6fda",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    }
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -2067,7 +2084,57 @@
       "V6_budget_diagnostics_progress_exact": true,
       "V6_cost_exact": false
     },
-    "canonical_scope_base": "d05478e8c30bba9f3d8b63b411859b06c026beb0"
+    "canonical_scope_base": "d05478e8c30bba9f3d8b63b411859b06c026beb0",
+    "strict_own3_to4": {
+      "name": "V7_OWN3_DAY4_EVIDENCE_20261107.zip",
+      "sha256": "d52e6cf6d99ae8ff464505618982b15c935bea8adb6809434bd4e0116802332b",
+      "bytes": 405594,
+      "members": 31,
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 162.6260969999712,
+      "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+      "input_restart_sha256": "bc0e8336f0af1ec0e16a936f999314f5e6a7e97fec753293dc3cc13f555fb723",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "f3c67bb4302ec21ae6ae0b27140a67bd7f4cc4bd12a000735ce5fc4e828c6fda",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "canonical_admission": {
+      "pull_request": 1614,
+      "qualified_head": "860bb7432b40ff8f0cb4e14983c1443fccfb5fe2",
+      "base": "d05478e8c30bba9f3d8b63b411859b06c026beb0",
+      "scope": "Private corrected Andelst V7 water and contact research; no production/default or historical equivalence claim.",
+      "linux_contact": {
+        "run": 42341732706,
+        "job": 128310682317,
+        "conclusion": "success"
+      },
+      "documentation": {
+        "run": 42341734235,
+        "job": 128310687485,
+        "conclusion": "success"
+      },
+      "local_docs": [
+        {
+          "label": "source",
+          "seconds": 28.814491200027987,
+          "returncode": 0
+        },
+        {
+          "label": "strict",
+          "seconds": 32.48498670011759,
+          "returncode": 0
+        }
+      ],
+      "raw_ci": {
+        "name": "V7_RECONCILED_CI_20261107.zip",
+        "sha256": "01d34d28d528316519614d75565c6e804ec55e913fdcdc2e5918f6eda2163048",
+        "bytes": 38115
+      },
+      "full481_and_year_active_not_pass": true
+    }
   },
   "predecessor_v6_terminal_execution": {
     "status": "TERMINAL_NEW_SOURCE256873_TO256875_REFUSAL",
