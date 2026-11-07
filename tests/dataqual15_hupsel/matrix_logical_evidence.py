@@ -22,13 +22,25 @@ def audit(files):
   assert len([e for e in events if e['label']=='provider'])==(len(sources)if role=='incumbent'else 1)
   assert len([e for e in events if e['label']=='driver'])==2 and len([e for e in events if e['label']=='link'])==2
   root=q(b['bindings'][0]['object']).parent.parent
+  repository=q(b['drivers']['joint']['original']).parents[2];opt=r['optimization'];assert opt in ('O0','O2')
+  flags=['-'+opt,'-std=f2008','-ffree-line-length-none','-fopenmp','-fcheck=all','-fbacktrace','-ffpe-trap=invalid,zero,overflow','-I'+str(root/role),'-J'+str(root/role),'-I'+str(root/'fixture'),'-I'+str(repository/'tests/nut-reactive')]
+  if role=='candidate':flags+=['-I'+str(root/'incumbent')]
+  assert b['flags']==flags;provider_events=iter(e for e in events if e['label']=='provider');compiler=next(e['command'][0]for e in events if e['label']=='provider');objects=[]
   for binding,(name,raw)in zip(b['bindings'],sources):
    expected_raw=g.postimage(g.raw(r['baseline'],g.SOURCE))if role=='candidate'and name==g.SOURCE else raw
    actual=files[role+'/'+binding['snapshot']];assert actual.replace(b'\r\n',b'\n')==expected_raw.replace(b'\r\n',b'\n')and sha(actual)==binding['source_sha256']
    if name.startswith(('src/','tests/')):assert raw.replace(b'\r\n',b'\n')==g.raw(r['baseline'],name)
    obj=q(binding['object']);rel=obj.relative_to(root).as_posix();assert sha(files[rel])==binding['object_sha256'];assert binding['reused']==(role=='candidate'and name!=g.SOURCE)
+   objects.append(str(obj))
+   if not binding['reused']:
+    source=root/role/Path(g.SOURCE).name if role=='candidate'else q(binding['original']);event=next(provider_events);assert event['command']==[compiler,*flags,'-c',str(source),'-o',str(obj)]
+  assert next(provider_events,None)is None;objects.append(str(root/role/'publisher.o'))
+  driver_events=iter(e for e in events if e['label']=='driver');link_events=iter(e for e in events if e['label']=='link')
   for name,(path,raw)in drivers.items():
    d=b['drivers'][name];assert raw.replace(b'\r\n',b'\n')==g.raw(r['baseline'],path);assert files[role+'/'+d['source']]==raw and sha(raw)==d['source_sha256'];assert sha(files[role+'/'+d['executable']])==d['executable_sha256']
+   event=next(driver_events);obj=root/role/(name+'.o');assert event['command']==[compiler,*flags,'-c',str(root/role/d['source']),'-o',str(obj)]
+   args=[*flags]+(['-Wl,--stack,16777216']if r['platform']=='WINDOWS'else[])+[str(obj),*objects,'-o',str(root/role/d['executable'])]
+   response='\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n';assert files[role+'/'+name+'.args'].replace(b'\r\n',b'\n')==response.encode();assert next(link_events)['command']==[compiler,'@'+str(root/role/(name+'.args'))]
   assert files[role+'/publisher.c'].replace(b'\r\n',b'\n')==g.raw(r['baseline'],'app/support/restart_publish.c')
   by_label={e['label']:e for e in events if e['label']not in ('provider','publisher','driver','link','logical')}
   expected_labels=set()
