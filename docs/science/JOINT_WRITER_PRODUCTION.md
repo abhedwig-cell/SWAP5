@@ -1,9 +1,10 @@
 # Executed current native writer publication successor
 
 The three production age/mineral/reactive-N adapters contain the exact complete
-postimages first executed privately in PR1603. The current successor is qualified
-for bounded production admission at PR1604 on the exact admitted PR1605 source
-at79cceedb8. All335 providers were freshly compiled at Windows/POSIX O0/O2, with
+postimages first executed privately in PR1603. The current successor is canonically
+admitted at PR1604 (`31ef0386e`), whose actual tree exactly equals final qualified
+head81e12363a. PR1606 metadata was reconciled with zero bound dependency delta;
+the physical baseline remains admitted PR1605 source79cceedb8. All335 providers were freshly compiled at Windows/POSIX O0/O2, with
 zero object reuse; full original native execution,24 logical refusals, exact
 prior payloads and six independent cold-evidence corruptions pass in all four
 cohorts. Actual deployed writer qualification then repeats every native, owner,
@@ -57,3 +58,8 @@ this executed preservation proof only under exact prior source/gate identities;
 current peer dependencies require the new cold/deployed cohorts. Historical
 execution cannot qualify current peer physics. Whole scientific admission and
 the2/3 execution,0/3 scientific project counts remain unchanged.
+
+All41 final workflows are terminal:21 SUCCESS and20 explicitly retained FAILED,
+with every24 failed-job full log preserved. Owning, F-CI, rollback and documentation
+qualification pass. Exact canonical selection, merge/tree parity and final
+adjudication are in `JOINT_WRITER_PHASE_PRODUCTION_CLOSE_20261107.json`.

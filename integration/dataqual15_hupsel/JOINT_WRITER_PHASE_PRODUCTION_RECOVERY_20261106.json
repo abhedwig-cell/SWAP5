@@ -1,5 +1,5 @@
 {
-  "phase": "QUALIFIED_GATE_INHERITED_AFTER_METADATA_ONLY_CANONICAL_RECONCILIATION_FINAL_CI_PENDING",
+  "phase": "CANONICALLY_ADMITTED_CLOSED",
   "branch": "codex/autonomous-migration-20261103",
   "canonical": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
   "cold_reference": "05d2df1e937f1f6257d0d47709696c8d1e321391",
@@ -34,12 +34,11 @@
     "archive_members": 2402,
     "strict_frozen_source_gate_identity": "PASS"
   },
-  "production_admission": false,
+  "production_admission": true,
   "whole_scientific_admission": false,
   "next_steps": [
-    "Wait selected final F-CI and workflows through terminal status; resolve causal failures, retain all failed verdicts/full logs with exact79c before evidence.",
-    "Complete owning/Status-A qualification record with unchanged2/3 execution and0/3 science.",
-    "Integrate PR1604 only after canonical source/tree preflight and expected-head qualification; preserve receipts."
+    "Persist and canonically reconcile closure receipts without changing qualified production/gate/scope/status/data inputs.",
+    "Continue the next executable disjoint migration capability from the durable current register. Reuse exact evidence; retain all remaining scientific failures."
   ],
   "other_chat_worktree_touched": false,
   "current_source_merged": true,
@@ -131,13 +130,25 @@
     "predicate": "Production/runtime/linkage/current execution/reference/consumer/before/preservation data are unchanged. Before-consumer trailing blank lines were normalized with exact AST equality; the new strict scope binds those bytes and its complete current gate is being requalified.",
     "gate_byte_normalization_declared": true
   },
-  "final_ci": "Required at final persisted metadata head before expected-head canonical integration.",
+  "final_ci": {
+    "head": "81e12363af9d72991126b10cca60fc0f838d9e0d",
+    "total": 41,
+    "success": 21,
+    "failed": 20,
+    "failed_jobs": 24,
+    "all_terminal": true,
+    "owning": "PASS",
+    "F_CI": "PASS",
+    "PUB_P1E02": "PASS",
+    "documentation": "PASS",
+    "all_failed_verdicts_retained": true
+  },
   "gate_normalization": {
-    "status": "PASS28 scope refusals and full Windows v2 current shared entry at310; actual POSIX owning/F-CI also PASS final310",
+    "status": "PASS28 malformed scope controls and full Windows v2 current entry at310; full POSIX owning/F-CI PASS final81 with all bound inputs identical.",
     "complete_AST_unchanged": true,
     "scope_regenerated": true
   },
-  "canonical_reconciled": "912f1dabbe5b764a8a47e54a8a3a1749b572b2c3",
+  "canonical_reconciled": "31ef0386e0dabd8e5022dd351d29a7fb6e7e3fe6",
   "physical_baseline": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
   "qualified_gate_head": "310c90be94686c9d6e8bd4e5d0ee36a3906a4082",
   "canonical_race": {
@@ -146,5 +157,11 @@
     "source_app_reference_delta": false,
     "bound_gate_scope_status_data_delta": false,
     "record": "JOINT_WRITER_PHASE_PRODUCTION_PEER_METADATA_RECONCILIATION_20261107.json"
-  }
+  },
+  "canonical_commit": "31ef0386e0dabd8e5022dd351d29a7fb6e7e3fe6",
+  "qualified_final_head": "81e12363af9d72991126b10cca60fc0f838d9e0d",
+  "close_receipt": "JOINT_WRITER_PHASE_PRODUCTION_CLOSE_20261107.json",
+  "final_adjudication": "JOINT_WRITER_PHASE_PRODUCTION_FINAL_ADJUDICATION_20261107.json",
+  "final_failed_logs": "JOINT_WRITER_PHASE_PRODUCTION_FINAL_FAILED_LOGS_20261107.zip",
+  "immutable_source_view_removed_after_success": true
 }
