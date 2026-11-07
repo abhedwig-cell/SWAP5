@@ -38,7 +38,7 @@ def audit(files):
   assert next(provider_events,None)is None;objects.append(str(root/role/'publisher.o'))
   driver_events=iter(e for e in events if e['label']=='driver');link_events=iter(e for e in events if e['label']=='link')
   for name,(path,raw)in drivers.items():
-   d=b['drivers'][name];assert raw.replace(b'\r\n',b'\n')==origin(r['baseline'],path);assert files[role+'/'+d['source']]==raw and sha(raw)==d['source_sha256'];assert sha(files[role+'/'+d['executable']])==d['executable_sha256']
+   d=b['drivers'][name];assert raw.replace(b'\r\n',b'\n')==origin(r['baseline'],path);actual_driver=files[role+'/'+d['source']];assert actual_driver.replace(b'\r\n',b'\n')==origin(r['baseline'],path)and sha(actual_driver)==d['source_sha256'];assert sha(files[role+'/'+d['executable']])==d['executable_sha256']
    event=next(driver_events);obj=root/role/(name+'.o');assert event['command']==[compiler,*flags,'-c',str(root/role/d['source']),'-o',str(obj)]
    args=[*flags]+(['-Wl,--stack,16777216']if r['platform']=='WINDOWS'else[])+[str(obj),*objects,'-o',str(root/role/d['executable'])]
    response='\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n';assert files[role+'/'+name+'.args'].replace(b'\r\n',b'\n')==response.encode();assert next(link_events)['command']==[compiler,'@'+str(root/role/(name+'.args'))]
