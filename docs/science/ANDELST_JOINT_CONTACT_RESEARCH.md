@@ -52,8 +52,11 @@ maximum daily residual3.394925574690817e-12cm. Its actual return4294967295 and
 raw runner censored=false remain unchanged; `CENSOR_ADJUDICATION.json` explicitly
 records external termination after the discriminating repair. This is neither a
 natural model failure nor a481-day PASS. The exact old own19-to20/32-to33
-results retain their V4 executable identity. New V5 original-initialization481
-and strict own3-to4/year365-to367 are separate pending gates.
+results retain their V4 executable identity. V5 strict own3-to4 then completes in160.888s: all504 source rows and the
+complete day4 stream are byte-exact, using its own unchanged binding and binary.
+Its original-initialization481 and own year365-to367 remain separate pending
+gates. The new prefix through4.922 is also byte-exact to the V4 progress prefix;
+this is bounded preservation, not a full-trajectory equivalence claim.
 
 Authority: `LOWER_PERCHED245594_EVIDENCE_20261107.zip` (SHA-256
 `6e1048762b8005a11ad230955b00a4b8d39ae5e88a16225450de0dce790a4e84`)

@@ -1228,7 +1228,19 @@
     "run": "s5-bottom-contact-original481-O2",
     "capture": "s5-bottom-contact-captured-own-O2",
     "whole481": false,
-    "own365_to367": false
+    "own365_to367": false,
+    "own3_to4": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 160.88777079991996,
+      "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
+      "input_restart_sha256": "c35966b802a76a819f900149e2678354feec1611a9d8b37ce8d394a913fbbe49",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "fed132bfb472efd4b37f8daf60ff6ac5e52f90605349ffbc1fb1d30a0eba95f8",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    }
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1262,7 +1274,7 @@
   "lower_contact_v5_ci": {
     "component_run": 42315694394,
     "head": "d564a4acadbe96688154b38193d2873b5c2f8c94",
-    "status": "RUNNING",
+    "status": "PASS_LINUX_ALL_ORIGINAL_AND_LOWER_CONTACT_O0_O2",
     "pr": 1606,
     "scope": "All unchanged owning contracts plus both lower-contact sides, conservative action and refusals. No broad F-CI/low-air.",
     "job": 128227610072
@@ -1271,6 +1283,39 @@
     "root_local_attempt": "REFUSED_EXISTING_UNTRACKED_GENERATED_SITE_DIRECTORY",
     "strict_build_after_root_check": "NOT_RUN",
     "selected_clean_control_worktree": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-transition65-doccheck",
-    "generated_files_preserved": true
+    "generated_files_preserved": true,
+    "clean_tested_head": "8e3ad2e9c7b651bf2523a2ba55bbf194d65c4257",
+    "clean_source_status": "PASS",
+    "clean_source_seconds": 10.813769900007173,
+    "clean_strict_status": "PASS",
+    "clean_strict_seconds": 32.862264999886975,
+    "ci_run": 42316289825,
+    "ci_status": "PASS",
+    "ci_job": 128229589752,
+    "ci_head": "8e3ad2e9c7b651bf2523a2ba55bbf194d65c4257"
+  },
+  "lower_contact_v5_admission_selection": {
+    "pr": 1606,
+    "actual_canonical_base": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
+    "component_tested_head": "d564a4acadbe96688154b38193d2873b5c2f8c94",
+    "component_run": 42315694394,
+    "component_job": 128227610072,
+    "component_status": "PASS",
+    "docs_tested_head": "8e3ad2e9c7b651bf2523a2ba55bbf194d65c4257",
+    "docs_run": 42316289825,
+    "docs_job": 128229589752,
+    "docs_status": "PASS",
+    "later_delta_docs_evidence_receipts_only": true,
+    "actual202_source_pins_exact": true,
+    "publisher_ttutil_pins_exact": true,
+    "production_src_app_tree_unchanged_vs_canonical": true,
+    "original481_and_year_not_promoted": true,
+    "current_executable_own3_to4_exact": true
+  },
+  "bottom_contact_own3_evidence": {
+    "archive": "BOTTOM_CONTACT_OWN3_EVIDENCE_20261107.zip",
+    "sha256": "cc4e58dfafffe2b041c937eea96c9f621c034622e6fc7ad64142b372c4217e0d",
+    "bytes": 553477,
+    "members": 33
   }
 }
