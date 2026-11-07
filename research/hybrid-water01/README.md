@@ -84,3 +84,21 @@ The two trajectories have 3,442 identical audited accepted steps over days
 stock, and all nodal heads, water contents and temperatures at the audit
 point. The daily standard series is exact. This does not compare all hidden
 Fortran state or establish arbitrary-boundary or SWAP5 transaction restart.
+
+## Andelst year boundary
+
+Add `--year-boundary` to run an uninterrupted reference through day 367,
+write its checkpoint at day 365, and replay days 366 and 367 in a fresh
+process. The uninterrupted run retains the original forcing. The replay
+input copy repeats the last Cauchy head on January 1. The original table
+ends on December 31, and its interpolation returns that last head for
+all later times. The duplicate value allows the legacy date validator to
+accept a January-only window while retaining the same imposed head.
+
+The year-only research build accepts the stored inactive crop calendar
+at this checkpoint by ending the crop read when the serialized flag is
+false. A calendar selected for the upcoming restart date does not imply
+that crop state was present at the checkpoint. Normal daily crop setup
+then activates the new crop. The probe compares unrounded daily water
+ledgers and audited accepted steps. It also rejects a bad signature,
+truncation and trailing bytes before normal model output.

@@ -134,6 +134,12 @@
     "3F8FBC6BADE0FB2A",
     "3F710C60C06825B2"
   ],
+  "checkpoint_day": 2,
+  "rejected_before_output": [
+    "bad_magic",
+    "truncated",
+    "trailing"
+  ],
   "stock_exact_before_first_step": true,
   "first_trial_input_max_abs_delta": {
     "rain_cm": 0.0,
@@ -182,18 +188,23 @@
     "1.00000000000000000E+000"
   ],
   "first_accepted_head_max_delta_cm": 0.0,
+  "daily_ledger_exact": true,
+  "resumed_daily_residual_cm": [
+    -3.493392135956548e-08,
+    1.2325933159990782e-08
+  ],
   "accepted_step_counts": [
     3442,
     3442
   ],
   "accepted_step_audit_exact": true,
-  "continuous_day3_4": [
+  "continuous_resumed_window": [
     "1998-01-03,1.68560,.65540,-47.85008",
     "1998-01-04,.36120,.60125,-63.38009"
   ],
-  "resumed_day3_4": [
+  "restart_resumed_window": [
     "1998-01-03,1.68560,.65540,-47.85008",
     "1998-01-04,.36120,.60125,-63.38009"
   ],
-  "published_day3_4_exact": true
+  "published_window_exact": true
 }
