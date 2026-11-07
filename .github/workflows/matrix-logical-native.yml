@@ -39,6 +39,7 @@ jobs:
           else
             python -B tests/dataqual15_hupsel/matrix_logical_header.py --native "$STEM" --stem "$RUNNER_TEMP/MATRIX_LOGICAL_HEADER_POSIX_${{ matrix.optimization }}_20261107" --output "$RUNNER_TEMP/matrix-logical-header-${{ matrix.optimization }}" --compiler /usr/bin/gfortran-13
           fi
+          python -B tests/dataqual15_hupsel/matrix_logical_surface.py "$STEM" "$RUNNER_TEMP/matrix-surface-${{ matrix.optimization }}" /usr/bin/gfortran-13
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -49,3 +50,7 @@ jobs:
             ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/RESULT.json
             ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/incumbent/*.stderr
             ${{ runner.temp }}/matrix-logical-${{ matrix.optimization }}/candidate/*.stderr
+            ${{ runner.temp }}/matrix-surface-${{ matrix.optimization }}/SURFACE_RESULT.json
+            ${{ runner.temp }}/matrix-surface-${{ matrix.optimization }}/EVENTS.json
+            ${{ runner.temp }}/matrix-surface-${{ matrix.optimization }}/*.stdout
+            ${{ runner.temp }}/matrix-surface-${{ matrix.optimization }}/*.stderr
