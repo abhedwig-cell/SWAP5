@@ -52,5 +52,14 @@
     "job": 128474604991,
     "result": "Windows and Linux O0/O2 pass for bit-identical outputs, status, iterations and ordered residual input trace. Covers interior bisection, iteration-limit return, both stress endpoints and invalid negative bound.",
     "scope": "Synthetic monotone residual establishes bracket parity. It does not establish coverage of an interior root for every physical response profile. The existing private FGC49D ABI gate also passed on this commit."
+  },
+  "reproducible_selector_qualification": {
+    "commit": "24789b8c7f1c722eb576c0fa2d0d5d01272cfbed",
+    "run": 42401796953,
+    "selector_job": 128490976667,
+    "abi_job": 128490976979,
+    "windows": "Both LOW03-A and LOW08-A passed with O0/O2 marker identity using the checked-in compiler wrapper.",
+    "posix": "Both boundary suites passed with O0/O2 marker identity. The private FGC49D ABI and bracket tests passed on the same head.",
+    "scope": "Uses existing qualification suites and explicit private source substitution. The historical LOW05-A standalone authority guard was not changed."
   }
 }
