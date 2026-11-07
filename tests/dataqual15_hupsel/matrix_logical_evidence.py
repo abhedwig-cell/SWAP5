@@ -1,5 +1,5 @@
 """Independent source/object/native raw-byte audit for private matrix reader."""
-import argparse,functools,io,json,lzma,struct,tarfile,tempfile,zlib
+import argparse,functools,io,json,lzma,struct,subprocess,tarfile,tempfile,zlib
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import matrix_logical_runtime as g
 sha=g.sha
@@ -15,6 +15,7 @@ def expected():
   return sources,{n:(p.relative_to(g.ROOT).as_posix(),p.read_bytes())for n,p in drivers.items()}
 def audit(files):
  r=json.loads(files['RESULT.json']);assert r['baseline']==g.guard()['baseline']and r['production_admission']is False and r['whole_scientific_admission']is False
+ if subprocess.run(['git','cat-file','-e',r['head']+'^{commit}'],cwd=g.ROOT,capture_output=True).returncode:subprocess.run(['git','fetch','--no-tags','origin',r['head']],cwd=g.ROOT,capture_output=True,check=True)
  for path in ('tests/dataqual15_hupsel/matrix_logical_runtime.py','tests/dataqual15_hupsel/matrix_crc_runtime.py','tests/dataqual15_hupsel/native_n_crc_runtime.py'):
   assert (g.ROOT/path).read_bytes().replace(b'\r\n',b'\n')==origin(r['head'],path),'runtime dependency changed; fresh native qualification required: '+path
  sources,drivers=expected();assert r['provider_count']==len(sources);q=PureWindowsPath if r['platform']=='WINDOWS'else PurePosixPath
