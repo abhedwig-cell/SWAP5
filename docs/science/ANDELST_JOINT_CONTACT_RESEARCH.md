@@ -19,6 +19,51 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
+### Connectivity and positive pond research successor
+
+The V6 actual rollback isolates a nonlocal drainage jump at the last negative
+node. Private V7 solves a bounded drainage projection between the two actual
+limits at zero head using the real DRAMET3/DIVDRA response in every residual
+and the accepted tuple. The first fixed-node experiment refuses; a targeted
+trace shows node11 reaching zero while node12 is constrained. An exact
+first-boundary pivot can change the limiting node without changing the
+physical projection. The accepted projection is carried into the next trial
+and exchange assessment; the ordinary derived projection remains the default.
+No fraction or new stream field persists.
+
+Another actual refusal used an old total residual of-8.76790e-6 despite the
+current coupled value1.84542e-7, with all earlier checks satisfied and the
+unchanged limit4.70020e-6. V7 recomputes the same total gate from the actual
+current tuple. Short probes with the corrected certificate alone reach their
+wall limits; these are retained as censored results, not model failures or PASS.
+
+The actual pond donor audit has the same starting pond/head at both widths:
+1.13191e-7cm is admitted, whereas a positive5.82750e-8cm is rounded to zero.
+Retaining bounded analytic positive water at both donor owners leaves the
+configured physical threshold and limiters unchanged. The donor-only replay
+progresses farther but is time-censored. Its fully connected profiles still
+jump by0.4825cm across a numerical1e-8cm pond classification. The private
+positive-pond projection instead uses the actual free surface for any
+positive depth, preserving the exact dry endpoint. No temporal norm or limit
+is reduced. These choices are explicit corrected research, not historical
+pointwise equivalence or a production-default change.
+
+A10-provider real-interface contract passes O0/O2 for both donor owners,
+conservation, unchanged physical threshold, positive projection and exact dry
+endpoint. Existing border/contact contracts also pass. Coherent final202-provider
+builds pass the actual failed source plus two neighbors at O0/O2
+(151.539s/73.069s) with byte-exact progress/cost and all original guards. The
+read-only67-source test reaches257 in53.301s with no restart publication. The
+previous256.742 three-source control passes at O2 with exact V6 cost rows; its
+progress values are not byte-exact. Original-initialization day-one O0/O2
+matches all four CSVs and physical payload, including V6 physical preservation.
+The fresh full481 and strict own3–4,256–257,365–367 tests are active separately.
+
+Authority: `V7_FINAL_SOURCE_EVIDENCE_20261107.zip`,
+`V7_SURFACE_CAUSAL_EVIDENCE_20261107.zip`,
+`V7_CONNECTIVITY_INITIAL_EXPERIMENTS_20261107.zip`, and
+`TRANSITION65_RECOVERY_20261106.json` in `integration/dataqual15/`.
+
 ### Zero-head saturated-transfer research successor
 
 V5 naturally terminates after256 completed days in6297.016s, at source

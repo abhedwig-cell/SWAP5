@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
+  "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -1217,81 +1217,18 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "TERMINAL_NEW_SOURCE256873_TO256875_REFUSAL",
-    "model": "ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6",
-    "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
-    "binding": "416a72cc2e61778ef3228b471863edd7f84247b58c00e76c75c8c5cccf922489",
+    "status": "ACTIVE_FRESH_ORIGINAL_INPUT481_V7_NOT_COMPLETED",
+    "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
+    "executable_sha256": "2b91e953ee6c97ca37503e20ac0b6d8d82d3561ed6ba3fb64ce716b11fcd0c64",
+    "binding": "5b0960078f2b9363a11974b5288c03dafc86c348737bd33d6aae61954fdb128c",
     "original_initialization": true,
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
     "whole481": false,
     "own365_to367": false,
-    "run": "s5-zero-head-original481-O2",
-    "capture": "s5-zero-head-captured-own-O2",
-    "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
-    "own3_to4": {
-      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
-      "seconds": 168.39868279988877,
-      "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
-      "input_restart_sha256": "625619993dc8b0dd9d7296157c1ae71b7296cf7cb7d9143bf42a5a71c75ac772",
-      "all_progress_rows_exact": true,
-      "progress_rows": 504,
-      "entire_checkpoint4_byte_exact": true,
-      "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
-      "same_input_binding": true,
-      "historical_original_equivalence": false
-    },
-    "fresh_original_initialization_passed_v5_barrier": {
-      "progress": {
-        "day": "257",
-        "segment": "379",
-        "t0": " 2.56742000000003657E+002",
-        "t1": " 2.56743000000002212E+002",
-        "attempts": "128",
-        "solver_rejections": "0",
-        "temporal_rejections": "65",
-        "mass_rejections": "0",
-        "residual_cm": " 1.18047932540221723E-014"
-      },
-      "cost": {
-        "t0": " 2.56742000000003657E+002",
-        "t1": " 2.56743000000002212E+002",
-        "completed": "T",
-        "nonlinear_iterations": "1572",
-        "headcalc_calls": "384",
-        "linear_solves": "1572",
-        "backtracking_attempts": "2222",
-        "accepted_substeps": "63",
-        "min_accepted_dt": " 7.62940999265993014E-009",
-        "max_accepted_dt": " 6.25001266598701477E-005"
-      },
-      "following_committed_source_observed_through": 256.8729999999988,
-      "checkpoint256_sha256": "f95819c51a69a3f2880f5d2aa314e4cc4844fc243fe0938ea110a1fc53bd8d1a",
-      "qualification_scope": "Actual fresh original initialization path, still pending481 and own year; separate O0/O2 three-source proof used the immutable V5 rollback seed."
-    },
-    "seconds": 6141.92303960002,
-    "returncode": 1,
-    "censored": false,
-    "completed_days": 256,
-    "last_completed_source_interval": 256.8729999999988,
-    "last_attempted_source_interval": 256.8749999999988,
-    "maximum_water_residual_cm": 3.3668931974385757e-12,
-    "last_source_cost": {
-      "t0": " 2.56872999999998797E+002",
-      "t1": " 2.56874999999998806E+002",
-      "completed": "F",
-      "nonlinear_iterations": "1956",
-      "headcalc_calls": "228",
-      "linear_solves": "1956",
-      "backtracking_attempts": "4181",
-      "accepted_substeps": "33",
-      "min_accepted_dt": " 2.27373675443232059E-013",
-      "max_accepted_dt": " 6.25000000127329258E-005"
-    },
-    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
-    "own256_to257": false,
-    "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
-    "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
+    "run": "s5-connectivity-final-original481-O2",
+    "capture": "s5-connectivity-final-captured-own-O2",
+    "next_action": "Follow fresh481 and strict own3-4,256-257,365-367 to terminal. Do not transfer V6 own proofs or diagnostic seeds."
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1851,6 +1788,16 @@
       "terminal_success": true,
       "source_FCI_low_air": "NOT_SELECTED_METADATA_ONLY",
       "canonical_base": "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c"
+    },
+    "terminal_receipt_canonical": {
+      "pr": 1613,
+      "actual_merge": "d05478e8c30bba9f3d8b63b411859b06c026beb0",
+      "parents": [
+        "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c",
+        "ce163b577dd34aca70b8c98964a857c5e964f023"
+      ],
+      "entire_actual_tree_exact": true,
+      "production_src_app_tests_delta": "NONE"
     }
   },
   "predecessor_v5_terminal_execution": {
@@ -1933,13 +1880,270 @@
       0.15000000009077058
     ],
     "probe_seconds": 33.402910299832,
-    "probe_scope": "Actual two-sided residual/drain/macro audit. The jump is nonlocal; there is no one-row residual bracket. Separate projected-coordinate experiments are not admitted by this record.",
+    "probe_scope": "Actual two-sided residual/drain/macro audit; not a one-row residual bracket. The jump is nonlocal. Current V7 experiment solves a bounded projection coordinate at exact zero head with the real DRAMET3/DIVDRA; UNTESTED.",
     "archive": {
       "name": "V6_CONNECTIVITY_DIAGNOSIS_20261107.zip",
       "sha256": "be16dd958f54b72409b8e3e3b6c5e206d2fb398248eefd9de516bc1435b8d04a",
       "bytes": 5488907,
       "members": 666,
       "unique_source_postimages": 203
+    },
+    "v7_experiments": {
+      "fixed_node_status": "NATURAL_REFUSAL",
+      "fixed_node_seconds": 18.532311300048605,
+      "verbose_newton_time_censored_seconds": 100.47012499999255,
+      "actual_limit_probe_seconds": 9.231400400167331,
+      "actual_limit_neighbor_node": 11,
+      "actual_limit_head_cm": 2.648284926505478e-12,
+      "proposed_decrease_cm": 0.00022095949774567035,
+      "pivot_status": "NATURAL_REFUSAL_AFTER_FURTHER_INTERNAL_ADVANCEMENT",
+      "pivot_seconds": 41.866500300122425,
+      "pivot_last_internal_clock": 256.8737389673805,
+      "pivot_accepted_internal_substeps": 381,
+      "seed_consistency_revision": "89e26cfe5 UNTESTED; build/actual source probe selected",
+      "archive": "V7_CONNECTIVITY_INITIAL_EXPERIMENTS_20261107.zip",
+      "sha256": "846d75d06c2528cc6c691c211c44b7c331fcbe0fa51f1cbd8f5075a3c9320b98",
+      "bytes": 14043644,
+      "members": 1528
+    },
+    "stale_total_certificate": {
+      "actual_step_dt_day": 5.95719029661268e-11,
+      "ordinary_iteration": 4,
+      "old_total": -8.767903502853851e-06,
+      "actual_coupled_total": 1.845420612967814e-07,
+      "unchanged_limit": 4.700202378279084e-06,
+      "max_actual_nodal_residual": 7.125851707312503e-09,
+      "all_previous_iteration_gates_pass": true,
+      "actual_audit_seconds": 2.611251699971035,
+      "correction": "Recompute the same total residual only after the joint candidate produces its actual accepted numerical tuple; all limits and original final checks retained. Actual source causal probe pending."
+    },
+    "total_refresh_selection": {
+      "quiet_first_probe": "TIME_CENSORED_180.36051369993947_S",
+      "trace_probe": "TIME_CENSORED_75.05561630008742_S",
+      "latest_internal_observed_clock": 256.8737409997516,
+      "observed_microstep_calls": 10589,
+      "progressing_groundwater_cm": -8.427016445107515,
+      "selected_repeat_wall_seconds": 1800,
+      "expected_wall_seconds": 950,
+      "scientific_justification": "Trace shows continued accepted time and resolved changing zero-head level, not a demonstrated fixed clock. Estimate remaining connectivity traversal from measured level/clock progression and measured cost; use same source, physics, tolerances and immutable origin, with only wall-clock budget extended. No original481 launch until actual source and neighbors pass. Separate donor branch audit/causal test is diagnostic only."
     }
+  },
+  "connectivity_v7": {
+    "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
+    "status": "FINAL_NATIVE_O0_O2_SOURCE_CONTROLS_PASS_FRESH481_SELECTED",
+    "original_historical_equivalence": false,
+    "whole481": false,
+    "own_year": false,
+    "three_source_seconds": 43.158137100050226,
+    "three_source_rows": [
+      {
+        "day": "257",
+        "segment": "1",
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "attempts": "1469",
+        "solver_rejections": "0",
+        "temporal_rejections": "734",
+        "mass_rejections": "2",
+        "residual_cm": "-6.53137960382466076E-012"
+      },
+      {
+        "day": "257",
+        "segment": "2",
+        "t0": " 2.56874999999998806E+002",
+        "t1": " 2.56876999999998816E+002",
+        "attempts": "67",
+        "solver_rejections": "0",
+        "temporal_rejections": "33",
+        "mass_rejections": "2",
+        "residual_cm": " 4.41799374861773231E-014"
+      },
+      {
+        "day": "257",
+        "segment": "3",
+        "t0": " 2.56876999999998816E+002",
+        "t1": " 2.56878999999998825E+002",
+        "attempts": "71",
+        "solver_rejections": "0",
+        "temporal_rejections": "35",
+        "mass_rejections": "2",
+        "residual_cm": " 3.10203251974172645E-014"
+      }
+    ],
+    "three_source_cost": [
+      {
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "completed": "T",
+        "nonlinear_iterations": "17258",
+        "headcalc_calls": "4407",
+        "linear_solves": "17258",
+        "backtracking_attempts": "51175",
+        "accepted_substeps": "733",
+        "min_accepted_dt": " 4.83169060316868126E-013",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      },
+      {
+        "t0": " 2.56874999999998806E+002",
+        "t1": " 2.56876999999998816E+002",
+        "completed": "T",
+        "nonlinear_iterations": "406",
+        "headcalc_calls": "201",
+        "linear_solves": "406",
+        "backtracking_attempts": "406",
+        "accepted_substeps": "32",
+        "min_accepted_dt": " 6.24999997853592504E-005",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      },
+      {
+        "t0": " 2.56876999999998816E+002",
+        "t1": " 2.56878999999998825E+002",
+        "completed": "T",
+        "nonlinear_iterations": "435",
+        "headcalc_calls": "213",
+        "linear_solves": "435",
+        "backtracking_attempts": "435",
+        "accepted_substeps": "34",
+        "min_accepted_dt": " 1.56250000031832315E-005",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      }
+    ],
+    "actual_donor_quantum": {
+      "same_prior_pond_cm": 3.464903062287959e-09,
+      "same_head1_cm": 0.018017078686300935,
+      "larger_step_analytic_and_published_cm": 1.1319092855903743e-07,
+      "half_step_analytic_cm": 5.8275045442732536e-08,
+      "half_step_published_cm": 0
+    },
+    "actual_positive_pond_projection_jump_cm": 0.4825250261789667,
+    "old_positive_donor_only_time_censored_seconds": 180.6930166000966,
+    "old_positive_donor_only_internal_clock": 256.8742584350721,
+    "next_action": "Final202-provider O0/O2 coherent builds and real physical contracts; replay actual failed source plus2 neighbors and predecessor256.742. Bounded read-only observation through day257 selected before fresh original481. Long unchanged-quantum control remains active; no cross-executable own proof.",
+    "read_only_through257": {
+      "completed_source_windows": 67,
+      "seconds": 53.30071960017085,
+      "last_clock": 257.0,
+      "all_original_guards_pass": true,
+      "max_water_residual_cm": 6.531379603824661e-12,
+      "no_published_restart": true,
+      "not_own_or_original_initialization_proof": true
+    },
+    "positive_pond_contracts": "Actual10-provider closure passes Windows O0/O2: both donor owners, same physical threshold, conservation, positive free surface and exact dry endpoint. Original default source untouched.",
+    "final_controls": {
+      "new_three_O0_seconds": 151.53868979983963,
+      "new_three_O2_seconds": 73.06905540009029,
+      "progress_cost_O0_O2_exact": true,
+      "prior_three_O2_seconds": 14.444124599918723,
+      "prior_cost_V6_exact": true,
+      "prior_progress_V6_exact": false,
+      "O0_original_init_day1_seconds": 42.34332940005697,
+      "O0_day1_max_water_residual_cm": 9.546109427027369e-14
+    },
+    "fresh_full_selection": {
+      "expected_seconds": 10500,
+      "maximum_seconds": 14400,
+      "own3_seconds": 900,
+      "own256_seconds": 3600,
+      "own_year_seconds": 3600,
+      "impact": "Physically closed scoped connectivity, original current balance gate, positive pond owners/projection. Requested original-input481 and exact own year require this native run. No unrelated F-CI/low-air."
+    },
+    "causal_evidence": {
+      "name": "V7_SURFACE_CAUSAL_EVIDENCE_20261107.zip",
+      "sha256": "82dffe26d42bc09b7ff99ac4ea63f00fb7013910ecc92d1d7c969c6becca6d20",
+      "bytes": 31682863,
+      "members": 2900,
+      "unique_source_postimages": 213
+    },
+    "final_evidence": {
+      "name": "V7_FINAL_SOURCE_EVIDENCE_20261107.zip",
+      "sha256": "9b9fdba49804d6c4f0714091be5c20f4709bd1d9322ca9cea02f65b40497c080",
+      "bytes": 13148446,
+      "members": 1338,
+      "unique_source_postimages": 204
+    },
+    "day1_preservation": {
+      "O0_O2_all4CSV_exact": true,
+      "O0_O2_V6_physical_payload_exact": true,
+      "V6_budget_diagnostics_progress_exact": true,
+      "V6_cost_exact": false
+    },
+    "canonical_scope_base": "d05478e8c30bba9f3d8b63b411859b06c026beb0"
+  },
+  "predecessor_v6_terminal_execution": {
+    "status": "TERMINAL_NEW_SOURCE256873_TO256875_REFUSAL",
+    "model": "ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6",
+    "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
+    "binding": "416a72cc2e61778ef3228b471863edd7f84247b58c00e76c75c8c5cccf922489",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "whole481": false,
+    "own365_to367": false,
+    "run": "s5-zero-head-original481-O2",
+    "capture": "s5-zero-head-captured-own-O2",
+    "next_action": "Reproduce actual source256.873 refusal from immutable rollback seed. Isolate current nonlinear, temporal and two mass rejections without changing tolerances. Continue original481 and own year after a proven correction.",
+    "own3_to4": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 168.39868279988877,
+      "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
+      "input_restart_sha256": "625619993dc8b0dd9d7296157c1ae71b7296cf7cb7d9143bf42a5a71c75ac772",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "908a645b903b33c2d8047156df372d5e1888b56280a4b2bafca554e835d62327",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "fresh_original_initialization_passed_v5_barrier": {
+      "progress": {
+        "day": "257",
+        "segment": "379",
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "attempts": "128",
+        "solver_rejections": "0",
+        "temporal_rejections": "65",
+        "mass_rejections": "0",
+        "residual_cm": " 1.18047932540221723E-014"
+      },
+      "cost": {
+        "t0": " 2.56742000000003657E+002",
+        "t1": " 2.56743000000002212E+002",
+        "completed": "T",
+        "nonlinear_iterations": "1572",
+        "headcalc_calls": "384",
+        "linear_solves": "1572",
+        "backtracking_attempts": "2222",
+        "accepted_substeps": "63",
+        "min_accepted_dt": " 7.62940999265993014E-009",
+        "max_accepted_dt": " 6.25001266598701477E-005"
+      },
+      "following_committed_source_observed_through": 256.8729999999988,
+      "checkpoint256_sha256": "f95819c51a69a3f2880f5d2aa314e4cc4844fc243fe0938ea110a1fc53bd8d1a",
+      "qualification_scope": "Actual fresh original initialization path, still pending481 and own year; separate O0/O2 three-source proof used the immutable V5 rollback seed."
+    },
+    "seconds": 6141.92303960002,
+    "returncode": 1,
+    "censored": false,
+    "completed_days": 256,
+    "last_completed_source_interval": 256.8729999999988,
+    "last_attempted_source_interval": 256.8749999999988,
+    "maximum_water_residual_cm": 3.3668931974385757e-12,
+    "last_source_cost": {
+      "t0": " 2.56872999999998797E+002",
+      "t1": " 2.56874999999998806E+002",
+      "completed": "F",
+      "nonlinear_iterations": "1956",
+      "headcalc_calls": "228",
+      "linear_solves": "1956",
+      "backtracking_attempts": "4181",
+      "accepted_substeps": "33",
+      "min_accepted_dt": " 2.27373675443232059E-013",
+      "max_accepted_dt": " 6.25000000127329258E-005"
+    },
+    "rollback_seed_sha256": "89cd301a8ef2be7d3f35fa8e5485dc28d91fee43ee284646af9d9b95b35f60b4",
+    "own256_to257": false,
+    "own256_watcher": "PRIMARY_TERMINAL_BEFORE_OWN257",
+    "year_watcher": "PRIMARY_TERMINAL_BEFORE_OWN367"
   }
 }

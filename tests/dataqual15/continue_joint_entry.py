@@ -6,7 +6,8 @@ meta=json.loads((bundle/'BUILD.json').read_text())
 model=meta['contact_model']
 assert model in ('ANDELST_SHARP_ENTRY_GRAPH_V1','ANDELST_JOINT_ENTRY_PERCHED_ACTION_GRAPH_V2',
  'ANDELST_JOINT_CURRENT_GROUNDWATER_GRAPH_V3','ANDELST_JOINT_CURRENT_GROUNDWATER_DRAINAGE_GRAPH_V4',
- 'ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5','ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6')
+ 'ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5','ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6',
+ 'ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7')
 assert all(hashlib.sha256(Path(n).read_bytes()).hexdigest()==h for n,h in meta['source_sha256'].items())
 recipe=Path(__file__).with_name('continue_original_andelst.py');source=recipe.read_text()
 source=source.replace('command=command,original_sharp_entry=True,','command=command,original_sharp_entry=True,corrected_entry_graph=True,historical_original_equivalence=False,')
