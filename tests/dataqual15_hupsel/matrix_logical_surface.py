@@ -127,6 +127,7 @@ def execute(native, output, compiler, qualify_publication=False):
     events = []
     outcomes = {}
     publication_faults = []
+    publication_terminations = []
     for role in ('incumbent', 'candidate'):
         build = json.loads(files[role + '/BUILD.json'])
         path_type = header.PureWindowsPath if result['platform'] == 'WINDOWS' else header.PurePosixPath
@@ -242,6 +243,28 @@ def execute(native, output, compiler, qualify_publication=False):
                     else:
                         assert target.read_bytes() == old_bytes and pending.read_bytes() == raw
                     publication_faults.append({'fixture': tag, 'stage': stage, 'event': event})
+                for phase in ('before', 'after'):
+                    case = output / role / f'termination-{tag}-{phase}'
+                    case.mkdir()
+                    target = case / 'published'
+                    target.write_bytes(old_bytes)
+                    event = fault_support.terminate(
+                        [fault_executable, 'surface-write', 'unused', target, tag],
+                        case, phase, target)
+                    pending = target.with_suffix('.pending')
+                    expected = old_bytes if phase == 'before' else raw
+                    assert target.read_bytes() == expected
+                    if phase == 'before':
+                        assert pending.read_bytes() == raw
+                    else:
+                        assert not pending.exists()
+                    recovery = case / 'restored'
+                    observed = run([executable, 'surface-read', target, recovery, tag],
+                                   output, events, f'publication-termination-{tag}-{phase}-restore')
+                    assert b'SURFACE_ACCEPTED' in observed.stdout
+                    assert recovery.read_bytes() == expected
+                    publication_terminations.append({'fixture': tag, 'event': event})
+
 
 
     for tag in ('1', '1t', '2', '3'):
@@ -249,6 +272,7 @@ def execute(native, output, compiler, qualify_publication=False):
     assert (output / 'incumbent/temporal-direct').read_bytes() == (output / 'candidate/temporal-direct').read_bytes()
     (output / 'SURFACE_RESULT.json').write_text(json.dumps({
         'native_archive_sha256': digest, 'platform': result['platform'], 'optimization': result['optimization'],
+        'publication_terminations': publication_terminations,
         'publication_faults': publication_faults, 'admitted_malformed': outcomes, 'surface_mass': 0.25, 'private_publication': qualify_publication, 'production_admission': False
     }, indent=2) + '\n')
     assert not any(outcomes['candidate'].values()), outcomes
