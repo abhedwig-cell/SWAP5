@@ -1,0 +1,165 @@
+"""Exercise external Cauchy head trials in isolated donor worker processes."""
+
+import argparse
+import hashlib
+import json
+import math
+import os
+import re
+import shutil
+import subprocess
+from pathlib import Path
+
+from probe_macro_checkpoint import compare_daily_ledger, render
+from run_day_return import records, replace, sha
+
+
+def build_worker(reference, audit, output):
+    build = reference / "build"
+    objects = build / "swap-obj"
+    ttutil = build / "ttutil-obj"
+    render(build, output, 2)
+    swap = output / "swap.f90"
+    anchor = "   if (sw_end == 1) call SoilWaterOutput(3)"
+    source = replace(swap.read_text(encoding="cp1252"), anchor, anchor +
+                     "\n   if (swinco == 3 .and. sw_end == 1) call hybrid_macro_checkpoint(.false., t1900, dtold, sicact)")
+    swap.write_text(source, encoding="cp1252")
+    source = (build / "swap-selected/boundbottom.f90").read_text(encoding="cp1252")
+    source = replace(source, "      integer node, nodnumgwl", """      integer node, nodnumgwl
+      integer, save :: head_mode = -1
+      integer :: status
+      character(len=40) :: external_head
+      real(8), save :: forced_head""")
+    source = replace(source, "        gwlmean = hdrain + shape_3*(gwl - hdrain)", """        if (head_mode == -1) then
+          call get_environment_variable('SWAP_TRIAL_CAUCHY_HEAD_CM',external_head,status=status)
+          head_mode = 0
+          if (status == 0) then
+            read(external_head,*,iostat=status) forced_head
+            if (status /= 0) error stop 'Invalid external Cauchy head'
+            head_mode = 1
+          else if (status /= 1) then
+            error stop 'Cannot read external Cauchy head'
+          end if
+        end if
+        gwlmean = hdrain + shape_3*(gwl - hdrain)""")
+    source = replace(source, "! ---   determine C-value (vertical resistance)",
+                     "        if (head_mode == 1) deepgw = forced_head\n\n! ---   determine C-value (vertical resistance)")
+    (output / "boundbottom.f90").write_text(source, encoding="cp1252")
+    patched = ("macropore", "swap", "boundbottom")
+    for name in patched:
+        subprocess.run(["gfortran", "-O2", "-cpp", "-Dlinux", "-finit-local-zero",
+                        "-ffree-line-length-none", "-fallow-argument-mismatch",
+                        "-I", str(objects), "-I", str(ttutil), "-c", name + ".f90"],
+                       cwd=output, check=True)
+    replacements = {name + ".o": output / (name + ".o") for name in patched}
+    replacements["swap_csv_output.o"] = audit / "swap_csv_output.o"
+    executable = output / "andelst_transaction_worker"
+    link = [str(replacements.get(path.name, path)) for path in sorted(objects.glob("*.o"))]
+    subprocess.run(["gfortran", "-o", str(executable), *link, str(ttutil / "libttutil.a")], check=True)
+    return executable
+
+
+def run_worker(case, executable, directory, origin=None, head=None):
+    shutil.copytree(case, directory)
+    control = directory / "swap.swp"
+    text = replace(control.read_text(encoding="cp1252"), "TEND = 1999-04-26", "TEND = 1998-01-04")
+    text += "\nSWENDTYPE = 2\n"
+    environment = os.environ.copy()
+    environment.pop("SWAP_TRIAL_CAUCHY_HEAD_CM", None)
+    if origin is not None:
+        (directory.parent / "first").symlink_to(origin, target_is_directory=True)
+        text = replace(text, "TSTART = 1998-01-01", "TSTART = 1998-01-03")
+        text, count = re.subn(r"(?im)^(\s*SWINCO\s*=)\s*\d", r"\1 3", text)
+        if count != 1:
+            raise ValueError("Expected one SWINCO entry")
+        text = replace(text, "SWEND = 0", "SWEND = 1")
+        text += "SWINITYPE = 2\nINIFIL = '../first/result.end'\n"
+    if head is not None:
+        if not math.isfinite(head):
+            raise ValueError("Cauchy head must be finite")
+        environment["SWAP_TRIAL_CAUCHY_HEAD_CM"] = str(head)
+    control.write_text(text, encoding="cp1252")
+    run = subprocess.run([executable, "./swap.swp"], cwd=directory, env=environment,
+                         capture_output=True, text=True, timeout=60)
+    (directory / "stdout").write_text(run.stdout)
+    (directory / "stderr").write_text(run.stderr)
+    if run.returncode != 100 or not (directory / "swap.ok").is_file():
+        raise RuntimeError(f"Worker failed: {directory}")
+    rows = records((directory / "result_output.csv").read_text().splitlines())
+    if [line.split(",")[0] for line in rows[-2:]] != ["1998-01-03", "1998-01-04"]:
+        raise RuntimeError("Worker did not reach both requested days")
+    flux = [line.split()[1:] for line in run.stdout.splitlines()
+            if line.startswith("HYBRID_EXTERNAL_FLUX ")][-2:]
+    trajectory = "\n".join(line for line in run.stdout.splitlines()
+                           if line.startswith("HYBRID_ACCEPTED_TRAJECTORY "))
+    if len(flux) != 2 or not trajectory:
+        raise RuntimeError("Missing donor step or boundary-flux evidence")
+    return {
+        "head_cm": head,
+        "accepted_trajectory_sha256": hashlib.sha256(trajectory.encode()).hexdigest(),
+        "daily_records": rows[-2:],
+        "bottom_inward_cm": [float(day[6]) - float(day[15]) for day in flux],
+    }
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--reference-work", required=True, type=Path)
+    parser.add_argument("--day-return-work", required=True, type=Path)
+    parser.add_argument("--output", required=True, type=Path)
+    args = parser.parse_args()
+    reference, audit, output = (p.resolve() for p in
+                                (args.reference_work, args.day_return_work, args.output))
+    output.mkdir()
+    executable = build_worker(reference, audit, output)
+    case = reference / "distribution/SWAP_4.3.1/cases/3.macroporeflow"
+    origin = output / "origin"
+    control = run_worker(case, executable, origin)
+    checkpoint = {name: sha(origin / name) for name in ("result.end", "macro.bin")}
+
+    verification = run_worker(case, executable, output / "control/resumed", origin)
+    historical = records((reference / "run/3.macroporeflow/result_output.csv").read_text().splitlines())
+    if verification != control or control["daily_records"] != historical[4:6]:
+        raise RuntimeError("Inactive external control did not reproduce the donor")
+    trials = {}
+    for label, head in (("A", -50.0), ("B", -90.0), ("A_repeat", -50.0)):
+        folder = output / label
+        trials[label] = run_worker(case, executable, folder / "resumed", origin, head)
+        ledger = compare_daily_ledger(folder)
+        trials[label]["resumed_daily_residual_cm"] = ledger["resumed_daily_residual_cm"]
+        trials[label]["endpoint_checkpoint"] = {
+            name: sha(folder / "resumed" / name) for name in checkpoint
+        }
+        if not all(abs(value) <= 1e-6 for value in trials[label]["resumed_daily_residual_cm"]):
+            raise RuntimeError(f"Unclosed worker ledger: {label}")
+        if checkpoint != {name: sha(origin / name) for name in checkpoint}:
+            raise RuntimeError(f"Committed origin changed in trial {label}")
+
+    if trials["A"] != trials["A_repeat"]:
+        raise RuntimeError("Interleaving another worker changed the repeated A trial")
+    if not all(a > b for a, b in zip(trials["A"]["bottom_inward_cm"], trials["B"]["bottom_inward_cm"])):
+        raise RuntimeError("Higher external head failed to increase inward water exchange")
+    receipt = {
+        "scope": "PROCESS_ISOLATED_DONOR_TRIALS_DAYS_3_AND_4",
+        "executable_sha256": sha(executable),
+        "origin_checkpoint": checkpoint,
+        "inactive_control_exact": True,
+        "trial_A": trials["A"],
+        "trial_B": trials["B"],
+        "repeat_A_after_B_exact": True,
+        "selected": "A",
+    }
+    if (output / "committed").exists():
+        raise RuntimeError("A trial was published before selection")
+    candidate = output / "A/resumed"
+    (candidate / "TRANSACTION.json").write_text(json.dumps(receipt, indent=2) + "\n")
+    os.replace(candidate, output / "committed")
+    if trials["A"]["endpoint_checkpoint"] != {
+        name: sha(output / "committed" / name) for name in checkpoint
+    }:
+        raise RuntimeError("Published endpoint does not match selected trial")
+    print(json.dumps(receipt, indent=2))
+
+
+if __name__ == "__main__":
+    main()

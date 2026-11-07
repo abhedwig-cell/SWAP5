@@ -1,0 +1,51 @@
+{
+  "scope": "PROCESS_ISOLATED_DONOR_TRIALS_DAYS_3_AND_4",
+  "executable_sha256": "eee6825be55f504f38c1d37c73593f46ffcb7c4f4cbac79349e65ab86d1f9b2f",
+  "origin_checkpoint": {
+    "result.end": "eb69ba955aa4f5765731e9af659fee82b8652ca8d4328e12c7d8f95edf07f112",
+    "macro.bin": "f6db6881aff16fa88c49aef975a655c6ab3de6c3f30b05936d7cd9ed024b37eb"
+  },
+  "inactive_control_exact": true,
+  "trial_A": {
+    "head_cm": -50.0,
+    "accepted_trajectory_sha256": "1f9c01611c0d001610068c16b9921b0e09fe3fa8242c8c7f9e809921ff9fc867",
+    "daily_records": [
+      "1998-01-03,1.68560,.86354,-39.82376",
+      "1998-01-04,.36120,.90264,-53.56018"
+    ],
+    "bottom_inward_cm": [
+      0.10565334285742356,
+      0.036507323757281246
+    ],
+    "resumed_daily_residual_cm": [
+      2.5126714322479954e-08,
+      -1.1915168678534177e-08
+    ],
+    "endpoint_checkpoint": {
+      "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
+      "macro.bin": "5517022559e65ca58e7778b9a0c94291ac8c7dcd343084a635a10c9bda5ba287"
+    }
+  },
+  "trial_B": {
+    "head_cm": -90.0,
+    "accepted_trajectory_sha256": "1460028167090cf6ae5ccd3624d6f04805ac607f8a5f9eaf038f57c36bad0ef9",
+    "daily_records": [
+      "1998-01-03,1.68560,.47326,-55.20870",
+      "1998-01-04,.36120,.34283,-71.08881"
+    ],
+    "bottom_inward_cm": [
+      -0.8457484649595913,
+      -0.6971520202047453
+    ],
+    "resumed_daily_residual_cm": [
+      -4.253411217040957e-08,
+      3.798230282375803e-09
+    ],
+    "endpoint_checkpoint": {
+      "result.end": "0857872b5ef3d2c98c614abd73efbb4438092123e9731a769a21f2626151f15b",
+      "macro.bin": "26d8b40b68e2b2dd1a437d5bb3cafd313c4ef95238ccf67964cbdf756609fdd3"
+    }
+  },
+  "repeat_A_after_B_exact": true,
+  "selected": "A"
+}

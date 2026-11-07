@@ -102,3 +102,28 @@ that crop state was present at the checkpoint. Normal daily crop setup
 then activates the new crop. The probe compares unrounded daily water
 ledgers and audited accepted steps. It also rejects a bad signature,
 truncation and trailing bytes before normal model output.
+
+## Isolated Cauchy head trials
+
+```sh
+python research/hybrid-water01/probe_head_transaction.py \
+  --reference-work /tmp/hybrid-b0 --day-return-work /tmp/hybrid-day-return \
+  --output /tmp/hybrid-head-transaction
+```
+
+The worker takes a constant external head in centimetres. It applies it
+after tabular interpolation and before the original Cauchy condition,
+including its implicit Richards contribution. Both head trials start
+from one unchanged day-2 checkpoint. The original-boundary control
+reproduces the historical records, while the altered trials yield
+different lower fluxes. The repeated A trial after B matches in the
+accepted-step audit, daily outputs, water residuals and endpoint file
+digests. Only the selected A result and its day-4 checkpoint are
+published to the committed directory. Positive lower flux denotes
+water entering the soil column from below.
+
+This is a process-isolated donor prototype with a fixed two-day window.
+It does not exercise two resident donor states in one Fortran process,
+a subdaily external window, or SWAP5 kernel transaction ownership. The
+selected endpoint is written and checked by hash. Reopening that new
+endpoint for day 5 is outside the exercised window.
