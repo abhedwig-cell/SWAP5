@@ -1,0 +1,305 @@
+{
+  "phase": "PRIVATE_GROSS_V2_CONTINUATION_FOCUSED_GATES_PASS",
+  "canonical_base": "158515440d6071273c7c10e8b7aa3f84a271bc76",
+  "tested_head": "3a751a932d8a88d8a200bd470e0811d4d44f7ea7",
+  "pull_request": 1612,
+  "scope": "Existing gross positive runon and runoff fixture, S5MJ0002 base mode, unchanged initial water and chemical balance gates. Exact live and independent-process endpoint bytes.",
+  "predecessor": "MATRIX_LOGICAL_TERMINATION_RECOVERY_20261107.json",
+  "production_admission": false,
+  "windows": {
+    "O0": {
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 121,
+      "endpoint_sha256": "e8c1cc51c7dc4fe677b8368fbf7fd8ea579e17d52e795348401a4552bcab77d3",
+      "events": [
+        {
+          "label": "gross-pond-module",
+          "stdout": ""
+        },
+        {
+          "label": "incumbent-gross-pond-link",
+          "stdout": ""
+        },
+        {
+          "label": "incumbent-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "incumbent-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-pond-link",
+          "stdout": ""
+        },
+        {
+          "label": "candidate-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        }
+      ]
+    },
+    "O2": {
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 121,
+      "endpoint_sha256": "e8c1cc51c7dc4fe677b8368fbf7fd8ea579e17d52e795348401a4552bcab77d3",
+      "events": [
+        {
+          "label": "gross-pond-module",
+          "stdout": ""
+        },
+        {
+          "label": "incumbent-gross-pond-link",
+          "stdout": ""
+        },
+        {
+          "label": "incumbent-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "incumbent-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-pond-link",
+          "stdout": ""
+        },
+        {
+          "label": "candidate-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        }
+      ]
+    }
+  },
+  "retained_refusals": [
+    {
+      "opt": "O0",
+      "reason": "Archived matrix literal oracle has a different interface. Select the original gross-only execution branch.",
+      "event": {
+        "label": "incumbent-gross-pond-link",
+        "command": [
+          "C:/msys64/ucrt64/bin/gfortran.exe",
+          "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-O0-20261107\\incumbent\\gross-pond.args"
+        ],
+        "returncode": 1,
+        "seconds": 0.7040860999841243,
+        "stdout": "0002-incumbent-gross-pond-link.stdout",
+        "stderr": "0002-incumbent-gross-pond-link.stderr"
+      },
+      "stdout": "",
+      "stderr": "C:/Users/Veldh012/AppData/Local/Temp/s5-matrix-gross-O0-20261107/incumbent/gross_pond.f90:398:68:\n\n  398 |         call literal_step(f,expected,mass,surface_mass,dec,ein,eout)\n      |                                                                    1\nError: More actual than formal arguments in procedure call at (1)\n"
+    },
+    {
+      "opt": "O0",
+      "reason": "Base S5MJ0001 external full-half fixture refused on the incumbent. Retain refusal and exclude from this qualification.",
+      "event": {
+        "label": "incumbent-advance",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-projected-O0-20261107\\incumbent\\surface.exe",
+          "surface-write-advance",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-projected-O0-20261107\\incumbent\\original-1",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-projected-O0-20261107\\incumbent\\advance-1-direct",
+          "1"
+        ],
+        "returncode": 1,
+        "seconds": 0.04715860006399453,
+        "stdout": "0008-incumbent-advance.stdout",
+        "stderr": "0008-incumbent-advance.stderr"
+      },
+      "stdout": "FAIL accepted physical continuation\n",
+      "stderr": "ERROR STOP 1\n\nError termination. Backtrace:\n#0  0x38d89b94\n#1  0x38d04471\n#2  0x38bb28b1\n#3  0xf373d65c\n#4  0xf3748520\n#5  0xf370e587\n#6  0xf374899b\n#7  0xf3701156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+    },
+    {
+      "opt": "O2",
+      "reason": "Archived matrix literal oracle has a different interface. Select the original gross-only execution branch.",
+      "event": {
+        "label": "incumbent-gross-pond-link",
+        "command": [
+          "C:/msys64/ucrt64/bin/gfortran.exe",
+          "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-O2-20261107\\incumbent\\gross-pond.args"
+        ],
+        "returncode": 1,
+        "seconds": 0.6373729000333697,
+        "stdout": "0002-incumbent-gross-pond-link.stdout",
+        "stderr": "0002-incumbent-gross-pond-link.stderr"
+      },
+      "stdout": "",
+      "stderr": "C:/Users/Veldh012/AppData/Local/Temp/s5-matrix-gross-O2-20261107/incumbent/gross_pond.f90:398:68:\n\n  398 |         call literal_step(f,expected,mass,surface_mass,dec,ein,eout)\n      |                                                                    1\nError: More actual than formal arguments in procedure call at (1)\n"
+    },
+    {
+      "opt": "O2",
+      "reason": "Base S5MJ0001 external full-half fixture refused on the incumbent. Retain refusal and exclude from this qualification.",
+      "event": {
+        "label": "incumbent-advance",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-projected-O2-20261107\\incumbent\\surface.exe",
+          "surface-write-advance",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-projected-O2-20261107\\incumbent\\original-1",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-gross-projected-O2-20261107\\incumbent\\advance-1-direct",
+          "1"
+        ],
+        "returncode": 1,
+        "seconds": 0.03739599999971688,
+        "stdout": "0008-incumbent-advance.stdout",
+        "stderr": "0008-incumbent-advance.stderr"
+      },
+      "stdout": "FAIL accepted physical continuation\n",
+      "stderr": "ERROR STOP 1\n\nError termination. Backtrace:\n#0  0x38d89b94\n#1  0x38d04471\n#2  0x38bb28b1\n#3  0x87c15bb\n#4  0x87c32ae\n#5  0x87d7ba5\n#6  0x8c2b299\n#7  0x87c1156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+    }
+  ],
+  "posix": {
+    "O0": {
+      "job": 128391095085,
+      "artifact": 13572199723,
+      "artifact_sha256": "5f2fcece65c44a06b68517d1ef404f4b12326944679b82ceb09a77f959dc72ea",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 121,
+      "events": [
+        {
+          "label": "incumbent-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "incumbent-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        }
+      ]
+    },
+    "O2": {
+      "job": 128391094951,
+      "artifact": 13572851512,
+      "artifact_sha256": "84a56949efcd67b752fa4f5f2002e20b8d823a05bdd931f0cc2e300b9aeb8632",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 121,
+      "events": [
+        {
+          "label": "incumbent-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "incumbent-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-write",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        },
+        {
+          "label": "candidate-gross-resume",
+          "stdout": "MC_SOL01_GROSS_POSITIVE_RUNON_RUNOFF_JOINT_V2=PASS\n"
+        }
+      ]
+    }
+  },
+  "workflows": [
+    {
+      "id": 42368344729,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344693,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344738,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344804,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344791,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344724,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344784,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344769,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 42368344678,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344658,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344647,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344649,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344674,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42368344648,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "workflow_failure": {
+    "job": 128391095510,
+    "observed": [
+      "2026-11-07T11:34:15.3890624Z OSError: /home/runner/work/_temp/swap5-fgc49d-context-42368344769-2500/o0/libfgc49d_application.so: cannot enable executable stack as shared object requires: Invalid argument",
+      "2026-11-07T11:34:15.3892001Z FGC49D_CONTEXT_FAIL runtime O0",
+      "2026-11-07T11:34:15.4031287Z ##[error]Process completed with exit code 1."
+    ]
+  },
+  "adjudication": "All four Windows/POSIX O0/O2 cohorts pass the original gross positive runon/runoff and first-window mass gates and exact S5MJ0002 fresh continuation. The separate literal oracle compile mismatch and S5MJ0001 base incumbent refusal remain recorded. F-CI110 retains its executable-stack loader failure.",
+  "next": "Qualify the real Boesten S5MJ0003 continuation envelope. Keep the base external full-half refusal outside admission."
+}

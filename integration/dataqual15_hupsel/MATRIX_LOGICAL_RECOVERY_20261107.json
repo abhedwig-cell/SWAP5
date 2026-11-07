@@ -1,5 +1,5 @@
 {
-  "phase": "FULL_CORRECTED_PRIVATE_S5MJ0001_WINDOWS_POSIX_QUALIFIED_CANONICAL_INTEGRATION_PENDING",
+  "phase": "CANONICALLY_INTEGRATED_PRIVATE_S5MJ0001_LOGICAL_QUALIFICATION",
   "scope": "Private S5MJ0001 matrix reader, original modes0 and1 only. S5MJ0002/3 not exercised.",
   "preregistration": "MATRIX_LOGICAL_PREREGISTRATION_20261107.json",
   "windows": {
@@ -10,7 +10,7 @@
   "limits": "S5MJ0002 and S5MJ0003 application cohorts, writer publication and deployed production admission remain open. No source/interface/layout/CRC/solver/tolerance/retry/mass/restart/owner changes. Prior P2E04 Windows numerical equality failures remain FAILED.",
   "production_admission": false,
   "whole_scientific_admission": false,
-  "next": "Exact nonoverlapping canonical merge with PR1610 preserved; then separate actual S5MJ0002 surface and S5MJ0003 Boesten cohorts and deployed admission. Existing pond-joint drivers supply surface-route evidence starting points. Do not infer coverage from shared header source alone.",
+  "next": "Separately qualify actual S5MJ0002 surface and S5MJ0003 Boesten cohorts using current source and matching owner fixtures, then consider deployed source successor with current native preservation. Existing test_pond_joint.f90 and test_dynamic_pond_joint.f90 exercise explicit surface-owner routes. No tag2/3 qualification or production admission inferred from shared header source. Keep original P2E04 Windows equality failures retained.",
   "posix": {
     "O0": "MATRIX_LOGICAL_POSIX_O0_20261107.json",
     "O2": "MATRIX_LOGICAL_POSIX_O2_20261107.json"
@@ -107,5 +107,8 @@
       }
     }
   },
-  "qualified_header_head": "7b4e0bcd2d6ece19368a5fbe849f6a990c72b04b"
+  "qualified_header_head": "7b4e0bcd2d6ece19368a5fbe849f6a990c72b04b",
+  "canonical_commit": "07e67e56c1cd80c4bb8d9582d27ab46b2aa0971c",
+  "canonical_tree": "f5f87d70739de924b3ad3b2a27a25e565c7b50ae",
+  "canonical_peer_preserved": "PR1610 at3aa9b8ee3"
 }

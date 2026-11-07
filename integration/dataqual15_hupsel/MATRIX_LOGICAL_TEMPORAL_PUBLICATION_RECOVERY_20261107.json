@@ -1,0 +1,687 @@
+{
+  "phase": "PRIVATE_TEMPORAL_PUBLICATION_AND_CONTINUATION_FOCUSED_GATES_PASS",
+  "canonical_base": "d8b33a22b3538d152f7a6d2a6a69d833c5f85871",
+  "tested_head": "128242b3b85c2c9c4af16d3e55c04d95393f09ad",
+  "pull_request": 1612,
+  "scope": "Four fixtures cover S5MJ0001 base and temporal history, S5MJ0002 surface mode 0 and S5MJ0003 Boesten mode 2. Physical continuation covers S5MJ0001 mode 1 only.",
+  "predecessor": "MATRIX_LOGICAL_ALL_TAG_PUBLICATION_RECOVERY_20261107.json",
+  "production_admission": false,
+  "windows": {
+    "O0": {
+      "native_archive_sha256": "b7c3fdf05a853bfcaf96f0776bf6d4825216282d6be0d5a99a5e53a22dc74c1c",
+      "platform": "WINDOWS",
+      "optimization": "O0",
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              -1
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "3": [
+            [
+              144,
+              -1
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 95,
+      "temporal_start_sha256": "7c0fc62ec0b39f2173e017a0f48d441849283b3662d497784c4481e006e7c844",
+      "temporal_endpoint_sha256": "4a0b4eef9bbe0c252e516ca738d889a4596475df964a35d099cc3d05e17d408b",
+      "selected_events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-compile",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        }
+      ]
+    },
+    "O2": {
+      "native_archive_sha256": "c10ad236e209fec1d2a1ffc359ff4e09c4d4d70d094874cbad4fe0cec1f5b839",
+      "platform": "WINDOWS",
+      "optimization": "O2",
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "3": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 95,
+      "temporal_start_sha256": "7c0fc62ec0b39f2173e017a0f48d441849283b3662d497784c4481e006e7c844",
+      "temporal_endpoint_sha256": "4a0b4eef9bbe0c252e516ca738d889a4596475df964a35d099cc3d05e17d408b",
+      "selected_events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-compile",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        }
+      ]
+    }
+  },
+  "posix": {
+    "O0": {
+      "native_archive_sha256": "d01d5a92ce30a092d6809f119f3ccdaa00474d85c5c640bdff56ec381ead6ffe",
+      "platform": "POSIX",
+      "optimization": "O0",
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              -1
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              -1
+            ]
+          ],
+          "3": [
+            [
+              144,
+              -1
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "job": 128349508707,
+      "artifact": 13566189307,
+      "artifact_sha256": "7758739538fb77f68bb50c63422f04eed01b4a9cffd26e342a555a22d142b11d",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 95,
+      "selected_events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-compile",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        }
+      ]
+    },
+    "O2": {
+      "native_archive_sha256": "1e3526e83567c0fcb95a2201d8cfccb1aa889efbe3886f0c8d498317cbda251f",
+      "platform": "POSIX",
+      "optimization": "O2",
+      "admitted_malformed": {
+        "incumbent": {
+          "1": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "1t": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ],
+            [
+              156,
+              2
+            ],
+            [
+              156,
+              -1
+            ],
+            [
+              156,
+              256
+            ]
+          ],
+          "2": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ],
+          "3": [
+            [
+              144,
+              2
+            ],
+            [
+              144,
+              -1
+            ],
+            [
+              144,
+              256
+            ]
+          ]
+        },
+        "candidate": {
+          "1": [],
+          "1t": [],
+          "2": [],
+          "3": []
+        }
+      },
+      "surface_mass": 0.25,
+      "private_publication": true,
+      "production_admission": false,
+      "job": 128349508492,
+      "artifact": 13566798624,
+      "artifact_sha256": "1e7c1da234338e3396e478dd293e7673716320d903413a8704a1eb4a7a839abf",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 95,
+      "selected_events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-compile",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "TEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nTEMPORAL_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        },
+        {
+          "label": "publication-occupied-pending",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-refused",
+          "stdout": "SURFACE_PUBLICATION_REFUSED\n"
+        },
+        {
+          "label": "publication-replace-success",
+          "stdout": ""
+        }
+      ]
+    }
+  },
+  "workflows": [
+    {
+      "id": 42354504646,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "in_progress",
+      "conclusion": null
+    },
+    {
+      "id": 42354504664,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504564,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504697,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504665,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504553,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504691,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504556,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504581,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504580,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504643,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504537,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504741,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42354504623,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  ],
+  "workflow_failure": {
+    "job": 128349508730,
+    "observed": [
+      "2026-11-07T08:17:09.1819137Z OSError: /home/runner/work/_temp/swap5-fgc49d-context-42354504623-2261/o0/libfgc49d_application.so: cannot enable executable stack as shared object requires: Invalid argument",
+      "2026-11-07T08:17:09.1819941Z FGC49D_CONTEXT_FAIL runtime O0",
+      "2026-11-07T08:17:09.1938169Z ##[error]Process completed with exit code 1."
+    ]
+  },
+  "adjudication": "Four Windows/POSIX O0/O2 cohorts pass 48 real publication controls and 96 private malformed reader refusals. S5MJ0001 mode 1 retains history and produces byte-identical direct and fresh-process endpoints within each cohort at the established water and chemical mass gates. F-CI110 retains its loader failure. LOW08-A was still running at evidence capture.",
+  "next": "Reconcile pending LOW08-A, then qualify publication-stage injection and remaining physical continuation envelopes before deployed admission."
+}
