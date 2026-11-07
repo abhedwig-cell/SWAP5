@@ -15,11 +15,13 @@ def render(folder):
     shadow = previous.render(folder)
     name = 'src/process/macropore/mod_ppa_wu05a6_saturated_exchange_rate.f90'
     s = (ROOT/name).read_text()
+    s = once(s, '  implicit none', '  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite\n  implicit none')
     s = once(s, '    integer :: swsep = 0',
              '    real(real64), allocatable :: zero_head_fraction(:)\n    integer :: swsep = 0')
     s = once(s, '    nd=self%num_domains', '''    if(allocated(self%zero_head_fraction))then
       ok=.false.
       if(size(self%zero_head_fraction)/=self%num_nodes)return
+      if(any(.not.ieee_is_finite(self%zero_head_fraction)))return
       if(any(.not.(self%zero_head_fraction>=-1d0.and.self%zero_head_fraction<=1d0)))return
     end if
     nd=self%num_domains''')
