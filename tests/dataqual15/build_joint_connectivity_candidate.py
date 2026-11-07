@@ -4,11 +4,27 @@ from pathlib import Path
 import build_joint_saturation_contact_candidate as previous
 from build_joint_entry_candidate import ROOT, once, sha
 
-MODEL = 'ANDELST_JOINT_SINGLE_NODE_CONNECTIVITY_GRAPH_V7'
+MODEL = 'ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7'
 
 
 def render(folder):
     shadow = previous.render(folder)
+    # Keep the physical pond threshold and all limiter/certificate bounds.
+    # A positive analytic amount is water even below the legacy numerical
+    # quantum; both the trial surface and the top-input owner must agree.
+    for name, old, new in [
+        ('src/solver/mod_b110_dynamic_top_boundary_provider.f90',
+         '    if(q_cm<1.0e-7_real64)then\n      q_cm=0.0_real64\n      dq_dh0max=0.0_real64\n    end if',
+         '    ! In this graph retain every positive analytic donor amount.'),
+        ('src/runtime/mod_fmr_macropore_top_input.f90',
+         '    if (requested_lateral_cm < 1.0e-7_real64) requested_lateral_cm = 0.0_real64',
+         '    ! Match the continuous positive donor amount of the trial surface.'),
+        ('src/solver/mod_b111_profile_groundwater_projection.f90',
+         'if (ponding_depth < 1.0e-8_real64) then',
+         'if (ponding_depth == 0.0_real64) then')]:
+        target=folder/name;target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_text(once((ROOT/name).read_text(),old,new),newline='\n')
+        shadow[ROOT/name]=target
     name = 'src/solver/mod_b110_source_sink_provider.f90'
     s = shadow[ROOT/name].read_text()
     s = once(s, '     integer :: active_nodes = 0', '''     integer :: connection_node = 0
@@ -249,7 +265,9 @@ def render(folder):
         view%active_nodes=state%active_nodes''')
     shadow[ROOT/name].write_text(s,newline='\n')
     p=folder/'MODEL.json';r=json.loads(p.read_text())
-    r.update(model=MODEL,connection='At a limiting interior zero head with the other heads nonnegative, solve a bounded level between actual disconnected/connected limits; evaluate DRAMET3/DIVDRA at that same level in the residual and its accepted receipt. An exact first boundary intersection can change the limiting node while carrying the same physical level. Trial scratch only.',rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
+    r.update(model=MODEL,connection='At a limiting interior zero head with the other heads nonnegative, solve a bounded level between actual disconnected/connected limits; evaluate DRAMET3/DIVDRA at that same level in the residual and its accepted receipt. An exact first boundary intersection can change the limiting node while carrying the same physical level. Trial scratch only.',
+             positive_pond='Retain the bounded analytic positive donor at both owners; for a fully connected positively ponded profile use the actual free surface. The exact dry projection and configured physical donor threshold stay unchanged.',
+             rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
     p.write_text(json.dumps(r,indent=2)+'\n')
     return shadow
 

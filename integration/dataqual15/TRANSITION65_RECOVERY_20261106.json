@@ -1969,5 +1969,97 @@
       "expected_wall_seconds": 950,
       "scientific_justification": "Trace shows continued accepted time and resolved changing zero-head level, not a demonstrated fixed clock. Estimate remaining connectivity traversal from measured level/clock progression and measured cost; use same source, physics, tolerances and immutable origin, with only wall-clock budget extended. No original481 launch until actual source and neighbors pass. Separate donor branch audit/causal test is diagnostic only."
     }
+  },
+  "connectivity_v7": {
+    "model": "ANDELST_JOINT_CONNECTIVITY_POSITIVE_POND_GRAPH_V7",
+    "status": "DIAGNOSTIC_O2_THREE_SOURCES_ALL_ORIGINAL_GUARDS_PASS_FINAL_O0_O2_PENDING",
+    "original_historical_equivalence": false,
+    "whole481": false,
+    "own_year": false,
+    "three_source_seconds": 43.158137100050226,
+    "three_source_rows": [
+      {
+        "day": "257",
+        "segment": "1",
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "attempts": "1469",
+        "solver_rejections": "0",
+        "temporal_rejections": "734",
+        "mass_rejections": "2",
+        "residual_cm": "-6.53137960382466076E-012"
+      },
+      {
+        "day": "257",
+        "segment": "2",
+        "t0": " 2.56874999999998806E+002",
+        "t1": " 2.56876999999998816E+002",
+        "attempts": "67",
+        "solver_rejections": "0",
+        "temporal_rejections": "33",
+        "mass_rejections": "2",
+        "residual_cm": " 4.41799374861773231E-014"
+      },
+      {
+        "day": "257",
+        "segment": "3",
+        "t0": " 2.56876999999998816E+002",
+        "t1": " 2.56878999999998825E+002",
+        "attempts": "71",
+        "solver_rejections": "0",
+        "temporal_rejections": "35",
+        "mass_rejections": "2",
+        "residual_cm": " 3.10203251974172645E-014"
+      }
+    ],
+    "three_source_cost": [
+      {
+        "t0": " 2.56872999999998797E+002",
+        "t1": " 2.56874999999998806E+002",
+        "completed": "T",
+        "nonlinear_iterations": "17258",
+        "headcalc_calls": "4407",
+        "linear_solves": "17258",
+        "backtracking_attempts": "51175",
+        "accepted_substeps": "733",
+        "min_accepted_dt": " 4.83169060316868126E-013",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      },
+      {
+        "t0": " 2.56874999999998806E+002",
+        "t1": " 2.56876999999998816E+002",
+        "completed": "T",
+        "nonlinear_iterations": "406",
+        "headcalc_calls": "201",
+        "linear_solves": "406",
+        "backtracking_attempts": "406",
+        "accepted_substeps": "32",
+        "min_accepted_dt": " 6.24999997853592504E-005",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      },
+      {
+        "t0": " 2.56876999999998816E+002",
+        "t1": " 2.56878999999998825E+002",
+        "completed": "T",
+        "nonlinear_iterations": "435",
+        "headcalc_calls": "213",
+        "linear_solves": "435",
+        "backtracking_attempts": "435",
+        "accepted_substeps": "34",
+        "min_accepted_dt": " 1.56250000031832315E-005",
+        "max_accepted_dt": " 6.25000000127329258E-005"
+      }
+    ],
+    "actual_donor_quantum": {
+      "same_prior_pond_cm": 3.464903062287959e-09,
+      "same_head1_cm": 0.018017078686300935,
+      "larger_step_analytic_and_published_cm": 1.1319092855903743e-07,
+      "half_step_analytic_cm": 5.8275045442732536e-08,
+      "half_step_published_cm": 0
+    },
+    "actual_positive_pond_projection_jump_cm": 0.4825250261789667,
+    "old_positive_donor_only_time_censored_seconds": 180.6930166000966,
+    "old_positive_donor_only_internal_clock": 256.8742584350721,
+    "next_action": "Final202-provider O0/O2 coherent builds and real physical contracts; replay actual failed source plus2 neighbors and predecessor256.742. Bounded read-only observation through day257 selected before fresh original481. Long unchanged-quantum control remains active; no cross-executable own proof."
   }
 }
