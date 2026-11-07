@@ -1217,67 +1217,18 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "TERMINAL_SOURCE256742_TO256743_REFUSAL",
-    "model": "ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5",
-    "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
+    "status": "ACTIVE_ORIGINAL_INPUT481_V6_NOT_COMPLETED",
+    "model": "ANDELST_JOINT_ZERO_HEAD_SATURATION_CONTACT_V6",
+    "executable_sha256": "105c7c283c268cabdc9cbbc77cee1b9b122d320b1c85625f4b837796969ed81b",
+    "binding": "416a72cc2e61778ef3228b471863edd7f84247b58c00e76c75c8c5cccf922489",
     "original_initialization": true,
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
-    "corrected_contact_groundwater_drainage": true,
-    "lower_perched_contact": true,
-    "run": "s5-bottom-contact-original481-O2",
-    "capture": "s5-bottom-contact-captured-own-O2",
     "whole481": false,
     "own365_to367": false,
-    "own3_to4": {
-      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
-      "seconds": 160.88777079991996,
-      "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
-      "input_restart_sha256": "c35966b802a76a819f900149e2678354feec1611a9d8b37ce8d394a913fbbe49",
-      "all_progress_rows_exact": true,
-      "progress_rows": 504,
-      "entire_checkpoint4_byte_exact": true,
-      "checkpoint4_sha256": "fed132bfb472efd4b37f8daf60ff6ac5e52f90605349ffbc1fb1d30a0eba95f8",
-      "same_input_binding": true,
-      "historical_original_equivalence": false
-    },
-    "own245_to246": {
-      "scope": "STRICT_CURRENT_EXECUTABLE_OWN245_TO246",
-      "seconds": 1060.0164379000198,
-      "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
-      "input_restart_sha256": "dc72dfdb72ee6d33cd137ef86863a52bcbcb657f65844ed6c8335f413ed094b7",
-      "all_progress_rows_exact": true,
-      "progress_rows": 512,
-      "entire_checkpoint246_byte_exact": true,
-      "checkpoint246_sha256": "fec2d3d9e961f5d981ed64a4a22ed5bbcfe498ccccc4f5d1fb89787af5505fde",
-      "same_input_binding": true,
-      "historical_original_equivalence": false
-    },
-    "prior_V4_day245_physical_payload_exact": true,
-    "observed_prior_V4_exact_CSV_prefix_rows": {
-      "budget.csv": 245,
-      "diagnostics.csv": 245,
-      "progress.csv": 123224,
-      "cost.csv": 123224
-    },
-    "new_own_checkpoint245_sha256": "dc72dfdb72ee6d33cd137ef86863a52bcbcb657f65844ed6c8335f413ed094b7",
-    "entire_prior_V4_all4CSV_exact_prefix_rows": {
-      "budget.csv": 245,
-      "diagnostics.csv": 245,
-      "progress.csv": 123362,
-      "cost.csv": 123362
-    },
-    "old245594_stagnation_source_completed_from_original_initialization": true,
-    "last_observed_completed_source_interval": 245.72099999999665,
-    "completed_days": 256,
-    "seconds": 6297.016090600053,
-    "returncode": 1,
-    "censored": false,
-    "last_completed_source_interval": 256.74200000000366,
-    "last_attempted_source_interval": 256.7430000000022,
-    "maximum_daily_water_residual_cm": 3.394925574690817e-12,
-    "year_control": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION",
-    "next_action": "Fresh V6 original-input481 plus unchanged own stream captures and exact year; retain V5 natural failure256."
+    "run": "s5-zero-head-original481-O2",
+    "capture": "s5-zero-head-captured-own-O2",
+    "next_action": "Actively follow fresh original-input481 to terminal. Validate own3-4,256-257,365-367 only under this exact binary/binding. Do not promote previous V5 own proofs."
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -1730,6 +1681,94 @@
       "bytes": 39913314,
       "members": 3915,
       "unique_source_postimages": 261
+    },
+    "day1_preservation": {
+      "O0_seconds": 28.81396079994738,
+      "O0_O2_all4CSV_exact": true,
+      "O0_O2_V5_physical_payload_exact": true,
+      "V5_budget_diagnostics_progress_exact": true,
+      "V5_cost_exact": false,
+      "first_different_cost_row": 102,
+      "first_cost_difference": "V6 eleven nonlinear/linear/backtrack evaluations versus V5 ten; same physical/progress result.",
+      "later_full_prefix_exact": false,
+      "first_different_progress_row": 965,
+      "first_different_source": [
+        1.906999999998021,
+        1.908999999998021
+      ],
+      "difference": "Last balance decimal only at first progress difference; no full prefix equivalence claimed."
+    },
+    "canonical_dependency_review": {
+      "canonical": "51b3e7305b7da4af58a5427f86166a570a9cef69",
+      "changed_compiled_file": "src/adapter/mod_age_joint_restart_file.f90",
+      "only_consumed_symbol": "crc32",
+      "crc32_body_byte_exact": true,
+      "app_import": "app/solute_column/macro_water_restart.f90 USE only crc32",
+      "changed_age_writer_not_executed_by_water_application": true,
+      "native_qualification_executable_remains_pinned_not_rebound": true
     }
+  },
+  "predecessor_v5_terminal_execution": {
+    "status": "TERMINAL_SOURCE256742_TO256743_REFUSAL",
+    "model": "ANDELST_JOINT_BOTH_PERCHED_CONTACTS_DRAINAGE_GRAPH_V5",
+    "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "corrected_contact_groundwater_drainage": true,
+    "lower_perched_contact": true,
+    "run": "s5-bottom-contact-original481-O2",
+    "capture": "s5-bottom-contact-captured-own-O2",
+    "whole481": false,
+    "own365_to367": false,
+    "own3_to4": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN3_TO4",
+      "seconds": 160.88777079991996,
+      "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
+      "input_restart_sha256": "c35966b802a76a819f900149e2678354feec1611a9d8b37ce8d394a913fbbe49",
+      "all_progress_rows_exact": true,
+      "progress_rows": 504,
+      "entire_checkpoint4_byte_exact": true,
+      "checkpoint4_sha256": "fed132bfb472efd4b37f8daf60ff6ac5e52f90605349ffbc1fb1d30a0eba95f8",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "own245_to246": {
+      "scope": "STRICT_CURRENT_EXECUTABLE_OWN245_TO246",
+      "seconds": 1060.0164379000198,
+      "executable_sha256": "71943c524abb937c5ebf6be93f2e51c384b5ea777e15b266267df76897d12902",
+      "input_restart_sha256": "dc72dfdb72ee6d33cd137ef86863a52bcbcb657f65844ed6c8335f413ed094b7",
+      "all_progress_rows_exact": true,
+      "progress_rows": 512,
+      "entire_checkpoint246_byte_exact": true,
+      "checkpoint246_sha256": "fec2d3d9e961f5d981ed64a4a22ed5bbcfe498ccccc4f5d1fb89787af5505fde",
+      "same_input_binding": true,
+      "historical_original_equivalence": false
+    },
+    "prior_V4_day245_physical_payload_exact": true,
+    "observed_prior_V4_exact_CSV_prefix_rows": {
+      "budget.csv": 245,
+      "diagnostics.csv": 245,
+      "progress.csv": 123224,
+      "cost.csv": 123224
+    },
+    "new_own_checkpoint245_sha256": "dc72dfdb72ee6d33cd137ef86863a52bcbcb657f65844ed6c8335f413ed094b7",
+    "entire_prior_V4_all4CSV_exact_prefix_rows": {
+      "budget.csv": 245,
+      "diagnostics.csv": 245,
+      "progress.csv": 123362,
+      "cost.csv": 123362
+    },
+    "old245594_stagnation_source_completed_from_original_initialization": true,
+    "last_observed_completed_source_interval": 245.72099999999665,
+    "completed_days": 256,
+    "seconds": 6297.016090600053,
+    "returncode": 1,
+    "censored": false,
+    "last_completed_source_interval": 256.74200000000366,
+    "last_attempted_source_interval": 256.7430000000022,
+    "maximum_daily_water_residual_cm": 3.394925574690817e-12,
+    "year_control": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION",
+    "next_action": "Fresh V6 original-input481 plus unchanged own stream captures and exact year; retain V5 natural failure256."
   }
 }
