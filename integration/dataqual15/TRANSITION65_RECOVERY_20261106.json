@@ -1958,6 +1958,16 @@
       "all_previous_iteration_gates_pass": true,
       "actual_audit_seconds": 2.611251699971035,
       "correction": "Recompute the same total residual only after the joint candidate produces its actual accepted numerical tuple; all limits and original final checks retained. Actual source causal probe pending."
+    },
+    "total_refresh_selection": {
+      "quiet_first_probe": "TIME_CENSORED_180.36051369993947_S",
+      "trace_probe": "TIME_CENSORED_75.05561630008742_S",
+      "latest_internal_observed_clock": 256.8737409997516,
+      "observed_microstep_calls": 10589,
+      "progressing_groundwater_cm": -8.427016445107515,
+      "selected_repeat_wall_seconds": 1800,
+      "expected_wall_seconds": 950,
+      "scientific_justification": "Trace shows continued accepted time and resolved changing zero-head level, not a demonstrated fixed clock. Estimate remaining connectivity traversal from measured level/clock progression and measured cost; use same source, physics, tolerances and immutable origin, with only wall-clock budget extended. No original481 launch until actual source and neighbors pass. Separate donor branch audit/causal test is diagnostic only."
     }
   }
 }
