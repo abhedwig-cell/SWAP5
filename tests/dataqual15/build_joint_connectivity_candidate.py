@@ -14,6 +14,7 @@ def render(folder):
     s = once(s, '     integer :: active_nodes = 0', '''     integer :: connection_node = 0
      real(real64) :: connection_fraction = 0d0
      real(real64) :: connection_pond_cm = 0d0
+     real(real64) :: connection_seed_level_cm = 999d0
      integer :: active_nodes = 0''')
     shadow[ROOT/name].write_text(s,newline='\n')
 
@@ -33,22 +34,41 @@ def render(folder):
     saved_connection_node=drain%connection_node;saved_connection_fraction=drain%connection_fraction
    end select
   end if''')
-    marker='  allocate(gwl_distance(n),gwl_z(n));gwl_distance=0d0'
-    s = once(s,marker,'''  ! A single zero-head node can disconnect two otherwise saturated regions.
+    marker='''  allocate(gwl_distance(n),gwl_z(n));gwl_distance=0d0
+  do i=1,n;gwl_z(i)=grid_z(i);end do
+  gwl_distance(2:n)=abs(gwl_z(2:n)-gwl_z(1:n-1))'''
+    s = once(s,marker,marker+'''
+  ! A single zero-head node can disconnect two otherwise saturated regions.
   ! Its drainage jump is nonlocal: use the whole bordered residual to decide
   ! whether the bounded contact exists, not a one-row endpoint sign test.
   if(k==0.and.associated(evaluation_context%source_sink))then
    select type(drain=>evaluation_context%source_sink)
    type is(b110_source_sink_provider_t)
-    i=minloc(x,dim=1)
-    if(associated(drain%current_drainage).and.i>1.and.i<n.and.abs(x(i))<=1d-3)then
-     if(all(x(:i-1)>0d0).and.all(x(i+1:)>0d0))then
-      k=1;nodes(k)=3*n+i;x(i)=0d0;lambda(k)=0d0
+    if(associated(drain%current_drainage))then
+     if(minval(state%hm1(:n))==0d0.and.state%hm1(1)>0d0.and.state%hm1(n)>0d0)then
+      call evaluate_b111_profile_groundwater_projection(gwl_z,gwl_distance,state%hm1(:n),drain%connection_pond_cm,gwl_view)
+      if(gwl_view%valid.and.gwl_view%level_present)then
+       do i=n-1,2,-1
+        if(state%hm1(i)/=0d0)cycle
+        if(drain%connection_seed_level_cm<gwl_z(i).or.drain%connection_seed_level_cm>=gwl_view%level_cm)cycle
+        k=1;nodes(k)=3*n+i;x=state%hm1(:n)
+        lambda(k)=(drain%connection_seed_level_cm-gwl_z(i))/(gwl_view%level_cm-gwl_z(i))
+        exit
+       end do
+      end if
+     end if
+     if(k==0)then
+      i=minloc(x,dim=1)
+      if(i>1.and.i<n.and.abs(x(i))<=1d-3)then
+       if(all(x(:i-1)>0d0).and.all(x(i+1:)>0d0))then
+        k=1;nodes(k)=3*n+i;x(i)=0d0;lambda(k)=0d0
+       end if
+      end if
      end if
     end if
    end select
   end if
-'''+marker)
+''')
     for j in ('j','jj'):
         s=s.replace(f'i=abs(nodes({j}));if(i>2*n)i=i-n\n    if(i>n)i=i-n',f'i=mod(abs(nodes({j}))-1,n)+1')
     s = once(s,'''    candidate(:k)=lambda(:k);candidate(j)=1d0''','''    if(nodes(j)>3*n)then
@@ -153,7 +173,13 @@ def render(folder):
     name='src/runtime/mod_fmr_serialized_reference_backend.f90';s=shadow[ROOT/name].read_text()
     s=once(s,'    logical::joint_drain_active,joint_drain_ok','    logical::joint_drain_active,joint_drain_ok\n    real(real64)::joint_drain_level')
     s=once(s,'      joint_drain_source=self%source_sink','''      joint_drain_source=self%source_sink
-      joint_drain_source%connection_pond_cm=hydraulic_start%ponding_depth''')
+      joint_drain_source%connection_pond_cm=hydraulic_start%ponding_depth
+      joint_drain_source%connection_seed_level_cm=hydraulic_start%groundwater_level''')
+    s=once(s,'''          hydraulic_start%groundwater_level=profile_projection%level_cm
+          self%last_observation%drainage_qbot_projection_available=.true.''','''          if(self%macropore_active)call retain_connection_projection(self%soil_parameters%z, &
+            hydraulic_start%pressure_head,hydraulic_start%groundwater_level,profile_projection)
+          hydraulic_start%groundwater_level=profile_projection%level_cm
+          self%last_observation%drainage_qbot_projection_available=.true.''')
     s=once(s,'      allocate(joint_final_qdra(size(self%qdra,1),size(self%qdra,2)))','''      if(joint_drain_source%connection_node>0)then
         block
           integer::ic
@@ -191,6 +217,32 @@ def render(folder):
       joint_drain_level=projection%level_cm
       view%active_nodes=size(head);view%pressure_head=head;view%water_content=theta''')
     s=s[:begin]+body+s[end:]
+    marker='  real(real64) function trial_drainage_exchange_error(self,full,half,dt) result(error)'
+    s=once(s,marker,'''  pure subroutine retain_connection_projection(z,head,level,projection)
+    real(real64),intent(in)::z(:),head(:),level
+    type(b111_profile_groundwater_projection_t),intent(inout)::projection
+    integer::i,n
+    if(.not.projection%valid.or..not.projection%level_present.or..not.ieee_is_finite(level))return
+    n=size(head)
+    if(n<3.or.size(z)/=n)return
+    if(minval(head)/=0d0.or.head(1)<=0d0.or.head(n)<=0d0.or.level>=projection%level_cm)return
+    do i=n-1,2,-1
+      if(head(i)/=0d0.or.level<z(i))cycle
+      projection%level_cm=level
+      return
+    end do
+  end subroutine retain_connection_projection
+
+'''+marker)
+    s=once(s,'''        state%pressure_head,state%ponding_depth,projection)
+      if(.not.projection%valid)return
+      if(projection%level_present)then
+        view%active_nodes=state%active_nodes''','''        state%pressure_head,state%ponding_depth,projection)
+      if(.not.projection%valid)return
+      if(self%macropore_active)call retain_connection_projection(self%soil_parameters%z, &
+        state%pressure_head,state%groundwater_level,projection)
+      if(projection%level_present)then
+        view%active_nodes=state%active_nodes''')
     shadow[ROOT/name].write_text(s,newline='\n')
     p=folder/'MODEL.json';r=json.loads(p.read_text())
     r.update(model=MODEL,connection='At a limiting interior zero head with the other heads nonnegative, solve a bounded level between actual disconnected/connected limits; evaluate DRAMET3/DIVDRA at that same level in the residual and its accepted receipt. An exact first boundary intersection can change the limiting node while carrying the same physical level. Trial scratch only.',rendered_sources_sha256={str(n.relative_to(ROOT)):sha(p.read_bytes())for n,p in shadow.items()})
