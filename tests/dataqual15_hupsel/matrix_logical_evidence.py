@@ -3,6 +3,7 @@ import argparse,functools,io,json,lzma,struct,tarfile,tempfile,zlib
 from pathlib import Path,PureWindowsPath,PurePosixPath
 import matrix_logical_runtime as g
 sha=g.sha
+origin=functools.lru_cache(maxsize=None)(g.raw)
 @functools.lru_cache(maxsize=1)
 def expected():
  with tempfile.TemporaryDirectory(prefix='s5-matrix-logical-audit-')as t:
@@ -27,9 +28,9 @@ def audit(files):
   if role=='candidate':flags+=['-I'+str(root/'incumbent')]
   assert b['flags']==flags;provider_events=iter(e for e in events if e['label']=='provider');compiler=next(e['command'][0]for e in events if e['label']=='provider');objects=[]
   for binding,(name,raw)in zip(b['bindings'],sources):
-   expected_raw=g.postimage(g.raw(r['baseline'],g.SOURCE))if role=='candidate'and name==g.SOURCE else raw
+   expected_raw=g.postimage(origin(r['baseline'],g.SOURCE))if role=='candidate'and name==g.SOURCE else raw
    actual=files[role+'/'+binding['snapshot']];assert actual.replace(b'\r\n',b'\n')==expected_raw.replace(b'\r\n',b'\n')and sha(actual)==binding['source_sha256']
-   if name.startswith(('src/','tests/')):assert raw.replace(b'\r\n',b'\n')==g.raw(r['baseline'],name)
+   if name.startswith(('src/','tests/')):assert raw.replace(b'\r\n',b'\n')==origin(r['baseline'],name)
    obj=q(binding['object']);rel=obj.relative_to(root).as_posix();assert sha(files[rel])==binding['object_sha256'];assert binding['reused']==(role=='candidate'and name!=g.SOURCE)
    objects.append(str(obj))
    if not binding['reused']:
@@ -37,11 +38,11 @@ def audit(files):
   assert next(provider_events,None)is None;objects.append(str(root/role/'publisher.o'))
   driver_events=iter(e for e in events if e['label']=='driver');link_events=iter(e for e in events if e['label']=='link')
   for name,(path,raw)in drivers.items():
-   d=b['drivers'][name];assert raw.replace(b'\r\n',b'\n')==g.raw(r['baseline'],path);assert files[role+'/'+d['source']]==raw and sha(raw)==d['source_sha256'];assert sha(files[role+'/'+d['executable']])==d['executable_sha256']
+   d=b['drivers'][name];assert raw.replace(b'\r\n',b'\n')==origin(r['baseline'],path);assert files[role+'/'+d['source']]==raw and sha(raw)==d['source_sha256'];assert sha(files[role+'/'+d['executable']])==d['executable_sha256']
    event=next(driver_events);obj=root/role/(name+'.o');assert event['command']==[compiler,*flags,'-c',str(root/role/d['source']),'-o',str(obj)]
    args=[*flags]+(['-Wl,--stack,16777216']if r['platform']=='WINDOWS'else[])+[str(obj),*objects,'-o',str(root/role/d['executable'])]
    response='\n'.join('"'+x.replace('\\','/')+'"'for x in args)+'\n';assert files[role+'/'+name+'.args'].replace(b'\r\n',b'\n')==response.encode();assert next(link_events)['command']==[compiler,'@'+str(root/role/(name+'.args'))]
-  assert files[role+'/publisher.c'].replace(b'\r\n',b'\n')==g.raw(r['baseline'],'app/support/restart_publish.c')
+  assert files[role+'/publisher.c'].replace(b'\r\n',b'\n')==origin(r['baseline'],'app/support/restart_publish.c')
   by_label={e['label']:e for e in events if e['label']not in ('provider','publisher','driver','link','logical')}
   expected_labels=set()
   for exponent,row in r['results'][role]['original'].items():
