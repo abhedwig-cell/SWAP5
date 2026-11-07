@@ -19,7 +19,7 @@ are never rebound. The source record distinguishes every generation and gate.
 
 ## Current drainage through zero and exact source phases
 
-### Proposed lower perched-contact successor
+### Lower perched-contact research successor
 
 The exact-phase V4 original-initialization run passes the previous245.379
 drainage refusal, then stagnates in source245.594-to245.596. An immutable own245
@@ -31,7 +31,9 @@ face between nodes27/28 instead finds a0-to0.0016855287077411096cm/day transfer
 jump. This positive-to-negative face is absent from the earlier upper-contact
 graph. It is a distinct implementation gap; neither481 nor year restart passes.
 
-V5 is a proposed private research successor. A separate trial-local lower-contact
+V5 is a private research successor, admitted at PR1606 (`912f1dabb`) for the
+bounded contracts and native source scope below. Its actual merge parents are
+`79cceedb8` and `7ceae3c6d`; the entire actual tree equals the qualified head. A separate trial-local lower-contact
 fraction acts on the first cell below that pocket, with the same weighted
 head-plane equality solved in the existing bordered system. Both Newton sides
 must expose that action; the accepted response must use the identical fraction,
