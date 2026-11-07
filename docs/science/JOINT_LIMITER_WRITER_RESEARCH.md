@@ -1,5 +1,10 @@
 # Native writer qualification through event and limiter successors
 
+Private current-source research is canonical at PR1603 (`7ae182b5d`). The actual
+merge tree equals qualified head `e299428d3`. Final17 workflows are terminal:
+14 SUCCESS and3 explicitly retained source-scope FAILED verdicts; complete final
+logs and merge proof are in `JOINT_LIMITER_WRITER_CLOSE_RECEIPT_20261106.json`.
+
 Actual latest Windows/POSIX O0/O2 and independent16-corruption archive audits
 pass. All335 providers are freshly compiled at each cohort; original native
 bytes and complete private owner/publication/termination controls pass. Source

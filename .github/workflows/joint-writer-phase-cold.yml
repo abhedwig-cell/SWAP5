@@ -1,0 +1,38 @@
+name: Exact PR1605 cold335 writer dependency research
+on:
+  pull_request:
+    paths:
+      - 'tests/dataqual15_hupsel/joint_writer_phase_*.py'
+      - 'integration/dataqual15_hupsel/JOINT_WRITER_PR1605_*'
+      - '.github/workflows/joint-writer-phase-cold.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-cold:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Actual immutable current source O0 O2 and independent source object audit
+        run: |
+          for opt in O0 O2; do
+            stem="integration/dataqual15_hupsel/JOINT_WRITER_PR1605_POSIX_${opt}_20261106"
+            if test -f "${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_writer_phase_evidence.py --stem "$stem"
+            else
+              python -B tests/dataqual15_hupsel/joint_writer_phase_cold.py --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/pr1605-cold/$opt"
+              python -B tests/dataqual15_hupsel/joint_writer_phase_evidence.py --output "$RUNNER_TEMP/pr1605-cold/$opt"
+            fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-pr1605-cold335-not-admitted
+          path: |
+            ${{ runner.temp }}/pr1605-cold/*-evidence.*
+            ${{ runner.temp }}/pr1605-cold/**/RESULT.json
+            ${{ runner.temp }}/pr1605-cold/**/EVENTS.json
+            ${{ runner.temp }}/pr1605-cold/**/*.stderr

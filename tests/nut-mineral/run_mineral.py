@@ -78,6 +78,9 @@ end subroutine
   extra=['-Wall','-Wextra','-Werror'] if p.name in ('mod_fmr_b111_mineral_route.f90','mod_fmr_b111_mineral_joint_application.f90','mod_mineral_joint_restart_file.f90') else []
   cmd(FC+flags+extra+['-c',p,'-o',obj],build,'physical_compile');
   if p.is_relative_to(ROOT):inputs[str(p.relative_to(ROOT))]=sha(p)
+ publication=ROOT/'app/support/restart_publish.c';inputs[str(publication.relative_to(ROOT))]=sha(publication)
+ cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'
+ cmd([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile');objects.append(publication_obj)
  obj=build/'joint.o';exe=build/'joint'
  cmd(FC+flags+['-c',driver,'-o',obj],build,'physical_compile');cmd(FC+flags+objects+[obj,'-o',exe],build,'physical_link')
  restart=build/'restart.bin';endpoint=build/'expected.bin';fresh=build/'fresh.bin'

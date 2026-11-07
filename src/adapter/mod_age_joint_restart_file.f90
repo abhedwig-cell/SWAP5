@@ -1,6 +1,7 @@
 ! Same-platform bounded disk adapter. Existing FMR/kernel restore owns water.
 module mod_age_joint_restart_file
   use iso_fortran_env,only:real64,int64,int32,int8,iostat_end
+  use iso_c_binding,only:c_int,c_char,c_null_char
   use ieee_arithmetic,only:ieee_is_finite
   use mod_transaction_reference,only:transaction_state_t
   use mod_kernel_transactions,only:kernel_committed_state_t
@@ -20,6 +21,12 @@ module mod_age_joint_restart_file
   character(8),parameter::MAGIC='S5AJ0001'
   integer,parameter::MAX_BYTES=10485760
   public::write_age_joint_restart_file,read_age_joint_restart_file,crc32
+  interface
+    integer(c_int) function publish_restart(a,b)bind(C,name='swap5_restart_publish')
+      import c_int,c_char
+      character(c_char),intent(in)::a(*),b(*)
+    end function
+  end interface
 contains
   logical function logical_raw_valid(raw)result(ok)
     integer(int8),intent(in)::raw(:)
@@ -43,6 +50,8 @@ contains
     real(real64),allocatable::theta(:),v(:),derivative(:)
     real(real64)::time
     integer(int64)::id,revision
+    character(:),allocatable::pending
+    integer::close_status
     integer::u,io,mode,n
     logical::ok,has_history
     status=JOINT_INVALID
@@ -65,7 +74,8 @@ contains
       end if
     end select
     if(mode<0)return
-    open(newunit=u,file=path,access='stream',form='unformatted',status='replace',iostat=io)
+    pending=path//'.pending'
+    open(newunit=u,file=pending,access='stream',form='unformatted',status='new',iostat=io)
     if(io/=0)return
     writing: block
       associate(r=>b%records(1))
@@ -84,9 +94,14 @@ contains
         write(u,iostat=io)id,revision,time,size(v),v,theta,s%age_amount
       end associate
     end block writing
-    close(u)
+    if(io==0)flush(u,iostat=io)
+    close(u,iostat=close_status)
+    if(io/=0.or.close_status/=0)return
+    call append_crc(pending,io)
     if(io/=0)return
-    call append_crc(path,io)
+    ! Existing publisher preserves post-replacement POSIX directory-sync refusal.
+    ! Failed pending generations stay retained; retries never overwrite them.
+    io=publish_restart(pending//c_null_char,path//c_null_char)
     if(io==0)status=JOINT_OK
   end subroutine
 
@@ -220,7 +235,7 @@ contains
     character(*),intent(in)::path
     integer,intent(out)::status
     integer(int8),allocatable::bytes(:)
-    integer::u,n,io
+    integer::u,n,io,close_status
     integer(int32)::crc
     status=1
     inquire(file=path,size=n,iostat=io)
@@ -232,7 +247,9 @@ contains
     if(io==0)then
       crc=crc32(bytes);write(u,pos=n+1,iostat=io)crc
     end if
-    close(u)
+    if(io==0)flush(u,iostat=io)
+    close(u,iostat=close_status)
+    if(close_status/=0)return
     if(io==0)status=0
   end subroutine
 

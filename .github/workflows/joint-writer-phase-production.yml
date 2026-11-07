@@ -1,0 +1,118 @@
+name: Exact current phase writer publication and immutable authority
+on:
+  pull_request:
+    paths:
+      - 'src/adapter/mod_age_joint_restart_file.f90'
+      - 'src/adapter/mod_mineral_joint_restart_file.f90'
+      - 'src/adapter/mod_reactive_n_joint_restart_file.f90'
+      - 'tests/dataqual15_hupsel/joint_writer_phase_production*.py'
+      - 'tests/dataqual15_hupsel/test_joint_writer_phase_production.py'
+      - 'tests/dataqual15/verify_current_native_admission.py'
+      - 'integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_*'
+      - '.github/workflows/joint-writer-phase-production.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-current-before:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - run: |
+          if test -f integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_EXACT_BEFORE_20261106.zip; then
+            python -B tests/dataqual15_hupsel/joint_writer_phase_production_before.py --verify
+          else
+            python -B tests/dataqual15_hupsel/joint_writer_phase_production_before.py --output "$RUNNER_TEMP/joint-writer-phase-production-before"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: exact-current-writer-before
+          path: |
+            integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_EXACT_BEFORE_20261106.zip
+            ${{ runner.temp }}/joint-writer-phase-production-before/*.json
+            ${{ runner.temp }}/joint-writer-phase-production-before/*.stdout
+            ${{ runner.temp }}/joint-writer-phase-production-before/*.stderr
+  original-posix-consumers:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Original unchanged age surface triplet and mineral assertions at O0 O2
+        env:
+          FC: /usr/bin/gfortran-13
+          OMP_NUM_THREADS: '1'
+          AGE_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/age
+          MINERAL_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/mineral
+          POND_JOINT_RESULT_DIR: ${{ runner.temp }}/original-writer-consumers/pond
+        run: |
+          if test -f integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_POSIX_CONSUMERS_20261106.json; then
+            python -B tests/dataqual15_hupsel/joint_writer_phase_production_consumers.py
+          else
+            python -B tests/nut-sol/run_age.py
+            python -B tests/nut-mineral/run_mineral.py
+            python -B tests/nut-sol/run_pond_joint.py
+            python -B tests/dataqual15_hupsel/joint_writer_phase_production_consumers.py --capture "$RUNNER_TEMP/original-writer-consumers"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-posix-writer-consumers
+          path: |
+            integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_POSIX_CONSUMERS_20261106.*
+            ${{ runner.temp }}/original-writer-consumers/**/result.json
+            ${{ runner.temp }}/original-writer-consumers/**/events.json
+            ${{ runner.temp }}/original-writer-consumers/**/*.stderr
+            ${{ runner.temp }}/original-writer-consumers/**/*.stdout
+            ${{ runner.temp }}/original-writer-consumers/**/*.bin*
+            ${{ runner.temp }}/original-writer-consumers/**/*.f90
+            ${{ runner.temp }}/original-writer-consumers/**/*.inc
+  actual-deployed:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+      - name: Actual deployed modules and complete native owner publication controls
+        run: |
+          for opt in O0 O2; do
+            python -B tests/dataqual15_hupsel/joint_writer_phase_production_evidence.py --stem "JOINT_WRITER_PHASE_PRODUCTION_WINDOWS_${opt}_20261106" --self-test
+            stem="JOINT_WRITER_PHASE_PRODUCTION_POSIX_${opt}_20261106"
+            if test -f "integration/dataqual15_hupsel/${stem}.json"; then
+              python -B tests/dataqual15_hupsel/joint_writer_phase_production_evidence.py --stem "$stem" --self-test
+            else
+              python -B tests/dataqual15_hupsel/joint_writer_phase_production_runtime.py --platform POSIX --optimization "$opt" --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/joint-writer-phase-production/$opt"
+              python -B tests/dataqual15_hupsel/joint_writer_phase_production_linkage.py --output "$RUNNER_TEMP/joint-writer-phase-production/$opt"
+            fi
+          done
+      - name: Typed admission and entire unchanged admitted native authority
+        run: |
+          phase=$(python -B -c "import json;print(json.load(open('integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_SCOPE_20261106.json'))['phase'])")
+          if test "$phase" = DEPLOYED_WINDOWS_POSIX_QUALIFIED; then
+            python -B tests/dataqual15_hupsel/test_joint_writer_phase_production.py
+            python -B tests/dataqual15/verify_current_native_admission.py --output "$RUNNER_TEMP/joint-writer-phase-production-admission"
+          else
+            test "$phase" = EXECUTION_PENDING
+            echo 'ACTUAL_DEPLOYED_EXECUTION_ONLY_NO_PRODUCTION_ADMISSION'
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: actual-deployed-writer-posix
+          path: |
+            integration/dataqual15_hupsel/JOINT_WRITER_PHASE_PRODUCTION_POSIX_*
+            ${{ runner.temp }}/joint-writer-phase-production/**/RESULT.json
+            ${{ runner.temp }}/joint-writer-phase-production/**/EVENTS.json
+            ${{ runner.temp }}/joint-writer-phase-production/**/*.stderr
+            ${{ runner.temp }}/joint-writer-phase-production-admission/RESULT.json
+            ${{ runner.temp }}/joint-writer-phase-production-admission/EVENTS.jsonl
+            ${{ runner.temp }}/joint-writer-phase-production-admission/*.stdout
+            ${{ runner.temp }}/joint-writer-phase-production-admission/*.stderr
