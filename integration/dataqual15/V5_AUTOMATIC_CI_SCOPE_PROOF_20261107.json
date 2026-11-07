@@ -1,0 +1,24 @@
+{
+  "scope": "EXACT_FAILED_SOURCE_GUARD_IDENTITY_NOT_NATIVE_MODEL_PASS",
+  "guard": "tests/dataqual15_hupsel/joint_production.py:24",
+  "guard_base": "dafb351da2279cfa9a2a261481f06518329ba175",
+  "parent": "79cceedb8c35cf0fd79761ecd011b270245a67f1",
+  "actual_merge": "912f1dabbe5b764a8a47e54a8a3a1749b572b2c3",
+  "parent_and_merge_footprint_identical": true,
+  "actual_footprint": [
+    "app/solute_project/main_water.f90",
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_mineral_joint_restart_file.f90",
+    "src/adapter/mod_reactive_n_joint_restart_file.f90",
+    "src/process/macropore/mod_ppa_wu05a6_top_inflow_limiter.f90",
+    "src/runtime/mod_interception_source_window_runtime.f90"
+  ],
+  "expected_three_reader_footprint": [
+    "src/adapter/mod_age_joint_restart_file.f90",
+    "src/adapter/mod_mineral_joint_restart_file.f90",
+    "src/adapter/mod_reactive_n_joint_restart_file.f90"
+  ],
+  "same_assertion_false_on_actual_parent": true,
+  "new_private_V5_change_is_not_cause_of_this_existing_frozen_footprint_refusal": true,
+  "other_automatic_unreviewed_delta_guards_remain_actual_scope_refusals_not_relabelled_PASS": true
+}
