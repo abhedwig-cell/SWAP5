@@ -80,6 +80,10 @@ for opt in ['O0','O2']:
    strict=['-Wall','-Wextra','-Werror']if p.name in ['mod_b111_soil_n_reactive_owner.f90','mod_b111_soil_n_organic_rate_environment.f90','mod_fmr_b111_reactive_n_route.f90']else[]
    cmd(FC+flags+strict+['-c',p,'-o',obj],build,category+'_compile')
    if p.is_relative_to(ROOT):inputs[str(p.relative_to(ROOT))]=sha(p)
+  if any('swap5_restart_publish' in p.read_text() for p in ordered):
+   publication=ROOT/'app/support/restart_publish.c';inputs[str(publication.relative_to(ROOT))]=sha(publication)
+   cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'
+   cmd([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile');objects.append(publication_obj)
   obj=build/(category+'-driver.o');exe=build/driver.stem
   cmd(FC+flags+['-c',driver,'-o',obj],build,category+'_compile');cmd(FC+flags+objects+[obj,'-o',exe],build,category+'_link')
   inputs[str(driver.relative_to(ROOT))]=sha(driver)

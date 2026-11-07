@@ -97,6 +97,10 @@ for opt in ('O0','O2'):
     for i,p in enumerate(ordered+[driver]):
         obj=build/f'joint{i}.o';objects.append(obj);bind(p)
         run(FC+flags+['-c',p,'-o',obj],build,'physical_compile')
+    publication=ROOT/'app/support/restart_publish.c';bind(publication)
+    cc=subprocess.check_output(FC+['-print-prog-name=gcc'],text=True).strip();publication_obj=build/'restart_publish.o'
+    run([cc,'-'+opt,'-std=c11','-c',publication,'-o',publication_obj],build,'publication_compile')
+    objects.insert(-1,publication_obj)  # Keep the original main object last for the unchanged surface link.
     exe=build/'joint';run(FC+flags+objects+['-o',exe],build,'physical_link')
     restart=build/'restart.bin';expected=build/'expected.bin';fresh=build/'fresh.bin'
     stdout=run([exe,'write',restart,expected],build,'physical_native');assert b'POND_JOINT_ACTUAL_BALANCE_RESTART=PASS' in stdout
@@ -134,7 +138,7 @@ for opt in ('O0','O2'):
         obj=build/('original'+str(j)+'.o');original_objects.append(obj)
         run(FC+flags+['-c',source,'-o',obj],build,'preservation_compile')
     original_exe=build/'original'
-    run(FC+flags+[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+original_objects+['-o',original_exe],build,'preservation_link')
+    run(FC+flags+[obj for source,obj in zip(ordered,objects[:-1]) if source!=joint_oracle]+[publication_obj]+original_objects+['-o',original_exe],build,'preservation_link')
     original_stdout=run([original_exe,'write',build/'old-restart.bin',build/'old-expected.bin'],build,'preservation_native')
     original_resume=run([original_exe,'resume',build/'old-restart.bin',build/'old-fresh.bin'],build,'preservation_native')
     assert b'SURFACE_JOINT_ATOMIC_BALANCE_LITERAL_RESTART=PASS' in original_stdout

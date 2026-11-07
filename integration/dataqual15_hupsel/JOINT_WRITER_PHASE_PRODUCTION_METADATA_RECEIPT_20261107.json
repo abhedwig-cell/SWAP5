@@ -1,0 +1,94 @@
+{
+  "status": "CANONICAL_CLOSURE_METADATA_INTEGRATED",
+  "pr": 1607,
+  "canonical_commit": "3e531194966de87abc589586e11d13298977785f",
+  "production_admission_commit": "31ef0386e0dabd8e5022dd351d29a7fb6e7e3fe6",
+  "qualified_metadata_head": "bf12026228692ee44f4f7e775a4a65db169224cd",
+  "actual_merge_tree": "6487015d0f6c793215029854ddc99bb1e8de92bf",
+  "qualified_merge_tree_exact": true,
+  "all14_terminal": true,
+  "success": 13,
+  "failed": 1,
+  "failed_job": 128244885954,
+  "failed_verdict_retained": true,
+  "actual_failed_predicate": "Unchanged joint_writer_frozen exact production source guard; old frozen scope remains invalid on canonical current source.",
+  "failed_logs": "JOINT_WRITER_PHASE_PRODUCTION_METADATA_FAILED_LOGS_20261107.zip",
+  "failed_logs_sha256": "6816853d85e09376034f3f9ca7b67f5071a7c86c6947698e1f221545ccc856fb",
+  "workflows": [
+    {
+      "id": 42320887590,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887471,
+      "name": "Documentation",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887293,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887359,
+      "name": "F-GC42 live whole-window service",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887328,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887451,
+      "name": "Private three-codec native writer publication",
+      "conclusion": "failure"
+    },
+    {
+      "id": 42320887309,
+      "name": "F-CI canonical qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887381,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887435,
+      "name": "Exact current phase writer publication and immutable authority",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887499,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887308,
+      "name": "F-CI110 reconstructed performance admission",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887402,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887443,
+      "name": "SWAP431 root constant LRV qualification",
+      "conclusion": "success"
+    },
+    {
+      "id": 42320887315,
+      "name": "F-MIG431 LOW08-A qualification",
+      "conclusion": "success"
+    }
+  ],
+  "all_bound_source_gate_status_scope_data_inputs_unchanged": true,
+  "other_chat_worktree_touched": false,
+  "whole_scientific_admission": false,
+  "execution_count": "2/3",
+  "science_count": "0/3"
+}

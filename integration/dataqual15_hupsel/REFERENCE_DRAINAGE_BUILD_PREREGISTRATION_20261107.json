@@ -1,0 +1,17 @@
+{
+  "phase": "PREREGISTERED_BEFORE_BUILD_REPAIR",
+  "baseline": "af758371e796978f542a7f091419ff4089dfe618",
+  "canonical": "3e531194966de87abc589586e11d13298977785f",
+  "workunit": "REFERENCE_DRAINAGE_BUILD",
+  "scope": [
+    "tests/publication/run_pub_p2e04_reference_failure_census.sh",
+    "tests/publication/run_pub_p2e04_reference_bc_sweeps.sh"
+  ],
+  "change": "Add only the actual intrinsic-only mod_drainage_dramet3_response provider immediately before its current drainage binding consumer. Preserve the complete original script outside this insertion, every original Fortran test, manifest, numerical tolerance, domain and RossFast firewall.",
+  "before_evidence": "JOINT_WRITER_PHASE_PRODUCTION_FINAL_ADJUDICATION_20261107.json and FINAL_FAILED_LOGS; both exact current scripts and production trees are unchanged since qualified81 source. Actual missing DRAM module failure is already retained; do not repeat broad baseline analysis.",
+  "qualification": "Actual full original47-provider builds and unchanged original tests at Windows/POSIX O0/O2. Run the original POSIX shell gates too. Retain stdout/stderr, objects/source/compiler/command hashes and all numerical failures; do not label census/sweep execution as scientific/production admission.",
+  "deferred": "P2E02 has additional missing current serialized-backend dependency closure; it is explicitly outside this bounded two-gate repair and remains failed.",
+  "production_admission": false,
+  "whole_scientific_admission": false,
+  "ownership": "No overlap with active coupled Andelst work; no src/app/reference changes or shared admission guard changes."
+}

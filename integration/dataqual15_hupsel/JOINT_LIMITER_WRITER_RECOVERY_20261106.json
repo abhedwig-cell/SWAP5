@@ -1,5 +1,5 @@
 {
-  "phase": "LATEST_CURRENT_PRIVATE_NATIVE_WRITERS_QUALIFIED",
+  "phase": "LATEST_CURRENT_PRIVATE_NATIVE_WRITERS_CANONICAL_CLOSED",
   "pr": 1603,
   "baseline": "8f83782630c01e8046c2391dc6a3aacce287aeed",
   "canonical_reconciled": "111ed331ad457e3a82d9d677cd9697a3c4501cea",
@@ -25,7 +25,7 @@
   "producer": "All actual producer functions and runtime assignments remain literally bound to producer commits; full runner/probe source remains byte-identical. Independent consumer-only revisions are distinguished, unknown module initialization refuses. Final consumer also verifies all four baseline driver hashes and actual link events.",
   "predecessor": "JOINT_EVENT_WRITER_RECOVERY_20261106.json",
   "reconciliation": "JOINT_LIMITER_WRITER_RECONCILIATION_20261106.json",
-  "pending": "Final metadata-head qualification and private canonical integration. Production writer admission still requires an executed deployed-source successor.",
+  "pending": "Executed deployed production writer postimages with a separately qualified typed current-admission successor; reuse these exact current335 cold cohorts only under source/object/compiler/flag/native binding.",
   "production_admission": false,
   "whole_scientific_admission": false,
   "current_whole_project_physics_qualified": false,
@@ -35,5 +35,14 @@
     "success": 14,
     "retained_failed": 3,
     "active": 0
-  }
+  },
+  "canonical": "7ae182b5da936ddf6c2937c9f79a7d1ff6a42d8c",
+  "qualified_head": "e299428d3f5000577109c93b50175646624c18a0",
+  "final_workflows": {
+    "success": 14,
+    "retained_failed": 3,
+    "active": 0
+  },
+  "close_receipt": "JOINT_LIMITER_WRITER_CLOSE_RECEIPT_20261106.json",
+  "migration_complete": false
 }
