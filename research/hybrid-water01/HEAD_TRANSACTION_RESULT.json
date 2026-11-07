@@ -1,9 +1,9 @@
 {
   "scope": "PROCESS_ISOLATED_DONOR_TRIALS_DAYS_3_AND_4",
-  "executable_sha256": "eee6825be55f504f38c1d37c73593f46ffcb7c4f4cbac79349e65ab86d1f9b2f",
+  "executable_sha256": "83b4337a530c2a08d29fe389777cb495932001ff09919ae5a8621947d9149c44",
   "origin_checkpoint": {
     "result.end": "eb69ba955aa4f5765731e9af659fee82b8652ca8d4328e12c7d8f95edf07f112",
-    "macro.bin": "f6db6881aff16fa88c49aef975a655c6ab3de6c3f30b05936d7cd9ed024b37eb"
+    "macro.bin": "91deec3f4e0e355675eee2b0ff3c3a6e9ff6f725063d7485b3289f55f6b9510b"
   },
   "inactive_control_exact": true,
   "trial_A": {
@@ -23,7 +23,7 @@
     ],
     "endpoint_checkpoint": {
       "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
-      "macro.bin": "5517022559e65ca58e7778b9a0c94291ac8c7dcd343084a635a10c9bda5ba287"
+      "macro.bin": "3cd86d786a1b0ad8a699547080f114f5df5e9ed0e5f60e6261c391aa2cd10e3c"
     }
   },
   "trial_B": {
@@ -43,9 +43,36 @@
     ],
     "endpoint_checkpoint": {
       "result.end": "0857872b5ef3d2c98c614abd73efbb4438092123e9731a769a21f2626151f15b",
-      "macro.bin": "26d8b40b68e2b2dd1a437d5bb3cafd313c4ef95238ccf67964cbdf756609fdd3"
+      "macro.bin": "1d0fb41b193af313eb1c391004b7d8ff84924a0be3c48648308f2e7ecb5a50e3"
     }
   },
   "repeat_A_after_B_exact": true,
-  "selected": "A"
+  "selected": "A",
+  "reopened_day4": {
+    "head_cm": -50.0,
+    "accepted_trajectory_sha256": "cf305b347dd713dc2c4c7f9b778abab89e882730d295bc38a25ca38d7d0c26f2",
+    "daily_records": [
+      "1998-01-05,1.52363,.91160,-40.43417",
+      "1998-01-06,.11076,.91368,-56.02329"
+    ],
+    "bottom_inward_cm": [
+      0.033281759636441144,
+      0.027569363339859584
+    ],
+    "continuous_step_count": 3539,
+    "reopened_step_count": 3539,
+    "trajectory_exact": true,
+    "published_days_exact": true,
+    "daily_external_fluxes_exact": true,
+    "daily_stocks_exact": true,
+    "continuous_daily_records": [
+      "1998-01-05,1.52363,.91160,-40.43417",
+      "1998-01-06,.11076,.91368,-56.02329"
+    ],
+    "endpoint_checkpoint_exact": {
+      "result.end": true,
+      "macro.bin": true
+    }
+  },
+  "followup_exact": true
 }

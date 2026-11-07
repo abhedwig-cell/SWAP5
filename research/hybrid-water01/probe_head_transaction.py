@@ -21,9 +21,24 @@ def build_worker(reference, audit, output):
     render(build, output, 2)
     swap = output / "swap.f90"
     anchor = "   if (sw_end == 1) call SoilWaterOutput(3)"
-    source = replace(swap.read_text(encoding="cp1252"), anchor, anchor +
+    source = replace(swap.read_text(encoding="cp1252"), "t1900 < 35799d0", "t1900 < 35801d0")
+    source = replace(source, anchor, anchor +
                      "\n   if (swinco == 3 .and. sw_end == 1) call hybrid_macro_checkpoint(.false., t1900, dtold, sicact)")
+    source = replace(source, "floutputshort, flzerointr,", "floutputshort, flzerointr, flZeroCumu,")
+    source = source.replace("dtold, checkpoint_canopy)", "dtold, checkpoint_canopy, flZeroCumu)")
+    source = source.replace("dtold, sicact)", "dtold, sicact, flZeroCumu)")
     swap.write_text(source, encoding="cp1252")
+    macro = output / "macropore.f90"
+    source = macro.read_text(encoding="cp1252")
+    source = replace(source, "clock, old_step, canopy_stock)",
+                     "clock, old_step, canopy_stock, zero_cumu)")
+    source = replace(source, "intent(inout) :: old_step, canopy_stock",
+                     "intent(inout) :: old_step, canopy_stock\n      logical, intent(inout) :: zero_cumu")
+    source = replace(source, "stored_clock, old_step, canopy_stock",
+                     "stored_clock, old_step, canopy_stock, zero_cumu")
+    source = replace(source, "NumDm, clock, old_step, canopy_stock",
+                     "NumDm, clock, old_step, canopy_stock, zero_cumu")
+    macro.write_text(source.replace("S5MAC003", "S5MAC004"), encoding="cp1252")
     source = (build / "swap-selected/boundbottom.f90").read_text(encoding="cp1252")
     source = replace(source, "      integer node, nodnumgwl", """      integer node, nodnumgwl
       integer, save :: head_mode = -1
@@ -59,16 +74,19 @@ def build_worker(reference, audit, output):
     return executable
 
 
-def run_worker(case, executable, directory, origin=None, head=None):
+def run_worker(case, executable, directory, origin=None, head=None,
+               start="1998-01-03", end="1998-01-04"):
+    if start not in ("1998-01-03", "1998-01-05") or end not in ("1998-01-04", "1998-01-06"):
+        raise ValueError("Unsupported experimental window")
     shutil.copytree(case, directory)
     control = directory / "swap.swp"
-    text = replace(control.read_text(encoding="cp1252"), "TEND = 1999-04-26", "TEND = 1998-01-04")
+    text = replace(control.read_text(encoding="cp1252"), "TEND = 1999-04-26", f"TEND = {end}")
     text += "\nSWENDTYPE = 2\n"
     environment = os.environ.copy()
     environment.pop("SWAP_TRIAL_CAUCHY_HEAD_CM", None)
     if origin is not None:
         (directory.parent / "first").symlink_to(origin, target_is_directory=True)
-        text = replace(text, "TSTART = 1998-01-01", "TSTART = 1998-01-03")
+        text = replace(text, "TSTART = 1998-01-01", f"TSTART = {start}")
         text, count = re.subn(r"(?im)^(\s*SWINCO\s*=)\s*\d", r"\1 3", text)
         if count != 1:
             raise ValueError("Expected one SWINCO entry")
@@ -86,7 +104,7 @@ def run_worker(case, executable, directory, origin=None, head=None):
     if run.returncode != 100 or not (directory / "swap.ok").is_file():
         raise RuntimeError(f"Worker failed: {directory}")
     rows = records((directory / "result_output.csv").read_text().splitlines())
-    if [line.split(",")[0] for line in rows[-2:]] != ["1998-01-03", "1998-01-04"]:
+    if [line.split(",")[0] for line in rows[-2:]] != [end[:-2] + f"{int(end[-2:])-1:02}", end]:
         raise RuntimeError("Worker did not reach both requested days")
     flux = [line.split()[1:] for line in run.stdout.splitlines()
             if line.startswith("HYBRID_EXTERNAL_FLUX ")][-2:]
@@ -158,7 +176,47 @@ def main():
         name: sha(output / "committed" / name) for name in checkpoint
     }:
         raise RuntimeError("Published endpoint does not match selected trial")
+    published = output / "committed"
+    extended = output / "extended"
+    replay = output / "reopened"
+    run_worker(case, executable, extended / "resumed", origin, -50.0, end="1998-01-06")
+    followup = run_worker(case, executable, replay / "resumed", published, -50.0,
+                          start="1998-01-05", end="1998-01-06")
+    def audit(folder, prefix, tail=None):
+        lines = [line for line in (folder / "resumed/stdout").read_text().splitlines()
+                 if line.startswith(prefix)]
+        return lines if tail is None else lines[-tail:]
+    continuous_steps = [line for line in audit(extended, "HYBRID_ACCEPTED_TRAJECTORY ")
+                        if float(line.split()[1]) >= 35799.0]
+    restarted_steps = audit(replay, "HYBRID_ACCEPTED_TRAJECTORY ")
+    continuous_rows = records((extended / "resumed/result_output.csv").read_text().splitlines())[-2:]
+    followup.update({
+        "continuous_step_count": len(continuous_steps),
+        "reopened_step_count": len(restarted_steps),
+        "trajectory_exact": continuous_steps == restarted_steps,
+        "published_days_exact": continuous_rows == followup["daily_records"],
+        "daily_external_fluxes_exact": audit(extended, "HYBRID_EXTERNAL_FLUX ", 2)
+                                      == audit(replay, "HYBRID_EXTERNAL_FLUX ", 2),
+        "daily_stocks_exact": audit(extended, "HYBRID_STOCK_FLUX ", 2)
+                             == audit(replay, "HYBRID_STOCK_FLUX ", 2),
+        "continuous_daily_records": continuous_rows,
+        "endpoint_checkpoint_exact": {
+            name: sha(extended / "resumed" / name) == sha(replay / "resumed" / name)
+            for name in checkpoint
+        },
+    })
+    if trials["A"]["endpoint_checkpoint"] != {name: sha(published / name) for name in checkpoint}:
+        raise RuntimeError("Reopening changed the published checkpoint")
+    receipt["reopened_day4"] = followup
+    receipt["followup_exact"] = (
+        all(followup[key] for key in ("trajectory_exact", "published_days_exact",
+                                      "daily_external_fluxes_exact", "daily_stocks_exact"))
+        and all(followup["endpoint_checkpoint_exact"].values())
+    )
+    (output / "RESULT.json").write_text(json.dumps(receipt, indent=2) + "\n")
     print(json.dumps(receipt, indent=2))
+    if not receipt["followup_exact"]:
+        raise RuntimeError("Reopening diverged from the continuous external-head window")
 
 
 if __name__ == "__main__":

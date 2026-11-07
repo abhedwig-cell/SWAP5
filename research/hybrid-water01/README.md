@@ -124,6 +124,14 @@ water entering the soil column from below.
 
 This is a process-isolated donor prototype with a fixed two-day window.
 It does not exercise two resident donor states in one Fortran process,
-a subdaily external window, or SWAP5 kernel transaction ownership. The
-selected endpoint is written and checked by hash. Reopening that new
-endpoint for day 5 is outside the exercised window.
+a subdaily external window, or SWAP5 kernel transaction ownership. The selected day-4 endpoint is reopened in a fresh worker for days 5 and
+6 at the same imposed head. A separate worker runs days 3 through 6 as one
+window from the original checkpoint. All 3,539 audited steps of days 5
+and 6, daily stocks, external fluxes and both day-6 checkpoint files match
+exactly. The selected day-4 checkpoint remains byte-identical.
+
+The experimental transaction schema S5MAC004 includes the cumulative
+balance reset flag. Without this flag, restart resets the cumulative
+macropore counters and their initial stock. The physical trajectory still
+matches, but the next sidecar differs. The flag belongs to the checkpoint
+because it determines the reporting state of the next window.
