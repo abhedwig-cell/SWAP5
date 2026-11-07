@@ -7,6 +7,7 @@ on:
       - tests/fgc/fgc49d_oxygen_context_projection.py
       - tests/fgc/fgc49d_selector_context_projection.py
       - tests/fgc/test_fgc49d_oxygen_context_parity.f90
+      - tests/fgc/run_fgc49d_selector_context_qualification.py
       - tests/fahl/run_fahl49_application_optin.sh
       - src/physics/oxygen/**
   workflow_dispatch:
@@ -33,3 +34,11 @@ jobs:
             "$build/bracket-$opt"
           done
       - run: bash tests/fahl/run_fahl49_application_optin.sh
+  private-boundary-selectors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -B tests/fgc/run_fgc49d_selector_context_qualification.py
