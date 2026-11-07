@@ -18,7 +18,7 @@
   "year365": false,
   "whole481": false,
   "original_historical_equivalence": false,
-  "next_action": "Follow active original-input481 and all exact own windows to terminal; correct new evidence-backed failures if encountered.",
+  "next_action": "Follow active original-input481 and the four exact own windows to terminal. Diagnose only actual evidence-backed barriers.",
   "selection": {
     "expected_compile_seconds": 60,
     "expected_native_seconds": 30,
@@ -749,7 +749,7 @@
     "bytes": 7015201,
     "members": 889
   },
-  "scope_note": "Named V2 through V7 preserve actual failures or censors. current_execution is the active corrected V8 run. Historical/default, full481, own year and whole-science gates remain separate.",
+  "scope_note": "Named V2 through V8 preserve actual failures or censors. current_execution is the active corrected V9 run. Historical/default, full481, own year and whole-science gates remain separate.",
   "limiter_ratio_admission_selection": {
     "pr": 1602,
     "final_qualified_head": "888bafb2933202fc882a0d5ecaae82aa9c1cb620",
@@ -1217,10 +1217,10 @@
     "own_year_watcher": "TERMINAL_BEFORE367_NO_NATIVE_YEAR_EXECUTION"
   },
   "current_execution": {
-    "status": "ACTIVE_FRESH_CORRECTED_V8_ORIGINAL_INPUT481",
-    "model": "ANDELST_JOINT_PORE_VOLUME_CONNECTIVITY_V8",
-    "executable_sha256": "4b69d1fdd0925aafa9f1de6878624519ffc07d7392f1f14867c9ebd3146e552a",
-    "binding": "d50601f57e2142e1f2472421d1a42dfcca9a1c59d073c9fdcc42bea53b1ec11d",
+    "status": "ACTIVE_FRESH_CORRECTED_V9_ORIGINAL_INPUT481",
+    "model": "ANDELST_JOINT_PORE_VOLUME_UPPER_SUPPORT_V9",
+    "executable_sha256": "093461e1effeef763f72ccc5592a7f7d8c7ac29516c4dd900be93a82e9104501",
+    "binding": "e4c7bf6cead265c45a10228fdea1a965db948177f75ee407f00d8db3cc13c91d",
     "original_initialization": true,
     "original_input_files_unchanged": true,
     "historical_original_equivalence": false,
@@ -1228,9 +1228,9 @@
     "own365_to367": false,
     "whole_science": false,
     "production_default_contact_law_admitted": false,
-    "run": "s5-pore-volume-current-surface-original481-O2",
-    "capture": "s5-pore-volume-current-surface-captured-own-O2",
-    "native_source_candidate": "7acfa9e89f492e2661d7c8a177a39259e48583b2",
+    "run": "s5-upper-support-final-original481-O2",
+    "capture": "s5-upper-support-final-captured-own-O2",
+    "native_source_candidate": "53ad7e08b26c1bf2f52cb178f548000c3f2b8000",
     "timeout_seconds": 16000,
     "own_selected": [
       "3-4",
@@ -1238,8 +1238,7 @@
       "300-301",
       "365-367"
     ],
-    "next_action": "Follow active original-input481 and all exact own windows to terminal; correct new evidence-backed failures if encountered.",
-    "own3_to4": true
+    "next_action": "Follow active original-input481 and the four exact own windows to terminal. Diagnose only actual evidence-backed barriers."
   },
   "bottom_contact481_selection": {
     "reason": "User-required original-initialization481 and exact own year. V4 time-censored7805.630s at245.594 after prior drainage repair passed. V5 actual failed source and following source pass O0/O2 with all original guards; day1 physical payload and4CSV exact. New executable requires fresh initial trajectory without rebinding.",
@@ -2564,7 +2563,7 @@
     }
   },
   "pore_volume_v8_research": {
-    "status": "FINAL_SOURCE_O0_O2_PASS_AND_READ_ONLY_THROUGH301_FRESH481_ACTIVE",
+    "status": "INTENTIONAL_STAGNATION_CENSOR_SOURCE256869_TO256871",
     "qualified_full_run": false,
     "strict_own_proof": false,
     "actual_source300317": {
@@ -2769,7 +2768,96 @@
         "bytes": 38137
       },
       "scope": "Bounded private research. No default change, complete trajectory, historical equivalence or whole-science claim.",
-      "full481_and_year_active_not_pass": true
+      "full481_and_year_active_not_pass": true,
+      "merge": "d8b33a22b3538d152f7a6d2a6a69d833c5f85871",
+      "parents": [
+        "9fb3705b94b93d9181125a678bd6dd853623c368",
+        "3d7857830fdce0f6f97ba0ada7d648c873cfa38f"
+      ],
+      "full_tree_exact_final_head": true,
+      "production_src_app_delta": false
+    },
+    "terminal_evidence": {
+      "name": "V8_INTENTIONAL_STAGNATION_AND_UPPER_SUPPORT_EVIDENCE_20261107.zip",
+      "sha256": "84b7183258930f28f262d39fd50e164e205b4ab65445a508d827376d9f4f8c4f",
+      "bytes": 13838641,
+      "members": 217
     }
+  },
+  "predecessor_v8_stagnation_execution": {
+    "status": "INTENTIONAL_STAGNATION_CENSOR_SOURCE256869_TO256871",
+    "model": "ANDELST_JOINT_PORE_VOLUME_CONNECTIVITY_V8",
+    "executable_sha256": "4b69d1fdd0925aafa9f1de6878624519ffc07d7392f1f14867c9ebd3146e552a",
+    "binding": "d50601f57e2142e1f2472421d1a42dfcca9a1c59d073c9fdcc42bea53b1ec11d",
+    "original_initialization": true,
+    "original_input_files_unchanged": true,
+    "historical_original_equivalence": false,
+    "whole481": false,
+    "own365_to367": false,
+    "whole_science": false,
+    "production_default_contact_law_admitted": false,
+    "run": "s5-pore-volume-current-surface-original481-O2",
+    "capture": "s5-pore-volume-current-surface-captured-own-O2",
+    "native_source_candidate": "7acfa9e89f492e2661d7c8a177a39259e48583b2",
+    "timeout_seconds": 16000,
+    "own_selected": [
+      "3-4",
+      "256-257",
+      "300-301",
+      "365-367"
+    ],
+    "next_action": "Check the V9 read-only predecessor replay through301 and final coherent O0/O2 sources, then launch from unchanged original initialization with strict own year.",
+    "own3_to4": true,
+    "seconds": 6228.331189099932,
+    "completed_days": 256,
+    "returncode_raw": 4294967295,
+    "native_timeout_flag": false,
+    "censored": true,
+    "natural_model_refusal": false,
+    "last_completed_source_interval": 256.8689999999988,
+    "maximum_daily_water_residual_cm": 3.346008237131092e-12,
+    "strict_own256_to_event": {
+      "all_445_progress_rows_exact": true,
+      "seconds": 260.7153060999699,
+      "own_event_checkpoint_sha256": "65b4c365fe242d6d845cbba5e792cfb494cfdce0751e789ff399a96636ff98fd"
+    },
+    "own256_to257": false,
+    "own300_to301": false
+  },
+  "upper_support_v9_research": {
+    "status": "FINAL_NATIVE_O0_O2_SOURCE_PASS_READ_ONLY257_AND301_FRESH481_ACTIVE",
+    "source_seed": "65b4c365fe242d6d845cbba5e792cfb494cfdce0751e789ff399a96636ff98fd",
+    "source_start": 256.8689999999988,
+    "first_source_attempts": 83,
+    "first_source_water_residual_cm": -7.17134684968812e-14,
+    "through257_seconds": 14.58269099984318,
+    "through257_windows": 69,
+    "O0_O2_physical_projection_contract_pass": true,
+    "scope": "Use actual interpolated wet support when a single upper node becomes positive above an unsaturated neighbor; same mass and temporal gates.",
+    "final_through257": {
+      "seconds": 14.58269099984318,
+      "source_windows": 69,
+      "all_original_guards_pass": true,
+      "no_restart_published": true,
+      "max_source_water_residual_cm": 7.17134684968812e-14
+    },
+    "final_through301": {
+      "seconds": 83.13150999997742,
+      "source_windows": 349,
+      "all_original_guards_pass": true,
+      "no_restart_published": true,
+      "max_source_water_residual_cm": 8.391551342690207e-14
+    },
+    "final_source_evidence": {
+      "name": "V9_UPPER_SUPPORT_FINAL_SOURCE_EVIDENCE_20261107.zip",
+      "sha256": "15be63c17baee2b92bb3bacc16b97b470c7fdc9dff56b5dac14ba49cd38629a3",
+      "bytes": 8954543,
+      "members": 311
+    },
+    "exact_source256869_progress_and_cost_O0_O2": true,
+    "original_init_day1_O0_O2_all4CSV_and_payload_exact": true,
+    "model_provider_hashes_exact_to_actual_source_controls": 201,
+    "next_action": "Follow active original-input481 and the four exact own windows to terminal. Diagnose only actual evidence-backed barriers.",
+    "canonical_scope_base": "d8b33a22b3538d152f7a6d2a6a69d833c5f85871"
   }
 }
