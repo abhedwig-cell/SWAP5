@@ -349,3 +349,21 @@ transition responsible for the growth. The donor's Cauchy flux uses
 the modelled water table at the beginning of a step, and SoilWater(3)
 updates that water table after each accepted solve. This feedback and
 the matrix/macropore iterations are the next targeted comparison.
+
+### One live volume handoff at the initial groundwater head
+
+Add `--origin-predictor` to the MF6 command with `--max-step-days 0.002`.
+The existing donor and SWAP5 participant perform one half-day trial
+with the initial groundwater head (-0.493 m) as the imposed constant
+head. The temporal gate remains active before any MF6 solve. After
+the equal-and-opposite volume handoff the existing head and budget
+criteria determine whether publication is possible. A failed head
+check discards both trial entries and leaves the accepted origin intact.
+
+The day-four checkpoint was rebuilt from the pinned original SWAP
+archive with GNU Fortran 13.3.0 and reproduced the recorded hashes.
+The native MODFLOW 6.8.0 run received -0.00118024830 m3 and closed the
+one-cell budget to 1.42e-14 m3. All three SWAP temporal defects were
+below 1e-4 cm. MODFLOW ended at -0.500868322 m, a head residual of
+7.868 mm. The origin predictor therefore did not pass the strict head
+criterion or commit. See `ORIGIN_PREDICTOR_RESULT.json`.

@@ -219,11 +219,11 @@ program run_kernel_donor
     if (.not. ok) error stop 'initialization'
     deallocate(initial)
   end do
-  if (mode == 'temporal' .or. mode == 'water-metric' .or. mode == 'coupled' .or. mode == 'bracketed') then
+  if (mode == 'temporal' .or. mode == 'water-metric' .or. mode == 'coupled' .or. mode == 'bracketed' .or. mode == 'origin-predictor') then
     numerical%transaction%mass_tolerance = 1e-6_real64
     numerical%transaction%max_retries = 0
     numerical%max_committed_substeps = 1
-    model%water_metric = mode == 'water-metric' .or. mode == 'coupled' .or. mode == 'bracketed'
+    model%water_metric = mode /= 'temporal'
     numerical%transaction%temporal_tolerance = 0.05_real64
     if (model%water_metric) numerical%transaction%temporal_tolerance = 1e-4_real64
     datum%available = .true.
@@ -232,7 +232,7 @@ program run_kernel_donor
     call participant%capture_origin(committed(1),status)
     if (status /= GW_SWAP_PARTICIPANT_OK) error stop 'capture temporal origin'
     window%t0 = 35799d0
-    if (mode == 'coupled' .or. mode == 'bracketed') then
+    if (mode == 'coupled' .or. mode == 'bracketed' .or. mode == 'origin-predictor') then
       call coupled_window()
       stop
     end if
@@ -302,7 +302,7 @@ contains
     real(real64), parameter :: head_tolerance = 1e-8_real64, initial_head = -0.493_real64
     real(real64) :: guess, response, volume, native_exchange, native_storage, last_feasible
     real(real64) :: lower, upper, residual
-    integer :: iteration, unit, rc, selected, discarded, gw_solves
+    integer :: iteration, unit, rc, selected, discarded, gw_solves, max_trials
     logical :: converged
 
     window%t1 = 35799.5d0
@@ -310,13 +310,18 @@ contains
     call ledger%bind_identity(1_int64,status)
     if (status /= GW_MASS_LEDGER_OK) error stop 'ledger identity'
     guess = -0.5d0
+    max_trials = 14
+    if (mode == 'origin-predictor') then
+      guess = initial_head
+      max_trials = 1
+    end if
     converged = .false.
     discarded = 0
     gw_solves = 0
     last_feasible = guess
     lower = -huge(guess)
     upper = huge(guess)
-    do iteration=1,14
+    do iteration=1,max_trials
       call participant%trial_from_origin(executor,parameters,committed(1),materializer,numerical, &
                                         datum,window,guess,exchange,status)
       if (status /= GW_SWAP_PARTICIPANT_OK .or. .not. exchange%valid) then
@@ -371,7 +376,7 @@ contains
       print '(a)', 'COUPLED_NO_COMMIT'
       return
     end if
-    if (gw_solves <= 1) error stop 'expected coupled correction'
+    if (gw_solves <= 1 .and. mode /= 'origin-predictor') error stop 'expected coupled correction'
     if (.not. participant%publication_ready(committed(1),window)) error stop 'coupled publication preflight'
     call ledger%prepare_trial(prepared,status)
     if (status /= GW_MASS_LEDGER_OK .or. .not. ledger%prepared_ready_for_commit(prepared)) error stop 'ledger preflight'

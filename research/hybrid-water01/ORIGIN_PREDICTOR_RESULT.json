@@ -1,0 +1,38 @@
+{
+  "scope": "LIVE_MODFLOW6_SINGLE_CELL_AND_ANDELST_HALF_DAY",
+  "mf6_sha256": "bae2a1099564374147702d088bdfc18ae5454ed2fe20dc9727e0c4b376f3a259",
+  "origin_checkpoint": {
+    "result.end": "4c80119b0ab149723951ead225259bf69188ddcfe093239b2545d8f3e0ddaa53",
+    "macro.bin": "3cd86d786a1b0ad8a699547080f114f5df5e9ed0e5f60e6261c391aa2cd10e3c"
+  },
+  "corrector": "origin-predictor",
+  "max_step_days": 0.002,
+  "head_tolerance_m": 1e-08,
+  "water_metric_tolerance_cm": 0.0001,
+  "columns": [
+    "swap_head_m",
+    "modflow_head_m",
+    "modflow_inward_m3",
+    "modflow_storage_outward_m3"
+  ],
+  "correctors": [
+    [
+      -0.493,
+      -0.5008683219779361,
+      -0.0011802482967045193,
+      0.0011802482966904032
+    ]
+  ],
+  "temporal_rejections": [],
+  "temporal_water_defects_cm": [
+    [
+      7.633340715074155e-08,
+      3.0846897317360344e-05,
+      2.475719103306462e-06
+    ]
+  ],
+  "best_head_mismatch_m": 0.007868321977936077,
+  "max_modflow_balance_residual_m3": 1.411609544532677e-14,
+  "committed": false,
+  "accepted_revision": 0
+}

@@ -102,11 +102,13 @@ def main():
     mode.add_argument("--temporal", action="store_true")
     mode.add_argument("--water-metric", action="store_true")
     mode.add_argument("--mf6", type=Path)
-    parser.add_argument("--bracketed", action="store_true", help="Safeguard the live corrector with a sign bracket")
+    predictor = parser.add_mutually_exclusive_group()
+    predictor.add_argument("--origin-predictor", action="store_true", help="Try one volume handoff from the initial MODFLOW head")
+    predictor.add_argument("--bracketed", action="store_true", help="Safeguard the live corrector with a sign bracket")
     parser.add_argument("--max-step-days", type=float, help="Diagnostic DTMAX override for coupled runs")
     args = parser.parse_args()
-    if args.bracketed and args.mf6 is None:
-        parser.error("--bracketed requires --mf6")
+    if (args.bracketed or args.origin_predictor) and args.mf6 is None:
+        parser.error("--bracketed and --origin-predictor require --mf6")
     if args.max_step_days is not None and (
             args.mf6 is None or not 0.0001 <= args.max_step_days <= 0.002):
         parser.error("--max-step-days requires --mf6 and must be in [0.0001, 0.002]")
@@ -142,7 +144,8 @@ def main():
                    cwd=output, check=True)
     command = [executable]
     if args.mf6 is not None:
-        command.append("bracketed" if args.bracketed else "coupled")
+        corrector = "origin-predictor" if args.origin_predictor else "bracketed" if args.bracketed else "coupled"
+        command.append(corrector)
     if args.temporal:
         command.append("temporal")
     if args.water_metric:
@@ -167,7 +170,7 @@ def main():
         evidence = {
             "scope": "LIVE_MODFLOW6_SINGLE_CELL_AND_ANDELST_HALF_DAY",
             "mf6_sha256": sha(args.mf6.resolve()), "origin_checkpoint": hashes,
-            "corrector": "bracketed" if args.bracketed else "fixed_point",
+            "corrector": corrector if corrector != "coupled" else "fixed_point",
             "max_step_days": args.max_step_days if args.max_step_days is not None else 0.002,
             "head_tolerance_m": 1e-8, "water_metric_tolerance_cm": 1e-4,
             "columns": ["swap_head_m", "modflow_head_m", "modflow_inward_m3", "modflow_storage_outward_m3"],
