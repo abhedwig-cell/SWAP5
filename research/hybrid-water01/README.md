@@ -239,6 +239,29 @@ have separate workers and each is compared with its own single-column
 control.
 
 
+The cold run accepts all 481 days, with the same accepted daily records
+as the previous profile through day 457. At day 458 the published
+groundwater level is −77.82077 cm, compared with −162.41993 cm for the
+previous profile and −78.08553 cm for the same-compiler original donor.
+The absolute discrepancy from the original donor falls from 84.33440 cm
+to 0.26476 cm on that day. Over all 481 days, the largest remaining
+absolute discrepancy is 10.88535 cm on day 457. The largest day-to-day
+change in the trial is +67.44652 cm on day 257, close to the original
+donor's +67.44455 cm on the same day. These comparisons cover daily
+outputs. They do not measure every subdaily groundwater excursion or
+qualify forced recomputation at other clock times.
+
+The independent daily water budget closes within 1e-6 cm on every day.
+Its largest absolute residual is 9.998896e-7 cm. The restart windows
+2→4, 20→22, 365→367 and 453→457 match the continuous run exactly.
+Continuations 256→481 and 453→459 also match exactly, including the
+changed day-458 state. The two-column controls match their separate
+trajectories over days 1–20, 257–258 and 454–459.
+
+See [the full-period result](GROUNDWATER_REFRESH481_RESULT_20261109.json)
+and [the daily comparison and replay evidence](GROUNDWATER_REFRESH481_EVIDENCE_20261109.zip).
+
+
 ## SWAP5 daily host and first refusal
 
 The daily host starts from branch commit
