@@ -209,6 +209,36 @@ See [the groundwater result](GROUNDWATER_REPLAY_RESULT_20261109.json)
 and [the selected step and solver traces](GROUNDWATER_REPLAY_EVIDENCE_20261109.zip).
 
 
+### Full-period trial of the final-step recomputation
+
+The optional `--refresh-macro-final` switch carries the exact clock
+window of the diagnostic into the regular daily kernel runner. It requests
+fresh macro rates during the existing `HeadCalc` evaluations that start
+at clock 36252.9989 through the end of day 458. The donor retains its
+ordinary convergence tests and retry sequence. The SWAP5 daily mass
+gate remains active.
+
+Use the full, restart and isolation commands above with fresh output
+directories and add `--shared-pond-transfer --refresh-macro-final`.
+The following additional controls cross the actual recomputation
+window. Use the corrected continuous day-453 checkpoint (the intervention
+has yet to run at that checkpoint).
+
+```powershell
+$flags = @('--budget-retry', '--shared-pond-transfer', '--refresh-macro-final')
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-refresh-full" @flags
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-refresh-cross458" @flags --origin $correctedOrigin --origin-day 453 --days 459
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-refresh-isolation458" @flags --origin $correctedOrigin --origin-day 453 --days 459 --isolation
+```
+
+With `--origin`, the kernel starts a new revision sequence on the
+supplied own checkpoint. In isolation mode, the shifted column
+perturbs one Cauchy-table entry by +0.001 cm at the resumed start
+date for post-year checkpoints. The original and perturbed columns
+have separate workers and each is compared with its own single-column
+control.
+
+
 ## SWAP5 daily host and first refusal
 
 The daily host starts from branch commit

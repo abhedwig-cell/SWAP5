@@ -56,7 +56,7 @@ def verify_source(distribution):
             raise ValueError(f"Unverified donor archive: {name}")
 
 
-def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False):
+def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False):
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
     case = distribution / "cases" / CASE
@@ -202,6 +202,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
    if (FlRunoff .OR. ArMpSs > 0.0d0) call pondrunoff ()
    if (budget_enabled .and. budget_start >= 36051d0 .and. swmacro == 1 .and. QMpLatSs < lateral_before_pond) &
      call apply_surface_lateral_limit(QMpLatSs)""")
+        if refresh_macro_final:
+            # Exact scope of the paired day-458 replay. Keep the native
+            # acceptance tests and retry policy for every residual evaluation.
+            source = replace(source, "      if (iTask == 1 .OR. .NOT. flunsatok(3)) then",
+                             "      if (iTask == 1 .OR. .NOT. flunsatok(3) .OR. &\n"
+                             "          (t1900 >= 36252.9989d0 .AND. t1900 < 36253d0)) then")
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
@@ -272,6 +278,11 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint_da
     first = checkpoint_day if origin is not None else 0
     accepted = []
     refusal = None
+    if origin is not None:
+        checkpoint_dir = output / "first"
+        checkpoint_dir.mkdir()
+        for name in ("macro.bin", "result.end"):
+            shutil.copyfile(origin / name, checkpoint_dir / name)
     with contextlib.ExitStack() as stack:
         workers = []
         previous = []
@@ -297,22 +308,19 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint_da
                     if count != 1:
                         raise ValueError("Missing restart setting")
                     source += "SWINITYPE = 2\nINIFIL = '../first/result.end'\n"
-                    checkpoint_dir = output / "first"
-                    checkpoint_dir.mkdir()
-                    for name in ("macro.bin", "result.end"):
-                        shutil.copyfile(origin / name, checkpoint_dir / name)
                 control.write_text(source, encoding="cp1252")
 
             if variant == "shifted":
                 bbc = directory / "swap.bbc"
                 source = bbc.read_text(encoding="cp1252")
+                shifted_date = date(1998, 1, 1) + timedelta(days=first + (first < 365))
                 source, count = re.subn(
-                    r"(?m)^([ \t]*1998-01-02[ \t]+)(-?\d+(?:\.\d+)?)([ \t]*)$",
+                    rf"(?m)^([ \t]*{shifted_date}[ \t]+)(-?\d+(?:\.\d+)?)([ \t]*)$",
                     lambda match: f"{match[1]}{float(match[2])+0.001:.6f}{match[3]}",
                     source,
                 )
                 if count != 1:
-                    raise ValueError("Expected one Cauchy head at 1998-01-02")
+                    raise ValueError(f"Expected one Cauchy head at {shifted_date}")
                 bbc.write_text(source, encoding="cp1252")
             worker, worker_log = start_process(stack, [donor, "./swap.swp"], directory, "donor")
             _, initial = receive(worker, worker_log, {"HYBRID_READY"})
@@ -429,13 +437,13 @@ def restart(donor, kernel, case, output, cut):
             "fresh_kernel_and_donor_exact": True, "committed_days": end-cut}
 
 
-def isolation(donor, kernel, case, output, days):
+def isolation(donor, kernel, case, output, days, cut=None, origin=None):
     order = ("original", "shifted")
     datasets = {}
     for name, variants in [("alternating", order), ("control_a", order[:1]), ("control_b", order[1:])]:
         directory = output / name
         directory.mkdir()
-        result = run(donor, kernel, case, directory, days, variants)
+        result = run(donor, kernel, case, directory, days, variants, checkpoint_day=cut, origin=origin)
         if result["first_refusal"] is not None:
             raise RuntimeError(f"Isolation trial {name} refused: {result['first_refusal']['day']}")
         datasets[name] = [json.loads(row) for row in (directory / "daily.jsonl").read_text().splitlines()]
@@ -450,7 +458,7 @@ def isolation(donor, kernel, case, output, days):
     if datasets["control_a"] == datasets["control_b"]:
         raise RuntimeError("The isolation inputs did not exercise different trajectories")
     return {
-        "days_per_column": days,
+        "days_per_column": days - (cut or 0),
         "distinct_trajectories": True,
         "exact_against_each_separate_control": True,
         "shifted_cauchy_input_sha256": sha(output / "control_b/shifted/swap.bbc"),
@@ -468,6 +476,10 @@ def main():
     mode.add_argument("--restart-at", type=int, choices=RESTART_WINDOWS)
     parser.add_argument("--budget-retry", action="store_true")
     parser.add_argument("--shared-pond-transfer", action="store_true")
+    parser.add_argument("--refresh-macro-final", action="store_true",
+                        help="Recompute macro rates in the final day-458 window")
+    parser.add_argument("--origin", type=Path, help="Start from an own checkpoint directory")
+    parser.add_argument("--origin-day", type=int, choices=RESTART_WINDOWS)
     parser.add_argument("--trace-richards", action="store_true", help="Trace the donor residuals and step water ledger")
     parser.add_argument("--trace-day", type=int, default=15)
     parser.add_argument("--days", type=int, choices=range(1, 482), default=481, metavar="1..481")
@@ -479,15 +491,26 @@ def main():
         parser.error("--output is required for a kernel run")
     if args.shared_pond_transfer and not args.budget_retry:
         parser.error("--shared-pond-transfer requires --budget-retry")
+    if args.refresh_macro_final and not args.budget_retry:
+        parser.error("--refresh-macro-final requires --budget-retry")
+    if (args.origin is None) != (args.origin_day is None):
+        parser.error("--origin and --origin-day must be supplied together")
+    if args.origin is not None and (args.restart_at is not None or args.days <= args.origin_day):
+        parser.error("A checkpoint continuation needs an end day after its origin and no --restart-at")
+    origin = args.origin.resolve() if args.origin is not None else None
+    cut = args.restart_at if args.restart_at is not None else args.origin_day
     output = args.output.resolve()
     output.mkdir()
-    donor, kernel, case, inputs = build(args.reference_work.resolve(), output, args.trace_richards, args.restart_at, args.budget_retry, args.trace_day, args.shared_pond_transfer)
+    donor, kernel, case, inputs = build(
+        args.reference_work.resolve(), output, args.trace_richards, cut,
+        args.budget_retry, args.trace_day, args.shared_pond_transfer, args.refresh_macro_final,
+    )
     if args.restart_at is not None:
         measurements = restart(donor, kernel, case, output, args.restart_at)
     elif args.isolation:
-        measurements = isolation(donor, kernel, case, output, args.days)
+        measurements = isolation(donor, kernel, case, output, args.days, cut, origin)
     else:
-        measurements = run(donor, kernel, case, output, args.days)
+        measurements = run(donor, kernel, case, output, args.days, checkpoint_day=cut, origin=origin)
     result = {
         "compiler": subprocess.check_output(["gfortran", "--version"], text=True).splitlines()[0],
         "source_sha256": {"SWAP.ZIP": DONOR_SOURCE_SHA, "TTUTIL.ZIP": TTUTIL_SOURCE_SHA},
@@ -496,6 +519,8 @@ def main():
         "requested_days": args.restart_at + RESTART_WINDOWS[args.restart_at] if args.restart_at else args.days,
         "budget_retry": args.budget_retry,
         "shared_pond_transfer": args.shared_pond_transfer,
+        "refresh_macro_final": args.refresh_macro_final,
+        "origin_day": args.origin_day,
         **measurements,
     }
     (output / "RESULT.json").write_text(json.dumps(result, indent=2) + "\n")
