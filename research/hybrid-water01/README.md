@@ -31,46 +31,35 @@ python -B $runner --reference-work $ref --output $published --checkpoint-at 20 -
 python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume" --origin "$published/accepted-column-1-day-20" --origin-day 20 --days 22 --require-accepted-origin @flags
 ```
 
-Resume here. Qualify the package at a wet cut (256) and at the year
-boundary using the existing evidence as the trajectory oracle. Then
-reconcile its publication and source/build identity with the existing
-durable restart owner before exposing it outside the research host.
-The selected-cut package does not yet cover arbitrary day cuts or
-prove recovery after a process or storage failure.
+The published-package controls at day 256 and the year boundary (day
+365) pass on GNU Fortran 16.2 O2. Days 257–258 and 366–367 match their
+continuous controls exactly, including every daily receipt after
+normalizing the new kernel revision counter, and both published rows.
+Both continuous prefixes also match the full 481-day evidence exactly.
+Maximum absolute independent water residuals are 2.202056e-8 cm and
+3.959763e-7 cm respectively, inside the original 1e-6 cm gate.
+The [accepted checkpoint receipt](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json)
+contains the four daily receipts, executable and input hashes and the
+verified pair of checkpoint digests.
 
+To reproduce, use the same reference and flags as above:
 
-Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
-PR #1618 has a complete corrected V9 run and exact own-year replay. This
-experiment uses the original sharp B0 donor and the unmodified Andelst inputs.
-
-Run from the repository root with GNU Fortran 13.3.0:
-
-```sh
-python tools/vq/b0_source_runner.py --archive /path/to/SWAP_4.3.1.zip \
-  --work-dir /tmp/hybrid-b0 --case 3.macroporeflow
-python research/hybrid-water01/run_day_return.py \
-  --archive /path/to/SWAP_4.3.1.zip --reference-work /tmp/hybrid-b0 \
-  --output /tmp/hybrid-day-return
+```powershell
+foreach ($cut in @(256, 365)) {
+    $published = "$env:TEMP/swap5-closure01-publish-$cut"
+    $end = $cut + 2
+    python -B $runner --reference-work $ref --output $published --checkpoint-at $cut --days $end @flags
+    if ($LASTEXITCODE) { throw "Continuous run failed at cut $cut" }
+    python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume-$cut" --origin "$published/accepted-column-1-day-$cut" --origin-day $cut --days $end --require-accepted-origin @flags
+    if ($LASTEXITCODE) { throw "Fresh continuation failed at cut $cut" }
+}
 ```
 
-The second command relinks three build-local donors: the loop return, a
-four-call driver, and read-only full-precision stock/flux output. The solver
-providers, original step selection and day-end process order come from B0.
-All four windows completed and the standard daily series is exact against
-the frozen B0 prefix. The largest independent recomputation of the donor's
-reported daily water inventory residual is about 5.97e-7 cm. This is the
-legacy ledger, with its own interception and snow conventions, not a new
-SWAP5 kernel mass certificate.
-
-The day-return test keeps one live donor process. In particular, the module
-state and the local SAVE fields still live in the executable. A successful
-return provides no fresh-process restart or A/B isolation proof. The next
-implementation boundary is an explicit per-instance capture/restore of
-continuation and attempt state, including TimeControl's saved clock,
-HeadCalc's retained memory, BoundTop's atmospheric state, macro event
-history, the crop and thermal continuations, and meteorological and output
-cursors. The external Cauchy head, kernel rollback and SWAP5-owned commit
-are also open. No canonical model or test gate has been altered.
+Resume here. Reconcile the package publication and source/build identity
+with the existing durable restart owner before exposing it outside the
+research host. Use the three passing cuts (20, 256 and 365) as regression
+controls. The selected-cut package does not yet cover arbitrary day
+cuts or prove recovery after a process or storage failure.
 
 
 ## Balance-driven day stepping
