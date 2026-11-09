@@ -118,11 +118,30 @@ earlier trial activating the correction from day 15 changed the trajectory
 and refused day 162 at 3.796380e-6 cm. The scheduling-only control remains
 available by omitting the shared-transfer option.
 
-A diagnostic trial from the original day-256 checkpoint accepts both
-days 257 and 258 with this correction. A cold run must establish the
-trajectory of the corrected donor. Use the same commands as above with
-fresh output directories and append `--shared-pond-transfer` to the
-full, restart and isolation commands.
+A cold run from the original initialization with `--budget-retry
+--shared-pond-transfer` accepts all 481 days, January 1, 1998 through April
+26, 1999. The largest independent daily water residual is 9.998896e-7 cm
+on day 215 and the signed sum is −3.098562e-5 cm. Days 257 and 258 close
+at kernel residuals of 3.767075e-9 and 2.202054e-8 cm. The scheduling-only
+control and the cold corrected run agree exactly through day 256.
+The full run matches the entire fresh-process continuation from the
+day-256 checkpoint. Days 2→4, 20→22, 365→367 and 453→457 reproduce the
+continuous pressure heads, water stocks, fluxes and published records.
+The two-column test passes for days 1–20 and a separate isolation test
+passes across the corrected wet window at days 257–258.
+
+Use the commands above with fresh output directories and append
+`--shared-pond-transfer` to each command. The result and archive include
+the original and resumed input hashes, the Cauchy perturbations for the
+isolation tests and the full accepted daily ledgers. Compared with the
+unmodified donor on the same compiler, the first published difference
+is on day 15. The largest absolute drainage difference is 0.01135 cm on
+day 258 and the largest groundwater-level difference is 84.3344 cm on
+day 458. These are trajectory comparisons and are separate from the
+mass acceptance and exact-restart evidence.
+
+See [the full result](DAILY_BALANCED_RESULT_20261109.json)
+and [its evidence archive](DAILY_BALANCED_EVIDENCE_20261109.zip).
 
 
 ## SWAP5 daily host and first refusal
