@@ -135,9 +135,14 @@ The eleven-file application change has no changed paths in common
 with the PR 1619 diff. The donor adapter, source transforms and
 balance guard are owned by `app/hybrid_water`. The application
 builds and prepares the original Andelst reference without this
-research directory. Follow the exact-head qualification in PR 1620
-before considering canonical admission. The full-period science
-comparisons remain separate.
+research directory. The [local integration receipt](CLOSURE01_INTEGRATION_RESULT_20261109.json)
+records the exact PR-head runs. Andelst O0/O2 kernels reproduced days
+1–22 and own day-20 continuations with the O2 donor. Generated donor
+sources match the previous application build byte for byte.
+Grassgrowth and Hupsel O2 reproduced days 1–4 and their own day-2
+restarts. Follow the existing exact-head CI in PR 1620 before
+canonical admission. The full-period science comparisons remain
+separate.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
