@@ -7,86 +7,93 @@ from the exact hybrid evidence head `0ca2e3edd7e869d2ac7d37ed6c139ae126fdcc49`
 with canonical checked at `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR 1619 remains the research baseline.
 
-At a selected accepted cut, the daily adapter writes a closed ZIP with
-the binary donor pair and its kernel receipt. It publishes that ZIP with
-the native `swap5_restart_publish` file flush and atomic replacement.
-The schema-2 manifest binds the accepted hydraulic state, pinned nested
-archives, input hashes, profile and numerical build inputs. The build
-identity includes the GNU Fortran driver, target, flags, rendered sources,
-linked legacy objects and TTUTIL archive, module inputs and SWAP5 sources.
-Executable hashes are recorded separately because independent links can
-produce different bytes. Strict reopening verifies the identity and both
-payload digests before extracting the exact verified bytes. It then checks
-the donor's initial stocks and heads before the new kernel starts.
-Historical schema-1 directories remain evidence of the earlier tests.
-Strict reopening requires a schema-2 ZIP. The raw donor-directory mode
-still exists for research replay.
+The reusable daily host owns the command and reply exchange with one
+Fortran worker per column. The SWAP5 kernel owns the accepted clock and
+water state. The host can interleave columns at different accepted days.
+A kernel refusal preserves that column's accepted time and state and
+ends its worker. The remaining columns can still advance.
 
-On Windows GNU Fortran 16.2 O2 the own day-20 package reproduced
-accepted days 21–22 exactly, after accounting for the new kernel
-revision sequence. A run without the balance scheduler refused day 15
-before its requested cut and published no package. Modified macro bytes,
-an incorrect cut and an incorrect profile were each refused by the
-package verifier. The previously evidenced 481-day trajectories were
-reused.
+The runtime donor writes a checkpoint on the requested day, including
+after restart. The host publishes the closed ZIP via the native
+`swap5_restart_publish` only after kernel acceptance. Schema 3 binds
+the accepted hydraulic state, nested source archives, project inputs
+and numerical build. The same donor and kernel build handles every cut.
+Strict reopening checks the complete binding and both payload hashes
+before extraction, then checks the donor's initial stocks and heads.
+Earlier schema-1 directories and schema-2 ZIPs remain historical
+evidence. Their strict reader is available at the earlier branch
+commit `3bb7d21b5fc056383e0e66b77e66584276b03f20`.
+
+The day-19 package and the day-21 package written after resuming day 19
+share the same numerical build identity. Both fresh continuations match
+all daily receipts and published rows of the continuous control through
+day 23, after accounting for the new kernel revision sequence. The
+mixed-clock regression starts one cold and one restored column in the
+same host and matches their control receipts. Its day-15 refusal control
+preserves day 14, publishes no checkpoint and lets the other column
+continue exactly. Strict isolation with two different Cauchy trajectories
+matches both separate controls. The original 1e-6 cm water tolerance is
+used throughout. An O0 SWAP5-kernel build with the O2 donor reproduced
+the mixed-clock control. The legacy raw day-2 restart also remained
+exact through day 4.
+
+To reproduce on Windows with GNU Fortran and GCC on PATH, use empty
+output directories and the original SWAP 4.3.1 distribution.
 
 ```powershell
 $ref = "$env:TEMP/hy481-local-b0-20261109"
+$archive = "$env:USERPROFILE/Downloads/SWAP_4.3.1.zip"
 $flags = @('--budget-retry', '--shared-pond-transfer', '--refresh-macro-final')
 $runner = 'research/hybrid-water01/run_daily_kernel.py'
-$published = "$env:TEMP/swap5-closure01-publish"
-python -B $runner --reference-work $ref --output $published --checkpoint-at 20 --days 22 @flags
-python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume" --origin "$published/accepted-column-1-day-20.zip" --origin-day 20 --days 22 --require-accepted-origin @flags
+if (!(Test-Path $ref)) { python -B $runner --reference-work $ref --prepare-archive $archive }
+$short = "$env:TEMP/swap5-closure01-host-v3-a"
+python -B $runner --reference-work $ref --output $short --checkpoint-at 19 --days 23 @flags
+python -B $runner --reference-work $ref --output "$short-chain" --origin "$short/accepted-column-1-day-19.zip" --origin-day 19 --require-accepted-origin --checkpoint-at 21 --days 23 @flags
+python -B $runner --reference-work $ref --output "$short-chain2" --origin "$short-chain/accepted-column-1-day-21.zip" --origin-day 21 --require-accepted-origin --days 23 @flags
+python -B $runner --reference-work $ref --output "$short-isolation" --origin "$short/accepted-column-1-day-19.zip" --origin-day 19 --require-accepted-origin --isolation --days 21 @flags
+python -B research/hybrid-water01/check_daily_host.py --reference-work $ref --checkpoint "$short/accepted-column-1-day-19.zip" --output "$short-check"
 ```
-
-The published-package controls at day 256 and the year boundary (day
-365) pass on GNU Fortran 16.2 O2. Days 257–258 and 366–367 match their
-continuous controls exactly, including every daily receipt after
-normalizing the new kernel revision counter, and both published rows.
-Both continuous prefixes also match the full 481-day evidence exactly.
-Maximum absolute independent water residuals are 2.202056e-8 cm and
-3.959763e-7 cm respectively, inside the original 1e-6 cm gate.
-The [accepted checkpoint receipt](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json)
-contains the four daily receipts, executable and input hashes and the
-verified pair of checkpoint digests.
-
-The [schema-2 durable checkpoint receipt](CLOSURE01_DURABLE_CHECKPOINT_RESULT_20261109.json)
-records fresh Windows GNU Fortran 16.2 O2 runs for all three cuts.
-Each continuation matches its continuous daily receipts and CSV rows
-exactly after normalizing the new kernel revision. The day-256 and
-day-365 continuous prefixes also match the earlier evidence exactly.
-The largest independent water residual over the six resumed days is
-3.959763e-7 cm, inside the original 1e-6 cm gate. The isolated day-20
-pair matches both separate controls. The strict verifier refuses an
-altered linked-object hash, changed payload, extra member or wrong day.
-
-To reproduce, use the same reference and flags as above:
 
 ```powershell
-foreach ($cut in @(256, 365)) {
-    $published = "$env:TEMP/swap5-closure01-publish-$cut"
-    $end = $cut + 2
-    python -B $runner --reference-work $ref --output $published --checkpoint-at $cut --days $end @flags
-    if ($LASTEXITCODE) { throw "Continuous run failed at cut $cut" }
-    python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume-$cut" --origin "$published/accepted-column-1-day-$cut.zip" --origin-day $cut --days $end --require-accepted-origin @flags
-    if ($LASTEXITCODE) { throw "Fresh continuation failed at cut $cut" }
-}
+$full = "$env:TEMP/swap5-closure01-host-v3-full"
+python -B $runner --reference-work $ref --output $full --checkpoint-at 365 --days 481 @flags
+python -B $runner --reference-work $ref --output "$full-year" --origin "$full/accepted-column-1-day-365.zip" --origin-day 365 --require-accepted-origin --checkpoint-at 453 --days 457 @flags
+python -B $runner --reference-work $ref --output "$full-dry" --origin "$full-year/accepted-column-1-day-453.zip" --origin-day 453 --require-accepted-origin --days 459 @flags
 ```
 
-Run the native publisher's O0/O2 controls with
-`python -B tests/dataqual15/test_restart_publication.py --output "$env:TEMP/swap5-closure01-native-publish"`.
-For the day-20 isolation control, reuse the verified donor bytes:
+The fresh original-input run accepted all 481 days and reproduced every
+daily receipt and published CSV record from the earlier hybrid run.
+Maximum absolute daily water residual was 9.998896e-7 cm and the signed
+sum was -3.098486e-5 cm. It took 522 s from donor link to the final
+result in the measured Windows run. The balance guard requested 86,521
+retries, of which 24,222 occurred on day 404, 22,635 on day 295 and
+16,292 on day 66.
 
-```powershell
-python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-isolation20" --isolation --origin "$env:TEMP/swap5-closure01-resume/verified-origin" --origin-day 20 --days 22 @flags
-```
+The fresh day-365 continuation matches the continuous run through day
+457 and publishes its own day-453 package. A second fresh process from
+that package matches through day 459, including day 458. The four
+published runtime packages at days 19, 21, 365 and 453 have the same
+numerical build identity. The [daily host receipt](CLOSURE01_DAILY_HOST_RESULT_20261109.json)
+contains the hashes, full-run water totals and controls.
 
-Resume here. Move the verified worker and restart handshake into a
-reusable host entry point that owns each column's clock and accepted
-state, then extend the current selected-cut contract. The restart proof
-covers a newly started process at an accepted day boundary. Storage
-failure recovery and cross-build restarts are outside the verified scope.
+Against the original SWAP 4.3.1 CSV, mean absolute groundwater
+difference is 0.20105 cm and the largest is 10.88535 cm on day 457.
+The signed cumulative drainage difference is -0.01233 cm and the largest
+daily drainage difference is -0.01135 cm on day 258. The canonical V9
+receipt reports 481 days with a maximum daily water residual of
+4.731912e-12 cm under its own integration and accounting. These are
+separate numerical profiles with separate scientific qualification.
 
+The [schema-2 checkpoint receipt](CLOSURE01_DURABLE_CHECKPOINT_RESULT_20261109.json)
+preserves the previously published day 20, 256 and 365 controls. Its
+[predecessor](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json) records
+the same wet and year controls with full daily receipts.
+
+Resume here. Connect the verified host to the SWAP5 application entry
+point. Start with the Andelst worker and its existing restart binding,
+then identify which configuration and grid dimensions need to be
+supplied for the existing Hupsel and Grassgrowth project owners.
+Qualify the application route before canonical admission.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
