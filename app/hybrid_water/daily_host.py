@@ -16,10 +16,9 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-DONOR_TOOLS = ROOT / "research/hybrid-water01"
-sys.path.insert(0, str(DONOR_TOOLS))
-from probe_macro_checkpoint import render as render_checkpoint
-from run_day_return import records, render, replace, sha
+from donor_sources import records, render_checkpoint, render_day_return, replace, sha
+
+APP = Path(__file__).resolve().parent
 
 CASE = "3.macroporeflow"
 APPLICATION_MODEL = "HYBRID_ANDELST_WATER"
@@ -77,7 +76,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     donor_build = reference / "build"
     objects = donor_build / "swap-obj"
     ttutil = donor_build / "ttutil-obj"
-    render(donor_build / "swap-selected", output)
+    render_day_return(donor_build / "swap-selected", output)
     main = output / "swap_main.f90"
     source = main.read_text(encoding="cp1252")
     source = replace(source, "use Variables, only: t1900, flrunend",
@@ -229,7 +228,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         patched.append("headcalc")
 
     if budget_retry:
-        budget_source = DONOR_TOOLS / "hybrid_step_budget.f90"
+        budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
@@ -241,12 +240,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                     *(str(replacements.get(p.name, p)) for p in donor_objects),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     str(ttutil_library)], cwd=output, check=True)
-    probe = (DONOR_TOOLS / "probe_kernel_donor.f90").read_text()
-    module, separator, _ = probe.partition("\nprogram run_kernel_donor\n")
-    if not separator:
-        raise ValueError("Missing donor adapter module boundary")
-    adapter = output / "adapter.f90"
-    adapter.write_text(module)
+    adapter = APP / "donor_adapter.f90"
     sources = [
         "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
         "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",

@@ -6,7 +6,6 @@ This checks the donor call boundary. The donor still owns its live process state
 
 import argparse
 import gzip
-import hashlib
 import json
 import math
 import shutil
@@ -19,67 +18,8 @@ sys.path.insert(0, str(ROOT / "tools/vq"))
 from reference_identity import verify_b0_archive
 
 
-def replace(text, anchor, replacement):
-    if text.count(anchor) != 1:
-        raise ValueError(f"Expected a unique donor anchor: {anchor!r}")
-    return text.replace(anchor, replacement)
-
-
-def render(selected, out):
-    swap = (selected / "swap.f90").read_text(encoding="cp1252")
-    swap = """module hybrid_day_window
-  implicit none
-  logical :: return_at_day_end = .false.
-end module hybrid_day_window
-
-""" + swap
-    swap = replace(swap, "use MOD_swap_base,       only: pathwork,",
-                   "use hybrid_day_window, only: return_at_day_end\n"
-                   "use MOD_swap_base,       only: pathwork,")
-    anchor = ("   end do\n\n!  Specific for exchange when called as DLL\n"
-              "   if (iCaller == 2) call handle_exchange(29, flError)")
-    swap = replace(swap, anchor, "      if (return_at_day_end .and. flDayEnd) return\n\n" + anchor)
-    (out / "swap.f90").write_text(swap, encoding="cp1252")
-
-    main = (selected / "swap_main.f90").read_text(encoding="cp1252")
-    main = replace(main, "use MOD_swap_base, only: unit_log",
-                   "use hybrid_day_window, only: return_at_day_end\n"
-                   "use Variables, only: t1900, flrunend\n"
-                   "use MOD_swap_base, only: unit_log")
-    main = replace(main, "integer              :: iTask",
-                   "integer              :: iTask, window\nreal(8)              :: window_start")
-    anchor = ("   if (iCaller == 0) call swap(iCaller, iTask, tstart_in, tend_in)\n"
-              "   !!!if (iCaller /= 0) call dummy(iTask)\n\n!  Close swap")
-    main = replace(main, anchor, """   return_at_day_end = .true.
-   do window = 1, 4
-      window_start = t1900
-      if (flrunend) error stop 'Donor ended before requested day'
-      call swap(iCaller, iTask, tstart_in, tend_in)
-      if (abs(t1900 - window_start - 1d0) > 1d-8) error stop 'Unexpected day boundary'
-      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900
-   end do
-
-!  Close swap""")
-    (out / "swap_main.f90").write_text(main, encoding="cp1252")
-
-    csv_source = (selected / "swap_csv_output.f90").read_text(encoding="cp1252")
-    anchor = "   dstor_1    = wasrdm1 - iwasrdm1beg"
-    csv_source = replace(csv_source, anchor, """   write(*,'(a,12(1x,es25.17e3))') 'HYBRID_STOCK_FLUX', &
-      volact, pond, ssnow, sicact, wasrdm1, wasrdm2, &
-      ivolbeg, ipondbeg, issnowbeg, isicbeg, iwasrdm1beg, iwasrdm2beg
-   write(*,'(a,16(1x,es25.17e3))') 'HYBRID_EXTERNAL_FLUX', &
-      igrai,isnrai,igsnow,igird,irunon,iqssdi,iqbup, &
-      iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iQMpOutDrRap,iqbdo
-""" + anchor)
-    (out / "swap_csv_output.f90").write_text(csv_source, encoding="cp1252")
-
-
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
-def records(lines):
-    return [line for line in lines if line.strip() and not line.startswith("*")]
+sys.path.insert(0, str(ROOT / "app/hybrid_water"))
+from donor_sources import records, render_day_return as render, replace, sha
 
 
 def main():

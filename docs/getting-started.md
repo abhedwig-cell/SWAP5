@@ -64,7 +64,7 @@ With GNU Fortran and GCC on PATH, prepare the reference from the original
 SWAP 4.3.1 distribution and use new output directories:
 
 ```bash
-python -B research/hybrid-water01/run_daily_kernel.py \
+python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
   --reference-work ./andelst-reference --prepare-archive /path/to/SWAP_4.3.1.zip
 python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
   --reference-work ./andelst-reference --output ./andelst-run \
@@ -77,8 +77,8 @@ python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
 Omitting `--days` runs through the original final day, 481. A restart ZIP
 must match the numerical build and original project inputs. The application
 emits daily receipts, the original CSV output and a result JSON with hashes.
-The application evidence in `research/hybrid-water01/README.md` records
-the validated windows and scientific comparison separately.
+The [development evidence](https://github.com/abhedwig-cell/SWAP5/blob/b706a1b6e7216d3b1bc02cdc66817eaceb964644/research/hybrid-water01/README.md)
+records the validated windows and scientific comparison separately.
 
 ## Run the native Grassgrowth application
 

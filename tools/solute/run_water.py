@@ -15,7 +15,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "app/hybrid_water"))
-from daily_host import APPLICATION_MODEL, build, checkpoint_identity, run, sha, verify_checkpoint
+from daily_host import APPLICATION_MODEL, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
 
 GRASS_MODEL = "NATIVE_GRASSGROWTH_WATER"
 HUPSEL_MODEL = "NATIVE_HUPSEL_ROTATION"
@@ -170,13 +170,24 @@ def main():
     parser.add_argument("--reference-work", type=Path, help="Prepared original SWAP 4.3.1 distribution for Andelst")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
-    parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--output", type=Path)
+    parser.add_argument("--prepare-archive", type=Path, help="Prepare the pinned original distribution for Andelst")
     parser.add_argument("--days", type=int, help="Last requested day, defaulting to the selected project's end")
     parser.add_argument("--checkpoint-at", type=int, help="Publish a checkpoint after this day is accepted")
     parser.add_argument("--restart", type=Path, help="Previously published checkpoint for the selected model")
     parser.add_argument("--restart-day", type=int)
     parser.add_argument("--kernel-opt", choices=["O0", "O2"])
     args = parser.parse_args()
+    if args.prepare_archive is not None:
+        if (args.model != APPLICATION_MODEL or args.reference_work is None
+                or any(value is not None for value in (args.output, args.grass_build, args.hupsel_build,
+                                                        args.days, args.restart, args.restart_day,
+                                                        args.checkpoint_at, args.kernel_opt))):
+            parser.error("Preparing Andelst requires only --model, --reference-work and --prepare-archive")
+        prepare_reference(args.prepare_archive.resolve(), args.reference_work.resolve())
+        return 0
+    if args.output is None:
+        parser.error("--output is required for a model run")
     if args.model == HUPSEL_MODEL:
         if (args.hupsel_build is None or args.grass_build is not None or args.reference_work is not None
                 or args.kernel_opt is not None or args.restart_day is not None or args.checkpoint_at is not None):

@@ -140,6 +140,7 @@ def main():
     executable = output / "kernel_donor"
     subprocess.run(["gfortran", "-O2", "-ffree-line-length-none", "-fcheck=all",
                     *[str(ROOT / source) for source in sources],
+                    str(ROOT / "app/hybrid_water/donor_adapter.f90"),
                     str(Path(__file__).with_suffix(".f90").resolve()), "-o", str(executable)],
                    cwd=output, check=True)
     command = [executable]
