@@ -1,0 +1,398 @@
+{
+  "source_commit": "ee789ed9bcaa9676ee4967e143ce0732c707a3c6",
+  "scope": "ORIGINAL_ANDELST_DONOR_WITH_SWAP5_DAILY_BALANCE_STEP_CONTROL_AND_SHARED_POND_TRANSFER",
+  "full": {
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "source_sha256": {
+      "SWAP.ZIP": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "TTUTIL.ZIP": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
+    },
+    "input_sha256": {
+      "andelst_meteo.998": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9",
+      "andelst_meteo.999": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+      "andelst_rain.998": "a65461b5291bb146033302cc86a13713885585c1a262ed1a4bcb3eab165b7f62",
+      "andelst_rain.999": "3cc22751f89d46eef91c82607fdba432a2cd32505a9651dc58727ea2f8fd7060",
+      "control_plot.inp": "d85c898b8b6bd6b5fe5f6dd34e582b3da2c574610eb22f9c5e1f824d2c467bdc",
+      "observed/DRN.csv": "9addc10fba3fd5c1f4ce5dc3a2080f6ffe3c5d1c1619844b7e4720a565664ad2",
+      "observed/GWL.csv": "05d53759c2f00877dd93b773cce91c96dad235bbc2c2e3a067eefb7ea02b3505",
+      "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+      "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+      "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff",
+      "swap.dra": "4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface",
+      "swap.swp": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+      "wintcer1.crp": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
+      "wintcer2.crp": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe"
+    },
+    "donor_executable_sha256": "90ac534357ea99d716725b966a7455f61ad3b7364f6aa8570eee7c8853f6e4e4",
+    "kernel_executable_sha256": "e21e0e15f9012464f8582e832b4e373c7fc6e69668726b709586f9e4f94d3136",
+    "requested_days": 481,
+    "budget_retry": true,
+    "shared_pond_transfer": true,
+    "committed_days": 481,
+    "maximum_accepted_residual_cm": 9.998895878216008e-07
+  },
+  "start_date": "1998-01-01",
+  "last_date": "1999-04-26",
+  "mass_tolerance_cm": 1e-06,
+  "all_accepted_days_stock_contiguous": true,
+  "original_first14_exact": true,
+  "unshared_first256_exact": true,
+  "corrected_fresh_process256_to481_exact": true,
+  "max_residual_day": 215,
+  "maximum_independent_daily_residual_cm": 9.99889593928854e-07,
+  "signed_sum_independent_daily_residual_cm": -3.098562313776675e-05,
+  "total_additional_step_retries": 86521,
+  "days_with_additional_step_retries": 63,
+  "day15": {
+    "column": 1,
+    "day": 15,
+    "committed": true,
+    "revision": 15,
+    "stock_end_cm": [
+      153.2713055268502,
+      0.0,
+      0.0,
+      0.0027867247246467475,
+      1.5921201482008605,
+      0.057818200280880146
+    ],
+    "stock_start_cm": [
+      153.28793398086697,
+      0.0,
+      0.0,
+      0.0027512807977746905,
+      1.591575424826057,
+      0.05597981118482813
+    ],
+    "external_flux_cm": [
+      0.07349999998559192,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.014332754702042557,
+      0.0003757157991500911,
+      0.0,
+      0.00037571579915009114,
+      0.0,
+      0.013264568397957475,
+      0.0,
+      0.0,
+      0.08621884788442669,
+      0.0018085855039502237
+    ],
+    "groundwater_cm": -79.90165981372205,
+    "drainage_outward_cm": 0.08621884788442669,
+    "bottom_outward_cm": -0.012524169198092334,
+    "independent_residual_cm": -7.810779596036078e-07,
+    "kernel_residual_cm": 7.810779746181273e-07,
+    "budget_step_retries": 1949,
+    "integrated_guard_residual_cm": 7.810779817377338e-07
+  },
+  "day33": {
+    "column": 1,
+    "day": 33,
+    "committed": true,
+    "revision": 33,
+    "stock_end_cm": [
+      153.0846333957861,
+      0.0,
+      0.0,
+      0.003034259419356108,
+      1.1812994586667613,
+      0.0077988288713420235
+    ],
+    "stock_start_cm": [
+      152.76797204541032,
+      0.0,
+      0.0,
+      0.0,
+      1.2438304497414043,
+      0.002965388414052362
+    ],
+    "external_flux_cm": [
+      0.44100000071570894,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0008799192760849937,
+      0.0,
+      0.0023941989355111305,
+      0.00021600181697468965,
+      0.052054520044101014,
+      0.0,
+      0.0,
+      0.0,
+      0.12345727959240971
+    ],
+    "groundwater_cm": -100.92036739686937,
+    "drainage_outward_cm": 0.0,
+    "bottom_outward_cm": 0.12345727959240971,
+    "independent_residual_cm": 2.1872828836799795e-08,
+    "kernel_residual_cm": -2.1872842759229627e-08,
+    "budget_step_retries": 1,
+    "integrated_guard_residual_cm": -2.1872790388960983e-08
+  },
+  "day257": {
+    "column": 1,
+    "day": 257,
+    "committed": true,
+    "revision": 257,
+    "stock_end_cm": [
+      154.0128452252252,
+      2.360818586817815e-06,
+      0.0,
+      0.0,
+      3.0207072468471234,
+      1.1207552670321568
+    ],
+    "stock_start_cm": [
+      153.80670528802028,
+      0.0,
+      0.0,
+      0.0,
+      1.7773792900720626,
+      0.15781564869161707
+    ],
+    "external_flux_cm": [
+      4.388378949196253,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.032195953956304715,
+      0.026775884201948097,
+      0.0,
+      0.05093680815091182,
+      0.8775177774410604,
+      0.9885426560740054
+    ],
+    "groundwater_cm": 2.360818586817815e-06,
+    "drainage_outward_cm": 0.9284545855919722,
+    "bottom_outward_cm": 0.9885426560740054,
+    "independent_residual_cm": -3.767074674599552e-09,
+    "kernel_residual_cm": 3.767075096305916e-09,
+    "budget_step_retries": 31,
+    "integrated_guard_residual_cm": 3.767054786802619e-09
+  },
+  "day258": {
+    "column": 1,
+    "day": 258,
+    "committed": true,
+    "revision": 258,
+    "stock_end_cm": [
+      153.68793687619115,
+      0.0,
+      0.0,
+      0.0,
+      1.9422751543339034,
+      0.21354233890374336
+    ],
+    "stock_start_cm": [
+      154.0128452252252,
+      2.360818586817815e-06,
+      0.0,
+      0.0,
+      3.0207072468471234,
+      1.1207552670321568
+    ],
+    "external_flux_cm": [
+      0.6518210534742692,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.028106231658261194,
+      0.16815001760807055,
+      0.0,
+      0.07388217786170773,
+      1.3019518630229934,
+      1.390286515838059
+    ],
+    "groundwater_cm": -61.36093207910929,
+    "drainage_outward_cm": 1.3758340408847012,
+    "bottom_outward_cm": 1.390286515838059,
+    "independent_residual_cm": -2.2020555672479874e-08,
+    "kernel_residual_cm": 2.202053650535163e-08,
+    "budget_step_retries": 8,
+    "integrated_guard_residual_cm": 2.2020452990594053e-08
+  },
+  "unshared_day257_refusal_reproduced_from_cut256": true,
+  "day33_prior_accepted_step": {
+    "clock": 35827.76501612822,
+    "dt": 0.002,
+    "surface_projected_macro_inflow_cm": 0.0024793149848064805,
+    "macro_booked_inflow_cm": 0.0024904941605566827,
+    "difference_cm": 1.1179175750202202e-05
+  },
+  "same_build_reference_first_changed_day": 15,
+  "largest_published_same_build_reference_differences": {
+    "RAIN": {
+      "max_abs_cm": 2.6575999999999996e-09,
+      "day": 411,
+      "date": "1999-02-15"
+    },
+    "DRN": {
+      "max_abs_cm": 0.011349999999999971,
+      "day": 258,
+      "date": "1998-09-15"
+    },
+    "GWL": {
+      "max_abs_cm": 84.33439999999999,
+      "day": 458,
+      "date": "1999-04-03"
+    }
+  },
+  "restart": {
+    "cut2": {
+      "donor_executable_sha256": "3a4dfadfe7c44d15cb0427204d94d5c9c4a291e99ad3a33888adfad877ca07f3",
+      "kernel_executable_sha256": "580d07abaf698c5cd1df85a10436e7e3e4a4e0d638f5851fe7b91d93623b3721",
+      "requested_days": 4,
+      "budget_retry": true,
+      "shared_pond_transfer": true,
+      "checkpoint_day": 2,
+      "end_day": 4,
+      "checkpoint_sha256": {
+        "result.end": "b6e5e04b40dbea28d32857d4a1c7070474f3a2da9396eadb0e40896753813f37",
+        "macro.bin": "d2a7641d3a386f30bef34e87c6b389e8dff0e12c46b196b6681d1bd68ac1c6cd"
+      },
+      "fresh_kernel_and_donor_exact": true,
+      "committed_days": 2,
+      "resumed_input_sha256": {
+        "swap.swp": "1573c6d7ff71ccae0a4ad2a63ec3726396e2d6688f056ce7154cf356bf3cfcfc",
+        "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff"
+      }
+    },
+    "cut20": {
+      "donor_executable_sha256": "e68ab1abb3eaeed6a86107ad8ff5f8c7abb29cf6d43a44aa983680d23567ceb6",
+      "kernel_executable_sha256": "5b858c4b54b4aaa5dfcb7a612d4ec8fa5fa8a21f63d96c0528a504234e459f20",
+      "requested_days": 22,
+      "budget_retry": true,
+      "shared_pond_transfer": true,
+      "checkpoint_day": 20,
+      "end_day": 22,
+      "checkpoint_sha256": {
+        "result.end": "d34e50ed9c5898ea3f1571f48daae3d4fe5f081b6bb7f178ad036f74515305e8",
+        "macro.bin": "768c8b88ee47c5cdabeb5b688ef523044233a3e9d5c7b019b6c194409cba1928"
+      },
+      "fresh_kernel_and_donor_exact": true,
+      "committed_days": 2,
+      "resumed_input_sha256": {
+        "swap.swp": "a448cc82f8a1f9a7dfc20cdab9f5b34f93c13aa1269eb00e552099fa5d7f5cdc",
+        "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff"
+      }
+    },
+    "year": {
+      "donor_executable_sha256": "aed714fdb7fe312967dda9825f232853d133ffedf30b07a0a6d3fb034c1109d4",
+      "kernel_executable_sha256": "480348f22aac5c67224747d4a3ab4272165976711e046983a65da5cdd1d0926f",
+      "requested_days": 367,
+      "budget_retry": true,
+      "shared_pond_transfer": true,
+      "checkpoint_day": 365,
+      "end_day": 367,
+      "checkpoint_sha256": {
+        "result.end": "257d37645da55742e5a1e8ceb04a2084f016147ada0d79581b48a979a610a879",
+        "macro.bin": "6138d317cdb08e657ca34383cdc5ac54775615ed40b7184b86d6ea9ea0c17f8c"
+      },
+      "fresh_kernel_and_donor_exact": true,
+      "committed_days": 2,
+      "resumed_input_sha256": {
+        "swap.swp": "aee331484d8baaa2186c09571c77308eb8e13503df5936680b73402505dea2ba",
+        "swap.bbc": "4925e18fb27171a9d08f08aaa3880f117ca8353817566b3dd738c7eb6139fb8b"
+      }
+    },
+    "dry": {
+      "donor_executable_sha256": "31f67970db84a73d39672dd2316328e38077a02ae43b88842e80e8770c2dd640",
+      "kernel_executable_sha256": "93a1d78f66ee4b2dd2084910918e6887b6bbae2ae6f5a1741fbbb828cd0b1c26",
+      "requested_days": 457,
+      "budget_retry": true,
+      "shared_pond_transfer": true,
+      "checkpoint_day": 453,
+      "end_day": 457,
+      "checkpoint_sha256": {
+        "result.end": "6198aef947fad4d57c7cdc9ddf0d63fdc173d82182d0db897b39834391291341",
+        "macro.bin": "39fe7165dcb9f59b14e0bfb44ba3116ebf48ad33b3a54769fb58479b32d83ae8"
+      },
+      "fresh_kernel_and_donor_exact": true,
+      "committed_days": 4,
+      "resumed_input_sha256": {
+        "swap.swp": "f21ccbb0e822629278d75958d0ec089f7ba3edaef7b099833deefa9745ca169a",
+        "swap.bbc": "4451cce63d7bea5acefb0b8f747ecbdc8053d2c44bfd2fc9dff661507c369b66"
+      }
+    }
+  },
+  "isolation": {
+    "donor_executable_sha256": "90ac534357ea99d716725b966a7455f61ad3b7364f6aa8570eee7c8853f6e4e4",
+    "kernel_executable_sha256": "683c3e11ae069cdf7dcf9a998dba33e94751c468af718428fc1bc63b392eb149",
+    "requested_days": 20,
+    "budget_retry": true,
+    "shared_pond_transfer": true,
+    "days_per_column": 20,
+    "distinct_trajectories": true,
+    "exact_against_each_separate_control": true,
+    "shifted_cauchy_input_sha256": "05cf4fffdd50eee8ac36cd48ab76b9213e2d184ebe92aef2661889e012a67ed9"
+  },
+  "wet_isolation": {
+    "cut": 256,
+    "end": 258,
+    "column_b_cauchy_date": "1998-09-15",
+    "column_b_delta_cm": 0.001,
+    "alternate_exact": true,
+    "distinct": true,
+    "column_b_bbc_sha256": "82d9f6cf1f108959d2538e0a0e9975b296a9f37d746524546cd28ff39f9e673d",
+    "donor_executable_sha256": "cf0f287a0ec90647ae0bf787a676e301916c5f9220eefe7840531a8dfef24ef3",
+    "kernel_executable_sha256": "dcc406e67aaec648a408d2a1ecfdefc58f93a694b2f63fce770db1de08c45b7e"
+  },
+  "archive": {
+    "file": "DAILY_BALANCED_EVIDENCE_20261109.zip",
+    "sha256": "5791b260e352133cdde149f79e685988ea0cfc3b8012cd723989455296a6b9f5",
+    "bytes": 1053553,
+    "members": [
+      "cut2/continuous-published.csv",
+      "cut2/continuous.jsonl",
+      "cut2/resumed-published.csv",
+      "cut2/resumed.jsonl",
+      "cut20/continuous-published.csv",
+      "cut20/continuous.jsonl",
+      "cut20/resumed-published.csv",
+      "cut20/resumed.jsonl",
+      "diagnostics/broad-shared-transfer-refusal.json",
+      "diagnostics/day33-original-route.txt",
+      "diagnostics/unshared-cut256-transaction.txt",
+      "dry/continuous-published.csv",
+      "dry/continuous.jsonl",
+      "dry/resumed-published.csv",
+      "dry/resumed.jsonl",
+      "fresh-cut256/daily.jsonl",
+      "fresh-cut256/reproducer.py",
+      "full/daily.jsonl",
+      "full/published-records.csv",
+      "full/transactions.txt",
+      "isolation/alternating.jsonl",
+      "isolation/control_a.jsonl",
+      "isolation/control_b.jsonl",
+      "wet-isolation/alternating.jsonl",
+      "wet-isolation/control_a.jsonl",
+      "wet-isolation/control_b.jsonl",
+      "wet-isolation/reproducer.py",
+      "year/continuous-published.csv",
+      "year/continuous.jsonl",
+      "year/resumed-published.csv",
+      "year/resumed.jsonl"
+    ]
+  }
+}

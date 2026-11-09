@@ -11,7 +11,7 @@ from pathlib import Path
 from run_day_return import ROOT, records, sha
 
 
-def launch(case, executable, output, settings, extra):
+def launch(case, executable, output, settings, extra, days=2):
     shutil.copytree(case, output)
     control = output / "swap.swp"
     text = control.read_text(encoding="cp1252")
@@ -31,8 +31,8 @@ def launch(case, executable, output, settings, extra):
     rows = records((output / "result_output.csv").read_text().splitlines())
     stock = [[float(value) for value in line.split()[1:7]]
              for line in run.stdout.splitlines() if line.startswith("HYBRID_STOCK_FLUX ")]
-    if len(stock) != 3:
-        raise RuntimeError(f"Expected initialization and two day stocks: {output.name}")
+    if len(stock) != days + 1:
+        raise RuntimeError(f"Unexpected number of daily stock records: {output.name}")
     return rows, stock
 
 

@@ -1,5 +1,5 @@
 module probe_kernel_donor
-  use iso_fortran_env, only: real64, int64
+  use iso_fortran_env, only: real64, int64, output_unit
   use ieee_arithmetic, only: ieee_is_finite
   use mod_transaction_reference, only: transaction_state_t, trial_outcome_t, TX_MASS_MISSING_NONE
   use mod_canonical_contracts
@@ -31,6 +31,7 @@ module probe_kernel_donor
   type, extends(kernel_model_t) :: model_t
     real(real64) :: head = 0
     logical :: water_metric = .false.
+    logical :: daily_pipe = .false.
   contains
     procedure :: configure_parameters
     procedure :: execution_admitted
@@ -96,16 +97,24 @@ contains
     outcome = trial_outcome_t()
     select type(state)
     type is(state_t)
-      open(newunit=unit,file='request',status='replace',action='write')
-      write(unit,*) state%column, state%ticket, t0, t1, self%head
-      close(unit)
-      status = 1
-      call execute_command_line('./worker', exitstat=status, cmdstat=command_status)
-      if (command_status /= 0 .or. status /= 0) return
-      open(newunit=unit,file='reply',status='old',action='read',iostat=status)
-      if (status /= 0) return
-      read(unit,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal, pressure, components
-      close(unit)
+      if (self%daily_pipe) then
+        write(*,'(a,2(1x,i0),2(1x,f16.8))') 'DAILY_REQUEST', state%column, state%ticket, t0, t1
+        flush(output_unit)
+        read(*,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal, pressure, components
+        if (status /= 0) return
+        if (ticket /= state%ticket+1) return
+      else
+        open(newunit=unit,file='request',status='replace',action='write')
+        write(unit,*) state%column, state%ticket, t0, t1, self%head
+        close(unit)
+        status = 1
+        call execute_command_line('./worker', exitstat=status, cmdstat=command_status)
+        if (command_status /= 0 .or. status /= 0) return
+        open(newunit=unit,file='reply',status='old',action='read',iostat=status)
+        if (status /= 0) return
+        read(unit,*,iostat=status) ticket, ending, water_in, water_out, bottom, terminal, pressure, components
+        close(unit)
+      end if
       if (status /= 0) return
       state%stock = ending
       state%pressure = pressure
