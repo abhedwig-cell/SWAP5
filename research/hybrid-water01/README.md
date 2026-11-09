@@ -128,12 +128,16 @@ preserves the previously published day 20, 256 and 365 controls. Its
 [predecessor](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json) records
 the same wet and year controls with full daily receipts.
 
-Resume here. The three application selections now execute original
-project inputs with their respective numerical profiles. Prepare the
-canonical review by reconciling the application dependency surface
-against PR 1619, including the donor build helpers still supplied from
-this research directory. Preserve the scoped O0/O2 and restart evidence
-and track whole-project science separately.
+Resume here. [Draft PR 1620](https://github.com/abhedwig-cell/SWAP5/pull/1620)
+targets canonical `7535a9e65` from the dedicated
+`codex/swap5-water-application-integration` branch at `6f2ba26ea`.
+The eleven-file application change has no changed paths in common
+with the PR 1619 diff. The donor adapter, source transforms and
+balance guard are owned by `app/hybrid_water`. The application
+builds and prepares the original Andelst reference without this
+research directory. Follow the exact-head qualification in PR 1620
+before considering canonical admission. The full-period science
+comparisons remain separate.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
