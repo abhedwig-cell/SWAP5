@@ -1,0 +1,179 @@
+{
+  "runner_sha256": "503b696f8b139367ea8722ccfcce9eb96eb3cc4cfd26090fd01328f53bde7419",
+  "daily_water_tolerance_cm": 1e-06,
+  "negative_controls": {
+    "changed_prebuilt_donor_object_digest": "CLI rejected before model start",
+    "changed_payload_bytes": "rejected before extraction",
+    "unexpected_zip_member": "rejected before extraction",
+    "wrong_day": "rejected before extraction",
+    "day_15_rejection": "14 commits and no accepted or pending package"
+  },
+  "cuts": {
+    "20": {
+      "archive_sha256": "f8faa86095c90e65c82dffd55396d7fc560e8b657c0d92f87d1c6c67fd819e26",
+      "schema": "swap5-hybrid-water-checkpoint-2",
+      "payload_sha256": {
+        "result.end": "d34e50ed9c5898ea3f1571f48daae3d4fe5f081b6bb7f178ad036f74515305e8",
+        "macro.bin": "768c8b88ee47c5cdabeb5b688ef523044233a3e9d5c7b019b6c194409cba1928"
+      },
+      "build_identity_sha256": "7d648f0e29c2bd02b7702b5979cacb0a8a67d79463ce481ee2ba19128c5b0fbb",
+      "reports": {
+        "continuous": {
+          "donor_executable_sha256": "1598d7b27557f12da83c9a61f5dc4e1df192688ab03e1aeaad53720b9da5a429",
+          "kernel_executable_sha256": "13bdcfd28eb4158c9beea47dda922845304fa1fa539b5216823ccec02faa5c50",
+          "committed_days": 22,
+          "maximum_accepted_residual_cm": 7.810779746181273e-07,
+          "maximum_independent_residual_cm": 7.810779596036078e-07,
+          "receipts_sha256": "68523abe4ad89aedaf1857cc4b38a01a238f3526defcd574c5941381997341a2"
+        },
+        "resumed": {
+          "donor_executable_sha256": "03c077ea18a3470f2e27fe452a261e611a813aed40c263757244e5dd62ca5a9b",
+          "kernel_executable_sha256": "3cec3a050199639cddfbb41dbf8052c67044a2402dab95534f014980788a92ef",
+          "committed_days": 2,
+          "maximum_accepted_residual_cm": 3.161463618672755e-08,
+          "maximum_independent_residual_cm": 3.16146550338476e-08,
+          "receipts_sha256": "39826d4cef37bd60baeb1c58b3548d71b50be8d8b70e363bd9a2147c5923a6be"
+        }
+      },
+      "exact_receipts_except_revision": true,
+      "exact_csv": true,
+      "resumed_days": [
+        21,
+        22
+      ]
+    },
+    "256": {
+      "archive_sha256": "401a8ca1c1a7ab321eb15f4730a5aa43466a96f711ad334ca62d369da3303e22",
+      "schema": "swap5-hybrid-water-checkpoint-2",
+      "payload_sha256": {
+        "result.end": "2f5fca1d1d708feab849987d6647f13fa27d4c7805371aebb93ea1a7df79d2c2",
+        "macro.bin": "94b1cc4f9f3b0d648cbb33d495c3553cd4ac9cf0a0c91f9fdce695e96d3d938d"
+      },
+      "build_identity_sha256": "7b9966067049398ad727f52ac3f4d472018e0371640b6044ca5e6f8957f6b357",
+      "reports": {
+        "continuous": {
+          "donor_executable_sha256": "cd0d3f9b00ae37966f9347cd864c4da818070c77f7b368a58a63a0f304634941",
+          "kernel_executable_sha256": "694c27cb86e27a6288011bc3d81dea9587c89db43a23d76e5ae2a0541b2f9dbd",
+          "committed_days": 258,
+          "maximum_accepted_residual_cm": 9.998895878216008e-07,
+          "maximum_independent_residual_cm": 9.99889593928854e-07,
+          "receipts_sha256": "f15302c472703f9531749bcce75e76621ee370162bc813889019c4a09cae2df5"
+        },
+        "resumed": {
+          "donor_executable_sha256": "f75ddd12481964c9588622ce5e4276e3b0ec27dfbf50308fc4c6fe8dba490f89",
+          "kernel_executable_sha256": "e6737e1b2eca32570bab1244c2131cb59439b641158372ae63cb0f3b34ff2644",
+          "committed_days": 2,
+          "maximum_accepted_residual_cm": 2.202053650535163e-08,
+          "maximum_independent_residual_cm": 2.2020555672479874e-08,
+          "receipts_sha256": "864f716f7576ff11603e339783e363e107a30b51c13bda5203bf2aa5646c8519"
+        }
+      },
+      "exact_receipts_except_revision": true,
+      "exact_csv": true,
+      "resumed_days": [
+        257,
+        258
+      ],
+      "exact_prior_continuous_prefix": true
+    },
+    "365": {
+      "archive_sha256": "1234b4075d36b2e335e1303b9a9cd13ec14071da939239e78a60ae69054a2836",
+      "schema": "swap5-hybrid-water-checkpoint-2",
+      "payload_sha256": {
+        "result.end": "257d37645da55742e5a1e8ceb04a2084f016147ada0d79581b48a979a610a879",
+        "macro.bin": "6138d317cdb08e657ca34383cdc5ac54775615ed40b7184b86d6ea9ea0c17f8c"
+      },
+      "build_identity_sha256": "f8039b8a0b52a1096501d73eabf1f177f151c35a727c09ce4c66f357e7d8da35",
+      "reports": {
+        "continuous": {
+          "donor_executable_sha256": "0788d437c128736b02026e96eb9790a26e7d268a5a4b4e3f16ac9267e40dfa60",
+          "kernel_executable_sha256": "51bbfd034c37ca3a1913557169db5991543b16c75b39d161c4bacfc4abe31047",
+          "committed_days": 367,
+          "maximum_accepted_residual_cm": 9.998895878216008e-07,
+          "maximum_independent_residual_cm": 9.99889593928854e-07,
+          "receipts_sha256": "cfe610165208b56add107e15d5c274ede9514c157bc907135b664ae47216795f"
+        },
+        "resumed": {
+          "donor_executable_sha256": "81116ab839d89e12763f60394720cae25b2f97c9d771aa45cde8119a76c27804",
+          "kernel_executable_sha256": "815ad7b6fc78e5c2f35df0d5bf7a3a4d35c1ba384305bb98a322e3bd6039fd24",
+          "committed_days": 2,
+          "maximum_accepted_residual_cm": 3.9597630629994995e-07,
+          "maximum_independent_residual_cm": 3.9597630598943445e-07,
+          "receipts_sha256": "b7e7498351c4a3ed31a630f4ea7f0f0bc1e9c76f2af1c40f90bd96a1a09b7666"
+        }
+      },
+      "exact_receipts_except_revision": true,
+      "exact_csv": true,
+      "resumed_days": [
+        366,
+        367
+      ],
+      "exact_prior_continuous_prefix": true
+    }
+  },
+  "native_publisher": {
+    "status": "NATIVE_RESTART_PUBLICATION_PASS",
+    "platform": "nt",
+    "source_sha256": {
+      "app/support/restart_publish.c": "3be46ad69ac6039aeb9e79055457e91b9f1d4041d6c992b8da3eb5e1a704484d"
+    },
+    "compiler": "gcc.EXE (Rev4, Built by MSYS2 project) 16.2.0",
+    "unchanged_assembly_after_warning_fix": [
+      "O0",
+      "O2"
+    ],
+    "events": [
+      {
+        "optimization": "O0",
+        "status": "PASS",
+        "fault_stages": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "crc_vectors": 17,
+        "library_sha256": "53b2dc1422c98dbc8da54f2f2680d65d1304a2442f64faa62b064fde1e22851e"
+      },
+      {
+        "optimization": "O2",
+        "status": "PASS",
+        "fault_stages": [
+          2,
+          3,
+          4,
+          5
+        ],
+        "crc_vectors": 17,
+        "library_sha256": "eaaf9a2c3469570be9d2fa0f025fe372ec4aea7e725ecbf36b4d97a95a3c8ecc"
+      }
+    ]
+  },
+  "day_20_isolation_from_verified_payload": {
+    "days_per_column": 2,
+    "distinct_trajectories": true,
+    "exact_against_each_separate_control": true,
+    "shifted_cauchy_input_sha256": "3cd44588c7baa9589194a16cf7a7410966dd4f9c7d4e72ecd31c2b187eeae9eb"
+  },
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "original_input_sha256": {
+    "andelst_meteo.998": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9",
+    "andelst_meteo.999": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+    "andelst_rain.998": "a65461b5291bb146033302cc86a13713885585c1a262ed1a4bcb3eab165b7f62",
+    "andelst_rain.999": "3cc22751f89d46eef91c82607fdba432a2cd32505a9651dc58727ea2f8fd7060",
+    "control_plot.inp": "d85c898b8b6bd6b5fe5f6dd34e582b3da2c574610eb22f9c5e1f824d2c467bdc",
+    "observed/DRN.csv": "9addc10fba3fd5c1f4ce5dc3a2080f6ffe3c5d1c1619844b7e4720a565664ad2",
+    "observed/GWL.csv": "05d53759c2f00877dd93b773cce91c96dad235bbc2c2e3a067eefb7ea02b3505",
+    "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+    "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+    "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff",
+    "swap.dra": "4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface",
+    "swap.swp": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+    "wintcer1.crp": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
+    "wintcer2.crp": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe"
+  },
+  "nested_source_sha256": {
+    "SWAP.ZIP": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "TTUTIL.ZIP": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
+  }
+}

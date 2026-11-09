@@ -7,12 +7,20 @@ from the exact hybrid evidence head `0ca2e3edd7e869d2ac7d37ed6c139ae126fdcc49`
 with canonical checked at `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR 1619 remains the research baseline.
 
-The daily adapter can now publish the binary donor pair and its kernel
-receipt as one package at a selected accepted cut. The manifest binds
-the cut, accepted hydraulic state, pinned nested archives, project input
-hashes and profile selectors. Strict reopening verifies the manifest
-and both binary digests, then compares the worker's initial stocks and
-heads against the receipt before the new kernel instance starts.
+At a selected accepted cut, the daily adapter writes a closed ZIP with
+the binary donor pair and its kernel receipt. It publishes that ZIP with
+the native `swap5_restart_publish` file flush and atomic replacement.
+The schema-2 manifest binds the accepted hydraulic state, pinned nested
+archives, input hashes, profile and numerical build inputs. The build
+identity includes the GNU Fortran driver, target, flags, rendered sources,
+linked legacy objects and TTUTIL archive, module inputs and SWAP5 sources.
+Executable hashes are recorded separately because independent links can
+produce different bytes. Strict reopening verifies the identity and both
+payload digests before extracting the exact verified bytes. It then checks
+the donor's initial stocks and heads before the new kernel starts.
+Historical schema-1 directories remain evidence of the earlier tests.
+Strict reopening requires a schema-2 ZIP. The raw donor-directory mode
+still exists for research replay.
 
 On Windows GNU Fortran 16.2 O2 the own day-20 package reproduced
 accepted days 21–22 exactly, after accounting for the new kernel
@@ -28,7 +36,7 @@ $flags = @('--budget-retry', '--shared-pond-transfer', '--refresh-macro-final')
 $runner = 'research/hybrid-water01/run_daily_kernel.py'
 $published = "$env:TEMP/swap5-closure01-publish"
 python -B $runner --reference-work $ref --output $published --checkpoint-at 20 --days 22 @flags
-python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume" --origin "$published/accepted-column-1-day-20" --origin-day 20 --days 22 --require-accepted-origin @flags
+python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume" --origin "$published/accepted-column-1-day-20.zip" --origin-day 20 --days 22 --require-accepted-origin @flags
 ```
 
 The published-package controls at day 256 and the year boundary (day
@@ -42,6 +50,16 @@ The [accepted checkpoint receipt](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.
 contains the four daily receipts, executable and input hashes and the
 verified pair of checkpoint digests.
 
+The [schema-2 durable checkpoint receipt](CLOSURE01_DURABLE_CHECKPOINT_RESULT_20261109.json)
+records fresh Windows GNU Fortran 16.2 O2 runs for all three cuts.
+Each continuation matches its continuous daily receipts and CSV rows
+exactly after normalizing the new kernel revision. The day-256 and
+day-365 continuous prefixes also match the earlier evidence exactly.
+The largest independent water residual over the six resumed days is
+3.959763e-7 cm, inside the original 1e-6 cm gate. The isolated day-20
+pair matches both separate controls. The strict verifier refuses an
+altered linked-object hash, changed payload, extra member or wrong day.
+
 To reproduce, use the same reference and flags as above:
 
 ```powershell
@@ -50,16 +68,24 @@ foreach ($cut in @(256, 365)) {
     $end = $cut + 2
     python -B $runner --reference-work $ref --output $published --checkpoint-at $cut --days $end @flags
     if ($LASTEXITCODE) { throw "Continuous run failed at cut $cut" }
-    python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume-$cut" --origin "$published/accepted-column-1-day-$cut" --origin-day $cut --days $end --require-accepted-origin @flags
+    python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume-$cut" --origin "$published/accepted-column-1-day-$cut.zip" --origin-day $cut --days $end --require-accepted-origin @flags
     if ($LASTEXITCODE) { throw "Fresh continuation failed at cut $cut" }
 }
 ```
 
-Resume here. Reconcile the package publication and source/build identity
-with the existing durable restart owner before exposing it outside the
-research host. Use the three passing cuts (20, 256 and 365) as regression
-controls. The selected-cut package does not yet cover arbitrary day
-cuts or prove recovery after a process or storage failure.
+Run the native publisher's O0/O2 controls with
+`python -B tests/dataqual15/test_restart_publication.py --output "$env:TEMP/swap5-closure01-native-publish"`.
+For the day-20 isolation control, reuse the verified donor bytes:
+
+```powershell
+python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-isolation20" --isolation --origin "$env:TEMP/swap5-closure01-resume/verified-origin" --origin-day 20 --days 22 @flags
+```
+
+Resume here. Move the verified worker and restart handshake into a
+reusable host entry point that owns each column's clock and accepted
+state, then extend the current selected-cut contract. The restart proof
+covers a newly started process at an accepted day boundary. Storage
+failure recovery and cross-build restarts are outside the verified scope.
 
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
