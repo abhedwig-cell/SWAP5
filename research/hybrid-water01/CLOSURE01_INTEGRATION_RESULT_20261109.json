@@ -229,5 +229,25 @@
       "maximum_solute_residual_mg_cm2": 9.865860927419965e-15,
       "maximum_heat_residual_j_cm2": 5.830891325331322e-13
     }
+  },
+  "candidate_mixed_clock_isolation_exact": true,
+  "candidate_day15_refusal_preserves_state_and_other_column": true,
+  "ci_scope_guards": {
+    "DATAQUAL12": {
+      "canonical": false,
+      "candidate": false
+    },
+    "hupsel_root_accuracy": {
+      "canonical": false,
+      "candidate": false
+    },
+    "grass_thermal": {
+      "canonical": false,
+      "candidate": false
+    },
+    "joint_writer_phase_current_native": {
+      "canonical": true,
+      "candidate": false
+    }
   }
 }

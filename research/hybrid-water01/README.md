@@ -140,9 +140,19 @@ records the exact PR-head runs. Andelst O0/O2 kernels reproduced days
 1–22 and own day-20 continuations with the O2 donor. Generated donor
 sources match the previous application build byte for byte.
 Grassgrowth and Hupsel O2 reproduced days 1–4 and their own day-2
-restarts. Follow the existing exact-head CI in PR 1620 before
-canonical admission. The full-period science comparisons remain
-separate.
+restarts. The exact head also passes the mixed-clock isolation and
+day-15 refusal controls.
+
+Canonical admission is blocked by the F-CI current native gate. Its
+`joint_writer_phase_production.py` source guard passes at `7535a9e65`
+and rejects the candidate's additional application paths with
+`exact three-writer production footprint`. Preserve that historical
+guard and qualify the application as an explicit successor. The
+DATAQUAL12, Hupsel root-profile and Grassgrowth thermal source guards
+reject both exact refs. The AHL application job fails while loading
+a shared object requiring an executable stack. Follow the existing
+exact-head CI rather than starting duplicate jobs. The full-period
+science comparisons remain separate.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
