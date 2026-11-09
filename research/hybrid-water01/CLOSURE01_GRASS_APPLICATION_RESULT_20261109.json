@@ -1,0 +1,66 @@
+{
+  "implementation_commit": "17aad85c84b946f9e7271a8816e1abd43f00ed98",
+  "model": "NATIVE_GRASSGROWTH_WATER",
+  "builds": {
+    "O0": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "providers": 203,
+      "input_sha256": {
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "executable_sha256": "15d41c89bcd97b45d554d7fbb2f810a0ebd8161acf1f7b14beb432fed1ec0944",
+      "max_water_residual_cm": 2.2565282975506307e-14,
+      "max_heat_residual_j_cm2": 2.0459745009304697e-12,
+      "full_budget_sha256": "8b5c00a9b2442940221dab71a832a4475e0b8187f692193c355ffb0f136fbb7d",
+      "full_crop_sha256": "09eff08a275d7b32e9e71540d643f4d1a5e1db5ec28512cb57ebaf4f3d380682",
+      "cut_checkpoint_sha256": "b57f4fca959e3305e1a15ccbd68e778cbc4b1cc3d775f09456b2a7bdcd748a57",
+      "exact_terminal_sha256": {
+        "state.csv": "12fa912d307669ef562b4e45f383f04d3a3c3b2a982915936d91e0158ad83a7a",
+        "endpoint.csv": "b395df772af76852c7d9cff769c84bdc9550beccc4061c8e4d4b3ea52ca04b67",
+        "checkpoint.bin": "2c085f54be927cc3e862e097de4fd74cb540c7d5b2d822c7a273a0d687898615"
+      },
+      "cold_days": 4,
+      "restart_from_day": 2,
+      "restart_through_day": 4,
+      "wrong_native_model_refused_before_output": true
+    },
+    "O2": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "providers": 203,
+      "input_sha256": {
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "executable_sha256": "523adae2eac8b303778c057312ede0205e2c770c2f923416b4ceba57b3b3fa3b",
+      "max_water_residual_cm": 2.2565282975506307e-14,
+      "max_heat_residual_j_cm2": 2.0459745009304697e-12,
+      "full_budget_sha256": "8b5c00a9b2442940221dab71a832a4475e0b8187f692193c355ffb0f136fbb7d",
+      "full_crop_sha256": "09eff08a275d7b32e9e71540d643f4d1a5e1db5ec28512cb57ebaf4f3d380682",
+      "cut_checkpoint_sha256": "1c35a74f6ca38c5d66ed3a8209b0615f1124af4791a6588987f686f335cd161a",
+      "exact_terminal_sha256": {
+        "state.csv": "12fa912d307669ef562b4e45f383f04d3a3c3b2a982915936d91e0158ad83a7a",
+        "endpoint.csv": "b395df772af76852c7d9cff769c84bdc9550beccc4061c8e4d4b3ea52ca04b67",
+        "checkpoint.bin": "071ef18f9648566435e38a91e3b3837f1dc4c1a0926da7ca6a6720e2d1653a71"
+      },
+      "cold_days": 4,
+      "restart_from_day": 2,
+      "restart_through_day": 4,
+      "wrong_native_model_refused_before_output": true
+    }
+  },
+  "water_tolerance_cm": 1e-10,
+  "o0_o2_identical_budget_crop_and_state": true,
+  "historical_grass_367_prefix_exact": true,
+  "historical_grass_367_budget_sha256": "a85c3413ea401f29f8960831f9c9040728d2f4f5380b3d19c0b9c480c2b9b962",
+  "historical_grass_367_crop_sha256": "26b4c16d89cef76d3355962ebafb26331096c8a245047d8d8feb47dc2ea42f07",
+  "andelst_dispatch_days": 2,
+  "wrong-build_restart_refused": true,
+  "damaged_restart_refused": true
+}

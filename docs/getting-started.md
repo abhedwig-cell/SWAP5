@@ -66,10 +66,10 @@ SWAP 4.3.1 distribution and use new output directories:
 ```bash
 python -B research/hybrid-water01/run_daily_kernel.py \
   --reference-work ./andelst-reference --prepare-archive /path/to/SWAP_4.3.1.zip
-python -B tools/solute/run_hybrid_water.py --model HYBRID_ANDELST_WATER \
+python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
   --reference-work ./andelst-reference --output ./andelst-run \
   --checkpoint-at 20 --days 22
-python -B tools/solute/run_hybrid_water.py --model HYBRID_ANDELST_WATER \
+python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
   --reference-work ./andelst-reference --output ./andelst-resumed \
   --restart ./andelst-run/accepted-column-1-day-20.zip --restart-day 20 --days 22
 ```
@@ -79,6 +79,27 @@ must match the numerical build and original project inputs. The application
 emits daily receipts, the original CSV output and a result JSON with hashes.
 The application evidence in `research/hybrid-water01/README.md` records
 the validated windows and scientific comparison separately.
+
+## Run the native Grassgrowth application
+
+The same launcher selects the existing Grassgrowth project owner with
+`NATIVE_GRASSGROWTH_WATER`. It uses the original 113-node project and
+the retained-step thermal-control profile. Build that profile and run
+it in new output directories:
+
+```bash
+python -B tools/solute/build_grass_startup.py --output ./grass-build \
+  --optimization O2 --policy retained --numerical-profile thermal-control-1e-5C
+python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER \
+  --grass-build ./grass-build --output ./grass-prefix --days 2
+python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER \
+  --grass-build ./grass-build --output ./grass-resumed --days 4 \
+  --restart ./grass-prefix/checkpoint.bin
+```
+
+The last accepted day is saved in the native checkpoint. The executable,
+thermal profile and original input files are checked before model launch.
+Omitting `--days` requests the original final day, 1827.
 
 ## Input: current truth
 
