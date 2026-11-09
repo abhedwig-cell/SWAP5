@@ -130,7 +130,8 @@ the same wet and year controls with full daily receipts.
 
 Resume here. [Draft PR 1620](https://github.com/abhedwig-cell/SWAP5/pull/1620)
 targets canonical `7535a9e65` from the dedicated
-`codex/swap5-water-application-integration` branch at `6f2ba26ea`.
+`codex/swap5-water-application-integration` branch. The application
+postimage is `6f2ba26ea` and the F-CI routing head is `1649abeeb`.
 The eleven-file application change has no changed paths in common
 with the PR 1619 diff. The donor adapter, source transforms and
 balance guard are owned by `app/hybrid_water`. The application
@@ -143,11 +144,17 @@ Grassgrowth and Hupsel O2 reproduced days 1–4 and their own day-2
 restarts. The exact head also passes the mixed-clock isolation and
 day-15 refusal controls.
 
-Canonical admission is blocked by the F-CI current native gate. Its
-`joint_writer_phase_production.py` source guard passes at `7535a9e65`
-and rejects the candidate's additional application paths with
-`exact three-writer production footprint`. Preserve that historical
-guard and qualify the application as an explicit successor. The
+The F-CI successor checks the exact application source and replays
+the complete unmodified native admission in a detached canonical
+`7535a9e65` view. The first registration at `5dee184b6` passed the
+successor locally and in GitHub modular feedback. It also triggered
+historical workflows that explicitly require the earlier source
+footprint. The final registration at `1649abeeb` is confined to the
+F-CI workflow and restores the historical entry and status files
+byte for byte. The local source guard and O0/O2 selector pass on
+this head. Follow its existing GitHub checks.
+
+The
 DATAQUAL12, Hupsel root-profile and Grassgrowth thermal source guards
 reject both exact refs. The AHL application job fails while loading
 a shared object requiring an executable stack. All 48 exact-head
