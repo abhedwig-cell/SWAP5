@@ -4,7 +4,10 @@ from pathlib import Path
 import shutil
 import subprocess
 
-from run_daily_kernel import build, records, replace, sha
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'app/hybrid_water'))
+from daily_host import build, records, replace, sha
 
 CUT = 453
 END = 459

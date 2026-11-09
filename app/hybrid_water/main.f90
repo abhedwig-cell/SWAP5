@@ -1,6 +1,11 @@
-program run_daily_kernel
+program swap5_hybrid_water
   use probe_kernel_donor
+  use mod_fmr_soil_water_application_host, only: fmr_resolve_soil_water_application_model, &
+       fmr_soil_water_application_selection_t, FMR_APPLICATION_HOST_OK, FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE
   implicit none
+  character(len=*), parameter :: hybrid_model_key = 'HYBRID_ANDELST_WATER'
+  character(len=32) :: requested_model
+  type(fmr_soil_water_application_selection_t) :: selection
   type(kernel_executor_t) :: executor
   type(model_t), target :: model
   type(parameters_t) :: parameters
@@ -14,6 +19,16 @@ program run_daily_kernel
   integer :: columns, column, i, day, first, status
   real(real64) :: components(6), pressure(112), stock, t0, t1, accepted_time
   logical :: ok
+
+  if (command_argument_count() /= 1) error stop 'An explicit soil water model is required'
+  call get_command_argument(1, requested_model, status=status)
+  if (status /= 0) error stop 'Invalid soil water model argument'
+  call fmr_resolve_soil_water_application_model(requested_model, [hybrid_model_key], selection, status)
+  if (status /= FMR_APPLICATION_HOST_OK .or. .not. selection%explicit_selection .or. &
+      selection%route /= FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE .or. selection%registered_index /= 1) &
+    error stop 'Soil water model is unavailable in this application'
+  write(*,'(a,1x,a)') 'DAILY_MODEL', trim(selection%model_key)
+  flush(output_unit)
 
   read(*,*) columns
   if (columns < 1) error stop 'Expected at least one column'

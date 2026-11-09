@@ -5,7 +5,10 @@ import contextlib
 import json
 from pathlib import Path
 
-from run_daily_kernel import CASE, DONOR_SOURCE_SHA, TTUTIL_SOURCE_SHA, ColumnStart, DailyHost, build, verify_checkpoint
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'app/hybrid_water'))
+from daily_host import ColumnStart, DailyHost, build, checkpoint_identity, verify_checkpoint
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -20,10 +23,8 @@ def main():
     output.mkdir(parents=True)
     donor, kernel, case, inputs, identity = build(reference, output, budget_retry=True,
         shared_pond_transfer=True, refresh_macro_final=True, runtime_checkpoint=True)
-    binding = {
-        "case": CASE, "inputs": inputs, "swap_source": DONOR_SOURCE_SHA, "ttutil_source": TTUTIL_SOURCE_SHA,
-        "budget_retry": True, "shared_pond_transfer": True, "refresh_macro_final": True, "build": identity,
-    }
+    binding = checkpoint_identity(inputs, identity, budget_retry=True,
+                                  shared_pond_transfer=True, refresh_macro_final=True)
     origin = output/"verified"
     receipt = verify_checkpoint(package, 19, binding, origin)
     with contextlib.ExitStack() as stack:
