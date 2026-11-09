@@ -1,0 +1,75 @@
+{
+  "local": {
+    "status": "WATER_APPLICATION_SUCCESSOR_AND_NATIVE_PREDECESSOR_PASS",
+    "head": "1649abeebca7d4e15a93340b1c03332dcd887f79",
+    "application": "6f2ba26ead83ffb8222a332746b93a014f4e461b",
+    "predecessor": "7535a9e650aa01ca3ee711353c2e2801e2872f00",
+    "predecessor_status": "EXACT_CURRENT_PHASE_DEPLOYED_WRITERS_AND_COMPLETE_PRIOR_ADMISSION_PASS",
+    "selector_o0_o2_sha256": "acf11684bfdeea14bb7f8802dba4e8eb09af09fc9699fcb5efbbadf30e203b22",
+    "local_integration_receipt_sha256": "ba0dc5c0d9df38e5026136f136f534a0e104066b28dd45211458dfd1109c582e",
+    "whole_scientific_admission": false
+  },
+  "github": {
+    "head": "1649abeebca7d4e15a93340b1c03332dcd887f79",
+    "success": 30,
+    "skipped": 17,
+    "failure": 8,
+    "checks": [
+      {
+        "job": "stress-attribution",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507640/job/129505670681"
+      },
+      {
+        "job": "recovery",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507640/job/129505670261"
+      },
+      {
+        "job": "preservation",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507640/job/129505670176"
+      },
+      {
+        "job": "modular-feedback",
+        "conclusion": "success",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717509804/job/129504327864"
+      },
+      {
+        "job": "native",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507514/job/129502746201"
+      },
+      {
+        "job": "column",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507722/job/129502745712"
+      },
+      {
+        "job": "native",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507303/job/129502739708"
+      },
+      {
+        "job": "original-reader",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507273/job/129502739573"
+      },
+      {
+        "job": "ahl-application",
+        "conclusion": "failure",
+        "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42717507058/job/129502738617"
+      }
+    ]
+  },
+  "baseline_scope_predicates": {
+    "dataqual12": false,
+    "hupsel_root_profile": false,
+    "grass_thermal_profile": false,
+    "historical_native_restart": false
+  },
+  "final_job_logs_unavailable": [
+    "original-reader",
+    "ahl-application"
+  ]
+}

@@ -151,16 +151,18 @@ successor locally and in GitHub modular feedback. It also triggered
 historical workflows that explicitly require the earlier source
 footprint. The final registration at `1649abeeb` is confined to the
 F-CI workflow and restores the historical entry and status files
-byte for byte. The local source guard and O0/O2 selector pass on
-this head. Follow its existing GitHub checks.
+byte for byte. The exact head passes the local and GitHub F-CI
+successor with full historical native preservation. See the
+[successor receipt](CLOSURE01_FCI_SUCCESSOR_20261109.json).
 
-The
-DATAQUAL12, Hupsel root-profile and Grassgrowth thermal source guards
-reject both exact refs. The AHL application job fails while loading
-a shared object requiring an executable stack. All 48 exact-head
-checks are terminal, with 25 successes, 17 skips and six failures.
-Both the column and original-reader jobs reach the same DATAQUAL12
-guard. Fresh reference preparation through the shared launcher
+All 55 checks on `1649abeeb` are terminal, with 30 successes,
+17 skips and eight failures. The DATAQUAL12, Hupsel root-profile,
+Grassgrowth thermal and historical native restart source predicates
+reject both the pinned canonical base and the application head.
+The original-reader and AHL logs on the final head were unavailable
+through GitHub diagnostics. Their initial-head failures were DATAQUAL12
+and a Linux executable-stack loader error, respectively. Resume with
+CI adjudication before canonical admission. Fresh reference preparation
 also ran the original 481-day donor and reproduced its CSV records.
 The full-period science comparisons remain separate.
 
