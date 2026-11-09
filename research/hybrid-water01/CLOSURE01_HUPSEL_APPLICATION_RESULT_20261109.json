@@ -1,0 +1,118 @@
+{
+  "implementation_commit": "378d269e9ebb752c416d2f0f46ce85ab4d28aeea",
+  "builds": {
+    "O0": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "providers": 236,
+      "recompiled_providers": 29,
+      "cold": {
+        "model": "NATIVE_HUPSEL_ROTATION",
+        "input_sha256": {
+          "swap.swp": "743cff140613f2ffb8171c02dff273fb95ba57ae229a6558d20cd6f637790db0",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "input.nml": "14d7a87e52d2de20f70e55005e40aa756f8c713e1758fc9f0d57a60940ee89c7"
+        },
+        "executable_sha256": "4f2f2a28ffb28475a4f1fe8a6cb95c4e8b4be01fa58f3f38ca585a3b2f197ed6",
+        "requested_days": 4,
+        "last_completed_day": 4,
+        "origin_day": null,
+        "checkpoint_sha256": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529",
+        "maximum_water_residual_cm": 6.7307270867900115e-15,
+        "maximum_solute_residual_mg_cm2": 9.865860927419965e-15,
+        "maximum_heat_residual_j_cm2": 5.830891325331322e-13
+      },
+      "fresh_restart": {
+        "model": "NATIVE_HUPSEL_ROTATION",
+        "input_sha256": {
+          "swap.swp": "743cff140613f2ffb8171c02dff273fb95ba57ae229a6558d20cd6f637790db0",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "input.nml": "14d7a87e52d2de20f70e55005e40aa756f8c713e1758fc9f0d57a60940ee89c7"
+        },
+        "executable_sha256": "4f2f2a28ffb28475a4f1fe8a6cb95c4e8b4be01fa58f3f38ca585a3b2f197ed6",
+        "requested_days": 4,
+        "last_completed_day": 4,
+        "origin_day": 2,
+        "checkpoint_sha256": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529",
+        "maximum_water_residual_cm": 4.621303340002214e-15,
+        "maximum_solute_residual_mg_cm2": 9.865860927419965e-15,
+        "maximum_heat_residual_j_cm2": 5.830891325331322e-13
+      },
+      "exact_terminal_sha256": {
+        "state.csv": "a1175290ea02c6b66b63328522f0765b5b63364acc2e640f372c594ef9fc3fb3",
+        "checkpoint.bin": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529"
+      },
+      "budget_sha256": "74abd529960eb5f6bccfc1070129434e84985363a966defba2acc18c60543158",
+      "crop_sha256": "f330f767fab3c61da724dee7259796e481d77d2fc41ae07e183a0d98c9298eb7",
+      "prior_1096_prefix_exact": true,
+      "wrong_native_model_refused": true
+    },
+    "O2": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "providers": 236,
+      "recompiled_providers": 29,
+      "cold": {
+        "model": "NATIVE_HUPSEL_ROTATION",
+        "input_sha256": {
+          "swap.swp": "743cff140613f2ffb8171c02dff273fb95ba57ae229a6558d20cd6f637790db0",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "input.nml": "14d7a87e52d2de20f70e55005e40aa756f8c713e1758fc9f0d57a60940ee89c7"
+        },
+        "executable_sha256": "11b94ae4669ed1cd79fe3704a9c0cd88246bee5e1833dcbf98c380cbebe854b9",
+        "requested_days": 4,
+        "last_completed_day": 4,
+        "origin_day": null,
+        "checkpoint_sha256": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529",
+        "maximum_water_residual_cm": 6.7307270867900115e-15,
+        "maximum_solute_residual_mg_cm2": 9.865860927419965e-15,
+        "maximum_heat_residual_j_cm2": 5.830891325331322e-13
+      },
+      "fresh_restart": {
+        "model": "NATIVE_HUPSEL_ROTATION",
+        "input_sha256": {
+          "swap.swp": "743cff140613f2ffb8171c02dff273fb95ba57ae229a6558d20cd6f637790db0",
+          "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+          "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+          "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+          "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+          "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+          "input.nml": "14d7a87e52d2de20f70e55005e40aa756f8c713e1758fc9f0d57a60940ee89c7"
+        },
+        "executable_sha256": "11b94ae4669ed1cd79fe3704a9c0cd88246bee5e1833dcbf98c380cbebe854b9",
+        "requested_days": 4,
+        "last_completed_day": 4,
+        "origin_day": 2,
+        "checkpoint_sha256": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529",
+        "maximum_water_residual_cm": 4.621303340002214e-15,
+        "maximum_solute_residual_mg_cm2": 9.865860927419965e-15,
+        "maximum_heat_residual_j_cm2": 5.830891325331322e-13
+      },
+      "exact_terminal_sha256": {
+        "state.csv": "a1175290ea02c6b66b63328522f0765b5b63364acc2e640f372c594ef9fc3fb3",
+        "checkpoint.bin": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529"
+      },
+      "budget_sha256": "74abd529960eb5f6bccfc1070129434e84985363a966defba2acc18c60543158",
+      "crop_sha256": "f330f767fab3c61da724dee7259796e481d77d2fc41ae07e183a0d98c9298eb7",
+      "prior_1096_prefix_exact": true,
+      "wrong_native_model_refused": true
+    }
+  },
+  "profile": "pressure-film-refined",
+  "dtmax_day": 0.01,
+  "o0_o2_exact_budget_crop_state": true,
+  "other-build_refused_before_launch": true,
+  "damaged_refused_before_launch": true,
+  "native_codec_refused_corrupt_payload_even_with_matching_receipt": true,
+  "other_routes_one_day_smoke_pass": true
+}

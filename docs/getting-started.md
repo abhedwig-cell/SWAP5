@@ -101,6 +101,28 @@ The last accepted day is saved in the native checkpoint. The executable,
 thermal profile and original input files are checked before model launch.
 Omitting `--days` requests the original final day, 1827.
 
+## Run the native Hupsel rotation
+
+Select `NATIVE_HUPSEL_ROTATION` with the same launcher. This route uses
+the existing 34-node water, solute, heat, crop and irrigation project.
+Its prepared inputs come from the pinned pressure-film qualification
+archive. The numerical profile uses a 0.01-day maximum time step
+and the explicit pressure-film root accuracy selector.
+
+```bash
+python -B tests/dataqual15_hupsel/build_and_run.py --output ./hupsel-build \
+  --compiler "$(command -v gfortran)" --optimization O2
+python -B tools/solute/run_water.py --model NATIVE_HUPSEL_ROTATION \
+  --hupsel-build ./hupsel-build --output ./hupsel-prefix --days 2
+python -B tools/solute/run_water.py --model NATIVE_HUPSEL_ROTATION \
+  --hupsel-build ./hupsel-build --output ./hupsel-resumed --days 4 \
+  --restart ./hupsel-prefix/checkpoint.bin
+```
+
+Keep `RESULT.json` beside the checkpoint. The launcher verifies that
+receipt against the checkpoint, executable and inputs before native
+restart validation. Omitting `--days` requests day 1096.
+
 ## Input: current truth
 
 There are several different things that can be called “input” in this repository and they should not be conflated.

@@ -35,6 +35,17 @@ See the [Grassgrowth commands](../../docs/getting-started.md#run-the-native-gras
 and the [application receipt](CLOSURE01_GRASS_APPLICATION_RESULT_20261109.json).
 The prior 1,827-day evidence remains the full-period authority.
 
+The third explicit selection is `--model NATIVE_HUPSEL_ROTATION`.
+It uses the existing 34-node joint rotation with the pinned pressure-film
+preparation, whose maximum step is 0.01 day. O0 and O2 reproduce the
+first four budget and crop days of the existing full-period runs.
+Own day-2 restarts match days 3–4 and the terminal state and checkpoint
+bytes. The application verifies the restart receipt before launch, and
+the native codec independently rejects a damaged rotation envelope.
+See the [Hupsel commands](../../docs/getting-started.md#run-the-native-hupsel-rotation)
+and [application receipt](CLOSURE01_HUPSEL_APPLICATION_RESULT_20261109.json).
+The earlier 1,096-day runs remain the full-period authority.
+
 The reusable daily host owns the command and reply exchange with one
 Fortran worker per column. The SWAP5 kernel owns the accepted clock and
 water state. The host can interleave columns at different accepted days.
@@ -117,9 +128,12 @@ preserves the previously published day 20, 256 and 365 controls. Its
 [predecessor](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json) records
 the same wet and year controls with full daily receipts.
 
-Resume here. Bind the existing 34-node Hupsel rotation owner to the
-shared application selection. Reuse its source-input preparation and
-joint water, solute, heat, crop and irrigation restart contract.
+Resume here. The three application selections now execute original
+project inputs with their respective numerical profiles. Prepare the
+canonical review by reconciling the application dependency surface
+against PR 1619, including the donor build helpers still supplied from
+this research directory. Preserve the scoped O0/O2 and restart evidence
+and track whole-project science separately.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
