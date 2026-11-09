@@ -4,6 +4,7 @@ import argparse
 from datetime import date, timedelta
 import json
 import math
+import os
 import re
 import shutil
 import subprocess
@@ -18,7 +19,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render(build, output, checkpoint_day):
+def render(build, output, checkpoint_day, days=2):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -116,10 +117,10 @@ def render(build, output, checkpoint_day):
       end if
 """ + anchor)
     clock = 35795 + checkpoint_day
-    swap = swap.replace("35797", str(clock)).replace("35799", str(clock + 2))
+    swap = swap.replace("35797", str(clock)).replace("35799", str(clock + days))
     swap = swap.replace("tstart + 2d0", f"tstart + {checkpoint_day}d0")
     (output / "swap.f90").write_text(swap, encoding="cp1252")
-    if checkpoint_day == 365:
+    if checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")
         source = replace(source,
                          "                  if (.NOT. fl_cropcalendar) call swap_error ('read_ini', 'no crop information in ini-file')",
@@ -164,13 +165,13 @@ def verify_rejected_checkpoints(case, executable, output, control):
     return list(mutations)
 
 
-def compare_daily_ledger(output):
+def compare_daily_ledger(output, days=2):
     ledgers = []
     for directory in ("first", "resumed"):
         lines = (output / directory / "stdout").read_text().splitlines()
-        stock = [line for line in lines if line.startswith("HYBRID_STOCK_FLUX ")][-2:]
-        flux = [line for line in lines if line.startswith("HYBRID_EXTERNAL_FLUX ")][-2:]
-        if len(stock) != 2 or len(flux) != 2:
+        stock = [line for line in lines if line.startswith("HYBRID_STOCK_FLUX ")][-days:]
+        flux = [line for line in lines if line.startswith("HYBRID_EXTERNAL_FLUX ")][-days:]
+        if len(stock) != days or len(flux) != days:
             raise RuntimeError(f"Missing daily water ledger: {directory}")
         ledgers.append((stock, flux))
     residual = []
@@ -188,29 +189,33 @@ def main():
     parser.add_argument("--day-return-work", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--year-boundary", action="store_true")
+    parser.add_argument("--dry-window", action="store_true")
     parser.add_argument("--reuse-continuous", type=Path)
     args = parser.parse_args()
-    checkpoint_day = 365 if args.year_boundary else 2
+    if args.dry_window and args.year_boundary:
+        parser.error("Select a single restart window")
+    checkpoint_day = 453 if args.dry_window else 365 if args.year_boundary else 2
+    days = 4 if args.dry_window else 2
     start = date(1998, 1, 1) + timedelta(days=checkpoint_day)
-    end = start + timedelta(days=1)
+    end = start + timedelta(days=days - 1)
     reference = args.reference_work.resolve()
     output = args.output.resolve()
     output.mkdir()
     build = reference / "build"
     obj = build / "swap-obj"
     tt = build / "ttutil-obj"
-    fields = render(build, output, checkpoint_day)
+    fields = render(build, output, checkpoint_day, days)
     common = ["gfortran", "-O2", "-cpp", "-Dlinux", "-finit-local-zero",
               "-ffree-line-length-none", "-fallow-argument-mismatch",
               "-I", str(output), "-I", str(obj), "-I", str(tt)]
     patched = ["macropore.f90", "swap.f90"]
-    if args.year_boundary:
+    if checkpoint_day >= 365:
         patched.append("swapoutput.f90")
     for name in patched:
         subprocess.run([*common, "-c", name], cwd=output, check=True)
     replacements = {Path(name).with_suffix(".o").name: output / Path(name).with_suffix(".o") for name in patched}
     replacements["swap_csv_output.o"] = args.day_return_work.resolve() / "swap_csv_output.o"
-    executable = output / "swap431_macro_checkpoint"
+    executable = output / ("swap431_macro_checkpoint.exe" if os.name == "nt" else "swap431_macro_checkpoint")
     objects = [str(replacements.get(path.name, path)) for path in sorted(obj.glob("*.o"))]
     subprocess.run(["gfortran", "-o", str(executable), *objects, str(tt / "libttutil.a")], check=True)
 
@@ -228,13 +233,13 @@ def main():
                            + "\nSWENDTYPE = 2\n", encoding="cp1252")
         with (first / "stdout").open("w") as stdout, (first / "stderr").open("w") as stderr:
             run = subprocess.run([executable, "./swap.swp"], cwd=first, stdout=stdout, stderr=stderr,
-                                 timeout=1200 if args.year_boundary else 60)
+                                 timeout=1200 if checkpoint_day >= 365 else 60)
         if run.returncode != 100 or not (first / "swap.ok").is_file():
             raise RuntimeError(f"Continuous donor refused: {run.returncode}")
     first_stock = [[float(v) for v in row.split()[1:7]] for row in (first / "stdout").read_text().splitlines()
                    if row.startswith("HYBRID_STOCK_FLUX ")]
     resumed_case = case
-    if args.year_boundary:
+    if checkpoint_day >= 365:
         resumed_case = output / "year_boundary_input"
         shutil.copytree(case, resumed_case)
         bbc = resumed_case / "swap.bbc"
@@ -247,16 +252,16 @@ def main():
     resumed, resumed_stock = launch(
         resumed_case, executable, output / "resumed",
         {"TSTART": str(start), "TEND": str(end), "SWINCO": "3"},
-        "SWINITYPE = 2\nSWENDTYPE = 2\nINIFIL = '../first/result.end'",
+        "SWINITYPE = 2\nSWENDTYPE = 2\nINIFIL = '../first/result.end'", days=days,
     )
     expected_bits = domain_bits(output / "first/stdout")
     actual_bits = domain_bits(output / "resumed/stdout")
     stock_exact = expected_bits == actual_bits and first_stock[checkpoint_day] == resumed_stock[0]
     expected = records((reference / "run/3.macroporeflow/result_output.csv").read_text().splitlines())
-    expected = expected[:checkpoint_day + 4]
+    expected = expected[:checkpoint_day + days + 2]
     if records((first / "result_output.csv").read_text().splitlines()) != expected:
         raise RuntimeError("Writing the checkpoint changed the continuous reference")
-    expected = expected[-2:]
+    expected = expected[-days:]
     accepted = []
     for directory in ("first", "resumed"):
         rows = [line.split()[1:] for line in (output / directory / "stdout").read_text().splitlines()
@@ -298,7 +303,7 @@ def main():
         "first_accepted_continuous": accepted[0][:11],
         "first_accepted_resumed": accepted[1][:11],
         "first_accepted_head_max_delta_cm": max(abs(float(a)-float(b)) for a,b in zip(accepted[0][11:123], accepted[1][11:123])),
-        **compare_daily_ledger(output),
+        **compare_daily_ledger(output, days),
         "accepted_step_counts": [len(rows) for rows in trajectories],
         "accepted_step_audit_exact": trajectories[0] == trajectories[1],
         "continuous_resumed_window": expected,

@@ -33,6 +33,92 @@ history, the crop and thermal continuations, and meteorological and output
 cursors. The external Cauchy head, kernel rollback and SWAP5-owned commit
 are also open. No canonical model or test gate has been altered.
 
+
+## SWAP5 daily host and first refusal
+
+The daily host starts from branch commit
+`a0ce3081868a5c2137600739023f68f3c7c96c3d`. Each column has a private
+donor process. The SWAP5 kernel requests one day at a time and uses its
+reference-floor transaction to check water conservation and publish the
+candidate state. The original donor performs Richards, drainage, macropore
+exchange and all internal retries in their original order. The primary
+run uses the original Andelst project files and tabulated Cauchy boundary.
+A refusal leaves the committed kernel time and revision unchanged and
+ends the private donor session. Its output remains available as a diagnostic.
+
+Run the following PowerShell commands from the repository root with Python
+and GNU Fortran on PATH. The recorded run used UCRT64 GNU Fortran 16.2.0 at
+O2. Give each command a fresh output directory. The preparation command
+checks the two nested source archive hashes. The daily host checks all
+project files against the tracked original project, allowing only line
+ending differences. The recorded outer archive is the local distribution
+whose SHA-256 starts with `76a79498`. Its two nested source archives match
+the pinned SWAP and TTUTIL sources.
+
+```powershell
+$env:PATH = 'C:\msys64\ucrt64\bin;' + $env:PATH
+$archive = "$env:USERPROFILE/Downloads/SWAP_4.3.1.zip"
+$ref = "$env:TEMP/hy481-reference"
+$probe = "research/hybrid-water01"
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --prepare-archive $archive
+
+# Build the audit object used by both fresh-process windows and test a kernel restart.
+$restart = "$env:TEMP/hy481-kernel-restart"
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output $restart --restart
+python -B "$probe/probe_macro_checkpoint.py" --reference-work $ref --day-return-work $restart --output "$env:TEMP/hy481-year" --year-boundary
+python -B "$probe/probe_macro_checkpoint.py" --reference-work $ref --day-return-work $restart --output "$env:TEMP/hy481-dry" --dry-window
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-isolation" --days 14 --isolation
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-kernel-481" --trace-richards
+```
+
+The final command records a refusal and exits with status 1. January 15,
+1998 is the first rejected day. SWAP5 retains revision 14 at its original
+clock 35809. The preceding 14 published days match the independent,
+unmodified donor on this compiler. The rejected day starts with exactly
+the previous six stock components. Its independent water residual is
+−1.9007261301e-6 cm and the kernel measures the equivalent imbalance with
+its opposite sign convention. The kernel limit is 1e-6 cm. The time
+integral of the 503 residuals observed on the converged `HeadCalc` path
+is +1.9007497716e-6 cm. The unexplained signed remainder is 2.36e-11 cm.
+The original instantaneous limits are 1e-6 cm/day per compartment and
+1e-5 cm/day for the sum. This run meets those rate limits and fails the
+SWAP5 day-integrated limit. The next investigation is whether the donor
+can satisfy the integrated certificate while keeping its original
+physical equations and registered convergence limits.
+
+The day-2 sidecar and binary end file rehydrate a fresh donor and a fresh
+SWAP5 kernel. Days 3 and 4 reproduce the continuous pressure heads,
+groundwater, drainage, bottom exchange and every water stock exactly.
+The fresh kernel starts a new revision sequence at the restored physical
+clock. The donor-only checkpoint tests at days 365 and 453 reproduce
+1,021 and 12,928 accepted steps respectively. Both compare unrounded
+stock and flux ledgers and the published records. The resumed Cauchy
+table copies the last original head to the fresh start date for the
+legacy date validator, preserving the original terminal hold. Two dry
+days independently exceed the daily SWAP5 mass limit. Both dry-window
+paths reproduce those residuals exactly.
+
+The alternating test uses two live donor processes and two committed
+columns in one kernel process. Column B changes the January 2 Cauchy
+entry by +0.001 cm. All 14 days in each column reproduce its separately
+executed control. The 481-day unmodified donor control succeeds, but
+its Windows series and the frozen reference first differ on day 3.
+Published groundwater is −49.17576 cm versus −47.85008 cm and drainage
+is 0.65557 cm versus 0.65540 cm on that day. The available frozen records
+do not localize the cross-build difference within the day. This
+comparison is separate from the exact same-build restart and isolation
+results.
+
+This daily reference-floor host returns the signed integrated and
+terminal lower exchange through the existing kernel adapter. The
+subdaily groundwater participant and its Cauchy interface remain
+available for MODFLOW work. The day-15 refusal precedes any live
+MODFLOW or full-project SWAP5 qualification.
+
+See [the measured result](DAILY_KERNEL_RESULT_20261109.json) for exact
+input and executable hashes and [the evidence archive](DAILY_KERNEL_EVIDENCE_20261109.zip)
+for daily results, transaction dispositions and the original HeadCalc trace.
+
 ## Legacy restart negative control
 
 After both commands above, run:
