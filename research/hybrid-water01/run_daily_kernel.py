@@ -18,7 +18,7 @@ from run_day_return import ROOT, records, render, replace, sha
 
 CASE = "3.macroporeflow"
 START_CLOCK = 35795
-RESTART_WINDOWS = {2: 2, 365: 2, 453: 4}
+RESTART_WINDOWS = {2: 2, 20: 2, 256: 2, 365: 2, 453: 4}
 DONOR_SOURCE_SHA = "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
 TTUTIL_SOURCE_SHA = "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
 
@@ -56,7 +56,7 @@ def verify_source(distribution):
             raise ValueError(f"Unverified donor archive: {name}")
 
 
-def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15):
+def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False):
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
     case = distribution / "cases" / CASE
@@ -193,6 +193,15 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                return
             end if
          end if""")
+        if shared_pond_transfer:
+            source = replace(source, "only: projected_water_residual",
+                             "only: projected_water_residual, apply_surface_lateral_limit")
+            source = replace(source, "   real(8)                          :: QMpLatSsSav",
+                             "   real(8)                          :: QMpLatSsSav, lateral_before_pond")
+            source = replace(source, "   if (FlRunoff .OR. ArMpSs > 0.0d0) call pondrunoff ()", """   lateral_before_pond = QMpLatSs
+   if (FlRunoff .OR. ArMpSs > 0.0d0) call pondrunoff ()
+   if (budget_enabled .and. swmacro == 1 .and. QMpLatSs < lateral_before_pond) &
+     call apply_surface_lateral_limit(QMpLatSs)""")
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
@@ -392,13 +401,15 @@ def restart(donor, kernel, case, output, cut):
     for name in ("continuous", "resumed"):
         (output / name).mkdir()
     continuous = run(donor, kernel, case, output / "continuous", end, checkpoint_day=cut)
-    if continuous["committed_days"] != end:
+    if continuous["committed_days"] < cut:
         return dict(continuous, checkpoint_day=cut, fresh_kernel_and_donor_exact=False)
+    refusal = continuous["first_refusal"]
+    target = refusal["day"] if refusal is not None else end
     origin = output / "continuous/original"
     checkpoint = {name: sha(origin / name) for name in ("result.end", "macro.bin")}
-    resumed = run(donor, kernel, case, output / "resumed", end, checkpoint_day=cut, origin=origin)
-    if resumed["committed_days"] != end-cut:
-        return dict(resumed, checkpoint_day=cut, fresh_kernel_and_donor_exact=False)
+    resumed = run(donor, kernel, case, output / "resumed", target, checkpoint_day=cut, origin=origin)
+    if resumed["committed_days"] != continuous["committed_days"]-cut:
+        raise RuntimeError("Fresh continuation accepted a different number of days")
     actual = [json.loads(row) for row in (output / "resumed/daily.jsonl").read_text().splitlines()]
     expected = [json.loads(row) for row in (output / "continuous/daily.jsonl").read_text().splitlines()][cut:]
     for a, e in zip(actual, expected, strict=True):
@@ -407,6 +418,9 @@ def restart(donor, kernel, case, output, cut):
             raise RuntimeError(f"Fresh continuation differs on day {e['day']}: {fields}")
     if checkpoint != {name: sha(origin / name) for name in checkpoint}:
         raise RuntimeError("Continuation mutated its accepted checkpoint")
+    if refusal is not None:
+        return dict(continuous, checkpoint_day=cut, end_day=target, checkpoint_sha256=checkpoint,
+                    fresh_kernel_and_donor_exact=False, fresh_refusal_exact=True)
     expected_output = records((origin / "result_output.csv").read_text().splitlines())[-(end-cut):]
     resumed_output = output / "resumed/original/result_output.csv"
     if records(resumed_output.read_text().splitlines())[-(end-cut):] != expected_output:
@@ -453,6 +467,7 @@ def main():
     mode.add_argument("--restart", dest="restart_at", action="store_const", const=2)
     mode.add_argument("--restart-at", type=int, choices=RESTART_WINDOWS)
     parser.add_argument("--budget-retry", action="store_true")
+    parser.add_argument("--shared-pond-transfer", action="store_true")
     parser.add_argument("--trace-richards", action="store_true", help="Trace the donor residuals and step water ledger")
     parser.add_argument("--trace-day", type=int, default=15)
     parser.add_argument("--days", type=int, choices=range(1, 482), default=481, metavar="1..481")
@@ -462,9 +477,11 @@ def main():
         return 0
     if args.output is None:
         parser.error("--output is required for a kernel run")
+    if args.shared_pond_transfer and not args.budget_retry:
+        parser.error("--shared-pond-transfer requires --budget-retry")
     output = args.output.resolve()
     output.mkdir()
-    donor, kernel, case, inputs = build(args.reference_work.resolve(), output, args.trace_richards, args.restart_at, args.budget_retry, args.trace_day)
+    donor, kernel, case, inputs = build(args.reference_work.resolve(), output, args.trace_richards, args.restart_at, args.budget_retry, args.trace_day, args.shared_pond_transfer)
     if args.restart_at is not None:
         measurements = restart(donor, kernel, case, output, args.restart_at)
     elif args.isolation:
@@ -478,6 +495,7 @@ def main():
         "donor_executable_sha256": sha(donor), "kernel_executable_sha256": sha(kernel),
         "requested_days": args.restart_at + RESTART_WINDOWS[args.restart_at] if args.restart_at else args.days,
         "budget_retry": args.budget_retry,
+        "shared_pond_transfer": args.shared_pond_transfer,
         **measurements,
     }
     (output / "RESULT.json").write_text(json.dumps(result, indent=2) + "\n")

@@ -10,7 +10,7 @@ module hybrid_step_budget
   use variables, only: dt, theta, thetm1, pond, pondm1, qbot, swbotb, epd, reva, runon, runots
   implicit none
   private
-  public :: projected_water_residual
+  public :: projected_water_residual, apply_surface_lateral_limit
 contains
   real(8) function projected_water_residual() result(residual)
     real(8) :: delta_matrix, delta_macro, new_stock, rapid, external
@@ -32,4 +32,14 @@ contains
     external = dt*(nraidt+nird+runon+qssdisum+qbot-qrosum-epd-reva-qdrtot-rapid)-runots
     residual = delta_matrix + delta_macro + pond - pondm1 - external
   end function
+
+  subroutine apply_surface_lateral_limit(volume)
+    real(8), intent(in) :: volume
+    real(8) :: booked
+
+    booked = dt*sum(QInTopLatDm(1:NumDm))
+    if (volume >= 0d0 .and. booked > volume) then
+      QInTopLatDm(1:NumDm) = QInTopLatDm(1:NumDm)*(volume/booked)
+    end if
+  end subroutine
 end module hybrid_step_budget

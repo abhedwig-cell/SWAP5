@@ -57,10 +57,70 @@ same PowerShell session using fresh directories:
 ```powershell
 python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced" --budget-retry --trace-richards --trace-day 33
 python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-cut2" --budget-retry --restart-at 2
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-cut20" --budget-retry --restart-at 20
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-cut256" --budget-retry --restart-at 256
 python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-year" --budget-retry --restart-at 365
 python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-dry" --budget-retry --restart-at 453
 python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-isolation" --budget-retry --isolation --days 20
 ```
+
+### Measured result on the original Cauchy input
+
+SWAP5 accepts day 15 at a residual of 7.810780e-7 cm and preserves the
+original first 14 days exactly. Day 33 required one additional retry.
+In its previous failing step, the surface balance expected 0.002479315 cm
+to enter the macropores while the macro rates booked 0.002490494 cm.
+The retry reduces that day's kernel residual to −2.187284e-8 cm.
+
+The 481-day command commits through day 256 (1998-09-13) and refuses
+day 257 (1998-09-14) at revision 256 with an independently measured
+residual of −0.00113638236 cm. The largest absolute accepted daily
+residual is 9.998896e-7 cm. The fresh donor and kernel from the day-256
+checkpoint reproduce the refused day's heads, all stocks, all fluxes
+and the residual. Of the 14,107 accepted donor steps in that private
+day candidate, 10,625 are at or below the original 1e-5 day step floor.
+They account for −0.00113569639 cm of the residual. The largest single
+defect occurs at clock 36051.95550000457. The macropores book
+5.8657444602e-5 cm of inflow while the surface balance accounts for
+5.7133102179e-5 cm. Their difference of 1.52434242e-6 cm explains the
+step defect. Independent controls cap the proposed steps on that day
+at 0.001 and 0.00025 days. Both still refuse day 257.
+
+The day-2 and day-20 fresh-process comparisons and the two-column
+20-day isolation pass. The year and dry-window checks stop before
+their checkpoints because the continuous SWAP5 origin fails at day
+257. The research host leaves this candidate unpublished. The next
+implementation question is whether the original surface and macro
+routines can share one transfer at the wet contact while preserving
+their physical equations and the native retry contract.
+
+See [the balance-retry result](DAILY_BALANCE_RETRY_RESULT_20261109.json)
+and [its evidence archive](DAILY_BALANCE_RETRY_EVIDENCE_20261109.zip).
+
+### Shared lateral transfer experiment
+
+The original `Pondrunoff` code can reduce the lateral transfer after
+`MacroRate` has distributed it over the domains. At the largest day-257
+defect, this reduces the surface transfer from 5.5962707760e-5 cm to
+5.4438365337e-5 cm and leaves the already distributed domain rates higher
+by 1.5243424231e-6 cm. A separate diagnostic that adds redistributed
+excess to the already accepted rates in `MacroRate` reproduces the
+same refusal.
+
+Use `--shared-pond-transfer` with `--budget-retry` to test sharing the
+original surface cap. When `Pondrunoff` reduces the transfer, the adapter
+applies that same cap to the accepted lateral macropore rates in
+proportion to their existing shares. Vertical inflow and the original
+hydraulic equations, native step floor and tolerance values retain
+their original definitions. The correction starts at day 15 alongside
+the experimental balance scheduler. The scheduling-only control remains
+available by omitting the shared-transfer option.
+
+A diagnostic trial from the original day-256 checkpoint accepts both
+days 257 and 258 with this correction. A cold run must establish the
+trajectory of the corrected donor. Use the same commands as above with
+fresh output directories and append `--shared-pond-transfer` to the
+full, restart and isolation commands.
 
 
 ## SWAP5 daily host and first refusal
