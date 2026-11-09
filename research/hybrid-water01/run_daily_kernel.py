@@ -2,7 +2,9 @@
 
 import argparse
 import contextlib
+import ctypes
 from datetime import date, timedelta
+from hashlib import sha256
 import json
 import math
 import os
@@ -11,7 +13,6 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
-import tempfile
 import zipfile
 
 from probe_macro_checkpoint import render as render_checkpoint
@@ -92,8 +93,9 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
       write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900
       flush(output_unit)""")
     main.write_text(source, encoding="cp1252")
-    common = ["gfortran", "-O2", "-cpp", "-Dlinux", "-finit-local-zero",
-              "-ffree-line-length-none", "-fallow-argument-mismatch", "-I", str(objects), "-I", str(ttutil)]
+    donor_flags = ["-O2", "-cpp", "-Dlinux", "-finit-local-zero",
+                   "-ffree-line-length-none", "-fallow-argument-mismatch"]
+    common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
     if checkpoint_day is not None:
         swap = output / "swap.f90"
@@ -219,10 +221,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
     replacements = {name + ".o": output / (name + ".o") for name in patched}
+    donor_objects = sorted(objects.glob("*.o"))
+    ttutil_library = ttutil / "libttutil.a"
     subprocess.run(["gfortran", "-o", str(donor),
-                    *(str(replacements.get(p.name, p)) for p in sorted(objects.glob("*.o"))),
+                    *(str(replacements.get(p.name, p)) for p in donor_objects),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
-                    str(ttutil / "libttutil.a")], cwd=output, check=True)
+                    str(ttutil_library)], cwd=output, check=True)
     probe = Path(__file__).with_name("probe_kernel_donor.f90").read_text()
     module, separator, _ = probe.partition("\nprogram run_kernel_donor\n")
     if not separator:
@@ -233,11 +237,32 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     sources = source_list.split("SOURCES=(\n", 1)[1].split("\n)", 1)[0].split()[:-1]
     sources.append("src/runtime/mod_groundwater_interface_mass_ledger.f90")
     kernel = executable(output, "day_kernel")
-    subprocess.run(["gfortran", "-O2", "-ffree-line-length-none", "-fcheck=all",
-                    *(str(ROOT / s) for s in sources), str(adapter),
-                    str(Path(__file__).with_suffix(".f90")), "-o", str(kernel)],
-                   cwd=output, check=True)
-    return donor, kernel, case, inputs
+    kernel_flags = ["-O2", "-ffree-line-length-none", "-fcheck=all"]
+    driver = Path(__file__).with_suffix(".f90")
+    subprocess.run(["gfortran", *kernel_flags, *(str(ROOT / s) for s in sources),
+                    str(adapter), str(driver), "-o", str(kernel)], cwd=output, check=True)
+
+    # Use stable inputs because linking the same sources in another directory
+    # need not reproduce executable bytes (for example PE timestamps).
+    build_identity = {
+        "compiler": subprocess.check_output(["gfortran", "--version"], text=True).splitlines()[0],
+        "target": subprocess.check_output(["gfortran", "-dumpmachine"], text=True).strip(),
+        "compiler_sha256": sha(Path(shutil.which("gfortran"))),
+        "donor_flags": donor_flags,
+        "kernel_flags": kernel_flags,
+        "donor_generated": {name: sha(output / name) for name in (n + ".f90" for n in patched)},
+        "donor_objects": {p.name: sha(p) for p in donor_objects if p.name not in replacements},
+        "donor_modules": {p.name: sha(p) for p in sorted(objects.glob("*.mod"))},
+        "ttutil_modules": {p.name: sha(p) for p in sorted(ttutil.glob("*.mod"))},
+        "ttutil_library": sha(ttutil_library),
+        "kernel_sources": [[name, sha(ROOT / name)] for name in sources],
+        "adapter": sha(adapter),
+        "driver": sha(driver),
+        "host": sha(Path(__file__)),
+    }
+    if budget_retry:
+        build_identity["budget_source"] = sha(budget_source)
+    return donor, kernel, case, inputs, build_identity
 
 
 def start_process(stack, command, directory, name):
@@ -278,34 +303,67 @@ def receive(process, transcript, prefixes):
 CHECKPOINT_FILES = ("result.end", "macro.bin")
 
 
-def publish_checkpoint(output, donor_directory, receipt, binding):
+CHECKPOINT_SCHEMA = "swap5-hybrid-water-checkpoint-2"
+
+
+def restart_publisher(output):
+    """Load the same durable file publisher used by native SWAP5 restarts."""
+    source = ROOT / "app/support/restart_publish.c"
+    library = output / ("restart_publish.dll" if os.name == "nt" else "restart_publish.so")
+    flags = ["-shared", "-O2"]
+    if os.name != "nt":
+        flags.append("-fPIC")
+    subprocess.run(["gcc", *flags, str(source), "-o", str(library)], check=True)
+    publish = ctypes.CDLL(str(library)).swap5_restart_publish
+    publish.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
+    publish.restype = ctypes.c_int
+    return publish
+
+
+def publish_checkpoint(output, donor_directory, receipt, binding, publish):
     """Publish both donor files only after the kernel accepts their day."""
-    target = output / f"accepted-column-{receipt['column']}-day-{receipt['day']}"
+    target = output / f"accepted-column-{receipt['column']}-day-{receipt['day']}.zip"
     if target.exists():
         raise FileExistsError(target)
-    with tempfile.TemporaryDirectory(dir=output, prefix=".checkpoint-") as staging:
-        package = Path(staging) / "package"
-        package.mkdir()
-        for name in CHECKPOINT_FILES:
-            shutil.copyfile(donor_directory / name, package / name)
-        manifest = {"schema": "swap5-hybrid-water-checkpoint-1", "binding": binding,
-                    "receipt": receipt, "files": {name: sha(package / name) for name in CHECKPOINT_FILES}}
-        (package / "checkpoint.json").write_text(json.dumps(manifest, indent=2) + "\n")
-        package.rename(target)
+    files = {name: (donor_directory / name).read_bytes() for name in CHECKPOINT_FILES}
+    manifest = {
+        "schema": CHECKPOINT_SCHEMA, "binding": binding, "receipt": receipt,
+        "files": {name: sha256(payload).hexdigest() for name, payload in files.items()},
+    }
+    pending = target.with_suffix(".pending")
+    try:
+        with zipfile.ZipFile(pending, "x") as package:
+            for name, payload in files.items():
+                package.writestr(name, payload)
+            package.writestr("checkpoint.json", json.dumps(manifest, indent=2) + "\n")
+        encode = (lambda p: str(p).encode("utf-8")) if os.name == "nt" else os.fsencode
+        stage = publish(encode(pending), encode(target))
+        if stage:
+            raise OSError(f"SWAP5 restart publication failed at stage {stage}: {target}")
+    finally:
+        pending.unlink(missing_ok=True)
 
 
-def verify_checkpoint(origin, cut, binding):
-    manifest = json.loads((origin / "checkpoint.json").read_text())
-    receipt = manifest["receipt"]
-    if (manifest["schema"] != "swap5-hybrid-water-checkpoint-1"
-            or manifest["binding"] != binding or not receipt["committed"] or receipt["day"] != cut
-            or manifest["files"] != {name: sha(origin / name) for name in CHECKPOINT_FILES}):
+def verify_checkpoint(origin, cut, binding, unpacked):
+    with zipfile.ZipFile(origin) as package:
+        if sorted(package.namelist()) != sorted((*CHECKPOINT_FILES, "checkpoint.json")):
+            raise ValueError("Unexpected accepted checkpoint contents")
+        manifest = json.loads(package.read("checkpoint.json"))
+        receipt = manifest["receipt"]
+        files = {name: package.read(name) for name in CHECKPOINT_FILES}
+    if (manifest["schema"] != CHECKPOINT_SCHEMA or manifest["binding"] != binding
+            or not receipt["committed"] or receipt["day"] != cut
+            or manifest["files"] != {name: sha256(data).hexdigest() for name, data in files.items()}):
         raise ValueError("Accepted checkpoint identity, day or content does not match")
+    unpacked.mkdir()
+    for name, data in files.items():
+        (unpacked / name).write_bytes(data)
     return receipt
 
 
 def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None, checkpoint_binding=None, origin_receipt=None):
     first = checkpoint_day if origin is not None else 0
+    publish = restart_publisher(output) if checkpoint_binding is not None else None
     accepted = []
     refusal = None
     if origin is not None:
@@ -417,7 +475,7 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint_da
                             raise RuntimeError("Kernel returned success after refusal")
                         break
                     if checkpoint_binding is not None and day == checkpoint_day:
-                        publish_checkpoint(output, output / variants[column-1], budget, checkpoint_binding)
+                        publish_checkpoint(output, output / variants[column-1], budget, checkpoint_binding, publish)
                     accepted.append(budget)
                     previous[column-1] = stocks[:6]
                 if refusal is not None:
@@ -515,7 +573,7 @@ def main():
     parser.add_argument("--shared-pond-transfer", action="store_true")
     parser.add_argument("--refresh-macro-final", action="store_true",
                         help="Recompute macro rates in the final day-458 window")
-    parser.add_argument("--origin", type=Path, help="Start from an own checkpoint directory")
+    parser.add_argument("--origin", type=Path, help="Start from a raw donor directory or a strict accepted ZIP")
     parser.add_argument("--origin-day", type=int, choices=RESTART_WINDOWS)
     parser.add_argument("--require-accepted-origin", action="store_true",
                         help="Require a checkpoint package published by the kernel host")
@@ -544,16 +602,20 @@ def main():
     cut = args.restart_at or args.checkpoint_at or args.origin_day
     output = args.output.resolve()
     output.mkdir()
-    donor, kernel, case, inputs = build(
+    donor, kernel, case, inputs, build_identity = build(
         args.reference_work.resolve(), output, args.trace_richards, cut,
         args.budget_retry, args.trace_day, args.shared_pond_transfer, args.refresh_macro_final,
     )
     binding = {
         "case": CASE, "inputs": inputs, "swap_source": DONOR_SOURCE_SHA, "ttutil_source": TTUTIL_SOURCE_SHA,
         "budget_retry": args.budget_retry, "shared_pond_transfer": args.shared_pond_transfer,
-        "refresh_macro_final": args.refresh_macro_final,
+        "refresh_macro_final": args.refresh_macro_final, "build": build_identity,
     }
-    origin_receipt = verify_checkpoint(origin, cut, binding) if args.require_accepted_origin else None
+    origin_receipt = None
+    if args.require_accepted_origin:
+        unpacked = output / "verified-origin"
+        origin_receipt = verify_checkpoint(origin, cut, binding, unpacked)
+        origin = unpacked
     if args.restart_at is not None:
         measurements = restart(donor, kernel, case, output, args.restart_at)
     elif args.isolation:
@@ -563,7 +625,7 @@ def main():
                            checkpoint_binding=binding if args.checkpoint_at is not None else None,
                            origin_receipt=origin_receipt)
     result = {
-        "compiler": subprocess.check_output(["gfortran", "--version"], text=True).splitlines()[0],
+        "compiler": build_identity["compiler"],
         "source_sha256": {"SWAP.ZIP": DONOR_SOURCE_SHA, "TTUTIL.ZIP": TTUTIL_SOURCE_SHA},
         "input_sha256": inputs,
         "donor_executable_sha256": sha(donor), "kernel_executable_sha256": sha(kernel),

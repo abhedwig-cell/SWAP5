@@ -13,7 +13,7 @@ FILES = ("macro.bin", "result.end")
 
 def replay(reference, origin, prepared, output, corrected, split_final=False, budget_only=False, refresh_macro_final=False):
     output.mkdir()
-    donor, _, case, _ = build(reference, output, checkpoint_day=CUT,
+    donor, _, case, _, _ = build(reference, output, checkpoint_day=CUT,
                               budget_retry=corrected or budget_only, shared_pond_transfer=corrected)
     donor_build = reference / "build"
     objects = donor_build / "swap-obj"
