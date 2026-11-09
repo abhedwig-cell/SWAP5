@@ -19,7 +19,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render(build, output, checkpoint_day, days=2):
+def render(build, output, checkpoint_day, days=2, *, runtime=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -69,6 +69,8 @@ def render(build, output, checkpoint_day, days=2):
         transfer(WaUnMpDm(1:NumDm), [0_8], NumDm)
     end subroutine hybrid_macro_checkpoint
 """
+    if runtime:
+        codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
     (output / "macropore.f90").write_text(macro, encoding="cp1252")
     swap = (selected / "swap.f90").read_text(encoding="cp1252")
@@ -85,21 +87,25 @@ def render(build, output, checkpoint_day, days=2):
                    "   if (swmacro == 1) call MacroPore(1)\n"
                    "   if (swmacro == 1 .and. fl_initialize) call hybrid_macro_checkpoint(.true., t1900, dtold, checkpoint_canopy)")
     swap = replace(swap, "gwl, gwlm1, dt, t1900", "gwl, gwlm1, dt, t1900, dtold, h, theta, pond, qrot")
-    swap = replace(swap, "only: meteo, interception_daily, peva, empreva, epond",
-                   "only: meteo, interception_daily, peva, empreva, epond, nraidt, ptra, ptra_dry, ptra_wet, wfrac")
-    swap = replace(swap, "fl_cropharvest, fl_cropharvestday", "fl_cropharvest, fl_cropharvestday, sicact, siccap, sw_inter")
-    swap = replace(swap, "         call Meteo(3)", """         if (flDayStart .and. nint(t1900) == 35797) then
+    if runtime:
+        swap = replace(swap, "fl_cropharvest, fl_cropharvestday",
+                       "fl_cropharvest, fl_cropharvestday, sicact")
+    else:
+        swap = replace(swap, "only: meteo, interception_daily, peva, empreva, epond",
+                       "only: meteo, interception_daily, peva, empreva, epond, nraidt, ptra, ptra_dry, ptra_wet, wfrac")
+        swap = replace(swap, "fl_cropharvest, fl_cropharvestday", "fl_cropharvest, fl_cropharvestday, sicact, siccap, sw_inter")
+        swap = replace(swap, "         call Meteo(3)", """         if (flDayStart .and. nint(t1900) == 35797) then
            write(*,*) "HYBRID_CANOPY", sicact, siccap, sw_inter
          end if
          call Meteo(3)""")
-    swap = replace(swap, "use MOD_drain,           only: drain", "use MOD_drain,           only: drain, qdra")
-    swap = replace(swap, "         if (.NOT.fldecdt) call SoilWater(2)", """         if (flDayStart .and. nint(t1900) == 35797 .and. .not. fldecdt) then
+        swap = replace(swap, "use MOD_drain,           only: drain", "use MOD_drain,           only: drain, qdra")
+        swap = replace(swap, "         if (.NOT.fldecdt) call SoilWater(2)", """         if (flDayStart .and. nint(t1900) == 35797 .and. .not. fldecdt) then
            write(*,'(a,*(1x,es25.17e3))') 'HYBRID_FIRST_INPUT', &
              nraidt, h(1:numnod), theta(1:numnod), qrot(1:numnod), sum(qdra(:,1:numnod), dim=1)
          end if
          if (.NOT.fldecdt) call SoilWater(2)""")
-    swap = replace(swap, "!     calculate SoilWater rate/state variables",
-                   """      if (t1900 >= 35797d0 .and. t1900 < 35799d0) then
+        swap = replace(swap, "!     calculate SoilWater rate/state variables",
+                       """      if (t1900 >= 35797d0 .and. t1900 < 35799d0) then
         write(*,'(a,*(1x,es25.17e3))') 'HYBRID_ACCEPTED_TRAJECTORY', &
           t1900, dt, ptra, sicact, pond, h(1:numnod), theta(1:numnod), tsoil(1:numnod)
       end if
@@ -116,15 +122,21 @@ def render(build, output, checkpoint_day, days=2):
         sw_end = 0
       end if
 """ + anchor)
-    clock = 35795 + checkpoint_day
-    swap = swap.replace("35797", str(clock)).replace("35799", str(clock + days))
-    swap = swap.replace("tstart + 2d0", f"tstart + {checkpoint_day}d0")
+    if runtime:
+        swap = replace(swap, "swinco /= 3 .and. flDayEnd .and. t1900 == tstart + 2d0",
+                       "flDayEnd .and. t1900 == checkpoint_clock")
+    else:
+        clock = 35795 + checkpoint_day
+        swap = swap.replace("35797", str(clock)).replace("35799", str(clock + days))
+        swap = swap.replace("tstart + 2d0", f"tstart + {checkpoint_day}d0")
     (output / "swap.f90").write_text(swap, encoding="cp1252")
-    if checkpoint_day >= 365:
+    if runtime or checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")
         source = replace(source,
                          "                  if (.NOT. fl_cropcalendar) call swap_error ('read_ini', 'no crop information in ini-file')",
-                         "                  if (.NOT. fl_cropcalendar .and. rw == 1) exit")
+                         ("                  if (.NOT. fl_cropcalendar .and. rw == 1 .and. tstart >= 36160d0) exit\n"
+                          "                  if (.NOT. fl_cropcalendar) call swap_error ('read_ini', 'no crop information in ini-file')"
+                          if runtime else "                  if (.NOT. fl_cropcalendar .and. rw == 1) exit"))
         (output / "swapoutput.f90").write_text(source, encoding="cp1252")
     return fields
 

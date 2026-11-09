@@ -6,6 +6,7 @@ program run_daily_kernel
   type(parameters_t) :: parameters
   type(forcing_t) :: forcing
   type(kernel_committed_state_t), allocatable :: committed(:)
+  logical, allocatable :: refused(:)
   type(kernel_reference_floor_candidate_t) :: candidate
   type(kernel_reference_floor_result_t) :: result
   type(kernel_diagnostics_t) :: diagnostics
@@ -17,6 +18,7 @@ program run_daily_kernel
   read(*,*) columns
   if (columns < 1) error stop 'Expected at least one column'
   allocate(committed(columns))
+  allocate(refused(columns), source=.false.)
   call executor%bind_model(model)
   model%daily_pipe = .true.
   do i=1,columns
@@ -33,7 +35,9 @@ program run_daily_kernel
     if (status /= 0) error stop 'Missing host command'
     if (column == 0) exit
     if (column < 1 .or. column > columns) error stop 'Invalid column'
-    t0 = 35795d0 + day - 1
+    if (refused(column)) error stop 'Column was refused'
+    call committed(column)%current_time(t0,ok)
+    if (.not. ok .or. t0 /= 35795d0 + day - 1) error stop 'Requested day does not follow the accepted clock'
     t1 = t0 + 1
     call executor%sample_reference_floor_interval(parameters,committed(column),forcing,t0,t1,1e-6_real64, &
                                                   result,candidate,diagnostics)
@@ -43,7 +47,8 @@ program run_daily_kernel
       write(*,'(a,3(1x,i0),2(1x,es25.17e3))') 'DAILY_REFUSED', column, day, &
         committed(column)%current_revision(), result%mass%residual, result%bottom_outward_exchange_native
       flush(output_unit)
-      error stop 'Daily donor candidate rejected'
+      refused(column) = .true.
+      cycle
     end if
     call executor%commit_reference_floor_candidate(committed(column),candidate,diagnostics,ok)
     if (.not. ok) error stop 'Daily commit failed'

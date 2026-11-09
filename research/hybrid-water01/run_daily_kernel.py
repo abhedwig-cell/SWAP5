@@ -3,6 +3,7 @@
 import argparse
 import contextlib
 import ctypes
+from dataclasses import dataclass
 from datetime import date, timedelta
 from hashlib import sha256
 import json
@@ -58,7 +59,7 @@ def verify_source(distribution):
             raise ValueError(f"Unverified donor archive: {name}")
 
 
-def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False):
+def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False):
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
     case = distribution / "cases" / CASE
@@ -97,19 +98,29 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                    "-ffree-line-length-none", "-fallow-argument-mismatch"]
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
-    if checkpoint_day is not None:
+    if checkpoint_day is not None or runtime_checkpoint:
         swap = output / "swap.f90"
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
-        render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS[checkpoint_day])
+        render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
+                          runtime=runtime_checkpoint)
+        imports = "return_at_day_end"
+        if runtime_checkpoint:
+            imports += ", checkpoint_clock"
+            module = replace(module, "end module hybrid_day_window",
+                             "  real(8) :: checkpoint_clock = -1d0\nend module hybrid_day_window")
+            source = replace(main.read_text(encoding="cp1252"), "only: return_at_day_end",
+                             "only: return_at_day_end, checkpoint_clock")
+            source = replace(source, "      read(*,*) window", "      read(*,*) window, checkpoint_clock")
+            main.write_text(source, encoding="cp1252")
         source = module + "\n\n" + swap.read_text(encoding="cp1252")
         source = replace(source, "use MOD_swap_base,       only: pathwork,",
-                         "use hybrid_day_window, only: return_at_day_end\nuse MOD_swap_base,       only: pathwork,")
+                         f"use hybrid_day_window, only: {imports}\nuse MOD_swap_base,       only: pathwork,")
         anchor = "   end do\n\n!  Specific for exchange when called as DLL"
         source = replace(source, anchor, "      if (return_at_day_end .and. flDayEnd) return\n\n" + anchor)
         swap.write_text(source, encoding="cp1252")
         patched.insert(0, "macropore")
-        if checkpoint_day >= 365:
+        if runtime_checkpoint or checkpoint_day >= 365:
             patched.append("swapoutput")
 
     if budget_retry:
@@ -147,7 +158,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                          "    iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iqbdo\n")
         source = replace(source, "only: fldecmprat\n", "only: fldecmprat, wasrdm1, wasrdm2, iQMpOutDrRap\n")
         source = replace(source, "only: snow\n", "only: snow, ssnow\n")
-        if checkpoint_day is None:
+        if checkpoint_day is None and not runtime_checkpoint:
             source = replace(source, "fl_cropharvest, fl_cropharvestday\n", "fl_cropharvest, fl_cropharvestday, sicact\n")
             source = replace(source, "gwl, gwlm1, dt, t1900", "gwl, gwlm1, dt, t1900, pond")
         source = replace(source, "outfil, tstart, tend,", "volact, outfil, tstart, tend,")
@@ -303,7 +314,7 @@ def receive(process, transcript, prefixes):
 CHECKPOINT_FILES = ("result.end", "macro.bin")
 
 
-CHECKPOINT_SCHEMA = "swap5-hybrid-water-checkpoint-2"
+CHECKPOINT_SCHEMA = "swap5-hybrid-water-checkpoint-3"
 
 
 def restart_publisher(output):
@@ -361,135 +372,211 @@ def verify_checkpoint(origin, cut, binding, unpacked):
     return receipt
 
 
-def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None, checkpoint_binding=None, origin_receipt=None):
+@dataclass(frozen=True)
+class ColumnStart:
+    variant: str = "original"
+    day: int = 0
+    origin: Path | None = None
+    receipt: dict | None = None
+    name: str | None = None
+
+
+@dataclass
+class DailyColumn:
+    directory: Path
+    variant: str
+    worker: subprocess.Popen
+    transcript: object
+    day: int
+    stocks: list
+    pressure: list
+    revision: int = 0
+    refused: bool = False
+
+
+def prepare_column(case, directory, start, checkpoint_enabled, runtime):
+    shutil.copytree(case, directory)
+    if checkpoint_enabled:
+        control = directory / "swap.swp"
+        source = control.read_text(encoding="cp1252") + "\nSWENDTYPE = 2\n"
+        if start.origin is not None:
+            start_date = date(1998, 1, 1) + timedelta(days=start.day)
+            source = replace(source, "TSTART = 1998-01-01", f"TSTART = {start_date}")
+            if start.day >= 365:
+                bbc = directory / "swap.bbc"
+                table = bbc.read_text(encoding="cp1252")
+                terminal = re.search(r"(?m)^([ \t]*1998-12-31[ \t]+)(-?\d+(?:\.\d+)?)[ \t]*$", table)
+                if terminal is None:
+                    raise ValueError("Missing original terminal Cauchy head")
+                table = replace(table, terminal[0], terminal[0] + f"\n {start_date}  {terminal[2]}")
+                bbc.write_text(table, encoding="cp1252")
+            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)2", r"\g<1>3", source)
+            if count != 1:
+                raise ValueError("Missing restart setting")
+            if runtime:
+                shutil.copyfile(start.origin / "macro.bin", directory / "macro-origin.bin")
+                shutil.copyfile(start.origin / "result.end", directory / "restart.end")
+            source += "SWINITYPE = 2\n"
+            source += "INIFIL = 'restart.end'\n" if runtime else "INIFIL = '../first/result.end'\n"
+        control.write_text(source, encoding="cp1252")
+
+    if start.variant == "shifted":
+        bbc = directory / "swap.bbc"
+        source = bbc.read_text(encoding="cp1252")
+        shifted_date = date(1998, 1, 1) + timedelta(days=start.day + (start.day < 365))
+        source, count = re.subn(
+            rf"(?m)^([ \t]*{shifted_date}[ \t]+)(-?\d+(?:\.\d+)?)([ \t]*)$",
+            lambda match: f"{match[1]}{float(match[2])+0.001:.6f}{match[3]}",
+            source,
+        )
+        if count != 1:
+            raise ValueError(f"Expected one Cauchy head at {shifted_date}")
+        bbc.write_text(source, encoding="cp1252")
+
+
+class DailyHost:
+    """One kernel-owned transaction per requested day, with private legacy workers."""
+
+    def __init__(self, stack, donor, kernel, case, output, starts, *, checkpoint_enabled=False,
+                 runtime=False, binding=None):
+        self.columns = []
+        self.output = output
+        self.binding = binding
+        self.publish = restart_publisher(output) if binding is not None else None
+        self.usable = False
+        for start in starts:
+            name = start.name or start.variant
+            if Path(name).name != name or name in {".", ".."} or start.variant not in {"original", "shifted"}:
+                raise ValueError("Invalid column directory or variant")
+            if (start.origin is None) != (start.day == 0):
+                raise ValueError("Column start day must match its origin")
+            directory = output / name
+            prepare_column(case, directory, start, checkpoint_enabled, runtime)
+            worker, transcript = start_process(stack, [donor, "./swap.swp"], directory, "donor")
+            _, initial = receive(worker, transcript, {"HYBRID_READY"})
+            if list(map(float, initial["HYBRID_READY"])) != [START_CLOCK + start.day]:
+                raise ValueError("Incorrect donor initialization clock")
+            stocks = list(map(float, initial["HYBRID_STOCK_FLUX"][:6]))
+            pressure = list(map(float, initial["HYBRID_HYDRAULIC"][2:]))
+            if len(stocks) != 6 or len(pressure) != 112 or not all(map(math.isfinite, stocks + pressure)):
+                raise ValueError("Incomplete or nonfinite donor initial state")
+            if start.receipt is not None and (
+                    stocks != start.receipt["stock_end_cm"] or pressure != start.receipt["pressure_head_cm"]):
+                raise ValueError("Restored donor state differs from the accepted checkpoint receipt")
+            self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure))
+        self.host, self.host_log = start_process(stack, [kernel], output, "kernel")
+        send(self.host, str(len(self.columns)))
+        for column in self.columns:
+            send(self.host, " ".join(map(str, [column.day, math.fsum(column.stocks), *column.stocks, *column.pressure])))
+        self.usable = True
+
+    def step(self, column, *, checkpoint=False):
+        if not self.usable or not 1 <= column <= len(self.columns):
+            raise ValueError("Host is closed or the requested column does not exist")
+        current = self.columns[column-1]
+        if current.refused or (checkpoint and (self.publish is None or current.variant != "original")):
+            raise ValueError("Column was refused or checkpoint publication is unavailable")
+        # A broken request/reply exchange cannot safely be retried on this host.
+        self.usable = False
+        day = current.day + 1
+        send(self.host, f"{column} {day}")
+        _, request = receive(self.host, self.host_log, {"DAILY_REQUEST"})
+        if list(map(float, request["DAILY_REQUEST"])) != [column, day-1, START_CLOCK+day-1, START_CLOCK+day]:
+            raise ValueError("Kernel request has incorrect ownership or clock")
+        send(current.worker, f"{day} {START_CLOCK+day if checkpoint else -1}")
+        _, response = receive(current.worker, current.transcript, {"HYBRID_DAY_RETURN"})
+        if list(map(float, response["HYBRID_DAY_RETURN"])) != [day, START_CLOCK+day]:
+            raise ValueError("Incorrect donor return clock")
+        stocks = list(map(float, response["HYBRID_STOCK_FLUX"]))
+        flow = list(map(float, response["HYBRID_EXTERNAL_FLUX"]))
+        hydraulic = list(map(float, response["HYBRID_HYDRAULIC"]))
+        if len(stocks) != 12 or len(flow) != 16 or len(hydraulic) != 114:
+            raise ValueError("Incomplete donor water budget")
+        if not all(map(math.isfinite, stocks + flow + hydraulic)):
+            raise ValueError("Nonfinite donor water budget")
+        if stocks[6:] != current.stocks:
+            raise ValueError(f"Day {day} donor origin differs from committed stocks")
+        bottom_out = flow[15] - flow[6]
+        reply = [day, math.fsum(stocks[:6]), math.fsum(flow[:7]), math.fsum(flow[7:]),
+                 bottom_out, -hydraulic[1], *hydraulic[2:], *stocks[:6]]
+        send(self.host, " ".join(map(str, reply)))
+        disposition, result = receive(self.host, self.host_log, {"DAILY_ACCEPTED", "DAILY_REFUSED"})
+        reported_column, reported_day, revision = map(int, result[disposition][:3])
+        committed = disposition == "DAILY_ACCEPTED"
+        if (reported_column, reported_day, revision) != (column, day, current.revision + int(committed)):
+            raise ValueError("Kernel disposition has incorrect ownership or revision")
+        budget = {
+            "column": column, "day": day, "committed": committed, "revision": revision,
+            "stock_end_cm": stocks[:6], "stock_start_cm": stocks[6:],
+            "external_flux_cm": flow, "pressure_head_cm": hydraulic[2:],
+            "groundwater_cm": hydraulic[0], "drainage_outward_cm": flow[13] + flow[14],
+            "bottom_outward_cm": bottom_out,
+            "independent_residual_cm": math.fsum([*flow[:7], *(-q for q in flow[7:]),
+                                                   *stocks[6:], *(-q for q in stocks[:6])]),
+            "kernel_residual_cm": float(result[disposition][3]),
+        }
+        if "HYBRID_BUDGET_RETRIES" in response:
+            count, residual = response["HYBRID_BUDGET_RETRIES"]
+            budget["budget_step_retries"] = int(count)
+            budget["integrated_guard_residual_cm"] = float(residual)
+        if committed:
+            current.day = day
+            current.revision = revision
+            current.stocks = budget["stock_end_cm"]
+            current.pressure = budget["pressure_head_cm"]
+        else:
+            current.refused = True
+            stop_process(current.worker)
+        self.usable = True
+        if committed and checkpoint:
+            publish_checkpoint(self.output, current.directory, budget, self.binding, self.publish)
+        return budget
+
+    def close(self):
+        if not self.usable:
+            raise ValueError("Cannot close a failed or already closed host")
+        self.usable = False
+        send(self.host, "0 0")
+        for column in self.columns:
+            if column.refused:
+                continue
+            send(column.worker, "0 -1")
+            for line in column.worker.stdout:
+                column.transcript.write(line)
+            if column.worker.wait(timeout=10) != 100:
+                raise RuntimeError("Donor did not close normally")
+        if self.host.wait(timeout=10) != 0:
+            raise RuntimeError("Kernel did not close normally")
+
+
+def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None,
+        checkpoint_binding=None, origin_receipt=None, *, runtime=False, publish_day=None):
     first = checkpoint_day if origin is not None else 0
-    publish = restart_publisher(output) if checkpoint_binding is not None else None
-    accepted = []
-    refusal = None
-    if origin is not None:
+    if origin is not None and not runtime:
         checkpoint_dir = output / "first"
         checkpoint_dir.mkdir()
-        for name in ("macro.bin", "result.end"):
+        for name in CHECKPOINT_FILES:
             shutil.copyfile(origin / name, checkpoint_dir / name)
+    starts = [ColumnStart(variant, first, origin, origin_receipt) for variant in variants]
+    accepted = []
+    refusal = None
     with contextlib.ExitStack() as stack:
-        workers = []
-        previous = []
-        initial_pressure = []
-        for variant in variants:
-            directory = output / variant
-            shutil.copytree(case, directory)
-            if checkpoint_day is not None:
-                control = directory / "swap.swp"
-                source = control.read_text(encoding="cp1252") + "\nSWENDTYPE = 2\n"
-                if origin is not None:
-                    start_date = date(1998, 1, 1) + timedelta(days=first)
-                    source = replace(source, "TSTART = 1998-01-01", f"TSTART = {start_date}")
-                    if first >= 365:
-                        bbc = directory / "swap.bbc"
-                        table = bbc.read_text(encoding="cp1252")
-                        terminal = re.search(r"(?m)^([ \t]*1998-12-31[ \t]+)(-?\d+(?:\.\d+)?)[ \t]*$", table)
-                        if terminal is None:
-                            raise ValueError("Missing original terminal Cauchy head")
-                        table = replace(table, terminal[0], terminal[0] + f"\n {start_date}  {terminal[2]}")
-                        bbc.write_text(table, encoding="cp1252")
-                    source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)2", r"\g<1>3", source)
-                    if count != 1:
-                        raise ValueError("Missing restart setting")
-                    source += "SWINITYPE = 2\nINIFIL = '../first/result.end'\n"
-                control.write_text(source, encoding="cp1252")
-
-            if variant == "shifted":
-                bbc = directory / "swap.bbc"
-                source = bbc.read_text(encoding="cp1252")
-                shifted_date = date(1998, 1, 1) + timedelta(days=first + (first < 365))
-                source, count = re.subn(
-                    rf"(?m)^([ \t]*{shifted_date}[ \t]+)(-?\d+(?:\.\d+)?)([ \t]*)$",
-                    lambda match: f"{match[1]}{float(match[2])+0.001:.6f}{match[3]}",
-                    source,
-                )
-                if count != 1:
-                    raise ValueError(f"Expected one Cauchy head at {shifted_date}")
-                bbc.write_text(source, encoding="cp1252")
-            worker, worker_log = start_process(stack, [donor, "./swap.swp"], directory, "donor")
-            _, initial = receive(worker, worker_log, {"HYBRID_READY"})
-            if list(map(float, initial["HYBRID_READY"])) != [START_CLOCK + first]:
-                raise ValueError("Incorrect donor initialization clock")
-            previous.append(list(map(float, initial["HYBRID_STOCK_FLUX"][:6])))
-            initial_pressure.append(list(map(float, initial["HYBRID_HYDRAULIC"][2:])))
-            workers.append((worker, worker_log))
-        if origin_receipt is not None:
-            if previous[0] != origin_receipt["stock_end_cm"] or initial_pressure[0] != origin_receipt["pressure_head_cm"]:
-                raise ValueError("Restored donor state differs from the accepted checkpoint receipt")
-        host, host_log = start_process(stack, [kernel], output, "kernel")
-        send(host, str(len(workers)))
-        for stocks, pressure in zip(previous, initial_pressure):
-            send(host, " ".join(map(str, [first, math.fsum(stocks), *stocks, *pressure])))
+        host = DailyHost(stack, donor, kernel, case, output, starts,
+                         checkpoint_enabled=checkpoint_day is not None or runtime,
+                         runtime=runtime, binding=checkpoint_binding)
         with (output / "daily.jsonl").open("w") as receipts:
             for day in range(first + 1, days + 1):
-                for column, (worker, worker_log) in enumerate(workers, 1):
-                    send(host, f"{column} {day}")
-                    _, request = receive(host, host_log, {"DAILY_REQUEST"})
-                    if list(map(float, request["DAILY_REQUEST"])) != [column, day-1, START_CLOCK+day-1, START_CLOCK+day]:
-                        raise ValueError("Kernel request has incorrect ownership or clock")
-                    send(worker, str(day))
-                    _, response = receive(worker, worker_log, {"HYBRID_DAY_RETURN"})
-                    if list(map(float, response["HYBRID_DAY_RETURN"])) != [day, START_CLOCK+day]:
-                        raise ValueError("Incorrect donor return clock")
-                    stocks = list(map(float, response["HYBRID_STOCK_FLUX"]))
-                    flow = list(map(float, response["HYBRID_EXTERNAL_FLUX"]))
-                    hydraulic = list(map(float, response["HYBRID_HYDRAULIC"]))
-                    if len(stocks) != 12 or len(flow) != 16 or len(hydraulic) != 114:
-                        raise ValueError("Incomplete donor water budget")
-                    if not all(map(math.isfinite, stocks + flow + hydraulic)):
-                        raise ValueError("Nonfinite donor water budget")
-                    if stocks[6:] != previous[column-1]:
-                        raise ValueError(f"Day {day} donor origin differs from committed stocks")
-                    bottom_out = flow[15] - flow[6]
-                    reply = [day, math.fsum(stocks[:6]), math.fsum(flow[:7]), math.fsum(flow[7:]),
-                             bottom_out, -hydraulic[1], *hydraulic[2:], *stocks[:6]]
-                    send(host, " ".join(map(str, reply)))
-                    disposition, result = receive(host, host_log, {"DAILY_ACCEPTED", "DAILY_REFUSED"})
-                    reported_column, reported_day, revision = map(int, result[disposition][:3])
-                    committed = disposition == "DAILY_ACCEPTED"
-                    if (reported_column, reported_day, revision) != (column, day, day-first if committed else day-first-1):
-                        raise ValueError("Kernel disposition has incorrect ownership or revision")
-                    budget = {
-                        "column": column, "day": day, "committed": committed, "revision": revision,
-                        "stock_end_cm": stocks[:6], "stock_start_cm": stocks[6:],
-                        "external_flux_cm": flow, "pressure_head_cm": hydraulic[2:],
-                        "groundwater_cm": hydraulic[0], "drainage_outward_cm": flow[13] + flow[14],
-                        "bottom_outward_cm": bottom_out,
-                        "independent_residual_cm": math.fsum([*flow[:7], *(-q for q in flow[7:]),
-                                                               *stocks[6:], *(-q for q in stocks[:6])]),
-                        "kernel_residual_cm": float(result[disposition][3]),
-                    }
-                    if "HYBRID_BUDGET_RETRIES" in response:
-                        count, residual = response["HYBRID_BUDGET_RETRIES"]
-                        budget["budget_step_retries"] = int(count)
-                        budget["integrated_guard_residual_cm"] = float(residual)
+                for column in range(1, len(starts)+1):
+                    budget = host.step(column, checkpoint=day == publish_day)
                     receipts.write(json.dumps(budget) + "\n")
                     receipts.flush()
-                    if not committed:
+                    if not budget["committed"]:
                         refusal = budget
-                        if host.wait(timeout=10) == 0:
-                            raise RuntimeError("Kernel returned success after refusal")
                         break
-                    if checkpoint_binding is not None and day == checkpoint_day:
-                        publish_checkpoint(output, output / variants[column-1], budget, checkpoint_binding, publish)
                     accepted.append(budget)
-                    previous[column-1] = stocks[:6]
                 if refusal is not None:
                     break
-        if refusal is None:
-            send(host, "0 0")
-            for worker, worker_log in workers:
-                send(worker, "0")
-                for line in worker.stdout:
-                    worker_log.write(line)
-                if worker.wait(timeout=10) != 100:
-                    raise RuntimeError("Donor did not close normally")
-            if host.wait(timeout=10) != 0:
-                raise RuntimeError("Kernel did not close normally")
+        host.close()
     return {
         "committed_days": len(accepted),
         "maximum_accepted_residual_cm": max((abs(row["kernel_residual_cm"]) for row in accepted), default=None),
@@ -530,13 +617,14 @@ def restart(donor, kernel, case, output, cut):
             "fresh_kernel_and_donor_exact": True, "committed_days": end-cut}
 
 
-def isolation(donor, kernel, case, output, days, cut=None, origin=None):
+def isolation(donor, kernel, case, output, days, cut=None, origin=None, *, runtime=False, origin_receipt=None):
     order = ("original", "shifted")
     datasets = {}
     for name, variants in [("alternating", order), ("control_a", order[:1]), ("control_b", order[1:])]:
         directory = output / name
         directory.mkdir()
-        result = run(donor, kernel, case, directory, days, variants, checkpoint_day=cut, origin=origin)
+        result = run(donor, kernel, case, directory, days, variants, checkpoint_day=cut, origin=origin,
+                     runtime=runtime, origin_receipt=origin_receipt)
         if result["first_refusal"] is not None:
             raise RuntimeError(f"Isolation trial {name} refused: {result['first_refusal']['day']}")
         datasets[name] = [json.loads(row) for row in (directory / "daily.jsonl").read_text().splitlines()]
@@ -567,14 +655,14 @@ def main():
     mode.add_argument("--isolation", action="store_true")
     mode.add_argument("--restart", dest="restart_at", action="store_const", const=2)
     mode.add_argument("--restart-at", type=int, choices=RESTART_WINDOWS)
-    mode.add_argument("--checkpoint-at", type=int, choices=RESTART_WINDOWS,
+    parser.add_argument("--checkpoint-at", type=int, choices=range(1, 482), metavar="1..481",
                       help="Publish a checkpoint after the selected day is accepted")
     parser.add_argument("--budget-retry", action="store_true")
     parser.add_argument("--shared-pond-transfer", action="store_true")
     parser.add_argument("--refresh-macro-final", action="store_true",
                         help="Recompute macro rates in the final day-458 window")
     parser.add_argument("--origin", type=Path, help="Start from a raw donor directory or a strict accepted ZIP")
-    parser.add_argument("--origin-day", type=int, choices=RESTART_WINDOWS)
+    parser.add_argument("--origin-day", type=int, choices=range(1, 481), metavar="1..480")
     parser.add_argument("--require-accepted-origin", action="store_true",
                         help="Require a checkpoint package published by the kernel host")
     parser.add_argument("--trace-richards", action="store_true", help="Trace the donor residuals and step water ledger")
@@ -594,17 +682,23 @@ def main():
         parser.error("--origin and --origin-day must be supplied together")
     if args.origin is not None and (args.restart_at is not None or args.days <= args.origin_day):
         parser.error("A checkpoint continuation needs an end day after its origin and no --restart-at")
-    if args.checkpoint_at is not None and (args.origin is not None or args.days < args.checkpoint_at):
-        parser.error("--checkpoint-at requires an original start and an end on or after the cut")
-    if args.require_accepted_origin and (args.origin is None or args.isolation):
-        parser.error("--require-accepted-origin requires a single-column --origin")
+    if args.checkpoint_at is not None and (
+            args.restart_at is not None or args.isolation
+            or not (args.origin_day or 0) < args.checkpoint_at <= args.days):
+        parser.error("--checkpoint-at requires a cut in the requested single-column run")
+    if args.require_accepted_origin and args.origin is None:
+        parser.error("--require-accepted-origin requires --origin")
+    if args.checkpoint_at is not None and args.origin is not None and not args.require_accepted_origin:
+        parser.error("Publishing from an origin requires a verified checkpoint")
     origin = args.origin.resolve() if args.origin is not None else None
-    cut = args.restart_at or args.checkpoint_at or args.origin_day
+    runtime = args.checkpoint_at is not None or args.require_accepted_origin
+    cut = args.restart_at or args.origin_day
     output = args.output.resolve()
     output.mkdir()
     donor, kernel, case, inputs, build_identity = build(
         args.reference_work.resolve(), output, args.trace_richards, cut,
         args.budget_retry, args.trace_day, args.shared_pond_transfer, args.refresh_macro_final,
+        runtime_checkpoint=runtime,
     )
     binding = {
         "case": CASE, "inputs": inputs, "swap_source": DONOR_SOURCE_SHA, "ttutil_source": TTUTIL_SOURCE_SHA,
@@ -619,11 +713,12 @@ def main():
     if args.restart_at is not None:
         measurements = restart(donor, kernel, case, output, args.restart_at)
     elif args.isolation:
-        measurements = isolation(donor, kernel, case, output, args.days, cut, origin)
+        measurements = isolation(donor, kernel, case, output, args.days, cut, origin,
+                                 runtime=runtime, origin_receipt=origin_receipt)
     else:
         measurements = run(donor, kernel, case, output, args.days, checkpoint_day=cut, origin=origin,
                            checkpoint_binding=binding if args.checkpoint_at is not None else None,
-                           origin_receipt=origin_receipt)
+                           origin_receipt=origin_receipt, runtime=runtime, publish_day=args.checkpoint_at)
     result = {
         "compiler": build_identity["compiler"],
         "source_sha256": {"SWAP.ZIP": DONOR_SOURCE_SHA, "TTUTIL.ZIP": TTUTIL_SOURCE_SHA},
