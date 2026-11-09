@@ -200,7 +200,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                              "   real(8)                          :: QMpLatSsSav, lateral_before_pond")
             source = replace(source, "   if (FlRunoff .OR. ArMpSs > 0.0d0) call pondrunoff ()", """   lateral_before_pond = QMpLatSs
    if (FlRunoff .OR. ArMpSs > 0.0d0) call pondrunoff ()
-   if (budget_enabled .and. swmacro == 1 .and. QMpLatSs < lateral_before_pond) &
+   if (budget_enabled .and. budget_start >= 36051d0 .and. swmacro == 1 .and. QMpLatSs < lateral_before_pond) &
      call apply_surface_lateral_limit(QMpLatSs)""")
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")

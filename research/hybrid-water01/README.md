@@ -112,8 +112,10 @@ original surface cap. When `Pondrunoff` reduces the transfer, the adapter
 applies that same cap to the accepted lateral macropore rates in
 proportion to their existing shares. Vertical inflow and the original
 hydraulic equations, native step floor and tolerance values retain
-their original definitions. The correction starts at day 15 alongside
-the experimental balance scheduler. The scheduling-only control remains
+their original definitions. The correction is scoped to day 257 and later
+so the balance scheduler can preserve the first 256 accepted days. An
+earlier trial activating the correction from day 15 changed the trajectory
+and refused day 162 at 3.796380e-6 cm. The scheduling-only control remains
 available by omitting the shared-transfer option.
 
 A diagnostic trial from the original day-256 checkpoint accepts both
