@@ -2,6 +2,7 @@
 
 import argparse
 import contextlib
+from datetime import date, timedelta
 import json
 import math
 import os
@@ -17,6 +18,7 @@ from run_day_return import ROOT, records, render, replace, sha
 
 CASE = "3.macroporeflow"
 START_CLOCK = 35795
+RESTART_WINDOWS = {2: 2, 365: 2, 453: 4}
 DONOR_SOURCE_SHA = "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151"
 TTUTIL_SOURCE_SHA = "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
 
@@ -54,7 +56,7 @@ def verify_source(distribution):
             raise ValueError(f"Unverified donor archive: {name}")
 
 
-def build(reference, output, trace_richards=False, checkpoint=False):
+def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15):
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
     case = distribution / "cases" / CASE
@@ -92,11 +94,11 @@ def build(reference, output, trace_richards=False, checkpoint=False):
     common = ["gfortran", "-O2", "-cpp", "-Dlinux", "-finit-local-zero",
               "-ffree-line-length-none", "-fallow-argument-mismatch", "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
-    if checkpoint:
+    if checkpoint_day is not None:
         swap = output / "swap.f90"
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
-        render_checkpoint(donor_build, output, 2)
+        render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS[checkpoint_day])
         source = module + "\n\n" + swap.read_text(encoding="cp1252")
         source = replace(source, "use MOD_swap_base,       only: pathwork,",
                          "use hybrid_day_window, only: return_at_day_end\nuse MOD_swap_base,       only: pathwork,")
@@ -104,22 +106,106 @@ def build(reference, output, trace_richards=False, checkpoint=False):
         source = replace(source, anchor, "      if (return_at_day_end .and. flDayEnd) return\n\n" + anchor)
         swap.write_text(source, encoding="cp1252")
         patched.insert(0, "macropore")
+        if checkpoint_day >= 365:
+            patched.append("swapoutput")
 
+    if budget_retry:
+        swap = output / "swap.f90"
+        source = swap.read_text(encoding="cp1252")
+        source = replace(source, "  logical :: return_at_day_end = .false.",
+                         "  logical :: return_at_day_end = .false., budget_enabled = .false.\n"
+                         "  real(8) :: budget_step = 0d0, budget_total = 0d0, budget_start = 0d0\n"
+                         "  integer :: budget_retries = 0")
+        source = replace(source, "only: return_at_day_end",
+                         "only: return_at_day_end, budget_step, budget_total")
+        source = replace(source, "         if (.NOT.fldecdt) call SoilWater(2)",
+                         "         budget_step = 0d0\n         if (.NOT.fldecdt) call SoilWater(2)")
+        source = replace(source, "      call SoilWater(3)",
+                         "      budget_total = budget_total + budget_step\n      call SoilWater(3)")
+        swap.write_text(source, encoding="cp1252")
+        source = main.read_text(encoding="cp1252")
+        source = replace(source, "only: return_at_day_end",
+                         "only: return_at_day_end, budget_enabled, budget_total, budget_start, budget_retries")
+        source = replace(source, "      window_start = t1900", """      window_start = t1900
+      budget_enabled = window >= 15
+      budget_start = t1900
+      budget_total = 0d0
+      budget_retries = 0""")
+        source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
+                         "      write(*,'(a,1x,i0,1x,es25.17e3)') 'HYBRID_BUDGET_RETRIES', budget_retries, budget_total\n"
+                         "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900")
+        main.write_text(source, encoding="cp1252")
     if trace_richards:
+        clock = START_CLOCK + trace_day - 1
+        swap = output / "swap.f90"
+        source = swap.read_text(encoding="cp1252")
+        source = replace(source, "only: integral\n",
+                         "only: integral, igrai,isnrai,igsnow,igird,irunon,iqssdi,iqbup, &\n"
+                         "    iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iqbdo\n")
+        source = replace(source, "only: fldecmprat\n", "only: fldecmprat, wasrdm1, wasrdm2, iQMpOutDrRap\n")
+        source = replace(source, "only: snow\n", "only: snow, ssnow\n")
+        if checkpoint_day is None:
+            source = replace(source, "fl_cropharvest, fl_cropharvestday\n", "fl_cropharvest, fl_cropharvestday, sicact\n")
+            source = replace(source, "gwl, gwlm1, dt, t1900", "gwl, gwlm1, dt, t1900, pond")
+        source = replace(source, "outfil, tstart, tend,", "volact, outfil, tstart, tend,")
+        source = replace(source, "      call integral(3)", f"""      call integral(3)
+      if (t1900 >= {clock}d0 .and. t1900 < {clock+1}d0) then
+        write(*,'(a,*(1x,es25.17e3))') 'HYBRID_STEP_LEDGER', t1900, dt, volact, pond, ssnow, sicact, wasrdm1, wasrdm2, &
+          igrai,isnrai,igsnow,igird,irunon,iqssdi,iqbup,iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iQMpOutDrRap,iqbdo
+      end if""")
+        swap.write_text(source, encoding="cp1252")
+        macro = output / "macropore.f90"
+        source = (macro if macro.is_file() else donor_build / "swap-selected/macropore.f90").read_text(encoding="cp1252")
+        marker = "WaSrMpDm(id) = dmax1(0.d0,WaSrMpDm(id))"
+        a = source.lower().index("subroutine macrostate ()")
+        b = source.lower().index("end subroutine macrostate", a)
+        before, after = source[:a], source[a:b]
+        after = replace(after, "use variables,     only: dt\n", "use variables,     only: dt, t1900\n")
+        source = before + after + source[b:]
+        source = replace(source, marker, f"""if (WaSrMpDm(id) < 0d0 .and. t1900 >= {clock}d0 .and. t1900 < {clock+1}d0) &
+               write(*,'(a,1x,i0,2(1x,es25.17e3))') 'HYBRID_MACRO_CLAMP', id, t1900, WaSrMpDm(id)
+            {marker}""")
+        macro.write_text(source, encoding="cp1252")
+        if "macropore" not in patched:
+            patched.insert(0, "macropore")
+    if trace_richards or budget_retry:
         source = (donor_build / "swap-selected/headcalc.f90").read_text(encoding="cp1252")
-        source = replace(source, "      if (.NOT.flnonconv) then      ! convergence has been reached",
-                         "      if (.NOT.flnonconv) then      ! convergence has been reached\n"
-                         "         if (t1900 >= 35809d0 .and. t1900 < 35810d0) &\n"
-                         "           write(*,'(a,4(1x,es25.17e3))') 'HYBRID_RICHARDS', t1900, dt, sum1, Fmax")
+        anchor = "      if (.NOT.flnonconv) then      ! convergence has been reached"
+        if trace_richards:
+            source = replace(source, "!     test for waterbalance of ponding layer\n",
+                             "!     test for waterbalance of ponding layer\n      deviat = 0d0\n")
+            source = replace(source, anchor, anchor + "\n"
+                             f"         if (t1900 >= {clock}d0 .and. t1900 < {clock+1}d0) &\n"
+                             "           write(*,'(a,5(1x,es25.17e3))') 'HYBRID_RICHARDS', t1900, dt, sum1, Fmax, deviat")
+        if budget_retry:
+            source = replace(source, "subroutine headcalc \n", """subroutine headcalc
+   use hybrid_day_window, only: budget_enabled, budget_step, budget_total, budget_start, budget_retries
+   use hybrid_step_budget, only: projected_water_residual
+""")
+            source = replace(source, anchor, anchor + """
+         ! Let the caller use the donor rollback before recording convergence.
+         if (budget_enabled) then
+            budget_step = projected_water_residual()
+            if (dt > dtmin .and. abs(budget_total + budget_step) > 1d-6 * (t1900-budget_start+dt)) then
+               fldecdt = .true.
+               FlDecMpRat = .false.
+               budget_retries = budget_retries + 1
+               return
+            end if
+         end if""")
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
+    if budget_retry:
+        budget_source = Path(__file__).with_name("hybrid_step_budget.f90")
+        subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
     replacements = {name + ".o": output / (name + ".o") for name in patched}
     subprocess.run(["gfortran", "-o", str(donor),
                     *(str(replacements.get(p.name, p)) for p in sorted(objects.glob("*.o"))),
+                    *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
                     str(ttutil / "libttutil.a")], cwd=output, check=True)
     probe = Path(__file__).with_name("probe_kernel_donor.f90").read_text()
     module, separator, _ = probe.partition("\nprogram run_kernel_donor\n")
@@ -173,8 +259,8 @@ def receive(process, transcript, prefixes):
     raise RuntimeError(f"Missing {prefixes}, process exited with {process.wait()}")
 
 
-def run(donor, kernel, case, output, days, variants=("original",), checkpoint=False, origin=None):
-    first = 2 if origin is not None else 0
+def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None):
+    first = checkpoint_day if origin is not None else 0
     accepted = []
     refusal = None
     with contextlib.ExitStack() as stack:
@@ -184,11 +270,20 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint=Fa
         for variant in variants:
             directory = output / variant
             shutil.copytree(case, directory)
-            if checkpoint:
+            if checkpoint_day is not None:
                 control = directory / "swap.swp"
                 source = control.read_text(encoding="cp1252") + "\nSWENDTYPE = 2\n"
                 if origin is not None:
-                    source = replace(source, "TSTART = 1998-01-01", "TSTART = 1998-01-03")
+                    start_date = date(1998, 1, 1) + timedelta(days=first)
+                    source = replace(source, "TSTART = 1998-01-01", f"TSTART = {start_date}")
+                    if first >= 365:
+                        bbc = directory / "swap.bbc"
+                        table = bbc.read_text(encoding="cp1252")
+                        terminal = re.search(r"(?m)^([ \t]*1998-12-31[ \t]+)(-?\d+(?:\.\d+)?)[ \t]*$", table)
+                        if terminal is None:
+                            raise ValueError("Missing original terminal Cauchy head")
+                        table = replace(table, terminal[0], terminal[0] + f"\n {start_date}  {terminal[2]}")
+                        bbc.write_text(table, encoding="cp1252")
                     source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)2", r"\g<1>3", source)
                     if count != 1:
                         raise ValueError("Missing restart setting")
@@ -260,6 +355,10 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint=Fa
                                                                *stocks[6:], *(-q for q in stocks[:6])]),
                         "kernel_residual_cm": float(result[disposition][3]),
                     }
+                    if "HYBRID_BUDGET_RETRIES" in response:
+                        count, residual = response["HYBRID_BUDGET_RETRIES"]
+                        budget["budget_step_retries"] = int(count)
+                        budget["integrated_guard_residual_cm"] = float(residual)
                     receipts.write(json.dumps(budget) + "\n")
                     receipts.flush()
                     if not committed:
@@ -288,28 +387,32 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint=Fa
     }
 
 
-def restart(donor, kernel, case, output):
-    for name in ("continuous", "prefix", "resumed"):
+def restart(donor, kernel, case, output, cut):
+    end = cut + RESTART_WINDOWS[cut]
+    for name in ("continuous", "resumed"):
         (output / name).mkdir()
-    continuous = run(donor, kernel, case, output / "continuous", 4, checkpoint=True)
-    prefix = run(donor, kernel, case, output / "prefix", 2, checkpoint=True)
-    if continuous["committed_days"] != 4 or prefix["committed_days"] != 2:
-        raise RuntimeError("Restart control refused before the comparison window")
-    origin = output / "prefix/original"
+    continuous = run(donor, kernel, case, output / "continuous", end, checkpoint_day=cut)
+    if continuous["committed_days"] != end:
+        return dict(continuous, checkpoint_day=cut, fresh_kernel_and_donor_exact=False)
+    origin = output / "continuous/original"
     checkpoint = {name: sha(origin / name) for name in ("result.end", "macro.bin")}
-    if checkpoint != {name: sha(output / "continuous/original" / name) for name in checkpoint}:
-        raise RuntimeError("Selected checkpoint differs from continuous checkpoint")
-    resumed = run(donor, kernel, case, output / "resumed", 4, checkpoint=True, origin=origin)
-    if resumed["committed_days"] != 2:
-        raise RuntimeError("Fresh kernel or donor refused the restored days")
+    resumed = run(donor, kernel, case, output / "resumed", end, checkpoint_day=cut, origin=origin)
+    if resumed["committed_days"] != end-cut:
+        return dict(resumed, checkpoint_day=cut, fresh_kernel_and_donor_exact=False)
     actual = [json.loads(row) for row in (output / "resumed/daily.jsonl").read_text().splitlines()]
-    expected = [json.loads(row) for row in (output / "continuous/daily.jsonl").read_text().splitlines()][2:]
-    if [dict(row, revision=row["revision"] + 2) for row in actual] != expected:
-        raise RuntimeError("Fresh kernel/donor continuation differs from its continuous control")
+    expected = [json.loads(row) for row in (output / "continuous/daily.jsonl").read_text().splitlines()][cut:]
+    for a, e in zip(actual, expected, strict=True):
+        if dict(a, revision=a["revision"] + cut) != e:
+            fields = [k for k in e if k != "revision" and e[k] != a[k]]
+            raise RuntimeError(f"Fresh continuation differs on day {e['day']}: {fields}")
     if checkpoint != {name: sha(origin / name) for name in checkpoint}:
         raise RuntimeError("Continuation mutated its accepted checkpoint")
-    return {"checkpoint_day": 2, "end_day": 4, "checkpoint_sha256": checkpoint,
-            "fresh_kernel_and_donor_exact": True, "committed_days": 2}
+    expected_output = records((origin / "result_output.csv").read_text().splitlines())[-(end-cut):]
+    resumed_output = output / "resumed/original/result_output.csv"
+    if records(resumed_output.read_text().splitlines())[-(end-cut):] != expected_output:
+        raise RuntimeError("Fresh continuation differs in its published daily records")
+    return {"checkpoint_day": cut, "end_day": end, "checkpoint_sha256": checkpoint,
+            "fresh_kernel_and_donor_exact": True, "committed_days": end-cut}
 
 
 def isolation(donor, kernel, case, output, days):
@@ -347,8 +450,11 @@ def main():
     parser.add_argument("--prepare-archive", type=Path, help="Build and run the unmodified nested-source reference")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--isolation", action="store_true")
-    mode.add_argument("--restart", action="store_true")
-    parser.add_argument("--trace-richards", action="store_true", help="Trace original HeadCalc residuals on day 15")
+    mode.add_argument("--restart", dest="restart_at", action="store_const", const=2)
+    mode.add_argument("--restart-at", type=int, choices=RESTART_WINDOWS)
+    parser.add_argument("--budget-retry", action="store_true")
+    parser.add_argument("--trace-richards", action="store_true", help="Trace the donor residuals and step water ledger")
+    parser.add_argument("--trace-day", type=int, default=15)
     parser.add_argument("--days", type=int, choices=range(1, 482), default=481, metavar="1..481")
     args = parser.parse_args()
     if args.prepare_archive is not None:
@@ -358,9 +464,9 @@ def main():
         parser.error("--output is required for a kernel run")
     output = args.output.resolve()
     output.mkdir()
-    donor, kernel, case, inputs = build(args.reference_work.resolve(), output, args.trace_richards, args.restart)
-    if args.restart:
-        measurements = restart(donor, kernel, case, output)
+    donor, kernel, case, inputs = build(args.reference_work.resolve(), output, args.trace_richards, args.restart_at, args.budget_retry, args.trace_day)
+    if args.restart_at is not None:
+        measurements = restart(donor, kernel, case, output, args.restart_at)
     elif args.isolation:
         measurements = isolation(donor, kernel, case, output, args.days)
     else:
@@ -370,7 +476,8 @@ def main():
         "source_sha256": {"SWAP.ZIP": DONOR_SOURCE_SHA, "TTUTIL.ZIP": TTUTIL_SOURCE_SHA},
         "input_sha256": inputs,
         "donor_executable_sha256": sha(donor), "kernel_executable_sha256": sha(kernel),
-        "requested_days": 4 if args.restart else args.days,
+        "requested_days": args.restart_at + RESTART_WINDOWS[args.restart_at] if args.restart_at else args.days,
+        "budget_retry": args.budget_retry,
         **measurements,
     }
     (output / "RESULT.json").write_text(json.dumps(result, indent=2) + "\n")

@@ -34,6 +34,35 @@ cursors. The external Cauchy head, kernel rollback and SWAP5-owned commit
 are also open. No canonical model or test gate has been altered.
 
 
+## Balance-driven day stepping
+
+Use `--budget-retry` to enable the Andelst step scheduler from day 15.
+This keeps the first 14 days as a same-build control. The scheduler reads
+the tentative matrix, pond, instantaneous-bypass macropore and Cauchy
+terms before the donor publishes them. It asks the existing donor
+rollback and timestep controller to retry if the predicted cumulative
+imbalance exceeds the elapsed share of the SWAP5 daily allowance.
+The hook runs after the donor's convergence checks and before recording
+the step as a success. The original step floor still applies. SWAP5 checks
+the actual whole-column daily ledger independently before publication.
+
+This receipt is specific to the original Andelst bypass, snow and
+bottom-boundary configuration. The step predictor covers the hydraulic
+system below the canopy. The SWAP5 daily gate also includes canopy
+stock and the other reported external water fluxes.
+
+Prepare the original reference as described below. Then run from the
+same PowerShell session using fresh directories:
+
+```powershell
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced" --budget-retry --trace-richards --trace-day 33
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-cut2" --budget-retry --restart-at 2
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-year" --budget-retry --restart-at 365
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-dry" --budget-retry --restart-at 453
+python -B "$probe/run_daily_kernel.py" --reference-work $ref --output "$env:TEMP/hy481-balanced-isolation" --budget-retry --isolation --days 20
+```
+
+
 ## SWAP5 daily host and first refusal
 
 The daily host starts from branch commit
