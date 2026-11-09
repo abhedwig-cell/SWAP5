@@ -41,6 +41,8 @@ program grass_initial_interval
  use mod_transaction_reference,only:TX_TEMPORAL_EXTERNAL_FULL_HALF
  use mod_transaction_reference,only:transaction_state_t
  use mod_soil_temperature_contract
+ use mod_fmr_soil_water_application_host,only:fmr_resolve_soil_water_application_model, &
+  fmr_soil_water_application_selection_t,FMR_APPLICATION_HOST_OK,FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE
  implicit none
  type(fmr_b110_physical_parameters_t),target::p
  type(fmr_b110_physical_state_t)::initial
@@ -116,6 +118,19 @@ program grass_initial_interval
  logical::available,committed,rdinqr
  character(64)::arg
  character(1024)::restart_path
+ character(*),parameter::grass_model='NATIVE_GRASSGROWTH_WATER'
+ type(fmr_soil_water_application_selection_t)::selection
+ integer::selection_status
+
+ if(command_argument_count()>=6)then
+  call get_command_argument(6,arg,status=selection_status)
+  call require(selection_status==0,'invalid application model argument')
+  call fmr_resolve_soil_water_application_model(arg,[grass_model],selection,selection_status)
+  call require(selection_status==FMR_APPLICATION_HOST_OK.and.selection%explicit_selection.and. &
+   selection%route==FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE.and.selection%registered_index==1, &
+   'soil water model is unavailable in this application')
+  write(*,'(a,1x,a)') 'DAILY_MODEL',trim(selection%model_key)
+ endif
  limit=.01d0
  call get_command_argument(1,arg)
  if(len_trim(arg)>0)read(arg,*)limit
