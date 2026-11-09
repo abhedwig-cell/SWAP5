@@ -7,6 +7,20 @@ from the exact hybrid evidence head `0ca2e3edd7e869d2ac7d37ed6c139ae126fdcc49`
 with canonical checked at `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR 1619 remains the research baseline.
 
+The bounded application command is now
+`tools/solute/run_hybrid_water.py --model HYBRID_ANDELST_WATER`.
+Its native driver resolves the explicit model with the existing
+F-APP01 selector before any donor starts. The shared day host lives
+in `app/hybrid_water`. See the
+[application commands](../../docs/getting-started.md#run-the-explicit-hybrid-andelst-application)
+and the [application receipt](CLOSURE01_APPLICATION_RESULT_20261109.json).
+Both Windows O0 and O2 kernel builds, using the O2 donor, match the
+first 22 full-period receipts and CSV rows exactly. Each build resumes
+its own day-20 package exactly. The cross-build restart is refused
+before model launch. The mixed-clock and column-local refusal controls
+also pass through the application driver. Earlier schema-3 packages
+require their original build at `3ec721ebf`.
+
 The reusable daily host owns the command and reply exchange with one
 Fortran worker per column. The SWAP5 kernel owns the accepted clock and
 water state. The host can interleave columns at different accepted days.
@@ -89,11 +103,11 @@ preserves the previously published day 20, 256 and 365 controls. Its
 [predecessor](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json) records
 the same wet and year controls with full daily receipts.
 
-Resume here. Connect the verified host to the SWAP5 application entry
-point. Start with the Andelst worker and its existing restart binding,
-then identify which configuration and grid dimensions need to be
-supplied for the existing Hupsel and Grassgrowth project owners.
-Qualify the application route before canonical admission.
+Resume here. Connect the existing Grassgrowth project owner to the
+application selection boundary. Its 113-node grid, rain-duration forcing
+and thermal restart need their own typed inputs. Use the existing native
+project owner and original-input qualification before binding Hupsel,
+whose 34-node project also has solute transport and a crop rotation.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This

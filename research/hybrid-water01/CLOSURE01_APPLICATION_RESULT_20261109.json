@@ -1,0 +1,120 @@
+{
+  "implementation_commit": "407b145d3738428cd144ebff21d690dfaf47d688",
+  "model": "HYBRID_ANDELST_WATER",
+  "platform": "Windows",
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "historical_hybrid_evidence_sha256": "17709132c8f7e47ff8ed5c2c5e5e69f1279a68ac112d87a9bdedd705cc15b500",
+  "daily_water_tolerance_cm": 1e-06,
+  "cross_kernel_build_restart_refused_before_model_start": true,
+  "kernel_builds": {
+    "O0": {
+      "donor_optimization": "O2",
+      "cold_days": 22,
+      "resumed_days": 2,
+      "cold_receipt_sha256": "68523abe4ad89aedaf1857cc4b38a01a238f3526defcd574c5941381997341a2",
+      "restart_receipt_sha256": "39826d4cef37bd60baeb1c58b3548d71b50be8d8b70e363bd9a2147c5923a6be",
+      "cold_executable_sha256": {
+        "kernel_executable_sha256": "3f24344e4abc78e3d45bb124f8e9c94f693c3fd98e357fa543b34a54c6bcc996",
+        "donor_executable_sha256": "f6eab634e2a881cacb812a688168772f8c5666b6ae6a6a6c0ad18c79f9230977"
+      },
+      "resumed_executable_sha256": {
+        "kernel_executable_sha256": "4a62374830a8b7f1b617db703ac3afa899e3059171e22e7b4299980688c20c48",
+        "donor_executable_sha256": "b0afcfe77e9a3cc4b7b35631331b5e14eabffcb18206601fd0490d3d6d5f69f3"
+      },
+      "cold_and_restart_exact": true,
+      "checkpoint_sha256": "0cb28279577864c0824dd82db7e0e5fade7fe20d36b313479954d23ed3ccdd75",
+      "checkpoint_payload_sha256": {
+        "result.end": "d34e50ed9c5898ea3f1571f48daae3d4fe5f081b6bb7f178ad036f74515305e8",
+        "macro.bin": "768c8b88ee47c5cdabeb5b688ef523044233a3e9d5c7b019b6c194409cba1928"
+      },
+      "native_model_selection_refusals": [
+        "absent",
+        "blank",
+        "REFERENCE_RICHARDS",
+        "UNREGISTERED"
+      ],
+      "maximum_independent_residual_cm": 7.810779596036078e-07
+    },
+    "O2": {
+      "donor_optimization": "O2",
+      "cold_days": 22,
+      "resumed_days": 2,
+      "cold_receipt_sha256": "68523abe4ad89aedaf1857cc4b38a01a238f3526defcd574c5941381997341a2",
+      "restart_receipt_sha256": "39826d4cef37bd60baeb1c58b3548d71b50be8d8b70e363bd9a2147c5923a6be",
+      "cold_executable_sha256": {
+        "kernel_executable_sha256": "d86395adccd7930f10683278b9467418388a0984c7cc14cb404fdbe8120597ad",
+        "donor_executable_sha256": "f6eab634e2a881cacb812a688168772f8c5666b6ae6a6a6c0ad18c79f9230977"
+      },
+      "resumed_executable_sha256": {
+        "kernel_executable_sha256": "f9456e216e196b1e8362fd6ef6437f9b06c1c1397b341e8819b42c66ff406353",
+        "donor_executable_sha256": "b0afcfe77e9a3cc4b7b35631331b5e14eabffcb18206601fd0490d3d6d5f69f3"
+      },
+      "cold_and_restart_exact": true,
+      "checkpoint_sha256": "b9d4ec9c2c9f0aa705132f29667141491941556fc8f1be8060132eb6ac7cacbd",
+      "checkpoint_payload_sha256": {
+        "result.end": "d34e50ed9c5898ea3f1571f48daae3d4fe5f081b6bb7f178ad036f74515305e8",
+        "macro.bin": "768c8b88ee47c5cdabeb5b688ef523044233a3e9d5c7b019b6c194409cba1928"
+      },
+      "native_model_selection_refusals": [
+        "absent",
+        "blank",
+        "REFERENCE_RICHARDS",
+        "UNREGISTERED"
+      ],
+      "maximum_independent_residual_cm": 7.810779596036078e-07
+    }
+  },
+  "input_sha256": {
+    "andelst_meteo.998": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9",
+    "andelst_meteo.999": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+    "andelst_rain.998": "a65461b5291bb146033302cc86a13713885585c1a262ed1a4bcb3eab165b7f62",
+    "andelst_rain.999": "3cc22751f89d46eef91c82607fdba432a2cd32505a9651dc58727ea2f8fd7060",
+    "control_plot.inp": "d85c898b8b6bd6b5fe5f6dd34e582b3da2c574610eb22f9c5e1f824d2c467bdc",
+    "observed/DRN.csv": "9addc10fba3fd5c1f4ce5dc3a2080f6ffe3c5d1c1619844b7e4720a565664ad2",
+    "observed/GWL.csv": "05d53759c2f00877dd93b773cce91c96dad235bbc2c2e3a067eefb7ea02b3505",
+    "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+    "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+    "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff",
+    "swap.dra": "4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface",
+    "swap.swp": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+    "wintcer1.crp": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
+    "wintcer2.crp": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe"
+  },
+  "source_sha256": {
+    "SWAP.ZIP": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "TTUTIL.ZIP": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
+  },
+  "existing_fapp01_o0_o2_sha256": "8f682a306230a676ca04cba408631612103fc42ee34e6ed20d5663785eef5ff9",
+  "mixed_clock_schedule": [
+    [
+      2,
+      20
+    ],
+    [
+      1,
+      1
+    ],
+    [
+      1,
+      2
+    ],
+    [
+      2,
+      21
+    ],
+    [
+      1,
+      3
+    ],
+    [
+      2,
+      22
+    ]
+  ],
+  "column_refusal": {
+    "day": 15,
+    "revision": 14,
+    "other_column_next_day": 2,
+    "no_checkpoint": true
+  }
+}

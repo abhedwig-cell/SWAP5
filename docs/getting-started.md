@@ -53,6 +53,33 @@ F-APP01 establishes one bounded application-level model-selection owner. Its qua
 
 The host deliberately does not redefine the legacy SWP grammar or provide a broad stable public API.
 
+## Run the explicit hybrid Andelst application
+
+The development application binds `HYBRID_ANDELST_WATER` to the existing
+soil-water application selector. It runs the original Andelst inputs through
+one legacy Fortran worker per column and commits each day in the SWAP5 kernel.
+This route has its own bounded qualification and is still under development.
+
+With GNU Fortran and GCC on PATH, prepare the reference from the original
+SWAP 4.3.1 distribution and use new output directories:
+
+```bash
+python -B research/hybrid-water01/run_daily_kernel.py \
+  --reference-work ./andelst-reference --prepare-archive /path/to/SWAP_4.3.1.zip
+python -B tools/solute/run_hybrid_water.py --model HYBRID_ANDELST_WATER \
+  --reference-work ./andelst-reference --output ./andelst-run \
+  --checkpoint-at 20 --days 22
+python -B tools/solute/run_hybrid_water.py --model HYBRID_ANDELST_WATER \
+  --reference-work ./andelst-reference --output ./andelst-resumed \
+  --restart ./andelst-run/accepted-column-1-day-20.zip --restart-day 20 --days 22
+```
+
+Omitting `--days` runs through the original final day, 481. A restart ZIP
+must match the numerical build and original project inputs. The application
+emits daily receipts, the original CSV output and a result JSON with hashes.
+The application evidence in `research/hybrid-water01/README.md` records
+the validated windows and scientific comparison separately.
+
 ## Input: current truth
 
 There are several different things that can be called “input” in this repository and they should not be conflated.
