@@ -74,9 +74,6 @@ def guard(record):
 def main():
  p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Path,required=True);a=p.parse_args()
  out=a.output.resolve()
- if 'water_application_successor_20261109' in json.loads((ROOT/NATIVE_STATUS).read_text()):
-  subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15/verify_water_application_successor.py'),'--output',str(out)],cwd=ROOT,check=True)
-  return
  if 'joint_native_phase_writer_successor_20261106' in json.loads((ROOT/NATIVE_STATUS).read_text()):
   subprocess.run([sys.executable,'-B',str(ROOT/'tests/dataqual15_hupsel/joint_writer_phase_production.py'),'--output',str(out)],cwd=ROOT,check=True)
   return

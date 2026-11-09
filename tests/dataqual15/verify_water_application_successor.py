@@ -12,14 +12,16 @@ import tempfile
 ROOT = Path(__file__).resolve().parents[2]
 BASE = "7535a9e650aa01ca3ee711353c2e2801e2872f00"
 APPLICATION = "6f2ba26ead83ffb8222a332746b93a014f4e461b"
-KEY = "water_application_successor_20261109"
 STATUS = "integration/dataqual15/STATUS.json"
 ENTRY = "tests/dataqual15/verify_current_native_admission.py"
 GATE = "tests/dataqual15/verify_water_application_successor.py"
+WORKFLOW = ".github/workflows/fci-canonical.yml"
+SELECTOR_TEST = "tests/runtime/test_fapp01_minimal_soil_water_application_host.f90"
 RECEIPT = "integration/dataqual15/WATER_APPLICATION_INTEGRATION_20261109.json"
 RECEIPT_SHA = "ba0dc5c0d9df38e5026136f136f534a0e104066b28dd45211458dfd1109c582e"
 AREAS = ("src", "app", "reference", "tools")
-ANCHOR = b" if 'joint_native_phase_writer_successor_20261106'"
+ANCHOR = b'          if [[ -f tests/dataqual15/verify_current_native_admission.py ]]; then\n'
+SUCCESSOR = b'          if [[ -f integration/dataqual15/WATER_APPLICATION_INTEGRATION_20261109.json ]]; then\n            python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt\n            python3 -B tests/dataqual15/test_current_native_admission.py\n            python3 -B tests/dataqual15/verify_water_application_successor.py --output "$RUNNER_TEMP/native-admission"\n'
 
 
 def git(*args):
@@ -33,17 +35,14 @@ def normalized(path):
 def guard():
     subprocess.run(["git", "merge-base", "--is-ancestor", BASE, "HEAD"], cwd=ROOT, check=True)
     assert not git("diff", APPLICATION, "HEAD", "--", *AREAS), "application source differs from tested head"
-    assert not git("diff", "HEAD", "--", *AREAS, STATUS, ENTRY, GATE, RECEIPT), "dirty application authority"
+    assert not git("diff", "HEAD", "--", *AREAS, STATUS, ENTRY, GATE, RECEIPT, WORKFLOW, SELECTOR_TEST), "dirty application authority"
     assert not git("ls-files", "--others", "--exclude-standard", "--", *AREAS), "untracked application source"
     assert not git("diff", BASE, "HEAD", "--", "tests/dataqual15_hupsel"), "historical native gate changed"
-    expected_status = json.loads(git("show", f"{BASE}:{STATUS}"))
-    expected_status[KEY] = {"scope": RECEIPT, "whole_scientific_admission": False}
-    assert json.loads(normalized(STATUS)) == expected_status, "historical native status changed"
-    old_entry = git("show", f"{BASE}:{ENTRY}")
-    branch = (f" if '{KEY}' in json.loads((ROOT/NATIVE_STATUS).read_text()):\n"
-              f"  subprocess.run([sys.executable,'-B',str(ROOT/'{GATE}'),'--output',str(out)],cwd=ROOT,check=True)\n"
-              "  return\n").encode()
-    assert old_entry.count(ANCHOR) == 1 and normalized(ENTRY) == old_entry.replace(ANCHOR, branch + ANCHOR)
+    for path in (ENTRY, STATUS, SELECTOR_TEST):
+        assert normalized(path) == git("show", f"{BASE}:{path}"), f"frozen authority changed: {path}"
+    old_workflow = git("show", f"{BASE}:{WORKFLOW}")
+    assert old_workflow.count(ANCHOR) == 1
+    assert normalized(WORKFLOW) == old_workflow.replace(ANCHOR, SUCCESSOR + ANCHOR.replace(b"if", b"elif", 1))
     raw = normalized(RECEIPT)
     assert sha256(raw).hexdigest() == RECEIPT_SHA, "local integration evidence differs"
     return json.loads(raw)
@@ -57,7 +56,7 @@ def selector_contract(output):
         executable = folder / ("fapp01.exe" if os.name == "nt" else "fapp01")
         subprocess.run(["gfortran", "-" + opt, "-std=f2008", "-fcheck=all",
                         str(ROOT / "src/runtime/mod_fmr_soil_water_application_host.f90"),
-                        str(ROOT / "tests/runtime/test_fapp01_minimal_soil_water_application_host.f90"),
+                        str(ROOT / SELECTOR_TEST),
                         "-o", str(executable)], cwd=folder, check=True)
         results.append(subprocess.check_output([executable], cwd=folder))
     assert results[0] == results[1] and b"FAPP01_UNKNOWN_MODEL_FAIL_CLOSED=PASS" in results[0]
