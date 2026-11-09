@@ -11,6 +11,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import tempfile
 import zipfile
 
 from probe_macro_checkpoint import render as render_checkpoint
@@ -274,7 +275,36 @@ def receive(process, transcript, prefixes):
     raise RuntimeError(f"Missing {prefixes}, process exited with {process.wait()}")
 
 
-def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None):
+CHECKPOINT_FILES = ("result.end", "macro.bin")
+
+
+def publish_checkpoint(output, donor_directory, receipt, binding):
+    """Publish both donor files only after the kernel accepts their day."""
+    target = output / f"accepted-column-{receipt['column']}-day-{receipt['day']}"
+    if target.exists():
+        raise FileExistsError(target)
+    with tempfile.TemporaryDirectory(dir=output, prefix=".checkpoint-") as staging:
+        package = Path(staging) / "package"
+        package.mkdir()
+        for name in CHECKPOINT_FILES:
+            shutil.copyfile(donor_directory / name, package / name)
+        manifest = {"schema": "swap5-hybrid-water-checkpoint-1", "binding": binding,
+                    "receipt": receipt, "files": {name: sha(package / name) for name in CHECKPOINT_FILES}}
+        (package / "checkpoint.json").write_text(json.dumps(manifest, indent=2) + "\n")
+        package.rename(target)
+
+
+def verify_checkpoint(origin, cut, binding):
+    manifest = json.loads((origin / "checkpoint.json").read_text())
+    receipt = manifest["receipt"]
+    if (manifest["schema"] != "swap5-hybrid-water-checkpoint-1"
+            or manifest["binding"] != binding or not receipt["committed"] or receipt["day"] != cut
+            or manifest["files"] != {name: sha(origin / name) for name in CHECKPOINT_FILES}):
+        raise ValueError("Accepted checkpoint identity, day or content does not match")
+    return receipt
+
+
+def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None, checkpoint_binding=None, origin_receipt=None):
     first = checkpoint_day if origin is not None else 0
     accepted = []
     refusal = None
@@ -329,6 +359,9 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint_da
             previous.append(list(map(float, initial["HYBRID_STOCK_FLUX"][:6])))
             initial_pressure.append(list(map(float, initial["HYBRID_HYDRAULIC"][2:])))
             workers.append((worker, worker_log))
+        if origin_receipt is not None:
+            if previous[0] != origin_receipt["stock_end_cm"] or initial_pressure[0] != origin_receipt["pressure_head_cm"]:
+                raise ValueError("Restored donor state differs from the accepted checkpoint receipt")
         host, host_log = start_process(stack, [kernel], output, "kernel")
         send(host, str(len(workers)))
         for stocks, pressure in zip(previous, initial_pressure):
@@ -383,6 +416,8 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint_da
                         if host.wait(timeout=10) == 0:
                             raise RuntimeError("Kernel returned success after refusal")
                         break
+                    if checkpoint_binding is not None and day == checkpoint_day:
+                        publish_checkpoint(output, output / variants[column-1], budget, checkpoint_binding)
                     accepted.append(budget)
                     previous[column-1] = stocks[:6]
                 if refusal is not None:
@@ -474,12 +509,16 @@ def main():
     mode.add_argument("--isolation", action="store_true")
     mode.add_argument("--restart", dest="restart_at", action="store_const", const=2)
     mode.add_argument("--restart-at", type=int, choices=RESTART_WINDOWS)
+    mode.add_argument("--checkpoint-at", type=int, choices=RESTART_WINDOWS,
+                      help="Publish a checkpoint after the selected day is accepted")
     parser.add_argument("--budget-retry", action="store_true")
     parser.add_argument("--shared-pond-transfer", action="store_true")
     parser.add_argument("--refresh-macro-final", action="store_true",
                         help="Recompute macro rates in the final day-458 window")
     parser.add_argument("--origin", type=Path, help="Start from an own checkpoint directory")
     parser.add_argument("--origin-day", type=int, choices=RESTART_WINDOWS)
+    parser.add_argument("--require-accepted-origin", action="store_true",
+                        help="Require a checkpoint package published by the kernel host")
     parser.add_argument("--trace-richards", action="store_true", help="Trace the donor residuals and step water ledger")
     parser.add_argument("--trace-day", type=int, default=15)
     parser.add_argument("--days", type=int, choices=range(1, 482), default=481, metavar="1..481")
@@ -497,20 +536,32 @@ def main():
         parser.error("--origin and --origin-day must be supplied together")
     if args.origin is not None and (args.restart_at is not None or args.days <= args.origin_day):
         parser.error("A checkpoint continuation needs an end day after its origin and no --restart-at")
+    if args.checkpoint_at is not None and (args.origin is not None or args.days < args.checkpoint_at):
+        parser.error("--checkpoint-at requires an original start and an end on or after the cut")
+    if args.require_accepted_origin and (args.origin is None or args.isolation):
+        parser.error("--require-accepted-origin requires a single-column --origin")
     origin = args.origin.resolve() if args.origin is not None else None
-    cut = args.restart_at if args.restart_at is not None else args.origin_day
+    cut = args.restart_at or args.checkpoint_at or args.origin_day
     output = args.output.resolve()
     output.mkdir()
     donor, kernel, case, inputs = build(
         args.reference_work.resolve(), output, args.trace_richards, cut,
         args.budget_retry, args.trace_day, args.shared_pond_transfer, args.refresh_macro_final,
     )
+    binding = {
+        "case": CASE, "inputs": inputs, "swap_source": DONOR_SOURCE_SHA, "ttutil_source": TTUTIL_SOURCE_SHA,
+        "budget_retry": args.budget_retry, "shared_pond_transfer": args.shared_pond_transfer,
+        "refresh_macro_final": args.refresh_macro_final,
+    }
+    origin_receipt = verify_checkpoint(origin, cut, binding) if args.require_accepted_origin else None
     if args.restart_at is not None:
         measurements = restart(donor, kernel, case, output, args.restart_at)
     elif args.isolation:
         measurements = isolation(donor, kernel, case, output, args.days, cut, origin)
     else:
-        measurements = run(donor, kernel, case, output, args.days, checkpoint_day=cut, origin=origin)
+        measurements = run(donor, kernel, case, output, args.days, checkpoint_day=cut, origin=origin,
+                           checkpoint_binding=binding if args.checkpoint_at is not None else None,
+                           origin_receipt=origin_receipt)
     result = {
         "compiler": subprocess.check_output(["gfortran", "--version"], text=True).splitlines()[0],
         "source_sha256": {"SWAP.ZIP": DONOR_SOURCE_SHA, "TTUTIL.ZIP": TTUTIL_SOURCE_SHA},

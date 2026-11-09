@@ -1,5 +1,44 @@
 # HYBRID-WATER01 donor day boundary
 
+## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
+
+The consolidation branch is `codex/swap5-functional-closure01`. It starts
+from the exact hybrid evidence head `0ca2e3edd7e869d2ac7d37ed6c139ae126fdcc49`
+with canonical checked at `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
+PR 1619 remains the research baseline.
+
+The daily adapter can now publish the binary donor pair and its kernel
+receipt as one package at a selected accepted cut. The manifest binds
+the cut, accepted hydraulic state, pinned nested archives, project input
+hashes and profile selectors. Strict reopening verifies the manifest
+and both binary digests, then compares the worker's initial stocks and
+heads against the receipt before the new kernel instance starts.
+
+On Windows GNU Fortran 16.2 O2 the own day-20 package reproduced
+accepted days 21–22 exactly, after accounting for the new kernel
+revision sequence. A run without the balance scheduler refused day 15
+before its requested cut and published no package. Modified macro bytes,
+an incorrect cut and an incorrect profile were each refused by the
+package verifier. The previously evidenced 481-day trajectories were
+reused.
+
+```powershell
+$ref = "$env:TEMP/hy481-local-b0-20261109"
+$flags = @('--budget-retry', '--shared-pond-transfer', '--refresh-macro-final')
+$runner = 'research/hybrid-water01/run_daily_kernel.py'
+$published = "$env:TEMP/swap5-closure01-publish"
+python -B $runner --reference-work $ref --output $published --checkpoint-at 20 --days 22 @flags
+python -B $runner --reference-work $ref --output "$env:TEMP/swap5-closure01-resume" --origin "$published/accepted-column-1-day-20" --origin-day 20 --days 22 --require-accepted-origin @flags
+```
+
+Resume here. Qualify the package at a wet cut (256) and at the year
+boundary using the existing evidence as the trajectory oracle. Then
+reconcile its publication and source/build identity with the existing
+durable restart owner before exposing it outside the research host.
+The selected-cut package does not yet cover arbitrary day cuts or
+prove recovery after a process or storage failure.
+
+
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
 experiment uses the original sharp B0 donor and the unmodified Andelst inputs.
