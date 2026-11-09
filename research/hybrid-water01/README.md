@@ -150,9 +150,12 @@ and rejects the candidate's additional application paths with
 guard and qualify the application as an explicit successor. The
 DATAQUAL12, Hupsel root-profile and Grassgrowth thermal source guards
 reject both exact refs. The AHL application job fails while loading
-a shared object requiring an executable stack. Follow the existing
-exact-head CI rather than starting duplicate jobs. The full-period
-science comparisons remain separate.
+a shared object requiring an executable stack. All 48 exact-head
+checks are terminal, with 25 successes, 17 skips and six failures.
+Both the column and original-reader jobs reach the same DATAQUAL12
+guard. Fresh reference preparation through the shared launcher
+also ran the original 481-day donor and reproduced its CSV records.
+The full-period science comparisons remain separate.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
