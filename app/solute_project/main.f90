@@ -30,6 +30,8 @@ program swap5_native_project_column
   use mod_b111_persistent_pond, only: pond_step_t
   use mod_restricted_surface_evaporation,only:boesten_evaporation_state_t,black_evaporation_state_t
   use mod_fmr_drainage_response_binding,only:FMR_DRAIN_VARIANT_DRAMET3,FMR_DRAIN_VARIANT_HOOGHOUDT_IPOS2
+  use mod_fmr_soil_water_application_host,only:fmr_resolve_soil_water_application_model, &
+    fmr_soil_water_application_selection_t,FMR_APPLICATION_HOST_OK,FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE
   use mod_drainage_dramet3_response,only:initialize_dramet3_channel_control,DRAMET3_OK
   use mod_fmr_b111_matrix_solute_route
   use mod_fmr_b111_matrix_joint_application, only: matrix_joint_result_t,JOINT_OK,JOINT_WATER_REJECTED,JOINT_INVALID
@@ -121,6 +123,8 @@ program swap5_native_project_column
   real(real64) :: surface_exfiltration_amount
   real(real64),allocatable :: theta(:),conductivity(:),capacity(:),dkdh(:)
   character(1024) :: path,restart_path,arg,message,legacy_swp
+  character(*),parameter::hupsel_model='NATIVE_HUPSEL_ROTATION'
+  type(fmr_soil_water_application_selection_t)::application_selection
   logical :: ok,retain_accepted_step_proposal=.false.,dynamic_temperature=.false.
   logical :: water_flux_temporal=.false.
   type(water_flux_temporal_policy_t)::water_flux_policy
@@ -194,6 +198,14 @@ program swap5_native_project_column
     drain_table_count,drain_table_times,drain_table_heads,drain_anisotropy
   namelist /surface/ windows,ends_day,rain_cm_day,irrigation_cm_day,runon_cm_day,evaporation_cm_day, &
     rain_c,irrigation_c,runon_c,dry_mg_cm2_day,surface_temperature_c,soil_evaporation_cm_day,air_temperature_c
+  if(command_argument_count()>=6)then
+    call get_command_argument(6,arg,status=io)
+    call require(io==0,'invalid application model argument')
+    call fmr_resolve_soil_water_application_model(arg,[hupsel_model],application_selection,io)
+    call require(io==FMR_APPLICATION_HOST_OK.and.application_selection%explicit_selection.and. &
+      application_selection%route==FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE.and. &
+      application_selection%registered_index==1,'soil water model is unavailable in this application')
+  end if
   ! Fortran may evaluate both operands of .and.; daily selectors always
   ! reference valid targets, including before the first detailed crop.
   active_crop=>potato;active_trial=>potato_trial
@@ -212,6 +224,10 @@ program swap5_native_project_column
   read(u,nml=column,iostat=io,iomsg=message)
   if(io/=0)write(*,'(A)')trim(message)
   call require(io==0,'invalid column namelist')
+  if(application_selection%explicit_selection)then
+    call require(original_hupsel_rotation,'selected Hupsel application requires the original rotation')
+    write(*,'(a,1x,a)')'DAILY_MODEL',trim(application_selection%model_key)
+  end if
   read(u,nml=surface,iostat=io,iomsg=message)
   if(io/=0)write(*,'(A)')trim(message)
   call require(io==0,'invalid surface namelist')

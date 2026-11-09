@@ -60,6 +60,7 @@ static int publish(const char *pending, const char *target, int failure, int dir
     wchar_t *src = wide_path(pending), *dst = wide_path(target);
     HANDLE file;
     int status = 0;
+    (void)directory_sync; /* Windows uses write-through replacement. */
     if (!src || !dst) { free(src); free(dst); return 1; }
     file = failure == 2 ? INVALID_HANDLE_VALUE : CreateFileW(src, GENERIC_WRITE,
         FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_FLAG_WRITE_THROUGH, NULL);
