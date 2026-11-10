@@ -840,6 +840,26 @@ change with KIM regression coverage and the bounded contact restart
 and rollback check. The isolated result does not resolve the
 independent O0 contact timeout.
 
+### AHL stable-candidate admission decision
+
+The exact PR 1626 [F-CI preflight](https://github.com/abhedwig-cell/SWAP5/actions/runs/42822647211/job/129851783016)
+reports `BLOCKED_OWNER_SELECTION` even though the workflow job is green.
+Its output is an impact report. The companion modular feedback job and
+the AHL/F-CI110, current Grassgrowth and external MODFLOW coupling jobs
+passed on the exact candidate. The current restricted canonical
+preservation job is skipped in the automatic F-CI run.
+
+The repository's
+[proportional execution rules](../../docs/development/workstream-execution-protocol.md#expensive-tests-are-explicitly-selected)
+and AGENTS.md separate automatic feedback from stable-candidate
+admission. The shared-runtime admission owner must record the selected
+preservation scope for `a4da56a0c` on `a8275101d`, including whether the
+full moving F-CI group is required. If required, dispatch the existing
+workflow once with the versioned owner selection record. The automatic
+workflow and the unrelated historical publication failures do not supply
+that decision. Reverify the live base and exact PR head before admission.
+The Andelst KIM/contact diagnosis is separately tracked in PR 1627.
+
 The completed Andelst chain used these commands.
 
 ```powershell
