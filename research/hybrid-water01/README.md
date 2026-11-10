@@ -739,6 +739,22 @@ first rejection only. It does not qualify the historical E7 experiment on the
 current backend or authorize a merge. Next review decision is the disposition
 of inherited historical guards alongside the scoped AHL evidence.
 
+### GitHub merge candidates for the four review packets
+
+GitHub's merge ref for PR 1626 is `05c43aa4c3055f71fc631d92b202a885d1eec168`. Its parents are the live canonical `a8275101d` and the tested PR head `a4da56a0c`. The full tree is byte-identical to the tested head (`b8fdd418beb68a0b2d711f469804c74be85d0ff5`).
+
+| Evidence PR | GitHub merge ref at the same base | Candidate tree |
+| --- | --- | --- |
+| 1623 Grassgrowth | `4fe82832fe216e3628d5a07454aefa536fb80cbb` | `cafc122dac9d0c07bb7a15f259bf14704f5f23aa` |
+| 1624 Andelst | `5fb925ab4787bccd7c37abef774c77ef60c1db7b` | `5f818a6b1b34338944773aee50caefab72e2bda5` |
+| 1625 Hupsel | `c39f687ee39a4126661f130342d3d29a03b83491` | `6e0e74d1e2df0de8152b6e4ddafbd709988b3d02` |
+
+All three evidence candidates change only the research directory. Check the
+parent and tree again after each admission, using the combined-tree preview
+above for the intended 1626 → 1623 → 1624 → 1625 order. GitHub reports all
+four PRs open and unstable. The hosted merge refs confirm composition and
+source identity, while disposition of the red checks on 1626 remains open.
+
 The completed Andelst chain used these commands.
 
 ```powershell
