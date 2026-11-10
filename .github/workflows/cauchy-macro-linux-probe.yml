@@ -45,6 +45,31 @@ jobs:
           body = body.replace(old, old + "\n      if(.not.local_ok)write(*,*) 'CONTACT_TRACE node shrinkage rejected',ic,theta(ic),config%theta_s(ic),shrink")
           p.write_text(s[:i] + body + s[j:])
           PY
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/legacy/b1_10_port/headcalc.f90")
+          s = p.read_text()
+          a = s.index("subroutine boundtop_state_bridge")
+          i = s.index("         call evaluation_context%macropore%evaluate_rate", a)
+          trace = '''
+                   if (numnod >= 27) then
+                      if (state%theta(27) > 0.393d0 .and. state%h(27) > 0d0) then
+                         write(*,*) 'CONTACT_TRACE state',state%h(27),state%theta(27),state%thetm1(27), &
+                              provider_constitutive_active
+                         if (associated(evaluation_context%constitutive)) then
+                            select type (constitutive => evaluation_context%constitutive)
+                            type is (b110_default_mvg_provider_t)
+                               write(*,*) 'CONTACT_TRACE MvG theta_s',constitutive%parameters%cofgen(2,27), &
+                                    constitutive%parameters%elastic_storage_active
+                            class default
+                               write(*,*) 'CONTACT_TRACE nondefault constitutive'
+                            end select
+                         end if
+                      end if
+                   end if
+          '''
+          p.write_text(s[:i] + trace + s[i:])
+          PY
           git -c user.name='SWAP5 diagnostics' -c user.email='diagnostic@localhost' commit -am 'Instrument candidate geometry refusal'
           code=0
           python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization O2 --output "$RUNNER_TEMP/contact" || code=$?
