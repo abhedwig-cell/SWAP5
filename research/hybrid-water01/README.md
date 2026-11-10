@@ -399,15 +399,25 @@ publishes no day-15 file and permits the other column to accept day 2.
 The older exact post-refusal state comparison remains in the
 dedicated host control.
 
-The fresh canonical application chain was started at the production
-tree of `a8275101` from the Grassgrowth review checkout, whose
-differences are limited to research evidence. Resume monitoring the
-existing runs under `$env:TEMP/s5-andelst-canonical-a827-review`
-and its `-year` and `-dry` siblings. The commands below show the
-active chain. The final gate is exact agreement with the retained
-physical trajectory under the unchanged tolerance, verified durable
-package binding, and the existing O0/O2, rollback and isolation
-controls. Open the separate Andelst evidence PR after that gate.
+The fresh canonical application chain completed at `a8275101`.
+The continuous 481-day ledger matches the retained ledger byte for
+byte. All 482 dated CSV rows also match. The new 365-to-457 and
+453-to-459 continuations are exact. The new schema-3 checkpoint
+payloads match the retained payload hashes. [Draft PR
+1624](https://github.com/abhedwig-cell/SWAP5/pull/1624) contains the
+current receipt, replay auditor and archived results.
+
+The next review block is the original Hupsel rotation through the
+public application. A fresh canonical O2 build and 1096-day run
+were started under `$env:TEMP/s5-hupsel-canonical-a827-review` and
+its `-full` sibling from the `a8275101` production tree. Continue
+the existing run. Compare its water, solute, heat, crop and restart
+evidence against the sealed original rotation. Report the scientific
+differences separately and choose any process change only from a
+specific failed acceptance criterion. Grassgrowth PR 1623 still
+has its separate current-source full O2 replay in progress.
+
+The completed Andelst chain used these commands.
 
 ```powershell
 $b = "$env:TEMP/s5-andelst-canonical-a827-review"
