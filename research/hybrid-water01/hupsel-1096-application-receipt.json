@@ -1,0 +1,110 @@
+{
+  "balance": {
+    "water": {
+      "max_independent_interval": 4.443667656062189e-14,
+      "max_reported_interval": 4.443667656062189e-14,
+      "cumulative": 8.526512829121202e-14
+    },
+    "solute": {
+      "max_independent_interval": 9.6270422189626e-12,
+      "max_reported_interval": 9.6270422189626e-12,
+      "cumulative": -5.077538389741676e-11
+    },
+    "max_reported_heat_j_cm2": 1.3049318570157453e-12
+  },
+  "outputs_sha256": {
+    "budget.csv": "519c1a78145cbd7202f4a2d66df9c41fc48aba9c14cea994b06936e99b68ac12",
+    "crop.csv": "c7bd5580d4111b6e27867f5e498d66223c48d13846d6ab0a2ceafe673a9c5438",
+    "endpoint.csv": "52d0d129fbe01f2f811b06c7a95012c12b1aa6af36960e3531cd56e316508fa9",
+    "germination.csv": "ed7d9ed1d7e61a8f29cf5e59480146a2d88531fbc9751574fd895f9294d19fc0",
+    "state.csv": "d56baef989c8acf7f728ade034c3fa6a466ec356e9a3bc54c83bef04872ee44a",
+    "temperature.csv": "d7ddb431289337eb479fd50f44d021feca1e694eacbe217cd21c9d4ebb0a8ed0",
+    "checkpoint.bin": "33c43f195bdfe07f93b73eb5f05d784928838015b7c57be102c2a79789a02209",
+    "restart.bin": "33c43f195bdfe07f93b73eb5f05d784928838015b7c57be102c2a79789a02209"
+  },
+  "sealed_checkpoint_sha256": "c65445a627889e0097ef654c29f566d19b2855fb2325bdcfbad762381731c672",
+  "sealed_physical_csv_exact": [
+    "budget.csv",
+    "crop.csv",
+    "endpoint.csv",
+    "germination.csv",
+    "state.csv",
+    "temperature.csv"
+  ],
+  "run": {
+    "model": "NATIVE_HUPSEL_ROTATION",
+    "input_sha256": {
+      "swap.swp": "743cff140613f2ffb8171c02dff273fb95ba57ae229a6558d20cd6f637790db0",
+      "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+      "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+      "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+      "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+      "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+      "input.nml": "14d7a87e52d2de20f70e55005e40aa756f8c713e1758fc9f0d57a60940ee89c7"
+    },
+    "executable_sha256": "756f1faaf33fcd894bed03617f3a6aa492ce78a6a5fb6bddede3dfd599f237e6",
+    "requested_days": 1096,
+    "last_completed_day": 1096,
+    "origin_day": null,
+    "checkpoint_sha256": "33c43f195bdfe07f93b73eb5f05d784928838015b7c57be102c2a79789a02209",
+    "maximum_water_residual_cm": 4.443667656062189e-14,
+    "maximum_solute_residual_mg_cm2": 9.6270422189626e-12,
+    "maximum_heat_residual_j_cm2": 1.3049318570157453e-12
+  },
+  "source_commit": "a8275101d91f0ab5b413290e9b00bb5666b11917",
+  "sealed_archive_sha256": "f2603ab5aa3dd9d822f40cdb59069b009f85facd6b6e32a657e9926e95b75167",
+  "day584_oxygen_cm": 0.0033488614852679407,
+  "O2_restart_2_to_4": {
+    "executable_sha256": "756f1faaf33fcd894bed03617f3a6aa492ce78a6a5fb6bddede3dfd599f237e6",
+    "cut": {
+      "balance": {
+        "water": {
+          "max_independent_interval": 6.7307270867900115e-15,
+          "max_reported_interval": 6.7307270867900115e-15,
+          "cumulative": 5.287437154777308e-15
+        },
+        "solute": {
+          "max_independent_interval": 8.51989229760062e-15,
+          "max_reported_interval": 8.51989229760062e-15,
+          "cumulative": -1.5612748038376145e-14
+        },
+        "max_reported_heat_j_cm2": 5.679900993982301e-13
+      },
+      "outputs_sha256": {
+        "budget.csv": "91c9a584221158d93244cbc96be3346116eabc44f8bf82db3a0fc68b701e0f1e",
+        "crop.csv": "f330f767fab3c61da724dee7259796e481d77d2fc41ae07e183a0d98c9298eb7",
+        "endpoint.csv": "af61d24beb12b0d1ea5b37861bef7f1597fb37b28d73566efaa89eafe62fa398",
+        "germination.csv": "ed7d9ed1d7e61a8f29cf5e59480146a2d88531fbc9751574fd895f9294d19fc0",
+        "state.csv": "50dff667cbf11290b76d48fc2ec25fc5cd22ae35698287cd5b673b5e2d4371ec",
+        "temperature.csv": "d9e952ee92e77a55e935340eff5deca6a9da3b55eb159f218acbd2c06c69688b",
+        "checkpoint.bin": "302db9fb2ce70f7356a0658d514665390bcbffa4f11662a22726649e23f907eb",
+        "restart.bin": "302db9fb2ce70f7356a0658d514665390bcbffa4f11662a22726649e23f907eb"
+      }
+    },
+    "resume": {
+      "balance": {
+        "water": {
+          "max_independent_interval": 4.621303340002214e-15,
+          "max_reported_interval": 4.621303340002214e-15,
+          "cumulative": 6.827871601444713e-15
+        },
+        "solute": {
+          "max_independent_interval": 9.865860927419965e-15,
+          "max_reported_interval": 9.865860927419965e-15,
+          "cumulative": -1.7069321411776184e-14
+        },
+        "max_reported_heat_j_cm2": 5.830891325331322e-13
+      },
+      "outputs_sha256": {
+        "budget.csv": "bbf04dfe77ce32339f9ab76f7ca126e8b05c2fdaaf68332562f031657c429a05",
+        "crop.csv": "f330f767fab3c61da724dee7259796e481d77d2fc41ae07e183a0d98c9298eb7",
+        "endpoint.csv": "6a65eb48353a6197fbb9051b7b1ccebf4b7d0ce656768a6b52d38405357d495e",
+        "germination.csv": "ed7d9ed1d7e61a8f29cf5e59480146a2d88531fbc9751574fd895f9294d19fc0",
+        "state.csv": "a1175290ea02c6b66b63328522f0765b5b63364acc2e640f372c594ef9fc3fb3",
+        "temperature.csv": "9acd8d4e2f9f2c00c484fa7b84f004d0dc122e565ea26dfa2147ab76d1a689a1",
+        "checkpoint.bin": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529",
+        "restart.bin": "0abb0fbead52e4c96729a4b196da4f90e9d890737eb7e161f67c02cc92070529"
+      }
+    }
+  }
+}
