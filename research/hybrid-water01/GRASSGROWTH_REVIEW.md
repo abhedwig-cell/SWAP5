@@ -120,3 +120,36 @@ On identical accepted soil profiles and B0 root and atmospheric forcing, exchang
 Classify the main gap as numerical sensitivity to the time grid. The remaining 0.000226656 cm relative to capped B0 in the water-only comparison is unresolved, and the historical daily mismatch stays visible. The evidence supports functional execution and restart for the stated scopes. Whole-trajectory scientific equivalence remains open, and the diagnosis does not warrant a production physics change.
 
 The [accepted root trace](grass-oxygen188-evidence.json), [same-state comparison](grass-oxygen188-paired-evidence.json) and [hydraulic cap evidence](grass-wetting188-evidence.json) include source, binary and input hashes. Their recovery commands and retained bundle locations are pinned in the [research workpoint](https://github.com/abhedwig-cell/SWAP5/blob/1938d37db59bbf7257071cadb32837f404e8670a/research/hybrid-water01/README.md#swap5-functional-closure01-workpoint).
+
+
+## Revalidation on the AHL portability successor
+
+The public O2 launcher completed the original 1827-day project on
+production candidate `a4da56a0c60105862fc3dc91b6101ff1c963cf84`
+from PR #1626 using the registered thermal profile. The water, crop
+and conductive ledgers, endpoint and state files are byte-identical
+to the earlier canonical run. Both executions accepted 1,819,203
+steps. All 202 repository build inputs were verified against the
+candidate source. The generated input helper and original input
+hashes are listed separately.
+
+A fresh process from the atomic day-245 checkpoint reproduces
+days 246-247. A separate fresh process from the live day-1792
+checkpoint reproduces every ledger row for days 1793-1827 and
+the terminal checkpoint, state and endpoint bytes. The same
+water, uptake and conductive-balance assertions pass. The
+maximum absolute daily water and conductive residuals are
+4.594e-14 cm and 2.179e-10 J/cm2.
+
+Use the existing O2 build and full-launch commands above with a
+new output directory. Copy the published checkpoint at the selected
+day and pass it as `--restart` to the same verified build. The
+[successor receipt](grass-ahl-successor-receipt.json) contains the
+exact captured day, build and data identities. The prior raw
+archive remains tied to its original build. Recomputing the
+comparison with the sealed B0 evidence reproduces the day-188
+finding and all reported period maxima exactly.
+
+The approximately 100-minute launcher observation is a performance
+finding. The short waterfilm-reuse candidate is separate from these
+functional results and comparable full-project runtime remains open.
