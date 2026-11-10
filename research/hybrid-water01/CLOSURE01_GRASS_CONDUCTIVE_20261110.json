@@ -172,5 +172,38 @@
     "fci_run": 42746215351,
     "grass_thermal_run": 42746215222,
     "native_disk_restart_run": 42746215230
+  },
+  "canonical_admission": {
+    "pull_request": 1621,
+    "head": "bd24e5922e7661b373aa01f6de8f72dd33d5f345",
+    "test_merge": "7910ff854a82b8fd4efed6c300395b4579234deb",
+    "merge": "a57d7d532464ad89b7aca918263cf114b6b42185",
+    "exact_tree": "bbed43d97a7c33c9a92a4c1a17c8f25ed1738e84",
+    "grass_owner_blob": "a35b05d36cc6e71fda288d86840f2c6ba143b0c6",
+    "terminal_workflows": {
+      "failure": 2,
+      "success": 16
+    },
+    "grass_thermal_workflow": 42746215222,
+    "fci_workflow": 42746215351,
+    "native_restart_workflow": 42746215230,
+    "failed_historical_guard": {
+      "head_paths": 39,
+      "base_paths": 39,
+      "expected_paths": 12,
+      "workflow": 42746215413,
+      "jobs": [
+        129601375198,
+        129601375212,
+        129601375238
+      ]
+    },
+    "failed_ahl_loader": {
+      "prior_pr1620_job": 129502738617,
+      "workflow": 42746215301,
+      "job": 129598837518,
+      "affected_sources_changed": false
+    },
+    "whole_scientific_admission": false
   }
 }

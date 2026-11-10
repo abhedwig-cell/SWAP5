@@ -217,9 +217,19 @@ executable-stack loader failure.
 PR head `bd24e5922e7661b373aa01f6de8f72dd33d5f345` keeps both historical
 guards on exact predecessor worktrees and checks the current conductive
 rows through the original-input O0/O2 native disk restart test. The
-previous guards and retained receipt hashes are untouched. Check the
-automatic workflows on this head before canonical integration. Full
-physical energy and historical equivalence remain separate questions.
+previous guards and retained receipt hashes are untouched. Sixteen workflows passed, including F-CI, native disk restart and the
+full Grassgrowth thermal workflow. The older Grassgrowth sprint
+predicate expects 12 production paths and rejects both the base and
+candidate with 39. The unrelated AHL shared-library loader error recurs
+with unchanged sources. The canonical merge of PR #1621 at
+`a57d7d532464ad89b7aca918263cf114b6b42185` has the exact qualified test
+tree `bbed43d97a7c33c9a92a4c1a17c8f25ed1738e84`.
+
+Resume with the physical Grassgrowth heat budget. The conductive ledger
+already closes. Use existing accepted thermal/water receipts to
+distinguish changing water heat capacity and carried energy from the
+conductive term before considering a physical process change. Retain the
+separate Hupsel reference limit and Andelst equivalence question.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
