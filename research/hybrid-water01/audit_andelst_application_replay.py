@@ -77,6 +77,15 @@ def refusal(path):
     return {"day": 15, "revision": 14, "checkpoint_published": False, "other_column_accepted_day": 2}
 
 
+def mixed_clock(path, baseline):
+    rows = read(path / "RESULT.json")
+    schedule = [(2, 20), (1, 1), (1, 2), (2, 21), (1, 3), (2, 22)]
+    assert [(row["column"], row["day"]) for row in rows] == schedule
+    for row in rows:
+        assert physical(dict(row, column=1)) == physical(baseline[row["day"]])
+    return {"schedule": schedule, "exact": True}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("full", type=Path)
@@ -84,6 +93,8 @@ def main():
     parser.add_argument("dry", type=Path)
     parser.add_argument("--isolation", type=Path)
     parser.add_argument("--refusal", type=Path)
+    parser.add_argument("--mixed", type=Path)
+    parser.add_argument("--prefix", type=Path)
     args = parser.parse_args()
     report, baseline, ledger_sha = run(args.full, 1, 481)
     year_report, year, year_sha = run(args.year, 366, 457)
@@ -102,6 +113,15 @@ def main():
         assert all(physical(row) == physical(baseline[day]) for day, row in segment.items())
         assert csv_records(path / "original/result_output.csv")[1:] == [continuous[day] for day in segment], path
     controls = {}
+    if args.prefix:
+        prefix_report, prefix, prefix_sha = run(args.prefix, 1, 22)
+        assert prefix == {day: baseline[day] for day in prefix}
+        assert prefix_report["input_sha256"] == report["input_sha256"]
+        binding, evidence = package(args.prefix / "accepted-column-1-day-19.zip", prefix[19])
+        assert binding == p365
+        controls["current_prefix"] = {"ledger_sha256": prefix_sha, "checkpoint_day": 19, "checkpoint": evidence}
+    if args.mixed:
+        controls["mixed_clocks"] = mixed_clock(args.mixed, baseline)
     if args.isolation:
         controls["isolation"] = isolation(args.isolation)
     if args.refusal:

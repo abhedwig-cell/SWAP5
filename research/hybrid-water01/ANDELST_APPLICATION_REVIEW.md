@@ -31,13 +31,30 @@ different executable bytes and are identified individually.
 
 The unchanged Andelst application dependencies preserve the [O0/O2
 prefix and day-20 restart checks](https://github.com/abhedwig-cell/SWAP5/blob/3f10d53d4a37dc7a57c538103299934cf1938aa1/research/hybrid-water01/CLOSURE01_INTEGRATION_RESULT_20261109.json).
-Those checks cover days 1–22 with an O2 donor. The retained distinct
-Cauchy isolation control was rechecked against both separate ledgers
-for days 20–21. The retained refusal record confirms day 15 is refused
-at revision 14, with no rejected-day package and an accepted day 2
-from the other column. The [original rollback
-control](https://github.com/abhedwig-cell/SWAP5/blob/3f10d53d4a37dc7a57c538103299934cf1938aa1/research/hybrid-water01/check_daily_host.py)
-also verifies the refused column retains the accepted day-14 stocks.
+Those checks cover days 1–22 with an O2 donor. A fresh public
+application run on the current Andelst dependency surface
+reproduced the first 22 complete receipts and published a day-19
+checkpoint with the same build binding as the full run.
+With that checkpoint, two distinct Cauchy trajectories matched
+their separate controls for days 20–21. A cold column and a restored
+column also matched all six separately accepted receipts on their
+interleaved clocks. The day-15 refusal control preserved the
+accepted day-14 clock and stocks, refused a second attempt at
+the closed column, emitted no day-15 checkpoint and allowed the
+other column to accept day 2 exactly. The
+[control harness](https://github.com/abhedwig-cell/SWAP5/blob/5c01e7afaeaf5843d1dcd0d7baf9d27aa93db5f1/research/hybrid-water01/check_daily_host.py)
+checks those assertions during execution.
+
+## CI scope
+
+The initial evidence head `d1629148` had nine successful workflows and
+one failure among the pull-request runs returned for that commit.
+The F-CI110 `ahl-application` job reached the inherited Linux shared
+library load failure, before the model test. Its loader reports that
+`libfgc49d_application.so` requires an executable stack. The same
+failure appears on the Grassgrowth and Hupsel evidence heads.
+This change modifies only the Andelst research evidence.
+[Andelst AHL job](https://github.com/abhedwig-cell/SWAP5/actions/runs/42794242271/job/129755163198).
 
 ## Scientific scope
 
@@ -75,6 +92,12 @@ python -B research/hybrid-water01/audit_andelst_application_replay.py $base "$ba
 The [receipt](andelst-481-application-receipt.json) and [evidence
 archive](andelst-481-application-evidence.zip) contain the logs,
 dated output and published checkpoint packages. Archive SHA-256
-`a6fc4294e9924d10df587e3c2181889d523c7119e739f24a2bf7a7b6dbb1db90`.
+`02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9`.
 To check the archived results directly, extract into a new directory
 and run the same auditor on its `full`, `year` and `dry` subdirectories.
+
+```powershell
+$x = "./andelst-evidence"
+python -B -m zipfile -e research/hybrid-water01/andelst-481-application-evidence.zip $x
+python -B research/hybrid-water01/audit_andelst_application_replay.py "$x/full" "$x/year" "$x/dry" --prefix "$x/controls/prefix" --isolation "$x/controls/isolation" --mixed "$x/controls/mixed" --refusal "$x/controls/refusal"
+```
