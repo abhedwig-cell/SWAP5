@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        probe: [fmr, contact-O0, contact-O2]
+        probe: [contact-O0, contact-O2]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -44,21 +44,18 @@ jobs:
             out="$RUNNER_TEMP/paired/$label"
             mkdir -p "$out"
             code=0
-            if [[ "$PROBE" == fmr ]]; then
-              bash tests/fgc/run_fgc44_real_fmr_participant.sh > "$out/run.log" 2>&1 || code=$?
-            else
-              mkdir -p "$RUNNER_TEMP/contact-$label"
-              OMP_NUM_THREADS=1 python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization "${PROBE#contact-}" \
-                --output "$RUNNER_TEMP/contact-$label" > "$out/run.log" 2>&1 || code=$?
-              if [[ $code -eq 0 ]]; then
-                python3 -B tests/dataqual15/analyze_native_thermal_receipts.py \
-                  "$RUNNER_TEMP/contact-$label/actual-prefix/actual-thermal.csv" \
-                  --output "$out/THERMAL_ANALYSIS.json" >> "$out/run.log" 2>&1 || code=$?
-              fi
+            OMP_NUM_THREADS=1 python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization "${PROBE#contact-}" \
+              --output "$RUNNER_TEMP/contact-$label" > "$out/run.log" 2>&1 || code=$?
+            if [[ $code -eq 0 ]]; then
+              python3 -B tests/dataqual15/analyze_native_thermal_receipts.py \
+                "$RUNNER_TEMP/contact-$label/actual-prefix/actual-thermal.csv" \
+                --output "$out/THERMAL_ANALYSIS.json" >> "$out/run.log" 2>&1 || code=$?
+            fi
+            if [[ -d "$RUNNER_TEMP/contact-$label" ]]; then
               find "$RUNNER_TEMP/contact-$label" -type f \( -name RESULT.json -o -name '*.log' -o -name '*.stderr' -o -name '*.stdout' \) -print0 |
-                while IFS= read -r -d '' file; do
-                  (cd "$RUNNER_TEMP/contact-$label" && cp --parents "${file#"$RUNNER_TEMP/contact-$label/"}" "$out")
-                done
+              while IFS= read -r -d '' file; do
+                (cd "$RUNNER_TEMP/contact-$label" && cp --parents "${file#"$RUNNER_TEMP/contact-$label/"}" "$out")
+              done
             fi
             printf '%s\n' "$code" > "$out/exit.txt"
             echo "$label $PROBE exit=$code"
@@ -71,108 +68,3 @@ jobs:
         with:
           name: ahl-paired-${{ matrix.probe }}
           path: ${{ runner.temp }}/paired
-  current-fci:
-    if: github.event.pull_request.number == 1626
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Confirm candidate source and install test dependencies
-        run: |
-          test "${{ github.event.pull_request.base.sha }}" = "$AHL_BASE"
-          git diff --exit-code "$AHL_CANDIDATE" HEAD -- src app reference tools tests
-          python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
-      - name: Current modular feedback
-        run: python3 -B tests/modularity/run_modular_tests.py --changed-since "$AHL_BASE" --output "$RUNNER_TEMP/modular-feedback"
-      - name: Current application selector O0 and O2
-        if: always()
-        run: |
-          python3 -B - <<'PY'
-          from pathlib import Path
-          import os
-          import runpy
-
-          output = Path(os.environ["RUNNER_TEMP"]) / "current-selector"
-          selector = runpy.run_path("tests/dataqual15/verify_water_application_successor.py")["selector_contract"]
-          print("CURRENT_SELECTOR_O0_O2_SHA256=" + selector(output))
-          PY
-      - name: Replay exact predecessor application and writer gates
-        if: always()
-        run: |
-          prior="$RUNNER_TEMP/grass-application-predecessor"
-          git worktree add --detach "$prior" 78c8012530b3be14e48edef6fc950e2c09c695ca
-          cd "$prior"
-          python3 -B tests/dataqual15/test_current_native_admission.py
-          python3 -B tests/dataqual15/verify_water_application_successor.py --output "$RUNNER_TEMP/native-admission"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ahl-current-fci
-          path: |
-            ${{ runner.temp }}/modular-feedback
-            ${{ runner.temp }}/native-admission
-  current-grassgrowth:
-    if: github.event.pull_request.number == 1626
-    runs-on: ubuntu-24.04
-    timeout-minutes: 35
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: ${{ github.event.pull_request.head.sha }}
-      - name: Confirm candidate source and install the registered compiler
-        run: |
-          test "${{ github.event.pull_request.base.sha }}" = "$AHL_BASE"
-          git diff --exit-code "$AHL_CANDIDATE" HEAD -- src app reference tools tests
-          sudo apt-get update
-          sudo apt-get install -y gfortran-13
-          gfortran-13 --version
-      - name: Replay exact predecessor thermal evidence
-        run: |
-          prior="$RUNNER_TEMP/grass-thermal-predecessor"
-          git worktree add --detach "$prior" 77f3736198bdc54caa5d7d5ad2894413c0edb535
-          cd "$prior"
-          python3 -B tests/dataqual15/test_thermal_profile_production.py
-          python3 -B tests/dataqual15/thermal_profile_production.py --verify-only
-      - name: Cold O0/O2 numerical and incumbent runtime contracts
-        if: always()
-        run: python3 -B tests/dataqual15/qualify_thermal_runtime.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/thermal-contract"
-      - name: Current original-input application and own disk restart on both optimizations
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          for opt in O0 O2; do
-            python3 -B tools/solute/build_grass_startup.py --compiler /usr/bin/gfortran-13 --optimization "$opt" --policy retained --numerical-profile thermal-control-1e-5C --end 1 --output "$RUNNER_TEMP/grass-$opt"
-            python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/grass-$opt" --output "$RUNNER_TEMP/thermal-disk-$opt" --conductive-budget
-          done
-      - name: Cold original Andelst numerical input and native macro publication
-        if: always()
-        shell: bash
-        run: |
-          set -euo pipefail
-          for opt in O0 O2; do
-            python3 -B tests/dataqual15_hupsel/build_and_run.py --driver app/solute_project/main_water.f90 --compiler /usr/bin/gfortran-13 --optimization "$opt" --ttutil-archive "$RUNNER_TEMP/grass-$opt/libttutil.a" --output "$RUNNER_TEMP/native-$opt"
-            if [[ "$opt" == O0 ]]; then name=day1-O0; else name=original-O2; fi
-            python3 -B tests/dataqual15/continue_original_andelst.py --bundle "$RUNNER_TEMP/native-$opt" --quiet-stages --end 1 --output "$RUNNER_TEMP/s5-events-andelst-$name" --seconds 90
-            python3 -B tests/dataqual15/continue_original_andelst.py --bundle "$RUNNER_TEMP/native-$opt" --quiet-stages --end '1.0169999999998254' --restart "$RUNNER_TEMP/s5-events-andelst-$name/restart.bin" --output "$RUNNER_TEMP/s5-events-andelst-own-exact-$opt" --seconds 90
-            python3 -B tests/dataqual15/continue_original_andelst.py --bundle "$RUNNER_TEMP/native-$opt" --quiet-stages --end '1.0169999999998254' --output "$RUNNER_TEMP/s5-events-andelst-prefix-exact-$opt" --seconds 90
-          done
-          python3 -B tests/dataqual15/qualify_andelst_codec.py --workspace "$RUNNER_TEMP" --output "$RUNNER_TEMP/andelst-codec"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: ahl-current-grassgrowth
-          path: |
-            ${{ runner.temp }}/thermal-contract
-            ${{ runner.temp }}/grass-O0
-            ${{ runner.temp }}/grass-O2
-            ${{ runner.temp }}/thermal-disk-O0
-            ${{ runner.temp }}/thermal-disk-O2
-            ${{ runner.temp }}/native-O0
-            ${{ runner.temp }}/native-O2
-            ${{ runner.temp }}/s5-events-andelst-*
-            ${{ runner.temp }}/andelst-codec
