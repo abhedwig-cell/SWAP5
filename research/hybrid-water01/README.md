@@ -814,6 +814,15 @@ The same script is ready for GNU Fortran 15.2 on Ubuntu 26.04.
 python research/hybrid-water01/replay_contact_macro_import.py --fc gfortran
 ```
 
+On [Ubuntu 26.04 with GNU Fortran 15.2.0](https://github.com/abhedwig-cell/SWAP5/actions/runs/42849523028/job/129946009456)
+the seven-file replay reproduces the refusal with the same sealed input.
+O0 returns true and an exact coefficient. O2 returns false and leaves the
+coefficient at zero before `source rapid reference`. This is a failure
+inside `prepare_rapid_drain_reference_kd`, not a small difference across
+the reader tolerance. The next discriminator is the first rejecting
+predicate in that routine, using the same isolated driver. No Richards
+step, contact rollback or full application was needed to reproduce it.
+
 The completed Andelst chain used these commands.
 
 ```powershell
