@@ -1,55 +1,52 @@
-name: Andelst OSAT decimal conversion
+name: Cauchy contact rollback on the KIM candidate
 on:
   push:
     branches: [codex/cauchy-macro-linux-probe]
     paths: [.github/workflows/cauchy-macro-linux-probe.yml]
 permissions:
   contents: read
+env:
+  OMP_NUM_THREADS: '1'
+  PYTHONUTF8: '1'
 jobs:
-  reader:
+  contact:
     runs-on: ubuntu-26.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
           ref: d6f5eddf5648b51a7256e5e282d6473fff769a54
-      - name: Compare TTUTIL and Fortran decimal input on the sealed fixture
+      - name: Run unchanged contact gate with rdlex contraction disabled
         shell: bash
         run: |
           gfortran --version
-          python3 - <<'PY'
-          from pathlib import Path
-          import tarfile
-          with tarfile.open("integration/dataqual15/ANDELST_CONTACT_DIAGNOSTIC.tar.xz") as archive:
-              Path("input.swp").write_bytes(archive.extractfile("run/input.swp").read())
-          PY
-          cat > compare.f90 <<'F90'
-          program compare
-            use iso_fortran_env, only: real64, int64
-            implicit none
-            real(real64) :: osat(256), decimal
-            integer :: count, nsub, layers(256)
-            character(5) :: literal
-            literal = '0.393'
-            read(literal,*) decimal
-            call rdinit(73,0,'input.swp')
-            call rdinne('isublay',nsub)
-            call rdfinr('isoillay',1,256,layers,256,nsub)
-            count=maxval(layers(:nsub))
-            call rdfdor('osat',0d0,1d0,osat,256,count)
-            if(count < 3) error stop 'missing layers'
-            write(*,'(a,2(1x,es25.17),2(1x,z16.16))') 'OSAT TTUTIL then internal READ',osat(3),decimal, &
-                 transfer(osat(3),0_int64),transfer(decimal,0_int64)
-          end program
-          F90
-          for opt in O0 O2; do
-            python3 -B tests/dataqual15/original_sources.py --output "$RUNNER_TEMP/tt-$opt" --compiler "$(command -v gfortran)" --optimization "$opt" --utilities-only
-            gfortran "-$opt" compare.f90 "$RUNNER_TEMP/tt-$opt/ttobj/libttutil.a" -o "compare-$opt"
-            "./compare-$opt"
+          export REAL_GFORTRAN="$(command -v gfortran)"
+          mkdir -p "$RUNNER_TEMP/compiler"
+          cat > "$RUNNER_TEMP/compiler/gfortran" <<'SH'
+          #!/bin/bash
+          for arg in "$@"; do
+            case "$arg" in
+              */rdlex.for) echo "RDLEX_NO_CONTRACTION $arg" >> "$RUNNER_TEMP/rdlex.flags"; exec "$REAL_GFORTRAN" "$@" -ffp-contract=off ;;
+            esac
           done
-          tt="$RUNNER_TEMP/tt-O2"
-          gfortran -O2 -ffp-contract=off -finit-local-zero -fallow-argument-mismatch -ffixed-line-length-none -I"$tt/source/TTUTIL" -I"$tt/ttobj" -J"$tt/ttobj" -c "$tt/source/TTUTIL/rdlex.for" -o "$tt/ttobj/rdlex.o"
-          ar rcs "$tt/ttobj/libttutil.a" "$tt/ttobj/rdlex.o"
-          gfortran -O2 compare.f90 "$tt/ttobj/libttutil.a" -o compare-O2-no-contract
-          echo 'O2 with only rdlex floating-point contraction disabled'
-          ./compare-O2-no-contract
+          exec "$REAL_GFORTRAN" "$@"
+          SH
+          chmod +x "$RUNNER_TEMP/compiler/gfortran"
+          export PATH="$RUNNER_TEMP/compiler:$PATH"
+          code=0
+          python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization O2 --output "$RUNNER_TEMP/contact" || code=$?
+          if [[ -d "$RUNNER_TEMP/contact" ]]; then
+            find "$RUNNER_TEMP/contact" -maxdepth 2 -type f -name 'contact-*.stderr' -print -exec tail -n 25 {} \;
+            find "$RUNNER_TEMP/contact" -maxdepth 2 -name 'diagnostic-rejected.bin' -exec sha256sum {} \;
+          fi
+          cat "$RUNNER_TEMP/rdlex.flags"
+          exit "$code"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kim-contact-o2
+          path: |
+            ${{ runner.temp }}/contact/RESULT.json
+            ${{ runner.temp }}/contact/contact-*.std*
+            ${{ runner.temp }}/contact/contact-*/diagnostic-rejected.bin
+            ${{ runner.temp }}/contact/contact-1/nonlinear-contact.csv
