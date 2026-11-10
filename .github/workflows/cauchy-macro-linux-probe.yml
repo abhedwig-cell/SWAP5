@@ -1,0 +1,22 @@
+name: Cauchy macro import diagnostic
+on:
+  push:
+    branches: [codex/cauchy-macro-linux-probe]
+    paths: [.github/workflows/cauchy-macro-linux-probe.yml]
+permissions:
+  contents: read
+jobs:
+  import:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          sparse-checkout: research/hybrid-water01
+      - name: Replay sealed contact macro input
+        shell: bash
+        run: |
+          git fetch --no-tags --depth=1 origin a4da56a0c60105862fc3dc91b6101ff1c963cf84
+          gfortran --version
+          python3 research/hybrid-water01/replay_contact_macro_import.py
