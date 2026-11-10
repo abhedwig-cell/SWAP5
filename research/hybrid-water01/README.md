@@ -877,6 +877,19 @@ This test verifies the short production-profile window. Full-project
 runtime parity and candidate admission remain open. The AHL owner
 selection is still pending and the performance candidate stays separate.
 
+The same production-profile executable (SHA-256
+`9194adbde36e121a3eba90a206a743332552024b79793242d0cbd6095d4c028f`)
+also completed a new-process day-2 to day-4 restart. Its day-2
+checkpoint hash is
+`29d6cc9baa0f0662341523e736c8a1dae7a3f8330e322e07859b9e1116ebc696`.
+Use native arguments `2 retain-step 100000 "" thermal-control` for the
+cut and `4 retain-step 100000 <day2-checkpoint> thermal-control` in a
+fresh directory for the continuation. Concatenating the three cut
+ledgers with the resumed rows exactly reproduces the uninterrupted
+production-cache control. Final state, endpoint and checkpoint also
+match byte for byte. The terminal checkpoint SHA-256 is
+`aa714e3dd63e4b1488a1dafa684bc9dd6bcb9f926550bd26fb699460fbddd0bb`.
+
 The completed Andelst chain used these commands.
 
 ```powershell
