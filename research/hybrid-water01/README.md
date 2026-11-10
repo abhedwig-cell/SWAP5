@@ -800,6 +800,20 @@ derived coefficient and sealed coefficient on the existing contact input
 before running any time integration. The local host has Windows GNU
 Fortran and no WSL installation.
 
+The standalone [contact import replay](replay_contact_macro_import.py)
+compiles seven source files and a one-call driver. It extracts the sealed
+`run/macro.nml` (SHA-256
+`674a1c12564322e15eccf9c6301fcfa9043a0432e677dc8089d9923b2e4b66cc`)
+from the selected Git commit and prints the success flag, calculated
+and sealed coefficients, and signed difference before the unchanged guard.
+On Windows GNU Fortran 16.2 both O0 and O2 return true and
+`0.878598015369454255` for both coefficients, with zero difference.
+The same script is ready for GNU Fortran 15.2 on Ubuntu 26.04.
+
+```sh
+python research/hybrid-water01/replay_contact_macro_import.py --fc gfortran
+```
+
 The completed Andelst chain used these commands.
 
 ```powershell
