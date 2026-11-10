@@ -28,12 +28,15 @@ def main():
     original = ref / "swap-selected/temperature.f90"
     source = original.read_text(encoding="cp1252")
     source = source.replace("numnod, z, dz, disnod, numlay", "numnod, z, dz, disnod, numlay, layer", 1)
-    source = source.replace("t1900, dt, thetsl", "t1900, dt, thetsl, thetas", 1)
+    source = source.replace("t1900, dt, thetsl", "t1900, dt, thetsl, thetas, qtop, qbot", 1)
+    source = insert(source, "      use atmosphere_interface, only: tav", "\n      use MOD_meteo, only: nraidt")
     source = insert(source, "      character(len=200)                        :: message", """
       logical, save :: observed_first = .false.
       real(8), save :: observed_end""")
     source = insert(source, "           tsoil(1:numnod) = thomx(1:numnod)", """
            if (.not. observed_first) then
+              write(*,'(a,*(1x,es25.17e3))') 'LEGACY_WATER_FIRST', dt, nraidt, qtop, qbot, &
+                   sum(dz(1:numnod)*(theta(1:numnod)-thetm1(1:numnod)))
               write(*,'(a,*(1x,es25.17e3))') 'LEGACY_HEAT_INITIAL', tmpold(1:numnod)
               observed_end = t1900 + 63d0
               observed_first = .true.
