@@ -491,6 +491,24 @@ For Hupsel day 584 the reference blocker above remains open. A
 new comparison needs an independently validated reference with
 its numerical uncertainty below the existing bound.
 
+The PR 1626 review now covers 46 failing jobs across the 36 failed
+workflows returned for the tested head. Of those, 29 signatures match
+versioned predecessor logs. RossFast F-CI67P refuses the frozen runtime
+blob on both current trees. Its unchanged test fixture compiled with
+the current module closure gives identical O0 and O2 output for
+canonical and the candidate (normalized SHA-256
+`d348bf914e82d5b649c20329a81197528d9b8e3a92efed782d120cb5bc1aa0ba`).
+The current F-CI and Grassgrowth thermal workflows reach their historical
+fallback because the six AHL production files exceed the Grassgrowth
+successor's exact source scope. Both stop before current runtime proof.
+The next integration block is a bounded successor that retains exact
+predecessor replay and runs current runtime controls. Separately, use
+paired Ubuntu 26.04 builds to attribute the F-GC44 derivative output
+difference and the anchored-Cauchy contact timeouts before admitting
+the shared runtime change. The same F-GC44 command already passes at the
+candidate merge ref on Ubuntu 24.04. See the PR for job identities.
+This review adds no model changes and retains all prior test verdicts.
+
 The completed Andelst chain used these commands.
 
 ```powershell
