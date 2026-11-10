@@ -15,7 +15,8 @@ FILES = ("macro.bin", "result.end")
 
 
 def replay(reference, origin, prepared, output, corrected, split_final=False, budget_only=False,
-           refresh_macro_final=False, solver_trace_day=458):
+           refresh_macro_final=False, solver_trace_day=458, trace_reuse_event=False,
+           check_fresh_residual=False):
     output.mkdir()
     donor, _, case, _, _ = build(reference, output, checkpoint_day=CUT,
                               budget_retry=corrected or budget_only, shared_pond_transfer=corrected)
@@ -51,6 +52,38 @@ def replay(reference, origin, prepared, output, corrected, split_final=False, bu
       write(*,'(a,1x,i0,9(1x,es25.17e3))') 'GWL_SOLVER', {stage}, t1900, dt, qbot, &
          h({upper_node}), h({lower_node}), h(numnod), maxval(abs(F(1:NN))), sum(QExcMpMtx(1:NN)), nraidt
    end if""")
+    if trace_reuse_event:
+        source = replace(source, "   real(8), dimension(macp)         :: hold",
+                         "   real(8), dimension(macp)         :: hold, macro_rate_heads")
+        gate = "      if (iTask == 1 .OR. .NOT. flunsatok(3)) then"
+        source = replace(source, gate, f"""      if (iTask == 2 .and. flunsatok(3) .and. &
+          t1900 >= {trace_end - 0.0011:.4f}d0 .and. t1900 < {trace_end}d0) then
+         write(*,'(a,2(1x,es25.17e3),4(1x,i0),1x,es25.17e3)') 'GWL_REUSE_EVENT', t1900, dt, numbit, itry, &
+            count((h(1:numnod) >= 0d0) .neqv. (macro_rate_heads(1:numnod) >= 0d0)), &
+            count((h(1:numnod) < 1d0) .neqv. (macro_rate_heads(1:numnod) < 1d0)), &
+            maxval(abs(h(1:numnod) - macro_rate_heads(1:numnod)))
+      end if
+""" + gate)
+        source = replace(source, "         call MACROPORE(2)",
+                         "         macro_rate_heads(1:numnod) = h(1:numnod)\n         call MACROPORE(2)")
+    if check_fresh_residual:
+        source = replace(source, "   real(8), dimension(macp)         :: hold",
+                         "   logical                        :: used_cached_macro_rates\n"
+                         "   real(8), dimension(macp)         :: hold")
+        call = "         call vector_F(2, hgrad)"
+        source = replace(source, call,
+                         "         used_cached_macro_rates = swmacro == 1 .and. flunsatok(3)\n" + call)
+        marker = "      if (dabs(sum1) > CritDevBalTot) flnonconv = .TRUE."
+        source = replace(source, marker, marker + """
+      if (.not. flnonconv .and. used_cached_macro_rates) then
+         flunsatok = .false.
+         used_cached_macro_rates = .false.
+         call vector_F(2, hgrad)
+         sump = 0.5d0 * dot_product(F(1:NN), F(1:NN))
+         sum1 = sum(F(1:NN))
+         Fmax = maxval(dabs(F(1:NN)))
+         goto 1
+      end if""")
     if refresh_macro_final:
         refresh_start = f"{trace_end - 0.00005:.5f}" if solver_trace_day == 457 else "36252.9989"
         source = replace(source, "      if (iTask == 1 .OR. .NOT. flunsatok(3)) then",
@@ -100,11 +133,16 @@ def main():
     parser.add_argument("--split-final", action="store_true")
     parser.add_argument("--refresh-macro-final", action="store_true")
     parser.add_argument("--solver-trace-day", type=int, choices=(457, 458), default=458)
+    parser.add_argument("--trace-reuse-event", action="store_true")
+    parser.add_argument("--check-fresh-residual", action="store_true")
     a = parser.parse_args()
     if a.solver_trace_day == 457 and a.split_final:
         parser.error("The final half-step intervention applies to day 458")
+    if a.check_fresh_residual and (a.refresh_macro_final or a.split_final):
+        parser.error("Test the fresh residual check separately from the clock and half-step interventions")
     replay(a.reference.resolve(), a.origin.resolve(), a.prepared.resolve(), a.output.resolve(),
-           a.corrected, a.split_final, a.budget_only, a.refresh_macro_final, a.solver_trace_day)
+           a.corrected, a.split_final, a.budget_only, a.refresh_macro_final, a.solver_trace_day,
+           a.trace_reuse_event, a.check_fresh_residual)
 
 
 if __name__ == "__main__":

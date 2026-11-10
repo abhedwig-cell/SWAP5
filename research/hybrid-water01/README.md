@@ -177,10 +177,26 @@ reach the historical DATAQUAL12 predicate that also rejects
 The targeted Andelst replays below localize the day-457 groundwater
 discrepancy to the final accepted step. Both same-origin controls show
 sensitivity to reuse of the macro exchange during that solve.
-Continue by testing which trial-state event predicts stale exchange,
-using these four runs as controls before proposing a production policy.
-Retain the existing mass tolerance and the separate Grassgrowth
-thermal and Hupsel oxygen qualification statuses.
+The read-only O2 replay reproduces the existing accepted-step and solver
+traces exactly. At the first clock-refresh-sensitive residual, pressure
+heads cross zero in 7 compartments on original day 457 and 29 on
+budget-only day 458. On corrected day 457, no compartment crosses either
+zero or 1 cm, yet refreshing the rates changes the net exchange by
+9.456 cm/day. A saturation-mask change alone misses that event.
+
+The follow-up experiment refreshes the rates once at provisional
+convergence and reruns the original compartment, total and pond
+convergence checks. All three O2 variants first differ from their controls
+on day 454 and time out after 240 seconds, with the last accepted step
+reported on day 456. This rules out this general convergence check as
+a replacement for the qualified application path. The research replay,
+input and build hashes, and exact first differences are in the
+[reuse evidence](CLOSURE01_MACRO_REUSE_20261110.json).
+
+Leave the Andelst experimental solver changes in research. Resume with
+the Hupsel oxygen comparison from the retained original reference and
+accepted root-state receipts. Keep Grassgrowth thermal qualification
+separate.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -921,3 +937,35 @@ one-cell budget to 1.42e-14 m3. All three SWAP temporal defects were
 below 1e-4 cm. MODFLOW ended at -0.500868322 m, a head residual of
 7.868 mm. The origin predictor therefore did not pass the strict head
 criterion or commit. See `ORIGIN_PREDICTOR_RESULT.json`.
+
+### Macropore rate reuse at provisional convergence
+
+Use the day-453 inputs and checkpoints from the final-step experiment
+above. With GNU Fortran on PATH, run these commands from the repository
+root in PowerShell. The day-458 case uses the budget retry with the
+corrected checkpoint and the original shared-pond treatment, matching
+its earlier control.
+
+```powershell
+foreach ($trial in @(
+    @{ Day = 457; Id = '00'; Mode = @() },
+    @{ Day = 457; Id = '11'; Mode = @('--corrected') },
+    @{ Day = 458; Id = '11'; Mode = @('--budget-only') }
+)) {
+    $case = "$env:TEMP/hy481-gwl-pair-$($trial.Id)"
+    $mode = $trial.Mode
+    foreach ($probe in @(
+        @{ Name = 'event'; Flag = '--trace-reuse-event' },
+        @{ Name = 'fresh'; Flag = '--check-fresh-residual' }
+    )) {
+        python -B research/hybrid-water01/replay_groundwater.py `
+          --reference "$env:TEMP/hy481-local-b0-20261109" `
+          --origin "$case/first" --prepared "$case/case" `
+          --output "$env:TEMP/s5-gwl$($trial.Day)-$($probe.Name)-$($trial.Id)" `
+          --solver-trace-day $trial.Day $probe.Flag @mode
+        if ($LASTEXITCODE -ne 0 -and $probe.Name -eq 'event') {
+            throw "Read-only Andelst replay failed"
+        }
+    }
+}
+```

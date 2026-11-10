@@ -1,0 +1,151 @@
+{
+  "baseline_research_commit": "e167eb6459c677433d8fe39698859ae941b23515",
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0 -O2",
+  "canonical_application_commit": "78c8012530b3be14e48edef6fc950e2c09c695ca",
+  "historical_replay_archive_sha256": "c6cbf1c863d545625eb8d72c3bc5d243163b03d13afd4704a932cebc79067c85",
+  "compiler_target": "x86_64-w64-mingw32",
+  "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+  "runs": [
+    {
+      "day": 457,
+      "profile": "original",
+      "origin_sha256": {
+        "macro.bin": "f24a64a430520378e0fdec5bccb45f87e2c7f84dfd73090b3ace6c358c099699",
+        "result.end": "b60bd897f247d2c01a591f13a589338dea89fbe9837f8d16290a77b4dddbf410"
+      },
+      "prepared_input_sha256": {
+        "swap.swp": "f21ccbb0e822629278d75958d0ec089f7ba3edaef7b099833deefa9745ca169a",
+        "swap.bbc": "4451cce63d7bea5acefb0b8f747ecbdc8053d2c44bfd2fc9dff661507c369b66"
+      },
+      "read_only_donor_sha256": "55dd27bf49b279c873d6bb054eac18913638ae7a66b231112605938ff7af4bd1",
+      "read_only_control_equal": {
+        "accepted_trace_steps_on_day": 11425,
+        "solver_trace_residuals": 277,
+        "budget_records_including_origin": 5,
+        "published_csv_data_rows": true
+      },
+      "matching_solver_records_before_clock_refresh_changes_exchange": 272,
+      "first_sensitive_cached_exchange": {
+        "clock_day": 36251.99995883766,
+        "dt_day": 4.1152263931198974e-05,
+        "newton_iteration": 4,
+        "line_search_trial": 1,
+        "zero_head_crossings": 7,
+        "one_cm_head_crossings": 8,
+        "max_head_displacement_cm": 48.649268469967105,
+        "cached_exchange_cm_day": -2.5957961512037557,
+        "refreshed_exchange_cm_day": 45.98259251123211
+      },
+      "fresh_convergence_check": {
+        "completed": false,
+        "wall_timeout_seconds": 240,
+        "donor_sha256": "80b81680e7e96f1fbb8021d05f038c83aab86182f0be976616064b44d0fe89ae",
+        "last_model_day_with_reported_step": 456,
+        "first_changed_trajectory_index_and_trial_control_clock_day": [
+          361,
+          36248.71612132049,
+          36248.71612132049
+        ],
+        "published_accepted_trajectory_records": 1493,
+        "last_reported_step_start_and_dt_day": [
+          36250.96689431661,
+          1e-05
+        ]
+      }
+    },
+    {
+      "day": 457,
+      "profile": "corrected",
+      "origin_sha256": {
+        "macro.bin": "39fe7165dcb9f59b14e0bfb44ba3116ebf48ad33b3a54769fb58479b32d83ae8",
+        "result.end": "6198aef947fad4d57c7cdc9ddf0d63fdc173d82182d0db897b39834391291341"
+      },
+      "prepared_input_sha256": {
+        "swap.swp": "f21ccbb0e822629278d75958d0ec089f7ba3edaef7b099833deefa9745ca169a",
+        "swap.bbc": "4451cce63d7bea5acefb0b8f747ecbdc8053d2c44bfd2fc9dff661507c369b66"
+      },
+      "read_only_donor_sha256": "28137b0f317caae33004584c8e4826f83780cedc3a50e49f3f4df5ccc264a156",
+      "read_only_control_equal": {
+        "accepted_trace_steps_on_day": 17335,
+        "solver_trace_residuals": 154,
+        "budget_records_including_origin": 5,
+        "published_csv_data_rows": true
+      },
+      "matching_solver_records_before_clock_refresh_changes_exchange": 151,
+      "first_sensitive_cached_exchange": {
+        "clock_day": 36251.99995894476,
+        "dt_day": 4.1017014155153575e-05,
+        "newton_iteration": 4,
+        "line_search_trial": 1,
+        "zero_head_crossings": 0,
+        "one_cm_head_crossings": 0,
+        "max_head_displacement_cm": 8.627188070496999,
+        "cached_exchange_cm_day": -0.000970162771990595,
+        "refreshed_exchange_cm_day": -9.456665912978647
+      },
+      "fresh_convergence_check": {
+        "completed": false,
+        "wall_timeout_seconds": 240,
+        "donor_sha256": "59123720b9cb4ef69b11616a265a9e1c475e11b8571b0f5a742bac1ccaf1a07c",
+        "last_model_day_with_reported_step": 456,
+        "first_changed_trajectory_index_and_trial_control_clock_day": [
+          890,
+          36248.789225350585,
+          36248.789225350585
+        ],
+        "published_accepted_trajectory_records": 3640,
+        "last_reported_step_start_and_dt_day": [
+          36250.945008840106,
+          3.7853924784778186e-05
+        ]
+      }
+    },
+    {
+      "day": 458,
+      "profile": "budget-only from corrected origin",
+      "origin_sha256": {
+        "macro.bin": "39fe7165dcb9f59b14e0bfb44ba3116ebf48ad33b3a54769fb58479b32d83ae8",
+        "result.end": "6198aef947fad4d57c7cdc9ddf0d63fdc173d82182d0db897b39834391291341"
+      },
+      "prepared_input_sha256": {
+        "swap.swp": "f21ccbb0e822629278d75958d0ec089f7ba3edaef7b099833deefa9745ca169a",
+        "swap.bbc": "4451cce63d7bea5acefb0b8f747ecbdc8053d2c44bfd2fc9dff661507c369b66"
+      },
+      "read_only_donor_sha256": "cdc1caaf14b0b70496f9f6bddea3a16caba4660262abbede6aa0bb12ce3d97bf",
+      "read_only_control_equal": {
+        "accepted_trace_steps_on_day": 7714,
+        "solver_trace_residuals": 31,
+        "budget_records_including_origin": 7,
+        "published_csv_data_rows": true
+      },
+      "matching_solver_records_before_clock_refresh_changes_exchange": 17,
+      "first_sensitive_cached_exchange": {
+        "clock_day": 36252.99899999999,
+        "dt_day": 0.0009999981200150554,
+        "newton_iteration": 8,
+        "line_search_trial": 1,
+        "zero_head_crossings": 29,
+        "one_cm_head_crossings": 29,
+        "max_head_displacement_cm": 118.3924652039542,
+        "cached_exchange_cm_day": -5.311980120367191,
+        "refreshed_exchange_cm_day": 133.47281793059764
+      },
+      "fresh_convergence_check": {
+        "completed": false,
+        "wall_timeout_seconds": 240,
+        "donor_sha256": "1617c8e73bfa96e4a1c1ce3d60c397ddcd79b961963e558480d121ecf2c2da25",
+        "last_model_day_with_reported_step": 456,
+        "first_changed_trajectory_index_and_trial_control_clock_day": [
+          890,
+          36248.789225350585,
+          36248.789225350585
+        ],
+        "published_accepted_trajectory_records": 3640,
+        "last_reported_step_start_and_dt_day": [
+          36250.945008840106,
+          3.7853924784778186e-05
+        ]
+      }
+    }
+  ]
+}
