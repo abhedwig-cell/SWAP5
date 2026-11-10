@@ -207,8 +207,18 @@ day-2 continuation produce identical conductive rows. Water, crop and
 terminal state agree with the prior four-day runs. The exact historical
 Grassgrowth production tree also revalidates its sealed 1827-day run.
 See the [conductive evidence](CLOSURE01_GRASS_CONDUCTIVE_20261110.json).
-The production change is isolated in draft PR #1621. Resume with its CI
-results and predecessor attribution before canonical integration. Full
+The production change is isolated in draft PR #1621. Its first CI head
+had ten passing workflows and three failures. The historical thermal
+predicate also rejects canonical. F-CI additionally rejected the
+changed Grassgrowth owner because its application receipt pins the old
+source. The AHL application hit the previously reproduced Linux
+executable-stack loader failure.
+
+PR head `bd24e5922e7661b373aa01f6de8f72dd33d5f345` keeps both historical
+guards on exact predecessor worktrees and checks the current conductive
+rows through the original-input O0/O2 native disk restart test. The
+previous guards and retained receipt hashes are untouched. Check the
+automatic workflows on this head before canonical integration. Full
 physical energy and historical equivalence remain separate questions.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
