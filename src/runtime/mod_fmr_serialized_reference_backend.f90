@@ -108,6 +108,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
        FMR_BARTHOLOMEUS_DISABLED
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
+  use mod_bartholomeus_waterfilm_provider, only: bartholomeus_waterfilm_trial_cache_t
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t, &
        root_water_uptake_parameters_t, root_water_uptake_request_t, evaluate_macro_feddes_drought_uptake, ROOT_UPTAKE_OK
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, compose_jarvis_root_uptake, &
@@ -947,6 +948,7 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    type(bartholomeus_waterfilm_trial_cache_t) :: waterfilm_cache
     logical :: accepted_water_flux_trace_enabled = .false.
     logical :: accepted_water_flux_trace_failed = .false.
     type(fmr_trace_arena_entry_t), allocatable :: trace_arena(:)
@@ -3349,6 +3351,9 @@ contains
     if (allocated(forcing%soil_salt_boundary)) self%model%soil_salt_boundary_forcing = forcing%soil_salt_boundary
     ! Warm numerical history is local to this immutable external interval.
     call clear_reference_trial_guess(self%model%workspace)
+    ! The memoized quadrature belongs only to this call. It is outside the
+    ! committed state and the attempt contexts because hits require exact input.
+    call self%model%waterfilm_cache%reset(allocated(self%model%bartholomeus))
     if (allocated(forcing%legacy_swbotb5_control) .or. allocated(forcing%legacy_swbotb3_implicit_control)) then
       selection%model => self%model
       selection%max_retries = config%transaction%max_retries
@@ -3370,6 +3375,7 @@ contains
       call materialize_accepted_water_flux_trace(self%model,t0,t1,soil_salt_boundary_ok)
       if (.not.soil_salt_boundary_ok) call reject_backend_trial(result,candidate,diagnostics)
     end if
+    call self%model%waterfilm_cache%reset(.false.)
     ! Transaction contexts have left scope after fmr_trial_from_checkpoint.
     ! The immutable public observation now owns the accepted flat trace.
     if (allocated(self%model%trace_arena)) deallocate(self%model%trace_arena)
@@ -5655,7 +5661,7 @@ contains
           call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
                self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
                self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors, &
-               refined_waterfilm=self%root_accuracy_enabled)
+               refined_waterfilm=self%root_accuracy_enabled,waterfilm_cache=self%waterfilm_cache)
           self%last_observation%bartholomeus_executed=.true.
           self%last_observation%bartholomeus_status=oxygen_status
           self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
