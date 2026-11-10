@@ -509,6 +509,27 @@ the shared runtime change. The same F-GC44 command already passes at the
 candidate merge ref on Ubuntu 24.04. See the PR for job identities.
 This review adds no model changes and retains all prior test verdicts.
 
+The same-runner comparison requested for PR 1626 is complete.
+The Ubuntu 26.04 image `20261101.186.1` with GNU Fortran 15.2.0
+reproduces the identical F-GC44 O0/O2 derivative output difference on
+canonical and the AHL candidate. For Cauchy contact, both O0 builds
+reach the unchanged 90-second limit at contact-0. Both O2 builds
+refuse both contact variants in macro initialization with
+`source rapid reference`, before the required rollback snapshots.
+See [FMR](https://github.com/abhedwig-cell/SWAP5/actions/runs/42818169920/job/129836513151)
+and the [Cauchy job pair](https://github.com/abhedwig-cell/SWAP5/actions/runs/42819115007).
+
+On Ubuntu 24.04 the [current Grassgrowth controls](https://github.com/abhedwig-cell/SWAP5/actions/runs/42818169920/job/129836512898)
+pass runtime, original-input and own disk restart at O0 and O2. The
+same job passes the Andelst cold prefix and restart/codec controls.
+[Current F-CI](https://github.com/abhedwig-cell/SWAP5/actions/runs/42818169920/job/129836513125)
+passes the selector and exact predecessor replay. Its automatic
+selection still requires a shared-runtime owner decision. The six
+selected current component probes pass locally at O0 and O2.
+The next AHL integration decision is the bounded current-source
+admission scope. Keep the FMR exact-output and Cauchy contact
+failures visible as independent baseline findings.
+
 The completed Andelst chain used these commands.
 
 ```powershell
