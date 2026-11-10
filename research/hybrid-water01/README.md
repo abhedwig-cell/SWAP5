@@ -193,10 +193,23 @@ a replacement for the qualified application path. The research replay,
 input and build hashes, and exact first differences are in the
 [reuse evidence](CLOSURE01_MACRO_REUSE_20261110.json).
 
-Leave the Andelst experimental solver changes in research. Resume with
-the Hupsel oxygen comparison from the retained original reference and
-accepted root-state receipts. Keep Grassgrowth thermal qualification
-separate.
+Leave the Andelst experimental solver changes in research. The Hupsel
+oxygen holdout on day 584 remains reference-limited. The two finest
+literal-original grids differ by 2.4784465e-5 cm against the frozen
+5.371840000016327e-7 cm criterion. Seven chronology tests pass, while the
+historical capsule correctly refuses current-source reuse because the
+shared publisher and current admission verifier have changed. No Hupsel
+process change is selected from this evidence.
+
+Grassgrowth now publishes a separate conductive day ledger for every
+accepted substep. Windows O0/O2 original-input days 1–4 and each own
+day-2 continuation produce identical conductive rows. Water, crop and
+terminal state agree with the prior four-day runs. The exact historical
+Grassgrowth production tree also revalidates its sealed 1827-day run.
+See the [conductive evidence](CLOSURE01_GRASS_CONDUCTIVE_20261110.json).
+The production change is isolated in draft PR #1621. Resume with its CI
+results and predecessor attribution before canonical integration. Full
+physical energy and historical equivalence remain separate questions.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -967,5 +980,24 @@ foreach ($trial in @(
             throw "Read-only Andelst replay failed"
         }
     }
+}
+```
+
+### Grassgrowth conductive day ledger
+
+Run from the repository root with GNU Fortran and GCC on PATH. Use new
+directories for each build, uninterrupted run, cut and fresh restart.
+
+```powershell
+foreach ($opt in @('O0', 'O2')) {
+    $b = "$env:TEMP/s5-closure-conductive-$opt"
+    python -B tools/solute/build_grass_startup.py --output $b --optimization $opt --policy retained --numerical-profile thermal-control-1e-5C
+    if ($LASTEXITCODE -ne 0) { throw "Grassgrowth build failed" }
+    python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER --grass-build $b --output "$b-full" --days 4
+    if ($LASTEXITCODE -ne 0) { throw "Grassgrowth control failed" }
+    python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER --grass-build $b --output "$b-cut" --days 2
+    if ($LASTEXITCODE -ne 0) { throw "Grassgrowth checkpoint run failed" }
+    python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER --grass-build $b --output "$b-resume" --days 4 --restart "$b-cut/checkpoint.bin"
+    if ($LASTEXITCODE -ne 0) { throw "Grassgrowth restart failed" }
 }
 ```

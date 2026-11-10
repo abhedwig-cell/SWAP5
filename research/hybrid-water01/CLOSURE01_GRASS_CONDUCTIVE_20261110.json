@@ -1,0 +1,140 @@
+{
+  "tested_source": "cb809e9665eeb30ecd8506ae0b1cc09038719693",
+  "pr": 1621,
+  "pr_head": "abe25ee47b22b34c8e2b05b74f8a0478d5fb1b96",
+  "canonical_base": "78c8012530b3be14e48edef6fc950e2c09c695ca",
+  "new_production_source": "app/grass_project/initial_interval.f90",
+  "scope": "conductive accepted substeps, four-day original inputs, same-build day-2 restart",
+  "builds": {
+    "O0": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "executable_sha256": "d0bc01313d09ba58e4281a192ab9c8a1b26be6afa5387b09d5bec7bef93009af",
+      "inputs_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "continuous_and_resumed_final_checkpoint_sha256": "1847470bd75ee102453b732c6647bcf031f24dbf4bfdd289109510db6121dcf6",
+      "water_crop_and_terminal_state_match_prior_four_day_run": true,
+      "day_two_restart_matches_continuous_budget_and_state": true,
+      "conductive_budget_sha256": "a7f06b6ad3a34a09f2f0d7210734d345b7df7b93c65431efd91e6b89802baa13",
+      "daily_conductive_budget": [
+        {
+          "day": "1",
+          "t1": " 1.00000000000000000E+000",
+          "accepted_steps": "3065",
+          "storage_change_j_cm2": "-9.29551913828768306E+002",
+          "top_in_j_cm2": "-9.29551913828636771E+002",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": "-1.31535671243909746E-010",
+          "max_substep_residual_j_cm2": " 3.53425622101610770E-012"
+        },
+        {
+          "day": "2",
+          "t1": " 2.00000000000000000E+000",
+          "accepted_steps": "601",
+          "storage_change_j_cm2": "-3.63541689924911395E+002",
+          "top_in_j_cm2": "-3.63541689924885588E+002",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": "-2.58069121628068388E-011",
+          "max_substep_residual_j_cm2": " 2.28077626229783448E-012"
+        },
+        {
+          "day": "3",
+          "t1": " 3.00000000000000000E+000",
+          "accepted_steps": "1489",
+          "storage_change_j_cm2": "-4.97258614489575052E+002",
+          "top_in_j_cm2": "-4.97258614489575280E+002",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": " 2.27373675443232059E-013",
+          "max_substep_residual_j_cm2": " 2.28887742093064617E-012"
+        },
+        {
+          "day": "4",
+          "t1": " 4.00000000000000000E+000",
+          "accepted_steps": "1727",
+          "storage_change_j_cm2": " 5.95214371119168995E+000",
+          "top_in_j_cm2": " 5.95214371119183205E+000",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": "-1.42108547152020037E-013",
+          "max_substep_residual_j_cm2": " 2.35658367819802095E-012"
+        }
+      ]
+    },
+    "O2": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "executable_sha256": "1fe2513cc579d31002889633b06f70bec853d2a606f5b9ef48f0fa3c82e5eda9",
+      "inputs_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "continuous_and_resumed_final_checkpoint_sha256": "08ceb95398741f00e15268c04aab63c10a91e0bf9e943f237651e3292b19d377",
+      "water_crop_and_terminal_state_match_prior_four_day_run": true,
+      "day_two_restart_matches_continuous_budget_and_state": true,
+      "conductive_budget_sha256": "a7f06b6ad3a34a09f2f0d7210734d345b7df7b93c65431efd91e6b89802baa13",
+      "daily_conductive_budget": [
+        {
+          "day": "1",
+          "t1": " 1.00000000000000000E+000",
+          "accepted_steps": "3065",
+          "storage_change_j_cm2": "-9.29551913828768306E+002",
+          "top_in_j_cm2": "-9.29551913828636771E+002",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": "-1.31535671243909746E-010",
+          "max_substep_residual_j_cm2": " 3.53425622101610770E-012"
+        },
+        {
+          "day": "2",
+          "t1": " 2.00000000000000000E+000",
+          "accepted_steps": "601",
+          "storage_change_j_cm2": "-3.63541689924911395E+002",
+          "top_in_j_cm2": "-3.63541689924885588E+002",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": "-2.58069121628068388E-011",
+          "max_substep_residual_j_cm2": " 2.28077626229783448E-012"
+        },
+        {
+          "day": "3",
+          "t1": " 3.00000000000000000E+000",
+          "accepted_steps": "1489",
+          "storage_change_j_cm2": "-4.97258614489575052E+002",
+          "top_in_j_cm2": "-4.97258614489575280E+002",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": " 2.27373675443232059E-013",
+          "max_substep_residual_j_cm2": " 2.28887742093064617E-012"
+        },
+        {
+          "day": "4",
+          "t1": " 4.00000000000000000E+000",
+          "accepted_steps": "1727",
+          "storage_change_j_cm2": " 5.95214371119168995E+000",
+          "top_in_j_cm2": " 5.95214371119183205E+000",
+          "bottom_in_j_cm2": " 0.00000000000000000E+000",
+          "residual_j_cm2": "-1.42108547152020037E-013",
+          "max_substep_residual_j_cm2": " 2.35658367819802095E-012"
+        }
+      ]
+    }
+  },
+  "historical_grass": {
+    "verified_days": 1827,
+    "verified_tree": "7faeaf1efba890fc52893bebd4f584469bb8b4a9",
+    "original_B0_max_temperature_difference_c": 0.010338430616862126
+  },
+  "hupsel": {
+    "finest_original_grid_response_cm": 2.4784465E-05,
+    "changed_dependencies": [
+      "app/support/restart_publish.c",
+      "tests/dataqual15/verify_current_native_admission.py"
+    ],
+    "unchanged_oxygen_limit_cm": 5.371840000016327E-07,
+    "holdout_day": 584,
+    "chronology_unit_tests_passed": 7,
+    "historical_capsule_reuse_on_current_head": "refused by source dependency binding"
+  }
+}
