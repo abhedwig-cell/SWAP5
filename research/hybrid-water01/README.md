@@ -171,10 +171,10 @@ The fetched canonical merge has the exact qualified tree
 `4caf4e27bab50f67d3f157d45d8f6adf19ec1c5c` and the expected two parents.
 
 The targeted Andelst replays below localize the day-457 groundwater
-discrepancy to the final accepted step. The same-origin intervention
-shows sensitivity to reuse of the macro exchange during that solve.
-Continue by checking that sensitivity on the corrected origin before
-proposing a production policy.
+discrepancy to the final accepted step. Both same-origin controls show
+sensitivity to reuse of the macro exchange during that solve.
+Continue by testing which trial-state event predicts stale exchange,
+using these four runs as controls before proposing a production policy.
 Retain the existing mass tolerance and the separate Grassgrowth
 thermal and Hupsel oxygen qualification statuses.
 
@@ -435,6 +435,14 @@ require separate qualification.
 $case = "$env:TEMP/hy481-gwl-pair-00"
 python -B research/hybrid-water01/replay_groundwater.py --reference "$env:TEMP/hy481-local-b0-20261109" --origin "$case/first" --prepared "$case/case" --output "$env:TEMP/s5-gwl457-solver-00-refresh" --solver-trace-day 457 --refresh-macro-final
 ```
+
+The corrected-origin intervention uses the same clock window, with
+`--corrected` and the `hy481-gwl-pair-11` case. It preserves 17,334
+accepted trace records and 151 residual evaluations before the
+first difference. The control's endpoint is -82.86799 cm and the
+recomputed endpoint is -83.60749 cm. Both runs have a day residual
+below 9.7e-9 cm. With recomputation the two origins' endpoints are
+0.11095 cm apart, compared with 10.88535 cm in the controls.
 
 
 ### Full-period trial of the final-step recomputation
