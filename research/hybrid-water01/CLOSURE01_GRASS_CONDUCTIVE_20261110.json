@@ -144,5 +144,33 @@
     "historical_expected_paths": 5,
     "canonical_base_paths": 30,
     "pull_request_head_paths": 30
+  },
+  "ci_successor": {
+    "head": "bd24e5922e7661b373aa01f6de8f72dd33d5f345",
+    "canonical_application_predecessor": "78c8012530b3be14e48edef6fc950e2c09c695ca",
+    "historical_thermal_predecessor": "77f3736198bdc54caa5d7d5ad2894413c0edb535",
+    "historical_thermal_boundary_tests": 8,
+    "historical_thermal_data_refusals": 8,
+    "native_windows": {
+      "O0": {
+        "executable_sha256": "5e0374d0776f3a04d7dc18316615fc4b6b822ec5c46a9be1daeb205c550466fe",
+        "checkpoint_sha256": "acd940f586ad9b74851fb2841c5d925df9caa3ac6acb7e2f01ef6d6a4dbbec88",
+        "conductive_budget_sha256": "4a665d99acd9798875c74e7df98e0b8443b8adea1683212759ddd635c2158e38",
+        "restart": "1 -> 3 exact including conductive budget",
+        "rejected_without_conductive_output": 15,
+        "maximum_water_residual_cm": 2.2565282975506307E-14
+      },
+      "O2": {
+        "executable_sha256": "b76b7644064f876bd0c7d23521526e777bae7f77ff755563311afb2410779a50",
+        "checkpoint_sha256": "9cbb99fdaadd39b060f443b409435afdec88ecc7582ceac12c2d9b1589bd90b4",
+        "conductive_budget_sha256": "4a665d99acd9798875c74e7df98e0b8443b8adea1683212759ddd635c2158e38",
+        "restart": "1 -> 3 exact including conductive budget",
+        "rejected_without_conductive_output": 15,
+        "maximum_water_residual_cm": 2.2565282975506307E-14
+      }
+    },
+    "fci_run": 42746215351,
+    "grass_thermal_run": 42746215222,
+    "native_disk_restart_run": 42746215230
   }
 }
