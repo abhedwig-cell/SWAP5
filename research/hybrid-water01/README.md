@@ -755,6 +755,30 @@ above for the intended 1626 → 1623 → 1624 → 1625 order. GitHub reports all
 four PRs open and unstable. The hosted merge refs confirm composition and
 source identity, while disposition of the red checks on 1626 remains open.
 
+### Independent file verification of the AHL application receipts
+
+Re-read the receipts from exact PR heads `3941df23`, `51c0b981` and
+`a6c9fe63`. All three name the production source `a4da56a0c`.
+Rehashed the retained Windows outputs without rerunning the models.
+
+- Grassgrowth: all six full-run outputs and five original inputs match.
+  Each of the three ledgers has 1827 rows. All six output hashes match
+  at each retained continuation, day 245 to 247 and day 1792 to 1827.
+- Andelst: the two executables and the 481-line daily ledger match.
+  The 482 dated output records match when joined with LF and a final LF.
+  The SWAP-generated report header is excluded from this recorded digest.
+  At each restart, 365 to 457 and 453 to 459, the resumed daily ledger
+  and both verified-origin payloads match their published hashes.
+  The staged `original/swap.swp` is an execution copy. This check did not
+  rehash the original input archive.
+- Hupsel: all eight full-run outputs and seven input files match.
+  The budget contains 1097 records for 1096 model days. All eight
+  retained outputs match for each O0/O2 day-2 restart and the O2 year restart.
+
+This verifies the retained bytes against the published receipts. It does
+not requalify the historical oxygen comparisons or the unresolved Linux
+Cauchy contact initialization.
+
 The completed Andelst chain used these commands.
 
 ```powershell
