@@ -78,7 +78,18 @@ jobs:
         env:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
-          if [[ -f integration/dataqual15/WATER_APPLICATION_INTEGRATION_20261109.json ]]; then
+          grass_base=78c8012530b3be14e48edef6fc950e2c09c695ca
+          if git merge-base --is-ancestor "$grass_base" HEAD &&
+             [[ "$(git diff --name-only --no-renames "$grass_base" HEAD -- src app reference tools)" == app/grass_project/initial_interval.f90 ]]; then
+            # Preserve the frozen application gate on its exact source.
+            # Current Grassgrowth execution is qualified by grass-thermal-production.yml.
+            python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
+            prior="$RUNNER_TEMP/grass-application-predecessor"
+            git worktree add --detach "$prior" "$grass_base"
+            trap 'git worktree remove "$prior"' EXIT
+            (cd "$prior" && python3 -B tests/dataqual15/test_current_native_admission.py &&
+              python3 -B tests/dataqual15/verify_water_application_successor.py --output "$RUNNER_TEMP/native-admission")
+          elif [[ -f integration/dataqual15/WATER_APPLICATION_INTEGRATION_20261109.json ]]; then
             python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
             python3 -B tests/dataqual15/test_current_native_admission.py
             python3 -B tests/dataqual15/verify_water_application_successor.py --output "$RUNNER_TEMP/native-admission"

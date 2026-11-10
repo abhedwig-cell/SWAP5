@@ -13,6 +13,7 @@ def main():
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--bundle',type=Path,required=True)
     parser.add_argument('--output',type=Path,required=True)
+    parser.add_argument('--conductive-budget', action='store_true')
     args=parser.parse_args();base=args.bundle.resolve();out=args.output.resolve();out.mkdir(parents=True)
     build=json.loads((base/'BUILD.json').read_text());exe=base/build.get('executable','swap5_grass_startup')
     assert sha(exe)==build['executable_sha256']
@@ -45,6 +46,22 @@ def main():
         assert all(math.isfinite(float(v))for v in row.values())
         assert abs(float(row['residual_cm']))<1e-10
         assert abs(float(row['water_end_cm'])-float(row['water_start_cm'])-float(row['input_cm'])+float(row['output_cm']))<1e-10
+    if args.conductive_budget:
+        name = 'conductive_budget.csv'
+        with (uninterrupted/name).open() as stream:
+            conductive = list(csv.DictReader(stream))
+        with (resumed/name).open() as stream:
+            assert conductive[1:] == list(csv.DictReader(stream))
+        assert len(conductive) == len(budget)
+        for heat, water in zip(conductive, budget):
+            assert all(heat[key] == water[key] for key in ('day', 't1', 'accepted_steps'))
+            assert all(math.isfinite(float(value)) for value in heat.values())
+            storage, top, bottom = (float(heat[key]) for key in (
+                'storage_change_j_cm2', 'top_in_j_cm2', 'bottom_in_j_cm2'))
+            assert bottom == 0.0
+            assert float(heat['residual_j_cm2']) == storage - top - bottom
+            assert abs(float(heat['residual_j_cm2'])) < 1e-8
+            assert abs(float(water['heat_residual_j_cm2'])) <= float(heat['max_substep_residual_j_cm2']) < 1e-8
     controls=['crc','truncated','layout','clock','source','roots','delay','potential_delay','cut_index','yield_nan']
     active_compat=[at for at in d['compatibility']if struct.unpack_from('=i',raw,at)[0]]
     if active_compat:controls.append('compatibility_nan')
