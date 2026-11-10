@@ -661,6 +661,35 @@ Use bounded owner feedback for development and preserve full proof
 for an affected release dependency surface. The running full Grassgrowth
 verification is independent of these scratch measurements.
 
+The historical [oxygen analysis](../../docs/audits/PPA_WU05C3R_BARTHOLOMEUS_RECONSTRUCTION.md)
+already removed a duplicate QROMBD integration experimentally and
+observed about 95% no-stress outcomes in the old Grassgrowth case.
+The original Grassgrowth sets SWKIMPL=0. The conditional legacy
+Newton-loop call to RootExtraction(2) is not active there. WFT300
+remains a separate numerical option without current admission.
+
+The bounded SWAP5 four-day diagnostic observes 7367 exact consecutive
+waterfilm-profile repeats in 22100 calls. The source candidate
+`589c1d27536d2daf89c921f1bcabc780aec882bc` limits bit-exact memoization
+to one FMR trial, with no checkpoint field or quadrature/tolerance change.
+In two alternating checked O2 pairs, median native wall time is
+21.17 s before and 18.30 s with trial reuse (13.5% lower). All five
+physical output files match exactly, as do O0/O2 assembled oxygen
+outputs and the own day-2-to-4 restart ledgers and terminal files.
+The candidate remains on its own branch above PR 1626. There is no
+production admission or full-period performance claim.
+
+The desired comparison remains full-project runtime on the same host
+at comparable verified accuracy. Small exact-preserving savings are
+useful but cannot close that gap alone. Earlier matched kernels and
+[97-day weather/crop timing](../../docs/performance/PERF01_NATIVE_431_WEATHER_20261023_RESULT.md)
+already isolate extra accepted and speculative work as major drivers
+in their scopes. [EMBEDSTEP](../../docs/performance/F-PE-EMBEDSTEP_CLOSEOUT.md)
+rules out recycling its static selective-control experiments. Use
+bounded representative development runs before selecting another
+complete experiment. Keep the existing full Grassgrowth verification
+on its original source and run no duplicate for this performance probe.
+
 The completed Andelst chain used these commands.
 
 ```powershell
