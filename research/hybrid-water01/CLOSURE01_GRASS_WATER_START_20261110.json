@@ -1,0 +1,229 @@
+{
+  "canonical_base": "a57d7d532464ad89b7aca918263cf114b6b42185",
+  "legacy_build": {
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "base_temperature_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "observed_temperature_sha256": "ee01d018c11dcbf6c29823e50ec619d7f487e7564c1d77cb330c860e320094e8",
+    "retained_legacy_executable_sha256": "f03b36e0ef24c6dccfa55aed18c4b713f6e710840bf98c42068fdc4b1ff20ba6",
+    "executable_sha256": "30f17aab76790a531b1c092f3be2e354693a8b7a341b514fdd6b1766ae307c04",
+    "original_input_sha256": {
+      "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+      "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+    },
+    "exit": "observer intentionally stopped after the last thermal step on day 63",
+    "stdout_sha256": "1f5f0d01ffc10b60dc7824443cbb57fce9c2f9ba86fc6483ea106c6e158b2ec7"
+  },
+  "legacy_first": {
+    "dt_days": 0.0002,
+    "net_rain_cm_day": 5.975243984917098,
+    "qtop_upward_cm_day": -5.973143032131077,
+    "qbottom_upward_cm_day": 5.211299167328797E-13,
+    "soil_storage_change_cm": 0.0011942789959929478
+  },
+  "runs": {
+    "O0-thermal": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "executable_sha256": "6ded9b774da3e8d965c00e1556eb331c839825d074e23f6208b0e4a1c40c0a11",
+      "original_inputs_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "profile": "thermal-control-1e-5C",
+      "initial_theta_vs_legacy": {
+        "node": 1,
+        "signed": 0.0,
+        "max_abs": 0.0
+      },
+      "daily_first_leaf": {
+        "dt_days": 6.103515625E-07,
+        "gross_rain_cm_day": 6.304347826086956,
+        "qtop_upward_cm_day": -5.973143032131077,
+        "qbottom_upward_cm_day": 1.6926392639951836E-10,
+        "soil_storage_change_cm": 3.644650256429127E-06,
+        "air_temperature_c": 0.7499999999999999,
+        "net_rain_cm_day": 5.975243984917098
+      },
+      "daily_first_forcing_window_end": 0.04,
+      "daily_first_forcing_window_temporal_rejections": 15,
+      "day1_adaptive_intervals": 3065,
+      "common_clock": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-water-start-O0-thermal\\swap5_grass_startup.exe",
+          "0.0002",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control"
+        ],
+        "thermal_leaves": 318,
+        "theta_vs_legacy": {
+          "node": 1,
+          "signed": 8.719759352238121E-06,
+          "max_abs": 8.719759352238121E-06
+        },
+        "water_residual_cm": 2.2197213066848186E-15,
+        "net_top_in_cm": 0.0011946286064262153,
+        "conductive_storage_j_cm2": -7.14254367786225,
+        "stdout_sha256": "a9dae77a2c62a28bebc7540a8fbfb9fa6f9ac7f0fea6bb5a6d2f3e206b101a76"
+      },
+      "observer_source_sha256": "ea69caa9944be62efcfa0329c6f676f1dfe43d01cceb0abacc178e3d6054181f",
+      "build_manifest_sha256": "f3486f1f94ce69e4231fd4310db7d8bfe209cab961688dd3854cad875ec5fb69"
+    },
+    "O0-water": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "executable_sha256": "fabcd320441e1ccd35a77d763cf0b4648d1a5e2ebf3e313efd28a9318303f7eb",
+      "original_inputs_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "profile": "water-only",
+      "initial_theta_vs_legacy": {
+        "node": 1,
+        "signed": 0.0,
+        "max_abs": 0.0
+      },
+      "daily_first_leaf": {
+        "dt_days": 7.8125E-05,
+        "gross_rain_cm_day": 6.304347826086956,
+        "qtop_upward_cm_day": -5.973143032131077,
+        "qbottom_upward_cm_day": 1.5475621018636075E-13,
+        "soil_storage_change_cm": 0.00046651523280971663,
+        "air_temperature_c": 0.7499999999999999,
+        "net_rain_cm_day": 5.975243984917098
+      },
+      "daily_first_forcing_window_end": 0.04,
+      "daily_first_forcing_window_temporal_rejections": 12,
+      "day1_adaptive_intervals": 496,
+      "common_clock": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-water-start-O0-water\\swap5_grass_startup.exe",
+          "0.0002",
+          "retain-step",
+          "100000"
+        ],
+        "thermal_leaves": 2,
+        "theta_vs_legacy": {
+          "node": 1,
+          "signed": 4.279681293739568E-06,
+          "max_abs": 4.279681293739568E-06
+        },
+        "water_residual_cm": 3.1642330819101896E-15,
+        "net_top_in_cm": 0.0011946286064262153,
+        "conductive_storage_j_cm2": -6.861472111895413,
+        "stdout_sha256": "418806437df6c5fcdf5530fbafaf8203ef76bad38ec6592f9f703f88d7c61457"
+      },
+      "observer_source_sha256": "ea69caa9944be62efcfa0329c6f676f1dfe43d01cceb0abacc178e3d6054181f",
+      "build_manifest_sha256": "9e4ef869aaa2a6759dd0af4f73c96b253287953a97958bd64aca75fddf0a7fbd"
+    },
+    "O2-thermal": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "executable_sha256": "2b70d53341e535c5e31e4265aad63844620983ee5febb475ad69ab3d75e977ab",
+      "original_inputs_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "profile": "thermal-control-1e-5C",
+      "initial_theta_vs_legacy": {
+        "node": 1,
+        "signed": 0.0,
+        "max_abs": 0.0
+      },
+      "daily_first_leaf": {
+        "dt_days": 6.103515625E-07,
+        "gross_rain_cm_day": 6.304347826086956,
+        "qtop_upward_cm_day": -5.973143032131077,
+        "qbottom_upward_cm_day": 1.6926392639951836E-10,
+        "soil_storage_change_cm": 3.644650256429127E-06,
+        "air_temperature_c": 0.7499999999999999,
+        "net_rain_cm_day": 5.975243984917098
+      },
+      "daily_first_forcing_window_end": 0.04,
+      "daily_first_forcing_window_temporal_rejections": 15,
+      "day1_adaptive_intervals": 3065,
+      "common_clock": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-water-start-O2-thermal\\swap5_grass_startup.exe",
+          "0.0002",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control"
+        ],
+        "thermal_leaves": 318,
+        "theta_vs_legacy": {
+          "node": 1,
+          "signed": 8.719759352238121E-06,
+          "max_abs": 8.719759352238121E-06
+        },
+        "water_residual_cm": 2.2197213066848186E-15,
+        "net_top_in_cm": 0.0011946286064262153,
+        "conductive_storage_j_cm2": -7.14254367786225,
+        "stdout_sha256": "a9dae77a2c62a28bebc7540a8fbfb9fa6f9ac7f0fea6bb5a6d2f3e206b101a76"
+      },
+      "observer_source_sha256": "ea69caa9944be62efcfa0329c6f676f1dfe43d01cceb0abacc178e3d6054181f",
+      "build_manifest_sha256": "ffdba52cf15ed9bdc0a85b014d77f57aca70cb271b637f80fb42ba124c0b5eee"
+    },
+    "O2-water": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "executable_sha256": "86c94e76d83dbdefc2bc8ebb64e22c1eb1533ce4658d4669a4bfe90126df3ac4",
+      "original_inputs_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "profile": "water-only",
+      "initial_theta_vs_legacy": {
+        "node": 1,
+        "signed": 0.0,
+        "max_abs": 0.0
+      },
+      "daily_first_leaf": {
+        "dt_days": 7.8125E-05,
+        "gross_rain_cm_day": 6.304347826086956,
+        "qtop_upward_cm_day": -5.973143032131077,
+        "qbottom_upward_cm_day": 1.5475621018636075E-13,
+        "soil_storage_change_cm": 0.00046651523280971663,
+        "air_temperature_c": 0.7499999999999999,
+        "net_rain_cm_day": 5.975243984917098
+      },
+      "daily_first_forcing_window_end": 0.04,
+      "daily_first_forcing_window_temporal_rejections": 12,
+      "day1_adaptive_intervals": 496,
+      "common_clock": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-water-start-O2-water\\swap5_grass_startup.exe",
+          "0.0002",
+          "retain-step",
+          "100000"
+        ],
+        "thermal_leaves": 2,
+        "theta_vs_legacy": {
+          "node": 1,
+          "signed": 4.279681293739568E-06,
+          "max_abs": 4.279681293739568E-06
+        },
+        "water_residual_cm": 3.1642330819101896E-15,
+        "net_top_in_cm": 0.0011946286064262153,
+        "conductive_storage_j_cm2": -6.861472111895413,
+        "stdout_sha256": "418806437df6c5fcdf5530fbafaf8203ef76bad38ec6592f9f703f88d7c61457"
+      },
+      "observer_source_sha256": "ea69caa9944be62efcfa0329c6f676f1dfe43d01cceb0abacc178e3d6054181f",
+      "build_manifest_sha256": "eaf4732cb23e981763cd8a92d64e4d0863c0e6f46772cd76bf9d63a11717949c"
+    }
+  },
+  "comparison_scope": "Original inputs, four one-day native builds and first common-clock endpoint; no redefinition of scientific tolerances"
+}

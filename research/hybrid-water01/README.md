@@ -249,10 +249,23 @@ changes node 27 by -0.003422 °C. The observed coupled native difference
 there is -0.006367 °C. Interpolating moisture within each split produces
 almost the same contrast. See [the clock evidence](CLOSURE01_GRASS_THERMAL_CLOCK_20261110.json).
 
-The controlled clock change demonstrates sensitivity, with a remaining
-coupled trajectory difference. Keep the original thermal law. If a
-correction is needed, first compare accepted hydraulic trajectories and
-the thermal forcing-window ownership at their earliest divergence.
+The first hydraulic comparison reproduces the original initial theta
+and net rain and surface flux exactly. The original first step lasts
+2e-4 day. Native day 1 first accepts leaves at 7.8125e-5 day with the
+water-only profile and 6.103515625e-7 day with thermal control. Each
+profile is exact across O0/O2. On the original first endpoint, both
+native profiles integrate the same net surface input as the original
+to roundoff. Their maximum theta differences are 4.280e-6 and 8.720e-6
+respectively, both at node 1, with water residual below 3.17e-15 cm.
+Thermal control uses 3065 adaptive intervals over day 1 versus 496
+for water-only. See [the startup evidence](CLOSURE01_GRASS_WATER_START_20261110.json).
+
+This localizes the earliest tested difference to evolution on different
+accepted grids, after identical initialization and surface forcing.
+The residual effect of the water step implementation is still open.
+Keep the original thermal law and the existing tolerances. Continue
+scientific qualification by comparing the initial SWAP5 full candidate
+with the original same-duration leaf before proposing a process change.
 Physical advection, Hupsel oxygen and Andelst historical equivalence
 remain separate open qualifications.
 
@@ -1110,4 +1123,35 @@ foreach ($opt in @('O0','O2')) {
     if ($LASTEXITCODE -ne 0) { throw "Native thermal replay build failed" }
 }
 python -B research/hybrid-water01/audit_grass_heat_history.py --legacy $legacy --native "$env:TEMP/s5-events-grass-367" --replay-o0 "$env:TEMP/s5-grass-heat-obs-O0/replay-grass-heat-history.exe" --replay-o2 "$env:TEMP/s5-grass-heat-obs-O2/replay-grass-heat-history.exe"
+```
+
+### Grassgrowth first hydraulic endpoint
+
+Use the previous heat observation builds for the original TTUTIL
+archives. The two native profiles use the same source and numerical
+water tolerance. They differ by the existing registered thermal
+profile, which includes its bounded small-drainage handling.
+
+```powershell
+$source = (Get-Location).Path
+$probe = "$env:TEMP/s5-grass-water-start-20261110"
+$legacy = "$env:TEMP/s5-grass-first-water-b0-20261110"
+python -B research/hybrid-water01/replay_grass_legacy_heat.py --reference "$env:TEMP/hy481-local-b0-20261109" --output $legacy
+git worktree add --detach --no-checkout $probe a57d7d532464ad89b7aca918263cf114b6b42185
+git -C $probe sparse-checkout set src app tools reference integration/audits/evidence tests/support
+git -C $probe reset --hard HEAD
+python -B research/hybrid-water01/observe_grass_heat.py $probe
+python -B research/hybrid-water01/observe_grass_water_start.py $probe
+Push-Location $probe
+try {
+    foreach ($opt in @('O0','O2')) {
+        $b = "$env:TEMP/s5-grass-water-start-$opt"
+        $tt = "$env:TEMP/s5-grass-heat-obs-$opt/libttutil.a"
+        python -B tools/solute/build_grass_startup.py --output "$b-thermal" --optimization $opt --input-archive $tt --policy retained --numerical-profile thermal-control-1e-5C --end 1
+        if ($LASTEXITCODE -ne 0) { throw "Observed thermal profile failed" }
+        python -B tools/solute/build_grass_startup.py --output "$b-water" --optimization $opt --input-archive $tt --reuse-build "$b-thermal" --policy retained --end 1
+        if ($LASTEXITCODE -ne 0) { throw "Observed water-only profile failed" }
+    }
+} finally { Pop-Location }
+python -B "$source/research/hybrid-water01/audit_grass_water_start.py" --legacy $legacy --build-root "$env:TEMP" --output "$env:TEMP/s5-grass-water-common-clock-20261110"
 ```
