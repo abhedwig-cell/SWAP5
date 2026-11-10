@@ -28,11 +28,14 @@ jobs:
             use iso_fortran_env, only: real64, int64
             implicit none
             real(real64) :: osat(256), decimal
-            integer :: count
+            integer :: count, nsub, layers(256)
             character(5) :: literal
             literal = '0.393'
             read(literal,*) decimal
             call rdinit(73,0,'input.swp')
+            call rdinne('isublay',nsub)
+            call rdfinr('isoillay',1,256,layers,256,nsub)
+            count=maxval(layers(:nsub))
             call rdfdor('osat',0d0,1d0,osat,256,count)
             if(count < 3) error stop 'missing layers'
             write(*,'(a,2(1x,es25.17),2(1x,z16.16))') 'OSAT TTUTIL then internal READ',osat(3),decimal, &
