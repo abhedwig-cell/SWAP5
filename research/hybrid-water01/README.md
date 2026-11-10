@@ -378,15 +378,14 @@ diagnostic variant, and the original B0 remains the historical
 reference. The values, profile samples and hashes are in the
 [hydraulic receipt](grass-wetting188-evidence.json).
 
-Grassgrowth review is in draft PR #1623 on
-`codex/grassgrowth-closure-1938`, against canonical `a8275101`.
-The PR consolidates the 1827-day sealed run, exact restarts,
-balances and the day-188 decision. The main difference is
-classified as numerical time-grid sensitivity. Keep the original
-B0 difference and the small unresolved residual explicit. Check the
-PR evidence and any already-running current-source replay before
-starting another Grassgrowth run. After this review packet, return
-to the Andelst water-kernel integration and durable restart.
+[Grassgrowth PR 1623](https://github.com/abhedwig-cell/SWAP5/pull/1623)
+is ready for review at `168e1ebc1`. The fresh canonical thermal O2 run
+completed 1827 days, and the fresh day-1791 process exactly reproduces
+days 1792-1827 and the terminal checkpoint, state and endpoint. All
+daily water, uptake and conductive checks pass with existing bounds.
+The source, original inputs and build are bound in the archived evidence.
+The diagnostic water-only day-188 attribution stays separate from the
+current thermal run and the literal B0 scientific comparison.
 
 The Andelst integration review now uses
 `audit_andelst_application_replay.py`. It reverified the retained
@@ -420,8 +419,8 @@ That is the remaining scientific acceptance decision for this packet.
 PR 1625 now includes both current O0/O2 exact own day-2
 continuations and the current O2 year restart, whose physical
 budget matches days 366-367 of the full run exactly. Its extracted
-archive reproduces the extended receipt. Grassgrowth PR 1623
-still has its current full O2 replay running.
+archive reproduces the extended receipt. The Grassgrowth full run
+and terminal restart are complete in PR 1623.
 
 For Hupsel science, the prior original-reference grid study
 already shows a 2.47646e-5 cm change between its two finest
