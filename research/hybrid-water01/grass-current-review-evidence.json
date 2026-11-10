@@ -98,6 +98,45 @@
         "state.csv": "c40f5becb207ca8cf04b631d357660814d8eb7b1c318b00512e862dd5dfcf4cf",
         "endpoint.csv": "7d5ab6373572078fa3d7488e341ed43ef1a81d1250e109b5e508d7f356013e53"
       }
-    }
+    },
+    "wet_event_cut": {
+      "days": [
+        1,
+        188
+      ],
+      "accepted_steps": 192790,
+      "maximum_daily_water_residual_cm": 3.7247982476174e-14,
+      "cumulative_water_residual_cm": 1.1324274851176597e-14,
+      "maximum_daily_conductive_residual_j_cm2": 1.4799184100411367e-10,
+      "maximum_substep_conductive_residual_j_cm2": 3.5342562210161077e-12,
+      "output_sha256": {
+        "budget.csv": "01d1055d643d622906ca5b59d8a7344ff0986c7a317299a7930ca28784a1e175",
+        "conductive_budget.csv": "de0f57d2ebb8de8b530815f79598b9cabd8618e2ac453ae05caadb73e60f0804",
+        "crop.csv": "aa578a68f186dee1dd81417534526eb3588032ef43df5cdf5bb6cf279648ad13",
+        "checkpoint.bin": "b95be7536096c92d03f8865ccc6f0bdfda1ee2d2e1822f4b3f8fa7b3d948eb2e",
+        "state.csv": "4e5331f62ef6aebc006a2aab41bd8c5f0910d8dbdb2059428cabf3736b370900",
+        "endpoint.csv": "a07dfbe0b5526c7487c50a96b1a5bbba34d15ae5a123c704fabaeaea2506d22e"
+      }
+    },
+    "wet_event_restart": {
+      "days": [
+        189,
+        190
+      ],
+      "accepted_steps": 1916,
+      "maximum_daily_water_residual_cm": 4.884981308350689e-15,
+      "cumulative_water_residual_cm": 3.774758283725532e-15,
+      "maximum_daily_conductive_residual_j_cm2": 2.823696831910638e-11,
+      "maximum_substep_conductive_residual_j_cm2": 2.1793435112105186e-12,
+      "output_sha256": {
+        "budget.csv": "e570997667507588bd341bc6a929a16e59c75448317de2ad16e7944bae2d2a64",
+        "conductive_budget.csv": "d715558d8e33b82538dee828a17380273b044045d6d7a275ea6ee318c894c737",
+        "crop.csv": "85e08720c3301a6fbd9df2c8dd86d3d9142edccbf4688c36c02bebe6629ee913",
+        "checkpoint.bin": "1c1d74d17ae5f83b179968e5d4480072fa5f6e53434fbd54e0a910b192678f72",
+        "state.csv": "947a42657b1869b994a1c1c19dcf3635fdf7540d2e6a3cf8ede8a9a1ea0d732c",
+        "endpoint.csv": "b0ba439a2e5c815017776cc072f8935f735bbbc71db8a4d5df89f8cfa78bc3eb"
+      }
+    },
+    "wet_event_ledgers_match_continuous": true
   }
 }

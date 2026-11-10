@@ -3,6 +3,7 @@ import argparse
 import csv
 from hashlib import sha256
 import json
+from itertools import islice
 import math
 from pathlib import Path
 
@@ -15,9 +16,9 @@ def sha(path):
     return sha256(path.read_bytes()).hexdigest()
 
 
-def read_csv(path):
+def read_csv(path, limit=None):
     with path.open(newline="") as stream:
-        return list(csv.DictReader(stream))
+        return list(islice(csv.DictReader(stream), limit))
 
 
 def audit(run, first, last):
@@ -63,6 +64,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("workspace", type=Path)
     parser.add_argument("--full", action="store_true")
+    parser.add_argument("--wet", action="store_true")
     a = parser.parse_args()
     receipt = {"review_source": REVIEW_SOURCE}
     for opt in ("O0", "O2"):
@@ -83,12 +85,24 @@ def main():
             "control": audit(control, 1, 3),
             "restart": audit(resume, 2, 3),
         }
-        if opt == "O2" and a.full:
+        if opt == "O2" and (a.wet or a.full):
             full = build.with_name(build.name + "-full")
+            cut = build.with_name(build.name + "-cut188")
             end = build.with_name(build.name + "-resume190")
-            receipt[opt]["full"] = audit(full, 1, 1827)
+            for path in (cut, end):
+                result = json.loads((path / "RESULT.json").read_text())
+                assert result["executable_sha256"] == metadata["executable_sha256"]
+                assert result["input_sha256"] == metadata["original_inputs_sha256"]
+            for name in LEDGERS:
+                continuous = read_csv(full / name, 190)
+                assert [int(row["day"]) for row in continuous] == list(range(1, 191))
+                assert read_csv(cut / name) == continuous[:188], name
+                assert read_csv(end / name) == continuous[188:], name
+            receipt[opt]["wet_event_cut"] = audit(cut, 1, 188)
             receipt[opt]["wet_event_restart"] = audit(end, 189, 190)
-            restart(full, end, 189, 190, terminal=False)
+            receipt[opt]["wet_event_ledgers_match_continuous"] = True
+            if a.full:
+                receipt[opt]["full"] = audit(full, 1, 1827)
     for name in (*LEDGERS, "state.csv", "endpoint.csv"):
         assert receipt["O0"]["control"]["output_sha256"][name] == receipt["O2"]["control"]["output_sha256"][name]
     print(json.dumps(receipt, indent=2))

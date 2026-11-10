@@ -58,14 +58,18 @@ and the maximum daily conductive residual is 1.316e-10 J/cm².
 The [current receipt](grass-current-review-evidence.json) pins
 the source baseline, build, inputs and output files.
 
-The current-source 1827-day O2 replay and the separate day-188
-cut/continuation were started. They are follow-up validation and
-are not counted in this receipt. The completed full-period and
-long-restart evidence above applies to the sealed predecessor.
+The current O2 cut after day 188 reproduces all three ledgers
+of the on-going continuous run for days 1–188. A fresh process
+using that checkpoint reproduces the water, crop and conductive
+ledgers for days 189–190 exactly. The receipt records the input
+and executable identities, cut checkpoint hash, and both resumed
+days. The current-source O2 full replay is still in progress.
+The completed 1827-day evidence above applies to the sealed
+predecessor.
 
 ```powershell
-python -B research/hybrid-water01/audit_grass_current.py "$env:TEMP"
-# Add --full after the current O2 full run and day-188 continuation finish.
+python -B research/hybrid-water01/audit_grass_current.py "$env:TEMP" --wet
+# Use --full after the current O2 full run finishes.
 ```
 
 ## Day 188, 6 July 1980
