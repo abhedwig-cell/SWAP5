@@ -52,9 +52,10 @@ def replay(reference, origin, prepared, output, corrected, split_final=False, bu
          h({upper_node}), h({lower_node}), h(numnod), maxval(abs(F(1:NN))), sum(QExcMpMtx(1:NN)), nraidt
    end if""")
     if refresh_macro_final:
+        refresh_start = f"{trace_end - 0.00005:.5f}" if solver_trace_day == 457 else "36252.9989"
         source = replace(source, "      if (iTask == 1 .OR. .NOT. flunsatok(3)) then",
                          "      if (iTask == 1 .OR. .NOT. flunsatok(3) .OR. &\n"
-                         "          (t1900 >= 36252.9989d0 .AND. t1900 < 36253d0)) then")
+                         f"          (t1900 >= {refresh_start}d0 .AND. t1900 < {trace_end}d0)) then")
     solver.write_text(source, encoding="cp1252")
     subprocess.run(["gfortran", "-O2", "-cpp", "-Dlinux", "-finit-local-zero",
                     "-ffree-line-length-none", "-fallow-argument-mismatch", "-I", str(objects), "-I", str(ttutil),
@@ -100,8 +101,8 @@ def main():
     parser.add_argument("--refresh-macro-final", action="store_true")
     parser.add_argument("--solver-trace-day", type=int, choices=(457, 458), default=458)
     a = parser.parse_args()
-    if a.solver_trace_day == 457 and (a.split_final or a.refresh_macro_final):
-        parser.error("The final-step interventions apply to day 458")
+    if a.solver_trace_day == 457 and a.split_final:
+        parser.error("The final half-step intervention applies to day 458")
     replay(a.reference.resolve(), a.origin.resolve(), a.prepared.resolve(), a.output.resolve(),
            a.corrected, a.split_final, a.budget_only, a.refresh_macro_final, a.solver_trace_day)
 

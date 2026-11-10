@@ -170,9 +170,11 @@ also ran the original 481-day donor and reproduced its CSV records.
 The fetched canonical merge has the exact qualified tree
 `4caf4e27bab50f67d3f157d45d8f6adf19ec1c5c` and the expected two parents.
 
-The targeted Andelst replay below localizes the day-457 groundwater
-discrepancy to the final accepted step. Continue with a same-state
-diagnostic of the first Newton update before proposing a repair.
+The targeted Andelst replays below localize the day-457 groundwater
+discrepancy to the final accepted step. The same-origin intervention
+shows sensitivity to reuse of the macro exchange during that solve.
+Continue by checking that sensitivity on the corrected origin before
+proposing a production policy.
 Retain the existing mass tolerance and the separate Grassgrowth
 thermal and Hupsel oxygen qualification statuses.
 
@@ -415,6 +417,24 @@ foreach ($pair in @('00', '11')) {
 ```
 
 See the [final-step receipt](CLOSURE01_DAY457_TRACE_20261110.json).
+
+A same-origin intervention recomputes the existing macropore rate
+only from clock 36251.99995 to 36252. The first 11,424 accepted
+trace records and 272 solver evaluations match the control exactly.
+At the first difference the recorded pressures and bottom rate
+still match. The net macro exchange changes from -2.59580 to
++45.98259 cm/day and the maximum residual from 0.26978 to 2.55043.
+The changed trial takes three accepted steps to reach the boundary,
+ending at -83.71844 cm rather than -93.75334 cm. The independent
+day-457 water residuals are 5.568e-9 and 5.575e-9 cm. This test shows
+that recomputation is sufficient to change this endpoint in the
+original trajectory. A production policy and full-period impact
+require separate qualification.
+
+```powershell
+$case = "$env:TEMP/hy481-gwl-pair-00"
+python -B research/hybrid-water01/replay_groundwater.py --reference "$env:TEMP/hy481-local-b0-20261109" --origin "$case/first" --prepared "$case/case" --output "$env:TEMP/s5-gwl457-solver-00-refresh" --solver-trace-day 457 --refresh-macro-final
+```
 
 
 ### Full-period trial of the final-step recomputation

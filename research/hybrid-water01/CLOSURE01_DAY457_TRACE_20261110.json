@@ -112,5 +112,46 @@
     "before_final_step": 0.14190165432270874,
     "at_day_end": 10.885346417813949,
     "formed_in_final_step": 10.74344476349124
+  },
+  "same_origin_final_window_intervention": {
+    "refresh_clock_day": [
+      36251.99995,
+      36252
+    ],
+    "origin_files_exact": true,
+    "accepted_prefix_exact_records": 11424,
+    "residual_prefix_exact_records": 272,
+    "first_difference": {
+      "clock_day": 36251.99995883766,
+      "trial_dt_day": 4.1152263931198974e-05,
+      "same_pressure_and_bottom_rate_at_measured_nodes": true,
+      "macro_exchange_rate_cm_day": [
+        -2.5957961512037557,
+        45.98259251123211
+      ],
+      "max_abs_residual": [
+        0.26977529361561287,
+        2.550430824577013
+      ]
+    },
+    "accepted_steps_after_prefix": [
+      1,
+      3
+    ],
+    "end_gwl_cm": [
+      -93.75334032162807,
+      -83.71843748358013
+    ],
+    "end_water_table_node": [
+      62,
+      58
+    ],
+    "day_water_residual_cm": [
+      5.5676345108715206e-09,
+      5.574872460694345e-09
+    ],
+    "donor_sha256": "9189291640afb0e8f58535155f39e1d7b0b85e101ad370dd050dc0a3513ff81c",
+    "instrumented_headcalc_sha256": "75872d3046a5e773e212d7d9a0cabe923860b46a2ab99e694c964c5e90e42bc1",
+    "scope": "sufficiency in the final window of this original trajectory; production policy and full-period impact untested"
   }
 }
