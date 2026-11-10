@@ -2,7 +2,7 @@
 import argparse
 from pathlib import Path
 
-ANCHOR = "         water_residual=water_stock-top_in-bottom_in-step_dt*sum(q%net_node_source)"
+ANCHOR = "       water_residual=water_stock-top_in-bottom_in-step_dt*sum(q%net_node_source)"
 OBSERVATION = """
          if (q%t0==0d0) then
           write(*,'(a,*(1x,es25.17e3))') 'GRASS_WATER_FIRST', q%t1, segment_rain_rate, q%top_flux, q%bottom_flux, &
