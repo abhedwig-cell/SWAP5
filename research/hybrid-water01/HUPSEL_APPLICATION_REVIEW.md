@@ -24,14 +24,17 @@ restart is checked within the current executable and input binding.
 | Cumulative independent solute residual | -5.077539e-11 mg/cm² |
 | Maximum reported heat residual | 1.304932e-12 J/cm² |
 
-A fresh O2 process using its own day-2 checkpoint reproduced the
-continuous balance rows for days 3–4 and all five terminal files
-(checkpoint, restart, endpoint, nodal state and temperature). The
+Fresh current-source O0 and O2 processes using their own day-2
+checkpoints reproduced the continuous balance rows for days 3–4
+and all five terminal files (checkpoint, restart, endpoint, nodal
+state and temperature). The O0 cold control also reproduces the
+O2 full-run physical budget through day 4. The current O2 year
+restart from day 365 exactly matches the continuous physical
+budget for days 366–367. Window counters are process-local.
+The
 [sealed pressure/film qualification](../../integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json)
 also records full Windows and POSIX O0/O2 runs, nine own-build restart
 windows per build, and the existing invalid-input and restart controls.
-Current-source O0 and year-boundary replay refreshes are separate
-in-progress controls.
 
 ## Scientific decision
 
@@ -62,14 +65,27 @@ foreach ($n in 2,4) {
 }
 python -B tools/solute/run_water.py @common --output "$s/resume4" --days 4 --restart "$s/control2/checkpoint.bin"
 if ($LASTEXITCODE) { throw 'Restart failed' }
+python -B tools/solute/run_water.py @common --output "$s/cut365" --days 365
+if ($LASTEXITCODE) { throw 'Year cut failed' }
+python -B tools/solute/run_water.py @common --output "$s/resume367" --days 367 --restart "$s/cut365/checkpoint.bin"
+if ($LASTEXITCODE) { throw 'Year restart failed' }
+python -B tests/dataqual15_hupsel/build_and_run.py --compiler $fc --output "$b-O0" --optimization O0
+if ($LASTEXITCODE) { throw 'O0 build failed' }
+$commonO0 = @('--model','NATIVE_HUPSEL_ROTATION','--hupsel-build',"$b-O0")
+foreach ($n in 2,4) {
+    python -B tools/solute/run_water.py @commonO0 --output "$s/O0-control$n" --days $n
+    if ($LASTEXITCODE) { throw "O0 control failed on day $n" }
+}
+python -B tools/solute/run_water.py @commonO0 --output "$s/O0-resume4" --days 4 --restart "$s/O0-control2/checkpoint.bin"
+if ($LASTEXITCODE) { throw 'O0 restart failed' }
 $sealed = "integration/dataqual15_hupsel/PRESSURE_FILM_WINDOWS_O2_20261105.tar.xz"
-python -B research/hybrid-water01/audit_hupsel_application_review.py $s $sealed
+python -B research/hybrid-water01/audit_hupsel_application_review.py $s $sealed --year --o0
 ```
 
 The [receipt](hupsel-1096-application-receipt.json) and [archived
 runs](hupsel-1096-application-evidence.zip) retain executable and input
 identities, actual output and the exact native checkpoint payloads.
 The archive includes the build manifest. Its SHA-256 is
-`372e7e4a2ace7ad66dee1971ee1b6bb43b4a90591a78a8c7ec0fd7051120b05f`.
+`efead5ee838e54a276de8fbd774b288dbcc9c6044ae83905405cb3f48125b093`.
 Extract the archive and pass its directory as `$s` to audit the
 stored results directly.
