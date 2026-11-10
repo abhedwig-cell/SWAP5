@@ -407,7 +407,7 @@ payloads match the retained payload hashes. [Draft PR
 current receipt, replay auditor and archived results.
 
 The current original-input Hupsel application has completed all
-1096 days. [Draft PR 1625](https://github.com/abhedwig-cell/SWAP5/pull/1625)
+1096 days. [PR 1625](https://github.com/abhedwig-cell/SWAP5/pull/1625)
 contains the exact pressure/film physical CSV comparison, independent
 water and solute closure, terminal heat result and exact own-build
 O2 day-2-to-4 restart. The older full-profile capsule uses another
@@ -422,15 +422,27 @@ budget matches days 366-367 of the full run exactly. Its extracted
 archive reproduces the extended receipt. The Grassgrowth full run
 and terminal restart are complete in PR 1623.
 
-For Hupsel science, the prior original-reference grid study
-already shows a 2.47646e-5 cm change between its two finest
-strict-balance grids on day 584, about 46 times the frozen
-comparison bound. See `ORIGINAL_OXYGEN_GRID_CANONICAL_RECEIPT_20261104.json`
-under `integration/dataqual15_hupsel`. Retain the failed original
-comparison. The next scientific work block must select an
-independently qualified reference strategy and use genuine
-same-profile histories. Avoid repeating the already rejected
-pointwise or grid-only designs or fitting the native oxygen term.
+Hupsel PR 1625 is ready for review at `8768f3f57`. The original
+and implicit reference audits were rerun against their bound
+evidence. The original finest strict-grid pair still changes
+oxygen by 2.47646e-5 cm on day 584. The distinct implicit
+conductivity family changes by 4.926112e-6 cm on that same day.
+These are 46.1 and 9.17 times the frozen 5.37184e-7 cm comparison
+bound. The implicit source guard refuses the current tree and
+passes at its admission checkout `eef0c31e`. Both families fail
+the accuracy requirement, so the original comparison remains
+failed and reference-limited. No native physical correction
+is warranted by these measurements.
+
+The next scientific work block needs a distinctly justified
+independent reference method and a feasible validation design at
+the frozen bound, with original forcing and genuine same-profile
+histories. The existing composed cap tests and same-state tests
+already exclude repeating those bounded experiments as a remedy.
+If no method can be independently validated, record the reference
+blocker and choose an independent functional acceptance item.
+Review the three application PRs without extending their evidence
+scope to whole-project scientific equivalence.
 
 The completed Andelst chain used these commands.
 
