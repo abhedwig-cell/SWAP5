@@ -20,6 +20,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reference", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--all-thermal-leaves", action="store_true")
     args = parser.parse_args()
     ref = args.reference.resolve() / "build"
     out = args.output.resolve()
@@ -52,6 +53,8 @@ def main():
               write(*,'(a,*(1x,es25.17e3))') 'LEGACY_HEAT_PROFILE', t1900+dt, tsoil(1:numnod)
               if (abs(t1900+dt-observed_end) < 1d-8) stop 73
            end if""")
+    if args.all_thermal_leaves:
+        source = source.replace("t1900 == observed_end-63d0 .or. abs(t1900+dt-observed_end) < 1d-8", ".true.")
     observed = out / "temperature.f90"
     observed.write_text(source, encoding="cp1252")
     objects = ref / "swap-obj"
