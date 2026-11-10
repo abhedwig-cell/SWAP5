@@ -615,6 +615,52 @@ JSON proof are in the same temporary workspace with suffixes
 `-live-origin`, `-live-resume` and `-live-proof.json`. The main run
 and the late terminal restart remain the next delivery to PR 1623.
 
+### Grassgrowth runtime reconciliation
+
+The sealed B0 log reports 7.7611 s for the 1827-day reference. The
+same Windows host running the verified local B0 with the five original
+Grassgrowth inputs reports 8.21875 s, 1828 dated rows including the
+initial state, and normal completion. This is an end-to-end model
+comparison with different numerical policies. The earlier matched
+[50-cell Richards benchmark](../../docs/performance/PERF01_CURRENT_431_20261023_RESULT.md)
+found 6-30% higher SWAP5 solver CPU in its short O2 cases and about 4%
+lower in its year case. It excludes the crop and time controller.
+The much faster [97-day flux metric](../../benchmarks/performance/PERF01_COMPLETE_20261024_RESULT.md)
+changes the accuracy measure and has a different admission scope.
+
+The registered [Grassgrowth profile](../../docs/science/GRASS_THERMAL_PRODUCTION.md)
+keeps both the water tolerance and the 1e-5 C thermal full/half gate.
+On the current source a paired four-day checked O2 run took 20.95 s
+and 6882 accepted steps with the profile. The water-only control took
+4.67 s and 1163 steps with the same linked object code and inputs.
+Terminal water stocks differ by 0.00039249 cm. The thermal run made
+7399 attempts with 517 temporal rejections and zero solver or balance
+rejections. Rejected retries alone therefore cannot explain the cost.
+
+A scratch replay with unchanged ledgers timed 15.38 s in oxygen,
+5.69 s in Richards and 0.17 s in the heat solve out of 23.69 s.
+The first 22000 oxygen calls spent 11.15 s in waterfilm and 0.93 s
+in response assembly and solve, with zero no-stress gate hits in this
+window. [PERF01](../../docs/audits/PPA_WU05C3A_PERF01_RESULT.md) already
+reuses trapezoid refinements. The [PERF02 bound](../../docs/audits/PPA_WU05C3A_PERF02_INTERIM_RESULT.md)
+is present in current canonical, and its synthetic speedup does not
+apply to this measured wet window. A scratch residual-coefficient
+preparation trial passed byte-exact O0/O2 oxygen and five four-day
+physical files but did not speed up the paired run (22.15 vs 21.61 s
+median). The existing production compiler profile gave exact short
+outputs and about 10% lower median wall time in two alternating pairs
+(21.81 vs 24.13 s). Neither result supports a production change.
+
+The next performance discriminator is to measure exact duplicate
+waterfilm inputs across the full/first-half siblings and retries.
+Only pursue per-trial reuse if it gives a material saving with the
+unchanged quadrature, complete input identity, exact outputs and
+existing rollback, restart and isolation controls. Do not repeat the
+trapezoid or no-stress experiments and do not weaken the thermal gate.
+Use bounded owner feedback for development and preserve full proof
+for an affected release dependency surface. The running full Grassgrowth
+verification is independent of these scratch measurements.
+
 The completed Andelst chain used these commands.
 
 ```powershell
