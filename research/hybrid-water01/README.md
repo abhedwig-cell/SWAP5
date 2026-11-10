@@ -823,6 +823,23 @@ the reader tolerance. The next discriminator is the first rejecting
 predicate in that routine, using the same isolated driver. No Richards
 step, contact rollback or full application was needed to reproduce it.
 
+The [guard trace](https://github.com/abhedwig-cell/SWAP5/actions/runs/42849799320/job/129947011901)
+locates the first refusal at `local_ok` after node shrinkage evaluation.
+The [KIM trace](https://github.com/abhedwig-cell/SWAP5/actions/runs/42849979505/job/129947666007)
+shows `theta == theta_s == 0.525` and a calculated shrink fraction of
+`-3.21380349233597712e-18`. This is the wet linear branch, where the
+exact result at saturation is zero.
+
+An [isolated trial](https://github.com/abhedwig-cell/SWAP5/actions/runs/42850115845/job/129948155606)
+returns zero explicitly only at exact saturation on that branch.
+Both Ubuntu O0 and O2 complete import with the unchanged 1e-12 cm
+coefficient check. O0 matches the sealed coefficient exactly. O2
+differs by `-6.66133814775093924e-16`. The candidate is an overlay
+on diagnostic branch `7335cf5b0`. Next gate is a separate production
+change with KIM regression coverage and the bounded contact restart
+and rollback check. The isolated result does not resolve the
+independent O0 contact timeout.
+
 The completed Andelst chain used these commands.
 
 ```powershell
