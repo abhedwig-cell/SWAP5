@@ -484,7 +484,13 @@ contains
       void_ratio = max(void_ratio,parameters%alpha_k)
     end if
     ! B1.11 SHRINK returns relative shrinkage from void ratio and solid fraction.
-    shrink_fraction = theta_s-void_ratio*solid_volume_fraction
+    ! At saturation on the linear branch, the exact shrinkage is zero.
+    ! Avoid a roundoff-dependent sign from dividing and multiplying by solid volume.
+    if (theta == theta_s .and. moisture_ratio > parameters%transition_moisture_ratio) then
+      shrink_fraction = 0.0_real64
+    else
+      shrink_fraction = theta_s-void_ratio*solid_volume_fraction
+    end if
     ok = ieee_is_finite(shrink_fraction) .and. shrink_fraction >= 0.0_real64 .and. shrink_fraction < 1.0_real64
   end subroutine evaluate_clay_kim_shrinkage_fraction
 

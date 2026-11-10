@@ -99,6 +99,13 @@ program test_ppa_wu05_migmac02_dynamic_shrinkage
   call evaluate_clay_kim_shrinkage_fraction(0.10_real64,0.50_real64,kim,shrink,ok)
   if(.not.ok) error stop 'MIGMAC02 Kim evaluation invalid'
   if(abs(shrink-0.31296799539643605_real64)>1.0e-14_real64) error stop 'MIGMAC02 donor-transcribed SHRINK mismatch'
+  ! The sealed Andelst contact profile has an exactly saturated node at 0.525.
+  call evaluate_clay_kim_shrinkage_fraction(0.525_real64,0.525_real64,kim,shrink,ok)
+  if (.not. ok .or. shrink /= 0.0_real64) error stop 'MIGMAC02 exact Kim saturation'
+  call evaluate_clay_kim_shrinkage_fraction(0.50_real64,0.525_real64,kim,shrink,ok)
+  if (.not. ok .or. abs(shrink-0.025_real64)>1.0e-14_real64) error stop 'MIGMAC02 wet linear shrinkage'
+  call evaluate_clay_kim_shrinkage_fraction(nearest(0.525_real64,1.0_real64),0.525_real64,kim,shrink,ok)
+  if (ok) error stop 'MIGMAC02 Kim accepted supersaturation'
   config%enabled=.true.
   config%theta_s=[0.50_real64,0.50_real64]
   config%theta_crack=[0.10_real64,0.10_real64]
