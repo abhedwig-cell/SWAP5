@@ -1,0 +1,116 @@
+{
+  "case": "Andelst",
+  "day": 457,
+  "date": "1999-04-02",
+  "trace_scope": "read-only paired own day-453 donor replay; final 0.0011 model day",
+  "historical_replay_archive_sha256": "c6cbf1c863d545625eb8d72c3bc5d243163b03d13afd4704a932cebc79067c85",
+  "profiles": {
+    "00": {
+      "role": "original",
+      "donor_sha256": "d6a848b21f90b61b4389e8f13c3667aa01335fa9f26f5bc63b1421d42b5c6f67",
+      "origin_sha256": {
+        "result.end": "b60bd897f247d2c01a591f13a589338dea89fbe9837f8d16290a77b4dddbf410",
+        "macro.bin": "f24a64a430520378e0fdec5bccb45f87e2c7f84dfd73090b3ace6c358c099699"
+      },
+      "replayed_published_days_454_to_457_exact": true,
+      "accepted": {
+        "clock_day": 36251.99995883766,
+        "dt_day": 4.1152263931198974e-05,
+        "gwl_before_cm": -83.01782011433268,
+        "gwl_after_cm": -93.75334032162807,
+        "bottom_inward_rate_cm_day": 1.7014992605200587,
+        "water_table_node": 62
+      },
+      "solver_evaluations": 13,
+      "initial_residual": {
+        "clock_day": 36251.99995883766,
+        "dt_day": 4.1152263931198974e-05,
+        "bottom_inward_rate_cm_day": 0.11767711530030849,
+        "head58_cm": 0.8014635237553682,
+        "head62_cm": 11.752732325470236,
+        "bottom_node_head_cm": 247.69380956817184,
+        "max_abs_residual": 0.4245816469553498,
+        "sum_macro_matrix_exchange_rate_cm_day": -9.401022886808994,
+        "rain_rate_cm_day": 0.0
+      },
+      "first_newton_residual": {
+        "clock_day": 36251.99995883766,
+        "dt_day": 4.1152263931198974e-05,
+        "bottom_inward_rate_cm_day": 0.5171845322912754,
+        "head58_cm": -0.022700380204510928,
+        "head62_cm": 10.00802610275206,
+        "bottom_node_head_cm": 243.59885854401443,
+        "max_abs_residual": 0.14900809591839337,
+        "sum_macro_matrix_exchange_rate_cm_day": 0.00524420483913222,
+        "rain_rate_cm_day": 0.0
+      },
+      "final_residual": {
+        "clock_day": 36251.99995883766,
+        "dt_day": 4.1152263931198974e-05,
+        "bottom_inward_rate_cm_day": 1.7014992605200587,
+        "head58_cm": -3.201590195070652,
+        "head62_cm": -0.0009192206199275459,
+        "bottom_node_head_cm": 231.4596325796694,
+        "max_abs_residual": 5.490205512437285e-12,
+        "sum_macro_matrix_exchange_rate_cm_day": -2.5957961512037557,
+        "rain_rate_cm_day": 0.0
+      }
+    },
+    "11": {
+      "role": "corrected",
+      "donor_sha256": "a1d257a25ed5a79d7c1d48d8f0762a9be5efcbc3a12443a73f287eaa5ccd6ffd",
+      "origin_sha256": {
+        "result.end": "6198aef947fad4d57c7cdc9ddf0d63fdc173d82182d0db897b39834391291341",
+        "macro.bin": "39fe7165dcb9f59b14e0bfb44ba3116ebf48ad33b3a54769fb58479b32d83ae8"
+      },
+      "replayed_published_days_454_to_457_exact": true,
+      "accepted": {
+        "clock_day": 36251.99995894476,
+        "dt_day": 4.1017014155153575e-05,
+        "gwl_before_cm": -82.87591846000997,
+        "gwl_after_cm": -82.86799390381412,
+        "bottom_inward_rate_cm_day": 0.11627950830610943,
+        "water_table_node": 58
+      },
+      "solver_evaluations": 12,
+      "initial_residual": {
+        "clock_day": 36251.99995894476,
+        "dt_day": 4.1017014155153575e-05,
+        "bottom_inward_rate_cm_day": 0.11643072947663313,
+        "head58_cm": 0.955750402594632,
+        "head62_cm": 11.89504987291603,
+        "bottom_node_head_cm": 247.70658502286452,
+        "max_abs_residual": 0.42284643190532367,
+        "sum_macro_matrix_exchange_rate_cm_day": -9.45188540717181,
+        "rain_rate_cm_day": 0.0
+      },
+      "first_newton_residual": {
+        "clock_day": 36251.99995894476,
+        "dt_day": 4.1017014155153575e-05,
+        "bottom_inward_rate_cm_day": 0.5145308951509555,
+        "head58_cm": 0.0631364029089504,
+        "head62_cm": 10.089429270924434,
+        "bottom_node_head_cm": 243.6260583247027,
+        "max_abs_residual": 0.14824357934846522,
+        "sum_macro_matrix_exchange_rate_cm_day": 0.005810746363600255,
+        "rain_rate_cm_day": 0.0
+      },
+      "final_residual": {
+        "clock_day": 36251.99995894476,
+        "dt_day": 4.1017014155153575e-05,
+        "bottom_inward_rate_cm_day": 0.11627950830610943,
+        "head58_cm": 0.9654181599896896,
+        "head62_cm": 11.91145325271151,
+        "bottom_node_head_cm": 247.70813503986238,
+        "max_abs_residual": 5.17973164360086e-12,
+        "sum_macro_matrix_exchange_rate_cm_day": -0.000970162771990595,
+        "rain_rate_cm_day": 0.0
+      }
+    }
+  },
+  "corrected_minus_original_gwl_cm": {
+    "before_final_step": 0.14190165432270874,
+    "at_day_end": 10.885346417813949,
+    "formed_in_final_step": 10.74344476349124
+  }
+}

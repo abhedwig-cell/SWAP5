@@ -14,7 +14,8 @@ END = 459
 FILES = ("macro.bin", "result.end")
 
 
-def replay(reference, origin, prepared, output, corrected, split_final=False, budget_only=False, refresh_macro_final=False):
+def replay(reference, origin, prepared, output, corrected, split_final=False, budget_only=False,
+           refresh_macro_final=False, solver_trace_day=458):
     output.mkdir()
     donor, _, case, _, _ = build(reference, output, checkpoint_day=CUT,
                               budget_retry=corrected or budget_only, shared_pond_transfer=corrected)
@@ -42,11 +43,13 @@ def replay(reference, origin, prepared, output, corrected, split_final=False, bu
                     "-c", "swap.f90"], cwd=output, check=True)
     solver = output / "headcalc.f90"
     source = (solver if solver.exists() else donor_build / "swap-selected/headcalc.f90").read_text(encoding="cp1252")
+    trace_end = 35795 + solver_trace_day
+    upper_node, lower_node = (58, 62) if solver_trace_day == 457 else (55, 80)
     for stage, call in [(1, "   call vector_F(1, hgrad)"), (2, "         call vector_F(2, hgrad)")]:
         source = replace(source, call, call + f"""
-   if (t1900 >= 36252.9989d0 .and. t1900 < 36253d0) then
+   if (t1900 >= {trace_end - 0.0011:.4f}d0 .and. t1900 < {trace_end}d0) then
       write(*,'(a,1x,i0,9(1x,es25.17e3))') 'GWL_SOLVER', {stage}, t1900, dt, qbot, &
-         h(55), h(80), h(numnod), maxval(abs(F(1:NN))), sum(QExcMpMtx(1:NN)), nraidt
+         h({upper_node}), h({lower_node}), h(numnod), maxval(abs(F(1:NN))), sum(QExcMpMtx(1:NN)), nraidt
    end if""")
     if refresh_macro_final:
         source = replace(source, "      if (iTask == 1 .OR. .NOT. flunsatok(3)) then",
@@ -74,9 +77,10 @@ def replay(reference, origin, prepared, output, corrected, split_final=False, bu
     # The legacy window originally ended on day 457.
     source = source.replace("TEND = 1999-04-02", "TEND = 1999-04-26")
     control.write_text(source, encoding="cp1252")
+    last = solver_trace_day if solver_trace_day == 457 else END
     with (output / "stdout").open("wb") as log:
         result = subprocess.run([donor, "./swap.swp"], cwd=run, stdout=log, stderr=subprocess.STDOUT,
-                                input=("".join(f"{day}\n" for day in range(CUT+1, END+1))+"0\n").encode(),
+                                input=("".join(f"{day}\n" for day in range(CUT+1, last+1))+"0\n").encode(),
                                 timeout=240)
     if result.returncode != 100 or not (run / "swap.ok").is_file():
         raise RuntimeError(f"Donor replay refused: {result.returncode}, see {output / 'stdout'}")
@@ -94,8 +98,12 @@ def main():
     mode.add_argument("--budget-only", action="store_true")
     parser.add_argument("--split-final", action="store_true")
     parser.add_argument("--refresh-macro-final", action="store_true")
+    parser.add_argument("--solver-trace-day", type=int, choices=(457, 458), default=458)
     a = parser.parse_args()
-    replay(a.reference.resolve(), a.origin.resolve(), a.prepared.resolve(), a.output.resolve(), a.corrected, a.split_final, a.budget_only, a.refresh_macro_final)
+    if a.solver_trace_day == 457 and (a.split_final or a.refresh_macro_final):
+        parser.error("The final-step interventions apply to day 458")
+    replay(a.reference.resolve(), a.origin.resolve(), a.prepared.resolve(), a.output.resolve(),
+           a.corrected, a.split_final, a.budget_only, a.refresh_macro_final, a.solver_trace_day)
 
 
 if __name__ == "__main__":

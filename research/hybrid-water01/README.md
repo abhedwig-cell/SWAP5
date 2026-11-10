@@ -170,12 +170,11 @@ also ran the original 481-day donor and reproduced its CSV records.
 The fetched canonical merge has the exact qualified tree
 `4caf4e27bab50f67d3f157d45d8f6adf19ec1c5c` and the expected two parents.
 
-After the canonical F-CI run, continue the scientific work. Start from
-the saved Andelst day-453 restart and day-457 groundwater discrepancy.
-Use the existing full-period data and the smallest replay that can
-distinguish the first changed flux or stock. Retain the existing mass
-tolerance and the separate Grassgrowth thermal and Hupsel oxygen
-qualification statuses.
+The targeted Andelst replay below localizes the day-457 groundwater
+discrepancy to the final accepted step. Continue with a same-state
+diagnostic of the first Newton update before proposing a repair.
+Retain the existing mass tolerance and the separate Grassgrowth
+thermal and Hupsel oxygen qualification statuses.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -384,6 +383,38 @@ qualification remains the source of the accepted daily mass evidence.
 
 See [the groundwater result](GROUNDWATER_REPLAY_RESULT_20261109.json)
 and [the selected step and solver traces](GROUNDWATER_REPLAY_EVIDENCE_20261109.zip).
+
+#### Day-457 final-step diagnosis
+
+The saved crossed controls show that either the corrected day-453
+origin or the corrected step policy is sufficient to avoid the
+original -93.75334 cm endpoint. Under original stepping the corrected
+origin ends at -83.18623 cm. Under corrected stepping the original
+origin ends at -82.83449 cm. The paired corrected endpoint is
+-82.86799 cm.
+
+Fresh read-only own-origin replays reproduce all four published days
+454–457 exactly. Their last accepted steps are about 3.55 s each.
+The corrected-minus-original groundwater difference grows from
+0.14190 cm before the step to 10.88535 cm at its endpoint. Both first
+residual evaluations have about 0.117 cm/day of bottom inflow.
+At the first Newton residual evaluation the original node-58 pressure
+is -0.02270 cm while the corrected pressure is +0.06314 cm.
+The original final crossing moves to node 62 with bottom inflow
+1.70150 cm/day. The corrected final crossing stays at node 58 with
+0.11628 cm/day. The two final residual norms are near 5e-12.
+The incoming states differ, so these observations identify the
+transition to investigate but leave its causal direction open.
+
+```powershell
+foreach ($pair in @('00', '11')) {
+    $case = "$env:TEMP/hy481-gwl-pair-$pair"
+    $flags = if ($pair -eq '11') { @('--corrected') } else { @() }
+    python -B research/hybrid-water01/replay_groundwater.py --reference "$env:TEMP/hy481-local-b0-20261109" --origin "$case/first" --prepared "$case/case" --output "$env:TEMP/s5-gwl457-solver-$pair" --solver-trace-day 457 @flags
+}
+```
+
+See the [final-step receipt](CLOSURE01_DAY457_TRACE_20261110.json).
 
 
 ### Full-period trial of the final-step recomputation
