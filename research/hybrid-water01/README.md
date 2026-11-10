@@ -444,6 +444,26 @@ blocker and choose an independent functional acceptance item.
 Review the three application PRs without extending their evidence
 scope to whole-project scientific equivalence.
 
+Andelst PR 1624 is ready for review at `a4bab2cf`. Its new
+current-source tests cover two distinct Cauchy trajectories, six
+interleaved cold/restored receipts and the day-15 refusal. The
+refusal preserves the day-14 clock and stocks and allows the
+other column to continue exactly. The day-19 package has the
+same numerical binding as the full run. The expanded evidence
+archive reproduces the full receipt after extraction.
+
+All three application evidence heads have an inherited F-CI110
+failure in `ahl-application`, before the model test. The Linux
+loader refuses the shared library because it requires an executable
+stack. The linker identifies `mod_bartholomeus_response.o`, whose
+respiration solve passes a host-associated internal callback to
+the scalar bracket. The failure is visible on jobs 129798653897,
+129755163198 and 129800407780. A separate engineering acceptance
+block can remove the callback trampoline with explicit per-call
+state while preserving the bracket evaluation order and outputs.
+Require the original O0/O2 oxygen controls and the exact Linux
+AHL job to pass before treating that blocker as resolved.
+
 The completed Andelst chain used these commands.
 
 ```powershell
