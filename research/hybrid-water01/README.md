@@ -860,6 +860,23 @@ workflow and the unrelated historical publication failures do not supply
 that decision. Reverify the live base and exact PR head before admission.
 The Andelst KIM/contact diagnosis is separately tracked in PR 1627.
 
+### Waterfilm reuse with the production compiler profile
+
+Built candidate `589c1d27536d2daf89c921f1bcabc780aec882bc` at Windows O2
+using `tools/solute/build_grass_startup.py --optimization O2 --profile production --policy retained --numerical-profile thermal-control-1e-5C`.
+The retained baseline is `a4da56a0c` built with the same production flags.
+Both use the five identical original input files. With one OpenMP thread,
+fresh run folders and native arguments
+`4 retain-step 100000 "" thermal-control`, the alternating wall times
+were 17.520, 14.468, 14.523 and 16.696 seconds (baseline/cache/cache/baseline).
+Median time was 17.108 versus 14.495 seconds, a 15.27% reduction.
+The water, conductive and crop ledgers each contain four day records.
+All five physical output hashes match across all four executions.
+
+This test verifies the short production-profile window. Full-project
+runtime parity and candidate admission remain open. The AHL owner
+selection is still pending and the performance candidate stays separate.
+
 The completed Andelst chain used these commands.
 
 ```powershell
