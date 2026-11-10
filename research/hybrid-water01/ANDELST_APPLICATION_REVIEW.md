@@ -101,3 +101,29 @@ $x = "./andelst-evidence"
 python -B -m zipfile -e research/hybrid-water01/andelst-481-application-evidence.zip $x
 python -B research/hybrid-water01/audit_andelst_application_replay.py "$x/full" "$x/year" "$x/dry" --prefix "$x/controls/prefix" --isolation "$x/controls/isolation" --mixed "$x/controls/mixed" --refusal "$x/controls/refusal"
 ```
+
+## Revalidation on the AHL portability successor
+
+The public launcher was rebuilt at PR #1626 commit
+`a4da56a0c60105862fc3dc91b6101ff1c963cf84`, which changes two
+source files in the hybrid kernel build. The commands above were
+repeated in new output directories. All 481 ledger records and 482
+dated CSV records match the earlier canonical execution exactly.
+The new day-365 and day-453 packages reproduce days 366-457 and
+454-459 in fresh processes. The independent balance residuals are
+identical to the earlier values under the same 1e-6 cm tolerance.
+
+The O0 and O2 kernels each reproduce the canonical prefix through
+day 22 and their own fresh day-20 continuation. The O0 kernel
+rejects the O2 day-20 checkpoint before publishing a day receipt.
+Two different Cauchy trajectories match separate controls for days
+21-22. A cold and a restored column match all five interleaved
+receipts. The day-15 refusal preserves day 14 and allows the
+other column to accept day 2.
+
+The [successor receipt](andelst-ahl-successor-receipt.json) binds
+the original inputs, the current builds and the new checkpoints.
+The original archive above remains tied to its original build.
+This result qualifies the stated Andelst application scope on the
+candidate source. Scientific comparisons with SWAP 4.3.1 retain
+the findings reported above.
