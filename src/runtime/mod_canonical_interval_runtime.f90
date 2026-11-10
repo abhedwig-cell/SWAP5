@@ -12,9 +12,23 @@ module mod_canonical_interval_runtime
   implicit none
   private
 
-  public :: run_canonical_interval, canonical_subinterval_target_selector
+  public :: run_canonical_interval, canonical_subinterval_target_selector, canonical_subinterval_selection_t
+
+  type, abstract :: canonical_subinterval_selection_t
+  contains
+    procedure(select_target), deferred :: select
+  end type canonical_subinterval_selection_t
 
   abstract interface
+    subroutine select_target(self, cursor, requested_t1, target_t1, max_retries_cap, valid)
+      import :: canonical_subinterval_selection_t, real64
+      class(canonical_subinterval_selection_t), intent(inout) :: self
+      real(real64), intent(in) :: cursor, requested_t1
+      real(real64), intent(out) :: target_t1
+      integer, intent(out) :: max_retries_cap
+      logical, intent(out) :: valid
+    end subroutine select_target
+
     subroutine canonical_subinterval_target_selector(cursor, requested_t1, target_t1, max_retries_cap, valid)
       import :: real64
       real(real64), intent(in) :: cursor, requested_t1
@@ -26,7 +40,7 @@ module mod_canonical_interval_runtime
 
 contains
 
-  subroutine run_canonical_interval(model, committed, forcing, interval, config, result, target_selector)
+  subroutine run_canonical_interval(model, committed, forcing, interval, config, result, target_selector, selection)
     class(canonical_physical_model_t), intent(inout) :: model
     class(transaction_state_t), allocatable, intent(inout) :: committed
     class(canonical_forcing_t), intent(in) :: forcing
@@ -34,6 +48,7 @@ contains
     type(canonical_numerical_config_t), intent(in) :: config
     type(canonical_result_t), intent(out) :: result
     procedure(canonical_subinterval_target_selector), optional :: target_selector
+    class(canonical_subinterval_selection_t), intent(inout), optional :: selection
 
     class(transaction_state_t), allocatable :: working
     type(transaction_result_t) :: tx
@@ -54,13 +69,15 @@ contains
     result%mass%interval_t1 = interval%t1
 
     if (.not. allocated(committed) .or. interval%t1 <= interval%t0 .or. &
-        config%max_committed_substeps <= 0 .or. config%progress_tolerance < 0.0_real64) then
+        config%max_committed_substeps <= 0 .or. config%progress_tolerance < 0.0_real64 .or. &
+        (present(target_selector) .and. present(selection))) then
       result%status = CANONICAL_STATUS_INVALID_REQUEST
       return
     end if
 
     if (config%retain_accepted_step_proposal) then
-      if (present(target_selector) .or. config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
+      if (present(target_selector) .or. present(selection) .or. &
+          config%transaction%temporal_mode /= TX_TEMPORAL_EXTERNAL_FULL_HALF) then
         result%status = CANONICAL_STATUS_INVALID_REQUEST
         return
       end if
@@ -92,6 +109,8 @@ contains
       selector_valid = .true.
       if (present(target_selector)) then
         call target_selector(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)
+      else if (present(selection)) then
+        call selection%select(cursor, interval%t1, transaction_t1, max_retries_cap, selector_valid)
       end if
       tol = progress_tolerance(config%progress_tolerance, cursor, interval%t1)
       ! Choose the exact endpoint before execution, never relabel a solved trace.
