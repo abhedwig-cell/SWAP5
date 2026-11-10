@@ -546,6 +546,21 @@ O0 and O2 matches the stored rapid-drain coefficient exactly.
 The full Linux O2 initialization refusal remains unresolved and
 separate from the scoped AHL portability decision.
 
+The four regular jobs above passed at `a4da56a0c`. F-CI ran the
+frozen application predecessor, six current Linux O0/O2 component
+cases and the current selector. Grassgrowth ran the current original
+input and disk restarts and the Andelst macro codec controls. F-CI110
+passed all eleven jobs and AHL50 all seven. PR 1626 is ready for
+review. The wider snapshot has 29 green and 34 red workflows, with
+no new failing workflow name against the preceding same-source run.
+The exact-output and contact baseline failures remain visible.
+The application evidence PRs are research-only. In Andelst PR 1624
+the build identity binds the changed canonical interval and kernel
+modules, so the prior full-run receipt stays tied to its own build.
+The next work block tests the current candidate with a cold 22-day
+public prefix and an own day-20 restart before using the changed
+dependency surface for a fresh full execution.
+
 The completed Andelst chain used these commands.
 
 ```powershell
