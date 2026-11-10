@@ -13,6 +13,7 @@ import tempfile
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--ref", default="a4da56a0c60105862fc3dc91b6101ff1c963cf84")
 parser.add_argument("--fc", default="gfortran")
+parser.add_argument("--trace-guards", action="store_true")
 args = parser.parse_args()
 
 def git(*args):
@@ -38,6 +39,28 @@ with tarfile.open(fileobj=io.BytesIO(git("show",f"{ref}:{archive}")),mode="r:xz"
 marker=b" call require(ok.and.abs(initial%rapid_kd-rapid_kd)<=1d-12,'source rapid reference')"
 assert ordered[start].count(marker)==1
 ordered[start]=ordered[start].replace(marker,b" write(*,'(a,1x,l1,3(1x,es25.17))') 'rapid_kd',ok,initial%rapid_kd,rapid_kd,initial%rapid_kd-rapid_kd\n"+marker)
+shrinkage = "src/process/macropore/mod_macropore_dynamic_shrinkage.f90"
+source = ordered[shrinkage].decode()
+begin = source.index("    kd=0.0_real64;ok=.false.;n=size(z)")
+end = source.index("    kd=total;ok=.true.", begin)
+body = source[begin:end]
+guard = re.compile(r"(?m)^( +)(if\(.*?(?:&\n[^\n]*)*\))return$")
+guards = []
+def report_guard(match):
+    indent, predicate = match.groups()
+    guards.append(" ".join(predicate.replace("&", "").split()))
+    return (
+        f"{indent}{predicate}then\n"
+        f"{indent}  write(*,*) 'rapid guard {len(guards)}'\n"
+        f"{indent}  return\n"
+        f"{indent}end if"
+    )
+if args.trace_guards:
+    body = guard.sub(report_guard, body)
+    assert len(guards) == 13, guards
+    for number, predicate in enumerate(guards, start=1):
+        print("rapid guard", number, predicate, flush=True)
+    ordered[shrinkage] = (source[:begin] + body + source[end:]).encode()
 program="""program probe
 use mod_column_swp_macro_initial
 implicit none
