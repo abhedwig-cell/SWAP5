@@ -530,6 +530,22 @@ The next AHL integration decision is the bounded current-source
 admission scope. Keep the FMR exact-output and Cauchy contact
 failures visible as independent baseline findings.
 
+PR 1626 now contains the exact-source F-CI and Grassgrowth CI route
+at `a4da56a0c60105862fc3dc91b6101ff1c963cf84`. It keeps the historical
+application and thermal authorities at their frozen commits and runs
+current component, selector, original-input and restart controls.
+The temporary paired workflow is removed from the PR diff, with its
+published logs retained. Model and test trees equal `1354f5cad`.
+Follow [F-CI](https://github.com/abhedwig-cell/SWAP5/actions/runs/42822647211),
+[Grassgrowth](https://github.com/abhedwig-cell/SWAP5/actions/runs/42822647267),
+[F-CI110](https://github.com/abhedwig-cell/SWAP5/actions/runs/42822647049)
+and [AHL50](https://github.com/abhedwig-cell/SWAP5/actions/runs/42822647194)
+through terminal status before another build or admission claim.
+The isolated Windows import of the sealed Cauchy `macro.nml` at
+O0 and O2 matches the stored rapid-drain coefficient exactly.
+The full Linux O2 initialization refusal remains unresolved and
+separate from the scoped AHL portability decision.
+
 The completed Andelst chain used these commands.
 
 ```powershell
