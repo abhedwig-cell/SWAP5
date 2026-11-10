@@ -31,8 +31,7 @@ state and temperature). The O0 cold control also reproduces the
 O2 full-run physical budget through day 4. The current O2 year
 restart from day 365 exactly matches the continuous physical
 budget for days 366–367. Window counters are process-local.
-The
-[sealed pressure/film qualification](../../integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json)
+The [sealed pressure/film qualification](../../integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json)
 also records full Windows and POSIX O0/O2 runs, nine own-build restart
 windows per build, and the existing invalid-input and restart controls.
 
@@ -46,13 +45,58 @@ The absolute difference is `0.000244679662 cm`, above the original
 `5.37184e-7 cm` bound. The full application and restart evidence
 support functional coverage. Scientific equivalence remains open.
 
-The original-reference grid study already measured a
-`2.47646e-5 cm` change between its two finest strict-balance
-grids on day 584, about 46 times the frozen bound. It retained
-the reference as underresolved. This supports keeping the original
-failure visible and selecting an independently qualified reference
-strategy before any native model adjustment. See the
-[canonical grid-study receipt](../../integration/dataqual15_hupsel/ORIGINAL_OXYGEN_GRID_CANONICAL_RECEIPT_20261104.json).
+### Day-584 reference qualification
+
+The two reference families both fail to resolve day 584 at the
+frozen `5.371840000016327e-7 cm` limit.
+
+| Reference family | Two finest audited oxygen results (cm) | Absolute change (cm) | Multiple of limit |
+| --- | --- | ---: | ---: |
+| Original SWAP 4.3.1 with strict balance input controls | 0.003387732492 and 0.003362967866 | 2.4764626e-5 | 46.1 |
+| Research-only implicit conductivity reference with strict balance input controls | 0.003338923548 and 0.003333997436 | 4.926112e-6 | 9.17 |
+
+The original grid verifier reproduced its retained results. The
+implicit-family verifier reproduced its source-bound screen from
+its admission checkout `eef0c31e`. All 38 members of the implicit
+archive were also checked against the manifest, and the largest
+oxygen change across the two finest stored prefixes occurs on
+2003-08-07, day 584. The source-bound verifier declines current-tree
+reuse because inherited dependencies have changed. Its unchanged
+historical checkout remains the verification authority.
+
+The existing composed SWAP5 temporal controls at DTMAX 0.005
+and 0.0025 days moved the day-584 integral by at most 6.551e-8 cm
+relative to the 0.01-day parent. The existing same-state tests
+also passed the original oxygen factor and final uptake partition
+checks on their selected states. Together these findings leave
+the original comparison failed and reference-limited. They do not
+identify a specific native process defect.
+
+The next scientific criterion requires independent reference
+accuracy at the existing bound with original forcing and genuine
+variant-owned histories. Neither reference family qualifies as
+a replacement for the original comparison. A closer result or
+a smaller successive change is insufficient to select a new oracle.
+No native adjustment follows from the evidence.
+
+- [Original grid receipt](../../integration/dataqual15_hupsel/ORIGINAL_OXYGEN_GRID_CANONICAL_RECEIPT_20261104.json)
+- [Implicit reference receipt](../../integration/dataqual15_hupsel/IMPLICIT_REFERENCE_CANONICAL_RECEIPT_20261105.json)
+- [Composed temporal controls](../../docs/science/HUPSEL_COMPOSED_TEMPORAL.md)
+- [Composed same-state controls](../../docs/science/HUPSEL_COMPOSED_OXYGEN.md)
+
+To reproduce the two reference audits from a full repository checkout:
+
+```powershell
+python -B tests/dataqual15_hupsel/original_oxygen_grid_evidence.py
+if ($LASTEXITCODE) { throw 'Original grid audit failed' }
+git worktree add --detach ./hupsel-implicit-reference-review eef0c31e22346324ff85e2bf7483d4527dd14878
+if ($LASTEXITCODE) { throw 'Implicit reference checkout failed' }
+Push-Location ./hupsel-implicit-reference-review
+python -B tests/dataqual15_hupsel/implicit_reference_evidence.py
+$implicitResult = $LASTEXITCODE
+Pop-Location
+if ($implicitResult) { throw 'Implicit reference audit failed' }
+```
 
 ## Reproduce
 
