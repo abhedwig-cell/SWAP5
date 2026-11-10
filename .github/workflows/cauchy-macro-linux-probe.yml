@@ -1,52 +1,32 @@
-name: Cauchy contact rollback on the KIM candidate
+name: AHL baseline numerical guard comparison
 on:
   push:
     branches: [codex/cauchy-macro-linux-probe]
     paths: [.github/workflows/cauchy-macro-linux-probe.yml]
 permissions:
   contents: read
-env:
-  OMP_NUM_THREADS: '1'
-  PYTHONUTF8: '1'
 jobs:
-  contact:
+  canonical:
     runs-on: ubuntu-26.04
-    timeout-minutes: 8
+    timeout-minutes: 7
+    strategy:
+      fail-fast: false
+      matrix:
+        script:
+          - tests/publication/run_pub_p2e01_e0_paired_pilot.sh
+          - tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh
+          - tests/publication/run_pub_p2e04_reference_bc_sweeps.sh
+          - tests/fpe/run_fpe_elastic65.sh
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: d6f5eddf5648b51a7256e5e282d6473fff769a54
-      - name: Run unchanged contact gate with rdlex contraction disabled
+          ref: a8275101d91f0ab5b413290e9b00bb5666b11917
+          fetch-depth: 0
+      - name: Run unchanged guard on exact canonical base
         shell: bash
+        env:
+          SCRIPT: ${{ matrix.script }}
         run: |
           gfortran --version
-          export REAL_GFORTRAN="$(command -v gfortran)"
-          mkdir -p "$RUNNER_TEMP/compiler"
-          cat > "$RUNNER_TEMP/compiler/gfortran" <<'SH'
-          #!/bin/bash
-          for arg in "$@"; do
-            case "$arg" in
-              */rdlex.for) echo "RDLEX_NO_CONTRACTION $arg" >> "$RUNNER_TEMP/rdlex.flags"; exec "$REAL_GFORTRAN" "$@" -ffp-contract=off ;;
-            esac
-          done
-          exec "$REAL_GFORTRAN" "$@"
-          SH
-          chmod +x "$RUNNER_TEMP/compiler/gfortran"
-          export PATH="$RUNNER_TEMP/compiler:$PATH"
-          code=0
-          python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization O2 --output "$RUNNER_TEMP/contact" || code=$?
-          if [[ -d "$RUNNER_TEMP/contact" ]]; then
-            find "$RUNNER_TEMP/contact" -maxdepth 2 -type f -name 'contact-*.stderr' -print -exec tail -n 25 {} \;
-            find "$RUNNER_TEMP/contact" -maxdepth 2 -name 'diagnostic-rejected.bin' -exec sha256sum {} \;
-          fi
-          cat "$RUNNER_TEMP/rdlex.flags"
-          exit "$code"
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: kim-contact-o2
-          path: |
-            ${{ runner.temp }}/contact/RESULT.json
-            ${{ runner.temp }}/contact/contact-*.std*
-            ${{ runner.temp }}/contact/contact-*/diagnostic-rejected.bin
-            ${{ runner.temp }}/contact/contact-1/nonlinear-contact.csv
+          git rev-parse HEAD
+          bash "$SCRIPT"
