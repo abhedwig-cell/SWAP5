@@ -21,4 +21,11 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin a4da56a0c60105862fc3dc91b6101ff1c963cf84
           gfortran --version
-          python3 research/hybrid-water01/replay_contact_macro_import.py --exact-saturation
+          git fetch --no-tags --depth=1 origin d6f5eddf5648b51a7256e5e282d6473fff769a54
+          python3 research/hybrid-water01/replay_contact_macro_import.py --ref d6f5eddf5648b51a7256e5e282d6473fff769a54
+          git show d6f5eddf5648b51a7256e5e282d6473fff769a54:src/process/macropore/mod_macropore_dynamic_shrinkage.f90 > shrinkage.f90
+          git show d6f5eddf5648b51a7256e5e282d6473fff769a54:tests/fpm/test_ppa_wu05_migmac02_dynamic_shrinkage.f90 > test.f90
+          for opt in O0 O2; do
+            gfortran "-$opt" -ffree-line-length-none -fcheck=all shrinkage.f90 test.f90 -o "test-$opt"
+            "./test-$opt"
+          done
