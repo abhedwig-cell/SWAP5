@@ -1,0 +1,437 @@
+{
+  "day": 188,
+  "accepted_control_traces_identical": true,
+  "legacy_cap_minutes": 0.5,
+  "legacy_cap_initial_nodal_state_exact": true,
+  "provenance": {
+    "legacy": {
+      "original_source_sha256": "3cb72036e2628148cb9b0844852b3190256b326c1f16d9dfa1258e3de4598ec4",
+      "observer_source_sha256": "30dbbf99b58aa76acbe14591ff8b12b01d3a063429d320b62e8637f59cc7617a",
+      "exe_sha256": "ce0344dd89b892f9daba2145ff0d1d21f4d1afc9a892cece918ed42ca6c5ec78",
+      "inputs_sha256": {
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "stdout_sha256": "e3f568beaebf3874370822b9c524a014e12829f986ea18c64d5ff24ca99f3c3e"
+    },
+    "native": {
+      "original_source_sha256": "91dc6e47dbb2a0dd4828d59cc77e5acf724beb85b9b129b0b635dc767e478455",
+      "observer_source_sha256": "cf151eec3d088eb08b6fabe26af3d1e7f3c0c276bbdb80eb5d711b9254459a0f",
+      "exe_sha256": "692032834a13a7a971c76cbab3ebbebd4b7de8b38f4d7332c669257d1c28fd4b",
+      "predecessor_exe_sha256": "fc6bc414dc36c1479bed27df17e6d1a836fb7e1597fcafdedb1b64e67fa2ac02",
+      "input_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "original_binding_preserved_for_observer": true,
+      "origin_sha256": "91ce38847b8b3b68c4c19f7bd5ed21217b280163954296e9d12097c6ea87ed96",
+      "terminal_sha256": "2e8610e23a8ebf875e1e4ef885759ed2c131f97bf54652ab1da118ec0cc10525",
+      "stdout_sha256": "a12bceb677d27a5cf09ba661c37e3faa1637f08f4ef9b650771ec87a4bf704fd"
+    },
+    "legacy_cap": {
+      "original_source_sha256": "3cb72036e2628148cb9b0844852b3190256b326c1f16d9dfa1258e3de4598ec4",
+      "observer_source_sha256": "ed1dafdb547ea99fc62e85f6062995f66f6b9125f2b9e5216a2a06fc0fafb7d8",
+      "exe_sha256": "54382ddff91c0e579f0815585a0cd16c8c0091a23614e6bc98ac02f84da03d8d",
+      "inputs_sha256": {
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "stdout_sha256": "c28ca96db327027dd7166eb1de1c0042b3c1fe46ff6d510939494ee33bde6c9c"
+    }
+  },
+  "runs": {
+    "legacy": {
+      "samples": {
+        "0": {
+          "gross_rain_cm": 0.0,
+          "net_rain_cm": 0.0,
+          "downward_top_flux_cm": -0.0,
+          "upward_bottom_flux_cm": 0.0,
+          "state_start_minute": 0.0,
+          "state_interval_minutes": 19.199999999982538,
+          "head_cm_by_node": {
+            "1": -134.8800855006466,
+            "6": -109.38259326900963,
+            "22": -82.59524131037949,
+            "30": -74.92309064980542
+          },
+          "theta_by_node": {
+            "1": 0.2896609513797708,
+            "6": 0.30560698190073127,
+            "22": 0.32663644207718506,
+            "30": 0.333724293729624
+          },
+          "root_zone_water_cm": 9.52680092630364,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "38.4": {
+          "gross_rain_cm": 0.2826666666859921,
+          "net_rain_cm": 0.2627488513329085,
+          "downward_top_flux_cm": 0.2587809188535518,
+          "upward_bottom_flux_cm": 0.0035500599495758207,
+          "state_start_minute": 38.39999999734573,
+          "state_interval_minutes": 19.199999999982538,
+          "head_cm_by_node": {
+            "1": -16.41275612854442,
+            "6": -109.35735048656973,
+            "22": -82.75569111175913,
+            "30": -75.02121765148279
+          },
+          "theta_by_node": {
+            "1": 0.4108654421098382,
+            "6": 0.3056244954474541,
+            "22": 0.32649394214323485,
+            "30": 0.33363012047493107
+          },
+          "root_zone_water_cm": 9.78131203001784,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "68.3": {
+          "gross_rain_cm": 0.5027638889179058,
+          "net_rain_cm": 0.4673371496314183,
+          "downward_top_flux_cm": 0.46027960306013777,
+          "upward_bottom_flux_cm": 0.005881261234073697,
+          "state_start_minute": 57.599999996018596,
+          "state_interval_minutes": 19.199999999982538,
+          "head_cm_by_node": {
+            "1": -15.270797890498732,
+            "6": -106.990058772968,
+            "22": -82.83445928868018,
+            "30": -75.06655051185857
+          },
+          "theta_by_node": {
+            "1": 0.4127465701636986,
+            "6": 0.30728408389190914,
+            "22": 0.3264240685547935,
+            "30": 0.3335866461121695
+          },
+          "root_zone_water_cm": 9.908632398855682,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "76.8": {
+          "gross_rain_cm": 0.5653333333719842,
+          "net_rain_cm": 0.525497702665817,
+          "downward_top_flux_cm": 0.5175618377071036,
+          "upward_bottom_flux_cm": 0.0065636333847440475,
+          "state_start_minute": 76.79999999469146,
+          "state_interval_minutes": 19.199999999982538,
+          "head_cm_by_node": {
+            "1": -14.767545153982619,
+            "6": -95.09176555763732,
+            "22": -82.87346130431618,
+            "30": -75.1104028507598
+          },
+          "theta_by_node": {
+            "1": 0.4135741273057096,
+            "6": 0.3161752211431885,
+            "22": 0.3263894908024618,
+            "30": 0.3335446107643964
+          },
+          "root_zone_water_cm": 10.036668882093576,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "144": {
+          "gross_rain_cm": 1.0600000000137981,
+          "net_rain_cm": 0.9853081924438686,
+          "downward_top_flux_cm": 0.970428445646889,
+          "upward_bottom_flux_cm": 0.01217352640839992,
+          "state_start_minute": 143.99999999790452,
+          "state_interval_minutes": 19.200000003911555,
+          "head_cm_by_node": {
+            "1": -13.2069047832322,
+            "6": -12.28777866844477,
+            "22": -83.01157919716981,
+            "30": -75.25468831252367
+          },
+          "theta_by_node": {
+            "1": 0.4161300203110113,
+            "6": 0.41762423412370486,
+            "22": 0.3262671475464642,
+            "30": 0.33340643671386616
+          },
+          "root_zone_water_cm": 10.487982649683582,
+          "top_flux_cm_day": 0.14879746796570228,
+          "pond_end_cm": 0.0
+        },
+        "1440": {
+          "gross_rain_cm": 1.0600000000137981,
+          "net_rain_cm": 0.9853081924438686,
+          "downward_top_flux_cm": 0.8365107244805093,
+          "upward_bottom_flux_cm": 0.14273015706322906
+        }
+      },
+      "interval_count": 31,
+      "oxygen_loss_cm": 0.01657104660993789,
+      "first_oxygen_minute": 38.39999999734573
+    },
+    "native": {
+      "samples": {
+        "0": {
+          "gross_rain_cm": 0.0,
+          "net_rain_cm": 0.0,
+          "downward_top_flux_cm": -0.0,
+          "upward_bottom_flux_cm": 0.0,
+          "state_start_minute": 0.0,
+          "state_interval_minutes": 0.22500000000491127,
+          "head_cm_by_node": {
+            "1": -136.90996168642133,
+            "6": -110.05585147006255,
+            "22": -82.9309142184309,
+            "30": -75.18891573075211
+          },
+          "theta_by_node": {
+            "1": 0.2885243138734951,
+            "6": 0.3051412767499417,
+            "22": 0.3263385794072396,
+            "30": 0.3334693981122778
+          },
+          "root_zone_water_cm": 9.514866497486492,
+          "top_flux_cm_day": -9.698346339422622,
+          "pond_end_cm": 0.0
+        },
+        "38.4": {
+          "gross_rain_cm": 0.28266666666671086,
+          "net_rain_cm": 0.26256632086386406,
+          "downward_top_flux_cm": 0.25862256905131037,
+          "upward_bottom_flux_cm": 0.003231672157830199,
+          "state_start_minute": 38.328031259325144,
+          "state_interval_minutes": 0.10168288516979374,
+          "head_cm_by_node": {
+            "1": -35.68983076164779,
+            "6": -109.76294008135369,
+            "22": -83.08980804782948,
+            "30": -75.28524350587347
+          },
+          "theta_by_node": {
+            "1": 0.38048419668316386,
+            "6": 0.30534355694342663,
+            "22": 0.32619792724623475,
+            "30": 0.33337720188348996
+          },
+          "root_zone_water_cm": 9.768751515857046,
+          "top_flux_cm_day": -9.698346339422622,
+          "pond_end_cm": 0.0
+        },
+        "68.3": {
+          "gross_rain_cm": 0.5027638888889839,
+          "net_rain_cm": 0.46701249257819016,
+          "downward_top_flux_cm": 0.4599979548490905,
+          "upward_bottom_flux_cm": 0.005779529521976472,
+          "state_start_minute": 68.29964253840444,
+          "state_interval_minutes": 0.1371125954483432,
+          "head_cm_by_node": {
+            "1": -27.531599259370868,
+            "6": -68.20980148768632,
+            "22": -83.2138723936935,
+            "30": -75.3597028851642
+          },
+          "theta_by_node": {
+            "1": 0.3928432688600489,
+            "6": 0.3403993256243459,
+            "22": 0.32608825913991313,
+            "30": 0.33330599830810537
+          },
+          "root_zone_water_cm": 9.967301075074548,
+          "top_flux_cm_day": -9.698346339422622,
+          "pond_end_cm": 0.0
+        },
+        "76.8": {
+          "gross_rain_cm": 0.5653333333334217,
+          "net_rain_cm": 0.5251326417277281,
+          "downward_top_flux_cm": 0.5172451381026207,
+          "upward_bottom_flux_cm": 0.0065088733874211135,
+          "state_start_minute": 76.79314030194291,
+          "state_interval_minutes": 0.1464363578133998,
+          "head_cm_by_node": {
+            "1": -26.106543305854416,
+            "6": -56.704779120476886,
+            "22": -83.24899790965279,
+            "30": -75.38032780236504
+          },
+          "theta_by_node": {
+            "1": 0.3950915269446806,
+            "6": 0.35300139790464075,
+            "22": 0.3260572338904326,
+            "30": 0.33328628481794986
+          },
+          "root_zone_water_cm": 10.023572235610851,
+          "top_flux_cm_day": -9.698346339422622,
+          "pond_end_cm": 0.0
+        },
+        "144": {
+          "gross_rain_cm": 1.0599999999999397,
+          "net_rain_cm": 0.9846237032392803,
+          "downward_top_flux_cm": 0.9698346339422071,
+          "upward_bottom_flux_cm": 0.012352440175877182,
+          "state_start_minute": 143.99999999999181,
+          "state_interval_minutes": 0.014062500013096724,
+          "head_cm_by_node": {
+            "1": -19.641565934052057,
+            "6": -27.74628142736913,
+            "22": -83.41388507121789,
+            "30": -75.5283055651417
+          },
+          "theta_by_node": {
+            "1": 0.4055482579649645,
+            "6": 0.39250669294091917,
+            "22": 0.3259117377286473,
+            "30": 0.33314496806059335
+          },
+          "root_zone_water_cm": 10.471163799872544,
+          "top_flux_cm_day": 0.14789069297074012,
+          "pond_end_cm": 0.0
+        },
+        "1440": {
+          "gross_rain_cm": 1.0599999999999397,
+          "net_rain_cm": 0.9846237032392803,
+          "downward_top_flux_cm": 0.83673301026854,
+          "upward_bottom_flux_cm": 0.14453178239695158
+        }
+      },
+      "interval_count": 1660,
+      "oxygen_loss_cm": 0.0059942256691273834,
+      "first_oxygen_minute": 68.29964253840444
+    },
+    "legacy_cap": {
+      "samples": {
+        "0": {
+          "gross_rain_cm": 0.0,
+          "net_rain_cm": 0.0,
+          "downward_top_flux_cm": -0.0,
+          "upward_bottom_flux_cm": 0.0,
+          "state_start_minute": 0.0,
+          "state_interval_minutes": 0.49999999999272404,
+          "head_cm_by_node": {
+            "1": -134.8800855006466,
+            "6": -109.38259326900963,
+            "22": -82.59524131037949,
+            "30": -74.92309064980542
+          },
+          "theta_by_node": {
+            "1": 0.2896609513797708,
+            "6": 0.30560698190073127,
+            "22": 0.32663644207718506,
+            "30": 0.333724293729624
+          },
+          "root_zone_water_cm": 9.52680092630364,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "38.4": {
+          "gross_rain_cm": 0.2826666657508497,
+          "net_rain_cm": 0.26274885046365987,
+          "downward_top_flux_cm": 0.25878091799743025,
+          "upward_bottom_flux_cm": 0.0031381797468856116,
+          "state_start_minute": 38.0000001238659,
+          "state_interval_minutes": 0.49999999999272404,
+          "head_cm_by_node": {
+            "1": -35.408929258327305,
+            "6": -109.04572697243441,
+            "22": -82.75382701130744,
+            "30": -75.02036509359894
+          },
+          "theta_by_node": {
+            "1": 0.38089427325797715,
+            "6": 0.30584101602580904,
+            "22": 0.32649559640598164,
+            "30": 0.33363093827404605
+          },
+          "root_zone_water_cm": 9.778655637829116,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "68.3": {
+          "gross_rain_cm": 0.5027638872500745,
+          "net_rain_cm": 0.46733714808110893,
+          "downward_top_flux_cm": 0.4602796015332406,
+          "upward_bottom_flux_cm": 0.005609807139526535,
+          "state_start_minute": 68.00000022165477,
+          "state_interval_minutes": 0.49999999999272404,
+          "head_cm_by_node": {
+            "1": -27.34427472016414,
+            "6": -67.83079434866652,
+            "22": -82.87881940348066,
+            "30": -75.09631833614584
+          },
+          "theta_by_node": {
+            "1": 0.39313741576834027,
+            "6": 0.34079030678566236,
+            "22": 0.32638474154900377,
+            "30": 0.3335581096404977
+          },
+          "root_zone_water_cm": 9.977505882184738,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "76.8": {
+          "gross_rain_cm": 0.5653333314896486,
+          "net_rain_cm": 0.525497700916118,
+          "downward_top_flux_cm": 0.517561835983828,
+          "upward_bottom_flux_cm": 0.00631736109432272,
+          "state_start_minute": 76.50000024936162,
+          "state_interval_minutes": 0.49999999999272404,
+          "head_cm_by_node": {
+            "1": -25.93665751078584,
+            "6": -56.27198046039554,
+            "22": -82.91419833297195,
+            "30": -75.1173139290451
+          },
+          "theta_by_node": {
+            "1": 0.39536113501858455,
+            "6": 0.35350665985120755,
+            "22": 0.32635338906425426,
+            "30": 0.333537987762439
+          },
+          "root_zone_water_cm": 10.033852734122902,
+          "top_flux_cm_day": -9.704284456344725,
+          "pond_end_cm": 0.0
+        },
+        "144": {
+          "gross_rain_cm": 1.0599999965259939,
+          "net_rain_cm": 0.9853081892018289,
+          "downward_top_flux_cm": 0.9704284424538094,
+          "upward_bottom_flux_cm": 0.011988692937589971,
+          "state_start_minute": 143.99999999790452,
+          "state_interval_minutes": 0.49999999999272404,
+          "head_cm_by_node": {
+            "1": -19.53194823433935,
+            "6": -27.501004584533344,
+            "22": -83.08112402760887,
+            "30": -75.26903448450815
+          },
+          "theta_by_node": {
+            "1": 0.40572826278963114,
+            "6": 0.3928912809250563,
+            "22": 0.3262056086110049,
+            "30": 0.3333927093366816
+          },
+          "root_zone_water_cm": 10.483694599033806,
+          "top_flux_cm_day": 0.14879746796570228,
+          "pond_end_cm": 0.0
+        },
+        "1440": {
+          "gross_rain_cm": 1.0599999965259939,
+          "net_rain_cm": 0.9853081892018289,
+          "downward_top_flux_cm": 0.8365107217229769,
+          "upward_bottom_flux_cm": 0.14121402843945335
+        }
+      },
+      "interval_count": 2880,
+      "oxygen_loss_cm": 0.006220881578858561,
+      "first_oxygen_minute": 67.50000022002496
+    }
+  }
+}
