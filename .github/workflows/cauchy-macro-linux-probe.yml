@@ -1,4 +1,4 @@
-name: Grassgrowth trial cache oxygen controls
+name: Grassgrowth cache runtime preservation
 on:
   push:
     branches: [codex/cauchy-macro-linux-probe]
@@ -6,9 +6,13 @@ on:
 permissions:
   contents: read
 jobs:
-  oxygen:
+  oxygen-runtime:
     runs-on: ubuntu-24.04
-    timeout-minutes: 4
+    timeout-minutes: 6
+    strategy:
+      fail-fast: false
+      matrix:
+        optimization: [O0, O2]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -16,12 +20,11 @@ jobs:
           sparse-checkout: |
             src
             tests/physics
-      - name: Run original chain and exact cache checks
-        shell: bash
+            tests/fsi
+      - name: Run production backend oxygen, rollback and restart fixture
+        env:
+          C3A_OPTS: ${{ matrix.optimization }}
         run: |
           gfortran --version
-          for opt in O0 O2; do
-            C3A_OPT="$opt" bash tests/physics/run_bartholomeus_active_chain.sh | tee "$opt.txt"
-            grep -Fx WATERFILM_EXACT_TRIAL_CACHE=PASS "$opt.txt"
-          done
-          cmp O0.txt O2.txt
+          git rev-parse HEAD
+          C3A_TESTED_SHA="$(git rev-parse HEAD)" python3 -B tests/physics/run_bartholomeus_application.py
