@@ -238,10 +238,23 @@ endpoint temperature. The original SWAP 4.3.1 numerical routine also
 uses moisture-averaged capacity in a conduction-only solve. See
 [the heat-stock evidence](CLOSURE01_GRASS_HEAT_STOCK_20261110.json).
 
-Keep physical advection separate from historical equivalence. Resume
-with the earliest shared Grassgrowth B0 thermal profile and compare
-boundary forcing and accepted clocks before selecting a model change.
-The Hupsel oxygen reference limit and Andelst equivalence remain open.
+The original 63-day Grassgrowth thermal replay recovered 1,664 accepted
+intervals and the archived B0 profile within 1.78e-15 °C. The air boundary
+matches the daily weather mean. The SWAP5 thermal owner reproduces the
+complete original history on its original clock and original moisture
+states to 1.78e-14 °C, with identical O0/O2 results. On day 63, B0 used
+27 heat steps and the newer retained native run accepted 771 adaptive
+intervals. Halving each original step with fixed averaged coefficients
+changes node 27 by -0.003422 °C. The observed coupled native difference
+there is -0.006367 °C. Interpolating moisture within each split produces
+almost the same contrast. See [the clock evidence](CLOSURE01_GRASS_THERMAL_CLOCK_20261110.json).
+
+The controlled clock change demonstrates sensitivity, with a remaining
+coupled trajectory difference. Keep the original thermal law. If a
+correction is needed, first compare accepted hydraulic trajectories and
+the thermal forcing-window ownership at their earliest divergence.
+Physical advection, Hupsel oxygen and Andelst historical equivalence
+remain separate open qualifications.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -1067,4 +1080,34 @@ try {
         if ($LASTEXITCODE -ne 0) { throw "Accepted heat audit failed" }
     }
 } finally { Pop-Location }
+```
+
+### Grassgrowth replay of the original thermal clock
+
+Rebuild only the original temperature provider with an observer and
+link it to the retained B0 objects. Use the full original inputs for
+initialization, including the dates outside the observed window. The
+observer stops after the last heat solve on day 63 and does not issue a
+full-project completion flag. An initial attempt to shorten TEND was
+refused by the original lower-boundary date reader.
+
+The native replay uses the heat-owner objects built for the four-day
+observation above. It compares three trajectories with the legacy
+profile at each step. The full-step replay preserves the exact original
+accepted intervals. The frozen half-step replay preserves each
+original interval's moisture-averaged coefficients. The interpolated
+half-step replay additionally distributes the original moisture change
+linearly over its two halves.
+
+```powershell
+$legacy = "$env:TEMP/s5-grass-b0-heat63-all-20261110"
+python -B research/hybrid-water01/replay_grass_legacy_heat.py --reference "$env:TEMP/hy481-local-b0-20261109" --output $legacy --all-thermal-leaves
+if ($LASTEXITCODE -ne 0) { throw "Original Grassgrowth thermal observation failed" }
+foreach ($opt in @('O0','O2')) {
+    $b = "$env:TEMP/s5-grass-heat-obs-$opt"
+    $objects = @(2..6 | ForEach-Object { "$b/$_.o" })
+    gfortran "-$opt" -fcheck=all -I $b research/hybrid-water01/replay_grass_heat_leaf.f90 @objects -o "$b/replay-grass-heat-history.exe"
+    if ($LASTEXITCODE -ne 0) { throw "Native thermal replay build failed" }
+}
+python -B research/hybrid-water01/audit_grass_heat_history.py --legacy $legacy --native "$env:TEMP/s5-events-grass-367" --replay-o0 "$env:TEMP/s5-grass-heat-obs-O0/replay-grass-heat-history.exe" --replay-o2 "$env:TEMP/s5-grass-heat-obs-O2/replay-grass-heat-history.exe"
 ```

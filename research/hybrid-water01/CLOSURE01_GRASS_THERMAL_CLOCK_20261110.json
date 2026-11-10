@@ -1,0 +1,174 @@
+{
+  "archived_profile_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+  "legacy": {
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "base_temperature_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "observed_temperature_sha256": "12449c86f94f0555e15dc049b0c676a44c81907700fa08093df4a21728009cb4",
+    "retained_legacy_executable_sha256": "f03b36e0ef24c6dccfa55aed18c4b713f6e710840bf98c42068fdc4b1ff20ba6",
+    "executable_sha256": "9f463bc62ea6ebff523d9ca3c0d5538f6e469c35d573fc264c44e5d343a107d6",
+    "original_input_sha256": {
+      "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+      "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+    },
+    "exit": "observer intentionally stopped after the last thermal step on day 63",
+    "stdout_sha256": "18bf4369f0f2cb6045a797bc8a795158823c4be0d8aed6a495eafde26417f432"
+  },
+  "legacy_accepted_steps": 1664,
+  "legacy_day63_accepted_steps": 27,
+  "legacy_max_boundary_error_vs_daily_met_mean_c": 1.1102230246251565E-16,
+  "legacy_day63_against_archived_b0": {
+    "max_abs_c": 1.7763568394002505E-15,
+    "node": 48,
+    "signed_node27_c": 0.0
+  },
+  "older_retained_native_day63_against_b0": {
+    "max_abs_c": 0.004617247217269416,
+    "node": 27,
+    "signed_node27_c": -0.004617247217269416
+  },
+  "newer_retained_native_day63_against_b0": {
+    "max_abs_c": 0.0063673515021287486,
+    "node": 27,
+    "signed_node27_c": -0.0063673515021287486
+  },
+  "newer_native_day63_adaptive_intervals": 771,
+  "newer_native_day63_checkpoint_sha256": "ddca23c965539dcae6143648b41691d335edf417b7f6ac3546f8dd33c8b325b7",
+  "replay_executable_sha256": {
+    "O0": "fdd0f4ec88f46736cb7706c658c8cb28964978b9396c6e31bdef969b0ac8cdb7",
+    "O2": "8b4be3e4b55ae40bbb4d2a1a96c228921e32c71ffb9145595a3020c2c53d8f6f"
+  },
+  "replays": {
+    "O0": {
+      "same_step": {
+        "max_temperature_difference_any_step_c": 7.105427357601002E-15,
+        "day63_max_temperature_difference_c": 1.7763568394002505E-15,
+        "day63_node_of_max": 27,
+        "day63_signed_node27_c": 1.7763568394002505E-15,
+        "max_abs_conductive_residual_j_cm2": 2.2524204723595176E-12,
+        "max_capacity_difference_j_cm3_k": 0.0,
+        "max_conductivity_difference_j_cm_k_day": 0.0
+      },
+      "full": {
+        "max_temperature_difference_any_step_c": 1.7763568394002505E-14,
+        "day63_max_temperature_difference_c": 1.2434497875801753E-14,
+        "day63_node_of_max": 112,
+        "day63_signed_node27_c": -2.6645352591003757E-15,
+        "max_abs_conductive_residual_j_cm2": 1.9753088054130785E-12,
+        "max_capacity_difference_j_cm3_k": 0.0,
+        "max_conductivity_difference_j_cm_k_day": 0.0
+      },
+      "frozen": {
+        "max_temperature_difference_any_step_c": 0.411366890326919,
+        "day63_max_temperature_difference_c": 0.0034218624187971614,
+        "day63_node_of_max": 26,
+        "day63_signed_node27_c": -0.003421647055636967,
+        "max_abs_conductive_residual_j_cm2": 1.9610979506978765E-12,
+        "max_capacity_difference_j_cm3_k": 0.0,
+        "max_conductivity_difference_j_cm_k_day": 0.0
+      },
+      "split": {
+        "max_temperature_difference_any_step_c": 0.411539108432069,
+        "day63_max_temperature_difference_c": 0.0034222654828361954,
+        "day63_node_of_max": 26,
+        "day63_signed_node27_c": -0.0034220677626546347,
+        "max_abs_conductive_residual_j_cm2": 2.000177801164682E-12,
+        "max_capacity_difference_j_cm3_k": 0.10307139426035228,
+        "max_conductivity_difference_j_cm_k_day": 40.37010577589126
+      }
+    },
+    "O2": {
+      "same_step": {
+        "max_temperature_difference_any_step_c": 7.105427357601002E-15,
+        "day63_max_temperature_difference_c": 1.7763568394002505E-15,
+        "day63_node_of_max": 27,
+        "day63_signed_node27_c": 1.7763568394002505E-15,
+        "max_abs_conductive_residual_j_cm2": 2.2524204723595176E-12,
+        "max_capacity_difference_j_cm3_k": 0.0,
+        "max_conductivity_difference_j_cm_k_day": 0.0
+      },
+      "full": {
+        "max_temperature_difference_any_step_c": 1.7763568394002505E-14,
+        "day63_max_temperature_difference_c": 1.2434497875801753E-14,
+        "day63_node_of_max": 112,
+        "day63_signed_node27_c": -2.6645352591003757E-15,
+        "max_abs_conductive_residual_j_cm2": 1.9753088054130785E-12,
+        "max_capacity_difference_j_cm3_k": 0.0,
+        "max_conductivity_difference_j_cm_k_day": 0.0
+      },
+      "frozen": {
+        "max_temperature_difference_any_step_c": 0.411366890326919,
+        "day63_max_temperature_difference_c": 0.0034218624187971614,
+        "day63_node_of_max": 26,
+        "day63_signed_node27_c": -0.003421647055636967,
+        "max_abs_conductive_residual_j_cm2": 1.9610979506978765E-12,
+        "max_capacity_difference_j_cm3_k": 0.0,
+        "max_conductivity_difference_j_cm_k_day": 0.0
+      },
+      "split": {
+        "max_temperature_difference_any_step_c": 0.411539108432069,
+        "day63_max_temperature_difference_c": 0.0034222654828361954,
+        "day63_node_of_max": 26,
+        "day63_signed_node27_c": -0.0034220677626546347,
+        "max_abs_conductive_residual_j_cm2": 2.000177801164682E-12,
+        "max_capacity_difference_j_cm3_k": 0.10307139426035228,
+        "max_conductivity_difference_j_cm_k_day": 40.37010577589126
+      }
+    }
+  },
+  "replay_provider_identities": {
+    "O0": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "objects": {
+        "mod_transaction_reference.f90": {
+          "source_sha256": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+          "object_sha256": "70546a73f68074b460fc0c3ab2c2ed1c62b0b413d48d346e5fc604324dbb2487"
+        },
+        "mod_soil_temperature_contract.f90": {
+          "source_sha256": "95b7440fd351fda32492761bee25ceceb965fa8050b2c7246de357187ce8bdb6",
+          "object_sha256": "852d140f1f64edf356a5c8c6d08d50003dfb96c3448ca498024354900bbc3dac"
+        },
+        "mod_soil_water_solver_contract.f90": {
+          "source_sha256": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+          "object_sha256": "93ea1e89e9e7ead7141a1b86d0bf0027760a6085685bb4d8580ead44fb40ced1"
+        },
+        "mod_process_hydraulic_view.f90": {
+          "source_sha256": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+          "object_sha256": "810187c5e79f75b149b4dc719988b81e40396f095be59a99421fdaf76f8d5d30"
+        },
+        "mod_restricted_soil_temperature.f90": {
+          "source_sha256": "1a15b1441a93bf9e704d0ca40eac97123e3946758793f7c3aabab1a201b2b74c",
+          "object_sha256": "d615773b86ee2d8a4bb697f58988f7a051f46874b34a67ac4f8b82f3155fb11b"
+        }
+      }
+    },
+    "O2": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "objects": {
+        "mod_transaction_reference.f90": {
+          "source_sha256": "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27",
+          "object_sha256": "ed44a7415f511875707608b50a6106b94b7da2f1451596367b2594fc42cfc90f"
+        },
+        "mod_soil_temperature_contract.f90": {
+          "source_sha256": "95b7440fd351fda32492761bee25ceceb965fa8050b2c7246de357187ce8bdb6",
+          "object_sha256": "43efa47abe735a7864b7d49d1fce6690d8dbbb8c4fdd2fc073b9611f3c4d2210"
+        },
+        "mod_soil_water_solver_contract.f90": {
+          "source_sha256": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+          "object_sha256": "150b0859c06195da9ac099857b9d7799e0b376efc9772aa2540f30b5eec18941"
+        },
+        "mod_process_hydraulic_view.f90": {
+          "source_sha256": "fb741e2274f179a7cff636fce8f618ed7ddb4b84fc68d60be8898bb80742d72e",
+          "object_sha256": "c5c02af39696a07cb2bbcb82537123b7fdff6a85abbd6b3925dab30e132a4274"
+        },
+        "mod_restricted_soil_temperature.f90": {
+          "source_sha256": "1a15b1441a93bf9e704d0ca40eac97123e3946758793f7c3aabab1a201b2b74c",
+          "object_sha256": "91e3599557d95a02ebb30a6a85d4b22879357c12a2dd643854e9801f3d2086d8"
+        }
+      }
+    }
+  },
+  "canonical_heat_owner_base": "a57d7d532464ad89b7aca918263cf114b6b42185"
+}

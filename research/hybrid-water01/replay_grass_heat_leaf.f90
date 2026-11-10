@@ -18,7 +18,7 @@ program replay_grass_heat_leaf
  logical :: first
  character(8) :: mode
  call get_command_argument(1,mode)
- if(mode/="".and.mode/="full".and.mode/="split") error stop "unknown heat replay mode"
+ if(mode/="".and.mode/="full".and.mode/="split".and.mode/="frozen") error stop "unknown heat replay mode"
  first=.true.
  do
  read(*,*,iostat=io) n, clock, dt, top
@@ -43,9 +43,13 @@ program replay_grass_heat_leaf
  forcing%air_temperature_c=top
  forcing%top_boundary_mode=SOIL_TEMP_TOP_AIR_TEMPERATURE
  forcing%bottom_boundary_mode=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
- if(mode=="split")then
+ if(mode=="split".or.mode=="frozen")then
   middle=left
   middle%water_content=0.5d0*(left%water_content+right%water_content)
+  if(mode=="frozen")then
+   left%water_content=middle%water_content
+   right%water_content=middle%water_content
+  end if
   call trial_restricted_soil_temperature(parameters,numerical,forcing,left,middle,initial,0d0,0.5d0*dt, &
    workspace,intermediate,result,diagnostics)
   if(result%status/=SOIL_TEMP_OK.or..not.result%produced) error stop 'first half-step refused'
@@ -61,7 +65,8 @@ program replay_grass_heat_leaf
  write(*,'(a,1x,i0,*(1x,es25.17e3))') 'REPLAY_HEAT', maxloc(abs(temperature-fields(11,:)),dim=1), &
   clock,dt,top,maxval(abs(temperature-fields(11,:))), &
   maxval(abs(workspace%heat_capacity_j_cm3_k-fields(12,:))), &
-  maxval(abs(workspace%node_conductivity_j_cm_k_day-fields(13,:))),result%energy_residual_j_cm2
+  maxval(abs(workspace%node_conductivity_j_cm_k_day-fields(13,:))),result%energy_residual_j_cm2, &
+  temperature(27)-fields(11,27)
  first=.false.
  initial=candidate
  deallocate(fields)
