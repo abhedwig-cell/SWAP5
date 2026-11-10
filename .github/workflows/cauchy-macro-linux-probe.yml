@@ -47,3 +47,9 @@ jobs:
             gfortran "-$opt" compare.f90 "$RUNNER_TEMP/tt-$opt/ttobj/libttutil.a" -o "compare-$opt"
             "./compare-$opt"
           done
+          tt="$RUNNER_TEMP/tt-O2"
+          gfortran -O2 -ffp-contract=off -finit-local-zero -fallow-argument-mismatch -ffixed-line-length-none -I"$tt/source/TTUTIL" -I"$tt/ttobj" -J"$tt/ttobj" -c "$tt/source/TTUTIL/rdlex.for" -o "$tt/ttobj/rdlex.o"
+          ar rcs "$tt/ttobj/libttutil.a" "$tt/ttobj/rdlex.o"
+          gfortran -O2 compare.f90 "$tt/ttobj/libttutil.a" -o compare-O2-no-contract
+          echo 'O2 with only rdlex floating-point contraction disabled'
+          ./compare-O2-no-contract
