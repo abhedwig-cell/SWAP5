@@ -45,6 +45,7 @@ jobs:
           body = body.replace(old, old + "\n      if(.not.local_ok)write(*,*) 'CONTACT_TRACE node shrinkage rejected',ic,theta(ic),config%theta_s(ic),shrink")
           p.write_text(s[:i] + body + s[j:])
           PY
+          git -c user.name='SWAP5 diagnostics' -c user.email='diagnostic@localhost' commit -am 'Instrument candidate geometry refusal'
           code=0
           python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization O2 --output "$RUNNER_TEMP/contact" || code=$?
           if [[ -d "$RUNNER_TEMP/contact" ]]; then
