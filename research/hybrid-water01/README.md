@@ -321,11 +321,41 @@ scientific cause of the fraction difference remains open. The native
 water balance residual is -6.72e-15 cm. The observer is diagnostic and
 the model tolerances were retained.
 
-Resume the half-hour task at the first B0 oxygen-active step, minute
-38.4. Compare the B0 `RootExtraction(2)` wet-factor inputs with the
-native oxygen calculation on identical nodal states. Use the accepted
-water/thermal starts around minutes 38.4 and 68.3 to distinguish the
-effect of different upstream states from a different oxygen calculation.
+The paired oxygen replay now calls the original B0 `OxygenStress`
+and the retained SWAP5 Bartholomeus reference provider on each of
+the same pressure-head, water-content and temperature profiles.
+Both receive the same B0 hydraulic and soil parameters, atmospheric
+boundary, 30-node root-density profile and respiration inputs. The
+B0 forcing and nodal potential demand stay constant across the
+observed window. The diagnostic relink preserves the complete
+accepted B0 trace exactly and reconstructs its oxygen rates within
+the existing `1e-10 cm` audit threshold when integrated over each
+step. Model tolerances are unchanged.
+
+| Shared accepted profile source | Intervals | First reduction in both kernels (min) | Max absolute nodal factor difference | Integrated SWAP5-minus-B0 loss (cm) |
+| --- | ---: | ---: | ---: | ---: |
+| B0 | 29 | 38.4000 | 8.5843e-6 | -3.0321e-9 |
+| SWAP5 | 1267 | 68.4368 | 1.3076e-5 | -2.8323e-9 |
+
+The integral uses the same B0 nodal demand on both grids, beginning
+at minute 38.4. Under that common forcing, changing only the
+accepted soil profiles and their step grid reduces the oxygen loss
+from 0.01657105 to 0.00593386 cm. The kernel-only difference is
+about 3e-9 cm, compared with the 0.01057682 cm gap between the
+original daily runs. The actual SWAP5 run first reduces uptake at
+minute 68.2996. On that same profile both kernels return a deepest
+factor of 1 under B0 forcing, whereas the retained SWAP5 factor is
+0.9941774. This comparison holds the nonstate inputs at B0 values
+and leaves the smaller difference from SWAP5's own inputs open.
+
+Resume the half-hour task with the accepted hydraulic profiles in
+the oxygen-active root zone at minute 38.4. Trace the wetting timing
+back through rain delivery, the accepted hydraulic steps and the
+soil-water state inherited from day 187. Compare the published
+SWAP5 root density and respiration against the B0 inputs separately
+if resolving the smaller residual around minute 68.3. The
+[paired receipt](grass-oxygen188-paired-evidence.json) records the
+values and hashes. Reproduce it after the observer run below.
 
 Replay in PowerShell with the retained O2 build and checkpoint
 directories from the preceding workpoint. The output directory must
@@ -335,6 +365,7 @@ original application binding for the diagnostic resume.
 ```powershell
 python -B research/hybrid-water01/replay_grass_oxygen188.py --reference "$env:TEMP/hy481-local-b0-20261109" --bundle "$env:TEMP/s5-grass-lai-O2" --control "$env:TEMP/s5-grass-oxygen-event-189" --archive "$env:TEMP/s5-grass-heat-obs-O2/libttutil.a" --output "$env:TEMP/s5-grass-oxygen188-observe-v3"
 python -B research/hybrid-water01/audit_grass_oxygen188.py "$env:TEMP/s5-grass-oxygen188-observe-v3" "$env:TEMP/s5-grass-oxygen-event-189"
+python -B research/hybrid-water01/compare_grass_oxygen188.py --reference "$env:TEMP/hy481-local-b0-20261109" --bundle "$env:TEMP/s5-grass-lai-O2" --observation "$env:TEMP/s5-grass-oxygen188-observe-v3" --output "$env:TEMP/s5-grass-oxygen188-pair-v2"
 ```
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
