@@ -407,15 +407,22 @@ payloads match the retained payload hashes. [Draft PR
 1624](https://github.com/abhedwig-cell/SWAP5/pull/1624) contains the
 current receipt, replay auditor and archived results.
 
-The next review block is the original Hupsel rotation through the
-public application. A fresh canonical O2 build and 1096-day run
-were started under `$env:TEMP/s5-hupsel-canonical-a827-review` and
-its `-full` sibling from the `a8275101` production tree. Continue
-the existing run. Compare its water, solute, heat, crop and restart
-evidence against the sealed original rotation. Report the scientific
-differences separately and choose any process change only from a
-specific failed acceptance criterion. Grassgrowth PR 1623 still
-has its separate current-source full O2 replay in progress.
+The current original-input Hupsel application has completed all
+1096 days. [Draft PR 1625](https://github.com/abhedwig-cell/SWAP5/pull/1625)
+contains the exact pressure/film physical CSV comparison, independent
+water and solute closure, terminal heat result and exact own-build
+O2 day-2-to-4 restart. The older full-profile capsule uses another
+numerical route and first differs on day 524. The pressure/film
+scientific comparison still fails the frozen day-584 oxygen bound
+(0.000244679662 cm absolute difference; 5.37184e-7 cm bound).
+That is the remaining scientific acceptance decision for this packet.
+
+Continue the already running O2 day-365-to-367 restart and O0 day-2
+restart under `$env:TEMP/s5-hupsel-canonical-a827-review*`.
+Attach them to PR 1625 when verified. The current Grassgrowth full
+O2 replay also remains active for PR 1623. After the functional
+evidence is collected, use the existing pressure/film investigation
+on Hupsel day 584 to select one distinguishing scientific test.
 
 The completed Andelst chain used these commands.
 
