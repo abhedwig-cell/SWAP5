@@ -21,4 +21,4 @@ jobs:
         run: |
           git fetch --no-tags --depth=1 origin a4da56a0c60105862fc3dc91b6101ff1c963cf84
           gfortran --version
-          python3 research/hybrid-water01/replay_contact_macro_import.py --trace-guards
+          python3 research/hybrid-water01/replay_contact_macro_import.py --exact-saturation

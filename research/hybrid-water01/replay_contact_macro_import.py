@@ -14,6 +14,7 @@ parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--ref", default="a4da56a0c60105862fc3dc91b6101ff1c963cf84")
 parser.add_argument("--fc", default="gfortran")
 parser.add_argument("--trace-guards", action="store_true")
+parser.add_argument("--exact-saturation", action="store_true")
 args = parser.parse_args()
 
 def git(*args):
@@ -68,6 +69,16 @@ if args.trace_guards:
          theta,theta_s,moisture_ratio,void_ratio,solid_volume_fraction,shrink_fraction
 """.rstrip())
     ordered[shrinkage] = traced.encode()
+if args.exact_saturation:
+    original = ordered[shrinkage]
+    marker = b"    shrink_fraction = theta_s-void_ratio*solid_volume_fraction"
+    assert original.count(marker) == 1
+    exact = b"""    if (theta == theta_s .and. moisture_ratio > parameters%transition_moisture_ratio) then
+      shrink_fraction = 0.0_real64
+    else
+      shrink_fraction = theta_s-void_ratio*solid_volume_fraction
+    end if"""
+    ordered[shrinkage] = original.replace(marker, exact)
 program="""program probe
 use mod_column_swp_macro_initial
 implicit none
