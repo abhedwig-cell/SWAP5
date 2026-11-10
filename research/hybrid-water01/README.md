@@ -388,6 +388,37 @@ PR evidence and any already-running current-source replay before
 starting another Grassgrowth run. After this review packet, return
 to the Andelst water-kernel integration and durable restart.
 
+The Andelst integration review now uses
+`audit_andelst_application_replay.py`. It reverified the retained
+481-day ledger and both checkpoint payload hashes against the
+published daily-host receipt. The 365-to-457 and 453-to-459
+continuations reproduce the accepted physical receipts and every
+published CSV row. The two distinct Cauchy columns match their own
+separate controls, and the retained refusal leaves revision 14,
+publishes no day-15 file and permits the other column to accept day 2.
+The older exact post-refusal state comparison remains in the
+dedicated host control.
+
+The fresh canonical application chain was started at the production
+tree of `a8275101` from the Grassgrowth review checkout, whose
+differences are limited to research evidence. Resume monitoring the
+existing runs under `$env:TEMP/s5-andelst-canonical-a827-review`
+and its `-year` and `-dry` siblings. The commands below show the
+active chain. The final gate is exact agreement with the retained
+physical trajectory under the unchanged tolerance, verified durable
+package binding, and the existing O0/O2, rollback and isolation
+controls. Open the separate Andelst evidence PR after that gate.
+
+```powershell
+$b = "$env:TEMP/s5-andelst-canonical-a827-review"
+$ref = "$env:TEMP/hy481-local-b0-20261109"
+$common = @('--model','HYBRID_ANDELST_WATER','--reference-work',$ref)
+python -B tools/solute/run_water.py @common --output $b --days 481 --checkpoint-at 365
+python -B tools/solute/run_water.py @common --output "$b-year" --days 457 --restart "$b/accepted-column-1-day-365.zip" --restart-day 365 --checkpoint-at 453
+python -B tools/solute/run_water.py @common --output "$b-dry" --days 459 --restart "$b-year/accepted-column-1-day-453.zip" --restart-day 453
+python -B research/hybrid-water01/audit_andelst_application_replay.py $b "$b-year" "$b-dry"
+```
+
 Replay in PowerShell with the retained O2 build and checkpoint
 directories from the preceding workpoint. The output directory must
 be new. The observer relinks the retained objects and uses the
