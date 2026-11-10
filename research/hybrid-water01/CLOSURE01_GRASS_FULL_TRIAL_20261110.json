@@ -1,0 +1,110 @@
+{
+  "canonical_base": "a57d7d532464ad89b7aca918263cf114b6b42185",
+  "legacy_build": {
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "base_temperature_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+    "observed_temperature_sha256": "a5e9d4d988dba4e8a445d91e290f9886b5fecbbd2c64856b175c038649d6db72",
+    "retained_legacy_executable_sha256": "f03b36e0ef24c6dccfa55aed18c4b713f6e710840bf98c42068fdc4b1ff20ba6",
+    "executable_sha256": "815513e9d627ad17cff30f21c85de576513d53379b91d2911e851950f8551b6a",
+    "original_input_sha256": {
+      "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+      "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+    },
+    "exit": "observer intentionally stopped after the last thermal step on day 63",
+    "stdout_sha256": "daa86f28bd5de842e3d910863138dba393bb1e16b8c72f4c575b93d09f6f5f19"
+  },
+  "original_full_step": {
+    "dt_day": 0.0002,
+    "net_rain_cm_day": 5.975243984917098,
+    "qtop_upward_cm_day": -5.973143032131077,
+    "qbottom_upward_cm_day": 5.211299167328797e-13,
+    "matrix_storage_change_cm": 0.0011942789959929478
+  },
+  "runs": {
+    "O0": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "build_sha256": "a11e739aa677d6f1fdb0024aea080a302655a760a03eafec83a5485cc7dc27d4",
+      "executable_sha256": "9f5c28c4182da3224c8321403dea14bb1ae443630a5e13fa26e8c2c5de236209",
+      "log_sha256": "52dc0e7afa1d56cf2b3c32e5a86808d2a2e712ae7184a92e8e7651c0805d9a57",
+      "backend_sha256": "75133090a6bb08af54120525f024c9a81633237228ca85d441f46a83d56edf5e",
+      "input_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "values": {
+        "dt_day": 0.0002,
+        "full_vs_legacy_theta": {
+          "node": 1,
+          "signed": 5.551115123125783e-17,
+          "max_abs": 5.551115123125783e-17
+        },
+        "half_vs_legacy_theta": {
+          "node": 1,
+          "signed": 4.279681293739568e-06,
+          "max_abs": 4.279681293739568e-06
+        },
+        "full_vs_half_theta": {
+          "node": 1,
+          "signed": -4.279681293684057e-06,
+          "max_abs": 4.279681293684057e-06
+        },
+        "full_vs_legacy_head_cm": {
+          "node": 113,
+          "signed": 5.286437954055145e-12,
+          "max_abs": 5.286437954055145e-12
+        },
+        "full_water_in_cm": 0.001194628606426375,
+        "full_water_out_cm": 3.496104333717367e-07,
+        "full_independent_water_residual_cm": 1.6871837518121595e-19,
+        "accepted_outputs_byte_equal_to_unobserved_control": true
+      }
+    },
+    "O2": {
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "build_sha256": "9be85b0de457de16a54823c3bd53e8dbbe4fc5b3fd13ec9caad711a798dbb4b3",
+      "executable_sha256": "ab6375e7d67c8bc802c78a4f3f65893aef9482ef7567309cf6237f32c92a3780",
+      "log_sha256": "52dc0e7afa1d56cf2b3c32e5a86808d2a2e712ae7184a92e8e7651c0805d9a57",
+      "backend_sha256": "75133090a6bb08af54120525f024c9a81633237228ca85d441f46a83d56edf5e",
+      "input_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "values": {
+        "dt_day": 0.0002,
+        "full_vs_legacy_theta": {
+          "node": 1,
+          "signed": 5.551115123125783e-17,
+          "max_abs": 5.551115123125783e-17
+        },
+        "half_vs_legacy_theta": {
+          "node": 1,
+          "signed": 4.279681293739568e-06,
+          "max_abs": 4.279681293739568e-06
+        },
+        "full_vs_half_theta": {
+          "node": 1,
+          "signed": -4.279681293684057e-06,
+          "max_abs": 4.279681293684057e-06
+        },
+        "full_vs_legacy_head_cm": {
+          "node": 113,
+          "signed": 5.286437954055145e-12,
+          "max_abs": 5.286437954055145e-12
+        },
+        "full_water_in_cm": 0.001194628606426375,
+        "full_water_out_cm": 3.496104333717367e-07,
+        "full_independent_water_residual_cm": 1.6871837518121595e-19,
+        "accepted_outputs_byte_equal_to_unobserved_control": true
+      }
+    }
+  }
+}

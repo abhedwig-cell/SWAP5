@@ -260,14 +260,19 @@ respectively, both at node 1, with water residual below 3.17e-15 cm.
 Thermal control uses 3065 adaptive intervals over day 1 versus 496
 for water-only. See [the startup evidence](CLOSURE01_GRASS_WATER_START_20261110.json).
 
-This localizes the earliest tested difference to evolution on different
-accepted grids, after identical initialization and surface forcing.
-The residual effect of the water step implementation is still open.
-Keep the original thermal law and the existing tolerances. Continue
-scientific qualification by comparing the initial SWAP5 full candidate
-with the original same-duration leaf before proposing a process change.
-Physical advection, Hupsel oxygen and Andelst historical equivalence
-remain separate open qualifications.
+At the original 2e-4 day interval, the native full candidate matches
+B0 within 5.55e-17 in theta and 5.29e-12 cm in pressure head. Its
+independently reconstructed water residual is 1.69e-19 cm. The first
+observed 4.28e-6 theta difference at node 1 is in the selected two-half
+trajectory. Observing both candidates preserves the accepted outputs
+byte for byte at O0/O2. See [the full-trial evidence](CLOSURE01_GRASS_FULL_TRIAL_20261110.json).
+
+This classifies the first discrepancy as temporal discretization under
+the current acceptance policy. Keep the original thermal law and the
+existing tolerances. Resume with the retained full-period scientific
+comparisons to identify any remaining difference that warrants a
+process change. Physical advection, Hupsel oxygen and Andelst
+historical equivalence remain separate open qualifications.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -1154,4 +1159,33 @@ try {
     }
 } finally { Pop-Location }
 python -B "$source/research/hybrid-water01/audit_grass_water_start.py" --legacy $legacy --build-root "$env:TEMP" --output "$env:TEMP/s5-grass-water-common-clock-20261110"
+```
+
+### Grassgrowth first full candidate before selection
+
+The observer records the complete native full-step and half-step
+candidates in the temporal assessment, before either is accepted.
+Compile it only in a detached canonical worktree and retain the
+original time and mass checks. The preceding common-clock water-only
+runs provide the accepted output controls.
+
+```powershell
+$source = (Get-Location).Path
+$probe = "$env:TEMP/s5-grass-full-trial-20261110"
+$legacy = "$env:TEMP/s5-grass-first-candidate-b0-20261110"
+python -B research/hybrid-water01/replay_grass_legacy_heat.py --reference "$env:TEMP/hy481-local-b0-20261109" --output $legacy
+git worktree add --detach --no-checkout $probe a57d7d532464ad89b7aca918263cf114b6b42185
+git -C $probe sparse-checkout set src app tools reference integration/audits/evidence tests/support
+git -C $probe reset --hard HEAD
+python -B research/hybrid-water01/observe_grass_full_trial.py $probe
+Push-Location $probe
+try {
+    foreach ($opt in @('O0','O2')) {
+        $b = "$env:TEMP/s5-grass-full-trial-$opt"
+        $tt = "$env:TEMP/s5-grass-heat-obs-$opt/libttutil.a"
+        python -B tools/solute/build_grass_startup.py --output $b --optimization $opt --input-archive $tt --policy retained --end 0.0002
+        if ($LASTEXITCODE -ne 0) { throw "Observed native full candidate failed" }
+    }
+} finally { Pop-Location }
+python -B "$source/research/hybrid-water01/audit_grass_full_trial.py" --legacy $legacy --build-root "$env:TEMP" --controls "$env:TEMP/s5-grass-water-common-clock-20261110"
 ```
