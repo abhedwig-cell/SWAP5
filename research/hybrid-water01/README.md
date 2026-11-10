@@ -27,10 +27,10 @@ project inputs, compiled executable and retained-step thermal profile
 before starting the native project. The native owner commits days and
 writes its water, heat, crop and root restart using the existing codec.
 Both Windows O0 and O2 builds reproduce the first four historical budget
-and crop records. Each day-2 restart reproduces days 3â€“4 and the terminal
+and crop records. Each day-2 restart reproduces days 3Ã¢â‚¬â€œ4 and the terminal
 state, endpoint and checkpoint bytes. Damaged and other-build checkpoints
 are refused before budget publication. Maximum absolute water residual
-is 2.257e-14 cm and maximum absolute heat residual is 2.046e-12 J/cmÂ².
+is 2.257e-14 cm and maximum absolute heat residual is 2.046e-12 J/cmÃ‚Â².
 See the [Grassgrowth commands](../../docs/getting-started.md#run-the-native-grassgrowth-application)
 and the [application receipt](CLOSURE01_GRASS_APPLICATION_RESULT_20261109.json).
 The prior 1,827-day evidence remains the full-period authority.
@@ -39,7 +39,7 @@ The third explicit selection is `--model NATIVE_HUPSEL_ROTATION`.
 It uses the existing 34-node joint rotation with the pinned pressure-film
 preparation, whose maximum step is 0.01 day. O0 and O2 reproduce the
 first four budget and crop days of the existing full-period runs.
-Own day-2 restarts match days 3â€“4 and the terminal state and checkpoint
+Own day-2 restarts match days 3Ã¢â‚¬â€œ4 and the terminal state and checkpoint
 bytes. The application verifies the restart receipt before launch, and
 the native codec independently rejects a damaged rotation envelope.
 See the [Hupsel commands](../../docs/getting-started.md#run-the-native-hupsel-rotation)
@@ -138,9 +138,9 @@ balance guard are owned by `app/hybrid_water`. The application
 builds and prepares the original Andelst reference without this
 research directory. The [local integration receipt](CLOSURE01_INTEGRATION_RESULT_20261109.json)
 records the exact PR-head runs. Andelst O0/O2 kernels reproduced days
-1â€“22 and own day-20 continuations with the O2 donor. Generated donor
+1Ã¢â‚¬â€œ22 and own day-20 continuations with the O2 donor. Generated donor
 sources match the previous application build byte for byte.
-Grassgrowth and Hupsel O2 reproduced days 1â€“4 and their own day-2
+Grassgrowth and Hupsel O2 reproduced days 1Ã¢â‚¬â€œ4 and their own day-2
 restarts. The exact head also passes the mixed-clock isolation and
 day-15 refusal controls.
 
@@ -202,7 +202,7 @@ shared publisher and current admission verifier have changed. No Hupsel
 process change is selected from this evidence.
 
 Grassgrowth now publishes a separate conductive day ledger for every
-accepted substep. Windows O0/O2 original-input days 1â€“4 and each own
+accepted substep. Windows O0/O2 original-input days 1Ã¢â‚¬â€œ4 and each own
 day-2 continuation produce identical conductive rows. Water, crop and
 terminal state agree with the prior four-day runs. The exact historical
 Grassgrowth production tree also revalidates its sealed 1827-day run.
@@ -230,23 +230,23 @@ The Grassgrowth heat observer recompiled the exact canonical owner with
 output-only instrumentation. Original-input O0/O2 day 1 and each own
 continuation through day 4 give the same 13,764 selected thermal leaves
 and match the earlier uninterrupted water, conductive, crop and final
-state output. Moisture changes contribute +31.75347 J/cmÂ² of sensible
-stock relative to 0 Â°C. Changing air capacity contributes -0.009207
-J/cmÂ². Positive net water inflow lacks a measured donor temperature
+state output. Moisture changes contribute +31.75347 J/cmÃ‚Â² of sensible
+stock relative to 0 Ã‚Â°C. Changing air capacity contributes -0.009207
+J/cmÃ‚Â². Positive net water inflow lacks a measured donor temperature
 already on the first accepted leaf. The outflow estimates use soil
 endpoint temperature. The original SWAP 4.3.1 numerical routine also
 uses moisture-averaged capacity in a conduction-only solve. See
 [the heat-stock evidence](CLOSURE01_GRASS_HEAT_STOCK_20261110.json).
 
 The original 63-day Grassgrowth thermal replay recovered 1,664 accepted
-intervals and the archived B0 profile within 1.78e-15 Â°C. The air boundary
+intervals and the archived B0 profile within 1.78e-15 Ã‚Â°C. The air boundary
 matches the daily weather mean. The SWAP5 thermal owner reproduces the
 complete original history on its original clock and original moisture
-states to 1.78e-14 Â°C, with identical O0/O2 results. On day 63, B0 used
+states to 1.78e-14 Ã‚Â°C, with identical O0/O2 results. On day 63, B0 used
 27 heat steps and the newer retained native run accepted 771 adaptive
 intervals. Halving each original step with fixed averaged coefficients
-changes node 27 by -0.003422 Â°C. The observed coupled native difference
-there is -0.006367 Â°C. Interpolating moisture within each split produces
+changes node 27 by -0.003422 Ã‚Â°C. The observed coupled native difference
+there is -0.006367 Ã‚Â°C. Interpolating moisture within each split produces
 almost the same contrast. See [the clock evidence](CLOSURE01_GRASS_THERMAL_CLOCK_20261110.json).
 
 The first hydraulic comparison reproduces the original initial theta
@@ -307,7 +307,7 @@ oxygen factor is 0.272334 in SWAP5 and zero in B0. At the two
 accepted interval starts the largest differences in head and water
 content are both at node 6. Head is -56.70 versus -95.09 cm and
 water content is 0.35300 versus 0.31618. The largest temperature
-difference across nodes is 0.027 °C. These values come from the two
+difference across nodes is 0.027 Â°C. These values come from the two
 actual step starts, about 0.41 seconds apart. The native trace exposes
 pressure head, water content, temperature and actual nodal sinks.
 The potential nodal sink and full nodal oxygen factors were
@@ -348,14 +348,41 @@ factor of 1 under B0 forcing, whereas the retained SWAP5 factor is
 0.9941774. This comparison holds the nonstate inputs at B0 values
 and leaves the smaller difference from SWAP5's own inputs open.
 
-Resume the half-hour task with the accepted hydraulic profiles in
-the oxygen-active root zone at minute 38.4. Trace the wetting timing
-back through rain delivery, the accepted hydraulic steps and the
-soil-water state inherited from day 187. Compare the published
-SWAP5 root density and respiration against the B0 inputs separately
-if resolving the smaller residual around minute 68.3. The
-[paired receipt](grass-oxygen188-paired-evidence.json) records the
-values and hashes. Reproduce it after the observer run below.
+A hydraulic replay then reproduced both accepted control traces
+exactly and the SWAP5 endpoint byte for byte. Both routes deliver
+1.06 cm gross rain over the first 144 minutes. At minute 38.4
+their cumulative net rain differs by 0.000183 cm and downward top
+flux by 0.000158 cm. The SWAP5 root zone starts the day with
+0.011934 cm less water in the top 30 cm. At minute 38.4 the
+accepted surface-node heads are -16.41 cm in B0 and -35.69 cm
+in SWAP5, despite the close cumulative input.
+
+To distinguish inherited state and rain delivery from temporal
+resolution, cap B0 at 30 seconds only during day 188, before the
+first root and hydraulic step. The original B0 endpoint from day
+187 and all model tolerances are retained. The capped B0 and
+uncapped B0 start with identical full nodal head, water content
+and temperature. Their first 144 minutes have the same cumulative
+downward top flux to within 4e-9 cm.
+
+| Route | Day-188 integration intervals | First oxygen reduction (minutes) | Day oxygen loss (cm) | Surface head near minute 38.4 (cm) |
+| --- | ---: | ---: | ---: | ---: |
+| Original B0 | 31 | 38.4 | 0.016571046610 | -16.4128 |
+| B0 capped at 30 s | 2880 | 67.5 | 0.006220881579 | -35.4089 |
+| SWAP5 O2 | 1660 | 68.3 | 0.005994225669 | -35.6898 |
+
+The day-188 B0 cap removes 97.86% of the original oxygen-loss
+gap, leaving 0.000226656 cm. This identifies sensitivity to the
+original accepted time grid at this event. The capped run is a
+diagnostic variant, and the original B0 remains the historical
+reference. The values, profile samples and hashes are in the
+[hydraulic receipt](grass-wetting188-evidence.json).
+
+For the next half-hour run, check whether the remaining
+0.000226656 cm is stable to a second B0 cap and compare the
+published SWAP5 crop oxygen forcing on the retained profiles
+if it is. Carry the original B0 day-budget difference separately
+into the Grassgrowth scientific assessment.
 
 Replay in PowerShell with the retained O2 build and checkpoint
 directories from the preceding workpoint. The output directory must
@@ -366,6 +393,7 @@ original application binding for the diagnostic resume.
 python -B research/hybrid-water01/replay_grass_oxygen188.py --reference "$env:TEMP/hy481-local-b0-20261109" --bundle "$env:TEMP/s5-grass-lai-O2" --control "$env:TEMP/s5-grass-oxygen-event-189" --archive "$env:TEMP/s5-grass-heat-obs-O2/libttutil.a" --output "$env:TEMP/s5-grass-oxygen188-observe-v3"
 python -B research/hybrid-water01/audit_grass_oxygen188.py "$env:TEMP/s5-grass-oxygen188-observe-v3" "$env:TEMP/s5-grass-oxygen-event-189"
 python -B research/hybrid-water01/compare_grass_oxygen188.py --reference "$env:TEMP/hy481-local-b0-20261109" --bundle "$env:TEMP/s5-grass-lai-O2" --observation "$env:TEMP/s5-grass-oxygen188-observe-v3" --output "$env:TEMP/s5-grass-oxygen188-pair-v2"
+python -B research/hybrid-water01/audit_grass_wetting188.py --reference "$env:TEMP/hy481-local-b0-20261109" --bundle "$env:TEMP/s5-grass-lai-O2" --control "$env:TEMP/s5-grass-oxygen-event-189" --archive "$env:TEMP/s5-grass-heat-obs-O2/libttutil.a" --baseline "$env:TEMP/s5-grass-oxygen188-observe-v3" --output "$env:TEMP/s5-grass-wetting188-v2"
 ```
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
@@ -438,16 +466,16 @@ SWAP5 accepts day 15 at a residual of 7.810780e-7 cm and preserves the
 original first 14 days exactly. Day 33 required one additional retry.
 In its previous failing step, the surface balance expected 0.002479315 cm
 to enter the macropores while the macro rates booked 0.002490494 cm.
-The retry reduces that day's kernel residual to âˆ’2.187284e-8 cm.
+The retry reduces that day's kernel residual to Ã¢Ë†â€™2.187284e-8 cm.
 
 The 481-day command commits through day 256 (1998-09-13) and refuses
 day 257 (1998-09-14) at revision 256 with an independently measured
-residual of âˆ’0.00113638236 cm. The largest absolute accepted daily
+residual of Ã¢Ë†â€™0.00113638236 cm. The largest absolute accepted daily
 residual is 9.998896e-7 cm. The fresh donor and kernel from the day-256
 checkpoint reproduce the refused day's heads, all stocks, all fluxes
 and the residual. Of the 14,107 accepted donor steps in that private
 day candidate, 10,625 are at or below the original 1e-5 day step floor.
-They account for âˆ’0.00113569639 cm of the residual. The largest single
+They account for Ã¢Ë†â€™0.00113569639 cm of the residual. The largest single
 defect occurs at clock 36051.95550000457. The macropores book
 5.8657444602e-5 cm of inflow while the surface balance accounts for
 5.7133102179e-5 cm. Their difference of 1.52434242e-6 cm explains the
@@ -489,14 +517,14 @@ available by omitting the shared-transfer option.
 A cold run from the original initialization with `--budget-retry
 --shared-pond-transfer` accepts all 481 days, January 1, 1998 through April
 26, 1999. The largest independent daily water residual is 9.998896e-7 cm
-on day 215 and the signed sum is âˆ’3.098562e-5 cm. Days 257 and 258 close
+on day 215 and the signed sum is Ã¢Ë†â€™3.098562e-5 cm. Days 257 and 258 close
 at kernel residuals of 3.767075e-9 and 2.202054e-8 cm. The scheduling-only
 control and the cold corrected run agree exactly through day 256.
 The full run matches the entire fresh-process continuation from the
-day-256 checkpoint. Days 2â†’4, 20â†’22, 365â†’367 and 453â†’457 reproduce the
+day-256 checkpoint. Days 2Ã¢â€ â€™4, 20Ã¢â€ â€™22, 365Ã¢â€ â€™367 and 453Ã¢â€ â€™457 reproduce the
 continuous pressure heads, water stocks, fluxes and published records.
-The two-column test passes for days 1â€“20 and a separate isolation test
-passes across the corrected wet window at days 257â€“258.
+The two-column test passes for days 1Ã¢â‚¬â€œ20 and a separate isolation test
+passes across the corrected wet window at days 257Ã¢â‚¬â€œ258.
 
 Use the commands above with fresh output directories and append
 `--shared-pond-transfer` to each command. The result and archive include
@@ -517,9 +545,9 @@ and [its evidence archive](DAILY_BALANCED_EVIDENCE_20261109.zip).
 The first published departure from the same-compiler original donor is
 +0.00029 cm on day 15. The balance scheduler retries 1,949 steps on that
 day. Day 457 is the first daily difference above 10 cm (+10.88535 cm).
-The largest daily difference is âˆ’84.33440 cm on day 458 (1999-04-03).
+The largest daily difference is Ã¢Ë†â€™84.33440 cm on day 458 (1999-04-03).
 The native and corrected trajectories both visit deep states on day 457.
-Their first accepted level below âˆ’130 cm occurs at model clock
+Their first accepted level below Ã¢Ë†â€™130 cm occurs at model clock
 36251.941259245505 and 36251.82481645328 respectively. This distinction
 separates the first published difference from the onset of the large
 local excursions. The comparison does not identify a unique January
@@ -531,24 +559,24 @@ their published day-458 levels exactly.
 
 | Day-453 checkpoint | Original step policy | Balance scheduler and shared transfer |
 | --- | ---: | ---: |
-| Original | âˆ’78.08553 cm | âˆ’162.36759 cm |
-| Corrected | âˆ’77.98819 cm | âˆ’162.41993 cm |
+| Original | Ã¢Ë†â€™78.08553 cm | Ã¢Ë†â€™162.36759 cm |
+| Corrected | Ã¢Ë†â€™77.98819 cm | Ã¢Ë†â€™162.41993 cm |
 
 On the corrected checkpoint, the scheduler alone reproduces the complete
 daily GWL sequence of the combined profile. In the final accepted step
-of day 458 its incoming GWL is âˆ’77.910974 cm. The solution changes the
-zero crossing from nodes 55â€“56 to nodes 80â€“81 and the bottom inward
+of day 458 its incoming GWL is Ã¢Ë†â€™77.910974 cm. The solution changes the
+zero crossing from nodes 55Ã¢â‚¬â€œ56 to nodes 80Ã¢â‚¬â€œ81 and the bottom inward
 rate reaches 2.549869 cm/day. Splitting the final proposed step in two
-retains a deep endpoint (âˆ’160.42973 cm).
+retains a deep endpoint (Ã¢Ë†â€™160.42973 cm).
 
 The same-prefix intervention recomputes `MACROPORE(2)` on every
 `HeadCalc` residual evaluation of the final window. The preceding
 25,048 accepted trace records and the first evaluation of the final
 step match the scheduler-only control exactly. The first differing
-evaluation retains âˆ’5.311980 cm/day of net macro-to-matrix exchange
+evaluation retains Ã¢Ë†â€™5.311980 cm/day of net macro-to-matrix exchange
 under the original reuse branch and measures +133.472818 cm/day under
 recomputation. The recomputed trial follows a different iteration and
-retry path and ends at âˆ’77.82077 cm. The experiment isolates sensitivity
+retry path and ends at Ã¢Ë†â€™77.82077 cm. The experiment isolates sensitivity
 to reuse of the macro rate in the last nonlinear solve. The change in
 the reported water table follows the computed pressure profile.
 Recomputation is confined to the replay driver. This experiment does
@@ -586,7 +614,7 @@ origin ends at -82.83449 cm. The paired corrected endpoint is
 -82.86799 cm.
 
 Fresh read-only own-origin replays reproduce all four published days
-454â€“457 exactly. Their last accepted steps are about 3.55 s each.
+454Ã¢â‚¬â€œ457 exactly. Their last accepted steps are about 3.55 s each.
 The corrected-minus-original groundwater difference grows from
 0.14190 cm before the step to 10.88535 cm at its endpoint. Both first
 residual evaluations have about 0.117 cm/day of bottom inflow.
@@ -667,8 +695,8 @@ control.
 
 The cold run accepts all 481 days, with the same accepted daily records
 as the previous profile through day 457. At day 458 the published
-groundwater level is âˆ’77.82077 cm, compared with âˆ’162.41993 cm for the
-previous profile and âˆ’78.08553 cm for the same-compiler original donor.
+groundwater level is Ã¢Ë†â€™77.82077 cm, compared with Ã¢Ë†â€™162.41993 cm for the
+previous profile and Ã¢Ë†â€™78.08553 cm for the same-compiler original donor.
 The absolute discrepancy from the original donor falls from 84.33440 cm
 to 0.26476 cm on that day. Over all 481 days, the largest remaining
 absolute discrepancy is 10.88535 cm on day 457. The largest day-to-day
@@ -679,10 +707,10 @@ qualify forced recomputation at other clock times.
 
 The independent daily water budget closes within 1e-6 cm on every day.
 Its largest absolute residual is 9.998896e-7 cm. The restart windows
-2â†’4, 20â†’22, 365â†’367 and 453â†’457 match the continuous run exactly.
-Continuations 256â†’481 and 453â†’459 also match exactly, including the
+2Ã¢â€ â€™4, 20Ã¢â€ â€™22, 365Ã¢â€ â€™367 and 453Ã¢â€ â€™457 match the continuous run exactly.
+Continuations 256Ã¢â€ â€™481 and 453Ã¢â€ â€™459 also match exactly, including the
 changed day-458 state. The two-column controls match their separate
-trajectories over days 1â€“20, 257â€“258 and 454â€“459.
+trajectories over days 1Ã¢â‚¬â€œ20, 257Ã¢â‚¬â€œ258 and 454Ã¢â‚¬â€œ459.
 
 See [the full-period result](GROUNDWATER_REFRESH481_RESULT_20261109.json)
 and [the daily comparison and replay evidence](GROUNDWATER_REFRESH481_EVIDENCE_20261109.zip).
@@ -730,7 +758,7 @@ The final command records a refusal and exits with status 1. January 15,
 clock 35809. The preceding 14 published days match the independent,
 unmodified donor on this compiler. The rejected day starts with exactly
 the previous six stock components. Its independent water residual is
-âˆ’1.9007261301e-6 cm and the kernel measures the equivalent imbalance with
+Ã¢Ë†â€™1.9007261301e-6 cm and the kernel measures the equivalent imbalance with
 its opposite sign convention. The kernel limit is 1e-6 cm. The time
 integral of the 503 residuals observed on the converged `HeadCalc` path
 is +1.9007497716e-6 cm. The unexplained signed remainder is 2.36e-11 cm.
@@ -757,7 +785,7 @@ columns in one kernel process. Column B changes the January 2 Cauchy
 entry by +0.001 cm. All 14 days in each column reproduce its separately
 executed control. The 481-day unmodified donor control succeeds, but
 its Windows series and the frozen reference first differ on day 3.
-Published groundwater is âˆ’49.17576 cm versus âˆ’47.85008 cm and drainage
+Published groundwater is Ã¢Ë†â€™49.17576 cm versus Ã¢Ë†â€™47.85008 cm and drainage
 is 0.65557 cm versus 0.65540 cm on that day. The available frozen records
 do not localize the cross-build difference within the day. This
 comparison is separate from the exact same-build restart and isolation
@@ -1163,7 +1191,7 @@ foreach ($opt in @('O0', 'O2')) {
 
 The observer adds output inside the existing accepted thermal receipt
 loop in a detached canonical worktree. It evaluates sensible endpoint
-stock relative to 0 Â°C. The exact product split separates the existing
+stock relative to 0 Ã‚Â°C. The exact product split separates the existing
 conductive storage change from the water and air capacity changes
 weighted by mean endpoint temperature. The water receipt independently
 closes with the upward-positive face signs and the accepted nodal
