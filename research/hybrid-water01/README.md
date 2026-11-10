@@ -464,6 +464,19 @@ state while preserving the bracket evaluation order and outputs.
 Require the original O0/O2 oxygen controls and the exact Linux
 AHL job to pass before treating that blocker as resolved.
 
+The separate Linux stack repair is in
+[PR #1626](https://github.com/abhedwig-cell/SWAP5/pull/1626)
+at `1354f5cad9a4db106db50e4e5d8d6a6ba141bca3`.
+The Bartholomeus residual and the HBOT5/Cauchy-3 proposal callbacks
+now use per-call state. The original oxygen probe has identical
+O0/O2 output against canonical. All eleven F-CI110 jobs pass,
+including the unchanged [Linux AHL application test](https://github.com/abhedwig-cell/SWAP5/actions/runs/42811507208/job/129813812905)
+at merge ref `cc4ccd83045450f997166db9d6bb2b10896e86b4`. This
+verifies the stack repair on its own PR. The published application
+evidence remains tied to the sources and builds used in those runs.
+Before integration, review the broader source-identity gate failures
+on #1626 and repeat the application CI against the integrated source.
+
 The completed Andelst chain used these commands.
 
 ```powershell
