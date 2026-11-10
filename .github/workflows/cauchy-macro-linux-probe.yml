@@ -1,31 +1,38 @@
-name: Cauchy macro import diagnostic
+name: Cauchy contact rollback on the KIM candidate
 on:
   push:
     branches: [codex/cauchy-macro-linux-probe]
-    paths:
-      - .github/workflows/cauchy-macro-linux-probe.yml
-      - research/hybrid-water01/replay_contact_macro_import.py
+    paths: [.github/workflows/cauchy-macro-linux-probe.yml]
 permissions:
   contents: read
+env:
+  OMP_NUM_THREADS: '1'
+  PYTHONUTF8: '1'
 jobs:
-  import:
+  contact:
     runs-on: ubuntu-26.04
-    timeout-minutes: 5
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 1
-          sparse-checkout: research/hybrid-water01
-      - name: Replay sealed contact macro input
+          ref: d6f5eddf5648b51a7256e5e282d6473fff769a54
+      - name: Run unchanged contact gate on the exact production candidate
         shell: bash
         run: |
-          git fetch --no-tags --depth=1 origin a4da56a0c60105862fc3dc91b6101ff1c963cf84
           gfortran --version
-          git fetch --no-tags --depth=1 origin d6f5eddf5648b51a7256e5e282d6473fff769a54
-          python3 research/hybrid-water01/replay_contact_macro_import.py --ref d6f5eddf5648b51a7256e5e282d6473fff769a54
-          git show d6f5eddf5648b51a7256e5e282d6473fff769a54:src/process/macropore/mod_macropore_dynamic_shrinkage.f90 > shrinkage.f90
-          git show d6f5eddf5648b51a7256e5e282d6473fff769a54:tests/fpm/test_ppa_wu05_migmac02_dynamic_shrinkage.f90 > test.f90
-          for opt in O0 O2; do
-            gfortran "-$opt" -ffree-line-length-none -fcheck=all shrinkage.f90 test.f90 -o "test-$opt"
-            "./test-$opt"
-          done
+          code=0
+          python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization O2 --output "$RUNNER_TEMP/contact" || code=$?
+          if [[ -d "$RUNNER_TEMP/contact" ]]; then
+            find "$RUNNER_TEMP/contact" -maxdepth 2 -type f -name 'contact-*.stderr' -print -exec tail -n 25 {} \;
+            find "$RUNNER_TEMP/contact" -maxdepth 2 -name 'diagnostic-rejected.bin' -exec sha256sum {} \;
+          fi
+          exit "$code"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: kim-contact-o2
+          path: |
+            ${{ runner.temp }}/contact/RESULT.json
+            ${{ runner.temp }}/contact/contact-*.std*
+            ${{ runner.temp }}/contact/contact-*/diagnostic-rejected.bin
+            ${{ runner.temp }}/contact/contact-1/nonlinear-contact.csv
