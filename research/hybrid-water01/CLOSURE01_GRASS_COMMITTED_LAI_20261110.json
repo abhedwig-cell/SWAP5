@@ -1,0 +1,123 @@
+{
+  "archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+  "archived_committed_lai_examples": [
+    {
+      "day": 126,
+      "published_lai": 2.918803265010114,
+      "committed_lai": 3.066154468139511,
+      "original_lai": 3.056076447018
+    },
+    {
+      "day": 127,
+      "published_lai": 3.0661544681395108,
+      "committed_lai": 0.8385999862282006,
+      "original_lai": 0.838599986228
+    },
+    {
+      "day": 140,
+      "published_lai": 1.4910076981645444,
+      "committed_lai": 1.5377391330620982,
+      "original_lai": 1.540192022865
+    },
+    {
+      "day": 918,
+      "published_lai": 4.233134072311851,
+      "committed_lai": 0.9520000000000001,
+      "original_lai": 0.952
+    },
+    {
+      "day": 1827,
+      "published_lai": 1.254740042940471,
+      "committed_lai": 1.2533762468105125,
+      "original_lai": 1.25168100265
+    }
+  ],
+  "retained_remaining_differences": {
+    "water_stock_cm": {
+      "day": 189,
+      "date": "1980-07-07",
+      "native_minus_original": -0.08344256198165567
+    },
+    "uptake_cm": {
+      "day": 188,
+      "date": "1980-07-06",
+      "native_minus_original": 0.01128903608404791
+    },
+    "oxygen_loss_cm": {
+      "day": 905,
+      "date": "1982-06-23",
+      "native_minus_original": -0.010628371555049355
+    },
+    "leaf_biomass_kg_ha": {
+      "day": 205,
+      "date": "1980-07-23",
+      "native_minus_original": 53.216091338990054
+    }
+  },
+  "candidate_mowing_window": [
+    {
+      "day": 126,
+      "published_lai": 3.066154468139473,
+      "committed_lai": 3.066154468139472,
+      "original_lai": 3.056076447018,
+      "leaf_biomass_kg_ha": 1687.1051995790995
+    },
+    {
+      "day": 127,
+      "published_lai": 0.8385999862282006,
+      "committed_lai": 0.8385999862282006,
+      "original_lai": 0.838599986228,
+      "leaf_biomass_kg_ha": 420.00000000000006
+    },
+    {
+      "day": 128,
+      "published_lai": 0.8385999862282006,
+      "committed_lai": 0.8385999862282006,
+      "original_lai": 0.838599986228,
+      "leaf_biomass_kg_ha": 420.00000000000006
+    }
+  ],
+  "own_day126_restart_exact": true,
+  "predecessor_water_budget_and_day126_physical_payload_exact": true,
+  "maximum_other_crop_field_differences_vs_previous_default": {
+    "day": 0.0,
+    "dvs": 0.0,
+    "tsum": 0.0,
+    "wrt": 0.0,
+    "wlv": 0.0,
+    "wst": 0.0,
+    "wso": 0.0,
+    "pwrt": 0.0,
+    "rd": 0.0,
+    "rdpot": 0.0,
+    "grrt": 0.0,
+    "grrtpot": 0.0,
+    "oxygen_integral": 0.0
+  },
+  "candidate_build": {
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "executable_sha256": "fc6bc414dc36c1479bed27df17e6d1a836fb7e1597fcafdedb1b64e67fa2ac02",
+    "input_sha256": {
+      "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+      "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+      "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+    }
+  },
+  "pr": 1622,
+  "candidate_commit": "97413bd091cc00554c1a5ed950a166520fd3b3c6",
+  "canonical_base": "a57d7d532464ad89b7aca918263cf114b6b42185",
+  "short_disk": {
+    "O0": {
+      "refusal_count": 10,
+      "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+      "exe_sha256": "e4dba4ec992accfa4dd5a876694edca339b4ce229db4eb7b2fa7368c00f9e952"
+    },
+    "O2": {
+      "refusal_count": 10,
+      "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+      "exe_sha256": "fc6bc414dc36c1479bed27df17e6d1a836fb7e1597fcafdedb1b64e67fa2ac02"
+    }
+  }
+}

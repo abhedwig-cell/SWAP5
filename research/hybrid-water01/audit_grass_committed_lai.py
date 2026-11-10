@@ -12,7 +12,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "tests/dataqual15"))
-from checkpoint_layout import layout
+from checkpoint_layout import layout, payload
 
 
 def rows(raw):
@@ -90,6 +90,8 @@ def main():
                       "original_lai":float(original[day]["LAI"]),
                       "leaf_biomass_kg_ha":float(crop[day-1]["wlv"])})
     assert local[0]["published_lai"]>local[1]["published_lai"]==local[2]["published_lai"]
+    assert read(full,"budget.csv")==read(args.predecessor,"budget.csv")[:128]
+    assert payload((full/"checkpoint-126.bin").read_bytes())==payload((args.predecessor/"checkpoint-126.bin").read_bytes())
     predecessor=read(args.predecessor,"crop.csv")[:128]
     differences={name:max(abs(float(a[name])-float(b[name])) for a,b in zip(crop,predecessor,strict=True))
                  for name in crop[0] if name!="lai"}
@@ -99,6 +101,7 @@ def main():
         "archive_sha256":archive_sha,"archived_committed_lai_examples":historical,
         "retained_remaining_differences":residuals(old_water,old_crop,original),
         "candidate_mowing_window":local,"own_day126_restart_exact":True,
+        "predecessor_water_budget_and_day126_physical_payload_exact":True,
         "maximum_other_crop_field_differences_vs_previous_default":differences,
         "candidate_build":{"compiler":build["compiler"],"executable_sha256":build["executable_sha256"],
                            "input_sha256":build["original_inputs_sha256"]},

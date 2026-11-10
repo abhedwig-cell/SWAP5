@@ -267,12 +267,19 @@ observed 4.28e-6 theta difference at node 1 is in the selected two-half
 trajectory. Observing both candidates preserves the accepted outputs
 byte for byte at O0/O2. See [the full-trial evidence](CLOSURE01_GRASS_FULL_TRIAL_20261110.json).
 
-This classifies the first discrepancy as temporal discretization under
-the current acceptance policy. Keep the original thermal law and the
-existing tolerances. Resume with the retained full-period scientific
-comparisons to identify any remaining difference that warrants a
-process change. Physical advection, Hupsel oxygen and Andelst
-historical equivalence remain separate open qualifications.
+The first Grassgrowth discrepancy is temporal discretization. The
+retained full runs also expose a separate output phase error. At mowing,
+the daily CSV mixed the opening canopy LAI with the closing biomass.
+PR #1622 derives completed-day LAI from the committed crop candidate.
+On original day 127 the corrected output is 0.838599986228, matching
+the checkpoint and original reference. The O2 original run through
+day 128 and own day-126 continuation agree exactly. Water budgets,
+non-LAI crop fields and the day-126 physical checkpoint match the
+retained water-only run. Windows O0/O2 own day-1 disk controls also pass.
+See [the mowing evidence](CLOSURE01_GRASS_COMMITTED_LAI_20261110.json).
+Resume at PR #1622 CI and verify the canonical postimage after admission.
+The remaining oxygen and biomass differences in the retained full runs
+are separate from the LAI output phase error.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -1188,4 +1195,24 @@ try {
     }
 } finally { Pop-Location }
 python -B "$source/research/hybrid-water01/audit_grass_full_trial.py" --legacy $legacy --build-root "$env:TEMP" --controls "$env:TEMP/s5-grass-water-common-clock-20261110"
+```
+
+### Grassgrowth committed LAI at the original first mowing
+
+With checked O0/O2 builds from PR #1622 on the water-only retained
+profile, run the following from its checkout. For the full run use the
+unchanged original inputs and the O2 build.
+
+```powershell
+$b = "$env:TEMP/s5-grass-lai-O2"
+$full = "$env:TEMP/s5-grass-lai-original-128"
+python -B tests/dataqual15/run_original.py --bundle $b --output $full --end 128 --capture 126 127 --timeout 540
+python -B tests/dataqual15/run_original.py --bundle $b --output "$full-resume" --end 128 --restart "$full/checkpoint-126.bin" --capture 127 --timeout 120
+```
+
+From the research worktree, verify the restart, archived comparison
+and native crop snapshot.
+
+```powershell
+python -B research/hybrid-water01/audit_grass_committed_lai.py --full "$env:TEMP/s5-grass-lai-original-128" --resume "$env:TEMP/s5-grass-lai-original-128-resume" --predecessor "$env:TEMP/s5-events-default-140" --build "$env:TEMP/s5-grass-lai-O2"
 ```
