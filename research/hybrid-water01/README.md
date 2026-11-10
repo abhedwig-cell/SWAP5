@@ -128,8 +128,8 @@ preserves the previously published day 20, 256 and 365 controls. Its
 [predecessor](CLOSURE01_ACCEPTED_CHECKPOINT_RESULT_20261109.json) records
 the same wet and year controls with full daily receipts.
 
-Resume here. [Draft PR 1620](https://github.com/abhedwig-cell/SWAP5/pull/1620)
-targets canonical `7535a9e65` from the dedicated
+Resume here. [PR 1620](https://github.com/abhedwig-cell/SWAP5/pull/1620)
+was admitted to canonical at `78c801253` from the dedicated
 `codex/swap5-water-application-integration` branch. The application
 postimage is `6f2ba26ea` and the F-CI routing head is `1649abeeb`.
 The eleven-file application change has no changed paths in common
@@ -167,7 +167,15 @@ pins the logs, exact test merge and local O0/O2 evidence. Grassgrowth
 and Hupsel each reproduce all four budget, crop and state days across
 optimizations and their own day-2 restarts. Fresh reference preparation
 also ran the original 481-day donor and reproduced its CSV records.
-The full-period science comparisons remain separate.
+The fetched canonical merge has the exact qualified tree
+`4caf4e27bab50f67d3f157d45d8f6adf19ec1c5c` and the expected two parents.
+
+After the canonical F-CI run, continue the scientific work. Start from
+the saved Andelst day-453 restart and day-457 groundwater discrepancy.
+Use the existing full-period data and the smallest replay that can
+distinguish the first changed flux or stock. Retain the existing mass
+tolerance and the separate Grassgrowth thermal and Hupsel oxygen
+qualification statuses.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
