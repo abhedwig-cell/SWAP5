@@ -779,6 +779,27 @@ This verifies the retained bytes against the published receipts. It does
 not requalify the historical oxygen comparisons or the unresolved Linux
 Cauchy contact initialization.
 
+### Andelst original archive and Linux contact boundary
+
+The original `SWAP_4.3.1.zip` SHA-256 is
+`76a79498423ee612a7861efb564b10c4360a4f648396eefcf8e9011919a66039`.
+Direct ZIP-entry hashing matches all 14 Andelst inputs and both source
+archives in the exact PR 1624 successor receipt. This closes the
+archive-input gap in the preceding retained-file audit.
+
+For Linux contact O2, the first refusal is the `source rapid reference`
+guard in `app/solute_column/read_swp_macro_initial.f90`, immediately after
+`prepare_rapid_drain_reference_kd` and before typed state initialization.
+It accepts only a successful derivation with absolute difference at most
+1e-12. Both the reader directory and the macropore process directory are
+byte-identical between the canonical base and the AHL PR. The paired Linux
+logs do not distinguish an unsuccessful derivation from a numerical
+mismatch. If investigated further, compile only the macro reader and its
+dependencies with GNU Fortran 15.2 on Ubuntu 26.04. Log the success flag,
+derived coefficient and sealed coefficient on the existing contact input
+before running any time integration. The local host has Windows GNU
+Fortran and no WSL installation.
+
 The completed Andelst chain used these commands.
 
 ```powershell
