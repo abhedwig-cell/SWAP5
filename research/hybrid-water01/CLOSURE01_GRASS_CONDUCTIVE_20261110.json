@@ -136,5 +136,13 @@
     "holdout_day": 584,
     "chronology_unit_tests_passed": 7,
     "historical_capsule_reuse_on_current_head": "refused by source dependency binding"
+  },
+  "ci_historical_thermal_check": {
+    "workflow_run": 42739638990,
+    "job": 129577247009,
+    "failure": "thermal_profile_production.py:26 exact historical production path set",
+    "historical_expected_paths": 5,
+    "canonical_base_paths": 30,
+    "pull_request_head_paths": 30
   }
 }
