@@ -1,4 +1,4 @@
-name: AHL baseline numerical guard comparison
+name: Grassgrowth trial cache oxygen controls
 on:
   push:
     branches: [codex/cauchy-macro-linux-probe]
@@ -6,27 +6,22 @@ on:
 permissions:
   contents: read
 jobs:
-  canonical:
-    runs-on: ubuntu-26.04
-    timeout-minutes: 7
-    strategy:
-      fail-fast: false
-      matrix:
-        script:
-          - tests/publication/run_pub_p2e01_e0_paired_pilot.sh
-          - tests/publication/run_pub_p2e02_reference_uncertainty_pilot.sh
-          - tests/publication/run_pub_p2e04_reference_bc_sweeps.sh
-          - tests/fpe/run_fpe_elastic65.sh
+  oxygen:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 4
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: a8275101d91f0ab5b413290e9b00bb5666b11917
-          fetch-depth: 0
-      - name: Run unchanged guard on exact canonical base
+          ref: 589c1d27536d2daf89c921f1bcabc780aec882bc
+          sparse-checkout: |
+            src
+            tests/physics
+      - name: Run original chain and exact cache checks
         shell: bash
-        env:
-          SCRIPT: ${{ matrix.script }}
         run: |
           gfortran --version
-          git rev-parse HEAD
-          bash "$SCRIPT"
+          for opt in O0 O2; do
+            C3A_OPT="$opt" bash tests/physics/run_bartholomeus_active_chain.sh | tee "$opt.txt"
+            grep -Fx WATERFILM_EXACT_TRIAL_CACHE=PASS "$opt.txt"
+          done
+          cmp O0.txt O2.txt
