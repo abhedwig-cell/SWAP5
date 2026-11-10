@@ -107,6 +107,8 @@ program grass_initial_interval
  real(real64)::surface_resistance,spacing,depth,drainres,infres,date_time,forcing_end
  real(real64)::clock,cursor,edge,day_end,step_dt,heat_residual,day_residual,day_in,day_out,day_start_water,day_final_water
  real(real64)::day_potential,day_actual,day_drought,day_oxygen
+ real(real64)::conductive_storage,conductive_top,conductive_bottom,max_conductive_residual,step_conductive_residual
+ integer::thermal_budget
  integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack,source_mean,source_implicit
  real(real64)::source_dtmax,segment_rain_rate,project_end,mowing_residual,harvested,potential_harvested,delay_value
  real(real64)::harvest_dates(1024),season_start(16),season_end(16)
@@ -330,6 +332,9 @@ program grass_initial_interval
  write(crop_log,'(a)')'day,dvs,tsum,lai,wrt,wlv,wst,wso,pwrt,rd,rdpot,grrt,grrtpot,oxygen_integral'
  open(newunit=budget,file='budget.csv',status='replace',action='write')
  write(budget,'(a)')'day,t1,water_start_cm,water_end_cm,input_cm,output_cm,residual_cm,potential_cm,uptake_cm,drought_cm,oxygen_cm,heat_residual_j_cm2,temperature_sum,accepted_steps'
+ open(newunit=thermal_budget,file='conductive_budget.csv',status='replace',action='write')
+ write(thermal_budget,'(a)')'day,t1,accepted_steps,storage_change_j_cm2,top_in_j_cm2,bottom_in_j_cm2,'// &
+  'residual_j_cm2,max_substep_residual_j_cm2'
  do day_index=int(clock)+1,ceiling(limit)
   do season_index=2,season_count
    if(origin+day_index-1==season_start(season_index))then
@@ -352,6 +357,7 @@ program grass_initial_interval
   day_potential=0d0;day_actual=0d0;day_drought=0d0;day_oxygen=0d0
   deepest_oxygen_integral=0d0
   day_residual=0d0;day_in=0d0;day_out=0d0;heat_residual=0d0;accepted_steps=0
+  conductive_storage=0d0;conductive_top=0d0;conductive_bottom=0d0;max_conductive_residual=0d0
   do while(cursor<day_end)
    forcing_end=day_end
    if(cursor<real(day_index-1,real64)+wet_duration)then
@@ -395,6 +401,15 @@ program grass_initial_interval
      step_dt=q%t1-q%t0
      deepest_oxygen_integral=deepest_oxygen_integral+q%deepest_root_oxygen_factor*step_dt
      call require(q%substep_root_available,'source substep root carrier')
+     associate(heat=>q%thermal)
+      call require(heat%available.and.heat%independent_boundary_heat,'source substep conductive budget')
+      call require(heat%t0==q%t0.and.heat%t1==q%t1,'source substep conductive clock')
+      conductive_storage=conductive_storage+heat%legacy_storage_change_j_cm2
+      conductive_top=conductive_top+heat%conductive_face_energy_j_cm2(1)
+      conductive_bottom=conductive_bottom-heat%conductive_face_energy_j_cm2(size(heat%conductive_face_energy_j_cm2))
+      step_conductive_residual=heat%legacy_storage_change_j_cm2-heat%legacy_boundary_energy_j_cm2
+      max_conductive_residual=max(max_conductive_residual,abs(step_conductive_residual))
+     end associate
      day_potential=day_potential+q%root_potential_cm_day*step_dt
      day_actual=day_actual+sum(q%root_sink)*step_dt
      day_drought=day_drought+q%root_drought_reduction_cm_day*step_dt
@@ -451,11 +466,15 @@ program grass_initial_interval
    ',',day_in,',',day_out,',',day_residual,',',day_potential,',',day_actual,',',day_drought,',',day_oxygen,',',heat_residual, &
    ',',crop%evolution_continuation%temperature_sum,',',accepted_steps
   flush(budget)
+  write(thermal_budget,'(i0,a,es25.17e3,a,i0,5(a,es25.17e3))')day_index,',',clock,',',accepted_steps, &
+   ',',conductive_storage,',',conductive_top,',',conductive_bottom, &
+   ',',conductive_storage-conductive_top-conductive_bottom,',',max_conductive_residual
+  flush(thermal_budget)
   call write_endpoint(water,clock,day_residual)
   write(*,*)'ORIGINAL_GRASS_DAY_COMMITTED',clock,day_residual,crop%development_stage,crop%evolution_continuation%temperature_sum
   flush(6)
  end do
- close(budget);close(crop_log)
+ close(budget);close(crop_log);close(thermal_budget)
  write(*,*)'ORIGINAL_GRASS_INTERVAL_COMPLETED',clock,day_residual
 contains
  subroutine prepare_source_day(day)
