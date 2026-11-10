@@ -46,6 +46,14 @@ The absolute difference is `0.000244679662 cm`, above the original
 `5.37184e-7 cm` bound. The full application and restart evidence
 support functional coverage. Scientific equivalence remains open.
 
+The original-reference grid study already measured a
+`2.47646e-5 cm` change between its two finest strict-balance
+grids on day 584, about 46 times the frozen bound. It retained
+the reference as underresolved. This supports keeping the original
+failure visible and selecting an independently qualified reference
+strategy before any native model adjustment. See the
+[canonical grid-study receipt](../../integration/dataqual15_hupsel/ORIGINAL_OXYGEN_GRID_CANONICAL_RECEIPT_20261104.json).
+
 ## Reproduce
 
 Build with GNU Fortran on PATH. Use new directories for every run.
