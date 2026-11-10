@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: 589c1d27536d2daf89c921f1bcabc780aec882bc
+          ref: f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
           sparse-checkout: |
             src
             tests/physics
