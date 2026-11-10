@@ -207,7 +207,7 @@ day-2 continuation produce identical conductive rows. Water, crop and
 terminal state agree with the prior four-day runs. The exact historical
 Grassgrowth production tree also revalidates its sealed 1827-day run.
 See the [conductive evidence](CLOSURE01_GRASS_CONDUCTIVE_20261110.json).
-The production change is isolated in draft PR #1621. Its first CI head
+The production change was integrated through PR #1621. Its first CI head
 had ten passing workflows and three failures. The historical thermal
 predicate also rejects canonical. F-CI additionally rejected the
 changed Grassgrowth owner because its application receipt pins the old
@@ -217,7 +217,8 @@ executable-stack loader failure.
 PR head `bd24e5922e7661b373aa01f6de8f72dd33d5f345` keeps both historical
 guards on exact predecessor worktrees and checks the current conductive
 rows through the original-input O0/O2 native disk restart test. The
-previous guards and retained receipt hashes are untouched. Sixteen workflows passed, including F-CI, native disk restart and the
+previous guards and retained receipt hashes are untouched. Sixteen workflows
+passed, including F-CI, native disk restart and the
 full Grassgrowth thermal workflow. The older Grassgrowth sprint
 predicate expects 12 production paths and rejects both the base and
 candidate with 39. The unrelated AHL shared-library loader error recurs
@@ -225,11 +226,22 @@ with unchanged sources. The canonical merge of PR #1621 at
 `a57d7d532464ad89b7aca918263cf114b6b42185` has the exact qualified test
 tree `bbed43d97a7c33c9a92a4c1a17c8f25ed1738e84`.
 
-Resume with the physical Grassgrowth heat budget. The conductive ledger
-already closes. Use existing accepted thermal/water receipts to
-distinguish changing water heat capacity and carried energy from the
-conductive term before considering a physical process change. Retain the
-separate Hupsel reference limit and Andelst equivalence question.
+The Grassgrowth heat observer recompiled the exact canonical owner with
+output-only instrumentation. Original-input O0/O2 day 1 and each own
+continuation through day 4 give the same 13,764 selected thermal leaves
+and match the earlier uninterrupted water, conductive, crop and final
+state output. Moisture changes contribute +31.75347 J/cm² of sensible
+stock relative to 0 °C. Changing air capacity contributes -0.009207
+J/cm². Positive net water inflow lacks a measured donor temperature
+already on the first accepted leaf. The outflow estimates use soil
+endpoint temperature. The original SWAP 4.3.1 numerical routine also
+uses moisture-averaged capacity in a conduction-only solve. See
+[the heat-stock evidence](CLOSURE01_GRASS_HEAT_STOCK_20261110.json).
+
+Keep physical advection separate from historical equivalence. Resume
+with the earliest shared Grassgrowth B0 thermal profile and compare
+boundary forcing and accepted clocks before selecting a model change.
+The Hupsel oxygen reference limit and Andelst equivalence remain open.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -1020,4 +1032,39 @@ foreach ($opt in @('O0', 'O2')) {
     python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER --grass-build $b --output "$b-resume" --days 4 --restart "$b-cut/checkpoint.bin"
     if ($LASTEXITCODE -ne 0) { throw "Grassgrowth restart failed" }
 }
+```
+
+### Grassgrowth mixture stock and liquid heat observation
+
+The observer adds output inside the existing accepted thermal receipt
+loop in a detached canonical worktree. It evaluates sensible endpoint
+stock relative to 0 °C. The exact product split separates the existing
+conductive storage change from the water and air capacity changes
+weighted by mean endpoint temperature. The water receipt independently
+closes with the upward-positive face signs and the accepted nodal
+source. Liquid outflow heat uses the final soil temperature as an
+explicit estimate. The recorded positive net water inflows require donor
+temperatures that the receipt does not supply.
+
+Run from the research worktree with GNU Fortran and GCC on PATH.
+
+```powershell
+$source = (Get-Location).Path
+$probe = "$env:TEMP/s5-grass-heat-observed-20261110"
+git worktree add --detach --no-checkout $probe a57d7d532464ad89b7aca918263cf114b6b42185
+git -C $probe sparse-checkout set src app tools reference integration/audits/evidence tests/support
+git -C $probe reset --hard HEAD
+python -B research/hybrid-water01/observe_grass_heat.py $probe
+Push-Location $probe
+try {
+    foreach ($opt in @('O0', 'O2')) {
+        $b = "$env:TEMP/s5-grass-heat-obs-$opt"
+        python -B tools/solute/build_grass_startup.py --output $b --optimization $opt --policy retained --numerical-profile thermal-control-1e-5C --end 1
+        if ($LASTEXITCODE -ne 0) { throw "Observed Grassgrowth build or day 1 failed" }
+        python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER --grass-build $b --output "$b-resume4" --days 4 --restart "$b/original-interval/checkpoint.bin"
+        if ($LASTEXITCODE -ne 0) { throw "Observed Grassgrowth continuation failed" }
+        python -B "$source/research/hybrid-water01/audit_grass_heat.py" --build $b --resume "$b-resume4"
+        if ($LASTEXITCODE -ne 0) { throw "Accepted heat audit failed" }
+    }
+} finally { Pop-Location }
 ```

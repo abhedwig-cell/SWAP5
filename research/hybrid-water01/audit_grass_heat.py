@@ -37,7 +37,8 @@ def audit(logs, cases):
     for budget in budgets:
         day = int(budget["day"])
         steps = observations[day]
-        assert len(steps) == int(budget["accepted_steps"])
+        accepted_intervals = int(budget["accepted_steps"])
+        assert accepted_intervals <= len(steps) <= 2 * accepted_intervals
         assert steps[0]["t0"] == day - 1 and steps[-1]["t1"] == float(budget["t1"])
         assert all(a["t1"] == b["t0"] for a, b in zip(steps, steps[1:]))
         assert all(step["t1"] > step["t0"] for step in steps)
@@ -51,9 +52,14 @@ def audit(logs, cases):
         split_error = max(abs(fsum((step["mixture_storage"], -step["conductive_storage"],
                                    -step["water_capacity"], -step["air_capacity"]))) for step in steps)
         assert split_error < 1e-8
+        inflow_keys = ("top_water_in", "bottom_water_in", "source_water_in")
+        positive_inflow = {key: fsum(max(0.0, step[key]) for step in steps) for key in inflow_keys}
+        first_missing_donor = next((step["t0"] for step in steps
+                                    if any(step[key] > 0 for key in inflow_keys)), None)
         result.append({
             "day": day,
-            "accepted_steps": len(steps),
+            "accepted_adaptive_intervals": accepted_intervals,
+            "accepted_thermal_leaves": len(steps),
             "max_step_water_residual_cm": water_residual,
             "max_step_mixture_split_error_j_cm2": split_error,
             "conductive_input_j_cm2": conductive,
@@ -61,10 +67,9 @@ def audit(logs, cases):
             "mixture_storage_j_cm2": total("mixture_storage"),
             "water_capacity_term_j_cm2": total("water_capacity"),
             "air_capacity_term_j_cm2": total("air_capacity"),
-            "inflow_with_unobserved_donor_temperature_cm": {
-                key: fsum(max(0.0, step[key]) for step in steps)
-                for key in ("top_water_in", "bottom_water_in", "source_water_in")
-            },
+            "inflow_with_unobserved_donor_temperature_cm": positive_inflow,
+            "first_inflow_missing_donor_t0_day": first_missing_donor,
+            "unobserved_inflow_energy_per_kelvin_j_cm2": 4.18 * fsum(positive_inflow.values()),
             "outflow_heat_at_end_temperature_j_cm2": {
                 key: total(key) for key in FIELDS[-3:]
             },

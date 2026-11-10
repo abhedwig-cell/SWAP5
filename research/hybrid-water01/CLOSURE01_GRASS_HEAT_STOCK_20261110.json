@@ -1,0 +1,245 @@
+{
+  "canonical_commit": "a57d7d532464ad89b7aca918263cf114b6b42185",
+  "observer_commit": "b6a803996",
+  "legacy_temperature_f90_sha256": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
+  "endpoint_sensible_stock_reference_temperature_c": 0,
+  "full_physical_energy_qualified": false,
+  "scope": "Native four-day original-input selected thermal/water traces, separately recompiled Windows O0/O2, each continued from own day-1 checkpoint",
+  "accepted_thermal_leaves": 13764,
+  "total_water_capacity_term_j_cm2": 31.753474894369848,
+  "total_air_capacity_term_j_cm2": -0.009206988414348386,
+  "first_inflow_missing_donor_day": 1,
+  "first_inflow_missing_donor_t0_day": 0.0,
+  "builds": {
+    "O0": {
+      "executable_sha256": "286e92a209f8360e87067934bf747f1ae4761ddecf8d28aeec56b2e18e3854b9",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "input_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "observer_source_sha256": "3f4cfe29869a3df8500716717ec8a473599fe8b373f15e7894ee0971438f3bb9",
+      "observation_log_sha256": [
+        "934a0f7685fd4c9e59a713a8301911d24dc8b577fedf18bdbdf31685cc19e4f9",
+        "9ba22d32f269db2a9bfbd78a02561c03aa882363e17d01725b0c54d9dd15dbe5"
+      ],
+      "days": [
+        {
+          "day": 1,
+          "accepted_adaptive_intervals": 3065,
+          "accepted_thermal_leaves": 6130,
+          "max_step_water_residual_cm": 2.8267077636652104e-19,
+          "max_step_mixture_split_error_j_cm2": 8.405402541207364e-13,
+          "conductive_input_j_cm2": -929.5519138286386,
+          "conductive_storage_j_cm2": -929.5519138287686,
+          "mixture_storage_j_cm2": -902.4483103833591,
+          "water_capacity_term_j_cm2": 27.11146447290764,
+          "air_capacity_term_j_cm2": -0.00786102749788614,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.549529158956059,
+            "bottom_water_in": 3.5273943963837447e-10,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 0.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 2.2970318859107772,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": -0.007907742888328335,
+            "bottom_out_heat_at_end_temperature": -1.8604234586992292,
+            "nodal_out_heat_at_end_temperature": -0.03105340589683751
+          }
+        },
+        {
+          "day": 2,
+          "accepted_adaptive_intervals": 601,
+          "accepted_thermal_leaves": 1202,
+          "max_step_water_residual_cm": 3.5829493668856904e-19,
+          "max_step_mixture_split_error_j_cm2": 5.690023261239278e-13,
+          "conductive_input_j_cm2": -363.5416899248858,
+          "conductive_storage_j_cm2": -363.5416899249118,
+          "mixture_storage_j_cm2": -365.1914588048998,
+          "water_capacity_term_j_cm2": -1.6502473727666895,
+          "air_capacity_term_j_cm2": 0.0004784927788979014,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.04831401486973243,
+            "bottom_water_in": 0.0,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 1.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 0.20195258215548154,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": -0.0034681916309373777,
+            "bottom_out_heat_at_end_temperature": -6.044294544823264,
+            "nodal_out_heat_at_end_temperature": -0.010119747025181676
+          }
+        },
+        {
+          "day": 3,
+          "accepted_adaptive_intervals": 1489,
+          "accepted_thermal_leaves": 2978,
+          "max_step_water_residual_cm": 3.2610768469290563e-19,
+          "max_step_mixture_split_error_j_cm2": 4.3676786479448143e-13,
+          "conductive_input_j_cm2": -497.25861448957505,
+          "conductive_storage_j_cm2": -497.2586144895748,
+          "mixture_storage_j_cm2": -497.43808122585693,
+          "water_capacity_term_j_cm2": -0.17951878814133185,
+          "air_capacity_term_j_cm2": 5.2051859145285697e-05,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.11098726691323325,
+            "bottom_water_in": 0.0,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 2.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 0.463926775697315,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": 0.018056984810358123,
+            "bottom_out_heat_at_end_temperature": -4.860799640829328,
+            "nodal_out_heat_at_end_temperature": 0.00474195388380799
+          }
+        },
+        {
+          "day": 4,
+          "accepted_adaptive_intervals": 1727,
+          "accepted_thermal_leaves": 3454,
+          "max_step_water_residual_cm": 1.566799194183642e-18,
+          "max_step_mixture_split_error_j_cm2": 5.072341448274082e-13,
+          "conductive_input_j_cm2": 5.9521437111919555,
+          "conductive_storage_j_cm2": 5.952143711191758,
+          "mixture_storage_j_cm2": 12.422043788007564,
+          "water_capacity_term_j_cm2": 6.471776582370227,
+          "air_capacity_term_j_cm2": -0.0018765055545054343,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.8773858221867892,
+            "bottom_water_in": 0.0,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 3.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 3.6674727367407787,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": -0.0018850322675280956,
+            "bottom_out_heat_at_end_temperature": -9.304002867340499,
+            "nodal_out_heat_at_end_temperature": -0.01042150993505087
+          }
+        }
+      ],
+      "matches_unobserved_continuous_water_conduction_crop_and_final_state": true
+    },
+    "O2": {
+      "executable_sha256": "e69190f0260b71465b2ad7dc0087aa2ce2d4ab07dae36430754a823e481512f1",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "input_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "observer_source_sha256": "3f4cfe29869a3df8500716717ec8a473599fe8b373f15e7894ee0971438f3bb9",
+      "observation_log_sha256": [
+        "934a0f7685fd4c9e59a713a8301911d24dc8b577fedf18bdbdf31685cc19e4f9",
+        "9ba22d32f269db2a9bfbd78a02561c03aa882363e17d01725b0c54d9dd15dbe5"
+      ],
+      "days": [
+        {
+          "day": 1,
+          "accepted_adaptive_intervals": 3065,
+          "accepted_thermal_leaves": 6130,
+          "max_step_water_residual_cm": 2.8267077636652104e-19,
+          "max_step_mixture_split_error_j_cm2": 8.405402541207364e-13,
+          "conductive_input_j_cm2": -929.5519138286386,
+          "conductive_storage_j_cm2": -929.5519138287686,
+          "mixture_storage_j_cm2": -902.4483103833591,
+          "water_capacity_term_j_cm2": 27.11146447290764,
+          "air_capacity_term_j_cm2": -0.00786102749788614,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.549529158956059,
+            "bottom_water_in": 3.5273943963837447e-10,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 0.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 2.2970318859107772,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": -0.007907742888328335,
+            "bottom_out_heat_at_end_temperature": -1.8604234586992292,
+            "nodal_out_heat_at_end_temperature": -0.03105340589683751
+          }
+        },
+        {
+          "day": 2,
+          "accepted_adaptive_intervals": 601,
+          "accepted_thermal_leaves": 1202,
+          "max_step_water_residual_cm": 3.5829493668856904e-19,
+          "max_step_mixture_split_error_j_cm2": 5.690023261239278e-13,
+          "conductive_input_j_cm2": -363.5416899248858,
+          "conductive_storage_j_cm2": -363.5416899249118,
+          "mixture_storage_j_cm2": -365.1914588048998,
+          "water_capacity_term_j_cm2": -1.6502473727666895,
+          "air_capacity_term_j_cm2": 0.0004784927788979014,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.04831401486973243,
+            "bottom_water_in": 0.0,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 1.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 0.20195258215548154,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": -0.0034681916309373777,
+            "bottom_out_heat_at_end_temperature": -6.044294544823264,
+            "nodal_out_heat_at_end_temperature": -0.010119747025181676
+          }
+        },
+        {
+          "day": 3,
+          "accepted_adaptive_intervals": 1489,
+          "accepted_thermal_leaves": 2978,
+          "max_step_water_residual_cm": 3.2610768469290563e-19,
+          "max_step_mixture_split_error_j_cm2": 4.3676786479448143e-13,
+          "conductive_input_j_cm2": -497.25861448957505,
+          "conductive_storage_j_cm2": -497.2586144895748,
+          "mixture_storage_j_cm2": -497.43808122585693,
+          "water_capacity_term_j_cm2": -0.17951878814133185,
+          "air_capacity_term_j_cm2": 5.2051859145285697e-05,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.11098726691323325,
+            "bottom_water_in": 0.0,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 2.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 0.463926775697315,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": 0.018056984810358123,
+            "bottom_out_heat_at_end_temperature": -4.860799640829328,
+            "nodal_out_heat_at_end_temperature": 0.00474195388380799
+          }
+        },
+        {
+          "day": 4,
+          "accepted_adaptive_intervals": 1727,
+          "accepted_thermal_leaves": 3454,
+          "max_step_water_residual_cm": 1.566799194183642e-18,
+          "max_step_mixture_split_error_j_cm2": 5.072341448274082e-13,
+          "conductive_input_j_cm2": 5.9521437111919555,
+          "conductive_storage_j_cm2": 5.952143711191758,
+          "mixture_storage_j_cm2": 12.422043788007564,
+          "water_capacity_term_j_cm2": 6.471776582370227,
+          "air_capacity_term_j_cm2": -0.0018765055545054343,
+          "inflow_with_unobserved_donor_temperature_cm": {
+            "top_water_in": 0.8773858221867892,
+            "bottom_water_in": 0.0,
+            "source_water_in": 0.0
+          },
+          "first_inflow_missing_donor_t0_day": 3.0,
+          "unobserved_inflow_energy_per_kelvin_j_cm2": 3.6674727367407787,
+          "outflow_heat_at_end_temperature_j_cm2": {
+            "top_out_heat_at_end_temperature": -0.0018850322675280956,
+            "bottom_out_heat_at_end_temperature": -9.304002867340499,
+            "nodal_out_heat_at_end_temperature": -0.01042150993505087
+          }
+        }
+      ],
+      "matches_unobserved_continuous_water_conduction_crop_and_final_state": true
+    }
+  }
+}
