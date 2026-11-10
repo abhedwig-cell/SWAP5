@@ -60,7 +60,14 @@ if args.trace_guards:
     assert len(guards) == 13, guards
     for number, predicate in enumerate(guards, start=1):
         print("rapid guard", number, predicate, flush=True)
-    ordered[shrinkage] = (source[:begin] + body + source[end:]).encode()
+    traced = source[:begin] + body + source[end:]
+    marker = "    ok = ieee_is_finite(shrink_fraction) .and. shrink_fraction >= 0.0_real64 .and. shrink_fraction < 1.0_real64"
+    assert traced.count(marker) == 1
+    traced = traced.replace(marker, marker + """
+    if (.not. ok) write(*,'(a,6(1x,es25.17))') 'kim rejection', &
+         theta,theta_s,moisture_ratio,void_ratio,solid_volume_fraction,shrink_fraction
+""".rstrip())
+    ordered[shrinkage] = traced.encode()
 program="""program probe
 use mod_column_swp_macro_initial
 implicit none

@@ -2,7 +2,9 @@ name: Cauchy macro import diagnostic
 on:
   push:
     branches: [codex/cauchy-macro-linux-probe]
-    paths: [.github/workflows/cauchy-macro-linux-probe.yml]
+    paths:
+      - .github/workflows/cauchy-macro-linux-probe.yml
+      - research/hybrid-water01/replay_contact_macro_import.py
 permissions:
   contents: read
 jobs:
