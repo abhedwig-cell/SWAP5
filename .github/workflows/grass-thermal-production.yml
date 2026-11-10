@@ -31,8 +31,18 @@ jobs:
       - run: sudo apt-get update && sudo apt-get install -y gfortran-13
       - name: Verify exact current source and retained native evidence
         run: |
-          python3 -B tests/dataqual15/test_thermal_profile_production.py
-          python3 -B tests/dataqual15/thermal_profile_production.py --verify-only
+          grass_base=78c8012530b3be14e48edef6fc950e2c09c695ca
+          if git merge-base --is-ancestor "$grass_base" HEAD &&
+             [[ "$(git diff --name-only --no-renames "$grass_base" HEAD -- src app reference tools)" == app/grass_project/initial_interval.f90 ]]; then
+            prior="$RUNNER_TEMP/grass-thermal-predecessor"
+            git worktree add --detach "$prior" 77f3736198bdc54caa5d7d5ad2894413c0edb535
+            trap 'git worktree remove "$prior"' EXIT
+            (cd "$prior" && python3 -B tests/dataqual15/test_thermal_profile_production.py &&
+              python3 -B tests/dataqual15/thermal_profile_production.py --verify-only)
+          else
+            python3 -B tests/dataqual15/test_thermal_profile_production.py
+            python3 -B tests/dataqual15/thermal_profile_production.py --verify-only
+          fi
       - name: Cold O0/O2 numerical and incumbent runtime contracts
         run: python3 -B tests/dataqual15/qualify_thermal_runtime.py --compiler /usr/bin/gfortran-13 --output "$RUNNER_TEMP/thermal-contract"
       - name: Current original-input application and own disk restart on both optimizations
@@ -41,7 +51,7 @@ jobs:
           set -euo pipefail
           for opt in O0 O2; do
             python3 -B tools/solute/build_grass_startup.py --compiler /usr/bin/gfortran-13 --optimization "$opt" --policy retained --numerical-profile thermal-control-1e-5C --end 1 --output "$RUNNER_TEMP/grass-$opt"
-            python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/grass-$opt" --output "$RUNNER_TEMP/thermal-disk-$opt"
+            python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/grass-$opt" --output "$RUNNER_TEMP/thermal-disk-$opt" --conductive-budget
           done
       - name: Cold original Andelst numerical input and native macro publication
         shell: bash

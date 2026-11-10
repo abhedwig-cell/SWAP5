@@ -101,6 +101,13 @@ The last accepted day is saved in the native checkpoint. The executable,
 thermal profile and original input files are checked before model launch.
 Omitting `--days` requests the original final day, 1827.
 
+`conductive_budget.csv` sums the sensible storage change and the top and
+bottom conductive energy entering the soil over accepted substeps. It
+also reports the daily closure residual and the largest absolute
+substep residual. This covers the conductive soil calculation. The file
+does not include advective heat, gas transport, latent heat or a full
+surface energy balance.
+
 ## Run the native Hupsel rotation
 
 Select `NATIVE_HUPSEL_ROTATION` with the same launcher. This route uses
