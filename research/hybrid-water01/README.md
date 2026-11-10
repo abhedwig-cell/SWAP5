@@ -605,6 +605,16 @@ late restart, publish the source-bound proof in PR 1623, then check
 review disposition and canonical postimages. Do not launch a
 second Grassgrowth run while this one is still making progress.
 
+A fresh Grassgrowth process resumed the atomic day-245 checkpoint
+while the main O2 run continued. Days 246-247 matched all three main-run
+ledgers exactly with the existing balance checks. The origin SHA-256
+is `7f3710632bfe7f493c0b36e256b4cf9c2c553a8703f54b7e60f9c29c0ea92bc7`.
+The source is `a4da56a0c` and the build manifest SHA-256 is
+`712f0c8676fede8102018d8ccc439d53b1283b9ab971819aff7e4fe1ab0b1253`. The live origin, replay and
+JSON proof are in the same temporary workspace with suffixes
+`-live-origin`, `-live-resume` and `-live-proof.json`. The main run
+and the late terminal restart remain the next delivery to PR 1623.
+
 The completed Andelst chain used these commands.
 
 ```powershell
