@@ -417,12 +417,21 @@ scientific comparison still fails the frozen day-584 oxygen bound
 (0.000244679662 cm absolute difference; 5.37184e-7 cm bound).
 That is the remaining scientific acceptance decision for this packet.
 
-Continue the already running O2 day-365-to-367 restart and O0 day-2
-restart under `$env:TEMP/s5-hupsel-canonical-a827-review*`.
-Attach them to PR 1625 when verified. The current Grassgrowth full
-O2 replay also remains active for PR 1623. After the functional
-evidence is collected, use the existing pressure/film investigation
-on Hupsel day 584 to select one distinguishing scientific test.
+PR 1625 now includes both current O0/O2 exact own day-2
+continuations and the current O2 year restart, whose physical
+budget matches days 366-367 of the full run exactly. Its extracted
+archive reproduces the extended receipt. Grassgrowth PR 1623
+still has its current full O2 replay running.
+
+For Hupsel science, the prior original-reference grid study
+already shows a 2.47646e-5 cm change between its two finest
+strict-balance grids on day 584, about 46 times the frozen
+comparison bound. See `ORIGINAL_OXYGEN_GRID_CANONICAL_RECEIPT_20261104.json`
+under `integration/dataqual15_hupsel`. Retain the failed original
+comparison. The next scientific work block must select an
+independently qualified reference strategy and use genuine
+same-profile histories. Avoid repeating the already rejected
+pointwise or grid-only designs or fitting the native oxygen term.
 
 The completed Andelst chain used these commands.
 
