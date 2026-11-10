@@ -561,6 +561,35 @@ The next work block tests the current candidate with a cold 22-day
 public prefix and an own day-20 restart before using the changed
 dependency surface for a fresh full execution.
 
+The current Andelst revalidation is published in PR 1624 at
+`51c0b981b`. The production source is `a4da56a0c`. The complete
+481-day ledger and 482 dated CSV records match the previous canonical
+run exactly. The own-build year and dry-window restarts, O0/O2 day-20
+restarts, cross-build refusal, alternating Cauchy columns and day-15
+rollback pass. The successor receipt binds the original inputs and
+current builds. The earlier archive and science finding retain their
+original scope.
+
+The same changed production source enters all six Hupsel build
+dependencies. The current O2 prefix to day 4 matches all six physical
+CSV files from the earlier canonical control. The day-2 restart
+matches its budget and five terminal files. Its receipt is staged
+locally at `$env:TEMP/s5-hupsel-a4da56a0-prefix-proof.json`.
+The fresh full Hupsel and year-chain runs use the same bundle under
+`$env:TEMP/s5-hupsel-a4da56a0-O2-current` with suffixes `-full`,
+`-cut365` and `-resume367`. The build and inputs are pinned by the
+existing launcher. The next Hupsel acceptance is the full ledger,
+year restart and unchanged day-584 scientific classification.
+
+The Grassgrowth O2 registered-profile build and full 1-1827 run use
+`$env:TEMP/s5-grass-a4da56a0-O2` with suffix `-full`. A watcher
+captures an atomic checkpoint between days 1791 and 1800 and runs
+its fresh terminal continuation in `-late-resume`. Use its verified
+day and hash from `-late-origin/ORIGIN.json`. Compare these current
+runs to the published application receipts before updating PRs 1623
+and 1625. Resume the existing processes or audit their output before
+starting any new copy.
+
 The completed Andelst chain used these commands.
 
 ```powershell
