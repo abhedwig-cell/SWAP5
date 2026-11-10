@@ -277,9 +277,18 @@ day 128 and own day-126 continuation agree exactly. Water budgets,
 non-LAI crop fields and the day-126 physical checkpoint match the
 retained water-only run. Windows O0/O2 own day-1 disk controls also pass.
 See [the mowing evidence](CLOSURE01_GRASS_COMMITTED_LAI_20261110.json).
-Resume at PR #1622 CI and verify the canonical postimage after admission.
-The remaining oxygen and biomass differences in the retained full runs
-are separate from the LAI output phase error.
+PR #1622 merged as `a8275101d91f0ab5b413290e9b00bb5666b11917` with the
+exact qualified tree `5ad8502ba67c1c53e77a7c5128a71504c050fade`. Eleven
+workflows passed, including F-CI and the Grassgrowth thermal workflow.
+The sole failure is the inherited Linux AHL executable-stack loader.
+
+Resume with the Grassgrowth wet event on day 188. The original-input
+O2 continuation from 128 to 189 reproduces retained native oxygen loss
+0.005994225669 cm on day 188, against 0.016571046610 cm from B0. B1 and
+B0 agree there to about 4e-12 cm. The same-build day-187 and day-188
+checkpoints are in the retained event directory with hashes in the
+mowing evidence. Compare the native accepted root and oxygen inputs
+with the original at this wet transition before altering either owner.
 
 Experimental proof on canonical base `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
 PR #1618 has a complete corrected V9 run and exact own-year replay. This
@@ -1215,4 +1224,10 @@ and native crop snapshot.
 
 ```powershell
 python -B research/hybrid-water01/audit_grass_committed_lai.py --full "$env:TEMP/s5-grass-lai-original-128" --resume "$env:TEMP/s5-grass-lai-original-128-resume" --predecessor "$env:TEMP/s5-events-default-140" --build "$env:TEMP/s5-grass-lai-O2"
+```
+
+The wet-event continuation uses the same native O2 executable.
+
+```powershell
+python -B tests/dataqual15/run_original.py --bundle "$env:TEMP/s5-grass-lai-O2" --output "$env:TEMP/s5-grass-oxygen-event-189" --end 189 --restart "$env:TEMP/s5-grass-lai-original-128/checkpoint.bin" --capture 187 188 --timeout 240
 ```
