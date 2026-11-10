@@ -477,6 +477,20 @@ evidence remains tied to the sources and builds used in those runs.
 Before integration, review the broader source-identity gate failures
 on #1626 and repeat the application CI against the integrated source.
 
+The independent functional acceptance item is Linux AHL integration.
+At exact canonical `a8275101d`, the same DATAQUAL12 predicate reached
+through SWAP5-PERF01 already rejects 700 changed paths against its
+13-path historical record. The AHL candidate has 705. P2E06 also
+already rejects canonical because the Reference tree differs from
+its pinned P2E05 tree. The Reference tree is identical on canonical
+and the AHL candidate. The predicate comparisons are recorded in
+PR 1626 alongside the two passing Linux workflows. The next
+integration step is to attribute the remaining red jobs against
+canonical and identify any candidate-specific gate before admission.
+For Hupsel day 584 the reference blocker above remains open. A
+new comparison needs an independently validated reference with
+its numerical uncertainty below the existing bound.
+
 The completed Andelst chain used these commands.
 
 ```powershell
