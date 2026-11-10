@@ -16,14 +16,40 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: d6f5eddf5648b51a7256e5e282d6473fff769a54
-      - name: Run unchanged contact gate on the exact production candidate
+      - name: Trace the first geometry failure on the production candidate
         shell: bash
         run: |
           gfortran --version
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/runtime/mod_ppa_wu05a16_inner_macropore_provider.f90")
+          s = p.read_text()
+          i = s.index("  subroutine evaluate_inner_trial_geometry")
+          j = s.index("  end subroutine evaluate_inner_trial_geometry", i)
+          body = s[i:j]
+          for old, new in [
+              ("    if(.not.ok)return", "    if(.not.ok)then\n      write(*,*) 'CONTACT_TRACE dynamic crack profile rejected',active_node\n      return\n    end if"),
+              ("    if(.not.geometry_current%valid)return", "    if(.not.geometry_current%valid)then\n      write(*,*) 'CONTACT_TRACE geometry invalid'\n      return\n    end if"),
+              ("    call derive_dynamic_surface_area(self%geometry_config,self%shrinkage%surface_crack_area_node,geometry_current,ok)", "    call derive_dynamic_surface_area(self%geometry_config,self%shrinkage%surface_crack_area_node,geometry_current,ok)\n    if(.not.ok)write(*,*) 'CONTACT_TRACE surface area derivation rejected'"),
+          ]:
+              assert body.count(old) == 1, old
+              body = body.replace(old, new)
+          p.write_text(s[:i] + body + s[j:])
+          p = Path("src/process/macropore/mod_macropore_dynamic_shrinkage.f90")
+          s = p.read_text()
+          i = s.index("  subroutine evaluate_dynamic_crack_profile")
+          j = s.index("  end subroutine evaluate_dynamic_crack_profile", i)
+          body = s[i:j]
+          old = "      call evaluate_node_shrinkage_fraction(config,ic,theta(ic),shrink,local_ok)"
+          assert body.count(old) == 1
+          body = body.replace(old, old + "\n      if(.not.local_ok)write(*,*) 'CONTACT_TRACE node shrinkage rejected',ic,theta(ic),config%theta_s(ic),shrink")
+          p.write_text(s[:i] + body + s[j:])
+          PY
           code=0
           python3 -B tests/dataqual15/qualify_nonlinear_native_contact.py --optimization O2 --output "$RUNNER_TEMP/contact" || code=$?
           if [[ -d "$RUNNER_TEMP/contact" ]]; then
             find "$RUNNER_TEMP/contact" -maxdepth 2 -type f -name 'contact-*.stderr' -print -exec tail -n 25 {} \;
+            grep -h CONTACT_TRACE "$RUNNER_TEMP/contact"/contact-*.stdout | tail -20 || true
             find "$RUNNER_TEMP/contact" -maxdepth 2 -name 'diagnostic-rejected.bin' -exec sha256sum {} \;
           fi
           exit "$code"
