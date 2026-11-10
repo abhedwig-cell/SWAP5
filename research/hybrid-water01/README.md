@@ -169,6 +169,10 @@ optimizations and their own day-2 restarts. Fresh reference preparation
 also ran the original 481-day donor and reproduced its CSV records.
 The fetched canonical merge has the exact qualified tree
 `4caf4e27bab50f67d3f157d45d8f6adf19ec1c5c` and the expected two parents.
+All 24 post-merge checks are terminal. F-CI modular feedback and the
+F-GC fixed-interface closeout pass on `78c801253`. The four failures
+reach the historical DATAQUAL12 predicate that also rejects
+`7535a9e65`. Sixteen checks are skipped.
 
 The targeted Andelst replays below localize the day-457 groundwater
 discrepancy to the final accepted step. Both same-origin controls show

@@ -226,6 +226,57 @@
     ],
     "tree": "4caf4e27bab50f67d3f157d45d8f6adf19ec1c5c",
     "complete_tree_equals_qualified_head": true,
-    "post_merge_ci": "running"
+    "post_merge_ci": {
+      "terminal": true,
+      "counts": {
+        "skipped": 16,
+        "success": 4,
+        "failure": 4
+      },
+      "selected_jobs": [
+        {
+          "name": "modular-feedback",
+          "id": 129528691593,
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42724951533/job/129528691593",
+          "log_sha256": "8ad447fe986a66ee64d80c6149857a645cfc377ca9d196f3621099df42d55648",
+          "signature": "WATER_APPLICATION_SUCCESSOR_AND_NATIVE_PREDECESSOR_PASS"
+        },
+        {
+          "name": "original-reader",
+          "id": 129528083026,
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42724951764/job/129528083026",
+          "log_sha256": "7e7c7970218a99729f033f76103e279efdedb393dbf0be78b6a0d063a3ce2310",
+          "signature": "AssertionError: unreviewed delta"
+        },
+        {
+          "name": "preserve-qualified-wof43a",
+          "id": 129528082106,
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42724951732/job/129528082106",
+          "log_sha256": "1905a31bcab184dda277020fd24ca33f3d5fe136564310c18fa54b2691763d83",
+          "signature": "AssertionError: unreviewed delta"
+        },
+        {
+          "name": "column",
+          "id": 129528077598,
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42724951341/job/129528077598",
+          "log_sha256": "949998c77b8249c688acde63dc78868765a617826988c924d2e8220af0b231ae",
+          "signature": "AssertionError: unreviewed delta"
+        },
+        {
+          "name": "closeout",
+          "id": 129528077532,
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42724951463/job/129528077532",
+          "log_sha256": "3c07d9d94bee31f193afc2a4de4650e9f0542ea620509a9a401d2fb671e5f308",
+          "signature": "F_GC_CLOSEOUT_FIXED_INTERFACE_GATE_PASS"
+        },
+        {
+          "name": "fsi35-permanent-preservation",
+          "id": 129528077326,
+          "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/42724951382/job/129528077326",
+          "log_sha256": "cf7696a559627084a1ae6c7443d9642a7ab0662d036f6de36cd990e71fd12045",
+          "signature": "AssertionError: unreviewed delta"
+        }
+      ]
+    }
   }
 }
