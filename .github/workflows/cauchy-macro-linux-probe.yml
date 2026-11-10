@@ -28,7 +28,7 @@ jobs:
           j = s.index("  end subroutine evaluate_inner_trial_geometry", i)
           body = s[i:j]
           for old, new in [
-              ("    if(.not.ok)return", "    if(.not.ok)then\n      write(*,*) 'CONTACT_TRACE dynamic crack profile rejected',active_node\n      return\n    end if"),
+              ("    if(.not.ok)return", "    if(.not.ok)then\n      write(*,*) 'CONTACT_TRACE dynamic crack profile rejected',active_node,pressure_head(27),water_content(27)\n      return\n    end if"),
               ("    if(.not.geometry_current%valid)return", "    if(.not.geometry_current%valid)then\n      write(*,*) 'CONTACT_TRACE geometry invalid'\n      return\n    end if"),
               ("    call derive_dynamic_surface_area(self%geometry_config,self%shrinkage%surface_crack_area_node,geometry_current,ok)", "    call derive_dynamic_surface_area(self%geometry_config,self%shrinkage%surface_crack_area_node,geometry_current,ok)\n    if(.not.ok)write(*,*) 'CONTACT_TRACE surface area derivation rejected'"),
           ]:
@@ -44,6 +44,17 @@ jobs:
           assert body.count(old) == 1
           body = body.replace(old, old + "\n      if(.not.local_ok)write(*,*) 'CONTACT_TRACE node shrinkage rejected',ic,theta(ic),config%theta_s(ic),shrink")
           p.write_text(s[:i] + body + s[j:])
+          PY
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("src/legacy/b1_10_port/headcalc.f90")
+          s = p.read_text()
+          marker = "         call evaluation_context%macropore%evaluate_rate(state%h(1:numnod),state%theta(1:numnod), &"
+          a = s.index("subroutine boundtop_state_bridge")
+          i = s.index(marker, a)
+          new = "         if (state%theta(27)>cofgen(2,27)) write(*,*) 'CONTACT_TRACE theta over COFGEN', &\n              state%h(27), state%theta(27), cofgen(1:2,27), provider_active"
+          new = new.replace(", provider_active", "")
+          p.write_text(s[:i] + new + "\n" + s[i:])
           PY
           git -c user.name='SWAP5 diagnostics' -c user.email='diagnostic@localhost' commit -am 'Instrument candidate geometry refusal'
           code=0
