@@ -690,6 +690,21 @@ bounded representative development runs before selecting another
 complete experiment. Keep the existing full Grassgrowth verification
 on its original source and run no duplicate for this performance probe.
 
+All three full applications on the AHL production candidate
+`a4da56a0c` now have published successor receipts. Grassgrowth
+PR 1623 at `3941df231` accepts 1827 days and 1819203 steps. The
+three ledgers, state and endpoint bytes match the previous canonical
+run. The own day-1792 checkpoint reproduces all terminal files
+and the day-245 replay matches days 246-247. Recomputing the sealed
+B0 comparison yields the unchanged science result. The full launcher
+observation is about 100 minutes and the performance criterion is open.
+Andelst PR 1624 and Hupsel PR 1625 retain the separately qualified
+current execution and restart scopes above. PR 1626 links the three
+successor receipts. The next functional admission step is review and
+actual canonical postimage verification, with the known red gates
+visible. Start no duplicate full application run on this source.
+The separate short waterfilm candidate does not replace these receipts.
+
 The completed Andelst chain used these commands.
 
 ```powershell
