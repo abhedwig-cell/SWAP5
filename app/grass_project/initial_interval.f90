@@ -107,6 +107,7 @@ program grass_initial_interval
  real(real64)::surface_resistance,spacing,depth,drainres,infres,date_time,forcing_end
  real(real64)::clock,cursor,edge,day_end,step_dt,heat_residual,day_residual,day_in,day_out,day_start_water,day_final_water
  real(real64)::day_potential,day_actual,day_drought,day_oxygen
+ real(real64)::reported_lai
  real(real64)::conductive_storage,conductive_top,conductive_bottom,max_conductive_residual,step_conductive_residual
  integer::thermal_budget
  integer::day_index,weather_count,budget,accepted_steps,trace_index,source_maxit,source_maxbacktrack,source_mean,source_implicit
@@ -423,6 +424,7 @@ program grass_initial_interval
   day_residual=day_final_water-day_start_water-day_in+day_out
   call require(abs(day_residual)<=1d-10,'original day water balance')
   call require(abs(day_potential-day_actual-day_drought-day_oxygen)<=1d-10,'original uptake attribution')
+  reported_lai=crop_view%actual_leaf_area_index
   if(day_end==real(day_index,real64))then
    aggregates%potential_transpiration=day_potential;aggregates%actual_root_uptake=day_actual
    day_management=development%management
@@ -451,13 +453,15 @@ program grass_initial_interval
    call evaluate_crop_root_depth_rate_candidate(root_parameters,root_state,root_forcing,day_roots,root_diagnostic,code)
    call require(code==0,'source daily root extension')
    day_crop=crop_candidate
+   call day_crop%derive_actual_leaf_area_index(ssa,spa,reported_lai,code)
+   call require(code==0,'committed grass leaf area')
    call write_grass_prefix_restart('checkpoint.bin',day_water,day_crop,day_management,code,day_potential_crop,day_roots)
    if(code/=0)write(*,*)'GRASS_RESTART_STATUS',code
    call require(code==0,'atomic grass restart publication')
   end if
   water=day_water;crop=day_crop;management=day_management;potential=day_potential_crop;root_state=day_roots;clock=day_end
   write(crop_log,'(i0,13(a,es25.17e3))')day_index,',',crop%development_stage,',',crop%evolution_continuation%temperature_sum, &
-   ',',crop_view%actual_leaf_area_index,',',crop%biomass%root_biomass,',',sum(crop%biomass%leaf_biomass), &
+   ',',reported_lai,',',crop%biomass%root_biomass,',',sum(crop%biomass%leaf_biomass), &
    ',',crop%biomass%stem_biomass,',',crop%biomass%storage_biomass,',',potential%root_biomass(), &
    ',',root_state%actual_root_depth_cm,',',root_state%potential_root_depth_cm,',',rates%gross_root_growth_rate, &
    ',',potential_rates%gross_root_growth_rate,',',deepest_oxygen_integral
