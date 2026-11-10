@@ -159,10 +159,13 @@ All 55 checks on `1649abeeb` are terminal, with 30 successes,
 17 skips and eight failures. The DATAQUAL12, Hupsel root-profile,
 Grassgrowth thermal and historical native restart source predicates
 reject both the pinned canonical base and the application head.
-The original-reader and AHL logs on the final head were unavailable
-through GitHub diagnostics. Their initial-head failures were DATAQUAL12
-and a Linux executable-stack loader error, respectively. Resume with
-CI adjudication before canonical admission. Fresh reference preparation
+The exact eight failed-job logs were recovered through the GitHub API.
+Seven jobs reach the four historical predicates above. The AHL job
+fails in the Linux executable-stack loader with unchanged AHL sources.
+The [admission evidence](CLOSURE01_CANONICAL_ADJUDICATION_20261110.json)
+pins the logs, exact test merge and local O0/O2 evidence. Grassgrowth
+and Hupsel each reproduce all four budget, crop and state days across
+optimizations and their own day-2 restarts. Fresh reference preparation
 also ran the original 481-day donor and reproduced its CSV records.
 The full-period science comparisons remain separate.
 
