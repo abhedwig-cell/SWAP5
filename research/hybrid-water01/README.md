@@ -705,6 +705,23 @@ actual canonical postimage verification, with the known red gates
 visible. Start no duplicate full application run on this source.
 The separate short waterfilm candidate does not replace these receipts.
 
+The unpublished integration preview from canonical `a8275101d`
+merges the exact PR heads in order 1626, 1623, 1624, 1625 without
+conflicts. The resulting tree is
+`505af0cb8de79c6fafe58003556705a531c7b6e7`. The three evidence
+merges leave src, app, tools, tests, reference and workflow files
+identical to the tested PR 1626 tree
+`b8fdd418beb68a0b2d711f469804c74be85d0ff5`. The preview contains
+the three successor receipts bound to `a4da56a0c`. The four
+intermediate tree IDs in order are `b8fdd418b`, `903e57ee8`,
+`79110d7aa` and `505af0cb8`. This is a local Git merge-tree check.
+Canonical remains at `a8275101d`. At Grassgrowth evidence head
+`3941df231`, nine workflows pass and the sole failure remains the
+[AHL loader on the older model tree](https://github.com/abhedwig-cell/SWAP5/actions/runs/42845560399/job/129931957310).
+The next condition is the PR 1626 review/admission decision.
+The actual canonical tree must then be checked before accepting
+the prospective tree or declaring integration complete.
+
 The completed Andelst chain used these commands.
 
 ```powershell
