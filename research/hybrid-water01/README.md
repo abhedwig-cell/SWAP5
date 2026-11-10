@@ -722,6 +722,23 @@ The next condition is the PR 1626 review/admission decision.
 The actual canonical tree must then be checked before accepting
 the prospective tree or declaring integration complete.
 
+### PR 1626 historical guard comparison
+
+Evaluated the versioned source predicates on canonical `a8275101d91f0ab5b413290e9b00bb5666b11917` and PR head `a4da56a0c60105862fc3dc91b6101ff1c963cf84`. This comparison uses Git objects and requires no model execution.
+
+| Guard | Canonical | PR head |
+| --- | --- | --- |
+| F-VQ87, first path outside the allowlist in the diff from `43c9f091` | `.gitattributes` | `.gitattributes` |
+| PUB-ME D4, changed paths in `git diff --name-only 6a77678b...HEAD -- src reference` | 518 | 519 |
+| F-CI59P, changed paths in `git diff --name-only 648c3a2a..HEAD -- src reference` | 593 | 593 |
+| PUB-GC E7, bootstrap blob pinned to `356b3825a8ba13af1fed385ab17ffdb330b1058f` | `2f42e0ee89cd0285f05a1bb1553f1bd7789061bd` | same |
+
+These four first rejections predate the repair. E7 also pins the serialized
+backend, whose blob does change in this PR. This comparison establishes the
+first rejection only. It does not qualify the historical E7 experiment on the
+current backend or authorize a merge. Next review decision is the disposition
+of inherited historical guards alongside the scoped AHL evidence.
+
 The completed Andelst chain used these commands.
 
 ```powershell
