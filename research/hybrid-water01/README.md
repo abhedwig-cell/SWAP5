@@ -590,6 +590,21 @@ runs to the published application receipts before updating PRs 1623
 and 1625. Resume the existing processes or audit their output before
 starting any new copy.
 
+The fresh Hupsel full execution and restart checks are now published
+in PR 1625 at `a6c9fe635`. The O2 run reaches 1096 days and all six
+physical CSVs match canonical exactly. The two own day-2 O0/O2
+restarts match five terminal files. The O2 year continuation matches
+its own full physical budget. The day-584 oxygen result is exactly
+0.0033488614852679407 cm. This preserves the failed frozen science
+comparison as a separate reference-resolution finding.
+The Grassgrowth successor is still running. Its water, crop and
+conductive ledgers match through day 188. Monitor the existing
+`s5-grass-a4da56a0-O2-full` output and its late-origin and late-resume
+siblings. On completion, audit the full ledgers, balances and
+late restart, publish the source-bound proof in PR 1623, then check
+review disposition and canonical postimages. Do not launch a
+second Grassgrowth run while this one is still making progress.
+
 The completed Andelst chain used these commands.
 
 ```powershell
