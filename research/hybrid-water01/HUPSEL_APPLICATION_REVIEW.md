@@ -141,3 +141,26 @@ The archive includes the build manifest. Its SHA-256 is
 `efead5ee838e54a276de8fbd774b288dbcc9c6044ae83905405cb3f48125b093`.
 Extract the archive and pass its directory as `$s` to audit the
 stored results directly.
+
+
+## Revalidation on the AHL portability successor
+
+The unchanged commands above were repeated on the production source of
+PR #1626 at `a4da56a0c60105862fc3dc91b6101ff1c963cf84`. The new O2 run
+completed all 1096 days. The six physical CSV files are byte-identical
+to the earlier canonical application run. The independent maximum
+water and solute interval residuals are 4.444e-14 cm and
+9.627e-12 mg/cm2. The maximum reported heat residual is
+1.305e-12 J/cm2.
+
+Each optimization reproduces its own day-2 restart through day 4,
+including the terminal checkpoint, restart, endpoint, state and
+temperature files. The O2 day-365 checkpoint reproduces the full
+run's physical budget for days 366-367. The
+[successor receipt](hupsel-ahl-successor-receipt.json) binds both
+builds, the original inputs and the current output hashes.
+
+Day-584 oxygen reduction remains 0.0033488614852679407 cm, exactly
+the previous current result. The failed frozen-reference comparison
+and the independent reference-resolution blockers retain their
+earlier classification.
