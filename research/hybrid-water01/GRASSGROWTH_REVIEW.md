@@ -46,6 +46,28 @@ foreach ($opt in 'O0','O2') {
 }
 ```
 
+### Current canonical regression
+
+Cold Windows GNU Fortran O0 and O2 builds on `a8275101` produce
+byte-identical water, crop and conductive ledgers for days 1–3.
+The physical endpoint and nodal state files also match. For each
+optimization, a separate process resumed from its own day-1 file
+and reproduced days 2–3 and the day-3 checkpoint, endpoint and
+state exactly. The maximum daily water residual is 2.257e-14 cm
+and the maximum daily conductive residual is 1.316e-10 J/cm².
+The [current receipt](grass-current-review-evidence.json) pins
+the source baseline, build, inputs and output files.
+
+The current-source 1827-day O2 replay and the separate day-188
+cut/continuation were started. They are follow-up validation and
+are not counted in this receipt. The completed full-period and
+long-restart evidence above applies to the sealed predecessor.
+
+```powershell
+python -B research/hybrid-water01/audit_grass_current.py "$env:TEMP"
+# Add --full after the current O2 full run and day-188 continuation finish.
+```
+
 ## Day 188, 6 July 1980
 
 Literal SWAP 4.3.1 B0 remains the historical reference. B1 is a distinct corrected reference and agrees with B0 oxygen loss for this day to approximately 4e-12 cm. The original daily SWAP5 minus B0 difference is +0.011289036 cm uptake, combining +0.000712215 cm potential demand and 0.010576821 cm less oxygen loss. Drought reduction is zero in both runs.
