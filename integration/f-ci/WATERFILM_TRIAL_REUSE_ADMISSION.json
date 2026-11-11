@@ -1,0 +1,83 @@
+{
+  "workstream": "SWAP5-FUNCTIONAL-CLOSURE01 / RT-TX / oxygen",
+  "status": "BOUNDED_CURRENT_SOURCE_QUALIFIED",
+  "canonical_base": "c49b8751a3663e5082ceb5a468223d121106c77a",
+  "tested_cache_postimage": "f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e",
+  "scope": "One trial-local bit-exact waterfilm profile cache. Independent instances own their caches and each FMR trial resets reuse state.",
+  "test_selection": {
+    "candidate": "56f514002b41f1e9393e181d50df032001b1f85c",
+    "groups": {
+      "waterfilm_admission": {
+        "changed_dependency": "Exact-source CI selection now recognizes the tested cache production and fixture tree on the admitted AHL base. Production, application, tools, tests and reference are unchanged from f0e5d9e1d.",
+        "scientific_claim": "The existing live O0/O2 oxygen, current original-input Grassgrowth, own-build restart and Andelst codec contracts still execute on the current cache source; frozen predecessor evidence retains its own identity.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 functional RT-TX/oxygen integration",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 900,
+        "existing_evidence": "PR 1628 includes O0/O2 bit-exact oxygen assembly, five physical output files over four days, fresh day-2-to-4 restart and distinct-head (-75/-125 cm) A/B/A/B interleaving with the existing 1e-12 cm mass assertion. Exact f0e5d9e1d isolation workflow 42862499929 passes. The former F-CI run 42862468691 rejects the source before current application admission. Reconciled F-CI and Grassgrowth workflows remain pending.",
+        "prior_execution": "FAILED",
+        "diagnosis": "The former automatic route falls through the exact AHL source predicate because the cache intentionally changes production and fixtures. The existing successor verifier then rejects application source identity. Add a second exact-source predicate while retaining all live numerical and native application commands."
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for the bounded cache and route reconciliation; no omnibus PASS",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "performance_scope": "Existing short production-profile four-day observation is approximately 15.27% lower median wall time with five physical files exact. Comparable full-project runtime remains open.",
+  "open_conditions": [
+    "A complete run using the cached executable is not claimed",
+    "Comparable full-project runtime and whole scientific equivalence remain open",
+    "Verify the actual canonical merge postimage"
+  ],
+  "local_route_validation": {
+    "yaml_parse": "PASS",
+    "bash_syntax": "PASS",
+    "source_fixture_and_reference_equal_tested_cache_postimage": true
+  },
+  "workflow_trigger": "Canonical retargeting alone emits an edited event. Persist this validation record after retargeting so the canonical-targeted Grassgrowth pull-request workflow receives a synchronize event. Existing current-source runs remain reusable on identical dependencies.",
+  "qualification": {
+    "fci": {
+      "run_id": 42992581008,
+      "job_id": 130430234105,
+      "head": "1f2d09251ab7960506dfca6a1aaa80a89fc08a7d",
+      "status": "PASS",
+      "scope": "six O0/O2 production component cases, current selector and source-bound predecessor verification",
+      "selector_o0_o2_sha256": "acf11684bfdeea14bb7f8802dba4e8eb09af09fc9699fcb5efbbadf30e203b22"
+    },
+    "grassgrowth": {
+      "run_id": 42993099019,
+      "job_id": 130430470991,
+      "head": "836e3125d7580fdda3aa55ad7b96e019e953c343",
+      "status": "PASS",
+      "scope": "cold O0/O2 numerical/runtime contracts, original-input Grassgrowth own disk restart, original Andelst macro restart/atomic refusals",
+      "terminal_markers": [
+        "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+        "NATIVE_MACRO_O0_O2_OWN_BYTES_AND_REFUSALS_PASS"
+      ]
+    },
+    "unchanged_cache_source_controls": {
+      "source": "f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e",
+      "distinct_profile_isolation_run": 42862499929,
+      "runtime_pass_runs": [
+        42862468331,
+        42862468316,
+        42862468852,
+        42862468577,
+        42862468863,
+        42862468688
+      ]
+    },
+    "dependency_identity": {
+      "src": "65a674b26310024b578013a92ba66c94e6549c9d",
+      "app": "7174a4522c79fc2406c692621d08c9f69065568c",
+      "tools": "adc518edc69768daeba4289513b40d877db7157e",
+      "tests": "9253edca14b41ece709a733e089c08062377fb4e",
+      "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+      ".github": "1a9ea928b0912c392b571f056b707240e64654bb"
+    },
+    "record_update": "Only this evidence record changes after the two completed route qualifications. Commit uses skip-ci to avoid another automatic duplicate campaign. Relevant source/test/workflow identities remain exact."
+  },
+  "ci_cost_control": {
+    "automatic_duplicates_cancelled": 93,
+    "scope": "Own exact source/test postimages only. Completed and failed verdicts retained. The two required cache route workflows were allowed to complete.",
+    "cancellation_is_scientific_pass": false
+  }
+}

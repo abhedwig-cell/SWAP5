@@ -151,8 +151,62 @@ program test_bartholomeus_application
     call badapp%close(status)
   end do
   print '(a)','C3A_ACTUAL_APPLICATION_UNSUPPORTED_INVALID=PASS'
+  call verify_interleaved_oxygen_profiles(cfg)
   print '(a)','PPA_WU05C3A_APPLICATION_CHAIN=PASS'
 contains
+  subroutine verify_interleaved_oxygen_profiles(config_a)
+    type(fmr_production_application_config_t), intent(in) :: config_a
+    type(fmr_production_application_config_t) :: config_b
+    type(fmr_production_application_bootstrap_t) :: isolated(2), interleaved(2)
+    type(fmr_serialized_column_result_t), allocatable :: control(:), replay_result(:)
+    real(real64) :: end_times(2), start_time, total_out(2,2), storage_end(2,2), unused_conductivity
+    integer :: model_index, step, code
+
+    call initialize_application_config(config_b,-125.0_real64,unused_conductivity)
+    call add_root_thermal_oxygen(config_b)
+    config_b%tiles(1)%tile_id = config_a%tiles(1)%tile_id + 1_int64
+    call isolated(1)%initialize(config_a,code)
+    call require(code==FMR_APP_BOOT_OK,'isolated oxygen A initializes')
+    call isolated(2)%initialize(config_b,code)
+    call require(code==FMR_APP_BOOT_OK,'isolated oxygen B initializes')
+    call interleaved(1)%initialize(config_a,code)
+    call require(code==FMR_APP_BOOT_OK,'interleaved oxygen A initializes')
+    call interleaved(2)%initialize(config_b,code)
+    call require(code==FMR_APP_BOOT_OK,'interleaved oxygen B initializes')
+
+    end_times=[T1,T1+(T1-T0)]
+    do model_index=1,2
+      start_time=T0
+      do step=1,2
+        call isolated(model_index)%run_standalone(start_time,end_times(step),control,code)
+        call require(code==FMR_APP_BOOT_OK.and.control(1)%committed,'isolated oxygen control commits')
+        call require(abs(control(1)%mass%residual)<=HARD_MASS_GATE,'isolated oxygen control balance')
+        total_out(step,model_index)=control(1)%mass%total_out
+        storage_end(step,model_index)=control(1)%mass%storage_end
+        start_time=end_times(step)
+      end do
+    end do
+    call require(.not.same_bits(storage_end(1,1),storage_end(1,2)),'oxygen controls have distinct profiles')
+
+    start_time=T0
+    do step=1,2
+      do model_index=1,2
+        call interleaved(model_index)%run_standalone(start_time,end_times(step),replay_result,code)
+        call require(code==FMR_APP_BOOT_OK.and.replay_result(1)%committed,'interleaved oxygen trial commits')
+        call require(abs(replay_result(1)%mass%residual)<=HARD_MASS_GATE,'interleaved oxygen balance')
+        call require(same_bits(replay_result(1)%mass%total_out,total_out(step,model_index)).and. &
+             same_bits(replay_result(1)%mass%storage_end,storage_end(step,model_index)), &
+             'interleaved oxygen result matches its own control')
+      end do
+      start_time=end_times(step)
+    end do
+    do model_index=1,2
+      call isolated(model_index)%close(code)
+      call interleaved(model_index)%close(code)
+    end do
+    print '(a)','C3A_ACTUAL_APPLICATION_DISTINCT_INTERLEAVED_OXYGEN=PASS'
+  end subroutine verify_interleaved_oxygen_profiles
+
   subroutine add_root_thermal_oxygen(value)
     type(fmr_production_application_config_t),intent(inout)::value
     type(b110_default_mvg_parameters_t),target::hp
