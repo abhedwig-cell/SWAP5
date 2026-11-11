@@ -5,6 +5,11 @@ on:
     paths:
       - .github/workflows/grass-thermal-production.yml
       - src/runtime/mod_fmr_serialized_reference_backend.f90
+      - src/process/macropore/mod_macropore_dynamic_shrinkage.f90
+      - tests/fpm/test_ppa_wu05_migmac02_dynamic_shrinkage.f90
+      - tests/fpm/test_ppa_wu05_migmac02_provider_geometry.f90
+      - tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh
+      - tests/fpm/run_ppa_wu05_migmac02_provider_geometry.sh
       - app/grass_project/**
       - app/solute_project/main_water.f90
       - app/solute_column/macro_water_restart.f90
@@ -20,6 +25,20 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 jobs:
+  kim-shrinkage:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      - name: Compiler identity
+        run: gfortran --version
+      - name: KIM operator and real provider geometry at O0 and O2
+        run: |
+          bash tests/fpm/run_ppa_wu05_migmac02_dynamic_shrinkage.sh
+          bash tests/fpm/run_ppa_wu05_migmac02_provider_geometry.sh
   native:
     runs-on: ubuntu-24.04
     timeout-minutes: 20
@@ -35,10 +54,13 @@ jobs:
           ahl_source=1354f5cad9a4db106db50e4e5d8d6a6ba141bca3
           ahl_exact=false
           cache_source=f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
+          kim_source=e145622a9b93aac0eee38a40338f6b452bf16ab8
           if { git merge-base --is-ancestor "$ahl_source" HEAD &&
                git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$cache_source" HEAD &&
-               git diff --quiet "$cache_source" HEAD -- src app reference tools tests; }; then
+               git diff --quiet "$cache_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$kim_source" HEAD &&
+               git diff --quiet "$kim_source" HEAD -- src app reference tools tests; }; then
             ahl_exact=true
           fi
           if [[ "$ahl_exact" == true ]] || {
