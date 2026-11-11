@@ -1,0 +1,82 @@
+{
+  "status": "CANONICAL_MERGED_POSTIMAGE_VERIFIED",
+  "canonical": "c49b8751a3663e5082ceb5a468223d121106c77a",
+  "canonical_tree": "26035216aa83a17ad7a59a201b36520e8b130ee9",
+  "tested_production_source": "a4da56a0c60105862fc3dc91b6101ff1c963cf84",
+  "selection_commit": "9971ee5e34d9bba1d09aefd172c3b5e4e27912a4",
+  "selection_record": "integration/f-ci/F-CI110_EXPLICIT_STATE_ADMISSION.json",
+  "selection_preflight": "SELECTED_NOT_QUALIFIED",
+  "full_fci": "NOT_SELECTED_IMPACT for the bounded portability successor; no full omnibus PASS",
+  "merges": [
+    {
+      "pr": 1626,
+      "commit": "141160c0fb845d6eaa153ff480a5a25ffabb4414",
+      "claim": "Explicit per-call oxygen and interval-selector state removes Linux executable-stack dependency"
+    },
+    {
+      "pr": 1623,
+      "commit": "e390a7e447eb0fe38e93c9ddfb2ccff914b92821",
+      "claim": "Grassgrowth 1827-day execution and exact own-build restarts with retained scientific day-188 assessment"
+    },
+    {
+      "pr": 1624,
+      "commit": "f20f55232b71975f4a77e85c3cefe550468a60d6",
+      "claim": "Andelst 481-day execution with durable restart, rollback and instance-isolation evidence"
+    },
+    {
+      "pr": 1625,
+      "commit": "c49b8751a3663e5082ceb5a468223d121106c77a",
+      "claim": "Hupsel 1096-day execution and exact own-build restarts with failed day-584 scientific comparison retained"
+    }
+  ],
+  "verification": {
+    "actual_merges_match_predicted_merge_trees": true,
+    "dependency_subtrees_equal_tested_candidate": {
+      "src": "e36b08e2f6dab6b3a0119445c163d675068129d8",
+      "app": "7174a4522c79fc2406c692621d08c9f69065568c",
+      "tools": "adc518edc69768daeba4289513b40d877db7157e",
+      "tests": "8c9c7049f8a5dfcc942ec4bc148b53b7ea4b3ac2",
+      "reference": "024e7e0eaf144116c70ac169d61e645ac7bf4bcf",
+      ".github": "1986e8d59a61676fbc76eded3a0abe5cc8c3d0a5"
+    },
+    "fresh_archive_audits_from_actual_canonical": {
+      "grass": {
+        "exit_code": 0,
+        "seconds": 1.6607433001045138,
+        "archive_sha256": "e79711fdac866bd1fe4c68b6daf2588b41353e7c3b4e85405559c35f06f6636c"
+      },
+      "andelst": {
+        "exit_code": 0,
+        "seconds": 0.594432600075379,
+        "archive_sha256": "02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9"
+      },
+      "hupsel": {
+        "exit_code": 0,
+        "seconds": 2.884085200028494,
+        "archive_sha256": "efead5ee838e54a276de8fbd774b288dbcc9c6044ae83905405cb3f48125b093"
+      }
+    },
+    "archive_scope": "Retained previous-source archives remain bound to their original source and builds. Separate AHL successor receipts retain current-source bindings and output equivalence.",
+    "model_runs_repeated": false,
+    "numerical_tolerances_changed": false
+  },
+  "functional_coverage": {
+    "original_project_periods_executed": {
+      "Grassgrowth": 1827,
+      "Andelst": 481,
+      "Hupsel": 1096
+    },
+    "application_successor_receipts": "Now in canonical, with their exact qualified scopes"
+  },
+  "reliability": "Complete published day records and named water, conductive/heat and uptake ledgers, own-build restarts, named rollback/isolation and external coupling controls retain their source-bound evidence. Full energy and whole scientific equivalence remain open.",
+  "development_yield": "One recorded test-selection decision, four merges and actual postimage verification consolidate existing qualified executions. Three fresh archive audits completed in under six native Python seconds without model reruns.",
+  "retained_open_conditions": [
+    "Hupsel day-584 original and implicit reference families do not independently qualify at the existing scientific threshold",
+    "Grassgrowth day-188 original mismatch and unresolved remaining numerical contribution remain visible",
+    "Whole scientific equivalence and complete energy qualification remain open",
+    "Comparable full-project runtime remains open",
+    "Experimental Linux Cauchy-contact rollback remains unqualified",
+    "PR 1627 KIM/contact and PR 1628 trial-local waterfilm reuse remain separate review scopes"
+  ],
+  "next_delivery": "Reconcile PR 1628 on the admitted AHL source using its existing O0/O2 oxygen, physical-output, own-build restart and distinct-profile interleaving proofs. Resolve its exact-source F-CI admission boundary before selecting any additional long run."
+}

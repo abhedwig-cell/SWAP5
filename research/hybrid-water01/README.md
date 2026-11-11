@@ -2,6 +2,37 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Canonical application integration, 11 November 2026
+
+PRs 1626, 1623, 1624 and 1625 are merged in that order. Actual canonical
+is c49b8751a3663e5082ceb5a468223d121106c77a. Each actual merge tree
+matches its conflict-free preview. The complete src, app, tools, tests,
+reference and workflow subtrees equal tested AHL candidate a4da56a0c.
+The three application successor receipts are now published in canonical.
+
+The earlier wait for a separate named RT-TX decision was an overly strict
+interpretation of the functional workstream map. The task records its
+bounded technical selection at 9971ee5e3 and the existing selection
+checker accepts it as SELECTED_NOT_QUALIFIED. Scientific qualification
+rests on the completed exact-source evidence. Full moving F-CI is
+NOT_SELECTED_IMPACT for this bounded portability admission. Existing
+failed scientific and historical verdicts remain visible.
+
+Fresh reads of the three archives from actual canonical pass the original
+Grassgrowth full/late archived audit, Andelst restart/isolation/refusal
+audit and Hupsel full/year/O0 audit. They take about 5.14 seconds in total.
+No model run is repeated. Archive builds retain their original identity,
+with current-source equivalence bound separately in the successor receipts.
+See CLOSURE01_CANONICAL_ADMISSION_20261111.json for exact source, tree,
+merge, archive and scope identities.
+
+Next delivery is the separate PR 1628 trial-local waterfilm reuse on the
+admitted AHL base, reconciling its source-admission boundary with its
+existing O0/O2, physical-output, restart and distinct-profile isolation
+evidence. Comparable full-project runtime and the Hupsel reference
+limitation remain open.
+
+
 ### Grassgrowth review description restored, 11 November 2026
 
 PR 1623's live description contained only an undefined prefix and the
