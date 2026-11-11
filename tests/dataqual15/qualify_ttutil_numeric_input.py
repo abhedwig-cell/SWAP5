@@ -23,6 +23,7 @@ DRIVER = """program original_osat
 
   call get_command_argument(1, filename)
   call rdinit(20, 0, trim(filename))
+  count = 8
   call rdfdor('OSAT', 0.0_real64, 1.0_real64, values, 100, count)
   if (count /= 8) error stop 'Original Andelst OSAT count'
   decimal_text = '0.393'
@@ -45,7 +46,7 @@ def execute(command, folder, category, events, timeout):
     command = list(map(str, command))
     started = time.monotonic()
     try:
-        result = subprocess.run(command, cwd=folder, capture_output=True, timeout=timeout)
+        result = subprocess.run(command, cwd=folder, input=b'', capture_output=True, timeout=timeout)
         stdout, stderr, returncode = result.stdout, result.stderr, result.returncode
     except subprocess.TimeoutExpired as error:
         stdout, stderr, returncode = error.stdout or b"", error.stderr or b"", None
