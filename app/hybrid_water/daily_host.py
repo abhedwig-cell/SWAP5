@@ -79,7 +79,8 @@ def verify_source(distribution):
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
     if project not in (ANDELST,GRASSGROWTH,HUPSEL):
         raise ValueError("Unregistered original hybrid project")
-    if project!=ANDELST and any((trace_richards,budget_retry,shared_pond_transfer,refresh_macro_final)):
+    if ((project!=ANDELST and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
+            or (project==GRASSGROWTH and budget_retry)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
@@ -150,6 +151,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if runtime_checkpoint or checkpoint_day >= 365:
             patched.append("swapoutput")
 
+    if project==HUPSEL and not budget_retry:raise ValueError("Hupsel requires its unchanged strict mass guard")
     if budget_retry:
         swap = output / "swap.f90"
         source = swap.read_text(encoding="cp1252")
@@ -175,6 +177,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
                          "      write(*,'(a,1x,i0,1x,es25.17e3)') 'HYBRID_BUDGET_RETRIES', budget_retries, budget_total\n"
                          "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900")
+        if project==HUPSEL:source=replace(source,"budget_enabled = window >= 15","budget_enabled = .true.")
         main.write_text(source, encoding="cp1252")
     if trace_richards:
         clock = project.start_clock + trace_day - 1
@@ -234,6 +237,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                return
             end if
          end if""")
+        if project==HUPSEL:
+            source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
         if shared_pond_transfer:
             source = replace(source, "only: projected_water_residual",
                              "only: projected_water_residual, apply_surface_lateral_limit")

@@ -51,7 +51,7 @@ def execute(command,*args,**kwargs):
     finally:
         (a.output/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n')
 subprocess.run=execute
-profile=dict(budget_retry=a.project=='andelst',shared_pond_transfer=a.project=='andelst',
+profile=dict(budget_retry=a.project!='grass',shared_pond_transfer=a.project=='andelst',
              refresh_macro_final=a.project=='andelst')
 if a.reuse_build:
     old=json.loads((a.reuse_build/'BUILD.json').read_text());identity=old['identity'];inputs=old['inputs']
