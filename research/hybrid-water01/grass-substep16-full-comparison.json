@@ -1,0 +1,275 @@
+{
+  "status": "CHANGED_NUMERICAL_GRID_COMPARISON_RECORDED_NOT_SCIENTIFIC_EQUIVALENCE",
+  "prior_four_archive_sha256": "b98e534a8eb1510187c3ce81c95931f8e8130f54c989f1523bf7b58908a42bec",
+  "original_inputs_identical": true,
+  "accepted_steps": {
+    "four": 1016128,
+    "sixteen": 636929
+  },
+  "launcher_seconds": {
+    "four": 2527.475440000184,
+    "sixteen": 1825.6806816000026
+  },
+  "cost_scope": "Separate full executions on the same host, not controlled alternating full-period timing. Short ABBA evidence remains separately scoped.",
+  "differences": {
+    "budget.csv": {
+      "day": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 188.0,
+        "day188_sixteen": 188.0
+      },
+      "t1": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 188.0,
+        "day188_sixteen": 188.0
+      },
+      "water_start_cm": {
+        "largest_absolute_daily_difference": 0.0005945071240773814,
+        "day": 1264,
+        "sixteen_minus_four": 0.0005945071240773814,
+        "day188_four": 215.06270774238868,
+        "day188_sixteen": 215.06293789694254
+      },
+      "water_end_cm": {
+        "largest_absolute_daily_difference": 0.0005945071240773814,
+        "day": 1263,
+        "sixteen_minus_four": 0.0005945071240773814,
+        "day188_four": 215.90760415323916,
+        "day188_sixteen": 215.90778849877236
+      },
+      "input_cm": {
+        "largest_absolute_daily_difference": 0.0003800107981484224,
+        "day": 680,
+        "sixteen_minus_four": 0.0003800107981484224,
+        "day188_four": 1.1144269887006808,
+        "day188_sixteen": 1.1143776945914718
+      },
+      "output_cm": {
+        "largest_absolute_daily_difference": 0.00046314927114643467,
+        "day": 1111,
+        "sixteen_minus_four": -0.00046314927114643467,
+        "day188_four": 0.26953057785018697,
+        "day188_sixteen": 0.2695270927616409
+      },
+      "residual_cm": {
+        "largest_absolute_daily_difference": 7.099876242477876e-14,
+        "day": 630,
+        "sixteen_minus_four": -7.099876242477876e-14,
+        "day188_four": -1.27675647831893e-14,
+        "day188_sixteen": -1.199040866595169e-14
+      },
+      "potential_cm": {
+        "largest_absolute_daily_difference": 2.6997975586418033e-05,
+        "day": 1254,
+        "sixteen_minus_four": -2.6997975586418033e-05,
+        "day188_four": 0.1424211599931252,
+        "day188_sixteen": 0.1424195365090789
+      },
+      "uptake_cm": {
+        "largest_absolute_daily_difference": 4.89352924094022e-05,
+        "day": 1275,
+        "sixteen_minus_four": 4.89352924094022e-05,
+        "day188_four": 0.13643074176918138,
+        "day188_sixteen": 0.1364253888907409
+      },
+      "drought_cm": {
+        "largest_absolute_daily_difference": 3.7710899599380926e-05,
+        "day": 1275,
+        "sixteen_minus_four": -3.7710899599380926e-05,
+        "day188_four": 0.0,
+        "day188_sixteen": 0.0
+      },
+      "oxygen_cm": {
+        "largest_absolute_daily_difference": 2.811893922992359e-05,
+        "day": 1249,
+        "sixteen_minus_four": 2.811893922992359e-05,
+        "day188_four": 0.005990418223943862,
+        "day188_sixteen": 0.00599414761833803
+      },
+      "heat_residual_j_cm2": {
+        "largest_absolute_daily_difference": 3.1925878607452773e-11,
+        "day": 289,
+        "sixteen_minus_four": 3.1925878607452773e-11,
+        "day188_four": 5.50928747067303e-12,
+        "day188_sixteen": 1.746870703644987e-11
+      },
+      "temperature_sum": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 1479.0500000000002,
+        "day188_sixteen": 1479.0500000000002
+      },
+      "accepted_steps": {
+        "largest_absolute_daily_difference": 655.0,
+        "day": 1,
+        "sixteen_minus_four": -655.0,
+        "day188_four": 946.0,
+        "day188_sixteen": 880.0
+      }
+    },
+    "crop.csv": {
+      "day": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 188.0,
+        "day188_sixteen": 188.0
+      },
+      "dvs": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 1.0273224043715856,
+        "day188_sixteen": 1.0273224043715856
+      },
+      "tsum": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 1479.0500000000002,
+        "day188_sixteen": 1479.0500000000002
+      },
+      "lai": {
+        "largest_absolute_daily_difference": 0.0006145207275380926,
+        "day": 1234,
+        "sixteen_minus_four": -0.0006145207275380926,
+        "day188_four": 1.8640597222837751,
+        "day188_sixteen": 1.8640138323659377
+      },
+      "wrt": {
+        "largest_absolute_daily_difference": 0.07782309286687905,
+        "day": 1260,
+        "sixteen_minus_four": -0.07782309286687905,
+        "day188_four": 711.606763027874,
+        "day188_sixteen": 711.5928116526732
+      },
+      "wlv": {
+        "largest_absolute_daily_difference": 0.3545898248926278,
+        "day": 1234,
+        "sixteen_minus_four": -0.3545898248926278,
+        "day188_four": 840.7613493612612,
+        "day188_sixteen": 840.7400409185559
+      },
+      "wst": {
+        "largest_absolute_daily_difference": 0.10627401107899459,
+        "day": 1234,
+        "sixteen_minus_four": -0.10627401107899459,
+        "day188_four": 484.67913052593735,
+        "day188_sixteen": 484.6704783152572
+      },
+      "wso": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 0.0,
+        "day188_sixteen": 0.0
+      },
+      "pwrt": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 941.8429290286625,
+        "day188_sixteen": 941.8429290286625
+      },
+      "rd": {
+        "largest_absolute_daily_difference": 2.9045319788423285e-05,
+        "day": 438,
+        "sixteen_minus_four": -2.9045319788423285e-05,
+        "day188_four": 30.0,
+        "day188_sixteen": 30.0
+      },
+      "rdpot": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 30.0,
+        "day188_sixteen": 30.0
+      },
+      "grrt": {
+        "largest_absolute_daily_difference": 0.010983138358010791,
+        "day": 1224,
+        "sixteen_minus_four": -0.010983138358010791,
+        "day188_four": 24.94744829734965,
+        "day188_sixteen": 24.946320140695665
+      },
+      "grrtpot": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 26.056864662219738,
+        "day188_sixteen": 26.056864662219738
+      },
+      "oxygen_integral": {
+        "largest_absolute_daily_difference": 0.009999999999990905,
+        "day": 683,
+        "sixteen_minus_four": -0.009999999999990905,
+        "day188_four": 0.6960295686007109,
+        "day188_sixteen": 0.6958510667649811
+      }
+    },
+    "conductive_budget.csv": {
+      "day": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 188.0,
+        "day188_sixteen": 188.0
+      },
+      "t1": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 188.0,
+        "day188_sixteen": 188.0
+      },
+      "accepted_steps": {
+        "largest_absolute_daily_difference": 655.0,
+        "day": 1,
+        "sixteen_minus_four": -655.0,
+        "day188_four": 946.0,
+        "day188_sixteen": 880.0
+      },
+      "storage_change_j_cm2": {
+        "largest_absolute_daily_difference": 0.04006682239685233,
+        "day": 1265,
+        "sixteen_minus_four": 0.04006682239685233,
+        "day188_four": 122.21737834226765,
+        "day188_sixteen": 122.21937571336262
+      },
+      "top_in_j_cm2": {
+        "largest_absolute_daily_difference": 0.04006682356151714,
+        "day": 1265,
+        "sixteen_minus_four": 0.04006682356151714,
+        "day188_four": 122.21737834255491,
+        "day188_sixteen": 122.2193757131593
+      },
+      "bottom_in_j_cm2": {
+        "largest_absolute_daily_difference": 0.0,
+        "day": 1,
+        "sixteen_minus_four": 0.0,
+        "day188_four": 0.0,
+        "day188_sixteen": 0.0
+      },
+      "residual_j_cm2": {
+        "largest_absolute_daily_difference": 2.4580657509432058e-09,
+        "day": 1054,
+        "sixteen_minus_four": -2.4580657509432058e-09,
+        "day188_four": -2.872582172130933e-10,
+        "day188_sixteen": 2.0332890926511027e-10
+      },
+      "max_substep_residual_j_cm2": {
+        "largest_absolute_daily_difference": 4.033524209079431e-11,
+        "day": 648,
+        "sixteen_minus_four": 4.033524209079431e-11,
+        "day188_four": 8.187974603890424e-12,
+        "day188_sixteen": 2.6413597004060207e-11
+      }
+    }
+  },
+  "scientific_scope": "Retain failed original B0/day188 comparison and prior causal tests in their exact tested scope. No tolerance change, new reference or scientific acceptance."
+}

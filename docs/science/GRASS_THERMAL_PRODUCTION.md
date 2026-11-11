@@ -99,9 +99,20 @@ remain byte-exact to their prior proofs on each platform. One current Windows
 O2 alternating four-day comparison measures7.939seconds for4 and5.138seconds
 for16 (35.27percent lower median), with3585 versus2134 accepted water steps.
 The16 own2-to4 process cut is exact. This is short ambient-host evidence;
-no new full16 trajectory, whole science/energy or runtime-parity claim is made.
+this original qualification did not establish a full16 trajectory, whole
+science/energy or runtime parity; the full successor is recorded below.
 See the [scoped review](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/research/hybrid-water01/THERMAL_SIXTEEN_POLICY_REVIEW.md)
 for actual source/build identities, raw artifacts and read-only verification.
+
+## Full sixteen-step execution evidence
+
+The separately selected original sixteen-step full trajectory and its own
+process continuations are reviewed in the [full sixteen-step package](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/research/hybrid-water01/GRASS_SUBSTEP16_FULL_REVIEW.md).
+Its receipt binds the exact release, original inputs, every daily water/uptake/
+conductive record and checkpoint cuts. This evidence remains separate from
+whole scientific equivalence, complete surface energy and runtime parity.
+The failed original day188 comparison and Hupsel day584 reference limits remain
+visible; prior causal percentages retain their original tested route.
 
 ## Measured scope
 

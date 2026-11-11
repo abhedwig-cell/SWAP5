@@ -1,0 +1,206 @@
+{
+  "status": "FULL_ORIGINAL_GRASS_SUBSTEP16_AND_OWN_RESTARTS_PASS",
+  "canonical_source": "7ef987beb098e9e36c4901adfa865d71ebcd8165",
+  "executable_sha256": "c9647b7643f63555ff61404a356f85b551e71852e7debfa0a28e9ba4f69fdb15",
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "flags": [
+    "-O2",
+    "-ffree-line-length-none",
+    "-fopenmp",
+    "-fbacktrace",
+    "-ffpe-trap=invalid,zero,overflow",
+    "-IC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-release-20261111",
+    "-JC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-release-20261111"
+  ],
+  "profile": "thermal-subcycle16-1e-5C",
+  "original_inputs_sha256": {
+    "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+    "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+    "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+    "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+    "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+  },
+  "elapsed_seconds": 1825.6806816000026,
+  "native_process_timing": {
+    "status": "UNKNOWN_NATIVE_CPU_OBSERVER_FAILED",
+    "reason": "PowerShell Get-Process handle WaitForExit/Refresh completed but one of StartTime/ExitTime/CPU property expressions was null after exit: You cannot call a method on a null-valued expression. No native total CPU or separate process-handle wall time is claimed. The actual run_original monotonic launcher1825.6806816000026seconds is retained. No model rerun justified.",
+    "observer_session": 41904,
+    "observed_process_id": 27728,
+    "observer_exit_code": 1
+  },
+  "full_audit": {
+    "days": [
+      1,
+      1827
+    ],
+    "accepted_steps": 636929,
+    "maximum_daily_water_residual_cm": 5.0959236830294685e-14,
+    "cumulative_water_residual_cm": 9.381384558082573e-15,
+    "maximum_uptake_attribution_residual_cm": 8.309867551015149e-16,
+    "cumulative_conductive_residual_j_cm2": -6.593548286942807e-07,
+    "maximum_daily_conductive_residual_j_cm2": 2.4882069737941492e-09,
+    "maximum_substep_conductive_residual_j_cm2": 5.048324952516836e-11,
+    "output_sha256": {
+      "budget.csv": "c9a02f87a5dbf4d0535405a941c995041c090dd4ed8666e7138b981d8354e803",
+      "conductive_budget.csv": "6b91ea3af4580e20d6190a0a7120e702d8ccfe28bc76536a81e4eabdefe54b43",
+      "crop.csv": "538822499bd7a5ac723476f3b38a37e34ce84fd8af33db1008177bd0457c76e3",
+      "checkpoint.bin": "6e0828bf29811b1078ea6a32742564035c8ee570441ac970985f92a13d865224",
+      "state.csv": "a26df1bd13f2cb05069cddddf7dcba202678bca0dfef9d7bb9c6af5752fdf4e2",
+      "endpoint.csv": "6eb4aefee9d816790094144b5abd58ef628e9c56271e5d8d6eb0ff061bfc9f86"
+    }
+  },
+  "exact_own_restarts": {
+    "2-4": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "origin_sha256": "da433ca5ef19fc187daa88d88aa8133384a5e261065f36360d363015e2128dfb",
+      "final_sha256": "b295f765ef95d2864594e3160ea6e90217f0515a4a11c592656b6267bae893cc",
+      "elapsed_seconds": 3.164325799793005,
+      "audit": {
+        "days": [
+          3,
+          4
+        ],
+        "accepted_steps": 1031,
+        "maximum_daily_water_residual_cm": 9.18709552877317e-15,
+        "cumulative_water_residual_cm": -1.9984014443252818e-15,
+        "maximum_uptake_attribution_residual_cm": 0.0,
+        "cumulative_conductive_residual_j_cm2": -1.3298961931695885e-10,
+        "maximum_daily_conductive_residual_j_cm2": 4.277467269275803e-10,
+        "maximum_substep_conductive_residual_j_cm2": 3.065872555829685e-11,
+        "output_sha256": {
+          "budget.csv": "7d09f51a08ef72ea9fef6487e853aed68a3ea3c57a17daf25e272d03ae503612",
+          "conductive_budget.csv": "29603ea49cf161f80b1624b9886aadeadf8a4c2596e8a97e40ca02ba9ffaa67b",
+          "crop.csv": "a1508ef4d9062c1079aedde7783c506c2357b36ed2d96fc0325f337c0a306042",
+          "checkpoint.bin": "b295f765ef95d2864594e3160ea6e90217f0515a4a11c592656b6267bae893cc",
+          "state.csv": "1212dfaac22869d3c37b1925f349fe5690e4297616895009077cfc0bef095575",
+          "endpoint.csv": "b175f4e0b8e7a9bb6f25c154057deec7b66e65e873c6b18cc24ceee40ca3c99d"
+        }
+      }
+    },
+    "187-190": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "origin_sha256": "e4daaff43887873529821f80b72567f2ca8a15bcb04152a420bf6752d06ea809",
+      "final_sha256": "a878a8a4ab3c0092573d18304b7d700086bb81859fef9217064b4e041dbf7061",
+      "elapsed_seconds": 7.683069000020623,
+      "audit": {
+        "days": [
+          188,
+          190
+        ],
+        "accepted_steps": 2310,
+        "maximum_daily_water_residual_cm": 2.9531932455029164e-14,
+        "cumulative_water_residual_cm": -3.1530333899354446e-14,
+        "maximum_uptake_attribution_residual_cm": 4.85722573273506e-17,
+        "cumulative_conductive_residual_j_cm2": 2.05631067728973e-11,
+        "maximum_daily_conductive_residual_j_cm2": 6.922959983057808e-10,
+        "maximum_substep_conductive_residual_j_cm2": 3.054238459365699e-11,
+        "output_sha256": {
+          "budget.csv": "a801168aaadf12b1ce96637fc2c21af48ee6edf47d1ca377c489be7eef3dc5dd",
+          "conductive_budget.csv": "2d0e6e162c3f2587fe68815a6ddbab2555ff0cdc0cd910c0607007e474f23f67",
+          "crop.csv": "37f2d1520e43228365220a1c3a24e5ddde8ed1cc68bb75617388069a905b4273",
+          "checkpoint.bin": "a878a8a4ab3c0092573d18304b7d700086bb81859fef9217064b4e041dbf7061",
+          "state.csv": "53a97b1db4f1e70a7c23aac64ae56abd077c0ad758e4d5b31c241bb819646b7e",
+          "endpoint.csv": "6096e68ec2dc4c367936020e5cadd5c141f4aa11ff1be488776793667a4da002"
+        }
+      }
+    },
+    "365-367": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "origin_sha256": "b462c56e84a9cee9bf885051b889acde4b0238708ebbf671ccb2da4128edf5b3",
+      "final_sha256": "b4a314a692e416bd65c4878ba0200f94d83881d6d0191444514f62ca2fd1ba7c",
+      "elapsed_seconds": 1.6078870000783354,
+      "audit": {
+        "days": [
+          366,
+          367
+        ],
+        "accepted_steps": 620,
+        "maximum_daily_water_residual_cm": 2.2898349882893854e-14,
+        "cumulative_water_residual_cm": 2.223221606811876e-14,
+        "maximum_uptake_attribution_residual_cm": 1.474514954580286e-17,
+        "cumulative_conductive_residual_j_cm2": -1.0865619515243452e-10,
+        "maximum_daily_conductive_residual_j_cm2": 1.9753088054130785e-10,
+        "maximum_substep_conductive_residual_j_cm2": 3.141742421775007e-11,
+        "output_sha256": {
+          "budget.csv": "f95fc82fe0016dc66bd6eeea507882cc30d60afe3eb1ee17c04aebbdf070b55b",
+          "conductive_budget.csv": "98a7d91300993329dcbcd5905b9b49a5d43aebc49746bdd81ace62f3c4102a86",
+          "crop.csv": "f4bfb65b43bc7256045311e9f55c038532463d016f451481c41b83a601947744",
+          "checkpoint.bin": "b4a314a692e416bd65c4878ba0200f94d83881d6d0191444514f62ca2fd1ba7c",
+          "state.csv": "74fca797cb2fdd6da047bf58fb623d4370f38cc8f57ddf2bdd7c417d0558c139",
+          "endpoint.csv": "4bc073cba88b86b817938c76f5d31f5ea00326bad7f836d2a58983ec92b7438f"
+        }
+      }
+    },
+    "1792-1827": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "origin_sha256": "b9984e8b1e2b355b9b585c9a6f0484e2d76b51bd5222da14af950bb001e5257f",
+      "final_sha256": "6e0828bf29811b1078ea6a32742564035c8ee570441ac970985f92a13d865224",
+      "elapsed_seconds": 29.614805900026113,
+      "audit": {
+        "days": [
+          1793,
+          1827
+        ],
+        "accepted_steps": 9616,
+        "maximum_daily_water_residual_cm": 3.236300116782331e-14,
+        "cumulative_water_residual_cm": -1.4654943925052066e-14,
+        "maximum_uptake_attribution_residual_cm": 1.0535395797948988e-17,
+        "cumulative_conductive_residual_j_cm2": -1.3327952075314897e-08,
+        "maximum_daily_conductive_residual_j_cm2": 1.6009096270863665e-09,
+        "maximum_substep_conductive_residual_j_cm2": 3.863866171460728e-11,
+        "output_sha256": {
+          "budget.csv": "b7e8d78a3a221accc1c68513b04ee55309abb41ee0c38d11d13651911d376957",
+          "conductive_budget.csv": "850e311b512d09ef8eb8e1747349bc57e6136e78a83598e71fb7a3c77910d498",
+          "crop.csv": "aeaac9fce47f8bbddfa51949caaa12343fe32b2f17592fb10b6198eb56deb247",
+          "checkpoint.bin": "6e0828bf29811b1078ea6a32742564035c8ee570441ac970985f92a13d865224",
+          "state.csv": "a26df1bd13f2cb05069cddddf7dcba202678bca0dfef9d7bb9c6af5752fdf4e2",
+          "endpoint.csv": "6eb4aefee9d816790094144b5abd58ef628e9c56271e5d8d6eb0ff061bfc9f86"
+        }
+      }
+    }
+  },
+  "historical_comparison": {
+    "sealed_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+    "day188": {
+      "potential_cm": {
+        "native_cm": 0.1424195365090789,
+        "B0_cm": 0.141707391074
+      },
+      "uptake_cm": {
+        "native_cm": 0.1364253888907409,
+        "B0_cm": 0.125136344464
+      },
+      "drought_cm": {
+        "native_cm": 0.0,
+        "B0_cm": 0.0
+      },
+      "oxygen_cm": {
+        "native_cm": 0.00599414761833803,
+        "B0_cm": 0.01657104661
+      }
+    },
+    "largest_absolute_daily_differences": {
+      "potential_cm": {
+        "day": 205,
+        "native_minus_B0_cm": 0.006878217927861863
+      },
+      "uptake_cm": {
+        "day": 188,
+        "native_minus_B0_cm": 0.011289044426740918
+      },
+      "drought_cm": {
+        "day": 170,
+        "native_minus_B0_cm": -0.0016700549677360656
+      },
+      "oxygen_cm": {
+        "day": 905,
+        "native_minus_B0_cm": -0.010627223958973933
+      }
+    }
+  },
+  "balance_auditor_sha256": "806401d20c1bde574c1ecd4a4f6eaa4690580775ef2876241b2c157ec9c1d87f",
+  "qualification_script_sha256": "ec9c3792d566d6fbf850858696d3a0281de5c90560e4d19d506398cd130ac242",
+  "full_launch_sha256": "5a422e1330af13efcb08eb37e3e20755a2633d7ec6d93aa48b613897ab01a96b",
+  "full_run_result_sha256": "0b5f6559f472132c4eed5016358fc24684a0ae2a4920a9c57c3854a036ade3c4",
+  "scope": "One complete original-input1827-day production O2 trajectory and four own process cuts. Original failed B0/day188 comparison remains visible. Conductive heat is not complete surface energy. Whole scientific equivalence and portable/full-project runtime parity are not granted."
+}
