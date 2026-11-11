@@ -1,5 +1,5 @@
 {
-  "status": "SELECTED_NOT_EXECUTED",
+  "status": "UNCHANGED_SIXTEEN_NATIVE_COST_AND_EXACT_SUFFIX_PASS",
   "baseline": "e37646f2745bb5e406f954a8727ba8c4c7bb50e9",
   "hypothesis": "Sixteen-step policy reduced accepted water trials but increased implicit heat solves; determine whether heat has displaced waterfilm as current wet-window hotspot before selecting any model change. Prior4 observation is not current16 owner attribution.",
   "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/native cost",
@@ -34,8 +34,37 @@
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
         "expected_seconds": 20,
         "existing_evidence": "PR1637 full16 and own cuts; prior4 profile52.29percent waterfilm but does not establish16 shares",
-        "prior_execution": "NONE"
+        "prior_execution": "PASS",
+        "diagnosis": "Both unchanged16 samples and all three physical suffix ledgers plus complete checkpoint match full16 exactly; statistical ownership only, no call counts/portable CPU fractions/new speedup."
       }
     }
-  }
+  },
+  "archive": "research/hybrid-water01/grass-sixteen-native-cost-20261111.tar.xz",
+  "archive_sha256": "40e903835e142125d22426946526c3e19799dabf04c1e782549ab1fcb98e0179",
+  "archive_bytes": 205976,
+  "retained_files": 50,
+  "result_receipt": "research/hybrid-water01/grass-sixteen-native-cost-receipt.json",
+  "total_probe_seconds": 21.96257480001077,
+  "summaries": {
+    "A": {
+      "samples": 1427,
+      "wall_seconds": 11.263550600036979,
+      "waterfilm_samples": 713,
+      "waterfilm_percent": 49.964961457603366,
+      "restricted_heat_samples": 68,
+      "restricted_heat_percent": 4.765241765942537
+    },
+    "B": {
+      "samples": 1399,
+      "wall_seconds": 10.699024199973792,
+      "waterfilm_samples": 676,
+      "waterfilm_percent": 48.32022873481058,
+      "restricted_heat_samples": 75,
+      "restricted_heat_percent": 5.36097212294496
+    }
+  },
+  "decision": "Hypothesis rejected: restricted-heat owner only4.77/5.36percent while waterfilm49.96/48.32percent. No safe new production optimization is established. Preserve original arithmetic and all closed prior cache/quad/no-stress/coefficient conclusions; do not increase heat substeps again merely from these samples.",
+  "independent_functional_gap": "app/hybrid_water/main.f90 fixes pressure(112) and clock35795; daily_host.py fixes Andelst CASE. Generic reuse requires explicit variable grid/clock without weakening existing project balance/restart/isolation contracts. Current retry receipt requires macro/Cauchy/no-snow; originalGrass nonmacro/SWBOTB1 cannot be enabled by relabeling.",
+  "next_delivery": "Explicit generic grid/clock plus nonmacro/prescribed-groundwater water receipt in existing hybrid host. Preserve Andelst contracts, qualify only a bounded originalGrass water-only day/restart/isolation prototype first; keep native1e-5C/science scope distinct, no full trajectory or relaxed tolerance.",
+  "independent_raw_audit": "PASS:50 member hashes, executed sampler/build identity, both exact suffixes/checkpoints, raw counter reconstruction"
 }
