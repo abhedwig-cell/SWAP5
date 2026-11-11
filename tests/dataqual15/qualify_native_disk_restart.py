@@ -103,21 +103,22 @@ def main():
             assert r.returncode!=0 and not(folder/'checkpoint.bin').exists()and not(folder/'budget.csv').exists(),kind
             profile_controls.append(dict(case=kind,returncode=r.returncode,command=cmd))
     if thermal:
-        folder=case('cross-policy-checkpoint')
-        binding=folder/'application.binding';data=json.loads(binding.read_text())
-        alternate='thermal-subcycle4-1e-5C' if profile=='thermal-subcycle16-1e-5C' else ('thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C')
-        data['grass_numerical_profile']=alternate
-        binding.write_text(json.dumps(data,sort_keys=True))
-        switch='thermal-control' if alternate=='thermal-control-1e-5C' else 'thermal-control-4'
-        incoming=folder/'incoming.bin';incoming.write_bytes(raw)
-        cmd=[str(exe),'3','retain-step','100000',str(incoming),switch]
-        r=subprocess.run(cmd,cwd=folder,capture_output=True,timeout=30)
-        (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
-        assert r.returncode!=0 and b'bound grass prefix restart rejected' in r.stdout
-        assert not(folder/'checkpoint.bin').exists()and not(folder/'budget.csv').exists()
-        assert incoming.read_bytes()==raw
-        profile_controls.append(dict(case='cross-policy-checkpoint',returncode=r.returncode,command=cmd,
-            scope='Only the numerical profile changes in the current binding; same executable, original input and source binding identities. Selector validation passes before actual restart rejection.'))
+        for alternate in ['thermal-control-1e-5C','thermal-subcycle4-1e-5C','thermal-subcycle16-1e-5C']:
+            if alternate==profile:continue
+            folder=case('cross-policy-checkpoint-'+alternate)
+            binding=folder/'application.binding';data=json.loads(binding.read_text())
+            data['grass_numerical_profile']=alternate
+            binding.write_text(json.dumps(data,sort_keys=True))
+            switch={'thermal-subcycle4-1e-5C':'thermal-control-4','thermal-subcycle16-1e-5C':'thermal-control-16'}.get(alternate,'thermal-control')
+            incoming=folder/'incoming.bin';incoming.write_bytes(raw)
+            cmd=[str(exe),'3','retain-step','100000',str(incoming),switch]
+            r=subprocess.run(cmd,cwd=folder,capture_output=True,timeout=30)
+            (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
+            assert r.returncode!=0 and b'bound grass prefix restart rejected' in r.stdout
+            assert not(folder/'checkpoint.bin').exists()and not(folder/'budget.csv').exists()
+            assert incoming.read_bytes()==raw
+            profile_controls.append(dict(case='cross-policy-checkpoint',alternate=alternate,returncode=r.returncode,command=cmd,
+                scope='Only the numerical profile changes in the current binding; same executable, original input and source binding identities. Selector validation passes before actual restart rejection.'))
     result=dict(status='NATIVE_ORIGINAL_DISK_RESTART_PASS',original_days=3,
                 optimization=next(f[1:] for f in build['flags']if f in ['-O0','-O2']),
                 exact_restart='1 -> 3; final full checkpoint and daily water/crop rows byte exact',

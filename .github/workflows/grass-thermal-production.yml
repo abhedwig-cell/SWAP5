@@ -32,12 +32,65 @@ on:
         description: Qualify the explicit policy and current default/native preservation
         type: boolean
         default: false
+      thermal_sixteen_policy:
+        description: Qualify explicit sixteen policy, original one/four preservation and own restarts
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  thermal-sixteen-policy:
+    if: github.event_name == 'workflow_dispatch' && inputs.thermal_sixteen_policy
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/THERMAL_SIXTEEN_POLICY_ADMISSION.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 64
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /AGENTS.md
+            /src/
+            /app/
+            /tools/solute/
+            /tests/
+            /docs/development/workstream-execution-protocol.md
+            /integration/f-ci/THERMAL_SIXTEEN_POLICY_ADMISSION.json
+            /integration/f-ci/THERMAL_SUBCYCLE_RESEARCH_20261111.json
+            /integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64
+            /integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64
+            /reference/swap-4.3.1/projects/2.grassgrowth/
+            /research/hybrid-water01/thermal-subcycle-ubuntu26-20261111.zip
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection thermal_substep_policy
+      - name: Cold owning body and actual runtime contracts O0/O2
+        run: |
+          python3 -B tests/dataqual15/qualify_thermal_substeps.py --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/sixteen-body"
+          python3 -B tests/dataqual15/qualify_thermal_runtime.py --compiler /usr/bin/gfortran --output "$RUNNER_TEMP/sixteen-runtime"
+      - name: Current one/four preservation and explicit sixteen application
+        run: |
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/sixteen-default" --compiler /usr/bin/gfortran --optimization O2 --profile production --policy retained --numerical-profile thermal-control-1e-5C --end 1
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/sixteen-four" --compiler /usr/bin/gfortran --optimization O2 --profile production --policy retained --numerical-profile thermal-subcycle4-1e-5C --end 1 --input-archive "$RUNNER_TEMP/sixteen-default/libttutil.a" --reuse-build "$RUNNER_TEMP/sixteen-default"
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/sixteen-opt" --compiler /usr/bin/gfortran --optimization O2 --profile production --policy retained --numerical-profile thermal-subcycle16-1e-5C --end 1 --input-archive "$RUNNER_TEMP/sixteen-default/libttutil.a" --reuse-build "$RUNNER_TEMP/sixteen-four"
+          python3 -B tests/dataqual15/run_original.py --bundle "$RUNNER_TEMP/sixteen-default" --output "$RUNNER_TEMP/sixteen-default-fourdays" --end 4 --timeout 60
+          python3 -B tests/dataqual15/run_original.py --bundle "$RUNNER_TEMP/sixteen-four" --output "$RUNNER_TEMP/sixteen-four-fourdays" --end 4 --timeout 60
+          python3 -B tests/dataqual15/check_thermal_policy_preservation.py --default "$RUNNER_TEMP/sixteen-default-fourdays" --four "$RUNNER_TEMP/sixteen-four-fourdays" --platform ubuntu --output "$RUNNER_TEMP/sixteen-preservation.json"
+          python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/sixteen-opt" --output "$RUNNER_TEMP/sixteen-opt-disk" --conductive-budget
+          python3 -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER --grass-build "$RUNNER_TEMP/sixteen-opt" --output "$RUNNER_TEMP/sixteen-public" --days 3
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/sixteen-opt-O0" --compiler /usr/bin/gfortran --optimization O0 --profile checked --policy retained --numerical-profile thermal-subcycle16-1e-5C --end 1
+          python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/sixteen-opt-O0" --output "$RUNNER_TEMP/sixteen-opt-O0-disk" --conductive-budget
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sixteen-policy-${{ github.sha }}
+          path: ${{ runner.temp }}/sixteen-*
+          retention-days: 14
   thermal-substep-policy:
     if: github.event_name == 'workflow_dispatch' && inputs.thermal_substep_policy
     runs-on: ubuntu-26.04
