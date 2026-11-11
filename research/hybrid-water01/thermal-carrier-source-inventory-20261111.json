@@ -4,7 +4,10 @@
     "temperature.f90": "92c39d296f41a60cfe3b66f8d1886ea938a53b4e0ea49e7ae1a23dd9680bd338",
     "fluxes.f90": "b28b163520bc2ed873d98d4e0308d7b02a33577ee81b12a7f4bc1bc4cf746550",
     "integral.f90": "bd37ebe5014f14ab2ff961a336cfa284266102d510617feef1c00f6616c64174",
-    "variables.f90": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856"
+    "variables.f90": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+    "irrigation.f90": "65830c1e030be8030995547729d9298e6352778f132e5195af2962baa38a3bf1",
+    "drainage.f90": "48e4792acd0a129a6939008bd51e82f9fed4668fcf8d28d03da0bc6efe6944cc",
+    "macropore.f90": "1cb5a2ce30610c05a4da5655bff217d6f52052d57d99efe8af7928f1d2187d0b"
   },
   "source_derived_paths": {
     "temperature.f90": "Original numeric conduction contains no q/root/drain/macropore advective heat terms; air is a conductive boundary, not measured water donor",
@@ -58,5 +61,6 @@
       "wintcer1.crp": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
       "wintcer2.crp": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe"
     }
-  }
+  },
+  "thermal_input_inspection": "Original selected irrigation/drainage/macropore owners contain no temperature/heat input declarations; actual corrected donor source variants are separately hashed in frozen BUILD.json and retained unchanged. Air/initial soil temperatures do not define measured liquid donors."
 }
