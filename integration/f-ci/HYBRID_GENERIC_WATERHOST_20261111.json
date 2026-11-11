@@ -47,5 +47,11 @@
         "prior_execution": "NONE"
       }
     }
+  },
+  "failed_preflight": {
+    "run": 43073368575,
+    "job": 130706823980,
+    "head": "e3faef7ebe279488efd07c5962fc479485c2e6d7",
+    "reason": "Sparse checkout omitted tests/support/augment_bartholomeus_backend_sources.py required before selection validation. No compilation/model executed. Fixed checkout only."
   }
 }
