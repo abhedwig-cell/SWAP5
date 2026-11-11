@@ -1,0 +1,114 @@
+{
+  "status": "CURRENT_ADMITTED_APPLICATION_SCOPE_RECONCILED_THERMAL_FEEDBACK_NOT_IMPLEMENTED",
+  "baseline": "937bd93b58ff913fcf9eafa3825a5da07f951513",
+  "scope": "Documentation/source-API reconciliation only; no model/source/profile/tolerance change",
+  "sources": {
+    "app/hybrid_water/daily_coupling.py": {
+      "git_blob": "3743fb3f6c0dfba81d6126ae00d8f3da6fb713e4",
+      "sha256_git_bytes": "de06c051bc941b6b472818efdb3875de1b9c6548a6f5df0e580265c4f2786f7c"
+    },
+    "app/hybrid_water/daily_host.py": {
+      "git_blob": "020ef1726cacc9aca5b6d9620a4c32a0709e2dc3",
+      "sha256_git_bytes": "044d8f7e21ccb00f458ab24e1c8a3e03e5c7fcb5bddbea0ed31c12922a26bf0f"
+    },
+    "src/runtime/mod_fmr_bottom_external_thermal_binding.f90": {
+      "git_blob": "ed2a2ee36add299ebb5f8bde276da2f3b360cc28",
+      "sha256_git_bytes": "dd3e975a8eca60012b45ce6a7739bf17679681472f56f9d845fd64434bd6c8a0"
+    },
+    "src/runtime/mod_fmr_bottom_sensible_energy.f90": {
+      "git_blob": "6c7e9b9ed77d116104fd6299a6404037a2548960",
+      "sha256_git_bytes": "d5b21307928708de5eb863092b68863bee8a6890b500510a8927a8dce1e53414"
+    },
+    "tests/dataqual15/research/mod_conservative_soil_heat_trial.f90": {
+      "git_blob": "5ebe9c3008c8f377e848c9fc93c2822c394dd2d1",
+      "sha256_git_bytes": "2f66ed33bd8784eeff9c0f2f9fb1851f49f7cf0859ec1a4c0955d61645ed22bd"
+    }
+  },
+  "source_inspection": {
+    "external_daily_prepare_signature": "(self)",
+    "caller_thermal_or_forcing_arguments": false,
+    "forcing_binding": "original-project",
+    "existing_bottom_binding": "candidate lineage and sample ordinal attach external donor temperature/provenance for sensible-energy accounting",
+    "consuming_original_heat_feedback_route": "NOT_IMPLEMENTED",
+    "conservative_heat_module": "research formulation, no production caller/full-SWAP energy claim",
+    "decision": "Do not implement an unused metadata wrapper or silently activate new physics. Explicit consuming physical-model/input/state/restart authority is required."
+  },
+  "admitted_prs": {
+    "1623": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1623",
+      "title": "Grassgrowth: review original 1827-day execution, restart and day-188 oxygen",
+      "merged": true,
+      "merge_commit_sha": "e390a7e447eb0fe38e93c9ddfb2ccff914b92821",
+      "qualified_head": "3941df231048d10db93ddbbd775f940197d3a1f1"
+    },
+    "1624": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1624",
+      "title": "Andelst: verify 481 days through the hybrid application and durable restart",
+      "merged": true,
+      "merge_commit_sha": "f20f55232b71975f4a77e85c3cefe550468a60d6",
+      "qualified_head": "51c0b981bfb30236e576b3699fc9705b348a3712"
+    },
+    "1625": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1625",
+      "title": "Hupsel: verify the full 1096-day public application run",
+      "merged": true,
+      "merge_commit_sha": "c49b8751a3663e5082ceb5a468223d121106c77a",
+      "qualified_head": "a6c9fe635538108aad11586c128a65d34c2dda06"
+    },
+    "1640": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1640",
+      "title": "Complete original Grassgrowth1827 through shared hybrid waterhost with durable seasonal restart",
+      "merged": true,
+      "merge_commit_sha": "3e0dc5e08c07719a7ac2107d54d7d74f954805f1",
+      "qualified_head": "fff975ebf1e9e46afb9e0f8b8256bc25ddad1f48"
+    },
+    "1641": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1641",
+      "title": "Complete original Hupsel water/solute route with exact seasonal restarts",
+      "merged": true,
+      "merge_commit_sha": "30026511e8d03f6c77bc30377d60a65259afb2fc",
+      "qualified_head": "4628ea0ddec375c1a50685b513a53aee0dfe234c"
+    },
+    "1642": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1642",
+      "title": "Add external daily prepare, discard and acceptance for the shared hybrid host",
+      "merged": true,
+      "merge_commit_sha": "f5606e455cf1e558d23e3a0af5b7d8847fbdc954",
+      "qualified_head": "afbf728c9e6b9487e810fcf5f64340b6cdb46cd2"
+    },
+    "1643": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1643",
+      "title": "Observe original heat accounting at accepted days with explicit energy limits",
+      "merged": true,
+      "merge_commit_sha": "a0c07487c944ff7da2a7e3b502aa725f687e480a",
+      "qualified_head": "b9b02c071e43007c79b772130efa85855f30a1a2"
+    },
+    "1644": {
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/pull/1644",
+      "title": "Expose accepted original water carriers and retain missing thermal donor inputs",
+      "merged": true,
+      "merge_commit_sha": "937bd93b58ff913fcf9eafa3825a5da07f951513",
+      "qualified_head": "e8484b47b880057f68ee8efb4c79f7dc67f370ab"
+    }
+  },
+  "current_application_projects": {
+    "Grassgrowth": 1827,
+    "Andelst": 481,
+    "Hupsel": 1096
+  },
+  "shared_hybrid_projects_complete": 3,
+  "whole_scientific_equivalence": "OPEN; dated failures and qualified profile boundaries retained",
+  "tests_selected": [
+    "python tools/docs/check_docs.py",
+    "python -m mkdocs build --strict"
+  ],
+  "model_runs_selected": [],
+  "reason_no_model_or_O0_O2_run": "Only documentation and source/API evidence changed; all inspected executable dependency surfaces exactly unchanged from admitted baseline. Existing relevant owning scientific evidence remains at its source/build/input scopes.",
+  "next": "Independent functional target: caller-controlled existing Andelst Cauchy water boundary through daily prepare/discard/accept. Verify original table initialization/restored cursor before implementing explicit one-day forcing identity and own discard/retry/recovery on retained20to22 origins, unchanged mass guard. Original forcing default; no thermal metadata wrapper/solver activation.",
+  "validation": {
+    "documentation_source_checks": "PASS",
+    "strict_mkdocs": "PASS;19.47s",
+    "model_runs": 0,
+    "executable_surface_change": "none"
+  }
+}
