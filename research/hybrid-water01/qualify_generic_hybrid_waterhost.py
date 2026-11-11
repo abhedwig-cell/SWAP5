@@ -275,6 +275,32 @@ if a.project!='andelst':
             else:raise AssertionError('Foreign inner auxiliary state accepted')
         assert not list(out.glob('accepted-*.zip'))
 
+# Nonfinite or unbalanced solute frames fail before a kernel candidate commits.
+if a.project=='hupsel':
+    for label in ['solute-mass','solute-nonfinite','uptake-shape']:
+        out=a.output/label;out.mkdir()
+        with bounded(label),contextlib.ExitStack() as stack:
+            current=host.DailyHost(stack,donor,kernel,case,out,[host.ColumnStart()],runtime=True,project=project)
+            initial_stock=current.columns[0].solute_stock
+            original_receive=host.receive
+            def corrupt_solute(process,transcript,prefixes):
+                key,response=original_receive(process,transcript,prefixes)
+                if 'HYBRID_SOLUTE_LEDGER' in response:
+                    if label=='solute-mass':response['HYBRID_SOLUTE_LEDGER'][0]='0.01'
+                    elif label=='solute-nonfinite':response['HYBRID_SOLUTE_LEDGER'][0]='NaN'
+                    else:response['HYBRID_UPTAKE'].pop()
+                return key,response
+            host.receive=corrupt_solute
+            try:
+                try:current.step(1)
+                except ValueError:pass
+                else:raise AssertionError('Invalid solute/uptake frame accepted')
+            finally:host.receive=original_receive
+            assert current.columns[0].day==current.columns[0].revision==0
+            assert current.columns[0].solute_stock==initial_stock
+        assert 'DAILY_ACCEPTED' not in (out/'kernel.stdout').read_text()
+        assert not list(out.glob('accepted-*.zip'))
+
 baseline='NOT_APPLICABLE'
 if a.project=='andelst':
     assert raw==rows(a.andelst_baseline/'cut'),'Changed same-platform canonical Andelst prefix'
