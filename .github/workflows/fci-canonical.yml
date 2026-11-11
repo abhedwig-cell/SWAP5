@@ -491,7 +491,7 @@ jobs:
           echo 'FCI40_FROZEN_RESTRICTED_EFFECTIVE_FORCING_EXECUTOR_SOURCE_AUTHORITY=PASS'
 
   current-restricted-canonical-preservation:
-    if: always() && github.event_name == 'workflow_dispatch' && !failure() && !cancelled()
+    if: always() && github.event_name == 'workflow_dispatch' && !failure() && !cancelled() && !inputs.bounded_thermal_policy
     env:
       SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     needs:
