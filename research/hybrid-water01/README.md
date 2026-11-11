@@ -2,6 +2,48 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Explicit heat policy admitted, 11 November 2026
+
+PR 1632 is merged at c3c99cb6c70edfd652d904306daa63d03a283939.
+Actual canonical whole tree equals qualified head 52fbe1eb5 and the predicted
+merge. Exact source/build/raw identities and scoped results are in
+CLOSURE01_THERMAL_POLICY_CANONICAL_20261111.json and the canonical
+integration/f-ci/THERMAL_SUBSTEP_POLICY_ADMISSION.json.
+
+The generic heat numerical configuration defaults to one original solve;
+four is explicit. Backend configure_soil_temperature_temporal_tolerance
+accepts optional heat_substeps=4. Invalid requests are atomic, activation
+locks the count, initialization restores one and the per-instance query
+reports it. Native profile thermal-subcycle4-1e-5C uses thermal-control-4;
+immutable binding refuses same-source cross-policy checkpoints. No new
+physical continuation state or codec layout is introduced.
+
+Actual Windows/Linux O0/O2 heat/runtime and active application controls pass.
+The complete checked O0 and production O2 opt-in native restarts and malformed,
+profile and policy-only checkpoint refusals pass. Current default Grassgrowth
+O0/O2 and original Andelst macro byte/atomic-refusal preservation pass.
+Focused F-CI and documentation source/strict build pass. Current default
+four-day physical files exactly reproduce the incumbent, and the selected
+four-step files exactly reproduce the qualified private variant. One current
+Windows O2 ABBA set measures14.233 to7.766 seconds (45.44% lower median),
+with6882 versus3585 accepted water steps; this is a short ambient-host
+observation. Existing tolerances remain fixed. Full moving F-CI is not
+selected; the earlier accidentally scheduled broad run is cancelled with
+no numerical PASS. Merge skip-ci avoids redoing completed exact-source gates.
+
+Next delivery is ONE complete original Grassgrowth1827 trajectory under the
+new explicit profile, followed by exact own early/late restart suffixes and
+all daily budget audits. Build on latest canonical at leastc3c99cb6, using
+a separate codex branch; this consolidated branch is recovery/research
+context and does not carry every canonical source integration. Inspect the
+stored prior full costs, choose a named runtime cap and record source,
+compiler, executable, input-library and all five original input hashes before
+launch. Capture day188 and late cuts on the same build. Resume a live run;
+never duplicate it or repeat the already qualified complete one-step route.
+New whole scientific, complete energy and day188/day584 acceptance remain
+open. The programme and half-hour recovery planning are not complete.
+
+
 ### Internal heat subcycling research delivered, 11 November 2026
 
 PR 1631 is merged at 87d2c7c1a931d5fcfb63869852896726ee28457e.
