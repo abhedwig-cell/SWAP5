@@ -64,6 +64,13 @@
     end do
     storage=sum(workspace%heat_capacity_j_cm3_k*parameters%dz_cm*(workspace%solution-start_temperature))
     boundary=face_energy(1)-face_energy(n+1);residual=storage-boundary
+    ! Independent finite-volume check for EVERY actual outer trial, including
+    ! discarded full/half probes. The incumbent energy tolerance is unchanged.
+    if(any(abs(workspace%heat_capacity_j_cm3_k*parameters%dz_cm*(workspace%solution-start_temperature)- &
+       (face_energy(1:n)-face_energy(2:n+1)))>numerical%energy_abs_tolerance_j_cm2))then
+      result%status=SOIL_TEMP_ENERGY_CLOSURE_FAILURE;diagnostics%status=result%status
+      return
+    end if
     if(.not.ieee_is_finite(residual).or.abs(residual)>numerical%energy_abs_tolerance_j_cm2)then
       result%status=SOIL_TEMP_ENERGY_CLOSURE_FAILURE;diagnostics%status=result%status
       return
