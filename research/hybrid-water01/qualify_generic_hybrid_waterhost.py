@@ -159,6 +159,18 @@ for name in host.CHECKPOINT_FILES:
         assert (control/'original'/name).read_bytes()==(a.andelst_baseline/'terminal/original'/name).read_bytes()
         assert (resumed/'original'/name).read_bytes()==(a.andelst_baseline/'resumed/original'/name).read_bytes()
 
+if a.project=='hupsel':
+    gift,_=run_case('gift-seven',end=7,publish_day=5,checkpoint_binding=binding)
+    gift_terminal,_=run_case('gift-terminal',end=7,publish_day=7,checkpoint_binding=binding)
+    gift_origin=a.output/'gift-origin'
+    gift_receipt=host.verify_checkpoint(gift/'accepted-column-1-day-5.zip',5,binding,gift_origin)
+    gift_own,_=run_case('gift-own',end=7,checkpoint_day=5,origin=gift_origin,
+                        origin_receipt=gift_receipt,publish_day=7,checkpoint_binding=binding)
+    assert list(map(physical,rows(gift_own)))==list(map(physical,rows(gift)[5:]))
+    assert max(abs(r['solute_independent_residual_mg_cm2']) for r in rows(gift))<=1e-10
+    for name in host.CHECKPOINT_FILES:
+        assert (gift_terminal/'original'/name).read_bytes()==(gift_own/'original'/name).read_bytes()
+
 # Distinct physical boundary histories interleave exactly against their controls.
 repeated=a.output/'repeated-publication';repeated.mkdir()
 with bounded('repeated-publication'),contextlib.ExitStack() as stack:
