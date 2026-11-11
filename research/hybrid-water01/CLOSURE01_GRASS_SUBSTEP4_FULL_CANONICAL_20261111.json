@@ -1,0 +1,97 @@
+{
+  "merge": "c0a21d22ed98f123168f55d16d1b43935a939cb3",
+  "head": "c0ab207671e882ff1a78823fc526240672939502",
+  "tree": "da2b01db4d50160f09e9b5153d307d5714deda7b",
+  "published_blob_sha256": {
+    "research/hybrid-water01/grass-substep4-full-20261111.tar.xz": "b98e534a8eb1510187c3ce81c95931f8e8130f54c989f1523bf7b58908a42bec",
+    "research/hybrid-water01/grass-substep4-full-receipt.json": "79302cd9da4fe92be5641c2ddfc9b6b1199911956ca2cfec41e6d8d2ca2a6bb6",
+    "research/hybrid-water01/grass-substep4-full-manifest.json": "afdb95606038f3224dc841bb8656da6d4d2a6ad9cfdad1ea5fabeceddeb4324e"
+  },
+  "status": "CANONICAL_FULL_ORIGINAL_GRASS_SUBSTEP4_AND_OWN_RESTARTS_VERIFIED",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1633",
+  "source": "c3c99cb6c70edfd652d904306daa63d03a283939",
+  "executable_sha256": "a136ff9700014c093a4441f040ecf3a1259ba67020ea0c84df2a88dc0798f4cd",
+  "profile": "thermal-subcycle4-1e-5C",
+  "elapsed_seconds": 2527.475440000184,
+  "native_process_timing": {
+    "pid": 23328,
+    "native_start_utc": "2026-11-11T13:05:36.5174532Z",
+    "native_exit_utc": "2026-11-11T13:47:43.8603457Z",
+    "native_user_cpu_seconds": 2459.703125,
+    "native_kernel_cpu_seconds": 25.125,
+    "native_total_cpu_seconds": 2484.828125,
+    "method": "Windows retained process handle, GetProcessTimes via System.Diagnostics.Process after natural exit; read-only observer"
+  },
+  "full_audit": {
+    "days": [
+      1,
+      1827
+    ],
+    "accepted_steps": 1016128,
+    "maximum_daily_water_residual_cm": 4.526934382909076e-14,
+    "cumulative_water_residual_cm": 1.0658141036401503e-14,
+    "maximum_uptake_attribution_residual_cm": 7.008282842946301e-16,
+    "cumulative_conductive_residual_j_cm2": -1.738166825748788e-08,
+    "maximum_daily_conductive_residual_j_cm2": 5.574065653490834e-10,
+    "maximum_substep_conductive_residual_j_cm2": 1.2467991916675913e-11,
+    "output_sha256": {
+      "budget.csv": "21b42f7b820d9efffd5ec4b2b66b601cfb97e5021e172fda9f80fe652ab99889",
+      "conductive_budget.csv": "6253b3d495bd5634704b39c243ee2b6eab7828c7b0cefb76e7b6b9a51806c629",
+      "crop.csv": "a163369e0ab952ccc61bf8aada04d915e292311e941ffab9ec8783e6eb28ef66",
+      "checkpoint.bin": "1faf8db9569d93e441ad0a15a694db27e6ee95dfca7dd77b9dff7b1f563f8c91",
+      "state.csv": "f15202cc40827dc8879b53de464fee554373cbe6020fdb8e39b2247774569c48",
+      "endpoint.csv": "59f2c7e328a65b2228e9e6190bf2d84ee2d7daff6d8e777bef14b0f825b5cbe3"
+    }
+  },
+  "own_cuts": {
+    "2-4": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "elapsed_seconds": 5.379254499915987
+    },
+    "187-190": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "elapsed_seconds": 10.69410050008446
+    },
+    "365-367": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "elapsed_seconds": 2.5613377999980003
+    },
+    "1792-1827": {
+      "status": "EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS",
+      "elapsed_seconds": 63.02926190011203
+    }
+  },
+  "documentation": "Source checks and final strict MkDocs pass19.94seconds; initial research-link warning corrected",
+  "running_models": "NONE: the single full run and all four own suffixes completed naturally",
+  "qualification": "No source dependency changes from PR1632; actual owning O0/O2/native/F-CI scopes inherited. Whole science, complete surface energy and comparable runtime remain open.",
+  "day188": {
+    "potential_cm": {
+      "native_cm": 0.1424211599931252,
+      "B0_cm": 0.141707391074
+    },
+    "uptake_cm": {
+      "native_cm": 0.13643074176918138,
+      "B0_cm": 0.125136344464
+    },
+    "drought_cm": {
+      "native_cm": 0.0,
+      "B0_cm": 0.0
+    },
+    "oxygen_cm": {
+      "native_cm": 0.005990418223943862,
+      "B0_cm": 0.01657104661
+    }
+  },
+  "next_delivery": {
+    "goal": "Bounded native cost attribution over an existing own short wet-event restart, then an output-preserving optimization only if a concrete cost cause is established",
+    "window": [
+      187,
+      190
+    ],
+    "observed_uninstrumented_seconds": 10.69410050008446,
+    "target_probe_seconds": 60,
+    "hard_cap_seconds": 120,
+    "constraints": "Use original source/build/state identities and unchanged assertions; no foreign-executable checkpoint rebinding. Prefer read-only native sampling. No repeat full trajectory or broad campaign without a newly identified necessity."
+  },
+  "recovery": "Main consolidated branch is navigation/research only. Use latest verified canonical source in the current/new separate development branch, not old source on this recovery branch."
+}

@@ -2,6 +2,47 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Complete four-step Grassgrowth delivered, 11 November 2026
+
+PR1633 is merged at c0a21d22ed98f123168f55d16d1b43935a939cb3.
+Its actual whole tree da2b01db4d50160f09e9b5153d307d5714deda7b equals
+qualified head c0ab207671e882ff1a78823fc526240672939502 and the predicted
+merge. Canonical raw archive/receipt/manifest blobs match the independently
+verified proof. Recovery receipt:
+CLOSURE01_GRASS_SUBSTEP4_FULL_CANONICAL_20261111.json. All model processes
+and monitor sessions from this package have completed; do not repeat them.
+The earlier live-run paragraph below is historical recovery context.
+
+The single original1827-day Windows production O2 run uses sourcec3c99cb6,
+the five unchanged original inputs and explicit thermal-subcycle4-1e-5C.
+It completes in2527.475440seconds (42min7.5s), native CPU2484.828125seconds,
+with1,016,128 accepted water steps. Maximum daily water residual4.527e-14cm,
+cumulative stock-flux1.066e-14cm and maximum uptake attribution7.008e-16cm.
+Daily/substep conductive gates pass unchanged. Signed cumulative conduction
+residual is separately reported; complete surface energy is not established.
+Own fresh-process2-to4,187-to190,365-to367 and1792-to1827 reproduce all
+three suffix ledgers and checkpoint bytes exactly; the final cut also matches
+state/endpoint. The775-member capsule re-extracts and regenerates the identical
+receipt. Source checks and strict documentation build pass. Published archive
+SHA256 b98e534a8eb1510187c3ce81c95931f8e8130f54c989f1523bf7b58908a42bec.
+
+Day188 oxygen is0.005990418224cm versus original B00.016571046610cm.
+The original failed comparison stays visible; the old97.86percent cap diagnosis
+retains its original water-only scope. Whole science/day584 and runtime parity
+remain open. Earlier6036seconds is a timestamp-derived launcher observation
+on a different source/profile, not a controlled full-period speedup baseline.
+The current source changes no src/app/tools/tests/reference dependencies;
+qualified implementation O0/O2/native/F-CI scopes remain owned by PR1632.
+
+Next delivery: bounded native cost attribution on the existing own187-to190
+wet restart (observed10.69seconds, target probe60seconds, cap120seconds), then
+an output-preserving optimization only if a specific cost cause is established.
+Prefer read-only sampling of the retained release; never rebind checkpoints
+between executables. Keep all tolerances and scientific failures. No new full
+trajectory or broad matrix is selected. Build on the latest verified canonical,
+not the old source on this consolidated recovery branch. The half-hour schedule
+remains recovery only; the whole programme is not complete.
+
 ### Single full four-step execution in progress, 11 November 2026
 
 Continue the existing run; do not launch another. Canonical source is
