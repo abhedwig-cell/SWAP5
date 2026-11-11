@@ -333,14 +333,47 @@ end submodule MOD_Solute_CDE""")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
                        "         if(swinco/=3 .or. .not.all(irdate(1:ifnd)<tstart)) &\n"
                        "            call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')")
+        # The original routine has SAVE locals as well as module variables.
+        # Keep that complete original context owned by this private worker.
+        start=source.index('      subroutine irrigation (task)')
+        finish=source.index('      end subroutine irrigation',start)
+        routine=source[start:finish]
+        a=routine.index('! -- local variables');b=routine.index('      ! functions',a)
+        local_region=routine[a:b];promoted=[];mapping={}
+        for line in local_region.splitlines():
+            if '::' not in line:continue
+            left,right=line.split('::');right=right.split('!')[0].strip()
+            values=[]
+            for value in right.split(','):
+                name=re.match(r'\w+',value.strip())[0]
+                if name.lower()=='afgen':continue
+                mapping[name.lower()]='hybrid_irrigation_local_'+name.lower()
+                values.append(value.strip())
+            if values:promoted.append(left+':: '+', '.join(values))
+        routine=routine[:a]+'      real(8)::afgen\n'+routine[b:]
+        routine=re.sub(r'(?m)^      save[ \t]*$', '',routine)
+        token=re.compile(r"'([^']|'')*'|\"([^\"]|\"\")*\"|!.*|[A-Za-z_]\w*")
+        def rename(match):
+            value=match[0]
+            return mapping.get(value.lower(),value) if value[0] not in "'\"!" else value
+        routine=token.sub(rename,routine)
+        promoted='\n'.join(token.sub(rename,line) for line in promoted)
+        source=source[:start]+routine+source[finish:]
+        source=replace(source,'use MOD_arrays, only: mairg, macp','use MOD_arrays, only: mairg, macp, maho')
+        source=replace(source,'   contains',promoted+'\n   contains')
+        source=replace(source,"         ! check if irdate is ascending, and determine initial entry point nirri",
+                       "         ! check if irdate is ascending, and determine initial entry point nirri")
+        source=replace(source,"         if (tstart >= irdate(ifnd)) nirri = ifnd",
+                       "         if (tstart >= irdate(ifnd)) nirri = ifnd\n"
+                       "         if(swinco==3.and.all(irdate(1:ifnd)<tstart))nirri=ifnd+1")
         header=source.split('   contains',1)[0]
         declarations=[];irrigation_fields=[]
         for line in header.splitlines():
-            if not re.match(r'\s*(?:integer|real\(8\)|logical)[ ,]',line) or '::' not in line:continue
+            if not re.match(r'\s*(?:integer|real\([48]\)|logical|character\(len=200\))[ ,]',line) or '::' not in line:continue
             left,right=line.split('::');right=right.split('!')[0].split('=')[0].strip()
             declarations.append(re.sub(r',\s*save\b','',left,flags=re.I)+':: '+right)
-            irrigation_fields.extend(name.strip() for name in right.split(','))
-        if len(irrigation_fields)!=50 or len(set(irrigation_fields))!=50:
+            irrigation_fields.extend(re.match(r'\w+',name.strip())[0] for name in right.split(','))
+        if len(irrigation_fields)!=50+len(mapping) or len(set(irrigation_fields))!=len(irrigation_fields):
             raise ValueError('Changed original irrigation state inventory')
         snapshot='\n'.join(declarations)
         source=replace(source,'   contains',f"""   type hybrid_irrigation_snapshot_t

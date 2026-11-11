@@ -166,13 +166,13 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
 """
     if solute_state:
         if not nonmacro:raise ValueError('Solute auxiliary requires nonmacro mode')
-        codec=codec.replace('S5NON004','S5HUP007')
+        codec=codec.replace('S5NON004','S5HUP008')
         codec=replace(codec,"      use MOD_swap_base, only: swmacro",
                       "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint\n      use MOD_irrigation,only:hybrid_irrigation_checkpoint")
         codec=replace(codec,"        read(unit,iostat=ios) trailing",
                       "        call hybrid_solute_checkpoint(unit,.true.)\n        call hybrid_irrigation_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
-        codec=replace(codec,"        write(unit) 'S5HUP007',numnod,clock,old_step,canopy_stock",
-                      "        write(unit) 'S5HUP007',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)")
+        codec=replace(codec,"        write(unit) 'S5HUP008',numnod,clock,old_step,canopy_stock",
+                      "        write(unit) 'S5HUP008',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
