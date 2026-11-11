@@ -239,12 +239,21 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
          end if""")
         if project==HUPSEL:
             source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
+            source=replace(source,"   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror",
+                           "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at")
+            source=replace(source,"   iBackTr        = 0","   mass_polish_at = 0\n   iBackTr        = 0")
             # First finish the original Newton iteration at the required mass
             # boundary. Halving a converged-but-inaccurate step alone repeated
             # at dtmin without curing the observed day-one residual.
             source=replace(source,anchor,"""      if (budget_enabled .and. .not.flnonconv) then
          budget_step=projected_water_residual()
          if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.
+         if (.not.flnonconv .and. mass_polish_at==0) then
+            ! One more original Newton iteration avoids stopping directly on
+            ! the day guard where independently summed receipts can round out.
+            mass_polish_at=numbit
+            flnonconv=.true.
+         end if
       end if
 """+anchor)
         if shared_pond_transfer:
