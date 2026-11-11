@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 import tarfile
+import tempfile
 
 ROOT=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser(description=__doc__)
@@ -17,8 +18,8 @@ a=p.parse_args();files={};sources={}
 for folder,prefix in [(a.current,'current'),(a.corruption,'corruption'),(a.previous,'before')]:
     for path in folder.rglob('*'):
         if path.is_file():files[prefix+'/'+path.relative_to(folder).as_posix()]=path
-stage=a.output.parent/('coupling-source-'+a.platform)
-stage.mkdir(exist_ok=True)
+stage_owner=tempfile.TemporaryDirectory(prefix='s5-coupling-pack-'+a.platform+'-')
+stage=Path(stage_owner.name)
 for prefix,ref in [('current',a.source_head),('before','88116fdc9c237570f3f218a430ac868bf348dc27')]:
     report=json.loads((a.current if prefix=='current' else a.previous).joinpath('RESULT.json').read_text())
     digests=report['source_sha256'].copy()
