@@ -1,0 +1,70 @@
+{
+  "status": "SELECTED_NOT_EXECUTED",
+  "canonical_source": "7ef987beb098e9e36c4901adfa865d71ebcd8165",
+  "model": "Original113-node Grassgrowth,1827days",
+  "numerical_profile": "thermal-subcycle16-1e-5C",
+  "invariants": "Original five inputs, water/uptake1e-10cm, thermal1e-5C, existing conductive/rollback/restart guards unchanged",
+  "runtime_selection": {
+    "estimated_seconds": 2700,
+    "hard_cap_seconds": 5400,
+    "estimate_status": "Planning budget only; prior4 full2527.475s,16 short35.27percent improvement does not establish full-period cost",
+    "reason": "Changed accepted time grid requires complete seasons and late states; one frozen16 full trajectory selected, no incumbent rerun"
+  },
+  "cuts": {
+    "capture": [
+      2,
+      4,
+      187,
+      188,
+      190,
+      365,
+      367,
+      1791,
+      1792
+    ],
+    "fresh_own_restarts": [
+      [
+        2,
+        4
+      ],
+      [
+        187,
+        190
+      ],
+      [
+        365,
+        367
+      ],
+      [
+        1792,
+        1827
+      ]
+    ],
+    "restart_cap_seconds_each": 300,
+    "backup_late_origin": 1791
+  },
+  "acceptance": [
+    "Every originalday1..1827 and finite water/crop/conductive records",
+    "Original unchanged daily/cumulative water/uptake/conductive assertions",
+    "Exact own-process suffix ledgers and complete checkpoint bytes",
+    "Frozen source/compiler/flags/library/object/executable/input identity and measured cost",
+    "Original failed day188 comparison retained, changedgrid16 compared explicitly to full4 without new reference run",
+    "Published reviewable PR and verified canonical postimage"
+  ],
+  "test_selection": {
+    "candidate": "7ef987beb098e9e36c4901adfa865d71ebcd8165",
+    "groups": {
+      "grass_substep16_full": {
+        "changed_dependency": "New admitted16 numerical trajectory; production dependencies frozen atPR1636",
+        "scientific_claim": "Full functional original execution and own restart only, not whole science or runtime parity",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/Grassgrowth",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 2700,
+        "existing_evidence": "PR1636 actual Windows/Linux coldO0/O2 native own restart/refusal/default preservation/focusedFCI and35.27percent bounded native improvement",
+        "prior_execution": "NONE"
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT evidence-only; physical/test source unchanged from qualifiedPR1636",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  }
+}
