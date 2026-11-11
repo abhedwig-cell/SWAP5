@@ -75,6 +75,7 @@ def main():
     assert launch['restart_sha256'] is None
     assert layout((a.full/'checkpoint.bin').read_bytes())['clock'] == 1827
     proof = audit_module.audit(a.full, 1, 1827)
+    assert abs(proof['cumulative_water_residual_cm']) <= 1e-10
     cuts = {}
     for first, last in spec['cuts']['fresh_own_restarts']:
         folder = a.restarts/f'{first}-{last}'
@@ -92,9 +93,11 @@ def main():
         audit_module.restart(a.full, folder, first+1, last, terminal=(last == 1827))
         if last != 1827:
             assert (folder/'checkpoint.bin').read_bytes() == (a.full/f'checkpoint-{last}.bin').read_bytes()
+        suffix = audit_module.audit(folder, first+1, last)
+        assert abs(suffix['cumulative_water_residual_cm']) <= 1e-10
         cuts[f'{first}-{last}'] = dict(status='EXACT_OWN_PROCESS_SUFFIX_AND_CHECKPOINT_PASS',
             origin_sha256=sha(origin), final_sha256=sha(folder/'checkpoint.bin'),
-            elapsed_seconds=r['seconds'], audit=audit_module.audit(folder, first+1, last))
+            elapsed_seconds=r['seconds'], audit=suffix)
     historical = audit_module.historical_comparison(a.full,
         ROOT/'integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz')
     result = dict(status='FULL_ORIGINAL_GRASS_SUBSTEP4_AND_OWN_RESTARTS_PASS',
