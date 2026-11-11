@@ -12,8 +12,8 @@ retained exact original day4 state. A fresh original/reference full run is unsel
 
 The application bridge observes original dt, grid, theta0/1, T0/1, mean capacity,
 solid capacity and independently reconstructed conductive faces AFTER the original
-Thomas solve. Removing exactly marked observation blocks must recover every byte
-of the selected original temperature source. No original operation is changed.
+Thomas solve. Removing exactly marked observation blocks must recover every original source statement
+after explicit platform CRLF/LF normalization. No original operation is changed.
 The bridge calls existing production whole-column sensible-energy accounting:
 with advective/reference terms unavailable, preserve its incomplete-boundary/storage
 status. Also retain a distinct counterfactual that declares missing advection zero;

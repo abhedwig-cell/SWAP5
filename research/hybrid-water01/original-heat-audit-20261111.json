@@ -1,0 +1,33 @@
+{
+  "status": "BOTH_INDEPENDENT_ORIGINAL_HEAT_CAPSULE_AUDITS_PASS",
+  "auditor_sha256": "f1673ef2cec4c28170c51589cca1dfe227c8ac69a521b46e6426e1269ec2b0f6",
+  "results": {
+    "windows": {
+      "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+      "cases": 6,
+      "raw_files": 349,
+      "heat_steps": 7750,
+      "maximum_global_conduction_residual_j_cm2": 1.7843504451775516e-12,
+      "counterfactual_zero_missing_energy_verdict": "FAIL",
+      "original_physical_and_both_native_payloads": "EXACT",
+      "original_statement_source_after_declared_EOL_normalization": "EXACT",
+      "actual_storage_boundary_status": "INCOMPLETE_BOUNDARY",
+      "full_energy_balance_complete": false
+    },
+    "linux": {
+      "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+      "cases": 6,
+      "raw_files": 347,
+      "heat_steps": 9422,
+      "maximum_global_conduction_residual_j_cm2": 1.545430450278218e-12,
+      "counterfactual_zero_missing_energy_verdict": "FAIL",
+      "original_physical_and_both_native_payloads": "EXACT",
+      "original_statement_source_after_declared_EOL_normalization": "EXACT",
+      "actual_storage_boundary_status": "INCOMPLETE_BOUNDARY",
+      "full_energy_balance_complete": false
+    }
+  },
+  "reference_temperature_c": 0.0,
+  "source_EOL_scope": "Original selected source uses CRLF. Generated Linux source uses LF after read_text/write_text; source text outside marked observer blocks matches exactly after explicit CRLF/LF normalization. Windows raw source bytes also match outside blocks.",
+  "notes": "Failed zero-missing-energy counterfactual is not an actual measured whole-energy residual. Production numerical conduction budget1e-9 unchanged."
+}

@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_UBUNTU26_SIX_EXACT_ORIGINAL_STATE_HEAT_OBSERVER_CASES_PASS_RAW_AUDIT_PENDING",
+  "status": "QUALIFIED_READ_ONLY_ORIGINAL_HEAT_BRIDGE_WINDOWS_UBUNTU26_FULL_PHYSICAL_ENERGY_OPEN_ADMISSION_PENDING",
   "base": "f5606e455cf1e558d23e3a0af5b7d8847fbdc954",
   "owned_surface": [
     "app/hybrid_water/heat_accounting.f90",
@@ -42,7 +42,7 @@
     "total_native_seconds": 240,
     "compiler_link_seconds": 45
   },
-  "next": "Persist before focused actual original heat observation, inspect raw production accounting statuses and decide one coherent generic read-only bridge/reproducible physical-energy blocker package.",
+  "next": "Admit qualified read-only heat-receipt bridge via own PR and verify canonical postimage. Next assemble source-bound mass-carried energy input inventory from existing water/root/drain/macro and thermal-carrier owners; unknown donor temperatures/reference stay unavailable. No repetition of proven conduction/zero-assumption probe or full/native/reference runs.",
   "first_probe": {
     "status": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
     "source": "772994f2f",
@@ -74,5 +74,55 @@
     "artifact": 13895885852,
     "artifact_sha256": "09d8ad83700ac6e67596276b3b04cb456f2e543f878a42d3a3ff45ace6fd3bd5"
   },
-  "conclusion": "Original numerical conduction closes under existing1e-9J/cm2. All actual storage-owner calls retain incomplete-boundary status3, zero-mass-carried-energy counterfactual FAILS. This is a model-formulation/accounting-coverage limitation, not a demonstrated migration defect or a reason to alter original temperatures/tolerances."
+  "conclusion": "Original numerical conduction closes under existing1e-9J/cm2. All actual storage-owner calls retain incomplete-boundary status3, zero-mass-carried-energy counterfactual FAILS. This is a model-formulation/accounting-coverage limitation, not a demonstrated migration defect or a reason to alter original temperatures/tolerances.",
+  "independent_audit": {
+    "status": "BOTH_INDEPENDENT_ORIGINAL_HEAT_CAPSULE_AUDITS_PASS",
+    "auditor_sha256": "f1673ef2cec4c28170c51589cca1dfe227c8ac69a521b46e6426e1269ec2b0f6",
+    "results": {
+      "windows": {
+        "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+        "cases": 6,
+        "raw_files": 349,
+        "heat_steps": 7750,
+        "maximum_global_conduction_residual_j_cm2": 1.7843504451775516e-12,
+        "counterfactual_zero_missing_energy_verdict": "FAIL",
+        "original_physical_and_both_native_payloads": "EXACT",
+        "original_statement_source_after_declared_EOL_normalization": "EXACT",
+        "actual_storage_boundary_status": "INCOMPLETE_BOUNDARY",
+        "full_energy_balance_complete": false
+      },
+      "linux": {
+        "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+        "cases": 6,
+        "raw_files": 347,
+        "heat_steps": 9422,
+        "maximum_global_conduction_residual_j_cm2": 1.545430450278218e-12,
+        "counterfactual_zero_missing_energy_verdict": "FAIL",
+        "original_physical_and_both_native_payloads": "EXACT",
+        "original_statement_source_after_declared_EOL_normalization": "EXACT",
+        "actual_storage_boundary_status": "INCOMPLETE_BOUNDARY",
+        "full_energy_balance_complete": false
+      }
+    },
+    "reference_temperature_c": 0.0,
+    "source_EOL_scope": "Original selected source uses CRLF. Generated Linux source uses LF after read_text/write_text; source text outside marked observer blocks matches exactly after explicit CRLF/LF normalization. Windows raw source bytes also match outside blocks.",
+    "notes": "Failed zero-missing-energy counterfactual is not an actual measured whole-energy residual. Production numerical conduction budget1e-9 unchanged."
+  },
+  "raw_archives": {
+    "windows": {
+      "bytes": 29788740,
+      "sha256": "53350b8cfb37eb5b7a89a3f6c63bf99877792ce3572c1e5550b3360ff5006ade"
+    },
+    "linux": {
+      "bytes": 35832564,
+      "sha256": "46a7e502b4e46bb460b2c9222d893fb619197f89028371b61a7998b828ced338"
+    }
+  },
+  "review": "research/hybrid-water01/HYBRID_HEAT_ACCOUNTING_REVIEW.md",
+  "verification": {
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "original_and_shared_physics_sources": "UNCHANGED",
+    "actual_observer_sources_and_qualifiers_since_linux_head": "UNCHANGED"
+  }
 }
