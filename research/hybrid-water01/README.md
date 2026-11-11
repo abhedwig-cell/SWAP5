@@ -2,6 +2,47 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Active Hupsel delivery, PR1641, 11 November 2026
+
+Supersedes the earlier NEXT DELIVERY below. Implementation/evidence branch:
+`codex/hybrid-hupsel-full`, published head287de920c6099928ca4b1ccfee6223f3d8032a73,
+base canonical3e0dc5e08c07719a7ac2107d54d7d74f954805f1. Review:
+https://github.com/abhedwig-cell/SWAP5/pull/1641 (draft pending Linux admission).
+Do not compile this older recovery branch or repeat accepted native applications.
+
+Windows full original Hupsel1096 PASSES in5.7971821s excluding compilation.
+All9 own windows reproduce every physical suffix and both complete native/aux
+checkpoint payloads exactly. Water max9.996691511691622e-11cm; solute
+max2.0189359137172196e-13mg/cm2; both daily guards unchanged1e-10. Six actual
+kernelO0/O2/originalO2 project controls and canonical Andelst preservation PASS.
+Public Hupsel583-to585 exact. Independent raw audit601 source/build/input
+identities over3642 retained files PASS; documentation source/strict build PASS.
+
+Original-block Hupsel adds complete solute/irrigation/previous-day feedback and
+WOFOST-rate restart ownership. Three demonstrated original conservation bugs
+(runoff inventory, solute endpoint truncation, harvest interception transfer)
+are corrected only in the generated Hupsel route. Original native profiles and
+Grass/Andelst tolerances remain separate and unchanged. Full scientific/energy
+qualification is not claimed. Frozen Hupsel584 original comparison still FAILS;
+separate high-precision-output agreement is not a qualified reference substitute.
+
+CI43096746300 failed before any job with GitHub internal startup error, also
+after rerun request. No Linux compiler/model started. Fresh exact persisted
+source attempt43098736948 at287de920c is QUEUED: resume it, do not duplicate.
+No local Linux fallback: WSL uninstalled, docker unavailable. Keep working
+through terminal CI, retain/audit Linux raw artifact and complete PR admission
+only after owning gates pass. If service startup fails again, retain exact
+annotation and preserve the reproducible external blocker. All local model,
+compiler, regression, independent raw-audit and documentation runs are FINISHED.
+
+Full review/source/build/raw proof and commands are on the implementation branch:
+research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md and
+integration/f-ci/HYBRID_HUPSEL_20261111.json. Windows capsuleSHA256
+678be090346a13ffd3b68f2a3447a947f86e52b8854fdc46f9fef798ab8b21c1.
+Next delivery: verified Linux Hupsel acceptance and canonical PR1641 postimage,
+without rerunning Windows or historical native/reference full applications.
+
+
 
 ### Complete original shared-host Grassgrowth delivered, 11 November 2026
 
