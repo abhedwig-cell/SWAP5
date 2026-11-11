@@ -1,5 +1,36 @@
 # Explicit project state in the hybrid waterhost
 
+## Complete original Grassgrowth successor
+
+The successor completes all1827 original Grassgrowth days in10.937884s through
+the same hybrid day host, with unchanged original O2 physics and1e-10cm water
+guard. Maximum daily water residual is6.349374289e-14cm; the signed sum is
+-1.094763878e-13cm. Own2-to4,187-to190,365-to367 and1792-to1827 continuations
+match every physical daily receipt and both complete endpoint payloads exactly.
+The public `HYBRID_GRASSGROWTH_WATER` period is now1..1827.
+
+Repeated publication removes only the worker's auxiliary staging file after
+checking its prior immutable durable package, binding, receipt and file hashes.
+Unowned staging and occupied targets refuse before advancing. A subsequently
+refused day cannot publish a package or change the previous accepted ZIP.
+Windows and Ubuntu26.04 actual kernelO0/O2, originalO2 donors, both project
+regressions, repeat publication and public cold/resume controls pass.
+
+The full unrounded water receipts agree with the sealed original reference
+print to6.822e-13cm across eight quantities. Day188 actual uptake is
+0.1251363444644971cm; B0 prints0.125136344464cm. The unchanged legacy oxygen
+output prints0.01657cm against B0's0.016571046610cm; no unrounded oxygen claim
+is inferred from five-decimal output. The native thermal-route difference is
+still open. Legacy heat does not qualify the separate native1e-5C profile,
+complete energy or whole scientific equivalence. Runtime is a measured new
+route cost, not an accuracy-matched speed ratio.
+
+Authority: `integration/f-ci/HYBRID_GRASS_FULL_20261111.json` and the
+[complete review proof](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/research/hybrid-water01/HYBRID_GRASS_FULL_REVIEW.md).
+The preceding four-day prototype qualification is retained below as history.
+
+## Preceding four-day prototype
+
 The existing hybrid day host now supports an explicit original-project grid and
 calendar, with per-instance pressure storage. Its qualified prototype adds the
 original113-node Grassgrowth water configuration through the same host used by

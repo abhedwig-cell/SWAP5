@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_O0_O2_AND_SINGLE_FULL1827_OWN_RESTARTS_PASS_LINUX_PENDING",
+  "status": "WINDOWS_FULL1827_AND_WINDOWS_UBUNTU_O0_O2_REPEATED_PUBLICATION_INDEPENDENT_AUDIT_PASS",
   "base": "741210626929b0043e9109aa93a3e4f9c4dffb18",
   "scope": "Owned repeated checkpoint staging then one complete original Grassgrowth via shared hybrid host; no physical routine or tolerance change",
   "reproducer": "Day2 publication passes; day4 in same original worker exits2 because macro.bin status=new. Raw failed log retained. Initial missing executable-path attempt is separate fixture failure.",
@@ -266,5 +266,111 @@
         "status": "PASS"
       }
     ]
-  }
+  },
+  "hosted_qualification": {
+    "artifact_id": 13883699055,
+    "zip_sha256": "62222a22c3be4607d7fe9e35f8a1fb605532d6c51bc70da8a89c3e1234ddac33",
+    "bytes": 18916395,
+    "run": 43082435188,
+    "job": 130738160734,
+    "source": "fb7d2b195ceaae1065bb59ff2e0ee6367761e78a"
+  },
+  "independent_raw_audits": {
+    "windows": {
+      "status": "INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS",
+      "platform": "windows",
+      "retained_files": 2352,
+      "source_build_input_identity_checks": 409,
+      "cases": {
+        "grass-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.965353207744765e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.965353207744765e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "repeated_publication": "BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS",
+        "full_original_grassgrowth": {
+          "days": 1827,
+          "maximum_daily_water_residual_cm": 6.3493742888471e-14,
+          "signed_cumulative_daily_residual_cm": -1.0947638779514135e-13,
+          "own_seasonal_payloads_exact": true
+        }
+      }
+    },
+    "linux": {
+      "status": "INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS",
+      "platform": "linux",
+      "retained_files": 2980,
+      "source_build_input_identity_checks": 409,
+      "cases": {
+        "grass-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.96535181195129e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.96535181195129e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "repeated_publication": "BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS"
+      }
+    }
+  },
+  "raw_capsules": {
+    "windows": {
+      "archive": "research\\hybrid-water01\\hybrid-grass-full-windows-20261111.tar.xz",
+      "bytes": 14663712,
+      "sha256": "cabfa1ba582b91838d9b5da851ae112ade5540e5b2d58020b94f6985094d40ad",
+      "retained_files": 2352
+    },
+    "linux": {
+      "archive": "research\\hybrid-water01\\hybrid-grass-full-linux-20261111.tar.xz",
+      "bytes": 10511672,
+      "sha256": "f5d3eea2e967490398628bb367db8323c18065fb544defdbf09bda033b3cc122",
+      "retained_files": 2980
+    }
+  },
+  "public_late": {
+    "status": "PUBLIC_OWN187_TO190_ALL_PHYSICAL_RECEIPTS_AND_BOTH_PAYLOADS_EXACT",
+    "archive": "research/hybrid-water01/hybrid-grass-public-late-20261111.tar.gz",
+    "bytes": 1143275,
+    "sha256": "f1b7f556c0ca3720461f2028ea7e0b5e69721414e2b4060a3e3fa978de2524fe",
+    "full_daily_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499"
+  },
+  "reference_summary": "research/hybrid-water01/HYBRID_GRASS_FULL_REFERENCE_20261111.json",
+  "next_delivery": "One generic Hupsel project/boundary/state extension: inspect original configuration, qualify prefix/own restart first, then one bounded complete new-route run. No repeated accepted native/reference trajectory.",
+  "tests_scope": "Changed host/publisher/public period only. Existing native physical/heat/oxygen owners and src are byte unchanged; prior actual source qualification inherited. Linux full trajectory not selected; complete run qualified on Windows only."
 }
