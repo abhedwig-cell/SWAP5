@@ -1,0 +1,26 @@
+{
+  "status": "CANONICALLY_ADMITTED_CURRENT_SCOPE_RECONCILIATION_THERMAL_FEEDBACK_NOT_IMPLEMENTED",
+  "pr": 1645,
+  "canonical": "ce04a4db9a21f264c077d0832e2173e5468e9d70",
+  "tree": "674e6ae16ad7b573a12dfb4bb7278caa9c74b7dc",
+  "qualified_head": "ebe3cc940cb3684bfd78d31d04e6515e7ad8e57a",
+  "base": "937bd93b58ff913fcf9eafa3825a5da07f951513",
+  "verified_document_blobs": {
+    "docs/science/HYBRID_GENERIC_WATERHOST.md": "a5ff9ea94ae436444ea1f18f9d8989e683182788",
+    "docs/science/SWAP5_FUNCTIONAL_CLOSURE.md": "e4dbaf3c5c6e2f47fd4d0b498d229f4b98819d1e",
+    "docs/status-a/CURRENT_ARCHITECTURE.md": "a7e00faf1cdf5bb2f7c6a6b99d4cb6ae24ad0d2d",
+    "docs/status-a/CURRENT_STATUS.md": "4da900b6342a61bbdf741c04e8675143f2b3bbde",
+    "docs/status-a/TRACEABILITY.md": "7f037f5853282d803fb07e31b2b504caf993a5f4",
+    "integration/f-ci/FUNCTIONAL_CLOSURE_CURRENT_20261112.json": "344a53e12020be6fba0a16aeb85e92d3131473b9"
+  },
+  "unchanged_executable_and_test_blobs": 4544,
+  "checks": {
+    "documentation_source": "PASS",
+    "strict_mkdocs": "PASS19.47s",
+    "model_runs": 0,
+    "O0_O2_runs": "NOT_SELECTED_IMPACT; no executable change"
+  },
+  "scope": "Three completed original applications and shared hybrid route reconciled; no scientific/profile denominator promotion. Original failures retained.",
+  "thermal_interface_decision": "prepare(self) has no thermal/forcing argument; existing bottom energy binding is not an original heat feedback consumer. No unused metadata wrapper or speculative physics change.",
+  "next": "Caller-controlled existing Andelst Cauchy water forcing through prepare/discard/accept: inspect original boundary-table initialization and restored cursor, then explicit one-day forcing identity and own retry/recovery on retained20to22 origins. Original forcing remains default; mass guard unchanged."
+}

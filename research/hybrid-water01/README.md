@@ -2,6 +2,48 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Current scope reconciled; thermal feedback consumer absent,12November2026
+
+PR #1645 MERGED atce04a4db9a21f264c077d0832e2173e5468e9d70. Qualified head
+ebe3cc940cb3684bfd78d31d04e6515e7ad8e57a and actual/predicted merge share
+tree674e6ae16ad7b573a12dfb4bb7278caa9c74b7dc. Six documentation/evidence
+blobs match canonical;4544 source/application/reference/tool/test/workflow blobs
+match previous admitted937bd93b5 exactly. Receipt:
+CLOSURE01_CURRENT_SCOPE_CANONICAL_20261112.json.
+This supersedes the earlier NEXT thermal-handoff banner. No run is active.
+
+The proposed thermal handoff was checked against exact original daily adapter and
+production thermal binding sources. CoupledDailyColumn.prepare(self) has no external
+thermal/forcing input; it invokes the original DailyHost with original-project
+forcing. The bottom thermal binding attaches donor temperature/provenance to a
+candidate energy ledger, not to this application's original temperature equation
+or a joint thermal state/restart owner. A metadata-only wrapper would not implement
+thermal feedback. No unused wrapper, invented input or speculative solver change.
+This is a reproducible data/model-interface limitation, not a numerical defect.
+
+Independent integration gap resolved: mandatory Status-A entry pages still led
+with older source-specific counts/barriers. Current scoped authority now at
+docs/science/SWAP5_FUNCTIONAL_CLOSURE.md; linked from current status/architecture/
+traceability and generic host. All8referenced PRs1623-25/1640-44 are merged ancestors
+of pinned baseline. Three complete applications and the common three-project
+hybrid route are explicit; native profiles, privateV9, corrected Hupsel, original
+cold/restored macro distinction, originalforcingcoupling and missing fullenergy/
+scientific qualification remain separate. Older failed188/584 comparisons remain.
+No additional model milestone or scientific denominator promotion is claimed.
+Doc source checks PASS; strictMkDocsPASS19.47s. No model/O0/O2 run selected because
+all executable dependencies are unchanged. No physical or numerical tolerance change.
+
+NEXT CONCRETE FUNCTIONAL DELIVERY: caller-controlled WATER forcing through the
+existing Andelst Cauchy lower boundary and external daily prepare/discard/accept.
+First inspect original BBC table initialization, interpolation and restored cursor
+semantics at a retained20-to22 origin. If usable, implement explicit one-day forcing
+identity, reject nonfinite/foreign/late inputs before state advancement, and verify
+same-origin discard/retry plus durable own recovery with two distinct head
+trajectories. Preserve original forcing as default and unchanged1e-6cm guard.
+Use existing lower-boundary/source/day contracts; no new generic framework. Keep
+thermal feedback/model/input/state prerequisites separately OPEN. Do not repeat
+full applications, conduction/carrier observations or underresolved reference probes.
+
 ### Actual thermal carriers delivered and admitted, 12 November 2026
 
 PR #1644 MERGED at937bd93b58ff913fcf9eafa3825a5da07f951513. Qualified head
