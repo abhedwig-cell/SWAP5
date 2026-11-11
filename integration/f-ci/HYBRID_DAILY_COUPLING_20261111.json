@@ -1,0 +1,44 @@
+{
+  "status": "IMPLEMENTED_PERSIST_BEFORE_QUALIFICATION",
+  "base": "30026511e8d03f6c77bc30377d60a65259afb2fc",
+  "workstream": "RT-TX / hybrid application ownership",
+  "owned_surface": [
+    "app/hybrid_water/daily_coupling.py",
+    "research/hybrid-water01/qualify_daily_coupling.py"
+  ],
+  "read_only_authorities": [
+    "docs/capabilities/groundwater-coupling-v1.md",
+    "docs/science/groundwater-coupling.md",
+    "app/hybrid_water/daily_host.py",
+    "app/support/restart_publish.c"
+  ],
+  "interfaces_allowed_to_change": "Application-only external prepare/accept/discard adapter; existing physical/kernel/Fortran coupling contracts fixed",
+  "invariants": [
+    "No external accepted publication before externalaccept",
+    "Discard never changes accepted day/revision/checkpoint",
+    "Exact source/build/input/parent lineage",
+    "Unchanged tolerances and original forcing",
+    "No rollback claim after ambiguous durable publication failure"
+  ],
+  "test_selection": {
+    "candidate": "30026511e8d03f6c77bc30377d60a65259afb2fc",
+    "groups": {
+      "hybrid_daily_coupling": {
+        "changed_dependency": "New Python daily acceptance adapter over unchanged qualified original donor and SWAP5 transaction kernels",
+        "scientific_claim": "External serial accepted-state control and original-forcing daily exchange; not a groundwater feedback solver",
+        "owner": "RT-TX hybrid application adapter",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 120,
+        "existing_evidence": "PR1641 Windows/Ubuntu26 raw source-bound capsules qualify underlying unchanged kernel/donor O0/O2, full1096/nine own and three project prefixes",
+        "prior_execution": "NOT_RUN",
+        "diagnosis": "Concrete absent external discard gate; fresh private branches reuse durable codec and actual binaries. No previous full application rerun selected."
+      }
+    }
+  },
+  "caps": {
+    "all_cases_wall_seconds": 180,
+    "expected_windows_seconds": 120,
+    "expected_linux_seconds": 30
+  },
+  "next": "Persist source/contract, qualify real bounded three-project O0/O2 external acceptance; retain raw data and integrate own PR only after Linux and independent audit."
+}
