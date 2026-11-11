@@ -55,3 +55,8 @@ source/generated/executable/input checks. No full original model or reference re
 Windows and Ubuntu26 actual execution plus independent retained proof auditing
 precede canonical admission. Total native-feedback cap180s, expected120sWindows/
 30sLinux including existing C publisher compilation; native CPU costs UNKNOWN.
+
+The measured successor loads the existing stateless C publisher once per external
+owner, lazily on its first proposal, and binds each private host before first
+advance. It never changes DailyHost or recompiles C per daily proposal. Same-
+platform prior/native payloads and ambiguous publication semantics must remain exact.

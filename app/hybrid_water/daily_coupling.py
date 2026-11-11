@@ -127,7 +127,7 @@ class CoupledDailyColumn:
                 if c['id'] != coupling_id or type(c['revision']) is not int or c['revision'] < 1:
                     raise ValueError('Invalid external origin revision')
                 self._revision = c['revision']
-        self._publisher = h.restart_publisher(self.output)
+        self._publisher = None  # load once on first proposal, never compile per day
         self._pending = None
         self._candidate = None
         self._attempt = 0
@@ -169,11 +169,19 @@ class CoupledDailyColumn:
             # Adoption has already been verified; each later origin has our binding.
             receipt = h.verify_checkpoint(self._origin, self._day, self._origin_binding, origin)
         start = h.ColumnStart(day=self._day, origin=origin, receipt=receipt, name='original')
+        if self._publisher is None:
+            self._publisher = h.restart_publisher(self.output)
         with contextlib.ExitStack() as stack:
             host = h.DailyHost(stack, h.executable(self.bundle, 'day_donor'),
                                h.executable(self.bundle, 'day_kernel'), self.case,
                                trial, [start], runtime=True, checkpoint_enabled=True,
-                               binding=self.meta['binding'], project=self.project)
+                               project=self.project)
+            # Bind the private host before its FIRST advance. The existing
+            # stateless C publisher uses the passed sibling paths, not the DLL
+            # directory. Reuse this owner's callable without changing DailyHost
+            # or recompiling identical C code for each day proposal.
+            host.binding = self.meta['binding']
+            host.publish = self._publisher
             raw = host.step(1, checkpoint=True)
             if not raw['committed']:
                 raise ValueError('Local water/solute acceptance refused the proposal')
