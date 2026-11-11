@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      hybrid_waterhost:
+        description: Qualify explicit generic hybrid waterhost with bounded original cases
+        type: boolean
+        default: false
       thermal_subcycle:
         description: Run only the bounded private thermal-subcycling research
         type: boolean
@@ -42,6 +46,69 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  hybrid-waterhost:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_waterhost
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/HYBRID_GENERIC_WATERHOST_20261111.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 64
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /AGENTS.md
+            /src/
+            /app/
+            /tools/
+            /tests/modularity/
+            /integration/f-ci/HYBRID_GENERIC_WATERHOST_20261111.json
+            /integration/audits/evidence/SWAP431_ORIGINAL_SOURCE.zip.b64
+            /integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64
+            /reference/swap-4.3.1/projects/2.grassgrowth/
+            /reference/swap-4.3.1/projects/3.macroporeflow/
+            /research/hybrid-water01/*generic_hybrid*
+            /research/hybrid-water01/check_hybrid_budget_protocol.py
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection hybrid_generic_waterhost
+      - name: Cold original source build, no reference trajectory
+        run: python3 -B research/hybrid-water01/prepare_generic_hybrid_reference.py --output "$RUNNER_TEMP/generic-reference"
+      - name: Actual canonical baseline view and bounded controls
+        shell: bash
+        run: |
+          git diff --exit-code 01a9d29c380645dec880257f360174b5cb5ea5c0 HEAD -- src app/support
+          python3 - <<'PY'
+          import os,subprocess
+          from pathlib import Path
+          base=Path(os.environ['RUNNER_TEMP'])/'generic-baseline-root'
+          (base/'app/hybrid_water').mkdir(parents=True)
+          for name in ['daily_host.py','donor_adapter.f90','donor_sources.py','main.f90','hybrid_step_budget.f90']:
+              path='app/hybrid_water/'+name
+              (base/path).write_bytes(subprocess.check_output(['git','cat-file','blob','01a9d29c380645dec880257f360174b5cb5ea5c0:'+path]))
+          for name in ['src','reference','app/support']:
+              target=base/name;target.parent.mkdir(parents=True,exist_ok=True)
+              target.symlink_to(Path.cwd()/name,target_is_directory=True)
+          PY
+          python3 -B research/hybrid-water01/prepare_generic_hybrid_baseline.py --source-root "$RUNNER_TEMP/generic-baseline-root" --reference "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-baseline"
+      - name: Original Grassgrowth and preserved Andelst kernel O0/O2
+        shell: bash
+        run: |
+          for opt in O0 O2; do
+            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --reference "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-grass-$opt" --project grass --optimization "$opt"
+            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --reference "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-andelst-$opt" --project andelst --optimization "$opt" --andelst-baseline "$RUNNER_TEMP/generic-baseline"
+          done
+      - name: Public explicit water prototype and fresh continuation
+        shell: bash
+        run: |
+          python3 -B tools/solute/run_water.py --model HYBRID_GRASSGROWTH_WATER --reference-work "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-public" --days 4 --checkpoint-at 2
+          python3 -B tools/solute/run_water.py --model HYBRID_GRASSGROWTH_WATER --reference-work "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-public-resume" --days 4 --restart "$RUNNER_TEMP/generic-public/accepted-column-1-day-2.zip" --restart-day 2 --checkpoint-at 4
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: generic-hybrid-waterhost
+          path: ${{ runner.temp }}/generic-*
   thermal-sixteen-policy:
     if: github.event_name == 'workflow_dispatch' && inputs.thermal_sixteen_policy
     runs-on: ubuntu-26.04
@@ -170,7 +237,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:

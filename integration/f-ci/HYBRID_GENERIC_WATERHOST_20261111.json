@@ -1,5 +1,5 @@
 {
-  "status": "SELECTED_NOT_IMPLEMENTED",
+  "status": "LOCAL_KERNEL_O0_O2_GRASS_AND_ANDELST_PROTOTYPE_PASS_LINUX_PENDING",
   "canonical_base": "01a9d29c380645dec880257f360174b5cb5ea5c0",
   "owner": "SWAP5-FUNCTIONAL-CLOSURE01 generic hybrid waterhost",
   "problem": "Existing hybrid state/host fixes112-node Andelst grid and35795 clock; macro/Cauchy receipt cannot be relabeled to original113-node nonmacro prescribed-groundwater Grassgrowth.",
@@ -21,5 +21,31 @@
     "full_FCI": "NOT_SELECTED_IMPACT until actual changed-owner reconciliation",
     "highest_low_air": "NOT_SELECTED_POLICY"
   },
-  "stop_rule": "At most two repair attempts for same failed contract; retain failures and reconsider larger intact original state block. No tolerance change."
+  "stop_rule": "At most two repair attempts for same failed contract; retain failures and reconsider larger intact original state block. No tolerance change.",
+  "diagnosis": {
+    "initial_stronger_assertion": "Both old/new Andelst have96 raw macro auxiliary bytes differing between cold/restored day4; old/new corresponding entire payloads byte-exact, native result.end and physical suffix exact. Not a new source regression; initial failed assert retained.",
+    "fixture_adapter": "Reuse helper initially expected per-case RESULT.json; actual producer stores case PASS in rootEVENTS and all committed rows in daily.jsonl. Verified actual source events/rows directly, no manufactured producer result or repeated native run."
+  },
+  "linux_selection": {
+    "runner": "Ubuntu26.04",
+    "expected_cold_build_seconds": 240,
+    "native_cases_seconds_cap": 180,
+    "scientific_impact": "Actual compiler/unformatted restart/registry/state/negative/public-route portability cannot be established by mocked physical data. Cold original build only; never run full reference. Same-runner canonical Andelst controls prevent importing Windows byte claims.",
+    "workflow": "grass-thermal-production.yml",
+    "input": "hybrid_waterhost"
+  },
+  "test_selection": {
+    "candidate": "f33647621a03b411c80220782b252bcc989255a4",
+    "groups": {
+      "hybrid_generic_waterhost": {
+        "changed_dependency": "Instance-local dynamic pressure, explicit clock/project and nonmacro auxiliary codec; unchanged oldAndelst macro body and core physics",
+        "scientific_claim": "Bounded original Grasswater4 days and restart/isolation/refusal, preserved same-platform canonicalAndelst prefix; not native1e-5C, full project or whole science",
+        "owner": "RT-TX/hybrid waterhost",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 240,
+        "existing_evidence": "Local kernelO0/O2 and actualO2 donor Grass4 exact own payloads; Andelst prior-control bit preservation plus own physical suffix; no full replay selected",
+        "prior_execution": "NONE"
+      }
+    }
+  }
 }
