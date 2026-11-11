@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_UBUNTU_SIX_CASE_NATIVE_AND_CARRIER_PASS_INDEPENDENT_LINUX_AUDIT_PENDING",
+  "status": "QUALIFIED_ACCEPTED_ORIGINAL_WATER_CARRIERS_WINDOWS_UBUNTU26_PHYSICAL_HEAT_INPUTS_INCOMPLETE_ADMISSION_PENDING",
   "base": "a0c07487c944ff7da2a7e3b502aa725f687e480a",
   "scope": "Opt-in original water-carrier observation and accepted-only inventory; no physical energy or solver change",
   "test_selection": {
@@ -21,7 +21,7 @@
     "native_cohort_seconds": 240,
     "compiler_link_seconds": 45
   },
-  "next": "Complete existing Linux run and independent raw source/object/physical/native/water audits, publish qualified carrier API and explicit missing-input boundary via PR and verify canonical. No additional model run selected.",
+  "next": "Admit bounded accepted carrier inventory via own PR and verify actual canonical tree/blobs. Next inspect existing thermal-binding and external daily coupling contracts for a caller-supplied, explicitly distinct thermal-input handoff; do not infer missing original donor/gas measurements or activate a solver.",
   "windows": {
     "native_result": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
     "source": "069a25730",
@@ -383,5 +383,168 @@
   "retained_ci_log": {
     "path": "research/hybrid-water01/thermal-carriers-linux-ci-20261111.log.gz",
     "sha256": "fa472da3b51490fe3abc0374a6edc9fb72e684eddb31cab8084e1d7aae41fbc5"
+  },
+  "independent_linux_audit": {
+    "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+    "platform": "linux",
+    "raw_files": 348,
+    "cases": {
+      "hupsel-O0": {
+        "steps": 278,
+        "original_source_outside_observation_exact": true,
+        "physical_and_both_native_payloads_exact": true,
+        "maximum_cell_residual_j_cm2": 1.9818218247036334e-13,
+        "maximum_global_residual_j_cm2": 6.963318810448982e-13,
+        "storage_status_counts": {
+          "3": 278
+        },
+        "zero_missing_energy_counterfactual": "FAIL",
+        "maximum_counterfactual_residual_j_cm2": 3.4290247861362944,
+        "composition_change_sum_j_cm2": -0.4739208312829645,
+        "full_energy_balance_complete": false,
+        "actual_water_carriers": {
+          "steps": 278,
+          "max_node_residual_cm": 1.3877787807814457e-17,
+          "missing_active_liquid_donor_paths": [
+            "top_in"
+          ],
+          "gas_carrier_available": false
+        }
+      },
+      "hupsel-O2": {
+        "steps": 278,
+        "original_source_outside_observation_exact": true,
+        "physical_and_both_native_payloads_exact": true,
+        "maximum_cell_residual_j_cm2": 1.9818218247036334e-13,
+        "maximum_global_residual_j_cm2": 6.963318810448982e-13,
+        "storage_status_counts": {
+          "3": 278
+        },
+        "zero_missing_energy_counterfactual": "FAIL",
+        "maximum_counterfactual_residual_j_cm2": 3.4290247861362944,
+        "composition_change_sum_j_cm2": -0.4739208312829645,
+        "full_energy_balance_complete": false,
+        "actual_water_carriers": {
+          "steps": 278,
+          "max_node_residual_cm": 1.3877787807814457e-17,
+          "missing_active_liquid_donor_paths": [
+            "top_in"
+          ],
+          "gas_carrier_available": false
+        }
+      },
+      "grass-O0": {
+        "steps": 52,
+        "original_source_outside_observation_exact": true,
+        "physical_and_both_native_payloads_exact": true,
+        "maximum_cell_residual_j_cm2": 2.2631896356983816e-13,
+        "maximum_global_residual_j_cm2": 1.545430450278218e-12,
+        "storage_status_counts": {
+          "3": 52
+        },
+        "zero_missing_energy_counterfactual": "FAIL",
+        "maximum_counterfactual_residual_j_cm2": 0.9752933588181226,
+        "composition_change_sum_j_cm2": 5.692697441134647,
+        "full_energy_balance_complete": false,
+        "actual_water_carriers": {
+          "steps": 52,
+          "max_node_residual_cm": 1.6479873021779667e-17,
+          "missing_active_liquid_donor_paths": [
+            "top_in"
+          ],
+          "gas_carrier_available": false
+        }
+      },
+      "grass-O2": {
+        "steps": 52,
+        "original_source_outside_observation_exact": true,
+        "physical_and_both_native_payloads_exact": true,
+        "maximum_cell_residual_j_cm2": 2.2631896356983816e-13,
+        "maximum_global_residual_j_cm2": 1.545430450278218e-12,
+        "storage_status_counts": {
+          "3": 52
+        },
+        "zero_missing_energy_counterfactual": "FAIL",
+        "maximum_counterfactual_residual_j_cm2": 0.9752933588181226,
+        "composition_change_sum_j_cm2": 5.692697441134647,
+        "full_energy_balance_complete": false,
+        "actual_water_carriers": {
+          "steps": 52,
+          "max_node_residual_cm": 1.6479873021779667e-17,
+          "missing_active_liquid_donor_paths": [
+            "top_in"
+          ],
+          "gas_carrier_available": false
+        }
+      },
+      "andelst-O0": {
+        "steps": 4381,
+        "original_source_outside_observation_exact": true,
+        "physical_and_both_native_payloads_exact": true,
+        "maximum_cell_residual_j_cm2": 8.436780359651256e-14,
+        "maximum_global_residual_j_cm2": 1.5004178455235717e-12,
+        "storage_status_counts": {
+          "3": 4381
+        },
+        "zero_missing_energy_counterfactual": "FAIL",
+        "maximum_counterfactual_residual_j_cm2": 0.24686421145308765,
+        "composition_change_sum_j_cm2": -2.038370888868414,
+        "full_energy_balance_complete": false,
+        "actual_water_carriers": {
+          "steps": 4381,
+          "max_node_residual_cm": 1.0842021724855044e-18,
+          "missing_active_liquid_donor_paths": [
+            "bottom_in",
+            "macro_exchange",
+            "top_in"
+          ],
+          "gas_carrier_available": false
+        }
+      },
+      "andelst-O2": {
+        "steps": 4381,
+        "original_source_outside_observation_exact": true,
+        "physical_and_both_native_payloads_exact": true,
+        "maximum_cell_residual_j_cm2": 8.436780359651256e-14,
+        "maximum_global_residual_j_cm2": 1.5004178455235717e-12,
+        "storage_status_counts": {
+          "3": 4381
+        },
+        "zero_missing_energy_counterfactual": "FAIL",
+        "maximum_counterfactual_residual_j_cm2": 0.24686421145606788,
+        "composition_change_sum_j_cm2": -2.038370888868414,
+        "full_energy_balance_complete": false,
+        "actual_water_carriers": {
+          "steps": 4381,
+          "max_node_residual_cm": 1.0842021724855044e-18,
+          "missing_active_liquid_donor_paths": [
+            "bottom_in",
+            "macro_exchange",
+            "top_in"
+          ],
+          "gas_carrier_available": false
+        }
+      }
+    },
+    "total_heat_steps": 9422,
+    "full_energy_balance_complete": false
+  },
+  "audit_tool_sha256": "a5a034739f77284db00a4f7e9b3e9b11e3c2cfc136bce0a170ba741bb8f9f23b",
+  "qualification_summary": {
+    "cases": 12,
+    "actual_water_and_heat_steps": 17172,
+    "raw_files": 696,
+    "all_same_platform_original_daily_and_both_native_payloads": "EXACT",
+    "all_source_text_outside_marked_blocks": "EXACT after declared EOL normalization",
+    "all_raw_object_source_and_archive_audits": "PASS",
+    "water_budget_cm": 1e-10,
+    "maximum_actual_nodal_water_residual_cm": 1.6479873021779667e-17,
+    "conduction_budget_J_cm2": 1e-09,
+    "physical_or_numerical_tolerances": "unchanged",
+    "full_energy_balance_complete": false,
+    "full_model_runs_repeated": 0,
+    "functional_project_count": 3,
+    "docs_source_and_strict_build": "PASS",
+    "default_heat_instrument_function_AST": "EXACT inherited PR1643"
   }
 }
