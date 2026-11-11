@@ -2,6 +2,39 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Current native wet-window cost attributed, 11 November 2026
+
+PR1634 is merged at059728c6176ba9e0fe5005e1c1fb5e58ff8f89fb.
+Actual whole tree7f13c3b41837ad12ddecee3cbf46e5f50b1015df equals qualified
+head6d80c85f5d500418adbf16c850036faabf52b731 and predicted merge. Raw
+canonical archive and receipt bytes equal independently audited bytes.
+CLOSURE01_NATIVE_COST_CANONICAL_20261111.json binds this result. No model
+process remains live; do not duplicate the completed observations.
+
+Two unchanged-release187-to190 own restarts cost10.17 and8.32seconds of
+sampled wall time,18.49seconds total. All water/crop/conductive rows and
+checkpoint190 match the published full trajectory exactly. The1092-sample
+native-unwind observation attributes571samples (52.29percent) to the MVG
+waterfilm integrand, including529 external samples resolved to its actual
+native caller. Macro zero residual accounts for106samples (9.71percent).
+Actual retained code calls pow three times in that integrand. Nearest DLL
+export_finite is not a safe owner attribution. These are statistical primary
+thread sample shares, not call counts, exact CPU fractions or a speedup.
+Source checks, strict docs and independent raw member/source/counter/suffix
+verification pass. No src/app/tools/tests/reference changes were made.
+Functional coverage is unchanged; this is supporting cost evidence only.
+
+Do not reopen prior QROMBD/trapezoid/no-stress/coefficient preparation or the
+disproved identical-wet-node cache. No oxygen equation/pow rewrite follows
+from these samples. Next discriminator is ONE private16-versus4 internal
+heat-step contract probe using the existing explicit-state driver. Preserve
+external1e-5C/energy guards; measure indicator reduction and heat cost before
+an application change. Target60seconds, cap120seconds. Never rebind disk
+checkpoints between executables. No full trajectory or broad matrix selected.
+Start from latest verified canonical in a separate codex branch; this
+consolidated branch remains recovery/research navigation. Whole science,
+complete energy and comparable runtime remain open. Planning remains recovery.
+
 ### Complete four-step Grassgrowth delivered, 11 November 2026
 
 PR1633 is merged at c0a21d22ed98f123168f55d16d1b43935a939cb3.

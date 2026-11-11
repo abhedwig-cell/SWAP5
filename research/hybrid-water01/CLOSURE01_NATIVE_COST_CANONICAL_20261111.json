@@ -1,0 +1,33 @@
+{
+  "status": "CANONICAL_SAME_BINARY_WET_NATIVE_COST_ATTRIBUTION_VERIFIED",
+  "pr": 1634,
+  "merge": "059728c6176ba9e0fe5005e1c1fb5e58ff8f89fb",
+  "head": "6d80c85f5d500418adbf16c850036faabf52b731",
+  "tree": "7f13c3b41837ad12ddecee3cbf46e5f50b1015df",
+  "whole_tree_equals_qualified_head": true,
+  "production_dependencies_unchanged": true,
+  "published_blobs": {
+    "research/hybrid-water01/grass-native-cost-20261111.tar.xz": "b519f2dd9b08cfda7522fd71df9c813dba89a8b60b11c3f08143e7aae25f4224",
+    "research/hybrid-water01/grass-native-cost-receipt.json": "e18b47c40ba690d546e740c7befd13d5774ffd2364c8c928c868ff1890c240d9"
+  },
+  "total_sampled_wall_seconds": 18.491997599834576,
+  "waterfilm_samples": {
+    "direct": 42,
+    "external_first_native_caller": 529,
+    "total": 571,
+    "all_samples": 1092
+  },
+  "macro_zero_residual_samples": 106,
+  "both_own_suffixes_and_checkpoint190": "EXACT",
+  "independent_archive_audit": "PASS",
+  "documentation": "source checks and strictMkdocs25.87seconds PASS",
+  "limitations": "Primary-thread approximate sample shares, not call counts or exact process CPU fractions. Native CPU/observer-overhead categories UNKNOWN. Intermediate unwind frames not retained. No model/speedup or whole-science claim.",
+  "decision": "Waterfilm integrand remains dominant (571/1092=52.29percent including529 external samples resolved to its native caller). Macro zero residual106/1092=9.71percent. Prior QROMBD/trapezoid/no-stress/coefficient and duplicate-node work is explicitly not reopened. Do not change equations or pow arithmetic from this measurement. Next targeted work remains accepted-step amplification at the unchanged thermal budget, reusing existing heat-subcycle studies; select one bounded discriminator before any model edit.",
+  "next_delivery": {
+    "goal": "One private16-versus4 internal heat-step contract discriminator, using existing explicit-state driver and unchanged external1e-5C budget/energy guards; measure indicator reduction and heat kernel cost before any application edit",
+    "expected_seconds": 60,
+    "hard_cap_seconds": 120,
+    "excluded": "No pow/equation rewrite, duplicate-node cache, QROMBD/no-stress replay, cross-executable disk rebinding, broad campaign or full trajectory"
+  },
+  "running_model_processes": "NONE: both observations completed naturally"
+}
