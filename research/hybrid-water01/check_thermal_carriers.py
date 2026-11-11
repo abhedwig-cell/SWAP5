@@ -61,6 +61,7 @@ for folder in sorted(a.runs.iterdir()):
 assert results,'No actual cases selected'
 out={'status':'ACTUAL_ACCEPTED_THERMAL_CARRIER_INVENTORY_PASS_FULL_ENERGY_UNAVAILABLE',
      'results':results,'sources':{n:h.sha(ROOT/n) for n in ['app/hybrid_water/thermal_carriers.py',
+     'app/hybrid_water/heat_receipts.py',
      'research/hybrid-water01/check_thermal_carriers.py','research/hybrid-water01/qualify_original_heat_accounting.py']}}
 (a.runs/'THERMAL_CARRIERS.json').write_text(json.dumps(out,indent=2)+'\n',encoding='utf-8')
 print(json.dumps({k:r['daily'] for k,r in results.items()}))
