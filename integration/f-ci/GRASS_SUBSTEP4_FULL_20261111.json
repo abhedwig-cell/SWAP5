@@ -1,0 +1,73 @@
+{
+  "status": "FULL_EXECUTION_PREREGISTERED",
+  "canonical_source": "c3c99cb6c70edfd652d904306daa63d03a283939",
+  "model": "Original113-node Grassgrowth,1827 days",
+  "numerical_profile": "thermal-subcycle4-1e-5C",
+  "invariants": "Original five input bytes, water/uptake1e-10 cm and thermal1e-5 C acceptance; existing energy limits and explicit model/restart/rollback contracts unchanged. Functional execution and whole science remain separate.",
+  "build_plan": "Production O2 GNU16.2, same verified compiler/flags and original TTUTIL archive as the accepted current policy proof; existing builder verifies every reused object and source dependency. Freeze release metadata and actual link inputs before full launch.",
+  "runtime_selection": {
+    "estimated_seconds": 3600,
+    "hard_cap_seconds": 7200,
+    "estimate_status": "Conservative planning estimate, not an extrapolated performance guarantee",
+    "prior_launcher_observation_seconds": 6036.22878742218,
+    "prior_observation_method": "Published prior receipt computes launcher elapsed from file timestamps; not a controlled pure-native comparison. Its exact scope is retained.",
+    "reason": "A changed numerical route must complete all original seasons, mowing/phenology and late states; short gates cannot establish this. One full new-route run is selected. Do not repeat the full incumbent or start a duplicate."
+  },
+  "cuts": {
+    "capture": [
+      2,
+      4,
+      187,
+      188,
+      190,
+      365,
+      367,
+      1791,
+      1792
+    ],
+    "fresh_own_restarts": [
+      [
+        2,
+        4
+      ],
+      [
+        187,
+        190
+      ],
+      [
+        365,
+        367
+      ],
+      [
+        1792,
+        1827
+      ]
+    ],
+    "restart_cap_seconds_each": 600,
+    "backup_late_origin": 1791
+  },
+  "acceptance": [
+    "Every original day1..1827 and every finite water/crop/conductive record, with original input SHA256",
+    "Original auditor water, cumulative, uptake and conductive limits; no new threshold changes",
+    "Exact own fresh-process suffix ledgers and exact full checkpoint bytes at each captured end",
+    "Source/compiler/flags/library/object/executable/input identities; monotonic full-launch timing",
+    "Original B0 and earlier one-step comparison retained, including failed scientific day188 result; no new reference run",
+    "Published reviewable PR and verified canonical postimage"
+  ],
+  "test_selection": {
+    "candidate": "c3c99cb6c70edfd652d904306daa63d03a283939",
+    "groups": {
+      "grass_substep4_full": {
+        "changed_dependency": "Explicit four-heat-step numerical trajectory under the source-qualified generic policy. Production source is frozen; this work changes execution evidence only.",
+        "scientific_claim": "Complete functional original1827-day execution and exact own restarts on the chosen immutable release, with all existing daily and cumulative gates; no whole-science promotion.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/Grassgrowth execution",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 3600,
+        "existing_evidence": "PR1632 current Windows/Linux O0/O2 policy/default/Andelst/native/F-CI pass. Four-day default physical files exact to incumbent and four-step files exact to qualified research. Current Windows short-window ABBA45.44% lower median; full-period effect is unproven. Existing1827-day one-step scope remains unchanged.",
+        "prior_execution": "NONE"
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for evidence-only full execution; unchanged source qualified atPR1632",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  }
+}
