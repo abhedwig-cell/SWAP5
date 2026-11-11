@@ -2,6 +2,29 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### KIM endpoint admitted, next reader-build delivery, 11 November 2026
+
+Canonical is cf1bfd691f938f1a76f828ec31ce65ff33a05cf3 after PR 1627.
+The actual whole tree equals qualified head a4257bbab and the predicted
+merge tree. Strict Windows GNU 16.2 operator/provider O0/O2 pass. Fresh
+Ubuntu 26.04 GNU 15.2 operator/provider, current F-CI and Ubuntu 24.04
+O0/O2 original application/native restart controls all pass. The source
+correction also repairs the original PR's -Werror real-equality failure
+while retaining exact saturation and the strict supersaturation refusal.
+See CLOSURE01_KIM_CANONICAL_20261111.json and the existing MIGMAC02 status.
+
+The separate experimental contact-0 timeout retains its failed/censored
+status. No identical contact replay or full project rerun was selected.
+
+Next delivery is the separately branched TTUTIL adapter-reader build
+correction for the already proven GNU 15.2 O0/O2 OSAT discrepancy. Pin
+the immutable TTUTIL source and use a short real-reader comparison on
+the original input. Bind actual per-source flags and library identity,
+retain ordinary builder entry points and use focused current application
+preservation. No parameter tolerance or moisture-domain relaxation is
+selected. Branch codex/ttutil-reader-contract starts at this canonical.
+
+
 ### Current canonical and next delivery, 11 November 2026
 
 Canonical is now 37acc6339abace5aea9b066e158d89780dd3647d.

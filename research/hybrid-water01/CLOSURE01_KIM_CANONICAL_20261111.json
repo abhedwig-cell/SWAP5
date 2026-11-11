@@ -1,0 +1,34 @@
+{
+  "status": "CANONICAL_MERGED_POSTIMAGE_VERIFIED",
+  "pr": 1627,
+  "canonical": "cf1bfd691f938f1a76f828ec31ce65ff33a05cf3",
+  "canonical_tree": "fbee6a2c6ee5935e7a32145f88b205c113dfd4e1",
+  "qualified_head": "a4257bbab3311a4618b70b2d95d6849be313bb7a",
+  "source_candidate": "e145622a9b93aac0eee38a40338f6b452bf16ab8",
+  "actual_merge_equals_pr_head_and_prediction": true,
+  "qualification": {
+    "windows_gnu_16_2": "Strict operator and real 20-source provider O0/O2 PASS",
+    "ubuntu_26_04_gnu_15_2": {
+      "run": 42997105211,
+      "job": 130443818351,
+      "status": "PASS"
+    },
+    "native_application": {
+      "run": 42997105211,
+      "job": 130443818617,
+      "status": "PASS"
+    },
+    "fci": {
+      "run": 42997105979,
+      "job": 130445299551,
+      "status": "PASS"
+    }
+  },
+  "scope": "Exact zero at the valid saturated linear KIM endpoint. Existing finite/domain/supersaturation guards and numerical tolerances remain applicable.",
+  "repaired_compile_regression": "The original PR's real equality fails the existing -Werror recipe. Ordered comparison after theta > theta_s refusal preserves exact semantics. The fixture checks positive-zero bits.",
+  "open_experimental_contact": "The earlier original O0 and diagnostic O2 TTUTIL-control contact-0 timeout remains unqualified; it was not repeated.",
+  "evidence": "integration/audits/PPA_WU05_MIGMAC02_STATUS.json#kim_saturation_successor_20261111 at canonical",
+  "functional_coverage": "Original project and restart scopes retain their source-bound full receipts; current short original applications preserve their named contracts.",
+  "development_yield": "One proven endpoint/compiler correction, direct O0/O2 operators, a 20-source real provider and existing short native application gates. No full historical model rerun.",
+  "next_delivery": "A separate reviewable TTUTIL adapter-reader build correction for the proven GNU 15.2 O0/O2 OSAT conversion discrepancy, using the existing immutable source archive and a short actual-reader fixture."
+}
