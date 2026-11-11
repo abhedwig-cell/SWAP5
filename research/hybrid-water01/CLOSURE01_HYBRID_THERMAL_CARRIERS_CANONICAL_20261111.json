@@ -1,0 +1,65 @@
+{
+  "status": "CANONICALLY_ADMITTED_ACCEPTED_ORIGINAL_WATER_CARRIER_INVENTORY_FULL_ENERGY_OPEN",
+  "pr": 1644,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1644",
+  "qualified_head": "e8484b47b880057f68ee8efb4c79f7dc67f370ab",
+  "base": "a0c07487c944ff7da2a7e3b502aa725f687e480a",
+  "canonical": "937bd93b58ff913fcf9eafa3825a5da07f951513",
+  "tree": "0d8cc745e0e7edbe06b0a7ee55b16cc2c52639b6",
+  "verified_blobs": {
+    "app/hybrid_water/thermal_carriers.py": {
+      "git_blob": "c96178e3d9d4fa84a345f59ef39de50d07361bf9",
+      "canonical_bytes_sha256": "be3b10677406d17f300c0c4d4a39aed67982f91ec654dddb486c2c7d7e9c0e8c",
+      "matches_executed_linux_source": true
+    },
+    "research/hybrid-water01/qualify_original_heat_accounting.py": {
+      "git_blob": "4083d13bd110d48233f37fdfa0c24ac993f5419b",
+      "canonical_bytes_sha256": "830049a903ed5f0a31b003b704d2e0fafc8ad4527ecdab046eb49586c52a0020",
+      "matches_executed_linux_source": true
+    },
+    "research/hybrid-water01/check_thermal_carriers.py": {
+      "git_blob": "1610cf1b3cdafc9ac64824122c9906bdb4f1019d",
+      "canonical_bytes_sha256": "756fb9d690f57526a66185a4cdf4234a232c04fe9253c6fbd812b63c801f8c3e",
+      "matches_executed_linux_source": true
+    },
+    "research/hybrid-water01/thermal-carriers-windows-20261111.tar.xz": {
+      "git_blob": "8897685e9d4a07797be15eb9ab4895fa68305baa",
+      "canonical_bytes_sha256": "2e0c3fbc5efd12c20242004bbe1a7298659b2bf1cd69df417465535b555a8d68"
+    },
+    "research/hybrid-water01/thermal-carriers-linux-20261111.tar.xz": {
+      "git_blob": "b3553dac4a77827f9166cb759a37c1d50a42dcf0",
+      "canonical_bytes_sha256": "6d03dced083e4e18fa4e5e70a44d260eb0e1015da4e695e520b7c47af4d26825"
+    },
+    "research/hybrid-water01/thermal-carriers-linux-ci-20261111.log.gz": {
+      "git_blob": "56e2565c2785052fe2ab0daead40de6a7a8a25d1",
+      "canonical_bytes_sha256": "fa472da3b51490fe3abc0374a6edc9fb72e684eddb31cab8084e1d7aae41fbc5"
+    }
+  },
+  "ci": {
+    "run": 43115292328,
+    "job": 130841606370,
+    "status": "completed",
+    "conclusion": "success",
+    "executed_head": "a913df87c80adaf9efbf363accf57cb2d109f867",
+    "application_qualifier_reader_workflow_dependency_diff": "empty"
+  },
+  "qualification": {
+    "cases": 12,
+    "actual_water_and_heat_steps": 17172,
+    "raw_files": 696,
+    "all_same_platform_original_daily_and_both_native_payloads": "EXACT",
+    "all_source_text_outside_marked_blocks": "EXACT after declared EOL normalization",
+    "all_raw_object_source_and_archive_audits": "PASS",
+    "water_budget_cm": 1e-10,
+    "maximum_actual_nodal_water_residual_cm": 1.6479873021779667e-17,
+    "conduction_budget_J_cm2": 1e-09,
+    "physical_or_numerical_tolerances": "unchanged",
+    "full_energy_balance_complete": false,
+    "full_model_runs_repeated": 0,
+    "functional_project_count": 3,
+    "docs_source_and_strict_build": "PASS",
+    "default_heat_instrument_function_AST": "EXACT inherited PR1643"
+  },
+  "scientific_disposition": "Actual nonzero original incoming water lacks measured thermal donors; macro thermal/domain state and gas carriers are unavailable. Existing conservative-heat request cannot be fully assembled. No inferred temperature/gas/energy compensation or physics repair. Original day188/day584 failed comparisons stay visible.",
+  "next_delivery": "Inspect existing thermal-binding and external daily coupling contracts for a caller-supplied explicit thermal-input handoff with distinct physical-model/input identity and refusal before accepted-state advance. Do not activate a heat solver or repeat full trajectories."
+}

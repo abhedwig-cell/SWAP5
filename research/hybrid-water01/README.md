@@ -2,6 +2,64 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Actual thermal carriers delivered and admitted, 12 November 2026
+
+PR #1644 MERGED at937bd93b58ff913fcf9eafa3825a5da07f951513. Qualified head
+e8484b47b880057f68ee8efb4c79f7dc67f370ab, predicted merge and actual canonical
+share tree0d8cc745e0e7edbe06b0a7ee55b16cc2c52639b6. Six source/raw/log blobs
+match canonical; all three captured Linux application/qualifier/checker source
+byte hashes match canonical Git blobs. Receipt:
+CLOSURE01_HYBRID_THERMAL_CARRIERS_CANONICAL_20261111.json.
+This supersedes earlier NEXT/ACTIVE banners. Every model/compiler/CI/pack/audit/docs
+process is FINISHED. Do not repeat the accepted carrier/conduction experiments.
+
+New opt-in original observation and accepted-day reader expose actual original q,
+root, separate drain-in/out, net matrix/macro, drip, immobile increment and area
+fraction at the identical original heat steps. Actual soil temperatures, water
+states and step clocks match heat observations exactly. No shared src, default
+host, original physics, input, restart layout or tolerance changes. No heat solver
+activation or invented energy boundary. Existing default heat observer function
+is AST-exact to PR1643. Local outflow soil endpoints remain distinct from complete
+integrated advection, unknown external donors and unresolved macro-domain energy.
+
+Windows/Ubuntu26 all6cases each: Hupsel4-to6, Grass2-to4, Andelst2-to4; real
+kernel/storageO0/O2 with originaltemperatureO2. All12 physical daily results and
+both complete native payloads EXACT against their same-platform original
+continuations. Independent raw source/object/checkpoint/state/conduction/storage/
+water audits pass:17172actual steps,696raw files. Maximum nodal water residual
+1.6479873021779667e-17cm against UNCHANGED1e-10cm; heat budget1e-9unchanged.
+Accepted-only support and face/water/nonfinite/clock corruptions pass. Docs source
+check/strict build pass. Linux43115292328/job130841606370 SUCCESS at
+a913df87c80adaf9efbf363accf57cb2d109f867; relevant final dependency diff empty.
+No full model/reference run repeated. Native CPU/isolated native wall and newly
+probed compiler binary identity UNKNOWN; inherited metadata retained separately.
+Compile/link12.5167sWindows/10.3156sLinux. Diagnostics I/O is not a speed benchmark.
+
+SCIENTIFIC DECISION: Hupsel day5 admits2.4cm top water without a measured incoming
+water temperature. Grass also has active top inflow; Andelst additionally has
+unresolved macro thermal/domain state. LinuxAndelst day3 includes1.557112374e-5cm
+bottom inflow, also unavailable thermally. Original heat is conduction-only.
+A complete existing conservative-heat request cannot be assembled from these
+historical inputs. Gas motion is not inferred from theta; air/soil temperatures
+are not measured external liquid donors. Full energy and whole scientific
+equivalence remain OPEN, functional coverage remains3projects. Day188/day584
+failed original comparisons remain visible. No further original heat run can
+measure absent inputs; no residual compensation or tolerance relaxation.
+
+Raw Windows SHA2562e0c3fbc5efd12c20242004bbe1a7298659b2bf1cd69df417465535b555a8d68;
+Linux SHA2566d03dced083e4e18fa4e5e70a44d260eb0e1015da4e695e520b7c47af4d26825.
+Review/contracts/source inventory/raw capsules are under research/hybrid-water01
+on canonical; owner integration/f-ci/HYBRID_THERMAL_CARRIERS_20261111.json.
+
+NEXT independent functional acceptance: inspect the existing production thermal-
+binding owners and generic external daily coupling interface for a bounded caller-
+supplied thermal-input handoff. Preserve explicit corrected physical-model/input
+identity, unavailable/nonfinite/foreign/rejected-input refusal before accepted-state
+advancement and the original forcing route. Use existing types/contracts; no new
+general framework. Do not activate a heat solver or select another full trajectory
+merely because carrier data exist. Complete physical energy requires an explicit
+physical-model and input authority. No new underresolved reference campaign.
+
 ### Original heat-accounting delivered and admitted, 11 November 2026
 
 PR #1643 MERGED at a0c07487c944ff7da2a7e3b502aa725f687e480a.
