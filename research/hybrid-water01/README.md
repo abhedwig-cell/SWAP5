@@ -2,6 +2,36 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Runtime discriminator delivered, 11 November 2026
+
+PR 1630 is merged at f96c9f23ed2234255c0ceeb64e82c3e87f2e77fe.
+Actual whole-tree postimage equals qualified head e76e08811 and the merge
+prediction. No production source, test, builder or original input changed.
+A fresh production O2 four-day Grassgrowth control and diagnostic observer
+both complete 6882 accepted steps. All five physical outputs are byte-exact
+and match the prior retained production-window hashes. Maximum daily water
+residual is 2.257e-14 cm. The read-only archive audit passes input, output,
+raw counter, daily water and uptake bookkeeping checks.
+
+The reported 16000-call prefix has 5333 whole-profile cache hits, but zero
+identical wet-node inputs on 211480 comparable node evaluations during
+profile misses. Do not implement a node-granular cache or repeat this
+hypothesis. Native calls cost 14.25/14.99 seconds; cold compilation costs
+110.71 seconds and link 0.70 seconds. Exact commands, generated observer,
+actual object, manifests, inputs and outputs are retained in the 86 KB
+versioned archive. See CLOSURE01_RUNTIME_CANONICAL_20261111.json.
+
+The repo review also confirms original Grassgrowth SWKIMPL=0 excludes the
+conditional Newton-loop RootExtraction duplicate. Previously investigated
+QROMBD, no-stress bounds and coefficient preparation are not reopened.
+The main remaining runtime target is accepted-step amplification under the
+unchanged thermal budget, rather than another duplicate-call cache.
+Next delivery must reconcile the existing thermal-controller/estimator
+studies and choose one short discriminator for a concrete implementation
+choice. Static selective-step campaigns and full historical reruns remain
+unselected. Full-project runtime parity and whole science are still open.
+
+
 ### TTUTIL build contract admitted, 11 November 2026
 
 Canonical is 3331f860db0cf5208faed99bf505425226d6b0d6 after PR 1629.
