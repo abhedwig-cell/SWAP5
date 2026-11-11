@@ -465,6 +465,10 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
     if checkpoint_enabled:
         control = directory / "swap.swp"
         source = control.read_text(encoding="cp1252")
+        if project==HUPSEL:
+            # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
+            source=replace(source,"'WATBAL,ETTERMS,SOLBAL,GWL,S_CONC'",
+                           "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'")
         source, count = re.subn(r"(?m)^([ \t]*SWENDTYPE[ \t]*=[ \t]*)[12]", r"\g<1>2", source)
         if count > 1:
             raise ValueError("Duplicate restart output setting")
@@ -488,7 +492,10 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
                 shutil.copyfile(start.origin / "macro.bin", directory / "macro-origin.bin")
                 shutil.copyfile(start.origin / "result.end", directory / "restart.end")
             source += "SWINITYPE = 2\n"
-            source += "INIFIL = 'restart.end'\n" if runtime else "INIFIL = '../first/result.end'\n"
+            inifil = "INIFIL = 'restart.end'" if runtime else "INIFIL = '../first/result.end'"
+            source,count=re.subn(r"(?m)^[ \t]*INIFIL[ \t]*=.*$", inifil, source)
+            if count>1:raise ValueError("Duplicate restart input setting")
+            if count==0:source += inifil+"\n"
         control.write_text(source, encoding="cp1252")
 
     if start.variant == "shifted" and project==HUPSEL:
