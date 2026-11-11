@@ -2,6 +2,31 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Active original heat-accounting delivery, 11 November 2026
+
+Current implementation branchcodex/hybrid-heat-accounting at6585e5ffe, based on
+canonicalf5606e455. No prior NEXT banner selects another model run. Original heat
+observation and accepted-only receipt bridge now pass Windows and Ubuntu26 all3
+projects/ledgerO0/O2 with exact physical records and both native payloads. The
+original numerical temperature arithmetic is unchanged outside marked read-only
+observer blocks; existing production whole-column sensible accounting is reused.
+Actual Hupsel gift4-to6 witnesses278 heat steps: conduction max5.74e-13J/cm2,
+but declaring missing mass-carried energy zero yieldsmax3.429J/cm2, far beyond
+unchanged1e-9. Actual storage-owner status3 (incomplete boundary) remains explicit.
+This is an original model-formulation/accounting limitation, not a proven migration
+bug. Whole energy remains OPEN; no automatic compensation or donor temperatures.
+
+Linux43109370745/job130821031484 atb7ca516f6 SUCCESS, unrelated jobs skipped.
+All native/compiler/CI calculations FINISHED. Windows initial HupselO2 source772994f2f
+was inherited while only the other5 cases ran; no accepted full/reference trajectory
+was repeated. Current tasks: lossless raw-proof compaction, independent source/object/
+state/conduction/storage audits, reviewable PR and canonical postimage verification.
+Two archive workers may still run; check them before restarting. Model replay is NOT
+selected. Owning record/recovery on implementation branch:
+integration/f-ci/HYBRID_HEAT_ACCOUNTING_20261111.json.
+Continue to published verified delivery; full-energy qualification stays separate.
+
+
 ### External daily acceptance delivered, 11 November 2026
 
 PR1642 MERGED atf5606e455cf1e558d23e3a0af5b7d8847fbdc954. Qualified head
