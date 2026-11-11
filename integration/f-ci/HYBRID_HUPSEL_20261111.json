@@ -1,5 +1,5 @@
 {
-  "status": "PERSISTED_NOT_YET_TESTED",
+  "status": "O2_REAL_FOUR_DAY_OWN_RESTART_REPEAT_ISOLATION_REFUSAL_PASS",
   "base": "3e0dc5e08c07719a7ac2107d54d7d74f954805f1",
   "scope": "Third project context in the same explicit host; original34nodes/2002calendar, drainage and bottom6, original crop rotation/heat/solute blocks, per-worker native complete restart",
   "invariants": [
@@ -22,5 +22,47 @@
     "new_full_hard_cap_seconds": 180,
     "own_restart_cap_seconds": 60
   },
-  "diagnostic_stop": "Two causal repairs maximum without material progress, then prefer larger intact original state or document the reproducible blocker."
+  "diagnostic_stop": "Two causal repairs maximum without material progress, then prefer larger intact original state or document the reproducible blocker.",
+  "diagnoses": [
+    "Original output controls already define SWENDTYPE/INIFIL: replace rather than duplicate.",
+    "Existing HIGH_PRECISION_REFERENCE output compatibility required: SWMONTH0, NUM_DECIMALS12, remove unavailable scalar S_CONC and request crop outputs. Physical inputs unchanged.",
+    "Original day1 mass defect3.447132371214856e-9 refused by unchanged1e-10. Halving-only candidate used1000002 extra retries/37.14s, still refused. Do not repeat.",
+    "Additional original Newton convergence under the same mass boundary: prefix4 and exact own state/refusal pass, no budget-step retries."
+  ],
+  "selected_full": {
+    "command": "python -B research/hybrid-water01/run_hybrid_grass_full.py --project hupsel --bundle $TEMP/s5-hybrid-hupsel-O2-qualified-20261111 --reference $TEMP/s5-water-integrated-reference --output $TEMP/s5-hybrid-hupsel-full-20261111",
+    "hard_seconds": 180,
+    "expected_seconds": 60,
+    "own_cuts": [
+      [
+        2,
+        4
+      ],
+      [
+        120,
+        122
+      ],
+      [
+        365,
+        367
+      ],
+      [
+        523,
+        526
+      ],
+      [
+        583,
+        585
+      ],
+      [
+        730,
+        732
+      ],
+      [
+        1061,
+        1096
+      ]
+    ],
+    "scope": "New original Hupsel hybrid route with strict water/solute accounting; legacy heat remains outside native heat qualification."
+  }
 }
