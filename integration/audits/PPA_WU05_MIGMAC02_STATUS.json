@@ -65,7 +65,7 @@
   "published_qualified_commit": "f74257be207eb65a8b03136f8ab90c0d809badd0",
   "qualified_tree": "fca26d03d3051d27c45e3eae04d53402f2b91879",
   "kim_saturation_successor_20261111": {
-    "status": "LOCAL_QUALIFIED_CURRENT_LINUX_AND_APPLICATION_GATES_PENDING",
+    "status": "BOUNDED_KIM_ENDPOINT_QUALIFIED_READY_CANONICAL",
     "canonical_base": "37acc6339abace5aea9b066e158d89780dd3647d",
     "production_candidate": "e145622a9b93aac0eee38a40338f6b452bf16ab8",
     "scope": "Exact zero shrinkage at exact saturation on the existing linear KIM branch",
@@ -172,7 +172,35 @@
     },
     "open_experimental_contact": "Original Linux O0 and the O2 diagnostic-only TTUTIL contraction control both reached the same 90-second contact-0 timeout without rollback snapshots. This remains unqualified; no identical replay is selected.",
     "production_ttutil_flags_changed": false,
-    "numerical_tolerances_changed": false
+    "numerical_tolerances_changed": false,
+    "strict_compile_failed_postimage": "b86f81861a9af7d23d6535359bcf6097f33ffd56",
+    "hosted_qualification": {
+      "current_head": "b3278ff2d71917a9a856f5b8ab5c9418656ee9b8",
+      "fci": {
+        "run": 42997105979,
+        "job": 130445299551,
+        "status": "PASS",
+        "scope": "Six O0/O2 production cases and current selector",
+        "selector_o0_o2_sha256": "acf11684bfdeea14bb7f8802dba4e8eb09af09fc9699fcb5efbbadf30e203b22"
+      },
+      "linux_operator_provider": {
+        "run": 42997105211,
+        "job": 130443818351,
+        "runner": "Ubuntu 26.04",
+        "status": "PASS",
+        "scope": "Existing strict MIGMAC02 operator and real provider geometry/two-domain transitions at O0/O2"
+      },
+      "native_application": {
+        "run": 42997105211,
+        "job": 130443818617,
+        "runner": "Ubuntu 24.04 GNU Fortran 13",
+        "status": "PASS",
+        "scope": "Cold O0/O2 numerical/runtime contracts, original Grassgrowth own disk restarts and original Andelst macro restart/atomic refusals"
+      },
+      "queued_unselected_groups_cancelled": 7,
+      "cancellation_grants_pass": false,
+      "final_record_only_commit_skips_duplicate_ci": true
+    }
   },
   "test_selection": {
     "candidate": "52ea0be861636ba60c1d1ca2fcc0d3a0d1f3e198",
@@ -191,5 +219,4 @@
     "full_fci_disposition": "NOT_SELECTED_IMPACT for this bounded endpoint repair; no full omnibus PASS",
     "highest_low_air": "NOT_SELECTED_POLICY"
   }
-
 }
