@@ -24,15 +24,19 @@ def main():
     p.add_argument('--origin', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--nm', type=Path, required=True)
+    p.add_argument('--timeout',type=float,default=120,help='Positive native observation cap in seconds')
     p.add_argument('--stackwalk', action='store_true', help='Resolve first native caller of external-library samples')
     a = p.parse_args()
+    assert 0 < a.timeout <= 120
     assert os.name == 'nt' and struct.calcsize('P') == 8
     sha = lambda f: hashlib.sha256(f.read_bytes()).hexdigest()
     b = json.loads((a.bundle/'BUILD.json').read_text())
     exe = a.bundle/b['executable']
     assert sha(exe) == b['executable_sha256']
     assert all(sha(Path(f)) == h for f,h in b['source_sha256'].items())
-    assert b['grass_numerical_profile'] == 'thermal-subcycle4-1e-5C'
+    profile=b['grass_numerical_profile']
+    assert profile in ('thermal-subcycle4-1e-5C','thermal-subcycle16-1e-5C')
+    selector={'thermal-subcycle4-1e-5C':'thermal-control-4','thermal-subcycle16-1e-5C':'thermal-control-16'}[profile]
     a.output.mkdir()
     for f,h in b['original_inputs_sha256'].items():
         source = a.bundle/'original-interval'/f
@@ -97,11 +101,11 @@ def main():
             if module_name(process,handle,name,len(name)) and module_info(process,handle,c.byref(info),c.sizeof(info)):
                 result.append(dict(path=name.value,base=info.base,size=info.size))
         return result
-    cmd=[str(exe.resolve()),'190','retain-step','100000',str(a.origin.resolve()),'thermal-control-4']
+    cmd=[str(exe.resolve()),'190','retain-step','100000',str(a.origin.resolve()),selector]
     env=os.environ.copy();env['OMP_NUM_THREADS']='1'
     report=dict(executable_sha256=sha(exe),origin_sha256=sha(a.origin),command=cmd,
                 method='Windows x64 primary-thread exclusive RIP samples; nearest defined text symbol; no call-count or inclusive-time claim',
-                interval_seconds=.007,hard_cap_seconds=120)
+                interval_seconds=.007,hard_cap_seconds=a.timeout,numerical_profile=profile)
     (a.output/'LAUNCH.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     counts=Counter();ips=Counter();callers=Counter();thread=None;proc=None;error=None;censored=False;sym_ready=False
     start=time.monotonic()
@@ -136,7 +140,7 @@ def main():
             buffer=c.create_string_buffer(1232+15);aligned=(c.addressof(buffer)+15)&~15
             # Native winnt.h AMD64 CONTEXT: flags at48, Rip at248, aligned16.
             while proc.poll() is None:
-                if time.monotonic()-start>120:
+                if time.monotonic()-start>a.timeout:
                     proc.kill();censored=True;break
                 old=suspend(thread)
                 if old==0xffffffff:

@@ -114,6 +114,12 @@ whole scientific equivalence, complete surface energy and runtime parity.
 The failed original day188 comparison and Hupsel day584 reference limits remain
 visible; prior causal percentages retain their original tested route.
 
+The subsequent [unchanged sixteen-step cost observations](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/research/hybrid-water01/GRASS_SIXTEEN_NATIVE_COST_REVIEW.md)
+retain both exact wet continuations. Waterfilm remains about49percent of native
+caller samples and restricted heat about5percent; the proposed heat-dominance
+hypothesis is rejected. This is attribution and observer preservation, not a
+new speedup or scientific qualification.
+
 ## Measured scope
 
 Fresh checked Windows GNU Fortran16.2 O0/O2 shared-runtime and thermal contracts

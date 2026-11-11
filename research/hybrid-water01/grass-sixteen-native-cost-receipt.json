@@ -1,0 +1,1858 @@
+{
+  "status": "UNCHANGED_SIXTEEN_NATIVE_COST_AND_EXACT_SUFFIX_PASS",
+  "proofs": {
+    "A": {
+      "profile": {
+        "executable_sha256": "c9647b7643f63555ff61404a356f85b551e71852e7debfa0a28e9ba4f69fdb15",
+        "origin_sha256": "e4daaff43887873529821f80b72567f2ca8a15bcb04152a420bf6752d06ea809",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-release-20261111\\swap5_grass_startup.exe",
+          "190",
+          "retain-step",
+          "100000",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-full-20261111\\checkpoint-187.bin",
+          "thermal-control-16"
+        ],
+        "method": "Windows x64 primary-thread exclusive RIP samples; nearest defined text symbol; no call-count or inclusive-time claim",
+        "interval_seconds": 0.007,
+        "hard_cap_seconds": 25.0,
+        "numerical_profile": "thermal-subcycle16-1e-5C",
+        "pid": 31480,
+        "primary_tid": 5384,
+        "initial_thread_count": 4,
+        "modules": [
+          {
+            "path": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-release-20261111\\swap5_grass_startup.exe",
+            "base": 140699224047616,
+            "size": 3846144
+          },
+          {
+            "path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "base": 140706031992832,
+            "size": 2523136
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+            "base": 140706006827008,
+            "size": 831488
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+            "base": 140705983692800,
+            "size": 4198400
+          },
+          {
+            "path": "C:\\WINDOWS\\SYSTEM32\\apphelp.dll",
+            "base": 140705927725056,
+            "size": 651264
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "base": 140705990836224,
+            "size": 1359872
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libgcc_s_seh-1.dll",
+            "base": 140705220853760,
+            "size": 172032
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+            "base": 140703410290688,
+            "size": 3788800
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+            "base": 140705998503936,
+            "size": 770048
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\msvcrt.dll",
+            "base": 140706006040576,
+            "size": 692224
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libquadmath-0.dll",
+            "base": 140705127464960,
+            "size": 430080
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libwinpthread-1.dll",
+            "base": 140705321713664,
+            "size": 90112
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\sechost.dll",
+            "base": 140706031009792,
+            "size": 688128
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\RPCRT4.dll",
+            "base": 140706014429184,
+            "size": 1146880
+          },
+          {
+            "path": "C:\\WINDOWS\\SYSTEM32\\CRYPTBASE.DLL",
+            "base": 140705973272576,
+            "size": 49152
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\bcryptPrimitives.dll",
+            "base": 140705994375168,
+            "size": 704512
+          }
+        ],
+        "status": "SAMPLED",
+        "error": null,
+        "censored": false,
+        "returncode": 0,
+        "wall_seconds": 11.263550600036979,
+        "samples": 1427,
+        "exclusive_counts": [
+          [
+            "EXTERNAL:ucrtbase.dll",
+            995
+          ],
+          [
+            "__mod_oxygen_macro_zero_depth_MOD_oxygen_macro_zero_residual",
+            61
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_MOD_bartholomeus_waterfilm_mvg_integrand",
+            50
+          ],
+          [
+            "EXTERNAL:ntdll.dll",
+            44
+          ],
+          [
+            "__mod_oxygen_macro_zero_depth_MOD_oxygen_macro_zero_depth",
+            43
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_evaluate_devries",
+            27
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_hconduc",
+            18
+          ],
+          [
+            "headcalc_",
+            16
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_solve_tridiagonal",
+            12
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_independent_MOD_trapezoid_refine",
+            11
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_trial_restricted_soil_temperature_single",
+            10
+          ],
+          [
+            "vector_f.2.isra.0",
+            7
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_hydraulic_view_usable",
+            7
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_continuous_conductivity_slope",
+            7
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_advance",
+            7
+          ],
+          [
+            "__mod_bartholomeus_micro_MOD_bartholomeus_micro_concentration",
+            6
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_watcon",
+            5
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_append_accepted_water_flux_substep",
+            5
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_assemble_system",
+            4
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_default_mvg_evaluate_water_content_increment",
+            4
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_default_mvg_evaluate",
+            4
+          ],
+          [
+            "__mod_reference_linear_solver_MOD_reference_tridag",
+            4
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_vg_same_branch_increment",
+            4
+          ],
+          [
+            "__mod_pond_water_temporal_difference_MOD_evaluate_pond_water_temporal_difference",
+            3
+          ],
+          [
+            "__mod_fmr_thermal_substep_receipt_MOD_capture_fmr_thermal_substep",
+            3
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_watcon_increment",
+            3
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_initialize_soil_temperature_state",
+            3
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_macropore_trace_receipt_valid",
+            3
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_moiscap",
+            3
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_log1p",
+            3
+          ],
+          [
+            "__mod_bartholomeus_macro_MOD_bartholomeus_macro_concentration",
+            3
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_weather_surface_temporal_error",
+            2
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_default_mvg_evaluate_demand",
+            2
+          ],
+          [
+            "__mod_bartholomeus_runtime_input_MOD_valid_bartholomeus_runtime_view",
+            2
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_account_external_fluxes",
+            2
+          ],
+          [
+            "exp",
+            2
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_expm1",
+            2
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_independent_MOD_bartholomeus_waterfilm_mvg_independent",
+            2
+          ],
+          [
+            "__mod_b110_dynamic_top_boundary_provider_MOD_validate_request",
+            2
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_accepted_water_flux_trace_covers",
+            2
+          ],
+          [
+            "jacobian_f.1",
+            2
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_provider_MOD_evaluate_bartholomeus_waterfilm",
+            2
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_evaluate_b110_default_mvg_conductivity",
+            2
+          ],
+          [
+            "__mod_reference_richards_legacy_binding_MOD_reference_richards_legacy_solve",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_copy_b110_physical_state",
+            1
+          ],
+          [
+            "__mod_b111_profile_groundwater_projection_MOD_evaluate_b111_profile_groundwater_projection",
+            1
+          ],
+          [
+            "__mod_drainage_dramet3_response_MOD_dramet3_control_ready",
+            1
+          ],
+          [
+            "__mod_fmr_drainage_response_binding_MOD_evaluate_fmr_drainage_response_bottom_lumped",
+            1
+          ],
+          [
+            "__mod_b110_source_sink_provider_MOD_bind_b110_source_sink_provider",
+            1
+          ],
+          [
+            "__mod_drainage_spatial_distribution_MOD_distribute_single_level_signed_divdra",
+            1
+          ],
+          [
+            "swap5_restart_crc32",
+            1
+          ],
+          [
+            "EXTERNAL:libgfortran-5.dll",
+            1
+          ],
+          [
+            "__mod_root_uptake_oxygen_composition_MOD_compose_root_sink_with_oxygen_factor",
+            1
+          ],
+          [
+            "__mod_reference_richards_state_binding_MOD_initialize_reference_state_binding",
+            1
+          ],
+          [
+            "__mod_root_water_uptake_process_MOD_evaluate_macro_feddes_drought_uptake",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_water_flux_temporal_assessment",
+            1
+          ],
+          [
+            "memcpy",
+            1
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_copy_soil_temperature_profile",
+            1
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_trial_restricted_soil_temperature",
+            1
+          ],
+          [
+            "matrix_fraction.13.isra.0",
+            1
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_independent_MOD_trapezoid_level",
+            1
+          ],
+          [
+            "memset",
+            1
+          ],
+          [
+            "__mod_drainage_spatial_distribution_MOD_valid_parameters",
+            1
+          ],
+          [
+            "__mod_bartholomeus_response_MOD_residual",
+            1
+          ],
+          [
+            "__mod_bartholomeus_response_assembly_MOD_assemble_bartholomeus_response_inputs",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_water_temporal_error",
+            1
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_resolve_b111_surface_temperature",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_backend_run_trial",
+            1
+          ],
+          [
+            "__mod_reference_linear_solver_MOD_require_vector_sizes",
+            1
+          ],
+          [
+            "__mod_bartholomeus_temperature_MOD_bartholomeus_temperature_parameters",
+            1
+          ],
+          [
+            "__mod_reference_richards_workspace_MOD_ensure_reference_workspace_shape",
+            1
+          ]
+        ],
+        "instruction_pointer_counts": {
+          "0x7ff8ad241f14": 1,
+          "0x7ff8ad241dd4": 3,
+          "0x7ff8ad2427f4": 8,
+          "0x7ff8aa9feda1": 5,
+          "0x7ff8aa9fef2f": 36,
+          "0x7ff8aa9fef64": 6,
+          "0x7ff8aa9fedff": 14,
+          "0x7ff8aa9fee33": 15,
+          "0x7ff8aa9fef5b": 13,
+          "0x7ff8aa9fee53": 4,
+          "0x7ff8aa9fee5a": 8,
+          "0x7ff8aa9ff061": 33,
+          "0x7ff8aa9fef74": 13,
+          "0x7ff8ad1128f4": 1,
+          "0x7ff8aa9fee44": 6,
+          "0x7ff7175270b5": 8,
+          "0x7ff8aa9fee37": 21,
+          "0x7ff8aa9fef37": 38,
+          "0x7ff8aa9ff065": 30,
+          "0x7ff8aa9fed84": 10,
+          "0x7ff717526ec1": 1,
+          "0x7ff8aa9fedbf": 1,
+          "0x7ff8aa9fef78": 35,
+          "0x7ff8aa9fee4f": 44,
+          "0x7ff717671785": 1,
+          "0x7ff8aa9fef1b": 36,
+          "0x7ff71745f3e5": 1,
+          "0x7ff8aa9fed27": 14,
+          "0x7ff71745e254": 7,
+          "0x7ff71745d643": 1,
+          "0x7ff8aa9fef03": 84,
+          "0x7ff717468a79": 1,
+          "0x7ff71746737d": 1,
+          "0x7ff717525368": 33,
+          "0x7ff8aa9fe99a": 4,
+          "0x7ff7174667c8": 1,
+          "0x7ff717525004": 1,
+          "0x7ff717467e4d": 1,
+          "0x7ff8aa9fef17": 29,
+          "0x7ff71767ba10": 2,
+          "0x7ff8aa9fed6d": 18,
+          "0x7ff8aa9feef7": 32,
+          "0x7ff7175252c6": 5,
+          "0x7ff8aa9fef27": 26,
+          "0x7ff717508711": 1,
+          "0x7ff7175272c8": 2,
+          "0x7ff8aa9fe9e1": 4,
+          "0x7ff8aa9fef1f": 31,
+          "0x7ff8aa9fee27": 6,
+          "0x7ff8aa9fed62": 1,
+          "0x7ff717682d14": 1,
+          "0x7ff71763ba42": 1,
+          "0x7ff8aa9fedd3": 16,
+          "0x7ff71752703b": 7,
+          "0x7ff71751da0d": 1,
+          "0x7ff8aa9fe9ad": 9,
+          "0x7ff8aa9fef70": 8,
+          "0x7ff8aa9fef0b": 39,
+          "0x7ff8aa9fed71": 5,
+          "0x7ff8aa9fee7f": 6,
+          "0x7ff71745e1e4": 3,
+          "0x7ff8aa9fed69": 1,
+          "0x7ff7174667c0": 2,
+          "0x7ff8aaa8e5b1": 1,
+          "0x7ff71745eb39": 2,
+          "0x7ff717527099": 6,
+          "0x7ff71746771a": 1,
+          "0x7ff8aaa481b9": 2,
+          "0x7ff7174dd8c0": 1,
+          "0x7ff7175270c1": 8,
+          "0x7ff8aa9fe9fe": 8,
+          "0x7ff717541beb": 1,
+          "0x7ff717494dec": 1,
+          "0x7ff717527368": 4,
+          "0x7ff8aaa8e4bc": 3,
+          "0x7ff8aa9fee3c": 18,
+          "0x7ff8aa9fedae": 8,
+          "0x7ff8aa9fed7f": 2,
+          "0x7ff71745eb18": 4,
+          "0x7ff71745d497": 1,
+          "0x7ff71745d406": 1,
+          "0x7ff8aa9fee4a": 1,
+          "0x7ff8aa9fedf3": 15,
+          "0x7ff71752554b": 7,
+          "0x7ff8aa9fe9bf": 1,
+          "0x7ff717467eb8": 1,
+          "0x7ff7174667d0": 6,
+          "0x7ff717466d56": 1,
+          "0x7ff7174668c0": 1,
+          "0x7ff7174676c6": 1,
+          "0x7ff8aa9feefb": 7,
+          "0x7ff8aa9a50e8": 1,
+          "0x7ff8aaa8e458": 1,
+          "0x7ff8aaa8e4ce": 1,
+          "0x7ff8aaa8e451": 1,
+          "0x7ff717466ff5": 1,
+          "0x7ff7175272ce": 9,
+          "0x7ff71745d746": 1,
+          "0x7ff717682633": 1,
+          "0x7ff8aa9fed58": 9,
+          "0x7ff71745eb59": 1,
+          "0x7ff8aa9fedcf": 1,
+          "0x7ff717466882": 1,
+          "0x7ff7175270bd": 8,
+          "0x7ff7174f0e78": 1,
+          "0x7ff717526fe9": 1,
+          "0x7ff8aaa484af": 10,
+          "0x7ff717668c3a": 1,
+          "0x7ff71745a52c": 2,
+          "0x7ff7174678e7": 3,
+          "0x7ff7174674fb": 1,
+          "0x7ff717626104": 1,
+          "0x7ff8aa9fe9aa": 4,
+          "0x7ff71766e375": 1,
+          "0x7ff717689ed0": 1,
+          "0x7ff8ad1af3e2": 2,
+          "0x7ff71752530f": 2,
+          "0x7ff71752706b": 7,
+          "0x7ff8aaa4903b": 1,
+          "0x7ff71746781c": 1,
+          "0x7ff8aa9ff08e": 14,
+          "0x7ff8aa9fed1a": 6,
+          "0x7ff7175270b1": 6,
+          "0x7ff8aa9fed95": 2,
+          "0x7ff71752736e": 7,
+          "0x7ff71745e294": 3,
+          "0x7ff7175272e7": 5,
+          "0x7ff8aaa48494": 5,
+          "0x7ff7176bc3b0": 2,
+          "0x7ff8aa9fe9b1": 1,
+          "0x7ff8aaa4846e": 2,
+          "0x7ff717527088": 6,
+          "0x7ff8aa9fe9d1": 2,
+          "0x7ff71762660e": 1,
+          "0x7ff8ad1072a7": 1,
+          "0x7ff717543ccc": 1,
+          "0x7ff8aa9fee73": 7,
+          "0x7ff71752734a": 1,
+          "0x7ff8ad107614": 1,
+          "0x7ff717527319": 3,
+          "0x7ff717525351": 2,
+          "0x7ff8aa9fe9d7": 8,
+          "0x7ff71746660c": 1,
+          "0x7ff8aaa4849d": 5,
+          "0x7ff7175252ee": 4,
+          "0x7ff717527358": 3,
+          "0x7ff717525364": 2,
+          "0x7ff7175272ef": 1,
+          "0x7ff8aaa481b2": 9,
+          "0x7ff8aaa8e4f6": 1,
+          "0x7ff8aaa484a6": 10,
+          "0x7ff7174eb95c": 1,
+          "0x7ff7174676ed": 1,
+          "0x7ff8aaa481a4": 1,
+          "0x7ff8aa9fede3": 1,
+          "0x7ff71745e387": 1,
+          "0x7ff717467315": 1,
+          "0x7ff71746669e": 1,
+          "0x7ff8aa9fed49": 2,
+          "0x7ff717466700": 1,
+          "0x7ff717525640": 1,
+          "0x7ff71762de85": 1,
+          "0x7ff717527323": 2,
+          "0x7ff717527585": 1,
+          "0x7ff71768479f": 1,
+          "0x7ff8aa9fecdb": 3,
+          "0x7ff8aaa4848b": 3,
+          "0x7ff8aa9fee23": 5,
+          "0x7ff8aa9fee2f": 9,
+          "0x7ff8aaa484db": 14,
+          "0x7ff8aa9aada0": 2,
+          "0x7ff8aaa481a8": 3,
+          "0x7ff71745e198": 1,
+          "0x7ff7175346b2": 1,
+          "0x7ff717466734": 2,
+          "0x7ff8aa9fea03": 1,
+          "0x7ff717525537": 3,
+          "0x7ff717467350": 1,
+          "0x7ff717526f61": 1,
+          "0x7ff8aaa48409": 3,
+          "0x7ff8aa9fed9d": 5,
+          "0x7ff7175254ba": 1,
+          "0x7ff8ad107413": 1,
+          "0x7ff717466d81": 1,
+          "0x7ff8aaa48416": 2,
+          "0x7ff71746704d": 1,
+          "0x7ff8ad112efc": 3,
+          "0x7ff8aaa4843a": 2,
+          "0x7ff8ad1128b5": 1,
+          "0x7ff8aa9fedcb": 4,
+          "0x7ff71745e1f4": 2,
+          "0x7ff8aaa166e9": 2,
+          "0x7ff8aa9fed41": 2,
+          "0x7ff71766b068": 1,
+          "0x7ff717525717": 1,
+          "0x7ff7174676e3": 1,
+          "0x7ff71768b244": 1,
+          "0x7ff8aa9fe9b4": 3,
+          "0x7ff71745e226": 2,
+          "0x7ff7176832f0": 1,
+          "0x7ff7174665ce": 1,
+          "0x7ff71762f0c4": 1,
+          "0x7ff7174e8f08": 1,
+          "0x7ff717670ae2": 1,
+          "0x7ff71767f188": 1,
+          "0x7ff8aaa484d5": 5,
+          "0x7ff8aa9feda9": 8,
+          "0x7ff8ad1073aa": 1,
+          "0x7ff717684b84": 1,
+          "0x7ff8aaa166eb": 3,
+          "0x7ff71762c6d1": 1,
+          "0x7ff8ad1127b1": 1,
+          "0x7ff71745e288": 2,
+          "0x7ff8aa9a50ce": 1,
+          "0x7ff71746773e": 1,
+          "0x7ff717466600": 1,
+          "0x7ff71745e220": 1,
+          "0x7ff8ad112fd3": 1,
+          "0x7ff717495173": 1,
+          "0x7ff8aaa8e4b7": 1,
+          "0x7ff717526e84": 1,
+          "0x7ff71745fc8a": 1,
+          "0x7ff8aaa166e6": 1,
+          "0x7ff810ea927b": 1,
+          "0x7ff71745d3e9": 4,
+          "0x7ff717527315": 1,
+          "0x7ff71766c1bc": 1,
+          "0x7ff7175252ea": 1,
+          "0x7ff71745d8dc": 1,
+          "0x7ff8aa9fee78": 1,
+          "0x7ff8ad1af3e5": 1,
+          "0x7ff8ad242114": 3,
+          "0x7ff8aaa8e2bb": 2,
+          "0x7ff71752a02b": 1,
+          "0x7ff8aaa484cf": 3,
+          "0x7ff717626244": 1,
+          "0x7ff71745f3f5": 2,
+          "0x7ff8ad112e3c": 1,
+          "0x7ff8aa9ff06b": 1,
+          "0x7ff8aa9fee2b": 5,
+          "0x7ff717526e03": 1,
+          "0x7ff71767c727": 1,
+          "0x7ff8aa9fede7": 2,
+          "0x7ff71767b957": 1,
+          "0x7ff71745d486": 1,
+          "0x7ff71767b94f": 1,
+          "0x7ff8aa9fe9dd": 1,
+          "0x7ff7176836ed": 1,
+          "0x7ff8aa9fee7c": 2,
+          "0x7ff7174f439a": 1,
+          "0x7ff71746ea64": 1,
+          "0x7ff71745f4c5": 1,
+          "0x7ff717466ec6": 1,
+          "0x7ff8ad1072fc": 1,
+          "0x7ff717628232": 2,
+          "0x7ff8ad107311": 1,
+          "0x7ff7174f0e8e": 1,
+          "0x7ff717466f86": 1,
+          "0x7ff717526f08": 1,
+          "0x7ff717668e1f": 1,
+          "0x7ff717672f21": 1,
+          "0x7ff7176bc378": 1,
+          "0x7ff8aa9fe995": 1,
+          "0x7ff717527678": 1,
+          "0x7ff717467ea4": 1,
+          "0x7ff7174e8ef6": 1,
+          "0x7ff8aaa48430": 1,
+          "0x7ff717468124": 1,
+          "0x7ff71745d3f6": 2,
+          "0x7ff71767dce1": 1,
+          "0x7ff8aa9aad88": 1,
+          "0x7ff717689e9c": 1,
+          "0x7ff71745d7d3": 1,
+          "0x7ff71745f29d": 1,
+          "0x7ff717466e08": 2,
+          "0x7ff71745a003": 1,
+          "0x7ff8aa9feeff": 1,
+          "0x7ff7174605cc": 1,
+          "0x7ff717527037": 1,
+          "0x7ff8aaa8e58b": 1,
+          "0x7ff8ad107384": 1,
+          "0x7ff717525e7f": 1,
+          "0x7ff71745e29e": 1,
+          "0x7ff71745f62c": 2,
+          "0x7ff71767a7b9": 1,
+          "0x7ff71745a401": 1,
+          "0x7ff8ad112755": 1,
+          "0x7ff71767ddc5": 1,
+          "0x7ff7176885d4": 1,
+          "0x7ff71745e334": 1,
+          "0x7ff8aaa8e4c1": 1,
+          "0x7ff71745d3c0": 1,
+          "0x7ff8aa9fedef": 1,
+          "0x7ff8aaa484ea": 2,
+          "0x7ff8aa9fed21": 1,
+          "0x7ff71752540d": 1,
+          "0x7ff8ad112dbd": 1,
+          "0x7ff71766587e": 1,
+          "0x7ff8aaa48462": 4,
+          "0x7ff71745d4c0": 1,
+          "0x7ff71762687d": 1,
+          "0x7ff7174dd858": 1,
+          "0x7ff717525000": 1,
+          "0x7ff717467e30": 1,
+          "0x7ff7176268f1": 1,
+          "0x7ff71752532a": 1,
+          "0x7ff71767c1b9": 1,
+          "0x7ff8ad112023": 1,
+          "0x7ff8aa9fed52": 2,
+          "0x7ff717525d8d": 1,
+          "0x7ff71745e25c": 1,
+          "0x7ff717466d2c": 1,
+          "0x7ff717527084": 1,
+          "0x7ff8aaa8e4e6": 2,
+          "0x7ff71767bfff": 1,
+          "0x7ff7174673a2": 1,
+          "0x7ff8aaa8e4c6": 1,
+          "0x7ff717466988": 1,
+          "0x7ff7176bc2b0": 1,
+          "0x7ff717466fc0": 1,
+          "0x7ff8aa9fef13": 1,
+          "0x7ff717531753": 1,
+          "0x7ff71745e21c": 1,
+          "0x7ff717527e49": 1,
+          "0x7ff7174669b6": 1,
+          "0x7ff717527013": 2,
+          "0x7ff717665e63": 1,
+          "0x7ff8ad241e54": 1,
+          "0x7ff8ad242234": 1,
+          "0x7ff7175274c4": 1,
+          "0x7ff717689e7d": 1,
+          "0x7ff8aaa484aa": 1,
+          "0x7ff7174669be": 1,
+          "0x7ff717528947": 1,
+          "0x7ff717672378": 1,
+          "0x7ff717468df2": 1,
+          "0x7ff71745ddd5": 1,
+          "0x7ff717684182": 1,
+          "0x7ff8ad10730d": 1,
+          "0x7ff8aa9fe99f": 1,
+          "0x7ff717468f74": 1,
+          "0x7ff7175270d6": 1,
+          "0x7ff71749516d": 1,
+          "0x7ff717467913": 1,
+          "0x7ff8ad1120bb": 1,
+          "0x7ff71765b38d": 1,
+          "0x7ff71768006a": 1,
+          "0x7ff7174efa01": 1,
+          "0x7ff717466856": 1,
+          "0x7ff717527307": 1,
+          "0x7ff71745d3e0": 1,
+          "0x7ff71745fc92": 2,
+          "0x7ff7175251ac": 1,
+          "0x7ff71762deef": 1,
+          "0x7ff717684ea9": 1,
+          "0x7ff7174eeb02": 1,
+          "0x7ff7174674e9": 1,
+          "0x7ff71752733e": 2,
+          "0x7ff8aaa8e5bf": 1,
+          "0x7ff717527017": 1,
+          "0x7ff71745e218": 1,
+          "0x7ff717683682": 1,
+          "0x7ff8ad112e45": 1,
+          "0x7ff7175273d0": 1,
+          "0x7ff7174f1009": 2,
+          "0x7ff71762dede": 1,
+          "0x7ff8ad112e1b": 1,
+          "0x7ff717466682": 1,
+          "0x7ff8aa9fe9cd": 1,
+          "0x7ff7174dda40": 1,
+          "0x7ff71767ef49": 1,
+          "0x7ff8ad2426b4": 1,
+          "0x7ff8ad154b38": 1
+        },
+        "external_first_native_caller_counts": [
+          [
+            "__mod_bartholomeus_waterfilm_MOD_bartholomeus_waterfilm_mvg_integrand",
+            663
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_watcon",
+            91
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_hconduc",
+            87
+          ],
+          [
+            "__mod_oxygen_macro_zero_depth_MOD_oxygen_macro_zero_residual",
+            82
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_moiscap",
+            18
+          ],
+          [
+            "NO_NATIVE_FRAME_WITHIN8",
+            13
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_vg_same_branch_increment",
+            11
+          ],
+          [
+            "__mod_bartholomeus_micro_MOD_bartholomeus_micro_concentration",
+            11
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_append_accepted_water_flux_substep",
+            6
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_trial_restricted_soil_temperature",
+            6
+          ],
+          [
+            "__mod_bartholomeus_macro_MOD_bartholomeus_macro_concentration",
+            6
+          ],
+          [
+            "headcalc_",
+            5
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_materialize_accepted_water_flux_trace",
+            5
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_advance",
+            5
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_backend_observation",
+            4
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_copy_soil_temperature_profile.part.0.constprop.0",
+            3
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_provider_MOD_evaluate_bartholomeus_waterfilm",
+            3
+          ],
+          [
+            "rdtmp1_",
+            2
+          ],
+          [
+            "MAIN__",
+            2
+          ],
+          [
+            "__mod_fmr_drainage_response_binding_MOD_evaluate_fmr_drainage_response_bottom_lumped",
+            2
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_configure_parameters",
+            2
+          ],
+          [
+            "__mod_bartholomeus_temperature_MOD_bartholomeus_temperature_parameters",
+            2
+          ],
+          [
+            "publish.constprop.0",
+            2
+          ],
+          [
+            "rddata_",
+            1
+          ],
+          [
+            "__mod_bartholomeus_soil_diffusivity_MOD_bartholomeus_soil_diffusivity",
+            1
+          ],
+          [
+            "__mod_fmr_bartholomeus_execution_MOD_fmr_apply_bartholomeus_to_root_sink",
+            1
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_initialize_soil_temperature_state",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_end_scratch_scope",
+            1
+          ],
+          [
+            "__mod_root_uptake_oxygen_composition_MOD_compose_root_sink_with_oxygen_factor",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_backend_run_trial",
+            1
+          ],
+          [
+            "__mod_bartholomeus_microbial_MOD_bartholomeus_microbial_respiration",
+            1
+          ],
+          [
+            "__mod_grass_prefix_restart_file_MOD_file_text",
+            1
+          ]
+        ],
+        "sampler_sha256": "777a731333ac29cb215f28f8864b182660b48ac327b9cbed6fbc2e552dee1642"
+      },
+      "audit": {
+        "days": [
+          188,
+          190
+        ],
+        "accepted_steps": 2310,
+        "maximum_daily_water_residual_cm": 2.9531932455029164e-14,
+        "cumulative_water_residual_cm": -3.1530333899354446e-14,
+        "maximum_uptake_attribution_residual_cm": 4.85722573273506e-17,
+        "cumulative_conductive_residual_j_cm2": 2.05631067728973e-11,
+        "maximum_daily_conductive_residual_j_cm2": 6.922959983057808e-10,
+        "maximum_substep_conductive_residual_j_cm2": 3.054238459365699e-11,
+        "output_sha256": {
+          "budget.csv": "a801168aaadf12b1ce96637fc2c21af48ee6edf47d1ca377c489be7eef3dc5dd",
+          "conductive_budget.csv": "2d0e6e162c3f2587fe68815a6ddbab2555ff0cdc0cd910c0607007e474f23f67",
+          "crop.csv": "37f2d1520e43228365220a1c3a24e5ddde8ed1cc68bb75617388069a905b4273",
+          "checkpoint.bin": "a878a8a4ab3c0092573d18304b7d700086bb81859fef9217064b4e041dbf7061",
+          "state.csv": "53a97b1db4f1e70a7c23aac64ae56abd077c0ad758e4d5b31c241bb819646b7e",
+          "endpoint.csv": "6096e68ec2dc4c367936020e5cadd5c141f4aa11ff1be488776793667a4da002"
+        }
+      },
+      "summary": {
+        "samples": 1427,
+        "wall_seconds": 11.263550600036979,
+        "waterfilm_samples": 713,
+        "waterfilm_percent": 49.964961457603366,
+        "restricted_heat_samples": 68,
+        "restricted_heat_percent": 4.765241765942537
+      }
+    },
+    "B": {
+      "profile": {
+        "executable_sha256": "c9647b7643f63555ff61404a356f85b551e71852e7debfa0a28e9ba4f69fdb15",
+        "origin_sha256": "e4daaff43887873529821f80b72567f2ca8a15bcb04152a420bf6752d06ea809",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-release-20261111\\swap5_grass_startup.exe",
+          "190",
+          "retain-step",
+          "100000",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-full-20261111\\checkpoint-187.bin",
+          "thermal-control-16"
+        ],
+        "method": "Windows x64 primary-thread exclusive RIP samples; nearest defined text symbol; no call-count or inclusive-time claim",
+        "interval_seconds": 0.007,
+        "hard_cap_seconds": 25.0,
+        "numerical_profile": "thermal-subcycle16-1e-5C",
+        "pid": 20360,
+        "primary_tid": 20716,
+        "initial_thread_count": 4,
+        "modules": [
+          {
+            "path": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-sixteen-release-20261111\\swap5_grass_startup.exe",
+            "base": 140699224047616,
+            "size": 3846144
+          },
+          {
+            "path": "C:\\WINDOWS\\SYSTEM32\\ntdll.dll",
+            "base": 140706031992832,
+            "size": 2523136
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\KERNEL32.DLL",
+            "base": 140706006827008,
+            "size": 831488
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\KERNELBASE.dll",
+            "base": 140705983692800,
+            "size": 4198400
+          },
+          {
+            "path": "C:\\WINDOWS\\SYSTEM32\\apphelp.dll",
+            "base": 140705927725056,
+            "size": 651264
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\ucrtbase.dll",
+            "base": 140705990836224,
+            "size": 1359872
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libgfortran-5.dll",
+            "base": 140703410290688,
+            "size": 3788800
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libgcc_s_seh-1.dll",
+            "base": 140705220853760,
+            "size": 172032
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\ADVAPI32.dll",
+            "base": 140705998503936,
+            "size": 770048
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\msvcrt.dll",
+            "base": 140706006040576,
+            "size": 692224
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libquadmath-0.dll",
+            "base": 140705127464960,
+            "size": 430080
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\sechost.dll",
+            "base": 140706031009792,
+            "size": 688128
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\RPCRT4.dll",
+            "base": 140706014429184,
+            "size": 1146880
+          },
+          {
+            "path": "C:\\msys64\\ucrt64\\bin\\libwinpthread-1.dll",
+            "base": 140705321713664,
+            "size": 90112
+          },
+          {
+            "path": "C:\\WINDOWS\\SYSTEM32\\CRYPTBASE.DLL",
+            "base": 140705973272576,
+            "size": 49152
+          },
+          {
+            "path": "C:\\WINDOWS\\System32\\bcryptPrimitives.dll",
+            "base": 140705994375168,
+            "size": 704512
+          }
+        ],
+        "status": "SAMPLED",
+        "error": null,
+        "censored": false,
+        "returncode": 0,
+        "wall_seconds": 10.699024199973792,
+        "samples": 1399,
+        "exclusive_counts": [
+          [
+            "EXTERNAL:ucrtbase.dll",
+            942
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_MOD_bartholomeus_waterfilm_mvg_integrand",
+            62
+          ],
+          [
+            "EXTERNAL:ntdll.dll",
+            54
+          ],
+          [
+            "__mod_oxygen_macro_zero_depth_MOD_oxygen_macro_zero_residual",
+            52
+          ],
+          [
+            "__mod_oxygen_macro_zero_depth_MOD_oxygen_macro_zero_depth",
+            38
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_evaluate_devries",
+            27
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_hconduc",
+            24
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_solve_tridiagonal",
+            23
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_independent_MOD_trapezoid_refine",
+            15
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_watcon",
+            12
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_vg_same_branch_increment",
+            11
+          ],
+          [
+            "headcalc_",
+            9
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_advance",
+            8
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_assemble_system",
+            7
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_continuous_conductivity_slope",
+            6
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_moiscap",
+            6
+          ],
+          [
+            "vector_f.2.isra.0",
+            6
+          ],
+          [
+            "__mod_drainage_spatial_distribution_MOD_valid_parameters",
+            5
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_hydraulic_view_usable",
+            5
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_trial_restricted_soil_temperature_single",
+            5
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_append_accepted_water_flux_substep",
+            5
+          ],
+          [
+            "__mod_bartholomeus_micro_MOD_bartholomeus_micro_concentration",
+            4
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_independent_MOD_bartholomeus_waterfilm_mvg_independent",
+            4
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_weather_surface_temporal_error",
+            4
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_watcon_increment",
+            4
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_trial_restricted_soil_temperature",
+            3
+          ],
+          [
+            "jacobian_f.1",
+            3
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_expm1",
+            3
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_provider_MOD_evaluate_bartholomeus_waterfilm",
+            3
+          ],
+          [
+            "__mod_reference_linear_solver_MOD_reference_tridag",
+            2
+          ],
+          [
+            "__mod_b111_profile_groundwater_projection_MOD_evaluate_b111_profile_groundwater_projection",
+            2
+          ],
+          [
+            "__mod_b110_source_sink_provider_MOD_bind_b110_source_sink_provider",
+            2
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_default_mvg_evaluate",
+            2
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_resolve_b111_surface_temperature",
+            2
+          ],
+          [
+            "__mod_bartholomeus_temperature_MOD_bartholomeus_temperature_parameters",
+            2
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_default_mvg_evaluate_water_content_increment",
+            2
+          ],
+          [
+            "__mod_b110_dynamic_top_boundary_solver_adapter_MOD_b110_dynamic_solver_top_evaluate",
+            2
+          ],
+          [
+            "__mod_b110_dynamic_top_boundary_provider_MOD_validate_request",
+            2
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_macropore_trace_receipt_valid",
+            1
+          ],
+          [
+            "__mod_restricted_surface_evaporation_MOD_evaluate_boesten_evaporation_reduction",
+            1
+          ],
+          [
+            "hcomean_",
+            1
+          ],
+          [
+            "__mod_reference_richards_legacy_binding_MOD_validate_legacy_request",
+            1
+          ],
+          [
+            "partition.1.constprop.0.isra.0",
+            1
+          ],
+          [
+            "grid_disnod.9.isra.0",
+            1
+          ],
+          [
+            "__mod_root_water_uptake_process_MOD_valid_parameters",
+            1
+          ],
+          [
+            "__mod_drainage_multilevel_aggregation_MOD_aggregate_drainage_levels",
+            1
+          ],
+          [
+            "__mod_b110_serialized_context_binding_MOD_bind_b110_serialized_legacy_context",
+            1
+          ],
+          [
+            "__mod_root_water_uptake_process_MOD_evaluate_macro_feddes_drought_uptake",
+            1
+          ],
+          [
+            "__mod_reference_richards_state_binding_MOD_ensure_shape",
+            1
+          ],
+          [
+            "exp",
+            1
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_soil_temperature_parameters_ready",
+            1
+          ],
+          [
+            "__mod_bartholomeus_profile_response_MOD_bartholomeus_profile_factors",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_storage",
+            1
+          ],
+          [
+            "__mod_fmr_thermal_substep_receipt_MOD_capture_fmr_thermal_substep",
+            1
+          ],
+          [
+            "__mod_bartholomeus_parameter_contract_MOD_validate_bartholomeus_parameters",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_materialize_accepted_water_flux_trace",
+            1
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_evaluate_b110_default_mvg_conductivity",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_state_matches_numerical_continuation_layout",
+            1
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_log1p",
+            1
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_initialize_soil_temperature_state",
+            1
+          ],
+          [
+            "__mod_b110_source_sink_provider_MOD_b110_source_sink_evaluate",
+            1
+          ],
+          [
+            "__mod_fmr_drainage_response_binding_MOD_fmr_drainage_response_configuration_status",
+            1
+          ],
+          [
+            "__mod_reference_richards_legacy_binding_MOD_reference_richards_legacy_solve",
+            1
+          ],
+          [
+            "__mod_bartholomeus_macro_MOD_bartholomeus_macro_concentration",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_accepted_water_flux_trace_covers",
+            1
+          ],
+          [
+            "__mod_drainage_spatial_distribution_MOD_distribute_single_level_signed_divdra",
+            1
+          ],
+          [
+            "pow",
+            1
+          ],
+          [
+            "__mod_transaction_reference_MOD_publish_local_terminal_sensitivity",
+            1
+          ],
+          [
+            "swap5_restart_crc32",
+            1
+          ]
+        ],
+        "instruction_pointer_counts": {
+          "0x7ff8ad2427f4": 9,
+          "0x7ff8ad241dd4": 3,
+          "0x7ff8ad241e54": 2,
+          "0x7ff8aa9fef1f": 22,
+          "0x7ff8aa9fef78": 29,
+          "0x7ff71745e288": 4,
+          "0x7ff717525368": 38,
+          "0x7ff8aa9fef17": 26,
+          "0x7ff7175270c1": 5,
+          "0x7ff8aa9fedd3": 11,
+          "0x7ff8aa9fef0b": 34,
+          "0x7ff8aa9fef03": 87,
+          "0x7ff8aa9fef27": 28,
+          "0x7ff8aa9fee4f": 52,
+          "0x7ff8aa9fee7f": 7,
+          "0x7ff8aa9fea0a": 6,
+          "0x7ff717526ff1": 2,
+          "0x7ff8aa9fed58": 7,
+          "0x7ff7174f0e8a": 1,
+          "0x7ff71752731d": 2,
+          "0x7ff71751db50": 1,
+          "0x7ff8aa9feef7": 22,
+          "0x7ff8aa9fee3c": 20,
+          "0x7ff8aa9fee44": 10,
+          "0x7ff8aa9fee37": 20,
+          "0x7ff8aa9fef37": 27,
+          "0x7ff8aa9ff08e": 10,
+          "0x7ff8aa9fed1a": 10,
+          "0x7ff717525537": 4,
+          "0x7ff8aa9ff065": 32,
+          "0x7ff7174678e7": 2,
+          "0x7ff8aa9fef2f": 25,
+          "0x7ff7175272ce": 9,
+          "0x7ff717467510": 1,
+          "0x7ff8aa9fed84": 8,
+          "0x7ff8aa9fee2f": 9,
+          "0x7ff71752530f": 6,
+          "0x7ff8aa9feefb": 4,
+          "0x7ff8aa9fee27": 11,
+          "0x7ff8ad112113": 1,
+          "0x7ff71745e254": 7,
+          "0x7ff7174eb552": 1,
+          "0x7ff717467712": 1,
+          "0x7ff717525351": 5,
+          "0x7ff8aa9fe9cd": 3,
+          "0x7ff717527088": 8,
+          "0x7ff71745d8d1": 2,
+          "0x7ff8aa9fef1b": 33,
+          "0x7ff8aa9fedf3": 16,
+          "0x7ff8aa9fee33": 18,
+          "0x7ff71745d3e0": 4,
+          "0x7ff717525534": 1,
+          "0x7ff8aa9fef5b": 10,
+          "0x7ff8aa9fe9aa": 8,
+          "0x7ff8aa9fed52": 3,
+          "0x7ff71752554b": 8,
+          "0x7ff8aa9fee53": 3,
+          "0x7ff8aa9fe9b4": 2,
+          "0x7ff8aa9fed6d": 15,
+          "0x7ff8aa9feda9": 3,
+          "0x7ff8aa9fedae": 5,
+          "0x7ff8aaa166eb": 8,
+          "0x7ff71745d88f": 2,
+          "0x7ff8aaa484a6": 6,
+          "0x7ff8aa9fed71": 3,
+          "0x7ff8aa9fee23": 6,
+          "0x7ff8ad107529": 1,
+          "0x7ff717466606": 1,
+          "0x7ff717466780": 2,
+          "0x7ff717531612": 2,
+          "0x7ff7174667c8": 1,
+          "0x7ff717527358": 3,
+          "0x7ff71745eb59": 1,
+          "0x7ff71746082d": 2,
+          "0x7ff717525364": 2,
+          "0x7ff8aa9ff061": 37,
+          "0x7ff71745e220": 1,
+          "0x7ff8aa9fedcf": 2,
+          "0x7ff717525782": 2,
+          "0x7ff7174667d0": 5,
+          "0x7ff8ad1af3e2": 2,
+          "0x7ff71762660e": 1,
+          "0x7ff717466d56": 1,
+          "0x7ff7175270b5": 8,
+          "0x7ff8aa9fe9fe": 4,
+          "0x7ff71752736e": 8,
+          "0x7ff8aa9fede7": 2,
+          "0x7ff717466791": 2,
+          "0x7ff7176711a6": 1,
+          "0x7ff8aaa484db": 7,
+          "0x7ff8aa9fe9ad": 9,
+          "0x7ff7175252c6": 6,
+          "0x7ff8aaa4849d": 9,
+          "0x7ff8aaa484ea": 3,
+          "0x7ff8aa9fee5a": 13,
+          "0x7ff8ad11155a": 1,
+          "0x7ff7174e8127": 1,
+          "0x7ff717527368": 4,
+          "0x7ff8aa9fedff": 5,
+          "0x7ff8aa9fe9d7": 6,
+          "0x7ff71766ce8d": 1,
+          "0x7ff8aaa48409": 4,
+          "0x7ff7174674e9": 1,
+          "0x7ff717527323": 3,
+          "0x7ff8aa9fed62": 4,
+          "0x7ff71745e27e": 1,
+          "0x7ff71745d497": 10,
+          "0x7ff8aa9fed27": 16,
+          "0x7ff8aa9fef74": 10,
+          "0x7ff8ad0e8660": 1,
+          "0x7ff7175270bd": 1,
+          "0x7ff8ad112018": 1,
+          "0x7ff8aaa8e451": 5,
+          "0x7ff8ad107311": 2,
+          "0x7ff8aaa48475": 1,
+          "0x7ff8aa9feee4": 2,
+          "0x7ff717683098": 2,
+          "0x7ff7175272c8": 2,
+          "0x7ff71767b94f": 1,
+          "0x7ff8aaa4846e": 2,
+          "0x7ff7174668c0": 1,
+          "0x7ff71767d46c": 2,
+          "0x7ff8aa9fe99a": 3,
+          "0x7ff717467900": 1,
+          "0x7ff8aa9fee7c": 5,
+          "0x7ff7175270b1": 6,
+          "0x7ff7175254ba": 1,
+          "0x7ff8aa9fed7f": 4,
+          "0x7ff717527099": 7,
+          "0x7ff8aa9fede3": 1,
+          "0x7ff8aaa484d5": 12,
+          "0x7ff717665fcc": 1,
+          "0x7ff8aaa48447": 1,
+          "0x7ff71752706b": 4,
+          "0x7ff71745256d": 1,
+          "0x7ff717467f4b": 1,
+          "0x7ff8aa9fedcb": 3,
+          "0x7ff717505597": 1,
+          "0x7ff8aaa495a4": 1,
+          "0x7ff8aaa4843a": 3,
+          "0x7ff717670705": 1,
+          "0x7ff71767a875": 1,
+          "0x7ff71752703b": 7,
+          "0x7ff8aaa484af": 7,
+          "0x7ff8aa9fe9e1": 3,
+          "0x7ff8aaa8e4ce": 1,
+          "0x7ff71753161a": 1,
+          "0x7ff8aa9fee4a": 2,
+          "0x7ff8aaa48494": 5,
+          "0x7ff8aaa484bc": 1,
+          "0x7ff8ad242114": 6,
+          "0x7ff8aa9fef64": 7,
+          "0x7ff71767c393": 1,
+          "0x7ff8aaa484ca": 1,
+          "0x7ff7174667c0": 1,
+          "0x7ff71766378b": 1,
+          "0x7ff71746e054": 1,
+          "0x7ff71745eb3d": 1,
+          "0x7ff717466773": 2,
+          "0x7ff71745f29d": 1,
+          "0x7ff8ad112785": 1,
+          "0x7ff8ad107381": 1,
+          "0x7ff717466e97": 1,
+          "0x7ff8aa9fed9d": 6,
+          "0x7ff7175418c4": 1,
+          "0x7ff8aaa48fa1": 1,
+          "0x7ff7174676ed": 3,
+          "0x7ff7174eb7a0": 1,
+          "0x7ff71752532a": 2,
+          "0x7ff8aaa48416": 3,
+          "0x7ff8aa9fee2b": 5,
+          "0x7ff8ad107317": 1,
+          "0x7ff7175252ee": 2,
+          "0x7ff7174665e6": 1,
+          "0x7ff8aa9ff05d": 1,
+          "0x7ff717466692": 1,
+          "0x7ff8ad112efc": 3,
+          "0x7ff71745d491": 1,
+          "0x7ff8ad11213f": 1,
+          "0x7ff7175234c7": 1,
+          "0x7ff71762b8f3": 1,
+          "0x7ff8aa9fe9b1": 1,
+          "0x7ff8ad241e14": 1,
+          "0x7ff8ad2426b4": 1,
+          "0x7ff71745e2e4": 1,
+          "0x7ff717527037": 3,
+          "0x7ff71745dd33": 1,
+          "0x7ff717525f0a": 1,
+          "0x7ff717466e08": 4,
+          "0x7ff8aaa481a8": 3,
+          "0x7ff71766a6ea": 1,
+          "0x7ff71745e1e4": 4,
+          "0x7ff71745e1f4": 1,
+          "0x7ff71762c504": 1,
+          "0x7ff717531780": 1,
+          "0x7ff71766054c": 1,
+          "0x7ff8aaa166e6": 1,
+          "0x7ff717630679": 1,
+          "0x7ff8aa9fedfb": 1,
+          "0x7ff7176876bc": 1,
+          "0x7ff8aaa4848b": 4,
+          "0x7ff8aa9fee73": 10,
+          "0x7ff7174667bc": 1,
+          "0x7ff8aa9fecdb": 2,
+          "0x7ff717466863": 1,
+          "0x7ff71746689c": 1,
+          "0x7ff717525d8d": 1,
+          "0x7ff71762ed06": 1,
+          "0x7ff717466de2": 2,
+          "0x7ff71746eaad": 1,
+          "0x7ff717525121": 1,
+          "0x7ff717467e30": 1,
+          "0x7ff717466de7": 1,
+          "0x7ff71746667e": 1,
+          "0x7ff71745d486": 3,
+          "0x7ff71745d8be": 1,
+          "0x7ff71766dfa9": 1,
+          "0x7ff71745d8c3": 1,
+          "0x7ff71745e1fe": 1,
+          "0x7ff71767c1b9": 1,
+          "0x7ff8aa9fed41": 2,
+          "0x7ff717467556": 1,
+          "0x7ff8aaa484cf": 8,
+          "0x7ff717689f9f": 1,
+          "0x7ff717466772": 1,
+          "0x7ff7175272e7": 1,
+          "0x7ff7174f38bd": 1,
+          "0x7ff717527084": 1,
+          "0x7ff8ad1af3e5": 2,
+          "0x7ff8ad242054": 1,
+          "0x7ff8aa9a50af": 1,
+          "0x7ff7176bc3b0": 1,
+          "0x7ff8aaa484aa": 1,
+          "0x7ff8aaa481b9": 1,
+          "0x7ff8aa9fe9d1": 2,
+          "0x7ff717457fc4": 1,
+          "0x7ff717466f36": 2,
+          "0x7ff717466fc0": 1,
+          "0x7ff71767129d": 1,
+          "0x7ff71745e294": 2,
+          "0x7ff8ad112ea8": 1,
+          "0x7ff8aaa481a0": 1,
+          "0x7ff71745d4c0": 2,
+          "0x7ff7175272ef": 4,
+          "0x7ff717527354": 1,
+          "0x7ff8aaa8dd93": 1,
+          "0x7ff8aa9fecee": 1,
+          "0x7ff8aaa481b2": 2,
+          "0x7ff8aaa48430": 1,
+          "0x7ff717467835": 1,
+          "0x7ff7175292b0": 1,
+          "0x7ff8aaa8e458": 2,
+          "0x7ff717669a36": 1,
+          "0x7ff71746669e": 1,
+          "0x7ff717617046": 1,
+          "0x7ff7175254be": 1,
+          "0x7ff7174667b2": 1,
+          "0x7ff7175256a5": 1,
+          "0x7ff717525705": 1,
+          "0x7ff71745e298": 3,
+          "0x7ff7174f0b08": 1,
+          "0x7ff7174676e3": 1,
+          "0x7ff71745eb3f": 2,
+          "0x7ff8aa9fe9ef": 1,
+          "0x7ff717494487": 1,
+          "0x7ff717467329": 1,
+          "0x7ff717466882": 2,
+          "0x7ff7174667d9": 1,
+          "0x7ff717466502": 1,
+          "0x7ff8aa9fedbf": 1,
+          "0x7ff717467536": 1,
+          "0x7ff7175252da": 1,
+          "0x7ff717466600": 1,
+          "0x7ff8aa9fe9bf": 2,
+          "0x7ff71745f62c": 2,
+          "0x7ff8aa9fe99b": 1,
+          "0x7ff71746660c": 1,
+          "0x7ff717682c06": 1,
+          "0x7ff8ad112db0": 1,
+          "0x7ff7174ea704": 1,
+          "0x7ff71746be27": 1,
+          "0x7ff71745fc92": 1,
+          "0x7ff7174e8d82": 1,
+          "0x7ff717527013": 1,
+          "0x7ff8aa9feda1": 8,
+          "0x7ff71751db80": 1,
+          "0x7ff8aa9fef70": 1,
+          "0x7ff8ad112065": 1,
+          "0x7ff717466ff9": 1,
+          "0x7ff8aa9fee0b": 1,
+          "0x7ff717670ef3": 1,
+          "0x7ff8ad1120f5": 1,
+          "0x7ff717467041": 1,
+          "0x7ff71745dd27": 1,
+          "0x7ff717670f83": 1,
+          "0x7ff717660a86": 1,
+          "0x7ff7176283bc": 1,
+          "0x7ff717460e8b": 1,
+          "0x7ff8ad112ed1": 1,
+          "0x7ff8ad112082": 2,
+          "0x7ff71752516c": 1,
+          "0x7ff7174674f4": 1,
+          "0x7ff717467074": 1,
+          "0x7ff717468fd4": 1,
+          "0x7ff8ad112e66": 1,
+          "0x7ff7174668d8": 1,
+          "0x7ff717639f2c": 1,
+          "0x7ff8ad10739e": 1,
+          "0x7ff7174674fb": 1,
+          "0x7ff7174e9041": 1,
+          "0x7ff8aa9fee78": 1,
+          "0x7ff71752733e": 1,
+          "0x7ff71746788d": 1,
+          "0x7ff71745e2b8": 1,
+          "0x7ff71767ba10": 1,
+          "0x7ff71746753e": 1,
+          "0x7ff8ad2424f4": 1,
+          "0x7ff717466734": 1,
+          "0x7ff71745a524": 1,
+          "0x7ff8ad10730d": 1,
+          "0x7ff71745d3c6": 1,
+          "0x7ff7174eb46d": 1,
+          "0x7ff8aaa48462": 1,
+          "0x7ff8ad112004": 1,
+          "0x7ff7175439d2": 1,
+          "0x7ff8aa9fed95": 1,
+          "0x7ff7176843ba": 1,
+          "0x7ff71745d532": 1,
+          "0x7ff71752701c": 1,
+          "0x7ff717508142": 1,
+          "0x7ff7174ea5e1": 1,
+          "0x7ff71767d48a": 1,
+          "0x7ff717684b8f": 1,
+          "0x7ff717527451": 1,
+          "0x7ff717466ec6": 1,
+          "0x7ff717627a20": 1,
+          "0x7ff71767b96d": 1,
+          "0x7ff71745d4da": 1,
+          "0x7ff71745d3c0": 1,
+          "0x7ff717526f61": 1,
+          "0x7ff71762d05d": 1,
+          "0x7ff7174663bb": 1,
+          "0x7ff717534707": 1,
+          "0x7ff7176bc3e0": 1,
+          "0x7ff7174673a2": 1,
+          "0x7ff8aaa4909d": 1,
+          "0x7ff71745eb1e": 1,
+          "0x7ff717525d70": 1,
+          "0x7ff71745e398": 1,
+          "0x7ff8aaa48459": 1,
+          "0x7ff71767c81f": 1,
+          "0x7ff8aa9fe9f9": 1,
+          "0x7ff7174676f1": 1,
+          "0x7ff717684ecb": 1,
+          "0x7ff717526fed": 1,
+          "0x7ff717531600": 1,
+          "0x7ff717683ec4": 1,
+          "0x7ff71745f3e9": 1,
+          "0x7ff717454775": 1,
+          "0x7ff8ad241f74": 1,
+          "0x7ff71768b23a": 1
+        },
+        "external_first_native_caller_counts": [
+          [
+            "__mod_bartholomeus_waterfilm_MOD_bartholomeus_waterfilm_mvg_integrand",
+            614
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_hconduc",
+            105
+          ],
+          [
+            "__mod_oxygen_macro_zero_depth_MOD_oxygen_macro_zero_residual",
+            81
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_watcon",
+            73
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_moiscap",
+            27
+          ],
+          [
+            "NO_NATIVE_FRAME_WITHIN8",
+            19
+          ],
+          [
+            "__mod_bartholomeus_macro_MOD_bartholomeus_macro_concentration",
+            12
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_materialize_accepted_water_flux_trace",
+            8
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_vg_same_branch_increment",
+            7
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_append_accepted_water_flux_substep",
+            7
+          ],
+          [
+            "__mod_bartholomeus_micro_MOD_bartholomeus_micro_concentration",
+            6
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_backend_observation",
+            4
+          ],
+          [
+            "rdtmp1_",
+            2
+          ],
+          [
+            "__mod_b110_default_mvg_provider_MOD_b110_expm1",
+            2
+          ],
+          [
+            "MAIN__",
+            2
+          ],
+          [
+            "headcalc_",
+            2
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_trial_restricted_soil_temperature",
+            2
+          ],
+          [
+            "__mod_bartholomeus_temperature_MOD_bartholomeus_temperature_parameters",
+            2
+          ],
+          [
+            "__mod_root_uptake_oxygen_composition_MOD_compose_root_sink_with_oxygen_factor",
+            2
+          ],
+          [
+            "__mod_bartholomeus_soil_diffusivity_MOD_bartholomeus_soil_diffusivity",
+            2
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_advance",
+            2
+          ],
+          [
+            "__mod_grass_prefix_restart_file_MOD_file_text",
+            2
+          ],
+          [
+            "rddata_",
+            1
+          ],
+          [
+            "partition.1.constprop.0.isra.0",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_end_scratch_scope",
+            1
+          ],
+          [
+            "__mod_fmr_thermal_substep_receipt_MOD_capture_fmr_thermal_substep",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_fmr_serialized_prepare_interval",
+            1
+          ],
+          [
+            "__mod_bartholomeus_microbial_MOD_bartholomeus_microbial_respiration",
+            1
+          ],
+          [
+            "publish.constprop.0",
+            1
+          ],
+          [
+            "__mod_bartholomeus_runtime_input_MOD_build_bartholomeus_runtime_view",
+            1
+          ],
+          [
+            "__mod_restricted_soil_temperature_MOD_assemble_system",
+            1
+          ],
+          [
+            "__mod_bartholomeus_response_assembly_MOD_assemble_bartholomeus_response_inputs",
+            1
+          ],
+          [
+            "__mod_bartholomeus_waterfilm_provider_MOD_evaluate_bartholomeus_waterfilm",
+            1
+          ],
+          [
+            "__mod_fmr_serialized_reference_backend_MOD_copy_b110_physical_state",
+            1
+          ],
+          [
+            "__mod_soil_temperature_contract_MOD_initialize_soil_temperature_state",
+            1
+          ]
+        ],
+        "sampler_sha256": "777a731333ac29cb215f28f8864b182660b48ac327b9cbed6fbc2e552dee1642"
+      },
+      "audit": {
+        "days": [
+          188,
+          190
+        ],
+        "accepted_steps": 2310,
+        "maximum_daily_water_residual_cm": 2.9531932455029164e-14,
+        "cumulative_water_residual_cm": -3.1530333899354446e-14,
+        "maximum_uptake_attribution_residual_cm": 4.85722573273506e-17,
+        "cumulative_conductive_residual_j_cm2": 2.05631067728973e-11,
+        "maximum_daily_conductive_residual_j_cm2": 6.922959983057808e-10,
+        "maximum_substep_conductive_residual_j_cm2": 3.054238459365699e-11,
+        "output_sha256": {
+          "budget.csv": "a801168aaadf12b1ce96637fc2c21af48ee6edf47d1ca377c489be7eef3dc5dd",
+          "conductive_budget.csv": "2d0e6e162c3f2587fe68815a6ddbab2555ff0cdc0cd910c0607007e474f23f67",
+          "crop.csv": "37f2d1520e43228365220a1c3a24e5ddde8ed1cc68bb75617388069a905b4273",
+          "checkpoint.bin": "a878a8a4ab3c0092573d18304b7d700086bb81859fef9217064b4e041dbf7061",
+          "state.csv": "53a97b1db4f1e70a7c23aac64ae56abd077c0ad758e4d5b31c241bb819646b7e",
+          "endpoint.csv": "6096e68ec2dc4c367936020e5cadd5c141f4aa11ff1be488776793667a4da002"
+        }
+      },
+      "summary": {
+        "samples": 1399,
+        "wall_seconds": 10.699024199973792,
+        "waterfilm_samples": 676,
+        "waterfilm_percent": 48.32022873481058,
+        "restricted_heat_samples": 75,
+        "restricted_heat_percent": 5.36097212294496
+      }
+    }
+  },
+  "total_probe_seconds": 21.96257480001077
+}
