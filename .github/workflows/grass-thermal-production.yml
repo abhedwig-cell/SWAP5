@@ -34,8 +34,11 @@ jobs:
           grass_base=78c8012530b3be14e48edef6fc950e2c09c695ca
           ahl_source=1354f5cad9a4db106db50e4e5d8d6a6ba141bca3
           ahl_exact=false
-          if git merge-base --is-ancestor "$ahl_source" HEAD &&
-             git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; then
+          cache_source=f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
+          if { git merge-base --is-ancestor "$ahl_source" HEAD &&
+               git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$cache_source" HEAD &&
+               git diff --quiet "$cache_source" HEAD -- src app reference tools tests; }; then
             ahl_exact=true
           fi
           if [[ "$ahl_exact" == true ]] || {
