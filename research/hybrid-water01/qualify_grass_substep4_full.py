@@ -70,6 +70,8 @@ def main():
     assert full['requested_days'] == full['completed_days'] == 1827
     assert full['executable_sha256'] == build['executable_sha256']
     assert full['source_sha256'] == build['source_sha256']
+    for name, expected in full['files'].items():
+        assert sha(a.full/name) == expected, name
     assert full['command'][4] == '' and full['command'][-1] == 'thermal-control-4'
     launch = json.loads((a.full/'LAUNCH.json').read_text())
     assert launch['restart_sha256'] is None
@@ -84,6 +86,8 @@ def main():
         assert r['requested_days'] == r['completed_days'] == last
         assert r['executable_sha256'] == build['executable_sha256']
         assert r['source_sha256'] == build['source_sha256']
+        for name, expected in r['files'].items():
+            assert sha(folder/name) == expected, name
         assert r['command'][-1] == 'thermal-control-4'
         origin = a.full/f'checkpoint-{first}.bin'
         assert layout(origin.read_bytes())['clock'] == first
