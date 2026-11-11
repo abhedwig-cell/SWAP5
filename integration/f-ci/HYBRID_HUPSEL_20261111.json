@@ -30,7 +30,7 @@
     "Additional original Newton convergence under the same mass boundary: prefix4 and exact own state/refusal pass, no budget-step retries."
   ],
   "selected_full": {
-    "command": "python -B research/hybrid-water01/run_hybrid_grass_full.py --project hupsel --bundle $TEMP/s5-hybrid-hupsel-O2-cde-20261111 --reference $TEMP/s5-water-integrated-reference --output $TEMP/s5-hybrid-hupsel-full-transport-20261111",
+    "command": "python -B research/hybrid-water01/run_hybrid_grass_full.py --project hupsel --bundle $TEMP/s5-hybrid-hupsel-O2-harvest-20261111 --reference $TEMP/s5-water-integrated-reference --output $TEMP/s5-hybrid-hupsel-full-final-20261111",
     "hard_seconds": 180,
     "expected_seconds": 60,
     "own_cuts": [
@@ -74,5 +74,6 @@
     "scope": "New original Hupsel hybrid route with strict water/solute accounting; legacy heat remains outside native heat qualification."
   },
   "wet_causal_decision": "Original364 refusal0.017299411664cm matches booked runoff. Original linear analytic pond equation removes small-flux branch inconsistency. One extra original Newton residual-polishing iteration preserves all numeric/mass tolerances and avoids receipt rounding at the stopping boundary. Changed-source private120to365 diagnostic passes245days in0.86484s, no ZIP published/rebound; not own-restart qualification. Select fresh same-build full and own restarts.",
-  "solute_causal_decision": "Full polished source failed closed at saline day5: solute3.043907625e-4mg/cm2 while water closed. Original transport applied max(dtmin) after min(remaining), overshooting a short accepted-water endpoint. Reorder existing bounds only in solute_CDE. Private verified4-to6 diagnostic now passes both days in0.20708s; no accepted ZIP rebound/published. Select fresh complete source-bound run with own gift4-to6 and5-to7 added."
+  "solute_causal_decision": "Full polished source failed closed at saline day5: solute3.043907625e-4mg/cm2 while water closed. Original transport applied max(dtmin) after min(remaining), overshooting a short accepted-water endpoint. Reorder existing bounds only in solute_CDE. Private verified4-to6 diagnostic now passes both days in0.20708s; no accepted ZIP rebound/published. Select fresh complete source-bound run with own gift4-to6 and5-to7 added.",
+  "harvest_causal_decision": "Transport-corrected full accepted1095 days then refused1096 with exact0.0312556834429cm retained Rutter stock also booked as harvest capacity loss. Original interception(task3) adds stock to loss but never empties it. Empty stock/capacity immediately after its unchanged original transfer. Private verified1061to1096 diagnostic35days/0.39717s PASS; no package rebound/published. Select final fresh same-build complete and nine own windows."
 }
