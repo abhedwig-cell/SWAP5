@@ -71,6 +71,16 @@ runtime parity or new complete historical trajectories. The day188/day584 and
 whole-energy scientific limits remain separate; existing full execution receipts
 retain their original exact source/build scope.
 
+The subsequent [complete four-step execution](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/research/hybrid-water01/GRASS_SUBSTEP4_FULL_REVIEW.md)
+uses the unchanged canonical implementation at `c3c99cb6c` and all five original
+input files. Its production O2 trajectory completes1827 days in2527.475seconds
+with1,016,128 accepted water steps. All daily water, uptake and conductive
+assertions pass, and four fresh own-process restart windows reproduce every
+suffix record and checkpoint exactly. The cumulative stock-flux water residual
+is1.066e-14cm. The retained archive independently re-audits exactly. Its explicit
+source/build scope, actual CPU/launcher measurements and still-failed original
+day188 comparison remain separate from whole science and runtime parity.
+
 ## Measured scope
 
 Fresh checked Windows GNU Fortran16.2 O0/O2 shared-runtime and thermal contracts
