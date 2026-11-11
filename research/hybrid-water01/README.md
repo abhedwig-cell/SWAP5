@@ -2,6 +2,77 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### External daily acceptance delivered, 11 November 2026
+
+PR1642 MERGED atf5606e455cf1e558d23e3a0af5b7d8847fbdc954. Qualified head
+afbf728c9e6b9487e810fcf5f64340b6cdb46cd2, predicted merge and actual canonical
+all have tree2cf8535941a0233d92b89e729083f59b06b41248. Application Git blob equals
+the executed Linux source; Windows source view differs only in pinned line endings.
+Both raw capsules and current complete CI log blobs match independently audited
+bytes. Receipt: CLOSURE01_HYBRID_DAILY_COUPLING_CANONICAL_20261111.json.
+This supersedes all earlier NEXT/ACTIVE banners. Every model/compiler/CI/audit/docs
+run is FINISHED. Do not repeat admitted full native/hybrid/reference applications.
+
+New application-only CoupledDailyColumn exposes prepare/discard/accept, with the
+unchanged original forcing, originalO2 donors and both real O0/O2 SWAP5 kernels.
+Each private proposal starts from the immutable accepted schema3 native/auxiliary
+origin; no externally accepted package exists before explicit accept. Public
+proposal says committed=False. Discard preserves accepted day/revision/package;
+retry and fresh external recovery reproduce complete native payloads exactly.
+Source/build/project/coupling/parent lineage, independent owner namespaces,
+stale/busy/foreign decisions, changed origin/native bytes and ambiguous durable
+publication failure/recovery are tested. Explicit Hupsel1096 terminal adoption
+refuses advancement before any model trial. No new native codec or framework.
+
+Windows GNU16.2 and Ubuntu26 GNU15.2 all six real cases plus corruption guards
+PASS. CurrentLinux43104058773/job130802649326 at7debee302675c864794e218b79c48286d95f5aac
+SUCCESS; unrelated jobs skipped. Pre-reuse control43103157732 also SUCCESS.
+Independent audits4800 new raw files/24 current-plus-previous case views PASS;
+all pre/post native result.end/macro.bin payloads EXACT. Existing original kernel,
+donor, physical state, Fortran coupling contracts, inputs and tolerances unchanged.
+The direct qualified coupling windows are day2-to4 plus Hupsel terminal refusal;
+full coupled-project/forcing-feedback/peer-backend/multiparty atomicity not claimed.
+Existing Groundwater Coupling v1 has its own retained qualified scope.
+
+Measured Windows feedback90.9598s included62.3197s in66 identical C compiles.
+The new owner lazily loads its stateless existing publisher once and binds each
+private host BEFORE its first advance. No global patch/shared owner code change.
+Same cases now54.0676sWindows/15.0798sLinux with24 C compiles (previousLinux24.4799s).
+This is bounded interface feedback, not a full-model speed or accuracy ratio.
+Actual native CPU cost UNKNOWN; all compilation commands/costs retained.
+
+Raw Windows5833072bytes SHA
+beb647405568e3000ea2b5d7d3ea6c4fe17e5575bb15681c505f197a87f57a02;
+Linux5594700bytes SHA
+ca3fa5b0babad0a53c43e7e190fa35a1d016dcb635a478fe39a9b250c404b1b7.
+Exact original binaries/input/state lineage inherit frozen admitted PR1641 capsules;
+no model recompile or old full trajectory repeated. Current Linux Actions artifact
+SHA13f8239207da9f7853f01893c1a5a1a80acfd8bb1d63cdf22e9f460fba7786f9.
+Review, source/commands/limits:
+canonical research/hybrid-water01/HYBRID_DAILY_COUPLING_REVIEW.md.
+Source/strict MkDocs and final owner-selection preflight PASS.
+
+Functional coverage: three original projects gain external serial daily acceptance
+and rejection. Reliability: exact immutable-origin replay and explicit publication
+failure recovery. Return: existing complete original blocks reused; repeated C
+compilation removed with measured same-platform payload preservation. Native
+Grass1827/Andelst481/Hupsel1096 and complete hybrid evidence remain untouched.
+Original day188/day584 scientific failures/reference-resolution limits remain open;
+no whole-energy/native1e-5C/scientific-equivalence claim is added.
+
+NEXT DELIVERY: inspect CURRENT consolidated original heat owner's energy/storage/
+flux accounting and existing accepted-heat contracts. Identify ONE concrete missing
+all-process energy-accounting acceptance point, first from retained original full
+outputs and read-only source evidence. Use an existing small real-owner driver if
+needed; a new calculation needs a specific distinguishing hypothesis and a cap.
+Do not repeat full/native/reference campaigns, invent a general thermal/coupling
+framework or change physics/tolerances without a demonstrated defect. If existing
+energy proof already covers the applicable dependency, inherit its exact authority
+and select the next independent missing functional criterion. Preserve scientific
+reference blockade separately. Automation remains recovery only; finish a coherent
+published and verified delivery within the active turn.
+
+
 ### Complete Hupsel water/solute shared-host delivery, 11 November 2026
 
 PR1641 MERGED at30026511e8d03f6c77bc30377d60a65259afb2fc. Qualified head
