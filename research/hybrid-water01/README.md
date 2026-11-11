@@ -2,6 +2,33 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Single full four-step execution in progress, 11 November 2026
+
+Continue the existing run; do not launch another. Canonical source is
+c3c99cb6c70edfd652d904306daa63d03a283939. Worktree is
+%TEMP%/s5-oxygen-runtime-parity, branch codex/grass-substep4-full; release
+%TEMP%/s5-grass-substep4-release-20261111 and live output
+%TEMP%/s5-grass-substep4-full-20261111. The exact immutable executable is
+a136ff9700014c093a4441f040ecf3a1259ba67020ea0c84df2a88dc0798f4cd.
+Versioned selection, process identities, original input hashes and all203 actual
+compiled dependencies are in integration/f-ci/GRASS_SUBSTEP4_FULL_20261111.json
+on that branch. Monitor session10734 owns the single native run; inspect its
+recorded live PIDs before resuming. Day367 was captured at531.44 seconds with
+all selected early/year checkpoints retained. This is progress, not full PASS.
+
+Complete day1827, then run own cuts2-to4,187-to190,365-to367,1792-to1827
+with the same release (600seconds cap each). The live full cap is7200seconds;
+3600seconds was an estimate only. Do not edit model or compiled dependencies.
+qualify_grass_substep4_full.py reuses the original daily assertions; the separate
+packer preserves actual source/object/library/executable and raw outputs for
+independent read-only extraction verification. Publish and verify the complete
+package via a new PR. Whole science and complete surface energy stay open.
+
+The prior grass-ahl-successor-receipt.json does contain a6036.22878742218second
+launcher observation derived from file timestamps; this is not pure native
+timing or a controlled same-source runtime baseline. This resolves the earlier
+summary's UNKNOWN without upgrading its measurement quality.
+
 ### Explicit heat policy admitted, 11 November 2026
 
 PR 1632 is merged at c3c99cb6c70edfd652d904306daa63d03a283939.
