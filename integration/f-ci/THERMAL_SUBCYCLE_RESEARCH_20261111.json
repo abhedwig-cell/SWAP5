@@ -12,7 +12,7 @@
   ],
   "stop_rule": "One four-substep discriminating candidate. If it does not materially reduce accepted expensive steps or fails conservation, retain the failure and do not perform a parameter sweep. No full historical execution.",
   "test_selection": {
-    "candidate": "cee43d2a50aed0e7f75e6f843df2f54ac12ae3ac",
+    "candidate": "16c9ac27dbe1c9d2e75190b71d7094d87e743497",
     "groups": {
       "thermal_subcycle_probe": {
         "changed_dependency": "Persisted private postimage generator, real heat-body fixture, bounded timing/restart runner and explicit-only Ubuntu26 research workflow. Production sources remain exact f96c9f23e.",
@@ -21,8 +21,8 @@
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
         "expected_seconds": 180,
         "existing_evidence": "Windows GNU16.2 real heat bodies O0/O2, six boundary combinations, per-cell faces, A/B/A and refusal pass. Native production O2 four-day ABBA gives 46.02% median reduction with own process restart exact. Select the same short actual proof on Ubuntu26 GNU15.2; no broad application or F-CI repeat.",
-        "prior_execution": "FAILED",
-        "diagnosis": "Local selector refused the abbreviated candidate SHA, then the missing prior-execution field. Both are corrected and the persisted selector passes before the corrected dispatch. The superseded first hosted dispatch 43014610390 was cancelled by branch concurrency during checkout before selection or compilation; its actual cancelled verdict grants no PASS. Windows source-bound numerical results are unaffected."
+        "prior_execution": "PASS",
+        "diagnosis": "The exact private sources and all selected Windows/Ubuntu proofs now pass. The retained failed local/link fixture and superseded checkout cancellation remain separately classified. No identical qualification is selected again without changed dependencies or an uncovered risk."
       }
     },
     "full_fci_disposition": "NOT_SELECTED_IMPACT for private prototype; original production dependencies must be restored and exact before publication",
@@ -394,12 +394,22 @@
     "raw_audit": "ZIP CRC, actual compiled source postimages, both complete linked native object sets and executables, original baseline Git source hashes, O0/O2 terminal markers, paired determinism, exact own restart and daily water/uptake/conductive ledgers PASS.",
     "maximum_abs_daily_water_residual_cm": 3.70536934468646e-14,
     "maximum_abs_daily_conductive_residual_j_cm2": 1.9696244635269977e-10,
-    "unrelated_jobs": "KIM and existing ordinary native workflow jobs SKIPPED by explicit research dispatch; no qualification granted by skipping."
+    "unrelated_jobs": "KIM and existing ordinary native workflow jobs SKIPPED by explicit research dispatch; no qualification granted by skipping.",
+    "observed_stage_times_utc": {
+      "runner_setup_start": "2026-11-11T11:46:51.8153037Z",
+      "compiler_and_preflight_complete": "2026-11-11T11:50:36.8762806Z",
+      "native_science_complete": "2026-11-11T11:53:14.2237889Z",
+      "artifact_complete": "2026-11-11T11:53:17.9542731Z",
+      "setup_through_preflight_seconds": 225.061,
+      "selected_build_controls_and_native_seconds": 157.348,
+      "note": "Repository checkout/setup cost is separate from compile and native costs, and does not enter the paired runtime ratio."
+    }
   },
   "workflow_validation": {
     "yaml_parse": "PASS",
     "all_run_blocks_bash_syntax": "PASS",
     "explicit_only_research_job": "PASS on exact hosted head",
     "production_source_dependencies_unchanged": true
-  }
+  },
+  "record_update": "After hosted source 9c3bb7385, only evidence records and raw archives change. Private source generator, driver, timing tools, workflow and production source dependencies remain identical. Evidence-only commits skip automatic duplicate CI."
 }
