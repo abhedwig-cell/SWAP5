@@ -63,5 +63,133 @@
   "canonical_pr": 1019,
   "canonical_merge": "957b87d69888f1eb7ef5671f441563bd9b798687",
   "published_qualified_commit": "f74257be207eb65a8b03136f8ab90c0d809badd0",
-  "qualified_tree": "fca26d03d3051d27c45e3eae04d53402f2b91879"
+  "qualified_tree": "fca26d03d3051d27c45e3eae04d53402f2b91879",
+  "kim_saturation_successor_20261111": {
+    "status": "LOCAL_QUALIFIED_CURRENT_LINUX_AND_APPLICATION_GATES_PENDING",
+    "canonical_base": "37acc6339abace5aea9b066e158d89780dd3647d",
+    "production_candidate": "e145622a9b93aac0eee38a40338f6b452bf16ab8",
+    "scope": "Exact zero shrinkage at exact saturation on the existing linear KIM branch",
+    "input_contract": "The existing finite/domain guard establishes 0 <= theta <= theta_s and 0 < theta_s < 1. Within that admitted domain, theta >= theta_s is equivalent to theta == theta_s. The preceding strict supersaturation refusal is unchanged.",
+    "reference": "docs/audits/PPA_WU05_MIGMAC02_SOURCE_RECONCILIATION.md",
+    "strict_compile_regression": "The prior PR equality expression fails the existing -Wall -Wextra -Werror owner recipe. The semantically equivalent ordered comparison and bit-exact positive-zero test preserve the recipe.",
+    "local_evidence": {
+      "source": "e145622a9b93aac0eee38a40338f6b452bf16ab8",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "cases": [
+        {
+          "case": "operator",
+          "optimization": "O0",
+          "source_count": 2,
+          "compile_seconds": 0.8021729001775384,
+          "link_seconds": 0.33463119994848967,
+          "native_seconds": 0.4308704000432044,
+          "marker": "PPA_WU05_MIGMAC02_E4_HYSTERESIS=PASS",
+          "source_sha256": {
+            "src\\process\\macropore\\mod_macropore_dynamic_shrinkage.f90": "6ad279d987243d20e2154751daf2af46fa697d2f5e74ea6ea126cc90c59c6987",
+            "tests\\fpm\\test_ppa_wu05_migmac02_dynamic_shrinkage.f90": "792c7d8cd824c64c785bca753a6fd0926029e50ec1a4429ba6d127b881a57985"
+          }
+        },
+        {
+          "case": "operator",
+          "optimization": "O2",
+          "source_count": 2,
+          "compile_seconds": 0.8456346001476049,
+          "link_seconds": 0.13750849990174174,
+          "native_seconds": 0.10052850004285574,
+          "marker": "PPA_WU05_MIGMAC02_E4_HYSTERESIS=PASS",
+          "source_sha256": {
+            "src\\process\\macropore\\mod_macropore_dynamic_shrinkage.f90": "6ad279d987243d20e2154751daf2af46fa697d2f5e74ea6ea126cc90c59c6987",
+            "tests\\fpm\\test_ppa_wu05_migmac02_dynamic_shrinkage.f90": "792c7d8cd824c64c785bca753a6fd0926029e50ec1a4429ba6d127b881a57985"
+          }
+        },
+        {
+          "case": "provider",
+          "optimization": "O0",
+          "source_count": 20,
+          "compile_seconds": 3.9587911998387426,
+          "link_seconds": 0.20919089997187257,
+          "native_seconds": 0.19737389986403286,
+          "marker": "PPA_WU05_MIGMAC02_PROVIDER_TRIAL_GEOMETRY=PASS",
+          "source_sha256": {
+            "src\\process\\macropore\\mod_macropore_dynamic_shrinkage.f90": "6ad279d987243d20e2154751daf2af46fa697d2f5e74ea6ea126cc90c59c6987",
+            "src\\runtime\\mod_macropore_continuation_state.f90": "2a8d2597041ebaab40f87d448eed7218784c97d931467cdade5ce65106728f8e",
+            "src\\process\\macropore\\mod_ppa_wu05a5_top_partition.f90": "d9dff1f2abd477a4aaeb4813ee358ddd7c214d847644058d65a1dc6487e70942",
+            "src\\process\\macropore\\mod_ppa_wu05a5_multi_domain_process.f90": "625a6b00763665759255109e2726affe8dde4138f8f2d5d038d7b569640acf5b",
+            "src\\process\\macropore\\mod_macropore_standard_storage.f90": "af57596253ca59789d49049aceae8e3b182c7f5185419e7bcd21d68c36e6a5cd",
+            "src\\runtime\\mod_fmr_macropore_top_input.f90": "3ae3adf90060b6b66104f5bb2bbc41fc897ea6c1df35ea61ff25a01a619af620",
+            "src\\process\\macropore\\mod_macropore_covering_layer_input.f90": "fc9031affd0a22bf9592ca22e2dc6465bd728055f07eac84fba308aa8d6dc753",
+            "src\\process\\macropore\\mod_ppa_wu05a6_rapid_drain_rate.f90": "2086b8d35c479ece4abb3492f03c774a2c833ced0320254010f2e8ff91826308",
+            "src\\process\\macropore\\mod_ppa_wu05a6_saturated_exchange_rate.f90": "fc8c63debbafb9bbbe10d343f3db570ec633b9551d01ff92067087a1288f2559",
+            "src\\process\\macropore\\mod_ppa_wu05a6_saturated_sources.f90": "9b88166e8a4a329ec47293f9d888aae3c7e95920dd4933a8a68fadff1f439562",
+            "src\\process\\macropore\\mod_ppa_wu05a6_top_inflow_limiter.f90": "bf2d029ffed552ea36166742f61cb799fb57a4dce84fcf5396c9793e47a99c5e",
+            "src\\process\\macropore\\mod_ppa_wu05a6_sorptivity_rate.f90": "83af798ae9dad92d403ec561391d4605d7766a3deec006a6fe73ad79508eea1a",
+            "src\\process\\macropore\\mod_ppa_wu05a6_unsat_absorption_rate.f90": "fe0e18e4fc1fe60c1599ea6a8e7dcfb231b192eaed33f4e2cc7508db196a9e3d",
+            "src\\process\\macropore\\mod_ppa_wu05a6_rate_bundle.f90": "d2d5fb7c40ccad4ae3f51616bd497b3d29570d9f484dfc6819e15e95cf702f34",
+            "src\\process\\macropore\\mod_ppa_wu05a15_exchange_derivative.f90": "f75f5885aede30d1a89ba2a474c9558aa25bc86ed2ea94af6f8ab9ea96cf3c86",
+            "src\\process\\macropore\\mod_ppa_wu05a6_sorptivity_history.f90": "e7458a536aa107c4e37cb70eaa450d567247f3560307ef4e26d1b791ab1f8a92",
+            "src\\solver\\mod_soil_water_solver_contract.f90": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+            "src\\runtime\\mod_macropore_standard_rate_adapter.f90": "a97903e4e85c9db4200fa36e6ed9eb2695443415bad6023d7fc8893aca7a4c75",
+            "src\\runtime\\mod_ppa_wu05a16_inner_macropore_provider.f90": "3d5140a5958541b5a355777277c523484e80736a9183ce2d08ee3c50db0b08a6",
+            "tests\\fpm\\test_ppa_wu05_migmac02_provider_geometry.f90": "8f9b9b625111fd3381449eea468c5e0a3e3735b02535b842333d0c70cdd1f235"
+          }
+        },
+        {
+          "case": "provider",
+          "optimization": "O2",
+          "source_count": 20,
+          "compile_seconds": 10.110190599225461,
+          "link_seconds": 0.1544542999472469,
+          "native_seconds": 0.15519730001688004,
+          "marker": "PPA_WU05_MIGMAC02_PROVIDER_TRIAL_GEOMETRY=PASS",
+          "source_sha256": {
+            "src\\process\\macropore\\mod_macropore_dynamic_shrinkage.f90": "6ad279d987243d20e2154751daf2af46fa697d2f5e74ea6ea126cc90c59c6987",
+            "src\\runtime\\mod_macropore_continuation_state.f90": "2a8d2597041ebaab40f87d448eed7218784c97d931467cdade5ce65106728f8e",
+            "src\\process\\macropore\\mod_ppa_wu05a5_top_partition.f90": "d9dff1f2abd477a4aaeb4813ee358ddd7c214d847644058d65a1dc6487e70942",
+            "src\\process\\macropore\\mod_ppa_wu05a5_multi_domain_process.f90": "625a6b00763665759255109e2726affe8dde4138f8f2d5d038d7b569640acf5b",
+            "src\\process\\macropore\\mod_macropore_standard_storage.f90": "af57596253ca59789d49049aceae8e3b182c7f5185419e7bcd21d68c36e6a5cd",
+            "src\\runtime\\mod_fmr_macropore_top_input.f90": "3ae3adf90060b6b66104f5bb2bbc41fc897ea6c1df35ea61ff25a01a619af620",
+            "src\\process\\macropore\\mod_macropore_covering_layer_input.f90": "fc9031affd0a22bf9592ca22e2dc6465bd728055f07eac84fba308aa8d6dc753",
+            "src\\process\\macropore\\mod_ppa_wu05a6_rapid_drain_rate.f90": "2086b8d35c479ece4abb3492f03c774a2c833ced0320254010f2e8ff91826308",
+            "src\\process\\macropore\\mod_ppa_wu05a6_saturated_exchange_rate.f90": "fc8c63debbafb9bbbe10d343f3db570ec633b9551d01ff92067087a1288f2559",
+            "src\\process\\macropore\\mod_ppa_wu05a6_saturated_sources.f90": "9b88166e8a4a329ec47293f9d888aae3c7e95920dd4933a8a68fadff1f439562",
+            "src\\process\\macropore\\mod_ppa_wu05a6_top_inflow_limiter.f90": "bf2d029ffed552ea36166742f61cb799fb57a4dce84fcf5396c9793e47a99c5e",
+            "src\\process\\macropore\\mod_ppa_wu05a6_sorptivity_rate.f90": "83af798ae9dad92d403ec561391d4605d7766a3deec006a6fe73ad79508eea1a",
+            "src\\process\\macropore\\mod_ppa_wu05a6_unsat_absorption_rate.f90": "fe0e18e4fc1fe60c1599ea6a8e7dcfb231b192eaed33f4e2cc7508db196a9e3d",
+            "src\\process\\macropore\\mod_ppa_wu05a6_rate_bundle.f90": "d2d5fb7c40ccad4ae3f51616bd497b3d29570d9f484dfc6819e15e95cf702f34",
+            "src\\process\\macropore\\mod_ppa_wu05a15_exchange_derivative.f90": "f75f5885aede30d1a89ba2a474c9558aa25bc86ed2ea94af6f8ab9ea96cf3c86",
+            "src\\process\\macropore\\mod_ppa_wu05a6_sorptivity_history.f90": "e7458a536aa107c4e37cb70eaa450d567247f3560307ef4e26d1b791ab1f8a92",
+            "src\\solver\\mod_soil_water_solver_contract.f90": "7c80677d43a4abc0ef493076ed1984ad793e14d5ea4b64dbdbebbd4170e87732",
+            "src\\runtime\\mod_macropore_standard_rate_adapter.f90": "a97903e4e85c9db4200fa36e6ed9eb2695443415bad6023d7fc8893aca7a4c75",
+            "src\\runtime\\mod_ppa_wu05a16_inner_macropore_provider.f90": "3d5140a5958541b5a355777277c523484e80736a9183ce2d08ee3c50db0b08a6",
+            "tests\\fpm\\test_ppa_wu05_migmac02_provider_geometry.f90": "8f9b9b625111fd3381449eea468c5e0a3e3735b02535b842333d0c70cdd1f235"
+          }
+        }
+      ]
+    },
+    "existing_linux_import_evidence": {
+      "run": 42850437656,
+      "scope": "Earlier source-bound sealed input import and original MIGMAC02 O0/O2 on Ubuntu 26.04 GNU 15.2"
+    },
+    "open_experimental_contact": "Original Linux O0 and the O2 diagnostic-only TTUTIL contraction control both reached the same 90-second contact-0 timeout without rollback snapshots. This remains unqualified; no identical replay is selected.",
+    "production_ttutil_flags_changed": false,
+    "numerical_tolerances_changed": false
+  },
+  "test_selection": {
+    "candidate": "52ea0be861636ba60c1d1ca2fcc0d3a0d1f3e198",
+    "groups": {
+      "kim_saturation_admission": {
+        "changed_dependency": "The admitted KIM law avoids cancellation only at its exact saturated linear endpoint. An ordered comparison also repairs the existing strict compile gate. Current-source CI recognizes the exact postimage.",
+        "scientific_claim": "Preserve the KIM interior law, strict oversaturation refusal, provider candidate/accepted geometry ownership, original short application balances and own-build restart, with exact positive zero at the admitted saturated endpoint.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 functional macropore / HY / RT-TX integration",
+        "authority": "docs/audits/PPA_WU05_MIGMAC02_CLOSEOUT.md#production-scope",
+        "expected_seconds": 900,
+        "existing_evidence": "Current Windows GNU 16.2 strict pure operator and real 20-source provider geometry pass at O0/O2. Retained Ubuntu 26.04 GNU 15.2 sealed-input import is run 42850437656. Fresh Ubuntu 26.04 operator/provider and Ubuntu 24.04 current original application/native restart are explicitly selected by grass-thermal-production.yml, alongside focused F-CI current-source contracts.",
+        "prior_execution": "FAILED",
+        "diagnosis": "The recovered PR fails the existing strict compile recipe on real equality. That compiler regression is repaired without changing endpoint semantics or tolerances. Experimental contact timeouts address a separate composition and remain visible."
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for this bounded endpoint repair; no full omnibus PASS",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  }
+
 }
