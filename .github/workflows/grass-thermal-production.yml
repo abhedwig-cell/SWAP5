@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      hybrid_daily_coupling:
+        description: Qualify external original-forcing daily accept and discard using admitted binaries
+        type: boolean
+        default: false
       hybrid_waterhost:
         description: Qualify explicit generic hybrid waterhost with bounded original cases
         type: boolean
@@ -46,6 +50,56 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  external-daily:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_daily_coupling
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/HYBRID_DAILY_COUPLING_20261111.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/
+            /tests/modularity/
+            /tests/support/
+            /docs/development/workstream-execution-protocol.md
+            /integration/f-ci/HYBRID_DAILY_COUPLING_20261111.json
+            /research/hybrid-water01/qualify_daily_coupling.py
+            /research/hybrid-water01/qualify_daily_coupling_corruption.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection hybrid_daily_coupling
+      - name: Exact admitted binary reuse, no repeated full runs or model compilation
+        run: |
+          python3 - <<'PY'
+          import hashlib,os,tarfile
+          from pathlib import Path
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          root=Path(os.environ['RUNNER_TEMP'])/'qualified-hybrid'
+          root.mkdir()
+          with tarfile.open(archive) as t:t.extractall(root,filter='data')
+          for project in ['grass','hupsel','andelst']:
+              for opt in ['O0','O2']:
+                  for name in ['day_donor','day_kernel']:
+                      (root/f'generic-{project}-{opt}'/name).chmod(0o755)
+          PY
+      - name: Real three-project O0/O2 external accept discard and disk recovery
+        run: python3 -B research/hybrid-water01/qualify_daily_coupling.py --platform linux --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/external-daily"
+      - name: Native corruption and terminal period guards
+        run: python3 -B research/hybrid-water01/qualify_daily_coupling_corruption.py --platform linux --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/external-daily-corruption"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: external-daily-acceptance
+          path: ${{ runner.temp }}/external-daily*
+          retention-days: 14
   hybrid-waterhost:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_waterhost
     runs-on: ubuntu-26.04
@@ -250,7 +304,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
