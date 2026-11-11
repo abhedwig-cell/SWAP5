@@ -469,6 +469,9 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
             # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
             source=replace(source,"'WATBAL,ETTERMS,SOLBAL,GWL,S_CONC'",
                            "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'")
+            source,count=re.subn(r"(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1",r"\g<1>0",source)
+            if count!=1:raise ValueError("Missing original monthly output setting")
+            source += "\nNUM_DECIMALS = 12\n"
         source, count = re.subn(r"(?m)^([ \t]*SWENDTYPE[ \t]*=[ \t]*)[12]", r"\g<1>2", source)
         if count > 1:
             raise ValueError("Duplicate restart output setting")
