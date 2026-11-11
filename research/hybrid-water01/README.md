@@ -2,6 +2,49 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Production sixteen-step option admitted with measured short gain, 11 November 2026
+
+PR1636 is merged at7ef987beb098e9e36c4901adfa865d71ebcd8165.
+Actual whole tree35caa2716c470e1663ebf86b324d340a2824a556 equals qualified
+head9c07d647d333f08c12376ead5d58346036e01260 and predicted merge. Canonical
+raw Windows/Linux capsules and independent audit bytes match checked SHA256.
+Receipt: CLOSURE01_THERMAL_SIXTEEN_POLICY_CANONICAL_20261111.json.
+This supersedes the private-only production16 status below. No model/compiler
+run is active. Do not duplicate the completed O0/O2 or hosted qualifications.
+
+The existing backend now admits explicit1/4/16 with unchanged default1,
+positive subcycle budget, atomic invalid requests, activation lock/reset and
+policy-specific immutable restart binding. Original implicit solves and all
+tolerances are retained. Public native launcher supports all three profiles.
+Cold Windows/Linux O0/O2 heat/runtime, actual own-process day1-to3 restart,
+malformed/cross-policy refusal and original1/4 preservation pass. Windows O2
+serial four-day ABBA median7.938734350 to5.138368100seconds is35.2747percent
+lower; accepted steps3585 to2134. Each arm repeats exactly and16 own2-to4
+restart is exact. Independent raw audit passes12514 member hashes and9202
+source/object/module/library identities. Source/strict docs pass. Failed initial
+fixture expectation and Windows preservation-adapter mismatch remain documented
+with their discriminating controls; no numerical tolerance was loosened.
+
+Functional coverage: explicit numerical option and public profile, no additional
+full project. Reliability: owning O0/O2/platform/native restart/refusal/balance
+and unchanged1/4 routes. Return:35.3percent shorter bounded native window,
+without another full run. Full16 speed/science and complete energy are OPEN.
+The full4 trajectory and original failed day188/day584 comparisons keep their
+exact prior scope; do not transfer their quantitative outcomes to16.
+
+Next delivery: one frozen original16 full1827-day Grassgrowth release and own
+wet/year/final restart cuts, reviewed through a separate PR. Preconditions now
+satisfied: composed16 implementation admitted and material short gain measured.
+Before launch, persist selection, expected/capped cost and exact release source,
+input/build/executable identities. The original4 full cost is2527.475seconds;
+35percent short-window gain is not a full-cost prediction. Use one bounded run,
+monitor progress and resume its own checkpoints without duplicate starts.
+Validate every day and water/uptake/conductive ledger with existing tolerances;
+retain original-reference science failures and compare the changed time-grid
+outcomes explicitly. Never rebind any4 checkpoint. Build from latest canonical
+in a separate codex branch, not the old sources on this recovery branch.
+
+
 ### Positive cold sixteen-step discriminator delivered, 11 November 2026
 
 PR1635 is merged at3e7c838ba1c98ed8d59d4fe33c750c666ce3d357.
