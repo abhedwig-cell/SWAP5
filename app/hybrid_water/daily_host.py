@@ -20,7 +20,21 @@ from donor_sources import records, render_checkpoint, render_day_return, replace
 
 APP = Path(__file__).resolve().parent
 
-CASE = "3.macroporeflow"
+@dataclass(frozen=True)
+class HybridProject:
+    case: str
+    model: str
+    start_date: str
+    nodes: int
+    water_tolerance: float
+
+    @property
+    def start_clock(self):
+        return (date.fromisoformat(self.start_date)-date(1900,1,1)).days+1
+
+ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6)
+GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10)
+CASE = ANDELST.case
 APPLICATION_MODEL = "HYBRID_ANDELST_WATER"
 START_CLOCK = 35795
 RESTART_WINDOWS = {2: 2, 20: 2, 256: 2, 365: 2, 453: 4}
@@ -61,22 +75,26 @@ def verify_source(distribution):
             raise ValueError(f"Unverified donor archive: {name}")
 
 
-def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2"):
+def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
+    if project not in (ANDELST,GRASSGROWTH):
+        raise ValueError("Unregistered original hybrid project")
+    if project==GRASSGROWTH and any((trace_richards,budget_retry,shared_pond_transfer,refresh_macro_final)):
+        raise ValueError("Macro/Cauchy corrections are not a Grassgrowth water receipt")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
-    case = distribution / "cases" / CASE
-    pinned = ROOT / "reference/swap-4.3.1/projects" / CASE
+    case = distribution / "cases" / project.case
+    pinned = ROOT / "reference/swap-4.3.1/projects" / project.case
     inputs = {p.relative_to(case).as_posix(): sha(p) for p in sorted(case.rglob("*")) if p.is_file()}
     expected = {p.relative_to(pinned).as_posix() for p in pinned.rglob("*") if p.is_file()}
     if set(inputs) != expected:
-        raise ValueError("Andelst project file sets differ")
+        raise ValueError("Original project file sets differ")
     for name in inputs:
         if (case / name).read_bytes().replace(b"\r\n", b"\n") != (pinned / name).read_bytes().replace(b"\r\n", b"\n"):
-            raise ValueError(f"Andelst input differs: {name}")
+            raise ValueError(f"Original project input differs: {name}")
     donor_build = reference / "build"
     objects = donor_build / "swap-obj"
     ttutil = donor_build / "ttutil-obj"
-    render_day_return(donor_build / "swap-selected", output)
+    render_day_return(donor_build / "swap-selected", output, nonmacro=project==GRASSGROWTH)
     main = output / "swap_main.f90"
     source = main.read_text(encoding="cp1252")
     source = replace(source, "use Variables, only: t1900, flrunend",
@@ -90,7 +108,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
       read(*,*) window
       if (window == 0) exit""")
     source = replace(source, "      if (flrunend) error stop 'Donor ended before requested day'",
-                     "      if (flrunend .or. window_start /= 35794d0+window) error stop 'Invalid requested day'")
+                     f"      if (flrunend .or. window_start /= {project.start_clock-1}d0+window) error stop 'Invalid requested day'")
     source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
                      """      write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
       write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900
@@ -105,7 +123,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
-                          runtime=runtime_checkpoint)
+                          runtime=runtime_checkpoint, nonmacro=project==GRASSGROWTH)
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -152,7 +170,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                          "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900")
         main.write_text(source, encoding="cp1252")
     if trace_richards:
-        clock = START_CLOCK + trace_day - 1
+        clock = project.start_clock + trace_day - 1
         swap = output / "swap.f90"
         source = swap.read_text(encoding="cp1252")
         source = replace(source, "only: integral\n",
@@ -325,9 +343,9 @@ CHECKPOINT_FILES = ("result.end", "macro.bin")
 CHECKPOINT_SCHEMA = "swap5-hybrid-water-checkpoint-3"
 
 
-def checkpoint_identity(inputs, build_identity, *, budget_retry, shared_pond_transfer, refresh_macro_final):
+def checkpoint_identity(inputs, build_identity, *, budget_retry, shared_pond_transfer, refresh_macro_final, project=ANDELST):
     return {
-        "case": CASE, "inputs": inputs, "swap_source": DONOR_SOURCE_SHA, "ttutil_source": TTUTIL_SOURCE_SHA,
+        "case": project.case, "inputs": inputs, "swap_source": DONOR_SOURCE_SHA, "ttutil_source": TTUTIL_SOURCE_SHA,
         "budget_retry": budget_retry, "shared_pond_transfer": shared_pond_transfer,
         "refresh_macro_final": refresh_macro_final, "build": build_identity,
     }
@@ -410,15 +428,15 @@ class DailyColumn:
     refused: bool = False
 
 
-def prepare_column(case, directory, start, checkpoint_enabled, runtime):
+def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=ANDELST):
     shutil.copytree(case, directory)
     if checkpoint_enabled:
         control = directory / "swap.swp"
         source = control.read_text(encoding="cp1252") + "\nSWENDTYPE = 2\n"
         if start.origin is not None:
-            start_date = date(1998, 1, 1) + timedelta(days=start.day)
-            source = replace(source, "TSTART = 1998-01-01", f"TSTART = {start_date}")
-            if start.day >= 365:
+            start_date = date.fromisoformat(project.start_date) + timedelta(days=start.day)
+            source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
+            if project==ANDELST and start.day >= 365:
                 bbc = directory / "swap.bbc"
                 table = bbc.read_text(encoding="cp1252")
                 terminal = re.search(r"(?m)^([ \t]*1998-12-31[ \t]+)(-?\d+(?:\.\d+)?)[ \t]*$", table)
@@ -426,7 +444,7 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime):
                     raise ValueError("Missing original terminal Cauchy head")
                 table = replace(table, terminal[0], terminal[0] + f"\n {start_date}  {terminal[2]}")
                 bbc.write_text(table, encoding="cp1252")
-            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)2", r"\g<1>3", source)
+            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)[12]", r"\g<1>3", source)
             if count != 1:
                 raise ValueError("Missing restart setting")
             if runtime:
@@ -440,6 +458,10 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime):
         bbc = directory / "swap.bbc"
         source = bbc.read_text(encoding="cp1252")
         shifted_date = date(1998, 1, 1) + timedelta(days=start.day + (start.day < 365))
+        if project==GRASSGROWTH:
+            first_head=re.search(r"(?m)^[ \t]*(\d{4}-\d{2}-\d{2})[ \t]+-?\d",source)
+            if first_head is None:raise ValueError("Missing original groundwater table")
+            shifted_date=first_head[1]
         source, count = re.subn(
             rf"(?m)^([ \t]*{shifted_date}[ \t]+)(-?\d+(?:\.\d+)?)([ \t]*)$",
             lambda match: f"{match[1]}{float(match[2])+0.001:.6f}{match[3]}",
@@ -454,12 +476,16 @@ class DailyHost:
     """One kernel-owned transaction per requested day, with private legacy workers."""
 
     def __init__(self, stack, donor, kernel, case, output, starts, *, checkpoint_enabled=False,
-                 runtime=False, binding=None, model=APPLICATION_MODEL):
+                 runtime=False, binding=None, model=None, project=ANDELST):
+        if project not in (ANDELST,GRASSGROWTH):raise ValueError("Unregistered hybrid project")
+        model=project.model if model is None else model
+        if model!=project.model:raise ValueError("Model and project identity differ")
+        self.project=project
         self.columns = []
         self.output = output
         self.binding = binding
         self.usable = False
-        self.host, self.host_log = start_process(stack, [kernel, model], output, "kernel")
+        self.host, self.host_log = start_process(stack, [kernel, model]+(["explicit-project"] if project!=ANDELST else []), output, "kernel")
         _, selected = receive(self.host, self.host_log, {"DAILY_MODEL"})
         if selected["DAILY_MODEL"] != [model]:
             raise ValueError("Kernel selected a different soil water model")
@@ -471,14 +497,14 @@ class DailyHost:
             if (start.origin is None) != (start.day == 0):
                 raise ValueError("Column start day must match its origin")
             directory = output / name
-            prepare_column(case, directory, start, checkpoint_enabled, runtime)
+            prepare_column(case, directory, start, checkpoint_enabled, runtime, project)
             worker, transcript = start_process(stack, [donor, "./swap.swp"], directory, "donor")
             _, initial = receive(worker, transcript, {"HYBRID_READY"})
-            if list(map(float, initial["HYBRID_READY"])) != [START_CLOCK + start.day]:
+            if list(map(float, initial["HYBRID_READY"])) != [project.start_clock + start.day]:
                 raise ValueError("Incorrect donor initialization clock")
             stocks = list(map(float, initial["HYBRID_STOCK_FLUX"][:6]))
             pressure = list(map(float, initial["HYBRID_HYDRAULIC"][2:]))
-            if len(stocks) != 6 or len(pressure) != 112 or not all(map(math.isfinite, stocks + pressure)):
+            if len(stocks) != 6 or len(pressure) != project.nodes or not all(map(math.isfinite, stocks + pressure)):
                 raise ValueError("Incomplete or nonfinite donor initial state")
             if start.receipt is not None and (
                     stocks != start.receipt["stock_end_cm"] or pressure != start.receipt["pressure_head_cm"]):
@@ -486,6 +512,7 @@ class DailyHost:
             self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure))
         send(self.host, str(len(self.columns)))
         for column in self.columns:
+            if project!=ANDELST:send(self.host,f"{project.nodes} {project.start_clock}")
             send(self.host, " ".join(map(str, [column.day, math.fsum(column.stocks), *column.stocks, *column.pressure])))
         self.usable = True
 
@@ -500,16 +527,16 @@ class DailyHost:
         day = current.day + 1
         send(self.host, f"{column} {day}")
         _, request = receive(self.host, self.host_log, {"DAILY_REQUEST"})
-        if list(map(float, request["DAILY_REQUEST"])) != [column, day-1, START_CLOCK+day-1, START_CLOCK+day]:
+        if list(map(float, request["DAILY_REQUEST"])) != [column, day-1, self.project.start_clock+day-1, self.project.start_clock+day]:
             raise ValueError("Kernel request has incorrect ownership or clock")
-        send(current.worker, f"{day} {START_CLOCK+day if checkpoint else -1}")
+        send(current.worker, f"{day} {self.project.start_clock+day if checkpoint else -1}")
         _, response = receive(current.worker, current.transcript, {"HYBRID_DAY_RETURN"})
-        if list(map(float, response["HYBRID_DAY_RETURN"])) != [day, START_CLOCK+day]:
+        if list(map(float, response["HYBRID_DAY_RETURN"])) != [day, self.project.start_clock+day]:
             raise ValueError("Incorrect donor return clock")
         stocks = list(map(float, response["HYBRID_STOCK_FLUX"]))
         flow = list(map(float, response["HYBRID_EXTERNAL_FLUX"]))
         hydraulic = list(map(float, response["HYBRID_HYDRAULIC"]))
-        if len(stocks) != 12 or len(flow) != 16 or len(hydraulic) != 114:
+        if len(stocks) != 12 or len(flow) != 16 or len(hydraulic) != self.project.nodes+2:
             raise ValueError("Incomplete donor water budget")
         if not all(map(math.isfinite, stocks + flow + hydraulic)):
             raise ValueError("Nonfinite donor water budget")
@@ -570,7 +597,7 @@ class DailyHost:
 
 def run(donor, kernel, case, output, days, variants=("original",), checkpoint_day=None, origin=None,
         checkpoint_binding=None, origin_receipt=None, *, runtime=False, publish_day=None,
-        model=APPLICATION_MODEL):
+        model=None, project=ANDELST):
     first = checkpoint_day if origin is not None else 0
     if origin is not None and not runtime:
         checkpoint_dir = output / "first"
@@ -583,7 +610,7 @@ def run(donor, kernel, case, output, days, variants=("original",), checkpoint_da
     with contextlib.ExitStack() as stack:
         host = DailyHost(stack, donor, kernel, case, output, starts,
                          checkpoint_enabled=checkpoint_day is not None or runtime,
-                         runtime=runtime, binding=checkpoint_binding, model=model)
+                         runtime=runtime, binding=checkpoint_binding, model=model, project=project)
         with (output / "daily.jsonl").open("w") as receipts:
             for day in range(first + 1, days + 1):
                 for column in range(1, len(starts)+1):

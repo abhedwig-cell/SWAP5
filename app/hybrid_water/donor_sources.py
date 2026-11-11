@@ -10,7 +10,7 @@ def replace(text, anchor, replacement):
     return text.replace(anchor, replacement)
 
 
-def render_day_return(selected, out):
+def render_day_return(selected, out, *, nonmacro=False):
     swap = (selected / "swap.f90").read_text(encoding="cp1252")
     swap = """module hybrid_day_window
   implicit none
@@ -56,6 +56,13 @@ end module hybrid_day_window
       igrai,isnrai,igsnow,igird,irunon,iqssdi,iqbup, &
       iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iQMpOutDrRap,iqbdo
 """ + anchor)
+    if nonmacro:
+        csv_source=replace(csv_source,"volact, pond, ssnow, sicact, wasrdm1, wasrdm2, &",
+                           "volact, pond, ssnow, sicact, 0d0, 0d0, &")
+        csv_source=replace(csv_source,"ivolbeg, ipondbeg, issnowbeg, isicbeg, iwasrdm1beg, iwasrdm2beg",
+                           "ivolbeg, ipondbeg, issnowbeg, isicbeg, 0d0, 0d0")
+        csv_source=replace(csv_source,"iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iQMpOutDrRap,iqbdo",
+                           "iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,0d0,iqbdo")
     (out / "swap_csv_output.f90").write_text(csv_source, encoding="cp1252")
 
 
@@ -72,7 +79,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -120,6 +127,36 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False):
       close(unit)
       write(*,'(a,*(1x,z16.16))') 'HYBRID_MACRO_DOMAIN_BITS', &
         transfer(WaUnMpDm(1:NumDm), [0_8], NumDm)
+    end subroutine hybrid_macro_checkpoint
+"""
+    if nonmacro:
+        codec = """
+    subroutine hybrid_macro_checkpoint(restoring, clock, old_step, canopy_stock)
+      use MOD_grid, only: numnod
+      use MOD_swap_base, only: swmacro
+      implicit none
+      logical, intent(in) :: restoring
+      real(8), intent(in) :: clock
+      real(8), intent(inout) :: old_step, canopy_stock
+      integer :: unit,ios,nodes
+      real(8) :: stored_clock
+      character(8) :: magic
+      character :: trailing
+      if (swmacro/=0) error stop 'Nonmacro checkpoint requires absent macropores'
+      if (restoring) then
+        open(newunit=unit,file='../first/macro.bin',access='stream',form='unformatted', &
+             status='old',action='read',iostat=ios)
+        if(ios/=0) error stop 'Missing nonmacro checkpoint'
+        read(unit,iostat=ios) magic,nodes,stored_clock,old_step,canopy_stock
+        if(ios/=0) error stop 'Incomplete nonmacro checkpoint'
+        if(magic/='S5NON004'.or.nodes/=numnod.or.stored_clock/=clock) error stop 'Foreign nonmacro checkpoint'
+        read(unit,iostat=ios) trailing
+        if(.not.is_iostat_end(ios)) error stop 'Trailing nonmacro checkpoint bytes'
+      else
+        open(newunit=unit,file='macro.bin',access='stream',form='unformatted',status='new',action='write')
+        write(unit) 'S5NON004',numnod,clock,old_step,canopy_stock
+      end if
+      close(unit)
     end subroutine hybrid_macro_checkpoint
 """
     if runtime:
@@ -182,6 +219,9 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False):
         clock = 35795 + checkpoint_day
         swap = swap.replace("35797", str(clock)).replace("35799", str(clock + days))
         swap = swap.replace("tstart + 2d0", f"tstart + {checkpoint_day}d0")
+    if nonmacro:
+        swap=replace(swap,"if (swmacro == 1 .and. fl_initialize) call hybrid_macro_checkpoint",
+                          "if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint")
     (output / "swap.f90").write_text(swap, encoding="cp1252")
     if runtime or checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")

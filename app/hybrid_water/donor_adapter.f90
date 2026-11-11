@@ -14,7 +14,8 @@ module probe_kernel_donor
   implicit none
   type, extends(canonical_state_t) :: state_t
     integer :: column = 0, ticket = 0
-    real(real64) :: stock = 0, pressure(112) = 0, component_stock(6) = 0
+    real(real64) :: stock = 0, component_stock(6) = 0
+    real(real64), allocatable :: pressure(:)
   contains
     procedure :: clone
   end type
@@ -93,10 +94,14 @@ contains
     real(real64), intent(in) :: t0, t1
     type(trial_outcome_t), intent(out) :: outcome
     integer :: unit, status, command_status, ticket
-    real(real64) :: ending, water_in, water_out, bottom, terminal, pressure(112), components(6)
+    real(real64) :: ending, water_in, water_out, bottom, terminal, components(6)
+    real(real64), allocatable :: pressure(:)
     outcome = trial_outcome_t()
     select type(state)
     type is(state_t)
+      if (.not. allocated(state%pressure)) return
+      if (size(state%pressure)<1) return
+      allocate(pressure(size(state%pressure)))
       if (self%daily_pipe) then
         write(*,'(a,2(1x,i0),2(1x,f16.8))') 'DAILY_REQUEST', state%column, state%ticket, t0, t1
         flush(output_unit)
@@ -116,6 +121,7 @@ contains
         close(unit)
       end if
       if (status /= 0) return
+      if (.not. all(ieee_is_finite([ending,water_in,water_out,bottom,terminal,pressure,components]))) return
       state%stock = ending
       state%pressure = pressure
       state%component_stock = components
@@ -157,6 +163,8 @@ contains
     type is(state_t)
       select type(half_state)
       type is(state_t)
+        if (.not. allocated(full_state%pressure) .or. .not. allocated(half_state%pressure)) return
+        if (size(full_state%pressure)<1 .or. size(full_state%pressure)/=size(half_state%pressure)) return
         value = maxval(abs(full_state%pressure - half_state%pressure))
         print *, 'TEMPORAL_HEAD_DEFECT_CM', value
       end select
