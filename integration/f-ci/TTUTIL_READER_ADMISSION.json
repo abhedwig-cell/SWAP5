@@ -1,0 +1,117 @@
+{
+  "workstream": "SWAP5-FUNCTIONAL-CLOSURE01 / native input / RT-TX",
+  "status": "WINDOWS_READER_QUALIFIED_LINUX_AND_APPLICATION_PENDING",
+  "canonical_base": "cf1bfd691f938f1a76f828ec31ce65ff33a05cf3",
+  "adapter_candidate": "16fb81dfbd80cfa6bcc52cddd4449078861b852d",
+  "scope": "Cold native adapter TTUTIL builds preserve the original decimal accumulation order by compiling rdlex with -ffp-contract=off through one shared flag provider. The other source flags retain their existing profiles.",
+  "original_source_authority_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+  "original_andelst_input_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+  "local_numeric_qualification": {
+    "status": "TTUTIL_ORIGINAL_OSAT_O0_O2_BITS_PASS",
+    "candidate": "63bf37ba13d8e60aadddb06153c1d1eed8d665e1",
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "authority_zip_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+    "original_input_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+    "flag_provider_sha256": "4e6f4ada712fa47e194f3831017794cb46471dfecba53d71db0cc80e69ce0860",
+    "driver_sha256": "c57cb61de123db2490ccf8073c903751d2b47677cbcbcbaaa32ce5d69c81b5e6",
+    "profiles": {
+      "O0": {
+        "osat_bits": [
+          "3FD9EB851EB851EC",
+          "3FD9EB851EB851EC",
+          "3FD926E978D4FDF4",
+          "3FD947AE147AE148",
+          "3FDC6A7EF9DB22D1",
+          "3FDC49BA5E353F7D",
+          "3FE0CCCCCCCCCCCD",
+          "3FE0CCCCCCCCCCCD"
+        ],
+        "reader_flags": [
+          "-O0",
+          "-std=legacy",
+          "-fallow-argument-mismatch",
+          "-ffree-line-length-none",
+          "-ffixed-line-length-none",
+          "-fcheck=all",
+          "-fbacktrace",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-IC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O0",
+          "-JC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O0",
+          "-ffp-contract=off"
+        ],
+        "archive_sha256": "0cc31fcd815d379f83f8f4ebb6b3fab6be2bc930c5894e93b2c1527e78b74df8",
+        "executable_sha256": "98ea6510142e0ca82ac3c130d82b0e90496cb491880422f62033070a3c730590",
+        "source_count": 153,
+        "cost_seconds": {
+          "compile": 18.916935701156035,
+          "archive": 0.08828769996762276,
+          "link": 0.22465469990856946,
+          "native": 0.16426560003310442
+        }
+      },
+      "O2": {
+        "osat_bits": [
+          "3FD9EB851EB851EC",
+          "3FD9EB851EB851EC",
+          "3FD926E978D4FDF4",
+          "3FD947AE147AE148",
+          "3FDC6A7EF9DB22D1",
+          "3FDC49BA5E353F7D",
+          "3FE0CCCCCCCCCCCD",
+          "3FE0CCCCCCCCCCCD"
+        ],
+        "reader_flags": [
+          "-O2",
+          "-std=legacy",
+          "-fallow-argument-mismatch",
+          "-ffree-line-length-none",
+          "-ffixed-line-length-none",
+          "-fcheck=all",
+          "-fbacktrace",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-IC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2",
+          "-JC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2",
+          "-ffp-contract=off"
+        ],
+        "archive_sha256": "dde72089055d5fb6a0456380dabff1a3b33f5f0b4432b56f732f4ce02b17f74f",
+        "executable_sha256": "fdb66d9d250c7de171df92aff11cc326c8ce9127f1fd77f463387c7eb49a35d3",
+        "source_count": 153,
+        "cost_seconds": {
+          "compile": 22.313875699881464,
+          "archive": 0.08137420006096363,
+          "link": 0.28339260001666844,
+          "native": 0.15336380014196038
+        }
+      }
+    }
+  },
+  "retained_causal_evidence": {
+    "original_gnu15_2_reader_comparison": 42855176063,
+    "single_rdlex_object_contraction_control": 42855609145,
+    "scope": "The original OSAT=0.393 token differs by one binary64 ULP at O2. The isolated no-contraction object restores the O0/internal-read value. The immutable TTUTIL archive is the same source authority."
+  },
+  "fixture_initialization_correction": "The first new local fixture left RDFDOR's requested value count undefined. Its failed command remains in the local output. Initializing the original eight-layer count yields the completed O0/O2 result above.",
+  "build_identity": "Each adapter records actual per-source original-input flags. The Hupsel builder also records actual compiled original-input source hashes. Explicit comparator-source builders additionally bind the executing builder and flag-provider files.",
+  "supplied_archive_behavior": "Existing explicit archive arguments keep their hash-bound reuse behavior. This record qualifies the cold build policy and the tested archives.",
+  "test_selection": {
+    "candidate": "8cec09ad58b705334b6d40334d120b00a2b80748",
+    "groups": {
+      "ttutil_reader_admission": {
+        "changed_dependency": "TTUTIL rdlex compiler contraction policy and original-input build metadata across seven native adapter builders, with their existing public entry points and immutable source materialization.",
+        "scientific_claim": "Original Andelst OSAT values are bit-identical at O0/O2, including exact agreement of node-three soil OSAT=0.393 with internal READ. Preserve current original-input application balances, own-build restart and atomic refusal contracts.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 functional native input / RT-TX integration",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 900,
+        "existing_evidence": "Windows GNU 16.2 reads all eight original OSAT values bit-identically at O0/O2. Native costs are 0.164 and 0.153 seconds, with cold TTUTIL compilation 18.917 and 22.314 seconds. Earlier GNU 15.2 causal reader/control runs remain applicable to the same immutable TTUTIL source. Fresh Ubuntu 26.04 reader and Ubuntu 24.04 current original application/native restart, plus focused F-CI, are selected.",
+        "prior_execution": "NONE"
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for this bounded input-build repair; no omnibus PASS",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "open_acceptance": [
+    "Current Ubuntu 26.04 numeric-reader O0/O2 and short original application gates",
+    "Experimental Cauchy-contact rollback remains unqualified",
+    "Whole scientific equivalence and full-project runtime parity remain open"
+  ]
+}
