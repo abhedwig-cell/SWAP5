@@ -2,6 +2,55 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Full original sixteen-step trajectory delivered, 11 November 2026
+
+PR1637 merged ate37646f2745bb5e406f954a8727ba8c4c7bb50e9. Actual whole tree
+3967079792c1009875061a5988b2f762b43c59f5 equals qualified head
+b42ecb173356bdff612a069b2e6bebabc9f4fedd and predicted merge. Canonical raw
+capsule/receipt SHA256 matches independent audit. Receipt:
+CLOSURE01_GRASS_SIXTEEN_FULL_CANONICAL_20261111.json. This supersedes the
+ACTIVE note below: all full/restart/audit/docs processes have finished.
+Do not start another full16,4 or reference run.
+
+One frozen original113-node productionO2 release completed all1827 days in
+1825.680682seconds (30min25.7s),636929 accepted water steps. All original
+input hashes and every finite daily water/crop/conductive record pass unchanged
+assertions. Maximum daily water5.095924e-14cm,cumulative9.381385e-15cm,
+uptake8.309868e-16cm. Four own fresh-process cuts2-to4,187-to190,365-to367
+and1792-to1827 reproduce all suffix ledgers and complete checkpoint bytes;
+final nodal/endpoint files also exact. No policy rebinding or second full run.
+Raw archive6121724bytes,784 retained members; independent extraction regenerates
+the entire receipt byte-exact. Source/strict docs pass. No production/test source
+changed from actual PR1636 gates; no fullO0/Linux or broad newFCI claim.
+
+Functional coverage remains the same three projects; this adds their Grass16
+numerical trajectory. Reliability improves to complete16 daily/cumulative and
+own late/year/wet cuts. Development return: one selected full execution, no
+old full rerun; separate prior4 observation2527.475440seconds/1016128steps
+is not controlled paired full-period timing. Total native CPU is UNKNOWN:
+PowerShell process-handle observer failed after exit, retained explicitly.
+Launcher monotonic time is valid; no rerun to replace missing CPU evidence.
+
+Daily/substep conductive limits pass unchanged. Signed cumulative conductive
+residual-6.593548287e-7J/cm2 is larger than prior4 -1.73816683e-8J/cm2 and is
+reported explicitly, without new cumulative tolerance or whole-energy claim.
+Day188 oxygen0.005994147618cm vs originalB0 0.016571046610cm remains failed;
+the previous97.86percent causal result keeps its original water-only scope.
+Hupsel584 reference qualification, whole science/energy and runtime parity OPEN.
+
+Next delivery: one bounded unchanged-release16 caller-cost observation to decide
+whether16 shifted the hotspot from MVG waterfilm to subcycled heat, then choose
+one evidence-backed semantics-preserving optimization or record the measured
+barrier. At most two own187-to190 native-unwind observations, target20seconds,
+cap60seconds total, exact suffix/checkpoint against this full16 raw archive.
+Prior4 profiles cannot establish current16 component shares. Reuse existing
+observer and preserved scientific gates; no full trajectory or closed identical
+node-cache/quad/no-stress/coefficient campaign. Do not modify physics or
+floating-point power ordering solely on a statistical sample. Build any later
+change from latest canonical on a separate codex branch, not this old-source
+recovery checkout. Current release and all raw identities are retained locally.
+
+
 ### Active original sixteen-step full release, 11 November 2026
 
 Own branch codex/grass-sixteen-full at36b9e57b4 has persisted the selection and
