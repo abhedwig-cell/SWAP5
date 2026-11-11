@@ -100,11 +100,15 @@ def main():
             elapsed_seconds=r['seconds'], audit=suffix)
     historical = audit_module.historical_comparison(a.full,
         ROOT/'integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz')
+    timing_path = a.full/'native-process-times.json'
+    native_timing = json.loads(timing_path.read_text(encoding='utf-8-sig')) if timing_path.exists() else {
+        'status': 'UNKNOWN', 'reason': 'No retained native process-handle observation'}
     result = dict(status='FULL_ORIGINAL_GRASS_SUBSTEP4_AND_OWN_RESTARTS_PASS',
         canonical_source=spec['canonical_source'], executable_sha256=release['executable_sha256'],
         compiler=build['compiler'], flags=build['flags'],
         profile=build['grass_numerical_profile'], original_inputs_sha256=build['original_inputs_sha256'],
-        elapsed_seconds=full['seconds'], full_audit=proof, exact_own_restarts=cuts,
+        elapsed_seconds=full['seconds'], native_process_timing=native_timing,
+        full_audit=proof, exact_own_restarts=cuts,
         historical_comparison=historical,
         balance_auditor_sha256=sha(module_path), qualification_script_sha256=sha(__file__),
         full_launch_sha256=sha(a.full/'LAUNCH.json'),
