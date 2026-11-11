@@ -50,6 +50,8 @@ def main():
     repo = Path(__file__).resolve().parents[2]
     for relative in ['research/hybrid-water01/qualify_grass_substep16_full.py',
                      'research/hybrid-water01/audit_grass_current.py',
+                     'research/hybrid-water01/audit_grass_sixteen_capsule.py',
+                     'research/hybrid-water01/compare_grass_sixteen_full.py',
                      'research/hybrid-water01/pack_grass_substep16_full.py',
                      'tests/dataqual15/run_original.py',
                      'tests/dataqual15/restart_snapshot.py',
