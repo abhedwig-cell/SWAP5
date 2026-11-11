@@ -36,10 +36,13 @@ new explicit profile, followed by exact own early/late restart suffixes and
 all daily budget audits. Build on latest canonical at leastc3c99cb6, using
 a separate codex branch; this consolidated branch is recovery/research
 context and does not carry every canonical source integration. Inspect the
-stored prior full costs, choose a named runtime cap and record source,
+prior launch/progress timing evidence, choose a named runtime cap and record source,
 compiler, executable, input-library and all five original input hashes before
 launch. Capture day188 and late cuts on the same build. Resume a live run;
 never duplicate it or repeat the already qualified complete one-step route.
+The inspected old full execution summaries contain dates and identities but no
+duration; their wall cost is UNKNOWN until actual timing evidence is recovered.
+Do not extrapolate a guaranteed full-period duration from the short benchmark.
 New whole scientific, complete energy and day188/day584 acceptance remain
 open. The programme and half-hour recovery planning are not complete.
 
