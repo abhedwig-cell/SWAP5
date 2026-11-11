@@ -428,7 +428,7 @@
     "not_selected": "No accepted original reference, old native application or full moving-FCI reruns."
   },
   "test_selection": {
-    "candidate": "58bb9b509f062400d15cefa6d540cb635fac8032",
+    "candidate": "ba3d487d22492fb6826ea5c98164226ffa99aee6",
     "groups": {
       "hybrid_generic_waterhost": {
         "changed_dependency": "Hupsel project/strict acceptance/original context codec and public route; old Grass/Andelst branches preserved, shared src unchanged",
@@ -445,5 +445,14 @@
   "review": "research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md",
   "linux_blocker": "research/hybrid-water01/HYBRID_HUPSEL_LINUX_BLOCKER_20261111.json",
   "windows_archive_sha256": "678be090346a13ffd3b68f2a3447a947f86e52b8854fdc46f9fef798ab8b21c1",
-  "next_delivery": "Resume Linux qualification, independently audit retained artifact, then canonical PR admission. No scientific-reference substitution."
+  "next_delivery": "Resume Linux qualification, independently audit retained artifact, then canonical PR admission. No scientific-reference substitution.",
+  "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1641",
+  "verification": {
+    "independent_windows_audit": "research/hybrid-water01/hybrid-hupsel-windows-audit-20261111.json",
+    "identity_checks": 601,
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "budget_protocol": "PASS",
+    "local_linux_fallback": "WSL not installed; docker unavailable"
+  }
 }
