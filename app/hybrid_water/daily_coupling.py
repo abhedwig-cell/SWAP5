@@ -6,15 +6,61 @@ the same immutable accepted native/auxiliary origin, including after discard.
 This is serial daily transaction control, not a groundwater feedback solver.
 """
 import contextlib
+import hashlib
 from dataclasses import dataclass
 from datetime import date, timedelta
 import json
 import math
+import re
+import shutil
 from pathlib import Path
 import secrets
 import zipfile
 
 import daily_host as h
+
+ORIGINAL_FORCING = 'original-project'
+CAUCHY_FORCING = 'andelst-cauchy-daily-v1'
+
+
+@dataclass(frozen=True)
+class CauchyDayForcing:
+    """One original-datum aquifer-head segment bound to an accepted origin."""
+    coupling_id: str
+    origin_sha256: str | None
+    origin_day: int
+    t0_day1900: int
+    t1_day1900: int
+    head_start_cm: float
+    head_end_cm: float
+    provenance: str
+
+    def document(self):
+        return dict(self.__dict__)
+
+
+def forcing_digest(document):
+    return hashlib.sha256(json.dumps(document,sort_keys=True,separators=(',', ':'),allow_nan=False).encode()).hexdigest()
+
+
+def write_cauchy_case(case, target, forcing, project):
+    """Private original input only; unchanged original interpolation/physics."""
+    shutil.copytree(case,target)
+    bbc=target/'swap.bbc';source=bbc.read_text(encoding='cp1252')
+    for name,value in [('SWBOTB',3),('SW3',2),('SW4',0)]:
+        if len(re.findall(rf'(?mi)^\s*{name}\s*=\s*{value}\b',source))!=1:
+            raise ValueError('Unsupported original Cauchy mode: '+name)
+    first=date.fromisoformat(project.start_date)+timedelta(days=forcing.origin_day)
+    last=first+timedelta(days=1)
+    # The unchanged DailyHost extends the original 1998 terminal point at a
+    # year restart. Supply its expected padding, then the real one-day endpoint.
+    table_start=date(1998,12,31) if forcing.origin_day>=365 else first
+    rows=f' {table_start} {forcing.head_start_cm:.17g}\n {last} {forcing.head_end_cm:.17g}\n'
+    number=r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?'
+    pattern=rf'(?m)^([ \t]*DATE3[ \t]+HAQUIF[ \t]*\r?\n)(?:[ \t]*\d{{4}}-\d{{2}}-\d{{2}}[ \t]+{number}[ \t]*\r?\n)+'
+    source,count=re.subn(pattern,lambda m:m[1]+rows,source)
+    if count!=1:raise ValueError('Missing or ambiguous original aquifer-head table')
+    bbc.write_text(source,encoding='cp1252')
 
 
 def validate_bundle(bundle, reference, project):
@@ -56,6 +102,11 @@ class PreparedDay:
     t1_day1900: int
     date: str
     _raw_json: str
+    _forcing_json: str = '"original-project"'
+
+    @property
+    def forcing(self):
+        return json.loads(self._forcing_json)
 
     @property
     def budget(self):
@@ -91,11 +142,14 @@ class CoupledDailyColumn:
     source/build/project/coupling binding. No physical origin is overwritten.
     """
     def __init__(self, bundle, reference, output, project, coupling_id, *,
-                 origin=None, day=0, adopt_native=False):
+                 origin=None, day=0, adopt_native=False, forcing_mode=ORIGINAL_FORCING):
         if project not in (h.ANDELST, h.GRASSGROWTH, h.HUPSEL):
             raise ValueError('Unregistered project')
         if not isinstance(coupling_id, str) or not coupling_id or len(coupling_id) > 128:
             raise ValueError('Explicit coupling identity is required')
+        if forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING) or (forcing_mode==CAUCHY_FORCING and project!=h.ANDELST):
+            raise ValueError('Unsupported external forcing mode/project')
+        self.forcing_mode=forcing_mode
         self.bundle, self.reference, self.output = map(Path, (bundle, reference, output))
         self.meta, self.case = validate_bundle(self.bundle, self.reference, project)
         self.project, self.coupling_id = project, coupling_id
@@ -106,7 +160,7 @@ class CoupledDailyColumn:
             raise ValueError('Native adoption requires a checkpoint')
         self.binding = {**self.meta['binding'], 'external_daily': {
             'version': 1, 'source_sha256': h.sha(Path(__file__)),
-            'coupling_id': coupling_id, 'forcing': 'original-project'}}
+            'coupling_id': coupling_id, 'forcing': forcing_mode}}
         self._origin = Path(origin).resolve() if origin is not None else None
         self._origin_hash = h.sha(self._origin) if self._origin is not None else None
         expected = self.meta['binding'] if adopt_native else self.binding
@@ -127,6 +181,13 @@ class CoupledDailyColumn:
                 if c['id'] != coupling_id or type(c['revision']) is not int or c['revision'] < 1:
                     raise ValueError('Invalid external origin revision')
                 self._revision = c['revision']
+                if self.forcing_mode==CAUCHY_FORCING:
+                    f=c['forcing'];document=f['input']
+                    if f['mode']!=CAUCHY_FORCING or type(c['origin_day']) is not int or c['origin_day']!=day-1:
+                        raise ValueError('Invalid persisted Cauchy origin')
+                    self._validate_cauchy(CauchyDayForcing(**document),day=c['origin_day'],origin=c['origin_sha256'])
+                    if f['identity_sha256']!=forcing_digest(document) or not re.fullmatch(r'[0-9a-f]{64}',f['applied_bbc_sha256']):
+                        raise ValueError('Invalid persisted Cauchy forcing identity')
         self._publisher = None  # load once on first proposal, never compile per day
         self._pending = None
         self._candidate = None
@@ -151,18 +212,47 @@ class CoupledDailyColumn:
         if self._origin is not None and h.sha(self._origin) != self._origin_hash:
             raise ValueError('Accepted origin was changed')
 
-    def prepare(self):
+    def _validate_cauchy(self, forcing, *, day=None, origin=None):
+        if type(forcing) is not CauchyDayForcing:raise ValueError('Explicit Cauchy segment required')
+        if day is None:day,origin=self._day,self._origin_hash
+        if (forcing.coupling_id!=self.coupling_id or forcing.origin_sha256!=origin or
+            type(forcing.origin_day) is not int or forcing.origin_day!=day or
+            type(forcing.t0_day1900) is not int or type(forcing.t1_day1900) is not int or
+            forcing.t0_day1900!=self.project.start_clock+day or forcing.t1_day1900!=forcing.t0_day1900+1):
+            raise ValueError('Foreign or stale Cauchy forcing origin/window')
+        for value in (forcing.head_start_cm,forcing.head_end_cm):
+            if isinstance(value,bool) or not isinstance(value,(int,float)) or not math.isfinite(value) or not -10000<=value<=1000:
+                raise ValueError('Cauchy head outside original finite input range')
+        if not isinstance(forcing.provenance,str) or not forcing.provenance or len(forcing.provenance)>128:
+            raise ValueError('Explicit Cauchy input provenance required')
+
+    def cauchy_forcing(self, head_start_cm, head_end_cm, provenance):
+        self._check_origin()
+        if self.forcing_mode!=CAUCHY_FORCING:raise ValueError('Original forcing mode has no override')
+        start=self.project.start_clock+self._day
+        forcing=CauchyDayForcing(self.coupling_id,self._origin_hash,self._day,start,start+1,
+                                head_start_cm,head_end_cm,provenance)
+        self._validate_cauchy(forcing)
+        return forcing
+
+    def prepare(self, *, cauchy=None):
         self._check_origin()
         if self._pending is not None:
             raise ValueError('A day proposal is already outstanding')
         if self._day >= self.last_day:
             raise ValueError('Original project period is complete')
+        if self.forcing_mode==CAUCHY_FORCING:self._validate_cauchy(cauchy)
+        elif cauchy is not None:raise ValueError('Original forcing mode has no override')
         if (self.output / f'accepted-column-1-day-{self._day+1}.zip').exists():
             raise FileExistsError('Accepted day target is occupied')
         validate_bundle(self.bundle, self.reference, self.project)
         self._attempt += 1
         trial = self.output / f'trial-{self._attempt}'
         trial.mkdir()
+        case=self.case
+        if cauchy is not None:
+            case=trial/'forcing-case'
+            write_cauchy_case(self.case,case,cauchy,self.project)
         receipt, origin = None, None
         if self._origin is not None:
             origin = trial / 'origin'
@@ -173,7 +263,7 @@ class CoupledDailyColumn:
             self._publisher = h.restart_publisher(self.output)
         with contextlib.ExitStack() as stack:
             host = h.DailyHost(stack, h.executable(self.bundle, 'day_donor'),
-                               h.executable(self.bundle, 'day_kernel'), self.case,
+                               h.executable(self.bundle, 'day_kernel'), case,
                                trial, [start], runtime=True, checkpoint_enabled=True,
                                project=self.project)
             # Bind the private host before its FIRST advance. The existing
@@ -182,6 +272,11 @@ class CoupledDailyColumn:
             # or recompiling identical C code for each day proposal.
             host.binding = self.meta['binding']
             host.publish = self._publisher
+            forcing_record=ORIGINAL_FORCING
+            if cauchy is not None:
+                forcing_record={'mode':CAUCHY_FORCING,'input':cauchy.document(),
+                    'identity_sha256':forcing_digest(cauchy.document()),
+                    'applied_bbc_sha256':h.sha(host.columns[0].directory/'swap.bbc')}
             raw = host.step(1, checkpoint=True)
             if not raw['committed']:
                 raise ValueError('Local water/solute acceptance refused the proposal')
@@ -192,11 +287,11 @@ class CoupledDailyColumn:
                 raise ValueError('Private candidate receipt differs')
             host.close()
         self._check_origin()
-        self._candidate = (ready, raw, h.sha(candidate), candidate)
+        self._candidate = (ready, raw, h.sha(candidate), candidate, forcing_record)
         t0 = self.project.start_clock + self._day
         self._pending = PreparedDay(self.coupling_id, secrets.token_hex(16), self._origin_hash,
                                     t0, t0+1, (date.fromisoformat(self.project.start_date)+
-                                               timedelta(days=self._day)).isoformat(), json.dumps(raw))
+                                               timedelta(days=self._day)).isoformat(), json.dumps(raw),json.dumps(forcing_record))
         return self._pending
 
     def _check_proposal(self, proposal):
@@ -210,7 +305,7 @@ class CoupledDailyColumn:
 
     def accept(self, proposal):
         self._check_proposal(proposal)
-        ready, raw, digest, candidate = self._candidate
+        ready, raw, digest, candidate, forcing_record = self._candidate
         if h.sha(candidate) != digest:
             raise ValueError('Private proposal changed')
         # Verify the bytes actually being published, not only the retained ZIP.
@@ -221,7 +316,7 @@ class CoupledDailyColumn:
         receipt = {**raw, 'coupling': {'id': self.coupling_id, 'revision': self._revision+1,
                    'origin_revision': self._revision, 'origin_sha256': self._origin_hash,
                    'origin_day': self._day, 'window_day1900': [proposal.t0_day1900, proposal.t1_day1900],
-                   'forcing': 'original-project'}}
+                   'forcing': forcing_record}}
         try:
             target = h.publish_checkpoint(self.output, ready, receipt, self.binding, self._publisher)
         except Exception:
