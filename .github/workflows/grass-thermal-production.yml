@@ -170,7 +170,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
