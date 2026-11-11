@@ -38,6 +38,39 @@ incumbent tiny-transfer refusal remains the default. The affected original
 geometry edge cases, both transfer signs and exact admitted-domain behavior are
 covered by the retained real-owner contract.
 
+## Explicit internal heat substeps
+
+The explicit policy successor is qualified at PR #1632; exact source, build,
+platform and acceptance scope are owned by
+`integration/f-ci/THERMAL_SUBSTEP_POLICY_ADMISSION.json`. This adds a numerical
+option, not a new physical heat model or a whole scientific qualification.
+
+`soil_temperature_numerical_config_t%internal_heat_substeps` defaults to one.
+The original single-step body is retained. Four selects four incumbent implicit
+heat solves per water trial, with actual integrated conductive faces and the
+unchanged per-cell/global energy budget. The backend's existing
+`configure_soil_temperature_temporal_tolerance` accepts an optional integer
+`heat_substeps`; only one or four is admitted, and four requires a positive
+thermal budget. Invalid requests are atomic. Heat activation locks the choice;
+backend initialization restores one. `soil_temperature_substep_count()` returns
+zero before initialization and the configured value afterwards.
+
+Native opt-in uses `--numerical-profile thermal-subcycle4-1e-5C` and the explicit
+`thermal-control-4` application selector. The existing profile and selector keep
+one step. The immutable native binding distinguishes these profiles, including
+when only the policy changes; foreign-policy checkpoints fail before publication.
+The physical codec layout is unchanged. External coupling explicitly reconstructs
+its per-backend numerical configuration as it does for the existing temporal policy.
+
+The current one-step four-day physical files match the admitted incumbent;
+four-step files match the qualified private variant. Current O0/O2 bodies,
+actual native restarts/refusals, shared default/Andelst and focused F-CI pass.
+One current Windows O2 alternating short-window comparison reduces median native
+time from14.233 to7.766 seconds. These observations do not establish full-project
+runtime parity or new complete historical trajectories. The day188/day584 and
+whole-energy scientific limits remain separate; existing full execution receipts
+retain their original exact source/build scope.
+
 ## Measured scope
 
 Fresh checked Windows GNU Fortran16.2 O0/O2 shared-runtime and thermal contracts
