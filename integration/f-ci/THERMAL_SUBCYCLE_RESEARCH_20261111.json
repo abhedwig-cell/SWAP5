@@ -20,7 +20,9 @@
         "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/thermal numerical research",
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
         "expected_seconds": 180,
-        "existing_evidence": "Windows GNU16.2 real heat bodies O0/O2, six boundary combinations, per-cell faces, A/B/A and refusal pass. Native production O2 four-day ABBA gives 46.02% median reduction with own process restart exact. Select the same short actual proof on Ubuntu26 GNU15.2; no broad application or F-CI repeat."
+        "existing_evidence": "Windows GNU16.2 real heat bodies O0/O2, six boundary combinations, per-cell faces, A/B/A and refusal pass. Native production O2 four-day ABBA gives 46.02% median reduction with own process restart exact. Select the same short actual proof on Ubuntu26 GNU15.2; no broad application or F-CI repeat.",
+        "prior_execution": "FAILED",
+        "diagnosis": "First Ubuntu dispatch is refused by the selection preflight before compilation because the candidate was abbreviated. Correct the full exact SHA and required prior-execution/diagnosis fields. Windows source-bound numerical results are unaffected; no numerical/Linux model result was obtained from the refused dispatch."
       }
     },
     "full_fci_disposition": "NOT_SELECTED_IMPACT for private prototype; original production dependencies must be restored and exact before publication",
