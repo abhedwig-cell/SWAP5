@@ -18,7 +18,7 @@
     "Short actual Linux preservation before admission"
   ],
   "test_selection": {
-    "candidate": "bb9c6ccd5ca41853196f778f2bc67fdfa3af5199",
+    "candidate": "fd2db7533a368e11e7724f82538d82a553e371e5",
     "groups": {
       "thermal_substep_policy": {
         "changed_dependency": "Generic heat numerical config/workspace, runtime policy setter, conductive receipt and explicit native profile/binding; original single-step heat body retained.",
@@ -1989,5 +1989,9 @@
     "yaml_parse": "PASS",
     "all_run_bash_syntax": "PASS",
     "sparse_policy_job": "Selected actual dependency files only; full current default native and focused F-CI retain their existing source-pinned preservation commands."
+  },
+  "bounded_fci_scope_correction": {
+    "cancelled_run": 43019110427,
+    "reason": "The new bounded dispatch also scheduled the existing unconditional manual moving-preservation job. Its broad body was not selected. Cancel the run and explicitly exclude that job for bounded thermal feedback; rerun only owning preflight and modular feedback. No cancelled observation grants PASS."
   }
 }
