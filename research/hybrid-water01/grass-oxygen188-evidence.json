@@ -1,0 +1,133 @@
+{
+  "day": 188,
+  "date": "1980-07-06",
+  "reference_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+  "build": {
+    "legacy": {
+      "original_source_sha256": "3cb72036e2628148cb9b0844852b3190256b326c1f16d9dfa1258e3de4598ec4",
+      "observer_source_sha256": "499e60515c3b416dd4ec73891b8cbd845e9cc10e0deecfe37f94b8a7cf78185e",
+      "exe_sha256": "503e5b9bfa72602285710fcbc2a928fbf927dd134237642dcaeb92130b39cc0e",
+      "inputs_sha256": {
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "stdout_sha256": "b587ef97753041cc55d84d037e6ff0bad38fa3045eaaa209685b82c61b6c7114"
+    },
+    "native": {
+      "original_source_sha256": "91dc6e47dbb2a0dd4828d59cc77e5acf724beb85b9b129b0b635dc767e478455",
+      "observer_source_sha256": "6ded0eb4eec7c68cadad98621fabe18d0a38a2dd1667350235befadf7699f49d",
+      "exe_sha256": "861b30ce5601dbb73467086e79e151414b97cfaaed7c65918862656b424ba60d",
+      "predecessor_exe_sha256": "fc6bc414dc36c1479bed27df17e6d1a836fb7e1597fcafdedb1b64e67fa2ac02",
+      "input_sha256": {
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+      },
+      "original_binding_preserved_for_observer": true,
+      "origin_sha256": "91ce38847b8b3b68c4c19f7bd5ed21217b280163954296e9d12097c6ea87ed96",
+      "terminal_sha256": "2e8610e23a8ebf875e1e4ef885759ed2c131f97bf54652ab1da118ec0cc10525",
+      "stdout_sha256": "285b40f2ff2e19e4e65e266721b98d4e1a565d7079157bcb14a1493bea65cdea"
+    }
+  },
+  "native": {
+    "trace_intervals": 1660,
+    "integral_cm": {
+      "potential_cm": 0.14241960621717528,
+      "uptake_cm": 0.1364253805480479,
+      "drought_cm": 0.0,
+      "oxygen_cm": 0.0059942256691273834
+    },
+    "root_depth_cm": [
+      30.0
+    ],
+    "first_oxygen_minute": 68.29964253840444,
+    "last_oxygen_end_minute": 669.5999999998821,
+    "peak_oxygen_rate_cm_day": 0.09567692935440289
+  },
+  "legacy": {
+    "trace_intervals": 31,
+    "integral_cm": {
+      "potential_cm": 0.14170739107440616,
+      "uptake_cm": 0.12513634446446825,
+      "drought_cm": 0.0,
+      "oxygen_cm": 0.01657104660993789
+    },
+    "root_depth_cm": [
+      30.0
+    ],
+    "first_oxygen_minute": 38.39999999734573,
+    "last_oxygen_end_minute": 777.6000000209433,
+    "peak_oxygen_rate_cm_day": 0.1417073910766374
+  },
+  "archived_references": {
+    "B0": {
+      "potential_cm": 0.141707391074,
+      "uptake_cm": 0.125136344464,
+      "drought_cm": 0.0,
+      "oxygen_cm": 0.01657104661
+    },
+    "B1": {
+      "potential_cm": 0.141707391076,
+      "uptake_cm": 0.12513634447,
+      "drought_cm": 0.0,
+      "oxygen_cm": 0.016571046606
+    }
+  },
+  "native_trace_tags": [
+    "HEAD",
+    "NODES",
+    "ROOT"
+  ],
+  "legacy_trace_tags": [
+    "NODES",
+    "ROOT"
+  ],
+  "native_reported_accepted_steps": 830,
+  "native_water_balance_cm": -6.716849298982197e-15,
+  "native_checkpoint_byte_identical": true,
+  "comparison": {
+    "oxygen_delta_native_minus_legacy_cm": {
+      "potential_demand_term": 5.663070586363256e-05,
+      "oxygen_fraction_term": -0.010633451646836775
+    },
+    "largest_overlapping_oxygen_rate_gap": {
+      "overlap_minutes": [
+        76.79999999469146,
+        76.93957665975631
+      ],
+      "native_start_minute": 76.79314030194291,
+      "legacy_start_minute": 76.79999999469146,
+      "native_oxygen_cm_day": 0.0015751585358019515,
+      "legacy_oxygen_cm_day": 0.12150163568163679,
+      "native_deepest_oxygen_factor": 0.27233417891967154,
+      "legacy_deepest_oxygen_factor": 0.0,
+      "largest_absolute_nodal_difference_at_own_step_starts": {
+        "pressure_head_cm": {
+          "node_1_based": 6,
+          "native": -56.704779120476886,
+          "legacy": -95.09176555763732
+        },
+        "water_content": {
+          "node_1_based": 6,
+          "native": 0.35300139790464075,
+          "legacy": 0.3161752211431885
+        },
+        "temperature_c": {
+          "node_1_based": 7,
+          "native": 14.720341527910216,
+          "legacy": 14.69344646422244
+        },
+        "root_sink_cm_day": {
+          "node_1_based": 4,
+          "native": 0.008386932366122543,
+          "legacy": 0.0
+        }
+      }
+    }
+  }
+}
