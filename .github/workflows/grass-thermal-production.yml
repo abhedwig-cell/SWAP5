@@ -48,7 +48,7 @@ concurrency:
 jobs:
   hybrid-waterhost:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_waterhost
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     timeout-minutes: 15
     env:
       OMP_NUM_THREADS: '1'
