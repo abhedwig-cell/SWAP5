@@ -1,5 +1,5 @@
 {
-  "status": "SHORT_DIAGNOSTIC_SELECTED",
+  "status": "QUALIFIED_DIAGNOSTIC_HYPOTHESIS_REJECTED_NO_PRODUCTION_CHANGE",
   "canonical_base": "3331f860db0cf5208faed99bf505425226d6b0d6",
   "scope": "Original four-day Grassgrowth wet window, unchanged thermal-control-1e-5C and retained numerical policy. No tolerance change.",
   "hypothesis": "The current whole-profile exact waterfilm cache recomputes unchanged unsaturated nodes when only other nodes change. Count node-identical inputs on whole-profile misses before selecting a per-node repair.",
@@ -25,5 +25,70 @@
     "full_fci_disposition": "NOT_SELECTED_IMPACT for diagnostic",
     "highest_low_air": "NOT_SELECTED_POLICY"
   },
-  "next_decision": "Measure unsaturated node duplicates on whole-profile misses. Stop this hypothesis if negligible; no second identical experiment."
+  "next_decision": "Use the established accepted-step amplification as the next runtime target. Read the existing thermal controller/error-estimator studies, then select one short source-bound estimator discriminator before any algorithm change. Preserve 1e-5 C thermal and existing water budgets; do not repeat static selective-step heuristics, no-stress/trapezoid or cache campaigns.",
+  "source_head": "27c3fa73cad33f9f395209505d031559c7deab65",
+  "result": {
+    "profile_calls_reported_prefix": 16000,
+    "whole_profile_hits_in_prefix": 5333,
+    "wet_nodes_on_comparable_profile_misses": 211480,
+    "identical_wet_nodes_on_misses": 0,
+    "all_five_physical_files_byte_equal": true,
+    "reported_prefix_scope": "Four original Grassgrowth days; counters report 1000-call prefixes. First calls after reset excluded from comparable misses.",
+    "maximum_abs_daily_water_residual_cm": 2.2565282975506307e-14,
+    "accepted_steps": 6882,
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "baseline_executable_sha256": "d771a5aeb2b5ec262f572802a0d71af0c520028c69f0f88c718c487528006ed5",
+    "diagnostic_executable_sha256": "df152c073903a14c7c79688c251f36c15d8e87246fe9c4f6268ee7aa3cadad38",
+    "original_inputs_sha256": {
+      "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+      "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+    },
+    "physical_sha256": {
+      "budget.csv": "8b5c00a9b2442940221dab71a832a4475e0b8187f692193c355ffb0f136fbb7d",
+      "conductive_budget.csv": "a7f06b6ad3a34a09f2f0d7210734d345b7df7b93c65431efd91e6b89802baa13",
+      "crop.csv": "09eff08a275d7b32e9e71540d643f4d1a5e1db5ec28512cb57ebaf4f3d380682",
+      "state.csv": "12fa912d307669ef562b4e45f383f04d3a3c3b2a982915936d91e0158ad83a7a",
+      "endpoint.csv": "b395df772af76852c7d9cff769c84bdc9550beccc4061c8e4d4b3ea52ca04b67"
+    }
+  },
+  "cost_seconds": {
+    "cold_compile": 110.70697799813934,
+    "cold_link": 0.7040633000433445,
+    "cold_native_original_initial_interval": 3.8007759999018162
+  },
+  "probe_cost_seconds": {
+    "compile": 0.27269489993341267,
+    "link": 0.3489583001937717,
+    "baseline": 14.245971000054851,
+    "observed": 14.98529539979063
+  },
+  "archive": {
+    "path": "research/hybrid-water01/oxygen-node-repeat-20261111.tar.xz",
+    "sha256": "f54cc106305b2d4e6398a048f3990c277aeb7562f81c8a988129c15471991bb9",
+    "bytes": 86520,
+    "contents": "Actual generated observer/source/object, commands/costs/stdout/stderr, baseline build manifest, original staged inputs, native daily/terminal outputs and own build bindings. Full rebuild is reproducible from exact named canonical source; this small diagnostic archive is not a complete object library."
+  },
+  "decision": "Reject node-granular reuse: no observed nontrivial duplicate on comparable profile misses. Keep existing trial-local whole-profile cache and its original restart/isolation qualifications. Do not introduce another cache or repeat this trial.",
+  "retained_comparisons": {
+    "same_host_original_full_grassgrowth_seconds": 8.21875,
+    "original_scope": "Earlier exact original five-file Grassgrowth 1827-day run; documented in README runtime reconciliation. Not re-executed.",
+    "current_scope": "Fresh current-canonical four-day thermal profile O2 native run; not an accuracy-matched full-project ratio.",
+    "previous_diagnosis": "Thermal 6882 vs water-only 1163 accepted steps over four days; 7399 attempts and 517 temporal rejections. Original SWKIMPL=0 excludes conditional Newton RootExtraction duplication. Existing trapezoid reuse, no-stress bounds and failed coefficient-preparation experiment remain resolved."
+  },
+  "production_dependency_equal_canonical": true,
+  "no_scientific_promotion": "This diagnostic changes no production implementation and does not qualify full-project runtime parity, day 188 residual, day 584 reference or whole energy. Full original application receipts retain exact original source/build scopes.",
+  "read_only_archive_audit": {
+    "status": "PASS",
+    "raw_counts_reconstructed": true,
+    "original_input_and_five_physical_hashes_checked": true,
+    "four_complete_day_records_and_6882_steps": true,
+    "water_and_root_uptake_bookkeeping_below_1e_12_cm": true,
+    "source_provider_count": 203,
+    "python_syntax": "PASS",
+    "full_fci": "NOT_SELECTED_IMPACT; diagnostic and evidence only, no production source change",
+    "O0": "NOT_SELECTED_IMPACT; this performance diagnostic observes production O2 only"
+  }
 }
