@@ -29,6 +29,8 @@ for obj, h in build['object_sha256'].items():
 sources = list(build['source_sha256'])
 objects = list(build['object_sha256'])
 assert len(sources) == len(objects)
+archive = next(e['command'][-3] for e in build['events'] if e['label'] == 'link')
+assert sha(archive) == build['original_input_archive_sha256']
 retained = [o for s, o in zip(sources, objects)
             if Path(s).name not in ['mod_restricted_soil_temperature.f90', 'initial_interval.f90']]
 original = subprocess.check_output(['git', 'show',
@@ -66,7 +68,7 @@ for opt in ['O0', 'O2']:
     run([fc, *flags, '-c', control, '-o', folder/'original.o'], folder, 'compile-original')
     driver = Path(__file__).with_name('test_thermal_subcycle.f90')
     run([fc, *flags, '-fopenmp', driver, folder/'private.o', folder/'original.o',
-         *retained, '-o', folder/'control.exe'], folder, 'compile-link-driver')
+         *retained, archive, '-o', folder/'control.exe'], folder, 'compile-link-driver')
     run([folder/'control.exe'], folder, 'native')
     assert 'THERMAL_SUBCYCLE_ORIGINAL_SOLVES_FACES_AND_REFUSAL=PASS' in (folder/'native.stdout').read_text()
 result = dict(status='REAL_HEAT_BODY_O0_O2_ORIGINAL_SOLVES_FACES_AND_REFUSAL_PASS',
