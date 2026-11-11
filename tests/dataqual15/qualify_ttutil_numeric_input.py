@@ -5,7 +5,6 @@ import hashlib
 import json
 import os
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 import time
@@ -45,21 +44,25 @@ def digest(path):
 def execute(command, folder, category, events, timeout):
     command = list(map(str, command))
     started = time.monotonic()
-    result = subprocess.run(command, cwd=folder, capture_output=True, timeout=timeout)
+    try:
+        result = subprocess.run(command, cwd=folder, capture_output=True, timeout=timeout)
+        stdout, stderr, returncode = result.stdout, result.stderr, result.returncode
+    except subprocess.TimeoutExpired as error:
+        stdout, stderr, returncode = error.stdout or b"", error.stderr or b"", None
     index = len(events)
-    (folder / f"{index}.stdout").write_bytes(result.stdout)
-    (folder / f"{index}.stderr").write_bytes(result.stderr)
+    (folder / f"{index}.stdout").write_bytes(stdout)
+    (folder / f"{index}.stderr").write_bytes(stderr)
     events.append({
         "command": command,
         "category": category,
-        "returncode": result.returncode,
+        "returncode": returncode,
         "seconds": time.monotonic() - started,
     })
     (folder / "events.json").write_text(json.dumps(events, indent=2) + "\n")
-    if result.returncode:
-        raise RuntimeError(result.stdout.decode(errors="replace") +
-                           result.stderr.decode(errors="replace"))
-    return result.stdout.decode()
+    if returncode != 0:
+        raise RuntimeError(f"{category} returned {returncode}: " +
+                           stdout.decode(errors="replace") + stderr.decode(errors="replace"))
+    return stdout.decode()
 
 
 def main():
