@@ -15,7 +15,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "app/hybrid_water"))
-from daily_host import APPLICATION_MODEL, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
+from daily_host import APPLICATION_MODEL, ANDELST, GRASSGROWTH, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
 
 GRASS_MODEL = "NATIVE_GRASSGROWTH_WATER"
 HUPSEL_MODEL = "NATIVE_HUPSEL_ROTATION"
@@ -170,7 +170,7 @@ def run_hupsel(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", required=True, choices=[APPLICATION_MODEL, GRASS_MODEL, HUPSEL_MODEL])
+    parser.add_argument("--model", required=True, choices=[APPLICATION_MODEL, GRASS_MODEL, HUPSEL_MODEL, GRASSGROWTH.model])
     parser.add_argument("--reference-work", type=Path, help="Prepared original SWAP 4.3.1 distribution for Andelst")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
@@ -210,23 +210,25 @@ def main():
         return run_grass(args)
     if args.reference_work is None or args.grass_build is not None or args.hupsel_build is not None:
         parser.error("Andelst requires --reference-work")
-    args.days = 481 if args.days is None else args.days
+    project=GRASSGROWTH if args.model==GRASSGROWTH.model else ANDELST
+    last_day=4 if project==GRASSGROWTH else 481
+    args.days = last_day if args.days is None else args.days
     args.kernel_opt = args.kernel_opt or "O2"
     if (args.restart is None) != (args.restart_day is None):
         parser.error("--restart and --restart-day must be supplied together")
     first = args.restart_day if args.restart is not None else 0
-    if not 0 <= first < args.days <= 481 or (args.restart is not None and first == 0):
-        parser.error("The last day must follow the origin and be within the original 481-day period")
+    if not 0 <= first < args.days <= last_day or (args.restart is not None and first == 0):
+        parser.error(f"The last day must follow the origin and be within the admitted {last_day}-day period")
     if args.checkpoint_at is not None and not first < args.checkpoint_at <= args.days:
         parser.error("The checkpoint day must belong to the requested run")
 
     output = args.output.resolve()
     output.mkdir(parents=True)
-    profile = dict(budget_retry=True, shared_pond_transfer=True, refresh_macro_final=True)
+    profile = dict(budget_retry=project==ANDELST, shared_pond_transfer=project==ANDELST, refresh_macro_final=project==ANDELST)
     donor, kernel, case, inputs, build_id = build(
-        args.reference_work.resolve(), output, **profile, runtime_checkpoint=True, kernel_opt=args.kernel_opt,
+        args.reference_work.resolve(), output, **profile, runtime_checkpoint=True, kernel_opt=args.kernel_opt, project=project,
     )
-    binding = checkpoint_identity(inputs, build_id, **profile)
+    binding = checkpoint_identity(inputs, build_id, project=project, **profile)
     origin = None
     receipt = None
     if args.restart is not None:
@@ -234,7 +236,7 @@ def main():
         receipt = verify_checkpoint(args.restart.resolve(), first, binding, origin)
     result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,
                  origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,
-                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model)
+                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)
     report = {
         "model": args.model, "kernel_optimization": args.kernel_opt,
         "input_sha256": inputs, "source_sha256": {"SWAP.ZIP": binding["swap_source"], "TTUTIL.ZIP": binding["ttutil_source"]},

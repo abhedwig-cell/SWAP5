@@ -93,3 +93,6 @@ For a scientific claim, reviewers should distinguish:
 - **preservation authority**: the mechanism that protects the admitted behaviour on later heads.
 
 The current mapping between these layers is maintained in [Status-A traceability](../status-a/TRACEABILITY.md).
+
+The [explicit hybrid project waterhost](HYBRID_GENERIC_WATERHOST.md) records the
+bounded original Grassgrowth extension and preserved Andelst state contracts.
