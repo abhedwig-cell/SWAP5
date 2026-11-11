@@ -1,0 +1,188 @@
+{
+  "workstream": "SWAP5-FUNCTIONAL-CLOSURE01",
+  "delivery": "Complete original Grassgrowth through common hybrid host and owned repeated durable checkpoints",
+  "status": "PUBLISHED_MERGED_CANONICAL_POSTIMAGE_VERIFIED",
+  "PR": 1640,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1640",
+  "base": "741210626929b0043e9109aa93a3e4f9c4dffb18",
+  "qualified_head": "fff975ebf1e9e46afb9e0f8b8256bc25ddad1f48",
+  "merge": "3e0dc5e08c07719a7ac2107d54d7d74f954805f1",
+  "qualified_predicted_actual_tree": "60e5ab1c9c57da24e7ee815f8cde5f836516ec73",
+  "actual_canonical_capsules_sha256_verified": true,
+  "full_windows": {
+    "status": "FULL_ORIGINAL1827_AND_OWN_SEASONAL_RESTARTS_PASS",
+    "source_commit": "6113552ed5119b0cc06a2f64dcc12e83bab52f48",
+    "bundle_build_sha256": "300de700c04fce3430a461e2030dc9bec0899de60f7f9493fdd0f0682d3a5e42",
+    "days": 1827,
+    "maximum_daily_water_residual_cm": 6.3493742888471e-14,
+    "signed_cumulative_daily_residual_cm": -1.0947638779514135e-13,
+    "restarts": [
+      {
+        "cut": 2,
+        "end": 4,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "f63a5fcf67a71fe569147a930a71ea9fc6d1ef4fcc6ca4729d77c85fa5e4cc44"
+      },
+      {
+        "cut": 187,
+        "end": 190,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "acb18d71f4756d7710e8a736db4c8d6d232c79ccf9c716f5334686c34669791c"
+      },
+      {
+        "cut": 365,
+        "end": 367,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "ba92c28ecfe178edfbb9ddc081fb14800b634224b5f8bb437aefd0cfe01cb474"
+      },
+      {
+        "cut": 1792,
+        "end": 1827,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "955665757e808ddead532987425bac98c11c79a006e25b23f95b06f35dad7e44"
+      }
+    ],
+    "events": [
+      {
+        "case": "full-original1827",
+        "seconds": 10.937884100014344,
+        "status": "PASS"
+      },
+      {
+        "case": "own-2-to-4",
+        "seconds": 1.1516118999570608,
+        "status": "PASS"
+      },
+      {
+        "case": "own-187-to-190",
+        "seconds": 1.0613718000240624,
+        "status": "PASS"
+      },
+      {
+        "case": "own-365-to-367",
+        "seconds": 1.0664291998837143,
+        "status": "PASS"
+      },
+      {
+        "case": "own-1792-to-1827",
+        "seconds": 1.2773593000601977,
+        "status": "PASS"
+      }
+    ]
+  },
+  "linux": {
+    "artifact_id": 13883699055,
+    "zip_sha256": "62222a22c3be4607d7fe9e35f8a1fb605532d6c51bc70da8a89c3e1234ddac33",
+    "bytes": 18916395,
+    "run": 43082435188,
+    "job": 130738160734,
+    "source": "fb7d2b195ceaae1065bb59ff2e0ee6367761e78a"
+  },
+  "independent_raw_audits": {
+    "windows": {
+      "status": "INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS",
+      "platform": "windows",
+      "retained_files": 2352,
+      "source_build_input_identity_checks": 409,
+      "cases": {
+        "grass-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.965353207744765e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.965353207744765e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "repeated_publication": "BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS",
+        "full_original_grassgrowth": {
+          "days": 1827,
+          "maximum_daily_water_residual_cm": 6.3493742888471e-14,
+          "signed_cumulative_daily_residual_cm": -1.0947638779514135e-13,
+          "own_seasonal_payloads_exact": true
+        }
+      }
+    },
+    "linux": {
+      "status": "INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS",
+      "platform": "linux",
+      "retained_files": 2980,
+      "source_build_input_identity_checks": 409,
+      "cases": {
+        "grass-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.96535181195129e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.96535181195129e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "repeated_publication": "BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS"
+      }
+    }
+  },
+  "raw_capsules": {
+    "windows": {
+      "archive": "research\\hybrid-water01\\hybrid-grass-full-windows-20261111.tar.xz",
+      "bytes": 14663712,
+      "sha256": "cabfa1ba582b91838d9b5da851ae112ade5540e5b2d58020b94f6985094d40ad",
+      "retained_files": 2352
+    },
+    "linux": {
+      "archive": "research\\hybrid-water01\\hybrid-grass-full-linux-20261111.tar.xz",
+      "bytes": 10511672,
+      "sha256": "f5d3eea2e967490398628bb367db8323c18065fb544defdbf09bda033b3cc122",
+      "retained_files": 2980
+    }
+  },
+  "public_late": {
+    "status": "PUBLIC_OWN187_TO190_ALL_PHYSICAL_RECEIPTS_AND_BOTH_PAYLOADS_EXACT",
+    "archive": "research/hybrid-water01/hybrid-grass-public-late-20261111.tar.gz",
+    "bytes": 1143275,
+    "sha256": "f1b7f556c0ca3720461f2028ea7e0b5e69721414e2b4060a3e3fa978de2524fe",
+    "full_daily_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499"
+  },
+  "documentation": "Source checks PASS; strict MkDocs build PASS22.70s; longstanding INFO anchor messages retained",
+  "source_scope": "Python staging owner and public period only; original Fortran/reckoning/tolerances unchanged. Native/source/default heat owners inherited unchanged; no duplicate native/reference full runs. Full new-route trajectory measured Windows only.",
+  "day188": "Hybrid actual uptake0.1251363444644971cm matches B0 print0.125136344464cm; oxygen current legacy print0.01657cm versus B0print0.016571046610cm. Original water8quantities all1827 dates maximum6.821210263296962e-13cm difference at B0print precision. No unrounded oxygen claim, native1e-5C/whole energy/whole science/runtime-parity qualification. Native thermal-route failed original comparison and Hupsel584 reference limits unchanged.",
+  "current_implementation_worktree": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity",
+  "current_implementation_branch": "codex/hybrid-grass-full",
+  "live_executions": "ALL_FINISHED_NO_MODEL_COMPILER_OR_CI_LEFT",
+  "next_delivery": "One generic Hupsel project/boundary/state extension: inspect original configuration, qualify prefix/own restart first, then one bounded complete new-route run. No repeated accepted native/reference trajectory.",
+  "next_cost_policy": "Retain short actual prefix/own restart and independent instance/refusal first. Build from new canonical, exact Hupsel original inputs; source/build-bound original coherent blocks. Do not compile old recovery research source or rebind old packages. One new full-route Hupsel run only after bounded acceptance, with explicit short wall cap; no completed native/full reference rerun."
+}

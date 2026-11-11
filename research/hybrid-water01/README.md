@@ -2,6 +2,58 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+
+### Complete original shared-host Grassgrowth delivered, 11 November 2026
+
+PR1640 merged at3e0dc5e08c07719a7ac2107d54d7d74f954805f1. Qualified head
+fff975ebf1e9e46afb9e0f8b8256bc25ddad1f48, predicted merge and actual canonical
+all have tree60e5ab1c9c57da24e7ee815f8cde5f836516ec73. All three canonical raw
+capsule blob hashes verified. Receipt:
+CLOSURE01_HYBRID_GRASS_FULL_CANONICAL_20261111.json. Supersedes earlier NEXT
+DELIVERY/ACTIVE banners below. Every model/compiler/audit/CI is FINISHED.
+
+One actual full original Grassgrowth through the common hybrid waterhost:
+1827 accepted days in10.937884100s, maximum daily water6.349374289e-14cm,
+signed sum-1.094763878e-13cm, unchanged1e-10cm guard. Own2-to4,187-to190,
+365-to367 and1792-to1827 all match every physical receipt and both complete
+native/auxiliary payloads exactly. Public187-to190 also exact; public period
+now1..1827, past1827 refuses before output. No completed native/reference
+trajectory was repeated. Legacy donor heat remains distinct from native1e-5C.
+
+Repeated publication was reproduced: day2 passed, day4 failed status=new on
+macro.bin. Only Python working staging now recycles after checking its prior
+immutable durable package/binding/receipt/hash. Foreign staging/occupied target
+refuse before advancement. A subsequent bad receipt cannot publish or alter the
+old accepted ZIP and the other column continues. Physics/tolerances unchanged.
+Windows GNU16.2 and Ubuntu26 GNU15.2 kernelO0/O2 with originalO2 donor pass both
+projects, repeat/refusal/isolation/public controls and corresponding complete
+canonical Andelst payloads. Linux43082435188/job130738160734 atfb7d2b195 SUCCESS.
+Independent raw audits5332members/818source-build-input identities PASS;
+documentation source/strict build PASS. Three capsules and complete logs retained.
+
+All1827 dates/eight unrounded water quantities agree with sealed originalB0
+print to6.822e-13cm observed. Day188 actual uptake0.1251363444644971cm agrees
+with B0print0.125136344464cm; legacy oxygen prints0.01657cm against B0's
+0.016571046610cm. No unrounded oxygen equivalence is inferred. Native four/
+sixteen trajectory original-comparison failures and Hupsel584 reference limits
+remain visible. No native1e-5C/complete-energy/whole-science or accuracy-matched
+runtime ratio claim. Full-run scope: Windows shared hybrid original water route.
+
+Functional coverage: one complete original1827-day project added to common hybrid
+route alongside existing Andelst; overall completed original application count
+remains3. Reliability: all-day water, exact own seasonal state, repeat durable
+publication and instance/refusal preservation. Return: full new-route computation
+10.94s plus4.56s own continuations, without revisiting long native campaigns.
+
+NEXT DELIVERY: original Hupsel1.hupselbrook via this SAME explicit-project host.
+Inspect original boundary/process/state requirements; implement coherent missing
+context/codec, qualify bounded actual prefix/own restart/instance/refusal under
+existing guards, then select one capped complete new-route1096-day run. Keep
+native accepted1096-day evidence and failed day584 original comparison intact.
+Start a fresh codex branch from verified canonical3e0dc5e08; do not compile the
+old research recovery branch or rebind prior accepted ZIPs. Automation remains
+recovery only; no duplicate full/native/reference executions.
+
 ### Generic original-project waterhost delivered, 11 November 2026
 
 PR1639 merged at741210626929b0043e9109aa93a3e4f9c4dffb18. Actual whole tree
