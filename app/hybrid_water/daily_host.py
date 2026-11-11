@@ -468,8 +468,8 @@ end module MOD_wofost""")
             dayfix=366
             flirrigate=.true.
          else
-            dayfix=hybrid_irrigation_snapshot%dayfix
-            flirrigate=hybrid_irrigation_snapshot%flirrigate
+{apply}
+            schedule=0
          end if
       else
 {apply}
