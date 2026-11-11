@@ -327,6 +327,14 @@ end submodule MOD_Solute_CDE""")
                        "            sicact = 0d0\n            siccap = 0d0")
         (output/'MOD_cropdevelopment.f90').write_text(source,encoding='cp1252')
         patched.append('MOD_cropdevelopment')
+        source=(donor_build/'swap-selected/irrigation.f90').read_text(encoding='cp1252')
+        source=replace(source,"      subroutine read_irrigation_fixed()",
+                       "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
+        source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
+                       "         if(swinco/=3 .or. .not.all(irdate(1:ifnd)<tstart)) &\n"
+                       "            call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')")
+        (output/'irrigation.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'irrigation')
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
@@ -555,16 +563,6 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
         if start.origin is not None:
             start_date = date.fromisoformat(project.start_date) + timedelta(days=start.day)
             source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
-            if project==HUPSEL:
-                irrigation=re.search(r"(?ms)^[ \t]*IRDATE[ \t]+IRDEPTH[^\n]*\n(.*?)(?=^\* End of table)",source)
-                if irrigation is None:raise ValueError("Missing original fixed irrigation table")
-                dates=re.findall(r"(?m)^[ \t]*(\d{4}-\d{2}-\d{2})[ \t]",irrigation[1])
-                if not dates:raise ValueError("Empty original fixed irrigation table")
-                # The original reader enforces event duration<=1day. Expired
-                # gifts have no future forcing and must not fail its date check.
-                if all(date.fromisoformat(value)<start_date for value in dates):
-                    source,count=re.subn(r"(?m)^([ \t]*SWIRFIX[ \t]*=[ \t]*)1",r"\g<1>0",source)
-                    if count!=1:raise ValueError("Missing original fixed irrigation switch")
             if project==ANDELST and start.day >= 365:
                 bbc = directory / "swap.bbc"
                 table = bbc.read_text(encoding="cp1252")
