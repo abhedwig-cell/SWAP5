@@ -18,7 +18,15 @@ program test_thermal_substep_policy
  type(fmr_thermal_substep_receipt_t)::receipt
  real(real64),allocatable::v(:),vcontrol(:),saved(:)
  real(real64)::faces(3),a,b,dt,cell(2),defect
- integer::status,k,top,bottom,cases
+ integer::status,k,top,bottom,cases,nsteps,io
+ character(16)::argument
+ nsteps=4
+ call get_command_argument(1,argument)
+ if(len_trim(argument)>0)then
+  read(argument,*,iostat=io)nsteps
+  if(io/=0)error stop 'count argument'
+ end if
+ if(nsteps/=4.and.nsteps/=16)error stop 'unsupported test count'
  call initialize_soil_temperature_parameters([2d0,3d0],[1d0,2.5d0],[.45d0,.45d0], &
       [.35d0,.35d0],[.15d0,.15d0],[.05d0,.05d0],p,status)
  if(status/=SOIL_TEMP_OK)error stop 'parameters'
@@ -26,7 +34,7 @@ program test_thermal_substep_policy
  if(status/=SOIL_TEMP_OK)error stop 'initial'
  h%active_nodes=2;h%pressure_head=[-100d0,-125d0];h%water_content=[.3d0,.32d0]
  call copy_soil_temperature_profile(initial,saved,status)
- num%internal_heat_substeps=4
+ num%internal_heat_substeps=nsteps
  dt=.04d0;cases=0
  do top=SOIL_TEMP_TOP_PRESCRIBED_TEMPERATURE,SOIL_TEMP_TOP_TEMPERATURE_FLUX_CORRECTION
  do bottom=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX,SOIL_TEMP_BOTTOM_PRESCRIBED_TEMPERATURE
@@ -35,11 +43,11 @@ program test_thermal_substep_policy
   f%prescribed_bottom_temperature_c=8d0
   call trial_restricted_soil_temperature(p,num,f,h,h,initial,0d0,dt,w,trial,r,d)
   if(r%status/=SOIL_TEMP_OK.or..not.r%produced)error stop 'private trial'
-  if(d%tridiagonal_solves/=4.or.d%constitutive_evaluations/=4)error stop 'missing subsolve'
+  if(d%tridiagonal_solves/=nsteps.or.d%constitutive_evaluations/=nsteps)error stop 'missing subsolve'
   control=initial;faces=0d0
-  do k=1,4
-   a=dt*real(k-1,real64)/4d0;b=dt*real(k,real64)/4d0
-   if(k==4)b=dt
+  do k=1,nsteps
+   a=dt*real(k-1,real64)/real(nsteps,real64);b=dt*real(k,real64)/real(nsteps,real64)
+   if(k==nsteps)b=dt
    call original_trial(p,num,f,h,h,control,a,b,wc,next_state,rc,dc)
    if(rc%status/=SOIL_TEMP_OK)error stop 'original control'
    faces(1)=faces(1)+(b-a)*rc%top_heat_flux_into_soil_j_cm2_day
@@ -50,7 +58,7 @@ program test_thermal_substep_policy
   end do
   call copy_soil_temperature_profile(trial,v,status)
   call copy_soil_temperature_profile(control,vcontrol,status)
-  if(maxval(abs(v-vcontrol))>1d-12)error stop 'four original solves differ'
+  if(maxval(abs(v-vcontrol))>1d-12)error stop 'original subsolves differ'
   if(maxval(abs(faces-w%substep_conductive_face_energy_j_cm2))>1d-12)error stop 'integrated faces'
   call capture_fmr_thermal_substep(p,w,f,r,h%water_content,h%water_content,0d0,dt,receipt)
   if(.not.receipt%available)error stop 'missing receipt'
@@ -87,7 +95,7 @@ program test_thermal_substep_policy
  num%internal_heat_substeps=2
  call trial_restricted_soil_temperature(p,num,f,h,h,initial,0d0,dt,w,trial,r,d)
  if(r%status/=SOIL_TEMP_INVALID_PARAMETERS.or.r%produced)error stop 'invalid numerical count accepted'
- num%internal_heat_substeps=4
+ num%internal_heat_substeps=nsteps
  ! A rejected call cannot publish an old successful integrated-face receipt.
  f%top_boundary_mode=-999
  call trial_restricted_soil_temperature(p,num,f,h,h,initial,0d0,dt,w,trial,r,d)

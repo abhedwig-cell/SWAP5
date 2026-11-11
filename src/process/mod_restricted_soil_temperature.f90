@@ -173,7 +173,7 @@ contains
            committed_state,t0,t1,workspace,trial_state,result,diagnostics)
       return
     end if
-    if(nsteps/=4.or.parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)then
+    if((nsteps/=4.and.nsteps/=16).or.parameters%solution_mode/=SOIL_TEMP_SOLUTION_NUMERIC)then
       result=soil_temperature_result_t();diagnostics=soil_temperature_diagnostics_t()
       result%status=SOIL_TEMP_INVALID_PARAMETERS;diagnostics%status=result%status
       return

@@ -50,13 +50,14 @@ The original single-step body is retained. Four selects four incumbent implicit
 heat solves per water trial, with actual integrated conductive faces and the
 unchanged per-cell/global energy budget. The backend's existing
 `configure_soil_temperature_temporal_tolerance` accepts an optional integer
-`heat_substeps`; only one or four is admitted, and four requires a positive
+`heat_substeps`; one, four or sixteen is admitted, and a subcycled choice requires a positive
 thermal budget. Invalid requests are atomic. Heat activation locks the choice;
 backend initialization restores one. `soil_temperature_substep_count()` returns
 zero before initialization and the configured value afterwards.
 
-Native opt-in uses `--numerical-profile thermal-subcycle4-1e-5C` and the explicit
-`thermal-control-4` application selector. The existing profile and selector keep
+Native opt-in uses `--numerical-profile thermal-subcycle4-1e-5C` or
+`thermal-subcycle16-1e-5C`, with the explicit `thermal-control-4` or
+`thermal-control-16` application selector respectively. The existing profile and selector keep
 one step. The immutable native binding distinguishes these profiles, including
 when only the policy changes; foreign-policy checkpoints fail before publication.
 The physical codec layout is unchanged. External coupling explicitly reconstructs

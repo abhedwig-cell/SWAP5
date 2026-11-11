@@ -2274,8 +2274,8 @@ contains
     if(tolerance_c<0.0_real64)return
     steps=1
     if(present(heat_substeps))steps=heat_substeps
-    if(steps/=1.and.steps/=4)return
-    if(steps==4.and.tolerance_c<=0.0_real64)return
+    if(steps/=1.and.steps/=4.and.steps/=16)return
+    if(steps>1.and.tolerance_c<=0.0_real64)return
     if(self%model%heat_substep_policy_locked.and. &
        steps/=self%model%soil_temperature_numerical%internal_heat_substeps)return
     self%model%soil_temperature_numerical%internal_heat_substeps=steps

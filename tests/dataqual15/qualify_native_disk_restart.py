@@ -22,8 +22,8 @@ def main():
     checkpoint=base/'original-interval/checkpoint.bin';raw=checkpoint.read_bytes();d=layout(raw);assert d['clock']==1
     names=[*build['original_inputs_sha256'],'application.binding'];events=[]
     profile=build.get('grass_numerical_profile','water-only')
-    thermal=profile in ['thermal-control-1e-5C','thermal-subcycle4-1e-5C']
-    thermal_switch='thermal-control-4' if profile=='thermal-subcycle4-1e-5C' else 'thermal-control'
+    thermal=profile in ['thermal-control-1e-5C','thermal-subcycle4-1e-5C','thermal-subcycle16-1e-5C']
+    thermal_switch={'thermal-subcycle4-1e-5C':'thermal-control-4','thermal-subcycle16-1e-5C':'thermal-control-16'}.get(profile,'thermal-control')
     def case(name):
         folder=out/name;folder.mkdir()
         for n in names:shutil.copyfile(base/'original-interval'/n,folder/n)
@@ -92,7 +92,7 @@ def main():
             binding=folder/'application.binding';data=json.loads(binding.read_text())
             if kind=='missing-marker':del data['grass_numerical_profile']
             if kind=='wrong-marker':data['grass_numerical_profile']='unknown-profile'
-            if kind=='cross-policy-marker':data['grass_numerical_profile']='thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C'
+            if kind=='cross-policy-marker':data['grass_numerical_profile']='thermal-subcycle4-1e-5C' if profile=='thermal-subcycle16-1e-5C' else ('thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C')
             binding.write_text(json.dumps(data,sort_keys=True))
             if kind=='duplicate-marker':binding.write_text(binding.read_text()[:-1]+',"grass_numerical_profile": "thermal-control-1e-5C"}')
             cmd=[str(exe),'3','retain-step','100000','',thermal_switch]
@@ -105,7 +105,7 @@ def main():
     if thermal:
         folder=case('cross-policy-checkpoint')
         binding=folder/'application.binding';data=json.loads(binding.read_text())
-        alternate='thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C'
+        alternate='thermal-subcycle4-1e-5C' if profile=='thermal-subcycle16-1e-5C' else ('thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C')
         data['grass_numerical_profile']=alternate
         binding.write_text(json.dumps(data,sort_keys=True))
         switch='thermal-control' if alternate=='thermal-control-1e-5C' else 'thermal-control-4'
