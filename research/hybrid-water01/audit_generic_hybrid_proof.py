@@ -45,6 +45,8 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
             assert sha(root/index['sources'][name])==h;checked+=1
         for key,name in [('host','daily_host.py'),('adapter','donor_adapter.f90'),('driver','main.f90')]:
             assert sha(root/index['sources']['app/hybrid_water/'+name])==identity[key];checked+=1
+        if 'budget_source' in identity:
+            assert sha(root/index['sources']['app/hybrid_water/hybrid_step_budget.f90'])==identity['budget_source'];checked+=1
         for name,h in identity['donor_generated'].items():assert sha(root/case['build']/name)==h;checked+=1
         for name,h in identity['donor_objects'].items():assert sha(root/index['reference']/'build/swap-obj'/name)==h;checked+=1
         assert sha(root/index['reference']/'build/ttutil-obj/libttutil.a')==identity['ttutil_library'];checked+=1
@@ -58,7 +60,7 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
         assert list(map(physical,resumed))==list(map(physical,continuous[2:]))
         assert csv_lines(case['terminal'])==csv_lines(case['continuous'])
         assert csv_lines(case['resumed'])[-2:]==csv_lines(case['continuous'])[-2:]
-        tol=1e-10 if label.startswith('grass') else 1e-6;nodes=113 if label.startswith('grass') else 112
+        tol=1e-6 if label.startswith('andelst') else 1e-10;nodes=34 if label.startswith('hupsel') else (113 if label.startswith('grass') else 112)
         for row in continuous+resumed:
             assert row['committed'] and len(row['pressure_head_cm'])==nodes
             values=[*row['stock_end_cm'],*row['stock_start_cm'],*row['external_flux_cm'],*row['pressure_head_cm']]
@@ -68,7 +70,7 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
             assert abs(row['kernel_residual_cm'])<=tol
         for name in ['result.end','macro.bin']:
             cold=(root/case['terminal']/'original'/name).read_bytes();warm=(root/case['resumed']/'original'/name).read_bytes()
-            if label.startswith('grass') or name=='result.end':assert cold==warm
+            if not label.startswith('andelst') or name=='result.end':assert cold==warm
             if label.startswith('andelst'):
                 assert cold==(root/index['canonical']/'terminal/original'/name).read_bytes()
                 assert warm==(root/index['canonical']/'resumed/original'/name).read_bytes()
@@ -134,6 +136,37 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
                     for name,digest in m['files'].items():assert hashlib.sha256(z.read(name)).hexdigest()==digest
                 for name in ['result.end','macro.bin']:assert c.read(name)==r.read(name)
         summary['full_original_grassgrowth']={'days':1827,'maximum_daily_water_residual_cm':max(abs(r['independent_residual_cm']) for r in full),'signed_cumulative_daily_residual_cm':math.fsum(r['independent_residual_cm'] for r in full),'own_seasonal_payloads_exact':True}
+    if index.get('hupsel_full'):
+        directory=index['hupsel_full'];full=rows(directory+'/full')
+        report=load(directory+'/RESULT.json');build=load(directory+'/BUILD.json')
+        assert report['status']=='FULL_ORIGINAL1096_AND_OWN_SEASONAL_RESTARTS_PASS'
+        assert build==load(cases['hupsel-O2']['report']+'/BUILD.json')
+        assert [r['day'] for r in full]==list(range(1,1097))
+        for day,r in enumerate(full,1):
+            assert r['committed'] and r['revision']==day and len(r['pressure_head_cm'])==34
+            if day>1:
+                assert r['stock_start_cm']==full[day-2]['stock_end_cm']
+                assert r['solute_start_mg_cm2']==full[day-2]['solute_end_mg_cm2']
+            f=r['external_flux_cm'];q=r['solute_ledger_mg_cm2']
+            assert all(math.isfinite(v) for v in [*f,*q,*r['pressure_head_cm'],*r['stock_end_cm'],*r['uptake_terms_cm']])
+            water=math.fsum([*f[:7],*(-x for x in f[7:]),*r['stock_start_cm'],*(-x for x in r['stock_end_cm'])])
+            assert water==r['independent_residual_cm'] and abs(water)<=1e-10
+            assert abs(r['kernel_residual_cm'])<=1e-10
+            solute=math.fsum([r['solute_end_mg_cm2'],-r['solute_start_mg_cm2'],-q[2],-q[3],-q[4],q[5],q[6],q[7]])
+            assert solute==r['solute_independent_residual_mg_cm2'] and abs(solute)<=1e-10 and abs(q[8])<=1e-10
+        for cut,end in [(2,4),(4,6),(5,7),(120,122),(365,367),(523,526),(583,585),(730,732),(1061,1096)]:
+            warm=rows(directory+f'/own-{cut}-to-{end}')
+            assert list(map(physical,warm))==list(map(physical,full[cut:end]))
+            with zipfile.ZipFile(root/directory/'full'/f'accepted-column-1-day-{end}.zip') as c, zipfile.ZipFile(root/directory/f'own-{cut}-to-{end}'/f'accepted-column-1-day-{end}.zip') as r:
+                for z in (c,r):
+                    m=json.loads(z.read('checkpoint.json'));assert m['binding']==build['binding']
+                    for name,digest in m['files'].items():assert hashlib.sha256(z.read(name)).hexdigest()==digest
+                for name in ['result.end','macro.bin']:assert c.read(name)==r.read(name)
+        if index.get('hupsel_public_late'):
+            d=index['hupsel_public_late'];assert list(map(physical,rows(d)))==list(map(physical,full[583:585]))
+            with zipfile.ZipFile(root/d/'accepted-column-1-day-585.zip') as p, zipfile.ZipFile(root/directory/'full/accepted-column-1-day-585.zip') as c:
+                for name in ['result.end','macro.bin']:assert p.read(name)==c.read(name)
+        summary['hupsel_full']={'days':1096,'nine_exact_own_windows':True,'maximum_daily_water_residual_cm':max(abs(r['independent_residual_cm']) for r in full),'maximum_daily_solute_residual_mg_cm2':max(abs(r['solute_independent_residual_mg_cm2']) for r in full)}
     print(json.dumps({'status':'INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS',
                       'platform':index['platform'],'retained_files':len(load('MEMBER_SHA256.json')),
                       'source_build_input_identity_checks':checked,'cases':summary}))
