@@ -265,6 +265,18 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
+    if project==HUPSEL:
+        # Original linear pond/runoff relation remains exact even when the
+        # lagged runoff estimate is below the legacy small-flux shortcut.
+        # That shortcut booked runoff without subtracting it from new pond.
+        source=(donor_build/'swap-selected/boundtop.f90').read_text(encoding='cp1252')
+        source=replace(source,"      if (dabs(runots) < 1.0d-6) then",
+                       "      if (dabs(runots) < 1.0d-6 .and. .not.(swdra/=2 .and. rsro>=1d-3 .and. &\n"
+                       "          dabs(rsroexp-1d0)<1d-6)) then")
+        source=replace(source,"else if (dabs(runots) >= 1.0d-6 .AND. swdra /= 2 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then",
+                       "else if (swdra /= 2 .AND. rsro>=1d-3 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then")
+        (output/'boundtop.f90').write_text(source,encoding='cp1252')
+        patched.append('boundtop')
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
