@@ -1,5 +1,5 @@
 {
-  "status": "O2_REAL_FOUR_DAY_OWN_RESTART_REPEAT_ISOLATION_REFUSAL_PASS",
+  "status": "O2_PREFIX_EXACT_RESTART_AND_PRIVATE_WET_CAUSAL_PASS_FRESH_FULL_PENDING",
   "base": "3e0dc5e08c07719a7ac2107d54d7d74f954805f1",
   "scope": "Third project context in the same explicit host; original34nodes/2002calendar, drainage and bottom6, original crop rotation/heat/solute blocks, per-worker native complete restart",
   "invariants": [
@@ -30,7 +30,7 @@
     "Additional original Newton convergence under the same mass boundary: prefix4 and exact own state/refusal pass, no budget-step retries."
   ],
   "selected_full": {
-    "command": "python -B research/hybrid-water01/run_hybrid_grass_full.py --project hupsel --bundle $TEMP/s5-hybrid-hupsel-O2-qualified-20261111 --reference $TEMP/s5-water-integrated-reference --output $TEMP/s5-hybrid-hupsel-full-20261111",
+    "command": "python -B research/hybrid-water01/run_hybrid_grass_full.py --project hupsel --bundle $TEMP/s5-hybrid-hupsel-O2-polished-20261111 --reference $TEMP/s5-water-integrated-reference --output $TEMP/s5-hybrid-hupsel-full-corrected-20261111",
     "hard_seconds": 180,
     "expected_seconds": 60,
     "own_cuts": [
@@ -64,5 +64,6 @@
       ]
     ],
     "scope": "New original Hupsel hybrid route with strict water/solute accounting; legacy heat remains outside native heat qualification."
-  }
+  },
+  "wet_causal_decision": "Original364 refusal0.017299411664cm matches booked runoff. Original linear analytic pond equation removes small-flux branch inconsistency. One extra original Newton residual-polishing iteration preserves all numeric/mass tolerances and avoids receipt rounding at the stopping boundary. Changed-source private120to365 diagnostic passes245days in0.86484s, no ZIP published/rebound; not own-restart qualification. Select fresh same-build full and own restarts."
 }
