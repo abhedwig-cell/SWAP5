@@ -1,5 +1,11 @@
 # Explicit project state in the hybrid waterhost
 
+Current reconciled full-project scope and external/thermal interface limits are
+in [functional closure](SWAP5_FUNCTIONAL_CLOSURE.md). Dated prototype sections
+below retain their original four-day scope and are superseded only by their
+explicit later full-project admission, not by whole scientific qualification.
+
+
 ## Complete original Grassgrowth successor
 
 The successor completes all1827 original Grassgrowth days in10.937884s through

@@ -1,0 +1,98 @@
+# Current functional closure of the original projects
+
+Baseline: canonical `937bd93b58ff913fcf9eafa3825a5da07f951513`, after PR1644.
+This is a reconciliation of admitted evidence, not a new model qualification.
+Older dated Status-A paragraphs retain their original source/profile claims.
+
+## Complete executions and their distinct model profiles
+
+The application-level completion count is **three original projects**. The shared
+hybrid daily host also has complete executions for all three. These counts do not
+qualify whole scientific equivalence or turn the hybrid heat profile into the
+native accuracy-controlled thermal profile.
+
+| Original project | Complete application evidence | Shared hybrid route and own continuation evidence |
+| --- | --- | --- |
+| Grassgrowth,1827days | [PR1623](https://github.com/abhedwig-cell/SWAP5/pull/1623), native thermal profile and separate day188 oxygen disposition | [PR1640](https://github.com/abhedwig-cell/SWAP5/pull/1640), original-block1827; own2→4,187→190,365→367,1792→1827 physical receipts and both endpoint payloads exact |
+| Andelst,481days | [PR1624](https://github.com/abhedwig-cell/SWAP5/pull/1624), public hybrid481 and source-bound restart/instance/refusal evidence | [Application review](https://github.com/abhedwig-cell/SWAP5/blob/937bd93b58ff913fcf9eafa3825a5da07f951513/research/hybrid-water01/ANDELST_APPLICATION_REVIEW.md); later generic-route controls retain same-platform original continuations; older96-byte cold/restored auxiliary distinction stays explicit |
+| Hupsel,1096days | [PR1625](https://github.com/abhedwig-cell/SWAP5/pull/1625), native pressure/film rotation profile and its own source-bound restart/balances | [PR1641](https://github.com/abhedwig-cell/SWAP5/pull/1641), corrected-original-block1096; nine exact own windows including saline gift, rotation, day584 and terminal1096 |
+
+The shared route's Hupsel corrections are explicit: original runoff/pond stock,
+CDE endpoint truncation and harvest interception clearing, plus original Newton
+convergence/residual polishing under unchanged1e-10 guards. This is not unmodified
+SWAP4.3.1 bitwise equivalence. The [generic application description](HYBRID_GENERIC_WATERHOST.md)
+and source-bound reviews preserve these distinctions. Native numerical profiles,
+the private AndelstV9 research trajectory, and the shared hybrid route must not
+be treated as interchangeable reference families.
+
+Full-run evidence is inherited at its **qualified source/build/input boundary**.
+Subsequent bounded same-platform O0/O2 controls qualify the affected dependency
+changes. No new full run at this page's baseline is implied.
+
+## What the shared application architecture actually provides
+
+One project-aware daily host owns explicit kernel clocks, pressure stocks,
+acceptance/rejection and immutable schema3 day packages. Original Fortran blocks
+run in independent worker processes; legacy module globals stay inside their
+worker. This is process isolation, not proof that legacy globals are thread-safe.
+Restart requires both native and auxiliary payloads and exact project/input/
+source/build binding. Refused trials cannot publish an accepted day. Independent
+columns, own continuations and publication failures retain their scoped evidence.
+
+[PR1642](https://github.com/abhedwig-cell/SWAP5/pull/1642) admits serial external
+daily prepare/discard/accept and durable recovery on **original project forcing**.
+Private local acceptance is only a proposal; external accept publishes the caller's
+accepted generation. This does not provide forcing override, groundwater feedback,
+peer-backend iteration or multiparty atomicity. Existing production groundwater
+coupling and thermal-binding contracts have their own separate owners/qualification.
+
+[PR1643](https://github.com/abhedwig-cell/SWAP5/pull/1643) observes actual original
+conduction and changing-composition sensible storage on accepted days.
+[PR1644](https://github.com/abhedwig-cell/SWAP5/pull/1644) exposes actual same-step
+water/root/drain/net-macro/drip carriers. Both are opt-in read-only observation
+profiles, not an activated conservative-heat solver. Their17172-step Windows/
+Ubuntu proof preserves original physical daily records and complete native state.
+Water, conduction, physical energy completeness and scientific equivalence are
+separate acceptance questions.
+
+## Reproducible thermal handoff limitation
+
+The current Python `CoupledDailyColumn.prepare(self)` has no thermal/forcing
+argument. Its source constructs the original DailyHost and publishes native state
+with the binding `forcing=original-project`. No caller temperature reaches the
+original heat equation through that interface. Existing
+`mod_fmr_bottom_external_thermal_binding` attaches finite external donor temperature
+and provenance to a candidate lineage/sample ordinal; the bottom sensible-energy
+owner evaluates those transfers. It does not replace the original temperature
+equation or persist a new joint thermal state for this application.
+
+Consequently, adding a wrapper that merely accepts temperature metadata would
+not implement a thermal feedback handoff. No such wrapper or speculative model
+change is admitted. The original numerical heat route is conduction-only. Current
+actual incoming water lacks measured donor temperatures; gas motion and macropore
+domain thermal state are unavailable. Local soil endpoints/air observations and
+water-content changes cannot silently supply those inputs. A new caller-defined
+thermal model would require its explicit physical scope, consumers and joint state/
+restart/rollback ownership before model execution could qualify it.
+
+This is a **data/model-interface limitation**, not a newly discovered numerical
+bug. No new historical heat run or donor-temperature proxy is selected. Existing
+accepted physical state is untouched; no numerical or physical tolerance changes.
+The exact inspected source hashes and API signature are retained in
+`integration/f-ci/FUNCTIONAL_CLOSURE_CURRENT_20261112.json`.
+
+## Remaining acceptance work
+
+Whole scientific equivalence is not qualified for all three projects. The native
+day188/day584 failed comparisons remain failed at their frozen criteria. Hupsel584
+original and implicit reference families remain independently underresolved;
+another reference is selected only for a distinct, independently verifiable causal
+hypothesis. Full physical energy is likewise open, not a reason to invent inputs.
+
+The next functional decision must concern an actual missing process/interface,
+with its consuming model, state/restart ownership and physical-input authority
+identified first. For thermal feedback this means an explicit corrected-physics
+scope through existing owners, not an unused handoff wrapper. Original input
+execution remains available and separately identified. Reuse the completed full
+applications and their qualified dependencies; do not repeat them to refresh status
+or to measure historical inputs that are absent.

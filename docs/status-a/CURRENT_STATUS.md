@@ -1,5 +1,18 @@
 # SWAP5 Status-A current status
 
+## Current original-project application successor,12November2026
+
+The admitted applications complete Grassgrowth1827,Andelst481 and Hupsel1096
+days; the common hybrid daily host also has complete executions for all three.
+Read the [current functional closure and exact profile boundaries](../science/SWAP5_FUNCTIONAL_CLOSURE.md)
+before using dated counts or open barriers below. This reconciles the current
+application scope; it does not promote whole scientific equivalence, native
+thermal-profile accuracy, full physical energy or thread-safe legacy globals.
+Original forcing serial external acceptance is admitted; thermal feedback
+through that adapter is not implemented. Earlier source-specific findings remain
+historical evidence under their named model and qualification boundaries.
+
+
 The private Andelst V9 research executable admitted through PR1617 completes 481 days (1998-01-01 through 1999-04-26 inclusive) from the unchanged original inputs and initialization in 11218.890 s. All 241,566 source intervals complete. The maximum absolute daily water residual is 4.731912e-12 cm. Strict same-executable own day 365 to 367 reproduces all 1,005 progress rows and the complete native checkpoint byte for byte. The original sharp historical model remains open, and production-default and whole-science gates remain separate. See [joint contact research](../science/ANDELST_JOINT_CONTACT_RESEARCH.md) and `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
 
 Private Andelst V8 completed 256 original-input days, then was deliberately censored after 6228.331 s while source 256.869–256.871 advanced internally at near-machine clock increments. The exact own event checkpoint reproduces all 445 prior source rows. Private V9 makes the upper wet support vanish continuously when the first node reaches zero above an unsaturated neighbor. Read-only replays reach day 257 and day 301 with unchanged guards. Historical sharp Andelst481, default production admission and whole science remain open. See [joint contact research](../science/ANDELST_JOINT_CONTACT_RESEARCH.md) and `integration/dataqual15/TRANSITION65_RECOVERY_20261106.json`.
