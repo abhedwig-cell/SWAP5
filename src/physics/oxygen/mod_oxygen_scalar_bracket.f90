@@ -16,18 +16,27 @@ module mod_oxygen_scalar_bracket
          real(real64), intent(in) :: x
          real(real64) :: f
       end function oxygen_residual
+
+      function oxygen_state_residual(x, state) result(f)
+         import real64
+         real(real64), intent(in) :: x
+         class(*), intent(inout) :: state
+         real(real64) :: f
+      end function oxygen_state_residual
    end interface
 
 contains
 
-   subroutine oxygen_bisect_monotone(residual, xmax, x, status, iterations, xtol, maxiter)
-      procedure(oxygen_residual) :: residual
+   subroutine oxygen_bisect_monotone(residual, xmax, x, status, iterations, xtol, maxiter, state, state_residual)
+      procedure(oxygen_residual), optional :: residual
       real(real64), intent(in) :: xmax
       real(real64), intent(out) :: x
       integer, intent(out) :: status
       integer, intent(out), optional :: iterations
       real(real64), intent(in), optional :: xtol
       integer, intent(in), optional :: maxiter
+      class(*), intent(inout), optional :: state
+      procedure(oxygen_state_residual), optional :: state_residual
 
       real(real64) :: a, b, fa, fb, fm, mid, tol
       integer :: i, nmax
@@ -37,7 +46,10 @@ contains
       nmax = 100
       if (present(maxiter)) nmax = max(1, maxiter)
 
-      if (xmax < 0.0_real64) then
+      ! Select one callback. An explicit state avoids a host-associated
+      ! procedure trampoline when the bracket is called in a shared library.
+      if (xmax < 0.0_real64 .or. (present(state) .neqv. present(state_residual)) .or. &
+          (present(residual) .eqv. present(state_residual))) then
          x = 0.0_real64
          status = OXYGEN_INVALID_BRACKET
          if (present(iterations)) iterations = 0
@@ -46,7 +58,7 @@ contains
 
       ! Exact-preserving fast path recovered from the 4.3.1 oxygen audit.
       b = xmax
-      fb = residual(b)
+      fb = evaluate_residual(b, residual, state, state_residual)
       if (fb >= 0.0_real64) then
          x = b
          status = OXYGEN_NO_STRESS
@@ -55,7 +67,7 @@ contains
       end if
 
       a = 0.0_real64
-      fa = residual(a)
+      fa = evaluate_residual(a, residual, state, state_residual)
       if (fa <= 0.0_real64) then
          x = a
          status = OXYGEN_FULL_STRESS
@@ -72,7 +84,7 @@ contains
 
       do i = 1, nmax
          mid = 0.5_real64*(a+b)
-         fm = residual(mid)
+         fm = evaluate_residual(mid, residual, state, state_residual)
          if (abs(b-a) <= tol*max(1.0_real64, abs(mid))) then
             x = mid
             status = OXYGEN_BRACKET_OK
@@ -90,5 +102,19 @@ contains
       status = OXYGEN_BRACKET_OK
       if (present(iterations)) iterations = nmax
    end subroutine oxygen_bisect_monotone
+
+   function evaluate_residual(x, residual, state, state_residual) result(f)
+      real(real64), intent(in) :: x
+      procedure(oxygen_residual), optional :: residual
+      class(*), intent(inout), optional :: state
+      procedure(oxygen_state_residual), optional :: state_residual
+      real(real64) :: f
+
+      if (present(state_residual)) then
+         f = state_residual(x, state)
+      else
+         f = residual(x)
+      end if
+   end function evaluate_residual
 
 end module mod_oxygen_scalar_bracket

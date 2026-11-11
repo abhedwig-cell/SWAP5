@@ -79,8 +79,16 @@ jobs:
           BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           grass_base=78c8012530b3be14e48edef6fc950e2c09c695ca
-          if git merge-base --is-ancestor "$grass_base" HEAD &&
-             [[ "$(git diff --name-only --no-renames "$grass_base" HEAD -- src app reference tools)" == app/grass_project/initial_interval.f90 ]]; then
+          ahl_source=1354f5cad9a4db106db50e4e5d8d6a6ba141bca3
+          ahl_exact=false
+          if git merge-base --is-ancestor "$ahl_source" HEAD &&
+             git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; then
+            ahl_exact=true
+          fi
+          if [[ "$ahl_exact" == true ]] || {
+             git merge-base --is-ancestor "$grass_base" HEAD &&
+             [[ "$(git diff --name-only --no-renames "$grass_base" HEAD -- src app reference tools)" == app/grass_project/initial_interval.f90 ]];
+          }; then
             # Preserve the frozen application gate on its exact source.
             # Current Grassgrowth execution is qualified by grass-thermal-production.yml.
             python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
@@ -89,6 +97,21 @@ jobs:
             trap 'git worktree remove "$prior"' EXIT
             (cd "$prior" && python3 -B tests/dataqual15/test_current_native_admission.py &&
               python3 -B tests/dataqual15/verify_water_application_successor.py --output "$RUNNER_TEMP/native-admission")
+            if [[ "$ahl_exact" == true ]]; then
+              # Current local feedback covers the explicit AHL successor only.
+              python3 -B tests/modularity/run_modular_tests.py \
+                --case assimilation --case boesten --case drainage --case low_air_policy \
+                --case root_contract --case root_oxygen --output "$RUNNER_TEMP/modular-feedback"
+              python3 -B - <<'PY'
+          import os
+          import runpy
+          from pathlib import Path
+
+          output = Path(os.environ["RUNNER_TEMP"]) / "current-selector"
+          selector = runpy.run_path("tests/dataqual15/verify_water_application_successor.py")["selector_contract"]
+          print("CURRENT_SELECTOR_O0_O2_SHA256=" + selector(output))
+          PY
+            fi
           elif [[ -f integration/dataqual15/WATER_APPLICATION_INTEGRATION_20261109.json ]]; then
             python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
             python3 -B tests/dataqual15/test_current_native_admission.py

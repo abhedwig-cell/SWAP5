@@ -1,7 +1,7 @@
 module mod_fmr_checkpoint_orchestrator
   use, intrinsic :: iso_fortran_env, only: real64
   use mod_canonical_contracts, only: canonical_forcing_t, canonical_numerical_config_t
-  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector
+  use mod_canonical_interval_runtime, only: canonical_subinterval_target_selector, canonical_subinterval_selection_t
   use mod_kernel_transactions, only: kernel_parameters_t, kernel_committed_state_t, kernel_checkpoint_t, &
        kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t
   implicit none
@@ -23,7 +23,7 @@ contains
   end subroutine fmr_capture_checkpoint
 
   subroutine fmr_trial_from_checkpoint(kernel, parameters, committed_state, forcing, numerical_config, &
-                                       t0, t1, checkpoint, result, candidate_state, diagnostics, target_selector)
+                                       t0, t1, checkpoint, result, candidate_state, diagnostics, target_selector, selection)
     type(kernel_executor_t), intent(inout) :: kernel
     class(kernel_parameters_t), intent(in) :: parameters
     type(kernel_committed_state_t), intent(in) :: committed_state
@@ -35,14 +35,10 @@ contains
     type(kernel_candidate_state_t), intent(out) :: candidate_state
     type(kernel_diagnostics_t), intent(out) :: diagnostics
     procedure(canonical_subinterval_target_selector), optional :: target_selector
+    class(canonical_subinterval_selection_t), intent(inout), optional :: selection
 
-    if (present(target_selector)) then
-      call kernel%advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1, &
-           result, candidate_state, diagnostics, checkpoint, target_selector)
-    else
-      call kernel%advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1, &
-           result, candidate_state, diagnostics, checkpoint)
-    end if
+    call kernel%advance_interval(parameters, committed_state, forcing, numerical_config, t0, t1, &
+         result, candidate_state, diagnostics, checkpoint, target_selector, selection)
   end subroutine fmr_trial_from_checkpoint
 
   subroutine fmr_commit_candidate(kernel, committed_state, candidate_state, diagnostics, did_commit, commit_status)

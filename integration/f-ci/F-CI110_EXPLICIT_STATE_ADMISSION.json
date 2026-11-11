@@ -1,0 +1,36 @@
+{
+  "workstream": "SWAP5-FUNCTIONAL-CLOSURE01 / RT-TX",
+  "status": "BOUNDED_ADMISSION_SELECTION",
+  "baseline": "a8275101d91f0ab5b413290e9b00bb5666b11917",
+  "production_candidate": "a4da56a0c60105862fc3dc91b6101ff1c963cf84",
+  "decision": "Select the completed exact-source portability, oxygen, runtime, application and coupling evidence for the explicit per-call state successor.",
+  "scope": "Linux executable-stack portability, existing callback compatibility and explicit per-call selector state. Existing scientific acceptance limits remain applicable.",
+  "test_selection": {
+    "candidate": "a4da56a0c60105862fc3dc91b6101ff1c963cf84",
+    "groups": {
+      "bounded_ahl_admission": {
+        "changed_dependency": "Six production modules relocate the oxygen residual and HBOT5/Cauchy selector closures into explicit per-call state and forward the optional selector through the kernel and checkpoint orchestrator.",
+        "scientific_claim": "Preserve calculation order, scalar bracket iterations, instance-local state, transactional publication, original-input application outputs and exact own-build restart for the tested portability successor.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 acting in the functional RT-TX integration scope",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 1,
+        "existing_evidence": "Terminal exact-candidate F-CI feedback 42822647211, F-CI110 42822647049, AHL50 42822647194, Grassgrowth 42822647267, F-GC42 42822646364, F-GC44 FMR 42822647215, F-GC44 MODFLOW 42822646922 and independent F-VQ116 42822647142. Full applications and fresh-process restarts are in PRs 1623, 1624 and 1625 and bound to production_candidate. Source/app/tools/tests/reference equal 1354f5cad9a4db106db50e4e5d8d6a6ba141bca3.",
+        "prior_execution": "PASS",
+        "diagnosis": "This decision validates the already completed source-bound evidence. Numerical reruns are not selected because only this selection record is added and the tested dependency surface is unchanged."
+      }
+    },
+    "full_fci_disposition": {
+      "status": "NOT_SELECTED_IMPACT",
+      "reason": "The selected claim is the explicit-state portability successor. Current production-driver O0/O2 feedback, runtime/AHL admission, external transactional coupling and all three complete applications cover its impacted contracts. The moving omnibus contains separate historical source and science scopes whose failed verdicts remain recorded in PR 1626. An omnibus PASS is not claimed."
+    },
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "retained_open_conditions": [
+    "The original failed and out-of-scope checks remain visible in PR 1626.",
+    "Linux experimental Cauchy contact rollback equivalence remains unqualified.",
+    "Hupsel day-584 scientific reference and whole-trajectory equivalence remain open.",
+    "Comparable full-project runtime remains open.",
+    "Canonical admission requires an actual merge and verification of its source and evidence postimage."
+  ],
+  "selection_basis": "The repository workstream registry defines RT and TX as functional technical domains. No separate named-person approval condition was found in the cited execution and workstream rules. This is the task's recorded technical selection, not an external review submission."
+}
