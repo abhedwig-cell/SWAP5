@@ -23,7 +23,7 @@
     "No rollback claim after ambiguous durable publication failure"
   ],
   "test_selection": {
-    "candidate": "c2b5d85179f4f7f8da69ab1cef7d311c11374d5e",
+    "candidate": "b23fc6e6392989898b09264923963a95f7daaad3",
     "groups": {
       "hybrid_daily_coupling": {
         "changed_dependency": "New Python daily acceptance adapter over unchanged qualified original donor and SWAP5 transaction kernels",
@@ -441,5 +441,12 @@
       "bytes": 5594700
     }
   },
-  "review": "research/hybrid-water01/HYBRID_DAILY_COUPLING_REVIEW.md"
+  "review": "research/hybrid-water01/HYBRID_DAILY_COUPLING_REVIEW.md",
+  "verification": {
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "independent_windows_linux_archives": "PASS",
+    "compiled_and_executed_source_since_linux_head": "UNCHANGED",
+    "worktree_staging": "Moved generated pack-source views to temporary storage; pack helper now owns TemporaryDirectory."
+  }
 }
