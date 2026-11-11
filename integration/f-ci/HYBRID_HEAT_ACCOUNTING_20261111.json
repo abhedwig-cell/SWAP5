@@ -1,9 +1,11 @@
 {
-  "status": "IMPLEMENTED_READ_ONLY_BRIDGE_INITIAL_HYPOTHESIS_SELECTED",
+  "status": "DISTINGUISHING_HUPSEL_GIFT_CONFIRMS_MISSING_PHYSICAL_ENERGY_ACCOUNTING",
   "base": "f5606e455cf1e558d23e3a0af5b7d8847fbdc954",
   "owned_surface": [
     "app/hybrid_water/heat_accounting.f90",
-    "research/hybrid-water01/qualify_original_heat_accounting.py"
+    "research/hybrid-water01/qualify_original_heat_accounting.py",
+    "app/hybrid_water/heat_receipts.py",
+    "research/hybrid-water01/check_original_heat_accounting.py"
   ],
   "fixed_surface": [
     "src",
@@ -27,10 +29,10 @@
         "scientific_claim": "Actual original conduction and changing-composition sensible-storage completeness; no new full-energy qualification",
         "owner": "RT-TX/heat original-block application bridge",
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
-        "expected_seconds": 25,
+        "expected_seconds": 90,
         "existing_evidence": "PR1641 complete original Hupsel1096, own4to6 plus source-bound original object/input/native-state capsules; accepted whole-column sensible energy decomposition and restricted heat energy budget",
-        "prior_execution": "NONE",
-        "diagnosis": "Original capacity uses theta average and no mass-carried energy donor. First actual Hupsel gift window distinguishes algebraic conduction closure from complete physical storage, or an existing strict storage-domain refusal. No new full application/reference run."
+        "prior_execution": "PASS",
+        "diagnosis": "Actual HupselO2 278 original heat calls preserve full physical/native state. Conduction max5.74e-13 closes; zero-advection counterfactual max3.429J/cm2 fails unchanged1e-9 and actual production owner correctly returns INCOMPLETE_BOUNDARY. Remaining five Windows cases qualify read-only generic bridge; original HupselO2 probe is inherited without repetition."
       }
     }
   },
@@ -39,5 +41,20 @@
     "total_native_seconds": 240,
     "compiler_link_seconds": 45
   },
-  "next": "Persist before focused actual original heat observation, inspect raw production accounting statuses and decide one coherent generic read-only bridge/reproducible physical-energy blocker package."
+  "next": "Persist before focused actual original heat observation, inspect raw production accounting statuses and decide one coherent generic read-only bridge/reproducible physical-energy blocker package.",
+  "first_probe": {
+    "status": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
+    "source": "772994f2f",
+    "steps": 278,
+    "storage_status_counts": {
+      "WCSA_INCOMPLETE_BOUNDARY": 278
+    },
+    "maximum_cell_conduction_residual_j_cm2": 2.102021898556239e-13,
+    "maximum_global_conduction_residual_j_cm2": 5.74207348336131e-13,
+    "composition_change_sum_j_cm2": -0.47392083128287765,
+    "maximum_zero_advection_residual_j_cm2": 3.42902478613633,
+    "existing_energy_budget_j_cm2": 1e-09,
+    "raw_theta_domain_failures": 0,
+    "decision": "Do not correct original heat or force missing energy to zero. Expose accepted original conduction/storage receipts with explicit incomplete physical boundary; qualify remaining five generic observer cases and preserve failed counterfactual."
+  }
 }
