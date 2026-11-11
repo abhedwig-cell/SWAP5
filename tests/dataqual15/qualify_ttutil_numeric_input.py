@@ -4,6 +4,7 @@ import base64
 import hashlib
 import json
 import os
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -110,7 +111,10 @@ def main():
         executable = folder / ("original_osat.exe" if os.name == "nt" else "original_osat")
         execute([compiler, "-" + optimization, "-std=f2008", driver, archive, "-o", executable],
                 folder, "link", events, 30)
-        stdout = execute([executable, original], folder, "native", events, 15)
+        staged = folder / "swap.swp"
+        shutil.copyfile(original, staged)
+        assert digest(staged) == digest(original)
+        stdout = execute([executable, staged.name], folder, "native", events, 15)
         assert "TTUTIL_ORIGINAL_OSAT_BITS=PASS" in stdout
         bits = next(line.split("=", 1)[1].split() for line in stdout.splitlines()
                     if line.startswith("TTUTIL_OSAT_BITS="))
@@ -135,7 +139,7 @@ def main():
         "authority_zip_sha256": hashlib.sha256(archive_bytes).hexdigest(),
         "original_input_sha256": digest(original),
         "flag_provider_sha256": digest(ROOT / "tools/solute/legacy_reader_sources.py"),
-        "driver_sha256": hashlib.sha256(DRIVER.encode()).hexdigest(),
+        "driver_sha256": digest(driver),
         "profiles": profiles,
     }
     (output / "RESULT.json").write_text(json.dumps(result, indent=2) + "\n")
