@@ -1,0 +1,37 @@
+{
+  "status": "CANONICAL_MERGED_POSTIMAGE_VERIFIED",
+  "pr": 1629,
+  "canonical": "3331f860db0cf5208faed99bf505425226d6b0d6",
+  "canonical_tree": "002a14fa601175e4600f0e715c05457efd36b3f5",
+  "qualified_head": "1b54b21710bbcbc5e7317a4ae3813c93f2ffa365",
+  "actual_merge_equals_pr_head_and_prediction": true,
+  "evidence": "integration/f-ci/TTUTIL_READER_ADMISSION.json at canonical",
+  "qualification": {
+    "reader_linux": {
+      "run": 43006341597,
+      "job": 130474652690,
+      "status": "O0_O2_PASS"
+    },
+    "native_application": {
+      "run": 43003419232,
+      "job": 130464858119,
+      "status": "PASS",
+      "scope": "Unchanged production sources, builders, original inputs and coupled fixtures after ac2c6e638"
+    },
+    "fci": {
+      "run": 43003419114,
+      "job": 130467873600,
+      "status": "PASS"
+    }
+  },
+  "functional_coverage": "Seven native adapter cold-build paths share the exact decimal reader policy. Historical complete project receipts retain original source/build scopes. No extra full project run.",
+  "reliability": "All eight original OSAT values O0/O2 bit-identical, original 0.393 equals internal READ. Existing own disk restart, macro restart and atomic refusal controls pass. Original tolerances unchanged.",
+  "development_yield": "Linux native reader calls 2.33/1.93 milliseconds; compile 5.43/8.64 seconds plus separately recorded archive/link. Reused exact-dependency successful application gates after fixing only the test input locator.",
+  "open_acceptance": [
+    "Whole scientific equivalence and complete energy",
+    "Grassgrowth day 188 residual and Hupsel day 584 reference accuracy",
+    "Full-project runtime parity",
+    "Experimental Cauchy-contact rollback remains unqualified"
+  ],
+  "next_delivery": "Bounded runtime-parity review: reconcile retained SWAP 4.3.1 and SWAP5 profiling and oxygen call-count evidence, then qualify a short matched original-input window with native runtime and calls. Select a code change only for a demonstrated remaining cause; do not repeat complete historical executions or identical failed contact diagnostics."
+}

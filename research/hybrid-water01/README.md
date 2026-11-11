@@ -2,6 +2,33 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### TTUTIL build contract admitted, 11 November 2026
+
+Canonical is 3331f860db0cf5208faed99bf505425226d6b0d6 after PR 1629.
+Its actual whole tree equals the qualified PR head and predicted merge
+postimage. Seven native builders share the rdlex-only no-contraction policy
+and record their actual build flags. Original source/input bytes and all
+model tolerances remain unchanged. GNU 15.2 Ubuntu 26.04 and GNU 16.2
+Windows original-input O0/O2 reader checks pass: all eight OSAT values are
+bit-identical and 0.393 agrees exactly with internal READ. Current focused
+F-CI and original application/own-restart/macro-refusal controls pass.
+See CLOSURE01_TTUTIL_CANONICAL_20261111.json and its canonical evidence link.
+
+Linux native reader calls cost 2.33/1.93 milliseconds. Cold compilation,
+archive and link costs are recorded separately. The initial reader fixture
+file-lookup failure remains visible; the component-only corrected retry
+passes, with the already qualified native job explicitly skipped.
+No complete historical model run was repeated. Functional coverage and
+whole scientific qualification remain separate; the recorded day 188,
+day 584, complete-energy and experimental-contact limits stay open.
+
+Next delivery is a bounded runtime-parity review using retained SWAP 4.3.1
+and SWAP5 profiling and oxygen call counts, followed by a short matched
+original-input window if existing evidence does not already answer it.
+Select a code change only for a demonstrated remaining cause. Preserve
+existing full-run receipts and avoid identical failed contact diagnostics.
+
+
 ### KIM endpoint admitted, next reader-build delivery, 11 November 2026
 
 Canonical is cf1bfd691f938f1a76f828ec31ce65ff33a05cf3 after PR 1627.
