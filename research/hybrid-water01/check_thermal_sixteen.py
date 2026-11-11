@@ -32,7 +32,7 @@ driver=driver.replace('mod_restricted_soil_temperature_control,only:',
 driver=driver.replace('type(soil_temperature_numerical_config_t)::num',
                       'type(soil_temperature_numerical_config_t)::num,single_num')
 driver=driver.replace('real(real64)::faces(3),a,b,dt,cell(2),defect',
-                      'real(real64)::faces(3),a,b,dt,cell(2),defect,error4,error16,cpu4,cpu16')
+                      'real(real64)::faces(3),a,b,dt,cell(2),defect,error4,error16,cpu4,cpu16,limit4,limit16')
 driver=driver.replace('dt=.04d0;cases=0','dt=.04d0;cases=0;num%internal_heat_substeps=16')
 driver=driver.replace('d%tridiagonal_solves/=4.or.d%constitutive_evaluations/=4',
                       'd%tridiagonal_solves/=16.or.d%constitutive_evaluations/=16')
@@ -43,7 +43,11 @@ driver=driver.replace('  cases=cases+1', '''  call indicator(4,error4)
   write(*,'(a,2(i0,a),3(es25.17,a))')'THERMAL_INDICATOR,',top,',',bottom,',', &
        error4,',',error16,',',error16/max(error4,tiny(1d0)),','
   cases=cases+1''')
-driver=driver.replace(' ! A rejected call', ''' call cost(4,cpu4)
+driver=driver.replace(' ! A rejected call', ''' f%bottom_boundary_mode=SOIL_TEMP_BOTTOM_ZERO_HEAT_FLUX
+ call calibrate(4,limit4,error4)
+ call calibrate(16,limit16,error16)
+ write(*,'(a,5(es25.17,a))')'THERMAL_ACCEPTED_DT,',limit4,',',limit16,',',limit16/limit4,',',error4,',',error16,','
+ call cost(4,cpu4)
  call cost(16,cpu16)
  write(*,'(a,3(es25.17,a))')'THERMAL_KERNEL_SECONDS,',cpu4,',',cpu16,',',cpu16/max(cpu4,tiny(1d0)),','
  ! A rejected call''')
@@ -65,21 +69,44 @@ helpers='''contains
   end if
   if(result%status/=SOIL_TEMP_OK.or..not.result%produced)error stop 'discriminator trial'
  end subroutine
- subroutine indicator(count,error)
+ subroutine indicator(count,error,interval)
   integer,intent(in)::count
   real(real64),intent(out)::error
+  real(real64),intent(in),optional::interval
   type(soil_temperature_state_t)::full,half,finish
   type(soil_temperature_workspace_t)::work
   real(real64),allocatable::vf(:),vh(:)
   integer::s
-  call step(count,initial,0d0,dt,full,work)
-  call step(count,initial,0d0,dt/2d0,half,work)
-  call step(count,half,dt/2d0,dt,finish,work)
+  real(real64)::span
+  span=dt
+  if(present(interval))span=interval
+  call step(count,initial,0d0,span,full,work)
+  call step(count,initial,0d0,span/2d0,half,work)
+  call step(count,half,span/2d0,span,finish,work)
   call copy_soil_temperature_profile(full,vf,s)
   if(s/=SOIL_TEMP_OK)error stop 'full profile'
   call copy_soil_temperature_profile(finish,vh,s)
   if(s/=SOIL_TEMP_OK)error stop 'half profile'
   error=maxval(abs(vf-vh))
+ end subroutine
+ subroutine calibrate(count,limit,error)
+  integer,intent(in)::count
+  real(real64),intent(out)::limit,error
+  real(real64)::lo,hi,mid,e
+  integer::j
+  lo=0d0;hi=dt
+  do j=1,40
+   mid=0.5d0*(lo+hi)
+   call indicator(count,e,mid)
+   if(e<=1d-5)then
+    lo=mid
+   else
+    hi=mid
+   end if
+  end do
+  limit=lo
+  call indicator(count,error,limit)
+  if(error>1d-5)error stop 'unchanged thermal gate'
  end subroutine
  subroutine cost(count,seconds)
   integer,intent(in)::count
@@ -87,13 +114,19 @@ helpers='''contains
   type(soil_temperature_state_t)::target
   type(soil_temperature_workspace_t)::work
   real(real64)::start,finish
-  integer::j
+  integer::j,k
   call cpu_time(start)
-  do j=1,20000
-   call step(count,initial,0d0,dt,target,work)
+  j=0
+  do
+   do k=1,1000
+    call step(count,initial,0d0,dt,target,work)
+   end do
+   j=j+1000
+   call cpu_time(finish)
+   if(finish-start>=0.5d0.or.j>=2000000)exit
   end do
-  call cpu_time(finish)
-  seconds=(finish-start)/20000d0
+  seconds=(finish-start)/real(j,real64)
+  write(*,'(a,2(i0,a),2(es25.17,a))')'THERMAL_COST_OBSERVATION,',count,',',j,',',finish-start,',',seconds,','
  end subroutine
 '''
 driver=driver.replace('end program',helpers+'end program')
@@ -124,13 +157,18 @@ for opt in ['O0','O2']:
  exe=folder/'probe.exe';run([a.compiler,*objects,'-o',exe],folder,'link')
  stdout=run([exe],folder,'native',120)
  assert 'THERMAL_SUBCYCLE_ORIGINAL_SOLVES_FACES_AND_REFUSAL=PASS' in stdout
- cases=[];timing=None
+ cases=[];timing=None;cost_samples=[];accepted=None
  for line in stdout.splitlines():
   parts=line.split(',')
   if parts[0]=='THERMAL_INDICATOR':cases.append(dict(top=int(parts[1]),bottom=int(parts[2]),error4=float(parts[3]),error16=float(parts[4]),ratio=float(parts[5])))
   if parts[0]=='THERMAL_KERNEL_SECONDS':timing=dict(four=float(parts[1]),sixteen=float(parts[2]),ratio=float(parts[3]))
+  if parts[0]=='THERMAL_COST_OBSERVATION':cost_samples.append(dict(count=int(parts[1]),calls=int(parts[2]),cpu_seconds=float(parts[3]),seconds_per_call=float(parts[4])))
+  if parts[0]=='THERMAL_ACCEPTED_DT':accepted=dict(four=float(parts[1]),sixteen=float(parts[2]),ratio=float(parts[3]),error4=float(parts[4]),error16=float(parts[5]))
  assert len(cases)==6 and timing and timing['four']>0 and timing['sixteen']>0
- results[opt]=dict(cases=cases,kernel_cpu_seconds_per_call=timing,executable_sha256=sha(exe))
+ assert accepted and accepted['error4']<=1e-5 and accepted['error16']<=1e-5
+ assert len(cost_samples)==2 and min(x['cpu_seconds'] for x in cost_samples)>=.5
+ results[opt]=dict(cases=cases,kernel_cpu_seconds_per_call=timing,cost_samples=cost_samples,
+                  unchanged_budget_dt=accepted,executable_sha256=sha(exe))
 record=dict(status='COLD_O0_O2_PRIVATE_SIXTEEN_CONTRACT_AND_INDICATOR_COST_PASS',
  original_driver_sha256=sha(old),source_sha256={str(s):sha(s) for s in sources},
  compiler=subprocess.check_output([str(a.compiler),'--version']).decode().splitlines()[0],
