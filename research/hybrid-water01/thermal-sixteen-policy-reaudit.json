@@ -1,0 +1,115 @@
+{
+  "status": "INDEPENDENT_WINDOWS_LINUX_SOURCE_BUILD_POLICY_RESTART_BALANCE_AND_TIMING_AUDIT_PASS",
+  "retained_members": {
+    "windows": 5771,
+    "linux": 6743
+  },
+  "identity_checks": {
+    "windows": 4191,
+    "linux": 5011
+  },
+  "disk_proofs": {
+    "windows": {
+      "disk-O0": {
+        "days": [
+          1,
+          3
+        ],
+        "accepted_steps": 1502,
+        "maximum_daily_water_residual_cm": 2.305794444268372e-14,
+        "cumulative_water_residual_cm": 1.4988010832439613e-14,
+        "maximum_uptake_attribution_residual_cm": 0.0,
+        "cumulative_conductive_residual_j_cm2": -7.803464541211724e-10,
+        "maximum_daily_conductive_residual_j_cm2": 4.277467269275803e-10,
+        "maximum_substep_conductive_residual_j_cm2": 4.29948299185412e-11,
+        "output_sha256": {
+          "budget.csv": "dd8e7f7b9a15aa7b25db754bf2e30b5ebc220d4cb67de07dec57c5f987c9bbd8",
+          "conductive_budget.csv": "67f565198c6cf145049bac5318c1396363e4c5595d02477fa29356d5b57522b6",
+          "crop.csv": "83fe796a032ffb35317a0aba395c02d380890eb320f2d5de5090ba0e21b84706",
+          "checkpoint.bin": "c4eded64743fed383355d0b8c8dd0afb00cf4cf8cad42cf299bd059c30bb19e2",
+          "state.csv": "2a272322297c00ad7332ac765e9303ad59db0068c61cf11cf7efb42366fdc626",
+          "endpoint.csv": "cbeb5a1d98a2e45ae25413f013f837f8c1c2e8f5e9c05c5891d67e905e47bf6b"
+        }
+      },
+      "disk-O2": {
+        "days": [
+          1,
+          3
+        ],
+        "accepted_steps": 1502,
+        "maximum_daily_water_residual_cm": 2.305794444268372e-14,
+        "cumulative_water_residual_cm": 1.4988010832439613e-14,
+        "maximum_uptake_attribution_residual_cm": 0.0,
+        "cumulative_conductive_residual_j_cm2": -7.803464541211724e-10,
+        "maximum_daily_conductive_residual_j_cm2": 4.277467269275803e-10,
+        "maximum_substep_conductive_residual_j_cm2": 4.29948299185412e-11,
+        "output_sha256": {
+          "budget.csv": "dd8e7f7b9a15aa7b25db754bf2e30b5ebc220d4cb67de07dec57c5f987c9bbd8",
+          "conductive_budget.csv": "67f565198c6cf145049bac5318c1396363e4c5595d02477fa29356d5b57522b6",
+          "crop.csv": "83fe796a032ffb35317a0aba395c02d380890eb320f2d5de5090ba0e21b84706",
+          "checkpoint.bin": "d2582dfab9c5e26a1e5d2a2c8dab493a1dfb3c12f1a4dcb70f4b31314f1f156b",
+          "state.csv": "2a272322297c00ad7332ac765e9303ad59db0068c61cf11cf7efb42366fdc626",
+          "endpoint.csv": "cbeb5a1d98a2e45ae25413f013f837f8c1c2e8f5e9c05c5891d67e905e47bf6b"
+        }
+      }
+    },
+    "linux": {
+      "sixteen-opt-O0-disk": {
+        "days": [
+          1,
+          3
+        ],
+        "accepted_steps": 1502,
+        "maximum_daily_water_residual_cm": 2.0511370379949767e-14,
+        "cumulative_water_residual_cm": 1.7819079545233762e-14,
+        "maximum_uptake_attribution_residual_cm": 0.0,
+        "cumulative_conductive_residual_j_cm2": -8.163283382600639e-10,
+        "maximum_daily_conductive_residual_j_cm2": 4.525873009697534e-10,
+        "maximum_substep_conductive_residual_j_cm2": 4.29948299185412e-11,
+        "output_sha256": {
+          "budget.csv": "1c1b2a8f94f3b59bddb91ea9b6d879f43a23ead6374f16af4619a5aaefda30ee",
+          "conductive_budget.csv": "98934ce9b29727d38c5bd140b6782ba3b3fe79ec18028a3f888279392796ec87",
+          "crop.csv": "a00ec8c49ae9f3e58a429c719e80f738fab65489efd56aa63b6b6e1319a28a5d",
+          "checkpoint.bin": "8c8f7ea636e846572c607a62620863051f97931c82e209127dfa4f1645101608",
+          "state.csv": "cd7180964194ff07d8b8d39cb1994e28ee11e4c75dafc83bf8b059c1c80c0dc9",
+          "endpoint.csv": "a84632f9875555d53219d0464b8243c7091f0b2effc061bbde307d7c5837da36"
+        }
+      },
+      "sixteen-opt-disk": {
+        "days": [
+          1,
+          3
+        ],
+        "accepted_steps": 1502,
+        "maximum_daily_water_residual_cm": 1.5203116543460737e-14,
+        "cumulative_water_residual_cm": 1.73749903353837e-14,
+        "maximum_uptake_attribution_residual_cm": 0.0,
+        "cumulative_conductive_residual_j_cm2": 3.338982423883863e-10,
+        "maximum_daily_conductive_residual_j_cm2": 4.176854417892173e-10,
+        "maximum_substep_conductive_residual_j_cm2": 4.342083637087768e-11,
+        "output_sha256": {
+          "budget.csv": "b7160b19671995ec1383c9ddc2ea1bd70e07c6437510747a7de1aa570a4c4b70",
+          "conductive_budget.csv": "df02272d5f765d4d29e7e3aa7cbd0f642ab02bee217ba34db67832f8ba2e3245",
+          "crop.csv": "a00ec8c49ae9f3e58a429c719e80f738fab65489efd56aa63b6b6e1319a28a5d",
+          "checkpoint.bin": "810672fe593071f2cd30811802ab49eeb0e536dcf6170cdd83008ebe39210f55",
+          "state.csv": "c33796b720effef77b5ad528b66c7d1e9ae79cd6a75b1888b15846f6d91a2a2a",
+          "endpoint.csv": "903726b6df383304fb87e3ca961442aee142073571467163192589f066a2077d"
+        }
+      }
+    }
+  },
+  "median_native_seconds": {
+    "baseline": 7.9387343500275165,
+    "candidate": 5.1383681000443175
+  },
+  "median_reduction_percent": 35.27471919971088,
+  "accepted_steps": {
+    "baseline": 3585,
+    "candidate": 2134
+  },
+  "numerical_profiles": {
+    "baseline": "thermal-subcycle4-1e-5C",
+    "candidate": "thermal-subcycle16-1e-5C"
+  },
+  "scope": "Scoped O0/O2 implementations and native cuts; short Windows ambient timing only. Whole science, full16 trajectory, energy completeness and runtime parity are not granted."
+}
