@@ -37,7 +37,7 @@ def main():
     headcalc = ROOT / 'src/legacy/b1_10_port/headcalc.f90'
     # Original input providers are isolated in an archive: only referenced
     # TTUTIL objects are linked, avoiding unrelated legacy physics providers.
-    from legacy_reader_sources import materialize
+    from legacy_reader_sources import materialize, original_input_compile_flags
     original, ttutil = materialize(ROOT, output)
     generated_inputs = [original] + sorted(p for p in ttutil[0].parent.rglob('*') if p.is_file())
     sources = list((ROOT / 'src').rglob('*.f90')) + list((ROOT / 'app/solute_column').glob('*.f90')) + [original]
@@ -107,9 +107,12 @@ def main():
     legacy_flags = [f for f in flags if f != '-std=f2008'] + [
         '-std=legacy', '-fallow-argument-mismatch', '-ffixed-line-length-none']
     ttobjects = []
+    report['original_input_flags_by_source'] = {}
     for index, source in enumerate(ttutil):
         obj = output / f'tt{index:04d}.o'
-        run(fc + legacy_flags + ['-c', source, '-o', obj], 'compile-original-input')
+        selected_flags = original_input_compile_flags(legacy_flags, source)
+        report['original_input_flags_by_source'][str(source.relative_to(output))] = selected_flags
+        run(fc + selected_flags + ['-c', source, '-o', obj], 'compile-original-input')
         ttobjects.append(obj)
     archive = output / 'libttutil.a'
     run(['ar', 'rcs', archive] + ttobjects, 'archive-original-input')

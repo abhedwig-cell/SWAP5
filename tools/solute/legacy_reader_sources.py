@@ -2,6 +2,13 @@
 import base64,hashlib,io,tarfile,zipfile
 from pathlib import Path
 B111='2fc8592001cdcd2de95a252d8b9099416c94e4d2654c335908858a735f80e7a2'
+def original_input_compile_flags(flags, source):
+    """Preserve the decimal reader's multiply/add evaluation order."""
+    if Path(source).stem.lower() == "rdlex":
+        return [*flags, "-ffp-contract=off"]
+    return list(flags)
+
+
 def materialize(root,out):
  archive=root/'integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64'
  with tarfile.open(fileobj=io.BytesIO(base64.b64decode(archive.read_bytes())),mode='r:gz') as tar:
