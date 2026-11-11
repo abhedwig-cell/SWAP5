@@ -241,14 +241,12 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         swap=replace(swap, "use MOD_irrigation,      only: irrigation, flirrigate",
                      "use MOD_irrigation,      only: irrigation, flirrigate, dayfix")
         swap=replace(swap,"real(8), save :: checkpoint_canopy = -1d0",
-                     "real(8), save :: checkpoint_canopy = -1d0\ninteger,save :: checkpoint_dayfix=-1\nlogical,save :: checkpoint_irrigate=.false.")
-        swap=replace(swap,"fl_cropharvest, fl_cropharvestday, sicact",
-                     "fl_cropharvest, fl_cropharvestday, sicact, fl_start_cropemergence")
+                     "real(8), save :: checkpoint_canopy = -1d0\ninteger,save :: checkpoint_dayfix=-1\nlogical,save :: checkpoint_irrigate=.false., checkpoint_emerged=.false.")
         swap=replace(swap,"         if (checkpoint_canopy >= 0d0) then",
-                     "         if (checkpoint_dayfix>=0)then\n            if(.not.fl_start_cropemergence)then\n               dayfix=checkpoint_dayfix\n               flirrigate=checkpoint_irrigate\n            end if\n            checkpoint_dayfix=-1\n         end if\n         if (checkpoint_canopy >= 0d0) then")
+                     "         if (checkpoint_dayfix>=0)then\n            if(.not.checkpoint_emerged.and.fl_cropemergence)then\n               dayfix=366\n               flirrigate=.true.\n            else\n               dayfix=checkpoint_dayfix\n               flirrigate=checkpoint_irrigate\n            end if\n            checkpoint_dayfix=-1\n         end if\n         if (checkpoint_canopy >= 0d0) then")
         swap=replace(swap,restore,"")
         swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore+
-                     "\n   if(fl_initialize)then\n      checkpoint_dayfix=dayfix\n      checkpoint_irrigate=flirrigate\n   end if")
+                     "\n   if(fl_initialize)then\n      checkpoint_dayfix=dayfix\n      checkpoint_irrigate=flirrigate\n      checkpoint_emerged=fl_cropemergence\n   end if")
     (output / "swap.f90").write_text(swap, encoding="cp1252")
     if runtime or checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")

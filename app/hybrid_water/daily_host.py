@@ -337,10 +337,6 @@ end submodule MOD_Solute_CDE""")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
                        "         if(swinco/=3 .or. .not.all(irdate(1:ifnd)<tstart)) &\n"
                        "            call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')")
-        source=replace(source,"only: swsolu, unit_err, fl_initialize, swirfix",
-                       "only: swsolu, unit_err, fl_initialize, swirfix\n      use plant_interface,only:fl_start_cropemergence")
-        source=replace(source,"            if (.NOT. fl_initialize .OR. fl_start_croprotation) then",
-                       "            if (.NOT. fl_initialize .OR. fl_start_croprotation .OR. fl_start_cropemergence) then")
         (output/'irrigation.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'irrigation')
     if budget_retry:
