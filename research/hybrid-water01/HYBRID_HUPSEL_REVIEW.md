@@ -47,7 +47,8 @@ is **2.667338342115643e-10 cm**. Maximum daily solute residual is
 **-2.7119257298790236e-12 mg/cm2**. Both daily guards remain 1e-10 in their units.
 Nine own windows reproduce every physical suffix record and both endpoint
 payloads exactly: 2→4, 4→6, 5→7, 120→122, 365→367, 523→526,
-583→585, 730→732 and 1061→1096. The actual public launcher independently
+583→585, 730→732 and 1061→1096. The independent potential/actual/dry/oxygen/salinity/frost uptake closure is at
+most 7.584536297622346e-16 cm per day. The actual public launcher independently
 reproduces 583→585 and its complete checkpoint.
 
 [Raw Windows capsule](hybrid-hupsel-windows-20261111.tar.xz), SHA-256

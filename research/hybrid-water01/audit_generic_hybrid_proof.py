@@ -154,6 +154,7 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
             assert abs(r['kernel_residual_cm'])<=1e-10
             solute=math.fsum([r['solute_end_mg_cm2'],-r['solute_start_mg_cm2'],-q[2],-q[3],-q[4],q[5],q[6],q[7]])
             assert solute==r['solute_independent_residual_mg_cm2'] and abs(solute)<=1e-10 and abs(q[8])<=1e-10
+            uptake=r['uptake_terms_cm'];assert abs(math.fsum([uptake[0],*(-v for v in uptake[1:])]))<=1e-10
         for cut,end in [(2,4),(4,6),(5,7),(120,122),(365,367),(523,526),(583,585),(730,732),(1061,1096)]:
             warm=rows(directory+f'/own-{cut}-to-{end}')
             assert list(map(physical,warm))==list(map(physical,full[cut:end]))
@@ -166,7 +167,7 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
             d=index['hupsel_public_late'];assert list(map(physical,rows(d)))==list(map(physical,full[583:585]))
             with zipfile.ZipFile(root/d/'accepted-column-1-day-585.zip') as p, zipfile.ZipFile(root/directory/'full/accepted-column-1-day-585.zip') as c:
                 for name in ['result.end','macro.bin']:assert p.read(name)==c.read(name)
-        summary['hupsel_full']={'days':1096,'nine_exact_own_windows':True,'maximum_daily_water_residual_cm':max(abs(r['independent_residual_cm']) for r in full),'maximum_daily_solute_residual_mg_cm2':max(abs(r['solute_independent_residual_mg_cm2']) for r in full)}
+        summary['hupsel_full']={'days':1096,'nine_exact_own_windows':True,'maximum_daily_uptake_closure_cm':max(abs(math.fsum([r['uptake_terms_cm'][0],*(-v for v in r['uptake_terms_cm'][1:])])) for r in full),'maximum_daily_water_residual_cm':max(abs(r['independent_residual_cm']) for r in full),'maximum_daily_solute_residual_mg_cm2':max(abs(r['solute_independent_residual_mg_cm2']) for r in full)}
     print(json.dumps({'status':'INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS',
                       'platform':index['platform'],'retained_files':len(load('MEMBER_SHA256.json')),
                       'source_build_input_identity_checks':checked,'cases':summary}))
