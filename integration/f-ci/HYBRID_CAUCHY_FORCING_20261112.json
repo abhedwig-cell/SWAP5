@@ -1,5 +1,5 @@
 {
-  "status": "IMPLEMENTED_NOT_YET_QUALIFIED",
+  "status": "WINDOWS_O0_O2_DAY20_22_AND_THREE_PROJECT_ORIGINAL_PRESERVATION_PASS_LINUX_RUNNING",
   "base": "ce04a4db9a21f264c077d0832e2173e5468e9d70",
   "scope": "Application-only explicit one-day original Cauchy head forcing; original/default physics/state/input/guards unchanged",
   "test_selection": {
@@ -20,7 +20,7 @@
   "caps": {
     "native_cohort_seconds": 240
   },
-  "next": "Execute smallest real O2 source probe, then current O0/O2 Cauchy/own/datum/lineage guards, original-forcing preservation and Linux owning tests; publish qualified PR and verify canonical.",
+  "next": "Complete existing Linux Cauchy plus original three-project/corruption owning cohort without duplication. Retain all failed probes, raw source/build/state/forcing evidence and independently audit; publish own PR and verify canonical. Actual external feedback qualified at20to22, not a full481 externally forced trajectory.",
   "initial_probe_failure": {
     "source": "174fe9a5b2c19c8976a019b038dba02742643bb5",
     "seconds": 8.4189376,
@@ -42,5 +42,500 @@
     "actual_original_control_retry_recovery": "PASS before shifted independent-control assertion",
     "diagnosis": "Independent direct host emits committed=True; public external proposal intentionally emits committed=False,candidate_only=True. Compare physical quantities separately from publication status; native byte equality remains mandatory. No application/model code change.",
     "cost_control": "Reuse already accepted exact current-bundle O0 day20 from failed-test output after strict current binding/hash/native verification; do not rerun its18-day warm prefix."
+  },
+  "windows_cauchy": {
+    "status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+    "source_commit": "20a85e286b48ed203ca923786dde1fba1b597d78",
+    "sources": {
+      "app/hybrid_water/daily_coupling.py": "2ff8214a0b036fe1aae55ccadda626155046657d367eca42c7ef9ad6b344f697",
+      "research/hybrid-water01/qualify_cauchy_daily_forcing.py": "50ae0f5e7bdcb49169794bc214f7ee30b0b9632ff9975ad1993fb88af1264a32"
+    },
+    "cases": [
+      {
+        "optimization": "O0",
+        "cut": 20,
+        "end": 22,
+        "original_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+        "compatible_origin_sha256": "d498844e8309e812c689bc86562a4dca2cb642fb37ad40fb5f153e8d4d410a73",
+        "exact_original_control": true,
+        "exact_retry_and_recovery": true,
+        "exact_independently_edited_original_head_control": true,
+        "invalid_pretrial_cases": 8,
+        "actual_head_perturbation_cm": 0.001,
+        "unshifted_bottom_cm": 0.19533361561655016,
+        "shifted_bottom_cm": 0.19532362950912902,
+        "external_terminal_sha256": "7179bfd972847a8c8395255eed7af06ff7b0569dd52b427626d60a21b9f9ae73"
+      },
+      {
+        "optimization": "O2",
+        "cut": 20,
+        "end": 22,
+        "original_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+        "compatible_origin_sha256": "6c0669cd92d160e68eb222bb23db9442b40e72de3d067979ef36e6c3a2a429f8",
+        "exact_original_control": true,
+        "exact_retry_and_recovery": true,
+        "exact_independently_edited_original_head_control": true,
+        "invalid_pretrial_cases": 8,
+        "actual_head_perturbation_cm": 0.001,
+        "unshifted_bottom_cm": 0.19533361561655016,
+        "shifted_bottom_cm": 0.19532362950912902,
+        "external_terminal_sha256": "9c2fe86656dd9073cf477635101fae6a406baf6528e63f7122b6b7408620c730"
+      }
+    ],
+    "censored": false,
+    "elapsed_seconds": 32.327968399971724
+  },
+  "windows_independent_audit": {
+    "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+    "cases": [
+      {
+        "optimization": "O0",
+        "window": [
+          20,
+          22
+        ],
+        "exact_original_and_retry_native_state": true,
+        "exact_recovery_native_state": true,
+        "exact_independent_shifted_original_control": true,
+        "forcing_receipt_and_applied_input_hashes": "PASS",
+        "bottom_response_cm": -9.986107421144919e-06,
+        "accepted_terminal_sha256": "7179bfd972847a8c8395255eed7af06ff7b0569dd52b427626d60a21b9f9ae73"
+      },
+      {
+        "optimization": "O2",
+        "window": [
+          20,
+          22
+        ],
+        "exact_original_and_retry_native_state": true,
+        "exact_recovery_native_state": true,
+        "exact_independent_shifted_original_control": true,
+        "forcing_receipt_and_applied_input_hashes": "PASS",
+        "bottom_response_cm": -9.986107421144919e-06,
+        "accepted_terminal_sha256": "9c2fe86656dd9073cf477635101fae6a406baf6528e63f7122b6b7408620c730"
+      }
+    ],
+    "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+  },
+  "windows_original_preservation": {
+    "status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+    "source_commit": "20a85e286b48ed203ca923786dde1fba1b597d78",
+    "source_sha256": {
+      "app/hybrid_water/daily_coupling.py": "2ff8214a0b036fe1aae55ccadda626155046657d367eca42c7ef9ad6b344f697",
+      "research/hybrid-water01/qualify_daily_coupling.py": "c1d0d6fa4779c6b1d16f366cb9d6c3ed4529b1b2c9a6cb91bcbb17d3a17749e9"
+    },
+    "platform": "windows",
+    "cases": [
+      {
+        "project": "grass",
+        "optimization": "O0",
+        "bundle_build_sha256": "4fddc7605d414b77d8b7fe5b91279fdf4bf9cb64e065c463b779624b6708640b",
+        "native_origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+        "external_day4_sha256": "79c115ca6adc9677c77db4f918351434aabe04842895a8736a4d4d23767f1606",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "grass",
+        "optimization": "O2",
+        "bundle_build_sha256": "d98cce3674e6ba470b145d523ae2f64d34317dca8437713c0181f884a3797a7f",
+        "native_origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+        "external_day4_sha256": "7f1bd012b1a0c3c9838d8983c912944cee744de0af1a9e9258fbbd5ac94f49ec",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O0",
+        "bundle_build_sha256": "9d708e89c1343acf1c64400df27d1a4c275ccd90d226e816a8b62017f2f5b880",
+        "native_origin_sha256": "eb50e360287c68b39daaec88a9bdf4c95e2e4e9cbecc0ab3e45c979efeb4317a",
+        "external_day4_sha256": "fe157d1f6957640ecdd1ce2715f3aa990da0a05c8355d98703828752b5083b44",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O2",
+        "bundle_build_sha256": "14bfa596b3d205490da1929980a11d256a5ba3501b70335f676d840a96786b7e",
+        "native_origin_sha256": "cfd09804cfd593b20783ba80f931d9c66e26ccdf94fa081f52b5bd6639165316",
+        "external_day4_sha256": "d0c21a43e3eb920f04742821bfd041e2af5d70afc238b3a4074a3db66050619c",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O0",
+        "bundle_build_sha256": "474528dc3a409500530aeeeb260753e591786d4c87111a5189239335d974b823",
+        "native_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+        "external_day4_sha256": "e34186702324a72f582813d0b6e111c21f171d14d90f4fa22146e518dfd472fe",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O2",
+        "bundle_build_sha256": "c9ac7536acb09a87987ad700571b77b91dad7d85888889a055efbe27959ad7a3",
+        "native_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+        "external_day4_sha256": "205ca47cb445b627fdfb254e7fe732cef774bf9f9c9c31daa13594ed760f3819",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      }
+    ],
+    "events": [
+      {
+        "case": "grass-O0",
+        "seconds": 5.788376099895686,
+        "status": "PASS"
+      },
+      {
+        "case": "grass-O2",
+        "seconds": 5.508271500002593,
+        "status": "PASS"
+      },
+      {
+        "case": "hupsel-O0",
+        "seconds": 6.194977100007236,
+        "status": "PASS"
+      },
+      {
+        "case": "hupsel-O2",
+        "seconds": 6.020849300082773,
+        "status": "PASS"
+      },
+      {
+        "case": "andelst-O0",
+        "seconds": 11.493055499857292,
+        "status": "PASS"
+      },
+      {
+        "case": "andelst-O2",
+        "seconds": 11.601406899979338,
+        "status": "PASS"
+      }
+    ],
+    "scope": "Serial externally accepted original-forcing daily transactions. No new groundwater feedback, forcing physics, peer-backend or whole-science qualification.",
+    "compiler_events": [
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O0\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8867277998942882,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O0\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8444097000174224,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O0\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8304018001072109,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O0\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8658127000089735,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O2\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8479716000147164,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O2\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8158891000784934,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O2\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.847269699908793,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\grass-O2\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8527837998699397,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O0\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8275079000741243,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O0\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8367147000972182,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O0\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8258873999584466,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O0\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8318593001458794,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O2\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8520273000467569,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O2\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.846827199915424,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O2\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8585383000317961,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\hupsel-O2\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8674491001293063,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O0\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8413976000156254,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O0\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.9067818000912666,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O0\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8756335000507534,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O0\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8479327999521047,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O2\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8897156999446452,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O2\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.9347572000697255,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O2\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.9135596000123769,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-cauchy-default-preservation-windows-20261112\\andelst-O2\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8919001000467688,
+        "returncode": 0
+      }
+    ]
+  },
+  "windows_corruption": {
+    "status": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS",
+    "platform": "windows",
+    "seconds": 1.3704238999634981,
+    "source_sha256": {
+      "app/hybrid_water/daily_coupling.py": "2ff8214a0b036fe1aae55ccadda626155046657d367eca42c7ef9ad6b344f697",
+      "research/hybrid-water01/qualify_daily_coupling_corruption.py": "2f00bbb1407231841a39a1e0dbd1429951fe919f7f6e9988c8522dcb8c7bff86"
+    },
+    "candidate_native_corruption_refused": true,
+    "accepted_origin_corruption_refused_before_trial": true,
+    "exclusive_owner": true,
+    "native_adoption_explicit": true,
+    "terminal_refused_before_trial": true,
+    "retained_terminal_origin_sha256": "477d1f326f03eea2f84465c26192ec8c3412f9c9e1f9db9e3e603147b8fd37c0",
+    "accepted_guard_day3_sha256": "3b8dff1f6e1fb50d842a7fa420609ec7c0e75bab15b94027394ef2db98f5bfe8"
+  },
+  "linux": {
+    "run": 43123554632,
+    "head": "20a85e286b48ed203ca923786dde1fba1b597d78",
+    "status": "in_progress"
   }
 }
