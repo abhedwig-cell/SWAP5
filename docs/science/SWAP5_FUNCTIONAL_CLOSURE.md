@@ -89,10 +89,16 @@ original and implicit reference families remain independently underresolved;
 another reference is selected only for a distinct, independently verifiable causal
 hypothesis. Full physical energy is likewise open, not a reason to invent inputs.
 
-The next functional decision must concern an actual missing process/interface,
-with its consuming model, state/restart ownership and physical-input authority
-identified first. For thermal feedback this means an explicit corrected-physics
-scope through existing owners, not an unused handoff wrapper. Original input
-execution remains available and separately identified. Reuse the completed full
+The next independent functional target is caller-controlled **water** forcing at
+the existing Andelst Cauchy lower boundary through daily prepare/discard/accept.
+First verify how the original boundary-table initialization and restored cursor
+consume a changed one-day head trajectory. If that contract is usable, implement
+the bounded handoff with explicit forcing identity and own retry/recovery, using
+the existing20→22 source windows and unchanged mass guard. Original forcing must
+remain the default. This uses the existing water physics and has an actual missing
+consumer interface; it does not require inventing thermal donor measurements.
+
+For thermal feedback an explicit corrected-physics scope and joint state/restart
+owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full
 applications and their qualified dependencies; do not repeat them to refresh status
 or to measure historical inputs that are absent.
