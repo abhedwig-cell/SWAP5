@@ -295,6 +295,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                        "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")+source[end:]
         (output/'solute.f90').write_text(source,encoding='cp1252')
         patched.append('solute')
+        source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')
+        source=replace(source,"            siccaploss = siccaploss + sicact",
+                       "            siccaploss = siccaploss + sicact\n"
+                       "            sicact = 0d0\n            siccap = 0d0")
+        (output/'MOD_cropdevelopment.f90').write_text(source,encoding='cp1252')
+        patched.append('MOD_cropdevelopment')
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
