@@ -23,7 +23,7 @@ builds = {name: (folder.resolve(), json.loads((folder/'BUILD.json').read_text())
 for folder, build in builds.values():
     assert build['status'] == 'ORIGINAL_INTERVAL_COMPLETED'
     assert build['profile'] == 'production'
-    assert build['grass_numerical_profile'] == 'thermal-control-1e-5C'
+    assert build['grass_numerical_profile'] in ['thermal-control-1e-5C','thermal-subcycle4-1e-5C','thermal-subcycle16-1e-5C']
     assert sha(folder/build['executable']) == build['executable_sha256']
 assert builds['baseline'][1]['compiler'] == builds['candidate'][1]['compiler']
 assert builds['baseline'][1]['original_inputs_sha256'] == builds['candidate'][1]['original_inputs_sha256']
@@ -42,7 +42,8 @@ def run(arm, name, end=4, origin=None):
         shutil.copyfile(folder/'original-interval'/n, case/n)
     shutil.copyfile(folder/'original-interval/application.binding', case/'application.binding')
     cmd = [str(folder/build['executable']), str(end), 'retain-step', '100000',
-           str(origin) if origin else '', 'thermal-control']
+           str(origin) if origin else '',
+           {'thermal-subcycle4-1e-5C':'thermal-control-4','thermal-subcycle16-1e-5C':'thermal-control-16'}.get(build['grass_numerical_profile'],'thermal-control')]
     start = time.perf_counter()
     try:
         r = subprocess.run(cmd, cwd=case, capture_output=True, timeout=60,
@@ -76,6 +77,7 @@ medians = {arm: statistics.median(e['seconds'] for e in events
 counts = {arm: sum(int(r['accepted_steps']) for r in csv.DictReader(
           (runs[name]/'budget.csv').open())) for arm, name in [('baseline','A1'),('candidate','B1')]}
 result = dict(status='SHORT_ABBA_AND_OWN_RESTART_PASS', events=events,
+              numerical_profiles={arm:b['grass_numerical_profile'] for arm,(_,b) in builds.items()},
               median_native_seconds=medians, accepted_steps=counts,
               median_reduction_percent=100*(1-medians['candidate']/medians['baseline']),
               build_manifest_sha256={arm: sha(folder/'BUILD.json') for arm,(folder,_) in builds.items()},
