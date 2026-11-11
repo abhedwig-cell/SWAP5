@@ -454,5 +454,12 @@
     "mkdocs_strict": "PASS",
     "budget_protocol": "PASS",
     "local_linux_fallback": "WSL not installed; docker unavailable"
+  },
+  "linux_infrastructure_fallback": {
+    "unstarted_run": 43098736948,
+    "runner_requested": "ubuntu-26.04",
+    "observation": "More than eight minutes queued with no steps/compiler/model; cancellation requested before fallback dispatch. Prior run43096746300 internal startup failure after rerun.",
+    "fallback_runner": "ubuntu-24.04",
+    "scope": "Actual installed compiler identity must be retained. Same-runner canonical/current Andelst comparison and same six controls/full1096/nine own/public routes, identical numerical guards. No Ubuntu26 qualification inferred from fallback."
   }
 }
