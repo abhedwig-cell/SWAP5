@@ -57,10 +57,24 @@ def write_cauchy_case(case, target, forcing, project):
     table_start=date(1998,12,31) if forcing.origin_day>=365 else first
     # TTUTIL infers numeric column type; integral endpoints must still be real.
     # repr(float) round-trips caller doubles without an integer lexical endpoint.
-    rows=f' {table_start} {float(forcing.head_start_cm)!r}\n {last} {float(forcing.head_end_cm)!r}\n'
     number=r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?'
     pattern=rf'(?m)^([ \t]*DATE3[ \t]+HAQUIF[ \t]*\r?\n)(?:[ \t]*\d{{4}}-\d{{2}}-\d{{2}}[ \t]+{number}[ \t]*\r?\n)+'
-    source,count=re.subn(pattern,lambda m:m[1]+rows,source)
+    def segment(match):
+        table=match[0]
+        for stamp,value in [(table_start,forcing.head_start_cm),(last,forcing.head_end_cm)]:
+            row=rf'(?m)^([ \t]*{stamp}[ \t]+)({number})([ \t]*\r?$)'
+            def change(m):
+                # Preserve original decimal spelling when the requested value
+                # is unchanged. TTUTIL owns conversion, including its rounding.
+                old=float(m[2].replace('D','e').replace('d','e'))
+                return m[0] if old==value else m[1]+repr(float(value))+m[3]
+            table,n=re.subn(row,change,table)
+            if n>1:raise ValueError('Duplicate aquifer-head date')
+            if not n:table+=f' {stamp} {float(value)!r}\n'
+        return table
+    # Retain all original neighboring knots: the original adaptive clock can
+    # evaluate a final abscissa a few ulps beyond the nominal day boundary.
+    source,count=re.subn(pattern,segment,source)
     if count!=1:raise ValueError('Missing or ambiguous original aquifer-head table')
     bbc.write_text(source,encoding='cp1252')
 

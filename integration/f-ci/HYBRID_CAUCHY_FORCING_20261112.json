@@ -28,5 +28,13 @@
     "diagnosis": "General .17g formatting produced real followed by integer lexical -71; TTUTIL rejects inconsistent column type. Preserve double round-trip real lexical form with repr(float).",
     "accepted_state_advanced": false,
     "failed_evidence": "Retained local s5-cauchy-probe-windows-20261112 RESULT.json and original swap.err/log; no tolerance change"
+  },
+  "second_probe_reassessment": {
+    "source": "c7faba5dc",
+    "seconds": 9.7976422,
+    "same_origin_retry_recovery": "PASS before original-control comparison",
+    "failed_exact_original_comparison": "bottom flux differed by about5e-15cm; residual and native bytes correspondingly differ",
+    "decision": "Reassess after two attempts: retain the larger original BBC table and original decimal spellings, change only requested day values. No physics/clock/guard relaxation. Independent original input edit remains the oracle.",
+    "failed_evidence": "Retained s5-cauchy-probe2-windows-20261112 including complete native payloads and original-control"
   }
 }

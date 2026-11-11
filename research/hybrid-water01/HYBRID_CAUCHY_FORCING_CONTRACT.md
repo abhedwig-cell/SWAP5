@@ -13,8 +13,9 @@ validates finite original bounds[-10000,1000], provenance, lineage and clock bef
 attempt creation or worker/model advancement. External mode requires explicit input
 every day. Original mode rejects overrides. No datum conversion is inferred.
 
-Each attempt copies immutable original inputs into a private case and replaces
-only DATE3/HAQUIF with a linear one-day segment. Original table reading and afgen
+Each attempt copies immutable original inputs into a private case and changes
+only the two DATE3/HAQUIF day values, retaining original neighboring knots and
+unchanged decimal spellings. Original table reading and afgen
 at t1900+dt own interpolation; no saved haqtab cursor exists. Original init rereads
 the table before macro/native restore; observed physical initial state must remain
 exact. The unchanged year-restart host extension is retained using its original
