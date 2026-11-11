@@ -1,0 +1,122 @@
+{
+  "day": 188,
+  "window_start_minute": 38.4,
+  "original_oxygen_gap_cm": -0.010576820940810507,
+  "rooted_nodes": 30,
+  "B0_forcing": {
+    "root_maintenance": 0.016,
+    "senescence": 1.0,
+    "maximum_respiration_factor": 3.2194965227143633,
+    "air_temperature_c": 15.5,
+    "specific_root_length": 383571.0,
+    "root_density_kg_m3": [
+      0.4649716424970633,
+      0.4494725877471611,
+      0.4339735329972589,
+      0.41847447824735684,
+      0.4029754234974547,
+      0.3874763687475526,
+      0.3719773139976506,
+      0.35647825924774834,
+      0.3409792044978464,
+      0.3254801497479444,
+      0.30998109499804216,
+      0.29448204024814034,
+      0.27898298549823813,
+      0.26348393074833554,
+      0.24798487599843336,
+      0.23248582124853154,
+      0.21698676649862972,
+      0.2014877117487275,
+      0.1859886569988253,
+      0.17048960224892312,
+      0.15499054749902091,
+      0.13949149274911868,
+      0.12399243799921687,
+      0.10849338324931505,
+      0.09299432849941283,
+      0.07749527374951064,
+      0.061996218999608436,
+      0.04649716424970623,
+      0.030998109499804027,
+      0.015499054749901818
+    ]
+  },
+  "comparison": {
+    "B0": {
+      "intervals": 29,
+      "first_reduction_minute": {
+        "B0_kernel": 38.39999999734573,
+        "SWAP5_kernel": 38.39999999734573
+      },
+      "worst_nodal_factor_gap": {
+        "absolute": 8.584337385930674e-06,
+        "minute": 720.0000000209548,
+        "node": 30,
+        "B0_kernel": 0.8549726697328337,
+        "SWAP5_kernel": 0.8549640853954478
+      },
+      "oxygen_loss_with_B0_nodal_demand_cm": {
+        "B0_kernel": 0.016571046609940722,
+        "SWAP5_kernel": 0.01657104357782174
+      },
+      "oxygen_loss_delta_cm": -3.032118982976284e-09,
+      "fraction_of_original_absolute_day_gap": 2.8667583576808964e-07
+    },
+    "NATIVE": {
+      "intervals": 1267,
+      "first_reduction_minute": {
+        "B0_kernel": 68.43675513385278,
+        "SWAP5_kernel": 68.43675513385278
+      },
+      "worst_nodal_factor_gap": {
+        "absolute": 1.3076169526837766e-05,
+        "minute": 70.09292942885168,
+        "node": 30,
+        "B0_kernel": 0.8325395052342534,
+        "SWAP5_kernel": 0.8325525814037802
+      },
+      "oxygen_loss_with_B0_nodal_demand_cm": {
+        "B0_kernel": 0.00593385808937931,
+        "SWAP5_kernel": 0.005933855257032954
+      },
+      "oxygen_loss_delta_cm": -2.8323463557161643e-09,
+      "fraction_of_original_absolute_day_gap": 2.677880595281327e-07
+    },
+    "native_actual_onset": {
+      "minute": 68.29964253840444,
+      "actual_deepest_factor": 0.9941773919752935,
+      "B0_forcing_B0_kernel_deepest_factor": 1.0,
+      "B0_forcing_SWAP5_kernel_deepest_factor": 1.0
+    }
+  },
+  "legacy_accepted_trace_exact": true,
+  "legacy_oxygen_object_sha256": "e6647db4d8aa610bc0377990e8f2970b1749f6b61d73a9acaf79b870d8b53b42",
+  "native_objects_sha256": {
+    "10.o": "fb844753b1efa6de9c5c25ee79c12718cb3f84c4dec41ef138c48697834919ed",
+    "101.o": "684d930fd31ba4491a2f51ba039a640cbe01bd93f304f176bb2653fc7256dbff",
+    "102.o": "00989525ff28e2e0e69b60b5e6ee4fbfc0dffaac2e554947479dbf31ba8bfea9",
+    "103.o": "7bb71424c18304f9278ea04b69eabb9388168c8d10aa827ac8285c54a019be6b",
+    "104.o": "1cda4243a3d379df3aba93c87e96f522bf8ece7c91d99866e8c670aa507e57f0",
+    "105.o": "5d6fbb220453aa973e55aa1329344a46663348a350ad9710cbd9fea917976e53",
+    "108.o": "4eb7a70c4b9508dfcba38e5b3a4d7ebf0c9873f7b994e27d84185be9a227b19e",
+    "109.o": "1e1e79f416bc41c0c01fddfc78cc915512ad75f83cc569d1a4eb4c4882bfb3ce",
+    "110.o": "2302bc6070dc539b676e49c169b3d623ba0b90e2c26577599bdd3b6246579026",
+    "111.o": "324976858ecc936dd2ad037c4bfc9556d57a01dff780e50b8bca7276481dbb1f",
+    "112.o": "1f836c39f0fd4a037bb3daec5a8e9f61a56123a6e1a80832167cc0fbb14fb738",
+    "113.o": "c25ce804eb26c78c95a1d063ac7c702eed416fdc77680871cbf3b1775d22dc4e",
+    "114.o": "bc032637ae958664a415b0e0722c0ca314e5aeff382812d36b5c844d5b754e39",
+    "115.o": "060aba95c11bdcbef1b11252f3bddc2e4e7a1cba29958291a5b270192e258801",
+    "116.o": "afc9776d4ee0014dc4270f6408acafcf095c2c511a923206eda11840f7f15168",
+    "117.o": "3edc69f783698441ddb096a05e93100b1440f7da68c697ba7a175ab0734ea379",
+    "2.o": "c38fa019b93d9f8648e7193eef769ac53897eeb986b0978f7ddcfcb7de03fd6d",
+    "3.o": "cb7d28a0be8f7aaf84e488c099f4779aee43c8b5ab3f6de19d7afc04820963f7",
+    "4.o": "a51063864245d297c33e62fa1caf824f03065576013e9379e7a0ad6de3dc92b3",
+    "5.o": "3226d747d3aecac9165da9c5f6af29d3f037c822fd8b53723bf38a0826606e09",
+    "9.o": "2df7c918f74a31cd4dbda6281bfbaa6e23329b61805048a768e5d1561bba400b"
+  },
+  "observer_executable_sha256": "f487a44481a55bb792e688edea8a23be5fde7683c1252ac75ac572f217a54304",
+  "observer_source_sha256": "f173a3c8675e7ab0a1d10a772ea8022f58bb4937bde2a1c70acdcb28aad71e37",
+  "stdout_sha256": "18a49bdf45d046ff1fd60fca1510d02c514de291e20628ec6ae16d887e111083",
+  "native_states_sha256": "a3729e5b3ece6c0ac2900fc386037e28b487ca9c03178aaa02efdea19e33aa2a"
+}
