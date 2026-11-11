@@ -27,6 +27,8 @@ def validate_bundle(bundle, reference, project):
         raise ValueError('Bundle project differs')
     for key, name in [('host', 'daily_host.py'), ('adapter', 'donor_adapter.f90'),
                       ('driver', 'main.f90'), ('budget_source', 'hybrid_step_budget.f90')]:
+        if key == 'budget_source' and not meta['binding']['budget_retry']:
+            continue
         if identity[key] != h.sha(h.APP / name):
             raise ValueError('Bundle source differs: ' + name)
     for name, digest in identity['kernel_sources']:

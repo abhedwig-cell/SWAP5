@@ -30,8 +30,8 @@
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
         "expected_seconds": 120,
         "existing_evidence": "PR1641 Windows/Ubuntu26 raw source-bound capsules qualify underlying unchanged kernel/donor O0/O2, full1096/nine own and three project prefixes",
-        "prior_execution": "NOT_RUN",
-        "diagnosis": "Concrete absent external discard gate; fresh private branches reuse durable codec and actual binaries. No previous full application rerun selected."
+        "prior_execution": "FAILED",
+        "diagnosis": "First preflight used invalid prior_execution enum; first bundle validation incorrectly required optional budget source for Grass budget_retry=False. No model/compiler ran. Preserve original optional build scope; require budget source for enabled profiles."
       }
     }
   },
@@ -40,5 +40,17 @@
     "expected_windows_seconds": 120,
     "expected_linux_seconds": 30
   },
-  "next": "Persist source/contract, qualify real bounded three-project O0/O2 external acceptance; retain raw data and integrate own PR only after Linux and independent audit."
+  "next": "Persist source/contract, qualify real bounded three-project O0/O2 external acceptance; retain raw data and integrate own PR only after Linux and independent audit.",
+  "initial_failure": {
+    "status": "FAILED",
+    "source_commit": "d9908896becadec904b52b3aa9cdb7cc272c77d7",
+    "source_sha256": {
+      "app/hybrid_water/daily_coupling.py": "3262e87987df41cec680f81a0428139a50bfe0e2dfb06486276a2bfbef30ba6b",
+      "research/hybrid-water01/qualify_daily_coupling.py": "c1d0d6fa4779c6b1d16f366cb9d6c3ed4529b1b2c9a6cb91bcbb17d3a17749e9"
+    },
+    "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\qualify_daily_coupling.py\", line 91, in <module>\n    model = CoupledDailyColumn(bundle, reference, output / 'external', project, 'column-A',\n                               origin=native, day=2, adopt_native=True)\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_coupling.py\", line 98, in __init__\n    self.meta, self.case = validate_bundle(self.bundle, self.reference, project)\n                           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_coupling.py\", line 30, in validate_bundle\n    if identity[key] != h.sha(h.APP / name):\n       ~~~~~~~~^^^^^\nKeyError: 'budget_source'\n",
+    "censored": false,
+    "compiler_events": [],
+    "events": []
+  }
 }
