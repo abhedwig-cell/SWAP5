@@ -304,22 +304,18 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source=replace(source,"end submodule MOD_Solute_CDE","""module subroutine hybrid_solute_checkpoint(unit,restoring)
    use ieee_arithmetic,only:ieee_is_finite
    use MOD_grid,only:dz
-   use MOD_irrigation,only:dayfix,flirrigate
    integer,intent(in)::unit
    logical,intent(in)::restoring
-   integer::ios,irrigation_flag
+   integer::ios
    if(restoring)then
-      read(unit,iostat=ios) cmsy(1:numnod),csurf,sampro,dayfix,irrigation_flag
+      read(unit,iostat=ios) cmsy(1:numnod),csurf,sampro
       if(ios/=0)error stop 'Incomplete Hupsel conserved solute state'
-      if(dayfix<0.or.dayfix>366.or.irrigation_flag<0.or.irrigation_flag>1) error stop 'Invalid Hupsel irrigation state'
-      flirrigate=irrigation_flag==1
       if(.not.all(ieee_is_finite(cmsy(1:numnod))).or..not.all(ieee_is_finite([csurf,sampro]))) &
          error stop 'Nonfinite Hupsel conserved solute state'
       if(any(cmsy(1:numnod)<0d0).or.csurf<0d0.or.sampro<0d0)error stop 'Negative Hupsel solute state'
       if(abs(sum(cmsy(1:numnod)*dz(1:numnod))+csurf-sampro)>1d-10)error stop 'Unbalanced Hupsel solute state'
    else
-      irrigation_flag=merge(1,0,flirrigate)
-      write(unit) cmsy(1:numnod),csurf,sampro,dayfix,irrigation_flag
+      write(unit) cmsy(1:numnod),csurf,sampro
    end if
 end subroutine hybrid_solute_checkpoint
 end submodule MOD_Solute_CDE""")
@@ -337,6 +333,59 @@ end submodule MOD_Solute_CDE""")
         source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
                        "         if(swinco/=3 .or. .not.all(irdate(1:ifnd)<tstart)) &\n"
                        "            call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')")
+        header=source.split('   contains',1)[0]
+        declarations=[];irrigation_fields=[]
+        for line in header.splitlines():
+            if not re.match(r'\s*(?:integer|real\(8\)|logical)[ ,]',line) or '::' not in line:continue
+            left,right=line.split('::');right=right.split('!')[0].split('=')[0].strip()
+            declarations.append(re.sub(r',\s*save\b','',left,flags=re.I)+':: '+right)
+            irrigation_fields.extend(name.strip() for name in right.split(','))
+        if len(irrigation_fields)!=50 or len(set(irrigation_fields))!=50:
+            raise ValueError('Changed original irrigation state inventory')
+        snapshot='\n'.join(declarations)
+        source=replace(source,'   contains',f"""   type hybrid_irrigation_snapshot_t
+{snapshot}
+      logical::was_emerged
+   end type
+   type(hybrid_irrigation_snapshot_t),save::hybrid_irrigation_snapshot
+   logical,save::hybrid_irrigation_pending=.false.
+   contains""")
+        wire=', &\n         '.join('hybrid_irrigation_snapshot%'+name for name in irrigation_fields+['was_emerged'])
+        capture='\n'.join('         hybrid_irrigation_snapshot%'+name+'='+name for name in irrigation_fields)
+        apply='\n'.join('         '+name+'=hybrid_irrigation_snapshot%'+name for name in irrigation_fields)
+        procedures=f"""
+   subroutine hybrid_irrigation_checkpoint(unit,restoring)
+      use plant_interface,only:fl_cropemergence
+      integer,intent(in)::unit
+      logical,intent(in)::restoring
+      integer::ios
+      if(restoring)then
+         read(unit,iostat=ios) {wire}
+         if(ios/=0)error stop 'Incomplete Hupsel irrigation context'
+         if(hybrid_irrigation_snapshot%dayfix<0.or.hybrid_irrigation_snapshot%dayfix>366) &
+            error stop 'Invalid Hupsel irrigation context'
+         hybrid_irrigation_pending=.true.
+      else
+{capture}
+         hybrid_irrigation_snapshot%was_emerged=fl_cropemergence
+         write(unit) {wire}
+      end if
+   end subroutine
+   subroutine hybrid_apply_irrigation(emerged)
+      logical,intent(in)::emerged
+      if(.not.hybrid_irrigation_pending)return
+      if(.not.hybrid_irrigation_snapshot%was_emerged.and.emerged)then
+         dayfix=366
+         flirrigate=.true.
+      else
+{apply}
+      end if
+      hybrid_irrigation_pending=.false.
+   end subroutine
+"""
+        marker=re.search(r'(?im)^end module MOD_irrigation',source)
+        if marker is None:raise ValueError('Missing original irrigation module end')
+        source=source[:marker.start()]+procedures+source[marker.start():]
         (output/'irrigation.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'irrigation')
     if budget_retry:
