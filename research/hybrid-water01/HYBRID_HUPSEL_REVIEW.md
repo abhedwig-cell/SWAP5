@@ -1,8 +1,9 @@
 # Hupsel original-block water and solute route
 
 Proposed successor to canonical `3e0dc5e08c07719a7ac2107d54d7d74f954805f1`.
-Windows qualification passed; Linux admission is blocked by a reproduced GitHub
-Actions startup failure before any job. Do not merge or describe this as cross-platform qualified.
+Windows and Ubuntu26.04 GNU15.2 owning model gates passed. PR1641 carries
+the qualified corrected-original-block successor; admission uses the exact
+reviewed source and verified canonical postimage, separately from scientific equivalence.
 
 ## Functional change
 
@@ -87,18 +88,40 @@ The existing temporal/grid/equal-state reference-resolution blockers remain.
 No reference is silently substituted, no additional reference trajectory is run,
 and no scientific equivalence is claimed for this corrected route.
 
-## Open acceptance and next delivery
+## Linux qualification and next delivery
 
-[Linux blocker](HYBRID_HUPSEL_LINUX_BLOCKER_20261111.json): Actions run
-43096746300 failed at startup, no jobs, including after a successful rerun request.
-GitHub's annotation identifies an internal service error. The same Ubuntu26 image
-has a retained successful predecessor run; stale actionlint runner-label inventory
-is not used as evidence to change the runner.
+The [historical startup failure](HYBRID_HUPSEL_LINUX_BLOCKER_20261111.json)
+remains retained. The successful replacement run is
+[43098736948](https://github.com/abhedwig-cell/SWAP5/actions/runs/43098736948),
+job130784487221, exact source `287de920c6099928ca4b1ccfee6223f3d8032a73`,
+Ubuntu26.04.1 image20261101.186.1, GNU15.2. All six bounded project/kernel
+controls, actual same-runner canonical Andelst preservation, full1096/nine own
+windows and public Grass/Hupsel cold/continuation pass. Other jobs are skipped.
+A temporarily proposed Ubuntu24 fallback was reverted before dispatch: stale
+API queue data did not justify changing the successful qualification platform.
+No duplicate model run was launched; an attempted queue cancellation returned409.
 
-The persisted owning record selects six bounded O0/O2 controls, same-runner
-canonical Andelst preservation, Linux full1096/nine own windows, and both public
-routes. Resume the existing workflow; retain and independently audit its artifact
-before merging through the canonical PR route. Until then Windows-only functional
-qualification and review are deliverable; cross-platform admission is blocked.
-After this acceptance, address an independently specified external coupling/energy
-contract rather than repeating successful original application runs.
+Linux full1096 took **3.256074393 s** excluding build; each own window took
+0.10–0.20 s. Maximum daily water residual is **9.997065718650444e-11 cm**,
+signed cumulative **2.6666888331351084e-10 cm**; maximum daily solute
+**2.1610435979544247e-13 mg/cm2**, signed cumulative
+**-2.7733259900138115e-12 mg/cm2**. The unchanged guards apply independently
+on each platform; cross-platform byte equality is not required or claimed.
+
+[Linux raw capsule](hybrid-hupsel-linux-20261111.tar.xz), 4536 files,
+SHA-256 `feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde`,
+includes the actual current and canonical builds, objects, original inputs,
+raw records and immutable own payloads. The original Actions ZIP digest is
+`23120fb2d277a29ee115bce220090e8b4af21da7128a133e79e479c0de2c9bfb`.
+The [complete job log](hybrid-hupsel-linux-ci-20261111.log.gz) retains actual
+compiler/runner identities and every command. Run the same independent auditor
+above with the Linux archive and digest. Source, generated physics, CLI and
+qualification-driver dependency paths are unchanged after the successful CI head;
+later changes package/read/audit evidence and documentation only.
+
+After verified canonical admission, the next functional delivery is an explicit
+accepted-state external-coupling contract for the consolidated route, with its
+own small transactional driver. First inspect existing qualified coupling/restart
+coverage, reuse unchanged dependencies and preserve all three native applications.
+The day584 scientific reference blockade remains a separate acceptance point;
+do not restart successful full/reference applications or expand coupling scope.

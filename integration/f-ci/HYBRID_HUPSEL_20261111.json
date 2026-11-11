@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_FULL1096_NINE_EXACT_OWN_WINDOWS_AND_SIX_O0_O2_CONTROLS_PASS_LINUX_STARTUP_BLOCKED",
+  "status": "WINDOWS_UBUNTU26_FULL1096_NINE_EXACT_OWN_WINDOWS_AND_SIX_O0_O2_CONTROLS_PASS_ADMISSION_PENDING",
   "base": "3e0dc5e08c07719a7ac2107d54d7d74f954805f1",
   "scope": "Third project context in the same explicit host; original34nodes/2002calendar, drainage and bottom6, original crop rotation/heat/solute blocks, per-worker native complete restart",
   "invariants": [
@@ -443,9 +443,8 @@
     }
   },
   "review": "research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md",
-  "linux_blocker": "research/hybrid-water01/HYBRID_HUPSEL_LINUX_BLOCKER_20261111.json",
   "windows_archive_sha256": "678be090346a13ffd3b68f2a3447a947f86e52b8854fdc46f9fef798ab8b21c1",
-  "next_delivery": "Resume Linux qualification, independently audit retained artifact, then canonical PR admission. No scientific-reference substitution.",
+  "next_delivery": "Verify canonical PR1641 postimage, then inspect existing accepted external coupling contract and select small missing driver; preserve full native/legacy evidence and scientific reference blockade.",
   "pull_request": "https://github.com/abhedwig-cell/SWAP5/pull/1641",
   "verification": {
     "independent_windows_audit": "research/hybrid-water01/hybrid-hupsel-windows-audit-20261111.json",
@@ -453,6 +452,463 @@
     "docs_source": "PASS",
     "mkdocs_strict": "PASS",
     "budget_protocol": "PASS",
-    "local_linux_fallback": "WSL not installed; docker unavailable"
+    "local_linux_fallback": "WSL not installed; docker unavailable",
+    "selection_preflight": "PASS at287de920c on CI and local; refreshed final package selection follows"
+  },
+  "actual_linux_full": {
+    "status": "FULL_ORIGINAL1096_AND_OWN_SEASONAL_RESTARTS_PASS",
+    "source_commit": "287de920c6099928ca4b1ccfee6223f3d8032a73",
+    "bundle_build_sha256": "f67af9efb4614c5beb07a43cd8cc82866bb1767c8802a75d8c2ad1e3cfaf2163",
+    "days": 1096,
+    "maximum_daily_water_residual_cm": 9.997065718650444e-11,
+    "signed_cumulative_daily_residual_cm": 2.6666888331351084e-10,
+    "day188": {
+      "column": 1,
+      "day": 188,
+      "committed": true,
+      "revision": 188,
+      "stock_end_cm": [
+        68.24627332090661,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "stock_start_cm": [
+        68.549564388259,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "external_flux_cm": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.2819351829815678,
+        0.0,
+        0.021355884370815276,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pressure_head_cm": [
+        -121.22811337784833,
+        -119.21216311414274,
+        -117.40656506931552,
+        -115.77943649261046,
+        -114.30618862136912,
+        -112.96749671713623,
+        -111.74792350348054,
+        -110.63495950371963,
+        -109.61833728035343,
+        -108.68953018541279,
+        -106.1155111670294,
+        -103.52620477890532,
+        -102.17544255756313,
+        -101.68765115341479,
+        -98.52753457939491,
+        -94.70267579236105,
+        -90.79856813175392,
+        -86.77942742120065,
+        -82.62219232162916,
+        -78.31736559030712,
+        -71.57180257267409,
+        -62.17497383553726,
+        -52.46338294871962,
+        -42.5860676412203,
+        -32.63965390144069,
+        -22.662940154734102,
+        -12.670443859645667,
+        -2.6716920147931553,
+        7.328307985206845,
+        17.328307985206845,
+        27.328307985206845,
+        37.32830798520685,
+        47.32830798520685,
+        57.32830798520685
+      ],
+      "groundwater_cm": -137.67169201479317,
+      "drainage_outward_cm": 0.0,
+      "bottom_outward_cm": 0.0,
+      "independent_residual_cm": 7.032568971609976e-15,
+      "kernel_residual_cm": -7.049916206369744e-15,
+      "solute_end_mg_cm2": 43.552045589000805,
+      "solute_start_mg_cm2": 43.552045589000805,
+      "solute_ledger_mg_cm2": [
+        43.552045589000805,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "solute_independent_residual_mg_cm2": 0.0,
+      "uptake_terms_cm": [
+        0.2819351829815678,
+        0.2819351829815678,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "budget_step_retries": 0,
+      "integrated_guard_residual_cm": -1.3062467774105357e-15
+    },
+    "restarts": [
+      {
+        "cut": 2,
+        "end": 4,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "2b86abb34ff00cab634cb303dc0a37b77719dd234a1152522ea30fe4496a49f8"
+      },
+      {
+        "cut": 4,
+        "end": 6,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "1f39342bae913163c93e1e8851b0ec2a1dfd1f08e82fe186cb6044a8a461b6ac"
+      },
+      {
+        "cut": 5,
+        "end": 7,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "c98b927813b577bac40e71e95c3cd406f4fe17f7d945debcfdeab45f3a521202"
+      },
+      {
+        "cut": 120,
+        "end": 122,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "68ab2ad7e6d3355f140f2f1befaa18fec714def60fc46ec8fdfb4d50eda5536a"
+      },
+      {
+        "cut": 365,
+        "end": 367,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "c58c4c82190cafb49cba9408850d546a7ee03e0266b53eefd7a50513ce811c8d"
+      },
+      {
+        "cut": 523,
+        "end": 526,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "4baa404059516aca6d0ac722b567a80441f1175f258bc1ad6fbc24655eb9b842"
+      },
+      {
+        "cut": 583,
+        "end": 585,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "799be29ec64fee06019e784b5d177be437a3858a8274f9503b8626a80709f016"
+      },
+      {
+        "cut": 730,
+        "end": 732,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "9c7e67c1cb047ca72cd26b83ff0c8b353fbd3f706f70e2290182f8f133987947"
+      },
+      {
+        "cut": 1061,
+        "end": 1096,
+        "exact_physical_suffix": true,
+        "exact_native_and_auxiliary_payload": true,
+        "origin_sha256": "cea68b452e16183756f15b2ece209a82be098ca0cd2128df778b6f3642cd28a6"
+      }
+    ],
+    "scope": "Original legacy heat/water trajectory controlled by SWAP5 day transactions. Not native1e-5C, complete energy or whole science.",
+    "day584": {
+      "column": 1,
+      "day": 584,
+      "committed": true,
+      "revision": 584,
+      "stock_end_cm": [
+        67.37208945511425,
+        0.0,
+        0.0,
+        1.4585652408510016e-20,
+        0.0,
+        0.0
+      ],
+      "stock_start_cm": [
+        65.90032628800421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "external_flux_cm": [
+        0.0,
+        0.0,
+        0.0,
+        1.9999999999999987,
+        0.0,
+        0.0,
+        0.0,
+        0.09429757945465221,
+        0.0,
+        0.4112794413849033,
+        0.0,
+        0.022659812050394974,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pressure_head_cm": [
+        -163.34043137101511,
+        -162.33042695438314,
+        -162.58747958336033,
+        -163.28807116330896,
+        -164.58718728023277,
+        -166.2995339642134,
+        -167.99676514089109,
+        -169.39901165542915,
+        -171.05796498405596,
+        -175.62795127543532,
+        -392.23286862585593,
+        -590.026942505723,
+        -238.84557657121977,
+        -134.3755213669271,
+        -115.92703740943473,
+        -104.41570182230284,
+        -94.74924368830065,
+        -86.39321819846536,
+        -78.96875391594193,
+        -72.21310132451433,
+        -63.03546377098006,
+        -51.751856537328095,
+        -41.124415941348886,
+        -30.84468056218481,
+        -20.73818561067927,
+        -10.708493115844364,
+        -0.7080972747251717,
+        9.291902725274827,
+        19.291902725274827,
+        29.291902725274827,
+        39.29190272527483,
+        49.29190272527483,
+        59.29190272527483,
+        69.29190272527482
+      ],
+      "groundwater_cm": -125.70809727472518,
+      "drainage_outward_cm": 0.0,
+      "bottom_outward_cm": 0.0,
+      "independent_residual_cm": 7.556440875702563e-15,
+      "kernel_residual_cm": -7.549516567451064e-15,
+      "solute_end_mg_cm2": 24.106366037351954,
+      "solute_start_mg_cm2": 24.106366037351954,
+      "solute_ledger_mg_cm2": [
+        24.106366037351954,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "solute_independent_residual_mg_cm2": 0.0,
+      "uptake_terms_cm": [
+        0.41659875675100727,
+        0.4112794413849033,
+        0.0005250728162170099,
+        0.004794242549886477,
+        0.0,
+        0.0
+      ],
+      "budget_step_retries": 0,
+      "integrated_guard_residual_cm": -1.4568898930138185e-14
+    },
+    "maximum_daily_solute_residual_mg_cm2": 2.1610435979544247e-13,
+    "signed_cumulative_daily_solute_residual_mg_cm2": -2.7733259900138115e-12,
+    "events": [
+      {
+        "case": "full-original1096",
+        "seconds": 3.256074393000006,
+        "status": "PASS"
+      },
+      {
+        "case": "own-2-to-4",
+        "seconds": 0.10390728400000171,
+        "status": "PASS"
+      },
+      {
+        "case": "own-4-to-6",
+        "seconds": 0.11178732700000182,
+        "status": "PASS"
+      },
+      {
+        "case": "own-5-to-7",
+        "seconds": 0.10315698100001214,
+        "status": "PASS"
+      },
+      {
+        "case": "own-120-to-122",
+        "seconds": 0.10361333899999181,
+        "status": "PASS"
+      },
+      {
+        "case": "own-365-to-367",
+        "seconds": 0.19072673700000564,
+        "status": "PASS"
+      },
+      {
+        "case": "own-523-to-526",
+        "seconds": 0.11213101699999584,
+        "status": "PASS"
+      },
+      {
+        "case": "own-583-to-585",
+        "seconds": 0.13133980099999576,
+        "status": "PASS"
+      },
+      {
+        "case": "own-730-to-732",
+        "seconds": 0.10658964900000001,
+        "status": "PASS"
+      },
+      {
+        "case": "own-1061-to-1096",
+        "seconds": 0.1906650720000016,
+        "status": "PASS"
+      }
+    ]
+  },
+  "linux_archive_sha256": "feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde",
+  "linux_ci": {
+    "run": 43098736948,
+    "job": 130784487221,
+    "head": "287de920c6099928ca4b1ccfee6223f3d8032a73",
+    "conclusion": "success",
+    "runner": "Ubuntu26.04.1 image20261101.186.1",
+    "compiler": "GNU15.2.0",
+    "artifact": 13891435473,
+    "artifact_sha256": "23120fb2d277a29ee115bce220090e8b4af21da7128a133e79e479c0de2c9bfb"
+  },
+  "linux_blocker_history": "research/hybrid-water01/HYBRID_HUPSEL_LINUX_BLOCKER_20261111.json",
+  "independent_audits": {
+    "windows": {
+      "status": "INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS",
+      "platform": "windows",
+      "retained_files": 3642,
+      "source_build_input_identity_checks": 601,
+      "cases": {
+        "hupsel-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.4585554986012994e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "hupsel-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.4585554986012994e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.965353207744765e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.965353207744765e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "repeated_publication": "BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS",
+        "hupsel_full": {
+          "days": 1096,
+          "nine_exact_own_windows": true,
+          "maximum_daily_uptake_closure_cm": 7.584536297622346e-16,
+          "maximum_daily_water_residual_cm": 9.996691511691622e-11,
+          "maximum_daily_solute_residual_mg_cm2": 2.0189359137172196e-13
+        }
+      }
+    },
+    "linux": {
+      "status": "INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS",
+      "platform": "linux",
+      "retained_files": 4536,
+      "source_build_input_identity_checks": 601,
+      "cases": {
+        "hupsel-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7729307605351963e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "hupsel-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.7729307605351963e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "grass-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O0": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.96535181195129e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "andelst-O2": {
+          "days": 4,
+          "maximum_water_residual_cm": 5.96535181195129e-07,
+          "exact_own_physical_suffix": true,
+          "distinct_instance_and_refusal": true
+        },
+        "repeated_publication": "BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS",
+        "hupsel_full": {
+          "days": 1096,
+          "nine_exact_own_windows": true,
+          "maximum_daily_uptake_closure_cm": 1.0788895818403255e-15,
+          "maximum_daily_water_residual_cm": 9.997065718650444e-11,
+          "maximum_daily_solute_residual_mg_cm2": 2.1610435979544247e-13
+        }
+      }
+    }
   }
 }
