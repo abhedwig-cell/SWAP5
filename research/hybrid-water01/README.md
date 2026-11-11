@@ -2,6 +2,21 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Active original sixteen-step full release, 11 November 2026
+
+Own branch codex/grass-sixteen-full at36b9e57b4 has persisted the selection and
+frozen release before launch. Source canonical7ef987beb098e9e36c4901adfa865d71ebcd8165.
+One full1827 request is ACTIVE in local temp s5-grass-sixteen-full-20261111;
+release s5-grass-sixteen-release-20261111, executable SHA256
+c9647b7643f63555ff61404a356f85b551e71852e7debfa0a28e9ba4f69fdb15.
+Budget estimate2700seconds, hard cap5400seconds. Read RESULT/PROGRESS and
+existing process before any launch; NEVER duplicate this run. Native process
+handle timing observer is active. Four own cut windows and unchanged balance
+assertions are specified in integration/f-ci/GRASS_SUBSTEP16_FULL_20261111.json.
+Continue through completion/audit/restarts/raw retention and published PR.
+Do not stop at this active-run recovery note. No new production source changes.
+
+
 ### Production sixteen-step option admitted with measured short gain, 11 November 2026
 
 PR1636 is merged at7ef987beb098e9e36c4901adfa865d71ebcd8165.
