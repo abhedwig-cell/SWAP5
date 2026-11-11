@@ -20,5 +20,13 @@
   "caps": {
     "native_cohort_seconds": 240
   },
-  "next": "Execute smallest real O2 source probe, then current O0/O2 Cauchy/own/datum/lineage guards, original-forcing preservation and Linux owning tests; publish qualified PR and verify canonical."
+  "next": "Execute smallest real O2 source probe, then current O0/O2 Cauchy/own/datum/lineage guards, original-forcing preservation and Linux owning tests; publish qualified PR and verify canonical.",
+  "initial_probe_failure": {
+    "source": "174fe9a5b2c19c8976a019b038dba02742643bb5",
+    "seconds": 8.4189376,
+    "stage": "Original TTUTIL input parser before HYBRID_READY",
+    "diagnosis": "General .17g formatting produced real followed by integer lexical -71; TTUTIL rejects inconsistent column type. Preserve double round-trip real lexical form with repr(float).",
+    "accepted_state_advanced": false,
+    "failed_evidence": "Retained local s5-cauchy-probe-windows-20261112 RESULT.json and original swap.err/log; no tolerance change"
+  }
 }

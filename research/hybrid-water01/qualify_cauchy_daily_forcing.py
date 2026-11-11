@@ -112,11 +112,30 @@ try:
         sf=shifted.cauchy_forcing(head(cut),head(cut+1)+.001,'caller-shifted-one-day-endpoint')
         sp=shifted.prepare(cauchy=sf)
         assert physical(sp.budget)!=physical(first_raw),'Cauchy forcing did not reach original physics'
+        manual=out/'manual-original-case'
+        import shutil
+        shutil.copytree(shifted.case,manual)
+        bbc=manual/'swap.bbc';text=bbc.read_text(encoding='cp1252')
+        end_date=date(1998,1,1)+timedelta(days=cut+1)
+        text,count=re.subn(rf'(?m)^([ \t]*{end_date}[ \t]+)([-+0-9.]+)',
+                           lambda m:m[1]+repr(float(m[2])+.001),text)
+        assert count==1;bbc.write_text(text,encoding='cp1252')
+        direct=out/'manual-control';direct.mkdir();unpacked=direct/'origin'
+        receipt=h.verify_checkpoint(compatible,cut,meta['binding'],unpacked)
+        with contextlib.ExitStack() as stack:
+            host=h.DailyHost(stack,h.executable(bundle,'day_donor'),h.executable(bundle,'day_kernel'),manual,direct,
+                [h.ColumnStart(day=cut,origin=unpacked,receipt=receipt,name='original')],runtime=True,
+                checkpoint_enabled=True,binding={**meta['binding'],'manual_cauchy_control':h.sha(bbc)},project=h.ANDELST)
+            expected=host.step(1,checkpoint=True);host.close()
+        assert physical(expected)==physical(sp.budget)
+        assert payload(direct/f'accepted-column-1-day-{cut+1}.zip')==payload(shifted._candidate[3])
+        (direct/'daily.jsonl').write_text(json.dumps(expected)+'\n')
         shifted.accept(sp)
         assert h.sha(origin)==initial_hash
         (out/'BUILD.json').write_text(json.dumps(meta,indent=2)+'\n')
         result={'optimization':opt,'cut':cut,'end':cut+2,'original_origin_sha256':initial_hash,
             'compatible_origin_sha256':h.sha(compatible),'exact_original_control':True,'exact_retry_and_recovery':True,
+            'exact_independently_edited_original_head_control':True,
             'invalid_pretrial_cases':8,'actual_head_perturbation_cm':.001,'unshifted_bottom_cm':first_raw['bottom_outward_cm'],
             'shifted_bottom_cm':sp.budget['bottom_outward_cm'],'external_terminal_sha256':h.sha(accepted2)}
         report['cases'].append(result);print(json.dumps(result),flush=True)

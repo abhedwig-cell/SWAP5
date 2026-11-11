@@ -55,7 +55,9 @@ def write_cauchy_case(case, target, forcing, project):
     # The unchanged DailyHost extends the original 1998 terminal point at a
     # year restart. Supply its expected padding, then the real one-day endpoint.
     table_start=date(1998,12,31) if forcing.origin_day>=365 else first
-    rows=f' {table_start} {forcing.head_start_cm:.17g}\n {last} {forcing.head_end_cm:.17g}\n'
+    # TTUTIL infers numeric column type; integral endpoints must still be real.
+    # repr(float) round-trips caller doubles without an integer lexical endpoint.
+    rows=f' {table_start} {float(forcing.head_start_cm)!r}\n {last} {float(forcing.head_end_cm)!r}\n'
     number=r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?'
     pattern=rf'(?m)^([ \t]*DATE3[ \t]+HAQUIF[ \t]*\r?\n)(?:[ \t]*\d{{4}}-\d{{2}}-\d{{2}}[ \t]+{number}[ \t]*\r?\n)+'
     source,count=re.subn(pattern,lambda m:m[1]+rows,source)
