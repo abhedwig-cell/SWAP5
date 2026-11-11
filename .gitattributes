@@ -3,3 +3,9 @@ tests/modularity/oracles/fvq38_dramet2_scientific.py text eol=lf
 # The diagnostic adapter verifies the current build recipe's exact bytes.
 tools/solute/build_grass_startup.py text eol=lf
 tools/solute/build_grass_diagnostic.py text eol=lf
+# Preserve the exact published receipt bytes and verifier identity of this capsule.
+research/hybrid-water01/grass-substep4-full-receipt.json text eol=lf
+research/hybrid-water01/grass-substep4-full-manifest.json text eol=lf
+integration/f-ci/GRASS_SUBSTEP4_FULL_20261111.json text eol=lf
+research/hybrid-water01/qualify_grass_substep4_full.py text eol=lf
+research/hybrid-water01/pack_grass_substep4_full.py text eol=lf

@@ -120,7 +120,7 @@ def main():
         scope='One complete original-input1827-day production O2 trajectory and four own process cuts. '
               'Original failed B0/day188 comparison remains visible. Conductive heat is not complete surface energy. '
               'Whole scientific equivalence and portable/full-project runtime parity are not granted.')
-    a.output.write_text(json.dumps(result, indent=2)+'\n')
+    a.output.write_text(json.dumps(result, indent=2)+'\n', newline='\n')
     print(json.dumps({k:result[k] for k in ['status','elapsed_seconds','full_audit']}))
 
 

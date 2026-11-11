@@ -1,5 +1,5 @@
 {
-  "status": "FULL_EXECUTION_PASS_OWN_RESTARTS_NEXT",
+  "status": "FULL_ORIGINAL_GRASS_SUBSTEP4_AND_OWN_RESTARTS_PASS",
   "canonical_source": "c3c99cb6c70edfd652d904306daa63d03a283939",
   "model": "Original113-node Grassgrowth,1827 days",
   "numerical_profile": "thermal-subcycle4-1e-5C",
@@ -554,5 +554,32 @@
       1792.0
     ]
   },
-  "restart_folder": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-restarts-20261111"
+  "restart_folder": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-restarts-20261111",
+  "qualification": {
+    "receipt": "research/hybrid-water01/grass-substep4-full-receipt.json",
+    "receipt_sha256": "79302cd9da4fe92be5641c2ddfc9b6b1199911956ca2cfec41e6d8d2ca2a6bb6",
+    "full_and_all_four_own_restarts": "PASS",
+    "all_daily_and_cumulative_water_and_uptake_assertions": "PASS_UNCHANGED_LIMITS",
+    "conductive_daily_and_substep_assertions": "PASS_UNCHANGED_LIMITS",
+    "implementation_O0_O2_and_focused_FCI": "Inherited only for unchanged exact PR1632 dependency postimage; not new full O0/Linux execution",
+    "whole_science": "OPEN: original B0/day188 mismatch retained; Hupsel day584 reference barrier unchanged",
+    "full_runtime_parity": "NOT_ESTABLISHED",
+    "raw_manifest": "research/hybrid-water01/grass-substep4-full-manifest.json"
+  },
+  "next_delivery": {
+    "goal": "Bounded native cost attribution over an existing own short wet-event restart, then an output-preserving optimization only if a concrete cost cause is established",
+    "window": [
+      187,
+      190
+    ],
+    "observed_uninstrumented_seconds": 10.69410050008446,
+    "target_probe_seconds": 60,
+    "hard_cap_seconds": 120,
+    "constraints": "Use original source/build/state identities and unchanged assertions; no foreign-executable checkpoint rebinding. Prefer read-only native sampling. No repeat full trajectory or broad campaign without a newly identified necessity."
+  },
+  "documentation_validation": {
+    "source_checks": "PASS",
+    "strict_mkdocs": "PASS after correcting the research link to its canonical GitHub URL; final build19.94seconds",
+    "source_impact": "No src/app/tools/tests/reference change; exact JSON/verifier LF attributes affect only this evidence package"
+  }
 }
