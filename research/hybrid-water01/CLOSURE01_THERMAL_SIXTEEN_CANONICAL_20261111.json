@@ -1,0 +1,183 @@
+{
+  "status": "CANONICAL_PRIVATE_SIXTEEN_DISCRIMINATOR_VERIFIED",
+  "pr": 1635,
+  "merge": "3e7c838ba1c98ed8d59d4fe33c750c666ce3d357",
+  "head": "566ac638b6447336621b54996bf304adaee0fb28",
+  "tree": "83a155266ecede445140a6f53e30d4b5da55b513",
+  "whole_tree_equals_qualified_head": true,
+  "production_dependencies_unchanged": true,
+  "archive_sha256": "ea85b5b160bb7d814de91bac01c1e8dee8c7d31f0082aa34e5b8cd5b051855a0",
+  "production16_admission": false,
+  "application_speedup": "NOT_MEASURED",
+  "results": {
+    "O0": {
+      "cases": [
+        {
+          "top": 2,
+          "bottom": 1,
+          "error4": 0.1825894584542329,
+          "error16": 0.05060239864184801,
+          "ratio": 0.2771375690044658
+        },
+        {
+          "top": 2,
+          "bottom": 2,
+          "error4": 0.01773398998106046,
+          "error16": 0.0024301645139246375,
+          "ratio": 0.1370342780457192
+        },
+        {
+          "top": 3,
+          "bottom": 1,
+          "error4": 0.018497863925908575,
+          "error16": 0.0019413566163244411,
+          "ratio": 0.10495031340377242
+        },
+        {
+          "top": 3,
+          "bottom": 2,
+          "error4": 0.10346581896366835,
+          "error16": 0.02755707056346779,
+          "ratio": 0.26633984865228155
+        },
+        {
+          "top": 4,
+          "bottom": 1,
+          "error4": 0.17315343088627344,
+          "error16": 0.0442698738281706,
+          "ratio": 0.2556684762269995
+        },
+        {
+          "top": 4,
+          "bottom": 2,
+          "error4": 0.014746927009525734,
+          "error16": 0.0013980232273791415,
+          "ratio": 0.09480098643440037
+        }
+      ],
+      "kernel_cpu_seconds_per_call": {
+        "four": 3.067484662576687e-06,
+        "sixteen": 9.803921568627451e-06,
+        "ratio": 3.196078431372549
+      },
+      "cost_samples": [
+        {
+          "count": 4,
+          "calls": 163000,
+          "cpu_seconds": 0.5,
+          "seconds_per_call": 3.067484662576687e-06
+        },
+        {
+          "count": 16,
+          "calls": 51000,
+          "cpu_seconds": 0.5,
+          "seconds_per_call": 9.803921568627451e-06
+        }
+      ],
+      "unchanged_budget_dt": {
+        "four": 7.28859334049048e-05,
+        "sixteen": 0.0001461049266799819,
+        "ratio": 2.0045696042379264,
+        "error4": 9.999999999621423e-06,
+        "error16": 9.999999967647e-06
+      },
+      "executable_sha256": "c392b3e4c841576b6cd1cc6a94ac1b259c2fef9b755a65a936cb800894ba047a"
+    },
+    "O2": {
+      "cases": [
+        {
+          "top": 2,
+          "bottom": 1,
+          "error4": 0.1825894584542329,
+          "error16": 0.05060239864184801,
+          "ratio": 0.2771375690044658
+        },
+        {
+          "top": 2,
+          "bottom": 2,
+          "error4": 0.01773398998106046,
+          "error16": 0.0024301645139246375,
+          "ratio": 0.1370342780457192
+        },
+        {
+          "top": 3,
+          "bottom": 1,
+          "error4": 0.018497863925908575,
+          "error16": 0.0019413566163244411,
+          "ratio": 0.10495031340377242
+        },
+        {
+          "top": 3,
+          "bottom": 2,
+          "error4": 0.10346581896366835,
+          "error16": 0.02755707056346779,
+          "ratio": 0.26633984865228155
+        },
+        {
+          "top": 4,
+          "bottom": 1,
+          "error4": 0.17315343088627344,
+          "error16": 0.0442698738281706,
+          "ratio": 0.2556684762269995
+        },
+        {
+          "top": 4,
+          "bottom": 2,
+          "error4": 0.014746927009525734,
+          "error16": 0.0013980232273791415,
+          "ratio": 0.09480098643440037
+        }
+      ],
+      "kernel_cpu_seconds_per_call": {
+        "four": 1.2531328320802005e-06,
+        "sixteen": 4.132231404958678e-06,
+        "ratio": 3.297520661157025
+      },
+      "cost_samples": [
+        {
+          "count": 4,
+          "calls": 399000,
+          "cpu_seconds": 0.5,
+          "seconds_per_call": 1.2531328320802005e-06
+        },
+        {
+          "count": 16,
+          "calls": 121000,
+          "cpu_seconds": 0.5,
+          "seconds_per_call": 4.132231404958678e-06
+        }
+      ],
+      "unchanged_budget_dt": {
+        "four": 7.28859334049048e-05,
+        "sixteen": 0.0001461049266799819,
+        "ratio": 2.0045696042379264,
+        "error4": 9.999999999621423e-06,
+        "error16": 9.999999967647e-06
+      },
+      "executable_sha256": "e15eef372d6f8b39978abbe93ebe22f27e0dd0822ce9af602e4302661ffccf95"
+    }
+  },
+  "costs": {
+    "initial": {
+      "compile": 7.355042300419882,
+      "link": 0.5432717001531273,
+      "native": 1.2014111999887973
+    },
+    "precision": {
+      "compile": 5.998528400203213,
+      "link": 0.27940809982828796,
+      "native": 2.366124799940735
+    }
+  },
+  "verification": {
+    "independent_archive_audit": "PASS160 member hashes, raw source/object/executable/marker identities and actualO0/O2 numerical equality",
+    "documentation_source_checks": "PASS",
+    "strict_mkdocs": "PASS32.21seconds",
+    "production_dependencies": "UNCHANGED src/app/tools/tests/reference",
+    "whole_application_and_science": "NOT_QUALIFIED_BY_THIS_PRIVATE_CONTRACT_PROBE"
+  },
+  "decision": "Positive bounded discriminator: same1e-5C budget admits about2.00457x interval in one fixed two-cell boundary case, versus3.30x O2 per-trial heat cost. No application speedup demonstrated. Proceed to explicit opt-in16 policy/native short-window preservation and measured benefit; do not change defaults or select full trajectories yet.",
+  "next_delivery": "Implement explicit16 count using existing numerical policy/binding/restart contract; preserve original one/four defaults and old four physical bytes. Qualify cold O0/O2 owner/state/refusal tests and bounded native short-window timing/own restarts before admission. Select no full new trajectory unless the composed source and a material short-window gain are verified.",
+  "processes": "NONE: both bounded cold chains and native drivers completed naturally",
+  "scope": "Private generated16 body only; production1/4 and all original project/scientific evidence unchanged. This recovery branch is not a current compilation source."
+}

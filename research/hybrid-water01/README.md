@@ -2,6 +2,45 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Positive cold sixteen-step discriminator delivered, 11 November 2026
+
+PR1635 is merged at3e7c838ba1c98ed8d59d4fe33c750c666ce3d357.
+Actual whole tree83a155266ecede445140a6f53e30d4b5da55b513 equals qualified
+head566ac638b6447336621b54996bf304adaee0fb28 and predicted merge. Canonical
+raw archive bytes match independently checked bytes. Recovery receipt:
+CLOSURE01_THERMAL_SIXTEEN_CANONICAL_20261111.json. No model/compiler/driver
+process is live. Do not rerun this completed discriminator.
+
+The existing explicit two-cell six-boundary/state/refusal driver runs against
+one generated private16 heat body. Both full contract chains compile cold O0
+and O2; sixteen original implicit solves, face/state agreement, unchanged
+per-cell/global energy, A/B/A, committed-state and stale-receipt refusal pass.
+No src/app/tools/tests/reference file changed. Production allows1/4 only;
+16 is NOT admitted as a public configuration or application profile.
+
+All six numerical results match O0/O2 exactly. One fixed temperature/flux-top,
+zero-bottom case admits7.28859334049e-5day at4 and1.4610492668e-4day at16
+under the unchanged1e-5C full/half gate: ratio2.00457. O2 kernel CPU cost is
+1.25313 versus4.13223microseconds/call (3.29752x); O0 ratio3.19608. Each
+final timing arm accumulates at least0.5CPU seconds. The initial coarse20k-call
+timings are retained but superseded due clock quantization; numerical checks
+passed in both. Total native checks3.568seconds; cold compile/link14.176seconds.
+No application speedup, global step-size proof, whole science or additional
+project coverage is claimed. Source/strict docs and160-member raw audit pass.
+Archive SHA256 ea85b5b160bb7d814de91bac01c1e8dee8c7d31f0082aa34e5b8cd5b051855a0.
+
+Next delivery: implement explicit opt-in16 through the EXISTING numerical
+configuration, backend setter/query/activation lock, application profile and
+immutable policy binding. Keep default1 and admitted4 physical behavior exact.
+Qualify actual cold O0/O2 owner/state/refusal and bounded original native
+short-window timing/own-process restarts. Use a fresh original-initialization
+16 run and its own checkpoint; NEVER rebind the existing4 disk stream.
+Do not select a full new trajectory until composed implementation and material
+short-window gain are verified. Reuse the cold driver/proof and cached verified
+build closure. Build from latest verified canonical in a separate codex branch,
+not the old source on this recovery branch. Existing day188/day584 failures,
+whole energy/science/runtime-parity limits and recovery planning remain open.
+
 ### Current native wet-window cost attributed, 11 November 2026
 
 PR1634 is merged at059728c6176ba9e0fe5005e1c1fb5e58ff8f89fb.
