@@ -166,13 +166,13 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
 """
     if solute_state:
         if not nonmacro:raise ValueError('Solute auxiliary requires nonmacro mode')
-        codec=codec.replace('S5NON004','S5HUP005')
+        codec=codec.replace('S5NON004','S5HUP006')
         codec=replace(codec,"      use MOD_swap_base, only: swmacro",
                       "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint")
         codec=replace(codec,"        read(unit,iostat=ios) trailing",
                       "        call hybrid_solute_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
-        codec=replace(codec,"        write(unit) 'S5HUP005',numnod,clock,old_step,canopy_stock",
-                      "        write(unit) 'S5HUP005',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)")
+        codec=replace(codec,"        write(unit) 'S5HUP006',numnod,clock,old_step,canopy_stock",
+                      "        write(unit) 'S5HUP006',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
@@ -238,8 +238,15 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                           "if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint")
     if solute_state:
         restore="   if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint(.true., t1900, dtold, checkpoint_canopy)"
+        swap=replace(swap, "use MOD_irrigation,      only: irrigation, flirrigate",
+                     "use MOD_irrigation,      only: irrigation, flirrigate, dayfix")
+        swap=replace(swap,"real(8), save :: checkpoint_canopy = -1d0",
+                     "real(8), save :: checkpoint_canopy = -1d0\ninteger,save :: checkpoint_dayfix=-1\nlogical,save :: checkpoint_irrigate=.false.")
+        swap=replace(swap,"         if (checkpoint_canopy >= 0d0) then",
+                     "         if (checkpoint_dayfix>=0)then\n            dayfix=checkpoint_dayfix\n            flirrigate=checkpoint_irrigate\n            checkpoint_dayfix=-1\n         end if\n         if (checkpoint_canopy >= 0d0) then")
         swap=replace(swap,restore,"")
-        swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore)
+        swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore+
+                     "\n   if(fl_initialize)then\n      checkpoint_dayfix=dayfix\n      checkpoint_irrigate=flirrigate\n   end if")
     (output / "swap.f90").write_text(swap, encoding="cp1252")
     if runtime or checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")

@@ -304,18 +304,22 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source=replace(source,"end submodule MOD_Solute_CDE","""module subroutine hybrid_solute_checkpoint(unit,restoring)
    use ieee_arithmetic,only:ieee_is_finite
    use MOD_grid,only:dz
+   use MOD_irrigation,only:dayfix,flirrigate
    integer,intent(in)::unit
    logical,intent(in)::restoring
-   integer::ios
+   integer::ios,irrigation_flag
    if(restoring)then
-      read(unit,iostat=ios) cmsy(1:numnod),csurf,sampro
+      read(unit,iostat=ios) cmsy(1:numnod),csurf,sampro,dayfix,irrigation_flag
       if(ios/=0)error stop 'Incomplete Hupsel conserved solute state'
+      if(dayfix<0.or.dayfix>366.or.irrigation_flag<0.or.irrigation_flag>1) error stop 'Invalid Hupsel irrigation state'
+      flirrigate=irrigation_flag==1
       if(.not.all(ieee_is_finite(cmsy(1:numnod))).or..not.all(ieee_is_finite([csurf,sampro]))) &
          error stop 'Nonfinite Hupsel conserved solute state'
       if(any(cmsy(1:numnod)<0d0).or.csurf<0d0.or.sampro<0d0)error stop 'Negative Hupsel solute state'
       if(abs(sum(cmsy(1:numnod)*dz(1:numnod))+csurf-sampro)>1d-10)error stop 'Unbalanced Hupsel solute state'
    else
-      write(unit) cmsy(1:numnod),csurf,sampro
+      irrigation_flag=merge(1,0,flirrigate)
+      write(unit) cmsy(1:numnod),csurf,sampro,dayfix,irrigation_flag
    end if
 end subroutine hybrid_solute_checkpoint
 end submodule MOD_Solute_CDE""")
