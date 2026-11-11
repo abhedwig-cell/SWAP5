@@ -464,7 +464,12 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
     shutil.copytree(case, directory)
     if checkpoint_enabled:
         control = directory / "swap.swp"
-        source = control.read_text(encoding="cp1252") + "\nSWENDTYPE = 2\n"
+        source = control.read_text(encoding="cp1252")
+        source, count = re.subn(r"(?m)^([ \t]*SWENDTYPE[ \t]*=[ \t]*)[12]", r"\g<1>2", source)
+        if count > 1:
+            raise ValueError("Duplicate restart output setting")
+        if count == 0:
+            source += "\nSWENDTYPE = 2\n"
         if start.origin is not None:
             start_date = date.fromisoformat(project.start_date) + timedelta(days=start.day)
             source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
