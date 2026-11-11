@@ -76,6 +76,15 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
                 assert warm==(root/index['canonical']/'resumed/original'/name).read_bytes()
         if label.startswith('andelst'):assert continuous==baseline
         directory=case['report']
+        if label.startswith('hupsel'):
+            gift=rows(directory+'/gift-seven');own=rows(directory+'/gift-own')
+            assert [r['day'] for r in gift]==list(range(1,8))
+            assert list(map(physical,own))==list(map(physical,gift[5:7]))
+            for name in ['result.end','macro.bin']:
+                assert (root/directory/'gift-terminal/original'/name).read_bytes()==(root/directory/'gift-own/original'/name).read_bytes()
+            for refused in ['solute-mass','solute-nonfinite','uptake-shape']:
+                assert 'DAILY_ACCEPTED' not in (root/directory/refused/'kernel.stdout').read_text()
+                assert not list((root/directory/refused).glob('accepted-*.zip'))
         mixed=rows(directory+'/mixed');plain=rows(directory+'/plain');shifted=rows(directory+'/shifted')
         for col,control in [(1,plain),(2,shifted)]:
             assert [physical(r) for r in mixed if r['column']==col]==list(map(physical,control))
@@ -166,6 +175,12 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
         if index.get('hupsel_public_late'):
             d=index['hupsel_public_late'];assert list(map(physical,rows(d)))==list(map(physical,full[583:585]))
             with zipfile.ZipFile(root/d/'accepted-column-1-day-585.zip') as p, zipfile.ZipFile(root/directory/'full/accepted-column-1-day-585.zip') as c:
+                for name in ['result.end','macro.bin']:assert p.read(name)==c.read(name)
+        if index['platform']=='linux':
+            cold=rows('generic-hupsel-public');warm=rows('generic-hupsel-public-resume')
+            assert list(map(physical,cold))==list(map(physical,full[:7]))
+            assert list(map(physical,warm))==list(map(physical,full[5:7]))
+            with zipfile.ZipFile(root/'generic-hupsel-public-resume/accepted-column-1-day-7.zip') as p, zipfile.ZipFile(root/directory/'full/accepted-column-1-day-7.zip') as c:
                 for name in ['result.end','macro.bin']:assert p.read(name)==c.read(name)
         summary['hupsel_full']={'days':1096,'nine_exact_own_windows':True,'maximum_daily_uptake_closure_cm':max(abs(math.fsum([r['uptake_terms_cm'][0],*(-v for v in r['uptake_terms_cm'][1:])])) for r in full),'maximum_daily_water_residual_cm':max(abs(r['independent_residual_cm']) for r in full),'maximum_daily_solute_residual_mg_cm2':max(abs(r['solute_independent_residual_mg_cm2']) for r in full)}
     print(json.dumps({'status':'INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS',
