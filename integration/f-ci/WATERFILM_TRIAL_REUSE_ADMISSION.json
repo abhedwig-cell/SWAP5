@@ -1,0 +1,30 @@
+{
+  "workstream": "SWAP5-FUNCTIONAL-CLOSURE01 / RT-TX / oxygen",
+  "status": "CURRENT_CI_RECONCILIATION_PENDING",
+  "canonical_base": "c49b8751a3663e5082ceb5a468223d121106c77a",
+  "tested_cache_postimage": "f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e",
+  "scope": "One trial-local bit-exact waterfilm profile cache. Independent instances own their caches and each FMR trial resets reuse state.",
+  "test_selection": {
+    "candidate": "56f514002b41f1e9393e181d50df032001b1f85c",
+    "groups": {
+      "waterfilm_admission": {
+        "changed_dependency": "Exact-source CI selection now recognizes the tested cache production and fixture tree on the admitted AHL base. Production, application, tools, tests and reference are unchanged from f0e5d9e1d.",
+        "scientific_claim": "The existing live O0/O2 oxygen, current original-input Grassgrowth, own-build restart and Andelst codec contracts still execute on the current cache source; frozen predecessor evidence retains its own identity.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 functional RT-TX/oxygen integration",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 900,
+        "existing_evidence": "PR 1628 includes O0/O2 bit-exact oxygen assembly, five physical output files over four days, fresh day-2-to-4 restart and distinct-head (-75/-125 cm) A/B/A/B interleaving with the existing 1e-12 cm mass assertion. Exact f0e5d9e1d isolation workflow 42862499929 passes. The former F-CI run 42862468691 rejects the source before current application admission. Reconciled F-CI and Grassgrowth workflows remain pending.",
+        "prior_execution": "FAILED",
+        "diagnosis": "The former automatic route falls through the exact AHL source predicate because the cache intentionally changes production and fixtures. The existing successor verifier then rejects application source identity. Add a second exact-source predicate while retaining all live numerical and native application commands."
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for the bounded cache and route reconciliation; no omnibus PASS",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "performance_scope": "Existing short production-profile four-day observation is approximately 15.27% lower median wall time with five physical files exact. Comparable full-project runtime remains open.",
+  "open_conditions": [
+    "Current reconciled F-CI and Grassgrowth workflows must complete",
+    "No new full-period cached model execution is claimed",
+    "Whole scientific equivalence and complete energy remain open"
+  ]
+}
