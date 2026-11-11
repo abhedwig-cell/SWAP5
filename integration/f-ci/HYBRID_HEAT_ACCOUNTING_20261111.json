@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_SIX_ORIGINAL_OBSERVER_PRESERVATION_AND_ACCEPTED_RECEIPT_GUARDS_PASS_LINUX_SELECTED",
+  "status": "WINDOWS_UBUNTU26_SIX_EXACT_ORIGINAL_STATE_HEAT_OBSERVER_CASES_PASS_RAW_AUDIT_PENDING",
   "base": "f5606e455cf1e558d23e3a0af5b7d8847fbdc954",
   "owned_surface": [
     "app/hybrid_water/heat_accounting.f90",
@@ -23,7 +23,7 @@
     "Conduction and full energy accepted scopes distinct"
   ],
   "test_selection": {
-    "candidate": "2767ad6f7cfcc8c79a408546f72b55b8d535598c",
+    "candidate": "6585e5ffe83104d6d984b700ed3c545dec205ef6",
     "groups": {
       "hybrid_heat_accounting": {
         "changed_dependency": "Read-only original temperature observer relink and existing production whole-column storage bridge; other inherited objects and process code unchanged",
@@ -65,5 +65,14 @@
     "remaining_receipts": "s5-heat-remaining-windows-20261111/HEAT_RECEIPTS.json",
     "all_original_physical_and_both_native_payloads": "EXACT",
     "zero_missing_energy_counterfactual": "FAIL in all6; production actual missing-boundary status3 retained"
-  }
+  },
+  "linux_ci": {
+    "run": 43109370745,
+    "job": 130821031484,
+    "head": "b7ca516f60caa448109a0f72980d9948de1f25e9",
+    "conclusion": "success",
+    "artifact": 13895885852,
+    "artifact_sha256": "09d8ad83700ac6e67596276b3b04cb456f2e543f878a42d3a3ff45ace6fd3bd5"
+  },
+  "conclusion": "Original numerical conduction closes under existing1e-9J/cm2. All actual storage-owner calls retain incomplete-boundary status3, zero-mass-carried-energy counterfactual FAILS. This is a model-formulation/accounting-coverage limitation, not a demonstrated migration defect or a reason to alter original temperatures/tolerances."
 }
