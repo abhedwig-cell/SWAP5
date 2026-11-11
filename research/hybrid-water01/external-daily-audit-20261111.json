@@ -1,0 +1,30 @@
+{
+  "status": "BOTH_INDEPENDENT_CAPSULE_AUDITS_PASS",
+  "auditor_sha256": "423340e176c1c15e50f6f351caee81441f9d32de8dfefedc0e5655bf81ae0ecf",
+  "results": {
+    "windows": {
+      "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+      "platform": "windows",
+      "raw_files": 2400,
+      "current_cases": 6,
+      "current_and_previous_cases": 12,
+      "C_compiles_before": 66,
+      "C_compiles_after": 24,
+      "seconds_before": 90.95980149996467,
+      "seconds_after": 54.06756090023555,
+      "publisher_reuse_native_payloads_exact": true
+    },
+    "linux": {
+      "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+      "platform": "linux",
+      "raw_files": 2400,
+      "current_cases": 6,
+      "current_and_previous_cases": 12,
+      "C_compiles_before": 66,
+      "C_compiles_after": 24,
+      "seconds_before": 24.47993776499999,
+      "seconds_after": 15.079757328999904,
+      "publisher_reuse_native_payloads_exact": true
+    }
+  }
+}

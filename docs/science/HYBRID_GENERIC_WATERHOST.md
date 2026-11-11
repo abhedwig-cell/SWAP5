@@ -119,3 +119,15 @@ profile, not native thermal or whole scientific qualification. The frozen day584
 comparison remains failed. See the [source-bound review and raw evidence](https://github.com/abhedwig-cell/SWAP5/blob/codex/hybrid-hupsel-full/research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md).
 The historical bounded prototype above retains its original scope; the previously
 admitted Grass full1827 successor is recorded in its own review.
+
+
+## Proposed external daily acceptance adapter
+
+The separate `codex/hybrid-daily-coupling` successor adds external prepare, discard
+and accept over the unchanged three-project host and durable native/auxiliary
+restart. Original forcing and existing groundwater semantic contracts remain fixed.
+Real O0/O2 model proposals on Windows/Ubuntu26 cover exact accepted-origin retry,
+external disk recovery, isolated/stale decisions and ambiguous publication failure.
+This is serial external publication control; peer-model feedback and complete
+coupled project qualification remain separate. See the [contract, measured costs
+and raw proof](https://github.com/abhedwig-cell/SWAP5/blob/codex/hybrid-daily-coupling/research/hybrid-water01/HYBRID_DAILY_COUPLING_REVIEW.md).
