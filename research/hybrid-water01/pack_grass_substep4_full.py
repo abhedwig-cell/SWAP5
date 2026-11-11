@@ -39,6 +39,14 @@ def main():
             index[str(path.resolve())] = member
     files['spec.json'] = a.spec
     files['receipt.json'] = a.receipt
+    repo = Path(__file__).resolve().parents[2]
+    for relative in ['research/hybrid-water01/qualify_grass_substep4_full.py',
+                     'research/hybrid-water01/audit_grass_current.py',
+                     'research/hybrid-water01/pack_grass_substep4_full.py',
+                     'tests/dataqual15/run_original.py',
+                     'tests/dataqual15/restart_snapshot.py',
+                     'tests/dataqual15/checkpoint_layout.py']:
+        files['verification/'+relative] = repo/relative
     hashes = {name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in files.items()}
     assert not a.output.exists(), 'Never overwrite published evidence'
     with tarfile.open(a.output, 'x:xz', preset=3) as archive:
