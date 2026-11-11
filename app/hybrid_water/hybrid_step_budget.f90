@@ -1,6 +1,6 @@
 module hybrid_step_budget
   use MOD_grid, only: numnod, dz
-  use MOD_swap_base, only: swsnow
+  use MOD_swap_base, only: swsnow, swmacro
   use MOD_macropore, only: NumDm, ICpBtDm, WaSrMpDm, QExcMtxDmCp, QInTopLatDm, QInTopVrtDm, QOutDrRapCp
   use MOD_swap_mp, only: ICTopMP, FrArMtrx, swmbf
   use MOD_drain, only: qdrtot
@@ -16,6 +16,13 @@ contains
     real(8) :: delta_matrix, delta_macro, new_stock, rapid, external
     integer :: domain, bottom
 
+    ! Nonmacro closed-bottom Hupsel uses the same original candidate/rollback.
+    if (swmacro==0 .and. swsnow==0 .and. swbotb==6) then
+      delta_matrix=sum((theta(1:numnod)-thetm1(1:numnod))*dz(1:numnod))
+      external=dt*(nraidt+nird+runon+qssdisum+qbot-qrosum-epd-reva-qdrtot)-runots
+      residual=delta_matrix+pond-pondm1-external
+      return
+    end if
     ! This receipt uses the instantaneous-bypass and original Cauchy routes.
     ! Snow, other macro models and reconstructed bottom fluxes need their own receipt.
     if (swmbf /= 1 .or. swsnow /= 0 .or. swbotb /= 3) error stop 'Unsupported day-budget donor configuration'

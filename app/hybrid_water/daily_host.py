@@ -1,4 +1,4 @@
-"""Build and drive the original Andelst donor under SWAP5 day transactions."""
+"""Build and drive original project donors under SWAP5 day transactions."""
 
 import contextlib
 import ctypes
@@ -34,6 +34,7 @@ class HybridProject:
 
 ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6)
 GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10)
+HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10)
 CASE = ANDELST.case
 APPLICATION_MODEL = "HYBRID_ANDELST_WATER"
 START_CLOCK = 35795
@@ -76,10 +77,11 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
-    if project not in (ANDELST,GRASSGROWTH):
+    if project not in (ANDELST,GRASSGROWTH,HUPSEL):
         raise ValueError("Unregistered original hybrid project")
-    if project==GRASSGROWTH and any((trace_richards,budget_retry,shared_pond_transfer,refresh_macro_final)):
-        raise ValueError("Macro/Cauchy corrections are not a Grassgrowth water receipt")
+    if ((project!=ANDELST and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
+            or (project==GRASSGROWTH and budget_retry)):
+        raise ValueError("Macro/Cauchy corrections require the Andelst project")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
     case = distribution / "cases" / project.case
@@ -94,13 +96,15 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     donor_build = reference / "build"
     objects = donor_build / "swap-obj"
     ttutil = donor_build / "ttutil-obj"
-    render_day_return(donor_build / "swap-selected", output, nonmacro=project==GRASSGROWTH)
+    render_day_return(donor_build / "swap-selected", output, nonmacro=project!=ANDELST, solute_ledger=project==HUPSEL)
     main = output / "swap_main.f90"
     source = main.read_text(encoding="cp1252")
     source = replace(source, "use Variables, only: t1900, flrunend",
                      "use iso_fortran_env, only: output_unit\n"
                      "use MOD_grid, only: numnod\n"
                      "use Variables, only: t1900, flrunend, h, gwl, qbot")
+    if project==HUPSEL:
+        source = replace(source, "use MOD_grid, only: numnod", "use MOD_solute, only: sampro\nuse MOD_grid, only: numnod")
     source = replace(source, "   do window = 1, 4", """   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
    write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900
    flush(output_unit)
@@ -113,6 +117,10 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                      """      write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
       write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900
       flush(output_unit)""")
+    if project==HUPSEL:
+        source=replace(source, "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900",
+                       "   write(*,'(a,1x,es25.17e3)') 'HYBRID_SOLUTE_READY', sampro\n"
+                       "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900")
     main.write_text(source, encoding="cp1252")
     donor_flags = ["-O2", "-cpp", "-Dlinux", "-finit-local-zero",
                    "-ffree-line-length-none", "-fallow-argument-mismatch"]
@@ -123,7 +131,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
-                          runtime=runtime_checkpoint, nonmacro=project==GRASSGROWTH)
+                          runtime=runtime_checkpoint, nonmacro=project!=ANDELST, solute_state=project==HUPSEL)
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -143,6 +151,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if runtime_checkpoint or checkpoint_day >= 365:
             patched.append("swapoutput")
 
+    if project==HUPSEL and not budget_retry:raise ValueError("Hupsel requires its unchanged strict mass guard")
     if budget_retry:
         swap = output / "swap.f90"
         source = swap.read_text(encoding="cp1252")
@@ -168,6 +177,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
                          "      write(*,'(a,1x,i0,1x,es25.17e3)') 'HYBRID_BUDGET_RETRIES', budget_retries, budget_total\n"
                          "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900")
+        if project==HUPSEL:source=replace(source,"budget_enabled = window >= 15","budget_enabled = .true.")
         main.write_text(source, encoding="cp1252")
     if trace_richards:
         clock = project.start_clock + trace_day - 1
@@ -227,6 +237,25 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                return
             end if
          end if""")
+        if project==HUPSEL:
+            source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
+            source=replace(source,"   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror",
+                           "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at")
+            source=replace(source,"   iBackTr        = 0","   mass_polish_at = 0\n   iBackTr        = 0")
+            # First finish the original Newton iteration at the required mass
+            # boundary. Halving a converged-but-inaccurate step alone repeated
+            # at dtmin without curing the observed day-one residual.
+            source=replace(source,anchor,"""      if (budget_enabled .and. .not.flnonconv) then
+         budget_step=projected_water_residual()
+         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.
+         if (.not.flnonconv .and. mass_polish_at==0) then
+            ! One more original Newton iteration avoids stopping directly on
+            ! the day guard where independently summed receipts can round out.
+            mass_polish_at=numbit
+            flnonconv=.true.
+         end if
+      end if
+"""+anchor)
         if shared_pond_transfer:
             source = replace(source, "only: projected_water_residual",
                              "only: projected_water_residual, apply_surface_lateral_limit")
@@ -245,6 +274,214 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
+    if project==HUPSEL:
+        # Original linear pond/runoff relation remains exact even when the
+        # lagged runoff estimate is below the legacy small-flux shortcut.
+        # That shortcut booked runoff without subtracting it from new pond.
+        source=(donor_build/'swap-selected/boundtop.f90').read_text(encoding='cp1252')
+        source=replace(source,"      if (dabs(runots) < 1.0d-6) then",
+                       "      if (dabs(runots) < 1.0d-6 .and. .not.(swdra/=2 .and. rsro>=1d-3 .and. &\n"
+                       "          dabs(rsroexp-1d0)<1d-6)) then")
+        source=replace(source,"else if (dabs(runots) >= 1.0d-6 .AND. swdra /= 2 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then",
+                       "else if (swdra /= 2 .AND. rsro>=1d-3 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then")
+        (output/'boundtop.f90').write_text(source,encoding='cp1252')
+        patched.append('boundtop')
+        # The transport dtmin floor must not extend beyond the accepted water
+        # interval. Its original order overshot short final fragments and
+        # created solute during the day-five saline irrigation event.
+        source=(donor_build/'swap-selected/solute.f90').read_text(encoding='cp1252')
+        end=source.index("      end subroutine solute_CDE",source.index("dtsolu  = min"))
+        source=replace(source[:end],"            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)",
+                       "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")+source[end:]
+        source=replace(source,"      module subroutine calc_AgeTracer(task)\n         integer, intent(in) :: task\n      end subroutine calc_AgeTracer","""      module subroutine hybrid_solute_checkpoint(unit,restoring)
+         integer,intent(in)::unit
+         logical,intent(in)::restoring
+      end subroutine hybrid_solute_checkpoint
+      module subroutine calc_AgeTracer(task)
+         integer, intent(in) :: task
+      end subroutine calc_AgeTracer""")
+        source=replace(source,"   public :: solute_CDE, calc_AgeTracer","   public :: solute_CDE, calc_AgeTracer, hybrid_solute_checkpoint")
+        source=replace(source,"end submodule MOD_Solute_CDE","""module subroutine hybrid_solute_checkpoint(unit,restoring)
+   use ieee_arithmetic,only:ieee_is_finite
+   use MOD_grid,only:dz
+   integer,intent(in)::unit
+   logical,intent(in)::restoring
+   integer::ios
+   if(restoring)then
+      read(unit,iostat=ios) cmsy(1:numnod),csurf,sampro
+      if(ios/=0)error stop 'Incomplete Hupsel conserved solute state'
+      if(.not.all(ieee_is_finite(cmsy(1:numnod))).or..not.all(ieee_is_finite([csurf,sampro]))) &
+         error stop 'Nonfinite Hupsel conserved solute state'
+      if(any(cmsy(1:numnod)<0d0).or.csurf<0d0.or.sampro<0d0)error stop 'Negative Hupsel solute state'
+      if(abs(sum(cmsy(1:numnod)*dz(1:numnod))+csurf-sampro)>1d-10)error stop 'Unbalanced Hupsel solute state'
+   else
+      write(unit) cmsy(1:numnod),csurf,sampro
+   end if
+end subroutine hybrid_solute_checkpoint
+end submodule MOD_Solute_CDE""")
+        (output/'solute.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'solute')
+        source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')
+        source=replace(source,"            siccaploss = siccaploss + sicact",
+                       "            siccaploss = siccaploss + sicact\n"
+                       "            sicact = 0d0\n            siccap = 0d0")
+        (output/'MOD_cropdevelopment.f90').write_text(source,encoding='cp1252')
+        source=(donor_build/'swap-selected/wofost.f90').read_text(encoding='cp1252')
+        source=replace(source,'   type (WOFOST_rates), save :: r_pot, r_act',
+                       '   type (WOFOST_rates), save :: r_pot, r_act\n'
+                       '   type (WOFOST_rates), save :: hybrid_r_pot,hybrid_r_act\n'
+                       '   logical,save::hybrid_crop_pending=.false.,hybrid_crop_was_emerged=.false.')
+        source=replace(source,'   public :: assimilation, wofost, reset_wofost_states_rates',
+                       '   public :: assimilation, wofost, reset_wofost_states_rates\n'
+                       '   public :: hybrid_wofost_checkpoint,hybrid_apply_wofost')
+        rates=source.split('   type WOFOST_rates',1)[1].split('   end type WOFOST_rates',1)[0]
+        names=re.findall(r'::\s*(\w+)',rates)
+        if len(names)!=25:raise ValueError('Changed original WOFOST rate inventory')
+        finite=', &\n         '.join('hybrid_r_'+mode+'%'+name for mode in ['pot','act'] for name in names)
+        source=replace(source,'end module MOD_wofost',f"""
+   subroutine hybrid_wofost_checkpoint(unit,restoring)
+      use plant_interface,only:fl_cropemergence
+      use ieee_arithmetic,only:ieee_is_finite
+      integer,intent(in)::unit
+      logical,intent(in)::restoring
+      integer::flag,ios
+      if(restoring)then
+         read(unit,iostat=ios) flag,hybrid_r_pot,hybrid_r_act
+         if(ios/=0.or.flag<0.or.flag>1)error stop 'Invalid Hupsel crop-rate context'
+         if(.not.all(ieee_is_finite([{finite}])))error stop 'Nonfinite Hupsel crop-rate context'
+         hybrid_crop_was_emerged=flag==1
+         hybrid_crop_pending=.true.
+      else
+         flag=merge(1,0,fl_cropemergence)
+         write(unit) flag,r_pot,r_act
+      end if
+   end subroutine
+   subroutine hybrid_apply_wofost(emerged)
+      logical,intent(in)::emerged
+      if(.not.hybrid_crop_pending)return
+      if(hybrid_crop_was_emerged.and.emerged)then
+         r_pot=hybrid_r_pot
+         r_act=hybrid_r_act
+      end if
+      hybrid_crop_pending=.false.
+   end subroutine
+end module MOD_wofost""")
+        (output/'wofost.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'wofost')
+        patched.append('MOD_cropdevelopment')
+        source=(donor_build/'swap-selected/irrigation.f90').read_text(encoding='cp1252')
+        source=replace(source,"      subroutine read_irrigation_fixed()",
+                       "      subroutine read_irrigation_fixed()\n         use MOD_swap_base,only:swinco")
+        source=replace(source,"         call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')",
+                       "         if(swinco/=3 .or. .not.all(irdate(1:ifnd)<tstart)) &\n"
+                       "            call checkdate(ifnd,irdate,tend,tstart,'irdate', 'readswap/swirfix=1      ')")
+        # The original routine has SAVE locals as well as module variables.
+        # Keep that complete original context owned by this private worker.
+        start=source.index('      subroutine irrigation (task)')
+        finish=source.index('      end subroutine irrigation',start)
+        routine=source[start:finish]
+        a=routine.index('! -- local variables');b=routine.index('      ! functions',a)
+        local_region=routine[a:b];promoted=[];mapping={}
+        for line in local_region.splitlines():
+            if '::' not in line:continue
+            left,right=line.split('::');right=right.split('!')[0].strip()
+            values=[]
+            for value in right.split(','):
+                name=re.match(r'\w+',value.strip())[0]
+                if name.lower()=='afgen':continue
+                mapping[name.lower()]='hybrid_irrigation_local_'+name.lower()
+                values.append(value.strip())
+            if values:promoted.append(left+':: '+', '.join(values))
+        routine=routine[:a]+'      real(8)::afgen\n'+routine[b:]
+        routine=re.sub(r'(?m)^      save[ \t]*$', '',routine)
+        token=re.compile(r"'([^']|'')*'|\"([^\"]|\"\")*\"|!.*|[A-Za-z_]\w*")
+        def rename(match):
+            value=match[0]
+            return mapping.get(value.lower(),value) if value[0] not in "'\"!" else value
+        routine=token.sub(rename,routine)
+        promoted='\n'.join(token.sub(rename,line) for line in promoted)
+        source=source[:start]+routine+source[finish:]
+        source=replace(source,'use MOD_arrays, only: mairg, macp','use MOD_arrays, only: mairg, macp, maho')
+        source=replace(source,'   contains',promoted+'\n   contains')
+        source=replace(source,"         ! check if irdate is ascending, and determine initial entry point nirri",
+                       "         ! check if irdate is ascending, and determine initial entry point nirri")
+        source=replace(source,"         if (tstart >= irdate(ifnd)) nirri = ifnd",
+                       "         if (tstart >= irdate(ifnd)) nirri = ifnd\n"
+                       "         if(swinco==3.and.all(irdate(1:ifnd)<tstart))nirri=ifnd+1")
+        header=source.split('   contains',1)[0]
+        declarations=[];irrigation_fields=[]
+        for line in header.splitlines():
+            if not re.match(r'\s*(?:integer|real\([48]\)|logical|character\(len=200\))[ ,]',line) or '::' not in line:continue
+            left,right=line.split('::');right=right.split('!')[0].split('=')[0].strip()
+            declarations.append(re.sub(r',\s*save\b','',left,flags=re.I)+':: '+right)
+            irrigation_fields.extend(re.match(r'\w+',name.strip())[0] for name in right.split(','))
+        if len(irrigation_fields)!=50+len(mapping) or len(set(irrigation_fields))!=len(irrigation_fields):
+            raise ValueError('Changed original irrigation state inventory')
+        snapshot='\n'.join(declarations)
+        source=replace(source,'   contains',f"""   type hybrid_irrigation_snapshot_t
+{snapshot}
+      real(8)::accepted_iptra_day,accepted_iqreddry_day,accepted_iqredsol_day
+      logical::was_emerged
+   end type
+   type(hybrid_irrigation_snapshot_t),save::hybrid_irrigation_snapshot
+   logical,save::hybrid_irrigation_pending=.false.
+   contains""")
+        wire=', &\n         '.join('hybrid_irrigation_snapshot%'+name for name in irrigation_fields+['accepted_iptra_day','accepted_iqreddry_day','accepted_iqredsol_day','was_emerged'])
+        capture='\n'.join('         hybrid_irrigation_snapshot%'+name+'='+name for name in irrigation_fields)
+        apply='\n'.join('         '+name+'=hybrid_irrigation_snapshot%'+name for name in irrigation_fields)
+        procedures=f"""
+   subroutine hybrid_irrigation_checkpoint(unit,restoring)
+      use plant_interface,only:fl_cropemergence
+      use MOD_integral_global,only:iptra_day,iqreddry_day,iqredsol_day
+      use ieee_arithmetic,only:ieee_is_finite
+      integer,intent(in)::unit
+      logical,intent(in)::restoring
+      integer::ios
+      if(restoring)then
+         read(unit,iostat=ios) {wire}
+         if(ios/=0)error stop 'Incomplete Hupsel irrigation context'
+         if(.not.all(ieee_is_finite([hybrid_irrigation_snapshot%accepted_iptra_day, &
+            hybrid_irrigation_snapshot%accepted_iqreddry_day,hybrid_irrigation_snapshot%accepted_iqredsol_day]))) &
+            error stop 'Nonfinite accepted irrigation feedback'
+         if(hybrid_irrigation_snapshot%dayfix<0.or.hybrid_irrigation_snapshot%dayfix>366) &
+            error stop 'Invalid Hupsel irrigation context'
+         hybrid_irrigation_pending=.true.
+      else
+{capture}
+         hybrid_irrigation_snapshot%accepted_iptra_day=iptra_day
+         hybrid_irrigation_snapshot%accepted_iqreddry_day=iqreddry_day
+         hybrid_irrigation_snapshot%accepted_iqredsol_day=iqredsol_day
+         hybrid_irrigation_snapshot%was_emerged=fl_cropemergence
+         write(unit) {wire}
+      end if
+   end subroutine
+   subroutine hybrid_apply_irrigation(emerged)
+      use MOD_integral_global,only:iptra_day,iqreddry_day,iqredsol_day
+      logical,intent(in)::emerged
+      if(.not.hybrid_irrigation_pending)return
+      iptra_day=hybrid_irrigation_snapshot%accepted_iptra_day
+      iqreddry_day=hybrid_irrigation_snapshot%accepted_iqreddry_day
+      iqredsol_day=hybrid_irrigation_snapshot%accepted_iqredsol_day
+      nirri=hybrid_irrigation_snapshot%nirri
+      if(.not.hybrid_irrigation_snapshot%was_emerged.and.emerged)then
+         if(schedule==1)then
+            dayfix=366
+            flirrigate=.true.
+         else
+{apply}
+            schedule=0
+         end if
+      else
+{apply}
+      end if
+      hybrid_irrigation_pending=.false.
+   end subroutine
+"""
+        marker=re.search(r'(?im)^end module MOD_irrigation',source)
+        if marker is None:raise ValueError('Missing original irrigation module end')
+        source=source[:marker.start()]+procedures+source[marker.start():]
+        (output/'irrigation.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'irrigation')
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
@@ -450,13 +687,26 @@ class DailyColumn:
     revision: int = 0
     refused: bool = False
     last_checkpoint: Path | None = None
+    solute_stock: float | None = None
 
 
 def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=ANDELST):
     shutil.copytree(case, directory)
-    if checkpoint_enabled:
+    if checkpoint_enabled or project==HUPSEL:
         control = directory / "swap.swp"
-        source = control.read_text(encoding="cp1252") + "\nSWENDTYPE = 2\n"
+        source = control.read_text(encoding="cp1252")
+        if project==HUPSEL:
+            # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
+            source=replace(source,"'WATBAL,ETTERMS,SOLBAL,GWL,S_CONC'",
+                           "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'")
+            source,count=re.subn(r"(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1",r"\g<1>0",source)
+            if count!=1:raise ValueError("Missing original monthly output setting")
+            source += "\nNUM_DECIMALS = 12\n"
+        source, count = re.subn(r"(?m)^([ \t]*SWENDTYPE[ \t]*=[ \t]*)[12]", r"\g<1>2", source)
+        if count > 1:
+            raise ValueError("Duplicate restart output setting")
+        if count == 0:
+            source += "\nSWENDTYPE = 2\n"
         if start.origin is not None:
             start_date = date.fromisoformat(project.start_date) + timedelta(days=start.day)
             source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
@@ -475,9 +725,19 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
                 shutil.copyfile(start.origin / "macro.bin", directory / "macro-origin.bin")
                 shutil.copyfile(start.origin / "result.end", directory / "restart.end")
             source += "SWINITYPE = 2\n"
-            source += "INIFIL = 'restart.end'\n" if runtime else "INIFIL = '../first/result.end'\n"
+            inifil = "INIFIL = 'restart.end'" if runtime else "INIFIL = '../first/result.end'"
+            source,count=re.subn(r"(?m)^[ \t]*INIFIL[ \t]*=.*$", inifil, source)
+            if count>1:raise ValueError("Duplicate restart input setting")
+            if count==0:source += inifil+"\n"
         control.write_text(source, encoding="cp1252")
 
+    if start.variant == "shifted" and project==HUPSEL:
+        drainage=directory/'swap.dra'
+        source=drainage.read_text(encoding='cp1252')
+        source,count=re.subn(r'(?m)^(  LM2 = )11[.]0( +!)',r'\g<1>11.001\2',source)
+        if count!=1:raise ValueError('Missing original active drain spacing')
+        drainage.write_text(source,encoding='cp1252')
+        return
     if start.variant == "shifted":
         bbc = directory / "swap.bbc"
         source = bbc.read_text(encoding="cp1252")
@@ -501,7 +761,7 @@ class DailyHost:
 
     def __init__(self, stack, donor, kernel, case, output, starts, *, checkpoint_enabled=False,
                  runtime=False, binding=None, model=None, project=ANDELST):
-        if project not in (ANDELST,GRASSGROWTH):raise ValueError("Unregistered hybrid project")
+        if project not in (ANDELST,GRASSGROWTH,HUPSEL):raise ValueError("Unregistered hybrid project")
         model=project.model if model is None else model
         if model!=project.model:raise ValueError("Model and project identity differ")
         self.project=project
@@ -533,7 +793,13 @@ class DailyHost:
             if start.receipt is not None and (
                     stocks != start.receipt["stock_end_cm"] or pressure != start.receipt["pressure_head_cm"]):
                 raise ValueError("Restored donor state differs from the accepted checkpoint receipt")
-            self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure))
+            solute_stock=None
+            if project==HUPSEL:
+                solute_stock=float(initial['HYBRID_SOLUTE_READY'][0])
+                if not math.isfinite(solute_stock):raise ValueError('Invalid initial solute stock')
+                if start.receipt is not None and solute_stock!=start.receipt['solute_end_mg_cm2']:
+                    raise ValueError('Restored solute stock differs from accepted receipt')
+            self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure,solute_stock=solute_stock))
         send(self.host, str(len(self.columns)))
         for column in self.columns:
             if project!=ANDELST:send(self.host,f"{project.nodes} {project.start_clock}")
@@ -571,6 +837,19 @@ class DailyHost:
             raise ValueError("Nonfinite donor water budget")
         if stocks[6:] != current.stocks:
             raise ValueError(f"Day {day} donor origin differs from committed stocks")
+        solute_budget={}
+        if self.project==HUPSEL:
+            ledger=list(map(float,response['HYBRID_SOLUTE_LEDGER']))
+            uptake=list(map(float,response['HYBRID_UPTAKE']))
+            if len(ledger)!=9 or len(uptake)!=6 or not all(map(math.isfinite,ledger+uptake)):
+                raise ValueError('Missing or nonfinite solute/uptake accounting')
+            end,delta,rain,irrig,bottom,drain,decay,root,reported=ledger
+            residual=math.fsum([end,-current.solute_stock,-rain,-irrig,-bottom,drain,decay,root])
+            if abs(residual)>1e-10 or abs(reported)>1e-10:
+                raise ValueError('Original solute candidate exceeds unchanged1e-10 mass guard')
+            solute_budget=dict(solute_end_mg_cm2=end,solute_start_mg_cm2=current.solute_stock,
+                               solute_ledger_mg_cm2=ledger,solute_independent_residual_mg_cm2=residual,
+                               uptake_terms_cm=uptake)
         bottom_out = flow[15] - flow[6]
         reply = [day, math.fsum(stocks[:6]), math.fsum(flow[:7]), math.fsum(flow[7:]),
                  bottom_out, -hydraulic[1], *hydraulic[2:], *stocks[:6]]
@@ -590,6 +869,7 @@ class DailyHost:
                                                    *stocks[6:], *(-q for q in stocks[:6])]),
             "kernel_residual_cm": float(result[disposition][3]),
         }
+        budget.update(solute_budget)
         if "HYBRID_BUDGET_RETRIES" in response:
             count, residual = response["HYBRID_BUDGET_RETRIES"]
             budget["budget_step_retries"] = int(count)
@@ -599,6 +879,7 @@ class DailyHost:
             current.revision = revision
             current.stocks = budget["stock_end_cm"].copy()
             current.pressure = budget["pressure_head_cm"].copy()
+            if self.project==HUPSEL:current.solute_stock=budget["solute_end_mg_cm2"]
         else:
             current.refused = True
             stop_process(current.worker)

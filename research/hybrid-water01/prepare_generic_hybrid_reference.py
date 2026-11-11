@@ -19,7 +19,7 @@ for name,encoded,digest in [('SWAP.ZIP','SWAP431_ORIGINAL_SOURCE.zip.b64','1a2d7
     raw=base64.b64decode((ROOT/'integration/audits/evidence'/encoded).read_bytes())
     assert hashlib.sha256(raw).hexdigest()==digest
     (source/name).write_bytes(raw)
-for project in ['2.grassgrowth','3.macroporeflow']:
+for project in ['1.hupselbrook','2.grassgrowth','3.macroporeflow']:
     shutil.copytree(ROOT/'reference/swap-4.3.1/projects'/project,distribution/'cases'/project)
 events=[];real_run=subprocess.run
 def logged(command,*args,**kwargs):

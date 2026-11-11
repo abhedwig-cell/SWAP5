@@ -107,3 +107,15 @@ python tools/solute/run_water.py --model HYBRID_GRASSGROWTH_WATER \
 
 Requests beyond day4 refuse. Full native thermal execution continues to use
 `NATIVE_GRASSGROWTH_WATER` with its own verified build and immutable profile.
+
+
+## Proposed complete Hupsel successor (2026-11-11)
+
+The separate `codex/hybrid-hupsel-full` review adds original Hupsel water, crop
+and solute blocks to the same explicit daily host. Windows and Ubuntu26.04 full1096 and nine
+complete own restart windows pass unchanged water/solute guards. Six actual O0/O2
+project controls and same-runner canonical Andelst preservation also pass. This is a corrected original-block compatibility
+profile, not native thermal or whole scientific qualification. The frozen day584
+comparison remains failed. See the [source-bound review and raw evidence](https://github.com/abhedwig-cell/SWAP5/blob/codex/hybrid-hupsel-full/research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md).
+The historical bounded prototype above retains its original scope; the previously
+admitted Grass full1827 successor is recorded in its own review.

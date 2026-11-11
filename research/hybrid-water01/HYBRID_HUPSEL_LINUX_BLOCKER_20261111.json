@@ -1,0 +1,22 @@
+{
+  "status": "EXTERNAL_GITHUB_ACTIONS_STARTUP_FAILURE_REPRODUCED_NO_JOB",
+  "run_id": 43096746300,
+  "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43096746300",
+  "head": "8a6f4887d0978fd31cd42ca6e0523b1223a690fc",
+  "dispatch_http": 204,
+  "rerun_http": 201,
+  "result": "startup_failure; zero jobs/check runs/artifacts; no compiler/model started",
+  "annotation": "An unexpected error has occurred and we've been automatically notified. Errors are sometimes temporary, so please try again.",
+  "request_id": "E266:2F2F4F:5184152:7A47045:6AF4D404",
+  "annotation_page_sha256": "bf82f869f89143ed41f998505420b0cc232d1d585dfca477fa85523f47e1166f",
+  "actionlint": "v1.7.12 only rejects ubuntu-26.04 as unknown; earlier retained actual successful runner log confirms Ubuntu26.04.1, image20261101.186.1. Do not change validated runner spec based on stale label inventory.",
+  "next": "Rerun existing exact source workflow when GitHub service accepts jobs; require six bounded cases, full1096/nine own and public routes, retain actual Linux artifact and independent audit before admission.",
+  "resolution": {
+    "status": "SUPERSEDED_BY_SUCCESSFUL_SAME_UBUNTU26_RUN",
+    "run": 43098736948,
+    "job": 130784487221,
+    "head": "287de920c6099928ca4b1ccfee6223f3d8032a73",
+    "all_model_gates": "PASS",
+    "note": "Stale queued API responses corrected from actual complete step logs; fallback reverted before dispatch and cancel returned409. No duplicate run."
+  }
+}

@@ -10,7 +10,7 @@ def replace(text, anchor, replacement):
     return text.replace(anchor, replacement)
 
 
-def render_day_return(selected, out, *, nonmacro=False):
+def render_day_return(selected, out, *, nonmacro=False, solute_ledger=False):
     swap = (selected / "swap.f90").read_text(encoding="cp1252")
     swap = """module hybrid_day_window
   implicit none
@@ -63,6 +63,11 @@ end module hybrid_day_window
                            "ivolbeg, ipondbeg, issnowbeg, isicbeg, 0d0, 0d0")
         csv_source=replace(csv_source,"iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iQMpOutDrRap,iqbdo",
                            "iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,0d0,iqbdo")
+    if solute_ledger:
+        csv_source=replace(csv_source,"   dstor_1    = wasrdm1 - iwasrdm1beg","""   write(*,'(a,9(1x,es25.17e3))') 'HYBRID_SOLUTE_LEDGER', &
+      sampro,sdstor,imsqprec,imsqirrig,imsqbot,imsqdra,imdectot,imrottot,sbaldev
+   write(*,'(a,6(1x,es25.17e3))') 'HYBRID_UPTAKE', iptra,iqrot,iqreddry,iqredwet,iqredsol,iqredfrs
+   dstor_1    = wasrdm1 - iwasrdm1beg""")
     (out / "swap_csv_output.f90").write_text(csv_source, encoding="cp1252")
 
 
@@ -79,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -159,6 +164,15 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
       close(unit)
     end subroutine hybrid_macro_checkpoint
 """
+    if solute_state:
+        if not nonmacro:raise ValueError('Solute auxiliary requires nonmacro mode')
+        codec=codec.replace('S5NON004','S5HUP010')
+        codec=replace(codec,"      use MOD_swap_base, only: swmacro",
+                      "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint\n      use MOD_irrigation,only:hybrid_irrigation_checkpoint\n      use MOD_wofost,only:hybrid_wofost_checkpoint")
+        codec=replace(codec,"        read(unit,iostat=ios) trailing",
+                      "        call hybrid_solute_checkpoint(unit,.true.)\n        call hybrid_irrigation_checkpoint(unit,.true.)\n        call hybrid_wofost_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
+        codec=replace(codec,"        write(unit) 'S5HUP010',numnod,clock,old_step,canopy_stock",
+                      "        write(unit) 'S5HUP010',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
@@ -222,6 +236,16 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
     if nonmacro:
         swap=replace(swap,"if (swmacro == 1 .and. fl_initialize) call hybrid_macro_checkpoint",
                           "if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint")
+    if solute_state:
+        restore="   if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint(.true., t1900, dtold, checkpoint_canopy)"
+        swap=replace(swap,"use MOD_cropdevelopment, only: croprotation, cropdevelopment, reset_crop",
+                     "use MOD_wofost,only:hybrid_apply_wofost\nuse MOD_cropdevelopment, only: croprotation, cropdevelopment, reset_crop")
+        swap=replace(swap, "use MOD_irrigation,      only: irrigation, flirrigate",
+                     "use MOD_irrigation,      only: irrigation, flirrigate, hybrid_apply_irrigation")
+        swap=replace(swap,"         if (checkpoint_canopy >= 0d0) then",
+                     "         call hybrid_apply_irrigation(fl_cropemergence)\n         call hybrid_apply_wofost(fl_cropemergence)\n         if (checkpoint_canopy >= 0d0) then")
+        swap=replace(swap,restore,"")
+        swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore)
     (output / "swap.f90").write_text(swap, encoding="cp1252")
     if runtime or checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")

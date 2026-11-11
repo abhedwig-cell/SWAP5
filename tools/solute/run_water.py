@@ -15,7 +15,7 @@ import tarfile
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "app/hybrid_water"))
-from daily_host import APPLICATION_MODEL, ANDELST, GRASSGROWTH, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
+from daily_host import APPLICATION_MODEL, ANDELST, GRASSGROWTH, HUPSEL, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
 
 GRASS_MODEL = "NATIVE_GRASSGROWTH_WATER"
 HUPSEL_MODEL = "NATIVE_HUPSEL_ROTATION"
@@ -170,7 +170,7 @@ def run_hupsel(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", required=True, choices=[APPLICATION_MODEL, GRASS_MODEL, HUPSEL_MODEL, GRASSGROWTH.model])
+    parser.add_argument("--model", required=True, choices=[APPLICATION_MODEL, GRASS_MODEL, HUPSEL_MODEL, GRASSGROWTH.model, HUPSEL.model])
     parser.add_argument("--reference-work", type=Path, help="Prepared original SWAP 4.3.1 distribution for Andelst")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
@@ -210,8 +210,8 @@ def main():
         return run_grass(args)
     if args.reference_work is None or args.grass_build is not None or args.hupsel_build is not None:
         parser.error("Andelst requires --reference-work")
-    project=GRASSGROWTH if args.model==GRASSGROWTH.model else ANDELST
-    last_day=1827 if project==GRASSGROWTH else 481
+    project={p.model:p for p in (ANDELST,GRASSGROWTH,HUPSEL)}[args.model]
+    last_day={GRASSGROWTH:1827,ANDELST:481,HUPSEL:1096}[project]
     args.days = last_day if args.days is None else args.days
     args.kernel_opt = args.kernel_opt or "O2"
     if (args.restart is None) != (args.restart_day is None):
@@ -224,7 +224,7 @@ def main():
 
     output = args.output.resolve()
     output.mkdir(parents=True)
-    profile = dict(budget_retry=project==ANDELST, shared_pond_transfer=project==ANDELST, refresh_macro_final=project==ANDELST)
+    profile = dict(budget_retry=project!=GRASSGROWTH, shared_pond_transfer=project==ANDELST, refresh_macro_final=project==ANDELST)
     donor, kernel, case, inputs, build_id = build(
         args.reference_work.resolve(), output, **profile, runtime_checkpoint=True, kernel_opt=args.kernel_opt, project=project,
     )

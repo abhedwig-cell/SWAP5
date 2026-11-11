@@ -23,7 +23,7 @@ from check_hybrid_budget_protocol import check as check_protocol
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--reference',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
-p.add_argument('--project',choices=['grass','andelst'],required=True)
+p.add_argument('--project',choices=['grass','andelst','hupsel'],required=True)
 p.add_argument('--optimization',choices=['O0','O2'],required=True)
 p.add_argument('--reuse-build',type=Path)
 p.add_argument('--reuse-control',type=Path)
@@ -34,7 +34,7 @@ a=p.parse_args()
 if a.project=='andelst' and a.andelst_baseline is None:p.error('Andelst requires actual same-platform canonical controls')
 a.output=a.output.resolve();a.output.mkdir()
 a.reference=a.reference.resolve()
-project=host.GRASSGROWTH if a.project=='grass' else host.ANDELST
+project={'grass':host.GRASSGROWTH,'andelst':host.ANDELST,'hupsel':host.HUPSEL}[a.project]
 events=[]
 original_run=subprocess.run
 
@@ -51,7 +51,7 @@ def execute(command,*args,**kwargs):
     finally:
         (a.output/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n')
 subprocess.run=execute
-profile=dict(budget_retry=a.project=='andelst',shared_pond_transfer=a.project=='andelst',
+profile=dict(budget_retry=a.project!='grass',shared_pond_transfer=a.project=='andelst',
              refresh_macro_final=a.project=='andelst')
 if a.reuse_build:
     old=json.loads((a.reuse_build/'BUILD.json').read_text());identity=old['identity'];inputs=old['inputs']
@@ -153,11 +153,23 @@ else:resumed,_=run_case('resumed',checkpoint_day=2,origin=origin,origin_receipt=
 assert list(map(physical,rows(resumed)))==list(map(physical,raw[2:]))
 assert csv_rows(resumed)[-2:]==csv_rows(continuous)[-2:]
 for name in host.CHECKPOINT_FILES:
-    if a.project=='grass' or name=='result.end':
+    if a.project!='andelst' or name=='result.end':
         assert (control/'original'/name).read_bytes()==(resumed/'original'/name).read_bytes(),name
     if a.project=='andelst':
         assert (control/'original'/name).read_bytes()==(a.andelst_baseline/'terminal/original'/name).read_bytes()
         assert (resumed/'original'/name).read_bytes()==(a.andelst_baseline/'resumed/original'/name).read_bytes()
+
+if a.project=='hupsel':
+    gift,_=run_case('gift-seven',end=7,publish_day=5,checkpoint_binding=binding)
+    gift_terminal,_=run_case('gift-terminal',end=7,publish_day=7,checkpoint_binding=binding)
+    gift_origin=a.output/'gift-origin'
+    gift_receipt=host.verify_checkpoint(gift/'accepted-column-1-day-5.zip',5,binding,gift_origin)
+    gift_own,_=run_case('gift-own',end=7,checkpoint_day=5,origin=gift_origin,
+                        origin_receipt=gift_receipt,publish_day=7,checkpoint_binding=binding)
+    assert list(map(physical,rows(gift_own)))==list(map(physical,rows(gift)[5:]))
+    assert max(abs(r['solute_independent_residual_mg_cm2']) for r in rows(gift))<=1e-10
+    for name in host.CHECKPOINT_FILES:
+        assert (gift_terminal/'original'/name).read_bytes()==(gift_own/'original'/name).read_bytes()
 
 # Distinct physical boundary histories interleave exactly against their controls.
 repeated=a.output/'repeated-publication';repeated.mkdir()
@@ -262,7 +274,7 @@ try:host.verify_checkpoint(continuous/'accepted-column-1-day-2.zip',2,{**binding
 except ValueError:pass
 else:raise AssertionError('Foreign binding accepted')
 assert not (a.output/'foreign-origin').exists()
-if a.project=='grass':
+if a.project!='andelst':
     for label,offset in [('mode',0),('grid',8),('clock',12)]:
         bad=a.output/('bad-'+label);bad.mkdir()
         for name in host.CHECKPOINT_FILES:(bad/name).write_bytes((origin/name).read_bytes())
@@ -275,6 +287,32 @@ if a.project=='grass':
             else:raise AssertionError('Foreign inner auxiliary state accepted')
         assert not list(out.glob('accepted-*.zip'))
 
+# Nonfinite or unbalanced solute frames fail before a kernel candidate commits.
+if a.project=='hupsel':
+    for label in ['solute-mass','solute-nonfinite','uptake-shape']:
+        out=a.output/label;out.mkdir()
+        with bounded(label),contextlib.ExitStack() as stack:
+            current=host.DailyHost(stack,donor,kernel,case,out,[host.ColumnStart()],runtime=True,project=project)
+            initial_stock=current.columns[0].solute_stock
+            original_receive=host.receive
+            def corrupt_solute(process,transcript,prefixes):
+                key,response=original_receive(process,transcript,prefixes)
+                if 'HYBRID_SOLUTE_LEDGER' in response:
+                    if label=='solute-mass':response['HYBRID_SOLUTE_LEDGER'][0]='0.01'
+                    elif label=='solute-nonfinite':response['HYBRID_SOLUTE_LEDGER'][0]='NaN'
+                    else:response['HYBRID_UPTAKE'].pop()
+                return key,response
+            host.receive=corrupt_solute
+            try:
+                try:current.step(1)
+                except ValueError:pass
+                else:raise AssertionError('Invalid solute/uptake frame accepted')
+            finally:host.receive=original_receive
+            assert current.columns[0].day==current.columns[0].revision==0
+            assert current.columns[0].solute_stock==initial_stock
+        assert 'DAILY_ACCEPTED' not in (out/'kernel.stdout').read_text()
+        assert not list(out.glob('accepted-*.zip'))
+
 baseline='NOT_APPLICABLE'
 if a.project=='andelst':
     assert raw==rows(a.andelst_baseline/'cut'),'Changed same-platform canonical Andelst prefix'
@@ -282,8 +320,8 @@ if a.project=='andelst':
 report=dict(status='GENERIC_HYBRID_ORIGINAL_PREFIX_RESTART_ISOLATION_REFUSAL_PASS',project=a.project,
             kernel_optimization=a.optimization,donor_optimization='O2',days=4,baseline=baseline,
             maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in raw),
-            exact_native_restart_payloads=list(host.CHECKPOINT_FILES) if a.project=='grass' else ['result.end'],
-            auxiliary_state_scope='Both payloads exact own restart' if a.project=='grass' else
+            exact_native_restart_payloads=list(host.CHECKPOINT_FILES) if a.project!='andelst' else ['result.end'],
+            auxiliary_state_scope='Both payloads exact own restart' if a.project!='andelst' else
                 'Complete cold and resumed macro payloads exactly preserve canonical same-platform controls; existing cold/resumed byte difference is not newly qualified',
             distinct_instance_control=True,refusal_isolation=True,source_sha256={str(ROOT/'app/hybrid_water'/n):sha(ROOT/'app/hybrid_water'/n)
                 for n in ['daily_host.py','donor_sources.py','donor_adapter.f90','main.f90']},

@@ -1,0 +1,95 @@
+[
+  {
+    "directory": "s5-hybrid-hupsel-full-20261111",
+    "result_sha256": "dc1b0675a796985ed1ffd920c5715e7f50877030b1a15f9e6086ca3e820601e5",
+    "result": {
+      "status": "FAILED",
+      "source_commit": "0a385c66cf2a3c73f94a5277bac2ad914b9514d2",
+      "bundle_build_sha256": "1482f70a851a575d06e551a8625a79a412f5e22d4ed03767dfadfc1bc6f37674",
+      "accepted_days": 363,
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\run_hybrid_grass_full.py\", line 70, in <module>\n    assert r['committed'],r\n           ~^^^^^^^^^^^^^\nAssertionError: {'column': 1, 'day': 364, 'committed': False, 'revision': 363, 'stock_end_cm': [78.81722, 0.34209009561145143, 0.0, 0.0, 0.0, 0.0], 'stock_start_cm': [77.46812930936822, 0.0, 0.0, 0.0, 0.0, 0.0], 'external_flux_cm': [2.7299999999712843, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01729941173326198, 0.0, 0.0, 0.0, 0.0, 1.038819213658821, 0.0, 0.0], 'pressure_head_cm': [0.8411506159717603, 1.839296223022106, 2.8374663964021796, 3.8356611361119812, 4.833880442151511, 5.832124314520768, 6.830392753219754, 7.828685758248467, 8.827003329606908, 9.825345467295078, 12.82044557934877, 17.812893257681456, 22.80595509425734, 27.79963108907642, 32.79066350858402, 37.77039628655846, 42.7507432227761, 47.73170431723694, 52.71327956994097, 57.69546898088821, 65.16967433467386, 75.13773810602753, 85.10825851035398, 95.08123554765324, 105.05666921792529, 115.03455952117012, 125.01490645738777, 134.9977100265782, 144.98297022874144, 154.97068706387745, 164.96086053198627, 174.9534906330679, 184.9485773671223, 194.9461207341495], 'groundwater_cm': 0.34209009561145143, 'drainage_outward_cm': 1.038819213658821, 'bottom_outward_cm': 0.0, 'independent_residual_cm': -0.017299411664033357, 'kernel_residual_cm': 0.01729941166403548, 'solute_end_mg_cm2': 39.492615849274515, 'solute_start_mg_cm2': 39.99033289057899, 'solute_ledger_mg_cm2': [39.492615849274515, -0.497717041304476, 0.0, 0.0, 0.0, 0.4977170413047342, 0.0, 0.0, 2.5818236437658015e-13], 'solute_independent_residual_mg_cm2': 2.5818236437658015e-13, 'uptake_terms_cm': [1.1027581878971736e-25, 0.0, 0.0, 0.0, 0.0, 0.0], 'budget_step_retries': 0, 'integrated_guard_residual_cm': 0.01729941164477826}\n",
+      "events": [
+        {
+          "case": "full-original1096",
+          "seconds": 15.366050699958578,
+          "status": "FAILED",
+          "error": "AssertionError({'column': 1, 'day': 364, 'committed': False, 'revision': 363, 'stock_end_cm': [78.81722, 0.34209009561145143, 0.0, 0.0, 0.0, 0.0], 'stock_start_cm': [77.46812930936822, 0.0, 0.0, 0.0, 0.0, 0.0], 'external_flux_cm': [2.7299999999712843, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.01729941173326198, 0.0, 0.0, 0.0, 0.0, 1.038819213658821, 0.0, 0.0], 'pressure_head_cm': [0.8411506159717603, 1.839296223022106, 2.8374663964021796, 3.8356611361119812, 4.833880442151511, 5.832124314520768, 6.830392753219754, 7.828685758248467, 8.827003329606908, 9.825345467295078, 12.82044557934877, 17.812893257681456, 22.80595509425734, 27.79963108907642, 32.79066350858402, 37.77039628655846, 42.7507432227761, 47.73170431723694, 52.71327956994097, 57.69546898088821, 65.16967433467386, 75.13773810602753, 85.10825851035398, 95.08123554765324, 105.05666921792529, 115.03455952117012, 125.01490645738777, 134.9977100265782, 144.98297022874144, 154.97068706387745, 164.96086053198627, 174.9534906330679, 184.9485773671223, 194.9461207341495], 'groundwater_cm': 0.34209009561145143, 'drainage_outward_cm': 1.038819213658821, 'bottom_outward_cm': 0.0, 'independent_residual_cm': -0.017299411664033357, 'kernel_residual_cm': 0.01729941166403548, 'solute_end_mg_cm2': 39.492615849274515, 'solute_start_mg_cm2': 39.99033289057899, 'solute_ledger_mg_cm2': [39.492615849274515, -0.497717041304476, 0.0, 0.0, 0.0, 0.4977170413047342, 0.0, 0.0, 2.5818236437658015e-13], 'solute_independent_residual_mg_cm2': 2.5818236437658015e-13, 'uptake_terms_cm': [1.1027581878971736e-25, 0.0, 0.0, 0.0, 0.0, 0.0], 'budget_step_retries': 0, 'integrated_guard_residual_cm': 0.01729941164477826})",
+          "censored": false
+        }
+      ]
+    }
+  },
+  {
+    "directory": "s5-hybrid-hupsel-full-corrected-20261111",
+    "result_sha256": "4701c521a16d1938a25c01e0b596bec9494700e432975675677061d3ba67d67c",
+    "result": {
+      "status": "FAILED",
+      "source_commit": "7c6611e9d36eceb268b9ba212f451e8202aac819",
+      "bundle_build_sha256": "a09f5d3a7e37aeb49bbbf313f011ba77b1bdbd2588014f3e9576706d7fa18f00",
+      "accepted_days": 4,
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\run_hybrid_grass_full.py\", line 69, in <module>\n    r=host.step(1,checkpoint=day in cuts);receipts.write(json.dumps(r)+'\\n');receipts.flush()\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_host.py\", line 663, in step\n    raise ValueError('Original solute candidate exceeds unchanged1e-10 mass guard')\nValueError: Original solute candidate exceeds unchanged1e-10 mass guard\n",
+      "events": [
+        {
+          "case": "full-original1096",
+          "seconds": 1.1054187000263482,
+          "status": "FAILED",
+          "error": "ValueError('Original solute candidate exceeds unchanged1e-10 mass guard')",
+          "censored": false
+        }
+      ]
+    }
+  },
+  {
+    "directory": "s5-hybrid-hupsel-full-transport-20261111",
+    "result_sha256": "4f888d30baa38831fb2dcda97edee4e45101d6c532151c32da587048e30baa87",
+    "result": {
+      "status": "FAILED",
+      "source_commit": "33fca4b2c53887a2d0d131b5de62a775878796fc",
+      "bundle_build_sha256": "b3e576b46bea32c7d11271f13366a2f219bdc0f827b1f897e473ed0c0676518d",
+      "accepted_days": 1095,
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\run_hybrid_grass_full.py\", line 70, in <module>\n    assert r['committed'],r\n           ~^^^^^^^^^^^^^\nAssertionError: {'column': 1, 'day': 1096, 'committed': False, 'revision': 1095, 'stock_end_cm': [76.01579396314669, 0.0, 0.0, 0.031255683442912845, 0.0, 0.0], 'stock_start_cm': [76.11703248054101, 0.0, 0.0, 0.028667271883297762, 0.0, 0.0], 'external_flux_cm': [0.11999999999999991, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.039342703853139004, 0.0, 0.004182227538122126, 0.0, 0.002656097377181135, 0.0, 0.2037247605091863, 0.0, 0.0], 'pressure_head_cm': [-58.7497182081603, -58.128038571351055, -57.49444813567757, -56.8490552292267, -56.19198855629571, -55.523395515365664, -54.84344029749716, -54.1523018710649, -53.45017193717865, -52.73725292249488, -50.49156213950897, -46.61050246465094, -42.510907168071824, -38.22181304467919, -33.643186330468104, -28.936329311434676, -24.176883177074068, -19.370996352974508, -14.524528146457001, -9.642822347811572, -2.2472663641885053, 7.737390690349498, 17.72982777375069, 27.722895100201782, 37.71659266970277, 47.71092048225366, 57.70587853785446, 67.70146683650515, 77.69768537820575, 87.69453416295624, 97.69201319075664, 107.69012246160693, 117.68886197550714, 127.68823173245724], 'groundwater_cm': -67.25071963104344, 'drainage_outward_cm': 0.2037247605091863, 'bottom_outward_cm': 0.0, 'independent_residual_cm': -0.0312556834429222, 'kernel_residual_cm': 0.03125568344292132, 'solute_end_mg_cm2': 14.031013193958565, 'solute_start_mg_cm2': 14.086353920322024, 'solute_ledger_mg_cm2': [14.031013193958565, -0.055340726363459325, 0.0, 0.0, 0.0, 0.055340726363459686, 0.0, 0.0, 3.608224830031759e-16], 'solute_independent_residual_mg_cm2': 3.608224830031759e-16, 'uptake_terms_cm': [0.004182227538646322, 0.004182227538122126, 5.24193067386198e-13, 0.0, 0.0, 0.0], 'budget_step_retries': 0, 'integrated_guard_residual_cm': -1.5287250632045613e-15}\n",
+      "events": [
+        {
+          "case": "full-original1096",
+          "seconds": 6.4690682999789715,
+          "status": "FAILED",
+          "error": "AssertionError({'column': 1, 'day': 1096, 'committed': False, 'revision': 1095, 'stock_end_cm': [76.01579396314669, 0.0, 0.0, 0.031255683442912845, 0.0, 0.0], 'stock_start_cm': [76.11703248054101, 0.0, 0.0, 0.028667271883297762, 0.0, 0.0], 'external_flux_cm': [0.11999999999999991, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.039342703853139004, 0.0, 0.004182227538122126, 0.0, 0.002656097377181135, 0.0, 0.2037247605091863, 0.0, 0.0], 'pressure_head_cm': [-58.7497182081603, -58.128038571351055, -57.49444813567757, -56.8490552292267, -56.19198855629571, -55.523395515365664, -54.84344029749716, -54.1523018710649, -53.45017193717865, -52.73725292249488, -50.49156213950897, -46.61050246465094, -42.510907168071824, -38.22181304467919, -33.643186330468104, -28.936329311434676, -24.176883177074068, -19.370996352974508, -14.524528146457001, -9.642822347811572, -2.2472663641885053, 7.737390690349498, 17.72982777375069, 27.722895100201782, 37.71659266970277, 47.71092048225366, 57.70587853785446, 67.70146683650515, 77.69768537820575, 87.69453416295624, 97.69201319075664, 107.69012246160693, 117.68886197550714, 127.68823173245724], 'groundwater_cm': -67.25071963104344, 'drainage_outward_cm': 0.2037247605091863, 'bottom_outward_cm': 0.0, 'independent_residual_cm': -0.0312556834429222, 'kernel_residual_cm': 0.03125568344292132, 'solute_end_mg_cm2': 14.031013193958565, 'solute_start_mg_cm2': 14.086353920322024, 'solute_ledger_mg_cm2': [14.031013193958565, -0.055340726363459325, 0.0, 0.0, 0.0, 0.055340726363459686, 0.0, 0.0, 3.608224830031759e-16], 'solute_independent_residual_mg_cm2': 3.608224830031759e-16, 'uptake_terms_cm': [0.004182227538646322, 0.004182227538122126, 5.24193067386198e-13, 0.0, 0.0, 0.0], 'budget_step_retries': 0, 'integrated_guard_residual_cm': -1.5287250632045613e-15})",
+          "censored": false
+        }
+      ]
+    }
+  },
+  {
+    "directory": "s5-hybrid-hupsel-full-final-20261111",
+    "result_sha256": "56681bf44d3c86e0dfc21c9821a125c41ac84fe8893ce9c3ced22aaa846d031e",
+    "result": {
+      "status": "FAILED",
+      "source_commit": "b1d029daf344a947963c0a975a56f1ffd0dd2a84",
+      "bundle_build_sha256": "ad5205f95fe2d09ea9a7b282b0bf1a705e64490a63f2478c4b2e368db043ff01",
+      "accepted_days": 1096,
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\run_hybrid_grass_full.py\", line 87, in <module>\n    assert list(map(physical,resumed))==list(map(physical,rows[cut:end])),f'Physical suffix {cut}'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Physical suffix 5\n",
+      "events": [
+        {
+          "case": "full-original1096",
+          "seconds": 6.045380200026557,
+          "status": "PASS"
+        },
+        {
+          "case": "own-2-to-4",
+          "seconds": 1.0857784999534488,
+          "status": "PASS"
+        },
+        {
+          "case": "own-4-to-6",
+          "seconds": 1.1649891000706702,
+          "status": "PASS"
+        },
+        {
+          "case": "own-5-to-7",
+          "seconds": 1.1876564999110997,
+          "status": "PASS"
+        }
+      ]
+    }
+  }
+]

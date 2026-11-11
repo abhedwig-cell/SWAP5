@@ -1,0 +1,24 @@
+{
+  "status": "READ_ONLY_SEPARATE_REFERENCE_COMPARISONS_NOT_SCIENTIFIC_QUALIFICATION",
+  "current_full_source": "22c6b8753e39c8f7fd3a9603ce3c4c8a86a6461d",
+  "current_day584_oxygen_cm": 0.004793906349978937,
+  "frozen_scientific_limit_cm": 5.371840000016327e-07,
+  "sealed_original_comparison_used_by_native_application": {
+    "reference_cm": 0.003593541147,
+    "native_cm": 0.0033488614852679407,
+    "native_verdict": "FAIL_PRESERVED",
+    "hybrid_delta_cm": 0.0012003652029789372,
+    "hybrid_verdict": "FAIL"
+  },
+  "separate_original_high_precision_output": {
+    "archive_sha256": "48f9c36dec1f214b41568dc14a854a08f8e2a7fe70256bd9cea3f9cf67f2b2ed",
+    "csv_sha256": "e71c3d550e6e95460041ea560c48e37d20e682562fd56bbc3904787992e54184",
+    "rows": 1097,
+    "day584_date": "2003-08-07",
+    "oxygen_cm": 0.004793370692,
+    "hybrid_delta_cm": 5.356579789372526e-07,
+    "single_value_within_limit": true,
+    "qualification": "Not a replacement qualified reference; existing independent reference-resolution blocker remains."
+  },
+  "decision": "No further reference model run or tolerance change. Retain both reference identities and failed original comparison. Corrected original-block route is functional water/solute/restart acceptance only."
+}

@@ -1,0 +1,20 @@
+{
+  "status": "PAST_ORIGINAL_PERIOD_REFUSED_BEFORE_OUTPUT_BUILD_OR_MODEL",
+  "command": [
+    "python",
+    "-B",
+    "tools/solute/run_water.py",
+    "--model",
+    "HYBRID_HUPSEL_WATER",
+    "--reference-work",
+    "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-water-integrated-reference",
+    "--output",
+    "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-hupsel-past-period-refusal-20261111",
+    "--days",
+    "1097"
+  ],
+  "returncode": 2,
+  "stderr": "usage: run_water.py [-h]\n                    --model {HYBRID_ANDELST_WATER,NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER}\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}]\nrun_water.py: error: The last day must follow the origin and be within the admitted 1096-day period\n",
+  "seconds": 0.15998829994350672,
+  "output_created": false
+}
