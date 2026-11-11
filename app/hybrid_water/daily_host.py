@@ -336,7 +336,7 @@ end submodule MOD_Solute_CDE""")
                        '   public :: hybrid_wofost_checkpoint,hybrid_apply_wofost')
         rates=source.split('   type WOFOST_rates',1)[1].split('   end type WOFOST_rates',1)[0]
         names=re.findall(r'::\s*(\w+)',rates)
-        if len(names)!=24:raise ValueError('Changed original WOFOST rate inventory')
+        if len(names)!=25:raise ValueError('Changed original WOFOST rate inventory')
         finite=', &\n         '.join('hybrid_r_'+mode+'%'+name for mode in ['pot','act'] for name in names)
         source=replace(source,'end module MOD_wofost',f"""
    subroutine hybrid_wofost_checkpoint(unit,restoring)
