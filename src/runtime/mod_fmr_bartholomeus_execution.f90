@@ -8,7 +8,7 @@ module mod_fmr_bartholomeus_execution
   use mod_bartholomeus_parameter_contract, only: BartholomeusImmutableDataset, BartholomeusCropParameters
   use mod_bartholomeus_factor_provider, only: evaluate_bartholomeus_factors_from_state
   use mod_fmr_bartholomeus_activation
-  use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE
+  use mod_bartholomeus_waterfilm_provider,only:BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE,bartholomeus_waterfilm_trial_cache_t
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t
   use mod_root_uptake_oxygen_composition, only: compose_root_sink_with_oxygen_factor, ROOT_OXYGEN_COMPOSE_OK
   implicit none
@@ -22,7 +22,7 @@ module mod_fmr_bartholomeus_execution
 
 contains
   subroutine fmr_apply_bartholomeus_to_root_sink(config,hydraulic,thermal,data,crop,w_root,w_root_z0, &
-       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,refined_waterfilm)
+       atmospheric_ctop,base_fluxes,final_fluxes,status,oxygen_factors,refined_waterfilm,waterfilm_cache)
     type(fmr_bartholomeus_selection_t),intent(in)::config
     type(process_hydraulic_view_t),intent(in)::hydraulic
     type(soil_temperature_field_view_t),intent(in)::thermal
@@ -37,6 +37,7 @@ contains
     integer,intent(out)::status
     real(real64),allocatable,optional,intent(out)::oxygen_factors(:)
     logical,optional,intent(in)::refined_waterfilm
+    type(bartholomeus_waterfilm_trial_cache_t),optional,intent(inout)::waterfilm_cache
     type(bartholomeus_runtime_view_t)::view
     real(real64),allocatable::factors(:)
     integer::route,wmode,input_status,compose_status
@@ -85,7 +86,8 @@ contains
     if(input_status/=BARTHOLOMEUS_INPUT_OK .or. size(w_root_z0)/=view%rooted_nodes) then
       status=FMR_BARTHOLOMEUS_EXEC_INPUT;return
     end if
-    call evaluate_bartholomeus_factors_from_state(view,data,crop,w_root,w_root_z0,atmospheric_ctop,wmode,factors,ok)
+    call evaluate_bartholomeus_factors_from_state(view,data,crop,w_root,w_root_z0,atmospheric_ctop, &
+         wmode,factors,ok,waterfilm_cache)
     if(.not.ok) then
       status=FMR_BARTHOLOMEUS_EXEC_PHYSICS;return
     end if

@@ -32,8 +32,19 @@ jobs:
       - name: Verify exact current source and retained native evidence
         run: |
           grass_base=78c8012530b3be14e48edef6fc950e2c09c695ca
-          if git merge-base --is-ancestor "$grass_base" HEAD &&
-             [[ "$(git diff --name-only --no-renames "$grass_base" HEAD -- src app reference tools)" == app/grass_project/initial_interval.f90 ]]; then
+          ahl_source=1354f5cad9a4db106db50e4e5d8d6a6ba141bca3
+          ahl_exact=false
+          cache_source=f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
+          if { git merge-base --is-ancestor "$ahl_source" HEAD &&
+               git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$cache_source" HEAD &&
+               git diff --quiet "$cache_source" HEAD -- src app reference tools tests; }; then
+            ahl_exact=true
+          fi
+          if [[ "$ahl_exact" == true ]] || {
+             git merge-base --is-ancestor "$grass_base" HEAD &&
+             [[ "$(git diff --name-only --no-renames "$grass_base" HEAD -- src app reference tools)" == app/grass_project/initial_interval.f90 ]];
+          }; then
             prior="$RUNNER_TEMP/grass-thermal-predecessor"
             git worktree add --detach "$prior" 77f3736198bdc54caa5d7d5ad2894413c0edb535
             trap 'git worktree remove "$prior"' EXIT

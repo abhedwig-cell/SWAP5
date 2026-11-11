@@ -7,7 +7,7 @@ module mod_bartholomeus_factor_provider
   use mod_bartholomeus_response, only: BartholomeusResponseInput
   use mod_bartholomeus_response_assembly, only: assemble_bartholomeus_response_inputs
   use mod_bartholomeus_waterfilm_provider, only: evaluate_bartholomeus_waterfilm, BARTHOLOMEUS_WATERFILM_OK, &
-       BARTHOLOMEUS_WATERFILM_REFERENCE,BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE
+       BARTHOLOMEUS_WATERFILM_REFERENCE,BARTHOLOMEUS_WATERFILM_REFINED_REFERENCE,bartholomeus_waterfilm_trial_cache_t
   use mod_bartholomeus_no_stress_gate, only: bartholomeus_macro_supply_bound_no_stress
   use mod_bartholomeus_profile_response, only: bartholomeus_profile_factors
   implicit none
@@ -31,7 +31,8 @@ contains
     call bartholomeus_profile_factors(input,atmospheric_ctop,factors,ok)
   end subroutine
 
-  subroutine evaluate_bartholomeus_factors_from_state(view,data,crop,w_root,w_root_z0,atmospheric_ctop,waterfilm_mode,factors,ok)
+  subroutine evaluate_bartholomeus_factors_from_state(view,data,crop,w_root,w_root_z0,atmospheric_ctop, &
+       waterfilm_mode,factors,ok,cache)
     type(bartholomeus_runtime_view_t),intent(in)::view
     type(BartholomeusImmutableDataset),intent(in)::data
     type(BartholomeusCropParameters),intent(in)::crop
@@ -39,6 +40,7 @@ contains
     integer,intent(in)::waterfilm_mode
     real(real64),allocatable,intent(out)::factors(:)
     logical,intent(out)::ok
+    type(bartholomeus_waterfilm_trial_cache_t),optional,intent(inout)::cache
     real(real64),allocatable::waterfilm(:)
     integer::status
 
@@ -57,7 +59,7 @@ contains
         allocate(factors(view%rooted_nodes)); factors=1.0_real64; ok=.true.; return
       end if
     end if
-    call evaluate_bartholomeus_waterfilm(view,data,waterfilm_mode,waterfilm,status)
+    call evaluate_bartholomeus_waterfilm(view,data,waterfilm_mode,waterfilm,status,cache)
     if(status/=BARTHOLOMEUS_WATERFILM_OK) return
     call evaluate_bartholomeus_factors(view,data,crop,w_root,w_root_z0,waterfilm,atmospheric_ctop,factors,ok)
   end subroutine

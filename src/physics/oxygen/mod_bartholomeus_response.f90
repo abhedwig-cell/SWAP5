@@ -16,6 +16,11 @@ module mod_bartholomeus_response
       real(real64) :: max_resp_factor
    end type BartholomeusResponseInput
 
+   type :: BartholomeusResidualState
+      type(BartholomeusResponseInput) :: input
+      logical :: valid
+   end type BartholomeusResidualState
+
 contains
 
    subroutine bartholomeus_respiration_factor(p, resp_factor, ok)
@@ -23,7 +28,7 @@ contains
       real(real64), intent(out) :: resp_factor
       logical, intent(out) :: ok
       integer :: status
-      logical :: residual_valid
+      type(BartholomeusResidualState) :: state
 
       ok = .false.
       if (p%max_resp_factor < 0.0_real64) then
@@ -31,28 +36,34 @@ contains
          return
       end if
 
-      residual_valid = .true.
-      call oxygen_bisect_monotone(residual, p%max_resp_factor, resp_factor, status, xtol=1.0e-8_real64)
-      if (.not. residual_valid) return
+      state = BartholomeusResidualState(p, .true.)
+      call oxygen_bisect_monotone(xmax=p%max_resp_factor, x=resp_factor, status=status, &
+                                  xtol=1.0e-8_real64, state=state, state_residual=residual)
+      if (.not. state%valid) return
       if (status == OXYGEN_INVALID_BRACKET) return
       ok = .true.
+   end subroutine bartholomeus_respiration_factor
 
-   contains
-      function residual(x) result(f)
-         real(real64), intent(in) :: x
-         real(real64) :: f, c_macro, c_micro
-         logical :: macro_ok
+   function residual(x, state) result(f)
+      real(real64), intent(in) :: x
+      class(*), intent(inout) :: state
+      real(real64) :: f, c_macro, c_micro
+      logical :: macro_ok
 
-         c_micro = bartholomeus_micro_concentration(p%micro,x)
-         c_macro = bartholomeus_macro_concentration(p%macro,x,macro_ok)
+      select type (state)
+      type is (BartholomeusResidualState)
+         c_micro = bartholomeus_micro_concentration(state%input%micro,x)
+         c_macro = bartholomeus_macro_concentration(state%input%macro,x,macro_ok)
          if (.not. macro_ok) then
-            residual_valid = .false.
+            state%valid = .false.
             f = 0.0_real64
          else
             f = c_macro-c_micro
          end if
-      end function residual
-   end subroutine bartholomeus_respiration_factor
+      class default
+         error stop "Unexpected Bartholomeus residual state"
+      end select
+   end function residual
 
    pure function bartholomeus_rwu_factor(resp_factor,max_resp_factor) result(rwu_factor)
       real(real64), intent(in) :: resp_factor,max_resp_factor

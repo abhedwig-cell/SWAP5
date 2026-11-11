@@ -1,0 +1,152 @@
+{
+  "source_commit": "a4da56a0c60105862fc3dc91b6101ff1c963cf84",
+  "previous_source_commit": "a8275101d91f0ab5b413290e9b00bb5666b11917",
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "executable_sha256": "dd9ef55c6f48db1b9ec7cce1908c35ab26b5efa944e10f152f9e73aafaf6705c",
+  "build_receipt_sha256": "712f0c8676fede8102018d8ccc439d53b1283b9ab971819aff7e4fe1ab0b1253",
+  "tracked_build_inputs": 202,
+  "generated_input_sha256": {
+    "original_input_helpers.f90": "bb30c071efeac9435018898108ad20e88986b2d1405d5b4067ac51700c611022"
+  },
+  "original_input_sha256": {
+    "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+    "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+    "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+    "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+    "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+  },
+  "previous_physical_files_byte_exact": [
+    "budget.csv",
+    "conductive_budget.csv",
+    "crop.csv",
+    "state.csv",
+    "endpoint.csv"
+  ],
+  "launcher_elapsed_seconds_from_file_timestamps": 6036.22878742218,
+  "full": {
+    "days": [
+      1,
+      1827
+    ],
+    "accepted_steps": 1819203,
+    "maximum_daily_water_residual_cm": 4.593547764386585e-14,
+    "cumulative_water_residual_cm": -6.661338147750939e-15,
+    "maximum_uptake_attribution_residual_cm": 8.539176310495833e-16,
+    "cumulative_conductive_residual_j_cm2": -8.75874892058981e-09,
+    "maximum_daily_conductive_residual_j_cm2": 2.1790924620290753e-10,
+    "maximum_substep_conductive_residual_j_cm2": 3.616142107976117e-12,
+    "output_sha256": {
+      "budget.csv": "3fc0121c159c8861ae2b2587be8698bcae837dba86084c9312a3ba1ac8b810b6",
+      "conductive_budget.csv": "ece1ea7babccf889d5316d74eb716dde46ae8d3fe79b223318d4bcc88c6ee459",
+      "crop.csv": "0741c173d441a69d9e53feb4a6b8c7a0b4c5b7ef1f70cb3fff920a006849434e",
+      "checkpoint.bin": "7d4274e88ccb493cdb0f461f0c979689778eaa69726b1746d44407d08c75f7fa",
+      "state.csv": "f0759d0879fdf7b26ac5553f36c685c7f5b12f154c12d0e0408822aacebdaeb3",
+      "endpoint.csv": "d7728b038f69f3383d44d453381ed87b9f2343ae73dcfa6cd8990f4539859af4"
+    }
+  },
+  "live_restart": {
+    "source_commit": "a4da56a0c60105862fc3dc91b6101ff1c963cf84",
+    "build_manifest_sha256": "712f0c8676fede8102018d8ccc439d53b1283b9ab971819aff7e4fe1ab0b1253",
+    "executable_sha256": "dd9ef55c6f48db1b9ec7cce1908c35ab26b5efa944e10f152f9e73aafaf6705c",
+    "input_sha256": {
+      "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+      "input.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+      "input.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+      "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+      "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060"
+    },
+    "origin": {
+      "day": 245,
+      "checkpoint_sha256": "7f3710632bfe7f493c0b36e256b4cf9c2c553a8703f54b7e60f9c29c0ea92bc7"
+    },
+    "all_three_ledgers_exact": true,
+    "run": {
+      "days": [
+        246,
+        247
+      ],
+      "accepted_steps": 1727,
+      "maximum_daily_water_residual_cm": 1.049160758270773e-14,
+      "cumulative_water_residual_cm": -1.199040866595169e-14,
+      "maximum_uptake_attribution_residual_cm": 0.0,
+      "cumulative_conductive_residual_j_cm2": 2.327027459614328e-11,
+      "maximum_daily_conductive_residual_j_cm2": 1.1652900866465643e-11,
+      "maximum_substep_conductive_residual_j_cm2": 2.869385284931525e-12,
+      "output_sha256": {
+        "budget.csv": "c9429bb926eb3e4eafd3dd23c8825537aae4d4b6ae504b3cbbc211fb316801e5",
+        "conductive_budget.csv": "545e6fbc49e118e57fb984cf7757abcb6be341380a8329501f1b09f2a53db06e",
+        "crop.csv": "a0668d3d9e9475f6416b9f25d10297b9137f4ff11452135f66f56a0f756d36ef",
+        "checkpoint.bin": "d3a2145da514d42ae0b5f5c1f93cefe0150cf5fc37abbf8c2914da0b8850e02c",
+        "state.csv": "42686d04cc965ac5ff556bfcd87d1d38b3a9dfc73ba41dbdfa8cc3664ac3ba00",
+        "endpoint.csv": "d543377bdc160d19da54dc897ff061ad681d7a784948ed1461b7f580b270a5c0"
+      }
+    }
+  },
+  "late_restart": {
+    "origin": {
+      "day": 1792,
+      "checkpoint_sha256": "9872c472a747d732943960804aa1d798b3cf249f63df70af9c16d092846ff951"
+    },
+    "exact_terminal": true,
+    "run": {
+      "days": [
+        1793,
+        1827
+      ],
+      "accepted_steps": 33929,
+      "maximum_daily_water_residual_cm": 2.955968803064479e-14,
+      "cumulative_water_residual_cm": -1.6431300764452317e-14,
+      "maximum_uptake_attribution_residual_cm": 2.0074680849926918e-18,
+      "cumulative_conductive_residual_j_cm2": -1.853244224747641e-10,
+      "maximum_daily_conductive_residual_j_cm2": 9.524114830128383e-11,
+      "maximum_substep_conductive_residual_j_cm2": 3.1565514091447255e-12,
+      "output_sha256": {
+        "budget.csv": "da51bdafe307a78cc98a8c43faf667d6a374a3b49c7e92d213527ff5aa0d7df1",
+        "conductive_budget.csv": "ad2a00766f47bcf687f60ec364f4e5595fefe777c8e89455ea3aa897e0c45bb4",
+        "crop.csv": "80744fba84de6cd5df37cad34dd59e476447256aef74bf76c0febdddb132c509",
+        "checkpoint.bin": "7d4274e88ccb493cdb0f461f0c979689778eaa69726b1746d44407d08c75f7fa",
+        "state.csv": "f0759d0879fdf7b26ac5553f36c685c7f5b12f154c12d0e0408822aacebdaeb3",
+        "endpoint.csv": "d7728b038f69f3383d44d453381ed87b9f2343ae73dcfa6cd8990f4539859af4"
+      }
+    }
+  },
+  "historical_comparison": {
+    "sealed_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+    "day188": {
+      "potential_cm": {
+        "native_cm": 0.14242295537732308,
+        "B0_cm": 0.141707391074
+      },
+      "uptake_cm": {
+        "native_cm": 0.13643794067970308,
+        "B0_cm": 0.125136344464
+      },
+      "drought_cm": {
+        "native_cm": 0.0,
+        "B0_cm": 0.0
+      },
+      "oxygen_cm": {
+        "native_cm": 0.005985014697619998,
+        "B0_cm": 0.01657104661
+      }
+    },
+    "largest_absolute_daily_differences": {
+      "potential_cm": {
+        "day": 205,
+        "native_minus_B0_cm": 0.006906141383167974
+      },
+      "uptake_cm": {
+        "day": 188,
+        "native_minus_B0_cm": 0.011301596215703091
+      },
+      "drought_cm": {
+        "day": 170,
+        "native_minus_B0_cm": -0.0016732685230524784
+      },
+      "oxygen_cm": {
+        "day": 905,
+        "native_minus_B0_cm": -0.01064852911121866
+      }
+    }
+  }
+}

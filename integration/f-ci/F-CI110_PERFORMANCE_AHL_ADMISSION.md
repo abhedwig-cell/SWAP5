@@ -101,3 +101,31 @@ Final status:
 `F-CI110 = CANONICAL_ADMITTED_PRESERVED`
 
 The reconstructed exact-performance lineage and bounded default-OFF F-AHL50 capability are now canonical production authority.
+
+
+## Explicit-state Linux portability successor
+
+PR #1626 repairs the Linux shared-library load on canonical
+`a8275101d91f0ab5b413290e9b00bb5666b11917`. Its production and test
+postimage is `1354f5cad9a4db106db50e4e5d8d6a6ba141bca3`.
+The per-call Bartholomeus residual and HBOT5/Cauchy-3 selector preserve
+the ordering, tolerance, and previous stateless interfaces. No change
+to the F-AHL50 direct-retention policy is part of this successor.
+
+F-CI and Grassgrowth thermal CI select this successor only when its
+exact source and test trees are preserved. They replay their frozen
+authorities at the existing predecessor commits. The current F-CI
+feedback executes the six impacted component cases at O0 and O2 and
+the current application selector. Grassgrowth continues to run the
+existing live thermal, original-input, restart and Andelst codec
+controls. The automatic impact report remains separate. This route
+does not promote either historical reference results or whole-project
+scientific equivalence.
+
+The original F-CI110 and AHL50 workflows passed at the production
+postimage. Paired Ubuntu 26.04 comparison reproduces the F-GC44
+O0/O2 derivative output difference on both sources. Cauchy contact
+reaches the O0 timeout on both and fails O2 macro initialization on
+both. These controls retain their failed verdicts and do not establish
+contact rollback equivalence. Exact logs and artifact identities are
+recorded in PR #1626.

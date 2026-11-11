@@ -20,6 +20,7 @@ module mod_fmr_serialized_reference_backend
        kernel_checkpoint_t, kernel_executor_t, kernel_result_t, kernel_candidate_state_t, kernel_diagnostics_t, &
        kernel_reference_floor_result_t, kernel_reference_floor_candidate_t, &
        KERNEL_STATUS_NOT_ADMITTED, KERNEL_REFERENCE_FLOOR_STATUS_NOT_ADMITTED
+  use mod_canonical_interval_runtime, only: canonical_subinterval_selection_t
   use mod_fmr_checkpoint_orchestrator, only: fmr_trial_from_checkpoint, fmr_commit_candidate, fmr_discard_candidate
   use mod_fmr_mode7_temporal_head_envelope, only: fmr_mode7_head_envelope_assessment_t, &
        assess_fmr_mode7_temporal_head_envelope, FMR_MODE7_HEAD_ENVELOPE_OK
@@ -107,6 +108,7 @@ module mod_fmr_serialized_reference_backend
   use mod_fmr_bartholomeus_activation, only: select_fmr_bartholomeus_route, FMR_BARTHOLOMEUS_ACTIVE, &
        FMR_BARTHOLOMEUS_DISABLED
   use mod_fmr_bartholomeus_execution, only: fmr_apply_bartholomeus_to_root_sink, FMR_BARTHOLOMEUS_EXEC_OK
+  use mod_bartholomeus_waterfilm_provider, only: bartholomeus_waterfilm_trial_cache_t
   use mod_root_water_uptake_process, only: root_water_uptake_flux_result_t, root_water_uptake_diagnostics_t, &
        root_water_uptake_parameters_t, root_water_uptake_request_t, evaluate_macro_feddes_drought_uptake, ROOT_UPTAKE_OK
   use mod_root_uptake_compensation, only: root_compensation_config_t, root_compensation_diagnostics_t, compose_jarvis_root_uptake, &
@@ -946,6 +948,7 @@ module mod_fmr_serialized_reference_backend
     logical :: top_sensible_boundary_carrier_active = .false.
     logical :: top_sensible_boundary_carrier_valid = .true.
     type(fmr_serialized_physical_observation_t) :: last_observation
+    type(bartholomeus_waterfilm_trial_cache_t) :: waterfilm_cache
     logical :: accepted_water_flux_trace_enabled = .false.
     logical :: accepted_water_flux_trace_failed = .false.
     type(fmr_trace_arena_entry_t), allocatable :: trace_arena(:)
@@ -970,6 +973,15 @@ module mod_fmr_serialized_reference_backend
     procedure :: end_scratch_scope => fmr_serialized_end_scratch_scope
     procedure :: accepted_trajectory_direction_snapshot => fmr_serialized_accepted_trajectory_direction_snapshot
   end type fmr_serialized_reference_model_t
+
+  type, extends(canonical_subinterval_selection_t) :: fmr_bottom_target_selection_t
+    type(fmr_serialized_reference_model_t), pointer :: model
+    integer :: max_retries
+    logical :: hbot5, anchored_ceiling
+    real(real64) :: previous_cursor, progress_tolerance
+  contains
+    procedure :: select => select_bottom_target
+  end type fmr_bottom_target_selection_t
 
   type, public :: fmr_serialized_reference_backend_t
     private
@@ -2718,7 +2730,7 @@ contains
   subroutine fmr_serialized_backend_run_trial(self, column, template, parameters, committed, forcing, config, &
                                                t0, t1, checkpoint, result, candidate, diagnostics, &
                                                trusted_prepared_parameters, trace_accepted_water_flux_substeps,trace_accepted_soil_n_heat)
-    class(fmr_serialized_reference_backend_t), intent(inout) :: self
+    class(fmr_serialized_reference_backend_t), target, intent(inout) :: self
     type(fmr_logical_column_t), intent(in) :: column
     type(fmr_template_t), intent(in) :: template
     type(fmr_b110_physical_parameters_t), target, intent(in) :: parameters
@@ -2734,7 +2746,7 @@ contains
     logical, intent(in), optional :: trace_accepted_water_flux_substeps
     logical, intent(in), optional :: trace_accepted_soil_n_heat
     logical :: anchored_ceiling
-    real(real64) :: previous_selector_cursor,accepted_width,endpoint_margin
+    type(fmr_bottom_target_selection_t) :: selection
     logical :: soil_n_heat_trace
     logical :: bottom_thermal_ok, top_sensible_ok, soil_salt_boundary_ok
     integer :: salt_active_domains
@@ -3138,7 +3150,6 @@ contains
       self%model%top_sensible_boundary_carrier_valid = top_sensible_ok
     end if
     anchored_ceiling=self%model%macropore_policy%anchored_cauchy_step_ceiling
-    previous_selector_cursor=t0
     if(anchored_ceiling)then
       if(.not.(composed_rutter_boesten_macro.and.macro_numeric_heat_valid(parameters).and. &
          self%model%accepted_water_flux_trace_enabled.and.allocated(forcing%legacy_swbotb3_implicit_control)))then
@@ -3340,12 +3351,18 @@ contains
     if (allocated(forcing%soil_salt_boundary)) self%model%soil_salt_boundary_forcing = forcing%soil_salt_boundary
     ! Warm numerical history is local to this immutable external interval.
     call clear_reference_trial_guess(self%model%workspace)
-    if (allocated(forcing%legacy_swbotb5_control)) then
+    ! The memoized quadrature belongs only to this call. It is outside the
+    ! committed state and the attempt contexts because hits require exact input.
+    call self%model%waterfilm_cache%reset(allocated(self%model%bartholomeus))
+    if (allocated(forcing%legacy_swbotb5_control) .or. allocated(forcing%legacy_swbotb3_implicit_control)) then
+      selection%model => self%model
+      selection%max_retries = config%transaction%max_retries
+      selection%hbot5 = allocated(forcing%legacy_swbotb5_control)
+      selection%anchored_ceiling = anchored_ceiling
+      selection%previous_cursor = t0
+      selection%progress_tolerance = config%progress_tolerance
       call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
-           result, candidate, diagnostics, target_selector=select_hbot5_proposal)
-    else if (allocated(forcing%legacy_swbotb3_implicit_control)) then
-      call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
-           result, candidate, diagnostics, target_selector=select_cauchy3_proposal)
+           result, candidate, diagnostics, selection=selection)
     else
       call fmr_trial_from_checkpoint(self%kernel, parameters, committed, trial_forcing, trial_config, t0, t1, checkpoint, &
            result, candidate, diagnostics)
@@ -3358,6 +3375,7 @@ contains
       call materialize_accepted_water_flux_trace(self%model,t0,t1,soil_salt_boundary_ok)
       if (.not.soil_salt_boundary_ok) call reject_backend_trial(result,candidate,diagnostics)
     end if
+    call self%model%waterfilm_cache%reset(.false.)
     ! Transaction contexts have left scope after fmr_trial_from_checkpoint.
     ! The immutable public observation now owns the accepted flat trace.
     if (allocated(self%model%trace_arena)) deallocate(self%model%trace_arena)
@@ -3384,46 +3402,42 @@ contains
     call self%model%top_sensible_boundary_carrier%clear()
     self%model%top_sensible_boundary_carrier_active = .false.
     self%model%top_sensible_boundary_carrier_valid = .true.
-  contains
-    subroutine select_hbot5_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
-      real(real64), intent(in) :: cursor, requested_t1
-      real(real64), intent(out) :: target_t1
-      integer, intent(out) :: max_retries_cap
-      logical, intent(out) :: valid
-      integer :: provider_status
-      target_t1 = requested_t1
-      max_retries_cap = config%transaction%max_retries
-      valid = .false.
+  end subroutine fmr_serialized_backend_run_trial
+
+  subroutine select_bottom_target(self, cursor, requested_t1, target_t1, max_retries_cap, valid)
+    class(fmr_bottom_target_selection_t), intent(inout) :: self
+    real(real64), intent(in) :: cursor, requested_t1
+    real(real64), intent(out) :: target_t1
+    integer, intent(out) :: max_retries_cap
+    logical, intent(out) :: valid
+    integer :: provider_status
+    real(real64) :: accepted_width, endpoint_margin
+
+    target_t1 = requested_t1
+    max_retries_cap = self%max_retries
+    valid = .false.
+    if (self%hbot5) then
       self%model%hbot5_proposal = fmr_hbot5_proposal_t()
       if (.not. allocated(self%model%legacy_swbotb5_control)) return
       call self%model%legacy_swbotb5_control%resolve(cursor,target_t1,self%model%hbot5_proposal,provider_status)
       valid = provider_status == FMR_HBOT5_OK .and. self%model%hbot5_proposal%available
-    end subroutine
+      return
+    end if
 
-    subroutine select_cauchy3_proposal(cursor, requested_t1, target_t1, max_retries_cap, valid)
-      real(real64), intent(in) :: cursor, requested_t1
-      real(real64), intent(out) :: target_t1
-      integer, intent(out) :: max_retries_cap
-      logical, intent(out) :: valid
-      integer :: provider_status
-      target_t1 = requested_t1
-      max_retries_cap = config%transaction%max_retries
-      valid = .false.
-      self%model%cauchy3_proposal = fmr_cauchy3_proposal_t()
-      if (.not. allocated(self%model%legacy_swbotb3_implicit_control)) return
-      call self%model%legacy_swbotb3_implicit_control%resolve_proposal(cursor, target_t1, &
-           self%model%cauchy3_proposal, provider_status)
-      valid = provider_status == FMR_CAUCHY3_OK .and. self%model%cauchy3_proposal%available
-      if(valid.and.anchored_ceiling.and.cursor>previous_selector_cursor)then
-        accepted_width=cursor-previous_selector_cursor
-        target_t1=min(requested_t1,cursor+2.0_real64*accepted_width)
-        endpoint_margin=max(config%progress_tolerance,128.0_real64*epsilon(1.0_real64)* &
-          max(1.0_real64,abs(cursor),abs(requested_t1)))
-        if(requested_t1-target_t1<=endpoint_margin)target_t1=requested_t1
-      end if
-      previous_selector_cursor=cursor
-    end subroutine
-  end subroutine fmr_serialized_backend_run_trial
+    self%model%cauchy3_proposal = fmr_cauchy3_proposal_t()
+    if (.not. allocated(self%model%legacy_swbotb3_implicit_control)) return
+    call self%model%legacy_swbotb3_implicit_control%resolve_proposal(cursor, target_t1, &
+         self%model%cauchy3_proposal, provider_status)
+    valid = provider_status == FMR_CAUCHY3_OK .and. self%model%cauchy3_proposal%available
+    if (valid .and. self%anchored_ceiling .and. cursor > self%previous_cursor) then
+      accepted_width = cursor-self%previous_cursor
+      target_t1 = min(requested_t1,cursor+2.0_real64*accepted_width)
+      endpoint_margin = max(self%progress_tolerance,128.0_real64*epsilon(1.0_real64)* &
+           max(1.0_real64,abs(cursor),abs(requested_t1)))
+      if (requested_t1-target_t1 <= endpoint_margin) target_t1 = requested_t1
+    end if
+    self%previous_cursor = cursor
+  end subroutine select_bottom_target
 
   subroutine reject_backend_trial(result, candidate, diagnostics)
     type(kernel_result_t), intent(out) :: result
@@ -5647,7 +5661,7 @@ contains
           call fmr_apply_bartholomeus_to_root_sink(self%bartholomeus%selection,hydraulic_start,oxygen_thermal, &
                self%bartholomeus%soil,self%bartholomeus%crop,oxygen_w_root, &
                self%crop_oxygen%root_density_kg_m3,atmospheric_ctop,oxygen_base,oxygen_final,oxygen_status,oxygen_factors, &
-               refined_waterfilm=self%root_accuracy_enabled)
+               refined_waterfilm=self%root_accuracy_enabled,waterfilm_cache=self%waterfilm_cache)
           self%last_observation%bartholomeus_executed=.true.
           self%last_observation%bartholomeus_status=oxygen_status
           self%last_observation%root_oxygen_base_uptake=oxygen_base%actual_uptake_total
