@@ -74,6 +74,7 @@ jobs:
             /reference/swap-4.3.1/projects/3.macroporeflow/
             /research/hybrid-water01/*generic_hybrid*
             /research/hybrid-water01/check_hybrid_budget_protocol.py
+            /research/hybrid-water01/run_hybrid_grass_full.py
       - name: Persisted owning selection
         run: python3 tests/modularity/run_modular_tests.py --check-selection hybrid_generic_waterhost
       - name: Cold original source build, no reference trajectory
@@ -103,11 +104,17 @@ jobs:
             python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --reference "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-grass-$opt" --project grass --optimization "$opt"
             python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --reference "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-andelst-$opt" --project andelst --optimization "$opt" --andelst-baseline "$RUNNER_TEMP/generic-baseline"
           done
+      - name: Complete Hupsel current compiler and own seasonal states
+        run: python3 -B research/hybrid-water01/run_hybrid_grass_full.py --project hupsel --reference "$RUNNER_TEMP/generic-reference" --bundle "$RUNNER_TEMP/generic-hupsel-O2" --output "$RUNNER_TEMP/generic-hupsel-full"
       - name: Public explicit water prototype and fresh continuation
         shell: bash
         run: |
           python3 -B tools/solute/run_water.py --model HYBRID_GRASSGROWTH_WATER --reference-work "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-public" --days 4 --checkpoint-at 2
           python3 -B tools/solute/run_water.py --model HYBRID_GRASSGROWTH_WATER --reference-work "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-public-resume" --days 4 --restart "$RUNNER_TEMP/generic-public/accepted-column-1-day-2.zip" --restart-day 2 --checkpoint-at 4
+      - name: Public Hupsel saline-gift cold and own continuation
+        run: |
+          python3 -B tools/solute/run_water.py --model HYBRID_HUPSEL_WATER --reference-work "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-hupsel-public" --days 7 --checkpoint-at 5
+          python3 -B tools/solute/run_water.py --model HYBRID_HUPSEL_WATER --reference-work "$RUNNER_TEMP/generic-reference" --output "$RUNNER_TEMP/generic-hupsel-public-resume" --days 7 --restart "$RUNNER_TEMP/generic-hupsel-public/accepted-column-1-day-5.zip" --restart-day 5 --checkpoint-at 7
       - uses: actions/upload-artifact@v4
         if: always()
         with:
