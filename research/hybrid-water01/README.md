@@ -2,6 +2,48 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Original heat-accounting delivered and admitted, 11 November 2026
+
+PR #1643 MERGED at a0c07487c944ff7da2a7e3b502aa725f687e480a.
+Qualified head b9b02c071e43007c79b772130efa85855f30a1a2, predicted merge and
+actual canonical have tree 7a2ace44308d760121e1a5939e2c05b3c633a5aa. Five
+application/raw-capsule/log Git blobs were independently checked against canonical.
+Receipt: CLOSURE01_HYBRID_HEAT_ACCOUNTING_CANONICAL_20261111.json.
+This supersedes the ACTIVE banner below. All model/compiler/CI/archive/audit/docs
+work is FINISHED; no workers remain for this delivery. Do not repeat its runs.
+
+New opt-in read-only original temperature observer and accepted-day reader reuse
+existing production sensible-storage accounting. Six O0/O2 case windows on Windows
+and Ubuntu26 (12 total) retain exact original physical records and both complete
+native endpoint payloads. Independent audits cover 17,172 actual heat calls and
+696 raw files. Numerical conduction residual stays below1.8e-12J/cm2 against the
+UNCHANGED1e-9 budget. Original operations are unchanged outside observation blocks
+(after explicit CRLF/LF normalization); no default launcher or physical solver change.
+Linux43109370745/job130821031484 SUCCESS atb7ca516f60caa448109a0f72980d9948de1f25e9;
+executed application/qualifier/reader dependency diff to admitted head is empty.
+Accepted-only filtering and corrupted-face refusal pass. Docs checks/strict build pass.
+
+All actual storage calls retain status3, incomplete boundary; FULL PHYSICAL ENERGY
+REMAINS OPEN. The labelled zero-missing-energy counterfactual FAILS (up to3.429J/cm2).
+It is not a measured whole-model energy residual or proof of a migration defect.
+Do not compensate by booking residuals as boundary heat. Functional coverage stays
+three original projects. Native thermal temporal accuracy and scientific equivalence
+remain separate; day188/day584 failed original comparisons remain visible.
+No full model/reference trajectory was rerun and no tolerance was changed.
+
+Raw Windows SHA25653350b8cfb37eb5b7a89a3f6c63bf99877792ce3572c1e5550b3360ff5006ade;
+Linux SHA25646a7e502b4e46bb460b2c9222d893fb619197f89028371b61a7998b828ced338.
+Both files and the detailed review/audit/owning record are on canonical under
+research/hybrid-water01 and integration/f-ci/HYBRID_HEAT_ACCOUNTING_20261111.json.
+
+NEXT coherent delivery: inventory actual water/root/drain/macropore thermal carriers
+and donor temperatures using existing production carrier/storage owners and the
+conservative-heat request contract. First read HYBRID_HEAT_ACCOUNTING_REVIEW.md on
+canonical and inspect actual source-bound accepted-window data. Unknown donor and
+reference inputs stay unavailable. Select a small real accepted source window only
+if it can decide whether a defensible physical carrier contract can be assembled.
+No repeat conduction-only experiment, full run or underresolved reference campaign.
+
 ### Active original heat-accounting delivery, 11 November 2026
 
 Current implementation branchcodex/hybrid-heat-accounting at6585e5ffe, based on

@@ -1,0 +1,54 @@
+{
+  "status": "CANONICALLY_ADMITTED_READ_ONLY_HEAT_ACCOUNTING_FULL_ENERGY_OPEN",
+  "pr": 1643,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1643",
+  "qualified_head": "b9b02c071e43007c79b772130efa85855f30a1a2",
+  "base": "f5606e455cf1e558d23e3a0af5b7d8847fbdc954",
+  "canonical": "a0c07487c944ff7da2a7e3b502aa725f687e480a",
+  "tree": "7a2ace44308d760121e1a5939e2c05b3c633a5aa",
+  "verified_blobs": {
+    "app/hybrid_water/heat_accounting.f90": {
+      "git_blob": "9f93aa36064e5f8cf2cbd46437bfa83e7d7edcda",
+      "working_file_sha256": "eb1a0a3a0bc531f73d0d5a20c0e2cf40be0bd973e87e7f7e66bac6c342998c89"
+    },
+    "app/hybrid_water/heat_receipts.py": {
+      "git_blob": "65cca2fc27c57387b9c25130ff3e6070c96e180d",
+      "working_file_sha256": "7f5a75ba8d07448695d4b964cea4c221bb89a76ca13e5154adaf8188bc94e418"
+    },
+    "research/hybrid-water01/original-heat-windows-20261111.tar.xz": {
+      "git_blob": "45e3b727709c21e49f6c8f51c646d5a4639b3d12",
+      "working_file_sha256": "53350b8cfb37eb5b7a89a3f6c63bf99877792ce3572c1e5550b3360ff5006ade"
+    },
+    "research/hybrid-water01/original-heat-linux-20261111.tar.xz": {
+      "git_blob": "d13c0d9acc2a06cfa817262777f6f28bdb068a56",
+      "working_file_sha256": "46a7e502b4e46bb460b2c9222d893fb619197f89028371b61a7998b828ced338"
+    },
+    "research/hybrid-water01/original-heat-linux-ci-20261111.log.gz": {
+      "git_blob": "d156e20d01124bf6c2b6d548bc36891e6b4c078b",
+      "working_file_sha256": "4fba36a0f4da404ad26b8e57b338cecdf80c71efdbdfd61de63996583bf7e97c"
+    }
+  },
+  "ci": {
+    "run": 43109370745,
+    "job": 130821031484,
+    "status": "completed",
+    "conclusion": "success",
+    "executed_head": "b7ca516f60caa448109a0f72980d9948de1f25e9",
+    "application_dependency_diff_to_qualified_head": "empty"
+  },
+  "proof": {
+    "windows_heat_steps": 7750,
+    "linux_heat_steps": 9422,
+    "case_windows": 12,
+    "actual_status": 3,
+    "full_energy_complete": false,
+    "original_physical_and_native_endpoints": "exact same-platform continuation",
+    "numerical_conduction_budget_J_cm2": 1e-09,
+    "largest_observed_conduction_residual_J_cm2": 1.7843504451775516e-12,
+    "zero_missing_energy_counterfactual": "FAIL; not an actual whole-model energy residual",
+    "physical_tolerances": "unchanged",
+    "full_model_runs_repeated": 0,
+    "functional_project_count": 3
+  },
+  "next_delivery": "Inventory actual water/root/drain/macropore thermal carriers and donor temperatures using existing production owners and conservative-heat request contract. Missing physical inputs remain unavailable; no residual compensation or repeat conduction campaign."
+}
