@@ -37,6 +37,14 @@ def main():
             member = f'bound/{n:03d}/{path.name}'
             files[member] = path
             index[str(path.resolve())] = member
+        index[name] = index[str(path.resolve())]
+    for parent in sorted({Path(name).parent for name in release['object_sha256']}):
+        manifest = parent/'BUILD.json'
+        if manifest.exists():
+            files[f'compile-provenance/{parent.name}/BUILD.json'] = manifest
+    reader_events = Path(release['input_library']).with_name('events.json')
+    if reader_events.exists():
+        files['compile-provenance/ttutil/events.json'] = reader_events
     files['spec.json'] = a.spec
     files['receipt.json'] = a.receipt
     repo = Path(__file__).resolve().parents[2]

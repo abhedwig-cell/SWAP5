@@ -1,5 +1,5 @@
 {
-  "status": "SINGLE_FULL_EXECUTION_RUNNING",
+  "status": "FULL_EXECUTION_PASS_OWN_RESTARTS_NEXT",
   "canonical_source": "c3c99cb6c70edfd652d904306daa63d03a283939",
   "model": "Original113-node Grassgrowth,1827 days",
   "numerical_profile": "thermal-subcycle4-1e-5C",
@@ -536,5 +536,23 @@
   ],
   "launch_record": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-full-20261111\\LAUNCH.json",
   "progress_record": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-full-20261111\\PROGRESS.json",
-  "resume_rule": "Inspect the exact process identities and run directory first. Continue observing live native/monitor processes; never launch a duplicate full trajectory. Preserve censored/failing observations; only own source-bound checkpoint continuation is allowed."
+  "resume_rule": "Inspect the exact process identities and run directory first. Continue observing live native/monitor processes; never launch a duplicate full trajectory. Preserve censored/failing observations; only own source-bound checkpoint continuation is allowed.",
+  "full_execution_summary": {
+    "seconds": 2527.475440000184,
+    "completed_days": 1827,
+    "returncode": 0,
+    "censored": false,
+    "captured": [
+      2.0,
+      4.0,
+      187.0,
+      188.0,
+      190.0,
+      365.0,
+      367.0,
+      1791.0,
+      1792.0
+    ]
+  },
+  "restart_folder": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-restarts-20261111"
 }
