@@ -2,6 +2,26 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### ACTIVE generic hybrid implementation, 11 November 2026
+
+Own branch codex/hybrid-generic-waterhost is ate3faef7ebe279488efd07c5962fc479485c2e6d7.
+The coherent grid/clock/nonmacro implementation and public4-day prototype are
+implemented. Local actual kernelO0/O2 with originalO2 donor passes Grass4days,
+exact own native/auxiliary2-to4, distinct instances/refusal and strict budgets.
+AndelstO0/O2 prefix and corresponding entire cold/restored payloads preserve the
+old donor controls. Existing96 auxiliary cold-versus-resumed bytes also occur
+in the old donor; failed overly-strong new asserts and adapter failures retained.
+Native result.end and physical suffix are exact. No tolerance/model repair used.
+
+One owning Ubuntu26 run43073368575 is ACTIVE on this exact source head;
+workflowgrass-thermal-production.yml with hybrid_waterhost=true. Do not start a
+duplicate. It builds original pinned sources without a full reference run and
+compares canonical Andelst on the SAME runner, then actual O0/O2 cases/public
+route. No local model/compiler remains. Continue to terminal CI status, raw
+retention and independent re-audit, strict docs and a published verified PR.
+Do not stop at this recovery banner or claim full Grass/heat/science coverage.
+
+
 ### Current16 cost hypothesis closed; generic waterhost is next, 11 November 2026
 
 PR1638 merged at01a9d29c380645dec880257f360174b5cb5ea5c0. Actual whole tree
