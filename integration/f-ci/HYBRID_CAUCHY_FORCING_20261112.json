@@ -36,5 +36,11 @@
     "failed_exact_original_comparison": "bottom flux differed by about5e-15cm; residual and native bytes correspondingly differ",
     "decision": "Reassess after two attempts: retain the larger original BBC table and original decimal spellings, change only requested day values. No physics/clock/guard relaxation. Independent original input edit remains the oracle.",
     "failed_evidence": "Retained s5-cauchy-probe2-windows-20261112 including complete native payloads and original-control"
+  },
+  "independent_control_presentation_failure": {
+    "source": "d1b1d9fba",
+    "actual_original_control_retry_recovery": "PASS before shifted independent-control assertion",
+    "diagnosis": "Independent direct host emits committed=True; public external proposal intentionally emits committed=False,candidate_only=True. Compare physical quantities separately from publication status; native byte equality remains mandatory. No application/model code change.",
+    "cost_control": "Reuse already accepted exact current-bundle O0 day20 from failed-test output after strict current binding/hash/native verification; do not rerun its18-day warm prefix."
   }
 }

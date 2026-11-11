@@ -23,6 +23,7 @@ p.add_argument('--workspace',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--opt',action='append',choices=['O0','O2'])
 p.add_argument('--probe',action='store_true')
+p.add_argument('--reuse-day20',type=Path,help='Previous exact current-bundle day20 files, verified before reuse')
 a=p.parse_args();a.output.mkdir();base=a.workspace
 idx=json.loads((base/'PROOF_INDEX.json').read_text());reference=base/idx['reference']
 report={'status':'RUNNING','source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
@@ -38,7 +39,7 @@ def stop():
         if proc.poll() is None:proc.kill()
 timer=threading.Timer(240,stop);timer.daemon=True;timer.start();begin=time.monotonic()
 def rows(p):return [json.loads(l) for l in p.read_text().splitlines()]
-def physical(r):return {k:v for k,v in r.items() if k not in ('coupling','revision','column')}
+def physical(r):return {k:v for k,v in r.items() if k not in ('coupling','revision','column','committed','candidate_only')}
 def payload(p):
     with zipfile.ZipFile(p) as z:return {n:z.read(n) for n in h.CHECKPOINT_FILES}
 def reject(fn):
@@ -54,7 +55,13 @@ try:
         out=a.output/opt;out.mkdir();cut=2
         origin=base/item['continuous']/f'accepted-column-1-day-{cut}.zip'
         initial_hash=h.sha(origin);compatible=origin
-        if not a.probe:
+        inherited=a.reuse_day20/opt/'warm-2-to-20/accepted-column-1-day-20.zip' if a.reuse_day20 else None
+        if not a.probe and inherited is not None and inherited.exists():
+            h.verify_checkpoint(inherited,20,meta['binding'],out/'verified-reused-day20')
+            import shutil
+            compatible=out/'accepted-origin-day-20.zip';shutil.copyfile(inherited,compatible)
+            assert h.sha(inherited)==h.sha(compatible);cut=20
+        elif not a.probe:
             # Old day20 in the capsule has a different build binding. Produce
             # current day20 once from its exact accepted2; never rebind old ZIPs.
             prefix=out/'warm-2-to-20';prefix.mkdir();unpacked=prefix/'origin'
