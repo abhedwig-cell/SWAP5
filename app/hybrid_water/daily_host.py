@@ -378,38 +378,57 @@ end submodule MOD_Solute_CDE""")
         snapshot='\n'.join(declarations)
         source=replace(source,'   contains',f"""   type hybrid_irrigation_snapshot_t
 {snapshot}
+      real(8)::accepted_iptra_day,accepted_iqreddry_day,accepted_iqredsol_day
       logical::was_emerged
    end type
    type(hybrid_irrigation_snapshot_t),save::hybrid_irrigation_snapshot
    logical,save::hybrid_irrigation_pending=.false.
    contains""")
-        wire=', &\n         '.join('hybrid_irrigation_snapshot%'+name for name in irrigation_fields+['was_emerged'])
+        wire=', &\n         '.join('hybrid_irrigation_snapshot%'+name for name in irrigation_fields+['accepted_iptra_day','accepted_iqreddry_day','accepted_iqredsol_day','was_emerged'])
         capture='\n'.join('         hybrid_irrigation_snapshot%'+name+'='+name for name in irrigation_fields)
         apply='\n'.join('         '+name+'=hybrid_irrigation_snapshot%'+name for name in irrigation_fields)
         procedures=f"""
    subroutine hybrid_irrigation_checkpoint(unit,restoring)
       use plant_interface,only:fl_cropemergence
+      use MOD_integral_global,only:iptra_day,iqreddry_day,iqredsol_day
+      use ieee_arithmetic,only:ieee_is_finite
       integer,intent(in)::unit
       logical,intent(in)::restoring
       integer::ios
       if(restoring)then
          read(unit,iostat=ios) {wire}
          if(ios/=0)error stop 'Incomplete Hupsel irrigation context'
+         if(.not.all(ieee_is_finite([hybrid_irrigation_snapshot%accepted_iptra_day, &
+            hybrid_irrigation_snapshot%accepted_iqreddry_day,hybrid_irrigation_snapshot%accepted_iqredsol_day]))) &
+            error stop 'Nonfinite accepted irrigation feedback'
          if(hybrid_irrigation_snapshot%dayfix<0.or.hybrid_irrigation_snapshot%dayfix>366) &
             error stop 'Invalid Hupsel irrigation context'
          hybrid_irrigation_pending=.true.
       else
 {capture}
+         hybrid_irrigation_snapshot%accepted_iptra_day=iptra_day
+         hybrid_irrigation_snapshot%accepted_iqreddry_day=iqreddry_day
+         hybrid_irrigation_snapshot%accepted_iqredsol_day=iqredsol_day
          hybrid_irrigation_snapshot%was_emerged=fl_cropemergence
          write(unit) {wire}
       end if
    end subroutine
    subroutine hybrid_apply_irrigation(emerged)
+      use MOD_integral_global,only:iptra_day,iqreddry_day,iqredsol_day
       logical,intent(in)::emerged
       if(.not.hybrid_irrigation_pending)return
+      iptra_day=hybrid_irrigation_snapshot%accepted_iptra_day
+      iqreddry_day=hybrid_irrigation_snapshot%accepted_iqreddry_day
+      iqredsol_day=hybrid_irrigation_snapshot%accepted_iqredsol_day
+      nirri=hybrid_irrigation_snapshot%nirri
       if(.not.hybrid_irrigation_snapshot%was_emerged.and.emerged)then
-         dayfix=366
-         flirrigate=.true.
+         if(schedule==1)then
+            dayfix=366
+            flirrigate=.true.
+         else
+            dayfix=hybrid_irrigation_snapshot%dayfix
+            flirrigate=hybrid_irrigation_snapshot%flirrigate
+         end if
       else
 {apply}
       end if
