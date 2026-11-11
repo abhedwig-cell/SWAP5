@@ -117,7 +117,7 @@ program grass_initial_interval
  real(real64)::year_origin
  real(real64),allocatable::heads(:),cofgen(:,:),conductivity(:),capacity(:),derivative(:),theta100(:),theta500(:)
  real(real64),allocatable::node_sand(:),node_organic(:),node_density(:),cumulative(:)
- integer::nodes,n,m,i,j,k,code,rooted,layers(256),counts(256),node_layer(256),dd(10000),mm(10000),yyyy(10000),date(6),mode,u
+ integer::heat_substeps,nodes,n,m,i,j,k,code,rooted,layers(256),counts(256),node_layer(256),dd(10000),mm(10000),yyyy(10000),date(6),mode,u
  logical::available,committed,rdinqr
  character(64)::arg
  character(1024)::restart_path
@@ -308,11 +308,13 @@ program grass_initial_interval
  call require(numerical%max_committed_substeps>0.and.numerical%max_committed_substeps<=100000,'bounded substep policy')
  call backend%initialize(top)
  call get_command_argument(5,arg)
- call validate_grass_numerical_profile(len_trim(arg)>0,code)
+ heat_substeps=1
+ if(trim(arg)=='thermal-control-4')heat_substeps=4
+ call validate_grass_numerical_profile(len_trim(arg)>0,code,heat_substeps)
  call require(code==0,'numerical profile matches immutable application binding')
  if(len_trim(arg)>0)then
-  call require(trim(arg)=='thermal-control','explicit supported numerical heat profile')
-  call backend%configure_soil_temperature_temporal_tolerance(1d-5,available)
+  call require(trim(arg)=='thermal-control'.or.trim(arg)=='thermal-control-4','explicit supported numerical heat profile')
+  call backend%configure_soil_temperature_temporal_tolerance(1d-5,available,heat_substeps)
   call require(available,'configured thermal temporal accuracy')
   write(*,*)'ORIGINAL_GRASS_THERMAL_TOLERANCE_C',1d-5
  end if

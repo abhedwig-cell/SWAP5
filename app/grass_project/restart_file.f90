@@ -31,11 +31,12 @@ module mod_grass_prefix_restart_file
   end function
  end interface
 contains
- subroutine validate_grass_numerical_profile(thermal_enabled,status)
+ subroutine validate_grass_numerical_profile(thermal_enabled,status,heat_substeps)
   logical,intent(in)::thermal_enabled
   integer,intent(out)::status
   character(:),allocatable::text
-  integer::code,pos
+  integer,optional,intent(in)::heat_substeps
+  integer::code,pos,steps
   call file_text('application.binding',text,code)
   status=1;if(code/=0)return
   pos=index(text,'"grass_numerical_profile"')
@@ -45,7 +46,16 @@ contains
   end if
   if(pos==0)return
   if(index(text(pos+1:),'"grass_numerical_profile"')/=0)return
-  if(index(text,'"grass_numerical_profile": "thermal-control-1e-5C"')==0)return
+  steps=1
+  if(present(heat_substeps))steps=heat_substeps
+  select case(steps)
+  case(1)
+   if(index(text,'"grass_numerical_profile": "thermal-control-1e-5C"')==0)return
+  case(4)
+   if(index(text,'"grass_numerical_profile": "thermal-subcycle4-1e-5C"')==0)return
+  case default
+   return
+  end select
   status=0
  end subroutine validate_grass_numerical_profile
  integer(int32) function crc32(bytes)result(crc)

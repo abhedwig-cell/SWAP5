@@ -66,6 +66,11 @@ contains
           (w%solution(i-1)-w%solution(i))/p%distance_above_cm(i)
    end do
   end if
+  if(allocated(w%substep_conductive_face_energy_j_cm2))then
+   if(size(w%substep_conductive_face_energy_j_cm2)/=n+1)return
+   if(any(.not.ieee_is_finite(w%substep_conductive_face_energy_j_cm2)))return
+   receipt%conductive_face_energy_j_cm2=w%substep_conductive_face_energy_j_cm2
+  end if
   receipt%available=.true.
  end subroutine
 end module

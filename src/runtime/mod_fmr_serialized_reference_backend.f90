@@ -2220,6 +2220,7 @@ contains
     self%endpoint_origin_available=.false.
     self%model%water_flux_temporal=water_flux_temporal_policy_t()
     self%model%soil_temperature_temporal_tolerance_c=0.0_real64
+    self%model%soil_temperature_numerical%internal_heat_substeps=1
     self%model%root_accuracy_enabled=.false.
     if(present(water_flux_temporal))self%model%water_flux_temporal=water_flux_temporal
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
@@ -2258,14 +2259,23 @@ contains
 
   ! Numerical configuration belongs to this backend instance, never to physical
   ! parameters or committed state. Failed configuration leaves the old policy.
-  subroutine fmr_configure_thermal_temporal_tolerance(self,tolerance_c,ok)
+  subroutine fmr_configure_thermal_temporal_tolerance(self,tolerance_c,ok,heat_substeps)
     class(fmr_serialized_reference_backend_t),intent(inout)::self
     real(real64),intent(in)::tolerance_c
     logical,intent(out)::ok
+    integer,optional,intent(in)::heat_substeps
+    integer::steps
     ok=.false.
     if(.not.self%initialized)return
     if(.not.ieee_is_finite(tolerance_c))return
     if(tolerance_c<0.0_real64)return
+    steps=1
+    if(present(heat_substeps))steps=heat_substeps
+    if(steps/=1.and.steps/=4)return
+    if(steps==4.and.tolerance_c<=0.0_real64)return
+    if(self%model%soil_temperature_active.and. &
+       steps/=self%model%soil_temperature_numerical%internal_heat_substeps)return
+    self%model%soil_temperature_numerical%internal_heat_substeps=steps
     self%model%soil_temperature_temporal_tolerance_c=tolerance_c
     ok=.true.
   end subroutine fmr_configure_thermal_temporal_tolerance
