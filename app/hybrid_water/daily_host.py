@@ -475,7 +475,7 @@ class DailyColumn:
 
 def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=ANDELST):
     shutil.copytree(case, directory)
-    if checkpoint_enabled:
+    if checkpoint_enabled or project==HUPSEL:
         control = directory / "swap.swp"
         source = control.read_text(encoding="cp1252")
         if project==HUPSEL:
