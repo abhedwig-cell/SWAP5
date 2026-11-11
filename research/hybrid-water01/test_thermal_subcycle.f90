@@ -10,8 +10,8 @@ program test_thermal_subcycle
  type(soil_temperature_parameters_t)::p
  type(soil_temperature_numerical_config_t)::num
  type(soil_temperature_forcing_t)::f
- type(soil_temperature_state_t)::initial,trial,control,next_state
- type(soil_temperature_workspace_t)::w,wc
+ type(soil_temperature_state_t)::initial,trial,control,next_state,other,other_trial
+ type(soil_temperature_workspace_t)::w,wc,wb
  type(soil_temperature_result_t)::r,rc
  type(soil_temperature_diagnostics_t)::d,dc
  type(process_hydraulic_view_t)::h
@@ -64,6 +64,16 @@ program test_thermal_subcycle
   cases=cases+1
  end do
  end do
+ ! A/B/A with distinct temperature profiles and private workspaces; a call for
+ ! B must not influence A's repeated physical response or mutate A's source.
+ call copy_soil_temperature_profile(trial,v,status)
+ call initialize_soil_temperature_state([20d0,25d0],other,status)
+ call trial_restricted_soil_temperature(p,num,f,h,h,other,0d0,dt,wb,other_trial,r,d)
+ if(r%status/=SOIL_TEMP_OK)error stop 'B trial'
+ call trial_restricted_soil_temperature(p,num,f,h,h,initial,0d0,dt,w,trial,r,d)
+ if(r%status/=SOIL_TEMP_OK)error stop 'A repeat'
+ call copy_soil_temperature_profile(trial,vcontrol,status)
+ if(maxval(abs(vcontrol-v))>0d0)error stop 'A/B/A contamination'
  ! A rejected call cannot publish an old successful integrated-face receipt.
  f%top_boundary_mode=-999
  call trial_restricted_soil_temperature(p,num,f,h,h,initial,0d0,dt,w,trial,r,d)
