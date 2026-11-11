@@ -24,6 +24,7 @@ def main():
     p.add_argument('--origin', type=Path, required=True)
     p.add_argument('--output', type=Path, required=True)
     p.add_argument('--nm', type=Path, required=True)
+    p.add_argument('--stackwalk', action='store_true', help='Resolve first native caller of external-library samples')
     a = p.parse_args()
     assert os.name == 'nt' and struct.calcsize('P') == 8
     sha = lambda f: hashlib.sha256(f.read_bytes()).hexdigest()
@@ -73,6 +74,19 @@ def main():
     class Module(c.Structure):
         _fields_=[('base',w.LPVOID),('size',w.DWORD),('entry',w.LPVOID)]
     module_info=api('K32GetModuleInformation',w.BOOL,w.HANDLE,w.HMODULE,c.POINTER(Module),w.DWORD)
+    class Address(c.Structure):
+        _fields_=[('offset',c.c_uint64),('segment',w.WORD),('mode',c.c_int)]
+    class Frame(c.Structure):
+        _fields_=[('pc',Address),('ret',Address),('frame',Address),('stack',Address),('backing',Address),
+                  ('table',w.LPVOID),('params',c.c_uint64*4),('far',w.BOOL),('virtual',w.BOOL),
+                  ('reserved',c.c_uint64*3),('kdhelp',c.c_byte*112)]
+    assert c.sizeof(Frame)==264
+    dbg=c.WinDLL('dbghelp',use_last_error=True)
+    dbg.SymInitializeW.argtypes=[w.HANDLE,w.LPCWSTR,w.BOOL];dbg.SymInitializeW.restype=w.BOOL
+    dbg.SymCleanup.argtypes=[w.HANDLE];dbg.SymCleanup.restype=w.BOOL
+    dbg.SymSetOptions.argtypes=[w.DWORD];dbg.SymSetOptions.restype=w.DWORD
+    dbg.StackWalk64.argtypes=[w.DWORD,w.HANDLE,w.HANDLE,c.POINTER(Frame),w.LPVOID,*([w.LPVOID]*4)]
+    dbg.StackWalk64.restype=w.BOOL
     def modules(process):
         handles=(w.HMODULE*1024)();needed=w.DWORD()
         if not enum_modules(process,handles,c.sizeof(handles),c.byref(needed)):
@@ -89,7 +103,7 @@ def main():
                 method='Windows x64 primary-thread exclusive RIP samples; nearest defined text symbol; no call-count or inclusive-time claim',
                 interval_seconds=.007,hard_cap_seconds=120)
     (a.output/'LAUNCH.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
-    counts=Counter();ips=Counter();thread=None;proc=None;error=None;censored=False
+    counts=Counter();ips=Counter();callers=Counter();thread=None;proc=None;error=None;censored=False;sym_ready=False
     start=time.monotonic()
     with (a.output/'stdout').open('wb') as so,(a.output/'stderr').open('wb') as se:
         try:
@@ -114,6 +128,11 @@ def main():
             report.update(pid=proc.pid,primary_tid=tid,initial_thread_count=len(targets))
             loaded=modules(int(proc._handle));report['modules']=loaded
             image=next(m for m in loaded if Path(m['path']).resolve()==exe.resolve())
+            if a.stackwalk:
+                # Local image paths only; no symbol-server retrieval or UI prompts.
+                dbg.SymSetOptions(0x4|0x200|0x80000|0x20000)
+                if not dbg.SymInitializeW(int(proc._handle),str(a.bundle),True):raise c.WinError(c.get_last_error())
+                sym_ready=True
             buffer=c.create_string_buffer(1232+15);aligned=(c.addressof(buffer)+15)&~15
             # Native winnt.h AMD64 CONTEXT: flags at48, Rip at248, aligned16.
             while proc.poll() is None:
@@ -125,9 +144,22 @@ def main():
                     raise c.WinError(c.get_last_error())
                 try:
                     assert old==0,'Thread was already suspended'
-                    c.c_uint32.from_address(aligned+48).value=0x100001
+                    c.c_uint32.from_address(aligned+48).value=0x10000b
                     if not context(thread,aligned):raise c.WinError(c.get_last_error())
                     rip=c.c_uint64.from_address(aligned+248).value
+                    if a.stackwalk and not image['base']<=rip<image['base']+image['size']:
+                        frame=Frame();frame.pc.offset=rip;frame.pc.mode=3
+                        frame.frame.offset=c.c_uint64.from_address(aligned+160).value;frame.frame.mode=3
+                        frame.stack.offset=c.c_uint64.from_address(aligned+152).value;frame.stack.mode=3
+                        caller='NO_NATIVE_FRAME_WITHIN8'
+                        for _ in range(8):
+                            ok=dbg.StackWalk64(0x8664,int(proc._handle),thread,c.byref(frame),aligned,None,
+                                c.cast(dbg.SymFunctionTableAccess64,w.LPVOID),c.cast(dbg.SymGetModuleBase64,w.LPVOID),None)
+                            if not ok or frame.pc.offset==0:break
+                            if image['base']<=frame.pc.offset<image['base']+image['size']:
+                                i=bisect.bisect_right(addresses,frame.pc.offset-image['base']+preferred)-1
+                                caller=symbols[i][1] if i>=0 else 'UNMAPPED_MAIN_IMAGE';break
+                        callers[caller]+=1
                 finally:
                     if resume(thread)==0xffffffff:raise c.WinError(c.get_last_error())
                 ips[rip]+=1
@@ -145,10 +177,13 @@ def main():
             if proc is not None and proc.poll() is None:proc.kill();proc.wait()
         finally:
             if thread:close(thread)
+            if sym_ready:dbg.SymCleanup(int(proc._handle))
     report.update(status='SAMPLED' if error is None and not censored and proc.returncode==0 else 'FAILED_OR_CENSORED',
                   error=error,censored=censored,returncode=proc.returncode if proc else None,
                   wall_seconds=time.monotonic()-start,samples=sum(counts.values()),
                   exclusive_counts=counts.most_common(),instruction_pointer_counts={hex(k):v for k,v in ips.items()})
+    report['external_first_native_caller_counts']=callers.most_common()
+    report['sampler_sha256']=sha(Path(__file__))
     (a.output/'PROFILE.json').write_text(json.dumps(report,indent=2)+'\n',newline='\n')
     print(json.dumps({k:v for k,v in report.items() if k not in ('modules','instruction_pointer_counts')}))
     if report['status']!='SAMPLED':raise SystemExit(1)
