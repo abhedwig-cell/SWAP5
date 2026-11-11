@@ -2,6 +2,25 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Grassgrowth review description restored, 11 November 2026
+
+PR 1623's live description contained only an undefined prefix and the
+older-model AHL CI note. Restored its complete review summary from
+GRASSGROWTH_REVIEW.md at evidence head
+3941df231048d10db93ddbbd775f940197d3a1f1, including the 1827-day
+candidate execution, exact fresh-process restarts, water/uptake/conductive
+balances, original-reference day-188 assessment and runtime limitation.
+Read back the published PR body and verified exact equality with the
+replacement. The evidence head and model dependency surface are unchanged.
+
+PRs 1623 through 1628 remain open at their recorded heads. Canonical
+remains a8275101d91f0ab5b413290e9b00bb5666b11917. No new discussion
+comments were returned for the six packages. The next delivery remains
+the bounded PR 1626 admission decision and canonical postimage check
+before the three application evidence integrations. The existing AHL
+selection condition and Hupsel reference limitation remain open.
+
+
 The consolidation branch is `codex/swap5-functional-closure01`. It starts
 from the exact hybrid evidence head `0ca2e3edd7e869d2ac7d37ed6c139ae126fdcc49`
 with canonical checked at `7535a9e650aa01ca3ee711353c2e2801e2872f00`.
