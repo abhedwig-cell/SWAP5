@@ -3,8 +3,8 @@ program swap5_hybrid_water
   use mod_fmr_soil_water_application_host, only: fmr_resolve_soil_water_application_model, &
        fmr_soil_water_application_selection_t, FMR_APPLICATION_HOST_OK, FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE
   implicit none
-  character(len=32), parameter :: hybrid_model_keys(2) = &
-       [character(len=32) :: 'HYBRID_ANDELST_WATER', 'HYBRID_GRASSGROWTH_WATER']
+  character(len=32), parameter :: hybrid_model_keys(3) = &
+       [character(len=32) :: 'HYBRID_ANDELST_WATER', 'HYBRID_GRASSGROWTH_WATER', 'HYBRID_HUPSEL_WATER']
   character(len=32) :: requested_model, protocol
   type(fmr_soil_water_application_selection_t) :: selection
   type(kernel_executor_t) :: executor
@@ -37,7 +37,7 @@ program swap5_hybrid_water
     error stop 'Explicit project metadata required'
   end if
   water_tolerance=1e-6_real64
-  if (selection%registered_index==2) water_tolerance=1e-10_real64
+  if (selection%registered_index>=2) water_tolerance=1e-10_real64
   write(*,'(a,1x,a)') 'DAILY_MODEL', trim(selection%model_key)
   flush(output_unit)
 

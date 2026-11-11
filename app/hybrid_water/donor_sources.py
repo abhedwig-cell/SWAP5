@@ -10,7 +10,7 @@ def replace(text, anchor, replacement):
     return text.replace(anchor, replacement)
 
 
-def render_day_return(selected, out, *, nonmacro=False):
+def render_day_return(selected, out, *, nonmacro=False, solute_ledger=False):
     swap = (selected / "swap.f90").read_text(encoding="cp1252")
     swap = """module hybrid_day_window
   implicit none
@@ -63,6 +63,11 @@ end module hybrid_day_window
                            "ivolbeg, ipondbeg, issnowbeg, isicbeg, 0d0, 0d0")
         csv_source=replace(csv_source,"iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,iQMpOutDrRap,iqbdo",
                            "iintc,iruno,iqrot,iepd,ievap,isubl,iqdra,0d0,iqbdo")
+    if solute_ledger:
+        csv_source=replace(csv_source,"   dstor_1    = wasrdm1 - iwasrdm1beg","""   write(*,'(a,9(1x,es25.17e3))') 'HYBRID_SOLUTE_LEDGER', &
+      sampro,sdstor,imsqprec,imsqirrig,imsqbot,imsqdra,imdectot,imrottot,sbaldev
+   write(*,'(a,6(1x,es25.17e3))') 'HYBRID_UPTAKE', iptra,iqrot,iqreddry,iqredwet,iqredsol,iqredfrs
+   dstor_1    = wasrdm1 - iwasrdm1beg""")
     (out / "swap_csv_output.f90").write_text(csv_source, encoding="cp1252")
 
 

@@ -23,7 +23,7 @@ from check_hybrid_budget_protocol import check as check_protocol
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--reference',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
-p.add_argument('--project',choices=['grass','andelst'],required=True)
+p.add_argument('--project',choices=['grass','andelst','hupsel'],required=True)
 p.add_argument('--optimization',choices=['O0','O2'],required=True)
 p.add_argument('--reuse-build',type=Path)
 p.add_argument('--reuse-control',type=Path)
@@ -34,7 +34,7 @@ a=p.parse_args()
 if a.project=='andelst' and a.andelst_baseline is None:p.error('Andelst requires actual same-platform canonical controls')
 a.output=a.output.resolve();a.output.mkdir()
 a.reference=a.reference.resolve()
-project=host.GRASSGROWTH if a.project=='grass' else host.ANDELST
+project={'grass':host.GRASSGROWTH,'andelst':host.ANDELST,'hupsel':host.HUPSEL}[a.project]
 events=[]
 original_run=subprocess.run
 
@@ -153,7 +153,7 @@ else:resumed,_=run_case('resumed',checkpoint_day=2,origin=origin,origin_receipt=
 assert list(map(physical,rows(resumed)))==list(map(physical,raw[2:]))
 assert csv_rows(resumed)[-2:]==csv_rows(continuous)[-2:]
 for name in host.CHECKPOINT_FILES:
-    if a.project=='grass' or name=='result.end':
+    if a.project!='andelst' or name=='result.end':
         assert (control/'original'/name).read_bytes()==(resumed/'original'/name).read_bytes(),name
     if a.project=='andelst':
         assert (control/'original'/name).read_bytes()==(a.andelst_baseline/'terminal/original'/name).read_bytes()
@@ -262,7 +262,7 @@ try:host.verify_checkpoint(continuous/'accepted-column-1-day-2.zip',2,{**binding
 except ValueError:pass
 else:raise AssertionError('Foreign binding accepted')
 assert not (a.output/'foreign-origin').exists()
-if a.project=='grass':
+if a.project!='andelst':
     for label,offset in [('mode',0),('grid',8),('clock',12)]:
         bad=a.output/('bad-'+label);bad.mkdir()
         for name in host.CHECKPOINT_FILES:(bad/name).write_bytes((origin/name).read_bytes())
@@ -282,8 +282,8 @@ if a.project=='andelst':
 report=dict(status='GENERIC_HYBRID_ORIGINAL_PREFIX_RESTART_ISOLATION_REFUSAL_PASS',project=a.project,
             kernel_optimization=a.optimization,donor_optimization='O2',days=4,baseline=baseline,
             maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in raw),
-            exact_native_restart_payloads=list(host.CHECKPOINT_FILES) if a.project=='grass' else ['result.end'],
-            auxiliary_state_scope='Both payloads exact own restart' if a.project=='grass' else
+            exact_native_restart_payloads=list(host.CHECKPOINT_FILES) if a.project!='andelst' else ['result.end'],
+            auxiliary_state_scope='Both payloads exact own restart' if a.project!='andelst' else
                 'Complete cold and resumed macro payloads exactly preserve canonical same-platform controls; existing cold/resumed byte difference is not newly qualified',
             distinct_instance_control=True,refusal_isolation=True,source_sha256={str(ROOT/'app/hybrid_water'/n):sha(ROOT/'app/hybrid_water'/n)
                 for n in ['daily_host.py','donor_sources.py','donor_adapter.f90','main.f90']},
