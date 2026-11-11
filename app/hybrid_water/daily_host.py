@@ -239,6 +239,14 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
          end if""")
         if project==HUPSEL:
             source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
+            # First finish the original Newton iteration at the required mass
+            # boundary. Halving a converged-but-inaccurate step alone repeated
+            # at dtmin without curing the observed day-one residual.
+            source=replace(source,anchor,"""      if (budget_enabled .and. .not.flnonconv) then
+         budget_step=projected_water_residual()
+         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.
+      end if
+"""+anchor)
         if shared_pond_transfer:
             source = replace(source, "only: projected_water_residual",
                              "only: projected_water_residual, apply_surface_lateral_limit")
