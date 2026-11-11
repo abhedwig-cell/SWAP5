@@ -95,6 +95,45 @@ with tempfile.TemporaryDirectory(prefix='s5-generic-water-raw-audit-') as temp:
     assert list(map(physical,rows(index['public_resume'])))==list(map(physical,rows(ref['resumed'])))
     for name in ['result.end','macro.bin']:
         assert (root/index['public_resume']/'original'/name).read_bytes()==(root/ref['terminal']/'original'/name).read_bytes()
+    if index.get('repeated_publication'):
+        for label,case in cases.items():
+            directory=case['report'];raw=rows(case['continuous'])
+            for day,control in [(2,case['continuous']),(4,case['terminal'])]:
+                with zipfile.ZipFile(root/directory/'repeated-publication'/f'accepted-column-1-day-{day}.zip') as z:
+                    m=json.loads(z.read('checkpoint.json'))
+                    assert m['receipt']==raw[day-1] and m['binding']==load(directory+'/BUILD.json')['binding']
+                    for name,digest in m['files'].items():
+                        assert hashlib.sha256(z.read(name)).hexdigest()==digest
+                        with zipfile.ZipFile(root/control/f'accepted-column-1-day-{day}.zip') as c:
+                            assert z.read(name)==c.read(name)
+            refused=root/directory/'refused-publication'
+            assert not (refused/'accepted-column-1-day-3.zip').exists()
+            text=(refused/'kernel.stdout').read_text()
+            assert 'DAILY_REFUSED 1 3 2' in text and 'DAILY_ACCEPTED 2 3 3' in text
+            assert 'DAILY_ACCEPTED 1 3' not in text
+        summary['repeated_publication']='BOTH_PROJECTS_BOTH_OPTIMIZATIONS_AND_REFUSAL_PASS'
+    if index.get('full_trajectory'):
+        directory=index['full_trajectory'];full=rows(directory+'/full')
+        report=load(directory+'/RESULT.json');build=load(directory+'/BUILD.json')
+        assert report['status']=='FULL_ORIGINAL1827_AND_OWN_SEASONAL_RESTARTS_PASS'
+        assert build==load(cases['grass-O2']['report']+'/BUILD.json')
+        assert [r['day'] for r in full]==list(range(1,1828))
+        for day,r in enumerate(full,1):
+            assert r['committed'] and r['revision']==day and len(r['pressure_head_cm'])==113
+            if day>1:assert r['stock_start_cm']==full[day-2]['stock_end_cm']
+            f=r['external_flux_cm']
+            residual=math.fsum([*f[:7],*(-x for x in f[7:]),*r['stock_start_cm'],*(-x for x in r['stock_end_cm'])])
+            assert residual==r['independent_residual_cm'] and abs(residual)<=1e-10
+            assert abs(r['kernel_residual_cm'])<=1e-10
+        for cut,end in [(2,4),(187,190),(365,367),(1792,1827)]:
+            resumed=rows(directory+f'/own-{cut}-to-{end}')
+            assert list(map(physical,resumed))==list(map(physical,full[cut:end]))
+            with zipfile.ZipFile(root/directory/'full'/f'accepted-column-1-day-{end}.zip') as c, zipfile.ZipFile(root/directory/f'own-{cut}-to-{end}'/f'accepted-column-1-day-{end}.zip') as r:
+                for z in (c,r):
+                    m=json.loads(z.read('checkpoint.json'));assert m['binding']==build['binding']
+                    for name,digest in m['files'].items():assert hashlib.sha256(z.read(name)).hexdigest()==digest
+                for name in ['result.end','macro.bin']:assert c.read(name)==r.read(name)
+        summary['full_original_grassgrowth']={'days':1827,'maximum_daily_water_residual_cm':max(abs(r['independent_residual_cm']) for r in full),'signed_cumulative_daily_residual_cm':math.fsum(r['independent_residual_cm'] for r in full),'own_seasonal_payloads_exact':True}
     print(json.dumps({'status':'INDEPENDENT_GENERIC_SOURCE_BUILD_INPUT_BALANCE_RESTART_INSTANCE_PUBLIC_AUDIT_PASS',
                       'platform':index['platform'],'retained_files':len(load('MEMBER_SHA256.json')),
                       'source_build_input_identity_checks':checked,'cases':summary}))

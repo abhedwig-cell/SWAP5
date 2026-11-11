@@ -387,6 +387,29 @@ def publish_checkpoint(output, donor_directory, receipt, binding, publish):
             raise OSError(f"SWAP5 restart publication failed at stage {stage}: {target}")
     finally:
         pending.unlink(missing_ok=True)
+    return target
+
+
+def clear_checkpoint_stage(column, binding, number):
+    """Recycle only this worker's already durably published auxiliary file."""
+    stage = column.directory / "macro.bin"
+    if not stage.exists():
+        return
+    if column.last_checkpoint is None:
+        raise ValueError("Unowned checkpoint staging file")
+    with zipfile.ZipFile(column.last_checkpoint) as package:
+        if sorted(package.namelist()) != sorted((*CHECKPOINT_FILES, "checkpoint.json")):
+            raise ValueError("Unexpected accepted checkpoint contents")
+        manifest = json.loads(package.read("checkpoint.json"))
+        files = {name: package.read(name) for name in CHECKPOINT_FILES}
+    receipt = manifest["receipt"]
+    if (manifest["schema"] != CHECKPOINT_SCHEMA or manifest["binding"] != binding
+            or not receipt["committed"] or receipt["column"] != number
+            or not 0 < receipt["day"] <= column.day
+            or manifest["files"] != {name: sha256(data).hexdigest() for name, data in files.items()}
+            or stage.read_bytes() != files["macro.bin"]):
+        raise ValueError("Checkpoint staging is not backed by its accepted durable package")
+    stage.unlink()
 
 
 def verify_checkpoint(origin, cut, binding, unpacked):
@@ -426,6 +449,7 @@ class DailyColumn:
     pressure: list
     revision: int = 0
     refused: bool = False
+    last_checkpoint: Path | None = None
 
 
 def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=ANDELST):
@@ -522,6 +546,11 @@ class DailyHost:
         current = self.columns[column-1]
         if current.refused or (checkpoint and (self.publish is None or current.variant != "original")):
             raise ValueError("Column was refused or checkpoint publication is unavailable")
+        if checkpoint:
+            target = self.output / f"accepted-column-{column}-day-{current.day+1}.zip"
+            if target.exists():
+                raise FileExistsError(target)
+            clear_checkpoint_stage(current, self.binding, column)
         # A broken request/reply exchange cannot safely be retried on this host.
         self.usable = False
         day = current.day + 1
@@ -575,7 +604,8 @@ class DailyHost:
             stop_process(current.worker)
         self.usable = True
         if committed and checkpoint:
-            publish_checkpoint(self.output, current.directory, budget, self.binding, self.publish)
+            current.last_checkpoint = publish_checkpoint(
+                self.output, current.directory, budget, self.binding, self.publish)
         return budget
 
     def close(self):

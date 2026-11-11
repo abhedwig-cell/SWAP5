@@ -160,6 +160,62 @@ for name in host.CHECKPOINT_FILES:
         assert (resumed/'original'/name).read_bytes()==(a.andelst_baseline/'resumed/original'/name).read_bytes()
 
 # Distinct physical boundary histories interleave exactly against their controls.
+repeated=a.output/'repeated-publication';repeated.mkdir()
+with bounded('repeated-publication'),contextlib.ExitStack() as stack:
+    current=host.DailyHost(stack,donor,kernel,case,repeated,[host.ColumnStart()],
+                          checkpoint_enabled=True,runtime=True,binding=binding,project=project)
+    staged=[]
+    for day in range(1,5):
+        staged.append(current.step(1,checkpoint=day in (2,4)))
+        if day==2:
+            old_package=repeated/'accepted-column-1-day-2.zip';old_bytes=old_package.read_bytes()
+            # A foreign working file may not be silently deleted or advanced.
+            stage=current.columns[0].directory/'macro.bin';saved=stage.read_bytes()
+            stage.write_bytes(saved+b'foreign')
+            try:current.step(1,checkpoint=True)
+            except ValueError:pass
+            else:raise AssertionError('Unowned staging removed')
+            assert current.columns[0].day==2 and stage.read_bytes()==saved+b'foreign'
+            stage.write_bytes(saved)
+            # An occupied next target also refuses before advancing/deleting.
+            occupied=repeated/'accepted-column-1-day-3.zip';occupied.write_bytes(b'occupied')
+            try:current.step(1,checkpoint=True)
+            except FileExistsError:pass
+            else:raise AssertionError('Occupied target overwritten')
+            assert occupied.read_bytes()==b'occupied' and current.columns[0].day==2
+            assert stage.read_bytes()==saved
+            occupied.unlink()
+    current.close()
+assert staged==raw and old_package.read_bytes()==old_bytes
+with zipfile.ZipFile(repeated/'accepted-column-1-day-4.zip') as package:
+    for name in host.CHECKPOINT_FILES:
+        assert package.read(name)==(control/'original'/name).read_bytes()
+
+# Refusal after an earlier publication leaves its accepted package intact.
+refused_pub=a.output/'refused-publication';refused_pub.mkdir()
+with bounded('refused-publication'),contextlib.ExitStack() as stack:
+    current=host.DailyHost(stack,donor,kernel,case,refused_pub,
+                          [host.ColumnStart(name='one'),host.ColumnStart(name='two')],
+                          checkpoint_enabled=True,runtime=True,binding=binding,project=project)
+    for day in (1,2):
+        assert current.step(1,checkpoint=day==2)['committed']
+        assert current.step(2)['committed']
+    saved_package=(refused_pub/'accepted-column-1-day-2.zip').read_bytes()
+    real_send=host.send
+    def corrupt_published(process,text):
+        values=text.split()
+        if process is current.host and len(values)==12+project.nodes:
+            values[2]=str(float(values[2])+0.01);text=' '.join(values)
+        real_send(process,text)
+    host.send=corrupt_published
+    try:assert not current.step(1,checkpoint=True)['committed']
+    finally:host.send=real_send
+    assert current.columns[0].day==2 and current.columns[0].revision==2
+    assert (refused_pub/'accepted-column-1-day-2.zip').read_bytes()==saved_package
+    assert not (refused_pub/'accepted-column-1-day-3.zip').exists()
+    assert physical(current.step(2))==physical(raw[2])
+    current.close()
+
 mixed,_=run_case('mixed',end=2,variants=('original','shifted'))
 plain,_=run_case('plain',end=2)
 shifted,_=run_case('shifted',end=2,variants=('shifted',))

@@ -1,0 +1,57 @@
+{
+  "status": "COMPLETE_DESCRIPTIVE_REFERENCE_COMPARISON_NOT_WHOLE_SCIENCE",
+  "sealed_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+  "current_daily_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499",
+  "days": 1827,
+  "maximum_absolute_water_difference_cm": {
+    "WTOT": 5.115907697472721e-13,
+    "DSTOR": 5.258987689771288e-13,
+    "RAIN": 4.989342272665453e-13,
+    "EIC": 4.988596341570783e-13,
+    "TACT": 4.999473057765158e-13,
+    "EACT": 4.999160807539482e-13,
+    "BOT": 5.011790678646766e-13,
+    "GWL": 6.821210263296962e-13
+  },
+  "current_five_decimal_print_minus_B0_maxima": {
+    "TPOT": 4.994112999992528e-06,
+    "TACT": 4.998283999996245e-06,
+    "TREDDRY": 4.9946739999959244e-06,
+    "TREDWET": 4.999403000000013e-06,
+    "PHRVDM": 0.04803429000094184,
+    "HRVDM": 0.04270856999937678
+  },
+  "day188": {
+    "date": "1980-07-06",
+    "unrounded_hybrid_actual_uptake_cm": 0.1251363444644971,
+    "B0_actual_uptake_cm": 0.125136344464,
+    "original_B0": {
+      "TPOT": ".141707391074",
+      "TACT": ".125136344464",
+      "TREDDRY": "0.",
+      "TREDWET": ".016571046610",
+      "PHRVDM": "6244.284986194957",
+      "HRVDM": "4598.447987324684"
+    },
+    "current_legacy_print": {
+      "TPOT": ".14171",
+      "TACT": ".12514",
+      "TREDDRY": "0.",
+      "TREDWET": ".01657",
+      "PHRVDM": "6244.28499",
+      "HRVDM": "4598.44799"
+    },
+    "water_differences_cm": {
+      "WTOT": 2.5579538487363607e-13,
+      "DSTOR": -2.3669954885008337e-13,
+      "RAIN": 3.9679370900103095e-13,
+      "EIC": -2.8282931552325863e-14,
+      "TACT": 4.971023592759138e-13,
+      "EACT": 3.9257486150745535e-13,
+      "BOT": 2.603472992745992e-13,
+      "GWL": 4.405364961712621e-13
+    },
+    "judgment": "Original coherent donor retains the original water trajectory and printed oxygen/crop result at day188. Current oxygen is only five-decimal printed, so no unrounded oxygen equivalence claim. Native sixteen/four thermal trajectories and their failed original oxygen comparison are unchanged and not requalified by this route."
+  },
+  "precision_note": "Differences against 12-decimal B0 water print and five-decimal current crop/oxygen print are descriptive, not relaxed model/scientific tolerances. Water acceptance remains1e-10cm. No native1e-5C, complete energy, whole-science or accuracy-matched runtime-parity claim."
+}
