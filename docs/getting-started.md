@@ -130,6 +130,14 @@ Keep `RESULT.json` beside the checkpoint. The launcher verifies that
 receipt against the checkpoint, executable and inputs before native
 restart validation. Omitting `--days` requests day 1096.
 
+## Bounded generic hybrid Grassgrowth water prototype
+
+The same hybrid host also has explicit `HYBRID_GRASSGROWTH_WATER` for the
+original113-node project. Current qualification is limited to days1..4, with
+its own exact restart and independent-instance controls. It uses the existing
+prepared original distribution. See [explicit hybrid project state](science/HYBRID_GENERIC_WATERHOST.md)
+for commands and limits; this does not replace the full native thermal route.
+
 ## Input: current truth
 
 There are several different things that can be called “input” in this repository and they should not be conflated.

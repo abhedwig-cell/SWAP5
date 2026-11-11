@@ -1,0 +1,66 @@
+{
+  "status": "DESCRIPTIVE_INITIAL_WATER_COMPARISON_NOT_WHOLE_SCIENCE",
+  "sealed_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+  "prototype_daily_sha256": "e802f7034f61fe167fda328dac0b879be5d5a4cfbe84acafedf3208138ac38c2",
+  "days": [
+    {
+      "day": 1,
+      "date": "1980-01-01",
+      "prototype_minus_B0_cm": {
+        "WTOT": 4.263256414560601e-13,
+        "DSTOR": 3.674838211509268e-13,
+        "RAIN": 2.843281166065026e-13,
+        "EIC": -3.0600522116230877e-13,
+        "TACT": -1.7397758581005895e-13,
+        "EACT": -1.81079110039839e-14,
+        "BOT": -4.060363156810354e-13,
+        "GWL": -1.8474111129762605e-13
+      }
+    },
+    {
+      "day": 2,
+      "date": "1980-01-02",
+      "prototype_minus_B0_cm": {
+        "WTOT": -2.8421709430404007e-13,
+        "DSTOR": 2.976785484776201e-13,
+        "RAIN": 2.2361279494731434e-13,
+        "EIC": -3.9131718698737217e-13,
+        "TACT": 1.1056129969877482e-13,
+        "EACT": -3.9321801023617375e-13,
+        "BOT": 3.829436767688321e-13,
+        "GWL": 9.947598300641403e-14
+      }
+    },
+    {
+      "day": 3,
+      "date": "1980-01-03",
+      "prototype_minus_B0_cm": {
+        "WTOT": 1.7053025658242404e-13,
+        "DSTOR": 4.555279764506537e-13,
+        "RAIN": -1.9903523273967494e-13,
+        "EIC": -5.14518982974721e-15,
+        "TACT": -2.52322685315165e-13,
+        "EACT": -3.075794827167577e-13,
+        "BOT": 9.026113190202523e-14,
+        "GWL": -3.836930773104541e-13
+      }
+    },
+    {
+      "day": 4,
+      "date": "1980-01-04",
+      "prototype_minus_B0_cm": {
+        "WTOT": -2.5579538487363607e-13,
+        "DSTOR": -4.212186155427844e-13,
+        "RAIN": 4.333200465111986e-13,
+        "EIC": -1.2529560722285282e-13,
+        "TACT": -7.360930441568936e-14,
+        "EACT": -4.670135263749875e-13,
+        "BOT": 4.816702592336242e-13,
+        "GWL": -4.547473508864641e-13
+      }
+    }
+  ],
+  "maximum_absolute_difference_cm": 4.816702592336242e-13,
+  "output_precision_note": "Use unrounded authoritative stock/flux receipts. LegacyCSV five-decimal text is not a new physical tolerance; reference printed precision limits this comparison.",
+  "scope": "Eight water quantities, first4days only. No full project, crop/heat/native1e-5C, day188/day584 or whole-science acceptance."
+}
