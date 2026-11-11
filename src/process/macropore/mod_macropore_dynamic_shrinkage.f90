@@ -486,7 +486,7 @@ contains
     ! B1.11 SHRINK returns relative shrinkage from void ratio and solid fraction.
     ! At saturation on the linear branch, the exact shrinkage is zero.
     ! Avoid a roundoff-dependent sign from dividing and multiplying by solid volume.
-    if (theta == theta_s .and. moisture_ratio > parameters%transition_moisture_ratio) then
+    if (theta >= theta_s .and. moisture_ratio > parameters%transition_moisture_ratio) then
       shrink_fraction = 0.0_real64
     else
       shrink_fraction = theta_s-void_ratio*solid_volume_fraction
