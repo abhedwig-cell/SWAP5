@@ -17,7 +17,7 @@ project=h.GRASSGROWTH if a.project=='grass' else h.HUPSEL
 end_day=1827 if a.project=='grass' else 1096
 a.days=end_day if a.days is None else a.days
 assert a.days==end_day,'Only the original complete period is selected'
-windows=[(2,4),(187,190),(365,367),(1792,1827)] if a.project=='grass' else [(2,4),(120,122),(365,367),(523,526),(583,585),(730,732),(1061,1096)]
+windows=[(2,4),(187,190),(365,367),(1792,1827)] if a.project=='grass' else [(2,4),(4,6),(5,7),(120,122),(365,367),(523,526),(583,585),(730,732),(1061,1096)]
 sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
 b=json.loads((a.bundle/'BUILD.json').read_text());identity=b['identity'];binding=b['binding']
 assert identity['host']==sha(Path(h.__file__)) and binding['case']==project.case
