@@ -277,12 +277,13 @@ class CoupledDailyColumn:
                 forcing_record={'mode':CAUCHY_FORCING,'input':cauchy.document(),
                     'identity_sha256':forcing_digest(cauchy.document()),
                     'applied_bbc_sha256':h.sha(host.columns[0].directory/'swap.bbc')}
+                host.binding={**self.meta['binding'],'external_cauchy_trial':forcing_record}
             raw = host.step(1, checkpoint=True)
             if not raw['committed']:
                 raise ValueError('Local water/solute acceptance refused the proposal')
             candidate = trial / f"accepted-column-1-day-{raw['day']}.zip"
             ready = trial / 'verified-candidate'
-            checked = h.verify_checkpoint(candidate, self._day+1, self.meta['binding'], ready)
+            checked = h.verify_checkpoint(candidate, self._day+1, host.binding, ready)
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             host.close()
