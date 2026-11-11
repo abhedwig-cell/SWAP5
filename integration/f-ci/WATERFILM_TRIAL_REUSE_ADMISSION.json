@@ -26,5 +26,11 @@
     "Current reconciled F-CI and Grassgrowth workflows must complete",
     "No new full-period cached model execution is claimed",
     "Whole scientific equivalence and complete energy remain open"
-  ]
+  ],
+  "local_route_validation": {
+    "yaml_parse": "PASS",
+    "bash_syntax": "PASS",
+    "source_fixture_and_reference_equal_tested_cache_postimage": true
+  },
+  "workflow_trigger": "Canonical retargeting alone emits an edited event. Persist this validation record after retargeting so the canonical-targeted Grassgrowth pull-request workflow receives a synchronize event. Existing current-source runs remain reusable on identical dependencies."
 }
