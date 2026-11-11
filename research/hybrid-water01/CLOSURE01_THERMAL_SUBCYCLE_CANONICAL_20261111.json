@@ -1,0 +1,41 @@
+{
+  "status": "CANONICAL_RESEARCH_MERGED_POSTIMAGE_VERIFIED",
+  "pr": 1631,
+  "canonical": "87d2c7c1a931d5fcfb63869852896726ee28457e",
+  "canonical_tree": "59ff4f827c7fbf371b2ada94de987eed4699174d",
+  "qualified_head": "5ab5c0a3973e807302ee86a9ffccde7cc96cefc4",
+  "actual_merge_equals_pr_head_and_prediction": true,
+  "production_dependencies_unchanged": true,
+  "evidence": "integration/f-ci/THERMAL_SUBCYCLE_RESEARCH_20261111.json at canonical",
+  "functional_coverage": "Private four-substep implicit heat variant completes four original Grassgrowth days on Windows16.2/Ubuntu15.2 O2. This is not another full historical execution or default production activation.",
+  "reliability": "Actual original/private heat bodies O0/O2: six boundary combinations, integrated per-cell faces, immutable source, refusal and distinct-temperature A/B/A PASS. Actual coupled every-trial cell-energy guard and unchanged external heat/water budgets PASS. Own fresh day2-to4 restart exact on both platforms; Windows foreign-build restart refused. No complete cold O0 application claim.",
+  "development_yield": {
+    "baseline_accepted_steps": 6882,
+    "candidate_accepted_steps": 3585,
+    "windows_median_seconds": [
+      14.42864310008008,
+      7.788962949998677
+    ],
+    "windows_reduction_percent": 46.0173566150829,
+    "ubuntu_median_seconds": [
+      12.761637121999996,
+      7.084674994500006
+    ],
+    "ubuntu_reduction_percent": 44.48459138297689,
+    "scope": "Two serial alternating native O2 pairs per platform; short original-input window only. No full-project or portable speed guarantee."
+  },
+  "hosted": {
+    "run": 43014743654,
+    "job": 130502913908,
+    "status": "PASS",
+    "original_artifact_zip_sha256": "d267dd19189f25a3743d29da4759b9cc400e073ee228c7225898bdd201c186c9",
+    "retained_losslessly": true,
+    "source_objects_executables_and_ledger_audit": "PASS"
+  },
+  "open_acceptance": [
+    "Explicit opt-in numerical policy and configuration/restart identity before broader activation",
+    "Current default exact behavior and shared receipt consumers must remain preserved",
+    "Full project/runtime parity, day188/day584 and whole scientific/energy criteria remain unqualified"
+  ],
+  "next_delivery": "Implement explicit numerical heat substeps (default1, selected4), immutable per-instance policy and native/restart binding. Start with this qualified private postimage; preserve exact default outputs and use short current-source O0/O2 plus affected native consumers before selecting any complete trajectory."
+}

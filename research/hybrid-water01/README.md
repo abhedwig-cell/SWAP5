@@ -2,6 +2,43 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Internal heat subcycling research delivered, 11 November 2026
+
+PR 1631 is merged at 87d2c7c1a931d5fcfb63869852896726ee28457e.
+The actual whole tree equals qualified head 5ab5c0a397 and the predicted
+merge postimage. Production src/app/tools/tests/reference remain unchanged;
+the three executed private postimages are generated explicitly for research.
+See CLOSURE01_THERMAL_SUBCYCLE_CANONICAL_20261111.json and the canonical
+THERMAL_SUBCYCLE_RESEARCH_20261111.json for exact source/build/raw identities.
+
+Four original implicit heat solves per water trial reduce accepted expensive
+water steps from 6882 to 3585 over the original four-day Grassgrowth window.
+Two alternating O2 production pairs give 14.429 to 7.789 seconds on Windows
+GNU16.2 (46.02% lower median), and 12.762 to 7.085 seconds on Ubuntu26 GNU15.2
+(44.48%). External water and 1e-5 C thermal gates and the energy budget are
+unchanged. Actual integrated conductive faces and per-cell closure are
+checked on every full/half trial. Original/private heat-body O0/O2, six
+boundary combinations, A/B/A, refusal and immutable-state controls pass.
+Own fresh-process day2-to4 restart is exact on both platforms; a Windows
+foreign-build checkpoint is refused. Complete cold O0 application execution
+is not claimed. Linux's entire original artifact ZIP is permanently retained
+and independently checked against actual source, objects, executable and
+native ledger identities. The cancelled checkout and failed link fixture
+remain explicitly classified. No complete historical model run was repeated.
+
+This is bounded private numerical research. Cross-arm trajectories differ;
+the Windows terminal temperature difference reaches 0.0003663 C. Neither
+whole science nor full-project runtime parity is established. The existing
+day188/day584 and complete-energy qualifications remain separate.
+
+Next delivery: make this proven option explicit in the generic numerical
+configuration (default one heat step, selected four), bind policy through
+per-instance/native/restart identity, preserve exact current default outputs,
+and run short actual O0/O2 and affected receipt/native consumer controls.
+Use the existing private postimages, not another parameter sweep. Select a
+new full trajectory only after the option and its preservation are qualified.
+
+
 ### Runtime discriminator delivered, 11 November 2026
 
 PR 1630 is merged at f96c9f23ed2234255c0ceeb64e82c3e87f2e77fe.
