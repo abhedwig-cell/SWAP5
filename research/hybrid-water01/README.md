@@ -2,6 +2,58 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Current16 cost hypothesis closed; generic waterhost is next, 11 November 2026
+
+PR1638 merged at01a9d29c380645dec880257f360174b5cb5ea5c0. Actual whole tree
+5ddd0994fdc92e7ef972f095a35919af26a08734 equals qualified head
+ae3b0627cbc3ab44976dc076324b60afd3312992 and predicted merge. Canonical raw
+archive matches independent SHA256. Recovery receipt:
+CLOSURE01_GRASS_SIXTEEN_COST_CANONICAL_20261111.json. No model/compiler/live
+observation remains. Do not repeat this completed profile or any full trajectory.
+
+Two own187-to190 observations of the unchanged full16 release cost21.962575s
+in total, below60s cap. Both complete water/crop/conductive suffixes and entire
+checkpoint190 match PR1637 full archive exactly. Waterfilm caller samples are
+713/1427 (49.96percent) and676/1399 (48.32percent); restricted heat samples
+68/1427 (4.77percent) and75/1399 (5.36percent). Reject heat dominance, not
+asserting exact CPU fractions/call counts/new speedup. No safe production
+optimization is established. Existing power ordering and closed cache/quad/
+no-stress/coefficient results stay unchanged. No more heat-count campaign from
+these observations. Independent50-member/source/counter/suffix audit and strict
+docs pass. Capsule205976bytes SHA256
+40e903835e142125d22426946526c3e19799dabf04c1e782549ab1fcb98e0179.
+Functional project coverage unchanged; this is supporting cost/preservation only.
+
+Next coherent FUNCTIONAL delivery: consolidate the EXISTING hybrid waterhost
+for explicit original project grid/clock and compatible original water receipt,
+then qualify a bounded original Grassgrowth water-only prototype with own day
+restart, rollback/refusal and independent columns. Source inspection found real
+constraints: main.f90 and donor_adapter.f90 fix112 pressures; main fixes35795
+clock; daily_host fixes CASE/START_CLOCK and112; hybrid_step_budget admits only
+macro instantaneous-bypass/Cauchy/no-snow. Original Grassgrowth113-node,
+SWMACRO0, SWSNOW0 and SWBOTB1 cannot be enabled by merely renaming a case.
+Keep original physics and all original input hashes. Make unsupported boundary/
+state configurations refuse explicitly; do not run Andelst-specific macro code
+on absent/unallocated macro state. Preserve Andelst112/Cauchy semantics and
+its existing1e-6cm day guard; keep Grass water1e-10cm. No tolerance relaxation.
+
+This is a watercore consolidation prototype, NOT automatic replacement of the
+registered native1e-5C trajectory. Its heat/crop/forcing completeness and exact
+restart must be demonstrated before any full new execution or science/runtime
+claim. Do not bypass the registered heat budget or relabel a legacy thermal
+trajectory as its qualification. Reuse proven original blocks and existing
+state/interfaces; do not invent a framework. Freeze source and selection before
+builds. Use bounded real original-input initial days and own cut first; include
+O0/O2 owning/state/negative controls and source-bound cached build reuse. If two
+repairs fail, preserve the concrete failed state-contract proof and choose a
+larger intact original block rather than a diagnostic campaign. Integrate only
+via a dedicated PR after the coherent functional block is reviewable. Latest
+canonical and current recovery refs override the old sources on this branch.
+
+The full16/4/native and all three historical-project receipts remain immutable.
+Day188/day584 science, complete energy and runtime parity are still OPEN.
+
+
 ### Full original sixteen-step trajectory delivered, 11 November 2026
 
 PR1637 merged ate37646f2745bb5e406f954a8727ba8c4c7bb50e9. Actual whole tree
