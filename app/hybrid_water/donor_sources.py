@@ -166,13 +166,13 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
 """
     if solute_state:
         if not nonmacro:raise ValueError('Solute auxiliary requires nonmacro mode')
-        codec=codec.replace('S5NON004','S5HUP009')
+        codec=codec.replace('S5NON004','S5HUP010')
         codec=replace(codec,"      use MOD_swap_base, only: swmacro",
-                      "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint\n      use MOD_irrigation,only:hybrid_irrigation_checkpoint")
+                      "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint\n      use MOD_irrigation,only:hybrid_irrigation_checkpoint\n      use MOD_wofost,only:hybrid_wofost_checkpoint")
         codec=replace(codec,"        read(unit,iostat=ios) trailing",
-                      "        call hybrid_solute_checkpoint(unit,.true.)\n        call hybrid_irrigation_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
-        codec=replace(codec,"        write(unit) 'S5HUP009',numnod,clock,old_step,canopy_stock",
-                      "        write(unit) 'S5HUP009',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)")
+                      "        call hybrid_solute_checkpoint(unit,.true.)\n        call hybrid_irrigation_checkpoint(unit,.true.)\n        call hybrid_wofost_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
+        codec=replace(codec,"        write(unit) 'S5HUP010',numnod,clock,old_step,canopy_stock",
+                      "        write(unit) 'S5HUP010',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
@@ -238,10 +238,12 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                           "if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint")
     if solute_state:
         restore="   if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint(.true., t1900, dtold, checkpoint_canopy)"
+        swap=replace(swap,"use MOD_cropdevelopment, only: croprotation, cropdevelopment, reset_crop",
+                     "use MOD_wofost,only:hybrid_apply_wofost\nuse MOD_cropdevelopment, only: croprotation, cropdevelopment, reset_crop")
         swap=replace(swap, "use MOD_irrigation,      only: irrigation, flirrigate",
                      "use MOD_irrigation,      only: irrigation, flirrigate, hybrid_apply_irrigation")
         swap=replace(swap,"         if (checkpoint_canopy >= 0d0) then",
-                     "         call hybrid_apply_irrigation(fl_cropemergence)\n         if (checkpoint_canopy >= 0d0) then")
+                     "         call hybrid_apply_irrigation(fl_cropemergence)\n         call hybrid_apply_wofost(fl_cropemergence)\n         if (checkpoint_canopy >= 0d0) then")
         swap=replace(swap,restore,"")
         swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore)
     (output / "swap.f90").write_text(swap, encoding="cp1252")

@@ -326,6 +326,48 @@ end submodule MOD_Solute_CDE""")
                        "            siccaploss = siccaploss + sicact\n"
                        "            sicact = 0d0\n            siccap = 0d0")
         (output/'MOD_cropdevelopment.f90').write_text(source,encoding='cp1252')
+        source=(donor_build/'swap-selected/wofost.f90').read_text(encoding='cp1252')
+        source=replace(source,'   type (WOFOST_rates), save :: r_pot, r_act',
+                       '   type (WOFOST_rates), save :: r_pot, r_act\n'
+                       '   type (WOFOST_rates), save :: hybrid_r_pot,hybrid_r_act\n'
+                       '   logical,save::hybrid_crop_pending=.false.,hybrid_crop_was_emerged=.false.')
+        source=replace(source,'   public :: assimilation, wofost, reset_wofost_states_rates',
+                       '   public :: assimilation, wofost, reset_wofost_states_rates\n'
+                       '   public :: hybrid_wofost_checkpoint,hybrid_apply_wofost')
+        rates=source.split('   type WOFOST_rates',1)[1].split('   end type WOFOST_rates',1)[0]
+        names=re.findall(r'::\s*(\w+)',rates)
+        if len(names)!=24:raise ValueError('Changed original WOFOST rate inventory')
+        finite=', &\n         '.join('hybrid_r_'+mode+'%'+name for mode in ['pot','act'] for name in names)
+        source=replace(source,'end module MOD_wofost',f"""
+   subroutine hybrid_wofost_checkpoint(unit,restoring)
+      use plant_interface,only:fl_cropemergence
+      use ieee_arithmetic,only:ieee_is_finite
+      integer,intent(in)::unit
+      logical,intent(in)::restoring
+      integer::flag,ios
+      if(restoring)then
+         read(unit,iostat=ios) flag,hybrid_r_pot,hybrid_r_act
+         if(ios/=0.or.flag<0.or.flag>1)error stop 'Invalid Hupsel crop-rate context'
+         if(.not.all(ieee_is_finite([{finite}])))error stop 'Nonfinite Hupsel crop-rate context'
+         hybrid_crop_was_emerged=flag==1
+         hybrid_crop_pending=.true.
+      else
+         flag=merge(1,0,fl_cropemergence)
+         write(unit) flag,r_pot,r_act
+      end if
+   end subroutine
+   subroutine hybrid_apply_wofost(emerged)
+      logical,intent(in)::emerged
+      if(.not.hybrid_crop_pending)return
+      if(hybrid_crop_was_emerged.and.emerged)then
+         r_pot=hybrid_r_pot
+         r_act=hybrid_r_act
+      end if
+      hybrid_crop_pending=.false.
+   end subroutine
+end module MOD_wofost""")
+        (output/'wofost.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'wofost')
         patched.append('MOD_cropdevelopment')
         source=(donor_build/'swap-selected/irrigation.f90').read_text(encoding='cp1252')
         source=replace(source,"      subroutine read_irrigation_fixed()",
