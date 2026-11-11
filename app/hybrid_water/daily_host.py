@@ -290,8 +290,9 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         # interval. Its original order overshot short final fragments and
         # created solute during the day-five saline irrigation event.
         source=(donor_build/'swap-selected/solute.f90').read_text(encoding='cp1252')
-        source=replace(source,"            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)",
-                       "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")
+        end=source.index("      end subroutine solute_CDE",source.index("dtsolu  = min"))
+        source=replace(source[:end],"            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)",
+                       "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")+source[end:]
         (output/'solute.f90').write_text(source,encoding='cp1252')
         patched.append('solute')
     if budget_retry:
