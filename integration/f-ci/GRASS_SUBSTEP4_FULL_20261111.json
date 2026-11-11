@@ -1,5 +1,5 @@
 {
-  "status": "RELEASE_VERIFIED_READY_FOR_SINGLE_FULL_RUN",
+  "status": "SINGLE_FULL_EXECUTION_RUNNING",
   "canonical_source": "c3c99cb6c70edfd652d904306daa63d03a283939",
   "model": "Original113-node Grassgrowth,1827 days",
   "numerical_profile": "thermal-subcycle4-1e-5C",
@@ -515,5 +515,26 @@
     "application_binding_sha256": "40aa372fa5ccec1572466ef863aefbd3841a986d03fef72aa0ee7678af180c35",
     "reused_object_count": 203,
     "provider_count": 203
-  }
+  },
+  "live_process_snapshot": [
+    {
+      "ProcessId": 23388,
+      "ParentProcessId": 35404,
+      "Name": "python.exe",
+      "CreationDate": "2026-11-11T14:05:36.351676+01:00",
+      "ExecutablePath": "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "CommandLine": "\"C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe\" -B tests/dataqual15/run_original.py --bundle C:\\Users\\Veldh012\\AppData\\Local\\Temp/s5-grass-substep4-release-20261111 --output C:\\Users\\Veldh012\\AppData\\Local\\Temp/s5-grass-substep4-full-20261111 --end 1827 --capture 2 4 187 188 190 365 367 1791 1792 --timeout 7200"
+    },
+    {
+      "ProcessId": 23328,
+      "ParentProcessId": 23388,
+      "Name": "swap5_grass_startup.exe",
+      "CreationDate": "2026-11-11T14:05:36.517453+01:00",
+      "ExecutablePath": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-release-20261111\\swap5_grass_startup.exe",
+      "CommandLine": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-release-20261111\\swap5_grass_startup.exe 1827 retain-step 100000 \"\" thermal-control-4"
+    }
+  ],
+  "launch_record": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-full-20261111\\LAUNCH.json",
+  "progress_record": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-grass-substep4-full-20261111\\PROGRESS.json",
+  "resume_rule": "Inspect the exact process identities and run directory first. Continue observing live native/monitor processes; never launch a duplicate full trajectory. Preserve censored/failing observations; only own source-bound checkpoint continuation is allowed."
 }
