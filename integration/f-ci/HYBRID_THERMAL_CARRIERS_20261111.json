@@ -1,0 +1,25 @@
+{
+  "status": "IMPLEMENTED_NOT_YET_QUALIFIED",
+  "base": "a0c07487c944ff7da2a7e3b502aa725f687e480a",
+  "scope": "Opt-in original water-carrier observation and accepted-only inventory; no physical energy or solver change",
+  "test_selection": {
+    "candidate": "a0c07487c944ff7da2a7e3b502aa725f687e480a",
+    "groups": {
+      "hybrid_thermal_carriers": {
+        "changed_dependency": "New read-only water observer and accepted carrier reader against same-step original heat and immutable original objects",
+        "scientific_claim": "Actual water path amounts/availability and unchanged original physical/native state; no actual external donor temperatures inferred",
+        "owner": "RT-TX/heat original-block application bridge",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 90,
+        "existing_evidence": "PR1643 original conduction and accepted physical/native proof; PR1641 complete original three-project binaries/objects/input/checkpoints",
+        "prior_execution": "PASS",
+        "diagnosis": "Capture actual q/root/drain/macro/drip at identical heat steps; determine whether missing nonzero donor temperatures block a defensible physical heat request. No full trajectories or broader F-CI selected: src/default host/reference untouched."
+      }
+    }
+  },
+  "caps": {
+    "native_cohort_seconds": 240,
+    "compiler_link_seconds": 45
+  },
+  "next": "Run bounded six Windows cases and identical Ubuntu owning cohort; publish actual input limitation and supported carrier API via PR, verify canonical."
+}
