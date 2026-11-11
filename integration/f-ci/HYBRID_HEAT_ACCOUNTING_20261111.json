@@ -1,0 +1,128 @@
+{
+  "status": "QUALIFIED_READ_ONLY_ORIGINAL_HEAT_BRIDGE_WINDOWS_UBUNTU26_FULL_PHYSICAL_ENERGY_OPEN_ADMISSION_PENDING",
+  "base": "f5606e455cf1e558d23e3a0af5b7d8847fbdc954",
+  "owned_surface": [
+    "app/hybrid_water/heat_accounting.f90",
+    "research/hybrid-water01/qualify_original_heat_accounting.py",
+    "app/hybrid_water/heat_receipts.py",
+    "research/hybrid-water01/check_original_heat_accounting.py",
+    ".github/workflows/grass-thermal-production.yml"
+  ],
+  "fixed_surface": [
+    "src",
+    "app/hybrid_water/daily_host.py",
+    "original physics/temperature arithmetic",
+    "all numerical/physical tolerances",
+    "existing native/default routes and original inputs"
+  ],
+  "invariants": [
+    "Original heat/source operations untouched outside marked read-only observer blocks",
+    "Old accepted checkpoints verified and explicitly adopted without rebinding",
+    "New donor source/executable identity explicit",
+    "Missing advective/reference/domain inputs fail closed in existing owner",
+    "Conduction and full energy accepted scopes distinct"
+  ],
+  "test_selection": {
+    "candidate": "83d0df4b0bdea8a816846021e191397420efc076",
+    "groups": {
+      "hybrid_heat_accounting": {
+        "changed_dependency": "Read-only original temperature observer relink and existing production whole-column storage bridge; other inherited objects and process code unchanged",
+        "scientific_claim": "Actual original conduction and changing-composition sensible-storage completeness; no new full-energy qualification",
+        "owner": "RT-TX/heat original-block application bridge",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 90,
+        "existing_evidence": "PR1641 complete original Hupsel1096, own4to6 plus source-bound original object/input/native-state capsules; accepted whole-column sensible energy decomposition and restricted heat energy budget",
+        "prior_execution": "PASS",
+        "diagnosis": "Actual Windows all6 observer/ledger O0/O2 cases preserve exact original physical/native results; accepted-only/corrupt-face guards pass. Native initial HupselO2 probe reused without repetition. Linux relinks same4 small ledger/observer sources and original temperature object against frozen admitted objects, not a full source build/run. Missing-energy counterfactual remains failed at1e-9."
+      }
+    }
+  },
+  "first_command": "python -B research/hybrid-water01/qualify_original_heat_accounting.py --base-archive research/hybrid-water01/hybrid-hupsel-windows-20261111.tar.xz --workspace $TEMP/s5-heat-original-base-windows-20261111 --output $TEMP/s5-heat-first-hupsel-20261111 --case hupsel-O2",
+  "caps": {
+    "total_native_seconds": 240,
+    "compiler_link_seconds": 45
+  },
+  "next": "Admit qualified read-only heat-receipt bridge via own PR and verify canonical postimage. Next assemble source-bound mass-carried energy input inventory from existing water/root/drain/macro and thermal-carrier owners; unknown donor temperatures/reference stay unavailable. No repetition of proven conduction/zero-assumption probe or full/native/reference runs.",
+  "first_probe": {
+    "status": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
+    "source": "772994f2f",
+    "steps": 278,
+    "storage_status_counts": {
+      "WCSA_INCOMPLETE_BOUNDARY": 278
+    },
+    "maximum_cell_conduction_residual_j_cm2": 2.102021898556239e-13,
+    "maximum_global_conduction_residual_j_cm2": 5.74207348336131e-13,
+    "composition_change_sum_j_cm2": -0.47392083128287765,
+    "maximum_zero_advection_residual_j_cm2": 3.42902478613633,
+    "existing_energy_budget_j_cm2": 1e-09,
+    "raw_theta_domain_failures": 0,
+    "decision": "Do not correct original heat or force missing energy to zero. Expose accepted original conduction/storage receipts with explicit incomplete physical boundary; qualify remaining five generic observer cases and preserve failed counterfactual."
+  },
+  "actual_windows": {
+    "first_hupsel_O2_inherited": "772994f2f",
+    "remaining_five_source": "ae794c785",
+    "first_probe_receipts": "s5-heat-first-hupsel-20261111/HEAT_RECEIPTS.json",
+    "remaining_receipts": "s5-heat-remaining-windows-20261111/HEAT_RECEIPTS.json",
+    "all_original_physical_and_both_native_payloads": "EXACT",
+    "zero_missing_energy_counterfactual": "FAIL in all6; production actual missing-boundary status3 retained"
+  },
+  "linux_ci": {
+    "run": 43109370745,
+    "job": 130821031484,
+    "head": "b7ca516f60caa448109a0f72980d9948de1f25e9",
+    "conclusion": "success",
+    "artifact": 13895885852,
+    "artifact_sha256": "09d8ad83700ac6e67596276b3b04cb456f2e543f878a42d3a3ff45ace6fd3bd5"
+  },
+  "conclusion": "Original numerical conduction closes under existing1e-9J/cm2. All actual storage-owner calls retain incomplete-boundary status3, zero-mass-carried-energy counterfactual FAILS. This is a model-formulation/accounting-coverage limitation, not a demonstrated migration defect or a reason to alter original temperatures/tolerances.",
+  "independent_audit": {
+    "status": "BOTH_INDEPENDENT_ORIGINAL_HEAT_CAPSULE_AUDITS_PASS",
+    "auditor_sha256": "f1673ef2cec4c28170c51589cca1dfe227c8ac69a521b46e6426e1269ec2b0f6",
+    "results": {
+      "windows": {
+        "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+        "cases": 6,
+        "raw_files": 349,
+        "heat_steps": 7750,
+        "maximum_global_conduction_residual_j_cm2": 1.7843504451775516e-12,
+        "counterfactual_zero_missing_energy_verdict": "FAIL",
+        "original_physical_and_both_native_payloads": "EXACT",
+        "original_statement_source_after_declared_EOL_normalization": "EXACT",
+        "actual_storage_boundary_status": "INCOMPLETE_BOUNDARY",
+        "full_energy_balance_complete": false
+      },
+      "linux": {
+        "status": "INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS",
+        "cases": 6,
+        "raw_files": 347,
+        "heat_steps": 9422,
+        "maximum_global_conduction_residual_j_cm2": 1.545430450278218e-12,
+        "counterfactual_zero_missing_energy_verdict": "FAIL",
+        "original_physical_and_both_native_payloads": "EXACT",
+        "original_statement_source_after_declared_EOL_normalization": "EXACT",
+        "actual_storage_boundary_status": "INCOMPLETE_BOUNDARY",
+        "full_energy_balance_complete": false
+      }
+    },
+    "reference_temperature_c": 0.0,
+    "source_EOL_scope": "Original selected source uses CRLF. Generated Linux source uses LF after read_text/write_text; source text outside marked observer blocks matches exactly after explicit CRLF/LF normalization. Windows raw source bytes also match outside blocks.",
+    "notes": "Failed zero-missing-energy counterfactual is not an actual measured whole-energy residual. Production numerical conduction budget1e-9 unchanged."
+  },
+  "raw_archives": {
+    "windows": {
+      "bytes": 29788740,
+      "sha256": "53350b8cfb37eb5b7a89a3f6c63bf99877792ce3572c1e5550b3360ff5006ade"
+    },
+    "linux": {
+      "bytes": 35832564,
+      "sha256": "46a7e502b4e46bb460b2c9222d893fb619197f89028371b61a7998b828ced338"
+    }
+  },
+  "review": "research/hybrid-water01/HYBRID_HEAT_ACCOUNTING_REVIEW.md",
+  "verification": {
+    "docs_source": "PASS",
+    "mkdocs_strict": "PASS",
+    "original_and_shared_physics_sources": "UNCHANGED",
+    "actual_observer_sources_and_qualifiers_since_linux_head": "UNCHANGED"
+  }
+}

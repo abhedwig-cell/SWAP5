@@ -131,3 +131,15 @@ external disk recovery, isolated/stale decisions and ambiguous publication failu
 This is serial external publication control; peer-model feedback and complete
 coupled project qualification remain separate. See the [contract, measured costs
 and raw proof](https://github.com/abhedwig-cell/SWAP5/blob/codex/hybrid-daily-coupling/research/hybrid-water01/HYBRID_DAILY_COUPLING_REVIEW.md).
+
+
+## Original heat-accounting observation
+
+The `codex/hybrid-heat-accounting` successor connects read-only original numerical
+heat observations to existing production sensible-storage accounting. Actual
+three-project O0/O2 cases preserve the corresponding original physical and native
+restart outputs exactly. Accepted numerical conduction closes within the existing
+1e-9J/cm2 budget; physical mass-carried boundary energy remains unavailable and
+full-energy flags remain false. Declaring the missing terms zero fails explicitly.
+This is balance/coverage evidence, not a replacement thermal model or full-energy
+qualification. See the [actual source-bound receipts and scientific disposition](https://github.com/abhedwig-cell/SWAP5/blob/codex/hybrid-heat-accounting/research/hybrid-water01/HYBRID_HEAT_ACCOUNTING_REVIEW.md).
