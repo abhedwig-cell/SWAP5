@@ -131,7 +131,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
-                          runtime=runtime_checkpoint, nonmacro=project!=ANDELST)
+                          runtime=runtime_checkpoint, nonmacro=project!=ANDELST, solute_state=project==HUPSEL)
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -293,8 +293,32 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         end=source.index("      end subroutine solute_CDE",source.index("dtsolu  = min"))
         source=replace(source[:end],"            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)",
                        "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")+source[end:]
+        source=replace(source,"      module subroutine calc_AgeTracer(task)","""      module subroutine hybrid_solute_checkpoint(unit,restoring)
+         integer,intent(in)::unit
+         logical,intent(in)::restoring
+      end subroutine hybrid_solute_checkpoint
+      module subroutine calc_AgeTracer(task)""")
+        source=replace(source,"   public :: solute_CDE, calc_AgeTracer","   public :: solute_CDE, calc_AgeTracer, hybrid_solute_checkpoint")
+        source=replace(source,"end submodule MOD_Solute_CDE","""module subroutine hybrid_solute_checkpoint(unit,restoring)
+   use ieee_arithmetic,only:ieee_is_finite
+   use MOD_grid,only:dz
+   integer,intent(in)::unit
+   logical,intent(in)::restoring
+   integer::ios
+   if(restoring)then
+      read(unit,iostat=ios) cmsy(1:numnod),csurf,sampro
+      if(ios/=0)error stop 'Incomplete Hupsel conserved solute state'
+      if(.not.all(ieee_is_finite(cmsy(1:numnod))).or..not.all(ieee_is_finite([csurf,sampro]))) &
+         error stop 'Nonfinite Hupsel conserved solute state'
+      if(any(cmsy(1:numnod)<0d0).or.csurf<0d0.or.sampro<0d0)error stop 'Negative Hupsel solute state'
+      if(abs(sum(cmsy(1:numnod)*dz(1:numnod))+csurf-sampro)>1d-10)error stop 'Unbalanced Hupsel solute state'
+   else
+      write(unit) cmsy(1:numnod),csurf,sampro
+   end if
+end subroutine hybrid_solute_checkpoint
+end submodule MOD_Solute_CDE""")
         (output/'solute.f90').write_text(source,encoding='cp1252')
-        patched.append('solute')
+        patched.insert(0,'solute')
         source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')
         source=replace(source,"            siccaploss = siccaploss + sicact",
                        "            siccaploss = siccaploss + sicact\n"

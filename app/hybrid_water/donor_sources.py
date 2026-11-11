@@ -84,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -164,6 +164,15 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
       close(unit)
     end subroutine hybrid_macro_checkpoint
 """
+    if solute_state:
+        if not nonmacro:raise ValueError('Solute auxiliary requires nonmacro mode')
+        codec=codec.replace('S5NON004','S5HUP005')
+        codec=replace(codec,"      use MOD_swap_base, only: swmacro",
+                      "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint")
+        codec=replace(codec,"        read(unit,iostat=ios) trailing",
+                      "        call hybrid_solute_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
+        codec=replace(codec,"        write(unit) 'S5HUP005',numnod,clock,old_step,canopy_stock",
+                      "        write(unit) 'S5HUP005',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
@@ -227,6 +236,10 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
     if nonmacro:
         swap=replace(swap,"if (swmacro == 1 .and. fl_initialize) call hybrid_macro_checkpoint",
                           "if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint")
+    if solute_state:
+        restore="   if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint(.true., t1900, dtold, checkpoint_canopy)"
+        swap=replace(swap,restore,"")
+        swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore)
     (output / "swap.f90").write_text(swap, encoding="cp1252")
     if runtime or checkpoint_day >= 365:
         source = (selected / "swapoutput.f90").read_text(encoding="cp1252")
