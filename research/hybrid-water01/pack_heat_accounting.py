@@ -13,11 +13,26 @@ p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--runs',action='append',type=Path,required=True)
 p.add_argument('--platform',choices=['windows','linux'],required=True)
 p.add_argument('--source-head',required=True);p.add_argument('--output',type=Path,required=True)
-a=p.parse_args();files={};cases={};digests={}
+a=p.parse_args();files={};cases={};digests={};patches={}
 for i,folder in enumerate(a.runs):
     prefix=f'phase-{i}'
     for path in folder.rglob('*'):
-        if path.is_file():files[prefix+'/'+path.relative_to(folder).as_posix()]=path
+        if not path.is_file():continue
+        member=prefix+'/'+path.relative_to(folder).as_posix()
+        if path.name=='bad-heat-face.txt':
+            original=path.parent/'original/original-heat-accounting.txt'
+            old=original.read_bytes().splitlines(keepends=True);bad=path.read_bytes().splitlines(keepends=True)
+            assert len(old)==len(bad)
+            changes=[{'line':i,'replacement_hex':right.hex()} for i,(left,right) in enumerate(zip(old,bad)) if left!=right]
+            assert len(changes)==1
+            reconstructed=old.copy()
+            for change in changes:reconstructed[change['line']]=bytes.fromhex(change['replacement_hex'])
+            assert hashlib.sha256(b''.join(reconstructed)).digest()==hashlib.sha256(path.read_bytes()).digest()
+            patches[member+'.patch.json']={'source':prefix+'/'+original.relative_to(folder).as_posix(),
+                'source_sha256':hashlib.sha256(original.read_bytes()).hexdigest(),
+                'reconstructed_bad_sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'changes':changes}
+            del old,bad,reconstructed
+        else:files[member]=path
     report=json.loads((folder/'RESULT.json').read_text())
     assert report['status']=='ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS'
     digests.update(report['sources']);digests.update(json.loads((folder/'HEAT_RECEIPTS.json').read_text())['sources'])
@@ -27,6 +42,8 @@ for i,folder in enumerate(a.runs):
 assert len(cases)==6
 with tempfile.TemporaryDirectory(prefix='s5-heat-pack-sources-') as temp:
     sources={}
+    for i,(name,value) in enumerate(patches.items()):
+        path=Path(temp)/('negative-'+str(i)+'.json');path.write_text(json.dumps(value,indent=2)+'\n',encoding='utf-8');files[name]=path
     for name,digest in digests.items():
         raw=subprocess.check_output(['git','cat-file','blob',a.source_head+':'+name],cwd=ROOT)
         lf=raw.replace(b'\r\n',b'\n')

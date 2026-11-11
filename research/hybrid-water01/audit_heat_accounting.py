@@ -23,6 +23,13 @@ with tempfile.TemporaryDirectory(prefix='s5-heat-independent-audit-') as temp:
     index=load(root/'PROOF_INDEX.json');assert sha(a.base_archive)==index['base_archive_sha256']
     with tarfile.open(a.base_archive) as t:t.extractall(base,filter='data')
     for name,digest in load(root/'MEMBER_SHA256.json').items():assert sha(root/name)==digest,name
+    for patch in root.rglob('bad-heat-face.txt.patch.json'):
+        witness=load(patch);source=root/witness['source'];assert sha(source)==witness['source_sha256']
+        lines=source.read_bytes().splitlines(keepends=True)
+        assert len(witness['changes'])==1
+        for change in witness['changes']:lines[change['line']]=bytes.fromhex(change['replacement_hex'])
+        assert hashlib.sha256(b''.join(lines)).hexdigest()==witness['reconstructed_bad_sha256']
+        del lines
     original_index=load(base/'PROOF_INDEX.json');original_members=load(base/'MEMBER_SHA256.json')
     original_objects={digest for name,digest in original_members.items() if name.endswith('.o')}
     original=base/original_index['reference']/'build/swap-selected/temperature.f90'
