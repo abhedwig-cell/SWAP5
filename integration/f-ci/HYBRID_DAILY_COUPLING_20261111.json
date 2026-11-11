@@ -1,10 +1,12 @@
 {
-  "status": "IMPLEMENTED_PERSIST_BEFORE_QUALIFICATION",
+  "status": "WINDOWS_SIX_REAL_ACCEPT_DISCARD_RECOVERY_CASES_PASS_LINUX_PENDING",
   "base": "30026511e8d03f6c77bc30377d60a65259afb2fc",
   "workstream": "RT-TX / hybrid application ownership",
   "owned_surface": [
     "app/hybrid_water/daily_coupling.py",
-    "research/hybrid-water01/qualify_daily_coupling.py"
+    "research/hybrid-water01/qualify_daily_coupling.py",
+    ".github/workflows/grass-thermal-production.yml",
+    "research/hybrid-water01/qualify_daily_coupling_corruption.py"
   ],
   "read_only_authorities": [
     "docs/capabilities/groundwater-coupling-v1.md",
@@ -30,8 +32,8 @@
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
         "expected_seconds": 120,
         "existing_evidence": "PR1641 Windows/Ubuntu26 raw source-bound capsules qualify underlying unchanged kernel/donor O0/O2, full1096/nine own and three project prefixes",
-        "prior_execution": "FAILED",
-        "diagnosis": "First preflight used invalid prior_execution enum; first bundle validation incorrectly required optional budget source for Grass budget_retry=False. No model/compiler ran. Preserve original optional build scope; require budget source for enabled profiles."
+        "prior_execution": "PASS",
+        "diagnosis": "Actual Windows three-project six O0/O2 cases PASS in91s total with original frozen bundles. Linux executes same interface using exact admitted Ubuntu26 binaries; extra corruption/terminal guards require one bounded native proposal only. No full trajectory or model compilation."
       }
     }
   },
@@ -52,5 +54,909 @@
     "censored": false,
     "compiler_events": [],
     "events": []
+  },
+  "actual_windows": {
+    "status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+    "source_commit": "aadbd5309852fbf0a2c3e1b6c50e5cf15846d9de",
+    "source_sha256": {
+      "app/hybrid_water/daily_coupling.py": "681ef9c87700e9f90be875e57e893509339a8b97322ccb3c41359f17d2e48c58",
+      "research/hybrid-water01/qualify_daily_coupling.py": "c1d0d6fa4779c6b1d16f366cb9d6c3ed4529b1b2c9a6cb91bcbb17d3a17749e9"
+    },
+    "platform": "windows",
+    "cases": [
+      {
+        "project": "grass",
+        "optimization": "O0",
+        "bundle_build_sha256": "4fddc7605d414b77d8b7fe5b91279fdf4bf9cb64e065c463b779624b6708640b",
+        "native_origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+        "external_day4_sha256": "131b48f54fbfc06b6564a1d91856cbafcca1dc1789e90c34755ba80b39932b57",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "grass",
+        "optimization": "O2",
+        "bundle_build_sha256": "d98cce3674e6ba470b145d523ae2f64d34317dca8437713c0181f884a3797a7f",
+        "native_origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+        "external_day4_sha256": "4e9ca9c49015c02dd83679c0cc05371320e32d7a3f2f8c8ae10cf5e159494537",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O0",
+        "bundle_build_sha256": "9d708e89c1343acf1c64400df27d1a4c275ccd90d226e816a8b62017f2f5b880",
+        "native_origin_sha256": "eb50e360287c68b39daaec88a9bdf4c95e2e4e9cbecc0ab3e45c979efeb4317a",
+        "external_day4_sha256": "8b65582799d281de02ee962b185d816c86d5282fc1c3716ae66d0f5e72d94cf4",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O2",
+        "bundle_build_sha256": "14bfa596b3d205490da1929980a11d256a5ba3501b70335f676d840a96786b7e",
+        "native_origin_sha256": "cfd09804cfd593b20783ba80f931d9c66e26ccdf94fa081f52b5bd6639165316",
+        "external_day4_sha256": "76d21a28a42ef89f96761065fa215b3bd8b0a6beac3722a1086bb4f0011569bc",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O0",
+        "bundle_build_sha256": "474528dc3a409500530aeeeb260753e591786d4c87111a5189239335d974b823",
+        "native_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+        "external_day4_sha256": "1ee66ce4c78d817c80635b1306d614df735125c4309e5009335156294e4faffd",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O2",
+        "bundle_build_sha256": "c9ac7536acb09a87987ad700571b77b91dad7d85888889a055efbe27959ad7a3",
+        "native_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+        "external_day4_sha256": "2ba213b327fdd250cab5fe5f0c53386f9f3bdb9ab86b7965ad6aee7b1c7c6922",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      }
+    ],
+    "events": [
+      {
+        "case": "grass-O0",
+        "seconds": 18.845715699950233,
+        "status": "PASS"
+      },
+      {
+        "case": "grass-O2",
+        "seconds": 11.850583899999037,
+        "status": "PASS"
+      },
+      {
+        "case": "hupsel-O0",
+        "seconds": 12.213746699970216,
+        "status": "PASS"
+      },
+      {
+        "case": "hupsel-O2",
+        "seconds": 12.136488900054246,
+        "status": "PASS"
+      },
+      {
+        "case": "andelst-O0",
+        "seconds": 17.875470699975267,
+        "status": "PASS"
+      },
+      {
+        "case": "andelst-O2",
+        "seconds": 18.03779560001567,
+        "status": "PASS"
+      }
+    ],
+    "scope": "Serial externally accepted original-forcing daily transactions. No new groundwater feedback, forcing physics, peer-backend or whole-science qualification.",
+    "compiler_events": [
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\external\\restart_publish.dll"
+        ],
+        "seconds": 6.884975200053304,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\external\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.9263137001544237,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\external\\trial-2\\restart_publish.dll"
+        ],
+        "seconds": 0.8884359998628497,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.9444468999281526,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\peer\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8493959999177605,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8561722999438643,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\external\\trial-3\\restart_publish.dll"
+        ],
+        "seconds": 0.9445491000078619,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\restored\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.9074091999791563,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8700594999827445,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\sync-failure\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.9104461998213083,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O0\\sync-recovered\\restart_publish.dll"
+        ],
+        "seconds": 0.9247461999766529,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8060379999224097,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\external\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8538468000479043,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\external\\trial-2\\restart_publish.dll"
+        ],
+        "seconds": 0.8514175999443978,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8995787999592721,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\peer\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8989673000760376,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.9016192001290619,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\external\\trial-3\\restart_publish.dll"
+        ],
+        "seconds": 0.8412057000678033,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\restored\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8659496000036597,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8230466998647898,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\sync-failure\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8261337000876665,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\grass-O2\\sync-recovered\\restart_publish.dll"
+        ],
+        "seconds": 0.8022821000777185,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8154134000651538,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\external\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8110635001212358,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\external\\trial-2\\restart_publish.dll"
+        ],
+        "seconds": 0.8211928999517113,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8337044001091272,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\peer\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8497799001634121,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8172797998413444,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\external\\trial-3\\restart_publish.dll"
+        ],
+        "seconds": 0.8117279999423772,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\restored\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8453186000697315,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.81779700005427,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\sync-failure\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8258219000417739,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O0\\sync-recovered\\restart_publish.dll"
+        ],
+        "seconds": 0.8111352999694645,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8208517997991294,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\external\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8656383999623358,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\external\\trial-2\\restart_publish.dll"
+        ],
+        "seconds": 0.834446599939838,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8306847000494599,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\peer\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8226362001150846,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8113886001519859,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\external\\trial-3\\restart_publish.dll"
+        ],
+        "seconds": 0.8148574999067932,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\restored\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8068528999574482,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8919512999709696,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\sync-failure\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8329171999357641,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\hupsel-O2\\sync-recovered\\restart_publish.dll"
+        ],
+        "seconds": 0.8039650998543948,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8084756000898778,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\external\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8260697000660002,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\external\\trial-2\\restart_publish.dll"
+        ],
+        "seconds": 0.8969575001392514,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.8570258000399917,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\peer\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8133388999849558,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8507817001082003,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\external\\trial-3\\restart_publish.dll"
+        ],
+        "seconds": 0.8498562998138368,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\restored\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8825191000942141,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8565254001878202,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\sync-failure\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8396294000558555,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O0\\sync-recovered\\restart_publish.dll"
+        ],
+        "seconds": 0.8469209000468254,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\external\\restart_publish.dll"
+        ],
+        "seconds": 0.8841672001872212,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\external\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8245590999722481,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\external\\trial-2\\restart_publish.dll"
+        ],
+        "seconds": 0.8425210998393595,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\peer\\restart_publish.dll"
+        ],
+        "seconds": 0.9024906000122428,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\peer\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8719745001289994,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\restored\\restart_publish.dll"
+        ],
+        "seconds": 0.8616602998226881,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\external\\trial-3\\restart_publish.dll"
+        ],
+        "seconds": 0.9029320999979973,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\restored\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.854130299994722,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\sync-failure\\restart_publish.dll"
+        ],
+        "seconds": 0.8555978001095355,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\sync-failure\\trial-1\\restart_publish.dll"
+        ],
+        "seconds": 0.8615580999758095,
+        "returncode": 0
+      },
+      {
+        "command": [
+          "gcc",
+          "-shared",
+          "-O2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+          "-o",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-external-daily-windows-final-20261111\\andelst-O2\\sync-recovered\\restart_publish.dll"
+        ],
+        "seconds": 0.8565815000329167,
+        "returncode": 0
+      }
+    ]
   }
 }
