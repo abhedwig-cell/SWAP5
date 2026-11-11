@@ -1,0 +1,29 @@
+{
+  "status": "SHORT_DIAGNOSTIC_SELECTED",
+  "canonical_base": "3331f860db0cf5208faed99bf505425226d6b0d6",
+  "scope": "Original four-day Grassgrowth wet window, unchanged thermal-control-1e-5C and retained numerical policy. No tolerance change.",
+  "hypothesis": "The current whole-profile exact waterfilm cache recomputes unchanged unsaturated nodes when only other nodes change. Count node-identical inputs on whole-profile misses before selecting a per-node repair.",
+  "prior_evidence": [
+    "research/hybrid-water01/README.md Grassgrowth runtime reconciliation",
+    "docs/audits/PPA_WU05C3R_BARTHOLOMEUS_RECONSTRUCTION.md",
+    "docs/performance/PERF01_NATIVE_431_WEATHER_20261023_RESULT.md",
+    "docs/performance/F-PE-EMBEDSTEP_CLOSEOUT.md"
+  ],
+  "acceptance": "Observer preserves all five physical output files. Only select production node reuse if measured nontrivial duplicate quadratures and short alternating native measurements justify it; retain exact O0/O2, reset, input and mode isolation. No full project runtime claim.",
+  "test_selection": {
+    "candidate": "3331f860db0cf5208faed99bf505425226d6b0d6",
+    "groups": {
+      "oxygen_runtime_probe": {
+        "changed_dependency": "Diagnostic-only waterfilm input counters; production baseline remains unchanged.",
+        "scientific_claim": "Locate redundant exact unsaturated-node quadratures without modifying numerical evaluation.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/oxygen",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 180,
+        "existing_evidence": "Prior four-day production observation 17 seconds; exact whole-profile cache saves 15.27%. No-stress/trapezoid/residual-preparation and static temporal-control experiments already resolved; not selected again."
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for diagnostic",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "next_decision": "Measure unsaturated node duplicates on whole-profile misses. Stop this hypothesis if negligible; no second identical experiment."
+}
