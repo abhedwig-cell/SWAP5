@@ -53,6 +53,8 @@ contains
    if(index(text,'"grass_numerical_profile": "thermal-control-1e-5C"')==0)return
   case(4)
    if(index(text,'"grass_numerical_profile": "thermal-subcycle4-1e-5C"')==0)return
+  case(16)
+   if(index(text,'"grass_numerical_profile": "thermal-subcycle16-1e-5C"')==0)return
   case default
    return
   end select

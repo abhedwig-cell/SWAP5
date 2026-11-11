@@ -94,6 +94,7 @@ jobs:
           kim_source=e145622a9b93aac0eee38a40338f6b452bf16ab8
           reader_source=5902c6b91e8478362a14eec9b22001a36f901769
           policy_source=1446572b0d90b82a6eff29df39b4eb5280f04ef1
+          sixteen_source=dc44cfa69053e3f8dc0117b2de3d704039522f4d
           if { git merge-base --is-ancestor "$ahl_source" HEAD &&
                git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$cache_source" HEAD &&
@@ -103,7 +104,9 @@ jobs:
              { git merge-base --is-ancestor "$reader_source" HEAD &&
                git diff --quiet "$reader_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$policy_source" HEAD &&
-               git diff --quiet "$policy_source" HEAD -- src app reference tools tests; }; then
+               git diff --quiet "$policy_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$sixteen_source" HEAD &&
+               git diff --quiet "$sixteen_source" HEAD -- src app reference tools tests; }; then
             ahl_exact=true
           fi
           if [[ "$ahl_exact" == true ]] || {

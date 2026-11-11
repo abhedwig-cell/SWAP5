@@ -14,14 +14,16 @@ program test_bartholomeus_application
   use mod_process_hydraulic_view
   use mod_kernel_transactions
   use mod_fixed_flux_top_boundary_provider
-  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE
+  use mod_transaction_reference, only: TX_TEMPORAL_MODEL_CERTIFICATE,TX_TEMPORAL_EXTERNAL_FULL_HALF
+  use mod_canonical_contracts, only: canonical_numerical_config_t
   use mod_fmr_committed_restart
   implicit none
   real(real64),parameter::T0=5100.1875_real64,T1=T0+1.0e-5_real64,HARD_MASS_GATE=1.0e-12_real64
   type(fmr_production_application_config_t)::cfg,off,bad
   type(fmr_production_application_bootstrap_t)::app,offapp,badapp
   type(fmr_serialized_column_result_t),allocatable::a(:),b(:),rejected(:)
-  type(fmr_serialized_reference_backend_t)::backend,resumed
+  type(fmr_serialized_reference_backend_t)::backend,resumed,sixteen_backend
+  type(canonical_numerical_config_t)::sixteen_numerical
   type(fixed_flux_top_boundary_provider_t),target::top
   type(fmr_logical_column_t)::columns(1)
   type(kernel_committed_state_t)::states(1),restored(1)
@@ -63,11 +65,30 @@ program test_bartholomeus_application
        cfg%tiles(1)%initial_state,T0,ok,cfg%tiles(1)%initial_right_derivative)
   call require(ok,'thermal/history owning initial state')
   call states(1)%capture_checkpoint(cp,ok)
+  ! A separate actual coupled instance owns sixteen steps before heat activation.
+  call sixteen_backend%initialize(top)
+  call sixteen_backend%configure_soil_temperature_temporal_tolerance(1d-5,ok,16)
+  call require(ok,'configure sixteen before activation')
+  sixteen_numerical=cfg%numerical
+  sixteen_numerical%transaction%temporal_mode=TX_TEMPORAL_EXTERNAL_FULL_HALF
+  sixteen_numerical%transaction%temporal_tolerance=1d-4
+  call sixteen_backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
+       cfg%tiles(1)%base_forcing,sixteen_numerical,T0,T1,cp,replay,other,diag2)
+  ! This fixed-flux history fixture has an exact-identity water full/half
+  ! metric, not the native weather-surface metric. Keep its strict refusal;
+  ! successful sixteen-step commits are qualified by the original native case.
+  call require(.not.replay%completed.and..not.other%ready().and.diag2%temporal_rejections>0.and. &
+       diag2%solver_rejections==0.and.diag2%mass_rejections==0,'sixteen preserves strict temporal refusal')
+  call sixteen_backend%configure_soil_temperature_temporal_tolerance(1d-5,ok,4)
+  call require(.not.ok.and.sixteen_backend%soil_temperature_substep_count()==16,'active sixteen immutable')
+  call sixteen_backend%discard_trial_candidate(other,diag2)
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag)
   call require(first%completed .and. candidate%ready(),'actual backend active trial')
   call backend%configure_soil_temperature_temporal_tolerance(1d-5,ok,4)
   call require(.not.ok.and.backend%soil_temperature_substep_count()==1,'active heat policy immutable')
+  call backend%configure_soil_temperature_temporal_tolerance(1d-5,ok,16)
+  call require(.not.ok.and.backend%soil_temperature_substep_count()==1,'active one refuses sixteen')
   obs=backend%observation()
   call require(obs%bartholomeus_executed .and. obs%bartholomeus_status==0,'actual caller executed oxygen')
   call require(obs%root_oxygen_final_uptake<obs%root_oxygen_base_uptake,'active physics reduces root sink')

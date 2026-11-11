@@ -50,7 +50,7 @@ The original single-step body is retained. Four selects four incumbent implicit
 heat solves per water trial, with actual integrated conductive faces and the
 unchanged per-cell/global energy budget. The backend's existing
 `configure_soil_temperature_temporal_tolerance` accepts an optional integer
-`heat_substeps`; only one or four is admitted, and four requires a positive
+`heat_substeps`; the PR1632 scope admits one or four, and four requires a positive
 thermal budget. Invalid requests are atomic. Heat activation locks the choice;
 backend initialization restores one. `soil_temperature_substep_count()` returns
 zero before initialization and the configured value afterwards.
@@ -80,6 +80,28 @@ suffix record and checkpoint exactly. The cumulative stock-flux water residual
 is1.066e-14cm. The retained archive independently re-audits exactly. Its explicit
 source/build scope, actual CPU/launcher measurements and still-failed original
 day188 comparison remain separate from whole science and runtime parity.
+
+## Sixteen-step numerical successor
+
+The successor qualification is recorded separately in
+`integration/f-ci/THERMAL_SIXTEEN_POLICY_ADMISSION.json`. It extends the existing
+instance-local setting with explicit16, retaining default1 and the admitted4
+route. Sixteen requires the same positive temporal budget, atomic configuration,
+activation lock and initialization reset. Native profile
+`thermal-subcycle16-1e-5C` selects `thermal-control-16`; the public launcher also
+accepts the existing4 profile. The unchanged codec envelope binds each numerical
+profile and refuses same-source checkpoints from the other two policies.
+External clients reconstruct their explicit numerical policy before continuation.
+
+Actual Windows/Linux O0/O2 body, runtime, current default preservation and native
+own-restart/refusal controls pass. Original one/four four-day physical files
+remain byte-exact to their prior proofs on each platform. One current Windows
+O2 alternating four-day comparison measures7.939seconds for4 and5.138seconds
+for16 (35.27percent lower median), with3585 versus2134 accepted water steps.
+The16 own2-to4 process cut is exact. This is short ambient-host evidence;
+no new full16 trajectory, whole science/energy or runtime-parity claim is made.
+See the [scoped review](https://github.com/abhedwig-cell/SWAP5/blob/integration/f-ci-canonical/research/hybrid-water01/THERMAL_SIXTEEN_POLICY_REVIEW.md)
+for actual source/build identities, raw artifacts and read-only verification.
 
 ## Measured scope
 

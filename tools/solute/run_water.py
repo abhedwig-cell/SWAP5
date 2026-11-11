@@ -28,7 +28,8 @@ def run_grass(args):
     metadata = json.loads((bundle / "BUILD.json").read_text())
     executable = bundle / ("swap5_grass_startup.exe" if os.name == "nt" else "swap5_grass_startup")
     if (metadata["status"] != "ORIGINAL_INTERVAL_COMPLETED"
-            or metadata["grass_numerical_profile"] != "thermal-control-1e-5C"
+            or metadata["grass_numerical_profile"] not in (
+                "thermal-control-1e-5C", "thermal-subcycle4-1e-5C", "thermal-subcycle16-1e-5C")
             or sha(executable) != metadata["executable_sha256"]):
         raise ValueError("Grassgrowth requires a verified thermal-control application build")
     if any(sha(Path(name)) != digest for name, digest in metadata["source_sha256"].items()):
@@ -50,8 +51,11 @@ def run_grass(args):
     output.mkdir(parents=True)
     for name, data in staged.items():
         (output / name).write_bytes(data)
+    selector = {"thermal-subcycle4-1e-5C": "thermal-control-4",
+                "thermal-subcycle16-1e-5C": "thermal-control-16"}.get(
+                    metadata["grass_numerical_profile"], "thermal-control")
     command = [str(executable), str(args.days), "retain-step", "100000",
-               str(origin) if origin is not None else "", "thermal-control", args.model]
+               str(origin) if origin is not None else "", selector, args.model]
     with (output / "stdout").open("wb") as stdout, (output / "stderr").open("wb") as stderr:
         completed = subprocess.run(command, cwd=output, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr)
     if completed.returncode:

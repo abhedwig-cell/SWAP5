@@ -310,10 +310,12 @@ program grass_initial_interval
  call get_command_argument(5,arg)
  heat_substeps=1
  if(trim(arg)=='thermal-control-4')heat_substeps=4
+ if(trim(arg)=='thermal-control-16')heat_substeps=16
  call validate_grass_numerical_profile(len_trim(arg)>0,code,heat_substeps)
  call require(code==0,'numerical profile matches immutable application binding')
  if(len_trim(arg)>0)then
-  call require(trim(arg)=='thermal-control'.or.trim(arg)=='thermal-control-4','explicit supported numerical heat profile')
+  call require(trim(arg)=='thermal-control'.or.trim(arg)=='thermal-control-4'.or. &
+       trim(arg)=='thermal-control-16','explicit supported numerical heat profile')
   call backend%configure_soil_temperature_temporal_tolerance(1d-5,available,heat_substeps)
   call require(available,'configured thermal temporal accuracy')
   write(*,*)'ORIGINAL_GRASS_THERMAL_TOLERANCE_C',1d-5
