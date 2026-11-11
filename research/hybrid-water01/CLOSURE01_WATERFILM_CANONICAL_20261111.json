@@ -1,0 +1,48 @@
+{
+  "status": "CANONICAL_MERGED_POSTIMAGE_VERIFIED",
+  "pr": 1628,
+  "canonical": "37acc6339abace5aea9b066e158d89780dd3647d",
+  "canonical_tree": "5e2ef3cd5026a93c6b596ebe1ed9d7eef6511ef1",
+  "qualified_pr_head": "f0c554cbc9db73b0dbcf4b3b0b1c069b850c3c0e",
+  "tested_cache_physics_and_fixture_head": "f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e",
+  "actual_merge_equals_predicted_tree_and_pr_head": true,
+  "production_application_tools_tests_reference_equal_tested_cache_head": true,
+  "source_tree": "65a674b26310024b578013a92ba66c94e6549c9d",
+  "test_tree": "9253edca14b41ece709a733e089c08062377fb4e",
+  "fci_route": {
+    "run": 42992581008,
+    "job": 130430234105,
+    "status": "PASS",
+    "selector_o0_o2_sha256": "acf11684bfdeea14bb7f8802dba4e8eb09af09fc9699fcb5efbbadf30e203b22"
+  },
+  "grassgrowth_route": {
+    "run": 42993099019,
+    "job": 130430470991,
+    "status": "PASS",
+    "scope": "Cold O0/O2 runtime, original Grassgrowth own disk restart, original Andelst macro restart and atomic refusals"
+  },
+  "selection": "integration/f-ci/WATERFILM_TRIAL_REUSE_ADMISSION.json at canonical",
+  "scope": "Trial-local exact-key waterfilm reuse. Every quadrature input and saturation-gate input plus mode is included in the bitwise key. Misses use the unchanged quadrature. Cache state is private and resets each FMR trial.",
+  "functional_coverage": "Preserves the bounded original-input application and restart contracts. The 1827/481/1096-day full execution receipts remain bound to their original AHL source and build identities.",
+  "reliability": "Existing exact O0/O2 oxygen assembly, five short-window physical files, own-build restart and distinct-profile A/B/A/B controls are retained on identical physics/test sources. Fresh current-route contracts pass.",
+  "performance": {
+    "observed_four_day_production_median_reduction_percent": 15.27,
+    "whole_project_runtime_parity": "OPEN",
+    "new_complete_cached_execution": "NOT_CLAIMED"
+  },
+  "test_cost_control": {
+    "automatic_duplicate_runs_cancelled": 93,
+    "criterion": "Own exact source/test postimages, with completed/failed verdicts retained. Keep and wait for the two necessary current cache route qualifications.",
+    "cancellation_supplies_scientific_pass": false,
+    "final_record_only_commit_skip_ci": true
+  },
+  "open_acceptance": [
+    "Whole scientific equivalence",
+    "Hupsel day-584 independently qualified reference",
+    "Grassgrowth remaining day-188 discrepancy",
+    "Complete energy qualification",
+    "Comparable full-project runtime",
+    "PR 1627 bounded KIM fix and experimental contact qualification"
+  ],
+  "next_delivery": "Reconcile the separate PR 1627 KIM saturation-endpoint repair on current canonical and qualify its bounded endpoint/input contract with the existing O0/O2 and short current application tests. Preserve the experimental Cauchy timeout as a separate failed observation. Do not repeat the same 90-second contact trial without a new distinguishing hypothesis."
+}

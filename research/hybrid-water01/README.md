@@ -2,6 +2,40 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Current canonical and next delivery, 11 November 2026
+
+Canonical is now 37acc6339abace5aea9b066e158d89780dd3647d.
+PR 1628 is merged after 1626, 1623, 1624 and 1625. Its actual whole
+tree equals the qualified PR head and the predicted merge tree.
+The physics/application/tools/tests/reference trees equal tested cache
+head f0e5d9e1d. Source and evidence identities are in
+CLOSURE01_WATERFILM_CANONICAL_20261111.json.
+
+The reconciled F-CI run 42992581008 passes all six O0/O2 component
+cases and the current selector. Grassgrowth run 42993099019 passes
+cold O0/O2 runtime, original-input own disk restart and the original
+Andelst macro restart/atomic-refusal controls. Existing cache-specific
+oxygen, four-day physical-output, own-build restart and distinct-profile
+interleaving proofs retain their exact source scope. The final evidence
+record commit uses skip-ci because source, tests and workflows are
+identical to the completed qualification heads. The work block cancels
+93 automatic duplicate runs on its own exact dependency postimages;
+their cancelled state grants no numerical PASS.
+
+The measured short production-profile median saving remains 15.27%.
+A new complete cached project execution and full-project runtime parity
+are not claimed. Full execution receipts remain bound to their original
+AHL builds. Whole scientific equivalence, the day-188/day-584 findings and
+complete energy remain open.
+
+Next delivery is PR 1627's separate KIM exact-saturation endpoint repair
+on this canonical, with existing O0/O2 endpoint/input controls and short
+current application preservation. Keep the experimental Linux Cauchy
+90-second timeout visible. Select another contact trial only for a new
+distinguishing hypothesis. The earlier RT-TX waiting condition has been
+resolved by the recorded functional test selection.
+
+
 ### Canonical application integration, 11 November 2026
 
 PRs 1626, 1623, 1624 and 1625 are merged in that order. Actual canonical
