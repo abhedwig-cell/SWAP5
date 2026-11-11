@@ -1,0 +1,265 @@
+{
+  "workstream": "SWAP5-FUNCTIONAL-CLOSURE01 / native input / RT-TX",
+  "status": "QUALIFIED_BOUNDED_NATIVE_INPUT_BUILD",
+  "canonical_base": "cf1bfd691f938f1a76f828ec31ce65ff33a05cf3",
+  "adapter_candidate": "16fb81dfbd80cfa6bcc52cddd4449078861b852d",
+  "scope": "Cold native adapter TTUTIL builds preserve the original decimal accumulation order by compiling rdlex with -ffp-contract=off through one shared flag provider. The other source flags retain their existing profiles.",
+  "original_source_authority_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+  "original_andelst_input_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+  "local_numeric_qualification": {
+    "status": "TTUTIL_ORIGINAL_OSAT_O0_O2_BITS_PASS",
+    "candidate": "63bf37ba13d8e60aadddb06153c1d1eed8d665e1",
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "authority_zip_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+    "original_input_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+    "flag_provider_sha256": "4e6f4ada712fa47e194f3831017794cb46471dfecba53d71db0cc80e69ce0860",
+    "driver_sha256": "e50460ef527b412986d3917297cca6adf2ebb40d62d7554cdddfa70481496398",
+    "profiles": {
+      "O0": {
+        "osat_bits": [
+          "3FD9EB851EB851EC",
+          "3FD9EB851EB851EC",
+          "3FD926E978D4FDF4",
+          "3FD947AE147AE148",
+          "3FDC6A7EF9DB22D1",
+          "3FDC49BA5E353F7D",
+          "3FE0CCCCCCCCCCCD",
+          "3FE0CCCCCCCCCCCD"
+        ],
+        "reader_flags": [
+          "-O0",
+          "-std=legacy",
+          "-fallow-argument-mismatch",
+          "-ffree-line-length-none",
+          "-ffixed-line-length-none",
+          "-fcheck=all",
+          "-fbacktrace",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-IC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O0",
+          "-JC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O0",
+          "-ffp-contract=off"
+        ],
+        "archive_sha256": "0cc31fcd815d379f83f8f4ebb6b3fab6be2bc930c5894e93b2c1527e78b74df8",
+        "executable_sha256": "98ea6510142e0ca82ac3c130d82b0e90496cb491880422f62033070a3c730590",
+        "source_count": 153,
+        "cost_seconds": {
+          "compile": 18.916935701156035,
+          "archive": 0.08828769996762276,
+          "link": 0.22465469990856946,
+          "native": 0.16426560003310442
+        }
+      },
+      "O2": {
+        "osat_bits": [
+          "3FD9EB851EB851EC",
+          "3FD9EB851EB851EC",
+          "3FD926E978D4FDF4",
+          "3FD947AE147AE148",
+          "3FDC6A7EF9DB22D1",
+          "3FDC49BA5E353F7D",
+          "3FE0CCCCCCCCCCCD",
+          "3FE0CCCCCCCCCCCD"
+        ],
+        "reader_flags": [
+          "-O2",
+          "-std=legacy",
+          "-fallow-argument-mismatch",
+          "-ffree-line-length-none",
+          "-ffixed-line-length-none",
+          "-fcheck=all",
+          "-fbacktrace",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-IC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2",
+          "-JC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2",
+          "-ffp-contract=off"
+        ],
+        "archive_sha256": "dde72089055d5fb6a0456380dabff1a3b33f5f0b4432b56f732f4ce02b17f74f",
+        "executable_sha256": "fdb66d9d250c7de171df92aff11cc326c8ce9127f1fd77f463387c7eb49a35d3",
+        "source_count": 153,
+        "cost_seconds": {
+          "compile": 22.313875699881464,
+          "archive": 0.08137420006096363,
+          "link": 0.28339260001666844,
+          "native": 0.15336380014196038
+        }
+      }
+    },
+    "driver_template_sha256": "c57cb61de123db2490ccf8073c903751d2b47677cbcbcbaaa32ce5d69c81b5e6"
+  },
+  "retained_causal_evidence": {
+    "original_gnu15_2_reader_comparison": 42855176063,
+    "single_rdlex_object_contraction_control": 42855609145,
+    "scope": "The original OSAT=0.393 token differs by one binary64 ULP at O2. The isolated no-contraction object restores the O0/internal-read value. The immutable TTUTIL archive is the same source authority."
+  },
+  "fixture_initialization_correction": "The first new local fixture left RDFDOR's requested value count undefined. Its failed command remains in the local output. Initializing the original eight-layer count yields the completed O0/O2 result above.",
+  "build_identity": "Each adapter records actual per-source original-input flags. The Hupsel builder also records actual compiled original-input source hashes. Explicit comparator-source builders additionally bind the executing builder and flag-provider files.",
+  "supplied_archive_behavior": "Existing explicit archive arguments keep their hash-bound reuse behavior. This record qualifies the cold build policy and the tested archives.",
+  "test_selection": {
+    "candidate": "e2a3b070d757a01b5636b28d6f1eb07105ba9883",
+    "groups": {
+      "ttutil_reader_admission": {
+        "changed_dependency": "TTUTIL rdlex compiler contraction policy and original-input build metadata across seven native adapter builders, with their existing public entry points and immutable source materialization.",
+        "scientific_claim": "Original Andelst OSAT values are bit-identical at O0/O2, including exact agreement of node-three soil OSAT=0.393 with internal READ. Preserve current original-input application balances, own-build restart and atomic refusal contracts.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 functional native input / RT-TX integration",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 180,
+        "existing_evidence": "Windows GNU 16.2 reads all eight original OSAT values bit-identically at O0/O2. Native costs are 0.164 and 0.153 seconds, with cold TTUTIL compilation 18.917 and 22.314 seconds. Earlier GNU 15.2 causal reader/control runs remain applicable to the same immutable TTUTIL source. Fresh Ubuntu 26.04 reader and Ubuntu 24.04 current original application/native restart, plus focused F-CI, are selected. Hosted current-source native application and F-CI already pass at ac2c6e638. Only the numeric fixture path and its raw driver-file hash reporting are corrected.",
+        "prior_execution": "FAILED",
+        "diagnosis": "The first GNU 15.2 reader fixture stops before parsing because FLNAME lowercases the absolute GitHub path. Stage byte-identical original input and use its relative lowercase name. The compiled Fortran DRIVER, production flag provider, builders, model sources, model fixtures and original inputs are unchanged. The already successful coupled native and F-CI observations remain applicable; select a component-only retry."
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT for this bounded input-build repair; no omnibus PASS",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "open_acceptance": [
+    "Experimental Cauchy-contact rollback remains unqualified",
+    "Whole scientific equivalence and full-project runtime parity remain open"
+  ],
+  "staged_input_native_recheck": {
+    "O0": {
+      "native_seconds": 0.5732082000467926,
+      "stdout": "TTUTIL_OSAT_BITS=3FD9EB851EB851EC 3FD9EB851EB851EC 3FD926E978D4FDF4 3FD947AE147AE148 3FDC6A7EF9DB22D1 3FDC49BA5E353F7D 3FE0CCCCCCCCCCCD 3FE0CCCCCCCCCCCD\nINTERNAL_0393_BITS=3FD926E978D4FDF4\nTTUTIL_ORIGINAL_OSAT_BITS=PASS\n",
+      "driver_sha256": "e50460ef527b412986d3917297cca6adf2ebb40d62d7554cdddfa70481496398"
+    },
+    "O2": {
+      "native_seconds": 0.11948160012252629,
+      "stdout": "TTUTIL_OSAT_BITS=3FD9EB851EB851EC 3FD9EB851EB851EC 3FD926E978D4FDF4 3FD947AE147AE148 3FDC6A7EF9DB22D1 3FDC49BA5E353F7D 3FE0CCCCCCCCCCCD 3FE0CCCCCCCCCCCD\nINTERNAL_0393_BITS=3FD926E978D4FDF4\nTTUTIL_ORIGINAL_OSAT_BITS=PASS\n",
+      "driver_sha256": "e50460ef527b412986d3917297cca6adf2ebb40d62d7554cdddfa70481496398"
+    }
+  },
+  "hosted_preservation": {
+    "head": "ac2c6e63828beb3f1aa31366f552f1f27667d297",
+    "fci": {
+      "run": 43003419114,
+      "job": 130467873600,
+      "status": "PASS",
+      "scope": "Focused current contracts and selector"
+    },
+    "native": {
+      "run": 43003419232,
+      "job": 130464858119,
+      "status": "PASS",
+      "scope": "Cold O0/O2 runtime, original Grassgrowth own disk restarts and original Andelst macro restart/atomic refusals"
+    },
+    "failed_reader_fixture": {
+      "run": 43003419232,
+      "job": 130464858390,
+      "status": "FAILED_FIXTURE_FILE_LOOKUP",
+      "reason": "Original FLNAME lowercases the complete filename. The GitHub workspace contains uppercase SWAP5 path components. The corrected fixture stages the exact bytes under a relative lowercase filename."
+    },
+    "production_sources_builders_reference_unchanged_after_pass": true
+  },
+  "component_retry": "Manual grass-thermal-production workflow executes the component job and explicitly skips the native job. Existing pull-request invocations retain the complete native job. This makes the reader retry independent of repeated model builds.",
+  "hosted_numeric_qualification": {
+    "status": "TTUTIL_ORIGINAL_OSAT_O0_O2_BITS_PASS",
+    "candidate": "f6d3ce499a0dd8892bb081d05107b6d277c2a4e3",
+    "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "authority_zip_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+    "original_input_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+    "flag_provider_sha256": "4af5490a45104203d7f139f0a9c2d9a04cde70db11f8a4d4365a2b71a0d3e383",
+    "driver_sha256": "c57cb61de123db2490ccf8073c903751d2b47677cbcbcbaaa32ce5d69c81b5e6",
+    "profiles": {
+      "O0": {
+        "osat_bits": [
+          "3FD9EB851EB851EC",
+          "3FD9EB851EB851EC",
+          "3FD926E978D4FDF4",
+          "3FD947AE147AE148",
+          "3FDC6A7EF9DB22D1",
+          "3FDC49BA5E353F7D",
+          "3FE0CCCCCCCCCCCD",
+          "3FE0CCCCCCCCCCCD"
+        ],
+        "reader_flags": [
+          "-O0",
+          "-std=legacy",
+          "-fallow-argument-mismatch",
+          "-ffree-line-length-none",
+          "-ffixed-line-length-none",
+          "-fcheck=all",
+          "-fbacktrace",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-I/home/runner/work/_temp/ttutil-numeric/O0",
+          "-J/home/runner/work/_temp/ttutil-numeric/O0",
+          "-ffp-contract=off"
+        ],
+        "archive_sha256": "01258dbdad9f899f64aebcf904a80b3169c958b2806be3b296ca8e7b4ff6f210",
+        "executable_sha256": "4314e8cea863a3d9a45821f36b812d2b1cde68594c129de215b052cc1328a2ae",
+        "source_count": 153,
+        "cost_seconds": {
+          "compile": 5.434315072000061,
+          "archive": 10.334336870999977,
+          "link": 0.2855337390000159,
+          "native": 0.0023339580000083515
+        }
+      },
+      "O2": {
+        "osat_bits": [
+          "3FD9EB851EB851EC",
+          "3FD9EB851EB851EC",
+          "3FD926E978D4FDF4",
+          "3FD947AE147AE148",
+          "3FDC6A7EF9DB22D1",
+          "3FDC49BA5E353F7D",
+          "3FE0CCCCCCCCCCCD",
+          "3FE0CCCCCCCCCCCD"
+        ],
+        "reader_flags": [
+          "-O2",
+          "-std=legacy",
+          "-fallow-argument-mismatch",
+          "-ffree-line-length-none",
+          "-ffixed-line-length-none",
+          "-fcheck=all",
+          "-fbacktrace",
+          "-ffpe-trap=invalid,zero,overflow",
+          "-I/home/runner/work/_temp/ttutil-numeric/O2",
+          "-J/home/runner/work/_temp/ttutil-numeric/O2",
+          "-ffp-contract=off"
+        ],
+        "archive_sha256": "c91d545661ecff3bb3f6d44ccaaca3ac27438f4fe0644cc042bddfa890157e68",
+        "executable_sha256": "4b3fe9e681464c5c69ec7369c450166d27a9f065be0edce22bcfec4dffa34659",
+        "source_count": 153,
+        "cost_seconds": {
+          "compile": 8.64246843099994,
+          "archive": 0.1724783849999767,
+          "link": 0.06378481599998054,
+          "native": 0.0019324529999948936
+        }
+      }
+    },
+    "run": 43006341597,
+    "job": 130474652690,
+    "artifact": {
+      "id": 13847844328,
+      "zip_sha256": "a854cba69cdac4a6573df12674506356c88303ac33ee26949518e1a2ca486835"
+    },
+    "manual_native_job": "SKIPPED_COMPONENT_ONLY; application qualification is the unchanged-dependency PR native job 130464858119"
+  },
+  "windows_o2_object_equivalence": {
+    "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "optimization": "O2",
+    "original_flags_command": [
+      "C:\\msys64\\ucrt64\\bin\\gfortran.exe",
+      "-O2",
+      "-std=legacy",
+      "-fallow-argument-mismatch",
+      "-ffree-line-length-none",
+      "-ffixed-line-length-none",
+      "-fcheck=all",
+      "-fbacktrace",
+      "-ffpe-trap=invalid,zero,overflow",
+      "-IC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2",
+      "-JC:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2",
+      "-c",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\sources\\historical-input\\TTUTIL\\rdlex.for",
+      "-o",
+      "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-ttutil-reader-windows-qualified-20261111\\O2\\rdlex-original-flags.o"
+    ],
+    "controlled_object_sha256": "1ae3032c3f6762a3c90e8aa7f78d7ee3a88b2a4b2a7ccab1527a69d37ec1dc96",
+    "original_flags_object_sha256": "1ae3032c3f6762a3c90e8aa7f78d7ee3a88b2a4b2a7ccab1527a69d37ec1dc96",
+    "object_bytes_identical": true,
+    "compile_seconds": 1.6207012999802828
+  },
+  "preserved_qualification_scope": "Bounded native input build and existing coupled contract checks; no new full historical project run or omnibus scientific acceptance. Tolerances and original source bytes unchanged."
+}

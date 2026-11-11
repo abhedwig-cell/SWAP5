@@ -8,7 +8,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from legacy_reader_sources import materialize
+from legacy_reader_sources import materialize, original_input_compile_flags
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -55,10 +55,13 @@ def main():
         result.check_returncode()
 
     objects = []
+    report['original_input_flags_by_source'] = {}
+    legacy_flags = flags + ['-std=legacy', '-ffixed-line-length-none', '-fallow-argument-mismatch']
     for index, provider in enumerate(providers):
         obj = out / f'tt{index:04d}.o'
-        run(fc + flags + ['-std=legacy', '-ffixed-line-length-none', '-fallow-argument-mismatch',
-                         '-c', provider, '-o', obj], 'compile-original-input')
+        selected_flags = original_input_compile_flags(legacy_flags, provider)
+        report['original_input_flags_by_source'][str(provider.relative_to(out))] = selected_flags
+        run(fc + selected_flags + ['-c', provider, '-o', obj], 'compile-original-input')
         objects.append(obj)
     library = out / 'libttutil.a'
     run(['ar', 'rcs', library] + objects, 'archive')

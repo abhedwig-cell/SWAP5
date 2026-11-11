@@ -65,7 +65,7 @@ def run(command,label,cwd=out,timeout=120):
  report['events'].append(dict(label=label,command=list(map(str,command)),seconds=time.perf_counter()-start,returncode=rc));save()
  return rc
 if not a.input_archive:
- from legacy_reader_sources import materialize
+ from legacy_reader_sources import materialize, original_input_compile_flags
  _,providers=materialize(ROOT,out)
  ttout=out/'ttobj';ttout.mkdir();ttobjects=[]
  legacy_flags=['-'+a.optimization,'-std=legacy','-fallow-argument-mismatch','-ffree-line-length-none',
@@ -73,9 +73,12 @@ if not a.input_archive:
                '-I'+str(ttout),'-J'+str(ttout)]
  report['original_input_sources_sha256']={str(s):sha(s)for s in providers}
  report['original_input_flags']=legacy_flags
+ report['original_input_flags_by_source']={}
  for i,source in enumerate(providers):
   obj=ttout/(str(i)+'.o')
-  assert run([fc,*legacy_flags,'-c',source,'-o',obj],'compile_original_input')==0,source
+  selected_flags=original_input_compile_flags(legacy_flags,source)
+  report['original_input_flags_by_source'][str(source.relative_to(out))]=selected_flags
+  assert run([fc,*selected_flags,'-c',source,'-o',obj],'compile_original_input')==0,source
   ttobjects.append(obj)
  ar=subprocess.check_output([fc,'-print-prog-name=ar'],text=True).strip()
  assert run([ar,'rcs',archive,*[o.name for o in ttobjects]],'archive_original_input',ttout)==0

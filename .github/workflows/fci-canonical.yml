@@ -83,12 +83,15 @@ jobs:
           ahl_exact=false
           cache_source=f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
           kim_source=e145622a9b93aac0eee38a40338f6b452bf16ab8
+          reader_source=5902c6b91e8478362a14eec9b22001a36f901769
           if { git merge-base --is-ancestor "$ahl_source" HEAD &&
                git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$cache_source" HEAD &&
                git diff --quiet "$cache_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$kim_source" HEAD &&
-               git diff --quiet "$kim_source" HEAD -- src app reference tools tests; }; then
+               git diff --quiet "$kim_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$reader_source" HEAD &&
+               git diff --quiet "$reader_source" HEAD -- src app reference tools tests; }; then
             ahl_exact=true
           fi
           if [[ "$ahl_exact" == true ]] || {
