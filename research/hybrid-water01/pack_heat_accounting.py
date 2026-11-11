@@ -35,7 +35,8 @@ for i,folder in enumerate(a.runs):
         else:files[member]=path
     report=json.loads((folder/'RESULT.json').read_text())
     assert report['status']=='ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS'
-    digests.update(report['sources']);digests.update(json.loads((folder/'HEAT_RECEIPTS.json').read_text())['sources'])
+    receipt_file=folder/('THERMAL_CARRIERS.json' if (folder/'THERMAL_CARRIERS.json').exists() else 'HEAT_RECEIPTS.json')
+    digests.update(report['sources']);digests.update(json.loads(receipt_file.read_text())['sources'])
     for case in report['cases']:
         key=case['project']+'-'+case['optimization'];assert key not in cases
         cases[key]={'directory':prefix+'/'+key,**case}

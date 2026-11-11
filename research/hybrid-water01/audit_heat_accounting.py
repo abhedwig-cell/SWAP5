@@ -40,7 +40,7 @@ with tempfile.TemporaryDirectory(prefix='s5-heat-independent-audit-') as temp:
         directory=root/case['directory'];meta=load(directory/'BUILD.json');binding=meta['binding']
         assert binding['original_temperature_sha256']==sha(original)
         observed=(directory/'temperature.f90').read_text(encoding='cp1252')
-        assert re.sub(r'! BEGIN HEAT OBSERVATION\n.*?! END HEAT OBSERVATION\n','',observed,flags=re.S)==original_text
+        assert re.sub(r'! BEGIN (?:HEAT|CARRIER) OBSERVATION\n.*?! END (?:HEAT|CARRIER) OBSERVATION\n','',observed,flags=re.S)==original_text
         assert sha(directory/'temperature.f90')==binding['observed_temperature_sha256']
         assert sha(directory/('observed-donor.exe' if index['platform']=='windows' else 'observed-donor'))==binding['observed_donor_sha256']
         for name,digest in binding['heat_observation_sources'].items():assert sha(root/index['sources'][name])==digest
@@ -108,6 +108,38 @@ with tempfile.TemporaryDirectory(prefix='s5-heat-independent-audit-') as temp:
             'maximum_global_residual_j_cm2':maximum_global,'storage_status_counts':dict(statuses),
             'zero_missing_energy_counterfactual':'FAIL','maximum_counterfactual_residual_j_cm2':maximum_missing,
             'composition_change_sum_j_cm2':composition,'full_energy_balance_complete':False}
+        carrier_path=window/'original/original-thermal-carriers.txt'
+        if carrier_path.exists():
+            # Independent native recurrence reconstruction, without importing
+            # the application parser or accepting its precomputed verdict.
+            carrier=iter(carrier_path.read_text().splitlines());carrier_count=0;water_max=0.;missing=set()
+            for header in carrier:
+                frame=header.split();assert frame[0]=='CARRIER_STEP' and len(frame)==5
+                dt=float(frame[2]);n=int(frame[3]);rows=[]
+                assert dt>0
+                for i in range(1,n+1):
+                    row=next(carrier).split();assert row[:2]==['CARRIER_NODE',str(i)] and len(row)==16
+                    v=list(map(float,row[2:]));assert all(map(math.isfinite,v));rows.append(v)
+                    storage=(v[3]-v[2]+v[4])*v[0]*v[1]
+                    incoming=-v[5]+v[6]+v[9]+v[10]+v[11]
+                    outgoing=v[7]+v[8]
+                    residual=abs(storage-dt*(incoming-outgoing));assert residual<=1e-10
+                    water_max=max(water_max,residual)
+                    if v[7]<0:missing.add('root_in')
+                    if v[9]>0:missing.add('drain_in')
+                    if v[10]!=0:missing.add('macro_exchange')
+                    if v[11]!=0:missing.add('subsurface_drip')
+                    if v[4]!=0:missing.add('mobile_immobile_exchange')
+                assert all(left[6]==right[5] for left,right in zip(rows,rows[1:]))
+                if rows[0][5]<0:missing.add('top_in')
+                if rows[-1][6]>0:missing.add('bottom_in')
+                carrier_count+=1
+            assert carrier_count==count
+            declaration=load(directory.parent/'THERMAL_CARRIERS.json')['results'][label]
+            assert {p for day in declaration['daily'] for p in day['missing_active_liquid_donor_paths']}==missing
+            assert not declaration['full_energy_balance_complete']
+            totals[label]['actual_water_carriers']={'steps':carrier_count,'max_node_residual_cm':water_max,
+                'missing_active_liquid_donor_paths':sorted(missing),'gas_carrier_available':False}
     assert len(totals)==6
     print(json.dumps({'status':'INDEPENDENT_ORIGINAL_HEAT_SOURCE_OBJECT_STATE_CONDUCTION_AND_STORAGE_AUDIT_PASS',
                       'platform':index['platform'],'raw_files':len(load(root/'MEMBER_SHA256.json')),

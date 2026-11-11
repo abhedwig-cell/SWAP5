@@ -31,6 +31,7 @@ p.add_argument('--base-archive',type=Path,required=True)
 p.add_argument('--workspace',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--case',action='append',choices=['hupsel-O0','hupsel-O2','grass-O0','grass-O2','andelst-O0','andelst-O2'])
+p.add_argument('--carrier-inventory',action='store_true',help='Observe actual water carriers at the identical heat step; no energy closure assumption')
 a=p.parse_args();a.output.mkdir()
 a.case=a.case or ['hupsel-O2']
 digest=h.sha(a.base_archive)
@@ -92,6 +93,37 @@ def instrument(raw):
  return raw
 
 def physical(r):return {k:v for k,v in r.items() if k not in ('column','revision')}
+
+def instrument_carriers(raw):
+ # q uses original upward-positive signs. qimmob is a water-content increment,
+ # despite its historical variable comment; retain it without dt multiplication.
+ imports='''      use variables, only: q,qrot,qimmob
+      use MOD_swap_base, only: swmacro
+      use MOD_swap_mp, only: FrArMtrx,QExcMpMtx
+      use MOD_drain, only: qdra,nrlevs
+      use MOD_irrigation, only: qssdi
+'''
+ local='      integer :: carrier_unit\n      real(8) :: carrier_fraction,carrier_macro\n'
+ trace='''           open(newunit=carrier_unit,file='original-thermal-carriers.txt',status='unknown',position='append')
+           write(carrier_unit,*) 'CARRIER_STEP',t1900,dt,numnod,swmacro
+           do i=1,numnod
+              carrier_fraction=1d0;carrier_macro=0d0
+              if(swmacro==1)then
+                 carrier_fraction=FrArMtrx(i);carrier_macro=QExcMpMtx(i)
+              end if
+              write(carrier_unit,*) 'CARRIER_NODE',i,dz(i),carrier_fraction,thetm1(i),theta(i), &
+                   qimmob(i),q(i),q(i+1),qrot(i),sum(max(qdra(1:nrlevs,i),0d0)), &
+                   -sum(min(qdra(1:nrlevs,i),0d0)),carrier_macro,qssdi(i), &
+                   tmpold(i),tsoil(i)
+           end do
+           close(carrier_unit)
+'''
+ for anchor,insert in [('      implicit none\n      \n      ! heat variables (numerical temperature function)',imports),
+                       ('      integer                                   :: i, lay, ierror, ipos\n',local),
+                       ('           ! estimate TeTop in case swtopbhea == 3\n',trace)]:
+  assert raw.count(anchor)==1,anchor
+  raw=raw.replace(anchor,'! BEGIN CARRIER OBSERVATION\n'+insert+'! END CARRIER OBSERVATION\n'+anchor)
+ return raw
 try:
  for key,project in [('hupsel',h.HUPSEL),('grass',h.GRASSGROWTH),('andelst',h.ANDELST)]:
   for opt in ['O0','O2']:
@@ -102,8 +134,10 @@ try:
    build_sources={n:h.sha(ROOT/n) for n in SOURCES}
    for n in SOURCES:execute(['gfortran','-'+opt,'-ffree-line-length-none','-fcheck=all','-I',out,'-J',out,'-c',ROOT/n],out,Path(n).stem)
    raw=original.read_text(encoding='cp1252');observed=instrument(raw)
+   if a.carrier_inventory:observed=instrument_carriers(observed)
    import re
-   assert re.sub(r'! BEGIN HEAT OBSERVATION\n.*?! END HEAT OBSERVATION\n','',observed,flags=re.S)==raw
+   stripped=re.sub(r'! BEGIN (?:HEAT|CARRIER) OBSERVATION\n.*?! END (?:HEAT|CARRIER) OBSERVATION\n','',observed,flags=re.S)
+   assert stripped==raw
    temperature=out/'temperature.f90';temperature.write_text(observed,encoding='cp1252')
    execute(['gfortran',*meta['identity']['donor_flags'],'-I',out,'-I',bundle,'-I',objects,'-I',ttutil,'-J',out,'-c',temperature],out,'temperature')
    replaced={Path(n).with_suffix('.o').name:bundle/Path(n).with_suffix('.o').name for n in meta['identity']['donor_generated']}

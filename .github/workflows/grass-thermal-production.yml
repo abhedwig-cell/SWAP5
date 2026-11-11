@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      hybrid_thermal_carriers:
+        description: Observe accepted original water carriers without donor temperature assumptions
+        type: boolean
+        default: false
       hybrid_heat_accounting:
         description: Observe original numerical heat against existing sensible energy accounting
         type: boolean
@@ -54,6 +58,41 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  original-thermal-carriers:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_thermal_carriers
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/HYBRID_THERMAL_CARRIERS_20261111.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/
+            /tests/modularity/
+            /tests/support/
+            /docs/development/workstream-execution-protocol.md
+            /integration/f-ci/HYBRID_THERMAL_CARRIERS_20261111.json
+            /research/hybrid-water01/qualify_original_heat_accounting.py
+            /research/hybrid-water01/check_thermal_carriers.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection hybrid_thermal_carriers
+      - name: Six real original-heat observer and production storage-owner cases
+        run: python3 -B research/hybrid-water01/qualify_original_heat_accounting.py --base-archive research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz --workspace "$RUNNER_TEMP/heat-original-base" --output "$RUNNER_TEMP/heat-observation" --carrier-inventory --case hupsel-O0 --case hupsel-O2 --case grass-O0 --case grass-O2 --case andelst-O0 --case andelst-O2
+      - name: Accepted-only thermal receipts and unchanged numerical energy budget
+        run: python3 -B research/hybrid-water01/check_thermal_carriers.py --runs "$RUNNER_TEMP/heat-observation"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-thermal-carriers
+          path: ${{ runner.temp }}/heat-observation
+          retention-days: 14
   original-heat-accounting:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_heat_accounting
     runs-on: ubuntu-26.04
@@ -343,7 +382,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
