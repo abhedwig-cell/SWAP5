@@ -52,7 +52,7 @@
     "Published reviewable PR and verified canonical postimage"
   ],
   "test_selection": {
-    "candidate": "21a7175df34ead952c6766914bfcfb88fb2e7dee",
+    "candidate": "c49bf81dd3ebbfb0e3a8ea65c453d1d461b1d833",
     "groups": {
       "grass_substep16_full": {
         "changed_dependency": "New admitted16 numerical trajectory; production dependencies frozen atPR1636",
@@ -742,5 +742,7 @@
     "expected_seconds": 20,
     "hard_cap_seconds": 60,
     "acceptance": "Source/executable/hash-bound current16 caller attribution, exact own suffix preservation, explicit scientific/cost decision; code change only if justified by new evidence."
-  }
+  },
+  "source_docs_and_strict_mkdocs": "PASS",
+  "independent_capsule_reaudit": "PASS:784 members and complete receipt byte-exact"
 }
