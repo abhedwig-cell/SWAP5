@@ -27,7 +27,8 @@ for folder in sorted(a.runs.iterdir()):
     # Match every actual water/heat frame and nodal state, not daily integrals alone.
     cl=iter(trace.read_text().splitlines());hl=iter(heat.read_text().splitlines())
     for line in cl:
-        c=line.split();t=next(hl).split();assert c[1:4]==t[1:4]
+        c=line.split();t=next(hl).split()
+        assert list(map(float,c[1:3]))==list(map(float,t[1:3])) and int(c[3])==int(t[3])
         for _ in range(project.nodes):
             cn=next(cl).split();hn=next(hl).split()
             assert cn[1]==hn[1]
