@@ -2,6 +2,69 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Complete Hupsel water/solute shared-host delivery, 11 November 2026
+
+PR1641 MERGED at30026511e8d03f6c77bc30377d60a65259afb2fc. Qualified head
+4628ea0ddec375c1a50685b513a53aee0dfe234c, predicted merge and actual canonical
+all have tree11149a6395ca2157c08524f4adaeec314d7eae8d. All three raw proof/log
+Git blobs verified against independently audited bytes. Receipt:
+CLOSURE01_HYBRID_HUPSEL_CANONICAL_20261111.json. This supersedes ALL active/next
+banners below. Every local/compiler/model/audit/documentation/CI run is FINISHED.
+
+The SAME generic daily host now completes original Hupsel34-node/2002-to2004,
+1096 days including original Richards, bottom6/drainage, crop rotation/root uptake,
+original heat and CDE solute blocks. Three reproduced original conservation defects
+are corrected only in the explicit Hupsel profile (runoff pond inventory, solute
+endpoint truncation, harvest interception inventory). No default/native profile
+or existing tolerance changed. Full auxiliary state explicitly owns solute, original
+irrigation saved context/previous-day feedback and WOFOST potential/actual rates.
+
+Windows GNU16.2 and Ubuntu26 GNU15.2 full1096 PASS, in5.7971821s/3.256074393s
+excluding compilation. Both daily water/solute guards remain1e-10. Maximum daily
+water<=9.998e-11cm, solute<=2.162e-13mg/cm2, uptake closure<=1.079e-15cm.
+All9 own windows on EACH platform reproduce all physical records and both complete
+native/auxiliary payloads EXACTLY: 2-to4,4-to6,5-to7,120-to122,365-to367,523-to526,
+583-to585,730-to732,1061-to1096. Six actual O0/O2 project controls, same-platform
+canonical Andelst preservation, refusal/isolation/repeated publication, malformed
+solute/uptake/state frames and public Grass/Hupsel routes PASS. Past1096 refuses
+before output/build/model. Independent archive audits8178files/1202identities PASS;
+docs source/strict build and owner-selection preflight PASS.
+
+Actual successful Linux43098736948/job130784487221 at287de920c; raw ActionsZIP
+SHA23120fb2d277a29ee115bce220090e8b4af21da7128a133e79e479c0de2c9bfb.
+Prior43096746300 startup failure is retained. Stale queued API responses were
+corrected from actual step/log data; attempted cancellation returned409. A proposed
+Ubuntu24 fallback was reverted before dispatch. No duplicate model run occurred.
+Windows/Linux capsules SHA678be090346a13ffd3b68f2a3447a947f86e52b8854fdc46f9fef798ab8b21c1
+and feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde.
+Review/source/build/commands/raw proof: canonical
+research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md.
+
+Frozen day584 original scientific comparison remains FAILED at existing5.37184e-7cm.
+Current hybrid0.004793906349978937cm is NOT qualified against frozen0.003593541147cm.
+Separate original high-precision-output0.004793370692cm is explicitly identified;
+its nearby single-value agreement does not independently qualify a replacement
+reference. Original native0.0033488614852679407 and reference-resolution blockers
+remain visible. No native1e-5C heat/complete-energy/whole-science or accuracy-matched
+runtime ratio claim. Native Grass1827/Andelst481/Hupsel1096 evidence untouched.
+
+Functional coverage: third original configuration completes via one shared hybrid
+host. Reliability: full water/solute/uptake accounting and18 complete seasonal own
+continuations across platforms. Return: original coherent blocks reused; actual
+full model computation in seconds, no historical native/reference campaign repeated.
+
+NEXT DELIVERY: inspect CURRENT canonical accepted external coupling/transaction
+contracts and identify ONE concrete uncovered daily accepted-state/forcing seam
+in this consolidated route. Use an existing small real-owner driver where possible;
+qualify only missing contract, rollback and instance isolation, through an own
+codex branch/PR. Do not invent a general framework or expand MODFLOW scope. If the
+coupling contract is already qualified for the relevant dependencies, inherit its
+exact evidence and select the next concrete energy-accounting acceptance gap.
+Keep functional execution separate from day584 scientific reference qualification.
+No successful full native/reference/Windows/Linux run is selected for repetition.
+Automation is recovery only; keep working to an agreed published verified delivery.
+
+
 ### Active Hupsel delivery, PR1641, 11 November 2026
 
 Supersedes the earlier NEXT DELIVERY below. Implementation/evidence branch:
