@@ -242,8 +242,10 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                      "use MOD_irrigation,      only: irrigation, flirrigate, dayfix")
         swap=replace(swap,"real(8), save :: checkpoint_canopy = -1d0",
                      "real(8), save :: checkpoint_canopy = -1d0\ninteger,save :: checkpoint_dayfix=-1\nlogical,save :: checkpoint_irrigate=.false.")
+        swap=replace(swap,"fl_cropharvest, fl_cropharvestday, sicact",
+                     "fl_cropharvest, fl_cropharvestday, sicact, fl_start_cropemergence")
         swap=replace(swap,"         if (checkpoint_canopy >= 0d0) then",
-                     "         if (checkpoint_dayfix>=0)then\n            dayfix=checkpoint_dayfix\n            flirrigate=checkpoint_irrigate\n            checkpoint_dayfix=-1\n         end if\n         if (checkpoint_canopy >= 0d0) then")
+                     "         if (checkpoint_dayfix>=0)then\n            if(.not.fl_start_cropemergence)then\n               dayfix=checkpoint_dayfix\n               flirrigate=checkpoint_irrigate\n            end if\n            checkpoint_dayfix=-1\n         end if\n         if (checkpoint_canopy >= 0d0) then")
         swap=replace(swap,restore,"")
         swap=replace(swap,"   if (swsolu > 0) call Solute(1)","   if (swsolu > 0) call Solute(1)\n"+restore+
                      "\n   if(fl_initialize)then\n      checkpoint_dayfix=dayfix\n      checkpoint_irrigate=flirrigate\n   end if")
