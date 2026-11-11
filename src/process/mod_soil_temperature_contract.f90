@@ -52,6 +52,7 @@ module mod_soil_temperature_contract
 
   type, public :: soil_temperature_numerical_config_t
     real(real64) :: energy_abs_tolerance_j_cm2 = 1.0e-9_real64
+    integer :: internal_heat_substeps = 1
   end type soil_temperature_numerical_config_t
 
   type, public :: soil_temperature_forcing_t
@@ -96,6 +97,8 @@ module mod_soil_temperature_contract
     real(real64), allocatable :: upper(:)
     real(real64), allocatable :: rhs(:)
     real(real64), allocatable :: solution(:)
+    ! Actual integrated flux at every conductive face.
+    real(real64), allocatable :: substep_conductive_face_energy_j_cm2(:)
   end type soil_temperature_workspace_t
 
   type, public :: soil_temperature_result_t

@@ -26,6 +26,10 @@ on:
 
   workflow_dispatch:
     inputs:
+      bounded_thermal_policy:
+        description: Run only the selected explicit thermal-policy focused feedback
+        default: false
+        type: boolean
       selection_record:
         description: Existing versioned work-unit JSON containing test_selection
         required: true
@@ -55,10 +59,15 @@ jobs:
           SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
           EVENT: ${{ github.event_name }}
           REPLAY: ${{ inputs.replay_historical }}
+          THERMAL_POLICY: ${{ inputs.bounded_thermal_policy }}
         run: |
           set -euo pipefail
           if [[ "$EVENT" == workflow_dispatch ]]; then
-            python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+            if [[ "$THERMAL_POLICY" == true ]]; then
+              python3 tests/modularity/run_modular_tests.py --check-selection thermal_substep_policy
+            else
+              python3 tests/modularity/run_modular_tests.py --check-selection full_fci
+            fi
             if [[ "$REPLAY" == true ]]; then
               python3 tests/modularity/run_modular_tests.py --check-selection replay_historical
             fi
@@ -67,7 +76,7 @@ jobs:
             echo 'Impact report only; owner admission is separate, no numerical PASS inherited.'
           fi
   modular-feedback:
-    if: github.event_name != 'workflow_dispatch'
+    if: github.event_name != 'workflow_dispatch' || inputs.bounded_thermal_policy
     needs: selection-preflight
     runs-on: ubuntu-24.04
     steps:
@@ -84,6 +93,7 @@ jobs:
           cache_source=f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
           kim_source=e145622a9b93aac0eee38a40338f6b452bf16ab8
           reader_source=5902c6b91e8478362a14eec9b22001a36f901769
+          policy_source=1446572b0d90b82a6eff29df39b4eb5280f04ef1
           if { git merge-base --is-ancestor "$ahl_source" HEAD &&
                git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$cache_source" HEAD &&
@@ -91,7 +101,9 @@ jobs:
              { git merge-base --is-ancestor "$kim_source" HEAD &&
                git diff --quiet "$kim_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$reader_source" HEAD &&
-               git diff --quiet "$reader_source" HEAD -- src app reference tools tests; }; then
+               git diff --quiet "$reader_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$policy_source" HEAD &&
+               git diff --quiet "$policy_source" HEAD -- src app reference tools tests; }; then
             ahl_exact=true
           fi
           if [[ "$ahl_exact" == true ]] || {
@@ -479,7 +491,7 @@ jobs:
           echo 'FCI40_FROZEN_RESTRICTED_EFFECTIVE_FORCING_EXECUTOR_SOURCE_AUTHORITY=PASS'
 
   current-restricted-canonical-preservation:
-    if: always() && github.event_name == 'workflow_dispatch' && !failure() && !cancelled()
+    if: always() && github.event_name == 'workflow_dispatch' && !failure() && !cancelled() && !inputs.bounded_thermal_policy
     env:
       SWAP5_TEST_SELECTION_RECORD: ${{ inputs.selection_record }}
     needs:

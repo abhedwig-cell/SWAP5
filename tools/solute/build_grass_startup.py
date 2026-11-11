@@ -17,7 +17,7 @@ p.add_argument('--compiler',type=Path,default=Path(shutil.which('gfortran') or '
 p.add_argument('--input-archive',type=Path,help='Optional already-built original TTUTIL archive; otherwise build from the pinned repository authority')
 p.add_argument('--end',type=float,default=.01)
 p.add_argument('--policy',choices=['ordinary','retained'],default='ordinary')
-p.add_argument('--numerical-profile',choices=['water-only','thermal-control-1e-5C'],default='water-only')
+p.add_argument('--numerical-profile',choices=['water-only','thermal-control-1e-5C','thermal-subcycle4-1e-5C'],default='water-only')
 a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False)
 assert a.numerical_profile=='water-only' or a.policy=='retained','thermal profile requires retained proposal policy'
 fc=str(a.compiler.resolve());archive=a.input_archive.resolve() if a.input_archive else out/'libttutil.a'
@@ -124,7 +124,7 @@ binding=json.dumps(binding_data,sort_keys=True).encode()
 (case/'application.binding').write_bytes(binding)
 report['application_binding_sha256']=sha(case/'application.binding')
 command=[exe,str(a.end)]+(['retain-step']if a.policy=='retained'else[])
-if a.numerical_profile!='water-only':command=[exe,str(a.end),'retain-step','100000','','thermal-control']
+if a.numerical_profile!='water-only':command=[exe,str(a.end),'retain-step','100000','','thermal-control-4' if a.numerical_profile=='thermal-subcycle4-1e-5C' else 'thermal-control']
 rc=run(command,'native_original_initial_interval',case,60)
 report['grass_numerical_profile']=a.numerical_profile
 report['native_returncode']=rc

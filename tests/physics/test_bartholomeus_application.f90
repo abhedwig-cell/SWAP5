@@ -66,6 +66,8 @@ program test_bartholomeus_application
   call backend%run_trial(columns(1),cfg%tiles(1)%template,cfg%tiles(1)%parameters,states(1), &
        cfg%tiles(1)%base_forcing,cfg%numerical,T0,T1,cp,first,candidate,diag)
   call require(first%completed .and. candidate%ready(),'actual backend active trial')
+  call backend%configure_soil_temperature_temporal_tolerance(1d-5,ok,4)
+  call require(.not.ok.and.backend%soil_temperature_substep_count()==1,'active heat policy immutable')
   obs=backend%observation()
   call require(obs%bartholomeus_executed .and. obs%bartholomeus_status==0,'actual caller executed oxygen')
   call require(obs%root_oxygen_final_uptake<obs%root_oxygen_base_uptake,'active physics reduces root sink')

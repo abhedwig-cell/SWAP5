@@ -13,9 +13,9 @@ if a.restart:
  origin=a.restart.resolve();shutil.copyfile(origin,out/'restart-origin.bin')
 cmd=[str(exe),str(a.end),'retain-step','100000']+([str(origin)]if origin else[])
 if build.get('grass_numerical_profile','water-only')!='water-only':
- assert build['grass_numerical_profile']=='thermal-control-1e-5C'
+ assert build['grass_numerical_profile'] in ['thermal-control-1e-5C','thermal-subcycle4-1e-5C']
  assert json.loads((out/'application.binding').read_text())['grass_numerical_profile']==build['grass_numerical_profile']
- cmd=[str(exe),str(a.end),'retain-step','100000',str(origin)if origin else'','thermal-control']
+ cmd=[str(exe),str(a.end),'retain-step','100000',str(origin)if origin else'','thermal-control-4' if build['grass_numerical_profile']=='thermal-subcycle4-1e-5C' else 'thermal-control']
 t=time.monotonic();captured=set();capture_seconds={};censored=False
 with (out/'stdout').open('wb')as so,(out/'stderr').open('wb')as se:
  (out/'LAUNCH.json').write_text(json.dumps(dict(command=cmd,source_sha256=build['source_sha256'],executable_sha256=sha(exe),restart_sha256=sha(origin)if origin else None),indent=2)+'\n')

@@ -1,0 +1,507 @@
+{
+  "status": "CURRENT_SOURCE_EXPLICIT_POLICY_AND_DEFAULT_PRESERVATION_QUALIFIED",
+  "canonical_base": "87d2c7c1a931d5fcfb63869852896726ee28457e",
+  "contract": {
+    "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/thermal numerical policy",
+    "default": "One incumbent heat solve; preserve all current default physical outputs.",
+    "opt_in": "Four original implicit heat substeps, actual integrated conductive-face receipts and existing cell/global energy bounds. Numeric heat only.",
+    "instance_policy": "Append optional heat_substeps to the existing backend thermal-tolerance setter. Only1/4 admitted; four requires positive thermal budget. Invalid requests are atomic. Changing substeps after heat activation is refused. Backend initialization restores one.",
+    "restart": "Distinct native profile thermal-subcycle4-1e-5C, explicit thermal-control-4 selector and exact immutable application binding. Old profile remains thermal-control-1e-5C/thermal-control. Missing, duplicated, wrong and cross-policy markers/checkpoints fail closed.",
+    "invariants": "No water/thermal/energy tolerance, physical equation, original input, accepted-state ownership or transaction/rollback semantics change."
+  },
+  "acceptance": [
+    "Current default original four-day physical files match the existing exact incumbent hashes",
+    "Explicit four-step original four-day outputs reproduce qualified private variant",
+    "Actual O0/O2 heat bodies, six boundary conditions, cell heat, A/B/A and refusal checks",
+    "Current backend/thermal contracts and atomic invalid policy setters",
+    "Own native process restarts and marker/cross-policy refusals",
+    "Short actual Linux preservation before admission"
+  ],
+  "test_selection": {
+    "candidate": "a5c2d965879641e26f66f7cb4eb55eca02ebef88",
+    "groups": {
+      "thermal_substep_policy": {
+        "changed_dependency": "Generic heat numerical config/workspace, runtime policy setter, conductive receipt and explicit native profile/binding; original single-step heat body retained.",
+        "scientific_claim": "Default exact preservation and bounded explicit numerical option inheriting source-equivalent private proof only after current live controls.",
+        "owner": "SWAP5-FUNCTIONAL-CLOSURE01 RT-TX/thermal",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 600,
+        "existing_evidence": "PR1631 actual Windows/Ubuntu heat bodies O0/O2, six boundaries, per-cell energy, A/B/A, refusal and native own restart; four-day O2 savings46.02/44.48 percent. No full trajectory is selected.",
+        "prior_execution": "PASS",
+        "diagnosis": "All selected Windows/Ubuntu policy, current default native, Andelst codec and focused F-CI gates pass. Source/fixtures/builders match the exact executed heads; later changes only retain evidence and correct bounded workflow scope. No identical replay is selected."
+      }
+    },
+    "full_fci_disposition": "NOT_SELECTED_IMPACT; select current owning thermal/runtime and focused contracts",
+    "highest_low_air": "NOT_SELECTED_POLICY"
+  },
+  "local_qualification": {
+    "default_and_four_exact_preservation": {
+      "status": "DEFAULT_EXACT_INCUMBENT_AND_FOUR_EXACT_PRIVATE_PASS",
+      "default_steps": 6882,
+      "four_steps": 3585,
+      "files_per_arm": 5,
+      "raw_record": "temp/s5-heat-policy-preservation-qualified.json in windows_archive"
+    },
+    "default_disk": {
+      "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+      "original_days": 3,
+      "optimization": "O2",
+      "exact_restart": "1 -> 3; final full checkpoint and daily water/crop rows byte exact",
+      "invalid_restart_controls": [
+        "crc",
+        "truncated",
+        "layout",
+        "clock",
+        "source",
+        "roots",
+        "delay",
+        "potential_delay",
+        "cut_index",
+        "yield_nan"
+      ],
+      "profile_controls": [
+        {
+          "case": "missing-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ]
+        },
+        {
+          "case": "wrong-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ]
+        },
+        {
+          "case": "duplicate-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ]
+        },
+        {
+          "case": "missing-switch",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000"
+          ]
+        },
+        {
+          "case": "wrong-switch",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "unknown-profile"
+          ]
+        },
+        {
+          "case": "cross-policy-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ]
+        },
+        {
+          "case": "cross-policy-checkpoint",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default-disk\\cross-policy-checkpoint\\incoming.bin",
+            "thermal-control-4"
+          ],
+          "scope": "Only the numerical profile changes in the current binding; same executable, original input and source binding identities. Selector validation passes before actual restart rejection."
+        }
+      ],
+      "inactive_compatibility_control_not_selected": true,
+      "executable_sha256": "d6af8a3bdc83db6119a780cc775edf8c85176b19db5fc245682bd0b0689f8a88",
+      "maximum_water_residual_cm": 2.2565282975506307e-14,
+      "final_checkpoint_sha256": "c61126df00dadc420ed7b52c34a7fb8ae3447bf54f1d4d9daf58b6876284752d"
+    },
+    "four_disk": {
+      "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+      "original_days": 3,
+      "optimization": "O2",
+      "exact_restart": "1 -> 3; final full checkpoint and daily water/crop rows byte exact",
+      "invalid_restart_controls": [
+        "crc",
+        "truncated",
+        "layout",
+        "clock",
+        "source",
+        "roots",
+        "delay",
+        "potential_delay",
+        "cut_index",
+        "yield_nan"
+      ],
+      "profile_controls": [
+        {
+          "case": "missing-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control-4"
+          ]
+        },
+        {
+          "case": "wrong-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control-4"
+          ]
+        },
+        {
+          "case": "duplicate-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control-4"
+          ]
+        },
+        {
+          "case": "missing-switch",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000"
+          ]
+        },
+        {
+          "case": "wrong-switch",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "unknown-profile"
+          ]
+        },
+        {
+          "case": "cross-policy-marker",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control-4"
+          ]
+        },
+        {
+          "case": "cross-policy-checkpoint",
+          "returncode": 1,
+          "command": [
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+            "3",
+            "retain-step",
+            "100000",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four-disk\\cross-policy-checkpoint\\incoming.bin",
+            "thermal-control"
+          ],
+          "scope": "Only the numerical profile changes in the current binding; same executable, original input and source binding identities. Selector validation passes before actual restart rejection."
+        }
+      ],
+      "inactive_compatibility_control_not_selected": true,
+      "executable_sha256": "9e184e8d04c1a41c8476bc33aac14a27575edf5d14c33ea8f4cb9722aafc3fe5",
+      "maximum_water_residual_cm": 2.8005375796169574e-14,
+      "final_checkpoint_sha256": "c74eb98deaaa35522e8b896f0f3a6a3a3279d68a326d92f98ac6a685c1d3eb30"
+    },
+    "heat_body": {
+      "status": "HEAT_POLICY_BODY_O0_O2_DEFAULT_FACES_AND_REFUSAL_PASS",
+      "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "original_control_sha256": "a6da7c70c801da220dc0cc55455b6fa1fbf61c6f9bc414f175f2a8bbe2676f9d",
+      "private_body_sha256": "52ae3acf3014570e90efce860c96696bde53f17dcbac61ad322ce9f1db67c074",
+      "driver_sha256": "9af560a70359e45446ad8956054461ab055fa8ac75b9a1f017b99f32709253b1",
+      "native_graph_build_sha256": "e4c1728d7b8da4283bfc7883cee3dfd8b774f285506ef4b0f918594f9f15a0e6"
+    },
+    "runtime_status": "SPRINT03_CURRENT_RUNTIME_AND_THERMAL_TEMPORAL_CONTRACT_PASS"
+  },
+  "workflow_validation": {
+    "yaml_parse": "PASS",
+    "all_run_bash_syntax": "PASS",
+    "sparse_policy_job": "Selected actual dependency files only; full current default native and focused F-CI retain their existing source-pinned preservation commands."
+  },
+  "bounded_fci_scope_correction": {
+    "cancelled_run": 43019110427,
+    "reason": "The new bounded dispatch also scheduled the existing unconditional manual moving-preservation job. Its broad body was not selected. Cancel the run and explicitly exclude that job for bounded thermal feedback; rerun only owning preflight and modular feedback. No cancelled observation grants PASS."
+  },
+  "current_timing_selection": {
+    "reason": "Production exposes explicit runtime policy instead of the private fixed-four body. Measure actual current entry points rather than inheriting a speed ratio solely from equal physical outputs.",
+    "expected_native_seconds": 60,
+    "scope": "One serial ABBA four-day O2 pair set, not a full project. Existing script retained with only accepted profile grammar and per-build CLI selector extended. Own restart remains asserted by that script.",
+    "source_template": "research/hybrid-water01/time_thermal_subcycle.py",
+    "actual_script_sha256": "4d3c9df6b4f46c7dc1510c2713c6313585951de86e5a89edef5a89eb5f063c76"
+  },
+  "hosted_policy_qualification": {
+    "run": 43019106784,
+    "job": 130517535678,
+    "head": "ddae5b740abea9d9ab981ac1e1686d8ff5745d7c",
+    "status": "PASS",
+    "artifact_id": 13854211674,
+    "artifact_sha256": "73294934e22ee8b23b8dfddb2fc9416ec40d31afcc19fddc48d40321f509be7e",
+    "retained_losslessly": "research/hybrid-water01/thermal-substep-policy-ubuntu26-20261111.zip",
+    "bytes": 27380790,
+    "actual_source_object_executable_audit": "PASS; raw Git blobs read in one cat-file batch; complete linked object sets and binaries verified",
+    "default_and_four_physical_preservation": "DEFAULT_EXACT_INCUMBENT_AND_FOUR_EXACT_PRIVATE_PASS",
+    "heat_body_O0_O2": "HEAT_POLICY_BODY_O0_O2_DEFAULT_FACES_AND_REFUSAL_PASS",
+    "actual_native": {
+      "policy-four-disk": {
+        "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+        "optimization": "O2",
+        "executable_sha256": "77a266d0f009aeb54fe7a88b9cdbbf5826a95be93cc3136bc661d87af2988ba0",
+        "final_checkpoint_sha256": "79039ebc65fd0520712d57e88f33715ad5536636572ade0527dcf8e26b0b3b3e",
+        "malformed_stream_controls": 10,
+        "profile_controls": 7
+      },
+      "policy-four-O0-disk": {
+        "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+        "optimization": "O0",
+        "executable_sha256": "39223efe08fceb3374e49c739c02d1faf8532735f3cc5fdcab5520eb51f03b9e",
+        "final_checkpoint_sha256": "b145e940ac079440476d7baea3dfa53d3dd33aabd9eb633ca8e9a04a2c3b2db6",
+        "malformed_stream_controls": 10,
+        "profile_controls": 7
+      }
+    },
+    "scope": "Cold complete checked O0 four-step model and library plus production O2; exact own native restart and policy-only cross-checkpoint refusals. No full historical trajectories.",
+    "audit_correction": "Initial git-archive source comparison applied Windows autocrlf export conversion and refused link_context. Raw git-show proved the actual source hash correct; final batch audit uses exact cat-file blobs, not working-tree archive conversion."
+  },
+  "windows_archive": {
+    "path": "research/hybrid-water01/thermal-substep-policy-windows-20261111.tar.xz",
+    "sha256": "6087b474b6bf477999552bb1a640e65828effb5ee91dbab24d64b0a0e4eab0d3",
+    "bytes": 38917408,
+    "member_count": 3939,
+    "scope": "Actual raw source bytes, complete linked objects/native executables, module files, input archive, cold O0/O2 runtime and heat controls, both native own/profile refusals, original inputs and four-day states/ledgers; current native ABBA and own restart. PATH_INDEX binds original absolute build paths to archived members."
+  },
+  "current_timing": {
+    "status": "SHORT_ABBA_AND_OWN_RESTART_PASS",
+    "events": [
+      {
+        "arm": "baseline",
+        "name": "A1",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+          "4",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control"
+        ],
+        "seconds": 14.42174579994753,
+        "returncode": 0
+      },
+      {
+        "arm": "candidate",
+        "name": "B1",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+          "4",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control-4"
+        ],
+        "seconds": 7.741595600033179,
+        "returncode": 0
+      },
+      {
+        "arm": "candidate",
+        "name": "B2",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+          "4",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control-4"
+        ],
+        "seconds": 7.790298799984157,
+        "returncode": 0
+      },
+      {
+        "arm": "baseline",
+        "name": "A2",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-default\\swap5_grass_startup.exe",
+          "4",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control"
+        ],
+        "seconds": 14.04338759998791,
+        "returncode": 0
+      },
+      {
+        "arm": "candidate",
+        "name": "cut",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+          "2",
+          "retain-step",
+          "100000",
+          "",
+          "thermal-control-4"
+        ],
+        "seconds": 4.303771799895912,
+        "returncode": 0
+      },
+      {
+        "arm": "candidate",
+        "name": "resumed",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-four\\swap5_grass_startup.exe",
+          "4",
+          "retain-step",
+          "100000",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-heat-policy-current-abba\\cut\\checkpoint.bin",
+          "thermal-control-4"
+        ],
+        "seconds": 3.7792918998748064,
+        "returncode": 0
+      }
+    ],
+    "median_native_seconds": {
+      "baseline": 14.23256669996772,
+      "candidate": 7.765947200008668
+    },
+    "accepted_steps": {
+      "baseline": 6882,
+      "candidate": 3585
+    },
+    "median_reduction_percent": 45.435371119488366,
+    "build_manifest_sha256": {
+      "baseline": "8c6495773584601f09ba60334db96197631dd661a3571c67558f5e92663c3a00",
+      "candidate": "e4c1728d7b8da4283bfc7883cee3dfd8b774f285506ef4b0f918594f9f15a0e6"
+    },
+    "executable_sha256": {
+      "baseline": "d6af8a3bdc83db6119a780cc775edf8c85176b19db5fc245682bd0b0689f8a88",
+      "candidate": "9e184e8d04c1a41c8476bc33aac14a27575edf5d14c33ea8f4cb9722aafc3fe5"
+    },
+    "physical_sha256": {
+      "baseline": {
+        "budget.csv": "8b5c00a9b2442940221dab71a832a4475e0b8187f692193c355ffb0f136fbb7d",
+        "conductive_budget.csv": "a7f06b6ad3a34a09f2f0d7210734d345b7df7b93c65431efd91e6b89802baa13",
+        "crop.csv": "09eff08a275d7b32e9e71540d643f4d1a5e1db5ec28512cb57ebaf4f3d380682",
+        "state.csv": "12fa912d307669ef562b4e45f383f04d3a3c3b2a982915936d91e0158ad83a7a",
+        "endpoint.csv": "b395df772af76852c7d9cff769c84bdc9550beccc4061c8e4d4b3ea52ca04b67"
+      },
+      "candidate": {
+        "budget.csv": "5df9f790bf629342449da0a66f3ee3b3e7f83edbec5f47a3800c38e7f11facba",
+        "conductive_budget.csv": "be4d7722578b6a48faa64ee4b36cb4105daa60fbb7cbd70fb16d606200958204",
+        "crop.csv": "09eff08a275d7b32e9e71540d643f4d1a5e1db5ec28512cb57ebaf4f3d380682",
+        "state.csv": "3d230d6a3f372ed296e7b5bf22a66676c979ab7063c60a93ddaf020f492f2c3a",
+        "endpoint.csv": "c30b4384329d5969273177db0eafa0d42ca35f4e957e8ed9ecccdbb6c775f8df"
+      }
+    },
+    "scope": "Windows GNU16.2 O2 production four-day original-input window; each arm deterministic and own candidate restart exact. Different time grids, not byte-identical cross-arm or full science/runtime parity.",
+    "measurement_limits": "One OMP thread, serial alternating native pairs on development host under ambient load; not exclusive-core or a portable speed guarantee."
+  },
+  "shared_default_native_qualification": {
+    "run": 43019106784,
+    "job": 130517536144,
+    "head": "ddae5b740abea9d9ab981ac1e1686d8ff5745d7c",
+    "status": "PASS",
+    "scope": "Existing cold O0/O2 runtime, current original-input Grassgrowth native own restart/refusals and original Andelst macro byte/atomic refusal contracts. Original assertion bodies retained; current defaults remain one heat step.",
+    "grassgrowth": {
+      "O0": {
+        "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+        "executable_sha256": "5f5302f15bd74c0ba83d2ccda0f08f916fe6a9867832c59ac9c1d7d3b61f2c5f",
+        "profile_controls": 7,
+        "invalid_restart_controls": 10,
+        "final_checkpoint_sha256": "176405e890a56ec14598a06271d2a36c46aed24a36534fd8351feb9d349e0063"
+      },
+      "O2": {
+        "status": "NATIVE_ORIGINAL_DISK_RESTART_PASS",
+        "executable_sha256": "a37ba6565bc8d03c7d8bdda05417e1b5e39e0cf4db1f00df43983fe27ad7e8c7",
+        "profile_controls": 7,
+        "invalid_restart_controls": 10,
+        "final_checkpoint_sha256": "617f283a737cfb0d35d6388f54dcaa8e85a4144c0b257e1715bdb4b88218b11d"
+      }
+    },
+    "andelst_macro_status": "NATIVE_MACRO_O0_O2_OWN_BYTES_AND_REFUSALS_PASS",
+    "artifact_id": 13854577693,
+    "original_zip_sha256": "d1c1bb4f802231509e3f1f640eb994a0341144a2a027cc0d5408ebee080c5ecb",
+    "retained_subset": "research/hybrid-water01/thermal-substep-shared-native-20261111.tar.xz",
+    "retained_subset_sha256": "800a7491e1361fc78ab621f13edbd9d4cfd8350abb2115c66b559cec2b96d324",
+    "bytes": 5949932,
+    "job_log": "research/hybrid-water01/thermal-substep-shared-native-20261111.log.gz",
+    "job_log_sha256": "5b52baaeeef680e6fbb60f198595e1ed5cb5a85e11a8f027b619e84a5139793b",
+    "retention_scope": "All raw artifact members except .o/.mod and relinkable thermal-runtime test binaries; native application executables, complete build source/object hash manifests, commands/logs, original inputs, actual checkpoint/ledger/refusal data retained. RETENTION_INDEX binds exact selected members to the checked original ZIP digest. This is not the complete original ZIP."
+  },
+  "focused_fci_qualification": {
+    "run": 43019767738,
+    "job": 130520433838,
+    "head": "936bdc74e5724f5f1bc8ee1d8d91067d90100cce",
+    "status": "PASS",
+    "scope": "Exact-source predecessor preservation, six current modular production cases O0/O2 and source-bound selector. Full moving omnibus and historical replay NOT_SELECTED_IMPACT, explicitly skipped.",
+    "selector_sha256": "acf11684bfdeea14bb7f8802dba4e8eb09af09fc9699fcb5efbbadf30e203b22",
+    "log_excerpt": "research/hybrid-water01/thermal-substep-focused-fci-20261111.log.gz",
+    "log_excerpt_sha256": "e48ba959747a51859520fd05225ea93da94dd206650910d4c8743cc3d04a3698",
+    "retention": "Selected terminal markers and step headers verbatim from GitHub connector job log; not the complete log."
+  },
+  "interpretation": "Generic opt-in is implemented and owning gates pass. Default preserves incumbent physical bytes; four steps preserve qualified private physical bytes. No complete historical trajectories on changed source, whole science, complete energy or full-project runtime-parity claim.",
+  "next_delivery": "After canonical admission select exactly one original-input full Grassgrowth1827 trajectory under explicit four-step profile, immutable release build, original input hashes, per-day ledgers and own-process early/late cuts. Changed numerical route justifies this qualification. Do not repeat the qualified one-step full trajectory or start duplicates; inspect prior full costs and set a named runtime cap first.",
+  "interface_notes": {
+    "query": "soil_temperature_substep_count returns0 before backend initialization; otherwise configured1/4.",
+    "physical_codec": "No new continuation state or physical checkpoint layout. Numerical configuration is per-backend caller-owned; native application.binding distinguishes the policy and rejects cross-policy restart. External coupling explicitly reconstructs numerical configuration, as with existing temporal policy.",
+    "default": "Existing optional setter calls select one substep. Original single-step body retained."
+  },
+  "archive_read_only_audits": "PASS: actual Windows link inputs, Ubuntu policy raw Git source/object/executable sets, exact own restarts, policy-only checkpoint refusals and default/private physical byte preservation. Shared-native subset retains decoded own checkpoints and original assertion results.",
+  "record_update": "Final update changes only this record after immutable evidence packaging. Actual implementation is source postimage1446572b0; actual Linux policy/native headddae5b740 and focused F-CI head936bdc74e have identical src/app/tools/tests/reference. Evidence-only commits skip duplicate CI.",
+  "documentation_validation": {
+    "source_checker": "PASS: python tools/docs/check_docs.py",
+    "mkdocs_strict": "PASS: mkdocs build --strict, fresh temporary site; 29.57 seconds",
+    "scope": "Existing page updated with public policy/default, binding and bounded scientific scope."
+  },
+  "integration_cost_policy": "Merge may use skip-ci after the whole predicted postimage and exact src/app/tools/tests/reference equality are checked. Actual selected policy/default/native/F-CI gates already passed the identical dependency postimage; no new scientific PASS is granted by skipped duplicate CI."
+}

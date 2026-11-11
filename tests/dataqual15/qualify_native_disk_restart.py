@@ -21,14 +21,16 @@ def main():
     assert all(sha(Path(p))==h for p,h in build['source_sha256'].items())
     checkpoint=base/'original-interval/checkpoint.bin';raw=checkpoint.read_bytes();d=layout(raw);assert d['clock']==1
     names=[*build['original_inputs_sha256'],'application.binding'];events=[]
-    thermal=build.get('grass_numerical_profile','water-only')=='thermal-control-1e-5C'
+    profile=build.get('grass_numerical_profile','water-only')
+    thermal=profile in ['thermal-control-1e-5C','thermal-subcycle4-1e-5C']
+    thermal_switch='thermal-control-4' if profile=='thermal-subcycle4-1e-5C' else 'thermal-control'
     def case(name):
         folder=out/name;folder.mkdir()
         for n in names:shutil.copyfile(base/'original-interval'/n,folder/n)
         return folder
     def run(folder,restart=None):
         cmd=[str(exe),'3','retain-step','100000']+([str(restart)] if restart else [])
-        if thermal:cmd=[str(exe),'3','retain-step','100000',str(restart)if restart else'','thermal-control']
+        if thermal:cmd=[str(exe),'3','retain-step','100000',str(restart)if restart else'',thermal_switch]
         start=time.monotonic();r=subprocess.run(cmd,cwd=folder,capture_output=True,timeout=90)
         (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
         events.append(dict(case=folder.name,command=cmd,returncode=r.returncode,seconds=time.monotonic()-start))
@@ -85,20 +87,37 @@ def main():
     assert checkpoint.read_bytes()==raw
     profile_controls=[]
     if thermal:
-        for kind in ['missing-marker','wrong-marker','duplicate-marker','missing-switch','wrong-switch']:
+        for kind in ['missing-marker','wrong-marker','duplicate-marker','missing-switch','wrong-switch','cross-policy-marker']:
             folder=case('profile-'+kind)
             binding=folder/'application.binding';data=json.loads(binding.read_text())
             if kind=='missing-marker':del data['grass_numerical_profile']
             if kind=='wrong-marker':data['grass_numerical_profile']='unknown-profile'
+            if kind=='cross-policy-marker':data['grass_numerical_profile']='thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C'
             binding.write_text(json.dumps(data,sort_keys=True))
             if kind=='duplicate-marker':binding.write_text(binding.read_text()[:-1]+',"grass_numerical_profile": "thermal-control-1e-5C"}')
-            cmd=[str(exe),'3','retain-step','100000','','thermal-control']
+            cmd=[str(exe),'3','retain-step','100000','',thermal_switch]
             if kind=='missing-switch':cmd=cmd[:4]
             if kind=='wrong-switch':cmd[-1]='unknown-profile'
             r=subprocess.run(cmd,cwd=folder,capture_output=True,timeout=30)
             (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
             assert r.returncode!=0 and not(folder/'checkpoint.bin').exists()and not(folder/'budget.csv').exists(),kind
             profile_controls.append(dict(case=kind,returncode=r.returncode,command=cmd))
+    if thermal:
+        folder=case('cross-policy-checkpoint')
+        binding=folder/'application.binding';data=json.loads(binding.read_text())
+        alternate='thermal-control-1e-5C' if profile=='thermal-subcycle4-1e-5C' else 'thermal-subcycle4-1e-5C'
+        data['grass_numerical_profile']=alternate
+        binding.write_text(json.dumps(data,sort_keys=True))
+        switch='thermal-control' if alternate=='thermal-control-1e-5C' else 'thermal-control-4'
+        incoming=folder/'incoming.bin';incoming.write_bytes(raw)
+        cmd=[str(exe),'3','retain-step','100000',str(incoming),switch]
+        r=subprocess.run(cmd,cwd=folder,capture_output=True,timeout=30)
+        (folder/'stdout').write_bytes(r.stdout);(folder/'stderr').write_bytes(r.stderr)
+        assert r.returncode!=0 and b'bound grass prefix restart rejected' in r.stdout
+        assert not(folder/'checkpoint.bin').exists()and not(folder/'budget.csv').exists()
+        assert incoming.read_bytes()==raw
+        profile_controls.append(dict(case='cross-policy-checkpoint',returncode=r.returncode,command=cmd,
+            scope='Only the numerical profile changes in the current binding; same executable, original input and source binding identities. Selector validation passes before actual restart rejection.'))
     result=dict(status='NATIVE_ORIGINAL_DISK_RESTART_PASS',original_days=3,
                 optimization=next(f[1:] for f in build['flags']if f in ['-O0','-O2']),
                 exact_restart='1 -> 3; final full checkpoint and daily water/crop rows byte exact',

@@ -934,6 +934,7 @@ module mod_fmr_serialized_reference_backend
     type(soil_temperature_parameters_t), allocatable :: soil_temperature_parameters
     type(soil_temperature_forcing_t), allocatable :: soil_temperature_forcing
     type(soil_temperature_numerical_config_t) :: soil_temperature_numerical
+    logical :: heat_substep_policy_locked = .false.
     type(soil_temperature_workspace_t) :: soil_temperature_workspace
     logical :: fixed_weir_surface_water_active = .false.
     logical :: fixed_weir_surface_water_configured = .false.
@@ -999,6 +1000,7 @@ module mod_fmr_serialized_reference_backend
     procedure, public :: initialize => fmr_serialized_backend_initialize
     procedure, public :: water_flux_temporal_enabled => fmr_water_flux_temporal_enabled
     procedure, public :: configure_soil_temperature_temporal_tolerance => fmr_configure_thermal_temporal_tolerance
+    procedure, public :: soil_temperature_substep_count => fmr_thermal_substep_count
     procedure, public :: configure_root_numerical_accuracy => fmr_configure_root_numerical_accuracy
     procedure, public :: configure_soil_water_model => fmr_serialized_backend_configure_soil_water_model
     procedure, public :: configure_macropore_policy => fmr_serialized_backend_configure_macropore_policy
@@ -2220,6 +2222,8 @@ contains
     self%endpoint_origin_available=.false.
     self%model%water_flux_temporal=water_flux_temporal_policy_t()
     self%model%soil_temperature_temporal_tolerance_c=0.0_real64
+    self%model%soil_temperature_numerical%internal_heat_substeps=1
+    self%model%heat_substep_policy_locked=.false.
     self%model%root_accuracy_enabled=.false.
     if(present(water_flux_temporal))self%model%water_flux_temporal=water_flux_temporal
     call self%model%soil_water_selection%configure('', selection_ok, selection_status)
@@ -2258,17 +2262,32 @@ contains
 
   ! Numerical configuration belongs to this backend instance, never to physical
   ! parameters or committed state. Failed configuration leaves the old policy.
-  subroutine fmr_configure_thermal_temporal_tolerance(self,tolerance_c,ok)
+  subroutine fmr_configure_thermal_temporal_tolerance(self,tolerance_c,ok,heat_substeps)
     class(fmr_serialized_reference_backend_t),intent(inout)::self
     real(real64),intent(in)::tolerance_c
     logical,intent(out)::ok
+    integer,optional,intent(in)::heat_substeps
+    integer::steps
     ok=.false.
     if(.not.self%initialized)return
     if(.not.ieee_is_finite(tolerance_c))return
     if(tolerance_c<0.0_real64)return
+    steps=1
+    if(present(heat_substeps))steps=heat_substeps
+    if(steps/=1.and.steps/=4)return
+    if(steps==4.and.tolerance_c<=0.0_real64)return
+    if(self%model%heat_substep_policy_locked.and. &
+       steps/=self%model%soil_temperature_numerical%internal_heat_substeps)return
+    self%model%soil_temperature_numerical%internal_heat_substeps=steps
     self%model%soil_temperature_temporal_tolerance_c=tolerance_c
     ok=.true.
   end subroutine fmr_configure_thermal_temporal_tolerance
+
+  integer function fmr_thermal_substep_count(self) result(steps)
+    class(fmr_serialized_reference_backend_t),intent(in)::self
+    steps=0
+    if(self%initialized)steps=self%model%soil_temperature_numerical%internal_heat_substeps
+  end function fmr_thermal_substep_count
 
   subroutine fmr_configure_root_numerical_accuracy(self,enabled,ok)
     class(fmr_serialized_reference_backend_t),intent(inout)::self
@@ -4197,6 +4216,7 @@ contains
       end if
       self%snow_active = parameters%snow_active
       self%soil_temperature_active = parameters%soil_temperature_active
+      if(self%soil_temperature_active)self%heat_substep_policy_locked=.true.
       self%frost_active = parameters%frost_active
       self%frost_hydraulic = parameters%frost_hydraulic
       if (self%frost_active) then

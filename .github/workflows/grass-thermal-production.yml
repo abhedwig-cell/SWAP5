@@ -28,12 +28,60 @@ on:
         description: Run only the bounded private thermal-subcycling research
         type: boolean
         default: false
+      thermal_substep_policy:
+        description: Qualify the explicit policy and current default/native preservation
+        type: boolean
+        default: false
 permissions:
   contents: read
 concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  thermal-substep-policy:
+    if: github.event_name == 'workflow_dispatch' && inputs.thermal_substep_policy
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/THERMAL_SUBSTEP_POLICY_ADMISSION.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 64
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /AGENTS.md
+            /src/
+            /app/
+            /tools/solute/
+            /tests/
+            /docs/development/workstream-execution-protocol.md
+            /integration/f-ci/THERMAL_SUBSTEP_POLICY_ADMISSION.json
+            /integration/f-ci/THERMAL_SUBCYCLE_RESEARCH_20261111.json
+            /integration/audits/evidence/SWAP431_B111_AUTHORITY.tar.gz.b64
+            /integration/audits/evidence/SWAP431_TTUTIL_AUTHORITY.zip.b64
+            /reference/swap-4.3.1/projects/2.grassgrowth/
+            /research/hybrid-water01/thermal-subcycle-ubuntu26-20261111.zip
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection thermal_substep_policy
+      - name: Actual policy and default coupled applications
+        run: |
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/policy-default" --compiler /usr/bin/gfortran --optimization O2 --profile production --policy retained --numerical-profile thermal-control-1e-5C --end 1
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/policy-four" --compiler /usr/bin/gfortran --optimization O2 --profile production --policy retained --numerical-profile thermal-subcycle4-1e-5C --end 1 --input-archive "$RUNNER_TEMP/policy-default/libttutil.a" --reuse-build "$RUNNER_TEMP/policy-default"
+          python3 -B tests/dataqual15/qualify_thermal_substeps.py --bundle "$RUNNER_TEMP/policy-four" --output "$RUNNER_TEMP/policy-body"
+          python3 -B tests/dataqual15/run_original.py --bundle "$RUNNER_TEMP/policy-default" --output "$RUNNER_TEMP/policy-default-fourdays" --end 4 --timeout 60
+          python3 -B tests/dataqual15/run_original.py --bundle "$RUNNER_TEMP/policy-four" --output "$RUNNER_TEMP/policy-four-fourdays" --end 4 --timeout 60
+          python3 -B tests/dataqual15/check_thermal_policy_preservation.py --default "$RUNNER_TEMP/policy-default-fourdays" --four "$RUNNER_TEMP/policy-four-fourdays" --platform ubuntu --output "$RUNNER_TEMP/policy-preservation.json"
+          python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/policy-four" --output "$RUNNER_TEMP/policy-four-disk" --conductive-budget
+          python3 -B tools/solute/build_grass_startup.py --output "$RUNNER_TEMP/policy-four-O0" --compiler /usr/bin/gfortran --optimization O0 --profile checked --policy retained --numerical-profile thermal-subcycle4-1e-5C --end 1
+          python3 -B tests/dataqual15/qualify_native_disk_restart.py --bundle "$RUNNER_TEMP/policy-four-O0" --output "$RUNNER_TEMP/policy-four-O0-disk" --conductive-budget
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: explicit-thermal-policy-${{ github.sha }}
+          path: ${{ runner.temp }}/policy-*
+          retention-days: 14
   thermal-subcycle-research:
     if: github.event_name == 'workflow_dispatch' && inputs.thermal_subcycle
     runs-on: ubuntu-26.04
@@ -69,7 +117,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:
@@ -92,7 +140,7 @@ jobs:
           path: ${{ runner.temp }}/ttutil-numeric
           retention-days: 14
   native:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' || inputs.thermal_substep_policy
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     steps:
@@ -109,6 +157,7 @@ jobs:
           cache_source=f0e5d9e1dad0a92e3ecd4ea6f464ab55be7af80e
           kim_source=e145622a9b93aac0eee38a40338f6b452bf16ab8
           reader_source=5902c6b91e8478362a14eec9b22001a36f901769
+          policy_source=1446572b0d90b82a6eff29df39b4eb5280f04ef1
           if { git merge-base --is-ancestor "$ahl_source" HEAD &&
                git diff --quiet "$ahl_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$cache_source" HEAD &&
@@ -116,7 +165,9 @@ jobs:
              { git merge-base --is-ancestor "$kim_source" HEAD &&
                git diff --quiet "$kim_source" HEAD -- src app reference tools tests; } ||
              { git merge-base --is-ancestor "$reader_source" HEAD &&
-               git diff --quiet "$reader_source" HEAD -- src app reference tools tests; }; then
+               git diff --quiet "$reader_source" HEAD -- src app reference tools tests; } ||
+             { git merge-base --is-ancestor "$policy_source" HEAD &&
+               git diff --quiet "$policy_source" HEAD -- src app reference tools tests; }; then
             ahl_exact=true
           fi
           if [[ "$ahl_exact" == true ]] || {
