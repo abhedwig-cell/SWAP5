@@ -1993,5 +1993,12 @@
   "bounded_fci_scope_correction": {
     "cancelled_run": 43019110427,
     "reason": "The new bounded dispatch also scheduled the existing unconditional manual moving-preservation job. Its broad body was not selected. Cancel the run and explicitly exclude that job for bounded thermal feedback; rerun only owning preflight and modular feedback. No cancelled observation grants PASS."
+  },
+  "current_timing_selection": {
+    "reason": "Production exposes explicit runtime policy instead of the private fixed-four body. Measure actual current entry points rather than inheriting a speed ratio solely from equal physical outputs.",
+    "expected_native_seconds": 60,
+    "scope": "One serial ABBA four-day O2 pair set, not a full project. Existing script retained with only accepted profile grammar and per-build CLI selector extended. Own restart remains asserted by that script.",
+    "source_template": "research/hybrid-water01/time_thermal_subcycle.py",
+    "actual_script_sha256": "4d3c9df6b4f46c7dc1510c2713c6313585951de86e5a89edef5a89eb5f063c76"
   }
 }
