@@ -293,11 +293,13 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         end=source.index("      end subroutine solute_CDE",source.index("dtsolu  = min"))
         source=replace(source[:end],"            dtsolu  = min(dtsolu,(dt-tcumsol))\n            dtsolu  = max(dtsolu,dtmin)",
                        "            dtsolu  = max(dtsolu,dtmin)\n            dtsolu  = min(dtsolu,(dt-tcumsol))")+source[end:]
-        source=replace(source,"      module subroutine calc_AgeTracer(task)","""      module subroutine hybrid_solute_checkpoint(unit,restoring)
+        source=replace(source,"      module subroutine calc_AgeTracer(task)\n         integer, intent(in) :: task\n      end subroutine calc_AgeTracer","""      module subroutine hybrid_solute_checkpoint(unit,restoring)
          integer,intent(in)::unit
          logical,intent(in)::restoring
       end subroutine hybrid_solute_checkpoint
-      module subroutine calc_AgeTracer(task)""")
+      module subroutine calc_AgeTracer(task)
+         integer, intent(in) :: task
+      end subroutine calc_AgeTracer""")
         source=replace(source,"   public :: solute_CDE, calc_AgeTracer","   public :: solute_CDE, calc_AgeTracer, hybrid_solute_checkpoint")
         source=replace(source,"end submodule MOD_Solute_CDE","""module subroutine hybrid_solute_checkpoint(unit,restoring)
    use ieee_arithmetic,only:ieee_is_finite
