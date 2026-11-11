@@ -211,7 +211,7 @@ def main():
     if args.reference_work is None or args.grass_build is not None or args.hupsel_build is not None:
         parser.error("Andelst requires --reference-work")
     project=GRASSGROWTH if args.model==GRASSGROWTH.model else ANDELST
-    last_day=4 if project==GRASSGROWTH else 481
+    last_day=1827 if project==GRASSGROWTH else 481
     args.days = last_day if args.days is None else args.days
     args.kernel_opt = args.kernel_opt or "O2"
     if (args.restart is None) != (args.restart_day is None):
