@@ -107,6 +107,9 @@ def main():
     legacy_flags = [f for f in flags if f != '-std=f2008'] + [
         '-std=legacy', '-fallow-argument-mismatch', '-ffixed-line-length-none']
     ttobjects = []
+    policy_files = [Path(__file__).resolve(),
+                    Path(__file__).with_name('legacy_reader_sources.py').resolve()]
+    report['build_policy_sha256'] = {str(path): sha(path) for path in policy_files}
     report['original_input_flags_by_source'] = {}
     for index, source in enumerate(ttutil):
         obj = output / f'tt{index:04d}.o'
