@@ -22,7 +22,7 @@
         "expected_seconds": 180,
         "existing_evidence": "Windows GNU16.2 real heat bodies O0/O2, six boundary combinations, per-cell faces, A/B/A and refusal pass. Native production O2 four-day ABBA gives 46.02% median reduction with own process restart exact. Select the same short actual proof on Ubuntu26 GNU15.2; no broad application or F-CI repeat.",
         "prior_execution": "FAILED",
-        "diagnosis": "First Ubuntu dispatch is refused by the selection preflight before compilation because the candidate was abbreviated. Correct the full exact SHA and required prior-execution/diagnosis fields. Windows source-bound numerical results are unaffected; no numerical/Linux model result was obtained from the refused dispatch."
+        "diagnosis": "Local selector refused the abbreviated candidate SHA, then the missing prior-execution field. Both are corrected and the persisted selector passes before the corrected dispatch. The superseded first hosted dispatch 43014610390 was cancelled by branch concurrency during checkout before selection or compilation; its actual cancelled verdict grants no PASS. Windows source-bound numerical results are unaffected."
       }
     },
     "full_fci_disposition": "NOT_SELECTED_IMPACT for private prototype; original production dependencies must be restored and exact before publication",
@@ -76,7 +76,7 @@
     "maximum_abs_daily_conductive_residual_j_cm2": 4.291020871960427e-10,
     "maximum_substep_conductive_residual_j_cm2": 1.2467991916675913e-11,
     "O0_native_full_graph": "NOT_EXERCISED",
-    "POSIX": "SELECTED_PENDING",
+    "POSIX": "Ubuntu26 GNU15.2 real heat-body O0/O2 plus actual coupled production O2 four-day ABBA and own process restart PASS; complete cold O0 native graph not claimed.",
     "full_historical_projects": "NOT_EXERCISED",
     "whole_scientific_equivalence": false
   },
@@ -252,5 +252,154 @@
     "actual_O0_O2_terminal_markers_verified": true,
     "archive_sha256_verified": true,
     "production_dependencies_equal_canonical": true
+  },
+  "hosted_superseded_dispatch": {
+    "run": 43014610390,
+    "job": 130502449379,
+    "status": "CANCELLED_DURING_CHECKOUT_BEFORE_SELECTION_OR_COMPILATION"
+  },
+  "hosted_qualification": {
+    "run": 43014743654,
+    "job": 130502913908,
+    "head": "9c3bb7385bf2999b131f2ed3df18fd85f6fc56a2",
+    "status": "PASS",
+    "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "artifact_id": 13852417768,
+    "artifact_zip_sha256": "d267dd19189f25a3743d29da4759b9cc400e073ee228c7225898bdd201c186c9",
+    "retained_archive": "research/hybrid-water01/thermal-subcycle-ubuntu26-20261111.zip",
+    "bytes": 13979934,
+    "timing": {
+      "status": "SHORT_ABBA_AND_OWN_RESTART_PASS",
+      "events": [
+        {
+          "arm": "baseline",
+          "name": "A1",
+          "command": [
+            "/home/runner/work/_temp/heat-baseline/swap5_grass_startup",
+            "4",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ],
+          "seconds": 12.77392637700001,
+          "returncode": 0
+        },
+        {
+          "arm": "candidate",
+          "name": "B1",
+          "command": [
+            "/home/runner/work/_temp/heat-candidate/swap5_grass_startup",
+            "4",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ],
+          "seconds": 7.080364154999984,
+          "returncode": 0
+        },
+        {
+          "arm": "candidate",
+          "name": "B2",
+          "command": [
+            "/home/runner/work/_temp/heat-candidate/swap5_grass_startup",
+            "4",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ],
+          "seconds": 7.088985834000027,
+          "returncode": 0
+        },
+        {
+          "arm": "baseline",
+          "name": "A2",
+          "command": [
+            "/home/runner/work/_temp/heat-baseline/swap5_grass_startup",
+            "4",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ],
+          "seconds": 12.749347866999983,
+          "returncode": 0
+        },
+        {
+          "arm": "candidate",
+          "name": "cut",
+          "command": [
+            "/home/runner/work/_temp/heat-candidate/swap5_grass_startup",
+            "2",
+            "retain-step",
+            "100000",
+            "",
+            "thermal-control"
+          ],
+          "seconds": 3.923599639000031,
+          "returncode": 0
+        },
+        {
+          "arm": "candidate",
+          "name": "resumed",
+          "command": [
+            "/home/runner/work/_temp/heat-candidate/swap5_grass_startup",
+            "4",
+            "retain-step",
+            "100000",
+            "/home/runner/work/_temp/heat-abba/cut/checkpoint.bin",
+            "thermal-control"
+          ],
+          "seconds": 3.42276700299999,
+          "returncode": 0
+        }
+      ],
+      "median_native_seconds": {
+        "baseline": 12.761637121999996,
+        "candidate": 7.084674994500006
+      },
+      "accepted_steps": {
+        "baseline": 6882,
+        "candidate": 3585
+      },
+      "median_reduction_percent": 44.48459138297689,
+      "build_manifest_sha256": {
+        "baseline": "7466c802befc0e1b0ddb846ab0a14019b085dc9beaadd4fde336683184dcb0c2",
+        "candidate": "902a76101c9e8ec1b3b8a42122a91a0fe331f96b54ba828ea181a0042b1d97d3"
+      },
+      "executable_sha256": {
+        "baseline": "f51d95f9d227741c1d86eb91521cdac8337d46768d729e9fe72185f39c5b68df",
+        "candidate": "c7b6f9bb6f584ff0e37ee9643bfc2f6dc97886c566f878bbc4384ef422f95874"
+      },
+      "physical_sha256": {
+        "baseline": {
+          "budget.csv": "339cf35c4602c5f6e0af4611d51fcdcc1a2394ac85dcbe360ebda9c50e0e2fd5",
+          "conductive_budget.csv": "fb640ffc11907cadb9a6fffaa50d4105fffa1e485d86720e4203353cfa7e4bc1",
+          "crop.csv": "9a170d95d091198a044308f41b99408f0afe5030bfbba73bf09f45aeffc55812",
+          "state.csv": "d7b2d8cc15f00d05dd8bcb9b99487c72ffc5bc4b791f03b4f128bddaedfc144b",
+          "endpoint.csv": "96d1b7f668cc71486cb615cfb3128c51300b5743c68b46fd7a4bb73636a2e569"
+        },
+        "candidate": {
+          "budget.csv": "4b6313fc12d56a7fae18c5c096746be987426d7a0503dcb7b8f008183bb37145",
+          "conductive_budget.csv": "6b4cf77d99ad6a8c5e5192f1d9dbc6bda835105cadc26bc00f5e14385e0cce51",
+          "crop.csv": "9a170d95d091198a044308f41b99408f0afe5030bfbba73bf09f45aeffc55812",
+          "state.csv": "db13b0b221d7758d0fcdffa137c7028daa720f1f56edfcc7e654fab78c7f309c",
+          "endpoint.csv": "3413997322835bed8e064b68e8a57adb2ec7357e99b0ff2ed8f23eece1c9e981"
+        }
+      },
+      "scope": "Windows GNU16.2 O2 production four-day original-input window; each arm deterministic and own candidate restart exact. Different time grids, not byte-identical cross-arm or full science/runtime parity."
+    },
+    "raw_audit": "ZIP CRC, actual compiled source postimages, both complete linked native object sets and executables, original baseline Git source hashes, O0/O2 terminal markers, paired determinism, exact own restart and daily water/uptake/conductive ledgers PASS.",
+    "maximum_abs_daily_water_residual_cm": 3.70536934468646e-14,
+    "maximum_abs_daily_conductive_residual_j_cm2": 1.9696244635269977e-10,
+    "unrelated_jobs": "KIM and existing ordinary native workflow jobs SKIPPED by explicit research dispatch; no qualification granted by skipping."
+  },
+  "workflow_validation": {
+    "yaml_parse": "PASS",
+    "all_run_blocks_bash_syntax": "PASS",
+    "explicit_only_research_job": "PASS on exact hosted head",
+    "production_source_dependencies_unchanged": true
   }
 }
