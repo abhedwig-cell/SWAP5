@@ -1,6 +1,6 @@
 {
   "workstream": "SWAP5-FUNCTIONAL-CLOSURE01 / native input / RT-TX",
-  "status": "WINDOWS_READER_QUALIFIED_LINUX_AND_APPLICATION_PENDING",
+  "status": "APPLICATION_AND_FCI_PASS_CORRECTED_LINUX_FIXTURE_PENDING",
   "canonical_base": "cf1bfd691f938f1a76f828ec31ce65ff33a05cf3",
   "adapter_candidate": "16fb81dfbd80cfa6bcc52cddd4449078861b852d",
   "scope": "Cold native adapter TTUTIL builds preserve the original decimal accumulation order by compiling rdlex with -ffp-contract=off through one shared flag provider. The other source flags retain their existing profiles.",
@@ -13,7 +13,7 @@
     "authority_zip_sha256": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
     "original_input_sha256": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
     "flag_provider_sha256": "4e6f4ada712fa47e194f3831017794cb46471dfecba53d71db0cc80e69ce0860",
-    "driver_sha256": "c57cb61de123db2490ccf8073c903751d2b47677cbcbcbaaa32ce5d69c81b5e6",
+    "driver_sha256": "e50460ef527b412986d3917297cca6adf2ebb40d62d7554cdddfa70481496398",
     "profiles": {
       "O0": {
         "osat_bits": [
@@ -83,7 +83,8 @@
           "native": 0.15336380014196038
         }
       }
-    }
+    },
+    "driver_template_sha256": "c57cb61de123db2490ccf8073c903751d2b47677cbcbcbaaa32ce5d69c81b5e6"
   },
   "retained_causal_evidence": {
     "original_gnu15_2_reader_comparison": 42855176063,
@@ -94,16 +95,17 @@
   "build_identity": "Each adapter records actual per-source original-input flags. The Hupsel builder also records actual compiled original-input source hashes. Explicit comparator-source builders additionally bind the executing builder and flag-provider files.",
   "supplied_archive_behavior": "Existing explicit archive arguments keep their hash-bound reuse behavior. This record qualifies the cold build policy and the tested archives.",
   "test_selection": {
-    "candidate": "8cec09ad58b705334b6d40334d120b00a2b80748",
+    "candidate": "e2a3b070d757a01b5636b28d6f1eb07105ba9883",
     "groups": {
       "ttutil_reader_admission": {
         "changed_dependency": "TTUTIL rdlex compiler contraction policy and original-input build metadata across seven native adapter builders, with their existing public entry points and immutable source materialization.",
         "scientific_claim": "Original Andelst OSAT values are bit-identical at O0/O2, including exact agreement of node-three soil OSAT=0.393 with internal READ. Preserve current original-input application balances, own-build restart and atomic refusal contracts.",
         "owner": "SWAP5-FUNCTIONAL-CLOSURE01 functional native input / RT-TX integration",
         "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
-        "expected_seconds": 900,
-        "existing_evidence": "Windows GNU 16.2 reads all eight original OSAT values bit-identically at O0/O2. Native costs are 0.164 and 0.153 seconds, with cold TTUTIL compilation 18.917 and 22.314 seconds. Earlier GNU 15.2 causal reader/control runs remain applicable to the same immutable TTUTIL source. Fresh Ubuntu 26.04 reader and Ubuntu 24.04 current original application/native restart, plus focused F-CI, are selected.",
-        "prior_execution": "NONE"
+        "expected_seconds": 180,
+        "existing_evidence": "Windows GNU 16.2 reads all eight original OSAT values bit-identically at O0/O2. Native costs are 0.164 and 0.153 seconds, with cold TTUTIL compilation 18.917 and 22.314 seconds. Earlier GNU 15.2 causal reader/control runs remain applicable to the same immutable TTUTIL source. Fresh Ubuntu 26.04 reader and Ubuntu 24.04 current original application/native restart, plus focused F-CI, are selected. Hosted current-source native application and F-CI already pass at ac2c6e638. Only the numeric fixture path and its raw driver-file hash reporting are corrected.",
+        "prior_execution": "FAILED",
+        "diagnosis": "The first GNU 15.2 reader fixture stops before parsing because FLNAME lowercases the absolute GitHub path. Stage byte-identical original input and use its relative lowercase name. The compiled Fortran DRIVER, production flag provider, builders, model sources, model fixtures and original inputs are unchanged. The already successful coupled native and F-CI observations remain applicable; select a component-only retry."
       }
     },
     "full_fci_disposition": "NOT_SELECTED_IMPACT for this bounded input-build repair; no omnibus PASS",
@@ -113,5 +115,40 @@
     "Current Ubuntu 26.04 numeric-reader O0/O2 and short original application gates",
     "Experimental Cauchy-contact rollback remains unqualified",
     "Whole scientific equivalence and full-project runtime parity remain open"
-  ]
+  ],
+  "staged_input_native_recheck": {
+    "O0": {
+      "native_seconds": 0.5732082000467926,
+      "stdout": "TTUTIL_OSAT_BITS=3FD9EB851EB851EC 3FD9EB851EB851EC 3FD926E978D4FDF4 3FD947AE147AE148 3FDC6A7EF9DB22D1 3FDC49BA5E353F7D 3FE0CCCCCCCCCCCD 3FE0CCCCCCCCCCCD\nINTERNAL_0393_BITS=3FD926E978D4FDF4\nTTUTIL_ORIGINAL_OSAT_BITS=PASS\n",
+      "driver_sha256": "e50460ef527b412986d3917297cca6adf2ebb40d62d7554cdddfa70481496398"
+    },
+    "O2": {
+      "native_seconds": 0.11948160012252629,
+      "stdout": "TTUTIL_OSAT_BITS=3FD9EB851EB851EC 3FD9EB851EB851EC 3FD926E978D4FDF4 3FD947AE147AE148 3FDC6A7EF9DB22D1 3FDC49BA5E353F7D 3FE0CCCCCCCCCCCD 3FE0CCCCCCCCCCCD\nINTERNAL_0393_BITS=3FD926E978D4FDF4\nTTUTIL_ORIGINAL_OSAT_BITS=PASS\n",
+      "driver_sha256": "e50460ef527b412986d3917297cca6adf2ebb40d62d7554cdddfa70481496398"
+    }
+  },
+  "hosted_preservation": {
+    "head": "ac2c6e63828beb3f1aa31366f552f1f27667d297",
+    "fci": {
+      "run": 43003419114,
+      "job": 130464856721,
+      "status": "PASS",
+      "scope": "Focused current contracts and selector"
+    },
+    "native": {
+      "run": 43003419232,
+      "job": 130464858119,
+      "status": "PASS",
+      "scope": "Cold O0/O2 runtime, original Grassgrowth own disk restarts and original Andelst macro restart/atomic refusals"
+    },
+    "failed_reader_fixture": {
+      "run": 43003419232,
+      "job": 130464858390,
+      "status": "FAILED_FIXTURE_FILE_LOOKUP",
+      "reason": "Original FLNAME lowercases the complete filename. The GitHub workspace contains uppercase SWAP5 path components. The corrected fixture stages the exact bytes under a relative lowercase filename."
+    },
+    "production_sources_builders_reference_unchanged_after_pass": true
+  },
+  "component_retry": "Manual grass-thermal-production workflow executes the component job and explicitly skips the native job. Existing pull-request invocations retain the complete native job. This makes the reader retry independent of repeated model builds."
 }
