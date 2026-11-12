@@ -109,3 +109,23 @@ Published proof head9dcf823279eb08ac1175e60a68d0e1edddeaf682 and canonical
 Documentation source check and strict MkDocs build pass; MkDocs retains an INFO
 message about the existing migration-slices anchor. No required model worker
 remains running. The next bounded same-state investigation above is still open.
+
+## Terminal clock hypothesis,106c2ca95
+
+The one read-only first-step probe preserves ALL1461 cold physical receipts and
+finds identical h,theta,k,kmean,root uptake,frost factors and soil temperature.
+However calendar-season t is363.00000000001455 cold and363.0 restored, while the
+main t1900 clock agrees. The original sinusoidal lower boundary uses t directly.
+The original TimeControl snaps the main clock at day end without recomputing t;
+native initialization reconstructs t and loses its accepted floating point value.
+Other observed differences (gwlm1,qbot,dimoca) are retained in the probe report;
+this observation alone does not prove their irrelevance.
+
+Selected repair attempt1: persist the actual accepted seasonal t in the existing
+nonmacro auxiliary state, restore it after original initialization, retain all
+original operation order and tolerances. Bump only the nonmacro codec versions
+to S5NON005/S5HUP011 and reject missing/nonfinite seasonal state. Existing bound
+old bundles/checkpoints remain usable with their original binary; no rebinding.
+The new writer requires fresh own checkpoints, so the inexpensive11.9s SaltFarm
+trajectory is selected to create them before testing all five own windows.
+The existing active-macro codec/body is unchanged and is not executed.

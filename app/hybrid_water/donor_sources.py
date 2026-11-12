@@ -139,6 +139,8 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
     subroutine hybrid_macro_checkpoint(restoring, clock, old_step, canopy_stock)
       use MOD_grid, only: numnod
       use MOD_swap_base, only: swmacro
+      use variables, only: t
+      use ieee_arithmetic, only: ieee_is_finite
       implicit none
       logical, intent(in) :: restoring
       real(8), intent(in) :: clock
@@ -154,25 +156,29 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if(ios/=0) error stop 'Missing nonmacro checkpoint'
         read(unit,iostat=ios) magic,nodes,stored_clock,old_step,canopy_stock
         if(ios/=0) error stop 'Incomplete nonmacro checkpoint'
-        if(magic/='S5NON004'.or.nodes/=numnod.or.stored_clock/=clock) error stop 'Foreign nonmacro checkpoint'
+        if(magic/='S5NON005'.or.nodes/=numnod.or.stored_clock/=clock) error stop 'Foreign nonmacro checkpoint'
+        read(unit,iostat=ios) t
+        if(ios/=0) error stop 'Missing nonmacro seasonal clock'
+        if(.not.ieee_is_finite(t)) error stop 'Nonfinite nonmacro seasonal clock'
         read(unit,iostat=ios) trailing
         if(.not.is_iostat_end(ios)) error stop 'Trailing nonmacro checkpoint bytes'
       else
         open(newunit=unit,file='macro.bin',access='stream',form='unformatted',status='new',action='write')
-        write(unit) 'S5NON004',numnod,clock,old_step,canopy_stock
+        write(unit) 'S5NON005',numnod,clock,old_step,canopy_stock
+        write(unit) t
       end if
       close(unit)
     end subroutine hybrid_macro_checkpoint
 """
     if solute_state:
         if not nonmacro:raise ValueError('Solute auxiliary requires nonmacro mode')
-        codec=codec.replace('S5NON004','S5HUP010')
+        codec=codec.replace('S5NON005','S5HUP011')
         codec=replace(codec,"      use MOD_swap_base, only: swmacro",
                       "      use MOD_swap_base, only: swmacro\n      use MOD_solute, only: hybrid_solute_checkpoint\n      use MOD_irrigation,only:hybrid_irrigation_checkpoint\n      use MOD_wofost,only:hybrid_wofost_checkpoint")
         codec=replace(codec,"        read(unit,iostat=ios) trailing",
                       "        call hybrid_solute_checkpoint(unit,.true.)\n        call hybrid_irrigation_checkpoint(unit,.true.)\n        call hybrid_wofost_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
-        codec=replace(codec,"        write(unit) 'S5HUP010',numnod,clock,old_step,canopy_stock",
-                      "        write(unit) 'S5HUP010',numnod,clock,old_step,canopy_stock\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)")
+        codec=replace(codec,"        write(unit) t",
+                      "        write(unit) t\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)")
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)
