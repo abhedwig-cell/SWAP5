@@ -48,7 +48,7 @@ def direct(bundle,meta,source,out,last,*,checkpoint=4):
     with contextlib.ExitStack() as stack:
         host=h.DailyHost(stack,h.executable(bundle,'day_donor'),h.executable(bundle,'day_kernel'),source,out,
             [h.ColumnStart(name='original')],runtime=True,checkpoint_enabled=True,binding=meta['binding'],project=h.HUPSEL)
-        for day in range(1,last+1):rows.append(host.step(1,checkpoint=day in (checkpoint,last)))
+        for day in range(1,last+1):rows.append(host.step(1,checkpoint=day in (checkpoint,5,last)))
         host.close()
     (out/'daily.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
     return rows
@@ -64,7 +64,7 @@ try:
         frozen=a.workspace/native['report']/'gift-seven'
         original=[json.loads(l) for l in (frozen/'daily.jsonl').read_text().splitlines()]
         assert [physical(r) for r in baseline]==[physical(r) for r in original]
-        assert payload(out/'no-file-original/accepted-column-1-day-7.zip')=={n:(frozen/'original'/n).read_bytes() for n in h.CHECKPOINT_FILES}
+        assert payload(out/'no-file-original/accepted-column-1-day-5.zip')==payload(frozen/'accepted-column-1-day-5.zip')
         origin=out/'no-file-original/accepted-column-1-day-4.zip';origin_hash=h.sha(origin)
         for scenario in ['modified','disabled','identity']:
             root=out/scenario;root.mkdir();cid='irrigation-'+opt+'-'+scenario
@@ -101,7 +101,7 @@ try:
             assert physical(p1.budget)==physical(controls[5])
             if scenario=='identity':
                 assert physical(firstrow)==physical(baseline[4]) and physical(p1.budget)==physical(baseline[5])
-                assert firstpayload==payload(out/'no-file-original/accepted-column-1-day-5.zip') if (out/'no-file-original/accepted-column-1-day-5.zip').exists() else True
+                assert firstpayload==payload(out/'no-file-original/accepted-column-1-day-5.zip')
             else:assert physical(firstrow)!=physical(baseline[4]),'Override did not reach original water/solute physics'
             final=c.accept(p1);recovered.accept(p2)
             for row in [firstrow,p1.budget]:
@@ -112,7 +112,7 @@ try:
             assert h.sha(origin)==origin_hash
             entry={'optimization':opt,'scenario':scenario,'first':f.document(),'second':second.document(),
                 'retry_native_exact':True,'modified_history_live_disk_native_exact':True,'independent_original_physical_controls_both_days':True,
-                'no_file_original_seven_days_native_exact':True,'pretrial_refusals':len(bad),'day5':physical(firstrow),'day6':physical(p1.budget),'terminal_sha256':h.sha(final)}
+                'no_file_original_seven_physical_days_and_day5_native_exact':True,'pretrial_refusals':len(bad),'day5':physical(firstrow),'day6':physical(p1.budget),'terminal_sha256':h.sha(final)}
             report['cases'].append(entry);print(opt,scenario,'PASS',flush=True)
     assert not expired;report['status']='HUPSEL_SURFACE_IRRIGATION_CHANGED_HISTORY_AND_ORIGINAL_PRESERVATION_PASS'
 except BaseException:
