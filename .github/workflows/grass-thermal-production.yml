@@ -24,6 +24,14 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      macro_expected_sha:
+        description: Exact requested source for macro481 evidence; mismatch stops before assessment
+        type: string
+        default: ""
+      hybrid_original_macro_481:
+        description: Verify preserved actual original macro481 and native restart evidence without model reruns
+        type: boolean
+        default: false
       hybrid_original_macro_restart:
         description: Qualify complete original macro restart with explicit wall-integral history
         type: boolean
@@ -86,6 +94,63 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  original-macro-full-evidence:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_original_macro_481
+    runs-on: ubuntu-26.04
+    timeout-minutes: 3
+    permissions:
+      contents: read
+    env:
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/ORIGINAL_MACRO_481_20261112.json
+    steps:
+      - name: Exact requested assessment source
+        env:
+          EXPECTED_MACRO_SHA: ${{ inputs.macro_expected_sha }}
+        run: test -n "$EXPECTED_MACRO_SHA" && test "$GITHUB_SHA" = "$EXPECTED_MACRO_SHA"
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /integration/f-ci/ORIGINAL_MACRO_481_20261112.json
+            /research/hybrid-water01/audit_original_macro_481.py
+            /research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json
+            /research/hybrid-water01/original-macro-481-evidence.zip
+            /research/hybrid-water01/andelst-481-application-evidence.zip
+            /research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv
+            /research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json
+      - name: Verify immutable native/model evidence and owning selection
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,zipfile
+          from pathlib import Path
+          owner=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
+          assert owner['status']=='ORIGINAL481_FUNCTIONAL_AND_NATIVE_RESTART_VERIFIED_SCIENCE_FAIL'
+          archive=Path(owner['evidence']['path'])
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()==owner['evidence']['sha256']
+          target=Path(os.environ['RUNNER_TEMP'])/'original-macro-proof';target.mkdir()
+          with zipfile.ZipFile(archive) as z:z.extractall(target)
+          PY
+      - name: Whole481 data, source graph, original inputs, water and complete native own restart; zero models
+        run: |
+          python3 -B research/hybrid-water01/audit_original_macro_481.py --qualified "$RUNNER_TEMP/original-macro-proof/qualified/artifact.zip" --segments "$RUNNER_TEMP/original-macro-proof/segments/1/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/2/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/3/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/4/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/5/artifact.zip" --output "$RUNNER_TEMP/original-macro-audit"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          actual=json.loads(Path(os.environ['RUNNER_TEMP'],'original-macro-audit/RESULT.json').read_text())
+          expected=json.loads(Path('research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json').read_text())
+          assert actual==expected
+          assert actual['new_model_runs_by_auditor']==0
+          print('EXACT_WHOLE481_AND_NATIVE_RESTART_REPRODUCTION; SCIENTIFIC_FAILURE_VISIBLE; ZERO_MODELS')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-macro-481-data-audit
+          path: ${{ runner.temp }}/original-macro-audit
+          retention-days: 14
   bounded-original-macro-restart:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_original_macro_restart
     runs-on: ubuntu-26.04
@@ -806,7 +871,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances && !inputs.full_trajectory_assessment && !inputs.hybrid_original_macro_restart }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances && !inputs.full_trajectory_assessment && !inputs.hybrid_original_macro_restart && !inputs.hybrid_original_macro_481 }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:

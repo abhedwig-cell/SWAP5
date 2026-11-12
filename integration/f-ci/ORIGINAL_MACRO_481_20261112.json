@@ -1,0 +1,211 @@
+{
+  "status": "ORIGINAL481_FUNCTIONAL_AND_NATIVE_RESTART_VERIFIED_SCIENCE_FAIL",
+  "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
+  "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
+  "selection": {
+    "first": "Own22to44; retain existing successful warm history and only new endpoint checkpoint44",
+    "reason": "Measure actual non-checkpoint model/controller step wall and combined checkpoint step cost before selecting whole481. Day4to22 was checkpointed daily, so its14.269s is not a solver-only projection.",
+    "expected_seconds": 10,
+    "model_cap_seconds": 20,
+    "pure_Fortran_CPU": "UNKNOWN; no timing category will be relabelled solver-only",
+    "next": "Only if measured practical cost: one continuous own44to481 with explicit checkpoints, short hard cap and per-day journal; no repeated warm prefix. Otherwise retain actual runtime blocker.",
+    "windows_measurement": {
+      "status": "MODEL_CAP_REACHED",
+      "accepted_through": 30,
+      "durable_origin": 22,
+      "seconds": 20.013921900186688,
+      "initialization_seconds": 7.181175800040364,
+      "eight_noncheckpoint_steps_seconds": 12.0413599004969,
+      "maximum_residual_cm": 8.116023547183803e-08,
+      "mass_retries": 0,
+      "decision": "No long Windows full run; no claim that this cost is solver CPU or checkpoint overhead"
+    },
+    "linux_full": {
+      "scope": "One actual own Linux4to481 continuation using immutable qualified native4 and unchanged donor/kernel binaries; no repeated successful prefix/build",
+      "qualified_run": 43154680629,
+      "qualified_artifact": 13914684409,
+      "artifact_zip_sha256": "b4840cb7afd435afe7b31c42e7370c70f130e6e70607d9e28aaf7c97ec228cbe",
+      "reason": "Same Ubuntu short interface cases1.0to2.5s versus slower Windows path; test practical actual full-period completion with a hard cap, not extrapolated parity",
+      "expected_seconds": 60,
+      "model_cap_seconds": 60,
+      "checkpoints": [
+        22,
+        44,
+        80,
+        160,
+        256,
+        365,
+        453,
+        456,
+        457,
+        458,
+        459,
+        481
+      ],
+      "on_failure": "Keep last durable native checkpoint and complete accepted-day journal; no automatic cap extension or identical campaign",
+      "first_result": {
+        "run_id": 43156633863,
+        "source": "311ac3e2466c2da5e6fc6a379c564a47afeafc9b",
+        "artifact_id": 13915394658,
+        "artifact_sha256": "5b05864ca2d79ab793444809efdde55759f0f21d8064413820a87218b60cc689",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 198,
+        "durable_day": 160,
+        "seconds": 60.00342171300002,
+        "initialization_seconds": 0.4513361679999832,
+        "mass_step_retries": 12296,
+        "maximum_residual_cm": 9.99703956792198e-07
+      }
+    },
+    "resume": {
+      "origin": "exact own native160 from immutable first execution",
+      "reason": "Continue already executed work, not cold-prefix repetition; retain60s bound and stop immediately if any overlap161to198 physical field/retry count differs",
+      "checkpoint_interval_days": 16,
+      "additional_explicit_checkpoints": [
+        365,
+        453,
+        456,
+        457,
+        458,
+        459,
+        481
+      ],
+      "own_restart_windows": [
+        [
+          365,
+          367
+        ],
+        [
+          453,
+          459
+        ]
+      ],
+      "model_cap_seconds": 60,
+      "restart_cap_seconds": 20,
+      "result160": {
+        "run_id": 43157255241,
+        "source": "d0b538c773cf8da5c11430b3de199c224fb23ed3",
+        "artifact_id": 13916810498,
+        "artifact_sha256": "156b77c7a682890ee9b605f5987d782ab4613324437c80691f859bf349c78731",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 249,
+        "durable_day": 240,
+        "seconds": 60.003452675999995,
+        "overlap161to198_physical_and_retry_counts_exact": true
+      },
+      "next": "Continue448to481 with live449to452 comparison, same60s cap. Reuse prior365 checkpoint for year365to368 complete endpoint comparison; own453to459 late event after finish.",
+      "unintended_stale_dispatch": {
+        "run_id": 43157677890,
+        "requested_after_push": "4fac31635e9036c7f3a1221c51d4a1af25e6321d",
+        "actual_source": "d0b538c773cf8da5c11430b3de199c224fb23ed3",
+        "artifact_id": 13916248811,
+        "artifact_sha256": "7dbe695b601c3169fabc1319c7c0a7d463b9749171f75390405f473f0737f372",
+        "outcome": "Repeated160to243; no new coverage beyond already249. Excluded from qualification.",
+        "correction": "Require expected source input and reject stale GitHub source before checkout/model work; verify actual run head."
+      },
+      "result240": {
+        "run_id": 43158145401,
+        "source": "394923f9070b4d4160fb444f0491d033d677b8b5",
+        "artifact_id": 13917161409,
+        "artifact_sha256": "1ebf1f76b49ec2397025f06aeb6e3d1caf6328e89ad760344f953ee133111bc9",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 313,
+        "durable_day": 304,
+        "seconds": 60.00320176299999,
+        "overlap241to249_exact": true,
+        "mass_retries": 22803
+      },
+      "result304": {
+        "run_id": 43158853787,
+        "source": "a40055099617ec05c3dc075671a8a83be2ee87a3",
+        "artifact_id": 13917047337,
+        "artifact_sha256": "be43cb0fe9992fc3518ce5167c9f1b3adabd1ec4bed7f156760854375674d46a",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 452,
+        "durable_day": 448,
+        "seconds": 60.003556701,
+        "overlap305to313_exact": true,
+        "mass_retries": 31022
+      },
+      "final_result": {
+        "run_id": 43159561006,
+        "source": "f95429fec34366ca7b44c386996101c8ceb1d508",
+        "artifact_id": 13917581830,
+        "artifact_sha256": "82456e1b451139b49da8d4d9ecff3129f0a8313f9330a591451250062f9454eb",
+        "status": "ORIGINAL_MACRO_CONTINUATION_COMPLETE",
+        "accepted_through": 481,
+        "seconds": 34.99314786300002,
+        "year_endpoint365to368_exact": true,
+        "late453to459_exact": true
+      }
+    },
+    "whole_work_unit_cost": {
+      "owner": "Explicit SWAP5-FUNCTIONAL-CLOSURE01 workpackageB original481 functional completion",
+      "known_useful_continuation_wall_seconds": 180.01007615199998,
+      "expected_total_seconds": [
+        300,
+        420
+      ],
+      "individual_model_cap_seconds": 60,
+      "scope": "Actual requested full project execution, not routine feedback/performance campaign. Includes necessary durable-overlap comparisons. No smaller sample can prove terminal481 or late native restart.",
+      "unintended_duplicate_seconds": 60.00417335099999,
+      "runtime_parity": "UNKNOWN and not claimed; original reference runtime and accepted-step counts not inferred from another project",
+      "actual_continuation_wall_seconds": 275.00678071600004
+    },
+    "post_execution_audit": {
+      "scope": "Cross-platform exact reproduction of completed481 and native restart proof, unchanged scientific model graph; zero models",
+      "expected_seconds": 8,
+      "reason": "Validate independent data reader and promoted evidence durability; never rerun successful full model for a data/PR/document update",
+      "workflow": "grass-thermal-production.yml hybrid_original_macro_481=true with macro_expected_sha"
+    }
+  },
+  "acceptance": [
+    "Unchanged original inputs and1e-6cm daily guard",
+    "Full accepted day journal, exact source/build/native checkpoint lineage",
+    "Explicit late warm restart and actual full trajectory before claiming new-policy481",
+    "Scientific comparison and complete model execution assessed separately"
+  ],
+  "result": "research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json",
+  "evidence": {
+    "path": "research/hybrid-water01/original-macro-481-evidence.zip",
+    "sha256": "c7b4cb52b86b07cf08a116603590e597c0ab6bd89780afc000e7d03e07512463",
+    "bytes": 11822736,
+    "scope": "All raw immutable Linux qualified model/build and chained full-execution artifacts, exact native files, overlap journals, audit, reference lineage; survives hosted artifact expiry"
+  },
+  "scientific_disposition": {
+    "status": "FAIL_NOT_QUALIFIED",
+    "largest_original_GWL_difference": {
+      "day": 438,
+      "date": "1999-03-14",
+      "new_gwl_cm": -159.96336565856024,
+      "original_printed_cm": -80.452,
+      "corrected_printed_cm": -80.00551,
+      "new_minus_original_cm": -79.51136565856024,
+      "new_minus_corrected_cm": -79.95785565856023
+    },
+    "pressure_support": {
+      "day": 438,
+      "source_archive_sha256": "02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9",
+      "maximum_node_pressure_difference_cm": 91.03726159571893,
+      "matrix_stock_difference_cm": -0.00068711117395992,
+      "scope": "Descriptive comparison with retained corrected Windows profile; numerical policy and platform both differ. Not unrounded original spatial reference or a causal attribution.",
+      "decision": "Large pressure-field difference cannot be waived as printed-GWL rounding or accepted from mass closure alone"
+    },
+    "rule": "Do not waive groundwater/pressure criteria from mass closure, storage closeness or successful native restart; keep all tolerances and original reference unchanged"
+  },
+  "next": "Publish source-bound functional481 and complete native restart as bounded evidence only. Next scientific goal: one discriminating original nonlinear/macro coupling test at438, informed by retained failed refresh interventions; no default promotion, reference replacement or repeated full runs without changed dependency.",
+  "preserved_data_gate": {
+    "run": 43165868303,
+    "job": 131007488724,
+    "source": "03f46503df3417940c2de5d604aa33356b4f92c5",
+    "runner": "Ubuntu26.04",
+    "status": "PASS",
+    "scope": "All481 source/build/input/balance/overlap/native-own evidence reproduced as exact parsed committed result; zero models; scientific failure retained"
+  },
+  "documentation_gate": {
+    "source_check": "PASS",
+    "strict_site_build": "PASS",
+    "seconds": 19.31,
+    "model_dependency_changes": false
+  }
+}
