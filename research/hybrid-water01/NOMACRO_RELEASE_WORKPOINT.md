@@ -378,3 +378,33 @@ Windows/Linux cohorts, audit raw evidence, publish/admit the coherent PR and
 verify actual canonical postimage. No further numerical/reference campaign is
 selected. Final release acceptance should reconcile the existing concrete
 functional criteria and explicit scientific limitations using these results.
+
+### Current qualification complete; publication gate
+
+Windows and actual Ubuntu26.04 run43212846464 (source
+fe1d6d89b741fb4a310d92e33d8114a80b00e36f) are terminal PASS after BOTH
+surface-stock fixes. There are12 complete profiles/17536 accepted days,72 exact
+seasonal own windows,44 accepted surface histories including repaired winter
+history,12 actual saved109-to110 continuations,4 changed-groundwater windows,
+and full supported heat for all profiles. All histories have independent
+original-input physical controls and exact same-route retry/recovery/native state.
+CLI13 refusal launches and44 persisted/actual consumer negative controls pass.
+Cold complete model calls take3.02–13.87s; observed calls3.73–22.07s, with the
+unchanged60s caps. Maximum water/solute/heat residuals retain their original
+1e-10/1e-10/1e-9 guards. Prior cold trajectory differences are measured separately;
+no scientific acceptance rests solely on a newly chosen tolerance.
+
+The main raw archive nomacro-surface-closure-20261112.tar.xz verifies3895
+member hashes. Identical files use internal tar hard links; verify sequentially,
+not by repeatedly seeking backwards through xz. The small separate execution-
+sources capsule preserves actual OS-specific source bytes/line endings and
+executed helper versions; no raw build identity is silently changed to Git LF.
+On POSIX restore executable mode after ZIP extraction before native reuse.
+No selected model/control remains running. Docs and strict MkDocs pass.
+
+Publish and admit the coherent surface-input/complete day-state PR, verify the
+actual canonical whole tree, then close the final version-bound release
+acceptance assessment against the concrete no-macro criteria. Reuse these
+complete results; no new numerical/reference campaign is selected. Original
+scientific failures, unsupported full advective energy and active-macro exclusion
+remain explicit and must not be promoted by functional completion.

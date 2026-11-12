@@ -1,5 +1,27 @@
 # Scientific disposition of the complete preserved trajectories
 
+## Later no-macro surface-solute state correction
+
+`integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json` records two concrete
+implementation findings, separately from the historical whole-period assessment
+below. At exactly zero pond and macropore area the original mixing equation
+reduces algebraically to complete surface-mass transfer. Evaluating that limit
+directly prevents a negative cancellation remainder; no clipping or tolerance
+change is involved. A distinct restart defect erased positive restored surface
+solute during cumulative-output reset. Its measured day110 loss matches the
+actual saved day109 stock0.001834mg/cm2. Retaining this physical inventory while
+resetting counters restores the state/flux contract; cold initialization remains.
+
+Actual original-table controls, changed-history live/disk continuation and the
+unchanged mass guards qualify these corrections. Differences against the prior
+complete cold trajectories are measured in the owner; small differences alone
+are not their scientific justification. The immutable historical references and
+their original Grass oxygen failures and underresolved Hupsel reference families
+remain unchanged. This correction qualifies neither a replacement universal
+reference nor whole scientific equivalence. Supported conduction/storage remains
+separate from missing mass-carried thermal energy; zero-advection counterfactuals
+remain failed. The earlier assessment retains its exact baseline below.
+
 Assessment baseline: canonical418a8d30345b500292824e00be4d8012b3d87e5e.
 This assesses the already completed original-project trajectories. No model or
 reference is rerun, no physical input/guard changes, and no whole-science result

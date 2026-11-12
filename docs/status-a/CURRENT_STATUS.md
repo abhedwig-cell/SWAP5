@@ -1,5 +1,20 @@
 # SWAP5 Status-A current status
 
+## No-macro surface-input and day-state successor
+
+The [source-bound no-macro successor](../science/SWAP5_FUNCTIONAL_CLOSURE.md)
+extends the existing surface-irrigation transaction to SaltFarm, preserves the
+legacy Hupsel mode, and repairs two demonstrated original surface-solute state
+defects without changing tolerances or codecs. Fresh Windows/Ubuntu O0/O2
+cohorts complete the three selected periods,72 exact seasonal own windows,
+44 accepted surface histories and12 actual saved109-to110 continuations.
+Supported heat, independent instances, refusal and existing prescribed-groundwater
+contracts retain their separate evidence. Macropores remain preserved outside
+the release; failed original oxygen criteria, reference limitations and missing
+mass-carried thermal energy remain explicit. Qualification and actual admission
+are recorded in `integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json`.
+This successor does not change the frozen Status-A denominator.
+
 ## No-macro application successor,12November2026
 
 The owner's selected next-release configurations are Grassgrowth1827,Hupsel1096

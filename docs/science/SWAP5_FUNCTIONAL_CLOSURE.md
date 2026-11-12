@@ -1,5 +1,51 @@
 # Current functional closure of the original projects
 
+## Shared no-macro surface input and complete day-state successor
+
+The source-bound successor in
+`integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json` extends the existing
+daily surface-event consumer to SaltFarm and Hupsel through
+`surface-irrigation-daily-v1`. The legacy Hupsel mode retains its project
+restriction. Water, salinity and application rate remain explicit caller inputs;
+no original event table or active-macropore input is silently changed.
+
+Two demonstrated conserved-state defects are closed. The original dry-surface
+mixed-reservoir equation is evaluated in its exact complete-transfer limit when
+pond and macropore area are exactly zero, preventing a negative roundoff stock.
+Separately, resetting cumulative output counters no longer erases restored
+physical surface solute. Actual saved day109 held0.001834mg/cm2 which the old
+initial counter reset lost on day110. Cold initialization, wet-surface physics,
+strict nonnegative native-state checks, codec and all tolerances are retained.
+An unrestartable private candidate is refused before external publication.
+
+Fresh Windows/Ubuntu26.04 donorO2/kernelO0/O2 cohorts complete Grassgrowth1827,
+Hupsel1096 and SaltFarm1461:12 profiles and17536 accepted daily records. All72
+seasonal own windows remain physical/native exact. Forty-four accepted surface
+histories cover legacy/shared Hupsel, SaltFarm changed/disabled/original summer
+events and original/changed winter events. Twelve further actual day109-to110
+continuations consume the retained identity/modified/disabled histories, with
+exact live/disk native payloads and independently initialized original-table
+physical controls. The earlier winter mass refusals remain historical evidence;
+the current repaired histories pass without parameter tuning or relaxed guards.
+
+Complete supported numerical heat export is freshly checked after the changed
+solute producer, with exact physical/native controls and unchanged1e-9J/cm2
+guards. Water/solute retain1e-10 limits. Current Grass prescribed-groundwater
+transactions also pass; existing MODFLOW source/contracts are unchanged. Actual
+release CLI probes refuse13 active/missing/ambiguous/fractional-macro requests
+before output or compilation; all three selected original SWMACRO0 files remain
+unchanged. This verifies named profiles and supported process combinations, not
+arbitrary original options or whole scientific equivalence.
+
+Commands, compiled providers, original inputs, actual generated sources, raw
+trajectories, checkpoints, negative controls, failed predecessors and costs are
+bound by the owning record and its member-hashed raw archive. The
+[surface-event contract](HYBRID_HUPSEL_DAILY_IRRIGATION.md) and
+[scientific disposition](FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md) distinguish
+the corrected physical-state contract from preserved historical references.
+Admission is established only by the PR and verified canonical postimage in the
+owning record; the earlier sections below keep their own dated scope.
+
 ## No-macro original-project successor,12November2026
 
 [PR1658](https://github.com/abhedwig-cell/SWAP5/pull/1658) adds the additional
