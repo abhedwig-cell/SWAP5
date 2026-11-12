@@ -1,5 +1,5 @@
 {
-  "status": "MEASURING_SPARSE_CONTINUATION_FROM_OWN_22",
+  "status": "WINDOWS_COST_CAP_REACHED_SELECTING_REUSED_LINUX_OWN_HISTORY",
   "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
   "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
   "selection": {
@@ -8,7 +8,42 @@
     "expected_seconds": 10,
     "model_cap_seconds": 20,
     "pure_Fortran_CPU": "UNKNOWN; no timing category will be relabelled solver-only",
-    "next": "Only if measured practical cost: one continuous own44to481 with explicit checkpoints, short hard cap and per-day journal; no repeated warm prefix. Otherwise retain actual runtime blocker."
+    "next": "Only if measured practical cost: one continuous own44to481 with explicit checkpoints, short hard cap and per-day journal; no repeated warm prefix. Otherwise retain actual runtime blocker.",
+    "windows_measurement": {
+      "status": "MODEL_CAP_REACHED",
+      "accepted_through": 30,
+      "durable_origin": 22,
+      "seconds": 20.013921900186688,
+      "initialization_seconds": 7.181175800040364,
+      "eight_noncheckpoint_steps_seconds": 12.0413599004969,
+      "maximum_residual_cm": 8.116023547183803e-08,
+      "mass_retries": 0,
+      "decision": "No long Windows full run; no claim that this cost is solver CPU or checkpoint overhead"
+    },
+    "linux_full": {
+      "scope": "One actual own Linux4to481 continuation using immutable qualified native4 and unchanged donor/kernel binaries; no repeated successful prefix/build",
+      "qualified_run": 43154680629,
+      "qualified_artifact": 13914684409,
+      "artifact_zip_sha256": "b4840cb7afd435afe7b31c42e7370c70f130e6e70607d9e28aaf7c97ec228cbe",
+      "reason": "Same Ubuntu short interface cases1.0to2.5s versus slower Windows path; test practical actual full-period completion with a hard cap, not extrapolated parity",
+      "expected_seconds": 60,
+      "model_cap_seconds": 60,
+      "checkpoints": [
+        22,
+        44,
+        80,
+        160,
+        256,
+        365,
+        453,
+        456,
+        457,
+        458,
+        459,
+        481
+      ],
+      "on_failure": "Keep last durable native checkpoint and complete accepted-day journal; no automatic cap extension or identical campaign"
+    }
   },
   "acceptance": [
     "Unchanged original inputs and1e-6cm daily guard",
