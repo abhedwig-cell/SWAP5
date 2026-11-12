@@ -2,6 +2,59 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Original nonlinear macro block short-pass; complete restart blocker,12November2026
+
+Current PR #1653 DRAFT, source826c4da8abb6997d8717e5a6b8d2aefed9bd214d on
+codex/hybrid-original-macro-block, based ona22754decc0ec4e69304d1495c48bae7cdcdabec.
+Prior rejected pair-per-residual PR1652 is CLOSED, superseded by1653, not merged.
+This supersedes all older NEXT/ACTIVE banners for this work unit. All model/
+compiler workers are FINISHED. Canonical/defaults/prior full applications unchanged.
+
+The larger intact original HeadCalc/Newton/MACROPORE2/3/flunsatok/MACROSTATE
+block now completes1..4 without date-scoped macro/pond/early-budget policies.
+Final original-donor-O2 + kernel-O0/O2 fresh times3.286s/3.007s; own2to4
+2.446s/2.396s. Max independent daily residual5.965353207744765e-7cm below
+UNCHANGED1e-6. Every physical receipt and result.end in2to4 exact. Do not call
+these tests all-donor-O0, whole481, late-event, Linux or science qualification.
+
+Compiler field map identified old cumulative reset bookkeeping plus two wall
+integrals. NativeS5MAC005 preserves original flzerocumu/flzerointr and explicit
+original HeadCalc SAVE iwarn/NStep. No equations or increment order changed.
+Counters are0 in prefix and do NOT explain remaining wall mismatch. Reader
+refuses old magic; full source/build binding also prevents old checkpoint rebind.
+This fixes original96-byte cumulative discrepancy: complete macro.bin on4 EXACT.
+Full macro.bin on3 still differs559bytes in IAvFrMpWlWtDm1/2, O0 andO2.
+
+Actual external discard/replay O2 preserves origin, rejects stale proposal and
+reproduces repeated complete receipt/result.end/macro.bin EXACT. Independently
+cold recovered3to4 retains all physical values and native text but FAILS complete
+auxiliary equality:698bytes in the SAME TWO wall-integral arrays. These feed
+PEARL/ANIMO: do not waive, mask, zero or label harmless. This is the reproducible
+blocking acceptance condition, NOT a reason to repeat full runs. Numerical
+rejected-timestep rollback not qualified by external discard; prefix guard
+retries0. Original/init-reset4 and current/explicit-context5 failed/successful
+phases remain archived. No Linux/whole481/late probe was selected after failure.
+
+Evidence in PR1653:research/hybrid-water01/original-macro-block-evidence.zip,
+SHA2567b1061e8f884f192411938f77c8d4fead332402c673bf6990fb6a7ddd9804913.
+Includes executed builder, generated sources, command/build/provider/compiler/
+input/executable identities, exact native packages, failed gates, compiler field
+layout and member hashes. Reproduce ORIGINAL_MACRO_BLOCK_20261112.md;
+result ORIGINAL_MACRO_BLOCK_RESULT_20261112.json; owner
+integration/f-ci/ORIGINAL_MACRO_BLOCK_20261112.json. Receipt here
+CLOSURE01_ORIGINAL_MACRO_BLOCK_20261112.json.
+
+NEXT concrete deliverable: complete native equality on2to3 AND separately cold
+recovered3to4 via coherent original wall-fraction integration history/timestep
+context. Use exact current PR/source and retained native failures; do not repeat
+all successful prefixes or failed previous refresh policies. First explain which
+original accepted-step context changes the two wall integrals. Do not invent
+new physics, date windows, tighter/looser tolerance, or extend time caps. Then
+qualify successor own state before selecting late event/Linux/full481. Existing
+scientific Hupsel584 and native Grass criteria remain independently open.
+The programme is NOT complete; half-hour planning remains recovery only.
+
+
 ### Generic macro candidate rejected and published,12November2026
 
 PR #1652 tipc84b8ecfb0b886e49ca24deaed7cc5566ebda8f6 (whitespace escape only;
