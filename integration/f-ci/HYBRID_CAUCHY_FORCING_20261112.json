@@ -3,7 +3,7 @@
   "base": "ce04a4db9a21f264c077d0832e2173e5468e9d70",
   "scope": "Application-only explicit one-day original Cauchy head forcing; original/default physics/state/input/guards unchanged",
   "test_selection": {
-    "candidate": "707f886dc10a03ab37f0acf5fed3571106b13c7f",
+    "candidate": "4f02dd7a9e65eab30a45c5a64df103608566d94c",
     "groups": {
       "hybrid_cauchy_forcing": {
         "changed_dependency": "External daily adapter gains opt-in private original BBC head segment and forcing lineage in existing accepted receipt",
@@ -808,5 +808,14 @@
     "Original forcing default and previous original-project tolerances unchanged",
     "No peer groundwater solve, thermal feedback or new native codec",
     "No new Fortran build or full application/reference repetition; immutable current binaries reused"
-  ]
+  ],
+  "verification": {
+    "docs_source": "PASS",
+    "strict_mkdocs": "PASS",
+    "executed_ci_application_qualifier_workflow_diff_to_final": "empty",
+    "audit_source_sha256": {
+      "research/hybrid-water01/audit_daily_coupling.py": "3a0539bd73d5fcfc56d0190fd907c944701b4e1fc43ded8cc03d61c91c786704",
+      "research/hybrid-water01/audit_cauchy_daily_forcing.py": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+    }
+  }
 }
