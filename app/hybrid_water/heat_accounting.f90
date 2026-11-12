@@ -7,6 +7,11 @@ module mod_hybrid_heat_accounting
  implicit none
  private
  public :: observe_original_heat
+ ! This observer is linked into one private legacy worker process. Its compact
+ ! output channel belongs to that worker/run, never to shared physical state.
+ ! Normal worker shutdown closes/flushed this stream; censored runs are not
+ ! promoted by the accepted-day reader. Detailed mode retains its old lifecycle.
+ integer,save :: compact_unit=0
 contains
  subroutine observe_original_heat(n,t0,dt,dz,saturated,water0,water1,temp0,temp1,capacity,solid,face,detailed)
   integer,intent(in)::n
@@ -47,7 +52,10 @@ contains
    open(newunit=unit,file='original-heat-accounting.txt',status='unknown',position='append',action='write')
   else
    frame='HEAT_SUMMARY1'
-   open(newunit=unit,file='original-heat-summary.txt',status='unknown',position='append',action='write')
+   if(compact_unit==0)then
+    open(newunit=compact_unit,file='original-heat-summary.txt',status='new',action='write')
+   end if
+   unit=compact_unit
   end if
   write(unit,'(a,1x,*(g0,1x))')trim(frame),t0,dt,n,actual_status,assumed_status, &
        frozen_storage,face(1)-face(n+1),maximum_cell_residual, &
@@ -61,6 +69,6 @@ contains
         capacity(i),solid(i),face(i),face(i+1)
    end do
   end if
-  close(unit)
+  if(write_nodes)close(unit)
  end subroutine
 end module

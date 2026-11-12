@@ -216,7 +216,8 @@ try:
  assert not expired,'Selected model/observation wall cap exceeded'
  report['status']='ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS'
 except BaseException:
- report.update(status='FAILED',traceback=traceback.format_exc());raise
+ report.update(status='FAILED',traceback=traceback.format_exc(),accepted_days=len(rows) if 'rows' in locals() else 0)
+ raise
 finally:
  timer.cancel()
  report['censored']=bool(expired)

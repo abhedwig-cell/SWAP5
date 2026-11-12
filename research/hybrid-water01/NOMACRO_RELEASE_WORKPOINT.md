@@ -257,3 +257,13 @@ and externally unaccepted steps stay absent. Output falls from11,354,520 to65,11
 bytes (174fold reduction). Full no-macro periods are now selected, reusing current
 native builds and source-bound complete controls, with60s caps. No original
 physical solver or forcing is changed by the observer.
+
+First full feedback retained: SaltFarmO2 and HupselO0/O2 complete with exact
+physical/native output, but concurrent SaltFarmO0 and GrassO0/O2 hit the selected
+60s total observer/build cap. No tolerance or cap is widened. Hypothesis: reopening
+and closing the compact output for every real heat step dominates Windows I/O.
+Selected one repair: retain one output channel owned by each private legacy worker
+process, closed/flushed at normal worker shutdown. It carries no physical state;
+the detailed observer lifecycle is unchanged. Repeat the short discriminator,
+then the failed full calls before selecting further replays. Censored files remain
+ineligible for complete accepted-day qualification.
