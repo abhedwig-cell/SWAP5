@@ -11,7 +11,7 @@ import subprocess
 import daily_host as h
 from donor_sources import replace
 
-POLICY = 'original-nonlinear-macro-block-explicit-context-v1'
+POLICY = 'original-nonlinear-macro-block-explicit-integral-history-v1'
 
 
 def render_headcalc(source):
@@ -32,23 +32,34 @@ def render_headcalc(source):
 
 def render_macro_checkpoint(source):
     """Restore the original reset flags, not cold-start accounting resets."""
+    # MACROINTEGRAL's local FrMpWalWetOld shadows the module's identically
+    # named, already checkpointed field. Preserve its original cold ZERO value,
+    # not the module field initialized from the current wet fraction.
+    a=source.index('      SUBROUTINE MACROINTEGRAL ()')
+    b=source.index('      end subroutine MacroIntegral',a)
+    routine=replace(source[a:b],'      real(8) FrMpWalWetOld(MaDm,MaCp)',
+        '      ! Previous integral quadrature endpoint belongs to explicit state.')
+    routine=routine.replace('FrMpWalWetOld','hybrid_integral_wall_previous')
+    source=source[:a]+routine+source[b:]
+    source=replace(source,'   contains\n',
+        '   real(8), save :: hybrid_integral_wall_previous(madm,macp) = 0d0\n\n   contains\n')
     source=replace(source, '    subroutine hybrid_macro_checkpoint(restoring, clock, old_step, canopy_stock)\n      use MOD_swap_mp',
         '    subroutine hybrid_macro_checkpoint(restoring, clock, old_step, canopy_stock)\n      use variables, only: flzerocumu, flzerointr\n      use hybrid_day_window, only: macro_iwarn, macro_nstep\n      use MOD_swap_mp')
     # A new native format refuses old cold-reset context rather than guessing it.
     if source.count("'S5MAC003'") != 2:
         raise ValueError('Unexpected native checkpoint format')
-    source=source.replace("'S5MAC003'", "'S5MAC005'")
+    source=source.replace("'S5MAC003'", "'S5MAC006'")
     source=replace(source, "        if (ios /= 0) error stop 'Incomplete macro checkpoint payload'",
         "        if (ios /= 0) error stop 'Incomplete macro checkpoint payload'\n"
-        "        read(unit,iostat=ios) flzerocumu, flzerointr, macro_iwarn, macro_nstep\n"
+        "        read(unit,iostat=ios) flzerocumu, flzerointr, macro_iwarn, macro_nstep, hybrid_integral_wall_previous\n"
         "        if (ios /= 0) error stop 'Missing macro reset context'")
     source=replace(source, '      end if\n      close(unit)\n      write(*,',
-        '        write(unit) flzerocumu, flzerointr, macro_iwarn, macro_nstep\n      end if\n      close(unit)\n      write(*,')
+        '        write(unit) flzerocumu, flzerointr, macro_iwarn, macro_nstep, hybrid_integral_wall_previous\n      end if\n      close(unit)\n      write(*,')
     return source
 
 
 def build_bundle(base,reference,target):
-    """Recompile only original HeadCalc/main, retaining exact original objects/kernel."""
+    """Recompile generated donor owners, retaining original physics objects/kernel."""
     from daily_coupling import validate_bundle
     base,reference,target=map(Path,(base,reference,target))
     meta,_=validate_bundle(base,reference,h.ANDELST)
@@ -84,7 +95,7 @@ def build_bundle(base,reference,target):
     policy=POLICY
     identity['macro_policy']={'name':policy,'generator_sha256':h.sha(Path(__file__)),
         'original_MACRORATE_object_sha256':h.sha(objects/'macrorate.o'),
-        'native_macro_format':'S5MAC005-original-reset-flags-and-counters',
+        'native_macro_format':'S5MAC006-original-reset-flags-counters-integral-history',
         'objects_sha256':{n:h.sha(target/n) for n in ['headcalc.o','swap_main.o','macropore.o','swap.o']}}
     meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'refresh_macro_final':False,'macro_policy':policy}
     meta['executable_sha256']['donor']=h.sha(h.executable(target,'day_donor'))
