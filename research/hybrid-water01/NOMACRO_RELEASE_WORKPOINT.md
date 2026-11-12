@@ -438,3 +438,16 @@ The final acceptance-only PR must be published and its whole-tree canonical
 postimage verified. After that, the no-macro release objective is complete and
 the half-hour recovery schedule should stop. Separate future macro/science work
 is preserved but is not silently started by this completed release task.
+
+FINAL ACCEPTANCE MERGED: PR1661 at f6e5c2d345de96da653c5caaf6062d471168373d.
+The fetched complete tree 80e1c96b3d87502750a68ea307913413a0b62ab4 is exactly qualified acceptance
+candidate 8a045dfd5d5646a051dbf5f08f07b262d4a0fa01 (empty complete file diff). Physical app/src/tools/
+reference code and input trees are unchanged from verified PR1660.
+FUNCTIONAL NO-MACRO RELEASE OBJECTIVE COMPLETE for the named profiles, with
+explicit scientific limitations retained. No model/control remains active.
+Stop the recovery schedule; future macro/scientific objectives are separate.
+
+Recovery automation swap5-functional-closure01 (SWAP5-NOMACRO-CLOSURE01)
+was DELETED through the Codex app after the verified final release postimage;
+the app confirmed deleteStatus=deleted. No next automatic work is scheduled.
+Release and scientific statuses remain separate as recorded above.

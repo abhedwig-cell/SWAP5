@@ -174,7 +174,7 @@
   },
   "raw_index": "research/hybrid-water01/NOMACRO_CALENDAR_RAW_INDEX_20261112.json",
   "preservation": "research/hybrid-water01/NOMACRO_PRESERVATION_20261112.json",
-  "next": "Final acceptance-only PR, verify canonical postimage, then end the no-macro recovery schedule. Future macro/science work is separate and not silently started.",
+  "next": "NONE_FOR_COMPLETED_FUNCTIONAL_NO_MACRO_RELEASE; future macro/scientific work is separately scoped and not automatically started",
   "prior_failed_package": {
     "status": "PROPOSED_WINDOWS_FULL1461_PASS_TERMINAL_EXACT_RESTART_FAIL_NO_ADMISSION",
     "acceptance": {
@@ -793,7 +793,10 @@
       "Global green historical CI"
     ],
     "cost": "Actual current complete calls3.02\u201313.87s, observed3.73\u201322.07s, unchanged60s caps; no new numerical model or reference campaign selected for this release acceptance.",
-    "assessment": "ALL_CONCRETE_FUNCTIONAL_RELEASE_CRITERIA_SATISFIED_FOR_NAMED_PROFILES; WHOLE_SCIENTIFIC_EQUIVALENCE_NOT_QUALIFIED"
+    "assessment": "ALL_CONCRETE_FUNCTIONAL_RELEASE_CRITERIA_SATISFIED_FOR_NAMED_PROFILES; WHOLE_SCIENTIFIC_EQUIVALENCE_NOT_QUALIFIED",
+    "actual_canonical_release": "f6e5c2d345de96da653c5caaf6062d471168373d",
+    "acceptance_pr": 1661,
+    "postimage_receipt": "research/hybrid-water01/NOMACRO_MERGE_20261112.json#final_functional_release_acceptance"
   },
   "historical_pr1658_acceptance": {
     "full1461": "PASS_O0_O2",
