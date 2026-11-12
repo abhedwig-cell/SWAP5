@@ -1,5 +1,12 @@
 # SWAP5-NOMACRO-CLOSURE01 release workpoint
 
+Current candidate successor: the accepted seasonal-clock/calendar omission is
+repaired. Windows and Ubuntu26.04 donorO2/kernelO0/O2 complete1461days and all
+five strict own windows, including1459→1461, exactly. Earlier failed results below
+are retained chronology, not the current verdict. Exact current evidence:
+`NOMACRO_CALENDAR_WINDOWS_20261112.json`, `NOMACRO_CALENDAR_LINUX_20261112.json`
+and `integration/f-ci/NOMACRO_RELEASE_20261112.json`.
+
 Baseline: canonical84e297af23b2b6e90c927b958fecb5e24228b975,12November2026.
 Development branch: codex/swap5-nomacro-closure01. Proposed, not admitted.
 
@@ -139,3 +146,54 @@ original year-transition branch. Selected completion: serialize the accepted
 iyear alongside t (S5NON006/S5HUP012), so the unchanged original START_OF_DAY
 detects and executes its year transition. Preserve the stronger whole-receipt
 assertion; do not omit the integrated guard to make the result pass.
+
+## Completed calendar successor
+
+Both accepted calendar fields restore the original sinus boundary and January1
+branch without modifying either equation or TimeControl's operation order.
+Every physical receipt, integrated-guard diagnostic, complete native/auxiliary
+endpoint and daily CSV field now matches the cold control in all five SaltFarm
+own windows, in Windows O0/O2 and Ubuntu26.04 O0/O2. Cold1461 ledgers and original
+native endpoints are byte-identical to the pre-repair Windows trajectories.
+The auxiliary delta is only its version and12 explicit t/iyear bytes. All four
+current Grassgrowth/Hupsel cohorts preserve physical receipts/native endpoints
+and pass their existing own/instance/refusal contracts. New native reader tests
+actually reject nonfinite t, invalid year, missing clock and old codecs before
+any kernel acceptance; old immutable bundles keep their original source identity.
+
+Ubuntu run43189426052 succeeds in BOTH jobs. Full1461 model/controller durations:
+O0=8.365s,O2=9.290s; maxima water1.296733553868279e-11cm and solute
+8.097869597101237e-12mg/cm2. No performance ratio against an unmeasured reference
+is claimed. Its exact CI head is aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04;
+all executable sources match candidate1ef2c8485566ad47bf3a33846059039d67f76e31.
+The dedicated CI branch differs only in the existing registered workflow file,
+which runs the committed no-macro recipe instead of launching deferred macro
+jobs. This dispatch-only wiring is not proposed for canonical. Both artifact ZIP
+digests and actual source/generated/binary/ledger identities were rechecked after
+download; Linux source bytes are compared with exact Git LF blobs, separately
+from the retained Windows CRLF kernel-source identities.
+
+The EXISTING numerical heat/storage observer passes actual irrigation days108–110
+in both profiles on both platforms, preserving the entire physical/native output.
+Its unchanged1e-9J/cm2 conduction guard and accepted-only/corrupt-face guards pass.
+Physical storage is explicit; missing mass-carried thermal boundary data remain
+unavailable. The zero-advection hypothesis remains failed, full physical energy
+remains unqualified, and this three-day check is not an all1461 heat-ledger claim.
+The external original-forcing adapter additionally discards/repeats/accepts the
+731→733 and1459→1461 windows exactly with both kernels, without changing the
+accepted origin. No override of SaltFarm boundary forcing has been promoted.
+
+Next functional deliverable after admission of this package: preserve the new
+calendar contract through the remaining public no-macro scenarios and close the
+explicit supported full-period heat-accounting/export scope with bounded cost.
+Do not repeat unchanged Grassgrowth/Hupsel full trajectories or invent missing
+advective energy. Native oxygen/reference limitations remain separate science.
+
+The nonmacro codec change also affects the admitted seasonal Grassgrowth/Hupsel
+restart windows. Their unchanged cold physics may be inherited, but old accepted
+packages cannot be relabeled into the new codec. Selected preservation therefore
+creates fresh own checkpoints using the already built current kernels/donors:
+Grassgrowth1827 (previously~11s) and Hupsel1096 (previously5.8s), O0/O2, followed
+by their existing4/9 seasonal windows. Each full call is now capped at60s instead
+of the older180s runner limit. This is format/clock requalification after an actual
+dependency change, not a repeat of an unchanged historical benchmark or oracle.
