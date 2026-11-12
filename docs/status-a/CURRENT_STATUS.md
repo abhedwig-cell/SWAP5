@@ -1,5 +1,21 @@
 # SWAP5 Status-A current status
 
+## Functional no-macro release acceptance
+
+The [named no-macro release scope](../science/SWAP5_FUNCTIONAL_CLOSURE.md) is
+functionally ready after canonical PR1658/1659/1660. Original Grassgrowth1827
+and Hupsel1096 inputs match the immutable project manifest; the additional
+original-workbook SaltFarm1461 profile preserves its explicit preparation
+provenance. The same generic daily host passes current complete execution,
+water/solute/supported-heat, day restart, rollback, independent-instance and
+external-input qualification on Windows/Ubuntu at the recorded O0/O2 profiles.
+Actual source/build/input identities and the final criterion assessment are in
+`integration/f-ci/NOMACRO_RELEASE_20261112.json`. No known unmanaged functional
+blocker remains within that scope. Whole scientific equivalence remains
+unqualified, with original failed criteria and thermal/reference limits visible.
+Active macropores remain preserved outside this release. This acceptance does
+not alter the frozen Status-A denominator or claim all original option mixes.
+
 ## No-macro surface-input and day-state successor
 
 The [source-bound no-macro successor](../science/SWAP5_FUNCTIONAL_CLOSURE.md)
