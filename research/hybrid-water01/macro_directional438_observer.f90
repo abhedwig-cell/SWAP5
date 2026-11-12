@@ -31,6 +31,7 @@ subroutine shadow438(stage)
       end do
    end do
    call history_evaluate438()
+   call analytic_evaluate438()
    open(newunit=u,file='day438-shadow.txt',status='new',action='write')
    write(u,*) 'DERIVATIVE_META',stage,t1900,dt,NN,swbotb,numbit,flunsatok
    write(u,*) 'SAMPLES',sample
@@ -43,6 +44,7 @@ subroutine directional_evaluate438(sample,node,delta)
    integer, intent(in) :: sample,node
    real(8), intent(in) :: delta
    integer :: pid_status,u,ic
+   real(8) :: cached_F(macp),cached_Q(macp)
    character(32) :: filename
    interface
       integer(c_int) function shadow_begin() bind(C,name='s5_shadow_begin')
@@ -65,12 +67,17 @@ subroutine directional_evaluate438(sample,node,delta)
    do ic=2,NN
       hgrad(ic)=(h(ic-1)-h(ic))/disnod(ic)+1d0
    end do
+   cached_F=F
+   cached_Q=QExcMpMtx
    call vector_F(1,hgrad)
    write(filename,'(a,i3.3,a)') 'directional-',sample,'.txt'
    open(newunit=u,file=trim(filename),status='new',action='write')
    write(u,*) 'SAMPLE',sample,node,delta
    write(u,*) 'H',h(1:NN)
    write(u,*) 'F',F(1:NN)
+   write(u,*) 'Q',QExcMpMtx(1:NN)
+   write(u,*) 'CACHED_F',cached_F(1:NN)
+   write(u,*) 'CACHED_Q',cached_Q(1:NN)
    close(u)
    call shadow_end()
 end subroutine directional_evaluate438
@@ -125,3 +132,28 @@ subroutine history_evaluate438()
    close(u)
    call shadow_end()
 end subroutine history_evaluate438
+
+subroutine analytic_evaluate438()
+   use iso_c_binding, only: c_int
+   integer :: pid_status,u
+   interface
+      integer(c_int) function shadow_begin() bind(C,name='s5_shadow_begin')
+         import c_int
+      end function
+      subroutine shadow_end() bind(C,name='s5_shadow_end')
+      end subroutine
+   end interface
+   pid_status=shadow_begin()
+   if (pid_status /= 0) then
+      if (pid_status < 0) error stop 'Analytic sample failed'
+      return
+   end if
+   call vector_F(1,hgrad)
+   open(newunit=u,file='analytic438.txt',status='new',action='write')
+   write(u,*) 'Q_RATE',QExcMpMtx(1:NN)
+   call MACROPORE(3)
+   write(u,*) 'Q_PAIR',QExcMpMtx(1:NN)
+   write(u,*) 'DQ_ANALYTIC',dFdhMp(1:NN)
+   close(u)
+   call shadow_end()
+end subroutine analytic_evaluate438

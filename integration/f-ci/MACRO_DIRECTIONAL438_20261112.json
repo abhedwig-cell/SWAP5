@@ -26,5 +26,21 @@
     "model_cap_seconds": 20,
     "child_cap_seconds": 3,
     "no_model_physics_change": true
+  },
+  "history_control": {
+    "source": "d9afaa58cddcaa4d8ec7447fcbffe73b87b021bb",
+    "run": 43175012277,
+    "job": 131037029825,
+    "artifact": 13923861677,
+    "sha256": "ac8e9e51c17629a7c056961c701f0adddabcc72dada0800b82f8113ad82ce7f9",
+    "seconds": 4.795549567999998,
+    "outcome": "Same-pressure sequential F and saturation-crossing pressure/theta round trip F exactly equal; recorded wet-wall, unsaturated stores and event flags identical. Derivative34 samples exactly repeat first control."
+  },
+  "local_derivative_closure_selection": {
+    "reason": "Offband and history hypotheses unsupported here. Attribute fresh/cached residual to actual macro exchange rather than boundary changes, and compare original analytic macro derivative to central-difference Q derivative on the identical state. This decides whether changing original analytic derivative is justified.",
+    "new_model_cap_seconds": 20,
+    "expected_seconds": 5,
+    "physics_change": false,
+    "additional_samples": "One child original rate/Jacobian pair equality and eight existing numerical columns with Q exchange recorded; no new time-marching solver"
   }
 }

@@ -152,6 +152,7 @@ def main():
         report['directional_samples']={p.name:p.read_text().splitlines() for p in sorted(log.parent.glob('directional-*.txt'))}
         assert len(report['directional_samples'])==34
         report['history_samples']=(log.parent/'history438.txt').read_text().splitlines()
+        report['analytic_samples']=(log.parent/'analytic438.txt').read_text().splitlines()
         report['status']='PARENT_AND_NATIVE_EXACT_FIXED_STATE_DIRECTIONAL_SAMPLES_RECORDED'
     except Exception:
         report['status']='FAILED';report['error']=traceback.format_exc()
