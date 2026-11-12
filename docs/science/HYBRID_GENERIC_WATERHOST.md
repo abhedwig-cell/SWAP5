@@ -1,5 +1,9 @@
 # Explicit project state in the hybrid waterhost
 
+The [Hupsel surface-irrigation successor](HYBRID_HUPSEL_DAILY_IRRIGATION.md)
+adds actual caller water/solute events after full irrigation-context restoration,
+with exact modified-history daily recovery and unchanged original no-file physics.
+
 The [Grass prescribed-groundwater successor](HYBRID_GRASS_DAILY_GROUNDWATER.md)
 adds original SWBOTB1 caller level segments using the same external transaction
 and native-state owners. Cauchy aquifer heads and prescribed groundwater levels
