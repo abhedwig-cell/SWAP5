@@ -1,0 +1,327 @@
+{
+  "source_commit": "11529865e76fb2259542f1e770726cd87af27603",
+  "original_executable_sha256": "83354b21173595a1501914eba869bdb4a1e7e5479e0d09014bae9b8fdde576aa",
+  "original_archives": {
+    "SWAP.ZIP": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+    "TTUTIL.ZIP": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193"
+  },
+  "toolchain": {
+    "gfortran": {
+      "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+      "sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "target": "x86_64-w64-mingw32"
+    },
+    "gcc": {
+      "version": "gcc.EXE (Rev4, Built by MSYS2 project) 16.2.0",
+      "sha256": "f4120ffea38b73efaf4d770c1942905e220819ae97299c94bfeab3c396b686e2",
+      "target": "x86_64-w64-mingw32"
+    },
+    "ar": {
+      "version": "GNU ar (GNU Binutils) 2.47.20260726",
+      "sha256": "294780eb7e0f0d26035e8b3e59c66046a7472680a4bbdd1d4e36ee4912643d30"
+    }
+  },
+  "link_command": [
+    "gfortran",
+    "-o",
+    "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\arrays.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\boundbottom.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\boundtop.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\calcgwl.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\description.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\divdra.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\drainage.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\fixed.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\fluxes.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\frozencond.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\functions.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\headcalc.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\hysteresis.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\initialize.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\integral.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\interface_atmosphere.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\interface_plant.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\irrigation.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\macropore.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\macroporeoutput.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\macrorate.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\management_soil.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_drainage.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_meteo.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_MvG_functions.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_RIA.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\MOD_runon.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\oxygenstress.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\params.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\readswap.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\rootextraction.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\RWU_micro.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\snow.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\soilwater.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\solute.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\sptabulated.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\surfacewater.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\swap.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\swap_base.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\swap_csv_output.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\swap_main.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\swapoutput.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\temperature.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\tillage.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\timecontrol.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\tridag.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\variables.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\watstor.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\WC_K_models_04_11.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_amendments.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_declarations.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_interface.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_parameters.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofost_soil_watern.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\swap-obj\\wofostnut.o",
+    "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider\\build\\ttutil-obj\\libttutil.a"
+  ],
+  "policy": "Exact original project input bytes; no tolerance/physics/output-switch changes. Original immutable source objectsO2, SWAP5 donorO2/kernelO2. Sequential same-laptop wall clocks; original CSV kept. One fresh pair per project; not a portable or accuracy-matched runtime assertion.",
+  "projects": [
+    {
+      "project": "grass",
+      "model": "HYBRID_GRASSGROWTH_WATER",
+      "case": "2.grassgrowth",
+      "expected_days": 1827,
+      "inputs": {
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "control_plot.inp": "f863e4ba420dee267e1d034e54d69e6d3419eb54263e067d2acee4acebbd8812",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196",
+        "observed/HRVDM.csv": "834a7aa8ebdb773e70d3bac588743edc50e980a5013a46fa1de1aec902859a88",
+        "observed/WDM.csv": "fe1e42be70e61a771e7dd60e75967a34af7d910fe22bd361f9dbb4f3495197a3"
+      },
+      "original": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 7.646102200029418,
+        "returncode": 100,
+        "completed": true,
+        "swap_err": ""
+      },
+      "existing_full": "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\grass-full",
+      "build": "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\grass-build",
+      "build_sha256": "c17e3b367c5d015640147701f0d110d43bfbaf2a6c7a66365182ea63ede5955e",
+      "swap5": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--no-macro-release",
+          "--model",
+          "HYBRID_GRASSGROWTH_WATER",
+          "--reference-work",
+          "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider",
+          "--build-bundle",
+          "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\grass-build",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\grass-swap5-timed"
+        ],
+        "wall_seconds": 10.207079200074077,
+        "model_and_controller_seconds": 9.495716499863192,
+        "completed": true,
+        "days": 1827,
+        "exact_physical_match_to_existing_run": true,
+        "existing_full_wall_seconds": 15.886037799995393,
+        "original_csv": "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\grass-swap5-timed\\original\\result_output.csv"
+      },
+      "wall_ratio_swap5_to_431": 1.3349388921370688,
+      "identical_execution_input_sha256": {
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "control_plot.inp": "f863e4ba420dee267e1d034e54d69e6d3419eb54263e067d2acee4acebbd8812",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.swp": "154f1801b4d86d1a94ed962655c5d6ecae8ef08f511bc21bc42bdbef55f91fa7",
+        "observed/HRVDM.csv": "834a7aa8ebdb773e70d3bac588743edc50e980a5013a46fa1de1aec902859a88",
+        "observed/WDM.csv": "fe1e42be70e61a771e7dd60e75967a34af7d910fe22bd361f9dbb4f3495197a3"
+      },
+      "output_only_preparation_delta": "--- registered_original\n+++ actual_SWAP5_execution\n@@ -450,3 +450,5 @@\n **********************************************************************************\n \n * End of the main input file .swp\n+\n+SWENDTYPE = 2\n",
+      "original_identical_executed_inputs": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 8.197571200085804,
+        "returncode": 100,
+        "completed": true,
+        "swap_err": "",
+        "path": "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\grass-swap431-identical-executed-inputs",
+        "all_input_bytes_equal_to_both_SWAP5_runs": true
+      },
+      "wall_ratio_identical_pair": 1.2451345588760778
+    },
+    {
+      "project": "hupsel",
+      "model": "HYBRID_HUPSEL_WATER",
+      "case": "1.hupselbrook",
+      "expected_days": 1096,
+      "inputs": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "original": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 0.09712769999168813,
+        "returncode": 0,
+        "completed": false,
+        "swap_err": " Data file   ./SWAP.SWP with 206 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n"
+      },
+      "existing_full": "C:\\Users\\Veldh012\\SWAP5-Hupsel-SaltFarm-20261112\\hupsel-full",
+      "build": "C:\\Users\\Veldh012\\SWAP5-Hupsel-SaltFarm-20261112\\hupsel-build",
+      "build_sha256": "f18e5e8fc09208dd922697edd492927e17ce1b7a57f5a236e50a5df63c299fc9",
+      "swap5": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--no-macro-release",
+          "--model",
+          "HYBRID_HUPSEL_WATER",
+          "--reference-work",
+          "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider",
+          "--build-bundle",
+          "C:\\Users\\Veldh012\\SWAP5-Hupsel-SaltFarm-20261112\\hupsel-build",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\hupsel-swap5-timed"
+        ],
+        "wall_seconds": 5.47784910001792,
+        "model_and_controller_seconds": 4.7235449000727385,
+        "completed": true,
+        "days": 1096,
+        "exact_physical_match_to_existing_run": true,
+        "existing_full_wall_seconds": 7.064086499856785,
+        "original_csv": "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\hupsel-swap5-timed\\original\\result_output.csv"
+      },
+      "identical_execution_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "63237a51338a62a67b7b5660d81747dd1dba9ccf9a47a1953e8fd6a178e87df1"
+      },
+      "output_only_preparation_delta": "--- registered_original\n+++ actual_SWAP5_execution\n@@ -56,7 +56,7 @@\n   NPRINTDAY = 1              ! Number of output times during a day [1..1440, I]\n \n * Specify dates for output of state variables and fluxes\n-  SWMONTH = 1                ! Switch, output each month [Y=1, N=0]\n+  SWMONTH = 0                ! Switch, output each month [Y=1, N=0]\n \n * If SWMONTH=0, choose output interval and/or specific dates\n   PERIOD = 1                 ! Fixed output interval, ignore = 0 [0..366, I]\n@@ -105,7 +105,7 @@\n                              ! 3 = Binary csv output + output of simulation characteristics\n \n * Specify required variables\n-  INLIST_CSV = 'WATBAL,ETTERMS,SOLBAL,GWL,S_CONC'\n+  INLIST_CSV = 'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'\n \n * Specify depth range for time-depth output parameters. Specify 0.0 0.0 in case the entire range is requested.\n   TZ_Z1_Z2 = 0.0 -100.0\n@@ -130,7 +130,7 @@\n                              ! 2 = Output at the end of each day\n                              \n * Switch, type of output end-conditions (default: formatted output)\n-  SWENDTYPE = 1              ! 1 = Formatted output\n+  SWENDTYPE = 2              ! 1 = Formatted output\n                              ! 2 = Unformatted output\n \n * Switch, filter output end-conditions (default: no filter)\n@@ -778,3 +778,5 @@\n **********************************************************************************\n \n * End of the main input file .swp\n+\n+NUM_DECIMALS = 12\n",
+      "original_identical_executed_inputs": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 2.764802899910137,
+        "returncode": 100,
+        "completed": true,
+        "swap_err": "",
+        "path": "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\hupsel-swap431-identical-executed-inputs",
+        "all_input_bytes_equal_to_both_SWAP5_runs": true
+      },
+      "wall_ratio_identical_pair": 1.9812801484677132
+    },
+    {
+      "project": "saltfarm",
+      "model": "HYBRID_SALTFARM_WATER",
+      "case": "4.salinitystress-04dS",
+      "expected_days": 1461,
+      "inputs": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+        "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "9060e13639d15809eccd2e9a339092e63dc2fc21d8c74511be994a762b85039d"
+      },
+      "original": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 0.1263141999952495,
+        "returncode": 0,
+        "completed": false,
+        "swap_err": " Data file   ./SWAP.SWP with 133 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.INI with  16 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of SWAP.INI recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   235.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  23 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n"
+      },
+      "existing_full": "C:\\Users\\Veldh012\\SWAP5-Hupsel-SaltFarm-20261112\\saltfarm-full",
+      "build": "C:\\Users\\Veldh012\\SWAP5-Hupsel-SaltFarm-20261112\\saltfarm-build",
+      "build_sha256": "b2d9b77f85a6d7df4779f2ab4df0f785a07f019964b895783c2ba80b546dcf9a",
+      "swap5": {
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/run_water.py",
+          "--no-macro-release",
+          "--model",
+          "HYBRID_SALTFARM_WATER",
+          "--reference-work",
+          "C:\\Users\\Veldh012\\SWAP5-Grassgrowth-20261112\\original-provider",
+          "--build-bundle",
+          "C:\\Users\\Veldh012\\SWAP5-Hupsel-SaltFarm-20261112\\saltfarm-build",
+          "--output",
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\saltfarm-swap5-timed"
+        ],
+        "wall_seconds": 11.812481799861416,
+        "model_and_controller_seconds": 11.110919799888507,
+        "completed": true,
+        "days": 1461,
+        "exact_physical_match_to_existing_run": true,
+        "existing_full_wall_seconds": 13.016671600053087,
+        "original_csv": "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\saltfarm-swap5-timed\\original\\result_output.csv"
+      },
+      "identical_execution_input_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+        "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "769d6663649ff8fc2f3802598e3c8563dd274406206fd51536a0ebebfe23d87c"
+      },
+      "output_only_preparation_delta": "--- registered_original\n+++ actual_SWAP5_execution\n@@ -94,7 +94,7 @@\n                              ! 3 = Binary csv output + output of simulation characteristics\n \n * Specify required variables\n-  INLIST_CSV = 'RAIN,IRRIG,ETTERMS,PWSO,WSO,S_CONC'\n+  INLIST_CSV = 'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'\n \n * Specify depth range for time-depth output parameters. Specify 0.0 0.0 in case the entire range is requested.\n   TZ_Z1_Z2 = 0.0 0.0\n@@ -1122,3 +1122,7 @@\n **********************************************************************************\n \n * End of the main input file .swp\n+\n+NUM_DECIMALS = 12\n+\n+SWENDTYPE = 2\n",
+      "original_identical_executed_inputs": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 5.139638299820945,
+        "returncode": 100,
+        "completed": true,
+        "swap_err": "",
+        "path": "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\saltfarm-swap431-identical-executed-inputs",
+        "all_input_bytes_equal_to_both_SWAP5_runs": true
+      },
+      "wall_ratio_identical_pair": 2.298309941435556
+    }
+  ]
+}

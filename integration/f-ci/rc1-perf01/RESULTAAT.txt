@@ -1,0 +1,81 @@
+VERGELIJKING SWAP5 EN OORSPRONKELIJKE SWAP4.3.1 OP DEZELFDE WINDOWS-LAPTOP
+
+SWAP5 broncommit:11529865e76fb2259542f1e770726cd87af27603
+Beide processenkernen GNU Fortran16.2, O2. Bouwtijd niet in de looptijden.
+Alle volledige dagen en alle gemeenschappelijke geprinte variabelen zijn vergeleken.
+De nieuwe SWAP5-tijdmetingen reproduceren de eerdere dagelijkse fysieke records exact.
+
+INVOER EN REFERENTIE
+Alle werkelijke invoerbestanden zijn bytegelijk tussen de succesvolle4.3.1-run
+en de SWAP5-run. Fysieke invoer en toleranties zijn niet aangepast.
+Hupsel en SaltFarm stoppen met de letterlijk geregistreerde originele SWP op
+de foutS_CONC in de oorspronkelijke CSV-uitvoer. Deze pogingen blijven bewaard.
+De succesvolle vergelijking gebruikt op BEIDE versies dezelfde reeds bestaande
+uitvoervoorbereiding van SWAP5 (CSV-groepen, uitvoerinterval,12decimalen, eindbestandformaat).
+De exacte verschillen staan in*-execution-input.diff; invoerhashes inMANIFEST.json.
+Dit kwalificeert geen vervangende universele wetenschappelijke referentie.
+
+REKENTIJDEN (seconden, volledige periode; geen checkpoint in nieuwe SWAP5-tijdmeting)
+Project         dagen   SWAP4.3.1   SWAP5 nieuw   verhouding   SWAP5 eerdere run
+grass           1827       8.198        10.207       1.245             15.886
+hupsel          1096       2.765         5.478       1.981              7.064
+saltfarm        1461       5.140        11.812       2.298             13.017
+
+Dit zijn gemeten uitvoeringstijden binnen deze sessie, geen portable
+prestatiegarantie of vergelijking bij aantoonbaar gelijke bereikte nauwkeurigheid.
+SWAP5 omvat ook dagelijkse besturing, onafhankelijke boekhouding en extra journaling.
+Eerdere runs omvatten een checkpoint en andere opstart-/cacheomstandigheden.
+
+MAXIMALE ABSOLUTE VERSCHILLEN OVER ALLE DAGEN (SWAP5 versus4.3.1)
+Grootheid                       Grassgrowth          Hupsel             SaltFarm
+Bodemwatervoorraad(cm)                         0    0.009324942287     0.03606724898
+Grondwaterstand(cm)                            0      0.2445560261      0.4781408402
+Dagelijkse drainage(cm)                        0    0.008297386348     0.03212713406
+Dagelijkse opname(cm)                          0    0.001113283189    0.000128514496
+Zuurstofreductie(cm)                           0     0.00024209355     5.6254352e-05
+Stofvoorraad(mg/cm2)                      n.v.t.     0.01251622303      0.1944640561
+Stofdrainage(mg/cm2)                      n.v.t.    0.001425550951     0.04642424029
+Biomassa(kg/ha)                                0        1.32908077        0.39691397
+
+Grassgrowth:alle24 geprinte variabelen exact gelijk op alle1827 dagen.
+Dat bewijst geen nieuwe gelijkheid onder de printresolutie.
+Hupsel en SaltFarm zijn meetbaar verschillend; bestaande conserveringscorrecties
+en numerieke uitvoeringspolicy zijn vastgelegd in de repository. Niet alle
+latere veldverschillen zijn hiermee afzonderlijk causaal verklaard.
+
+BALANSEN
+SWAP5 onafhankelijke dagelijkse water- en stofresiduen blijven onder de
+bestaande grenzen1e-10cm en1e-10mg/cm2. Geen grens is verruimd.
+Oorspronkelijke geprinte BALDEV/S_BALDEV betreffen hun eigen uitvoerinterval-
+en cumulatieve tellers. Die zijn hieronder herkenbaar apart weergegeven.
+
+GRASS
+4.3.1:max|BALDEV|=0.0 cm
+SWAP5:max onafhankelijke dagelijkse waterafwijking=6.3493742888471e-14 cm
+
+HUPSEL
+4.3.1:max|BALDEV|=0.031255676876 cm
+SWAP5:max onafhankelijke dagelijkse waterafwijking=9.996691511691622e-11 cm
+4.3.1:max|S_BALDEV|=0.0 mg/cm2
+SWAP5:max onafhankelijke dagelijkse stofafwijking=2.0189359137172196e-13 mg/cm2
+
+SALTFARM
+4.3.1:max|BALDEV|=8.213476514238e-06 cm
+SWAP5:max onafhankelijke dagelijkse waterafwijking=1.8597862833091838e-11 cm
+4.3.1:max|S_BALDEV|=1.45581958462e-06 mg/cm2
+SWAP5:max onafhankelijke dagelijkse stofafwijking=8.099007575701478e-12 mg/cm2
+
+WETENSCHAPPELIJKE STATUS
+Bestaande oorspronkelijke zuurstof-FAILs en onvoldoende gekwalificeerde
+Hupsel-referenties blijven zichtbaar. De nieuwe gunstige waarde opdag584
+vervangt de bevroren oorspronkelijke referentie of criteria niet.
+Volledige wetenschappelijke gelijkwaardigheid is niet aangetoond.
+De vergelijking verandert geen broncode, tolerantie of geaccepteerde releasegrens.
+
+BESTANDEN
+COMPARISON.json:alle veldstatistieken, eenheden, slechtste dagen en balanscontext.
+*-all-field-differences.csv:alle afzonderlijke datum/veldverschillen.
+MANIFEST.json:bronnen, compiler, uitvoerbare bestanden, invoerhashes en looptijden.
+*-swap431-identical-executed-inputs\:werkelijke volledige originele modeluitvoer.
+*-swap5-timed\:werkelijke aanvullende volledige SWAP5-uitvoer.
+*-swap431\:bewaarde letterlijke eerste pogingen, inclusief de CSV-fouten.

@@ -1,0 +1,46 @@
+{
+  "project": "saltfarm",
+  "instrumented_wall_seconds": 16.40967270010151,
+  "worker_cpu": {
+    "kernel": {
+      "user_seconds": 0.40625,
+      "system_seconds": 0.1875
+    },
+    "donor": {
+      "user_seconds": 11.609375,
+      "system_seconds": 1.484375
+    }
+  },
+  "wall_buckets": {
+    "log_write_seconds": 0.06141949654556811,
+    "log_flush_seconds": 0.2575145922601223,
+    "log_writes": 13160,
+    "log_flushes": 13159,
+    "log_characters": 9581833,
+    "launch_seconds": 0.02622399991378188,
+    "send_seconds": 0.1550833866931498
+  },
+  "receive_wall": {
+    "DAILY_MODEL": {
+      "calls": 1,
+      "wall_seconds": 0.020981600042432547
+    },
+    "HYBRID_READY": {
+      "calls": 1,
+      "wall_seconds": 0.1651053000241518
+    },
+    "DAILY_REQUEST": {
+      "calls": 1461,
+      "wall_seconds": 0.15066330460831523
+    },
+    "HYBRID_DAY_RETURN": {
+      "calls": 1461,
+      "wall_seconds": 13.138200401328504
+    },
+    "DAILY_ACCEPTED,DAILY_REFUSED": {
+      "calls": 1461,
+      "wall_seconds": 0.6101869998965412
+    }
+  },
+  "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times."
+}

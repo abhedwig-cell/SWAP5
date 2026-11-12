@@ -1,0 +1,61 @@
+name: RC1 Windows matched compiler-major discriminator
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: rc1-matched-gcc15-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  windows-gcc15:
+    runs-on: windows-2022
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: '1'
+      PYTHONUTF8: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin actual source/compiler and preserve frozen RC1
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        shell: pwsh
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Source differs' }
+          gfortran --version
+          gfortran -dumpfullversion
+          gcc --version
+          ar --version
+          python --version
+      - name: One extra compiler-major cohort; actual user builds/full periods/own restart
+        shell: pwsh
+        run: python -B tools/solute/check_userrelease.py --output "$env:RUNNER_TEMP/rc1-matched-user"
+      - name: Same-major nodal thermal and iteration controls; no fitted tolerance
+        shell: pwsh
+        run: python -B tools/solute/run_rc1_science.py --reference "$env:RUNNER_TEMP/rc1-matched-user/provider" --qualification "$env:RUNNER_TEMP/rc1-matched-user" --user-qualification --output "$env:RUNNER_TEMP/rc1-matched-science"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc1-matched-gcc15-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/rc1-matched-user
+            ${{ runner.temp }}/rc1-matched-science
+          retention-days: 14

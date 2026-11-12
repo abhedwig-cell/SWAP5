@@ -114,10 +114,12 @@ def validate(reference):
     return record
 
 
-def validate_build(reference, identity):
+def validate_build(reference, identity, *, validated_toolchain=None):
     """Reused executable must retain its original compiler and object provider."""
     reference=Path(reference)
-    current=toolchain()['gfortran']
+    # The CLI has just validated the provider and current compiler binaries.
+    # Reuse only that invocation-local proof; standalone callers still recheck.
+    current=(validated_toolchain if validated_toolchain is not None else toolchain())['gfortran']
     if (identity['compiler'] != current['version'] or identity['compiler_sha256'] != current['sha256']
         or identity['target'] != current['target']):
         raise ValueError('Build compiler differs from the prepared toolchain')

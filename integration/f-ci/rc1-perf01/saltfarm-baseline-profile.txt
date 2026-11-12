@@ -1,0 +1,53 @@
+         446215 function calls (443939 primitive calls) in 16.409 seconds
+
+   Ordered by: cumulative time
+   List reduced from 633 to 45 due to restriction <45>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000   16.409   16.409 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\run_water.py:185(main)
+      534    0.001    0.000   15.808    0.030 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\pathlib\_abc.py:621(read_bytes)
+      547    0.001    0.000   15.782    0.029 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\pathlib\_local.py:529(open)
+      565    0.395    0.001   15.782    0.028 {built-in method _io.open}
+      522    0.003    0.000   15.739    0.030 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\donor_sources.py:74(sha)
+       15    0.000    0.000   15.615    1.041 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\threading.py:1001(_bootstrap)
+       15    0.014    0.001   15.615    1.041 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\threading.py:1028(_bootstrap_inner)
+        1    0.031    0.031   15.363   15.363 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_host.py:950(run)
+     1461    0.300    0.000   14.646    0.010 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_host.py:850(step)
+     4385    0.025    0.000   14.089    0.003 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\profile_daily_host.py:27(receive)
+     4385   13.557    0.003   14.049    0.003 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_host.py:605(receive)
+        2    0.000    0.000    0.479    0.239 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\user_prepare.py:19(toolchain)
+       14    0.000    0.000    0.440    0.031 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:423(check_output)
+       14    0.000    0.000    0.438    0.031 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:512(run)
+        1    0.002    0.002    0.381    0.381 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\user_prepare.py:100(validate)
+    19008    0.364    0.000    0.364    0.000 {method 'flush' of '_io.TextIOWrapper' objects}
+     1463    0.003    0.000    0.307    0.000 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\json\__init__.py:185(dumps)
+     1463    0.007    0.000    0.303    0.000 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py:185(encode)
+     1463    0.293    0.000    0.293    0.000 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\json\encoder.py:207(iterencode)
+    13159    0.025    0.000    0.272    0.000 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\profile_daily_host.py:20(flush)
+       14    0.000    0.000    0.252    0.018 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:1178(communicate)
+       14    0.000    0.000    0.244    0.017 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:1623(_communicate)
+       14    0.000    0.000    0.243    0.017 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\threading.py:1059(join)
+       14    0.002    0.000    0.242    0.017 {method 'join' of '_thread._ThreadHandle' objects}
+        1    0.001    0.001    0.240    0.240 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\user_prepare.py:117(validate_build)
+        1    0.000    0.000    0.239    0.239 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_host.py:803(__init__)
+       14    0.000    0.000    0.237    0.017 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\threading.py:984(run)
+     9564    0.236    0.000    0.237    0.000 {method 'join' of 'str' objects}
+       19    0.236    0.012    0.236    0.012 {method 'read' of '_io.TextIOWrapper' objects}
+       14    0.000    0.000    0.236    0.017 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:1614(_readerthread)
+        1    0.000    0.000    0.235    0.235 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_coupling.py:142(validate_bundle)
+       16    0.001    0.000    0.210    0.013 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:817(__init__)
+       16    0.000    0.000    0.207    0.013 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\subprocess.py:1452(_execute_child)
+       16    0.205    0.013    0.205    0.013 {built-in method _winapi.CreateProcess}
+    19012    0.077    0.000    0.178    0.000 {method 'write' of '_io.TextIOWrapper' objects}
+     4388    0.010    0.000    0.161    0.000 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\profile_daily_host.py:32(send)
+     4388    0.008    0.000    0.148    0.000 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_host.py:600(send)
+     5852    0.005    0.000    0.100    0.000 C:\Users\Veldh012\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py:18(encode)
+    13160    0.044    0.000    0.097    0.000 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\profile_daily_host.py:18(write)
+        1    0.000    0.000    0.096    0.096 C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\user_prepare.py:41(check_inputs)
+     5852    0.095    0.000    0.095    0.000 {built-in method _codecs.charmap_encode}
+      9/2    0.000    0.000    0.069    0.035 <frozen importlib._bootstrap>:1349(_find_and_load)
+      9/2    0.000    0.000    0.069    0.035 <frozen importlib._bootstrap>:1304(_find_and_load_unlocked)
+      9/2    0.000    0.000    0.069    0.034 <frozen importlib._bootstrap>:911(_load_unlocked)
+      7/2    0.000    0.000    0.069    0.034 <frozen importlib._bootstrap_external>:1017(exec_module)
+
+

@@ -268,7 +268,7 @@ def main():
 
     if args.no_macro_release:
         try:
-            user_prepare.validate(args.reference_work)
+            prepared_provider=user_prepare.validate(args.reference_work)
             user_prepare.check_inputs(args.reference_work, project)
             require_no_macro_input(args.reference_work, project)
         except (OSError, ValueError) as error:
@@ -283,7 +283,7 @@ def main():
             bundle=args.build_bundle.resolve()
             meta,case=validate_bundle(bundle,args.reference_work.resolve(),project)
             inputs,build_id=meta['inputs'],meta['identity']
-            user_prepare.validate_build(args.reference_work,build_id)
+            user_prepare.validate_build(args.reference_work,build_id,validated_toolchain=prepared_provider['toolchain'])
             binding=checkpoint_identity(inputs,build_id,project=project,**profile)
             if meta['binding'] != binding:
                 raise ValueError('Build checkpoint binding differs')
