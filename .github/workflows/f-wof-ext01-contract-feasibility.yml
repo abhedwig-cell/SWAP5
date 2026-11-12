@@ -1,0 +1,133 @@
+name: F-WOF-EXT01 external crop contract feasibility
+on:
+  pull_request:
+    paths:
+      - 'tests/fwof/ext01/**'
+      - '.github/workflows/f-wof-ext01-contract-feasibility.yml'
+  workflow_dispatch:
+jobs:
+  protocol-probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test crop process-boundary prototype
+        run: python -m unittest -v tests/fwof/ext01/test_external_crop_contract.py
+      - name: Trace real accepted root uptake rate and interval integration units
+        run: python -m unittest -v tests/fwof/ext01/test_accepted_rate_unit_trace.py
+      - name: Verify physical witness cannot masquerade as accepted PCSE day
+        run: python -m unittest -v tests/fwof/ext01/test_physical_witness_import_gate.py
+  native-fortran:
+    runs-on: ubuntu-latest
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: swap
+      - uses: actions/checkout@v4
+        with:
+          repository: abhedwig-cell/pcse
+          ref: research/wofost81-external-day-probe-20261017
+          path: pcse
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Verify independent SWAP rooted crop parameters are not pinned PCSE barley
+        run: |
+          python -m pip install PyYAML
+          EXT01_MANIFEST_PATH=ext01-crop-parameter-pair.json python swap/tests/fwof/ext01/test_cross_source_crop_parameter_authority.py swap pcse
+      - name: Build Python reference and Fortran-source forcing in one runner
+        run: |
+          python -m pip install -e pcse
+          cd pcse
+          python -m pcse.tests.export_ext01_barley_reference ../input
+          python -m pcse.tests.export_ext01_fortran_input ../input
+          cd ..
+          python swap/tests/fwof/ext01/prepare_research_fortran.py input build
+      - name: Compile and run native WOFOST81 one-day kernel O0 O2
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd swap
+          python - ../build/ext01_driver.f90 <<'PY'
+          from pathlib import Path
+          import sys
+          src=Path('tests/fwof/pp02/test_wofost81_fullseason_replay.f90').read_text()
+          old='aggregates%actual_root_uptake=1._real64'
+          assert src.count(old)==1
+          src=src.replace(old,'aggregates%actual_root_uptake=0.5_real64')
+          marker='    call apply_wofost81_one_day_n_supply(prepared,p81,prepared%nitrogen_request%soil_request,candidate,flux,status)'
+          assert src.count(marker)==1
+          trace='\n' + "    if (day>=18.and.day<=23) then\n      write(*,'(a,i0,1x,11(es24.16,1x))') 'EXT01_LEAF_TRACE ',day, &\n        committed%crop%development_stage, &\n        sum(committed%crop%biomass%leaf_biomass*committed%crop%biomass%specific_leaf_area), &\n        committed%crop%biomass%exponential_leaf_area_index, &\n        prepared%corrected_rates%relative_transpiration_used, &\n        prepared%rate_diagnostics%rfrgrl, &\n        prepared%corrected_rates%leaf_growth_rate, &\n        prepared%corrected_rates%youngest_specific_leaf_area, &\n        prepared%corrected_rates%lai_exponential_growth_rate, &\n        prepared%corrected_rates%leaf_stress_death_rate, &\n        prepared%corrected_rates%leaf_age_increment, &\n        prepared%rate_diagnostics%nstress_index_dlv\n    endif\n"
+          src=src.replace(marker,trace+marker)
+          Path(sys.argv[1]).write_text(src)
+          PY
+          # Research-only matched PCSE juvenile water-stress condition.
+          # Patch a disposable source copy, never admitted src/crop.
+          python - <<'PY'
+          from pathlib import Path
+          src=Path('src/crop/mod_wofost_finalize_rates.f90').read_text()
+          old='glaiex = reltr * state_view%exponential_leaf_area_index * &'
+          new=('glaiex = merge(reltr, 1.0_real64, &\n'
+               '           state_view%development_stage < 0.2_real64 .and. &\n'
+               '           state_view%actual_leaf_area_index < 0.75_real64) * &\n'
+               '           state_view%exponential_leaf_area_index * &')
+          assert src.count(old)==1
+          Path('../build/mod_wofost_finalize_rates_ext01_probe.f90').write_text(src.replace(old,new))
+          print('EXT01_RESEARCH_ONLY_GLAIEX_JUVENILE_PROBE')
+          PY
+          COMMON=(-std=f2008 -ffree-line-length-none -Wall -Wextra -fcheck=all -fbacktrace -ffpe-trap=invalid,zero,overflow)
+          SOURCES=(
+            src/transaction/mod_transaction_reference.f90
+            src/crop/mod_wofost_rate_table.f90
+            src/crop/mod_crop_root_uptake_input_contract.f90
+            src/crop/mod_crop_root_depth_dvs.f90
+            src/crop/mod_crop_root_depth_biomass.f90
+            src/crop/mod_crop_root_profile_static.f90
+            src/crop/mod_wofost_actual_biomass_state.f90
+            src/crop/mod_wofost_crop_owner_state.f90
+            src/crop/mod_wofost_one_day_structural_evolution.f90
+            src/crop/mod_wofost_one_day_rate_state_view.f90
+            src/crop/mod_wofost_rate_parameters.f90
+            src/crop/mod_wofost_prepare_assimilation.f90
+            ../build/mod_wofost_finalize_rates_ext01_probe.f90
+            src/crop/mod_wofost81_assimilation.f90
+            src/crop/mod_wofost81_nitrogen.f90
+            src/crop/mod_wofost81_n_stress.f90
+            src/crop/mod_wofost81_parameter_contract.f90
+            src/crop/mod_wofost81_n_owner_state.f90
+            src/crop/mod_wofost81_crop_owner_state.f90
+            src/crop/mod_wofost81_daily_parameter_contract.f90
+            src/crop/mod_wofost81_prepare_assimilation.f90
+            src/crop/mod_wofost81_rate_correction.f90
+            src/crop/mod_wofost81_leaf_structural_evolution.f90
+            src/crop/mod_wofost81_one_day_candidate.f90
+          )
+          for opt in 0 2; do
+            mkdir -p "../build/o$opt"
+            objs=()
+            for src in "${SOURCES[@]}"; do
+              obj="../build/o$opt/$(basename "${src%.*}").o"
+              gfortran "${COMMON[@]}" -O"$opt" -J "../build/o$opt" -I "../build/o$opt" -c "$src" -o "$obj"
+              objs+=( "$obj" )
+            done
+            gfortran "${COMMON[@]}" -O"$opt" -J "../build/o$opt" -I "../build/o$opt" -c ../build/ext01_driver.f90 -o "../build/o$opt/driver.o"
+            gfortran "${COMMON[@]}" -O"$opt" "${objs[@]}" "../build/o$opt/driver.o" -o "../build/o$opt/driver"
+            "../build/o$opt/driver" ../build/forcing.dat "../build/fortran_o$opt.csv"
+            python tests/fwof/ext01/compare_new_barley.py "../build/fortran_o$opt.csv" ../input/ext01_barley_python_crop_only.csv "../build/difference_o$opt.json"
+            echo "EXT01_O${opt}_NATIVE_RESEARCH_COMPLETE"
+          done
+          cmp ../build/fortran_o0.csv ../build/fortran_o2.csv
+          echo EXT01_O0_O2_IDENTICAL_NO_SCIENCE_ADMISSION
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ext01-research-native-fortran-comparison
+          path: |
+            build/
+            input/
+            ext01-crop-parameter-pair.json
+          if-no-files-found: warn
