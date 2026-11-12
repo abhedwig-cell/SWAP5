@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_UBUNTU_ALL_THREE_FULL_APPLICATIONS_72_EXACT_OWN_WINDOWS_QUALIFIED_PR_ADMISSION_PENDING",
+  "status": "CANONICALLY_ADMITTED_PR1658_THREE_FULL_NO_MACRO_APPLICATIONS_72_EXACT_OWN_WINDOWS",
   "owner": "SWAP5-NOMACRO-CLOSURE01",
   "canonical_base": "84e297af23b2b6e90c927b958fecb5e24228b975",
   "candidate_physics_commit": "3ab3383877ed7c9172383458e5517dc3b63f5892",
@@ -176,7 +176,7 @@
   },
   "raw_index": "research/hybrid-water01/NOMACRO_CALENDAR_RAW_INDEX_20261112.json",
   "preservation": "research/hybrid-water01/NOMACRO_PRESERVATION_20261112.json",
-  "next": "Admit this bounded functional package through PR1658, verify canonical tree; close explicit full-period supported-heat export and remaining no-macro scenario contracts without repeated unchanged historical runs",
+  "next": "Compact accepted supported-heat export: compare existing detailed three-day saline irrigation first, then select bounded full periods; never invent missing mass-carried energy",
   "prior_failed_package": {
     "status": "PROPOSED_WINDOWS_FULL1461_PASS_TERMINAL_EXACT_RESTART_FAIL_NO_ADMISSION",
     "acceptance": {
@@ -680,5 +680,29 @@
   "seasonal_raw_index": "research/hybrid-water01/NOMACRO_CALENDAR_SEASONAL_RAW_INDEX_20261112.json",
   "macro_static_source_preservation": "research/hybrid-water01/NOMACRO_MACRO_SOURCE_PRESERVATION_20261112.json",
   "linux_seasonal": "research/hybrid-water01/NOMACRO_CALENDAR_SEASONAL_LINUX_20261112.json",
-  "historical_auto_CI_adjudication": "research/hybrid-water01/NOMACRO_CI_ADJUDICATION_20261112.json"
+  "historical_auto_CI_adjudication": "research/hybrid-water01/NOMACRO_CI_ADJUDICATION_20261112.json",
+  "canonical_admission": {
+    "status": "VERIFIED_CANONICAL_EXACT_QUALIFIED_PR_TREE",
+    "pr": 1658,
+    "canonical_merge": "c8a75378f1eef315441366bff421dbb6bc991127",
+    "qualified_pr_head": "4f9cbe1b636f85870a97f143347f66e71463f783",
+    "canonical_base": "84e297af23b2b6e90c927b958fecb5e24228b975",
+    "tree": "ea98a50a27ebc23bdf03cffec5cb75d0eb235b1a",
+    "all_files_diff_empty": true,
+    "blob_sha256": {
+      "app/hybrid_water/daily_host.py": "4f5965c3c2658b3475e20e23b7eed7a53bc8d7692d8c11905db5bea101b5a273",
+      "app/hybrid_water/donor_sources.py": "6b65e625751f7c890f58586f0168b64a351f2719e621356aa2285a0ec8d419af",
+      "app/hybrid_water/main.f90": "b967a621b96d00c77ed1239dc688c1f7e23e82921ad4732c52de94ba43feeba1",
+      "app/hybrid_water/daily_coupling.py": "d5d3a3688f3add59395f9f1c43857bed59c1f6f351378a411e297a2b9802ca87",
+      "tools/solute/run_water.py": "a9f290b91fe235f71a0f2ce21141196771a6d639e2543b3d42e6a9ca0945b832",
+      "integration/f-ci/NOMACRO_RELEASE_20261112.json": "7383d9ac22ca5a36a9156913f4bf0f25832695d737d0671d35ba5e597a222b62"
+    },
+    "full_applications": {
+      "Grassgrowth": 1827,
+      "Hupsel": 1096,
+      "SaltFarm04dS": 1461
+    },
+    "exact_own_windows_windows_ubuntu_kernel_O0_O2": 72,
+    "remaining": "Full-period supported-heat export; complete physical energy and whole scientific equivalence remain separately unqualified"
+  }
 }

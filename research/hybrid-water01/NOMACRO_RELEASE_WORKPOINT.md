@@ -1,7 +1,11 @@
 # SWAP5-NOMACRO-CLOSURE01 release workpoint
 
-Current candidate successor: the accepted seasonal-clock/calendar omission is
-repaired. Windows and Ubuntu26.04 donorO2/kernelO0/O2 complete1461days and all
+Current canonically admitted successor: PR1658 merged at
+`c8a75378f1eef315441366bff421dbb6bc991127`. Its entire tree exactly matches
+qualified PR head4f9cbe1b636f85870a97f143347f66e71463f783 (treeea98a50a…).
+`NOMACRO_MERGE_20261112.json` records the actual fetched postimage. The accepted
+seasonal-clock/calendar omission is repaired. Windows and Ubuntu26.04
+donorO2/kernelO0/O2 complete1461days and all
 five strict own windows, including1459→1461, exactly. Earlier failed results below
 are retained chronology, not the current verdict. Exact current evidence:
 `NOMACRO_CALENDAR_WINDOWS_20261112.json`, `NOMACRO_CALENDAR_LINUX_20261112.json`
@@ -216,3 +220,17 @@ These remain FAILED, not promoted to PASS; none is a new physical regression.
 An automatically started long AHL run was canceled as NOT_SELECTED_IMPACT because
 its owning source is unchanged. Final proof-only publication skips redundant
 automatic model campaigns; both selected Ubuntu qualifications are terminal PASS.
+
+## Next concrete functional package
+
+Close supported full-period heat export for the three admitted no-macro
+configurations. Reuse the existing real heat/storage observer and accepted-day
+reader; emit compact numerical conduction/storage summaries rather than millions
+of redundant node lines. First compare compact and existing detailed output on
+the already qualified three-day saline-irrigation window, retaining native and
+physical byte identity and unchanged1e-9J/cm2 checks. Select a complete-period
+execution only after that discriminator passes; use a60s model cap and retain
+source/build/input identities. Keep missing mass-carried energy unavailable,
+the zero-advection failure visible and whole scientific equivalence separate.
+No active model worker or incomplete selected check remains at this checkpoint.
+Macro work remains frozen; the half-hour recovery automation remains useful.
