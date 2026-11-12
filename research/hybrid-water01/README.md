@@ -2,6 +2,59 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Complete original macro481 admitted; day438 science FAIL,12November2026
+
+PR #1654 MERGED at20fc1a56dcee2c741e6d97de51d59e9852cbc07c from
+codex/hybrid-original-macro-481 headf4d2af33922210b09e7681527ec5258f42612234.
+Actual canonical tree87ac96261459df8391fff165eada3094b5a1a2d4 exactly matches
+predicted merge tree. Canonical src/app/reference/tools/tests are unchanged from
+PR1653; all four executed data-auditor/workflow/result/evidence blobs exactly
+match qualified Linux03f46503df3417940c2de5d604aa33356b4f92c5. Receipt:
+CLOSURE01_ORIGINAL_MACRO481_CANONICAL_20261112.json. This supersedes old NEXT/
+ACTIVE continuation headings below; the full481 is DONE, DO NOT REPEAT it.
+
+Functional481 original dates/input hashes and all daily balance/stock/pressure
+records verified. Max daily water residual9.998866333377667e-7cm at unchanged
+1e-6 guard; signed sum-2.8784462817707774e-5cm;71035 unique-trajectory mass-step
+retries. Own365to368 physical366to368 EXACT, complete native368 EXACT; own453to459
+physical454to459 EXACT, complete native456/457/458/459 EXACT. Inherited PR1653
+Windows/Ubuntu kernel-O0/O2 short cold/state/discard proof has unchanged model
+sources; new full execution is Ubuntu-O2, not all-donor-O0 or cross-platform bits.
+
+Actual run chain43156633863/43157255241/43158145401/43158853787/43159561006
+continues native4/160/240/304/448 to481. First four are deliberately60s censored
+FAILURE jobs with preserved accepted journals; their38+9+9+4 overlap days match
+exactly; final COMPLETE34.993s. Sum275.007s includes60 overlap days, excludes old
+warm4 and own0.745/7.141s probes. Unintended stale-source repeat60.004s separately
+recorded, no new coverage. Mandatory expected-SHA guard now prevents stale work.
+No runtime-parity claim. ZERO new models for the Ubuntu26.04 preserved-data audit
+43165868303/job131007488724 PASS. Docs source/strict PASS,19.31s.
+
+SCIENCE NOT QUALIFIED: worst original GWL difference on438 is79.511365659cm
+(new-159.963365659 versus original printed-80.452cm). Corrected-profile spatial
+pressure difference91.0373cm despite matrix-stock difference-0.000687cm; cannot
+waive using mass closure/output rounding. Corrected spatial comparator differs
+platform/policy and is descriptive, NOT a qualified original spatial oracle.
+Default/public481 stays unchanged. Three original projects functionally complete;
+whole science/physical energy/runtime parity remain OPEN.
+
+Preserved raw executables/build/source/native/journals are canonical
+original-macro-481-evidence.zip SHA256
+c7b4cb52b86b07cf08a116603590e597c0ab6bd89780afc000e7d03e07512463.
+Report ORIGINAL_MACRO_481_20261112.md, full machine result and owner
+integration/f-ci/ORIGINAL_MACRO_481_20261112.json provide exact commands/lineage.
+No reliance on hosted artifact expiry. Data-only workflow input
+hybrid_original_macro_481=true, macro_expected_sha=exactHEAD verifies all evidence.
+
+NEXT DELIVERABLE: one bounded decision-changing day438 causal discriminator on
+source-bound states, explicitly separating cached coupled residual consistency
+from reference conditioning. First read retained accepted433to438/journal and
+original432 native seed; no full481 rerun, no repeated failed provisional-refresh
+campaign. Define the independent control and cost cap before execution. If no
+qualified reference/discriminator is defensible, retain scientific failure and
+continue an independent functional acceptance point. No active run remains.
+
+
 ### Complete native macro restart canonically admitted,12November2026
 
 PR #1653 MERGED at395b06eba53ca417f72b4f2d4e9c2734a22d825d.

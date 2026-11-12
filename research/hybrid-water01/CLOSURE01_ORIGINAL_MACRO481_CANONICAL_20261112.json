@@ -1,0 +1,28 @@
+{
+  "pr": 1654,
+  "status": "MERGED_FUNCTIONAL481_AND_NATIVE_STATE_SCIENTIFIC_NOT_QUALIFIED",
+  "head": "f4d2af33922210b09e7681527ec5258f42612234",
+  "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
+  "canonical": "20fc1a56dcee2c741e6d97de51d59e9852cbc07c",
+  "tree": "87ac96261459df8391fff165eada3094b5a1a2d4",
+  "predicted_tree_equal": true,
+  "data_gate": {
+    "run": 43165868303,
+    "job": 131007488724,
+    "head": "03f46503df3417940c2de5d604aa33356b4f92c5",
+    "status": "PASS",
+    "new_models": 0,
+    "canonical_exact_blobs": {
+      ".github/workflows/grass-thermal-production.yml": "fe1013b0bfd0f2ec60e62a641e4ae6a2708996a1",
+      "research/hybrid-water01/audit_original_macro_481.py": "20cba7b6826d827489e1f04419e31174291fc2e3",
+      "research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json": "03853e78ded3b73b0029fb6b9fef794659327b84",
+      "research/hybrid-water01/original-macro-481-evidence.zip": "2b44bf1491c06c634545fec5deb3e5178d9ee97a"
+    }
+  },
+  "unchanged_src_app_reference_tools_tests": true,
+  "inherited_state_O0_O2": "PR1653 unchanged model graph",
+  "docs_source": "PASS",
+  "docs_strict_seconds": 19.31,
+  "scientific_blocker": "Day438 groundwater difference79.511365659cm; no tolerance change or public-default promotion",
+  "next_deliverable": "One bounded causal day438 discriminator; no full model repetition or prior failed residual-refresh campaign"
+}
