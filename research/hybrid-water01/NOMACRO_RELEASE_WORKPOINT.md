@@ -102,3 +102,10 @@ Next concrete deliverable: isolate the terminal same-state derived/input-history
 dependency with one short1459→1461 comparison; repair only a demonstrated missing
 state, then repeat that bounded continuation before selecting any full replay.
 No new macropore calculation or implementation is selected.
+
+Published review: https://github.com/abhedwig-cell/SWAP5/pull/1658 (draft, no merge).
+Published proof head9dcf823279eb08ac1175e60a68d0e1edddeaf682 and canonical
+84e297af23b2b6e90c927b958fecb5e24228b975 were rechecked against the remote.
+Documentation source check and strict MkDocs build pass; MkDocs retains an INFO
+message about the existing migration-slices anchor. No required model worker
+remains running. The next bounded same-state investigation above is still open.
