@@ -1,0 +1,19 @@
+{
+  "status": "SELECTED_EXPLICIT_TRIAL_ORIGIN_CORRECTIVE_CANDIDATE",
+  "base": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+  "hypothesis": "Mutable macro trial geometry/events/unsaturated stores cause nonrepeatable coupling; restore existing native state envelope from one HeadCalc-call origin, evaluate original rates and derivatives together once per residual, reuse that derivative in Jacobian",
+  "physics": "Original MACRORATE(2), original formula/order within routine, criteria and native format unchanged; new numerical evaluation policy opt-in only",
+  "invariants": [
+    "explicit per-call trial state",
+    "no rejected-trial state accumulation",
+    "fresh residual and derivative same candidate",
+    "daily1e-6 mass unchanged",
+    "native source/build binding distinct for candidate"
+  ],
+  "local_selection": "Short actual fresh1to4 and own2to4 at kernelO0/O2 with frozen donor compiler;20s model caps",
+  "full_runs": 0,
+  "two_attempt_stop": true,
+  "candidate": "app/hybrid_water/consistent_macro_policy.py",
+  "next_if_pass": "One bounded Linux432to438 actual candidate fixture/control with same-state consistency observation, then only affected restart/rollback controls",
+  "next_if_fail": "Retain actual shortest failure, no cap extension/full run, reassess larger original block after second directed attempt"
+}
