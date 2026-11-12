@@ -32,6 +32,30 @@
         "model_runs": 0,
         "artifact_id": 13914688514,
         "artifact_sha256": "65a23e448266a065f53291a9b387df22791e0a1fa095111eaee73561d2a9a97a"
+      },
+      "retained_setup_failure_2": {
+        "run_id": 43154379242,
+        "head": "7ad930e54d1926a7d2d3790e283281ec1a4e1522",
+        "cause": "Reference root also must come from frozen PROOF_INDEX; no fixture reconstruction or input hash waiver",
+        "model_runs": 0,
+        "artifact_id": 13915221802,
+        "artifact_sha256": "476d85f10c79cc91c514a2d8a4a73466307eb30c236d3dc7ea4eb4fc52ce6136"
+      }
+    },
+    "next_window": {
+      "scope": "Own S5MAC006 continuation4to22, original all-day budget and macro block, no warm prefix repetition",
+      "reason": "After complete short restart passes, exercise a genuine later mass-retry interval before selecting a costly full trajectory",
+      "expected_seconds": 12,
+      "model_cap_seconds": 20,
+      "new_reference_runs": 0,
+      "outcome": {
+        "status": "OWN_RESTART_WINDOW_COMPLETE",
+        "seconds": 14.26867809984833,
+        "accepted_days": 18,
+        "end_day": 22,
+        "maximum_residual_cm": 7.810779596036078e-07,
+        "mass_step_retries": 1949,
+        "retry_day": 15
       }
     }
   },

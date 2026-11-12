@@ -42,8 +42,9 @@ def main():
     p.add_argument('--prior-o2',type=Path)
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     if bool(a.reuse_o0)!=bool(a.reuse_o2):raise ValueError('Both reused optimizations required')
-    reference=a.workspace/'reference';started=time.perf_counter()
+    started=time.perf_counter()
     index=json.loads((a.workspace/'PROOF_INDEX.json').read_text())
+    reference=a.workspace/index['reference']
     def provider(opt):
         return a.workspace/index['cases']['andelst-'+opt]['build']
     report={'status':'RUNNING','platform':sys.platform,'scope':'original donor O2; day-owner kernel O0/O2; fresh1to4, own2to4, external discard and cold3to4',
