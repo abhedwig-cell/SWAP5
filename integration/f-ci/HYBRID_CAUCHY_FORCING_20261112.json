@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_O0_O2_DAY20_22_AND_THREE_PROJECT_ORIGINAL_PRESERVATION_PASS_LINUX_RUNNING",
+  "status": "QUALIFIED_WINDOWS_UBUNTU_O0_O2_CAUCHY20_22_AND_ORIGINAL_ROUTE_PRESERVATION_ADMISSION_PENDING",
   "base": "ce04a4db9a21f264c077d0832e2173e5468e9d70",
   "scope": "Application-only explicit one-day original Cauchy head forcing; original/default physics/state/input/guards unchanged",
   "test_selection": {
@@ -20,7 +20,7 @@
   "caps": {
     "native_cohort_seconds": 240
   },
-  "next": "Complete existing Linux Cauchy plus original three-project/corruption owning cohort without duplication. Retain all failed probes, raw source/build/state/forcing evidence and independently audit; publish own PR and verify canonical. Actual external feedback qualified at20to22, not a full481 externally forced trajectory.",
+  "next": "Publish qualified Cauchy water input consumer with raw proof, retain failed probes and scoped limits, verify actual canonical postimage. Next inspect original Grassgrowth prescribed-groundwater boundary for extension through same transaction semantics; original Hupsel zero flux must not silently change.",
   "initial_probe_failure": {
     "source": "174fe9a5b2c19c8976a019b038dba02742643bb5",
     "seconds": 8.4189376,
@@ -535,7 +535,278 @@
   },
   "linux": {
     "run": 43123554632,
+    "job": 130869817599,
     "head": "20a85e286b48ed203ca923786dde1fba1b597d78",
-    "status": "in_progress"
-  }
+    "status": "completed",
+    "conclusion": "success",
+    "artifact": 13901403180,
+    "artifact_zip_sha256": "sha256:fd2f17d0993967a6f3dfccfb0bb9845e941c272e848acf6c8385205eb07c4c72",
+    "cauchy": {
+      "status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+      "source_commit": "20a85e286b48ed203ca923786dde1fba1b597d78",
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "d744444cf93bc3b070a4272f9fffd5aefc322139a0c8ac439d01be413b5a2fa5",
+        "research/hybrid-water01/qualify_cauchy_daily_forcing.py": "50ae0f5e7bdcb49169794bc214f7ee30b0b9632ff9975ad1993fb88af1264a32"
+      },
+      "cases": [
+        {
+          "optimization": "O0",
+          "cut": 20,
+          "end": 22,
+          "original_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+          "compatible_origin_sha256": "484eb109c8833035b1f4ac5381a90767fc65cf4c5352dced490f2a06fad7d6b0",
+          "exact_original_control": true,
+          "exact_retry_and_recovery": true,
+          "exact_independently_edited_original_head_control": true,
+          "invalid_pretrial_cases": 8,
+          "actual_head_perturbation_cm": 0.001,
+          "unshifted_bottom_cm": 0.19532446941794768,
+          "shifted_bottom_cm": 0.19537529078756663,
+          "external_terminal_sha256": "a0dd7bc53e7067427e5d911519bb071ed9404bef8a070b115b955315c8447e43"
+        },
+        {
+          "optimization": "O2",
+          "cut": 20,
+          "end": 22,
+          "original_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+          "compatible_origin_sha256": "3aa75e3a98346ef2cf28ee76cef6e6a27af2cd873b8e65e607dd50be3c4a753d",
+          "exact_original_control": true,
+          "exact_retry_and_recovery": true,
+          "exact_independently_edited_original_head_control": true,
+          "invalid_pretrial_cases": 8,
+          "actual_head_perturbation_cm": 0.001,
+          "unshifted_bottom_cm": 0.19532446941794768,
+          "shifted_bottom_cm": 0.19537529078756663,
+          "external_terminal_sha256": "9d5865078775f1dda01323b8fd132ccf623e1638f9b0c15f8cad1db1703dabfc"
+        }
+      ],
+      "censored": false,
+      "elapsed_seconds": 19.051515429999995
+    },
+    "original_preservation_status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+    "original_preservation_cases": [
+      {
+        "project": "grass",
+        "optimization": "O0",
+        "bundle_build_sha256": "4a4b7c6759385ff415b5340d0633aa632893d8c38de96230fa380cd2a808f114",
+        "native_origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+        "external_day4_sha256": "3b286f5c1ab7f3a4f823d6008f01a8b9bc6092bcd9fd476a18bf378d3905ef9b",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "grass",
+        "optimization": "O2",
+        "bundle_build_sha256": "692ab0deb79d6b277730d45b7485a3c86b795960ffa2622606fef604278c0aab",
+        "native_origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+        "external_day4_sha256": "6e9f9164108b5c4fbf0b415b7b75a079d7326876bf0db14db0fdc59845d69a5f",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O0",
+        "bundle_build_sha256": "bffd8b8c5979524da003abc6e2c282d40c74bbe5484873c37d61afb7bd3ad6c7",
+        "native_origin_sha256": "b296554d70385b3bc5c4e64ff68731281749203e6556e513b64e6307936b94d7",
+        "external_day4_sha256": "759f9dbc4d35d5adc7b5d5a47fc8083ab83ef18c89bedf6f62a6c03b67cc758c",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O2",
+        "bundle_build_sha256": "f67af9efb4614c5beb07a43cd8cc82866bb1767c8802a75d8c2ad1e3cfaf2163",
+        "native_origin_sha256": "25660942044824e0c36209b72040234c7c135ce48ed98a3ee2e687790f2eba1b",
+        "external_day4_sha256": "d365144b3aa5f768af09baa920cf6289f615dda8069eb125b240ef2007942713",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O0",
+        "bundle_build_sha256": "687d509b7519de7a5a864de72de9d7e3a97ab510f46c002b858f62a76a252ae6",
+        "native_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+        "external_day4_sha256": "191d08201a584f47975aea5b1c5707303b509f4ae336389b83e11a6c81847fa5",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O2",
+        "bundle_build_sha256": "5e4761bec3ab57f33f1767ddbdd2f711220a4ba581d1e0638601738577b32828",
+        "native_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+        "external_day4_sha256": "88b31c62a6705bc201ead6e3490b169dbc3b477f7c8d744470cf5ca76a5326fc",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      }
+    ],
+    "default_elapsed_case_seconds": 15.640762016999986,
+    "C_compiles": 24,
+    "native_corruption_status": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS"
+  },
+  "independent_audits": {
+    "windows": {
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "7179bfd972847a8c8395255eed7af06ff7b0569dd52b427626d60a21b9f9ae73"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "9c2fe86656dd9073cf477635101fae6a406baf6528e63f7122b6b7408620c730"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "original_route": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "windows",
+        "raw_files": 2660,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 46.60693639982492,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    },
+    "linux": {
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "a0dd7bc53e7067427e5d911519bb071ed9404bef8a070b115b955315c8447e43"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "9d5865078775f1dda01323b8fd132ccf623e1638f9b0c15f8cad1db1703dabfc"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "original_route": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "linux",
+        "raw_files": 1931,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 15.640762016999986,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    }
+  },
+  "recovery_input_guards": {
+    "status": "PERSISTED_CAUCHY_FORCING_REFUSALS_AND_YEAR_INPUT_TRANSFORMATION_PASS",
+    "checkpoint_attacks": [
+      "digest",
+      "mode",
+      "clock",
+      "foreign",
+      "nonfinite",
+      "applied-hash"
+    ],
+    "year_input_checks": [
+      {
+        "day": 364,
+        "prepared_bbc_sha256": "de7e106398e4950ac5d62b078dafff3dec3ca12d9bb70f965f6dabb5d362aa17",
+        "scope": "input transformation only, no year model execution"
+      },
+      {
+        "day": 365,
+        "prepared_bbc_sha256": "a9d24a5ddb802fba84cd38dcebc0ac340fd2a75a15aa80db0d8b7ea4f7118487",
+        "scope": "input transformation only, no year model execution"
+      },
+      {
+        "day": 453,
+        "prepared_bbc_sha256": "d71d16b888596a3c93dd556a8e3de1cba52fb9fad3bf633cf1532e6eebf30fba",
+        "scope": "input transformation only, no year model execution"
+      }
+    ],
+    "original_checkpoint_sha256": "9c39db6de2009028464e87aa0975f0dbe64f2a9fe4b281ec777bc3c71b8e6f07",
+    "model_runs": 0,
+    "sources": {
+      "app/hybrid_water/daily_coupling.py": "2ff8214a0b036fe1aae55ccadda626155046657d367eca42c7ef9ad6b344f697",
+      "research/hybrid-water01/check_cauchy_recovery_inputs.py": "f9c1306d4307cf7141813e54bbf006295966a4a01c50c6d9dd0213c62632f95a"
+    }
+  },
+  "raw_archives": {
+    "windows": {
+      "path": "research/hybrid-water01/cauchy-windows-20261112.tar.xz",
+      "bytes": 8915128,
+      "sha256": "828f0a9078c9670d15783b54a6115fc4749e0a48db918b5dc4d8cdd1efcb756d"
+    },
+    "linux": {
+      "path": "research/hybrid-water01/cauchy-linux-20261112.tar.xz",
+      "bytes": 5919700,
+      "sha256": "1f3b6a2f24feffd94cd8c0930699558f389987658a7c227a7068fa06ce2e160e"
+    }
+  },
+  "ci_log": {
+    "path": "research/hybrid-water01/cauchy-linux-ci-20261112.log.gz",
+    "sha256": "8c1faa964f56c3f8cb13cac1a07f4273dff6598076210209b0cc4bc27e411271"
+  },
+  "scope_limits": [
+    "Actual external Cauchy qualification20to22 and modified one-day head; no full externally forced481 trajectory",
+    "Own external recovery tested on matching original-head segments; modified one-day forcing is separately accepted and exact to independent original control",
+    "Year364/365/453 checks are input-only, not model execution",
+    "Platform-dependent old Andelst trajectory/sensitivity is retained; no common monotonic derivative/cross-platform science claim",
+    "Original forcing default and previous original-project tolerances unchanged",
+    "No peer groundwater solve, thermal feedback or new native codec",
+    "No new Fortran build or full application/reference repetition; immutable current binaries reused"
+  ]
 }
