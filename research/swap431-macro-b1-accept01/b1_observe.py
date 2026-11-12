@@ -1,8 +1,8 @@
 """Read-only fork observers for the two already registered numerical variants."""
 from pathlib import Path
 import argparse,json,subprocess,os,time,shutil,hashlib
-P=argparse.ArgumentParser();P.add_argument('action',choices=['prepare','run']);P.add_argument('--optimization',choices=['O0','O2'],default='O2')
-A=P.parse_args();ROOT=Path(__file__).resolve().parent;R=ROOT/'b1-accept01';OLD=Path('/workspace/scratch/847fc052fa43')
+P=argparse.ArgumentParser();P.add_argument('action',choices=['prepare','run']);P.add_argument('--optimization',choices=['O0','O2'],default='O2');P.add_argument('--bare-only',action='store_true');P.add_argument('--build-only',action='store_true');P.add_argument('--provider',type=Path,default=Path('/workspace/scratch/847fc052fa43'))
+A=P.parse_args();ROOT=Path(__file__).resolve().parent;R=ROOT if (ROOT/'PREREGISTRATION.json').exists() else ROOT/'b1-accept01';OLD=A.provider.resolve()
 
 FRESH=r'''
 subroutine audit_fresh()
@@ -197,15 +197,15 @@ def execute(cmd,cwd,limit=40):
         return dict(command=list(map(str,cmd)),returncode=None,seconds=time.monotonic()-start,stdout=(e.stdout or b'').decode(errors='replace') if isinstance(e.stdout,bytes) else e.stdout,censored=True)
 def compile(cmd,cwd):
     q=execute(cmd,cwd);logs.append(q)
-    (build/'OBS_BUILD.json').write_text(json.dumps(logs,indent=2)+'\n')
+    (build/('BARE_BUILD.json' if A.bare_only else 'OBS_BUILD.json')).write_text(json.dumps(logs,indent=2)+'\n')
     assert q['returncode']==0,q['stdout']
 for name in ['B0','V1','V2']:
     # O2 metrics controls already exist. O0 builds have their own full closure.
-    profiles=['metrics'] if name=='B0' else ['metrics','observer']
+    profiles=([] if name=='B0' else ['observer']) if A.build_only else (([] if name=='B0' else ['bare']) if A.bare_only else (['metrics'] if name=='B0' else ['metrics','observer']))
     for profile in profiles:
         if opt=='O2' and profile=='metrics':continue
         d=build/(name+'-'+profile);d.mkdir(exist_ok=True)
-        f=R/name/('headcalc_'+profile+'.f90')
+        f=R/name/('headcalc.f90' if profile=='bare' else 'headcalc_'+profile+'.f90')
         compile(baseflags+['-c',str(f),'-o',str(d/'headcalc.o')],d)
         extras=[];exclude={'headcalc.o'}
         if profile=='observer':
@@ -214,10 +214,15 @@ for name in ['B0','V1','V2']:
             extras=[d/'soilwater.o',d/'fork.o'];exclude.add('soilwater.o')
         objects=[p for p in sorted(obj.glob('*.o')) if p.name not in exclude]+[d/'headcalc.o']+extras
         compile(['gfortran','-B/usr/lib/gcc/x86_64-linux-gnu/14/','-o',d/'swap',*objects,tt/'libttutil.a'],d)
+        if A.build_only:
+            expected=next(x['exe_sha256'] for x in json.loads((build/'OBS_RUNS.json').read_text()) if x['name']==name and x['profile']=='observer')
+            assert sha(d/'swap')==expected,'Rebuilt observer differs from tested executable'
+            print(json.dumps({'name':name,'optimization':opt,'observer_rebuilt_byte_exact':True,'exe_sha256':expected}),flush=True)
+            continue
         case=d/'case';case.mkdir(exist_ok=True)
         for item in json.loads((OLD/'CASE_IDENTITY.json').read_text()):
             p=Path(item['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(OLD/'run-control'/p,case/p)
         shutil.copy2(OLD/'run-control-output/swap.swp',case/'swap.swp')
         q=execute([d/'swap','./swap.swp'],case,20);(case/'stdout.txt').write_text(q.pop('stdout') or '')
         q.update(name=name,profile=profile,optimization=opt,exe_sha256=sha(d/'swap'),swap_ok=(case/'swap.ok').exists())
-        runs.append(q);(build/'OBS_RUNS.json').write_text(json.dumps(runs,indent=2)+'\n');print(json.dumps(q),flush=True)
+        runs.append(q);(build/('BARE_RUNS.json' if A.bare_only else 'OBS_RUNS.json')).write_text(json.dumps(runs,indent=2)+'\n');print(json.dumps(q),flush=True)

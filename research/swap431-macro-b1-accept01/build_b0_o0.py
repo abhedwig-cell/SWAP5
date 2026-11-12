@@ -1,6 +1,7 @@
 from pathlib import Path
-import os, sys, types, json, subprocess, time, hashlib
-OLD=Path('/workspace/scratch/847fc052fa43');ROOT=Path(__file__).resolve().parent;OUT=ROOT/'b1-accept01/O0-closure'
+import os, sys, types, json, subprocess, time, hashlib,argparse
+parser=argparse.ArgumentParser();parser.add_argument('--provider',type=Path,default=Path('/workspace/scratch/847fc052fa43'));args=parser.parse_args()
+OLD=args.provider.resolve();ROOT=Path(__file__).resolve().parent;BASE=ROOT if (ROOT/'PREREGISTRATION.json').exists() else ROOT/'b1-accept01';OUT=BASE/'O0-closure'
 OUT.mkdir(parents=True,exist_ok=True)
 comp=OLD/'compiler'
 os.environ['PATH']=str(comp/'bin')+':'+os.environ['PATH']
@@ -8,7 +9,7 @@ os.environ['GCC_EXEC_PREFIX']=str(comp/'root/usr/lib/gcc/')
 os.environ['COMPILER_PATH']=str(comp/'root/usr/libexec/gcc/x86_64-linux-gnu/14')
 os.environ['LIBRARY_PATH']=str(comp/'root/usr/lib/gcc/x86_64-linux-gnu/14')+':/usr/lib/gcc/x86_64-linux-gnu/14'
 sys.modules['reference_identity']=types.SimpleNamespace(verify_b0_archive=None)
-p=ROOT/'audit-source/tools/vq/b0_source_runner.py'
+p=OLD/'evidence/tools/vq/b0_source_runner.py'
 source=p.read_text();ns={'__name__':'o0_builder','__file__':str(p)}
 exec(compile(source.replace('"-O2"','"-O0"'),str(p),'exec'),ns)
 logs=[]

@@ -1,0 +1,1086 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-ACCEPT01",
+  "baseline": "798c0bff798e6906c46b0cbfb8c8850fed3a037e",
+  "candidate_status": "V1_SHORT_ACCEPTANCE_REPAIR_SUPPORTED_NOT_PROMOTED",
+  "decision": "Prefer explicit terminal coupled certification V1 as experimental candidate. Do not promote B1: full history rollback is incomplete and original rate reduction becomes active; whole science and restart are untested.",
+  "numerical_variants": 2,
+  "model_executions": 16,
+  "censored_executions": 2,
+  "total_actual_model_wall_seconds": 61.29507615900002,
+  "O0_full_closure_build_seconds": 37.85182123499908,
+  "original_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "compiler": "GNU Fortran14.2.0 Linux x86_64",
+  "optimizations": [
+    "O0",
+    "O2"
+  ],
+  "physics_and_criteria_changed": false,
+  "O0_O2_all_registered_exports_and_attempts_exact": true,
+  "results": [
+    {
+      "optimization": "O2",
+      "name": "B0",
+      "accepted": 1022,
+      "attempt_counts": {
+        "0": 1022,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "accepted_with_rate_reduction": 0,
+      "rate_reduced_duration_days": 0,
+      "max_IDecMpRat": 0.0,
+      "max_accepted_iteration_index": 10.0,
+      "sum_accepted_iteration_indices": 2766.0,
+      "cached_criterion_failures": 0,
+      "daily": [
+        {
+          "DATE": "1997-12-31",
+          "RAIN": "0.",
+          "DRN": "0.",
+          "GWL": "-80.90000",
+          "BALDEV": "0.",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-01",
+          "RAIN": ".02670",
+          "DRN": ".06200",
+          "GWL": "-81.89494",
+          "BALDEV": "-5.96535E-07",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "-0."
+        },
+        {
+          "DATE": "1998-01-02",
+          "RAIN": "1.20740",
+          "DRN": ".11498",
+          "GWL": "-65.77381",
+          "BALDEV": "-4.62874E-08",
+          "MP_BALDEV_1": "-0.",
+          "MP_BALDEV_2": "-0."
+        }
+      ]
+    },
+    {
+      "optimization": "O2",
+      "name": "V1",
+      "accepted": 1538,
+      "attempt_counts": {
+        "0": 1538,
+        "1": 52,
+        "2": 11,
+        "3": 0
+      },
+      "accepted_with_rate_reduction": 11,
+      "rate_reduced_duration_days": 0.0014613540144521983,
+      "max_IDecMpRat": 1.0,
+      "max_accepted_iteration_index": 18.0,
+      "sum_accepted_iteration_indices": 6194.0,
+      "cached_criterion_failures": 0,
+      "daily": [
+        {
+          "DATE": "1997-12-31",
+          "RAIN": "0.",
+          "DRN": "0.",
+          "GWL": "-80.90000",
+          "BALDEV": "0.",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-01",
+          "RAIN": ".02670",
+          "DRN": ".06200",
+          "GWL": "-81.89494",
+          "BALDEV": "-5.49177E-07",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-02",
+          "RAIN": "1.20740",
+          "DRN": ".11455",
+          "GWL": "-65.71347",
+          "BALDEV": "-4.04856E-08",
+          "MP_BALDEV_1": "-0.",
+          "MP_BALDEV_2": "0."
+        }
+      ],
+      "fresh_observer": {
+        "samples": 41,
+        "failed": 0,
+        "max_local": 9.753823076580348e-07,
+        "max_total_abs": 1.7219932601388299e-06,
+        "max_exchange_attribution_remainder": 0.0
+      },
+      "rollback": {
+        "origin_byte_exact": true,
+        "real_large_trial_rejected": true,
+        "smaller_retry_success": true,
+        "stock_and_clock_restored": true,
+        "strict_full_memory_restored": false,
+        "differences_after_rollback_vs_direct_small": {
+          "reference_theta": 0.444,
+          "sorptivity": 0.28424123826309283,
+          "event": 1.0,
+          "exchange": 0.09285524550524515
+        },
+        "retry_all_exported_fields_byte_exact": true,
+        "changed_reference_cells": 9,
+        "max_origin_clock_at_changed_reference": 0.0,
+        "changed_event_cells": 6,
+        "max_origin_clock_at_changed_event": 0.002
+      },
+      "derivative": {
+        "columns": [
+          [
+            1.0,
+            0.0001,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            0.0001,
+            -0.00017916509639174377,
+            -0.00017916509662677858,
+            2.350348106243405e-13
+          ],
+          [
+            56.0,
+            0.0001,
+            -0.0637332112567602,
+            -0.06373321125689592,
+            1.3572476476042539e-13
+          ],
+          [
+            81.0,
+            0.0001,
+            -0.05032118184883809,
+            -0.0503211818471676,
+            1.6704901351083379e-12
+          ],
+          [
+            1.0,
+            5e-05,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            5e-05,
+            -0.00017916509757569254,
+            -0.00017916509662677858,
+            9.489139617298303e-13
+          ],
+          [
+            56.0,
+            5e-05,
+            -0.06373321125676887,
+            -0.06373321125689592,
+            1.2705114738054135e-13
+          ],
+          [
+            81.0,
+            5e-05,
+            -0.050321181848838104,
+            -0.0503211818471676,
+            1.6705040128961457e-12
+          ]
+        ],
+        "max_absolute_macro_diagonal_error": 1.6705040128961457e-12,
+        "rate_vs_derivative_task_exchange_exact": true,
+        "post_perturbation_return_exact": true
+      },
+      "max_terminal_head_difference_from_B0_cm": 0.08443081645599904
+    },
+    {
+      "optimization": "O2",
+      "name": "V2",
+      "accepted": 1233,
+      "attempt_counts": {
+        "0": 1233,
+        "1": 70,
+        "2": 16,
+        "3": 0
+      },
+      "accepted_with_rate_reduction": 16,
+      "rate_reduced_duration_days": 0.002168460795638746,
+      "max_IDecMpRat": 1.0,
+      "max_accepted_iteration_index": 12.0,
+      "sum_accepted_iteration_indices": 3869.0,
+      "cached_criterion_failures": 0,
+      "daily": [
+        {
+          "DATE": "1997-12-31",
+          "RAIN": "0.",
+          "DRN": "0.",
+          "GWL": "-80.90000",
+          "BALDEV": "0.",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-01",
+          "RAIN": ".02670",
+          "DRN": ".06200",
+          "GWL": "-81.89494",
+          "BALDEV": "-6.21654E-07",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-02",
+          "RAIN": "1.20740",
+          "DRN": ".11432",
+          "GWL": "-65.71217",
+          "BALDEV": "-7.49250E-08",
+          "MP_BALDEV_1": "-0.",
+          "MP_BALDEV_2": "-0."
+        }
+      ],
+      "fresh_observer": {
+        "samples": 41,
+        "failed": 0,
+        "max_local": 8.090390159545824e-07,
+        "max_total_abs": 1.7216715113542153e-06,
+        "max_exchange_attribution_remainder": 0.0
+      },
+      "rollback": {
+        "origin_byte_exact": true,
+        "real_large_trial_rejected": true,
+        "smaller_retry_success": true,
+        "stock_and_clock_restored": true,
+        "strict_full_memory_restored": false,
+        "differences_after_rollback_vs_direct_small": {
+          "reference_theta": 0.444,
+          "sorptivity": 0.2842395876643943,
+          "event": 1.0,
+          "exchange": 0.09285302509960477
+        },
+        "retry_all_exported_fields_byte_exact": true,
+        "changed_reference_cells": 9,
+        "max_origin_clock_at_changed_reference": 0.0,
+        "changed_event_cells": 6,
+        "max_origin_clock_at_changed_event": 0.002
+      },
+      "derivative": {
+        "columns": [
+          [
+            1.0,
+            0.0001,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            0.0001,
+            -0.00017918017751385878,
+            -0.00017918017724730885,
+            2.6654993858822584e-13
+          ],
+          [
+            56.0,
+            0.0001,
+            -0.06373321125675152,
+            -0.06373321125689592,
+            1.4439838214030942e-13
+          ],
+          [
+            81.0,
+            0.0001,
+            -0.05032118184883809,
+            -0.0503211818471676,
+            1.6704901351083379e-12
+          ],
+          [
+            1.0,
+            5e-05,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            5e-05,
+            -0.0001791801775181956,
+            -0.00017918017724730885,
+            2.7088674727816786e-13
+          ],
+          [
+            56.0,
+            5e-05,
+            -0.06373321125675152,
+            -0.06373321125689592,
+            1.4439838214030942e-13
+          ],
+          [
+            81.0,
+            5e-05,
+            -0.05032118184883807,
+            -0.0503211818471676,
+            1.6704693184266262e-12
+          ]
+        ],
+        "max_absolute_macro_diagonal_error": 1.6704901351083379e-12,
+        "rate_vs_derivative_task_exchange_exact": true,
+        "post_perturbation_return_exact": true
+      },
+      "max_terminal_head_difference_from_B0_cm": 0.08377078704799956
+    },
+    {
+      "optimization": "O0",
+      "name": "B0",
+      "accepted": 1022,
+      "attempt_counts": {
+        "0": 1022,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "accepted_with_rate_reduction": 0,
+      "rate_reduced_duration_days": 0,
+      "max_IDecMpRat": 0.0,
+      "max_accepted_iteration_index": 10.0,
+      "sum_accepted_iteration_indices": 2766.0,
+      "cached_criterion_failures": 0,
+      "daily": [
+        {
+          "DATE": "1997-12-31",
+          "RAIN": "0.",
+          "DRN": "0.",
+          "GWL": "-80.90000",
+          "BALDEV": "0.",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-01",
+          "RAIN": ".02670",
+          "DRN": ".06200",
+          "GWL": "-81.89494",
+          "BALDEV": "-5.96535E-07",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "-0."
+        },
+        {
+          "DATE": "1998-01-02",
+          "RAIN": "1.20740",
+          "DRN": ".11498",
+          "GWL": "-65.77381",
+          "BALDEV": "-4.62874E-08",
+          "MP_BALDEV_1": "-0.",
+          "MP_BALDEV_2": "-0."
+        }
+      ]
+    },
+    {
+      "optimization": "O0",
+      "name": "V1",
+      "accepted": 1538,
+      "attempt_counts": {
+        "0": 1538,
+        "1": 52,
+        "2": 11,
+        "3": 0
+      },
+      "accepted_with_rate_reduction": 11,
+      "rate_reduced_duration_days": 0.0014613540144521983,
+      "max_IDecMpRat": 1.0,
+      "max_accepted_iteration_index": 18.0,
+      "sum_accepted_iteration_indices": 6194.0,
+      "cached_criterion_failures": 0,
+      "daily": [
+        {
+          "DATE": "1997-12-31",
+          "RAIN": "0.",
+          "DRN": "0.",
+          "GWL": "-80.90000",
+          "BALDEV": "0.",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-01",
+          "RAIN": ".02670",
+          "DRN": ".06200",
+          "GWL": "-81.89494",
+          "BALDEV": "-5.49177E-07",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-02",
+          "RAIN": "1.20740",
+          "DRN": ".11455",
+          "GWL": "-65.71347",
+          "BALDEV": "-4.04856E-08",
+          "MP_BALDEV_1": "-0.",
+          "MP_BALDEV_2": "0."
+        }
+      ],
+      "fresh_observer": {
+        "samples": 41,
+        "failed": 0,
+        "max_local": 9.753823076580348e-07,
+        "max_total_abs": 1.7219932601388299e-06,
+        "max_exchange_attribution_remainder": 0.0
+      },
+      "rollback": {
+        "origin_byte_exact": true,
+        "real_large_trial_rejected": true,
+        "smaller_retry_success": true,
+        "stock_and_clock_restored": true,
+        "strict_full_memory_restored": false,
+        "differences_after_rollback_vs_direct_small": {
+          "reference_theta": 0.444,
+          "sorptivity": 0.28424123826309283,
+          "event": 1.0,
+          "exchange": 0.09285524550524515
+        },
+        "retry_all_exported_fields_byte_exact": true,
+        "changed_reference_cells": 9,
+        "max_origin_clock_at_changed_reference": 0.0,
+        "changed_event_cells": 6,
+        "max_origin_clock_at_changed_event": 0.002
+      },
+      "derivative": {
+        "columns": [
+          [
+            1.0,
+            0.0001,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            0.0001,
+            -0.00017916509639174377,
+            -0.00017916509662677858,
+            2.350348106243405e-13
+          ],
+          [
+            56.0,
+            0.0001,
+            -0.0637332112567602,
+            -0.06373321125689592,
+            1.3572476476042539e-13
+          ],
+          [
+            81.0,
+            0.0001,
+            -0.05032118184883809,
+            -0.0503211818471676,
+            1.6704901351083379e-12
+          ],
+          [
+            1.0,
+            5e-05,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            5e-05,
+            -0.00017916509757569254,
+            -0.00017916509662677858,
+            9.489139617298303e-13
+          ],
+          [
+            56.0,
+            5e-05,
+            -0.06373321125676887,
+            -0.06373321125689592,
+            1.2705114738054135e-13
+          ],
+          [
+            81.0,
+            5e-05,
+            -0.050321181848838104,
+            -0.0503211818471676,
+            1.6705040128961457e-12
+          ]
+        ],
+        "max_absolute_macro_diagonal_error": 1.6705040128961457e-12,
+        "rate_vs_derivative_task_exchange_exact": true,
+        "post_perturbation_return_exact": true
+      },
+      "max_terminal_head_difference_from_B0_cm": 0.08443081645599904
+    },
+    {
+      "optimization": "O0",
+      "name": "V2",
+      "accepted": 1233,
+      "attempt_counts": {
+        "0": 1233,
+        "1": 70,
+        "2": 16,
+        "3": 0
+      },
+      "accepted_with_rate_reduction": 16,
+      "rate_reduced_duration_days": 0.002168460795638746,
+      "max_IDecMpRat": 1.0,
+      "max_accepted_iteration_index": 12.0,
+      "sum_accepted_iteration_indices": 3869.0,
+      "cached_criterion_failures": 0,
+      "daily": [
+        {
+          "DATE": "1997-12-31",
+          "RAIN": "0.",
+          "DRN": "0.",
+          "GWL": "-80.90000",
+          "BALDEV": "0.",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-01",
+          "RAIN": ".02670",
+          "DRN": ".06200",
+          "GWL": "-81.89494",
+          "BALDEV": "-6.21654E-07",
+          "MP_BALDEV_1": "0.",
+          "MP_BALDEV_2": "0."
+        },
+        {
+          "DATE": "1998-01-02",
+          "RAIN": "1.20740",
+          "DRN": ".11432",
+          "GWL": "-65.71217",
+          "BALDEV": "-7.49250E-08",
+          "MP_BALDEV_1": "-0.",
+          "MP_BALDEV_2": "-0."
+        }
+      ],
+      "fresh_observer": {
+        "samples": 41,
+        "failed": 0,
+        "max_local": 8.090390159545824e-07,
+        "max_total_abs": 1.7216715113542153e-06,
+        "max_exchange_attribution_remainder": 0.0
+      },
+      "rollback": {
+        "origin_byte_exact": true,
+        "real_large_trial_rejected": true,
+        "smaller_retry_success": true,
+        "stock_and_clock_restored": true,
+        "strict_full_memory_restored": false,
+        "differences_after_rollback_vs_direct_small": {
+          "reference_theta": 0.444,
+          "sorptivity": 0.2842395876643943,
+          "event": 1.0,
+          "exchange": 0.09285302509960477
+        },
+        "retry_all_exported_fields_byte_exact": true,
+        "changed_reference_cells": 9,
+        "max_origin_clock_at_changed_reference": 0.0,
+        "changed_event_cells": 6,
+        "max_origin_clock_at_changed_event": 0.002
+      },
+      "derivative": {
+        "columns": [
+          [
+            1.0,
+            0.0001,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            0.0001,
+            -0.00017918017751385878,
+            -0.00017918017724730885,
+            2.6654993858822584e-13
+          ],
+          [
+            56.0,
+            0.0001,
+            -0.06373321125675152,
+            -0.06373321125689592,
+            1.4439838214030942e-13
+          ],
+          [
+            81.0,
+            0.0001,
+            -0.05032118184883809,
+            -0.0503211818471676,
+            1.6704901351083379e-12
+          ],
+          [
+            1.0,
+            5e-05,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            34.0,
+            5e-05,
+            -0.0001791801775181956,
+            -0.00017918017724730885,
+            2.7088674727816786e-13
+          ],
+          [
+            56.0,
+            5e-05,
+            -0.06373321125675152,
+            -0.06373321125689592,
+            1.4439838214030942e-13
+          ],
+          [
+            81.0,
+            5e-05,
+            -0.05032118184883807,
+            -0.0503211818471676,
+            1.6704693184266262e-12
+          ]
+        ],
+        "max_absolute_macro_diagonal_error": 1.6704901351083379e-12,
+        "rate_vs_derivative_task_exchange_exact": true,
+        "post_perturbation_return_exact": true
+      },
+      "max_terminal_head_difference_from_B0_cm": 0.08377078704799956
+    }
+  ],
+  "noninterference": [
+    {
+      "optimization": "O2",
+      "name": "V1",
+      "file": "result_output.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "c6f4d588c1f46fa5de4f52a9761e5256ae2a7da56faec5f55c84550690363797"
+    },
+    {
+      "optimization": "O2",
+      "name": "V1",
+      "file": "result.end",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "983ff4ec7acc9abd3f6196e1c0e1382953d15542e655743fe6fefe38a4a149c3"
+    },
+    {
+      "optimization": "O2",
+      "name": "V1",
+      "file": "macrogeom.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "91d1e1651e989e224ef72613424374bc85a57a6fd81a6b291358f3044c3e6816"
+    },
+    {
+      "optimization": "O2",
+      "name": "V1",
+      "file": "soilshrinkchar.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "0ce1f40ab494b38115c1cc89f5d987c6e1d59a06a3007e1cb2ea96ea67d72d38"
+    },
+    {
+      "optimization": "O2",
+      "name": "V2",
+      "file": "result_output.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "9bba4f351c4c65972f2aa5cf3bc0b9019fb397346375fbc8773bb3238b0b2006"
+    },
+    {
+      "optimization": "O2",
+      "name": "V2",
+      "file": "result.end",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "32e19ebc501a200c00477a0a0aefcc0d1b62c56d10370e613c2542f2c0f0caf3"
+    },
+    {
+      "optimization": "O2",
+      "name": "V2",
+      "file": "macrogeom.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "ebca7542e8a023dd0e85d2da97f43d654d88c8bf173823f810b1fbd3b29fba89"
+    },
+    {
+      "optimization": "O2",
+      "name": "V2",
+      "file": "soilshrinkchar.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "ed8780020de029d125f80d93963415dc6f46a2753dc759bba2899a4d4f482b3c"
+    },
+    {
+      "optimization": "O0",
+      "name": "V1",
+      "file": "result_output.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "74a865244e2470a9928f256e6c4b4b518ff26ed8eb351fa4c3c687d9b06749b9"
+    },
+    {
+      "optimization": "O0",
+      "name": "V1",
+      "file": "result.end",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "983ff4ec7acc9abd3f6196e1c0e1382953d15542e655743fe6fefe38a4a149c3"
+    },
+    {
+      "optimization": "O0",
+      "name": "V1",
+      "file": "macrogeom.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "b1699701cce25ddbcd94a9d47cc38e0123ffd317ada1d5e5f99143e97cf419f8"
+    },
+    {
+      "optimization": "O0",
+      "name": "V1",
+      "file": "soilshrinkchar.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "afd0aaf22d40a0cec868e171a6ff47f5da08e1c0f1a627c0f72c63f0499a7c2d"
+    },
+    {
+      "optimization": "O0",
+      "name": "V2",
+      "file": "result_output.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "55d56971a82f310b981e8941f05aa3c5b5390551823ebe3ec11e9b92db25ee28"
+    },
+    {
+      "optimization": "O0",
+      "name": "V2",
+      "file": "result.end",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "32e19ebc501a200c00477a0a0aefcc0d1b62c56d10370e613c2542f2c0f0caf3"
+    },
+    {
+      "optimization": "O0",
+      "name": "V2",
+      "file": "macrogeom.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "fc15bf42dd65e36272efb7f096e1ec2ff843e692a7692f9f0a7b10a42df83c5f"
+    },
+    {
+      "optimization": "O0",
+      "name": "V2",
+      "file": "soilshrinkchar.csv",
+      "metrics_observer_bare_equal": true,
+      "sha256_metrics": "897dfa2747ac66ca680de24d645ced6348ce88511a95c91c44023be1341c634b"
+    }
+  ],
+  "censored_observations": [
+    {
+      "name": "V1",
+      "samples": 756,
+      "fresh_failures": 0,
+      "last_observed_time": 35796.40400000459,
+      "qualified_complete_trajectory": false
+    },
+    {
+      "name": "V2",
+      "samples": 886,
+      "fresh_failures": 0,
+      "last_observed_time": 35796.585961133926,
+      "qualified_complete_trajectory": false
+    }
+  ],
+  "runs": [
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/B0/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 0.5804683590013155,
+      "censored": false,
+      "name": "B0",
+      "optimization": "O2",
+      "exe_sha256": "ccbe7e8ce20e4cd46af183fcd09638afc96908e155bcfad4ffa970489198ac74",
+      "swap_ok": true,
+      "input_sha256": "41f00a2efe9f1e39ff20831d34d6c657811f4862fcf62878c9787380ddd2cf78",
+      "attempt_counts": {
+        "0": 1022,
+        "1": 0,
+        "2": 0,
+        "3": 0
+      },
+      "cached_failures": 0,
+      "max_accepted_IDecMpRat": 0.0,
+      "last_attempt": [
+        0.0,
+        35796.99800000001,
+        0.002,
+        2.0,
+        0.0,
+        8.347321500679072e-09,
+        -8.056125365788819e-09,
+        1e-06,
+        1e-05,
+        0.0,
+        248.12713976594205,
+        -0.15158568989260127
+      ]
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V1/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 0.8828940590010461,
+      "censored": false,
+      "name": "V1",
+      "optimization": "O2",
+      "exe_sha256": "16741848e7dcb20d8847a3ce5e204a3fcc0bc56ae78c36b36e6345fd82d3fa01",
+      "swap_ok": true,
+      "input_sha256": "41f00a2efe9f1e39ff20831d34d6c657811f4862fcf62878c9787380ddd2cf78",
+      "attempt_counts": {
+        "0": 1538,
+        "1": 52,
+        "2": 11,
+        "3": 0
+      },
+      "cached_failures": 0,
+      "max_accepted_IDecMpRat": 1.0,
+      "last_attempt": [
+        0.0,
+        35796.9990403613,
+        0.0009596398834385012,
+        2.0,
+        0.0,
+        1.2257413972704967e-09,
+        -1.2831145705120984e-09,
+        1e-06,
+        1e-05,
+        0.0,
+        248.13766059801844,
+        -0.16289552568205778
+      ]
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V2/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 0.9137927400006447,
+      "censored": false,
+      "name": "V2",
+      "optimization": "O2",
+      "exe_sha256": "5104b726fc265de36c7ea08b057360d6df19ccea6db237b0b301e37a347c5822",
+      "swap_ok": true,
+      "input_sha256": "41f00a2efe9f1e39ff20831d34d6c657811f4862fcf62878c9787380ddd2cf78",
+      "attempt_counts": {
+        "0": 1233,
+        "1": 70,
+        "2": 16,
+        "3": 0
+      },
+      "cached_failures": 0,
+      "max_accepted_IDecMpRat": 1.0,
+      "last_attempt": [
+        0.0,
+        35796.99939690688,
+        0.0006030933772941394,
+        2.0,
+        0.0,
+        5.113592327354866e-10,
+        -5.893923955657562e-10,
+        1e-06,
+        1e-05,
+        0.0,
+        248.13835162735776,
+        -0.104074575400222
+      ]
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V1-observer/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 2.1500112189987703,
+      "censored": false,
+      "name": "V1",
+      "profile": "observer",
+      "optimization": "O2",
+      "exe_sha256": "6fda3606304da0f16fbee5895cfd4b5e908ecc5232f0bbb3ea7bf4e358376297",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V2-observer/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 2.082316310999886,
+      "censored": false,
+      "name": "V2",
+      "profile": "observer",
+      "optimization": "O2",
+      "exe_sha256": "e5241bc2ef279bc1b5aaa6e7bb75a27cd4fd5d3a043503ab4b040582a81ad0ed",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V1-bare/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 0.8760419109985378,
+      "censored": false,
+      "name": "V1",
+      "profile": "bare",
+      "optimization": "O2",
+      "exe_sha256": "01a5fb7de40983b29be6947d5087eab82a24fa676a51fa16b946952cfff6c14a",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V2-bare/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 0.7938228310013073,
+      "censored": false,
+      "name": "V2",
+      "profile": "bare",
+      "optimization": "O2",
+      "exe_sha256": "e31d779a9453796d3ae26ca91e600251fedbe61c91cd611cfe33ea9138877180",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/B0-metrics/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 0.6507071089999954,
+      "censored": false,
+      "name": "B0",
+      "profile": "metrics",
+      "optimization": "O0",
+      "exe_sha256": "626f2f724a99b7006d4d01f64c61818cbe23574ea42fe68eec6665b5f40e9318",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/V1-metrics/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 1.5552204839987098,
+      "censored": false,
+      "name": "V1",
+      "profile": "metrics",
+      "optimization": "O0",
+      "exe_sha256": "b14147f91eaa07fb7c0a0ffd3703c43a6729ae82d23e6a2efe967a97b252224d",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/V1-observer/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 2.8720767320010054,
+      "censored": false,
+      "name": "V1",
+      "profile": "observer",
+      "optimization": "O0",
+      "exe_sha256": "161fe4d2966b5cb9086c24ca6dbfd967bf9cff0cf57977dd61272bc58749e3b7",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/V2-metrics/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 1.8168743810001615,
+      "censored": false,
+      "name": "V2",
+      "profile": "metrics",
+      "optimization": "O0",
+      "exe_sha256": "e41057a7696609d8a1d0df62766fa860114c94cc1a2279a61effe4904b973896",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/V2-observer/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 2.8904884639996453,
+      "censored": false,
+      "name": "V2",
+      "profile": "observer",
+      "optimization": "O0",
+      "exe_sha256": "de70a98b38293f35ba2267a8b01d18d5f3054f900a2ecf6c4e17626f5879bb0e",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/V1-bare/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 1.5404761280005914,
+      "censored": false,
+      "name": "V1",
+      "profile": "bare",
+      "optimization": "O0",
+      "exe_sha256": "ee6c23ace2b43d6ed3d1fe65273e68b395e310ea5e3f45357a6eaf8e8463d62b",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O0/V2-bare/swap",
+        "./swap.swp"
+      ],
+      "returncode": 100,
+      "seconds": 1.6372240689997852,
+      "censored": false,
+      "name": "V2",
+      "profile": "bare",
+      "optimization": "O0",
+      "exe_sha256": "0b5b8e21f1b7537424f6a23170641a52381a3eb3c8bfd3414f1413f24526e0bf",
+      "swap_ok": true
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V1-observer/swap",
+        "./swap.swp"
+      ],
+      "returncode": null,
+      "seconds": 20.024601891000202,
+      "censored": true,
+      "name": "V1",
+      "profile": "observer",
+      "optimization": "O2",
+      "exe_sha256": "e99ab8ac4b8ae7d7012910714157c70010a57ceee14e2d8b81a75fa01ed2c871",
+      "swap_ok": false
+    },
+    {
+      "command": [
+        "/workspace/scratch/7f24e796fb4c/b1-accept01/O2/V2-observer/swap",
+        "./swap.swp"
+      ],
+      "returncode": null,
+      "seconds": 20.028059470998414,
+      "censored": true,
+      "name": "V2",
+      "profile": "observer",
+      "optimization": "O2",
+      "exe_sha256": "7a01e5d79cff2af6719312762b4f3182cc7a41d10cada975a4c3aee07e186010",
+      "swap_ok": false
+    }
+  ],
+  "bounds": [
+    "Original Andelst cold first two days, SWMBF1/SWKIMPL0 only",
+    "No B1 manifest/snapshot change",
+    "No whole481, B0 day438, own restart or global Jacobian qualification",
+    "Strict history rollback fails immediate restore; selected same-origin smaller retry is nevertheless exact",
+    "All-step observer prefixes censored, not complete passes",
+    "Ordinary accepted V1 residual is recertified by implementation; independent fresh-observer tests remain selected states",
+    "Water balance is reported at printed daily precision; no independent full substep donor/receiver inventory audit added",
+    "Original IDecMpRat law unchanged but rate reduction is activated on11(V1)/16(V2) accepted steps",
+    "No evidence all B0 head errors or hybrid day438 discrepancies are repaired"
+  ]
+}

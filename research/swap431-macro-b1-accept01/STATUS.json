@@ -1,0 +1,28 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-ACCEPT01",
+  "baseline": "798c0bff798e6906c46b0cbfb8c8850fed3a037e",
+  "branch": "research/swap431-macro-b1-accept01-798c0bff",
+  "stage": "TWO_VARIANT_BOUNDED_EXPERIMENT_COMPLETE",
+  "candidate": "V1",
+  "qualification": "SHORT_ACCEPTANCE_SUPPORTED_NOT_REFERENCE_PROMOTED",
+  "canonical_changed": false,
+  "b0_changed": false,
+  "b1_manifest_changed": false,
+  "production_changed": false,
+  "variants_tested": 2,
+  "O0_O2_complete": true,
+  "strict_full_history_rollback": false,
+  "selected_effective_retry_exact": true,
+  "macro_rate_reduction_active": true,
+  "whole_science_qualified": false,
+  "next_safe_step": "CODEX_FOLLOWUP.md: one process-memory context and one reduced-rate operator context only",
+  "recovery_files": [
+    "REPORT.md",
+    "RESULT.json",
+    "PREREGISTRATION.json",
+    "OBSERVATION_SELECTION.json",
+    "V1/fix.patch",
+    "V2/fix.patch",
+    "EVIDENCE.json"
+  ]
+}
