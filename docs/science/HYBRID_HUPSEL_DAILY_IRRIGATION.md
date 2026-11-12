@@ -110,9 +110,9 @@ control. Its admitted matching-original-head recovery and modified one-day
 control remain narrower evidence; reuse exact compatible published day20 origins,
 keep all tolerances and cap the two-day proof rather than repeat481days.
 
-## Proposed no-macro surface-irrigation successor
+## No-macro surface-irrigation successor
 
-The additive mode `surface-irrigation-daily-v1` selects the same S5IRR001
+The implemented additive mode `surface-irrigation-daily-v1` selects the same S5IRR001
 consumer for registered Hupsel and SaltFarm04dS only. The existing Hupsel mode
 retains its original project restriction and request semantics. The incremental
 builder accepts an explicit registered project (default Hupsel), preserves its
@@ -145,7 +145,9 @@ correctly refuses it. No clipping, repair or tolerance relaxation is selected.
 The external adapter now checks the current codec's conserved-solute domain
 before publication, so a locally mass-closed but unrestartable trial cannot
 become externally accepted. Such a request remains physically unqualified.
-The accepted-history test changes salinity at the original14.4mm water gift.
+That intermediate salinity-only probe also exposed the original day109 gap.
+The final regression retains the original failing14.401mm/.402mgcm3 request
+after the exact conservative transfer repair below.
 This is a fail-closed interface decision, not a numerical repair campaign.
 
 The fail-closed check also detects negative csurf at UNCHANGED original day109.
@@ -158,3 +160,12 @@ surface equations and all strict guards stay unchanged. It is a justified
 floating-point evaluation repair. Fresh full no-macro trajectories and affected
 restart/transaction controls are selected because the solute producer changes.
 Prior proof retains its old source scope; no failed reference is promoted.
+
+Consuming the actual changed-history day109 exposed a second original issue:
+the codec correctly retained positive surface solute0.001834mg/cm2, but the
+first solute step's flzerocumu output-counter reset erased it. The observed
+day110 mass loss matches that inventory. The repair removes only this physical
+stock reset from cumulative bookkeeping; cold task1 still initializes csurf=0.
+No tolerance, clipping, schema or accepted origin is changed. Actual109-to110
+consumption and the previously refused changed-winter history are selected
+as regression gates, together with fresh affected complete no-macro trajectories.

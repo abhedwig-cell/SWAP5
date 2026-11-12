@@ -313,3 +313,37 @@ Postimage receipt: NOMACRO_HEAT_MERGE_20261112.json. All selected checks are
 terminal; no model worker remains active. Next deliverable remains the bounded
 SaltFarm caller-controlled saline irrigation transaction described above.
 The release program and half-hour recovery schedule are not yet complete.
+
+## Active shared surface-event and strict day-restart closure
+
+Current implementation extends S5IRR001 to explicit registered no-macro projects
+through the additive surface-irrigation-daily-v1 mode. Historical Hupsel mode
+restriction remains. Source9f6edaa18 also closes a demonstrated original dry
+surface cancellation: both changed depth108 and UNCHANGED original day109 could
+export csurf=-2.168404344971009e-19, which strict native restore rightly refused.
+No epsilon/clipping is used: for exactly zero pond and macropore area the original
+mixture equation reduces to cfluxt=-csurf; csurf=0; isqtop=cfluxt/dtsolu. Wet
+equations stay exact. The adapter refuses invalid conserved native state before
+external publication. Full-day duration uses the actual original converted units
+without widening its1day boundary (14.4mm/0.6mmh was previously falsely refused).
+
+Windows actual O0/O2 complete Grass1827/Hupsel1096/Salt1461, all18 seasonal own
+windows per cohort, complete supported-heat export and guarded surface-event
+trials now pass. Accepted summer changed/disabled/identity histories have exact
+original-table controls, discard/retry, fresh recovery and interleaved workers.
+Original year-boundary identity passes. Injecting winter gifts on732/733 can
+refuse the second proposal under the unchanged1e-10 original solute guard; live
+and disk both refuse without advancing the accepted origin. This is retained
+as a coupling limit, not qualified changed-winter history or grounds for tuning.
+Native source remains donorO2 with kernel/heat-accounting O0/O2, as before.
+
+Linux first attempt43207819499 retained passed SaltFarm full/own, then stopped
+because selected state driver was omitted from sparse checkout. Attempt
+43208529651 stopped before Grass protocol because artifact ZIP had dropped
+executable mode. Workflow recovery restores the exact file/modes and reuses
+the passed SaltFarm proof and exact already built Grass binary; no physical
+code or tolerance changed between those attempts. Current selected CI source
+795ee7b0f is dispatched, with state-fixture/executable prerequisites explicit.
+Wait for that existing run, audit actual artifacts and finish one dedicated PR.
+Do not rerun the successful Windows or unchanged prior native full calls.
+Owner: integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json.

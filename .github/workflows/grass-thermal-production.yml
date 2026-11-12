@@ -265,47 +265,28 @@ jobs:
           shutil.copytree(Path('reference/swap-4.3.1/projects/4.salinitystress-04dS'),reference/'distribution/SWAP_4.3.1/cases/4.salinitystress-04dS')
           with Path(os.environ['GITHUB_ENV']).open('a') as f:f.write('SURFACE_REFERENCE='+str(reference)+'\n')
           PY
-      - uses: actions/download-artifact@v4
-        with:
-          name: nomacro-surface-${{ matrix.opt }}-26c1109e48060b953c5c3f84c8a669340fc8128d
-          run-id: 43207819499
-          github-token: ${{ github.token }}
-          path: ${{ runner.temp }}/surface-reused
-      - name: Validate reusable provider execution and selected state fixture
+      - name: Selected state fixture and current changed-state SaltFarm producer
         run: |
           test -f research/hybrid-water01/test_generic_hybrid_state.f90
-          for project in saltfarm grass; do
-            bundle="$RUNNER_TEMP/surface-reused/surface-native-$project-${{ matrix.opt }}"
-            chmod +x "$bundle/day_donor" "$bundle/day_kernel"
-          done
-      - name: Changed solute producer complete SaltFarm and all five own windows
-        run: |
-          python3 - <<'PY'
-          import os,shutil
-          from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP'])
-          shutil.copytree(root/'surface-reused/surface-native-saltfarm-${{ matrix.opt }}',root/'surface-native-saltfarm-${{ matrix.opt }}')
-          PY
-          python3 -B research/hybrid-water01/qualify_nomacro_saltfarm.py --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-native-saltfarm-${{ matrix.opt }}" --optimization ${{ matrix.opt }} --resume-proof
+          python3 -B research/hybrid-water01/qualify_nomacro_saltfarm.py --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-native-saltfarm-${{ matrix.opt }}" --optimization ${{ matrix.opt }}
       - name: Complete Grassgrowth and Hupsel with affected original contracts and seasonal windows
         run: |
           for project in grass hupsel; do
             bundle="$RUNNER_TEMP/surface-native-$project-${{ matrix.opt }}"
-            extra=()
-            if [ "$project" = grass ]; then extra=(--reuse-build "$RUNNER_TEMP/surface-reused/surface-native-grass-${{ matrix.opt }}"); fi
-            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference "$SURFACE_REFERENCE" --output "$bundle" --project "$project" --optimization ${{ matrix.opt }} "${extra[@]}"
-            if [ "$project" = grass ]; then
-              python3 - <<'PY'
-          import os,shutil
-          from pathlib import Path
-          root=Path(os.environ['RUNNER_TEMP'])
-          old=root/'surface-reused/surface-native-grass-${{ matrix.opt }}';new=root/'surface-native-grass-${{ matrix.opt }}'
-          for p in old.iterdir():
-              if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):shutil.copy2(p,new/p.name)
-          PY
-            fi
+            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference "$SURFACE_REFERENCE" --output "$bundle" --project "$project" --optimization ${{ matrix.opt }}
             python3 -B research/hybrid-water01/run_hybrid_grass_full.py --bundle "$bundle" --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-seasonal-$project-${{ matrix.opt }}" --project "$project"
           done
+      - name: Existing Grass prescribed-groundwater contract using current own origins
+        run: |
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP']);bundle=root/'surface-native-grass-${{ matrix.opt }}'
+          workspace=root/'surface-groundwater-provider';workspace.mkdir()
+          case={n:str(bundle/sub) if sub else str(bundle) for n,sub in [('build',''),('report',''),('continuous','continuous'),('resumed','resumed')]}
+          (workspace/'PROOF_INDEX.json').write_text(json.dumps({'reference':os.environ['SURFACE_REFERENCE'],'cases':{'grass-${{ matrix.opt }}':case}}))
+          PY
+          python3 -B research/hybrid-water01/qualify_grass_groundwater.py --workspace "$RUNNER_TEMP/surface-groundwater-provider" --output "$RUNNER_TEMP/surface-groundwater-${{ matrix.opt }}" --opt ${{ matrix.opt }} --probe
       - name: Actual shared and legacy events with original controls and fail-closed state
         run: |
           for project in saltfarm hupsel; do
@@ -314,6 +295,9 @@ jobs:
             if [ "$project" = saltfarm ]; then controls="$bundle/full"; fi
             out="$RUNNER_TEMP/surface-transactions-$project-${{ matrix.opt }}"
             python3 -B research/hybrid-water01/qualify_surface_irrigation.py --reference "$SURFACE_REFERENCE" --bundle "$bundle" --controls "$controls" --output "$out" --project "$project"
+            if [ "$project" = saltfarm ]; then
+              python3 -B research/hybrid-water01/check_saltfarm_day109.py --runs "$out" --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-day109-${{ matrix.opt }}"
+            fi
             cut=4; if [ "$project" = saltfarm ]; then cut=107; fi
             python3 -B research/hybrid-water01/check_irrigation_inputs.py --reference "$SURFACE_REFERENCE" --bundle "$out/build" --accepted "$out/$cut-modified-shared/external/accepted-column-1-day-$((cut+1)).zip" --project "$project" --output "$RUNNER_TEMP/surface-guards-$project-${{ matrix.opt }}"
           done
@@ -337,4 +321,6 @@ jobs:
             ${{ runner.temp }}/surface-transactions-*
             ${{ runner.temp }}/surface-guards-*
             ${{ runner.temp }}/surface-heat-*
+            ${{ runner.temp }}/surface-groundwater-*
+            ${{ runner.temp }}/surface-day109-*
           retention-days: 14

@@ -343,6 +343,10 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
    end if
 end subroutine hybrid_solute_checkpoint
 end submodule MOD_Solute_CDE""")
+        # Cumulative-output initialization must not erase restored physical
+        # surface solute. Cold task1 already initializes csurf to zero.
+        source=replace(source,"           csurf   = 0.0d0\n           samini  = sampro",
+                       "           samini  = sampro")
         # Exact dry-surface limit of the original mixed-reservoir equation.
         # With no pond or macropore area, all surface mass enters the matrix.
         # Avoid division/multiplication cancellation leaving a signed roundoff
