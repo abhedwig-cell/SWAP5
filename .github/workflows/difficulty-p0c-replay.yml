@@ -1,0 +1,17 @@
+name: DIFFICULTY P0C Counterfactual Replay
+on:
+  pull_request:
+    paths:
+      - 'src/research/mod_difficulty_trial_record.f90'
+      - 'src/research/mod_difficulty_counterfactual_replay.f90'
+      - 'tests/publication/test_difficulty_p0c_replay.f90'
+      - 'tests/publication/run_difficulty_p0c_replay.sh'
+      - '.github/workflows/difficulty-p0c-replay.yml'
+  workflow_dispatch:
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Qualify counterfactual replay
+        run: bash tests/publication/run_difficulty_p0c_replay.sh

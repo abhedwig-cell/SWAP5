@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "SWAP5.DIFFICULTY.TrialDifficultyRecord.v0",
+  "title": "TrialDifficultyRecord v0",
+  "description": "Research-only immutable record for preregistered DIFFICULTY Phase-0 counterfactual trials.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["identity", "phys", "forcing", "num_pre", "outcome"],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["experiment_id","preregistration_revision","canonical_commit_sha","checkpoint_id","counterfactual_group_id","soil_id","regime_id","method_id","grid_id","simulation_time","trial_id"],
+      "properties": {
+        "experiment_id":{"type":"string"},
+        "preregistration_revision":{"type":"string"},
+        "canonical_commit_sha":{"type":"string","pattern":"^[0-9a-f]{40}$"},
+        "checkpoint_id":{"type":"string"},
+        "counterfactual_group_id":{"type":"string"},
+        "soil_id":{"type":"string"},
+        "regime_id":{"enum":["R1","R2","R3","R4","R5","R6"]},
+        "method_id":{"type":"string"},
+        "grid_id":{"type":"string"},
+        "simulation_time":{"type":"string"},
+        "trial_id":{"type":"string"}
+      }
+    },
+    "phys": {
+      "type":"object",
+      "description":"Only quantities available before the tested solve. Arrays may be replaced by immutable content-addressed references in the implementation.",
+      "required":["profile","descriptors"],
+      "properties":{
+        "profile":{"type":"object"},
+        "descriptors":{"type":"object"}
+      },
+      "additionalProperties":false
+    },
+    "forcing": {
+      "type":"object",
+      "description":"Forcing and active boundary identities fixed before solve.",
+      "additionalProperties":true
+    },
+    "num_pre": {
+      "type":"object",
+      "description":"Numerical context known before solve; never classify these fields as physical predictors.",
+      "required":["dt","method_id"],
+      "properties":{
+        "dt":{"type":"number","exclusiveMinimum":0},
+        "method_id":{"type":"string"},
+        "grid":{"type":"object"},
+        "tolerances":{"type":"object"},
+        "previous_iterations":{"type":["integer","null"],"minimum":0},
+        "previous_rejection":{"type":["boolean","null"]},
+        "retry_index":{"type":"integer","minimum":0},
+        "previous_method":{"type":["string","null"]}
+      },
+      "additionalProperties":true
+    },
+    "outcome": {
+      "type":"object",
+      "description":"Must never be used to construct preregistered pre-trial predictors or regime membership.",
+      "required":["converged","admissible_final_state","mass_balance_pass","hidden_fallback_used","rejection","retry_required","failure_class"],
+      "properties":{
+        "converged":{"type":"boolean"},
+        "admissible_final_state":{"type":"boolean"},
+        "mass_balance_pass":{"type":"boolean"},
+        "hidden_fallback_used":{"type":"boolean"},
+        "nonlinear_iterations":{"type":["integer","null"],"minimum":0},
+        "rejection":{"type":"boolean"},
+        "retry_required":{"type":"boolean"},
+        "residual_trajectory":{"type":["array","null"],"items":{"type":"number"}},
+        "increment_trajectory":{"type":["array","null"],"items":{"type":"number"}},
+        "linear_iterations":{"type":["integer","null"],"minimum":0},
+        "conditioning_proxy":{"type":["number","null"]},
+        "wall_time_seconds":{"type":["number","null"],"minimum":0},
+        "cpu_time_seconds":{"type":["number","null"],"minimum":0},
+        "final_state_ref":{"type":["string","null"]},
+        "failure_class":{"type":"string"},
+        "reliably_solvable":{"type":"boolean"}
+      },
+      "additionalProperties":true
+    }
+  }
+}
