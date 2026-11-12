@@ -95,8 +95,11 @@ day20→22 original controls and unchanged mass guard. Original forcing remains 
 default. It adds no thermal consumer. The [Grass groundwater successor](HYBRID_GRASS_DAILY_GROUNDWATER.md)
 extends the same transaction to original prescribed groundwater, with actual
 leading/interior and modified-history recovery controls. Original Hupsel zero flux
-retains its semantics. The next bounded consumer is its original fixed irrigation
-with water/solute and complete persisted irrigation-context ownership.
+retains its semantics. The [Hupsel surface-irrigation successor](HYBRID_HUPSEL_DAILY_IRRIGATION.md)
+now supplies actual fixed water/solute events after complete persisted irrigation-
+context restoration, with changed-history retry/recovery and independent original-
+input physical controls. Next qualify changed-history external Cauchy recovery;
+its matching-original-head recovery and shifted one-day controls remain narrower.
 
 For thermal feedback an explicit corrected-physics scope and joint state/restart
 owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full

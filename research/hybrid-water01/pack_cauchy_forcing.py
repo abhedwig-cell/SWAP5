@@ -14,6 +14,8 @@ for name in ['cauchy','current','corruption','output']:p.add_argument('--'+name,
 p.add_argument('--failed',type=Path,action='append',default=[])
 p.add_argument('--inputs',type=Path)
 p.add_argument('--groundwater',type=Path)
+p.add_argument('--irrigation',type=Path)
+p.add_argument('--irrigation-inputs',type=Path)
 p.add_argument('--probe',type=Path)
 p.add_argument('--cauchy-inputs',type=Path)
 p.add_argument('--platform',choices=['windows','linux'],required=True)
@@ -22,6 +24,8 @@ phases={'cauchy':a.cauchy,'current':a.current,'corruption':a.corruption,
         **{f'failed-{i}':path for i,path in enumerate(a.failed)}}
 if a.inputs is not None:phases['recovery-inputs']=a.inputs
 if a.groundwater is not None:phases['groundwater']=a.groundwater
+if a.irrigation is not None:phases['irrigation']=a.irrigation
+if a.irrigation_inputs is not None:phases['irrigation-inputs']=a.irrigation_inputs
 if a.probe is not None:phases['probe']=a.probe
 if a.cauchy_inputs is not None:phases['cauchy-inputs']=a.cauchy_inputs
 files={};sources={}
@@ -42,6 +46,7 @@ with tempfile.TemporaryDirectory(prefix='s5-cauchy-source-pack-') as tmp:
         'linux':'feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'}[a.platform],
         'scope':'Actual external original Cauchy20to22 plus unchanged three-project original-forcing/default owner controls; no full coupled run.'}
     if a.groundwater is not None:index['scope']='Actual original Grass groundwater leading/interior changed-history control, current Cauchy and original3project preservation; no full externally forced trajectory.'
+    if a.irrigation is not None:index['scope']='Original Hupsel surface water/solute event, exact modified-history external recovery, independent original-input physical controls, no-file original event preservation and current three-project/Cauchy/Grass preservation; no full controlled trajectory.'
     hashes={n:hashlib.sha256(path.read_bytes()).hexdigest() for n,path in files.items()}
     with tarfile.open(a.output,'x:xz',preset=1) as t:
         for name,path in sorted(files.items()):t.add(path,arcname=name,recursive=False)
