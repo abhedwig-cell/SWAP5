@@ -160,3 +160,12 @@ surface equations and all strict guards stay unchanged. It is a justified
 floating-point evaluation repair. Fresh full no-macro trajectories and affected
 restart/transaction controls are selected because the solute producer changes.
 Prior proof retains its old source scope; no failed reference is promoted.
+
+Consuming the actual changed-history day109 exposed a second original issue:
+the codec correctly retained positive surface solute0.001834mg/cm2, but the
+first solute step's flzerocumu output-counter reset erased it. The observed
+day110 mass loss matches that inventory. The repair removes only this physical
+stock reset from cumulative bookkeeping; cold task1 still initializes csurf=0.
+No tolerance, clipping, schema or accepted origin is changed. Actual109-to110
+consumption and the previously refused changed-winter history are selected
+as regression gates, together with fresh affected complete no-macro trajectories.

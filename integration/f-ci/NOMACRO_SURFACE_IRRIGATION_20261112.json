@@ -1,7 +1,7 @@
 {
   "owner": "SWAP5-NOMACRO-CLOSURE01",
   "baseline": "8e929360afd67567c4dfa138d9a480d351e6ce85",
-  "status": "IDENTIFIED_ORIGINAL_DRY_SURFACE_CANCELLATION_IMPLEMENTED_AWAITING_PRODUCTION_TESTS",
+  "status": "POSITIVE_SURFACE_STOCK_RESTART_REPAIR_SELECTED_FRESH_CURRENT_QUALIFICATION",
   "scope": "Additive shared surface-irrigation transaction for registered SaltFarm and Hupsel; original Hupsel mode unchanged",
   "invariants": "accepted-state ownership, discard/retry/durable recovery, independent private workers, explicit build/input/origin lineage; no changed physics/order/tolerance/codec",
   "acceptance": [
@@ -51,5 +51,14 @@
     "status": "FAILED_ARTIFACT_EXECUTION_MODE_BEFORE_GRASS_CONTRACT",
     "cause": "GitHub ZIP artifact drops executable mode; native bytes unchanged",
     "recovery": "Preflight exact state fixture and restore executable permission before reuse; preserve copied modes. Reuse same passed SaltFarm full, same Grass binary, no physical code change."
+  },
+  "positive_surface_stock_restart_gap": {
+    "source": "9f6edaa18",
+    "accepted_day": 109,
+    "surface_stock_mg_cm2": 0.0018339999999385567,
+    "next_day_reported_mass_loss_mg_cm2": -0.0018340000023130414,
+    "cause": "Original flzerocumu bookkeeping erased restored physical csurf; native codec itself retained exact stock",
+    "repair": "Remove only csurf reset from cumulative-output reset; cold task1 still initializes zero. Preserve stock, guards, native order and codec.",
+    "regression": "Consume actual saved109 into110 for all three accepted summer histories; retain independently initialized no-override original controls. Winter gifts must now qualify or remain a blocker."
   }
 }
