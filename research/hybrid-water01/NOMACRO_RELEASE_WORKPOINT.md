@@ -267,3 +267,36 @@ process, closed/flushed at normal worker shutdown. It carries no physical state;
 the detailed observer lifecycle is unchanged. Repeat the short discriminator,
 then the failed full calls before selecting further replays. Censored files remain
 ineligible for complete accepted-day qualification.
+
+## Complete supported-heat export successor
+
+The buffered repair passes all three complete periods at O0/O2 on Windows and
+Ubuntu26.04 (selected run43203191980). All17536 accepted daily records have
+complete consecutive numerical heat support; each original physical receipt and
+both final native payloads are EXACT against its source-bound unobserved control.
+The unchanged1e-9J/cm2 cell/global guard passes, maximum global1.74e-11J/cm2.
+Model calls take3.77–28.29s; compile/link costs are separate and the60s cap remains.
+Both actual270-step O0/O2 irrigation discriminators match detailed headers exactly;
+the detailed independent reader passes. Compact output has no independent nodal
+reconstruction claim. On Ubuntu O0/O2 accounting reductions show small roundoff,
+retained explicitly; each passes the original guard. The earlier three censored
+unbuffered Windows attempts remain FAILED/censored. No tolerance was widened.
+
+The raw compact summaries, daily physical ledgers, final packages, actual observed
+donors, generated original temperature units, source/build/input identities and
+initial-attempt reports are in nomacro-full-heat-20261112.tar.xz with its own member
+SHA256 manifest; the owning NOMACRO_HEAT_EXPORT_20261112.json pins the archive and
+verified GitHub artifact digests. The separate worker owns its buffered I/O
+channel; no shared physical state or legacy thread-safety claim is introduced.
+Complete mass-carried energy remains unavailable, zero-advection comparisons FAIL,
+and the original oxygen/reference failures stay visible. Macro work stays frozen.
+
+Next concrete functional deliverable: extend the existing caller-controlled
+surface-irrigation transaction to the admitted SaltFarm profile, retaining the
+original Hupsel contract. First prove unchanged original saline irrigation108–110
+and a year boundary against independent original controls; then verify one
+changed-history water/solute request through discard/repeat/accept, fresh-process
+restart and interleaved independent instances at O0/O2. Use short retained origins
+and the existing1e-10 guards; no full1461 repeat without a changed dependency.
+This is a bounded external-coupling acceptance point, not a new forcing framework
+or an implicit full-energy/scientific-equivalence claim.
