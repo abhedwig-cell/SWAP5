@@ -186,3 +186,20 @@ is investigated and the attractive generic shortcut rejected by an unchanged
 physical gate. Portable Hupsel/SaltFarm scientific acceptance remains an explicit
 release decision; neither roundoff language nor performance evidence authorizes
 accepting their complete cross-platform trajectories.
+
+
+## Proposed source-bound durable-publisher build reuse
+
+The four-day checkpoint profiles expose about one second of repeated GCC
+compilation/loading per checkpoint-enabled command, separate from native donor
+work. The successor builds the unchanged restart_publish.c once with each
+registered no-macro bundle. Its C source, resulting library and actual GCC binary
+SHA are bound into the build/checkpoint identity. Every reused-bundle command
+checks the source/library before output, verifies the current prepared compiler,
+and rechecks the binary before loading. Direct legacy/macro callers retain their
+existing compilation route. No cross-command mutable compiler cache, durability
+operation, publication ordering, codec or physical/state contract is changed.
+A successor needs fresh build identities; RC1 checkpoints are never rebound.
+Qualification requires all3 O0/O2 physical/CSV/native controls and complete O2
+runs on Windows/Ubuntu, plus changed source/library/compiler refusals. This
+section is proposed until the corresponding gates and actual PR admission exist.

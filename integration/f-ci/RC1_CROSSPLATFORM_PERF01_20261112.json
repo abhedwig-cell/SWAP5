@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "MATCHED_GNU15_AUDITED_GENERIC_POLISH_OPTIMIZATION_REJECTED_REVIEWABLE_SCIENTIFIC_LIMITS",
+  "status": "PUBLISHER_BINARY_REUSE_IMPLEMENTED_PENDING_QUALIFICATION",
   "implementation": "Reuse one current-toolchain validation record only within the same CLI invocation. No cross-call compiler cache, no skipped file/binary/binding validation, no physics/state/codec/Fortran change.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
@@ -14,7 +14,7 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Review quantified cross-platform scientific limitations and rejected numerical-policy change in successor PR. Preserve existing scientific FAILs. Decide whether release may explicitly carry these portable-trajectory limitations; no fitted criteria or new broad campaign is authorized by these descriptive maxima.",
+  "next_action": "Fresh source provider and O0/O2 same-platform exact full physical/CSV/native comparison; changed source/library/compiler refusal controls; Linux same qualification before admission. No changed Fortran, C publication protocol, tolerances or codecs.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
@@ -73,7 +73,7 @@
       "forward_member_scan_pass": true
     }
   },
-  "current_development_branch": "codex/rc1-platform-science02",
+  "current_development_branch": "codex/rc1-publisher-perf03",
   "first_block_admission": {
     "pr": 1665,
     "qualified_head": "09fba1b26b22a628a218b77e6060b6e1c2f42baf",
@@ -92,5 +92,12 @@
     "audit": "All3 O0/O2 own native controls and fullO2 mass guards PASS; generated source normalized text and executed input hashes match Ubuntu. Corrected trajectories still amplify numerical branch differences; no portable-science PASS."
   },
   "polish_feedback": "integration/f-ci/rc1-perf01/POLISH_FEEDBACK.json",
-  "checkpoint_costs": "integration/f-ci/rc1-perf01/RESTART_COSTS.json"
+  "checkpoint_costs": "integration/f-ci/rc1-perf01/RESTART_COSTS.json",
+  "science_admission": {
+    "pr": 1666,
+    "canonical": "2b9d322e68de204128d9c57b53aaf3f9e7f963de",
+    "qualified_head": "738cf2a86417e18497ed2fb136b59750980cbf78",
+    "tree": "0a6bdd4a713236a4a9ddf1640503b0dacc3442c9",
+    "postimage_exact": true
+  }
 }
