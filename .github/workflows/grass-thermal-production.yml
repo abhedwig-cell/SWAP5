@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      full_trajectory_assessment:
+        description: Reproduce complete preserved scientific comparisons without any model launch
+        type: boolean
+        default: false
       hybrid_controlled_instances:
         description: Qualify interleaved independent project instances with explicit controlled inputs
         type: boolean
@@ -147,6 +151,49 @@ jobs:
         with:
           name: original-heat-accounting
           path: ${{ runner.temp }}/heat-observation
+          retention-days: 14
+  complete-trajectory-scientific-data:
+    if: github.event_name == 'workflow_dispatch' && inputs.full_trajectory_assessment
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz
+            /integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json
+            /integration/dataqual15_hupsel/HIGH_PRECISION_REFERENCE.json
+            /integration/dataqual15_hupsel/HIGH_PRECISION_REFERENCE.tar.xz
+            /integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json
+            /research/hybrid-water01/FULL_TRAJECTORY_COMPARISON_20261112.json
+            /research/hybrid-water01/HYBRID_GRASS_FULL_REFERENCE_20261111.json
+            /research/hybrid-water01/HYBRID_HUPSEL_REFERENCE_20261111.json
+            /research/hybrid-water01/andelst-481-application-evidence.zip
+            /research/hybrid-water01/andelst-481-application-receipt.json
+            /research/hybrid-water01/assess_full_trajectories.py
+            /research/hybrid-water01/grass-ahl-successor-receipt.json
+            /research/hybrid-water01/hybrid-grass-full-windows-20261111.tar.xz
+            /research/hybrid-water01/hybrid-hupsel-windows-20261111.tar.xz
+            /research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv
+            /research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json
+      - name: Reproduce source-bound whole-period comparisons from immutable data only
+        run: |
+          python3 -B research/hybrid-water01/assess_full_trajectories.py --output "$RUNNER_TEMP/full-trajectory-comparison.json"
+          python3 - "$RUNNER_TEMP/full-trajectory-comparison.json" <<'PY'
+          import json,sys
+          from pathlib import Path
+          expected=json.loads(Path('research/hybrid-water01/FULL_TRAJECTORY_COMPARISON_20261112.json').read_text())
+          actual=json.loads(Path(sys.argv[1]).read_text())
+          assert actual==expected
+          assert actual['model_runs']==0 and actual['builds']==0
+          print('COMPLETE_DATA_REPRODUCTION_EXACT; SCIENTIFIC_FAILURES_PRESERVED; NO_MODELS_EXECUTED')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: complete-trajectory-scientific-data
+          path: ${{ runner.temp }}/full-trajectory-comparison.json
           retention-days: 14
   external-controlled-instances:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_controlled_instances
@@ -712,7 +759,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances && !inputs.full_trajectory_assessment }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:

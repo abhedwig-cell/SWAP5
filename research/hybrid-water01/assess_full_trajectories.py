@@ -118,7 +118,7 @@ agwl=stats([float(r['original_gwl_cm']) for r in acmp],[float(r['GWL']) for r in
 assert round(agwl['max_abs_difference'],5)==alineage['prior_result']['max_abs_difference_from_original']['refreshed_minus_original_cm']
 native_grass=read('research/hybrid-water01/grass-ahl-successor-receipt.json')['historical_comparison']
 native_hupsel=read('integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json')['original_science']
-result={'status':'PRESERVED_FULL_TRAJECTORY_ASSESSMENT_REPRODUCED_NOT_WHOLE_SCIENCE','model_runs':0,'builds':0,
+result={'analysis_source_canonical_lf_sha256':digest(Path(__file__).read_bytes().replace(b'\r\n',b'\n')),'status':'PRESERVED_FULL_TRAJECTORY_ASSESSMENT_REPRODUCED_NOT_WHOLE_SCIENCE','model_runs':0,'builds':0,
  'precision_policy':'All computed differences descriptive. No new physical/scientific tolerance or reference substitution. Stock/yield sums are descriptive sums, not all physical cumulative fluxes.',
  'source_data_sha256':provenance,'text_hash_policy':'Repository JSON/promoted CSV canonical LF; archives and archived member hashes are raw bytes. Original promoted CSV raw source member hash retained in lineage.',
  'grass_original_block':{'days':1827,'water_fields_cm':gfields,'printed_crop_fields_descriptive':gcrop,'reproduces_prior_whole_period_water_comparison':True,'day188_unrounded_uptake_cm':grows[187]['external_flux_cm'][9],
