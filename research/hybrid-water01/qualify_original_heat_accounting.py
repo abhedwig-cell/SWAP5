@@ -30,7 +30,8 @@ p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--base-archive',type=Path,required=True)
 p.add_argument('--workspace',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
-p.add_argument('--case',action='append',choices=['hupsel-O0','hupsel-O2','grass-O0','grass-O2','andelst-O0','andelst-O2'])
+p.add_argument('--case',action='append',choices=['hupsel-O0','hupsel-O2','grass-O0','grass-O2','andelst-O0','andelst-O2','saltfarm-O0','saltfarm-O2'])
+p.add_argument('--saltfarm-bundle',type=Path,help='Current verified SaltFarm full/own bundle; original capsule supplies only immutable original objects')
 p.add_argument('--carrier-inventory',action='store_true',help='Observe actual water carriers at the identical heat step; no energy closure assumption')
 a=p.parse_args();a.output.mkdir()
 a.case=a.case or ['hupsel-O2']
@@ -41,6 +42,13 @@ if not a.workspace.exists():
  a.workspace.mkdir()
  with tarfile.open(a.base_archive) as t:t.extractall(a.workspace,filter='data')
 index=json.loads((a.workspace/'PROOF_INDEX.json').read_text())
+if a.saltfarm_bundle:
+ from daily_coupling import validate_bundle
+ selected=json.loads((a.saltfarm_bundle/'BUILD.json').read_text())
+ key='saltfarm-'+selected['identity']['kernel_flags'][0][1:]
+ assert a.case==[key],'Select exactly the current SaltFarm kernel profile'
+ validate_bundle(a.saltfarm_bundle,a.workspace/index['reference'],h.SALTFARM)
+ index['cases'][key]={'build':str(a.saltfarm_bundle.resolve()),'report':str(a.saltfarm_bundle.resolve())}
 member_hash=json.loads((a.workspace/'MEMBER_SHA256.json').read_text())
 for name,expected in member_hash.items():assert h.sha(a.workspace/name)==expected,name
 reference=a.workspace/index['reference'];objects=reference/'build/swap-obj';ttutil=reference/'build/ttutil-obj'
@@ -125,7 +133,7 @@ def instrument_carriers(raw):
   raw=raw.replace(anchor,'! BEGIN CARRIER OBSERVATION\n'+insert+'! END CARRIER OBSERVATION\n'+anchor)
  return raw
 try:
- for key,project in [('hupsel',h.HUPSEL),('grass',h.GRASSGROWTH),('andelst',h.ANDELST)]:
+ for key,project in [('hupsel',h.HUPSEL),('grass',h.GRASSGROWTH),('andelst',h.ANDELST),('saltfarm',h.SALTFARM)]:
   for opt in ['O0','O2']:
    if key+'-'+opt not in a.case:continue
    case=index['cases'][key+'-'+opt];bundle=a.workspace/case['build'];meta=json.loads((a.workspace/case['report']/'BUILD.json').read_text())
@@ -149,9 +157,12 @@ try:
    execute(['gfortran','-o',donor,*linked,*extras,ttutil/'libttutil.a'],out,'link')
    kernel=h.executable(bundle,'day_kernel')
    if os.name!='nt':kernel.chmod(0o755)
-   windows=[(2,4)] if key!='hupsel' else [(4,6)]
+   windows=[(107,110)] if key=='saltfarm' else ([(4,6)] if key=='hupsel' else [(2,4)])
    for cut,end in windows:
-    if key=='hupsel':
+    if key=='saltfarm':
+     origin=bundle/'full'/f'accepted-column-1-day-{cut}.zip';parent=meta['binding']
+     expected_folder=bundle/f'own-{cut}-{end}'
+    elif key=='hupsel':
      full=index['hupsel_full'];origin=a.workspace/full/'full'/f'accepted-column-1-day-{cut}.zip'
      parent=json.loads((a.workspace/full/'BUILD.json').read_text())['binding']
      expected_folder=a.workspace/full/f'own-{cut}-to-{end}'

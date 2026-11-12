@@ -14,13 +14,13 @@ a=p.parse_args();results={}
 for folder in sorted(a.runs.iterdir()):
     if not folder.is_dir() or '-' not in folder.name:continue
     key=folder.name.split('-')[0]
-    if key not in ('hupsel','grass','andelst'):continue
-    project={'hupsel':h.HUPSEL,'grass':h.GRASSGROWTH,'andelst':h.ANDELST}[key]
+    if key not in ('hupsel','grass','andelst','saltfarm'):continue
+    project={'hupsel':h.HUPSEL,'grass':h.GRASSGROWTH,'andelst':h.ANDELST,'saltfarm':h.SALTFARM}[key]
     window=next(folder.glob('window-*'))
     receipts=[json.loads(l) for l in (window/'daily.jsonl').read_text().splitlines()]
     trace=window/'original/original-heat-accounting.txt'
     report=read_accepted_heat(trace,receipts,project)
-    assert len(report['daily'])==2 and all(not r['full_energy_balance_complete'] for r in report['daily'])
+    assert len(report['daily'])==len(receipts) and all(not r['full_energy_balance_complete'] for r in report['daily'])
     # A calculated but externally unaccepted day never becomes an accepted heat
     # receipt. This is observer bookkeeping, not a new model computation.
     refused=read_accepted_heat(trace,[dict(r,committed=False) for r in receipts],project)
