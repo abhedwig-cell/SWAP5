@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_ALL_NEW_AND_CURRENT_OWNER_MODEL_GATES_PASS_LINUX_SELECTED",
+  "status": "QUALIFIED_WINDOWS_UBUNTU_O0_O2_ORIGINAL_GRASS_GROUNDWATER_CHANGED_HISTORY_AND_PRESERVATION_ADMISSION_PENDING",
   "base": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
   "scope": "Original Grass SWBOTB1 controlled groundwater with existing external daily transaction/restart; no new physics or kernel",
   "test_selection": {
@@ -20,7 +20,7 @@
   "caps": {
     "new_mode_seconds": 240
   },
-  "next": "Run same-source Linux owning groundwater/Cauchy/original3project and input guard cohort. Preserve exact successful leading O2 probe separately; no model repeat or Cauchy warm prefix repeat. Then publish independently audited raw proof via own PR and verify canonical.",
+  "next": "Publish qualified Grass original-groundwater external transaction via own PR and verify canonical postimage. Next inspect original Hupsel fixed irrigation event timing/units and full S5HUP010 irrigation context for explicit consuming water/solute input after restore; no metadata-only SWP wrapper, new general framework or full run.",
   "leading_O2_probe": {
     "status": "PASS",
     "source": "284a10881",
@@ -754,5 +754,479 @@
         "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
       }
     }
-  }
+  },
+  "linux": {
+    "run": 43128811641,
+    "job": 130887582127,
+    "head": "e7d4c5a9b90232ebde0df5b2467948ab74564095",
+    "status": "completed",
+    "conclusion": "success",
+    "artifact": 13905005274,
+    "artifact_zip_sha256": "sha256:bea5d281ce7becec5c9994fc0d2f9dc1976603900f68b11a85f759559506c807",
+    "groundwater": {
+      "status": "GRASS_ORIGINAL_PRESCRIBED_GROUNDWATER_CHANGED_HISTORY_RETRY_RECOVERY_PASS",
+      "source_commit": "e7d4c5a9b90232ebde0df5b2467948ab74564095",
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "878b23268c89c6ff14e4f90c983b2e6536c48ef31e1912e59d02c6fe75c14d1d",
+        "research/hybrid-water01/qualify_grass_groundwater.py": "7916f0ad86c9df58a60dc66f887cec4f113c392b6877eac3f279a629dd136cb2"
+      },
+      "cases": [
+        {
+          "optimization": "O0",
+          "cut": 2,
+          "end": 4,
+          "origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O0-2",
+            "origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+            "origin_day": 2,
+            "t0_day1900": 29222,
+            "t1_day1900": 29223,
+            "head_start_cm": -88.0,
+            "head_end_cm": -87.999,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O0-2",
+            "origin_sha256": "46b24a1353bd44dadfb8111168ab81002284e0552e16ddd7e086463278697c0d",
+            "origin_day": 3,
+            "t0_day1900": 29223,
+            "t1_day1900": 29224,
+            "head_start_cm": -87.999,
+            "head_end_cm": -87.998,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.1313808930187061,
+          "terminal_sha256": "553be9b5fce5a5c8260ec726446f9bbebb37ca265b6094ec99011775926aa011"
+        },
+        {
+          "optimization": "O0",
+          "cut": 114,
+          "end": 116,
+          "origin_sha256": "1dba3ad1d70e8f42449634913cd3a0e7b4301d9794851c5d6961f8c2a24df7db",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O0-114",
+            "origin_sha256": "1dba3ad1d70e8f42449634913cd3a0e7b4301d9794851c5d6961f8c2a24df7db",
+            "origin_day": 114,
+            "t0_day1900": 29334,
+            "t1_day1900": 29335,
+            "head_start_cm": -88.0,
+            "head_end_cm": -92.124,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O0-114",
+            "origin_sha256": "5361e95f006fb272ff2a7b4603d2efc747e8870aed3cd24067ecadca7fea6631",
+            "origin_day": 115,
+            "t0_day1900": 29335,
+            "t1_day1900": 29336,
+            "head_start_cm": -92.124,
+            "head_end_cm": -96.248,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.12451579977403532,
+          "terminal_sha256": "694ee8e5c628f6ca47be370c7ae86436fbf4435d7febadd4fe087382b19b8f49"
+        },
+        {
+          "optimization": "O2",
+          "cut": 2,
+          "end": 4,
+          "origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O2-2",
+            "origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+            "origin_day": 2,
+            "t0_day1900": 29222,
+            "t1_day1900": 29223,
+            "head_start_cm": -88.0,
+            "head_end_cm": -87.999,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O2-2",
+            "origin_sha256": "39dabbdde5436b933f0c5fc92262878842e9d161dbcc0ad0c921612efa28b527",
+            "origin_day": 3,
+            "t0_day1900": 29223,
+            "t1_day1900": 29224,
+            "head_start_cm": -87.999,
+            "head_end_cm": -87.998,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.1313808930187061,
+          "terminal_sha256": "a8ff94db07d25fb7ca148987cf63a7a3d48de93d76f4f8416e393da8f0a4da13"
+        },
+        {
+          "optimization": "O2",
+          "cut": 114,
+          "end": 116,
+          "origin_sha256": "1806d8be411bf3b344251ca7ef4fc0aca8c930c7be02a1f7f2881e8832e6773d",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O2-114",
+            "origin_sha256": "1806d8be411bf3b344251ca7ef4fc0aca8c930c7be02a1f7f2881e8832e6773d",
+            "origin_day": 114,
+            "t0_day1900": 29334,
+            "t1_day1900": 29335,
+            "head_start_cm": -88.0,
+            "head_end_cm": -92.124,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O2-114",
+            "origin_sha256": "c7f1e8bc9408ac2fe1d7da0ba404c428ba2e43b3560cef769d8e0f21062ea422",
+            "origin_day": 115,
+            "t0_day1900": 29335,
+            "t1_day1900": 29336,
+            "head_start_cm": -92.124,
+            "head_end_cm": -96.248,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.12451579977403532,
+          "terminal_sha256": "2562aa1ddcccbdbd7a4cacdbcd72d95ae6f697c5572b41172d25b859e0cabf58"
+        }
+      ],
+      "censored": false,
+      "elapsed_seconds": 8.192508963000002
+    },
+    "cauchy_status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+    "cauchy_cases": [
+      {
+        "optimization": "O0",
+        "cut": 20,
+        "end": 22,
+        "original_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+        "compatible_origin_sha256": "484eb109c8833035b1f4ac5381a90767fc65cf4c5352dced490f2a06fad7d6b0",
+        "exact_original_control": true,
+        "exact_retry_and_recovery": true,
+        "exact_independently_edited_original_head_control": true,
+        "invalid_pretrial_cases": 8,
+        "actual_head_perturbation_cm": 0.001,
+        "unshifted_bottom_cm": 0.19532446941794768,
+        "shifted_bottom_cm": 0.19537529078756663,
+        "external_terminal_sha256": "778f1b6aafb268fd2de0f5bab07e35857ace82b6b18cef620054c9c3bbc6b5d6"
+      },
+      {
+        "optimization": "O2",
+        "cut": 20,
+        "end": 22,
+        "original_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+        "compatible_origin_sha256": "3aa75e3a98346ef2cf28ee76cef6e6a27af2cd873b8e65e607dd50be3c4a753d",
+        "exact_original_control": true,
+        "exact_retry_and_recovery": true,
+        "exact_independently_edited_original_head_control": true,
+        "invalid_pretrial_cases": 8,
+        "actual_head_perturbation_cm": 0.001,
+        "unshifted_bottom_cm": 0.19532446941794768,
+        "shifted_bottom_cm": 0.19537529078756663,
+        "external_terminal_sha256": "45e794830d17551f0bb1b4ae9bebb91f47df0cd94109a6554c52b7e6f0895663"
+      }
+    ],
+    "cauchy_elapsed_seconds": 11.920779025000002,
+    "original_preservation_status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+    "original_preservation_cases": [
+      {
+        "project": "grass",
+        "optimization": "O0",
+        "bundle_build_sha256": "4a4b7c6759385ff415b5340d0633aa632893d8c38de96230fa380cd2a808f114",
+        "native_origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+        "external_day4_sha256": "89634bdee11dd1d4c684af78a10c6ade8dc3a2c8baef56e3b45913520385e0a8",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "grass",
+        "optimization": "O2",
+        "bundle_build_sha256": "692ab0deb79d6b277730d45b7485a3c86b795960ffa2622606fef604278c0aab",
+        "native_origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+        "external_day4_sha256": "91aeb70638965d38627e298ebf3d9d1643f081822d3cbd4e86327e0d2c245875",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O0",
+        "bundle_build_sha256": "bffd8b8c5979524da003abc6e2c282d40c74bbe5484873c37d61afb7bd3ad6c7",
+        "native_origin_sha256": "b296554d70385b3bc5c4e64ff68731281749203e6556e513b64e6307936b94d7",
+        "external_day4_sha256": "dec326b80f4333558b9650497fcf068d32909eac10c485575c720c7dac6dfcd6",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O2",
+        "bundle_build_sha256": "f67af9efb4614c5beb07a43cd8cc82866bb1767c8802a75d8c2ad1e3cfaf2163",
+        "native_origin_sha256": "25660942044824e0c36209b72040234c7c135ce48ed98a3ee2e687790f2eba1b",
+        "external_day4_sha256": "59151259465dadc458aa6d8f643bc949365ed92bf6ec9b5e62475e308c08ec2b",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O0",
+        "bundle_build_sha256": "687d509b7519de7a5a864de72de9d7e3a97ab510f46c002b858f62a76a252ae6",
+        "native_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+        "external_day4_sha256": "c1172185b3271e1d102747fa684bfe6caa84a8a212cfb9640e84c12abc8d982e",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O2",
+        "bundle_build_sha256": "5e4761bec3ab57f33f1767ddbdd2f711220a4ba581d1e0638601738577b32828",
+        "native_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+        "external_day4_sha256": "72b1003d48ee18797de2aa337ad434cc7083397b426621022485bdb34f26c188",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      }
+    ],
+    "default_elapsed_case_seconds": 17.465187646000018,
+    "C_compiles": 24,
+    "guard_statuses": {
+      "groundwater-inputs": "PERSISTED_GROUNDWATER_FORCING_REFUSALS_LEAP_YEAR_INPUT_TRANSFORMATION_PASS",
+      "cauchy-inputs": "PERSISTED_CAUCHY_FORCING_REFUSALS_AND_YEAR_INPUT_TRANSFORMATION_PASS",
+      "external-daily-corruption": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS"
+    }
+  },
+  "independent_audits": {
+    "windows": {
+      "groundwater": {
+        "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O0",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          }
+        ],
+        "auditor_sha256": "53a551a764e42fd4e7b4f7a652d368828e17869de59228ecb2a434a928c982c3"
+      },
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "67f588b7e261d0421033b8a4fe3365a05fe6860cb53d4c18bd4b304ac20a9154"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "5838a20ac3509b60359141fef30f9e4143519868aab2eec59adfcc7ded3b233e"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "original_route": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "windows",
+        "raw_files": 3551,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 47.532718299888074,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    },
+    "linux": {
+      "groundwater": {
+        "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O0",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          }
+        ],
+        "auditor_sha256": "53a551a764e42fd4e7b4f7a652d368828e17869de59228ecb2a434a928c982c3"
+      },
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "778f1b6aafb268fd2de0f5bab07e35857ace82b6b18cef620054c9c3bbc6b5d6"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "45e794830d17551f0bb1b4ae9bebb91f47df0cd94109a6554c52b7e6f0895663"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "original_route": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "linux",
+        "raw_files": 3236,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 17.465187646000018,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    }
+  },
+  "raw_archives": {
+    "windows": {
+      "path": "research/hybrid-water01/groundwater-windows-20261112.tar.xz",
+      "bytes": 7180104,
+      "sha256": "63c9f223dc7f62199aa73fc4c9720cd73675e7b7439c76bfb3b7bc60a77d0016"
+    },
+    "linux": {
+      "path": "research/hybrid-water01/groundwater-linux-20261112.tar.xz",
+      "bytes": 6970580,
+      "sha256": "d66d51270a2632f1f748797b1bf4c7d8f24a3719b1d5eb921fda72fb9d63f296"
+    }
+  },
+  "ci_log": {
+    "path": "research/hybrid-water01/groundwater-linux-ci-20261112.log.gz",
+    "sha256": "acd8e27e959f44174c69547d16de83d591cd0f8ef304fa9d18f63fae5bc95340"
+  },
+  "scope_limits": [
+    "Actual groundwater2to4 and114to116 with changed-state recovery, original leading-level identity and direct original input controls; no full externally controlled1827 trajectory",
+    "Cauchy20to22/current default3projects preserved at same scoped source/build identities; older Andelst numerical sensitivity remains open",
+    "Leap/year/terminal checks are input-only, not model runs",
+    "No source/physics/tolerance/datum conversion/new native codec or peer/thermal solver change",
+    "Native-only CPU/wall UNKNOWN; cohort elapsed includes controller/IO/publisher costs",
+    "Successful Windows O2 leading probe source report retained separately and reused with exact application/BUILD/native-state identity",
+    "Compatible inherited Cauchy day20 states verified; no repeated Cauchy warm prefix or full project/reference run"
+  ]
 }
