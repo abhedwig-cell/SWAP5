@@ -1,4 +1,4 @@
-"""Bounded opt-in original Hupsel surface-event consumer and incremental build."""
+"""Bounded opt-in original no-macro surface-event consumer and incremental build."""
 import copy
 import json
 from pathlib import Path
@@ -75,11 +75,12 @@ def render(source):
     return replace(source, 'end module MOD_irrigation', procedure+'\nend module MOD_irrigation')
 
 
-def build_bundle(base, reference, target):
+def build_bundle(base, reference, target, project=h.HUPSEL):
     """Compile one module; preserve the validated original kernel and other objects."""
     from daily_coupling import validate_bundle
     base,reference,target=map(Path,(base,reference,target))
-    meta,_=validate_bundle(base,reference,h.HUPSEL)
+    if project not in (h.HUPSEL,h.SALTFARM):raise ValueError('Unsupported surface irrigation project')
+    meta,_=validate_bundle(base,reference,project)
     identity=copy.deepcopy(meta['identity'])
     if 'irrigation_extension' in identity:raise ValueError('Already extended irrigation bundle')
     if subprocess.check_output(['gfortran','-dumpmachine'],text=True).strip()!=identity['target']:

@@ -1,0 +1,21 @@
+{
+  "owner": "SWAP5-NOMACRO-CLOSURE01",
+  "baseline": "8e929360afd67567c4dfa138d9a480d351e6ce85",
+  "status": "CONTRACT_SELECTED_NOT_IMPLEMENTED",
+  "scope": "Additive shared surface-irrigation transaction for registered SaltFarm and Hupsel; original Hupsel mode unchanged",
+  "invariants": "accepted-state ownership, discard/retry/durable recovery, independent private workers, explicit build/input/origin lineage; no changed physics/order/tolerance/codec",
+  "acceptance": [
+    "SaltFarm original108-110 and732-733 exact own controls",
+    "Hupsel original5-6 legacy and additive mode preservation",
+    "Modified two-day original-input controls; retry/recovery/instance exact",
+    "O0/O2 Windows and Ubuntu; original1e-10 water/solute guards",
+    "Dedicated PR and exact mergepostimage"
+  ],
+  "cost_selection": {
+    "model_call_cap_seconds": 60,
+    "fresh_SaltFarm_prefix": 733,
+    "full1461": "NOT_SELECTED_UNCHANGED_PHYSICS",
+    "macro": "FROZEN_NOT_SELECTED",
+    "full_FCI": "NOT_SELECTED_IMPACT_UNCHANGED_PHYSICAL_OWNERS"
+  }
+}

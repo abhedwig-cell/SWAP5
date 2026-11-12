@@ -109,3 +109,24 @@ modified first-day head, compared with an independent original-input second-day
 control. Its admitted matching-original-head recovery and modified one-day
 control remain narrower evidence; reuse exact compatible published day20 origins,
 keep all tolerances and cap the two-day proof rather than repeat481days.
+
+## Proposed no-macro surface-irrigation successor
+
+The additive mode `surface-irrigation-daily-v1` selects the same S5IRR001
+consumer for registered Hupsel and SaltFarm04dS only. The existing Hupsel mode
+retains its original project restriction and request semantics. The incremental
+builder accepts an explicit registered project (default Hupsel), preserves its
+exact original input/kernel/provider identity and refuses other projects. No
+physical equation, original conversion, calculation order or schema changes.
+Accepted requests remain bound to mode/project/build/origin/day and coupling ID.
+Discard, publication, recovery and independent-worker ownership remain unchanged.
+No original native origin may be relabelled into the extended build: fresh bounded
+no-file controls create its own origins and are compared with admitted originals.
+
+Selected acceptance: original saline irrigation108–110 and year-boundary732–733
+for SaltFarm, original Hupsel gift5–6, O0/O2 on Windows and Ubuntu. Retain
+independent original SWP-table controls for changed two-day histories; exact
+same-route retry/durable recovery and two interleaved instances; finite/range/
+foreign-mode/origin guards; unchanged1e-10 water/solute accounting. All calls
+are bounded at60seconds and unaffected full trajectories are reused. Missing
+energy and original scientific failures stay open; active macro work stays frozen.
