@@ -97,7 +97,7 @@ try:
         winter=cut==731
         base=(0.,0.,0.) if winter else ((14.4,.401,14.4/24) if project==h.SALTFARM else (24.,20.,12.))
         values=base if scenario=='identity' else ((0.,0.,0.) if scenario=='disabled' else
-             ((.02,1.,.02/24) if winter else ((14.4,.402,14.4/24) if project==h.SALTFARM else (24.001,20.001,12.))))
+             ((.02,1.,.02/24) if winter else ((14.401,.402,14.401/24) if project==h.SALTFARM else (24.001,20.001,12.))))
         f=c.irrigation_forcing(*values,'caller-first',enabled=values[0]>0)
         before=(c.day,c.revision,h.sha(c.checkpoint),c._attempt)
         for bad in [replace(f,coupling_id='foreign'),replace(f,origin_sha256='0'*64),replace(f,t0_day1900=f.t0_day1900+1),
