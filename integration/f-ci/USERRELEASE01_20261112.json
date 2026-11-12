@@ -1,0 +1,339 @@
+{
+  "owner": "SWAP5-USERRELEASE01",
+  "baseline": "f6e5c2d345de96da653c5caaf6062d471168373d",
+  "review_pr": 1662,
+  "status": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "invariants": "No physics/Fortran generator/tolerance/codec change. Exact source archives, original inputs, compiler/object/library/binary and own restart binding. No active macro execution.",
+  "acceptance": [
+    "Fresh Windows/Ubuntu source preparation, no research provider or Andelst execution",
+    "Literal public build/run/restart commands all3 registered profiles; exact physical/native own continuation",
+    "Missing/corrupt source/toolchain/input, occupied output, foreign restart and active macro refusals",
+    "README/getting-started exact supported scope/results/units/heat research-only limitation",
+    "Selected O0/O2 user-route checks, docs/strict MkDocs, PR and actual canonical postimage"
+  ],
+  "cost_selection": {
+    "original_provider_build_expected_seconds": 60,
+    "individual_compiler_timeout_seconds": 60,
+    "model_call_cap_seconds": 60,
+    "full_periods": "FRESH_PUBLIC_O2_ALL3_BOTH_OS; unchanged full O0/heat/seasonal contracts inherited",
+    "highest_low_air": "NOT_SELECTED",
+    "active_macro": "FROZEN_NOT_SELECTED"
+  },
+  "release_decision": "RELEASE_READY_NAMED_NO_MACRO_SCOPE_UPON_CANONICAL_ADMISSION",
+  "release_scope": [
+    "HYBRID_GRASSGROWTH_WATER1827",
+    "HYBRID_HUPSEL_WATER1096",
+    "HYBRID_SALTFARM_WATER1461"
+  ],
+  "implementation": "Source-only preparation from exact bundled original archives; SaltFarm staged before preflight; compile-only selected project; source/provider/compiler-validated reusable build; public exact day restart. Legacy Andelst/native routes preserved separately.",
+  "physical_dependency_surface_unchanged": {
+    "app/hybrid_water/daily_host.py": "070c33c958e56716eaece159ec0ba1990e4659c65bc8feccbec410fff5a71d39",
+    "app/hybrid_water/donor_sources.py": "6b65e625751f7c890f58586f0168b64a351f2719e621356aa2285a0ec8d419af",
+    "app/hybrid_water/donor_adapter.f90": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+    "app/hybrid_water/main.f90": "b967a621b96d00c77ed1239dc688c1f7e23e82921ad4732c52de94ba43feeba1",
+    "app/hybrid_water/hybrid_step_budget.f90": "0c708e0ba706919c6d2ac383657bc974c1a5dd7c109aee59dcd5f4213c07c4f9",
+    "app/hybrid_water/daily_coupling.py": "3b1172c9e86de8886d217e214060bc70f8e89247321fa9e5a5c7b45bf7203345",
+    "app/hybrid_water/heat_accounting.f90": "72e0376844a47fbdff15e7ab8a61a7b9ed0e9f9262eb44d86e4f3784f001b221",
+    "app/support/restart_publish.c": "3be46ad69ac6039aeb9e79055457e91b9f1d4041d6c992b8da3eb5e1a704484d",
+    "tools/solute/prepare_saltfarm.py": "9ac7607016edac47c59fb429e8f648b403afdc7cd4270c132bfd93637174719f"
+  },
+  "physical_dependency_note": "Actual Windows file-byte hashes above; normalized original text equals baseline blobs and Git production diff is empty. Both OS BUILD identities retain actual source-byte hashes, including platform checkout line endings.",
+  "inherited_authorities": [
+    "integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json",
+    "integration/f-ci/NOMACRO_RELEASE_20261112.json"
+  ],
+  "inherited_scope": "Unchanged production host/generator/Fortran/codec and original source/input/recipe retain full O0/O2 seasonal, rollback, independent-instance, external/MODFLOW and supported numerical heat qualification from PR1658/1659/1660/1661. Existing original FAIL results retained. New public route additionally reexecutes all three complete O2 periods on each OS.",
+  "fresh_proofs": {
+    "windows": {
+      "path": "integration/f-ci/userrelease01/windows-user-proof.tar.xz",
+      "sha256": "434e16c9b162aa8b5c07b669af2fe464caeb079becac80e03a9ed85ff416290f",
+      "bytes": 13316816,
+      "members": 488,
+      "source_commit": "c983f6d7d6ebcd950085a051ba7dedb8a360cbfa",
+      "source_preparation_seconds": 50.78244099998847,
+      "profiles": [
+        {
+          "project": "grass",
+          "optimization": "O0",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "1a3349bf689037823840e9b7206c68069b023e2921a9bdbee162382d4b596bd6",
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "maximum_solute_residual_mg_cm2": 0
+        },
+        {
+          "project": "grass",
+          "optimization": "O2",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "213e0f9e3291f8e3a5b47d9a9fb4f783f2925a2925b67dd2e97c323b51b5e654",
+          "maximum_water_residual_cm": 1.7144055272644287e-14,
+          "maximum_solute_residual_mg_cm2": 0,
+          "full_days": 1827,
+          "full_maximum_water_residual_cm": 6.3493742888471e-14,
+          "full_maximum_solute_residual_mg_cm2": 0,
+          "full_signed_water_residual_cm": -1.0947638779514135e-13
+        },
+        {
+          "project": "hupsel",
+          "optimization": "O0",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "1ebbc01df7b88cdabd8338b89b253c2dd76f2647ca1687ab0d8b9109aa841aad",
+          "maximum_water_residual_cm": 1.4585554986012994e-14,
+          "maximum_solute_residual_mg_cm2": 0.0
+        },
+        {
+          "project": "hupsel",
+          "optimization": "O2",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "d047f5b2bb6ca2856f8e12e4fab0454b0b2d4ae7b7c14862e82e2abc5592b51d",
+          "maximum_water_residual_cm": 1.4585554986012994e-14,
+          "maximum_solute_residual_mg_cm2": 0.0,
+          "full_days": 1096,
+          "full_maximum_water_residual_cm": 9.996691511691622e-11,
+          "full_maximum_solute_residual_mg_cm2": 2.0189359137172196e-13,
+          "full_signed_water_residual_cm": 2.667338342115643e-10
+        },
+        {
+          "project": "saltfarm",
+          "optimization": "O0",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "0aba71499f32007e88eda03788d17aef5779163342b5f5358c32643ddc0493b8",
+          "maximum_water_residual_cm": 5.65152091791532e-13,
+          "maximum_solute_residual_mg_cm2": 7.283063041541027e-13
+        },
+        {
+          "project": "saltfarm",
+          "optimization": "O2",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "0cde72bd96bd8752c963c159f8deea06a2006d90b43debd9da9a68eb59e02666",
+          "maximum_water_residual_cm": 5.65152091791532e-13,
+          "maximum_solute_residual_mg_cm2": 7.283063041541027e-13,
+          "full_days": 1461,
+          "full_maximum_water_residual_cm": 1.8597862833091838e-11,
+          "full_maximum_solute_residual_mg_cm2": 8.099007575701478e-12,
+          "full_signed_water_residual_cm": 3.118490542295023e-10
+        }
+      ],
+      "full_model_calls": [
+        {
+          "label": "grass-O2-full",
+          "seconds": 9.249684700043872
+        },
+        {
+          "label": "hupsel-O2-full",
+          "seconds": 4.893111100187525
+        },
+        {
+          "label": "saltfarm-O2-full",
+          "seconds": 11.17440599994734
+        }
+      ],
+      "source_preparation": {
+        "app/hybrid_water/user_prepare.py": "11bacc1bdeef758aba0df4f892c15865052b0dfb19b6ac0ee5c17fd7355c89d4",
+        "tools/vq/b0_source_runner.py": "cd23f0d70ea79110f2dcf36f66b5c4b428b3df90596a798dad992c8ee3a63cf5",
+        "tools/solute/prepare_saltfarm.py": "9ac7607016edac47c59fb429e8f648b403afdc7cd4270c132bfd93637174719f"
+      },
+      "toolchain": {
+        "gfortran": {
+          "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+          "sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+          "target": "x86_64-w64-mingw32"
+        },
+        "gcc": {
+          "version": "gcc.EXE (Rev4, Built by MSYS2 project) 16.2.0",
+          "sha256": "f4120ffea38b73efaf4d770c1942905e220819ae97299c94bfeab3c396b686e2",
+          "target": "x86_64-w64-mingw32"
+        },
+        "ar": {
+          "version": "GNU ar (GNU Binutils) 2.47.20260726",
+          "sha256": "294780eb7e0f0d26035e8b3e59c66046a7472680a4bbdd1d4e36ee4912643d30"
+        }
+      },
+      "original_model_executions_in_preparation": 0,
+      "exact_O0_O2_physical_receipts": true,
+      "negative_CLI_refusals": 12
+    },
+    "ubuntu": {
+      "path": "integration/f-ci/userrelease01/ubuntu-user-proof.tar.xz",
+      "sha256": "325068d937487578421d4be896856fc830ce4af3c299e1dfbd2d7a4bdd4065c4",
+      "bytes": 13361704,
+      "members": 483,
+      "source_commit": "a9d7c0b0a979bffd268c381d3aa80d976af3897a",
+      "source_preparation_seconds": 19.319677152000004,
+      "profiles": [
+        {
+          "project": "grass",
+          "optimization": "O0",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "4fd83da16be4c65e8424e0896cd12590597c90cb4f2ee1bccf2d58cf4143253c",
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "maximum_solute_residual_mg_cm2": 0
+        },
+        {
+          "project": "grass",
+          "optimization": "O2",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "269a91c427074adf945a0352bdb4e1e9f885d9fc2e03fe9b6fc1ca815a70bd92",
+          "maximum_water_residual_cm": 1.8643290036757243e-14,
+          "maximum_solute_residual_mg_cm2": 0,
+          "full_days": 1827,
+          "full_maximum_water_residual_cm": 6.350762067627882e-14,
+          "full_maximum_solute_residual_mg_cm2": 0,
+          "full_signed_water_residual_cm": -1.11290712138631e-13
+        },
+        {
+          "project": "hupsel",
+          "optimization": "O0",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "d36ec6bed41bd6e9e828759acbfb918d8957ffdaed382e8391ec66fc40992682",
+          "maximum_water_residual_cm": 1.7729307605351963e-14,
+          "maximum_solute_residual_mg_cm2": 0.0
+        },
+        {
+          "project": "hupsel",
+          "optimization": "O2",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "787b3fb18ff395672a35a6b433d7dfb6ab04d7acb971b2350a5bd1a57b55b29e",
+          "maximum_water_residual_cm": 1.7729307605351963e-14,
+          "maximum_solute_residual_mg_cm2": 0.0,
+          "full_days": 1096,
+          "full_maximum_water_residual_cm": 9.997065718650444e-11,
+          "full_maximum_solute_residual_mg_cm2": 2.1610435979544247e-13,
+          "full_signed_water_residual_cm": 2.6666888331351084e-10
+        },
+        {
+          "project": "saltfarm",
+          "optimization": "O0",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "7e86e14588d7f25dfc0270f9b87ce0e5e3499370a0bf11ded29482bf4993efa9",
+          "maximum_water_residual_cm": 5.649716805500304e-13,
+          "maximum_solute_residual_mg_cm2": 7.220890552162018e-13
+        },
+        {
+          "project": "saltfarm",
+          "optimization": "O2",
+          "exact_physical_suffix": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "build_sha256": "254b39cb905b1b86386b9596fb5548e15ea3ab9fe80faa31dd5711b08c57c15f",
+          "maximum_water_residual_cm": 5.649716805500304e-13,
+          "maximum_solute_residual_mg_cm2": 7.220890552162018e-13,
+          "full_days": 1461,
+          "full_maximum_water_residual_cm": 1.296733553868279e-11,
+          "full_maximum_solute_residual_mg_cm2": 8.097869597101237e-12,
+          "full_signed_water_residual_cm": 3.312170511092107e-10
+        }
+      ],
+      "full_model_calls": [
+        {
+          "label": "grass-O2-full",
+          "seconds": 3.7975414080000007
+        },
+        {
+          "label": "hupsel-O2-full",
+          "seconds": 1.5721168919999968
+        },
+        {
+          "label": "saltfarm-O2-full",
+          "seconds": 4.632895573999988
+        }
+      ],
+      "source_preparation": {
+        "app/hybrid_water/user_prepare.py": "11bacc1bdeef758aba0df4f892c15865052b0dfb19b6ac0ee5c17fd7355c89d4",
+        "tools/vq/b0_source_runner.py": "cd23f0d70ea79110f2dcf36f66b5c4b428b3df90596a798dad992c8ee3a63cf5",
+        "tools/solute/prepare_saltfarm.py": "9ac7607016edac47c59fb429e8f648b403afdc7cd4270c132bfd93637174719f"
+      },
+      "toolchain": {
+        "gfortran": {
+          "version": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+          "sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+          "target": "x86_64-linux-gnu"
+        },
+        "gcc": {
+          "version": "gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+          "sha256": "864711037b900acdb7a449cf48d912cefa935b527fb60c767ccb956779e66136",
+          "target": "x86_64-linux-gnu"
+        },
+        "ar": {
+          "version": "GNU ar (GNU Binutils for Ubuntu) 2.46",
+          "sha256": "22c9d13affd2bea0f0237533ccb1bb2682eb9d22d6a4ed953bcc38445c8c98ab"
+        }
+      },
+      "original_model_executions_in_preparation": 0,
+      "exact_O0_O2_physical_receipts": true,
+      "negative_CLI_refusals": 12
+    }
+  },
+  "fresh_execution": {
+    "complete_O2_profiles": 6,
+    "complete_daily_records": 8768,
+    "short_accepted_records": 120,
+    "exact_own_native_restarts": 12,
+    "exact_O0_O2_short_profile_pairs": 6,
+    "premodel_CLI_refusals": 24,
+    "additional_Windows_checkpoint_refusals": 4,
+    "active_macro_executions": 0,
+    "Andelst_executions": 0
+  },
+  "linux_run": {
+    "id": 43233736787,
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43233736787",
+    "source": "a9d7c0b0a979bffd268c381d3aa80d976af3897a",
+    "conclusion": "success",
+    "registered_manual_workflow_only_delta": ".github/workflows/grass-thermal-production.yml",
+    "actual_user_source": "c983f6d7d6ebcd950085a051ba7dedb8a360cbfa",
+    "artifact_sha256": "a7c99e11bf47e6d40c9647c439004835043d77abf4db802c140e64645659aac1",
+    "artifact_id": 13952045988
+  },
+  "archive_policy": "Member-hashed raw accepted journals, original CSV, native checkpoints, actual generated source, command logs and source/build/input/toolchain metadata versioned under integration/f-ci/userrelease01. Users need only repository source and compilers; no proof capsule or expiring artifact is a runtime/build prerequisite.",
+  "heat_user_surface": "RESEARCH_ONLY_NUMERICAL_CONDUCTION_AND_SENSIBLE_STORAGE_OBSERVER; no public heat-ledger CSV or complete physical energy promise",
+  "scientific_limits": [
+    "Whole historical scientific equivalence NOT_QUALIFIED",
+    "Grass original/native oxygen FAIL retained including day188; no new oxygen/reference campaign",
+    "Hupsel day584 original/implicit reference families underresolved; FAIL retained",
+    "Missing advective/latent/gas/full-surface energy; zero-advection FAIL retained",
+    "SaltFarm original-workbook materialization; original R byte equivalence NOT_CLAIMED"
+  ],
+  "excluded": [
+    "Active macropores and original Andelst",
+    "Arbitrary edited SWP or unregistered option mixes",
+    "Thread-safe shared legacy globals",
+    "Caller thermal feedback",
+    "New MODFLOW/solver/migration work"
+  ],
+  "regression_selection": "Clean source builds Windows GNU16.2/Ubuntu26.04 GNU15.2, original donorO2/kernelO0/O2 all3, complete original O2 periods, exact cold/control/resume, invalid source/provider/input/toolchain/binding/output/macro refusals. Full F-CI/highest low-air NOT_SELECTED_IMPACT; src and production code owners unchanged.",
+  "docs_checks": "Documentation source checks PASS; strict MkDocs external site PASS. Initial sparse-checkout missing-locator/site-output failures repaired by materializing existing tests/testbank and moving generated site outside source; no assertion weakened.",
+  "review_disposition": {
+    "1662": "Both user-release gaps resolved by standalone clean preparation and actual documented Windows/Ubuntu build/run/day-restart. SaltFarm ordering fixed. Old native/development commands removed from release getting-started. Heat explicitly research-only."
+  },
+  "functional_blockers": [],
+  "next": "Publish qualified implementation/evidence PR, inspect review/checks, merge and verify exact canonical postimage. No release tag or public GitHub release.",
+  "fresh_entrypoint_sources": {
+    "app/hybrid_water/user_prepare.py": "11bacc1bdeef758aba0df4f892c15865052b0dfb19b6ac0ee5c17fd7355c89d4",
+    "tools/solute/run_water.py": "7c09d90cb0cde2dfb7722cdd85686900a5da3e0b78db16fd1e06593ebe04b631",
+    "tools/solute/check_userrelease.py": "7b69d40e0f1dad1d9aaa8003dd9a8e6c77aced3b2a1b01c461167c121e5b01bc",
+    "tools/vq/b0_source_runner.py": "cd23f0d70ea79110f2dcf36f66b5c4b428b3df90596a798dad992c8ee3a63cf5"
+  },
+  "review_head": "9d7283f9a4c36005565457696bdeb592cb2b51c9"
+}

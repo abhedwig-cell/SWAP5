@@ -1,5 +1,20 @@
 # SWAP5 Status-A current status
 
+## Standalone named no-macro user release
+
+[Getting started](../getting-started.md) provides source-only preparation,
+project build, complete execution and exact day restart for registered
+Grassgrowth1827, Hupsel1096 and SaltFarm04dS1461. Original source archives are
+bundled by exact SHA; preparation executes no model or active-macropore case.
+Clean Windows/Ubuntu public commands pass all three O0/O2 builds/own restarts
+and all complete O2 periods, with unchanged water/solute limits.
+`integration/f-ci/USERRELEASE01_20261112.json` owns the release decision,
+source-bound proofs and admission. Production Fortran/host, external/MODFLOW
+contracts and inherited full-period qualifications are unchanged. Numerical
+heat-ledger export stays research-only; whole science, original oxygen failures
+and underqualified references are not promoted.
+
+
 ## Functional no-macro release acceptance
 
 The [named no-macro release scope](../science/SWAP5_FUNCTIONAL_CLOSURE.md) is

@@ -1,5 +1,26 @@
 # Current functional closure of the original projects
 
+## Standalone user-release successor
+
+The [supported user commands](../getting-started.md) close independent PR1662's
+preparation/distribution gaps without changing production physics, process
+selection, tolerances or codecs. Original objects compile from repository-pinned
+archives without executing Andelst. All three registered no-macro inputs are
+staged before preflight, including SaltFarm workbook materialization. Users build
+and reuse validated executables, run complete selected periods and resume durable
+accepted days. Clean Windows GNU16.2 and Ubuntu26.04 GNU15.2 public commands pass
+all three O0/O2 builds and exact physical/native own restarts, plus fresh complete
+O2 periods. The unchanged production surface inherits existing full O0/O2,
+seasonal, rollback, independent-worker, external/MODFLOW and numerical heat proof.
+
+`integration/f-ci/USERRELEASE01_20261112.json` owns the exact release decision and
+member-hashed durable raw proofs. User readiness covers the named profiles only;
+arbitrary edited SWP and active macro cases remain excluded. Extra numerical
+heat-ledger export is explicitly research-only. Original oxygen FAIL results,
+Hupsel reference limitations, missing full physical energy and SaltFarm R limits
+remain separate scientific constraints. No official tag/public release is made.
+
+
 ## Functional no-macro release acceptance,12November2026
 
 **Functionally ready within the qualified release scope; whole scientific
