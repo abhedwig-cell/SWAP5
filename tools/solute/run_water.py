@@ -185,7 +185,7 @@ def run_hupsel(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL]+[p.model for p in PROJECTS])
-    parser.add_argument("--reference-work", type=Path, help="Prepared original SWAP 4.3.1 distribution for Andelst")
+    parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
     parser.add_argument("--output", type=Path)
@@ -283,6 +283,7 @@ def main():
             bundle=args.build_bundle.resolve()
             meta,case=validate_bundle(bundle,args.reference_work.resolve(),project)
             inputs,build_id=meta['inputs'],meta['identity']
+            user_prepare.validate_build(args.reference_work,build_id)
             binding=checkpoint_identity(inputs,build_id,project=project,**profile)
             if meta['binding'] != binding:
                 raise ValueError('Build checkpoint binding differs')

@@ -112,3 +112,18 @@ def validate(reference):
     for name,digest in record['provider_files'].items():
         if h.sha(reference/name) != digest:raise ValueError('Prepared source/object/library differs: '+name)
     return record
+
+
+def validate_build(reference, identity):
+    """Reused executable must retain its original compiler and object provider."""
+    reference=Path(reference)
+    current=toolchain()['gfortran']
+    if (identity['compiler'] != current['version'] or identity['compiler_sha256'] != current['sha256']
+        or identity['target'] != current['target']):
+        raise ValueError('Build compiler differs from the prepared toolchain')
+    for key,folder in [('donor_objects','swap-obj'),('donor_modules','swap-obj'),('ttutil_modules','ttutil-obj')]:
+        for name,digest in identity[key].items():
+            if h.sha(reference/'build'/folder/name) != digest:
+                raise ValueError('Build provider differs: '+name)
+    if h.sha(reference/'build/ttutil-obj/libttutil.a') != identity['ttutil_library']:
+        raise ValueError('Build TTUTIL library differs')
