@@ -1,0 +1,1237 @@
+{
+  "status": "QUALIFIED_WINDOWS_UBUNTU_O0_O2_ORIGINAL_GRASS_GROUNDWATER_CHANGED_HISTORY_AND_PRESERVATION_ADMISSION_PENDING",
+  "base": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
+  "scope": "Original Grass SWBOTB1 controlled groundwater with existing external daily transaction/restart; no new physics or kernel",
+  "test_selection": {
+    "candidate": "64e9408d40bd868f13c7522d8f20931c5d4242d4",
+    "groups": {
+      "hybrid_grass_groundwater": {
+        "changed_dependency": "External daily adapter adds typed original groundwater mode, sparse original-table day knots and uses existing transaction lineage",
+        "scientific_claim": "Actual mode1 prescribed-water-level effect and exact changed-history discard/retry/recovery with independent original input controls; preserve original/Cauchy routes",
+        "owner": "RT-TX original-block application",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 90,
+        "existing_evidence": "PR1641 immutable3project originalO2/kernelO0/O2/input/native capsules; PR1646 original Cauchy20to22/default proofs and compatible day20 packages",
+        "prior_execution": "PASS",
+        "diagnosis": "Source readswap builds GWLTAB before native restore; SoilWater hydrostatic reinitialization only SWINCO2, restore uses3. BoundBottom uses afgen at t1900+dt. Distinguish leading clamp and first interior segment, not full project reexecution. Retain native geometric checks."
+      }
+    }
+  },
+  "caps": {
+    "new_mode_seconds": 240
+  },
+  "next": "Publish qualified Grass original-groundwater external transaction via own PR and verify canonical postimage. Next inspect original Hupsel fixed irrigation event timing/units and full S5HUP010 irrigation context for explicit consuming water/solute input after restore; no metadata-only SWP wrapper, new general framework or full run.",
+  "leading_O2_probe": {
+    "status": "PASS",
+    "source": "284a10881",
+    "scope": "actual changed-head2to4 and changed-history external recovery, independent original input controls, exact original clamped-level control",
+    "inheritance": "Reuse only exact unchanged application SHA and same binary BUILD/native terminal SHA; retain original probe source report"
+  },
+  "windows_groundwater": {
+    "status": "GRASS_ORIGINAL_PRESCRIBED_GROUNDWATER_CHANGED_HISTORY_RETRY_RECOVERY_PASS",
+    "source_commit": "26b05027d234693fa947f9843c8e013c5d67ebec",
+    "sources": {
+      "app/hybrid_water/daily_coupling.py": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c",
+      "research/hybrid-water01/qualify_grass_groundwater.py": "7916f0ad86c9df58a60dc66f887cec4f113c392b6877eac3f279a629dd136cb2"
+    },
+    "cases": [
+      {
+        "optimization": "O0",
+        "cut": 2,
+        "end": 4,
+        "origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+        "exact_discard_retry_and_modified_history_recovery": true,
+        "exact_independent_original_controls_both_days": true,
+        "invalid_pretrial_cases": 8,
+        "first_forcing": {
+          "coupling_id": "grass-level-O0-2",
+          "origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+          "origin_day": 2,
+          "t0_day1900": 29222,
+          "t1_day1900": 29223,
+          "head_start_cm": -88.0,
+          "head_end_cm": -87.999,
+          "provenance": "caller-first-day"
+        },
+        "second_forcing": {
+          "coupling_id": "grass-level-O0-2",
+          "origin_sha256": "34d90659e8ac9d9ac186355b1ee10c5474046c29f236db81dcb1281869a04909",
+          "origin_day": 3,
+          "t0_day1900": 29223,
+          "t1_day1900": 29224,
+          "head_start_cm": -87.999,
+          "head_end_cm": -87.998,
+          "provenance": "caller-second-day-after-modified-state"
+        },
+        "first_bottom_outward_cm": 0.13138089301870753,
+        "terminal_sha256": "f29a589490fe1114011c40944151d636d280766db59ef117687f465af42cb210"
+      },
+      {
+        "optimization": "O0",
+        "cut": 114,
+        "end": 116,
+        "origin_sha256": "9b350c5fffcc37244ce268ddd4549634c47e13c85c9d0d084e3263cf590c6ded",
+        "exact_discard_retry_and_modified_history_recovery": true,
+        "exact_independent_original_controls_both_days": true,
+        "invalid_pretrial_cases": 8,
+        "first_forcing": {
+          "coupling_id": "grass-level-O0-114",
+          "origin_sha256": "9b350c5fffcc37244ce268ddd4549634c47e13c85c9d0d084e3263cf590c6ded",
+          "origin_day": 114,
+          "t0_day1900": 29334,
+          "t1_day1900": 29335,
+          "head_start_cm": -88.0,
+          "head_end_cm": -92.124,
+          "provenance": "caller-first-day"
+        },
+        "second_forcing": {
+          "coupling_id": "grass-level-O0-114",
+          "origin_sha256": "8b1f9460278d7d7f9378eb2e5a77da5856d588beccfa928c0f90743c41008443",
+          "origin_day": 115,
+          "t0_day1900": 29335,
+          "t1_day1900": 29336,
+          "head_start_cm": -92.124,
+          "head_end_cm": -96.248,
+          "provenance": "caller-second-day-after-modified-state"
+        },
+        "first_bottom_outward_cm": 0.12451579977403421,
+        "terminal_sha256": "553b4b3325789bbdabc062e1e6245a59d6487a847e9bcfe6f4af0920dda192a1"
+      },
+      {
+        "optimization": "O2",
+        "cut": 2,
+        "end": 4,
+        "origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+        "exact_discard_retry_and_modified_history_recovery": true,
+        "exact_independent_original_controls_both_days": true,
+        "invalid_pretrial_cases": 8,
+        "first_forcing": {
+          "coupling_id": "grass-level-O2-2",
+          "origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+          "origin_day": 2,
+          "t0_day1900": 29222,
+          "t1_day1900": 29223,
+          "head_start_cm": -88.0,
+          "head_end_cm": -87.999,
+          "provenance": "caller-first-day"
+        },
+        "second_forcing": {
+          "coupling_id": "grass-level-O2-2",
+          "origin_sha256": "aa81ac3f32c062e65902cab29a100d25ea0fcb3795d2dd97a247ffff0f9f2c15",
+          "origin_day": 3,
+          "t0_day1900": 29223,
+          "t1_day1900": 29224,
+          "head_start_cm": -87.999,
+          "head_end_cm": -87.998,
+          "provenance": "caller-second-day-after-modified-state"
+        },
+        "first_bottom_outward_cm": 0.13138089301870753,
+        "terminal_sha256": "317f03ede42ee1a8be4f2f5b7c6675abc01453598907f396c3a1f191dbf57006"
+      },
+      {
+        "optimization": "O2",
+        "cut": 114,
+        "end": 116,
+        "origin_sha256": "68157f7bb12ef52cf90f34b58891314998d711cda25445580b860fb3d04cfad9",
+        "exact_discard_retry_and_modified_history_recovery": true,
+        "exact_independent_original_controls_both_days": true,
+        "invalid_pretrial_cases": 8,
+        "first_forcing": {
+          "coupling_id": "grass-level-O2-114",
+          "origin_sha256": "68157f7bb12ef52cf90f34b58891314998d711cda25445580b860fb3d04cfad9",
+          "origin_day": 114,
+          "t0_day1900": 29334,
+          "t1_day1900": 29335,
+          "head_start_cm": -88.0,
+          "head_end_cm": -92.124,
+          "provenance": "caller-first-day"
+        },
+        "second_forcing": {
+          "coupling_id": "grass-level-O2-114",
+          "origin_sha256": "a57295bef114af0d40decc73a6acfbae4a3bd5430e7f2be2ad78584c1df14907",
+          "origin_day": 115,
+          "t0_day1900": 29335,
+          "t1_day1900": 29336,
+          "head_start_cm": -92.124,
+          "head_end_cm": -96.248,
+          "provenance": "caller-second-day-after-modified-state"
+        },
+        "first_bottom_outward_cm": 0.12451579977403421,
+        "terminal_sha256": "14450b78effe09365d3ac2083e28bae82e94e8ad8ec5601dea22e5ccc65ec86f"
+      }
+    ],
+    "inherited_probes": [
+      {
+        "optimization": "O2",
+        "cut": 2,
+        "source_commit": "284a108811940eb676c88993fb9d72336af4686d",
+        "report_sha256": "28d5f5d455cc0117108d2c9452597ca930a0808323334bf430878d5548616d80",
+        "application_source_sha256": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c"
+      }
+    ],
+    "censored": false,
+    "elapsed_seconds": 21.00178280007094
+  },
+  "windows_audit": {
+    "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+    "cases": [
+      {
+        "optimization": "O0",
+        "window": [
+          2,
+          4
+        ],
+        "actual_modified_state_disk_recovery_exact": true,
+        "actual_independent_original_controls_both_days_exact": true,
+        "actual_retry_native_payloads_exact": true,
+        "forcing_and_applied_input_lineage": "PASS"
+      },
+      {
+        "optimization": "O0",
+        "window": [
+          114,
+          116
+        ],
+        "actual_modified_state_disk_recovery_exact": true,
+        "actual_independent_original_controls_both_days_exact": true,
+        "actual_retry_native_payloads_exact": true,
+        "forcing_and_applied_input_lineage": "PASS"
+      },
+      {
+        "optimization": "O2",
+        "window": [
+          2,
+          4
+        ],
+        "actual_modified_state_disk_recovery_exact": true,
+        "actual_independent_original_controls_both_days_exact": true,
+        "actual_retry_native_payloads_exact": true,
+        "forcing_and_applied_input_lineage": "PASS"
+      },
+      {
+        "optimization": "O2",
+        "window": [
+          114,
+          116
+        ],
+        "actual_modified_state_disk_recovery_exact": true,
+        "actual_independent_original_controls_both_days_exact": true,
+        "actual_retry_native_payloads_exact": true,
+        "forcing_and_applied_input_lineage": "PASS"
+      }
+    ],
+    "auditor_sha256": "b1ac6171be2c0e005fa36a0589538c1380a494f31f0e70eee2c3db1c056f27d3"
+  },
+  "windows_preservation": {
+    "cauchy-preservation": {
+      "status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+      "source_commit": "26b05027d234693fa947f9843c8e013c5d67ebec",
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c",
+        "research/hybrid-water01/qualify_cauchy_daily_forcing.py": "50ae0f5e7bdcb49169794bc214f7ee30b0b9632ff9975ad1993fb88af1264a32"
+      },
+      "cases": [
+        {
+          "optimization": "O0",
+          "cut": 20,
+          "end": 22,
+          "original_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+          "compatible_origin_sha256": "d498844e8309e812c689bc86562a4dca2cb642fb37ad40fb5f153e8d4d410a73",
+          "exact_original_control": true,
+          "exact_retry_and_recovery": true,
+          "exact_independently_edited_original_head_control": true,
+          "invalid_pretrial_cases": 8,
+          "actual_head_perturbation_cm": 0.001,
+          "unshifted_bottom_cm": 0.19533361561655016,
+          "shifted_bottom_cm": 0.19532362950912902,
+          "external_terminal_sha256": "67f588b7e261d0421033b8a4fe3365a05fe6860cb53d4c18bd4b304ac20a9154"
+        },
+        {
+          "optimization": "O2",
+          "cut": 20,
+          "end": 22,
+          "original_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+          "compatible_origin_sha256": "6c0669cd92d160e68eb222bb23db9442b40e72de3d067979ef36e6c3a2a429f8",
+          "exact_original_control": true,
+          "exact_retry_and_recovery": true,
+          "exact_independently_edited_original_head_control": true,
+          "invalid_pretrial_cases": 8,
+          "actual_head_perturbation_cm": 0.001,
+          "unshifted_bottom_cm": 0.19533361561655016,
+          "shifted_bottom_cm": 0.19532362950912902,
+          "external_terminal_sha256": "5838a20ac3509b60359141fef30f9e4143519868aab2eec59adfcc7ded3b233e"
+        }
+      ],
+      "censored": false,
+      "elapsed_seconds": 27.611436400096864
+    },
+    "default-preservation": {
+      "status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+      "source_commit": "26b05027d234693fa947f9843c8e013c5d67ebec",
+      "source_sha256": {
+        "app/hybrid_water/daily_coupling.py": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c",
+        "research/hybrid-water01/qualify_daily_coupling.py": "c1d0d6fa4779c6b1d16f366cb9d6c3ed4529b1b2c9a6cb91bcbb17d3a17749e9"
+      },
+      "platform": "windows",
+      "cases": [
+        {
+          "project": "grass",
+          "optimization": "O0",
+          "bundle_build_sha256": "4fddc7605d414b77d8b7fe5b91279fdf4bf9cb64e065c463b779624b6708640b",
+          "native_origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+          "external_day4_sha256": "3d5e51829bf7f78fb94c0a471d6c626e79d84ce34c1040a1ad49d4fde5f80fda",
+          "exact_discard_retry_payload": true,
+          "exact_external_disk_recovery": true,
+          "independent_peer_and_stale_refusal": true,
+          "post_replace_failure_recovery": true
+        },
+        {
+          "project": "grass",
+          "optimization": "O2",
+          "bundle_build_sha256": "d98cce3674e6ba470b145d523ae2f64d34317dca8437713c0181f884a3797a7f",
+          "native_origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+          "external_day4_sha256": "368179e907a778cd9639121a6fb8c4c5b8da9c904215198fb949e9d47762b74a",
+          "exact_discard_retry_payload": true,
+          "exact_external_disk_recovery": true,
+          "independent_peer_and_stale_refusal": true,
+          "post_replace_failure_recovery": true
+        },
+        {
+          "project": "hupsel",
+          "optimization": "O0",
+          "bundle_build_sha256": "9d708e89c1343acf1c64400df27d1a4c275ccd90d226e816a8b62017f2f5b880",
+          "native_origin_sha256": "eb50e360287c68b39daaec88a9bdf4c95e2e4e9cbecc0ab3e45c979efeb4317a",
+          "external_day4_sha256": "be6fed26f0d94767a7e4eab41a2012a2efeec8de73d20aacee1da34e2575bbcd",
+          "exact_discard_retry_payload": true,
+          "exact_external_disk_recovery": true,
+          "independent_peer_and_stale_refusal": true,
+          "post_replace_failure_recovery": true
+        },
+        {
+          "project": "hupsel",
+          "optimization": "O2",
+          "bundle_build_sha256": "14bfa596b3d205490da1929980a11d256a5ba3501b70335f676d840a96786b7e",
+          "native_origin_sha256": "cfd09804cfd593b20783ba80f931d9c66e26ccdf94fa081f52b5bd6639165316",
+          "external_day4_sha256": "6125942b188615f4a20cdb7fee40faadf4e77b82af67f926941f8dbec7204fe4",
+          "exact_discard_retry_payload": true,
+          "exact_external_disk_recovery": true,
+          "independent_peer_and_stale_refusal": true,
+          "post_replace_failure_recovery": true
+        },
+        {
+          "project": "andelst",
+          "optimization": "O0",
+          "bundle_build_sha256": "474528dc3a409500530aeeeb260753e591786d4c87111a5189239335d974b823",
+          "native_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+          "external_day4_sha256": "593343715d13c01bcf2cc5ce4b5d9c32221a307da7117ac195555dac751b15e1",
+          "exact_discard_retry_payload": true,
+          "exact_external_disk_recovery": true,
+          "independent_peer_and_stale_refusal": true,
+          "post_replace_failure_recovery": true
+        },
+        {
+          "project": "andelst",
+          "optimization": "O2",
+          "bundle_build_sha256": "c9ac7536acb09a87987ad700571b77b91dad7d85888889a055efbe27959ad7a3",
+          "native_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+          "external_day4_sha256": "41973a50aaf400dc1ee11df25b393e4752355992994ee8516e74c95d1da5ec33",
+          "exact_discard_retry_payload": true,
+          "exact_external_disk_recovery": true,
+          "independent_peer_and_stale_refusal": true,
+          "post_replace_failure_recovery": true
+        }
+      ],
+      "events": [
+        {
+          "case": "grass-O0",
+          "seconds": 6.05707519990392,
+          "status": "PASS"
+        },
+        {
+          "case": "grass-O2",
+          "seconds": 6.077986599877477,
+          "status": "PASS"
+        },
+        {
+          "case": "hupsel-O0",
+          "seconds": 6.474284199997783,
+          "status": "PASS"
+        },
+        {
+          "case": "hupsel-O2",
+          "seconds": 6.0124540000688285,
+          "status": "PASS"
+        },
+        {
+          "case": "andelst-O0",
+          "seconds": 11.399312099907547,
+          "status": "PASS"
+        },
+        {
+          "case": "andelst-O2",
+          "seconds": 11.511606200132519,
+          "status": "PASS"
+        }
+      ],
+      "scope": "Serial externally accepted original-forcing daily transactions. No new groundwater feedback, forcing physics, peer-backend or whole-science qualification.",
+      "compiler_events": [
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O0\\external\\restart_publish.dll"
+          ],
+          "seconds": 0.9276053998619318,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O0\\peer\\restart_publish.dll"
+          ],
+          "seconds": 0.8910628999583423,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O0\\restored\\restart_publish.dll"
+          ],
+          "seconds": 0.9229985000565648,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O0\\sync-failure\\restart_publish.dll"
+          ],
+          "seconds": 0.8955206999089569,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O2\\external\\restart_publish.dll"
+          ],
+          "seconds": 0.9715780999977142,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O2\\peer\\restart_publish.dll"
+          ],
+          "seconds": 0.922589500201866,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O2\\restored\\restart_publish.dll"
+          ],
+          "seconds": 0.8934993001166731,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\grass-O2\\sync-failure\\restart_publish.dll"
+          ],
+          "seconds": 0.9181415000930429,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O0\\external\\restart_publish.dll"
+          ],
+          "seconds": 0.870381599990651,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O0\\peer\\restart_publish.dll"
+          ],
+          "seconds": 0.8908309999387711,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O0\\restored\\restart_publish.dll"
+          ],
+          "seconds": 0.8773831999860704,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O0\\sync-failure\\restart_publish.dll"
+          ],
+          "seconds": 0.8837752998806536,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O2\\external\\restart_publish.dll"
+          ],
+          "seconds": 0.8762590000405908,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O2\\peer\\restart_publish.dll"
+          ],
+          "seconds": 0.8217704000417143,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O2\\restored\\restart_publish.dll"
+          ],
+          "seconds": 0.8160562999546528,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\hupsel-O2\\sync-failure\\restart_publish.dll"
+          ],
+          "seconds": 0.825910999905318,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O0\\external\\restart_publish.dll"
+          ],
+          "seconds": 0.8059079998638481,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O0\\peer\\restart_publish.dll"
+          ],
+          "seconds": 0.820599399972707,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O0\\restored\\restart_publish.dll"
+          ],
+          "seconds": 0.9298434001393616,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O0\\sync-failure\\restart_publish.dll"
+          ],
+          "seconds": 0.8391603000927716,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O2\\external\\restart_publish.dll"
+          ],
+          "seconds": 0.8573747000191361,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O2\\peer\\restart_publish.dll"
+          ],
+          "seconds": 0.8551845999900252,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O2\\restored\\restart_publish.dll"
+          ],
+          "seconds": 0.8683342000003904,
+          "returncode": 0
+        },
+        {
+          "command": [
+            "gcc",
+            "-shared",
+            "-O2",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+            "-o",
+            "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-groundwater-default-preservation-windows-20261112\\andelst-O2\\sync-failure\\restart_publish.dll"
+          ],
+          "seconds": 0.8931020000018179,
+          "returncode": 0
+        }
+      ]
+    },
+    "default-corruption": {
+      "status": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS",
+      "platform": "windows",
+      "seconds": 1.35282490006648,
+      "source_sha256": {
+        "app/hybrid_water/daily_coupling.py": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c",
+        "research/hybrid-water01/qualify_daily_coupling_corruption.py": "2f00bbb1407231841a39a1e0dbd1429951fe919f7f6e9988c8522dcb8c7bff86"
+      },
+      "candidate_native_corruption_refused": true,
+      "accepted_origin_corruption_refused_before_trial": true,
+      "exclusive_owner": true,
+      "native_adoption_explicit": true,
+      "terminal_refused_before_trial": true,
+      "retained_terminal_origin_sha256": "477d1f326f03eea2f84465c26192ec8c3412f9c9e1f9db9e3e603147b8fd37c0",
+      "accepted_guard_day3_sha256": "908201f92a105bf61ab048c2470cb04940f9d9f3d2d2e7b71c0e34c7dff8c29e"
+    },
+    "inputs": {
+      "status": "PERSISTED_GROUNDWATER_FORCING_REFUSALS_LEAP_YEAR_INPUT_TRANSFORMATION_PASS",
+      "checkpoint_attacks": [
+        "digest",
+        "mode",
+        "clock",
+        "foreign",
+        "nonfinite",
+        "applied-hash"
+      ],
+      "year_input_checks": [
+        {
+          "day": 58,
+          "prepared_bbc_sha256": "0fb680a848131fa5287a5f9ef4d983acc5fee41b7f606f357ce841046d487a7e",
+          "scope": "input transformation only, no year model execution"
+        },
+        {
+          "day": 59,
+          "prepared_bbc_sha256": "df7af8a72668712eeb805cd4ac6d3991c57fc4c20beeff93304b25c1cb74a8d1",
+          "scope": "input transformation only, no year model execution"
+        },
+        {
+          "day": 365,
+          "prepared_bbc_sha256": "b5873c5966cd7bd3579172ab5e73d6d0fbd8ea12e8ec0a680a6787a00059fbb0",
+          "scope": "input transformation only, no year model execution"
+        },
+        {
+          "day": 1826,
+          "prepared_bbc_sha256": "78232a0eb9b8e9fff9404aecb2c42680f4d4f37fc4bb337ee46671d3aca46d02",
+          "scope": "input transformation only, no year model execution"
+        }
+      ],
+      "original_checkpoint_sha256": "aa81ac3f32c062e65902cab29a100d25ea0fcb3795d2dd97a247ffff0f9f2c15",
+      "model_runs": 0,
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c",
+        "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
+      }
+    },
+    "cauchy-inputs": {
+      "status": "PERSISTED_CAUCHY_FORCING_REFUSALS_AND_YEAR_INPUT_TRANSFORMATION_PASS",
+      "checkpoint_attacks": [
+        "digest",
+        "mode",
+        "clock",
+        "foreign",
+        "nonfinite",
+        "applied-hash"
+      ],
+      "year_input_checks": [
+        {
+          "day": 364,
+          "prepared_bbc_sha256": "de7e106398e4950ac5d62b078dafff3dec3ca12d9bb70f965f6dabb5d362aa17",
+          "scope": "input transformation only, no year model execution"
+        },
+        {
+          "day": 365,
+          "prepared_bbc_sha256": "a9d24a5ddb802fba84cd38dcebc0ac340fd2a75a15aa80db0d8b7ea4f7118487",
+          "scope": "input transformation only, no year model execution"
+        },
+        {
+          "day": 453,
+          "prepared_bbc_sha256": "d71d16b888596a3c93dd556a8e3de1cba52fb9fad3bf633cf1532e6eebf30fba",
+          "scope": "input transformation only, no year model execution"
+        }
+      ],
+      "original_checkpoint_sha256": "613e275e9fdc7c7d6c2308b1728d05bff7117cbfb2f00c1397eadb780008501d",
+      "model_runs": 0,
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "9b3684b5be02cb95f71c05fe80afec506d79dd69e30bbb0eab1f5d27f8ab762c",
+        "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
+      }
+    }
+  },
+  "linux": {
+    "run": 43128811641,
+    "job": 130887582127,
+    "head": "e7d4c5a9b90232ebde0df5b2467948ab74564095",
+    "status": "completed",
+    "conclusion": "success",
+    "artifact": 13905005274,
+    "artifact_zip_sha256": "sha256:bea5d281ce7becec5c9994fc0d2f9dc1976603900f68b11a85f759559506c807",
+    "groundwater": {
+      "status": "GRASS_ORIGINAL_PRESCRIBED_GROUNDWATER_CHANGED_HISTORY_RETRY_RECOVERY_PASS",
+      "source_commit": "e7d4c5a9b90232ebde0df5b2467948ab74564095",
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "878b23268c89c6ff14e4f90c983b2e6536c48ef31e1912e59d02c6fe75c14d1d",
+        "research/hybrid-water01/qualify_grass_groundwater.py": "7916f0ad86c9df58a60dc66f887cec4f113c392b6877eac3f279a629dd136cb2"
+      },
+      "cases": [
+        {
+          "optimization": "O0",
+          "cut": 2,
+          "end": 4,
+          "origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O0-2",
+            "origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+            "origin_day": 2,
+            "t0_day1900": 29222,
+            "t1_day1900": 29223,
+            "head_start_cm": -88.0,
+            "head_end_cm": -87.999,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O0-2",
+            "origin_sha256": "46b24a1353bd44dadfb8111168ab81002284e0552e16ddd7e086463278697c0d",
+            "origin_day": 3,
+            "t0_day1900": 29223,
+            "t1_day1900": 29224,
+            "head_start_cm": -87.999,
+            "head_end_cm": -87.998,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.1313808930187061,
+          "terminal_sha256": "553be9b5fce5a5c8260ec726446f9bbebb37ca265b6094ec99011775926aa011"
+        },
+        {
+          "optimization": "O0",
+          "cut": 114,
+          "end": 116,
+          "origin_sha256": "1dba3ad1d70e8f42449634913cd3a0e7b4301d9794851c5d6961f8c2a24df7db",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O0-114",
+            "origin_sha256": "1dba3ad1d70e8f42449634913cd3a0e7b4301d9794851c5d6961f8c2a24df7db",
+            "origin_day": 114,
+            "t0_day1900": 29334,
+            "t1_day1900": 29335,
+            "head_start_cm": -88.0,
+            "head_end_cm": -92.124,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O0-114",
+            "origin_sha256": "5361e95f006fb272ff2a7b4603d2efc747e8870aed3cd24067ecadca7fea6631",
+            "origin_day": 115,
+            "t0_day1900": 29335,
+            "t1_day1900": 29336,
+            "head_start_cm": -92.124,
+            "head_end_cm": -96.248,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.12451579977403532,
+          "terminal_sha256": "694ee8e5c628f6ca47be370c7ae86436fbf4435d7febadd4fe087382b19b8f49"
+        },
+        {
+          "optimization": "O2",
+          "cut": 2,
+          "end": 4,
+          "origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O2-2",
+            "origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+            "origin_day": 2,
+            "t0_day1900": 29222,
+            "t1_day1900": 29223,
+            "head_start_cm": -88.0,
+            "head_end_cm": -87.999,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O2-2",
+            "origin_sha256": "39dabbdde5436b933f0c5fc92262878842e9d161dbcc0ad0c921612efa28b527",
+            "origin_day": 3,
+            "t0_day1900": 29223,
+            "t1_day1900": 29224,
+            "head_start_cm": -87.999,
+            "head_end_cm": -87.998,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.1313808930187061,
+          "terminal_sha256": "a8ff94db07d25fb7ca148987cf63a7a3d48de93d76f4f8416e393da8f0a4da13"
+        },
+        {
+          "optimization": "O2",
+          "cut": 114,
+          "end": 116,
+          "origin_sha256": "1806d8be411bf3b344251ca7ef4fc0aca8c930c7be02a1f7f2881e8832e6773d",
+          "exact_discard_retry_and_modified_history_recovery": true,
+          "exact_independent_original_controls_both_days": true,
+          "invalid_pretrial_cases": 8,
+          "first_forcing": {
+            "coupling_id": "grass-level-O2-114",
+            "origin_sha256": "1806d8be411bf3b344251ca7ef4fc0aca8c930c7be02a1f7f2881e8832e6773d",
+            "origin_day": 114,
+            "t0_day1900": 29334,
+            "t1_day1900": 29335,
+            "head_start_cm": -88.0,
+            "head_end_cm": -92.124,
+            "provenance": "caller-first-day"
+          },
+          "second_forcing": {
+            "coupling_id": "grass-level-O2-114",
+            "origin_sha256": "c7f1e8bc9408ac2fe1d7da0ba404c428ba2e43b3560cef769d8e0f21062ea422",
+            "origin_day": 115,
+            "t0_day1900": 29335,
+            "t1_day1900": 29336,
+            "head_start_cm": -92.124,
+            "head_end_cm": -96.248,
+            "provenance": "caller-second-day-after-modified-state"
+          },
+          "first_bottom_outward_cm": 0.12451579977403532,
+          "terminal_sha256": "2562aa1ddcccbdbd7a4cacdbcd72d95ae6f697c5572b41172d25b859e0cabf58"
+        }
+      ],
+      "censored": false,
+      "elapsed_seconds": 8.192508963000002
+    },
+    "cauchy_status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+    "cauchy_cases": [
+      {
+        "optimization": "O0",
+        "cut": 20,
+        "end": 22,
+        "original_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+        "compatible_origin_sha256": "484eb109c8833035b1f4ac5381a90767fc65cf4c5352dced490f2a06fad7d6b0",
+        "exact_original_control": true,
+        "exact_retry_and_recovery": true,
+        "exact_independently_edited_original_head_control": true,
+        "invalid_pretrial_cases": 8,
+        "actual_head_perturbation_cm": 0.001,
+        "unshifted_bottom_cm": 0.19532446941794768,
+        "shifted_bottom_cm": 0.19537529078756663,
+        "external_terminal_sha256": "778f1b6aafb268fd2de0f5bab07e35857ace82b6b18cef620054c9c3bbc6b5d6"
+      },
+      {
+        "optimization": "O2",
+        "cut": 20,
+        "end": 22,
+        "original_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+        "compatible_origin_sha256": "3aa75e3a98346ef2cf28ee76cef6e6a27af2cd873b8e65e607dd50be3c4a753d",
+        "exact_original_control": true,
+        "exact_retry_and_recovery": true,
+        "exact_independently_edited_original_head_control": true,
+        "invalid_pretrial_cases": 8,
+        "actual_head_perturbation_cm": 0.001,
+        "unshifted_bottom_cm": 0.19532446941794768,
+        "shifted_bottom_cm": 0.19537529078756663,
+        "external_terminal_sha256": "45e794830d17551f0bb1b4ae9bebb91f47df0cd94109a6554c52b7e6f0895663"
+      }
+    ],
+    "cauchy_elapsed_seconds": 11.920779025000002,
+    "original_preservation_status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+    "original_preservation_cases": [
+      {
+        "project": "grass",
+        "optimization": "O0",
+        "bundle_build_sha256": "4a4b7c6759385ff415b5340d0633aa632893d8c38de96230fa380cd2a808f114",
+        "native_origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+        "external_day4_sha256": "89634bdee11dd1d4c684af78a10c6ade8dc3a2c8baef56e3b45913520385e0a8",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "grass",
+        "optimization": "O2",
+        "bundle_build_sha256": "692ab0deb79d6b277730d45b7485a3c86b795960ffa2622606fef604278c0aab",
+        "native_origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+        "external_day4_sha256": "91aeb70638965d38627e298ebf3d9d1643f081822d3cbd4e86327e0d2c245875",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O0",
+        "bundle_build_sha256": "bffd8b8c5979524da003abc6e2c282d40c74bbe5484873c37d61afb7bd3ad6c7",
+        "native_origin_sha256": "b296554d70385b3bc5c4e64ff68731281749203e6556e513b64e6307936b94d7",
+        "external_day4_sha256": "dec326b80f4333558b9650497fcf068d32909eac10c485575c720c7dac6dfcd6",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "hupsel",
+        "optimization": "O2",
+        "bundle_build_sha256": "f67af9efb4614c5beb07a43cd8cc82866bb1767c8802a75d8c2ad1e3cfaf2163",
+        "native_origin_sha256": "25660942044824e0c36209b72040234c7c135ce48ed98a3ee2e687790f2eba1b",
+        "external_day4_sha256": "59151259465dadc458aa6d8f643bc949365ed92bf6ec9b5e62475e308c08ec2b",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O0",
+        "bundle_build_sha256": "687d509b7519de7a5a864de72de9d7e3a97ab510f46c002b858f62a76a252ae6",
+        "native_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+        "external_day4_sha256": "c1172185b3271e1d102747fa684bfe6caa84a8a212cfb9640e84c12abc8d982e",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      },
+      {
+        "project": "andelst",
+        "optimization": "O2",
+        "bundle_build_sha256": "5e4761bec3ab57f33f1767ddbdd2f711220a4ba581d1e0638601738577b32828",
+        "native_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+        "external_day4_sha256": "72b1003d48ee18797de2aa337ad434cc7083397b426621022485bdb34f26c188",
+        "exact_discard_retry_payload": true,
+        "exact_external_disk_recovery": true,
+        "independent_peer_and_stale_refusal": true,
+        "post_replace_failure_recovery": true
+      }
+    ],
+    "default_elapsed_case_seconds": 17.465187646000018,
+    "C_compiles": 24,
+    "guard_statuses": {
+      "groundwater-inputs": "PERSISTED_GROUNDWATER_FORCING_REFUSALS_LEAP_YEAR_INPUT_TRANSFORMATION_PASS",
+      "cauchy-inputs": "PERSISTED_CAUCHY_FORCING_REFUSALS_AND_YEAR_INPUT_TRANSFORMATION_PASS",
+      "external-daily-corruption": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS"
+    }
+  },
+  "independent_audits": {
+    "windows": {
+      "groundwater": {
+        "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O0",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          }
+        ],
+        "auditor_sha256": "53a551a764e42fd4e7b4f7a652d368828e17869de59228ecb2a434a928c982c3"
+      },
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "67f588b7e261d0421033b8a4fe3365a05fe6860cb53d4c18bd4b304ac20a9154"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "5838a20ac3509b60359141fef30f9e4143519868aab2eec59adfcc7ded3b233e"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "original_route": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "windows",
+        "raw_files": 3551,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 47.532718299888074,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    },
+    "linux": {
+      "groundwater": {
+        "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O0",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          }
+        ],
+        "auditor_sha256": "53a551a764e42fd4e7b4f7a652d368828e17869de59228ecb2a434a928c982c3"
+      },
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "778f1b6aafb268fd2de0f5bab07e35857ace82b6b18cef620054c9c3bbc6b5d6"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "45e794830d17551f0bb1b4ae9bebb91f47df0cd94109a6554c52b7e6f0895663"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "original_route": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "linux",
+        "raw_files": 3236,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 17.465187646000018,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    }
+  },
+  "raw_archives": {
+    "windows": {
+      "path": "research/hybrid-water01/groundwater-windows-20261112.tar.xz",
+      "bytes": 7180104,
+      "sha256": "63c9f223dc7f62199aa73fc4c9720cd73675e7b7439c76bfb3b7bc60a77d0016"
+    },
+    "linux": {
+      "path": "research/hybrid-water01/groundwater-linux-20261112.tar.xz",
+      "bytes": 6970580,
+      "sha256": "d66d51270a2632f1f748797b1bf4c7d8f24a3719b1d5eb921fda72fb9d63f296"
+    }
+  },
+  "ci_log": {
+    "path": "research/hybrid-water01/groundwater-linux-ci-20261112.log.gz",
+    "sha256": "acd8e27e959f44174c69547d16de83d591cd0f8ef304fa9d18f63fae5bc95340"
+  },
+  "scope_limits": [
+    "Actual groundwater2to4 and114to116 with changed-state recovery, original leading-level identity and direct original input controls; no full externally controlled1827 trajectory",
+    "Cauchy20to22/current default3projects preserved at same scoped source/build identities; older Andelst numerical sensitivity remains open",
+    "Leap/year/terminal checks are input-only, not model runs",
+    "No source/physics/tolerance/datum conversion/new native codec or peer/thermal solver change",
+    "Native-only CPU/wall UNKNOWN; cohort elapsed includes controller/IO/publisher costs",
+    "Successful Windows O2 leading probe source report retained separately and reused with exact application/BUILD/native-state identity",
+    "Compatible inherited Cauchy day20 states verified; no repeated Cauchy warm prefix or full project/reference run"
+  ],
+  "documentation_checks": {
+    "source_check": "PASS",
+    "strict_mkdocs": "PASS",
+    "seconds": 23.81
+  }
+}

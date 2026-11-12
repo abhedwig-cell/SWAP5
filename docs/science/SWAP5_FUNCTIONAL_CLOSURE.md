@@ -92,9 +92,11 @@ hypothesis. Full physical energy is likewise open, not a reason to invent inputs
 The later [Cauchy water-forcing successor](HYBRID_CAUCHY_DAILY_FORCING.md) supplies
 caller-controlled **water** forcing through daily prepare/discard/accept with actual
 day20→22 original controls and unchanged mass guard. Original forcing remains the
-default. It adds no thermal consumer. Its next bounded extension is the existing
-Grassgrowth prescribed-groundwater boundary under the same transaction discipline;
-original Hupsel zero flux must not silently acquire different physical semantics.
+default. It adds no thermal consumer. The [Grass groundwater successor](HYBRID_GRASS_DAILY_GROUNDWATER.md)
+extends the same transaction to original prescribed groundwater, with actual
+leading/interior and modified-history recovery controls. Original Hupsel zero flux
+retains its semantics. The next bounded consumer is its original fixed irrigation
+with water/solute and complete persisted irrigation-context ownership.
 
 For thermal feedback an explicit corrected-physics scope and joint state/restart
 owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full

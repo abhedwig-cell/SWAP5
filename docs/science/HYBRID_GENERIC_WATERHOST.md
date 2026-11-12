@@ -1,5 +1,10 @@
 # Explicit project state in the hybrid waterhost
 
+The [Grass prescribed-groundwater successor](HYBRID_GRASS_DAILY_GROUNDWATER.md)
+adds original SWBOTB1 caller level segments using the same external transaction
+and native-state owners. Cauchy aquifer heads and prescribed groundwater levels
+retain distinct modes/datum semantics; the original forcing default stays intact.
+
 The [explicit Cauchy water-forcing successor](HYBRID_CAUCHY_DAILY_FORCING.md)
 adds an opt-in caller aquifer-head segment to serial external daily acceptance.
 The original forcing default, original physics and existing complete-project
