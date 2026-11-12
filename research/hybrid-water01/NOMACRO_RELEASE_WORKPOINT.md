@@ -129,3 +129,13 @@ old bundles/checkpoints remain usable with their original binary; no rebinding.
 The new writer requires fresh own checkpoints, so the inexpensive11.9s SaltFarm
 trajectory is selected to create them before testing all five own windows.
 The existing active-macro codec/body is unchanged and is not executed.
+
+Attempt1 resolves1459→1461 completely: physical receipts and both payloads exact.
+It exposes only a day732 integrated-guard diagnostic difference2.08e-17cm, with
+all physical quantities and payloads still exact. At a January1 checkpoint the
+cold TimeControl still owns the previous iyear until START_OF_DAY resets t;
+initialization instead owns the new year. Persisting t alone suppresses that
+original year-transition branch. Selected completion: serialize the accepted
+iyear alongside t (S5NON006/S5HUP012), so the unchanged original START_OF_DAY
+detects and executes its year transition. Preserve the stronger whole-receipt
+assertion; do not omit the integrated guard to make the result pass.
