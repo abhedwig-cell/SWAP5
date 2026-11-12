@@ -1,0 +1,55 @@
+{
+  "original": {
+    "mode": "original",
+    "observer_wall_seconds": 6.046480800025165,
+    "exact_existing_csv": true,
+    "converged_solve_count": 38772.0,
+    "iterations_in_converged_solves": 77664.0,
+    "cost_note": "Includes substantial observer output; use counts, not this wall time as the ordinary application benchmark."
+  },
+  "corrected-daily": {
+    "mode": "corrected-daily",
+    "observer_wall_seconds": 9.281238700030372,
+    "exact_existing_csv": true,
+    "converged_solve_count": 59176.0,
+    "iterations_in_converged_solves": 219566.0,
+    "cost_note": "Includes substantial observer output; use counts, not this wall time as the ordinary application benchmark."
+  },
+  "corrected-coherent": {
+    "mode": "corrected-coherent",
+    "observer_wall_seconds": 8.97398649994284,
+    "exact_existing_csv": true,
+    "converged_solve_count": 59176.0,
+    "iterations_in_converged_solves": 219566.0,
+    "cost_note": "Includes substantial observer output; use counts, not this wall time as the ordinary application benchmark."
+  },
+  "causal_disposition": {
+    "corrected_coherent_exact_all_frames": true,
+    "first_nonzero_original_difference": {
+      "HEAD": {
+        "day": 1,
+        "max_absolute": 0.08148233981194153
+      },
+      "HEAT": {
+        "day": 1,
+        "max_absolute": 0.003074791072755545
+      },
+      "STOCK_FLUX": {
+        "day": 1,
+        "max_absolute": 0.0018067019501017967
+      },
+      "EXTERNAL_FLUX": {
+        "day": 1,
+        "max_absolute": 0.0012677379143682388
+      },
+      "SOLUTE_LEDGER": {
+        "day": 1,
+        "max_absolute": 0.020373218698296114
+      },
+      "UPTAKE": {
+        "day": 2,
+        "max_absolute": 7.491939776568923e-37
+      }
+    }
+  }
+}

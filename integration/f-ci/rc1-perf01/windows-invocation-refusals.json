@@ -1,0 +1,68 @@
+{
+  "status": "INVOCATION_LOCAL_TOOLCHAIN_REFUSALS_PASS",
+  "events": [
+    {
+      "label": "current-toolchain-missing",
+      "refused_before_output": true,
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-provider-win",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-windows-qualification\\saltfarm-O2-candidate-build",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-validation-refusals\\current-toolchain-missing",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "foreign-build-compiler",
+      "refused_before_output": true,
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-provider-win",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-windows-qualification\\saltfarm-O2-candidate-build",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-validation-refusals\\foreign-build-compiler",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "foreign-provider-compiler",
+      "refused_before_output": true,
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-provider-win",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-windows-qualification\\saltfarm-O2-candidate-build",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf-validation-refusals\\foreign-provider-compiler",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    }
+  ]
+}

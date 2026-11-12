@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "HYDRAULIC_PROTOTYPE_REJECTED_INVOKE_LOCAL_COMPILER_PROOF_REUSE_IMPLEMENTED",
+  "status": "FIRST_SAFE_STARTUP_OPTIMIZATION_WINDOWS_UBUNTU_EXACT_QUALIFIED",
   "implementation": "Reuse one current-toolchain validation record only within the same CLI invocation. No cross-call compiler cache, no skipped file/binary/binding validation, no physics/state/codec/Fortran change.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
@@ -14,7 +14,7 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Build source provider bound to the updated validation helper, qualify same-OS complete numerical/native preservation and paired public-route performance on all3 Windows and Ubuntu. Then integrate useful safe block and continue corrected coherent-worker causal/iteration plus platform disposition.",
+  "next_action": "Persist proof and integrate qualified invocation-local validation block viaPR with frozen RC1 ref unchanged. Then complete platform/science probe in cloud using read-only coherent counters/thermal states; separate GNU15/16 cohort and assess remaining platform limitations under existing criteria.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
@@ -29,5 +29,16 @@
     "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud"
   },
   "findings": "Measured donor wait dominates; all3 role CPU and host IO profiles recorded. SaltFarm direct worker matches all physical records without SWAP5. Hydraulic HEX prototype preserves all physical/nodal/native state; candidate whole-host timings and qualification pending.",
-  "transport_decision": "REJECTED_NOT_ADMITTED: exact physical/native preservation achieved, but SaltFarmABBA model/controller timing did not establish a material gain. Original daily_host.py fully restored to frozen RC1 bytes."
+  "transport_decision": "REJECTED_NOT_ADMITTED: exact physical/native preservation achieved, but SaltFarmABBA model/controller timing did not establish a material gain. Original daily_host.py fully restored to frozen RC1 bytes.",
+  "linux_qualification": {
+    "run_id": 43246935136,
+    "source": "5346528e77479f92d1d86758a8bf4957ce5af882",
+    "candidate_runtime_source": "aa6510b934",
+    "conclusion": "success",
+    "artifact_id": 13958171510,
+    "artifact_sha256": "c45c7d4b6b64f081c8b8ea28b3925be6014fd4f2d674aafa542eda7057aad3ef",
+    "wiring_only_delta": ".github/workflows/grass-thermal-production.yml"
+  },
+  "causal_result": "All3 corrected coherent full-call and daily worker frames, original CSV, nodal temperatures, hydraulic states, uptake and solute exact. Daily return and external SWAP5 transfer excluded for these whole-profile differences. Hupsel converged iterations104672->227360 and accepted solves32518->43636; SaltFarm77664->219566 and38772->59176. Grass counts and all frames identical to original. Extra native numerical work dominates; no tolerance relaxed.",
+  "runtime_verdict": "One compiler verification pass instead of two per public reused-build command; current binary identity still checked freshly each invocation. Windows nonmodel overhead decreases about0.40/0.40/0.58seconds on full Grass/Hupsel/SaltFarm. Full wall differences remain noisy and are not asserted as native solver acceleration; Ubuntu overhead gain about0.006..0.010seconds."
 }
