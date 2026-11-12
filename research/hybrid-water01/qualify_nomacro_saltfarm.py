@@ -112,22 +112,28 @@ def main():
                 payloads={name:reference.read(name)==(out/'original'/name).read_bytes() for name in h.CHECKPOINT_FILES}
             restart.append(dict(cut=cut,end=end,physical_receipts_exact=exact,payloads_exact=payloads,
                 maximum_pressure_delta_cm=max(abs(x-y) for r,s in zip(actual_rows,rows[cut:end]) for x,y in zip(r['pressure_head_cm'],s['pressure_head_cm']))))
-        out=a.output/'isolation-refusal';out.mkdir()
-        with bounded(out.name),contextlib.ExitStack() as stack:
-            host=h.DailyHost(stack,donor,kernel,case,out,[h.ColumnStart(name='one'),h.ColumnStart(name='two')],runtime=True,project=h.SALTFARM)
-            for day in (1,2):
-                for col in (2,1):assert physical(host.step(col))==physical(rows[day-1])
-            prior={k:copy.deepcopy(getattr(host.columns[0],k)) for k in ('day','revision','stocks','pressure','solute_stock')};send=h.send
-            def corrupt(process,text):
-                values=text.split()
-                if process is host.host and len(values)==12+195:
-                    values[2]=str(float(values[2])+0.01);text=' '.join(values)
-                send(process,text)
-            h.send=corrupt
-            try:assert not host.step(1)['committed']
-            finally:h.send=send
-            for key in ('day','revision','stocks','pressure','solute_stock'):assert getattr(host.columns[0],key)==prior[key]
-            assert physical(host.step(2))==physical(rows[2]);host.close()
+        if a.resume_proof:
+            log=(a.output/'isolation-refusal/kernel.stdout').read_text()
+            assert prior_report['interleaved_instances_and_refused_accepted_state']=='PASS'
+            assert any(e['case']=='isolation-refusal' and e['status']=='PASS' for e in events)
+            assert 'DAILY_REFUSED 1 3 2 ' in log and 'DAILY_ACCEPTED 2 3 3 ' in log
+        else:
+            out=a.output/'isolation-refusal';out.mkdir()
+            with bounded(out.name),contextlib.ExitStack() as stack:
+                host=h.DailyHost(stack,donor,kernel,case,out,[h.ColumnStart(name='one'),h.ColumnStart(name='two')],runtime=True,project=h.SALTFARM)
+                for day in (1,2):
+                    for col in (2,1):assert physical(host.step(col))==physical(rows[day-1])
+                prior={k:copy.deepcopy(getattr(host.columns[0],k)) for k in ('day','revision','stocks','pressure','solute_stock')};send=h.send
+                def corrupt(process,text):
+                    values=text.split()
+                    if process is host.host and len(values)==12+195:
+                        values[2]=str(float(values[2])+0.01);text=' '.join(values)
+                    send(process,text)
+                h.send=corrupt
+                try:assert not host.step(1)['committed']
+                finally:h.send=send
+                for key in ('day','revision','stocks','pressure','solute_stock'):assert getattr(host.columns[0],key)==prior[key]
+                assert physical(host.step(2))==physical(rows[2]);host.close()
         report=dict(status='PASS' if all(r['physical_receipts_exact'] and all(r['payloads_exact'].values()) for r in restart) else 'FAIL_EXACT_OWN_RESTART',scope='Original-workbook SaltFarm1461; donorO2/kernel'+a.optimization,
             compile_seconds=compile_seconds,days=1461,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
             maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in rows),
