@@ -2,6 +2,43 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Generic macro candidate rejected and published,12November2026
+
+PR #1652 is DRAFT, not admitted: source9d30efed28239d1074d752b48d96baca862b9175
+on codex/hybrid-generic-macro-policy. Canonical staysa22754decc0ec4e69304d1495c48bae7cdcdabec.
+This supersedes older NEXT/ACTIVE banners for the current implementation attempt.
+No running model/compiler/qualification worker remains; no full481 run started.
+
+Original MACROPORE(3) rate+derivative pair per residual candidate removes dated
+macro/pond triggers, but accepts only days1..3 before incomplete4. Own checkpoint2
+restores exact stocks/pressure and reproduces day3 stock/pressure/flux EXACT;
+day4 hits20.013s cap. Keeping the original early-budget schedule separately hits
+same4 at20.014s. Unchanged same-runner O2 original control completes1..4 in2.842s.
+Early-budget activation alone does NOT explain this blocker. No tolerance change;
+max accepted fresh guard6.216544880776115e-7cm below1e-6. No O0/Linux, full2to4,
+rollback or whole-model science PASS claimed. Three complete admitted application
+scopes and PR1651 scientific disposition remain unchanged. No default builder
+activates the isolated helper; do not merge this failing implementation.
+
+Exact build/compiler/providers/input/executable/generated source identities,
+commands, raw logs, accepted native packages and baseline result are in PR1652:
+research/hybrid-water01/generic-macro-policy-evidence.zip SHA256
+c57bbf49475cc6d702745deb952c68b7d02293fc2143f88f7d9e123c0017dd54.
+Owner integration/f-ci/GENERIC_MACRO_POLICY_20261112.json;
+reproduction GENERIC_MACRO_POLICY_20261112.md; result
+GENERIC_MACRO_POLICY_RESULT_20261112.json. First45s elapsed controller output
+was not retained; later measured20s runs establish reproducible censoring.
+Receipt here:CLOSURE01_GENERIC_MACRO_BLOCKER_20261112.json.
+
+NEXT concrete deliverable: reassess the larger original coupled nonlinear/macro
+accepted-step block, preserving original equations, forcing, tolerances and
+rollback. A successor must first terminate through4 then prove own2to4/rollback
+before late-event selection. Do not repeat failed provisional-convergence refresh,
+these20s candidates or a full481 campaign; do not add new calendar patches.
+Keep functional coverage and scientific equivalence separate. Half-hour restart
+remains a recovery mechanism; programme is NOT complete.
+
+
 ### Complete preserved-trajectory scientific disposition delivered, 12 November 2026
 
 PR #1651 MERGED ata22754decc0ec4e69304d1495c48bae7cdcdabec.
