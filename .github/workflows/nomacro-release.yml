@@ -244,6 +244,7 @@ jobs:
             /app/
             /reference/swap-4.3.1/projects/
             /research/hybrid-water01/*.py
+            /research/hybrid-water01/test_generic_hybrid_state.f90
             /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
             /integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json
       - name: Exact selected source and original provider
@@ -264,13 +265,38 @@ jobs:
           shutil.copytree(Path('reference/swap-4.3.1/projects/4.salinitystress-04dS'),reference/'distribution/SWAP_4.3.1/cases/4.salinitystress-04dS')
           with Path(os.environ['GITHUB_ENV']).open('a') as f:f.write('SURFACE_REFERENCE='+str(reference)+'\n')
           PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-surface-${{ matrix.opt }}-26c1109e48060b953c5c3f84c8a669340fc8128d
+          run-id: 43207819499
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/surface-reused
       - name: Changed solute producer complete SaltFarm and all five own windows
-        run: python3 -B research/hybrid-water01/qualify_nomacro_saltfarm.py --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-native-saltfarm-${{ matrix.opt }}" --optimization ${{ matrix.opt }}
+        run: |
+          python3 - <<'PY'
+          import os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          shutil.copytree(root/'surface-reused/surface-native-saltfarm-${{ matrix.opt }}',root/'surface-native-saltfarm-${{ matrix.opt }}')
+          PY
+          python3 -B research/hybrid-water01/qualify_nomacro_saltfarm.py --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-native-saltfarm-${{ matrix.opt }}" --optimization ${{ matrix.opt }} --resume-proof
       - name: Complete Grassgrowth and Hupsel with affected original contracts and seasonal windows
         run: |
           for project in grass hupsel; do
             bundle="$RUNNER_TEMP/surface-native-$project-${{ matrix.opt }}"
-            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference "$SURFACE_REFERENCE" --output "$bundle" --project "$project" --optimization ${{ matrix.opt }}
+            extra=()
+            if [ "$project" = grass ]; then extra=(--reuse-build "$RUNNER_TEMP/surface-reused/surface-native-grass-${{ matrix.opt }}"); fi
+            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference "$SURFACE_REFERENCE" --output "$bundle" --project "$project" --optimization ${{ matrix.opt }} "${extra[@]}"
+            if [ "$project" = grass ]; then
+              python3 - <<'PY'
+          import os,shutil
+          from pathlib import Path
+          root=Path(os.environ['RUNNER_TEMP'])
+          old=root/'surface-reused/surface-native-grass-${{ matrix.opt }}';new=root/'surface-native-grass-${{ matrix.opt }}'
+          for p in old.iterdir():
+              if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):shutil.copyfile(p,new/p.name)
+          PY
+            fi
             python3 -B research/hybrid-water01/run_hybrid_grass_full.py --bundle "$bundle" --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-seasonal-$project-${{ matrix.opt }}" --project "$project"
           done
       - name: Actual shared and legacy events with original controls and fail-closed state
