@@ -22,6 +22,15 @@ from daily_host import APPLICATION_MODEL, ANDELST, GRASSGROWTH, HUPSEL, SALTFARM
 
 GRASS_MODEL = "NATIVE_GRASSGROWTH_WATER"
 HUPSEL_MODEL = "NATIVE_HUPSEL_ROTATION"
+
+
+def require_no_macro_input(reference, project):
+    """Refuse active/ambiguous actual SWP input before output or compilation."""
+    path = Path(reference) / 'distribution/SWAP_4.3.1/cases' / project.case / 'swap.swp'
+    values = re.findall(r'(?mi)^\s*SWMACRO\s*=\s*([^\s!]+)', path.read_text(encoding='cp1252'))
+    if len(values) != 1 or not re.fullmatch(r'[+-]?\d+', values[0]) or int(values[0]) != 0:
+        raise ValueError('No-macro release requires one explicit SWMACRO=0 in the actual original input; no input is changed')
+
 GRASS_INPUTS = {"input.swp": "swap.swp", "grass.crp": "grass.crp", "input.met": "260.met",
                 "swap.bbc": "swap.bbc", "swap.dra": "swap.dra"}
 
@@ -234,6 +243,12 @@ def main():
         parser.error(f"The last day must follow the origin and be within the admitted {last_day}-day period")
     if args.checkpoint_at is not None and not first < args.checkpoint_at <= args.days:
         parser.error("The checkpoint day must belong to the requested run")
+
+    if args.no_macro_release:
+        try:
+            require_no_macro_input(args.reference_work, project)
+        except (OSError, ValueError) as error:
+            parser.error(str(error))
 
     output = args.output.resolve()
     output.mkdir(parents=True)

@@ -305,3 +305,110 @@ Reviewable publication: PR1659, proof head dee81334c08fc4705674a39e73a691558dc1d
 Selected Linux qualification is terminal SUCCESS, all artifact/member hashes
 verified, docs and strict MkDocs PASS. Admission and actual canonical postimage
 remain separate from the qualified candidate until the merge is verified.
+
+PR1659 is now MERGED at 8e929360afd67567c4dfa138d9a480d351e6ce85. The actual fetched canonical
+whole tree 6ac2f25fc61df52065134ae9c006fc9bc67af584 is EXACTLY the qualified candidate
+6e2345a78b5a9fb5e9934a409f069d5d36615264 (empty complete file diff).
+Postimage receipt: NOMACRO_HEAT_MERGE_20261112.json. All selected checks are
+terminal; no model worker remains active. Next deliverable remains the bounded
+SaltFarm caller-controlled saline irrigation transaction described above.
+The release program and half-hour recovery schedule are not yet complete.
+
+## Active shared surface-event and strict day-restart closure
+
+Current implementation extends S5IRR001 to explicit registered no-macro projects
+through the additive surface-irrigation-daily-v1 mode. Historical Hupsel mode
+restriction remains. Source9f6edaa18 also closes a demonstrated original dry
+surface cancellation: both changed depth108 and UNCHANGED original day109 could
+export csurf=-2.168404344971009e-19, which strict native restore rightly refused.
+No epsilon/clipping is used: for exactly zero pond and macropore area the original
+mixture equation reduces to cfluxt=-csurf; csurf=0; isqtop=cfluxt/dtsolu. Wet
+equations stay exact. The adapter refuses invalid conserved native state before
+external publication. Full-day duration uses the actual original converted units
+without widening its1day boundary (14.4mm/0.6mmh was previously falsely refused).
+
+Windows actual O0/O2 complete Grass1827/Hupsel1096/Salt1461, all18 seasonal own
+windows per cohort, complete supported-heat export and guarded surface-event
+trials now pass. Accepted summer changed/disabled/identity histories have exact
+original-table controls, discard/retry, fresh recovery and interleaved workers.
+Original year-boundary identity passes. Injecting winter gifts on732/733 can
+refuse the second proposal under the unchanged1e-10 original solute guard; live
+and disk both refuse without advancing the accepted origin. This is retained
+as a coupling limit, not qualified changed-winter history or grounds for tuning.
+Native source remains donorO2 with kernel/heat-accounting O0/O2, as before.
+
+Linux first attempt43207819499 retained passed SaltFarm full/own, then stopped
+because selected state driver was omitted from sparse checkout. Attempt
+43208529651 stopped before Grass protocol because artifact ZIP had dropped
+executable mode. Workflow recovery restores the exact file/modes and reuses
+the passed SaltFarm proof and exact already built Grass binary; no physical
+code or tolerance changed between those attempts. Current selected CI source
+795ee7b0f is dispatched, with state-fixture/executable prerequisites explicit.
+Wait for that existing run, audit actual artifacts and finish one dedicated PR.
+Do not rerun the successful Windows or unchanged prior native full calls.
+Owner: integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json.
+
+### Positive physical surface inventory: current successor
+
+The earlier winter refusal above is now a preserved predecessor limitation, not
+the current target. Actual changed day109 retained csurf=0.0018339999999385567
+mg/cm2; consuming it erased this stock in original flzerocumu bookkeeping and
+reported -0.0018340000023130414mg/cm2. Source d9c2ea5b3 removes only this physical
+stock reset, retaining cold task1 initialization and strict guards. This is
+separate from the algebraically exact dry-surface cancellation repair. No
+parameter tuning, clipping, codec change or new saved state is introduced.
+
+Current fresh Windows cohorts use s5-surface-v2-* directories. Both SaltFarm
+full1461/own windows, all5 accepted summer/year scenarios with NO mass refusals,
+actual saved109-to110 live/disk and independent original controls, and actual
+consumer/persisted-input negatives pass. All three complete supported heat
+profiles and fresh Grass/Hupsel seasonal preservation are selected after this
+real solute-state dependency change. Existing global/static Fortran providers
+remain reused. The actual-input release CLI now refuses active, absent,
+ambiguous or fractional SWMACRO before output/compilation:13 actual refusals
+pass with all3 original SWMACRO0 fixtures unchanged.
+
+Current Ubuntu job is dispatched once at fe1d6d89b741fb4a310d92e33d8114a80b00e36f.
+It rebuilds the genuinely changed producer, then all original complete periods,
+seasonal windows, legacy/shared surface events, positive-inventory day109
+consumption, Grass prescribed-groundwater preservation and supported heat.
+Prior successful source795ee7b0f remains historical pre-counter-reset proof;
+it must not be relabelled into this new physical postimage. Finish the existing
+Windows/Linux cohorts, audit raw evidence, publish/admit the coherent PR and
+verify actual canonical postimage. No further numerical/reference campaign is
+selected. Final release acceptance should reconcile the existing concrete
+functional criteria and explicit scientific limitations using these results.
+
+### Current qualification complete; publication gate
+
+Windows and actual Ubuntu26.04 run43212846464 (source
+fe1d6d89b741fb4a310d92e33d8114a80b00e36f) are terminal PASS after BOTH
+surface-stock fixes. There are12 complete profiles/17536 accepted days,72 exact
+seasonal own windows,44 accepted surface histories including repaired winter
+history,12 actual saved109-to110 continuations,4 changed-groundwater windows,
+and full supported heat for all profiles. All histories have independent
+original-input physical controls and exact same-route retry/recovery/native state.
+CLI13 refusal launches and44 persisted/actual consumer negative controls pass.
+Cold complete model calls take3.02–13.87s; observed calls3.73–22.07s, with the
+unchanged60s caps. Maximum water/solute/heat residuals retain their original
+1e-10/1e-10/1e-9 guards. Prior cold trajectory differences are measured separately;
+no scientific acceptance rests solely on a newly chosen tolerance.
+
+The main raw archive nomacro-surface-closure-20261112.tar.xz verifies3895
+member hashes. Identical files use internal tar hard links; verify sequentially,
+not by repeatedly seeking backwards through xz. The small separate execution-
+sources capsule preserves actual OS-specific source bytes/line endings and
+executed helper versions; no raw build identity is silently changed to Git LF.
+On POSIX restore executable mode after ZIP extraction before native reuse.
+No selected model/control remains running. Docs and strict MkDocs pass.
+
+Publish and admit the coherent surface-input/complete day-state PR, verify the
+actual canonical whole tree, then close the final version-bound release
+acceptance assessment against the concrete no-macro criteria. Reuse these
+complete results; no new numerical/reference campaign is selected. Original
+scientific failures, unsupported full advective energy and active-macro exclusion
+remain explicit and must not be promoted by functional completion.
+
+Reviewable publication: PR1660, proof head a5d3adbb1700a6eb6c3cfc3ff03cdbf772a5cf24.
+All selected source-bound controls and both archive SHA256 manifests pass.
+Actual canonical admission/postimage remains a separate gate before promotion.

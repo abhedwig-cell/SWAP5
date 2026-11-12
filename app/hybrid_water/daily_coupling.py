@@ -16,6 +16,7 @@ import shutil
 from pathlib import Path
 import secrets
 import zipfile
+import struct
 
 import daily_host as h
 
@@ -23,6 +24,8 @@ ORIGINAL_FORCING = 'original-project'
 CAUCHY_FORCING = 'andelst-cauchy-daily-v1'
 GROUNDWATER_FORCING = 'grass-groundwater-daily-v1'
 IRRIGATION_FORCING = 'hupsel-surface-irrigation-daily-v1'
+SURFACE_IRRIGATION_FORCING = 'surface-irrigation-daily-v1'
+IRRIGATION_MODES = (IRRIGATION_FORCING, SURFACE_IRRIGATION_FORCING)
 
 
 @dataclass(frozen=True)
@@ -162,7 +165,7 @@ def validate_bundle(bundle, reference, project):
     if 'irrigation_extension' in identity:
         from irrigation_forcing import __file__ as extension_source
         ext=identity['irrigation_extension']
-        if project!=h.HUPSEL or ext['source_sha256']!=h.sha(Path(extension_source)) or ext['object_sha256']!=h.sha(bundle/'irrigation.o'):
+        if project not in (h.HUPSEL,h.SALTFARM) or ext['source_sha256']!=h.sha(Path(extension_source)) or ext['object_sha256']!=h.sha(bundle/'irrigation.o'):
             raise ValueError('Foreign irrigation extension source/object')
     case = reference / 'distribution/SWAP_4.3.1/cases' / project.case
     for name, digest in meta['inputs'].items():
@@ -225,15 +228,16 @@ class CoupledDailyColumn:
             raise ValueError('Unregistered project')
         if not isinstance(coupling_id, str) or not coupling_id or len(coupling_id) > 128:
             raise ValueError('Explicit coupling identity is required')
-        if (forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING,GROUNDWATER_FORCING,IRRIGATION_FORCING) or
+        if (forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING,GROUNDWATER_FORCING,*IRRIGATION_MODES) or
             (forcing_mode==CAUCHY_FORCING and project!=h.ANDELST) or
             (forcing_mode==GROUNDWATER_FORCING and project!=h.GRASSGROWTH) or
-            (forcing_mode==IRRIGATION_FORCING and project!=h.HUPSEL)):
+            (forcing_mode==IRRIGATION_FORCING and project!=h.HUPSEL) or
+            (forcing_mode==SURFACE_IRRIGATION_FORCING and project not in (h.HUPSEL,h.SALTFARM))):
             raise ValueError('Unsupported external forcing mode/project')
         self.forcing_mode=forcing_mode
         self.bundle, self.reference, self.output = map(Path, (bundle, reference, output))
         self.meta, self.case = validate_bundle(self.bundle, self.reference, project)
-        if forcing_mode==IRRIGATION_FORCING and 'irrigation_extension' not in self.meta['identity']:
+        if forcing_mode in IRRIGATION_MODES and 'irrigation_extension' not in self.meta['identity']:
             raise ValueError('Irrigation consumer not built')
         self.project, self.coupling_id = project, coupling_id
         self.last_day = project.last_day
@@ -269,10 +273,10 @@ class CoupledDailyColumn:
                     if f['mode']!=self.forcing_mode or type(c['origin_day']) is not int or c['origin_day']!=day-1:
                         raise ValueError('Invalid persisted Cauchy origin')
                     kind=GroundwaterDayForcing if self.forcing_mode==GROUNDWATER_FORCING else CauchyDayForcing
-                    if self.forcing_mode==IRRIGATION_FORCING:
+                    if self.forcing_mode in IRRIGATION_MODES:
                         self._validate_irrigation(IrrigationDayForcing(**document),day=c['origin_day'],origin=c['origin_sha256'])
                     else:self._validate_cauchy(kind(**document),day=c['origin_day'],origin=c['origin_sha256'])
-                    if f['identity_sha256']!=forcing_digest(document) or not re.fullmatch(r'[0-9a-f]{64}',f['applied_irrigation_sha256' if self.forcing_mode==IRRIGATION_FORCING else 'applied_bbc_sha256']):
+                    if f['identity_sha256']!=forcing_digest(document) or not re.fullmatch(r'[0-9a-f]{64}',f['applied_irrigation_sha256' if self.forcing_mode in IRRIGATION_MODES else 'applied_bbc_sha256']):
                         raise ValueError('Invalid persisted Cauchy forcing identity')
         self._publisher = None  # load once on first proposal, never compile per day
         self._pending = None
@@ -345,7 +349,7 @@ class CoupledDailyColumn:
             raise ValueError('Nonfinite or nonnumeric irrigation')
         depth,conc,rate=values
         if forcing.enabled:
-            if not (.01<=depth<=100 and 0<=conc<=1000 and 0<rate<=100 and depth/(24*rate)<=1):
+            if not (.01<=depth<=100 and 0<=conc<=1000 and 0<rate<=100 and (0.1*depth)/(0.1*24*rate)<=1):
                 raise ValueError('Irrigation outside original input range/duration')
         elif any(values):raise ValueError('Disabled irrigation must carry zero water and solute input')
         if not isinstance(forcing.provenance,str) or not forcing.provenance or len(forcing.provenance)>128:
@@ -353,7 +357,7 @@ class CoupledDailyColumn:
 
     def irrigation_forcing(self, depth_mm, concentration_mg_cm3, rate_mm_h, provenance, *, enabled=True):
         self._check_origin()
-        if self.forcing_mode!=IRRIGATION_FORCING:raise ValueError('Surface irrigation mode required')
+        if self.forcing_mode not in IRRIGATION_MODES:raise ValueError('Surface irrigation mode required')
         start=self.project.start_clock+self._day
         request=IrrigationDayForcing(self.coupling_id,self._origin_hash,self._day,start,start+1,
                                     enabled,depth_mm,concentration_mg_cm3,rate_mm_h,provenance)
@@ -366,7 +370,7 @@ class CoupledDailyColumn:
             raise ValueError('A day proposal is already outstanding')
         if self._day >= self.last_day:
             raise ValueError('Original project period is complete')
-        if self.forcing_mode==IRRIGATION_FORCING:
+        if self.forcing_mode in IRRIGATION_MODES:
             if cauchy is not None or groundwater is not None:raise ValueError('Wrong irrigation input kind')
             self._validate_irrigation(irrigation)
         elif irrigation is not None:raise ValueError('Irrigation mode required')
@@ -375,7 +379,7 @@ class CoupledDailyColumn:
             (self.forcing_mode==GROUNDWATER_FORCING and cauchy is not None)):
             raise ValueError('Boundary forcing kind does not match the selected mode')
         if self.forcing_mode==GROUNDWATER_FORCING:cauchy=groundwater
-        if self.forcing_mode not in (ORIGINAL_FORCING,IRRIGATION_FORCING):self._validate_cauchy(cauchy)
+        if self.forcing_mode not in (ORIGINAL_FORCING,*IRRIGATION_MODES):self._validate_cauchy(cauchy)
         elif cauchy is not None or groundwater is not None:raise ValueError('Original forcing mode has no override')
         if (self.output / f'accepted-column-1-day-{self._day+1}.zip').exists():
             raise FileExistsError('Accepted day target is occupied')
@@ -431,6 +435,14 @@ class CoupledDailyColumn:
             candidate = trial / f"accepted-column-1-day-{raw['day']}.zip"
             ready = trial / 'verified-candidate'
             checked = h.verify_checkpoint(candidate, self._day+1, host.binding, ready)
+            if self.project.solute:
+                # Current nonmacro codec: same strict state domain as the real
+                # original consumer, checked BEFORE external publication.
+                with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
+                if aux[:8]!=b'S5HUP012':raise ValueError('Foreign conserved solute codec')
+                conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
+                if not all(math.isfinite(v) and v>=0 for v in conserved):
+                    raise ValueError('Unrestartable candidate conserved solute state')
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             host.close()

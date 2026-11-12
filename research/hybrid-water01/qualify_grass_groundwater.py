@@ -31,7 +31,7 @@ def stop():
     expired.append(True)
     for proc in started:
         if proc.poll() is None:proc.kill()
-timer=threading.Timer(240,stop);timer.daemon=True;timer.start();begin=time.monotonic()
+timer=threading.Timer(60 if a.probe else 240,stop);timer.daemon=True;timer.start();begin=time.monotonic()
 report={'status':'RUNNING','source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
  'sources':{n:h.sha(ROOT/n) for n in ['app/hybrid_water/daily_coupling.py','research/hybrid-water01/qualify_grass_groundwater.py']},'cases':[]}
 def physical(r):return {k:v for k,v in r.items() if k not in ('column','revision','coupling','committed','candidate_only')}

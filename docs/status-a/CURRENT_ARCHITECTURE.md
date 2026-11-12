@@ -1,5 +1,20 @@
 # SWAP5 Status-A current architecture
 
+## No-macro surface-input and conserved-state successor
+
+The [surface-event successor](../science/HYBRID_HUPSEL_DAILY_IRRIGATION.md) uses
+the same explicit daily prepare/discard/accept owner for registered Hupsel and
+SaltFarm. Each request binds project/build, coupling identity, accepted origin,
+clock, water and salinity. Independent private workers isolate original globals;
+the new mode adds no physical saved state or restart schema. Invalid conserved
+native solute is refused before external publication. Resetting output counters
+does not initialize or erase restored physical surface stock. The exact original
+dry-reservoir transfer limit preserves that stock's nonnegative domain without
+clipping or weakening mass checks. Original forcing remains the default;
+existing groundwater/MODFLOW ownership and transaction interfaces are unchanged.
+The owning qualification/admission record is
+`integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json`.
+
 ## No-macro daily-host successor
 
 [PR1658](../science/SWAP5_FUNCTIONAL_CLOSURE.md) adds SaltFarm through the existing

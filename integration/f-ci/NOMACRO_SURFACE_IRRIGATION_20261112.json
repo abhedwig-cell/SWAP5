@@ -1,0 +1,956 @@
+{
+  "owner": "SWAP5-NOMACRO-CLOSURE01",
+  "baseline": "8e929360afd67567c4dfa138d9a480d351e6ce85",
+  "status": "QUALIFIED_READY_PR1660_AWAITING_ADMISSION",
+  "scope": "Same original-block generic host; donorO2/kernelO0/O2 and heatO0/O2; all original scientific failures retained; no active macro model run",
+  "invariants": "Same explicit state/private workers and equations; exact dry-limit evaluation and restored physical-stock ownership corrected explicitly; strict existing water/solute/native-domain/heat limits, wet-surface operations and codec retained.",
+  "acceptance": [
+    "SaltFarm original108-110 and732-733 exact own controls",
+    "Hupsel original5-6 legacy and additive mode preservation",
+    "Modified two-day original-input controls; retry/recovery/instance exact",
+    "O0/O2 Windows and Ubuntu; original1e-10 water/solute guards",
+    "Dedicated PR and exact mergepostimage"
+  ],
+  "cost_selection": {
+    "model_call_cap_seconds": 60,
+    "fresh_SaltFarm_prefix": 733,
+    "full1461": "SELECTED_ON_ACTUAL_CONSERVED_STATE_DEPENDENCY_CHANGE",
+    "macro": "FROZEN_NOT_SELECTED",
+    "full_FCI": "NOT_SELECTED_IMPACT_UNCHANGED_PHYSICAL_OWNERS",
+    "fresh_full_no_macro_profiles": "SELECTED_CHANGED_SOLUTE_PRODUCER_AND_FULL_DAY_RESTART; O0/O2 WINDOWS_UBUNTU"
+  },
+  "retained_failed_attempts": [
+    {
+      "source": "0b3372f82",
+      "case": "SaltFarm full-day identity14.4mm0.6mm/h",
+      "failure": "caller-unit duration roundoff; converted original-unit strict check fixes it"
+    },
+    {
+      "source": "b6f53e351",
+      "case": "SaltFarm day10814.401mm/.402mgcm3",
+      "failure": "native exported csurf=-2.168404344971009e-19; strict real restore refuses; no tolerance relaxation",
+      "decision": "Existing original solve may emit negative roundoff surface mass; reject such candidate before external accept, preserving original physics and strict state contract. Accepted-history discriminator holds depth at original14.4 and changes concentration."
+    },
+    {
+      "source": "65a8fa6c1",
+      "case": "UNCHANGED original SaltFarm day109 identity",
+      "failure": "Original cold trajectory also exports csurf=-2.168404344971009e-19 at day109; not a forcing-specific defect",
+      "decision": "No further parameter tuning. Preserve strict native domain. Evaluate exact original dry/no-macro surface limit: cfluxt=-csurf; csurf=0; isqtop=cfluxt/dtsolu. Wet surface equation unchanged."
+    }
+  ],
+  "linux_first_attempt": {
+    "run": 43207819499,
+    "source": "26c1109e48060b953c5c3f84c8a669340fc8128d",
+    "status": "FAILED_MISSING_SELECTED_STATE_DRIVER_IN_SPARSE_CHECKOUT",
+    "missing": "research/hybrid-water01/test_generic_hybrid_state.f90",
+    "recovery": "Add exact fixture; reuse passed SaltFarm full/own proof and already compiled Grass binary at identical source instead of repeating them; Hupsel not yet started"
+  },
+  "linux_second_attempt": {
+    "run": 43208529651,
+    "status": "FAILED_ARTIFACT_EXECUTION_MODE_BEFORE_GRASS_CONTRACT",
+    "cause": "GitHub ZIP artifact drops executable mode; native bytes unchanged",
+    "recovery": "Preflight exact state fixture and restore executable permission before reuse; preserve copied modes. Reuse same passed SaltFarm full, same Grass binary, no physical code change."
+  },
+  "positive_surface_stock_restart_gap": {
+    "source": "9f6edaa18",
+    "accepted_day": 109,
+    "surface_stock_mg_cm2": 0.0018339999999385567,
+    "next_day_reported_mass_loss_mg_cm2": -0.0018340000023130414,
+    "cause": "Original flzerocumu bookkeeping erased restored physical csurf; native codec itself retained exact stock",
+    "repair": "Remove only csurf reset from cumulative-output reset; cold task1 still initializes zero. Preserve stock, guards, native order and codec.",
+    "regression": "Consume actual saved109 into110 for all three accepted summer histories; retain independently initialized no-override original controls. Winter gifts must now qualify or remain a blocker."
+  },
+  "retained_predecessor_winter_refusal": "SaltFarm injected0.02mm/1mgcm3 gift on732 and733: second proposal can fail unchanged1e-10 original solute guard; preserve as actual refusal/live-disk/unchanged accepted-origin control, not accepted-history qualification. No parameter tuning or tolerance change.",
+  "current_winter_gate": "REQUIRES_FIVE_ACCEPTED_SALTFARM_SCENARIOS_WITH_NO_REFUSALS; strict post-reset mass guard unchanged",
+  "production_source": "d9c2ea5b37d09d97c24646d735845e6977f1b0e7",
+  "current_linux_source": "fe1d6d89b741fb4a310d92e33d8114a80b00e36f",
+  "test_assertion_delta": "Current qualifier additionally asserts no winter refusal; admission separately checks the same predicate on all actual raw result reports. This adds no model execution or physics dependency.",
+  "totals": {
+    "full_profiles": 12,
+    "accepted_days": 17536,
+    "own_windows": 72,
+    "surface_histories": 44,
+    "day109_consumptions": 12,
+    "groundwater_windows": 4
+  },
+  "results": {
+    "windows/grass-O0": {
+      "days": 1827,
+      "own_windows": [
+        [
+          1792,
+          1827
+        ],
+        [
+          187,
+          190
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ]
+      ],
+      "maximum_water_residual_cm": 6.350475700855895e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "maximum_global_heat_residual_j_cm2": 5.438316463823867e-12,
+      "maximum_cell_heat_residual_j_cm2": 9.532023607927709e-13,
+      "complete_model_seconds": 11.025013299891725,
+      "observed_model_seconds": 14.950432300101966,
+      "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "ada13c20bc70a076f3ddc5dfa6fcef051a94bef8b9060c216326dca7b3fbafb6",
+      "native_executable_sha256": {
+        "donor": "b2706bfc60d282f1d7e36929bd8902f138667799ccc737cc507d49195b8471aa",
+        "kernel": "0936ab6a0a745c4444a9f990aa32a28e03234e7d605f53306be979b3f99a38ff"
+      }
+    },
+    "windows/hupsel-O0": {
+      "days": 1096,
+      "own_windows": [
+        [
+          1061,
+          1096
+        ],
+        [
+          120,
+          122
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          523,
+          526
+        ],
+        [
+          583,
+          585
+        ],
+        [
+          730,
+          732
+        ]
+      ],
+      "maximum_water_residual_cm": 9.996847794013775e-11,
+      "maximum_solute_residual_mg_cm2": 2.0189359137172196e-13,
+      "maximum_global_heat_residual_j_cm2": 2.2319923687064147e-12,
+      "maximum_cell_heat_residual_j_cm2": 1.1371008301619412e-12,
+      "complete_model_seconds": 6.599687100155279,
+      "observed_model_seconds": 7.478515099966899,
+      "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "31dacfaa0383a6297125fe44e655db924b23eff612767ff996a3237aa8c83953",
+      "native_executable_sha256": {
+        "donor": "f9455d43dc354556f20072d8c1fb030e735a8d7fca03ea41cf29186bdbde71d2",
+        "kernel": "fe5579f04288ed6931d813f38c93eb0812d552d8e8e9703c6e40c167ec2abd15"
+      },
+      "accepted_surface_histories": 6,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "windows/saltfarm-O0": {
+      "days": 1461,
+      "own_windows": [
+        [
+          107,
+          110
+        ],
+        [
+          1459,
+          1461
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          731,
+          733
+        ]
+      ],
+      "maximum_water_residual_cm": 1.8597862833091838e-11,
+      "maximum_solute_residual_mg_cm2": 8.099007575701478e-12,
+      "maximum_global_heat_residual_j_cm2": 1.7372658867031987e-11,
+      "maximum_cell_heat_residual_j_cm2": 1.4863683200916356e-12,
+      "complete_model_seconds": 13.868741899961606,
+      "observed_model_seconds": 22.061730799963698,
+      "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "cbeef467d10b2ea0bc9a30909aa7c5a6d19249fc139410490d0e7ec9d55d3092",
+      "native_executable_sha256": {
+        "donor": "9976e4161d650aaca9112935304990360a38962e1066d8944271d01bfffcfb02",
+        "kernel": "51e8152fae64d11857e45e54045619015b08fe23096ba3f51ad7923fd98b5ec8"
+      },
+      "accepted_surface_histories": 5,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "windows/grass-O2": {
+      "days": 1827,
+      "own_windows": [
+        [
+          1792,
+          1827
+        ],
+        [
+          187,
+          190
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ]
+      ],
+      "maximum_water_residual_cm": 6.350475700855895e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "maximum_global_heat_residual_j_cm2": 5.438316463823867e-12,
+      "maximum_cell_heat_residual_j_cm2": 9.532023607927709e-13,
+      "complete_model_seconds": 10.614214199827984,
+      "observed_model_seconds": 13.14329389994964,
+      "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "619970759b2ff09309666fd6b15743c3ad4340b634ee67d4a995427cb8624c17",
+      "native_executable_sha256": {
+        "donor": "b2706bfc60d282f1d7e36929bd8902f138667799ccc737cc507d49195b8471aa",
+        "kernel": "85d1daaf9c58ebc57ed9c516924a8d47455f1f926b39811ed724e3280ee3e087"
+      }
+    },
+    "windows/hupsel-O2": {
+      "days": 1096,
+      "own_windows": [
+        [
+          1061,
+          1096
+        ],
+        [
+          120,
+          122
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          523,
+          526
+        ],
+        [
+          583,
+          585
+        ],
+        [
+          730,
+          732
+        ]
+      ],
+      "maximum_water_residual_cm": 9.996847794013775e-11,
+      "maximum_solute_residual_mg_cm2": 2.0189359137172196e-13,
+      "maximum_global_heat_residual_j_cm2": 2.2319923687064147e-12,
+      "maximum_cell_heat_residual_j_cm2": 1.1371008301619412e-12,
+      "complete_model_seconds": 6.651305600069463,
+      "observed_model_seconds": 6.917376099852845,
+      "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "a6f79a0f777243eb1763754dcee5a1295407c5b2380670b2ee4e84352bcfb282",
+      "native_executable_sha256": {
+        "donor": "f9455d43dc354556f20072d8c1fb030e735a8d7fca03ea41cf29186bdbde71d2",
+        "kernel": "02f358f9e1c241a188366b87bc06faac61a605087f677821017f35697cf0060a"
+      },
+      "accepted_surface_histories": 6,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "windows/saltfarm-O2": {
+      "days": 1461,
+      "own_windows": [
+        [
+          107,
+          110
+        ],
+        [
+          1459,
+          1461
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          731,
+          733
+        ]
+      ],
+      "maximum_water_residual_cm": 1.8597862833091838e-11,
+      "maximum_solute_residual_mg_cm2": 8.099007575701478e-12,
+      "maximum_global_heat_residual_j_cm2": 1.7372658867031987e-11,
+      "maximum_cell_heat_residual_j_cm2": 1.4863683200916356e-12,
+      "complete_model_seconds": 13.664188500028104,
+      "observed_model_seconds": 17.664864600170404,
+      "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "8b1d67182fdea95e8c091f760688ee466e4c70ba56bb4870f8b5b1d52e393b37",
+      "native_executable_sha256": {
+        "donor": "9976e4161d650aaca9112935304990360a38962e1066d8944271d01bfffcfb02",
+        "kernel": "17a7f420cafd6ad07d84572d6737852ed071a91a5d6a49a56066091be915e751"
+      },
+      "accepted_surface_histories": 5,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "ubuntu26.04/grass-O0": {
+      "days": 1827,
+      "own_windows": [
+        [
+          1792,
+          1827
+        ],
+        [
+          187,
+          190
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ]
+      ],
+      "maximum_water_residual_cm": 6.350762067627882e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "maximum_global_heat_residual_j_cm2": 5.980771433655718e-12,
+      "maximum_cell_heat_residual_j_cm2": 8.739623608144953e-13,
+      "complete_model_seconds": 6.658362354000005,
+      "observed_model_seconds": 9.713736679000007,
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "cbcafee0130e26fbe99d713787d6c348931c178088ee043d68894d59b911e8af",
+      "native_executable_sha256": {
+        "donor": "034404cdc02736b4a367f21a196d182f09ded3f1226a3989d2049e8b846af89a",
+        "kernel": "45d425a09fd13bc4c7ea07ee939b3576fbc66dc03236aba2fefa265ef8463ae4"
+      }
+    },
+    "ubuntu26.04/hupsel-O0": {
+      "days": 1096,
+      "own_windows": [
+        [
+          1061,
+          1096
+        ],
+        [
+          120,
+          122
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          523,
+          526
+        ],
+        [
+          583,
+          585
+        ],
+        [
+          730,
+          732
+        ]
+      ],
+      "maximum_water_residual_cm": 9.997065718650444e-11,
+      "maximum_solute_residual_mg_cm2": 2.1610435979544247e-13,
+      "maximum_global_heat_residual_j_cm2": 2.3847590568948362e-12,
+      "maximum_cell_heat_residual_j_cm2": 1.0396644482824069e-12,
+      "complete_model_seconds": 3.0221347790000053,
+      "observed_model_seconds": 4.022896734,
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "a485d0e5affb67e11cd02538be1171a520be90606afdec77cc2e1394ec4b6147",
+      "native_executable_sha256": {
+        "donor": "2a3b2247b03532f4567103190b12be2d4de99552499a2d2abadae2ef44dfd35b",
+        "kernel": "45d425a09fd13bc4c7ea07ee939b3576fbc66dc03236aba2fefa265ef8463ae4"
+      },
+      "accepted_surface_histories": 6,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "ubuntu26.04/saltfarm-O0": {
+      "days": 1461,
+      "own_windows": [
+        [
+          107,
+          110
+        ],
+        [
+          1459,
+          1461
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          731,
+          733
+        ]
+      ],
+      "maximum_water_residual_cm": 1.296733553868279e-11,
+      "maximum_solute_residual_mg_cm2": 8.097869597101237e-12,
+      "maximum_global_heat_residual_j_cm2": 1.2918555114538322e-11,
+      "maximum_cell_heat_residual_j_cm2": 1.1674294343733127e-12,
+      "complete_model_seconds": 8.567336894999997,
+      "observed_model_seconds": 14.521048043999997,
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "kernel_flags": [
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "7dde747b47495dffec24c97f9c48f50c69ff3a0ee083e4d9e01678c809da6683",
+      "native_executable_sha256": {
+        "donor": "63686875698c1f6c01d9099ff196fdc59c923bc248522a449e3e254a9b043911",
+        "kernel": "45d425a09fd13bc4c7ea07ee939b3576fbc66dc03236aba2fefa265ef8463ae4"
+      },
+      "accepted_surface_histories": 5,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "ubuntu26.04/grass-O2": {
+      "days": 1827,
+      "own_windows": [
+        [
+          1792,
+          1827
+        ],
+        [
+          187,
+          190
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ]
+      ],
+      "maximum_water_residual_cm": 6.350762067627882e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "maximum_global_heat_residual_j_cm2": 5.980771433655718e-12,
+      "maximum_cell_heat_residual_j_cm2": 8.739625304041194e-13,
+      "complete_model_seconds": 7.093601363000005,
+      "observed_model_seconds": 8.137540876999992,
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "076d0aea6255bcf0e05ce9fac683664a0ef0037f738b5aa132e349f69d25d720",
+      "native_executable_sha256": {
+        "donor": "034404cdc02736b4a367f21a196d182f09ded3f1226a3989d2049e8b846af89a",
+        "kernel": "d3e2c41375675a2e2f1b7ebe47ec5f17dd1707cd0ae18e4d88d65bb6ad0159af"
+      }
+    },
+    "ubuntu26.04/hupsel-O2": {
+      "days": 1096,
+      "own_windows": [
+        [
+          1061,
+          1096
+        ],
+        [
+          120,
+          122
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          4,
+          6
+        ],
+        [
+          5,
+          7
+        ],
+        [
+          523,
+          526
+        ],
+        [
+          583,
+          585
+        ],
+        [
+          730,
+          732
+        ]
+      ],
+      "maximum_water_residual_cm": 9.997065718650444e-11,
+      "maximum_solute_residual_mg_cm2": 2.1610435979544247e-13,
+      "maximum_global_heat_residual_j_cm2": 2.3847590568948362e-12,
+      "maximum_cell_heat_residual_j_cm2": 1.0396644514373218e-12,
+      "complete_model_seconds": 3.228045261999995,
+      "observed_model_seconds": 3.729829880000011,
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "e98bb72dc5dbf52e211a8d4e7851be57cfd1d70d8498d4939ad2af5085c99228",
+      "native_executable_sha256": {
+        "donor": "2a3b2247b03532f4567103190b12be2d4de99552499a2d2abadae2ef44dfd35b",
+        "kernel": "d3e2c41375675a2e2f1b7ebe47ec5f17dd1707cd0ae18e4d88d65bb6ad0159af"
+      },
+      "accepted_surface_histories": 6,
+      "persisted_and_actual_consumer_refusals": 11
+    },
+    "ubuntu26.04/saltfarm-O2": {
+      "days": 1461,
+      "own_windows": [
+        [
+          107,
+          110
+        ],
+        [
+          1459,
+          1461
+        ],
+        [
+          2,
+          4
+        ],
+        [
+          365,
+          367
+        ],
+        [
+          731,
+          733
+        ]
+      ],
+      "maximum_water_residual_cm": 1.296733553868279e-11,
+      "maximum_solute_residual_mg_cm2": 8.097869597101237e-12,
+      "maximum_global_heat_residual_j_cm2": 1.2918555114538322e-11,
+      "maximum_cell_heat_residual_j_cm2": 1.1674294069923638e-12,
+      "complete_model_seconds": 8.801739521999991,
+      "observed_model_seconds": 11.194531581000007,
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "build_sha256": "57f4f64c5833b7843b292b05aa3a186cb73b2865a073f477ef90418b37f793c1",
+      "native_executable_sha256": {
+        "donor": "63686875698c1f6c01d9099ff196fdc59c923bc248522a449e3e254a9b043911",
+        "kernel": "d3e2c41375675a2e2f1b7ebe47ec5f17dd1707cd0ae18e4d88d65bb6ad0159af"
+      },
+      "accepted_surface_histories": 5,
+      "persisted_and_actual_consumer_refusals": 11
+    }
+  },
+  "comparison_with_predecessor": {
+    "windows/grass-O0": {
+      "prior_raw_ledger_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499",
+      "current_raw_ledger_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "windows/hupsel-O0": {
+      "prior_raw_ledger_sha256": "1c9f18ee1875a637f55830c95b9039ebf9ded01ee96cf937f560e2333f9ac7b9",
+      "current_raw_ledger_sha256": "942d95631c9363257210d296a48666079ec7d72027efba73dcb9c19f2a5f76ed",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0,
+        "solute_end_max_mg_cm2": 1.4210854715202004e-14
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "windows/saltfarm-O0": {
+      "prior_raw_ledger_sha256": "73836c0208cf515b66cffbf118a8b1b4325eb44831147e342737ceaff1f2d77c",
+      "current_raw_ledger_sha256": "34a3b1d98549cc3f07b0c88400a527ce76b6e5ab1af31d7373854b668ab9d7aa",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 2.220446049250313e-16,
+        "drainage_outward_cm": 6.106226635438361e-16,
+        "groundwater_cm": 4.263256414560601e-14,
+        "pressure_max_cm": 1.1368683772161603e-13,
+        "solute_end_max_mg_cm2": 2.2737367544323206e-13
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "windows/grass-O2": {
+      "prior_raw_ledger_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499",
+      "current_raw_ledger_sha256": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "windows/hupsel-O2": {
+      "prior_raw_ledger_sha256": "1c9f18ee1875a637f55830c95b9039ebf9ded01ee96cf937f560e2333f9ac7b9",
+      "current_raw_ledger_sha256": "942d95631c9363257210d296a48666079ec7d72027efba73dcb9c19f2a5f76ed",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0,
+        "solute_end_max_mg_cm2": 1.4210854715202004e-14
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "windows/saltfarm-O2": {
+      "prior_raw_ledger_sha256": "73836c0208cf515b66cffbf118a8b1b4325eb44831147e342737ceaff1f2d77c",
+      "current_raw_ledger_sha256": "34a3b1d98549cc3f07b0c88400a527ce76b6e5ab1af31d7373854b668ab9d7aa",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 2.220446049250313e-16,
+        "drainage_outward_cm": 6.106226635438361e-16,
+        "groundwater_cm": 4.263256414560601e-14,
+        "pressure_max_cm": 1.1368683772161603e-13,
+        "solute_end_max_mg_cm2": 2.2737367544323206e-13
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "ubuntu26.04/grass-O0": {
+      "prior_raw_ledger_sha256": "80054ddf20900af55cc0ac8b924faa2620914a07e0f3bf7c284fb199d4f4cf68",
+      "current_raw_ledger_sha256": "80054ddf20900af55cc0ac8b924faa2620914a07e0f3bf7c284fb199d4f4cf68",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "ubuntu26.04/hupsel-O0": {
+      "prior_raw_ledger_sha256": "b6a0754f4911c114a3dee8b3dda120b9a648894c42c0de66ebc992533bc9360c",
+      "current_raw_ledger_sha256": "b6a0754f4911c114a3dee8b3dda120b9a648894c42c0de66ebc992533bc9360c",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0,
+        "solute_end_max_mg_cm2": 0.0
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "ubuntu26.04/saltfarm-O0": {
+      "prior_raw_ledger_sha256": "2d082898d24a1f52719241302507129a4c00e9edc93a9dc78a31680e5e90964d",
+      "current_raw_ledger_sha256": "068aca532a1ee60d56e07b92afbc2beb8928efc348963aa6ae044f00abe8d9f6",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 7.389644451905042e-13,
+        "bottom_outward_cm": 2.856603842360528e-13,
+        "drainage_outward_cm": 2.049471703458039e-13,
+        "groundwater_cm": 7.325695605686633e-12,
+        "pressure_max_cm": 4.604316927725449e-11,
+        "solute_end_max_mg_cm2": 9.094947017729282e-13
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "ubuntu26.04/grass-O2": {
+      "prior_raw_ledger_sha256": "80054ddf20900af55cc0ac8b924faa2620914a07e0f3bf7c284fb199d4f4cf68",
+      "current_raw_ledger_sha256": "80054ddf20900af55cc0ac8b924faa2620914a07e0f3bf7c284fb199d4f4cf68",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "ubuntu26.04/hupsel-O2": {
+      "prior_raw_ledger_sha256": "b6a0754f4911c114a3dee8b3dda120b9a648894c42c0de66ebc992533bc9360c",
+      "current_raw_ledger_sha256": "b6a0754f4911c114a3dee8b3dda120b9a648894c42c0de66ebc992533bc9360c",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "drainage_outward_cm": 0.0,
+        "groundwater_cm": 0.0,
+        "pressure_max_cm": 0.0,
+        "solute_end_max_mg_cm2": 0.0
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    },
+    "ubuntu26.04/saltfarm-O2": {
+      "prior_raw_ledger_sha256": "2d082898d24a1f52719241302507129a4c00e9edc93a9dc78a31680e5e90964d",
+      "current_raw_ledger_sha256": "068aca532a1ee60d56e07b92afbc2beb8928efc348963aa6ae044f00abe8d9f6",
+      "maximum_absolute_differences": {
+        "stock_end_cm": 7.389644451905042e-13,
+        "bottom_outward_cm": 2.856603842360528e-13,
+        "drainage_outward_cm": 2.049471703458039e-13,
+        "groundwater_cm": 7.325695605686633e-12,
+        "pressure_max_cm": 4.604316927725449e-11,
+        "solute_end_max_mg_cm2": 9.094947017729282e-13
+      },
+      "interpretation": "Exact unchanged Grass physics; other changes are justified conservative dry-limit evaluation / preserved physical stock. Small differences are measured evidence, not sole acceptance criteria or whole scientific equivalence."
+    }
+  },
+  "ubuntu_run": 43212846464,
+  "ubuntu_source": "fe1d6d89b741fb4a310d92e33d8114a80b00e36f",
+  "ubuntu_artifacts": [
+    {
+      "name": "nomacro-surface-O0-fe1d6d89b741fb4a310d92e33d8114a80b00e36f",
+      "id": 13941817531,
+      "sha256": "31a09887b9c32bbd75bc03d1487b5712167d43ecb75c92f462392d50cc99e16d"
+    },
+    {
+      "name": "nomacro-surface-O2-fe1d6d89b741fb4a310d92e33d8114a80b00e36f",
+      "id": 13941409245,
+      "sha256": "7c89a8e00fe1d6af13291e26d2de2361977029794d0e646412bbebd7bb198d02"
+    }
+  ],
+  "raw_evidence": {
+    "path": "research/hybrid-water01/nomacro-surface-closure-20261112.tar.xz",
+    "sha256": "4b20cd1119954fc44abbba53f44de5d60524a5400bcc9d95f75f7489e54f337e",
+    "bytes": 79910172,
+    "members": 3895,
+    "all_members_verified": true,
+    "format": "tar.xz with SHA256 manifest; identical files have portable tar hard links"
+  },
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "new_winter_refusals": 0,
+  "pre_counter_reset_proof": {
+    "run_id": 43209080961,
+    "head_sha": "795ee7b0f84e56b78cb156bc51b2ea18689b724f",
+    "conclusion": "success",
+    "artifacts": [
+      {
+        "name": "nomacro-surface-O0-795ee7b0f84e56b78cb156bc51b2ea18689b724f",
+        "id": 13939014192,
+        "sha256": "54a1c288c69e75cd22edaeb31b1c878e465473a65ac8d8e18ab00413ed00c2fe"
+      },
+      {
+        "name": "nomacro-surface-O2-795ee7b0f84e56b78cb156bc51b2ea18689b724f",
+        "id": 13938579343,
+        "sha256": "84f300f8d2c42100b96a2904359296795d9f2377dea639ccd984f41aff84e20d"
+      }
+    ]
+  },
+  "execution_source_capsule": {
+    "path": "research/hybrid-water01/nomacro-surface-execution-sources-20261112.tar.xz",
+    "sha256": "6dd66d4b5ce78e703bed94b70c6704761bfec02adc4fe2ad1652570722a41d64",
+    "bytes": 277928,
+    "members": 75,
+    "all_members_verified": true
+  },
+  "docs_checks": "Documentation source checks PASS; strict MkDocs external site PASS",
+  "negative_controls": {
+    "persisted_and_consuming_Fortran_refusals": 44,
+    "prebuild_actual_cli_refusals": 13,
+    "positive_original_SW_MACRO0_inputs": 3
+  },
+  "existing_contracts": "Current Grass prescribed-groundwater changed-history Windows/Ubuntu O0/O2 PASS; current state-owner/FMR kernel closure compiled O0/O2; src/MODFLOW implementation unchanged; no active macro model selected.",
+  "validation_cost_notes": "All actual complete/observed model calls below60seconds. Initial archive verifier was stopped after404.7 CPU seconds due backward hard-link xz seeks; the same completed archive passed one forward SHA256 scan, without model replay.",
+  "known_automatic_preflights": "The four pre-existing obsolete guards remain FAILED under their historical scopes; research/hybrid-water01/NOMACRO_CI_ADJUDICATION_20261112.json. Full F-CI and highest low-air are NOT_SELECTED_IMPACT; no weakened assertion or fabricated blanket green CI.",
+  "next": "Final version-bound release acceptance against the named no-macro criteria and input/scientific scope; reuse these complete trajectories, execute no new campaign without an actual uncovered dependency.",
+  "pull_request": 1660,
+  "published_proof_head": "a5d3adbb1700a6eb6c3cfc3ff03cdbf772a5cf24"
+}

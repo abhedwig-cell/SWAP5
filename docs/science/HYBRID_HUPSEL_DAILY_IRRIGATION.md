@@ -109,3 +109,63 @@ modified first-day head, compared with an independent original-input second-day
 control. Its admitted matching-original-head recovery and modified one-day
 control remain narrower evidence; reuse exact compatible published day20 origins,
 keep all tolerances and cap the two-day proof rather than repeat481days.
+
+## No-macro surface-irrigation successor
+
+The implemented additive mode `surface-irrigation-daily-v1` selects the same S5IRR001
+consumer for registered Hupsel and SaltFarm04dS only. The existing Hupsel mode
+retains its original project restriction and request semantics. The incremental
+builder accepts an explicit registered project (default Hupsel), preserves its
+exact original input/kernel/provider identity and refuses other projects. No
+physical equation, original conversion, calculation order or schema changes.
+Accepted requests remain bound to mode/project/build/origin/day and coupling ID.
+Discard, publication, recovery and independent-worker ownership remain unchanged.
+No original native origin may be relabelled into the extended build: fresh bounded
+no-file controls create its own origins and are compared with admitted originals.
+
+Selected acceptance: original saline irrigation108–110 and year-boundary732–733
+for SaltFarm, original Hupsel gift5–6, O0/O2 on Windows and Ubuntu. Retain
+independent original SWP-table controls for changed two-day histories; exact
+same-route retry/durable recovery and two interleaved instances; finite/range/
+foreign-mode/origin guards; unchanged1e-10 water/solute accounting. All calls
+are bounded at60seconds and unaffected full trajectories are reused. Missing
+energy and original scientific failures stay open; active macro work stays frozen.
+
+The first SaltFarm identity request exposed a concrete duration-validation bug:
+14.4/(24*0.6) rounds above1 in caller units, while the original reader evaluates
+(0.1*14.4)/(0.1*24*0.6)=1 after its actual mm-to-cm conversion. Both host and
+consumer now check duration using that unchanged original conversion order.
+The strict limit stays1day with no epsilon or tolerance increase; the original
+physical assignments and default no-file execution remain unchanged. The failed
+pretrial request is retained; original control output distinguishes the fix.
+
+A second distinguishing request (14.401mm/.402mgcm3 on SaltFarm108)
+exported csurf=-2.168404344971009e-19mg/cm2. The unchanged native restore
+correctly refuses it. No clipping, repair or tolerance relaxation is selected.
+The external adapter now checks the current codec's conserved-solute domain
+before publication, so a locally mass-closed but unrestartable trial cannot
+become externally accepted. Such a request remains physically unqualified.
+That intermediate salinity-only probe also exposed the original day109 gap.
+The final regression retains the original failing14.401mm/.402mgcm3 request
+after the exact conservative transfer repair below.
+This is a fail-closed interface decision, not a numerical repair campaign.
+
+The fail-closed check also detects negative csurf at UNCHANGED original day109.
+This is therefore a pre-existing complete-day restart gap, not grounds for more
+forcing-parameter trials. For qtop<-1e-6 with EXACTLY zero pond and macropore
+area, the original mixed-reservoir equations reduce algebraically to complete
+transfer: cfluxt=-csurf; csurf=0; isqtop=cfluxt/dtsolu. This exact conservative
+limit replaces cancelling division/multiplication only in that branch; wet
+surface equations and all strict guards stay unchanged. It is a justified
+floating-point evaluation repair. Fresh full no-macro trajectories and affected
+restart/transaction controls are selected because the solute producer changes.
+Prior proof retains its old source scope; no failed reference is promoted.
+
+Consuming the actual changed-history day109 exposed a second original issue:
+the codec correctly retained positive surface solute0.001834mg/cm2, but the
+first solute step's flzerocumu output-counter reset erased it. The observed
+day110 mass loss matches that inventory. The repair removes only this physical
+stock reset from cumulative bookkeeping; cold task1 still initializes csurf=0.
+No tolerance, clipping, schema or accepted origin is changed. Actual109-to110
+consumption and the previously refused changed-winter history are selected
+as regression gates, together with fresh affected complete no-macro trajectories.
