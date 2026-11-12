@@ -1,0 +1,74 @@
+{
+  "status": "CACHED_ACCEPTED_RESIDUAL_INCONSISTENT_WITH_FRESH_ORIGINAL_OPERATOR",
+  "source": "fe11b65305189d10f210c59da6622ace5648c4df",
+  "run": 43167302507,
+  "job": 131012065925,
+  "artifact_sha256": "d66b55a4368a3d6b519590557fc4feae8ab8be3271912d8ed68e9320f43a7f63",
+  "original_origin432_sha256": "7cc6a6ed1116dcaddced5202e4c6d3754169ee99d860980dfc3df2b1b883bbf6",
+  "window": [
+    432,
+    438
+  ],
+  "parent_physical_days_exact": [
+    433,
+    434,
+    435,
+    436,
+    437,
+    438
+  ],
+  "complete_raw_endpoint_exact": {
+    "result.end": "a7c69f9264499ace2f450f690a2e826a559c1f0f69812f4c6cc52cf8e01cb27d",
+    "macro.bin": "543a8c2242924b21521b4b564ee947dc84cede0da386fee1e7e93d00adbefc3f"
+  },
+  "accepted_branch": "converged, not continue-without-convergence",
+  "all_three_flunsatok_flags": true,
+  "macro_rate_reduction_level": 0,
+  "time1900_start": 36232.99992244174,
+  "dt_days": 7.756941163949982e-05,
+  "dt_seconds": 6.701997165652784,
+  "iterations": 12,
+  "cached_Fmax": 5.801720215359296e-12,
+  "cached_Fsum": 3.419538743164509e-12,
+  "original_local_guard": 1e-06,
+  "original_total_guard": 1e-05,
+  "fresh_Fmax": 4.319762946264734,
+  "fresh_Fsum": -42.977539768372964,
+  "maximum_delta_F": 4.319762946264462,
+  "local_guard_ratio": 4319762.9462647345,
+  "total_guard_ratio": 4297753.976837296,
+  "fresh_exceeding_nodes": 38,
+  "worst_node_one_based": 81,
+  "runs": [
+    {
+      "label": "control",
+      "seconds": 6.026584479999997,
+      "expired": false,
+      "verified_days": [
+        433,
+        434,
+        435,
+        436,
+        437,
+        438
+      ]
+    },
+    {
+      "label": "observation",
+      "seconds": 5.841301704999999,
+      "expired": false,
+      "verified_days": [
+        433,
+        434,
+        435,
+        436,
+        437,
+        438
+      ]
+    }
+  ],
+  "new_models_by_auditor": 0,
+  "decision": "A converged frozen residual does not satisfy a refreshed original coupled residual on the identical state. Do not qualify pressure from daily mass closure. This falsifies final-step continue-without-convergence as the explanation for this observed endpoint.",
+  "limits": "Single final step, not complete attribution of79.511cm, not an independently qualified reference, no repaired physics or all-timestep verdict. Fork refresh changes only child; exact native parent control qualifies observation noninterference, not scientific equivalence.",
+  "next": "Use explicit frozen start-of-step state and consistent larger coupled solve in a bounded corrective work unit; do not repeat failed fresh-residual polishing campaigns or change tolerances."
+}
