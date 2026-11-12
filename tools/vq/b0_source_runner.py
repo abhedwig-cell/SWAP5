@@ -26,7 +26,7 @@ SYMBOLS = {"linux": True, "multiswap": False, "with_sss": False, "with_animo": F
 
 
 def run(cmd: list[str], cwd: Path) -> subprocess.CompletedProcess[str]:
-    return subprocess.run(cmd, cwd=cwd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    return subprocess.run(cmd, cwd=cwd, text=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=60)
 
 
 def select_dec_branches(text: str) -> str:

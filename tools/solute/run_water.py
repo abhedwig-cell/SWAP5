@@ -184,7 +184,7 @@ def run_hupsel(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", required=True, choices=[GRASS_MODEL,HUPSEL_MODEL]+[p.model for p in PROJECTS])
+    parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL]+[p.model for p in PROJECTS])
     parser.add_argument("--reference-work", type=Path, help="Prepared original SWAP 4.3.1 distribution for Andelst")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
@@ -197,7 +197,30 @@ def main():
     parser.add_argument("--kernel-opt", choices=["O0", "O2"])
     parser.add_argument('--no-macro-release',action='store_true',help='Explicit macropore-free release; active macro input is rejected before build')
     parser.add_argument('--timeout-seconds',type=float,help='Hard model/controller wall cap; release default60seconds, compile time excluded')
+    parser.add_argument('--prepare-sources', action='store_true', help='Build original source provider only; no model execution')
+    parser.add_argument('--build-only', action='store_true', help='Compile the selected registered project without running it')
+    parser.add_argument('--build-bundle', type=Path, help='Reuse an exact source/input/compiler-bound build')
     args = parser.parse_args()
+    import user_prepare
+    if args.prepare_sources:
+        if (not args.no_macro_release or args.reference_work is None or args.model is not None
+            or args.build_only or any(v is not None for v in (args.output,args.prepare_archive,args.build_bundle,
+                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt))):
+            parser.error('--prepare-sources requires only --no-macro-release and a new --reference-work')
+        try:
+            prepared=user_prepare.prepare(args.reference_work)
+        except (OSError,ValueError,subprocess.SubprocessError) as error:
+            parser.error(str(error))
+        print(json.dumps({'status':prepared['status'],'compile_seconds':prepared['compile_seconds']}))
+        return 0
+    if args.model is None:
+        parser.error('--model is required for a build or run')
+    if args.no_macro_release and args.model not in (GRASSGROWTH.model,HUPSEL.model,SALTFARM.model):
+        parser.error('Release selection is limited to the three registered no-macro hybrid projects; active macropores are excluded')
+    if (args.build_only or args.build_bundle is not None) and not args.no_macro_release:
+        parser.error('--build-only/--build-bundle require --no-macro-release')
+    if args.build_only and (args.build_bundle is not None or any(v is not None for v in (args.days,args.restart,args.restart_day,args.checkpoint_at))):
+        parser.error('--build-only does not run or resume a model')
     if args.no_macro_release and args.model==ANDELST.model:
         parser.error('Active macropores are outside SWAP5-NOMACRO-CLOSURE01; original Andelst is not silently changed')
     if args.timeout_seconds is not None and not 0<args.timeout_seconds<=300:
@@ -235,7 +258,6 @@ def main():
     project={p.model:p for p in PROJECTS}[args.model]
     last_day=project.last_day
     args.days = last_day if args.days is None else args.days
-    args.kernel_opt = args.kernel_opt or "O2"
     if (args.restart is None) != (args.restart_day is None):
         parser.error("--restart and --restart-day must be supplied together")
     first = args.restart_day if args.restart is not None else 0
@@ -246,25 +268,47 @@ def main():
 
     if args.no_macro_release:
         try:
+            user_prepare.validate(args.reference_work)
+            user_prepare.check_inputs(args.reference_work, project)
             require_no_macro_input(args.reference_work, project)
         except (OSError, ValueError) as error:
             parser.error(str(error))
 
     output = args.output.resolve()
-    output.mkdir(parents=True)
     profile = dict(budget_retry=project.macro or project.solute, shared_pond_transfer=project.macro, refresh_macro_final=project.macro)
-    donor, kernel, case, inputs, build_id = build(
-        args.reference_work.resolve(), output, **profile, runtime_checkpoint=True, kernel_opt=args.kernel_opt, project=project,
-    )
-    binding = checkpoint_identity(inputs, build_id, project=project, **profile)
-    origin = None
-    receipt = None
-    if args.restart is not None:
-        origin = output / "verified-origin"
-        receipt = verify_checkpoint(args.restart.resolve(), first, binding, origin)
     project_meta=dict(case=project.case,model=project.model,start_date=project.start_date,nodes=project.nodes,water_tolerance=project.water_tolerance)
+    if args.build_bundle is not None:
+        from daily_coupling import validate_bundle
+        try:
+            bundle=args.build_bundle.resolve()
+            meta,case=validate_bundle(bundle,args.reference_work.resolve(),project)
+            inputs,build_id=meta['inputs'],meta['identity']
+            binding=checkpoint_identity(inputs,build_id,project=project,**profile)
+            if meta['binding'] != binding:
+                raise ValueError('Build checkpoint binding differs')
+            actual_opt=next(v[1:] for v in build_id['kernel_flags'] if v in ('-O0','-O2'))
+            if args.kernel_opt is not None and args.kernel_opt != actual_opt:
+                raise ValueError('Requested kernel optimization differs from build')
+            args.kernel_opt=actual_opt
+            donor=host_module.executable(bundle,'day_donor');kernel=host_module.executable(bundle,'day_kernel')
+        except (OSError,ValueError,KeyError,StopIteration) as error:
+            parser.error(str(error))
+        output.mkdir(parents=True)
+    else:
+        args.kernel_opt=args.kernel_opt or 'O2'
+        output.mkdir(parents=True)
+        donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,
+            runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project)
+        binding=checkpoint_identity(inputs,build_id,project=project,**profile)
+    origin=None;receipt=None
+    if args.restart is not None:
+        origin=output/'verified-origin'
+        receipt=verify_checkpoint(args.restart.resolve(),first,binding,origin)
     (output/'BUILD.json').write_text(json.dumps(dict(project=project_meta,inputs=inputs,identity=build_id,binding=binding,
         executable_sha256={'donor':sha(donor),'kernel':sha(kernel)}),indent=2)+'\n')
+    if args.build_only:
+        print(json.dumps({'status':'BUILT_NO_MODEL_EXECUTED','model':project.model,'kernel_optimization':args.kernel_opt}))
+        return 0
     workers=[];expired=threading.Event();actual_start=host_module.start_process
     def track(*arguments,**keywords):
         process,log=actual_start(*arguments,**keywords);workers.append(process);return process,log
