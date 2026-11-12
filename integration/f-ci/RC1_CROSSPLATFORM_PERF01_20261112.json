@@ -26,9 +26,10 @@
   ],
   "automation": {
     "id": "swap5-rc1-onderzoek-hervatten",
-    "status": "RESUME_TIMER_TO_STOP_AT_EXPLICIT_OWNER_DECISION_BOUNDARY",
+    "status": "DELETED_VERIFIED_AT_OWNER_DECISION_BOUNDARY",
     "interval_minutes": 30,
-    "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud"
+    "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud",
+    "reason": "Work-order stop rule: real scientific owner disposition pending; full goal not reported achieved. Recreate 30minute safety net if owner chooses continuation."
   },
   "findings": "Corrected coherent and daily full frames exact on both platforms. Matching GNU15.2 does not remove corrected Hupsel/SaltFarm branch amplification. Private polish-feedback shortcut materially lowers iteration counts but fails Hupsel day364 independent daily water1e-10 guard; rejected without production changes.",
   "transport_decision": "REJECTED_NOT_ADMITTED: exact physical/native preservation achieved, but SaltFarmABBA model/controller timing did not establish a material gain. Original daily_host.py fully restored to frozen RC1 bytes.",
