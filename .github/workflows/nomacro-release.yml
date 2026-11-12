@@ -271,6 +271,13 @@ jobs:
           run-id: 43207819499
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/surface-reused
+      - name: Validate reusable provider execution and selected state fixture
+        run: |
+          test -f research/hybrid-water01/test_generic_hybrid_state.f90
+          for project in saltfarm grass; do
+            bundle="$RUNNER_TEMP/surface-reused/surface-native-$project-${{ matrix.opt }}"
+            chmod +x "$bundle/day_donor" "$bundle/day_kernel"
+          done
       - name: Changed solute producer complete SaltFarm and all five own windows
         run: |
           python3 - <<'PY'
@@ -294,7 +301,7 @@ jobs:
           root=Path(os.environ['RUNNER_TEMP'])
           old=root/'surface-reused/surface-native-grass-${{ matrix.opt }}';new=root/'surface-native-grass-${{ matrix.opt }}'
           for p in old.iterdir():
-              if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):shutil.copyfile(p,new/p.name)
+              if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):shutil.copy2(p,new/p.name)
           PY
             fi
             python3 -B research/hybrid-water01/run_hybrid_grass_full.py --bundle "$bundle" --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-seasonal-$project-${{ matrix.opt }}" --project "$project"
