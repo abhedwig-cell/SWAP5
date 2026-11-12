@@ -1,5 +1,5 @@
 {
-  "status": "CONTINUING_EXACT_DURABLE_LINUX304",
+  "status": "CONTINUING_EXACT_DURABLE_LINUX448_TO_FINISH481",
   "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
   "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
   "selection": {
@@ -93,7 +93,7 @@
         "seconds": 60.003452675999995,
         "overlap161to198_physical_and_retry_counts_exact": true
       },
-      "next": "Continue own304to481; stop immediately on any changed305to313 retained day. Same60s cap and16day durability. No changed model/build/input or tolerance.",
+      "next": "Continue448to481 with live449to452 comparison, same60s cap. Reuse prior365 checkpoint for year365to368 complete endpoint comparison; own453to459 late event after finish.",
       "unintended_stale_dispatch": {
         "run_id": 43157677890,
         "requested_after_push": "4fac31635e9036c7f3a1221c51d4a1af25e6321d",
@@ -114,6 +114,18 @@
         "seconds": 60.00320176299999,
         "overlap241to249_exact": true,
         "mass_retries": 22803
+      },
+      "result304": {
+        "run_id": 43158853787,
+        "source": "a40055099617ec05c3dc075671a8a83be2ee87a3",
+        "artifact_id": 13917047337,
+        "artifact_sha256": "be43cb0fe9992fc3518ce5167c9f1b3adabd1ec4bed7f156760854375674d46a",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 452,
+        "durable_day": 448,
+        "seconds": 60.003556701,
+        "overlap305to313_exact": true,
+        "mass_retries": 31022
       }
     },
     "whole_work_unit_cost": {

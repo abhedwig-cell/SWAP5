@@ -130,7 +130,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with:
           name: original-macro-481-linux
-          run-id: 43158145401
+          run-id: 43158853787
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ runner.temp }}/prior-original-macro-481
       - name: Exact provider and persisted selection; zero scientific compilation
@@ -152,12 +152,12 @@ jobs:
           reference=provider/json.loads((provider/'PROOF_INDEX.json').read_text())['reference']
           with open(os.environ['GITHUB_ENV'],'a') as f:f.write('MACRO_REFERENCE='+str(reference)+'\n')
           PY
-      - name: Continue exact durable304 at unchanged bound and compare every retained overlap day
-        run: python3 -B research/hybrid-water01/run_original_macro_continuation.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/prior-original-macro-481/resume-240-to-481/accepted-column-1-day-304.zip" --cut 304 --end 481 --seconds 60 --checkpoint-days 320 336 352 365 368 384 400 416 432 448 453 456 457 458 459 464 480 481 --compare-journal "$RUNNER_TEMP/prior-original-macro-481/resume-240-to-481/daily.jsonl" --output "$RUNNER_TEMP/original-macro-481/resume-304-to-481"
-      - name: Own complete year-boundary restart365to367
-        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/resume-304-to-481/accepted-column-1-day-365.zip" --cut 365 --end 367 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-365-to-367"
+      - name: Continue exact durable448 at unchanged bound and compare every retained overlap day
+        run: python3 -B research/hybrid-water01/run_original_macro_continuation.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/prior-original-macro-481/resume-304-to-481/accepted-column-1-day-448.zip" --cut 448 --end 481 --seconds 60 --checkpoint-days 453 456 457 458 459 464 480 481 --compare-journal "$RUNNER_TEMP/prior-original-macro-481/resume-304-to-481/daily.jsonl" --output "$RUNNER_TEMP/original-macro-481/resume-448-to-481"
+      - name: Own complete year-boundary endpoint restart365to368
+        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/prior-original-macro-481/resume-304-to-481/accepted-column-1-day-365.zip" --cut 365 --end 368 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-365-to-368"
       - name: Own complete late-event restart453to459
-        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/resume-304-to-481/accepted-column-1-day-453.zip" --cut 453 --end 459 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-453-to-459"
+        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/resume-448-to-481/accepted-column-1-day-453.zip" --cut 453 --end 459 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-453-to-459"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
