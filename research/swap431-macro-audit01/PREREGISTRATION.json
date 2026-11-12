@@ -1,0 +1,13 @@
+{
+  "work_unit": "SWAP431-MACRO-AUDIT01",
+  "baseline": "f2377211d2be58d03d96e50fb0a6bc35ced3c90f",
+  "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "H1": "First 20 frozen-flux converged B0 steps: fresh coupled residual may fail unchanged original local/total criteria.",
+  "H2": "Repeated evaluation and node81 saturation roundtrip may alter same-input residual/history.",
+  "selection": "First two original Andelst days from cold initialization; only TEND changed from 1999-04-26 to 1998-01-02. No imported hybrid state.",
+  "cap_seconds_each": 20,
+  "max_observed_accepts": 20,
+  "child_cap_seconds": 3,
+  "acceptance": "Uninstrumented and instrumented complete physical output files must match bytes, ignoring timestamp headers; record exact exclusions. No new physics/tolerance.",
+  "qualification": "Observation only. No B1 correction, no general rejected-step rollback claim, no whole trajectory accuracy claim."
+}
