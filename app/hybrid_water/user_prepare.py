@@ -123,6 +123,10 @@ def validate_build(reference, identity, *, validated_toolchain=None):
     if (identity['compiler'] != current['version'] or identity['compiler_sha256'] != current['sha256']
         or identity['target'] != current['target']):
         raise ValueError('Build compiler differs from the prepared toolchain')
+    if 'restart_publisher' in identity:
+        tools = validated_toolchain if validated_toolchain is not None else toolchain()
+        if identity['restart_publisher']['gcc_sha256'] != tools['gcc']['sha256']:
+            raise ValueError('Build publisher compiler differs from the prepared toolchain')
     for key,folder in [('donor_objects','swap-obj'),('donor_modules','swap-obj'),('ttutil_modules','ttutil-obj')]:
         for name,digest in identity[key].items():
             if h.sha(reference/'build'/folder/name) != digest:

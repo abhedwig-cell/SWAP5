@@ -145,6 +145,17 @@ Functional whole-period execution and same-build restart are qualified;
 whole scientific or portable trajectory equivalence is **not qualified**.
 The listed maxima do not constitute accepted errors or a full energy balance.
 
+For the matched GNU15.2 cohorts, Hupsel584 oxygen reduction is
+0.004793608905922416cm on Windows versus0.004794242549886477cm on Ubuntu.
+Their absolute spread6.336439640616462e-7cm also exceeds the already recorded
+pointwise scientific bound5.371840000016327e-7cm. This is a diagnostic application
+of an existing bound, not a new portable reference qualification; the original
+reference FAIL remains independently failed. Thus a portable scientific PASS
+cannot be reported at that point. Accepting a functionally qualified release
+with these explicit scientific limitations requires an owner disposition;
+automatic tolerance relaxation or describing the spread as accepted roundoff
+is not an alternative.
+
 ## Rejected pure-polish adaptive-feedback experiment
 
 The private discriminator retains every original Newton iteration and every
@@ -186,3 +197,52 @@ is investigated and the attractive generic shortcut rejected by an unchanged
 physical gate. Portable Hupsel/SaltFarm scientific acceptance remains an explicit
 release decision; neither roundoff language nor performance evidence authorizes
 accepting their complete cross-platform trajectories.
+
+
+## Proposed source-bound durable-publisher build reuse
+
+The four-day checkpoint profiles expose about one second of repeated GCC
+compilation/loading per checkpoint-enabled command, separate from native donor
+work. The successor builds the unchanged restart_publish.c once with each
+registered no-macro bundle. Its C source, resulting library and actual GCC binary
+SHA are bound into the build/checkpoint identity. Every reused-bundle command
+checks the source/library before output, verifies the current prepared compiler,
+and rechecks the binary before loading. Direct legacy/macro callers retain their
+existing compilation route. No cross-command mutable compiler cache, durability
+operation, publication ordering, codec or physical/state contract is changed.
+A successor needs fresh build identities; RC1 checkpoints are never rebound.
+Qualification requires all3 O0/O2 physical/CSV/native controls and complete O2
+runs on Windows/Ubuntu, plus changed source/library/compiler refusals. This
+section requires the corresponding gates and actual PR admission below.
+
+WindowsGNU16.2 now passes all three short O0 and complete O2 baseline/successor
+comparisons: every unrounded physical receipt, original CSV and own native/aux
+end state remains exact, including complete365/365/109-to-end continuations.
+The six O0/O2 external controls also pass discard/replay, stale-token refusal,
+interleaved-instance native equality and accepted1-to2 recovery. Six current
+toolchain/publisher source/library/compiler refusal controls precede output.
+The unchanged full-period water/solute bounds remain1e-10. No scientific failed
+criterion is promoted by these exact same-platform preservation results.
+
+Prepared Windows publisher loading takes0.00238/0.00117/0.00097seconds for
+Grass/Hupsel/SaltFarm, with no runtime compiler invocation in these profiles.
+This moves compilation to the explicit build stage; it is amortized when a build
+is reused, not claimed as elimination of first-build cost. Full one-checkpoint
+observations against canonical2b9d322e6 are12.308->12.409seconds for Grass,
+6.814->5.685 for Hupsel and14.531->12.982 for SaltFarm (ratios1.008/0.834/0.893).
+These are same-laptop observations, not statistical whole-solver speedups.
+Grass's whole wall improvement is unresolved. Physics and iteration histories
+remain unchanged; the rejected adaptive-feedback experiment is not present.
+
+Ubuntu26.04GNU15.2 run43258743503 also passes every selected O0/O2 physical,
+CSV, own-native and publisher-refusal control. Its carrier6d29936bec differs
+from runtime/test source459b45244 only in the registered manual workflow wiring.
+All three full O2 observations are6.918->6.872,3.172->3.145 and8.609->8.750seconds;
+these small/noisy changes do not establish whole-run speedup. Four-day controller
+controls resolve removal of the smaller Linux per-run compilation cost. Exact
+source/build/compiler/input records, negative cases, physical journals, complete
+original CSVs, restart files and executed binaries persist in publisher-proof.tar.gz
+with SHA/member verification. The focused external transaction controls are
+Windows-only; unchanged C durability operations and Fortran process contracts
+retain their existing separate qualification, rather than a fabricated Linux
+external-test PASS or a broad moving F-CI claim.

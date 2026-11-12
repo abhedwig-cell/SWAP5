@@ -577,6 +577,13 @@ end module MOD_wofost""")
     }
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
+    if not project.macro:
+        library = compile_restart_publisher(output)
+        build_identity['restart_publisher'] = {
+            'source_sha256': sha(ROOT/'app/support/restart_publish.c'),
+            'library_sha256': sha(library),
+            'gcc_sha256': sha(Path(shutil.which('gcc'))),
+        }
     return donor, kernel, case, inputs, build_identity
 
 
@@ -629,14 +636,30 @@ def checkpoint_identity(inputs, build_identity, *, budget_retry, shared_pond_tra
     }
 
 
-def restart_publisher(output):
-    """Load the same durable file publisher used by native SWAP5 restarts."""
+def compile_restart_publisher(output):
+    """Build the unchanged durable publisher once in an explicit build bundle."""
     source = ROOT / "app/support/restart_publish.c"
     library = output / ("restart_publish.dll" if os.name == "nt" else "restart_publish.so")
     flags = ["-shared", "-O2"]
     if os.name != "nt":
         flags.append("-fPIC")
     subprocess.run(["gcc", *flags, str(source), "-o", str(library)], check=True)
+    return library
+
+
+def validate_restart_publisher(bundle, identity):
+    """Refuse changed publication code/binary before using a prepared library."""
+    library = bundle/('restart_publish.dll' if os.name == 'nt' else 'restart_publish.so')
+    if (identity['source_sha256'] != sha(ROOT/'app/support/restart_publish.c')
+            or identity['library_sha256'] != sha(library)):
+        raise ValueError('Build durable restart publisher differs')
+    return library
+
+
+def restart_publisher(output, *, bundle=None, identity=None):
+    """Load the same durable publisher; prepared no-macro builds reuse its binary."""
+    library = (validate_restart_publisher(bundle, identity) if identity is not None
+               else compile_restart_publisher(output))
     publish = ctypes.CDLL(str(library)).swap5_restart_publish
     publish.argtypes = [ctypes.c_char_p, ctypes.c_char_p]
     publish.restype = ctypes.c_int
@@ -814,7 +837,9 @@ class DailyHost:
         _, selected = receive(self.host, self.host_log, {"DAILY_MODEL"})
         if selected["DAILY_MODEL"] != [model]:
             raise ValueError("Kernel selected a different soil water model")
-        self.publish = restart_publisher(output) if binding is not None else None
+        publisher_identity = binding['build'].get('restart_publisher') if binding is not None else None
+        self.publish = (restart_publisher(output, bundle=Path(donor).parent, identity=publisher_identity)
+                        if binding is not None else None)
         for start in starts:
             name = start.name or start.variant
             if Path(name).name != name or name in {".", ".."} or start.variant not in {"original", "shifted"}:

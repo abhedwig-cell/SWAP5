@@ -143,6 +143,8 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    if 'restart_publisher' in identity:
+        h.validate_restart_publisher(bundle, identity['restart_publisher'])
     if meta['project'] != dict(case=project.case, model=project.model,
                               start_date=project.start_date, nodes=project.nodes,
                               water_tolerance=project.water_tolerance):

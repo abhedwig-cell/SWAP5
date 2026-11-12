@@ -19,5 +19,18 @@ finally:p.write_bytes(original)
 p=reference/'PREPARED.json';original=p.read_bytes();changed=json.loads(original);changed['toolchain']['gfortran']['sha256']='0'*64
 try:p.write_text(json.dumps(changed));refuse('foreign-provider-compiler')
 finally:p.write_bytes(original)
+if 'restart_publisher' in meta['identity']:
+ p=bundle/'BUILD.json';original=p.read_bytes()
+ for field,message in [('source_sha256','Build durable restart publisher differs'),
+                       ('gcc_sha256','Build publisher compiler differs')]:
+  changed=json.loads(original);changed['identity']['restart_publisher'][field]='0'*64
+  try:p.write_text(json.dumps(changed));refuse('foreign-publisher-'+field)
+  finally:p.write_bytes(original)
+  assert message in (a.output/('foreign-publisher-'+field+'.log')).read_text()
+ library=bundle/('restart_publish.dll' if os.name=='nt' else 'restart_publish.so')
+ original=library.read_bytes()
+ try:library.write_bytes(original+b'changed');refuse('changed-publisher-library')
+ finally:library.write_bytes(original)
+ assert 'Build durable restart publisher differs' in (a.output/'changed-publisher-library.log').read_text()
 (a.output/'RESULT.json').write_text(json.dumps(dict(status='INVOCATION_LOCAL_TOOLCHAIN_REFUSALS_PASS',events=events),indent=2)+'\n')
 print('INVOCATION_LOCAL_TOOLCHAIN_REFUSALS_PASS',flush=True)
