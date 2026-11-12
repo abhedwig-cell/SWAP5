@@ -65,6 +65,16 @@ reference or full attribution of the groundwater discrepancy. See
 `research/hybrid-water01/ORIGINAL_MACRO_DAY438_20261112.md` and its preserved
 artifact/independent zero-model audit. No model-source dependency is changed.
 
+The subsequent fixed-live-state control supports retaining the original local
+derivative: eight columns at two perturbation scales show zero off-tridiagonal
+response; sequential and saturation-crossing round-trip evaluations are exact.
+The cached/fresh residual change is accounted for by the macro exchange change
+to8.9e-16. This is one-context evidence, not a pressure repair or full trajectory
+attribution. `research/hybrid-water01/MACRO_DIRECTIONAL438_20261112.md` preserves
+the actual15.587seconds of observer runs and zero-model independent assessment.
+Rejected solver variants remain rejected; actual numerical timestep rollback is
+the next independent functional acceptance point.
+
 ## What the shared application architecture actually provides
 
 One project-aware daily host owns explicit kernel clocks, pressure stocks,

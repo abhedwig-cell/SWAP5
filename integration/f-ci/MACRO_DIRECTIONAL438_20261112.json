@@ -1,0 +1,77 @@
+{
+  "status": "FIXED_STATE_HYPOTHESES_RESOLVED_NO_SOLVER_REPAIR_SELECTED",
+  "base": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+  "hypothesis": "Fresh original coupled residual on identical complete live state is repeatable; pressure changes at selected nodes create off-tridiagonal responses missing from original analytic direction",
+  "decision_boundary": "First two baseline evaluations must exactly repeat and reproduce prior fresh F vector; then compare eight central-difference directions at absolute1e-4cm and5e-5cm. Report scale change, not a new physical acceptance tolerance. Nonlocal signal selects coupled derivative formulation; no signal rejects that explanation.",
+  "invariants": "No production arithmetic, physical option, tolerance, model default or accepted state change; children perturb only trial h/theta/hgrad under original SWKIMPL0; parent full native438 and all physical433to438 equal frozen original control",
+  "scope": "One original432to438 observer; original PR1655 control reused by exact archive hash.34 fixed-state fork evaluations, not time marches.",
+  "model_expected_seconds": 7,
+  "model_cap_seconds": 20,
+  "child_cap_seconds": 3,
+  "full_runs": 0,
+  "no_repairs_selected": "Rejected1656 diagonal/secant and earlier polishing variants excluded",
+  "artifact_and_source_identity_required": true,
+  "first_control": {
+    "source": "70d4d2d0f4e5f148a719d1563bcc80336d0ea682",
+    "run": 43174240491,
+    "job": 131034515867,
+    "artifact": 13922769904,
+    "sha256": "bfa1f1267e04b0179f2016e0816178c478bbdd6cdb21cda4809cc67a934eec58",
+    "seconds": 4.975797565000001,
+    "result": "Clone baselines exact and match old fresh residual. No offband response in eight directions at two scales; nonlocal hypothesis unsupported at this state."
+  },
+  "followthrough": {
+    "hypothesis": "Deterministic cloned evaluations do not establish sequential idempotence or rejection/round-trip independence; log repeated fresh evaluation and pressure81 saturation-crossing round-trip within one child",
+    "reason_for_short_observer_route": "New history state cannot be reconstructed from daily endpoint or independent-clone samples. Parent/control/native exact check retained; derivative samples must exactly reproduce earlier source",
+    "model_cap_seconds": 20,
+    "child_cap_seconds": 3,
+    "no_model_physics_change": true
+  },
+  "history_control": {
+    "source": "d9afaa58cddcaa4d8ec7447fcbffe73b87b021bb",
+    "run": 43175012277,
+    "job": 131037029825,
+    "artifact": 13923861677,
+    "sha256": "ac8e9e51c17629a7c056961c701f0adddabcc72dada0800b82f8113ad82ce7f9",
+    "seconds": 4.795549567999998,
+    "outcome": "Same-pressure sequential F and saturation-crossing pressure/theta round trip F exactly equal; recorded wet-wall, unsaturated stores and event flags identical. Derivative34 samples exactly repeat first control."
+  },
+  "local_derivative_closure_selection": {
+    "reason": "Offband and history hypotheses unsupported here. Attribute fresh/cached residual to actual macro exchange rather than boundary changes, and compare original analytic macro derivative to central-difference Q derivative on the identical state. This decides whether changing original analytic derivative is justified.",
+    "new_model_cap_seconds": 20,
+    "expected_seconds": 5,
+    "physics_change": false,
+    "additional_samples": "One child original rate/Jacobian pair equality and eight existing numerical columns with Q exchange recorded; no new time-marching solver"
+  },
+  "final_observation": {
+    "source": "6b4a58b0e131a7fe6f8a3e9d45a4ce3b7c9cfc2e",
+    "run": 43175514599,
+    "job": 131038719139,
+    "artifact": 13924063164,
+    "sha256": "ec1ce470c8e09e1c893ca1f43f9eeccba064efe9a74bb6e173c76621139ca268",
+    "seconds": 5.8156003459999965,
+    "sum_all_three_short_observers_seconds": 15.586947478999996,
+    "all_parent_physical_and_full_native_exact": true
+  },
+  "decision": "Do not select dense/nonlocal or new analytic derivative solver. Sequential and saturation round trip exact at this live state; original analytic samples supported; cached/fresh residual difference accounts for macro exchange to8.89e-16. No pressure/reference promotion.",
+  "next_functional_deliverable": "Controlled numerical rejected-timestep rollback at known retry day15. Separate intended numerical retry changes from physical macro state, retain unchanged mass guard; no code change before an actual contract violation is shown.",
+  "preserved_data_gate": {
+    "source": "686008af7e438c8fc330706728318d61ee1be285",
+    "run": 43176309949,
+    "job": 131041291664,
+    "status": "PASS",
+    "new_models": 0,
+    "assessment_source_and_evidence_unchanged_after_gate": true
+  },
+  "documentation": {
+    "source": "PASS",
+    "strict_build": "PASS",
+    "seconds": 24.02
+  },
+  "next_owner_seam": {
+    "original_selected_soilwater": "MacroStateVar(1) immediately before HeadCalc, lines139/143 of frozen provider selected/soilwater.f90",
+    "original_selected_swap": "MacroStateVar(2) in rejected timestep branch, line432 of frozen provider selected/swap.f90",
+    "known_retry_fixture": "Original own14 native, original15 with1949 mass-step retries; own14to16 already exact but not numerical rollback-state proof",
+    "cost_selection": "Short actual14to15 or14to16 window only; no full run, first source/state ownership reconciliation then controlled observation"
+  }
+}
