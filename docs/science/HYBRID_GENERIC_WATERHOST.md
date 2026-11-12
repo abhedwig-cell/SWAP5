@@ -1,5 +1,9 @@
 # Explicit project state in the hybrid waterhost
 
+The [controlled-instance composition](HYBRID_CONTROLLED_INSTANCES.md)
+qualifies interleaved independent Cauchy, prescribed-groundwater and surface-
+irrigation owners against exact existing single-instance physical/native controls.
+
 The [Hupsel surface-irrigation successor](HYBRID_HUPSEL_DAILY_IRRIGATION.md)
 adds actual caller water/solute events after full irrigation-context restoration,
 with exact modified-history daily recovery and unchanged original no-file physics.
