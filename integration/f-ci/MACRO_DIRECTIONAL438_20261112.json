@@ -54,5 +54,24 @@
     "all_parent_physical_and_full_native_exact": true
   },
   "decision": "Do not select dense/nonlocal or new analytic derivative solver. Sequential and saturation round trip exact at this live state; original analytic samples supported; cached/fresh residual difference accounts for macro exchange to8.89e-16. No pressure/reference promotion.",
-  "next_functional_deliverable": "Controlled numerical rejected-timestep rollback at known retry day15. Separate intended numerical retry changes from physical macro state, retain unchanged mass guard; no code change before an actual contract violation is shown."
+  "next_functional_deliverable": "Controlled numerical rejected-timestep rollback at known retry day15. Separate intended numerical retry changes from physical macro state, retain unchanged mass guard; no code change before an actual contract violation is shown.",
+  "preserved_data_gate": {
+    "source": "686008af7e438c8fc330706728318d61ee1be285",
+    "run": 43176309949,
+    "job": 131041291664,
+    "status": "PASS",
+    "new_models": 0,
+    "assessment_source_and_evidence_unchanged_after_gate": true
+  },
+  "documentation": {
+    "source": "PASS",
+    "strict_build": "PASS",
+    "seconds": 24.02
+  },
+  "next_owner_seam": {
+    "original_selected_soilwater": "MacroStateVar(1) immediately before HeadCalc, lines139/143 of frozen provider selected/soilwater.f90",
+    "original_selected_swap": "MacroStateVar(2) in rejected timestep branch, line432 of frozen provider selected/swap.f90",
+    "known_retry_fixture": "Original own14 native, original15 with1949 mass-step retries; own14to16 already exact but not numerical rollback-state proof",
+    "cost_selection": "Short actual14to15 or14to16 window only; no full run, first source/state ownership reconciliation then controlled observation"
+  }
 }
