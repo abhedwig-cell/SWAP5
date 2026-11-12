@@ -40,7 +40,7 @@ def main():
         a.output.mkdir()
         donor,kernel,case,inputs,identity=h.build(a.reference,a.output,runtime_checkpoint=True,
             kernel_opt=a.optimization,project=h.SALTFARM,**profile)
-    compile_seconds=time.perf_counter()-started
+    compile_seconds=None if a.resume_proof else time.perf_counter()-started
     binding=h.checkpoint_identity(inputs,identity,project=h.SALTFARM,**profile)
     project={k:getattr(h.SALTFARM,k) for k in ['case','model','start_date','nodes','water_tolerance']}
     (a.output/'BUILD.json').write_text(json.dumps(dict(project=project,inputs=inputs,identity=identity,binding=binding,
