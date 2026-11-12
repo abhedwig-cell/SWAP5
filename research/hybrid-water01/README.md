@@ -2,6 +2,55 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Day438 live-state residual inconsistency identified and admitted,12November2026
+
+PR #1655 MERGED at173a3e8e1c231108ddd048c593170f9096e5bf4a.
+Head ebd8fb8d674fd2473852cacd07db6f371c2a7a4a; predicted/actual canonical tree
+78ea604926ec52da4863048cf45f8ee4acfd9b0e match. All executed observer, auditor,
+workflow, raw artifact and result blobs exactly match qualified source
+3ad6c0507644098f114d3571739b41d50249c297. Canonical src/app/reference/tools/tests
+remain unchanged from PR1654. Receipt CLOSURE01_MACRO_DAY438_CANONICAL_20261112.json.
+This supersedes the pending single day438 discriminator below: it is DONE.
+
+ONE distinctive trial, actual source fe11b65305189d10f210c59da6622ace5648c4df,
+Ubuntu26.04 run43167302507/job131012065925 PASS. Original432 native import with
+original source/build binding; no rebinding. Control433to4386.027s, research
+observer5.841s,20s cap each, zero full runs. BOTH reproduce ALL preserved physical
+433to438 records and BOTH COMPLETE RAW native endpoint438 payloads byte-exact.
+Only a forked copy of the live Fortran state reevaluates original vector_F(1).
+Original parent arithmetic and accepted state remain unchanged. Child alarm2s.
+
+FINDING: final438 step takes CONVERGED branch,12 iterations,112nodes, original
+Cauchy3, all three flunsatok flags TRUE, macro reduction0. Cached max residual
+5.801720215359296e-12 and sum3.419538743164509e-12 pass original1e-6/1e-5 criteria.
+Fresh ORIGINAL coupled operator on IDENTICAL live state gives max4.319762946264734,
+sum-42.977539768372964;38nodes exceed original local criterion, worst node81.
+Local ratio4319762.946. Endpoint dt6.701997166seconds. This proves a cached/fresh
+coupled-residual inconsistency and falsifies continue-without-convergence at THIS
+endpoint. It is not complete attribution of79.511cm GWL or a new qualified oracle.
+Fresh operator includes original boundary+macro updates; no single-flux attribution.
+
+Raw artifact13920197946 is preserved canonical original-macro-day438-evidence.zip,
+2440771bytes SHA256 d66b55a4368a3d6b519590557fc4feae8ab8be3271912d8ed68e9320f43a7f63.
+Report ORIGINAL_MACRO_DAY438_20261112.md; independent auditor validates original
+checkpoint/journal, all original provider-object/TTUTIL hashes, observed executable
+and generated source, complete parent native hashes and actual residual vectors.
+Final ZERO-MODEL Ubuntu audit43168283397/job131015210538 PASS. Docs source/strict
+PASS,28.73s. Current hybrid_macro_day438=true workflow is data-only, mandatory
+macro_expected_sha=exactHEAD; no repeated models to reproduce this result.
+
+NEXT DELIVERABLE: a bounded corrective block for CONSISTENT original matrix/macro
+state evaluation, using explicit start-of-step state. Read original MACROSTATEVAR
+rollback/iteration ownership before changing rate/Jacobian pairing. Prior per-
+residual paired variant1652 failed, and three final-residual-polishing campaigns
+failed; DO NOT REPEAT those approaches or simply disable cache and launch481.
+Require repeatable same-state rate/residual evaluation and original-state control,
+short actual day438 solve under the unchanged criteria, mass/rollback/native own
+restart proof and O0/O2 for any model change before widening. Keep a short measured
+cap and two-attempt stop rule. No date gate, relaxed tolerance or reference swap.
+No active model/CI remains. Programme scientific/energy/runtime closure stays OPEN.
+
+
 ### Complete original macro481 admitted; day438 science FAIL,12November2026
 
 PR #1654 MERGED at20fc1a56dcee2c741e6d97de51d59e9852cbc07c from

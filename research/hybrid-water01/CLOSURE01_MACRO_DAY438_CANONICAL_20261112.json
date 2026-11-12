@@ -1,0 +1,40 @@
+{
+  "pr": 1655,
+  "status": "MERGED_SAME_STATE_CACHED_RESIDUAL_INCONSISTENCY_OBSERVED_NO_PHYSICS_REPAIR",
+  "base": "20fc1a56dcee2c741e6d97de51d59e9852cbc07c",
+  "head": "ebd8fb8d674fd2473852cacd07db6f371c2a7a4a",
+  "canonical": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+  "predicted_and_actual_tree": "78ea604926ec52da4863048cf45f8ee4acfd9b0e",
+  "model_source_graph_unchanged": true,
+  "actual_observation_source": "fe11b65305189d10f210c59da6622ace5648c4df",
+  "actual_run": 43167302507,
+  "control_seconds": 6.026584479999997,
+  "observer_seconds": 5.841301704999999,
+  "physical433to438_and_raw_native438_exact": true,
+  "zero_model_final_data_gate": {
+    "source": "3ad6c0507644098f114d3571739b41d50249c297",
+    "run": 43168283397,
+    "job": 131015210538,
+    "status": "PASS",
+    "canonical_blobs": {
+      "research/hybrid-water01/probe_macro_day438.py": "3a6e83fbceded733033c9a9e9795d29b753d0c12",
+      "research/hybrid-water01/audit_macro_day438.py": "60d31e478142562b1f82b8ac80d70ec3ec071daf",
+      "research/hybrid-water01/ORIGINAL_MACRO_DAY438_RESULT_20261112.json": "6745616d5cf6ab7b7cac07879f936aa3e30862b0",
+      "research/hybrid-water01/ORIGINAL_MACRO_DAY438_ARTIFACT_20261112.json": "8b6b34bbe78bd17f7ef51712777dda651ccf2248",
+      "research/hybrid-water01/original-macro-day438-evidence.zip": "38cfeee48104251774049dcfe6675ec9e25416dd",
+      ".github/workflows/grass-thermal-production.yml": "9e2a603f670afe7a9e86f4eb0bb1d85b888276d0"
+    }
+  },
+  "finding": {
+    "cached_Fmax": 5.801720215359296e-12,
+    "fresh_Fmax": 4.319762946264734,
+    "unchanged_local_guard": 1e-06,
+    "accepted_branch": "converged",
+    "flunsatok": "all three true",
+    "fresh_nodes_failing": 38,
+    "worst_node": 81
+  },
+  "docs_source": "PASS",
+  "docs_strict_seconds": 28.73,
+  "next_deliverable": "Bounded corrective original matrix/macropore coupled solve with explicit start-of-step state. Reject date gates, raised tolerances, repeated provisional-refresh campaigns or automatic full runs. No whole79.511cm causal attribution or scientific reference promotion."
+}
