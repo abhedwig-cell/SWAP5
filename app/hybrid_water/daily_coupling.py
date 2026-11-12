@@ -1,4 +1,4 @@
-"""External daily accept/discard adapter; original forcing and physics stay owned by DailyHost.
+"""External daily accept/discard with opt-in original lower-boundary head inputs.
 
 A private, locally accepted day is only a proposal to the external caller.
 Only accept() publishes in the caller's accepted namespace. Every proposal uses
@@ -21,6 +21,7 @@ import daily_host as h
 
 ORIGINAL_FORCING = 'original-project'
 CAUCHY_FORCING = 'andelst-cauchy-daily-v1'
+GROUNDWATER_FORCING = 'grass-groundwater-daily-v1'
 
 
 @dataclass(frozen=True)
@@ -37,6 +38,42 @@ class CauchyDayForcing:
 
     def document(self):
         return dict(self.__dict__)
+
+
+@dataclass(frozen=True)
+class GroundwaterDayForcing(CauchyDayForcing):
+    """Original signed GWLEVEL in cm relative to the original soil surface.
+
+    Inherited head fields carry water-level coordinates, not aquifer pressure.
+    The distinct type/mode prevents exchanging it with a Cauchy aquifer segment.
+    """
+
+
+def write_groundwater_case(case, target, forcing, project):
+    """Retain sparse original DATE1/GWLEVEL rows and insert owned daily knots."""
+    shutil.copytree(case,target)
+    bbc=target/'swap.bbc';source=bbc.read_text(encoding='cp1252')
+    if len(re.findall(r'(?mi)^\s*SWBOTB\s*=\s*1\b',source))!=1:
+        raise ValueError('Original prescribed groundwater mode required')
+    first=date.fromisoformat(project.start_date)+timedelta(days=forcing.origin_day)
+    number=r'[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[EeDd][+-]?\d+)?'
+    pattern=rf'(?m)^([ \t]*DATE1[ \t]+GWLEVEL[ \t]*\r?\n)((?:[ \t]*\d{{4}}-\d{{2}}-\d{{2}}[ \t]+{number}[ \t]*\r?\n)+)'
+    def segment(m):
+        rows={}
+        for line in m[2].splitlines():
+            stamp,value=line.split()
+            if stamp in rows:raise ValueError('Duplicate original groundwater date')
+            rows[stamp]=line
+        for stamp,value in [(str(first),forcing.head_start_cm),(str(first+timedelta(days=1)),forcing.head_end_cm)]:
+            if stamp not in rows:rows[stamp]=f' {stamp} {float(value)!r}'
+            else:
+                old=rows[stamp].split()[1]
+                if float(old.replace('D','e').replace('d','e'))!=value:
+                    rows[stamp]=re.sub(rf'({re.escape(stamp)}[ \t]+){number}',lambda x:x[1]+repr(float(value)),rows[stamp])
+        return m[1]+'\n'.join(rows[k] for k in sorted(rows))+'\n'
+    source,count=re.subn(pattern,segment,source)
+    if count!=1:raise ValueError('Missing or ambiguous original groundwater table')
+    bbc.write_text(source,encoding='cp1252')
 
 
 def forcing_digest(document):
@@ -150,7 +187,7 @@ class PreparedDay:
 
 
 class CoupledDailyColumn:
-    """One externally accepted column; no peer model, forcing override or new codec.
+    """One externally accepted column with original registered boundary semantics.
 
     Each output directory has one owner and must be new. Supply an explicit
     coupling_id on cold start and recovery. A native checkpoint may be adopted
@@ -163,7 +200,9 @@ class CoupledDailyColumn:
             raise ValueError('Unregistered project')
         if not isinstance(coupling_id, str) or not coupling_id or len(coupling_id) > 128:
             raise ValueError('Explicit coupling identity is required')
-        if forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING) or (forcing_mode==CAUCHY_FORCING and project!=h.ANDELST):
+        if (forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING,GROUNDWATER_FORCING) or
+            (forcing_mode==CAUCHY_FORCING and project!=h.ANDELST) or
+            (forcing_mode==GROUNDWATER_FORCING and project!=h.GRASSGROWTH)):
             raise ValueError('Unsupported external forcing mode/project')
         self.forcing_mode=forcing_mode
         self.bundle, self.reference, self.output = map(Path, (bundle, reference, output))
@@ -197,11 +236,12 @@ class CoupledDailyColumn:
                 if c['id'] != coupling_id or type(c['revision']) is not int or c['revision'] < 1:
                     raise ValueError('Invalid external origin revision')
                 self._revision = c['revision']
-                if self.forcing_mode==CAUCHY_FORCING:
+                if self.forcing_mode!=ORIGINAL_FORCING:
                     f=c['forcing'];document=f['input']
-                    if f['mode']!=CAUCHY_FORCING or type(c['origin_day']) is not int or c['origin_day']!=day-1:
+                    if f['mode']!=self.forcing_mode or type(c['origin_day']) is not int or c['origin_day']!=day-1:
                         raise ValueError('Invalid persisted Cauchy origin')
-                    self._validate_cauchy(CauchyDayForcing(**document),day=c['origin_day'],origin=c['origin_sha256'])
+                    kind=GroundwaterDayForcing if self.forcing_mode==GROUNDWATER_FORCING else CauchyDayForcing
+                    self._validate_cauchy(kind(**document),day=c['origin_day'],origin=c['origin_sha256'])
                     if f['identity_sha256']!=forcing_digest(document) or not re.fullmatch(r'[0-9a-f]{64}',f['applied_bbc_sha256']):
                         raise ValueError('Invalid persisted Cauchy forcing identity')
         self._publisher = None  # load once on first proposal, never compile per day
@@ -229,7 +269,8 @@ class CoupledDailyColumn:
             raise ValueError('Accepted origin was changed')
 
     def _validate_cauchy(self, forcing, *, day=None, origin=None):
-        if type(forcing) is not CauchyDayForcing:raise ValueError('Explicit Cauchy segment required')
+        kind=GroundwaterDayForcing if self.forcing_mode==GROUNDWATER_FORCING else CauchyDayForcing
+        if type(forcing) is not kind:raise ValueError('Explicit boundary segment of the selected kind required')
         if day is None:day,origin=self._day,self._origin_hash
         if (forcing.coupling_id!=self.coupling_id or forcing.origin_sha256!=origin or
             type(forcing.origin_day) is not int or forcing.origin_day!=day or
@@ -251,14 +292,28 @@ class CoupledDailyColumn:
         self._validate_cauchy(forcing)
         return forcing
 
-    def prepare(self, *, cauchy=None):
+    def groundwater_forcing(self, level_start_cm, level_end_cm, provenance):
+        self._check_origin()
+        if self.forcing_mode!=GROUNDWATER_FORCING:raise ValueError('Prescribed groundwater mode required')
+        start=self.project.start_clock+self._day
+        forcing=GroundwaterDayForcing(self.coupling_id,self._origin_hash,self._day,start,start+1,
+                                     level_start_cm,level_end_cm,provenance)
+        self._validate_cauchy(forcing)
+        return forcing
+
+    def prepare(self, *, cauchy=None, groundwater=None):
         self._check_origin()
         if self._pending is not None:
             raise ValueError('A day proposal is already outstanding')
         if self._day >= self.last_day:
             raise ValueError('Original project period is complete')
-        if self.forcing_mode==CAUCHY_FORCING:self._validate_cauchy(cauchy)
-        elif cauchy is not None:raise ValueError('Original forcing mode has no override')
+        if ((cauchy is not None and groundwater is not None) or
+            (self.forcing_mode==CAUCHY_FORCING and groundwater is not None) or
+            (self.forcing_mode==GROUNDWATER_FORCING and cauchy is not None)):
+            raise ValueError('Boundary forcing kind does not match the selected mode')
+        if self.forcing_mode==GROUNDWATER_FORCING:cauchy=groundwater
+        if self.forcing_mode!=ORIGINAL_FORCING:self._validate_cauchy(cauchy)
+        elif cauchy is not None or groundwater is not None:raise ValueError('Original forcing mode has no override')
         if (self.output / f'accepted-column-1-day-{self._day+1}.zip').exists():
             raise FileExistsError('Accepted day target is occupied')
         validate_bundle(self.bundle, self.reference, self.project)
@@ -268,7 +323,8 @@ class CoupledDailyColumn:
         case=self.case
         if cauchy is not None:
             case=trial/'forcing-case'
-            write_cauchy_case(self.case,case,cauchy,self.project)
+            writer=write_groundwater_case if self.forcing_mode==GROUNDWATER_FORCING else write_cauchy_case
+            writer(self.case,case,cauchy,self.project)
         receipt, origin = None, None
         if self._origin is not None:
             origin = trial / 'origin'
@@ -290,10 +346,11 @@ class CoupledDailyColumn:
             host.publish = self._publisher
             forcing_record=ORIGINAL_FORCING
             if cauchy is not None:
-                forcing_record={'mode':CAUCHY_FORCING,'input':cauchy.document(),
+                forcing_record={'mode':self.forcing_mode,'input':cauchy.document(),
                     'identity_sha256':forcing_digest(cauchy.document()),
                     'applied_bbc_sha256':h.sha(host.columns[0].directory/'swap.bbc')}
-                host.binding={**self.meta['binding'],'external_cauchy_trial':forcing_record}
+                key='external_groundwater_trial' if self.forcing_mode==GROUNDWATER_FORCING else 'external_cauchy_trial'
+                host.binding={**self.meta['binding'],key:forcing_record}
             raw = host.step(1, checkpoint=True)
             if not raw['committed']:
                 raise ValueError('Local water/solute acceptance refused the proposal')

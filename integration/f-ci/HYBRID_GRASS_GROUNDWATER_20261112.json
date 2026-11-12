@@ -1,0 +1,24 @@
+{
+  "status": "IMPLEMENTED_NOT_YET_QUALIFIED",
+  "base": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
+  "scope": "Original Grass SWBOTB1 controlled groundwater with existing external daily transaction/restart; no new physics or kernel",
+  "test_selection": {
+    "candidate": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
+    "groups": {
+      "hybrid_grass_groundwater": {
+        "changed_dependency": "External daily adapter adds typed original groundwater mode, sparse original-table day knots and uses existing transaction lineage",
+        "scientific_claim": "Actual mode1 prescribed-water-level effect and exact changed-history discard/retry/recovery with independent original input controls; preserve original/Cauchy routes",
+        "owner": "RT-TX original-block application",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 90,
+        "existing_evidence": "PR1641 immutable3project originalO2/kernelO0/O2/input/native capsules; PR1646 original Cauchy20to22/default proofs and compatible day20 packages",
+        "prior_execution": "PASS",
+        "diagnosis": "Source readswap builds GWLTAB before native restore; SoilWater hydrostatic reinitialization only SWINCO2, restore uses3. BoundBottom uses afgen at t1900+dt. Distinguish leading clamp and first interior segment, not full project reexecution. Retain native geometric checks."
+      }
+    }
+  },
+  "caps": {
+    "new_mode_seconds": 240
+  },
+  "next": "Run smallest actual Grass O2 leading source, then O0/O2 leading/interior changed-history controls, current default/Cauchy preservation and same-source Linux. Publish source/build-bound qualified PR and verify canonical."
+}
