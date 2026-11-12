@@ -742,7 +742,7 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
                     raise ValueError("Missing original terminal Cauchy head")
                 table = replace(table, terminal[0], terminal[0] + f"\n {start_date}  {terminal[2]}")
                 bbc.write_text(table, encoding="cp1252")
-            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)[12]", r"\g<1>3", source)
+            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)[123]\b", r"\g<1>3", source)
             if count != 1:
                 raise ValueError("Missing restart setting")
             if runtime:
