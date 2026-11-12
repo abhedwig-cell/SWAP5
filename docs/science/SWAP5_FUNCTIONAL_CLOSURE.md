@@ -1,5 +1,36 @@
 # Current functional closure of the original projects
 
+## No-macro candidate successor,12November2026
+
+[PR1658](https://github.com/abhedwig-cell/SWAP5/pull/1658) proposes the additional
+original-workbook SaltFarm/Texel04dS configuration through the SAME daily host:
+195nodes, potato rotation, saline irrigation, drainage and original sinusoidal
+lower boundary,1461days. Windows/Ubuntu26.04 donorO2/kernelO0/O2 complete the
+period; five own windows, including the terminal/year boundaries, reproduce the
+complete physical receipts and both native payloads exactly. The accepted
+seasonal t and calendar iyear are serialized explicitly in S5NON006/S5HUP012;
+original computation order and existing tolerances stay unchanged. The earlier
+terminal failure is retained with its causal observation and corrected successor.
+
+The owner's next release excludes active macropores. Its selected configurations
+are Grassgrowth1827,Hupsel1096 and this materialized SaltFarm1461 scenario. The
+original workbook's numerical/date content is preserved; byte equivalence with
+the original R preprocessing is NOT claimed. Existing Andelst functionality,
+branches and proof remain preserved outside that release selection; original
+active-macro inputs are explicitly refused by the no-macro release option.
+
+This successor's thermal proof is the supported original conduction/storage
+observer on irrigation days108–110, with unchanged1e-9J/cm2 guards. It does not
+establish a full-period heat ledger, complete mass-carried energy or whole
+scientific equivalence. The failed Grassgrowth oxygen criteria and underresolved
+Hupsel reference families below remain visible. Source/build/command/raw evidence
+and the next functional acceptance point are recorded in
+`research/hybrid-water01/NOMACRO_RELEASE_WORKPOINT.md` and
+`integration/f-ci/NOMACRO_RELEASE_20261112.json`.
+
+The earlier three-application table below retains its own baseline and profiles;
+it must not be confused with the owner's three selected no-macro configurations.
+
 The [complete-trajectory scientific disposition](FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md)
 reproduces existing full-period comparisons, adds the full Hupsel water/solute/
 uptake/crop disposition and identifies the current Andelst clock-scoped numerical
