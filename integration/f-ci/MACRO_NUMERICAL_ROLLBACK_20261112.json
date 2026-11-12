@@ -1,0 +1,13 @@
+{
+  "status": "SELECTED_READ_ONLY_ACTUAL_REJECTED_TIMESTEP_CONTROL",
+  "base": "84e297af23b2b6e90c927b958fecb5e24228b975",
+  "hypothesis": "Original MacroStateVar2 restores only3 physical arrays; actual rejected trials may retain event or hysteretic geometry state read by the next trial",
+  "invariants": "Original accepted physical records and complete native16 must match frozen own14to16; numerical retry controls excluded from physical restore assertions",
+  "fields_preselected": "25 original persisted macro fields, categories original-restored/event-history/geometry/stock",
+  "scope": "Windows original donor-O2/kernel-O2 own14to16,20s model cap; original native14 binding verified, no rebind, no new full runs",
+  "decision": "Classify any observed deltas by actual next-trial read/write ownership before repairing; if only recomputed scratch differs, no false defect claim",
+  "expected_seconds": 4,
+  "model_cap_seconds": 20,
+  "control": "Existing qualified original own14to16 and source/compiler/object capsule",
+  "next_if_actual_defect": "Narrow rollback repair plus owning O0/O2, mass, restart and unchanged accepted-path controls before PR admission"
+}
