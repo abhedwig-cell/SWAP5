@@ -45,5 +45,11 @@
     "status": "FAILED_MISSING_SELECTED_STATE_DRIVER_IN_SPARSE_CHECKOUT",
     "missing": "research/hybrid-water01/test_generic_hybrid_state.f90",
     "recovery": "Add exact fixture; reuse passed SaltFarm full/own proof and already compiled Grass binary at identical source instead of repeating them; Hupsel not yet started"
+  },
+  "linux_second_attempt": {
+    "run": 43208529651,
+    "status": "FAILED_ARTIFACT_EXECUTION_MODE_BEFORE_GRASS_CONTRACT",
+    "cause": "GitHub ZIP artifact drops executable mode; native bytes unchanged",
+    "recovery": "Preflight exact state fixture and restore executable permission before reuse; preserve copied modes. Reuse same passed SaltFarm full, same Grass binary, no physical code change."
   }
 }
