@@ -32,8 +32,17 @@ p.add_argument('--workspace',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--case',action='append',choices=['hupsel-O0','hupsel-O2','grass-O0','grass-O2','andelst-O0','andelst-O2','saltfarm-O0','saltfarm-O2'])
 p.add_argument('--saltfarm-bundle',type=Path,help='Current verified SaltFarm full/own bundle; original capsule supplies only immutable original objects')
+p.add_argument('--current-bundle',type=Path,help='Current source-bound no-macro native build')
+p.add_argument('--project',choices=['grass','hupsel','saltfarm'])
+p.add_argument('--control-root',type=Path,help='Matching source-bound complete run and own controls')
+p.add_argument('--compact',action='store_true',help='Export real production summaries without redundant node lines')
+p.add_argument('--full-period',action='store_true',help='Explicit bounded complete period, compact mode only')
 p.add_argument('--carrier-inventory',action='store_true',help='Observe actual water carriers at the identical heat step; no energy closure assumption')
 a=p.parse_args();a.output.mkdir()
+if a.saltfarm_bundle:
+ assert not a.current_bundle
+ a.current_bundle=a.saltfarm_bundle;a.project='saltfarm'
+if a.full_period:assert a.compact and a.current_bundle,'Full-period export requires explicit compact current-bundle mode'
 a.case=a.case or ['hupsel-O2']
 digest=h.sha(a.base_archive)
 assert digest in ['678be090346a13ffd3b68f2a3447a947f86e52b8854fdc46f9fef798ab8b21c1',
@@ -42,13 +51,15 @@ if not a.workspace.exists():
  a.workspace.mkdir()
  with tarfile.open(a.base_archive) as t:t.extractall(a.workspace,filter='data')
 index=json.loads((a.workspace/'PROOF_INDEX.json').read_text())
-if a.saltfarm_bundle:
+if a.current_bundle:
  from daily_coupling import validate_bundle
- selected=json.loads((a.saltfarm_bundle/'BUILD.json').read_text())
- key='saltfarm-'+selected['identity']['kernel_flags'][0][1:]
- assert a.case==[key],'Select exactly the current SaltFarm kernel profile'
- validate_bundle(a.saltfarm_bundle,a.workspace/index['reference'],h.SALTFARM)
- index['cases'][key]={'build':str(a.saltfarm_bundle.resolve()),'report':str(a.saltfarm_bundle.resolve())}
+ selected=json.loads((a.current_bundle/'BUILD.json').read_text())
+ key=str(a.project)+'-'+selected['identity']['kernel_flags'][0][1:]
+ assert a.case==[key],'Select exactly the current no-macro kernel profile'
+ validate_bundle(a.current_bundle,a.workspace/index['reference'],{'grass':h.GRASSGROWTH,'hupsel':h.HUPSEL,'saltfarm':h.SALTFARM}[a.project])
+ a.control_root=(a.control_root or a.current_bundle).resolve()
+ assert json.loads((a.control_root/'BUILD.json').read_text())['binding']==selected['binding']
+ index['cases'][key]={'build':str(a.current_bundle.resolve()),'report':str(a.current_bundle.resolve())}
 member_hash=json.loads((a.workspace/'MEMBER_SHA256.json').read_text())
 for name,expected in member_hash.items():assert h.sha(a.workspace/name)==expected,name
 reference=a.workspace/index['reference'];objects=reference/'build/swap-obj';ttutil=reference/'build/ttutil-obj'
@@ -62,7 +73,7 @@ def stop():
  expired.append(True)
  for proc in started:
   if proc.poll() is None:proc.kill()
-timer=threading.Timer(240,stop);timer.daemon=True;timer.start()
+timer=threading.Timer(60 if a.compact else 240,stop);timer.daemon=True;timer.start()
 events=[];report={'status':'RUNNING','base_archive_sha256':digest,'cases':[],
  'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True,cwd=ROOT).strip(),
  'sources':{n:h.sha(ROOT/n) for n in SOURCES+['research/hybrid-water01/qualify_original_heat_accounting.py']},
@@ -142,6 +153,9 @@ try:
    build_sources={n:h.sha(ROOT/n) for n in SOURCES}
    for n in SOURCES:execute(['gfortran','-'+opt,'-ffree-line-length-none','-fcheck=all','-I',out,'-J',out,'-c',ROOT/n],out,Path(n).stem)
    raw=original.read_text(encoding='cp1252');observed=instrument(raw)
+   if a.compact:
+    observed=h.replace(observed,'audit_solid(1:numnod),audit_face(1:numnod+1))',
+                      'audit_solid(1:numnod),audit_face(1:numnod+1),detailed=.false.)')
    if a.carrier_inventory:observed=instrument_carriers(observed)
    import re
    stripped=re.sub(r'! BEGIN (?:HEAT|CARRIER) OBSERVATION\n.*?! END (?:HEAT|CARRIER) OBSERVATION\n','',observed,flags=re.S)
@@ -158,10 +172,14 @@ try:
    kernel=h.executable(bundle,'day_kernel')
    if os.name!='nt':kernel.chmod(0o755)
    windows=[(107,110)] if key=='saltfarm' else ([(4,6)] if key=='hupsel' else [(2,4)])
+   if a.full_period:windows=[(0,project.last_day)]
    for cut,end in windows:
-    if key=='saltfarm':
-     origin=bundle/'full'/f'accepted-column-1-day-{cut}.zip';parent=meta['binding']
-     expected_folder=bundle/f'own-{cut}-{end}'
+    if a.full_period:
+     origin=None;parent=meta['binding'];expected_folder=a.control_root/'full'
+    elif a.current_bundle:
+     origin=a.control_root/'full'/f'accepted-column-1-day-{cut}.zip';parent=meta['binding']
+     own_name=f'own-{cut}-{end}' if key=='saltfarm' else f'own-{cut}-to-{end}'
+     expected_folder=a.control_root/own_name
     elif key=='hupsel':
      full=index['hupsel_full'];origin=a.workspace/full/'full'/f'accepted-column-1-day-{cut}.zip'
      parent=json.loads((a.workspace/full/'BUILD.json').read_text())['binding']
@@ -170,21 +188,23 @@ try:
      origin=a.workspace/case['continuous']/f'accepted-column-1-day-{cut}.zip';parent=meta['binding']
      expected_folder=a.workspace/case['resumed']
     prefix=out/f'window-{cut}-to-{end}';prefix.mkdir();unpacked=prefix/'origin'
-    receipt=h.verify_checkpoint(origin,cut,parent,unpacked)
+    receipt=h.verify_checkpoint(origin,cut,parent,unpacked) if origin else None
     binding={'original_binding':meta['binding'],'heat_observation_sources':build_sources,
              'original_temperature_sha256':h.sha(original),'observed_temperature_sha256':h.sha(temperature),
-             'observed_donor_sha256':h.sha(donor),'optimization':opt,'adopted_original_origin_sha256':h.sha(origin)}
+             'observed_donor_sha256':h.sha(donor),'optimization':opt,'adopted_original_origin_sha256':h.sha(origin) if origin else None,
+             'compact':a.compact,'full_period':a.full_period}
     (out/'BUILD.json').write_text(json.dumps({'binding':binding,'original_build':meta,'linked_objects':{str(p):h.sha(p) for p in linked+extras}},indent=2)+'\n')
-    before=h.sha(origin)
+    before=h.sha(origin) if origin else None;model_start=time.monotonic()
     with contextlib.ExitStack() as stack:
      host=h.DailyHost(stack,donor,kernel,reference/'distribution/SWAP_4.3.1/cases'/project.case,prefix,
-           [h.ColumnStart(day=cut,origin=unpacked,receipt=receipt,name='original')],runtime=True,
+           [h.ColumnStart(day=cut,origin=unpacked if origin else None,receipt=receipt,name='original')],runtime=True,
            checkpoint_enabled=True,binding=binding,project=project)
      rows=[]
      for day in range(cut+1,end+1):
       r=host.step(1,checkpoint=day==end);assert r['committed'];rows.append(r)
      host.close()
-    assert h.sha(origin)==before
+    events.append({'label':'model-'+key+'-'+opt,'seconds':time.monotonic()-model_start,'days':end-cut})
+    if origin:assert h.sha(origin)==before
     expected=[json.loads(line) for line in (expected_folder/'daily.jsonl').read_text().splitlines()]
     assert list(map(physical,rows))==list(map(physical,expected)),key+' physical observation changed state'
     with zipfile.ZipFile(prefix/f'accepted-column-1-day-{end}.zip') as z:
@@ -193,7 +213,7 @@ try:
     report['cases'].append({'project':key,'optimization':opt,'cut':cut,'end':end,'origin_sha256':before,
                             'exact_physical_and_native_payloads':True})
     print(key,opt,'OBSERVED_ORIGINAL_STATE_EXACT',flush=True)
- assert not expired,'Selected240-second cap exceeded'
+ assert not expired,'Selected model/observation wall cap exceeded'
  report['status']='ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS'
 except BaseException:
  report.update(status='FAILED',traceback=traceback.format_exc());raise

@@ -8,10 +8,13 @@ module mod_hybrid_heat_accounting
  private
  public :: observe_original_heat
 contains
- subroutine observe_original_heat(n,t0,dt,dz,saturated,water0,water1,temp0,temp1,capacity,solid,face)
+ subroutine observe_original_heat(n,t0,dt,dz,saturated,water0,water1,temp0,temp1,capacity,solid,face,detailed)
   integer,intent(in)::n
   real(real64),intent(in)::t0,dt,dz(n),saturated(n),water0(n),water1(n),temp0(n),temp1(n)
   real(real64),intent(in)::capacity(n),solid(n),face(n+1)
+  logical,intent(in),optional::detailed
+  logical::write_nodes
+  character(len=32)::frame
   type(whole_column_sensible_boundary_t)::boundary,zero_advection
   type(whole_column_sensible_energy_result_t)::actual,assumed
   real(real64)::frozen_storage,maximum_cell_residual,top,bottom
@@ -37,17 +40,27 @@ contains
        temp0,temp1,4.18d0,.001212d0,0d0,zero_advection,assumed,assumed_status)
   frozen_storage=sum(dz*capacity*(temp1-temp0))
   maximum_cell_residual=maxval(abs(dz*capacity*(temp1-temp0)-(face(1:n)-face(2:n+1))))
-  open(newunit=unit,file='original-heat-accounting.txt',status='unknown',position='append',action='write')
-  write(unit,'(a,1x,*(g0,1x))')'HEAT_STEP',t0,dt,n,actual_status,assumed_status, &
+  write_nodes=.true.
+  if(present(detailed))write_nodes=detailed
+  if(write_nodes)then
+   frame='HEAT_STEP'
+   open(newunit=unit,file='original-heat-accounting.txt',status='unknown',position='append',action='write')
+  else
+   frame='HEAT_SUMMARY1'
+   open(newunit=unit,file='original-heat-summary.txt',status='unknown',position='append',action='write')
+  end if
+  write(unit,'(a,1x,*(g0,1x))')trim(frame),t0,dt,n,actual_status,assumed_status, &
        frozen_storage,face(1)-face(n+1),maximum_cell_residual, &
        actual%exact_storage_change_j_m2*1d-4,actual%temperature_change_component_j_m2*1d-4, &
        actual%composition_change_component_j_m2*1d-4,actual%storage_decomposition_residual_j_m2*1d-4, &
        assumed%projected_balance%residual_j_m2*1d-4, &
        actual%storage_complete,actual%sensible_boundary_complete,actual%full_energy_balance_complete
-  do i=1,n
+  if(write_nodes)then
+   do i=1,n
    write(unit,'(a,1x,*(g0,1x))')'HEAT_NODE',i,dz(i),saturated(i),water0(i),water1(i),temp0(i),temp1(i), &
         capacity(i),solid(i),face(i),face(i+1)
-  end do
+   end do
+  end if
   close(unit)
  end subroutine
 end module
