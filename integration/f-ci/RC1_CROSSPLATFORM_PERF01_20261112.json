@@ -14,7 +14,7 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Persist proof and integrate qualified invocation-local validation block viaPR with frozen RC1 ref unchanged. Then complete platform/science probe in cloud using read-only coherent counters/thermal states; separate GNU15/16 cohort and assess remaining platform limitations under existing criteria.",
+  "next_action": "First proof-bound validation/performance PR and canonical postimage, then source-bound cloud science/coherent probe at branch66d6e194d18177cb3f89ef98f2e28de82bf18437 (already dispatched; do not duplicate), cross-cohort classification and remaining numerical policy decision. Timer active as local resume safety net.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
@@ -33,12 +33,35 @@
   "linux_qualification": {
     "run_id": 43246935136,
     "source": "5346528e77479f92d1d86758a8bf4957ce5af882",
-    "candidate_runtime_source": "aa6510b934",
+    "candidate_runtime_source": "aa6510b93510a0b7aef5fd3f9f41a85d82fa4e53",
     "conclusion": "success",
     "artifact_id": 13958171510,
     "artifact_sha256": "c45c7d4b6b64f081c8b8ea28b3925be6014fd4f2d674aafa542eda7057aad3ef",
     "wiring_only_delta": ".github/workflows/grass-thermal-production.yml"
   },
   "causal_result": "All3 corrected coherent full-call and daily worker frames, original CSV, nodal temperatures, hydraulic states, uptake and solute exact. Daily return and external SWAP5 transfer excluded for these whole-profile differences. Hupsel converged iterations104672->227360 and accepted solves32518->43636; SaltFarm77664->219566 and38772->59176. Grass counts and all frames identical to original. Extra native numerical work dominates; no tolerance relaxed.",
-  "runtime_verdict": "One compiler verification pass instead of two per public reused-build command; current binary identity still checked freshly each invocation. Windows nonmodel overhead decreases about0.40/0.40/0.58seconds on full Grass/Hupsel/SaltFarm. Full wall differences remain noisy and are not asserted as native solver acceleration; Ubuntu overhead gain about0.006..0.010seconds."
+  "runtime_verdict": "One compiler verification pass instead of two per public reused-build command; current binary identity still checked freshly each invocation. Windows nonmodel overhead decreases about0.40/0.40/0.58seconds on full Grass/Hupsel/SaltFarm. Full wall differences remain noisy and are not asserted as native solver acceleration; Ubuntu overhead gain about0.006..0.010seconds.",
+  "proof_archives": {
+    "windows-qualification": {
+      "path": "integration/f-ci/rc1-perf01/windows-qualification.tar.xz",
+      "sha256": "83fd17c92abc035732c05cfe692f736d543a9a41a2657ef859e1b217842b2a8b",
+      "bytes": 34505564,
+      "members": 322,
+      "forward_member_scan_pass": true
+    },
+    "ubuntu-qualification": {
+      "path": "integration/f-ci/rc1-perf01/ubuntu-qualification.tar.xz",
+      "sha256": "a070b7075ea1bc4ed8e70b42a66ffbdb2f0114b86bb83f392d6d1d76fe0310e5",
+      "bytes": 34490628,
+      "members": 351,
+      "forward_member_scan_pass": true
+    },
+    "windows-coherent": {
+      "path": "integration/f-ci/rc1-perf01/windows-coherent.tar.xz",
+      "sha256": "0b07aed8ae5d77bdfd38518a742381edd3ae33b425b30fbb9c1930a211aa6fa8",
+      "bytes": 63797600,
+      "members": 97,
+      "forward_member_scan_pass": true
+    }
+  }
 }

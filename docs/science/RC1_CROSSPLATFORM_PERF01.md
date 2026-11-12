@@ -65,3 +65,46 @@ standalone build-validation call still obtains a fresh toolchain record.
 No cache survives a command, no mutable global cache is added, and source/object/
 library/input/executable/binding checks remain. This changes neither original
 Fortran nor any physical state, journal or rollback contract.
+
+## First qualified numerical and cost results
+
+Both WindowsGNU16.2 and Ubuntu26.04GNU15.2 pass all three source-bound O0/O2
+public-route controls: complete O2 periods, exact baseline/candidate physical
+journals, all original CSV fields and exact own native/auxiliary continuations.
+Original origins remain unchanged. New toolchain/compiler/provider refusal
+controls run before output. Ordinary standalone validation still refreshes tools.
+The changed preparation-helper identity requires a newly prepared provider on
+the successor; RC1 providers/checkpoints are not silently rebound. Frozen RC1
+checkouts remain usable at their own exact dependency surface.
+
+The first improvement removes seven duplicate compiler/version/target process
+calls and three binary-hash reads per reused-build invocation. Windows observed
+non-model startup overhead drops by0.40/0.40/0.58seconds for full Grass/Hupsel/
+SaltFarm; Ubuntu drops by0.006..0.010seconds. Full wall observations are noisy:
+Windows11.27->11.04,7.59->7.63,12.58->13.06seconds. These do NOT establish a
+native solver speedup or a statistically resolved whole-run gain. All timings
+include the same source-bound user route and one saved state; original earlier
+no-checkpoint benchmarks keep their separate scope.
+
+The dominant extra native work is now counted. Original versus corrected
+converged-solve/iteration totals are48493/108964 versus the same for Grass,
+32518/104672 versus43636/227360 for Hupsel, and38772/77664 versus59176/219566
+for SaltFarm. The original Newton/mass-polishing policy affects subsequent
+adaptive steps; zero additional budget rejections does not erase this cost.
+No stopping rule, iteration or tolerance is relaxed for a speed claim.
+
+For all three Windows projects, a corrected coherent full-call worker produces
+exactly the same daily unrounded water, heads, uptake, supported soil-temperature
+state and solute frames as the daily-return worker. All corresponding user CSV
+controls remain exact. Thus the daily split and external SWAP5 transfer are
+excluded as the source of these selected whole-trajectory differences. Hupsel
+and SaltFarm first nonzero head/heat/stock differences already arise on day1
+inside the corrected original block; their complete differences against4.3.1
+remain quantified rather than universally explained by one correction. Grass
+matches the original observer exactly, including all supported thermal states.
+This diagnostic is not a replacement scientific reference or full-energy claim.
+
+The separate cross-platform assessment remains open: compiler-major and C/math
+runtime differences must be separated before attributing observed amplification
+to the operating system, and no fitted tolerance is introduced. Existing failed
+original oxygen criteria and underqualified reference families remain visible.
