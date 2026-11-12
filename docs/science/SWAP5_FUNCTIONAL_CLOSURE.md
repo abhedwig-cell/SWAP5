@@ -57,7 +57,7 @@ separate acceptance questions.
 
 ## Reproducible thermal handoff limitation
 
-The current Python `CoupledDailyColumn.prepare(self)` has no thermal/forcing
+At this page's pinned baseline, `CoupledDailyColumn.prepare(self)` has no thermal/forcing
 argument. Its source constructs the original DailyHost and publishes native state
 with the binding `forcing=original-project`. No caller temperature reaches the
 original heat equation through that interface. Existing
@@ -89,14 +89,12 @@ original and implicit reference families remain independently underresolved;
 another reference is selected only for a distinct, independently verifiable causal
 hypothesis. Full physical energy is likewise open, not a reason to invent inputs.
 
-The next independent functional target is caller-controlled **water** forcing at
-the existing Andelst Cauchy lower boundary through daily prepare/discard/accept.
-First verify how the original boundary-table initialization and restored cursor
-consume a changed one-day head trajectory. If that contract is usable, implement
-the bounded handoff with explicit forcing identity and own retry/recovery, using
-the existing20→22 source windows and unchanged mass guard. Original forcing must
-remain the default. This uses the existing water physics and has an actual missing
-consumer interface; it does not require inventing thermal donor measurements.
+The later [Cauchy water-forcing successor](HYBRID_CAUCHY_DAILY_FORCING.md) supplies
+caller-controlled **water** forcing through daily prepare/discard/accept with actual
+day20→22 original controls and unchanged mass guard. Original forcing remains the
+default. It adds no thermal consumer. Its next bounded extension is the existing
+Grassgrowth prescribed-groundwater boundary under the same transaction discipline;
+original Hupsel zero flux must not silently acquire different physical semantics.
 
 For thermal feedback an explicit corrected-physics scope and joint state/restart
 owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full

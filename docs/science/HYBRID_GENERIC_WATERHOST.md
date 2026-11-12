@@ -1,5 +1,10 @@
 # Explicit project state in the hybrid waterhost
 
+The [explicit Cauchy water-forcing successor](HYBRID_CAUCHY_DAILY_FORCING.md)
+adds an opt-in caller aquifer-head segment to serial external daily acceptance.
+The original forcing default, original physics and existing complete-project
+qualification remain separate from the new day20→22 input/retry/recovery scope.
+
 Current reconciled full-project scope and external/thermal interface limits are
 in [functional closure](SWAP5_FUNCTIONAL_CLOSURE.md). Dated prototype sections
 below retain their original four-day scope and are superseded only by their

@@ -12,6 +12,7 @@ import zipfile
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--archive',type=Path,required=True);p.add_argument('--sha256',required=True)
 p.add_argument('--base-archive',type=Path,required=True)
+p.add_argument('--current-only',action='store_true',help='Audit new default preservation without repeating prior performance control')
 a=p.parse_args();sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 assert sha(a.archive)==a.sha256
 with tempfile.TemporaryDirectory(prefix='s5-external-daily-audit-') as directory:
@@ -24,7 +25,8 @@ with tempfile.TemporaryDirectory(prefix='s5-external-daily-audit-') as directory
     for name,digest in load(root/'MEMBER_SHA256.json').items():assert sha(root/name)==digest,name
     base_index=load(base/'PROOF_INDEX.json')
     assert base_index['platform']==index['platform']
-    for prefix in ['current','before']:
+    prefixes=['current'] if a.current_only else ['current','before']
+    for prefix in prefixes:
         report=load(root/prefix/'RESULT.json')
         assert report['status']=='EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS'
         assert len(report['cases'])==6 and len(report['events'])==6
@@ -54,7 +56,7 @@ with tempfile.TemporaryDirectory(prefix='s5-external-daily-audit-') as directory
             original,_=read_package(origin,binding)
             expected=[json.loads(l) for l in (base/case['continuous']/'daily.jsonl').read_text().splitlines()]
             epoch=(date.fromisoformat(meta['project']['start_date'])-date(1900,1,1)).days+1
-            for prefix in ['current','before']:
+            for prefix in prefixes:
                 report=load(root/prefix/'RESULT.json')
                 entry=next(c for c in report['cases'] if c['project']==key and c['optimization']==opt)
                 assert entry['bundle_build_sha256']==sha(base/case['report']/'BUILD.json')
@@ -92,14 +94,16 @@ with tempfile.TemporaryDirectory(prefix='s5-external-daily-audit-') as directory
                     assert abs(r['kernel_residual_cm'])<=meta['project']['water_tolerance']
                 checked+=1
             # Publisher reuse changes no native state or physical computation.
-            for relative in ['external/accepted-column-1-day-3.zip','restored/accepted-column-1-day-4.zip']:
+            for relative in ([] if a.current_only else ['external/accepted-column-1-day-3.zip','restored/accepted-column-1-day-4.zip']):
                 with zipfile.ZipFile(root/'current'/label/relative) as now, zipfile.ZipFile(root/'before'/label/relative) as old:
                     for name in ['result.end','macro.bin']:assert now.read(name)==old.read(name)
-    before=load(root/'before/RESULT.json');current=load(root/'current/RESULT.json')
-    assert len(before['compiler_events'])==66 and len(current['compiler_events'])==24
+    before=load(root/'before/RESULT.json') if not a.current_only else None
+    current=load(root/'current/RESULT.json')
+    assert len(current['compiler_events'])==24
+    if before is not None:assert len(before['compiler_events'])==66
     print(json.dumps({'status':'INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS',
                       'platform':index['platform'],'raw_files':len(load(root/'MEMBER_SHA256.json')),
-                      'current_cases':6,'current_and_previous_cases':checked,'C_compiles_before':66,'C_compiles_after':24,
-                      'seconds_before':math.fsum(e['seconds'] for e in before['events']),
+                      'current_cases':6,'current_and_previous_cases':checked,'C_compiles_before':66 if before else None,'C_compiles_after':24,
+                      'seconds_before':math.fsum(e['seconds'] for e in before['events']) if before else None,
                       'seconds_after':math.fsum(e['seconds'] for e in current['events']),
-                      'publisher_reuse_native_payloads_exact':True}))
+                      'publisher_reuse_native_payloads_exact':True if before else 'NOT_SELECTED_PRIOR_PERFORMANCE'}))
