@@ -1,0 +1,1590 @@
+{
+  "analysis_source_canonical_lf_sha256": "f6b1833844c7ad4c76195041f3f61cdcd03ea45885d33fcec656eeab7f57fd5a",
+  "status": "PRESERVED_FULL_TRAJECTORY_ASSESSMENT_REPRODUCED_NOT_WHOLE_SCIENCE",
+  "model_runs": 0,
+  "builds": 0,
+  "precision_policy": "All computed differences descriptive. No new physical/scientific tolerance or reference substitution. Stock/yield sums are descriptive sums, not all physical cumulative fluxes.",
+  "source_data_sha256": {
+    "research/hybrid-water01/HYBRID_GRASS_FULL_REFERENCE_20261111.json": "e32f7734c6f3ad7cbddfb760e59a955d45e8f823cb8c6bbdb6d1798a9db2bdfd",
+    "research/hybrid-water01/hybrid-grass-full-windows-20261111.tar.xz": "cabfa1ba582b91838d9b5da851ae112ade5540e5b2d58020b94f6985094d40ad",
+    "research/hybrid-water01/hybrid-grass-full-windows-20261111.tar.xz::full-trajectory/full/daily.jsonl": "20d255d0d63b59be9cce5b57886f783609cff21d4e7252684c945d72873f5499",
+    "research/hybrid-water01/hybrid-grass-full-windows-20261111.tar.xz::full-trajectory/full/original/result_output.csv": "05663b4f2047084817629ba39f8e48d8e38a32a63f9f2b3ab2be3058990e2bfa",
+    "integration/dataqual15/GRASS_UNION_FULL_MANIFEST.json": "83dabf1a9db0422b9622fa575694f6868a82ef52f048af474d6a5a20cdfd5867",
+    "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+    "integration/dataqual15/GRASS_UNION_FULL_EVIDENCE.tar.xz::dq15-original-nodal-reference/original/result_output.csv": "90d883adc28a48e6f58d2239087d671a1e6b73a4600d9da8bec1709fc27340c1",
+    "integration/dataqual15_hupsel/HIGH_PRECISION_REFERENCE.json": "9019ab5327e93cec7ccf976751a7fa2a50b6117879db87d5b505bb63964908fc",
+    "research/hybrid-water01/hybrid-hupsel-windows-20261111.tar.xz": "678be090346a13ffd3b68f2a3447a947f86e52b8854fdc46f9fef798ab8b21c1",
+    "research/hybrid-water01/hybrid-hupsel-windows-20261111.tar.xz::hupsel-full/full/daily.jsonl": "1c9f18ee1875a637f55830c95b9039ebf9ded01ee96cf937f560e2333f9ac7b9",
+    "research/hybrid-water01/hybrid-hupsel-windows-20261111.tar.xz::hupsel-full/full/original/result_output.csv": "03b28ec5d733173887f2a330cdf0264e6c05a9471509c0f7c4c4534aae528c5c",
+    "research/hybrid-water01/hybrid-hupsel-windows-20261111.tar.xz::hupsel-O2/BUILD.json": "14bfa596b3d205490da1929980a11d256a5ba3501b70335f676d840a96786b7e",
+    "integration/dataqual15_hupsel/HIGH_PRECISION_REFERENCE.tar.xz": "48f9c36dec1f214b41568dc14a854a08f8e2a7fe70256bd9cea3f9cf67f2b2ed",
+    "integration/dataqual15_hupsel/HIGH_PRECISION_REFERENCE.tar.xz::reference/result_output.csv": "e71c3d550e6e95460041ea560c48e37d20e682562fd56bbc3904787992e54184",
+    "research/hybrid-water01/HYBRID_HUPSEL_REFERENCE_20261111.json": "506f904d59f3181aa42718a308101cdf3783b7ab0a5f1dbc6424aa7aa6445060",
+    "research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json": "974a5de0e24cafc14bd7d724be45b68306783be350c63cde2365dcd27bb2dba4",
+    "research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv": "85b4d42386f4737032215232a8894d691cd750d75c3546bec4fed62b042f229d",
+    "research/hybrid-water01/andelst-481-application-evidence.zip": "02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9",
+    "research/hybrid-water01/andelst-481-application-receipt.json": "a8ffb5f627d3132f0d8376002601cf34171a51fb9cd900bf5f04e1dcd65f404d",
+    "research/hybrid-water01/grass-ahl-successor-receipt.json": "3ba312a26ea17d7ce1ae1f58fd44031a6d7a17945b799957fe75eb2d0f01832c",
+    "integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json": "dd97d5108424c2edd1573139cb1aed7d87cac53c02b196ff14c30766e8af0067"
+  },
+  "text_hash_policy": "Repository JSON/promoted CSV canonical LF; archives and archived member hashes are raw bytes. Original promoted CSV raw source member hash retained in lineage.",
+  "grass_original_block": {
+    "days": 1827,
+    "water_fields_cm": {
+      "WTOT": {
+        "compared_days": 1827,
+        "max_abs_difference": 5.115907697472721e-13,
+        "worst": {
+          "day": 34,
+          "date": "1980-02-03",
+          "reference": 218.183537730168,
+          "current": 218.1835377301675,
+          "current_minus_reference": -5.115907697472721e-13
+        },
+        "signed_sum_of_daily_differences": -1.0885514711844735e-11,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DSTOR": {
+        "compared_days": 1827,
+        "max_abs_difference": 5.258987689771288e-13,
+        "worst": {
+          "day": 1419,
+          "date": "1983-11-19",
+          "reference": 0.101297876977,
+          "current": 0.1012978769775259,
+          "current_minus_reference": 5.258987689771288e-13
+        },
+        "signed_sum_of_daily_differences": 7.922472167231145e-12,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "RAIN": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.989342272665453e-13,
+        "worst": {
+          "day": 1715,
+          "date": "1984-09-10",
+          "reference": 1.36999999998,
+          "current": 1.369999999980499,
+          "current_minus_reference": 4.989342272665453e-13
+        },
+        "signed_sum_of_daily_differences": 1.6427201612878584e-11,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "EIC": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.988596341570783e-13,
+        "worst": {
+          "day": 1546,
+          "date": "1984-03-25",
+          "reference": 0.0139670368,
+          "current": 0.013967036799501141,
+          "current_minus_reference": -4.988596341570783e-13
+        },
+        "signed_sum_of_daily_differences": 1.2507044011567103e-12,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TACT": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.999473057765158e-13,
+        "worst": {
+          "day": 1516,
+          "date": "1984-02-24",
+          "reference": 0.030609637614,
+          "current": 0.030609637614499946,
+          "current_minus_reference": 4.999473057765158e-13
+        },
+        "signed_sum_of_daily_differences": 1.0948629969222828e-12,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "EACT": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.999160807539482e-13,
+        "worst": {
+          "day": 1341,
+          "date": "1983-09-02",
+          "reference": 0.015927843235,
+          "current": 0.015927843235499915,
+          "current_minus_reference": 4.999160807539482e-13
+        },
+        "signed_sum_of_daily_differences": -8.322592698505922e-12,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "BOT": {
+        "compared_days": 1827,
+        "max_abs_difference": 5.011790678646766e-13,
+        "worst": {
+          "day": 1397,
+          "date": "1983-10-28",
+          "reference": -0.000826738785,
+          "current": -0.000826738784498821,
+          "current_minus_reference": 5.011790678646766e-13
+        },
+        "signed_sum_of_daily_differences": 1.0814429430086592e-11,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "GWL": {
+        "compared_days": 1827,
+        "max_abs_difference": 6.821210263296962e-13,
+        "worst": {
+          "day": 1352,
+          "date": "1983-09-13",
+          "reference": -161.538461587655,
+          "current": -161.5384615876557,
+          "current_minus_reference": -6.821210263296962e-13
+        },
+        "signed_sum_of_daily_differences": 9.730882766234572e-12,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      }
+    },
+    "printed_crop_fields_descriptive": {
+      "TPOT": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.994112999992528e-06,
+        "worst": {
+          "day": 1336,
+          "date": "1983-08-28",
+          "reference": 0.114144994113,
+          "current": 0.11414,
+          "current_minus_reference": -4.994112999992528e-06
+        },
+        "signed_sum_of_daily_differences": -9.755963440439667e-05,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TACT": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.998283999996245e-06,
+        "worst": {
+          "day": 1683,
+          "date": "1984-08-09",
+          "reference": 0.167004998284,
+          "current": 0.167,
+          "current_minus_reference": -4.998283999996245e-06
+        },
+        "signed_sum_of_daily_differences": -0.00013379057940435162,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TREDDRY": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.9946739999959244e-06,
+        "worst": {
+          "day": 892,
+          "date": "1982-06-10",
+          "reference": 0.059455005326,
+          "current": 0.05946,
+          "current_minus_reference": 4.9946739999959244e-06
+        },
+        "signed_sum_of_daily_differences": 3.54694015199992e-05,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TREDWET": {
+        "compared_days": 1827,
+        "max_abs_difference": 4.999403000000013e-06,
+        "worst": {
+          "day": 517,
+          "date": "1981-05-31",
+          "reference": 0.004285000597,
+          "current": 0.00429,
+          "current_minus_reference": 4.999403000000013e-06
+        },
+        "signed_sum_of_daily_differences": -7.391017513390392e-06,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PHRVDM": {
+        "compared_days": 1827,
+        "max_abs_difference": 0.04803429000094184,
+        "worst": {
+          "day": 667,
+          "date": "1981-10-28",
+          "reference": 12681.55196571,
+          "current": 12681.6,
+          "current_minus_reference": 0.04803429000094184
+        },
+        "signed_sum_of_daily_differences": 5.230717422908128,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "HRVDM": {
+        "compared_days": 1827,
+        "max_abs_difference": 0.04270856999937678,
+        "worst": {
+          "day": 667,
+          "date": "1981-10-28",
+          "reference": 12155.25729143,
+          "current": 12155.3,
+          "current_minus_reference": 0.04270856999937678
+        },
+        "signed_sum_of_daily_differences": 0.7598557090493614,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      }
+    },
+    "reproduces_prior_whole_period_water_comparison": true,
+    "day188_unrounded_uptake_cm": 0.1251363444644971,
+    "decision": "Water output agreement at original print precision; no unrounded oxygen/crop, native thermal accuracy or whole-science qualification."
+  },
+  "hupsel_corrected_original_block": {
+    "days": 1096,
+    "reference_identity": "Separate retained original high-precision-output trajectory, not the frozen native application oracle and not a newly qualified replacement reference.",
+    "water_fields_cm": {
+      "TOTAL_STOCK": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.031158084585300116,
+        "worst": {
+          "day": 1096,
+          "date": "2004-12-31",
+          "reference": 76.04695204773199,
+          "current": 76.01579396314669,
+          "current_minus_reference": -0.031158084585300116
+        },
+        "signed_sum_of_daily_differences": -0.692129919059667,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "SOIL_STOCK": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.009324942286980331,
+        "worst": {
+          "day": 369,
+          "date": "2003-01-04",
+          "reference": 77.430554539359,
+          "current": 77.43987948164597,
+          "current_minus_reference": 0.009324942286980331
+        },
+        "signed_sum_of_daily_differences": -0.6630504691807744,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "POND": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0021484739688496235,
+        "worst": {
+          "day": 367,
+          "date": "2003-01-02",
+          "reference": 0.213654873305,
+          "current": 0.21580334727384962,
+          "current_minus_reference": 0.0021484739688496235
+        },
+        "signed_sum_of_daily_differences": 0.002185461271622351,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "CANOPY": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.031255683318,
+        "worst": {
+          "day": 1096,
+          "date": "2004-12-31",
+          "reference": 0.031255683318,
+          "current": 0.0,
+          "current_minus_reference": -0.031255683318
+        },
+        "signed_sum_of_daily_differences": -0.03126491115053831,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DSTOR_TOTAL": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.031104806393614126,
+        "worst": {
+          "day": 1096,
+          "date": "2004-12-31",
+          "reference": -0.09880098288400063,
+          "current": -0.12990578927761476,
+          "current_minus_reference": -0.031104806393614126
+        },
+        "signed_sum_of_daily_differences": -0.031158084585101165,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "RAIN": {
+        "compared_days": 1096,
+        "max_abs_difference": 8.898548564673092e-12,
+        "worst": {
+          "day": 217,
+          "date": "2002-08-05",
+          "reference": 0.8,
+          "current": 0.7999999999911015,
+          "current_minus_reference": -8.898548564673092e-12
+        },
+        "signed_sum_of_daily_differences": -1.307469063571709e-11,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "IRRIG": {
+        "compared_days": 1096,
+        "max_abs_difference": 1.5543122344752192e-15,
+        "worst": {
+          "day": 591,
+          "date": "2003-08-14",
+          "reference": 2.0,
+          "current": 1.9999999999999984,
+          "current_minus_reference": -1.5543122344752192e-15
+        },
+        "signed_sum_of_daily_differences": -2.220446049250313e-15,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "RUNOFF": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.00012184571022352467,
+        "worst": {
+          "day": 367,
+          "date": "2003-01-02",
+          "reference": 0.000353879106,
+          "current": 0.00047572481622352466,
+          "current_minus_reference": 0.00012184571022352467
+        },
+        "signed_sum_of_daily_differences": 0.0001653678588636506,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "EIC": {
+        "compared_days": 1096,
+        "max_abs_difference": 7.162763699275487e-06,
+        "worst": {
+          "day": 630,
+          "date": "2003-09-22",
+          "reference": 0.209264019837,
+          "current": 0.20925685707330072,
+          "current_minus_reference": -7.162763699275487e-06
+        },
+        "signed_sum_of_daily_differences": -2.5861017231559968e-05,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "EACT": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0016792361071262252,
+        "worst": {
+          "day": 511,
+          "date": "2003-05-26",
+          "reference": 0.142968624047,
+          "current": 0.14464786015412623,
+          "current_minus_reference": 0.0016792361071262252
+        },
+        "signed_sum_of_daily_differences": 0.007448135159629784,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "EPD": {
+        "compared_days": 1096,
+        "max_abs_difference": 1.463289960360113e-05,
+        "worst": {
+          "day": 368,
+          "date": "2003-01-03",
+          "reference": 0.001450486197,
+          "current": 0.0014651190966036012,
+          "current_minus_reference": 1.463289960360113e-05
+        },
+        "signed_sum_of_daily_differences": 2.163903778095973e-05,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TACT": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.00111328318889925,
+        "worst": {
+          "day": 582,
+          "date": "2003-08-05",
+          "reference": 0.477871981945,
+          "current": 0.4767586987561008,
+          "current_minus_reference": -0.00111328318889925
+        },
+        "signed_sum_of_daily_differences": -0.0016658783096530003,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DRN": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.008297386347641489,
+        "worst": {
+          "day": 5,
+          "date": "2002-01-05",
+          "reference": 0.376121127581,
+          "current": 0.3844185139286415,
+          "current_minus_reference": 0.008297386347641489
+        },
+        "signed_sum_of_daily_differences": -0.006130538022416741,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "SSDI": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 1,
+          "date": "2002-01-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "GWL": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.24455602609455696,
+        "worst": {
+          "day": 859,
+          "date": "2004-05-08",
+          "reference": -96.711261110613,
+          "current": -96.46670508451844,
+          "current_minus_reference": 0.24455602609455696
+        },
+        "signed_sum_of_daily_differences": -1.402899676962303,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      }
+    },
+    "uptake_fields_cm": {
+      "TPOT": {
+        "compared_days": 1096,
+        "max_abs_difference": 7.726222888304601e-06,
+        "worst": {
+          "day": 590,
+          "date": "2003-08-13",
+          "reference": 0.40396776353,
+          "current": 0.4039600373071117,
+          "current_minus_reference": -7.726222888304601e-06
+        },
+        "signed_sum_of_daily_differences": -9.872539472560518e-05,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TACT": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.00111328318889925,
+        "worst": {
+          "day": 582,
+          "date": "2003-08-05",
+          "reference": 0.477871981945,
+          "current": 0.4767586987561008,
+          "current_minus_reference": -0.00111328318889925
+        },
+        "signed_sum_of_daily_differences": -0.0016658783096530003,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TREDDRY": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0011126711492598154,
+        "worst": {
+          "day": 582,
+          "date": "2003-08-05",
+          "reference": 0.016850880262,
+          "current": 0.017963551411259816,
+          "current_minus_reference": 0.0011126711492598154
+        },
+        "signed_sum_of_daily_differences": 0.001257808565060456,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TREDWET": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.00024209355002690843,
+        "worst": {
+          "day": 591,
+          "date": "2003-08-14",
+          "reference": 0.001124960451,
+          "current": 0.0013670540010269085,
+          "current_minus_reference": 0.00024209355002690843
+        },
+        "signed_sum_of_daily_differences": 0.00030934641183606823,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TREDSOL": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 1,
+          "date": "2002-01-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      }
+    },
+    "solute_fields_mg_cm2": {
+      "S_RAIN": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 1,
+          "date": "2002-01-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "S_IRRIG": {
+        "compared_days": 1096,
+        "max_abs_difference": 7.815970093361102e-14,
+        "worst": {
+          "day": 5,
+          "date": "2002-01-05",
+          "reference": 48.0,
+          "current": 47.99999999999992,
+          "current_minus_reference": -7.815970093361102e-14
+        },
+        "signed_sum_of_daily_differences": -7.815970093361102e-14,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "S_DRN": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.001425550950847676,
+        "worst": {
+          "day": 366,
+          "date": "2003-01-01",
+          "reference": 0.48044825728,
+          "current": 0.4818738082308477,
+          "current_minus_reference": 0.001425550950847676
+        },
+        "signed_sum_of_daily_differences": -0.0023142132303505393,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "S_UPT": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 1,
+          "date": "2002-01-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "S_STOT": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.012516223034623408,
+        "worst": {
+          "day": 365,
+          "date": "2002-12-31",
+          "reference": 38.956141591925,
+          "current": 38.96865781495962,
+          "current_minus_reference": 0.012516223034623408
+        },
+        "signed_sum_of_daily_differences": 5.430725037074039,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "S_DSTOR": {
+        "compared_days": 1096,
+        "max_abs_difference": 0.0014255509508584452,
+        "worst": {
+          "day": 366,
+          "date": "2003-01-01",
+          "reference": -0.48044825728,
+          "current": -0.48187380823085846,
+          "current_minus_reference": -0.0014255509508584452
+        },
+        "signed_sum_of_daily_differences": 0.0023142132295582655,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "S_BALDEV": {
+        "compared_days": 1096,
+        "max_abs_difference": 2.0189359137172196e-13,
+        "worst": {
+          "day": 5,
+          "date": "2002-01-05",
+          "reference": -0.0,
+          "current": -2.0189359137172196e-13,
+          "current_minus_reference": -2.0189359137172196e-13
+        },
+        "signed_sum_of_daily_differences": -2.7119257298790236e-12,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      }
+    },
+    "printed_crop_fields_descriptive": {
+      "CH": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "CF": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TSUM": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DVS": {
+        "compared_days": 677,
+        "max_abs_difference": 1.287708400000108e-05,
+        "worst": {
+          "day": 520,
+          "date": "2003-06-04",
+          "reference": -0.009728974735,
+          "current": -0.009741851819,
+          "current_minus_reference": -1.287708400000108e-05
+        },
+        "signed_sum_of_daily_differences": -0.0001688485579999779,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "LAIPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PWSO": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PWLV": {
+        "compared_days": 677,
+        "max_abs_difference": 1.1368683772161603e-12,
+        "worst": {
+          "day": 846,
+          "date": "2004-04-25",
+          "reference": 1273.252152431396,
+          "current": 1273.252152431395,
+          "current_minus_reference": -1.1368683772161603e-12
+        },
+        "signed_sum_of_daily_differences": -1.1368683772161603e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PWST": {
+        "compared_days": 677,
+        "max_abs_difference": 9.663381206337363e-13,
+        "worst": {
+          "day": 827,
+          "date": "2004-04-06",
+          "reference": 359.487075675626,
+          "current": 359.487075675625,
+          "current_minus_reference": -9.663381206337363e-13
+        },
+        "signed_sum_of_daily_differences": -1.9326762412674725e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PWRT": {
+        "compared_days": 677,
+        "max_abs_difference": 1.1368683772161603e-12,
+        "worst": {
+          "day": 929,
+          "date": "2004-07-17",
+          "reference": 1125.248786009443,
+          "current": 1125.248786009444,
+          "current_minus_reference": 1.1368683772161603e-12
+        },
+        "signed_sum_of_daily_differences": 3.399236447876319e-11,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PDWLV": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PDWST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PDWRT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PTWLV": {
+        "compared_days": 677,
+        "max_abs_difference": 1.3642420526593924e-12,
+        "worst": {
+          "day": 614,
+          "date": "2003-09-06",
+          "reference": 2353.505523048989,
+          "current": 2353.50552304899,
+          "current_minus_reference": 1.3642420526593924e-12
+        },
+        "signed_sum_of_daily_differences": 1.1368683772161603e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PTWST": {
+        "compared_days": 677,
+        "max_abs_difference": 1.0231815394945443e-12,
+        "worst": {
+          "day": 848,
+          "date": "2004-04-27",
+          "reference": 934.28058293191,
+          "current": 934.280582931909,
+          "current_minus_reference": -1.0231815394945443e-12
+        },
+        "signed_sum_of_daily_differences": -2.0463630789890885e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PTWRT": {
+        "compared_days": 677,
+        "max_abs_difference": 1.3642420526593924e-12,
+        "worst": {
+          "day": 976,
+          "date": "2004-09-02",
+          "reference": 3222.926917429713,
+          "current": 3222.926917429714,
+          "current_minus_reference": 1.3642420526593924e-12
+        },
+        "signed_sum_of_daily_differences": 2.5920599000528455e-11,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PWDM": {
+        "compared_days": 677,
+        "max_abs_difference": 1.3642420526593924e-12,
+        "worst": {
+          "day": 854,
+          "date": "2004-05-03",
+          "reference": 2941.565294392445,
+          "current": 2941.565294392444,
+          "current_minus_reference": -1.3642420526593924e-12
+        },
+        "signed_sum_of_daily_differences": -5.229594535194337e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "RDPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "ICUTPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TCUTPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PHRVDM": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PLOSSDM": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "VCOVER": {
+        "compared_days": 1096,
+        "max_abs_difference": 2.1555668999972966e-05,
+        "worst": {
+          "day": 637,
+          "date": "2003-09-29",
+          "reference": 0.525876496691,
+          "current": 0.525854941022,
+          "current_minus_reference": -2.1555668999972966e-05
+        },
+        "signed_sum_of_daily_differences": -0.0004144443449998897,
+        "both_source_sentinel_days": 0,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "LAI": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0002455358720001577,
+        "worst": {
+          "day": 602,
+          "date": "2003-08-25",
+          "reference": 3.754220109275,
+          "current": 3.754465645147,
+          "current_minus_reference": 0.0002455358720001577
+        },
+        "signed_sum_of_daily_differences": -0.0028048712290039274,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "WSO": {
+        "compared_days": 677,
+        "max_abs_difference": 1.2268763954616588,
+        "worst": {
+          "day": 589,
+          "date": "2003-08-12",
+          "reference": 8522.906435913628,
+          "current": 8521.679559518167,
+          "current_minus_reference": -1.2268763954616588
+        },
+        "signed_sum_of_daily_differences": -41.68512184999144,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "WLV": {
+        "compared_days": 677,
+        "max_abs_difference": 0.10230661315608813,
+        "worst": {
+          "day": 602,
+          "date": "2003-08-25",
+          "reference": 1564.258378864731,
+          "current": 1564.360685477887,
+          "current_minus_reference": 0.10230661315608813
+        },
+        "signed_sum_of_daily_differences": -1.1644848946036248,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "WST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0559336850899399,
+        "worst": {
+          "day": 589,
+          "date": "2003-08-12",
+          "reference": 1305.720470926859,
+          "current": 1305.664537241769,
+          "current_minus_reference": -0.0559336850899399
+        },
+        "signed_sum_of_daily_differences": -2.8831013931593077,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "WRT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.04176522110105907,
+        "worst": {
+          "day": 583,
+          "date": "2003-08-06",
+          "reference": 1452.614095198779,
+          "current": 1452.572329977678,
+          "current_minus_reference": -0.04176522110105907
+        },
+        "signed_sum_of_daily_differences": -2.393116842828679,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DWLV": {
+        "compared_days": 677,
+        "max_abs_difference": 0.12338641336600631,
+        "worst": {
+          "day": 602,
+          "date": "2003-08-25",
+          "reference": 706.62029872519,
+          "current": 706.496912311824,
+          "current_minus_reference": -0.12338641336600631
+        },
+        "signed_sum_of_daily_differences": -0.7010173263729289,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DWST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.02565167314003247,
+        "worst": {
+          "day": 637,
+          "date": "2003-09-29",
+          "reference": 669.007391099683,
+          "current": 668.981739426543,
+          "current_minus_reference": -0.02565167314003247
+        },
+        "signed_sum_of_daily_differences": -0.5078562549161507,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "DWRT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.020994958262008367,
+        "worst": {
+          "day": 637,
+          "date": "2003-09-29",
+          "reference": 730.983522271231,
+          "current": 730.962527312969,
+          "current_minus_reference": -0.020994958262008367
+        },
+        "signed_sum_of_daily_differences": -0.4122411112955726,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TWLV": {
+        "compared_days": 677,
+        "max_abs_difference": 0.04627068679292279,
+        "worst": {
+          "day": 589,
+          "date": "2003-08-12",
+          "reference": 2195.061694909096,
+          "current": 2195.015424222303,
+          "current_minus_reference": -0.04627068679292279
+        },
+        "signed_sum_of_daily_differences": -1.8655022209912104,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TWST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0559336850899399,
+        "worst": {
+          "day": 589,
+          "date": "2003-08-12",
+          "reference": 1305.720470926859,
+          "current": 1305.664537241769,
+          "current_minus_reference": -0.0559336850899399
+        },
+        "signed_sum_of_daily_differences": -3.3909576481220967,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TWRT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.04176522110105907,
+        "worst": {
+          "day": 583,
+          "date": "2003-08-06",
+          "reference": 1452.614095198779,
+          "current": 1452.572329977678,
+          "current_minus_reference": -0.04176522110105907
+        },
+        "signed_sum_of_daily_differences": -2.8053579541427247,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "WDM": {
+        "compared_days": 677,
+        "max_abs_difference": 1.329080769999564,
+        "worst": {
+          "day": 589,
+          "date": "2003-08-12",
+          "reference": 12023.68860175,
+          "current": 12022.35952098,
+          "current_minus_reference": -1.329080769999564
+        },
+        "signed_sum_of_daily_differences": -46.941581705944856,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "RD": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0017303375790014286,
+        "worst": {
+          "day": 837,
+          "date": "2004-04-16",
+          "reference": 26.338112082912,
+          "current": 26.336381745333,
+          "current_minus_reference": -0.0017303375790014286
+        },
+        "signed_sum_of_daily_differences": -0.05182455369100225,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "ICUT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "TCUT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "HRVDM": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0006067037684260868,
+        "worst": {
+          "day": 930,
+          "date": "2004-07-18",
+          "reference": 9063.813099427298,
+          "current": 9063.813706131066,
+          "current_minus_reference": 0.0006067037684260868
+        },
+        "signed_sum_of_daily_differences": 0.008927245959966967,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "LOSSDM": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PGASSTPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 1.0231815394945443e-12,
+        "worst": {
+          "day": 927,
+          "date": "2004-07-15",
+          "reference": 174.132635159065,
+          "current": 174.132635159066,
+          "current_minus_reference": 1.0231815394945443e-12
+        },
+        "signed_sum_of_daily_differences": 1.0231815394945443e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "PGASST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.005981165023001722,
+        "worst": {
+          "day": 635,
+          "date": "2003-09-27",
+          "reference": 148.535069739393,
+          "current": 148.52908857437,
+          "current_minus_reference": -0.005981165023001722
+        },
+        "signed_sum_of_daily_differences": -0.11717319696509304,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "GASSTPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 1.0231815394945443e-12,
+        "worst": {
+          "day": 927,
+          "date": "2004-07-15",
+          "reference": 174.132635159065,
+          "current": 174.132635159066,
+          "current_minus_reference": 1.0231815394945443e-12
+        },
+        "signed_sum_of_daily_differences": 1.0231815394945443e-12,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "GASST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.8739383447249907,
+        "worst": {
+          "day": 582,
+          "date": "2003-08-05",
+          "reference": 375.240973722852,
+          "current": 374.367035378127,
+          "current_minus_reference": -0.8739383447249907
+        },
+        "signed_sum_of_daily_differences": -0.9599772066569647,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "MRESTPOT": {
+        "compared_days": 677,
+        "max_abs_difference": 0.0,
+        "worst": {
+          "day": 121,
+          "date": "2002-05-01",
+          "reference": 0.0,
+          "current": 0.0,
+          "current_minus_reference": 0.0
+        },
+        "signed_sum_of_daily_differences": 0.0,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      },
+      "MREST": {
+        "compared_days": 677,
+        "max_abs_difference": 0.007137485255995557,
+        "worst": {
+          "day": 590,
+          "date": "2003-08-13",
+          "reference": 90.69021094803,
+          "current": 90.683073462774,
+          "current_minus_reference": -0.007137485255995557
+        },
+        "signed_sum_of_daily_differences": -0.17349213263402136,
+        "both_source_sentinel_days": 419,
+        "reference_only_active_days": 0,
+        "current_only_active_days": 0,
+        "first_active_scope_mismatch": null
+      }
+    },
+    "frozen_day584_comparison": {
+      "status": "READ_ONLY_SEPARATE_REFERENCE_COMPARISONS_NOT_SCIENTIFIC_QUALIFICATION",
+      "current_full_source": "22c6b8753e39c8f7fd3a9603ce3c4c8a86a6461d",
+      "current_day584_oxygen_cm": 0.004793906349978937,
+      "frozen_scientific_limit_cm": 5.371840000016327e-07,
+      "sealed_original_comparison_used_by_native_application": {
+        "reference_cm": 0.003593541147,
+        "native_cm": 0.0033488614852679407,
+        "native_verdict": "FAIL_PRESERVED",
+        "hybrid_delta_cm": 0.0012003652029789372,
+        "hybrid_verdict": "FAIL"
+      },
+      "separate_original_high_precision_output": {
+        "archive_sha256": "48f9c36dec1f214b41568dc14a854a08f8e2a7fe70256bd9cea3f9cf67f2b2ed",
+        "csv_sha256": "e71c3d550e6e95460041ea560c48e37d20e682562fd56bbc3904787992e54184",
+        "rows": 1097,
+        "day584_date": "2003-08-07",
+        "oxygen_cm": 0.004793370692,
+        "hybrid_delta_cm": 5.356579789372526e-07,
+        "single_value_within_limit": true,
+        "qualification": "Not a replacement qualified reference; existing independent reference-resolution blocker remains."
+      },
+      "decision": "No further reference model run or tolerance change. Retain both reference identities and failed original comparison. Corrected original-block route is functional water/solute/restart acceptance only."
+    },
+    "maximum_water_ledger_residual_cm": 9.996691511691622e-11,
+    "maximum_solute_ledger_residual_mg_cm2": 2.0189359137172196e-13,
+    "reference_internal_water_accounting": {
+      "formula": "delta(WTOT+PD_VOL+IC_VOL)-RAIN-IRRIG-SSDI+EIC+EACT+EPD+TACT+DRN+RUNOFF; sourceSWBOT6zero",
+      "maximum_excluding_final_day_cm": 1.1511842014533258e-05,
+      "final_day1096_residual_cm": 0.031255676875999394,
+      "final_day1096_IC_VOL_cm": 0.031255683318,
+      "observation": "Terminal original donor output has a residual approximately equal to ending canopy stock and BALDEV with opposite sign. This is preserved reference feedback, not evidence that SWAP5 may discard canopy storage. Cause not yet qualified."
+    },
+    "decision": "Known corrected runoff/solute endpoint/harvest accounting and nonlinear policy change the trajectory; field-wise causality of remaining differences is unresolved. Original frozen day584 comparison remains FAIL; no substitute oracle selected."
+  },
+  "andelst_hybrid": {
+    "days": 481,
+    "gwl_print_comparison_cm": {
+      "compared_days": 481,
+      "max_abs_difference": 10.885349999999988,
+      "worst": {
+        "day": 457,
+        "date": "1999-04-02",
+        "reference": -93.75334,
+        "current": -82.86799,
+        "current_minus_reference": 10.885349999999988
+      },
+      "signed_sum_of_daily_differences": 8.650358540560095,
+      "both_source_sentinel_days": 0,
+      "reference_only_active_days": 0,
+      "current_only_active_days": 0,
+      "first_active_scope_mismatch": null
+    },
+    "water_ledger_sha256": "68699c2bcb7680e40f92e68bd9b428e5300a285cf157cc1c9adaa162229f4573",
+    "signed_water_ledger_residual_cm": -3.0984857022372374e-05,
+    "maximum_water_ledger_residual_cm": 9.99889593928854e-07,
+    "clock_scoped_policy_source": "app/hybrid_water/daily_host.py: shared_pond_transfer and refresh_macro_final generated scopes; not a universal original-physics identity.",
+    "prior_registered_profile_disposition": {
+      "first_changed_day_against_prior_profile": 458,
+      "unchanged_accepted_prefix_days": 457,
+      "day458": {
+        "day": 458,
+        "date": "1999-04-03",
+        "refreshed_gwl_cm": -77.82077,
+        "prior_gwl_cm": -162.41993,
+        "original_gwl_cm": -78.08553,
+        "refreshed_minus_original_cm": 0.26476,
+        "prior_minus_original_cm": -84.3344
+      },
+      "max_abs_difference_from_original": {
+        "day": 457,
+        "date": "1999-04-02",
+        "refreshed_gwl_cm": -82.86799,
+        "prior_gwl_cm": -82.86799,
+        "original_gwl_cm": -93.75334,
+        "refreshed_minus_original_cm": 10.88535,
+        "prior_minus_original_cm": 10.88535
+      },
+      "largest_day_to_day_change": {
+        "refreshed": {
+          "day": 257,
+          "change_cm": 67.44652
+        },
+        "prior": {
+          "day": 459,
+          "change_cm": 89.46945
+        },
+        "original": {
+          "day": 257,
+          "change_cm": 67.44455
+        }
+      },
+      "largest_independent_residual_cm": 9.99889593928854e-07,
+      "signed_sum_daily_residuals_cm": -3.0984857022372374e-05
+    },
+    "decision": "Retain clock-scoped corrected research-policy identity. Daily mass closure and restart do not qualify original trajectory or generic correctness of the clock-scoped numerical policy. Remaining day457 sensitivity has no qualified causal repair."
+  },
+  "native_application_science": {
+    "grass_registered_thermal": {
+      "sealed_archive_sha256": "ece4d7ca4a7c232aedc4d4dffeb460820f0942514bb825c0cb349b6c3d854d73",
+      "day188": {
+        "potential_cm": {
+          "native_cm": 0.14242295537732308,
+          "B0_cm": 0.141707391074
+        },
+        "uptake_cm": {
+          "native_cm": 0.13643794067970308,
+          "B0_cm": 0.125136344464
+        },
+        "drought_cm": {
+          "native_cm": 0.0,
+          "B0_cm": 0.0
+        },
+        "oxygen_cm": {
+          "native_cm": 0.005985014697619998,
+          "B0_cm": 0.01657104661
+        }
+      },
+      "largest_absolute_daily_differences": {
+        "potential_cm": {
+          "day": 205,
+          "native_minus_B0_cm": 0.006906141383167974
+        },
+        "uptake_cm": {
+          "day": 188,
+          "native_minus_B0_cm": 0.011301596215703091
+        },
+        "drought_cm": {
+          "day": 170,
+          "native_minus_B0_cm": -0.0016732685230524784
+        },
+        "oxygen_cm": {
+          "day": 905,
+          "native_minus_B0_cm": -0.01064852911121866
+        }
+      }
+    },
+    "hupsel_pressure_film": {
+      "windows_passing": 36,
+      "posix_passing": 36,
+      "total": 37,
+      "closed_film_only_failures": 11,
+      "failures": [
+        "oxygen"
+      ],
+      "windows_oxygen584": {
+        "day": 584,
+        "native": 0.0033488614852679407,
+        "original": 0.003593541147,
+        "limit": 5.371840000016327e-07,
+        "absolute_error": 0.00024467966173205916
+      },
+      "posix_oxygen584": {
+        "day": 584,
+        "native": 0.0033488614572728895,
+        "original": 0.003593541147,
+        "limit": 5.371840000016327e-07,
+        "absolute_error": 0.0002446796897271103
+      }
+    },
+    "decision": "Retained pinned native application results; do not transfer their criteria/counts to the original-block routes."
+  }
+}
