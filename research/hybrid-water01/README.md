@@ -2,6 +2,78 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Hupsel daily surface water/solute irrigation delivered and admitted, 12 November 2026
+
+PR #1648 MERGED at a634269639b2f7955f11c356018cf4ee8dd1dcb6.
+Qualified head 13ee9aba9465d9f44ae382ba8e9a16173b308f4b on
+codex/hybrid-hupsel-daily-irrigation. Predicted and actual canonical tree
+e791ead7bb5a36e5d12c6523b50b8a49643c1916 match. Ten application/workflow/raw/
+log/evidence blobs verified. Executed Linux application, extension builder and
+qualifier SHA256 equal canonical Git bytes. All 3866 shared src/reference/tools/
+tests blobs unchanged. Receipt: CLOSURE01_HUPSEL_IRRIGATION_CANONICAL_20261112.json.
+This supersedes prior NEXT/ACTIVE banners. Every model, CI, build, pack, audit
+and documentation process for this delivery is FINISHED. Do not duplicate them.
+
+Functional coverage: all three original full applications retain their separate
+qualified scopes. The shared serial external transaction now additionally accepts
+actual Hupsel fixed surface irrigation water/solute events, including an explicit
+absent event. Original zero-flux bottom retained. Typed request binds accepted
+origin/day, exact original 2002 clock, coupling ID, provenance and applied input
+hash; no-file original forcing remains default. Source/contract/API/commands:
+canonical docs/science/HYBRID_HUPSEL_DAILY_IRRIGATION.md and
+integration/f-ci/HYBRID_HUPSEL_IRRIGATION_20261112.json.
+
+The real task3 consumer runs AFTER original S5HUP010 irrigation-context restore
+and crop initialization. Original mm/mm-h conversions, duration, rate/time control,
+surface water and solute consumers remain unchanged. Only the irrigation module
+is recompiled and original donor relinked with verified frozen objects; kernel/
+shared providers reused. No new checkpoint codec or hidden SAVE context added.
+Never relabel old native checkpoints to a new build: a short fresh original prefix
+creates the new build's own day4 origin.
+
+Reliability: actual original donorO2/kernelO0/O2 Windows/Ubuntu26, six scenarios:
+modified, disabled and original January5 gift, followed through January6 with a
+new event or explicit absence. Exact same-route native discard/retry and fresh
+disk versus live recovery from MODIFIED day5. Independent full original SWP
+controls from initial state match both physical daily records exactly; their saved
+irrigation tables intentionally differ, so no full-context native equality with
+those controls is claimed. Seven original no-file physical records and actual
+original day5 native/auxiliary checkpoint are exact. Independent actual input,
+source/object/native/lineage and water/solute accounting audits PASS at unchanged
+1e-10 guards. New gift solute48.0044001mg/cm2, disabled zero, next gift0.002mg/cm2.
+Seven persisted-input attacks and three actual malformed consuming-file launches
+refuse. Both prior controlled boundary modes, all three original default routes,
+and corruption/terminal/persisted-input guards pass on both OS.
+
+Development yield: new-mode full cohort including incremental builds and controls
+33.046s Windows,11.736s Linux. No full1096/1827/481-day application repeated. Owning
+Linux run43133683506 SUCCESS at4023bd4672df4175797f3f53a2b9175ee1def267; later
+deltas are audit/pack/docs/evidence only. Strict docs/source checks PASS. Raw
+Windows90080f1ec5b582fe62e1c7891cc9694facc5fb9463d9fde51a270a39ff5d6fbe and
+Linux9ddbbefcec649fef7f3c016fe3be65e7d17bd3b2199d5598828ef8bfe21537f4
+archives include exact executed source/build/input/objects and failed probe.
+Initial harness mismatch used day7 against frozen native payload actually saved
+on day5; corrected assertion, unchanged model. Initial CI selection metadata
+preflight failed before models; full failed log retained alongside successful run.
+
+Limits: only fixed surface type1 daily water/solute input and named windows;
+no full externally controlled1096, scheduled/SSDI caller input, complete energy,
+thread-safe legacy globals or cross-platform bytes. Original full applications
+and native day188/day584 failed scientific comparisons remain separate/visible.
+No new historical reference experiment selected.
+
+NEXT DELIVERY: complete Andelst Cauchy changed-history second-day recovery with
+an independently edited original-input second-day control. PR1646 admits matching-
+original-head recovery and shifted ONE-day acceptance/control, not this broader
+claim. Reuse compatible published day20 origins from its hash-bound raw capsule;
+first request actually changes the head, accept it, then continue a second changed
+head day from that modified native state. Compare exact live/disk retry/recovery
+and the independent physical/native control at unchanged guards for O0/O2 on
+Windows/Ubuntu. Cap the two-day cohort; never repeat the full481 or warm prefix
+when the same compatible origin is available. If exact native control cannot
+hold because input context legitimately differs, classify that distinction
+explicitly rather than weakening any physical guard or claiming equality.
+
 ### Grass daily groundwater control delivered and admitted, 12 November 2026
 
 PR #1647 MERGED at fc0ca4b09690c7e2522db6eb4416ed023aeac7fa.

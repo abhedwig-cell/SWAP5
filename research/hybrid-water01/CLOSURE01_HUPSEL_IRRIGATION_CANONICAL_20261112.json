@@ -1,0 +1,52 @@
+{
+  "status": "CANONICAL_POSTIMAGE_VERIFIED",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1648",
+  "head": "13ee9aba9465d9f44ae382ba8e9a16173b308f4b",
+  "baseline": "fc0ca4b09690c7e2522db6eb4416ed023aeac7fa",
+  "canonical": "a634269639b2f7955f11c356018cf4ee8dd1dcb6",
+  "canonical_tree": "e791ead7bb5a36e5d12c6523b50b8a49643c1916",
+  "predicted_and_actual_tree_equal": true,
+  "verified_blobs": {
+    "app/hybrid_water/daily_coupling.py": "0529fb83b691a4dd0743caa431221fb1269dc26e",
+    "app/hybrid_water/irrigation_forcing.py": "e4d52e070d9cd4fb1066dc1494dec6f64f74d119",
+    "research/hybrid-water01/qualify_hupsel_irrigation.py": "b2f3a77843542f930ed45ec00882086646a28741",
+    "research/hybrid-water01/check_irrigation_inputs.py": "c564e5860d37830c3771b33b22814cdc132757f2",
+    ".github/workflows/grass-thermal-production.yml": "7e16cbe82c9e7bcf39b7feba99aa2fae0a302b0b",
+    "research/hybrid-water01/irrigation-windows-20261112.tar.xz": "38ce7b6b1e236fcec989aa6dd923d1f4b77f894d",
+    "research/hybrid-water01/irrigation-linux-20261112.tar.xz": "22e1fa3109bdcd3597d51c4a7565b93118d8d5d3",
+    "research/hybrid-water01/irrigation-linux-ci-20261112.log.gz": "fa7eb43965d77f651d564daf27024488c2ce7f8b",
+    "research/hybrid-water01/irrigation-linux-preflight-failed-20261112.log.gz": "8cf3f06361edf95f7d1754c2d58b4e74694f1b38",
+    "integration/f-ci/HYBRID_HUPSEL_IRRIGATION_20261112.json": "92a59b96daa5bce7dee8f65f4b8932dbcc1df852"
+  },
+  "linux_executed_sources_equal_canonical_git_bytes": {
+    "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+    "app/hybrid_water/irrigation_forcing.py": "096554c44267b0b1b546ccb939f07ce531a84a12f3c9806e02b0bdac96005411",
+    "research/hybrid-water01/qualify_hupsel_irrigation.py": "05918c973ea43fb5f883410b0261d1ec4a26fe44ff22d4d9f00ec5f4f15c0a8c"
+  },
+  "unchanged_shared_blobs": 3866,
+  "qualification_record": "integration/f-ci/HYBRID_HUPSEL_IRRIGATION_20261112.json",
+  "owning_linux_run": 43133683506,
+  "raw_archives": [
+    {
+      "path": "research/hybrid-water01/irrigation-windows-20261112.tar.xz",
+      "bytes": 14602408,
+      "sha256": "90080f1ec5b582fe62e1c7891cc9694facc5fb9463d9fde51a270a39ff5d6fbe"
+    },
+    {
+      "path": "research/hybrid-water01/irrigation-linux-20261112.tar.xz",
+      "bytes": 12993124,
+      "sha256": "9ddbbefcec649fef7f3c016fe3be65e7d17bd3b2199d5598828ef8bfe21537f4"
+    }
+  ],
+  "scope": "Original Hupsel fixed surface water/solute day5 event and day6 continuation, original donorO2/kernelO0/O2 Windows/Ubuntu. Exact same-route changed-history native retry/recovery; independent original-input physical controls; no-file original7 physical records/native5 preserved. Current original3project/Cauchy/Grass preservation PASS.",
+  "limits": [
+    "Original donorO2/kernelO0/O2, two platforms; surface type1 fixed-event daily input only.",
+    "Independent original SWP controls match physical records; their full saved irrigation table context intentionally differs. Exact native retry/recovery is same external route.",
+    "Seven original no-file physical days and original native event checkpoint5 are preserved; no full new controlled1096day trajectory.",
+    "Original full1827/481/1096 application evidence and existing day188/day584 scientific failures retain separate scopes.",
+    "No full physical energy, scheduled/SSDI input, thread-safety, cross-platform byte equality or universal performance claim.",
+    "No source in src/reference/tools/tests modified, no new kernel or checkpoint codec.",
+    "Calendar transformations are input-only, not year model runs."
+  ],
+  "next": "Qualify Andelst Cauchy second-day recovery after modified first-day head with independently edited original second-day input controls. Reuse exact published compatible day20 origins, retain tolerances, cap two-day O0/O2 Windows/Ubuntu cohort; no481day repeat."
+}
