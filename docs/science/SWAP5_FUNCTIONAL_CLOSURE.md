@@ -44,10 +44,17 @@ HeadCalc counters are now explicit and persisted. Same-platform Windows/Ubuntu
 kernel-O0/O2 cold controls, complete own2to3/4, external discard and cold3to4 are
 exact. Windows also reaches22 and reproduces complete own14to16 payloads across
 1949 mass-step retries, retaining1e-6cm. The admitted public481 profile and its
-historical auxiliary distinction retain their exact original scope. Whole481 and
-whole scientific qualification of the new policy remain open; default builders
-are unchanged. Reproduction/source/build receipts are in the PR's original
-macro-state review and integration/f-ci owner record.
+historical auxiliary distinction retain their exact original scope. The complete
+original481 successor is now executed on the same Ubuntu-O2 build, with exact
+year365to368 and late453to459 own physical continuations and selected full native
+endpoints. Its maximum daily residual is9.998866333377667e-7cm. Preserved raw
+artifacts, exact source/build/input binding and a zero-model Linux reproduction
+are in`research/hybrid-water01/ORIGINAL_MACRO_481_20261112.md` and its owner record.
+Whole scientific qualification FAILS: day438 groundwater differs by79.5114cm
+from original printed output, supported by a large spatial pressure difference
+against the retained corrected profile. Mass closure does not approve pressure.
+Public/default builders remain unchanged; this is a complete functional opt-in
+profile, not scientific equivalence or a runtime-parity claim.
 
 ## What the shared application architecture actually provides
 
