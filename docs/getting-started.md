@@ -1,5 +1,9 @@
 # Getting started: standalone no-macro SWAP5
 
+**RELEASE READY for the named standalone no-macro scope.** PR1663's actual
+canonical source postimage is verified in the versioned release record. This is
+not whole scientific equivalence or an official tagged/public GitHub release.
+
 ## Supported release boundary
 
 The standalone user route supports exactly these registered original profiles:

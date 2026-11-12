@@ -2,7 +2,7 @@
   "owner": "SWAP5-USERRELEASE01",
   "baseline": "f6e5c2d345de96da653c5caaf6062d471168373d",
   "review_pr": 1662,
-  "status": "QUALIFIED_FOR_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_RELEASE_READY",
   "invariants": "No physics/Fortran generator/tolerance/codec change. Exact source archives, original inputs, compiler/object/library/binary and own restart binding. No active macro execution.",
   "acceptance": [
     "Fresh Windows/Ubuntu source preparation, no research provider or Andelst execution",
@@ -19,7 +19,7 @@
     "highest_low_air": "NOT_SELECTED",
     "active_macro": "FROZEN_NOT_SELECTED"
   },
-  "release_decision": "RELEASE_READY_NAMED_NO_MACRO_SCOPE_UPON_CANONICAL_ADMISSION",
+  "release_decision": "RELEASE_READY_NAMED_NO_MACRO_USER_SCOPE",
   "release_scope": [
     "HYBRID_GRASSGROWTH_WATER1827",
     "HYBRID_HUPSEL_WATER1096",
@@ -328,12 +328,30 @@
     "1662": "Both user-release gaps resolved by standalone clean preparation and actual documented Windows/Ubuntu build/run/day-restart. SaltFarm ordering fixed. Old native/development commands removed from release getting-started. Heat explicitly research-only."
   },
   "functional_blockers": [],
-  "next": "Publish qualified implementation/evidence PR, inspect review/checks, merge and verify exact canonical postimage. No release tag or public GitHub release.",
+  "next": "SWAP5-USERRELEASE01 complete within named bounded scope. No further model work selected. Preserve scientific exclusions, active-macro freeze and exact source/build/input/restart binding; no official tag or public release.",
   "fresh_entrypoint_sources": {
     "app/hybrid_water/user_prepare.py": "11bacc1bdeef758aba0df4f892c15865052b0dfb19b6ac0ee5c17fd7355c89d4",
     "tools/solute/run_water.py": "7c09d90cb0cde2dfb7722cdd85686900a5da3e0b78db16fd1e06593ebe04b631",
     "tools/solute/check_userrelease.py": "7b69d40e0f1dad1d9aaa8003dd9a8e6c77aced3b2a1b01c461167c121e5b01bc",
     "tools/vq/b0_source_runner.py": "cd23f0d70ea79110f2dcf36f66b5c4b428b3df90596a798dad992c8ee3a63cf5"
   },
-  "review_head": "9d7283f9a4c36005565457696bdeb592cb2b51c9"
+  "review_head": "9d7283f9a4c36005565457696bdeb592cb2b51c9",
+  "pull_request": 1663,
+  "canonical_admission": {
+    "pr": 1663,
+    "qualified_head": "2375c2ab3f21c4614f0a24064b8a8e56fbfc4bb3",
+    "canonical_commit": "dd83e381ebb973355923e46e35cf031aba98a335",
+    "canonical_tree": "6d1b9fe4eb1bafdbf11009a030e2d582fa522290",
+    "exact_tree_equal_to_qualified_head": true,
+    "parents": [
+      "f6e5c2d345de96da653c5caaf6062d471168373d",
+      "2375c2ab3f21c4614f0a24064b8a8e56fbfc4bb3"
+    ],
+    "source_and_build_dependency_surface_unchanged": true,
+    "review_submissions": [],
+    "unresolved_review_threads": [],
+    "checks": "Manual source-bound Ubuntu run43233736787 success; fresh Windows current qualified source PASS; docs source/strict MkDocs PASS. Automatic global green not claimed.",
+    "release_decision": "RELEASE_READY_NAMED_NO_MACRO_USER_SCOPE",
+    "official_tag_or_public_release_created": false
+  }
 }
