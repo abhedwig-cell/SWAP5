@@ -98,8 +98,11 @@ leading/interior and modified-history recovery controls. Original Hupsel zero fl
 retains its semantics. The [Hupsel surface-irrigation successor](HYBRID_HUPSEL_DAILY_IRRIGATION.md)
 now supplies actual fixed water/solute events after complete persisted irrigation-
 context restoration, with changed-history retry/recovery and independent original-
-input physical controls. Next qualify changed-history external Cauchy recovery;
-its matching-original-head recovery and shifted one-day controls remain narrower.
+input physical controls. The [Cauchy changed-history successor](HYBRID_CAUCHY_CHANGED_HISTORY.md)
+now proves second-day disk recovery from an actually modified accepted state
+and exact both-day independent original controls. Cross-platform sensitivity
+and whole scientific equivalence remain separate. Next interleave independent
+controlled instances using these same existing accepted-state contracts.
 
 For thermal feedback an explicit corrected-physics scope and joint state/restart
 owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full
