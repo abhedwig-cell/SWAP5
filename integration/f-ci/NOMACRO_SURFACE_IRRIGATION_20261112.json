@@ -17,5 +17,18 @@
     "full1461": "NOT_SELECTED_UNCHANGED_PHYSICS",
     "macro": "FROZEN_NOT_SELECTED",
     "full_FCI": "NOT_SELECTED_IMPACT_UNCHANGED_PHYSICAL_OWNERS"
-  }
+  },
+  "retained_failed_attempts": [
+    {
+      "source": "0b3372f82",
+      "case": "SaltFarm full-day identity14.4mm0.6mm/h",
+      "failure": "caller-unit duration roundoff; converted original-unit strict check fixes it"
+    },
+    {
+      "source": "b6f53e351",
+      "case": "SaltFarm day10814.401mm/.402mgcm3",
+      "failure": "native exported csurf=-2.168404344971009e-19; strict real restore refuses; no tolerance relaxation",
+      "decision": "Existing original solve may emit negative roundoff surface mass; reject such candidate before external accept, preserving original physics and strict state contract. Accepted-history discriminator holds depth at original14.4 and changes concentration."
+    }
+  ]
 }

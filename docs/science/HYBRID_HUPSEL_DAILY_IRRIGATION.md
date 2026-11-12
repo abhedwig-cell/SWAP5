@@ -138,3 +138,12 @@ consumer now check duration using that unchanged original conversion order.
 The strict limit stays1day with no epsilon or tolerance increase; the original
 physical assignments and default no-file execution remain unchanged. The failed
 pretrial request is retained; original control output distinguishes the fix.
+
+A second distinguishing request (14.401mm/.402mgcm3 on SaltFarm108)
+exported csurf=-2.168404344971009e-19mg/cm2. The unchanged native restore
+correctly refuses it. No clipping, repair or tolerance relaxation is selected.
+The external adapter now checks the current codec's conserved-solute domain
+before publication, so a locally mass-closed but unrestartable trial cannot
+become externally accepted. Such a request remains physically unqualified.
+The accepted-history test changes salinity at the original14.4mm water gift.
+This is a fail-closed interface decision, not a numerical repair campaign.

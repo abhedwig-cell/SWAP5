@@ -16,6 +16,7 @@ import shutil
 from pathlib import Path
 import secrets
 import zipfile
+import struct
 
 import daily_host as h
 
@@ -434,6 +435,14 @@ class CoupledDailyColumn:
             candidate = trial / f"accepted-column-1-day-{raw['day']}.zip"
             ready = trial / 'verified-candidate'
             checked = h.verify_checkpoint(candidate, self._day+1, host.binding, ready)
+            if self.project.solute:
+                # Current nonmacro codec: same strict state domain as the real
+                # original consumer, checked BEFORE external publication.
+                with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
+                if aux[:8]!=b'S5HUP012':raise ValueError('Foreign conserved solute codec')
+                conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
+                if not all(math.isfinite(v) and v>=0 for v in conserved):
+                    raise ValueError('Unrestartable candidate conserved solute state')
             if checked != raw:
                 raise ValueError('Private candidate receipt differs')
             host.close()
