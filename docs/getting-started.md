@@ -19,7 +19,17 @@ preparation remain separate development routes, not prerequisites or aliases.
 
 ## Install and obtain the source
 
-Use a checkout containing this release's admitted commit. Python 3.12 or later,
+Obtain the source with Git (or use an existing checkout at the admitted commit):
+
+```bash
+git clone --single-branch --branch integration/f-ci-canonical https://github.com/abhedwig-cell/SWAP5.git
+cd SWAP5
+git rev-parse HEAD
+```
+
+Keep the printed commit with your results. The versioned release decision and
+Windows/Ubuntu evidence are in `integration/f-ci/USERRELEASE01_20261112.json`.
+Python 3.12 or later,
 GNU Fortran and GCC major 15 or 16, and GNU binutils (`ar`) must be on PATH. Fortran
 and C must target the same platform. The model launcher uses only Python's standard
 library; no downloaded research capsule or previous executable is required.
@@ -132,6 +142,16 @@ limit: `--days` is an absolute day within the selected original period.
 - `accepted-column-1-day-N.zip`: durable native + auxiliary day state and binding;
   it is a restart package, not an editable input file.
 - Worker/kernel stdout and stderr remain beside results for diagnosis.
+
+`stock_end_cm` / `stock_start_cm` order is soil water, pond, snow, canopy
+interception, then two inactive macropore slots (both zero). `external_flux_cm`
+retains the original amount order: liquid rain, snow rain, snowfall, irrigation,
+run-on, lateral inflow, bottom inflow, interception evaporation, runoff, root
+uptake, pond evaporation, soil evaporation, sublimation, drainage, inactive
+macropore drainage (zero), bottom outflow. The first seven enter; the final nine
+leave. Solute ledger order is end stock, change, rain, irrigation, bottom input,
+drainage loss, decay loss, root loss, reported residual. Consult original CSV
+headers before interpreting any extra original process-specific output.
 
 The additional qualified numerical heat ledger is currently **research-only**.
 The supported user launcher does not promise an exported heat-budget CSV. Its
