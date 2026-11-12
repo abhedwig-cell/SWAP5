@@ -1,8 +1,10 @@
 """Independent accepted native/input/lineage audit of real groundwater runs."""
 import argparse
+from datetime import date,timedelta
 import hashlib
 import json
 from pathlib import Path
+import re
 import zipfile
 
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--runs',type=Path,required=True)
@@ -38,6 +40,12 @@ for entry in r['cases']:
         assert f['mode']=='grass-groundwater-daily-v1'
         assert hashlib.sha256(json.dumps(x,sort_keys=True,separators=(',', ':'),allow_nan=False).encode()).hexdigest()==f['identity_sha256']
         assert sha(folder/'swap.bbc')==f['applied_bbc_sha256']
+        text=(folder/'swap.bbc').read_text(encoding='cp1252')
+        assert re.search(r'(?m)^\s*SWBOTB\s*=\s*1\b',text)
+        knots=dict(re.findall(r'(?m)^\s*(\d{4}-\d{2}-\d{2})[ \t]+([-+0-9.]+)[ \t]*$',text))
+        start=date(1980,1,1)+timedelta(days=x['origin_day'])
+        assert float(knots[str(start)])==x['head_start_cm']
+        assert float(knots[str(start+timedelta(days=1))])==x['head_end_cm']
         assert x['origin_sha256']==c['origin_sha256'] and x['origin_day']==c['origin_day']
         assert [x['t0_day1900'],x['t1_day1900']]==c['window_day1900'] and x['coupling_id']==c['id']
         assert abs(m['receipt']['independent_residual_cm'])<=1e-10

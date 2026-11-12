@@ -15,6 +15,7 @@ p.add_argument('--failed',type=Path,action='append',default=[])
 p.add_argument('--inputs',type=Path)
 p.add_argument('--groundwater',type=Path)
 p.add_argument('--probe',type=Path)
+p.add_argument('--cauchy-inputs',type=Path)
 p.add_argument('--platform',choices=['windows','linux'],required=True)
 p.add_argument('--source-head',required=True);a=p.parse_args()
 phases={'cauchy':a.cauchy,'current':a.current,'corruption':a.corruption,
@@ -22,6 +23,7 @@ phases={'cauchy':a.cauchy,'current':a.current,'corruption':a.corruption,
 if a.inputs is not None:phases['recovery-inputs']=a.inputs
 if a.groundwater is not None:phases['groundwater']=a.groundwater
 if a.probe is not None:phases['probe']=a.probe
+if a.cauchy_inputs is not None:phases['cauchy-inputs']=a.cauchy_inputs
 files={};sources={}
 with tempfile.TemporaryDirectory(prefix='s5-cauchy-source-pack-') as tmp:
     for prefix,folder in phases.items():
