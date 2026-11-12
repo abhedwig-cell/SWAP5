@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "PROFILE_BASELINE_AND_EXISTING_PLATFORM_DELTA",
+  "status": "EXACT_HYDRAULIC_TRANSPORT_CANDIDATE_IMPLEMENTED_NOT_QUALIFIED",
   "implementation": "Existing same-laptop exact-execution-input reference comparison copied without rerunning models. Own development branch; frozen RC unchanged.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
@@ -14,12 +14,19 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Profile all3 Windows current exact reusable builds: worker CPU, IPC wait, launch/exit, JSON, log IO and solver retry counters. Select largest demonstrated removable host cost. Then qualify bothOS and own restart, assess original-versus-donor causal first differences.",
+  "next_action": "Qualify candidate complete physical/CSV/native own restart on Windows and Ubuntu O0/O2, measure paired application cost. Then coherent non-return corrected-worker causal/iteration probe and platform-science disposition. Keep RC1 unchanged.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
     "macro": "NOT_SELECTED",
     "broad_F_CI": "NOT_SELECTED_IMPACT"
   },
-  "blockers": []
+  "blockers": [],
+  "automation": {
+    "id": "swap5-rc1-onderzoek-hervatten",
+    "status": "ACTIVE_VERIFIED_CREATE_AND_VIEW",
+    "interval_minutes": 30,
+    "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud"
+  },
+  "findings": "Measured donor wait dominates; all3 role CPU and host IO profiles recorded. SaltFarm direct worker matches all physical records without SWAP5. Hydraulic HEX prototype preserves all physical/nodal/native state; candidate whole-host timings and qualification pending."
 }
