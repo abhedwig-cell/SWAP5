@@ -1,0 +1,11 @@
+--- B0-selected/headcalc.f90
++++ V2/headcalc.f90
+@@ -348,7 +348,7 @@
+       
+ 
+ !     implemented to improve iteration performance in case of macropores
+-      if (dt <  0.01d0 .AND. swmacro == 1 .AND. .NOT.flnonconv3) then 
++      if (.FALSE.) then ! B1 EXPERIMENT V2: retain active coupling throughout Newton 
+          flok = .TRUE.
+          if (dt > 10.d0*dtmin) then
+             do i = 1, nodgwl

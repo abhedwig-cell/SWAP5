@@ -1,0 +1,23 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-ACCEPT01",
+  "baseline": "798c0bff798e6906c46b0cbfb8c8850fed3a037e",
+  "B0_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "V1": "At provisional convergence reset freeze, reevaluate original coupled operator, reapply original local/head/pond/global criteria, continue original iteration if failure.",
+  "V2": "Disable only original macro-freeze optimization; retain original equations, derivative, line search, limits and retry policies.",
+  "model_selection": "Original cold Andelst first two days; TEND short window and output-only controls inherited from audit.",
+  "order": "O2 discrimination first; O0/O2 qualification of any viable candidate. No third variant.",
+  "cap_seconds_per_model": 20,
+  "tolerance_changes": false,
+  "physics_changes": false,
+  "acceptance": "Complete within cap, no continue-without-convergence acceptance, actual fresh coupled residual meets unchanged criteria; mass/actual rejected-trial rollback/selected derivative controls required before promotion.",
+  "safety": "V1 extra rate evaluation mutates original trial workspace; unchanged legacy rollback is NOT presumed qualified. Any completion is provisional until tested.",
+  "stop": "Two failing/censored variants => no B1 promotion; record narrow numerical blocker, no long trajectory.",
+  "sources": {
+    "V2/headcalc.f90": "75a0759db39bf808f8d50a55ba000438b5d519e5f809f33cab564ec44b76a7b0",
+    "V2/headcalc_metrics.f90": "04942385c6597839885601e862516c071baa147f9a5282f324589c64c5f1465d",
+    "V1/headcalc.f90": "0d31223cbf676b9ef7d5bc84a916d5b11447e1a6258c6d8c4cbf0778ec3c60f0",
+    "V1/headcalc_metrics.f90": "7e087e46828cad956a9972229952f621481ad609531650eeb6519b5d365889b0",
+    "B0/headcalc.f90": "f2885def8bd50fd65abb71d00969440881aacac0e8131eed28325dd864a0cebf",
+    "B0/headcalc_metrics.f90": "6fe647f9a9b267fb071849738f1420d0ffabc46779733243a54cd90f2a4e81bf"
+  }
+}
