@@ -3,7 +3,7 @@
   "base": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
   "scope": "Original Grass SWBOTB1 controlled groundwater with existing external daily transaction/restart; no new physics or kernel",
   "test_selection": {
-    "candidate": "8bc013ef2c8425b9d918e6da2a4cff98e24901b6",
+    "candidate": "a79503e14108aec96ea9f4d1197b913b7b587273",
     "groups": {
       "hybrid_grass_groundwater": {
         "changed_dependency": "External daily adapter adds typed original groundwater mode, sparse original-table day knots and uses existing transaction lineage",
@@ -20,5 +20,11 @@
   "caps": {
     "new_mode_seconds": 240
   },
-  "next": "Run smallest actual Grass O2 leading source, then O0/O2 leading/interior changed-history controls, current default/Cauchy preservation and same-source Linux. Publish source/build-bound qualified PR and verify canonical."
+  "next": "Run smallest actual Grass O2 leading source, then O0/O2 leading/interior changed-history controls, current default/Cauchy preservation and same-source Linux. Publish source/build-bound qualified PR and verify canonical.",
+  "leading_O2_probe": {
+    "status": "PASS",
+    "source": "284a10881",
+    "scope": "actual changed-head2to4 and changed-history external recovery, independent original input controls, exact original clamped-level control",
+    "inheritance": "Reuse only exact unchanged application SHA and same binary BUILD/native terminal SHA; retain original probe source report"
+  }
 }
