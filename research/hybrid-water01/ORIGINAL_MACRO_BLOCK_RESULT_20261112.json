@@ -1,0 +1,101 @@
+{
+  "status": "DAY4_TERMINATION_PASS_WITH_COMPLETE_RESTART_BLOCKER",
+  "base": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
+  "variants": {
+    "O0": {
+      "fresh_seconds": 3.2860532999038696,
+      "restart_seconds": 2.445583499968052,
+      "physical_receipts_2to4_exact": true,
+      "native_text_2to4_exact": true,
+      "macro_payload": {
+        "3": {
+          "differing_bytes": 559,
+          "fields": [
+            {
+              "name": "IAvFrMpWlWtDm1",
+              "offset": 14402528,
+              "bytes": 40000,
+              "different_bytes": 420
+            },
+            {
+              "name": "IAvFrMpWlWtDm2",
+              "offset": 14442528,
+              "bytes": 40000,
+              "different_bytes": 139
+            }
+          ]
+        },
+        "4": {
+          "differing_bytes": 0,
+          "fields": []
+        }
+      },
+      "max_daily_residual_cm": 5.965353207744765e-07,
+      "budget_retries": 0
+    },
+    "O2": {
+      "fresh_seconds": 3.0072324997745454,
+      "restart_seconds": 2.396010900149122,
+      "physical_receipts_2to4_exact": true,
+      "native_text_2to4_exact": true,
+      "macro_payload": {
+        "3": {
+          "differing_bytes": 559,
+          "fields": [
+            {
+              "name": "IAvFrMpWlWtDm1",
+              "offset": 14402528,
+              "bytes": 40000,
+              "different_bytes": 420
+            },
+            {
+              "name": "IAvFrMpWlWtDm2",
+              "offset": 14442528,
+              "bytes": 40000,
+              "different_bytes": 139
+            }
+          ]
+        },
+        "4": {
+          "differing_bytes": 0,
+          "fields": []
+        }
+      },
+      "max_daily_residual_cm": 5.965353207744765e-07,
+      "budget_retries": 0
+    }
+  },
+  "native_format": "S5MAC005",
+  "unchanged_mass_tolerance_cm": 1e-06,
+  "full_model_runs": 0,
+  "scope": "Original donor physics O2 objects; SWAP5 day-owner kernel O0/O2; no calendar-scoped macro/pond or early-budget triggers",
+  "not_qualified": [
+    "all-day complete byte-exact auxiliary restart",
+    "late-event accuracy",
+    "whole481 generic policy",
+    "numerical rejected-timestep rollback",
+    "Linux",
+    "whole scientific equivalence"
+  ],
+  "external_discard": {
+    "status": "FAILED",
+    "cap_seconds": 20,
+    "origin_unchanged": true,
+    "discarded_proposal_rejected": true,
+    "repeated_receipt_exact": true,
+    "repeated_complete_native_payload_exact": true,
+    "cold_day3_to4_differing_bytes": {
+      "result.end": 0,
+      "macro.bin": 698
+    },
+    "cold_day3_to4_physical_receipt_exact": true,
+    "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\probe_original_macro_discard.py\", line 64, in main\n    assert actual==expected, 'Complete auxiliary restart differs; physical equality is insufficient'\n           ^^^^^^^^^^^^^^^^\nAssertionError: Complete auxiliary restart differs; physical equality is insufficient\n",
+    "elapsed_seconds": 7.053711100015789,
+    "differing_fields": [
+      "IAvFrMpWlWtDm1",
+      "IAvFrMpWlWtDm2"
+    ]
+  },
+  "interpretation": "Original frozen-macro nonlinear block cures pair-per-residual day4 termination failure. Saving reset flags fixes original cumulative bookkeeping mismatch; original saved HeadCalc counters are explicit and serialized (zero in tested prefix). Two wall-fraction integral arrays remain unequal after cold restore. These may feed PEARL/ANIMO; do not waive, zero, round or call harmless.",
+  "next": "Resolve original wall-fraction integral history/context as a coherent original accepted-step state contract. First gate complete native equality on2to3 and separately recovered3to4; only then late-event probe and Linux/481 selection. Stop calendar patches and previous refresh reruns."
+}
