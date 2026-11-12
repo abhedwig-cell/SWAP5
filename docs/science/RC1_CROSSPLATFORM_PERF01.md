@@ -108,3 +108,81 @@ The separate cross-platform assessment remains open: compiler-major and C/math
 runtime differences must be separated before attributing observed amplification
 to the operating system, and no fitted tolerance is introduced. Existing failed
 original oxygen criteria and underqualified reference families remain visible.
+
+## Matched GNU15.2 control and bounded scientific disposition
+
+The additional Windows2022 GNU15.2 MinGW control completed successfully in
+Actions43252338070 at3f0ad796ef88b201ba17ebb30290ee80f5f5e678. All three
+O0/O2 public builds, complete O2 periods and short exact own native/auxiliary
+restarts pass their unchanged guards. Ubuntu26.04 GNU15.2 controls are the
+existing successful43246935136 and43249724326 runs. Executed input hashes match
+across the cohorts; generated donor source text matches after CRLF/LF
+normalization. Compiler binary, target and runtime identities remain distinct.
+Matching version numbers do not isolate OS, C library or build-distribution
+effects, and cloud/laptop timings are not compared as a solver speed ratio.
+
+`GNU15_WINDOWS_UBUNTU.json` records every observed maximum with day, slot,
+unrounded values and complete-stream hashes. These are descriptive differences,
+not newly fitted acceptance bounds. Original4.3.1 has identical successful-solve
+histograms on all three projects; maximum original Hupsel head differences are
+8.98e-10cm and SaltFarm1.24e-12cm. The corrected routes remain sensitive even
+with the same compiler version:
+
+| Complete corrected profile | Head maximum (cm) | Temperature maximum (C) | Stock maximum (cm) | First histogram fork |
+| --- | ---: | ---: | ---: | ---: |
+| Grass1827 | 1.44e-10 | 2.63e-13 | 2.84e-14 | None |
+| Hupsel1096 | 17.28254 | 0.006461 | 0.001152 | Day364 |
+| SaltFarm1461 | 0.112589 | 0.008229 | 0.020219 | Day156 |
+
+Both operating-system cohorts reproduce their own corrected daily route exactly
+in a single coherent full-period original-main call, including nodal heat,
+heads, uptake and solute. Thus daily state transfer and daily-return clock
+boundaries are excluded for these tested differences. Native numerical-policy
+branch amplification remains a demonstrated limitation. Compiler-major change
+alone cannot explain it. The original reference comparisons, including failed
+Hupsel584 oxygen and underqualified reference families, remain failed/open.
+Functional whole-period execution and same-build restart are qualified;
+whole scientific or portable trajectory equivalence is **not qualified**.
+The listed maxima do not constitute accepted errors or a full energy balance.
+
+## Rejected pure-polish adaptive-feedback experiment
+
+The private discriminator retains every original Newton iteration and every
+1e-10 water/solute guard. Only when convergence took exactly one extra final
+confirmation iteration does a local wrapper remove that one iteration from
+the subsequent time-step growth feedback, outside the Fortran DO loop. Actual
+iteration histograms retain all executed work. Maximum-iteration step reduction
+is preserved. No saved state, supported model or frozen release was changed.
+
+Five-day controls pass unchanged guards and reduce work markedly. The bounded
+full-period discriminator then gives Hupsel43636->35176 accepted solves and
+227360->196420 converged-solve iterations; SaltFarm59176->38885 and
+219566->141096. However, Hupsel day364 has independently summed daily water
+residual **1.0033339783999118e-10cm**, exceeding the existing1e-10 bound.
+SaltFarm's full-period guards pass, but that does not admit a generic policy.
+The candidate is **REJECTED_NOT_ADMITTED**. No tolerance change, selectively
+enabled SaltFarm shortcut, extra reference campaign or claimed speedup follows.
+No O0/restart/platform qualification of this rejected policy is claimed.
+`POLISH_FEEDBACK.json` preserves both successful and failed controls; the
+private generated sources and raw ledgers are in the hashed proof archive.
+
+## Checkpoint and exit cost decomposition
+
+The instrumented same-build four-day controls for all three projects preserve
+every physical record and exact native/auxiliary2-to4 end state. Publication,
+archive/identity verification and case preparation are separate from worker CPU.
+Resume publication costs about0.006/0.021/0.022seconds for Grass/Hupsel/SaltFarm;
+archive/identity verification about0.035/0.036/0.038seconds. The generated native
+serialization remains inside the donor-return wait bucket, not falsely resolved
+as a separate measurement. cProfile separately records normal worker close and
+per-command compilation/loading of the durable publisher. Steady publisher setup
+is about one second here; one cold7.04second outlier is retained. These are
+instrumented diagnostic costs, not headline timings or additive CPU/wall totals.
+`RESTART_COSTS.json` records all observations and exactness checks.
+
+The safe invocation-local startup optimization remains admitted byPR1665,
+postimage95b16cfab4f5e7597d366d355d83e9812993a1b0. The dominant numerical cost
+is investigated and the attractive generic shortcut rejected by an unchanged
+physical gate. Portable Hupsel/SaltFarm scientific acceptance remains an explicit
+release decision; neither roundoff language nor performance evidence authorizes
+accepting their complete cross-platform trajectories.

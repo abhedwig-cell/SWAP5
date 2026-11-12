@@ -1,0 +1,651 @@
+{
+  "status": "PASS",
+  "profiles": [
+    {
+      "project": "grass",
+      "own_restart": "EXACT_DAY2_TO4_NATIVE_AUXILIARY_AND_ALL_PHYSICAL",
+      "costs": {
+        "cut2": {
+          "project": "grass",
+          "instrumented_wall_seconds": 14.03756930003874,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.015625,
+              "system_seconds": 0.0
+            },
+            "donor": {
+              "user_seconds": 0.078125,
+              "system_seconds": 0.03125
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.0001842996571213007,
+            "log_flush_seconds": 0.0015474003739655018,
+            "log_writes": 32,
+            "log_flushes": 31,
+            "log_characters": 19639,
+            "launch_seconds": 0.12575530004687607,
+            "send_seconds": 0.0005852999165654182
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.01589589985087514
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.12248090002685785
+            },
+            "DAILY_REQUEST": {
+              "calls": 4,
+              "wall_seconds": 0.0006848003249615431
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 4,
+              "wall_seconds": 0.07387909991666675
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 4,
+              "wall_seconds": 0.0015574002172797918
+            }
+          },
+          "checkpoint_stage_costs": {
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.03598649986088276,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.023905300069600344,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 7.0366692
+            },
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.0574034
+            }
+          }
+        },
+        "cut4": {
+          "project": "grass",
+          "instrumented_wall_seconds": 1.6780867001507431,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.015625
+            },
+            "donor": {
+              "user_seconds": 0.078125,
+              "system_seconds": 0.0625
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.0001441005151718855,
+            "log_flush_seconds": 0.0013233006466180086,
+            "log_writes": 32,
+            "log_flushes": 31,
+            "log_characters": 19639,
+            "launch_seconds": 0.028268499998375773,
+            "send_seconds": 0.0004509999416768551
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.01807260001078248
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.11770089995115995
+            },
+            "DAILY_REQUEST": {
+              "calls": 4,
+              "wall_seconds": 0.0004338000435382128
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 4,
+              "wall_seconds": 0.04923440027050674
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 4,
+              "wall_seconds": 0.001129399985074997
+            }
+          },
+          "checkpoint_stage_costs": {
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.02946790005080402,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.02419429994188249,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 0.9779253000000001
+            },
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.023323200000000002
+            }
+          }
+        },
+        "resume": {
+          "project": "grass",
+          "instrumented_wall_seconds": 1.6777448998764157,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.0
+            },
+            "donor": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.109375
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.00010189949534833431,
+            "log_flush_seconds": 0.0010411003604531288,
+            "log_writes": 20,
+            "log_flushes": 19,
+            "log_characters": 11763,
+            "launch_seconds": 0.036202300107106566,
+            "send_seconds": 0.00028340029530227184
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.011709799990057945
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.12081499979831278
+            },
+            "DAILY_REQUEST": {
+              "calls": 2,
+              "wall_seconds": 0.000273300101980567
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 2,
+              "wall_seconds": 0.03533929982222617
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 2,
+              "wall_seconds": 0.0005714998114854097
+            }
+          },
+          "checkpoint_stage_costs": {
+            "verify_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.035445200046524405,
+              "host_cpu_seconds": 0.0
+            },
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.04126400011591613,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.005948300007730722,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.023208100000000002
+            },
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 0.9754940000000001
+            }
+          }
+        }
+      }
+    },
+    {
+      "project": "hupsel",
+      "own_restart": "EXACT_DAY2_TO4_NATIVE_AUXILIARY_AND_ALL_PHYSICAL",
+      "costs": {
+        "cut2": {
+          "project": "hupsel",
+          "instrumented_wall_seconds": 2.6697955999989063,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.015625
+            },
+            "donor": {
+              "user_seconds": 0.015625,
+              "system_seconds": 0.09375
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.0001600997056812048,
+            "log_flush_seconds": 0.0015641003847122192,
+            "log_writes": 47,
+            "log_flushes": 46,
+            "log_characters": 11735,
+            "launch_seconds": 0.15688550029881299,
+            "send_seconds": 0.00036099995486438274
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.01622339989989996
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.12868160009384155
+            },
+            "DAILY_REQUEST": {
+              "calls": 4,
+              "wall_seconds": 0.00047850003466010094
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 4,
+              "wall_seconds": 0.014405299909412861
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 4,
+              "wall_seconds": 0.0007162999827414751
+            }
+          },
+          "checkpoint_stage_costs": {
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.031806299928575754,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.02621979988180101,
+              "host_cpu_seconds": 0.015625
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.022129700000000002
+            },
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 1.0432229000000002
+            }
+          }
+        },
+        "cut4": {
+          "project": "hupsel",
+          "instrumented_wall_seconds": 1.6662502000108361,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.015625,
+              "system_seconds": 0.015625
+            },
+            "donor": {
+              "user_seconds": 0.046875,
+              "system_seconds": 0.03125
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.00015709851868450642,
+            "log_flush_seconds": 0.0013577991630882025,
+            "log_writes": 47,
+            "log_flushes": 46,
+            "log_characters": 11735,
+            "launch_seconds": 0.02868019975721836,
+            "send_seconds": 0.0003747998271137476
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.011729700025171041
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.12302440009079874
+            },
+            "DAILY_REQUEST": {
+              "calls": 4,
+              "wall_seconds": 0.00037029990926384926
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 4,
+              "wall_seconds": 0.01271469984203577
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 4,
+              "wall_seconds": 0.0006381000857800245
+            }
+          },
+          "checkpoint_stage_costs": {
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.03084410005249083,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.027105299988761544,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.021066900000000003
+            },
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 0.9858038
+            }
+          }
+        },
+        "resume": {
+          "project": "hupsel",
+          "instrumented_wall_seconds": 2.024144400143996,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.015625
+            },
+            "donor": {
+              "user_seconds": 0.046875,
+              "system_seconds": 0.046875
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.0001421002671122551,
+            "log_flush_seconds": 0.001603399170562625,
+            "log_writes": 29,
+            "log_flushes": 28,
+            "log_characters": 7017,
+            "launch_seconds": 0.03645780007354915,
+            "send_seconds": 0.0002949994523078203
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.016085500130429864
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.19342489982955158
+            },
+            "DAILY_REQUEST": {
+              "calls": 2,
+              "wall_seconds": 0.0003746000584214926
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 2,
+              "wall_seconds": 0.009395800065249205
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 2,
+              "wall_seconds": 0.0005610000807791948
+            }
+          },
+          "checkpoint_stage_costs": {
+            "verify_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.03564859996549785,
+              "host_cpu_seconds": 0.015625
+            },
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.05514509999193251,
+              "host_cpu_seconds": 0.03125
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.020939100068062544,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.0277161
+            },
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 1.2135208000000002
+            }
+          }
+        }
+      }
+    },
+    {
+      "project": "saltfarm",
+      "own_restart": "EXACT_DAY2_TO4_NATIVE_AUXILIARY_AND_ALL_PHYSICAL",
+      "costs": {
+        "cut2": {
+          "project": "saltfarm",
+          "instrumented_wall_seconds": 2.715462999884039,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.015625,
+              "system_seconds": 0.0
+            },
+            "donor": {
+              "user_seconds": 0.015625,
+              "system_seconds": 0.09375
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.00019069993868470192,
+            "log_flush_seconds": 0.0015440999995917082,
+            "log_writes": 47,
+            "log_flushes": 46,
+            "log_characters": 32667,
+            "launch_seconds": 0.2705794000066817,
+            "send_seconds": 0.0004713993985205889
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.015218900050967932
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.15202799998223782
+            },
+            "DAILY_REQUEST": {
+              "calls": 4,
+              "wall_seconds": 0.00047650025226175785
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 4,
+              "wall_seconds": 0.031750800320878625
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 4,
+              "wall_seconds": 0.0014527002349495888
+            }
+          },
+          "checkpoint_stage_costs": {
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.027717499993741512,
+              "host_cpu_seconds": 0.0
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.02660049987025559,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.03361
+            },
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 1.0252423000000002
+            }
+          }
+        },
+        "cut4": {
+          "project": "saltfarm",
+          "instrumented_wall_seconds": 1.674469699850306,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.046875
+            },
+            "donor": {
+              "user_seconds": 0.046875,
+              "system_seconds": 0.03125
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.00020309933461248875,
+            "log_flush_seconds": 0.0016039011534303427,
+            "log_writes": 47,
+            "log_flushes": 46,
+            "log_characters": 32667,
+            "launch_seconds": 0.027396000223234296,
+            "send_seconds": 0.000495000509545207
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.01303969998843968
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.13836789992637932
+            },
+            "DAILY_REQUEST": {
+              "calls": 4,
+              "wall_seconds": 0.0004950000438839197
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 4,
+              "wall_seconds": 0.03117050020955503
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 4,
+              "wall_seconds": 0.0014937000814825296
+            }
+          },
+          "checkpoint_stage_costs": {
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.02915820013731718,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.02822729991748929,
+              "host_cpu_seconds": 0.015625
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 0.9910584000000001
+            },
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.031262200000000004
+            }
+          }
+        },
+        "resume": {
+          "project": "saltfarm",
+          "instrumented_wall_seconds": 2.028993099927902,
+          "worker_cpu": {
+            "kernel": {
+              "user_seconds": 0.0,
+              "system_seconds": 0.0
+            },
+            "donor": {
+              "user_seconds": 0.046875,
+              "system_seconds": 0.0625
+            }
+          },
+          "wall_buckets": {
+            "log_write_seconds": 0.0001676992978900671,
+            "log_flush_seconds": 0.0013624001294374466,
+            "log_writes": 29,
+            "log_flushes": 28,
+            "log_characters": 19577,
+            "launch_seconds": 0.03014790010638535,
+            "send_seconds": 0.00043379957787692547
+          },
+          "receive_wall": {
+            "DAILY_MODEL": {
+              "calls": 1,
+              "wall_seconds": 0.013870000140741467
+            },
+            "HYBRID_READY": {
+              "calls": 1,
+              "wall_seconds": 0.15563110006041825
+            },
+            "DAILY_REQUEST": {
+              "calls": 2,
+              "wall_seconds": 0.00032410002313554287
+            },
+            "HYBRID_DAY_RETURN": {
+              "calls": 2,
+              "wall_seconds": 0.02228909987024963
+            },
+            "DAILY_ACCEPTED,DAILY_REFUSED": {
+              "calls": 2,
+              "wall_seconds": 0.000976799987256527
+            }
+          },
+          "checkpoint_stage_costs": {
+            "verify_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.03759089997038245,
+              "host_cpu_seconds": 0.0
+            },
+            "prepare_column": {
+              "calls": 1,
+              "wall_seconds": 0.055117599898949265,
+              "host_cpu_seconds": 0.015625
+            },
+            "publish_checkpoint": {
+              "calls": 1,
+              "wall_seconds": 0.021776200039312243,
+              "host_cpu_seconds": 0.0
+            }
+          },
+          "caveat": "Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.",
+          "profile_additional_stages": {
+            "close": {
+              "calls": 1,
+              "cumulative_seconds": 0.0255008
+            },
+            "restart_publisher": {
+              "calls": 1,
+              "cumulative_seconds": 1.2374528
+            }
+          }
+        }
+      }
+    }
+  ],
+  "interpretation": "Instrumented four-day same-build control, costs overlap; publication includes pack/hash/durable IO; restore validation includes identity/archive checking. Native serialization remains in donor receive bucket; not claimed separately resolved."
+}

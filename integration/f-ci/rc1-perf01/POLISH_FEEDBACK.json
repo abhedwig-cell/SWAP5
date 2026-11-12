@@ -1,0 +1,57 @@
+{
+  "decision": "REJECTED_NOT_ADMITTED_GENERIC_CANDIDATE_FAILS_UNCHANGED_HUPSEL_GUARD",
+  "profiles": {
+    "hupsel": {
+      "status": "EXPERIMENTAL_NOT_ADMITTED",
+      "hypothesis": "Pure final polish iteration unnecessarily restricts adaptive step growth",
+      "results": {
+        "baseline": {
+          "days": 1096,
+          "solves": 43636.0,
+          "iterations": 227360.0,
+          "max_water_residual": 9.996691511691622e-11,
+          "max_solute_residual": 2.0189359137172196e-13,
+          "unchanged_guards_pass": true
+        },
+        "polish-feedback": {
+          "days": 1096,
+          "solves": 35176.0,
+          "iterations": 196420.0,
+          "max_water_residual": 1.0033339783999118e-10,
+          "max_solute_residual": 1.6687345949506494e-13,
+          "unchanged_guards_pass": false
+        }
+      },
+      "water_guard_failures": [
+        {
+          "day": 364,
+          "residual_cm": 1.0033339783999118e-10
+        }
+      ]
+    },
+    "saltfarm": {
+      "status": "EXPERIMENTAL_NOT_ADMITTED",
+      "hypothesis": "Pure final polish iteration unnecessarily restricts adaptive step growth",
+      "results": {
+        "baseline": {
+          "days": 1461,
+          "solves": 59176.0,
+          "iterations": 219566.0,
+          "max_water_residual": 1.8597862833091838e-11,
+          "max_solute_residual": 8.099007575701478e-12,
+          "unchanged_guards_pass": true
+        },
+        "polish-feedback": {
+          "days": 1461,
+          "solves": 38885.0,
+          "iterations": 141096.0,
+          "max_water_residual": 2.940876708823481e-12,
+          "max_solute_residual": 6.438044541923205e-12,
+          "unchanged_guards_pass": true
+        }
+      },
+      "water_guard_failures": []
+    }
+  },
+  "scope": "Private original-object relink only; no production or frozen RC1 change. No own-restart, O0 or cross-platform promotion selected after failed daily guard."
+}
