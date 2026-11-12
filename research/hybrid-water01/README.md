@@ -2,6 +2,61 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Complete native macro restart canonically admitted,12November2026
+
+PR #1653 MERGED at395b06eba53ca417f72b4f2d4e9c2734a22d825d.
+Head9125705ca09d907c92a029b0194717fa2efef47f; predicted and actual tree
+1c3077271aa7e09deb7d69abb02096106e4c219a match. All five executed model/runner/
+workflow blobs exactly match owning Ubuntu source3affe302984bbafc2108fb5b52d7ea91d44d5b80.
+Canonical Git helper SHA256 equals executed Linux source. Existing src/app/
+reference/tools/tests unchanged except added opt-in original_macro_policy.py.
+Docs source check and mkdocs strict PASS(32.76s). Receipt here:
+CLOSURE01_ORIGINAL_MACRO_CANONICAL_20261112.json. This supersedes all old
+BLOCKER/NEXT/ACTIVE headings. PR1652 remains closed/rejected, not merged.
+
+ROOT CAUSE REPAIRED: MACROINTEGRAL local FrMpWalWetOld shadows same-named saved
+module field. Old codec saved the wrong prior quadrature endpoint. New explicit
+hybrid_integral_wall_previous preserves actual local coldZERO initialization,
+all original formulas/assignment order, and full independent history. Module
+field stays separate. S5MAC006 saves that array+original reset flags/counters;
+old native magic rejected, full source/build identity retained, no rebind.
+
+Windows+Ubuntu26.04 original donor-O2/kernel-O0/O2 complete own2to3/4 payloads
+EXACT(result.end and16,122,624-byte macro.bin). External discard/replay and extra
+cold3to4 complete native state EXACT on both optimizations/platforms. Same-
+platform pre-fix coherent-block cold receipts and ALL old native fields EXACT
+except intended magic. Hence old559/698-byte wall-integral failures are resolved,
+not masked or waived. Historical failed evidence remains immutable.
+
+Windows fresh4 takes3.211/2.940s; Ubuntu2.362/1.332s. Selected Linux whole
+build/qualification24.045s, run43154680629 success, job130971744992. Root-array
+state and numerical macro logic source bound; this is NOT all-donor-O0 or cross-
+platform byte equality. Windows own4to22 completes14.269s, max daily residual
+7.810779596036078e-7 under unchanged1e-6. Own14to16 takes2.323s and repeats
+all physical receipts, complete native payloads and1949 retries on15 EXACT.
+
+Qualified evidence archive:original-macro-restart-qualified-evidence.zip SHA256
+4ca71f582b83616182e98c33675c16324d1812637aeb32a570a7933e5e523e27.
+Linux raw artifact13914684409 verified ZIP SHA256
+b4840cb7afd435afe7b31c42e7370c70f130e6e70607d9e28aaf7c97ec228cbe.
+Machine result ORIGINAL_MACRO_BLOCK_RESULT_20261112.json; owner
+integration/f-ci/ORIGINAL_MACRO_BLOCK_20261112.json; reproduce via
+qualify_original_macro_restart.py or registered thermal workflow input
+hybrid_original_macro_restart=true. No default/public full profile was changed.
+Application coverage stays3 complete historical projects; new opt-in policy
+only through22 Windows, short complete-state qualification on Linux. Whole481
+new-policy and scientific equivalence remain OPEN. Native science gates unchanged.
+
+NEXT concrete deliverable: from current exact own22 S5MAC006 package, measure
+sparse-checkpoint continuation cost under short cap, retaining per-step and
+publication timings. Warm prefix and builds already verified: DO NOT repeat.
+Then select full481 generic trajectory only at measured practical cost, with
+own durable checkpoints at scientific/restart windows and complete ledger.
+No new reference family, tolerance change or broad repeated campaign. Full and
+scientific acceptance remain separate. Half-hour planning is recovery only.
+All PR1653/qualification processes FINISHED; next continuation not started yet.
+
+
 ### Original nonlinear macro block short-pass; complete restart blocker,12November2026
 
 Current PR #1653 DRAFT, source826c4da8abb6997d8717e5a6b8d2aefed9bd214d on
