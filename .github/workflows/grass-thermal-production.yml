@@ -119,6 +119,12 @@ jobs:
           run-id: 43154680629
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: ${{ runner.temp }}/qualified-original-macro
+      - uses: actions/download-artifact@v4
+        with:
+          name: original-macro-481-linux
+          run-id: 43156633863
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ runner.temp }}/prior-original-macro-481
       - name: Exact provider and persisted selection; zero scientific compilation
         run: |
           python3 - <<'PY'
@@ -138,10 +144,12 @@ jobs:
           reference=provider/json.loads((provider/'PROOF_INDEX.json').read_text())['reference']
           with open(os.environ['GITHUB_ENV'],'a') as f:f.write('MACRO_REFERENCE='+str(reference)+'\n')
           PY
-      - name: Actual source-bound original481 at unchanged daily mass tolerance
-        run: python3 -B research/hybrid-water01/run_original_macro_continuation.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/qualified-original-macro/O2/fresh/accepted-column-1-day-4.zip" --cut 4 --end 481 --seconds 60 --checkpoint-days 22 44 80 160 256 365 453 456 457 458 459 481 --output "$RUNNER_TEMP/original-macro-481/full"
+      - name: Continue exact durable160 at unchanged bound and compare every retained overlap day
+        run: python3 -B research/hybrid-water01/run_original_macro_continuation.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/prior-original-macro-481/full/accepted-column-1-day-160.zip" --cut 160 --end 481 --seconds 60 --checkpoint-days 176 192 208 224 240 256 272 288 304 320 336 352 365 368 384 400 416 432 448 453 456 457 458 459 464 480 481 --compare-journal "$RUNNER_TEMP/prior-original-macro-481/full/daily.jsonl" --output "$RUNNER_TEMP/original-macro-481/resume-160-to-481"
+      - name: Own complete year-boundary restart365to367
+        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/resume-160-to-481/accepted-column-1-day-365.zip" --cut 365 --end 367 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-365-to-367"
       - name: Own complete late-event restart453to459
-        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/full/accepted-column-1-day-453.zip" --cut 453 --end 459 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-453-to-459"
+        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/resume-160-to-481/accepted-column-1-day-453.zip" --cut 453 --end 459 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-453-to-459"
       - uses: actions/upload-artifact@v4
         if: always()
         with:

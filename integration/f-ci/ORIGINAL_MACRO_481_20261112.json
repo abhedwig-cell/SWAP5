@@ -1,5 +1,5 @@
 {
-  "status": "WINDOWS_COST_CAP_REACHED_SELECTING_REUSED_LINUX_OWN_HISTORY",
+  "status": "CONTINUING_EXISTING_DURABLE_LINUX160_WITH_LIVE_OVERLAP_CHECK",
   "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
   "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
   "selection": {
@@ -42,7 +42,46 @@
         459,
         481
       ],
-      "on_failure": "Keep last durable native checkpoint and complete accepted-day journal; no automatic cap extension or identical campaign"
+      "on_failure": "Keep last durable native checkpoint and complete accepted-day journal; no automatic cap extension or identical campaign",
+      "first_result": {
+        "run_id": 43156633863,
+        "source": "311ac3e2466c2da5e6fc6a379c564a47afeafc9b",
+        "artifact_id": 13915394658,
+        "artifact_sha256": "5b05864ca2d79ab793444809efdde55759f0f21d8064413820a87218b60cc689",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 198,
+        "durable_day": 160,
+        "seconds": 60.00342171300002,
+        "initialization_seconds": 0.4513361679999832,
+        "mass_step_retries": 12296,
+        "maximum_residual_cm": 9.99703956792198e-07
+      }
+    },
+    "resume": {
+      "origin": "exact own native160 from immutable first execution",
+      "reason": "Continue already executed work, not cold-prefix repetition; retain60s bound and stop immediately if any overlap161to198 physical field/retry count differs",
+      "checkpoint_interval_days": 16,
+      "additional_explicit_checkpoints": [
+        365,
+        453,
+        456,
+        457,
+        458,
+        459,
+        481
+      ],
+      "own_restart_windows": [
+        [
+          365,
+          367
+        ],
+        [
+          453,
+          459
+        ]
+      ],
+      "model_cap_seconds": 60,
+      "restart_cap_seconds": 20
     }
   },
   "acceptance": [

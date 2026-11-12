@@ -23,6 +23,7 @@ def main():
     p.add_argument('--end',type=int,required=True)
     p.add_argument('--seconds',type=float,default=20)
     p.add_argument('--checkpoint-days',type=int,nargs='*')
+    p.add_argument('--compare-journal',type=Path)
     a=p.parse_args()
     if not 0<a.cut<a.end<=481 or not 0<a.seconds<=60:
         raise ValueError('Original project period and short explicit cost bound required')
@@ -33,11 +34,18 @@ def main():
     validation_start=time.perf_counter()
     meta,case=validate_bundle(a.bundle,a.reference,h.ANDELST)
     receipt=h.verify_checkpoint(a.checkpoint,a.cut,meta['binding'],a.output/'origin')
+    expected={}
+    if a.compare_journal:
+        previous=json.loads(a.compare_journal.with_name('RESULT.json').read_text())
+        if previous['build']!=meta:raise ValueError('Overlap comparator has another source/build')
+        expected={row['day']:row for row in map(json.loads,a.compare_journal.read_text().splitlines())}
     report={'status':'RUNNING','origin_checkpoint_sha256':h.sha(a.checkpoint),
         'build':meta,'origin_day':a.cut,'requested_end_day':a.end,'cap_seconds':a.seconds,
         'selected_checkpoint_days':sorted(cuts),'last_accepted_day':a.cut,
         'last_durable_day':a.cut,'maximum_daily_residual_cm':0.0,'step_timings':[],
         'mass_step_retries':0,'validation_seconds':time.perf_counter()-validation_start}
+    report['overlap_journal_sha256']=h.sha(a.compare_journal) if a.compare_journal else None
+    report['overlap_days_exact']=[]
     workers=[];expired=threading.Event();original=h.start_process;residuals=[]
     def start(*args,**kwargs):
         result=original(*args,**kwargs);workers.append(result[0]);return result
@@ -58,6 +66,13 @@ def main():
             for day in range(a.cut+1,a.end+1):
                 before=time.perf_counter();row=host.step(1,checkpoint=day in cuts)
                 report['step_timings'].append({'day':day,'seconds':time.perf_counter()-before,'checkpoint':day in cuts})
+                if day in expected:
+                    keys=[k for k in row if k!='revision' and row[k]!=expected[day][k]]
+                    if keys:
+                        report['overlap_mismatch']={'day':day,'fields':keys,
+                            'expected':{k:expected[day][k] for k in keys},'actual':{k:row[k] for k in keys}}
+                        raise ValueError('Own durable restart changes retained accepted physical history')
+                    report['overlap_days_exact'].append(day)
                 journal.write(json.dumps(row)+'\n');journal.flush()
                 if not row['committed']:raise ValueError('Unchanged daily acceptance refused candidate')
                 residuals.append(row['independent_residual_cm'])
