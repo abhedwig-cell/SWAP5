@@ -39,7 +39,7 @@ def render_headcalc(source):
     return source
 
 
-def build_bundle(base,reference,target):
+def build_bundle(base,reference,target,*,retain_early_budget_schedule=False):
     """Recompile only original HeadCalc/main, retaining exact original objects/kernel."""
     from daily_coupling import validate_bundle
     base,reference,target=map(Path,(base,reference,target))
@@ -56,7 +56,9 @@ def build_bundle(base,reference,target):
         if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):
             shutil.copyfile(p,target/p.name)
     p=target/'headcalc.f90';p.write_text(render_headcalc(p.read_text(encoding='cp1252')),encoding='cp1252')
-    p=target/'swap_main.f90';p.write_text(replace(p.read_text(encoding='cp1252'),'budget_enabled = window >= 15','budget_enabled = .true.'),encoding='cp1252')
+    p=target/'swap_main.f90'
+    if not retain_early_budget_schedule:
+        p.write_text(replace(p.read_text(encoding='cp1252'),'budget_enabled = window >= 15','budget_enabled = .true.'),encoding='cp1252')
     commands=[['gfortran',*identity['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c',name] for name in ['headcalc.f90','swap_main.f90']]
     replacements={Path(n).with_suffix('.o').name:target/Path(n).with_suffix('.o').name for n in identity['donor_generated']}
     commands.append(['gfortran','-o',str(h.executable(target,'day_donor')),
@@ -68,9 +70,10 @@ def build_bundle(base,reference,target):
         (target/'INCREMENTAL_BUILD.json').write_text(json.dumps(logs,indent=2)+'\n')
         if completed.returncode:raise ValueError('Generic macro candidate compilation failed')
     for name in ['headcalc.f90','swap_main.f90']:identity['donor_generated'][name]=h.sha(target/name)
-    identity['macro_policy']={'name':POLICY,'generator_sha256':h.sha(Path(__file__)),
+    policy=POLICY+('-existing-early-budget-diagnostic' if retain_early_budget_schedule else '')
+    identity['macro_policy']={'name':policy,'generator_sha256':h.sha(Path(__file__)),
         'original_MACRORATE_object_sha256':h.sha(objects/'macrorate.o'),
         'objects_sha256':{n:h.sha(target/n) for n in ['headcalc.o','swap_main.o']}}
-    meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'refresh_macro_final':False,'macro_policy':POLICY}
+    meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity,'refresh_macro_final':False,'macro_policy':policy}
     meta['executable_sha256']['donor']=h.sha(h.executable(target,'day_donor'))
     (target/'BUILD.json').write_text(json.dumps(meta,indent=2)+'\n');return target

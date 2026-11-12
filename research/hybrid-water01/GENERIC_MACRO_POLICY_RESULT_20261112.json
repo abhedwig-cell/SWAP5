@@ -1,0 +1,51 @@
+{
+  "status": "REJECTED_BEFORE_ADMISSION_REPRODUCIBLE_RUNTIME_BLOCKER",
+  "base": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
+  "first_candidate_source": "f107e734f",
+  "archive_sha256": "c57bbf49475cc6d702745deb952c68b7d02293fc2143f88f7d9e123c0017dd54",
+  "archive_bytes": 451185,
+  "fresh_accepted_days": [
+    1,
+    2,
+    3
+  ],
+  "incomplete_day": 4,
+  "first_cap_seconds": 45,
+  "first_cap_measurement": "Initial controller output unavailable; raw3 accepted rows and pending4 retained. Independently measured20s probes below establish censoring.",
+  "own_restart_2_to_3": {
+    "initial_state_exact": true,
+    "stock_pressure_flux_exact": true,
+    "residual_cm": -1.0235386844521408e-07,
+    "budget_retries": 0
+  },
+  "all_day_budget_own_restart": {
+    "status": "MODEL_CAP_REACHED",
+    "elapsed_seconds": 20.0128587000072,
+    "requested_day": 4
+  },
+  "old_early_budget_fresh": {
+    "status": "MODEL_CAP_REACHED",
+    "elapsed_seconds": 20.014145100023597,
+    "requested_day": 4,
+    "accepted_days": [
+      1,
+      2,
+      3
+    ]
+  },
+  "unchanged_baseline_fresh": {
+    "status": "FRESH_4_DAYS_COMPLETE",
+    "elapsed_seconds": 2.8417144000995904,
+    "accepted_days": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "water_tolerance_cm": 1e-06,
+  "maximum_reported_fresh_guard_cm": 6.216544880776115e-07,
+  "whole_model_runs": 0,
+  "O0_and_Linux": "NOT_SELECTED: O2 candidate already fails minimal performance/termination gate; no qualification or portable performance claim",
+  "decision": "Do not widen cap, promote candidate, rerun481 or weaken tolerances. Failure persists without early mass-retry activation, so that activation alone does not explain it. This does not isolate MACRORATE discontinuity vs Jacobian suitability. Preserve coherent original nonlinear/macro block; replacing calendar policy remains open."
+}
