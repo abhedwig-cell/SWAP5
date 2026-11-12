@@ -266,6 +266,7 @@ PY
 
 python3 - "$TMP_RUN" "$TMP_FIX" "$TMP_PY" <<'PY'
 from pathlib import Path
+import os
 import sys
 runner=Path("tests/fgc/run_fgc49d_production_application_context.sh").read_text()
 runner=runner.replace("tests/fgc/support/mod_fgc49d_application_context_fixture.f90",sys.argv[2])
@@ -277,6 +278,69 @@ if "src/solver/mod_b110_direct_retention_core.f90" not in runner:
         raise SystemExit("FGC49D compile seam missing")
     runner=runner.replace(provider_needle,provider_needle+"  src/solver/mod_b110_direct_retention_core.f90\n",1)
     runner=runner.replace(directional_needle,directional_needle+"  src/solver/mod_b110_direct_retention_provider.f90\n",1)
+if os.environ.get("FGC49D_PRIVATE_OXYGEN_CONTEXT") == "1":
+    sources = 'mapfile -t MODULE_SRC < <(python3 tests/support/augment_bartholomeus_backend_sources.py --all "${MODULE_SRC[@]}")'
+    link = '  gfortran -shared -fopenmp -O"$opt" "${objects[@]}" -o "$OUT/libfgc49d_application.so" || fail "link O$opt"'
+    for anchor in (sources, link):
+        if runner.count(anchor) != 1:
+            raise SystemExit("FGC49D private oxygen projection seam missing")
+    runner = runner.replace(sources, sources + '''
+projection="$BUILD/private-oxygen"
+python3 -B tests/fgc/fgc49d_oxygen_context_projection.py src/physics/oxygen "$projection"
+python3 -B tests/fgc/fgc49d_selector_context_projection.py src "$projection"
+for relative in oxygen/mod_oxygen_scalar_bracket.f90 oxygen/mod_bartholomeus_response.f90 \
+    runtime/mod_canonical_interval_runtime.f90 kernel/mod_kernel_transactions.f90 \
+    runtime/mod_fmr_checkpoint_orchestrator.f90 \
+    runtime/mod_fmr_serialized_reference_backend.f90; do
+  original="src/$relative"
+  projected="$projection/$relative"
+  if [[ "$relative" == oxygen/* ]]; then
+    original="src/physics/$relative"
+    projected="$projection/${relative##*/}"
+  fi
+  matches=0
+  for idx in "${!MODULE_SRC[@]}"; do
+    if [[ "${MODULE_SRC[idx]}" == "$original" ]]; then
+      MODULE_SRC[idx]="$projected"
+      matches=$((matches + 1))
+    fi
+  done
+  [[ "$matches" == 1 ]] || fail "private module source $original"
+done
+''')
+    runner = runner.replace(link, r'''
+  for obj in "${objects[@]}"; do
+    sections="$(readelf -W -S "$obj")" || fail "read object sections O$opt $obj"
+    stack="$(printf '%s\n' "$sections" | awk '
+      /[[:space:]]\.note\.GNU-stack[[:space:]]/ {
+        ++count
+        if ($(NF-3) ~ /X/) executable=1
+      }
+      END {
+        if (count == 0) print "missing"
+        else if (count != 1) exit 1
+        else if (executable) print "executable"
+        else print "nonexecutable"
+      }
+    ')" || fail "ambiguous object stack note O$opt $obj"
+    if [[ "$stack" != nonexecutable ]]; then
+      echo "FGC49D_PRIVATE_STACK_OBJECT O$opt ${obj##*/} $stack"
+    fi
+    case "${obj##*/}" in
+      mod_oxygen_scalar_bracket.o|mod_bartholomeus_response.o)
+        [[ "$stack" == nonexecutable ]] || fail "private oxygen object stack O$opt $obj"
+        echo "FGC49D_PRIVATE_OXYGEN_OBJECT O$opt ${obj##*/} $stack"
+        ;;
+    esac
+  done
+''' + link)
+    runner = runner.replace(link, link + '''
+  readelf -W -l "$OUT/libfgc49d_application.so" | awk '
+    $1 == "GNU_STACK" { ++count; if ($(NF-1) != "RW") bad=1 }
+    END { exit(count != 1 || bad) }
+  ' || fail "private oxygen stack permissions O$opt"
+  echo "FGC49D_PRIVATE_OXYGEN_NONEXEC_STACK_O$opt=PASS"
+''')
 Path(sys.argv[1]).write_text(runner)
 PY
 

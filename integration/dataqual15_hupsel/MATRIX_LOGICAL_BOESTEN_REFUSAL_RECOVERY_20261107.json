@@ -1,0 +1,385 @@
+{
+  "phase": "PRIVATE_BOESTEN_REFUSAL_FOCUSED_GATES_PASS",
+  "canonical_base": "158515440d6071273c7c10e8b7aa3f84a271bc76",
+  "tested_head": "f6b1be0aadb9557421ef748a38b74b2634a13dbc",
+  "pull_request": 1612,
+  "scope": "S5MJ0003 with positive pond depth, surface solute store, Boesten forcing and external full-half. Exact checkpoint preservation across a rejected water trial. Accepted Boesten continuation is outside this evidence.",
+  "predecessor": "MATRIX_LOGICAL_GROSS_V2_RECOVERY_20261107.json",
+  "production_admission": false,
+  "windows": {
+    "O0": {
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 125,
+      "events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        }
+      ],
+      "preserved_checkpoint_sha256": "7ac80d9597f70020c435ae33eb2b5cce4a11178e463dee61f37f74cff0dbd378"
+    },
+    "O2": {
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 125,
+      "events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        }
+      ],
+      "preserved_checkpoint_sha256": "7ac80d9597f70020c435ae33eb2b5cce4a11178e463dee61f37f74cff0dbd378"
+    }
+  },
+  "retained_attempts": [
+    {
+      "opt": "O0",
+      "reason": "Default runoff forcing hit dynamic top-boundary refusal.",
+      "event": {
+        "label": "incumbent-advance",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-O0-20261107\\incumbent\\surface.exe",
+          "surface-write-advance",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-O0-20261107\\incumbent\\original-3",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-O0-20261107\\incumbent\\advance-3-direct",
+          "3"
+        ],
+        "returncode": 1,
+        "seconds": 0.04739749990403652,
+        "stdout": "0039-incumbent-advance.stdout",
+        "stderr": "0039-incumbent-advance.stderr"
+      },
+      "stdout": "",
+      "stderr": "ERROR STOP HeadCalc: dynamic top-boundary provider unavailable\n\nError termination. Backtrace:\n#0  0x38d89b94\n#1  0x38d04471\n#2  0x38bb28f4\n#3  0xdd2906be\n#4  0xdd288826\n#5  0xdd27808c\n#6  0xdca1df1d\n#7  0xdcd886a1\n#8  0xdc87cab8\n#9  0xdc87ece6\n#10  0xdc8895d4\n#11  0xdc894aae\n#12  0xdc983636\n#13  0xdcdddddd\n#14  0xdd299bb0\n#15  0xdc878d4b\n#16  0xdc83e587\n#17  0xdc8794b5\n#18  0xdc831156\n#19  0xab90dda6\n#20  0xad15ee4b\n#21  0xffffffff\n"
+    },
+    {
+      "opt": "O0",
+      "reason": "Explicit runoff forcing reaches the incumbent joint water refusal, with observed tuple 2,4,1.",
+      "event": {
+        "label": "incumbent-advance",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-bound-O0-20261107\\incumbent\\surface.exe",
+          "surface-write-advance",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-bound-O0-20261107\\incumbent\\original-3",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-bound-O0-20261107\\incumbent\\advance-3-direct",
+          "3"
+        ],
+        "returncode": 1,
+        "seconds": 12.847229300066829,
+        "stdout": "0039-incumbent-advance.stdout",
+        "stderr": "0039-incumbent-advance.stderr"
+      },
+      "stdout": " BOESTEN_STATUS           2           4           1\nFAIL accepted physical continuation\n",
+      "stderr": "ERROR STOP 1\n\nError termination. Backtrace:\n#0  0x38d89b94\n#1  0x38d04471\n#2  0x38bb28b1\n#3  0xae9dd65c\n#4  0xae9e9062\n#5  0xae9ae587\n#6  0xae9e94dd\n#7  0xae9a1156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+    },
+    {
+      "opt": "O0",
+      "reason": "An unrelated serialized-backend status import is outside the archived closure. Use the joint result contract.",
+      "event": {
+        "label": "incumbent-link",
+        "command": [
+          "C:/msys64/ucrt64/bin/gfortran.exe",
+          "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-refuse-O0-20261107\\incumbent\\surface.args"
+        ],
+        "returncode": 1,
+        "seconds": 0.5329565000720322,
+        "stdout": "0004-incumbent-link.stdout",
+        "stderr": "0004-incumbent-link.stderr"
+      },
+      "stdout": "",
+      "stderr": "C:/Users/Veldh012/AppData/Local/Temp/s5-matrix-boesten-refuse-O0-20261107/incumbent/surface.f90:178:9:\n\n  178 |     use mod_fmr_serialized_kernel_backend, only: FMR_SERIALIZED_KERNEL_MASS_INCOMPLETE\n      |         1\nFatal Error: Cannot open module file 'mod_fmr_serialized_kernel_backend.mod' for reading at (1): No such file or directory\ncompilation terminated.\n"
+    },
+    {
+      "opt": "O2",
+      "reason": "Default runoff forcing hit dynamic top-boundary refusal.",
+      "event": {
+        "label": "incumbent-advance",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-O2-20261107\\incumbent\\surface.exe",
+          "surface-write-advance",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-O2-20261107\\incumbent\\original-3",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-O2-20261107\\incumbent\\advance-3-direct",
+          "3"
+        ],
+        "returncode": 1,
+        "seconds": 0.04082560003735125,
+        "stdout": "0039-incumbent-advance.stdout",
+        "stderr": "0039-incumbent-advance.stderr"
+      },
+      "stdout": "",
+      "stderr": "ERROR STOP HeadCalc: dynamic top-boundary provider unavailable\n\nError termination. Backtrace:\n#0  0x38d89b94\n#1  0x38d04471\n#2  0x38bb28f4\n#3  0xe3a2626a\n#4  0xe3a314f7\n#5  0xe36919e8\n#6  0xe383abf5\n#7  0xe35ef3d1\n#8  0xe35f0e62\n#9  0xe35f5e40\n#10  0xe35fdf3c\n#11  0xe365968d\n#12  0xe38274fd\n#13  0xe3a3d593\n#14  0xe35d2feb\n#15  0xe35e7de5\n#16  0xe3a41459\n#17  0xe35d1156\n#18  0xab90dda6\n#19  0xad15ee4b\n#20  0xffffffff\n"
+    },
+    {
+      "opt": "O2",
+      "reason": "Explicit runoff forcing reaches the incumbent joint water refusal, with observed tuple 2,4,1.",
+      "event": {
+        "label": "incumbent-advance",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-bound-O2-20261107\\incumbent\\surface.exe",
+          "surface-write-advance",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-bound-O2-20261107\\incumbent\\original-3",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-bound-O2-20261107\\incumbent\\advance-3-direct",
+          "3"
+        ],
+        "returncode": 1,
+        "seconds": 6.346624499885365,
+        "stdout": "0039-incumbent-advance.stdout",
+        "stderr": "0039-incumbent-advance.stderr"
+      },
+      "stdout": " BOESTEN_STATUS           2           4           1\nFAIL accepted physical continuation\n",
+      "stderr": "ERROR STOP 1\n\nError termination. Backtrace:\n#0  0x38d89b94\n#1  0x38d04471\n#2  0x38bb28b1\n#3  0xa34e15bb\n#4  0xa34e32ba\n#5  0xa34f7de5\n#6  0xa3951459\n#7  0xa34e1156\n#8  0xab90dda6\n#9  0xad15ee4b\n#10  0xffffffff\n"
+    },
+    {
+      "opt": "O2",
+      "reason": "An unrelated serialized-backend status import is outside the archived closure. Use the joint result contract.",
+      "event": {
+        "label": "incumbent-link",
+        "command": [
+          "C:/msys64/ucrt64/bin/gfortran.exe",
+          "@C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-matrix-boesten-refuse-O2-20261107\\incumbent\\surface.args"
+        ],
+        "returncode": 1,
+        "seconds": 0.4952783999033272,
+        "stdout": "0004-incumbent-link.stdout",
+        "stderr": "0004-incumbent-link.stderr"
+      },
+      "stdout": "",
+      "stderr": "C:/Users/Veldh012/AppData/Local/Temp/s5-matrix-boesten-refuse-O2-20261107/incumbent/surface.f90:178:9:\n\n  178 |     use mod_fmr_serialized_kernel_backend, only: FMR_SERIALIZED_KERNEL_MASS_INCOMPLETE\n      |         1\nFatal Error: Cannot open module file 'mod_fmr_serialized_kernel_backend.mod' for reading at (1): No such file or directory\ncompilation terminated.\n"
+    }
+  ],
+  "posix": {
+    "O0": {
+      "job": 128403655321,
+      "artifact": 13573634116,
+      "artifact_sha256": "94fbf4e201934c611a81e5b6b42512c01d9a8b03ea8938c325dc175c4ca867f0",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 125,
+      "events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        }
+      ]
+    },
+    "O2": {
+      "job": 128403655034,
+      "artifact": 13573728726,
+      "artifact_sha256": "db8b349fb99b1087160e97948449e1b118da519dbf6636378c5b990ed6deec63",
+      "writer_source_sha256": "9953dfa3d8e81d94da17a194520095a17cfa2b585bd73c56dfa9902b07125cb9",
+      "event_count": 125,
+      "events": [
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "incumbent-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\nMATRIX_CONTINUATION_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": " BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        },
+        {
+          "label": "candidate-advance",
+          "stdout": "MATRIX_LOGICAL_FIELD_OFFSETS=144 148 152 156\nSURFACE_ACCEPTED\nSURFACE_OCCUPIED_REFUSED\n BOESTEN_STATUS           2           4           1\nBOESTEN_WATER_REFUSAL_PASS\n"
+        }
+      ]
+    }
+  },
+  "workflows": [
+    {
+      "id": 42372610205,
+      "name": "F-MIG431-INT12-D Gash qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610175,
+      "name": "F-MIG431-INT12-P0 qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610201,
+      "name": "F-MIG431-INT12-E detailed interception qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610126,
+      "name": "F-GC42 live whole-window service",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610217,
+      "name": "F-PE-ZERO-WASTE01 poisoned workspace",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610195,
+      "name": "SWAP431 empirical root oxygen qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610231,
+      "name": "SWAP431 crop rootgrow DVS qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610225,
+      "name": "Private matrix native logical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610307,
+      "name": "F-PE-TIMEINT16 moisture Thomas-Gladwell",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610305,
+      "name": "SWAP431 crop CO2 response qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610152,
+      "name": "F-CI110 reconstructed performance admission",
+      "status": "completed",
+      "conclusion": "failure"
+    },
+    {
+      "id": 42372610374,
+      "name": "F-CI canonical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610319,
+      "name": "F-MIG431 LOW08-A qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 42372610313,
+      "name": "SWAP431 root constant LRV qualification",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "workflow_failure": {
+    "job": 128403654985,
+    "observed": [
+      "2026-11-07T12:30:23.0443079Z OSError: /home/runner/work/_temp/swap5-fgc49d-context-42372610152-2248/o0/libfgc49d_application.so: cannot enable executable stack as shared object requires: Invalid argument",
+      "2026-11-07T12:30:23.0443988Z FGC49D_CONTEXT_FAIL runtime O0",
+      "2026-11-07T12:30:23.0523825Z ##[error]Process completed with exit code 1."
+    ]
+  },
+  "adjudication": "The initial Boesten probe hit a dynamic top-boundary error with incomplete runoff forcing. After explicit runoff binding, the incumbent rejects the water trial. All 16 direct and independently restored S5MJ0003 trials across four cohorts refuse with byte-identical checkpoint preservation. The prior temporal and gross continuation, malformed read, publication fault and termination gates pass. No acceptance or tolerance rule was relaxed.",
+  "next": "Treat the positive-pond Boesten accepted continuation and base full-half continuation as blocked envelopes. Qualify an independent executable capability or reconcile a strictly bounded production-admission plan with these refusals retained."
+}
