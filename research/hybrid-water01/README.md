@@ -4,6 +4,8 @@
 
 ### Generic macro candidate rejected and published,12November2026
 
+PR #1652 tipc84b8ecfb0b886e49ca24deaed7cc5566ebda8f6 (whitespace escape only;
+exact generated Fortran unchanged).
 PR #1652 is DRAFT, not admitted: source9d30efed28239d1074d752b48d96baca862b9175
 on codex/hybrid-generic-macro-policy. Canonical staysa22754decc0ec4e69304d1495c48bae7cdcdabec.
 This supersedes older NEXT/ACTIVE banners for the current implementation attempt.
