@@ -24,9 +24,9 @@ for mode in ('baseline', 'polish-feedback'):
     out.mkdir()
     source = (a.bundle/'headcalc.f90').read_text(encoding='cp1252')
     if mode != 'baseline':
-        assert source.count('subroutine headcalc\n') == 2
-        source = source.replace('subroutine headcalc\n',
-                                'subroutine rc1_headcalc_impl(rc1_polish_only)\n', 1)
+        assert source.count('\nsubroutine headcalc\n') == 1
+        source = source.replace('\nsubroutine headcalc\n',
+                                '\nsubroutine rc1_headcalc_impl(rc1_polish_only)\n', 1)
         source = source.replace('   implicit none',
                                 '   implicit none\n   integer, intent(out) :: rc1_polish_only', 1)
         source = source.replace('   mass_polish_at = 0',
