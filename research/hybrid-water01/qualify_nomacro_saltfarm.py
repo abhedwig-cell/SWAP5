@@ -40,7 +40,8 @@ def main():
         a.output.mkdir()
         donor,kernel,case,inputs,identity=h.build(a.reference,a.output,runtime_checkpoint=True,
             kernel_opt=a.optimization,project=h.SALTFARM,**profile)
-    compile_seconds=None if a.resume_proof else time.perf_counter()-started
+    prior_report=json.loads((a.output/'RESULT.json').read_text()) if a.resume_proof and (a.output/'RESULT.json').exists() else {}
+    compile_seconds=prior_report.get('compile_seconds') if a.resume_proof else time.perf_counter()-started
     binding=h.checkpoint_identity(inputs,identity,project=h.SALTFARM,**profile)
     project={k:getattr(h.SALTFARM,k) for k in ['case','model','start_date','nodes','water_tolerance']}
     (a.output/'BUILD.json').write_text(json.dumps(dict(project=project,inputs=inputs,identity=identity,binding=binding,
@@ -138,6 +139,7 @@ def main():
             full_ledger_sha256=h.sha(full/'daily.jsonl'),build_sha256=h.sha(a.output/'BUILD.json'),
             scientific_equivalence='NOT_QUALIFIED',full_conservative_energy='NOT_QUALIFIED',R_byte_equivalence='NOT_CLAIMED')
         (a.output/'RESULT.json').write_text(json.dumps(report,indent=2)+'\n');print(json.dumps(report))
+        return int(report['status']!='PASS')
     finally:
         h.start_process=actual
         for process in workers:
@@ -145,4 +147,4 @@ def main():
             process.wait(timeout=5)
 
 
-if __name__=='__main__':main()
+if __name__=='__main__':raise SystemExit(main())

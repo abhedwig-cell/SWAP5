@@ -60,7 +60,8 @@ def run_grass(args):
     command = [str(executable), str(args.days), "retain-step", "100000",
                str(origin) if origin is not None else "", selector, args.model]
     with (output / "stdout").open("wb") as stdout, (output / "stderr").open("wb") as stderr:
-        completed = subprocess.run(command, cwd=output, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr)
+        completed = subprocess.run(command, cwd=output, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                                   timeout=args.timeout_seconds or (60 if args.no_macro_release else None))
     if completed.returncode:
         return completed.returncode
     with (output / "stdout").open("rb") as stdout:
@@ -146,7 +147,8 @@ def run_hupsel(args):
     env = dict(os.environ, OMP_NUM_THREADS="1")
     env.pop("SWAP5_DIAG_PREDECESSOR", None)
     with (output / "stdout").open("wb") as stdout, (output / "stderr").open("wb") as stderr:
-        completed = subprocess.run(command, cwd=output, env=env, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr)
+        completed = subprocess.run(command, cwd=output, env=env, stdin=subprocess.DEVNULL, stdout=stdout, stderr=stderr,
+                                   timeout=args.timeout_seconds or (60 if args.no_macro_release else None))
     if completed.returncode:
         return completed.returncode
     markers = (output / "stdout").read_bytes().splitlines()
@@ -201,6 +203,8 @@ def main():
         return 0
     if args.output is None:
         parser.error("--output is required for a model run")
+    if args.no_macro_release and args.output.exists():
+        parser.error('Release output directory must be new')
     if args.model == HUPSEL_MODEL:
         if (args.hupsel_build is None or args.grass_build is not None or args.reference_work is not None
                 or args.kernel_opt is not None or args.restart_day is not None or args.checkpoint_at is not None):
@@ -232,7 +236,6 @@ def main():
         parser.error("The checkpoint day must belong to the requested run")
 
     output = args.output.resolve()
-    if args.no_macro_release and output.exists():parser.error('Release output directory must be new')
     output.mkdir(parents=True)
     profile = dict(budget_retry=project.macro or project.solute, shared_pond_transfer=project.macro, refresh_macro_final=project.macro)
     donor, kernel, case, inputs, build_id = build(
