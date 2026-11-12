@@ -7,9 +7,13 @@ and the original-workbook SaltFarm/Texel04dS1461 scenario. The
 [PR1658 boundary](../science/SWAP5_FUNCTIONAL_CLOSURE.md) records complete runs,
 accepted calendar-state repair and exact seasonal continuations on Windows and
 Ubuntu26.04, donorO2/kernelO0/O2. Active Andelst/macropore functionality and prior
-proof remain preserved outside this release selection. Full-period supported
-heat export and whole scientific equivalence remain separate open acceptance
-points; the earlier three-application snapshots below keep their original scope.
+proof remain preserved outside this release selection. The supported full-period
+heat-export successor qualifies original numerical conduction/storage for every
+accepted day of these three configurations at O0/O2 on Windows and Ubuntu26.04;
+physical receipts and final native payloads remain exact. Complete mass-carried
+energy and whole scientific equivalence remain open. The earlier three-application
+snapshots below keep their original scope; the linked functional closure records
+the separate source-bound successor evidence and admission.
 
 ## Current original-project application successor,12November2026
 

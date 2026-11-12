@@ -12,7 +12,7 @@ ENERGY_BUDGET_J_CM2 = 1e-9
 CLOCK_BUDGET_DAY = 1e-8
 
 
-def read_accepted_heat(path, receipts, project):
+def read_accepted_heat(path, receipts, project, *, compact=False):
     accepted = {}
     for receipt in receipts:
         if receipt.get('committed') is not True:
@@ -30,7 +30,7 @@ def read_accepted_heat(path, receipts, project):
         if header is None:
             break
         fields = header.split()
-        if len(fields) != 17 or fields[0] != 'HEAT_STEP':
+        if len(fields) != 17 or fields[0] != ('HEAT_SUMMARY1' if compact else 'HEAT_STEP'):
             raise ValueError('Invalid original heat step frame')
         numbers = list(map(float, fields[1:14]))
         if not all(map(math.isfinite, numbers)):
@@ -43,7 +43,7 @@ def read_accepted_heat(path, receipts, project):
         if any(flag not in ('T', 'F') for flag in flags) or flags[2] != 'F':
             raise ValueError('Invalid or promoted original full-energy flag')
         nodes = []
-        for i in range(1, n+1):
+        for i in range(1, 1 if compact else n+1):
             row = next(lines, '').split()
             if len(row) != 12 or row[0] != 'HEAT_NODE' or row[1] != str(i):
                 raise ValueError('Invalid original heat node frame')
@@ -59,13 +59,19 @@ def read_accepted_heat(path, receipts, project):
             continue
         # Independent reconstruction from the ACTUAL exported solve coefficients,
         # not an evaluation of another temperature model or copied constitutive law.
-        storage = [v[0]*v[6]*(v[5]-v[4]) for v in nodes]
-        cell = [abs(s-(v[8]-v[9])) for s,v in zip(storage,nodes)]
-        boundary = nodes[0][8]-nodes[-1][9]
-        for left,right in zip(nodes,nodes[1:]):
-            if left[9] != right[8]:
-                raise ValueError('Conductive faces do not cancel internally')
-        frozen = math.fsum(storage)
+        if compact:
+            # Actual production-coefficient reductions, qualified against the
+            # independent detailed reconstruction; no nodal remeasurement claim.
+            frozen,boundary,cell = numbers[5],numbers[6],[numbers[7]]
+            if cell[0]<0:raise ValueError('Negative compact cell residual')
+        else:
+            storage = [v[0]*v[6]*(v[5]-v[4]) for v in nodes]
+            cell = [abs(s-(v[8]-v[9])) for s,v in zip(storage,nodes)]
+            boundary = nodes[0][8]-nodes[-1][9]
+            for left,right in zip(nodes,nodes[1:]):
+                if left[9] != right[8]:
+                    raise ValueError('Conductive faces do not cancel internally')
+            frozen = math.fsum(storage)
         if (max(cell) > ENERGY_BUDGET_J_CM2 or abs(frozen-boundary) > ENERGY_BUDGET_J_CM2
                 or abs(frozen-numbers[5]) > ENERGY_BUDGET_J_CM2
                 or abs(boundary-numbers[6]) > ENERGY_BUDGET_J_CM2):
@@ -86,6 +92,11 @@ def read_accepted_heat(path, receipts, project):
     for day,steps in sorted(accepted.items()):
         if not steps or abs(math.fsum(s['dt'] for s in steps)-1) > CLOCK_BUDGET_DAY:
             raise ValueError('Accepted day has no complete original heat support')
+        cursor=project.start_clock+day-1
+        for step in steps:
+            if abs(step['t0']-cursor)>CLOCK_BUDGET_DAY:
+                raise ValueError('Heat support is not consecutive from accepted day origin')
+            cursor=step['t0']+step['dt']
         complete = all(s['physical_storage_complete'] for s in steps)
         daily.append({'day':day,'accepted':True,'steps':len(steps),
             'numerical_conduction_complete':True,'full_energy_balance_complete':False,
@@ -98,6 +109,8 @@ def read_accepted_heat(path, receipts, project):
             'physical_storage_change_j_cm2':math.fsum(s['physical_storage_change_j_cm2'] for s in steps) if complete else None,
             'composition_change_j_cm2':math.fsum(s['composition_change_j_cm2'] for s in steps) if complete else None,
             'zero_advection_step_residual_max_j_cm2':max(abs(s['zero_advection_projected_residual_j_cm2']) for s in steps) if complete else None})
-    return {'status':'ACCEPTED_ORIGINAL_CONDUCTION_WITH_EXPLICIT_PHYSICAL_ENERGY_LIMITS',
+    result = {'status':'ACCEPTED_ORIGINAL_CONDUCTION_WITH_EXPLICIT_PHYSICAL_ENERGY_LIMITS',
             'model':project.model,'daily':daily,'unaccepted_steps_ignored':ignored,
             'energy_budget_j_cm2':ENERGY_BUDGET_J_CM2,'full_energy_balance_complete':False}
+    if compact:result['observation_detail']='PRODUCTION_COEFFICIENT_SUMMARIES; no exported nodal reconstruction'
+    return result

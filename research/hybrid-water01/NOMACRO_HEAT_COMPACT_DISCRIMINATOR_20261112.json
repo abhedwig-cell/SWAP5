@@ -1,0 +1,73 @@
+{
+  "status": "PASS",
+  "native_and_physical_state": "EXACT",
+  "summary_tokens_equal_retained_detailed_headers": true,
+  "steps": 270,
+  "detailed_bytes": 11354520,
+  "compact_bytes": 65118,
+  "comparison_budget_j_cm2": 1e-09,
+  "compact": {
+    "status": "ACCEPTED_ORIGINAL_CONDUCTION_WITH_EXPLICIT_PHYSICAL_ENERGY_LIMITS",
+    "model": "HYBRID_SALTFARM_WATER",
+    "daily": [
+      {
+        "day": 108,
+        "accepted": true,
+        "steps": 55,
+        "numerical_conduction_complete": true,
+        "full_energy_balance_complete": false,
+        "sensible_mass_carried_boundary_complete": false,
+        "storage_status_counts": {
+          "3": 55
+        },
+        "conductive_into_j_cm2": -108.7531644556144,
+        "cell_residual_max_j_cm2": 2.4467580739262473e-13,
+        "global_step_residual_max_j_cm2": 5.17941245448128e-12,
+        "physical_storage_complete": true,
+        "physical_storage_change_j_cm2": -76.50759702853395,
+        "composition_change_j_cm2": 32.245567427283476,
+        "zero_advection_step_residual_max_j_cm2": 1.323944351845188
+      },
+      {
+        "day": 109,
+        "accepted": true,
+        "steps": 134,
+        "numerical_conduction_complete": true,
+        "full_energy_balance_complete": false,
+        "sensible_mass_carried_boundary_complete": false,
+        "storage_status_counts": {
+          "3": 134
+        },
+        "conductive_into_j_cm2": 228.96086168693802,
+        "cell_residual_max_j_cm2": 1.879466634407967e-13,
+        "global_step_residual_max_j_cm2": 5.1672000012104036e-12,
+        "physical_storage_complete": true,
+        "physical_storage_change_j_cm2": 268.45200024817393,
+        "composition_change_j_cm2": 39.4911385610613,
+        "zero_advection_step_residual_max_j_cm2": 0.7486318083940835
+      },
+      {
+        "day": 110,
+        "accepted": true,
+        "steps": 81,
+        "numerical_conduction_complete": true,
+        "full_energy_balance_complete": false,
+        "sensible_mass_carried_boundary_complete": false,
+        "storage_status_counts": {
+          "3": 81
+        },
+        "conductive_into_j_cm2": 98.44306731228976,
+        "cell_residual_max_j_cm2": 2.321710532160459e-13,
+        "global_step_residual_max_j_cm2": 5.0244253202436084e-12,
+        "physical_storage_complete": true,
+        "physical_storage_change_j_cm2": 140.88871458683423,
+        "composition_change_j_cm2": 42.44564727455284,
+        "zero_advection_step_residual_max_j_cm2": 0.9083159698936168
+      }
+    ],
+    "unaccepted_steps_ignored": 0,
+    "energy_budget_j_cm2": 1e-09,
+    "full_energy_balance_complete": false,
+    "observation_detail": "PRODUCTION_COEFFICIENT_SUMMARIES; no exported nodal reconstruction"
+  }
+}

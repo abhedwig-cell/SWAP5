@@ -10,6 +10,10 @@ on:
         description: Reuse source-bound successful run43189426052 binaries for fresh Grassgrowth/Hupsel seasonal checkpoints only
         type: boolean
         default: false
+      heat_export_only:
+        description: Compile only the read-only heat observer and export all three complete supported periods
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -18,7 +22,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   original-no-macro:
-    if: ${{ !inputs.seasonal_only }}
+    if: ${{ !inputs.seasonal_only && !inputs.heat_export_only }}
     runs-on: ubuntu-26.04
     timeout-minutes: 7
     strategy:
@@ -90,7 +94,7 @@ jobs:
             ${{ runner.temp }}/nomacro-heat-*
           retention-days: 14
   seasonal-no-macro:
-    if: ${{ inputs.seasonal_only }}
+    if: ${{ inputs.seasonal_only && !inputs.heat_export_only }}
     runs-on: ubuntu-26.04
     timeout-minutes: 5
     strategy:
@@ -143,4 +147,76 @@ jobs:
         with:
           name: nomacro-seasonal-${{ matrix.opt }}-${{ github.sha }}
           path: ${{ runner.temp }}/nomacro-seasonal-*
+          retention-days: 14
+  supported-heat-export:
+    if: ${{ inputs.heat_export_only }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 7
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [O0, O2]
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/swap-4.3.1/projects/
+            /research/hybrid-water01/*.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+            /integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json
+      - name: Exact requested source and selected bounded scope
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          owner=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
+          assert owner['cost_selection']['model_and_observation_call_cap_seconds']==60
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-release-${{ matrix.opt }}-aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04
+          run-id: 43189426052
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/heat-native
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-seasonal-${{ matrix.opt }}-519821a5feaf8e345c226a6609d7cde31160c16f
+          run-id: 43193830146
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/heat-controls
+      - name: Immutable original object provider and exact materialized input
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,shutil,tarfile
+          from pathlib import Path
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          root=Path(os.environ['RUNNER_TEMP'])/'heat-provider';root.mkdir()
+          with tarfile.open(archive) as t:t.extractall(root,filter='data')
+          reference=root/json.loads((root/'PROOF_INDEX.json').read_text())['reference']
+          shutil.copytree(Path('reference/swap-4.3.1/projects/4.salinitystress-04dS'),reference/'distribution/SWAP_4.3.1/cases/4.salinitystress-04dS')
+          PY
+      - name: Real compact complete periods and accepted-only heat checks
+        run: |
+          for project in grass hupsel saltfarm; do
+            bundle="$RUNNER_TEMP/heat-native/nomacro-$project-${{ matrix.opt }}"
+            controls="$RUNNER_TEMP/heat-controls/nomacro-seasonal-$project-${{ matrix.opt }}"
+            if [ "$project" = saltfarm ]; then controls="$bundle"; fi
+            python3 -B research/hybrid-water01/qualify_original_heat_accounting.py --base-archive research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz --workspace "$RUNNER_TEMP/heat-provider" --output "$RUNNER_TEMP/heat-full-$project-${{ matrix.opt }}" --case "$project-${{ matrix.opt }}" --current-bundle "$bundle" --control-root "$controls" --project "$project" --compact --full-period
+            python3 -B research/hybrid-water01/check_original_heat_accounting.py --runs "$RUNNER_TEMP/heat-full-$project-${{ matrix.opt }}" --compact > "$RUNNER_TEMP/heat-full-$project-${{ matrix.opt }}/check.stdout"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-heat-${{ matrix.opt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/heat-full-*
           retention-days: 14

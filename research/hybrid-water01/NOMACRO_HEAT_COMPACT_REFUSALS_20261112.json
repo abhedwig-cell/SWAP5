@@ -1,0 +1,29 @@
+{
+  "status": "PASS",
+  "cases": [
+    {
+      "case": "nonfinite",
+      "refusal": "Nonfinite original heat step"
+    },
+    {
+      "case": "unbalanced",
+      "refusal": "Original conduction exceeds existing energy budget"
+    },
+    {
+      "case": "promoted-energy",
+      "refusal": "Invalid or promoted original full-energy flag"
+    },
+    {
+      "case": "wrong-grid",
+      "refusal": "Invalid original heat grid or interval"
+    },
+    {
+      "case": "missing-support",
+      "refusal": "Accepted day has no complete original heat support"
+    },
+    {
+      "case": "overlap",
+      "refusal": "Heat support is not consecutive from accepted day origin"
+    }
+  ]
+}

@@ -1,7 +1,11 @@
 # SWAP5-NOMACRO-CLOSURE01 release workpoint
 
-Current candidate successor: the accepted seasonal-clock/calendar omission is
-repaired. Windows and Ubuntu26.04 donorO2/kernelO0/O2 complete1461days and all
+Current canonically admitted successor: PR1658 merged at
+`c8a75378f1eef315441366bff421dbb6bc991127`. Its entire tree exactly matches
+qualified PR head4f9cbe1b636f85870a97f143347f66e71463f783 (treeea98a50a…).
+`NOMACRO_MERGE_20261112.json` records the actual fetched postimage. The accepted
+seasonal-clock/calendar omission is repaired. Windows and Ubuntu26.04
+donorO2/kernelO0/O2 complete1461days and all
 five strict own windows, including1459→1461, exactly. Earlier failed results below
 are retained chronology, not the current verdict. Exact current evidence:
 `NOMACRO_CALENDAR_WINDOWS_20261112.json`, `NOMACRO_CALENDAR_LINUX_20261112.json`
@@ -216,3 +220,88 @@ These remain FAILED, not promoted to PASS; none is a new physical regression.
 An automatically started long AHL run was canceled as NOT_SELECTED_IMPACT because
 its owning source is unchanged. Final proof-only publication skips redundant
 automatic model campaigns; both selected Ubuntu qualifications are terminal PASS.
+
+## Next concrete functional package
+
+Close supported full-period heat export for the three admitted no-macro
+configurations. Reuse the existing real heat/storage observer and accepted-day
+reader; emit compact numerical conduction/storage summaries rather than millions
+of redundant node lines. First compare compact and existing detailed output on
+the already qualified three-day saline-irrigation window, retaining native and
+physical byte identity and unchanged1e-9J/cm2 checks. Select a complete-period
+execution only after that discriminator passes; use a60s model cap and retain
+source/build/input identities. Keep missing mass-carried energy unavailable,
+the zero-advection failure visible and whole scientific equivalence separate.
+No active model worker or incomplete selected check remains at this checkpoint.
+Macro work remains frozen; the half-hour recovery automation remains useful.
+
+## Active supported-heat export package
+
+At70045d502 the existing observer accepts an optional compact flag; its default
+still exports detailed nodes. HEAT_SUMMARY1 carries the same actual coefficient
+reductions and physical-availability flags, without redundant node rows. The
+existing accepted reader distinguishes this aggregate provenance explicitly and
+checks unchanged conduction limits plus consecutive accepted time support.
+No node-reconstruction claim is made for compact files. The existing qualifier
+now supports current Grassgrowth/Hupsel/SaltFarm builds and conditionally selected
+full periods. Owning acceptance/cost selection is
+`integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json`.
+First gate: actual SaltFarm108–110 compact versus retained detailed headers,
+independent detailed reconstruction and complete native/physical control. No
+full-period execution is selected before that gate completes.
+
+Short gate PASS: SaltFarm108–110 emits270 compact steps with exactly the same
+summary tokens as retained detailed headers; complete physical/native outputs
+remain exact. Both accepted readers agree within their existing1e-9J/cm2 budget,
+and externally unaccepted steps stay absent. Output falls from11,354,520 to65,118
+bytes (174fold reduction). Full no-macro periods are now selected, reusing current
+native builds and source-bound complete controls, with60s caps. No original
+physical solver or forcing is changed by the observer.
+
+First full feedback retained: SaltFarmO2 and HupselO0/O2 complete with exact
+physical/native output, but concurrent SaltFarmO0 and GrassO0/O2 hit the selected
+60s total observer/build cap. No tolerance or cap is widened. Hypothesis: reopening
+and closing the compact output for every real heat step dominates Windows I/O.
+Selected one repair: retain one output channel owned by each private legacy worker
+process, closed/flushed at normal worker shutdown. It carries no physical state;
+the detailed observer lifecycle is unchanged. Repeat the short discriminator,
+then the failed full calls before selecting further replays. Censored files remain
+ineligible for complete accepted-day qualification.
+
+## Complete supported-heat export successor
+
+The buffered repair passes all three complete periods at O0/O2 on Windows and
+Ubuntu26.04 (selected run43203191980). All17536 accepted daily records have
+complete consecutive numerical heat support; each original physical receipt and
+both final native payloads are EXACT against its source-bound unobserved control.
+The unchanged1e-9J/cm2 cell/global guard passes, maximum global1.74e-11J/cm2.
+Model calls take3.77–28.29s; compile/link costs are separate and the60s cap remains.
+Both actual270-step O0/O2 irrigation discriminators match detailed headers exactly;
+the detailed independent reader passes. Compact output has no independent nodal
+reconstruction claim. On Ubuntu O0/O2 accounting reductions show small roundoff,
+retained explicitly; each passes the original guard. The earlier three censored
+unbuffered Windows attempts remain FAILED/censored. No tolerance was widened.
+
+The raw compact summaries, daily physical ledgers, final packages, actual observed
+donors, generated original temperature units, source/build/input identities and
+initial-attempt reports are in nomacro-full-heat-20261112.tar.xz with its own member
+SHA256 manifest; the owning NOMACRO_HEAT_EXPORT_20261112.json pins the archive and
+verified GitHub artifact digests. The separate worker owns its buffered I/O
+channel; no shared physical state or legacy thread-safety claim is introduced.
+Complete mass-carried energy remains unavailable, zero-advection comparisons FAIL,
+and the original oxygen/reference failures stay visible. Macro work stays frozen.
+
+Next concrete functional deliverable: extend the existing caller-controlled
+surface-irrigation transaction to the admitted SaltFarm profile, retaining the
+original Hupsel contract. First prove unchanged original saline irrigation108–110
+and a year boundary against independent original controls; then verify one
+changed-history water/solute request through discard/repeat/accept, fresh-process
+restart and interleaved independent instances at O0/O2. Use short retained origins
+and the existing1e-10 guards; no full1461 repeat without a changed dependency.
+This is a bounded external-coupling acceptance point, not a new forcing framework
+or an implicit full-energy/scientific-equivalence claim.
+
+Reviewable publication: PR1659, proof head dee81334c08fc4705674a39e73a691558dc1dc2c.
+Selected Linux qualification is terminal SUCCESS, all artifact/member hashes
+verified, docs and strict MkDocs PASS. Admission and actual canonical postimage
+remain separate from the qualified candidate until the merge is verified.
