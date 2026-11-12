@@ -1,5 +1,5 @@
 {
-  "status": "CONTINUING_DURABLE_LINUX240_AFTER_EXACT38_DAY_RESTART_OVERLAP",
+  "status": "CONTINUING_EXACT_DURABLE_LINUX304",
   "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
   "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
   "selection": {
@@ -93,7 +93,7 @@
         "seconds": 60.003452675999995,
         "overlap161to198_physical_and_retry_counts_exact": true
       },
-      "next": "Continue source-identical own240to481, compare241to249 immediately against saved journal; same60s cap,16day durable checkpoints. No prefix/model recompilation.",
+      "next": "Continue own304to481; stop immediately on any changed305to313 retained day. Same60s cap and16day durability. No changed model/build/input or tolerance.",
       "unintended_stale_dispatch": {
         "run_id": 43157677890,
         "requested_after_push": "4fac31635e9036c7f3a1221c51d4a1af25e6321d",
@@ -102,7 +102,31 @@
         "artifact_sha256": "7dbe695b601c3169fabc1319c7c0a7d463b9749171f75390405f473f0737f372",
         "outcome": "Repeated160to243; no new coverage beyond already249. Excluded from qualification.",
         "correction": "Require expected source input and reject stale GitHub source before checkout/model work; verify actual run head."
+      },
+      "result240": {
+        "run_id": 43158145401,
+        "source": "394923f9070b4d4160fb444f0491d033d677b8b5",
+        "artifact_id": 13917161409,
+        "artifact_sha256": "1ebf1f76b49ec2397025f06aeb6e3d1caf6328e89ad760344f953ee133111bc9",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 313,
+        "durable_day": 304,
+        "seconds": 60.00320176299999,
+        "overlap241to249_exact": true,
+        "mass_retries": 22803
       }
+    },
+    "whole_work_unit_cost": {
+      "owner": "Explicit SWAP5-FUNCTIONAL-CLOSURE01 workpackageB original481 functional completion",
+      "known_useful_continuation_wall_seconds": 180.01007615199998,
+      "expected_total_seconds": [
+        300,
+        420
+      ],
+      "individual_model_cap_seconds": 60,
+      "scope": "Actual requested full project execution, not routine feedback/performance campaign. Includes necessary durable-overlap comparisons. No smaller sample can prove terminal481 or late native restart.",
+      "unintended_duplicate_seconds": 60.00417335099999,
+      "runtime_parity": "UNKNOWN and not claimed; original reference runtime and accepted-step counts not inferred from another project"
     }
   },
   "acceptance": [
