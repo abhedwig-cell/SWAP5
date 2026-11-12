@@ -10,6 +10,7 @@ import daily_host as h
 from heat_receipts import read_accepted_heat
 
 p=argparse.ArgumentParser(description=__doc__);p.add_argument('--runs',type=Path,required=True)
+p.add_argument('--compact',action='store_true')
 a=p.parse_args();results={}
 for folder in sorted(a.runs.iterdir()):
     if not folder.is_dir() or '-' not in folder.name:continue
@@ -18,19 +19,20 @@ for folder in sorted(a.runs.iterdir()):
     project={'hupsel':h.HUPSEL,'grass':h.GRASSGROWTH,'andelst':h.ANDELST,'saltfarm':h.SALTFARM}[key]
     window=next(folder.glob('window-*'))
     receipts=[json.loads(l) for l in (window/'daily.jsonl').read_text().splitlines()]
-    trace=window/'original/original-heat-accounting.txt'
-    report=read_accepted_heat(trace,receipts,project)
+    trace=window/('original/original-heat-summary.txt' if a.compact else 'original/original-heat-accounting.txt')
+    report=read_accepted_heat(trace,receipts,project,compact=a.compact)
     assert len(report['daily'])==len(receipts) and all(not r['full_energy_balance_complete'] for r in report['daily'])
     # A calculated but externally unaccepted day never becomes an accepted heat
     # receipt. This is observer bookkeeping, not a new model computation.
-    refused=read_accepted_heat(trace,[dict(r,committed=False) for r in receipts],project)
+    refused=read_accepted_heat(trace,[dict(r,committed=False) for r in receipts],project,compact=a.compact)
     assert not refused['daily'] and refused['unaccepted_steps_ignored']>0
-    first=read_accepted_heat(trace,receipts[:1],project)
+    first=read_accepted_heat(trace,receipts[:1],project,compact=a.compact)
     assert len(first['daily'])==1 and first['unaccepted_steps_ignored']>0
-    raw=trace.read_text();parts=raw.splitlines();node=next(i for i,l in enumerate(parts) if l.startswith('HEAT_NODE'))
-    values=parts[node].split();values[-1]=str(float(values[-1])+.001);parts[node]=' '.join(values)
+    raw=trace.read_text();parts=raw.splitlines();node=0 if a.compact else next(i for i,l in enumerate(parts) if l.startswith('HEAT_NODE'))
+    values=parts[node].split();offset=7 if a.compact else -1
+    values[offset]=str(float(values[offset])+.001);parts[node]=' '.join(values)
     bad=window/'bad-heat-face.txt';bad.write_text('\n'.join(parts)+'\n')
-    try:read_accepted_heat(bad,receipts,project)
+    try:read_accepted_heat(bad,receipts,project,compact=a.compact)
     except ValueError:pass
     else:raise AssertionError('Corrupt actual conductive face accepted')
     # Preserve the failed zero-mass-carried-energy hypothesis as a failed

@@ -1,0 +1,1908 @@
+{
+  "status": "PASS",
+  "run": {
+    "branch": "codex/nomacro-calendar-linux-ci",
+    "expected_sha": "519821a5feaf8e345c226a6609d7cde31160c16f",
+    "same_executable_sources_as": "a6f74f71dc59cf30f4afd7965abba796615946fe",
+    "dispatch": "SEASONAL_ONLY_REQUESTED",
+    "immutable_binaries_from_run": 43189426052,
+    "time": 1794476544.9678977,
+    "run": 43193830146,
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43193830146",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "cases": {
+    "nomacro-seasonal-grass-O2": {
+      "status": "FULL_ORIGINAL1827_AND_OWN_SEASONAL_RESTARTS_PASS",
+      "source_commit": "519821a5feaf8e345c226a6609d7cde31160c16f",
+      "bundle_build_sha256": "2cc87ba38e5b251434ed3c6e27c79e746e14b7230a6bce94c677442dc7883263",
+      "days": 1827,
+      "maximum_daily_water_residual_cm": 6.350762067627882e-14,
+      "signed_cumulative_daily_residual_cm": -1.11290712138631e-13,
+      "day188": {
+        "column": 1,
+        "day": 188,
+        "committed": true,
+        "revision": 188,
+        "stock_end_cm": [
+          215.93388946803427,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          215.0797849309545,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          1.0600000000143968,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.14273015706325842,
+          0.07469180756997172,
+          0.0,
+          0.12513634446449667,
+          0.0,
+          0.1487974679633926,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -86.71346979551144,
+          -84.04513627525539,
+          -81.79920852687685,
+          -79.87528086561824,
+          -78.20634408324722,
+          -76.74523358182161,
+          -75.45738940495697,
+          -74.31667850293684,
+          -73.30282872081351,
+          -72.39977057897855,
+          -71.59451977614003,
+          -70.87639689149836,
+          -70.23646541419966,
+          -69.66711555892795,
+          -69.16174795340784,
+          -68.71452726503287,
+          -68.32018581605759,
+          -67.9738637182534,
+          -67.67097643945132,
+          -67.40710380932113,
+          -67.17789676344181,
+          -66.97899990023912,
+          -66.8059893456342,
+          -66.65432655712094,
+          -66.51932955559627,
+          -66.39616359816439,
+          -66.27985340813044,
+          -66.16531865426934,
+          -66.04743333512052,
+          -65.9211080561341,
+          -65.78139198168617,
+          -65.62275095926508,
+          -65.43918202417018,
+          -65.22516790355104,
+          -64.9758176149684,
+          -64.68699010766115,
+          -64.35538906076654,
+          -63.97861995112737,
+          -63.55520475992862,
+          -63.084554450080724,
+          -62.56690376648851,
+          -62.00321627453754,
+          -61.39506944506595,
+          -60.74452995992336,
+          -60.054028495068536,
+          -59.32624145963501,
+          -58.56398499238492,
+          -57.77012433973175,
+          -56.94749983909643,
+          -56.09886925347744,
+          -54.66757845394659,
+          -52.71981511222156,
+          -50.75529837651405,
+          -48.77639253742144,
+          -46.78522341208058,
+          -44.783696143944006,
+          -42.773512752632456,
+          -40.75618909547731,
+          -38.7330710053671,
+          -36.70534946533297,
+          -34.67407475782433,
+          -32.6401695839541,
+          -30.6044411874081,
+          -28.567592543020208,
+          -26.530232685287718,
+          -22.969625220011274,
+          -17.881598367761267,
+          -12.802909211382252,
+          -7.736632217325807,
+          -2.685440762267255,
+          2.3497606097753265,
+          7.378612636518801,
+          12.407464663262274,
+          17.43631669000575,
+          22.465168716749226,
+          27.4940207434927,
+          32.52287277023618,
+          40.06615081035139,
+          50.12385486383834,
+          60.18155891732529,
+          70.23926297081223,
+          80.29696702429918,
+          90.35467107778612,
+          105.44122715801655,
+          125.55663526499045,
+          145.67204337196435,
+          165.78745147893824,
+          185.90285958591213,
+          201.99518607149125,
+          214.06443093567557,
+          226.1336757998599,
+          238.20292066404423,
+          250.27216552822856,
+          262.3414103924129,
+          274.41065525659724,
+          286.47990012078156,
+          298.5491449849659,
+          310.6183898491502,
+          322.68763471333455,
+          334.7568795775189,
+          346.8261244417032,
+          358.8953693058875,
+          370.96461417007185,
+          383.0338590342562,
+          395.1031038984405,
+          407.17234876262484,
+          419.24159362680916,
+          431.3108384909935,
+          443.3800833551778,
+          455.44932821936214,
+          467.51857308354647,
+          479.5878179477308,
+          491.6570628119151
+        ],
+        "groundwater_cm": -105.16666669696457,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": -0.14273015706325842,
+        "independent_residual_cm": 3.0878077872387166e-14,
+        "kernel_residual_cm": -3.086420008457935e-14
+      },
+      "restarts": [
+        {
+          "cut": 2,
+          "end": 4,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "103d8160ed6b02d61eaadec787ddcb045884edb21fe07a22733bc5ed77c53c36"
+        },
+        {
+          "cut": 187,
+          "end": 190,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "4be4be19f102049ae0d0461c01cfc4526bee56d7875924d318e7247d9f7f8e37"
+        },
+        {
+          "cut": 365,
+          "end": 367,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "96bbeec91d046969eb93be4cf6fe2c6fb9e5649ada350452286e4f02d4881cb8"
+        },
+        {
+          "cut": 1792,
+          "end": 1827,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "c8db78f5f5c8c7d5022d4408ce20d7189d5a2506cb6d3fdbfa120c92c61f752b"
+        }
+      ],
+      "scope": "Original legacy heat/water trajectory controlled by SWAP5 day transactions. Not native1e-5C, complete energy or whole science.",
+      "events": [
+        {
+          "case": "full-original1827",
+          "seconds": 7.329854942999997,
+          "status": "PASS"
+        },
+        {
+          "case": "own-2-to-4",
+          "seconds": 0.1074745539999995,
+          "status": "PASS"
+        },
+        {
+          "case": "own-187-to-190",
+          "seconds": 0.1150358940000018,
+          "status": "PASS"
+        },
+        {
+          "case": "own-365-to-367",
+          "seconds": 0.10618105999999727,
+          "status": "PASS"
+        },
+        {
+          "case": "own-1792-to-1827",
+          "seconds": 0.2277725159999946,
+          "status": "PASS"
+        }
+      ]
+    },
+    "nomacro-seasonal-hupsel-O2": {
+      "status": "FULL_ORIGINAL1096_AND_OWN_SEASONAL_RESTARTS_PASS",
+      "source_commit": "519821a5feaf8e345c226a6609d7cde31160c16f",
+      "bundle_build_sha256": "10dd4debcf3f569ab7e983b62b517fd0bb3d41d47d1d8d613663d02cd83d62ef",
+      "days": 1096,
+      "maximum_daily_water_residual_cm": 9.997065718650444e-11,
+      "signed_cumulative_daily_residual_cm": 2.6666888331351084e-10,
+      "day188": {
+        "column": 1,
+        "day": 188,
+        "committed": true,
+        "revision": 188,
+        "stock_end_cm": [
+          68.24627332090661,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          68.549564388259,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.2819351829815678,
+          0.0,
+          0.021355884370815276,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -121.22811337784833,
+          -119.21216311414274,
+          -117.40656506931552,
+          -115.77943649261046,
+          -114.30618862136912,
+          -112.96749671713623,
+          -111.74792350348054,
+          -110.63495950371963,
+          -109.61833728035343,
+          -108.68953018541279,
+          -106.1155111670294,
+          -103.52620477890532,
+          -102.17544255756313,
+          -101.68765115341479,
+          -98.52753457939491,
+          -94.70267579236105,
+          -90.79856813175392,
+          -86.77942742120065,
+          -82.62219232162916,
+          -78.31736559030712,
+          -71.57180257267409,
+          -62.17497383553726,
+          -52.46338294871962,
+          -42.5860676412203,
+          -32.63965390144069,
+          -22.662940154734102,
+          -12.670443859645667,
+          -2.6716920147931553,
+          7.328307985206845,
+          17.328307985206845,
+          27.328307985206845,
+          37.32830798520685,
+          47.32830798520685,
+          57.32830798520685
+        ],
+        "groundwater_cm": -137.67169201479317,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 7.032568971609976e-15,
+        "kernel_residual_cm": -7.049916206369744e-15,
+        "solute_end_mg_cm2": 43.552045589000805,
+        "solute_start_mg_cm2": 43.552045589000805,
+        "solute_ledger_mg_cm2": [
+          43.552045589000805,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "solute_independent_residual_mg_cm2": 0.0,
+        "uptake_terms_cm": [
+          0.2819351829815678,
+          0.2819351829815678,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -1.3062467774105357e-15
+      },
+      "restarts": [
+        {
+          "cut": 2,
+          "end": 4,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "37f3f8f194fb145c2e80868caa29a7fa762d8b19b81a295d7de297a0ef0bf4c0"
+        },
+        {
+          "cut": 4,
+          "end": 6,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "a3fb2eb9e31cb28589e490cf51d1cb4b7c36e976f82cfb3f464ee69ddd659a4e"
+        },
+        {
+          "cut": 5,
+          "end": 7,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "6dcc63014c01a16edfb722a3ded61ee6399061db44b4e8bef8e7fe94e3b19c5a"
+        },
+        {
+          "cut": 120,
+          "end": 122,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "d451de495610f6ce6350f3b4dc0b2bfa8838b6b1559e08346ebf01f35534c110"
+        },
+        {
+          "cut": 365,
+          "end": 367,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "aacdec8a54bdb579e59c58d7bf16573306b45ddaca1c3cdff8703c7cfdd3e98b"
+        },
+        {
+          "cut": 523,
+          "end": 526,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "89c00076e78e33f3ebe3805e620beba84718a8179ce770b9516aa5cea5b719b2"
+        },
+        {
+          "cut": 583,
+          "end": 585,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "5f7b77584490ff9b74f1f94a3bf1619219989bbdd73a2f41e9a4ba94cdf78be4"
+        },
+        {
+          "cut": 730,
+          "end": 732,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "4d0fef8b0f002d06eb96ae967137af07d4ecb455142b2f8d7611b9532211f0f1"
+        },
+        {
+          "cut": 1061,
+          "end": 1096,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "1c5c6019384356225241d666a169a5445626447cec6f164e7726c757c2a67e4f"
+        }
+      ],
+      "scope": "Original legacy heat/water trajectory controlled by SWAP5 day transactions. Not native1e-5C, complete energy or whole science.",
+      "day584": {
+        "column": 1,
+        "day": 584,
+        "committed": true,
+        "revision": 584,
+        "stock_end_cm": [
+          67.37208945511425,
+          0.0,
+          0.0,
+          1.4585652408510016e-20,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          65.90032628800421,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          1.9999999999999987,
+          0.0,
+          0.0,
+          0.0,
+          0.09429757945465221,
+          0.0,
+          0.4112794413849033,
+          0.0,
+          0.022659812050394974,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -163.34043137101511,
+          -162.33042695438314,
+          -162.58747958336033,
+          -163.28807116330896,
+          -164.58718728023277,
+          -166.2995339642134,
+          -167.99676514089109,
+          -169.39901165542915,
+          -171.05796498405596,
+          -175.62795127543532,
+          -392.23286862585593,
+          -590.026942505723,
+          -238.84557657121977,
+          -134.3755213669271,
+          -115.92703740943473,
+          -104.41570182230284,
+          -94.74924368830065,
+          -86.39321819846536,
+          -78.96875391594193,
+          -72.21310132451433,
+          -63.03546377098006,
+          -51.751856537328095,
+          -41.124415941348886,
+          -30.84468056218481,
+          -20.73818561067927,
+          -10.708493115844364,
+          -0.7080972747251717,
+          9.291902725274827,
+          19.291902725274827,
+          29.291902725274827,
+          39.29190272527483,
+          49.29190272527483,
+          59.29190272527483,
+          69.29190272527482
+        ],
+        "groundwater_cm": -125.70809727472518,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 7.556440875702563e-15,
+        "kernel_residual_cm": -7.549516567451064e-15,
+        "solute_end_mg_cm2": 24.106366037351954,
+        "solute_start_mg_cm2": 24.106366037351954,
+        "solute_ledger_mg_cm2": [
+          24.106366037351954,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "solute_independent_residual_mg_cm2": 0.0,
+        "uptake_terms_cm": [
+          0.41659875675100727,
+          0.4112794413849033,
+          0.0005250728162170099,
+          0.004794242549886477,
+          0.0,
+          0.0
+        ],
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -1.4568898930138185e-14
+      },
+      "maximum_daily_solute_residual_mg_cm2": 2.1610435979544247e-13,
+      "signed_cumulative_daily_solute_residual_mg_cm2": -2.7733259900138115e-12,
+      "events": [
+        {
+          "case": "full-original1096",
+          "seconds": 3.830103540000003,
+          "status": "PASS"
+        },
+        {
+          "case": "own-2-to-4",
+          "seconds": 0.1071747239999965,
+          "status": "PASS"
+        },
+        {
+          "case": "own-4-to-6",
+          "seconds": 0.11555693100000042,
+          "status": "PASS"
+        },
+        {
+          "case": "own-5-to-7",
+          "seconds": 0.10683576099999925,
+          "status": "PASS"
+        },
+        {
+          "case": "own-120-to-122",
+          "seconds": 0.10876400000000075,
+          "status": "PASS"
+        },
+        {
+          "case": "own-365-to-367",
+          "seconds": 0.19658896700000383,
+          "status": "PASS"
+        },
+        {
+          "case": "own-523-to-526",
+          "seconds": 0.11266970799999854,
+          "status": "PASS"
+        },
+        {
+          "case": "own-583-to-585",
+          "seconds": 0.1332411329999985,
+          "status": "PASS"
+        },
+        {
+          "case": "own-730-to-732",
+          "seconds": 0.10841908700000147,
+          "status": "PASS"
+        },
+        {
+          "case": "own-1061-to-1096",
+          "seconds": 0.19143009900000152,
+          "status": "PASS"
+        }
+      ]
+    },
+    "nomacro-seasonal-grass-O0": {
+      "status": "FULL_ORIGINAL1827_AND_OWN_SEASONAL_RESTARTS_PASS",
+      "source_commit": "519821a5feaf8e345c226a6609d7cde31160c16f",
+      "bundle_build_sha256": "1fb651559673d0f5c4ff0319eac1abbab248a26aa9a2bb710782e54a2eb32d13",
+      "days": 1827,
+      "maximum_daily_water_residual_cm": 6.350762067627882e-14,
+      "signed_cumulative_daily_residual_cm": -1.11290712138631e-13,
+      "day188": {
+        "column": 1,
+        "day": 188,
+        "committed": true,
+        "revision": 188,
+        "stock_end_cm": [
+          215.93388946803427,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          215.0797849309545,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          1.0600000000143968,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.14273015706325842,
+          0.07469180756997172,
+          0.0,
+          0.12513634446449667,
+          0.0,
+          0.1487974679633926,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -86.71346979551144,
+          -84.04513627525539,
+          -81.79920852687685,
+          -79.87528086561824,
+          -78.20634408324722,
+          -76.74523358182161,
+          -75.45738940495697,
+          -74.31667850293684,
+          -73.30282872081351,
+          -72.39977057897855,
+          -71.59451977614003,
+          -70.87639689149836,
+          -70.23646541419966,
+          -69.66711555892795,
+          -69.16174795340784,
+          -68.71452726503287,
+          -68.32018581605759,
+          -67.9738637182534,
+          -67.67097643945132,
+          -67.40710380932113,
+          -67.17789676344181,
+          -66.97899990023912,
+          -66.8059893456342,
+          -66.65432655712094,
+          -66.51932955559627,
+          -66.39616359816439,
+          -66.27985340813044,
+          -66.16531865426934,
+          -66.04743333512052,
+          -65.9211080561341,
+          -65.78139198168617,
+          -65.62275095926508,
+          -65.43918202417018,
+          -65.22516790355104,
+          -64.9758176149684,
+          -64.68699010766115,
+          -64.35538906076654,
+          -63.97861995112737,
+          -63.55520475992862,
+          -63.084554450080724,
+          -62.56690376648851,
+          -62.00321627453754,
+          -61.39506944506595,
+          -60.74452995992336,
+          -60.054028495068536,
+          -59.32624145963501,
+          -58.56398499238492,
+          -57.77012433973175,
+          -56.94749983909643,
+          -56.09886925347744,
+          -54.66757845394659,
+          -52.71981511222156,
+          -50.75529837651405,
+          -48.77639253742144,
+          -46.78522341208058,
+          -44.783696143944006,
+          -42.773512752632456,
+          -40.75618909547731,
+          -38.7330710053671,
+          -36.70534946533297,
+          -34.67407475782433,
+          -32.6401695839541,
+          -30.6044411874081,
+          -28.567592543020208,
+          -26.530232685287718,
+          -22.969625220011274,
+          -17.881598367761267,
+          -12.802909211382252,
+          -7.736632217325807,
+          -2.685440762267255,
+          2.3497606097753265,
+          7.378612636518801,
+          12.407464663262274,
+          17.43631669000575,
+          22.465168716749226,
+          27.4940207434927,
+          32.52287277023618,
+          40.06615081035139,
+          50.12385486383834,
+          60.18155891732529,
+          70.23926297081223,
+          80.29696702429918,
+          90.35467107778612,
+          105.44122715801655,
+          125.55663526499045,
+          145.67204337196435,
+          165.78745147893824,
+          185.90285958591213,
+          201.99518607149125,
+          214.06443093567557,
+          226.1336757998599,
+          238.20292066404423,
+          250.27216552822856,
+          262.3414103924129,
+          274.41065525659724,
+          286.47990012078156,
+          298.5491449849659,
+          310.6183898491502,
+          322.68763471333455,
+          334.7568795775189,
+          346.8261244417032,
+          358.8953693058875,
+          370.96461417007185,
+          383.0338590342562,
+          395.1031038984405,
+          407.17234876262484,
+          419.24159362680916,
+          431.3108384909935,
+          443.3800833551778,
+          455.44932821936214,
+          467.51857308354647,
+          479.5878179477308,
+          491.6570628119151
+        ],
+        "groundwater_cm": -105.16666669696457,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": -0.14273015706325842,
+        "independent_residual_cm": 3.0878077872387166e-14,
+        "kernel_residual_cm": -3.086420008457935e-14
+      },
+      "restarts": [
+        {
+          "cut": 2,
+          "end": 4,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "98389bdf2ac5a4e80fb8434228ff40abbe2de5c1646d5e7c251dcba1092d5e78"
+        },
+        {
+          "cut": 187,
+          "end": 190,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "bd5fb79fdc664f89c1a8af79115d9dd9cdbf69dcff10b041198d83c4576f7d98"
+        },
+        {
+          "cut": 365,
+          "end": 367,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "73c1b41d77554aed0d6c82f3d6facf49a29cc0ef9b112705a574c656121ae77b"
+        },
+        {
+          "cut": 1792,
+          "end": 1827,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "a473e5d2a5c963ec1c93e07666dc508407ed9d76c377d667e29136dc8fe1b599"
+        }
+      ],
+      "scope": "Original legacy heat/water trajectory controlled by SWAP5 day transactions. Not native1e-5C, complete energy or whole science.",
+      "events": [
+        {
+          "case": "full-original1827",
+          "seconds": 7.137256201,
+          "status": "PASS"
+        },
+        {
+          "case": "own-2-to-4",
+          "seconds": 0.10335388299999693,
+          "status": "PASS"
+        },
+        {
+          "case": "own-187-to-190",
+          "seconds": 0.11569644000000068,
+          "status": "PASS"
+        },
+        {
+          "case": "own-365-to-367",
+          "seconds": 0.10287090399999954,
+          "status": "PASS"
+        },
+        {
+          "case": "own-1792-to-1827",
+          "seconds": 0.2962389420000022,
+          "status": "PASS"
+        }
+      ]
+    },
+    "nomacro-seasonal-hupsel-O0": {
+      "status": "FULL_ORIGINAL1096_AND_OWN_SEASONAL_RESTARTS_PASS",
+      "source_commit": "519821a5feaf8e345c226a6609d7cde31160c16f",
+      "bundle_build_sha256": "583c333cb6a591dacfaa13e9dd074d8e5ca1179eddc3c972c4ed6d798b2dbc48",
+      "days": 1096,
+      "maximum_daily_water_residual_cm": 9.997065718650444e-11,
+      "signed_cumulative_daily_residual_cm": 2.6666888331351084e-10,
+      "day188": {
+        "column": 1,
+        "day": 188,
+        "committed": true,
+        "revision": 188,
+        "stock_end_cm": [
+          68.24627332090661,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          68.549564388259,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.2819351829815678,
+          0.0,
+          0.021355884370815276,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -121.22811337784833,
+          -119.21216311414274,
+          -117.40656506931552,
+          -115.77943649261046,
+          -114.30618862136912,
+          -112.96749671713623,
+          -111.74792350348054,
+          -110.63495950371963,
+          -109.61833728035343,
+          -108.68953018541279,
+          -106.1155111670294,
+          -103.52620477890532,
+          -102.17544255756313,
+          -101.68765115341479,
+          -98.52753457939491,
+          -94.70267579236105,
+          -90.79856813175392,
+          -86.77942742120065,
+          -82.62219232162916,
+          -78.31736559030712,
+          -71.57180257267409,
+          -62.17497383553726,
+          -52.46338294871962,
+          -42.5860676412203,
+          -32.63965390144069,
+          -22.662940154734102,
+          -12.670443859645667,
+          -2.6716920147931553,
+          7.328307985206845,
+          17.328307985206845,
+          27.328307985206845,
+          37.32830798520685,
+          47.32830798520685,
+          57.32830798520685
+        ],
+        "groundwater_cm": -137.67169201479317,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 7.032568971609976e-15,
+        "kernel_residual_cm": -7.049916206369744e-15,
+        "solute_end_mg_cm2": 43.552045589000805,
+        "solute_start_mg_cm2": 43.552045589000805,
+        "solute_ledger_mg_cm2": [
+          43.552045589000805,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "solute_independent_residual_mg_cm2": 0.0,
+        "uptake_terms_cm": [
+          0.2819351829815678,
+          0.2819351829815678,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -1.3062467774105357e-15
+      },
+      "restarts": [
+        {
+          "cut": 2,
+          "end": 4,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "515593907cee9b713a74e729eeb85d1d6453191268e1c0df5076be5ccc86e450"
+        },
+        {
+          "cut": 4,
+          "end": 6,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "68da23e0a9124d12eeef53c568eedf42da87abbf6f1845aeaea1d00b411b8947"
+        },
+        {
+          "cut": 5,
+          "end": 7,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "601ab7302d8131be3db484b3dba8d6c4678044785827d237789a31162305450a"
+        },
+        {
+          "cut": 120,
+          "end": 122,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "01b5ec35707a9c049cec128d334757b5177f6d3eced7dd42ef0a19a2be80205e"
+        },
+        {
+          "cut": 365,
+          "end": 367,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "394f5fb4192307a256f23cf2f284691f6a21df230e88c87a6b2d5401926ecd2b"
+        },
+        {
+          "cut": 523,
+          "end": 526,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "8100a2a6bd5c5985131e1777f19ed48b490bc872e24508187a9278863f12d6ce"
+        },
+        {
+          "cut": 583,
+          "end": 585,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "5cf06c5475e4069126d328e8f1b34f575229ea890d315451eb825b2af73438e1"
+        },
+        {
+          "cut": 730,
+          "end": 732,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "72216be00da057cf462534dc6835faaf1f9faa42912661e18bd8dba881cf5bfd"
+        },
+        {
+          "cut": 1061,
+          "end": 1096,
+          "exact_physical_suffix": true,
+          "exact_native_and_auxiliary_payload": true,
+          "origin_sha256": "92e01ff938170628c1a4b178cb1b133dea41295c3284f98898fe2c72dc5a9a97"
+        }
+      ],
+      "scope": "Original legacy heat/water trajectory controlled by SWAP5 day transactions. Not native1e-5C, complete energy or whole science.",
+      "day584": {
+        "column": 1,
+        "day": 584,
+        "committed": true,
+        "revision": 584,
+        "stock_end_cm": [
+          67.37208945511425,
+          0.0,
+          0.0,
+          1.4585652408510016e-20,
+          0.0,
+          0.0
+        ],
+        "stock_start_cm": [
+          65.90032628800421,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "external_flux_cm": [
+          0.0,
+          0.0,
+          0.0,
+          1.9999999999999987,
+          0.0,
+          0.0,
+          0.0,
+          0.09429757945465221,
+          0.0,
+          0.4112794413849033,
+          0.0,
+          0.022659812050394974,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "pressure_head_cm": [
+          -163.34043137101511,
+          -162.33042695438314,
+          -162.58747958336033,
+          -163.28807116330896,
+          -164.58718728023277,
+          -166.2995339642134,
+          -167.99676514089109,
+          -169.39901165542915,
+          -171.05796498405596,
+          -175.62795127543532,
+          -392.23286862585593,
+          -590.026942505723,
+          -238.84557657121977,
+          -134.3755213669271,
+          -115.92703740943473,
+          -104.41570182230284,
+          -94.74924368830065,
+          -86.39321819846536,
+          -78.96875391594193,
+          -72.21310132451433,
+          -63.03546377098006,
+          -51.751856537328095,
+          -41.124415941348886,
+          -30.84468056218481,
+          -20.73818561067927,
+          -10.708493115844364,
+          -0.7080972747251717,
+          9.291902725274827,
+          19.291902725274827,
+          29.291902725274827,
+          39.29190272527483,
+          49.29190272527483,
+          59.29190272527483,
+          69.29190272527482
+        ],
+        "groundwater_cm": -125.70809727472518,
+        "drainage_outward_cm": 0.0,
+        "bottom_outward_cm": 0.0,
+        "independent_residual_cm": 7.556440875702563e-15,
+        "kernel_residual_cm": -7.549516567451064e-15,
+        "solute_end_mg_cm2": 24.106366037351954,
+        "solute_start_mg_cm2": 24.106366037351954,
+        "solute_ledger_mg_cm2": [
+          24.106366037351954,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "solute_independent_residual_mg_cm2": 0.0,
+        "uptake_terms_cm": [
+          0.41659875675100727,
+          0.4112794413849033,
+          0.0005250728162170099,
+          0.004794242549886477,
+          0.0,
+          0.0
+        ],
+        "budget_step_retries": 0,
+        "integrated_guard_residual_cm": -1.4568898930138185e-14
+      },
+      "maximum_daily_solute_residual_mg_cm2": 2.1610435979544247e-13,
+      "signed_cumulative_daily_solute_residual_mg_cm2": -2.7733259900138115e-12,
+      "events": [
+        {
+          "case": "full-original1096",
+          "seconds": 3.886472765999997,
+          "status": "PASS"
+        },
+        {
+          "case": "own-2-to-4",
+          "seconds": 0.10157470099999699,
+          "status": "PASS"
+        },
+        {
+          "case": "own-4-to-6",
+          "seconds": 0.1080389540000013,
+          "status": "PASS"
+        },
+        {
+          "case": "own-5-to-7",
+          "seconds": 0.10395421500000168,
+          "status": "PASS"
+        },
+        {
+          "case": "own-120-to-122",
+          "seconds": 0.10262554399999857,
+          "status": "PASS"
+        },
+        {
+          "case": "own-365-to-367",
+          "seconds": 0.19217115499999693,
+          "status": "PASS"
+        },
+        {
+          "case": "own-523-to-526",
+          "seconds": 0.10775451300000327,
+          "status": "PASS"
+        },
+        {
+          "case": "own-583-to-585",
+          "seconds": 0.12944922100000156,
+          "status": "PASS"
+        },
+        {
+          "case": "own-730-to-732",
+          "seconds": 0.10460276399999913,
+          "status": "PASS"
+        },
+        {
+          "case": "own-1061-to-1096",
+          "seconds": 0.18515134700000146,
+          "status": "PASS"
+        }
+      ]
+    }
+  },
+  "artifacts": [
+    {
+      "artifact": "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f",
+      "id": 13932515585,
+      "zip_sha256": "ac3c5c76a112ffb3c4438f7a147935cf398e7fb6e12b249ccd327f29ff780896",
+      "bytes": 7710170
+    },
+    {
+      "artifact": "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f",
+      "id": 13931253918,
+      "zip_sha256": "4d56d603437df8aaa9e11b6421b58c9ce27dd9f711150881df2c07562014be7a",
+      "bytes": 7710154
+    }
+  ],
+  "archive": "nomacro-calendar-seasonal-linux-20261112.tar.xz",
+  "archive_sha256": "b0ef7cd12c8693f086c274361467f71b292f8030a9a1c7cc1d6f0734f5c2152e",
+  "archive_bytes": 6026356,
+  "members": {
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/BUILD.json": {
+      "sha256": "2cc87ba38e5b251434ed3c6e27c79e746e14b7230a6bce94c677442dc7883263",
+      "bytes": 32177
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/EVENTS.json": {
+      "sha256": "d8008795281380e434387b0e2f651d515d583f3e87bd669f5aba0b0198164ca5",
+      "bytes": 479
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/RESULT.json": {
+      "sha256": "a031a5e568a8cb10ed9a677fc1291c51a00d6bae404b6ff303dfb2cc0dbd8444",
+      "bytes": 5745
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/BUILD.json": {
+      "sha256": "10dd4debcf3f569ab7e983b62b517fd0bb3d41d47d1d8d613663d02cd83d62ef",
+      "bytes": 32174
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/EVENTS.json": {
+      "sha256": "8443794826938441336275979db291b57d84526585907135cc0e3e7a1a13d454",
+      "bytes": 952
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/RESULT.json": {
+      "sha256": "3052c483c03fc2e6bd4f351aef5bfbdc9a02316a1b5b7fac5c06b4d895e52b09",
+      "bytes": 8235
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-1061.zip": {
+      "sha256": "1c5c6019384356225241d666a169a5445626447cec6f164e7726c757c2a67e4f",
+      "bytes": 1384095
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-1096.zip": {
+      "sha256": "26c44b07edcd4477f7eb2828eebb2e655f29ec5b877ed9f3c7cc546cfdf2dab3",
+      "bytes": 1381347
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-120.zip": {
+      "sha256": "d451de495610f6ce6350f3b4dc0b2bfa8838b6b1559e08346ebf01f35534c110",
+      "bytes": 1381236
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-122.zip": {
+      "sha256": "bdb7034b4b6f1c46db7d0c4feee76cebbca8b2484f99c7c68fe10587932cdd8b",
+      "bytes": 1381322
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-2.zip": {
+      "sha256": "37f3f8f194fb145c2e80868caa29a7fa762d8b19b81a295d7de297a0ef0bf4c0",
+      "bytes": 1381106
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-365.zip": {
+      "sha256": "aacdec8a54bdb579e59c58d7bf16573306b45ddaca1c3cdff8703c7cfdd3e98b",
+      "bytes": 1381253
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-367.zip": {
+      "sha256": "8770e54c55f5a3bc3de26df71b36705ee17cf00fad2905cb0f87fc061c27305c",
+      "bytes": 1381221
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-4.zip": {
+      "sha256": "a3fb2eb9e31cb28589e490cf51d1cb4b7c36e976f82cfb3f464ee69ddd659a4e",
+      "bytes": 1381099
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-5.zip": {
+      "sha256": "6dcc63014c01a16edfb722a3ded61ee6399061db44b4e8bef8e7fe94e3b19c5a",
+      "bytes": 1381223
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-523.zip": {
+      "sha256": "89c00076e78e33f3ebe3805e620beba84718a8179ce770b9516aa5cea5b719b2",
+      "bytes": 1381281
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-526.zip": {
+      "sha256": "b84f0968dcc8b0c277b805d8a452b5cf7c01ba9d6a65dc87dd9a99504f5b78e2",
+      "bytes": 1382617
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-583.zip": {
+      "sha256": "5f7b77584490ff9b74f1f94a3bf1619219989bbdd73a2f41e9a4ba94cdf78be4",
+      "bytes": 1384583
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-584.zip": {
+      "sha256": "90b70153a31589a5a87c7f7fb1e5b8f76a9f11d2f6fc31cf94abc5580ed5beb6",
+      "bytes": 1384668
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-585.zip": {
+      "sha256": "b1fde51ddcfe5f772480f9dd84dd1aecaa9aab9e7a89f6090128241988d21649",
+      "bytes": 1384677
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-6.zip": {
+      "sha256": "1345af97c7ed914fbc54e6f48dc60c48b6940b09e1859aa2e29366820b669e19",
+      "bytes": 1381239
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-7.zip": {
+      "sha256": "d664abb2a93985fe3c46e99557535af4d09a5d58b269aa77089a61ff2fe27c41",
+      "bytes": 1381221
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-730.zip": {
+      "sha256": "4d0fef8b0f002d06eb96ae967137af07d4ecb455142b2f8d7611b9532211f0f1",
+      "bytes": 1381230
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/accepted-column-1-day-732.zip": {
+      "sha256": "f2ae01b38bc20807ed64799c29d37267c5bf8128e0cda35a87a8834f2fb9fd6b",
+      "bytes": 1382634
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/daily.jsonl": {
+      "sha256": "b6a0754f4911c114a3dee8b3dda120b9a648894c42c0de66ebc992533bc9360c",
+      "bytes": 1821911
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/kernel.stdout": {
+      "sha256": "bbd131039c97eae404b827c1c46bba6a611f203c28dc43591a4393091afb9b47",
+      "bytes": 143572
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/RESULT.json": {
+      "sha256": "95c57c106abdad988ac89519adaec8644fbfc6f40a2eb35c95ca5c5489705061",
+      "bytes": 57
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-1061-to-1096/accepted-column-1-day-1096.zip": {
+      "sha256": "966a1d41775b315f9154c629f55b4ff6b224f332bf140e1af193c1892a739382",
+      "bytes": 1381345
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-1061-to-1096/daily.jsonl": {
+      "sha256": "23ee3b471a323364860e20075fb7ce4fe6d1474f02beb95b78a8839b9c45927a",
+      "bytes": 61411
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-1061-to-1096/kernel.stdout": {
+      "sha256": "051dd12ce25dd777b0d31f6eca5a3223110f142da1f715f32c426e648429a281",
+      "bytes": 4643
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-120-to-122/accepted-column-1-day-122.zip": {
+      "sha256": "2d86c260b2e07cde6c8faf936bac4c8b9d897968659a4796ed30230764553fa2",
+      "bytes": 1381320
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-120-to-122/daily.jsonl": {
+      "sha256": "8ee075360203245e1a96a94784bf8b58abbec9c812e5f83a0a95cfee34b058c7",
+      "bytes": 3347
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-120-to-122/kernel.stdout": {
+      "sha256": "7ec806b30d74cdd4fa4714ab3a13e44b0df0d8804802a806144a102ba3f4c87e",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-2-to-4/accepted-column-1-day-4.zip": {
+      "sha256": "93580bfafefefc70cf11f52b1bf62bd9010ffb9253e85e89c6442409a6a02368",
+      "bytes": 1381099
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-2-to-4/daily.jsonl": {
+      "sha256": "17f985a512a756576f924d53486425c61fe9b49369300bd3617ac6465efae163",
+      "bytes": 3057
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-2-to-4/kernel.stdout": {
+      "sha256": "faa4236ee9ad9ecbde618094f17a5b50b1dd7317b77a885de1c20354c3834d92",
+      "bytes": 282
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-365-to-367/accepted-column-1-day-367.zip": {
+      "sha256": "383aa58dbb109d13c3ad2f3cdaa4485c55052e9e71ade15427e6c0dbabfcdd75",
+      "bytes": 1381219
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-365-to-367/daily.jsonl": {
+      "sha256": "c13a913eab7816bb7a6c3b105106fe23c99d948eefa2ca3ff777360c3a14fd6f",
+      "bytes": 3326
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-365-to-367/kernel.stdout": {
+      "sha256": "f1837497bab44b1e9afa112f56eb6d5a8cac1798e9a79c1e637c07b50669d3e1",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-4-to-6/accepted-column-1-day-6.zip": {
+      "sha256": "32a9d1c6d1beef20bb1775fd26e2c969312efdb79be76263061d383e620fb210",
+      "bytes": 1381239
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-4-to-6/daily.jsonl": {
+      "sha256": "05a883aab64072b55c8f2c0ad539b54407d07b6207b350655fd55e29dbd3f66a",
+      "bytes": 3332
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-4-to-6/kernel.stdout": {
+      "sha256": "0c8b222ad06e73d718fa4f5fc924eb9972ab739119e671a5d96bfa15ae43dee1",
+      "bytes": 282
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-5-to-7/accepted-column-1-day-7.zip": {
+      "sha256": "1bfc20994f7c23d2211da43a11f951afcf61761b9c6d1b683c6d0e8ce7157a52",
+      "bytes": 1381221
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-5-to-7/daily.jsonl": {
+      "sha256": "5f5b21140a353912b1fccb253a3f2e0fe3aae1c20f660d2e25840d6dd0e1b868",
+      "bytes": 3330
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-5-to-7/kernel.stdout": {
+      "sha256": "7d451fd376453e562c6cb0878391308eb47d66cc10e83446f351e711d52800ed",
+      "bytes": 282
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-523-to-526/accepted-column-1-day-526.zip": {
+      "sha256": "d499b1020e6763f3a42d087b7ce1d689fa7fe872c7d55b19368defb5c5244e2a",
+      "bytes": 1382615
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-523-to-526/daily.jsonl": {
+      "sha256": "46d8dd6dde9376a8f206906761ee4afb0dfcd53431010877c8de4d0d69629605",
+      "bytes": 5305
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-523-to-526/kernel.stdout": {
+      "sha256": "463c0152903cdcccc49f30088607da1fae4902220d8fbfcf78b9928a420e1358",
+      "bytes": 419
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-583-to-585/accepted-column-1-day-585.zip": {
+      "sha256": "22b4b46a99615dd7475795b348d231ff3a25b239f1398b3f029c8cd17c25661c",
+      "bytes": 1384675
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-583-to-585/daily.jsonl": {
+      "sha256": "8689fa943d20dde2a41f2e1876989555cf657aa95640340ea354affc612586dd",
+      "bytes": 3331
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-583-to-585/kernel.stdout": {
+      "sha256": "5000eb42648f666fbd4adde73aa902bfd25141f8620db90f6bec9ad34839f01f",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-730-to-732/accepted-column-1-day-732.zip": {
+      "sha256": "9ac3e3362474a659d987d3afad4270beaaeac44d9aaf74c27878e35f6e31a3bd",
+      "bytes": 1382632
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-730-to-732/daily.jsonl": {
+      "sha256": "f77260c2e825cb822cf6ac1409b71bd6129fb34a13adba66723398f98281544d",
+      "bytes": 3417
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-730-to-732/kernel.stdout": {
+      "sha256": "5a8adb81a1450b25dcba080942ca41c643c04d8b2d23db47d3461ea4add78d3e",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-730-to-732/original/result_output.csv": {
+      "sha256": "46487f294824444a6100fec9acc4ec1444836fa71ed081c30759ab862f67b26d",
+      "bytes": 3353
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-583-to-585/original/result_output.csv": {
+      "sha256": "675025d34e74c27dad931f38b0f5349fb4867e36d7ad6329e4577eba04b91726",
+      "bytes": 3039
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-523-to-526/original/result_output.csv": {
+      "sha256": "32136e2b6098d811b0f9788c2f32a94d57d8b6588081b9ff6ab906785f4c1d1b",
+      "bytes": 3654
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-5-to-7/original/result_output.csv": {
+      "sha256": "1db708a0ebae71117c32d6c89d4a83ed174fa66cca656ce92f70d9301836bbba",
+      "bytes": 4056
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-4-to-6/original/result_output.csv": {
+      "sha256": "a34608b73bae969bef8e4d1577d58954269596b3426b9d6d81827d748647fee4",
+      "bytes": 4042
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-365-to-367/original/result_output.csv": {
+      "sha256": "59ca0e697663a20b1f00655f72395f987d74b918484042f90b726a405cec02f7",
+      "bytes": 4044
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-2-to-4/original/result_output.csv": {
+      "sha256": "3a93142fdafb3217effee22aa900bfdd7f882c4c791521923d57ab70c01f693a",
+      "bytes": 3917
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-120-to-122/original/result_output.csv": {
+      "sha256": "1920d0b38dead5b0962be2cba4a0be601b365385fcbb669d1d71ec68f6ad2783",
+      "bytes": 2749
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/own-1061-to-1096/original/result_output.csv": {
+      "sha256": "3363b9dfd61be01b8dcfd32bf12a8604adfc4553fb64072bf2d79f8fff491bb8",
+      "bytes": 31478
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O2/full/original/result_output.csv": {
+      "sha256": "380528c0b902b201ac4916c3c5ae05d1d3fa3c9be579393463368ded72858c0d",
+      "bytes": 899306
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-1792.zip": {
+      "sha256": "c8db78f5f5c8c7d5022d4408ce20d7189d5a2506cb6d3fdbfa120c92c61f752b",
+      "bytes": 25548
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-1827.zip": {
+      "sha256": "06add27eaf1182d18eace438ff1adb72260778d41420a82acfa35aca5c4acb39",
+      "bytes": 22720
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-187.zip": {
+      "sha256": "4be4be19f102049ae0d0461c01cfc4526bee56d7875924d318e7247d9f7f8e37",
+      "bytes": 25132
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-188.zip": {
+      "sha256": "4cfe9091baba7a91fe65134706901c451e7dcc5a0a6ccfefdff34157844b6e4e",
+      "bytes": 25168
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-190.zip": {
+      "sha256": "69e1fe760873ee0a263637ad8ca5cdd88e2c485cf33212f4cffd4fae4dabeccb",
+      "bytes": 25283
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-2.zip": {
+      "sha256": "103d8160ed6b02d61eaadec787ddcb045884edb21fe07a22733bc5ed77c53c36",
+      "bytes": 24295
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-365.zip": {
+      "sha256": "96bbeec91d046969eb93be4cf6fe2c6fb9e5649ada350452286e4f02d4881cb8",
+      "bytes": 27867
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-367.zip": {
+      "sha256": "239f419ef1810a14eef23e9a9ba3d894a2f35c1e9d039b57556d8213dc66ac9d",
+      "bytes": 24337
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/accepted-column-1-day-4.zip": {
+      "sha256": "b33a582a0cfdb2164ceb3cb23b74454796c85cda20a7cd6b3b688b6492df909a",
+      "bytes": 24314
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/daily.jsonl": {
+      "sha256": "80054ddf20900af55cc0ac8b924faa2620914a07e0f3bf7c284fb199d4f4cf68",
+      "bytes": 5193191
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/kernel.stdout": {
+      "sha256": "19bc116433b18f7f34b2623811c935c5dd21bd8fe0a8110baa744eef9b8f0d53",
+      "bytes": 241531
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/RESULT.json": {
+      "sha256": "5635b48720438268a817429c43ad5e5ed91bed8743363b7639205f1b19a802c6",
+      "bytes": 57
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-1792-to-1827/accepted-column-1-day-1827.zip": {
+      "sha256": "eacf2dcb2b3484785debdd6af12b46c604911b3b5652b3061981acfd08228e93",
+      "bytes": 22718
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-1792-to-1827/daily.jsonl": {
+      "sha256": "f122300133e97e47ea2b9e19cf31325dbcf1c1cce3dac711a3151cac07377100",
+      "bytes": 98918
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-1792-to-1827/kernel.stdout": {
+      "sha256": "fe3d03cca68f0bc0fb4a5da38ee99c3a1543e8b83ea2a666ef3a91a05a31737e",
+      "bytes": 4648
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-187-to-190/accepted-column-1-day-190.zip": {
+      "sha256": "8f945265f677dc61b60015cd6a2f5e91a1ef3accee40f29ca1228a951f1beef6",
+      "bytes": 25281
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-187-to-190/daily.jsonl": {
+      "sha256": "9f3176716c5da8a685a300e98021dcbe4e61768b150909d4f0294ad691449063",
+      "bytes": 8545
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-187-to-190/kernel.stdout": {
+      "sha256": "2b5e16366d2f20d70e44ddacf00e387f1ad30a97b774b3b938695c1519ec73b1",
+      "bytes": 424
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-2-to-4/accepted-column-1-day-4.zip": {
+      "sha256": "d27520865a6ffca2736ef03ddbac8a7359804133da23a4faed3fb57b79199dfa",
+      "bytes": 24314
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-2-to-4/daily.jsonl": {
+      "sha256": "f0e7f84f4b00932fed86692e81c30838274c030c86a149bb15d1eab9c60e66fd",
+      "bytes": 5702
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-2-to-4/kernel.stdout": {
+      "sha256": "746c86a78755823aeac11306daafb1723ceccb212b46a98df2ada56b86717d7d",
+      "bytes": 287
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-365-to-367/accepted-column-1-day-367.zip": {
+      "sha256": "79b49b0f5a7d592aa963ad34165f7b262199af8db2f96cb17ff18b5749d1903a",
+      "bytes": 24335
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-365-to-367/daily.jsonl": {
+      "sha256": "d156f9c6cd54c201920cbbaaa3d1e23eb7ed24aedc649382f71e2d6e4919bcdf",
+      "bytes": 5743
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-365-to-367/kernel.stdout": {
+      "sha256": "a9e5c2cd6ba06c32181f6fe5fba0635eede71eb5036f28b5f5636c5e8d25ead7",
+      "bytes": 295
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-365-to-367/original/result_output.csv": {
+      "sha256": "71d9a91f2d7339fa4b9b0601cc6c1314f7f8945b4a44b4df45cd33e7264c9042",
+      "bytes": 886
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-2-to-4/original/result_output.csv": {
+      "sha256": "665a67ab5b3fc789662425eada4165899d292fdd21658e483d4ddc55a5afe243",
+      "bytes": 842
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-187-to-190/original/result_output.csv": {
+      "sha256": "7a73ef54b0c45947112b344ac801267497f09c987042c30c9c43b2c0e5326abd",
+      "bytes": 1074
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/own-1792-to-1827/original/result_output.csv": {
+      "sha256": "faaa78b7955a9ca4ce5462eadf80536bbd512b64c94247e5732dd55440e1b2ad",
+      "bytes": 6128
+    },
+    "nomacro-seasonal-O2-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O2/full/original/result_output.csv": {
+      "sha256": "ca39d617d461275c23dc4fd537a16c97529bae5c925e0dd0b810db3ef3daa658",
+      "bytes": 285869
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/BUILD.json": {
+      "sha256": "1fb651559673d0f5c4ff0319eac1abbab248a26aa9a2bb710782e54a2eb32d13",
+      "bytes": 32177
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/EVENTS.json": {
+      "sha256": "9a765f7a32ebb2f04b6dd7e733c9c41a6a827274b919b7867b98c6e7783d0c69",
+      "bytes": 475
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/RESULT.json": {
+      "sha256": "649bb2cbc4284bbd150a4ef10c3375a64a9babd66cef62edeb4dbf0cf15e9203",
+      "bytes": 5741
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/BUILD.json": {
+      "sha256": "583c333cb6a591dacfaa13e9dd074d8e5ca1179eddc3c972c4ed6d798b2dbc48",
+      "bytes": 32174
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/EVENTS.json": {
+      "sha256": "1ff51e6609c4a6db46b8319d336fb32b01fe1ee2c9875d084e97ce8662fb9046",
+      "bytes": 953
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/RESULT.json": {
+      "sha256": "cb5727e2c43b2e5a940b67135b676671f472ad5ea5b985798ac75a3bde1f924e",
+      "bytes": 8236
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-1061.zip": {
+      "sha256": "92e01ff938170628c1a4b178cb1b133dea41295c3284f98898fe2c72dc5a9a97",
+      "bytes": 1384095
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-1096.zip": {
+      "sha256": "bc0ea383b9916773df622d4b4be0c76ad928bf82d1b0b53071c1db4ef04e7073",
+      "bytes": 1381347
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-120.zip": {
+      "sha256": "01b5ec35707a9c049cec128d334757b5177f6d3eced7dd42ef0a19a2be80205e",
+      "bytes": 1381236
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-122.zip": {
+      "sha256": "219a74d3473e62e9ebef362547cc8406ab55c56256fd40d55a2762067497a0ca",
+      "bytes": 1381322
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-2.zip": {
+      "sha256": "515593907cee9b713a74e729eeb85d1d6453191268e1c0df5076be5ccc86e450",
+      "bytes": 1381106
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-365.zip": {
+      "sha256": "394f5fb4192307a256f23cf2f284691f6a21df230e88c87a6b2d5401926ecd2b",
+      "bytes": 1381253
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-367.zip": {
+      "sha256": "ce44a294201fc68bea35c61432c204c3c6618955f7e6f29954f05050d9534807",
+      "bytes": 1381221
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-4.zip": {
+      "sha256": "68da23e0a9124d12eeef53c568eedf42da87abbf6f1845aeaea1d00b411b8947",
+      "bytes": 1381099
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-5.zip": {
+      "sha256": "601ab7302d8131be3db484b3dba8d6c4678044785827d237789a31162305450a",
+      "bytes": 1381223
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-523.zip": {
+      "sha256": "8100a2a6bd5c5985131e1777f19ed48b490bc872e24508187a9278863f12d6ce",
+      "bytes": 1381281
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-526.zip": {
+      "sha256": "b4a9847d9d765aff45ec389c681e9c8939255e034785e120fb23547b961fc551",
+      "bytes": 1382617
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-583.zip": {
+      "sha256": "5cf06c5475e4069126d328e8f1b34f575229ea890d315451eb825b2af73438e1",
+      "bytes": 1384583
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-584.zip": {
+      "sha256": "04964840805e204f3a25e95cf04eee359b3d4e2392f0ed429995b5f6db3122f2",
+      "bytes": 1384668
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-585.zip": {
+      "sha256": "9ca7a34f10e6f96c1dc6c180092b7aa4c8a9df91120ec69511e94219e4ec011f",
+      "bytes": 1384677
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-6.zip": {
+      "sha256": "406d4a09de7b7f68f101689f03d8e0592d482e902b6903b46c652210e4916e94",
+      "bytes": 1381239
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-7.zip": {
+      "sha256": "fb0e286d1ea425dc9b6cd740ad6755846d421141f655e501f41b96bee0bc4273",
+      "bytes": 1381221
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-730.zip": {
+      "sha256": "72216be00da057cf462534dc6835faaf1f9faa42912661e18bd8dba881cf5bfd",
+      "bytes": 1381230
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/accepted-column-1-day-732.zip": {
+      "sha256": "70630a708605426a9f72b6aeee816a9dbff8b03ac6242e1e3cf95d3c60b53d7f",
+      "bytes": 1382634
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/daily.jsonl": {
+      "sha256": "b6a0754f4911c114a3dee8b3dda120b9a648894c42c0de66ebc992533bc9360c",
+      "bytes": 1821911
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/kernel.stdout": {
+      "sha256": "bbd131039c97eae404b827c1c46bba6a611f203c28dc43591a4393091afb9b47",
+      "bytes": 143572
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/RESULT.json": {
+      "sha256": "95c57c106abdad988ac89519adaec8644fbfc6f40a2eb35c95ca5c5489705061",
+      "bytes": 57
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-1061-to-1096/accepted-column-1-day-1096.zip": {
+      "sha256": "5180e3fde9cc0f3469c3855417f8eedd292488276a052965ef26546fa5ec44b8",
+      "bytes": 1381345
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-1061-to-1096/daily.jsonl": {
+      "sha256": "23ee3b471a323364860e20075fb7ce4fe6d1474f02beb95b78a8839b9c45927a",
+      "bytes": 61411
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-1061-to-1096/kernel.stdout": {
+      "sha256": "051dd12ce25dd777b0d31f6eca5a3223110f142da1f715f32c426e648429a281",
+      "bytes": 4643
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-120-to-122/accepted-column-1-day-122.zip": {
+      "sha256": "1fb2c20ce34d45315a74f056f35909ffb4bfb5c988e11be1270168dc72e787a6",
+      "bytes": 1381320
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-120-to-122/daily.jsonl": {
+      "sha256": "8ee075360203245e1a96a94784bf8b58abbec9c812e5f83a0a95cfee34b058c7",
+      "bytes": 3347
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-120-to-122/kernel.stdout": {
+      "sha256": "7ec806b30d74cdd4fa4714ab3a13e44b0df0d8804802a806144a102ba3f4c87e",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-2-to-4/accepted-column-1-day-4.zip": {
+      "sha256": "b6b45de658afcbb0725a6153ca9432117601dc969d1a71c617b5c58a6d159514",
+      "bytes": 1381099
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-2-to-4/daily.jsonl": {
+      "sha256": "17f985a512a756576f924d53486425c61fe9b49369300bd3617ac6465efae163",
+      "bytes": 3057
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-2-to-4/kernel.stdout": {
+      "sha256": "faa4236ee9ad9ecbde618094f17a5b50b1dd7317b77a885de1c20354c3834d92",
+      "bytes": 282
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-365-to-367/accepted-column-1-day-367.zip": {
+      "sha256": "197a9f5027882b048f7add7204412708a6fa4a2682b96f43738ac3a0544ce01e",
+      "bytes": 1381219
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-365-to-367/daily.jsonl": {
+      "sha256": "c13a913eab7816bb7a6c3b105106fe23c99d948eefa2ca3ff777360c3a14fd6f",
+      "bytes": 3326
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-365-to-367/kernel.stdout": {
+      "sha256": "f1837497bab44b1e9afa112f56eb6d5a8cac1798e9a79c1e637c07b50669d3e1",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-4-to-6/accepted-column-1-day-6.zip": {
+      "sha256": "61b89003ab31e845b88205859204020245f9cb9e2e6f2f6eb4b49962c6bdb375",
+      "bytes": 1381239
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-4-to-6/daily.jsonl": {
+      "sha256": "05a883aab64072b55c8f2c0ad539b54407d07b6207b350655fd55e29dbd3f66a",
+      "bytes": 3332
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-4-to-6/kernel.stdout": {
+      "sha256": "0c8b222ad06e73d718fa4f5fc924eb9972ab739119e671a5d96bfa15ae43dee1",
+      "bytes": 282
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-5-to-7/accepted-column-1-day-7.zip": {
+      "sha256": "74800b33a88daf87470a907b488fe596425fee725f76b8be66195d5634830425",
+      "bytes": 1381221
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-5-to-7/daily.jsonl": {
+      "sha256": "5f5b21140a353912b1fccb253a3f2e0fe3aae1c20f660d2e25840d6dd0e1b868",
+      "bytes": 3330
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-5-to-7/kernel.stdout": {
+      "sha256": "7d451fd376453e562c6cb0878391308eb47d66cc10e83446f351e711d52800ed",
+      "bytes": 282
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-523-to-526/accepted-column-1-day-526.zip": {
+      "sha256": "584d3307e0698d1d784c8a478348241682e82a9e81ad8879771dff5c031e6b36",
+      "bytes": 1382615
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-523-to-526/daily.jsonl": {
+      "sha256": "46d8dd6dde9376a8f206906761ee4afb0dfcd53431010877c8de4d0d69629605",
+      "bytes": 5305
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-523-to-526/kernel.stdout": {
+      "sha256": "463c0152903cdcccc49f30088607da1fae4902220d8fbfcf78b9928a420e1358",
+      "bytes": 419
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-583-to-585/accepted-column-1-day-585.zip": {
+      "sha256": "5f8f8d252af3f8598b2853201f997bd5cd2afc6b6c654b9bf86f55e021f18a28",
+      "bytes": 1384675
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-583-to-585/daily.jsonl": {
+      "sha256": "8689fa943d20dde2a41f2e1876989555cf657aa95640340ea354affc612586dd",
+      "bytes": 3331
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-583-to-585/kernel.stdout": {
+      "sha256": "5000eb42648f666fbd4adde73aa902bfd25141f8620db90f6bec9ad34839f01f",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-730-to-732/accepted-column-1-day-732.zip": {
+      "sha256": "b89ff2200aad029a6f8cd1a3175a5cccd96ae7c837188990c6dfa87bf8230689",
+      "bytes": 1382632
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-730-to-732/daily.jsonl": {
+      "sha256": "f77260c2e825cb822cf6ac1409b71bd6129fb34a13adba66723398f98281544d",
+      "bytes": 3417
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-730-to-732/kernel.stdout": {
+      "sha256": "5a8adb81a1450b25dcba080942ca41c643c04d8b2d23db47d3461ea4add78d3e",
+      "bytes": 290
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-730-to-732/original/result_output.csv": {
+      "sha256": "105885e54172f436ff9c54a8966622851f5d76f42fe61706aa0f7ea789834cd0",
+      "bytes": 3353
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-583-to-585/original/result_output.csv": {
+      "sha256": "5be96895f6f717c32de90699a86134c3715f2cb5ed0e2e34101c4e691d759dd0",
+      "bytes": 3039
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-523-to-526/original/result_output.csv": {
+      "sha256": "22aa8066d6b55bef0040bb0f3ddd5cb030b8f83405e3a2df8c2c073c3da49a1f",
+      "bytes": 3654
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-5-to-7/original/result_output.csv": {
+      "sha256": "367d2a1e4783a28c90d261011d8d494c4086eefc965fe38aa20efb03f7d232a7",
+      "bytes": 4056
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-4-to-6/original/result_output.csv": {
+      "sha256": "49dc75386abe06e700da34d9b79fe58dcff2ae8bfd4f1183f24147dd8908f3d2",
+      "bytes": 4042
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-365-to-367/original/result_output.csv": {
+      "sha256": "b0143cb0fbe0744cb9d8b8199ac2088cb66af26cf3c4b0cdd9ac6c92ddab27ff",
+      "bytes": 4044
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-2-to-4/original/result_output.csv": {
+      "sha256": "b4539a2ac9af6ab07d6cee6d23ac448782ed11b37d05e85cdd49aacacd7ce5b4",
+      "bytes": 3917
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-120-to-122/original/result_output.csv": {
+      "sha256": "1ffda3334cede787050073075f35482e37e032314496237b625fa190a6d1dc33",
+      "bytes": 2749
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/own-1061-to-1096/original/result_output.csv": {
+      "sha256": "11e0ec98a1f3336e1ddd4cb95ed8aca7422d7a2256463f9bd2ebaa07d66528b1",
+      "bytes": 31478
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-hupsel-O0/full/original/result_output.csv": {
+      "sha256": "b6620090dd16df89fd317ec2c69aedc6607ff1d00841c130a4e6f0f8eaf456c3",
+      "bytes": 899306
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-1792.zip": {
+      "sha256": "a473e5d2a5c963ec1c93e07666dc508407ed9d76c377d667e29136dc8fe1b599",
+      "bytes": 25548
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-1827.zip": {
+      "sha256": "f92abf6761e2d3d8a0cd149a117fff7b4a8882011bec74fc881961653091e386",
+      "bytes": 22720
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-187.zip": {
+      "sha256": "bd5fb79fdc664f89c1a8af79115d9dd9cdbf69dcff10b041198d83c4576f7d98",
+      "bytes": 25132
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-188.zip": {
+      "sha256": "373955a95f5e44b5e8101b03012edc741bbf5de9175aa15104ce681d16411be9",
+      "bytes": 25168
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-190.zip": {
+      "sha256": "132e42b150c4dd7da4eb879132316d3081ae339cf82fc7ff682c4ee068036a5f",
+      "bytes": 25283
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-2.zip": {
+      "sha256": "98389bdf2ac5a4e80fb8434228ff40abbe2de5c1646d5e7c251dcba1092d5e78",
+      "bytes": 24295
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-365.zip": {
+      "sha256": "73c1b41d77554aed0d6c82f3d6facf49a29cc0ef9b112705a574c656121ae77b",
+      "bytes": 27867
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-367.zip": {
+      "sha256": "429d1b7b0a28cb86bdcd8fd72e71970b31b0a996f04c4bc05c861802985d174d",
+      "bytes": 24337
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/accepted-column-1-day-4.zip": {
+      "sha256": "48226486a1665275b73d3b7e35f5e38373c3f6f481b882496df4d2b47e177f79",
+      "bytes": 24314
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/daily.jsonl": {
+      "sha256": "80054ddf20900af55cc0ac8b924faa2620914a07e0f3bf7c284fb199d4f4cf68",
+      "bytes": 5193191
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/kernel.stdout": {
+      "sha256": "19bc116433b18f7f34b2623811c935c5dd21bd8fe0a8110baa744eef9b8f0d53",
+      "bytes": 241531
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/RESULT.json": {
+      "sha256": "5635b48720438268a817429c43ad5e5ed91bed8743363b7639205f1b19a802c6",
+      "bytes": 57
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-1792-to-1827/accepted-column-1-day-1827.zip": {
+      "sha256": "decb89ccd02d3610357301df609927370dd97ec509ec54d69e18a1a322859b94",
+      "bytes": 22718
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-1792-to-1827/daily.jsonl": {
+      "sha256": "f122300133e97e47ea2b9e19cf31325dbcf1c1cce3dac711a3151cac07377100",
+      "bytes": 98918
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-1792-to-1827/kernel.stdout": {
+      "sha256": "fe3d03cca68f0bc0fb4a5da38ee99c3a1543e8b83ea2a666ef3a91a05a31737e",
+      "bytes": 4648
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-187-to-190/accepted-column-1-day-190.zip": {
+      "sha256": "4ca19ba22feb9c2da49160917bc0df6b3559d9386e2d7cb66115a8ff69099272",
+      "bytes": 25281
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-187-to-190/daily.jsonl": {
+      "sha256": "9f3176716c5da8a685a300e98021dcbe4e61768b150909d4f0294ad691449063",
+      "bytes": 8545
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-187-to-190/kernel.stdout": {
+      "sha256": "2b5e16366d2f20d70e44ddacf00e387f1ad30a97b774b3b938695c1519ec73b1",
+      "bytes": 424
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-2-to-4/accepted-column-1-day-4.zip": {
+      "sha256": "46dcb8549ba042a0fddafd67064ec34df4fb91b5c0a6eb08055a271e68e89964",
+      "bytes": 24314
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-2-to-4/daily.jsonl": {
+      "sha256": "f0e7f84f4b00932fed86692e81c30838274c030c86a149bb15d1eab9c60e66fd",
+      "bytes": 5702
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-2-to-4/kernel.stdout": {
+      "sha256": "746c86a78755823aeac11306daafb1723ceccb212b46a98df2ada56b86717d7d",
+      "bytes": 287
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-365-to-367/accepted-column-1-day-367.zip": {
+      "sha256": "174e84d7b8034f197f4fcb031c8b398dc77b30fbe6d51eca691ccd479560620a",
+      "bytes": 24335
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-365-to-367/daily.jsonl": {
+      "sha256": "d156f9c6cd54c201920cbbaaa3d1e23eb7ed24aedc649382f71e2d6e4919bcdf",
+      "bytes": 5743
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-365-to-367/kernel.stdout": {
+      "sha256": "a9e5c2cd6ba06c32181f6fe5fba0635eede71eb5036f28b5f5636c5e8d25ead7",
+      "bytes": 295
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-365-to-367/original/result_output.csv": {
+      "sha256": "805700a3a095bb8c0756127c084cf47a32cc4e22c18deaae3765768f26741557",
+      "bytes": 886
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-2-to-4/original/result_output.csv": {
+      "sha256": "0d1acf8f59c604b55dc15d19eaf17c3d92bc9d71f63cfaef36696369997e91dc",
+      "bytes": 842
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-187-to-190/original/result_output.csv": {
+      "sha256": "21728c75e1170e7e81f47f089922ee4d687462a30b6962bf232b3de3e0ea45a3",
+      "bytes": 1074
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/own-1792-to-1827/original/result_output.csv": {
+      "sha256": "0ecac85a458e6d3c070bdd93679377e582011b8c40084a94fc1c3e4c928bed1b",
+      "bytes": 6128
+    },
+    "nomacro-seasonal-O0-519821a5feaf8e345c226a6609d7cde31160c16f/nomacro-seasonal-grass-O0/full/original/result_output.csv": {
+      "sha256": "56467725f71ede96fbdc0481b41eef6adacfe2ab3d04a0b72cee96187bfc9276",
+      "bytes": 285869
+    }
+  }
+}

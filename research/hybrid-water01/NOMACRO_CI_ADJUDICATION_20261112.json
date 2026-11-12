@@ -1,0 +1,60 @@
+{
+  "canonical": "84e297af23b2b6e90c927b958fecb5e24228b975",
+  "status": "FOUR_HISTORICAL_PREFLIGHT_FAILURES_ALREADY_REJECT_CANONICAL_NO_PHYSICAL_BASELINE_RERUN",
+  "checks": {
+    "modular-feedback": {
+      "canonical_guard": "application source differs from tested head",
+      "tested_head": "6f2ba26ead83ffb8222a332746b93a014f4e461b",
+      "actual_canonical_diff_sha256": "3f4e8d56f514bbfb1254beef431d5d87524a023e91b5df947f2a22a92ffef705"
+    },
+    "original-reader": {
+      "canonical_guard": "unreviewed delta",
+      "expected_delta_members": 13,
+      "canonical_delta_members": 727
+    },
+    "reference-cancellation-floor": {
+      "canonical_guard": "P2E07 mutated src or reference",
+      "preregistered_base": "d0a41c39d7ff95db99bcf8360ac9b474fdf164d7",
+      "actual_canonical_diff_sha256": "32f722f84a05e3a0e3f19e36085324b58082ed6e268300d189eabd1165b079cb"
+    },
+    "Verify current corrected reference": {
+      "hardcoded_expected_snapshot": "B1.11",
+      "actual_canonical_snapshot": "B1.12",
+      "consumed_manifest_unchanged_in_PR": true
+    }
+  },
+  "unchanged_owner_long_AHL_auto_run": {
+    "run": 43193574813,
+    "disposition": "CANCEL_REQUESTED_NOT_SELECTED_IMPACT",
+    "reason": "AHL owner/source unchanged; selected no-macro O0/O2 contracts pass; unrelated long campaign not selected.",
+    "status": "completed",
+    "conclusion": "cancelled"
+  },
+  "actual_failed_job_logs": {
+    "131099467047": {
+      "file": "nomacro-auto-job-131099467047.log.gz",
+      "raw_bytes": 475851,
+      "raw_sha256": "53de0511a24e838b842545422acf7792f3a5751473ee021a7bc6aa9d6d4dc75a",
+      "gzip_sha256": "48a56f6a3462fa9d6cc9e95b756c9222e4accf33ff7bcd711c023d81c8bbc796"
+    },
+    "131098710335": {
+      "file": "nomacro-auto-job-131098710335.log.gz",
+      "raw_bytes": 48000,
+      "raw_sha256": "d14a6f738ec6670f3a0ba35acbcb68149082ce4b6fe37547f0bcdf5f1d7d08b0",
+      "gzip_sha256": "9af69aa8a670b4dbc7484f54f22e3ac255d820219b4c13035277c24a10ecf38a"
+    },
+    "131098709850": {
+      "file": "nomacro-auto-job-131098709850.log.gz",
+      "raw_bytes": 500010,
+      "raw_sha256": "2271b668f5760ff9d989fdc1a27d3c7905d1d8c9c4ba463ffa7a22c8ea0f3ac0",
+      "gzip_sha256": "858b85c48782b5047535a4b33ebdc76eb3549b92bbedf532ffaae0878082d9aa"
+    },
+    "131098709783": {
+      "file": "nomacro-auto-job-131098709783.log.gz",
+      "raw_bytes": 464108,
+      "raw_sha256": "feadd09b6244ead86e41c43105c355c2a757f4713ab636834412f47036f43c09",
+      "gzip_sha256": "f7cdaf7fe747882b12022326d634632fbfc4dcefa2c10d1c9d041e19a82a761e"
+    }
+  },
+  "log_capture": "Actual REST response bytes with exact digests and lengths; no local truncation; retained guard failures are not PASS"
+}

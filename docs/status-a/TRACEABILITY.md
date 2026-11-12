@@ -1,5 +1,15 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+## No-macro successor authority
+
+The [PR1658 application boundary](../science/SWAP5_FUNCTIONAL_CLOSURE.md) separates
+the selected no-macro configurations from preserved active-macro capabilities.
+Source/build/input identities, raw proofs, the retained terminal failure and its
+qualified calendar-state successor are owned by
+`integration/f-ci/NOMACRO_RELEASE_20261112.json` and the release workpoint in
+`research/hybrid-water01/NOMACRO_RELEASE_WORKPOINT.md`. Original failed oxygen
+criteria, reference limitations and supported heat scope remain explicit.
+
 ## Current original-project application successor,12November2026
 
 The admitted applications complete Grassgrowth1827,Andelst481 and Hupsel1096

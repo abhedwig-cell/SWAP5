@@ -1,7 +1,11 @@
 # SWAP5-NOMACRO-CLOSURE01 release workpoint
 
-Current candidate successor: the accepted seasonal-clock/calendar omission is
-repaired. Windows and Ubuntu26.04 donorO2/kernelO0/O2 complete1461days and all
+Current canonically admitted successor: PR1658 merged at
+`c8a75378f1eef315441366bff421dbb6bc991127`. Its entire tree exactly matches
+qualified PR head4f9cbe1b636f85870a97f143347f66e71463f783 (treeea98a50a…).
+`NOMACRO_MERGE_20261112.json` records the actual fetched postimage. The accepted
+seasonal-clock/calendar omission is repaired. Windows and Ubuntu26.04
+donorO2/kernelO0/O2 complete1461days and all
 five strict own windows, including1459→1461, exactly. Earlier failed results below
 are retained chronology, not the current verdict. Exact current evidence:
 `NOMACRO_CALENDAR_WINDOWS_20261112.json`, `NOMACRO_CALENDAR_LINUX_20261112.json`
@@ -197,3 +201,69 @@ Grassgrowth1827 (previously~11s) and Hupsel1096 (previously5.8s), O0/O2, followe
 by their existing4/9 seasonal windows. Each full call is now capped at60s instead
 of the older180s runner limit. This is format/clock requalification after an actual
 dependency change, not a repeat of an unchanged historical benchmark or oracle.
+
+Current-codec seasonal preservation now also passes on Ubuntu26.04 using the
+EXACT binaries already qualified in run43189426052: run43193830146 succeeds in
+both jobs, with no new compilation or repeated SaltFarm run. Grassgrowth1827
+takes7.14/7.33s, Hupsel1096 takes3.89/3.83s; all4/9 original seasonal windows pass
+with each kernel. Windows full calls took14.80/14.92s and9.08/9.09s while four
+cohorts ran concurrently. Across both platforms/profiles there are72 exact own
+windows (SaltFarm5,Grassgrowth4,Hupsel9 per cohort). Windows original complete
+Grassgrowth/Hupsel ledgers remain byte-identical to their admitted controls.
+
+The automatic broad PR checks retain four historical preflight failures. Actual
+logs and direct canonical prerequisite comparisons are preserved in
+`NOMACRO_CI_ADJUDICATION_20261112.json`: the old application-source equality gate,
+dataqual12's13-file delta expectation (canonical already727), the oldP2E07 frozen
+src/reference guard, and B1.11 metadata expectation against canonical B1.12.
+These remain FAILED, not promoted to PASS; none is a new physical regression.
+An automatically started long AHL run was canceled as NOT_SELECTED_IMPACT because
+its owning source is unchanged. Final proof-only publication skips redundant
+automatic model campaigns; both selected Ubuntu qualifications are terminal PASS.
+
+## Next concrete functional package
+
+Close supported full-period heat export for the three admitted no-macro
+configurations. Reuse the existing real heat/storage observer and accepted-day
+reader; emit compact numerical conduction/storage summaries rather than millions
+of redundant node lines. First compare compact and existing detailed output on
+the already qualified three-day saline-irrigation window, retaining native and
+physical byte identity and unchanged1e-9J/cm2 checks. Select a complete-period
+execution only after that discriminator passes; use a60s model cap and retain
+source/build/input identities. Keep missing mass-carried energy unavailable,
+the zero-advection failure visible and whole scientific equivalence separate.
+No active model worker or incomplete selected check remains at this checkpoint.
+Macro work remains frozen; the half-hour recovery automation remains useful.
+
+## Active supported-heat export package
+
+At70045d502 the existing observer accepts an optional compact flag; its default
+still exports detailed nodes. HEAT_SUMMARY1 carries the same actual coefficient
+reductions and physical-availability flags, without redundant node rows. The
+existing accepted reader distinguishes this aggregate provenance explicitly and
+checks unchanged conduction limits plus consecutive accepted time support.
+No node-reconstruction claim is made for compact files. The existing qualifier
+now supports current Grassgrowth/Hupsel/SaltFarm builds and conditionally selected
+full periods. Owning acceptance/cost selection is
+`integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json`.
+First gate: actual SaltFarm108–110 compact versus retained detailed headers,
+independent detailed reconstruction and complete native/physical control. No
+full-period execution is selected before that gate completes.
+
+Short gate PASS: SaltFarm108–110 emits270 compact steps with exactly the same
+summary tokens as retained detailed headers; complete physical/native outputs
+remain exact. Both accepted readers agree within their existing1e-9J/cm2 budget,
+and externally unaccepted steps stay absent. Output falls from11,354,520 to65,118
+bytes (174fold reduction). Full no-macro periods are now selected, reusing current
+native builds and source-bound complete controls, with60s caps. No original
+physical solver or forcing is changed by the observer.
+
+First full feedback retained: SaltFarmO2 and HupselO0/O2 complete with exact
+physical/native output, but concurrent SaltFarmO0 and GrassO0/O2 hit the selected
+60s total observer/build cap. No tolerance or cap is widened. Hypothesis: reopening
+and closing the compact output for every real heat step dominates Windows I/O.
+Selected one repair: retain one output channel owned by each private legacy worker
+process, closed/flushed at normal worker shutdown. It carries no physical state;
+the detailed observer lifecycle is unchanged. Repeat the short discriminator,
+then the failed full calls before selecting further replays. Censored files remain
+ineligible for complete accepted-day qualification.
