@@ -2,8 +2,8 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "PUBLISHER_BINARY_REUSE_IMPLEMENTED_PENDING_QUALIFICATION",
-  "implementation": "Reuse one current-toolchain validation record only within the same CLI invocation. No cross-call compiler cache, no skipped file/binary/binding validation, no physics/state/codec/Fortran change.",
+  "status": "PUBLISHER_WINDOWS_UBUNTU_O0_O2_FULL_EXACT_AND_REFUSALS_PASS_PENDING_PR",
+  "implementation": "Compile unchanged restart_publish.c once per registered no-macro build; bind C source, shared library and GCC binary SHA. Validate before output and loading; no process/physical checkpoint cache. Invocation-local compiler verification improvement remains admitted.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
     "improvement": "Same-OS baseline versus successor complete physical journals, all printed crop fields and own native/auxiliary restart payloads exact; unchanged daily water/solute guards. RelevantO0/O2 and failure log retention.",
@@ -14,7 +14,7 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Fresh source provider and O0/O2 same-platform exact full physical/CSV/native comparison; changed source/library/compiler refusal controls; Linux same qualification before admission. No changed Fortran, C publication protocol, tolerances or codecs.",
+  "next_action": "Publish and admit source-bound durable publisher reuse via PR; verify canonical tree and unchanged frozen RC1. Then present quantified portable-science limits without asserting whole equivalence or fitting tolerances.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
@@ -99,5 +99,53 @@
     "qualified_head": "738cf2a86417e18497ed2fb136b59750980cbf78",
     "tree": "0a6bdd4a713236a4a9ddf1640503b0dacc3442c9",
     "postimage_exact": true
+  },
+  "publisher_qualification": {
+    "runtime_source": "459b45244",
+    "windows": "integration/f-ci/rc1-perf01/PUBLISHER_WINDOWS_PROFILES.json",
+    "windows_external": "integration/f-ci/rc1-perf01/PUBLISHER_COUPLING_WINDOWS.json",
+    "windows_refusals": "integration/f-ci/rc1-perf01/PUBLISHER_WINDOWS_REFUSALS.json",
+    "linux": {
+      "run": 43258743503,
+      "source": "6d29936becd9ea36043d8047e4dab18bf263ecc2",
+      "wiring_only": ".github/workflows/grass-thermal-production.yml",
+      "status": "completed",
+      "conclusion": "success",
+      "artifact": {
+        "id": 13963012571,
+        "name": "rc1-perf-6d29936becd9ea36043d8047e4dab18bf263ecc2",
+        "size_in_bytes": 51018286,
+        "digest": "sha256:c502b36e109443f43d81037f815d4631e9a1cf1ba8f27ae6bbbb3d10ea7aef2e"
+      }
+    },
+    "proof": {
+      "path": "integration/f-ci/rc1-perf01/publisher-proof.tar.gz",
+      "sha256": "96bf31d680e3759e9380de3cea1c2d8a84fd12d7ad72c7d01326deac38a752c1",
+      "bytes": 49602154,
+      "members": 359,
+      "forward_member_scan_pass": true
+    }
+  },
+  "test_selection": {
+    "selected": [
+      "All3 O0 four-day exact own native/physical/CSV",
+      "All3 O2 complete exact physical/CSV and full own suffix/native",
+      "All3 O0/O2 external discard/replay, stale token, interleaved-instance native equality, accepted day1-to2 restore on Windows",
+      "Changed C source identity/shared-library/current GCC refusals before output Windows and Ubuntu"
+    ],
+    "not_selected": {
+      "full_moving_FCI": "NOT_SELECTED_IMPACT: no Fortran, C durability operation, numerical physics, codecs or external ABI changes",
+      "macro": "NOT_SELECTED_OWNER_SCOPE",
+      "whole_science_recalculation": "NOT_SELECTED_UNCHANGED_FORTRAN_AND_EXACT_FULL_PHYSICAL_PRESERVATION"
+    }
+  },
+  "portable_point_control": {
+    "project": "Hupsel",
+    "day": 584,
+    "windows_gnu15_oxygen_cm": 0.004793608905922416,
+    "ubuntu_gnu15_oxygen_cm": 0.004794242549886477,
+    "absolute_spread_cm": 6.336439640616462e-07,
+    "existing_point_bound_cm": 5.371840000016327e-07,
+    "disposition": "EXCEEDS_EXISTING_POINT_BOUND_NOT_A_NEW_REFERENCE_QUALIFICATION"
   }
 }

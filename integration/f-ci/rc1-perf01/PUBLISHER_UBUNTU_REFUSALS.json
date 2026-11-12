@@ -1,0 +1,131 @@
+{
+  "status": "INVOCATION_LOCAL_TOOLCHAIN_REFUSALS_PASS",
+  "events": [
+    {
+      "label": "current-toolchain-missing",
+      "refused_before_output": true,
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/rc1-new-provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/rc1-perf-proof/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/rc1-perf-proof/publisher-refusals/current-toolchain-missing",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "foreign-build-compiler",
+      "refused_before_output": true,
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/rc1-new-provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/rc1-perf-proof/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/rc1-perf-proof/publisher-refusals/foreign-build-compiler",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "foreign-provider-compiler",
+      "refused_before_output": true,
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/rc1-new-provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/rc1-perf-proof/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/rc1-perf-proof/publisher-refusals/foreign-provider-compiler",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "foreign-publisher-source_sha256",
+      "refused_before_output": true,
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/rc1-new-provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/rc1-perf-proof/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/rc1-perf-proof/publisher-refusals/foreign-publisher-source_sha256",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "foreign-publisher-gcc_sha256",
+      "refused_before_output": true,
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/rc1-new-provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/rc1-perf-proof/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/rc1-perf-proof/publisher-refusals/foreign-publisher-gcc_sha256",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    },
+    {
+      "label": "changed-publisher-library",
+      "refused_before_output": true,
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/rc1-new-provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/rc1-perf-proof/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/rc1-perf-proof/publisher-refusals/changed-publisher-library",
+        "--days",
+        "1"
+      ],
+      "returncode": 2
+    }
+  ]
+}
