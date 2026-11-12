@@ -147,3 +147,14 @@ before publication, so a locally mass-closed but unrestartable trial cannot
 become externally accepted. Such a request remains physically unqualified.
 The accepted-history test changes salinity at the original14.4mm water gift.
 This is a fail-closed interface decision, not a numerical repair campaign.
+
+The fail-closed check also detects negative csurf at UNCHANGED original day109.
+This is therefore a pre-existing complete-day restart gap, not grounds for more
+forcing-parameter trials. For qtop<-1e-6 with EXACTLY zero pond and macropore
+area, the original mixed-reservoir equations reduce algebraically to complete
+transfer: cfluxt=-csurf; csurf=0; isqtop=cfluxt/dtsolu. This exact conservative
+limit replaces cancelling division/multiplication only in that branch; wet
+surface equations and all strict guards stay unchanged. It is a justified
+floating-point evaluation repair. Fresh full no-macro trajectories and affected
+restart/transaction controls are selected because the solute producer changes.
+Prior proof retains its old source scope; no failed reference is promoted.
