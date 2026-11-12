@@ -27,7 +27,8 @@ from irrigation_forcing import build_bundle
 p=argparse.ArgumentParser(description=__doc__)
 for name in ['reference','bundle','controls','output']:p.add_argument('--'+name,type=Path,required=True)
 p.add_argument('--project',choices=['hupsel','saltfarm'],required=True)
-a=p.parse_args();a.output.mkdir();project={'hupsel':h.HUPSEL,'saltfarm':h.SALTFARM}[a.project]
+p.add_argument('--resume',action='store_true',help='Reuse exact built producer, original prefix and already passed scenarios; retain failed report')
+a=p.parse_args();a.output.mkdir(exist_ok=a.resume);project={'hupsel':h.HUPSEL,'saltfarm':h.SALTFARM}[a.project]
 workers=[];start=h.start_process;events=[]
 def track(*args):
     process,log=start(*args);workers.append(process);return process,log
@@ -60,7 +61,13 @@ report=dict(status='RUNNING',source_commit=subprocess.check_output(['git','rev-p
         'app/hybrid_water/irrigation_forcing.py','research/hybrid-water01/qualify_surface_irrigation.py']},cases=[])
 
 try:
-    begin=time.monotonic();bundle=build_bundle(a.bundle,a.reference,a.output/'build',project=project)
+    if a.resume:
+        prior=json.loads((a.output/'RESULT.json').read_text())
+        (a.output/('FAILED-'+prior['source_commit']+'.json')).write_text(json.dumps(prior,indent=2)+'\n')
+        report['cases']=prior['cases'];report['inherited_bounded_controls_source']=prior['source_commit']
+        from daily_coupling import validate_bundle
+        validate_bundle(a.output/'build',a.reference,project)
+    begin=time.monotonic();bundle=a.output/'build' if a.resume else build_bundle(a.bundle,a.reference,a.output/'build',project=project)
     events.append(dict(label='incremental-compile-link',seconds=time.monotonic()-begin,censored=False))
     meta=json.loads((bundle/'BUILD.json').read_text());case=a.reference/'distribution/SWAP_4.3.1/cases'/project.case
     for name in ['day_donor','day_kernel']:
@@ -76,7 +83,8 @@ try:
         return rows
     last=733 if project==h.SALTFARM else 7
     cuts=[107,731] if project==h.SALTFARM else [4]
-    baseline=direct(case,a.output/'no-file-original',last,{*cuts,*(c+1 for c in cuts),last})
+    baseline=([json.loads(l) for l in (a.output/'no-file-original/daily.jsonl').read_text().splitlines()] if a.resume else
+        direct(case,a.output/'no-file-original',last,{*cuts,*(c+1 for c in cuts),last}))
     original=[json.loads(l) for l in (a.controls/'daily.jsonl').read_text().splitlines()]
     assert list(map(physical,baseline))==list(map(physical,original[:last]))
     if project==h.SALTFARM:
@@ -88,7 +96,10 @@ try:
     if project==h.SALTFARM:windows += [(731,s,SURFACE_IRRIGATION_FORCING) for s in ['identity','modified']]
     else:windows += [(4,s,IRRIGATION_FORCING) for s in ['identity','modified','disabled']]
     for cut,scenario,mode in windows:
-        name=f'{cut}-{scenario}-'+('legacy' if mode==IRRIGATION_FORCING else 'shared');out=a.output/name;out.mkdir()
+        if any((c['cut'],c['scenario'],c['mode'])==(cut,scenario,mode) for c in report['cases']):continue
+        name=f'{cut}-{scenario}-'+('legacy' if mode==IRRIGATION_FORCING else 'shared');out=a.output/name
+        if out.exists():out=a.output/(name+'-retry-'+report['source_commit'][:9])
+        out.mkdir()
         origin=a.output/'no-file-original'/f'accepted-column-1-day-{cut}.zip';origin_hash=h.sha(origin)
         cid='surface-'+a.project+'-'+name
         def column(target,coupling=cid,origin=origin,day=cut,adopt=True):
@@ -129,17 +140,17 @@ try:
             manual=out/'manual-original-input';shutil.copytree(case,manual)
             swp=manual/'swap.swp';source=swp.read_text(encoding='cp1252')
             header=next(l for l in source.splitlines() if l.strip().startswith('IRDATE '));rate_column='IRRATE' in header.upper()
+            lines=source.splitlines(keepends=True);start_index=next(i for i,l in enumerate(lines) if l.strip().startswith('IRDATE '))+1
+            end_index=start_index
+            while end_index<len(lines) and re.match(r'\s*\d{4}-\d{2}-\d{2}\s',lines[end_index]):end_index+=1
+            table=''.join(lines[start_index:end_index])
             for offset,vals in [(cut,values),(cut+1,second)]:
                 stamp=str(date.fromisoformat(project.start_date)+timedelta(days=offset))
                 entry='' if vals[0]==0 else ' '+stamp+' '+repr(vals[0])+' '+repr(vals[1])+' 1'+(' '+repr(vals[2]) if rate_column else '')+'\n'
                 pattern=rf'(?m)^[ \t]*{stamp}[ \t]+[^\r\n]*\r?\n'
-                source,count=re.subn(pattern,entry,source);assert count<=1
-                if not count and entry:source=source.replace(header+'\n',header+'\n'+entry)
-            # Keep original chronology when inserting a winter gift before later events.
-            lines=source.splitlines(keepends=True);start_index=next(i for i,l in enumerate(lines) if l.strip().startswith('IRDATE '))+1
-            end_index=start_index
-            while end_index<len(lines) and re.match(r'\s*\d{4}-\d{2}-\d{2}\s',lines[end_index]):end_index+=1
-            lines[start_index:end_index]=sorted(lines[start_index:end_index],key=lambda l:l.split()[0])
+                table,count=re.subn(pattern,entry,table);assert count<=1
+                if not count and entry:table+=entry
+            lines[start_index:end_index]=sorted(table.splitlines(keepends=True),key=lambda l:l.split()[0])
             swp.write_text(''.join(lines),encoding='cp1252')
             independent=direct(manual,out/'independent-original-control',cut+2,{cut+2})
             assert physical(row)==physical(independent[cut]),'First original-input control differs'
