@@ -1,8 +1,8 @@
 # Current functional closure of the original projects
 
-## No-macro candidate successor,12November2026
+## No-macro original-project successor,12November2026
 
-[PR1658](https://github.com/abhedwig-cell/SWAP5/pull/1658) proposes the additional
+[PR1658](https://github.com/abhedwig-cell/SWAP5/pull/1658) adds the additional
 original-workbook SaltFarm/Texel04dS configuration through the SAME daily host:
 195nodes, potato rotation, saline irrigation, drainage and original sinusoidal
 lower boundary,1461days. Windows/Ubuntu26.04 donorO2/kernelO0/O2 complete the
@@ -30,6 +30,13 @@ and the next functional acceptance point are recorded in
 
 The earlier three-application table below retains its own baseline and profiles;
 it must not be confused with the owner's three selected no-macro configurations.
+
+The new codec also has fresh full Grassgrowth1827/Hupsel1096 preservation on
+Windows AND Ubuntu26.04 with both kernels: all4/9 seasonal own windows reproduce
+the physical suffixes and both payloads exactly. Earlier complete cold ledgers
+remain byte-identical on the same platform; no old accepted package was rebound.
+The functional acceptance boundary is this named PR/source profile, not a blanket
+claim for every no-macro configuration or a completed scientific qualification.
 
 The [complete-trajectory scientific disposition](FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md)
 reproduces existing full-period comparisons, adds the full Hupsel water/solute/

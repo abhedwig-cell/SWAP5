@@ -1,5 +1,15 @@
 # SWAP5 Status-A current architecture
 
+## No-macro daily-host successor
+
+[PR1658](../science/SWAP5_FUNCTIONAL_CLOSURE.md) adds SaltFarm through the existing
+generic explicit-grid/clock daily host and process capabilities. Legacy globals
+remain private to independent worker processes. The complete nonmacro auxiliary
+state now owns accepted seasonal t and calendar iyear (S5NON006/S5HUP012), so the
+original sinus boundary and year-transition order survive day restart. Existing
+original-forcing external acceptance and durable publication are reused; no
+thread-safety, new thermal feedback or full physical energy contract is implied.
+
 ## Current original-project application successor,12November2026
 
 The admitted applications complete Grassgrowth1827,Andelst481 and Hupsel1096

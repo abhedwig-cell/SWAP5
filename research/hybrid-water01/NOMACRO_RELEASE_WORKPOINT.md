@@ -197,3 +197,22 @@ Grassgrowth1827 (previously~11s) and Hupsel1096 (previously5.8s), O0/O2, followe
 by their existing4/9 seasonal windows. Each full call is now capped at60s instead
 of the older180s runner limit. This is format/clock requalification after an actual
 dependency change, not a repeat of an unchanged historical benchmark or oracle.
+
+Current-codec seasonal preservation now also passes on Ubuntu26.04 using the
+EXACT binaries already qualified in run43189426052: run43193830146 succeeds in
+both jobs, with no new compilation or repeated SaltFarm run. Grassgrowth1827
+takes7.14/7.33s, Hupsel1096 takes3.89/3.83s; all4/9 original seasonal windows pass
+with each kernel. Windows full calls took14.80/14.92s and9.08/9.09s while four
+cohorts ran concurrently. Across both platforms/profiles there are72 exact own
+windows (SaltFarm5,Grassgrowth4,Hupsel9 per cohort). Windows original complete
+Grassgrowth/Hupsel ledgers remain byte-identical to their admitted controls.
+
+The automatic broad PR checks retain four historical preflight failures. Actual
+logs and direct canonical prerequisite comparisons are preserved in
+`NOMACRO_CI_ADJUDICATION_20261112.json`: the old application-source equality gate,
+dataqual12's13-file delta expectation (canonical already727), the oldP2E07 frozen
+src/reference guard, and B1.11 metadata expectation against canonical B1.12.
+These remain FAILED, not promoted to PASS; none is a new physical regression.
+An automatically started long AHL run was canceled as NOT_SELECTED_IMPACT because
+its owning source is unchanged. Final proof-only publication skips redundant
+automatic model campaigns; both selected Ubuntu qualifications are terminal PASS.
