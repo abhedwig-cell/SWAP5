@@ -348,7 +348,7 @@ class CoupledDailyColumn:
             raise ValueError('Nonfinite or nonnumeric irrigation')
         depth,conc,rate=values
         if forcing.enabled:
-            if not (.01<=depth<=100 and 0<=conc<=1000 and 0<rate<=100 and depth/(24*rate)<=1):
+            if not (.01<=depth<=100 and 0<=conc<=1000 and 0<rate<=100 and (0.1*depth)/(0.1*24*rate)<=1):
                 raise ValueError('Irrigation outside original input range/duration')
         elif any(values):raise ValueError('Disabled irrigation must carry zero water and solute input')
         if not isinstance(forcing.provenance,str) or not forcing.provenance or len(forcing.provenance)>128:

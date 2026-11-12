@@ -53,7 +53,7 @@ def render(source):
       else
          if(depth<0.01d0.or.depth>100d0.or.concentration<0d0.or.concentration>1000d0.or. &
             rate<=0d0.or.rate>100d0)error stop 'External irrigation outside original range'
-         if(depth/(24d0*rate)>1d0)error stop 'External irrigation exceeds one day'
+         if((0.1d0*depth)/(0.1d0*24d0*rate)>1d0)error stop 'External irrigation exceeds one day'
       end if
       ! Retain the original future table; suppress an original same-date event once.
       if(nirri<1.or.nirri>mairg)error stop 'Invalid original irrigation cursor'

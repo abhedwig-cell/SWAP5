@@ -130,3 +130,11 @@ same-route retry/durable recovery and two interleaved instances; finite/range/
 foreign-mode/origin guards; unchanged1e-10 water/solute accounting. All calls
 are bounded at60seconds and unaffected full trajectories are reused. Missing
 energy and original scientific failures stay open; active macro work stays frozen.
+
+The first SaltFarm identity request exposed a concrete duration-validation bug:
+14.4/(24*0.6) rounds above1 in caller units, while the original reader evaluates
+(0.1*14.4)/(0.1*24*0.6)=1 after its actual mm-to-cm conversion. Both host and
+consumer now check duration using that unchanged original conversion order.
+The strict limit stays1day with no epsilon or tolerance increase; the original
+physical assignments and default no-file execution remain unchanged. The failed
+pretrial request is retained; original control output distinguishes the fix.
