@@ -7,7 +7,8 @@ import io
 import json
 import math
 from pathlib import Path
-import tarfile
+import subprocess
+import tempfile
 import time
 import zipfile
 
@@ -16,12 +17,17 @@ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--output',type=Pa
 digest=lambda b:hashlib.sha256(b).hexdigest()
 provenance={}
 def read(name):
-    path=ROOT/name;data=path.read_bytes();provenance[name]=digest(data);return json.loads(data)
+    path=ROOT/name;data=path.read_bytes();provenance[name]=digest(data.replace(b'\r\n',b'\n'));return json.loads(data)
 def tar(name,expected,names):
     path=ROOT/name;assert digest(path.read_bytes())==expected;provenance[name]=expected;out={}
-    with tarfile.open(path,'r|xz') as t:
-        for m in t:
-            if m.name in names or m.name=='MEMBER_SHA256.json':out[m.name]=t.extractfile(m).read()
+    selected=list(names)
+    if name.startswith('research/hybrid-water01/hybrid-'):selected.append('MEMBER_SHA256.json')
+    # Native streaming extraction avoids Python tarfile's costly large-member buffer copies.
+    with tempfile.TemporaryDirectory(prefix='s5-whole-trajectory-read-') as temporary:
+        scratch=Path(temporary).resolve()
+        assert scratch.parent==Path(tempfile.gettempdir()).resolve() and scratch.name.startswith('s5-whole-trajectory-read-')
+        subprocess.run(['tar','-xf',str(path),'-C',str(scratch),*selected],check=True,capture_output=True,timeout=30)
+        out={n:(scratch/n).read_bytes() for n in selected}
     assert all(n in out for n in names)
     if 'MEMBER_SHA256.json' in out:
         members=json.loads(out['MEMBER_SHA256.json'])
@@ -102,7 +108,7 @@ hscience=read('research/hybrid-water01/HYBRID_HUPSEL_REFERENCE_20261111.json')
 assert hrows[583]['uptake_terms_cm'][3]==hscience['current_day584_oxygen_cm']
 
 alineage=read('research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json')
-q=ROOT/'research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv';assert digest(q.read_bytes())==alineage['member_sha256'];provenance[q.relative_to(ROOT).as_posix()]=digest(q.read_bytes());acmp=records(q.read_bytes())
+q=ROOT/'research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv';assert digest(q.read_bytes().replace(b'\r\n',b'\n'))==alineage['canonical_lf_csv_sha256'];provenance[q.relative_to(ROOT).as_posix()]=alineage['canonical_lf_csv_sha256'];acmp=records(q.read_bytes())
 q=ROOT/'research/hybrid-water01/andelst-481-application-evidence.zip';assert digest(q.read_bytes())=='02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9';provenance[q.relative_to(ROOT).as_posix()]=digest(q.read_bytes())
 with zipfile.ZipFile(q) as z:araw=z.read('full/daily.jsonl');apub=z.read('full/original/result_output.csv')
 ar=read('research/hybrid-water01/andelst-481-application-receipt.json');assert digest(araw)==ar['ledger_sha256'];assert ar['result']['input_sha256']==alineage['original_inputs_sha256']
@@ -114,7 +120,7 @@ native_grass=read('research/hybrid-water01/grass-ahl-successor-receipt.json')['h
 native_hupsel=read('integration/dataqual15_hupsel/PRESSURE_FILM_CANONICAL_RECEIPT_20261105.json')['original_science']
 result={'status':'PRESERVED_FULL_TRAJECTORY_ASSESSMENT_REPRODUCED_NOT_WHOLE_SCIENCE','model_runs':0,'builds':0,
  'precision_policy':'All computed differences descriptive. No new physical/scientific tolerance or reference substitution. Stock/yield sums are descriptive sums, not all physical cumulative fluxes.',
- 'source_data_sha256':provenance,
+ 'source_data_sha256':provenance,'text_hash_policy':'Repository JSON/promoted CSV canonical LF; archives and archived member hashes are raw bytes. Original promoted CSV raw source member hash retained in lineage.',
  'grass_original_block':{'days':1827,'water_fields_cm':gfields,'printed_crop_fields_descriptive':gcrop,'reproduces_prior_whole_period_water_comparison':True,'day188_unrounded_uptake_cm':grows[187]['external_flux_cm'][9],
     'decision':'Water output agreement at original print precision; no unrounded oxygen/crop, native thermal accuracy or whole-science qualification.'},
  'hupsel_corrected_original_block':{'days':1096,'reference_identity':'Separate retained original high-precision-output trajectory, not the frozen native application oracle and not a newly qualified replacement reference.',
