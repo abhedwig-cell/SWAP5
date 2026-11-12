@@ -1,16 +1,17 @@
 """Cloud coherent-worker causal and complete nodal heat/iteration controls."""
-import argparse,json,shutil,subprocess,sys,time
+import argparse,json,shutil,subprocess,sys,time,os
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--reference',type=Path,required=True);p.add_argument('--qualification',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
+p.add_argument('--user-qualification',action='store_true')
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();reference=a.reference.resolve();q=a.qualification.resolve();events=[]
 for name in ('grass','hupsel','saltfarm'):
- bundle=q/(name+'-O2-baseline-build');full=q/(name+'-O2-baseline-full');meta=json.loads((bundle/'BUILD.json').read_text())
+ bundle=q/(name+('-O2-build' if a.user_qualification else '-O2-baseline-build'));full=q/(name+('-O2-full' if a.user_qualification else '-O2-baseline-full'));meta=json.loads((bundle/'BUILD.json').read_text())
  original=a.output/(name+'-original');original.mkdir()
  for n in meta['inputs']:
   (original/n).parent.mkdir(exist_ok=True,parents=True);shutil.copyfile(full/'original'/n,original/n)
- exe=reference/'build/swap_b0_gfortran'
+ exe=reference/('build/swap_b0_gfortran.exe' if os.name=='nt' else 'build/swap_b0_gfortran')
  with (a.output/(name+'-original.stdout')).open('wb') as stdout,(a.output/(name+'-original.stderr')).open('wb') as stderr:
   t=time.perf_counter();r=subprocess.run([str(exe),'./swap.swp'],cwd=original,stdout=stdout,stderr=stderr,stdin=subprocess.DEVNULL,timeout=60)
  assert r.returncode==100 and (original/'swap.ok').exists()
