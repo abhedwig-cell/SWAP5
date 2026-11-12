@@ -24,7 +24,15 @@
       "owning_workflow": "grass-thermal-production.yml: hybrid_original_macro_restart",
       "reason": "Explicit hidden integral history moved into new native format; require platform-native complete payload equality and exact pre-fix cold fields",
       "whole_project_runs": 0,
-      "workflow_registration": "New standalone filename returned404; use existing registered dispatcher with explicit exclusion of unrelated kim guard"
+      "workflow_registration": "New standalone filename returned404; use existing registered dispatcher with explicit exclusion of unrelated kim guard",
+      "retained_setup_failure": {
+        "run_id": 43154096665,
+        "head": "14a0b1fe9d48089b3486284241371070545b3289",
+        "cause": "Used Windows flat bundle path instead of frozen Linux PROOF_INDEX build path",
+        "model_runs": 0,
+        "artifact_id": 13914688514,
+        "artifact_sha256": "65a23e448266a065f53291a9b387df22791e0a1fa095111eaee73561d2a9a97a"
+      }
     }
   },
   "next": "Finish Windows O0 and exact reuse audit, run selected Ubuntu gate to terminal; update PR1653 and admit only the bounded opt-in capability after verified checks, preserving historical failed evidence.",

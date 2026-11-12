@@ -43,6 +43,9 @@ def main():
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     if bool(a.reuse_o0)!=bool(a.reuse_o2):raise ValueError('Both reused optimizations required')
     reference=a.workspace/'reference';started=time.perf_counter()
+    index=json.loads((a.workspace/'PROOF_INDEX.json').read_text())
+    def provider(opt):
+        return a.workspace/index['cases']['andelst-'+opt]['build']
     report={'status':'RUNNING','platform':sys.platform,'scope':'original donor O2; day-owner kernel O0/O2; fresh1to4, own2to4, external discard and cold3to4',
         'full_project_runs':0,'source':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'cases':[]}
     try:
@@ -50,7 +53,7 @@ def main():
         for opt,reuse in [('O0',a.reuse_o0),('O2',a.reuse_o2)]:
             root=reuse or a.output/opt;roots[opt]=root
             if not reuse:
-                root.mkdir();build_bundle(a.workspace/('andelst-'+opt),reference,root/'build')
+                root.mkdir();build_bundle(provider(opt),reference,root/'build')
                 for n in ('day_donor','day_kernel'):h.executable(root/'build',n).chmod(0o755)
                 probe(root/'build',reference,root/'fresh')
                 probe(root/'build',reference,root/'restart',root/'fresh/accepted-column-1-day-2.zip')
@@ -81,7 +84,7 @@ def main():
             spec=importlib.util.spec_from_file_location('previous_macro_builder',previous)
             module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
             prior=a.output/'prior-O2';prior.mkdir()
-            module.build_bundle(a.workspace/'andelst-O2',reference,prior/'build')
+            module.build_bundle(provider('O2'),reference,prior/'build')
             for n in ('day_donor','day_kernel'):h.executable(prior/'build',n).chmod(0o755)
             probe(prior/'build',reference,prior/'fresh')
         validate_bundle(prior/'build',reference,h.ANDELST)
