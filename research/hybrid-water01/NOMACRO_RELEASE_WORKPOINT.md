@@ -408,3 +408,7 @@ acceptance assessment against the concrete no-macro criteria. Reuse these
 complete results; no new numerical/reference campaign is selected. Original
 scientific failures, unsupported full advective energy and active-macro exclusion
 remain explicit and must not be promoted by functional completion.
+
+Reviewable publication: PR1660, proof head a5d3adbb1700a6eb6c3cfc3ff03cdbf772a5cf24.
+All selected source-bound controls and both archive SHA256 manifests pass.
+Actual canonical admission/postimage remains a separate gate before promotion.
