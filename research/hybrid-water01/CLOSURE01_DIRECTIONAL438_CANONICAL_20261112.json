@@ -1,0 +1,44 @@
+{
+  "pr": 1657,
+  "status": "MERGED_SCOPED_FIXED_STATE_HYPOTHESES_RESOLVED_NO_MODEL_REPAIR",
+  "base": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+  "head": "265902665043e9d9b219a087ef56e28640f1d973",
+  "canonical": "84e297af23b2b6e90c927b958fecb5e24228b975",
+  "predicted_and_actual_tree": "b1d7f795ef7d8eeed23e555b41a5ff1f66840e5d",
+  "production_source_graph_unchanged": true,
+  "observed_model_seconds": 15.586947478999996,
+  "actual_runs": [
+    43174240491,
+    43175012277,
+    43175514599
+  ],
+  "assessment": {
+    "run": 43176309949,
+    "job": 131041291664,
+    "source": "686008af7e438c8fc330706728318d61ee1be285",
+    "status": "PASS",
+    "new_models": 0,
+    "canonical_exact_blobs": {
+      ".github/workflows/grass-thermal-production.yml": "f8996add092652f1a669a0abd9f0d8aca37f9084",
+      "research/hybrid-water01/probe_macro_directional438.py": "94ec0eafa47fa330fbb74f172254059230babda2",
+      "research/hybrid-water01/macro_directional438_observer.f90": "a737b861f81683a4aa4764753acb48541b330504",
+      "research/hybrid-water01/audit_macro_directional438.py": "5ee9f8d6e632d90d6509ffbe10e336c565f575c0",
+      "research/hybrid-water01/MACRO_DIRECTIONAL438_RESULT_20261112.json": "6221c8e3a036350802e1c990ce33ba2332818385",
+      "research/hybrid-water01/MACRO_DIRECTIONAL438_ARTIFACT_20261112.json": "86bc1d771c1c7fe699d15ff716c3b73f6a9b8b2e",
+      "research/hybrid-water01/macro-directional438-evidence.zip": "8c2885026b80f965662fcefd5d9951e5d5854fc9",
+      "research/hybrid-water01/macro-directional438-first-evidence.zip": "b37143162e742fb08b140b231e600e5a0239d633",
+      "research/hybrid-water01/macro-directional438-history-evidence.zip": "03dd9ee627d86ac63651b09a03ac7230ffd06acf"
+    }
+  },
+  "findings": {
+    "eight_directions_two_scales_offband_response": 0,
+    "identical_clone_repeat": "EXACT",
+    "same_pressure_sequential_and_saturation_round_trip": "EXACT",
+    "original_analytic_vs_numerical_macro_diagonal_max_difference": 3.729888318343422e-09,
+    "cached_fresh_residual_macro_exchange_closure": 8.881784197001252e-16,
+    "pressure_science": "NOT_QUALIFIED; no full79.511cm attribution or reference promotion"
+  },
+  "docs_source": "PASS",
+  "docs_strict_seconds": 24.02,
+  "next": "Independent actual numerical rejected-timestep rollback control, original15 known retries; soilwater.f90 MacroStateVar1 before HeadCalc, swap.f90 MacroStateVar2 after rejection; original own14 fixture exists. No model change until an actual contract violation is shown."
+}

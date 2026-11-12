@@ -2,6 +2,71 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Fixed438 hypotheses resolved; numerical timestep rollback is next,12November2026
+
+PR #1657 MERGED at84e297af23b2b6e90c927b958fecb5e24228b975 from
+codex/macro-directional438 head265902665043e9d9b219a087ef56e28640f1d973.
+Predicted/actual canonical tree b1d7f795ef7d8eeed23e555b41a5ff1f66840e5d match.
+All9 executed probe/template/auditor/workflow/artifact/result blobs match qualified
+Ubuntu assessment686008af7e438c8fc330706728318d61ee1be285 exactly. Production
+src/app/reference/tools/tests UNCHANGED. Receipt
+CLOSURE01_DIRECTIONAL438_CANONICAL_20261112.json. This supersedes every pending
+438 derivative/solver selection below; no further speculative solver is selected.
+
+ACTUAL CONTROLS: one exact live final438 operator, original own432 native, original
+PR1655 control reused by immutable digest. Three observer profiles execute433to438
+only,4.975798+4.795550+5.815600=15.586947seconds total;20s caps,3s child alarms,
+zero full runs. Runs43174240491/43175012277/43175514599 ALL PASS. Every parent
+physical day433to438 and BOTH COMPLETE RAW native endpoint438 payloads EXACT.
+Each derivative perturbation starts from an independent identical live-state fork.
+No source-bound checkpoint rebind/publication by the observer. Earlier samples
+repeat exactly as the observation is completed with history/analytic controls.
+
+FINDINGS/DECISION: eight columns at nodes1/40/56/60/80/81/90/112 and absolute
+central steps1e-4/5e-5cm show EXACT ZERO off-tridiagonal response. Identical clone
+baselines match earlier fresh F exactly. Same-pressure sequential evaluations and
+pressure81 saturation-crossing round trip return EXACT F/H/theta and recorded
+wet-wall, unsaturated-store and event state. Original rate-only/rate+Jacobian Q
+vectors EXACT; original analytic macro derivatives agree with the selected
+numerical columns (max measured difference3.729888318343422e-9, scales preserved;
+NOT a relaxed physical tolerance). Thus neither selected nonlocal-Jacobian nor
+history hypothesis justifies replacing original derivatives at THIS context.
+Not all112 columns/other steps; not an explanation of rejected1656 days3/4 caps.
+
+The fresh/cached F change is accounted for by macro exchange to8.881784197001252e-16:
+max deltaF4.319762946264462, max deltaQ4.319762946264463. Frozen exchange issue is
+real at this step; whole79.511cm pressure attribution/reference qualification is
+NOT established. Preserve original physics/derivatives, all tolerances and public
+profiles. PR1656 remains CLOSED/REJECTED; its body now has this follow-up addendum.
+No dense/global, diagonal/secant or convergence-polishing campaign follows.
+
+Raw actual executables/build commands/native/journals/operator samples preserved
+canonical macro-directional438-first-evidence.zip (bfa1f1267e04b0179f2016e0816178c478bbdd6cdb21cda4809cc67a934eec58),
+macro-directional438-history-evidence.zip (ac8e9e51c17629a7c056961c701f0adddabcc72dada0800b82f8113ad82ce7f9),
+macro-directional438-evidence.zip (ec1ce470c8e09e1c893ca1f43f9eeccba064efe9a74bb6e173c76621139ca268).
+Report MACRO_DIRECTIONAL438_20261112.md, result/artifact JSON, owner
+integration/f-ci/MACRO_DIRECTIONAL438_20261112.json. Independent ZERO-MODEL Ubuntu
+replay43176309949/job131041291664 PASS; docs source/strict PASS,24.02s. Current
+hybrid_macro_directional438 input replays DATA ONLY with required expectedSHA.
+No hosted-retention dependence and no active model/CI remains.
+
+NEXT FUNCTIONAL DELIVERABLE: controlled ACTUAL NUMERICAL REJECTED-TIMESTEP ROLLBACK
+at original15 (known1949 mass-step retries). Existing external daily discard and
+own14to16 exact controls do NOT establish this numerical rollback contract.
+Frozen provider selected/soilwater.f90 calls MacroStateVar(1) immediately before
+HeadCalc(lines139/143); selected/swap.f90 calls MacroStateVar(2) in rejected-step
+branch(line432). Reconcile exact source/call order first, distinguish intended
+IDecMpRat/FlDecMpRat/timestep-control changes from PHYSICAL macro state/history.
+Observe a pretrial origin and actual restored state; no model repair until a
+controlled state-contract violation is shown. Reuse original qualified build and
+known own14 fixture. Windows fixture exists at
+s5-original-macro-integral-O2-20261112/continue-4-to-22/accepted-column-1-day-14.zip
+under TEMP; full source-bound providers/previous accepted native files are also
+preserved in admitted archives. Select only a short14to15 or14to16 control, preserve
+mass guard; no full run or original438 repeats. Whole scientific/energy/runtime
+closure remains OPEN. Planning stays active.
+
+
 ### Two consistent-coupling repair attempts rejected,12November2026
 
 PR #1656 CLOSED/NOT MERGED; branch codex/macro-consistent-state at
