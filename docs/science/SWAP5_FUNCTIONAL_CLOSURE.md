@@ -1,5 +1,10 @@
 # Current functional closure of the original projects
 
+The [complete-trajectory scientific disposition](FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md)
+reproduces existing full-period comparisons, adds the full Hupsel water/solute/
+uptake/crop disposition and identifies the current Andelst clock-scoped numerical
+policy. Functional3project coverage and whole scientific equivalence remain separate.
+
 Baseline: canonical `937bd93b58ff913fcf9eafa3825a5da07f951513`, after PR1644.
 This is a reconciliation of admitted evidence, not a new model qualification.
 Older dated Status-A paragraphs retain their original source/profile claims.
@@ -105,9 +110,11 @@ and whole scientific equivalence remain separate. The [controlled-instance
 composition](HYBRID_CONTROLLED_INSTANCES.md) now verifies interleaved independent
 Cauchy/GWL/irrigation owners, pending and accepted state isolation, mixed discard/
 accept and cold reconstruction against exact single-instance physical/native
-controls. Next assess the complete preserved trajectories against their sealed
-references; retain unresolved scientific and energy quantities without new runs
-or another equivalent short-window acceptance campaign.
+controls. The complete preserved trajectories now have a source-bound scientific
+disposition; unresolved reference accuracy, native temporal behavior and the
+Andelst research clock-policy remain explicit. The next implementation target is
+a justified generic state/process contract for that macro-rate policy, using
+retained original-origin evidence rather than another broad reference campaign.
 
 For thermal feedback an explicit corrected-physics scope and joint state/restart
 owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full
