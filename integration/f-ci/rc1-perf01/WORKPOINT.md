@@ -28,3 +28,14 @@ release SHA. Present the quantified scientific disposition to the owner: whether
 a functionally qualified release may carry these explicit portable-science
 limitations, or a separately scoped numerical-stabilization successor is required.
 Do not silently promote equivalence or start another reference/solver campaign.
+
+
+PR1667 admitted at canonical f2377211d2be58d03d96e50fb0a6bc35ced3c90f,
+exact tested tree343eae7e7e1f49baf0138fc50152769f006439d9. Frozen release ref
+verified unchanged after merge. PR1667_MERGE.json preserves actual receipt.
+All selected checks are terminal PASS; no model/CI run remains pending.
+Owner disposition question is pending in the chat: continue a scoped numerical
+platform-sensitivity package or close the investigation with explicit scientific
+limits. No automatic new tolerance/reference/solver campaign and no premature
+claim of achieved portable scientific equivalence. The resumption timer stops
+at this explicit decision boundary under the work-order stop rule.

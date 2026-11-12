@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "PUBLISHER_WINDOWS_UBUNTU_O0_O2_FULL_EXACT_AND_REFUSALS_PASS_PENDING_PR",
+  "status": "PERFORMANCE_BLOCKS_ADMITTED_PORTABLE_SCIENCE_OWNER_DISPOSITION_PENDING",
   "implementation": "Compile unchanged restart_publish.c once per registered no-macro build; bind C source, shared library and GCC binary SHA. Validate before output and loading; no process/physical checkpoint cache. Invocation-local compiler verification improvement remains admitted.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
@@ -14,7 +14,7 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Publish and admit source-bound durable publisher reuse via PR; verify canonical tree and unchanged frozen RC1. Then present quantified portable-science limits without asserting whole equivalence or fitting tolerances.",
+  "next_action": "Owner question pending: continue a separately scoped numerical platform-sensitivity stabilization package, or close this investigation with explicit quantified scientific limits. Neither choice changes tolerances. No portable-science PASS or completion is claimed while the decision is pending.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
@@ -26,7 +26,7 @@
   ],
   "automation": {
     "id": "swap5-rc1-onderzoek-hervatten",
-    "status": "ACTIVE_VERIFIED_CREATE_AND_VIEW",
+    "status": "RESUME_TIMER_TO_STOP_AT_EXPLICIT_OWNER_DECISION_BOUNDARY",
     "interval_minutes": 30,
     "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud"
   },
@@ -147,5 +147,16 @@
     "absolute_spread_cm": 6.336439640616462e-07,
     "existing_point_bound_cm": 5.371840000016327e-07,
     "disposition": "EXCEEDS_EXISTING_POINT_BOUND_NOT_A_NEW_REFERENCE_QUALIFICATION"
+  },
+  "publisher_admission": {
+    "pr": 1667,
+    "qualified_head": "3f0c6df7aac58e143d0e7e37e6e5609c5eb3ca4a",
+    "canonical": "f2377211d2be58d03d96e50fb0a6bc35ced3c90f",
+    "tree": "343eae7e7e1f49baf0138fc50152769f006439d9",
+    "postimage_exact": true,
+    "frozen_rc1": "11529865e76fb2259542f1e770726cd87af27603",
+    "frozen_release_unchanged": true,
+    "independent_review": "No submitted reviews at merge; do not claim independent code review",
+    "qualification": "Windows/Ubuntu O0 short,O2 complete exact physical/CSV/native; both publisher refusals; six Windows external controls; docs source and strict MkDocs PASS"
   }
 }
