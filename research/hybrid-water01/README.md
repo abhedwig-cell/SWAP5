@@ -2,6 +2,54 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Two consistent-coupling repair attempts rejected,12November2026
+
+PR #1656 CLOSED/NOT MERGED; branch codex/macro-consistent-state at
+4436820c4312ccbf535971f787a1d215e7c22fed. Canonical stays
+173a3e8e1c231108ddd048c593170f9096e5bf4a. Public/default model unchanged.
+The actual repair block has FAILED bounded qualification, not merely pending.
+This supersedes the NEXT implementation selection below. Do not rerun these variants.
+
+Attempt1 source5168d4004e4ae3c49c18c00a8e86c6cb278451f5 implements explicit per-
+HeadCalc trial origin using active slices of the existing native state envelope,
+restores before each residual, evaluates original MACRORATE(2) rates+derivatives
+once and reuses matching derivative in Jacobian. Original formulas, iteration/
+backtracking limits and local1e-6/total1e-5/daily1e-6 guards retained. Native
+S5MAC006 unchanged; new candidate build binding distinct, no rebind. Frozen
+Windows donor-O2/kernel-O2 compile16.999s, model20.016s cap: accepts1/2/3, stuck
+within selected wall budget requesting4. Max completed daily residual3.02803e-7cm,
+156 mass retries. Explicit state alone does not establish a practical solve.
+
+Attempt2 source95970bb884b1f88fb4061f12454215a7859c8c88 adds per-call inverse
+rank-one secant of the112-node fresh residual, initialized from original
+tridiagonal Jacobian. Same criteria/backtracking. Build6.688s, model20.019s cap:
+only1/2 accepted, requesting3. Max residual7.65393e-8cm,177 mass retries. No
+material progress. These are censored practical failures, NOT proof no solution
+exists. Both are REJECTED. O0/own2to4/Linux438 NOT RUN because O2 fresh4 failed.
+No full run, cap extension or scientific/reference promotion. Total actual model
+cost40.035s. Two-attempt stop is in force; no third related patch/time march.
+
+Frozen failed evidence on that branch: consistent-macro-rejected-evidence.zip,
+2806772bytes SHA2560c0263821542f2606464890c88e677c0f4b503d6a5a1b6861407b5c2462908c6.
+Both generators, actual executables/generated sources, exact compiler/object/input
+identities, complete own accepted native packages, journals and terminal errors
+are retained. verify_consistent_macro_rejection.py PASS checks all archive members,
+actual source/build identities and native bindings with ZERO new models. Docs
+source check PASS. Full report CONSISTENT_MACRO_REJECTED_20261112.md/.json and
+integration/f-ci/CONSISTENT_MACRO_20261112.json. Evidence receipt copied here:
+CLOSURE01_CONSISTENT_MACRO_REJECTED_20261112.json. No active model or CI remains.
+
+NEXT SAFE SOLVER DELIVERABLE: a bounded fixed-live-step coupled derivative/state
+control, including moving saturated interfaces. Establish repeatability and the
+nonlocal Jacobian/directional response of the ACTUAL original rate operator before
+selecting another time-marching solver. This is a formulation reassessment after
+two rejected attempts, not another convergence-polishing or diagonal/secant run.
+Use original own432 state and the frozen final438 live-state observation as the
+known failure; no full481 rerun or larger timeout. If no defensible derivative/
+reference control is available, retain this numerical blocker and choose an
+independent functional acceptance point. Whole science/energy/runtime remains OPEN.
+
+
 ### Day438 live-state residual inconsistency identified and admitted,12November2026
 
 PR #1655 MERGED at173a3e8e1c231108ddd048c593170f9096e5bf4a.

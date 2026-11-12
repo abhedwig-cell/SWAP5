@@ -1,0 +1,51 @@
+{
+  "status": "REJECTED_TWO_BOUNDED_CORRECTIVE_ATTEMPTS",
+  "base": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+  "attempts": [
+    {
+      "attempt": "attempt1",
+      "source": "5168d4004e4ae3c49c18c00a8e86c6cb278451f5",
+      "policy": "original-macro-explicit-trial-origin-rate-jacobian-v1",
+      "status": "MODEL_CAP_REACHED",
+      "elapsed_seconds": 20.016034200089052,
+      "accepted_days": [
+        1,
+        2,
+        3
+      ],
+      "requested_day": 4,
+      "maximum_daily_residual_cm": 3.02802910546302e-07,
+      "mass_retries": 156
+    },
+    {
+      "attempt": "attempt2",
+      "source": "95970bb884b1f88fb4061f12454215a7859c8c88",
+      "policy": "original-macro-explicit-trial-origin-coupled-secant-v2",
+      "status": "MODEL_CAP_REACHED",
+      "elapsed_seconds": 20.01896769995801,
+      "accepted_days": [
+        1,
+        2
+      ],
+      "requested_day": 3,
+      "maximum_daily_residual_cm": 7.653930241653065e-08,
+      "mass_retries": 177
+    }
+  ],
+  "archive_sha256": "0c0263821542f2606464890c88e677c0f4b503d6a5a1b6861407b5c2462908c6",
+  "archive_bytes": 2806772,
+  "model_seconds": 40.035001900047064,
+  "O0": "NOT_RUN: O2 prerequisite failed",
+  "Linux_day438": "NOT_RUN: short prerequisite failed twice",
+  "own_restart": "NOT_QUALIFIED: fresh4 prerequisite failed",
+  "science": "NOT_QUALIFIED; original day438 failure retained",
+  "stop_decision": "Reject both variants; no third same-family patch, timeout extension or full run; do not merge experimental modelcode",
+  "next_work": "Reassess solver formulation at existing original block; original diagonal and inverse-secant directions both impractical. A new correction must have an independently defensible coupled derivative/state map before execution. Continue independent acceptance work where feasible.",
+  "publication": {
+    "pr": 1656,
+    "state": "CLOSED_NOT_MERGED",
+    "head": "4436820c4312ccbf535971f787a1d215e7c22fed",
+    "canonical_unchanged": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+    "verification": "Failed evidence reader and documentation source PASS; model qualification FAIL"
+  }
+}
