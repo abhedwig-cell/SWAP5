@@ -25,7 +25,7 @@ on:
   workflow_dispatch:
     inputs:
       hybrid_macro_day438:
-        description: Single bounded same-state residual observation with exact parent/native preservation
+        description: Verify preserved day438 same-state residual and exact parent/native proof, zero models
         type: boolean
         default: false
       macro_expected_sha:
@@ -101,11 +101,11 @@ jobs:
   original-macro-day438:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_macro_day438
     runs-on: ubuntu-26.04
-    timeout-minutes: 4
+    timeout-minutes: 3
     env:
       SWAP5_TEST_SELECTION_RECORD: integration/f-ci/ORIGINAL_MACRO_DAY438_20261112.json
     steps:
-      - name: Exact requested diagnostic source
+      - name: Exact requested assessment source
         env:
           EXPECTED_MACRO_SHA: ${{ inputs.macro_expected_sha }}
         run: test -n "$EXPECTED_MACRO_SHA" && test "$GITHUB_SHA" = "$EXPECTED_MACRO_SHA"
@@ -113,36 +113,30 @@ jobs:
         with:
           sparse-checkout-cone-mode: false
           sparse-checkout: |
-            /src/
-            /app/
             /integration/f-ci/ORIGINAL_MACRO_DAY438_20261112.json
+            /research/hybrid-water01/audit_macro_day438.py
             /research/hybrid-water01/probe_macro_day438.py
             /research/hybrid-water01/original-macro-481-evidence.zip
-            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
-      - name: Restore exact original compiler provider and selected immutable evidence
+            /research/hybrid-water01/original-macro-day438-evidence.zip
+            /research/hybrid-water01/ORIGINAL_MACRO_DAY438_ARTIFACT_20261112.json
+            /research/hybrid-water01/ORIGINAL_MACRO_DAY438_RESULT_20261112.json
+      - name: Preserved same-state actual solve and native endpoints, no model launches
         run: |
+          python3 -B research/hybrid-water01/audit_macro_day438.py --artifact research/hybrid-water01/original-macro-day438-evidence.zip --metadata research/hybrid-water01/ORIGINAL_MACRO_DAY438_ARTIFACT_20261112.json --output "$RUNNER_TEMP/day438-assessment.json"
           python3 - <<'PY'
-          import hashlib,json,os,subprocess,zipfile
+          import json,os
           from pathlib import Path
           owner=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
-          assert owner['full_runs_selected']==0 and owner['model_cap_seconds_each']==20
-          arc=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
-          assert hashlib.sha256(arc.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
-          provider=Path(os.environ['RUNNER_TEMP'])/'provider';provider.mkdir()
-          subprocess.run(['tar','-xf',str(arc),'-C',str(provider)],check=True)
-          arc=Path('research/hybrid-water01/original-macro-481-evidence.zip')
-          assert hashlib.sha256(arc.read_bytes()).hexdigest()=='c7b4cb52b86b07cf08a116603590e597c0ab6bd89780afc000e7d03e07512463'
-          with zipfile.ZipFile(arc) as z:z.extractall(Path(os.environ['RUNNER_TEMP'])/'proof')
+          assert owner['status']=='SAME_STATE_CACHED_RESIDUAL_INCONSISTENCY_VERIFIED_PARENT_NATIVE_EXACT'
+          actual=json.loads(Path(os.environ['RUNNER_TEMP'],'day438-assessment.json').read_text())
+          expected=json.loads(Path('research/hybrid-water01/ORIGINAL_MACRO_DAY438_RESULT_20261112.json').read_text())
+          assert actual==expected and actual['new_models_by_auditor']==0
           PY
-      - name: Install exact compiler family
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq gfortran gcc
-      - name: Same-origin432 control and observer, six days each, exact parent and native endpoint
-        run: python3 -B research/hybrid-water01/probe_macro_day438.py --provider "$RUNNER_TEMP/provider" --proof "$RUNNER_TEMP/proof" --output "$RUNNER_TEMP/day438"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: original-macro-day438-observation
-          path: ${{ runner.temp }}/day438
+          name: original-macro-day438-assessment
+          path: ${{ runner.temp }}/day438-assessment.json
           retention-days: 14
   original-macro-full-evidence:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_original_macro_481

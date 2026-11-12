@@ -1,5 +1,5 @@
 {
-  "status": "SELECTED_SINGLE_BOUNDED_DAY438_DIAGNOSTIC",
+  "status": "SAME_STATE_CACHED_RESIDUAL_INCONSISTENCY_VERIFIED_PARENT_NATIVE_EXACT",
   "base": "20fc1a56dcee2c741e6d97de51d59e9852cbc07c",
   "scope": "Observation only; production physics and all tolerances unchanged",
   "hypothesis": "At final accepted438 solver state, cached macro residual may differ materially from original vector_F(1), or original solver may accept without convergence",
@@ -13,5 +13,28 @@
   "acceptance": "Exact physical parent433to438 and both raw native endpoint payloads; otherwise diagnostic rejected",
   "decision": "Stale fresh residual above unchanged original guards identifies consistency defect; explicit nonconverged return identifies retained solver acceptance defect; neither result establishes original reference qualification",
   "failure_stop": "No cap extension, no repeat full run, no speculative repair if non-distinguishing; preserve reproducible result",
-  "existing_O0_O2": "PR1653 inherited only for unchanged production source; observer is research-only Linux O2 instrumentation, not new model qualification"
+  "existing_O0_O2": "PR1653 inherited only for unchanged production source; observer is research-only Linux O2 instrumentation, not new model qualification",
+  "execution": {
+    "source": "fe11b65305189d10f210c59da6622ace5648c4df",
+    "run": 43167302507,
+    "job": 131012065925,
+    "artifact": 13920197946,
+    "artifact_sha256": "d66b55a4368a3d6b519590557fc4feae8ab8be3271912d8ed68e9320f43a7f63",
+    "control_seconds": 6.026584479999997,
+    "observed_seconds": 5.841301704999999,
+    "parent_physical_and_raw_native": "EXACT",
+    "new_full_runs": 0
+  },
+  "outcome": {
+    "cached_Fmax": 5.801720215359296e-12,
+    "fresh_Fmax": 4.319762946264734,
+    "original_local_guard": 1e-06,
+    "original_total_guard": 1e-05,
+    "fresh_Fsum": -42.977539768372964,
+    "converged_branch": true,
+    "fresh_exceeding_nodes": 38,
+    "worst_node": 81,
+    "decision": "Actual same-state frozen coupled residual inconsistency confirmed; no full scientific attribution, no production repair or tolerance change"
+  },
+  "next_deliverable": "Bounded corrective coupled-state solve using explicit start-of-step state; not repeated final-residual polishing. Define consistency/control proof and short cap before implementing."
 }
