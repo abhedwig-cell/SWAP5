@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      macro_expected_sha:
+        description: Exact requested source for capped macro481 execution; mismatch stops before models
+        type: string
+        default: ""
       hybrid_original_macro_481:
         description: Execute own original macro481 from qualified Linux checkpoint with60s model cap
         type: boolean
@@ -101,6 +105,10 @@ jobs:
       OMP_NUM_THREADS: '1'
       SWAP5_TEST_SELECTION_RECORD: integration/f-ci/ORIGINAL_MACRO_481_20261112.json
     steps:
+      - name: Refuse stale dispatch source before any model work
+        env:
+          EXPECTED_MACRO_SHA: ${{ inputs.macro_expected_sha }}
+        run: test -n "$EXPECTED_MACRO_SHA" && test "$GITHUB_SHA" = "$EXPECTED_MACRO_SHA"
       - uses: actions/checkout@v4
         with:
           fetch-depth: 32

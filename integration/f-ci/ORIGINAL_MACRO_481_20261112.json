@@ -93,7 +93,16 @@
         "seconds": 60.003452675999995,
         "overlap161to198_physical_and_retry_counts_exact": true
       },
-      "next": "Continue source-identical own240to481, compare241to249 immediately against saved journal; same60s cap,16day durable checkpoints. No prefix/model recompilation."
+      "next": "Continue source-identical own240to481, compare241to249 immediately against saved journal; same60s cap,16day durable checkpoints. No prefix/model recompilation.",
+      "unintended_stale_dispatch": {
+        "run_id": 43157677890,
+        "requested_after_push": "4fac31635e9036c7f3a1221c51d4a1af25e6321d",
+        "actual_source": "d0b538c773cf8da5c11430b3de199c224fb23ed3",
+        "artifact_id": 13916248811,
+        "artifact_sha256": "7dbe695b601c3169fabc1319c7c0a7d463b9749171f75390405f473f0737f372",
+        "outcome": "Repeated160to243; no new coverage beyond already249. Excluded from qualification.",
+        "correction": "Require expected source input and reject stale GitHub source before checkout/model work; verify actual run head."
+      }
     }
   },
   "acceptance": [
