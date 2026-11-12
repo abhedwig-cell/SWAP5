@@ -1,0 +1,54 @@
+name: RC1 bounded cross-platform performance successor
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Exact checked-out candidate SHA
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: rc1-perf-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 9
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Pin source and RC1; no active macro or other campaign
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          git fetch --no-tags --depth=1 origin 11529865e76fb2259542f1e770726cd87af27603
+          mkdir "$RUNNER_TEMP/rc1-base"
+          git archive 11529865e76fb2259542f1e770726cd87af27603 app src tools reference | tar -x -C "$RUNNER_TEMP/rc1-base"
+          gfortran --version
+          apt-cache policy gfortran-16
+      - name: Fresh original source providers for exact validation-source bindings
+        run: |
+          python3 -B "$RUNNER_TEMP/rc1-base/tools/solute/run_water.py" --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/rc1-base-provider"
+          python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/rc1-new-provider"
+      - name: Actual source-bound O0/O2, complete O2, physical CSV and own native continuations
+        run: python3 -B tools/solute/qualify_rc1_perf.py --baseline-root "$RUNNER_TEMP/rc1-base" --baseline-reference "$RUNNER_TEMP/rc1-base-provider" --reference "$RUNNER_TEMP/rc1-new-provider" --output "$RUNNER_TEMP/rc1-perf-proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc1-perf-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/rc1-perf-proof
+            ${{ runner.temp }}/rc1-base-provider/PREPARED.json
+            ${{ runner.temp }}/rc1-new-provider/PREPARED.json
+          retention-days: 14
