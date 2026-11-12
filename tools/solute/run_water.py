@@ -12,10 +12,13 @@ import struct
 import subprocess
 import sys
 import tarfile
+import threading
+import time
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "app/hybrid_water"))
-from daily_host import APPLICATION_MODEL, ANDELST, GRASSGROWTH, HUPSEL, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
+import daily_host as host_module
+from daily_host import APPLICATION_MODEL, ANDELST, GRASSGROWTH, HUPSEL, SALTFARM, PROJECTS, build, checkpoint_identity, prepare_reference, run, sha, verify_checkpoint
 
 GRASS_MODEL = "NATIVE_GRASSGROWTH_WATER"
 HUPSEL_MODEL = "NATIVE_HUPSEL_ROTATION"
@@ -170,7 +173,7 @@ def run_hupsel(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", required=True, choices=[APPLICATION_MODEL, GRASS_MODEL, HUPSEL_MODEL, GRASSGROWTH.model, HUPSEL.model])
+    parser.add_argument("--model", required=True, choices=[GRASS_MODEL,HUPSEL_MODEL]+[p.model for p in PROJECTS])
     parser.add_argument("--reference-work", type=Path, help="Prepared original SWAP 4.3.1 distribution for Andelst")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
@@ -181,7 +184,13 @@ def main():
     parser.add_argument("--restart", type=Path, help="Previously published checkpoint for the selected model")
     parser.add_argument("--restart-day", type=int)
     parser.add_argument("--kernel-opt", choices=["O0", "O2"])
+    parser.add_argument('--no-macro-release',action='store_true',help='Explicit macropore-free release; active macro input is rejected before build')
+    parser.add_argument('--timeout-seconds',type=float,help='Hard model/controller wall cap; release default60seconds, compile time excluded')
     args = parser.parse_args()
+    if args.no_macro_release and args.model==ANDELST.model:
+        parser.error('Active macropores are outside SWAP5-NOMACRO-CLOSURE01; original Andelst is not silently changed')
+    if args.timeout_seconds is not None and not 0<args.timeout_seconds<=300:
+        parser.error('Model wall cap must be positive and at most300seconds')
     if args.prepare_archive is not None:
         if (args.model != APPLICATION_MODEL or args.reference_work is None
                 or any(value is not None for value in (args.output, args.grass_build, args.hupsel_build,
@@ -210,8 +219,8 @@ def main():
         return run_grass(args)
     if args.reference_work is None or args.grass_build is not None or args.hupsel_build is not None:
         parser.error("Andelst requires --reference-work")
-    project={p.model:p for p in (ANDELST,GRASSGROWTH,HUPSEL)}[args.model]
-    last_day={GRASSGROWTH:1827,ANDELST:481,HUPSEL:1096}[project]
+    project={p.model:p for p in PROJECTS}[args.model]
+    last_day=project.last_day
     args.days = last_day if args.days is None else args.days
     args.kernel_opt = args.kernel_opt or "O2"
     if (args.restart is None) != (args.restart_day is None):
@@ -223,8 +232,9 @@ def main():
         parser.error("The checkpoint day must belong to the requested run")
 
     output = args.output.resolve()
+    if args.no_macro_release and output.exists():parser.error('Release output directory must be new')
     output.mkdir(parents=True)
-    profile = dict(budget_retry=project!=GRASSGROWTH, shared_pond_transfer=project==ANDELST, refresh_macro_final=project==ANDELST)
+    profile = dict(budget_retry=project.macro or project.solute, shared_pond_transfer=project.macro, refresh_macro_final=project.macro)
     donor, kernel, case, inputs, build_id = build(
         args.reference_work.resolve(), output, **profile, runtime_checkpoint=True, kernel_opt=args.kernel_opt, project=project,
     )
@@ -234,9 +244,37 @@ def main():
     if args.restart is not None:
         origin = output / "verified-origin"
         receipt = verify_checkpoint(args.restart.resolve(), first, binding, origin)
-    result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,
-                 origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,
-                 checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)
+    project_meta=dict(case=project.case,model=project.model,start_date=project.start_date,nodes=project.nodes,water_tolerance=project.water_tolerance)
+    (output/'BUILD.json').write_text(json.dumps(dict(project=project_meta,inputs=inputs,identity=build_id,binding=binding,
+        executable_sha256={'donor':sha(donor),'kernel':sha(kernel)}),indent=2)+'\n')
+    workers=[];expired=threading.Event();actual_start=host_module.start_process
+    def track(*arguments,**keywords):
+        process,log=actual_start(*arguments,**keywords);workers.append(process);return process,log
+    def stop():
+        expired.set()
+        for process in workers:
+            if process.poll() is None:process.kill()
+    seconds=args.timeout_seconds or (60 if args.no_macro_release else None)
+    timer=threading.Timer(seconds,stop) if seconds else None
+    started=time.perf_counter();host_module.start_process=track
+    if timer:timer.start()
+    try:
+        result = run(donor, kernel, case, output, args.days, checkpoint_day=first, origin=origin,
+                     origin_receipt=receipt, runtime=True, publish_day=args.checkpoint_at,
+                     checkpoint_binding=binding if args.checkpoint_at is not None else None, model=args.model, project=project)
+    except Exception:
+        if not expired.is_set():raise
+        (output/'RESULT.json').write_text(json.dumps({'status':'MODEL_WALL_CAP_REACHED','seconds':time.perf_counter()-started,
+            'cap_seconds':seconds,'model':args.model,'journal':'daily.jsonl; accepted records retained, no completion claim'},indent=2)+'\n')
+        return 124
+    finally:
+        if timer:timer.cancel()
+        host_module.start_process=actual_start
+        for process in workers:
+            if process.poll() is None:process.kill()
+            process.wait(timeout=5)
+    result['model_and_controller_seconds']=time.perf_counter()-started
+    result['no_macro_release']=args.no_macro_release
     report = {
         "model": args.model, "kernel_optimization": args.kernel_opt,
         "input_sha256": inputs, "source_sha256": {"SWAP.ZIP": binding["swap_source"], "TTUTIL.ZIP": binding["ttutil_source"]},
