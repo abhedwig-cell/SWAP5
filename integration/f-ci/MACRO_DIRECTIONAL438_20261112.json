@@ -1,0 +1,14 @@
+{
+  "status": "SELECTED_FIXED_LIVE_STATE_NONLOCAL_DERIVATIVE_CONTROL",
+  "base": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
+  "hypothesis": "Fresh original coupled residual on identical complete live state is repeatable; pressure changes at selected nodes create off-tridiagonal responses missing from original analytic direction",
+  "decision_boundary": "First two baseline evaluations must exactly repeat and reproduce prior fresh F vector; then compare eight central-difference directions at absolute1e-4cm and5e-5cm. Report scale change, not a new physical acceptance tolerance. Nonlocal signal selects coupled derivative formulation; no signal rejects that explanation.",
+  "invariants": "No production arithmetic, physical option, tolerance, model default or accepted state change; children perturb only trial h/theta/hgrad under original SWKIMPL0; parent full native438 and all physical433to438 equal frozen original control",
+  "scope": "One original432to438 observer; original PR1655 control reused by exact archive hash.34 fixed-state fork evaluations, not time marches.",
+  "model_expected_seconds": 7,
+  "model_cap_seconds": 20,
+  "child_cap_seconds": 3,
+  "full_runs": 0,
+  "no_repairs_selected": "Rejected1656 diagonal/secant and earlier polishing variants excluded",
+  "artifact_and_source_identity_required": true
+}
