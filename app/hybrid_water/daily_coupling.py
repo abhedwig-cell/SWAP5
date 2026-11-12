@@ -378,7 +378,7 @@ class CoupledDailyColumn:
             (self.forcing_mode==GROUNDWATER_FORCING and cauchy is not None)):
             raise ValueError('Boundary forcing kind does not match the selected mode')
         if self.forcing_mode==GROUNDWATER_FORCING:cauchy=groundwater
-        if self.forcing_mode not in (ORIGINAL_FORCING,IRRIGATION_FORCING):self._validate_cauchy(cauchy)
+        if self.forcing_mode not in (ORIGINAL_FORCING,*IRRIGATION_MODES):self._validate_cauchy(cauchy)
         elif cauchy is not None or groundwater is not None:raise ValueError('Original forcing mode has no override')
         if (self.output / f'accepted-column-1-day-{self._day+1}.zip').exists():
             raise FileExistsError('Accepted day target is occupied')
