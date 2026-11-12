@@ -1,0 +1,63 @@
+{
+  "work_unit": "SWAP431-MACRO-AUDIT01",
+  "baseline": "f2377211d2be58d03d96e50fb0a6bc35ced3c90f",
+  "preregistration_commit": "8ad3a40619b58e614e8c694639a3735c41329911",
+  "branch": "research/swap431-macro-audit01-review-20261112",
+  "stage": "BOUNDED_AUDIT_COMPLETE",
+  "production_changes": false,
+  "b0_modified": false,
+  "new_b1_implemented": false,
+  "canonical_admitted": false,
+  "hypotheses": {
+    "H1": "CONFIRMED: fresh residual fails original criteria after frozen B0 convergence",
+    "H2": "NO_EFFECT in twenty selected B0 states; general rollback remains unknown"
+  },
+  "decision": "B: bounded experimental B1 acceptance correction/qualification, no reference promotion",
+  "source_scope": "63 exact B0 source members; Andelst cold two-day window, SWMBF1/SWKIMPL0, GNU14.2 O2",
+  "dependency_surface": [
+    "original headcalc.f90",
+    "macropore.f90",
+    "macrorate.f90",
+    "soilwater.f90",
+    "swap.f90",
+    "boundtop.f90",
+    "fluxes.f90",
+    "original Andelst input",
+    "B0 DEC branch selector and compiler closure"
+  ],
+  "invariants": [
+    "immutable B0",
+    "unchanged physics/tolerances",
+    "separate B1 lineage",
+    "paired exchange",
+    "trial rollback"
+  ],
+  "validation": [
+    "original capsule zero-model assessment reproduced exactly",
+    "63 member hashes and 63 branch-selected sources checked",
+    "62 reused objects and compiler/frontend/library hashes checked",
+    "fresh gfortran control/observer headcalc and fork compilation/link",
+    "two two-day runs complete, code100+swap.ok",
+    "20 observation vectors byte-exact",
+    "4 control/observer exported files byte-exact"
+  ],
+  "not_qualified": [
+    "B0 actual day438",
+    "general rejected-step rollback",
+    "complete B0 Jacobian",
+    "O0/cross-platform",
+    "new B1",
+    "whole-trajectory pressure accuracy"
+  ],
+  "next_safe_step": "CODEX_FOLLOWUP.md: at most two short B1 acceptance variants, unchanged criteria; no481 run",
+  "recovery_files": [
+    "AUDIT.md",
+    "CODEX_FOLLOWUP.md",
+    "RESULT.json",
+    "EVIDENCE.json",
+    "B0_MACRO_AUDIT01_EVIDENCE.zip",
+    "VERIFICATION.json",
+    "VERIFICATION_EVIDENCE.json",
+    "VERIFICATION_EVIDENCE.zip"
+  ]
+}

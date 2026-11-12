@@ -1,0 +1,62 @@
+{
+  "raw_source_members_verified": 63,
+  "verified_reused_objects": 62,
+  "freshly_compiled": [
+    "control headcalc",
+    "observer headcalc",
+    "fork helper"
+  ],
+  "baseline": "f2377211d2be58d03d96e50fb0a6bc35ced3c90f",
+  "prior_preregistration_commit": "8ad3a40619b58e614e8c694639a3735c41329911",
+  "source_archive_sha256": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+  "runs": [
+    {
+      "label": "control",
+      "seconds": 0.34622394800135226,
+      "returncode": 100,
+      "exe_sha256": "dce6c1567c9729545a1cb68fed616d0e60fc3c042e3ab4b0dd2a74923ff24103",
+      "input_sha256": "41f00a2efe9f1e39ff20831d34d6c657811f4862fcf62878c9787380ddd2cf78"
+    },
+    {
+      "label": "observer",
+      "seconds": 1.2031237470000633,
+      "returncode": 100,
+      "exe_sha256": "bf2772433b2d4bc91e165a8857a811651183e5be026f522c9239c935154f6263",
+      "input_sha256": "41f00a2efe9f1e39ff20831d34d6c657811f4862fcf62878c9787380ddd2cf78"
+    }
+  ],
+  "comparisons": [
+    {
+      "file": "result_output.csv",
+      "parent_observer_equal": true,
+      "prior_control_equal": true,
+      "byte_exact": true
+    },
+    {
+      "file": "macrogeom.csv",
+      "parent_observer_equal": true,
+      "prior_control_equal": true,
+      "byte_exact": true
+    },
+    {
+      "file": "soilshrinkchar.csv",
+      "parent_observer_equal": true,
+      "prior_control_equal": true,
+      "byte_exact": true
+    },
+    {
+      "file": "result.end",
+      "parent_observer_equal": true,
+      "prior_control_equal": true,
+      "byte_exact": true
+    }
+  ],
+  "observations": 20,
+  "prior_sample_vectors_byte_exact": true,
+  "local_failures": 16,
+  "total_failures": 17,
+  "max_fresh_local": 1.387360372412513e-06,
+  "max_fresh_total": 2.2460010243790122e-05,
+  "max_attribution_remainder": 0.0,
+  "scope": "Independent O2 reproduction of existing two hypotheses. No new B1, no B0 day438, no full Jacobian/rollback qualification. Unchanged non-headcalc objects reused only after hash verification."
+}
