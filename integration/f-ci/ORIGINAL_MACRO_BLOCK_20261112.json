@@ -1,0 +1,21 @@
+{
+  "status": "IMPLEMENTING_INTACT_ORIGINAL_NONLINEAR_MACRO_BLOCK",
+  "base": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
+  "prior_rejected": "PR1652 pair-per-residual candidate fails day4; do not repeat",
+  "changed_contract": "Remove added macro/pond calendar triggers and enable unchanged daily step budget every day; preserve full original residual/Jacobian/macropore freezing interplay and all original physics/state routines",
+  "invariants": [
+    "original forcing",
+    "1e-6cm daily guard",
+    "native complete state and rollback",
+    "distinct source/build identity",
+    "defaults unchanged until qualification"
+  ],
+  "selection": {
+    "first": "Own fresh4 O2 bounded20s. If complete own2to4 then O0; no481 campaign before material progress.",
+    "expected_seconds": 4,
+    "cap_seconds": 20,
+    "late_event": "Only after prefix/restart success, explicit source-bound same-state retained-origin event; no old checkpoint rebind.",
+    "excluded": "Previous failed refresh interventions; unrelated full F-CI and reference families"
+  },
+  "next": "Compile/link frozen original provider with only generated HeadCalc/main changes and execute prefix"
+}
