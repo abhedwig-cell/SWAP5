@@ -1,0 +1,17 @@
+{
+  "status": "SELECTED_SINGLE_BOUNDED_DAY438_DIAGNOSTIC",
+  "base": "20fc1a56dcee2c741e6d97de51d59e9852cbc07c",
+  "scope": "Observation only; production physics and all tolerances unchanged",
+  "hypothesis": "At final accepted438 solver state, cached macro residual may differ materially from original vector_F(1), or original solver may accept without convergence",
+  "discriminator": "Log actual accepted/nonconverged branch, original F and guards, and fresh F on a forked identical state. No child mutation can reach parent. Verify both parent receipts433to438 against retained whole481 and complete raw native endpoint against source-identical control.",
+  "expected_model_seconds_each": 6,
+  "model_cap_seconds_each": 20,
+  "child_cap_seconds": 2,
+  "full_runs_selected": 0,
+  "source": "research/hybrid-water01/probe_macro_day438.py",
+  "native_import": "Verify original432 with original source/build binding; no manifest rebinding and no source-bound package published by observer",
+  "acceptance": "Exact physical parent433to438 and both raw native endpoint payloads; otherwise diagnostic rejected",
+  "decision": "Stale fresh residual above unchanged original guards identifies consistency defect; explicit nonconverged return identifies retained solver acceptance defect; neither result establishes original reference qualification",
+  "failure_stop": "No cap extension, no repeat full run, no speculative repair if non-distinguishing; preserve reproducible result",
+  "existing_O0_O2": "PR1653 inherited only for unchanged production source; observer is research-only Linux O2 instrumentation, not new model qualification"
+}
