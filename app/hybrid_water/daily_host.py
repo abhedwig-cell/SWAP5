@@ -11,7 +11,6 @@ import os
 import re
 from pathlib import Path
 import shutil
-import struct
 import subprocess
 import sys
 import zipfile
@@ -118,12 +117,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     main = output / "swap_main.f90"
     source = main.read_text(encoding="cp1252")
     source = replace(source, "use Variables, only: t1900, flrunend",
-                     "use iso_fortran_env, only: output_unit, int64\n"
+                     "use iso_fortran_env, only: output_unit\n"
                      "use MOD_grid, only: numnod\n"
                      "use Variables, only: t1900, flrunend, h, gwl, qbot")
     if project.solute:
         source = replace(source, "use MOD_grid, only: numnod", "use MOD_solute, only: sampro\nuse MOD_grid, only: numnod")
-    source = replace(source, "   do window = 1, 4", """   write(*,'(a,*(1x,z16.16))') 'HYBRID_HYDRAULIC_HEX_V1', transfer([gwl,qbot,h(1:numnod)],[0_int64])
+    source = replace(source, "   do window = 1, 4", """   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
    write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900
    flush(output_unit)
    do
@@ -132,7 +131,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     source = replace(source, "      if (flrunend) error stop 'Donor ended before requested day'",
                      f"      if (flrunend .or. window_start /= {project.start_clock-1}d0+window) error stop 'Invalid requested day'")
     source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
-                     """      write(*,'(a,*(1x,z16.16))') 'HYBRID_HYDRAULIC_HEX_V1', transfer([gwl,qbot,h(1:numnod)],[0_int64])
+                     """      write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
       write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900
       flush(output_unit)""")
     if project.solute:
@@ -603,30 +602,13 @@ def send(process, text):
     process.stdin.flush()
 
 
-def decode_hydraulic_bits(tokens):
-    """Internal worker-v1 text frame: exact IEEE binary64 words, high digit first."""
-    values=[]
-    for token in tokens:
-        if len(token)!=16:
-            raise ValueError('Invalid hydraulic binary64 word width')
-        value=struct.unpack('>d',bytes.fromhex(token))[0]
-        if not math.isfinite(value):
-            raise ValueError('Nonfinite hydraulic binary64 word')
-        values.append(value)
-    if not values:
-        raise ValueError('Empty hydraulic binary64 frame')
-    return values
-
-
 def receive(process, transcript, prefixes):
     rows = {}
     for line in process.stdout:
         transcript.write(line)
         transcript.flush()
         key, _, values = line.strip().partition(" ")
-        if key == 'HYBRID_HYDRAULIC_HEX_V1':
-            rows['HYBRID_HYDRAULIC']=decode_hydraulic_bits(values.split())
-        elif key.startswith(("DAILY_", "HYBRID_")):
+        if key.startswith(("DAILY_", "HYBRID_")):
             rows[key] = values.split()
         if key in prefixes:
             return key, rows

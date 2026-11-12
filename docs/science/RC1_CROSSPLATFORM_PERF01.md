@@ -25,9 +25,9 @@ transfer is not the source of the baseline field differences on this profile.
 The generated worker still has daily return boundaries; this alone does not
 exclude a Fortran day-return dependency. That distinction remains explicit.
 
-## Internal exact hydraulic frame v1
+## Rejected internal hydraulic-frame prototype
 
-The candidate changes only original-worker hydraulic output serialization. Each
+The diagnostic prototype changed only original-worker hydraulic output serialization. Each
 binary64 groundwater, bottom flux and pressure-head value is transferred to an
 ISO `int64` bit pattern and emitted as sixteen hexadecimal digits. The tag is
 `HYBRID_HYDRAULIC_HEX_V1`; order remains groundwater, bottom flux, all grid heads.
@@ -47,3 +47,21 @@ The output-only prototype preserves every SaltFarm CSV record and terminal
 native/auxiliary byte. Its hex variant also preserves all daily unrounded heads.
 Its one-shot cost change is only a discriminator, not the accepted speed result;
 paired full application measurements determine whether the candidate is useful.
+
+## Selected first implementation: one compiler verification per invocation
+
+The hydraulic prototype is NOT admitted: paired full SaltFarm model/controller
+cost did not establish a material improvement over normal run variability.
+The implementation restores the original hydraulic text producer/receiver
+exactly. Raw prototype data and its complete bit-preservation result remain.
+No new frame is part of the supported interface.
+
+After the dominant native compute cost is separated, the actionable public-route
+cost is repeated toolchain verification. The CLI already validates the current
+compiler executables, versions, targets and provider before it validates a reused
+build. It now passes that invocation-local verified toolchain record to the build
+validator instead of launching and hashing the same tools a second time. A
+standalone build-validation call still obtains a fresh toolchain record.
+No cache survives a command, no mutable global cache is added, and source/object/
+library/input/executable/binding checks remain. This changes neither original
+Fortran nor any physical state, journal or rollback contract.
