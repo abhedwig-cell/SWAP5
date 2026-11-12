@@ -20,6 +20,9 @@ getting-started supplies portable relative-path commands. Scientific FAILs and
 underqualified references remain visible; heat-ledger export stays research-only.
 Active macropore work remains frozen.
 
-Next deliverable: merge the qualified user-release PR, verify its exact canonical
-tree and publish the admission receipt. No new model campaign or release tag.
-After admission the named standalone user task is complete within its exclusions.
+Completed: PR1663 merged at `dd83e381ebb973355923e46e35cf031aba98a335`.
+Its actual canonical tree equals qualified head2375c2ab3 exactly. See
+`PR1663_MERGE.json`. Release decision: **RELEASE READY** for the three named
+registered no-macro profiles. This source-only admission record changes no
+production dependency or test scope. No further simulation is selected and no
+official tag/public release is created. Scientific limits and macro freeze remain.
