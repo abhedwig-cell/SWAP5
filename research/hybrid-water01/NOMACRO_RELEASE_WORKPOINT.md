@@ -412,3 +412,29 @@ remain explicit and must not be promoted by functional completion.
 Reviewable publication: PR1660, proof head a5d3adbb1700a6eb6c3cfc3ff03cdbf772a5cf24.
 All selected source-bound controls and both archive SHA256 manifests pass.
 Actual canonical admission/postimage remains a separate gate before promotion.
+
+PR1660 MERGED: 61e96e7a17d9fae7543cf1763d247453a202057c. The actual fetched canonical whole tree
+0148186d79504f0c7942a7c0486a6b54321ab39e equals qualified candidate3137403ec002a09c52481aaafd184506427e8421
+with an empty complete file diff. Receipt: NOMACRO_SURFACE_MERGE_20261112.json.
+All model and qualification work is terminal; next is the final bounded release
+acceptance/profile reconciliation using existing results. Scientific limits and
+macro exclusion remain explicit.
+
+## Final bounded functional release acceptance
+
+The final data-only assessment verifies every selected BUILD input against the
+immutable original manifest for Grassgrowth/Hupsel and the explicitly derived
+original-workbook SaltFarm preparation. Both primary SWP files are BYTE-EXACT
+originals and all3 SWMACRO selectors are0. The additional soil/grid/crop/saline
+process combination uses the same generic host. All concrete functional criteria
+for these named profiles are satisfied by the current canonical implementation
+and already verified results; no model/ref campaign is repeated for this audit.
+
+Status: FUNCTIONALLY_READY_NAMED_NO_MACRO_RELEASE_WITH_EXPLICIT_SCIENTIFIC_LIMITATIONS.
+Physical code boundary:61e96e7a17d9fae7543cf1763d247453a202057c. Existing science
+failures, unsupported physical advective energy and the original R-byte caveat
+remain explicit; no whole-equivalence/global-CI/all-original-options claim follows.
+The final acceptance-only PR must be published and its whole-tree canonical
+postimage verified. After that, the no-macro release objective is complete and
+the half-hour recovery schedule should stop. Separate future macro/science work
+is preserved but is not silently started by this completed release task.

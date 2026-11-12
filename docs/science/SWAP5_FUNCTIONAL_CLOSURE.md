@@ -1,5 +1,45 @@
 # Current functional closure of the original projects
 
+## Functional no-macro release acceptance,12November2026
+
+**Functionally ready within the qualified release scope; whole scientific
+equivalence is not qualified.** The code boundary is canonical
+`61e96e7a17d9fae7543cf1763d247453a202057c`, following PR1658/1659/1660.
+The concrete request criteria and exact input hashes are reconciled in
+`integration/f-ci/NOMACRO_RELEASE_20261112.json#release_acceptance`.
+
+| Selected profile | Complete period | Additional process coverage |
+| --- | ---: | --- |
+| Original Grassgrowth | 1827days | Richards, prescribed groundwater, drainage, crop/root uptake, evaporation, supported conduction/storage |
+| Original Hupsel | 1096days | Crop rotation, water/solute transport, fixed irrigation, drainage, original zero-flux lower boundary, supported heat |
+| Original-workbook SaltFarm/Texel04dS | 1461days | 195nodes, four annual potato crops,581 saline irrigation events, original sinusoidal Cauchy boundary, water/solute/heat |
+
+Grassgrowth and Hupsel input bytes match the immutable original-project manifest;
+their selected SWMACRO values are0. SaltFarm uses the explicitly recorded
+original-workbook materialization, with no physical switch changed; original R
+preprocessor byte equivalence is not claimed. These are applications of the same
+generic explicit-state daily host and original Fortran process blocks. There is
+no new date-specific or separately implemented case physics.
+
+The final current qualification covers both operating systems and both kernels,
+all selected complete trajectories,72 exact seasonal own windows,44 accepted
+surface histories,12 actual positive-surface-stock day109 continuations, current
+prescribed-groundwater control, independent instances and guarded rollback.
+Water/solute and supported numerical heat retain their existing limits. Both
+demonstrated surface-stock defects and the earlier changed-winter failure are
+resolved. No known unmanaged functional blocker remains in these named profiles.
+Active/ambiguous macro input, foreign/stale state, invalid forcing and unsupported
+mode combinations are refused rather than silently changed or published.
+
+This acceptance does not qualify arbitrary unregistered original process-option
+combinations, active macropores, thread-safe legacy globals, caller thermal
+feedback, complete mass-carried thermal energy, an accuracy-matched runtime
+ratio, whole historical equivalence or globally green obsolete CI. Original
+failed oxygen criteria and underresolved reference families remain visible in
+the scientific disposition. Functional acceptance and those scientific limits
+are separate statuses. Macro code, history and evidence remain preserved for a
+separate future task; no further numerical campaign is selected by this closure.
+
 ## Shared no-macro surface input and complete day-state successor
 
 The source-bound successor in
