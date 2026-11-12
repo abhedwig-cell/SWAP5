@@ -1,0 +1,85 @@
+name: No-macro original-project qualification
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        description: Exact source; mismatch refuses before compilation
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-release-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  original-no-macro:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 7
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [O0, O2]
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/NOMACRO_RELEASE_20261112.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /AGENTS.md
+            /src/
+            /app/
+            /tools/solute/
+            /reference/swap-4.3.1/projects/
+            /research/hybrid-water01/*.py
+            /research/hybrid-water01/test_generic_hybrid_state.f90
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+            /integration/f-ci/NOMACRO_RELEASE_20261112.json
+      - name: Exact source and selected execution cost
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          record=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
+          assert record['owner']=='SWAP5-NOMACRO-CLOSURE01'
+          assert record['cost_selection']['full_model_call_cap_seconds']==60
+          PY
+      - name: Reuse immutable original object provider without a model run
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,tarfile
+          from pathlib import Path
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          root=Path(os.environ['RUNNER_TEMP'])/'nomacro-provider';root.mkdir()
+          with tarfile.open(archive) as t:t.extractall(root,filter='data')
+          for name,digest in json.loads((root/'MEMBER_SHA256.json').read_text()).items():
+              assert hashlib.sha256((root/name).read_bytes()).hexdigest()==digest,name
+          reference=root/json.loads((root/'PROOF_INDEX.json').read_text())['reference']
+          with Path(os.environ['GITHUB_ENV']).open('a') as f:f.write('NOMACRO_REFERENCE='+str(reference)+'\n')
+          PY
+      - name: SaltFarm full1461 and all five strict own windows
+        run: python3 -B research/hybrid-water01/qualify_nomacro_saltfarm.py --reference "$NOMACRO_REFERENCE" --output "$RUNNER_TEMP/nomacro-saltfarm-${{ matrix.opt }}" --optimization ${{ matrix.opt }}
+      - name: Grassgrowth and Hupsel affected contracts with macro probes excluded
+        run: |
+          for project in grass hupsel; do
+            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference "$NOMACRO_REFERENCE" --output "$RUNNER_TEMP/nomacro-$project-${{ matrix.opt }}" --project "$project" --optimization ${{ matrix.opt }}
+          done
+      - name: Existing original sensible-heat observer on actual saline irrigation days
+        run: |
+          python3 -B research/hybrid-water01/qualify_original_heat_accounting.py --base-archive research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz --workspace "$RUNNER_TEMP/nomacro-provider" --output "$RUNNER_TEMP/nomacro-heat-${{ matrix.opt }}" --case saltfarm-${{ matrix.opt }} --saltfarm-bundle "$RUNNER_TEMP/nomacro-saltfarm-${{ matrix.opt }}"
+          python3 -B research/hybrid-water01/check_original_heat_accounting.py --runs "$RUNNER_TEMP/nomacro-heat-${{ matrix.opt }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-release-${{ matrix.opt }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/nomacro-saltfarm-*
+            ${{ runner.temp }}/nomacro-grass-*
+            ${{ runner.temp }}/nomacro-hupsel-*
+            ${{ runner.temp }}/nomacro-heat-*
+          retention-days: 14
