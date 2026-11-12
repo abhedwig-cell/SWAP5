@@ -1,0 +1,19 @@
+{
+  "status": "MEASURING_SPARSE_CONTINUATION_FROM_OWN_22",
+  "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
+  "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
+  "selection": {
+    "first": "Own22to44; retain existing successful warm history and only new endpoint checkpoint44",
+    "reason": "Measure actual non-checkpoint model/controller step wall and combined checkpoint step cost before selecting whole481. Day4to22 was checkpointed daily, so its14.269s is not a solver-only projection.",
+    "expected_seconds": 10,
+    "model_cap_seconds": 20,
+    "pure_Fortran_CPU": "UNKNOWN; no timing category will be relabelled solver-only",
+    "next": "Only if measured practical cost: one continuous own44to481 with explicit checkpoints, short hard cap and per-day journal; no repeated warm prefix. Otherwise retain actual runtime blocker."
+  },
+  "acceptance": [
+    "Unchanged original inputs and1e-6cm daily guard",
+    "Full accepted day journal, exact source/build/native checkpoint lineage",
+    "Explicit late warm restart and actual full trajectory before claiming new-policy481",
+    "Scientific comparison and complete model execution assessed separately"
+  ]
+}
