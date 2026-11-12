@@ -1,0 +1,48 @@
+{
+  "status": "CANONICAL_POSTIMAGE_VERIFIED",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1647",
+  "head": "774161db29ee7e59cdd2e002f8ea48025a66ebc7",
+  "baseline": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
+  "canonical": "fc0ca4b09690c7e2522db6eb4416ed023aeac7fa",
+  "canonical_tree": "db6bac8ba76e571c663b8855228b9bfef38f7b74",
+  "predicted_and_actual_tree_equal": true,
+  "verified_blobs": {
+    "app/hybrid_water/daily_coupling.py": "ebd52c85228c03c47b82bd2df236008502501230",
+    "research/hybrid-water01/qualify_grass_groundwater.py": "e71e1d7e8f366dcdba194455c8ee7433a3c5497f",
+    ".github/workflows/grass-thermal-production.yml": "13b568c90f2a88de057d8a7451e470fc98f76cbc",
+    "research/hybrid-water01/groundwater-windows-20261112.tar.xz": "b8d222f5b5cbe26f398d846edcf7edea6b3c3c37",
+    "research/hybrid-water01/groundwater-linux-20261112.tar.xz": "c4d1a5cfaf7696bdc185e9ab38c95a354f8aa10f",
+    "research/hybrid-water01/groundwater-linux-ci-20261112.log.gz": "3b1b13033910b59150b0fa72a376c1cd550be17b",
+    "integration/f-ci/HYBRID_GRASS_GROUNDWATER_20261112.json": "9efa65dedd759d8e74b79de48255b06f2ef7ea31"
+  },
+  "linux_executed_sources_equal_canonical_git_bytes": {
+    "app/hybrid_water/daily_coupling.py": "878b23268c89c6ff14e4f90c983b2e6536c48ef31e1912e59d02c6fe75c14d1d",
+    "research/hybrid-water01/qualify_grass_groundwater.py": "7916f0ad86c9df58a60dc66f887cec4f113c392b6877eac3f279a629dd136cb2"
+  },
+  "unchanged_shared_blobs": 3866,
+  "qualification_record": "integration/f-ci/HYBRID_GRASS_GROUNDWATER_20261112.json",
+  "owning_linux_run": 43128811641,
+  "raw_archives": {
+    "windows": {
+      "path": "research/hybrid-water01/groundwater-windows-20261112.tar.xz",
+      "bytes": 7180104,
+      "sha256": "63c9f223dc7f62199aa73fc4c9720cd73675e7b7439c76bfb3b7bc60a77d0016"
+    },
+    "linux": {
+      "path": "research/hybrid-water01/groundwater-linux-20261112.tar.xz",
+      "bytes": 6970580,
+      "sha256": "d66d51270a2632f1f748797b1bf4c7d8f24a3719b1d5eb921fda72fb9d63f296"
+    }
+  },
+  "scope": "Original Grass SWBOTB1 daily groundwater request; O0/O2 Windows/Ubuntu windows2to4 and114to116 including exact modified-history recovery and independent original controls; original/Cauchy preservation PASS",
+  "limits": [
+    "Actual groundwater2to4 and114to116 with changed-state recovery, original leading-level identity and direct original input controls; no full externally controlled1827 trajectory",
+    "Cauchy20to22/current default3projects preserved at same scoped source/build identities; older Andelst numerical sensitivity remains open",
+    "Leap/year/terminal checks are input-only, not model runs",
+    "No source/physics/tolerance/datum conversion/new native codec or peer/thermal solver change",
+    "Native-only CPU/wall UNKNOWN; cohort elapsed includes controller/IO/publisher costs",
+    "Successful Windows O2 leading probe source report retained separately and reused with exact application/BUILD/native-state identity",
+    "Compatible inherited Cauchy day20 states verified; no repeated Cauchy warm prefix or full project/reference run"
+  ],
+  "next": "Original Hupsel fixed irrigation: inspect actual water/solute event consuming routine and S5HUP010 restored context; implement only at a real consuming entry, preserve original timing/units, zero bottom and existing mass guards. No new full project runs without changed dependency."
+}

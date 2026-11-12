@@ -2,6 +2,56 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Grass daily groundwater control delivered and admitted, 12 November 2026
+
+PR #1647 MERGED at fc0ca4b09690c7e2522db6eb4416ed023aeac7fa.
+Qualified head 774161db29ee7e59cdd2e002f8ea48025a66ebc7 on
+codex/hybrid-grass-daily-groundwater. Predicted and actual canonical tree
+ db6bac8ba76e571c663b8855228b9bfef38f7b74 match. Seven new source/workflow/
+evidence blobs verified; captured executed Linux application/qualifier SHA256
+matches canonical Git bytes. All 3866 shared src/reference/tools/tests blobs
+unchanged. Receipt: CLOSURE01_GRASS_GROUNDWATER_CANONICAL_20261112.json.
+This supersedes earlier NEXT/ACTIVE banners. Every model, CI, pack, audit and
+docs process for this delivery is FINISHED; do not duplicate them.
+
+Implemented: typed original Grass SWBOTB1 daily groundwater input in the existing
+external transaction. Uses original signed GWLEVEL centimetres/soil-surface datum
+and 1980 calendar; original sparse BBC rows and Fortran consumer retained.
+Accepted request binds origin, day/clock, coupling ID, provenance and actual BBC
+hash. Full original physical/native state uses the existing durable publisher.
+No numerical tolerance, Fortran reordering or original physical law changed.
+
+Qualification: Windows and Ubuntu26 O0/O2, windows 2-to-4 and 114-to-116:
+exact discard/retry; exact live versus disk recovery from MODIFIED prior-day
+state; independent manually edited original-input controls exact on BOTH days.
+Constant original leading level reproduces original receipts and both payloads.
+Actual requests change bottom exchange. Independent physical/native/input/hash
+and mass-accounting audits PASS. Both Cauchy O0/O2 and all three default routes
+O0/O2, corruption/terminal and persisted-input rejection guards PASS per platform.
+Linux run 43128811641 SUCCESS at e7d4c5a9b90232ebde0df5b2467948ab74564095;
+subsequent changes are audit/pack/docs/evidence only. Strict docs/source checks PASS.
+
+New-mode elapsed: Windows 21.002s plus inherited/source-bound 12.379s O2 leading
+probe; Linux all four cases 8.193s. Compatible published origins and compiled
+binaries reused; no complete 1827-day run repeated. Exact commands, sources,
+builds, raw archive SHA256 and findings are in canonical
+integration/f-ci/HYBRID_GRASS_GROUNDWATER_20261112.json and
+docs/science/HYBRID_GRASS_DAILY_GROUNDWATER.md.
+
+Scope remains bounded: no fully externally controlled 1827-day qualification,
+no cross-platform byte-identity, full energy or scientific-equivalence claim.
+Leap/year/terminal request preparation checks are input-only. Native scientific
+day188/day584 failures and original qualified full-project evidence stay visible.
+
+NEXT DELIVERY: original Hupsel fixed irrigation as real caller input. First read
+the actual consuming water/solute event routine and full S5HUP010 saved irrigation
+context. A prestart SWP metadata override can be overwritten on native restore;
+use a justified consuming entry after restore rather than a metadata-only wrapper.
+Preserve original event timing/units, water/solute pairing, original zero-flux
+bottom and existing 1e-10 mass guards. Select a bounded distinguishing event
+window and exact modified-history retry/recovery/control evidence O0/O2 on both
+platforms. No general framework, new reference campaign or full-project rerun.
+
 ### External Cauchy water forcing delivered and admitted,12November2026
 
 PR #1646 MERGED at4f0688b03f8ec00cc75f4be4b4f16ab07a273770. Implementation
