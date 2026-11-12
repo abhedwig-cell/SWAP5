@@ -8,7 +8,7 @@ from pathlib import Path
 p=argparse.ArgumentParser(description=__doc__)
 for name in ('bundle','reference','full','original_case','output'):p.add_argument('--'+name.replace('_','-'),type=Path,required=True)
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();bundle=a.bundle.resolve();reference=a.reference.resolve();meta=json.loads((bundle/'BUILD.json').read_text())
-rows=[json.loads(s) for s in (a.full/'daily.jsonl').read_text().splitlines()];last=rows[-1]['day'];flags=meta['identity']['donor_flags']
+rows=[json.loads(s) for s in (a.full/'daily.jsonl').read_text().splitlines()];last=rows[-1]['day'];flags=meta['identity']['donor_flags'];solute='solute_ledger_mg_cm2' in rows[-1]
 records=lambda q:[s for s in q.read_text().splitlines() if s.strip() and not s.startswith('*')]
 all_modes={}
 for mode in ('original','corrected-daily','corrected-coherent'):
@@ -18,7 +18,7 @@ for mode in ('original','corrected-daily','corrected-coherent'):
  main=main.replace('implicit none','use variables, only: itnumb\nimplicit none\ninteger :: rc1_j',1)
  main=main.replace('   call IterTime(3)',"   write(*,'(a,*(1x,i0))') 'RC1_FINAL_HIST', itnumb(:,1)\n   call IterTime(3)")
  (out/'swap_main.f90').write_text(main,encoding='cp1252')
- if mode=='corrected-coherent':
+ if mode=='corrected-coherent' and solute:
   swap=(bundle/'swap.f90').read_text(encoding='cp1252')
   anchor='use MOD_swap_base,       only: pathwork,';assert swap.count(anchor)==1
   swap=swap.replace(anchor,'use hybrid_day_window, only: budget_enabled, budget_start, budget_retries\n'+anchor)
@@ -42,8 +42,9 @@ for mode in ('original','corrected-daily','corrected-coherent'):
       sampro,sdstor,imsqprec,imsqirrig,imsqbot,imsqdra,imdectot,imrottot,sbaldev
    write(*,'(a,6(1x,es25.17e3))') 'HYBRID_UPTAKE', iptra,iqrot,iqreddry,iqredwet,iqredsol,iqredfrs
 """
+ if not solute:observer=observer.split("   write(*,'(a,9")[0]
  csv=csv.replace(anchor,observer+anchor);(out/'swap_csv_output.f90').write_text(csv,encoding='cp1252')
- sources=(['swap'] if mode=='corrected-coherent' else [])+['swap_csv_output','swap_main']
+ sources=(['swap'] if mode=='corrected-coherent' and solute else [])+['swap_csv_output','swap_main']
  for name in sources:
   cmd=['gfortran',*flags,'-I',str(out),'-I',str(bundle if corrected else reference/'build/swap-obj'),'-I',str(reference/'build/swap-obj'),'-I',str(reference/'build/ttutil-obj'),'-c',name+'.f90']
   c=subprocess.run(cmd,cwd=out,capture_output=True,text=True,timeout=60);(out/(name+'-compile.log')).write_text(c.stdout+c.stderr);assert c.returncode==0,c.stderr
@@ -52,7 +53,7 @@ for mode in ('original','corrected-daily','corrected-coherent'):
   local=out/orig.name;candidate=bundle/orig.name
   objects.append(str(local if local.exists() else candidate if corrected and candidate.exists() else orig))
  exe=out/('coherent.exe' if __import__('os').name=='nt' else 'coherent')
- link=subprocess.run(['gfortran','-o',str(exe),*objects,*([str(bundle/'hybrid_step_budget.o')] if corrected else []),str(reference/'build/ttutil-obj/libttutil.a')],capture_output=True,text=True,timeout=60);assert link.returncode==0,link.stderr
+ link=subprocess.run(['gfortran','-o',str(exe),*objects,*([str(bundle/'hybrid_step_budget.o')] if corrected and solute else []),str(reference/'build/ttutil-obj/libttutil.a')],capture_output=True,text=True,timeout=60);assert link.returncode==0,link.stderr
  case=out/'case';case.mkdir()
  for name in meta['inputs']:
   (case/name).parent.mkdir(exist_ok=True,parents=True);shutil.copyfile(a.full/'original'/name,case/name)
@@ -65,7 +66,7 @@ for mode in ('original','corrected-daily','corrected-coherent'):
  expected=control/'original/result_output.csv' if corrected else control/'result_output.csv'
  exact_csv=records(case/'result_output.csv')==records(expected)
  assert exact_csv or mode=='corrected-coherent','Read-only observer changed existing physics'
- frames={key:[] for key in ('HEAD','HEAT','HIST','STOCK_FLUX','EXTERNAL_FLUX','SOLUTE_LEDGER','UPTAKE')}
+ frames={key:[] for key in ('HEAD','HEAT','HIST','STOCK_FLUX','EXTERNAL_FLUX')+(('SOLUTE_LEDGER','UPTAKE') if solute else ())}
  for s in (out/'stdout').read_text(encoding='cp1252').splitlines():
   for key in frames:
    tag=('RC1_' if key in ('HEAD','HEAT','HIST') else 'HYBRID_')+key
