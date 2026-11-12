@@ -305,3 +305,11 @@ Reviewable publication: PR1659, proof head dee81334c08fc4705674a39e73a691558dc1d
 Selected Linux qualification is terminal SUCCESS, all artifact/member hashes
 verified, docs and strict MkDocs PASS. Admission and actual canonical postimage
 remain separate from the qualified candidate until the merge is verified.
+
+PR1659 is now MERGED at 8e929360afd67567c4dfa138d9a480d351e6ce85. The actual fetched canonical
+whole tree 6ac2f25fc61df52065134ae9c006fc9bc67af584 is EXACTLY the qualified candidate
+6e2345a78b5a9fb5e9934a409f069d5d36615264 (empty complete file diff).
+Postimage receipt: NOMACRO_HEAT_MERGE_20261112.json. All selected checks are
+terminal; no model worker remains active. Next deliverable remains the bounded
+SaltFarm caller-controlled saline irrigation transaction described above.
+The release program and half-hour recovery schedule are not yet complete.
