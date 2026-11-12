@@ -1,12 +1,13 @@
 {
-  "selection": "All ordinary accepted steps: fresh coupled residual in fork. At first actual V1/V2 rejection t1900=35796.92,dt=.002: compare real failed trial+original rollback+smaller solve against same-origin direct smaller solve.",
+  "selection": "First20 accepted early steps, first20 accepted steps at/after actual rejection time35796.92, and final accepted step: fresh coupled residual in fork. At first actual V1/V2 rejection t1900=35796.92,dt=.002: compare real failed trial+original rollback+smaller solve against same-origin direct smaller solve. At first late selected step compare macro derivatives at1/34/56/81 with original analytic diagonal at perturbations1e-4/5e-5cm.",
+  "cost_revision": "All-step fork observation exceeded20s after756/886 passing fresh checks. Preserve both censored profiles; only observational selection changes, no third physical variant or time-cap increase.",
   "origin": "Identical live process forks before original headcalc, immediately after original state save; no reconstructed checkpoint.",
   "scope": "No physical/criteria changes; child-only probes. Same two physical candidates; not a third repair. Three-second child alarm and20s per full route.",
   "rollback": "Record stocks, volumes, event flags, sorptivity refs/clocks, wall history, hydraulic fields and exchange before/after actual reject/restore/retry. Separate retry policy flags from physical state.",
   "sources": {
     "soilwater_observer.f90": "4d8c445618eea2cbd794e585f209839e0d92fc1b49db9a79055a3aac4d999a70",
     "fork_observer.c": "f0bba33981c6d74e22c1a6e4204a088f5216a4d9d93b08bd07fb6b6b05e7d02d",
-    "V1/headcalc_observer.f90": "dfa25c04365b6e87d72e3ce7819bfacca7ef420484107b934795227fec20a3b1",
-    "V2/headcalc_observer.f90": "dec34a2a0aa2841859e3f6223570280315251b53e37367691d8afae501cdfd79"
+    "V1/headcalc_observer.f90": "6d46f4150fcaeabfd7e7062ef927385a074fcc5056378927b1d9af16d4b785f3",
+    "V2/headcalc_observer.f90": "9733a98bcb680f8298634af36e2fcac6afd91896dfef1af0eedb8d855eabc2e1"
   }
 }

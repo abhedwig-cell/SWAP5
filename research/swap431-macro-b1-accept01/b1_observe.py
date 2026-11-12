@@ -7,8 +7,11 @@ A=P.parse_args();ROOT=Path(__file__).resolve().parent;R=ROOT/'b1-accept01';OLD=P
 FRESH=r'''
 subroutine audit_fresh()
  use iso_c_binding, only:c_int
- integer :: status,u
- real(8) :: oldf(macp),oldq(macp)
+ integer :: status,u,jj,sgn,scale,node
+ integer,save :: early=0,late=0
+ integer,parameter :: nodes(4)=[1,34,56,81]
+ real(8) :: oldf(macp),oldq(macp),oldh(macp),oldtheta(macp),oldgrad(macp+1),baseq(macp),analytic(macp),eps,qp,qm
+ logical :: selected,derivative
  interface
   integer(c_int) function begin_fork() bind(C,name='audit_fork_begin')
    import c_int
@@ -16,6 +19,15 @@ subroutine audit_fresh()
   subroutine end_fork() bind(C,name='audit_fork_end')
   end subroutine
  end interface
+ selected=.false.;derivative=.false.
+ if(t1900<35796.9d0.and.early<20) then
+  early=early+1;selected=.true.
+ end if
+ if(t1900>=35796.919999d0.and.late<20) then
+  late=late+1;selected=.true.;derivative=(late==1)
+ end if
+ if(t1900+dt>=35797d0-1d-10) selected=.true.
+ if(.not.selected) return
  status=begin_fork()
  if(status/=0) then
   if(status<0) error stop 'fresh child failure'
@@ -28,6 +40,34 @@ subroutine audit_fresh()
   maxval(abs(F(1:NN))),sum(F(1:NN)),CritDevBalCp,CritDevBalTot, &
   maxval(abs(F(1:NN)-oldf(1:NN)+QExcMpMtx(1:NN)-oldq(1:NN)))
  close(u)
+ if(derivative) then
+  oldh=h;oldtheta=theta;oldgrad=hgrad;baseq=QExcMpMtx
+  call jacobian_F()
+  analytic=dFdhMp
+  open(newunit=u,file='derivative.txt',status='replace')
+  write(u,*) 'TASKS',maxval(abs(baseq(1:NN)-QExcMpMtx(1:NN)))
+  do scale=1,2
+   eps=1d-4/dble(scale)
+   do jj=1,4
+    node=nodes(jj)
+    do sgn=-1,1,2
+     h=oldh;theta=oldtheta;hgrad=oldgrad
+     h(node)=oldh(node)+dble(sgn)*eps
+     theta(node)=watcon(node,h(node))
+     if(node>1) hgrad(node)=(h(node-1)-h(node))/disnod(node)+1d0
+     if(node<NN) hgrad(node+1)=(h(node)-h(node+1))/disnod(node+1)+1d0
+     call vector_F(1,hgrad)
+     if(sgn==-1) qm=QExcMpMtx(node)
+     if(sgn==1) qp=QExcMpMtx(node)
+    end do
+    write(u,*) 'COLUMN',node,eps,(qp-qm)/(2d0*eps),analytic(node),abs((qp-qm)/(2d0*eps)-analytic(node))
+   end do
+  end do
+  h=oldh;theta=oldtheta;hgrad=oldgrad
+  call vector_F(1,hgrad)
+  write(u,*) 'RETURN',maxval(abs(QExcMpMtx(1:NN)-baseq(1:NN)))
+  close(u)
+ end if
  call end_fork()
 end subroutine audit_fresh
 '''
@@ -133,7 +173,8 @@ if A.action=='prepare':
     s=s.replace('            call headcalc','            call audit_retry()\n            call headcalc',1)
     s=s.replace('end module MOD_SoilWater',RETRY+'\nend module MOD_SoilWater')
     (R/'soilwater_observer.f90').write_text(s,encoding='cp1252');(R/'fork_observer.c').write_text(C)
-    q={'selection':'All ordinary accepted steps: fresh coupled residual in fork. At first actual V1/V2 rejection t1900=35796.92,dt=.002: compare real failed trial+original rollback+smaller solve against same-origin direct smaller solve.',
+    q={'selection':'First20 accepted early steps, first20 accepted steps at/after actual rejection time35796.92, and final accepted step: fresh coupled residual in fork. At first actual V1/V2 rejection t1900=35796.92,dt=.002: compare real failed trial+original rollback+smaller solve against same-origin direct smaller solve. At first late selected step compare macro derivatives at1/34/56/81 with original analytic diagonal at perturbations1e-4/5e-5cm.',
+       'cost_revision':'All-step fork observation exceeded20s after756/886 passing fresh checks. Preserve both censored profiles; only observational selection changes, no third physical variant or time-cap increase.',
        'origin':'Identical live process forks before original headcalc, immediately after original state save; no reconstructed checkpoint.',
        'scope':'No physical/criteria changes; child-only probes. Same two physical candidates; not a third repair. Three-second child alarm and20s per full route.',
        'rollback':'Record stocks, volumes, event flags, sorptivity refs/clocks, wall history, hydraulic fields and exchange before/after actual reject/restore/retry. Separate retry policy flags from physical state.',
