@@ -62,7 +62,7 @@ rows=[];cuts={value for pair in windows for value in pair}|({188} if a.project==
 report={'status':'RUNNING','source_commit':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'bundle_build_sha256':sha(a.bundle/'BUILD.json')}
 try:
  full=a.output/'full';full.mkdir()
- with bounded(f'full-original{end_day}',180),contextlib.ExitStack() as stack:
+ with bounded(f'full-original{end_day}',60),contextlib.ExitStack() as stack:
   host=h.DailyHost(stack,donor,kernel,case,full,[h.ColumnStart()],runtime=True,checkpoint_enabled=True,binding=binding,project=project)
   with (full/'daily.jsonl').open('w',encoding='utf-8') as receipts:
    for day in range(1,a.days+1):

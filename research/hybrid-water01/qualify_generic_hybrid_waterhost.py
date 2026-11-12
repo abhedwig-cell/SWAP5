@@ -25,12 +25,14 @@ p.add_argument('--reference',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--project',choices=['grass','andelst','hupsel'],required=True)
 p.add_argument('--optimization',choices=['O0','O2'],required=True)
+p.add_argument('--no-macro-release',action='store_true')
 p.add_argument('--reuse-build',type=Path)
 p.add_argument('--reuse-control',type=Path)
 p.add_argument('--reuse-resume',type=Path)
 p.add_argument('--reuse-terminal',type=Path)
 p.add_argument('--andelst-baseline',type=Path,help='Same-platform old donor cut/terminal/resumed controls')
 a=p.parse_args()
+if a.no_macro_release and a.project=='andelst':p.error('Active macro project outside release')
 if a.project=='andelst' and a.andelst_baseline is None:p.error('Andelst requires actual same-platform canonical controls')
 a.output=a.output.resolve();a.output.mkdir()
 a.reference=a.reference.resolve()
@@ -72,10 +74,10 @@ else:
                                               kernel_opt=a.optimization,project=project,**profile)
 binding=host.checkpoint_identity(inputs,identity,project=project,**profile)
 sha=lambda p:hashlib.sha256(Path(p).read_bytes()).hexdigest()
-metadata=dict(project=project.__dict__,inputs=inputs,identity=identity,binding=binding,
+metadata=dict(project={k:getattr(project,k) for k in ['case','model','start_date','nodes','water_tolerance']},inputs=inputs,identity=identity,binding=binding,
               executable_sha256={'donor':sha(donor),'kernel':sha(kernel)})
 (a.output/'BUILD.json').write_text(json.dumps(metadata,indent=2)+'\n')
-print(check_protocol(kernel),flush=True)
+print(check_protocol(kernel,include_macro=not a.no_macro_release),flush=True)
 
 # Compile the actual state owner and its complete current kernel closure cold.
 unit=a.output/'state-contract';unit.mkdir()

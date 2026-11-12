@@ -1,5 +1,16 @@
 # SWAP5 Status-A current status
 
+## No-macro application successor,12November2026
+
+The owner's selected next-release configurations are Grassgrowth1827,Hupsel1096
+and the original-workbook SaltFarm/Texel04dS1461 scenario. The
+[PR1658 boundary](../science/SWAP5_FUNCTIONAL_CLOSURE.md) records complete runs,
+accepted calendar-state repair and exact seasonal continuations on Windows and
+Ubuntu26.04, donorO2/kernelO0/O2. Active Andelst/macropore functionality and prior
+proof remain preserved outside this release selection. Full-period supported
+heat export and whole scientific equivalence remain separate open acceptance
+points; the earlier three-application snapshots below keep their original scope.
+
 ## Current original-project application successor,12November2026
 
 The admitted applications complete Grassgrowth1827,Andelst481 and Hupsel1096

@@ -221,7 +221,7 @@ class CoupledDailyColumn:
     """
     def __init__(self, bundle, reference, output, project, coupling_id, *,
                  origin=None, day=0, adopt_native=False, forcing_mode=ORIGINAL_FORCING):
-        if project not in (h.ANDELST, h.GRASSGROWTH, h.HUPSEL):
+        if project not in h.PROJECTS:
             raise ValueError('Unregistered project')
         if not isinstance(coupling_id, str) or not coupling_id or len(coupling_id) > 128:
             raise ValueError('Explicit coupling identity is required')
@@ -236,7 +236,7 @@ class CoupledDailyColumn:
         if forcing_mode==IRRIGATION_FORCING and 'irrigation_extension' not in self.meta['identity']:
             raise ValueError('Irrigation consumer not built')
         self.project, self.coupling_id = project, coupling_id
-        self.last_day = {h.ANDELST: 481, h.GRASSGROWTH: 1827, h.HUPSEL: 1096}[project]
+        self.last_day = project.last_day
         if type(day) is not int or not 0 <= day <= self.last_day or (origin is None) != (day == 0):
             raise ValueError('Origin and original project period differ')
         if adopt_native and origin is None:

@@ -3,11 +3,12 @@ import argparse
 from pathlib import Path
 import subprocess
 
-def check(kernel):
+def check(kernel,include_macro=True):
     # Same small nonzero mass defect is refused by Grass and admitted by Andelst.
     for model,nodes,epoch,accepted in [('HYBRID_GRASSGROWTH_WATER',113,29220,False),
                                       ('HYBRID_HUPSEL_WATER',34,37256,False),
                                       ('HYBRID_ANDELST_WATER',112,35795,True)]:
+        if model=='HYBRID_ANDELST_WATER' and not include_macro:continue
         initial=' '.join(map(str,[0,1,1,0,0,0,0,0,*([0]*nodes)]))
         reply=' '.join(map(str,[1,1,5e-10,0,0,0,*([0]*nodes),1,0,0,0,0,0]))
         data=f'1\n{nodes} {epoch}\n{initial}\n1 1\n{reply}\n0 0\n'

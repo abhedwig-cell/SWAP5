@@ -27,14 +27,23 @@ class HybridProject:
     start_date: str
     nodes: int
     water_tolerance: float
+    macro: bool = False
+    solute: bool = False
+    end_date: str = ''
+
+    @property
+    def last_day(self):
+        return (date.fromisoformat(self.end_date)-date.fromisoformat(self.start_date)).days+1
 
     @property
     def start_clock(self):
         return (date.fromisoformat(self.start_date)-date(1900,1,1)).days+1
 
-ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6)
-GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10)
-HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10)
+ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6,macro=True,end_date='1999-04-26')
+GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10,end_date='1984-12-31')
+HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10,solute=True,end_date='2004-12-31')
+SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31')
+PROJECTS = (ANDELST,GRASSGROWTH,HUPSEL,SALTFARM)
 CASE = ANDELST.case
 APPLICATION_MODEL = "HYBRID_ANDELST_WATER"
 START_CLOCK = 35795
@@ -77,15 +86,16 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
-    if project not in (ANDELST,GRASSGROWTH,HUPSEL):
+    if project not in PROJECTS:
         raise ValueError("Unregistered original hybrid project")
-    if ((project!=ANDELST and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
-            or (project==GRASSGROWTH and budget_retry)):
+    if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
+            or (not project.macro and not project.solute and budget_retry)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
     case = distribution / "cases" / project.case
     pinned = ROOT / "reference/swap-4.3.1/projects" / project.case
+    if not case.exists():shutil.copytree(pinned,case)
     inputs = {p.relative_to(case).as_posix(): sha(p) for p in sorted(case.rglob("*")) if p.is_file()}
     expected = {p.relative_to(pinned).as_posix() for p in pinned.rglob("*") if p.is_file()}
     if set(inputs) != expected:
@@ -93,17 +103,24 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     for name in inputs:
         if (case / name).read_bytes().replace(b"\r\n", b"\n") != (pinned / name).read_bytes().replace(b"\r\n", b"\n"):
             raise ValueError(f"Original project input differs: {name}")
+    control=(case/'swap.swp').read_text(encoding='cp1252')
+    def selector(name):
+        values=re.findall(r'(?mi)^\s*'+name+r'\s*=\s*(\d+)\b',control)
+        if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
+        return int(values[0])
+    if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
+        raise ValueError('Original physical options disagree with declared project; no implicit disabling')
     donor_build = reference / "build"
     objects = donor_build / "swap-obj"
     ttutil = donor_build / "ttutil-obj"
-    render_day_return(donor_build / "swap-selected", output, nonmacro=project!=ANDELST, solute_ledger=project==HUPSEL)
+    render_day_return(donor_build / "swap-selected", output, nonmacro=not project.macro, solute_ledger=project.solute)
     main = output / "swap_main.f90"
     source = main.read_text(encoding="cp1252")
     source = replace(source, "use Variables, only: t1900, flrunend",
                      "use iso_fortran_env, only: output_unit\n"
                      "use MOD_grid, only: numnod\n"
                      "use Variables, only: t1900, flrunend, h, gwl, qbot")
-    if project==HUPSEL:
+    if project.solute:
         source = replace(source, "use MOD_grid, only: numnod", "use MOD_solute, only: sampro\nuse MOD_grid, only: numnod")
     source = replace(source, "   do window = 1, 4", """   write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
    write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900
@@ -117,7 +134,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                      """      write(*,'(a,*(1x,es25.17e3))') 'HYBRID_HYDRAULIC', gwl, qbot, h(1:numnod)
       write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900
       flush(output_unit)""")
-    if project==HUPSEL:
+    if project.solute:
         source=replace(source, "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900",
                        "   write(*,'(a,1x,es25.17e3)') 'HYBRID_SOLUTE_READY', sampro\n"
                        "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900")
@@ -131,7 +148,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         day_source = swap.read_text(encoding="cp1252")
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
-                          runtime=runtime_checkpoint, nonmacro=project!=ANDELST, solute_state=project==HUPSEL)
+                          runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute)
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -146,12 +163,19 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                          f"use hybrid_day_window, only: {imports}\nuse MOD_swap_base,       only: pathwork,")
         anchor = "   end do\n\n!  Specific for exchange when called as DLL"
         source = replace(source, anchor, "      if (return_at_day_end .and. flDayEnd) return\n\n" + anchor)
+        if not project.macro and re.search(r'(?mi)^\s*SWINCO\s*=\s*3\b',control):
+            if re.search(r"(?mi)^\s*INIFIL\s*=\s*'restart.end'",control):
+                raise ValueError('Original native input collides with reserved full-restart filename')
+            source=replace(source,'use MOD_swap_base,       only: pathwork,',
+                           'use MOD_swap_base, only: inifilnam\nuse MOD_swap_base,       only: pathwork,')
+            source=replace(source,'swmacro == 0 .and. fl_initialize)',
+                           "swmacro == 0 .and. fl_initialize .and. trim(inifilnam)=='restart.end')")
         swap.write_text(source, encoding="cp1252")
         patched.insert(0, "macropore")
         if runtime_checkpoint or checkpoint_day >= 365:
             patched.append("swapoutput")
 
-    if project==HUPSEL and not budget_retry:raise ValueError("Hupsel requires its unchanged strict mass guard")
+    if project.solute and not budget_retry:raise ValueError("Hupsel requires its unchanged strict mass guard")
     if budget_retry:
         swap = output / "swap.f90"
         source = swap.read_text(encoding="cp1252")
@@ -177,7 +201,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
                          "      write(*,'(a,1x,i0,1x,es25.17e3)') 'HYBRID_BUDGET_RETRIES', budget_retries, budget_total\n"
                          "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900")
-        if project==HUPSEL:source=replace(source,"budget_enabled = window >= 15","budget_enabled = .true.")
+        if project.solute:source=replace(source,"budget_enabled = window >= 15","budget_enabled = .true.")
         main.write_text(source, encoding="cp1252")
     if trace_richards:
         clock = project.start_clock + trace_day - 1
@@ -237,7 +261,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                return
             end if
          end if""")
-        if project==HUPSEL:
+        if project.solute:
             source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
             source=replace(source,"   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror",
                            "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at")
@@ -274,7 +298,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
-    if project==HUPSEL:
+    if project.solute:
         # Original linear pond/runoff relation remains exact even when the
         # lagged runoff estimate is below the legacy small-flux shortcut.
         # That shortcut booked runoff without subtracting it from new pond.
@@ -692,15 +716,15 @@ class DailyColumn:
 
 def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=ANDELST):
     shutil.copytree(case, directory)
-    if checkpoint_enabled or project==HUPSEL:
+    if checkpoint_enabled or project.solute:
         control = directory / "swap.swp"
         source = control.read_text(encoding="cp1252")
-        if project==HUPSEL:
+        if project.solute:
             # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
-            source=replace(source,"'WATBAL,ETTERMS,SOLBAL,GWL,S_CONC'",
-                           "'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'")
+            source,count=re.subn(r"(?mi)^(\s*INLIST_CSV\s*=\s*)'[^']*'",r"\1'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'",source)
+            if count!=1:raise ValueError('Missing/ambiguous original CSV groups')
             source,count=re.subn(r"(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1",r"\g<1>0",source)
-            if count!=1:raise ValueError("Missing original monthly output setting")
+            if count not in (0,1):raise ValueError("Ambiguous original monthly output setting")
             source += "\nNUM_DECIMALS = 12\n"
         source, count = re.subn(r"(?m)^([ \t]*SWENDTYPE[ \t]*=[ \t]*)[12]", r"\g<1>2", source)
         if count > 1:
@@ -718,7 +742,7 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
                     raise ValueError("Missing original terminal Cauchy head")
                 table = replace(table, terminal[0], terminal[0] + f"\n {start_date}  {terminal[2]}")
                 bbc.write_text(table, encoding="cp1252")
-            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)[12]", r"\g<1>3", source)
+            source, count = re.subn(r"(?m)^([ \t]*SWINCO[ \t]*=[ \t]*)[123]\b", r"\g<1>3", source)
             if count != 1:
                 raise ValueError("Missing restart setting")
             if runtime:
@@ -761,7 +785,7 @@ class DailyHost:
 
     def __init__(self, stack, donor, kernel, case, output, starts, *, checkpoint_enabled=False,
                  runtime=False, binding=None, model=None, project=ANDELST):
-        if project not in (ANDELST,GRASSGROWTH,HUPSEL):raise ValueError("Unregistered hybrid project")
+        if project not in PROJECTS:raise ValueError("Unregistered hybrid project")
         model=project.model if model is None else model
         if model!=project.model:raise ValueError("Model and project identity differ")
         self.project=project
@@ -769,7 +793,7 @@ class DailyHost:
         self.output = output
         self.binding = binding
         self.usable = False
-        self.host, self.host_log = start_process(stack, [kernel, model]+(["explicit-project"] if project!=ANDELST else []), output, "kernel")
+        self.host, self.host_log = start_process(stack, [kernel, model]+(["explicit-project"] if not project.macro else []), output, "kernel")
         _, selected = receive(self.host, self.host_log, {"DAILY_MODEL"})
         if selected["DAILY_MODEL"] != [model]:
             raise ValueError("Kernel selected a different soil water model")
@@ -794,7 +818,7 @@ class DailyHost:
                     stocks != start.receipt["stock_end_cm"] or pressure != start.receipt["pressure_head_cm"]):
                 raise ValueError("Restored donor state differs from the accepted checkpoint receipt")
             solute_stock=None
-            if project==HUPSEL:
+            if project.solute:
                 solute_stock=float(initial['HYBRID_SOLUTE_READY'][0])
                 if not math.isfinite(solute_stock):raise ValueError('Invalid initial solute stock')
                 if start.receipt is not None and solute_stock!=start.receipt['solute_end_mg_cm2']:
@@ -802,7 +826,7 @@ class DailyHost:
             self.columns.append(DailyColumn(directory, start.variant, worker, transcript, start.day, stocks, pressure,solute_stock=solute_stock))
         send(self.host, str(len(self.columns)))
         for column in self.columns:
-            if project!=ANDELST:send(self.host,f"{project.nodes} {project.start_clock}")
+            if not project.macro:send(self.host,f"{project.nodes} {project.start_clock}")
             send(self.host, " ".join(map(str, [column.day, math.fsum(column.stocks), *column.stocks, *column.pressure])))
         self.usable = True
 
@@ -838,7 +862,7 @@ class DailyHost:
         if stocks[6:] != current.stocks:
             raise ValueError(f"Day {day} donor origin differs from committed stocks")
         solute_budget={}
-        if self.project==HUPSEL:
+        if self.project.solute:
             ledger=list(map(float,response['HYBRID_SOLUTE_LEDGER']))
             uptake=list(map(float,response['HYBRID_UPTAKE']))
             if len(ledger)!=9 or len(uptake)!=6 or not all(map(math.isfinite,ledger+uptake)):
@@ -879,7 +903,7 @@ class DailyHost:
             current.revision = revision
             current.stocks = budget["stock_end_cm"].copy()
             current.pressure = budget["pressure_head_cm"].copy()
-            if self.project==HUPSEL:current.solute_stock=budget["solute_end_mg_cm2"]
+            if self.project.solute:current.solute_stock=budget["solute_end_mg_cm2"]
         else:
             current.refused = True
             stop_process(current.worker)

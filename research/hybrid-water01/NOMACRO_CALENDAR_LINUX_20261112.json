@@ -1,0 +1,332 @@
+{
+  "status": "PASS",
+  "run": {
+    "branch": "codex/nomacro-calendar-linux-ci",
+    "expected_sha": "aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+    "dispatch": "REQUESTED",
+    "time": 1794474755.4490504,
+    "same_executable_sources_as": "1ef2c8485566ad47bf3a33846059039d67f76e31",
+    "only_ci_delta": [
+      ".github/workflows/grass-thermal-production.yml"
+    ],
+    "run": 43189426052,
+    "url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43189426052",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "artifacts": [
+    {
+      "name": "nomacro-release-O0-aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+      "artifact_id": 13929987729,
+      "zip_sha256": "7c320a404cc9753f1683020d4e84f69539c83aceedd612133fd44a84bf635fa5",
+      "local": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-nomacro-linux-artifacts-20261112\\nomacro-release-O0-aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+      "size": 21001067
+    },
+    {
+      "name": "nomacro-release-O2-aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+      "artifact_id": 13929649202,
+      "zip_sha256": "81828bf48a2748f63183d84d763fe41b22e1a96bde419bf2823dd05e83ee37f1",
+      "local": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-nomacro-linux-artifacts-20261112\\nomacro-release-O2-aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+      "size": 20915881
+    }
+  ],
+  "source_byte_basis": "Ubuntu checkout: exact Git LF blobs; Windows CRLF kernel source hashes remain separately recorded",
+  "cohorts": [
+    {
+      "optimization": "O0",
+      "full_model_seconds": 8.364725294000003,
+      "result": {
+        "status": "PASS",
+        "scope": "Original-workbook SaltFarm1461; donorO2/kernelO0",
+        "compile_seconds": 9.397033495000002,
+        "days": 1461,
+        "source_commit": "aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+        "maximum_water_residual_cm": 1.296733553868279e-11,
+        "cumulative_water_residual_cm": 3.3122399005024275e-10,
+        "maximum_solute_residual_mg_cm2": 8.097869597101237e-12,
+        "cumulative_solute_residual_mg_cm2": 1.1915922001421103e-11,
+        "budget_step_retries": 0,
+        "restart": [
+          {
+            "cut": 2,
+            "end": 4,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 107,
+            "end": 110,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 365,
+            "end": 367,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 731,
+            "end": 733,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 1459,
+            "end": 1461,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          }
+        ],
+        "interleaved_instances_and_refused_accepted_state": "PASS",
+        "full_ledger_sha256": "2d082898d24a1f52719241302507129a4c00e9edc93a9dc78a31680e5e90964d",
+        "build_sha256": "e3573876aa27c9e51a49c45bd56a462195ad4273f867e9897311c25d72c7ab11",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "full_conservative_energy": "NOT_QUALIFIED",
+        "R_byte_equivalence": "NOT_CLAIMED"
+      },
+      "heat": {
+        "status": "ACCEPTED_HEAT_OBSERVER_AND_FAIL_CLOSED_ENERGY_LIMITS_PASS",
+        "results": {
+          "saltfarm-O0": {
+            "status": "ACCEPTED_ORIGINAL_CONDUCTION_WITH_EXPLICIT_PHYSICAL_ENERGY_LIMITS",
+            "model": "HYBRID_SALTFARM_WATER",
+            "daily": [
+              {
+                "day": 108,
+                "accepted": true,
+                "steps": 55,
+                "numerical_conduction_complete": true,
+                "full_energy_balance_complete": false,
+                "sensible_mass_carried_boundary_complete": false,
+                "storage_status_counts": {
+                  "3": 55
+                },
+                "conductive_into_j_cm2": -108.75316445559214,
+                "cell_residual_max_j_cm2": 2.2257369558520423e-13,
+                "global_step_residual_max_j_cm2": 6.914913086575325e-12,
+                "physical_storage_complete": true,
+                "physical_storage_change_j_cm2": -76.50759702836402,
+                "composition_change_j_cm2": 32.245567427281905,
+                "zero_advection_step_residual_max_j_cm2": 1.323944351844588
+              },
+              {
+                "day": 109,
+                "accepted": true,
+                "steps": 134,
+                "numerical_conduction_complete": true,
+                "full_energy_balance_complete": false,
+                "sensible_mass_carried_boundary_complete": false,
+                "storage_status_counts": {
+                  "3": 134
+                },
+                "conductive_into_j_cm2": 228.96086168696306,
+                "cell_residual_max_j_cm2": 1.5604401451541072e-13,
+                "global_step_residual_max_j_cm2": 4.381384144380718e-12,
+                "physical_storage_complete": true,
+                "physical_storage_change_j_cm2": 268.45200024805393,
+                "composition_change_j_cm2": 39.49113856105915,
+                "zero_advection_step_residual_max_j_cm2": 0.7486318083698323
+              },
+              {
+                "day": 110,
+                "accepted": true,
+                "steps": 81,
+                "numerical_conduction_complete": true,
+                "full_energy_balance_complete": false,
+                "sensible_mass_carried_boundary_complete": false,
+                "storage_status_counts": {
+                  "3": 81
+                },
+                "conductive_into_j_cm2": 98.44306731584038,
+                "cell_residual_max_j_cm2": 1.9178766647726109e-13,
+                "global_step_residual_max_j_cm2": 3.823164007599189e-12,
+                "physical_storage_complete": true,
+                "physical_storage_change_j_cm2": 140.88871459259454,
+                "composition_change_j_cm2": 42.44564727676713,
+                "zero_advection_step_residual_max_j_cm2": 0.9083159699541679
+              }
+            ],
+            "unaccepted_steps_ignored": 0,
+            "energy_budget_j_cm2": 1e-09,
+            "full_energy_balance_complete": false,
+            "counterfactual_zero_advection_verdict": "FAIL",
+            "accepted_only_and_corrupt_face_guards": "PASS"
+          }
+        },
+        "sources": {
+          "app/hybrid_water/heat_receipts.py": "7f5a75ba8d07448695d4b964cea4c221bb89a76ca13e5154adaf8188bc94e418",
+          "research/hybrid-water01/check_original_heat_accounting.py": "65f7ca0cd1f15e7e07a489e1ec88f9cd8ae51d96c193657c8c517e13e5d405c5"
+        }
+      }
+    },
+    {
+      "optimization": "O2",
+      "full_model_seconds": 9.289880034999996,
+      "result": {
+        "status": "PASS",
+        "scope": "Original-workbook SaltFarm1461; donorO2/kernelO2",
+        "compile_seconds": 12.369137411000011,
+        "days": 1461,
+        "source_commit": "aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04",
+        "maximum_water_residual_cm": 1.296733553868279e-11,
+        "cumulative_water_residual_cm": 3.3122399005024275e-10,
+        "maximum_solute_residual_mg_cm2": 8.097869597101237e-12,
+        "cumulative_solute_residual_mg_cm2": 1.1915922001421103e-11,
+        "budget_step_retries": 0,
+        "restart": [
+          {
+            "cut": 2,
+            "end": 4,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 107,
+            "end": 110,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 365,
+            "end": 367,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 731,
+            "end": 733,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          },
+          {
+            "cut": 1459,
+            "end": 1461,
+            "physical_receipts_exact": true,
+            "payloads_exact": {
+              "result.end": true,
+              "macro.bin": true
+            },
+            "maximum_pressure_delta_cm": 0.0
+          }
+        ],
+        "interleaved_instances_and_refused_accepted_state": "PASS",
+        "full_ledger_sha256": "2d082898d24a1f52719241302507129a4c00e9edc93a9dc78a31680e5e90964d",
+        "build_sha256": "6f8a09783acee059dca432ac0c05bc97c89d8c4733428a471bf244331c727233",
+        "scientific_equivalence": "NOT_QUALIFIED",
+        "full_conservative_energy": "NOT_QUALIFIED",
+        "R_byte_equivalence": "NOT_CLAIMED"
+      },
+      "heat": {
+        "status": "ACCEPTED_HEAT_OBSERVER_AND_FAIL_CLOSED_ENERGY_LIMITS_PASS",
+        "results": {
+          "saltfarm-O2": {
+            "status": "ACCEPTED_ORIGINAL_CONDUCTION_WITH_EXPLICIT_PHYSICAL_ENERGY_LIMITS",
+            "model": "HYBRID_SALTFARM_WATER",
+            "daily": [
+              {
+                "day": 108,
+                "accepted": true,
+                "steps": 55,
+                "numerical_conduction_complete": true,
+                "full_energy_balance_complete": false,
+                "sensible_mass_carried_boundary_complete": false,
+                "storage_status_counts": {
+                  "3": 55
+                },
+                "conductive_into_j_cm2": -108.75316445559214,
+                "cell_residual_max_j_cm2": 2.2257369558520423e-13,
+                "global_step_residual_max_j_cm2": 6.914913086575325e-12,
+                "physical_storage_complete": true,
+                "physical_storage_change_j_cm2": -76.50759702836427,
+                "composition_change_j_cm2": 32.245567427281905,
+                "zero_advection_step_residual_max_j_cm2": 1.323944351844588
+              },
+              {
+                "day": 109,
+                "accepted": true,
+                "steps": 134,
+                "numerical_conduction_complete": true,
+                "full_energy_balance_complete": false,
+                "sensible_mass_carried_boundary_complete": false,
+                "storage_status_counts": {
+                  "3": 134
+                },
+                "conductive_into_j_cm2": 228.96086168696306,
+                "cell_residual_max_j_cm2": 1.5604401451541072e-13,
+                "global_step_residual_max_j_cm2": 4.381384144380718e-12,
+                "physical_storage_complete": true,
+                "physical_storage_change_j_cm2": 268.4520002480543,
+                "composition_change_j_cm2": 39.49113856105915,
+                "zero_advection_step_residual_max_j_cm2": 0.7486318083698323
+              },
+              {
+                "day": 110,
+                "accepted": true,
+                "steps": 81,
+                "numerical_conduction_complete": true,
+                "full_energy_balance_complete": false,
+                "sensible_mass_carried_boundary_complete": false,
+                "storage_status_counts": {
+                  "3": 81
+                },
+                "conductive_into_j_cm2": 98.44306731584038,
+                "cell_residual_max_j_cm2": 1.9178766647726109e-13,
+                "global_step_residual_max_j_cm2": 3.823164007599189e-12,
+                "physical_storage_complete": true,
+                "physical_storage_change_j_cm2": 140.8887145925947,
+                "composition_change_j_cm2": 42.44564727676713,
+                "zero_advection_step_residual_max_j_cm2": 0.9083159699511877
+              }
+            ],
+            "unaccepted_steps_ignored": 0,
+            "energy_budget_j_cm2": 1e-09,
+            "full_energy_balance_complete": false,
+            "counterfactual_zero_advection_verdict": "FAIL",
+            "accepted_only_and_corrupt_face_guards": "PASS"
+          }
+        },
+        "sources": {
+          "app/hybrid_water/heat_receipts.py": "7f5a75ba8d07448695d4b964cea4c221bb89a76ca13e5154adaf8188bc94e418",
+          "research/hybrid-water01/check_original_heat_accounting.py": "65f7ca0cd1f15e7e07a489e1ec88f9cd8ae51d96c193657c8c517e13e5d405c5"
+        }
+      }
+    }
+  ]
+}

@@ -3,8 +3,8 @@ program swap5_hybrid_water
   use mod_fmr_soil_water_application_host, only: fmr_resolve_soil_water_application_model, &
        fmr_soil_water_application_selection_t, FMR_APPLICATION_HOST_OK, FMR_APPLICATION_ROUTE_REGISTERED_ALTERNATIVE
   implicit none
-  character(len=32), parameter :: hybrid_model_keys(3) = &
-       [character(len=32) :: 'HYBRID_ANDELST_WATER', 'HYBRID_GRASSGROWTH_WATER', 'HYBRID_HUPSEL_WATER']
+  character(len=32), parameter :: hybrid_model_keys(4) = &
+       [character(len=32) :: 'HYBRID_ANDELST_WATER', 'HYBRID_GRASSGROWTH_WATER', 'HYBRID_HUPSEL_WATER', 'HYBRID_SALTFARM_WATER']
   character(len=32) :: requested_model, protocol
   type(fmr_soil_water_application_selection_t) :: selection
   type(kernel_executor_t) :: executor
