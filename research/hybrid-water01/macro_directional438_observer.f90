@@ -30,6 +30,7 @@ subroutine shadow438(stage)
          end do
       end do
    end do
+   call history_evaluate438()
    open(newunit=u,file='day438-shadow.txt',status='new',action='write')
    write(u,*) 'DERIVATIVE_META',stage,t1900,dt,NN,swbotb,numbit,flunsatok
    write(u,*) 'SAMPLES',sample
@@ -73,3 +74,54 @@ subroutine directional_evaluate438(sample,node,delta)
    close(u)
    call shadow_end()
 end subroutine directional_evaluate438
+
+subroutine history_evaluate438()
+   use iso_c_binding, only: c_int
+   use MOD_macropore, only: NumDm, FrMpWalWet, WaUnMpDmCp, FlEndSrpEvt
+   integer :: pid_status,u,iteration,ic
+   real(8) :: base_h(macp),base_theta(macp)
+   character(16) :: tag
+   interface
+      integer(c_int) function shadow_begin() bind(C,name='s5_shadow_begin')
+         import c_int
+      end function
+      subroutine shadow_end() bind(C,name='s5_shadow_end')
+      end subroutine
+   end interface
+   pid_status=shadow_begin()
+   if (pid_status /= 0) then
+      if (pid_status < 0) error stop 'History sample failed'
+      return
+   end if
+   base_h=h
+   base_theta=theta
+   open(newunit=u,file='history438.txt',status='new',action='write')
+   do iteration=1,4
+      if (iteration == 3) then
+         h(81)=-abs(base_h(81))-0.01d0
+         theta(81)=watcon(81,h(81))
+      end if
+      if (iteration == 4) then
+         h=base_h
+         theta=base_theta
+      end if
+      do ic=2,NN
+         hgrad(ic)=(h(ic-1)-h(ic))/disnod(ic)+1d0
+      end do
+      call vector_F(1,hgrad)
+      write(tag,'(a,i1)') 'F',iteration
+      write(u,*) trim(tag),F(1:NN)
+      write(tag,'(a,i1)') 'H',iteration
+      write(u,*) trim(tag),h(1:NN)
+      write(tag,'(a,i1)') 'THETA',iteration
+      write(u,*) trim(tag),theta(1:NN)
+      write(tag,'(a,i1)') 'WET',iteration
+      write(u,*) trim(tag),FrMpWalWet(1:NumDm,1:NN)
+      write(tag,'(a,i1)') 'UNSAT',iteration
+      write(u,*) trim(tag),WaUnMpDmCp(1:NumDm,1:NN)
+      write(tag,'(a,i1)') 'EVENT',iteration
+      write(u,*) trim(tag),FlEndSrpEvt(1:NumDm,1:NN)
+   end do
+   close(u)
+   call shadow_end()
+end subroutine history_evaluate438

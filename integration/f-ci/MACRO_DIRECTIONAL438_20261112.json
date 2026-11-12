@@ -10,5 +10,21 @@
   "child_cap_seconds": 3,
   "full_runs": 0,
   "no_repairs_selected": "Rejected1656 diagonal/secant and earlier polishing variants excluded",
-  "artifact_and_source_identity_required": true
+  "artifact_and_source_identity_required": true,
+  "first_control": {
+    "source": "70d4d2d0f4e5f148a719d1563bcc80336d0ea682",
+    "run": 43174240491,
+    "job": 131034515867,
+    "artifact": 13922769904,
+    "sha256": "bfa1f1267e04b0179f2016e0816178c478bbdd6cdb21cda4809cc67a934eec58",
+    "seconds": 4.975797565000001,
+    "result": "Clone baselines exact and match old fresh residual. No offband response in eight directions at two scales; nonlocal hypothesis unsupported at this state."
+  },
+  "followthrough": {
+    "hypothesis": "Deterministic cloned evaluations do not establish sequential idempotence or rejection/round-trip independence; log repeated fresh evaluation and pressure81 saturation-crossing round-trip within one child",
+    "reason_for_short_observer_route": "New history state cannot be reconstructed from daily endpoint or independent-clone samples. Parent/control/native exact check retained; derivative samples must exactly reproduce earlier source",
+    "model_cap_seconds": 20,
+    "child_cap_seconds": 3,
+    "no_model_physics_change": true
+  }
 }
