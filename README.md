@@ -1,6 +1,10 @@
 # SWAP5
 
-SWAP5 is the modernized SWAP codebase and its technical documentation, qualification evidence, reference material and governance records.
+SWAP5 provides a standalone, bounded macropore-free user route for original
+Grassgrowth (1827 days), Hupsel (1096 days) and original-workbook SaltFarm04dS
+(1461 days). Build original sources, run a complete selected period and restart
+an accepted day with the [getting-started commands](docs/getting-started.md).
+No research capsule, previous executable or Andelst run is required.
 
 The first colleague-review package uses a frozen Status-A scientific denominator. Ongoing development can continue on later canonical heads without silently changing that frozen review claim.
 
@@ -13,7 +17,11 @@ The first colleague-review package uses a frozen Status-A scientific denominator
 - Later admitted development: [Post-Status-A current canonical state](docs/status-a/POST_STATUS_A_CURRENT_STATE.md)
 - Documentation portal source: [SWAP5 technical documentation](docs/index.md)
 
-The repository does not claim one broad stable public SWAP5 CLI/API or a wholesale replacement of all historical SWAP input/output formats unless a separately admitted authority establishes that interface. Internal qualification runners are not end-user commands by default.
+The named user route accepts the registered original inputs and exact build-bound
+day states. Arbitrary edited SWP projects and active macropores are outside this
+release. Functional completeness and whole scientific equivalence remain separate;
+original failed oxygen criteria and reference limitations stay visible. Numerical
+heat-ledger export is research-only; full physical energy is not claimed.
 
 ## Validate the documentation locally
 

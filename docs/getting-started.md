@@ -1,178 +1,177 @@
-# Getting started: build, run, input and output
+# Getting started: standalone no-macro SWAP5
 
-This page gives a practical entry point to the **current repository**, while keeping the distinction between qualified internal/application contracts and a future broad end-user SWAP5 interface explicit.
+## Supported release boundary
 
-## First: what the repository currently provides
+The standalone user route supports exactly these registered original profiles:
 
-SWAP5 Status-A is a qualified scientific/runtime baseline and review target. The repository contains production Fortran modules, qualification runners, reference material and documentation. It does **not** currently claim one broad stable public command-line application interface for every historical SWAP input/output mode.
+| Model selector | Original input | Complete period | Grid |
+| --- | --- | ---: | ---: |
+| `HYBRID_GRASSGROWTH_WATER` | `2.grassgrowth` | 1827 days | 113 nodes |
+| `HYBRID_HUPSEL_WATER` | `1.hupselbrook` | 1096 days | 34 nodes |
+| `HYBRID_SALTFARM_WATER` | `4.salinitystress-04dS` | 1461 days | 195 nodes |
 
-Do not invent a user-facing command from internal qualification scripts. Use the bounded entry points below for the purpose they were admitted for.
+These use one generic SWAP5 daily controller and private original Fortran workers.
+They are complete selected applications, with exact day restart; arbitrary edited
+SWP files and unregistered option combinations are refused. Active macropores,
+including original Andelst, are outside this release. No input switch is silently
+changed. Preserved native/research applications and the legacy Andelst archive
+preparation remain separate development routes, not prerequisites or aliases.
 
-## Build the documentation
+## Install and obtain the source
 
-The documentation itself has a supported local validation route:
+Use a checkout containing this release's admitted commit. Python 3.12 or later,
+GNU Fortran and GCC major 15 or 16, and GNU binutils (`ar`) must be on PATH. Fortran
+and C must target the same platform. The model launcher uses only Python's standard
+library; no downloaded research capsule or previous executable is required.
+
+On Windows, use Python and the matching MSYS2 UCRT64 GNU compiler/binutils packages.
+In PowerShell add the installed UCRT64 `bin` directory to PATH, for example:
+
+```powershell
+$env:PATH = "C:\msys64\ucrt64\bin;" + $env:PATH
+python --version
+gfortran --version
+gcc --version
+ar --version
+```
+
+On Ubuntu 26.04 install Python and the default GNU toolchain, then optionally make
+`python` available through an isolated environment:
 
 ```bash
+sudo apt-get install python3 python3-venv gfortran gcc binutils
+python3 -m venv .venv
+. .venv/bin/activate
+python --version
+gfortran --version
+gcc --version
+ar --version
+```
+
+Run all commands below at the repository root. Paths are examples relative to that
+root; every preparation, build and result directory must be new. Builds and saved
+states are platform/compiler/source bound, not cross-platform binaries.
+
+## Prepare original sources once; no model is executed
+
+```bash
+python -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work ./original-provider
+```
+
+This verifies the repository-bundled original `SWAP.ZIP` and `TTUTIL.ZIP`, compiles
+their original objects and library, and stages the three registered inputs.
+Grassgrowth and Hupsel retain the original project bytes. SaltFarm is materialized
+from the original workbook/template **before** input preflight, with its 581 saline
+irrigation events and no changed physical switch. Equivalence to the historical R
+preprocessor's output bytes is not claimed. The original archive hashes are:
+
+- SWAP: `1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151`.
+- TTUTIL: `ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193`.
+
+`original-provider/PREPARED.json` binds archive, compiler, preparation source,
+selected source, object, module, library and actual input hashes. The preparation
+executes zero original models, including zero Andelst/macropore runs. No whole
+distribution ZIP, personal temporary directory or GitHub artifact is needed.
+Keep the provider and build together with results; modifying inputs or objects
+invalidates reuse. A compiler change requires a new provider and build.
+
+## Build and run complete periods
+
+```bash
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_GRASSGROWTH_WATER --reference-work ./original-provider --build-only --kernel-opt O2 --output ./grass-build
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_GRASSGROWTH_WATER --reference-work ./original-provider --build-bundle ./grass-build --output ./grass-full
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_HUPSEL_WATER --reference-work ./original-provider --build-only --kernel-opt O2 --output ./hupsel-build
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_HUPSEL_WATER --reference-work ./original-provider --build-bundle ./hupsel-build --output ./hupsel-full
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_SALTFARM_WATER --reference-work ./original-provider --build-only --kernel-opt O2 --output ./saltfarm-build
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_SALTFARM_WATER --reference-work ./original-provider --build-bundle ./saltfarm-build --output ./saltfarm-full
+```
+
+Without `--days` these run all 1827, 1096 and 1461 days. `--build-only` compiles
+without simulation. The original process worker remains O2; `--kernel-opt O0`
+selects the checked SWAP5 controller build. A model/controller call defaults to a
+60-second wall cap, excluding compilation. `--timeout-seconds` explicitly selects
+a positive cap up to 300 seconds. Cap exhaustion retains accepted journals and
+reports `MODEL_WALL_CAP_REACHED`, never successful completion. Build commands in
+original source preparation each have a 60-second cap. No process or tolerance
+is removed to meet a time limit.
+
+## Save and resume an accepted day
+
+This short example exercises exactly the same state and executable owners as a
+complete run. Use the corresponding model selector and build for Hupsel/SaltFarm.
+
+```bash
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_GRASSGROWTH_WATER --reference-work ./original-provider --build-bundle ./grass-build --output ./grass-prefix --days 4 --checkpoint-at 2
+python -B tools/solute/run_water.py --no-macro-release --model HYBRID_GRASSGROWTH_WATER --reference-work ./original-provider --build-bundle ./grass-build --output ./grass-resumed --days 4 --restart ./grass-prefix/accepted-column-1-day-2.zip --restart-day 2 --checkpoint-at 4
+```
+
+The first run saves day 2 **after acceptance**, then continues through day 4.
+The fresh process resumes the saved state through days 3 and 4. Reuse the same
+build; do not recompile between these commands. The ZIP binds both original
+native state and complete auxiliary state to the exact project, original inputs,
+source and numerical build. Wrong day, source/build/input, incomplete or corrupt
+payloads refuse; the accepted origin is never overwritten. Add `--checkpoint-at N`
+to any complete run to save its accepted day N. There is no four-day prototype
+limit: `--days` is an absolute day within the selected original period.
+
+## Read outputs and units
+
+- `BUILD.json`: project, exact production sources, original object/library and
+  compiler identities, actual input hashes, executable hashes and checkpoint binding.
+- `RESULT.json`: requested and committed days, first refusal, maximum accepted
+  water residual in cm, source/input hashes and controller/model elapsed seconds.
+  Success requires no refusal and the requested number of daily records.
+- `daily.jsonl`: one accepted/refused day record. Stocks, daily water fluxes,
+  pressure head, groundwater and drainage are in cm (daily amounts, not rates).
+  `bottom_outward_cm` is positive outward. `independent_residual_cm` and
+  `kernel_residual_cm` retain the existing `1e-10 cm` guard. Hupsel/SaltFarm also
+  report solute stocks/ledger/residual in mg/cm2 with `1e-10 mg/cm2` guard and
+  uptake terms in cm. Day and revision identify the accepted transaction.
+- `original/result_output.csv` and original output files: original process output;
+  their headers label fields and units, including soil temperature in degrees C.
+- `accepted-column-1-day-N.zip`: durable native + auxiliary day state and binding;
+  it is a restart package, not an editable input file.
+- Worker/kernel stdout and stderr remain beside results for diagnosis.
+
+The additional qualified numerical heat ledger is currently **research-only**.
+The supported user launcher does not promise an exported heat-budget CSV. Its
+qualified research observer covers sensible storage and conductive flux, not full
+physical energy: advective water-carried heat, latent/gas and full surface energy
+are not supplied or fabricated. Temperature output is not a full energy balance.
+
+## External boundaries and scientific limits
+
+Original forcing is the default. The existing serial daily coupling API keeps
+explicit prepare/discard/accept, rollback and independent worker ownership. The
+[Grass prescribed-groundwater contract](science/HYBRID_GRASS_DAILY_GROUNDWATER.md)
+and [surface-irrigation contract](science/HYBRID_HUPSEL_DAILY_IRRIGATION.md) describe
+accepted caller inputs, units and restrictions. The shared no-macro irrigation
+mode accepts registered Hupsel/SaltFarm surface events; the older Hupsel-only mode
+stays restricted. Existing MODFLOW exchange conventions are unchanged. There is
+no new general CLI for arbitrary forcing and no caller thermal feedback contract.
+
+Functional readiness does not establish whole scientific equivalence. Preserve
+original Grassgrowth oxygen FAIL results (including the native thermal-profile
+day 188 criterion), underresolved Hupsel day 584 reference families, failed
+zero-advection comparisons and SaltFarm preprocessor limits. Read the
+[functional scope](science/SWAP5_FUNCTIONAL_CLOSURE.md) and
+[scientific disposition](science/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md).
+Active macropores, arbitrary edited SWP projects, new process combinations,
+thread-safe legacy globals and full physical energy are outside this release.
+
+## Reproduce user acceptance or build documentation
+
+```bash
+python -B tools/solute/check_userrelease.py --output ./user-acceptance
 python -m pip install -r requirements-docs.txt
 python tools/docs/check_docs.py
 mkdocs build --strict
 ```
 
-This is the same validation discipline used by the repository documentation workflow.
-
-## Exercise the minimal application-host contract
-
-The repository contains an admitted minimal generic soil-water application host in:
-
-```text
-src/runtime/mod_fmr_soil_water_application_host.f90
-```
-
-Its bounded owner runner is:
-
-```bash
-chmod +x tests/runtime/run_fapp01_minimal_soil_water_application_host.sh
-tests/runtime/run_fapp01_minimal_soil_water_application_host.sh
-```
-
-The runner requires GNU Fortran (`gfortran`). It compiles the host and its contract test under both `-O0` and `-O2`, executes both binaries, requires identical output and reports the resulting SHA-256 plus PASS markers.
-
-This is a **contract exercise**, not a general SWAP5 end-user simulation command.
-
-## What the minimal host selects
-
-F-APP01 establishes one bounded application-level model-selection owner. Its qualified contract includes:
-
-- blank selection resolves to the Reference model;
-- Reference can be selected explicitly;
-- an alternative must be explicitly selected and registry-bound;
-- unsupported selections fail closed;
-- an invalid registry fails closed;
-- there is no automatic fallback or silent model selection;
-- the host owns routing identity, not solver/process science.
-
-The host deliberately does not redefine the legacy SWP grammar or provide a broad stable public API.
-
-## Run the explicit hybrid Andelst application
-
-The development application binds `HYBRID_ANDELST_WATER` to the existing
-soil-water application selector. It runs the original Andelst inputs through
-one legacy Fortran worker per column and commits each day in the SWAP5 kernel.
-This route has its own bounded qualification and is still under development.
-
-With GNU Fortran and GCC on PATH, prepare the reference from the original
-SWAP 4.3.1 distribution and use new output directories:
-
-```bash
-python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
-  --reference-work ./andelst-reference --prepare-archive /path/to/SWAP_4.3.1.zip
-python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
-  --reference-work ./andelst-reference --output ./andelst-run \
-  --checkpoint-at 20 --days 22
-python -B tools/solute/run_water.py --model HYBRID_ANDELST_WATER \
-  --reference-work ./andelst-reference --output ./andelst-resumed \
-  --restart ./andelst-run/accepted-column-1-day-20.zip --restart-day 20 --days 22
-```
-
-Omitting `--days` runs through the original final day, 481. A restart ZIP
-must match the numerical build and original project inputs. The application
-emits daily receipts, the original CSV output and a result JSON with hashes.
-The [development evidence](https://github.com/abhedwig-cell/SWAP5/blob/b706a1b6e7216d3b1bc02cdc66817eaceb964644/research/hybrid-water01/README.md)
-records the validated windows and scientific comparison separately.
-
-## Run the native Grassgrowth application
-
-The same launcher selects the existing Grassgrowth project owner with
-`NATIVE_GRASSGROWTH_WATER`. It uses the original 113-node project and
-the retained-step thermal-control profile. Build that profile and run
-it in new output directories:
-
-```bash
-python -B tools/solute/build_grass_startup.py --output ./grass-build \
-  --optimization O2 --policy retained --numerical-profile thermal-control-1e-5C
-python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER \
-  --grass-build ./grass-build --output ./grass-prefix --days 2
-python -B tools/solute/run_water.py --model NATIVE_GRASSGROWTH_WATER \
-  --grass-build ./grass-build --output ./grass-resumed --days 4 \
-  --restart ./grass-prefix/checkpoint.bin
-```
-
-The last accepted day is saved in the native checkpoint. The executable,
-thermal profile and original input files are checked before model launch.
-Omitting `--days` requests the original final day, 1827.
-
-`conductive_budget.csv` sums the sensible storage change and the top and
-bottom conductive energy entering the soil over accepted substeps. It
-also reports the daily closure residual and the largest absolute
-substep residual. This covers the conductive soil calculation. The file
-does not include advective heat, gas transport, latent heat or a full
-surface energy balance.
-
-## Run the native Hupsel rotation
-
-Select `NATIVE_HUPSEL_ROTATION` with the same launcher. This route uses
-the existing 34-node water, solute, heat, crop and irrigation project.
-Its prepared inputs come from the pinned pressure-film qualification
-archive. The numerical profile uses a 0.01-day maximum time step
-and the explicit pressure-film root accuracy selector.
-
-```bash
-python -B tests/dataqual15_hupsel/build_and_run.py --output ./hupsel-build \
-  --compiler "$(command -v gfortran)" --optimization O2
-python -B tools/solute/run_water.py --model NATIVE_HUPSEL_ROTATION \
-  --hupsel-build ./hupsel-build --output ./hupsel-prefix --days 2
-python -B tools/solute/run_water.py --model NATIVE_HUPSEL_ROTATION \
-  --hupsel-build ./hupsel-build --output ./hupsel-resumed --days 4 \
-  --restart ./hupsel-prefix/checkpoint.bin
-```
-
-Keep `RESULT.json` beside the checkpoint. The launcher verifies that
-receipt against the checkpoint, executable and inputs before native
-restart validation. Omitting `--days` requests day 1096.
-
-## Bounded generic hybrid Grassgrowth water prototype
-
-The same hybrid host also has explicit `HYBRID_GRASSGROWTH_WATER` for the
-original113-node project. Current qualification is limited to days1..4, with
-its own exact restart and independent-instance controls. It uses the existing
-prepared original distribution. See [explicit hybrid project state](science/HYBRID_GENERIC_WATERHOST.md)
-for commands and limits; this does not replace the full native thermal route.
-
-## Input: current truth
-
-There are several different things that can be called “input” in this repository and they should not be conflated.
-
-### 1. Typed/internal application requests
-
-Modern runtime and qualification seams can construct typed requests/state directly for a bounded capability. These are useful for qualification and controlled composition, but they are not automatically a public file format.
-
-### 2. Legacy/reference input
-
-SWAP 4.3.1/reference material remains an important authority for historical file-oriented behaviour. Status-A does not claim that wholesale legacy I/O has been replaced by a new public SWAP5 grammar.
-
-A later application binding can translate a bounded piece of legacy application meaning into typed runtime meaning only where that binding has been explicitly admitted. Such a binding is not authority to redesign the whole legacy grammar.
-
-### 3. Future public interface
-
-A broad stable SWAP5 API/CLI or wholesale input-format modernization remains outside the frozen Status-A denominator unless separately admitted.
-
-## Output: current truth
-
-Qualification runners produce deterministic contract/test output and evidence. Production/runtime capabilities expose admitted state, fluxes, diagnostics or coupling results through their owning contracts.
-
-There is currently no documentation authority here for a new universal SWAP5 output-file format that supersedes all historical SWAP outputs. Do not infer one from test logs or internal diagnostic structures.
-
-For scientific review, output meaning should therefore be traced through the owning process/capability and its balance/evidence contract rather than through a presumed global file schema.
-
-## Where to go next
-
-- To understand what is scientifically admitted, read [Status-A current status](status-a/CURRENT_STATUS.md).
-- For the scientific model, read [Scientific model](science/index.md).
-- For individual runtime/process capabilities, use [Status-A capability review pages](capabilities/index.md).
-- For transaction/retry/commit semantics, read [Numerical formulation](numerics/index.md).
-- For exact theory/code/evidence chains, use [Status-A traceability](status-a/TRACEABILITY.md).
-- For SWAP 4.3.1 reference context, see [Legacy baseline](legacy/swap-4.3.1-baseline.md).
-
-## Documentation rule
-
-If a build/run/input/output path is missing but can be reconstructed from accepted repository authority, document it. If the authority itself is not yet established, record that as a bounded gap instead of presenting an internal test harness as a supported public interface.
+The acceptance runner invokes the public commands in separate processes from a
+new source provider, builds all three projects at O0/O2, checks exact physical and
+native own restarts, executes the complete selected O2 periods and tests invalid
+source/toolchain/input/build/output and active-macro refusals. It does not execute
+Andelst or load a research provider. Existing full O0, seasonal restart, heat,
+rollback, independent-instance and external-input qualification remains separately
+source-bound; this packaging change does not change the production Fortran/host.
