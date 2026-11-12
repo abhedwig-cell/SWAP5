@@ -14,11 +14,20 @@ import daily_host as h
 from daily_coupling import CoupledDailyColumn,IRRIGATION_FORCING
 from irrigation_forcing import INPUT
 p=argparse.ArgumentParser(description=__doc__)
-for n in ['workspace','runs','output']:p.add_argument('--'+n,type=Path,required=True)
+for n in ['workspace','runs','reference','bundle','accepted']:p.add_argument('--'+n,type=Path)
+p.add_argument('--project',choices=['hupsel','saltfarm'],default='hupsel')
+p.add_argument('--output',type=Path,required=True)
 a=p.parse_args();a.output.mkdir();start=time.monotonic()
-idx=json.loads((a.workspace/'PROOF_INDEX.json').read_text());reference=a.workspace/idx['reference']
-bundle=a.runs/'O2/build';meta=json.loads((bundle/'BUILD.json').read_text())
-good=a.runs/'O2/modified/external/accepted-column-1-day-5.zip';digest=h.sha(good)
+project={'hupsel':h.HUPSEL,'saltfarm':h.SALTFARM}[a.project]
+if a.bundle:
+    assert a.reference and a.accepted
+    reference=a.reference;bundle=a.bundle;good=a.accepted
+else:
+    idx=json.loads((a.workspace/'PROOF_INDEX.json').read_text());reference=a.workspace/idx['reference']
+    bundle=a.runs/'O2/build';good=a.runs/'O2/modified/external/accepted-column-1-day-5.zip'
+meta=json.loads((bundle/'BUILD.json').read_text());digest=h.sha(good)
+with zipfile.ZipFile(good) as z:manifest=json.loads(z.read('checkpoint.json'))
+day=manifest['receipt']['day'];cid=manifest['receipt']['coupling']['id'];mode=manifest['binding']['external_daily']['forcing']
 with zipfile.ZipFile(good) as z:files={n:z.read(n) for n in z.namelist()}
 persisted=[]
 for name in ['digest','mode','clock','foreign','nonfinite','applied-hash','disabled']:
@@ -33,22 +42,23 @@ for name in ['digest','mode','clock','foreign','nonfinite','applied-hash','disab
     bad=a.output/(name+'.zip')
     with zipfile.ZipFile(bad,'w',zipfile.ZIP_DEFLATED) as z:
         for n,data in files.items():z.writestr(n,json.dumps(m).encode() if n=='checkpoint.json' else data)
-    try:CoupledDailyColumn(bundle,reference,a.output/(name+'-owner'),h.HUPSEL,'irrigation-O2-modified',
-                           origin=bad,day=5,forcing_mode=IRRIGATION_FORCING)
+    try:CoupledDailyColumn(bundle,reference,a.output/(name+'-owner'),project,cid,
+                           origin=bad,day=day,forcing_mode=mode)
     except (ValueError,TypeError,KeyError):persisted.append(name)
     else:raise AssertionError('Malformed persisted irrigation accepted: '+name)
 assert h.sha(good)==digest
-clock=h.HUPSEL.start_clock;original=reference/'distribution/SWAP_4.3.1/cases/1.hupselbrook'
+clock=project.start_clock;original=reference/'distribution/SWAP_4.3.1/cases'/project.case
 refusals=[]
 for name,line,expected in [('stale',f'S5IRR001 {clock+1} 1 24.0 20.0 12.0','Foreign external irrigation clock'),
                            ('nonfinite',f'S5IRR001 {clock} 1 NaN 20.0 12.0','Nonfinite external irrigation'),
-                           ('range',f'S5IRR001 {clock} 1 101.0 20.0 12.0','External irrigation outside original range')]:
+                           ('range',f'S5IRR001 {clock} 1 101.0 20.0 12.0','External irrigation outside original range'),
+                           ('duration',f'S5IRR001 {clock} 1 14.4 0.401 0.5','External irrigation exceeds one day')]:
     case=a.output/(name+'-case');shutil.copytree(original,case);(case/INPUT).write_text(line+'\n')
     out=a.output/(name+'-run');out.mkdir()
     try:
         with contextlib.ExitStack() as stack:
             host=h.DailyHost(stack,h.executable(bundle,'day_donor'),h.executable(bundle,'day_kernel'),case,out,
-                [h.ColumnStart(name='original')],runtime=True,checkpoint_enabled=True,binding=meta['binding'],project=h.HUPSEL)
+                [h.ColumnStart(name='original')],runtime=True,checkpoint_enabled=True,binding=meta['binding'],project=project)
             host.step(1,checkpoint=True)
     except RuntimeError:
         error=(out/'original/donor.stderr').read_text();assert expected in error
