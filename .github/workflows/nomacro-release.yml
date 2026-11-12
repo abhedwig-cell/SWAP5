@@ -6,13 +6,19 @@ on:
         description: Exact source; mismatch refuses before compilation
         required: true
         type: string
+      seasonal_only:
+        description: Reuse source-bound successful run43189426052 binaries for fresh Grassgrowth/Hupsel seasonal checkpoints only
+        type: boolean
+        default: false
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: nomacro-release-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   original-no-macro:
+    if: ${{ !inputs.seasonal_only }}
     runs-on: ubuntu-26.04
     timeout-minutes: 7
     strategy:
@@ -82,4 +88,59 @@ jobs:
             ${{ runner.temp }}/nomacro-grass-*
             ${{ runner.temp }}/nomacro-hupsel-*
             ${{ runner.temp }}/nomacro-heat-*
+          retention-days: 14
+  seasonal-no-macro:
+    if: ${{ inputs.seasonal_only }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [O0, O2]
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/swap-4.3.1/projects/
+            /research/hybrid-water01/*.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+      - name: Exact requested source
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-release-${{ matrix.opt }}-aaefe2ef6d07a80e0a19b06ec7ae010ae22b7e04
+          run-id: 43189426052
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/nomacro-current
+      - name: Original provider only; no compilation or repeated SaltFarm run
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,tarfile
+          from pathlib import Path
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          root=Path(os.environ['RUNNER_TEMP'])/'nomacro-provider';root.mkdir()
+          with tarfile.open(archive) as t:t.extractall(root,filter='data')
+          reference=root/json.loads((root/'PROOF_INDEX.json').read_text())['reference']
+          with Path(os.environ['GITHUB_ENV']).open('a') as f:f.write('NOMACRO_REFERENCE='+str(reference)+'\n')
+          PY
+      - name: Full Grassgrowth1827 and Hupsel1096 plus original4/9 own windows under60second caps
+        run: |
+          for project in grass hupsel; do
+            bundle="$RUNNER_TEMP/nomacro-current/nomacro-$project-${{ matrix.opt }}"
+            chmod +x "$bundle/day_donor" "$bundle/day_kernel"
+            python3 -B research/hybrid-water01/run_hybrid_grass_full.py --bundle "$bundle" --reference "$NOMACRO_REFERENCE" --output "$RUNNER_TEMP/nomacro-seasonal-$project-${{ matrix.opt }}" --project "$project"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-seasonal-${{ matrix.opt }}-${{ github.sha }}
+          path: ${{ runner.temp }}/nomacro-seasonal-*
           retention-days: 14
