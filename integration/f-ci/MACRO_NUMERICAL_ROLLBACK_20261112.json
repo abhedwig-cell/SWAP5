@@ -9,5 +9,302 @@
   "expected_seconds": 4,
   "model_cap_seconds": 20,
   "control": "Existing qualified original own14to16 and source/compiler/object capsule",
-  "next_if_actual_defect": "Narrow rollback repair plus owning O0/O2, mass, restart and unchanged accepted-path controls before PR admission"
+  "next_if_actual_defect": "Narrow rollback repair plus owning O0/O2, mass, restart and unchanged accepted-path controls before PR admission",
+  "initial_observation": {
+    "status": "READ_ONLY_PARENT_AND_FULL_NATIVE_EXACT_ACTUAL_NUMERICAL_ROLLBACK_OBSERVED",
+    "seconds": 2.758960499893874,
+    "rollback_count": 1949,
+    "field_results": [
+      {
+        "field": "ICpBtDm",
+        "kind": "integer",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "original_restored",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "VlMpDmCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "original_restored",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "WaUnMpDmCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "original_restored",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "FlEndSrpEvt",
+        "kind": "logical",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "event_history",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "ThtSrpRefDmCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "event_history",
+        "changed_rejections": 1770,
+        "maximum_changed_elements": 1,
+        "maximum_difference": 0.444
+      },
+      {
+        "field": "SorpDmCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "event_history",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 1,
+        "maximum_difference": 0.1688281233484726
+      },
+      {
+        "field": "TimAbsCumDmCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "event_history",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "VlMpDyCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "macp"
+        ],
+        "category": "geometry_history",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 48,
+        "maximum_difference": 0.0001297327140129239
+      },
+      {
+        "field": "SubsidCp",
+        "kind": "real(8)",
+        "dimensions": [
+          "macp"
+        ],
+        "category": "geometry_history",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 35,
+        "maximum_difference": 6.881605911113198e-06
+      },
+      {
+        "field": "FrMpWalWet",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm",
+          "macp"
+        ],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "ICpBtDmPot",
+        "kind": "integer",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "ICpTpWaSrDm",
+        "kind": "integer",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "ZWaLevDm",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "ZBtDm",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "VlMpDm",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "geometry",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 5,
+        "maximum_difference": 0.00013698837749487325
+      },
+      {
+        "field": "VlMp",
+        "kind": "real(8)",
+        "dimensions": [],
+        "category": "geometry",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 1,
+        "maximum_difference": 0.0002739767549897465
+      },
+      {
+        "field": "ArMpTp",
+        "kind": "real(8)",
+        "dimensions": [],
+        "category": "geometry",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 1,
+        "maximum_difference": 6.475550942505737e-06
+      },
+      {
+        "field": "ArMpTpDm",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "geometry",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 5,
+        "maximum_difference": 3.2377754712528684e-06
+      },
+      {
+        "field": "ArMpSs",
+        "kind": "real(8)",
+        "dimensions": [],
+        "category": "geometry",
+        "changed_rejections": 1949,
+        "maximum_changed_elements": 1,
+        "maximum_difference": 6.475550942505737e-06
+      },
+      {
+        "field": "KsMpSs",
+        "kind": "real(8)",
+        "dimensions": [],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "FrArMtrx",
+        "kind": "real(8)",
+        "dimensions": [
+          "macp"
+        ],
+        "category": "geometry",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "WaSrMp",
+        "kind": "real(8)",
+        "dimensions": [],
+        "category": "stock",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "WaSrMpDm",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "stock",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "WaUnMpDm",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "stock",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      },
+      {
+        "field": "WaUnsat",
+        "kind": "real(8)",
+        "dimensions": [
+          "madm"
+        ],
+        "category": "stock",
+        "changed_rejections": 0,
+        "maximum_changed_elements": 0,
+        "maximum_difference": 0.0
+      }
+    ],
+    "native_endpoint_hashes": {
+      "result.end": "71137f7ec381c00f5247661eade5293558066ae0b1ce408957fb330767331141",
+      "macro.bin": "27c752c2053da4b8ba1b287b0597531c918d829755e3fafd33f7ebcd9f7d3583"
+    },
+    "observer_identity": {
+      "script_sha256": "3b459a8e931472879efd81c08e9a80f2ef28df763269111d4342a650a20b573b",
+      "generated_macro_sha256": "85ebc126b2b1a9e3d6f88c544f0032a794ed4bbd72d529ddba7986cbf5ed29a6",
+      "executable_sha256": "c21e533383cacbcc84c2083f6253d19fb371124a45c57750ee6f51e6b896add2",
+      "purpose": "Read-only observation, no original checkpoint rebinding/publication"
+    },
+    "source_identity_note": "Locally executed script SHA3b459a8e... matches exact persisted1b0c0c418ef395dfb3d13de6047c1008ca160643 blob; start HEAD was base84e297af, observation source was persisted unchanged during compile."
+  },
+  "repair_selection": {
+    "policy": "Restore the25 selected physical macro state fields at original numerical rollback only; preserve all retry-control flags, original solver/cache/rates/Jacobian/tolerances and native format",
+    "concrete_problem": "1949 actual rejections leave9 selected physical fields changed. VlMpDyCp is read by MPVOLUME1 hysteresis test before overwrite; sorption reference/coefficients are native persisted event state. Existing3 original arrays do restore exactly.",
+    "prerequisite": "Proper source-bound candidate fresh1to4 and own2to4 before owned4to16, then actual14to16 rollback observation and own endpoint proof.20s caps. Owning Fortran macro/headcalc owners O0/O2 against unchanged originalO2 object pool, exact kernel compiler closures recorded.",
+    "no_original_checkpoint_rebind": true,
+    "full_runs_selected": 0
+  }
 }
