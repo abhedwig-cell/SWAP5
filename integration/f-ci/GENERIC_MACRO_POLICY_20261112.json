@@ -1,0 +1,21 @@
+{
+  "status": "IMPLEMENTING_COHERENT_ORIGINAL_MACRO_RATE_DERIVATIVE_POLICY",
+  "base": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
+  "scope": "Opt-in original coherent MACRORATE task2 residual/analytic-derivative pair; no absolute day/clock policy triggers; original equations, time control, rollback and mass guard retained",
+  "prior_attempts": "CLOSURE01_MACRO_REUSE_20261110: provisional-convergence fresh residual tried on3 own histories; all240s timeout. Do NOT repeat. Saturation mask alone misses corrected457 event.",
+  "hypothesis": "Evaluate original MACROPORE(3)=MACRORATE(2), which calculates full rates then analytic derivatives, ONCE for each residual candidate. Reuse those same-candidate derivatives in Jacobian rather than freeze them or recalculate a different rate owner. Apply actual lateral pond limit whenever it reduces donor volume. Enable existing mass accounting on every day.",
+  "selection": {
+    "first": "Fresh4-day O2 candidate plus own2to4 restart/discard. Reuse frozen original object/kernel build, recompile only main and HeadCalc. No whole run.",
+    "expected_seconds": 20,
+    "model_cap_seconds": 45,
+    "late_probe": "Only after prefix passes: one source-bound same-state local handoff probe near actual late macro sensitivity. Not a variant-owned full-history qualification; retain exact source/history labels.",
+    "new_reference_runs": 0
+  },
+  "invariants": [
+    "No changed input physics or numerical/mass tolerances",
+    "MACROSTATE/integration untouched; derived rates and derivatives belong to same candidate",
+    "Full old/new build identity distinct; no old checkpoint relabelling",
+    "Default admitted profile and all other projects untouched until qualification"
+  ],
+  "next": "Compile incremental opt-in candidate and execute smallest bounded prefix; then choose one distinguishing late probe or reconsider block if no material progress."
+}
