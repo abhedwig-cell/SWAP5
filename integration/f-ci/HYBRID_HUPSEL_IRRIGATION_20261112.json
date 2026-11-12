@@ -1,0 +1,20 @@
+{
+  "status": "IMPLEMENTING",
+  "base": "fc0ca4b09690c7e2522db6eb4416ed023aeac7fa",
+  "test_selection": {
+    "candidate": "fc0ca4b09690c7e2522db6eb4416ed023aeac7fa",
+    "groups": {
+      "hybrid_hupsel_irrigation": {
+        "changed_dependency": "Typed private irrigation input consumed after native state restoration; original module incremental build",
+        "scientific_claim": "Actual surface water/solute event and exact modified-history daily recovery; unchanged no-file original physics",
+        "owner": "RT-TX original-block application",
+        "authority": "docs/development/workstream-execution-protocol.md#enforced-proportional-execution-2026-10-15",
+        "expected_seconds": 90,
+        "existing_evidence": "PR1641 frozen full Hupsel1096/native original blocks and basecapsules; PR1647 daily original3project/controlledboundary preservation",
+        "prior_execution": "NOT_RUN",
+        "diagnosis": "S5HUP010 restores full irrigation arrays after SWP reading; consume explicit override within original task3 after restore, retain original event mechanics"
+      }
+    }
+  },
+  "next": "Implement bounded original day5 water/solute control, qualify both OS and publish via separate PR."
+}
