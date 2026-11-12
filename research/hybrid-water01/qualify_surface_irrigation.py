@@ -179,6 +179,7 @@ try:
             discard_retry_native_exact=True,durable_changed_history_native_exact=True,interleaved_independent_native_exact=True,
             original_input_physical_control_exact=True,first_physical=physical(row),second_physical=physical(live.budget),final_sha256=h.sha(final)))
         print(a.project,name,'PASS',flush=True)
+    assert not report.get('refusals'),'Selected changed-winter acceptance remains open'
     report['status']='SURFACE_IRRIGATION_NO_MACRO_TRANSACTION_AND_ORIGINAL_CONTROLS_PASS'
 except BaseException:
     report.update(status='FAILED',traceback=traceback.format_exc());raise

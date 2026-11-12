@@ -347,3 +347,34 @@ code or tolerance changed between those attempts. Current selected CI source
 Wait for that existing run, audit actual artifacts and finish one dedicated PR.
 Do not rerun the successful Windows or unchanged prior native full calls.
 Owner: integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json.
+
+### Positive physical surface inventory: current successor
+
+The earlier winter refusal above is now a preserved predecessor limitation, not
+the current target. Actual changed day109 retained csurf=0.0018339999999385567
+mg/cm2; consuming it erased this stock in original flzerocumu bookkeeping and
+reported -0.0018340000023130414mg/cm2. Source d9c2ea5b3 removes only this physical
+stock reset, retaining cold task1 initialization and strict guards. This is
+separate from the algebraically exact dry-surface cancellation repair. No
+parameter tuning, clipping, codec change or new saved state is introduced.
+
+Current fresh Windows cohorts use s5-surface-v2-* directories. Both SaltFarm
+full1461/own windows, all5 accepted summer/year scenarios with NO mass refusals,
+actual saved109-to110 live/disk and independent original controls, and actual
+consumer/persisted-input negatives pass. All three complete supported heat
+profiles and fresh Grass/Hupsel seasonal preservation are selected after this
+real solute-state dependency change. Existing global/static Fortran providers
+remain reused. The actual-input release CLI now refuses active, absent,
+ambiguous or fractional SWMACRO before output/compilation:13 actual refusals
+pass with all3 original SWMACRO0 fixtures unchanged.
+
+Current Ubuntu job is dispatched once at fe1d6d89b741fb4a310d92e33d8114a80b00e36f.
+It rebuilds the genuinely changed producer, then all original complete periods,
+seasonal windows, legacy/shared surface events, positive-inventory day109
+consumption, Grass prescribed-groundwater preservation and supported heat.
+Prior successful source795ee7b0f remains historical pre-counter-reset proof;
+it must not be relabelled into this new physical postimage. Finish the existing
+Windows/Linux cohorts, audit raw evidence, publish/admit the coherent PR and
+verify actual canonical postimage. No further numerical/reference campaign is
+selected. Final release acceptance should reconcile the existing concrete
+functional criteria and explicit scientific limitations using these results.

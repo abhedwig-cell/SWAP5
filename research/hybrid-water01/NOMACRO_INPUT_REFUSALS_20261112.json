@@ -1,0 +1,81 @@
+{
+  "status": "ACTUAL_INPUT_REFUSED_BEFORE_OUTPUT_OR_COMPILATION_PASS",
+  "positive_original_cases": 3,
+  "actual_cli_refusals": [
+    {
+      "model": "HYBRID_GRASSGROWTH_WATER",
+      "case": "active",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_GRASSGROWTH_WATER",
+      "case": "missing",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_GRASSGROWTH_WATER",
+      "case": "duplicate",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_GRASSGROWTH_WATER",
+      "case": "fractional",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_HUPSEL_WATER",
+      "case": "active",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_HUPSEL_WATER",
+      "case": "missing",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_HUPSEL_WATER",
+      "case": "duplicate",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_HUPSEL_WATER",
+      "case": "fractional",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_SALTFARM_WATER",
+      "case": "active",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_SALTFARM_WATER",
+      "case": "missing",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_SALTFARM_WATER",
+      "case": "duplicate",
+      "exit_code": 2,
+      "no_output_or_build": true
+    },
+    {
+      "model": "HYBRID_SALTFARM_WATER",
+      "case": "fractional",
+      "exit_code": 2,
+      "no_output_or_build": true
+    }
+  ],
+  "original_Andelst_refusal": "PASS_NO_MODEL_RUN",
+  "source_commit": "dab38d172d9b03dc777b948b7ef59249363a9a5e",
+  "source_sha256": "def0b9c04512dd0f24e628b35e2371586f7db895fbf410a323190c2e3f8a4475"
+}
