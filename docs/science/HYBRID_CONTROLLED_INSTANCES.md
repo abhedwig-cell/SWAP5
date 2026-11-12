@@ -27,13 +27,13 @@ single-instance results serve as immutable controls; they are not rerun.
 
 Original donorO2/kernelO0/O2, Windows/Ubuntu26.04 all PASS. Per optimization:
 
--26 actual owner operations with accepted/pending sibling state hashes checked
+- 26 actual owner operations with accepted/pending sibling state hashes checked
  after every operation; three distinct coupling identities and calendars.
--Seven foreign/stale refusals, two real discarded physical proposals and three
+- Seven foreign/stale refusals, two real discarded physical proposals and three
  cold owner reconstructions after mixed first-day acceptance.
--Six published physical/native endpoints (both days for each project) exactly
+- Six published physical/native endpoints (both days for each project) exactly
  match their independently qualified single-instance controls.
--Original Andelst1e-6cm and Grass/Hupsel1e-10cm water limits, and Hupsel1e-10
+- Original Andelst1e-6cm and Grass/Hupsel1e-10cm water limits, and Hupsel1e-10
  solute limits, remain unchanged. Independent audits recompute actual balances
  and verify input/origin/window/identity chain, pending candidate payloads,
  accepted generations, control bytes and all sibling state transitions.
