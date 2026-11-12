@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      hybrid_grass_groundwater:
+        description: Qualify original Grass groundwater day input and existing original Cauchy preservation
+        type: boolean
+        default: false
       hybrid_cauchy_forcing:
         description: Qualify explicit original Cauchy daily input and original forcing preservation
         type: boolean
@@ -131,6 +135,71 @@ jobs:
         with:
           name: original-heat-accounting
           path: ${{ runner.temp }}/heat-observation
+          retention-days: 14
+  external-grass-groundwater:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_grass_groundwater
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/HYBRID_GRASS_GROUNDWATER_20261112.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/
+            /tests/modularity/
+            /tests/support/
+            /docs/development/workstream-execution-protocol.md
+            /integration/f-ci/HYBRID_GRASS_GROUNDWATER_20261112.json
+            /research/hybrid-water01/qualify_grass_groundwater.py
+            /research/hybrid-water01/qualify_cauchy_daily_forcing.py
+            /research/hybrid-water01/cauchy-linux-20261112.tar.xz
+            /research/hybrid-water01/qualify_daily_coupling.py
+            /research/hybrid-water01/qualify_daily_coupling_corruption.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection hybrid_grass_groundwater
+      - name: Exact admitted binary reuse, no repeated full runs or model compilation
+        run: |
+          python3 - <<'PY'
+          import hashlib,os,tarfile
+          from pathlib import Path
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          root=Path(os.environ['RUNNER_TEMP'])/'qualified-hybrid'
+          root.mkdir()
+          with tarfile.open(archive) as t:t.extractall(root,filter='data')
+          for project in ['grass','hupsel','andelst']:
+              for opt in ['O0','O2']:
+                  for name in ['day_donor','day_kernel']:
+                      (root/f'generic-{project}-{opt}'/name).chmod(0o755)
+          prior=Path(os.environ['RUNNER_TEMP'])/'prior-cauchy-proof'
+          prior.mkdir()
+          checkpoint_archive=Path('research/hybrid-water01/cauchy-linux-20261112.tar.xz')
+          assert hashlib.sha256(checkpoint_archive.read_bytes()).hexdigest()=='1f3b6a2f24feffd94cd8c0930699558f389987658a7c227a7068fa06ce2e160e'
+          with tarfile.open(checkpoint_archive) as t:t.extractall(prior,filter='data')
+          PY
+      - name: Actual Grass sparse groundwater and changed-history restart O0 O2
+        run: python3 -B research/hybrid-water01/qualify_grass_groundwater.py --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/grass-groundwater"
+      - name: Real current Cauchy day20-to22 forcing and exact retry recovery
+        run: python3 -B research/hybrid-water01/qualify_cauchy_daily_forcing.py --workspace "$RUNNER_TEMP/qualified-hybrid" --reuse-day20 "$RUNNER_TEMP/prior-cauchy-proof/cauchy" --output "$RUNNER_TEMP/cauchy-forcing"
+      - name: Real three-project O0/O2 external accept discard and disk recovery
+        run: python3 -B research/hybrid-water01/qualify_daily_coupling.py --platform linux --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/external-daily"
+      - name: Native corruption and terminal period guards
+        run: python3 -B research/hybrid-water01/qualify_daily_coupling_corruption.py --platform linux --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/external-daily-corruption"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: external-grass-groundwater
+          path: |
+            ${{ runner.temp }}/grass-groundwater
+            ${{ runner.temp }}/cauchy-forcing
+            ${{ runner.temp }}/external-daily*
           retention-days: 14
   external-cauchy-forcing:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_cauchy_forcing
@@ -441,7 +510,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:

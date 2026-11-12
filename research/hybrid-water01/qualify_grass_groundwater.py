@@ -21,6 +21,7 @@ from daily_coupling import CoupledDailyColumn,GROUNDWATER_FORCING,CauchyDayForci
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--workspace',type=Path,required=True);p.add_argument('--output',type=Path,required=True)
 p.add_argument('--opt',choices=['O0','O2'],action='append');p.add_argument('--probe',action='store_true')
+p.add_argument('--reuse-leading',type=Path,help='Same-application successful leading probe, with original source report retained')
 a=p.parse_args();a.output.mkdir();base=a.workspace;idx=json.loads((base/'PROOF_INDEX.json').read_text())
 reference=base/idx['reference'];project=h.GRASSGROWTH;started=[];expired=[];real_start=h.start_process
 def track(*args):
@@ -59,7 +60,22 @@ try:
         original_hash=h.sha(day2);origins={2:day2}
         cuts=[2] if a.probe else [2,(table[0][0]-date.fromisoformat(project.start_date)).days]
         for cut in cuts:
-            out=optroot/f'window-{cut}-to-{cut+2}';out.mkdir()
+            out=optroot/f'window-{cut}-to-{cut+2}'
+            previous=a.reuse_leading/opt/out.name if a.reuse_leading is not None else None
+            if cut==2 and previous is not None and previous.exists():
+                inherited=json.loads((a.reuse_leading/'RESULT.json').read_text())
+                assert inherited['status']=='GRASS_ORIGINAL_PRESCRIBED_GROUNDWATER_CHANGED_HISTORY_RETRY_RECOVERY_PASS'
+                assert inherited['sources']['app/hybrid_water/daily_coupling.py']==report['sources']['app/hybrid_water/daily_coupling.py']
+                assert json.loads((a.reuse_leading/opt/'BUILD.json').read_text())==meta
+                entry=next(c for c in inherited['cases'] if c['optimization']==opt and c['cut']==2)
+                assert h.sha(previous/'external/accepted-column-1-day-4.zip')==entry['terminal_sha256']
+                shutil.copytree(previous,out)
+                (out/'INHERITED_CASE_REPORT.json').write_text(json.dumps(inherited,indent=2)+'\n')
+                report.setdefault('inherited_probes',[]).append({'optimization':opt,'cut':2,'source_commit':inherited['source_commit'],
+                    'report_sha256':h.sha(a.reuse_leading/'RESULT.json'),'application_source_sha256':inherited['sources']['app/hybrid_water/daily_coupling.py']})
+                report['cases'].append(entry);print(opt,'leading actual probe inherited exactly',flush=True)
+                continue
+            out.mkdir()
             if cut not in origins:
                 prefix=out/'warm-prefix';prefix.mkdir();unpacked=prefix/'origin'
                 receipt=h.verify_checkpoint(day2,2,meta['binding'],unpacked)
