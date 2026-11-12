@@ -1,5 +1,9 @@
 # Caller-controlled Cauchy water forcing in the hybrid daily adapter
 
+The [changed-history recovery successor](HYBRID_CAUCHY_CHANGED_HISTORY.md)
+qualifies both-day original controls and second-day disk recovery from an actually
+modified accepted native parent. The narrower original scope below is retained.
+
 Application successor to canonical `ce04a4db9a21f264c077d0832e2173e5468e9d70`.
 This adds an actual water input consumer to the existing external daily transaction,
 without changing original Fortran physics or the original-forcing default.
