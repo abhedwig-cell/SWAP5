@@ -2,6 +2,85 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Independent controlled-instance composition qualified and admitted, 12 November 2026
+
+PR #1650 MERGED at418a8d30345b500292824e00be4d8012b3d87e5e.
+Qualified headbf5924026eeaff680662622afabeba68ca8b0610 on
+codex/hybrid-controlled-instance-composition. Predicted and actual canonical tree
+d3bf9a53d3e52ae808f1367fe41d4101c86a3593 match. Nine qualifier/auditor/pack/
+workflow/raw/log/record/docs blobs match. Four captured executed Linux source
+SHA256 values equal canonical Git bytes. All3906 src/app/reference/tools/tests
+blobs unchanged from03e605c899afc1209e1de4e087c1e2fb6a75b1a4. Receipt:
+CLOSURE01_CONTROLLED_INSTANCES_CANONICAL_20261112.json.
+This supersedes all prior NEXT/ACTIVE banners. All model/CI/audit/pack/docs
+processes for this block are FINISHED. Do not duplicate any completed cohort.
+
+Functional coverage: the three original full applications retain their separate
+1827/481/1096 scopes. The existing typed external API now has integration proof
+for interleaved INDEPENDENT controlled Cauchy, prescribed-groundwater and saline
+surface-irrigation owners, not merely same-project original-forcing peers.
+All first-day proposals are outstanding before mixed decisions. Hupsel discards/
+retries while another owner accepts and another remains pending. Each accepted
+owner is reconstructed from disk in reversed order, then its second-day proposals
+interleave with a Grass discard/retry. Old live mirrors remain unchanged while
+cold owners accept. Each original1998/1980/2002 calendar is retained.
+
+Reliability: original donorO2/kernelO0/O2 Windows/Ubuntu26 first-attempt PASS.
+Per optimization:26 actual operations,7 foreign/stale refusals,2 real physical
+discards,3 cold owner reconstructions and6 published physical/native endpoints
+exact against already qualified single-instance results. Every action preserves
+other owners' accepted AND pending state hashes. Independent audits verify
+actual candidate/public payloads, source/identity/input/origin/window lineage,
+event transitions and original1e-6 Andelst /1e-10 Grass/Hupsel water plus1e-10
+Hupsel solute balances. No model/application/tolerance/codec change was warranted.
+Serial private-worker logical columns are qualified; no concurrent calls into
+shared globals, thread-safety, multiparty atomicity or common-time peer solve.
+
+Development yield: full new cohort33.795s Windows,6.574s Linux,120s worker cap.
+Native origins, compiled binaries and all single-instance controls reused. No
+Fortran compile, warm prefix or full project run. Prior PR1648 current preservation
+and PR1649 changed-history proofs inherited at exact unchanged dependency graph.
+Linux run43139938674/job130924218149 SUCCESS at
+79639f83cc415d45e8d537eb2b093a70baf7bcc9. Strict/source docs and final selection
+preflight PASS. New raw703members/platform verified in ONE sequential compressed
+pass; prior capsule hashes and exact executed sources also verified. Windows SHA
+07a3b4a95d1229af0c8131bc68ef5e4db4dd1016868b34050c798d873bf6b1e7;
+Linux60cd979c92d60f4f52646a4d7b7deecafd543365dc0e3bc0d090a0a133a48083.
+Canonical authority: integration/f-ci/HYBRID_CONTROLLED_INSTANCES_20261112.json
+and docs/science/HYBRID_CONTROLLED_INSTANCES.md. Full raw event traces live in
+the new small capsules, not duplicated in the compact owning record.
+
+Scientific scope is unchanged: full externally controlled trajectories, whole
+energy, whole scientific/cross-platform equivalence remain unqualified. Prior
+platform-specific Cauchy sensitivity and native day188/day584 failed comparisons
+remain visible. The underresolved Hupsel reference families are not accepted as
+new qualified references. This is no new physics or full-project breakthrough;
+it closes the named independent-instance integration acceptance gap.
+
+NEXT PROGRAMME DELIVERY: scientific disposition of the COMPLETE already executed
+trajectories against the sealed original references, across the three original
+projects. Reuse existing full-run outputs, reports and criteria. Begin with:
+research/hybrid-water01/ANDELST_APPLICATION_REVIEW.md,
+research/hybrid-water01/HUPSEL_APPLICATION_REVIEW.md,
+research/hybrid-water01/GRASSGROWTH_REVIEW.md,
+research/hybrid-water01/HYBRID_GRASS_FULL_REVIEW.md,
+research/hybrid-water01/HYBRID_GRASS_FULL_REFERENCE_20261111.json,
+research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md,
+research/hybrid-water01/HYBRID_HUPSEL_REFERENCE_20261111.json,
+and docs/science/SWAP5_FUNCTIONAL_CLOSURE.md. Follow their exact preserved source/
+reference/artifact identities; do not substitute corrected legacy controls for a
+failed original comparison. Distinguish copied original physics, numerical/time
+resolution, changed process formulations, actual defects and unresolved quantities
+at existing thresholds. Preserve limited printed-reference precision explicitly.
+Use prior whole-period comparisons where already sufficient; do not launch another
+equivalent short-window qualification just to create a new workpoint. No complete
+run, scientific reference campaign, new tolerance or invented reference is selected.
+Modify model code only for a concrete demonstrated defect. If the next scientific
+quantity still lacks an independently valid reference, record its reproducible
+blocking condition and the exact evidence; do not relabel it PASS or re-run the
+same failing reference families. Publish the coherent whole-trajectory scientific
+assessment through the existing review route.
+
 ### Actual changed-state Cauchy recovery qualified and admitted, 12 November 2026
 
 PR #1649 MERGED at 03e605c899afc1209e1de4e087c1e2fb6a75b1a4.

@@ -1,0 +1,65 @@
+{
+  "status": "CANONICAL_POSTIMAGE_VERIFIED",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1650",
+  "head": "bf5924026eeaff680662622afabeba68ca8b0610",
+  "baseline": "03e605c899afc1209e1de4e087c1e2fb6a75b1a4",
+  "canonical": "418a8d30345b500292824e00be4d8012b3d87e5e",
+  "canonical_tree": "d3bf9a53d3e52ae808f1367fe41d4101c86a3593",
+  "predicted_and_actual_tree_equal": true,
+  "verified_blobs": {
+    "research/hybrid-water01/qualify_controlled_instances.py": "2908f44dc1026012a68cd358ad8e40003fa2ff47",
+    "research/hybrid-water01/audit_controlled_instances.py": "9bb8e83282964ac7d77854e51d2f63b38697a49b",
+    "research/hybrid-water01/pack_cauchy_changed_history.py": "b70818d297988cf5b7c7fdde18e9bf1199811988",
+    ".github/workflows/grass-thermal-production.yml": "d1dbdbc097485531e5b2af35ce52ed41be83f75e",
+    "research/hybrid-water01/controlled-instances-windows-20261112.tar.xz": "a524bd98a132d5c148275fea74f7b08d811cdc2a",
+    "research/hybrid-water01/controlled-instances-linux-20261112.tar.xz": "e1915e8f818c5c504c449b47940d9a12135bcea0",
+    "research/hybrid-water01/controlled-instances-linux-ci-20261112.log.gz": "410ffc7813c911d3b4d7f8f58da6de067bd20787",
+    "integration/f-ci/HYBRID_CONTROLLED_INSTANCES_20261112.json": "76183adb81f5a6ef6bc8724b34853db1b181176f",
+    "docs/science/HYBRID_CONTROLLED_INSTANCES.md": "4678ed28038c0de259c7a0556853ecb371a69eb2"
+  },
+  "linux_executed_sources_equal_canonical_git_bytes": {
+    "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+    "app/hybrid_water/daily_host.py": "044d8f7e21ccb00f458ab24e1c8a3e03e5c7fcb5bddbea0ed31c12922a26bf0f",
+    "app/hybrid_water/irrigation_forcing.py": "096554c44267b0b1b546ccb939f07ce531a84a12f3c9806e02b0bdac96005411",
+    "research/hybrid-water01/qualify_controlled_instances.py": "089b3e6ca947df084305409f4e4c1e93f58b7958655ea1b8c345ec1ec873d03e"
+  },
+  "unchanged_src_app_reference_tools_tests_blobs": 3906,
+  "qualification_record": "integration/f-ci/HYBRID_CONTROLLED_INSTANCES_20261112.json",
+  "owning_linux_run": 43139938674,
+  "raw_archives": [
+    {
+      "path": "research/hybrid-water01/controlled-instances-windows-20261112.tar.xz",
+      "sha256": "07a3b4a95d1229af0c8131bc68ef5e4db4dd1016868b34050c798d873bf6b1e7",
+      "bytes": 1795180
+    },
+    {
+      "path": "research/hybrid-water01/controlled-instances-linux-20261112.tar.xz",
+      "sha256": "60cd979c92d60f4f52646a4d7b7deecafd543365dc0e3bc0d090a0a133a48083",
+      "bytes": 1740056
+    }
+  ],
+  "scope": "Qualification-only serial mixed controlled Andelst/Grass/Hupsel owners, donorO2/kernelO0/O2 Windows/Ubuntu. Both days exact against existing single-instance physical/native controls; accepted/pending sibling isolation, mixed decisions and cold owner reconstruction; original water/solute guards unchanged.",
+  "metrics": {
+    "functional_coverage": "Three original full applications unchanged; controlled external interface instance-isolation acceptance now covers interleaved three-project pending/accepted/cold owners.",
+    "reliability": "Two optimizations per OS,26 operations/group,7 foreign/stale refusals,2 physical discards,3 cold reconstructions,6 exact physical/native endpoints/group; unchanged water/solute guards.",
+    "development_yield": "33.795s Windows,6.574s Linux; all old single-instance controls and binaries reused, no full run/Fortran compile. Only703 new raw files per platform."
+  },
+  "limits": [
+    "Serial interleaving of independent typed controlled columns; no simultaneous native calls/thread safety or multiparty atomicity.",
+    "Respect original1998/1980/2002 project calendars; no common-time groundwater/thermal peer solve.",
+    "Named two-day windows against immutable qualified single-instance physical/native controls, no full controlled trajectories.",
+    "Original full1827/481/1096 and failed day188/day584 science remain separate; platform Cauchy sensitivity and physical-energy/data limitation unchanged.",
+    "No model/application/Fortran/kernel/codec/tolerance change; qualification-only integration gap."
+  ],
+  "next": "Scientific disposition of complete existing trajectories against sealed original references, with supported process/numerical/formulation/error/unknown classification at existing criteria. Reuse full-run outputs/reviews; no equivalent short-window proof, whole-run repeat or invented reference. Select model edits only for a concrete demonstrated defect.",
+  "next_locators": [
+    "research/hybrid-water01/ANDELST_APPLICATION_REVIEW.md",
+    "research/hybrid-water01/HUPSEL_APPLICATION_REVIEW.md",
+    "research/hybrid-water01/GRASSGROWTH_REVIEW.md",
+    "research/hybrid-water01/HYBRID_GRASS_FULL_REVIEW.md",
+    "research/hybrid-water01/HYBRID_GRASS_FULL_REFERENCE_20261111.json",
+    "research/hybrid-water01/HYBRID_HUPSEL_REVIEW.md",
+    "research/hybrid-water01/HYBRID_HUPSEL_REFERENCE_20261111.json",
+    "docs/science/SWAP5_FUNCTIONAL_CLOSURE.md"
+  ]
+}
