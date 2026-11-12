@@ -1,0 +1,4028 @@
+{
+  "status": "SAME_LAPTOP_IDENTICAL_EXECUTION_INPUT_DESCRIPTIVE_COMPARISON",
+  "source_commit": "11529865e76fb2259542f1e770726cd87af27603",
+  "scientific_policy": "No physical, numerical or scientific tolerance increased. Model balance tolerances are distinct from intermodel error acceptance. All differences descriptive; no new equivalence threshold. Original oxygen FAIL criteria and underresolved reference families retained. Original literal-input failures preserved separately. Identical execution-input comparison includes the pre-existing output preparation shared with SWAP5; original literal registered SWPs fail for Hupsel/SaltFarm onS_CONC. No claim that changing legacy output scheduling is causally neutral under all known original state defects.",
+  "timing_policy": "Exact original project input bytes; no tolerance/physics/output-switch changes. Original immutable source objectsO2, SWAP5 donorO2/kernelO2. Sequential same-laptop wall clocks; original CSV kept. One fresh pair per project; not a portable or accuracy-matched runtime assertion.",
+  "projects": {
+    "grass": {
+      "days": 1827,
+      "identical_execution_input_bytes": true,
+      "input_sha256": {
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "control_plot.inp": "f863e4ba420dee267e1d034e54d69e6d3419eb54263e067d2acee4acebbd8812",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.swp": "154f1801b4d86d1a94ed962655c5d6ecae8ef08f511bc21bc42bdbef55f91fa7",
+        "observed/HRVDM.csv": "834a7aa8ebdb773e70d3bac588743edc50e980a5013a46fa1de1aec902859a88",
+        "observed/WDM.csv": "fe1e42be70e61a771e7dd60e75967a34af7d910fe22bd361f9dbb4f3495197a3"
+      },
+      "original_csv_sha256": "40ac3ec8ff3d1b2663b9a02cb0eba61caf011f68a2792b001261cd9d424e525d",
+      "swap5_csv_sha256": "091889e22f894b42dfe87d469fef7c0a4cc1ab003298afd5cc68632f729a60a8",
+      "initial_dates_equal": true,
+      "fields": {
+        "RAIN": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.58,
+            "swap5": 0.58,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.23,
+            "swap5": 0.23,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "IRRIG": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "RUNOFF": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "EIC": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.03028,
+            "swap5": 0.03028,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.03839,
+            "swap5": 0.03839,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "EPD": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "EPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0021,
+            "swap5": 0.0021,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.00301,
+            "swap5": 0.00301,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "EACT": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0021,
+            "swap5": 0.0021,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.00301,
+            "swap5": 0.00301,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "TPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.00175,
+            "swap5": 0.00175,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.00624,
+            "swap5": 0.00624,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "TACT": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.00175,
+            "swap5": 0.00175,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.00624,
+            "swap5": 0.00624,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "TREDDRY": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "TREDWET": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "DRN": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "SSDI": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "BOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": -0.0457,
+            "swap5": -0.0457,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -0.02888,
+            "swap5": -0.02888,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "GWL": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": -88.0,
+            "swap5": -88.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -86.0,
+            "swap5": -86.0,
+            "difference": 0.0
+          }
+        },
+        "PD_VOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "IC_VOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "WTOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 217.51761,
+            "swap5": 217.51761,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 217.41037,
+            "swap5": 217.41037,
+            "difference": 0.0
+          }
+        },
+        "DSTOR": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.50018,
+            "swap5": 0.50018,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.15349,
+            "swap5": 0.15349,
+            "difference": 0.0
+          }
+        },
+        "BALDEV": {
+          "unit": "(cm)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -0.0,
+            "swap5": -0.0,
+            "difference": 0.0
+          }
+        },
+        "PWDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 700.0,
+            "swap5": 700.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 1052.94051,
+            "swap5": 1052.94051,
+            "difference": 0.0
+          }
+        },
+        "PHRVDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 12417.8,
+            "swap5": 12417.8,
+            "difference": 0.0
+          }
+        },
+        "WDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 700.0,
+            "swap5": 700.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 1036.64579,
+            "swap5": 1036.64579,
+            "difference": 0.0
+          }
+        },
+        "HRVDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 1827,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1827,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "1980-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 10327.8,
+            "swap5": 10327.8,
+            "difference": 0.0
+          }
+        }
+      },
+      "original_printed_water_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1827,
+        "date": "1984-12-31",
+        "value": -0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_printed_water_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1827,
+        "date": "1984-12-31",
+        "value": -0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_unrounded_daily_balance": {
+        "maximum_water_cm": 6.3493742888471e-14,
+        "maximum_kernel_water_cm": 6.350475700855895e-14,
+        "maximum_solute_mg_cm2": 0,
+        "signed_water_cm": -1.0947638779514135e-13,
+        "signed_solute_mg_cm2": 0.0,
+        "daily_guard_1e_10_pass": true
+      },
+      "timing": {
+        "original_seconds": 8.197571200085804,
+        "swap5_fresh_seconds": 10.207079200074077,
+        "swap5_model_controller_seconds": 9.495716499863192,
+        "swap5_existing_seconds": 15.886037799995393,
+        "ratio": 1.2451345588760778
+      },
+      "literal_registered_input_attempt": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 7.646102200029418,
+        "returncode": 100,
+        "completed": true,
+        "swap_err": ""
+      }
+    },
+    "hupsel": {
+      "days": 1096,
+      "identical_execution_input_bytes": true,
+      "input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "63237a51338a62a67b7b5660d81747dd1dba9ccf9a47a1953e8fd6a178e87df1"
+      },
+      "original_csv_sha256": "cb1673ee4c1303940266b84d74975b13a4850dce061d3ad4be68fcf1df9c3b91",
+      "swap5_csv_sha256": "cae7ddf362a731b0ef41872e147be5db50170ea77635cbde5adb0b044382c7db",
+      "initial_dates_equal": true,
+      "fields": {
+        "RAIN": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 9e-12,
+          "exact_printed_equal_days": 1093,
+          "mean_absolute_difference": 1.186131386861314e-14,
+          "rms_difference": 2.849638214967714e-13,
+          "worst": {
+            "day": 217,
+            "date": "2002-08-05",
+            "original": 0.8,
+            "swap5": 0.799999999991,
+            "swap5_minus_original": -9e-12
+          },
+          "terminal": {
+            "original": 0.12,
+            "swap5": 0.12,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -1.3e-11
+        },
+        "IRRIG": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "RUNOFF": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.00012184571,
+          "exact_printed_equal_days": 1092,
+          "mean_absolute_difference": 1.85803276459854e-07,
+          "rms_difference": 4.004325375156832e-06,
+          "worst": {
+            "day": 367,
+            "date": "2003-01-02",
+            "original": 0.000353879106,
+            "swap5": 0.000475724816,
+            "swap5_minus_original": 0.00012184571
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.00016536785900000001
+        },
+        "EIC": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 7.162764e-06,
+          "exact_printed_equal_days": 858,
+          "mean_absolute_difference": 3.561369079310219e-08,
+          "rms_difference": 3.282815730550348e-07,
+          "worst": {
+            "day": 630,
+            "date": "2003-09-22",
+            "original": 0.209264019837,
+            "swap5": 0.209256857073,
+            "swap5_minus_original": -7.162764e-06
+          },
+          "terminal": {
+            "original": 0.039342703703,
+            "swap5": 0.039342703853,
+            "difference": 1.5e-10
+          },
+          "signed_period_flux_difference": -2.586100889076e-05
+        },
+        "EPD": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.46329e-05,
+          "exact_printed_equal_days": 1093,
+          "mean_absolute_difference": 1.9743646897810218e-08,
+          "rms_difference": 4.800521818982315e-07,
+          "worst": {
+            "day": 368,
+            "date": "2003-01-03",
+            "original": 0.001450486197,
+            "swap5": 0.001465119097,
+            "swap5_minus_original": 1.46329e-05
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 2.1639037e-05
+        },
+        "EPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 3.541442e-06,
+          "exact_printed_equal_days": 723,
+          "mean_absolute_difference": 8.0321799270073e-08,
+          "rms_difference": 3.970442591352793e-07,
+          "worst": {
+            "day": 590,
+            "date": "2003-08-13",
+            "original": 0.022168712992,
+            "swap5": 0.022172254434,
+            "swap5_minus_original": 3.541442e-06
+          },
+          "terminal": {
+            "original": 0.00265609738,
+            "swap5": 0.002656097377,
+            "difference": -3e-12
+          },
+          "signed_period_flux_difference": 7.1822764e-05
+        },
+        "EACT": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.001679236107,
+          "exact_printed_equal_days": 694,
+          "mean_absolute_difference": 1.6928224160583942e-05,
+          "rms_difference": 9.343709167097976e-05,
+          "worst": {
+            "day": 511,
+            "date": "2003-05-26",
+            "original": 0.142968624047,
+            "swap5": 0.144647860154,
+            "swap5_minus_original": 0.001679236107
+          },
+          "terminal": {
+            "original": 0.00265609738,
+            "swap5": 0.002656097377,
+            "difference": -3e-12
+          },
+          "signed_period_flux_difference": 0.007448135152
+        },
+        "TPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 7.726223e-06,
+          "exact_printed_equal_days": 696,
+          "mean_absolute_difference": 1.1117092062043796e-07,
+          "rms_difference": 5.84724561013782e-07,
+          "worst": {
+            "day": 590,
+            "date": "2003-08-13",
+            "original": 0.40396776353,
+            "swap5": 0.403960037307,
+            "swap5_minus_original": -7.726223e-06
+          },
+          "terminal": {
+            "original": 0.004182227526,
+            "swap5": 0.004182227539,
+            "difference": 1.3e-11
+          },
+          "signed_period_flux_difference": -9.8725385e-05
+        },
+        "TACT": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.001113283189,
+          "exact_printed_equal_days": 662,
+          "mean_absolute_difference": 3.7326334260948905e-06,
+          "rms_difference": 5.065091992016929e-05,
+          "worst": {
+            "day": 582,
+            "date": "2003-08-05",
+            "original": 0.477871981945,
+            "swap5": 0.476758698756,
+            "swap5_minus_original": -0.001113283189
+          },
+          "terminal": {
+            "original": 0.004182227525,
+            "swap5": 0.004182227538,
+            "difference": 1.3e-11
+          },
+          "signed_period_flux_difference": -0.001665878313
+        },
+        "TREDDRY": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.001112671149,
+          "exact_printed_equal_days": 720,
+          "mean_absolute_difference": 3.36924573715142e-06,
+          "rms_difference": 5.010797176203378e-05,
+          "worst": {
+            "day": 582,
+            "date": "2003-08-05",
+            "original": 0.016850880262,
+            "swap5": 0.017963551411,
+            "swap5_minus_original": 0.001112671149
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0012578065242277634
+        },
+        "TREDWET": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.00024209355,
+          "exact_printed_equal_days": 1048,
+          "mean_absolute_difference": 2.8693617750705944e-07,
+          "rms_difference": 7.603339403346657e-06,
+          "worst": {
+            "day": 591,
+            "date": "2003-08-14",
+            "original": 0.001124960451,
+            "swap5": 0.001367054001,
+            "swap5_minus_original": 0.00024209355
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.00030934616404970644
+        },
+        "TREDSOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "DRN": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.008297386348,
+          "exact_printed_equal_days": 611,
+          "mean_absolute_difference": 8.688155045073564e-05,
+          "rms_difference": 0.0005016084335494499,
+          "worst": {
+            "day": 5,
+            "date": "2002-01-05",
+            "original": 0.376121127581,
+            "swap5": 0.384418513929,
+            "swap5_minus_original": 0.008297386348
+          },
+          "terminal": {
+            "original": 0.203875631152,
+            "swap5": 0.203724760509,
+            "difference": -0.000150870643
+          },
+          "signed_period_flux_difference": -0.006130538031993749
+        },
+        "SSDI": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "GWL": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.244556026096,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.010516573269333942,
+          "rms_difference": 0.022283047726553443,
+          "worst": {
+            "day": 859,
+            "date": "2004-05-08",
+            "original": -96.711261110614,
+            "swap5": -96.466705084518,
+            "swap5_minus_original": 0.244556026096
+          },
+          "terminal": {
+            "original": -67.250563673369,
+            "swap5": -67.250719631043,
+            "difference": -0.000155957674
+          }
+        },
+        "PD_VOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.002148473969,
+          "exact_printed_equal_days": 1093,
+          "mean_absolute_difference": 1.9940340063868618e-06,
+          "rms_difference": 6.490197606405606e-05,
+          "worst": {
+            "day": 367,
+            "date": "2003-01-02",
+            "original": 0.213654873305,
+            "swap5": 0.215803347274,
+            "swap5_minus_original": 0.002148473969
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "IC_VOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.031255683318,
+          "exact_printed_equal_days": 954,
+          "mean_absolute_difference": 2.8526575468978105e-05,
+          "rms_difference": 0.0009441124461127524,
+          "worst": {
+            "day": 1096,
+            "date": "2004-12-31",
+            "original": 0.031255683318,
+            "swap5": 0.0,
+            "swap5_minus_original": -0.031255683318
+          },
+          "terminal": {
+            "original": 0.031255683318,
+            "swap5": 0.0,
+            "difference": -0.031255683318
+          }
+        },
+        "WTOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.009324942287,
+          "exact_printed_equal_days": 3,
+          "mean_absolute_difference": 0.0012456992891195255,
+          "rms_difference": 0.0022690338810503093,
+          "worst": {
+            "day": 369,
+            "date": "2003-01-04",
+            "original": 77.430554539359,
+            "swap5": 77.439879481646,
+            "swap5_minus_original": 0.009324942287
+          },
+          "terminal": {
+            "original": 76.015696364414,
+            "swap5": 76.015793963147,
+            "difference": 9.7598733e-05
+          }
+        },
+        "DSTOR": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.031104806393,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.00013194528968156933,
+          "rms_difference": 0.0010689421833628627,
+          "worst": {
+            "day": 1096,
+            "date": "2004-12-31",
+            "original": -0.098800982885,
+            "swap5": -0.129905789278,
+            "swap5_minus_original": -0.031104806393
+          },
+          "terminal": {
+            "original": -0.098800982885,
+            "swap5": -0.129905789278,
+            "difference": -0.031104806393
+          }
+        },
+        "BALDEV": {
+          "unit": "(cm)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.031255676876,
+          "exact_printed_equal_days": 111,
+          "mean_absolute_difference": 2.862677330858872e-05,
+          "rms_difference": 0.000944112366177385,
+          "worst": {
+            "day": 1096,
+            "date": "2004-12-31",
+            "original": -0.031255676876,
+            "swap5": -0.0,
+            "swap5_minus_original": 0.031255676876
+          },
+          "terminal": {
+            "original": -0.031255676876,
+            "swap5": -0.0,
+            "difference": 0.031255676876
+          }
+        },
+        "CH": {
+          "unit": "(cm)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 12.0,
+            "swap5": 12.0,
+            "difference": 0.0
+          }
+        },
+        "CF": {
+          "unit": "(-)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "TSUM": {
+          "unit": "(deg C)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 3624.699999999998,
+            "swap5": 3624.699999999998,
+            "difference": 0.0
+          }
+        },
+        "DVS": {
+          "unit": "(-)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.2877084e-05,
+          "exact_printed_equal_days": 631,
+          "mean_absolute_difference": 2.494129955686854e-07,
+          "rms_difference": 1.6832458642859034e-06,
+          "worst": {
+            "day": 520,
+            "date": "2003-06-04",
+            "original": -0.009728974735,
+            "swap5": -0.009741851819,
+            "swap5_minus_original": -1.2877084e-05
+          },
+          "terminal": {
+            "original": 2.0,
+            "swap5": 2.0,
+            "difference": 0.0
+          }
+        },
+        "LAIPOT": {
+          "unit": "(m2/m2)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 1.100540780289,
+            "swap5": 1.100540780289,
+            "difference": 0.0
+          }
+        },
+        "PWSO": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "PWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 528.1068759005,
+            "swap5": 528.1068759005,
+            "difference": 0.0
+          }
+        },
+        "PWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 110.817571218824,
+            "swap5": 110.817571218824,
+            "difference": 0.0
+          }
+        },
+        "PWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 213.955040081023,
+            "swap5": 213.955040081023,
+            "difference": 0.0
+          }
+        },
+        "PDWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "PDWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 48.60112942785,
+            "swap5": 48.60112942785,
+            "difference": 0.0
+          }
+        },
+        "PDWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 3648.49912140103,
+            "swap5": 3648.49912140103,
+            "difference": 0.0
+          }
+        },
+        "PTWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 528.1068759005,
+            "swap5": 528.1068759005,
+            "difference": 0.0
+          }
+        },
+        "PTWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 159.418700646674,
+            "swap5": 159.418700646674,
+            "difference": 0.0
+          }
+        },
+        "PTWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 3862.454161482053,
+            "swap5": 3862.454161482053,
+            "difference": 0.0
+          }
+        },
+        "PWDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 687.525576547174,
+            "swap5": 687.525576547174,
+            "difference": 0.0
+          }
+        },
+        "RDPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 30.0,
+            "swap5": 30.0,
+            "difference": 0.0
+          }
+        },
+        "ICUTPOT": {
+          "unit": "(-)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 8.0,
+            "swap5": 8.0,
+            "difference": 0.0
+          }
+        },
+        "TCUTPOT": {
+          "unit": "(d)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 18.0,
+            "swap5": 18.0,
+            "difference": 0.0
+          }
+        },
+        "PHRVDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 14762.29106938,
+            "swap5": 14762.29106938,
+            "difference": 0.0
+          }
+        },
+        "PLOSSDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "VCOVER": {
+          "unit": "(-)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 2.1555669e-05,
+          "exact_printed_equal_days": 680,
+          "mean_absolute_difference": 4.3871366879562044e-07,
+          "rms_difference": 2.413490626510056e-06,
+          "worst": {
+            "day": 637,
+            "date": "2003-09-29",
+            "original": 0.525876496691,
+            "swap5": 0.525854941022,
+            "swap5_minus_original": -2.1555669e-05
+          },
+          "terminal": {
+            "original": 0.39082859247,
+            "swap5": 0.390828593677,
+            "difference": 1.207e-09
+          }
+        },
+        "LAI": {
+          "unit": "(m2/m2)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.000245535872,
+          "exact_printed_equal_days": 258,
+          "mean_absolute_difference": 6.274947954209748e-06,
+          "rms_difference": 2.388606716448516e-05,
+          "worst": {
+            "day": 602,
+            "date": "2003-08-25",
+            "original": 3.754220109275,
+            "swap5": 3.754465645147,
+            "swap5_minus_original": 0.000245535872
+          },
+          "terminal": {
+            "original": 1.100552229505,
+            "swap5": 1.100552233905,
+            "difference": 4.4e-09
+          }
+        },
+        "WSO": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.226876395469,
+          "exact_printed_equal_days": 572,
+          "mean_absolute_difference": 0.06169189331973265,
+          "rms_difference": 0.20953865240352268,
+          "worst": {
+            "day": 589,
+            "date": "2003-08-12",
+            "original": 8522.906435913636,
+            "swap5": 8521.679559518167,
+            "swap5_minus_original": -1.226876395469
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "WLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.102306613154,
+          "exact_printed_equal_days": 256,
+          "mean_absolute_difference": 0.0026128065624549486,
+          "rms_difference": 0.009951708656163766,
+          "worst": {
+            "day": 602,
+            "date": "2003-08-25",
+            "original": 1564.258378864733,
+            "swap5": 1564.360685477887,
+            "swap5_minus_original": 0.102306613154
+          },
+          "terminal": {
+            "original": 528.112312925376,
+            "swap5": 528.112315089023,
+            "difference": 2.163647e-06
+          }
+        },
+        "WST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.05593368509,
+          "exact_printed_equal_days": 256,
+          "mean_absolute_difference": 0.004287874410890694,
+          "rms_difference": 0.013512005390398315,
+          "worst": {
+            "day": 589,
+            "date": "2003-08-12",
+            "original": 1305.720470926859,
+            "swap5": 1305.664537241769,
+            "swap5_minus_original": -0.05593368509
+          },
+          "terminal": {
+            "original": 110.819009135374,
+            "swap5": 110.819009318341,
+            "difference": 1.82967e-07
+          }
+        },
+        "WRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.041765221101,
+          "exact_printed_equal_days": 242,
+          "mean_absolute_difference": 0.0035710079034948303,
+          "rms_difference": 0.01109376014386001,
+          "worst": {
+            "day": 583,
+            "date": "2003-08-06",
+            "original": 1452.614095198779,
+            "swap5": 1452.572329977678,
+            "swap5_minus_original": -0.041765221101
+          },
+          "terminal": {
+            "original": 213.890733085508,
+            "swap5": 213.890723899176,
+            "difference": -9.186332e-06
+          }
+        },
+        "DWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.123386413364,
+          "exact_printed_equal_days": 258,
+          "mean_absolute_difference": 0.001214500733368352,
+          "rms_difference": 0.008783840403914712,
+          "worst": {
+            "day": 602,
+            "date": "2003-08-25",
+            "original": 706.620298725188,
+            "swap5": 706.496912311824,
+            "swap5_minus_original": -0.123386413364
+          },
+          "terminal": {
+            "original": 1.21189404762e-05,
+            "swap5": 1.224753348452e-05,
+            "difference": 1.2859300832e-07
+          }
+        },
+        "DWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.02565167314,
+          "exact_printed_equal_days": 344,
+          "mean_absolute_difference": 0.000751290322562777,
+          "rms_difference": 0.0037056777125673767,
+          "worst": {
+            "day": 637,
+            "date": "2003-09-29",
+            "original": 669.007391099683,
+            "swap5": 668.981739426543,
+            "swap5_minus_original": -0.02565167314
+          },
+          "terminal": {
+            "original": 48.601760053189,
+            "swap5": 48.601760133432,
+            "difference": 8.0243e-08
+          }
+        },
+        "DWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.020994958262,
+          "exact_printed_equal_days": 322,
+          "mean_absolute_difference": 0.0006262915375214181,
+          "rms_difference": 0.0030331492772428265,
+          "worst": {
+            "day": 637,
+            "date": "2003-09-29",
+            "original": 730.983522271231,
+            "swap5": 730.962527312969,
+            "swap5_minus_original": -0.020994958262
+          },
+          "terminal": {
+            "original": 3646.991198591257,
+            "swap5": 3646.991157282991,
+            "difference": -4.1308266e-05
+          }
+        },
+        "TWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.046270686794,
+          "exact_printed_equal_days": 256,
+          "mean_absolute_difference": 0.00278567866938257,
+          "rms_difference": 0.0089448872562582,
+          "worst": {
+            "day": 589,
+            "date": "2003-08-12",
+            "original": 2195.061694909097,
+            "swap5": 2195.015424222303,
+            "swap5_minus_original": -0.046270686794
+          },
+          "terminal": {
+            "original": 528.112325044316,
+            "swap5": 528.112327336556,
+            "difference": 2.29224e-06
+          }
+        },
+        "TWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.05593368509,
+          "exact_printed_equal_days": 256,
+          "mean_absolute_difference": 0.005039132944750369,
+          "rms_difference": 0.015664686557764877,
+          "worst": {
+            "day": 589,
+            "date": "2003-08-12",
+            "original": 1305.720470926859,
+            "swap5": 1305.664537241769,
+            "swap5_minus_original": -0.05593368509
+          },
+          "terminal": {
+            "original": 159.420769188563,
+            "swap5": 159.420769451772,
+            "difference": 2.63209e-07
+          }
+        },
+        "TWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.041765221101,
+          "exact_printed_equal_days": 242,
+          "mean_absolute_difference": 0.004191120494623338,
+          "rms_difference": 0.012850942816193221,
+          "worst": {
+            "day": 583,
+            "date": "2003-08-06",
+            "original": 1452.614095198779,
+            "swap5": 1452.572329977678,
+            "swap5_minus_original": -0.041765221101
+          },
+          "terminal": {
+            "original": 3860.881931676764,
+            "swap5": 3860.881881182166,
+            "difference": -5.0494598e-05
+          }
+        },
+        "WDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.32908077,
+          "exact_printed_equal_days": 256,
+          "mean_absolute_difference": 0.06951664389666766,
+          "rms_difference": 0.2332867653081799,
+          "worst": {
+            "day": 589,
+            "date": "2003-08-12",
+            "original": 12023.68860175,
+            "swap5": 12022.35952098,
+            "swap5_minus_original": -1.32908077
+          },
+          "terminal": {
+            "original": 687.533094232879,
+            "swap5": 687.533096788329,
+            "difference": 2.55545e-06
+          }
+        },
+        "RD": {
+          "unit": "(cm)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.001730337579,
+          "exact_printed_equal_days": 602,
+          "mean_absolute_difference": 7.655030087296899e-05,
+          "rms_difference": 0.0003105364724762647,
+          "worst": {
+            "day": 836,
+            "date": "2004-04-15",
+            "original": 26.138112082912,
+            "swap5": 26.136381745333,
+            "swap5_minus_original": -0.001730337579
+          },
+          "terminal": {
+            "original": 30.0,
+            "swap5": 30.0,
+            "difference": 0.0
+          }
+        },
+        "ICUT": {
+          "unit": "(-)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 8.0,
+            "swap5": 8.0,
+            "difference": 0.0
+          }
+        },
+        "TCUT": {
+          "unit": "(d)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 18.0,
+            "swap5": 18.0,
+            "difference": 0.0
+          }
+        },
+        "HRVDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.000606703766,
+          "exact_printed_equal_days": 448,
+          "mean_absolute_difference": 8.572774874150665e-05,
+          "rms_difference": 0.00016954405223313935,
+          "worst": {
+            "day": 930,
+            "date": "2004-07-18",
+            "original": 9063.8130994273,
+            "swap5": 9063.813706131066,
+            "swap5_minus_original": 0.000606703766
+          },
+          "terminal": {
+            "original": 14755.99463247,
+            "swap5": 14755.99442794,
+            "difference": -0.00020453
+          }
+        },
+        "LOSSDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "PGASSTPOT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "PGASST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.005981165024,
+          "exact_printed_equal_days": 308,
+          "mean_absolute_difference": 0.0001976071691166913,
+          "rms_difference": 0.0008571833296640174,
+          "worst": {
+            "day": 635,
+            "date": "2003-09-27",
+            "original": 148.535069739394,
+            "swap5": 148.52908857437,
+            "swap5_minus_original": -0.005981165024
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "GASSTPOT": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "GASST": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.873938344729,
+          "exact_printed_equal_days": 307,
+          "mean_absolute_difference": 0.0051225027764844906,
+          "rms_difference": 0.05341674764362121,
+          "worst": {
+            "day": 582,
+            "date": "2003-08-05",
+            "original": 375.240973722856,
+            "swap5": 374.367035378127,
+            "swap5_minus_original": -0.873938344729
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "MRESTPOT": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 677,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 121,
+            "date": "2002-05-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "MREST": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 677,
+          "sentinel_both_days": 419,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.007137485257,
+          "exact_printed_equal_days": 309,
+          "mean_absolute_difference": 0.0002578448410590842,
+          "rms_difference": 0.0009440867917671068,
+          "worst": {
+            "day": 590,
+            "date": "2003-08-13",
+            "original": 90.690210948031,
+            "swap5": 90.683073462774,
+            "swap5_minus_original": -0.007137485257
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "S_RAIN": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "S_IRRIG": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "S_DRN": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.001425550951,
+          "exact_printed_equal_days": 615,
+          "mean_absolute_difference": 3.522892839584624e-05,
+          "rms_difference": 0.0001150945775004119,
+          "worst": {
+            "day": 366,
+            "date": "2003-01-01",
+            "original": 0.48044825728,
+            "swap5": 0.481873808231,
+            "swap5_minus_original": 0.001425550951
+          },
+          "terminal": {
+            "original": 0.055369322305,
+            "swap5": 0.055340726363,
+            "difference": -2.8595942e-05
+          },
+          "signed_period_flux_difference": -0.0023142132312444297
+        },
+        "S_UPT": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "S_STOT": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.012516223035,
+          "exact_printed_equal_days": 4,
+          "mean_absolute_difference": 0.004955042086838504,
+          "rms_difference": 0.006654481005029082,
+          "worst": {
+            "day": 365,
+            "date": "2002-12-31",
+            "original": 38.956141591925,
+            "swap5": 38.96865781496,
+            "swap5_minus_original": 0.012516223035
+          },
+          "terminal": {
+            "original": 14.02869898073,
+            "swap5": 14.031013193959,
+            "difference": 0.002314213229
+          }
+        },
+        "S_BALDEV": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1096,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2002-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "S_DSTOR": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1096,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.001425550951,
+          "exact_printed_equal_days": 615,
+          "mean_absolute_difference": 3.522892840183857e-05,
+          "rms_difference": 0.0001150945775031162,
+          "worst": {
+            "day": 366,
+            "date": "2003-01-01",
+            "original": -0.48044825728,
+            "swap5": -0.481873808231,
+            "swap5_minus_original": -0.001425550951
+          },
+          "terminal": {
+            "original": -0.055369322305,
+            "swap5": -0.055340726363,
+            "difference": 2.8595942e-05
+          }
+        }
+      },
+      "original_printed_water_balance": {
+        "maximum_abs": 0.031255676876,
+        "worst_day": 1096,
+        "date": "2004-12-31",
+        "value": -0.031255676876,
+        "printed_records_above_1e_10_diagnostic_only": 985,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_printed_water_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1096,
+        "date": "2004-12-31",
+        "value": -0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_unrounded_daily_balance": {
+        "maximum_water_cm": 9.996691511691622e-11,
+        "maximum_kernel_water_cm": 9.996847794013775e-11,
+        "maximum_solute_mg_cm2": 2.0189359137172196e-13,
+        "signed_water_cm": 2.667338342115643e-10,
+        "signed_solute_mg_cm2": -2.7119257298790236e-12,
+        "daily_guard_1e_10_pass": true
+      },
+      "timing": {
+        "original_seconds": 2.764802899910137,
+        "swap5_fresh_seconds": 5.47784910001792,
+        "swap5_model_controller_seconds": 4.7235449000727385,
+        "swap5_existing_seconds": 7.064086499856785,
+        "ratio": 1.9812801484677132
+      },
+      "literal_registered_input_attempt": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 0.09712769999168813,
+        "returncode": 0,
+        "completed": false,
+        "swap_err": " Data file   ./SWAP.SWP with 206 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n"
+      },
+      "original_printed_solute_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1096,
+        "date": "2004-12-31",
+        "value": -0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_printed_solute_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1096,
+        "date": "2004-12-31",
+        "value": 0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "preserved_oxygen584": {
+        "original_same_execution_input_printed": 0.004793370692,
+        "swap5_same_execution_input_printed": 0.00479390635,
+        "printed_difference": 5.35658e-07,
+        "frozen_original_criterion_cm": 5.371840000016327e-07,
+        "status": "Existing failed frozen-oracle comparison retained; this run does not qualify a replacement reference."
+      }
+    },
+    "saltfarm": {
+      "days": 1461,
+      "identical_execution_input_bytes": true,
+      "input_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+        "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "769d6663649ff8fc2f3802598e3c8563dd274406206fd51536a0ebebfe23d87c"
+      },
+      "original_csv_sha256": "f633f0a6ed9bded0af46fa76dbdda0a29a338a227aeb560f40a9e3589315bf33",
+      "swap5_csv_sha256": "f83e03e145ea1be1ada60e98e2111a3e75797a28451c709bfdeb097126285c84",
+      "initial_dates_equal": true,
+      "fields": {
+        "RAIN": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.8407e-08,
+          "exact_printed_equal_days": 1023,
+          "mean_absolute_difference": 3.24476386036961e-11,
+          "rms_difference": 5.043178259207283e-10,
+          "worst": {
+            "day": 211,
+            "date": "2012-07-29",
+            "original": 0.129999999989,
+            "swap5": 0.129999981582,
+            "swap5_minus_original": -1.8407e-08
+          },
+          "terminal": {
+            "original": 0.15999999999,
+            "swap5": 0.15999999999,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -8.192000000000001e-09
+        },
+        "IRRIG": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 9.922e-09,
+          "exact_printed_equal_days": 1224,
+          "mean_absolute_difference": 1.152292950034223e-11,
+          "rms_difference": 2.6092996823490087e-10,
+          "worst": {
+            "day": 257,
+            "date": "2012-09-13",
+            "original": 1.439999999972,
+            "swap5": 1.43999999005,
+            "swap5_minus_original": -9.922e-09
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -1.0795e-08
+        },
+        "RUNOFF": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1461,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2012-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "EIC": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 3.128088e-06,
+          "exact_printed_equal_days": 1295,
+          "mean_absolute_difference": 3.3154608487337444e-08,
+          "rms_difference": 2.0571498975362827e-07,
+          "worst": {
+            "day": 954,
+            "date": "2014-08-11",
+            "original": 0.103725880937,
+            "swap5": 0.103722752849,
+            "swap5_minus_original": -3.128088e-06
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -4.7428421e-05
+        },
+        "EPD": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1461,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2012-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "EPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 7.019025e-06,
+          "exact_printed_equal_days": 849,
+          "mean_absolute_difference": 1.1711164476386036e-07,
+          "rms_difference": 5.036436075563552e-07,
+          "worst": {
+            "day": 954,
+            "date": "2014-08-11",
+            "original": 0.119781720339,
+            "swap5": 0.119788739364,
+            "swap5_minus_original": 7.019025e-06
+          },
+          "terminal": {
+            "original": 0.034435212538,
+            "swap5": 0.034435212538,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.000167505697
+        },
+        "EACT": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 7.019025e-06,
+          "exact_printed_equal_days": 838,
+          "mean_absolute_difference": 1.171114045175017e-07,
+          "rms_difference": 5.03643607434321e-07,
+          "worst": {
+            "day": 954,
+            "date": "2014-08-11",
+            "original": 0.119781720339,
+            "swap5": 0.119788739364,
+            "swap5_minus_original": 7.019025e-06
+          },
+          "terminal": {
+            "original": 0.034435212538,
+            "swap5": 0.034435212538,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.00016750628999993
+        },
+        "TPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 6.630251e-06,
+          "exact_printed_equal_days": 1124,
+          "mean_absolute_difference": 1.475285071868583e-07,
+          "rms_difference": 5.686920483072918e-07,
+          "worst": {
+            "day": 955,
+            "date": "2014-08-12",
+            "original": 0.1950275373,
+            "swap5": 0.195020907049,
+            "swap5_minus_original": -6.630251e-06
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -0.000211850807
+        },
+        "TACT": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.000128514496,
+          "exact_printed_equal_days": 1120,
+          "mean_absolute_difference": 1.7024841149897332e-06,
+          "rms_difference": 7.495870209157145e-06,
+          "worst": {
+            "day": 589,
+            "date": "2013-08-11",
+            "original": 0.263377447743,
+            "swap5": 0.263248933247,
+            "swap5_minus_original": -0.000128514496
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -0.001437101064
+        },
+        "TREDDRY": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1461,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2012-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "TREDWET": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 5.6254352e-05,
+          "exact_printed_equal_days": 1431,
+          "mean_absolute_difference": 1.4945945523492038e-07,
+          "rms_difference": 1.940423993144788e-06,
+          "worst": {
+            "day": 945,
+            "date": "2014-08-02",
+            "original": 0.000254474777,
+            "swap5": 0.000198220425,
+            "swap5_minus_original": -5.6254352e-05
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -0.00021212032118453429
+        },
+        "TREDSOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.000125883443,
+          "exact_printed_equal_days": 1167,
+          "mean_absolute_difference": 1.6057588642335395e-06,
+          "rms_difference": 7.162206487993801e-06,
+          "worst": {
+            "day": 589,
+            "date": "2013-08-11",
+            "original": 0.005601450201,
+            "swap5": 0.005727333644,
+            "swap5_minus_original": 0.000125883443
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0014373705905846989
+        },
+        "DRN": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.032127134061,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.0008812773152888433,
+          "rms_difference": 0.0028306089947360614,
+          "worst": {
+            "day": 1334,
+            "date": "2015-08-26",
+            "original": 1.083858478347,
+            "swap5": 1.115985612408,
+            "swap5_minus_original": 0.032127134061
+          },
+          "terminal": {
+            "original": -0.117967904028,
+            "swap5": -0.118014680644,
+            "difference": -4.6776616e-05
+          },
+          "signed_period_flux_difference": -0.028379656094999997
+        },
+        "SSDI": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1461,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2012-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "BOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.00601331865,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.000140587862275154,
+          "rms_difference": 0.00034965865629947736,
+          "worst": {
+            "day": 1304,
+            "date": "2015-07-27",
+            "original": -0.396370200814,
+            "swap5": -0.402383519464,
+            "swap5_minus_original": -0.00601331865
+          },
+          "terminal": {
+            "original": -0.296242390655,
+            "swap5": -0.296169440209,
+            "difference": 7.2950446e-05
+          },
+          "signed_period_flux_difference": -0.03203183085
+        },
+        "GWL": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.478140840176,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.010557822707534565,
+          "rms_difference": 0.025953719364956728,
+          "worst": {
+            "day": 1304,
+            "date": "2015-07-27",
+            "original": -65.887209681828,
+            "swap5": -65.409068841652,
+            "swap5_minus_original": 0.478140840176
+          },
+          "terminal": {
+            "original": -102.795330198703,
+            "swap5": -102.80182858654,
+            "difference": -0.006498387837
+          }
+        },
+        "PD_VOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1461,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2012-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "IC_VOL": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 8.76661e-07,
+          "exact_printed_equal_days": 1458,
+          "mean_absolute_difference": 1.0419425051334703e-09,
+          "rms_difference": 2.848387187756568e-08,
+          "worst": {
+            "day": 1325,
+            "date": "2015-08-17",
+            "original": 0.059759961686,
+            "swap5": 0.059759085025,
+            "swap5_minus_original": -8.76661e-07
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "WTOT": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.03606724898,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.0023778721899479806,
+          "rms_difference": 0.004073929416934212,
+          "worst": {
+            "day": 1334,
+            "date": "2015-08-26",
+            "original": 318.733241327484,
+            "swap5": 318.697174078504,
+            "swap5_minus_original": -0.03606724898
+          },
+          "terminal": {
+            "original": 305.356188505592,
+            "swap5": 305.353685917279,
+            "difference": -0.002502588313
+          }
+        },
+        "DSTOR": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.034892519188,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.0010216758562051292,
+          "rms_difference": 0.0031050234510121154,
+          "worst": {
+            "day": 1334,
+            "date": "2015-08-26",
+            "original": 1.666182209439,
+            "swap5": 1.631289690251,
+            "swap5_minus_original": -0.034892519188
+          },
+          "terminal": {
+            "original": -0.052709609817,
+            "swap5": -0.052589972113,
+            "difference": 0.000119637704
+          }
+        },
+        "BALDEV": {
+          "unit": "(cm)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 8.213476514238e-06,
+          "exact_printed_equal_days": 65,
+          "mean_absolute_difference": 3.4346008360270695e-07,
+          "rms_difference": 9.166066561577606e-07,
+          "worst": {
+            "day": 462,
+            "date": "2013-04-06",
+            "original": -8.213476514238e-06,
+            "swap5": 0.0,
+            "swap5_minus_original": 8.213476514238e-06
+          },
+          "terminal": {
+            "original": -8.93572939531e-08,
+            "swap5": 0.0,
+            "difference": 8.93572939531e-08
+          }
+        },
+        "CH": {
+          "unit": "(cm)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 5.528789659224,
+            "swap5": 5.528789659224,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "CF": {
+          "unit": "(-)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "TSUM": {
+          "unit": "(deg C)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 1.8,
+            "swap5": 1.8,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "DVS": {
+          "unit": "(-)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.008108108108,
+            "swap5": 0.008108108108,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "LAIPOT": {
+          "unit": "(m2/m2)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.07242,
+            "swap5": 0.07242,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PWSO": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 42.6,
+            "swap5": 42.6,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 17.4,
+            "swap5": 17.4,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 15.0,
+            "swap5": 15.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PDWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PDWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PDWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PTWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 42.6,
+            "swap5": 42.6,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PTWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 17.4,
+            "swap5": 17.4,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PTWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 15.0,
+            "swap5": 15.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PWDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 60.0,
+            "swap5": 60.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "RDPOT": {
+          "unit": "(cm)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 10.0,
+            "swap5": 10.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "ICUTPOT": {
+          "unit": "(-)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "TCUTPOT": {
+          "unit": "(d)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PHRVDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PLOSSDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "VCOVER": {
+          "unit": "(-)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.9373678e-05,
+          "exact_printed_equal_days": 1157,
+          "mean_absolute_difference": 3.175407700205339e-07,
+          "rms_difference": 1.3686098075294714e-06,
+          "worst": {
+            "day": 955,
+            "date": "2014-08-12",
+            "original": 0.730498242267,
+            "swap5": 0.730478868589,
+            "swap5_minus_original": -1.9373678e-05
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "LAI": {
+          "unit": "(m2/m2)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.000118177586,
+          "exact_printed_equal_days": 118,
+          "mean_absolute_difference": 1.9357235417840374e-05,
+          "rms_difference": 3.21164639650701e-05,
+          "worst": {
+            "day": 944,
+            "date": "2014-08-01",
+            "original": 3.577519419552,
+            "swap5": 3.577401241966,
+            "swap5_minus_original": -0.000118177586
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "WSO": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.34684765,
+          "exact_printed_equal_days": 118,
+          "mean_absolute_difference": 0.07277506738769952,
+          "rms_difference": 0.1165710859232642,
+          "worst": {
+            "day": 607,
+            "date": "2013-08-29",
+            "original": 13223.51941609,
+            "swap5": 13223.17256844,
+            "swap5_minus_original": -0.34684765
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "WLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.049240660887,
+          "exact_printed_equal_days": 117,
+          "mean_absolute_difference": 0.007795730129453052,
+          "rms_difference": 0.01305460711017928,
+          "worst": {
+            "day": 944,
+            "date": "2014-08-01",
+            "original": 1490.633091480013,
+            "swap5": 1490.583850819126,
+            "swap5_minus_original": -0.049240660887
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "WST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.042668534807,
+          "exact_printed_equal_days": 118,
+          "mean_absolute_difference": 0.012533651887561033,
+          "rms_difference": 0.018389103556458185,
+          "worst": {
+            "day": 926,
+            "date": "2014-07-14",
+            "original": 1285.439381063792,
+            "swap5": 1285.396712528985,
+            "swap5_minus_original": -0.042668534807
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "WRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.04367188917,
+          "exact_printed_equal_days": 117,
+          "mean_absolute_difference": 0.013823170483624414,
+          "rms_difference": 0.019732817625185747,
+          "worst": {
+            "day": 926,
+            "date": "2014-07-14",
+            "original": 1406.389196273087,
+            "swap5": 1406.345524383917,
+            "swap5_minus_original": -0.04367188917
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "DWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.043376290983,
+          "exact_printed_equal_days": 127,
+          "mean_absolute_difference": 0.010064867830019761,
+          "rms_difference": 0.01550533574012765,
+          "worst": {
+            "day": 942,
+            "date": "2014-07-30",
+            "original": 617.900226043395,
+            "swap5": 617.856849752412,
+            "swap5_minus_original": -0.043376290983
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "DWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.009637843152,
+          "exact_printed_equal_days": 389,
+          "mean_absolute_difference": 0.0002701746346737089,
+          "rms_difference": 0.001184943581078416,
+          "worst": {
+            "day": 955,
+            "date": "2014-08-12",
+            "original": 301.571929446757,
+            "swap5": 301.562291603605,
+            "swap5_minus_original": -0.009637843152
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "DWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.010006617971,
+          "exact_printed_equal_days": 389,
+          "mean_absolute_difference": 0.0002904112639413146,
+          "rms_difference": 0.0012527616683229274,
+          "worst": {
+            "day": 955,
+            "date": "2014-08-12",
+            "original": 322.248468610503,
+            "swap5": 322.238461992532,
+            "swap5_minus_original": -0.010006617971
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "TWLV": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.049260181712,
+          "exact_printed_equal_days": 117,
+          "mean_absolute_difference": 0.01742743718575587,
+          "rms_difference": 0.024031285646871764,
+          "worst": {
+            "day": 932,
+            "date": "2014-07-20",
+            "original": 2121.959497081874,
+            "swap5": 2121.910236900162,
+            "swap5_minus_original": -0.049260181712
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "TWST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.042668534807,
+          "exact_printed_equal_days": 118,
+          "mean_absolute_difference": 0.012803826522244132,
+          "rms_difference": 0.0188064779327704,
+          "worst": {
+            "day": 926,
+            "date": "2014-07-14",
+            "original": 1285.439381063792,
+            "swap5": 1285.396712528985,
+            "swap5_minus_original": -0.042668534807
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "TWRT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.04367188917,
+          "exact_printed_equal_days": 117,
+          "mean_absolute_difference": 0.014113581747551642,
+          "rms_difference": 0.020167344196589453,
+          "worst": {
+            "day": 926,
+            "date": "2014-07-14",
+            "original": 1406.389196273087,
+            "swap5": 1406.345524383917,
+            "swap5_minus_original": -0.04367188917
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "WDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.39691397,
+          "exact_printed_equal_days": 117,
+          "mean_absolute_difference": 0.10200019944698592,
+          "rms_difference": 0.15504353720735425,
+          "worst": {
+            "day": 607,
+            "date": "2013-08-29",
+            "original": 17453.60718679,
+            "swap5": 17453.21027282,
+            "swap5_minus_original": -0.39691397
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "RD": {
+          "unit": "(cm)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 2.9510179e-05,
+          "exact_printed_equal_days": 335,
+          "mean_absolute_difference": 2.0862728755868547e-06,
+          "rms_difference": 7.228052762476416e-06,
+          "worst": {
+            "day": 1302,
+            "date": "2015-07-25",
+            "original": 29.021184458245,
+            "swap5": 29.021213968424,
+            "swap5_minus_original": 2.9510179e-05
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "ICUT": {
+          "unit": "(-)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "TCUT": {
+          "unit": "(d)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "HRVDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "LOSSDM": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PGASSTPOT": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "PGASST": {
+          "unit": "(kg/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.006901500901,
+          "exact_printed_equal_days": 122,
+          "mean_absolute_difference": 0.0003297062712723005,
+          "rms_difference": 0.000801968711807844,
+          "worst": {
+            "day": 955,
+            "date": "2014-08-12",
+            "original": 238.981632138122,
+            "swap5": 238.974730637221,
+            "swap5_minus_original": -0.006901500901
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "GASSTPOT": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "GASST": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.146787309883,
+          "exact_printed_equal_days": 117,
+          "mean_absolute_difference": 0.007848284706537558,
+          "rms_difference": 0.018525140288501548,
+          "worst": {
+            "day": 589,
+            "date": "2013-08-11",
+            "original": 301.034095651322,
+            "swap5": 300.887308341439,
+            "swap5_minus_original": -0.146787309883
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "MRESTPOT": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 426,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 108,
+            "date": "2012-04-17",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "MREST": {
+          "unit": "(kgch/ha)",
+          "active_compared_days": 426,
+          "sentinel_both_days": 1035,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.013781893254,
+          "exact_printed_equal_days": 122,
+          "mean_absolute_difference": 0.0005432322613403756,
+          "rms_difference": 0.0010249567657200861,
+          "worst": {
+            "day": 1325,
+            "date": "2015-08-17",
+            "original": 62.792159149782,
+            "swap5": 62.805941043036,
+            "swap5_minus_original": 0.013781893254
+          },
+          "terminal": {
+            "original": -999.999,
+            "swap5": -999.999,
+            "difference": 0.0
+          }
+        },
+        "S_RAIN": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0,
+          "exact_printed_equal_days": 1461,
+          "mean_absolute_difference": 0.0,
+          "rms_difference": 0.0,
+          "worst": {
+            "day": 1,
+            "date": "2012-01-01",
+            "original": 0.0,
+            "swap5": 0.0,
+            "swap5_minus_original": 0.0
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0
+        },
+        "S_IRRIG": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.0429e-08,
+          "exact_printed_equal_days": 1224,
+          "mean_absolute_difference": 1.1110198494182066e-11,
+          "rms_difference": 2.739677209362259e-10,
+          "worst": {
+            "day": 257,
+            "date": "2012-09-13",
+            "original": 1.513439999971,
+            "swap5": 1.513439989542,
+            "swap5_minus_original": -1.0429e-08
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": -1.0788e-08
+        },
+        "S_BOT": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0356734792,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.0007571181355947981,
+          "rms_difference": 0.002635872478039459,
+          "worst": {
+            "day": 113,
+            "date": "2012-04-22",
+            "original": -2.234484771897,
+            "swap5": -2.270158251097,
+            "swap5_minus_original": -0.0356734792
+          },
+          "terminal": {
+            "original": -0.242340914756,
+            "swap5": -0.242242338186,
+            "difference": 9.857657e-05
+          },
+          "signed_period_flux_difference": -0.016685086475999984
+        },
+        "S_DRN": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.046424240288,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.0011024840505995893,
+          "rms_difference": 0.0038285608706233884,
+          "worst": {
+            "day": 243,
+            "date": "2012-08-30",
+            "original": 3.226580175261,
+            "swap5": 3.273004415549,
+            "swap5_minus_original": 0.046424240288
+          },
+          "terminal": {
+            "original": -0.123984267133,
+            "swap5": -0.124033429356,
+            "difference": -4.9162223e-05
+          },
+          "signed_period_flux_difference": -0.013087470728000004
+        },
+        "S_UPT": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.000384619013,
+          "exact_printed_equal_days": 1035,
+          "mean_absolute_difference": 6.15873604782807e-06,
+          "rms_difference": 2.6462401609857514e-05,
+          "worst": {
+            "day": 890,
+            "date": "2014-06-08",
+            "original": 0.100917805131,
+            "swap5": 0.101302424144,
+            "swap5_minus_original": 0.000384619013
+          },
+          "terminal": {
+            "original": 0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          },
+          "signed_period_flux_difference": 0.0005406974438768099
+        },
+        "S_STOT": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.194464056147,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.03247871796789528,
+          "rms_difference": 0.05165546229508192,
+          "worst": {
+            "day": 243,
+            "date": "2012-08-30",
+            "original": 1250.459084848496,
+            "swap5": 1250.264620792349,
+            "swap5_minus_original": -0.194464056147
+          },
+          "terminal": {
+            "original": 199.850805786907,
+            "swap5": 199.846664602968,
+            "difference": -0.004141183939
+          }
+        },
+        "S_BALDEV": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 1.45581958462e-06,
+          "exact_printed_equal_days": 1458,
+          "mean_absolute_difference": 1.9575367107856262e-09,
+          "rms_difference": 4.69625263681746e-08,
+          "worst": {
+            "day": 192,
+            "date": "2012-07-10",
+            "original": 1.45581958462e-06,
+            "swap5": -0.0,
+            "swap5_minus_original": -1.45581958462e-06
+          },
+          "terminal": {
+            "original": -0.0,
+            "swap5": 0.0,
+            "difference": 0.0
+          }
+        },
+        "S_DSTOR": {
+          "unit": "(mg/cm2)",
+          "active_compared_days": 1461,
+          "sentinel_both_days": 0,
+          "sentinel_mismatches": [],
+          "max_abs_difference": 0.0794757907,
+          "exact_printed_equal_days": 0,
+          "mean_absolute_difference": 0.0018541485836618755,
+          "rms_difference": 0.006299228733158744,
+          "worst": {
+            "day": 243,
+            "date": "2012-08-30",
+            "original": -12.927056351378,
+            "swap5": -13.006532142078,
+            "swap5_minus_original": -0.0794757907
+          },
+          "terminal": {
+            "original": -0.118356647623,
+            "swap5": -0.11820890883,
+            "difference": 0.000147738793
+          }
+        }
+      },
+      "original_printed_water_balance": {
+        "maximum_abs": 8.213476514238e-06,
+        "worst_day": 462,
+        "date": "2013-04-06",
+        "value": -8.213476514238e-06,
+        "printed_records_above_1e_10_diagnostic_only": 1396,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_printed_water_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1461,
+        "date": "2015-12-31",
+        "value": 0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_unrounded_daily_balance": {
+        "maximum_water_cm": 1.8597862833091838e-11,
+        "maximum_kernel_water_cm": 1.8597789974705847e-11,
+        "maximum_solute_mg_cm2": 8.099007575701478e-12,
+        "signed_water_cm": 3.118490542295023e-10,
+        "signed_solute_mg_cm2": 8.763083549342206e-12,
+        "daily_guard_1e_10_pass": true
+      },
+      "timing": {
+        "original_seconds": 5.139638299820945,
+        "swap5_fresh_seconds": 11.812481799861416,
+        "swap5_model_controller_seconds": 11.110919799888507,
+        "swap5_existing_seconds": 13.016671600053087,
+        "ratio": 2.298309941435556
+      },
+      "literal_registered_input_attempt": {
+        "command": [
+          "C:\\Users\\Veldh012\\SWAP5-Comparison431-20261112\\swap431-original.exe",
+          "./swap.swp"
+        ],
+        "wall_seconds": 0.1263141999952495,
+        "returncode": 0,
+        "completed": false,
+        "swap_err": " Data file   ./SWAP.SWP with 133 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.INI with  16 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of SWAP.INI recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   235.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  23 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n ERROR in csv_write: Item S_CONC in userlist not known in vars%name. Adjust inlist_csv!\n"
+      },
+      "original_printed_solute_balance": {
+        "maximum_abs": 1.45581958462e-06,
+        "worst_day": 192,
+        "date": "2012-07-10",
+        "value": 1.45581958462e-06,
+        "printed_records_above_1e_10_diagnostic_only": 3,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      },
+      "swap5_printed_solute_balance": {
+        "maximum_abs": 0.0,
+        "worst_day": 1461,
+        "date": "2015-12-31",
+        "value": 0.0,
+        "printed_records_above_1e_10_diagnostic_only": 0,
+        "interpretation": "Original printed interval/cumulative counter residual, not a new reference acceptance test or automatically interchangeable with the independent SWAP5 daily ledger."
+      }
+    }
+  },
+  "existing_scientific_authority": "docs/science/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md at11529865e76fb2259542f1e770726cd87af27603; frozen original oxygen584 reference0.003593541147cm and criterion5.371840000016327e-7cm remain unchanged. The new same-input original print0.004793370692cm is descriptive, not a qualified replacement oracle.",
+  "limits": [
+    "Grassgrowth equality established for24 printed variables on1827 days; original default printed precision is insufficient for new unrounded oxygen/crop equivalence claims.",
+    "Hupsel72 and SaltFarm74 printed variables compared on all dates with sentinels counted; remaining differences not individually causally attributed.",
+    "Single same-laptop session wall times, no build or staging time; original compilerGNU16.2 sourceO2, SWAP5 donorO2/kernelO2. SWAP5 includes controller/journals/preflight and uses corrected conservation policy; not accuracy-matched runtime parity.",
+    "SWAP431 literal Hupsel/SaltFarm failed before completing, and their0.10/0.13s times are NOT complete-run performance measurements.",
+    "No tolerance was widened, no model source or registered physical option changed, no scientific FAIL relabeled PASS."
+  ]
+}
