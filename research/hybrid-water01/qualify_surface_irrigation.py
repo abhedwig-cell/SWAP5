@@ -129,7 +129,23 @@ try:
             # Original Hupsel has no event on day6.
             if project==h.HUPSEL and scenario=='identity':second=(0.,0.,0.)
             req=c.irrigation_forcing(*second,'caller-second',enabled=second[0]>0)
-            live=c.prepare(irrigation=req);disk=recovered.prepare(irrigation=req)
+            stable=(c.day,c.revision,h.sha(c.checkpoint))
+            try:live=c.prepare(irrigation=req)
+            except ValueError as error:
+                if not (winter and scenario=='modified' and 'unchanged1e-10 mass guard' in str(error)):raise
+                assert stable==(c.day,c.revision,h.sha(c.checkpoint)) and c._pending is None
+                try:recovered.prepare(irrigation=req)
+                except ValueError as disk_error:
+                    assert 'unchanged1e-10 mass guard' in str(disk_error)
+                else:raise AssertionError('Disk recovery changed original mass refusal')
+                assert not (out/'external'/f'accepted-column-1-day-{cut+2}.zip').exists()
+                report.setdefault('refusals',[]).append(dict(cut=cut,scenario=scenario,mode=mode,
+                    status='REFUSED_UNCHANGED_ORIGINAL_MASS_GUARD',live_and_disk_refusal_exact=True,
+                    accepted_origin_unchanged=True,first=f.document(),second=req.document(),
+                    qualified_changed_winter_history=False))
+                print(a.project,name,'REFUSED_ORIGINAL_MASS_GUARD',flush=True)
+                continue
+            disk=recovered.prepare(irrigation=req)
             assert live.budget==disk.budget and payload(c._candidate[3])==payload(recovered._candidate[3])
             final=c.accept(live);recovered.accept(disk)
         if scenario=='identity':
