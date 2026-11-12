@@ -34,6 +34,21 @@ Full-run evidence is inherited at its **qualified source/build/input boundary**.
 Subsequent bounded same-platform O0/O2 controls qualify the affected dependency
 changes. No new full run at this page's baseline is implied.
 
+## Qualified bounded original macro-state successor
+
+[PR1653](https://github.com/abhedwig-cell/SWAP5/pull/1653) adds an opt-in original
+nonlinear/macropore policy with complete native state inS5MAC006. The original
+MACROINTEGRAL local previous-wall array shadowed its checkpointed module name;
+the independent cold-zero quadrature history, original reset flags and original
+HeadCalc counters are now explicit and persisted. Same-platform Windows/Ubuntu
+kernel-O0/O2 cold controls, complete own2to3/4, external discard and cold3to4 are
+exact. Windows also reaches22 and reproduces complete own14to16 payloads across
+1949 mass-step retries, retaining1e-6cm. The admitted public481 profile and its
+historical auxiliary distinction retain their exact original scope. Whole481 and
+whole scientific qualification of the new policy remain open; default builders
+are unchanged. Reproduction/source/build receipts are in the PR's original
+macro-state review and integration/f-ci owner record.
+
 ## What the shared application architecture actually provides
 
 One project-aware daily host owns explicit kernel clocks, pressure stocks,

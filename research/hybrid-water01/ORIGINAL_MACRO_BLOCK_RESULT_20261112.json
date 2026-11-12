@@ -1,101 +1,114 @@
 {
-  "status": "DAY4_TERMINATION_PASS_WITH_COMPLETE_RESTART_BLOCKER",
+  "status": "QUALIFIED_BOUNDED_ORIGINAL_MACRO_RESTART",
   "base": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
-  "variants": {
-    "O0": {
-      "fresh_seconds": 3.2860532999038696,
-      "restart_seconds": 2.445583499968052,
-      "physical_receipts_2to4_exact": true,
-      "native_text_2to4_exact": true,
-      "macro_payload": {
-        "3": {
-          "differing_bytes": 559,
-          "fields": [
-            {
-              "name": "IAvFrMpWlWtDm1",
-              "offset": 14402528,
-              "bytes": 40000,
-              "different_bytes": 420
-            },
-            {
-              "name": "IAvFrMpWlWtDm2",
-              "offset": 14442528,
-              "bytes": 40000,
-              "different_bytes": 139
-            }
-          ]
-        },
-        "4": {
-          "differing_bytes": 0,
-          "fields": []
-        }
-      },
-      "max_daily_residual_cm": 5.965353207744765e-07,
-      "budget_retries": 0
-    },
-    "O2": {
-      "fresh_seconds": 3.0072324997745454,
-      "restart_seconds": 2.396010900149122,
-      "physical_receipts_2to4_exact": true,
-      "native_text_2to4_exact": true,
-      "macro_payload": {
-        "3": {
-          "differing_bytes": 559,
-          "fields": [
-            {
-              "name": "IAvFrMpWlWtDm1",
-              "offset": 14402528,
-              "bytes": 40000,
-              "different_bytes": 420
-            },
-            {
-              "name": "IAvFrMpWlWtDm2",
-              "offset": 14442528,
-              "bytes": 40000,
-              "different_bytes": 139
-            }
-          ]
-        },
-        "4": {
-          "differing_bytes": 0,
-          "fields": []
-        }
-      },
-      "max_daily_residual_cm": 5.965353207744765e-07,
-      "budget_retries": 0
-    }
+  "root_cause": "MACROINTEGRAL local FrMpWalWetOld shadows same-named saved module field; previous codec saved the wrong history. Preserve independent cold-zero local history explicitly and serialize it, along with original reset flags/counters.",
+  "native_format": "S5MAC006",
+  "native_bytes": 16122624,
+  "original_equations_and_cold_old_fields": "EXACT pre-fix coherent source826c4da8a control on each platform, including physical receipts and complete old payload prefix except magic",
+  "tolerance_cm": 1e-06,
+  "windows": {
+    "source": "ca53a01658b9f4838df67de5c2faea4af6d84412",
+    "qualification_wall_seconds": 0.3700209001544863,
+    "cold_predecessor_receipts_and_old_fields_exact": true,
+    "predecessor_source": "826c4da8abb6997d8717e5a6b8d2aefed9bd214d"
   },
-  "native_format": "S5MAC005",
-  "unchanged_mass_tolerance_cm": 1e-06,
-  "full_model_runs": 0,
-  "scope": "Original donor physics O2 objects; SWAP5 day-owner kernel O0/O2; no calendar-scoped macro/pond or early-budget triggers",
-  "not_qualified": [
-    "all-day complete byte-exact auxiliary restart",
-    "late-event accuracy",
-    "whole481 generic policy",
-    "numerical rejected-timestep rollback",
-    "Linux",
-    "whole scientific equivalence"
-  ],
-  "external_discard": {
-    "status": "FAILED",
-    "cap_seconds": 20,
-    "origin_unchanged": true,
-    "discarded_proposal_rejected": true,
-    "repeated_receipt_exact": true,
-    "repeated_complete_native_payload_exact": true,
-    "cold_day3_to4_differing_bytes": {
-      "result.end": 0,
-      "macro.bin": 698
+  "linux": {
+    "run_id": 43154680629,
+    "job_id": 130971744992,
+    "source": "3affe302984bbafc2108fb5b52d7ea91d44d5b80",
+    "artifact": {
+      "id": 13914684409,
+      "node_id": "MDg6QXJ0aWZhY3QxMzkxNDY4NDQwOQ==",
+      "name": "original-macro-restart-linux",
+      "size_in_bytes": 6484104,
+      "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/13914684409",
+      "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/13914684409/zip",
+      "expired": false,
+      "digest": "sha256:b4840cb7afd435afe7b31c42e7370c70f130e6e70607d9e28aaf7c97ec228cbe",
+      "created_at": "2026-11-12T04:25:53Z",
+      "updated_at": "2026-11-12T04:25:53Z",
+      "expires_at": "2026-11-26T04:25:49Z",
+      "workflow_run": {
+        "id": 43154680629,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/hybrid-original-macro-block",
+        "head_sha": "3affe302984bbafc2108fb5b52d7ea91d44d5b80"
+      }
     },
-    "cold_day3_to4_physical_receipt_exact": true,
-    "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\research\\hybrid-water01\\probe_original_macro_discard.py\", line 64, in main\n    assert actual==expected, 'Complete auxiliary restart differs; physical equality is insufficient'\n           ^^^^^^^^^^^^^^^^\nAssertionError: Complete auxiliary restart differs; physical equality is insufficient\n",
-    "elapsed_seconds": 7.053711100015789,
-    "differing_fields": [
-      "IAvFrMpWlWtDm1",
-      "IAvFrMpWlWtDm2"
+    "qualification_wall_seconds": 24.045485216
+  },
+  "cases": {
+    "windows": [
+      {
+        "optimization": "O0",
+        "fresh_seconds": 3.2113791001029313,
+        "restart_seconds": 2.7931530999485403,
+        "discard_seconds": 7.5294935998972505,
+        "maximum_daily_residual_cm": 5.965353207744765e-07,
+        "complete_native_2to3_and_2to4_exact": true,
+        "discard_and_cold3to4_exact": true,
+        "native_bytes": 16122624
+      },
+      {
+        "optimization": "O2",
+        "fresh_seconds": 2.939535099780187,
+        "restart_seconds": 2.3632992000784725,
+        "discard_seconds": 6.483792699873447,
+        "maximum_daily_residual_cm": 5.965353207744765e-07,
+        "complete_native_2to3_and_2to4_exact": true,
+        "discard_and_cold3to4_exact": true,
+        "native_bytes": 16122624
+      }
+    ],
+    "linux": [
+      {
+        "optimization": "O0",
+        "fresh_seconds": 2.362042800000001,
+        "restart_seconds": 1.2049918230000003,
+        "discard_seconds": 2.5355353130000005,
+        "maximum_daily_residual_cm": 5.96535181195129e-07,
+        "complete_native_2to3_and_2to4_exact": true,
+        "discard_and_cold3to4_exact": true,
+        "native_bytes": 16122624
+      },
+      {
+        "optimization": "O2",
+        "fresh_seconds": 1.3320874389999986,
+        "restart_seconds": 1.0128465439999985,
+        "discard_seconds": 2.5295889240000022,
+        "maximum_daily_residual_cm": 5.96535181195129e-07,
+        "complete_native_2to3_and_2to4_exact": true,
+        "discard_and_cold3to4_exact": true,
+        "native_bytes": 16122624
+      }
     ]
   },
-  "interpretation": "Original frozen-macro nonlinear block cures pair-per-residual day4 termination failure. Saving reset flags fixes original cumulative bookkeeping mismatch; original saved HeadCalc counters are explicit and serialized (zero in tested prefix). Two wall-fraction integral arrays remain unequal after cold restore. These may feed PEARL/ANIMO; do not waive, zero, round or call harmless.",
-  "next": "Resolve original wall-fraction integral history/context as a coherent original accepted-step state contract. First gate complete native equality on2to3 and separately recovered3to4; only then late-event probe and Linux/481 selection. Stop calendar patches and previous refresh reruns."
+  "windows_extended": {
+    "own_window": [
+      4,
+      22
+    ],
+    "accepted_days": 18,
+    "seconds": 14.26867809984833,
+    "maximum_daily_residual_cm": 7.810779596036078e-07,
+    "mass_step_retries": 1949,
+    "own_replay": [
+      14,
+      16
+    ],
+    "replay_seconds": 2.3234181001316756,
+    "complete_receipts_and_both_native_payloads_exact": true,
+    "retry_count_exact": 1949
+  },
+  "whole_project_runs": 0,
+  "not_claimed": [
+    "whole481 generic profile",
+    "scientific equivalence",
+    "universal numerical rollback qualification",
+    "thread safety",
+    "Linux through22",
+    "cross-platform bitwise equality"
+  ],
+  "previous_failures": "Original immutable original-macro-block-evidence.zip remains; old v3/v5 failure not relabelled PASS"
 }
