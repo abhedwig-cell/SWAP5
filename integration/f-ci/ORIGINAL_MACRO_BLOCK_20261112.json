@@ -21,9 +21,10 @@
       "scope": "complete short native restart and cold trajectory preservation",
       "expected_seconds": 90,
       "model_probe_cap_seconds": 20,
-      "owning_workflow": "original-macro-restart.yml",
+      "owning_workflow": "grass-thermal-production.yml: hybrid_original_macro_restart",
       "reason": "Explicit hidden integral history moved into new native format; require platform-native complete payload equality and exact pre-fix cold fields",
-      "whole_project_runs": 0
+      "whole_project_runs": 0,
+      "workflow_registration": "New standalone filename returned404; use existing registered dispatcher with explicit exclusion of unrelated kim guard"
     }
   },
   "next": "Finish Windows O0 and exact reuse audit, run selected Ubuntu gate to terminal; update PR1653 and admit only the bounded opt-in capability after verified checks, preserving historical failed evidence.",
