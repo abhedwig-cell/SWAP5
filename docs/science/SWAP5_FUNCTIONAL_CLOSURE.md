@@ -101,8 +101,13 @@ context restoration, with changed-history retry/recovery and independent origina
 input physical controls. The [Cauchy changed-history successor](HYBRID_CAUCHY_CHANGED_HISTORY.md)
 now proves second-day disk recovery from an actually modified accepted state
 and exact both-day independent original controls. Cross-platform sensitivity
-and whole scientific equivalence remain separate. Next interleave independent
-controlled instances using these same existing accepted-state contracts.
+and whole scientific equivalence remain separate. The [controlled-instance
+composition](HYBRID_CONTROLLED_INSTANCES.md) now verifies interleaved independent
+Cauchy/GWL/irrigation owners, pending and accepted state isolation, mixed discard/
+accept and cold reconstruction against exact single-instance physical/native
+controls. Next assess the complete preserved trajectories against their sealed
+references; retain unresolved scientific and energy quantities without new runs
+or another equivalent short-window acceptance campaign.
 
 For thermal feedback an explicit corrected-physics scope and joint state/restart
 owner remain prerequisites, not an unused handoff wrapper. Reuse the completed full

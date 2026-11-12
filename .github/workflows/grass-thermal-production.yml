@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      hybrid_controlled_instances:
+        description: Qualify interleaved independent project instances with explicit controlled inputs
+        type: boolean
+        default: false
       hybrid_cauchy_changed_history:
         description: Qualify actual Cauchy second-day recovery from modified accepted state
         type: boolean
@@ -143,6 +147,58 @@ jobs:
         with:
           name: original-heat-accounting
           path: ${{ runner.temp }}/heat-observation
+          retention-days: 14
+  external-controlled-instances:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_controlled_instances
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/HYBRID_CONTROLLED_INSTANCES_20261112.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/
+            /tests/modularity/
+            /tests/support/
+            /docs/development/workstream-execution-protocol.md
+            /integration/f-ci/HYBRID_CONTROLLED_INSTANCES_20261112.json
+            /research/hybrid-water01/qualify_controlled_instances.py
+            /research/hybrid-water01/cauchy-history-linux-20261112.tar.xz
+            /research/hybrid-water01/irrigation-linux-20261112.tar.xz
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+      - name: Persisted owning selection
+        run: python3 tests/modularity/run_modular_tests.py --check-selection hybrid_controlled_instances
+      - name: Hash-bound reuse of original binaries, modified-input controls and origins; no model compilation
+        run: |
+          python3 - <<'PY'
+          import hashlib,os,tarfile
+          from pathlib import Path
+          cases=[('hybrid-hupsel-linux-20261111.tar.xz','feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde','qualified-hybrid'),
+                 ('irrigation-linux-20261112.tar.xz','9ddbbefcec649fef7f3c016fe3be65e7d17bd3b2199d5598828ef8bfe21537f4','prior-irrigation-proof'),
+                 ('cauchy-history-linux-20261112.tar.xz','cca335421f59b6ada4b602db41c88051b55f4af7b4db05cf90f785b8baaa1bc3','prior-cauchy-history')]
+          for name,digest,folder in cases:
+              archive=Path('research/hybrid-water01')/name
+              assert hashlib.sha256(archive.read_bytes()).hexdigest()==digest
+              out=Path(os.environ['RUNNER_TEMP'])/folder
+              out.mkdir()
+              with tarfile.open(archive,'r|xz') as t:
+                  for member in t:
+                      if folder!='prior-irrigation-proof' or member.name.startswith(('groundwater/','irrigation/')):
+                          t.extract(member,path=out,filter='data')
+          PY
+      - name: Interleaved independent Cauchy groundwater and irrigation instances O0 O2
+        run: python3 -B research/hybrid-water01/qualify_controlled_instances.py --workspace "$RUNNER_TEMP/qualified-hybrid" --cauchy "$RUNNER_TEMP/prior-cauchy-history" --groundwater "$RUNNER_TEMP/prior-irrigation-proof/groundwater" --irrigation "$RUNNER_TEMP/prior-irrigation-proof/irrigation" --output "$RUNNER_TEMP/controlled-instances"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: external-controlled-instances
+          path: ${{ runner.temp }}/controlled-instances
           retention-days: 14
   external-cauchy-changed-history:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_cauchy_changed_history
@@ -656,7 +712,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:

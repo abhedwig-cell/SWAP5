@@ -83,8 +83,7 @@ origin, same-origin original control and its source-bound report. NEW must not
 exist. The Windows execution used the earlier identical native-origin cache;
 its immutable hash is checked against the actual prior original-control parent.
 
-Next bounded functional acceptance: interleave independent externally controlled
-Andelst, Grass and Hupsel instances through this existing API, including a
-rejected/discarded proposal and exact comparison to their already qualified
-single-instance results. Respect each original project calendar; do not invent
-a simultaneous groundwater/thermal peer solver or rerun full applications.
+The later [controlled-instance composition](HYBRID_CONTROLLED_INSTANCES.md)
+qualifies the interleaved independent Andelst/Grass/Hupsel owners against these
+existing physical/native controls, respecting each original calendar. It adds
+no simultaneous groundwater/thermal peer solver and repeats no full application.
