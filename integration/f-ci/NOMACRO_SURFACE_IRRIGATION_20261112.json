@@ -1,0 +1,42 @@
+{
+  "owner": "SWAP5-NOMACRO-CLOSURE01",
+  "baseline": "8e929360afd67567c4dfa138d9a480d351e6ce85",
+  "status": "IDENTIFIED_ORIGINAL_DRY_SURFACE_CANCELLATION_IMPLEMENTED_AWAITING_PRODUCTION_TESTS",
+  "scope": "Additive shared surface-irrigation transaction for registered SaltFarm and Hupsel; original Hupsel mode unchanged",
+  "invariants": "accepted-state ownership, discard/retry/durable recovery, independent private workers, explicit build/input/origin lineage; no changed physics/order/tolerance/codec",
+  "acceptance": [
+    "SaltFarm original108-110 and732-733 exact own controls",
+    "Hupsel original5-6 legacy and additive mode preservation",
+    "Modified two-day original-input controls; retry/recovery/instance exact",
+    "O0/O2 Windows and Ubuntu; original1e-10 water/solute guards",
+    "Dedicated PR and exact mergepostimage"
+  ],
+  "cost_selection": {
+    "model_call_cap_seconds": 60,
+    "fresh_SaltFarm_prefix": 733,
+    "full1461": "SELECTED_ON_ACTUAL_CONSERVED_STATE_DEPENDENCY_CHANGE",
+    "macro": "FROZEN_NOT_SELECTED",
+    "full_FCI": "NOT_SELECTED_IMPACT_UNCHANGED_PHYSICAL_OWNERS",
+    "fresh_full_no_macro_profiles": "SELECTED_CHANGED_SOLUTE_PRODUCER_AND_FULL_DAY_RESTART; O0/O2 WINDOWS_UBUNTU"
+  },
+  "retained_failed_attempts": [
+    {
+      "source": "0b3372f82",
+      "case": "SaltFarm full-day identity14.4mm0.6mm/h",
+      "failure": "caller-unit duration roundoff; converted original-unit strict check fixes it"
+    },
+    {
+      "source": "b6f53e351",
+      "case": "SaltFarm day10814.401mm/.402mgcm3",
+      "failure": "native exported csurf=-2.168404344971009e-19; strict real restore refuses; no tolerance relaxation",
+      "decision": "Existing original solve may emit negative roundoff surface mass; reject such candidate before external accept, preserving original physics and strict state contract. Accepted-history discriminator holds depth at original14.4 and changes concentration."
+    },
+    {
+      "source": "65a8fa6c1",
+      "case": "UNCHANGED original SaltFarm day109 identity",
+      "failure": "Original cold trajectory also exports csurf=-2.168404344971009e-19 at day109; not a forcing-specific defect",
+      "decision": "No further parameter tuning. Preserve strict native domain. Evaluate exact original dry/no-macro surface limit: cfluxt=-csurf; csurf=0; isqtop=cfluxt/dtsolu. Wet surface equation unchanged."
+    }
+  ],
+  "winter_modified_limit": "SaltFarm injected0.02mm/1mgcm3 gift on732 and733: second proposal can fail unchanged1e-10 original solute guard; preserve as actual refusal/live-disk/unchanged accepted-origin control, not accepted-history qualification. No parameter tuning or tolerance change."
+}

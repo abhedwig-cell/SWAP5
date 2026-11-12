@@ -1,7 +1,7 @@
 {
   "owner": "SWAP5-NOMACRO-CLOSURE01",
   "baseline": "c8a75378f1eef315441366bff421dbb6bc991127",
-  "status": "IMPLEMENTED_PERSISTED_NOT_YET_QUALIFIED",
+  "status": "CANONICALLY_ADMITTED_PR1659_POSTIMAGE_VERIFIED",
   "contract": "Optional compact real production-coefficient heat summaries; unchanged detailed output by default; accepted-only consecutive day support; unchanged1e-9J/cm2 numerical conduction guard. Missing mass-carried energy remains unavailable. No new physical formula, tolerance or macro calculation.",
   "acceptance": [
     "Compact/detail actual saline irrigation108-110 headers agree; independent detailed reconstruction matches within its existing1e-9 budget; all native/physical state bytes unchanged",
@@ -16,5 +16,349 @@
     "full_periods": "CONDITIONAL_ON_SHORT_DISCRIMINATOR",
     "full_FCI": "NOT_SELECTED_UNCHANGED_PHYSICAL_OWNERS",
     "active_macro": "FROZEN_NOT_SELECTED"
-  }
+  },
+  "qualified_source": "24d002ce23dba1f93e79730e8d2914dbba744cd9",
+  "ubuntu_workflow_source": "4c4abd48aa9832297ac4d8bddb7e680e06571665",
+  "ubuntu_run": 43203191980,
+  "ubuntu_artifacts": [
+    {
+      "name": "nomacro-heat-O0-4c4abd48aa9832297ac4d8bddb7e680e06571665",
+      "id": 13935863734,
+      "sha256": "ca292b22e4d3fdc53e6130fa2e2ed9ad38d0ead826e89369cadb0fdd4decdf41"
+    },
+    {
+      "name": "nomacro-heat-O2-4c4abd48aa9832297ac4d8bddb7e680e06571665",
+      "id": 13935669468,
+      "sha256": "08d3f8d562298bab30d43831c7dc412774237f8649b8b5234b6b40daa2eff723"
+    }
+  ],
+  "raw_evidence": {
+    "path": "research/hybrid-water01/nomacro-full-heat-20261112.tar.xz",
+    "sha256": "d83790826e9ecddf52fa4b77f05aaf0ae3a25e9dcea10890b45329847f815e42",
+    "bytes": 73280268,
+    "member_manifest": "MEMBER_SHA256.json",
+    "all_member_sha256_verified": true
+  },
+  "results": {
+    "windows/grass-O0": {
+      "days": 1827,
+      "steps": 48493,
+      "maximum_cell_residual_j_cm2": 9.532023607927709e-13,
+      "maximum_global_step_residual_j_cm2": 5.438316463823867e-12,
+      "model_seconds": 20.790710400091484,
+      "recorded_compile_link_model_seconds": 23.12087140022777,
+      "summary_bytes": 11975971,
+      "summary_sha256": "a95a58407dfefc95f04a458fc44775f70a7c5b053864e4b3e696e951e9b59839",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "20eb60057632aafeb6f4099948702a57b64ca9bd8c122c42545e5979e07cc4a2",
+      "source_commit": "24d002ce23dba1f93e79730e8d2914dbba744cd9"
+    },
+    "windows/grass-O2": {
+      "days": 1827,
+      "steps": 48493,
+      "maximum_cell_residual_j_cm2": 9.532023607927709e-13,
+      "maximum_global_step_residual_j_cm2": 5.438316463823867e-12,
+      "model_seconds": 18.098863299936056,
+      "recorded_compile_link_model_seconds": 20.906903599621728,
+      "summary_bytes": 11975971,
+      "summary_sha256": "a95a58407dfefc95f04a458fc44775f70a7c5b053864e4b3e696e951e9b59839",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "95e119fc8ed254bbeb6a7bc2ea24136a9a57bdfe154ee26e685716fcad160d1b",
+      "source_commit": "24d002ce23dba1f93e79730e8d2914dbba744cd9"
+    },
+    "windows/hupsel-O0": {
+      "days": 1096,
+      "steps": 43636,
+      "maximum_cell_residual_j_cm2": 1.1371008301619412e-12,
+      "maximum_global_step_residual_j_cm2": 2.2319923687064147e-12,
+      "model_seconds": 10.978933500126004,
+      "recorded_compile_link_model_seconds": 13.149225499946624,
+      "summary_bytes": 10894359,
+      "summary_sha256": "5cfa807d6f6b2b3272b3f001bf43831c6a9699945aaab869953a7b49e7dad1c6",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "ee796b4284d20fcedea0f1a3dfed4593212dca22c0fb3eb0231b0b45fff0ad07",
+      "source_commit": "24d002ce23dba1f93e79730e8d2914dbba744cd9"
+    },
+    "windows/hupsel-O2": {
+      "days": 1096,
+      "steps": 43636,
+      "maximum_cell_residual_j_cm2": 1.1371008301619412e-12,
+      "maximum_global_step_residual_j_cm2": 2.2319923687064147e-12,
+      "model_seconds": 10.120480200042948,
+      "recorded_compile_link_model_seconds": 12.702936999965459,
+      "summary_bytes": 10894359,
+      "summary_sha256": "5cfa807d6f6b2b3272b3f001bf43831c6a9699945aaab869953a7b49e7dad1c6",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "4bf0af17cfa26f420b58102893aac8bfacd39bbf64c2e309d4f81d0f42224df8",
+      "source_commit": "24d002ce23dba1f93e79730e8d2914dbba744cd9"
+    },
+    "windows/saltfarm-O0": {
+      "days": 1461,
+      "steps": 59176,
+      "maximum_cell_residual_j_cm2": 1.4863683200916356e-12,
+      "maximum_global_step_residual_j_cm2": 1.7372658867031987e-11,
+      "model_seconds": 28.288525599986315,
+      "recorded_compile_link_model_seconds": 30.618745100218803,
+      "summary_bytes": 14695692,
+      "summary_sha256": "3d35a82692feb72626e6bbc808c7c577c386f86ecbce684f2b5b8a497c09f788",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "743011094c50758903c4774b2f8b36fb522406e8fb6af9749d858031ee453424",
+      "source_commit": "24d002ce23dba1f93e79730e8d2914dbba744cd9"
+    },
+    "windows/saltfarm-O2": {
+      "days": 1461,
+      "steps": 59176,
+      "maximum_cell_residual_j_cm2": 1.4863683200916356e-12,
+      "maximum_global_step_residual_j_cm2": 1.7372658867031987e-11,
+      "model_seconds": 20.48487709998153,
+      "recorded_compile_link_model_seconds": 23.06802019989118,
+      "summary_bytes": 14695692,
+      "summary_sha256": "3d35a82692feb72626e6bbc808c7c577c386f86ecbce684f2b5b8a497c09f788",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "217a7f5687b64e9b0bf6312c7d611d58c5365f8e1f8e0079640e925e527cc2a2",
+      "source_commit": "24d002ce23dba1f93e79730e8d2914dbba744cd9"
+    },
+    "ubuntu26.04/grass-O0": {
+      "days": 1827,
+      "steps": 48493,
+      "maximum_cell_residual_j_cm2": 8.739623608144953e-13,
+      "maximum_global_step_residual_j_cm2": 5.980771433655718e-12,
+      "model_seconds": 11.965349133999993,
+      "recorded_compile_link_model_seconds": 16.110719568999997,
+      "summary_bytes": 11927398,
+      "summary_sha256": "f568d060ec951db89c97bf69a48712eb922d830838ae11a8b2b08a68f8e707e1",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "da892d8a914a9242bea83ca0c83fe72d9449066e7216af79898ccc439c071a29",
+      "source_commit": "4c4abd48aa9832297ac4d8bddb7e680e06571665"
+    },
+    "ubuntu26.04/grass-O2": {
+      "days": 1827,
+      "steps": 48493,
+      "maximum_cell_residual_j_cm2": 8.739625304041194e-13,
+      "maximum_global_step_residual_j_cm2": 5.980771433655718e-12,
+      "model_seconds": 10.260862090000018,
+      "recorded_compile_link_model_seconds": 14.585541930000034,
+      "summary_bytes": 11927441,
+      "summary_sha256": "65b7cce1a80a00b8d71fcbbead29e07832a6f4d02bfb052231c8ad2d0bf94bed",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "650a394dcfba39c4ea20b5f6496e8b96a17c44b452f60c07ae9861a5f5d9b9ef",
+      "source_commit": "4c4abd48aa9832297ac4d8bddb7e680e06571665"
+    },
+    "ubuntu26.04/hupsel-O0": {
+      "days": 1096,
+      "steps": 43777,
+      "maximum_cell_residual_j_cm2": 1.0396644482824069e-12,
+      "maximum_global_step_residual_j_cm2": 2.3847590568948362e-12,
+      "model_seconds": 4.386566952999999,
+      "recorded_compile_link_model_seconds": 5.026623627999996,
+      "summary_bytes": 10887544,
+      "summary_sha256": "676ea19247d180d0febc6ef30c578499952bbe224f333c918551f9e024acae85",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "4a19cc5944dd6a1c14e85e8fff482a20dacfaed8750dbdc9079a60f43ee028cf",
+      "source_commit": "4c4abd48aa9832297ac4d8bddb7e680e06571665"
+    },
+    "ubuntu26.04/hupsel-O2": {
+      "days": 1096,
+      "steps": 43777,
+      "maximum_cell_residual_j_cm2": 1.0396644514373218e-12,
+      "maximum_global_step_residual_j_cm2": 2.3847590568948362e-12,
+      "model_seconds": 3.7720192150000003,
+      "recorded_compile_link_model_seconds": 4.661958897000005,
+      "summary_bytes": 10887560,
+      "summary_sha256": "52d554b7896863481f6bf84aec432b7cb342f70a94915973c6386e01466d4fe7",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "844b98523dc7887df2c72a02efe4fa13fe82d757c7a5c878da8de8acfa8d569f",
+      "source_commit": "4c4abd48aa9832297ac4d8bddb7e680e06571665"
+    },
+    "ubuntu26.04/saltfarm-O0": {
+      "days": 1461,
+      "steps": 58935,
+      "maximum_cell_residual_j_cm2": 1.297931380428441e-12,
+      "maximum_global_step_residual_j_cm2": 1.3504752871540404e-11,
+      "model_seconds": 15.36146186100001,
+      "recorded_compile_link_model_seconds": 15.959521504000023,
+      "summary_bytes": 14577677,
+      "summary_sha256": "6d3f09c643b5d3b5e79820b2b5c0236ad461f5a47508d980eea943a1611f0148",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "c7b6fb71d409e28adea99c489483d1256c359fc2da8fc0803748cfa534e496c2",
+      "source_commit": "4c4abd48aa9832297ac4d8bddb7e680e06571665"
+    },
+    "ubuntu26.04/saltfarm-O2": {
+      "days": 1461,
+      "steps": 58935,
+      "maximum_cell_residual_j_cm2": 1.2979314310659597e-12,
+      "maximum_global_step_residual_j_cm2": 1.3504752871540404e-11,
+      "model_seconds": 11.090379797999987,
+      "recorded_compile_link_model_seconds": 11.984606809999974,
+      "summary_bytes": 14577804,
+      "summary_sha256": "8566aa41d4131c6d8a75b3f29056ec45f5314297dcb37aae77f1856afd3746de",
+      "physical_and_final_native_payloads": "EXACT_SOURCE_BOUND_CONTROLS",
+      "zero_advection_counterfactual": "FAIL",
+      "full_physical_energy": "NOT_QUALIFIED",
+      "observation_build_sha256": "d9733a4fdf7341b109311408da1369704dfcca44feec81410fd9e43f923bc30d",
+      "source_commit": "4c4abd48aa9832297ac4d8bddb7e680e06571665"
+    }
+  },
+  "cross_optimization_observation": {
+    "windows/grass": {
+      "headers_exact_except_roundoff_reductions": true,
+      "maximum_field_differences_j_cm2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "note": "Each profile independently passes unchanged1e-9 conduction budget; no cross-optimization byte-equivalence claim for accounting reductions"
+    },
+    "windows/hupsel": {
+      "headers_exact_except_roundoff_reductions": true,
+      "maximum_field_differences_j_cm2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "note": "Each profile independently passes unchanged1e-9 conduction budget; no cross-optimization byte-equivalence claim for accounting reductions"
+    },
+    "windows/saltfarm": {
+      "headers_exact_except_roundoff_reductions": true,
+      "maximum_field_differences_j_cm2": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "note": "Each profile independently passes unchanged1e-9 conduction budget; no cross-optimization byte-equivalence claim for accounting reductions"
+    },
+    "ubuntu26.04/grass": {
+      "headers_exact_except_roundoff_reductions": true,
+      "maximum_field_differences_j_cm2": [
+        0.0,
+        0.0,
+        8.879615469253602e-16,
+        1.1874945471390674e-12,
+        2.1316282072803006e-14,
+        0.0,
+        1.1876124528242826e-12,
+        2.0861624927537292e-11
+      ],
+      "note": "Each profile independently passes unchanged1e-9 conduction budget; no cross-optimization byte-equivalence claim for accounting reductions"
+    },
+    "ubuntu26.04/hupsel": {
+      "headers_exact_except_roundoff_reductions": true,
+      "maximum_field_differences_j_cm2": [
+        0.0,
+        0.0,
+        1.1331338366100387e-15,
+        1.0302869668521453e-12,
+        2.842170943040401e-14,
+        0.0,
+        1.0302755981683731e-12,
+        5.9605653746075404e-12
+      ],
+      "note": "Each profile independently passes unchanged1e-9 conduction budget; no cross-optimization byte-equivalence claim for accounting reductions"
+    },
+    "ubuntu26.04/saltfarm": {
+      "headers_exact_except_roundoff_reductions": true,
+      "maximum_field_differences_j_cm2": [
+        0.0,
+        0.0,
+        5.441411307917458e-16,
+        1.3096190798478347e-12,
+        2.842170943040401e-14,
+        0.0,
+        1.3097011697382755e-12,
+        2.980238278382785e-11
+      ],
+      "note": "Each profile independently passes unchanged1e-9 conduction budget; no cross-optimization byte-equivalence claim for accounting reductions"
+    }
+  },
+  "retained_initial_attempts": [
+    {
+      "case": "s5-nomacro-compact-full-grass-O0-20261112",
+      "status": "FAILED",
+      "censored": true,
+      "accepted_days": null,
+      "source_commit": "6d0acd49a6126bb2bdb7bd006aa689262c16eaa2"
+    },
+    {
+      "case": "s5-nomacro-compact-full-grass-O2-20261112",
+      "status": "FAILED",
+      "censored": true,
+      "accepted_days": null,
+      "source_commit": "6d0acd49a6126bb2bdb7bd006aa689262c16eaa2"
+    },
+    {
+      "case": "s5-nomacro-compact-full-hupsel-O0-20261112",
+      "status": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
+      "censored": false,
+      "accepted_days": null,
+      "source_commit": "6d0acd49a6126bb2bdb7bd006aa689262c16eaa2"
+    },
+    {
+      "case": "s5-nomacro-compact-full-hupsel-O2-20261112",
+      "status": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
+      "censored": false,
+      "accepted_days": null,
+      "source_commit": "6d0acd49a6126bb2bdb7bd006aa689262c16eaa2"
+    },
+    {
+      "case": "s5-nomacro-compact-full-saltfarm-O0-20261112",
+      "status": "FAILED",
+      "censored": true,
+      "accepted_days": null,
+      "source_commit": "6d0acd49a6126bb2bdb7bd006aa689262c16eaa2"
+    },
+    {
+      "case": "s5-nomacro-compact-full-saltfarm-O2-20261112",
+      "status": "ORIGINAL_HEAT_OBSERVATION_PHYSICAL_PRESERVATION_PASS",
+      "censored": false,
+      "accepted_days": null,
+      "source_commit": "1a214a671bbe8b607090ea53312d4ea2f262e3f8"
+    }
+  ],
+  "short_discriminator": "PASS_O0_O2_270_EXACT_SUMMARY_HEADERS; detailed independent reconstruction within1e-9",
+  "source_identity": "Windows raw bytes; Ubuntu Git LF bytes; exact production sources verified separately on each platform",
+  "inheritance": "PR1658 source-bound native controls and restart/rollback/instance/external gates unchanged; all observer full physical ledgers and final payloads verified EXACT; no new codec or external contract",
+  "remaining": "Missing mass-carried thermal energy and failed/underqualified original oxygen references remain open; macro frozen",
+  "docs_checks": "tools/docs/check_docs.py PASS; mkdocs --strict external site PASS",
+  "acceptance_inheritance_source": "c8a75378f1eef315441366bff421dbb6bc991127",
+  "known_automatic_checks": "Four obsolete preflights retain FAILED canonical antecedents: research/hybrid-water01/NOMACRO_CI_ADJUDICATION_20261112.json. They are not converted to PASS. Full FCI and highest low-air are NOT_SELECTED_IMPACT for this read-only observer change.",
+  "pull_request": 1659,
+  "published_proof_head": "dee81334c08fc4705674a39e73a691558dc1dc2c",
+  "admission_receipt": "research/hybrid-water01/NOMACRO_HEAT_MERGE_20261112.json"
 }

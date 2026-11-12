@@ -343,6 +343,19 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
    end if
 end subroutine hybrid_solute_checkpoint
 end submodule MOD_Solute_CDE""")
+        # Exact dry-surface limit of the original mixed-reservoir equation.
+        # With no pond or macropore area, all surface mass enters the matrix.
+        # Avoid division/multiplication cancellation leaving a signed roundoff
+        # stock that the existing strict native restart correctly refuses.
+        source=replace(source,"               csurf  = csurf + cfluxt                         ! mg cm-2\n               isqtop = qtop*(1.0d0-ArMpSs)*cpond              ! mg cm-2 d-1",
+                       "               if (pond==0d0.and.ArMpSs==0d0) then\n"
+                       "                  cfluxt = -csurf\n"
+                       "                  csurf = 0d0\n"
+                       "                  isqtop = cfluxt/dtsolu\n"
+                       "               else\n"
+                       "                  csurf = csurf + cfluxt\n"
+                       "                  isqtop = qtop*(1.0d0-ArMpSs)*cpond\n"
+                       "               end if")
         (output/'solute.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'solute')
         source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')

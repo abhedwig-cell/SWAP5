@@ -267,3 +267,49 @@ process, closed/flushed at normal worker shutdown. It carries no physical state;
 the detailed observer lifecycle is unchanged. Repeat the short discriminator,
 then the failed full calls before selecting further replays. Censored files remain
 ineligible for complete accepted-day qualification.
+
+## Complete supported-heat export successor
+
+The buffered repair passes all three complete periods at O0/O2 on Windows and
+Ubuntu26.04 (selected run43203191980). All17536 accepted daily records have
+complete consecutive numerical heat support; each original physical receipt and
+both final native payloads are EXACT against its source-bound unobserved control.
+The unchanged1e-9J/cm2 cell/global guard passes, maximum global1.74e-11J/cm2.
+Model calls take3.77–28.29s; compile/link costs are separate and the60s cap remains.
+Both actual270-step O0/O2 irrigation discriminators match detailed headers exactly;
+the detailed independent reader passes. Compact output has no independent nodal
+reconstruction claim. On Ubuntu O0/O2 accounting reductions show small roundoff,
+retained explicitly; each passes the original guard. The earlier three censored
+unbuffered Windows attempts remain FAILED/censored. No tolerance was widened.
+
+The raw compact summaries, daily physical ledgers, final packages, actual observed
+donors, generated original temperature units, source/build/input identities and
+initial-attempt reports are in nomacro-full-heat-20261112.tar.xz with its own member
+SHA256 manifest; the owning NOMACRO_HEAT_EXPORT_20261112.json pins the archive and
+verified GitHub artifact digests. The separate worker owns its buffered I/O
+channel; no shared physical state or legacy thread-safety claim is introduced.
+Complete mass-carried energy remains unavailable, zero-advection comparisons FAIL,
+and the original oxygen/reference failures stay visible. Macro work stays frozen.
+
+Next concrete functional deliverable: extend the existing caller-controlled
+surface-irrigation transaction to the admitted SaltFarm profile, retaining the
+original Hupsel contract. First prove unchanged original saline irrigation108–110
+and a year boundary against independent original controls; then verify one
+changed-history water/solute request through discard/repeat/accept, fresh-process
+restart and interleaved independent instances at O0/O2. Use short retained origins
+and the existing1e-10 guards; no full1461 repeat without a changed dependency.
+This is a bounded external-coupling acceptance point, not a new forcing framework
+or an implicit full-energy/scientific-equivalence claim.
+
+Reviewable publication: PR1659, proof head dee81334c08fc4705674a39e73a691558dc1dc2c.
+Selected Linux qualification is terminal SUCCESS, all artifact/member hashes
+verified, docs and strict MkDocs PASS. Admission and actual canonical postimage
+remain separate from the qualified candidate until the merge is verified.
+
+PR1659 is now MERGED at 8e929360afd67567c4dfa138d9a480d351e6ce85. The actual fetched canonical
+whole tree 6ac2f25fc61df52065134ae9c006fc9bc67af584 is EXACTLY the qualified candidate
+6e2345a78b5a9fb5e9934a409f069d5d36615264 (empty complete file diff).
+Postimage receipt: NOMACRO_HEAT_MERGE_20261112.json. All selected checks are
+terminal; no model worker remains active. Next deliverable remains the bounded
+SaltFarm caller-controlled saline irrigation transaction described above.
+The release program and half-hour recovery schedule are not yet complete.

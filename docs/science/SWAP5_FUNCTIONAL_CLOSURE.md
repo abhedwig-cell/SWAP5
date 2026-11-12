@@ -19,17 +19,66 @@ the original R preprocessing is NOT claimed. Existing Andelst functionality,
 branches and proof remain preserved outside that release selection; original
 active-macro inputs are explicitly refused by the no-macro release option.
 
-This successor's thermal proof is the supported original conduction/storage
-observer on irrigation days108–110, with unchanged1e-9J/cm2 guards. It does not
-establish a full-period heat ledger, complete mass-carried energy or whole
-scientific equivalence. The failed Grassgrowth oxygen criteria and underresolved
+The subsequent compact observer exports supported original conduction/storage
+for every accepted day of all three selected complete periods on Windows and
+Ubuntu26.04, at O0/O2. Original production coefficients and reductions are
+preserved; the saline irrigation108–110 discriminator agrees exactly with the
+retained detailed headers and within the existing1e-9J/cm2 independently
+reconstructed nodal budget. Compact files contain production reductions, not
+independently exported node measurements. All complete physical receipts and both
+final native payloads remain exact against their source-bound unobserved controls.
+The worker owns its buffered output channel; this is process-local observation
+I/O, not shared model state or a thread-safety claim. Numerical heat export is
+separate from complete mass-carried energy and whole scientific equivalence.
+The failed Grassgrowth oxygen criteria and underresolved
 Hupsel reference families below remain visible. Source/build/command/raw evidence
 and the next functional acceptance point are recorded in
 `research/hybrid-water01/NOMACRO_RELEASE_WORKPOINT.md` and
 `integration/f-ci/NOMACRO_RELEASE_20261112.json`.
 
+The full-period thermal successor is owned by
+`integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json`, with raw compact receipts,
+source/build/input identity, unchanged1e-9J/cm2 cell/global checks, accepted-only
+support, measured costs and retained censored attempts. Missing advective donor
+energy remains unavailable; asserting zero advection still FAILS. The thermal
+export closes a supported accounting gap without changing temperature physics,
+water/solute/uptake, accepted state, restart codecs or external forcing contracts.
+
 The earlier three-application table below retains its own baseline and profiles;
 it must not be confused with the owner's three selected no-macro configurations.
+
+Complete compact observation calls (seconds, O0/O2 accounting objects and kernels,
+original donorO2) have the following measured costs. Compilation/linking is
+recorded separately; each selected call retains its60second cap. These are
+same-platform preservation measurements, not an accuracy-matched SWAP431 speed
+claim or a portable performance guarantee.
+
+| Configuration | Accepted days | Windows seconds O0/O2 | Ubuntu26.04 seconds O0/O2 |
+| --- | ---: | ---: | ---: |
+| Grassgrowth | 1827 | 20.79 / 18.10 | 11.97 / 10.26 |
+| Hupsel | 1096 | 10.98 / 10.12 | 4.39 / 3.77 |
+| SaltFarm04dS | 1461 | 28.29 / 20.49 | 15.36 / 11.09 |
+
+The largest observed numerical global step residual is1.74e-11J/cm2 against the
+unchanged1e-9J/cm2 guard. Earlier unbuffered Windows calls that hit the selected
+cap remain censored, not successful. Buffered compact output is174times smaller
+than detailed output in the270-step irrigation discriminator. O0/O2 accounting
+reductions show small compiler roundoff on Ubuntu; each separately satisfies the
+original energy guard and exact physical/native controls. Their accounting text
+is not claimed byte-identical across optimization levels or platforms.
+
+Reproduction uses the existing qualifier, the exact native/control bundles named
+by the owning record, and the matching original-object capsule:
+
+```text
+python -B research/hybrid-water01/qualify_original_heat_accounting.py --base-archive CAPSULE --workspace PROVIDER --output NEW_OUTPUT --case PROJECT-O2 --current-bundle NATIVE_BUNDLE --control-root COMPLETE_CONTROL --project PROJECT --compact --full-period
+python -B research/hybrid-water01/check_original_heat_accounting.py --runs NEW_OUTPUT --compact
+```
+
+`PROJECT` is `grass`, `hupsel` or `saltfarm`; select O0 explicitly for its second
+cohort. The manual `nomacro-release.yml` heat-export mode reuses the exact
+qualified Ubuntu native builds and complete controls instead of recompiling
+unaffected physics or rerunning active-macropore projects.
 
 The new codec also has fresh full Grassgrowth1827/Hupsel1096 preservation on
 Windows AND Ubuntu26.04 with both kernels: all4/9 seasonal own windows reproduce

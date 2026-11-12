@@ -14,6 +14,10 @@ on:
         description: Compile only the read-only heat observer and export all three complete supported periods
         type: boolean
         default: false
+      surface_irrigation_only:
+        description: Qualify shared no-macro surface events and conservative dry-surface restart repair
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -22,7 +26,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   original-no-macro:
-    if: ${{ !inputs.seasonal_only && !inputs.heat_export_only }}
+    if: ${{ !inputs.seasonal_only && !inputs.heat_export_only && !inputs.surface_irrigation_only }}
     runs-on: ubuntu-26.04
     timeout-minutes: 7
     strategy:
@@ -94,7 +98,7 @@ jobs:
             ${{ runner.temp }}/nomacro-heat-*
           retention-days: 14
   seasonal-no-macro:
-    if: ${{ inputs.seasonal_only && !inputs.heat_export_only }}
+    if: ${{ inputs.seasonal_only && !inputs.heat_export_only && !inputs.surface_irrigation_only }}
     runs-on: ubuntu-26.04
     timeout-minutes: 5
     strategy:
@@ -149,7 +153,7 @@ jobs:
           path: ${{ runner.temp }}/nomacro-seasonal-*
           retention-days: 14
   supported-heat-export:
-    if: ${{ inputs.heat_export_only }}
+    if: ${{ inputs.heat_export_only && !inputs.surface_irrigation_only }}
     runs-on: ubuntu-26.04
     timeout-minutes: 7
     strategy:
@@ -219,4 +223,85 @@ jobs:
         with:
           name: nomacro-heat-${{ matrix.opt }}-${{ github.sha }}
           path: ${{ runner.temp }}/heat-full-*
+          retention-days: 14
+  surface-irrigation:
+    if: ${{ inputs.surface_irrigation_only }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        opt: [O0, O2]
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/swap-4.3.1/projects/
+            /research/hybrid-water01/*.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+            /integration/f-ci/NOMACRO_SURFACE_IRRIGATION_20261112.json
+      - name: Exact selected source and original provider
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          python3 - <<'PY'
+          import hashlib,json,os,shutil,tarfile
+          from pathlib import Path
+          owner=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
+          assert owner['cost_selection']['model_call_cap_seconds']==60
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          root=Path(os.environ['RUNNER_TEMP'])/'surface-provider';root.mkdir()
+          with tarfile.open(archive) as t:t.extractall(root,filter='data')
+          reference=root/json.loads((root/'PROOF_INDEX.json').read_text())['reference']
+          shutil.copytree(Path('reference/swap-4.3.1/projects/4.salinitystress-04dS'),reference/'distribution/SWAP_4.3.1/cases/4.salinitystress-04dS')
+          with Path(os.environ['GITHUB_ENV']).open('a') as f:f.write('SURFACE_REFERENCE='+str(reference)+'\n')
+          PY
+      - name: Changed solute producer complete SaltFarm and all five own windows
+        run: python3 -B research/hybrid-water01/qualify_nomacro_saltfarm.py --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-native-saltfarm-${{ matrix.opt }}" --optimization ${{ matrix.opt }}
+      - name: Complete Grassgrowth and Hupsel with affected original contracts and seasonal windows
+        run: |
+          for project in grass hupsel; do
+            bundle="$RUNNER_TEMP/surface-native-$project-${{ matrix.opt }}"
+            python3 -B research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference "$SURFACE_REFERENCE" --output "$bundle" --project "$project" --optimization ${{ matrix.opt }}
+            python3 -B research/hybrid-water01/run_hybrid_grass_full.py --bundle "$bundle" --reference "$SURFACE_REFERENCE" --output "$RUNNER_TEMP/surface-seasonal-$project-${{ matrix.opt }}" --project "$project"
+          done
+      - name: Actual shared and legacy events with original controls and fail-closed state
+        run: |
+          for project in saltfarm hupsel; do
+            bundle="$RUNNER_TEMP/surface-native-$project-${{ matrix.opt }}"
+            controls="$RUNNER_TEMP/surface-seasonal-$project-${{ matrix.opt }}/full"
+            if [ "$project" = saltfarm ]; then controls="$bundle/full"; fi
+            out="$RUNNER_TEMP/surface-transactions-$project-${{ matrix.opt }}"
+            python3 -B research/hybrid-water01/qualify_surface_irrigation.py --reference "$SURFACE_REFERENCE" --bundle "$bundle" --controls "$controls" --output "$out" --project "$project"
+            cut=4; if [ "$project" = saltfarm ]; then cut=107; fi
+            python3 -B research/hybrid-water01/check_irrigation_inputs.py --reference "$SURFACE_REFERENCE" --bundle "$out/build" --accepted "$out/$cut-modified-shared/external/accepted-column-1-day-$((cut+1)).zip" --project "$project" --output "$RUNNER_TEMP/surface-guards-$project-${{ matrix.opt }}"
+          done
+      - name: Complete supported numerical heat after the changed solute producer
+        run: |
+          for project in grass hupsel saltfarm; do
+            bundle="$RUNNER_TEMP/surface-native-$project-${{ matrix.opt }}"
+            controls="$RUNNER_TEMP/surface-seasonal-$project-${{ matrix.opt }}"
+            if [ "$project" = saltfarm ]; then controls="$bundle"; fi
+            out="$RUNNER_TEMP/surface-heat-$project-${{ matrix.opt }}"
+            python3 -B research/hybrid-water01/qualify_original_heat_accounting.py --base-archive research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz --workspace "$RUNNER_TEMP/surface-provider" --output "$out" --case "$project-${{ matrix.opt }}" --current-bundle "$bundle" --control-root "$controls" --project "$project" --compact --full-period
+            python3 -B research/hybrid-water01/check_original_heat_accounting.py --runs "$out" --compact > "$out/check.stdout"
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-surface-${{ matrix.opt }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/surface-native-*
+            ${{ runner.temp }}/surface-seasonal-*
+            ${{ runner.temp }}/surface-transactions-*
+            ${{ runner.temp }}/surface-guards-*
+            ${{ runner.temp }}/surface-heat-*
           retention-days: 14
