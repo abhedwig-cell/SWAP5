@@ -19,7 +19,7 @@ POLICY='original-macro-rate-derivative-pair-v1'
 
 def render_headcalc(source):
     source=replace(source,'''      if (iTask == 1 .OR. .NOT. flunsatok(3) .OR. &
-          (t1900 >= 36252.9989d0 .AND. t1900 < 36253d0)) then 
+          (t1900 >= 36252.9989d0 .AND. t1900 < 36253d0)) then\x20
          call MACROPORE(2)
       else
          QMpLatSs = QMpLatSsSav
