@@ -27,18 +27,27 @@ def main():
     p.add_argument('--reference',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--optimization',choices=['O0','O2'],required=True)
-    a=p.parse_args();a.output=a.output.resolve();a.reference=a.reference.resolve();a.output.mkdir()
+    p.add_argument('--resume-proof',action='store_true',help='Validate and audit existing exact build/full/own results; no repeated model calls')
+    a=p.parse_args();a.output=a.output.resolve();a.reference=a.reference.resolve()
     profile=dict(budget_retry=True,shared_pond_transfer=False,refresh_macro_final=False)
     started=time.perf_counter()
-    donor,kernel,case,inputs,identity=h.build(a.reference,a.output,runtime_checkpoint=True,
-        kernel_opt=a.optimization,project=h.SALTFARM,**profile)
+    if a.resume_proof:
+        meta,case=validate_bundle(a.output,a.reference,h.SALTFARM)
+        identity=meta['identity'];inputs=meta['inputs']
+        assert identity['kernel_flags'][0]=='-'+a.optimization
+        donor=h.executable(a.output,'day_donor');kernel=h.executable(a.output,'day_kernel')
+    else:
+        a.output.mkdir()
+        donor,kernel,case,inputs,identity=h.build(a.reference,a.output,runtime_checkpoint=True,
+            kernel_opt=a.optimization,project=h.SALTFARM,**profile)
     compile_seconds=time.perf_counter()-started
     binding=h.checkpoint_identity(inputs,identity,project=h.SALTFARM,**profile)
     project={k:getattr(h.SALTFARM,k) for k in ['case','model','start_date','nodes','water_tolerance']}
     (a.output/'BUILD.json').write_text(json.dumps(dict(project=project,inputs=inputs,identity=identity,binding=binding,
         executable_sha256=dict(donor=h.sha(donor),kernel=h.sha(kernel))),indent=2)+'\n')
     validate_bundle(a.output,a.reference,h.SALTFARM)
-    events=[];workers=[];actual=h.start_process
+    events=json.loads((a.output/'EVENTS.json').read_text()) if a.resume_proof else []
+    workers=[];actual=h.start_process
     def track(*args,**kwargs):
         process,log=actual(*args,**kwargs);workers.append(process);return process,log
     h.start_process=track
@@ -62,17 +71,22 @@ def main():
             (a.output/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n')
     physical=lambda r:{k:v for k,v in r.items() if k not in ('column','revision')}
     windows=[(2,4),(107,110),(365,367),(731,733),(1459,1461)]
-    full=a.output/'full';full.mkdir();rows=[]
+    full=a.output/'full';rows=[]
     try:
-        with bounded('full1461'),contextlib.ExitStack() as stack:
-            host=h.DailyHost(stack,donor,kernel,case,full,[h.ColumnStart()],checkpoint_enabled=True,
-                runtime=True,binding=binding,project=h.SALTFARM)
-            with (full/'daily.jsonl').open('w') as journal:
-                for day in range(1,1462):
-                    row=host.step(1,checkpoint=day in {d for w in windows for d in w})
-                    journal.write(json.dumps(row)+'\n');journal.flush();rows.append(row)
-                    assert row['committed'],row
-            host.close()
+        if a.resume_proof:
+            assert any(e['case']=='full1461' and e['status']=='PASS' for e in events)
+            rows=[json.loads(line) for line in (full/'daily.jsonl').read_text().splitlines()]
+        else:
+            full.mkdir()
+            with bounded('full1461'),contextlib.ExitStack() as stack:
+                host=h.DailyHost(stack,donor,kernel,case,full,[h.ColumnStart()],checkpoint_enabled=True,
+                    runtime=True,binding=binding,project=h.SALTFARM)
+                with (full/'daily.jsonl').open('w') as journal:
+                    for day in range(1,1462):
+                        row=host.step(1,checkpoint=day in {d for w in windows for d in w})
+                        journal.write(json.dumps(row)+'\n');journal.flush();rows.append(row)
+                        assert row['committed'],row
+                host.close()
         assert [r['day'] for r in rows]==list(range(1,1462))
         for r in rows:
             assert len(r['pressure_head_cm'])==195 and all(map(math.isfinite,r['pressure_head_cm']))
@@ -80,23 +94,29 @@ def main():
             assert abs(r['solute_independent_residual_mg_cm2'])<=1e-10
         restart=[]
         for cut,end in windows:
-            out=a.output/f'own-{cut}-{end}';out.mkdir();origin=out/'origin'
-            receipt=h.verify_checkpoint(full/f'accepted-column-1-day-{cut}.zip',cut,binding,origin)
-            with bounded(out.name):
-                result=h.run(donor,kernel,case,out,end,checkpoint_day=cut,origin=origin,origin_receipt=receipt,
-                    runtime=True,publish_day=end,checkpoint_binding=binding,project=h.SALTFARM)
+            out=a.output/f'own-{cut}-{end}';origin=out/'origin'
+            if not a.resume_proof:
+                out.mkdir()
+                receipt=h.verify_checkpoint(full/f'accepted-column-1-day-{cut}.zip',cut,binding,origin)
+                with bounded(out.name):
+                    result=h.run(donor,kernel,case,out,end,checkpoint_day=cut,origin=origin,origin_receipt=receipt,
+                        runtime=True,publish_day=end,checkpoint_binding=binding,project=h.SALTFARM)
+                assert result['first_refusal'] is None
+            else:
+                assert any(e['case']==out.name and e['status']=='PASS' for e in events)
             actual_rows=[json.loads(line) for line in (out/'daily.jsonl').read_text().splitlines()]
-            assert result['first_refusal'] is None
-            assert list(map(physical,actual_rows))==list(map(physical,rows[cut:end]))
+            assert [r['day'] for r in actual_rows]==list(range(cut+1,end+1)) and all(r['committed'] for r in actual_rows)
+            exact=list(map(physical,actual_rows))==list(map(physical,rows[cut:end]))
             with zipfile.ZipFile(full/f'accepted-column-1-day-{end}.zip') as reference:
-                for name in h.CHECKPOINT_FILES:assert reference.read(name)==(out/'original'/name).read_bytes(),(cut,end,name)
-            restart.append(dict(cut=cut,end=end,physical_receipts_exact=True,payloads_exact=list(h.CHECKPOINT_FILES)))
+                payloads={name:reference.read(name)==(out/'original'/name).read_bytes() for name in h.CHECKPOINT_FILES}
+            restart.append(dict(cut=cut,end=end,physical_receipts_exact=exact,payloads_exact=payloads,
+                maximum_pressure_delta_cm=max(abs(x-y) for r,s in zip(actual_rows,rows[cut:end]) for x,y in zip(r['pressure_head_cm'],s['pressure_head_cm']))))
         out=a.output/'isolation-refusal';out.mkdir()
         with bounded(out.name),contextlib.ExitStack() as stack:
             host=h.DailyHost(stack,donor,kernel,case,out,[h.ColumnStart(name='one'),h.ColumnStart(name='two')],runtime=True,project=h.SALTFARM)
             for day in (1,2):
                 for col in (2,1):assert physical(host.step(col))==physical(rows[day-1])
-            prior=copy.deepcopy(host.columns[0].__dict__);send=h.send
+            prior={k:copy.deepcopy(getattr(host.columns[0],k)) for k in ('day','revision','stocks','pressure','solute_stock')};send=h.send
             def corrupt(process,text):
                 values=text.split()
                 if process is host.host and len(values)==12+195:
@@ -107,7 +127,7 @@ def main():
             finally:h.send=send
             for key in ('day','revision','stocks','pressure','solute_stock'):assert getattr(host.columns[0],key)==prior[key]
             assert physical(host.step(2))==physical(rows[2]);host.close()
-        report=dict(status='PASS',scope='Original-workbook SaltFarm1461; donorO2/kernel'+a.optimization,
+        report=dict(status='PASS' if all(r['physical_receipts_exact'] and all(r['payloads_exact'].values()) for r in restart) else 'FAIL_EXACT_OWN_RESTART',scope='Original-workbook SaltFarm1461; donorO2/kernel'+a.optimization,
             compile_seconds=compile_seconds,days=1461,source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
             maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in rows),
             cumulative_water_residual_cm=math.fsum(r['independent_residual_cm'] for r in rows),
