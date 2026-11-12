@@ -1,0 +1,58 @@
+name: RC1 coherent cross-platform science discriminator
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: rc1-science-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux-coherent:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Exact source and frozen release
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test "$(git ls-remote origin refs/heads/release/swap5-nomacro-rc1-20261112 | cut -f1)" = 11529865e76fb2259542f1e770726cd87af27603
+      - uses: actions/download-artifact@v4
+        with:
+          name: rc1-perf-5346528e77479f92d1d86758a8bf4957ce5af882
+          run-id: 43246935136
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/rc1-qualified
+      - name: Fresh verified source objects; no completed application qualification repeated
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/rc1-observer-provider"
+      - name: One coherent discriminator all three complete original periods
+        run: python3 -B tools/solute/run_rc1_science.py --reference "$RUNNER_TEMP/rc1-observer-provider" --qualification "$RUNNER_TEMP/rc1-qualified/rc1-perf-proof" --output "$RUNNER_TEMP/rc1-science-proof"
+      - name: Public current compiler refusal remains per invocation
+        run: |
+          python3 -B tools/solute/run_water.py --no-macro-release --model HYBRID_HUPSEL_WATER --reference-work "$RUNNER_TEMP/rc1-observer-provider" --build-only --output "$RUNNER_TEMP/rc1-refusal-build"
+          python3 -B tools/solute/check_rc1_build_validation.py --reference "$RUNNER_TEMP/rc1-observer-provider" --bundle "$RUNNER_TEMP/rc1-refusal-build" --output "$RUNNER_TEMP/rc1-refusals"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rc1-science-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/rc1-science-proof
+            ${{ runner.temp }}/rc1-refusals
+            ${{ runner.temp }}/rc1-observer-provider/PREPARED.json
+          retention-days: 14
