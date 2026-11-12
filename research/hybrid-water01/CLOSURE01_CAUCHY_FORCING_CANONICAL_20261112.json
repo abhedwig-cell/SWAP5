@@ -1,0 +1,70 @@
+{
+  "status": "CANONICALLY_ADMITTED_EXTERNAL_ORIGINAL_CAUCHY_DAILY_FORCING_WITH_SCOPED_SCIENTIFIC_LIMITS",
+  "pr": 1646,
+  "url": "https://github.com/abhedwig-cell/SWAP5/pull/1646",
+  "base": "ce04a4db9a21f264c077d0832e2173e5468e9d70",
+  "qualified_head": "a2983b40d14e6646f8477f9400e1228d638bc3a9",
+  "canonical": "4f0688b03f8ec00cc75f4be4b4f16ab07a273770",
+  "tree": "ce63b6772bebc0f8a68b084fc087e98f462758f8",
+  "verified_blobs": {
+    "app/hybrid_water/daily_coupling.py": {
+      "git_blob": "81a91134b388c27eacf75f0adb71128d182f6497",
+      "canonical_bytes_sha256": "d744444cf93bc3b070a4272f9fffd5aefc322139a0c8ac439d01be413b5a2fa5",
+      "matches_executed_linux_source": true
+    },
+    "research/hybrid-water01/qualify_cauchy_daily_forcing.py": {
+      "git_blob": "dbd28d800c25776f958a40dcff05e10bf9b3cf4e",
+      "canonical_bytes_sha256": "50ae0f5e7bdcb49169794bc214f7ee30b0b9632ff9975ad1993fb88af1264a32",
+      "matches_executed_linux_source": true
+    },
+    ".github/workflows/grass-thermal-production.yml": {
+      "git_blob": "447869cdfaa38c3b7e6bab5276ee049804bb781b",
+      "canonical_bytes_sha256": "8eccdacb773b1cbdf781af9f7fd7a33e18ea057a9c3c2abcca2919482cffeef1"
+    },
+    "research/hybrid-water01/cauchy-windows-20261112.tar.xz": {
+      "git_blob": "a24fff26d20cfa66f7cd4a172da89f36c99bcf0d",
+      "canonical_bytes_sha256": "828f0a9078c9670d15783b54a6115fc4749e0a48db918b5dc4d8cdd1efcb756d"
+    },
+    "research/hybrid-water01/cauchy-linux-20261112.tar.xz": {
+      "git_blob": "80e3e383f9d53de0c8bedcf393144f2f1b9f7e9e",
+      "canonical_bytes_sha256": "1f3b6a2f24feffd94cd8c0930699558f389987658a7c227a7068fa06ce2e160e"
+    },
+    "research/hybrid-water01/cauchy-linux-ci-20261112.log.gz": {
+      "git_blob": "2253b3faa3ba1d2a393b54c5f27377310f50135b",
+      "canonical_bytes_sha256": "8c1faa964f56c3f8cb13cac1a07f4273dff6598076210209b0cc4bc27e411271"
+    }
+  },
+  "unchanged_shared_source_reference_tool_test_blobs": 3866,
+  "ci": {
+    "run": 43123554632,
+    "job": 130869817599,
+    "executed_head": "20a85e286b48ed203ca923786dde1fba1b597d78",
+    "status": "completed",
+    "conclusion": "success",
+    "relevant_application_qualifier_workflow_diff_to_final": "empty"
+  },
+  "qualification": {
+    "cauchy_cases": "Windows/Ubuntu donorO2/kernelO0/O2 day20to22",
+    "exact_original_and_independent_shifted_controls": true,
+    "exact_same_origin_retry_and_external_recovery": true,
+    "default_three_project_cases_per_platform": 6,
+    "persisted_forcing_refusals_windows": 6,
+    "year_input_only_checks": [
+      364,
+      365,
+      453
+    ],
+    "water_tolerance_cm": 1e-06,
+    "physics_and_tolerances": "unchanged",
+    "full_project_or_reference_runs_repeated": 0,
+    "Windows_Cauchy_cohort_seconds": 32.327968399971724,
+    "Linux_Cauchy_cohort_seconds": 19.051515429999995
+  },
+  "limits": [
+    "Controls are the admitted same-platform hybrid original-block profile, not new unmodified SWAP431 historical equivalence",
+    "Original platform-dependent finite sensitivity differs in sign; each exact original control agrees locally",
+    "Recovery actual proof uses original-head segments in explicit external profile; shifted one-day input is separately accepted/original-control exact",
+    "No full forced481, forced-year, peer groundwater solve, thermal feedback or whole scientific equivalence claim"
+  ],
+  "next": "Inspect existing original Grassgrowth prescribed-groundwater mode1 input/state semantics and extend the same daily transaction discipline only if a defensible consumer exists. Use native1980 datum/calendar and existing short source/restart windows; no silent Hupsel zero-flux change or full trajectory repeat."
+}

@@ -2,6 +2,71 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### External Cauchy water forcing delivered and admitted,12November2026
+
+PR #1646 MERGED at4f0688b03f8ec00cc75f4be4b4f16ab07a273770. Implementation
+branchcodex/hybrid-cauchy-daily-forcing qualified heada2983b40d14e6646f8477f9400e1228d638bc3a9.
+Qualified, predicted and actual canonical treece63b6772bebc0f8a68b084fc087e98f462758f8
+match. Six application/qualifier/workflow/raw/log blobs match canonical; captured
+executed Linux application/qualifier source SHA equals canonical Git bytes.
+All3866shared src/reference/tools/tests blobs unchanged fromce04a4db9. Receipt:
+CLOSURE01_CAUCHY_FORCING_CANONICAL_20261112.json.
+This supersedes all prior NEXT/ACTIVE banners. Every model/CI/pack/audit/docs
+process for this delivery is FINISHED. Do not rerun its selected cohorts.
+
+CoupledDailyColumn gains explicit forcing_mode=andelst-cauchy-daily-v1 for original
+Andelst SWBOTB3/SW3=2/SW4=0. Original-project remains default for all3projects.
+cauchy_forcing(head0,head1,provenance) binds exact accepted originSHA/day, coupling
+ID and day1900 window. Values use original local aquifer-head datum/cm and original
+finite range[-10000,1000]. prepare(cauchy=segment) refuses missing/foreign/stale/
+nonfinite/range/provenance input before attempt/model advance. Private cases retain
+the full original BBC table and original decimal spelling, changing only requested
+knots. Original readswap/afgen/Cauchy resistance and all tolerances are unchanged.
+Private candidates explicitly bind the override; external accept persists full
+native/auxiliary state, forcing document/digest and actual worker BBC SHA. Discard
+keeps accepted state; detached proposal forcing cannot mutate stored metadata.
+
+Windows/Ubuntu26 original donorO2/kernelO0/O2 day20-to22: exact original control,
+exact same-origin discard/retry and external live/cold disk recovery, both native
+payloads included. Actual0.001cm end-head perturbation changes water exchange and
+matches a separately edited original BBC control exactly in physical records and
+both payloads. Matching-original-head segments qualify actual recovery; modified
+one-day forcing is separately accepted/original-control exact. No broader changed-
+history recovery claim is inferred. Current6original-forcing cases per platform,
+all prior publication/peer/owner/nativecorruption/terminal guards pass. Six malformed
+persisted forcing checks pass on Windows without model runs. Year364/365/453 checks
+are input transformation ONLY. No full forced-year/481 trajectory was selected.
+
+Linux43123554632/job130869817599 at20a85e286b48ed203ca923786dde1fba1b597d78
+SUCCESS. Relevant application/qualifier/workflow final dependency diff empty. All
+independent Cauchy/default source/lineage/input/native/water/publication audits pass.
+Raw Windows2660files SHA828f0a9078c9670d15783b54a6115fc4749e0a48db918b5dc4d8cdd1efcb756d;
+Linux1931files SHA1f3b6a2f24feffd94cd8c0930699558f389987658a7c227a7068fa06ce2e160e.
+Full CI log and all3development probes retained. Source check/strictMkDocsPASS23.82s.
+Cauchy cohort32.328sWindows/19.052sLinux. Original-preservation cases46.607sWindows/
+15.641sLinux with24Ccompiles each. No Fortran rebuild or full application/reference
+repeat. Oldday20 has different build binding and was NOT relabelled; compatible
+prefixes are bounded2-to20, with accepted WindowsO0 day20 strictly verified/reused.
+Native-only CPU/wall UNKNOWN; cohort times are not accuracy-matched speed ratios.
+
+Scientific limit: unchanged platform-dependent Andelst response differs in sign:
+perturbed bottom amount decreases on Windows and increases on Linux. Independent
+unchanged original-block controls reproduce each platform exactly. No monotonic
+common derivative/cross-platform science, peer groundwater solver, thermal feedback
+or whole-scientific qualification is claimed. Existing188/584 failures remain.
+Review docs/science/HYBRID_CAUCHY_DAILY_FORCING.md; owning record
+integration/f-ci/HYBRID_CAUCHY_FORCING_20261112.json on canonical.
+
+NEXT FUNCTIONAL DELIVERY: inspect original Grassgrowth prescribed-groundwater mode1
+input and initial/native restore ownership, then extend the SAME external daily
+transaction discipline if a defensible consuming boundary contract exists. Use its
+1980calendar and original GWL datum/semantics, not Andelst aquifer-head semantics.
+Select short existing own windows and exact original input-edit controls/O0/O2.
+Preserve original forcing default, unchanged guard and explicit forcing/state/
+restart lineage; no silent Hupsel zero-flux change, new general framework or full
+trajectory repeat. Keep numerical sensitivity, thermal data/model gaps and whole
+scientific acceptance separately OPEN.
+
 ### Current scope reconciled; thermal feedback consumer absent,12November2026
 
 PR #1645 MERGED atce04a4db9a21f264c077d0832e2173e5468e9d70. Qualified head
