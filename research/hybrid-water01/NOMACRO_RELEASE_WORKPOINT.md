@@ -412,3 +412,10 @@ remain explicit and must not be promoted by functional completion.
 Reviewable publication: PR1660, proof head a5d3adbb1700a6eb6c3cfc3ff03cdbf772a5cf24.
 All selected source-bound controls and both archive SHA256 manifests pass.
 Actual canonical admission/postimage remains a separate gate before promotion.
+
+PR1660 MERGED: 61e96e7a17d9fae7543cf1763d247453a202057c. The actual fetched canonical whole tree
+0148186d79504f0c7942a7c0486a6b54321ab39e equals qualified candidate3137403ec002a09c52481aaafd184506427e8421
+with an empty complete file diff. Receipt: NOMACRO_SURFACE_MERGE_20261112.json.
+All model and qualification work is terminal; next is the final bounded release
+acceptance/profile reconciliation using existing results. Scientific limits and
+macro exclusion remain explicit.
