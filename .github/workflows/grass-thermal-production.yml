@@ -157,6 +157,7 @@ jobs:
             /docs/development/workstream-execution-protocol.md
             /integration/f-ci/HYBRID_GRASS_GROUNDWATER_20261112.json
             /research/hybrid-water01/qualify_grass_groundwater.py
+            /research/hybrid-water01/check_cauchy_recovery_inputs.py
             /research/hybrid-water01/qualify_cauchy_daily_forcing.py
             /research/hybrid-water01/cauchy-linux-20261112.tar.xz
             /research/hybrid-water01/qualify_daily_coupling.py
@@ -188,6 +189,10 @@ jobs:
         run: python3 -B research/hybrid-water01/qualify_grass_groundwater.py --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/grass-groundwater"
       - name: Real current Cauchy day20-to22 forcing and exact retry recovery
         run: python3 -B research/hybrid-water01/qualify_cauchy_daily_forcing.py --workspace "$RUNNER_TEMP/qualified-hybrid" --reuse-day20 "$RUNNER_TEMP/prior-cauchy-proof/cauchy" --output "$RUNNER_TEMP/cauchy-forcing"
+      - name: Malformed persisted input and leap year transformations without model runs
+        run: |
+          python3 -B research/hybrid-water01/check_cauchy_recovery_inputs.py --groundwater --workspace "$RUNNER_TEMP/qualified-hybrid" --runs "$RUNNER_TEMP/grass-groundwater" --output "$RUNNER_TEMP/groundwater-inputs"
+          python3 -B research/hybrid-water01/check_cauchy_recovery_inputs.py --workspace "$RUNNER_TEMP/qualified-hybrid" --runs "$RUNNER_TEMP/cauchy-forcing" --output "$RUNNER_TEMP/cauchy-inputs"
       - name: Real three-project O0/O2 external accept discard and disk recovery
         run: python3 -B research/hybrid-water01/qualify_daily_coupling.py --platform linux --workspace "$RUNNER_TEMP/qualified-hybrid" --output "$RUNNER_TEMP/external-daily"
       - name: Native corruption and terminal period guards
@@ -198,6 +203,8 @@ jobs:
           name: external-grass-groundwater
           path: |
             ${{ runner.temp }}/grass-groundwater
+            ${{ runner.temp }}/groundwater-inputs
+            ${{ runner.temp }}/cauchy-inputs
             ${{ runner.temp }}/cauchy-forcing
             ${{ runner.temp }}/external-daily*
           retention-days: 14
