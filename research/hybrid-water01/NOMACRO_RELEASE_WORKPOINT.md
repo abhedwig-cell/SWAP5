@@ -300,3 +300,8 @@ restart and interleaved independent instances at O0/O2. Use short retained origi
 and the existing1e-10 guards; no full1461 repeat without a changed dependency.
 This is a bounded external-coupling acceptance point, not a new forcing framework
 or an implicit full-energy/scientific-equivalence claim.
+
+Reviewable publication: PR1659, proof head dee81334c08fc4705674a39e73a691558dc1dc2c.
+Selected Linux qualification is terminal SUCCESS, all artifact/member hashes
+verified, docs and strict MkDocs PASS. Admission and actual canonical postimage
+remain separate from the qualified candidate until the merge is verified.
