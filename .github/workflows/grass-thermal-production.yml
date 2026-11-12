@@ -24,6 +24,10 @@ on:
       - tests/dataqual15_hupsel/build_and_run.py
   workflow_dispatch:
     inputs:
+      hybrid_original_macro_restart:
+        description: Qualify complete original macro restart with explicit wall-integral history
+        type: boolean
+        default: false
       full_trajectory_assessment:
         description: Reproduce complete preserved scientific comparisons without any model launch
         type: boolean
@@ -82,6 +86,49 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  bounded-original-macro-restart:
+    if: github.event_name == 'workflow_dispatch' && inputs.hybrid_original_macro_restart
+    runs-on: ubuntu-26.04
+    timeout-minutes: 5
+    env:
+      OMP_NUM_THREADS: '1'
+      SWAP5_TEST_SELECTION_RECORD: integration/f-ci/ORIGINAL_MACRO_BLOCK_20261112.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 32
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/
+            /app/
+            /reference/swap-4.3.1/projects/3.macroporeflow/
+            /integration/f-ci/ORIGINAL_MACRO_BLOCK_20261112.json
+            /research/hybrid-water01/probe_original_macro_block.py
+            /research/hybrid-water01/probe_original_macro_discard.py
+            /research/hybrid-water01/qualify_original_macro_restart.py
+            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
+      - name: Persisted owning selection and exact frozen Linux provider
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          owner=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
+          assert owner['selection']['linux']['scope']=='complete short native restart and cold trajectory preservation'
+          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+          target=Path(os.environ['RUNNER_TEMP'])/'provider';target.mkdir()
+          subprocess.run(['tar','-xf',str(archive),'-C',str(target)],check=True)
+          PY
+      - name: Install original module compiler
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq gfortran gcc
+      - name: O0 O2 complete native restart, actual discard, and unchanged pre-fix cold control
+        run: python3 -B research/hybrid-water01/qualify_original_macro_restart.py --workspace "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/original-macro-restart"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: original-macro-restart-linux
+          path: ${{ runner.temp }}/original-macro-restart
+          retention-days: 14
   original-thermal-carriers:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_thermal_carriers
     runs-on: ubuntu-26.04
@@ -759,7 +806,7 @@ jobs:
             ${{ runner.temp }}/heat-abba
           retention-days: 14
   kim-shrinkage:
-    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances && !inputs.full_trajectory_assessment }}
+    if: ${{ !inputs.thermal_subcycle && !inputs.thermal_substep_policy && !inputs.thermal_sixteen_policy && !inputs.hybrid_waterhost && !inputs.hybrid_daily_coupling && !inputs.hybrid_heat_accounting && !inputs.hybrid_thermal_carriers && !inputs.hybrid_cauchy_forcing && !inputs.hybrid_grass_groundwater && !inputs.hybrid_hupsel_irrigation && !inputs.hybrid_cauchy_changed_history && !inputs.hybrid_controlled_instances && !inputs.full_trajectory_assessment && !inputs.hybrid_original_macro_restart }}
     runs-on: ubuntu-26.04
     timeout-minutes: 10
     steps:

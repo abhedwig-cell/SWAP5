@@ -1,0 +1,85 @@
+{
+  "status": "QUALIFIED_BOUNDED_ORIGINAL_MACRO_RESTART",
+  "base": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
+  "prior_rejected": "PR1652 pair-per-residual candidate fails day4; do not repeat",
+  "changed_contract": "Remove added macro/pond calendar triggers and enable unchanged daily step budget every day; preserve full original residual/Jacobian/macropore freezing interplay and all original physics/state routines",
+  "invariants": [
+    "original forcing",
+    "1e-6cm daily guard",
+    "native complete state and rollback",
+    "distinct source/build identity",
+    "defaults unchanged until qualification"
+  ],
+  "selection": {
+    "first": "Own fresh4 O2 bounded20s. If complete own2to4 then O0; no481 campaign before material progress.",
+    "expected_seconds": 4,
+    "cap_seconds": 20,
+    "late_event": "Only after prefix/restart success, explicit source-bound same-state retained-origin event; no old checkpoint rebind.",
+    "excluded": "Previous failed refresh interventions; unrelated full F-CI and reference families",
+    "executed": "O0/O2 prefixes+own2to4; O2 external discard and cold3to4. Intermediate v3/v4 failures retained. Complete auxiliary failure stops late/Linux/full runs.",
+    "linux": {
+      "scope": "complete short native restart and cold trajectory preservation",
+      "expected_seconds": 90,
+      "model_probe_cap_seconds": 20,
+      "owning_workflow": "grass-thermal-production.yml: hybrid_original_macro_restart",
+      "reason": "Explicit hidden integral history moved into new native format; require platform-native complete payload equality and exact pre-fix cold fields",
+      "whole_project_runs": 0,
+      "workflow_registration": "New standalone filename returned404; use existing registered dispatcher with explicit exclusion of unrelated kim guard",
+      "retained_setup_failure": {
+        "run_id": 43154096665,
+        "head": "14a0b1fe9d48089b3486284241371070545b3289",
+        "cause": "Used Windows flat bundle path instead of frozen Linux PROOF_INDEX build path",
+        "model_runs": 0,
+        "artifact_id": 13914688514,
+        "artifact_sha256": "65a23e448266a065f53291a9b387df22791e0a1fa095111eaee73561d2a9a97a"
+      },
+      "retained_setup_failure_2": {
+        "run_id": 43154379242,
+        "head": "7ad930e54d1926a7d2d3790e283281ec1a4e1522",
+        "cause": "Reference root also must come from frozen PROOF_INDEX; no fixture reconstruction or input hash waiver",
+        "model_runs": 0,
+        "artifact_id": 13915221802,
+        "artifact_sha256": "476d85f10c79cc91c514a2d8a4a73466307eb30c236d3dc7ea4eb4fc52ce6136"
+      }
+    },
+    "next_window": {
+      "scope": "Own S5MAC006 continuation4to22, original all-day budget and macro block, no warm prefix repetition",
+      "reason": "After complete short restart passes, exercise a genuine later mass-retry interval before selecting a costly full trajectory",
+      "expected_seconds": 12,
+      "model_cap_seconds": 20,
+      "new_reference_runs": 0,
+      "outcome": {
+        "status": "OWN_RESTART_WINDOW_COMPLETE",
+        "seconds": 14.26867809984833,
+        "accepted_days": 18,
+        "end_day": 22,
+        "maximum_residual_cm": 7.810779596036078e-07,
+        "mass_step_retries": 1949,
+        "retry_day": 15
+      },
+      "replay14to16": {
+        "seconds": 2.3234181001316756,
+        "complete_native_exact": true,
+        "mass_step_retries_exact": 1949
+      }
+    }
+  },
+  "next": "Admit bounded opt-in explicit-state capability after review/canonical checks; then measure sparse-checkpoint continuation cost from own22 before selecting whole481 generic profile. Scientific comparison remains separate.",
+  "result": "research/hybrid-water01/ORIGINAL_MACRO_BLOCK_RESULT_20261112.json",
+  "archive": {
+    "path": "research/hybrid-water01/original-macro-block-evidence.zip",
+    "sha256": "7b1061e8f884f192411938f77c8d4fead332402c673bf6990fb6a7ddd9804913",
+    "bytes": 2806961
+  },
+  "qualified_evidence": {
+    "path": "research/hybrid-water01/original-macro-restart-qualified-evidence.zip",
+    "sha256": "4ca71f582b83616182e98c33675c16324d1812637aeb32a570a7933e5e523e27",
+    "bytes": 3992712
+  },
+  "qualification": {
+    "linux_run": 43154680629,
+    "linux_source": "3affe302984bbafc2108fb5b52d7ea91d44d5b80",
+    "windows_source": "ca53a01658b9f4838df67de5c2faea4af6d84412",
+    "cold_source_preserved": "826c4da8abb6997d8717e5a6b8d2aefed9bd214d"
+  }
+}
