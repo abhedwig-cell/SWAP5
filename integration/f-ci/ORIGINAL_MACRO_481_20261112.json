@@ -1,5 +1,5 @@
 {
-  "status": "CONTINUING_EXISTING_DURABLE_LINUX160_WITH_LIVE_OVERLAP_CHECK",
+  "status": "CONTINUING_DURABLE_LINUX240_AFTER_EXACT38_DAY_RESTART_OVERLAP",
   "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
   "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
   "selection": {
@@ -81,7 +81,19 @@
         ]
       ],
       "model_cap_seconds": 60,
-      "restart_cap_seconds": 20
+      "restart_cap_seconds": 20,
+      "result160": {
+        "run_id": 43157255241,
+        "source": "d0b538c773cf8da5c11430b3de199c224fb23ed3",
+        "artifact_id": 13916810498,
+        "artifact_sha256": "156b77c7a682890ee9b605f5987d782ab4613324437c80691f859bf349c78731",
+        "status": "MODEL_CAP_REACHED",
+        "accepted_through": 249,
+        "durable_day": 240,
+        "seconds": 60.003452675999995,
+        "overlap161to198_physical_and_retry_counts_exact": true
+      },
+      "next": "Continue source-identical own240to481, compare241to249 immediately against saved journal; same60s cap,16day durable checkpoints. No prefix/model recompilation."
     }
   },
   "acceptance": [
