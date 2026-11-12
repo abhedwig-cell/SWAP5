@@ -14,7 +14,7 @@ import daily_host as h
 from daily_coupling import validate_bundle
 from donor_sources import replace, saved_names
 
-POLICY='original-macro-explicit-trial-origin-rate-jacobian-v1'
+POLICY='original-macro-explicit-trial-origin-coupled-secant-v2'
 
 
 def render_macro(source,variables):
@@ -59,7 +59,11 @@ def render_macro(source,variables):
 def render_headcalc(source):
     source=replace(source,'only: macropore\n','only: macropore, macro_trial_origin, capture_macro_trial, restore_macro_trial\n')
     source=replace(source,'   real(8)                          :: QMpLatSsSav, lateral_before_pond',
-        '   real(8)                          :: QMpLatSsSav, lateral_before_pond\n   type(macro_trial_origin) :: macro_origin')
+        '   real(8)                          :: QMpLatSsSav, lateral_before_pond\n'
+        '   type(macro_trial_origin) :: macro_origin\n'
+        '   real(8), allocatable :: coupled_inverse(:,:)\n'
+        '   real(8) :: previous_h(macp), previous_F(macp), delta_h(macp), delta_F(macp)\n'
+        '   real(8) :: secant_error(macp), unit_rhs(macp), inverse_column(macp), secant_norm\n')
     source=replace(source,'!  summation of sink terms (constant for the current time step)',
         '   if (swmacro == 1) call capture_macro_trial(macro_origin)\n\n!  summation of sink terms (constant for the current time step)')
     source=replace(source,'!  top layer\n',
@@ -73,6 +77,35 @@ def render_headcalc(source):
 '''+source[b:]
     source=replace(source,'   if (swmacro == 1 .AND. .NOT.flunsatok(3)) then\n      call MACROPORE(3)',
         '   if (swmacro == 1) then\n      ! Rates and derivatives already belong to the same vector_F evaluation.')
+    source=replace(source,'      call tridag(NN, dFdhU, dFdhM, dFdhL, F, difh, ierror)',
+'''      if (swmacro == 1) then
+         if (.not. allocated(coupled_inverse)) then
+            allocate(coupled_inverse(NN,NN))
+            do j = 1, NN
+               unit_rhs(1:NN) = 0d0
+               unit_rhs(j) = 1d0
+               call tridag(NN, dFdhU, dFdhM, dFdhL, unit_rhs, inverse_column, ierror)
+               if (ierror /= 0) error stop 'Singular initial coupled direction'
+               coupled_inverse(1:NN,j) = inverse_column(1:NN)
+            end do
+         else
+            delta_h(1:NN) = h(1:NN) - previous_h(1:NN)
+            delta_F(1:NN) = F(1:NN) - previous_F(1:NN)
+            secant_norm = dot_product(delta_F(1:NN),delta_F(1:NN))
+            if (secant_norm > tiny(secant_norm)) then
+               secant_error(1:NN) = delta_h(1:NN) - matmul(coupled_inverse,delta_F(1:NN))
+               do j = 1, NN
+                  coupled_inverse(:,j) = coupled_inverse(:,j) + secant_error(1:NN)*delta_F(j)/secant_norm
+               end do
+            end if
+         end if
+         previous_h(1:NN) = h(1:NN)
+         previous_F(1:NN) = F(1:NN)
+         difh(1:NN) = matmul(coupled_inverse,F(1:NN))
+         ierror = 0
+      else
+         call tridag(NN, dFdhU, dFdhM, dFdhL, F, difh, ierror)
+      end if''')
     return source
 
 

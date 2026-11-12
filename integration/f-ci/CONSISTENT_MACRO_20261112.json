@@ -15,5 +15,26 @@
   "two_attempt_stop": true,
   "candidate": "app/hybrid_water/consistent_macro_policy.py",
   "next_if_pass": "One bounded Linux432to438 actual candidate fixture/control with same-state consistency observation, then only affected restart/rollback controls",
-  "next_if_fail": "Retain actual shortest failure, no cap extension/full run, reassess larger original block after second directed attempt"
+  "next_if_fail": "Retain actual shortest failure, no cap extension/full run, reassess larger original block after second directed attempt",
+  "attempt1": {
+    "source": "5168d4004",
+    "variant": "explicit trial origin and original analytic coupled diagonal",
+    "compile_seconds": 16.998990199994296,
+    "model_seconds": 20.016034200089052,
+    "status": "MODEL_CAP_REACHED",
+    "accepted_days": [
+      1,
+      2,
+      3
+    ],
+    "requested_day": 4,
+    "max_day_residual_cm": 3.02802910546302e-07,
+    "decision": "Trial-state reset alone does not make original diagonal Jacobian practical; do not repeat or extend cap"
+  },
+  "attempt2_selection": {
+    "hypothesis": "Original diagonal macro derivative misses global coupled response; use per-call inverse secant updates of actual fresh112-node residual, initialized from original tridiagonal matrix",
+    "method": "Broyden inverse minimum-change rank-one secant; original nonlinear backtracking, iteration limits and physical criteria unchanged",
+    "model_cap_seconds": 20,
+    "on_failure": "Stop this candidate family after two directed failures, preserve failed code/evidence, no full run"
+  }
 }
