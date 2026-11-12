@@ -2,6 +2,97 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Complete preserved-trajectory scientific disposition delivered, 12 November 2026
+
+PR #1651 MERGED ata22754decc0ec4e69304d1495c48bae7cdcdabec.
+Qualified DATA assessment head1741a1249a6ff5266ba26ef44a9d81ae0a6283c2 on
+codex/hybrid-full-trajectory-assessment. Predicted and actual canonical tree
+f2501e6c6e46a55b9eb2a2ac33e8a26ab21e5845 match. Nine analysis/data/workflow/
+log/record/docs blobs verified; executed analysis and exact Windows/Ubuntu report
+SHA256 equal canonical Git bytes. All3906 src/app/reference/tools/tests blobs
+unchanged from418a8d30345b500292824e00be4d8012b3d87e5e. Receipt:
+CLOSURE01_FULL_SCIENCE_CANONICAL_20261112.json.
+This supersedes earlier NEXT/ACTIVE banners. Every analysis/CI/docs/publication
+process is FINISHED. No model was run or compiled; no new reference selected.
+
+The WHOLE existing1827Grass/1096Hupsel/481Andelst periods are assessed with exact
+archive/member/input/date lineage. Model/source/physical tolerances unchanged.
+Canonical docs/science/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md contains the
+coherent scientific review. Complete statistics, dates and sentinel support:
+research/hybrid-water01/FULL_TRAJECTORY_COMPARISON_20261112.json. Owner:
+integration/f-ci/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION_20261112.json.
+
+Functional coverage stays three complete original applications. Whole scientific
+equivalence remains NOT_QUALIFIED. DATA reproduction PASS is not science PASS.
+New whole-period computed maxima use the retained Windows-produced full-run
+capsules; Ubuntu reproduces those exact DATA, not a new Linux model trajectory.
+
+Results and classifications:
+- Original-block Grass1827 water/eight quantities reproduce previous B0 comparison
+  exactly, max6.8212102633e-13cm against printed original. No unrounded oxygen/crop
+  qualification; distinct native day188 and day905 oxygen failures retained.
+  Existing97.86percent temporal explanation belongs to selected water-only
+  diagnostic; its residual and whole native thermal equivalence remain open.
+- Corrected-original Hupsel: all1096 dates,15 water/five available uptake/seven
+  solute fields plus common crop outputs. Growth/biomass support677 days with419
+  both-sentinel days; VCOVER all1096; no silently dropped active-scope mismatch.
+  Against SEPARATE high-output trajectory, largest oxygen difference0.000242093550cm
+  occurs on591, not584; GWL0.244556026095cm on859; solute stock0.012516223035mg/cm2
+  on365. These descriptive differences do not define new acceptance thresholds.
+  Terminal total-stock delta-0.031158084585cm is dominated by known original
+  uncleared canopy0.031255683318cm. Runoff/pond, CDE endpoint, harvest clearing
+  corrections and changed nonlinear policy are explicit; their individual later
+  hydrology/solute/crop contributions remain unresolved.
+- Frozen Hupsel584 native and hybrid comparisons both remain FAIL at original
+  5.371840000016327e-7cm. Original and implicit reference families still change
+  by46.1/9.17times that bound. High-output584's favorable single value is NOT a
+  qualified replacement oracle; native36/37 criteria do not transfer to hybrid.
+- Public Andelst481 full ledger and registered five-decimal GWL comparison match.
+  Original-control GWL max delta10.88535cm on457 remains. Current generation
+  explicitly gates lateral feedback atbudget_start>=36051 and macro refresh at
+  36252.9989<=t1900<36253. These are bounded RESEARCH-PROFILE numerical policies,
+  not universal original-physics or generic scientific qualification. Mass closure,
+  restart and the generic daily owner do not establish generic validity of that
+  date-scoped macro policy. Separate privateV9 and native profiles remain distinct.
+- Physical energy and accuracy-matched runtime retain existing model/data limits;
+  no donor temperatures, B1 snapshot, oracle or scientific tolerance is invented.
+
+Development yield: data processing2.439s Windows/2.452s Ubuntu, exact semantic
+report match and downloaded artifact digest/content verified. Initial Python archive
+buffering took131.6s; native streaming extraction reduces it to2.4s with ALL
+scientific statistics identical. This is evidence-I/O, not model acceleration.
+Actual Ubuntu run43144688991/job130939639725 SUCCESS at
+b076605f1a61fedee3e1c431a1394f6faea0f99e,artifact13910488556. Exact raw log retained.
+Strict/source docs PASS; all physical O0/O2/full-run controls inherited at unchanged
+source graph. No repeated model/reference campaign or new configuration matrix.
+
+NEXT COHERENT IMPLEMENTATION: Andelst original-block macro-rate and surface-
+feedback policy under a justified GENERIC STATE/PROCESS contract. Inspect actual
+canonical app/hybrid_water/daily_host.py, donor_sources.py and
+hybrid_step_budget.f90 plus original coherent Macropore/HeadCalc blocks, and read
+retained paired-origin interventions/earlier attempts before choosing a repair.
+The present absolute-clock gates are a concrete non-generic research limitation;
+do not remove them blindly or replace them by different hard-coded dates.
+Use the existing exact old/new origin and final-step evidence to distinguish
+consistent rate/state evaluation and full rollback. Preserve original forcing,
+1e-6cm water guard, complete native state, initialization, instance and coupling
+contracts. A coherent larger original block is preferred over accumulating local
+state patches. Select at most the smallest distinguishing retained-origin replay
+before a new complete481 trajectory is justified by material implementation
+progress and measured cost. If two directed repairs do not advance the contract,
+reconsider the original block boundary or record its reproducible blocker; do not
+enter a finer diagnostic loop. Hupsel reference accuracy and Grass native temporal
+science remain separate; neither is a reason to tune the new water kernel.
+
+Useful pinned next evidence: canonical
+research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json records
+the original registered refresh experiment at9659b2a4c and archived source/member
+hashes. Original recovery history BELOW retains same-origin day457 rate-refresh
+interventions and full-period458 change. The promoted GWL CSV is ONLY five-decimal
+original-control output; do not call it an independently accurate state oracle.
+Any full model replay must retain its exact variant-owned source/build/history;
+old native packages may not be relabelled with a changed build.
+
 ### Independent controlled-instance composition qualified and admitted, 12 November 2026
 
 PR #1650 MERGED at418a8d30345b500292824e00be4d8012b3d87e5e.

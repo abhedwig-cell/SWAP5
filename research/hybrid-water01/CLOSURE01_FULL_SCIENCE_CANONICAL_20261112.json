@@ -1,0 +1,104 @@
+{
+  "status": "CANONICAL_POSTIMAGE_VERIFIED_DATA_ASSESSMENT_SCIENTIFIC_FAILURES_RETAINED",
+  "pr": "https://github.com/abhedwig-cell/SWAP5/pull/1651",
+  "head": "1741a1249a6ff5266ba26ef44a9d81ae0a6283c2",
+  "baseline": "418a8d30345b500292824e00be4d8012b3d87e5e",
+  "canonical": "a22754decc0ec4e69304d1495c48bae7cdcdabec",
+  "canonical_tree": "f2501e6c6e46a55b9eb2a2ac33e8a26ab21e5845",
+  "predicted_and_actual_tree_equal": true,
+  "verified_blobs": {
+    "research/hybrid-water01/assess_full_trajectories.py": "a5a1f9eb45ccfccb45fa3954d038aef32f5e160b",
+    "research/hybrid-water01/FULL_TRAJECTORY_COMPARISON_20261112.json": "24e690da8fc1d7bb6c6983bc6973dc8b5d08016a",
+    "research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv": "1870871ac29461ca41e95d6f72c56f32eb2b54f0",
+    "research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json": "4ab21a6d9e3f0ff2c5f39649f34ef929ccb7b780",
+    ".github/workflows/grass-thermal-production.yml": "02cee66d0dcb235fb4d0dda26e186490495783a6",
+    "research/hybrid-water01/full-science-linux-ci-20261112.log.gz": "81f2045ae18716f0538fdeb1a98fd9398e31e58d",
+    "integration/f-ci/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION_20261112.json": "a8918d6a438690e14445d7bab950f8a848f90a38",
+    "docs/science/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md": "29290634b33227d0bfdbc2279011a2b499bc50cb",
+    "docs/science/SWAP5_FUNCTIONAL_CLOSURE.md": "50d4afe21f2a22d045c848dd8479703b4b388ee0"
+  },
+  "executed_analysis_source_equals_canonical_git_sha256": "f6b1833844c7ad4c76195041f3f61cdcd03ea45885d33fcec656eeab7f57fd5a",
+  "exact_windows_ubuntu_report_equals_canonical_git_sha256": "db1b1b8d7e7f6038f156db4e49fed995e4be739e6dacfb7f744dac26196face1",
+  "unchanged_src_app_reference_tools_tests_blobs": 3906,
+  "owning_record": "integration/f-ci/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION_20261112.json",
+  "data_reproduction": {
+    "windows_seconds": 2.43929999996908,
+    "ubuntu_seconds": 2.4523342150000005,
+    "exact_semantic_report_equality": true,
+    "actual_artifact_downloaded_digest_and_contents_verified": true,
+    "linux_run": 43144688991,
+    "linux_job": 130939639725,
+    "head": "b076605f1a61fedee3e1c431a1394f6faea0f99e",
+    "conclusion": "success",
+    "artifact": 13910488556,
+    "artifact_zip_sha256": "sha256:196e6a58523274cb9beb5f91811a0b8f4e22f2cfe149b946952a7e5a897b78a1",
+    "models_executed": 0,
+    "native_tar_timeout_seconds_per_archive": 30,
+    "initial_python_archive_io_seconds": 131.55434989999048,
+    "all_scientific_statistics_exact_after_io_only_improvement": true
+  },
+  "scientific_disposition": {
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "functional_application_count": "3 original projects; previous full-run/restart/instance/coupling scopes unchanged",
+    "classes": [
+      {
+        "class": "copied_original_physics",
+        "scope": "Grass original-block1827 water quantities",
+        "evidence": "Prior full-period eight-field descriptive comparison reproduced exactly, max6.821210263296962e-13cm versus B0 print; no new tolerance or unrounded oxygen/crop claim"
+      },
+      {
+        "class": "supported_numerical_sensitivity",
+        "scope": "Native Grass separate day188 water-only diagnosis",
+        "evidence": "Existing30second B0 cap explains97.86percent selected diagnostic gap; same-state oxygen kernels differ about3e-9cm; residual0.000226656cm unresolved; not transferred to entire thermal profile"
+      },
+      {
+        "class": "demonstrated_legacy_defects_and_changed_nonlinear_policy",
+        "scope": "Corrected-original Hupsel",
+        "evidence": "Runoff/pond, CDE endpoint and harvest clearing corrections plus stricter nonlinear processing are explicit; terminal canopy difference consistent with known clearing defect; individual downstream field attribution remains unresolved"
+      },
+      {
+        "class": "changed_clock_scoped_research_policy",
+        "scope": "Andelst shared_pond_transfer and refresh_macro_final",
+        "evidence": "Actual source guards budget_start>=36051 and36252.9989<=t1900<36253 remain explicit; bounded functional acceptance is not generic scientific validity"
+      },
+      {
+        "class": "independently_underresolved_reference",
+        "scope": "Hupsel584 original and implicit reference families",
+        "evidence": "Finest reference changes46.1 and9.17 times existing5.371840000016327e-7cm criterion; neither qualifies replacement oracle; frozen native/hybrid comparisons FAIL remain"
+      },
+      {
+        "class": "unresolved_whole_trajectory_differences",
+        "scope": "Remaining state/flux/solute/crop quantities",
+        "evidence": "Full Hupsel maxima and sentinel support now reported, including oxygen max on591 versus separate high-output trajectory, not only584; no causal proof for tuning each field"
+      },
+      {
+        "class": "separate_data_model_interface_limit",
+        "scope": "Physical energy and native accuracy-matched runtime",
+        "evidence": "Conduction accounting does not establish full energy; original/native profiles are not accuracy-matched and missing donor-energy data are not invented"
+      }
+    ]
+  },
+  "reference_policy": {
+    "authority": "docs/decisions/ADR-0005-reference-baseline-chain.md",
+    "new_reference_selected": false,
+    "B1_or_B2_snapshot_promoted": false,
+    "frozen_failed_comparisons_preserved": true,
+    "separate_high_precision_hupsel_is_not_replacement_oracle": true,
+    "limited_print_and_crop_sentinel_semantics_preserved": true
+  },
+  "metrics": {
+    "functional_coverage": "No additional execution days claimed; full original3project and independent/coupled controls preserved.",
+    "reliability": "Whole-period/date/member/source identity and exact prior comparison reproduction; explicit native/original/corrected reference boundaries; scientific failures not relabelled.",
+    "development_yield": "New whole Hupsel water/solute/uptake/crop and Andelst GWL assessment from existing artifacts; zero model runs/builds and about2.5s data processing/platform after IO-only optimization."
+  },
+  "next": "Coherent Andelst original-block macro-rate/surface-feedback policy implementation: audit retained paired-origin interventions and earlier attempts, replace absolute-clock research triggers only with justified generic state/process ownership and complete rollback. Preserve original forcing and mass guards. Select the smallest distinguishing retained-origin replay; no full481/reference campaign or finer diagnostic loop before material progress.",
+  "next_paths": [
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/donor_sources.py",
+    "app/hybrid_water/hybrid_step_budget.f90",
+    "research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json",
+    "research/hybrid-water01/ANDELST_APPLICATION_REVIEW.md",
+    "docs/science/FULL_TRAJECTORY_SCIENTIFIC_DISPOSITION.md",
+    "research/hybrid-water01/README.md on codex/swap5-functional-closure01: original paired final-step interventions and registered full-period refresh experiment"
+  ]
+}
