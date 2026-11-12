@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "FIRST_SAFE_STARTUP_OPTIMIZATION_WINDOWS_UBUNTU_EXACT_QUALIFIED",
+  "status": "MATCHED_GNU15_AUDITED_GENERIC_POLISH_OPTIMIZATION_REJECTED_REVIEWABLE_SCIENTIFIC_LIMITS",
   "implementation": "Reuse one current-toolchain validation record only within the same CLI invocation. No cross-call compiler cache, no skipped file/binary/binding validation, no physics/state/codec/Fortran change.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
@@ -14,21 +14,23 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "First proof-bound validation/performance PR and canonical postimage, then source-bound cloud science/coherent probe at branch66d6e194d18177cb3f89ef98f2e28de82bf18437 (already dispatched; do not duplicate), cross-cohort classification and remaining numerical policy decision. Timer active as local resume safety net.",
+  "next_action": "Review quantified cross-platform scientific limitations and rejected numerical-policy change in successor PR. Preserve existing scientific FAILs. Decide whether release may explicitly carry these portable-trajectory limitations; no fitted criteria or new broad campaign is authorized by these descriptive maxima.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
     "macro": "NOT_SELECTED",
     "broad_F_CI": "NOT_SELECTED_IMPACT"
   },
-  "blockers": [],
+  "blockers": [
+    "Portable full-trajectory scientific equivalence is not qualified: GNU15.2 Hupsel head spread17.2825376518403cm; SaltFarm stock spread0.020218933796115834cm. Existing original oxygen references remain failed/underqualified."
+  ],
   "automation": {
     "id": "swap5-rc1-onderzoek-hervatten",
     "status": "ACTIVE_VERIFIED_CREATE_AND_VIEW",
     "interval_minutes": 30,
     "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud"
   },
-  "findings": "Measured donor wait dominates; all3 role CPU and host IO profiles recorded. SaltFarm direct worker matches all physical records without SWAP5. Hydraulic HEX prototype preserves all physical/nodal/native state; candidate whole-host timings and qualification pending.",
+  "findings": "Corrected coherent and daily full frames exact on both platforms. Matching GNU15.2 does not remove corrected Hupsel/SaltFarm branch amplification. Private polish-feedback shortcut materially lowers iteration counts but fails Hupsel day364 independent daily water1e-10 guard; rejected without production changes.",
   "transport_decision": "REJECTED_NOT_ADMITTED: exact physical/native preservation achieved, but SaltFarmABBA model/controller timing did not establish a material gain. Original daily_host.py fully restored to frozen RC1 bytes.",
   "linux_qualification": {
     "run_id": 43246935136,
@@ -62,6 +64,33 @@
       "bytes": 63797600,
       "members": 97,
       "forward_member_scan_pass": true
+    },
+    "platform-science": {
+      "path": "integration/f-ci/rc1-perf01/platform-science-proof.tar.xz",
+      "sha256": "8bd5d130dfa4ca853bdc3162fdebc2328de9ad8b38bc1314e0edd6f4637ec390",
+      "bytes": 70977556,
+      "members": 204,
+      "forward_member_scan_pass": true
     }
-  }
+  },
+  "current_development_branch": "codex/rc1-platform-science02",
+  "first_block_admission": {
+    "pr": 1665,
+    "qualified_head": "09fba1b26b22a628a218b77e6060b6e1c2f42baf",
+    "canonical": "95b16cfab4f5e7597d366d355d83e9812993a1b0",
+    "tree": "7a8fd32970803c6f4305707011076d59a241fc39",
+    "postimage_exact": true,
+    "frozen_rc1": "11529865e76fb2259542f1e770726cd87af27603",
+    "release_unchanged": true
+  },
+  "matched_compiler_control": {
+    "run_id": 43252338070,
+    "source": "3f0ad796ef88b201ba17ebb30290ee80f5f5e678",
+    "conclusion": "success",
+    "purpose": "Single additional cloud WindowsGNU15 cohort to separate compiler-major/runtime sensitivity, not OS-versus-solver timing. Original WindowsGNU16.2 and UbuntuGNU15.2 cannot alone isolate OS effects.",
+    "compiler": "GNU15.2.0 MinGW x86_64-posix-seh-rev0",
+    "audit": "All3 O0/O2 own native controls and fullO2 mass guards PASS; generated source normalized text and executed input hashes match Ubuntu. Corrected trajectories still amplify numerical branch differences; no portable-science PASS."
+  },
+  "polish_feedback": "integration/f-ci/rc1-perf01/POLISH_FEEDBACK.json",
+  "checkpoint_costs": "integration/f-ci/rc1-perf01/RESTART_COSTS.json"
 }

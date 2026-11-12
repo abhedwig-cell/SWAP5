@@ -1,0 +1,104 @@
+"""Private numerical-policy discriminator, never a release build or reference.
+
+Keep every Newton iteration and mass guard. Exclude just one final confirmation
+iteration from subsequent adaptive time-step feedback, outside the Fortran DO.
+No checkpoint produced here may be rebound to a supported build.
+"""
+import argparse
+import json
+import math
+import shutil
+import subprocess
+from pathlib import Path
+
+p = argparse.ArgumentParser(description=__doc__)
+for name in ('bundle', 'reference', 'full', 'observer', 'output'):
+    p.add_argument('--'+name, type=Path, required=True)
+p.add_argument('--days', type=int, default=5)
+a = p.parse_args()
+a.output.mkdir()
+meta = json.loads((a.bundle/'BUILD.json').read_text())
+results = {}
+for mode in ('baseline', 'polish-feedback'):
+    out = a.output/mode
+    out.mkdir()
+    source = (a.bundle/'headcalc.f90').read_text(encoding='cp1252')
+    if mode != 'baseline':
+        assert source.count('\nsubroutine headcalc\n') == 1
+        source = source.replace('\nsubroutine headcalc\n',
+                                '\nsubroutine rc1_headcalc_impl(rc1_polish_only)\n', 1)
+        source = source.replace('   implicit none',
+                                '   implicit none\n   integer, intent(out) :: rc1_polish_only', 1)
+        source = source.replace('   mass_polish_at = 0',
+                                '   rc1_polish_only = 0\n   mass_polish_at = 0', 1)
+        anchor = '         itnumb(min(100,numbit),1)'
+        assert source.count(anchor) == 1
+        source = source.replace(anchor,
+            '         if (mass_polish_at>0 .and. numbit==mass_polish_at+1) rc1_polish_only=1\n'+anchor)
+        source = source.replace('end subroutine headcalc', 'end subroutine rc1_headcalc_impl')
+        source += '''
+subroutine headcalc
+   use variables, only: numbit, maxit
+   implicit none
+   integer :: rc1_polish_only
+   call rc1_headcalc_impl(rc1_polish_only)
+   if (rc1_polish_only==1 .and. numbit<maxit) numbit=numbit-1
+end subroutine headcalc
+'''
+    (out/'headcalc.f90').write_text(source, encoding='cp1252')
+    for name in ('swap_main', 'swap_csv_output'):
+        shutil.copyfile(a.observer/(name+'.f90'), out/(name+'.f90'))
+    for name in ('headcalc', 'swap_csv_output', 'swap_main'):
+        command = ['gfortran', *meta['identity']['donor_flags'], '-I', str(a.bundle),
+                   '-I', str(a.reference/'build/swap-obj'), '-I', str(a.reference/'build/ttutil-obj'),
+                   '-c', name+'.f90']
+        c = subprocess.run(command, cwd=out, capture_output=True, text=True, timeout=30)
+        (out/(name+'-compile.log')).write_text(c.stdout+c.stderr)
+        assert c.returncode == 0, c.stderr
+    objects = []
+    for original in sorted((a.reference/'build/swap-obj').glob('*.o')):
+        candidates = [out/original.name, a.bundle/original.name, original]
+        objects.append(str(next(q for q in candidates if q.exists())))
+    exe = out/'diagnostic.exe'
+    c = subprocess.run(['gfortran', '-o', str(exe), *objects,
+                        str(a.bundle/'hybrid_step_budget.o'),
+                        str(a.reference/'build/ttutil-obj/libttutil.a')],
+                       capture_output=True, text=True, timeout=30)
+    assert c.returncode == 0, c.stderr
+    case = out/'case'
+    case.mkdir()
+    for name in meta['inputs']:
+        (case/name).parent.mkdir(exist_ok=True, parents=True)
+        shutil.copyfile(a.full/'original'/name, case/name)
+    payload = ''.join(f'{day} -1\n' for day in range(1,a.days+1))+'0 -1\n'
+    with (out/'stdout').open('wb') as stdout, (out/'stderr').open('wb') as stderr:
+        c = subprocess.run([str(exe), './swap.swp'], cwd=case, input=payload.encode(),
+                           stdout=stdout, stderr=stderr, timeout=60)
+    assert c.returncode == 100, c.returncode
+    frames = {}
+    for line in (out/'stdout').read_text(encoding='cp1252').splitlines():
+        if line.startswith(('RC1_HIST ', 'HYBRID_STOCK_FLUX ', 'HYBRID_EXTERNAL_FLUX ',
+                            'HYBRID_SOLUTE_LEDGER ')):
+            tag, *values = line.split()
+            frames.setdefault(tag, []).append(list(map(float, values)))
+    assert all(len(v)==a.days+1 for v in frames.values())
+    water, solute = [], []
+    for day in range(1,a.days+1):
+        stocks = frames['HYBRID_STOCK_FLUX'][day]
+        flow = frames['HYBRID_EXTERNAL_FLUX'][day]
+        water.append(math.fsum([*flow[:7], *(-q for q in flow[7:]),
+                               *stocks[6:], *(-q for q in stocks[:6])]))
+        end,delta,rain,irrig,bottom,drain,decay,root,reported = frames['HYBRID_SOLUTE_LEDGER'][day]
+        start = frames['HYBRID_SOLUTE_LEDGER'][day-1][0]
+        solute.append(math.fsum([end,-start,-rain,-irrig,-bottom,drain,decay,root]))
+        assert abs(reported)<=1e-10
+    hist = frames['RC1_HIST'][-1]
+    results[mode] = dict(days=a.days, solves=sum(hist),
+        iterations=sum((i+1)*v for i,v in enumerate(hist)),
+        max_water_residual=max(map(abs,water)), max_solute_residual=max(map(abs,solute)),
+        unchanged_guards_pass=max(map(abs,water+solute))<=1e-10)
+    (out/'FRAMES.json').write_text(json.dumps(frames)+'\n')
+(a.output/'RESULT.json').write_text(json.dumps(dict(status='EXPERIMENTAL_NOT_ADMITTED',
+    hypothesis='Pure final polish iteration unnecessarily restricts adaptive step growth',
+    results=results), indent=2)+'\n')
+print(json.dumps(results), flush=True)

@@ -1,0 +1,684 @@
+{
+  "disposition": "DESCRIPTIVE_NO_NEW_ACCEPTANCE_CRITERION",
+  "left": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-gcc15-windows-proof\\rc1-matched-science",
+  "right": "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-science-linux\\rc1-science-proof",
+  "projects": {
+    "grass": {
+      "original": {
+        "left_sha256": "03c17444b3a19fb229a639bdcf0370d31a59e7f7231abf5521af07737534949d",
+        "right_sha256": "93faeec95f73c371283043a416f0a5189bdc1f61590591f01a7fffee94a79f9c",
+        "fields": {
+          "HEAD": {
+            "rows": 1828,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 1.4370016288012266e-10,
+              "day": 1010,
+              "slot": 9,
+              "left": -5320.954295756247,
+              "right": -5320.954295756391
+            }
+          },
+          "HEAT": {
+            "rows": 1828,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 2.6290081223123707e-13,
+              "day": 1771,
+              "slot": 68,
+              "left": 11.220189489687698,
+              "right": 11.220189489687435
+            }
+          },
+          "HIST": {
+            "rows": 1828,
+            "first_nonzero_day": null,
+            "maximum": {
+              "absolute": 0.0,
+              "day": null,
+              "slot": null
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1828,
+            "first_nonzero_day": 22,
+            "maximum": {
+              "absolute": 2.842170943040401e-14,
+              "day": 22,
+              "slot": 0,
+              "left": 217.3875229255772,
+              "right": 217.38752292557723
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1828,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 8.271161533457416e-15,
+              "day": 1016,
+              "slot": 15,
+              "left": 0.15572054950350145,
+              "right": 0.15572054950349318
+            }
+          }
+        }
+      },
+      "corrected-daily": {
+        "left_sha256": "03c17444b3a19fb229a639bdcf0370d31a59e7f7231abf5521af07737534949d",
+        "right_sha256": "93faeec95f73c371283043a416f0a5189bdc1f61590591f01a7fffee94a79f9c",
+        "fields": {
+          "HEAD": {
+            "rows": 1828,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 1.4370016288012266e-10,
+              "day": 1010,
+              "slot": 9,
+              "left": -5320.954295756247,
+              "right": -5320.954295756391
+            }
+          },
+          "HEAT": {
+            "rows": 1828,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 2.6290081223123707e-13,
+              "day": 1771,
+              "slot": 68,
+              "left": 11.220189489687698,
+              "right": 11.220189489687435
+            }
+          },
+          "HIST": {
+            "rows": 1828,
+            "first_nonzero_day": null,
+            "maximum": {
+              "absolute": 0.0,
+              "day": null,
+              "slot": null
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1828,
+            "first_nonzero_day": 22,
+            "maximum": {
+              "absolute": 2.842170943040401e-14,
+              "day": 22,
+              "slot": 0,
+              "left": 217.3875229255772,
+              "right": 217.38752292557723
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1828,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 8.271161533457416e-15,
+              "day": 1016,
+              "slot": 15,
+              "left": 0.15572054950350145,
+              "right": 0.15572054950349318
+            }
+          }
+        }
+      },
+      "corrected-coherent": {
+        "left_sha256": "03c17444b3a19fb229a639bdcf0370d31a59e7f7231abf5521af07737534949d",
+        "right_sha256": "93faeec95f73c371283043a416f0a5189bdc1f61590591f01a7fffee94a79f9c",
+        "fields": {
+          "HEAD": {
+            "rows": 1828,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 1.4370016288012266e-10,
+              "day": 1010,
+              "slot": 9,
+              "left": -5320.954295756247,
+              "right": -5320.954295756391
+            }
+          },
+          "HEAT": {
+            "rows": 1828,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 2.6290081223123707e-13,
+              "day": 1771,
+              "slot": 68,
+              "left": 11.220189489687698,
+              "right": 11.220189489687435
+            }
+          },
+          "HIST": {
+            "rows": 1828,
+            "first_nonzero_day": null,
+            "maximum": {
+              "absolute": 0.0,
+              "day": null,
+              "slot": null
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1828,
+            "first_nonzero_day": 22,
+            "maximum": {
+              "absolute": 2.842170943040401e-14,
+              "day": 22,
+              "slot": 0,
+              "left": 217.3875229255772,
+              "right": 217.38752292557723
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1828,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 8.271161533457416e-15,
+              "day": 1016,
+              "slot": 15,
+              "left": 0.15572054950350145,
+              "right": 0.15572054950349318
+            }
+          }
+        }
+      }
+    },
+    "hupsel": {
+      "original": {
+        "left_sha256": "c280745b143b223d66e88075812ab5cc802fd3536e9ebc307cfd08b01a85d333",
+        "right_sha256": "35937e077c6a09bb396f3c3e3aefca4d8de279eb2a74cbd30322a40c62f28662",
+        "fields": {
+          "HEAD": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 8.978986443253234e-10,
+              "day": 912,
+              "slot": 2,
+              "left": -388.75125051355326,
+              "right": -388.75125051445116
+            }
+          },
+          "HEAT": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 1.3145040611561853e-13,
+              "day": 1006,
+              "slot": 14,
+              "left": 13.958762708108496,
+              "right": 13.958762708108365
+            }
+          },
+          "HIST": {
+            "rows": 1097,
+            "first_nonzero_day": null,
+            "maximum": {
+              "absolute": 0.0,
+              "day": null,
+              "slot": null
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1097,
+            "first_nonzero_day": 5,
+            "maximum": {
+              "absolute": 6.252776074688882e-13,
+              "day": 920,
+              "slot": 0,
+              "left": 65.84167904856648,
+              "right": 65.84167904856585
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 1.40915057400548e-13,
+              "day": 909,
+              "slot": 11,
+              "left": 0.0926615492287775,
+              "right": 0.09266154922891842
+            }
+          },
+          "SOLUTE_LEDGER": {
+            "rows": 1097,
+            "first_nonzero_day": 5,
+            "maximum": {
+              "absolute": 1.4566126083082054e-13,
+              "day": 1075,
+              "slot": 0,
+              "left": 14.908882017714644,
+              "right": 14.90888201771479
+            }
+          },
+          "UPTAKE": {
+            "rows": 1097,
+            "first_nonzero_day": 19,
+            "maximum": {
+              "absolute": 4.718447854656915e-15,
+              "day": 589,
+              "slot": 1,
+              "left": 0.3821308618485901,
+              "right": 0.38213086184858536
+            }
+          }
+        }
+      },
+      "corrected-daily": {
+        "left_sha256": "e71b14e9c75475b991fdfe66f45f118970cea0a5d4c809c316b49c25be4f6c0a",
+        "right_sha256": "58e680fe85a1853b8505a9fd6eef3ab4fd16ac33b0cb69b8b9d5855dc9136f05",
+        "fields": {
+          "HEAD": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 17.2825376518403,
+              "day": 636,
+              "slot": 9,
+              "left": -240.65414754713981,
+              "right": -257.9366851989801
+            }
+          },
+          "HEAT": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 0.006460756285648017,
+              "day": 649,
+              "slot": 12,
+              "left": 10.75392954899932,
+              "right": 10.747468792713672
+            }
+          },
+          "HIST": {
+            "rows": 1097,
+            "first_nonzero_day": 364,
+            "maximum": {
+              "absolute": 453.0,
+              "day": 618,
+              "slot": 3,
+              "left": 13838.0,
+              "right": 14291.0
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1097,
+            "first_nonzero_day": 4,
+            "maximum": {
+              "absolute": 0.0011520264693558602,
+              "day": 588,
+              "slot": 0,
+              "left": 65.55642067026803,
+              "right": 65.55757269673738
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 0.0005593742320164075,
+              "day": 582,
+              "slot": 9,
+              "left": 0.4773175968860891,
+              "right": 0.4767582226540727
+            }
+          },
+          "SOLUTE_LEDGER": {
+            "rows": 1097,
+            "first_nonzero_day": 5,
+            "maximum": {
+              "absolute": 0.00028686137817501844,
+              "day": 715,
+              "slot": 0,
+              "left": 23.247902630893385,
+              "right": 23.24761576951521
+            }
+          },
+          "UPTAKE": {
+            "rows": 1097,
+            "first_nonzero_day": 19,
+            "maximum": {
+              "absolute": 0.0005593742320164075,
+              "day": 582,
+              "slot": 1,
+              "left": 0.4773175968860891,
+              "right": 0.4767582226540727
+            }
+          }
+        }
+      },
+      "corrected-coherent": {
+        "left_sha256": "e71b14e9c75475b991fdfe66f45f118970cea0a5d4c809c316b49c25be4f6c0a",
+        "right_sha256": "58e680fe85a1853b8505a9fd6eef3ab4fd16ac33b0cb69b8b9d5855dc9136f05",
+        "fields": {
+          "HEAD": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 17.2825376518403,
+              "day": 636,
+              "slot": 9,
+              "left": -240.65414754713981,
+              "right": -257.9366851989801
+            }
+          },
+          "HEAT": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 0.006460756285648017,
+              "day": 649,
+              "slot": 12,
+              "left": 10.75392954899932,
+              "right": 10.747468792713672
+            }
+          },
+          "HIST": {
+            "rows": 1097,
+            "first_nonzero_day": 364,
+            "maximum": {
+              "absolute": 453.0,
+              "day": 618,
+              "slot": 3,
+              "left": 13838.0,
+              "right": 14291.0
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1097,
+            "first_nonzero_day": 4,
+            "maximum": {
+              "absolute": 0.0011520264693558602,
+              "day": 588,
+              "slot": 0,
+              "left": 65.55642067026803,
+              "right": 65.55757269673738
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1097,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 0.0005593742320164075,
+              "day": 582,
+              "slot": 9,
+              "left": 0.4773175968860891,
+              "right": 0.4767582226540727
+            }
+          },
+          "SOLUTE_LEDGER": {
+            "rows": 1097,
+            "first_nonzero_day": 5,
+            "maximum": {
+              "absolute": 0.00028686137817501844,
+              "day": 715,
+              "slot": 0,
+              "left": 23.247902630893385,
+              "right": 23.24761576951521
+            }
+          },
+          "UPTAKE": {
+            "rows": 1097,
+            "first_nonzero_day": 19,
+            "maximum": {
+              "absolute": 0.0005593742320164075,
+              "day": 582,
+              "slot": 1,
+              "left": 0.4773175968860891,
+              "right": 0.4767582226540727
+            }
+          }
+        }
+      }
+    },
+    "saltfarm": {
+      "original": {
+        "left_sha256": "ef1b7557aef455b970de9a01a5cec91f0850eec4f60ab0490b1a8316a73cb42e",
+        "right_sha256": "c79d110b2a2df5384d4800a7a67647bf38e927e5ba6b7406f4bdde4788d5cdd5",
+        "fields": {
+          "HEAD": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 1.2363443602225743e-12,
+              "day": 944,
+              "slot": 0,
+              "left": -65.49654283380112,
+              "right": -65.49654283379988
+            }
+          },
+          "HEAT": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 2.079048044834053e-11,
+              "day": 1461,
+              "slot": 194,
+              "left": 11.282615851703426,
+              "right": 11.282615851682635
+            }
+          },
+          "HIST": {
+            "rows": 1462,
+            "first_nonzero_day": null,
+            "maximum": {
+              "absolute": 0.0,
+              "day": null,
+              "slot": null
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1462,
+            "first_nonzero_day": 56,
+            "maximum": {
+              "absolute": 1.7053025658242404e-13,
+              "day": 944,
+              "slot": 0,
+              "left": 315.68847994138406,
+              "right": 315.68847994138423
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1462,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 1.3933298959045715e-12,
+              "day": 944,
+              "slot": 3,
+              "left": 1.0999999999775638,
+              "right": 1.0999999999761705
+            }
+          },
+          "SOLUTE_LEDGER": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 5.002220859751105e-12,
+              "day": 158,
+              "slot": 0,
+              "left": 2126.2459851534745,
+              "right": 2126.2459851534695
+            }
+          },
+          "UPTAKE": {
+            "rows": 1462,
+            "first_nonzero_day": 20,
+            "maximum": {
+              "absolute": 3.917421942389865e-13,
+              "day": 944,
+              "slot": 0,
+              "left": 0.30932368599547183,
+              "right": 0.3093236859950801
+            }
+          }
+        }
+      },
+      "corrected-daily": {
+        "left_sha256": "f5a340bd20a74251a820cd3a88e59d6def93d68bfdd8a56ed5ddde43790f06ec",
+        "right_sha256": "f10d5991649176dc0c79e32fba1513c459a254bf02b978967994dc70027a4265",
+        "fields": {
+          "HEAD": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 0.1125894830543075,
+              "day": 1325,
+              "slot": 6,
+              "left": -36.349531383543784,
+              "right": -36.23694190048948
+            }
+          },
+          "HEAT": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 0.008228502252986658,
+              "day": 1338,
+              "slot": 25,
+              "left": 17.341785559339773,
+              "right": 17.333557057086786
+            }
+          },
+          "HIST": {
+            "rows": 1462,
+            "first_nonzero_day": 156,
+            "maximum": {
+              "absolute": 197.0,
+              "day": 1339,
+              "slot": 3,
+              "left": 37227.0,
+              "right": 37030.0
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1462,
+            "first_nonzero_day": 15,
+            "maximum": {
+              "absolute": 0.020218933796115834,
+              "day": 1325,
+              "slot": 0,
+              "left": 319.41067839229794,
+              "right": 319.43089732609405
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1462,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 0.018490307702122455,
+              "day": 1325,
+              "slot": 13,
+              "left": 0.7087516263147186,
+              "right": 0.6902613186125961
+            }
+          },
+          "SOLUTE_LEDGER": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 0.018363003726591387,
+              "day": 1325,
+              "slot": 1,
+              "left": -0.1657827282499511,
+              "right": -0.14741972452335972
+            }
+          },
+          "UPTAKE": {
+            "rows": 1462,
+            "first_nonzero_day": 20,
+            "maximum": {
+              "absolute": 3.359203357126278e-05,
+              "day": 908,
+              "slot": 4,
+              "left": 0.015759786843066517,
+              "right": 0.01579337887663778
+            }
+          }
+        }
+      },
+      "corrected-coherent": {
+        "left_sha256": "f5a340bd20a74251a820cd3a88e59d6def93d68bfdd8a56ed5ddde43790f06ec",
+        "right_sha256": "f10d5991649176dc0c79e32fba1513c459a254bf02b978967994dc70027a4265",
+        "fields": {
+          "HEAD": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 0.1125894830543075,
+              "day": 1325,
+              "slot": 6,
+              "left": -36.349531383543784,
+              "right": -36.23694190048948
+            }
+          },
+          "HEAT": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 0.008228502252986658,
+              "day": 1338,
+              "slot": 25,
+              "left": 17.341785559339773,
+              "right": 17.333557057086786
+            }
+          },
+          "HIST": {
+            "rows": 1462,
+            "first_nonzero_day": 156,
+            "maximum": {
+              "absolute": 197.0,
+              "day": 1339,
+              "slot": 3,
+              "left": 37227.0,
+              "right": 37030.0
+            }
+          },
+          "STOCK_FLUX": {
+            "rows": 1462,
+            "first_nonzero_day": 15,
+            "maximum": {
+              "absolute": 0.020218933796115834,
+              "day": 1325,
+              "slot": 0,
+              "left": 319.41067839229794,
+              "right": 319.43089732609405
+            }
+          },
+          "EXTERNAL_FLUX": {
+            "rows": 1462,
+            "first_nonzero_day": 1,
+            "maximum": {
+              "absolute": 0.018490307702122455,
+              "day": 1325,
+              "slot": 13,
+              "left": 0.7087516263147186,
+              "right": 0.6902613186125961
+            }
+          },
+          "SOLUTE_LEDGER": {
+            "rows": 1462,
+            "first_nonzero_day": 0,
+            "maximum": {
+              "absolute": 0.018363003726591387,
+              "day": 1325,
+              "slot": 1,
+              "left": -0.1657827282499511,
+              "right": -0.14741972452335972
+            }
+          },
+          "UPTAKE": {
+            "rows": 1462,
+            "first_nonzero_day": 20,
+            "maximum": {
+              "absolute": 3.359203357126278e-05,
+              "day": 908,
+              "slot": 4,
+              "left": 0.015759786843066517,
+              "right": 0.01579337887663778
+            }
+          }
+        }
+      }
+    }
+  }
+}

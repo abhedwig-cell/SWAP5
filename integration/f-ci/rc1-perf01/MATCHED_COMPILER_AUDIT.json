@@ -1,0 +1,162 @@
+{
+  "run_id": 43252338070,
+  "source": "3f0ad796ef88b201ba17ebb30290ee80f5f5e678",
+  "application_test_source": "09fba1b26b22a628a218b77e6060b6e1c2f42baf",
+  "status": "completed",
+  "conclusion": "success",
+  "artifact": {
+    "id": 13961360916,
+    "name": "rc1-matched-gcc15-3f0ad796ef88b201ba17ebb30290ee80f5f5e678",
+    "size_in_bytes": 98738334,
+    "digest": "sha256:f87dc273b41d4e9c3caa3d6e2853b4795397328f6ccdd422631e3fc44f70257f"
+  },
+  "profiles": [
+    {
+      "project": "grass",
+      "optimization": "O0",
+      "exact_physical_suffix": true,
+      "exact_native_auxiliary": true,
+      "origin_unchanged": true,
+      "build_sha256": "a61f816a066570fb462c38814dc0045298d1ca8a94c1e3d373282edadff77d25",
+      "maximum_water_residual_cm": 1.8698367507119507e-14,
+      "maximum_solute_residual_mg_cm2": 0
+    },
+    {
+      "project": "grass",
+      "optimization": "O2",
+      "exact_physical_suffix": true,
+      "exact_native_auxiliary": true,
+      "origin_unchanged": true,
+      "build_sha256": "c6911be922df0e601d51e65d622d6af1a4cf4a1f36253c5aa2e786395e7e7b65",
+      "maximum_water_residual_cm": 1.8698367507119507e-14,
+      "maximum_solute_residual_mg_cm2": 0,
+      "full_days": 1827,
+      "full_maximum_water_residual_cm": 6.379211532633901e-14,
+      "full_maximum_solute_residual_mg_cm2": 0,
+      "full_signed_water_residual_cm": -1.0324557828327141e-13
+    },
+    {
+      "project": "hupsel",
+      "optimization": "O0",
+      "exact_physical_suffix": true,
+      "exact_native_auxiliary": true,
+      "origin_unchanged": true,
+      "build_sha256": "b09ed16394c0e00c3edef251f9e76aaee82723f10a5a57a26b4ab0b68ce58c23",
+      "maximum_water_residual_cm": 1.9124025280037316e-14,
+      "maximum_solute_residual_mg_cm2": 0.0
+    },
+    {
+      "project": "hupsel",
+      "optimization": "O2",
+      "exact_physical_suffix": true,
+      "exact_native_auxiliary": true,
+      "origin_unchanged": true,
+      "build_sha256": "eef435b25bc280a4858b191044ad20b80165c9dd7f23dc31fdb3b86b74eaf216",
+      "maximum_water_residual_cm": 1.9124025280037316e-14,
+      "maximum_solute_residual_mg_cm2": 0.0,
+      "full_days": 1096,
+      "full_maximum_water_residual_cm": 9.996748806355427e-11,
+      "full_maximum_solute_residual_mg_cm2": 2.0899876049015317e-13,
+      "full_signed_water_residual_cm": 2.664021329974205e-10
+    },
+    {
+      "project": "saltfarm",
+      "optimization": "O0",
+      "exact_physical_suffix": true,
+      "exact_native_auxiliary": true,
+      "origin_unchanged": true,
+      "build_sha256": "a32f0ea91d1b08e33bc6e6ca1a64b140844505c3742705adbbb6001b135e0d80",
+      "maximum_water_residual_cm": 5.64930047186607e-13,
+      "maximum_solute_residual_mg_cm2": 7.123190925995004e-13
+    },
+    {
+      "project": "saltfarm",
+      "optimization": "O2",
+      "exact_physical_suffix": true,
+      "exact_native_auxiliary": true,
+      "origin_unchanged": true,
+      "build_sha256": "a28505304554e79ef93a84c3f69ff187e79877c877f532b352161430cb61cb3e",
+      "maximum_water_residual_cm": 5.64930047186607e-13,
+      "maximum_solute_residual_mg_cm2": 7.123190925995004e-13,
+      "full_days": 1461,
+      "full_maximum_water_residual_cm": 1.8597585277335682e-11,
+      "full_maximum_solute_residual_mg_cm2": 8.096412429381417e-12,
+      "full_signed_water_residual_cm": 3.1288604178262083e-10
+    }
+  ],
+  "inputs_and_text_comparison": {
+    "grass": {
+      "executed_inputs_sha256": {
+        "260.met": "0475ed569201c4348750ed436cb656792e9388e18731fa179c37e0b1b77d5ddf",
+        "control_plot.inp": "f863e4ba420dee267e1d034e54d69e6d3419eb54263e067d2acee4acebbd8812",
+        "grass.crp": "d7caaba0c75ff39c3637469840210b22eeec13045974e6c7199c2d63a566a616",
+        "observed/HRVDM.csv": "834a7aa8ebdb773e70d3bac588743edc50e980a5013a46fa1de1aec902859a88",
+        "observed/WDM.csv": "fe1e42be70e61a771e7dd60e75967a34af7d910fe22bd361f9dbb4f3495197a3",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "533e4dabd926b7bcfa3207dc5bd6c7b66316aa3b0b10435935ede660af012ad4",
+        "swap.dra": "a6dff5617468c646d20f412793e43e65d7943f360aa047911d291f770c0f1060",
+        "swap.swp": "2f21cc9d269b435a9b20d1072bce6433b945946cd72ebebd5285c67acb2ab196"
+      },
+      "normalized_generated_sha256": {
+        "macropore.f90": "b199e1940616154755f939e6b4dee61773a9e961f5a4b2f5886b23817b98396a",
+        "swap.f90": "e180376e915837d2a1b1dc712d755fcfb80faebe2f1f406548e31cb84ddcc4d6",
+        "swap_main.f90": "1269692a9582c541b2865d8ec8dc514c539ddb572621cb5545be77e11f7bf298",
+        "swap_csv_output.f90": "f3803d47a1c6cc77144e7ba475ccc0188d406302f63a636f9f4f2ec4b89c0f8e",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251"
+      },
+      "exact_text_after_CRLF_LF_normalization": true
+    },
+    "hupsel": {
+      "executed_inputs_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "normalized_generated_sha256": {
+        "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+        "solute.f90": "1a769b34177db432e968909be7ef052b6516fcbf9e16fcc2e7ac39bce18696d4",
+        "macropore.f90": "3072ad24b5f12415f002927deef34da19c094ee4ad558899da97e9990cb326f7",
+        "swap.f90": "27d186901823d7ba7cfe74d26f4913211f28c64fa1901581bc090e8b9958da30",
+        "swap_main.f90": "fa88a5ea39b3a663ed7568219e60732b9c54848b8357e19d01c0610752ca9a9f",
+        "swap_csv_output.f90": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "headcalc.f90": "e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f",
+        "boundtop.f90": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+      },
+      "exact_text_after_CRLF_LF_normalization": true
+    },
+    "saltfarm": {
+      "executed_inputs_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "fontane.crp": "000eeca30866de5bb015ebd0fe7f931b8675908d0bb908683e36bf8eebe73754",
+        "PREPARATION.json": "65147ab4cde9975dc67ff1f1e704a01ead0c1f9eb6e33b7bff6ed9efb86931bd",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "9060e13639d15809eccd2e9a339092e63dc2fc21d8c74511be994a762b85039d"
+      },
+      "normalized_generated_sha256": {
+        "irrigation.f90": "46019e54edea91b2c68664112680dc2e4bb48b56680f3225dc6f0f085bda4693",
+        "wofost.f90": "ea319f5a6ea4d355ed6321739897241cf0480798c745a7617af73e7abe88f13a",
+        "solute.f90": "1a769b34177db432e968909be7ef052b6516fcbf9e16fcc2e7ac39bce18696d4",
+        "macropore.f90": "3072ad24b5f12415f002927deef34da19c094ee4ad558899da97e9990cb326f7",
+        "swap.f90": "9621b63bdc2dc02cce5fbadcbc4639560d474bcedb4de12cd68d43c3fcc4a472",
+        "swap_main.f90": "bf20678ee69e986c6df45c5284a50f21f0658ecefd6a4a72b4b233e4d99fe00e",
+        "swap_csv_output.f90": "3b2790fd62b733ec931db9f944d6785eaa86ecee9c534863680cf2bb0e9dc7ea",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "headcalc.f90": "e8693175f3c0497d83fa9a59868250d4c0b76ca4e8a88de8d825ae5c25f6255f",
+        "boundtop.f90": "4d20890c14533a2026ac250e221cdff540a68cc9c68e7e9aa98cc82a654068f0",
+        "MOD_cropdevelopment.f90": "ba17ff17327a997064fe3be9f874ae656b3a4ac6031faddd1fe23f6779cdcf77"
+      },
+      "exact_text_after_CRLF_LF_normalization": true
+    }
+  }
+}

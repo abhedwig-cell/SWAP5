@@ -10,6 +10,10 @@ import daily_host as h
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--bundle',type=Path,required=True);p.add_argument('--reference',type=Path,required=True)
 p.add_argument('--output',type=Path,required=True);p.add_argument('--project',choices=['grass','hupsel','saltfarm'],required=True)
+p.add_argument('--days',type=int)
+p.add_argument('--checkpoint-at',type=int)
+p.add_argument('--restart',type=Path)
+p.add_argument('--restart-day',type=int)
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();events={};workers=[]
 real_start=h.start_process;real_receive=h.receive;real_send=h.send
 stats=dict(log_write_seconds=0.,log_flush_seconds=0.,log_writes=0,log_flushes=0,log_characters=0,launch_seconds=0.,send_seconds=0.)
@@ -34,9 +38,24 @@ def send(process,text):
  try:return real_send(process,text)
  finally:stats['send_seconds']+=time.perf_counter()-t
 h.start_process=start;h.receive=receive;h.send=send
+stage_costs={}
+def stage(name,original):
+ def measured(*args,**kwargs):
+  wall=time.perf_counter();cpu=time.process_time()
+  try:return original(*args,**kwargs)
+  finally:
+   cost=stage_costs.setdefault(name,dict(calls=0,wall_seconds=0.,host_cpu_seconds=0.))
+   cost['calls']+=1;cost['wall_seconds']+=time.perf_counter()-wall
+   cost['host_cpu_seconds']+=time.process_time()-cpu
+ return measured
+for name in ('publish_checkpoint','verify_checkpoint','prepare_column'):
+ setattr(h,name,stage(name,getattr(h,name)))
 model={'grass':h.GRASSGROWTH,'hupsel':h.HUPSEL,'saltfarm':h.SALTFARM}[a.project]
 sys.path.insert(0,str(ROOT/'tools/solute'));import run_water
 sys.argv=['run_water.py','--no-macro-release','--model',model.model,'--reference-work',str(a.reference.resolve()),'--build-bundle',str(a.bundle.resolve()),'--output',str(a.output/'full')]
+for name in ('days','checkpoint_at','restart','restart_day'):
+ value=getattr(a,name)
+ if value is not None:sys.argv+=['--'+name.replace('_','-'),str(value)]
 prof=cProfile.Profile();beg=time.perf_counter();prof.enable()
 try:code=run_water.main();assert code==0
 finally:
@@ -53,6 +72,6 @@ for name,process in workers:
   cpus[name]=dict(user_seconds=seconds(user),system_seconds=seconds(kernel))
  else:
   vals=(a.output/(name+'-cpu.txt')).read_text().split();cpus[name]=dict(user_seconds=float(vals[0]),system_seconds=float(vals[1]),wall_seconds=float(vals[2]))
-result=dict(project=a.project,instrumented_wall_seconds=elapsed,worker_cpu=cpus,wall_buckets=stats,receive_wall=events,
+result=dict(project=a.project,instrumented_wall_seconds=elapsed,worker_cpu=cpus,wall_buckets=stats,receive_wall=events,checkpoint_stage_costs=stage_costs,
  caveat='Receive includes Fortran/core wait and log IO; CPU and wall not additive. Compiler/profile confounding excluded only within each platform cohort. cProfile overhead means these are diagnostic, not headline benchmark times.')
 (a.output/'COSTS.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps(result),flush=True)
