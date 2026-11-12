@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import tarfile
 import zipfile
 
 ROOT=Path(__file__).resolve().parents[2]
@@ -36,6 +37,13 @@ def main():
         assert r['observation_identity']['executable_sha256']==digest(z.read('observed-build/day_donor'))
         assert r['observation_identity']['headcalc_sha256']==digest(z.read('observed-build/headcalc.f90'))
         assert r['observation_identity']['c_sha256']==digest(z.read('observed-build/shadow.c'))
+        provider=ROOT/'research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz'
+        assert digest(provider.read_bytes())=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
+        with tarfile.open(provider) as t:
+            index=json.load(t.extractfile('PROOF_INDEX.json'));reference=index['reference']
+            for name,sha in r['original_build']['identity']['donor_objects'].items():
+                assert digest(t.extractfile(reference+'/build/swap-obj/'+name).read())==sha
+            assert digest(t.extractfile(reference+'/build/ttutil-obj/libttutil.a').read())==r['original_build']['identity']['ttutil_library']
         for label in ('control','observation'):
             rows=list(map(json.loads,z.read(label+'/daily.jsonl').decode().splitlines()))
             assert [x['day'] for x in rows]==list(range(433,439))

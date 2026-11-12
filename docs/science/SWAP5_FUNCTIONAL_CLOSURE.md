@@ -56,6 +56,15 @@ against the retained corrected profile. Mass closure does not approve pressure.
 Public/default builders remain unchanged; this is a complete functional opt-in
 profile, not scientific equivalence or a runtime-parity claim.
 
+A later bounded same-state observation identifies an actual residual inconsistency
+at the final accepted438 step: cached maximum5.80e-12 versus refreshed original
+coupled maximum4.3198 under the unchanged1e-6 local criterion. Both observed and
+control physical433to438 records and complete raw native endpoints are exact.
+This is a research-only fork observation, not a production repair, a qualified
+reference or full attribution of the groundwater discrepancy. See
+`research/hybrid-water01/ORIGINAL_MACRO_DAY438_20261112.md` and its preserved
+artifact/independent zero-model audit. No model-source dependency is changed.
+
 ## What the shared application architecture actually provides
 
 One project-aware daily host owns explicit kernel clocks, pressure stocks,

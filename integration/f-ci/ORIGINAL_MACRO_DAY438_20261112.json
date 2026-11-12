@@ -36,5 +36,18 @@
     "worst_node": 81,
     "decision": "Actual same-state frozen coupled residual inconsistency confirmed; no full scientific attribution, no production repair or tolerance change"
   },
-  "next_deliverable": "Bounded corrective coupled-state solve using explicit start-of-step state; not repeated final-residual polishing. Define consistency/control proof and short cap before implementing."
+  "next_deliverable": "Bounded corrective coupled-state solve using explicit start-of-step state; not repeated final-residual polishing. Define consistency/control proof and short cap before implementing.",
+  "preserved_data_gate": {
+    "run": 43167787131,
+    "job": 131013623009,
+    "source": "9f3fead86f2d289999fd613f2daa08e05e2decff",
+    "status": "PASS",
+    "new_models": 0,
+    "note": "Final auditor also checks every unchanged donor provider object and TTUTIL hash; final source gate pending"
+  },
+  "docs": {
+    "source_check": "PASS",
+    "strict_build": "PASS",
+    "seconds": 28.73
+  }
 }
