@@ -98,7 +98,8 @@ python -B research/hybrid-water01/audit_hupsel_irrigation.py --workspace BASE --
 ```
 
 BASE is the extracted hash-bound original platform capsule. NEW must not exist.
-The cohort has a240s kill cap; only the two irrigation modules are compiled.
+Model workers have a240s cohort kill cap; each incremental compile/link command
+has a90s timeout. Only the two irrigation modules are compiled.
 Full physical energy, new crop/solute process formulations, scientific day188/
 day584 equivalence and a full controlled-irrigation project remain unqualified.
 The completed original1827/481/1096 application evidence retains its own scope.

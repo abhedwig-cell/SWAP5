@@ -1,8 +1,8 @@
 {
-  "status": "WINDOWS_O0_O2_EVENT_CHANGED_HISTORY_ORIGINAL_PRESERVATION_PASS_LINUX_PENDING",
+  "status": "QUALIFIED_WINDOWS_UBUNTU_O0_O2_SURFACE_EVENT_CHANGED_HISTORY_ORIGINAL_PRESERVATION_ADMISSION_PENDING",
   "base": "fc0ca4b09690c7e2522db6eb4416ed023aeac7fa",
   "test_selection": {
-    "candidate": "99dddf3e75e178baf519e816a2a5cf23d1aeddba",
+    "candidate": "7c8045854b05ea07a92ffcdffd3a7e2cb85cf9e2",
     "groups": {
       "hybrid_hupsel_irrigation": {
         "changed_dependency": "Typed private irrigation input consumed after native state restoration; original module incremental build",
@@ -16,7 +16,7 @@
       }
     }
   },
-  "next": "Implement bounded original day5 water/solute control, qualify both OS and publish via separate PR.",
+  "next": "Qualify Andelst Cauchy second-day recovery after modified first-day head with independently edited original second-day input controls. Reuse exact published compatible day20 origins, retain tolerances, cap two-day O0/O2 Windows/Ubuntu cohort; no481day repeat.",
   "windows": {
     "status": "HUPSEL_SURFACE_IRRIGATION_CHANGED_HISTORY_AND_ORIGINAL_PRESERVATION_PASS",
     "source_commit": "ebec370636cf601b61286c57d451811afe5a3439",
@@ -1482,5 +1482,3198 @@
     "source_commit": "99dddf3e75e178baf519e816a2a5cf23d1aeddba",
     "elapsed_seconds": 4.32392040011473
   },
-  "selection_correction": "Initial owner preflight refused NOT_RUN wording despite recorded completed Windows O0/O2 proof; correct prior_execution to PASS. No model was executed by that failed Linux preflight."
+  "selection_correction": "Initial owner preflight refused NOT_RUN wording despite recorded completed Windows O0/O2 proof; correct prior_execution to PASS. No model was executed by that failed Linux preflight.",
+  "linux": {
+    "run": 43133683506,
+    "head": "4023bd4672df4175797f3f53a2b9175ee1def267",
+    "status": "completed",
+    "conclusion": "success",
+    "job": 130903752098,
+    "artifact": 13906760837,
+    "artifact_zip_sha256": "sha256:37f761eb76d7d9a37755f92c5436120444dee520f87f53d16b8021e54672eb31",
+    "irrigation": {
+      "status": "HUPSEL_SURFACE_IRRIGATION_CHANGED_HISTORY_AND_ORIGINAL_PRESERVATION_PASS",
+      "source_commit": "4023bd4672df4175797f3f53a2b9175ee1def267",
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+        "app/hybrid_water/irrigation_forcing.py": "096554c44267b0b1b546ccb939f07ce531a84a12f3c9806e02b0bdac96005411",
+        "research/hybrid-water01/qualify_hupsel_irrigation.py": "05918c973ea43fb5f883410b0261d1ec4a26fe44ff22d4d9f00ec5f4f15c0a8c"
+      },
+      "cases": [
+        {
+          "optimization": "O0",
+          "scenario": "modified",
+          "first": {
+            "coupling_id": "irrigation-O0-modified",
+            "origin_sha256": "9a9f778db1d240b05cb8efa9b57b73c870302b738e72d786eb1e077e35baf797",
+            "origin_day": 4,
+            "t0_day1900": 37260,
+            "t1_day1900": 37261,
+            "enabled": true,
+            "depth_mm": 24.001,
+            "concentration_mg_cm3": 20.001,
+            "rate_mm_h": 12.0,
+            "provenance": "caller-day5"
+          },
+          "second": {
+            "coupling_id": "irrigation-O0-modified",
+            "origin_sha256": "c8d5a4d7e891d780af5747d6f49b3ecaa966ce2e9bc24d440e8064c7abb601a2",
+            "origin_day": 5,
+            "t0_day1900": 37261,
+            "t1_day1900": 37262,
+            "enabled": true,
+            "depth_mm": 0.02,
+            "concentration_mg_cm3": 1.0,
+            "rate_mm_h": 1.0,
+            "provenance": "caller-day6-new-event"
+          },
+          "retry_native_exact": true,
+          "modified_history_live_disk_native_exact": true,
+          "independent_original_physical_controls_both_days": true,
+          "no_file_original_seven_physical_days_and_day5_native_exact": true,
+          "pretrial_refusals": 10,
+          "day5": {
+            "day": 5,
+            "stock_end_cm": [
+              77.00353779944061,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.98787795895996,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.0,
+              0.0,
+              0.0,
+              2.4000999999999992,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.3844401595193292,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -49.21113495750838,
+              -48.22683735257062,
+              -47.25647903012442,
+              -46.29844540193889,
+              -45.35125589865763,
+              -44.41355135866221,
+              -43.48408303261994,
+              -42.561702965277654,
+              -41.645355552137865,
+              -40.73407009991356,
+              -37.97802604490319,
+              -33.48237135053489,
+              -28.968412827031134,
+              -24.397366112677812,
+              -19.756005859792097,
+              -15.055596995686605,
+              -10.306444943654224,
+              -5.504858445007557,
+              -0.5240496210200679,
+              4.466207407578106,
+              11.952659161102684,
+              21.93588514165692,
+              31.920401431399295,
+              41.90620803032981,
+              51.89330493844845,
+              61.88169215575523,
+              71.87136968225015,
+              81.8623375179332,
+              91.85459566280439,
+              101.84814411686371,
+              111.84298288011117,
+              121.83911195254676,
+              131.8365313341705,
+              141.83524102498237
+            ],
+            "groundwater_cm": -53.02507277482587,
+            "drainage_outward_cm": 0.3844401595193292,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 1.84297022087776e-14,
+            "kernel_residual_cm": -1.865174681370263e-14,
+            "solute_end_mg_cm2": 48.00439938555568,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              48.00439938555568,
+              48.00439938555568,
+              0.0,
+              48.00440009999995,
+              0.0,
+              7.144440169865953e-07,
+              0.0,
+              0.0,
+              -2.5209214475802077e-13
+            ],
+            "solute_independent_residual_mg_cm2": -2.5209214475802077e-13,
+            "uptake_terms_cm": [
+              5.849314515063495e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": -6.9570305733738375e-15
+          },
+          "day6": {
+            "day": 6,
+            "stock_end_cm": [
+              76.6395691543785,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              77.00353779944061,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.02000000000000003,
+              0.0,
+              0.0,
+              0.002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005903572086905923,
+              0.0,
+              0.38006507297519093,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -54.08507849144949,
+              -53.13486001832217,
+              -52.19465998151559,
+              -51.26337413642271,
+              -50.33995612521616,
+              -49.42342710615648,
+              -48.51287506544692,
+              -47.60745123064709,
+              -46.706365795001545,
+              -45.808883473258625,
+              -43.088353150469885,
+              -38.636615764710136,
+              -34.160165752971544,
+              -29.6258471654419,
+              -24.98466584327197,
+              -20.272579744936014,
+              -15.519766173524765,
+              -10.723667403025273,
+              -5.883592854265929,
+              -0.90211543675894,
+              6.585853263475389,
+              16.57230620884633,
+              26.559801235342587,
+              36.54833834296415,
+              46.53791753171103,
+              56.528538801583224,
+              66.52020215258072,
+              76.51290758470354,
+              86.50665509795166,
+              96.50144469232511,
+              106.49727636782386,
+              116.49415012444793,
+              126.4920659621973,
+              136.49102388107198
+            ],
+            "groundwater_cm": -58.40356491146662,
+            "drainage_outward_cm": 0.38006507297519093,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 4.5363018896793506e-15,
+            "kernel_residual_cm": -4.551914400963142e-15,
+            "solute_end_mg_cm2": 48.00639872193972,
+            "solute_start_mg_cm2": 48.00439938555568,
+            "solute_ledger_mg_cm2": [
+              48.00639872193972,
+              0.001999336384038486,
+              0.0,
+              0.002,
+              0.0,
+              6.636158332095906e-07,
+              0.0,
+              0.0,
+              -1.283045478782518e-13
+            ],
+            "solute_independent_residual_mg_cm2": -1.283045478782518e-13,
+            "uptake_terms_cm": [
+              3.223953477927994e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": 1.194628163753153e-15
+          },
+          "terminal_sha256": "0b9a4ebffa8e1f603de003a6f8f31e5ccb6b37a40b350d184bb150f920c9d3c0"
+        },
+        {
+          "optimization": "O0",
+          "scenario": "disabled",
+          "first": {
+            "coupling_id": "irrigation-O0-disabled",
+            "origin_sha256": "9a9f778db1d240b05cb8efa9b57b73c870302b738e72d786eb1e077e35baf797",
+            "origin_day": 4,
+            "t0_day1900": 37260,
+            "t1_day1900": 37261,
+            "enabled": false,
+            "depth_mm": 0.0,
+            "concentration_mg_cm3": 0.0,
+            "rate_mm_h": 0.0,
+            "provenance": "caller-day5"
+          },
+          "second": {
+            "coupling_id": "irrigation-O0-disabled",
+            "origin_sha256": "501c8225f4be8bdd204aaa3759997c58eac1ecff207bea12f7b95fea2ea65d53",
+            "origin_day": 5,
+            "t0_day1900": 37261,
+            "t1_day1900": 37262,
+            "enabled": true,
+            "depth_mm": 0.02,
+            "concentration_mg_cm3": 1.0,
+            "rate_mm_h": 1.0,
+            "provenance": "caller-day6-new-event"
+          },
+          "retry_native_exact": true,
+          "modified_history_live_disk_native_exact": true,
+          "independent_original_physical_controls_both_days": true,
+          "no_file_original_seven_physical_days_and_day5_native_exact": true,
+          "pretrial_refusals": 10,
+          "day5": {
+            "day": 5,
+            "stock_end_cm": [
+              74.95513629352209,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.98787795895996,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.03274166543784849,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -76.47969512246908,
+              -75.48287344315956,
+              -74.4889525148629,
+              -73.49766889839388,
+              -72.50877287827957,
+              -71.52202804658346,
+              -70.53721088301492,
+              -69.55411033550234,
+              -68.57252740417701,
+              -67.5922747307287,
+              -64.64858913266187,
+              -59.769357911506155,
+              -54.89280836942079,
+              -50.00927848864259,
+              -45.07893618230692,
+              -40.12985440363355,
+              -35.17614812994875,
+              -30.217021673921597,
+              -25.25215963633439,
+              -20.281598454493416,
+              -12.812179027792752,
+              -2.8388528324683286,
+              7.158665520384696,
+              17.15745532749212,
+              27.156355152135234,
+              37.155364994314034,
+              47.154484854028524,
+              57.153714731278704,
+              67.15305462606457,
+              77.15250453838613,
+              87.15206446824338,
+              97.15173441563631,
+              107.15151438056493,
+              117.15140436302924
+            ],
+            "groundwater_cm": -77.83955751044778,
+            "drainage_outward_cm": 0.03274166543784849,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 1.9560741915114477e-14,
+            "kernel_residual_cm": -1.9560741915114477e-14,
+            "solute_end_mg_cm2": 0.0,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "solute_independent_residual_mg_cm2": 0.0,
+            "uptake_terms_cm": [
+              5.849314515063487e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": -5.739115779834769e-15
+          },
+          "day6": {
+            "day": 6,
+            "stock_end_cm": [
+              74.94265676522816,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.95513629352209,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.019999999999999993,
+              0.0,
+              0.0,
+              0.002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005903572086905919,
+              0.0,
+              0.0285759562070333,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -75.51481896319846,
+              -74.63260139916248,
+              -73.74428540218055,
+              -72.85012902942097,
+              -71.95039906298157,
+              -71.0453668622437,
+              -70.13530470408982,
+              -69.22048259688586,
+              -68.30116555836437,
+              -67.3776113438652,
+              -64.57378499503972,
+              -59.849429493977226,
+              -55.06423707476042,
+              -50.23332932751982,
+              -45.32253590919783,
+              -40.38185682408138,
+              -35.43220469551057,
+              -30.474409229243715,
+              -25.509268795021224,
+              -20.537574195151592,
+              -13.066278712596606,
+              -3.090578714458617,
+              6.907230106584965,
+              16.906163087291386,
+              26.905193069751768,
+              36.90432005396611,
+              46.90354403993442,
+              56.90286502765669,
+              66.90228301713292,
+              76.9017980083631,
+              86.90141000134726,
+              96.90111899608537,
+              106.90092499257744,
+              116.90082799082349
+            ],
+            "groundwater_cm": -78.09125606398224,
+            "drainage_outward_cm": 0.0285759562070333,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": -1.604445742930949e-14,
+            "kernel_residual_cm": 1.6042722705833512e-14,
+            "solute_end_mg_cm2": 0.0019999999999955947,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              0.0019999999999955947,
+              0.0019999999999955947,
+              0.0,
+              0.002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -4.405330267243102e-15
+            ],
+            "solute_independent_residual_mg_cm2": -4.405330267243102e-15,
+            "uptake_terms_cm": [
+              3.223953477927989e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": 7.158219533071573e-15
+          },
+          "terminal_sha256": "c8aee0283a6af07e56a0c53969108cf20dd410457aa2ea75040a6eb3d5eaffa1"
+        },
+        {
+          "optimization": "O0",
+          "scenario": "identity",
+          "first": {
+            "coupling_id": "irrigation-O0-identity",
+            "origin_sha256": "9a9f778db1d240b05cb8efa9b57b73c870302b738e72d786eb1e077e35baf797",
+            "origin_day": 4,
+            "t0_day1900": 37260,
+            "t1_day1900": 37261,
+            "enabled": true,
+            "depth_mm": 24.0,
+            "concentration_mg_cm3": 20.0,
+            "rate_mm_h": 12.0,
+            "provenance": "caller-day5"
+          },
+          "second": {
+            "coupling_id": "irrigation-O0-identity",
+            "origin_sha256": "640761430f9a95e779177a3b5ed681737489adec79683bdcd93f50747448751f",
+            "origin_day": 5,
+            "t0_day1900": 37261,
+            "t1_day1900": 37262,
+            "enabled": false,
+            "depth_mm": 0.0,
+            "concentration_mg_cm3": 0.0,
+            "rate_mm_h": 0.0,
+            "provenance": "caller-day6-absent"
+          },
+          "retry_native_exact": true,
+          "modified_history_live_disk_native_exact": true,
+          "independent_original_physical_controls_both_days": true,
+          "no_file_original_seven_physical_days_and_day5_native_exact": true,
+          "pretrial_refusals": 10,
+          "day5": {
+            "day": 5,
+            "stock_end_cm": [
+              77.00345944503128,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.98787795895996,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.0,
+              0.0,
+              0.0,
+              2.3999999999999995,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.3844185139286464,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -49.21227416147378,
+              -48.227976726782,
+              -47.257618709831334,
+              -46.29958550936706,
+              -45.352396554190165,
+              -44.41469268650057,
+              -43.485225163793835,
+              -42.56284603955183,
+              -41.646499719633205,
+              -40.735215522853814,
+              -37.979174597479464,
+              -33.4835278718035,
+              -28.96957616068559,
+              -24.398529236272754,
+              -19.757169170662976,
+              -15.056761275900584,
+              -10.307606460025431,
+              -5.5060126624894,
+              -0.5251922876385152,
+              4.465067458479902,
+              11.951518155085763,
+              21.934742827073972,
+              31.91925790890924,
+              41.90506340059157,
+              51.892159302120966,
+              61.88054561349742,
+              71.87022233472094,
+              81.86118946579151,
+              91.85344700670915,
+              101.84699495747384,
+              111.84183331808559,
+              121.83796208854442,
+              131.83538126885028,
+              141.83409085900323
+            ],
+            "groundwater_cm": -53.02621738582548,
+            "drainage_outward_cm": 0.3844185139286464,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 2.6700863742235015e-14,
+            "kernel_residual_cm": -2.6645352591003757e-14,
+            "solute_end_mg_cm2": 47.999999285929135,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              47.999999285929135,
+              47.999999285929135,
+              0.0,
+              47.99999999999992,
+              0.0,
+              7.140705703961827e-07,
+              0.0,
+              0.0,
+              -2.1610435979544247e-13
+            ],
+            "solute_independent_residual_mg_cm2": -2.1610435979544247e-13,
+            "uptake_terms_cm": [
+              5.849314515063487e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": -7.566270879147755e-15
+          },
+          "day6": {
+            "day": 6,
+            "stock_end_cm": [
+              76.63760234364129,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              77.00345944503128,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.019999999999999997,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005903572086905921,
+              0.0,
+              0.37995352930310283,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -54.113438005860495,
+              -53.16316482166186,
+              -52.22292999878511,
+              -51.2916038538652,
+              -50.368135139022414,
+              -49.45154566534901,
+              -48.54092524469697,
+              -47.63542702012454,
+              -46.734263203917884,
+              -45.83670121366612,
+              -43.11593469885814,
+              -38.66375189642658,
+              -34.1868994487054,
+              -29.6522287273199,
+              -25.010848527991058,
+              -20.29866036917179,
+              -15.545779858229308,
+              -10.749667594540654,
+              -5.909592122986544,
+              -0.9274124937023062,
+              6.560668808504484,
+              16.547075615330296,
+              26.534528052400272,
+              36.52302611971442,
+              46.512569817272734,
+              56.50315914507522,
+              66.49479410312188,
+              76.4874746914127,
+              86.48120090994769,
+              96.47597275872684,
+              106.47179023775017,
+              116.46865334701766,
+              126.46656208652932,
+              136.46551645628514
+            ],
+            "groundwater_cm": -58.42888864610984,
+            "drainage_outward_cm": 0.37995352930310283,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": -1.7144272113078785e-14,
+            "kernel_residual_cm": 1.709743457922741e-14,
+            "solute_end_mg_cm2": 47.99999862519388,
+            "solute_start_mg_cm2": 47.999999285929135,
+            "solute_ledger_mg_cm2": [
+              47.99999862519388,
+              -6.607352531773358e-07,
+              0.0,
+              0.0,
+              0.0,
+              6.607351665472463e-07,
+              0.0,
+              0.0,
+              -8.66300894867021e-14
+            ],
+            "solute_independent_residual_mg_cm2": -8.66300894867021e-14,
+            "uptake_terms_cm": [
+              3.2239534779279886e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": 3.662868619525028e-15
+          },
+          "terminal_sha256": "34b5eb931b83434a3422c3decff2b6b7d809e2623a8d36710cca5d3840e4b91c"
+        },
+        {
+          "optimization": "O2",
+          "scenario": "modified",
+          "first": {
+            "coupling_id": "irrigation-O2-modified",
+            "origin_sha256": "18a847effb8f950a55c2a401fed8e96e27842d36b2e30ff2fd08a36e143b48f4",
+            "origin_day": 4,
+            "t0_day1900": 37260,
+            "t1_day1900": 37261,
+            "enabled": true,
+            "depth_mm": 24.001,
+            "concentration_mg_cm3": 20.001,
+            "rate_mm_h": 12.0,
+            "provenance": "caller-day5"
+          },
+          "second": {
+            "coupling_id": "irrigation-O2-modified",
+            "origin_sha256": "5dd3dc52c1036e793e6c1a77068a545d9b7ce476866da78aabe5c0513d7c9a4d",
+            "origin_day": 5,
+            "t0_day1900": 37261,
+            "t1_day1900": 37262,
+            "enabled": true,
+            "depth_mm": 0.02,
+            "concentration_mg_cm3": 1.0,
+            "rate_mm_h": 1.0,
+            "provenance": "caller-day6-new-event"
+          },
+          "retry_native_exact": true,
+          "modified_history_live_disk_native_exact": true,
+          "independent_original_physical_controls_both_days": true,
+          "no_file_original_seven_physical_days_and_day5_native_exact": true,
+          "pretrial_refusals": 10,
+          "day5": {
+            "day": 5,
+            "stock_end_cm": [
+              77.00353779944061,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.98787795895996,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.0,
+              0.0,
+              0.0,
+              2.4000999999999992,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.3844401595193292,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -49.21113495750838,
+              -48.22683735257062,
+              -47.25647903012442,
+              -46.29844540193889,
+              -45.35125589865763,
+              -44.41355135866221,
+              -43.48408303261994,
+              -42.561702965277654,
+              -41.645355552137865,
+              -40.73407009991356,
+              -37.97802604490319,
+              -33.48237135053489,
+              -28.968412827031134,
+              -24.397366112677812,
+              -19.756005859792097,
+              -15.055596995686605,
+              -10.306444943654224,
+              -5.504858445007557,
+              -0.5240496210200679,
+              4.466207407578106,
+              11.952659161102684,
+              21.93588514165692,
+              31.920401431399295,
+              41.90620803032981,
+              51.89330493844845,
+              61.88169215575523,
+              71.87136968225015,
+              81.8623375179332,
+              91.85459566280439,
+              101.84814411686371,
+              111.84298288011117,
+              121.83911195254676,
+              131.8365313341705,
+              141.83524102498237
+            ],
+            "groundwater_cm": -53.02507277482587,
+            "drainage_outward_cm": 0.3844401595193292,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 1.84297022087776e-14,
+            "kernel_residual_cm": -1.865174681370263e-14,
+            "solute_end_mg_cm2": 48.00439938555568,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              48.00439938555568,
+              48.00439938555568,
+              0.0,
+              48.00440009999995,
+              0.0,
+              7.144440169865953e-07,
+              0.0,
+              0.0,
+              -2.5209214475802077e-13
+            ],
+            "solute_independent_residual_mg_cm2": -2.5209214475802077e-13,
+            "uptake_terms_cm": [
+              5.849314515063495e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": -6.9570305733738375e-15
+          },
+          "day6": {
+            "day": 6,
+            "stock_end_cm": [
+              76.6395691543785,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              77.00353779944061,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.02000000000000003,
+              0.0,
+              0.0,
+              0.002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005903572086905923,
+              0.0,
+              0.38006507297519093,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -54.08507849144949,
+              -53.13486001832217,
+              -52.19465998151559,
+              -51.26337413642271,
+              -50.33995612521616,
+              -49.42342710615648,
+              -48.51287506544692,
+              -47.60745123064709,
+              -46.706365795001545,
+              -45.808883473258625,
+              -43.088353150469885,
+              -38.636615764710136,
+              -34.160165752971544,
+              -29.6258471654419,
+              -24.98466584327197,
+              -20.272579744936014,
+              -15.519766173524765,
+              -10.723667403025273,
+              -5.883592854265929,
+              -0.90211543675894,
+              6.585853263475389,
+              16.57230620884633,
+              26.559801235342587,
+              36.54833834296415,
+              46.53791753171103,
+              56.528538801583224,
+              66.52020215258072,
+              76.51290758470354,
+              86.50665509795166,
+              96.50144469232511,
+              106.49727636782386,
+              116.49415012444793,
+              126.4920659621973,
+              136.49102388107198
+            ],
+            "groundwater_cm": -58.40356491146662,
+            "drainage_outward_cm": 0.38006507297519093,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 4.5363018896793506e-15,
+            "kernel_residual_cm": -4.551914400963142e-15,
+            "solute_end_mg_cm2": 48.00639872193972,
+            "solute_start_mg_cm2": 48.00439938555568,
+            "solute_ledger_mg_cm2": [
+              48.00639872193972,
+              0.001999336384038486,
+              0.0,
+              0.002,
+              0.0,
+              6.636158332095906e-07,
+              0.0,
+              0.0,
+              -1.283045478782518e-13
+            ],
+            "solute_independent_residual_mg_cm2": -1.283045478782518e-13,
+            "uptake_terms_cm": [
+              3.223953477927994e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": 1.194628163753153e-15
+          },
+          "terminal_sha256": "b42de9d47c42ab333548848d731c722709126b50f4cfa1df573576e3bb968fe6"
+        },
+        {
+          "optimization": "O2",
+          "scenario": "disabled",
+          "first": {
+            "coupling_id": "irrigation-O2-disabled",
+            "origin_sha256": "18a847effb8f950a55c2a401fed8e96e27842d36b2e30ff2fd08a36e143b48f4",
+            "origin_day": 4,
+            "t0_day1900": 37260,
+            "t1_day1900": 37261,
+            "enabled": false,
+            "depth_mm": 0.0,
+            "concentration_mg_cm3": 0.0,
+            "rate_mm_h": 0.0,
+            "provenance": "caller-day5"
+          },
+          "second": {
+            "coupling_id": "irrigation-O2-disabled",
+            "origin_sha256": "03ee46f5783414fc52354f86aa5eb9c258f0a0e3bd34e186eb4a094a0fbd0320",
+            "origin_day": 5,
+            "t0_day1900": 37261,
+            "t1_day1900": 37262,
+            "enabled": true,
+            "depth_mm": 0.02,
+            "concentration_mg_cm3": 1.0,
+            "rate_mm_h": 1.0,
+            "provenance": "caller-day6-new-event"
+          },
+          "retry_native_exact": true,
+          "modified_history_live_disk_native_exact": true,
+          "independent_original_physical_controls_both_days": true,
+          "no_file_original_seven_physical_days_and_day5_native_exact": true,
+          "pretrial_refusals": 10,
+          "day5": {
+            "day": 5,
+            "stock_end_cm": [
+              74.95513629352209,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.98787795895996,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.03274166543784849,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -76.47969512246908,
+              -75.48287344315956,
+              -74.4889525148629,
+              -73.49766889839388,
+              -72.50877287827957,
+              -71.52202804658346,
+              -70.53721088301492,
+              -69.55411033550234,
+              -68.57252740417701,
+              -67.5922747307287,
+              -64.64858913266187,
+              -59.769357911506155,
+              -54.89280836942079,
+              -50.00927848864259,
+              -45.07893618230692,
+              -40.12985440363355,
+              -35.17614812994875,
+              -30.217021673921597,
+              -25.25215963633439,
+              -20.281598454493416,
+              -12.812179027792752,
+              -2.8388528324683286,
+              7.158665520384696,
+              17.15745532749212,
+              27.156355152135234,
+              37.155364994314034,
+              47.154484854028524,
+              57.153714731278704,
+              67.15305462606457,
+              77.15250453838613,
+              87.15206446824338,
+              97.15173441563631,
+              107.15151438056493,
+              117.15140436302924
+            ],
+            "groundwater_cm": -77.83955751044778,
+            "drainage_outward_cm": 0.03274166543784849,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 1.9560741915114477e-14,
+            "kernel_residual_cm": -1.9560741915114477e-14,
+            "solute_end_mg_cm2": 0.0,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "solute_independent_residual_mg_cm2": 0.0,
+            "uptake_terms_cm": [
+              5.849314515063487e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": -5.739115779834769e-15
+          },
+          "day6": {
+            "day": 6,
+            "stock_end_cm": [
+              74.94265676522816,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.95513629352209,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.019999999999999993,
+              0.0,
+              0.0,
+              0.002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005903572086905919,
+              0.0,
+              0.0285759562070333,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -75.51481896319846,
+              -74.63260139916248,
+              -73.74428540218055,
+              -72.85012902942097,
+              -71.95039906298157,
+              -71.0453668622437,
+              -70.13530470408982,
+              -69.22048259688586,
+              -68.30116555836437,
+              -67.3776113438652,
+              -64.57378499503972,
+              -59.849429493977226,
+              -55.06423707476042,
+              -50.23332932751982,
+              -45.32253590919783,
+              -40.38185682408138,
+              -35.43220469551057,
+              -30.474409229243715,
+              -25.509268795021224,
+              -20.537574195151592,
+              -13.066278712596606,
+              -3.090578714458617,
+              6.907230106584965,
+              16.906163087291386,
+              26.905193069751768,
+              36.90432005396611,
+              46.90354403993442,
+              56.90286502765669,
+              66.90228301713292,
+              76.9017980083631,
+              86.90141000134726,
+              96.90111899608537,
+              106.90092499257744,
+              116.90082799082349
+            ],
+            "groundwater_cm": -78.09125606398224,
+            "drainage_outward_cm": 0.0285759562070333,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": -1.604445742930949e-14,
+            "kernel_residual_cm": 1.6042722705833512e-14,
+            "solute_end_mg_cm2": 0.0019999999999955947,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              0.0019999999999955947,
+              0.0019999999999955947,
+              0.0,
+              0.002,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              -4.405330267243102e-15
+            ],
+            "solute_independent_residual_mg_cm2": -4.405330267243102e-15,
+            "uptake_terms_cm": [
+              3.223953477927989e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": 7.158219533071573e-15
+          },
+          "terminal_sha256": "e78e85fb4d1ea98eeda28fb4d374d084027946ff28b2168c2cef951c509c31c6"
+        },
+        {
+          "optimization": "O2",
+          "scenario": "identity",
+          "first": {
+            "coupling_id": "irrigation-O2-identity",
+            "origin_sha256": "18a847effb8f950a55c2a401fed8e96e27842d36b2e30ff2fd08a36e143b48f4",
+            "origin_day": 4,
+            "t0_day1900": 37260,
+            "t1_day1900": 37261,
+            "enabled": true,
+            "depth_mm": 24.0,
+            "concentration_mg_cm3": 20.0,
+            "rate_mm_h": 12.0,
+            "provenance": "caller-day5"
+          },
+          "second": {
+            "coupling_id": "irrigation-O2-identity",
+            "origin_sha256": "bcb9f1eb7db48fa5fe9a8f3c785c9e7314b855426f35ed17fc0932c8b6ca966c",
+            "origin_day": 5,
+            "t0_day1900": 37261,
+            "t1_day1900": 37262,
+            "enabled": false,
+            "depth_mm": 0.0,
+            "concentration_mg_cm3": 0.0,
+            "rate_mm_h": 0.0,
+            "provenance": "caller-day6-absent"
+          },
+          "retry_native_exact": true,
+          "modified_history_live_disk_native_exact": true,
+          "independent_original_physical_controls_both_days": true,
+          "no_file_original_seven_physical_days_and_day5_native_exact": true,
+          "pretrial_refusals": 10,
+          "day5": {
+            "day": 5,
+            "stock_end_cm": [
+              77.00345944503128,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              74.98787795895996,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.0,
+              0.0,
+              0.0,
+              2.3999999999999995,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.3844185139286464,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -49.21227416147378,
+              -48.227976726782,
+              -47.257618709831334,
+              -46.29958550936706,
+              -45.352396554190165,
+              -44.41469268650057,
+              -43.485225163793835,
+              -42.56284603955183,
+              -41.646499719633205,
+              -40.735215522853814,
+              -37.979174597479464,
+              -33.4835278718035,
+              -28.96957616068559,
+              -24.398529236272754,
+              -19.757169170662976,
+              -15.056761275900584,
+              -10.307606460025431,
+              -5.5060126624894,
+              -0.5251922876385152,
+              4.465067458479902,
+              11.951518155085763,
+              21.934742827073972,
+              31.91925790890924,
+              41.90506340059157,
+              51.892159302120966,
+              61.88054561349742,
+              71.87022233472094,
+              81.86118946579151,
+              91.85344700670915,
+              101.84699495747384,
+              111.84183331808559,
+              121.83796208854442,
+              131.83538126885028,
+              141.83409085900323
+            ],
+            "groundwater_cm": -53.02621738582548,
+            "drainage_outward_cm": 0.3844185139286464,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": 2.6700863742235015e-14,
+            "kernel_residual_cm": -2.6645352591003757e-14,
+            "solute_end_mg_cm2": 47.999999285929135,
+            "solute_start_mg_cm2": 0.0,
+            "solute_ledger_mg_cm2": [
+              47.999999285929135,
+              47.999999285929135,
+              0.0,
+              47.99999999999992,
+              0.0,
+              7.140705703961827e-07,
+              0.0,
+              0.0,
+              -2.1610435979544247e-13
+            ],
+            "solute_independent_residual_mg_cm2": -2.1610435979544247e-13,
+            "uptake_terms_cm": [
+              5.849314515063487e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": -7.566270879147755e-15
+          },
+          "day6": {
+            "day": 6,
+            "stock_end_cm": [
+              76.63760234364129,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "stock_start_cm": [
+              77.00345944503128,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "external_flux_cm": [
+              0.019999999999999997,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005903572086905921,
+              0.0,
+              0.37995352930310283,
+              0.0,
+              0.0
+            ],
+            "pressure_head_cm": [
+              -54.113438005860495,
+              -53.16316482166186,
+              -52.22292999878511,
+              -51.2916038538652,
+              -50.368135139022414,
+              -49.45154566534901,
+              -48.54092524469697,
+              -47.63542702012454,
+              -46.734263203917884,
+              -45.83670121366612,
+              -43.11593469885814,
+              -38.66375189642658,
+              -34.1868994487054,
+              -29.6522287273199,
+              -25.010848527991058,
+              -20.29866036917179,
+              -15.545779858229308,
+              -10.749667594540654,
+              -5.909592122986544,
+              -0.9274124937023062,
+              6.560668808504484,
+              16.547075615330296,
+              26.534528052400272,
+              36.52302611971442,
+              46.512569817272734,
+              56.50315914507522,
+              66.49479410312188,
+              76.4874746914127,
+              86.48120090994769,
+              96.47597275872684,
+              106.47179023775017,
+              116.46865334701766,
+              126.46656208652932,
+              136.46551645628514
+            ],
+            "groundwater_cm": -58.42888864610984,
+            "drainage_outward_cm": 0.37995352930310283,
+            "bottom_outward_cm": 0.0,
+            "independent_residual_cm": -1.7144272113078785e-14,
+            "kernel_residual_cm": 1.709743457922741e-14,
+            "solute_end_mg_cm2": 47.99999862519388,
+            "solute_start_mg_cm2": 47.999999285929135,
+            "solute_ledger_mg_cm2": [
+              47.99999862519388,
+              -6.607352531773358e-07,
+              0.0,
+              0.0,
+              0.0,
+              6.607351665472463e-07,
+              0.0,
+              0.0,
+              -8.66300894867021e-14
+            ],
+            "solute_independent_residual_mg_cm2": -8.66300894867021e-14,
+            "uptake_terms_cm": [
+              3.2239534779279886e-25,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "budget_step_retries": 0,
+            "integrated_guard_residual_cm": 3.662868619525028e-15
+          },
+          "terminal_sha256": "74f3df6625d81a949df10b2b358fc92871cfdfe6f4917db6ceda06030ff3e06f"
+        }
+      ],
+      "censored": false,
+      "elapsed_seconds": 11.736139398999995
+    },
+    "input_refusals": {
+      "status": "IRRIGATION_PERSISTED_AND_ACTUAL_CONSUMER_REFUSALS_PASS",
+      "persisted_refusals": [
+        "digest",
+        "mode",
+        "clock",
+        "foreign",
+        "nonfinite",
+        "applied-hash",
+        "disabled"
+      ],
+      "actual_consumer_refusals": [
+        "stale",
+        "nonfinite",
+        "range"
+      ],
+      "sources": {
+        "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+        "app/hybrid_water/irrigation_forcing.py": "096554c44267b0b1b546ccb939f07ce531a84a12f3c9806e02b0bdac96005411",
+        "research/hybrid-water01/check_irrigation_inputs.py": "868a2c2a32439ab67f70c30dcfaccbe8a4d4de55f9110d53fd73cecd139176d9"
+      },
+      "source_commit": "4023bd4672df4175797f3f53a2b9175ee1def267",
+      "elapsed_seconds": 0.44124304300000006
+    }
+  },
+  "preservation": {
+    "windows": {
+      "original": {
+        "status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+        "source_commit": "ebec370636cf601b61286c57d451811afe5a3439",
+        "source_sha256": {
+          "app/hybrid_water/daily_coupling.py": "1a21bef312e19b531607d7f3fad1c1f88a57f498558ad9e3b66ec90fc7297e26",
+          "research/hybrid-water01/qualify_daily_coupling.py": "c1d0d6fa4779c6b1d16f366cb9d6c3ed4529b1b2c9a6cb91bcbb17d3a17749e9"
+        },
+        "platform": "windows",
+        "cases": [
+          {
+            "project": "grass",
+            "optimization": "O0",
+            "bundle_build_sha256": "4fddc7605d414b77d8b7fe5b91279fdf4bf9cb64e065c463b779624b6708640b",
+            "native_origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+            "external_day4_sha256": "95410c2d344ed654fa1fe7a2aa20087cd16e9e29054676f9deb8f716ca2169aa",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "grass",
+            "optimization": "O2",
+            "bundle_build_sha256": "d98cce3674e6ba470b145d523ae2f64d34317dca8437713c0181f884a3797a7f",
+            "native_origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+            "external_day4_sha256": "6e4cbd36de2b3d0bdcf2245219d0f92b42d2b387b8ee743a3e5e6a0604b2c0d3",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "hupsel",
+            "optimization": "O0",
+            "bundle_build_sha256": "9d708e89c1343acf1c64400df27d1a4c275ccd90d226e816a8b62017f2f5b880",
+            "native_origin_sha256": "eb50e360287c68b39daaec88a9bdf4c95e2e4e9cbecc0ab3e45c979efeb4317a",
+            "external_day4_sha256": "b83970812c72765a7fdf6229d7ea1087a90022b9844a9db8c7ea9e419d61801d",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "hupsel",
+            "optimization": "O2",
+            "bundle_build_sha256": "14bfa596b3d205490da1929980a11d256a5ba3501b70335f676d840a96786b7e",
+            "native_origin_sha256": "cfd09804cfd593b20783ba80f931d9c66e26ccdf94fa081f52b5bd6639165316",
+            "external_day4_sha256": "ba135b1fa2138399c3d72f28271bd1ef15f0b56c12b394aa3a48a76289500e4b",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "andelst",
+            "optimization": "O0",
+            "bundle_build_sha256": "474528dc3a409500530aeeeb260753e591786d4c87111a5189239335d974b823",
+            "native_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+            "external_day4_sha256": "ba1376bf7ea802fd03e36142cb57b82619905ab2376c0c5c28dcdb5d1756bb98",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "andelst",
+            "optimization": "O2",
+            "bundle_build_sha256": "c9ac7536acb09a87987ad700571b77b91dad7d85888889a055efbe27959ad7a3",
+            "native_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+            "external_day4_sha256": "3c15474264fc5c9de4e8d82ba013b8ed63e6b21763f1ab70d455187c50aa7b5a",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          }
+        ],
+        "events": [
+          {
+            "case": "grass-O0",
+            "seconds": 5.4297187000047415,
+            "status": "PASS"
+          },
+          {
+            "case": "grass-O2",
+            "seconds": 5.398213000036776,
+            "status": "PASS"
+          },
+          {
+            "case": "hupsel-O0",
+            "seconds": 5.96597020002082,
+            "status": "PASS"
+          },
+          {
+            "case": "hupsel-O2",
+            "seconds": 6.022891799919307,
+            "status": "PASS"
+          },
+          {
+            "case": "andelst-O0",
+            "seconds": 11.37001289986074,
+            "status": "PASS"
+          },
+          {
+            "case": "andelst-O2",
+            "seconds": 12.134349300060421,
+            "status": "PASS"
+          }
+        ],
+        "scope": "Serial externally accepted original-forcing daily transactions. No new groundwater feedback, forcing physics, peer-backend or whole-science qualification.",
+        "compiler_events": [
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O0\\external\\restart_publish.dll"
+            ],
+            "seconds": 0.7977405998390168,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O0\\peer\\restart_publish.dll"
+            ],
+            "seconds": 0.792179400101304,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O0\\restored\\restart_publish.dll"
+            ],
+            "seconds": 0.7873586001805961,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O0\\sync-failure\\restart_publish.dll"
+            ],
+            "seconds": 0.8619838000740856,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O2\\external\\restart_publish.dll"
+            ],
+            "seconds": 0.7993270000442863,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O2\\peer\\restart_publish.dll"
+            ],
+            "seconds": 0.7909848000854254,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O2\\restored\\restart_publish.dll"
+            ],
+            "seconds": 0.8307016000617296,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\grass-O2\\sync-failure\\restart_publish.dll"
+            ],
+            "seconds": 0.8200700001325458,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O0\\external\\restart_publish.dll"
+            ],
+            "seconds": 0.8116091000847518,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O0\\peer\\restart_publish.dll"
+            ],
+            "seconds": 0.8178491001017392,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O0\\restored\\restart_publish.dll"
+            ],
+            "seconds": 0.8193767999764532,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O0\\sync-failure\\restart_publish.dll"
+            ],
+            "seconds": 0.8208924999926239,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O2\\external\\restart_publish.dll"
+            ],
+            "seconds": 0.8224076998885721,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O2\\peer\\restart_publish.dll"
+            ],
+            "seconds": 0.8365988000296056,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O2\\restored\\restart_publish.dll"
+            ],
+            "seconds": 0.8237684001214802,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\hupsel-O2\\sync-failure\\restart_publish.dll"
+            ],
+            "seconds": 0.8606883999891579,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O0\\external\\restart_publish.dll"
+            ],
+            "seconds": 0.8418156998232007,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O0\\peer\\restart_publish.dll"
+            ],
+            "seconds": 0.859051899984479,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O0\\restored\\restart_publish.dll"
+            ],
+            "seconds": 0.8546670998912305,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O0\\sync-failure\\restart_publish.dll"
+            ],
+            "seconds": 0.8624900002032518,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O2\\external\\restart_publish.dll"
+            ],
+            "seconds": 0.855204600142315,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O2\\peer\\restart_publish.dll"
+            ],
+            "seconds": 1.0119965998455882,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O2\\restored\\restart_publish.dll"
+            ],
+            "seconds": 0.8968851999379694,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\support\\restart_publish.c",
+              "-o",
+              "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-irrigation-default-windows-20261112\\andelst-O2\\sync-failure\\restart_publish.dll"
+            ],
+            "seconds": 0.9706370001658797,
+            "returncode": 0
+          }
+        ]
+      },
+      "cauchy": {
+        "status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+        "source_commit": "c2117a8161fba18f556962740147256e7dca4388",
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "1a21bef312e19b531607d7f3fad1c1f88a57f498558ad9e3b66ec90fc7297e26",
+          "research/hybrid-water01/qualify_cauchy_daily_forcing.py": "50ae0f5e7bdcb49169794bc214f7ee30b0b9632ff9975ad1993fb88af1264a32"
+        },
+        "cases": [
+          {
+            "optimization": "O0",
+            "cut": 20,
+            "end": 22,
+            "original_origin_sha256": "c6a439db5e8a7bf9695a828fc96bc8da1b991fe5348499b7846b0f93db96bf84",
+            "compatible_origin_sha256": "d498844e8309e812c689bc86562a4dca2cb642fb37ad40fb5f153e8d4d410a73",
+            "exact_original_control": true,
+            "exact_retry_and_recovery": true,
+            "exact_independently_edited_original_head_control": true,
+            "invalid_pretrial_cases": 8,
+            "actual_head_perturbation_cm": 0.001,
+            "unshifted_bottom_cm": 0.19533361561655016,
+            "shifted_bottom_cm": 0.19532362950912902,
+            "external_terminal_sha256": "40ecc92605e544533acdebf3897e502043811613288a735566d6817ca3f50848"
+          },
+          {
+            "optimization": "O2",
+            "cut": 20,
+            "end": 22,
+            "original_origin_sha256": "e0c56614e22b047d38e013daaabd6b2be3370240c502c6b1298dfbbc19a1b0a7",
+            "compatible_origin_sha256": "6c0669cd92d160e68eb222bb23db9442b40e72de3d067979ef36e6c3a2a429f8",
+            "exact_original_control": true,
+            "exact_retry_and_recovery": true,
+            "exact_independently_edited_original_head_control": true,
+            "invalid_pretrial_cases": 8,
+            "actual_head_perturbation_cm": 0.001,
+            "unshifted_bottom_cm": 0.19533361561655016,
+            "shifted_bottom_cm": 0.19532362950912902,
+            "external_terminal_sha256": "aef77825f2bb7322a69fb91a0e5b3156db1a8c7591af83d96c9f2b14a608fe3d"
+          }
+        ],
+        "censored": false,
+        "elapsed_seconds": 31.156312400009483
+      },
+      "groundwater": {
+        "status": "GRASS_ORIGINAL_PRESCRIBED_GROUNDWATER_CHANGED_HISTORY_RETRY_RECOVERY_PASS",
+        "source_commit": "c2117a8161fba18f556962740147256e7dca4388",
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "1a21bef312e19b531607d7f3fad1c1f88a57f498558ad9e3b66ec90fc7297e26",
+          "research/hybrid-water01/qualify_grass_groundwater.py": "7916f0ad86c9df58a60dc66f887cec4f113c392b6877eac3f279a629dd136cb2"
+        },
+        "cases": [
+          {
+            "optimization": "O0",
+            "cut": 2,
+            "end": 4,
+            "origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O0-2",
+              "origin_sha256": "b3c38b774fe8c30c4c2dbe6c3438d7a8e98610003cb63f69b8902f8957175a56",
+              "origin_day": 2,
+              "t0_day1900": 29222,
+              "t1_day1900": 29223,
+              "head_start_cm": -88.0,
+              "head_end_cm": -87.999,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O0-2",
+              "origin_sha256": "805aba2d1388c97fcc2920df364318e9972d7afa35c4ed07404ff96c5b4fc2b7",
+              "origin_day": 3,
+              "t0_day1900": 29223,
+              "t1_day1900": 29224,
+              "head_start_cm": -87.999,
+              "head_end_cm": -87.998,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.13138089301870753,
+            "terminal_sha256": "a63fa58756f0c1cbabe4e1429f75105b4261097e53e636ed60c003a8e8f36659"
+          },
+          {
+            "optimization": "O0",
+            "cut": 114,
+            "end": 116,
+            "origin_sha256": "31bc2d11576ad65aa1ba1a87c72d81e9229672f9d7661b7d3d99a61b0a6d9a6c",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O0-114",
+              "origin_sha256": "31bc2d11576ad65aa1ba1a87c72d81e9229672f9d7661b7d3d99a61b0a6d9a6c",
+              "origin_day": 114,
+              "t0_day1900": 29334,
+              "t1_day1900": 29335,
+              "head_start_cm": -88.0,
+              "head_end_cm": -92.124,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O0-114",
+              "origin_sha256": "2288a8acc29628eaa534a94af4eab8f8ae114dcc0d21169590e6a9671229f60d",
+              "origin_day": 115,
+              "t0_day1900": 29335,
+              "t1_day1900": 29336,
+              "head_start_cm": -92.124,
+              "head_end_cm": -96.248,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.12451579977403421,
+            "terminal_sha256": "feba234fac9943b2a689e44b96a6efc9fda961e8218de9452e25646c0cc08baf"
+          },
+          {
+            "optimization": "O2",
+            "cut": 2,
+            "end": 4,
+            "origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O2-2",
+              "origin_sha256": "59c2204f3e4a72b5fa8c11311249cb86eefa55c9c8624b126a4e98b92fbb318a",
+              "origin_day": 2,
+              "t0_day1900": 29222,
+              "t1_day1900": 29223,
+              "head_start_cm": -88.0,
+              "head_end_cm": -87.999,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O2-2",
+              "origin_sha256": "bf2ae528a76470348bf12d33faf8fe81673554893865fd3741bf50a70032188b",
+              "origin_day": 3,
+              "t0_day1900": 29223,
+              "t1_day1900": 29224,
+              "head_start_cm": -87.999,
+              "head_end_cm": -87.998,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.13138089301870753,
+            "terminal_sha256": "9b09a9c36334204a8d9d77f379fb23e046edc26538008f3f1eb7826073e509c6"
+          },
+          {
+            "optimization": "O2",
+            "cut": 114,
+            "end": 116,
+            "origin_sha256": "d6b5247373ccd436eb18ed263d6ae494f1a09ede3638f7fcf15093e5834d5e1e",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O2-114",
+              "origin_sha256": "d6b5247373ccd436eb18ed263d6ae494f1a09ede3638f7fcf15093e5834d5e1e",
+              "origin_day": 114,
+              "t0_day1900": 29334,
+              "t1_day1900": 29335,
+              "head_start_cm": -88.0,
+              "head_end_cm": -92.124,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O2-114",
+              "origin_sha256": "2cd136638fb9dfaa501cbbde87f72e57de2c3a691403a8b0c452d8ac0221fb4b",
+              "origin_day": 115,
+              "t0_day1900": 29335,
+              "t1_day1900": 29336,
+              "head_start_cm": -92.124,
+              "head_end_cm": -96.248,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.12451579977403421,
+            "terminal_sha256": "7546da654c933b10426258c6e68accda69ce79bbda808f943a818d4d6e3db78d"
+          }
+        ],
+        "censored": false,
+        "elapsed_seconds": 33.09704099991359
+      },
+      "guards": {
+        "status": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS",
+        "platform": "windows",
+        "seconds": 1.3484459999017417,
+        "source_sha256": {
+          "app/hybrid_water/daily_coupling.py": "1a21bef312e19b531607d7f3fad1c1f88a57f498558ad9e3b66ec90fc7297e26",
+          "research/hybrid-water01/qualify_daily_coupling_corruption.py": "2f00bbb1407231841a39a1e0dbd1429951fe919f7f6e9988c8522dcb8c7bff86"
+        },
+        "candidate_native_corruption_refused": true,
+        "accepted_origin_corruption_refused_before_trial": true,
+        "exclusive_owner": true,
+        "native_adoption_explicit": true,
+        "terminal_refused_before_trial": true,
+        "retained_terminal_origin_sha256": "477d1f326f03eea2f84465c26192ec8c3412f9c9e1f9db9e3e603147b8fd37c0",
+        "accepted_guard_day3_sha256": "672c3df8d2f2e5ac190dab57d315064ca873c842306b8a5122ff063ffb4ad9a1"
+      },
+      "groundwater-inputs": {
+        "status": "PERSISTED_GROUNDWATER_FORCING_REFUSALS_LEAP_YEAR_INPUT_TRANSFORMATION_PASS",
+        "checkpoint_attacks": [
+          "digest",
+          "mode",
+          "clock",
+          "foreign",
+          "nonfinite",
+          "applied-hash"
+        ],
+        "year_input_checks": [
+          {
+            "day": 58,
+            "prepared_bbc_sha256": "0fb680a848131fa5287a5f9ef4d983acc5fee41b7f606f357ce841046d487a7e",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 59,
+            "prepared_bbc_sha256": "df7af8a72668712eeb805cd4ac6d3991c57fc4c20beeff93304b25c1cb74a8d1",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 365,
+            "prepared_bbc_sha256": "b5873c5966cd7bd3579172ab5e73d6d0fbd8ea12e8ec0a680a6787a00059fbb0",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 1826,
+            "prepared_bbc_sha256": "78232a0eb9b8e9fff9404aecb2c42680f4d4f37fc4bb337ee46671d3aca46d02",
+            "scope": "input transformation only, no year model execution"
+          }
+        ],
+        "original_checkpoint_sha256": "bf2ae528a76470348bf12d33faf8fe81673554893865fd3741bf50a70032188b",
+        "model_runs": 0,
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "1a21bef312e19b531607d7f3fad1c1f88a57f498558ad9e3b66ec90fc7297e26",
+          "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
+        }
+      },
+      "cauchy-inputs": {
+        "status": "PERSISTED_CAUCHY_FORCING_REFUSALS_AND_YEAR_INPUT_TRANSFORMATION_PASS",
+        "checkpoint_attacks": [
+          "digest",
+          "mode",
+          "clock",
+          "foreign",
+          "nonfinite",
+          "applied-hash"
+        ],
+        "year_input_checks": [
+          {
+            "day": 364,
+            "prepared_bbc_sha256": "de7e106398e4950ac5d62b078dafff3dec3ca12d9bb70f965f6dabb5d362aa17",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 365,
+            "prepared_bbc_sha256": "a9d24a5ddb802fba84cd38dcebc0ac340fd2a75a15aa80db0d8b7ea4f7118487",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 453,
+            "prepared_bbc_sha256": "d71d16b888596a3c93dd556a8e3de1cba52fb9fad3bf633cf1532e6eebf30fba",
+            "scope": "input transformation only, no year model execution"
+          }
+        ],
+        "original_checkpoint_sha256": "001d238a85214bf47aeefe1d69e10825f09d2dc8a0387fd307d3c40177f36e6f",
+        "model_runs": 0,
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "1a21bef312e19b531607d7f3fad1c1f88a57f498558ad9e3b66ec90fc7297e26",
+          "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
+        }
+      }
+    },
+    "linux": {
+      "original": {
+        "status": "EXTERNAL_DAILY_THREE_PROJECTS_O0_O2_ACCEPT_DISCARD_RECOVERY_PASS",
+        "source_commit": "4023bd4672df4175797f3f53a2b9175ee1def267",
+        "source_sha256": {
+          "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+          "research/hybrid-water01/qualify_daily_coupling.py": "e978bb1edc38efcdb0eafbb8b86ce7e5c7667b348d54646ce557657ea172b217"
+        },
+        "platform": "linux",
+        "cases": [
+          {
+            "project": "grass",
+            "optimization": "O0",
+            "bundle_build_sha256": "4a4b7c6759385ff415b5340d0633aa632893d8c38de96230fa380cd2a808f114",
+            "native_origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+            "external_day4_sha256": "8fe730816f6b9039bedb005f32804602d2fe764b05f9e670e478b7ffc4a1e9e8",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "grass",
+            "optimization": "O2",
+            "bundle_build_sha256": "692ab0deb79d6b277730d45b7485a3c86b795960ffa2622606fef604278c0aab",
+            "native_origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+            "external_day4_sha256": "28468f46fe1a50d80969483eda18ab579aa2e9f9191cd440e139479a08792509",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "hupsel",
+            "optimization": "O0",
+            "bundle_build_sha256": "bffd8b8c5979524da003abc6e2c282d40c74bbe5484873c37d61afb7bd3ad6c7",
+            "native_origin_sha256": "b296554d70385b3bc5c4e64ff68731281749203e6556e513b64e6307936b94d7",
+            "external_day4_sha256": "090450f4d1968ecfb2642efe5722afe76527d556a8a357fdab7fb54a2b5212e2",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "hupsel",
+            "optimization": "O2",
+            "bundle_build_sha256": "f67af9efb4614c5beb07a43cd8cc82866bb1767c8802a75d8c2ad1e3cfaf2163",
+            "native_origin_sha256": "25660942044824e0c36209b72040234c7c135ce48ed98a3ee2e687790f2eba1b",
+            "external_day4_sha256": "1d021294d66ea1350814537ecfc5dddcba9588817b0dec287f14105bda746883",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "andelst",
+            "optimization": "O0",
+            "bundle_build_sha256": "687d509b7519de7a5a864de72de9d7e3a97ab510f46c002b858f62a76a252ae6",
+            "native_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+            "external_day4_sha256": "7e43b1f3ffa7cdd2f6af1237edf99b65ec557fd559be64ace79dfbc8620fb49f",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          },
+          {
+            "project": "andelst",
+            "optimization": "O2",
+            "bundle_build_sha256": "5e4761bec3ab57f33f1767ddbdd2f711220a4ba581d1e0638601738577b32828",
+            "native_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+            "external_day4_sha256": "e6c7b148894e363a7e49d0a79d15a8aea9d92237716f3762e9974ae4b675627f",
+            "exact_discard_retry_payload": true,
+            "exact_external_disk_recovery": true,
+            "independent_peer_and_stale_refusal": true,
+            "post_replace_failure_recovery": true
+          }
+        ],
+        "events": [
+          {
+            "case": "grass-O0",
+            "seconds": 0.5133238020000022,
+            "status": "PASS"
+          },
+          {
+            "case": "grass-O2",
+            "seconds": 0.5134212869999999,
+            "status": "PASS"
+          },
+          {
+            "case": "hupsel-O0",
+            "seconds": 0.6015381670000011,
+            "status": "PASS"
+          },
+          {
+            "case": "hupsel-O2",
+            "seconds": 1.3643672299999992,
+            "status": "PASS"
+          },
+          {
+            "case": "andelst-O0",
+            "seconds": 6.472179171999997,
+            "status": "PASS"
+          },
+          {
+            "case": "andelst-O2",
+            "seconds": 6.21333882399999,
+            "status": "PASS"
+          }
+        ],
+        "scope": "Serial externally accepted original-forcing daily transactions. No new groundwater feedback, forcing physics, peer-backend or whole-science qualification.",
+        "compiler_events": [
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O0/external/restart_publish.so"
+            ],
+            "seconds": 0.07778616199999533,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O0/peer/restart_publish.so"
+            ],
+            "seconds": 0.07731925200000234,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O0/restored/restart_publish.so"
+            ],
+            "seconds": 0.07614036300000038,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O0/sync-failure/restart_publish.so"
+            ],
+            "seconds": 0.07710816800000231,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O2/external/restart_publish.so"
+            ],
+            "seconds": 0.07984468000000078,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O2/peer/restart_publish.so"
+            ],
+            "seconds": 0.07846652099999574,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O2/restored/restart_publish.so"
+            ],
+            "seconds": 0.07867902699999973,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/grass-O2/sync-failure/restart_publish.so"
+            ],
+            "seconds": 0.07722760000000051,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O0/external/restart_publish.so"
+            ],
+            "seconds": 0.07842834899999929,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O0/peer/restart_publish.so"
+            ],
+            "seconds": 0.07847681000000506,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O0/restored/restart_publish.so"
+            ],
+            "seconds": 0.07727252499999793,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O0/sync-failure/restart_publish.so"
+            ],
+            "seconds": 0.07693766999999951,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O2/external/restart_publish.so"
+            ],
+            "seconds": 0.07736033799999831,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O2/peer/restart_publish.so"
+            ],
+            "seconds": 0.12710102199999795,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O2/restored/restart_publish.so"
+            ],
+            "seconds": 0.08126736300000204,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/hupsel-O2/sync-failure/restart_publish.so"
+            ],
+            "seconds": 0.15313738300000068,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O0/external/restart_publish.so"
+            ],
+            "seconds": 0.24246895800000345,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O0/peer/restart_publish.so"
+            ],
+            "seconds": 0.07752785099999926,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O0/restored/restart_publish.so"
+            ],
+            "seconds": 0.07808788500000219,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O0/sync-failure/restart_publish.so"
+            ],
+            "seconds": 0.08076787000000252,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O2/external/restart_publish.so"
+            ],
+            "seconds": 0.08161304500001165,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O2/peer/restart_publish.so"
+            ],
+            "seconds": 0.07817892500000312,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O2/restored/restart_publish.so"
+            ],
+            "seconds": 0.07808052800000098,
+            "returncode": 0
+          },
+          {
+            "command": [
+              "gcc",
+              "-shared",
+              "-O2",
+              "-fPIC",
+              "/home/runner/work/SWAP5/SWAP5/app/support/restart_publish.c",
+              "-o",
+              "/home/runner/work/_temp/external-daily/andelst-O2/sync-failure/restart_publish.so"
+            ],
+            "seconds": 0.08114983299999778,
+            "returncode": 0
+          }
+        ]
+      },
+      "cauchy": {
+        "status": "ACTUAL_ORIGINAL_CAUCHY_DAILY_FORCING_RETRY_RECOVERY_PASS",
+        "source_commit": "4023bd4672df4175797f3f53a2b9175ee1def267",
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+          "research/hybrid-water01/qualify_cauchy_daily_forcing.py": "50ae0f5e7bdcb49169794bc214f7ee30b0b9632ff9975ad1993fb88af1264a32"
+        },
+        "cases": [
+          {
+            "optimization": "O0",
+            "cut": 20,
+            "end": 22,
+            "original_origin_sha256": "60ba22de4630fd9c195d5e4d6bd3af98a399df261b6c00e53015de769ee13310",
+            "compatible_origin_sha256": "484eb109c8833035b1f4ac5381a90767fc65cf4c5352dced490f2a06fad7d6b0",
+            "exact_original_control": true,
+            "exact_retry_and_recovery": true,
+            "exact_independently_edited_original_head_control": true,
+            "invalid_pretrial_cases": 8,
+            "actual_head_perturbation_cm": 0.001,
+            "unshifted_bottom_cm": 0.19532446941794768,
+            "shifted_bottom_cm": 0.19537529078756663,
+            "external_terminal_sha256": "1a7648a13c00a220378c5192cfe6493b17a580c118d5dcca806fcf8c5e6bd853"
+          },
+          {
+            "optimization": "O2",
+            "cut": 20,
+            "end": 22,
+            "original_origin_sha256": "55b544168272a056614aa6b531452731403fe7940744340c2bdda9e98a8c1934",
+            "compatible_origin_sha256": "3aa75e3a98346ef2cf28ee76cef6e6a27af2cd873b8e65e607dd50be3c4a753d",
+            "exact_original_control": true,
+            "exact_retry_and_recovery": true,
+            "exact_independently_edited_original_head_control": true,
+            "invalid_pretrial_cases": 8,
+            "actual_head_perturbation_cm": 0.001,
+            "unshifted_bottom_cm": 0.19532446941794768,
+            "shifted_bottom_cm": 0.19537529078756663,
+            "external_terminal_sha256": "e002a0e13d0e7127c1e921333e7040eee778c2b726924fe741e867fda887d258"
+          }
+        ],
+        "censored": false,
+        "elapsed_seconds": 7.323926331999999
+      },
+      "groundwater": {
+        "status": "GRASS_ORIGINAL_PRESCRIBED_GROUNDWATER_CHANGED_HISTORY_RETRY_RECOVERY_PASS",
+        "source_commit": "4023bd4672df4175797f3f53a2b9175ee1def267",
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+          "research/hybrid-water01/qualify_grass_groundwater.py": "7916f0ad86c9df58a60dc66f887cec4f113c392b6877eac3f279a629dd136cb2"
+        },
+        "cases": [
+          {
+            "optimization": "O0",
+            "cut": 2,
+            "end": 4,
+            "origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O0-2",
+              "origin_sha256": "d5020c6fe77381f59ca40cc3a8c97228038fb26b20c56e2b1b6ef9ac8abe9b2b",
+              "origin_day": 2,
+              "t0_day1900": 29222,
+              "t1_day1900": 29223,
+              "head_start_cm": -88.0,
+              "head_end_cm": -87.999,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O0-2",
+              "origin_sha256": "67e80eddf809a128cc6180097204fc409745bd54788cad6cbb86f2096d356457",
+              "origin_day": 3,
+              "t0_day1900": 29223,
+              "t1_day1900": 29224,
+              "head_start_cm": -87.999,
+              "head_end_cm": -87.998,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.1313808930187061,
+            "terminal_sha256": "0b2e67fb99f61e81f3cd2225acfc366e4118a28d541bb869e928fc943a5c0285"
+          },
+          {
+            "optimization": "O0",
+            "cut": 114,
+            "end": 116,
+            "origin_sha256": "a28b5a32808a3d1478d9349197e2daad2353d37548c494f9335227b9844df00e",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O0-114",
+              "origin_sha256": "a28b5a32808a3d1478d9349197e2daad2353d37548c494f9335227b9844df00e",
+              "origin_day": 114,
+              "t0_day1900": 29334,
+              "t1_day1900": 29335,
+              "head_start_cm": -88.0,
+              "head_end_cm": -92.124,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O0-114",
+              "origin_sha256": "03543f27455b62a99ba65be5ffe43f5147726a237a0eaf8dfe44a37cd7a3fd45",
+              "origin_day": 115,
+              "t0_day1900": 29335,
+              "t1_day1900": 29336,
+              "head_start_cm": -92.124,
+              "head_end_cm": -96.248,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.12451579977403532,
+            "terminal_sha256": "850c2b85ccc09661f6fa045791ed6536a1bd9fe945b98b5f6479b4ce7200dc67"
+          },
+          {
+            "optimization": "O2",
+            "cut": 2,
+            "end": 4,
+            "origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O2-2",
+              "origin_sha256": "40f870027d2649f30e312b1da5cb7f3ccafd9a1a7f9a99ca217b94157a4ca42d",
+              "origin_day": 2,
+              "t0_day1900": 29222,
+              "t1_day1900": 29223,
+              "head_start_cm": -88.0,
+              "head_end_cm": -87.999,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O2-2",
+              "origin_sha256": "89740617ed57d1c75a79da0e124e37f2092db227dc380473dac4bc738311c02c",
+              "origin_day": 3,
+              "t0_day1900": 29223,
+              "t1_day1900": 29224,
+              "head_start_cm": -87.999,
+              "head_end_cm": -87.998,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.1313808930187061,
+            "terminal_sha256": "ed3224c6ef9b66deec3a0e61f85bbb50802eddd029c54f2b691dee3021cdd42a"
+          },
+          {
+            "optimization": "O2",
+            "cut": 114,
+            "end": 116,
+            "origin_sha256": "aee7707f548de4e4353cca2cdeaedbb658ba03ea1a24999ceaaa2503da2869ee",
+            "exact_discard_retry_and_modified_history_recovery": true,
+            "exact_independent_original_controls_both_days": true,
+            "invalid_pretrial_cases": 8,
+            "first_forcing": {
+              "coupling_id": "grass-level-O2-114",
+              "origin_sha256": "aee7707f548de4e4353cca2cdeaedbb658ba03ea1a24999ceaaa2503da2869ee",
+              "origin_day": 114,
+              "t0_day1900": 29334,
+              "t1_day1900": 29335,
+              "head_start_cm": -88.0,
+              "head_end_cm": -92.124,
+              "provenance": "caller-first-day"
+            },
+            "second_forcing": {
+              "coupling_id": "grass-level-O2-114",
+              "origin_sha256": "6cab71991dc4c15780a04048c923f6c5fe654c35501d9236d1e28c881deac81e",
+              "origin_day": 115,
+              "t0_day1900": 29335,
+              "t1_day1900": 29336,
+              "head_start_cm": -92.124,
+              "head_end_cm": -96.248,
+              "provenance": "caller-second-day-after-modified-state"
+            },
+            "first_bottom_outward_cm": 0.12451579977403532,
+            "terminal_sha256": "4c9c1ff62cb6a58e5f36848f042a25536b84338e950a0071c701b60861a1601f"
+          }
+        ],
+        "censored": false,
+        "elapsed_seconds": 3.3544330779999996
+      },
+      "guards": {
+        "status": "MUTATED_NATIVE_ORIGIN_OWNER_NATIVE_ADOPTION_AND_TERMINAL_GUARDS_PASS",
+        "platform": "linux",
+        "seconds": 0.15905873900000245,
+        "source_sha256": {
+          "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+          "research/hybrid-water01/qualify_daily_coupling_corruption.py": "2f00bbb1407231841a39a1e0dbd1429951fe919f7f6e9988c8522dcb8c7bff86"
+        },
+        "candidate_native_corruption_refused": true,
+        "accepted_origin_corruption_refused_before_trial": true,
+        "exclusive_owner": true,
+        "native_adoption_explicit": true,
+        "terminal_refused_before_trial": true,
+        "retained_terminal_origin_sha256": "875eee2e118f2ad5f0b0690e81719f4f0e2c9c53905be1f96fb3798a7d6acb0a",
+        "accepted_guard_day3_sha256": "0f344b8e9d0ef56b322d70333dbd67c64686c0bc99696c2b83e4cffff304c08c"
+      },
+      "groundwater-inputs": {
+        "status": "PERSISTED_GROUNDWATER_FORCING_REFUSALS_LEAP_YEAR_INPUT_TRANSFORMATION_PASS",
+        "checkpoint_attacks": [
+          "digest",
+          "mode",
+          "clock",
+          "foreign",
+          "nonfinite",
+          "applied-hash"
+        ],
+        "year_input_checks": [
+          {
+            "day": 58,
+            "prepared_bbc_sha256": "709a1d5c39adf0d17dd069847fcf278cbd578e0a7789f99e094e7aeeac03529b",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 59,
+            "prepared_bbc_sha256": "b6e70460878a42214b66c797cb09616b44d3649780839b45b13e87fce9818f55",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 365,
+            "prepared_bbc_sha256": "138b2537bb004baa49b697813cc6aeaefb50905c0885afb30097a862fd6bcaad",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 1826,
+            "prepared_bbc_sha256": "b95c0b00da6ab8a80eca61e71537669580c5ddcacdb1fedeb334b2cc41f48230",
+            "scope": "input transformation only, no year model execution"
+          }
+        ],
+        "original_checkpoint_sha256": "89740617ed57d1c75a79da0e124e37f2092db227dc380473dac4bc738311c02c",
+        "model_runs": 0,
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+          "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
+        }
+      },
+      "cauchy-inputs": {
+        "status": "PERSISTED_CAUCHY_FORCING_REFUSALS_AND_YEAR_INPUT_TRANSFORMATION_PASS",
+        "checkpoint_attacks": [
+          "digest",
+          "mode",
+          "clock",
+          "foreign",
+          "nonfinite",
+          "applied-hash"
+        ],
+        "year_input_checks": [
+          {
+            "day": 364,
+            "prepared_bbc_sha256": "6ed1e4b2a03a28252d651468f80d8cec67fe41ef06dbd4f13a588335ddb318df",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 365,
+            "prepared_bbc_sha256": "a2e17501632873549b4c47ec48f8020b80b1130f90e85123f121c950d6016c6f",
+            "scope": "input transformation only, no year model execution"
+          },
+          {
+            "day": 453,
+            "prepared_bbc_sha256": "645849e8753209cbde9c50794441f6efc93e83297e9391f3687dc75cdbdd00c2",
+            "scope": "input transformation only, no year model execution"
+          }
+        ],
+        "original_checkpoint_sha256": "4d2a235fe832e46d7640cfe22c73feac3d2428076ff9a08b8e668089797eece4",
+        "model_runs": 0,
+        "sources": {
+          "app/hybrid_water/daily_coupling.py": "9afa6a1c1c69100bdd5119c52d6c2cb17758305e3865632cd5997328deb0041a",
+          "research/hybrid-water01/check_cauchy_recovery_inputs.py": "333d3141a0c21c8bb627e00f2b3f6209aa8d8f14dc03ad9bb22882a6735a5360"
+        }
+      }
+    }
+  },
+  "independent_audits": {
+    "windows": {
+      "irrigation": {
+        "status": "INDEPENDENT_IRRIGATION_NATIVE_INPUT_WATER_SOLUTE_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "scenario": "modified",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O0",
+            "scenario": "disabled",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O0",
+            "scenario": "identity",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O2",
+            "scenario": "modified",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O2",
+            "scenario": "disabled",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O2",
+            "scenario": "identity",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          }
+        ],
+        "auditor_sha256": "7a80981d96793bcc5b0c29daad236d641183e1ec67cfd97c0eaa925e0c6815b8"
+      },
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "40ecc92605e544533acdebf3897e502043811613288a735566d6817ca3f50848"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": -9.986107421144919e-06,
+            "accepted_terminal_sha256": "aef77825f2bb7322a69fb91a0e5b3156db1a8c7591af83d96c9f2b14a608fe3d"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "groundwater": {
+        "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O0",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          }
+        ],
+        "auditor_sha256": "53a551a764e42fd4e7b4f7a652d368828e17869de59228ecb2a434a928c982c3"
+      },
+      "original": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "windows",
+        "raw_files": 4807,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 46.321155899902806,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    },
+    "linux": {
+      "irrigation": {
+        "status": "INDEPENDENT_IRRIGATION_NATIVE_INPUT_WATER_SOLUTE_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "scenario": "modified",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O0",
+            "scenario": "disabled",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O0",
+            "scenario": "identity",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O2",
+            "scenario": "modified",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O2",
+            "scenario": "disabled",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          },
+          {
+            "optimization": "O2",
+            "scenario": "identity",
+            "native_retry_and_changed_history_recovery": "EXACT",
+            "independent_original_input_physical_control": "EXACT_BOTH_DAYS",
+            "actual_input_lineage_water_solute": "PASS",
+            "incremental_build_commands": 2
+          }
+        ],
+        "auditor_sha256": "7a80981d96793bcc5b0c29daad236d641183e1ec67cfd97c0eaa925e0c6815b8"
+      },
+      "cauchy": {
+        "status": "INDEPENDENT_ACTUAL_CAUCHY_STATE_INPUT_LINEAGE_AND_PHYSICAL_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "1a7648a13c00a220378c5192cfe6493b17a580c118d5dcca806fcf8c5e6bd853"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              20,
+              22
+            ],
+            "exact_original_and_retry_native_state": true,
+            "exact_recovery_native_state": true,
+            "exact_independent_shifted_original_control": true,
+            "forcing_receipt_and_applied_input_hashes": "PASS",
+            "bottom_response_cm": 5.0821369618953005e-05,
+            "accepted_terminal_sha256": "e002a0e13d0e7127c1e921333e7040eee778c2b726924fe741e867fda887d258"
+          }
+        ],
+        "source_sha256": "a4abd36a9077ae7322286ea9deb2a7eb16142509e47c4cf243809853756c6664"
+      },
+      "groundwater": {
+        "status": "INDEPENDENT_GROUNDWATER_MODIFIED_HISTORY_NATIVE_INPUT_LINEAGE_CONTROL_AUDIT_PASS",
+        "cases": [
+          {
+            "optimization": "O0",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O0",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              2,
+              4
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          },
+          {
+            "optimization": "O2",
+            "window": [
+              114,
+              116
+            ],
+            "actual_modified_state_disk_recovery_exact": true,
+            "actual_independent_original_controls_both_days_exact": true,
+            "actual_retry_native_payloads_exact": true,
+            "forcing_and_applied_input_lineage": "PASS"
+          }
+        ],
+        "auditor_sha256": "53a551a764e42fd4e7b4f7a652d368828e17869de59228ecb2a434a928c982c3"
+      },
+      "original": {
+        "status": "INDEPENDENT_DAILY_COUPLING_SOURCE_LINEAGE_PHYSICAL_PAYLOAD_PUBLICATION_AUDIT_PASS",
+        "platform": "linux",
+        "raw_files": 4725,
+        "current_cases": 6,
+        "current_and_previous_cases": 6,
+        "C_compiles_before": null,
+        "C_compiles_after": 24,
+        "seconds_before": null,
+        "seconds_after": 15.67816848199999,
+        "publisher_reuse_native_payloads_exact": "NOT_SELECTED_PRIOR_PERFORMANCE"
+      }
+    }
+  },
+  "raw_archives": [
+    {
+      "path": "research/hybrid-water01/irrigation-windows-20261112.tar.xz",
+      "bytes": 14602408,
+      "sha256": "90080f1ec5b582fe62e1c7891cc9694facc5fb9463d9fde51a270a39ff5d6fbe"
+    },
+    {
+      "path": "research/hybrid-water01/irrigation-linux-20261112.tar.xz",
+      "bytes": 12993124,
+      "sha256": "9ddbbefcec649fef7f3c016fe3be65e7d17bd3b2199d5598828ef8bfe21537f4"
+    }
+  ],
+  "ci_logs": [
+    {
+      "path": "research/hybrid-water01/irrigation-linux-ci-20261112.log.gz",
+      "sha256": "3c95c0b4f58f841433abb7492f2eb58c4593e342450415a40b04b676ee4c1fa8"
+    },
+    {
+      "path": "research/hybrid-water01/irrigation-linux-preflight-failed-20261112.log.gz",
+      "sha256": "cf504ca7381bff8a799764a0c7fbb9521fe1f55fd279e18e2e85d1510e1e6721"
+    }
+  ],
+  "retained_failed_attempts": [
+    {
+      "kind": "harness boundary assertion",
+      "source": "854d91f5c",
+      "retained_in": "Windows raw failed-0 phase",
+      "diagnosis": "Seven-day physical records already exact; frozen gift-seven archive actually saves native context on day5. Correct native comparison to actual day5 saved checkpoint, without model change."
+    },
+    {
+      "kind": "owning selection preflight",
+      "run": 43133558054,
+      "job": 130903317061,
+      "head": "c2117a8161fba18f556962740147256e7dca4388",
+      "conclusion": "failure",
+      "models_executed": 0,
+      "diagnosis": "prior_execution NOT_RUN wording refused despite recorded completed Windows proof; corrected metadata to PASS and persisted; successor actual science run succeeds."
+    }
+  ],
+  "scope_limits": [
+    "Original donorO2/kernelO0/O2, two platforms; surface type1 fixed-event daily input only.",
+    "Independent original SWP controls match physical records; their full saved irrigation table context intentionally differs. Exact native retry/recovery is same external route.",
+    "Seven original no-file physical days and original native event checkpoint5 are preserved; no full new controlled1096day trajectory.",
+    "Original full1827/481/1096 application evidence and existing day188/day584 scientific failures retain separate scopes.",
+    "No full physical energy, scheduled/SSDI input, thread-safety, cross-platform byte equality or universal performance claim.",
+    "No source in src/reference/tools/tests modified, no new kernel or checkpoint codec.",
+    "Calendar transformations are input-only, not year model runs."
+  ],
+  "documentation_checks": {
+    "source_check": "PASS",
+    "strict_mkdocs": "PASS",
+    "seconds": 22.29
+  }
 }
