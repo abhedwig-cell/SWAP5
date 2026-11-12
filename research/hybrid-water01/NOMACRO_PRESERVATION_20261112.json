@@ -1,0 +1,207 @@
+{
+  "status": "PASS",
+  "preservation": [
+    {
+      "project": "grass",
+      "opt": "O0",
+      "prior_build_sha256": "4fddc7605d414b77d8b7fe5b91279fdf4bf9cb64e065c463b779624b6708640b",
+      "generated": {
+        "macropore.f90": true,
+        "swap.f90": true,
+        "swap_main.f90": true,
+        "swap_csv_output.f90": true,
+        "swapoutput.f90": true
+      },
+      "checks": {
+        "continuous/daily.jsonl": true,
+        "resumed/daily.jsonl": true,
+        "terminal-control/original/result.end": true,
+        "terminal-control/original/macro.bin": true,
+        "resumed/original/result.end": true,
+        "resumed/original/macro.bin": true
+      },
+      "current": {
+        "status": "GENERIC_HYBRID_ORIGINAL_PREFIX_RESTART_ISOLATION_REFUSAL_PASS",
+        "project": "grass",
+        "kernel_optimization": "O0",
+        "donor_optimization": "O2",
+        "days": 4,
+        "baseline": "NOT_APPLICABLE",
+        "maximum_water_residual_cm": 1.7144055272644287e-14,
+        "exact_native_restart_payloads": [
+          "result.end",
+          "macro.bin"
+        ],
+        "auxiliary_state_scope": "Both payloads exact own restart",
+        "distinct_instance_control": true,
+        "refusal_isolation": true,
+        "source_sha256": {
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_host.py": "4f5965c3c2658b3475e20e23b7eed7a53bc8d7692d8c11905db5bea101b5a273",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_sources.py": "2a74df363f4a5d172f1c900ea99505ba9e722a91555d682df92dc4c5755a389b",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_adapter.f90": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\main.f90": "b967a621b96d00c77ed1239dc688c1f7e23e82921ad4732c52de94ba43feeba1"
+        },
+        "build_sha256": "ce397f198ea53cfdf27e0cf8e2a96a68d1a608897f1421195076bd9e5ed8e36c",
+        "events_sha256": "6278100beab6eabaf0fddfd562ebac3a08cffeac694914ca6651ec996b0568fb",
+        "scope": "Bounded original water route only; not native1e-5C heat, full project or whole science."
+      }
+    },
+    {
+      "project": "grass",
+      "opt": "O2",
+      "prior_build_sha256": "d98cce3674e6ba470b145d523ae2f64d34317dca8437713c0181f884a3797a7f",
+      "generated": {
+        "macropore.f90": true,
+        "swap.f90": true,
+        "swap_main.f90": true,
+        "swap_csv_output.f90": true,
+        "swapoutput.f90": true
+      },
+      "checks": {
+        "continuous/daily.jsonl": true,
+        "resumed/daily.jsonl": true,
+        "terminal-control/original/result.end": true,
+        "terminal-control/original/macro.bin": true,
+        "resumed/original/result.end": true,
+        "resumed/original/macro.bin": true
+      },
+      "current": {
+        "status": "GENERIC_HYBRID_ORIGINAL_PREFIX_RESTART_ISOLATION_REFUSAL_PASS",
+        "project": "grass",
+        "kernel_optimization": "O2",
+        "donor_optimization": "O2",
+        "days": 4,
+        "baseline": "NOT_APPLICABLE",
+        "maximum_water_residual_cm": 1.7144055272644287e-14,
+        "exact_native_restart_payloads": [
+          "result.end",
+          "macro.bin"
+        ],
+        "auxiliary_state_scope": "Both payloads exact own restart",
+        "distinct_instance_control": true,
+        "refusal_isolation": true,
+        "source_sha256": {
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_host.py": "4f5965c3c2658b3475e20e23b7eed7a53bc8d7692d8c11905db5bea101b5a273",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_sources.py": "2a74df363f4a5d172f1c900ea99505ba9e722a91555d682df92dc4c5755a389b",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_adapter.f90": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\main.f90": "b967a621b96d00c77ed1239dc688c1f7e23e82921ad4732c52de94ba43feeba1"
+        },
+        "build_sha256": "d83c4cc79d5596b04fe45d271bb715f108b63d2bff2f1270573d95cbfad039f8",
+        "events_sha256": "eb0f3af3fde84680bf54d83a94ba9e89d227c354fa1e92e6b2b25b46d92aec9d",
+        "scope": "Bounded original water route only; not native1e-5C heat, full project or whole science."
+      }
+    },
+    {
+      "project": "hupsel",
+      "opt": "O0",
+      "prior_build_sha256": "9d708e89c1343acf1c64400df27d1a4c275ccd90d226e816a8b62017f2f5b880",
+      "generated": {
+        "irrigation.f90": true,
+        "wofost.f90": true,
+        "solute.f90": true,
+        "macropore.f90": true,
+        "swap.f90": true,
+        "swap_main.f90": true,
+        "swap_csv_output.f90": true,
+        "swapoutput.f90": true,
+        "headcalc.f90": true,
+        "boundtop.f90": true,
+        "MOD_cropdevelopment.f90": true
+      },
+      "checks": {
+        "continuous/daily.jsonl": true,
+        "resumed/daily.jsonl": true,
+        "terminal-control/original/result.end": true,
+        "terminal-control/original/macro.bin": true,
+        "resumed/original/result.end": true,
+        "resumed/original/macro.bin": true
+      },
+      "current": {
+        "status": "GENERIC_HYBRID_ORIGINAL_PREFIX_RESTART_ISOLATION_REFUSAL_PASS",
+        "project": "hupsel",
+        "kernel_optimization": "O0",
+        "donor_optimization": "O2",
+        "days": 4,
+        "baseline": "NOT_APPLICABLE",
+        "maximum_water_residual_cm": 1.4585554986012994e-14,
+        "exact_native_restart_payloads": [
+          "result.end",
+          "macro.bin"
+        ],
+        "auxiliary_state_scope": "Both payloads exact own restart",
+        "distinct_instance_control": true,
+        "refusal_isolation": true,
+        "source_sha256": {
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_host.py": "4f5965c3c2658b3475e20e23b7eed7a53bc8d7692d8c11905db5bea101b5a273",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_sources.py": "2a74df363f4a5d172f1c900ea99505ba9e722a91555d682df92dc4c5755a389b",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_adapter.f90": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\main.f90": "b967a621b96d00c77ed1239dc688c1f7e23e82921ad4732c52de94ba43feeba1"
+        },
+        "build_sha256": "f9cbccc1adf8e155a9ac46b4984b19bc6ad14b0f0366c691bc73530ff3c8bfff",
+        "events_sha256": "92b9f3084a4b7ec4c1ceec87b65823c34e393580680de76c182a95d49e402341",
+        "scope": "Bounded original water route only; not native1e-5C heat, full project or whole science."
+      }
+    },
+    {
+      "project": "hupsel",
+      "opt": "O2",
+      "prior_build_sha256": "14bfa596b3d205490da1929980a11d256a5ba3501b70335f676d840a96786b7e",
+      "generated": {
+        "irrigation.f90": true,
+        "wofost.f90": true,
+        "solute.f90": true,
+        "macropore.f90": true,
+        "swap.f90": true,
+        "swap_main.f90": true,
+        "swap_csv_output.f90": true,
+        "swapoutput.f90": true,
+        "headcalc.f90": true,
+        "boundtop.f90": true,
+        "MOD_cropdevelopment.f90": true
+      },
+      "checks": {
+        "continuous/daily.jsonl": true,
+        "resumed/daily.jsonl": true,
+        "terminal-control/original/result.end": true,
+        "terminal-control/original/macro.bin": true,
+        "resumed/original/result.end": true,
+        "resumed/original/macro.bin": true
+      },
+      "current": {
+        "status": "GENERIC_HYBRID_ORIGINAL_PREFIX_RESTART_ISOLATION_REFUSAL_PASS",
+        "project": "hupsel",
+        "kernel_optimization": "O2",
+        "donor_optimization": "O2",
+        "days": 4,
+        "baseline": "NOT_APPLICABLE",
+        "maximum_water_residual_cm": 1.4585554986012994e-14,
+        "exact_native_restart_payloads": [
+          "result.end",
+          "macro.bin"
+        ],
+        "auxiliary_state_scope": "Both payloads exact own restart",
+        "distinct_instance_control": true,
+        "refusal_isolation": true,
+        "source_sha256": {
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\daily_host.py": "4f5965c3c2658b3475e20e23b7eed7a53bc8d7692d8c11905db5bea101b5a273",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_sources.py": "2a74df363f4a5d172f1c900ea99505ba9e722a91555d682df92dc4c5755a389b",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\donor_adapter.f90": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+          "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-oxygen-runtime-parity\\app\\hybrid_water\\main.f90": "b967a621b96d00c77ed1239dc688c1f7e23e82921ad4732c52de94ba43feeba1"
+        },
+        "build_sha256": "135b004194bef181c17e881cb6b2584203d564b2f36c456a370be232499705a6",
+        "events_sha256": "ab1ee62063b64acd8b47ae9906e62ebc35953fa47dfb83d63691373290e50d34",
+        "scope": "Bounded original water route only; not native1e-5C heat, full project or whole science."
+      }
+    }
+  ],
+  "saltfarm_external": {
+    "status": "PASS",
+    "scope": "SaltFarm original-forcing prepare/discard/repeat/accept2; independent proposal replay; no controlled boundary override claimed"
+  },
+  "active_macro_release_refusal": {
+    "returncode": 2,
+    "output_absent": true,
+    "stderr": "usage: run_water.py [-h]\n                    --model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--no-macro-release]\n                    [--timeout-seconds TIMEOUT_SECONDS]\nrun_water.py: error: Active macropores are outside SWAP5-NOMACRO-CLOSURE01; original Andelst is not silently changed\n"
+  },
+  "source_host_sha256": "4f5965c3c2658b3475e20e23b7eed7a53bc8d7692d8c11905db5bea101b5a273"
+}

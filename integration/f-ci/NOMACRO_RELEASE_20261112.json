@@ -1,0 +1,178 @@
+{
+  "status": "PROPOSED_WINDOWS_FULL1461_PASS_TERMINAL_EXACT_RESTART_FAIL_NO_ADMISSION",
+  "owner": "SWAP5-NOMACRO-CLOSURE01",
+  "canonical_base": "84e297af23b2b6e90c927b958fecb5e24228b975",
+  "candidate_physics_commit": "766bae058",
+  "evidence_audit_commit": "a711d7371fb097a2062553ec3dc3931e34bedf31",
+  "acceptance": {
+    "full1461": "PASS_O0_O2",
+    "daily_water_and_solute_guard": "PASS_UNCHANGED_1e-10",
+    "strict_own_restart": "FAIL_1459_1461",
+    "four_prior_own_windows": "PASS_EXACT_O0_O2",
+    "independent_instances_refusal": "PASS",
+    "existing_Grass_Hupsel_preservation": "PASS_O0_O2_EXACT_SAME_PLATFORM",
+    "original_external_transactions": "PASS_BOUNDED_TWO_DAYS",
+    "supported_heat_accounting_SaltFarm": "OPEN",
+    "Linux": "NOT_STARTED_KNOWN_LOCAL_ACCEPTANCE_FAILURE",
+    "whole_scientific_equivalence": "NOT_QUALIFIED",
+    "original_R_byte_equivalence": "NOT_CLAIMED"
+  },
+  "macro_scope": "FROZEN_PRESERVED_NO_NEW_PHYSICAL_OR_NUMERICAL_MACRO_RUN",
+  "cost_selection": {
+    "expected_build_seconds": 20,
+    "full_model_call_cap_seconds": 60,
+    "measured_full_seconds": {
+      "O0": 11.634441500063986,
+      "O2": 11.921759699936956
+    },
+    "full_FCI": "NOT_SELECTED_IMPACT; affected contract controls selected",
+    "highest_low_air": "NOT_SELECTED_POLICY",
+    "repeated_historical_full_Grass_Hupsel": "NOT_SELECTED_UNCHANGED_GENERATED_PHYSICS"
+  },
+  "results": {
+    "O0": {
+      "status": "FAIL_EXACT_OWN_RESTART",
+      "scope": "Original-workbook SaltFarm1461; donorO2/kernelO0",
+      "compile_seconds": 10.097477199975401,
+      "days": 1461,
+      "source_commit": "a711d7371fb097a2062553ec3dc3931e34bedf31",
+      "maximum_water_residual_cm": 1.8597862833091838e-11,
+      "cumulative_water_residual_cm": 3.118439194480134e-10,
+      "maximum_solute_residual_mg_cm2": 8.099007575701478e-12,
+      "cumulative_solute_residual_mg_cm2": 8.772740971773403e-12,
+      "budget_step_retries": 0,
+      "restart": [
+        {
+          "cut": 2,
+          "end": 4,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 107,
+          "end": 110,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 365,
+          "end": 367,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 731,
+          "end": 733,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 1459,
+          "end": 1461,
+          "physical_receipts_exact": false,
+          "payloads_exact": {
+            "result.end": false,
+            "macro.bin": false
+          },
+          "maximum_pressure_delta_cm": 1.1368683772161603e-13
+        }
+      ],
+      "interleaved_instances_and_refused_accepted_state": "PASS",
+      "full_ledger_sha256": "73836c0208cf515b66cffbf118a8b1b4325eb44831147e342737ceaff1f2d77c",
+      "build_sha256": "c1859b7bc428f7d9c2538ba9dfa16b4adc139a934b3c3cda0c24d0bf2d508e2d",
+      "scientific_equivalence": "NOT_QUALIFIED",
+      "full_conservative_energy": "NOT_QUALIFIED",
+      "R_byte_equivalence": "NOT_CLAIMED"
+    },
+    "O2": {
+      "status": "FAIL_EXACT_OWN_RESTART",
+      "scope": "Original-workbook SaltFarm1461; donorO2/kernelO2",
+      "compile_seconds": null,
+      "days": 1461,
+      "source_commit": "a711d7371fb097a2062553ec3dc3931e34bedf31",
+      "maximum_water_residual_cm": 1.8597862833091838e-11,
+      "cumulative_water_residual_cm": 3.118439194480134e-10,
+      "maximum_solute_residual_mg_cm2": 8.099007575701478e-12,
+      "cumulative_solute_residual_mg_cm2": 8.772740971773403e-12,
+      "budget_step_retries": 0,
+      "restart": [
+        {
+          "cut": 2,
+          "end": 4,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 107,
+          "end": 110,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 365,
+          "end": 367,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 731,
+          "end": 733,
+          "physical_receipts_exact": true,
+          "payloads_exact": {
+            "result.end": true,
+            "macro.bin": true
+          },
+          "maximum_pressure_delta_cm": 0.0
+        },
+        {
+          "cut": 1459,
+          "end": 1461,
+          "physical_receipts_exact": false,
+          "payloads_exact": {
+            "result.end": false,
+            "macro.bin": false
+          },
+          "maximum_pressure_delta_cm": 1.1368683772161603e-13
+        }
+      ],
+      "interleaved_instances_and_refused_accepted_state": "PASS",
+      "full_ledger_sha256": "73836c0208cf515b66cffbf118a8b1b4325eb44831147e342737ceaff1f2d77c",
+      "build_sha256": "12b0cceb848f1a2f0f8de317f75aa0ae1cebfc3faf2c319c410549753934e708",
+      "scientific_equivalence": "NOT_QUALIFIED",
+      "full_conservative_energy": "NOT_QUALIFIED",
+      "R_byte_equivalence": "NOT_CLAIMED",
+      "compile_seconds_note": "UNKNOWN: proof-resume validation was initially mislabeled as compile time; actual model runtime remains in EVENTS.json"
+    }
+  },
+  "raw_index": "research/hybrid-water01/NOMACRO_RAW_INDEX_20261112.json",
+  "preservation": "research/hybrid-water01/NOMACRO_PRESERVATION_20261112.json",
+  "next": "Single bounded same-state1459-to1461 derived/input-history comparison; keep strict failure; no tolerance change, no full replay without causal change"
+}

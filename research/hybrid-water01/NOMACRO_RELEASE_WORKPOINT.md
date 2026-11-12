@@ -39,3 +39,66 @@ failed oxygen criteria and underresolved reference families remain visible.
 Original conduction/sensible storage observations do not establish full physical
 energy with advection; missing energy fluxes are not assigned invented zeros.
 External forcing admission remains limited to the existing documented contracts.
+
+## Executed successor at a711d7371
+
+SaltFarm1461 completes under donorO2/kernelO0 and donorO2/kernelO2, in11.634s
+and11.922s respectively (full model/controller calls, compilation separate).
+Both complete daily ledgers are byte-identical. The maximum independent daily
+water residual is1.8597862833091838e-11cm, cumulative signed3.118439194480134e-10cm.
+Solute maximum8.099007575701478e-12mg/cm2, cumulative8.772740971773403e-12mg/cm2.
+All1461 daily guards stay1e-10; budget-driven timestep retries are zero.
+This counts those additional retries only, not every original Newton iteration.
+
+Own2→4,107→110,365→367 and731→733 reproduce complete physical receipts and both
+native/auxiliary payloads exactly in BOTH kernel profiles. Interleaved original
+instances and refusal after two accepted days preserve the rejected column's
+accepted state while the other column advances. The external original-forcing
+adapter passes prepare/discard/repeat/accept through day2. This adds no controlled
+SaltFarm boundary override and makes no new MODFLOW solver claim.
+
+**Open admission failure: own1459→1461 is not bitwise exact**, in BOTH profiles.
+Maximum pressure difference is1.1368683772161603e-13cm; native and auxiliary
+endpoint bytes differ. This reproducible failure remains FAIL_EXACT_OWN_RESTART;
+the qualification command returns1, even though the daily balances pass. No
+tolerance or exact-state assertion has been loosened. Its cause is not yet
+established; small magnitude is not proof of complete state ownership.
+
+Current Grassgrowth/Hupsel O0/O2 prefix, exact own restart, independent distinct
+instances, malformed-state and rejection checks all pass. Every corresponding
+generated donor source, raw continuous/resumed receipt and complete endpoint
+payload is byte-identical to the frozen same-platform provider. These bounded
+preservation controls do not relabel old full trajectories as newly executed.
+The original active-macro CLI request refuses with exit2 before creating output.
+
+Raw proof: `nomacro-saltfarm-windows-20261112.tar.xz`, with every member SHA256
+in `NOMACRO_RAW_INDEX_20261112.json`; the archive was reopened and every digest
+verified. `NOMACRO_PRESERVATION_20261112.json` retains affected prior/current
+comparisons. Windows GNU16.2 donorO2; O0/O2 denotes the actual SWAP5 kernel.
+The SaltFarm O2 compile duration is UNKNOWN: an initial proof-resume validation
+duration was incorrectly labeled compilation and is explicitly corrected. O0
+compilation was10.097s. Full model durations come from the retained EVENTS.json.
+
+Reproduction, with an existing pinned original provider in REFERENCE:
+
+```text
+python tools/solute/prepare_saltfarm.py --output NEW_ORIGINAL_CASE
+python research/hybrid-water01/qualify_nomacro_saltfarm.py --reference REFERENCE --output NEW_PROOF_O0 --optimization O0
+python research/hybrid-water01/qualify_nomacro_saltfarm.py --reference REFERENCE --output NEW_PROOF_O2 --optimization O2
+python research/hybrid-water01/qualify_nomacro_saltfarm.py --reference REFERENCE --output EXISTING_PROOF --optimization O2 --resume-proof
+python research/hybrid-water01/qualify_generic_hybrid_waterhost.py --no-macro-release --reference REFERENCE --output NEW_CONTROL --project grass --optimization O0
+```
+
+Repeat the last command for grass/O2,hupsel/O0,hupsel/O2. The pinned Windows
+provider is the unchanged reference/build from the original generic-water proof;
+its object/library/compiler/source hashes are recorded in each BUILD.json. The
+new SaltFarm case is installed from the versioned materialization when absent;
+an existing foreign case is refused. Proof-only resumption verifies current
+source/binary/input bindings and existing raw records instead of rerunning1461.
+
+Review status: proposed, merge blocked by exact terminal continuation; Linux
+qualification and the additional SaltFarm supported-heat accounting remain open.
+Next concrete deliverable: isolate the terminal same-state derived/input-history
+dependency with one short1459→1461 comparison; repair only a demonstrated missing
+state, then repeat that bounded continuation before selecting any full replay.
+No new macropore calculation or implementation is selected.
