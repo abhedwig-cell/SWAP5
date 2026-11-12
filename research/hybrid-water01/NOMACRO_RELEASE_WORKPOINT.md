@@ -234,3 +234,18 @@ source/build/input identities. Keep missing mass-carried energy unavailable,
 the zero-advection failure visible and whole scientific equivalence separate.
 No active model worker or incomplete selected check remains at this checkpoint.
 Macro work remains frozen; the half-hour recovery automation remains useful.
+
+## Active supported-heat export package
+
+At70045d502 the existing observer accepts an optional compact flag; its default
+still exports detailed nodes. HEAT_SUMMARY1 carries the same actual coefficient
+reductions and physical-availability flags, without redundant node rows. The
+existing accepted reader distinguishes this aggregate provenance explicitly and
+checks unchanged conduction limits plus consecutive accepted time support.
+No node-reconstruction claim is made for compact files. The existing qualifier
+now supports current Grassgrowth/Hupsel/SaltFarm builds and conditionally selected
+full periods. Owning acceptance/cost selection is
+`integration/f-ci/NOMACRO_HEAT_EXPORT_20261112.json`.
+First gate: actual SaltFarm108–110 compact versus retained detailed headers,
+independent detailed reconstruction and complete native/physical control. No
+full-period execution is selected before that gate completes.
