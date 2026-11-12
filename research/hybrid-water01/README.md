@@ -2,6 +2,70 @@
 
 ## SWAP5-FUNCTIONAL-CLOSURE01 workpoint
 
+### Actual changed-state Cauchy recovery qualified and admitted, 12 November 2026
+
+PR #1649 MERGED at 03e605c899afc1209e1de4e087c1e2fb6a75b1a4.
+Qualified head4fd0bd7958b4ee9c727475e3c7f5718c36af6ec3 on
+codex/hybrid-cauchy-changed-history. Predicted and actual canonical tree
+342d69d66ae3c0b8c99a0701f3928a36e4e2f30a match. Nine qualifier/auditor/pack/
+workflow/raw/log/record/docs blobs match. Captured executed Linux application,
+host and qualifier SHA256 equal canonical Git bytes. All3906 src/app/reference/
+tools/tests blobs unchanged froma634269639b2f7955f11c356018cf4ee8dd1dcb6.
+Receipt: CLOSURE01_CAUCHY_CHANGED_HISTORY_CANONICAL_20261112.json.
+This supersedes prior NEXT/ACTIVE banners. All model, CI, audit, pack and docs
+processes FINISHED. Do not duplicate model calculations or old preservation.
+
+Functional acceptance: the existing original Cauchy API now has actual proof of
+second-day recovery from MODIFIED externally accepted state. First day starts
+from exact compatible original day20 and ends at original day21 head+0.001cm.
+Second starts at that modified head and ends at original day22 head+0.002cm.
+Independent raw audit proves the first-day physical/native state actually differs
+from the same-origin original-forcing control. Both days discard/retry and
+independently edited ORIGINAL full BBC controls are exact in physical records and
+both complete native payloads. Second-day live and fresh disk recovery from that
+modified accepted parent are exact, including complete receipt and both payloads.
+Input/origin/day/window/coupling/provenance/BBC hashes and original1e-6cm water
+balance are independently verified. No model/application repair was warranted.
+
+Original donorO2/kernelO0/O2 Windows/Ubuntu26 PASS, first attempt. Cohort30.588s
+Windows,7.366s Linux,120s worker cap. Compatible published day20 origins required
+and verified; no warm-prefix fallback, Fortran compilation or full481 repeat.
+Current PR1648 original3project/Cauchy/Grass/irrigation/instance/publication/
+input/corruption/terminal O0/O2 preservation is inherited at the EXACT unchanged
+source/build/input dependency surface; qualifiers and src/app/reference/tools/
+tests do not change. Linux owning run43136268642/job130912257748 SUCCESS at
+bdefa054abb810f0f4b2dcd20b9ec35d30f27c4a. Source/docs/strict build and final
+selection preflight PASS. Each new raw archive has688 independently hash-checked
+members and exact executed source snapshots. Windows archive SHA256
+25fb937504d8481bf35bae2107f426c32823be26f3d7597b4a75a7a59b54b271;
+Linuxcca335421f59b6ada4b602db41c88051b55f4af7b4db05cf90f785b8baaa1bc3.
+Only the NEW two-day cohort is packaged; original binary and prior-preservation
+capsules are hash-bound/reused. Reproduction and limits in canonical
+integration/f-ci/HYBRID_CAUCHY_CHANGED_HISTORY_20261112.json and
+docs/science/HYBRID_CAUCHY_CHANGED_HISTORY.md.
+
+Keep scientific scope separate: prior opposite-sign platform sensitivity remains
+visible (first bottom response Windows-9.986107421e-6cm, Linux+5.082136962e-5cm).
+Each platform matches its independent ORIGINAL block exactly. This is not a new
+cross-platform-equivalence, full externally forced481, whole-energy or scientific
+qualification. Full original1827/481/1096 and failed day188/day584 evidence retain
+their scopes. No new scientific reference experiment was selected.
+
+NEXT DELIVERY: qualify interleaved INDEPENDENT externally controlled Andelst,
+Grass and Hupsel instances through the existing CoupledDailyColumn API. Include
+accepted and discarded proposals, source-bound distinct identities and exact
+comparison to already qualified single-instance modified-input outcomes. Preserve
+each original project calendar (1998/1980/2002); these are independent instances,
+not a simultaneous peer-groundwater/thermal solve. Reuse existing native origins,
+compiled bundles and published window data. No new configuration matrix, coupling
+framework, physical process change or full-project rerun. If the required property
+is already directly covered by the same exact dependency-bound proof, reuse it
+and move to the next actual contract gap instead of rerunning it.
+
+Execution note: raw archive hashing must iterate members sequentially (r|xz or
+one sorted pass); repeated extractfile(name) seeks on xz took unnecessary audit
+CPU. Do not repeat that packaging overhead or turn it into another model test.
+
 ### Hupsel daily surface water/solute irrigation delivered and admitted, 12 November 2026
 
 PR #1648 MERGED at a634269639b2f7955f11c356018cf4ee8dd1dcb6.
