@@ -249,3 +249,11 @@ full periods. Owning acceptance/cost selection is
 First gate: actual SaltFarm108–110 compact versus retained detailed headers,
 independent detailed reconstruction and complete native/physical control. No
 full-period execution is selected before that gate completes.
+
+Short gate PASS: SaltFarm108–110 emits270 compact steps with exactly the same
+summary tokens as retained detailed headers; complete physical/native outputs
+remain exact. Both accepted readers agree within their existing1e-9J/cm2 budget,
+and externally unaccepted steps stay absent. Output falls from11,354,520 to65,118
+bytes (174fold reduction). Full no-macro periods are now selected, reusing current
+native builds and source-bound complete controls, with60s caps. No original
+physical solver or forcing is changed by the observer.
