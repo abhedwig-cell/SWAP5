@@ -1,5 +1,5 @@
 {
-  "status": "SELECTED_FIXED_LIVE_STATE_NONLOCAL_DERIVATIVE_CONTROL",
+  "status": "FIXED_STATE_HYPOTHESES_RESOLVED_NO_SOLVER_REPAIR_SELECTED",
   "base": "173a3e8e1c231108ddd048c593170f9096e5bf4a",
   "hypothesis": "Fresh original coupled residual on identical complete live state is repeatable; pressure changes at selected nodes create off-tridiagonal responses missing from original analytic direction",
   "decision_boundary": "First two baseline evaluations must exactly repeat and reproduce prior fresh F vector; then compare eight central-difference directions at absolute1e-4cm and5e-5cm. Report scale change, not a new physical acceptance tolerance. Nonlocal signal selects coupled derivative formulation; no signal rejects that explanation.",
@@ -42,5 +42,17 @@
     "expected_seconds": 5,
     "physics_change": false,
     "additional_samples": "One child original rate/Jacobian pair equality and eight existing numerical columns with Q exchange recorded; no new time-marching solver"
-  }
+  },
+  "final_observation": {
+    "source": "6b4a58b0e131a7fe6f8a3e9d45a4ce3b7c9cfc2e",
+    "run": 43175514599,
+    "job": 131038719139,
+    "artifact": 13924063164,
+    "sha256": "ec1ce470c8e09e1c893ca1f43f9eeccba064efe9a74bb6e173c76621139ca268",
+    "seconds": 5.8156003459999965,
+    "sum_all_three_short_observers_seconds": 15.586947478999996,
+    "all_parent_physical_and_full_native_exact": true
+  },
+  "decision": "Do not select dense/nonlocal or new analytic derivative solver. Sequential and saturation round trip exact at this live state; original analytic samples supported; cached/fresh residual difference accounts for macro exchange to8.89e-16. No pressure/reference promotion.",
+  "next_functional_deliverable": "Controlled numerical rejected-timestep rollback at known retry day15. Separate intended numerical retry changes from physical macro state, retain unchanged mass guard; no code change before an actual contract violation is shown."
 }
