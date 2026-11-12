@@ -1,5 +1,5 @@
 {
-  "status": "CONTINUING_EXACT_DURABLE_LINUX448_TO_FINISH481",
+  "status": "ORIGINAL481_FUNCTIONAL_AND_NATIVE_RESTART_VERIFIED_SCIENCE_FAIL",
   "base": "395b06eba53ca417f72b4f2d4e9c2734a22d825d",
   "unchanged_model": "PR1653 S5MAC006 exact source/build/input identity; no model changes or rebuild",
   "selection": {
@@ -126,6 +126,17 @@
         "seconds": 60.003556701,
         "overlap305to313_exact": true,
         "mass_retries": 31022
+      },
+      "final_result": {
+        "run_id": 43159561006,
+        "source": "f95429fec34366ca7b44c386996101c8ceb1d508",
+        "artifact_id": 13917581830,
+        "artifact_sha256": "82456e1b451139b49da8d4d9ecff3129f0a8313f9330a591451250062f9454eb",
+        "status": "ORIGINAL_MACRO_CONTINUATION_COMPLETE",
+        "accepted_through": 481,
+        "seconds": 34.99314786300002,
+        "year_endpoint365to368_exact": true,
+        "late453to459_exact": true
       }
     },
     "whole_work_unit_cost": {
@@ -138,7 +149,14 @@
       "individual_model_cap_seconds": 60,
       "scope": "Actual requested full project execution, not routine feedback/performance campaign. Includes necessary durable-overlap comparisons. No smaller sample can prove terminal481 or late native restart.",
       "unintended_duplicate_seconds": 60.00417335099999,
-      "runtime_parity": "UNKNOWN and not claimed; original reference runtime and accepted-step counts not inferred from another project"
+      "runtime_parity": "UNKNOWN and not claimed; original reference runtime and accepted-step counts not inferred from another project",
+      "actual_continuation_wall_seconds": 275.00678071600004
+    },
+    "post_execution_audit": {
+      "scope": "Cross-platform exact reproduction of completed481 and native restart proof, unchanged scientific model graph; zero models",
+      "expected_seconds": 8,
+      "reason": "Validate independent data reader and promoted evidence durability; never rerun successful full model for a data/PR/document update",
+      "workflow": "grass-thermal-production.yml hybrid_original_macro_481=true with macro_expected_sha"
     }
   },
   "acceptance": [
@@ -146,5 +164,34 @@
     "Full accepted day journal, exact source/build/native checkpoint lineage",
     "Explicit late warm restart and actual full trajectory before claiming new-policy481",
     "Scientific comparison and complete model execution assessed separately"
-  ]
+  ],
+  "result": "research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json",
+  "evidence": {
+    "path": "research/hybrid-water01/original-macro-481-evidence.zip",
+    "sha256": "c7b4cb52b86b07cf08a116603590e597c0ab6bd89780afc000e7d03e07512463",
+    "bytes": 11822736,
+    "scope": "All raw immutable Linux qualified model/build and chained full-execution artifacts, exact native files, overlap journals, audit, reference lineage; survives hosted artifact expiry"
+  },
+  "scientific_disposition": {
+    "status": "FAIL_NOT_QUALIFIED",
+    "largest_original_GWL_difference": {
+      "day": 438,
+      "date": "1999-03-14",
+      "new_gwl_cm": -159.96336565856024,
+      "original_printed_cm": -80.452,
+      "corrected_printed_cm": -80.00551,
+      "new_minus_original_cm": -79.51136565856024,
+      "new_minus_corrected_cm": -79.95785565856023
+    },
+    "pressure_support": {
+      "day": 438,
+      "source_archive_sha256": "02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9",
+      "maximum_node_pressure_difference_cm": 91.03726159571893,
+      "matrix_stock_difference_cm": -0.00068711117395992,
+      "scope": "Descriptive comparison with retained corrected Windows profile; numerical policy and platform both differ. Not unrounded original spatial reference or a causal attribution.",
+      "decision": "Large pressure-field difference cannot be waived as printed-GWL rounding or accepted from mass closure alone"
+    },
+    "rule": "Do not waive groundwater/pressure criteria from mass closure, storage closeness or successful native restart; keep all tolerances and original reference unchanged"
+  },
+  "next": "Publish source-bound functional481 and complete native restart as bounded evidence only. Next scientific goal: one discriminating original nonlinear/macro coupling test at438, informed by retained failed refresh interventions; no default promotion, reference replacement or repeated full runs without changed dependency."
 }

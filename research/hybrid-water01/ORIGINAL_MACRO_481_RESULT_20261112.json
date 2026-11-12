@@ -1,0 +1,849 @@
+{
+  "status": "ORIGINAL_MACRO481_AND_COMPLETE_OWN_RESTART_VERIFIED",
+  "analysis_source_canonical_lf_sha256": "17824418f0feab3c030d242d50b49d38bb8eb159164e53187c3ca3a87ebe7514",
+  "unchanged_model_source_graph": {
+    "app/hybrid_water/original_macro_policy.py": "14d05cf9083b00004ac9ae9690bf0e03c337fd2dec6aa843bc57247c2b3d7529",
+    "app/hybrid_water/daily_host.py": "044d8f7e21ccb00f458ab24e1c8a3e03e5c7fcb5bddbea0ed31c12922a26bf0f",
+    "app/hybrid_water/donor_adapter.f90": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+    "app/hybrid_water/main.f90": "06578d6e5669e6acfba93b3dd565c65b8ec379f7a3bf42f999e72bab88a2242d",
+    "app/hybrid_water/hybrid_step_budget.f90": "152fa824d1839247377b5ae6ab9a5e6135c612d6177129afc456983fc4eda9bd",
+    "src/solver/mod_soil_water_accepted_step_direction_contract.f90": "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810",
+    "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90": "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f",
+    "src/transaction/mod_accepted_trajectory_directional_publication.f90": "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8",
+    "src/transaction/mod_transaction_reference.f90": "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed",
+    "src/runtime/mod_canonical_contracts.f90": "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b",
+    "src/runtime/mod_canonical_interval_runtime.f90": "1a3e57b9a2d58b11e2be71f55f36e3f4dde0c988cb0010bcfc42f393be9d8384",
+    "src/kernel/mod_kernel_transactions.f90": "ae14f20d6582699f3a0f575a09c62c95e84e7a7b8048cfb9b188faf47b41e308",
+    "src/runtime/mod_groundwater_coupling_contract.f90": "81001c48c7fd98faec9c3612092cd6729c8f98d16b6057ecfc5ecb090b306252",
+    "src/runtime/mod_groundwater_swap_forcing_adapter.f90": "d5f6645e27e8fc89bdc46838fe34e9766e8163b444027f5e6d80ea950759b8e1",
+    "src/runtime/mod_groundwater_swap_transaction_participant.f90": "c13813f8412db1a02cf8ae8eac27d6005a6835a22f60fade196eb0cc3dc3277b",
+    "src/runtime/mod_groundwater_interface_mass_ledger.f90": "934b62625685c67f5a3bb8931522609f7b73ed4ab853f06b5249b15ae362aa0a",
+    "src/runtime/mod_fmr_soil_water_application_host.f90": "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c",
+    "app/hybrid_water/donor_sources.py": "551dfb776dda30c0a0bd738e27323d26ff81561529bdad1a83acd384eb2540a0",
+    "app/support/restart_publish.c": "f064226eac3aab1f16c6c1a1068a903d86eef6565ad26a29dee91b0018cf77ed"
+  },
+  "model_execution_days": 481,
+  "new_model_runs_by_auditor": 0,
+  "qualified_capsule": {
+    "id": 13914684409,
+    "node_id": "MDg6QXJ0aWZhY3QxMzkxNDY4NDQwOQ==",
+    "name": "original-macro-restart-linux",
+    "size_in_bytes": 6484104,
+    "url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/13914684409",
+    "archive_download_url": "https://api.github.com/repos/abhedwig-cell/SWAP5/actions/artifacts/13914684409/zip",
+    "expired": false,
+    "digest": "sha256:b4840cb7afd435afe7b31c42e7370c70f130e6e70607d9e28aaf7c97ec228cbe",
+    "created_at": "2026-11-12T04:25:53Z",
+    "updated_at": "2026-11-12T04:25:53Z",
+    "expires_at": "2026-11-26T04:25:49Z",
+    "workflow_run": {
+      "id": 43154680629,
+      "repository_id": 1357193305,
+      "head_repository_id": 1357193305,
+      "head_branch": "codex/hybrid-original-macro-block",
+      "head_sha": "3affe302984bbafc2108fb5b52d7ea91d44d5b80"
+    }
+  },
+  "build": {
+    "project": {
+      "case": "3.macroporeflow",
+      "model": "HYBRID_ANDELST_WATER",
+      "start_date": "1998-01-01",
+      "nodes": 112,
+      "water_tolerance": 1e-06
+    },
+    "inputs": {
+      "andelst_meteo.998": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9",
+      "andelst_meteo.999": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+      "andelst_rain.998": "a65461b5291bb146033302cc86a13713885585c1a262ed1a4bcb3eab165b7f62",
+      "andelst_rain.999": "3cc22751f89d46eef91c82607fdba432a2cd32505a9651dc58727ea2f8fd7060",
+      "control_plot.inp": "d85c898b8b6bd6b5fe5f6dd34e582b3da2c574610eb22f9c5e1f824d2c467bdc",
+      "observed/DRN.csv": "9addc10fba3fd5c1f4ce5dc3a2080f6ffe3c5d1c1619844b7e4720a565664ad2",
+      "observed/GWL.csv": "05d53759c2f00877dd93b773cce91c96dad235bbc2c2e3a067eefb7ea02b3505",
+      "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+      "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+      "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff",
+      "swap.dra": "4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface",
+      "swap.swp": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+      "wintcer1.crp": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
+      "wintcer2.crp": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe"
+    },
+    "identity": {
+      "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+      "target": "x86_64-linux-gnu",
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "donor_flags": [
+        "-O2",
+        "-cpp",
+        "-Dlinux",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-fallow-argument-mismatch"
+      ],
+      "kernel_flags": [
+        "-O2",
+        "-ffree-line-length-none",
+        "-fcheck=all"
+      ],
+      "donor_generated": {
+        "macropore.f90": "b9a10d4782c2edb8b3c71b50885828997b647bd68b2ee20d249cf7975298ea25",
+        "swap.f90": "21c792a4d6d5300702c71a661f42aa2ffac2e3d93479cfc0e3278ec79d226f67",
+        "swap_main.f90": "0c5216de07a369a33a844d9d7a0415d9e0e36180df11958ab394602cc446b6b0",
+        "swap_csv_output.f90": "fa8bec26f6361df5c6e792639c9895896a7b47df60aefac4554f0775e08c4660",
+        "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+        "headcalc.f90": "586991b90b0c3154252b2baa40cd53a2dca4bad8ab963bca34f3368ff336252d"
+      },
+      "donor_objects": {
+        "MOD_Kavg_Szym.o": "b7e21c013b2c83871e04aba8a3c18661400786da79c2534a55ead3fab8d4137b",
+        "MOD_MvG_functions.o": "d01cf52e60e6b516e6c0375a67e119a48bd2e4c96e3f1206690d949efe8c535b",
+        "MOD_RIA.o": "6a1295d5db657cee778e2056284c68fb2dfcee3069c1cd72971b908c4f049844",
+        "MOD_cropdevelopment.o": "0fdc193718a6a196987e6d4f2dce952c1c1ae0bac6b77ca6d7b6226af72ccab1",
+        "MOD_drainage.o": "fec0c37b38d090f36091bc543503bb87e527feacad4756d14b90a7d0a5786a8c",
+        "MOD_meteo.o": "ae6fb48966e89e805eaf44d3ac3e15439e1e3abfcd5b83ab6578c9a14d8b369f",
+        "MOD_out_PEARL_ANIMO.o": "a11fbca0799eb787a12d7f83efa19e5bc2d8f7066948e25459a9f1e9a30a90ee",
+        "MOD_runon.o": "497a6de86b5e2a5e466b0fe17469482ef3a30c40fe9764f9f96d7a186e644d7d",
+        "RWU_micro.o": "d8adc0b1612f7d1f593d493bf51d82f3965188983157d7b318188dd10600a673",
+        "WC_K_models_04_11.o": "22d66c94199efbe919261aaef28835d841cddb9fcd87cd6f21f780fd634ea61d",
+        "arrays.o": "231cec64fd1269e5d63480e6389b3c1cd182ae0ee0fd272e670766fddfe87add",
+        "boundbottom.o": "601b618233fbd72f13df4bdc470168ac7d12afa5d86605ad80079e23bad4444e",
+        "boundtop.o": "824290bfc69ac0d4b4bbc0096e18c8418b4112adeb4845eef2a3fa4b1d7d351e",
+        "calcgwl.o": "6f0ea88a82d7df4faebbde9c096d3d399569fdf65df53f11c5e951e8675b6721",
+        "description.o": "115dd0ab4f696857069ab9d43cdaf1711b2fdb6570efc8f675dbc8e7f7ba78fd",
+        "divdra.o": "5994834c21ad87fd71ae2b48beed88c3f838ccf1f0708cccdc619664454c51a1",
+        "drainage.o": "5d21c0b5f30387c0e135c5ded589e92b2375b3fa22fd8af812aa59934b93eb08",
+        "fixed.o": "913fc468f031bafbc2cab7a5810b4e0bf265402176d35d8e4cb5a5ce34cbafbf",
+        "fluxes.o": "9cf53e8cb249dc1cfb9e1acbec9351c8bae471125ec2c3f9343ab886054a274f",
+        "frozencond.o": "149c8b19b3afd9fe3eadf3f4f6ba59e959bab635e5b313d27a29ef7811e19cdd",
+        "functions.o": "4c81c0911b5cc5ed635283a93bb1df2a3b239d56ac894494e56a3a359d2809eb",
+        "hysteresis.o": "a7ca0acf884e2521118752ee2c76b6a8083a5a4b12dd796865b6a6f90bf0f7b6",
+        "initialize.o": "61a6d794b69c19abf0f01da3d9fb02a087d4f1e2fb23e33dbbc05ec07d2991ea",
+        "integral.o": "4427c3b5dc2519bc9677c839797ab7cb3bcce0deec3382499d97a2bcd4a9afc1",
+        "interface_atmosphere.o": "0a888121c26215f1c72500dac52813061e42a263650b3796ca5829c536270084",
+        "interface_plant.o": "581536bd618742d682e9eed0c94ecc7a56f630dbbb9c1a5de41464c9bea406aa",
+        "irrigation.o": "4427dd3fc145617334683ee9e711ec74cc196d5735a705ec22cac8578146e6bd",
+        "macroporeoutput.o": "c1d57282afc93cc5b861d547ec8f4d1e01271ace439ab112ec554a30859ff4ca",
+        "macrorate.o": "aad3bd1e10e254ddf97c941b827a61ed6bdb9c44be95de7407dc044ef1367953",
+        "management_soil.o": "ad6aab5332a18a5c039f8c6054c81df117c2946ce9f4b7815b0f98afb4e46535",
+        "oxygenstress.o": "087f383b5681fdee38c85535c4a296f95456c3d52bb35ce816a04f2823214451",
+        "params.o": "68c750f7df02fbba69702db9a386fc895e6fb6996795bcd5cfcd86a4ee486f1f",
+        "readswap.o": "620b34f37e6818c145fb6d02b719bd622d312ea3d4c02528e2587d3148215dd8",
+        "rootextraction.o": "d3d934ddf2d8f690d8d3148e6f79eb581fba39b342b432fff0b1c9ceeb614955",
+        "snow.o": "0da8b639a15cf9a031baa6fcb97742b70d7cef0f65399616913bf7f9b3f6058b",
+        "soilwater.o": "e70aebabbf13cfb2adf9a936771c824f3275b3b9cb6310565a36f129bbcd2366",
+        "solute.o": "5db9c7069602fe2bdb8f0d543eff0935bb47ca8c81901062b84c3658acce5069",
+        "sptabulated.o": "ffac868c85722928d29c400ddebd8e97dbd38eeefab154375425f886c8df743e",
+        "surfacewater.o": "c975fed72af89828f58918d920f605797c864419dff3c85e7ceefab766186659",
+        "swap_base.o": "9534f0dc1ba62de337073761a6c9efbe65278264525c657059015e71ac7855fb",
+        "temperature.o": "fc1a319797b99e92ae17a13d7d74041e8cec9df9b9e3091dfff902c00fabb8fd",
+        "tillage.o": "1ca5355ff9bde65f93270da2dbdc11f67915625ef738dc752548c3c8578dc5c6",
+        "timecontrol.o": "71aec6b8c42016a83c05093597a48b9c3bb6fe6d10114c8282605481fd89869b",
+        "tridag.o": "028e9c4a8bf28e661a7dd416e331ae782693b07018e384884c9986793ea06836",
+        "variables.o": "c4234db3d4e7ed4744f5b332ce7083dddc312c757b443e182eab7888c1ad24ac",
+        "watstor.o": "0ad63de5233e8e21c6c37bff0aa0a1ee10ab6f37a9510d4526c8f7295c87ec64",
+        "wofost.o": "b1db715b3ebbf8ffc1a8644549a39466a54e867fe078abc9f708fd6f14afed81",
+        "wofost_soil_amendments.o": "a0d7d9e8190be0b8e65f28af2fa3f2496753a90ee4f96ac44b5fbce7f924d57d",
+        "wofost_soil_balancecheck.o": "1ca23d94f56464125b6fb015768cedb18ba9627cf1dad8c29385d2bff1d52315",
+        "wofost_soil_cropresidues.o": "95e04103f2102302532723e4e3a0909d6d4726bd454a4d2542e91bd4b08a57b0",
+        "wofost_soil_declarations.o": "d971769beb8f0540a983920d21dc0e6b3f864862c317acae7e2cb772be21869a",
+        "wofost_soil_interface.o": "a4de86b5694852be3672040838c1a7fb4112e01f0a409217c0f034fd8f2039d5",
+        "wofost_soil_orgmatn.o": "f20fe313aa6127a64889ee5f1e4e4f984cea6c0000198e392fd5ee4ec9411224",
+        "wofost_soil_parameters.o": "73741eea5042ade72d080aee5d7b7d6e39bdcce657d34835767b6956ea7ae3b5",
+        "wofost_soil_rateconstants.o": "2a98da7d9cada31e2288ff30b7b002cfc9b0756769ba3afc0c5e6b75a3516523",
+        "wofost_soil_watern.o": "104c2cec0e61e467f4fe1477adb13fb8dba344237af69f18a211ab75d0214d89",
+        "wofostnut.o": "e84f42812af8625b304a388636f61468813fea2b03406b7959e8bd6b4412e3d8"
+      },
+      "donor_modules": {
+        "atmosphere_interface.mod": "d54c6ef17dbf8b0c25719022f03356dc6d280693e0a33fdec7d458af9945aaad",
+        "bisparameters.mod": "9b2ac9a140eb22ad97bb0787949489239ecc9f887bbabb50b0844a652b66bd1a",
+        "doln.mod": "5d6803206f29ff572e8209cee580ca9b0d8ce66479bedbec20e43fc4c1ccd3c8",
+        "dotspack.mod": "b23ae429c3b398cbd382ad0ff4500ab5654538222c04fb51c8e3fa48fe52e5db",
+        "doubleprec.mod": "6cc7fb24b848f57fd65e290fcdb2a344160eda7ca4088c1c2e9accff193975a4",
+        "kvapor.mod": "4d9ece863c327913cbc47c5f26595e086acda0310d54e475a590cb4f794a4bf2",
+        "mod_arrays.mod": "adb95850e1d3bc251f362efbf0d3c35ec4df673df0d8d6e15620fb85a14855bc",
+        "mod_cropdevelopment.mod": "638b0db4864c3e790d5fe09b5f8a36d02a75ebe6b3d75eaf6b091c035f268da3",
+        "mod_description.mod": "7d42070d27711a0f91bdbe60cf3df1daaa93ec35aae02cd2d78c90d1c41d52cb",
+        "mod_drain.mod": "8939ca46ec036452464cb3888450dc5703423db340894ca9c1089571d7524239",
+        "mod_fixed.mod": "0e478900f9b7188f9c227a76c17dbb72e67c3a2a88708744c58432d1d283cc20",
+        "mod_frost.mod": "9b842f672c1bfa5dff904c0d6391275d1ec2fef9a9d2dbd0bb775afabfd5ee8e",
+        "mod_grid.mod": "32bbcf3e1ed1d582992041a1b1e4e963d2401065dc5156ae874f9a7823976541",
+        "mod_gwl.mod": "80966582ccc3912ed759092f9a1ae201840c5c8eb1d1a366a25bf1c491eeae47",
+        "mod_integral.mod": "42170d3cc6676e8868d59770bba2bcf6c26cba85a95c9684344b6de983571879",
+        "mod_integral_global.mod": "aa5a0244d5e86f8ff9650353a8f01cb8d9aa96dcabf18fa8b5cbde2a3cf62841",
+        "mod_irrigation.mod": "e73677e4362b1830d8d1c8d92a80100153cec5319af3e9ac559b25fc7463a903",
+        "mod_kavg_szym.mod": "8b08e5176ef72a5371e63fc7184168ab2213782d8cf2232deb42f5976f190730",
+        "mod_macropore.mod": "709a378f1f652a3303b944de0b18f2424bd4e31e5510894d967cdd06607f079a",
+        "mod_meteo.mod": "dd955f01298598a77947c38afc087827db24727f55c18b5cae1527ede8f2f618",
+        "mod_mvg.mod": "81d8e4db91833b56d5a17d1550ff59a27476fddc07c36e9c35dc3f12c3fa3361",
+        "mod_out_pearl_animo.mod": "ec4d5ad2473e81264435b47dc4fe729a04ab120023a1f4dfb00591d9502a652d",
+        "mod_params.mod": "32193e83462336995eaa758961129222f3e03d526a022fac173d27e302f1e6b9",
+        "mod_re_global.mod": "586ed6e095d2959fa2edc66a7a4e0fdf28d45314ae9105c97fa7f55927df9213",
+        "mod_ria.mod": "1c47ac0d93bd7b0277d1db522e635f3120a366b86e8e2cad15d6524d288f4b91",
+        "mod_rootextraction.mod": "3f1890440d53a08f47e29b7b89a46d38df348223ec455107da1f98a3047a11a9",
+        "mod_runon.mod": "ebc6e44b602f5bb7a6dbb2e09fd5a288ddab1f58e7b9226a280a13294338f917",
+        "mod_rwu_micro.mod": "bdea0e6be23e847e1d78a4318256794d0ab90ed7b9cf159d4b932efd832682e3",
+        "mod_snow.mod": "a7625da42d90e7bda4899b1f6ce8b18e84ce90030037f0b24702f93421828605",
+        "mod_soiltemperature.mod": "84b0829c5aef1478ba1b593a98de1173406d873c3544d3829efcd77df8790461",
+        "mod_soilwater.mod": "263078b78095a64371056c69d87564cbe571c0f24daa0106b0c2401dd0f27c55",
+        "mod_solute.mod": "139ae97a97073b86625e590505fc39b952007a3b7044fb203afa80d2101d544e",
+        "mod_solute_global.mod": "07055b10ec399b70e52cde99f2d99e12d890def7b13389126d4aab98c5edf6df",
+        "mod_swap_base.mod": "ab4f9111852b36b785f29b41615bea4386555b54e3683b7b826326732ce88006",
+        "mod_swap_mp.mod": "87b1d6e4704420a65aca9e753a7e4941499f9a439ba7c63a667163cf0f835585",
+        "mod_texture_orgmat.mod": "99a5adaac9fa7c7ae01534b455b20298c3dba27d53d5d0bd6dca4f8dabb1b5b2",
+        "mod_tillage.mod": "dcd44d06a0e6eaaeccf6db1608715aed554c6c39530fca501c109edba6a8766b",
+        "mod_timer.mod": "4f7a6131a225ad2175ea9e5a77aa69bdfe09d7b178a79fc435bca28a4e01770d",
+        "mod_top.mod": "a86f702f532bcba8d7c46f779325f394511eabe9b2c5cd19cb9ba169bf85df61",
+        "mod_wofost.mod": "1b29203364d57bc0ee3bc6e7bff30fc6e8bf4edb8e3b885c5a58d61499ee6a28",
+        "mod_wofost_nut.mod": "8b8809bbdb2611a13894de0350408e578a9a872e3d0ca4ac566a7aa1af13bd7a",
+        "module_outdat.mod": "2c95261993b4cddb90a13c22cea7f86c070f3bdcdc2655fdedd65a3ee1c38cfe",
+        "numbers.mod": "b1e9dcd6a43ac1363ce8e34765c33794ed4445d33f35ab5be8dd8f9d20f394c7",
+        "o2_pars.mod": "6c3f9ef1f5fb917b5db646cabf70710842d9d371f1d802ae3b96eaba46962078",
+        "parameterinformation.mod": "b574d3ad3b8a9b78c39ea451622045b4e3279799ab0bab3a00cd4acb6a5bb30b",
+        "parameters.mod": "a4adcc963193237d68d9c2ec20b923470bbba610314a40cdd2ac4a361baf74c1",
+        "plant_interface.mod": "5469c0855f51c856bb931543dfc400a1ca1053ba7989ba0a071cd3c61fa97b8a",
+        "rdmodulettutil.mod": "b72597b740899068f83558e29072a75d8cffdf384473f26a29f1a1ed9dbe1faa",
+        "shpvariables.mod": "2a46bfab643a0437ab32a2f131ee88d5c4851300f8c0ae5516b52c58e74a5547",
+        "smallestvalues.mod": "447450a1f67b2d891141f4f47881bface55010e45c3e6a4bbc59b240bd584ca1",
+        "swap_csv_output.mod": "7667cb44fed3f1571d6970ccf179f57d35769205e6a9fe6505877f9057f4cb33",
+        "swap_exchange.mod": "37b622285148a67502e998fa29e3878cbd64baa57c62ef390cf12f8eeda8b87e",
+        "tspack.mod": "a479d92098b75096d09d5fe2ee1816cce1145e797ca7ec00a885c99383d34967",
+        "ttutil.mod": "5a404b6baad8b4acf186fd6cf10b5fc62c1d4f06fc1f6b97f4bf9ad5faf7512f",
+        "ttutilprefs.mod": "2aaba07c74c4a85a1a160162270dbfea3a76dc9579c8b14d6cbc536733dd5db6",
+        "types.mod": "aa83272e0db09b9e525445b6e2f2855e640bba6aa4fd785fbb1d62495cb1305e",
+        "variables.mod": "39ad0d2331c0f041fe9c6c0a8f967b5edf12f970ae5a894305f011baff309bae",
+        "wc_k_models_04_11.mod": "32289b6f8d39f805644fc3139a28fabb4d7532bb5bf7035b631b51ff68434bf2",
+        "wofost_soil_declarations.mod": "9ccf35211cf190ef22500702632dbb154740c82c84760017373547a1858319b8",
+        "wofost_soil_interface.mod": "88fb6b5ec4953dc2d422ebd22e4d017b1afc99118a23f8ab48076d7f1bd5a624"
+      },
+      "ttutil_modules": {
+        "module_outdat.mod": "2c95261993b4cddb90a13c22cea7f86c070f3bdcdc2655fdedd65a3ee1c38cfe",
+        "rdmodulettutil.mod": "b72597b740899068f83558e29072a75d8cffdf384473f26a29f1a1ed9dbe1faa",
+        "ttutil.mod": "5a404b6baad8b4acf186fd6cf10b5fc62c1d4f06fc1f6b97f4bf9ad5faf7512f",
+        "ttutilprefs.mod": "2aaba07c74c4a85a1a160162270dbfea3a76dc9579c8b14d6cbc536733dd5db6"
+      },
+      "ttutil_library": "5f21151bb67326a0076d840e127f6cf129f8a2b46e3e0d676c00fb438caacba8",
+      "kernel_sources": [
+        [
+          "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+          "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810"
+        ],
+        [
+          "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+          "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f"
+        ],
+        [
+          "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+          "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8"
+        ],
+        [
+          "src/transaction/mod_transaction_reference.f90",
+          "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed"
+        ],
+        [
+          "src/runtime/mod_canonical_contracts.f90",
+          "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b"
+        ],
+        [
+          "src/runtime/mod_canonical_interval_runtime.f90",
+          "1a3e57b9a2d58b11e2be71f55f36e3f4dde0c988cb0010bcfc42f393be9d8384"
+        ],
+        [
+          "src/kernel/mod_kernel_transactions.f90",
+          "ae14f20d6582699f3a0f575a09c62c95e84e7a7b8048cfb9b188faf47b41e308"
+        ],
+        [
+          "src/runtime/mod_groundwater_coupling_contract.f90",
+          "81001c48c7fd98faec9c3612092cd6729c8f98d16b6057ecfc5ecb090b306252"
+        ],
+        [
+          "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+          "d5f6645e27e8fc89bdc46838fe34e9766e8163b444027f5e6d80ea950759b8e1"
+        ],
+        [
+          "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+          "c13813f8412db1a02cf8ae8eac27d6005a6835a22f60fade196eb0cc3dc3277b"
+        ],
+        [
+          "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+          "934b62625685c67f5a3bb8931522609f7b73ed4ab853f06b5249b15ae362aa0a"
+        ],
+        [
+          "src/runtime/mod_fmr_soil_water_application_host.f90",
+          "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c"
+        ]
+      ],
+      "adapter": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+      "driver": "06578d6e5669e6acfba93b3dd565c65b8ec379f7a3bf42f999e72bab88a2242d",
+      "host": "044d8f7e21ccb00f458ab24e1c8a3e03e5c7fcb5bddbea0ed31c12922a26bf0f",
+      "budget_source": "152fa824d1839247377b5ae6ab9a5e6135c612d6177129afc456983fc4eda9bd",
+      "macro_policy": {
+        "name": "original-nonlinear-macro-block-explicit-integral-history-v1",
+        "generator_sha256": "14d05cf9083b00004ac9ae9690bf0e03c337fd2dec6aa843bc57247c2b3d7529",
+        "original_MACRORATE_object_sha256": "aad3bd1e10e254ddf97c941b827a61ed6bdb9c44be95de7407dc044ef1367953",
+        "native_macro_format": "S5MAC006-original-reset-flags-counters-integral-history",
+        "objects_sha256": {
+          "headcalc.o": "6591d5949496c5794d31d2ce00bf6fd56618d79185637ef5eed96f16fd565088",
+          "swap_main.o": "81b1b9115605cd2cb1ce4b3fbf2b469425c0dd44d4423dc454320b9f2102f82c",
+          "macropore.o": "15e1ea3f98bb2d09896599738d89e7df6058fe51ca9fa5e26d366d0d377bab1f",
+          "swap.o": "16e81f5ad587626bce91c51190714855fa1d85f9ff682d5f216144853780e085"
+        }
+      }
+    },
+    "binding": {
+      "case": "3.macroporeflow",
+      "inputs": {
+        "andelst_meteo.998": "4a78610169f6356ee739ecb939c4e6befb564a2898ea007f6d7421280c01b7d9",
+        "andelst_meteo.999": "ba5c1f880f6166842ed292c18fd12a142cfda4158002f9487fd1420e734e7b72",
+        "andelst_rain.998": "a65461b5291bb146033302cc86a13713885585c1a262ed1a4bcb3eab165b7f62",
+        "andelst_rain.999": "3cc22751f89d46eef91c82607fdba432a2cd32505a9651dc58727ea2f8fd7060",
+        "control_plot.inp": "d85c898b8b6bd6b5fe5f6dd34e582b3da2c574610eb22f9c5e1f824d2c467bdc",
+        "observed/DRN.csv": "9addc10fba3fd5c1f4ce5dc3a2080f6ffe3c5d1c1619844b7e4720a565664ad2",
+        "observed/GWL.csv": "05d53759c2f00877dd93b773cce91c96dad235bbc2c2e3a067eefb7ea02b3505",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.bbc": "ed83fe31870676cef7a57a27ce2372abc53cc0755b0f4ea6b0b6248e152480ff",
+        "swap.dra": "4c23dec437ee72338db01b04d82829d57b2cf994f9395bba1691aebaa32cface",
+        "swap.swp": "c87ef0f8561f90277a2ae22f74fd12e050e4cafb26cb3b475768a737c76c059b",
+        "wintcer1.crp": "214a3c59a1ec83e2be9bb3889a18ce773cc7730dbd8b23558d0520a764e3fcd7",
+        "wintcer2.crp": "5818576bb56ff54404af66b9235a83629d7e9480df76bb603d3b2b71a532debe"
+      },
+      "swap_source": "1a2d798994c2990b397f9349317e3a26f40662fbcff55c9ea484dd638af45151",
+      "ttutil_source": "ee40b4bc20b158163318a4a77a1294e0d9430f5cb73641fcf4a2f3c773d01193",
+      "budget_retry": true,
+      "shared_pond_transfer": true,
+      "refresh_macro_final": false,
+      "build": {
+        "compiler": "GNU Fortran (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+        "target": "x86_64-linux-gnu",
+        "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+        "donor_flags": [
+          "-O2",
+          "-cpp",
+          "-Dlinux",
+          "-finit-local-zero",
+          "-ffree-line-length-none",
+          "-fallow-argument-mismatch"
+        ],
+        "kernel_flags": [
+          "-O2",
+          "-ffree-line-length-none",
+          "-fcheck=all"
+        ],
+        "donor_generated": {
+          "macropore.f90": "b9a10d4782c2edb8b3c71b50885828997b647bd68b2ee20d249cf7975298ea25",
+          "swap.f90": "21c792a4d6d5300702c71a661f42aa2ffac2e3d93479cfc0e3278ec79d226f67",
+          "swap_main.f90": "0c5216de07a369a33a844d9d7a0415d9e0e36180df11958ab394602cc446b6b0",
+          "swap_csv_output.f90": "fa8bec26f6361df5c6e792639c9895896a7b47df60aefac4554f0775e08c4660",
+          "swapoutput.f90": "3d2fd0416183a7597adb9dbe9d53a8c3e3b71e0b092b008f04c86deb36538251",
+          "headcalc.f90": "586991b90b0c3154252b2baa40cd53a2dca4bad8ab963bca34f3368ff336252d"
+        },
+        "donor_objects": {
+          "MOD_Kavg_Szym.o": "b7e21c013b2c83871e04aba8a3c18661400786da79c2534a55ead3fab8d4137b",
+          "MOD_MvG_functions.o": "d01cf52e60e6b516e6c0375a67e119a48bd2e4c96e3f1206690d949efe8c535b",
+          "MOD_RIA.o": "6a1295d5db657cee778e2056284c68fb2dfcee3069c1cd72971b908c4f049844",
+          "MOD_cropdevelopment.o": "0fdc193718a6a196987e6d4f2dce952c1c1ae0bac6b77ca6d7b6226af72ccab1",
+          "MOD_drainage.o": "fec0c37b38d090f36091bc543503bb87e527feacad4756d14b90a7d0a5786a8c",
+          "MOD_meteo.o": "ae6fb48966e89e805eaf44d3ac3e15439e1e3abfcd5b83ab6578c9a14d8b369f",
+          "MOD_out_PEARL_ANIMO.o": "a11fbca0799eb787a12d7f83efa19e5bc2d8f7066948e25459a9f1e9a30a90ee",
+          "MOD_runon.o": "497a6de86b5e2a5e466b0fe17469482ef3a30c40fe9764f9f96d7a186e644d7d",
+          "RWU_micro.o": "d8adc0b1612f7d1f593d493bf51d82f3965188983157d7b318188dd10600a673",
+          "WC_K_models_04_11.o": "22d66c94199efbe919261aaef28835d841cddb9fcd87cd6f21f780fd634ea61d",
+          "arrays.o": "231cec64fd1269e5d63480e6389b3c1cd182ae0ee0fd272e670766fddfe87add",
+          "boundbottom.o": "601b618233fbd72f13df4bdc470168ac7d12afa5d86605ad80079e23bad4444e",
+          "boundtop.o": "824290bfc69ac0d4b4bbc0096e18c8418b4112adeb4845eef2a3fa4b1d7d351e",
+          "calcgwl.o": "6f0ea88a82d7df4faebbde9c096d3d399569fdf65df53f11c5e951e8675b6721",
+          "description.o": "115dd0ab4f696857069ab9d43cdaf1711b2fdb6570efc8f675dbc8e7f7ba78fd",
+          "divdra.o": "5994834c21ad87fd71ae2b48beed88c3f838ccf1f0708cccdc619664454c51a1",
+          "drainage.o": "5d21c0b5f30387c0e135c5ded589e92b2375b3fa22fd8af812aa59934b93eb08",
+          "fixed.o": "913fc468f031bafbc2cab7a5810b4e0bf265402176d35d8e4cb5a5ce34cbafbf",
+          "fluxes.o": "9cf53e8cb249dc1cfb9e1acbec9351c8bae471125ec2c3f9343ab886054a274f",
+          "frozencond.o": "149c8b19b3afd9fe3eadf3f4f6ba59e959bab635e5b313d27a29ef7811e19cdd",
+          "functions.o": "4c81c0911b5cc5ed635283a93bb1df2a3b239d56ac894494e56a3a359d2809eb",
+          "hysteresis.o": "a7ca0acf884e2521118752ee2c76b6a8083a5a4b12dd796865b6a6f90bf0f7b6",
+          "initialize.o": "61a6d794b69c19abf0f01da3d9fb02a087d4f1e2fb23e33dbbc05ec07d2991ea",
+          "integral.o": "4427c3b5dc2519bc9677c839797ab7cb3bcce0deec3382499d97a2bcd4a9afc1",
+          "interface_atmosphere.o": "0a888121c26215f1c72500dac52813061e42a263650b3796ca5829c536270084",
+          "interface_plant.o": "581536bd618742d682e9eed0c94ecc7a56f630dbbb9c1a5de41464c9bea406aa",
+          "irrigation.o": "4427dd3fc145617334683ee9e711ec74cc196d5735a705ec22cac8578146e6bd",
+          "macroporeoutput.o": "c1d57282afc93cc5b861d547ec8f4d1e01271ace439ab112ec554a30859ff4ca",
+          "macrorate.o": "aad3bd1e10e254ddf97c941b827a61ed6bdb9c44be95de7407dc044ef1367953",
+          "management_soil.o": "ad6aab5332a18a5c039f8c6054c81df117c2946ce9f4b7815b0f98afb4e46535",
+          "oxygenstress.o": "087f383b5681fdee38c85535c4a296f95456c3d52bb35ce816a04f2823214451",
+          "params.o": "68c750f7df02fbba69702db9a386fc895e6fb6996795bcd5cfcd86a4ee486f1f",
+          "readswap.o": "620b34f37e6818c145fb6d02b719bd622d312ea3d4c02528e2587d3148215dd8",
+          "rootextraction.o": "d3d934ddf2d8f690d8d3148e6f79eb581fba39b342b432fff0b1c9ceeb614955",
+          "snow.o": "0da8b639a15cf9a031baa6fcb97742b70d7cef0f65399616913bf7f9b3f6058b",
+          "soilwater.o": "e70aebabbf13cfb2adf9a936771c824f3275b3b9cb6310565a36f129bbcd2366",
+          "solute.o": "5db9c7069602fe2bdb8f0d543eff0935bb47ca8c81901062b84c3658acce5069",
+          "sptabulated.o": "ffac868c85722928d29c400ddebd8e97dbd38eeefab154375425f886c8df743e",
+          "surfacewater.o": "c975fed72af89828f58918d920f605797c864419dff3c85e7ceefab766186659",
+          "swap_base.o": "9534f0dc1ba62de337073761a6c9efbe65278264525c657059015e71ac7855fb",
+          "temperature.o": "fc1a319797b99e92ae17a13d7d74041e8cec9df9b9e3091dfff902c00fabb8fd",
+          "tillage.o": "1ca5355ff9bde65f93270da2dbdc11f67915625ef738dc752548c3c8578dc5c6",
+          "timecontrol.o": "71aec6b8c42016a83c05093597a48b9c3bb6fe6d10114c8282605481fd89869b",
+          "tridag.o": "028e9c4a8bf28e661a7dd416e331ae782693b07018e384884c9986793ea06836",
+          "variables.o": "c4234db3d4e7ed4744f5b332ce7083dddc312c757b443e182eab7888c1ad24ac",
+          "watstor.o": "0ad63de5233e8e21c6c37bff0aa0a1ee10ab6f37a9510d4526c8f7295c87ec64",
+          "wofost.o": "b1db715b3ebbf8ffc1a8644549a39466a54e867fe078abc9f708fd6f14afed81",
+          "wofost_soil_amendments.o": "a0d7d9e8190be0b8e65f28af2fa3f2496753a90ee4f96ac44b5fbce7f924d57d",
+          "wofost_soil_balancecheck.o": "1ca23d94f56464125b6fb015768cedb18ba9627cf1dad8c29385d2bff1d52315",
+          "wofost_soil_cropresidues.o": "95e04103f2102302532723e4e3a0909d6d4726bd454a4d2542e91bd4b08a57b0",
+          "wofost_soil_declarations.o": "d971769beb8f0540a983920d21dc0e6b3f864862c317acae7e2cb772be21869a",
+          "wofost_soil_interface.o": "a4de86b5694852be3672040838c1a7fb4112e01f0a409217c0f034fd8f2039d5",
+          "wofost_soil_orgmatn.o": "f20fe313aa6127a64889ee5f1e4e4f984cea6c0000198e392fd5ee4ec9411224",
+          "wofost_soil_parameters.o": "73741eea5042ade72d080aee5d7b7d6e39bdcce657d34835767b6956ea7ae3b5",
+          "wofost_soil_rateconstants.o": "2a98da7d9cada31e2288ff30b7b002cfc9b0756769ba3afc0c5e6b75a3516523",
+          "wofost_soil_watern.o": "104c2cec0e61e467f4fe1477adb13fb8dba344237af69f18a211ab75d0214d89",
+          "wofostnut.o": "e84f42812af8625b304a388636f61468813fea2b03406b7959e8bd6b4412e3d8"
+        },
+        "donor_modules": {
+          "atmosphere_interface.mod": "d54c6ef17dbf8b0c25719022f03356dc6d280693e0a33fdec7d458af9945aaad",
+          "bisparameters.mod": "9b2ac9a140eb22ad97bb0787949489239ecc9f887bbabb50b0844a652b66bd1a",
+          "doln.mod": "5d6803206f29ff572e8209cee580ca9b0d8ce66479bedbec20e43fc4c1ccd3c8",
+          "dotspack.mod": "b23ae429c3b398cbd382ad0ff4500ab5654538222c04fb51c8e3fa48fe52e5db",
+          "doubleprec.mod": "6cc7fb24b848f57fd65e290fcdb2a344160eda7ca4088c1c2e9accff193975a4",
+          "kvapor.mod": "4d9ece863c327913cbc47c5f26595e086acda0310d54e475a590cb4f794a4bf2",
+          "mod_arrays.mod": "adb95850e1d3bc251f362efbf0d3c35ec4df673df0d8d6e15620fb85a14855bc",
+          "mod_cropdevelopment.mod": "638b0db4864c3e790d5fe09b5f8a36d02a75ebe6b3d75eaf6b091c035f268da3",
+          "mod_description.mod": "7d42070d27711a0f91bdbe60cf3df1daaa93ec35aae02cd2d78c90d1c41d52cb",
+          "mod_drain.mod": "8939ca46ec036452464cb3888450dc5703423db340894ca9c1089571d7524239",
+          "mod_fixed.mod": "0e478900f9b7188f9c227a76c17dbb72e67c3a2a88708744c58432d1d283cc20",
+          "mod_frost.mod": "9b842f672c1bfa5dff904c0d6391275d1ec2fef9a9d2dbd0bb775afabfd5ee8e",
+          "mod_grid.mod": "32bbcf3e1ed1d582992041a1b1e4e963d2401065dc5156ae874f9a7823976541",
+          "mod_gwl.mod": "80966582ccc3912ed759092f9a1ae201840c5c8eb1d1a366a25bf1c491eeae47",
+          "mod_integral.mod": "42170d3cc6676e8868d59770bba2bcf6c26cba85a95c9684344b6de983571879",
+          "mod_integral_global.mod": "aa5a0244d5e86f8ff9650353a8f01cb8d9aa96dcabf18fa8b5cbde2a3cf62841",
+          "mod_irrigation.mod": "e73677e4362b1830d8d1c8d92a80100153cec5319af3e9ac559b25fc7463a903",
+          "mod_kavg_szym.mod": "8b08e5176ef72a5371e63fc7184168ab2213782d8cf2232deb42f5976f190730",
+          "mod_macropore.mod": "709a378f1f652a3303b944de0b18f2424bd4e31e5510894d967cdd06607f079a",
+          "mod_meteo.mod": "dd955f01298598a77947c38afc087827db24727f55c18b5cae1527ede8f2f618",
+          "mod_mvg.mod": "81d8e4db91833b56d5a17d1550ff59a27476fddc07c36e9c35dc3f12c3fa3361",
+          "mod_out_pearl_animo.mod": "ec4d5ad2473e81264435b47dc4fe729a04ab120023a1f4dfb00591d9502a652d",
+          "mod_params.mod": "32193e83462336995eaa758961129222f3e03d526a022fac173d27e302f1e6b9",
+          "mod_re_global.mod": "586ed6e095d2959fa2edc66a7a4e0fdf28d45314ae9105c97fa7f55927df9213",
+          "mod_ria.mod": "1c47ac0d93bd7b0277d1db522e635f3120a366b86e8e2cad15d6524d288f4b91",
+          "mod_rootextraction.mod": "3f1890440d53a08f47e29b7b89a46d38df348223ec455107da1f98a3047a11a9",
+          "mod_runon.mod": "ebc6e44b602f5bb7a6dbb2e09fd5a288ddab1f58e7b9226a280a13294338f917",
+          "mod_rwu_micro.mod": "bdea0e6be23e847e1d78a4318256794d0ab90ed7b9cf159d4b932efd832682e3",
+          "mod_snow.mod": "a7625da42d90e7bda4899b1f6ce8b18e84ce90030037f0b24702f93421828605",
+          "mod_soiltemperature.mod": "84b0829c5aef1478ba1b593a98de1173406d873c3544d3829efcd77df8790461",
+          "mod_soilwater.mod": "263078b78095a64371056c69d87564cbe571c0f24daa0106b0c2401dd0f27c55",
+          "mod_solute.mod": "139ae97a97073b86625e590505fc39b952007a3b7044fb203afa80d2101d544e",
+          "mod_solute_global.mod": "07055b10ec399b70e52cde99f2d99e12d890def7b13389126d4aab98c5edf6df",
+          "mod_swap_base.mod": "ab4f9111852b36b785f29b41615bea4386555b54e3683b7b826326732ce88006",
+          "mod_swap_mp.mod": "87b1d6e4704420a65aca9e753a7e4941499f9a439ba7c63a667163cf0f835585",
+          "mod_texture_orgmat.mod": "99a5adaac9fa7c7ae01534b455b20298c3dba27d53d5d0bd6dca4f8dabb1b5b2",
+          "mod_tillage.mod": "dcd44d06a0e6eaaeccf6db1608715aed554c6c39530fca501c109edba6a8766b",
+          "mod_timer.mod": "4f7a6131a225ad2175ea9e5a77aa69bdfe09d7b178a79fc435bca28a4e01770d",
+          "mod_top.mod": "a86f702f532bcba8d7c46f779325f394511eabe9b2c5cd19cb9ba169bf85df61",
+          "mod_wofost.mod": "1b29203364d57bc0ee3bc6e7bff30fc6e8bf4edb8e3b885c5a58d61499ee6a28",
+          "mod_wofost_nut.mod": "8b8809bbdb2611a13894de0350408e578a9a872e3d0ca4ac566a7aa1af13bd7a",
+          "module_outdat.mod": "2c95261993b4cddb90a13c22cea7f86c070f3bdcdc2655fdedd65a3ee1c38cfe",
+          "numbers.mod": "b1e9dcd6a43ac1363ce8e34765c33794ed4445d33f35ab5be8dd8f9d20f394c7",
+          "o2_pars.mod": "6c3f9ef1f5fb917b5db646cabf70710842d9d371f1d802ae3b96eaba46962078",
+          "parameterinformation.mod": "b574d3ad3b8a9b78c39ea451622045b4e3279799ab0bab3a00cd4acb6a5bb30b",
+          "parameters.mod": "a4adcc963193237d68d9c2ec20b923470bbba610314a40cdd2ac4a361baf74c1",
+          "plant_interface.mod": "5469c0855f51c856bb931543dfc400a1ca1053ba7989ba0a071cd3c61fa97b8a",
+          "rdmodulettutil.mod": "b72597b740899068f83558e29072a75d8cffdf384473f26a29f1a1ed9dbe1faa",
+          "shpvariables.mod": "2a46bfab643a0437ab32a2f131ee88d5c4851300f8c0ae5516b52c58e74a5547",
+          "smallestvalues.mod": "447450a1f67b2d891141f4f47881bface55010e45c3e6a4bbc59b240bd584ca1",
+          "swap_csv_output.mod": "7667cb44fed3f1571d6970ccf179f57d35769205e6a9fe6505877f9057f4cb33",
+          "swap_exchange.mod": "37b622285148a67502e998fa29e3878cbd64baa57c62ef390cf12f8eeda8b87e",
+          "tspack.mod": "a479d92098b75096d09d5fe2ee1816cce1145e797ca7ec00a885c99383d34967",
+          "ttutil.mod": "5a404b6baad8b4acf186fd6cf10b5fc62c1d4f06fc1f6b97f4bf9ad5faf7512f",
+          "ttutilprefs.mod": "2aaba07c74c4a85a1a160162270dbfea3a76dc9579c8b14d6cbc536733dd5db6",
+          "types.mod": "aa83272e0db09b9e525445b6e2f2855e640bba6aa4fd785fbb1d62495cb1305e",
+          "variables.mod": "39ad0d2331c0f041fe9c6c0a8f967b5edf12f970ae5a894305f011baff309bae",
+          "wc_k_models_04_11.mod": "32289b6f8d39f805644fc3139a28fabb4d7532bb5bf7035b631b51ff68434bf2",
+          "wofost_soil_declarations.mod": "9ccf35211cf190ef22500702632dbb154740c82c84760017373547a1858319b8",
+          "wofost_soil_interface.mod": "88fb6b5ec4953dc2d422ebd22e4d017b1afc99118a23f8ab48076d7f1bd5a624"
+        },
+        "ttutil_modules": {
+          "module_outdat.mod": "2c95261993b4cddb90a13c22cea7f86c070f3bdcdc2655fdedd65a3ee1c38cfe",
+          "rdmodulettutil.mod": "b72597b740899068f83558e29072a75d8cffdf384473f26a29f1a1ed9dbe1faa",
+          "ttutil.mod": "5a404b6baad8b4acf186fd6cf10b5fc62c1d4f06fc1f6b97f4bf9ad5faf7512f",
+          "ttutilprefs.mod": "2aaba07c74c4a85a1a160162270dbfea3a76dc9579c8b14d6cbc536733dd5db6"
+        },
+        "ttutil_library": "5f21151bb67326a0076d840e127f6cf129f8a2b46e3e0d676c00fb438caacba8",
+        "kernel_sources": [
+          [
+            "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+            "5aa7639b9205c14af72242900de4aa7ba9a83474dd783e2c07560f1f41abb810"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+            "dbd8e777ed74724ae827c655ec3bc5e63aa6ff2f06e0186bfaae0a7190586e6f"
+          ],
+          [
+            "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+            "6e8c41904933b6641d9084882976684867d9819c06f07454d650cc8f218280c8"
+          ],
+          [
+            "src/transaction/mod_transaction_reference.f90",
+            "20ee59cbff38d1ff423bd4bc1de213ff8ef1f81da0dcd4a22a339a6ee7acdbed"
+          ],
+          [
+            "src/runtime/mod_canonical_contracts.f90",
+            "a468f9470475ec613bc045e00ae4979d32f8e4aa9368c0b3d269962f832ced3b"
+          ],
+          [
+            "src/runtime/mod_canonical_interval_runtime.f90",
+            "1a3e57b9a2d58b11e2be71f55f36e3f4dde0c988cb0010bcfc42f393be9d8384"
+          ],
+          [
+            "src/kernel/mod_kernel_transactions.f90",
+            "ae14f20d6582699f3a0f575a09c62c95e84e7a7b8048cfb9b188faf47b41e308"
+          ],
+          [
+            "src/runtime/mod_groundwater_coupling_contract.f90",
+            "81001c48c7fd98faec9c3612092cd6729c8f98d16b6057ecfc5ecb090b306252"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+            "d5f6645e27e8fc89bdc46838fe34e9766e8163b444027f5e6d80ea950759b8e1"
+          ],
+          [
+            "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+            "c13813f8412db1a02cf8ae8eac27d6005a6835a22f60fade196eb0cc3dc3277b"
+          ],
+          [
+            "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+            "934b62625685c67f5a3bb8931522609f7b73ed4ab853f06b5249b15ae362aa0a"
+          ],
+          [
+            "src/runtime/mod_fmr_soil_water_application_host.f90",
+            "6315a507c697bd033d88bba63403176927841638458879986d7bcf1825a8ae3c"
+          ]
+        ],
+        "adapter": "e420bee05ae1ff93e94226f4e1a7399fdc46fa24bbc9668cbbcb8aed55c419b2",
+        "driver": "06578d6e5669e6acfba93b3dd565c65b8ec379f7a3bf42f999e72bab88a2242d",
+        "host": "044d8f7e21ccb00f458ab24e1c8a3e03e5c7fcb5bddbea0ed31c12922a26bf0f",
+        "budget_source": "152fa824d1839247377b5ae6ab9a5e6135c612d6177129afc456983fc4eda9bd",
+        "macro_policy": {
+          "name": "original-nonlinear-macro-block-explicit-integral-history-v1",
+          "generator_sha256": "14d05cf9083b00004ac9ae9690bf0e03c337fd2dec6aa843bc57247c2b3d7529",
+          "original_MACRORATE_object_sha256": "aad3bd1e10e254ddf97c941b827a61ed6bdb9c44be95de7407dc044ef1367953",
+          "native_macro_format": "S5MAC006-original-reset-flags-counters-integral-history",
+          "objects_sha256": {
+            "headcalc.o": "6591d5949496c5794d31d2ce00bf6fd56618d79185637ef5eed96f16fd565088",
+            "swap_main.o": "81b1b9115605cd2cb1ce4b3fbf2b469425c0dd44d4423dc454320b9f2102f82c",
+            "macropore.o": "15e1ea3f98bb2d09896599738d89e7df6058fe51ca9fa5e26d366d0d377bab1f",
+            "swap.o": "16e81f5ad587626bce91c51190714855fa1d85f9ff682d5f216144853780e085"
+          }
+        }
+      },
+      "macro_policy": "original-nonlinear-macro-block-explicit-integral-history-v1"
+    },
+    "executable_sha256": {
+      "donor": "a2bd446bcfcc2e98a10929c670734d85a7b69edc9fd9e603039786963a1c7780",
+      "kernel": "d2b6bd3b951f350243fd471f9d12b23400957a81053dfb837960baef7aab8726"
+    }
+  },
+  "segments": [
+    {
+      "artifact_id": 13915394658,
+      "artifact_digest": "sha256:5b05864ca2d79ab793444809efdde55759f0f21d8064413820a87218b60cc689",
+      "run": {
+        "id": 43156633863,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/hybrid-original-macro-481",
+        "head_sha": "311ac3e2466c2da5e6fc6a379c564a47afeafc9b"
+      },
+      "origin_day": 4,
+      "accepted_through": 198,
+      "durable_through": 160,
+      "status": "MODEL_CAP_REACHED",
+      "seconds": 60.00342171300002,
+      "overlap_days_exact": []
+    },
+    {
+      "artifact_id": 13916810498,
+      "artifact_digest": "sha256:156b77c7a682890ee9b605f5987d782ab4613324437c80691f859bf349c78731",
+      "run": {
+        "id": 43157255241,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/hybrid-original-macro-481",
+        "head_sha": "d0b538c773cf8da5c11430b3de199c224fb23ed3"
+      },
+      "origin_day": 160,
+      "accepted_through": 249,
+      "durable_through": 240,
+      "status": "MODEL_CAP_REACHED",
+      "seconds": 60.003452675999995,
+      "overlap_days_exact": [
+        161,
+        162,
+        163,
+        164,
+        165,
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198
+      ]
+    },
+    {
+      "artifact_id": 13917161409,
+      "artifact_digest": "sha256:1ebf1f76b49ec2397025f06aeb6e3d1caf6328e89ad760344f953ee133111bc9",
+      "run": {
+        "id": 43158145401,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/hybrid-original-macro-481",
+        "head_sha": "394923f9070b4d4160fb444f0491d033d677b8b5"
+      },
+      "origin_day": 240,
+      "accepted_through": 313,
+      "durable_through": 304,
+      "status": "MODEL_CAP_REACHED",
+      "seconds": 60.00320176299999,
+      "overlap_days_exact": [
+        241,
+        242,
+        243,
+        244,
+        245,
+        246,
+        247,
+        248,
+        249
+      ]
+    },
+    {
+      "artifact_id": 13917047337,
+      "artifact_digest": "sha256:be43cb0fe9992fc3518ce5167c9f1b3adabd1ec4bed7f156760854375674d46a",
+      "run": {
+        "id": 43158853787,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/hybrid-original-macro-481",
+        "head_sha": "a40055099617ec05c3dc075671a8a83be2ee87a3"
+      },
+      "origin_day": 304,
+      "accepted_through": 452,
+      "durable_through": 448,
+      "status": "MODEL_CAP_REACHED",
+      "seconds": 60.003556701,
+      "overlap_days_exact": [
+        305,
+        306,
+        307,
+        308,
+        309,
+        310,
+        311,
+        312,
+        313
+      ]
+    },
+    {
+      "artifact_id": 13917581830,
+      "artifact_digest": "sha256:82456e1b451139b49da8d4d9ecff3129f0a8313f9330a591451250062f9454eb",
+      "run": {
+        "id": 43159561006,
+        "repository_id": 1357193305,
+        "head_repository_id": 1357193305,
+        "head_branch": "codex/hybrid-original-macro-481",
+        "head_sha": "f95429fec34366ca7b44c386996101c8ceb1d508"
+      },
+      "origin_day": 448,
+      "accepted_through": 481,
+      "durable_through": 481,
+      "status": "ORIGINAL_MACRO_CONTINUATION_COMPLETE",
+      "seconds": 34.99314786300002,
+      "overlap_days_exact": [
+        449,
+        450,
+        451,
+        452
+      ]
+    }
+  ],
+  "own_restarts": [
+    {
+      "window": [
+        365,
+        368
+      ],
+      "physical_days_exact": [
+        366,
+        367,
+        368
+      ],
+      "complete_native_days_exact": [
+        368
+      ],
+      "seconds": 0.744899801999992
+    },
+    {
+      "window": [
+        453,
+        459
+      ],
+      "physical_days_exact": [
+        454,
+        455,
+        456,
+        457,
+        458,
+        459
+      ],
+      "complete_native_days_exact": [
+        456,
+        457,
+        458,
+        459
+      ],
+      "seconds": 7.141330756000002
+    }
+  ],
+  "maximum_daily_residual_cm": 9.998866333377667e-07,
+  "signed_water_residual_cm": -2.8784462817707774e-05,
+  "mass_step_retries": 71035,
+  "summed_continuation_wall_seconds": 275.00678071600004,
+  "terminal_native_sha256": {
+    "result.end": "f28bc91ca54a5c62397d6bc62fc12766a3f66c35f131fa79f0c072c68cf9f828",
+    "macro.bin": "d1e9468a369d611fbd306f462b57fee463ed6eef03aa65f102a2a37b492bf247"
+  },
+  "reference_lf_csv_sha256": "85b4d42386f4737032215232a8894d691cd750d75c3546bec4fed62b042f229d",
+  "largest_original_gwl_difference": {
+    "day": 438,
+    "date": "1999-03-14",
+    "new_gwl_cm": -159.96336565856024,
+    "original_printed_cm": -80.452,
+    "corrected_printed_cm": -80.00551,
+    "new_minus_original_cm": -79.51136565856024,
+    "new_minus_corrected_cm": -79.95785565856023
+  },
+  "largest_corrected_gwl_difference": {
+    "day": 438,
+    "date": "1999-03-14",
+    "new_gwl_cm": -159.96336565856024,
+    "original_printed_cm": -80.452,
+    "corrected_printed_cm": -80.00551,
+    "new_minus_original_cm": -79.51136565856024,
+    "new_minus_corrected_cm": -79.95785565856023
+  },
+  "pressure_support_at_worst_gwl": {
+    "day": 438,
+    "source_archive_sha256": "02570c194df9c712a61bbb2c678d4ed5cc216f2c4def9259885e48a5a3fe83f9",
+    "maximum_node_pressure_difference_cm": 91.03726159571893,
+    "matrix_stock_difference_cm": -0.00068711117395992,
+    "scope": "Descriptive comparison with retained corrected Windows profile; numerical policy and platform both differ. Not unrounded original spatial reference or a causal attribution.",
+    "decision": "Large pressure-field difference cannot be waived as printed-GWL rounding or accepted from mass closure alone"
+  },
+  "sentinels": [
+    {
+      "day": 256,
+      "date": "1998-09-13",
+      "new_gwl_cm": -67.45028031665596,
+      "original_printed_cm": -67.44455,
+      "corrected_printed_cm": -67.44652,
+      "new_minus_original_cm": -0.005730316655956358,
+      "new_minus_corrected_cm": -0.0037603166559563306
+    },
+    {
+      "day": 257,
+      "date": "1998-09-14",
+      "new_gwl_cm": 3.7434354452022746e-06,
+      "original_printed_cm": 3.82026e-06,
+      "corrected_printed_cm": 2.36082e-06,
+      "new_minus_original_cm": -7.682455479772565e-08,
+      "new_minus_corrected_cm": 1.3826154452022746e-06
+    },
+    {
+      "day": 365,
+      "date": "1998-12-31",
+      "new_gwl_cm": -73.79402726694833,
+      "original_printed_cm": -73.78734,
+      "corrected_printed_cm": -73.77658,
+      "new_minus_original_cm": -0.006687266948333104,
+      "new_minus_corrected_cm": -0.01744726694833787
+    },
+    {
+      "day": 453,
+      "date": "1999-03-29",
+      "new_gwl_cm": -82.98706414443448,
+      "original_printed_cm": -83.01574,
+      "corrected_printed_cm": -82.98786,
+      "new_minus_original_cm": 0.028675855565509778,
+      "new_minus_corrected_cm": 0.0007958555655136479
+    },
+    {
+      "day": 456,
+      "date": "1999-04-01",
+      "new_gwl_cm": -83.90489211978199,
+      "original_printed_cm": -84.04507,
+      "corrected_printed_cm": -83.91987,
+      "new_minus_original_cm": 0.1401778802180047,
+      "new_minus_corrected_cm": 0.014977880218012274
+    },
+    {
+      "day": 457,
+      "date": "1999-04-02",
+      "new_gwl_cm": -84.82502871883786,
+      "original_printed_cm": -93.75334,
+      "corrected_printed_cm": -82.86799,
+      "new_minus_original_cm": 8.928311281162138,
+      "new_minus_corrected_cm": -1.9570387188378504
+    },
+    {
+      "day": 458,
+      "date": "1999-04-03",
+      "new_gwl_cm": -79.31128439569667,
+      "original_printed_cm": -78.08553,
+      "corrected_printed_cm": -77.82077,
+      "new_minus_original_cm": -1.2257543956966686,
+      "new_minus_corrected_cm": -1.4905143956966782
+    },
+    {
+      "day": 459,
+      "date": "1999-04-04",
+      "new_gwl_cm": -72.95451382281763,
+      "original_printed_cm": -73.01652,
+      "corrected_printed_cm": -72.95269,
+      "new_minus_original_cm": 0.06200617718236856,
+      "new_minus_corrected_cm": -0.0018238228176272742
+    },
+    {
+      "day": 481,
+      "date": "1999-04-26",
+      "new_gwl_cm": -84.90289876462019,
+      "original_printed_cm": -84.91711,
+      "corrected_printed_cm": -84.9041,
+      "new_minus_original_cm": 0.014211235379804066,
+      "new_minus_corrected_cm": 0.001201235379809873
+    }
+  ],
+  "science": "NOT_QUALIFIED: comparison uses retained five-decimal groundwater support, not a new oracle or relaxed acceptance; functional completeness and native state do not establish scientific equivalence or runtime parity"
+}

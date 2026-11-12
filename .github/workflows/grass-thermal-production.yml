@@ -25,11 +25,11 @@ on:
   workflow_dispatch:
     inputs:
       macro_expected_sha:
-        description: Exact requested source for capped macro481 execution; mismatch stops before models
+        description: Exact requested source for macro481 evidence; mismatch stops before assessment
         type: string
         default: ""
       hybrid_original_macro_481:
-        description: Execute own original macro481 from qualified Linux checkpoint with60s model cap
+        description: Verify preserved actual original macro481 and native restart evidence without model reruns
         type: boolean
         default: false
       hybrid_original_macro_restart:
@@ -94,18 +94,16 @@ concurrency:
   group: grass-thermal-production-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
-  original-macro-full-period:
+  original-macro-full-evidence:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_original_macro_481
     runs-on: ubuntu-26.04
-    timeout-minutes: 5
+    timeout-minutes: 3
     permissions:
       contents: read
-      actions: read
     env:
-      OMP_NUM_THREADS: '1'
       SWAP5_TEST_SELECTION_RECORD: integration/f-ci/ORIGINAL_MACRO_481_20261112.json
     steps:
-      - name: Refuse stale dispatch source before any model work
+      - name: Exact requested assessment source
         env:
           EXPECTED_MACRO_SHA: ${{ inputs.macro_expected_sha }}
         run: test -n "$EXPECTED_MACRO_SHA" && test "$GITHUB_SHA" = "$EXPECTED_MACRO_SHA"
@@ -116,53 +114,42 @@ jobs:
           sparse-checkout: |
             /src/
             /app/
-            /reference/swap-4.3.1/projects/3.macroporeflow/
             /integration/f-ci/ORIGINAL_MACRO_481_20261112.json
-            /research/hybrid-water01/run_original_macro_continuation.py
-            /research/hybrid-water01/probe_original_macro_block.py
-            /research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz
-      - uses: actions/download-artifact@v4
-        with:
-          name: original-macro-restart-linux
-          run-id: 43154680629
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: ${{ runner.temp }}/qualified-original-macro
-      - uses: actions/download-artifact@v4
-        with:
-          name: original-macro-481-linux
-          run-id: 43158853787
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: ${{ runner.temp }}/prior-original-macro-481
-      - name: Exact provider and persisted selection; zero scientific compilation
+            /research/hybrid-water01/audit_original_macro_481.py
+            /research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json
+            /research/hybrid-water01/original-macro-481-evidence.zip
+            /research/hybrid-water01/andelst-481-application-evidence.zip
+            /research/hybrid-water01/whole-period-andelst-groundwater-20261112.csv
+            /research/hybrid-water01/whole-period-andelst-reference-lineage-20261112.json
+      - name: Verify immutable native/model evidence and owning selection
         run: |
           python3 - <<'PY'
-          import hashlib,json,os,subprocess
+          import hashlib,json,os,zipfile
           from pathlib import Path
           owner=json.loads(Path(os.environ['SWAP5_TEST_SELECTION_RECORD']).read_text())
-          assert owner['selection']['linux_full']['model_cap_seconds']==60
-          root=Path(os.environ['RUNNER_TEMP'])/'qualified-original-macro'
-          result=json.loads((root/'RESULT.json').read_text())
-          assert result['status']=='ORIGINAL_MACRO_COMPLETE_SHORT_RESTART_PASS'
-          assert result['source']=='3affe302984bbafc2108fb5b52d7ea91d44d5b80'
-          for name in ['day_donor','day_kernel']:(root/'O2/build'/name).chmod(0o755)
-          archive=Path('research/hybrid-water01/hybrid-hupsel-linux-20261111.tar.xz')
-          assert hashlib.sha256(archive.read_bytes()).hexdigest()=='feaec2daeada9b5f01f0391352a7b15910f406c4a0034123e65c58418cd67bde'
-          provider=Path(os.environ['RUNNER_TEMP'])/'provider';provider.mkdir()
-          subprocess.run(['tar','-xf',str(archive),'-C',str(provider)],check=True)
-          reference=provider/json.loads((provider/'PROOF_INDEX.json').read_text())['reference']
-          with open(os.environ['GITHUB_ENV'],'a') as f:f.write('MACRO_REFERENCE='+str(reference)+'\n')
+          assert owner['status']=='ORIGINAL481_FUNCTIONAL_AND_NATIVE_RESTART_VERIFIED_SCIENCE_FAIL'
+          archive=Path(owner['evidence']['path'])
+          assert hashlib.sha256(archive.read_bytes()).hexdigest()==owner['evidence']['sha256']
+          target=Path(os.environ['RUNNER_TEMP'])/'original-macro-proof';target.mkdir()
+          with zipfile.ZipFile(archive) as z:z.extractall(target)
           PY
-      - name: Continue exact durable448 at unchanged bound and compare every retained overlap day
-        run: python3 -B research/hybrid-water01/run_original_macro_continuation.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/prior-original-macro-481/resume-304-to-481/accepted-column-1-day-448.zip" --cut 448 --end 481 --seconds 60 --checkpoint-days 453 456 457 458 459 464 480 481 --compare-journal "$RUNNER_TEMP/prior-original-macro-481/resume-304-to-481/daily.jsonl" --output "$RUNNER_TEMP/original-macro-481/resume-448-to-481"
-      - name: Own complete year-boundary endpoint restart365to368
-        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/prior-original-macro-481/resume-304-to-481/accepted-column-1-day-365.zip" --cut 365 --end 368 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-365-to-368"
-      - name: Own complete late-event restart453to459
-        run: python3 -B research/hybrid-water01/probe_original_macro_block.py --bundle "$RUNNER_TEMP/qualified-original-macro/O2/build" --reference "$MACRO_REFERENCE" --checkpoint "$RUNNER_TEMP/original-macro-481/resume-448-to-481/accepted-column-1-day-453.zip" --cut 453 --end 459 --cap-seconds 20 --output "$RUNNER_TEMP/original-macro-481/restart-453-to-459"
+      - name: Whole481 data, source graph, original inputs, water and complete native own restart; zero models
+        run: |
+          python3 -B research/hybrid-water01/audit_original_macro_481.py --qualified "$RUNNER_TEMP/original-macro-proof/qualified/artifact.zip" --segments "$RUNNER_TEMP/original-macro-proof/segments/1/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/2/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/3/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/4/artifact.zip" "$RUNNER_TEMP/original-macro-proof/segments/5/artifact.zip" --output "$RUNNER_TEMP/original-macro-audit"
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          actual=json.loads(Path(os.environ['RUNNER_TEMP'],'original-macro-audit/RESULT.json').read_text())
+          expected=json.loads(Path('research/hybrid-water01/ORIGINAL_MACRO_481_RESULT_20261112.json').read_text())
+          assert actual==expected
+          assert actual['new_model_runs_by_auditor']==0
+          print('EXACT_WHOLE481_AND_NATIVE_RESTART_REPRODUCTION; SCIENTIFIC_FAILURE_VISIBLE; ZERO_MODELS')
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: original-macro-481-linux
-          path: ${{ runner.temp }}/original-macro-481
+          name: original-macro-481-data-audit
+          path: ${{ runner.temp }}/original-macro-audit
           retention-days: 14
   bounded-original-macro-restart:
     if: github.event_name == 'workflow_dispatch' && inputs.hybrid_original_macro_restart
