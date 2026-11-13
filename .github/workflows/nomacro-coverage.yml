@@ -1,0 +1,43 @@
+name: No-macro functional coverage
+on:
+  push:
+    branches: [codex/nomacro-coverage01]
+    paths:
+      - '.github/workflows/nomacro-coverage.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-coverage-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  coverage:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile and execute new process configurations O0/O2
+        run: python3 -B tools/solute/check_nomacro_coverage.py --output "$RUNNER_TEMP/coverage"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-coverage-${{ github.sha }}
+          path: ${{ runner.temp }}/coverage
+          retention-days: 30
+  release-regression:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preserve all three registered profiles O0/O2 and complete periods
+        run: python3 -B tools/solute/check_userrelease.py --output "$RUNNER_TEMP/regression"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-regression-${{ github.sha }}
+          path: ${{ runner.temp }}/regression
+          retention-days: 30

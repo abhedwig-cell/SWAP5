@@ -30,6 +30,8 @@ class HybridProject:
     macro: bool = False
     solute: bool = False
     end_date: str = ''
+    input_directory: str = ''
+    input_inventory: tuple = ()
 
     @property
     def last_day(self):
@@ -44,6 +46,17 @@ GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-
 HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10,solute=True,end_date='2004-12-31')
 SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31')
 PROJECTS = (ANDELST,GRASSGROWTH,HUPSEL,SALTFARM)
+
+
+def project_case(reference, project):
+    if project.input_directory:
+        from experimental_project import validate
+        return validate(project)
+    if project not in PROJECTS:
+        raise ValueError('Unregistered original hybrid project')
+    return Path(reference)/'distribution/SWAP_4.3.1/cases'/project.case
+
+
 CASE = ANDELST.case
 APPLICATION_MODEL = "HYBRID_ANDELST_WATER"
 START_CLOCK = 35795
@@ -86,15 +99,13 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
-    if project not in PROJECTS:
-        raise ValueError("Unregistered original hybrid project")
+    case = project_case(reference, project)
     if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
             or (not project.macro and not project.solute and budget_retry)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
-    case = distribution / "cases" / project.case
-    pinned = ROOT / "reference/swap-4.3.1/projects" / project.case
+    pinned = case if project.input_directory else ROOT / "reference/swap-4.3.1/projects" / project.case
     if not case.exists():shutil.copytree(pinned,case)
     inputs = {p.relative_to(case).as_posix(): sha(p) for p in sorted(case.rglob("*")) if p.is_file()}
     expected = {p.relative_to(pinned).as_posix() for p in pinned.rglob("*") if p.is_file()}
@@ -575,6 +586,8 @@ end module MOD_wofost""")
         "driver": sha(driver),
         "host": sha(Path(__file__)),
     }
+    if project.input_directory:
+        build_identity['experimental_input_adapter'] = sha(APP/'experimental_project.py')
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:
@@ -773,7 +786,12 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
             source += "\nSWENDTYPE = 2\n"
         if start.origin is not None:
             start_date = date.fromisoformat(project.start_date) + timedelta(days=start.day)
-            source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
+            if project.input_directory:
+                source,count=re.subn(r'(?m)^([ \t]*TSTART[ \t]*=[ \t]*)'+re.escape(project.start_date)+r'\b',
+                                     lambda m:m[1]+str(start_date),source)
+                if count!=1:raise ValueError('Missing/ambiguous experimental start date')
+            else:
+                source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
             if project==ANDELST and start.day >= 365:
                 bbc = directory / "swap.bbc"
                 table = bbc.read_text(encoding="cp1252")
@@ -825,7 +843,7 @@ class DailyHost:
 
     def __init__(self, stack, donor, kernel, case, output, starts, *, checkpoint_enabled=False,
                  runtime=False, binding=None, model=None, project=ANDELST):
-        if project not in PROJECTS:raise ValueError("Unregistered hybrid project")
+        project_case(case, project)
         model=project.model if model is None else model
         if model!=project.model:raise ValueError("Model and project identity differ")
         self.project=project
