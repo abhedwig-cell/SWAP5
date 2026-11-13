@@ -18,16 +18,17 @@ p.add_argument('--days', type=int, default=5)
 p.add_argument('--receipt-guard',action='store_true',help='Private absolute day-receipt projection')
 p.add_argument('--no-feedback',action='store_true',help='Test receipt guard without adaptive feedback change')
 p.add_argument('--primary-feedback',action='store_true',help='Use first original convergence count for original adaptive controller')
+p.add_argument('--quadmath',action='store_true',help='Private GNU quadmath rounded elementary functions; no feedback change')
 a = p.parse_args()
 a.output.mkdir()
 meta = json.loads((a.bundle/'BUILD.json').read_text())
 results = {}
-candidate='primary-feedback' if a.primary_feedback else 'receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
+candidate='quadmath' if a.quadmath else 'primary-feedback' if a.primary_feedback else 'receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
 for mode in ('baseline', candidate):
     out = a.output/mode
     out.mkdir()
     source = (a.bundle/'headcalc.f90').read_text(encoding='cp1252')
-    if mode != 'baseline' and not a.no_feedback:
+    if mode != 'baseline' and not a.no_feedback and not a.quadmath:
         assert source.count('\nsubroutine headcalc\n') == 1
         source = source.replace('\nsubroutine headcalc\n',
                                 '\nsubroutine rc1_headcalc_impl(rc1_polish_only)\n', 1)
@@ -82,10 +83,16 @@ end subroutine headcalc
         candidates = [out/original.name, a.bundle/original.name, original]
         objects.append(str(next(q for q in candidates if q.exists())))
     exe = out/'diagnostic.exe'
+    math_objects=[]
+    if mode!='baseline' and a.quadmath:
+        math_source=Path(__file__).with_name('platform_quadmath_probe.c').resolve()
+        c=subprocess.run(['gcc','-O2','-fno-builtin','-c',str(math_source),'-o',str(out/'quadmath_probe.o')],capture_output=True,text=True,timeout=30)
+        assert c.returncode==0,c.stderr
+        math_objects=[str(out/'quadmath_probe.o'),'-lquadmath']
     c = subprocess.run(['gfortran', '-o', str(exe), *objects,
                         *([str(out/'platform_day_receipt.o')] if mode!='baseline' and a.receipt_guard else []),
                         str(a.bundle/'hybrid_step_budget.o'),
-                        str(a.reference/'build/ttutil-obj/libttutil.a')],
+                        str(a.reference/'build/ttutil-obj/libttutil.a'),*math_objects],
                        capture_output=True, text=True, timeout=30)
     assert c.returncode == 0, c.stderr
     case = out/'case'
@@ -130,6 +137,7 @@ end subroutine headcalc
 (a.output/'RESULT.json').write_text(json.dumps(dict(status='EXPERIMENTAL_NOT_ADMITTED',
     receipt_guard=a.receipt_guard,adaptive_feedback=not a.no_feedback,
     primary_feedback=a.primary_feedback,
+    quadmath=a.quadmath,
     hypothesis='Pure final polish iteration unnecessarily restricts adaptive step growth',
     results=results), indent=2)+'\n')
 print(json.dumps(results), flush=True)

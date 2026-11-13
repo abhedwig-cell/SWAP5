@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-RC1-PLATFORM-STABILITY01",
-  "status": "IMPLEMENTING_BOUNDED_DAY_RECEIPT_DISCRIMINATOR",
+  "status": "PRIVATE_MATH_RUNTIME_DISCRIMINATOR_NOT_ADMITTED",
   "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
   "branch": "codex/rc1-platform-stability01",
   "owner_instruction": "2026-11-13: en nu verder met optie1",
@@ -22,7 +22,7 @@
   "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
   "max_model_seconds": 60,
   "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
-  "next_action": "One private primary-convergence-feedback trial to584; no receipt projection enabled. If guard fails, reject rather than adjust tolerance.",
+  "next_action": "Stop adaptive/receipt repairs. Keep original numerical/physical blocks and all guards unchanged; test whether GNU quadmath elementary functions rounded to original real32/64 remove cross-runtime seeds. First5-day Hupsel probe, then matched compiler/OS5-day check only if useful and affordable. No production math override until full qualification.",
   "first_probe_result": {
     "five_days": "EXACT_BASELINE_ALL_FRAMES",
     "extended": "CENSORED_60_SECONDS_AFTER_DAY534",
@@ -45,5 +45,15 @@
     "original_and_formula_stock_exact": true,
     "legacy_warning": "No convergence was reached...2002-12-30,23:59:60; SWAP did continue",
     "disposition": "REJECTED: copied-stock rounding was not the cause. Final dt4.085458780167528e-7 is below configured1e-6; original nonconverged-floor fallback bypasses convergence-only acceptance probes."
-  }
+  },
+  "primary_feedback_result": {
+    "days": 584,
+    "maximum_water_cm": 1.0033339783999118e-10,
+    "oxygen584_cm": 0.004793372017600289,
+    "disposition": "REJECTED_UNCHANGED_MASS_GUARD"
+  },
+  "math_source_reference": [
+    "https://github.com/gcc-mirror/gcc/blob/master/libquadmath/math/expq.c",
+    "https://github.com/gcc-mirror/gcc/blob/master/libquadmath/math/powq.c"
+  ]
 }
