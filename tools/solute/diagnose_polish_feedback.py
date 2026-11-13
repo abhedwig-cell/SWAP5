@@ -17,11 +17,12 @@ for name in ('bundle', 'reference', 'full', 'observer', 'output'):
 p.add_argument('--days', type=int, default=5)
 p.add_argument('--receipt-guard',action='store_true',help='Private absolute day-receipt projection')
 p.add_argument('--no-feedback',action='store_true',help='Test receipt guard without adaptive feedback change')
+p.add_argument('--primary-feedback',action='store_true',help='Use first original convergence count for original adaptive controller')
 a = p.parse_args()
 a.output.mkdir()
 meta = json.loads((a.bundle/'BUILD.json').read_text())
 results = {}
-candidate='receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
+candidate='primary-feedback' if a.primary_feedback else 'receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
 for mode in ('baseline', candidate):
     out = a.output/mode
     out.mkdir()
@@ -39,15 +40,22 @@ for mode in ('baseline', candidate):
         source = source.replace(anchor,
             '         if (mass_polish_at>0 .and. numbit==mass_polish_at+1) rc1_polish_only=1\n'+anchor)
         source = source.replace('end subroutine headcalc', 'end subroutine rc1_headcalc_impl')
+        if a.primary_feedback:
+            source=source.replace('         if (mass_polish_at>0 .and. numbit==mass_polish_at+1) rc1_polish_only=1\n','')
+            anchor='      if (budget_enabled .and. .not.flnonconv) then'
+            assert source.count(anchor)==1
+            source=source.replace(anchor,'      if (.not.flnonconv .and. rc1_polish_only==0) rc1_polish_only=numbit\n'+anchor)
+        feedback=('   if (rc1_polish_only>0 .and. numbit<maxit) numbit=rc1_polish_only'
+                  if a.primary_feedback else '   if (rc1_polish_only==1 .and. numbit<maxit) numbit=numbit-1')
         source += '''
 subroutine headcalc
    use variables, only: numbit, maxit
    implicit none
    integer :: rc1_polish_only
    call rc1_headcalc_impl(rc1_polish_only)
-   if (rc1_polish_only==1 .and. numbit<maxit) numbit=numbit-1
+FEEDBACK
 end subroutine headcalc
-'''
+'''.replace('FEEDBACK',feedback)
     if mode != 'baseline' and a.receipt_guard:
         source=source.replace('   use hybrid_step_budget, only: projected_water_residual',
             '   use hybrid_step_budget, only: projected_water_residual\n   use rc1_day_receipt_probe, only: projected_day_receipt')
@@ -121,6 +129,7 @@ end subroutine headcalc
     (out/'FRAMES.json').write_text(json.dumps(frames)+'\n')
 (a.output/'RESULT.json').write_text(json.dumps(dict(status='EXPERIMENTAL_NOT_ADMITTED',
     receipt_guard=a.receipt_guard,adaptive_feedback=not a.no_feedback,
+    primary_feedback=a.primary_feedback,
     hypothesis='Pure final polish iteration unnecessarily restricts adaptive step growth',
     results=results), indent=2)+'\n')
 print(json.dumps(results), flush=True)
