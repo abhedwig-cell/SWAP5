@@ -59,7 +59,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cohort: [first-block, extended, basic]
+        cohort: [first-block, extended, basic, crop]
     runs-on: ubuntu-26.04
     timeout-minutes: 12
     env:
@@ -87,6 +87,8 @@ jobs:
         run: |
           if [ "$COHORT" = extended ]; then
             python -B tools/solute/check_nomacro_coverage.py --extended --output "$RUNNER_TEMP/daily-nominal-coverage"
+          elif [ "$COHORT" = crop ]; then
+            python -B tools/solute/check_nomacro_coverage.py --crop-options --output "$RUNNER_TEMP/daily-nominal-coverage"
           elif [ "$COHORT" = basic ]; then
             python -B tools/solute/check_nomacro_coverage.py --basic-options --output "$RUNNER_TEMP/daily-nominal-coverage"
           else
