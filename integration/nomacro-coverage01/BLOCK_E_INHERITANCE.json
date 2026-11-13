@@ -1,0 +1,86 @@
+{
+  "base": "bdf222befb3ba444d3cd7147ef2fa90e2581ca16",
+  "checked_code": "5060be80285a3ce776b1021d286ef9eb6057716e",
+  "source_delta": [
+    "app/hybrid_water/experimental_project.py",
+    "tools/solute/check_nomacro_coverage.py"
+  ],
+  "unchanged_registered_runtime_source": [
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/donor_sources.py",
+    "app/hybrid_water/hybrid_step_budget.f90",
+    "tools/solute/run_water.py",
+    "app/hybrid_water/user_prepare.py"
+  ],
+  "checks": [
+    {
+      "case": "no-compensation",
+      "descriptor": {
+        "case": "experimental-e40d5945bd2fa3618e11c968220888bf8ae055dee3b56af1adef6d6ec8483289",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "no-interception",
+      "descriptor": {
+        "case": "experimental-a02c4a2c8d3a4ea0574be2f2131b982c4b314a535f413ab5c2745a5584480f6e",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "no-oxygen",
+      "descriptor": {
+        "case": "experimental-abc7dd01045c25e4bacc12ec6607397ff65af1c798e79208a962c8e9ea773f18",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "no-salt-stress",
+      "descriptor": {
+        "case": "experimental-7ff36f9af835a0627ad504ebac3060383a7dcd9f351d453ae3ab03a74fe3ffce",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "water-hupsel",
+      "descriptor": {
+        "case": "experimental-bcbae22043d4244cba1de9a227255e44585c61f4ba854b62e645a6ef4f084849",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "water-salt",
+      "descriptor": {
+        "case": "experimental-0986c2febf00fb64326efca9ead0b9bb3a83a861f927b428732450d14d9fd4de",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    }
+  ],
+  "local_cross_platform_limit": "Full Linux bundle validation on Windows refused its platform publisher identity as expected; no bypass or binary reuse attempted.",
+  "claim": "Input-reachability expansion only. Prior trajectory/state evidence inherited within unchanged selected process and runtime dependency surface; no new model trajectory claim from this read-only check."
+}

@@ -297,3 +297,45 @@ larger original state block in a separate bounded successor, rather than another
 local cache-repair loop. Earlier solute-history block B evidence remains limited
 to its named2/365 restart origins; it is not proof of arbitrary active-crop
 history restart. Whole scientific equivalence remains unqualified.
+
+
+## Original thermal and additional canopy/root options
+
+Block E connects the unchanged original analytical temperature routine and all
+four original thermal top boundaries (air, prescribed temperature, prescribed
+heat flux and the original mixed temperature/flux condition), plus prescribed
+bottom temperature. The future-crop check still requires numerical heat for
+physical oxygen2; analytical heat cannot bypass that original constraint.
+Original drought2 and compensation2 become independently selectable. No
+Fortran physical equation, time-step policy or existing state codec changes.
+
+The nine derived Hupsel fixtures exercise analytical heat with oxygen off;
+prescribed bottom temperature; top temperature, top flux and mixed top;
+Gash interception; Feddes oxygen; potential-based drought; Walsum compensation.
+Thermal tables span the complete2002..2004 period and remain bound input files.
+Qualification requires complete1096-day periods, actual touched donor/controller
+O0/O2, exact native2/365 and active530 continuations, finite native temperature
+state, original-reference diagnostics, hard water/solute bounds, independent
+origins and external discard/replay/recovery. Actual qualification/admission
+belongs to `integration/nomacro-coverage01/BLOCK_E_STATUS.json` when present.
+
+The first thermal cohort completed five full trajectories with exact native
+continuations, but the proposed Gash fixture later reached original WOFOST
+potato. The original reader correctly forbids Gash outside simple crop type1.
+That prefix and original refusal remain in `BLOCK_E_FIRST_RUN_*`. The valid
+fixture uses the original simple maize file/type1 in all original date windows.
+The preflight now checks every referenced occurrence of a crop file and rejects
+Gash/type2 or type3 before build/output; unused files cannot activate a process.
+Simple-crop activation is checked by positive actual root uptake, while WOFOST
+cases retain the nonzero saved-growth-rate check. Neither inactive WOFOST rates
+nor finite temperatures establish a complete physical energy balance. Original
+oxygen/scientific FAILs and the mass-carried heat limitation remain visible.
+
+
+The second cohort completed seven full trajectories, then the original
+microscopic drought2 input refused extra compensation1 on day140. This original
+physical compatibility rule now also applies to every referenced future crop
+before output/build. The drought2 fixture explicitly selects compensation0;
+Walsum compensation2 explicitly selects Feddes drought1 throughout its rotation.
+Both original input refusals are retained as failures, not counted as complete
+configurations. No numerical repair or threshold change is involved.

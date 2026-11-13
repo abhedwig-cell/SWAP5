@@ -1,7 +1,7 @@
 ## Current recovery checkpoint
 
 Workstream SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01,
-branch codex/nomacro-coverage04. A/B/C admitted PR1669/1670/1671. Exact C
+branch codex/nomacro-coverage05. A/B/C admitted PR1669/1670/1671. Exact C
 postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
 43412494520. Historical old-head evidence remains unchanged and separate.
 A/B/C complete17 additional configurations20457 model days; zero new independent
@@ -16,13 +16,21 @@ and native endpoints sealed. Six complete variants7306 days; across A/B/C/D,
 Both failed history cache hypotheses removed; new water-only history atomically
 refused. Frozen11529865e unchanged and no peer private source imported.
 
-Current own branch codex/nomacro-coverage05 on actual D merge. Next block E:
-audit original analytical heat/prescribed thermal boundaries and additional
-original canopy/root options, then reachability plus actual full trajectories
-and O0/O2/state/transaction qualification. See BLOCK_E_RECOVERY.md. Not yet
-implemented or tested. No cloud run is pending. Larger original state-block
-integration remains the strategy for the retained active-history gap, with no
-third narrow cache patch. Reconcile peer canonical delta before code/merge.
+Current own branch codex/nomacro-coverage05, PR1674 draft. E source5060be802
+connects original analytic heat, top thermal1..4, bottom1/2, drought2,
+compensation2 and valid simple-growth Gash. Hosted run43422509387 is live;
+follow that exact handle to terminal before further action. First sourcec5bbbb58c
+run43420989052 qualified five thermal full periods then original reader refused
+future WOFOST/Gash. Second run43421662126 passed7 then refused drought2 plus
+extra compensation. Both original input failures are retained in raw archives.
+Revised valid fixtures and preflight catch
+all future crop-type/Gash inconsistencies atomically. No physical/source/state
+runtime change; original immutable provider remainsO2 and touched units O0/O2.
+Exact selected old D descriptors unchanged; registered runtime source diff empty.
+No whole-energy/scientific promotion. See BLOCK_E_RECOVERY/INHERITANCE.
+Larger original state-block integration remains the strategy for the retained
+active-history gap, with no third narrow cache patch. Reconcile peer canonical
+delta before merge.
 
 An active serial autonomous Codex goal continues this work; no scheduled timer
 is configured. Later checkpoints must replace this current pointer. Inventory
