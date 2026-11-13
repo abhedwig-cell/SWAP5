@@ -45,3 +45,8 @@ retains compile policy; future canonical admission of that profile invalidates
 relevant source/build qualifications and needs its own remeasurement. No overlap
 with blockC's experimental_project/test/workflow changes. Macro STATE02 now has
 uncommitted research/swap431-macro-b1-unreduced04 files atf62e19e2c; untouched.
+
+Final source24a5ed08c: run43408409505 SUCCESS, all7 complete1096 trajectories
+(7672days),14 O0/O2/native own controls, independence/rollback/external controls
+and17 logical/physical input refusals pass. BLOCK_C_STATUS.json owns scope,
+actual unchanged compiled-source dependency comparison to PR1670 and peer overlap.
