@@ -48,7 +48,7 @@ jobs:
           gfortran --version
       - name: Identical math arguments and five-day native model
         shell: pwsh
-        run: python -B tools/solute/run_platform_math_probe.py --output "$env:RUNNER_TEMP/platform-math" --days 5 --no-contract
+        run: python -B tools/solute/run_platform_math_probe.py --output "$env:RUNNER_TEMP/platform-math" --days 5 --common-isa
       - uses: actions/upload-artifact@v4
         if: always()
         with:

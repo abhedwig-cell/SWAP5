@@ -139,9 +139,9 @@ end subroutine headcalc
         unchanged_guards_pass=max(map(abs,water+solute))<=1e-10)
     (out/'FRAMES.json').write_text(json.dumps(frames)+'\n')
 (a.output/'RESULT.json').write_text(json.dumps(dict(status='EXPERIMENTAL_NOT_ADMITTED',
-    receipt_guard=a.receipt_guard,adaptive_feedback=not a.no_feedback,
+    receipt_guard=a.receipt_guard,adaptive_feedback=not(a.no_feedback or a.quadmath or a.same_core),
     primary_feedback=a.primary_feedback,
     quadmath=a.quadmath,
-    hypothesis='Pure final polish iteration unnecessarily restricts adaptive step growth',
+    hypothesis=('Common compiler arithmetic policy' if a.same_core else 'Math runtime seeds' if a.quadmath else 'Pure final polish iteration unnecessarily restricts adaptive step growth'),
     results=results), indent=2)+'\n')
 print(json.dumps(results), flush=True)
