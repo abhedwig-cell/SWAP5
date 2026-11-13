@@ -1,6 +1,6 @@
 {
   "work_unit": "HUPSEL_PRESSURE_STABILITY01",
-  "status": "ACTIVE_FIRST_TARGETED_OBSERVATION",
+  "status": "MATERIAL_CAUSAL_PROGRESS_TESTING_EOD_PROPOSAL_SEPARATION",
   "baseline": "8d08011ffbdce693b8e1a8cd81b13d6c3d80896c",
   "branch": "codex/hupsel-pressure-stability01",
   "owner_instruction": "Continue until pressure platform problem is addressed; half-hour is resumption safety net, not package stop rule.",
@@ -36,7 +36,9 @@
       "model_seconds": 3.8511053998954594,
       "all567_head_stock_flow_uptake_exact": true,
       "maximum_water_cm": 9.996691511691622e-11
-    }
+    },
+    "cloud_run": 43411875844,
+    "conclusion": "SUCCESS both GNU15 platforms; offline exact567 public records verified both"
   },
   "acceptance": [
     "Locate first causal branch difference, not just largest day636 difference",
@@ -48,5 +50,13 @@
     "not_selected": "No macro, no new original-reference campaign, no broad moving F-CI, no full1096 replay at diagnostic stage.",
     "estimated_cost": "Native prefix a few seconds; relink <15s; fresh cloud preparation/build <2min per platform plus setup."
   },
-  "next_action": "Run the exact locally checked readonly trace on matched GNU15 Windows/Ubuntu, compare first accepted-step grid, original convergence and mass-polish decisions. No model-code repair selected."
+  "next_action": "One matched GNU15 pair compares unchanged637 control, window562 activation and generic day1 activation, each native cap60s. Quantify day636 pressure/stock/oxygen spread and iteration/cost effects before selecting production implementation.",
+  "causal_finding": "Carried EOD remainder dt amplifies ~6.33e-15day at562 to2.57e-5day at567 before first divergent Newton count. Original numbit rule unchanged across this lead-in.",
+  "private_policy": {
+    "change": "Preserve nominal proposal before EOD event truncation; restore it before the original next-step iteration feedback at EOD. Keep all original event clipping, iteration criteria and budgets.",
+    "window562_to637_local": "PASS unchanged water/solute guards,2.856s, first561 days exact",
+    "generic_day1_to637_local": "PASS unchanged guards,2.712s,maxwater9.996453014318729e-11",
+    "production_status": "NOT_ADMITTED; private only, no production BUILD rebinding or checkpoint claims",
+    "state_boundary": "New private proposed scalar/clip flag is consumed and cleared at EOD, so candidate public design should persist only the existing dt at day boundary. Must prove own restart and rollback, not assume."
+  }
 }
