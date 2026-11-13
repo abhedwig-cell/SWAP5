@@ -175,3 +175,40 @@ Frost remains refused. The preserved FROST-GEOMETRY-01 correction excludes
 SWDIVD1 and general production admission, while Hupsel uses SWDIVD1. No
 uncorrected frost defect or unrelated B0/B1 correction is silently adopted.
 Full physical energy and whole scientific equivalence remain unqualified.
+
+## Basic original options and complete future-input checks
+
+Qualified source `24a5ed08cce662470015a6d4c6e7f9cbcd9583c2`, hosted
+run43408409505, completes seven further derived1096-day configurations:
+bare soil/free bottom; bare soil/no heat/free bottom; cultivated no-heat maize
+rotation; undrained/free bottom; prescribed bottom-flux table; sinusoidal bottom
+flux; head-dependent bottom flux. These add7672 complete model days.
+`integration/nomacro-coverage01/BLOCK_C_STATUS.json` owns this evidence and
+subsequent actual admission. All14 O0/O2 profiles pass native/auxiliary own
+continuations, independent origins, external discard/replay/recovery and the
+actual inconsistent-mass refusal. Bounds remain1e-10cm and1e-10mg/cm2.
+
+No Fortran physical/state/host/provider, registered CLI or original archive byte
+changes from the qualified PR1670 surface in this block. Its registered-release
+qualification is preserved by an explicit empty relevant-source comparison;
+unmodified historical periods are not rerun solely for an adapter-only change.
+
+The valid no-heat cultivated case uses the original maize file/simple growth
+in the three original date windows. The table-bottom fixture supplies downward
+flux knots-0.05/-0.10/-0.075cm/day over2002through2004; the sinusoidal fixture uses
+mean-0.05/amplitude0.02cm/day. These are explicit derived inputs, not unchanged
+historical configurations.
+
+The original no-heat Hupsel rotation ran523 days before the physical-oxygen
+reader refused its future potato crop: SWOXYGEN2 requires SWHEA1/SWCALT2.
+That prefix/refusal is retained and is not counted as a successful configuration.
+The adapter now checks every referenced future crop before output/build, so the
+same incompatibility refuses atomically. An unused crop file remains hash-bound
+input data and cannot activate an irrelevant process or invalidate a bare-soil
+or different-rotation run.
+
+The undrained/free-bottom configuration is a complete functional result; it
+does not replace or relabel the distinct undrained/closed-bottom day51 failure.
+Across the first three blocks there are17 additional complete configurations
+and20457 executed complete-model days, with zero new independent historical
+projects and no whole-science promotion.

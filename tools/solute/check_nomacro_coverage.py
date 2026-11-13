@@ -41,7 +41,9 @@ def payload(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--extended', action='store_true', help='Snow/hysteresis and sorption/decomposition block')
+    group=parser.add_mutually_exclusive_group()
+    group.add_argument('--extended', action='store_true', help='Snow/hysteresis and sorption/decomposition block')
+    group.add_argument('--basic-options', action='store_true', help='Original no-crop/no-heat and prescribed bottom fluxes')
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -63,11 +65,11 @@ def main():
 
     call('prepare', ['--no-macro-release', '--prepare-sources', '--reference-work', reference])
     cases = {}
-    for key, run_id in ([] if args.extended else [('salt08', 2), ('salt16', 3)]):
+    for key, run_id in ([] if args.extended or args.basic_options else [('salt08', 2), ('salt16', 3)]):
         case = out/('input-'+key)
         saltfarm(case, run_id)
         cases[key] = case
-    for key, name, value in ([] if args.extended else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
+    for key, name, value in ([] if args.extended or args.basic_options else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
         case = out/('input-'+key)
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
         path = case/'swap.swp'
@@ -96,6 +98,36 @@ def main():
             if switches.get('SWDC'):
                 text+='\nGAMPAR = 0.0\nRTHETA = 0.3\nBEXP = 0.7\nDECPOT = 0.001 0.001\nFDEPTH = 1.0 0.65\n'
             path.write_text(text,encoding='cp1252');cases[key]=case
+    if args.basic_options:
+        for key, changes in [('bare',{'SWCROP':0,'SWBOTB':7}), ('noheat',{'SWHEA':0,'SWCROP':0,'SWBOTB':7}),
+                             ('noheat-maize',{'SWHEA':0}),
+                             ('undrained-free',{'SWDRA':0,'SWBOTB':7}),
+                             ('prescribed-bottom',{'SWBOTB':2}), ('sine-bottom',{'SWBOTB':2,'SW2':1}),
+                             ('head-flux-bottom',{'SWBOTB':4})]:
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+            for name,value in changes.items():
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
+                assert count==1
+            if key=='prescribed-bottom':
+                text,count=re.subn(r'(?m)^([ \t]*DATE2[ \t]+QBOT2[^\n]*\n)(?:[ \t]*\d{4}-\d{2}-\d{2}[^\n]*\n)+',
+                                   r'\g<1> 2002-01-01 -0.05\n 2003-01-01 -0.10\n 2004-12-31 -0.075\n',text)
+                assert count==1
+            if key=='sine-bottom':
+                for name,value in [('SINAVE',-0.05),('SINAMP',0.02)]:
+                    text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)[^\s!]+',lambda m:m[1]+str(value),text)
+                    assert count==1
+            if key=='noheat-maize':
+                text,count=re.subn(r"(?m)^([ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+)'[^']+'[ \t]+[12][ \t]*$",
+                                   r"\1'maize' 1",text)
+                assert count==3
+            path.write_text(text,encoding='cp1252');cases[key]=case
+        invalid=out/'invalid-noheat-oxygen'
+        shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',invalid)
+        path=invalid/'swap.swp';path.write_text(path.read_text(encoding='cp1252').replace('SWHEA = 1','SWHEA = 0'),encoding='cp1252')
+        target=out/'refused-noheat-oxygen'
+        call('future-oxygen-heat-refusal',['--model',e.MODEL,'--experimental-project',invalid,'--reference-work',reference,
+                                         '--build-only','--output',target],refuse=True,absent=target)
 
     for key, case in cases.items():
         project = e.load(case)
@@ -281,14 +313,14 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = 'salt-adsorption' if args.extended else 'salt08'
+    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else 'salt08')
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
     bad = [('macro', 'SWMACRO', 1), ('snow', 'SWSNOW', 2), ('frost', 'SWFROST', 1),
            ('hysteresis', 'SWHYST', 3), ('solute', 'SWSOLU', 2), ('adsorption', 'SWSP', 2),
            ('decay', 'SWDC', 2), ('reservoir', 'SWBR', 1), ('surfacewater', 'SWDRA', 2),
-           ('heat', 'SWHEA', 0), ('other-bottom', 'SWBOTB', 9),
+           ('heat', 'SWHEA', 2), ('other-bottom', 'SWBOTB', 9),
            ('reconstructed-groundwater', 'SWBOTB', 1), ('reconstructed-head', 'SWBOTB', 5)]
     for label, name, value in bad:
         target = out/('refused-'+label)
@@ -308,9 +340,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL'), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended else 2, new_derived_process_configurations=7 if args.extended else 2,
+                  new_original_workbook_configurations=0 if args.extended or args.basic_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options else 2,
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
