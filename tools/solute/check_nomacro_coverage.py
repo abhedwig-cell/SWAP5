@@ -99,7 +99,7 @@ def main():
                 text+='\nGAMPAR = 0.0\nRTHETA = 0.3\nBEXP = 0.7\nDECPOT = 0.001 0.001\nFDEPTH = 1.0 0.65\n'
             path.write_text(text,encoding='cp1252');cases[key]=case
     if args.basic_options:
-        for key, changes in [('bare',{'SWCROP':0,'SWBOTB':7}), ('noheat',{'SWHEA':0}),
+        for key, changes in [('bare',{'SWCROP':0,'SWBOTB':7}), ('noheat',{'SWHEA':0,'SWCROP':0,'SWBOTB':7}),
                              ('undrained-free',{'SWDRA':0,'SWBOTB':7}),
                              ('prescribed-bottom',{'SWBOTB':2}), ('sine-bottom',{'SWBOTB':2,'SW2':1}),
                              ('head-flux-bottom',{'SWBOTB':4})]:
@@ -117,6 +117,12 @@ def main():
                     text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)[^\s!]+',lambda m:m[1]+str(value),text)
                     assert count==1
             path.write_text(text,encoding='cp1252');cases[key]=case
+        invalid=out/'invalid-noheat-oxygen'
+        shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',invalid)
+        path=invalid/'swap.swp';path.write_text(path.read_text(encoding='cp1252').replace('SWHEA = 1','SWHEA = 0'),encoding='cp1252')
+        target=out/'refused-noheat-oxygen'
+        call('future-oxygen-heat-refusal',['--model',e.MODEL,'--experimental-project',invalid,'--reference-work',reference,
+                                         '--build-only','--output',target],refuse=True,absent=target)
 
     for key, case in cases.items():
         project = e.load(case)

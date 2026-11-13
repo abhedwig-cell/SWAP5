@@ -131,6 +131,8 @@ def inspect(directory):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
             if not selected['SWSOLU'] and sig.get('SWWOFOST', 0) != 3:
                 raise ValueError('WOFOST day-state currently requires the solute auxiliary codec')
+            if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
+                raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':

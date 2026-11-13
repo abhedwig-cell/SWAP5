@@ -19,3 +19,13 @@ Other process parameters and original meteorology remain unchanged.
 
 Next: persist/push, actual O0/O2 whole-period/water/solute/restart/isolation/
 discard/replay/refusal comparisons. No scientific or full-equivalence claim.
+
+First C run43405930779 at6540727fe: bare soil completes1096 with all O0/O2,
+restart/isolation/rollback/external controls. No-heat original rotation executes
+523days then original read_stressors refuses future potato SWOXYGEN2 because
+physical oxygen requires SWHEA1/SWCALT2. This is an invalid input combination,
+not a solver failure. New preflight enforces that original rule for every crop
+before build/output, including crops that start in a later year. Its actual CLI
+refusal is tested. Positive no-heat fixture uses bare soil/free bottom, with no
+physical oxygen process. The invalid original attempt and its523-day prefix
+remain preserved in source-bound run43405930779 and local verified artifact.
