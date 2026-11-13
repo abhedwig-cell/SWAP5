@@ -62,8 +62,9 @@ def build(opt):
     commands=[]
     for src,dest in [('control.f90','control.o'),('macrorate_contract.f90','macrorate.o'),('soilwater_contract.f90','soilwater.o')]:
         commands.append(['gfortran','-'+opt,'-finit-local-zero','-fallow-argument-mismatch','-cpp','-Dlinux','-ffree-line-length-none','-I',str(obj),'-c',str(R/src),'-o',str(obj/dest)])
-    commands.append(['gfortran','-o',str(out/'contract.exe'),*map(str,sorted(obj.glob('*.o'))),str(out/'libttutil.a')])
-    commands.append(['gfortran','-o',str(out/'operator.exe'),*map(str,[p for p in sorted(obj.glob('*.o')) if p.name!='headcalc.o']),str(out/'threshold.o'),str(out/'libttutil.a')])
+    objects=sorted(set(obj.glob('*.o'))|{obj/'control.o'})
+    commands.append(['gfortran','-o',str(out/'contract.exe'),*map(str,objects),str(out/'libttutil.a')])
+    commands.append(['gfortran','-o',str(out/'operator.exe'),*map(str,[p for p in objects if p.name!='headcalc.o']),str(out/'threshold.o'),str(out/'libttutil.a')])
     for cmd in commands:
         t=time.perf_counter();p=subprocess.run(cmd,cwd=obj,capture_output=True,text=True,timeout=60);logs.append(dict(command=cmd,seconds=time.perf_counter()-t,returncode=p.returncode,output=p.stdout+p.stderr));save(R/(opt+'_BUILD.json'),logs);assert p.returncode==0,p.stderr
     save(R/(opt+'_IDENTITY.json'),dict(compiler=subprocess.check_output(['gfortran','--version'],text=True),sources={p.name:sha(p) for p in R.glob('*.f90')},executables={p.name:sha(p) for p in [out/'contract.exe',out/'operator.exe']},inherited_state02=json.loads((R.parent/'swap431-macro-b1-state02/EVIDENCE.json').read_text())['sha256'],inherited_stagnation05=json.loads((PREV/'EVIDENCE.json').read_text())['sha256']))
