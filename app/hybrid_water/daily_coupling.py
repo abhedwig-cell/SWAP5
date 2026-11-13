@@ -442,7 +442,11 @@ class CoupledDailyColumn:
                 # Current nonmacro codec: same strict state domain as the real
                 # original consumer, checked BEFORE external publication.
                 with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
-                if aux[:8]!=b'S5HUP012':raise ValueError('Foreign conserved solute codec')
+                expected=b'S5HUP012'
+                if self.project.input_directory:
+                    from experimental_project import auxiliary_magic
+                    expected=auxiliary_magic(self.project)
+                if aux[:8]!=expected:raise ValueError('Foreign conserved solute codec')
                 conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
                 if not all(math.isfinite(v) and v>=0 for v in conserved):
                     raise ValueError('Unrestartable candidate conserved solute state')

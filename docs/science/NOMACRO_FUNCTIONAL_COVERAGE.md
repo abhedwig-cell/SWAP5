@@ -93,7 +93,7 @@ they do not turn the literal failure or inherited scientific failures into PASS.
 The source-based A/B/C/D inventory is in the recovery record. Source presence
 does not establish execution, restart correctness or scientific qualification.
 
-The initial generic route admits original Mualem/van Genuchten or table
+The first block at PR1669 admitted original Mualem/van Genuchten or table
 hydraulics without hysteresis, supported atmospheric forcing, bottom modes1to7 (solute substep receipt excludes reconstructed modes1/5),
 no drainage or original methods2/3, existing crop signatures, numerical heat with
 the supported boundaries and conservative solute without adsorption/decay or a
@@ -101,8 +101,9 @@ mixed aquifer reservoir. Not every permitted parameter combination has full-peri
 evidence. Original numeric/physical validation and runtime mass guards remain
 mandatory for every experimental run.
 
-Hysteresis, snow/frost, adsorption/decay and other already-present processes are
-next source/state candidates. Other drainage/surfacewater methods, analytical
+The qualified second block below connects hysteresis, snow and adsorption/decay.
+Frost remains a separate source/state/corrected-reference gap.
+Other drainage/surfacewater methods, analytical
 heat/boundary variants, age tracer, arbitrary crop-memory combinations and
 subsurface irrigation retain their distinct integration/evidence gaps. A new
 stateful combination is not enabled solely because its Fortran routine exists.
@@ -119,3 +120,58 @@ is refused by the unchanged1e-10cm guard. The projected substep sum is
 9.991413595525985e-11cm. This near-boundary disagreement is retained, not
 rounded into admission or used to start a general solver campaign. Own49to51
 replay and absence of rejected-day publication are checked separately.
+
+## Original state and reaction block
+
+Qualified source `12ae9114857b97bb5cbe3dd587703f2e96ef7b7f`, hosted
+run43406084493, passes all three cohorts: the seven new process configurations,
+the entire first block (including its retained failure), and the registered
+three-profile release regression. `integration/nomacro-coverage01/BLOCK_B_STATUS.json`
+owns the evidence and subsequent actual canonical admission.
+
+| New derived configuration | Complete days | Functionality |
+| --- | ---: | --- |
+| Hupsel hysteresis1 | 1096 | Original wetting-start scanning curves |
+| Hupsel hysteresis2 | 1096 | Original drying-start scanning curves |
+| Hupsel snow | 1096 | Positive snow accumulation/melt and original snow/soil heat boundary |
+| Hupsel snow plus hysteresis1 | 1096 | Combined original snow and hydraulic history |
+| SaltFarm08 sorption | 1461 | Nonlinear Freundlich adsorption |
+| SaltFarm08 decay | 1461 | Positive decomposition with original moisture/depth response |
+| SaltFarm08 sorption plus decay | 1461 | Combined original reactions and saline crop trajectory |
+
+These are8767 additional complete model days, not seven independent historical
+projects. Each configuration has checked O0/O2 builds, own2to4 and365to367
+continuations, byte-exact complete native/auxiliary endpoint files, alternating
+workers at distinct physical origins, external discard/replay/recovery and a
+deliberately inconsistent mass candidate refused without commit. Sixteen
+resealed history corruptions exercise the actual native decoder: wrong format,
+truncation, NaN and negative state; no rejected target is published. Maximum
+accepted water/solute residuals remain below the unchanged1e-10 bounds.
+
+The first hysteresis execution exposed a real restart gap: native H and scanning
+variables do not preserve the accepted hydraulic carry after hysteresis changes
+the head/curve. Only experimental active hysteresis adds accepted theta,
+conductivity/interface conductivity, capacity, head, volume and groundwater to
+its auxiliary state. This restores exact continuation without changing the
+original hydraulic law or Newton policy.
+
+The first snow continuation reproduced the water rows but changed the native
+temperature profile. The original snow-interface boundary uses the previously
+accepted `heacon(1)` before updating heat properties. Native TSOIL alone therefore
+does not define its continuation. Only active experimental snow now preserves
+conductivity, heat capacity and the two thermal boundaries. History combinations
+have distinct auxiliary formats; inactive options add no fields. The original
+no-history formats and registered production input remain unchanged.
+
+Conserved `cmsy` already includes dissolved plus adsorbed solute. The existing
+native aqueous state, conserved auxiliary state and independent decomposition
+ledger therefore support the original sorption/decay bodies without rewriting
+them. The derived SaltFarm tests explicitly use Freundlich exponent0.9,
+reference concentration1.0, layer coefficients0.0001389/0.0001378 and/or
+potential decay0.001/day with depth factors1.0/0.65. These parameterized process
+tests are distinguished from the original workbook configurations.
+
+Frost remains refused. The preserved FROST-GEOMETRY-01 correction excludes
+SWDIVD1 and general production admission, while Hupsel uses SWDIVD1. No
+uncorrected frost defect or unrelated B0/B1 correction is silently adopted.
+Full physical energy and whole scientific equivalence remain unqualified.
