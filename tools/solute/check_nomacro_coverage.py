@@ -40,7 +40,7 @@ def payload(path):
 
 def management_end(aux,project):
     selected=e.inspect(project.input_directory)['selectors']
-    count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
+    count=(23*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
     return len(aux)-8*count
 
 

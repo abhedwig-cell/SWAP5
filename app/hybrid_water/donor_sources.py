@@ -191,25 +191,26 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                       '        write(unit) t,iyear\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)')
     managed=solute_state or management_state
     base_magic='S5HUP012' if solute_state else ('S5WAT007' if management_state else 'S5NON006')
-    hys_magic='S5SHS013' if solute_state else ('S5WHS008' if management_state else 'S5NHS007')
+    hys_magic='S5SHS016' if solute_state else ('S5WHS011' if management_state else 'S5NHS010')
     snow_magic='S5SSN014' if solute_state else ('S5WSN009' if management_state else 'S5NSN008')
-    mixed_magic='S5SMX015' if solute_state else ('S5WMX010' if management_state else 'S5NMX009')
+    mixed_magic='S5SMX017' if solute_state else ('S5WMX012' if management_state else 'S5NMX011')
     if hydraulic_history:
         if not nonmacro:raise ValueError('Hydraulic history requires absent macropores')
         # Hysteresis can change h/scanning state after the accepted Richards
         # solve. Recomputing theta/K/capacity from h during cold initialization
         # does not reproduce that accepted hydraulic carry. Keep the actual
         # active history, not an inverse constitutive reconstruction.
-        fields='h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
+        fields='h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,cofgen(25:42,1:numnod)'
+        finite_fields=fields.replace('cofgen(25:42,1:numnod)', 'reshape(cofgen(25:42,1:numnod),[18*numnod])')
         codec=replace(codec,'      use variables, only: t, iyear',
-                      '      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
+                      '      use MOD_MvG, only: cofgen\n      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
         codec=replace(codec,'      use MOD_grid, only: numnod','      use MOD_grid, only: numnod,dz')
         old_magic=base_magic
         new_magic=hys_magic
         codec=codec.replace(old_magic,new_magic)
         codec=replace(codec,'        read(unit,iostat=ios) trailing',f"""        read(unit,iostat=ios) {fields}
         if(ios/=0)error stop 'Incomplete hysteresis hydraulic history'
-        if(.not.all(ieee_is_finite([{fields}])))error stop 'Nonfinite hysteresis hydraulic history'
+        if(.not.all(ieee_is_finite([{finite_fields}])))error stop 'Nonfinite hysteresis hydraulic history'
         if(any(theta(1:numnod)<0d0).or.any(k(1:numnod+1)<0d0).or.any(kmean(1:numnod+1)<0d0).or. &
            any(dimoca(1:numnod)<0d0).or.volact<0d0)error stop 'Invalid hysteresis hydraulic history'
         if(abs(sum(theta(1:numnod)*dz(1:numnod))-volact)>1d-10)error stop 'Unbalanced hysteresis water history'
@@ -233,7 +234,7 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if(any(heacon(1:numnod)<=0d0).or.any(heacap(1:numnod)<=0d0))error stop 'Invalid snow thermal history'
         read(unit,iostat=ios) trailing""")
         if hydraulic_history:
-            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
+            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,cofgen(25:42,1:numnod)'
         else:
             anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if managed else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)

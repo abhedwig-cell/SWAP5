@@ -61,3 +61,13 @@ O0/O2 for generated/touched donor units (original immutable object provider stay
 O2), in addition to O0/O2 controller. Registered defaults remain donorO2 and
 reject that experimental override. Numeric optimization and FP flags remain
 explicit build identity; no performance profile or physical law is changed.
+
+Source640565a8d run43416681903 retains actual active-water-history O0 restart
+FAIL: first resumed stock differs2.2815e-9cm, then2.1637e-8cm. Bounds
+still pass, exact trajectories/endpoints do not. Water Hupsel/Salt active
+windows pass both actual generated O0/O2. Prior source dec0 run43416437150
+also failed. No qualification/admission of combined history.
+Focused hypothesis1: the mutable original MvG coefficient cache25:42 is
+updated on reversal; persisting theta/K/capacity alone may omit that carry.
+Explicit history payload/format version advanced, no original law changed.
+Actual experiment required before this hypothesis can be called a fix.

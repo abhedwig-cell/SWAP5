@@ -189,6 +189,6 @@ def validate(project):
 def auxiliary_magic(project):
     selected = inspect(project.input_directory)['selectors']
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
-    formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
-               b'S5WAT007',b'S5WHS008',b'S5WSN009',b'S5WMX010')
+    formats = (b'S5HUP012',b'S5SHS016',b'S5SSN014',b'S5SMX017') if project.solute else (
+               b'S5WAT007',b'S5WHS011',b'S5WSN009',b'S5WMX012')
     return formats[history]
