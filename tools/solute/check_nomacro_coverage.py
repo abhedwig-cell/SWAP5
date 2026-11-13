@@ -146,6 +146,13 @@ def main():
                     text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
                     assert count==1
                 path.write_text(text,encoding='cp1252')
+            if key=='water-salt':
+                # This derived no-chemistry input must explicitly change its
+                # text native-initialization tag as well as its SWP selector.
+                path=case/'swap.ini'
+                text,count=re.subn(r'(?m)^([ \t]*SWSOLU[ \t]*=[ \t]*)1',r'\g<1>0',path.read_text(encoding='cp1252'))
+                assert count==1
+                path.write_text(text,encoding='cp1252')
             cases[key]=case
 
     for key, case in cases.items():

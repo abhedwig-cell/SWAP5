@@ -29,3 +29,11 @@ All are derived physical configurations, not new independent historical projects
 Reject salinity-stress requests without solute before execution. Check complete
 periods, O0/O2, native/auxiliary restart, rollback, isolation, external control and
 unchanged original-reference comparisons. Then final affected predecessor gates.
+
+First source6118e98b3, run43411274462: water-only Hupsel completes1096 with
+O0/O2 exact short/seasonal native+management state, isolation and external
+rollback/recovery. SaltFarm no-chemistry refused before first day because its
+original text swap.ini still declares SWSOLU1. The original physical-consistency
+check is retained. The explicitly derived water-only fixture now changes both
+SWP and native-text SWSOLU to0; no solute stock is fabricated or original input
+silently disabled. Native format/NaN/truncation/logical controls added separately.
