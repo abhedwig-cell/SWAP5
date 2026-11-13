@@ -53,8 +53,10 @@ end subroutine headcalc
             '   use hybrid_step_budget, only: projected_water_residual\n   use rc1_day_receipt_probe, only: projected_day_receipt')
         assert source.count('budget_total+budget_step')==1
         assert source.count('budget_total + budget_step')==1
-        source=source.replace('budget_total+budget_step','projected_day_receipt()')
-        source=source.replace('budget_total + budget_step','projected_day_receipt()')
+        source=source.replace('abs(budget_total+budget_step)',
+            'max(abs(budget_total+budget_step),abs(projected_day_receipt()))')
+        source=source.replace('abs(budget_total + budget_step)',
+            'max(abs(budget_total + budget_step),abs(projected_day_receipt()))')
         shutil.copyfile(Path(__file__).with_name('platform_day_receipt.f90'),out/'platform_day_receipt.f90')
     (out/'headcalc.f90').write_text(source, encoding='cp1252')
     for name in ('swap_main', 'swap_csv_output'):
@@ -90,7 +92,8 @@ end subroutine headcalc
     assert c.returncode == 100, c.returncode
     frames = {}
     for line in (out/'stdout').read_text(encoding='cp1252').splitlines():
-        if line.startswith(('RC1_HIST ', 'HYBRID_STOCK_FLUX ', 'HYBRID_EXTERNAL_FLUX ',
+        if line.startswith(('RC1_HIST ', 'RC1_HEAD ', 'RC1_HEAT ', 'HYBRID_UPTAKE ',
+                            'HYBRID_STOCK_FLUX ', 'HYBRID_EXTERNAL_FLUX ',
                             'HYBRID_SOLUTE_LEDGER ')):
             tag, *values = line.split()
             frames.setdefault(tag, []).append(list(map(float, values)))
