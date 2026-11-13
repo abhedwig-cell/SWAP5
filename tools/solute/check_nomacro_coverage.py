@@ -38,6 +38,12 @@ def payload(path):
         return {name: z.read(name) for name in ('result.end', 'macro.bin')}
 
 
+def management_end(aux,project):
+    selected=e.inspect(project.input_directory)['selectors']
+    count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
+    return len(aux)-8*count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
@@ -132,6 +138,7 @@ def main():
     if args.crop_options:
         specs=[('water-hupsel',False,{'SWSOLU':0},{'SWSALINITY':0}),
                ('water-salt',True,{'SWSOLU':0},{'SWSALINITY':0}),
+               ('water-history',False,{'SWSOLU':0,'SWHYST':1,'SWSNOW':1},{'SWSALINITY':0}),
                ('no-interception',False,{}, {'SWINTER':0}),
                ('no-oxygen',False,{}, {'SWOXYGEN':0,'SWWRTNONOX':0}),
                ('no-salt-stress',True,{}, {'SWSALINITY':0}),
@@ -170,7 +177,8 @@ def main():
             label = key+'-'+opt
             bundle = out/(label+'-build')
             base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference]
-            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
+            generated_opt=opt if args.crop_options else 'O2'
+            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt]+(['--donor-opt',generated_opt] if args.crop_options else []))
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
             cut, end = (2, 5) if opt == 'O0' else ((49, project.last_day) if partial else (365, project.last_day))
@@ -206,6 +214,7 @@ def main():
             assert h.sha(origin) == before
             report = dict(configuration=key, optimization=opt, completed_days=len(accepted), requested_days=end,
                           solute_active=project.solute,
+                          generated_donor_optimization=generated_opt,original_provider_optimization='O2',
                           full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
                           maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in accepted),
                           maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted) if project.solute else None,
@@ -277,8 +286,9 @@ def main():
                     call(label+'-active-prefix',reuse+['--output',prefix,'--days',active_cut+2,'--checkpoint-at',active_cut])
                     accepted_origin=prefix/f'accepted-column-1-day-{active_cut}.zip';origin_hash=h.sha(accepted_origin)
                     with zipfile.ZipFile(accepted_origin) as z:aux=z.read('macro.bin')
-                    assert struct.unpack_from('=i',aux,len(aux)-404)[0]==1, label+' did not checkpoint an emerged crop'
-                    assert any(value!=0 for value in struct.unpack_from('=50d',aux,len(aux)-400)), label+' did not checkpoint active growth rates'
+                    terminal=management_end(aux,project)
+                    assert struct.unpack_from('=i',aux,terminal-404)[0]==1, label+' did not checkpoint an emerged crop'
+                    assert any(value!=0 for value in struct.unpack_from('=50d',aux,terminal-400)), label+' did not checkpoint active growth rates'
                     call(label+'-active-restart',reuse+['--output',active,'--days',active_cut+2,'--checkpoint-at',active_cut+2,
                                                      '--restart',accepted_origin,'--restart-day',active_cut])
                     call(label+'-active-end',reuse+['--output',endstate,'--days',active_cut+2,'--checkpoint-at',active_cut+2])
@@ -292,12 +302,13 @@ def main():
                     original_aux=members['macro.bin']
                     thermal='snow' in key
                     index=len(original_aux)-(8*(2*project.nodes+2) if thermal else 8)
+                    if not project.solute:index=management_end(original_aux,project)-8
                     controls=[('wrong-format',b'S5HUP012'+original_aux[8:]),
                               ('short',original_aux[:-1]),
                               ('nan',original_aux[:index]+struct.pack('=d',float('nan'))+original_aux[index+8:]),
                               ('negative',original_aux[:index]+struct.pack('=d',-1.0)+original_aux[index+8:])]
                     if not project.solute:
-                        flag=len(original_aux)-404
+                        flag=management_end(original_aux,project)-404
                         controls[-1]=('invalid-crop-flag',original_aux[:flag]+struct.pack('=i',99)+original_aux[flag+4:])
                     for mutation,data in controls:
                         changed=dict(members);changed['macro.bin']=data
@@ -395,7 +406,7 @@ def main():
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
     result = dict(status='EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options else (6 if args.crop_options else 2),
+                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options or args.crop_options else 2,
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

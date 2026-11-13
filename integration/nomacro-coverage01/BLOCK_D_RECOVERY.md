@@ -49,3 +49,15 @@ check emitted-crop flag1 and nonzero actual WOFOST rates, complete physical rows
 and entire native/management endpoints. Dormant winter windows alone cannot
 qualify water-only WOFOST management state. New water-only formats also exercise
 resealed wrong-format/truncated/NaN/logical-flag refusals with origin preserved.
+
+Source1c64ba98d: D run43413311211 SUCCESS, all6 full trajectories7306days,
+including actual emerged/nonzero-rate native active windows and8 resealed native
+management refusals. All predecessor cohorts and release pass on same source:
+43414136760 (A/B/release) and43414140424 (C).
+
+Final coverage adds combined water-only snow+hysteresis to exercise the new
+management/history format. Explicit experimental --donor-opt selects actual
+O0/O2 for generated/touched donor units (original immutable object provider stays
+O2), in addition to O0/O2 controller. Registered defaults remain donorO2 and
+reject that experimental override. Numeric optimization and FP flags remain
+explicit build identity; no performance profile or physical law is changed.

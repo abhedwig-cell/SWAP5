@@ -104,10 +104,12 @@ def verify_source(distribution):
             raise ValueError(f"Unverified donor archive: {name}")
 
 
-def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
+def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST, donor_opt="O2"):
     case = project_case(reference, project)
     strict_water = project.solute or bool(project.input_directory and budget_retry)
     management_state = project.solute or bool(project.input_directory)
+    if donor_opt not in ('O0','O2') or (donor_opt!='O2' and not project.input_directory):
+        raise ValueError('Generated-donor optimization is explicit experimental qualification only')
     if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
             or (not project.macro and not project.solute and budget_retry and not project.input_directory)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
@@ -162,7 +164,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                        "   write(*,'(a,1x,es25.17e3)') 'HYBRID_SOLUTE_READY', sampro\n"
                        "   write(*,'(a,1x,f16.8)') 'HYBRID_READY', t1900")
     main.write_text(source, encoding="cp1252")
-    donor_flags = ["-O2", "-cpp", "-Dlinux", "-finit-local-zero",
+    donor_flags = [f"-{donor_opt}", "-cpp", "-Dlinux", "-finit-local-zero",
                    "-ffree-line-length-none", "-fallow-argument-mismatch"]
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
