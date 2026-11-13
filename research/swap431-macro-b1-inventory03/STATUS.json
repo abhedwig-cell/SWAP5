@@ -2,8 +2,8 @@
   "work_unit": "SWAP431-MACRO-B1-INVENTORY03",
   "workstream": "ORIGINAL_B1_MACRO_RESEARCH",
   "baseline": "e7c5b44ebe3efd4f1a84f073803f9eab3b2cfa12",
-  "stage": "PREREGISTERED_NOT_TESTED",
-  "scope": "Independent accepted full-step surface/matrix/domain water inventory at the first existing reduced V1 context, O0/O2",
+  "stage": "BOUNDED_INDEPENDENT_INVENTORY_COMPLETE",
+  "scope": "One existing reduced accepted step; no broad solver or history campaign",
   "selected_context": {
     "t1900": 35796.9513533331,
     "dt": 0.0001414213562373095,
@@ -13,15 +13,34 @@
   "maximum_initial_routes": 2,
   "physics_changed": false,
   "solver_policy_changed": false,
-  "reference_contract": "Decision pending; unreduced-convergence recommended. Inventory does not admit reduced physical reference.",
+  "reference_contract": "PROPOSED: require unreduced physical convergence; owner choice remains open",
   "dry_context_search": false,
   "production_changed": false,
-  "qualification": "NOT_YET_TESTED",
-  "next_safe_step": "Build only the two diagnostic objects with sealed STATE02 closures; run O2 then O0; independently assess stored primitive vectors",
+  "qualification": "SELECTED_REDUCED_STEP_INDEPENDENT_INVENTORY_PASS",
+  "next_safe_step": "Record owner reference-contract choice, then separately preregister one first-context unreduced solve/reject experiment if selected",
   "invariants": [
     "no protected reference changes",
     "no policy/physics/tolerance change",
     "paired exchange and actual accepted inventory",
     "no full trajectory campaign"
+  ],
+  "implemented": "Diagnostic copies only, no physical or solver correction",
+  "persisted": true,
+  "tested": "Real original reduced accepted SoilWater(3) transition, native O0/O2; independent surface/matrix/five-domain inventories and residual reconstruction",
+  "candidate_decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "independent_selected_full_substep_inventory_qualified": true,
+  "original_dry_event_closure_qualified": false,
+  "own_restart_qualified": false,
+  "canonical_admitted": false,
+  "setup_routes": 3,
+  "final_routes": 2,
+  "recovery_files": [
+    "REPORT.md",
+    "RESULT.json",
+    "assess_inventory03.py",
+    "inventory03.py",
+    "data/",
+    "O0_IDENTITY.json",
+    "O2_IDENTITY.json"
   ]
 }

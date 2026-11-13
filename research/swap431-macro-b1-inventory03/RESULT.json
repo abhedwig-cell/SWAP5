@@ -1,0 +1,178 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-INVENTORY03",
+  "baseline": "e7c5b44ebe3efd4f1a84f073803f9eab3b2cfa12",
+  "result": "SELECTED_REDUCED_STEP_INDEPENDENT_INVENTORY_PASS",
+  "candidate_decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "reference_recommendation": "Require unreduced coupled convergence for the intended physical B1 reference; retain reduced V1 as explicitly separate numerical research variant.",
+  "official_reference_contract_changed": false,
+  "physics_or_solver_policy_changed": false,
+  "production_changed": false,
+  "O0_O2_primitive_vectors_byte_exact": true,
+  "final_routes": 2,
+  "final_routes_censored": 0,
+  "setup_routes": 3,
+  "setup_full_two_day_windows_inadvertently_completed": 2,
+  "setup_explanation": "First selector intercepted a rejected trial where headcalc had just raised IDecMpRat. The second selector missed postaccept because headcalc decreases IDecMpRat after certifying the reduced operator. Both setup misses are preserved; final selector uses the exact entry t/dt/level and a diagnostic pending flag.",
+  "acceptance_limits": "Original local/total/pond criteria unchanged. Macro domain/aggregate reconstruction uses a 64*machine-epsilon*inventory-scale roundoff envelope; no new physical tolerance.",
+  "results": [
+    {
+      "optimization": "O2",
+      "t1900": 35796.9513533331,
+      "dt": 0.0001414213562373095,
+      "solver_reduction_level": 1.0,
+      "postaccept_reduction_level": 0.0,
+      "exact_STATE02_selected_operator": true,
+      "local_residual": 1.712015348931395e-09,
+      "total_residual": -2.101663816426414e-09,
+      "independently_reconstructed_residual_difference": 6.938893903907228e-18,
+      "matrix_change_cm": 4.529194942943462e-06,
+      "matrix_error_cm": -2.9722014271689554e-13,
+      "macro_change_cm": -2.241665299046111e-05,
+      "macro_error_cm": 1.692168540706751e-16,
+      "surface_change_cm": 0.0,
+      "surface_error_cm": 0.0,
+      "combined_change_cm": -1.788745804751765e-05,
+      "external_budget_cm": -1.7887457750466722e-05,
+      "combined_error_cm": -2.9705092755689076e-13,
+      "paired_exchange_error_cm_per_day": 1.734723475976807e-18,
+      "domains": [
+        {
+          "domain": 1,
+          "begin": 1.8467735884107193,
+          "end": 1.8467744039566552,
+          "change": 8.155459358949457e-07,
+          "expected_change": 8.155459357169197e-07,
+          "inventory_error_cm": 1.7802599672211983e-16,
+          "compartment_sum": 1.846774403956655,
+          "roundoff_envelope_cm": 2.6244242746381803e-14
+        },
+        {
+          "domain": 2,
+          "begin": 0.11760417147983294,
+          "end": 0.11760605168027503,
+          "change": 1.8802004420892526e-06,
+          "expected_change": 1.8802004420946658e-06,
+          "inventory_error_cm": -5.41317580766542e-18,
+          "compartment_sum": 0.11760605168027506,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        },
+        {
+          "domain": 3,
+          "begin": 0.046572646112980336,
+          "end": 0.046570482987423195,
+          "change": -2.163125557140544e-06,
+          "expected_change": -2.163125557138104e-06,
+          "inventory_error_cm": -2.439878404566012e-18,
+          "compartment_sum": 0.046570482987423195,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        },
+        {
+          "domain": 4,
+          "begin": 0.019783717547530628,
+          "end": 0.019778131140833755,
+          "change": -5.586406696872492e-06,
+          "expected_change": -5.586406696871916e-06,
+          "inventory_error_cm": -5.759824041329242e-19,
+          "compartment_sum": 0.019778131140833755,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        },
+        {
+          "domain": 5,
+          "begin": 0.014968459797249012,
+          "end": 0.01495109693013458,
+          "change": -1.7362867114432273e-05,
+          "expected_change": -1.7362867114431894e-05,
+          "inventory_error_cm": -3.7947076036992655e-19,
+          "compartment_sum": 0.01495109693013458,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        }
+      ],
+      "clamping_active": false,
+      "mass_derived_surface_flux_difference": 2.101663522033337e-09,
+      "model_seconds": 0.8167375000193715
+    },
+    {
+      "optimization": "O0",
+      "t1900": 35796.9513533331,
+      "dt": 0.0001414213562373095,
+      "solver_reduction_level": 1.0,
+      "postaccept_reduction_level": 0.0,
+      "exact_STATE02_selected_operator": true,
+      "local_residual": 1.712015348931395e-09,
+      "total_residual": -2.101663816426414e-09,
+      "independently_reconstructed_residual_difference": 6.938893903907228e-18,
+      "matrix_change_cm": 4.529194942943462e-06,
+      "matrix_error_cm": -2.9722014271689554e-13,
+      "macro_change_cm": -2.241665299046111e-05,
+      "macro_error_cm": 1.692168540706751e-16,
+      "surface_change_cm": 0.0,
+      "surface_error_cm": 0.0,
+      "combined_change_cm": -1.788745804751765e-05,
+      "external_budget_cm": -1.7887457750466722e-05,
+      "combined_error_cm": -2.9705092755689076e-13,
+      "paired_exchange_error_cm_per_day": 1.734723475976807e-18,
+      "domains": [
+        {
+          "domain": 1,
+          "begin": 1.8467735884107193,
+          "end": 1.8467744039566552,
+          "change": 8.155459358949457e-07,
+          "expected_change": 8.155459357169197e-07,
+          "inventory_error_cm": 1.7802599672211983e-16,
+          "compartment_sum": 1.846774403956655,
+          "roundoff_envelope_cm": 2.6244242746381803e-14
+        },
+        {
+          "domain": 2,
+          "begin": 0.11760417147983294,
+          "end": 0.11760605168027503,
+          "change": 1.8802004420892526e-06,
+          "expected_change": 1.8802004420946658e-06,
+          "inventory_error_cm": -5.41317580766542e-18,
+          "compartment_sum": 0.11760605168027506,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        },
+        {
+          "domain": 3,
+          "begin": 0.046572646112980336,
+          "end": 0.046570482987423195,
+          "change": -2.163125557140544e-06,
+          "expected_change": -2.163125557138104e-06,
+          "inventory_error_cm": -2.439878404566012e-18,
+          "compartment_sum": 0.046570482987423195,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        },
+        {
+          "domain": 4,
+          "begin": 0.019783717547530628,
+          "end": 0.019778131140833755,
+          "change": -5.586406696872492e-06,
+          "expected_change": -5.586406696871916e-06,
+          "inventory_error_cm": -5.759824041329242e-19,
+          "compartment_sum": 0.019778131140833755,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        },
+        {
+          "domain": 5,
+          "begin": 0.014968459797249012,
+          "end": 0.01495109693013458,
+          "change": -1.7362867114432273e-05,
+          "expected_change": -1.7362867114431894e-05,
+          "inventory_error_cm": -3.7947076036992655e-19,
+          "compartment_sum": 0.01495109693013458,
+          "roundoff_envelope_cm": 1.4210854715202004e-14
+        }
+      ],
+      "clamping_active": false,
+      "mass_derived_surface_flux_difference": 2.101663522033337e-09,
+      "model_seconds": 1.28712709993124
+    }
+  ],
+  "exclusions": [
+    "Single original reduced wet step only",
+    "No dry/event-end rejection or own restart qualification",
+    "No unreduced physical convergence",
+    "No B1.12/canonical/release promotion"
+  ],
+  "next_safe_step": "Owner selects the physical reference contract. Recommendation: unreduced acceptance required. Only then separately preregister a bounded solve/reject experiment at the same first context, with original equations and no silent reduction-policy change."
+}
