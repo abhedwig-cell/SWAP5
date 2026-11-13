@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-RC1-PLATFORM-STABILITY01",
-  "status": "QUALIFIED_READY_FOR_CANONICAL_PR",
+  "status": "QUALIFIED_PR_1672_ADMISSION_CANDIDATE",
   "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
   "branch": "codex/rc1-common-fp-profile",
   "owner_instruction": "2026-11-13: en nu verder met optie1",
@@ -22,7 +22,7 @@
   "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
   "max_model_seconds": 60,
   "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
-  "next_action": "Publish and admit clean qualified compiler-profile PR; verify canonical postimage and frozen RC1. Then this bounded numerical follow-up package is complete; independent reference accuracy and full-trajectory spread remain separately unresolved, not silently qualified.",
+  "next_action": "Merge PR1672 at expected qualified head and verify actual canonical tree and frozen RC1. Publish the observational merge receipt on this review branch and PR without reopening completed model runs. This numerical compiler-profile package then closes; broader scientific equivalence remains unresolved with explicit limitations.",
   "first_probe_result": {
     "five_days": "EXACT_BASELINE_ALL_FRAMES",
     "extended": "CENSORED_60_SECONDS_AFTER_DAY534",
@@ -206,5 +206,13 @@
     "Hupsel pressure spread12.203962749731431cm; solute ledger spread increases to0.00039911416767601793mg/cm2",
     "x86-64 GNU only; frozen RC1 unchanged; fresh source-bound provider/build/checkpoint required",
     "Single paired cost check does not establish statistical native solver speedup"
-  ]
+  ],
+  "pr": {
+    "number": 1672,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1672",
+    "qualified_evidence_commit": "d4561a4969ca06ebd1f8c3333a6db84de524eede",
+    "reviews": "No submissions or inline review threads at premerge check; no independent human review claimed.",
+    "checks": "No head check runs; source-bound manual qualification43408495599 SUCCESS and laptop SUCCESS, docs PASS.",
+    "base": "af65d5a267ec33024779122002cc84fc344ee7e4"
+  }
 }
