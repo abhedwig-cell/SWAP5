@@ -224,16 +224,18 @@ module MOD_SoilWater
 
 
 subroutine inventory_before()
- use variables, only:t1900
+ use variables, only:t1900,dt
  use MOD_swap_mp, only:IDecMpRat
  if(IDecMpRat/=1.or.abs(t1900-35796.9513533331d0)>1d-9) return
+ if(abs(dt-0.0001414213562373095d0)>1d-14) return
  call inventory_dump('origin')
 end subroutine inventory_before
 
 subroutine inventory_after()
- use variables, only:t1900,fldecdt
+ use variables, only:t1900,dt,fldecdt
  use MOD_swap_mp, only:IDecMpRat,FlDecMpRat
  if(IDecMpRat/=1.or.abs(t1900-35796.9513533331d0)>1d-9) return
+ if(abs(dt-0.0001414213562373095d0)>1d-14) return
  call inventory_dump('trial')
  if(fldecdt.or.FlDecMpRat) error stop 'selected step not accepted'
  call SoilWater(3)
