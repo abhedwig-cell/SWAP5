@@ -61,7 +61,8 @@ subroutine unreduced_driver()
  ! Explicit experimental choice at this ONE live origin. The original
  ! MACRORATE reduction law and all HEADCALC equations/criteria stay intact.
  IDecMpRat=0
- FlDecMpRat=.false.
+ ! Preserve the origin's existing retry flag: original HEADCALC uses it
+ ! to select its doubled iteration budget. Do not shorten that budget.
  call get_environment_variable('UNRED04_DIRECT_DT',direct,status=status)
  if(status==0.and.len_trim(direct)>0) then
   read(direct,*,iostat=ios) target
@@ -95,7 +96,7 @@ subroutine unreduced_driver()
   call MacroStateVar(2)
   write(name,'(a,i0)') 'rollback_',attempt
   call inventory_dump(trim(name))
-  if(FlDecMpRat.or.IDecMpRat/=0) then
+  if(IDecMpRat/=0) then
    open(newunit=u,file='outcome.txt',status='replace')
    write(u,*) 'ORIGINAL_REDUCTION_REQUIRED',attempt,dt
    close(u)
