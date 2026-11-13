@@ -1,0 +1,53 @@
+name: No-macro original memory and reactions
+on:
+  push:
+    branches: [codex/nomacro-coverage02]
+    paths: ['.github/workflows/nomacro-coverage-extended.yml']
+  workflow_dispatch:
+    inputs:
+      extended_only:
+        type: boolean
+        default: false
+        description: Run only the changed extended process cohort
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-extended-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    strategy:
+      fail-fast: false
+      matrix:
+        cohort: ${{ fromJSON(inputs.extended_only && '["extended"]' || '["extended","first-block","release"]') }}
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Execute source-bound process cohort
+        env:
+          COHORT: ${{ matrix.cohort }}
+        run: |
+          if [ "$COHORT" = extended ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --extended --output "$RUNNER_TEMP/proof"
+          elif [ "$COHORT" = first-block ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --output "$RUNNER_TEMP/proof"
+          else
+            python3 -B tools/solute/check_userrelease.py --output "$RUNNER_TEMP/proof"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-${{ matrix.cohort }}-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

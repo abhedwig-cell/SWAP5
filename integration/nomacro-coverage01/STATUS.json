@@ -4,7 +4,7 @@
   "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
   "qualified_source": "681af16d02367d0565e40013c3dcc30013da52f5",
   "workflow_run": 43402931940,
-  "status": "QUALIFIED_EXPERIMENTAL_FUNCTIONAL_SCOPE_WITH_RETAINED_FULL_PERIOD_FAIL_PENDING_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_EXPERIMENTAL_SCOPE_WITH_RETAINED_FULL_PERIOD_FAIL",
   "profiles": [
     {
       "configuration": "salt08",
@@ -414,5 +414,6 @@
     "mkdocs_strict": "PASS; source335656c6f documentation structure; subsequent prose-only refusal clarification adds no links"
   },
   "overlap": "No performance/math or B0/B1/macropore files incorporated",
-  "next_step": "Merge PR1669 after current canonical/peer reconciliation; verify actual merge tree. Continue blockB on codex/nomacro-coverage02."
+  "next_step": "Merge PR1669 after current canonical/peer reconciliation; verify actual merge tree. Continue blockB on codex/nomacro-coverage02.",
+  "admission_receipt": "BLOCK_A_MERGE.json"
 }
