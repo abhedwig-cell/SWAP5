@@ -4,7 +4,7 @@
   "baseline": "980273f819ef0984da90dc478e26d2b1e340fcc2",
   "qualified_source": "12ae9114857b97bb5cbe3dd587703f2e96ef7b7f",
   "workflow_run": 43406084493,
-  "status": "QUALIFIED_EXPERIMENTAL_FUNCTIONAL_SCOPE_PENDING_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_EXPERIMENTAL_FUNCTIONAL_SCOPE",
   "configurations": [
     {
       "configuration": "hupsel-hyst1",
@@ -531,5 +531,6 @@
     "first_block": "PASS with retained undrained51 FAIL"
   },
   "retained_scope": "No full science, original oxygen FAILs and unqualified references/heat/platform boundaries unchanged; frost and unsupported state/ledger families refused",
-  "next_step": "Merge PR1670 and verify actual canonical postimage; continue separate basic-option blockC."
+  "next_step": "Merge PR1670 and verify actual canonical postimage; continue separate basic-option blockC.",
+  "admission_receipt": "BLOCK_B_MERGE.json"
 }
