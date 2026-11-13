@@ -79,3 +79,11 @@ Undrained Hupsel accepts50days; day51 naturally refuses at independent
 Preserve as full-period FAIL, qualify exact own49to51 refusal and no rejected
 publication, and continue independent process blocks. Final gate now separates
 successful functional profiles from this explicitly retained refusal.
+
+Final blockA source681af16d0: hosted run43402931940 both jobs SUCCESS. Three
+new complete trajectories4018days total; undrained Hupsel full-period FAIL retained
+and exact own49to51 refusal/rollback passes. All8 O0/O2 profiles, external controls,
+16 input refusals and all three complete release regressions pass their declared
+bounded criteria. STATUS.json and raw archives preserve actual evidence.
+Admission pending PR1669; next independent blockB is already persisted on
+codex/nomacro-coverage02 atdfba06aef (hysteresis restart defect under diagnosis).
