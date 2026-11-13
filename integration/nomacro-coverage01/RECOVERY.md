@@ -16,21 +16,21 @@ and native endpoints sealed. Six complete variants7306 days; across A/B/C/D,
 Both failed history cache hypotheses removed; new water-only history atomically
 refused. Frozen11529865e unchanged and no peer private source imported.
 
-Current own branch codex/nomacro-coverage05, PR1674 draft. E source5060be802
-connects original analytic heat, top thermal1..4, bottom1/2, drought2,
-compensation2 and valid simple-growth Gash. Hosted run43422509387 is live;
-follow that exact handle to terminal before further action. First sourcec5bbbb58c
-run43420989052 qualified five thermal full periods then original reader refused
-future WOFOST/Gash. Second run43421662126 passed7 then refused drought2 plus
-extra compensation. Both original input failures are retained in raw archives.
-Revised valid fixtures and preflight catch
-all future crop-type/Gash inconsistencies atomically. No physical/source/state
-runtime change; original immutable provider remainsO2 and touched units O0/O2.
-Exact selected old D descriptors unchanged; registered runtime source diff empty.
-No whole-energy/scientific promotion. See BLOCK_E_RECOVERY/INHERITANCE.
-Larger original state-block integration remains the strategy for the retained
-active-history gap, with no third narrow cache patch. Reconcile peer canonical
-delta before merge.
+Current own branch codex/nomacro-coverage05, PR1674 draft. E codeb7a9d8405
+passes actual run43423367602:9 full9864 days,18 O0/O2 touched-unit/controller
+profiles, exact native2/365/530, temperature state, original reference and all
+transaction checks. Maxwater9.997787873191472e-11cm; solute2.0189361551216096e-13.
+32 additional complete configurations37627 days across A..E; zero new
+independent projects. Three original invalid-input prefixes/refusals retained.
+No physical/codec/host/kernel/provider/CLI/time-policy change; all24 old selected
+experimental descriptors exact. Old adapter bundles require rebuild, never rebind.
+Next: finish raw archiving/docs, ready/merge PR1674 and verify exact postimage.
+Then choose the next original-process integration surface from current register.
+Known reservoir SWBR1 requires separate aquifer state/ledger and original-index
+reference audit; age2, other drainage/surfacewater, detailed meteo, hydraulic
+tables, broader crop structures and complete original history remain open.
+Do not resume two failed local cache hypotheses or start a solver campaign.
+Peer3075fbbb3/cd2bf853e inspected; canonical bdf222bef, no private import.
 
 An active serial autonomous Codex goal continues this work; no scheduled timer
 is configured. Later checkpoints must replace this current pointer. Inventory

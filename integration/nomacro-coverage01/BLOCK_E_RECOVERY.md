@@ -92,3 +92,20 @@ unchanged. No numerical tolerance, solver, kernel or physical law patch. Source
 runtime remains5060be802; only qualifier input fixture changes. Retain original
 reader failure and its139-day prefix. Fresh full9 cohort will establish final
 joint source/input evidence; original source archives are never edited.
+
+Final b7a9d8405 run43423367602 SUCCESS:9 complete9864 days,18 actual
+O0/O2 touched-donor/controller profiles, full exact native2/365/530 states,
+active growth/root uptake, temperature diagnostics, all original comparisons,
+external isolation/discard/replay/recovery and mass refusals. Maximum water
+9.997787873191472e-11cm, solute2.0189361551216096e-13mg/cm2. All thermal
+native profiles distinct. Physical energy/whole science still NOT_QUALIFIED.
+New source is input validation/qualifier only: no Fortran, codec, host, kernel,
+CLI, original provider/archive/time policy change. All24 prior selected project
+descriptors remain exact; immutable trajectory evidence inherited within that
+surface, old bundles never rebound across changed adapter fingerprints.
+Peer refreshed: PERF3075fbbb3 (private combined-D pressure evidence), macro
+cd2bf853e; their untracked/active evidence untouched. Canonical stillbdf222bef.
+Invariants2/3/7/13/21/23/29: original physics and accepted day ownership reused,
+physical constraints preflighted, explicit immutable input/state/build identity,
+no scientific/tolerance promotions. Next: seal raw/source-bound receipts/docs,
+merge PR1674 after current overlap check and verify actual canonical tree.

@@ -228,9 +228,9 @@ which remain outside this work unit. A supported input selector alone is not A.
 | Richards/hydraulics | Selected original MvG and unchanged production solver; hysteresis1/2 trajectories and named restarts | B: hydraulic tables and other original constitutive families; C: later active history restart FAIL retained; water-only history explicitly refused |
 | Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux | C: strict solute substep receipt absent for reconstructed modes1/5; B: other original boundaries8/9 |
 | Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
-| Crops/roots/ET | Registered grass/rotation/WOFOST; bare soil; original simple maize without heat | B: broader original growth structures, root/stress/interception/ET controls and combinations; block D is pending admission |
+| Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; block D is pending admission |
 | Irrigation | Registered fixed surface and external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
-| Heat | Selected original numerical conduction and native supported-heat state; compatible no-heat routes | B: original analytical heat and other boundaries; whole physical energy including mass-carried energy remains a separate scientific limitation |
+| Heat | Selected numerical and analytical temperature; original top1..4 and bottom1/2; compatible no-heat routes | B: unexecuted process combinations; whole physical energy including mass-carried energy remains a separate scientific limitation |
 | Snow/frost | Positive snow accumulation/melt, snow plus hysteresis, named exact continuations | B/C: complete frost state and corrected-reference integration; frost remains refused |
 | Solute | Original conservative CDE; separate and combined Freundlich sorption/decay | B/C: reservoir SWBR1, original age/tracer SWSOLU2 and their matching conserved ledgers/state |
 | Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | B: detailed weather/rainfall and further original top-boundary options; implicit conductivity SWKIMPL1 remains excluded |
@@ -339,3 +339,35 @@ before output/build. The drought2 fixture explicitly selects compensation0;
 Walsum compensation2 explicitly selects Feddes drought1 throughout its rotation.
 Both original input refusals are retained as failures, not counted as complete
 configurations. No numerical repair or threshold change is involved.
+
+
+The microscopic-option input also exposes inactive original ROOTXYLEM0.02,
+which exceeds the supplied root radii and is correctly refused by the original
+reader. Its explicitly derived fixture uses the reader's own example,
+ROOTXYLEM=0.4*ROOTRADIUS, for each referenced crop. Original source and numeric
+validation remain unchanged; this is a different physical input, not an
+unchanged historical-project claim.
+
+
+Final block E source `b7a9d8405c3ec3f79d199b9c5a8273cebd4d9bdc` passes
+run43423367602: all nine full1096-day trajectories,9864 complete model days,
+and all18 actual touched-unit/controller O0/O2 profiles pass exact native
+2/365/530 continuations, independent origins and external transactional controls.
+The immutable original provider remains O2. Maximum water residual is
+9.997787873191472e-11cm and maximum solute residual2.0189361551216096e-13mg/cm2,
+below the unchanged1e-10 bounds. All five thermal choices produce distinct
+active native temperature profiles; this proves activation and exact supported
+state, not a full physical energy balance. Three incompatible future-input
+requests refuse before output/build. `BLOCK_E_STATUS.json`, source-bound reports
+and raw archives own the qualification; the merge receipt owns admission.
+
+Registered release runtime, host, kernel, original provider and existing state
+codec sources are unchanged from D. All24 prior selected experimental project
+descriptors (23 complete configurations and one preserved refusal) remain exact
+under current validation. This inherits previous evidence only within its
+unchanged selected-process/runtime surface. Adapter fingerprints changed, so old
+experimental build bundles cannot be silently rebound and require a fresh build.
+Across A/B/C/D/E there are32 additional complete configurations and37627 complete
+model days, with zero new independent historical projects. Complete original
+no-macro functional coverage has not yet been established; the remaining register
+and retained history/scientific gaps are still open.
