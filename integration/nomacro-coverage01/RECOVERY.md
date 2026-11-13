@@ -69,3 +69,13 @@ explicit prescribed-flux/free-drainage boundaries but was dispatched only for
 closed bottom. Extend only explicit modes2/-2/4/7; retain qualified Cauchy branch
 unchanged. Reconstructed qbot modes1/5 remain refused for solute profiles.
 This is the first targeted functional repair; no solver/tolerance change.
+
+Run43401847456 at335656c6f: all three release profiles pass again. SaltFarm08/16
+complete1461 each and free-bottom Hupsel completes1096 with exact own native/
+auxiliary restart, isolation, discard/replay/recovery and explicit mass refusal.
+Undrained Hupsel accepts50days; day51 naturally refuses at independent
+1.0001328931696918e-10cm (kernel1.0000955619204888e-10), versus projected
+9.991413595525985e-11. No tolerance adjustment or solver repair selected.
+Preserve as full-period FAIL, qualify exact own49to51 refusal and no rejected
+publication, and continue independent process blocks. Final gate now separates
+successful functional profiles from this explicitly retained refusal.

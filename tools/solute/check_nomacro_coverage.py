@@ -83,27 +83,39 @@ def main():
             base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference]
             call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
-            cut, end = (2, 5) if opt == 'O0' else (365, project.last_day)
+            partial = key == 'hupsel-nodrain' and opt == 'O2'
+            cut, end = (2, 5) if opt == 'O0' else ((49, project.last_day) if partial else (365, project.last_day))
             control, resumed, endpoint = [out/(label+'-'+n) for n in ('control', 'resumed', 'endpoint')]
-            call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut])
+            call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut], refuse=partial)
             data = rows(control)
-            assert len(data) == end and all(r['committed'] for r in data)
+            if partial:
+                assert len(data) == 51 and data[-1]['day'] == 51 and not data[-1]['committed']
+                assert 1e-10 < abs(data[-1]['independent_residual_cm']) < 1.01e-10
+            else:
+                assert len(data) == end and all(r['committed'] for r in data)
+            accepted = [r for r in data if r['committed']]
             assert all(abs(r['independent_residual_cm']) <= 1e-10 and abs(r['kernel_residual_cm']) <= 1e-10
-                       and abs(r.get('solute_independent_residual_mg_cm2', 0)) <= 1e-10 for r in data)
+                       and abs(r.get('solute_independent_residual_mg_cm2', 0)) <= 1e-10 for r in accepted)
             origin = control/f'accepted-column-1-day-{cut}.zip'
             before = h.sha(origin)
             call(label+'-resumed', reuse+['--output', resumed, '--days', cut+2, '--checkpoint-at', cut+2,
-                                        '--restart', origin, '--restart-day', cut])
+                                        '--restart', origin, '--restart-day', cut], refuse=partial)
             # Fresh cold control through the same endpoint is needed to compare
             # complete native bytes, including output counters, not just stocks.
-            call(label+'-endpoint', reuse+['--output', endpoint, '--days', cut+2, '--checkpoint-at', cut+2])
+            call(label+'-endpoint', reuse+['--output', endpoint, '--days', cut+2, '--checkpoint-at', cut+2], refuse=partial)
             assert list(map(physical, rows(resumed))) == list(map(physical, data[cut:cut+2]))
-            assert payload(resumed/f'accepted-column-1-day-{cut+2}.zip') == payload(endpoint/f'accepted-column-1-day-{cut+2}.zip')
+            if partial:
+                assert not (resumed/f'accepted-column-1-day-{cut+2}.zip').exists()
+                assert not (endpoint/f'accepted-column-1-day-{cut+2}.zip').exists()
+                assert rows(resumed)[-1]['revision'] == 1
+            else:
+                assert payload(resumed/f'accepted-column-1-day-{cut+2}.zip') == payload(endpoint/f'accepted-column-1-day-{cut+2}.zip')
             assert h.sha(origin) == before
-            report = dict(configuration=key, optimization=opt, completed_days=end,
-                          maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in data),
-                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in data),
-                          restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=True,
+            report = dict(configuration=key, optimization=opt, completed_days=len(accepted), requested_days=end,
+                          full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
+                          maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in accepted),
+                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted),
+                          restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=not partial,
                           original_input_sha256=dict(project.input_inventory), build_sha256=h.sha(bundle/'BUILD.json'),
                           scope='Experimental functional evidence; not scientific equivalence')
             reports.append(report)
@@ -225,7 +237,8 @@ def main():
     bad = [('macro', 'SWMACRO', 1), ('snow', 'SWSNOW', 1), ('frost', 'SWFROST', 1),
            ('hysteresis', 'SWHYST', 1), ('solute', 'SWSOLU', 2), ('adsorption', 'SWSP', 1),
            ('decay', 'SWDC', 1), ('reservoir', 'SWBR', 1), ('surfacewater', 'SWDRA', 2),
-           ('heat', 'SWHEA', 0), ('dynamic-bottom', 'SWBOTB', 9)]
+           ('heat', 'SWHEA', 0), ('other-bottom', 'SWBOTB', 9),
+           ('reconstructed-groundwater', 'SWBOTB', 1), ('reconstructed-head', 'SWBOTB', 5)]
     for label, name, value in bad:
         target = out/('refused-'+label)
         try:
@@ -244,7 +257,7 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_FUNCTIONAL_COVERAGE_PASS', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
                   new_original_workbook_configurations=2, new_derived_process_configurations=2,
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)

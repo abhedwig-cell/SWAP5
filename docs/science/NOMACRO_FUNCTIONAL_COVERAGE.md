@@ -66,7 +66,7 @@ The first executed coverage cohort includes:
 | SaltFarm08dS | Workbook run2; same independent SaltFarm project | Original higher-salinity irrigation and crop stress trajectory |
 | SaltFarm16dS | Workbook run3; same independent SaltFarm project | Original16dS irrigation/stress trajectory |
 | Hupsel free bottom | Derived original input, only SWBOTB6to7 | Original free-drainage bottom law |
-| Hupsel no drainage | Derived original input, only SWDRA1to0 | Original undrained profile with crop/solute/heat |
+| Hupsel no drainage | Derived original input, only SWDRA1to0 | Short execution; full-period FAIL retained at day51 |
 
 These are two new workbook configurations and two derived process
 configurations, **zero new independent historical projects**. The pinned
@@ -94,7 +94,7 @@ The source-based A/B/C/D inventory is in the recovery record. Source presence
 does not establish execution, restart correctness or scientific qualification.
 
 The initial generic route admits original Mualem/van Genuchten or table
-hydraulics without hysteresis, supported atmospheric forcing, bottom modes1to7,
+hydraulics without hysteresis, supported atmospheric forcing, bottom modes1to7 (solute substep receipt excludes reconstructed modes1/5),
 no drainage or original methods2/3, existing crop signatures, numerical heat with
 the supported boundaries and conservative solute without adsorption/decay or a
 mixed aquifer reservoir. Not every permitted parameter combination has full-period
@@ -111,3 +111,11 @@ Active macro functionality and macro-only processes are outside this work unit.
 The platform/performance workstream's separate math probes and original B0/B1
 macropore research are not incorporated. The admitted durable restart publisher
 and existing strict acceptance thresholds are retained.
+
+
+The undrained Hupsel request is **not a full-period PASS**. At source335656c6f,
+50days are accepted; day51 independently reports1.0001328931696918e-10cm and
+is refused by the unchanged1e-10cm guard. The projected substep sum is
+9.991413595525985e-11cm. This near-boundary disagreement is retained, not
+rounded into admission or used to start a general solver campaign. Own49to51
+replay and absence of rejected-day publication are checked separately.
