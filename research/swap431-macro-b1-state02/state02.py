@@ -60,7 +60,12 @@ def prepare():
     soil=soil.replace('end module MOD_SoilWater',retry+'\nend module MOD_SoilWater')
     (ROOT/'soilwater_probe.f90').write_text(soil,encoding='cp1252')
     head=(OLD/'V1/headcalc_metrics.f90').read_text(encoding='cp1252')
-    head=head.replace('         call audit_attempt(0)','         call state02_rate()\n         call audit_attempt(0)',1)
+    # Windows per-attempt open/append/close is too expensive. Retain the
+    # registered numerical source and selected probes, omit routine trace I/O.
+    import re
+    head=re.sub(r'(?m)^\s*call audit_attempt\([0-3]\)\s*$', '', head)
+    marker='!        special case for macropores'
+    head=head.replace(marker,'         call state02_rate()\n'+marker,1)
     rate='''
 subroutine state02_rate()
  use MOD_macropore, only: NumDm,QExcMtxDmCp,FrReduQ,WaSrMpDm,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp
@@ -146,9 +151,17 @@ def execute(opt,mode,index):
             target=ROOT/'data'/opt/(mode+str(index));target.mkdir(parents=True,exist_ok=True);shutil.copy2(case/name,target/name)
     print(result)
 
+def relink(opt):
+    obj=WORK/opt/'obj'
+    for name in ['headcalc','soilwater']:
+        subprocess.run(['gfortran','-'+opt,'-finit-local-zero','-fallow-argument-mismatch','-cpp','-Dlinux','-ffree-line-length-none','-I',str(obj),'-c',str(ROOT/(name+'_probe.f90')),'-o',str(obj/(name+'.o'))],cwd=obj,check=True,capture_output=True)
+    subprocess.run(['gfortran','-o',str(WORK/opt/'swap.exe'),*map(str,sorted(obj.glob('*.o'))),str(WORK/opt/'libttutil.a')],cwd=obj,check=True,capture_output=True)
+    save(ROOT/(opt+'_RELINK.json'),dict(exe_sha256=sha(WORK/opt/'swap.exe'),sources={p.name:sha(p) for p in ROOT.glob('*.f90')},policy='Only remove ordinary attempt trace IO; selected diagnostic output retained. Same native closure.'))
+
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('action');p.add_argument('--opt',default='O2');p.add_argument('--mode',default='rate');p.add_argument('--index',type=int,default=1);a=p.parse_args()
     if a.action=='recover':recover()
     elif a.action=='prepare':prepare()
     elif a.action=='build':build(a.opt)
     elif a.action=='run':execute(a.opt,a.mode,a.index)
+    elif a.action=='relink':relink(a.opt)

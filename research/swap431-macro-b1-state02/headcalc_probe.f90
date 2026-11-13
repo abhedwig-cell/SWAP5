@@ -443,9 +443,8 @@ subroutine headcalc
       sumold = sump
 
       if (.NOT.flnonconv) then      ! convergence has been reached
-     
+
          call state02_rate()
-         call audit_attempt(0)
 !        special case for macropores
          if (swmacro == 1) then
             FlDecMpRat = .FALSE.
@@ -505,7 +504,6 @@ subroutine headcalc
 
 !     reset and continue iteration with smaller timestep!
       fldecdt = .TRUE.
-      call audit_attempt(1)
 
       return  
 
@@ -513,7 +511,7 @@ subroutine headcalc
 !     in case of macropores, retry with reduction of exchange fluxes with matrix
       IDecMpRat  = IDecMpRat + 1
       FlDecMpRat = .TRUE.
-      call audit_attempt(2)
+
       dtold      = dt
       fldtmin    = .FALSE.
 
@@ -530,7 +528,6 @@ subroutine headcalc
          if (iwarn > 3) flwarn = .FALSE.  
       end if
 
-      call audit_attempt(3)
 !     continue without convergence !!!
       return
 
