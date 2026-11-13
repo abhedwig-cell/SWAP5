@@ -1,0 +1,11 @@
+# Na RETRY07
+
+Lees STATUS.json, RESULT.json en REPORT.md op de definitieve branchcommit. Werk met V1 plus de ongewijzigde CONTRACT06-patch; promoveer niets naar B1.12/canonical/release.
+
+De oorspronkelijke context A accepteert nu dt=.002 in vijf iteraties en is niet onderscheidend. De vooraf geselecteerde oorspronkelijke context B (t35796.9513533331, dt2e-5, IDec0) wijst echt af na dertig iteraties. Oorspronkelijke rollback en TimeControl5 leveren dt1e-5, acceptatie in zeven iteraties. Retry en directe kleine route zijn vanaf solverreturn bytegelijk, ook na volledige hostovergang en één vervolgstep (drie iteraties). Onafhankelijke matrix/macro/oppervlakte-inventaris slaagt, O0/O2 zijn exact. Onmiddellijk na rollback en vóór headcalc blijven trialwaarden/referenties/events/sorp verschillen; claim geen volledige onmiddellijke reset. Geen aanvullende geheugenpatch gerechtvaardigd in deze natte context.
+
+De werkelijke native eigen herstart is uitgevoerd en faalt toestandsgelijkheid vóór headcalc. Matrix h/theta zijn exact, macrovoorraad verschilt .010407692cm, domeinen tot .032567926cm, klok nul versus .02003dag. Native reader waarschuwt macro-I/O niet geïmplementeerd; inoutend schrijft geen macrogeheugen. Native eerste dt wijkt bovendien af. Vergelijk de twee eindtoestanden niet alsof ze op gelijke tijd liggen. Eén geaccepteerde herstartstap is geen restart-PASS. Dit is oorspronkelijke ontbrekende ondersteuning, niet een aangetoonde patchregressie.
+
+De twee eerdere opstartinvoerfouten staan apart in setup-date en setup-binary. Definitieve RESTART_FINAL gebruikt eigen binair bestand, numerieke maandspelling en SWINITYPE/SWENDTYPE2. Niet opnieuw modellen draaien alleen om deze setupfouten te herhalen.
+
+Status B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS. Een eventueel vervolg vereist een afgebakend native macroherstartcontract; er is geen algemene serializer gebouwd. Droge/event- en h0-overdracht blijven expliciet open. Herbeoordeel met assess_retry07.py zonder model; bewijsarchive en inherited capsules bevatten herstelmateriaal. Geen tweedaagse/481-daagse campagne, nieuwe solvervariant, onbeperkte scenariogeneratie, officiële promotie of architectuurwijziging. Twintig seconden per geselecteerde route blijft gelden.

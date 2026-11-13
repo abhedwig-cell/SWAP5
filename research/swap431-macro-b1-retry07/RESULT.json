@@ -1,0 +1,395 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-RETRY07",
+  "baseline": "e9ade290b2861159f94afe4b347c15badad6ba02",
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "candidate": "V1 plus unchanged CONTRACT06 one-line Darcy gate patch",
+  "actual_rejection_restore_direct_small_retry": "PASS_ORIGINAL_CONTEXT_B",
+  "full_host_following_step": "PASS_EXACT_DIRECT_RETRY",
+  "own_native_restart": "FAIL_PREEXISTING_UNSUPPORTED_MACRO_IO",
+  "complete_restart_qualification": false,
+  "nondiscriminating_context_A": "Patched dt .002 accepts in 5 iterations; no artificial rejection introduced",
+  "O0_O2_all_final_B_raw_vectors_and_own_files_byte_exact": true,
+  "final_routes": 7,
+  "setup_failures_preserved": 2,
+  "final_max_model_seconds": 0.9802755999844521,
+  "final_total_model_seconds": 4.290841300273314,
+  "model_cap_seconds": 20,
+  "model_censored": 0,
+  "additional_memory_patch": false,
+  "physical_patch_changed": false,
+  "official_reference_promoted": false,
+  "production_changed": false,
+  "results": [
+    {
+      "optimization": "O2",
+      "rejection": {
+        "dt": 2e-05,
+        "actual_iterations": 30,
+        "trace_loop_index": 31,
+        "outcome": 4,
+        "local_residual": 0.06193804833164862,
+        "total_residual": 0.02103829966538083,
+        "flux_factor": 1
+      },
+      "immediate_restored_fields": [
+        "h",
+        "hm1",
+        "theta",
+        "thetm1",
+        "dz",
+        "fraction",
+        "pond",
+        "matrix_stored",
+        "macro_total",
+        "macro_sat",
+        "macro_domain",
+        "macro_compartment",
+        "macro_volume",
+        "macro_bottom",
+        "clock",
+        "wet_wall",
+        "wet_wall_old"
+      ],
+      "immediate_trial_differences": {
+        "controls": 1.0,
+        "macro_exchange": 1.5026831899348143,
+        "macro_rapid": 1.8500249977576252e-07,
+        "matrix_exchange": 1.5026831899348143,
+        "boundary_rates": 0.06767893447834057,
+        "event": 1.0,
+        "reference": 0.444,
+        "sorptivity": 0.003419922703458976
+      },
+      "retry_direct_pre_head_differences": {
+        "macro_exchange": 1.5026831899348143,
+        "macro_rapid": 1.8500249977576252e-07,
+        "matrix_exchange": 1.5026831899348143,
+        "boundary_rates": 0.06767893447834057,
+        "event": 1.0,
+        "reference": 0.444,
+        "sorptivity": 0.003419922703458976
+      },
+      "retry_direct_exact_stages": [
+        "origin",
+        "accepted_solver_return",
+        "checkpoint",
+        "checkpoint_after_io",
+        "continuous_next_begin",
+        "continuous_next_return",
+        "continuous_after_step"
+      ],
+      "retry_direct_solver_and_native_checkpoint_byte_exact": true,
+      "checkpoint_io_noninterference_exact": true,
+      "accepted_inventory": {
+        "dt": 1e-05,
+        "iterations": 7,
+        "local_residual": 1.445111049158676e-07,
+        "total_residual": 1.444983181403704e-07,
+        "independent_residual_difference": 6.938893903907228e-18,
+        "matrix_change_cm": 2.6822108116252718e-05,
+        "macro_change_cm": -3.182914534368905e-05,
+        "matrix_balance_error_cm": 1.4449831779793192e-12,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": 1.4449891978424753e-12,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -7.055157102975329e-07,
+            "error_cm": 5.3485895454372795e-18
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.695507013069422e-07,
+            "error_cm": -6.702148195149651e-20
+          },
+          {
+            "domain": 3,
+            "change_cm": -2.474286945448878e-06,
+            "error_cm": 1.8507669897506462e-19
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.762580750036302e-06,
+            "error_cm": 1.0960606337470646e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -2.1356312639213282e-05,
+            "error_cm": -5.421010862427522e-19
+          }
+        ]
+      },
+      "continuation_inventory": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "local_residual": 1.3744363980272567e-10,
+        "total_residual": -4.320236542641742e-10,
+        "independent_residual_difference": 3.469446951953614e-18,
+        "matrix_change_cm": 2.2802091817187574e-05,
+        "macro_change_cm": -2.7810819514051746e-05,
+        "matrix_balance_error_cm": -4.320240725493724e-15,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": -4.28442563138497e-15,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -9.327043848372796e-07,
+            "error_cm": 3.045178736585776e-17
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.120751821851121e-07,
+            "error_cm": 6.1853522182061214e-18
+          },
+          {
+            "domain": 3,
+            "change_cm": -1.8326096382012547e-06,
+            "error_cm": -2.3115529130569856e-18
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.90113549515789e-06,
+            "error_cm": 1.6567964448294115e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -1.7556445178040433e-05,
+            "error_cm": -1.6940658945086007e-19
+          }
+        ]
+      },
+      "native_restart": {
+        "gate": "FAIL_PREEXISTING_UNSUPPORTED_MACRO_IO",
+        "own_end_sha256": "caa01ac7f4a59a46c610ea534e5bbaa7ebc9ddc3e80955fb62dee7e3b31e54be",
+        "matrix_heads_and_theta_exact_at_first_head": true,
+        "initialization_differences": {
+          "controls": 0.0001314213562373095,
+          "policy": 1.0,
+          "hm1": 0.09450449942295358,
+          "wet_wall": 1.0,
+          "wet_wall_old": 1.0,
+          "thetm1": 4.502029703312704e-06,
+          "matrix_stored": 153.8417927054116,
+          "macro_total": 0.010407691988458367,
+          "macro_sat": 0.032567926486988474,
+          "macro_domain": 0.032567926486988474,
+          "macro_compartment": 0.032567926486988474,
+          "macro_exchange": 0.9829054620839789,
+          "macro_rapid": 0.016099943034409096,
+          "matrix_exchange": 0.9829054620839789,
+          "matrix_drains": 3.467338714303403e-05,
+          "matrix_root": 6.6702487248591415e-06,
+          "matrix_vertical": 1.4634281554444852,
+          "boundary_rates": 0.06700967710894246,
+          "clock": 0.020029999740510247,
+          "event": 1.0,
+          "reference": 0.44422357455548966,
+          "sorptivity": 0.2364723871480035
+        },
+        "checkpoint_max_clock": 0.020029999740510247,
+        "restart_max_clock": 0.0,
+        "checkpoint_time": 35796.9513633331,
+        "restart_time": 35796.95136333309,
+        "time_roundtrip_error_days": -7.275957614183426e-12,
+        "continuous_first_dt": 1e-05,
+        "restart_first_dt": 0.0001414213562373095,
+        "actual_native_first_step_executed": true,
+        "continuous_end_time": 35796.951373333104,
+        "restart_end_time": 35796.95150475445,
+        "after_step_equal_time_comparison": "NOT_VALID_DIFFERENT_DT_AND_END_TIME",
+        "warning": "Original reader explicitly states SWINCO3 macro I/O is not implemented"
+      }
+    },
+    {
+      "optimization": "O0",
+      "rejection": {
+        "dt": 2e-05,
+        "actual_iterations": 30,
+        "trace_loop_index": 31,
+        "outcome": 4,
+        "local_residual": 0.06193804833164862,
+        "total_residual": 0.02103829966538083,
+        "flux_factor": 1
+      },
+      "immediate_restored_fields": [
+        "h",
+        "hm1",
+        "theta",
+        "thetm1",
+        "dz",
+        "fraction",
+        "pond",
+        "matrix_stored",
+        "macro_total",
+        "macro_sat",
+        "macro_domain",
+        "macro_compartment",
+        "macro_volume",
+        "macro_bottom",
+        "clock",
+        "wet_wall",
+        "wet_wall_old"
+      ],
+      "immediate_trial_differences": {
+        "controls": 1.0,
+        "macro_exchange": 1.5026831899348143,
+        "macro_rapid": 1.8500249977576252e-07,
+        "matrix_exchange": 1.5026831899348143,
+        "boundary_rates": 0.06767893447834057,
+        "event": 1.0,
+        "reference": 0.444,
+        "sorptivity": 0.003419922703458976
+      },
+      "retry_direct_pre_head_differences": {
+        "macro_exchange": 1.5026831899348143,
+        "macro_rapid": 1.8500249977576252e-07,
+        "matrix_exchange": 1.5026831899348143,
+        "boundary_rates": 0.06767893447834057,
+        "event": 1.0,
+        "reference": 0.444,
+        "sorptivity": 0.003419922703458976
+      },
+      "retry_direct_exact_stages": [
+        "origin",
+        "accepted_solver_return",
+        "checkpoint",
+        "checkpoint_after_io",
+        "continuous_next_begin",
+        "continuous_next_return",
+        "continuous_after_step"
+      ],
+      "retry_direct_solver_and_native_checkpoint_byte_exact": true,
+      "checkpoint_io_noninterference_exact": true,
+      "accepted_inventory": {
+        "dt": 1e-05,
+        "iterations": 7,
+        "local_residual": 1.445111049158676e-07,
+        "total_residual": 1.444983181403704e-07,
+        "independent_residual_difference": 6.938893903907228e-18,
+        "matrix_change_cm": 2.6822108116252718e-05,
+        "macro_change_cm": -3.182914534368905e-05,
+        "matrix_balance_error_cm": 1.4449831779793192e-12,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": 1.4449891978424753e-12,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -7.055157102975329e-07,
+            "error_cm": 5.3485895454372795e-18
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.695507013069422e-07,
+            "error_cm": -6.702148195149651e-20
+          },
+          {
+            "domain": 3,
+            "change_cm": -2.474286945448878e-06,
+            "error_cm": 1.8507669897506462e-19
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.762580750036302e-06,
+            "error_cm": 1.0960606337470646e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -2.1356312639213282e-05,
+            "error_cm": -5.421010862427522e-19
+          }
+        ]
+      },
+      "continuation_inventory": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "local_residual": 1.3744363980272567e-10,
+        "total_residual": -4.320236542641742e-10,
+        "independent_residual_difference": 3.469446951953614e-18,
+        "matrix_change_cm": 2.2802091817187574e-05,
+        "macro_change_cm": -2.7810819514051746e-05,
+        "matrix_balance_error_cm": -4.320240725493724e-15,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": -4.28442563138497e-15,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -9.327043848372796e-07,
+            "error_cm": 3.045178736585776e-17
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.120751821851121e-07,
+            "error_cm": 6.1853522182061214e-18
+          },
+          {
+            "domain": 3,
+            "change_cm": -1.8326096382012547e-06,
+            "error_cm": -2.3115529130569856e-18
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.90113549515789e-06,
+            "error_cm": 1.6567964448294115e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -1.7556445178040433e-05,
+            "error_cm": -1.6940658945086007e-19
+          }
+        ]
+      },
+      "native_restart": {
+        "gate": "FAIL_PREEXISTING_UNSUPPORTED_MACRO_IO",
+        "own_end_sha256": "caa01ac7f4a59a46c610ea534e5bbaa7ebc9ddc3e80955fb62dee7e3b31e54be",
+        "matrix_heads_and_theta_exact_at_first_head": true,
+        "initialization_differences": {
+          "controls": 0.0001314213562373095,
+          "policy": 1.0,
+          "hm1": 0.09450449942295358,
+          "wet_wall": 1.0,
+          "wet_wall_old": 1.0,
+          "thetm1": 4.502029703312704e-06,
+          "matrix_stored": 153.8417927054116,
+          "macro_total": 0.010407691988458367,
+          "macro_sat": 0.032567926486988474,
+          "macro_domain": 0.032567926486988474,
+          "macro_compartment": 0.032567926486988474,
+          "macro_exchange": 0.9829054620839789,
+          "macro_rapid": 0.016099943034409096,
+          "matrix_exchange": 0.9829054620839789,
+          "matrix_drains": 3.467338714303403e-05,
+          "matrix_root": 6.6702487248591415e-06,
+          "matrix_vertical": 1.4634281554444852,
+          "boundary_rates": 0.06700967710894246,
+          "clock": 0.020029999740510247,
+          "event": 1.0,
+          "reference": 0.44422357455548966,
+          "sorptivity": 0.2364723871480035
+        },
+        "checkpoint_max_clock": 0.020029999740510247,
+        "restart_max_clock": 0.0,
+        "checkpoint_time": 35796.9513633331,
+        "restart_time": 35796.95136333309,
+        "time_roundtrip_error_days": -7.275957614183426e-12,
+        "continuous_first_dt": 1e-05,
+        "restart_first_dt": 0.0001414213562373095,
+        "actual_native_first_step_executed": true,
+        "continuous_end_time": 35796.951373333104,
+        "restart_end_time": 35796.95150475445,
+        "after_step_equal_time_comparison": "NOT_VALID_DIFFERENT_DT_AND_END_TIME",
+        "warning": "Original reader explicitly states SWINCO3 macro I/O is not implemented"
+      }
+    }
+  ],
+  "exclusions": [
+    "Native macro restart remains unsupported and fails initialization equivalence",
+    "No original dry-event or zero-head handoff qualification",
+    "Other hydraulic modes/tabulated hydraulics/variable air-entry layers unqualified",
+    "No full trajectory qualification, reference promotion or general state architecture"
+  ],
+  "next_safe_step": "Resolve the native macro restart support contract as a separately scoped change before claiming own-restart qualification; retain dry/event and zero-head exclusions. No broad campaign."
+}
