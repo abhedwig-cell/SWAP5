@@ -3,11 +3,11 @@
   "baseline": "81e00d043ce322a60f4377a93c56e64beed3f90a",
   "canonical_reconciled": "8d08011ffbdce693b8e1a8cd81b13d6c3d80896c",
   "canonical_delta": "RC1 common-profile qualification only; b0 builder extra_flags default-empty addition. Immutable original sources and archived native closures unchanged.",
-  "stage": "PREREGISTERED_CONTRACT_REPAIR_NOT_TESTED",
+  "stage": "FINAL_MINIMAL_REPAIR_PREREGISTERED",
   "authorization": "User requests intended physical contract and at most a justified minimal correction within same bounds",
   "contract": "Original manual2017 p100-101 eq6.32-6.34: Darcy pressure-gradient infiltration in unsaturated matrix, max with sorptivity. Current official6.49-6.52 corroborates. Original CALCGWL uses h0; original WATCON polynomial remains unsaturated above h_enpr. An unconditional Darcy exclusion at negative h_enpr contradicts this documented field contract.",
   "historical_limit": "GEM comment proves deliberate coding choice; exact SVN change/author decision unavailable. Distinguish deliberate implementation from documented physical consistency.",
-  "minimal_patch": "Only replace cofgen(9,lay) with0.d0 in ABSORPTION H-gate, retaining original epsilon, positive-HMp gate, SWDARCY, formulas, derivatives, limits and reduction law. No smoothing.",
+  "minimal_patch": "Remove only the H<h_enpr clause from the Darcy gate; preserve HMp>1e-8, outer unsaturated/perched/wet-wall selection, nonnegative pressure gradient, all formulas/limits and reduction law.",
   "prefix": "All original code until exact live origin. A harness-only selector activates candidate thereafter; selector is absent from proposed one-line patch.",
   "scope": "Same original wet context and one recorded threshold pair only; no new profile inputs or solver variant",
   "initial_routes": [
@@ -25,5 +25,17 @@
     "no altered tolerances/dt bounds/general solver",
     "paired exchange and actual accepted inventory",
     "only one candidate correction"
-  ]
+  ],
+  "refinement": "Preliminary H<0-epsilon trial solves in3 iterations but retains an unnecessary explicit head gate. Final repair removes obsolete head gate because the outer routine already routes unsaturated compartments; no invented smoothing or displaced epsilon discontinuity. Preserve3 preliminary routes separately.",
+  "final_selected_routes": [
+    "BASE_RIGHT",
+    "PATCH_RIGHT",
+    "PATCH_LEFT",
+    "PATCH_SOLVE"
+  ],
+  "optimizations": [
+    "O2",
+    "O0"
+  ],
+  "final_route_limit": 8
 }

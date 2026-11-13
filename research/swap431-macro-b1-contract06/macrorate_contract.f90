@@ -1657,7 +1657,7 @@
 ! ----------------------------------------------------------------------
 ! --- local
       integer                             :: ic, icBt, Lay, ICTp
-      real(8)                             :: AbsDarc, AbsSorp, DelH, selected_gate, raw_sorp, raw_darcy
+      real(8)                             :: AbsDarc, AbsSorp, DelH, raw_sorp, raw_darcy
       real(8)                             :: Deriv, HMp, RecRes, SatDefMtx
       real(8)                             :: SorpAct, SorpFac, Time
       real(8)                             :: alfamg, ksatfit, m, wcsminwcr, s_enpr, oneoverm, lambda_adj, relsat, help, diffus_avg
@@ -1770,9 +1770,7 @@
                if (ic > ICpTpWaSrDm(id)) then
                   HMp = ZWaLevDm(id) - Z(ic)  ! head in macropore domain, assuming static equilibrium
                   HMp = dmax1(0.d0,HMp)       ! no negative head in macropores
-                  selected_gate=cofgen(9,lay)
-                  if(use_patch) selected_gate=0.d0
-                  if (H(ic) < selected_gate-1.d-8 .AND. HMp > 1.d-8) then     ! Adapted for GEM: test for H_enpr        
+                  if ((use_patch .OR. H(ic) < cofgen(9,lay)-1.d-8) .AND. HMp > 1.d-8) then     ! Adapted for GEM: test for H_enpr        
                      DelH= dmax1(0.d0,HMp - H(ic))
                   else
                      DelH= 0.d0

@@ -4,7 +4,7 @@ import argparse,hashlib,json,os,shutil,subprocess,time,zipfile,sys,difflib
 sys.dont_write_bytecode=True
 R=Path(__file__).resolve().parent
 PREV=R.parent/'swap431-macro-b1-stagnation05'
-WORK=Path('C:/Users/Veldh012/swap431-contract06-work')
+WORK=Path('C:/Users/Veldh012/swap431-contract06-work/final')
 OLD=Path('C:/Users/Veldh012/swap431-state02-work')
 sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()
 def save(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
@@ -13,7 +13,7 @@ COLS='id node layer h gate_layer gate_node theta theta_s k HMp DelH RecRes sorp_
 def prepare():
     raw=(OLD/'audit/build/swap-selected/macrorate.f90').read_text(encoding='cp1252')
     old='H(ic) < cofgen(9,lay)-1.d-8 .AND. HMp > 1.d-8'
-    new='H(ic) < 0.d0-1.d-8 .AND. HMp > 1.d-8'
+    new='HMp > 1.d-8'
     assert raw.count(old)==1
     fixed=raw.replace(old,new,1)
     (R/'minimal_contract.patch').write_text(''.join(difflib.unified_diff(raw.splitlines(True),fixed.splitlines(True),fromfile='B0-selected/macrorate.f90',tofile='B1-experiment/macrorate.f90')))
@@ -22,11 +22,9 @@ def prepare():
     s=raw.replace('      subroutine ABSORPTION(ITask,id,flwoutmtxunsdmcppot,flwoutmtxunsdmpot)',
 '''      subroutine ABSORPTION(ITask,id,flwoutmtxunsdmcppot,flwoutmtxunsdmpot)
       use CONTRACT06_CONTROL, only:use_patch,trace_on,trace_unit''',1)
-    s=s.replace('      real(8)                             :: AbsDarc, AbsSorp, DelH','      real(8)                             :: AbsDarc, AbsSorp, DelH, selected_gate, raw_sorp, raw_darcy',1)
+    s=s.replace('      real(8)                             :: AbsDarc, AbsSorp, DelH','      real(8)                             :: AbsDarc, AbsSorp, DelH, raw_sorp, raw_darcy',1)
     s=s.replace('                  if ('+old+') then',
-'''                  selected_gate=cofgen(9,lay)
-                  if(use_patch) selected_gate=0.d0
-                  if (H(ic) < selected_gate-1.d-8 .AND. HMp > 1.d-8) then''',1)
+'''                  if ((use_patch .OR. H(ic) < cofgen(9,lay)-1.d-8) .AND. HMp > 1.d-8) then''',1)
     marker='            if (AbsSorp > SorpFac*AbsDarc) then'
     s=s.replace(marker,'            raw_sorp=AbsSorp\n            raw_darcy=AbsDarc\n'+marker,1)
     marker='            FlwOutMtxUnsDmPot(id) = FlwOutMtxUnsDmPot(id) + FlwOutMtxUnsDmCpPot(id,ic)'
