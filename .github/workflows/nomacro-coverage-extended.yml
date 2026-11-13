@@ -4,6 +4,11 @@ on:
     branches: [codex/nomacro-coverage02]
     paths: ['.github/workflows/nomacro-coverage-extended.yml']
   workflow_dispatch:
+    inputs:
+      extended_only:
+        type: boolean
+        default: false
+        description: Run only the changed extended process cohort
 permissions:
   contents: read
 concurrency:
@@ -14,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        cohort: [extended, first-block, release]
+        cohort: ${{ fromJSON(inputs.extended_only && '["extended"]' || '["extended","first-block","release"]') }}
     runs-on: ubuntu-26.04
     timeout-minutes: 20
     env:

@@ -37,3 +37,18 @@ Invariants2/3/7/13/21/23/29; physical laws, independent strict water/solute limi
 source rollback and native state ownership preserved. Existing scientific FAILs
 remain; whole scientific equivalence and frost coverage are not claimed.
 Next action: persist and push; dedicated hosted O0/O2 full process qualification.
+
+
+First block admitted PR1669 at980273f81; actual tree matches qualified head.
+First extended run43403320753 atdfba06aef: unchanged release and first-block
+cohorts PASS. Hysteresis1 O0 own2to4 fails exact continuation (groundwater
+spread4.84671923e-6cm on day3), despite successful water/solute checks.
+Native format preserves scanning variables but omits the accepted hydraulic
+carry after hysteresis changes h/scanning curves. Cold recomputation of theta,
+conductivity and capacity is not a complete continuation of the accepted step.
+Targeted repair1: only explicit experimental hysteresis adds active theta/K/
+Kmean/capacity/volume/groundwater/h history to the existing auxiliary stream;
+new formatS5SHS013 (solute) orS5NHS007 (water) prevents old-history ambiguity.
+Strict finite/positive/conserved-water checks apply before use. Original no-hyst
+formats and generated physical bodies remain unchanged. Qualify exact short
+and seasonal own states; reject the repair unless exact continuation is restored.
