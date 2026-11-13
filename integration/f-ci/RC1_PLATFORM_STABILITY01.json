@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-RC1-PLATFORM-STABILITY01",
-  "status": "FMA_CONTRACTION_DIFFERENCE_PROVEN_PRIVATE_COMMON_ARITHMETIC_PROBE_PENDING",
+  "status": "COMPILER_TARGET_DEFAULTS_DIFFER_PENDING_COMMON_ISA_DISCRIMINATOR",
   "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
   "branch": "codex/rc1-platform-stability01",
   "owner_instruction": "2026-11-13: en nu verder met optie1",
@@ -22,7 +22,7 @@
   "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
   "max_model_seconds": 60,
   "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
-  "next_action": "Match arithmetic operation policy with explicit -ffp-contract=off for all Fortran source compilation. Use private child bootstrap with complete compiler call journal; no production profile/old-state rebinding. First5-day pair, then longer only if material.",
+  "next_action": "Reassess incomplete compiler profile: explicit common x86-64/generic target and no contraction on all original Fortran and generated sources. Preserve original math library and physical/time controls. One final five-day compiler-profile discriminator before a longer model selection.",
   "first_probe_result": {
     "five_days": "EXACT_BASELINE_ALL_FRAMES",
     "extended": "CENSORED_60_SECONDS_AFTER_DAY534",
@@ -65,5 +65,18 @@
     "status": "completed",
     "conclusion": "success"
   },
-  "quadmath_probe_disposition": "REJECTED:65 selected math results exact cross-platform, but5-day head difference remains2.06e-13cm and execution about12x native. No extended quadmath run selected."
+  "quadmath_probe_disposition": "REJECTED:65 selected math results exact cross-platform, but5-day head difference remains2.06e-13cm and execution about12x native. No extended quadmath run selected.",
+  "no_contract_probe": {
+    "run": 43398718647,
+    "source": "a4f33987dcc67255987baa9943c5bc37bfebb7d7",
+    "status": "completed",
+    "conclusion": "success",
+    "head_maximum_cm": 4.725109192804666e-13,
+    "all_frames_exact": false,
+    "disposition": "No five-day material improvement; no extended run selected for contraction-only profile.",
+    "default_targets": {
+      "windows": "nocona;mfma disabled",
+      "ubuntu": "x86-64-v3;mfma enabled"
+    }
+  }
 }
