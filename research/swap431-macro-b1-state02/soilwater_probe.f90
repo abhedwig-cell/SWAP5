@@ -7,7 +7,7 @@ module MOD_SoilWater
 ! File VersionID:
 !   $Id: soilwater.f90 369 2018-01-22 13:18:25Z heine003 $
 ! ----------------------------------------------------------------------
-      subroutine soilwater(task) 
+      recursive subroutine soilwater(task) 
 ! ----------------------------------------------------------------------
 !     Date               : Aug 2004   
 !     Purpose            : calculate soil water state variables

@@ -55,7 +55,7 @@ def prepare():
     retry=retry.replace('subroutine audit_retry()','subroutine audit_retry()',1)
     # SoilWater(3) is reached by this diagnostic while SoilWater(2) is on stack.
     soil=(AUDIT/'build/swap-selected/soilwater.f90').read_text(encoding='cp1252')
-    soil=soil.replace('subroutine soilwater (task)','recursive subroutine soilwater (task)')
+    soil=soil.replace('subroutine soilwater(task)','recursive subroutine soilwater(task)',1)
     soil=soil.replace('            call headcalc','            call audit_retry()\n            call headcalc',1)
     soil=soil.replace('end module MOD_SoilWater',retry+'\nend module MOD_SoilWater')
     (ROOT/'soilwater_probe.f90').write_text(soil,encoding='cp1252')
