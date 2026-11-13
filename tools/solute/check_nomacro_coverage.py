@@ -223,6 +223,22 @@ def main():
                           scope='Experimental functional evidence; not scientific equivalence')
             reports.append(report)
             (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
+            if args.crop_options:
+                active_cut=200 if 'salt' in key else 530
+                prefix=out/(label+'-active-prefix');active=out/(label+'-active-restart');endstate=out/(label+'-active-end')
+                call(label+'-active-prefix',reuse+['--output',prefix,'--days',active_cut+2,'--checkpoint-at',active_cut])
+                accepted_origin=prefix/f'accepted-column-1-day-{active_cut}.zip';origin_hash=h.sha(accepted_origin)
+                with zipfile.ZipFile(accepted_origin) as z:aux=z.read('macro.bin')
+                terminal=management_end(aux,project)
+                assert struct.unpack_from('=i',aux,terminal-404)[0]==1, label+' did not checkpoint an emerged crop'
+                assert any(value!=0 for value in struct.unpack_from('=50d',aux,terminal-400)), label+' did not checkpoint active growth rates'
+                call(label+'-active-restart',reuse+['--output',active,'--days',active_cut+2,'--checkpoint-at',active_cut+2,
+                                                 '--restart',accepted_origin,'--restart-day',active_cut])
+                call(label+'-active-end',reuse+['--output',endstate,'--days',active_cut+2,'--checkpoint-at',active_cut+2])
+                assert list(map(physical,rows(active)))==list(map(physical,(data if opt=='O2' else rows(prefix))[active_cut:active_cut+2]))
+                assert payload(active/f'accepted-column-1-day-{active_cut+2}.zip')==payload(endstate/f'accepted-column-1-day-{active_cut+2}.zip')
+                assert h.sha(accepted_origin)==origin_hash
+                report['active_crop_exact_native_window']=[active_cut,active_cut+2]
             if opt == 'O2':
                 full_rows = data
                 # Two independent original workers under one kernel, at two
@@ -280,22 +296,6 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if args.crop_options:
-                    active_cut=200 if 'salt' in key else 530
-                    prefix=out/(label+'-active-prefix');active=out/(label+'-active-restart');endstate=out/(label+'-active-end')
-                    call(label+'-active-prefix',reuse+['--output',prefix,'--days',active_cut+2,'--checkpoint-at',active_cut])
-                    accepted_origin=prefix/f'accepted-column-1-day-{active_cut}.zip';origin_hash=h.sha(accepted_origin)
-                    with zipfile.ZipFile(accepted_origin) as z:aux=z.read('macro.bin')
-                    terminal=management_end(aux,project)
-                    assert struct.unpack_from('=i',aux,terminal-404)[0]==1, label+' did not checkpoint an emerged crop'
-                    assert any(value!=0 for value in struct.unpack_from('=50d',aux,terminal-400)), label+' did not checkpoint active growth rates'
-                    call(label+'-active-restart',reuse+['--output',active,'--days',active_cut+2,'--checkpoint-at',active_cut+2,
-                                                     '--restart',accepted_origin,'--restart-day',active_cut])
-                    call(label+'-active-end',reuse+['--output',endstate,'--days',active_cut+2,'--checkpoint-at',active_cut+2])
-                    assert list(map(physical,rows(active)))==list(map(physical,full_rows[active_cut:active_cut+2]))
-                    assert payload(active/f'accepted-column-1-day-{active_cut+2}.zip')==payload(endstate/f'accepted-column-1-day-{active_cut+2}.zip')
-                    assert h.sha(accepted_origin)==origin_hash
-                    report['active_crop_exact_native_window']=[active_cut,active_cut+2]
                 if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
