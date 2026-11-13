@@ -68,3 +68,11 @@ remain separate. Whole-model scientific equivalence and unmeasured physical
 energy are not promoted by reproducibility. Frozen RC1 is unchanged. Actual
 admission requires a PR and verified canonical postimage. The broader owner
 end goal stays open until its actual remaining criteria are resolved.
+
+The derived undrained Hupsel case remains a full-period FAIL. With the selected
+policy it accepts211 days and refuses212 at independent1.0015015206032984e-10cm
+(kernel -1.0014078455355957e-10cm), beyond the unchanged1e-10cm guard. The earlier
+canonical day51 refusal is retained as historical evidence, not overwritten.
+The current preservation fixture selects exact210-to212 own refusal/rollback;
+no rejected day or terminal checkpoint may be published. This is distinct from
+the complete original drained Hupsel1096 application and is not silently fixed.

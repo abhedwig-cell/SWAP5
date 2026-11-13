@@ -139,12 +139,13 @@ def main():
             call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
-            cut, end = (2, 5) if opt == 'O0' else ((49, project.last_day) if partial else (365, project.last_day))
+            failure_day = 212 if h.NO_MACRO_TIME_POLICY=='configured-dtmax-daily-v1' else 51
+            cut, end = (2, 5) if opt == 'O0' else ((failure_day-2, project.last_day) if partial else (365, project.last_day))
             control, resumed, endpoint = [out/(label+'-'+n) for n in ('control', 'resumed', 'endpoint')]
             call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut], refuse=partial)
             data = rows(control)
             if partial:
-                assert len(data) == 51 and data[-1]['day'] == 51 and not data[-1]['committed']
+                assert len(data) == failure_day and data[-1]['day'] == failure_day and not data[-1]['committed']
                 assert 1e-10 < abs(data[-1]['independent_residual_cm']) < 1.01e-10
             else:
                 assert len(data) == end and all(r['committed'] for r in data)
@@ -172,6 +173,7 @@ def main():
             assert h.sha(origin) == before
             report = dict(configuration=key, optimization=opt, completed_days=len(accepted), requested_days=end,
                           full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
+                          original_retained_failure_day=51 if partial else None,
                           maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in accepted),
                           maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted),
                           restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=not partial,
