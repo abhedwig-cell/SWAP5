@@ -7,16 +7,22 @@ postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
 A/B/C complete17 additional configurations20457 model days; zero new independent
 historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
 
-D PR1673 final qualified code42f066bf0: all six configurations7306 days PASS
-in run43418605842. Actual generated/touched donor O0/O2, providerO2, both active
-windows, eight malformed native refusals and two atomic history refusals pass.
-A/B/release43418610124 and C43418614412 all SUCCESS on the same source.
-Next: finish versioning artifact/raw receipts, ready/merge PR1673 and verify
-actual canonical tree/dependencies. Then original unused-process successor from
-the current register, with a larger-state strategy for failed active history.
-Both cache hypotheses91de/5529 failed and were removed. Never reclassify those
-FAILs. Private peer daily-time-policy changes inspected, not imported; canonical
-still a6720a0e8. See BLOCK_D_RECOVERY/STATUS for exact source-bound proof.
+D PR1673 admitted bdf222befb3ba444d3cd7147ef2fa90e2581ca16. Actual canonical
+tree cccb02ef8a2aad4da19c8605afdc38e72fc19ad8 equals qualified headca68e2cfe;
+relevant app/src/tools/workflow diff from executed42f066bf0 is empty. All three
+workflow runs43418605842/43418610124/43418614412 SUCCESS; versioned raw data
+and native endpoints sealed. Six complete variants7306 days; across A/B/C/D,
+23 complete additional configurations27763 days, zero new independent projects.
+Both failed history cache hypotheses removed; new water-only history atomically
+refused. Frozen11529865e unchanged and no peer private source imported.
+
+Current own branch codex/nomacro-coverage05 on actual D merge. Next block E:
+audit original analytical heat/prescribed thermal boundaries and additional
+original canopy/root options, then reachability plus actual full trajectories
+and O0/O2/state/transaction qualification. See BLOCK_E_RECOVERY.md. Not yet
+implemented or tested. No cloud run is pending. Larger original state-block
+integration remains the strategy for the retained active-history gap, with no
+third narrow cache patch. Reconcile peer canonical delta before code/merge.
 
 An active serial autonomous Codex goal continues this work; no scheduled timer
 is configured. Later checkpoints must replace this current pointer. Inventory
