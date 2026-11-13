@@ -1,0 +1,62 @@
+[
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\headcalc_inventory.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj\\headcalc.o"
+    ],
+    "seconds": 1.2929177999030799,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\soilwater_inventory.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj\\soilwater.o"
+    ],
+    "seconds": 0.6194031001068652,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\headcalc_v2.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj\\headcalc_v2.o"
+    ],
+    "seconds": 0.1860346000175923,
+    "returncode": 1,
+    "output": "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\headcalc_v2.f90:792:26:\n\n  792 | end subroutine headcalc_v2\n      |                          1\nError: Expected label 'headcalc' for END SUBROUTINE statement at (1)\nf951.exe: Error: Unexpected end of file in 'C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\headcalc_v2.f90'\n"
+  }
+]

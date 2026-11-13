@@ -65,7 +65,7 @@ def prepare():
     v1=(R/'headcalc_inventory.f90').read_text(encoding='cp1252')
     (R/'headcalc_inventory.f90').write_text(instrument(v1),encoding='cp1252')
     v2=(R.parent/'swap431-macro-b1-accept01/V2/headcalc.f90').read_text(encoding='cp1252')
-    v2=v2.replace('subroutine headcalc','subroutine headcalc_v2',1)
+    v2=v2.replace('\nsubroutine headcalc ','\nsubroutine headcalc_v2 ',1)
     # This source uses an unqualified END SUBROUTINE name only at the end.
     v2=v2.replace('end subroutine headcalc','end subroutine headcalc_v2')
     v2=v2.replace('!        special case for macropores','         call unreduced_trace(0)\n!        special case for macropores',1)

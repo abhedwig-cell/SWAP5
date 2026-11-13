@@ -1,12 +1,12 @@
 ! TO DO
-! module MOD_solve_Richards met public subroutine headcalc_v2
+! module MOD_solve_Richards met public subroutine headcalc
 !
 ! aangeven per variabelel: lokaal, input, output
 ! sommige globale variabelen mogelijk alleen voor headcalc?
 !
 
 ! ----------------------------------------------------------------------
-subroutine headcalc 
+subroutine headcalc_v2 
 ! ----------------------------------------------------------------------
 !     date               : April 2005 / Sept 2005
 !     purpose            : calculate pressure heads, water contents,
