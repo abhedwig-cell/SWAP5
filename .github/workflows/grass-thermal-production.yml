@@ -1,4 +1,4 @@
-name: Read-only Hupsel pressure amplification observation
+name: Bounded Hupsel EOD proposal experiment
 on:
   workflow_dispatch:
     inputs:
@@ -17,7 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-26.04, windows-2022]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 7
+    timeout-minutes: 9
     env:
       PYTHONUTF8: '1'
       OMP_NUM_THREADS: '1'
@@ -47,9 +47,9 @@ jobs:
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
           gfortran --version
           gfortran -Q -O2 -ffp-contract=off -march=x86-64 -mtune=generic --help=target
-      - name: Read-only first pressure amplification observation
+      - name: Short unchanged control and causal/generic EOD proposal experiments
         shell: pwsh
-        run: python -B tools/solute/trace_hupsel_pressure.py --output "$env:RUNNER_TEMP/pressure-proof"
+        run: python -B tools/solute/check_hupsel_eod_proposal.py --output "$env:RUNNER_TEMP/pressure-proof"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
