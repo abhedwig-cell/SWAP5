@@ -200,17 +200,18 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         # solve. Recomputing theta/K/capacity from h during cold initialization
         # does not reproduce that accepted hydraulic carry. Keep the actual
         # active history, not an inverse constitutive reconstruction.
-        fields='h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,cofgen(25:42,1:numnod)'
-        finite_fields=fields.replace('cofgen(25:42,1:numnod)', 'reshape(cofgen(25:42,1:numnod),[18*numnod])')
+        # Original boundtop(1) also caches TheAtm/katm using the startup
+        # scanning curve; recomputing from a later fhyst changes evaporation.
+        fields='h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,theatm,katm'
         codec=replace(codec,'      use variables, only: t, iyear',
-                      '      use MOD_MvG, only: cofgen\n      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
+                      '      use MOD_top, only: theatm,katm\n      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
         codec=replace(codec,'      use MOD_grid, only: numnod','      use MOD_grid, only: numnod,dz')
         old_magic=base_magic
         new_magic=hys_magic
         codec=codec.replace(old_magic,new_magic)
         codec=replace(codec,'        read(unit,iostat=ios) trailing',f"""        read(unit,iostat=ios) {fields}
         if(ios/=0)error stop 'Incomplete hysteresis hydraulic history'
-        if(.not.all(ieee_is_finite([{finite_fields}])))error stop 'Nonfinite hysteresis hydraulic history'
+        if(.not.all(ieee_is_finite([{fields}])))error stop 'Nonfinite hysteresis hydraulic history'
         if(any(theta(1:numnod)<0d0).or.any(k(1:numnod+1)<0d0).or.any(kmean(1:numnod+1)<0d0).or. &
            any(dimoca(1:numnod)<0d0).or.volact<0d0)error stop 'Invalid hysteresis hydraulic history'
         if(abs(sum(theta(1:numnod)*dz(1:numnod))-volact)>1d-10)error stop 'Unbalanced hysteresis water history'
@@ -234,7 +235,7 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if(any(heacon(1:numnod)<=0d0).or.any(heacap(1:numnod)<=0d0))error stop 'Invalid snow thermal history'
         read(unit,iostat=ios) trailing""")
         if hydraulic_history:
-            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,cofgen(25:42,1:numnod)'
+            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,theatm,katm'
         else:
             anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if managed else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)

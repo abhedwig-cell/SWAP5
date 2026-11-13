@@ -71,3 +71,13 @@ Focused hypothesis1: the mutable original MvG coefficient cache25:42 is
 updated on reversal; persisting theta/K/capacity alone may omit that carry.
 Explicit history payload/format version advanced, no original law changed.
 Actual experiment required before this hypothesis can be called a fix.
+
+Hypothesis1 rejected:91de2c713 run43417579030 still fails active history
+O0 exact suffix. Remove its speculative coefficient-cache extension entirely.
+Focused hypothesis2 follows direct original-source dataflow: boundtop(1) caches
+TheAtm/katm once from the startup scanning curve. Cold restart recomputes
+these from the later saved fhyst, although continuous execution never does.
+Persist exactly those two existing public boundary values in active hysteresis
+state, with distinct format; no extra coefficients or original law changes.
+This is the second focused attempt; if it fails, revise strategy rather than
+continue numerical repair loops.
