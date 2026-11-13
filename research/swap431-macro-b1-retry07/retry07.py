@@ -186,8 +186,8 @@ def build(opt):
         t=time.perf_counter();p=subprocess.run(cmd,cwd=obj,capture_output=True,text=True,timeout=60);logs.append(dict(command=cmd,returncode=p.returncode,seconds=time.perf_counter()-t,output=p.stdout+p.stderr));save(R/(opt+'_BUILD.json'),logs);assert p.returncode==0,p.stderr
     save(R/(opt+'_IDENTITY.json'),dict(compiler=subprocess.check_output(['gfortran','--version'],text=True),exe_sha256=sha(out/'retry07.exe'),sources={p.name:sha(p) for p in R.glob('*.f90')},contract06_evidence_sha256=json.loads((PREV/'EVIDENCE.json').read_text())['sha256']))
 
-def run(opt,context,mode,checkpoint):
-    profile=context+'_'+mode;case=WORK/(opt+'-'+profile);case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
+def run(opt,context,mode,checkpoint,label=''):
+    profile=context+'_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile);case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
     for x in json.loads((OLD/'audit/CASE_IDENTITY.json').read_text()):
         p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(OLD/'phase/O2/V1/case'/p,case/p)
     if mode=='RESTART':
@@ -202,7 +202,9 @@ def run(opt,context,mode,checkpoint):
             line=re.sub(r'(\d{4})-([A-Za-z]{3})-(\d{2})',lambda m:m[1]+'-'+str(months[m[2].title()]).zfill(2)+'-'+m[3],line)
             key=line.split('=')[0].strip();s=re.sub(r'(?mi)^\s*'+key+r'\s*=.*$',line,s,count=1)
         s=re.sub(r'(?mi)^(\s*SWINCO\s*=\s*)2\b',r'\g<1>3',s,count=1)
-        s+='\n INIFIL = \'own.end\'\n SWINITYPE = 2\n'
+        # Original read_switches opens the input conditionally on SWENDTYPE,
+        # so use the matching existing binary output/input format settings.
+        s+='\n INIFIL = \'own.end\'\n SWINITYPE = 2\n SWENDTYPE = 2\n'
         p.write_text(s,encoding='cp1252')
         save(R/(opt+'_'+profile+'_INPUT.json'),dict(own_end_sha256=sha(case/'own.end'),input_sha256=sha(p),checkpoint_profile=checkpoint,date_lines=(source/'restart_dates.txt').read_text(),modifications='Native SWINCO3 own binary file; native time formatting for same checkpoint, short end bound; no added macro serializer.'))
     env=os.environ.copy();env.update(RETRY07_MODE=mode,RETRY07_CONTEXT=context);env.pop('STAG05_PROBE_SIDE',None);env.pop('UNRED04_DIRECT_DT',None)
@@ -216,7 +218,7 @@ def run(opt,context,mode,checkpoint):
     print(json.dumps(q),flush=True)
 
 if __name__=='__main__':
-    p=argparse.ArgumentParser();p.add_argument('action');p.add_argument('--opt',default='O2');p.add_argument('--context',default='A');p.add_argument('--mode',default='TRIAL');p.add_argument('--checkpoint',default='A_TRIAL');a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument('action');p.add_argument('--opt',default='O2');p.add_argument('--context',default='A');p.add_argument('--mode',default='TRIAL');p.add_argument('--checkpoint',default='A_TRIAL');p.add_argument('--label',default='');a=p.parse_args()
     if a.action=='prepare':prepare()
     elif a.action=='build':build(a.opt)
-    elif a.action=='run':run(a.opt,a.context,a.mode,a.checkpoint)
+    elif a.action=='run':run(a.opt,a.context,a.mode,a.checkpoint,a.label)
