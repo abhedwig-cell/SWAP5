@@ -1,0 +1,26 @@
+{
+  "runtime_source": "d54d4a3e1e25904c265dc3ffb1536bbe34520544",
+  "carrier": "982b5c605db2c90033a1e45581ccfb8680c21b71",
+  "carrier_only_delta": [
+    ".github/workflows/grass-thermal-production.yml"
+  ],
+  "canonical_base": "af65d5a267ec33024779122002cc84fc344ee7e4",
+  "changed_paths": [
+    ".github/workflows/common-profile-qualification.yml",
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/user_prepare.py",
+    "docs/science/RC1_PLATFORM_STABILITY01.md",
+    "integration/f-ci/RC1_PLATFORM_STABILITY01.json",
+    "integration/f-ci/platform-stability01/PREFIX_PROOF.json",
+    "integration/f-ci/platform-stability01/rejected-and-prefix-probes.tar.gz",
+    "integration/f-ci/rc1-perf01/STABILITY_FMA_DISASSEMBLY.json",
+    "tools/solute/check_rc1_build_validation.py",
+    "tools/solute/qualify_compiler_profile.py",
+    "tools/vq/b0_source_runner.py"
+  ],
+  "fortran_C_physics_delta": [],
+  "frozen_rc1": "11529865e76fb2259542f1e770726cd87af27603",
+  "interrupted_local_cohort": "All six physical profiles and ten refusals passed; external validation correctly refused daily_host source change when canonical PR1670 was merged during execution. NOT a completed cohort; retained and rerun on pinned final source.",
+  "cancelled_preflight": "43408411246 cancelled after initial git push server error left remote at73af instead of expected982b; no accepted model evidence."
+}

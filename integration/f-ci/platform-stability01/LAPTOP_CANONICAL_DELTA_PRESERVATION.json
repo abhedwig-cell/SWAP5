@@ -1,0 +1,28 @@
+{
+  "old_source": "cb1091521609b922d4f131987ba92c9d5644f185",
+  "new_source": "d54d4a3e1e25904c265dc3ffb1536bbe34520544",
+  "profiles": {
+    "grass": {
+      "all_daily_records_exact": true,
+      "native_payload_exact_across_canonical_delta": {
+        "result.end": true,
+        "macro.bin": true
+      }
+    },
+    "hupsel": {
+      "all_daily_records_exact": true,
+      "native_payload_exact_across_canonical_delta": {
+        "result.end": true,
+        "macro.bin": true
+      }
+    },
+    "saltfarm": {
+      "all_daily_records_exact": true,
+      "native_payload_exact_across_canonical_delta": {
+        "result.end": true,
+        "macro.bin": true
+      }
+    }
+  },
+  "scope": "Observation only; no identity/checkpoint rebinding."
+}

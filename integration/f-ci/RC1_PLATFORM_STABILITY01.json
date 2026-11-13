@@ -1,0 +1,218 @@
+{
+  "work_unit": "SWAP5-RC1-PLATFORM-STABILITY01",
+  "status": "QUALIFIED_PR_1672_ADMISSION_CANDIDATE",
+  "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
+  "branch": "codex/rc1-common-fp-profile",
+  "owner_instruction": "2026-11-13: en nu verder met optie1",
+  "previous_investigation": "CLOSED_WITH_LIMITATIONS_NOT_REWRITTEN",
+  "frozen_release": "11529865e76fb2259542f1e770726cd87af27603",
+  "automation_id": "swap5-platformstabiliteit-hervatten",
+  "hypothesis": "Incremental projected step-budget summation differs from absolute published day receipt near1e-10; mass-only Newton iterations feed original adaptive dt policy and amplify cross-platform branch sensitivity.",
+  "existing_discriminator": {
+    "Hupsel364_private_feedback_native_integrated": -9.989438378051052e-11,
+    "independent_day_receipt": 1.0033339783999118e-10,
+    "interpretation": "Opposite residual sign conventions; absolute gap about4.39e-13. Existing candidate remains rejected."
+  },
+  "acceptance": [
+    "Unchanged daily water/solute1e-10 guards and existing scientific point bound5.371840000016327e-7cm",
+    "Separate source-bound numerical policy from physical process changes; preserve original reference FAILs",
+    "Test complete Hupsel1096 and SaltFarm1461 plus Grass preservation, O0/O2, own native restart/rollback/instances Windows/Linux before promotion",
+    "No new fitted tolerances or altered original input; no macro work"
+  ],
+  "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
+  "max_model_seconds": 60,
+  "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
+  "next_action": "Merge PR1672 at expected qualified head and verify actual canonical tree and frozen RC1. Publish the observational merge receipt on this review branch and PR without reopening completed model runs. This numerical compiler-profile package then closes; broader scientific equivalence remains unresolved with explicit limitations.",
+  "first_probe_result": {
+    "five_days": "EXACT_BASELINE_ALL_FRAMES",
+    "extended": "CENSORED_60_SECONDS_AFTER_DAY534",
+    "failure": "Censored after534 completed days. Hypothesis: absolute daily receipt is not a valid intraday contract under original canopy/interception process order; not independently established as the unique cause.",
+    "source": "e6178f26c",
+    "raw": "C:/Users/Veldh012/AppData/Local/Temp/s5-stability-intersection-hupsel584"
+  },
+  "second_probe_result": {
+    "source": "8b1df57fa",
+    "days": 584,
+    "maximum_water_cm": 1.0032269112669745e-10,
+    "failed_day": 364,
+    "disposition": "NOT_ADMITTED_STILL_EXCEEDS_UNCHANGED_GUARD"
+  },
+  "strategy_reassessment": "Abandon receipt-forecast repair path. Preserve original timestep controller and feed it the iteration count at first satisfaction of its original physical convergence tests; retain every subsequent mass-polish iteration in actual-work histograms and all existing guards. This reuses the original adaptive semantics rather than tuning balances.",
+  "stock_reuse_probe": {
+    "source": "ef10d4181",
+    "days": 364,
+    "maximum_water_cm": 1.0032269112669745e-10,
+    "original_and_formula_stock_exact": true,
+    "legacy_warning": "No convergence was reached...2002-12-30,23:59:60; SWAP did continue",
+    "disposition": "REJECTED: copied-stock rounding was not the cause. Final dt4.085458780167528e-7 is below configured1e-6; original nonconverged-floor fallback bypasses convergence-only acceptance probes."
+  },
+  "primary_feedback_result": {
+    "days": 584,
+    "maximum_water_cm": 1.0033339783999118e-10,
+    "oxygen584_cm": 0.004793372017600289,
+    "disposition": "REJECTED_UNCHANGED_MASS_GUARD"
+  },
+  "math_source_reference": [
+    "https://github.com/gcc-mirror/gcc/blob/master/libquadmath/math/expq.c",
+    "https://github.com/gcc-mirror/gcc/blob/master/libquadmath/math/powq.c"
+  ],
+  "math_probe_run": {
+    "id": 43397238161,
+    "carrier": "b895188801ecc052049b9ddb3d2467bee9be3b09",
+    "runtime_tools": "cb44d28272600e8a7c122715f41144523448d29d",
+    "wiring_only": ".github/workflows/grass-thermal-production.yml",
+    "scope": "GNU15 Windows2022/Ubuntu26.04 identical65-argument math table and5-day Hupsel; no full-run qualification or restart promotion",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "quadmath_probe_disposition": "REJECTED:65 selected math results exact cross-platform, but5-day head difference remains2.06e-13cm and execution about12x native. No extended quadmath run selected.",
+  "no_contract_probe": {
+    "run": 43398718647,
+    "source": "a4f33987dcc67255987baa9943c5bc37bfebb7d7",
+    "status": "completed",
+    "conclusion": "success",
+    "head_maximum_cm": 4.725109192804666e-13,
+    "all_frames_exact": false,
+    "disposition": "No five-day material improvement; no extended run selected for contraction-only profile.",
+    "default_targets": {
+      "windows": "nocona;mfma disabled",
+      "ubuntu": "x86-64-v3;mfma enabled"
+    }
+  },
+  "common_isa_probe": {
+    "run": 43399585574,
+    "source": "94bdcc0df594df609bf438c60a09b1c4be4b5e88",
+    "status": "completed",
+    "conclusion": "success",
+    "five_day_all_guards_pass": true,
+    "five_day_head_spread_cm": 4.725109192804666e-13,
+    "first5_counts_exact": true,
+    "scope": "Prefix ULP differences alone do not decide the existing584 point criterion. Select one complete Hupsel extension plus native365-to1096 on the exact already-built donor, no recompilation."
+  },
+  "extended_probe": {
+    "run": 43400636103,
+    "source": "99a377ca5c2defedc00d3c68645975b0c22209b1",
+    "status": "completed",
+    "conclusion": "failure",
+    "classification": "Harness stage-file collision on final checkpoint; not a scientific PASS or a model guard failure.",
+    "completed_guarded_days": 1095,
+    "all_1096_day_frames_emitted": true,
+    "oxygen584_windows_cm": 0.004793608905922416,
+    "oxygen584_ubuntu_cm": 0.004794137799582377,
+    "oxygen584_spread_cm": 5.288936599616434e-07,
+    "existing_point_bound_cm": 5.371840000016327e-07,
+    "interpretation": "Point spread within unchanged bound on observed frames; native/full qualification still pending.",
+    "model_wall_seconds": {
+      "windows": 4.03369500000008,
+      "ubuntu": 3.0178267029999972
+    }
+  },
+  "proposed_profile": {
+    "id": "gnu-x86_64-separate-ops-v1",
+    "flags": [
+      "-ffp-contract=off",
+      "-march=x86-64",
+      "-mtune=generic"
+    ],
+    "applies_to": [
+      "TTUTIL",
+      "original selected donor objects",
+      "generated donor objects",
+      "no-macro SWAP5 kernel"
+    ],
+    "source_changes": "Build/preparation/validation only; physical Fortran/C and numerical controller unchanged.",
+    "compatibility": "Fresh provider/build/checkpoint identities required; no old or private checkpoint rebinding. Legacy original-reference builder default flags and macro branch unchanged."
+  },
+  "test_selection": {
+    "public_profiles": "All3 O0 prefix4 cold/cut2/own, all3 O2 full cold/control/own365 or109-to-end; unchanged mass guards. Fresh WindowsGNU16 and UbuntuGNU15 cohorts.",
+    "private_point": "Matched GNU15 Windows/Ubuntu full Hupsel+own, exact reused donor, existing584 bound.",
+    "external": "Six source-bound O0/O2 external discard/replay/interleaved-instance/restart controls on Windows; profile refusal on both platforms.",
+    "not_selected": "Active macro, broad moving F-CI, highest low-air and new reference campaigns: no source/process/state/physics change in those routes.",
+    "estimated_cost": "Each donor execution capped60seconds; whole selected local or CI cohort about3-4minutes including compilation."
+  },
+  "research_branch": "codex/rc1-platform-stability01",
+  "research_source": "e4767ec95f1db5296fe03e9e76d61b3776b70d8d",
+  "clean_review_scope": "Build/preparation/validation profile plus direct public qualification; rejected prototype executors remain only on research branch and archived generated proof.",
+  "review_branch": "codex/rc1-common-fp-profile",
+  "review_runtime_source": "d54d4a3e1",
+  "canonical_reconciliation": {
+    "base": "af65d5a267ec33024779122002cc84fc344ee7e4",
+    "overlap": "PR1669 explicit experimental input/bottom dispatch and PR1670 original history/reaction state. Profile adds no Fortran/C change relative to that base.",
+    "selected": "Three fresh full public cohorts and Ubuntu blockA plus extended blockB preservation on the combined source.",
+    "run": 43408495599,
+    "intermediate_run": {
+      "id": 43407827759,
+      "conclusion": "SUCCESS",
+      "source": "73af144f953d674f30148c27ac110944b3d505d7",
+      "scope": "Public Windows/Linux plus first-block coverage before PR1670 delta."
+    },
+    "terminal_conclusion": "success"
+  },
+  "public_qualification": {
+    "initial_cloud_run": 43404227897,
+    "conclusion": "SUCCESS",
+    "cohorts": "Windows GNU16 laptop, Windows2022 GNU15 and Ubuntu26.04 GNU15",
+    "proof_directory": "integration/f-ci/platform-stability01",
+    "scope": "All three complete O2 periods/own continuations; kernel O0 four-day controls, donor O2; ten refusals and six external controls per cohort.",
+    "final_cloud_run": 43408495599,
+    "final_runtime": "d54d4a3e1"
+  },
+  "final_run": {
+    "id": 43408495599,
+    "carrier": "982b5c605db2c90033a1e45581ccfb8680c21b71",
+    "status": "completed",
+    "conclusion": "success",
+    "scope": "Windows2022 GNU15 and Ubuntu26.04 GNU15 all3 public kernel O0/O2 full/own/refusal/external; Ubuntu blockA and extended blockB."
+  },
+  "final_laptop": "COMMON_PROFILE_PUBLIC_O0_O2_FULL_OWN_PASS",
+  "point_assessment": {
+    "windows15_cm": 0.004793608905922416,
+    "ubuntu15_cm": 0.004794137799582377,
+    "spread_cm": 5.288936599616434e-07,
+    "unchanged_bound_cm": 5.371840000016327e-07,
+    "status": "PASS_NAMED_PLATFORM_POINT_ONLY",
+    "original_reference_cm": 0.003593541147,
+    "original_reference_disposition": "FAIL_UNDERQUALIFIED_REFERENCE_RETAINED"
+  },
+  "final_scientific_assessment": "integration/f-ci/platform-stability01/FINAL_ASSESSMENT.json",
+  "final_preservation": {
+    "release_cohorts": 3,
+    "public_optimization_profiles_per_cohort": 6,
+    "public_full_period_days": [
+      1827,
+      1096,
+      1461
+    ],
+    "own_full_continuations_cut_days": [
+      365,
+      365,
+      109
+    ],
+    "profile_compiler_refusals_per_cohort": 10,
+    "external_controls_per_cohort": 6,
+    "canonical_coverage_blockA": "EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL",
+    "canonical_coverage_blockB": "EXPERIMENTAL_EXTENDED_COVERAGE_PASS",
+    "matched_daily_records_across_canonical_delta": "ALL3_EXACT_BOTH_PLATFORMS",
+    "laptop_native_across_canonical_delta": "ALL3_EXACT"
+  },
+  "docs_checks": {
+    "source": "PASS",
+    "strict_mkdocs": "PASS",
+    "site": "External generated Temp directory; no generated site in repository"
+  },
+  "remaining_limits": [
+    "No whole-model scientific equivalence or identical cross-platform trajectories",
+    "Original Hupsel584/Grass188 scientific FAILs and underqualified references retained",
+    "Hupsel pressure spread12.203962749731431cm; solute ledger spread increases to0.00039911416767601793mg/cm2",
+    "x86-64 GNU only; frozen RC1 unchanged; fresh source-bound provider/build/checkpoint required",
+    "Single paired cost check does not establish statistical native solver speedup"
+  ],
+  "pr": {
+    "number": 1672,
+    "url": "https://github.com/abhedwig-cell/SWAP5/pull/1672",
+    "qualified_evidence_commit": "d4561a4969ca06ebd1f8c3333a6db84de524eede",
+    "reviews": "No submissions or inline review threads at premerge check; no independent human review claimed.",
+    "checks": "No head check runs; source-bound manual qualification43408495599 SUCCESS and laptop SUCCESS, docs PASS.",
+    "base": "af65d5a267ec33024779122002cc84fc344ee7e4"
+  }
+}

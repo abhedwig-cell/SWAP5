@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\check_publisher_coupling.py", line 37, in <module>
+    again=x.prepare();assert physical(again.budget)==first==physical(other.budget)
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_coupling.py", line 391, in prepare
+    validate_bundle(self.bundle, self.reference, self.project)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_coupling.py", line 159, in validate_bundle
+    raise ValueError('Bundle source differs: ' + name)
+ValueError: Bundle source differs: daily_host.py

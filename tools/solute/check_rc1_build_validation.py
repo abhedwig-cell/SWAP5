@@ -19,6 +19,17 @@ finally:p.write_bytes(original)
 p=reference/'PREPARED.json';original=p.read_bytes();changed=json.loads(original);changed['toolchain']['gfortran']['sha256']='0'*64
 try:p.write_text(json.dumps(changed));refuse('foreign-provider-compiler')
 finally:p.write_bytes(original)
+if 'floating_point_profile' in meta['identity']:
+ p=bundle/'BUILD.json';original=p.read_bytes()
+ for label in ('profile','donor-flags','kernel-flags'):
+  changed=json.loads(original)
+  if label=='profile':changed['identity']['floating_point_profile']['id']='foreign'
+  else:changed['identity']['donor_flags' if label=='donor-flags' else 'kernel_flags'][-1]='-mtune=native'
+  try:p.write_text(json.dumps(changed));refuse('foreign-floating-'+label)
+  finally:p.write_bytes(original)
+ p=reference/'PREPARED.json';original=p.read_bytes();changed=json.loads(original);changed['floating_point_profile']['id']='foreign'
+ try:p.write_text(json.dumps(changed));refuse('foreign-provider-floating-profile')
+ finally:p.write_bytes(original)
 if 'restart_publisher' in meta['identity']:
  p=bundle/'BUILD.json';original=p.read_bytes()
  for field,message in [('source_sha256','Build durable restart publisher differs'),

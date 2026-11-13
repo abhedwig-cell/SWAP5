@@ -60,6 +60,8 @@ def prepare(reference):
     if reference.exists():
         raise FileExistsError('Preparation directory must be new: '+str(reference))
     tools = toolchain()
+    if not tools['gfortran']['target'].startswith('x86_64-'):
+        raise ValueError('Named no-macro common arithmetic profile requires x86-64 GNU target')
     sources = h.ROOT/'reference/swap-4.3.1/source-archives'
     for name,digest in [('SWAP.ZIP',h.DONOR_SOURCE_SHA),('TTUTIL.ZIP',h.TTUTIL_SOURCE_SHA)]:
         if h.sha(sources/name) != digest:
@@ -82,13 +84,14 @@ def prepare(reference):
     sys.path.insert(0,str(h.ROOT/'tools/vq'))
     from b0_source_runner import build_gfortran
     started = time.monotonic()
-    _, logs = build_gfortran(root,reference/'build')
+    _, logs = build_gfortran(root,reference/'build',extra_flags=h.NO_MACRO_FP_FLAGS)
     (reference/'compile.log').write_text(''.join(logs))
     provider = {}
     for folder in ['swap-selected','swap-obj','ttutil-obj']:
         for path in sorted((reference/'build'/folder).iterdir()):
             if path.is_file():provider[path.relative_to(reference).as_posix()] = h.sha(path)
     record = dict(status='SOURCE_PROVIDER_READY_NO_MODEL_EXECUTED',
+        floating_point_profile=h.no_macro_fp_profile(),
         toolchain=tools,python=sys.version,source_archives={n:h.sha(target/n) for n in ['SWAP.ZIP','TTUTIL.ZIP']},
         preparation_sources={n:h.sha(h.ROOT/n) for n in ['app/hybrid_water/user_prepare.py','tools/vq/b0_source_runner.py','tools/solute/prepare_saltfarm.py']},
         provider_files=provider,inputs=inputs,compile_seconds=time.monotonic()-started,
@@ -100,6 +103,8 @@ def prepare(reference):
 def validate(reference):
     reference = Path(reference)
     record = json.loads((reference/'PREPARED.json').read_text())
+    if record.get('floating_point_profile') != h.no_macro_fp_profile():
+        raise ValueError('Prepared floating-point profile differs; prepare fresh sources')
     if record['status'] != 'SOURCE_PROVIDER_READY_NO_MODEL_EXECUTED' or record['toolchain'] != toolchain():
         raise ValueError('Prepared provider or current compiler/library toolchain differs')
     h.verify_source(reference/'distribution/SWAP_4.3.1')
@@ -117,6 +122,12 @@ def validate(reference):
 def validate_build(reference, identity, *, validated_toolchain=None):
     """Reused executable must retain its original compiler and object provider."""
     reference=Path(reference)
+    profile=h.no_macro_fp_profile()
+    if (identity.get('floating_point_profile') != profile
+            or json.loads((reference/'PREPARED.json').read_text()).get('floating_point_profile') != profile
+            or identity['donor_flags'][-len(h.NO_MACRO_FP_FLAGS):] != profile['flags']
+            or identity['kernel_flags'][-len(h.NO_MACRO_FP_FLAGS):] != profile['flags']):
+        raise ValueError('Build floating-point profile differs')
     # The CLI has just validated the provider and current compiler binaries.
     # Reuse only that invocation-local proof; standalone callers still recheck.
     current=(validated_toolchain if validated_toolchain is not None else toolchain())['gfortran']
