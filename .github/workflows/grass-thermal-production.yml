@@ -1,4 +1,4 @@
-name: Short Hupsel daily nominal proposal discriminator
+name: Daily nominal pressure policy qualification
 on:
   workflow_dispatch:
     inputs:
@@ -7,9 +7,8 @@ on:
         type: string
 permissions:
   contents: read
-  actions: read
 concurrency:
-  group: pressure-trace-${{ github.ref }}
+  group: daily-nominal-qualification-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   public:
@@ -40,32 +39,62 @@ jobs:
         with:
           compiler: gcc
           version: '15'
-      - name: Pin actual source and selected compiler policy
+      - name: Pin selected source
         shell: pwsh
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
           gfortran --version
-          gfortran -Q -O2 -ffp-contract=off -march=x86-64 -mtune=generic --help=target
-      - uses: actions/download-artifact@v4
-        with:
-          run-id: 43413278227
-          github-token: ${{ github.token }}
-          name: pressure-trace-${{ matrix.os }}-0331778ed87f6081ebd117d9e46326e6401c946e
-          path: ${{ runner.temp }}/prior-pressure
-      - name: Compiler-matched private637-day daily nominal observation
+      - name: Registered O0/O2 full own restarts, unchanged balances, policy refusals and external instances
         shell: pwsh
-        run: >-
-          python -B tools/solute/trace_hupsel_pressure.py
-          --output "$env:RUNNER_TEMP/pressure-proof"
-          --reference "$env:RUNNER_TEMP/prior-pressure/control/provider"
-          --bundle "$env:RUNNER_TEMP/prior-pressure/control/bundle"
-          --full "$env:RUNNER_TEMP/prior-pressure/control/cold-input"
-          --first-trace 562 --last 637 --activate-day 1 --reset-daily-proposal
+        run: python -B tools/solute/qualify_compiler_profile.py --output "$env:RUNNER_TEMP/daily-nominal-public"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: pressure-trace-${{ matrix.os }}-${{ github.sha }}
-          path: ${{ runner.temp }}/pressure-proof
+          name: daily-nominal-public-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/daily-nominal-public
+          retention-days: 14
+  coverage:
+    strategy:
+      fail-fast: false
+      matrix:
+        cohort: [first-block, extended, basic]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Pin selected source
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+      - name: Preserve affected original process families and genuine guard refusals
+        env:
+          COHORT: ${{ matrix.cohort }}
+        run: |
+          if [ "$COHORT" = extended ]; then
+            python -B tools/solute/check_nomacro_coverage.py --extended --output "$RUNNER_TEMP/daily-nominal-coverage"
+          elif [ "$COHORT" = basic ]; then
+            python -B tools/solute/check_nomacro_coverage.py --basic-options --output "$RUNNER_TEMP/daily-nominal-coverage"
+          else
+            python -B tools/solute/check_nomacro_coverage.py --output "$RUNNER_TEMP/daily-nominal-coverage"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-nominal-coverage-${{ matrix.cohort }}-${{ github.sha }}
+          path: ${{ runner.temp }}/daily-nominal-coverage
           retention-days: 14
