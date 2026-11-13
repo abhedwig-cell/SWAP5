@@ -143,6 +143,8 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    if not project.macro and identity.get('floating_point_profile') != h.no_macro_fp_profile():
+        raise ValueError('Bundle floating-point profile differs')
     if 'restart_publisher' in identity:
         h.validate_restart_publisher(bundle, identity['restart_publisher'])
     if meta['project'] != dict(case=project.case, model=project.model,

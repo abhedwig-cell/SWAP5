@@ -1,0 +1,27 @@
+{
+  "windows": {
+    "executable_sha256": "08d04ff80c5a7dbc140a6c46e39798d2815b5ff9e4878c9662f9c6f947607872",
+    "fused_instruction_count": 0,
+    "functions": {},
+    "scope": "Static linked instructions; includes preserved unexecuted macro routines. Not an executed instruction count."
+  },
+  "ubuntu": {
+    "executable_sha256": "3ac291ea94196bae798bc4ecec80f3c116bd1627d19b1ea898e0f0fed58c3984",
+    "fused_instruction_count": 1013,
+    "functions": {
+      "macrorate_": 112,
+      "devries.2.constprop.0": 45,
+      "wofost_soilorgmatn_": 45,
+      "__tspack_MOD_tsval1": 38,
+      "__mod_macropore_MOD_macrointegral": 37,
+      "__mod_solute_MOD_solute_cde": 35,
+      "__mod_integral_MOD_integral": 34,
+      "headcalc_": 30,
+      "__mod_meteo_MOD_penmon": 21,
+      "__mod_solute_MOD_calc_agetracer": 21,
+      "soilmanagement_": 19,
+      "__wc_k_models_04_11_MOD_functionvalue_04_11": 18
+    },
+    "scope": "Static linked instructions; includes preserved unexecuted macro routines. Not an executed instruction count."
+  }
+}
