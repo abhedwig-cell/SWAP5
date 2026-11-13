@@ -6,11 +6,13 @@ Run on a dedicated hosted runner; every output is owned by this work unit.
 import argparse
 import contextlib
 import csv
+import hashlib
 import json
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import struct
 import sys
 import time
 import zipfile
@@ -77,7 +79,8 @@ def main():
 
     if args.extended:
         for key, switches in [('hupsel-hyst1', {'SWHYST':1}), ('hupsel-hyst2', {'SWHYST':2}),
-                              ('hupsel-snow', {'SWSNOW':1}), ('salt-adsorption', {'SWSP':1}),
+                              ('hupsel-snow', {'SWSNOW':1}), ('hupsel-snow-hyst', {'SWSNOW':1,'SWHYST':1}),
+                              ('salt-adsorption', {'SWSP':1}),
                               ('salt-decay', {'SWDC':1}), ('salt-reactions', {'SWSP':1,'SWDC':1})]:
             case = out/('input-'+key)
             if key.startswith('salt'):
@@ -115,7 +118,7 @@ def main():
                 assert len(data) == end and all(r['committed'] for r in data)
             accepted = [r for r in data if r['committed']]
             if args.extended and opt=='O2':
-                if key=='hupsel-snow':assert max(r['stock_end_cm'][2] for r in accepted)>0
+                if key in ('hupsel-snow','hupsel-snow-hyst'):assert max(r['stock_end_cm'][2] for r in accepted)>0
                 if key in ('salt-decay','salt-reactions'):
                     assert sum(r['solute_ledger_mg_cm2'][6] for r in accepted)>0
             assert all(abs(r['independent_residual_cm']) <= 1e-10 and abs(r['kernel_residual_cm']) <= 1e-10
@@ -201,6 +204,29 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
+                if args.extended and key.startswith('hupsel'):
+                    with zipfile.ZipFile(origin) as z:
+                        members={name:z.read(name) for name in z.namelist()}
+                    original_aux=members['macro.bin']
+                    thermal='snow' in key
+                    index=len(original_aux)-(8*(2*project.nodes+2) if thermal else 8)
+                    controls=[('wrong-format',b'S5HUP012'+original_aux[8:]),
+                              ('short',original_aux[:-1]),
+                              ('nan',original_aux[:index]+struct.pack('=d',float('nan'))+original_aux[index+8:]),
+                              ('negative',original_aux[:index]+struct.pack('=d',-1.0)+original_aux[index+8:])]
+                    for mutation,data in controls:
+                        changed=dict(members);changed['macro.bin']=data
+                        manifest=json.loads(changed['checkpoint.json']);manifest['files']['macro.bin']=hashlib.sha256(data).hexdigest()
+                        changed['checkpoint.json']=json.dumps(manifest).encode()
+                        checkpoint=out/(label+'-'+mutation+'.zip')
+                        with zipfile.ZipFile(checkpoint,'w') as z:
+                            for name,value in changed.items():z.writestr(name,value)
+                        target=out/(label+'-refused-'+mutation)
+                        call(label+'-native-'+mutation,reuse+['--output',target,'--days',cut+2,'--checkpoint-at',cut+2,
+                                                             '--restart',checkpoint,'--restart-day',cut],refuse=True)
+                        assert not list(target.glob('accepted-*.zip'))
+                        assert h.sha(origin)==before
+                    report['resealed_native_history_refusals']=len(controls)
                 (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
 
         # The unchanged original executable is a comparison reference, never
@@ -284,7 +310,7 @@ def main():
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
     result = dict(status='EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended else 2, new_derived_process_configurations=6 if args.extended else 2,
+                  new_original_workbook_configurations=0 if args.extended else 2, new_derived_process_configurations=7 if args.extended else 2,
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
