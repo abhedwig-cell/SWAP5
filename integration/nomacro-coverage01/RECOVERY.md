@@ -1,3 +1,21 @@
+## Current recovery checkpoint
+
+Workstream SWAP5-NOMACRO-COVERAGE01. Current qualification branch
+codex/nomacro-coverage03, source24a5ed08c. PR1669 admitted980273f81;
+PR1670 admittedaf65d5a26; both exact canonical trees verified and versioned.
+PR1671 has seven new full1096-day profiles qualified in run43408409505;
+next action is its admission/postimage check. Complete new trajectories across
+A/B/C:17 configurations,20457 days. No new independent historical projects.
+Frozen RC111529865e and every scientific FAIL remain unchanged.
+
+Independent next block: codex/nomacro-coverage04 at48d1e5f4f. Water-only Hupsel
+already completes1096 with exact state/external controls; water-only SaltFarm
+initial native SWSOLU tag needs a consistent derived input before further tests.
+No automatic continuation timer is configured. Read BLOCK_*_STATUS/RECOVERY
+for source-bound actual evidence; historical inventory below is dated baseline.
+
+---
+
 # SWAP5-NOMACRO-COVERAGE01 recovery
 
 Baseline: integration/f-ci-canonical e157e65ff (2026-11-13).

@@ -19,6 +19,12 @@ ROOT = Path(__file__).resolve().parents[2]
 from donor_sources import records, render_checkpoint, render_day_return, replace, sha
 
 APP = Path(__file__).resolve().parent
+NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
+
+
+def no_macro_fp_profile():
+    """Explicit named x86-64 arithmetic policy, independent of compiler defaults."""
+    return {'id': 'gnu-x86_64-separate-ops-v1', 'flags': list(NO_MACRO_FP_FLAGS)}
 
 @dataclass(frozen=True)
 class HybridProject:
@@ -107,6 +113,10 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
+    if not project.macro:
+        provider = json.loads((reference/'PREPARED.json').read_text())
+        if provider.get('floating_point_profile') != no_macro_fp_profile():
+            raise ValueError('Prepared floating-point profile differs; prepare fresh no-macro sources')
     pinned = case if project.input_directory else ROOT / "reference/swap-4.3.1/projects" / project.case
     if not case.exists():shutil.copytree(pinned,case)
     inputs = {p.relative_to(case).as_posix(): sha(p) for p in sorted(case.rglob("*")) if p.is_file()}
@@ -154,6 +164,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     main.write_text(source, encoding="cp1252")
     donor_flags = ["-O2", "-cpp", "-Dlinux", "-finit-local-zero",
                    "-ffree-line-length-none", "-fallow-argument-mismatch"]
+    if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
     if checkpoint_day is not None or runtime_checkpoint:
@@ -571,6 +582,7 @@ end module MOD_wofost""")
     ]
     kernel = executable(output, "day_kernel")
     kernel_flags = [f"-{kernel_opt}", "-ffree-line-length-none", "-fcheck=all"]
+    if not project.macro:kernel_flags.extend(NO_MACRO_FP_FLAGS)
     driver = ROOT / "app/hybrid_water/main.f90"
     subprocess.run(["gfortran", *kernel_flags, *(str(ROOT / s) for s in sources),
                     str(adapter), str(driver), "-o", str(kernel)], cwd=output, check=True)
@@ -598,6 +610,7 @@ end module MOD_wofost""")
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:
+        build_identity['floating_point_profile'] = no_macro_fp_profile()
         library = compile_restart_publisher(output)
         build_identity['restart_publisher'] = {
             'source_sha256': sha(ROOT/'app/support/restart_publish.c'),
