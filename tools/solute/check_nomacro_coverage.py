@@ -190,9 +190,10 @@ def main():
                 assert payload(resumed/f'accepted-column-1-day-{cut+2}.zip') == payload(endpoint/f'accepted-column-1-day-{cut+2}.zip')
             assert h.sha(origin) == before
             report = dict(configuration=key, optimization=opt, completed_days=len(accepted), requested_days=end,
+                          solute_active=project.solute,
                           full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
                           maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in accepted),
-                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted),
+                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted) if project.solute else None,
                           restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=not partial,
                           original_input_sha256=dict(project.input_inventory), build_sha256=h.sha(bundle/'BUILD.json'),
                           scope='Experimental functional evidence; not scientific equivalence')
@@ -255,7 +256,7 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if args.extended and key.startswith('hupsel'):
+                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
@@ -265,6 +266,9 @@ def main():
                               ('short',original_aux[:-1]),
                               ('nan',original_aux[:index]+struct.pack('=d',float('nan'))+original_aux[index+8:]),
                               ('negative',original_aux[:index]+struct.pack('=d',-1.0)+original_aux[index+8:])]
+                    if not project.solute:
+                        flag=len(original_aux)-404
+                        controls[-1]=('invalid-crop-flag',original_aux[:flag]+struct.pack('=i',99)+original_aux[flag+4:])
                     for mutation,data in controls:
                         changed=dict(members);changed['macro.bin']=data
                         manifest=json.loads(changed['checkpoint.json']);manifest['files']['macro.bin']=hashlib.sha256(data).hexdigest()
