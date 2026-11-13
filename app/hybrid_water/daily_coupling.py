@@ -145,7 +145,7 @@ def validate_bundle(bundle, reference, project):
     identity = meta['identity']
     if not project.macro and identity.get('time_step_policy_source') != h.sha(h.APP/'donor_sources.py'):
         raise ValueError('Bundle time-step generator source differs')
-    if not project.macro and identity.get('time_step_policy') != h.NO_MACRO_TIME_POLICY:
+    if not project.macro and identity.get('time_step_policy') != project.time_step_policy:
         raise ValueError('Bundle time-step policy differs; rebuild at current source')
     if not project.macro and identity.get('floating_point_profile') != h.no_macro_fp_profile():
         raise ValueError('Bundle floating-point profile differs')

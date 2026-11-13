@@ -139,7 +139,7 @@ def main():
             call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
-            failure_day = 212 if h.NO_MACRO_TIME_POLICY=='configured-dtmax-daily-v1' else 51
+            failure_day = 212 if project.time_step_policy=='configured-dtmax-daily-v1' else 51
             cut, end = (2, 5) if opt == 'O0' else ((failure_day-2, project.last_day) if partial else (365, project.last_day))
             control, resumed, endpoint = [out/(label+'-'+n) for n in ('control', 'resumed', 'endpoint')]
             call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut], refuse=partial)

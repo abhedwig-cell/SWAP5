@@ -76,3 +76,26 @@ canonical day51 refusal is retained as historical evidence, not overwritten.
 The current preservation fixture selects exact210-to212 own refusal/rollback;
 no rejected day or terminal checkpoint may be published. This is distinct from
 the complete original drained Hupsel1096 application and is not silently fixed.
+
+## Qualification boundary after actual process-family findings
+
+The first broad candidate run43416327365 passes both complete public cohorts
+and basic options but fails the other two experimental jobs. Under the new
+seed, undrained Hupsel refuses117 on Ubuntu (212 on the laptop), and the
+previously complete snow+hysteresis case refuses26 because kernel water residual
+-1.00006225522975e-10cm exceeds1e-10 (independent9.999651280623301e-11cm).
+These actual findings are preserved, not relabelled as passing tests.
+
+The numerical execution policy is therefore explicit project metadata, separate
+from physical selectors. Registered user-release profiles select
+`configured-dtmax-daily-v1`. General experimental projects keep their already
+qualified `original-adaptive-day-seed-v1` default. An explicit experimental policy
+option may select the new seed as a research execution, whose observed failures
+remain failures. There is no automatic fallback, input-option suppression,
+extra physics kernel or changed guard. Both policies use the same original
+Richards/process implementation and differ only in the daily initial proposal.
+The selected project policy and generator source are bound in every build and
+checkpoint, and a different policy is refused before output. This boundary
+preserves current process-family capability while fixing the original named
+Hupsel application; it does not assert universal qualification of the new
+numerical policy for every option mix.
