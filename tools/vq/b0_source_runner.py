@@ -66,7 +66,7 @@ def select_dec_branches(text: str) -> str:
     return "".join(selected)
 
 
-def build_gfortran(root: Path, build: Path) -> tuple[Path, list[str]]:
+def build_gfortran(root: Path, build: Path, *, extra_flags: tuple[str, ...] = ()) -> tuple[Path, list[str]]:
     gfortran = shutil.which("gfortran")
     if not gfortran:
         raise RuntimeError("gfortran_not_found")
@@ -91,7 +91,7 @@ def build_gfortran(root: Path, build: Path) -> tuple[Path, list[str]]:
             text = source.read_bytes().decode("cp1252")
             (selected / source.name).write_bytes(select_dec_branches(text).encode("cp1252"))
 
-    common_tt = [gfortran, "-O2", "-finit-local-zero"]
+    common_tt = [gfortran, "-O2", "-finit-local-zero", *extra_flags]
     logs: list[str] = []
     for first in ("ttutilprefs.f90", "ttutil.f90"):
         completed = run(
@@ -121,6 +121,7 @@ def build_gfortran(root: Path, build: Path) -> tuple[Path, list[str]]:
     flags = [
         gfortran, "-O2", "-cpp", "-Dlinux", "-finit-local-zero", "-ffree-line-length-none",
         "-fallow-argument-mismatch", "-I", str(objsw), "-I", str(objtt),
+        *extra_flags,
     ]
     for name in SWAP_ORDER:
         completed = run(flags + ["-c", str(selected / name)], objsw)
