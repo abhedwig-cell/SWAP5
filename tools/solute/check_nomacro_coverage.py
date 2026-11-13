@@ -226,6 +226,15 @@ def main():
                     text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
                     assert count==1
                 path.write_text(text,encoding='cp1252')
+            if key=='drought-potential':
+                # Original dormant iMicro2 defaults have xylem >= root radius.
+                # Use the original reader's explicit example for this derived
+                # geometry; preserve its constraints and original physical law.
+                for path in case.glob('*.crp'):
+                    text=path.read_text(encoding='cp1252')
+                    radius=float(e.one(text,'ROOTRADIUS',r'[0-9.]+'))
+                    text,count=re.subn(r'(?m)^([ \t]*ROOTXYLEM[ \t]*=[ \t]*)[^\s!]+',lambda m:m[1]+repr(0.4*radius),text)
+                    assert count==1;path.write_text(text,encoding='cp1252')
             if key=='gash-interception':
                 path=case/'swap.swp';text=path.read_text(encoding='cp1252')
                 text,count=re.subn(r"(?m)^([ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+)'[^']+'[ \t]+[12][ \t]*$",r"\1'maize' 1",text)

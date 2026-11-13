@@ -82,3 +82,13 @@ fixture selects original Feddes drought1 for the whole rotation. Add exact
 original compatibility check for all future crops and actual atomic refusal.
 These are original input constraints, not numerical solver repair attempts.
 No tolerance, kernel, original equation or codec changed.
+
+Run43422509387 on5060be802 again confirms7 complete variants; original
+microscopic iMicro2 reader refuses ROOTXYLEM>=ROOTRADIUS on first maize day140.
+Dormant original defaults0.02 exceed root radii0.0075/0.013/0.015. For this
+explicitly derived drought2 fixture choose exactly the original error message's
+example ROOTXYLEM=0.4*ROOTRADIUS, for each crop. TTUTIL/Fortran validation stays
+unchanged. No numerical tolerance, solver, kernel or physical law patch. Source
+runtime remains5060be802; only qualifier input fixture changes. Retain original
+reader failure and its139-day prefix. Fresh full9 cohort will establish final
+joint source/input evidence; original source archives are never edited.
