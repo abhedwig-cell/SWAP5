@@ -1,0 +1,753 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-STATE02",
+  "baseline": "87792cdee54380424b9e1efb62ac272cdde1ab76",
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "question1": "Immediate rollback is incomplete, but all 19 observed groups become exact at the real wet retry and accepted clock update. No harmful persistent-memory defect demonstrated. Dry/event-end history remains unqualified.",
+  "question2": "All 11 existing reduced accepted states satisfy reduced criteria and fail both original unreduced criteria at identical heads/history. Reduction changes accepted exchange and macro stock rate; it is not solely a Newton aid.",
+  "question3": "V1 may continue only as candidate for the existing reduced numerical approximation, with explicit exclusions. It is not qualified as an unreduced physical reference or a B1.12 successor.",
+  "production_fortran_changes": 0,
+  "experimental_rollback_corrections": 0,
+  "diagnostic_fortran": [
+    "headcalc_probe.f90",
+    "soilwater_probe.f90"
+  ],
+  "compiler": "GNU Fortran 16.2.0 MSYS2 UCRT64 native Windows",
+  "O0_O2_vectors_byte_exact": true,
+  "final_model_routes": 26,
+  "final_max_route_seconds": 1.8000201999675483,
+  "censored_trace_pilot_routes": 3,
+  "successful_previous_pilot_routes": 6,
+  "total_new_model_routes": 35,
+  "total_model_wall_seconds": 97.55878250068054,
+  "water_conservation": "Matrix/domain exchange is exactly paired in all 22 operator probes. Stock and clock stay unchanged during counterfactual evaluation. Budget increments are diagnostic predictions, not committed unreduced states; no independent whole-step water-inventory audit.",
+  "sum_dt_selected": 0.0014613540144521983,
+  "exclusions": [
+    "No original unreduced acceptance on the eleven reduced steps",
+    "No qualified original dry/event-end rejection context",
+    "No whole-trajectory, independent restart, or all-mode qualification",
+    "No canonical/B0/B1.12/release changes"
+  ],
+  "memory": [
+    {
+      "optimization": "O2",
+      "origin_exact": true,
+      "real_rejection": true,
+      "rollback_differences": {
+        "reference_theta": 0.444,
+        "sorptivity": 0.2842412382630967,
+        "event": 1.0,
+        "exchange": 0.09285524550525012
+      },
+      "retry_all_19_groups_exact": true,
+      "committed_all_19_groups_exact": true,
+      "retry_dt": 0.0006666666666666666,
+      "max_clock_before_commit": 0.012999999989697244,
+      "max_clock_after_commit": 0.01366666665636391,
+      "harmful_memory_effect_demonstrated": false,
+      "dry_event_closure_qualified": false
+    },
+    {
+      "optimization": "O0",
+      "origin_exact": true,
+      "real_rejection": true,
+      "rollback_differences": {
+        "reference_theta": 0.444,
+        "sorptivity": 0.2842412382630967,
+        "event": 1.0,
+        "exchange": 0.09285524550525012
+      },
+      "retry_all_19_groups_exact": true,
+      "committed_all_19_groups_exact": true,
+      "retry_dt": 0.0006666666666666666,
+      "max_clock_before_commit": 0.012999999989697244,
+      "max_clock_after_commit": 0.01366666665636391,
+      "harmful_memory_effect_demonstrated": false,
+      "dry_event_closure_qualified": false
+    }
+  ],
+  "rates": [
+    {
+      "optimization": "O2",
+      "index": 1,
+      "t1900": 35796.9513533331,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.712015348931395e-09,
+      "total_abs_reduced": 2.101663823365308e-09,
+      "local_unreduced": 0.43707968563948424,
+      "total_abs_unreduced": 1.0972851952354046,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.4370796856407312,
+      "attribution_remainder": 1.734723475976807e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.12192057701486006,
+        0.03658909639694398
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        1.219205770148601,
+        0.3658909639694395
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -2.2416652990630328e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00022416652990630325,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 2,
+      "t1900": 35796.95154713273,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6055916943202853e-09,
+      "total_abs_reduced": 1.98102068536222e-09,
+      "local_unreduced": 0.5312305548284051,
+      "total_abs_unreduced": 0.9773054263110328,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.5312305548284073,
+      "attribution_remainder": 2.0816681711721685e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.10858949159222357,
+        0.036588642184132665
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        1.0858949159222353,
+        0.3658864218413265
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -2.053128857465385e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00020531288574653843,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 3,
+      "t1900": 35796.95175093237,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6627816866454648e-09,
+      "total_abs_reduced": 2.0522057332168124e-09,
+      "local_unreduced": 0.26761467503454206,
+      "total_abs_unreduced": 0.6476494346515452,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2676146750342433,
+      "attribution_remainder": 1.734723475976807e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.0719610480665933,
+        0.036588106888133395
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7196104806659329,
+        0.3658810688813339
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.5351168712111314e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00015351168712111313,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 4,
+      "t1900": 35796.951965683314,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6866006993798699e-09,
+      "total_abs_reduced": 2.0766440735317027e-09,
+      "local_unreduced": 0.23238406217960333,
+      "total_abs_unreduced": 0.6970021697778394,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.23238406217956126,
+      "attribution_remainder": 1.0408340855860843e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.07744468530013283,
+        0.0365874575172735
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7744468530013277,
+        0.3658745751727351
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.6126580291884177e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.0001612658029188417,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 5,
+      "t1900": 35796.95219043426,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.671749037812642e-09,
+      "total_abs_reduced": 1.7642476467673968e-09,
+      "local_unreduced": 0.28032513682256927,
+      "total_abs_unreduced": 0.7548676147401215,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2803251368222984,
+      "attribution_remainder": 1.3877787807814457e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.08387417921954156,
+        0.03658670590710698
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.838741792195415,
+        0.36586705907106976
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.703574174815738e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00017035741748157372,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 6,
+      "t1900": 35796.95234233127,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 3.079603353925431e-08,
+      "total_abs_reduced": 3.52458671354674e-08,
+      "local_unreduced": 0.25056922204223275,
+      "total_abs_unreduced": 0.588268917747495,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2505692220500437,
+      "attribution_remainder": 2.0816681711721685e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.06536320916684757,
+        0.03658672305680704
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.6536320916684758,
+        0.3658672305680702
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.441789768337102e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00014417897683371018,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 7,
+      "t1900": 35796.952557082215,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6065914779095358e-09,
+      "total_abs_reduced": 1.9910986295799417e-09,
+      "local_unreduced": 0.23163906292166814,
+      "total_abs_unreduced": 0.6330782258049731,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2316390629221807,
+      "attribution_remainder": 1.0408340855860843e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.07034202486820829,
+        0.03658610761191347
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7034202486820825,
+        0.36586107611913476
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.5121921515261525e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.0001512192151526152,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 8,
+      "t1900": 35796.952729930534,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 9.691471791750672e-10,
+      "total_abs_reduced": 1.2277895252476635e-09,
+      "local_unreduced": 0.1749000736339484,
+      "total_abs_unreduced": 0.49392031785782775,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.1749000734270341,
+      "attribution_remainder": 1.3877787807814457e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.05488003518111536,
+        0.03658588724250213
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.5488003518111536,
+        0.36585887242502135
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.2935234798644524e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00012935234798644525,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 9,
+      "t1900": 35796.95293373017,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.5996310283317161e-09,
+      "total_abs_reduced": 1.9914359359448285e-09,
+      "local_unreduced": 0.3045314088573361,
+      "total_abs_unreduced": 0.5838929030737114,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.3045314088574225,
+      "attribution_remainder": 2.0816681711721685e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.06487698900914174,
+        0.03658538514646945
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.6487698900914173,
+        0.36585385146469446
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.4348946560143876e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00014348946560143873,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 10,
+      "t1900": 35796.95315848112,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6322313708960756e-09,
+      "total_abs_reduced": 1.7322099375407162e-09,
+      "local_unreduced": 0.24753111354064927,
+      "total_abs_unreduced": 0.7060034746157386,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2475311135398294,
+      "attribution_remainder": 1.0408340855860843e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.07844483032039212,
+        0.036584660427717686
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7844483032039207,
+        0.3658466042771768
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.6267626588884736e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.0001626762658888473,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O2",
+      "index": 11,
+      "t1900": 35796.95340418338,
+      "dt": 4.714045207910317e-05,
+      "local_reduced": 4.2355682502992487e-10,
+      "total_abs_reduced": 4.681541484905178e-10,
+      "local_unreduced": 0.17425215186887116,
+      "total_abs_unreduced": 0.4775546217781487,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.17425215183372683,
+      "attribution_remainder": 6.938893903907228e-18,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.0530616245899994,
+        0.036583704214057294
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.5306162458999941,
+        0.3658370421405729
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -4.225921326603082e-06,
+      "predicted_macro_stock_increment_unreduced_cm": -4.225921326603082e-05,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 1,
+      "t1900": 35796.9513533331,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.712015348931395e-09,
+      "total_abs_reduced": 2.101663823365308e-09,
+      "local_unreduced": 0.43707968563948424,
+      "total_abs_unreduced": 1.0972851952354046,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.4370796856407312,
+      "attribution_remainder": 1.734723475976807e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.12192057701486006,
+        0.03658909639694398
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        1.219205770148601,
+        0.3658909639694395
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -2.2416652990630328e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00022416652990630325,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 2,
+      "t1900": 35796.95154713273,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6055916943202853e-09,
+      "total_abs_reduced": 1.98102068536222e-09,
+      "local_unreduced": 0.5312305548284051,
+      "total_abs_unreduced": 0.9773054263110328,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.5312305548284073,
+      "attribution_remainder": 2.0816681711721685e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.10858949159222357,
+        0.036588642184132665
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        1.0858949159222353,
+        0.3658864218413265
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -2.053128857465385e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00020531288574653843,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 3,
+      "t1900": 35796.95175093237,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6627816866454648e-09,
+      "total_abs_reduced": 2.0522057332168124e-09,
+      "local_unreduced": 0.26761467503454206,
+      "total_abs_unreduced": 0.6476494346515452,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2676146750342433,
+      "attribution_remainder": 1.734723475976807e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.0719610480665933,
+        0.036588106888133395
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7196104806659329,
+        0.3658810688813339
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.5351168712111314e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00015351168712111313,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 4,
+      "t1900": 35796.951965683314,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6866006993798699e-09,
+      "total_abs_reduced": 2.0766440735317027e-09,
+      "local_unreduced": 0.23238406217960333,
+      "total_abs_unreduced": 0.6970021697778394,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.23238406217956126,
+      "attribution_remainder": 1.0408340855860843e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.07744468530013283,
+        0.0365874575172735
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7744468530013277,
+        0.3658745751727351
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.6126580291884177e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.0001612658029188417,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 5,
+      "t1900": 35796.95219043426,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.671749037812642e-09,
+      "total_abs_reduced": 1.7642476467673968e-09,
+      "local_unreduced": 0.28032513682256927,
+      "total_abs_unreduced": 0.7548676147401215,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2803251368222984,
+      "attribution_remainder": 1.3877787807814457e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.08387417921954156,
+        0.03658670590710698
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.838741792195415,
+        0.36586705907106976
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.703574174815738e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00017035741748157372,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 6,
+      "t1900": 35796.95234233127,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 3.079603353925431e-08,
+      "total_abs_reduced": 3.52458671354674e-08,
+      "local_unreduced": 0.25056922204223275,
+      "total_abs_unreduced": 0.588268917747495,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2505692220500437,
+      "attribution_remainder": 2.0816681711721685e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.06536320916684757,
+        0.03658672305680704
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.6536320916684758,
+        0.3658672305680702
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.441789768337102e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00014417897683371018,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 7,
+      "t1900": 35796.952557082215,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6065914779095358e-09,
+      "total_abs_reduced": 1.9910986295799417e-09,
+      "local_unreduced": 0.23163906292166814,
+      "total_abs_unreduced": 0.6330782258049731,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2316390629221807,
+      "attribution_remainder": 1.0408340855860843e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.07034202486820829,
+        0.03658610761191347
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7034202486820825,
+        0.36586107611913476
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.5121921515261525e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.0001512192151526152,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 8,
+      "t1900": 35796.952729930534,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 9.691471791750672e-10,
+      "total_abs_reduced": 1.2277895252476635e-09,
+      "local_unreduced": 0.1749000736339484,
+      "total_abs_unreduced": 0.49392031785782775,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.1749000734270341,
+      "attribution_remainder": 1.3877787807814457e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.05488003518111536,
+        0.03658588724250213
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.5488003518111536,
+        0.36585887242502135
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.2935234798644524e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00012935234798644525,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 9,
+      "t1900": 35796.95293373017,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.5996310283317161e-09,
+      "total_abs_reduced": 1.9914359359448285e-09,
+      "local_unreduced": 0.3045314088573361,
+      "total_abs_unreduced": 0.5838929030737114,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.3045314088574225,
+      "attribution_remainder": 2.0816681711721685e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.06487698900914174,
+        0.03658538514646945
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.6487698900914173,
+        0.36585385146469446
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.4348946560143876e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.00014348946560143873,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 10,
+      "t1900": 35796.95315848112,
+      "dt": 0.0001414213562373095,
+      "local_reduced": 1.6322313708960756e-09,
+      "total_abs_reduced": 1.7322099375407162e-09,
+      "local_unreduced": 0.24753111354064927,
+      "total_abs_unreduced": 0.7060034746157386,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.2475311135398294,
+      "attribution_remainder": 1.0408340855860843e-17,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.07844483032039212,
+        0.036584660427717686
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.7844483032039207,
+        0.3658466042771768
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -1.6267626588884736e-05,
+      "predicted_macro_stock_increment_unreduced_cm": -0.0001626762658888473,
+      "stock_not_committed_by_diagnostic": true
+    },
+    {
+      "optimization": "O0",
+      "index": 11,
+      "t1900": 35796.95340418338,
+      "dt": 4.714045207910317e-05,
+      "local_reduced": 4.2355682502992487e-10,
+      "total_abs_reduced": 4.681541484905178e-10,
+      "local_unreduced": 0.17425215186887116,
+      "total_abs_unreduced": 0.4775546217781487,
+      "local_limit": 1e-06,
+      "total_limit": 1e-05,
+      "max_exchange_change": 0.17425215183372683,
+      "attribution_remainder": 6.938893903907228e-18,
+      "paired_exchange_remainder": 0.0,
+      "unreduced_paired_exchange_remainder": 0.0,
+      "accepted_budget_rates": [
+        0.0,
+        0.0,
+        0.0530616245899994,
+        0.036583704214057294
+      ],
+      "unreduced_budget_rates": [
+        0.0,
+        0.0,
+        0.5306162458999941,
+        0.3658370421405729
+      ],
+      "predicted_macro_stock_increment_reduced_cm": -4.225921326603082e-06,
+      "predicted_macro_stock_increment_unreduced_cm": -4.225921326603082e-05,
+      "stock_not_committed_by_diagnostic": true
+    }
+  ],
+  "next_step": "First agree whether a B1 reference may retain the original rate-reduction approximation. If yes, qualify one original wet-to-dry/event-end rejection with positive sorption clock and accepted continuation plus own restart. If unreduced convergence is required, this V1 route is not ready; independently investigate retry-without-reduction on the first saved context, without altering reduction policy in this round."
+}

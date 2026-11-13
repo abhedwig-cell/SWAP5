@@ -1,13 +1,43 @@
 {
+  "workstream": "ORIGINAL_B1_MACRO_RESEARCH",
   "work_unit": "SWAP431-MACRO-B1-STATE02",
   "baseline": "87792cdee54380424b9e1efb62ac272cdde1ab76",
-  "stage": "PREPARED_NOT_TESTED",
-  "scope": "One wet rejection and existing reduced contexts; no production patch",
-  "next_safe_step": "Build native O0/O2 closure and run bounded replay",
-  "invariants": [
-    "unchanged physics/criteria/reduction/dt limits",
-    "paired exchange",
-    "protected references unchanged"
+  "branch": "research/swap431-macro-b1-state02-20261113",
+  "stage": "BOUNDED_STATE_AND_REDUCTION_INVESTIGATION_COMPLETE",
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "implemented": "Diagnostic Fortran probes only; no additional memory/solver repair",
+  "persisted": true,
+  "tested": "63 raw source members; 1099 capsule files; exact inherited assessment; native O0/O2 closures; 26 final prefix probes and exact O0/O2 vectors",
+  "qualified": "Selected wet rejection/retry/accepted clock and eleven reduced operators only",
+  "canonical_admitted": false,
+  "production_changed": false,
+  "b0_changed": false,
+  "b1_manifest_changed": false,
+  "interfaces_changed": false,
+  "experimental_rollback_corrections": 0,
+  "original_dry_event_closure_qualified": false,
+  "unreduced_physical_reference_qualified": false,
+  "independent_full_substep_inventory_qualified": false,
+  "next_safe_step": "CODEX_FOLLOWUP.md",
+  "recovery_files": [
+    "REPORT.md",
+    "RESULT.json",
+    "RECOVERY.json",
+    "PROVENANCE.json",
+    "RATE_COMPARISON.csv",
+    "state02.py",
+    "assess_state02.py",
+    "O0_RELINK.json",
+    "O2_RELINK.json",
+    "data/"
   ],
-  "qualification": "NOT_PROMOTED"
+  "dependencies": [
+    "Original dry/event-end positive-clock origin unavailable in inherited capsules",
+    "Reference contract must explicitly decide whether original numerical flux reduction is allowed"
+  ],
+  "invariants": [
+    "original laws, residual limits and dt bounds unchanged",
+    "exactly paired donor/receiver exchange",
+    "all protected branches and official references untouched"
+  ]
 }
