@@ -536,11 +536,12 @@ subroutine headcalc
 contains
 
 subroutine state02_rate()
- use MOD_macropore, only: NumDm,QExcMtxDmCp,FrReduQ,WaSrMpDm,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp
+ use MOD_macropore, only: NumDm,QExcMtxDmCp,FrReduQ,WaSrMpDm,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp, &
+ QInTopLatDm,QInTopVrtDm,QOutDrRapCp
  integer,save :: count=0
  integer :: target,ios,u
  character(32) :: mode,sel
- real(8) :: oldf(macp),oldq(macp),oldh(macp),oldtheta(macp),oldstock(100),oldclock(100,macp)
+ real(8) :: oldf(macp),oldq(macp),oldh(macp),oldtheta(macp)
  call get_environment_variable('STATE02_MODE',mode)
  if(trim(mode)/='rate') return
  if(IDecMpRat/=1) return
@@ -555,6 +556,8 @@ subroutine state02_rate()
  write(u,*) 'accepted_f',F(1:NN)
  write(u,*) 'accepted_q',QExcMpMtx(1:NN)
  write(u,*) 'accepted_pair',sum(QExcMtxDmCp(1:NumDm,1:NN),dim=1)
+ write(u,*) 'accepted_budget_rates',sum(QInTopLatDm(1:NumDm)),sum(QInTopVrtDm(1:NumDm)), &
+ sum(QExcMtxDmCp(1:NumDm,1:NN)),sum(QOutDrRapCp(1:NN))
  write(u,*) 'stock',WaSrMpDm(1:NumDm)
  write(u,*) 'clock',TimAbsCumDmCp(1:NumDm,1:NN)
  ! The accepted operator is freshly certified by V1. No history/head changes
@@ -564,6 +567,8 @@ subroutine state02_rate()
  write(u,*) 'unreduced_f',F(1:NN)
  write(u,*) 'unreduced_q',QExcMpMtx(1:NN)
  write(u,*) 'unreduced_pair',sum(QExcMtxDmCp(1:NumDm,1:NN),dim=1)
+ write(u,*) 'unreduced_budget_rates',sum(QInTopLatDm(1:NumDm)),sum(QInTopVrtDm(1:NumDm)), &
+ sum(QExcMtxDmCp(1:NumDm,1:NN)),sum(QOutDrRapCp(1:NN))
  write(u,*) 'unreduced_stock',WaSrMpDm(1:NumDm)
  write(u,*) 'unreduced_clock',TimAbsCumDmCp(1:NumDm,1:NN)
  write(u,*) 'heads_unchanged',maxval(abs(h-oldh)),maxval(abs(theta-oldtheta))
