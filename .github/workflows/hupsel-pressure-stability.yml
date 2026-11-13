@@ -1,0 +1,58 @@
+name: Read-only Hupsel pressure amplification observation
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: pressure-trace-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin actual source and selected compiler policy
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
+          gfortran --version
+          gfortran -Q -O2 -ffp-contract=off -march=x86-64 -mtune=generic --help=target
+      - name: Read-only first pressure amplification observation
+        shell: pwsh
+        run: python -B tools/solute/trace_hupsel_pressure.py --output "$env:RUNNER_TEMP/pressure-proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pressure-trace-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/pressure-proof
+          retention-days: 14
