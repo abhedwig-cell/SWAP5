@@ -57,7 +57,9 @@ def run(mode,first):
                     raise ValueError(f'{mode} day{day} unchanged guard failed: water={residual!r} solute={sr!r}')
                 completed=day;stocks=s[:6];solute=end
                 if day==a.cut and not first:
-                    for name in h.CHECKPOINT_FILES:shutil.copyfile(directory/name,origin/name)
+                    # The original writer opens a new stage, as in DailyHost's
+                    # clear_checkpoint_stage. Preserve the cut and vacate it.
+                    for name in h.CHECKPOINT_FILES:shutil.move(directory/name,origin/name)
             h.send(process,'0 -1')
             for line in process.stdout:log.write(line)
             assert process.wait(timeout=10)==100
