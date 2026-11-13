@@ -148,6 +148,8 @@ def inspect(directory):
                 raise ValueError('Unsupported original irrigation schedule')
             if structure(sig) not in crop_structures or any(sig.get(k) not in values for k,values in root_controls.items()):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
+            if sig['SWDROUGHT']>1 and sig['SWCOMPENSATE']>0:
+                raise ValueError('Original microscopic root uptake cannot be combined with additional compensation')
             if sig.get('SWINTER')==2 and crop_types[path.resolve()] != {1}:
                 raise ValueError('Original Gash interception requires simple crop type1 for every referenced occurrence')
             if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:

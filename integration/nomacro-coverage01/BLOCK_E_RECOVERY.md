@@ -72,3 +72,13 @@ checks crop type for every referenced occurrence; dedicated future-WOFOST Gash
 request must refuse before output/build. For simple growth assert actual root
 uptake at the active window, rather than claim unused WOFOST rates are active.
 No original physical rule bypassed or changed.
+
+Run43421662126 ef111b4dd: seven full trajectories (five heat/Gash/Feddes)
+and all named active/seasonal states pass. Drought2 fixture hit original
+read_stressors refusal on day140: original microscopic uptake (>1) cannot
+combine with additional compensation (>0). Original maize defaults1, hence
+fixture must explicitly select compensation0 for drought2. Conversely Walsum2
+fixture selects original Feddes drought1 for the whole rotation. Add exact
+original compatibility check for all future crops and actual atomic refusal.
+These are original input constraints, not numerical solver repair attempts.
+No tolerance, kernel, original equation or codec changed.

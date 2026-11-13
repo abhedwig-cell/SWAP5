@@ -216,8 +216,8 @@ def main():
                ('top-mixed',{'SWTOPBHEA':4},{}),
                ('gash-interception',{}, {'SWINTER':2}),
                ('feddes-oxygen',{}, {'SWOXYGEN':1}),
-               ('drought-potential',{}, {'SWDROUGHT':2}),
-               ('walsum-compensation',{}, {'SWCOMPENSATE':2})]
+               ('drought-potential',{}, {'SWDROUGHT':2,'SWCOMPENSATE':0}),
+               ('walsum-compensation',{}, {'SWCOMPENSATE':2,'SWDROUGHT':1})]
         for key,main_options,crop_options in specs:
             case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
             for path,options in [(case/'swap.swp',main_options)]+[(p,crop_options) for p in case.glob('*.crp')]:
@@ -255,6 +255,13 @@ def main():
             text,count=re.subn(rb"(?m)^( *2003-\d{2}-\d{2} +\d{4}-\d{2}-\d{2} +)'maize' 1",rb"\1'potato' 2",saved)
             assert count==1;control.write_bytes(text)
             call('gash-future-wofost-refusal',['--model',e.MODEL,'--experimental-project',cases['gash-interception'],
+                 '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+        finally:control.write_bytes(saved)
+        control=cases['drought-potential']/'potato.crp';saved=control.read_bytes()
+        target=out/'refused-microscopic-compensation'
+        try:
+            control.write_bytes(saved.replace(b'SWCOMPENSATE = 0',b'SWCOMPENSATE = 1'))
+            call('microscopic-compensation-refusal',['--model',e.MODEL,'--experimental-project',cases['drought-potential'],
                  '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
         finally:control.write_bytes(saved)
 
