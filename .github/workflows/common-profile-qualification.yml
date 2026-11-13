@@ -17,7 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-26.04, windows-2022]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 9
+    timeout-minutes: 12
     env:
       PYTHONUTF8: '1'
       OMP_NUM_THREADS: '1'
@@ -50,6 +50,10 @@ jobs:
       - name: All3 public O0/O2 complete periods and exact own native; profile refusals and external transactions
         shell: pwsh
         run: python -B tools/solute/qualify_compiler_profile.py --output "$env:RUNNER_TEMP/common-profile-proof"
+      - name: Preserve newly admitted experimental coverage on Ubuntu
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: python -B tools/solute/check_nomacro_coverage.py --output "$env:RUNNER_TEMP/common-coverage-proof"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -64,4 +68,5 @@ jobs:
             ${{ runner.temp }}/common-profile-proof/refusals
             ${{ runner.temp }}/common-profile-proof/external
             ${{ runner.temp }}/common-profile-proof/provider/PREPARED.json
+            ${{ runner.temp }}/common-coverage-proof
           retention-days: 14

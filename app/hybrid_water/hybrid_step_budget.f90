@@ -16,8 +16,11 @@ contains
     real(8) :: delta_matrix, delta_macro, new_stock, rapid, external
     integer :: domain, bottom
 
-    ! Nonmacro closed-bottom Hupsel uses the same original candidate/rollback.
-    if (swmacro==0 .and. swsnow==0 .and. swbotb==6) then
+    ! Original nonmacro explicit bottom fluxes share the same candidate balance.
+    ! Modes1/5 reconstruct qbot after HeadCalc and cannot use this receipt.
+    ! Mode-2 is the original prescribed-flux fallback to free drainage.
+    if (swmacro==0 .and. swsnow==0 .and. &
+        (abs(swbotb)==2 .or. swbotb==4 .or. swbotb==6 .or. swbotb==7)) then
       delta_matrix=sum((theta(1:numnod)-thetm1(1:numnod))*dz(1:numnod))
       external=dt*(nraidt+nird+runon+qssdisum+qbot-qrosum-epd-reva-qdrtot)-runots
       residual=delta_matrix+pond-pondm1-external
