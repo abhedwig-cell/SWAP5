@@ -1,0 +1,67 @@
+name: Source-bound common arithmetic public qualification
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: common-profile-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 9
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin actual source and selected compiler policy
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
+          gfortran --version
+          gfortran -Q -O2 -ffp-contract=off -march=x86-64 -mtune=generic --help=target
+      - name: All3 public O0/O2 complete periods and exact own native; profile refusals and external transactions
+        shell: pwsh
+        run: python -B tools/solute/qualify_compiler_profile.py --output "$env:RUNNER_TEMP/common-profile-proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: common-profile-${{ matrix.os }}-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/common-profile-proof/*.json
+            ${{ runner.temp }}/common-profile-proof/*.log
+            ${{ runner.temp }}/common-profile-proof/*-candidate-build
+            ${{ runner.temp }}/common-profile-proof/*-candidate-full
+            ${{ runner.temp }}/common-profile-proof/*-control
+            ${{ runner.temp }}/common-profile-proof/*-own-resume
+            ${{ runner.temp }}/common-profile-proof/refusals
+            ${{ runner.temp }}/common-profile-proof/external
+            ${{ runner.temp }}/common-profile-proof/provider/PREPARED.json
+          retention-days: 14
