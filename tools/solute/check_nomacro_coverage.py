@@ -226,6 +226,10 @@ def main():
                     text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
                     assert count==1
                 path.write_text(text,encoding='cp1252')
+            if key=='gash-interception':
+                path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+                text,count=re.subn(r"(?m)^([ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+)'[^']+'[ \t]+[12][ \t]*$",r"\1'maize' 1",text)
+                assert count==3;path.write_text(text,encoding='cp1252')
             if key=='bottom-temperature':
                 path=case/'swap.swp';text=path.read_text(encoding='cp1252')
                 text,count=re.subn(r'(?m)^([ \t]*DATET[ \t]+TBOT[^\n]*\n)(?:[ \t]*\d{4}-\d{2}-\d{2}[^\n]*\n)+',
@@ -243,6 +247,14 @@ def main():
         try:
             control.write_bytes(saved.replace(b'SWOXYGEN = 0',b'SWOXYGEN = 2'))
             call('analytic-physical-oxygen-refusal',['--model',e.MODEL,'--experimental-project',cases['analytic-heat'],
+                 '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+        finally:control.write_bytes(saved)
+        control=cases['gash-interception']/'swap.swp';saved=control.read_bytes()
+        target=out/'refused-gash-future-wofost'
+        try:
+            text,count=re.subn(rb"(?m)^( *2003-\d{2}-\d{2} +\d{4}-\d{2}-\d{2} +)'maize' 1",rb"\1'potato' 2",saved)
+            assert count==1;control.write_bytes(text)
+            call('gash-future-wofost-refusal',['--model',e.MODEL,'--experimental-project',cases['gash-interception'],
                  '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
         finally:control.write_bytes(saved)
 
@@ -307,7 +319,11 @@ def main():
                 with zipfile.ZipFile(accepted_origin) as z:aux=z.read('macro.bin')
                 terminal=management_end(aux,project)
                 assert struct.unpack_from('=i',aux,terminal-404)[0]==1, label+' did not checkpoint an emerged crop'
-                assert any(value!=0 for value in struct.unpack_from('=50d',aux,terminal-400)), label+' did not checkpoint active growth rates'
+                if key=='gash-interception':
+                    assert rows(prefix)[active_cut]['external_flux_cm'][9]>0, label+' did not exercise active simple-crop uptake'
+                    report['active_growth_kind']='Original simple crop with positive root uptake; no WOFOST rate claim'
+                else:
+                    assert any(value!=0 for value in struct.unpack_from('=50d',aux,terminal-400)), label+' did not checkpoint active growth rates'
                 call(label+'-active-restart',reuse+['--output',active,'--days',active_cut+2,'--checkpoint-at',active_cut+2,
                                                  '--restart',accepted_origin,'--restart-day',active_cut])
                 call(label+'-active-end',reuse+['--output',endstate,'--days',active_cut+2,'--checkpoint-at',active_cut+2])

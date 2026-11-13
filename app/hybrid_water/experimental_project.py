@@ -62,14 +62,15 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
-    crop_files=set()
+    crop_files=set();crop_types={}
     if selected.get('SWCROP')==1:
         entries=re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
         if not entries:raise ValueError('Missing/unsupported original crop rotation')
-        for name,_ in entries:
+        for name,crop_type in entries:
             path=directory/(name if name.lower().endswith('.crp') else name+'.crp')
             if not path.is_file():raise ValueError('Missing original crop input: '+name)
             crop_files.add(path.resolve())
+            crop_types.setdefault(path.resolve(),set()).add(int(crop_type))
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
                  'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
@@ -147,6 +148,8 @@ def inspect(directory):
                 raise ValueError('Unsupported original irrigation schedule')
             if structure(sig) not in crop_structures or any(sig.get(k) not in values for k,values in root_controls.items()):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
+            if sig.get('SWINTER')==2 and crop_types[path.resolve()] != {1}:
+                raise ValueError('Original Gash interception requires simple crop type1 for every referenced occurrence')
             if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):

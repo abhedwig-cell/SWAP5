@@ -61,3 +61,14 @@ finite/range diagnostics, water/solute bounds, transactions and references.
 No new physical energy-ledger qualification is inferred from temperature state.
 Peer status refreshed: macro0e2ab095b, PERF3fe7d2023; both tracked files clean,
 private peer qualification ongoing, no peer source imported; canonicalbdf222bef.
+
+First actual run43420989052 on c5bbbb58c: five thermal variants pass full
+periods and exact2/365/530 native windows at actual touched O0/O2. Gash
+fixture reaches future potato and original read_interception rejects WOFOST2;
+this is an original input incompatibility, not a numerical solver failure.
+Preserve the failure and original message. Correct derived Gash fixture uses
+original simple-maize file/type1 in all original date windows. Preflight now
+checks crop type for every referenced occurrence; dedicated future-WOFOST Gash
+request must refuse before output/build. For simple growth assert actual root
+uptake at the active window, rather than claim unused WOFOST rates are active.
+No original physical rule bypassed or changed.
