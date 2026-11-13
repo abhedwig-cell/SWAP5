@@ -187,6 +187,12 @@ def main():
                 # different physical/calendar origins, stepped in alternating order.
                 short = out/(label+'-short')
                 call(label+'-short', reuse+['--output', short, '--days', 5, '--checkpoint-at', 2])
+                # A known different numerical policy cannot silently reuse this build.
+                if key==next(iter(cases)):
+                    target=out/'refused-numerical-policy-binding'
+                    call('negative-numerical-policy-binding',base+['--build-bundle',bundle,
+                         '--experimental-time-step-policy',h.NO_MACRO_TIME_POLICY,'--output',target,'--days',1],
+                         refuse=True,absent=target)
                 meta, actual = validate_bundle(bundle, reference, project)
                 isolated = out/(label+'-isolated'); isolated.mkdir()
                 restored = out/(label+'-isolation-origin')
