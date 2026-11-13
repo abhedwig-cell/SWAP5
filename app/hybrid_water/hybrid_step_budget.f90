@@ -6,6 +6,7 @@ module hybrid_step_budget
   use MOD_drain, only: qdrtot
   use MOD_irrigation, only: nird, qssdisum
   use MOD_meteo, only: nraidt
+  use MOD_snow, only: melt
   use MOD_re_global, only: qrosum
   use variables, only: dt, theta, thetm1, pond, pondm1, qbot, swbotb, epd, reva, runon, runots
   implicit none
@@ -19,10 +20,14 @@ contains
     ! Original nonmacro explicit bottom fluxes share the same candidate balance.
     ! Modes1/5 reconstruct qbot after HeadCalc and cannot use this receipt.
     ! Mode-2 is the original prescribed-flux fallback to free drainage.
-    if (swmacro==0 .and. swsnow==0 .and. &
-        (abs(swbotb)==2 .or. swbotb==4 .or. swbotb==6 .or. swbotb==7)) then
+    if (swmacro==0 .and. &
+        (abs(swbotb)==2 .or. swbotb==4 .or. swbotb==6 .or. swbotb==7 .or. (swbotb==3 .and. swsnow==1))) then
       delta_matrix=sum((theta(1:numnod)-thetm1(1:numnod))*dz(1:numnod))
       external=dt*(nraidt+nird+runon+qssdisum+qbot-qrosum-epd-reva-qdrtot)-runots
+      ! Snow updates its native ssnow/slw state once at day start, outside the
+      ! water trial. The soil+pond receipt receives its melt flux explicitly;
+      ! the independent complete-day receipt still includes the snow store.
+      if (swsnow==1) external=external+dt*melt
       residual=delta_matrix+pond-pondm1-external
       return
     end if

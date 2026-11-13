@@ -62,8 +62,8 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
-    mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0},
-                 'SWSNOW': {0}, 'SWFROST': {0}, 'SWHEA': {1}, 'SWCALT': {2},
+    mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
+                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {1}, 'SWCALT': {2},
                  'SWTOPBHEA': {1}, 'SWBOTBHEA': {1}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
                  'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
@@ -75,7 +75,7 @@ def inspect(directory):
             raise ValueError('Unsupported experimental process/state: '+name)
     if selected['SWSOLU']:
         for name in ('SWSP', 'SWDC', 'SWBR'):
-            if selected.get(name) != 0:
+            if selected.get(name) not in ({0} if name == 'SWBR' else {0, 1}):
                 raise ValueError('Solute ledger/state does not support '+name)
     elif selected['SWIRFIX']:
         raise ValueError('Irrigation day-state currently requires the solute auxiliary codec')
@@ -89,10 +89,13 @@ def inspect(directory):
         for name, value in switches((root/'swap.swp').read_text(encoding='cp1252')).items():
             allowed.setdefault(name, set()).add(value)
     # Stateless original dispatches; complete original Fortran bodies are kept.
-    # Other bottom variants (8/9), hysteresis and stateful surfacewater remain
+    # Other bottom variants (8/9), frost and stateful surfacewater remain
     # excluded until their complete process/state combinations are qualified.
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
-                   SWETR={0, 1}, SWCROP={0, 1})
+                   SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
+                   SWSP={0, 1}, SWDC={0, 1})
+    if selected['SWHYST'] and selected['SWSOPHY'] != 0:
+        raise ValueError('Original hysteresis requires the analytical hydraulic family')
     for name, value in selected.items():
         if value not in allowed.get(name, set()):
             raise ValueError('Unimplemented experimental selector: '+name+'='+str(value))
@@ -164,3 +167,11 @@ def validate(project):
     if not project.input_directory or load(project.input_directory) != project:
         raise ValueError('Experimental input, process configuration or metadata differs')
     return Path(project.input_directory)
+
+
+def auxiliary_magic(project):
+    selected = inspect(project.input_directory)['selectors']
+    history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
+    formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
+               b'S5NON006',b'S5NHS007',b'S5NSN008',b'S5NMX009')
+    return formats[history]

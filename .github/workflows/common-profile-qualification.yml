@@ -17,7 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-26.04, windows-2022]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 12
+    timeout-minutes: 18
     env:
       PYTHONUTF8: '1'
       OMP_NUM_THREADS: '1'
@@ -54,6 +54,10 @@ jobs:
         if: runner.os == 'Linux'
         shell: pwsh
         run: python -B tools/solute/check_nomacro_coverage.py --output "$env:RUNNER_TEMP/common-coverage-proof"
+      - name: Preserve admitted history and reaction configurations on Ubuntu
+        if: runner.os == 'Linux'
+        shell: pwsh
+        run: python -B tools/solute/check_nomacro_coverage.py --extended --output "$env:RUNNER_TEMP/common-extended-proof"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,4 +73,5 @@ jobs:
             ${{ runner.temp }}/common-profile-proof/external
             ${{ runner.temp }}/common-profile-proof/provider/PREPARED.json
             ${{ runner.temp }}/common-coverage-proof
+            ${{ runner.temp }}/common-extended-proof
           retention-days: 14
