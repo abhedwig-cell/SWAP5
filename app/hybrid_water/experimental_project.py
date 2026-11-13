@@ -63,7 +63,7 @@ def inspect(directory):
     check_paths(text, 'swap.swp')
     selected = switches(text)
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
-                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {1}, 'SWCALT': {2},
+                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {2},
                  'SWTOPBHEA': {1}, 'SWBOTBHEA': {1}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
                  'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
@@ -93,7 +93,9 @@ def inspect(directory):
     # excluded until their complete process/state combinations are qualified.
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
-                   SWSP={0, 1}, SWDC={0, 1})
+                   SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SW2={1, 2}, SW3={1, 2})
+    if selected['SWSNOW'] and selected['SWHEA'] == 0:
+        raise ValueError('Original snow requires soil heat transport')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
         raise ValueError('Original hysteresis requires the analytical hydraulic family')
     for name, value in selected.items():
