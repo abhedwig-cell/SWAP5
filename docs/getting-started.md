@@ -21,6 +21,11 @@ including original Andelst, are outside this release. No input switch is silentl
 changed. Preserved native/research applications and the legacy Andelst archive
 preparation remain separate development routes, not prerequisites or aliases.
 
+For development beyond these registered profiles, see the separately qualified
+[experimental original no-macro input and option coverage](science/NOMACRO_FUNCTIONAL_COVERAGE.md).
+It retains explicit experimental selection and does not expand this release's
+production or scientific-equivalence claims.
+
 ## Install and obtain the source
 
 Obtain the source with Git (or use an existing checkout at the admitted commit):

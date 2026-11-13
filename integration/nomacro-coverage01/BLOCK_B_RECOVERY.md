@@ -64,3 +64,9 @@ accepted heacon(1) BEFORE the next DeVries update. Native TSOIL lacks that carry
 Targeted snow repair1: only experimental SWSNOW1 adds heacon/heacap and top/bottom
 temperature carry to a format-distinct auxiliary stream. Numerical coefficients,
 snow law, timestep control and tolerances unchanged. Requalify exact whole state.
+
+Final source12ae91148: run43406084493 all3 cohorts SUCCESS. Seven complete
+new trajectories8767days,14 O0/O2 controls and16 actual resealed native-history
+refusals pass. BLOCK_B_STATUS.json contains activation, source/build/input and
+raw archive identities. PR1670 pending canonical admission; blockC proceeds on
+codex/nomacro-coverage03. No numerical/tolerance/physical-law changes selected.
