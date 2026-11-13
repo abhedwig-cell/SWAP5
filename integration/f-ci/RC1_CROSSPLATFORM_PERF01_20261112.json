@@ -2,7 +2,7 @@
   "work_unit": "SWAP5-RC1-CROSSPLATFORM-PERF01",
   "baseline": "11529865e76fb2259542f1e770726cd87af27603",
   "frozen_release": "release/swap5-nomacro-rc1-20261112",
-  "status": "PUBLISHER_WINDOWS_UBUNTU_O0_O2_FULL_EXACT_AND_REFUSALS_PASS_PENDING_PR",
+  "status": "CLOSED_BY_OWNER_WITH_EXPLICIT_SCIENTIFIC_LIMITATIONS",
   "implementation": "Compile unchanged restart_publish.c once per registered no-macro build; bind C source, shared library and GCC binary SHA. Validate before output and loading; no process/physical checkpoint cache. Invocation-local compiler verification improvement remains admitted.",
   "invariants": "No physical kernel, state, rollback, original forcing, balance tolerance, codec, original input or frozen scientific reference changes. Timing buckets separate CPU and wall, no different OS/compiler/output mix asserted as solver performance.",
   "acceptance": {
@@ -14,21 +14,19 @@
   "existing_results": "integration/f-ci/rc1-perf01/COMPARISON.json",
   "existing_user_route": "integration/f-ci/USERRELEASE01_20261112.json",
   "initial_platform_findings": "Grass numerical roundoff; Hupsel/SaltFarm amplified differences in mixed compiler-major/OS cohorts. Not yet isolated as OS differences; no whole-equivalence promotion.",
-  "next_action": "Publish and admit source-bound durable publisher reuse via PR; verify canonical tree and unchanged frozen RC1. Then present quantified portable-science limits without asserting whole equivalence or fitting tolerances.",
+  "next_action": "None within this completed investigation. No automatic numerical/reference campaign. Any further scientific stabilization needs a separately scoped work order.",
   "cost_selection": {
     "per_model_cap_seconds": 60,
     "profile_full_profiles": 3,
     "macro": "NOT_SELECTED",
     "broad_F_CI": "NOT_SELECTED_IMPACT"
   },
-  "blockers": [
-    "Portable full-trajectory scientific equivalence is not qualified: GNU15.2 Hupsel head spread17.2825376518403cm; SaltFarm stock spread0.020218933796115834cm. Existing original oxygen references remain failed/underqualified."
-  ],
   "automation": {
     "id": "swap5-rc1-onderzoek-hervatten",
-    "status": "ACTIVE_VERIFIED_CREATE_AND_VIEW",
+    "status": "DELETED_VERIFIED_NO_RESTART_ON_OWNER_CLOSURE",
     "interval_minutes": 30,
-    "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud"
+    "environment": "LOCAL_THREAD_RESUME; app/laptop must remain online; Linux model runs via GitHubActions cloud",
+    "reason": "Owner explicitly closed investigation with scientific limitations on2026-11-13; no resumption timer required."
   },
   "findings": "Corrected coherent and daily full frames exact on both platforms. Matching GNU15.2 does not remove corrected Hupsel/SaltFarm branch amplification. Private polish-feedback shortcut materially lowers iteration counts but fails Hupsel day364 independent daily water1e-10 guard; rejected without production changes.",
   "transport_decision": "REJECTED_NOT_ADMITTED: exact physical/native preservation achieved, but SaltFarmABBA model/controller timing did not establish a material gain. Original daily_host.py fully restored to frozen RC1 bytes.",
@@ -73,7 +71,7 @@
       "forward_member_scan_pass": true
     }
   },
-  "current_development_branch": "codex/rc1-publisher-perf03",
+  "current_development_branch": "codex/rc1-perf-closeout",
   "first_block_admission": {
     "pr": 1665,
     "qualified_head": "09fba1b26b22a628a218b77e6060b6e1c2f42baf",
@@ -147,5 +145,27 @@
     "absolute_spread_cm": 6.336439640616462e-07,
     "existing_point_bound_cm": 5.371840000016327e-07,
     "disposition": "EXCEEDS_EXISTING_POINT_BOUND_NOT_A_NEW_REFERENCE_QUALIFICATION"
-  }
+  },
+  "publisher_admission": {
+    "pr": 1667,
+    "qualified_head": "3f0c6df7aac58e143d0e7e37e6e5609c5eb3ca4a",
+    "canonical": "f2377211d2be58d03d96e50fb0a6bc35ced3c90f",
+    "tree": "343eae7e7e1f49baf0138fc50152769f006439d9",
+    "postimage_exact": true,
+    "frozen_rc1": "11529865e76fb2259542f1e770726cd87af27603",
+    "frozen_release_unchanged": true,
+    "independent_review": "No submitted reviews at merge; do not claim independent code review",
+    "qualification": "Windows/Ubuntu O0 short,O2 complete exact physical/CSV/native; both publisher refusals; six Windows external controls; docs source and strict MkDocs PASS"
+  },
+  "owner_disposition": {
+    "date": "2026-11-13",
+    "instruction": "Rond af met expliciete beperkingen",
+    "decision": "Close this investigation with quantified scientific limitations; no numerical stabilization successor selected.",
+    "qualification_boundary": "Functional execution, same-build restart and qualified performance improvements preserved. Portable whole scientific equivalence remains NOT_QUALIFIED; original failed criteria and underqualified references remain unchanged.",
+    "model_or_tolerance_changes": false
+  },
+  "scientific_limitations": [
+    "Portable full-trajectory scientific equivalence is not qualified: GNU15.2 Hupsel head spread17.2825376518403cm; SaltFarm stock spread0.020218933796115834cm. Existing original oxygen references remain failed/underqualified."
+  ],
+  "blockers": []
 }

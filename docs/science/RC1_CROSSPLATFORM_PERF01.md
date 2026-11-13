@@ -1,5 +1,28 @@
 # RC1 cross-platform and performance successor
 
+## Owner-approved investigation closure,13November2026
+
+The project owner selected "Rond af met expliciete beperkingen" on13November2026.
+This investigation is closed with the quantified scientific limitations below.
+The admitted performance/evidence blocks are PR1665,PR1666 and PR1667; the latter
+has verified canonical postimage f2377211d2be58d03d96e50fb0a6bc35ced3c90f.
+This documentation-only closeout changes no model, input, balance guard, numerical
+tolerance, scientific reference, restart or external coupling contract.
+
+Complete selected runs and same-build own restarts retain their named functional
+qualification. Portable whole scientific equivalence remains **NOT_QUALIFIED**.
+The Hupsel584 oxygen discrepancy, larger Hupsel/SaltFarm platform spreads,
+original scientific FAILs and underqualified references are accepted as explicit
+limitations of this investigation's conclusion, not reclassified as scientific
+PASS. The rejected adaptive-feedback optimization remains excluded. The frozen
+RC1 branch remains exactly11529865e76fb2259542f1e770726cd87af27603.
+
+The owner record is `integration/f-ci/RC1_CROSSPLATFORM_PERF01_20261112.json`.
+The recovery timer is deleted. No further automatic solver, reference or active
+macropore campaign is selected; additional numerical stabilization requires a
+separate work order. Historical pending-assessment passages below retain their
+evidence context and are superseded only for the owner's closeout disposition.
+
 ## Frozen scope and first transport discriminator
 
 RC1 remains `release/swap5-nomacro-rc1-20261112` at
