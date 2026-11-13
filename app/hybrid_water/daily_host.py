@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[2]
 from donor_sources import records, render_checkpoint, render_day_return, render_no_macro_timecontrol, replace, sha
 
 APP = Path(__file__).resolve().parent
+ORIGINAL_TIME_POLICY = 'original-adaptive-day-seed-v1'
 NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
@@ -39,6 +40,7 @@ class HybridProject:
     end_date: str = ''
     input_directory: str = ''
     input_inventory: tuple = ()
+    time_step_policy: str = ORIGINAL_TIME_POLICY
 
     @property
     def last_day(self):
@@ -49,9 +51,9 @@ class HybridProject:
         return (date.fromisoformat(self.start_date)-date(1900,1,1)).days+1
 
 ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6,macro=True,end_date='1999-04-26')
-GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10,end_date='1984-12-31')
-HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10,solute=True,end_date='2004-12-31')
-SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31')
+GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10,end_date='1984-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
+HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10,solute=True,end_date='2004-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
+SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
 PROJECTS = (ANDELST,GRASSGROWTH,HUPSEL,SALTFARM)
 
 
@@ -106,6 +108,8 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
+    if not project.macro and project.time_step_policy not in (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY):
+        raise ValueError('Unknown no-macro daily time-step policy')
     case = project_case(reference, project)
     if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
             or (not project.macro and not project.solute and budget_retry)):
@@ -166,7 +170,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
-    if not project.macro:
+    if not project.macro and project.time_step_policy==NO_MACRO_TIME_POLICY:
         render_no_macro_timecontrol(donor_build/'swap-selected',output)
         patched.insert(0,'timecontrol')
     if checkpoint_day is not None or runtime_checkpoint:
@@ -610,7 +614,7 @@ end module MOD_wofost""")
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
-        build_identity['time_step_policy'] = NO_MACRO_TIME_POLICY
+        build_identity['time_step_policy'] = project.time_step_policy
         build_identity['time_step_policy_source'] = sha(APP/'donor_sources.py')
         library = compile_restart_publisher(output)
         build_identity['restart_publisher'] = {

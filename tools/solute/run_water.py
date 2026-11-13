@@ -188,6 +188,8 @@ def main():
     parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL,experimental_model]+[p.model for p in PROJECTS])
     parser.add_argument('--experimental-project', type=Path,
                         help='Explicit experimental original project directory; no production/science claim')
+    parser.add_argument('--experimental-time-step-policy',choices=[host_module.ORIGINAL_TIME_POLICY,host_module.NO_MACRO_TIME_POLICY],
+                        help='Explicit experimental numerical policy; defaults to original adaptive daily seed, new policy is not qualified for all option mixes')
     parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
@@ -208,7 +210,7 @@ def main():
     if args.prepare_sources:
         if (not args.no_macro_release or args.reference_work is None or args.model is not None
             or args.build_only or any(v is not None for v in (args.output,args.prepare_archive,args.build_bundle,
-                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project))):
+                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy))):
             parser.error('--prepare-sources requires only --no-macro-release and a new --reference-work')
         try:
             prepared=user_prepare.prepare(args.reference_work)
@@ -219,6 +221,8 @@ def main():
     if args.model is None:
         parser.error('--model is required for a build or run')
     experimental = args.experimental_project is not None
+    if args.experimental_time_step_policy is not None and not experimental:
+        parser.error("--experimental-time-step-policy requires --experimental-project")
     if (args.model == experimental_model) != experimental or (experimental and args.no_macro_release):
         parser.error('HYBRID_NOMACRO_WATER requires --experimental-project and cannot claim --no-macro-release')
     if args.no_macro_release and args.model not in (GRASSGROWTH.model,HUPSEL.model,SALTFARM.model):
@@ -264,7 +268,7 @@ def main():
     try:
         if experimental:
             from experimental_project import load
-            project = load(args.experimental_project)
+            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy)
         else:
             project={p.model:p for p in PROJECTS}[args.model]
     except (OSError, ValueError) as error:

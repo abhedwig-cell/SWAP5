@@ -139,7 +139,7 @@ def main():
             call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
-            failure_day = 212 if h.NO_MACRO_TIME_POLICY=='configured-dtmax-daily-v1' else 51
+            failure_day = 212 if project.time_step_policy=='configured-dtmax-daily-v1' else 51
             cut, end = (2, 5) if opt == 'O0' else ((failure_day-2, project.last_day) if partial else (365, project.last_day))
             control, resumed, endpoint = [out/(label+'-'+n) for n in ('control', 'resumed', 'endpoint')]
             call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut], refuse=partial)
@@ -187,6 +187,12 @@ def main():
                 # different physical/calendar origins, stepped in alternating order.
                 short = out/(label+'-short')
                 call(label+'-short', reuse+['--output', short, '--days', 5, '--checkpoint-at', 2])
+                # A known different numerical policy cannot silently reuse this build.
+                if key==next(iter(cases)):
+                    target=out/'refused-numerical-policy-binding'
+                    call('negative-numerical-policy-binding',base+['--build-bundle',bundle,
+                         '--experimental-time-step-policy',h.NO_MACRO_TIME_POLICY,'--output',target,'--days',1],
+                         refuse=True,absent=target)
                 meta, actual = validate_bundle(bundle, reference, project)
                 isolated = out/(label+'-isolated'); isolated.mkdir()
                 restored = out/(label+'-isolation-origin')
