@@ -29,3 +29,19 @@ before build/output, including crops that start in a later year. Its actual CLI
 refusal is tested. Positive no-heat fixture uses bare soil/free bottom, with no
 physical oxygen process. The invalid original attempt and its523-day prefix
 remain preserved in source-bound run43405930779 and local verified artifact.
+
+Source9e8e86ee1, run43407021524: all6 complete1096 trajectories and O0/O2/
+restart/isolation/rollback/external controls PASS. Follow-up adds the cultivated
+no-heat/Feddes maize rotation (all3 original date windows use the original maize
+file/simple growth). Process preflight now validates actual referenced future
+crop files, retaining unused files in the exact inventory without letting them
+activate physical options. Seven derived cases; no new crop/soil/heat law.
+
+Peer reconciliation2026-11-13: platform branch e4767ec95 adds explicit FP flags
+and matching provider/build identity in daily_host/daily_coupling/user_prepare/
+b0_source_runner. Those hunks are distinct from coverage's experimental project
+lookup and option-active restart carry. They are NOT imported. Performance owner
+retains compile policy; future canonical admission of that profile invalidates
+relevant source/build qualifications and needs its own remeasurement. No overlap
+with blockC's experimental_project/test/workflow changes. Macro STATE02 now has
+uncommitted research/swap431-macro-b1-unreduced04 files atf62e19e2c; untouched.

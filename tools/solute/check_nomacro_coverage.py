@@ -100,6 +100,7 @@ def main():
             path.write_text(text,encoding='cp1252');cases[key]=case
     if args.basic_options:
         for key, changes in [('bare',{'SWCROP':0,'SWBOTB':7}), ('noheat',{'SWHEA':0,'SWCROP':0,'SWBOTB':7}),
+                             ('noheat-maize',{'SWHEA':0}),
                              ('undrained-free',{'SWDRA':0,'SWBOTB':7}),
                              ('prescribed-bottom',{'SWBOTB':2}), ('sine-bottom',{'SWBOTB':2,'SW2':1}),
                              ('head-flux-bottom',{'SWBOTB':4})]:
@@ -116,6 +117,10 @@ def main():
                 for name,value in [('SINAVE',-0.05),('SINAMP',0.02)]:
                     text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)[^\s!]+',lambda m:m[1]+str(value),text)
                     assert count==1
+            if key=='noheat-maize':
+                text,count=re.subn(r"(?m)^([ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+)'[^']+'[ \t]+[12][ \t]*$",
+                                   r"\1'maize' 1",text)
+                assert count==3
             path.write_text(text,encoding='cp1252');cases[key]=case
         invalid=out/'invalid-noheat-oxygen'
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',invalid)
@@ -337,7 +342,7 @@ def main():
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
     result = dict(status='EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL'), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended or args.basic_options else 2, new_derived_process_configurations=7 if args.extended else (6 if args.basic_options else 2),
+                  new_original_workbook_configurations=0 if args.extended or args.basic_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options else 2,
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

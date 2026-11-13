@@ -62,6 +62,14 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
+    crop_files=set()
+    if selected.get('SWCROP')==1:
+        entries=re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
+        if not entries:raise ValueError('Missing/unsupported original crop rotation')
+        for name,_ in entries:
+            path=directory/(name if name.lower().endswith('.crp') else name+'.crp')
+            if not path.is_file():raise ValueError('Missing original crop input: '+name)
+            crop_files.add(path.resolve())
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
                  'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {2},
                  'SWTOPBHEA': {1}, 'SWBOTBHEA': {1}, 'SWCROP': {0, 1},
@@ -124,6 +132,9 @@ def inspect(directory):
         check_paths(body, path.name)
         sig = switches(body)
         if path.suffix.lower() == '.crp':
+            # An unused file remains hash-bound input data, but cannot activate
+            # a process. Validate the actual complete future rotation instead.
+            if path.resolve() not in crop_files:continue
             schedule = one(body, 'SCHEDULE', r'[+-]?\d+')
             if schedule not in ('0', '1') or (schedule == '1' and not selected['SWSOLU']):
                 raise ValueError('Scheduled irrigation requires the existing complete auxiliary codec')
