@@ -160,7 +160,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         module = day_source[:day_source.index("end module hybrid_day_window") + len("end module hybrid_day_window")]
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
                           runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute,
-                          hydraulic_history=bool(project.input_directory and selector('SWHYST')>0))
+                          hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),
+                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0))
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"

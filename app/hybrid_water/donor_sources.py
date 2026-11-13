@@ -84,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -201,6 +201,27 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if(abs(sum(theta(1:numnod)*dz(1:numnod))-volact)>1d-10)error stop 'Unbalanced hysteresis water history'
         read(unit,iostat=ios) trailing""")
         anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if solute_state else '        write(unit) t,iyear'
+        codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)
+    if thermal_history:
+        if not nonmacro:raise ValueError('Snow thermal history requires absent macropores')
+        # Under snow, the next top boundary uses the PREVIOUS accepted heacon
+        # before DeVries computes the next coefficient. Native TSOIL alone is
+        # therefore not a complete restart of this original boundary law.
+        fields='heacon(1:numnod),heacap(1:numnod),tetop,tebot'
+        codec=replace(codec,'      use variables, only: t, iyear',
+                      '      use MOD_SoilTemperature,only:heacon,heacap,tetop,tebot\n      use variables, only: t, iyear')
+        old_magic=('S5SHS013' if solute_state else 'S5NHS007') if hydraulic_history else ('S5HUP012' if solute_state else 'S5NON006')
+        new_magic=('S5SMX015' if solute_state else 'S5NMX009') if hydraulic_history else ('S5SSN014' if solute_state else 'S5NSN008')
+        codec=codec.replace(old_magic,new_magic)
+        codec=replace(codec,'        read(unit,iostat=ios) trailing',f"""        read(unit,iostat=ios) {fields}
+        if(ios/=0)error stop 'Incomplete snow thermal history'
+        if(.not.all(ieee_is_finite([{fields}])))error stop 'Nonfinite snow thermal history'
+        if(any(heacon(1:numnod)<=0d0).or.any(heacap(1:numnod)<=0d0))error stop 'Invalid snow thermal history'
+        read(unit,iostat=ios) trailing""")
+        if hydraulic_history:
+            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
+        else:
+            anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if solute_state else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")

@@ -167,3 +167,11 @@ def validate(project):
     if not project.input_directory or load(project.input_directory) != project:
         raise ValueError('Experimental input, process configuration or metadata differs')
     return Path(project.input_directory)
+
+
+def auxiliary_magic(project):
+    selected = inspect(project.input_directory)['selectors']
+    history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
+    formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
+               b'S5NON006',b'S5NHS007',b'S5NSN008',b'S5NMX009')
+    return formats[history]

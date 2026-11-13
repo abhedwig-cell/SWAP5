@@ -444,8 +444,8 @@ class CoupledDailyColumn:
                 with zipfile.ZipFile(candidate) as z:aux=z.read('macro.bin')
                 expected=b'S5HUP012'
                 if self.project.input_directory:
-                    from experimental_project import inspect
-                    if inspect(self.project.input_directory)['selectors']['SWHYST']>0:expected=b'S5SHS013'
+                    from experimental_project import auxiliary_magic
+                    expected=auxiliary_magic(self.project)
                 if aux[:8]!=expected:raise ValueError('Foreign conserved solute codec')
                 conserved=struct.unpack_from('<'+str(self.project.nodes+2)+'d',aux,48)
                 if not all(math.isfinite(v) and v>=0 for v in conserved):

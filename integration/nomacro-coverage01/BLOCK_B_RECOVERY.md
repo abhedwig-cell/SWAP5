@@ -52,3 +52,15 @@ new formatS5SHS013 (solute) orS5NHS007 (water) prevents old-history ambiguity.
 Strict finite/positive/conserved-water checks apply before use. Original no-hyst
 formats and generated physical bodies remain unchanged. Qualify exact short
 and seasonal own states; reject the repair unless exact continuation is restored.
+
+
+Run43404793167 at5699485d9 proves repair1: hysteresis1 AND2 complete1096 each,
+O0/O2 own2to4 and365to367 native+auxiliary endpoints, distinct-origin isolation,
+external discard/replay/recovery and actual mass-refusal controls all pass.
+The following snow O0 trajectory matches water/solute exactly but native TSOIL
+bytes differ (193bytes in result.end; complete1361096-byte auxiliary identical).
+Source temperature_numeric computes the snow-interface boundary from previously
+accepted heacon(1) BEFORE the next DeVries update. Native TSOIL lacks that carry.
+Targeted snow repair1: only experimental SWSNOW1 adds heacon/heacap and top/bottom
+temperature carry to a format-distinct auxiliary stream. Numerical coefficients,
+snow law, timestep control and tolerances unchanged. Requalify exact whole state.
