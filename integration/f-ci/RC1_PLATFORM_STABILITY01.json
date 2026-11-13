@@ -1,0 +1,26 @@
+{
+  "work_unit": "SWAP5-RC1-PLATFORM-STABILITY01",
+  "status": "IMPLEMENTING_BOUNDED_DAY_RECEIPT_DISCRIMINATOR",
+  "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
+  "branch": "codex/rc1-platform-stability01",
+  "owner_instruction": "2026-11-13: en nu verder met optie1",
+  "previous_investigation": "CLOSED_WITH_LIMITATIONS_NOT_REWRITTEN",
+  "frozen_release": "11529865e76fb2259542f1e770726cd87af27603",
+  "automation_id": "swap5-platformstabiliteit-hervatten",
+  "hypothesis": "Incremental projected step-budget summation differs from absolute published day receipt near1e-10; mass-only Newton iterations feed original adaptive dt policy and amplify cross-platform branch sensitivity.",
+  "existing_discriminator": {
+    "Hupsel364_private_feedback_native_integrated": -9.989438378051052e-11,
+    "independent_day_receipt": 1.0033339783999118e-10,
+    "interpretation": "Opposite residual sign conventions; absolute gap about4.39e-13. Existing candidate remains rejected."
+  },
+  "acceptance": [
+    "Unchanged daily water/solute1e-10 guards and existing scientific point bound5.371840000016327e-7cm",
+    "Separate source-bound numerical policy from physical process changes; preserve original reference FAILs",
+    "Test complete Hupsel1096 and SaltFarm1461 plus Grass preservation, O0/O2, own native restart/rollback/instances Windows/Linux before promotion",
+    "No new fitted tolerances or altered original input; no macro work"
+  ],
+  "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
+  "max_model_seconds": 60,
+  "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
+  "next_action": "Implement absolute day-receipt projection for selected snow-free no-macro bottom6 route; test existing private adaptive feedback both with/without that guard without publishing physical state."
+}
