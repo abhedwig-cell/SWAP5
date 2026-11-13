@@ -5,9 +5,14 @@ ROOT=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--days',type=int,default=5)
+p.add_argument('--no-contract',action='store_true')
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();events=[]
 def run(label,command,timeout=120):
-    begin=time.perf_counter();r=subprocess.run(list(map(str,command)),cwd=ROOT,capture_output=True,text=True,timeout=timeout)
+    command=list(map(str,command));env=dict(os.environ)
+    if a.no_contract and command[:2]==[sys.executable,'-B']:
+        command=command[:2]+[str(ROOT/'tools/solute/platform_fp_bootstrap.py')]+command[2:]
+        env['SWAP5_PRIVATE_FP_JOURNAL']=str(a.output/'COMPILER_CALLS.jsonl')
+    begin=time.perf_counter();r=subprocess.run(command,cwd=ROOT,env=env,capture_output=True,text=True,timeout=timeout)
     (a.output/(label+'.log')).write_text(r.stdout+r.stderr,encoding='utf-8')
     events.append(dict(label=label,command=list(map(str,command)),seconds=time.perf_counter()-begin,returncode=r.returncode))
     (a.output/'EVENTS.json').write_text(json.dumps(events,indent=2)+'\n')
@@ -34,7 +39,7 @@ csv=csv.replace(anchor,"""   write(*,'(a,*(1x,es25.17e3))') 'RC1_HEAD',gwl,rc1_q
 (observer/'swap_csv_output.f90').write_text(csv,encoding='cp1252')
 fixture=ROOT/'tools/solute/platform_quadmath_probe.c';table=ROOT/'tools/solute/platform_math_table.c'
 tables={}
-for mode in ('native','quadmath'):
+for mode in (('native',) if a.no_contract else ('native','quadmath')):
     exe=a.output/(mode+('-table.exe' if os.name=='nt' else '-table'))
     run(mode+'-table-build',['gcc','-O2','-fno-builtin',table,*([fixture,'-lquadmath'] if mode=='quadmath' else ['-lm']),'-o',exe],30)
     output=run(mode+'-table',[exe],10)
@@ -44,7 +49,8 @@ for name in ('libquadmath.a','libquadmath.so','libquadmath-0.dll'):
     path=Path(subprocess.check_output(['gfortran','-print-file-name='+name],text=True).strip())
     if not path.is_file() and os.name=='nt':path=Path(shutil.which('gfortran')).parent/name
     if path.is_file():libraries[name]=dict(path=str(path.resolve()),sha256=hashlib.sha256(path.read_bytes()).hexdigest())
-(a.output/'MATH_RUNTIME.json').write_text(json.dumps(dict(source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),toolchain=json.loads((reference/'PREPARED.json').read_text())['toolchain'],libraries=libraries,source_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),tables=tables),indent=2)+'\n')
-run('model-probe',[sys.executable,'-B','tools/solute/diagnose_polish_feedback.py','--bundle',bundle,'--reference',reference,'--full',cold,'--observer',observer,'--output',a.output/'probe','--quadmath','--days',a.days],150)
+(a.output/'MATH_RUNTIME.json').write_text(json.dumps(dict(source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),toolchain=json.loads((reference/'PREPARED.json').read_text())['toolchain'],libraries=libraries,source_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),tables=tables,separate_operations=a.no_contract),indent=2)+'\n')
+run('compiler-target',['gfortran','-Q','-O2','--help=target'],10)
+run('model-probe',[sys.executable,'-B','tools/solute/diagnose_polish_feedback.py','--bundle',bundle,'--reference',reference,'--full',cold,'--observer',observer,'--output',a.output/'probe','--same-core' if a.no_contract else '--quadmath','--days',a.days],150)
 (a.output/'RESULT.json').write_text(json.dumps(dict(status='PRIVATE_MATH_DISCRIMINATOR_COMPLETED_NOT_QUALIFIED',probe=json.loads((a.output/'probe/RESULT.json').read_text()),events=events),indent=2)+'\n')
 print('PRIVATE_MATH_DISCRIMINATOR_COMPLETED_NOT_QUALIFIED',flush=True)

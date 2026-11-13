@@ -1,6 +1,6 @@
 {
   "work_unit": "SWAP5-RC1-PLATFORM-STABILITY01",
-  "status": "PRIVATE_MATH_RUNTIME_DISCRIMINATOR_NOT_ADMITTED",
+  "status": "FMA_CONTRACTION_DIFFERENCE_PROVEN_PRIVATE_COMMON_ARITHMETIC_PROBE_PENDING",
   "baseline": "e157e65ff36305d8661f7c8afb9577bad6b6ecd0",
   "branch": "codex/rc1-platform-stability01",
   "owner_instruction": "2026-11-13: en nu verder met optie1",
@@ -22,7 +22,7 @@
   "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
   "max_model_seconds": 60,
   "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
-  "next_action": "Stop adaptive/receipt repairs. Keep original numerical/physical blocks and all guards unchanged; test whether GNU quadmath elementary functions rounded to original real32/64 remove cross-runtime seeds. First5-day Hupsel probe, then matched compiler/OS5-day check only if useful and affordable. No production math override until full qualification.",
+  "next_action": "Match arithmetic operation policy with explicit -ffp-contract=off for all Fortran source compilation. Use private child bootstrap with complete compiler call journal; no production profile/old-state rebinding. First5-day pair, then longer only if material.",
   "first_probe_result": {
     "five_days": "EXACT_BASELINE_ALL_FRAMES",
     "extended": "CENSORED_60_SECONDS_AFTER_DAY534",
@@ -55,5 +55,15 @@
   "math_source_reference": [
     "https://github.com/gcc-mirror/gcc/blob/master/libquadmath/math/expq.c",
     "https://github.com/gcc-mirror/gcc/blob/master/libquadmath/math/powq.c"
-  ]
+  ],
+  "math_probe_run": {
+    "id": 43397238161,
+    "carrier": "b895188801ecc052049b9ddb3d2467bee9be3b09",
+    "runtime_tools": "cb44d28272600e8a7c122715f41144523448d29d",
+    "wiring_only": ".github/workflows/grass-thermal-production.yml",
+    "scope": "GNU15 Windows2022/Ubuntu26.04 identical65-argument math table and5-day Hupsel; no full-run qualification or restart promotion",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "quadmath_probe_disposition": "REJECTED:65 selected math results exact cross-platform, but5-day head difference remains2.06e-13cm and execution about12x native. No extended quadmath run selected."
 }
