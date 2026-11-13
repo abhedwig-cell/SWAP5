@@ -195,6 +195,11 @@ def run(opt,context,mode,checkpoint):
         shutil.copy2(source/'candidate.end',case/'own.end')
         p=case/'swap.swp';s=p.read_text(encoding='cp1252')
         for line in (source/'restart_dates.txt').read_text().splitlines():
+            # Original R D lexer expects year-month-day for numeric months,
+            # but day-month-year for named months. Normalize the native
+            # formatter's year-Mon-day token without changing its time value.
+            months={m:i for i,m in enumerate(['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],1)}
+            line=re.sub(r'(\d{4})-([A-Za-z]{3})-(\d{2})',lambda m:m[1]+'-'+str(months[m[2].title()]).zfill(2)+'-'+m[3],line)
             key=line.split('=')[0].strip();s=re.sub(r'(?mi)^\s*'+key+r'\s*=.*$',line,s,count=1)
         s=re.sub(r'(?mi)^(\s*SWINCO\s*=\s*)2\b',r'\g<1>3',s,count=1)
         s+='\n INIFIL = \'own.end\'\n SWINITYPE = 2\n'

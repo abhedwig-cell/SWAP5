@@ -1,0 +1,6 @@
+{
+  "reason": "TTUTIL RDLEX numeric month expects year-month-day, named month expects day-Mon-year; native DTDPST YEAR-MONTHST-DAY therefore gives day invalid. Normalize month name to numeric, keeping subday value, before actual restart qualification.",
+  "source": "rdlex.for lines616-664",
+  "model_physics_changed": false,
+  "failed_model_before_initialization": true
+}

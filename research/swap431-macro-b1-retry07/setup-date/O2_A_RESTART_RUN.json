@@ -1,0 +1,13 @@
+{
+  "command": [
+    "C:\\Users\\Veldh012\\swap431-retry07-work\\native\\O2\\retry07.exe",
+    "./swap.swp"
+  ],
+  "context": "A",
+  "mode": "RESTART",
+  "returncode": 0,
+  "censored": false,
+  "seconds": 0.031851200154051185,
+  "stdout": "\n Error(s) or Warning(s) while reading from ./swap.swp\n\n Line Error text                               Somewhere here\n ==== ==========                               ==============\n   91 Day invalid                              [ = 1998-Jan-02_22:07:40.799999]\n                                                   ^-------------------------^\n   93 Day invalid                              [ = 1998-Jan-02_22:13:26.399999]\n                                                   ^-------------------------^\n\n\n Number of errors in data file ./SWAP.SWP:   2\n Fatal execution error\n",
+  "stderr": ""
+}
