@@ -39,6 +39,7 @@ def payload(path):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--extended', action='store_true', help='Snow/hysteresis and sorption/decomposition block')
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -60,11 +61,11 @@ def main():
 
     call('prepare', ['--no-macro-release', '--prepare-sources', '--reference-work', reference])
     cases = {}
-    for key, run_id in [('salt08', 2), ('salt16', 3)]:
+    for key, run_id in ([] if args.extended else [('salt08', 2), ('salt16', 3)]):
         case = out/('input-'+key)
         saltfarm(case, run_id)
         cases[key] = case
-    for key, name, value in [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]:
+    for key, name, value in ([] if args.extended else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
         case = out/('input-'+key)
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
         path = case/'swap.swp'
@@ -73,6 +74,25 @@ def main():
         assert count == 1
         path.write_text(text, encoding='cp1252')
         cases[key] = case
+
+    if args.extended:
+        for key, switches in [('hupsel-hyst1', {'SWHYST':1}), ('hupsel-hyst2', {'SWHYST':2}),
+                              ('hupsel-snow', {'SWSNOW':1}), ('salt-adsorption', {'SWSP':1}),
+                              ('salt-decay', {'SWDC':1}), ('salt-reactions', {'SWSP':1,'SWDC':1})]:
+            case = out/('input-'+key)
+            if key.startswith('salt'):
+                saltfarm(case, 2)
+            else:
+                shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
+            path = case/'swap.swp';text=path.read_text(encoding='cp1252')
+            for name,value in switches.items():
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
+                assert count==1
+            if switches.get('SWSP'):
+                text+='\nFREXP = 0.9\nCREF = 1.0\nKF = 0.0001389 0.0001378\n'
+            if switches.get('SWDC'):
+                text+='\nGAMPAR = 0.0\nRTHETA = 0.3\nBEXP = 0.7\nDECPOT = 0.001 0.001\nFDEPTH = 1.0 0.65\n'
+            path.write_text(text,encoding='cp1252');cases[key]=case
 
     for key, case in cases.items():
         project = e.load(case)
@@ -94,6 +114,10 @@ def main():
             else:
                 assert len(data) == end and all(r['committed'] for r in data)
             accepted = [r for r in data if r['committed']]
+            if args.extended and opt=='O2':
+                if key=='hupsel-snow':assert max(r['stock_end_cm'][2] for r in accepted)>0
+                if key in ('salt-decay','salt-reactions'):
+                    assert sum(r['solute_ledger_mg_cm2'][6] for r in accepted)>0
             assert all(abs(r['independent_residual_cm']) <= 1e-10 and abs(r['kernel_residual_cm']) <= 1e-10
                        and abs(r.get('solute_independent_residual_mg_cm2', 0)) <= 1e-10 for r in accepted)
             origin = control/f'accepted-column-1-day-{cut}.zip'
@@ -231,12 +255,13 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    case = cases['salt08']; control = case/'swap.swp'; saved = control.read_bytes()
+    key = 'salt-adsorption' if args.extended else 'salt08'
+    case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
-            '--build-bundle', out/'salt08-O2-build']
-    bad = [('macro', 'SWMACRO', 1), ('snow', 'SWSNOW', 1), ('frost', 'SWFROST', 1),
-           ('hysteresis', 'SWHYST', 1), ('solute', 'SWSOLU', 2), ('adsorption', 'SWSP', 1),
-           ('decay', 'SWDC', 1), ('reservoir', 'SWBR', 1), ('surfacewater', 'SWDRA', 2),
+            '--build-bundle', out/(key+'-O2-build')]
+    bad = [('macro', 'SWMACRO', 1), ('snow', 'SWSNOW', 2), ('frost', 'SWFROST', 1),
+           ('hysteresis', 'SWHYST', 3), ('solute', 'SWSOLU', 2), ('adsorption', 'SWSP', 2),
+           ('decay', 'SWDC', 2), ('reservoir', 'SWBR', 1), ('surfacewater', 'SWDRA', 2),
            ('heat', 'SWHEA', 0), ('other-bottom', 'SWBOTB', 9),
            ('reconstructed-groundwater', 'SWBOTB', 1), ('reconstructed-head', 'SWBOTB', 5)]
     for label, name, value in bad:
@@ -257,9 +282,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=2, new_derived_process_configurations=2,
+                  new_original_workbook_configurations=0 if args.extended else 2, new_derived_process_configurations=6 if args.extended else 2,
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
