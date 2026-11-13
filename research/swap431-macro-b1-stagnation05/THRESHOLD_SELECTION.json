@@ -1,0 +1,11 @@
+{
+  "selected": true,
+  "question": "Does the h45 air-entry gate create a local operator jump independently of V1 freezing?",
+  "source": "ABSORPTION h(ic)<cofgen(9,layer)-1e-8 AND HMp>1e-8 gate",
+  "heads": "V2 last rejected vector at first original dt; identical all other heads",
+  "pair": "h45=h_entry +/-1e-7 cm",
+  "history": "Each side independently from exact same original V1 prefix, start stock/clock/history and same semimplicit coefficients; direct original vector_F(1) once",
+  "scope": "Operator diagnostic only; no Newton iterations, acceptance, stock commit, law change or new solver variant",
+  "O0_O2": true,
+  "stop": "One pair per optimization; no epsilon campaign"
+}

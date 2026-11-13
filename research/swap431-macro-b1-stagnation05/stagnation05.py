@@ -112,8 +112,85 @@ def run(opt,variant):
     for p in case.glob('*.txt'):shutil.copy2(p,out/p.name)
     print(json.dumps(q),flush=True)
 
+def prepare_probe():
+    head=(R/'headcalc_inventory.f90').read_text(encoding='cp1252')
+    head=head.replace('   implicit none','''   use MOD_grid, only:layer
+   use MOD_macropore, only:NumDm,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,FlEndSrpEvt
+   implicit none''',1)
+    head=head.replace('!  diagnostic local storage only','''   character(32) :: probe_side
+   integer :: probe_u,probe_ios
+!  diagnostic local storage only''',1)
+    marker='   call diag_log(0)'
+    code='''
+   if(diag_active) then
+    call get_environment_variable('STAG05_PROBE_SIDE',probe_side)
+    if(len_trim(probe_side)>0) then
+     open(newunit=probe_u,file='probe_h.txt',status='old')
+     read(probe_u,*,iostat=probe_ios) h(1:NN)
+     close(probe_u)
+     if(probe_ios/=0) error stop 'threshold head vector missing'
+     if(trim(probe_side)=='LEFT') then
+      h(45)=cofgen(9,layer(45))-1d-7
+     else if(trim(probe_side)=='RIGHT') then
+      h(45)=cofgen(9,layer(45))+1d-7
+     else
+      error stop 'invalid diagnostic side'
+     end if
+     do i=1,NN
+      theta(i)=watcon(i,h(i))
+     end do
+     do i=2,NN
+      hgrad(i)=(h(i-1)-h(i))/disnod(i)+1d0
+     end do
+     call vector_F(1,hgrad)
+     call diag_log(8)
+     call unreduced_trace(8)
+     open(newunit=probe_u,file='probe_memory.txt',status='replace')
+     write(probe_u,*) 'clock',TimAbsCumDmCp(1:NumDm,1:NN)
+     write(probe_u,*) 'reference',ThtSrpRefDmCp(1:NumDm,1:NN)
+     write(probe_u,*) 'sorptivity',SorpDmCp(1:NumDm,1:NN)
+     write(probe_u,*) 'event',merge(1,0,FlEndSrpEvt(1:NumDm,1:NN))
+     close(probe_u)
+     close(diag_u)
+     open(newunit=probe_u,file='outcome.txt',status='replace')
+     write(probe_u,*) 'THRESHOLD_OPERATOR_ONLY',trim(probe_side)
+     close(probe_u)
+     stop 0
+    end if
+   end if
+'''
+    assert head.count(marker)==1
+    (R/'headcalc_threshold.f90').write_text(head.replace(marker,marker+code,1),encoding='cp1252')
+
+def build_probe(opt):
+    out=WORK/'native'/opt;obj=out/'obj';logs=[]
+    commands=[['gfortran','-'+opt,'-finit-local-zero','-fallow-argument-mismatch','-cpp','-Dlinux','-ffree-line-length-none','-I',str(obj),'-c',str(R/'headcalc_threshold.f90'),'-o',str(out/'threshold.o')],
+     ['gfortran','-o',str(out/'threshold.exe'),*map(str,[p for p in sorted(obj.glob('*.o')) if p.name!='headcalc.o']),str(out/'threshold.o'),str(out/'libttutil.a')]]
+    for cmd in commands:
+        t=time.perf_counter();p=subprocess.run(cmd,cwd=obj,capture_output=True,text=True,timeout=60);logs.append(dict(command=cmd,returncode=p.returncode,seconds=time.perf_counter()-t,output=p.stdout+p.stderr));save(R/(opt+'_PROBE_BUILD.json'),logs);assert p.returncode==0,p.stderr
+    save(R/(opt+'_PROBE_IDENTITY.json'),dict(exe_sha256=sha(out/'threshold.exe'),source_sha256=sha(R/'headcalc_threshold.f90'),inherited_diagnostic_identity=json.loads((R/(opt+'_IDENTITY.json')).read_text())))
+
+def run_probe(opt,side):
+    case=WORK/(opt+'-'+side);case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
+    for x in json.loads((OLD/'audit/CASE_IDENTITY.json').read_text()):
+        p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(OLD/'phase/O2/V1/case'/p,case/p)
+    solver=R/'data/O2/V2/solver_1.txt'
+    h=next(s.split()[1:] for s in solver.read_text().splitlines() if s.split()[0]=='h')
+    (case/'probe_h.txt').write_text(' '.join(h)+'\n')
+    env=os.environ.copy();env.update(STAG05_VARIANT='V1',STAG05_PROBE_SIDE=side);env.pop('UNRED04_DIRECT_DT',None)
+    cmd=[str(WORK/'native'/opt/'threshold.exe'),'./swap.swp'];t=time.perf_counter()
+    try:
+        p=subprocess.run(cmd,cwd=case,env=env,capture_output=True,text=True,timeout=20);q=dict(command=cmd,side=side,returncode=p.returncode,censored=False,seconds=time.perf_counter()-t,stdout=p.stdout,stderr=p.stderr)
+    except subprocess.TimeoutExpired:q=dict(command=cmd,side=side,censored=True,seconds=time.perf_counter()-t)
+    save(R/(opt+'_'+side+'_RUN.json'),q);out=R/'data'/opt/side;out.mkdir(parents=True,exist_ok=True)
+    for p in case.glob('*.txt'):shutil.copy2(p,out/p.name)
+    print(json.dumps(q),flush=True)
+
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('action');p.add_argument('--opt',default='O2');p.add_argument('--variant',default='V1');a=p.parse_args()
     if a.action=='prepare':prepare()
     elif a.action=='build':build(a.opt)
     elif a.action=='run':run(a.opt,a.variant)
+    elif a.action=='prepare-probe':prepare_probe()
+    elif a.action=='build-probe':build_probe(a.opt)
+    elif a.action=='run-probe':run_probe(a.opt,a.variant)
