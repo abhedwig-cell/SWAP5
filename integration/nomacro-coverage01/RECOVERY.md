@@ -3,9 +3,9 @@
 Baseline: integration/f-ci-canonical e157e65ff (2026-11-13).
 Branch/worktree: codex/nomacro-coverage01 / C:/Users/Veldh012/swap5-nomacro-coverage01.
 Frozen RC1: release/swap5-nomacro-rc1-20261112; never modified.
-Implementation: inventory complete; experimental process/input route next.
+Implementation: experimental process/input route and executable qualification driver persisted; not yet tested.
 Test/qualification: not yet run; no new scientific qualification.
-Next action: implement explicit experimental project selection with exact input inventory,
+Next action: hosted O0/O2 compilation/execution of experimental project selection with exact input inventory,
 original process controls, generic grid/calendar metadata and existing daily transactions.
 Then compile/run O0/O2 on hosted runner; full original SaltFarm08/16 trajectories,
 own restarts, isolation, discard/replay and unchanged three-profile regression.

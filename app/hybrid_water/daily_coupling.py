@@ -169,7 +169,9 @@ def validate_bundle(bundle, reference, project):
         ext=identity['irrigation_extension']
         if project not in (h.HUPSEL,h.SALTFARM) or ext['source_sha256']!=h.sha(Path(extension_source)) or ext['object_sha256']!=h.sha(bundle/'irrigation.o'):
             raise ValueError('Foreign irrigation extension source/object')
-    case = reference / 'distribution/SWAP_4.3.1/cases' / project.case
+    case = h.project_case(reference, project)
+    if project.input_directory and identity.get('experimental_input_adapter') != h.sha(h.APP/'experimental_project.py'):
+        raise ValueError('Experimental input adapter differs')
     for name, digest in meta['inputs'].items():
         if h.sha(case / name) != digest:
             raise ValueError('Original input differs: ' + name)
@@ -226,8 +228,7 @@ class CoupledDailyColumn:
     """
     def __init__(self, bundle, reference, output, project, coupling_id, *,
                  origin=None, day=0, adopt_native=False, forcing_mode=ORIGINAL_FORCING):
-        if project not in h.PROJECTS:
-            raise ValueError('Unregistered project')
+        h.project_case(reference, project)
         if not isinstance(coupling_id, str) or not coupling_id or len(coupling_id) > 128:
             raise ValueError('Explicit coupling identity is required')
         if (forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING,GROUNDWATER_FORCING,*IRRIGATION_MODES) or

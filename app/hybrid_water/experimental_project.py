@@ -1,0 +1,154 @@
+"""Explicit, source-bound input adapter for implemented no-macro process families.
+
+This is experimental admission, never production or scientific qualification.
+Original TTUTIL still owns numeric/physical input validation. This preflight
+rejects process families whose day-state/ledger integration is not implemented.
+"""
+from datetime import date
+import hashlib
+import json
+from pathlib import Path
+import re
+
+MODEL = 'HYBRID_NOMACRO_WATER'
+ROOT = Path(__file__).resolve().parents[2]
+ASSIGN = re.compile(r'(?mi)^[ \t]*(SW\w+)[ \t]*=[ \t]*([^\s!]+)')
+
+
+def switches(text):
+    result = {}
+    for name, value in ASSIGN.findall(text):
+        name = name.upper()
+        if name in result or not re.fullmatch(r'[+-]?\d+', value):
+            raise ValueError('Ambiguous/noninteger process selector: '+name)
+        result[name] = int(value)
+    return result
+
+
+def one(text, name, pattern):
+    values = re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*('+pattern+r')[ \t]*(?:!.*)?$', text)
+    if len(values) != 1:
+        raise ValueError('Missing/ambiguous original input: '+name)
+    return values[0]
+
+
+def inventory(directory):
+    directory = Path(directory)
+    paths = list(directory.rglob('*'))
+    if not paths or any(p.is_symlink() for p in paths):
+        raise ValueError('Experimental input must be a nonempty regular directory')
+    # Flat original input namespace: workers may never read a caller path or
+    # stale output/restart outside their private copied input directory.
+    if any(not p.is_file() or p.parent != directory for p in paths):
+        raise ValueError('Experimental project requires flat regular input files')
+    reserved = {'restart.end', 'macro-origin.bin', 'macro.bin', 'result.end', 'swap.ok', 'swap.err'}
+    if any(p.name.lower() in reserved for p in paths):
+        raise ValueError('Experimental input collides with a worker output/restart name')
+    return tuple(sorted((p.name, hashlib.sha256(p.read_bytes()).hexdigest()) for p in paths))
+
+
+def inspect(directory):
+    directory = Path(directory).resolve()
+    inputs = inventory(directory)
+    text = (directory/'swap.swp').read_text(encoding='cp1252')
+    selected = switches(text)
+    mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0},
+                 'SWSNOW': {0}, 'SWFROST': {0}, 'SWHEA': {1}, 'SWCALT': {2},
+                 'SWTOPBHEA': {1}, 'SWBOTBHEA': {1}, 'SWCROP': {0, 1},
+                 'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
+                 'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
+    mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
+                     SWDIVIDE={1}, SWRAIN={0, 2}, SWCFBS={0}, SWREDU={1, 2},
+                     SWKMEAN={1, 2}, SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
+    for name, allowed in mandatory.items():
+        if selected.get(name) not in allowed:
+            raise ValueError('Unsupported experimental process/state: '+name)
+    if selected['SWSOLU']:
+        for name in ('SWSP', 'SWDC', 'SWBR'):
+            if selected.get(name) != 0:
+                raise ValueError('Solute ledger/state does not support '+name)
+    elif selected['SWIRFIX']:
+        raise ValueError('Irrigation day-state currently requires the solute auxiliary codec')
+    if selected['SWIRFIX'] and selected.get('SWIRGFIL') != 0:
+        raise ValueError('Experimental fixed irrigation must be embedded in SWP')
+
+    originals = ROOT/'reference/swap-4.3.1/projects'
+    roots = [originals/n for n in ('1.hupselbrook', '2.grassgrowth', '4.salinitystress-04dS')]
+    allowed = {}
+    for root in roots:
+        for name, value in switches((root/'swap.swp').read_text(encoding='cp1252')).items():
+            allowed.setdefault(name, set()).add(value)
+    # Stateless original dispatches; complete original Fortran bodies are kept.
+    # Dynamic groundwater reservoir (8/9), hysteresis and stateful surfacewater
+    # are deliberately excluded until their additional memory is qualified.
+    allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
+                   SWETR={0, 1}, SWCROP={0, 1})
+    for name, value in selected.items():
+        if value not in allowed.get(name, set()):
+            raise ValueError('Unimplemented experimental selector: '+name+'='+str(value))
+    if selected.get('SWBBCFILE') == 1:
+        # Resolve the actual original boundary file, never assume swap.bbc.
+        name = one(text, 'BBCFIL', r"'[^']+'").strip("'")
+        boundary = switches((directory/(name if name.lower().endswith('.bbc') else name+'.bbc')).read_text(encoding='cp1252'))
+    else:
+        boundary = selected
+    if boundary.get('SWBOTB') not in range(1, 8):
+        raise ValueError('Unsupported/missing original lower boundary')
+    for name, value in boundary.items():
+        if value not in allowed.get(name, set()):
+            raise ValueError('Unsupported boundary selector: '+name)
+
+    crop_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.crp')]
+    drain_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.dra')]
+    for path in directory.iterdir():
+        if path.suffix.lower() not in ('.swp', '.crp', '.dra', '.bbc', '.ini'):
+            continue
+        body = path.read_text(encoding='cp1252')
+        # Reject paths even in dormant file settings; every input stays inside
+        # the private worker. Other quoted strings (CSV groups/project) remain.
+        active = '\n'.join(line.split('!', 1)[0] for line in body.splitlines()
+                           if line.strip() and not line.lstrip().startswith('*'))
+        if any(token not in ('./', '.\\') and ('/' in token or '\\' in token or ':' in token)
+               for token in re.findall(r"'([^'\n]*)'", active)):
+            raise ValueError('External/relative path in original input: '+path.name)
+        sig = switches(body)
+        if path.suffix.lower() == '.crp':
+            schedule = one(body, 'SCHEDULE', r'[+-]?\d+')
+            if schedule not in ('0', '1') or (schedule == '1' and not selected['SWSOLU']):
+                raise ValueError('Scheduled irrigation requires the existing complete auxiliary codec')
+            if sig not in crop_signatures:
+                raise ValueError('Crop process/state combination is not implemented: '+path.name)
+            if not selected['SWSOLU'] and sig.get('SWWOFOST', 0) != 3:
+                raise ValueError('WOFOST day-state currently requires the solute auxiliary codec')
+        if path.suffix.lower() == '.dra' and sig not in drain_signatures:
+            raise ValueError('Drainage process/state combination is not implemented: '+path.name)
+    start = one(text, 'TSTART', r'\d{4}-\d{2}-\d{2}')
+    end = one(text, 'TEND', r'\d{4}-\d{2}-\d{2}')
+    if date.fromisoformat(end) < date.fromisoformat(start):
+        raise ValueError('Invalid original project period')
+    table = re.findall(r'(?mi)^[ \t]*ISUBLAY[ \t]+ISOILLAY[ \t]+HSUBLAY[ \t]+NCOMP[^\n]*\n((?:[ \t]*\d+[^\n]*\n)+)', text)
+    if len(table) != 1:
+        raise ValueError('Missing/ambiguous original grid')
+    rows = [line.split() for line in table[0].splitlines()]
+    if any(len(row) != 4 or not row[3].isdigit() or int(row[3]) < 1 for row in rows):
+        raise ValueError('Invalid original grid row')
+    nodes = sum(int(row[3]) for row in rows)
+    if not 1 <= nodes <= 1000:
+        raise ValueError('Unsupported original grid size')
+    return dict(inputs=inputs, start_date=start, end_date=end, nodes=nodes,
+                solute=bool(selected['SWSOLU']), selectors=selected, boundary=boundary)
+
+
+def load(directory):
+    from daily_host import HybridProject
+    report = inspect(directory)
+    key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
+    return HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
+                         solute=report['solute'], end_date=report['end_date'],
+                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'])
+
+
+def validate(project):
+    if not project.input_directory or load(project.input_directory) != project:
+        raise ValueError('Experimental input, process configuration or metadata differs')
+    return Path(project.input_directory)

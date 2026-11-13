@@ -1,0 +1,214 @@
+"""Actual source-bound experimental input/process qualification, O0/O2.
+
+No tolerance changes and no promotion of inherited scientific FAILs.
+Run on a dedicated hosted runner; every output is owned by this work unit.
+"""
+import argparse
+import contextlib
+import csv
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import sys
+import time
+import zipfile
+
+ROOT = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(ROOT/'app/hybrid_water'))
+import daily_host as h
+import experimental_project as e
+from daily_coupling import CoupledDailyColumn, validate_bundle
+from prepare_saltfarm import prepare as saltfarm
+
+
+def physical(row):
+    return {k: v for k, v in row.items() if k not in ('column', 'revision')}
+
+
+def rows(directory):
+    return [json.loads(line) for line in (directory/'daily.jsonl').read_text().splitlines()]
+
+
+def payload(path):
+    with zipfile.ZipFile(path) as z:
+        return {name: z.read(name) for name in ('result.end', 'macro.bin')}
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--output', type=Path, required=True)
+    args = parser.parse_args()
+    out = args.output.resolve()
+    out.mkdir(parents=True, exist_ok=False)
+    reference = out/'provider'
+    events, reports = [], []
+
+    def call(label, arguments, *, refuse=False, absent=None, timeout=300):
+        cmd = [sys.executable, '-B', str(ROOT/'tools/solute/run_water.py'), *map(str, arguments)]
+        start = time.monotonic()
+        proc = subprocess.run(cmd, cwd=ROOT, capture_output=True, text=True, timeout=timeout)
+        (out/(label+'.log')).write_text(proc.stdout+proc.stderr)
+        events.append(dict(label=label, command=cmd, seconds=time.monotonic()-start,
+                           returncode=proc.returncode, expected_refusal=refuse))
+        (out/'EVENTS.json').write_text(json.dumps(events, indent=2)+'\n')
+        assert (proc.returncode != 0) == refuse, (label, proc.stdout, proc.stderr)
+        if absent is not None:
+            assert not absent.exists(), label+' wrote output before refusal'
+        print(label, 'REFUSED' if refuse else 'PASS', round(events[-1]['seconds'], 2), flush=True)
+
+    call('prepare', ['--no-macro-release', '--prepare-sources', '--reference-work', reference])
+    cases = {}
+    for key, run_id in [('salt08', 2), ('salt16', 3)]:
+        case = out/('input-'+key)
+        saltfarm(case, run_id)
+        cases[key] = case
+    for key, name, value in [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]:
+        case = out/('input-'+key)
+        shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
+        path = case/'swap.swp'
+        text, count = re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',
+                              lambda m: m[1]+str(value), path.read_text(encoding='cp1252'))
+        assert count == 1
+        path.write_text(text, encoding='cp1252')
+        cases[key] = case
+
+    for key, case in cases.items():
+        project = e.load(case)
+        full_rows = None
+        for opt in ('O0', 'O2'):
+            label = key+'-'+opt
+            bundle = out/(label+'-build')
+            base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference]
+            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
+            reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
+            cut, end = (2, 5) if opt == 'O0' else (365, project.last_day)
+            control, resumed, endpoint = [out/(label+'-'+n) for n in ('control', 'resumed', 'endpoint')]
+            call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut])
+            data = rows(control)
+            assert len(data) == end and all(r['committed'] for r in data)
+            assert all(abs(r['independent_residual_cm']) <= 1e-10 and abs(r['kernel_residual_cm']) <= 1e-10
+                       and abs(r.get('solute_independent_residual_mg_cm2', 0)) <= 1e-10 for r in data)
+            origin = control/f'accepted-column-1-day-{cut}.zip'
+            before = h.sha(origin)
+            call(label+'-resumed', reuse+['--output', resumed, '--days', cut+2, '--checkpoint-at', cut+2,
+                                        '--restart', origin, '--restart-day', cut])
+            # Fresh cold control through the same endpoint is needed to compare
+            # complete native bytes, including output counters, not just stocks.
+            call(label+'-endpoint', reuse+['--output', endpoint, '--days', cut+2, '--checkpoint-at', cut+2])
+            assert list(map(physical, rows(resumed))) == list(map(physical, data[cut:cut+2]))
+            assert payload(resumed/f'accepted-column-1-day-{cut+2}.zip') == payload(endpoint/f'accepted-column-1-day-{cut+2}.zip')
+            assert h.sha(origin) == before
+            report = dict(configuration=key, optimization=opt, completed_days=end,
+                          maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in data),
+                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in data),
+                          restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=True,
+                          original_input_sha256=dict(project.input_inventory), build_sha256=h.sha(bundle/'BUILD.json'),
+                          scope='Experimental functional evidence; not scientific equivalence')
+            reports.append(report)
+            (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
+            if opt == 'O2':
+                full_rows = data
+                # Two independent original workers under one kernel, at two
+                # different physical/calendar origins, stepped in alternating order.
+                short = out/(label+'-short')
+                call(label+'-short', reuse+['--output', short, '--days', 5, '--checkpoint-at', 2])
+                meta, actual = validate_bundle(bundle, reference, project)
+                isolated = out/(label+'-isolated'); isolated.mkdir()
+                restored = out/(label+'-isolation-origin')
+                receipt = h.verify_checkpoint(short/'accepted-column-1-day-2.zip', 2, meta['binding'], restored)
+                with contextlib.ExitStack() as stack:
+                    host = h.DailyHost(stack, h.executable(bundle, 'day_donor'), h.executable(bundle, 'day_kernel'),
+                                       actual, isolated, [h.ColumnStart(name='cold'), h.ColumnStart(day=2, origin=restored, receipt=receipt, name='warm')],
+                                       runtime=True, checkpoint_enabled=True, project=project)
+                    for offset in range(3):
+                        for column, index in [(2, offset+2), (1, offset)]:
+                            assert physical(host.step(column)) == physical(full_rows[index])
+                    host.close()
+                external = CoupledDailyColumn(bundle, reference, out/(label+'-external'), project, 'coverage-'+key)
+                first = external.prepare(); external.discard(first)
+                assert external.day == external.revision == 0 and external.checkpoint is None
+                replay = external.prepare()
+                assert replay.budget == first.budget
+                external.accept(replay)
+                accepted = external.checkpoint; digest = h.sha(accepted)
+                second = external.prepare(); external.discard(second)
+                assert external.day == 1 and h.sha(accepted) == digest
+                repeat = external.prepare(); assert repeat.budget == second.budget
+                external.accept(repeat)
+                recovered = CoupledDailyColumn(bundle, reference, out/(label+'-recovered'), project, 'coverage-'+key,
+                                               origin=external.checkpoint, day=2)
+                third = recovered.prepare()
+                assert physical({k:v for k,v in third.budget.items() if k != 'candidate_only'} | {'committed':True}) == physical(full_rows[2])
+                recovered.discard(third)
+                report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True)
+                (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
+
+        # The unchanged original executable is a comparison reference, never
+        # patched or reused as an acceptance oracle for its known defects.
+        donor = h.executable(reference/'build', 'swap_b0_gfortran')
+        original = out/(key+'-original'); shutil.copytree(case, original)
+        started = time.monotonic()
+        with (original/'stdout').open('wb') as log:
+            result = subprocess.run([str(donor), './swap.swp'], cwd=original, stdout=log, stderr=subprocess.STDOUT, timeout=180)
+        comparison = dict(returncode=result.returncode, seconds=time.monotonic()-started,
+                          swap_ok=(original/'swap.ok').is_file(),
+                          error=(original/'swap.err').read_text(encoding='cp1252') if (original/'swap.err').exists() else '',
+                          scientific_equivalence='NOT_QUALIFIED', original_executable_sha256=h.sha(donor))
+        # Report numerical differences on actual common CSV fields without
+        # assigning new scientific tolerances or relabelling inherited FAILs.
+        def csv_rows(path):
+            lines = [line for line in path.read_text(encoding='cp1252').splitlines() if line.strip() and not line.startswith('*')]
+            return list(csv.DictReader(lines))
+        left = csv_rows(original/'result_output.csv')
+        right = csv_rows(out/(key+'-O2-control')/'original/result_output.csv')
+        comparison['original_output_rows'] = len(left)
+        comparison['hybrid_output_rows'] = len(right)
+        if len(left) == len(right):
+            deltas = {}
+            for field in left[0]:
+                try:
+                    deltas[field] = max(abs(float(a[field])-float(b[field])) for a,b in zip(left,right,strict=True))
+                except (ValueError, KeyError, TypeError):
+                    pass
+            comparison['maximum_numeric_csv_differences'] = deltas
+        (out/(key+'-COMPARISON.json')).write_text(json.dumps(comparison, indent=2)+'\n')
+        assert comparison['swap_ok'] and not comparison['error'].strip() and result.returncode in (0, 100)
+
+    # All refusals occur before any model/output ownership is acquired.
+    case = cases['salt08']; control = case/'swap.swp'; saved = control.read_bytes()
+    base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
+            '--build-bundle', out/'salt08-O2-build']
+    bad = [('macro', 'SWMACRO', 1), ('snow', 'SWSNOW', 1), ('frost', 'SWFROST', 1),
+           ('hysteresis', 'SWHYST', 1), ('solute', 'SWSOLU', 2), ('adsorption', 'SWSP', 1),
+           ('decay', 'SWDC', 1), ('reservoir', 'SWBR', 1), ('surfacewater', 'SWDRA', 2),
+           ('heat', 'SWHEA', 0), ('dynamic-bottom', 'SWBOTB', 9)]
+    for label, name, value in bad:
+        target = out/('refused-'+label)
+        try:
+            text, count = re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+', lambda m:m[1]+str(value), saved.decode('cp1252'))
+            assert count == 1
+            control.write_text(text, encoding='cp1252')
+            call('negative-'+label, base+['--output', target, '--days', 1], refuse=True, absent=target)
+        finally:
+            control.write_bytes(saved)
+    for label, suffix in [('duplicate', b'\nSWMACRO = 0\n'), ('changed-input', b'\n! changed input binding\n')]:
+        target=out/('refused-'+label)
+        try:
+            control.write_bytes(saved+suffix)
+            call('negative-'+label, base+['--output', target, '--days', 1], refuse=True, absent=target)
+        finally:
+            control.write_bytes(saved)
+    target=out/'refused-release-claim'
+    call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
+    result = dict(status='EXPERIMENTAL_FUNCTIONAL_COVERAGE_PASS', source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+                  configurations=reports, independent_new_historical_projects=0,
+                  new_original_workbook_configurations=2, new_derived_process_configurations=2,
+                  science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
+    (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
+    print(result['status'], flush=True)
+
+
+if __name__ == '__main__':
+    main()

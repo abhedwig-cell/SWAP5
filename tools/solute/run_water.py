@@ -184,7 +184,10 @@ def run_hupsel(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL]+[p.model for p in PROJECTS])
+    from experimental_project import MODEL as experimental_model
+    parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL,experimental_model]+[p.model for p in PROJECTS])
+    parser.add_argument('--experimental-project', type=Path,
+                        help='Explicit experimental flat original project directory; no production/science claim')
     parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
@@ -205,7 +208,7 @@ def main():
     if args.prepare_sources:
         if (not args.no_macro_release or args.reference_work is None or args.model is not None
             or args.build_only or any(v is not None for v in (args.output,args.prepare_archive,args.build_bundle,
-                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt))):
+                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project))):
             parser.error('--prepare-sources requires only --no-macro-release and a new --reference-work')
         try:
             prepared=user_prepare.prepare(args.reference_work)
@@ -215,10 +218,13 @@ def main():
         return 0
     if args.model is None:
         parser.error('--model is required for a build or run')
+    experimental = args.experimental_project is not None
+    if (args.model == experimental_model) != experimental or (experimental and args.no_macro_release):
+        parser.error('HYBRID_NOMACRO_WATER requires --experimental-project and cannot claim --no-macro-release')
     if args.no_macro_release and args.model not in (GRASSGROWTH.model,HUPSEL.model,SALTFARM.model):
         parser.error('Release selection is limited to the three registered no-macro hybrid projects; active macropores are excluded')
-    if (args.build_only or args.build_bundle is not None) and not args.no_macro_release:
-        parser.error('--build-only/--build-bundle require --no-macro-release')
+    if (args.build_only or args.build_bundle is not None) and not (args.no_macro_release or experimental):
+        parser.error('--build-only/--build-bundle require --no-macro-release or --experimental-project')
     if args.build_only and (args.build_bundle is not None or any(v is not None for v in (args.days,args.restart,args.restart_day,args.checkpoint_at))):
         parser.error('--build-only does not run or resume a model')
     if args.no_macro_release and args.model==ANDELST.model:
@@ -235,7 +241,7 @@ def main():
         return 0
     if args.output is None:
         parser.error("--output is required for a model run")
-    if args.no_macro_release and args.output.exists():
+    if (args.no_macro_release or experimental) and args.output.exists():
         parser.error('Release output directory must be new')
     if args.model == HUPSEL_MODEL:
         if (args.hupsel_build is None or args.grass_build is not None or args.reference_work is not None
@@ -255,7 +261,14 @@ def main():
         return run_grass(args)
     if args.reference_work is None or args.grass_build is not None or args.hupsel_build is not None:
         parser.error("Andelst requires --reference-work")
-    project={p.model:p for p in PROJECTS}[args.model]
+    try:
+        if experimental:
+            from experimental_project import load
+            project = load(args.experimental_project)
+        else:
+            project={p.model:p for p in PROJECTS}[args.model]
+    except (OSError, ValueError) as error:
+        parser.error(str(error))
     last_day=project.last_day
     args.days = last_day if args.days is None else args.days
     if (args.restart is None) != (args.restart_day is None):
@@ -266,11 +279,12 @@ def main():
     if args.checkpoint_at is not None and not first < args.checkpoint_at <= args.days:
         parser.error("The checkpoint day must belong to the requested run")
 
-    if args.no_macro_release:
+    if args.no_macro_release or experimental:
         try:
             prepared_provider=user_prepare.validate(args.reference_work)
-            user_prepare.check_inputs(args.reference_work, project)
-            require_no_macro_input(args.reference_work, project)
+            if not experimental:
+                user_prepare.check_inputs(args.reference_work, project)
+                require_no_macro_input(args.reference_work, project)
         except (OSError, ValueError) as error:
             parser.error(str(error))
 
@@ -317,7 +331,7 @@ def main():
         expired.set()
         for process in workers:
             if process.poll() is None:process.kill()
-    seconds=args.timeout_seconds or (60 if args.no_macro_release else None)
+    seconds=args.timeout_seconds or (60 if args.no_macro_release or experimental else None)
     timer=threading.Timer(seconds,stop) if seconds else None
     started=time.perf_counter();host_module.start_process=track
     if timer:timer.start()
@@ -338,6 +352,9 @@ def main():
             process.wait(timeout=5)
     result['model_and_controller_seconds']=time.perf_counter()-started
     result['no_macro_release']=args.no_macro_release
+    if experimental:
+        result['execution_mode']='EXPERIMENTAL_NOT_PRODUCTION_QUALIFIED'
+        result['scientific_equivalence']='NOT_QUALIFIED'
     report = {
         "model": args.model, "kernel_optimization": args.kernel_opt,
         "input_sha256": inputs, "source_sha256": {"SWAP.ZIP": binding["swap_source"], "TTUTIL.ZIP": binding["ttutil_source"]},
