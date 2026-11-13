@@ -30,7 +30,7 @@ Die verse controle geeft telkens weer een lokaal residu van ongeveer `0.1284 cm/
 | --- | --- | --- |
 | h45 | `-10.039819393461206 cm` | exact gelijk |
 | Uitwisseling compartiment 45 | `0.04526139529513873 cm/d` | `0.1736682761306392 cm/d` |
-| Grootste lokale residu | `7.95e-7 cm/d` ongeveer | `0.1284076765339081 cm/d` |
+| Grootste lokale residu | `7.956984076351592e-7 cm/d` | `0.1284076765339081 cm/d` |
 
 De eindcontrole verwerpt die voorlopige oplossing; daarna begint dezelfde combinatie van actief itereren, grensoverschrijden en opnieuw bevriezen. In totaal zijn er 120 backtrack-evaluaties, waarvan 19 met bevroren uitwisseling, en tien uitgeputte lijnzoekingen. De laatste gebruikte solverresidunorm is `0.0018398763633383775 cm/d`, met bevroren uitwisseling. Dat getal is **geen** verse gekoppelde nauwkeurigheidsmaat en mag niet als bewijs worden gebruikt dat V1 nauwkeuriger is dan V2.
 
