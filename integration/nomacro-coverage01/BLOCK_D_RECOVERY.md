@@ -37,3 +37,15 @@ original text swap.ini still declares SWSOLU1. The original physical-consistency
 check is retained. The explicitly derived water-only fixture now changes both
 SWP and native-text SWSOLU to0; no solute stock is fabricated or original input
 silently disabled. Native format/NaN/truncation/logical controls added separately.
+
+Canonical PR1672 common-GNU FP policy merged between C preflight and admission.
+C actual mergea6720a0e8 deliberately includes that peer postimage (tree differs
+from old qualified C head); exact canonical C cohort dispatched separately.
+D merged canonical, including owner FP flags/provider validation, without conflict.
+No FP changes developed here. D qualification must use that current profile.
+
+Additional active-growth own windows200to202 (SaltFarm) and530to532 (Hupsel)
+check emitted-crop flag1 and nonzero actual WOFOST rates, complete physical rows
+and entire native/management endpoints. Dormant winter windows alone cannot
+qualify water-only WOFOST management state. New water-only formats also exercise
+resealed wrong-format/truncated/NaN/logical-flag refusals with origin preserved.
