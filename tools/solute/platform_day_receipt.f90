@@ -12,7 +12,7 @@ module rc1_day_receipt_probe
   use MOD_snow, only: ssnow
   use plant_interface, only: sicact,sw_inter,crsflx_out
   use variables, only: swbotb,theta,dt,qbot,pond,ivolbeg,ipondbeg,issnowbeg,isicbeg, &
-    runon,runots,epd,reva
+    runon,runots,epd,reva,tcum
   implicit none
   private
   public :: projected_day_receipt
@@ -21,6 +21,11 @@ contains
     integer,parameter :: wide=selected_real_kind(33)
     real(8) :: terms(28),drip,interception,bottom,stock
     integer :: node
+    ! A daily receipt is not an intraday acceptance contract: interception and
+    ! canopy states follow the original daily process order. Match precisely
+    ! TimeControl(3)'s existing end-of-day test, including its unchanged dtCrit.
+    residual=0d0
+    if(1d0-(tcum+dt)>1d-8)return
     if(swmacro/=0.or.swsnow/=0.or.swbotb/=6) error stop 'Private day receipt probe domain'
     ! Match the original binary64 integration order, including per-node drip.
     drip=iqssdi

@@ -87,8 +87,13 @@ end subroutine headcalc
         shutil.copyfile(a.full/'original'/name, case/name)
     payload = ''.join(f'{day} -1\n' for day in range(1,a.days+1))+'0 -1\n'
     with (out/'stdout').open('wb') as stdout, (out/'stderr').open('wb') as stderr:
-        c = subprocess.run([str(exe), './swap.swp'], cwd=case, input=payload.encode(),
-                           stdout=stdout, stderr=stderr, timeout=60)
+        try:
+            c = subprocess.run([str(exe), './swap.swp'], cwd=case, input=payload.encode(),
+                               stdout=stdout, stderr=stderr, timeout=60)
+        except subprocess.TimeoutExpired:
+            (a.output/'RESULT.json').write_text(json.dumps(dict(status='CENSORED_MODEL_CAP',
+                failed_mode=mode,cap_seconds=60,completed_modes=results),indent=2)+'\n')
+            raise
     assert c.returncode == 100, c.returncode
     frames = {}
     for line in (out/'stdout').read_text(encoding='cp1252').splitlines():
