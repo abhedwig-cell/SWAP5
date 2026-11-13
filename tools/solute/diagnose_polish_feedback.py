@@ -20,16 +20,17 @@ p.add_argument('--receipt-guard',action='store_true',help='Private absolute day-
 p.add_argument('--no-feedback',action='store_true',help='Test receipt guard without adaptive feedback change')
 p.add_argument('--primary-feedback',action='store_true',help='Use first original convergence count for original adaptive controller')
 p.add_argument('--quadmath',action='store_true',help='Private GNU quadmath rounded elementary functions; no feedback change')
+p.add_argument('--same-core',action='store_true',help='Single private observation of unchanged core, no feedback modification')
 a = p.parse_args()
 a.output.mkdir()
 meta = json.loads((a.bundle/'BUILD.json').read_text())
 results = {}
-candidate='quadmath' if a.quadmath else 'primary-feedback' if a.primary_feedback else 'receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
-for mode in ('baseline', candidate):
+candidate='same-core' if a.same_core else 'quadmath' if a.quadmath else 'primary-feedback' if a.primary_feedback else 'receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
+for mode in ((candidate,) if a.same_core else ('baseline',candidate)):
     out = a.output/mode
     out.mkdir()
     source = (a.bundle/'headcalc.f90').read_text(encoding='cp1252')
-    if mode != 'baseline' and not a.no_feedback and not a.quadmath:
+    if mode != 'baseline' and not a.no_feedback and not a.quadmath and not a.same_core:
         assert source.count('\nsubroutine headcalc\n') == 1
         source = source.replace('\nsubroutine headcalc\n',
                                 '\nsubroutine rc1_headcalc_impl(rc1_polish_only)\n', 1)
