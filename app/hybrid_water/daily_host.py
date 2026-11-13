@@ -16,9 +16,10 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-from donor_sources import records, render_checkpoint, render_day_return, replace, sha
+from donor_sources import records, render_checkpoint, render_day_return, render_no_macro_timecontrol, replace, sha
 
 APP = Path(__file__).resolve().parent
+NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
 
@@ -165,6 +166,9 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
+    if not project.macro:
+        render_no_macro_timecontrol(donor_build/'swap-selected',output)
+        patched.insert(0,'timecontrol')
     if checkpoint_day is not None or runtime_checkpoint:
         swap = output / "swap.f90"
         day_source = swap.read_text(encoding="cp1252")
@@ -606,6 +610,8 @@ end module MOD_wofost""")
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
+        build_identity['time_step_policy'] = NO_MACRO_TIME_POLICY
+        build_identity['time_step_policy_source'] = sha(APP/'donor_sources.py')
         library = compile_restart_publisher(output)
         build_identity['restart_publisher'] = {
             'source_sha256': sha(ROOT/'app/support/restart_publish.c'),

@@ -306,3 +306,16 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                           if runtime else "                  if (.NOT. fl_cropcalendar .and. rw == 1) exit"))
         (output / "swapoutput.f90").write_text(source, encoding="cp1252")
     return fields
+
+
+def render_no_macro_timecontrol(selected, output):
+    """Use the configured daily proposal, independent of yesterday's event cut.
+
+    This numerical policy changes no event cap, Newton test or step-rejection
+    rule. It owns no new saved state: original TimeControl(2) applies DTMAX at
+    every day start, including a native restart, before its original event cap.
+    """
+    source=(selected/'timecontrol.f90').read_text(encoding='cp1252')
+    source=replace(source,'         dt = max(dt, dsqrt(dtmin*dtmax))',
+                   '         dt = dtmax  ! SWAP5 configured-dtmax-daily-v1')
+    (output/'timecontrol.f90').write_text(source,encoding='cp1252')
