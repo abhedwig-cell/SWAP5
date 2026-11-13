@@ -1,0 +1,44 @@
+{
+  "work_unit": "SWAP5-NOMACRO-COVERAGE01",
+  "block": "D_CHEMISTRY_INDEPENDENT_MANAGEMENT",
+  "status": "FINAL_QUALIFICATION_RUNNING_NOT_ADMITTED",
+  "source": "42f066bf05df510bc7d8dd3f5a3305235762fac5",
+  "pr": 1673,
+  "workflow_run": 43418605842,
+  "predecessor_runs": [
+    43418610124,
+    43418614412
+  ],
+  "derived_configurations": 6,
+  "new_independent_historical_projects": 0,
+  "generated_donor_optimization": [
+    "O0",
+    "O2"
+  ],
+  "immutable_original_provider_optimization": "O2",
+  "history_state": "WATER_ONLY_HYSTERESIS_OR_SNOW_REFUSED_BEFORE_BUILD",
+  "retained_history_failures": [
+    {
+      "source": "dec0bbfa1c287764b743b2b731a26bb4e1593b78",
+      "run": 43416437150
+    },
+    {
+      "source": "640565a8dee425aad182101d37ee5afb2f6e14a5",
+      "run": 43416681903
+    },
+    {
+      "source": "91de2c7139cec3af597c99f8b2b78976f5d731f2",
+      "run": 43417579030,
+      "hypothesis": "mutable coefficient cache",
+      "outcome": "FAILED_REMOVED"
+    },
+    {
+      "source": "5529505d73e80b12634574d2594c424605823b68",
+      "run": 43418162311,
+      "hypothesis": "startup atmospheric cache",
+      "outcome": "FAILED_REMOVED"
+    }
+  ],
+  "science": "NOT_QUALIFIED; inherited scientific FAILs retained",
+  "next_step": "Follow current runs to terminal, assess exact profiles, preserve raw result, then ready/merge and verify actual canonical postimage"
+}

@@ -1,18 +1,23 @@
 ## Current recovery checkpoint
 
-Workstream SWAP5-NOMACRO-COVERAGE01. Current qualification branch
-codex/nomacro-coverage03, source24a5ed08c. PR1669 admitted980273f81;
-PR1670 admittedaf65d5a26; both exact canonical trees verified and versioned.
-PR1671 has seven new full1096-day profiles qualified in run43408409505;
-next action is its admission/postimage check. Complete new trajectories across
-A/B/C:17 configurations,20457 days. No new independent historical projects.
-Frozen RC111529865e and every scientific FAIL remain unchanged.
+Workstream SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01,
+branch codex/nomacro-coverage04. A/B/C admitted PR1669/1670/1671. Exact C
+postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
+43412494520. Historical old-head evidence remains unchanged and separate.
+A/B/C complete17 additional configurations20457 model days; zero new independent
+historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
 
-Independent next block: codex/nomacro-coverage04 at48d1e5f4f. Water-only Hupsel
-already completes1096 with exact state/external controls; water-only SaltFarm
-initial native SWSOLU tag needs a consistent derived input before further tests.
-No automatic continuation timer is configured. Read BLOCK_*_STATUS/RECOVERY
-for source-bound actual evidence; historical inventory below is dated baseline.
+D draft PR1673, final candidate42f066bf0: six profiles; actual generated O0/O2
+and active-crop windows qualify in new crop workflow43418605842. Both cache
+hypotheses91de/5529 failed and were removed; new water-only hydraulic/snow history
+is atomically refused. No third repair loop. Preserve actual640565a8d raw FAIL.
+All predecessor cohorts dispatched on42f066bf0; inspect latest extended/basic
+runs to terminal status before evidence/admission. Peer private daily-time-policy
+changes were inspected, not imported; see BLOCK_D_RECOVERY.md.
+
+An active serial autonomous Codex goal continues this work; no scheduled timer
+is configured. Later checkpoints must replace this current pointer. Inventory
+below is the dated initial baseline, not a present full-coverage claim.
 
 ---
 
