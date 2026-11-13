@@ -198,6 +198,7 @@ def main():
     parser.add_argument("--restart", type=Path, help="Previously published checkpoint for the selected model")
     parser.add_argument("--restart-day", type=int)
     parser.add_argument("--kernel-opt", choices=["O0", "O2"])
+    parser.add_argument('--donor-opt',choices=['O0','O2'],help='Experimental generated-donor units only; immutable original provider stays O2')
     parser.add_argument('--no-macro-release',action='store_true',help='Explicit macropore-free release; active macro input is rejected before build')
     parser.add_argument('--timeout-seconds',type=float,help='Hard model/controller wall cap; release default60seconds, compile time excluded')
     parser.add_argument('--prepare-sources', action='store_true', help='Build original source provider only; no model execution')
@@ -208,7 +209,7 @@ def main():
     if args.prepare_sources:
         if (not args.no_macro_release or args.reference_work is None or args.model is not None
             or args.build_only or any(v is not None for v in (args.output,args.prepare_archive,args.build_bundle,
-                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project))):
+                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.donor_opt))):
             parser.error('--prepare-sources requires only --no-macro-release and a new --reference-work')
         try:
             prepared=user_prepare.prepare(args.reference_work)
@@ -219,6 +220,8 @@ def main():
     if args.model is None:
         parser.error('--model is required for a build or run')
     experimental = args.experimental_project is not None
+    if args.donor_opt is not None and not experimental:
+        parser.error('--donor-opt is limited to explicit experimental project qualification')
     if (args.model == experimental_model) != experimental or (experimental and args.no_macro_release):
         parser.error('HYBRID_NOMACRO_WATER requires --experimental-project and cannot claim --no-macro-release')
     if args.no_macro_release and args.model not in (GRASSGROWTH.model,HUPSEL.model,SALTFARM.model):
@@ -290,6 +293,11 @@ def main():
 
     output = args.output.resolve()
     profile = dict(budget_retry=project.macro or project.solute, shared_pond_transfer=project.macro, refresh_macro_final=project.macro)
+    if experimental:
+        from experimental_project import inspect
+        # Existing explicit-flux certificate is independent of chemical mode.
+        # Reconstructed1/5 water-only cases retain the independent daily guard.
+        profile['budget_retry']=inspect(project.input_directory)['boundary']['SWBOTB'] not in (1,5)
     project_meta=dict(case=project.case,model=project.model,start_date=project.start_date,nodes=project.nodes,water_tolerance=project.water_tolerance)
     if args.build_bundle is not None:
         from daily_coupling import validate_bundle
@@ -302,6 +310,10 @@ def main():
             if meta['binding'] != binding:
                 raise ValueError('Build checkpoint binding differs')
             actual_opt=next(v[1:] for v in build_id['kernel_flags'] if v in ('-O0','-O2'))
+            donor_opt=next(v[1:] for v in build_id['donor_flags'] if v in ('-O0','-O2'))
+            if args.donor_opt is not None and args.donor_opt != donor_opt:
+                raise ValueError('Requested generated-donor optimization differs from build')
+            args.donor_opt=donor_opt
             if args.kernel_opt is not None and args.kernel_opt != actual_opt:
                 raise ValueError('Requested kernel optimization differs from build')
             args.kernel_opt=actual_opt
@@ -311,9 +323,10 @@ def main():
         output.mkdir(parents=True)
     else:
         args.kernel_opt=args.kernel_opt or 'O2'
+        args.donor_opt=args.donor_opt or 'O2'
         output.mkdir(parents=True)
         donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,
-            runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project)
+            runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)
         binding=checkpoint_identity(inputs,build_id,project=project,**profile)
     origin=None;receipt=None
     if args.restart is not None:
@@ -357,6 +370,7 @@ def main():
         result['scientific_equivalence']='NOT_QUALIFIED'
     report = {
         "model": args.model, "kernel_optimization": args.kernel_opt,
+        "generated_donor_optimization":args.donor_opt,
         "input_sha256": inputs, "source_sha256": {"SWAP.ZIP": binding["swap_source"], "TTUTIL.ZIP": binding["ttutil_source"]},
         "donor_executable_sha256": sha(donor), "kernel_executable_sha256": sha(kernel),
         "origin_day": args.restart_day, "requested_days": args.days, **result,
