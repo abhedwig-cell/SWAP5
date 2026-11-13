@@ -1,0 +1,60 @@
+name: Extend exact private common-arithmetic donor
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: platform-extend-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  probe:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 6
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            tools/solute
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin extension source
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 43399585574
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: platform-math-${{ matrix.os }}-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/common-profile
+      - name: Reuse exact donor full1096 and365-to1096 own native; unchanged guards
+        shell: pwsh
+        run: python -B tools/solute/extend_platform_probe.py --artifact "$env:RUNNER_TEMP/common-profile" --output "$env:RUNNER_TEMP/extended" --days 1096 --cut 365
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: platform-extended-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/extended
+          retention-days: 14

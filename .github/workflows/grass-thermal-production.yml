@@ -1,4 +1,4 @@
-name: Bounded private platform math discriminator
+name: Extend exact private common-arithmetic donor
 on:
   workflow_dispatch:
     inputs:
@@ -7,8 +7,9 @@ on:
         type: string
 permissions:
   contents: read
+  actions: read
 concurrency:
-  group: platform-math-${{ github.ref }}
+  group: platform-extend-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   probe:
@@ -17,7 +18,7 @@ jobs:
       matrix:
         os: [ubuntu-26.04, windows-2022]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 9
+    timeout-minutes: 6
     env:
       PYTHONUTF8: '1'
       OMP_NUM_THREADS: '1'
@@ -26,11 +27,7 @@ jobs:
         with:
           sparse-checkout: |
             app
-            src
             tools/solute
-            tools/vq
-            reference/swap-4.3.1/projects
-            reference/swap-4.3.1/source-archives
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -39,28 +36,25 @@ jobs:
         with:
           compiler: gcc
           version: '15'
-      - name: Exact source
+      - name: Pin extension source
         shell: pwsh
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
-          gfortran --version
-      - name: Identical math arguments and five-day native model
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 43399585574
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          pattern: platform-math-${{ matrix.os }}-*
+          merge-multiple: true
+          path: ${{ runner.temp }}/common-profile
+      - name: Reuse exact donor full1096 and365-to1096 own native; unchanged guards
         shell: pwsh
-        run: python -B tools/solute/run_platform_math_probe.py --output "$env:RUNNER_TEMP/platform-math" --days 5 --common-isa
+        run: python -B tools/solute/extend_platform_probe.py --artifact "$env:RUNNER_TEMP/common-profile" --output "$env:RUNNER_TEMP/extended" --days 1096 --cut 365
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: platform-math-${{ matrix.os }}-${{ github.sha }}
-          path: |
-            ${{ runner.temp }}/platform-math/EVENTS.json
-            ${{ runner.temp }}/platform-math/RESULT.json
-            ${{ runner.temp }}/platform-math/MATH_RUNTIME.json
-            ${{ runner.temp }}/platform-math/COMPILER_CALLS.jsonl
-            ${{ runner.temp }}/platform-math/*.log
-            ${{ runner.temp }}/platform-math/observer
-            ${{ runner.temp }}/platform-math/probe
-            ${{ runner.temp }}/platform-math/bundle/BUILD.json
-            ${{ runner.temp }}/platform-math/provider/PREPARED.json
+          name: platform-extended-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/extended
           retention-days: 14
