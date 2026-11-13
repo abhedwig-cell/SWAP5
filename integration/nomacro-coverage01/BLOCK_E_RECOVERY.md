@@ -42,3 +42,22 @@ macro, MODFLOW or general solver campaign here.
 Invariants2/3/7/13/21/23/29 remain relevant. No model run pending. Active serial
 Codex goal is configured; no scheduled automation timer. Own Python cache was
 left untracked after automatic approval review rejected its optional cleanup.
+
+Source implementation E: original analytic/numeric temperature bodies unchanged;
+preflight admits SWCALT1/2, original top1..4 and bottom1/2. Original future
+oxygen2 still requires numerical heat. Snow+analytic remains explicitly excluded
+pending its original compatible history contract; water-only history guard stays.
+Root switches extend existing SWDROUGHT2 and SWCOMPENSATE2; original equations
+remain in original provider. Nine explicit derived Hupsel fixtures1096 days:
+analytic heat (oxygen off), prescribed bottom, prescribed top temperature,
+top heat flux, original mixed top, Gash, Feddes oxygen, potential drought and
+Walsum compensation. Original parameter tables reused; boundary time tables
+are explicit derived files spanning the full2002..2004 interval.
+Local actual adapter preflight accepts9 fixtures and refuses future oxygen2
+under analytic heat. This is not Fortran execution evidence. Qualification
+will compile actual touched donor/controller O0/O2 with immutable providerO2,
+full O2 trajectories and exact active/seasonal native state, temperature-state
+finite/range diagnostics, water/solute bounds, transactions and references.
+No new physical energy-ledger qualification is inferred from temperature state.
+Peer status refreshed: macro0e2ab095b, PERF3fe7d2023; both tracked files clean,
+private peer qualification ongoing, no peer source imported; canonicalbdf222bef.

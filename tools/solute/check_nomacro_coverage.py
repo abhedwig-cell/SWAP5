@@ -8,6 +8,7 @@ import contextlib
 import csv
 import hashlib
 import json
+import math
 from pathlib import Path
 import re
 import shutil
@@ -44,6 +45,30 @@ def management_end(aux,project):
     return len(aux)-8*count
 
 
+def native_temperatures(checkpoint,project):
+    # Read the original GNU sequential native prefix by its actual record
+    # boundaries, in the documented read_ini order. Full endpoint equality
+    # below still compares every native byte, not only these diagnostics.
+    with zipfile.ZipFile(checkpoint) as z:raw=z.read('result.end')
+    records=[];offset=0
+    while offset<len(raw):
+        size=struct.unpack_from('=i',raw,offset)[0]
+        assert size>=0 and offset+size+8<=len(raw)
+        assert struct.unpack_from('=i',raw,offset+size+4)[0]==size
+        records.append(raw[offset+4:offset+size+4]);offset+=size+8
+    integer=lambda i:struct.unpack('=i',records[i])[0]
+    cursor=3 if integer(0)==2 else 2
+    assert integer(1)==0 and integer(cursor)==project.nodes
+    cursor+=3 # NUMNOD, H, POND
+    snow=integer(cursor);cursor+=1+2*snow
+    reduction=integer(cursor);cursor+=1+(1 if reduction==1 else 2)
+    hysteresis=integer(cursor);cursor+=1+4*int(hysteresis>0)
+    assert integer(cursor)==1
+    values=struct.unpack('='+str(project.nodes)+'d',records[cursor+1])
+    assert all(math.isfinite(v) and -50<=v<=80 for v in values)
+    return list(values)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
@@ -51,7 +76,10 @@ def main():
     group.add_argument('--extended', action='store_true', help='Snow/hysteresis and sorption/decomposition block')
     group.add_argument('--basic-options', action='store_true', help='Original no-crop/no-heat and prescribed bottom fluxes')
     group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
+    group.add_argument('--process-options',action='store_true',help='Original thermal boundaries/analytic heat and canopy/root families')
     args = parser.parse_args()
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options
+    active_options = args.crop_options or args.process_options
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -72,11 +100,11 @@ def main():
 
     call('prepare', ['--no-macro-release', '--prepare-sources', '--reference-work', reference])
     cases = {}
-    for key, run_id in ([] if args.extended or args.basic_options or args.crop_options else [('salt08', 2), ('salt16', 3)]):
+    for key, run_id in ([] if extra else [('salt08', 2), ('salt16', 3)]):
         case = out/('input-'+key)
         saltfarm(case, run_id)
         cases[key] = case
-    for key, name, value in ([] if args.extended or args.basic_options or args.crop_options else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
+    for key, name, value in ([] if extra else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
         case = out/('input-'+key)
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
         path = case/'swap.swp'
@@ -180,6 +208,44 @@ def main():
                      '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
             finally:control.write_bytes(saved)
 
+    if args.process_options:
+        specs=[('analytic-heat',{'SWCALT':1},{'SWOXYGEN':0,'SWWRTNONOX':0}),
+               ('bottom-temperature',{'SWBOTBHEA':2},{}),
+               ('top-temperature',{'SWTOPBHEA':2},{}),
+               ('top-heat-flux',{'SWTOPBHEA':3},{}),
+               ('top-mixed',{'SWTOPBHEA':4},{}),
+               ('gash-interception',{}, {'SWINTER':2}),
+               ('feddes-oxygen',{}, {'SWOXYGEN':1}),
+               ('drought-potential',{}, {'SWDROUGHT':2}),
+               ('walsum-compensation',{}, {'SWCOMPENSATE':2})]
+        for key,main_options,crop_options in specs:
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            for path,options in [(case/'swap.swp',main_options)]+[(p,crop_options) for p in case.glob('*.crp')]:
+                text=path.read_text(encoding='cp1252')
+                for name,value in options.items():
+                    text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
+                    assert count==1
+                path.write_text(text,encoding='cp1252')
+            if key=='bottom-temperature':
+                path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+                text,count=re.subn(r'(?m)^([ \t]*DATET[ \t]+TBOT[^\n]*\n)(?:[ \t]*\d{4}-\d{2}-\d{2}[^\n]*\n)+',
+                                   r'\g<1> 2002-01-01 10.0\n 2003-06-30 15.0\n 2004-12-31 8.0\n',text)
+                assert count==1;path.write_text(text,encoding='cp1252')
+            if main_options.get('SWTOPBHEA') in (2,4):
+                (case/'swap.tss').write_text('DATET TTOP\n2002-01-01 5.0\n2003-06-30 22.0\n2004-12-31 7.0\n')
+            if main_options.get('SWTOPBHEA') in (3,4):
+                path=case/'swap.swp';path.write_text(path.read_text(encoding='cp1252')+"\nTGSOILFILE = 'swap'\n",encoding='cp1252')
+                (case/'swap.tgs').write_text('GC = 1.0\nDATET TGTOP\n2002-01-01 0.25\n2003-06-30 -0.25\n2004-12-31 0.25\n')
+            cases[key]=case
+        # Future crop physical oxygen cannot be smuggled into analytical heat.
+        control=cases['analytic-heat']/'potato.crp';saved=control.read_bytes()
+        target=out/'refused-analytic-physical-oxygen'
+        try:
+            control.write_bytes(saved.replace(b'SWOXYGEN = 0',b'SWOXYGEN = 2'))
+            call('analytic-physical-oxygen-refusal',['--model',e.MODEL,'--experimental-project',cases['analytic-heat'],
+                 '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+        finally:control.write_bytes(saved)
+
     for key, case in cases.items():
         project = e.load(case)
         full_rows = None
@@ -187,8 +253,8 @@ def main():
             label = key+'-'+opt
             bundle = out/(label+'-build')
             base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference]
-            generated_opt=opt if args.crop_options else 'O2'
-            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt]+(['--donor-opt',generated_opt] if args.crop_options else []))
+            generated_opt=opt if active_options else 'O2'
+            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt]+(['--donor-opt',generated_opt] if active_options else []))
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
             cut, end = (2, 5) if opt == 'O0' else ((49, project.last_day) if partial else (365, project.last_day))
@@ -233,7 +299,7 @@ def main():
                           scope='Experimental functional evidence; not scientific equivalence')
             reports.append(report)
             (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
-            if args.crop_options:
+            if active_options:
                 active_cut=200 if 'salt' in key else 530
                 prefix=out/(label+'-active-prefix');active=out/(label+'-active-restart');endstate=out/(label+'-active-end')
                 call(label+'-active-prefix',reuse+['--output',prefix,'--days',active_cut+2,'--checkpoint-at',active_cut])
@@ -249,6 +315,10 @@ def main():
                 assert payload(active/f'accepted-column-1-day-{active_cut+2}.zip')==payload(endstate/f'accepted-column-1-day-{active_cut+2}.zip')
                 assert h.sha(accepted_origin)==origin_hash
                 report['active_crop_exact_native_window']=[active_cut,active_cut+2]
+                if args.process_options:
+                    report['active_native_soil_temperature_C']=native_temperatures(endstate/f'accepted-column-1-day-{active_cut+2}.zip',project)
+                    report['thermal_scope']='Original temperature state and exact continuation; whole physical energy NOT_QUALIFIED'
+                    (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
             if opt == 'O2':
                 full_rows = data
                 # Two independent original workers under one kernel, at two
@@ -387,7 +457,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else 'salt08'))
+    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08')))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -414,9 +484,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=6 if args.crop_options else (7 if args.extended or args.basic_options else 2),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2)),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
