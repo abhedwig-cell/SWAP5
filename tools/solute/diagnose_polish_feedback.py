@@ -9,6 +9,7 @@ import json
 import math
 import shutil
 import subprocess
+import time
 from pathlib import Path
 
 p = argparse.ArgumentParser(description=__doc__)
@@ -101,6 +102,7 @@ end subroutine headcalc
         (case/name).parent.mkdir(exist_ok=True, parents=True)
         shutil.copyfile(a.full/'original'/name, case/name)
     payload = ''.join(f'{day} -1\n' for day in range(1,a.days+1))+'0 -1\n'
+    started=time.perf_counter()
     with (out/'stdout').open('wb') as stdout, (out/'stderr').open('wb') as stderr:
         try:
             c = subprocess.run([str(exe), './swap.swp'], cwd=case, input=payload.encode(),
@@ -109,6 +111,7 @@ end subroutine headcalc
             (a.output/'RESULT.json').write_text(json.dumps(dict(status='CENSORED_MODEL_CAP',
                 failed_mode=mode,cap_seconds=60,completed_modes=results),indent=2)+'\n')
             raise
+    model_seconds=time.perf_counter()-started
     assert c.returncode == 100, c.returncode
     frames = {}
     for line in (out/'stdout').read_text(encoding='cp1252').splitlines():
@@ -129,7 +132,7 @@ end subroutine headcalc
         solute.append(math.fsum([end,-start,-rain,-irrig,-bottom,drain,decay,root]))
         assert abs(reported)<=1e-10
     hist = frames['RC1_HIST'][-1]
-    results[mode] = dict(days=a.days, solves=sum(hist),
+    results[mode] = dict(days=a.days, model_wall_seconds=model_seconds,solves=sum(hist),
         iterations=sum((i+1)*v for i,v in enumerate(hist)),
         max_water_residual=max(map(abs,water)), max_solute_residual=max(map(abs,solute)),
         unchanged_guards_pass=max(map(abs,water+solute))<=1e-10)
