@@ -212,3 +212,88 @@ does not replace or relabel the distinct undrained/closed-bottom day51 failure.
 Across the first three blocks there are17 additional complete configurations
 and20457 executed complete-model days, with zero new independent historical
 projects and no whole-science promotion.
+
+
+## Current coverage register and remaining work
+
+The categories below describe the current integration boundary: **A** means an
+executed, source-bound functional configuration; **B** means original Fortran is
+present but its broader option/state combinations are not qualified; **C** means
+a demonstrated missing or defective integration; **D** means active macropores,
+which remain outside this work unit. A supported input selector alone is not A.
+
+| Family | A: executed scope | B/C: remaining original integration or qualification |
+| --- | --- | --- |
+| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A/B/C | B: arbitrary grids, references and process combinations need their own evidence |
+| Richards/hydraulics | Selected original MvG and unchanged production solver; hysteresis1/2 trajectories and named restarts | B: hydraulic tables and other original constitutive families; C: later active history restart FAIL retained; water-only history explicitly refused |
+| Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux | C: strict solute substep receipt absent for reconstructed modes1/5; B: other original boundaries8/9 |
+| Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
+| Crops/roots/ET | Registered grass/rotation/WOFOST; bare soil; original simple maize without heat | B: broader original growth structures, root/stress/interception/ET controls and combinations; block D is pending admission |
+| Irrigation | Registered fixed surface and external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
+| Heat | Selected original numerical conduction and native supported-heat state; compatible no-heat routes | B: original analytical heat and other boundaries; whole physical energy including mass-carried energy remains a separate scientific limitation |
+| Snow/frost | Positive snow accumulation/melt, snow plus hysteresis, named exact continuations | B/C: complete frost state and corrected-reference integration; frost remains refused |
+| Solute | Original conservative CDE; separate and combined Freundlich sorption/decay | B/C: reservoir SWBR1, original age/tracer SWSOLU2 and their matching conserved ledgers/state |
+| Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | B: detailed weather/rainfall and further original top-boundary options; implicit conductivity SWKIMPL1 remains excluded |
+| Runtime control | Registered groundwater and surface forcing; experimental original-forcing accept/discard/recovery | B/C: general runtime dynamic boundary forcing beyond the registered contracts |
+| Macropores | None within this work unit | D: all active macropore processes and owner research remain separate |
+
+This register is derived from the explicit adapter restrictions in
+`app/hybrid_water/experimental_project.py`, original bundled readers/process
+bodies and the source-bound block records. It identifies the next implementation
+surfaces, not a claim that unexecuted mixtures work. The available pinned
+no-macro historical distribution still provides only three independent projects;
+derived SaltFarm levels and switched options do not increase that count.
+
+Block C was admitted by PR1671 at `a6720a0e8`. Its actual tree includes the
+separately admitted PR1672 GNU arithmetic profile, which entered canonical
+between preflight and merge. Run43412494520 requalified all seven C configurations
+on that exact actual merge. The historical premerge result is retained separately
+from `BLOCK_C_POSTMERGE_*` and `BLOCK_C_MERGE.json`.
+
+
+## Chemistry-independent crop and management state
+
+Block D separates original irrigation/WOFOST management from chemical transport.
+Previously that carry was generated only for active solute. Explicit experimental
+water-only runs now preserve the same original schedule/rate/crop state under a
+distinct `S5WAT007` auxiliary format, without inventing a chemical stock or ledger.
+Referenced future crop salinity stress requires active solute, and incompatible
+requests refuse before output/build. The original SaltFarm text initialization
+must consistently declare the derived SWSOLU0 as well as its SWP input.
+
+The six derived configurations are water-only Hupsel1096 and SaltFarm08/1461;
+Hupsel with interception off, oxygen stress off or compensation off (1096 each);
+and SaltFarm08 with solute active but salinity stress off (1461). Their initial
+source1c64ba98d qualification completed7306 model days and all A/B/C/release
+predecessors. The final source adds actual generated/touched donor O0/O2 builds
+and active-crop windows530to532/200to202 at both optimizations. The immutable
+original object provider remains O2; this is not a full-provider O0 claim.
+Final source42f066bf0 passes run43418605842 for all six configurations.
+A/B/release43418610124 and C43418614412 all pass on the same source. Maximum
+water residual is9.996782546727034e-11cm; maximum active-solute residual is
+7.64517615881033e-12mg/cm2, under the unchanged1e-10 bounds. Actual admission
+belongs to `BLOCK_D_STATUS.json` and the merge receipt.
+
+These windows inspect an actually emerged crop and nonzero saved growth rates,
+then compare complete physical rows and native/auxiliary endpoint bytes.
+Water-only malformed state tests reseal wrong format, truncation, NaN and
+invalid crop flags and run the actual decoder. Independent origins, external
+accept/discard/replay/disk recovery and deliberately inconsistent mass rejection
+retain their own actual execution checks. Inactive chemical balance is reported
+as absent, not a fictitious zero-residual chemical qualification.
+
+A proposed seventh variant, water-only snow plus hysteresis, passed its full
+O2 period and named winter restart on source dec0bbfa1, but failed the later
+active-growth continuation. Source640565a8d repeated that genuine mismatch with
+actual generated O0: first resumed water storage differed2.2815e-9cm and the next
+by2.1637e-8cm. Daily conservation passed, which does not establish exact restart.
+The original failure and selected raw state are retained in
+`BLOCK_D_RETAINED_FAIL_*`. Two narrowly scoped cache hypotheses both failed and
+were removed. No tolerance, physical law or general solver change was made.
+
+The revised route explicitly refuses new water-only hysteresis or snow history
+before compilation/output. Completing these combinations requires preserving a
+larger original state block in a separate bounded successor, rather than another
+local cache-repair loop. Earlier solute-history block B evidence remains limited
+to its named2/365 restart origins; it is not proof of arbitrary active-crop
+history restart. Whole scientific equivalence remains unqualified.

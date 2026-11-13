@@ -38,12 +38,19 @@ def payload(path):
         return {name: z.read(name) for name in ('result.end', 'macro.bin')}
 
 
+def management_end(aux,project):
+    selected=e.inspect(project.input_directory)['selectors']
+    count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
+    return len(aux)-8*count
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, required=True)
     group=parser.add_mutually_exclusive_group()
     group.add_argument('--extended', action='store_true', help='Snow/hysteresis and sorption/decomposition block')
     group.add_argument('--basic-options', action='store_true', help='Original no-crop/no-heat and prescribed bottom fluxes')
+    group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -65,11 +72,11 @@ def main():
 
     call('prepare', ['--no-macro-release', '--prepare-sources', '--reference-work', reference])
     cases = {}
-    for key, run_id in ([] if args.extended or args.basic_options else [('salt08', 2), ('salt16', 3)]):
+    for key, run_id in ([] if args.extended or args.basic_options or args.crop_options else [('salt08', 2), ('salt16', 3)]):
         case = out/('input-'+key)
         saltfarm(case, run_id)
         cases[key] = case
-    for key, name, value in ([] if args.extended or args.basic_options else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
+    for key, name, value in ([] if args.extended or args.basic_options or args.crop_options else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
         case = out/('input-'+key)
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
         path = case/'swap.swp'
@@ -128,6 +135,50 @@ def main():
         target=out/'refused-noheat-oxygen'
         call('future-oxygen-heat-refusal',['--model',e.MODEL,'--experimental-project',invalid,'--reference-work',reference,
                                          '--build-only','--output',target],refuse=True,absent=target)
+    if args.crop_options:
+        specs=[('water-hupsel',False,{'SWSOLU':0},{'SWSALINITY':0}),
+               ('water-salt',True,{'SWSOLU':0},{'SWSALINITY':0}),
+               ('no-interception',False,{}, {'SWINTER':0}),
+               ('no-oxygen',False,{}, {'SWOXYGEN':0,'SWWRTNONOX':0}),
+               ('no-salt-stress',True,{}, {'SWSALINITY':0}),
+               ('no-compensation',False,{}, {'SWCOMPENSATE':0})]
+        for key,salt,main_options,crop_options in specs:
+            case=out/('input-'+key)
+            if salt:saltfarm(case,2)
+            else:shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            for path,options in [(case/'swap.swp',main_options)]+[(p,crop_options) for p in case.glob('*.crp')]:
+                text=path.read_text(encoding='cp1252')
+                for name,value in options.items():
+                    text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
+                    assert count==1
+                path.write_text(text,encoding='cp1252')
+            if key=='water-salt':
+                # This derived no-chemistry input must explicitly change its
+                # text native-initialization tag as well as its SWP selector.
+                path=case/'swap.ini'
+                text,count=re.subn(r'(?m)^([ \t]*SWSOLU[ \t]*=[ \t]*)1',r'\g<1>0',path.read_text(encoding='cp1252'))
+                assert count==1
+                path.write_text(text,encoding='cp1252')
+            cases[key]=case
+
+        control=cases['water-hupsel']/'potato.crp';saved=control.read_bytes()
+        target=out/'refused-water-only-salinity'
+        try:
+            control.write_bytes(saved.replace(b'SWSALINITY = 0',b'SWSALINITY = 1'))
+            call('future-salinity-without-transport-refusal',['--model',e.MODEL,'--experimental-project',cases['water-hupsel'],
+                 '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+        finally:control.write_bytes(saved)
+
+        control=cases['water-hupsel']/'swap.swp';saved=control.read_bytes()
+        for selector in ('SWHYST','SWSNOW'):
+            target=out/('refused-water-only-'+selector.lower())
+            try:
+                changed,count=re.subn(rb'(?m)^([ \t]*'+selector.encode()+rb'[ \t]*=[ \t]*)0',rb'\g<1>1',saved)
+                assert count==1
+                control.write_bytes(changed)
+                call('water-only-history-refusal-'+selector,['--model',e.MODEL,'--experimental-project',cases['water-hupsel'],
+                     '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+            finally:control.write_bytes(saved)
 
     for key, case in cases.items():
         project = e.load(case)
@@ -136,7 +187,8 @@ def main():
             label = key+'-'+opt
             bundle = out/(label+'-build')
             base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference]
-            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt])
+            generated_opt=opt if args.crop_options else 'O2'
+            call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt]+(['--donor-opt',generated_opt] if args.crop_options else []))
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
             failure_day = 212 if project.time_step_policy=='configured-dtmax-daily-v1' else 51
@@ -172,15 +224,33 @@ def main():
                 assert payload(resumed/f'accepted-column-1-day-{cut+2}.zip') == payload(endpoint/f'accepted-column-1-day-{cut+2}.zip')
             assert h.sha(origin) == before
             report = dict(configuration=key, optimization=opt, completed_days=len(accepted), requested_days=end,
+                          solute_active=project.solute,
+                          generated_donor_optimization=generated_opt,original_provider_optimization='O2',
                           full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
                           original_retained_failure_day=51 if partial else None,
                           maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in accepted),
-                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted),
+                          maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted) if project.solute else None,
                           restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=not partial,
                           original_input_sha256=dict(project.input_inventory), build_sha256=h.sha(bundle/'BUILD.json'),
                           scope='Experimental functional evidence; not scientific equivalence')
             reports.append(report)
             (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
+            if args.crop_options:
+                active_cut=200 if 'salt' in key else 530
+                prefix=out/(label+'-active-prefix');active=out/(label+'-active-restart');endstate=out/(label+'-active-end')
+                call(label+'-active-prefix',reuse+['--output',prefix,'--days',active_cut+2,'--checkpoint-at',active_cut])
+                accepted_origin=prefix/f'accepted-column-1-day-{active_cut}.zip';origin_hash=h.sha(accepted_origin)
+                with zipfile.ZipFile(accepted_origin) as z:aux=z.read('macro.bin')
+                terminal=management_end(aux,project)
+                assert struct.unpack_from('=i',aux,terminal-404)[0]==1, label+' did not checkpoint an emerged crop'
+                assert any(value!=0 for value in struct.unpack_from('=50d',aux,terminal-400)), label+' did not checkpoint active growth rates'
+                call(label+'-active-restart',reuse+['--output',active,'--days',active_cut+2,'--checkpoint-at',active_cut+2,
+                                                 '--restart',accepted_origin,'--restart-day',active_cut])
+                call(label+'-active-end',reuse+['--output',endstate,'--days',active_cut+2,'--checkpoint-at',active_cut+2])
+                assert list(map(physical,rows(active)))==list(map(physical,(data if opt=='O2' else rows(prefix))[active_cut:active_cut+2]))
+                assert payload(active/f'accepted-column-1-day-{active_cut+2}.zip')==payload(endstate/f'accepted-column-1-day-{active_cut+2}.zip')
+                assert h.sha(accepted_origin)==origin_hash
+                report['active_crop_exact_native_window']=[active_cut,active_cut+2]
             if opt == 'O2':
                 full_rows = data
                 # Two independent original workers under one kernel, at two
@@ -244,16 +314,20 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if args.extended and key.startswith('hupsel'):
+                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
                     thermal='snow' in key
                     index=len(original_aux)-(8*(2*project.nodes+2) if thermal else 8)
+                    if not project.solute:index=management_end(original_aux,project)-8
                     controls=[('wrong-format',b'S5HUP012'+original_aux[8:]),
                               ('short',original_aux[:-1]),
                               ('nan',original_aux[:index]+struct.pack('=d',float('nan'))+original_aux[index+8:]),
                               ('negative',original_aux[:index]+struct.pack('=d',-1.0)+original_aux[index+8:])]
+                    if not project.solute:
+                        flag=management_end(original_aux,project)-404
+                        controls[-1]=('invalid-crop-flag',original_aux[:flag]+struct.pack('=i',99)+original_aux[flag+4:])
                     for mutation,data in controls:
                         changed=dict(members);changed['macro.bin']=data
                         manifest=json.loads(changed['checkpoint.json']);manifest['files']['macro.bin']=hashlib.sha256(data).hexdigest()
@@ -321,7 +395,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else 'salt08')
+    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else 'salt08'))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -348,9 +422,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL'), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended or args.basic_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options else 2,
+                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=6 if args.crop_options else (7 if args.extended or args.basic_options else 2),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

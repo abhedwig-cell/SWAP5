@@ -1,18 +1,26 @@
 ## Current recovery checkpoint
 
-Workstream SWAP5-NOMACRO-COVERAGE01. Current qualification branch
-codex/nomacro-coverage03, source24a5ed08c. PR1669 admitted980273f81;
-PR1670 admittedaf65d5a26; both exact canonical trees verified and versioned.
-PR1671 has seven new full1096-day profiles qualified in run43408409505;
-next action is its admission/postimage check. Complete new trajectories across
-A/B/C:17 configurations,20457 days. No new independent historical projects.
-Frozen RC111529865e and every scientific FAIL remain unchanged.
+Workstream SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01,
+branch codex/nomacro-coverage04. A/B/C admitted PR1669/1670/1671. Exact C
+postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
+43412494520. Historical old-head evidence remains unchanged and separate.
+A/B/C complete17 additional configurations20457 model days; zero new independent
+historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
 
-Independent next block: codex/nomacro-coverage04 at48d1e5f4f. Water-only Hupsel
-already completes1096 with exact state/external controls; water-only SaltFarm
-initial native SWSOLU tag needs a consistent derived input before further tests.
-No automatic continuation timer is configured. Read BLOCK_*_STATUS/RECOVERY
-for source-bound actual evidence; historical inventory below is dated baseline.
+D PR1673 final qualified code42f066bf0: all six configurations7306 days PASS
+in run43418605842. Actual generated/touched donor O0/O2, providerO2, both active
+windows, eight malformed native refusals and two atomic history refusals pass.
+A/B/release43418610124 and C43418614412 all SUCCESS on the same source.
+Next: finish versioning artifact/raw receipts, ready/merge PR1673 and verify
+actual canonical tree/dependencies. Then original unused-process successor from
+the current register, with a larger-state strategy for failed active history.
+Both cache hypotheses91de/5529 failed and were removed. Never reclassify those
+FAILs. Private peer daily-time-policy changes inspected, not imported; canonical
+still a6720a0e8. See BLOCK_D_RECOVERY/STATUS for exact source-bound proof.
+
+An active serial autonomous Codex goal continues this work; no scheduled timer
+is configured. Later checkpoints must replace this current pointer. Inventory
+below is the dated initial baseline, not a present full-coverage claim.
 
 ---
 

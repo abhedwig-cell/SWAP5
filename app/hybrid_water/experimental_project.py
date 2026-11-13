@@ -85,8 +85,6 @@ def inspect(directory):
         for name in ('SWSP', 'SWDC', 'SWBR'):
             if selected.get(name) not in ({0} if name == 'SWBR' else {0, 1}):
                 raise ValueError('Solute ledger/state does not support '+name)
-    elif selected['SWIRFIX']:
-        raise ValueError('Irrigation day-state currently requires the solute auxiliary codec')
     if selected['SWIRFIX'] and selected.get('SWIRGFIL') != 0:
         raise ValueError('Experimental fixed irrigation must be embedded in SWP')
 
@@ -102,6 +100,8 @@ def inspect(directory):
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SW2={1, 2}, SW3={1, 2})
+    if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
+        raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
@@ -124,6 +124,10 @@ def inspect(directory):
             raise ValueError('Unsupported boundary selector: '+name)
 
     crop_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.crp')]
+    root_controls={'SWINTER':{0,1,2,3},'SWOXYGEN':{0,1,2},'SWDROUGHT':{1,3},
+                   'SWSALINITY':{0,1},'SWCOMPENSATE':{0,1},'SWWRTNONOX':{0,1}}
+    structure=lambda sig:{k:v for k,v in sig.items() if k not in root_controls}
+    crop_structures=list(map(structure,crop_signatures))
     drain_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.dra')]
     for path in directory.rglob('*'):
         if path.suffix.lower() not in ('.swp', '.crp', '.dra', '.bbc', '.ini'):
@@ -136,12 +140,12 @@ def inspect(directory):
             # a process. Validate the actual complete future rotation instead.
             if path.resolve() not in crop_files:continue
             schedule = one(body, 'SCHEDULE', r'[+-]?\d+')
-            if schedule not in ('0', '1') or (schedule == '1' and not selected['SWSOLU']):
-                raise ValueError('Scheduled irrigation requires the existing complete auxiliary codec')
-            if sig not in crop_signatures:
+            if schedule not in ('0','1'):
+                raise ValueError('Unsupported original irrigation schedule')
+            if structure(sig) not in crop_structures or any(sig.get(k) not in values for k,values in root_controls.items()):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
-            if not selected['SWSOLU'] and sig.get('SWWOFOST', 0) != 3:
-                raise ValueError('WOFOST day-state currently requires the solute auxiliary codec')
+            if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:
+                raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
                 raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
@@ -190,5 +194,5 @@ def auxiliary_magic(project):
     selected = inspect(project.input_directory)['selectors']
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
     formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
-               b'S5NON006',b'S5NHS007',b'S5NSN008',b'S5NMX009')
+               b'S5WAT007',b'S5WHS008',b'S5WSN009',b'S5WMX010')
     return formats[history]
