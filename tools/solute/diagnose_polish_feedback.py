@@ -15,15 +15,18 @@ p = argparse.ArgumentParser(description=__doc__)
 for name in ('bundle', 'reference', 'full', 'observer', 'output'):
     p.add_argument('--'+name, type=Path, required=True)
 p.add_argument('--days', type=int, default=5)
+p.add_argument('--receipt-guard',action='store_true',help='Private absolute day-receipt projection')
+p.add_argument('--no-feedback',action='store_true',help='Test receipt guard without adaptive feedback change')
 a = p.parse_args()
 a.output.mkdir()
 meta = json.loads((a.bundle/'BUILD.json').read_text())
 results = {}
-for mode in ('baseline', 'polish-feedback'):
+candidate='receipt-only' if a.no_feedback else 'receipt-feedback' if a.receipt_guard else 'polish-feedback'
+for mode in ('baseline', candidate):
     out = a.output/mode
     out.mkdir()
     source = (a.bundle/'headcalc.f90').read_text(encoding='cp1252')
-    if mode != 'baseline':
+    if mode != 'baseline' and not a.no_feedback:
         assert source.count('\nsubroutine headcalc\n') == 1
         source = source.replace('\nsubroutine headcalc\n',
                                 '\nsubroutine rc1_headcalc_impl(rc1_polish_only)\n', 1)
@@ -45,11 +48,20 @@ subroutine headcalc
    if (rc1_polish_only==1 .and. numbit<maxit) numbit=numbit-1
 end subroutine headcalc
 '''
+    if mode != 'baseline' and a.receipt_guard:
+        source=source.replace('   use hybrid_step_budget, only: projected_water_residual',
+            '   use hybrid_step_budget, only: projected_water_residual\n   use rc1_day_receipt_probe, only: projected_day_receipt')
+        assert source.count('budget_total+budget_step')==1
+        assert source.count('budget_total + budget_step')==1
+        source=source.replace('budget_total+budget_step','projected_day_receipt()')
+        source=source.replace('budget_total + budget_step','projected_day_receipt()')
+        shutil.copyfile(Path(__file__).with_name('platform_day_receipt.f90'),out/'platform_day_receipt.f90')
     (out/'headcalc.f90').write_text(source, encoding='cp1252')
     for name in ('swap_main', 'swap_csv_output'):
         shutil.copyfile(a.observer/(name+'.f90'), out/(name+'.f90'))
-    for name in ('headcalc', 'swap_csv_output', 'swap_main'):
-        command = ['gfortran', *meta['identity']['donor_flags'], '-I', str(a.bundle),
+    names=(['platform_day_receipt'] if mode!='baseline' and a.receipt_guard else [])+['headcalc','swap_csv_output','swap_main']
+    for name in names:
+        command = ['gfortran', *meta['identity']['donor_flags'], '-I',str(out),'-I', str(a.bundle),
                    '-I', str(a.reference/'build/swap-obj'), '-I', str(a.reference/'build/ttutil-obj'),
                    '-c', name+'.f90']
         c = subprocess.run(command, cwd=out, capture_output=True, text=True, timeout=30)
@@ -61,6 +73,7 @@ end subroutine headcalc
         objects.append(str(next(q for q in candidates if q.exists())))
     exe = out/'diagnostic.exe'
     c = subprocess.run(['gfortran', '-o', str(exe), *objects,
+                        *([str(out/'platform_day_receipt.o')] if mode!='baseline' and a.receipt_guard else []),
                         str(a.bundle/'hybrid_step_budget.o'),
                         str(a.reference/'build/ttutil-obj/libttutil.a')],
                        capture_output=True, text=True, timeout=30)
@@ -99,6 +112,7 @@ end subroutine headcalc
         unchanged_guards_pass=max(map(abs,water+solute))<=1e-10)
     (out/'FRAMES.json').write_text(json.dumps(frames)+'\n')
 (a.output/'RESULT.json').write_text(json.dumps(dict(status='EXPERIMENTAL_NOT_ADMITTED',
+    receipt_guard=a.receipt_guard,adaptive_feedback=not a.no_feedback,
     hypothesis='Pure final polish iteration unnecessarily restricts adaptive step growth',
     results=results), indent=2)+'\n')
 print(json.dumps(results), flush=True)
