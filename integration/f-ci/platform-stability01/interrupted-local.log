@@ -1,0 +1,34 @@
+prepare PASS 60.444
+grass-O0-build PASS 16.639
+grass-O0-control PASS 1.165
+grass-O0-full PASS 0.803
+grass-O0-resume PASS 0.865
+grass-O2-build PASS 11.453
+grass-O2-control PASS 11.554
+grass-O2-full PASS 11.537
+grass-O2-resume PASS 10.831
+hupsel-O0-build PASS 15.072
+hupsel-O0-control PASS 1.033
+hupsel-O0-full PASS 0.796
+hupsel-O0-resume PASS 0.908
+hupsel-O2-build PASS 16.547
+hupsel-O2-control PASS 5.674
+hupsel-O2-full PASS 5.399
+hupsel-O2-resume PASS 4.111
+saltfarm-O0-build PASS 13.75
+saltfarm-O0-control PASS 1.037
+saltfarm-O0-full PASS 0.781
+saltfarm-O0-resume PASS 0.777
+saltfarm-O2-build PASS 14.341
+saltfarm-O2-control PASS 11.404
+saltfarm-O2-full PASS 11.219
+saltfarm-O2-resume PASS 10.247
+refusals PASS 4.325
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\qualify_compiler_profile.py", line 53, in <module>
+    call('external',['--reference',reference,'--qualification',a.output,'--output',a.output/'external'],script='tools/solute/check_publisher_coupling.py',timeout=120)
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\qualify_compiler_profile.py", line 16, in call
+    assert r.returncode==0,(label,r.stdout,r.stderr)
+           ^^^^^^^^^^^^^^^
+AssertionError: ('external', '', 'Traceback (most recent call last):\n  File "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf01\\tools\\solute\\check_publisher_coupling.py", line 37, in <module>\n    again=x.prepare();assert physical(again.budget)==first==physical(other.budget)\n  File "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf01\\app\\hybrid_water\\daily_coupling.py", line 391, in prepare\n    validate_bundle(self.bundle, self.reference, self.project)\n    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-rc1-perf01\\app\\hybrid_water\\daily_coupling.py", line 159, in validate_bundle\n    raise ValueError(\'Bundle source differs: \' + name)\nValueError: Bundle source differs: daily_host.py\n')

@@ -1,6 +1,6 @@
 # Common GNU x86-64 application arithmetic profile
 
-## Proposed successor,13November2026
+## Qualified successor, 13 November 2026
 
 Owner: `integration/f-ci/RC1_PLATFORM_STABILITY01.json`. The owner selected
 continued platform-sensitivity work after closing the preceding performance
@@ -48,17 +48,78 @@ hydraulic spreads and original failed comparisons must remain separately visible
 The first full/native harness failed on a reused stage filename, after1095
 guarded days; its failure is retained and is not a qualified full/restart result.
 
-## Selected admission evidence
+## Qualification and remaining limits
 
-Before promotion: fresh WindowsGNU16/UbuntuGNU15 public O0 four-day and O2 complete
-1827/1096/1461-day controls, exact within-profile physical/CSV/native own
-continuations, source/profile/compiler refusals, independent-instance/discard
-contracts, matched GNU15 Hupsel point/full/native assessment and source/build
-identities. Each model invocation is capped60seconds. Whole candidate cohorts
-are expected to take3-4minutes including compilation. Scientific references are
-reused rather than rerun under a new profile and silently relabelled.
+The initial public qualification completed on the laptop (GNU16.2),
+Windows2022 GNU15 and Ubuntu26.04 GNU15. Hosted run
+[43404227897](https://github.com/abhedwig-cell/SWAP5/actions/runs/43404227897)
+succeeded on both systems. All three complete O2 periods (1827/1096/1461 days)
+and own cut-to-end continuations are exact within each cohort, including physical
+records, printed CSV and native/auxiliary terminal payloads. The kernel O0
+four-day controls also pass; the original donor is compiled O2 in both kernel
+profiles. Ten refusal cases and six external transaction/instance controls pass
+per cohort. Daily water/kernel and solute guards remain 1e-10 in their units.
+Supported thermal bookkeeping is preserved; no unmeasured energy flux is invented.
 
-Moving full F-CI, active macropores and retired highest-low-air campaigns are
-not selected: their model/contract/default build paths are unchanged. No such
-gate is claimed PASS. This document is a proposed profile until the owning
-qualification and actual canonical PR postimage have been verified.
+The public matched GNU15 point reproduces the private result above. This is a
+bounded improvement of platform reproducibility, not qualification against the
+original SWAP4.3.1 oxygen reference (0.003593541147 cm), whose FAIL remains.
+The original and implicit reference families remain underqualified. Grassgrowth
+day188 and all earlier scientific dispositions are preserved.
+
+Full trajectory spreads are retained in
+`integration/f-ci/platform-stability01/PUBLIC_CROSSPLATFORM.json`.
+Hupsel still differs by up to 12.20396275 cm in pressure head, 0.0008707256 cm
+in stock and 0.0004601525 cm in an uptake term. SaltFarm stock spread falls
+from 0.0202189338 to 0.0049296497 cm (about 75.6 percent), but is not zero.
+Hupsel maximum solute-ledger spread increases from 0.0002868614 to
+0.0003991142 mg/cm2. The improvement is therefore not uniform across outputs.
+No new fitted whole-profile tolerance or portable scientific PASS is declared.
+
+On this laptop the previous and new profile produce exactly the same daily
+physical JSON records and terminal native payloads for all three periods.
+`LAPTOP_BASELINE_PRESERVATION.json` binds that observation to source and hashes.
+A single alternating old/new paired cost observation with one terminal checkpoint
+gives model-plus-controller seconds: Grass 8.684/9.002; Hupsel 4.645/4.643;
+SaltFarm 10.773/10.232. This is a bounded cost check, not a statistical benchmark
+or native-solver speedup claim. Earlier separate-day timings and unlike runner
+hardware are not used as performance ratios. Exact commands and observations
+are retained in `SAME_LAPTOP_PAIRED_COST.json`.
+
+## Admission boundary
+
+Canonical advanced through PR1669 and PR1670 during qualification. Their
+explicit original-project/bottom dispatch and original history/reaction state
+are merged into this candidate;
+`project_case` remains authoritative and the profile check is additional.
+The final combined runtime d54d4a3e1 is qualified by hosted carrier
+982b5c605 (only the registered workflow wiring differs), run
+[43408495599](https://github.com/abhedwig-cell/SWAP5/actions/runs/43408495599),
+SUCCESS on Windows2022 and Ubuntu26.04, plus the fresh laptop cohort.
+Both Ubuntu blockA and extended blockB coverage pass, including their retained
+undrained-Hupsel refusal and history/state rejection controls. Prior runs
+qualify their pinned sources only. Raw proof, member digests, exact invocations,
+PREPARED/BUILD identities and terminal receipts are preserved under
+`integration/f-ci/platform-stability01`. The owner record binds admission.
+
+Across the canonical reconciliation the three laptop trajectories and native
+payloads remain exact; `LAPTOP_CANONICAL_DELTA_PRESERVATION.json` records this
+separately from the initial compiler-profile comparison. Source-bound checkpoint
+identities are never rebound even where physical payloads are equal.
+
+Each selected release-model invocation is capped at 60 seconds. The unchanged
+canonical coverage harness uses its existing 180-second model cap and 300-second
+subprocess cap; this is a selected preservation gate, not a new reference or
+numerical search campaign. Scientific
+references are reused rather than rerun under a new profile and silently
+relabelled. Moving full F-CI, active macropores and retired highest-low-air
+campaigns are not selected: those paths are unchanged. No such gate is claimed
+PASS. Canonical admission requires the PR merge and actual postimage check;
+frozen RC1 remains unchanged.
+
+This package provides the explicit build policy and the named point improvement.
+It does not solve the residual full-trajectory platform spread or independently
+qualify the original oxygen reference. Further science must retain those visible
+FAILs and establish independent reference accuracy before any equivalence claim;
+no additional fitted tolerance or repeat reference campaign is authorized by
+this admission.
