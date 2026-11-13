@@ -15,6 +15,8 @@ p.add_argument('--days',type=int,default=1096)
 p.add_argument('--cut',type=int,default=365)
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir()
 source=a.artifact.resolve();exe=source/'probe/same-core/diagnostic.exe'
+runtime=json.loads((source/'MATH_RUNTIME.json').read_text())
+assert h.sha(Path(shutil.which('gfortran')))==runtime['toolchain']['gfortran']['sha256'],'Compiler cohort changed'
 if os.name!='nt':exe.chmod(0o755)
 meta=json.loads((source/'bundle/BUILD.json').read_text())
 assert meta['project']['model']==h.HUPSEL.model
@@ -73,6 +75,8 @@ def run(mode,first):
     (a.output/(mode+'-frames.json')).write_text(json.dumps(frames)+'\n')
     return frames,directory
 full,full_dir=run('full',0);origin_hashes={n:h.sha(origin/n) for n in h.CHECKPOINT_FILES}
+prefix=json.loads((source/'probe/same-core/FRAMES.json').read_text())
+assert all(full[k][:len(v)]==v for k,v in prefix.items()),'Original five-day cohort changed'
 resumed,resume_dir=run('resumed',a.cut)
 for name in h.CHECKPOINT_FILES:
     assert h.sha(origin/name)==origin_hashes[name]
