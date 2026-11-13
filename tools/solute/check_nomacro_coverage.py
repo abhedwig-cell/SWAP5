@@ -40,7 +40,7 @@ def payload(path):
 
 def management_end(aux,project):
     selected=e.inspect(project.input_directory)['selectors']
-    count=(5*project.nodes+6 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
+    count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
     return len(aux)-8*count
 
 
@@ -138,7 +138,6 @@ def main():
     if args.crop_options:
         specs=[('water-hupsel',False,{'SWSOLU':0},{'SWSALINITY':0}),
                ('water-salt',True,{'SWSOLU':0},{'SWSALINITY':0}),
-               ('water-history',False,{'SWSOLU':0,'SWHYST':1,'SWSNOW':1},{'SWSALINITY':0}),
                ('no-interception',False,{}, {'SWINTER':0}),
                ('no-oxygen',False,{}, {'SWOXYGEN':0,'SWWRTNONOX':0}),
                ('no-salt-stress',True,{}, {'SWSALINITY':0}),
@@ -169,6 +168,17 @@ def main():
             call('future-salinity-without-transport-refusal',['--model',e.MODEL,'--experimental-project',cases['water-hupsel'],
                  '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
         finally:control.write_bytes(saved)
+
+        control=cases['water-hupsel']/'swap.swp';saved=control.read_bytes()
+        for selector in ('SWHYST','SWSNOW'):
+            target=out/('refused-water-only-'+selector.lower())
+            try:
+                changed,count=re.subn(rb'(?m)^([ \t]*'+selector.encode()+rb'[ \t]*=[ \t]*)0',rb'\g<1>1',saved)
+                assert count==1
+                control.write_bytes(changed)
+                call('water-only-history-refusal-'+selector,['--model',e.MODEL,'--experimental-project',cases['water-hupsel'],
+                     '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+            finally:control.write_bytes(saved)
 
     for key, case in cases.items():
         project = e.load(case)
@@ -406,7 +416,7 @@ def main():
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
     result = dict(status='EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options or args.crop_options else 2,
+                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=6 if args.crop_options else (7 if args.extended or args.basic_options else 2),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

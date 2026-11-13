@@ -191,20 +191,18 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                       '        write(unit) t,iyear\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)')
     managed=solute_state or management_state
     base_magic='S5HUP012' if solute_state else ('S5WAT007' if management_state else 'S5NON006')
-    hys_magic='S5SHS016' if solute_state else ('S5WHS011' if management_state else 'S5NHS010')
+    hys_magic='S5SHS013' if solute_state else ('S5WHS008' if management_state else 'S5NHS007')
     snow_magic='S5SSN014' if solute_state else ('S5WSN009' if management_state else 'S5NSN008')
-    mixed_magic='S5SMX017' if solute_state else ('S5WMX012' if management_state else 'S5NMX011')
+    mixed_magic='S5SMX015' if solute_state else ('S5WMX010' if management_state else 'S5NMX009')
     if hydraulic_history:
         if not nonmacro:raise ValueError('Hydraulic history requires absent macropores')
         # Hysteresis can change h/scanning state after the accepted Richards
         # solve. Recomputing theta/K/capacity from h during cold initialization
         # does not reproduce that accepted hydraulic carry. Keep the actual
         # active history, not an inverse constitutive reconstruction.
-        # Original boundtop(1) also caches TheAtm/katm using the startup
-        # scanning curve; recomputing from a later fhyst changes evaporation.
-        fields='h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,theatm,katm'
+        fields='h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
         codec=replace(codec,'      use variables, only: t, iyear',
-                      '      use MOD_top, only: theatm,katm\n      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
+                      '      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
         codec=replace(codec,'      use MOD_grid, only: numnod','      use MOD_grid, only: numnod,dz')
         old_magic=base_magic
         new_magic=hys_magic
@@ -235,7 +233,7 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if(any(heacon(1:numnod)<=0d0).or.any(heacap(1:numnod)<=0d0))error stop 'Invalid snow thermal history'
         read(unit,iostat=ios) trailing""")
         if hydraulic_history:
-            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact,theatm,katm'
+            anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
         else:
             anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if managed else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)

@@ -81,3 +81,23 @@ Persist exactly those two existing public boundary values in active hysteresis
 state, with distinct format; no extra coefficients or original law changes.
 This is the second focused attempt; if it fails, revise strategy rather than
 continue numerical repair loops.
+
+Second hypothesis5529505d7 run43418162311 also failed the exact active
+water-history O0 suffix. Both speculative cache changes removed. Stop rule
+invoked: no more local state patches/numerical loops. Revised integration
+strategy retains six independent D variants and explicitly refuses new
+water-only hysteresis/snow combinations before output/build. New controls
+execute those actual atomic refusals. Complete original state-block preservation
+for the broader history family is a separate bounded successor; old B evidence
+qualifies only its named2/365 windows, not arbitrary active-crop origins.
+5529505d7 extended run43418166906 also exposed malformed-negative test offset
+now pointing at newly appended katm; removing rejected experimental extension
+restores the old codec/negative-domain check, not a weakened corruption test.
+
+Peer reconciliation2026-11-13: STATE02 aefc7aefa owns untracked retry07 evidence;
+untouched. PERF worktree codex/hupsel-pressure-stability01 source8f05f3dea has
+private daily time-policy changes and dirty host/coupling/input/test/CLI. Inspected
+actual delta: daily seed/build/restart identity is peer-owned; no private policy
+imported. Our management selection, donor optimization and root controls are
+independent semantic changes. Canonical remains a6720a0e8; any later peer
+admission requires affected exact-postimage requalification before our merge.

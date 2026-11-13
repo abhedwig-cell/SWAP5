@@ -100,6 +100,8 @@ def inspect(directory):
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SW2={1, 2}, SW3={1, 2})
+    if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
+        raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
@@ -189,6 +191,6 @@ def validate(project):
 def auxiliary_magic(project):
     selected = inspect(project.input_directory)['selectors']
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
-    formats = (b'S5HUP012',b'S5SHS016',b'S5SSN014',b'S5SMX017') if project.solute else (
-               b'S5WAT007',b'S5WHS011',b'S5WSN009',b'S5WMX012')
+    formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
+               b'S5WAT007',b'S5WHS008',b'S5WSN009',b'S5WMX010')
     return formats[history]
