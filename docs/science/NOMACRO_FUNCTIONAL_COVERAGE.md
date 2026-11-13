@@ -47,9 +47,11 @@ absolute/parent references, reserved restart/output names and foreign reused
 builds. Relative folders remain inside each worker's copied project. No physical
 switch is silently changed. Validated crop signatures retain the original
 Hupsel, Grassgrowth and SaltFarm process implementations, with general parameters
-and project calendars. The existing complete solute auxiliary state is required
-for WOFOST/scheduled-irrigation combinations; the known grass-only water path
-retains its own native state.
+and project calendars. Original WOFOST/scheduled-irrigation management state is selected independently
+of chemistry. Solute runs retain their conserved chemical auxiliary state;
+experimental water-only runs use their distinct management format. The registered
+grass-only water path retains its own native state, and unqualified water-only
+hydraulic/snow history remains explicitly refused.
 
 ## First implementation block
 
