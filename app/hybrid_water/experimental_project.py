@@ -62,8 +62,16 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
+    crop_files=set()
+    if selected.get('SWCROP')==1:
+        entries=re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
+        if not entries:raise ValueError('Missing/unsupported original crop rotation')
+        for name,_ in entries:
+            path=directory/(name if name.lower().endswith('.crp') else name+'.crp')
+            if not path.is_file():raise ValueError('Missing original crop input: '+name)
+            crop_files.add(path.resolve())
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
-                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {1}, 'SWCALT': {2},
+                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {2},
                  'SWTOPBHEA': {1}, 'SWBOTBHEA': {1}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
                  'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
@@ -93,7 +101,9 @@ def inspect(directory):
     # excluded until their complete process/state combinations are qualified.
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
-                   SWSP={0, 1}, SWDC={0, 1})
+                   SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SW2={1, 2}, SW3={1, 2})
+    if selected['SWSNOW'] and selected['SWHEA'] == 0:
+        raise ValueError('Original snow requires soil heat transport')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
         raise ValueError('Original hysteresis requires the analytical hydraulic family')
     for name, value in selected.items():
@@ -122,6 +132,9 @@ def inspect(directory):
         check_paths(body, path.name)
         sig = switches(body)
         if path.suffix.lower() == '.crp':
+            # An unused file remains hash-bound input data, but cannot activate
+            # a process. Validate the actual complete future rotation instead.
+            if path.resolve() not in crop_files:continue
             schedule = one(body, 'SCHEDULE', r'[+-]?\d+')
             if schedule not in ('0', '1') or (schedule == '1' and not selected['SWSOLU']):
                 raise ValueError('Scheduled irrigation requires the existing complete auxiliary codec')
@@ -129,6 +142,8 @@ def inspect(directory):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
             if not selected['SWSOLU'] and sig.get('SWWOFOST', 0) != 3:
                 raise ValueError('WOFOST day-state currently requires the solute auxiliary codec')
+            if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
+                raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':
