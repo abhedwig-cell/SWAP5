@@ -1,0 +1,13 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-STATE02",
+  "baseline": "87792cdee54380424b9e1efb62ac272cdde1ab76",
+  "stage": "PREPARED_NOT_TESTED",
+  "scope": "One wet rejection and existing reduced contexts; no production patch",
+  "next_safe_step": "Build native O0/O2 closure and run bounded replay",
+  "invariants": [
+    "unchanged physics/criteria/reduction/dt limits",
+    "paired exchange",
+    "protected references unchanged"
+  ],
+  "qualification": "NOT_PROMOTED"
+}
