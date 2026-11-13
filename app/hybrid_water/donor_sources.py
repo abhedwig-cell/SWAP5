@@ -84,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -180,6 +180,20 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                       "        call hybrid_solute_checkpoint(unit,.true.)\n        call hybrid_irrigation_checkpoint(unit,.true.)\n        call hybrid_wofost_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing")
         codec=replace(codec,"        write(unit) t,iyear",
                       "        write(unit) t,iyear\n        call hybrid_solute_checkpoint(unit,.false.)\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)")
+    elif management_state:
+        if not nonmacro:raise ValueError('Management auxiliary requires absent macropores')
+        codec=codec.replace('S5NON006','S5WAT007')
+        codec=replace(codec,'      use MOD_swap_base, only: swmacro',
+                      '      use MOD_swap_base, only: swmacro\n      use MOD_irrigation,only:hybrid_irrigation_checkpoint\n      use MOD_wofost,only:hybrid_wofost_checkpoint')
+        codec=replace(codec,'        read(unit,iostat=ios) trailing',
+                      '        call hybrid_irrigation_checkpoint(unit,.true.)\n        call hybrid_wofost_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing')
+        codec=replace(codec,'        write(unit) t,iyear',
+                      '        write(unit) t,iyear\n        call hybrid_irrigation_checkpoint(unit,.false.)\n        call hybrid_wofost_checkpoint(unit,.false.)')
+    managed=solute_state or management_state
+    base_magic='S5HUP012' if solute_state else ('S5WAT007' if management_state else 'S5NON006')
+    hys_magic='S5SHS013' if solute_state else ('S5WHS008' if management_state else 'S5NHS007')
+    snow_magic='S5SSN014' if solute_state else ('S5WSN009' if management_state else 'S5NSN008')
+    mixed_magic='S5SMX015' if solute_state else ('S5WMX010' if management_state else 'S5NMX009')
     if hydraulic_history:
         if not nonmacro:raise ValueError('Hydraulic history requires absent macropores')
         # Hysteresis can change h/scanning state after the accepted Richards
@@ -190,8 +204,8 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         codec=replace(codec,'      use variables, only: t, iyear',
                       '      use variables, only: t, iyear, h,theta,k,kmean,dimoca,gwl,volact')
         codec=replace(codec,'      use MOD_grid, only: numnod','      use MOD_grid, only: numnod,dz')
-        old_magic='S5HUP012' if solute_state else 'S5NON006'
-        new_magic='S5SHS013' if solute_state else 'S5NHS007'
+        old_magic=base_magic
+        new_magic=hys_magic
         codec=codec.replace(old_magic,new_magic)
         codec=replace(codec,'        read(unit,iostat=ios) trailing',f"""        read(unit,iostat=ios) {fields}
         if(ios/=0)error stop 'Incomplete hysteresis hydraulic history'
@@ -200,7 +214,7 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
            any(dimoca(1:numnod)<0d0).or.volact<0d0)error stop 'Invalid hysteresis hydraulic history'
         if(abs(sum(theta(1:numnod)*dz(1:numnod))-volact)>1d-10)error stop 'Unbalanced hysteresis water history'
         read(unit,iostat=ios) trailing""")
-        anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if solute_state else '        write(unit) t,iyear'
+        anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if managed else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)
     if thermal_history:
         if not nonmacro:raise ValueError('Snow thermal history requires absent macropores')
@@ -210,8 +224,8 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         fields='heacon(1:numnod),heacap(1:numnod),tetop,tebot'
         codec=replace(codec,'      use variables, only: t, iyear',
                       '      use MOD_SoilTemperature,only:heacon,heacap,tetop,tebot\n      use variables, only: t, iyear')
-        old_magic=('S5SHS013' if solute_state else 'S5NHS007') if hydraulic_history else ('S5HUP012' if solute_state else 'S5NON006')
-        new_magic=('S5SMX015' if solute_state else 'S5NMX009') if hydraulic_history else ('S5SSN014' if solute_state else 'S5NSN008')
+        old_magic=hys_magic if hydraulic_history else base_magic
+        new_magic=mixed_magic if hydraulic_history else snow_magic
         codec=codec.replace(old_magic,new_magic)
         codec=replace(codec,'        read(unit,iostat=ios) trailing',f"""        read(unit,iostat=ios) {fields}
         if(ios/=0)error stop 'Incomplete snow thermal history'
@@ -221,7 +235,7 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if hydraulic_history:
             anchor='        write(unit) h(1:numnod),theta(1:numnod),k(1:numnod+1),kmean(1:numnod+1),dimoca(1:numnod),gwl,volact'
         else:
-            anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if solute_state else '        write(unit) t,iyear'
+            anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if managed else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
@@ -286,7 +300,7 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
     if nonmacro:
         swap=replace(swap,"if (swmacro == 1 .and. fl_initialize) call hybrid_macro_checkpoint",
                           "if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint")
-    if solute_state:
+    if managed:
         restore="   if (swmacro == 0 .and. fl_initialize) call hybrid_macro_checkpoint(.true., t1900, dtold, checkpoint_canopy)"
         swap=replace(swap,"use MOD_cropdevelopment, only: croprotation, cropdevelopment, reset_crop",
                      "use MOD_wofost,only:hybrid_apply_wofost\nuse MOD_cropdevelopment, only: croprotation, cropdevelopment, reset_crop")

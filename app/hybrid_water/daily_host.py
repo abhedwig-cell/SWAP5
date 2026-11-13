@@ -100,8 +100,10 @@ def verify_source(distribution):
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST):
     case = project_case(reference, project)
+    strict_water = project.solute or bool(project.input_directory and budget_retry)
+    management_state = project.solute or bool(project.input_directory)
     if ((not project.macro and any((trace_richards,shared_pond_transfer,refresh_macro_final)))
-            or (not project.macro and not project.solute and budget_retry)):
+            or (not project.macro and not project.solute and budget_retry and not project.input_directory)):
         raise ValueError("Macro/Cauchy corrections require the Andelst project")
     distribution = reference / "distribution/SWAP_4.3.1"
     verify_source(distribution)
@@ -161,7 +163,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         render_checkpoint(donor_build, output, checkpoint_day, RESTART_WINDOWS.get(checkpoint_day, 2),
                           runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute,
                           hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),
-                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0))
+                          thermal_history=bool(project.input_directory and selector('SWSNOW')>0),
+                          management_state=management_state)
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -214,7 +217,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         source = replace(source, "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900",
                          "      write(*,'(a,1x,i0,1x,es25.17e3)') 'HYBRID_BUDGET_RETRIES', budget_retries, budget_total\n"
                          "      write(*,'(a,i0,1x,f18.8)') 'HYBRID_DAY_RETURN ', window, t1900")
-        if project.solute:source=replace(source,"budget_enabled = window >= 15","budget_enabled = .true.")
+        if strict_water:source=replace(source,"budget_enabled = window >= 15","budget_enabled = .true.")
         main.write_text(source, encoding="cp1252")
     if trace_richards:
         clock = project.start_clock + trace_day - 1
@@ -274,7 +277,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                return
             end if
          end if""")
-        if project.solute:
+        if strict_water:
             source=replace(source,"1d-6 * (t1900-budget_start+dt)","1d-10 * (t1900-budget_start+dt)")
             source=replace(source,"   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror",
                            "   integer                          :: i, j, itry,  MaxIt1, NN, iBackTr, ierror, mass_polish_at")
@@ -311,7 +314,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         (output / "headcalc.f90").write_text(source, encoding="cp1252")
         patched.append("headcalc")
 
-    if project.solute:
+    if project.solute or project.input_directory:
         # Original linear pond/runoff relation remains exact even when the
         # lagged runoff estimate is below the legacy small-flux shortcut.
         # That shortcut booked runoff without subtracting it from new pond.
@@ -323,6 +326,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                        "else if (swdra /= 2 .AND. rsro>=1d-3 .AND. dabs(rsroexp-1.0d0) < 1.0d-6) then")
         (output/'boundtop.f90').write_text(source,encoding='cp1252')
         patched.append('boundtop')
+    if project.solute:
         # The transport dtmin floor must not extend beyond the accepted water
         # interval. Its original order overshot short final fragments and
         # created solute during the day-five saline irrigation event.
@@ -375,6 +379,7 @@ end submodule MOD_Solute_CDE""")
                        "               end if")
         (output/'solute.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'solute')
+    if management_state:
         source=(donor_build/'swap-selected/MOD_cropdevelopment.f90').read_text(encoding='cp1252')
         source=replace(source,"            siccaploss = siccaploss + sicact",
                        "            siccaploss = siccaploss + sicact\n"
@@ -774,13 +779,15 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
     if checkpoint_enabled or project.solute:
         control = directory / "swap.swp"
         source = control.read_text(encoding="cp1252")
-        if project.solute:
+        if project.solute or project.input_directory:
             # Same output-only compatibility already owned by HIGH_PRECISION_REFERENCE.json.
             source,count=re.subn(r"(?mi)^(\s*INLIST_CSV\s*=\s*)'[^']*'",r"\1'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'",source)
             if count!=1:raise ValueError('Missing/ambiguous original CSV groups')
             source,count=re.subn(r"(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1",r"\g<1>0",source)
             if count not in (0,1):raise ValueError("Ambiguous original monthly output setting")
-            source += "\nNUM_DECIMALS = 12\n"
+            source,count=re.subn(r'(?m)^([ \t]*NUM_DECIMALS[ \t]*=[ \t]*)[^\s!]+',r'\g<1>12',source)
+            if count>1:raise ValueError('Ambiguous original output precision')
+            if count==0:source += "\nNUM_DECIMALS = 12\n"
         source, count = re.subn(r"(?m)^([ \t]*SWENDTYPE[ \t]*=[ \t]*)[12]", r"\g<1>2", source)
         if count > 1:
             raise ValueError("Duplicate restart output setting")

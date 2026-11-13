@@ -44,6 +44,7 @@ def main():
     group=parser.add_mutually_exclusive_group()
     group.add_argument('--extended', action='store_true', help='Snow/hysteresis and sorption/decomposition block')
     group.add_argument('--basic-options', action='store_true', help='Original no-crop/no-heat and prescribed bottom fluxes')
+    group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
     args = parser.parse_args()
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
@@ -65,11 +66,11 @@ def main():
 
     call('prepare', ['--no-macro-release', '--prepare-sources', '--reference-work', reference])
     cases = {}
-    for key, run_id in ([] if args.extended or args.basic_options else [('salt08', 2), ('salt16', 3)]):
+    for key, run_id in ([] if args.extended or args.basic_options or args.crop_options else [('salt08', 2), ('salt16', 3)]):
         case = out/('input-'+key)
         saltfarm(case, run_id)
         cases[key] = case
-    for key, name, value in ([] if args.extended or args.basic_options else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
+    for key, name, value in ([] if args.extended or args.basic_options or args.crop_options else [('hupsel-free', 'SWBOTB', 7), ('hupsel-nodrain', 'SWDRA', 0)]):
         case = out/('input-'+key)
         shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook', case)
         path = case/'swap.swp'
@@ -128,6 +129,24 @@ def main():
         target=out/'refused-noheat-oxygen'
         call('future-oxygen-heat-refusal',['--model',e.MODEL,'--experimental-project',invalid,'--reference-work',reference,
                                          '--build-only','--output',target],refuse=True,absent=target)
+    if args.crop_options:
+        specs=[('water-hupsel',False,{'SWSOLU':0},{'SWSALINITY':0}),
+               ('water-salt',True,{'SWSOLU':0},{'SWSALINITY':0}),
+               ('no-interception',False,{}, {'SWINTER':0}),
+               ('no-oxygen',False,{}, {'SWOXYGEN':0,'SWWRTNONOX':0}),
+               ('no-salt-stress',True,{}, {'SWSALINITY':0}),
+               ('no-compensation',False,{}, {'SWCOMPENSATE':0})]
+        for key,salt,main_options,crop_options in specs:
+            case=out/('input-'+key)
+            if salt:saltfarm(case,2)
+            else:shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            for path,options in [(case/'swap.swp',main_options)]+[(p,crop_options) for p in case.glob('*.crp')]:
+                text=path.read_text(encoding='cp1252')
+                for name,value in options.items():
+                    text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text)
+                    assert count==1
+                path.write_text(text,encoding='cp1252')
+            cases[key]=case
 
     for key, case in cases.items():
         project = e.load(case)
@@ -313,7 +332,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else 'salt08')
+    key = 'salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else 'salt08'))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -340,9 +359,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL'), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if args.extended or args.basic_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options else 2,
+                  new_original_workbook_configurations=0 if args.extended or args.basic_options or args.crop_options else 2, new_derived_process_configurations=7 if args.extended or args.basic_options else (6 if args.crop_options else 2),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
