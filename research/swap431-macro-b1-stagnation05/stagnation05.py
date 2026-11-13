@@ -11,11 +11,6 @@ def save(p,x):p.write_text(json.dumps(x,indent=2)+'\n')
 COLS='stage iteration backtrack factor max_F sum_F objective previous_objective frozen h45 q45 F45 dQdh45 h_entry ended_events45 top_saturated top_perched bottom_perched max_head_step max_newton_step nonconverged pond_nonconverged macro_flag local_failures head_failures unsat_out45 sat_out45 saturated_in45 perched_in45 wet_wall45 max_clock45'.split()
 
 def instrument(head):
-    head=head.replace('   implicit none', '''   logical :: diag_active
-   integer :: diag_u
-   integer,save :: diag_counter=0
-   character(64) :: diag_name
-   implicit none''',1) if False else head
     # Declarations must follow IMPLICIT NONE.
     head=head.replace('!  local\n','''!  diagnostic local storage only
    logical :: diag_active
@@ -81,7 +76,9 @@ def prepare():
     soil=(R/'soilwater_inventory.f90').read_text(encoding='cp1252')
     soil=soil.replace('character(64) :: direct,name','character(64) :: direct,name,variant',1)
     soil=soil.replace(' do attempt=1,4'," call get_environment_variable('STAG05_VARIANT',variant)\n do attempt=1,1",1)
-    soil=soil.replace('  call headcalc',"  if(trim(variant)=='V2') then\n   call headcalc_v2\n  else\n   call headcalc\n  end if",1)
+    marker='  call headcalc\n  write(name'
+    assert soil.count(marker)==1
+    soil=soil.replace(marker,"  if(trim(variant)=='V2') then\n   call headcalc_v2\n  else\n   call headcalc\n  end if\n  write(name",1)
     soil=soil.replace('if(attempt==4) exit','if(attempt==1) exit',1)
     soil=soil.replace("'FOUR_ATTEMPT_BOUND',attempt,dt","'ONE_ATTEMPT_DIAGNOSTIC_BOUND',1,dt",1)
     (R/'soilwater_inventory.f90').write_text(soil,encoding='cp1252')

@@ -1,0 +1,42 @@
+[
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\headcalc_inventory.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj\\headcalc.o"
+    ],
+    "seconds": 2.5008086999878287,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\soilwater_inventory.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-stagnation05-work\\native\\O2\\obj\\soilwater.o"
+    ],
+    "seconds": 1.5146451001055539,
+    "returncode": 1,
+    "output": "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\soilwater_inventory.f90:144:27:\n\n  144 |             if(trim(variant)=='V2') then\n      |                           1\nError: Symbol 'variant' at (1) has no IMPLICIT type\nC:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-stagnation05\\soilwater_inventory.f90:144:27:\n\n  144 |             if(trim(variant)=='V2') then\n      |                           1\nError: Symbol 'variant' at (1) has no IMPLICIT type\n"
+  }
+]

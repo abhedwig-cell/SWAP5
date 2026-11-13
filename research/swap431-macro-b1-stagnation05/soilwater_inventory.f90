@@ -141,11 +141,7 @@ module MOD_SoilWater
 ! ---    calculate new soil water state variables
          if (swsolve == 1) then
             call unreduced_driver()
-            if(trim(variant)=='V2') then
-   call headcalc_v2
-  else
-   call headcalc
-  end if
+            call headcalc
          else
          end if
 
@@ -265,7 +261,11 @@ subroutine unreduced_driver()
  do attempt=1,1
   write(name,'(a,i0)') 'begin_',attempt
   call inventory_dump(trim(name))
-  call headcalc
+  if(trim(variant)=='V2') then
+   call headcalc_v2
+  else
+   call headcalc
+  end if
   write(name,'(a,i0)') 'returned_',attempt
   call inventory_dump(trim(name))
   if(.not.fldecdt.and..not.FlDecMpRat.and.IDecMpRat==0) then
