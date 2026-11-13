@@ -7,7 +7,7 @@ rejects process families whose day-state/ledger integration is not implemented.
 from datetime import date
 import hashlib
 import json
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import re
 
 MODEL = 'HYBRID_NOMACRO_WATER'
@@ -37,20 +37,30 @@ def inventory(directory):
     paths = list(directory.rglob('*'))
     if not paths or any(p.is_symlink() for p in paths):
         raise ValueError('Experimental input must be a nonempty regular directory')
-    # Flat original input namespace: workers may never read a caller path or
-    # stale output/restart outside their private copied input directory.
-    if any(not p.is_file() or p.parent != directory for p in paths):
-        raise ValueError('Experimental project requires flat regular input files')
+    # Relative original input folders are copied with the private worker.
+    if any(not (p.is_file() or p.is_dir()) for p in paths):
+        raise ValueError('Experimental project requires regular input files/directories')
     reserved = {'restart.end', 'macro-origin.bin', 'macro.bin', 'result.end', 'swap.ok', 'swap.err'}
     if any(p.name.lower() in reserved for p in paths):
         raise ValueError('Experimental input collides with a worker output/restart name')
-    return tuple(sorted((p.name, hashlib.sha256(p.read_bytes()).hexdigest()) for p in paths))
+    return tuple(sorted((p.relative_to(directory).as_posix(), hashlib.sha256(p.read_bytes()).hexdigest())
+                        for p in paths if p.is_file()))
+
+
+def check_paths(body, name):
+    active = '\n'.join(line.split('!', 1)[0] for line in body.splitlines()
+                       if line.strip() and not line.lstrip().startswith('*'))
+    for token in re.findall(r"'([^'\n]*)'", active):
+        path = PureWindowsPath(token)
+        if path.drive or path.root or '..' in path.parts:
+            raise ValueError('External/parent path in original input: '+name)
 
 
 def inspect(directory):
     directory = Path(directory).resolve()
     inputs = inventory(directory)
     text = (directory/'swap.swp').read_text(encoding='cp1252')
+    check_paths(text, 'swap.swp')
     selected = switches(text)
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0},
                  'SWSNOW': {0}, 'SWFROST': {0}, 'SWHEA': {1}, 'SWCALT': {2},
@@ -79,8 +89,8 @@ def inspect(directory):
         for name, value in switches((root/'swap.swp').read_text(encoding='cp1252')).items():
             allowed.setdefault(name, set()).add(value)
     # Stateless original dispatches; complete original Fortran bodies are kept.
-    # Dynamic groundwater reservoir (8/9), hysteresis and stateful surfacewater
-    # are deliberately excluded until their additional memory is qualified.
+    # Other bottom variants (8/9), hysteresis and stateful surfacewater remain
+    # excluded until their complete process/state combinations are qualified.
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1})
     for name, value in selected.items():
@@ -100,17 +110,11 @@ def inspect(directory):
 
     crop_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.crp')]
     drain_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.dra')]
-    for path in directory.iterdir():
+    for path in directory.rglob('*'):
         if path.suffix.lower() not in ('.swp', '.crp', '.dra', '.bbc', '.ini'):
             continue
         body = path.read_text(encoding='cp1252')
-        # Reject paths even in dormant file settings; every input stays inside
-        # the private worker. Other quoted strings (CSV groups/project) remain.
-        active = '\n'.join(line.split('!', 1)[0] for line in body.splitlines()
-                           if line.strip() and not line.lstrip().startswith('*'))
-        if any(token not in ('./', '.\\') and ('/' in token or '\\' in token or ':' in token)
-               for token in re.findall(r"'([^'\n]*)'", active)):
-            raise ValueError('External/relative path in original input: '+path.name)
+        check_paths(body, path.name)
         sig = switches(body)
         if path.suffix.lower() == '.crp':
             schedule = one(body, 'SCHEDULE', r'[+-]?\d+')
@@ -122,6 +126,12 @@ def inspect(directory):
                 raise ValueError('WOFOST day-state currently requires the solute auxiliary codec')
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
             raise ValueError('Drainage process/state combination is not implemented: '+path.name)
+        if path.suffix.lower() == '.dra':
+            if one(body, 'DRAMET', r'[+-]?\d+') not in ('2', '3'):
+                raise ValueError('Unqualified drainage method')
+        if path.suffix.lower() == '.crp' and schedule == '1':
+            if one(body, 'ISUAS', r'[+-]?\d+') not in ('0', '1'):
+                raise ValueError('Subsurface scheduled irrigation is not integrated')
     start = one(text, 'TSTART', r'\d{4}-\d{2}-\d{2}')
     end = one(text, 'TEND', r'\d{4}-\d{2}-\d{2}')
     if date.fromisoformat(end) < date.fromisoformat(start):

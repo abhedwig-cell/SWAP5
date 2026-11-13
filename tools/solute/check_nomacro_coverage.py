@@ -126,6 +126,27 @@ def main():
                         for column, index in [(2, offset+2), (1, offset)]:
                             assert physical(host.step(column)) == physical(full_rows[index])
                     host.close()
+                refused = out/(label+'-mass-refused'); refused.mkdir()
+                with contextlib.ExitStack() as stack:
+                    host = h.DailyHost(stack, h.executable(bundle, 'day_donor'), h.executable(bundle, 'day_kernel'),
+                                       actual, refused, [h.ColumnStart()], runtime=True, checkpoint_enabled=True, project=project)
+                    origin_stocks = host.columns[0].stocks.copy()
+                    send = h.send
+                    def inconsistent_flux(process, line):
+                        values = line.split()
+                        if process is host.host and len(values) == project.nodes+12:
+                            values[2] = str(float(values[2])+1.0)
+                            line = ' '.join(values)
+                        return send(process, line)
+                    try:
+                        h.send = inconsistent_flux
+                        rejected = host.step(1)
+                    finally:
+                        h.send = send
+                    assert not rejected['committed'] and rejected['revision'] == 0
+                    assert host.columns[0].day == 0 and host.columns[0].stocks == origin_stocks
+                    assert not list(refused.glob('accepted-*.zip'))
+                    host.close()
                 external = CoupledDailyColumn(bundle, reference, out/(label+'-external'), project, 'coverage-'+key)
                 first = external.prepare(); external.discard(first)
                 assert external.day == external.revision == 0 and external.checkpoint is None
@@ -142,7 +163,8 @@ def main():
                 third = recovered.prepare()
                 assert physical({k:v for k,v in third.budget.items() if k != 'candidate_only'} | {'committed':True}) == physical(full_rows[2])
                 recovered.discard(third)
-                report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True)
+                report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
+                              inconsistent_mass_refused_without_commit=True)
                 (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
 
         # The unchanged original executable is a comparison reference, never
@@ -156,12 +178,31 @@ def main():
                           swap_ok=(original/'swap.ok').is_file(),
                           error=(original/'swap.err').read_text(encoding='cp1252') if (original/'swap.err').exists() else '',
                           scientific_equivalence='NOT_QUALIFIED', original_executable_sha256=h.sha(donor))
+        (out/(key+'-LITERAL_REFERENCE.json')).write_text(json.dumps(comparison, indent=2)+'\n')
+        if not comparison['swap_ok']:
+            # The distributed SaltFarm template requests nonexistent S_CONC.
+            # Preserve that literal FAIL; rerun the unchanged executable with
+            # the already admitted output-only CSV spelling/precision adapter.
+            assert 'Item S_CONC in userlist not known' in comparison['error']
+        compat = out/(key+'-reference-csv'); shutil.copytree(case, compat)
+        path = compat/'swap.swp'
+        text, count = re.subn(r"(?mi)^([ \t]*INLIST_CSV[ \t]*=[ \t]*)'[^']*'",
+                              r"\1'WATBAL,ETTERMS,SOLBAL,GWL,CROP,WOFOST,GRASS'", path.read_text(encoding='cp1252'))
+        assert count == 1
+        text = re.sub(r'(?m)^([ \t]*SWMONTH[ \t]*=[ \t]*)1', r'\g<1>0', text)
+        path.write_text(text+'\nNUM_DECIMALS = 12\n', encoding='cp1252')
+        with (compat/'stdout').open('wb') as log:
+            result = subprocess.run([str(donor), './swap.swp'], cwd=compat, stdout=log, stderr=subprocess.STDOUT, timeout=180)
+        comparison['output_compatible_reference'] = dict(returncode=result.returncode, swap_ok=(compat/'swap.ok').is_file(),
+            error=(compat/'swap.err').read_text(encoding='cp1252') if (compat/'swap.err').exists() else '',
+            changes=['INLIST_CSV valid original groups', 'SWMONTH=0', 'NUM_DECIMALS=12'], physical_changes=False,
+            input_sha256={p.name:h.sha(p) for p in case.iterdir() if p.is_file()}, prepared_swp_sha256=h.sha(path))
         # Report numerical differences on actual common CSV fields without
         # assigning new scientific tolerances or relabelling inherited FAILs.
         def csv_rows(path):
             lines = [line for line in path.read_text(encoding='cp1252').splitlines() if line.strip() and not line.startswith('*')]
             return list(csv.DictReader(lines))
-        left = csv_rows(original/'result_output.csv')
+        left = csv_rows(compat/'result_output.csv')
         right = csv_rows(out/(key+'-O2-control')/'original/result_output.csv')
         comparison['original_output_rows'] = len(left)
         comparison['hybrid_output_rows'] = len(right)
@@ -174,7 +215,8 @@ def main():
                     pass
             comparison['maximum_numeric_csv_differences'] = deltas
         (out/(key+'-COMPARISON.json')).write_text(json.dumps(comparison, indent=2)+'\n')
-        assert comparison['swap_ok'] and not comparison['error'].strip() and result.returncode in (0, 100)
+        checked = comparison['output_compatible_reference']
+        assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
     case = cases['salt08']; control = case/'swap.swp'; saved = control.read_bytes()

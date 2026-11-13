@@ -786,7 +786,12 @@ def prepare_column(case, directory, start, checkpoint_enabled, runtime, project=
             source += "\nSWENDTYPE = 2\n"
         if start.origin is not None:
             start_date = date.fromisoformat(project.start_date) + timedelta(days=start.day)
-            source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
+            if project.input_directory:
+                source,count=re.subn(r'(?m)^([ \t]*TSTART[ \t]*=[ \t]*)'+re.escape(project.start_date)+r'\b',
+                                     lambda m:m[1]+str(start_date),source)
+                if count!=1:raise ValueError('Missing/ambiguous experimental start date')
+            else:
+                source = replace(source, f"TSTART = {project.start_date}", f"TSTART = {start_date}")
             if project==ANDELST and start.day >= 365:
                 bbc = directory / "swap.bbc"
                 table = bbc.read_text(encoding="cp1252")
