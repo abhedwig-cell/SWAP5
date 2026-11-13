@@ -1,6 +1,7 @@
 """Single-context, unscaled V1 solve/reject experiment. No reference promotion."""
 from pathlib import Path
-import argparse,importlib.util,json,os,shutil,subprocess,time,hashlib
+import argparse,importlib.util,json,os,shutil,subprocess,time,hashlib,sys
+sys.dont_write_bytecode=True
 
 R=Path(__file__).resolve().parent
 PREV=R.parent/'swap431-macro-b1-inventory03'

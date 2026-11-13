@@ -1,0 +1,201 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-UNREDUCED04",
+  "baseline": "f1271cc1d99e611dbc287cc6ca8c11dfc46c732c",
+  "decision": "B1_CANDIDATE_NOT_READY",
+  "decision_scope": "Unreduced physical B1 reference under the existing V1 solver/criteria/dt limits",
+  "result": "UNREDUCED_V1_FAILS_ALL_FOUR_ORIGINAL_DT_ATTEMPTS_AND_REQUESTS_REDUCTION_AT_DTMIN",
+  "O0_O2_vectors_byte_exact": true,
+  "final_model_routes": 2,
+  "pilot_model_routes": 2,
+  "model_cap_seconds": 20,
+  "final_max_model_seconds": 1.078544900054112,
+  "source_equations_criteria_and_reduction_law_unchanged": true,
+  "experimental_policy": "Only select IDecMpRat=0 at the saved origin; preserve retry flag and refuse requested scaled fallback after actual rollback.",
+  "official_reference_changed": false,
+  "production_changed": false,
+  "additional_memory_patch": false,
+  "accepted_unreduced_steps": 0,
+  "no_direct_control_run": "No smaller trial accepted, so the preregistered conditional accepted-retry control was not selected.",
+  "pilot_explanation": "Initial two routes cleared the inherited retry flag, shortening nonminimum iterations to30. Their failures, binaries and vectors are preserved separately and do not qualify the final result. Final routes preserve the flag and run the full60 iterations at all4 dt values.",
+  "bounds": [
+    "One saved original wet context only",
+    "No proof that no unscaled mathematical root exists",
+    "No proof of failure of all possible numerical methods",
+    "Last rejected residuals are the original solver residuals with currently used exchange, not new acceptance certificates",
+    "No dry-event/restart/whole-trajectory qualification",
+    "Original reduction law unchanged; no official B1 promotion"
+  ],
+  "results": [
+    {
+      "optimization": "O2",
+      "model_seconds": 0.8234171001240611,
+      "outcome": "ORIGINAL_REDUCTION_REQUIRED",
+      "accepted_steps": 0,
+      "origin_matches_INVENTORY03": true,
+      "full_original_iteration_budget_preserved": true,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 0.0001414213562373095,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.0018398763633383775,
+          "last_total_residual": -0.001922009307350458,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 3.469446951953614e-18,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {
+            "event": 1.0,
+            "sorptivity": 2.6302661466004115e-06
+          }
+        },
+        {
+          "attempt": 2,
+          "dt": 4.714045207910317e-05,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.11222129347959493,
+          "last_total_residual": 0.8157597524220922,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 1.3877787807814457e-17,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {
+            "event": 1.0,
+            "sorptivity": 3.4652086561869685e-05
+          }
+        },
+        {
+          "attempt": 3,
+          "dt": 1.5713484026367723e-05,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.09894222962661647,
+          "last_total_residual": 0.1819282670732871,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 1.3877787807814457e-17,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {
+            "event": 1.0,
+            "sorptivity": 3.0980088205991886e-06
+          }
+        },
+        {
+          "attempt": 4,
+          "dt": 1e-05,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.0951914939633643,
+          "last_total_residual": -0.09590048763429958,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 6.938893903907228e-18,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {}
+        }
+      ],
+      "final_measured_stock_and_process_memory_exact": true,
+      "committed_inventory_change": 0.0
+    },
+    {
+      "optimization": "O0",
+      "model_seconds": 1.078544900054112,
+      "outcome": "ORIGINAL_REDUCTION_REQUIRED",
+      "accepted_steps": 0,
+      "origin_matches_INVENTORY03": true,
+      "full_original_iteration_budget_preserved": true,
+      "attempts": [
+        {
+          "attempt": 1,
+          "dt": 0.0001414213562373095,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.0018398763633383775,
+          "last_total_residual": -0.001922009307350458,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 3.469446951953614e-18,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {
+            "event": 1.0,
+            "sorptivity": 2.6302661466004115e-06
+          }
+        },
+        {
+          "attempt": 2,
+          "dt": 4.714045207910317e-05,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.11222129347959493,
+          "last_total_residual": 0.8157597524220922,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 1.3877787807814457e-17,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {
+            "event": 1.0,
+            "sorptivity": 3.4652086561869685e-05
+          }
+        },
+        {
+          "attempt": 3,
+          "dt": 1.5713484026367723e-05,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.09894222962661647,
+          "last_total_residual": 0.1819282670732871,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 1.3877787807814457e-17,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {
+            "event": 1.0,
+            "sorptivity": 3.0980088205991886e-06
+          }
+        },
+        {
+          "attempt": 4,
+          "dt": 1e-05,
+          "iterations": 60,
+          "solver_level": 0,
+          "used_reduction_factor": 1.0,
+          "accepted": false,
+          "last_local_residual": 0.0951914939633643,
+          "last_total_residual": -0.09590048763429958,
+          "local_limit": 1e-06,
+          "total_limit": 1e-05,
+          "independently_reconstructed_residual_error": 6.938893903907228e-18,
+          "paired_exchange_error": 6.938893903907228e-18,
+          "stocks_geometry_theta_clock_restored": true,
+          "rollback_process_memory_differences": {}
+        }
+      ],
+      "final_measured_stock_and_process_memory_exact": true,
+      "committed_inventory_change": 0.0
+    }
+  ],
+  "next_safe_step": "Retain reduced V1 as excluded numerical research evidence. Separately diagnose why the existing V1 iteration stagnates in this one original context (freeze/line-search/local active-set), without starting a new general solver or historical campaign. If justified, compare the already existing active-coupling V2 on the same context under a separate bounded contract; not executed here."
+}
