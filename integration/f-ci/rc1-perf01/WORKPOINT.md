@@ -1,41 +1,31 @@
-# RC1 source-bound publisher and science recovery
+# RC1 cross-platform/performance investigation closed
 
-Own branch: codex/rc1-publisher-perf03. Canonical2b9d322e68de204128d9c57b53aaf3f9e7f963de
-admits science PR1666, exact tree0a6bdd4a713236a4a9ddf1640503b0dacc3442c9.
-Frozen RC1 remains11529865e76fb2259542f1e770726cd87af27603.
+Owner decision2026-11-13: "Rond af met expliciete beperkingen".
+Status: CLOSED_BY_OWNER_WITH_EXPLICIT_SCIENTIFIC_LIMITATIONS.
 Owner: integration/f-ci/RC1_CROSSPLATFORM_PERF01_20261112.json.
+Closeout branch: codex/rc1-perf-closeout.
 
-Publisher successor runtime459b45244 builds unchanged C once, binds C/library/GCC
-SHA to the build, verifies before output/load, and reuses it for checkpoint runs.
-Windows all3 O0 short/O2 full physical/CSV/native preservation and refusals PASS.
-Six focused Windows O0/O2 external discard/replay/isolation/recovery controls PASS.
-Ubuntu43258743503 at6d29936becd9ea36043d8047e4dab18bf263ecc2 is SUCCESS,
-downloaded/digest-verified and all six profiles/refusals audited. Only registered
-manual workflow wiring differs from runtime/test459b45244. Do not rerun.
-Raw proof publisher-proof.tar.gz has forward-scanned member hashes; index records
-archive SHA. Full wall observations are noisy; prepared publisher loading falls
-from about1second to1-2milliseconds Windows. Compilation shifts to build, not
-eliminated for the first build/run. No native solver speedup claimed.
+Performance and scientific evidence blocks are admitted through PR1665/1666/1667.
+Verified functional canonical postimage f2377211d2be58d03d96e50fb0a6bc35ced3c90f,
+tree343eae7e7e1f49baf0138fc50152769f006439d9. PR1667_MERGE.json preserves
+actual admission receipt. Frozen RC1 remains11529865e76fb2259542f1e770726cd87af27603.
 
-The rejected private adaptive-feedback policy is absent. Hupsel day364 exceeded
-unchanged1e-10 daily water guard. Matched GNU15.2 Hupsel584 oxygen spread is
-6.336439640616462e-7cm, exceeding existing point bound5.371840000016327e-7cm.
-All original scientific FAILs/reference limitations remain. Portable whole
-scientific equivalence is not qualified. No new acceptance bounds are fitted.
+Selected complete O2 periods1827/1096/1461 and short O0 controls preserve all
+same-platform physical/CSV receipts and own native/auxiliary continuations on
+Windows/Ubuntu. Windows external discard/replay/isolation/recovery passes.
+Tolerances, original physical processes, restart and rollback contracts unchanged.
+Publisher compilation moves to the build stage; repeated prepared-build checkpoint
+commands load the exact source/library/GCC-bound binary. Full timing observations
+are noisy and are not a universal native-solver acceleration claim.
 
-Next: publish/admit publisher PR and verify actual canonical tree plus frozen
-release SHA. Present the quantified scientific disposition to the owner: whether
-a functionally qualified release may carry these explicit portable-science
-limitations, or a separately scoped numerical-stabilization successor is required.
-Do not silently promote equivalence or start another reference/solver campaign.
+Portable whole scientific equivalence remains NOT_QUALIFIED. In matched GNU15.2
+cohorts Hupsel584 oxygen spread6.336439640616462e-7cm exceeds existing point
+bound5.371840000016327e-7cm. Hupsel head spread17.2825376518403cm and SaltFarm
+stock spread0.020218933796115834cm remain quantified limitations. Original
+oxygen FAILs and underqualified references remain visible. Private adaptive
+shortcut rejected after Hupsel364 daily water guard failed; never admitted.
 
-
-PR1667 admitted at canonical f2377211d2be58d03d96e50fb0a6bc35ced3c90f,
-exact tested tree343eae7e7e1f49baf0138fc50152769f006439d9. Frozen release ref
-verified unchanged after merge. PR1667_MERGE.json preserves actual receipt.
-All selected checks are terminal PASS; no model/CI run remains pending.
-Owner disposition question is pending in the chat: continue a scoped numerical
-platform-sensitivity package or close the investigation with explicit scientific
-limits. No automatic new tolerance/reference/solver campaign and no premature
-claim of achieved portable scientific equivalence. The resumption timer stops
-at this explicit decision boundary under the work-order stop rule.
+No active blocker remains for the owner-selected closeout scope. This is an
+explicit limited investigation closure, not a retrospective scientific PASS.
+No further run, tolerance change, reference campaign or macro work is selected.
+The half-hour recovery timer is deleted and must not restart this closed work.
