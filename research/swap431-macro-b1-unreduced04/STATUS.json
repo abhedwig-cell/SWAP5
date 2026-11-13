@@ -1,0 +1,24 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-UNREDUCED04",
+  "baseline": "f1271cc1d99e611dbc287cc6ca8c11dfc46c732c",
+  "canonical_reconciled": "980273f819ef0984da90dc478e26d2b1e340fcc2",
+  "canonical_delta": "No-macro project/bottom coverage only; immutable original closure unchanged",
+  "stage": "PREREGISTERED_NOT_TESTED",
+  "authorization": "User go after explicit proposed single-context unreduced solve/reject experiment",
+  "contract": "Selected accepted V1 first reduction context; at live origin explicitly set IDecMpRat=0. Use unchanged V1 headcalc, local/total/head/pond criteria and original shrink policy. On request for original flux reduction, restore and stop; never accept a scaled or nonconverged fallback.",
+  "scope": "One original context, at most four original dt attempts per route; O0/O2; direct-from-origin control only if a smaller retry accepts",
+  "model_cap_seconds": 20,
+  "initial_routes": 2,
+  "conditional_direct_controls": 2,
+  "production_changed": false,
+  "official_reference_changed": false,
+  "reduction_law_changed": false,
+  "solver_equations_changed": false,
+  "experimental_execution_policy": "Select unscaled same-origin solve and decline original scaled fallback only in this experiment",
+  "next_safe_step": "Build two diagnostic objects and run bounded native O2 route, then O0 and necessary direct control",
+  "invariants": [
+    "no tolerance or dt limit changes",
+    "actual original rollback and accepted inventory",
+    "no full trajectory or new general solver variant"
+  ]
+}
