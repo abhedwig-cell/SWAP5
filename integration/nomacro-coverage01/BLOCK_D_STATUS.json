@@ -1,7 +1,7 @@
 {
   "work_unit": "SWAP5-NOMACRO-COVERAGE01",
   "block": "D_CHEMISTRY_INDEPENDENT_MANAGEMENT",
-  "status": "FINAL_QUALIFICATION_RUNNING_NOT_ADMITTED",
+  "status": "QUALIFIED_EXPERIMENTAL_FUNCTIONAL_SCOPE_PENDING_ADMISSION",
   "source": "42f066bf05df510bc7d8dd3f5a3305235762fac5",
   "pr": 1673,
   "workflow_run": 43418605842,
@@ -40,5 +40,486 @@
     }
   ],
   "science": "NOT_QUALIFIED; inherited scientific FAILs retained",
-  "next_step": "Follow current runs to terminal, assess exact profiles, preserve raw result, then ready/merge and verify actual canonical postimage"
+  "next_step": "Follow current runs to terminal, assess exact profiles, preserve raw result, then ready/merge and verify actual canonical postimage",
+  "configurations": [
+    {
+      "configuration": "water-hupsel",
+      "optimization": "O0",
+      "completed_days": 5,
+      "requested_days": 5,
+      "solute_active": false,
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "full_period_pass": false,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 3.0753177782116836e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "restart_window": [
+        2,
+        4
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "8c7bd67acd0119e82a13b1fec84fc1cf19a3679116a4b1da1124644f7c996a01",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "9b912f689a076faa80570360674dc6c112e26670c3be9bbb2b4e6a2875fb1101"
+      },
+      "build_sha256": "046ebc848bfc5df4f3c5ab6853fa672506f63d491aa4f21378bd43b4c926b8cc",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ]
+    },
+    {
+      "configuration": "water-hupsel",
+      "optimization": "O2",
+      "completed_days": 1096,
+      "requested_days": 1096,
+      "solute_active": false,
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "full_period_pass": true,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 9.996712219953116e-11,
+      "maximum_solute_residual_mg_cm2": null,
+      "restart_window": [
+        365,
+        367
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "6b7d994c3908f198100104f935c05536d0fdce7a56c0ef32286471738ea0e31a",
+        "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "8c7bd67acd0119e82a13b1fec84fc1cf19a3679116a4b1da1124644f7c996a01",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "9b912f689a076faa80570360674dc6c112e26670c3be9bbb2b4e6a2875fb1101"
+      },
+      "build_sha256": "667689e4952539ae8d5b24b895e0e754deaf9007e932f9ec2f968af35c9053b4",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ],
+      "independent_distinct_origins": true,
+      "external_discard_replay_exact": true,
+      "external_disk_recovery": true,
+      "inconsistent_mass_refused_without_commit": true,
+      "resealed_native_history_refusals": 4
+    },
+    {
+      "configuration": "water-salt",
+      "optimization": "O0",
+      "completed_days": 5,
+      "requested_days": 5,
+      "solute_active": false,
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "full_period_pass": false,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 5.648051470963367e-13,
+      "maximum_solute_residual_mg_cm2": null,
+      "restart_window": [
+        2,
+        4
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "PREPARATION.json": "ef902d144f6cfadc75e8e159cdd2808f6dc48019926da1e46b82bbcf41100894",
+        "fontane.crp": "7e82fdfe25976d6741c63f6c15a66d2005b2251718efe8480cd937de90ba8da5",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "bebde0a25eb6ece1fc02cdf0967aea97e998c32eb77b62317206fd364978bda8",
+        "swap.swp": "5f6770e35286232412237cfb952ad1d648ae46527596fcb9c91eeac0440ec48c"
+      },
+      "build_sha256": "1cb2721caffcc1a2a2b06a591376989b09d92644ebf314b33ee34143d9a040ef",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        200,
+        202
+      ]
+    },
+    {
+      "configuration": "water-salt",
+      "optimization": "O2",
+      "completed_days": 1461,
+      "requested_days": 1461,
+      "solute_active": false,
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "full_period_pass": true,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 1.2967328599788885e-11,
+      "maximum_solute_residual_mg_cm2": null,
+      "restart_window": [
+        365,
+        367
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "PREPARATION.json": "ef902d144f6cfadc75e8e159cdd2808f6dc48019926da1e46b82bbcf41100894",
+        "fontane.crp": "7e82fdfe25976d6741c63f6c15a66d2005b2251718efe8480cd937de90ba8da5",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "bebde0a25eb6ece1fc02cdf0967aea97e998c32eb77b62317206fd364978bda8",
+        "swap.swp": "5f6770e35286232412237cfb952ad1d648ae46527596fcb9c91eeac0440ec48c"
+      },
+      "build_sha256": "a315426a921d88e0eae3fe538f8c5b78f186f9acbf8e4147dc350521061c29ab",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        200,
+        202
+      ],
+      "independent_distinct_origins": true,
+      "external_discard_replay_exact": true,
+      "external_disk_recovery": true,
+      "inconsistent_mass_refused_without_commit": true,
+      "resealed_native_history_refusals": 4
+    },
+    {
+      "configuration": "no-interception",
+      "optimization": "O0",
+      "completed_days": 5,
+      "requested_days": 5,
+      "solute_active": true,
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "full_period_pass": false,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 3.0753177782116836e-14,
+      "maximum_solute_residual_mg_cm2": 2.0189361551216096e-13,
+      "restart_window": [
+        2,
+        4
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "5e7e81510c8660dc20d687e2ea93e5fb02c1394af3173b9bb83dac0a5cb5dd13",
+        "maize.crp": "37249182c739266d978a2257dedf7982ac292881ad1e6750db2af7ff05e0924a",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "ab5ccd95c5220b168675ac28b340d7e5267e6b6101f91d8b4a13ea82f229256a",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "build_sha256": "c23e046f20c95e80d7662bf47915184e8c41da9409f91424c50c5929dd0c2c70",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ]
+    },
+    {
+      "configuration": "no-interception",
+      "optimization": "O2",
+      "completed_days": 1096,
+      "requested_days": 1096,
+      "solute_active": true,
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "full_period_pass": true,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 9.996782546727034e-11,
+      "maximum_solute_residual_mg_cm2": 2.0189361551216096e-13,
+      "restart_window": [
+        365,
+        367
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "5e7e81510c8660dc20d687e2ea93e5fb02c1394af3173b9bb83dac0a5cb5dd13",
+        "maize.crp": "37249182c739266d978a2257dedf7982ac292881ad1e6750db2af7ff05e0924a",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "ab5ccd95c5220b168675ac28b340d7e5267e6b6101f91d8b4a13ea82f229256a",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "build_sha256": "700cbe66f74e623b4a1e6b5e2138618258afbae9d7b15fe6870f8a33cb2be45d",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ],
+      "independent_distinct_origins": true,
+      "external_discard_replay_exact": true,
+      "external_disk_recovery": true,
+      "inconsistent_mass_refused_without_commit": true
+    },
+    {
+      "configuration": "no-oxygen",
+      "optimization": "O0",
+      "completed_days": 5,
+      "requested_days": 5,
+      "solute_active": true,
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "full_period_pass": false,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 3.0753177782116836e-14,
+      "maximum_solute_residual_mg_cm2": 2.0189361551216096e-13,
+      "restart_window": [
+        2,
+        4
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "d6b8b3212151b9b62e3f996a696e772432770c4fb01e629ecf5276b27f3f7a22",
+        "maize.crp": "fdb41836ea08314aa174a427299de0874f80f804f026cc79efcec61cda5f7347",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "947c838a030a179e26a3255c038adb2d2ba9b610cb57e467615fd4b624cbb372",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "build_sha256": "a5edd4bf6f1b548f9df34ebdf541b79012df391aab5cd09e17f7d0ff4ec89076",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ]
+    },
+    {
+      "configuration": "no-oxygen",
+      "optimization": "O2",
+      "completed_days": 1096,
+      "requested_days": 1096,
+      "solute_active": true,
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "full_period_pass": true,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 9.996712219953116e-11,
+      "maximum_solute_residual_mg_cm2": 2.0189361551216096e-13,
+      "restart_window": [
+        365,
+        367
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "d6b8b3212151b9b62e3f996a696e772432770c4fb01e629ecf5276b27f3f7a22",
+        "maize.crp": "fdb41836ea08314aa174a427299de0874f80f804f026cc79efcec61cda5f7347",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "947c838a030a179e26a3255c038adb2d2ba9b610cb57e467615fd4b624cbb372",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "build_sha256": "3e813e38aeae3e4eee432006d873007f4be56130f2902af90f5a78809b0eeaad",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ],
+      "independent_distinct_origins": true,
+      "external_discard_replay_exact": true,
+      "external_disk_recovery": true,
+      "inconsistent_mass_refused_without_commit": true
+    },
+    {
+      "configuration": "no-salt-stress",
+      "optimization": "O0",
+      "completed_days": 5,
+      "requested_days": 5,
+      "solute_active": true,
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "full_period_pass": false,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 5.648051470963367e-13,
+      "maximum_solute_residual_mg_cm2": 7.172040739078511e-13,
+      "restart_window": [
+        2,
+        4
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "PREPARATION.json": "ef902d144f6cfadc75e8e159cdd2808f6dc48019926da1e46b82bbcf41100894",
+        "fontane.crp": "7e82fdfe25976d6741c63f6c15a66d2005b2251718efe8480cd937de90ba8da5",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "878abca51f8d4e0c40d342a353586fb115bbc478d1f6b54f7e58cea1518708cc"
+      },
+      "build_sha256": "ea549f2f0e73a66899620fd05310ed578b396d54f80f06fd22ff102e49d34883",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        200,
+        202
+      ]
+    },
+    {
+      "configuration": "no-salt-stress",
+      "optimization": "O2",
+      "completed_days": 1461,
+      "requested_days": 1461,
+      "solute_active": true,
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "full_period_pass": true,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 1.2967328599788885e-11,
+      "maximum_solute_residual_mg_cm2": 7.64517615881033e-12,
+      "restart_window": [
+        365,
+        367
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "235.met": "c2f62d3b9018325b308e4a25b1350ee9e54ccbb1a278a65efdc70b575304867a",
+        "PREPARATION.json": "ef902d144f6cfadc75e8e159cdd2808f6dc48019926da1e46b82bbcf41100894",
+        "fontane.crp": "7e82fdfe25976d6741c63f6c15a66d2005b2251718efe8480cd937de90ba8da5",
+        "swap.dra": "0795c30750c9ea08afee9dbd8f72e4c9f3eb81755fa3bebdee5a9f78fcb42768",
+        "swap.ini": "3f6539a9c6bfd1e9dfdbccc74418c9ed97e130445f7cd781e4d1e44353915b87",
+        "swap.swp": "878abca51f8d4e0c40d342a353586fb115bbc478d1f6b54f7e58cea1518708cc"
+      },
+      "build_sha256": "2df0a644e7e84640bf401d4573a0e8e7d99838604130b09499c5debffb9b5726",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        200,
+        202
+      ],
+      "independent_distinct_origins": true,
+      "external_discard_replay_exact": true,
+      "external_disk_recovery": true,
+      "inconsistent_mass_refused_without_commit": true
+    },
+    {
+      "configuration": "no-compensation",
+      "optimization": "O0",
+      "completed_days": 5,
+      "requested_days": 5,
+      "solute_active": true,
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "full_period_pass": false,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 3.0753177782116836e-14,
+      "maximum_solute_residual_mg_cm2": 2.0189361551216096e-13,
+      "restart_window": [
+        2,
+        4
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "8fb9cf4ce57e0af6a623d8f62749234d84e1ab941dfca15dcb318d787d8ffb69",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "build_sha256": "3bf44916e52448fb63845ec64fcc86c4192c78b4be2a78d75d3b20ffa903f5f4",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ]
+    },
+    {
+      "configuration": "no-compensation",
+      "optimization": "O2",
+      "completed_days": 1096,
+      "requested_days": 1096,
+      "solute_active": true,
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "full_period_pass": true,
+      "retained_failure": null,
+      "maximum_water_residual_cm": 9.996657169587808e-11,
+      "maximum_solute_residual_mg_cm2": 2.0189361551216096e-13,
+      "restart_window": [
+        365,
+        367
+      ],
+      "exact_day_suffix": true,
+      "exact_native_auxiliary": true,
+      "original_input_sha256": {
+        "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+        "control_plot.inp": "6eeb70e90f051b0f01dbd61e33c0790347a10cd03eb18e4a4bf394c42fbf4fc8",
+        "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+        "maize.crp": "8fb9cf4ce57e0af6a623d8f62749234d84e1ab941dfca15dcb318d787d8ffb69",
+        "plot_swap.cmd": "2a01535cd1cd3249d39f7f52c36adc1490524e4e1900bb4f8dcf214b7b9ce357",
+        "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+        "run_swap.cmd": "0c2afb35af45ee22e5b49ba9c4a7330589dcb874164399532f6ae8b52365fcb9",
+        "swap.dra": "070f6adee26fbf750d38bb01b99c014b587b297a5203a6429e22ded58c22ea17",
+        "swap.swp": "a54d110efa0cf003b23537109a3aea83f17f941fa875a5de6aefd65291405b5b"
+      },
+      "build_sha256": "fa87cd61f55b6889939b8a0daf94a224e694f2206e0134b40921ba26a8b071c1",
+      "scope": "Experimental functional evidence; not scientific equivalence",
+      "active_crop_exact_native_window": [
+        530,
+        532
+      ],
+      "independent_distinct_origins": true,
+      "external_discard_replay_exact": true,
+      "external_disk_recovery": true,
+      "inconsistent_mass_refused_without_commit": true
+    }
+  ],
+  "full_model_days": 7306,
+  "native_corruption_refusals": 8,
+  "atomic_input_history_refusals": 2,
+  "predecessor_gates": [
+    {
+      "run": 43418610124,
+      "cohorts": [
+        "first-block",
+        "extended",
+        "release"
+      ],
+      "conclusion": "SUCCESS"
+    },
+    {
+      "run": 43418614412,
+      "cohorts": [
+        "basic-options"
+      ],
+      "conclusion": "SUCCESS"
+    }
+  ],
+  "maximum_water_residual_cm": 9.996782546727034e-11,
+  "maximum_solute_residual_mg_cm2": 7.64517615881033e-12,
+  "architecture_invariants": [
+    2,
+    3,
+    7,
+    13,
+    21,
+    23,
+    29
+  ],
+  "registered_history_codecs_unchanged": true
 }

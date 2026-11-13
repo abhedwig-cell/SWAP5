@@ -7,13 +7,16 @@ postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
 A/B/C complete17 additional configurations20457 model days; zero new independent
 historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
 
-D draft PR1673, final candidate42f066bf0: six profiles; actual generated O0/O2
-and active-crop windows qualify in new crop workflow43418605842. Both cache
-hypotheses91de/5529 failed and were removed; new water-only hydraulic/snow history
-is atomically refused. No third repair loop. Preserve actual640565a8d raw FAIL.
-All predecessor cohorts dispatched on42f066bf0; inspect latest extended/basic
-runs to terminal status before evidence/admission. Peer private daily-time-policy
-changes were inspected, not imported; see BLOCK_D_RECOVERY.md.
+D PR1673 final qualified code42f066bf0: all six configurations7306 days PASS
+in run43418605842. Actual generated/touched donor O0/O2, providerO2, both active
+windows, eight malformed native refusals and two atomic history refusals pass.
+A/B/release43418610124 and C43418614412 all SUCCESS on the same source.
+Next: finish versioning artifact/raw receipts, ready/merge PR1673 and verify
+actual canonical tree/dependencies. Then original unused-process successor from
+the current register, with a larger-state strategy for failed active history.
+Both cache hypotheses91de/5529 failed and were removed. Never reclassify those
+FAILs. Private peer daily-time-policy changes inspected, not imported; canonical
+still a6720a0e8. See BLOCK_D_RECOVERY/STATUS for exact source-bound proof.
 
 An active serial autonomous Codex goal continues this work; no scheduled timer
 is configured. Later checkpoints must replace this current pointer. Inventory

@@ -101,3 +101,14 @@ actual delta: daily seed/build/restart identity is peer-owned; no private policy
 imported. Our management selection, donor optimization and root controls are
 independent semantic changes. Canonical remains a6720a0e8; any later peer
 admission requires affected exact-postimage requalification before our merge.
+
+Final source42f066bf0: crop43418605842 SUCCESS, six complete7306 days;
+all predecessor gates43418610124 (A/B/release),43418614412 (C) SUCCESS.
+Actual touched donor and controller O0/O2 plus active-growth native windows,
+8 malformed management refusals,2 atomic history refusals and all transactions.
+Maximumwater9.996782546727034e-11cm; maximumsolute7.64517615881033e-12mg/cm2.
+No source change after42f066bf0, only docs/evidence; source diff checked empty.
+Affected invariants2/3/7/13/21/23/29: explicit management independent of chemistry,
+unchanged mass/transaction semantics, private workers and complete supported
+restart bytes, original process reuse, explicit numerical optimization and build
+identity. New unqualified history refuses atomically. Registered codecs unchanged.

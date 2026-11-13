@@ -268,7 +268,11 @@ source1c64ba98d qualification completed7306 model days and all A/B/C/release
 predecessors. The final source adds actual generated/touched donor O0/O2 builds
 and active-crop windows530to532/200to202 at both optimizations. The immutable
 original object provider remains O2; this is not a full-provider O0 claim.
-Final qualification/admission belongs to `BLOCK_D_STATUS.json` when present.
+Final source42f066bf0 passes run43418605842 for all six configurations.
+A/B/release43418610124 and C43418614412 all pass on the same source. Maximum
+water residual is9.996782546727034e-11cm; maximum active-solute residual is
+7.64517615881033e-12mg/cm2, under the unchanged1e-10 bounds. Actual admission
+belongs to `BLOCK_D_STATUS.json` and the merge receipt.
 
 These windows inspect an actually emerged crop and nonzero saved growth rates,
 then compare complete physical rows and native/auxiliary endpoint bytes.
