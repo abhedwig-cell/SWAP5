@@ -39,22 +39,25 @@ end subroutine inventory_solver
     head=head.replace('\ncontains\n','\ncontains\n'+routine,1)
     (R/'headcalc_inventory.f90').write_text(head,encoding='cp1252')
     soil=(AUDIT/'soilwater.f90').read_text(encoding='cp1252')
+    soil=soil.replace('   contains','   logical, save :: inventory_pending=.false.\n\n   contains',1)
     soil=soil.replace('subroutine soilwater(task)','recursive subroutine soilwater(task)',1)
     soil=soil.replace('            call headcalc',"            call inventory_before()\n            call headcalc\n            call inventory_after()",1)
     routine='''
 subroutine inventory_before()
  use variables, only:t1900,dt
  use MOD_swap_mp, only:IDecMpRat
+ inventory_pending=.false.
  if(IDecMpRat/=1.or.abs(t1900-35796.9513533331d0)>1d-9) return
  if(abs(dt-0.0001414213562373095d0)>1d-14) return
+ inventory_pending=.true.
  call inventory_dump('origin')
 end subroutine inventory_before
 
 subroutine inventory_after()
  use variables, only:t1900,dt,fldecdt
  use MOD_swap_mp, only:IDecMpRat,FlDecMpRat
- if(IDecMpRat/=1.or.abs(t1900-35796.9513533331d0)>1d-9) return
- if(abs(dt-0.0001414213562373095d0)>1d-14) return
+ if(.not.inventory_pending) return
+ inventory_pending=.false.
  call inventory_dump('trial')
  if(fldecdt.or.FlDecMpRat) error stop 'selected step not accepted'
  call SoilWater(3)
