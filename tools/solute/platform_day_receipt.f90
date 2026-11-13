@@ -12,14 +12,14 @@ module rc1_day_receipt_probe
   use MOD_snow, only: ssnow
   use plant_interface, only: sicact,sw_inter,crsflx_out
   use variables, only: swbotb,theta,dt,qbot,pond,ivolbeg,ipondbeg,issnowbeg,isicbeg, &
-    runon,runots,epd,reva,tcum
+    runon,runots,epd,reva,tcum,volact,volm1,t1900
   implicit none
   private
   public :: projected_day_receipt
 contains
   real(8) function projected_day_receipt() result(residual)
     integer,parameter :: wide=selected_real_kind(33)
-    real(8) :: terms(28),drip,interception,bottom,stock
+    real(8) :: terms(28),drip,interception,bottom,stock,old_stock,old_previous,formula_stock
     integer :: node
     ! A daily receipt is not an intraday acceptance contract: interception and
     ! canopy states follow the original daily process order. Match precisely
@@ -35,7 +35,17 @@ contains
     interception=aintcdt
     if(sw_inter==3) interception=crsflx_out
     bottom=qbot*dt
-    stock=sum(theta(1:numnod)*dz(1:numnod))
+    formula_stock=sum(theta(1:numnod)*dz(1:numnod))
+    ! Reuse the actual original stock calculation. Its only writes are these
+    ! two explicitly restored scalars (watstor.f90); no saved probe state.
+    old_stock=volact
+    old_previous=volm1
+    call watstor()
+    stock=volact
+    volact=old_stock
+    volm1=old_previous
+    if(floor(t1900)==37619)write(*,'(a,4(1x,es25.17e3))') &
+      'RC1_STOCK_PROJECTION',t1900,dt,formula_stock,stock
     terms(1:16)=[igrai+graidt*dt,isnrai,igsnow,igird+gird*dt,irunon+runon*dt, &
       drip,iqbup+max(bottom,0d0),-(iintc+interception*dt),-(iruno+runots), &
       -(iqrot+qrosum*dt),-(iepd+epd*dt),-(ievap+reva*dt),-isubl, &

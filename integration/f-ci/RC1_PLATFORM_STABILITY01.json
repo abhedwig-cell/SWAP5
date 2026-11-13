@@ -22,12 +22,20 @@
   "first_probe": "Private relink Hupsel5 then364-day with read-only projected absolute day receipt; reconcile arithmetic before policy promotion",
   "max_model_seconds": 60,
   "stop_rule": "After two non-material physical repair attempts reconsider rather than tune",
-  "next_action": "Second bounded correction: absolute receipt only at original TimeControl(3) end-day boundary; keep original integrated projected guard at every trial. No changed time/physical tolerance.",
+  "next_action": "One364-day original-watstor reuse discriminator; reject unsupported forecast rather than tune tolerances.",
   "first_probe_result": {
     "five_days": "EXACT_BASELINE_ALL_FRAMES",
     "extended": "CENSORED_60_SECONDS_AFTER_DAY534",
-    "failure": "Absolute daily receipt imposed within a day is not a supported intraday contract; original canopy/interception daily order can leave a transient stock/flux imbalance.",
+    "failure": "Censored after534 completed days. Hypothesis: absolute daily receipt is not a valid intraday contract under original canopy/interception process order; not independently established as the unique cause.",
     "source": "e6178f26c",
     "raw": "C:/Users/Veldh012/AppData/Local/Temp/s5-stability-intersection-hupsel584"
-  }
+  },
+  "second_probe_result": {
+    "source": "8b1df57fa",
+    "days": 584,
+    "maximum_water_cm": 1.0032269112669745e-10,
+    "failed_day": 364,
+    "disposition": "NOT_ADMITTED_STILL_EXCEEDS_UNCHANGED_GUARD"
+  },
+  "strategy_reassessment": "Two unsuccessful arithmetic projections: reuse the original watstor block with explicit local snapshot/restore of its only writes, volact and volm1. Read-only stock/formula comparison at the first failed boundary before considering any further implementation."
 }
