@@ -5,7 +5,7 @@
                    HMp = ZWaLevDm(id) - Z(ic)  ! head in macropore domain, assuming static equilibrium
                    HMp = dmax1(0.d0,HMp)       ! no negative head in macropores
 -                  if (H(ic) < cofgen(9,lay)-1.d-8 .AND. HMp > 1.d-8) then     ! Adapted for GEM: test for H_enpr        
-+                  if (HMp > 1.d-8) then     ! Adapted for GEM: test for H_enpr        
++                  if (HMp > 1.d-8) then     ! B1 experiment: Darcy within existing unsaturated-domain routing        
                       DelH= dmax1(0.d0,HMp - H(ic))
                    else
                       DelH= 0.d0

@@ -1,0 +1,150 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-CONTRACT06",
+  "baseline": "81e00d043ce322a60f4377a93c56e64beed3f90a",
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "candidate": "Existing V1 plus one-line documented unsaturated Darcy-gate repair",
+  "physical_contract": "Pressure-gradient Darcy infiltration where fully water-filled macropore wall contacts unsaturated matrix; retain original sorption/Darcy maximum and stock limits. No additional negative-air-entry exclusion.",
+  "finding": "The gate was deliberately written (GEM comment), but contradicts the documented field-process contract and active zero-head saturation routing in this context. No documented alternate intended zero-transfer interval was found. This is an implementation-to-documented-contract defect, not proof of the exact historical author intent.",
+  "minimal_experimental_correction_supported": true,
+  "official_reference_promoted": false,
+  "production_changed": false,
+  "inherited_physical_formulas_solver_tolerances_dt_limits_and_reduction_law_unchanged": true,
+  "changed_physical_implementation": "Only remove H<h_enpr exclusion from ABSORPTION; outer zone/wet-wall eligibility, HMp gate and nonnegative pressure gradient remain.",
+  "O0_O2_all_final_raw_profiles_byte_exact": true,
+  "final_routes": 8,
+  "preliminary_routes": 3,
+  "model_censored": 0,
+  "final_max_model_seconds": 1.4467537999153137,
+  "final_total_model_seconds": 8.567109200172126,
+  "setup_link_errors": 1,
+  "additional_memory_patch": false,
+  "results": [
+    {
+      "optimization": "O2",
+      "baseline_noninterference_exact": true,
+      "baseline_contract_violation": {
+        "node": 45,
+        "layer": 5,
+        "head": -9.9999999,
+        "HMp": 4.099979577155267,
+        "theta_deficit": 7.22863459736156e-05,
+        "conductivity": 2.429272972972973,
+        "raw_Darcy_actual": 0.0,
+        "raw_Darcy_expected": 2.456290005697688e-05
+      },
+      "corrected_raw_Darcy": 2.456290005697688e-05,
+      "original_q45_jump": -0.1279200635526785,
+      "corrected_q45_pair_difference": -2.3936974624660934e-09,
+      "accepted_iterations": 3,
+      "accepted_IDecMpRat": 0,
+      "accepted_FrReduQ": 1.0,
+      "local_residual": 1.1702493141196868e-09,
+      "total_residual": -2.479530817331362e-09,
+      "accepted_h45": -9.898230699732077,
+      "independent_residual_difference": 6.938893903907228e-18,
+      "matrix_change_cm": 0.00022165886431884638,
+      "macro_change_cm": -0.0002924690851945303,
+      "matrix_balance_error_cm": -3.506586026321562e-13,
+      "surface_balance_error_cm": 0.0,
+      "combined_balance_error_cm": -3.5052778008751867e-13,
+      "paired_exchange_error": 6.938893903907228e-18,
+      "domain_inventory": [
+        {
+          "domain": 1,
+          "change": -1.0585820020114767e-05,
+          "error_cm": 1.3079543958322004e-16
+        },
+        {
+          "domain": 2,
+          "change": 6.453126929456543e-06,
+          "error_cm": 8.089164646278568e-19
+        },
+        {
+          "domain": 3,
+          "change": -2.5456065060817934e-05,
+          "error_cm": -2.1006417091906648e-19
+        },
+        {
+          "domain": 4,
+          "change": -8.968139039914474e-05,
+          "error_cm": 1.7618285302889447e-19
+        },
+        {
+          "domain": 5,
+          "change": -0.0001731989366439094,
+          "error_cm": -7.318364664277155e-19
+        }
+      ],
+      "max_clock_begin": 0.030686666429412243,
+      "max_clock_after_commit": 0.020161421096747557
+    },
+    {
+      "optimization": "O0",
+      "baseline_noninterference_exact": true,
+      "baseline_contract_violation": {
+        "node": 45,
+        "layer": 5,
+        "head": -9.9999999,
+        "HMp": 4.099979577155267,
+        "theta_deficit": 7.22863459736156e-05,
+        "conductivity": 2.429272972972973,
+        "raw_Darcy_actual": 0.0,
+        "raw_Darcy_expected": 2.456290005697688e-05
+      },
+      "corrected_raw_Darcy": 2.456290005697688e-05,
+      "original_q45_jump": -0.1279200635526785,
+      "corrected_q45_pair_difference": -2.3936974624660934e-09,
+      "accepted_iterations": 3,
+      "accepted_IDecMpRat": 0,
+      "accepted_FrReduQ": 1.0,
+      "local_residual": 1.1702493141196868e-09,
+      "total_residual": -2.479530817331362e-09,
+      "accepted_h45": -9.898230699732077,
+      "independent_residual_difference": 6.938893903907228e-18,
+      "matrix_change_cm": 0.00022165886431884638,
+      "macro_change_cm": -0.0002924690851945303,
+      "matrix_balance_error_cm": -3.506586026321562e-13,
+      "surface_balance_error_cm": 0.0,
+      "combined_balance_error_cm": -3.5052778008751867e-13,
+      "paired_exchange_error": 6.938893903907228e-18,
+      "domain_inventory": [
+        {
+          "domain": 1,
+          "change": -1.0585820020114767e-05,
+          "error_cm": 1.3079543958322004e-16
+        },
+        {
+          "domain": 2,
+          "change": 6.453126929456543e-06,
+          "error_cm": 8.089164646278568e-19
+        },
+        {
+          "domain": 3,
+          "change": -2.5456065060817934e-05,
+          "error_cm": -2.1006417091906648e-19
+        },
+        {
+          "domain": 4,
+          "change": -8.968139039914474e-05,
+          "error_cm": 1.7618285302889447e-19
+        },
+        {
+          "domain": 5,
+          "change": -0.0001731989366439094,
+          "error_cm": -7.318364664277155e-19
+        }
+      ],
+      "max_clock_begin": 0.030686666429412243,
+      "max_clock_after_commit": 0.020161421096747557
+    }
+  ],
+  "exclusions": [
+    "Single original wet context and one selected pressure pair only",
+    "No corrected rejected-trial/direct-retry comparison",
+    "No original dry-event transition or own restart qualification",
+    "No qualification of the phreatic zero-head handoff, other hydraulic modes, tabulated hydraulics, or variable air-entry layers",
+    "No full trajectory qualification or B1.12/canonical/release admission",
+    "Historical GEM change rationale/complete SVN history unavailable"
+  ],
+  "next_safe_step": "Qualify the one-line candidate on one original rejection/rollback/accepted continuation with independent inventory and short own restart; explicitly include dry/event or zero-head handoff when a distinguishing original state is available. Do not begin a broad trajectory or reference promotion."
+}

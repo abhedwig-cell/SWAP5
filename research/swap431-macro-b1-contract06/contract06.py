@@ -16,6 +16,7 @@ def prepare():
     new='HMp > 1.d-8'
     assert raw.count(old)==1
     fixed=raw.replace(old,new,1)
+    fixed=fixed.replace('then     ! Adapted for GEM: test for H_enpr','then     ! B1 experiment: Darcy within existing unsaturated-domain routing',1)
     (R/'minimal_contract.patch').write_text(''.join(difflib.unified_diff(raw.splitlines(True),fixed.splitlines(True),fromfile='B0-selected/macrorate.f90',tofile='B1-experiment/macrorate.f90')))
     # A harness switch allows the identical original prefix. It is NOT part of
     # the proposed patch, not physical state, and is false until the live origin.
