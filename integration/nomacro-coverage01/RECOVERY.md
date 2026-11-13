@@ -52,3 +52,20 @@ same project, not two new independent historical projects. Andelst is excluded.
 Invariants affected: 2,3,7,9,11,13,21,23,29: adapter-only input selection,
 private original workers, unchanged strict mass/restart/rollback semantics.
 No solver or performance campaign; no automatic resumption is configured.
+
+
+## Executed checkpoints
+
+Hosted run43400125668 at85eb96bea: three-profile regression PASS; SaltFarm08
+complete1461, exact365to367 native+auxiliary, isolation and external discard/replay
+PASS. Driver stopped on the original SaltFarm S_CONC output-selector defect;
+literal refusal retained, output-only comparison preparation added.
+Run43401007213 at05df42e90: baseline regression PASS again; SaltFarm08/16
+complete1461 each, O0/O2 restarts/isolation/discard/replay and inconsistent-mass
+rollback PASS. Hupsel free-bottom refused before first accepted day, with exact
+ERROR STOP Unsupported day-budget donor configuration. No convergence failure.
+Source hypothesis: the conserved nonmacro substep formula is identical for
+explicit prescribed-flux/free-drainage boundaries but was dispatched only for
+closed bottom. Extend only explicit modes2/-2/4/7; retain qualified Cauchy branch
+unchanged. Reconstructed qbot modes1/5 remain refused for solute profiles.
+This is the first targeted functional repair; no solver/tolerance change.

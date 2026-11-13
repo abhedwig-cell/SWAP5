@@ -187,7 +187,7 @@ def main():
     from experimental_project import MODEL as experimental_model
     parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL,experimental_model]+[p.model for p in PROJECTS])
     parser.add_argument('--experimental-project', type=Path,
-                        help='Explicit experimental flat original project directory; no production/science claim')
+                        help='Explicit experimental original project directory; no production/science claim')
     parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
     parser.add_argument("--hupsel-build", type=Path, help="Verified native Hupsel rotation build")
