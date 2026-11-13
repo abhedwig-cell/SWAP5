@@ -1,0 +1,29 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-CONTRACT06",
+  "baseline": "81e00d043ce322a60f4377a93c56e64beed3f90a",
+  "canonical_reconciled": "8d08011ffbdce693b8e1a8cd81b13d6c3d80896c",
+  "canonical_delta": "RC1 common-profile qualification only; b0 builder extra_flags default-empty addition. Immutable original sources and archived native closures unchanged.",
+  "stage": "PREREGISTERED_CONTRACT_REPAIR_NOT_TESTED",
+  "authorization": "User requests intended physical contract and at most a justified minimal correction within same bounds",
+  "contract": "Original manual2017 p100-101 eq6.32-6.34: Darcy pressure-gradient infiltration in unsaturated matrix, max with sorptivity. Current official6.49-6.52 corroborates. Original CALCGWL uses h0; original WATCON polynomial remains unsaturated above h_enpr. An unconditional Darcy exclusion at negative h_enpr contradicts this documented field contract.",
+  "historical_limit": "GEM comment proves deliberate coding choice; exact SVN change/author decision unavailable. Distinguish deliberate implementation from documented physical consistency.",
+  "minimal_patch": "Only replace cofgen(9,lay) with0.d0 in ABSORPTION H-gate, retaining original epsilon, positive-HMp gate, SWDARCY, formulas, derivatives, limits and reduction law. No smoothing.",
+  "prefix": "All original code until exact live origin. A harness-only selector activates candidate thereafter; selector is absent from proposed one-line patch.",
+  "scope": "Same original wet context and one recorded threshold pair only; no new profile inputs or solver variant",
+  "initial_routes": [
+    "O2 BASE_RIGHT control",
+    "O2 PATCH_RIGHT operator",
+    "O2 PATCH_SOLVE real unscaled V1 attempt"
+  ],
+  "conditional_routes": "If supported: PATCH_LEFT pair completion and O0 repeats; no more than8 initial registered short routes",
+  "model_cap_seconds": 20,
+  "production_changed": false,
+  "official_reference_changed": false,
+  "next_safe_step": "Compile three changed objects against verified STATE02/STAGNATION05 closure; test baseline noninterference and primitive Darcy contract before qualifying candidate solve",
+  "invariants": [
+    "preserve B0/B1.12/canonical/release",
+    "no altered tolerances/dt bounds/general solver",
+    "paired exchange and actual accepted inventory",
+    "only one candidate correction"
+  ]
+}
