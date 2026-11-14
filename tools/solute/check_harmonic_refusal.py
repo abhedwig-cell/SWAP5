@@ -9,19 +9,19 @@ from daily_coupling import validate_bundle
 from check_nomacro_coverage import physical
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--prior',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--weighted',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--prior',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--weighted',action='store_true');p.add_argument('--weather-rain',action='store_true');args=p.parse_args()
     prior=args.prior.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
     reports=[]
-    key='weighted-harmonic-mean' if args.weighted else 'harmonic-mean'
-    for opt in (['O0','O2'] if args.weighted else ['O2']):
+    key='rain-detailed' if args.weather_rain else ('weighted-harmonic-mean' if args.weighted else 'harmonic-mean')
+    for opt in (['O0','O2'] if args.weighted or args.weather_rain else ['O2']):
         target=out/opt;target.mkdir()
-        reports.append(exercise(prior,target,key,opt,args.weighted))
-    (out/'RESULT.json').write_text(json.dumps(dict(status='RETAINED_HARMONIC_REFUSALS_QUALIFIED',profiles=reports,science='NOT_QUALIFIED'),indent=2)+'\n')
+        reports.append(exercise(prior,target,key,opt,args.weighted,args.weather_rain))
+    (out/'RESULT.json').write_text(json.dumps(dict(status='RETAINED_STRICT_WATER_REFUSALS_QUALIFIED',profiles=reports,science='NOT_QUALIFIED'),indent=2)+'\n')
 
 
-def exercise(prior,out,key,opt,weighted):
-    failure_day=367 if weighted else 589
-    minimum,maximum=(1e-10,1.1e-10) if weighted else (9e-9,1.1e-8)
+def exercise(prior,out,key,opt,weighted,weather_rain=False):
+    failure_day=364 if weather_rain else (367 if weighted else 589)
+    minimum,maximum=(1e-10,1.1e-10) if weighted or weather_rain else (9e-9,1.1e-8)
     bundle=prior/(key+'-'+opt+'-build');ref=prior/'provider';project=e.load(prior/('input-'+key))
     if not bundle.exists():
         bundle=out/'fresh-build'
@@ -55,8 +55,8 @@ def exercise(prior,out,key,opt,weighted):
         assert host.columns[0].day==failure_day-1 and host.columns[0].stocks==stock
         assert not list(cold.glob('accepted-*.zip')) and h.sha(origin)==digest
         host.close()
-    result=dict(status='ORIGINAL_HARMONIC_REFUSAL_REPRODUCED_NO_COMMIT',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-        original_run=43591575148 if weighted else 43590665680,source_build=meta['identity'],configuration=key,optimization=opt,accepted_days=failure_day-1,refusal_day=failure_day,refused=rejected,
+    result=dict(status='ORIGINAL_STRICT_WATER_REFUSAL_REPRODUCED_NO_COMMIT',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+        original_run=43597013110 if weather_rain else (43591575148 if weighted else 43590665680),source_build=meta['identity'],configuration=key,optimization=opt,accepted_days=failure_day-1,refusal_day=failure_day,refused=rejected,
         own_restart_exact_refusal=True,no_rejected_publication=True,origin_unchanged=True,whole_period_pass=False,
         science='NOT_QUALIFIED; no tolerance or Richards repair')
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],opt,flush=True)

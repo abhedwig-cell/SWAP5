@@ -98,3 +98,21 @@ Preflight enforces every referenced crop, no implicit runtime change. This is an
 input compatibility correction, not a numerical repair. New full9 and default8
 source/external preservation are next; no H qualification yet. Existing Fortran
 physical laws/solver/time policy/tolerances remain unchanged.
+
+Full state-candidate43597013110 source2c0c082db completes SEVEN full1096
+configurations, all actual O0/O2 native2/365/530, finite native temperatures,
+independent/transaction/reference gates. Both chemical and water-only ET formats
+pass actual malformed native attacks. The complete1096 warm physical rows for
+soil-factor are EXACT to original failed-restart43593959340: physical trajectory
+unchanged, cold state corrected. Default-source/external43597013103 SUCCESS8.
+Pulsed detailed rain O0 accepts363 and refuses364 with independent
+-1.0044746978632446e-10, kernel1.0044387543928224e-10; integrated
+9.987969560578888e-11. Keep this near-boundary discrepancy as a FAIL, never round
+or change solver/tolerance. Hourly weather was not reached. Next select only
+hourly plus an ADDITIONAL distinct uniform detailed-rain data configuration to
+qualify that input route with the same daily amounts. Uniform data uses fractions
+0.25/0.25/0.5 at the same0.25/0.5/1 interval ends; it does NOT fix/relabel the
+original pulsed0/0.8/0.2 history. No input rebinding; separate project hash/native.
+Separately reproduce pulsed364 from own363 at O0/O2 and verify no commit/origin
+mutation. Runtime/app remains exact2c0c082db; further changes are test selection,
+new distinct synthetic input and evidence only. Do not repeat seven full cases.

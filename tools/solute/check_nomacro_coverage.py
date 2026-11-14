@@ -320,7 +320,7 @@ def main():
                ('water-factor-soil',{'SWDIVIDE':0,'SWCFBS':1,'SWSOLU':0}),
                ('reference-et',{'SWETR':1,'SWDIVIDE':0}),('reference-et-soil',{'SWETR':1,'SWDIVIDE':0,'SWCFBS':1}),
                ('rain-intensity',{'SWRAIN':1}),('rain-duration',{'SWRAIN':2}),
-               ('rain-detailed',{'SWRAIN':3}),('weather-hourly',{'SWMETDETAIL':1,'SWRAIN':0})]
+               ('rain-detailed',{'SWRAIN':3}),('rain-detailed-uniform',{'SWRAIN':3}),('weather-hourly',{'SWMETDETAIL':1,'SWRAIN':0})]
         for key,changes in specs:
             case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
             path=case/'swap.swp';text=path.read_text(encoding='cp1252')
@@ -337,16 +337,17 @@ def main():
                 for crop in case.glob('*.crp'):
                     body,count=re.subn(r'(?m)^([ \t]*SWCF[ \t]*=[ \t]*)[12]',r'\g<1>1',crop.read_text(encoding='cp1252'));assert count==1
                     crop.write_text(body,encoding='cp1252')
-            if key in ('rain-detailed','weather-hourly'):
+            if key.startswith('rain-detailed') or key=='weather-hourly':
                 for crop in case.glob('*.crp'):
                     body,count=re.subn(r'(?m)^([ \t]*SWINTER[ \t]*=[ \t]*)\d+',r'\g<1>0',crop.read_text(encoding='cp1252'));assert count==1
                     crop.write_text(body,encoding='cp1252')
                 meteo=list(csv.DictReader(line for line in (case/'283.met').read_text().splitlines() if line.strip() and not line.startswith('*')))
-                if key=='rain-detailed':
+                if key.startswith('rain-detailed'):
                     records=['DAY MONTH YEAR TIME AMOUNT\n']
                     for row in meteo:
                         rain=float(row['Rain'])
-                        for fraction,amount in [(0.25,0.0),(0.5,0.8*rain),(1.0,0.2*rain)]:
+                        distribution=[(0.25,0.25*rain),(0.5,0.25*rain),(1.0,0.5*rain)] if key.endswith('uniform') else [(0.25,0.0),(0.5,0.8*rain),(1.0,0.2*rain)]
+                        for fraction,amount in distribution:
                             records.append(f"{int(row['DD'])} {int(row['MM'])} {int(row['YYYY'])} {fraction!r} {amount!r}\n")
                     (case/'hupsel.rain').write_text(''.join(records))
                 else:

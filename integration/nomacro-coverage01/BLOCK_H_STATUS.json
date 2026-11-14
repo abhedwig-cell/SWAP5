@@ -5,8 +5,8 @@
   "source": "2c0c082db4c6ef57cca7b31ccc46a087b963eef7",
   "canonical_base": "3aa5544608617309675a17055e817bad0aaffd3b",
   "run": 43597013110,
-  "status": "FRESH_NINE_CASE_COHORT_RUNNING_DEFAULT_PRESERVATION_PASS",
-  "requested_configurations": 9,
+  "status": "SEVEN_COMPLETE_ET_STATE_REPAIRED_PULSED364_RETAINED_LAST_TEMPORAL_PENDING",
+  "requested_configurations": 10,
   "requested_full_days_each": 1096,
   "runtime_fortran_host_codec_delta": [],
   "prior_descriptors_exact": 21,
@@ -18,5 +18,18 @@
   "local_codec": "O0/O2 exact roundtrip and6actual failures each",
   "inactive_codec_source_variants_exact": 6,
   "default_preservation_run": 43597013103,
-  "default_preservation_status": "SUCCESS_EIGHT_OLD_GENERATED_SOURCE_IMAGES_AND_EXTERNAL_SEAMS"
+  "default_preservation_status": "SUCCESS_EIGHT_OLD_GENERATED_SOURCE_IMAGES_AND_EXTERNAL_SEAMS",
+  "complete_configurations": [
+    "factor-partition",
+    "factor-partition-soil",
+    "water-factor-soil",
+    "reference-et",
+    "reference-et-soil",
+    "rain-intensity",
+    "rain-duration"
+  ],
+  "complete_days": 7672,
+  "retained_pulsed_rain_failure_day": 364,
+  "pulsed_rain_accepted_days": 363,
+  "next": "Hourly+distinct uniform detailed rain; exact pulsed refusal replay; no solver/tolerance change"
 }
