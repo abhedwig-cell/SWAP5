@@ -1,0 +1,161 @@
+{
+  "status": "MATCHED_READ_ONLY_ORIGINAL_STEP_OBSERVATION",
+  "run": 43550642328,
+  "proof": {
+    "windows": {
+      "source": "8ea0a4ee4555fedb1d6ced7acf40ecfa0aafff4e",
+      "model_seconds": 3.986021599999958,
+      "maximum_water_cm": 1.2966357154642338e-11,
+      "maximum_solute_mg_cm2": 5.78245784588205e-12,
+      "public_prefix": "ALL_PUBLIC_PREFIX_HEAD_STOCK_FLOW_UPTAKE_EXACT",
+      "private_executable_sha256": "49a45e3889601b0945e4a92a4f31021bc5b1805fb0eba9da87db32ff51076031",
+      "profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "compiler_sha256": "529504042a6630c71ba022c55258f6ee99af068800eb5bfb69979b247e43a5b4"
+    },
+    "ubuntu": {
+      "source": "8ea0a4ee4555fedb1d6ced7acf40ecfa0aafff4e",
+      "model_seconds": 3.371033224999991,
+      "maximum_water_cm": 1.2966357154642338e-11,
+      "maximum_solute_mg_cm2": 5.7815696674623496e-12,
+      "public_prefix": "ALL_PUBLIC_PREFIX_HEAD_STOCK_FLOW_UPTAKE_EXACT",
+      "private_executable_sha256": "57c472f0663ab0c098b11c8f9f940278057dfb73da3f0f819a4840a78b9b1b28",
+      "profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e"
+    }
+  },
+  "trace_comparison": {
+    "PS_ORIGINAL": {
+      "windows_count": 115,
+      "ubuntu_count": 115,
+      "first_discrete_split": {
+        "index": 31,
+        "windows": [
+          "PS_ORIGINAL",
+          "4.19161189999999988E+004",
+          "1.69999999998253770E-002",
+          "4",
+          "F",
+          "4.36206626375224005E-013",
+          "1.99332737815804961E-014",
+          "-6.73312531323022796E+001",
+          "1.78645127500439566E-001"
+        ],
+        "ubuntu": [
+          "PS_ORIGINAL",
+          "4.19161359999999986E+004",
+          "3.39999999996507540E-002",
+          "1",
+          "T",
+          "3.78553711156554007E-005",
+          "6.90418129691331502E-004",
+          "-6.74754158751195519E+001",
+          "1.78336663402792972E-001"
+        ]
+      }
+    },
+    "PS_DECISION": {
+      "windows_count": 115,
+      "ubuntu_count": 115,
+      "first_discrete_split": {
+        "index": 29,
+        "windows": [
+          "PS_DECISION",
+          "4.19161189999999988E+004",
+          "1.69999999998253770E-002",
+          "2",
+          "0",
+          "T",
+          "1.35994713754139518E-011",
+          "1.01221114823246694E-015"
+        ],
+        "ubuntu": [
+          "PS_DECISION",
+          "4.19161189999999988E+004",
+          "1.69999999998253770E-002",
+          "2",
+          "2",
+          "T",
+          "1.35993378017063016E-011",
+          "-3.21791204793697716E-016"
+        ]
+      }
+    },
+    "PS_ACCEPT": {
+      "windows_count": 32,
+      "ubuntu_count": 32,
+      "first_discrete_split": {
+        "index": 7,
+        "windows": [
+          "PS_ACCEPT",
+          "4.19161189999999988E+004",
+          "1.69999999998253770E-002",
+          "4",
+          "3",
+          "-6.73312531323022796E+001",
+          "1.78645127500439566E-001"
+        ],
+        "ubuntu": [
+          "PS_ACCEPT",
+          "4.19161189999999988E+004",
+          "1.69999999998253770E-002",
+          "3",
+          "2",
+          "-6.73312531323022512E+001",
+          "1.78645127500439649E-001"
+        ]
+      }
+    }
+  },
+  "production_changed": false,
+  "tolerances_changed": false,
+  "daily_heads": [
+    {
+      "day": 1008,
+      "max_pressure_spread_cm": 1.1368683772161603e-13
+    },
+    {
+      "day": 1009,
+      "max_pressure_spread_cm": 0.0018243055500306582
+    }
+  ],
+  "causal_assessment": {
+    "day": 1009,
+    "start_minute": 171.3599999982398,
+    "guard_threshold_cm": 1.3599999999860302e-11,
+    "windows_budget_candidate_cm": 1.3600483586562184e-11,
+    "ubuntu_budget_candidate_cm": 1.3599016010501508e-11,
+    "first_original_convergence_decision_same": true,
+    "first_mass_polish_at": [
+      0,
+      2
+    ],
+    "accepted_numbit": [
+      4,
+      3
+    ],
+    "original_feedback_criterion": 3,
+    "following_dt_days": [
+      0.016999999999825377,
+      0.033999999999650754
+    ],
+    "classification": "ROUNDING_SENSITIVE_STRICT_MASS_POLISH_DECISION_WITH_ADAPTIVE_STEP_FEEDBACK",
+    "implementation_defect_established": false,
+    "production_fix_selected": false,
+    "disposition": "Preserve unchanged guards, original actual NUMBIT feedback and failed science. A controller count excluding strict mass polishing is a separate numerical-policy question; no ad hoc extra iteration or time-step threshold fitting selected.",
+    "next_bounded_goal": "Read original NUMBIT ownership and guard-polish control contract; decide whether distinct original-convergence and guard-polish counts are justified before code or another numerical probe."
+  }
+}

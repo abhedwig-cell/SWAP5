@@ -1,0 +1,10 @@
+{
+  "baseline": "51b819a404ed37838ee5c56c97b70e6c69f1ec81",
+  "status": "PRIVATE_POLICY_DISCRIMINATOR_SELECTED_NOT_PRODUCTION",
+  "owning_source": "Original TimeControl(3) NUMBIT<=NUMBIT_CRIT growth and NUMBIT>=MaxIt shrink; generated headcalc strict-water extra iterations",
+  "question": "Can physical-convergence-only growth remove artificial amplification from auxiliary mass-polish iterations, while retaining actual count for high-iteration shrink, logs, rejected attempts and all guards?",
+  "decision": "Numerical-policy experiment justified, not a correction to original NUMBIT. No production modification or implicit acceptance claim.",
+  "semantics": "Reset transient counter on each headcalc call; reset after any original nonconvergence; capture first iteration of final original-converged streak, before strict guard. Use for growth only and only when actual count<MaxIt. Actual NUMBIT unchanged elsewhere. No restart state: reset before every use on each accepted/rejected call; process-private donor owns context.",
+  "selection": "Activate onSaltFarm1009 only. Previous1008-day prefix must remain exact. Existing read-only paired trace is control, no repeat. Nativecap60seconds, expected4seconds/platform. Local first, then one paired policy run only if local passes unchanged guards.",
+  "not_selected": "No arbitrary iteration padding, tolerance widening, rounded guard, full model campaign, production switch, or active macropores"
+}
