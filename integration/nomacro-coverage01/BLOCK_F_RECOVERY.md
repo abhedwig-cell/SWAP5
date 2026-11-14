@@ -131,3 +131,16 @@ solver campaign. Maximum two focused repair hypotheses remains binding.
 Canonical1679 at996f772cd changes release/cost evidence and its measurement tool,
 not app/src physics or execution. Reconcile it without replaying unchanged
 models; keep all admitted policy identities and original scientific FAILs.
+
+Focused probe1 run43584892979 on805152251 reproduces exact day573 mass error
+0.00020858649141789897. It records ZERO water-floor crossings; removing that
+floor changes nothing. Hypothesis1 rejected, no public CDE source change.
+One negative intermediate stock at node2 is clipped by original CDE, adding
+0.00020858649260958143mg/cm2; this accounts for the whole mass error.
+Second/final focused hypothesis: scalar stability bound omits actual FV diagonal
+loss rates and dt-dependent original LW dispersion. Derive row dt limit from
+unchanged original face coefficients and root/drain extraction, retaining the
+original old bound as an additional restriction. No new physical flux formula,
+parameter or tolerance. Probe original-observed versus explicit private row-limit
+candidate from the same exact572 origin. If unsupported, stop local CDE patches
+and revise transport strategy. No production/default source modification yet.
