@@ -41,3 +41,16 @@ formula or mock substitutes for that production composition. Runtime/source
 of prior qualified options is unchanged; prove old descriptors unchanged.
 Expected own-runner cap25minutes. Expensive execution selected for uncovered
 original temporal forcing/state risk, not a platform/performance campaign.
+
+FirstH43593959340 source4d3e41c8a: factor-partition completes full1096, actual
+O0/O2 native2/365/530 and all transactions/reference gates. factor-partition-soil
+completes1096 but cold365->366 differs water0.006376066972421768cm, Hmax
+0.14686493507930454cm; native367 differs. Both balances pass, so do not call it
+restart-qualified or relax exact state. Original SWCFBS1 chooses a different
+Penman soil branch depending on original plant_interface swcf/canopy fields.
+Read-only discriminator will trace complete original plant/ET interface at
+accepted365 versus cold365, reproducing original warm/cold rows without accepted
+publication or origin rebinding. No public state repair yet. Then preserve a
+larger original component state if proven, not blind individual-cache trials.
+Select only other still-uncovered non-soil-factor variants while diagnosing;
+retain first completed case without unnecessary re-execution. H remains draft.

@@ -9,7 +9,7 @@ on:
       configuration:
         type: choice
         default: all
-        options: [all, factor-partition, factor-partition-soil, reference-et, reference-et-soil, rain-intensity, rain-duration, rain-detailed, weather-hourly]
+        options: [all, remaining-no-soil-factor, factor-partition, factor-partition-soil, reference-et, reference-et-soil, rain-intensity, rain-duration, rain-detailed, weather-hourly]
         description: Select only an uncovered configuration after retained prior evidence
 permissions:
   contents: read
@@ -38,6 +38,8 @@ jobs:
         run: |
           if [ -z "$SELECTED" ] || [ "$SELECTED" = all ]; then
             python3 -B tools/solute/check_nomacro_coverage.py --weather-options --output "$RUNNER_TEMP/proof"
+          elif [ "$SELECTED" = remaining-no-soil-factor ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --weather-options --configuration reference-et --configuration rain-intensity --configuration rain-duration --configuration rain-detailed --configuration weather-hourly --output "$RUNNER_TEMP/proof"
           else
             python3 -B tools/solute/check_nomacro_coverage.py --weather-options --configuration "$SELECTED" --output "$RUNNER_TEMP/proof"
           fi
