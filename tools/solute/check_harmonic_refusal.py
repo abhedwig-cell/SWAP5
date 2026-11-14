@@ -9,21 +9,21 @@ from daily_coupling import validate_bundle
 from check_nomacro_coverage import physical
 
 def main():
-    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--prior',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--weighted',action='store_true');p.add_argument('--weather-rain',action='store_true');p.add_argument('--weather-hourly',action='store_true');args=p.parse_args()
+    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--prior',type=Path,required=True);p.add_argument('--output',type=Path,required=True);p.add_argument('--weighted',action='store_true');p.add_argument('--weather-rain',action='store_true');p.add_argument('--weather-hourly',action='store_true');p.add_argument('--constitutive-three',action='store_true');p.add_argument('--fresh-build',action='store_true');args=p.parse_args()
     prior=args.prior.resolve();out=args.output.resolve();out.mkdir(parents=True,exist_ok=False)
     reports=[]
-    key='weather-hourly' if args.weather_hourly else 'rain-detailed' if args.weather_rain else ('weighted-harmonic-mean' if args.weighted else 'harmonic-mean')
-    for opt in (['O0','O2'] if args.weighted or args.weather_rain or args.weather_hourly else ['O2']):
+    key='constitutive-3' if args.constitutive_three else 'weather-hourly' if args.weather_hourly else 'rain-detailed' if args.weather_rain else ('weighted-harmonic-mean' if args.weighted else 'harmonic-mean')
+    for opt in (['O0','O2'] if args.weighted or args.weather_rain or args.weather_hourly or args.constitutive_three else ['O2']):
         target=out/opt;target.mkdir()
-        reports.append(exercise(prior,target,key,opt,args.weighted,args.weather_rain,args.weather_hourly))
+        reports.append(exercise(prior,target,key,opt,args.weighted,args.weather_rain,args.weather_hourly,args.constitutive_three,args.fresh_build))
     (out/'RESULT.json').write_text(json.dumps(dict(status='RETAINED_STRICT_WATER_REFUSALS_QUALIFIED',profiles=reports,science='NOT_QUALIFIED'),indent=2)+'\n')
 
 
-def exercise(prior,out,key,opt,weighted,weather_rain=False,weather_hourly=False):
-    failure_day=364 if weather_rain or weather_hourly else (367 if weighted else 589)
-    minimum,maximum=(1e-10,1.1e-10) if weighted or weather_rain or weather_hourly else (9e-9,1.1e-8)
+def exercise(prior,out,key,opt,weighted,weather_rain=False,weather_hourly=False,constitutive_three=False,fresh_build=False):
+    failure_day=365 if constitutive_three else 364 if weather_rain or weather_hourly else (367 if weighted else 589)
+    minimum,maximum=(1.1,1.2) if constitutive_three else (1e-10,1.1e-10) if weighted or weather_rain or weather_hourly else (9e-9,1.1e-8)
     bundle=prior/(key+'-'+opt+'-build');ref=prior/'provider';project=e.load(prior/('input-'+key))
-    if not bundle.exists():
+    if fresh_build or not bundle.exists():
         bundle=out/'fresh-build'
         command=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',e.MODEL,'--experimental-project',project.input_directory,'--reference-work',str(ref),'--build-only','--output',str(bundle),'--donor-opt',opt,'--kernel-opt',opt]
         built=subprocess.run(command,capture_output=True,text=True,timeout=90);(out/'build.log').write_text(built.stdout+built.stderr);assert built.returncode==0
@@ -56,7 +56,7 @@ def exercise(prior,out,key,opt,weighted,weather_rain=False,weather_hourly=False)
         assert not list(cold.glob('accepted-*.zip')) and h.sha(origin)==digest
         host.close()
     result=dict(status='ORIGINAL_STRICT_WATER_REFUSAL_REPRODUCED_NO_COMMIT',source_commit=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
-        original_run=43598743032 if weather_hourly else 43597013110 if weather_rain else (43591575148 if weighted else 43590665680),source_build=meta['identity'],configuration=key,optimization=opt,accepted_days=failure_day-1,refusal_day=failure_day,refused=rejected,
+        original_run=43599641836 if constitutive_three else 43598743032 if weather_hourly else 43597013110 if weather_rain else (43591575148 if weighted else 43590665680),source_build=meta['identity'],configuration=key,optimization=opt,accepted_days=failure_day-1,refusal_day=failure_day,refused=rejected,
         own_restart_exact_refusal=True,no_rejected_publication=True,origin_unchanged=True,whole_period_pass=False,
         science='NOT_QUALIFIED; no tolerance or Richards repair')
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],opt,flush=True)

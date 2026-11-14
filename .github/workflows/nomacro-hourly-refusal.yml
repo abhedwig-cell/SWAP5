@@ -1,9 +1,14 @@
-name: Original hourly weather refusal preservation
+name: Original hourly or constitutive refusal preservation
 on:
   push:
     branches: [codex/nomacro-coverage08]
     paths: ['.github/workflows/nomacro-hourly-refusal.yml']
   workflow_dispatch:
+    inputs:
+      constitutive_three:
+        type: boolean
+        default: false
+        description: Preserve original bimodal model3 day365 with fresh actual source
 permissions:
   contents: read
   actions: read
@@ -24,16 +29,28 @@ jobs:
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
       - uses: actions/download-artifact@v4
+        if: ${{ inputs.constitutive_three != true }}
         with:
           name: nomacro-weather-bc1adba5cfc123f69eb98010026e15ca9bee70ac
           run-id: 43598743032
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/prior
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.constitutive_three == true }}
+        with:
+          name: nomacro-constitutive-3-f45d9a10bfb89aa95a3dc498b625b1d25f1f2270
+          run-id: 43599641836
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Reproduce own364 to rejected365 with fresh source and unchanged accepted state
+        if: ${{ inputs.constitutive_three == true }}
+        run: python3 -B tools/solute/check_harmonic_refusal.py --constitutive-three --fresh-build --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
       - name: Reproduce own363 to rejected364 with unchanged accepted state
+        if: ${{ inputs.constitutive_three != true }}
         run: python3 -B tools/solute/check_harmonic_refusal.py --weather-hourly --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: hourly-weather-refusal-${{ github.sha }}
+          name: original-refusal-${{ github.sha }}
           path: ${{ runner.temp }}/proof
           retention-days: 30
