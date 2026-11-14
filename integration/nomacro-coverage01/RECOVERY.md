@@ -1,22 +1,36 @@
 ## Current recovery checkpoint
 
 Workstream SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01,
-branch codex/nomacro-coverage04. A/B/C admitted PR1669/1670/1671. Exact C
+branch codex/nomacro-coverage05. A/B/C admitted PR1669/1670/1671. Exact C
 postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
 43412494520. Historical old-head evidence remains unchanged and separate.
 A/B/C complete17 additional configurations20457 model days; zero new independent
 historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
 
-D PR1673 final qualified code42f066bf0: all six configurations7306 days PASS
-in run43418605842. Actual generated/touched donor O0/O2, providerO2, both active
-windows, eight malformed native refusals and two atomic history refusals pass.
-A/B/release43418610124 and C43418614412 all SUCCESS on the same source.
-Next: finish versioning artifact/raw receipts, ready/merge PR1673 and verify
-actual canonical tree/dependencies. Then original unused-process successor from
-the current register, with a larger-state strategy for failed active history.
-Both cache hypotheses91de/5529 failed and were removed. Never reclassify those
-FAILs. Private peer daily-time-policy changes inspected, not imported; canonical
-still a6720a0e8. See BLOCK_D_RECOVERY/STATUS for exact source-bound proof.
+D PR1673 admitted bdf222befb3ba444d3cd7147ef2fa90e2581ca16. Actual canonical
+tree cccb02ef8a2aad4da19c8605afdc38e72fc19ad8 equals qualified headca68e2cfe;
+relevant app/src/tools/workflow diff from executed42f066bf0 is empty. All three
+workflow runs43418605842/43418610124/43418614412 SUCCESS; versioned raw data
+and native endpoints sealed. Six complete variants7306 days; across A/B/C/D,
+23 complete additional configurations27763 days, zero new independent projects.
+Both failed history cache hypotheses removed; new water-only history atomically
+refused. Frozen11529865e unchanged and no peer private source imported.
+
+Current own branch codex/nomacro-coverage05, PR1674 draft. E codeb7a9d8405
+passes actual run43423367602:9 full9864 days,18 O0/O2 touched-unit/controller
+profiles, exact native2/365/530, temperature state, original reference and all
+transaction checks. Maxwater9.997787873191472e-11cm; solute2.0189361551216096e-13.
+32 additional complete configurations37627 days across A..E; zero new
+independent projects. Three original invalid-input prefixes/refusals retained.
+No physical/codec/host/kernel/provider/CLI/time-policy change; all24 old selected
+experimental descriptors exact. Old adapter bundles require rebuild, never rebind.
+Next: finish raw archiving/docs, ready/merge PR1674 and verify exact postimage.
+Then choose the next original-process integration surface from current register.
+Known reservoir SWBR1 requires separate aquifer state/ledger and original-index
+reference audit; age2, other drainage/surfacewater, detailed meteo, hydraulic
+tables, broader crop structures and complete original history remain open.
+Do not resume two failed local cache hypotheses or start a solver campaign.
+Peer3075fbbb3/cd2bf853e inspected; canonical bdf222bef, no private import.
 
 An active serial autonomous Codex goal continues this work; no scheduled timer
 is configured. Later checkpoints must replace this current pointer. Inventory
