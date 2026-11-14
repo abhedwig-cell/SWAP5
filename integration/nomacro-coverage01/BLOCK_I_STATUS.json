@@ -21,5 +21,18 @@
   "requested_full_days_each": 1096,
   "whole_science": "NOT_QUALIFIED",
   "pending_delta": "Additional per-layer SWVAPOR0-only preflight; no generated/runtime/numerical change",
-  "next": "Follow existing matrix to terminal; inspect per-case full and refusal gates, preserve every failure"
+  "next": "Follow existing matrix to terminal; inspect per-case full and refusal gates, preserve every failure",
+  "completed_full_configurations": [
+    "constitutive-2"
+  ],
+  "complete_days": 1096,
+  "retained_failure": {
+    "configuration": "constitutive-3",
+    "optimization": "O0",
+    "accepted_days": 364,
+    "refusal_day": 365,
+    "independent_water_residual_cm": -1.1546276901024912,
+    "integrated_estimate_cm": 2.574461231715377e-11
+  },
+  "prior_descriptors_exact": 44
 }

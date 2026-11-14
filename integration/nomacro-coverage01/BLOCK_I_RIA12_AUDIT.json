@@ -1,0 +1,12 @@
+{
+  "status": "SOURCE_AUDIT_ONLY_RIA12_NOT_QUALIFIED",
+  "source_sha256": {
+    "readswap.f90": "3ab42ae4ad9a76d96b01d90b173cf821a9add8514620a965bf31eaf874405cf2",
+    "MOD_RIA.f90": "a8695bbcb45ae4967686ae4dfbb7e365e91658a190165e86487ee9e5f1ffa9b3",
+    "MOD_MvG_functions.f90": "a27252d216da65ce20ed3a173ade5404a0f31241ac87349edadb3b3ff9d63390"
+  },
+  "reader": "RIA_Reader reads Case, HeatOn, VaporCond, SWRC/UHCC parameters, fitted-head flags; allocates complete SHP variables and derives original junction parameters",
+  "scope": "No RIA activation or physical repair; no component/full/restart proof yet",
+  "finding": "readswap lines629..636 maps UHCCpars(:,1) into ksatfit although RIA_Reader stores UHCC_hae in column1 and UHCC_ksat in column4; lexp uses UHCC_tau column6. Requires original-component/full-reference investigation before changing or qualifying initialization. This is a source suspicion, not a demonstrated numerical failure.",
+  "next": "Retain literal original source and isolate actual RIA initialization plus reader/temperature/vapor ownership before any alternative integration"
+}
