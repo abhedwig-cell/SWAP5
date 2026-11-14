@@ -1,3 +1,17 @@
+# H current full9 run with proven original plant ET memory
+
+Own branch08 PR1682 draft, canonicalG3aa554460. Source2c0c082db: full9-case
+weather/ET/rain run43597013110 LIVE. Default-source8/external preservation
+43597013103 SUCCESS. Follow exact full run to terminal, no duplicates.
+Read-only43595033501 isolated lost accepted swcf/CO2 factors. Active experimental
+SWCFBS1 now saves/restores complete original plant ET interface (100bytes),
+including water-only mode; six inactive codec-source variants byte-identical.
+Local production codec O0/O2 exact+6corrupt read/write refusals each. H original
+future SWCF2/referenceET1 incompatibility corrected explicitly in fixtures and
+atomic preflight; retain first native failure and original future-input refusal.
+No physical formula/solver/policy/tolerance change. G exactreceipt persisted,
+frozenRC111529865e/peer streams untouched. No H admission/full-science claim.
+
 # H live original weather qualification
 
 Own branch08 PR1682 draft from canonicalG3aa554460. H source4d3e41c8a real full
