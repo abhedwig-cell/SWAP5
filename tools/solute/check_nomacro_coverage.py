@@ -288,7 +288,7 @@ def main():
             path.write_text(text,encoding='cp1252')
             if not changes.get('SWSOLU',1):
                 for path in case.glob('*.crp'):
-                    text,count=re.subn(r'(?m)^([ \t]*SWSALINITY[ \t]*=[ \t]*)1',r'\g<1>0',path.read_text(encoding='cp1252'));assert count==1
+                    text,count=re.subn(r'(?m)^([ \t]*SWSALINITY[ \t]*=[ \t]*)[01]',r'\g<1>0',path.read_text(encoding='cp1252'));assert count==1
                     path.write_text(text,encoding='cp1252')
             if changes.get('SWSOPHY'):
                 # Explicit independent physical data, not a reimplementation

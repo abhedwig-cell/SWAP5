@@ -30,3 +30,9 @@ changed preflight SHA requires fresh experimental bundles, no capsule rebinding.
 Cost expected under20minutes on own runner, no platform/performance campaign.
 This is essential uncovered original-option functional risk, not repeated
 qualification of unchanged original physical components. No G PASS claimed yet.
+
+First run43589431793 b52f1de4b stops before option compilation/model because
+water-only fixture regex expects every crop to have salinity1; an original crop
+already has0. Retained input/source/error, corrected fixture accepts0/1 and
+explicitly selects0. No physical/numerical attempt or guard modification.
+PR1681 draft. Follow next exact run through terminal.
