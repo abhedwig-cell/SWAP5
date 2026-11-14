@@ -219,12 +219,22 @@ def run(opt,mode,label=''):
  profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+('-FINAL2' if not label else ''));case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
  for x in json.loads(Path('C:/Users/Veldh012/swap431-state02-work/audit/CASE_IDENTITY.json').read_text()):
   p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/p,case/p)
+  assert sha(case/p)==x['sha256'],str(p)
  if mode=='RESTART':
   import re
   source=R/'data'/opt/'B_TRIAL'/'candidate.end';shutil.copy2(source,case/'own.end')
   if label=='MISSING':shutil.copy2(BASE/'data'/opt/'B_TRIAL/candidate.end',case/'own.end')
   if label=='VERSION':
    p=case/'own.end';b=p.read_bytes();i=b.index(b'SWAP431_MACRO_RESTART_V1');b=b[:i]+b[i:].replace(b'SWAP431_MACRO_RESTART_V1',b'SWAP431_MACRO_RESTART_V9',1);p.write_bytes(b)
+  if label in ['IDENTITY','DIMENSION','NONFINITE','INVENTORY','TRUNCATED']:
+   import struct
+   p=case/'own.end';b=bytearray(p.read_bytes());i=b.index(b'SWAP431_MACRO_RESTART_V1');size=struct.unpack_from('<i',b,i-4)[0]
+   if label=='IDENTITY':b[i+44]=ord('x')
+   elif label=='DIMENSION':struct.pack_into('<i',b,i+36,111)
+   elif label=='NONFINITE':struct.pack_into('<d',b,i+size+8,float('nan'))
+   elif label=='INVENTORY':struct.pack_into('<d',b,i+size+8,-1.)
+   elif label=='TRUNCATED':b=b[:-40]
+   p.write_bytes(b)
   s=(case/'swap.swp').read_text(encoding='cp1252');s=re.sub(r'(?mi)^(\s*SWINCO\s*=\s*)2\b',r'\g<1>3',s,count=1)
   s+="\n INIFIL = 'own.end'\n SWINITYPE = 2\n SWENDTYPE = 2\n"
   (case/'swap.swp').write_text(s,encoding='cp1252')
