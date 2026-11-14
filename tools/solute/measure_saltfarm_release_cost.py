@@ -20,20 +20,24 @@ def call(label,cmd,*,cwd=ROOT,expected=0,timeout=60):
 begin=time.perf_counter();prepared=validate(a.provider);meta,_=validate_bundle(a.bundle,a.provider,h.SALTFARM);verify_seconds=time.perf_counter()-begin
 assert meta['identity']['floating_point_profile']==prepared['floating_point_profile']==h.no_macro_fp_profile()
 assert meta['identity']['compiler_sha256']==prepared['toolchain']['gfortran']['sha256']
-case=a.output/'original431-case';case.mkdir();inventory={}
-source=h.project_case(a.provider,h.SALTFARM)
-for name,sha in meta['inputs'].items():
- data=(source/name).read_bytes();assert hashlib.sha256(data).hexdigest()==sha,name
- target=case/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data);inventory[name]=sha
 exe=a.output/'swap431-common.exe';objects=sorted((a.provider/'build/swap-obj').glob('*.o'));assert objects
 link=call('original-link',['gfortran','-o',exe,*objects,a.provider/'build/ttutil-obj/libttutil.a'])
-original=call('original-model',[exe,'./swap.swp'],cwd=case,expected=0)
 current=call('current-public',[sys.executable,'-B',ROOT/'tools/solute/run_water.py','--no-macro-release','--model',h.SALTFARM.model,'--reference-work',a.provider,'--build-bundle',a.bundle,'--days',1461,'--timeout-seconds',60,'--output',a.output/'current'])
+# Original literal S_CONC is already a preserved input refusal. Compare exact
+# executed bytes after the existing shared public output-only preparation.
+case=a.output/'original431-executed-input-case';case.mkdir();inventory={}
+source=h.project_case(a.provider,h.SALTFARM)
+for name,sha in meta['inputs'].items():
+ assert h.sha(source/name)==sha,name
+ data=(a.output/'current/original'/name).read_bytes()
+ target=case/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
+ inventory[name]=hashlib.sha256(data).hexdigest()
+original=call('original-model',[exe,'./swap.swp'],cwd=case,expected=0)
 read=lambda p:list(csv.DictReader(s for s in p.read_text().splitlines() if s.strip() and not s.startswith('*')))
 o=read(case/'result_output.csv');c=read(a.output/'current/original/result_output.csv');assert len(o)==len(c)==1462 and o[-1]['DATE']==c[-1]['DATE']=='2015-12-31'
 for name,sha in inventory.items():
  assert h.sha(case/name)==sha and h.sha(a.output/'current/original'/name)==sha,name
 r=json.loads((a.output/'current/RESULT.json').read_text());assert r['committed_days']==1461
 rows=[json.loads(v) for v in (a.output/'current/daily.jsonl').read_text().splitlines()];assert len(rows)==1461 and all(v['committed'] for v in rows)
-result=dict(status='ONE_MATCHED_PROFILE_ORDERED_SALTFARM_COST_PAIR_COMPLETE',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),days=1461,input_sha256=inventory,execution_input_bytes_identical=True,profile=prepared['floating_point_profile'],toolchain=prepared['toolchain'],provider_prepared_sha256=h.sha(a.provider/'PREPARED.json'),original_objects={p.name:h.sha(p) for p in objects},original_executable_sha256=h.sha(exe),current_build=meta,verification_seconds=verify_seconds,fresh_original_link_seconds=link,original_process_wall_seconds=original,current_public_wall_seconds=current,current_model_and_controller_seconds=r['model_and_controller_seconds'],single_observed_public_wall_ratio=current/original,maximum_current_water_cm=max(abs(v['independent_residual_cm']) for v in rows),maximum_current_solute_mg_cm2=max(abs(v.get('solute_independent_residual_mg_cm2',0)) for v in rows),science='One ordered observation, not statistical speedup, accuracy-matched runtime or a new qualified scientific reference. Current stricter balance/rollback/instance contracts differ from original. No tolerance or physical/input change.',cost='Source preparation and original compilation reused unchanged, fresh link and verification measured separately. Public wall includes current host/kernel/validation/output; model_and_controller is not donor-only timing.')
+result=dict(status='ONE_MATCHED_PROFILE_ORDERED_SALTFARM_COST_PAIR_COMPLETE',source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),days=1461,input_sha256=inventory,source_input_sha256=meta['inputs'],execution_input_bytes_identical=True,literal_input_pass_claimed=False,output_preparation='Existing public INLIST_CSV, NUM_DECIMALS12 and SWENDTYPE2 preparation shared exactly; physical selectors and tolerances unchanged',execution_order='current-public then original prepared-input model',profile=prepared['floating_point_profile'],toolchain=prepared['toolchain'],provider_prepared_sha256=h.sha(a.provider/'PREPARED.json'),original_objects={p.name:h.sha(p) for p in objects},original_executable_sha256=h.sha(exe),current_build=meta,verification_seconds=verify_seconds,fresh_original_link_seconds=link,original_process_wall_seconds=original,current_public_wall_seconds=current,current_model_and_controller_seconds=r['model_and_controller_seconds'],single_observed_public_wall_ratio=current/original,maximum_current_water_cm=max(abs(v['independent_residual_cm']) for v in rows),maximum_current_solute_mg_cm2=max(abs(v.get('solute_independent_residual_mg_cm2',0)) for v in rows),science='One ordered observation, not statistical speedup, accuracy-matched runtime or a new qualified scientific reference. Current stricter balance/rollback/instance contracts differ from original. No tolerance or physical/input change.',cost='Source preparation and original compilation reused unchanged, fresh link and verification measured separately. Public wall includes current host/kernel/validation/output; model_and_controller is not donor-only timing.')
 (a.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:result[k] for k in ['status','days','original_process_wall_seconds','current_public_wall_seconds','current_model_and_controller_seconds','single_observed_public_wall_ratio']}),flush=True)
