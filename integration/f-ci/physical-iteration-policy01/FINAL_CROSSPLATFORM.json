@@ -1,0 +1,52 @@
+{
+  "status": "MATCHED_COMPLETE_BOUNDED_POLICY_PLATFORM_COMPARISON",
+  "run": 43554537720,
+  "carrier": "7e5cccebb0cc2d80e6ff81cd99e93bd4593c97a7",
+  "runtime": "857967bd144afe25d90a52e817189fb407769630",
+  "profiles": {
+    "grass": {
+      "days": 1827,
+      "maximum_pressure_spread_cm": 1.6189005691558123e-10,
+      "max_pressure_day": 986,
+      "maximum_stock_spread_cm": 2.842170943040401e-14,
+      "maximum_flux_spread_cm": 7.452372052796363e-15,
+      "maximum_water_residual_cm": 1.2820290680911249e-13,
+      "maximum_kernel_residual_cm": 1.2817524819297432e-13,
+      "maximum_solute_residual_mg_cm2": 0,
+      "daily_sha256": {
+        "windows": "76ff3d63152e269981c8f545bd82a843da77ce6776d55a7515c33a043afc9536",
+        "ubuntu": "d23af9e5992c2134fefdef418e4e93efd73e18f0cabc6e2cac17c4fab93070e3"
+      }
+    },
+    "hupsel": {
+      "days": 1096,
+      "maximum_pressure_spread_cm": 3.956301952712238e-11,
+      "max_pressure_day": 948,
+      "maximum_stock_spread_cm": 1.9895196601282805e-13,
+      "maximum_flux_spread_cm": 2.442143709480149e-14,
+      "maximum_water_residual_cm": 9.99670639778745e-11,
+      "maximum_kernel_residual_cm": 9.99724747430264e-11,
+      "maximum_solute_residual_mg_cm2": 2.3019408954034093e-13,
+      "daily_sha256": {
+        "windows": "53d156461c41f4035514aa579c99a7b8cccb3b2ab4d74b9044585d1bdd266c5f",
+        "ubuntu": "2f3c0d6dadffe29287488950fd4538f1c4dbe7ea317ae6daf4992c1277f8bb19"
+      }
+    },
+    "saltfarm": {
+      "days": 1461,
+      "maximum_pressure_spread_cm": 2.2737367544323206e-13,
+      "max_pressure_day": 229,
+      "maximum_stock_spread_cm": 5.684341886080802e-14,
+      "maximum_flux_spread_cm": 2.4424906541753444e-15,
+      "maximum_water_residual_cm": 2.9596394779396462e-12,
+      "maximum_kernel_residual_cm": 2.9596325390457423e-12,
+      "maximum_solute_residual_mg_cm2": 1.3832754386378099e-11,
+      "daily_sha256": {
+        "windows": "907e12d433d29d1c777ab399bc465728cdd6ccd4492b5440a44cf21026d712c9",
+        "ubuntu": "d8ebb5f62913d2c63f9c64b37deb4cc1c20c694b39ea0af2e728e21bf3d2807b"
+      },
+      "day1009_pressure_spread_cm": 1.1368683772161603e-13
+    }
+  },
+  "scientific_disposition": "No new pressure tolerance; descriptive spreads, original oxygen/reference FAILs retained. Exact within-profile own full restarts are qualified separately."
+}

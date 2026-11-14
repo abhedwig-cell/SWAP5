@@ -85,3 +85,5 @@ and broader scientific limitations remain intact.
 Next bounded objective: inspect that original-count versus guard-polish ownership
 and decide on the numerical policy before any additional model experiment.
 A second similar trace or a repeated full trajectory is not selected.
+
+The subsequent [bounded physical-growth policy](PHYSICAL_ITERATION_POLICY01.md) implements and qualifies the explicit SaltFarm successor; the original localization and failed universal-policy attempt remain preserved.

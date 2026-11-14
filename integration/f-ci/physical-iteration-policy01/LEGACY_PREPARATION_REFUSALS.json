@@ -1,0 +1,21 @@
+{
+  "status": "REFUSALS_RETAINED_NOT_QUALIFICATION_PASS",
+  "attempts": [
+    {
+      "kind": "CLI",
+      "path": "s5-v2-legacy-short",
+      "refusal": "HYBRID_NOMACRO_WATER requires --experimental-project and cannot claim --no-macro-release",
+      "disposition": "Use documented experimental route; before build/model"
+    },
+    {
+      "kind": "stale_source",
+      "path": "s5-v2-legacy-qualified/build",
+      "refusal": "Bundle source differs: daily_host.py",
+      "disposition": "Fresh current build and5day own test completed at s5-v2-legacy-current; no rebinding"
+    },
+    {
+      "kind": "raw_cross_OS_source_hash_equality",
+      "disposition": "CRLF/LF differs; normalize only newlines for textual source-inheritance assessment, preserve actual byte hashes and failed byte-equality expectation"
+    }
+  ]
+}

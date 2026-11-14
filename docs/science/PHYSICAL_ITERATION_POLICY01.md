@@ -41,3 +41,82 @@ trajectories, exact own restart, unchanged balances and coupling/source refusals
 It would not prove scientific equivalence or authorize relaxing any original
 criterion. A failed or immaterial result must remain visible and lead to a
 simpler strategy rather than repeated threshold adjustments.
+
+
+## Qualified bounded implementation
+
+The paired private discriminator completed SUCCESS and reduced the isolated
+SaltFarm day1009 pressure difference from0.0018243055500306582 cm to
+1.1368683772161603e-13 cm, while preserving the complete preceding1008-day
+prefix. An explicit candidate was then implemented in the existing generic
+generator. A real broad-candidate Hupsel attempt refused day364 at
+-1.0033485153826405e-10 cm under the unchanged1e-10 gate. Its full failure and
+binary evidence remain preserved; it is not admitted or hidden by a fallback.
+
+The qualified selection is therefore explicit per registered numerical profile:
+
+| Project | Selected policy |
+| --- | --- |
+| Grassgrowth1827 | configured-dtmax-daily-v1 |
+| Hupsel1096 | configured-dtmax-daily-v1 |
+| SaltFarm1461 | configured-dtmax-physical-growth-v2 |
+
+This is one generic physical implementation with declared numerical policy
+metadata. The original adaptive policy and daily-actual-v1 remain available;
+general experimental projects still default to original adaptive behavior.
+Explicit experimental v2 use is research, and is not universally qualified.
+No runtime failure changes the selected policy. Known v1/v2 mismatches are
+refused before output, and the existing source/build/checkpoint binding remains.
+The transient counter resets at every HeadCalc call and retry; it adds no
+physical restart field. Actual iteration histograms, MaxIt decrease and all
+rejection rules are retained. Only the explicit v2 growth trigger differs.
+
+Local fresh O0/O2 checks and
+[actual matched Windows/Ubuntu qualification43554537720](https://github.com/abhedwig-cell/SWAP5/actions/runs/43554537720)
+pass all three complete periods, exact own native/auxiliary and printed-CSV
+restarts, twelve build/source/policy refusals and six external instance controls.
+Full-period maximum pressure spreads are1.6189005691558123e-10 cm for Grass,
+3.956301952712238e-11 cm for Hupsel, and2.2737367544323206e-13 cm for SaltFarm.
+All water/solute limits remain unchanged. Native original heat state is included
+in exact own restart; no new independently closed physical energy budget or
+whole scientific equivalence is claimed.
+
+Grass/Hupsel generated calculation sources are byte-identical to their preceding
+qualified v1 local bundles, and their full local daily records remain exact.
+One fresh five-day experimental legacy composition has exact own restart and
+identical generated source text to the prior qualified D case after universal
+newline normalization only. Other unchanged experimental full cohorts are
+inherited by their unchanged policy/generator path; no full repeat is selected.
+Source identity still requires rebuilding stale bundles and never rebinding a
+checkpoint. The initial generation-anchor failure and a refused stale legacy
+bundle are preserved as failures, not counted as numerical PASS.
+
+## Scientific and performance limits
+
+The new SaltFarm route differs from the previous v1 local trajectory by up to
+0.6181955413385367 cm in pressure and0.028052418626089093 cm in water stock.
+Those are numerical-policy differences, not silently treated as rounding error.
+The unchanged original4.3.1 CSV is reused by its exact historical hash, without
+a new model reference run. Execution input text is identical; SWP bytes differ
+only by CRLF/LF, so byte-identical input is explicitly not claimed for this
+archived comparison. All compared active original CSV fields are preserved in
+ORIGINAL431_SALTFARM_COMPARISON.json. Descriptively, maximum GWL difference to
+that original decreases from0.47797304926800166 to0.018153260029997398 cm;
+WTOT from0.028058441110033527 to0.0038408625089800807 cm; drainage from
+0.021618043748999893 to0.003333123028999907 cm. This is not a new accuracy bound,
+a qualified universal reference or scientific PASS. Existing failed oxygen
+criteria and underqualified reference families remain visible.
+
+WORK_COUNTS.json distinguishes converged solves, actual Newton iterations and
+original backtracking-cycle counts. Separate-batch wall times are not paired
+speedup evidence. Native invocations remain capped at60seconds; compiler setup
+is measured separately and dominated Windows hosted waiting. Existing immutable
+original providers are reused, while application builds and own restart
+qualification are fresh. Full raw qualified local and hosted proofs are retained
+with archive/member hashes, alongside the rejected Hupsel v2 attempt.
+
+Next concrete goal: reconcile release/performance acceptance against the
+preserved original4.3.1 and current profile evidence. Select only a short matched
+SaltFarm timing pair if the existing source/toolchain-bound measurements do not
+answer the outstanding performance question. No additional solver/reference
+campaign is selected here. The owner's half-hour resumption remains active.

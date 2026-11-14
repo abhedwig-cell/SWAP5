@@ -1,5 +1,11 @@
 # SWAP5 Status-A theory, code and evidence traceability
 
+The bounded SaltFarm physical-growth successor is owned by
+[PHYSICAL_ITERATION_POLICY01](../science/PHYSICAL_ITERATION_POLICY01.md) and
+`integration/f-ci/physical-iteration-policy01/STATUS.json`; its proof distinguishes
+qualified registered policies from the rejected Hupsel-v2 experiment and whole
+scientific equivalence. Historical release receipts remain unchanged.
+
 ## Standalone named no-macro user release
 
 [Getting started](../getting-started.md) provides source-only preparation,
