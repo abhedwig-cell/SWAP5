@@ -1,0 +1,732 @@
+{
+  "status": "COMMON_PROFILE_PUBLIC_O0_O2_FULL_OWN_PASS",
+  "source": "822b6a84ca68ce48020c6f8f0aa7f0da4be474ba",
+  "profiles": [
+    {
+      "project": "grass",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.1178871640203707e-14,
+      "maximum_solute_mg_cm2": 0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.24627209990285337
+    },
+    {
+      "project": "grass",
+      "opt": "O2",
+      "days": 1827,
+      "cut": 365,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.2831355015544926e-13,
+      "maximum_solute_mg_cm2": 0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 8.080605399794877
+    },
+    {
+      "project": "hupsel",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.0644263248593688e-14,
+      "maximum_solute_mg_cm2": 0.0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.23351829987950623
+    },
+    {
+      "project": "hupsel",
+      "opt": "O2",
+      "days": 1096,
+      "cut": 365,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 9.997037887180676e-11,
+      "maximum_solute_mg_cm2": 2.159834487009581e-13,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 3.974247499834746,
+      "oxygen584_cm": 0.004793468495847016
+    },
+    {
+      "project": "saltfarm",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 5.145571468911925e-13,
+      "maximum_solute_mg_cm2": 1.2403411631112249e-12,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-physical-growth-v2",
+      "model_seconds": 0.2556586000137031
+    },
+    {
+      "project": "saltfarm",
+      "opt": "O2",
+      "days": 1461,
+      "cut": 109,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 2.959653355727454e-12,
+      "maximum_solute_mg_cm2": 1.3835196877032274e-11,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-physical-growth-v2",
+      "model_seconds": 7.673212399939075
+    }
+  ],
+  "events": [
+    {
+      "label": "grass-O0-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 8.273485400015488
+    },
+    {
+      "label": "grass-O0-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 0.9300643000751734
+    },
+    {
+      "label": "grass-O0-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.7192927000578493
+    },
+    {
+      "label": "grass-O0-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-candidate-full\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.7082877999637276
+    },
+    {
+      "label": "grass-O2-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 9.683146700030193
+    },
+    {
+      "label": "grass-O2-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--checkpoint-at",
+        "1827",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 8.709607700118795
+    },
+    {
+      "label": "grass-O2-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--checkpoint-at",
+        "365",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 8.565622499911115
+    },
+    {
+      "label": "grass-O2-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-full\\accepted-column-1-day-365.zip",
+        "--restart-day",
+        "365",
+        "--checkpoint-at",
+        "1827",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 7.063644099980593
+    },
+    {
+      "label": "hupsel-O0-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 11.843604499939829
+    },
+    {
+      "label": "hupsel-O0-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 0.8900607000105083
+    },
+    {
+      "label": "hupsel-O0-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.7595315000507981
+    },
+    {
+      "label": "hupsel-O0-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-candidate-full\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.7557606999762356
+    },
+    {
+      "label": "hupsel-O2-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 13.353515299968421
+    },
+    {
+      "label": "hupsel-O2-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--checkpoint-at",
+        "1096",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 4.616630799835548
+    },
+    {
+      "label": "hupsel-O2-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--checkpoint-at",
+        "365",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 4.455674600088969
+    },
+    {
+      "label": "hupsel-O2-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-candidate-full\\accepted-column-1-day-365.zip",
+        "--restart-day",
+        "365",
+        "--checkpoint-at",
+        "1096",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\hupsel-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 3.703323000110686
+    },
+    {
+      "label": "saltfarm-O0-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 11.908562199911103
+    },
+    {
+      "label": "saltfarm-O0-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 0.9041369999758899
+    },
+    {
+      "label": "saltfarm-O0-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.719105799915269
+    },
+    {
+      "label": "saltfarm-O0-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-candidate-full\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.724681899882853
+    },
+    {
+      "label": "saltfarm-O2-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 13.781159900128841
+    },
+    {
+      "label": "saltfarm-O2-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--checkpoint-at",
+        "1461",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 8.589311699848622
+    },
+    {
+      "label": "saltfarm-O2-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--checkpoint-at",
+        "109",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 8.226134500000626
+    },
+    {
+      "label": "saltfarm-O2-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-candidate-full\\accepted-column-1-day-109.zip",
+        "--restart-day",
+        "109",
+        "--checkpoint-at",
+        "1461",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\saltfarm-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 7.770246299915016
+    },
+    {
+      "label": "refusals",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/check_rc1_build_validation.py",
+        "--reference",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\grass-O2-candidate-build",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\refusals"
+      ],
+      "returncode": 0,
+      "seconds": 5.324767299927771
+    },
+    {
+      "label": "external",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/check_publisher_coupling.py",
+        "--reference",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--qualification",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-physical-growth-salt-local\\external"
+      ],
+      "returncode": 0,
+      "seconds": 23.392186400014907
+    }
+  ],
+  "scope": "Within-profile exact own controls; no old-profile equality, cross-platform whole-science or native-solver speedup claim."
+}

@@ -1,0 +1,63 @@
+name: Bounded physical growth release qualification
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: daily-nominal-qualification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 15
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin selected source
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
+          gfortran --version
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 43422771039
+          github-token: ${{ github.token }}
+          name: daily-nominal-public-${{ matrix.os }}-2a73d1c13742b1955c2ffb5127608076a7e9b2c5
+          path: ${{ runner.temp }}/qualified-provider
+      - name: Registered O0/O2 full own restarts, unchanged balances, policy refusals and external instances
+        shell: pwsh
+        run: python -B tools/solute/qualify_compiler_profile.py --reference "$env:RUNNER_TEMP/qualified-provider/provider" --output "$env:RUNNER_TEMP/daily-nominal-public"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-nominal-public-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/daily-nominal-public
+          retention-days: 14
