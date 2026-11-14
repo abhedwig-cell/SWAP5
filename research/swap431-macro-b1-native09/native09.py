@@ -46,6 +46,10 @@ use MOD_macropore, only:NumDm,swmbf,swabs
 use MOD_swap_base, only:swmacro,swhyst,swfrost,swdra,swsolu,swhea,swcrop,fl_initialize
 use MOD_swap_mp, only:IDecMpRat,FlDecMpRat
 use variables, only:fldecdt,flrunend
+use variables, only:h,theta,k,kmean
+use MOD_SoilTemperature, only:tsoil
+use plant_interface, only:sw_inter,sw_drought,sw_oxygen
+use MOD_cropdevelopment, only:hlim1,hlim2u,hlim2l,rdm,sw_compensate,sw_stressor
 use, intrinsic :: ieee_arithmetic, only:ieee_is_finite
 {use}
 implicit none
@@ -122,7 +126,12 @@ open(newunit=u,file=label//'.txt',status='replace')
   val=f['name']+section(f)
   if f['type']=='logical':val='merge(1,0,'+val+')'
   code+=f"write(u,*) '{f['name']}',{val}\n"
- code+='''close(u)
+ code+='''write(u,*) 'tsoil',tsoil(1:numnod)
+write(u,*) 'hydraulic_k',k(1:numnod)
+write(u,*) 'hydraulic_kmean',kmean(1:numnod+1)
+write(u,*) 'crop_switches',sw_inter,sw_drought,sw_oxygen,sw_compensate,sw_stressor
+write(u,*) 'root_constants',hlim1,hlim2u,hlim2l,rdm
+close(u)
 end subroutine
 end module MOD_native09
 subroutine native09_io(u,rw)
@@ -216,7 +225,7 @@ def build(opt):
  save(R/(opt+'_IDENTITY.json'),dict(exe_sha256=sha(out/'native09.exe'),sources={p.name:sha(p) for p in R.glob('*.f90')},compiler=subprocess.check_output(['gfortran','--version'],text=True)))
 
 def run(opt,mode,label=''):
- profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+('-FINAL2' if not label else ''));case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
+ profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+'-FINAL3');case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
  for x in json.loads((R/'CASE_IDENTITY.json').read_text()):
   p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/p,case/p)
   assert sha(case/p)==x['sha256'],str(p)

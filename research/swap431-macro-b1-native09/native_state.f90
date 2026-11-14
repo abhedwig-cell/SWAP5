@@ -5,6 +5,10 @@ use MOD_macropore, only:NumDm,swmbf,swabs
 use MOD_swap_base, only:swmacro,swhyst,swfrost,swdra,swsolu,swhea,swcrop,fl_initialize
 use MOD_swap_mp, only:IDecMpRat,FlDecMpRat
 use variables, only:fldecdt,flrunend
+use variables, only:h,theta,k,kmean
+use MOD_SoilTemperature, only:tsoil
+use plant_interface, only:sw_inter,sw_drought,sw_oxygen
+use MOD_cropdevelopment, only:hlim1,hlim2u,hlim2l,rdm,sw_compensate,sw_stressor
 use, intrinsic :: ieee_arithmetic, only:ieee_is_finite
 use MOD_macropore, only:WaSrMpDm,WaUnMpDm,WaUnMpDmCp,WaSrMp,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,VlMpDmCp,VlMpDm,VlMp,ZBtDm,ZWaLevDm,FrMpWalWet,FrMpWalWetOld,FrReduQ,AwlCorFac,ArMpTp,ArMpTpDm,ICpBtDm,ICpTpWaSrDm
 use MOD_swap_mp, only:VlMpDyCp,SubsidCp,ArMpSs,KsMpSs
@@ -629,6 +633,11 @@ write(u,*) 'noddrz',noddrz
 write(u,*) 'fl_cropemergence',merge(1,0,fl_cropemergence)
 write(u,*) 'fl_cropharvest',merge(1,0,fl_cropharvest)
 write(u,*) 'cumdens_top',cumdens_top(1:numnod+1)
+write(u,*) 'tsoil',tsoil(1:numnod)
+write(u,*) 'hydraulic_k',k(1:numnod)
+write(u,*) 'hydraulic_kmean',kmean(1:numnod+1)
+write(u,*) 'crop_switches',sw_inter,sw_drought,sw_oxygen,sw_compensate,sw_stressor
+write(u,*) 'root_constants',hlim1,hlim2u,hlim2l,rdm
 close(u)
 end subroutine
 end module MOD_native09

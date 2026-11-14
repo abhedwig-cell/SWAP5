@@ -1,0 +1,372 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-NATIVE09",
+  "baseline": "cd2bf853efeae56775a2e917f2f60701697ba34c",
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "native_own_restart": "PASS_ORIGINAL_B_ACCEPTED_SUBDAY_ONE_STEP_O0_O2",
+  "original_rejection_rollback_retry": "PASS_PRESERVED_30_ITER_REJECT_7_ITER_ACCEPT",
+  "own_file_exact_install": true,
+  "pre_head_extended_context_exact": true,
+  "equal_dt_end_time": true,
+  "full_physical_next_step_exact": true,
+  "O0_O2_byte_exact": true,
+  "independent_inventory": "PASS_PRIMITIVE_MATRIX_MACRO_SURFACE_PAIRED_EXCHANGE",
+  "negative_file_guards": [
+    {
+      "label": "MISSING",
+      "reason": "missing trailer",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.18402939988300204
+    },
+    {
+      "label": "VERSION",
+      "reason": "version or identity mismatch",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.07192120002582669
+    },
+    {
+      "label": "IDENTITY",
+      "reason": "version or identity mismatch",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.0803970000706613
+    },
+    {
+      "label": "DIMENSION",
+      "reason": "dimensions mismatch",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.0804927998688072
+    },
+    {
+      "label": "NONFINITE",
+      "reason": "nonfinite WaSrMpDm",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.07415529992431402
+    },
+    {
+      "label": "INVENTORY",
+      "reason": "invalid inventory/history",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.0742788000497967
+    },
+    {
+      "label": "TRUNCATED",
+      "reason": "incomplete trailer",
+      "returncode": 1,
+      "before_install_and_head": true,
+      "seconds": 0.07746429997496307
+    }
+  ],
+  "final_routes": 11,
+  "final_positive_routes": 4,
+  "final_negative_initializations": 7,
+  "preliminary_routes": 4,
+  "preliminary_source_postimages": 2,
+  "max_final_model_seconds": 1.6578200000803918,
+  "total_final_model_seconds": 3.6715730000287294,
+  "model_cap_seconds": 20,
+  "model_censored": 0,
+  "results": [
+    {
+      "optimization": "O2",
+      "original_B_and_true_rejection_preserved_byte_exact": true,
+      "retry_iterations": 7,
+      "checkpoint_time": 35796.9513633331,
+      "next_dt": 1e-05,
+      "end_time": 35796.951373333104,
+      "native_file_bytes": 38972,
+      "own_file_sha256": "d8fca360e93bf224a5e7ef19b50d42858c789ff19fd90a2ae879797af9203469",
+      "committed_payload_exact_on_install": true,
+      "extended_pre_head_context_exact": true,
+      "solver_and_full_physical_step_byte_exact": true,
+      "clocks_restored_max_days": 0.020029999740510247,
+      "pre_head_recomputed_previous_rates_and_flags": [
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "matrix_vertical",
+        "boundary_rates",
+        "event"
+      ],
+      "accepted_retry_inventory": {
+        "dt": 1e-05,
+        "iterations": 7,
+        "local_residual": 1.445111049158676e-07,
+        "total_residual": 1.444983181403704e-07,
+        "independent_residual_difference": 6.938893903907228e-18,
+        "matrix_change_cm": 2.6822108116252718e-05,
+        "macro_change_cm": -3.182914534368905e-05,
+        "matrix_balance_error_cm": 1.4449831779793192e-12,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": 1.4449891978424753e-12,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -7.055157102975329e-07,
+            "error_cm": 5.3485895454372795e-18
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.695507013069422e-07,
+            "error_cm": -6.702148195149651e-20
+          },
+          {
+            "domain": 3,
+            "change_cm": -2.474286945448878e-06,
+            "error_cm": 1.8507669897506462e-19
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.762580750036302e-06,
+            "error_cm": 1.0960606337470646e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -2.1356312639213282e-05,
+            "error_cm": -5.421010862427522e-19
+          }
+        ]
+      },
+      "continuous_step_inventory": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "local_residual": 1.3744363980272567e-10,
+        "total_residual": -4.320236542641742e-10,
+        "independent_residual_difference": 3.469446951953614e-18,
+        "matrix_change_cm": 2.2802091817187574e-05,
+        "macro_change_cm": -2.7810819514051746e-05,
+        "matrix_balance_error_cm": -4.320240725493724e-15,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": -4.28442563138497e-15,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -9.327043848372796e-07,
+            "error_cm": 3.045178736585776e-17
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.120751821851121e-07,
+            "error_cm": 6.1853522182061214e-18
+          },
+          {
+            "domain": 3,
+            "change_cm": -1.8326096382012547e-06,
+            "error_cm": -2.3115529130569856e-18
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.90113549515789e-06,
+            "error_cm": 1.6567964448294115e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -1.7556445178040433e-05,
+            "error_cm": -1.6940658945086007e-19
+          }
+        ]
+      },
+      "restarted_step_inventory": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "local_residual": 1.3744363980272567e-10,
+        "total_residual": -4.320236542641742e-10,
+        "independent_residual_difference": 3.469446951953614e-18,
+        "matrix_change_cm": 2.2802091817187574e-05,
+        "macro_change_cm": -2.7810819514051746e-05,
+        "matrix_balance_error_cm": -4.320240725493724e-15,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": -4.28442563138497e-15,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -9.327043848372796e-07,
+            "error_cm": 3.045178736585776e-17
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.120751821851121e-07,
+            "error_cm": 6.1853522182061214e-18
+          },
+          {
+            "domain": 3,
+            "change_cm": -1.8326096382012547e-06,
+            "error_cm": -2.3115529130569856e-18
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.90113549515789e-06,
+            "error_cm": 1.6567964448294115e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -1.7556445178040433e-05,
+            "error_cm": -1.6940658945086007e-19
+          }
+        ]
+      }
+    },
+    {
+      "optimization": "O0",
+      "original_B_and_true_rejection_preserved_byte_exact": true,
+      "retry_iterations": 7,
+      "checkpoint_time": 35796.9513633331,
+      "next_dt": 1e-05,
+      "end_time": 35796.951373333104,
+      "native_file_bytes": 38972,
+      "own_file_sha256": "d8fca360e93bf224a5e7ef19b50d42858c789ff19fd90a2ae879797af9203469",
+      "committed_payload_exact_on_install": true,
+      "extended_pre_head_context_exact": true,
+      "solver_and_full_physical_step_byte_exact": true,
+      "clocks_restored_max_days": 0.020029999740510247,
+      "pre_head_recomputed_previous_rates_and_flags": [
+        "macro_exchange",
+        "macro_rapid",
+        "matrix_exchange",
+        "matrix_vertical",
+        "boundary_rates",
+        "event"
+      ],
+      "accepted_retry_inventory": {
+        "dt": 1e-05,
+        "iterations": 7,
+        "local_residual": 1.445111049158676e-07,
+        "total_residual": 1.444983181403704e-07,
+        "independent_residual_difference": 6.938893903907228e-18,
+        "matrix_change_cm": 2.6822108116252718e-05,
+        "macro_change_cm": -3.182914534368905e-05,
+        "matrix_balance_error_cm": 1.4449831779793192e-12,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": 1.4449891978424753e-12,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -7.055157102975329e-07,
+            "error_cm": 5.3485895454372795e-18
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.695507013069422e-07,
+            "error_cm": -6.702148195149651e-20
+          },
+          {
+            "domain": 3,
+            "change_cm": -2.474286945448878e-06,
+            "error_cm": 1.8507669897506462e-19
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.762580750036302e-06,
+            "error_cm": 1.0960606337470646e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -2.1356312639213282e-05,
+            "error_cm": -5.421010862427522e-19
+          }
+        ]
+      },
+      "continuous_step_inventory": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "local_residual": 1.3744363980272567e-10,
+        "total_residual": -4.320236542641742e-10,
+        "independent_residual_difference": 3.469446951953614e-18,
+        "matrix_change_cm": 2.2802091817187574e-05,
+        "macro_change_cm": -2.7810819514051746e-05,
+        "matrix_balance_error_cm": -4.320240725493724e-15,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": -4.28442563138497e-15,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -9.327043848372796e-07,
+            "error_cm": 3.045178736585776e-17
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.120751821851121e-07,
+            "error_cm": 6.1853522182061214e-18
+          },
+          {
+            "domain": 3,
+            "change_cm": -1.8326096382012547e-06,
+            "error_cm": -2.3115529130569856e-18
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.90113549515789e-06,
+            "error_cm": 1.6567964448294115e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -1.7556445178040433e-05,
+            "error_cm": -1.6940658945086007e-19
+          }
+        ]
+      },
+      "restarted_step_inventory": {
+        "dt": 1e-05,
+        "iterations": 3,
+        "local_residual": 1.3744363980272567e-10,
+        "total_residual": -4.320236542641742e-10,
+        "independent_residual_difference": 3.469446951953614e-18,
+        "matrix_change_cm": 2.2802091817187574e-05,
+        "macro_change_cm": -2.7810819514051746e-05,
+        "matrix_balance_error_cm": -4.320240725493724e-15,
+        "surface_balance_error_cm": 0.0,
+        "combined_balance_error_cm": -4.28442563138497e-15,
+        "paired_exchange_error": 6.938893903907228e-18,
+        "domains": [
+          {
+            "domain": 1,
+            "change_cm": -9.327043848372796e-07,
+            "error_cm": 3.045178736585776e-17
+          },
+          {
+            "domain": 2,
+            "change_cm": 4.120751821851121e-07,
+            "error_cm": 6.1853522182061214e-18
+          },
+          {
+            "domain": 3,
+            "change_cm": -1.8326096382012547e-06,
+            "error_cm": -2.3115529130569856e-18
+          },
+          {
+            "domain": 4,
+            "change_cm": -7.90113549515789e-06,
+            "error_cm": 1.6567964448294115e-18
+          },
+          {
+            "domain": 5,
+            "change_cm": -1.7556445178040433e-05,
+            "error_cm": -1.6940658945086007e-19
+          }
+        ]
+      }
+    }
+  ],
+  "additional_physics_or_solver_change": false,
+  "official_reference_promoted": false,
+  "production_changed": false,
+  "qualification_identity": "Same ABI native binary and case-bound build fingerprint; launcher verifies all inherited bounded case hashes before documented SWINCO3/INIFIL edits. No arbitrary input-drift or cross-toolchain compatibility claim.",
+  "inherited_warning": "Unchanged original readswap warns macro I/O is unsupported; that message describes the old native format. Only this research extension and versioned trailer are qualified here.",
+  "exclusions": [
+    "Only the exact original B accepted unscaled subday boundary and one next step",
+    "No KWT/reduced/hysteresis/frost/other options, full day crossing or full trajectory qualification",
+    "No exact cumulative/PEARL/output-ledger continuity; MacroIntegral local shadow history unchanged",
+    "No generic input changes, foreign ABI, standard-format backward promotion or B1.12/canonical/release admission",
+    "Dry/event and h0 handoff remain unqualified"
+  ],
+  "next_safe_step": "Retain narrow physical own-restart qualification. Only select another original transition for a concrete dry/event/h0 or output-continuity question; do not broaden into a campaign or promote automatically."
+}
