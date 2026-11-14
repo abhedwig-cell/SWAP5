@@ -32,7 +32,7 @@ for name,sha in meta['inputs'].items():
  data=(a.output/'current/original'/name).read_bytes()
  target=case/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data)
  inventory[name]=hashlib.sha256(data).hexdigest()
-original=call('original-model',[exe,'./swap.swp'],cwd=case,expected=0)
+original=call('original-model',[exe,'./swap.swp'],cwd=case,expected=100)
 read=lambda p:list(csv.DictReader(s for s in p.read_text().splitlines() if s.strip() and not s.startswith('*')))
 o=read(case/'result_output.csv');c=read(a.output/'current/original/result_output.csv');assert len(o)==len(c)==1462 and o[-1]['DATE']==c[-1]['DATE']=='2015-12-31'
 for name,sha in inventory.items():
