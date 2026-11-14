@@ -1,6 +1,6 @@
 # Daily nominal step and Hupsel pressure reproducibility
 
-## Proposed numerical successor, 13 November 2026
+## Qualified numerical successor, 13 November 2026
 
 Owner: `integration/f-ci/HUPSEL_PRESSURE_STABILITY01.json`.
 PR1672 arithmetic baseline remains valid for its recorded sources. The owner
@@ -100,3 +100,35 @@ checkpoint, and a different policy is refused before output. This boundary
 preserves current process-family capability while fixing the original named
 Hupsel application; it does not assert universal qualification of the new
 numerical policy for every option mix.
+
+## Final combined-source qualification
+
+Canonical PR1673 was reconciled without dropping its management-state,
+chemistry-independent water certificate or explicit experimental donor
+optimization. Local Hupsel O0/O2 generated-source hashes remain exactly equal
+to the pre-reconciliation policy implementation; the complete1096 and own365
+continuation pass. Final hosted run43422771039 on carrier
+2a73d1c13742b1955c2ffb5127608076a7e9b2c5 (runtime f809bb103) passes all six jobs:
+registered public Windows2022/Ubuntu26.04 plus default-legacy A/B/C/D process
+families. All registered daily records equal the prior successful full cohort
+43419349800 exactly, so the complete spread assessment remains valid.
+
+The full1096-day Hupsel pressure spread is3.956301952712238e-11cm maximum
+(day948); day636 is6.906475391588174e-12cm. Its maximum water-stock spread is
+1.9895196601282805e-13cm and solute-ledger spread1.5276668818842154e-13mg/cm2.
+SaltFarm improves substantially but retains0.0018243055500306582cm maximum
+pressure spread and1.0165492199121218e-6cm stock spread. Full field extrema are
+retained in FINAL_CROSSPLATFORM.json; no pressure threshold is fitted or invented.
+Original oxygen reference comparisons and whole scientific limits remain.
+
+Original laptop iteration logs show Hupsel converged solves43636 to38779
+(11.1percent fewer) and SaltFarm59176 to49668 (16.1percent fewer). Histogram
+Newton iterations are distinct from the original reported BTr-cycle counts.
+This measures actual work; timings from separate batches are not a statistical
+speedup or a native SWAP4.3.1 performance-equivalence guarantee.
+
+The half-hour resumption remains active at the owner's explicit request;
+finishing this PR does not declare the broader release/science end goal met.
+The existing snow+hysteresis26 packet separately demonstrates differing atomic
+and grouped floating sums at the unchanged guard. It is preserved as a bounded
+future producer/consumer precision question, not reclassified or patched here.
