@@ -132,3 +132,5 @@ finishing this PR does not declare the broader release/science end goal met.
 The existing snow+hysteresis26 packet separately demonstrates differing atomic
 and grouped floating sums at the unchanged guard. It is preserved as a bounded
 future producer/consumer precision question, not reclassified or patched here.
+
+The final integration also preserves canonical E (`02ecf5187`, PR #1674). Its sole application delta expands and validates experimental input eligibility; named release calculation and generated-source inputs are unchanged from the completed six-job qualification. Canonical experimental inspection and auxiliary format are exact after reconciliation; the explicit legacy default remains. `E_RECONCILIATION.json` records this bounded source-based inheritance. No duplicate full trajectories were selected.

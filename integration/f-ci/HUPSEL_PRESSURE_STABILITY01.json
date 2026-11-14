@@ -153,9 +153,10 @@
     "run": 43419349800,
     "carrier": "a80ae81f20de4ec704c87c8b508434a11cd46d37",
     "runtime_source": "2caab41c9",
-    "status": "in_progress",
+    "status": "completed",
     "selected": "Public Windows/Ubuntu configured daily seed; Ubuntu existingA/B/C with declared legacy seed and explicit mixed-policy refusal.",
-    "duplicate_dispatch": "43419731215 cancelled while pending, no model execution; never restart the existing run"
+    "duplicate_dispatch": "43419731215 cancelled while pending, no model execution; never restart the existing run",
+    "conclusion": "success"
   },
   "predecessor_qualification_success": {
     "run": 43419349800,
@@ -194,5 +195,18 @@
     "saltfarm_remaining_pressure_max_cm": 0.0018243055500306582,
     "no_new_pressure_tolerance": true,
     "whole_science": "NOT_QUALIFIED; original reference FAILs retained"
+  },
+  "canonical_E_reconciliation": {
+    "status": "SOURCE_DEPENDENCY_INHERITANCE_PASS",
+    "qualified_runtime": "f809bb103f5b6974fb88cb9a1a11537dab827792",
+    "canonical_E": "02ecf51877ec420e8e591e3a99584b78c3f7d59e",
+    "changed_application_files": [
+      "app/hybrid_water/experimental_project.py"
+    ],
+    "canonical_inspect_and_auxiliary_exact": true,
+    "named_release_runtime_and_generated_source_inputs_unchanged": true,
+    "experimental_legacy_default_preserved": true,
+    "qualification_run": 43422771039,
+    "disposition": "Reuse completed all6 qualification: E changes experimental input eligibility only; no registered named runtime/body changes. Peer E evidence remains under original legacy-default. No full model repetition."
   }
 }
