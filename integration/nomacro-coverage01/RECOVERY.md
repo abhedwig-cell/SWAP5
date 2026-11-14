@@ -1,40 +1,39 @@
 ## Current recovery checkpoint
 
-Workstream SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01,
-branch codex/nomacro-coverage05. A/B/C admitted PR1669/1670/1671. Exact C
-postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
-43412494520. Historical old-head evidence remains unchanged and separate.
-A/B/C complete17 additional configurations20457 model days; zero new independent
-historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
+SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01.
+A/B/C/D/E admitted PR1669/1670/1671/1673/1674. Current canonical02ecf51877ec420e8e591e3a99584b78c3f7d59e.
+E actual tree4d5aeb4ca357153fd37e2df9903f77d0ca895794 equals qualified7f8b72fc5;
+relevant source/workflow diff from executedb7a9d8405 is empty. Frozen release
+11529865e76fb2259542f1e770726cd87af27603 unchanged. BLOCK_E_MERGE owns receipt.
 
-D PR1673 admitted bdf222befb3ba444d3cd7147ef2fa90e2581ca16. Actual canonical
-tree cccb02ef8a2aad4da19c8605afdc38e72fc19ad8 equals qualified headca68e2cfe;
-relevant app/src/tools/workflow diff from executed42f066bf0 is empty. All three
-workflow runs43418605842/43418610124/43418614412 SUCCESS; versioned raw data
-and native endpoints sealed. Six complete variants7306 days; across A/B/C/D,
-23 complete additional configurations27763 days, zero new independent projects.
-Both failed history cache hypotheses removed; new water-only history atomically
-refused. Frozen11529865e unchanged and no peer private source imported.
+E run43423367602 SUCCESS:9 full9864 days,18 touched-unit/controller O0/O2
+profiles with immutable original providerO2, exact native2/365/530, real growth
+or root uptake, distinct thermal states, reference and all transaction checks.
+Maxwater9.997787873191472e-11cm, solute2.0189361551216096e-13mg/cm2. Three original
+invalid-input prefixes/refusals preserved; valid derived fixtures honor all
+original constraints. No physics/codec/host/kernel/provider/CLI/time-policy
+change. Old adapter bundles require rebuild, never rebind. All24 prior selected
+descriptors exact; historical qualifications inherited only within dependency scope.
 
-Current own branch codex/nomacro-coverage05, PR1674 draft. E codeb7a9d8405
-passes actual run43423367602:9 full9864 days,18 O0/O2 touched-unit/controller
-profiles, exact native2/365/530, temperature state, original reference and all
-transaction checks. Maxwater9.997787873191472e-11cm; solute2.0189361551216096e-13.
-32 additional complete configurations37627 days across A..E; zero new
-independent projects. Three original invalid-input prefixes/refusals retained.
-No physical/codec/host/kernel/provider/CLI/time-policy change; all24 old selected
-experimental descriptors exact. Old adapter bundles require rebuild, never rebind.
-Next: finish raw archiving/docs, ready/merge PR1674 and verify exact postimage.
-Then choose the next original-process integration surface from current register.
-Known reservoir SWBR1 requires separate aquifer state/ledger and original-index
-reference audit; age2, other drainage/surfacewater, detailed meteo, hydraulic
-tables, broader crop structures and complete original history remain open.
-Do not resume two failed local cache hypotheses or start a solver campaign.
-Peer3075fbbb3/cd2bf853e inspected; canonical bdf222bef, no private import.
+Across A..E:32 additional full configurations37627 model days, zero new independent
+historical projects. Whole science/physical energy remains NOT_QUALIFIED; original
+FAILs and full-history gaps retained. New water-only hysteresis/snow refused;
+both failed cache hypotheses removed. Do not restart local cache/solver loops.
 
-An active serial autonomous Codex goal continues this work; no scheduled timer
-is configured. Later checkpoints must replace this current pointer. Inventory
-below is the dated initial baseline, not a present full-coverage claim.
+Current own branch codex/nomacro-coverage06 on actual E merge. No own PR/model
+run pending. Next F: general experimental external surface-irrigation control,
+using existing original event consumer and durable day transactions. Source audit
+finds current builder/coupler limited to registered Hupsel/SaltFarm; original
+consumer hard-requires solute1/schedule0. Audit durable publisher copying in the
+incremental builder. See BLOCK_F_RECOVERY.md before editing. Preserve old protocol
+and bounds; declare generic water/chemistry capabilities explicitly and reject
+unsupported input atomically. Refresh active peer/canonical delta before code.
+Other open register: hydraulic tables, detailed meteo/ET, drainage/surface water,
+reservoir/age plus full original state history. No full-coverage claim.
+
+Active serial Codex goal is configured; no scheduled timer and no overlapping
+session. Peer last inspected PERF3075fbbb3 / macrocd2bf853e; private evidence not
+imported. Later checkpoints replace this pointer. Inventory below is dated baseline.
 
 ---
 
