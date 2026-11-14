@@ -1,3 +1,15 @@
+# H live original weather qualification
+
+Own branch08 PR1682 draft from canonicalG3aa554460. H source4d3e41c8a real full
+8-case weather/ET/rainfall run43593959340 LIVE; follow exact handle to terminal,
+no duplicate dispatch. Scope contract H_RECOVERY, source/status H_STATUS,
+21 prior descriptors exact. No original Fortran/host/codec/numerical/tolerance
+change. Detailed files are synthetic temporal redistribution of pinned daily
+inputs and are not new independent historical data. H unqualified until actual
+full/native/balance/isolation/rollback/input/reference gates pass. G exactmerge
+receipt persisted, frozenRC111529865e and peer worktrees untouched. All harmonic,
+TSPACK and scientific/energy/history limits remain; complete coverage not achieved.
+
 # Current: G admitted, H weather/ET/rainfall source audit
 
 F PR1680 and G PR1681 integrated. Canonical3aa554460 exact tree2e604c91b matches
