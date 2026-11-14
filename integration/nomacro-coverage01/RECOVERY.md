@@ -1,3 +1,17 @@
+# G bounded admission ready
+
+PR1681 branch07: FIVE full1096 configurations5480 days; harmonic5/6 retain strict
+water FAIL589/367 with exact own-native rejection and immutable accepted state.
+Qualified runtimeb3421842a unchanged through executed8ffdc68f3; four full configs
+43590665680, final Darcy43592320510, refusal proofs43591564339/43592320429,
+eight default-source/external preservation43590666062. All terminal.
+G_QUALIFICATION/STATUS and SHA256 raw archives own narrow scope; no all7 PASS.
+Docs source and strict render PASS. CanonicalF2ac504bbc, frozenRC111529865e,
+peers PERF5b68e5438 / MACRO7551d92dc unchanged/untouched. Finalize exact head,
+merge bounded PR1681, verify actual postimage, persist receipt on new branch08,
+then continue original weather/reference-ET/rainfall existing process block.
+Original TSPACK censor, scientific/energy/history and broad remaining gaps stay.
+
 # G current live original-component qualification
 
 CanonicalF2ac504bbc, own branch07 PR1681 draft. Revised sourceb3421842a selects

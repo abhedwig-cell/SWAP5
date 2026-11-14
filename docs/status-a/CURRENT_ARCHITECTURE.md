@@ -666,3 +666,15 @@ It changes no physical law, mass tolerance, accepted codec or registered default
 policy; inactive source allocates no chemical trial memory. Policy/generator is
 build/checkpoint-bound, with no failure-triggered fallback or capsule rebinding.
 The retained legacy573 failure and narrower scientific scope remain explicit.
+
+## Explicit original table interpolation
+
+The [experimental hydraulic route](../science/NOMACRO_FUNCTIONAL_COVERAGE.md)
+selects dormant original PCHIP only through explicit original-pchip-v1 for
+SWSOPHY1. Its source/compiled policy participates in build/native identity. The
+original TSPACK default and inactive generated sources remain unchanged; no
+accepted codec or Richards implementation changes. Original geometric/harmonic
+mean dispatch and Darcy evaporation bodies are reused. Five complete trajectories
+qualify a bounded scope; harmonic refusals and TSPACK censorship remain separate.
+Table reference executables explicitly select the same original dormant branch
+and are labeled modified original references, not unmodified-default science.
