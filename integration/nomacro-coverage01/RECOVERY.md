@@ -1,3 +1,13 @@
+# G live qualification recovery
+
+F admittedPR1680 canonical2ac504bbc exact qualified tree2fd7a6185; receipt inG.
+Own branch codex/nomacro-coverage07 PR1681 draft; Gsource0f47c7e84 full run
+43589590074 queued. Follow exact run through terminal, no duplicate dispatch.
+Seven requested complete1096-day original option configurations, actual touched
+O0/O2 and native2/365/530 plus balance/transaction/reference gates. First fixture
+failure43589431793 retained, no numerical repair. Details BLOCK_G_RECOVERY/STATUS.
+FrozenRC111529865e and peer streams untouched. No G qualification/admission yet.
+
 # Current: F admitted, G original hydraulic/surface controls next
 
 F PR1680 admitted2ac504bbc, exact tree2fd7a6185 matches final qualified head.
