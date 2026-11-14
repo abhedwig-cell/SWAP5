@@ -19,6 +19,12 @@ finally:p.write_bytes(original)
 p=reference/'PREPARED.json';original=p.read_bytes();changed=json.loads(original);changed['toolchain']['gfortran']['sha256']='0'*64
 try:p.write_text(json.dumps(changed));refuse('foreign-provider-compiler')
 finally:p.write_bytes(original)
+if 'time_step_policy' in meta['identity']:
+ p=bundle/'BUILD.json';original=p.read_bytes()
+ for field in ('time_step_policy','time_step_policy_source'):
+  changed=json.loads(original);changed['identity'][field]='foreign'
+  try:p.write_text(json.dumps(changed));refuse('foreign-'+field)
+  finally:p.write_bytes(original)
 if 'floating_point_profile' in meta['identity']:
  p=bundle/'BUILD.json';original=p.read_bytes()
  for label in ('profile','donor-flags','kernel-flags'):

@@ -1,0 +1,141 @@
+{
+  "source_run": 43419349800,
+  "disposition": "Descriptive full-trajectory spreads, no new fitted tolerance or whole-science PASS",
+  "time_step_policy": "configured-dtmax-daily-v1",
+  "projects": {
+    "grass": {
+      "days": 1827,
+      "fields": {
+        "stock_end_cm": {
+          "absolute": 2.842170943040401e-14,
+          "day": 5,
+          "slot": 0,
+          "windows": 217.90342637641234,
+          "ubuntu": 217.9034263764123
+        },
+        "pressure_head_cm": {
+          "absolute": 1.6189005691558123e-10,
+          "day": 986,
+          "slot": 16,
+          "windows": -4760.708855570742,
+          "ubuntu": -4760.70885557058
+        },
+        "external_flux_cm": {
+          "absolute": 7.452372052796363e-15,
+          "day": 1330,
+          "slot": 15,
+          "windows": 0.10253514912277674,
+          "ubuntu": 0.10253514912276929
+        },
+        "groundwater_cm": {
+          "absolute": 3.410605131648481e-13,
+          "day": 1353,
+          "slot": 0,
+          "windows": -158.4615384663939,
+          "ubuntu": -158.46153846639356
+        }
+      }
+    },
+    "hupsel": {
+      "days": 1096,
+      "fields": {
+        "stock_end_cm": {
+          "absolute": 1.9895196601282805e-13,
+          "day": 1045,
+          "slot": 0,
+          "windows": 71.48177537232755,
+          "ubuntu": 71.48177537232735
+        },
+        "pressure_head_cm": {
+          "absolute": 3.956301952712238e-11,
+          "day": 948,
+          "slot": 0,
+          "windows": -1273.45272972376,
+          "ubuntu": -1273.4527297237205
+        },
+        "external_flux_cm": {
+          "absolute": 2.442143709480149e-14,
+          "day": 316,
+          "slot": 13,
+          "windows": 0.016775599241293238,
+          "ubuntu": 0.016775599241268816
+        },
+        "solute_ledger_mg_cm2": {
+          "absolute": 1.5276668818842154e-13,
+          "day": 1089,
+          "slot": 0,
+          "windows": 14.522969775712426,
+          "ubuntu": 14.522969775712578
+        },
+        "uptake_terms_cm": {
+          "absolute": 4.315992008230296e-15,
+          "day": 602,
+          "slot": 2,
+          "windows": 0.11540571738637208,
+          "ubuntu": 0.1154057173863764
+        },
+        "groundwater_cm": {
+          "absolute": 2.4158453015843406e-12,
+          "day": 313,
+          "slot": 0,
+          "windows": -90.55099365613923,
+          "ubuntu": -90.55099365614164
+        }
+      },
+      "oxygen584_cm": [
+        0.0047934684958470235,
+        0.004793468495847017
+      ],
+      "day636_pressure_max_cm": 6.906475391588174e-12
+    },
+    "saltfarm": {
+      "days": 1461,
+      "fields": {
+        "stock_end_cm": {
+          "absolute": 1.0165492199121218e-06,
+          "day": 1022,
+          "slot": 0,
+          "windows": 305.3178568307518,
+          "ubuntu": 305.317857847301
+        },
+        "pressure_head_cm": {
+          "absolute": 0.0018243055500306582,
+          "day": 1009,
+          "slot": 194,
+          "windows": 874.767643025579,
+          "ubuntu": 874.769467331129
+        },
+        "external_flux_cm": {
+          "absolute": 6.307681924833108e-07,
+          "day": 1009,
+          "slot": 13,
+          "windows": -0.18394992991109113,
+          "ubuntu": -0.18394929914289865
+        },
+        "solute_ledger_mg_cm2": {
+          "absolute": 9.424935853985517e-07,
+          "day": 1011,
+          "slot": 0,
+          "windows": 242.3686096232522,
+          "ubuntu": 242.36860868075863
+        },
+        "uptake_terms_cm": {
+          "absolute": 2.6314783685421617e-12,
+          "day": 1266,
+          "slot": 0,
+          "windows": 0.1718869909320026,
+          "ubuntu": 0.17188699093463408
+        },
+        "groundwater_cm": {
+          "absolute": 2.3284031271941785e-05,
+          "day": 1015,
+          "slot": 0,
+          "windows": -113.41849299942648,
+          "ubuntu": -113.41851628345775
+        }
+      }
+    }
+  },
+  "requalified_source_run": 43422771039,
+  "all_registered_daily_records_exact_after_D_reconciliation": true
+}

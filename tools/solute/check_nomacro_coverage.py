@@ -285,12 +285,13 @@ def main():
             call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt]+(['--donor-opt',generated_opt] if active_options else []))
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
             partial = key == 'hupsel-nodrain' and opt == 'O2'
-            cut, end = (2, 5) if opt == 'O0' else ((49, project.last_day) if partial else (365, project.last_day))
+            failure_day = 212 if project.time_step_policy=='configured-dtmax-daily-v1' else 51
+            cut, end = (2, 5) if opt == 'O0' else ((failure_day-2, project.last_day) if partial else (365, project.last_day))
             control, resumed, endpoint = [out/(label+'-'+n) for n in ('control', 'resumed', 'endpoint')]
             call(label+'-control', reuse+['--output', control, '--days', end, '--checkpoint-at', cut], refuse=partial)
             data = rows(control)
             if partial:
-                assert len(data) == 51 and data[-1]['day'] == 51 and not data[-1]['committed']
+                assert len(data) == failure_day and data[-1]['day'] == failure_day and not data[-1]['committed']
                 assert 1e-10 < abs(data[-1]['independent_residual_cm']) < 1.01e-10
             else:
                 assert len(data) == end and all(r['committed'] for r in data)
@@ -320,6 +321,7 @@ def main():
                           solute_active=project.solute,
                           generated_donor_optimization=generated_opt,original_provider_optimization='O2',
                           full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
+                          original_retained_failure_day=51 if partial else None,
                           maximum_water_residual_cm=max(abs(r['independent_residual_cm']) for r in accepted),
                           maximum_solute_residual_mg_cm2=max(abs(r.get('solute_independent_residual_mg_cm2', 0)) for r in accepted) if project.solute else None,
                           restart_window=[cut, cut+2], exact_day_suffix=True, exact_native_auxiliary=not partial,
@@ -357,6 +359,12 @@ def main():
                 # different physical/calendar origins, stepped in alternating order.
                 short = out/(label+'-short')
                 call(label+'-short', reuse+['--output', short, '--days', 5, '--checkpoint-at', 2])
+                # A known different numerical policy cannot silently reuse this build.
+                if key==next(iter(cases)):
+                    target=out/'refused-numerical-policy-binding'
+                    call('negative-numerical-policy-binding',base+['--build-bundle',bundle,
+                         '--experimental-time-step-policy',h.NO_MACRO_TIME_POLICY,'--output',target,'--days',1],
+                         refuse=True,absent=target)
                 meta, actual = validate_bundle(bundle, reference, project)
                 isolated = out/(label+'-isolated'); isolated.mkdir()
                 restored = out/(label+'-isolation-origin')

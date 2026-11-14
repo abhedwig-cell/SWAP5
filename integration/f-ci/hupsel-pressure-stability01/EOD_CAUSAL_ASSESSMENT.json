@@ -1,0 +1,48 @@
+{
+  "run": 43413278227,
+  "ci_conclusion": "FAIL_HARNESS_ASSUMED200_NODES_INSTEAD_OF_ACTUAL34_AFTER_ALL_MODELS_COMPLETED",
+  "reconciliation": "Correct model-owned node count; reanalyzed both existing cohorts without rerunning any model",
+  "models": "All6 private native637 trajectories pass unchanged1e-10 water/solute guards",
+  "assessment": {
+    "control": {
+      "day636_head_max_cm": 12.203962749731431,
+      "max_head637_cm_day_node": [
+        12.203962749731431,
+        636,
+        8
+      ],
+      "oxygen584_spread_cm": 5.288936599616434e-07,
+      "solves": [
+        27408.0,
+        26954.0
+      ]
+    },
+    "window562": {
+      "day636_head_max_cm": 0.001869192779452078,
+      "max_head637_cm_day_node": [
+        0.011560910495290955,
+        626,
+        1
+      ],
+      "oxygen584_spread_cm": 2.1076890233118206e-16,
+      "solves": [
+        26076.0,
+        26048.0
+      ]
+    },
+    "generic": {
+      "day636_head_max_cm": 0.4158157500842776,
+      "max_head637_cm_day_node": [
+        1.2509267228504086,
+        599,
+        1
+      ],
+      "oxygen584_spread_cm": 1.0408340855860843e-17,
+      "solves": [
+        25803.0,
+        25669.0
+      ]
+    }
+  },
+  "disposition": "EOD separation materially improves day636 but leaves other event-phase sensitivity. Not admitted; test simpler deterministic daily start at existing configured DTMAX without new saved state."
+}

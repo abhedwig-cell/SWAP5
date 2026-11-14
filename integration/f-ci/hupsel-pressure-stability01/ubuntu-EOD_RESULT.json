@@ -1,0 +1,153 @@
+{
+  "status": "PRIVATE_EOD_POLICY_CAUSAL_EXPERIMENT_COMPLETE_NOT_ADMITTED",
+  "analysis_source": "4a2824a1d39fe3a4b070b7768415c268a5bbebd6",
+  "reconciled_without_model_execution": true,
+  "reports": {
+    "control": {
+      "status": "PRIVATE_READ_ONLY_PRESSURE_OBSERVATION_NOT_PRODUCTION_QUALIFICATION",
+      "private_eod_proposal": false,
+      "activation_day": null,
+      "source": "0331778ed87f6081ebd117d9e46326e6401c946e",
+      "days": 637,
+      "first_trace": 562,
+      "model_seconds": 0.8152011710000124,
+      "maximum_water_cm": 9.996712219953116e-11,
+      "maximum_solute_mg_cm2": 2.0189361551216096e-13,
+      "public_prefix": "NOT_TESTED_NO_PUBLIC_PREFIX_GIVEN",
+      "profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "private_executable_sha256": "17f4653553f5346ea1b7038963b5db4fc031186039e5b9cd0597107d4e0ac36c",
+      "solves": 26954.0,
+      "iterations": 165769.0,
+      "day636_head8_cm": -252.85811029687125,
+      "oxygen584_cm": 0.004794137799582377
+    },
+    "window562": {
+      "status": "PRIVATE_EOD_PROPOSAL_POLICY_NOT_ADMITTED",
+      "private_eod_proposal": true,
+      "activation_day": 562,
+      "source": "0331778ed87f6081ebd117d9e46326e6401c946e",
+      "days": 637,
+      "first_trace": 562,
+      "model_seconds": 0.7652815710000027,
+      "maximum_water_cm": 9.996712219953116e-11,
+      "maximum_solute_mg_cm2": 2.0189361551216096e-13,
+      "public_prefix": "NOT_TESTED_NO_PUBLIC_PREFIX_GIVEN",
+      "profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "private_executable_sha256": "7c160737a1932679e27f1c307f36149e985c23e2f54f894d996a6401cd30a1f9",
+      "solves": 26048.0,
+      "iterations": 162247.0,
+      "day636_head8_cm": -245.67820288829083,
+      "oxygen584_cm": 0.00479336611981401
+    },
+    "generic": {
+      "status": "PRIVATE_EOD_PROPOSAL_POLICY_NOT_ADMITTED",
+      "private_eod_proposal": true,
+      "activation_day": 1,
+      "source": "0331778ed87f6081ebd117d9e46326e6401c946e",
+      "days": 637,
+      "first_trace": 562,
+      "model_seconds": 0.7147085529999799,
+      "maximum_water_cm": 9.996892257144868e-11,
+      "maximum_solute_mg_cm2": 2.1375290496018534e-13,
+      "public_prefix": "NOT_TESTED_NO_PUBLIC_PREFIX_GIVEN",
+      "profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "compiler_sha256": "3f4cea0ce047346e79e904b35102352fd6021cfd9795458e3115480a02ba1d0e",
+      "private_executable_sha256": "f35df8298e65bb1d9f254fde9eb7f9a90230dbeb0cbd6bf33017d26339b0aaab",
+      "solves": 25669.0,
+      "iterations": 160783.0,
+      "day636_head8_cm": -245.66364067750118,
+      "oxygen584_cm": 0.0047933251748532996
+    }
+  },
+  "events": [
+    {
+      "mode": "control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/trace_hupsel_pressure.py",
+        "--output",
+        "/home/runner/work/_temp/pressure-proof/control",
+        "--first-trace",
+        "562",
+        "--last",
+        "637"
+      ],
+      "seconds": 25.183523568,
+      "returncode": 0
+    },
+    {
+      "mode": "window562",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/trace_hupsel_pressure.py",
+        "--output",
+        "/home/runner/work/_temp/pressure-proof/window562",
+        "--first-trace",
+        "562",
+        "--last",
+        "637",
+        "--reference",
+        "/home/runner/work/_temp/pressure-proof/control/provider",
+        "--bundle",
+        "/home/runner/work/_temp/pressure-proof/control/bundle",
+        "--full",
+        "/home/runner/work/_temp/pressure-proof/control/cold-input",
+        "--preserve-eod-proposal",
+        "--activate-day",
+        "562"
+      ],
+      "seconds": 2.308902754999991,
+      "returncode": 0
+    },
+    {
+      "mode": "generic",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/trace_hupsel_pressure.py",
+        "--output",
+        "/home/runner/work/_temp/pressure-proof/generic",
+        "--first-trace",
+        "562",
+        "--last",
+        "637",
+        "--reference",
+        "/home/runner/work/_temp/pressure-proof/control/provider",
+        "--bundle",
+        "/home/runner/work/_temp/pressure-proof/control/bundle",
+        "--full",
+        "/home/runner/work/_temp/pressure-proof/control/cold-input",
+        "--preserve-eod-proposal",
+        "--activate-day",
+        "1"
+      ],
+      "seconds": 2.241427593999987,
+      "returncode": 0
+    }
+  ]
+}
