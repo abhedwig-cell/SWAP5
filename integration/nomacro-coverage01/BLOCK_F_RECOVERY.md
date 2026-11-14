@@ -51,3 +51,28 @@ uses a loop index after the node loop); age2 requires proper conserved age state
 Do not casually admit either through the existing chemical1 scalar receipt.
 New water-only hysteresis/snow remains refused after two failed cache hypotheses;
 complete original state-block preservation is the required revised strategy.
+
+## F interface contract before implementation (2026-11-14)
+
+Existing registered Hupsel/SaltFarm S5IRR001 rendering, input ranges, fixed-event
+suppression, state codecs, day receipts and physical route remain unchanged.
+General experimental surface mode is allowed only after exact original input
+validation, SWIRFIX1 and every referenced crop SCHEDULE0. Unused crop files do
+not activate scheduling. No implicit schedule disable or change of SWP physics.
+Generic solute1 reuses S5IRR001; generic water-only uses distinct S5IRR002,
+SWSOLU0, with concentration exactly0. Nonzero chemical input refuses before
+trial/output acquisition. Typed origin/window/provenance and mass bounds stay.
+The generic source input may not contain the reserved external-day filename.
+
+Incremental builder validates/copies the bound restart publisher together with
+all unchanged kernel/original objects; actual fresh builds must establish that
+result. Compiler identity and donor O0/O2 are inherited from the validated base.
+Build extension binds its protocol/source/object; coupler validates the actual
+project's declared protocol. Existing modes keep their eligibility unchanged.
+Every external proposal uses the accepted immutable origin; discard never
+publishes, accept persists request lineage; stale/cross-project/persisted-field
+attacks must refuse. No kernel physics, new solver or external message sending.
+
+Peer refreshed before code: PERF3075fbbb3 has its own untracked qualification
+artifacts; macrocd2bf853e unchanged, both untouched. Canonical02ecf5187 unchanged.
+Invariants2/3/7/13/21/23/29 apply. No private peer policy imported.
