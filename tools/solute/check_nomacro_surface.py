@@ -65,21 +65,36 @@ def main():
         for crop in case.glob('*.crp'):
             set_value(crop,'SCHEDULE',0)
             if not solute:set_value(crop,'SWSALINITY',0)
-        cases.append((key,e.load(case),True))
+        cases.append((key,e.load(case,solute_step_policy=h.TRANSACTIONAL_SOLUTE_STEP_POLICY if solute else None),True))
     cases += [('registered-hupsel',h.HUPSEL,False),('registered-salt',h.SALTFARM,False)]
     for key,project,generic in cases:
         for opt in ('O0','O2'):
             label=key+'-'+opt;base=out/(label+'-base');bundle=out/(label+'-extended')
             common=['--model',project.model,'--reference-work',ref]
             common += ['--experimental-project',project.input_directory,'--donor-opt',opt] if generic else ['--no-macro-release']
+            if generic and project.solute:
+                common += ['--experimental-solute-step-policy',project.solute_step_policy]
             call(label+'-build',common+['--kernel-opt',opt,'--build-only','--output',base])
             original=json.loads((base/'BUILD.json').read_text())
+            preimage=json.loads((ROOT/'tools/solute/nomacro_surface_preimage.json').read_text())['profiles'][label]
+            for name,digest in preimage.items():
+                actual=original['identity']['donor_generated'][name]
+                if generic and project.solute and name=='solute.f90':assert actual!=digest
+                else:assert actual==digest,(label,name,'default generated source changed')
             ir.build_bundle(base,ref,bundle,project)
             meta,case=validate_bundle(bundle,ref,project)
             assert h.sha(h.executable(base,'day_kernel'))==h.sha(h.executable(bundle,'day_kernel'))
             assert meta['identity']['donor_objects']==original['identity']['donor_objects']
             assert h.sha(h.validate_restart_publisher(bundle,meta['identity']['restart_publisher']))==original['identity']['restart_publisher']['library_sha256']
             protocol=ir.project_protocol(project)
+            if generic and project.solute:
+                reject(label+'-wrong-chemical-policy',lambda:validate_bundle(bundle,ref,dataclasses.replace(project,solute_step_policy=h.LEGACY_SOLUTE_STEP_POLICY)))
+                metadata_path=bundle/'BUILD.json';saved_metadata=metadata_path.read_bytes()
+                try:
+                    wrong=json.loads(saved_metadata);wrong['identity']['solute_step_policy_source']='0'*64
+                    metadata_path.write_text(json.dumps(wrong))
+                    reject(label+'-stale-chemical-generator',lambda:validate_bundle(bundle,ref,project))
+                finally:metadata_path.write_bytes(saved_metadata)
             # The old registered rendering remains byte-identical, checked
             # additionally by the source-preservation record.
             # Fresh base and extended binaries without an event file must
@@ -106,8 +121,9 @@ def main():
                 text,count=re.subn(r'(?m)^([ \t]*IRDATE[ \t]+IRDEPTH[^\n]*\n)(?:[ \t]*\d{4}-\d{2}-\d{2}[^\n]*\n)+',
                                    lambda m:(m[1] if 'IRRATE' in m[1] else m[1].rstrip('\r\n')+' IRRATE\n')+''.join(entries),text)
                 assert count==1;path.write_text(text,encoding='cp1252')
-                manual_project=e.load(manual);manual_base=out/(label+'-manual-build');manual_run=out/(label+'-manual-control')
+                manual_project=e.load(manual,solute_step_policy=project.solute_step_policy);manual_base=out/(label+'-manual-build');manual_run=out/(label+'-manual-control')
                 manual_common=['--model',manual_project.model,'--experimental-project',manual,'--reference-work',ref,'--donor-opt',opt]
+                if project.solute:manual_common+=['--experimental-solute-step-policy',project.solute_step_policy]
                 call(label+'-manual-build',manual_common+['--kernel-opt',opt,'--build-only','--output',manual_base])
                 call(label+'-manual-control',manual_common+['--build-bundle',manual_base,'--output',manual_run,'--days',6,'--checkpoint-at',4])
                 manual_rows=read_rows(manual_run)
@@ -268,6 +284,8 @@ def main():
                 assert report['swap_ok'] and not report['error'].strip() and comparison.returncode in (0,100)
             reports.append(dict(configuration=key,kernel_optimization=opt,generated_donor_optimization=opt if generic else 'O2',
                 original_provider_optimization='O2',protocol=protocol,solute_active=project.solute,full_model_days=last,
+                solute_step_policy=project.solute_step_policy if project.solute else None,
+                default_generated_source_preimage_run=43583358529,
                 full_period=last==project.last_day,externally_accepted_days=len(coldrows),every_exercised_native_exact=True,
                 maximum_water_residual_cm=maxwater,maximum_solute_residual_mg_cm2=maxsolute,
                 original_kernel_reused=True,original_objects_reused=True,publisher_copied_and_verified=publisher,active_native=active,

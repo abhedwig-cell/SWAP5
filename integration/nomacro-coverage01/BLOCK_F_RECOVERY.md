@@ -150,3 +150,13 @@ execution: selected module interface declaration rather than CDE submodule body.
 Anchor now scoped explicitly to the CDE implementation submodule; local rendering
 of exact refused-carrier source confirms one transaction loop and unchanged
 parent interface. No numerical attempt or physical tolerance change involved.
+
+Private whole-trial strategy43586778043 (6116436df) PASSES exact day573 from
+sealed572, independent residual-3.5551331843686196e-12; baseline reproduces
+0.00020858649141789897. Neither publishes an accepted checkpoint. Source, compiler,
+origin identities retained. Public experimental-only chemical policy now wired
+through project/CLI/build/bundle validation. Inactive chemistry reportsNone;
+registered/default remains admitted-cde-substeps-v1. New generator SHA participates
+only in the selected transactional policy. All8 actual prior generated-source
+preimages are checked, allowing only genericSalt solute.f90 to differ. Fresh
+full original external history is essential; one interval is not full qualification.

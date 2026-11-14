@@ -143,6 +143,12 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    if not project.macro:
+        expected=project.solute_step_policy if project.solute else None
+        if identity.get('solute_step_policy') != expected:
+            raise ValueError('Bundle chemical substep policy differs; rebuild without rebinding checkpoints')
+        if project.solute_step_policy == h.TRANSACTIONAL_SOLUTE_STEP_POLICY and identity.get('solute_step_policy_source') != h.sha(h.APP/'solute_step_policy.py'):
+            raise ValueError('Bundle chemical substep generator differs')
     if not project.macro and identity.get('time_step_policy_source') != h.sha(h.APP/'donor_sources.py'):
         raise ValueError('Bundle time-step generator source differs')
     if not project.macro and identity.get('time_step_policy') != project.time_step_policy:

@@ -185,19 +185,24 @@ def inspect(directory):
                 solute=bool(selected['SWSOLU']), selectors=selected, boundary=boundary)
 
 
-def load(directory, *, time_step_policy=None):
+def load(directory, *, time_step_policy=None, solute_step_policy=None):
     from daily_host import HybridProject, ORIGINAL_TIME_POLICY, TIME_POLICIES
+    from solute_step_policy import LEGACY_SOLUTE_STEP_POLICY, SOLUTE_STEP_POLICIES
     policy=ORIGINAL_TIME_POLICY if time_step_policy is None else time_step_policy
     if policy not in TIME_POLICIES:raise ValueError("Unknown experimental time-step policy")
+    chemical=LEGACY_SOLUTE_STEP_POLICY if solute_step_policy is None else solute_step_policy
+    if chemical not in SOLUTE_STEP_POLICIES:raise ValueError('Unknown experimental chemical substep policy')
     report = inspect(directory)
+    if chemical!=LEGACY_SOLUTE_STEP_POLICY and not report['solute']:
+        raise ValueError('Chemical substep policy requires active SWSOLU1')
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
     return HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,
                          solute=report['solute'], end_date=report['end_date'],
-                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy)
+                         input_directory=str(Path(directory).resolve()), input_inventory=report['inputs'],time_step_policy=policy,solute_step_policy=chemical)
 
 
 def validate(project):
-    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy) != project:
+    if not project.input_directory or load(project.input_directory,time_step_policy=project.time_step_policy,solute_step_policy=project.solute_step_policy) != project:
         raise ValueError('Experimental input, process configuration or metadata differs')
     return Path(project.input_directory)
 

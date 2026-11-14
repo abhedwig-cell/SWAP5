@@ -1,3 +1,16 @@
+# Current block F checkpoint: explicit transactional chemical qualification
+
+Canonical996f772cd, own branch codex/nomacro-coverage06 PR1680 draft.
+Original full43583516947 FAILED Salt day573 after572 accepted exact external
+restarts. Water-only full1096 and both O0 active532 pass. No day573 publication.
+Two scalar hypotheses rejected; whole-original chemical trial rollback strategy
+privately PASSES exact573 in43586778043, residual-3.5551331843686196e-12.
+No tolerance relaxation and no old checkpoint rebinding. Public opt-in policy is
+now implemented, NOT yet qualified. Registered/default generated source must
+remain identical against all8 source preimages from43583358529. Fresh full
+external public-policy qualification is next; merge forbidden until it passes.
+Original full failure and both rejected hypotheses remain retained evidence.
+
 ## Current recovery checkpoint
 
 SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01.
