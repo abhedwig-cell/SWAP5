@@ -1,4 +1,4 @@
-name: Short private physical-iteration proposal discriminator
+name: Bounded physical growth release qualification
 on:
   workflow_dispatch:
     inputs:
@@ -7,9 +7,8 @@ on:
         type: string
 permissions:
   contents: read
-  actions: read
 concurrency:
-  group: pressure-trace-${{ github.ref }}
+  group: daily-nominal-qualification-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   public:
@@ -18,7 +17,7 @@ jobs:
       matrix:
         os: [ubuntu-26.04, windows-2022]
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 9
+    timeout-minutes: 15
     env:
       PYTHONUTF8: '1'
       OMP_NUM_THREADS: '1'
@@ -40,32 +39,25 @@ jobs:
         with:
           compiler: gcc
           version: '15'
-      - name: Pin actual source and selected compiler policy
+      - name: Pin selected source
         shell: pwsh
         env:
           EXPECTED_SHA: ${{ inputs.expected_sha }}
         run: |
           if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
           gfortran --version
-          gfortran -Q -O2 -ffp-contract=off -march=x86-64 -mtune=generic --help=target
       - uses: actions/download-artifact@v4
         with:
           run-id: 43422771039
           github-token: ${{ github.token }}
           name: daily-nominal-public-${{ matrix.os }}-2a73d1c13742b1955c2ffb5127608076a7e9b2c5
-          path: ${{ runner.temp }}/prior-pressure
-      - name: Compiler-matched private day1009 proposal policy
+          path: ${{ runner.temp }}/qualified-provider
+      - name: Registered O0/O2 full own restarts, unchanged balances, policy refusals and external instances
         shell: pwsh
-        run: >-
-          python -B tools/solute/trace_hupsel_pressure.py
-          --project saltfarm --physical-iteration-proposal --activate-day 1009 --output "$env:RUNNER_TEMP/pressure-proof"
-          --reference "$env:RUNNER_TEMP/prior-pressure/provider"
-          --bundle "$env:RUNNER_TEMP/prior-pressure/saltfarm-O2-candidate-build"
-          --full "$env:RUNNER_TEMP/prior-pressure/saltfarm-O2-candidate-full"
-          --first-trace 1009 --last 1009
+        run: python -B tools/solute/qualify_compiler_profile.py --reference "$env:RUNNER_TEMP/qualified-provider/provider" --output "$env:RUNNER_TEMP/daily-nominal-public"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: pressure-trace-${{ matrix.os }}-${{ github.sha }}
-          path: ${{ runner.temp }}/pressure-proof
+          name: daily-nominal-public-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/daily-nominal-public
           retention-days: 14
