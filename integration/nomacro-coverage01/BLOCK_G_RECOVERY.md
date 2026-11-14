@@ -97,3 +97,13 @@ rounding into PASS or solver repair. Select remaining Darcy alone and an actual
 mean6 O0/O2 own366 refusal proof. Four completed configurations/source remain
 unchanged, no duplicate complete-period replay. G final report will have bounded
 full passes and separately retained harmonic failures, not all7 full PASSes.
+
+Darcy43592104497 completes full1096, O0/O2 native2/365/530, transactions and
+original reference; final negative-input harness then uses absent default key
+salt08. Correct hydraulic final key to the actual selected case. This is a
+verification-only KeyError after model gates, not a physical failure. Weighted
+proof43592104562 passes exactO0 own366 refusal; freshO2 build then stops before
+compilation because focused runner sparse checkout lacks tools/vq required by
+source-provider validation. Include tools/vq and pinned source archives; no
+model/source/guard repair. Retain both partial artifacts. Re-run only Darcy
+and focused weighted gate; do not duplicate four complete prior configurations.

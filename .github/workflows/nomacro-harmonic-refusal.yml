@@ -25,7 +25,9 @@ jobs:
             app
             src
             tools/solute
+            tools/vq
             reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
       - uses: actions/download-artifact@v4
         if: inputs.weighted != true
         with:
