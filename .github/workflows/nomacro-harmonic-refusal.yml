@@ -1,0 +1,37 @@
+name: Original harmonic refusal preservation
+on:
+  push:
+    branches: [codex/nomacro-coverage07]
+    paths: ['.github/workflows/nomacro-harmonic-refusal.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preserve:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            reference/swap-4.3.1/projects
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-hydraulic-b3421842a0a2b6142e42c5b551364de3dbb96ba9
+          run-id: 43590665680
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Preserve actual rejection and immutable own origin
+        run: python3 -B tools/solute/check_harmonic_refusal.py --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: harmonic-refusal-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
