@@ -1,5 +1,8 @@
 name: Actual transactional chemical O0 retry
 on:
+  push:
+    branches: [codex/nomacro-coverage06]
+    paths: ['.github/workflows/nomacro-surface-transactional-o0.yml']
   workflow_dispatch:
 permissions:
   contents: read
