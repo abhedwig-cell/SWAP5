@@ -1,0 +1,135 @@
+[
+  {
+    "project": "grass",
+    "opt": "O0",
+    "days": 4,
+    "cut": 2,
+    "exact_all_physical": true,
+    "exact_all_printed_csv": true,
+    "exact_own_native_auxiliary": true,
+    "origin_unchanged": true,
+    "maximum_water_cm": 1.1178871640203707e-14,
+    "maximum_solute_mg_cm2": 0,
+    "floating_point_profile": {
+      "id": "gnu-x86_64-separate-ops-v1",
+      "flags": [
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "time_step_policy": "configured-dtmax-daily-v1",
+    "model_seconds": 0.24627209990285337
+  },
+  {
+    "project": "grass",
+    "opt": "O2",
+    "days": 1827,
+    "cut": 365,
+    "exact_all_physical": true,
+    "exact_all_printed_csv": true,
+    "exact_own_native_auxiliary": true,
+    "origin_unchanged": true,
+    "maximum_water_cm": 1.2831355015544926e-13,
+    "maximum_solute_mg_cm2": 0,
+    "floating_point_profile": {
+      "id": "gnu-x86_64-separate-ops-v1",
+      "flags": [
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "time_step_policy": "configured-dtmax-daily-v1",
+    "model_seconds": 8.080605399794877
+  },
+  {
+    "project": "hupsel",
+    "opt": "O0",
+    "days": 4,
+    "cut": 2,
+    "exact_all_physical": true,
+    "exact_all_printed_csv": true,
+    "exact_own_native_auxiliary": true,
+    "origin_unchanged": true,
+    "maximum_water_cm": 1.0644263248593688e-14,
+    "maximum_solute_mg_cm2": 0.0,
+    "floating_point_profile": {
+      "id": "gnu-x86_64-separate-ops-v1",
+      "flags": [
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "time_step_policy": "configured-dtmax-daily-v1",
+    "model_seconds": 0.23351829987950623
+  },
+  {
+    "project": "hupsel",
+    "opt": "O2",
+    "days": 1096,
+    "cut": 365,
+    "exact_all_physical": true,
+    "exact_all_printed_csv": true,
+    "exact_own_native_auxiliary": true,
+    "origin_unchanged": true,
+    "maximum_water_cm": 9.997037887180676e-11,
+    "maximum_solute_mg_cm2": 2.159834487009581e-13,
+    "floating_point_profile": {
+      "id": "gnu-x86_64-separate-ops-v1",
+      "flags": [
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "time_step_policy": "configured-dtmax-daily-v1",
+    "model_seconds": 3.974247499834746,
+    "oxygen584_cm": 0.004793468495847016
+  },
+  {
+    "project": "saltfarm",
+    "opt": "O0",
+    "days": 4,
+    "cut": 2,
+    "exact_all_physical": true,
+    "exact_all_printed_csv": true,
+    "exact_own_native_auxiliary": true,
+    "origin_unchanged": true,
+    "maximum_water_cm": 5.145571468911925e-13,
+    "maximum_solute_mg_cm2": 1.2403411631112249e-12,
+    "floating_point_profile": {
+      "id": "gnu-x86_64-separate-ops-v1",
+      "flags": [
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "time_step_policy": "configured-dtmax-physical-growth-v2",
+    "model_seconds": 0.2556586000137031
+  },
+  {
+    "project": "saltfarm",
+    "opt": "O2",
+    "days": 1461,
+    "cut": 109,
+    "exact_all_physical": true,
+    "exact_all_printed_csv": true,
+    "exact_own_native_auxiliary": true,
+    "origin_unchanged": true,
+    "maximum_water_cm": 2.959653355727454e-12,
+    "maximum_solute_mg_cm2": 1.3835196877032274e-11,
+    "floating_point_profile": {
+      "id": "gnu-x86_64-separate-ops-v1",
+      "flags": [
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic"
+      ]
+    },
+    "time_step_policy": "configured-dtmax-physical-growth-v2",
+    "model_seconds": 7.673212399939075
+  }
+]

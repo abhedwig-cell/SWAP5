@@ -1,0 +1,102 @@
+name: Daily nominal pressure policy qualification
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: daily-nominal-qualification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 9
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin selected source
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
+          gfortran --version
+      - name: Registered O0/O2 full own restarts, unchanged balances, policy refusals and external instances
+        shell: pwsh
+        run: python -B tools/solute/qualify_compiler_profile.py --output "$env:RUNNER_TEMP/daily-nominal-public"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-nominal-public-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/daily-nominal-public
+          retention-days: 14
+  coverage:
+    strategy:
+      fail-fast: false
+      matrix:
+        cohort: [first-block, extended, basic, crop]
+    runs-on: ubuntu-26.04
+    timeout-minutes: 12
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Pin selected source
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+      - name: Preserve affected original process families and genuine guard refusals
+        env:
+          COHORT: ${{ matrix.cohort }}
+        run: |
+          if [ "$COHORT" = extended ]; then
+            python -B tools/solute/check_nomacro_coverage.py --extended --output "$RUNNER_TEMP/daily-nominal-coverage"
+          elif [ "$COHORT" = crop ]; then
+            python -B tools/solute/check_nomacro_coverage.py --crop-options --output "$RUNNER_TEMP/daily-nominal-coverage"
+          elif [ "$COHORT" = basic ]; then
+            python -B tools/solute/check_nomacro_coverage.py --basic-options --output "$RUNNER_TEMP/daily-nominal-coverage"
+          else
+            python -B tools/solute/check_nomacro_coverage.py --output "$RUNNER_TEMP/daily-nominal-coverage"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: daily-nominal-coverage-${{ matrix.cohort }}-${{ github.sha }}
+          path: ${{ runner.temp }}/daily-nominal-coverage
+          retention-days: 14

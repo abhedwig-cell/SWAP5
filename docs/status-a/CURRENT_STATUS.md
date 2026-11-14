@@ -1,5 +1,21 @@
 # SWAP5 Status-A current status
 
+The [14 November named-scope release decision](../science/NOMACRO_RELEASE_STATUS_20261114.md)
+reconciles current platform, own-restart, balance and measured-cost evidence:
+**RELEASE READY** for registered Grassgrowth/Hupsel/SaltFarm, with the preserved
+scientific limitations. No official tag or public release is created.
+
+## Current bounded numerical-policy successor
+
+The named SaltFarm1461 route selects `configured-dtmax-physical-growth-v2`;
+Grassgrowth1827 and Hupsel1096 retain `configured-dtmax-daily-v1`. The
+[policy assessment](../science/PHYSICAL_ITERATION_POLICY01.md) and
+`integration/f-ci/physical-iteration-policy01/STATUS.json` own the source-bound
+qualification and preserved Hupsel-v2 refusal. This remains one generic physical
+implementation with explicit numerical-policy metadata and no automatic fallback.
+All three full Windows/Ubuntu O0/O2/own-restart cohorts retain unchanged guards;
+original science FAILs and underqualified references remain separate.
+
 ## Standalone named no-macro user release
 
 [Getting started](../getting-started.md) provides source-only preparation,

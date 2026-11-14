@@ -1,0 +1,732 @@
+{
+  "status": "COMMON_PROFILE_PUBLIC_O0_O2_FULL_OWN_PASS",
+  "source": "ed9a429108dad31524b41198df154ce1d0b5e02f",
+  "profiles": [
+    {
+      "project": "grass",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.1178871640203707e-14,
+      "maximum_solute_mg_cm2": 0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.29744240012951195
+    },
+    {
+      "project": "grass",
+      "opt": "O2",
+      "days": 1827,
+      "cut": 365,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.2831355015544926e-13,
+      "maximum_solute_mg_cm2": 0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 10.046639499953017
+    },
+    {
+      "project": "hupsel",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.0644263248593688e-14,
+      "maximum_solute_mg_cm2": 0.0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.25810510013252497
+    },
+    {
+      "project": "hupsel",
+      "opt": "O2",
+      "days": 1096,
+      "cut": 365,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 9.997037887180676e-11,
+      "maximum_solute_mg_cm2": 2.159834487009581e-13,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 4.403779300162569,
+      "oxygen584_cm": 0.004793468495847016
+    },
+    {
+      "project": "saltfarm",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 5.65152091791532e-13,
+      "maximum_solute_mg_cm2": 4.933831121434196e-13,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.2790901998523623
+    },
+    {
+      "project": "saltfarm",
+      "opt": "O2",
+      "days": 1461,
+      "cut": 109,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.2966100415567894e-11,
+      "maximum_solute_mg_cm2": 5.3268223165758855e-12,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 9.673725200118497
+    }
+  ],
+  "events": [
+    {
+      "label": "grass-O0-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 23.816183199873194
+    },
+    {
+      "label": "grass-O0-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 1.638750599930063
+    },
+    {
+      "label": "grass-O0-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.8714607998263091
+    },
+    {
+      "label": "grass-O0-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-candidate-full\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.8845484999474138
+    },
+    {
+      "label": "grass-O2-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 11.517481000162661
+    },
+    {
+      "label": "grass-O2-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--checkpoint-at",
+        "1827",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 9.891537099843845
+    },
+    {
+      "label": "grass-O2-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--checkpoint-at",
+        "365",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 10.72404080000706
+    },
+    {
+      "label": "grass-O2-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-full\\accepted-column-1-day-365.zip",
+        "--restart-day",
+        "365",
+        "--checkpoint-at",
+        "1827",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 9.648627399932593
+    },
+    {
+      "label": "hupsel-O0-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 14.500751599902287
+    },
+    {
+      "label": "hupsel-O0-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 1.0414048000238836
+    },
+    {
+      "label": "hupsel-O0-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.8472865000367165
+    },
+    {
+      "label": "hupsel-O0-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-candidate-full\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.8814228000119328
+    },
+    {
+      "label": "hupsel-O2-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 14.959487499902025
+    },
+    {
+      "label": "hupsel-O2-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--checkpoint-at",
+        "1096",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 4.851805499987677
+    },
+    {
+      "label": "hupsel-O2-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--checkpoint-at",
+        "365",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 4.9049192001111805
+    },
+    {
+      "label": "hupsel-O2-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-candidate-full\\accepted-column-1-day-365.zip",
+        "--restart-day",
+        "365",
+        "--checkpoint-at",
+        "1096",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\hupsel-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 3.812100699869916
+    },
+    {
+      "label": "saltfarm-O0-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 13.755070799961686
+    },
+    {
+      "label": "saltfarm-O0-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 1.0593118001706898
+    },
+    {
+      "label": "saltfarm-O0-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.8251575001049787
+    },
+    {
+      "label": "saltfarm-O0-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-candidate-full\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.8194597000256181
+    },
+    {
+      "label": "saltfarm-O2-build",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 15.072991099907085
+    },
+    {
+      "label": "saltfarm-O2-control",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--checkpoint-at",
+        "1461",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 10.228957999963313
+    },
+    {
+      "label": "saltfarm-O2-full",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--checkpoint-at",
+        "109",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 10.163387299980968
+    },
+    {
+      "label": "saltfarm-O2-resume",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--build-bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--restart",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-candidate-full\\accepted-column-1-day-109.zip",
+        "--restart-day",
+        "109",
+        "--checkpoint-at",
+        "1461",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\saltfarm-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 9.52269020001404
+    },
+    {
+      "label": "refusals",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/check_rc1_build_validation.py",
+        "--reference",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--bundle",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\grass-O2-candidate-build",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\refusals"
+      ],
+      "returncode": 0,
+      "seconds": 5.388017300050706
+    },
+    {
+      "label": "external",
+      "command": [
+        "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-B",
+        "tools/solute/check_publisher_coupling.py",
+        "--reference",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-common-profile-final-windows\\provider",
+        "--qualification",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local",
+        "--output",
+        "C:\\Users\\Veldh012\\AppData\\Local\\Temp\\s5-daily-nominal-public-local\\external"
+      ],
+      "returncode": 0,
+      "seconds": 23.750899200094864
+    }
+  ],
+  "scope": "Within-profile exact own controls; no old-profile equality, cross-platform whole-science or native-solver speedup claim."
+}

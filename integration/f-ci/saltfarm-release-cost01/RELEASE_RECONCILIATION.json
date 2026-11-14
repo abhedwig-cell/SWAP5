@@ -1,0 +1,54 @@
+{
+  "status": "OWNER_NAMED_SCOPE_ACCEPTANCE_RECONCILED",
+  "no_new_acceptance_threshold": true,
+  "original_science_limitations_already_accepted_by_owner": true,
+  "profiles": {
+    "grass": {
+      "historical_original_process_seconds": 8.197571200085804,
+      "historical_RC1_public_seconds": 10.207079200074077,
+      "historical_public_original_ratio": 1.2451345588760778,
+      "historical_RC1_model_controller_seconds": 9.495716499863192,
+      "current_qualified_model_controller_seconds": 8.080605399794877,
+      "descriptive_current_old_model_controller_ratio": 0.850973741677239,
+      "comparable_before_after_stage": "model/controller; independent cohorts, no statistical speedup or accuracy-matched claim",
+      "old_converged_solves": 48493,
+      "v1_converged_solves": 47787
+    },
+    "hupsel": {
+      "historical_original_process_seconds": 2.764802899910137,
+      "historical_RC1_public_seconds": 5.47784910001792,
+      "historical_public_original_ratio": 1.9812801484677132,
+      "historical_RC1_model_controller_seconds": 4.7235449000727385,
+      "current_qualified_model_controller_seconds": 3.974247499834746,
+      "descriptive_current_old_model_controller_ratio": 0.8413696882130931,
+      "comparable_before_after_stage": "model/controller; independent cohorts, no statistical speedup or accuracy-matched claim",
+      "old_converged_solves": 43636,
+      "v1_converged_solves": 38779
+    },
+    "saltfarm": {
+      "historical_original_process_seconds": 5.139638299820945,
+      "historical_RC1_public_seconds": 11.812481799861416,
+      "historical_public_original_ratio": 2.298309941435556,
+      "historical_RC1_model_controller_seconds": 11.110919799888507,
+      "current_qualified_model_controller_seconds": 7.673212399939075,
+      "descriptive_current_old_model_controller_ratio": 0.6906010067695811,
+      "comparable_before_after_stage": "model/controller; independent cohorts, no statistical speedup or accuracy-matched claim",
+      "old_converged_solves": 59176,
+      "v1_converged_solves": 49668,
+      "fresh_same_profile_ordered_pair": {
+        "original_seconds": 5.836645300034434,
+        "current_public_seconds": 8.195426400052384,
+        "current_model_controller_seconds": 7.721801499836147,
+        "single_observed_ratio": 1.404133021412837
+      }
+    }
+  },
+  "qualification_run": 43554537720,
+  "production_source": "01f44996a0bbe812b7c981e2060cdbbf0554283c",
+  "release_decision": "RELEASE_READY_NAMED_NO_MACRO_SCOPE",
+  "unresolved_functional_blockers_in_named_scope": [],
+  "science": "NOT_QUALIFIED whole equivalence; original FAILs and underqualified references retained",
+  "frozen_RC1": "11529865e76fb2259542f1e770726cd87af27603",
+  "official_release_tag_or_public_release": "NOT_CREATED_PER_OWNER",
+  "next": "Publish reconciliation via PR and verify canonical; then end this completed resumption mandate instead of inventing another campaign."
+}

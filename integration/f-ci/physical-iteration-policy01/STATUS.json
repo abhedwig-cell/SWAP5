@@ -1,0 +1,18 @@
+{
+  "work_unit": "PHYSICAL_ITERATION_POLICY01",
+  "status": "QUALIFIED_BOUNDED_CANDIDATE_READY_FOR_PR",
+  "runtime": "857967bd144afe25d90a52e817189fb407769630",
+  "carrier": "7e5cccebb0cc2d80e6ff81cd99e93bd4593c97a7",
+  "qualification_run": 43554537720,
+  "policies": {
+    "grass": "configured-dtmax-daily-v1",
+    "hupsel": "configured-dtmax-daily-v1",
+    "saltfarm": "configured-dtmax-physical-growth-v2"
+  },
+  "qualification": "Local all3 + Windows/Ubuntu full O2, O0short, exact own native/CSV restart, unchanged water/solute guards,12 refusals and6 external instance controls",
+  "legacy": "Original experimental default retained; current5day exact own and normalized generated-source equality to qualified D. Both known-policy mismatches refused.",
+  "failed_v2_hupsel": "Day364 retained and not admitted; no automatic fallback",
+  "scientific": "No new acceptance criterion; original oxygen/reference FAILs retained; no full-energy or whole-science claim",
+  "next_goal": "Reconcile actual release/performance acceptance with preserved original431 and current numerical-policy evidence; select a short matched SaltFarm timing pair only if existing source/toolchain-bound measurements do not answer it.",
+  "half_hour_recovery": "ACTIVE"
+}

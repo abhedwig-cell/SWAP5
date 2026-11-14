@@ -1,0 +1,71 @@
+name: Short Hupsel daily nominal proposal discriminator
+on:
+  workflow_dispatch:
+    inputs:
+      expected_sha:
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pressure-trace-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  public:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-26.04, windows-2022]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 9
+    env:
+      PYTHONUTF8: '1'
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: fortran-lang/setup-fortran@v1
+        if: runner.os == 'Windows'
+        with:
+          compiler: gcc
+          version: '15'
+      - name: Pin actual source and selected compiler policy
+        shell: pwsh
+        env:
+          EXPECTED_SHA: ${{ inputs.expected_sha }}
+        run: |
+          if ((git rev-parse HEAD) -ne $env:EXPECTED_SHA) { throw 'Foreign source' }
+          gfortran --version
+          gfortran -Q -O2 -ffp-contract=off -march=x86-64 -mtune=generic --help=target
+      - uses: actions/download-artifact@v4
+        with:
+          run-id: 43413278227
+          github-token: ${{ github.token }}
+          name: pressure-trace-${{ matrix.os }}-0331778ed87f6081ebd117d9e46326e6401c946e
+          path: ${{ runner.temp }}/prior-pressure
+      - name: Compiler-matched private637-day daily nominal observation
+        shell: pwsh
+        run: >-
+          python -B tools/solute/trace_hupsel_pressure.py
+          --output "$env:RUNNER_TEMP/pressure-proof"
+          --reference "$env:RUNNER_TEMP/prior-pressure/control/provider"
+          --bundle "$env:RUNNER_TEMP/prior-pressure/control/bundle"
+          --full "$env:RUNNER_TEMP/prior-pressure/control/cold-input"
+          --first-trace 562 --last 637 --activate-day 1 --reset-daily-proposal
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pressure-trace-${{ matrix.os }}-${{ github.sha }}
+          path: ${{ runner.temp }}/pressure-proof
+          retention-days: 14

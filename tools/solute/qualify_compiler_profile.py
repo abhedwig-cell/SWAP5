@@ -4,9 +4,10 @@ from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output',type=Path,required=True)
+p.add_argument('--reference',type=Path,help='Reuse a source/compiler-verified original provider, still build fresh application binaries')
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();events=[];profiles=[]
 source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
-reference=a.output/'provider'
+reference=a.reference.resolve() if a.reference else a.output/'provider'
 def call(label,arguments,*,script='tools/solute/run_water.py',timeout=180):
     command=[sys.executable,'-B',script,*map(str,arguments)];begin=time.perf_counter()
     r=subprocess.run(command,cwd=ROOT,capture_output=True,text=True,timeout=timeout)
@@ -22,7 +23,9 @@ def native(path):
     with zipfile.ZipFile(path) as z:return {n:z.read(n) for n in ('result.end','macro.bin')}
 def csv(directory):
     return [s for s in (directory/'original/result_output.csv').read_text().splitlines() if s.strip() and not s.startswith('*')]
-call('prepare',['--no-macro-release','--prepare-sources','--reference-work',reference],timeout=240)
+if a.reference:
+    (a.output/'PREPARED_REUSED.json').write_bytes((reference/'PREPARED.json').read_bytes())
+else:call('prepare',['--no-macro-release','--prepare-sources','--reference-work',reference],timeout=240)
 for project,model,last,cut in [('grass','HYBRID_GRASSGROWTH_WATER',1827,365),('hupsel','HYBRID_HUPSEL_WATER',1096,365),('saltfarm','HYBRID_SALTFARM_WATER',1461,109)]:
     for opt in ('O0','O2'):
         label=project+'-'+opt;end=4 if opt=='O0' else last;origin_day=2 if opt=='O0' else cut
@@ -46,6 +49,7 @@ for project,model,last,cut in [('grass','HYBRID_GRASSGROWTH_WATER',1827,365),('h
         report=dict(project=project,opt=opt,days=end,cut=origin_day,exact_all_physical=True,exact_all_printed_csv=True,exact_own_native_auxiliary=True,origin_unchanged=True,
             maximum_water_cm=max(abs(v['independent_residual_cm']) for v in f),maximum_solute_mg_cm2=max(abs(v.get('solute_independent_residual_mg_cm2',0)) for v in f),
             floating_point_profile=json.loads((bundle/'BUILD.json').read_text())['identity']['floating_point_profile'],
+            time_step_policy=json.loads((bundle/'BUILD.json').read_text())['identity'].get('time_step_policy'),
             model_seconds=json.loads((full/'RESULT.json').read_text())['model_and_controller_seconds'])
         if project=='hupsel' and opt=='O2':report['oxygen584_cm']=f[583]['uptake_terms_cm'][3]
         profiles.append(report);(a.output/'PROFILES.json').write_text(json.dumps(profiles,indent=2)+'\n')
