@@ -287,6 +287,7 @@
       use variables,           only: tstart,t1900,h,pond,dt,swredu,ldwet,spev,saev,outfil,indeks,delp,fhyst,hm1
       use MOD_params,          only: nihil
       use MOD_integral,        only: iptra_day, iqrot_day
+      use MOD_swap_base, only:swmacro
       implicit none
 
 ! --- global
@@ -470,6 +471,9 @@
 
                end if
 
+               ! Native accepted-state resume must consume crop state even when
+               ! the unchanged original loading origin equals crop emergence.
+               if(rw==1.and.sw_initype==2.and.swmacro==1) fl_start_croprotation=.false.
                ! crop section
                if (fl_cropcalendar) then
 

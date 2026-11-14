@@ -59,10 +59,12 @@ character(64)::sig
 if(swmacro/=1) return
 if(rw==2) then
  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
- write(u) 'SWAP431_MACRO_RESTART_V1          ',1,numnod,NumDm,signature
+ tag='SWAP431_MACRO_RESTART_V1'
+ write(u) tag,1,numnod,NumDm,signature
 '''
  for f in fields:code+=f" write(u) {f['name']}\n"
- code+=''' write(u) 'NATIVE09_COMPLETE'
+ code+=''' tag='NATIVE09_COMPLETE'
+ write(u) tag
  return
 end if
 read(u,iostat=ios) tag,v,n,nd,sig
@@ -168,6 +170,9 @@ end subroutine
  s=s.replace('      call MPVOLUME (1)\n      \n      return\n      end subroutine MacroInit','      if (.not.native09_pending()) call MPVOLUME (1)\n      \n      return\n      end subroutine MacroInit',1)
  (R/'macropore_native.f90').write_text(s,encoding='cp1252')
  s=(SRC/'swapoutput.f90').read_text(encoding='cp1252')
+ i=s.index('   subroutine inoutend (task)');j=s.index('      implicit none',i)
+ s=s[:j]+'      use MOD_swap_base, only:swmacro\n'+s[j:]
+ s=s.replace('               ! crop section','               ! Native accepted-state resume must consume crop state even when\n               ! the unchanged original loading origin equals crop emergence.\n               if(rw==1.and.sw_initype==2.and.swmacro==1) fl_start_croprotation=.false.\n               ! crop section',1)
  # Native trailer follows crop records, inside each full record before close.
  needle='         \n            end do\n               \n            ! close unit'
  assert needle in s
@@ -197,7 +202,7 @@ def build(opt):
  save(R/(opt+'_IDENTITY.json'),dict(exe_sha256=sha(out/'native09.exe'),sources={p.name:sha(p) for p in R.glob('*.f90')},compiler=subprocess.check_output(['gfortran','--version'],text=True)))
 
 def run(opt,mode,label=''):
- profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile);case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
+ profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+('-FINAL' if not label else ''));case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
  for x in json.loads(Path('C:/Users/Veldh012/swap431-state02-work/audit/CASE_IDENTITY.json').read_text()):
   p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/p,case/p)
  if mode=='RESTART':

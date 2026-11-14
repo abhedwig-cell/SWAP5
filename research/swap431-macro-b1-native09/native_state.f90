@@ -103,7 +103,8 @@ character(64)::sig
 if(swmacro/=1) return
 if(rw==2) then
  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
- write(u) 'SWAP431_MACRO_RESTART_V1          ',1,numnod,NumDm,signature
+ tag='SWAP431_MACRO_RESTART_V1'
+ write(u) tag,1,numnod,NumDm,signature
  write(u) WaSrMpDm
  write(u) WaUnMpDm
  write(u) WaUnMpDmCp
@@ -181,7 +182,8 @@ if(rw==2) then
  write(u) fl_cropemergence
  write(u) fl_cropharvest
  write(u) cumdens_top
- write(u) 'NATIVE09_COMPLETE'
+ tag='NATIVE09_COMPLETE'
+ write(u) tag
  return
 end if
 read(u,iostat=ios) tag,v,n,nd,sig
