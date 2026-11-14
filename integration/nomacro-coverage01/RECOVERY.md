@@ -1,3 +1,25 @@
+# Block F admission-ready checkpoint
+
+Public full43587528984 and actualO0 retry43588596845 both SUCCESS.
+Runtime qualified3c5171531 unchanged in HEAD04ecc10e3; later additions are focused
+verification, docs and raw evidence. PR1680 draft, canonical996f772cd, frozenRC1
+11529865e unchanged. Finalize docs, refresh canonical/peers, merge exact head,
+verify postimage, persist merge receipt on next branch07, continue remaining
+original hydraulics/weather/drainage/history coverage. Whole science unqualified.
+
+# Current block F: full qualification PASS, O0 retry seam pending
+
+Public source3c5171531 full43587528984 SUCCESS: full1096/1461 externally forced
+periods, exact EVERY daily native and physical warm/cold endpoint, O0 active532,
+all8 default-source preimages,105 refusals, original-table/no-file/replay/recovery.
+Maxwater9.99749903631171e-11cm; maxsolute1.5017015408957946e-11mg/cm2.
+Current own branch codex/nomacro-coverage06 PR1680 remains draft and unmerged.
+Focused O0 actual-retry gate43588596845 on04ecc10e3 is LIVE. Follow to terminal;
+source/runtime unchanged from full3c5171531. Then seal raw evidence, docs and PR,
+refresh canonical996f772cd/peers and safely admit exact qualified postimage.
+FrozenRC111529865e unchanged. Full prior FAIL573, rejected hypotheses and private
+strategy proof retained. No original scientific/energy/history promotion.
+
 # Current block F checkpoint: explicit transactional chemical qualification
 
 Canonical996f772cd, own branch codex/nomacro-coverage06 PR1680 draft.

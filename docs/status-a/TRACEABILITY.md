@@ -1697,3 +1697,17 @@ Registered thermal production authority: `integration/dataqual15/THERMAL_PROFILE
 Hupsel numerical-profile production authority: `integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_SCOPE_20261105.json`, sealed Windows full trajectories/builds/controls, retained cold POSIX capsule and `ROOT_ACCURACY_PRODUCTION_CI_ADJUDICATION_20261105.json`. Existing source guards remain immutable; their new-scope refusals are distinct from the current owner qualification and unchanged baseline defects.
 
 Actual #1567 merge authority: `integration/dataqual15_hupsel/ROOT_ACCURACY_PRODUCTION_CANONICAL_RECEIPT_20261105.json`, canonical `e9bc89274e80`, verified parents and production trees equal to merged head and cold tested head. Original Andelst481 remains open; no whole-scientific promotion.
+
+## Experimental general external surface control
+
+[Original no-macro functional coverage](../science/NOMACRO_FUNCTIONAL_COVERAGE.md)
+connects the surface contract and chemical policy to
+`integration/nomacro-coverage01/BLOCK_F_RECOVERY.md`,
+`BLOCK_F_SOLUTE_STRATEGY.md` and `BLOCK_F_STATUS.json`. Full source3c5171531
+run43587528984 qualifies1096/1461 external histories and105refusals; focused
+04ecc10e3 run43588596845 exercises actual O0 retry and exact573..575 native
+continuations. Versioned raw archives retain original full failure43583516947,
+both rejected scalar hypotheses and the private discriminator. Actual merge
+receipt owns canonical admission. Registered/default preservation uses eight
+actual generated-source preimages plus named execution seams; whole scientific
+equivalence and unimplemented history/energy scope are not promoted.

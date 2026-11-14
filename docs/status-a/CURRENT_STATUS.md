@@ -1707,3 +1707,15 @@ The registered Grassgrowth thermal numerical profile is admitted by #1563 (`f093
 The registered Grassgrowth thermal numerical profile is admitted by #1563 (`f0939f4cbc44`), with current367-day and exact own365-to367 evidence plus qualified historical1827 reuse. Original Andelst sharp-entry481 remains incomplete at the1.958-day barrier. See [numerical profile qualification](../science/GRASS_THERMAL_PRODUCTION.md).
 
 The explicit Hupsel pressure/film numerical policy is admitted by PR #1567 at canonical `e9bc89274e80`: actual original-initialized1096 O0/O2, ten exact own windows each, unchanged36/37 original comparisons with oxygen FAILED, and current cold POSIX components/default-thermal/native original7/restarts/publication controls. See [root numerical policy](../science/HUPSEL_ROOT_NUMERICAL_PROFILE.md). Whole-project counts stay2/3 complete and0/3 whole-scientifically qualified.
+
+## Experimental general external surface control
+
+[Original no-macro coverage](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) block F
+qualifies two derived external histories: water-only1096 and chemical1461 days,
+every daily native/physical cold continuation, actual touched O0/O2 builds,
+active O0 windows and actual O0 chemical retry, unchanged hard balances and105
+refusals. This is bounded experimental functional scope. Registered/default
+generated sources and numerical policies are preserved. Scientific equivalence,
+complete energy, arbitrary history and the remaining original coverage register
+are not promoted. Exact source/run/raw/admission authority belongs to
+`integration/nomacro-coverage01/BLOCK_F_STATUS.json` and its merge receipt.

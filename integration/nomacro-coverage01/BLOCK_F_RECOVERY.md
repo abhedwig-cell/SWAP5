@@ -169,3 +169,15 @@ worktree imported. Remote frozenRC111529865e unchanged. Canonical996f772cd.
 Docs source checks pass; strict rendered-doc build pending. Every old generated
 source preimage is checked on the real fresh hosted build, not inferred from
 Python AST. Only explicit genericSalt chemical Fortran may differ.
+
+Full43587528984 on3c5171531 SUCCESS all8: externally forced genericwater1096,
+chemical1461, every daily cold/warm physical/native endpoint exact, bothO0
+active532,105refusals, no-file/manual controls, original full comparisons with
+retained science differences. Maxwater9.99749903631171e-11, maxsolute
+1.5017015408957946e-11. Warm fullchemical executes2 whole-trial retries.
+Follow-up43588596845 on04ecc10e3 SUCCESS actualO0 chemical retry: own fresh warm
+575 days, exactnative573..575 cold, discard/replay on573 and immutable572origin.
+Compiler/binary/source identities verified against its own full-run O0 build.
+No checkpoint rebinding or cross-optimization origin. No runtime/source change
+since full3c5171531; additional tool/workflow and evidence only. Seal final raw,
+update PR1680 scope, re-read canonical/peer delta, then exact expected-head merge.

@@ -653,3 +653,16 @@ The serialized Reference worker now owns an explicit instance-local Grassgrowth 
 The serialized Reference worker owns an explicit instance-local Grassgrowth thermal temporal policy; native profile binding and atomic publication retain their separate app owners. Original Andelst SWP numerical controls are read independently of research physical selectors; its remaining discontinuous entry needs a coupled conservative solution. See [implementation and scope](../science/GRASS_THERMAL_PRODUCTION.md).
 
 Hupsel SWP numerical selector `SWAP5_ROOT_ACCURACY=1` configures the serialized worker independently of physical parameters. MICRO pressure-bracket search has a separate final flux certificate; explicit film mode3 requires two successful refinements. Default mode1 is retained. Exact SWP bytes use the existing S5HR0004 input binding; no persistent state/schema is added. See [bounded numerical interface](../science/HUPSEL_ROOT_NUMERICAL_PROFILE.md).
+
+## Experimental general external surface control
+
+The [general original-input surface route](../science/NOMACRO_FUNCTIONAL_COVERAGE.md)
+reuses the existing typed prepare/discard/accept owner with original fixed-event
+Fortran for eligible experimental SWIRFIX1/SCHEDULE0 projects. Water-only uses
+S5IRR002 with zero chemical concentration; chemical1 retains S5IRR001. Explicit
+experimental `transactional-cde-substeps-v1` retains the whole original chemical
+trial and restores all mutable stocks/fluxes before retry on negative inventory.
+It changes no physical law, mass tolerance, accepted codec or registered default
+policy; inactive source allocates no chemical trial memory. Policy/generator is
+build/checkpoint-bound, with no failure-triggered fallback or capsule rebinding.
+The retained legacy573 failure and narrower scientific scope remain explicit.
