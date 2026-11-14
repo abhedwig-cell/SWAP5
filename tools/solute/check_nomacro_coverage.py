@@ -77,9 +77,10 @@ def main():
     group.add_argument('--basic-options', action='store_true', help='Original no-crop/no-heat and prescribed bottom fluxes')
     group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
     group.add_argument('--process-options',action='store_true',help='Original thermal boundaries/analytic heat and canopy/root families')
+    group.add_argument('--hydraulic-options',action='store_true',help='Original hydraulic tables, geometric/harmonic means and Darcy evaporation')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options
-    active_options = args.crop_options or args.process_options
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -273,6 +274,40 @@ def main():
             call('microscopic-compensation-refusal',['--model',e.MODEL,'--experimental-project',cases['drought-potential'],
                  '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
         finally:control.write_bytes(saved)
+
+    if args.hydraulic_options:
+        specs=[('soil-tables',{'SWSOPHY':1}),('water-soil-tables',{'SWSOPHY':1,'SWSOLU':0}),
+               ('geometric-mean',{'SWKMEAN':3}),('weighted-geometric-mean',{'SWKMEAN':4}),
+               ('harmonic-mean',{'SWKMEAN':5}),('weighted-harmonic-mean',{'SWKMEAN':6}),
+               ('darcy-evaporation',{'SWREDU':0})]
+        for key,changes in specs:
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+            for name,value in changes.items():
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text);assert count==1
+            path.write_text(text,encoding='cp1252')
+            if not changes.get('SWSOLU',1):
+                for path in case.glob('*.crp'):
+                    text,count=re.subn(r'(?m)^([ \t]*SWSALINITY[ \t]*=[ \t]*)1',r'\g<1>0',path.read_text(encoding='cp1252'));assert count==1
+                    path.write_text(text,encoding='cp1252')
+            if changes.get('SWSOPHY'):
+                # Explicit independent physical data, not a reimplementation
+                # of MvG. The unchanged original reader/interpolator owns it.
+                heads=[-1e6,-1e5,-1e4,-1000.,-300.,-100.,-30.,-10.,-1.,0.]
+                tables=[('topsoil_sand_b2.csv',[.025,.028,.07,.128,.20,.30,.38,.42,.433,.433878],
+                         [1e-14,1e-12,1e-9,1e-6,.0001,.01,.5,5.,40.,83.]),
+                        ('subsoil_sand_o2.csv',[.025,.03,.05,.11,.18,.26,.34,.375,.386,.387064],
+                         [1e-14,1e-12,1e-9,1e-6,.0001,.005,.05,.4,10.,22.])]
+                for name,theta,conductivity in tables:
+                    (case/name).write_text('HEADTAB THETATAB CONDUCTAB\n'+''.join(f'{head!r} {water!r} {cond!r}\n' for head,water,cond in zip(heads,theta,conductivity,strict=True)))
+            cases[key]=case
+        for name,value in [('SWKMEAN',7),('SWKMEAN',8),('SWREDU',3)]:
+            control=cases['soil-tables']/'swap.swp';saved=control.read_bytes();target=out/('refused-'+name+'-'+str(value))
+            try:
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),saved.decode('cp1252'));assert count==1
+                control.write_text(text,encoding='cp1252')
+                call('unsupported-'+name+'-'+str(value),['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+            finally:control.write_bytes(saved)
 
     for key, case in cases.items():
         project = e.load(case)
@@ -524,9 +559,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2)),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=7 if args.hydraulic_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

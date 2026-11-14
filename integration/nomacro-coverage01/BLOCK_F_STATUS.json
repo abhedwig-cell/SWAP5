@@ -5,7 +5,7 @@
   "canonical_base": "996f772cd8ac741d827a96d6385da9da78725dae",
   "smoke_run": 43583358529,
   "smoke_status": "SUCCESS_ALL8_CURRENT_POLICIES",
-  "status": "QUALIFIED_READY_FOR_CANONICAL_ADMISSION",
+  "status": "CANONICALLY_ADMITTED_BOUNDED_EXPERIMENTAL_FUNCTIONAL_SCOPE",
   "full_periods_requested": [
     1096,
     1461
@@ -14,7 +14,7 @@
   "private_strategy_run": 43586778043,
   "private_strategy_residual_mg_cm2": -3.5551331843686196e-12,
   "new_policy": "transactional-cde-substeps-v1",
-  "next": "Seal raw evidence, finalize docs and PR1680; verify exact canonical postimage after admission",
+  "next": "Block G original hydraulic constitutive/averaging and evaporation controls; remaining full history, weather, drainage, reservoir and age remain separate",
   "candidate_source": "3c5171531bbb285b13c97d5c6e351bab3132f908",
   "candidate_full_run": 43587528984,
   "candidate_status": "SUCCESS",
@@ -266,5 +266,7 @@
   "mkdocs_strict": "PASS",
   "qualified_runtime_surface": "app and src unchanged from full-qualified3c5171531 through actualO0-qualified04ecc10e3; later changes are evidence/docs only",
   "default_preservation_scope": "Actual eight generated-source preimages plus registered O0/O2 six-day external/no-file seams; unchanged physical source/input/policy qualifications inherited, no fresh full registered replay claimed",
-  "remaining_scope": "Complete no-macro coverage, full scientific equivalence, complete mass-carried energy and arbitrary water-only history remain open"
+  "remaining_scope": "Complete no-macro coverage, full scientific equivalence, complete mass-carried energy and arbitrary water-only history remain open",
+  "merge": "2ac504bbcd0d2f9d175e00e8645cff0a0358aa9b",
+  "actual_tree": "2fd7a61851a051c49e42563136c433316cd51d65"
 }

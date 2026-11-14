@@ -81,8 +81,8 @@ def inspect(directory):
                  'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
                  'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
-                     SWDIVIDE={1}, SWRAIN={0, 2}, SWCFBS={0}, SWREDU={1, 2},
-                     SWKMEAN={1, 2}, SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
+                     SWDIVIDE={1}, SWRAIN={0, 2}, SWCFBS={0}, SWREDU={0, 1, 2},
+                     SWKMEAN=set(range(1,7)), SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
     for name, allowed in mandatory.items():
         if selected.get(name) not in allowed:
             raise ValueError('Unsupported experimental process/state: '+name)
@@ -105,7 +105,8 @@ def inspect(directory):
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
-                   SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2})
+                   SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
+                   SWKMEAN=set(range(1,7)), SWREDU={0,1,2})
     if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
         raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:

@@ -1,3 +1,12 @@
+# Current: F admitted, G original hydraulic/surface controls next
+
+F PR1680 admitted2ac504bbc, exact tree2fd7a6185 matches final qualified head.
+No runtime delta from full-qualified3c5171531; focusedO0 retry43588596845 PASS.
+FrozenRC111529865e unchanged. Own branch codex/nomacro-coverage07 from canonical.
+BLOCK_F_MERGE.json owns exact postimage. Next G source audit and original
+hydraulic tables/means plus Darcy evaporation; preserve unchanged solver and
+state codec, strict balances and source-bound per-configuration qualification.
+
 # Block F admission-ready checkpoint
 
 Public full43587528984 and actualO0 retry43588596845 both SUCCESS.
