@@ -394,7 +394,7 @@ def main():
             if model in (3,6,7,10,11):
                 additions+=['ALFA_2 = .005 .003','NPAR_2 = 1.5 1.6','OMEGA_1 = .8 .8']
             if model in (5,7,8,9,10,11):additions+=['H0 = -1e6 -1e6']
-            if model>=8:additions+=['HA = -10 -10','APAR = -1.5 -1.5','OMEGA_K = .01 .01','SWVAPOR = 0 0']
+            if model>=8:additions+=['HA = -10.0 -10.0','APAR = -1.5 -1.5','OMEGA_K = .01 .01','SWVAPOR = 0 0']
             path=case/'swap.swp';path.write_text(path.read_text(encoding='cp1252')+'\n'+ '\n'.join(additions)+'\n',encoding='cp1252')
             cases[key]=case
     if args.configuration:
