@@ -18,6 +18,7 @@ def call(label,cmd,*,cwd=ROOT,expected=0,timeout=60):
  assert r.returncode==expected,(label,r.returncode,r.stderr)
  return seconds
 begin=time.perf_counter();prepared=validate(a.provider);meta,_=validate_bundle(a.bundle,a.provider,h.SALTFARM);verify_seconds=time.perf_counter()-begin
+(a.output/'PRECHECK.json').write_text(json.dumps(dict(seconds=verify_seconds,source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),provider_prepared_sha256=h.sha(a.provider/'PREPARED.json')),indent=2)+'\n')
 assert meta['identity']['floating_point_profile']==prepared['floating_point_profile']==h.no_macro_fp_profile()
 assert meta['identity']['compiler_sha256']==prepared['toolchain']['gfortran']['sha256']
 exe=a.output/'swap431-common.exe';objects=sorted((a.provider/'build/swap-obj').glob('*.o'));assert objects

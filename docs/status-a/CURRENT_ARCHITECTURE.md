@@ -1,5 +1,10 @@
 # SWAP5 Status-A current architecture
 
+The [14 November named-scope release decision](../science/NOMACRO_RELEASE_STATUS_20261114.md)
+reconciles current platform, own-restart, balance and measured-cost evidence:
+**RELEASE READY** for registered Grassgrowth/Hupsel/SaltFarm, with the preserved
+scientific limitations. No official tag or public release is created.
+
 ## Current bounded numerical-policy successor
 
 The named SaltFarm1461 route selects `configured-dtmax-physical-growth-v2`;
