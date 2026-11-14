@@ -77,9 +77,12 @@ def main():
     group.add_argument('--basic-options', action='store_true', help='Original no-crop/no-heat and prescribed bottom fluxes')
     group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
     group.add_argument('--process-options',action='store_true',help='Original thermal boundaries/analytic heat and canopy/root families')
+    group.add_argument('--hydraulic-options',action='store_true',help='Original hydraulic tables, geometric/harmonic means and Darcy evaporation')
+    parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic configuration; preserves prior per-configuration evidence')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options
-    active_options = args.crop_options or args.process_options
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options
+    if args.configuration and not args.hydraulic_options:parser.error('--configuration requires --hydraulic-options')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -274,16 +277,61 @@ def main():
                  '--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
         finally:control.write_bytes(saved)
 
+    if args.hydraulic_options:
+        specs=[('soil-tables',{'SWSOPHY':1}),('water-soil-tables',{'SWSOPHY':1,'SWSOLU':0}),
+               ('geometric-mean',{'SWKMEAN':3}),('weighted-geometric-mean',{'SWKMEAN':4}),
+               ('harmonic-mean',{'SWKMEAN':5}),('weighted-harmonic-mean',{'SWKMEAN':6}),
+               ('darcy-evaporation',{'SWREDU':0})]
+        for key,changes in specs:
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+            for name,value in changes.items():
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text);assert count==1
+            path.write_text(text,encoding='cp1252')
+            if not changes.get('SWSOLU',1):
+                for path in case.glob('*.crp'):
+                    text,count=re.subn(r'(?m)^([ \t]*SWSALINITY[ \t]*=[ \t]*)[01]',r'\g<1>0',path.read_text(encoding='cp1252'));assert count==1
+                    path.write_text(text,encoding='cp1252')
+            if changes.get('SWSOPHY'):
+                # Explicit independent physical data, not a reimplementation
+                # of MvG. The unchanged original reader/interpolator owns it.
+                heads=[-1e6,-1e5,-1e4,-1000.,-300.,-100.,-30.,-10.,-1.,0.]
+                tables=[('topsoil_sand_b2.csv',[.025,.028,.07,.128,.20,.30,.38,.42,.433,.433878],
+                         [1e-14,1e-12,1e-9,1e-6,.0001,.01,.5,5.,40.,83.]),
+                        ('subsoil_sand_o2.csv',[.025,.03,.05,.11,.18,.26,.34,.375,.386,.387064],
+                         [1e-14,1e-12,1e-9,1e-6,.0001,.005,.05,.4,10.,22.])]
+                for name,theta,conductivity in tables:
+                    (case/name).write_text('HEADTAB THETATAB CONDUCTAB\n'+''.join(f'{head!r} {water!r} {cond!r}\n' for head,water,cond in zip(heads,theta,conductivity,strict=True)))
+            cases[key]=case
+        target=out/'refused-inactive-table-policy'
+        call('inactive-table-policy',['--model',e.MODEL,'--experimental-project',cases['geometric-mean'],'--reference-work',reference,
+             '--experimental-soil-table-policy',h.PCHIP_SOIL_TABLE_POLICY,'--build-only','--output',target],refuse=True,absent=target)
+        for name,value in [('SWKMEAN',7),('SWKMEAN',8),('SWREDU',3)]:
+            control=cases['soil-tables']/'swap.swp';saved=control.read_bytes();target=out/('refused-'+name+'-'+str(value))
+            try:
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),saved.decode('cp1252'));assert count==1
+                control.write_text(text,encoding='cp1252')
+                call('unsupported-'+name+'-'+str(value),['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+            finally:control.write_bytes(saved)
+
+    if args.configuration:
+        if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
+        cases={key:value for key,value in cases.items() if key in args.configuration}
     for key, case in cases.items():
-        project = e.load(case)
+        selected_table_policy=h.PCHIP_SOIL_TABLE_POLICY if args.hydraulic_options and 'soil-tables' in key else None
+        project = e.load(case,soil_table_policy=selected_table_policy)
         full_rows = None
         for opt in ('O0', 'O2'):
             label = key+'-'+opt
             bundle = out/(label+'-build')
             base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference]
+            if selected_table_policy:base+=['--experimental-soil-table-policy',selected_table_policy]
             generated_opt=opt if active_options else 'O2'
             call(label+'-build', base+['--build-only', '--output', bundle, '--kernel-opt', opt]+(['--donor-opt',generated_opt] if active_options else []))
             reuse = base+['--build-bundle', bundle, '--timeout-seconds', 180]
+            if selected_table_policy:
+                target=out/(label+'-wrong-table-policy')
+                call(label+'-wrong-table-policy',reuse+['--experimental-soil-table-policy',h.ORIGINAL_SOIL_TABLE_POLICY,'--output',target,'--days',1],refuse=True,absent=target)
             partial = key == 'hupsel-nodrain' and opt == 'O2'
             failure_day = 212 if project.time_step_policy=='configured-dtmax-daily-v1' else 51
             cut, end = (2, 5) if opt == 'O0' else ((failure_day-2, project.last_day) if partial else (365, project.last_day))
@@ -319,6 +367,7 @@ def main():
             assert h.sha(origin) == before
             report = dict(configuration=key, optimization=opt, completed_days=len(accepted), requested_days=end,
                           solute_active=project.solute,
+                          soil_table_policy=project.soil_table_policy if selected_table_policy else None,
                           generated_donor_optimization=generated_opt,original_provider_optimization='O2',
                           full_period_pass=len(accepted)==project.last_day, retained_failure=data[-1] if partial else None,
                           original_retained_failure_day=51 if partial else None,
@@ -445,9 +494,30 @@ def main():
                     report['resealed_native_history_refusals']=len(controls)
                 (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
 
-        # The unchanged original executable is a comparison reference, never
-        # patched or reused as an acceptance oracle for its known defects.
+        # The original standalone executable is a diagnostic reference,
+        # with explicit original interpolation selection for table cases.
+        # It is never an acceptance oracle for its known defects.
         donor = h.executable(reference/'build', 'swap_b0_gfortran')
+        reference_selection=None
+        if selected_table_policy:
+            # Independent original standalone executable: retain original main,
+            # objects and all source except the one existing interpolation
+            # branch. The unmodified TSPACK censor remains distinct evidence.
+            target=out/(key+'-original-pchip-reference-build');target.mkdir()
+            raw=(reference/'build/swap-selected/sptabulated.f90').read_text(encoding='cp1252')
+            assert raw.count('logical, parameter :: use_TSPACK = .TRUE.')==1
+            selected=target/'sptabulated.f90';selected.write_text(raw.replace('logical, parameter :: use_TSPACK = .TRUE.','logical, parameter :: use_TSPACK = .FALSE.'),encoding='cp1252')
+            objects=reference/'build/swap-obj';ttutil=reference/'build/ttutil-obj';donor=h.executable(target,'original_pchip')
+            commands=[['gfortran','-O2','-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch',*h.NO_MACRO_FP_FLAGS,
+                       '-I',str(objects),'-I',str(ttutil),'-c',str(selected)],
+                      ['gfortran','-o',str(donor),*[str(target/'sptabulated.o') if p.name=='sptabulated.o' else str(p) for p in sorted(objects.glob('*.o'))],str(ttutil/'libttutil.a')]]
+            for index,command in enumerate(commands):
+                result=subprocess.run(command,cwd=target,capture_output=True,text=True,timeout=90)
+                (target/f'build-{index}.log').write_text(result.stdout+result.stderr);assert result.returncode==0,result.stderr
+            reference_selection=dict(policy=selected_table_policy,source_modification='Only existing use_TSPACK parameter TRUE to FALSE; original PCHIP branch, no hybrid main, solver or mass-polish changes',
+                original_source_sha256=h.sha(reference/'build/swap-selected/sptabulated.f90'),selected_source_sha256=h.sha(selected),
+                original_objects={p.name:h.sha(p) for p in sorted(objects.glob('*.o')) if p.name!='sptabulated.o'},
+                unchanged_default_censored_run=43589590074,unchanged_default_component_evidence='BLOCK_G_TABLE_COMPONENT_RESULT.json',scientific_equivalence='NOT_QUALIFIED')
         original = out/(key+'-original'); shutil.copytree(case, original)
         started = time.monotonic()
         with (original/'stdout').open('wb') as log:
@@ -456,6 +526,7 @@ def main():
                           swap_ok=(original/'swap.ok').is_file(),
                           error=(original/'swap.err').read_text(encoding='cp1252') if (original/'swap.err').exists() else '',
                           scientific_equivalence='NOT_QUALIFIED', original_executable_sha256=h.sha(donor))
+        if reference_selection:comparison['explicit_original_branch_reference']=reference_selection
         (out/(key+'-LITERAL_REFERENCE.json')).write_text(json.dumps(comparison, indent=2)+'\n')
         if not comparison['swap_ok']:
             # The distributed SaltFarm template requests nonexistent S_CONC.
@@ -524,9 +595,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2)),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

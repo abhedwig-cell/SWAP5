@@ -1,3 +1,34 @@
+# G current live original-component qualification
+
+CanonicalF2ac504bbc, own branch07 PR1681 draft. Revised sourceb3421842a selects
+existing original PCHIP explicitly only for experimental tables. Full7 original
+option cohort43590665680 and unchanged-default surface seam43590666062 LIVE.
+Follow BOTH exact handles through terminal; no duplicates. Original TSPACK
+startup43589590074 censored180s,0days; local actual O0/O2 component isolates
+conductivity preprocessing, dormant original PCHIP coefficients finite/monotone.
+No TSPACK fix, fallback or tolerance relaxation; reference with only same original
+branch selected must be labeled modified. G status/recovery/raw own details.
+F admittedexactreceipt persisted; frozenRC111529865e and peer sources unchanged.
+
+# G live qualification recovery
+
+F admittedPR1680 canonical2ac504bbc exact qualified tree2fd7a6185; receipt inG.
+Own branch codex/nomacro-coverage07 PR1681 draft; Gsource0f47c7e84 full run
+43589590074 queued. Follow exact run through terminal, no duplicate dispatch.
+Seven requested complete1096-day original option configurations, actual touched
+O0/O2 and native2/365/530 plus balance/transaction/reference gates. First fixture
+failure43589431793 retained, no numerical repair. Details BLOCK_G_RECOVERY/STATUS.
+FrozenRC111529865e and peer streams untouched. No G qualification/admission yet.
+
+# Current: F admitted, G original hydraulic/surface controls next
+
+F PR1680 admitted2ac504bbc, exact tree2fd7a6185 matches final qualified head.
+No runtime delta from full-qualified3c5171531; focusedO0 retry43588596845 PASS.
+FrozenRC111529865e unchanged. Own branch codex/nomacro-coverage07 from canonical.
+BLOCK_F_MERGE.json owns exact postimage. Next G source audit and original
+hydraulic tables/means plus Darcy evaporation; preserve unchanged solver and
+state codec, strict balances and source-bound per-configuration qualification.
+
 # Block F admission-ready checkpoint
 
 Public full43587528984 and actualO0 retry43588596845 both SUCCESS.

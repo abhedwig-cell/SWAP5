@@ -24,6 +24,9 @@ ORIGINAL_TIME_POLICY = 'original-adaptive-day-seed-v1'
 NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
 PHYSICAL_GROWTH_TIME_POLICY = 'configured-dtmax-physical-growth-v2'
 TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY)
+ORIGINAL_SOIL_TABLE_POLICY = 'original-tspack-v1'
+PCHIP_SOIL_TABLE_POLICY = 'original-pchip-v1'
+SOIL_TABLE_POLICIES = (ORIGINAL_SOIL_TABLE_POLICY,PCHIP_SOIL_TABLE_POLICY)
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
 
@@ -45,6 +48,7 @@ class HybridProject:
     input_inventory: tuple = ()
     time_step_policy: str = ORIGINAL_TIME_POLICY
     solute_step_policy: str = LEGACY_SOLUTE_STEP_POLICY
+    soil_table_policy: str = ORIGINAL_SOIL_TABLE_POLICY
 
     @property
     def last_day(self):
@@ -112,6 +116,10 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST, donor_opt="O2"):
+    if project.soil_table_policy not in SOIL_TABLE_POLICIES:
+        raise ValueError('Unknown original soil-table interpolation policy')
+    if project.soil_table_policy != ORIGINAL_SOIL_TABLE_POLICY and (not project.input_directory or project.macro):
+        raise ValueError('Original PCHIP selection requires explicit experimental soil tables')
     if project.solute_step_policy not in SOLUTE_STEP_POLICIES:
         raise ValueError('Unknown chemical substep policy')
     if project.solute_step_policy != LEGACY_SOLUTE_STEP_POLICY and (not project.input_directory or project.macro or not project.solute):
@@ -148,6 +156,9 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         return int(values[0])
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
+    soil_tables = selector('SWSOPHY')==1
+    if project.soil_table_policy != ORIGINAL_SOIL_TABLE_POLICY and not soil_tables:
+        raise ValueError('Soil-table interpolation policy requires active SWSOPHY1')
     donor_build = reference / "build"
     objects = donor_build / "swap-obj"
     ttutil = donor_build / "ttutil-obj"
@@ -182,6 +193,12 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
+    if project.soil_table_policy == PCHIP_SOIL_TABLE_POLICY:
+        source=(donor_build/'swap-selected/sptabulated.f90').read_text(encoding='cp1252')
+        source=replace(source,'logical, parameter :: use_TSPACK = .TRUE.',
+                              'logical, parameter :: use_TSPACK = .FALSE.')
+        (output/'sptabulated.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'sptabulated')
     if not project.macro and project.time_step_policy in (NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY):
         render_no_macro_timecontrol(donor_build/'swap-selected',output)
         patched.insert(0,'timecontrol')
@@ -633,6 +650,9 @@ end module MOD_wofost""")
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
+        build_identity['soil_table_policy'] = project.soil_table_policy if soil_tables else None
+        if project.soil_table_policy == PCHIP_SOIL_TABLE_POLICY:
+            build_identity['soil_table_policy_source'] = sha(Path(__file__))
         build_identity['solute_step_policy'] = project.solute_step_policy if project.solute else None
         if project.solute_step_policy == TRANSACTIONAL_SOLUTE_STEP_POLICY:
             build_identity['solute_step_policy_source'] = sha(APP/'solute_step_policy.py')

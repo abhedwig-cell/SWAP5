@@ -1,0 +1,38 @@
+{
+  "work_unit": "SWAP5-NOMACRO-COVERAGE01",
+  "block": "G_ORIGINAL_HYDRAULIC_TABLES_MEANS_DARCY",
+  "pr": 1681,
+  "source": "b3421842a0a2b6142e42c5b551364de3dbb96ba9",
+  "canonical_base": "2ac504bbcd0d2f9d175e00e8645cff0a0358aa9b",
+  "run": 43590665680,
+  "status": "FOUR_FULL_PASSES_HARMONIC589_FAIL_REMAINING_SELECTED",
+  "first_run": 43589431793,
+  "retained_first_failure": "Fixture SWSALINITY0 already inactive; corrected explicit0/1 handling before model",
+  "requested_configurations": 7,
+  "requested_full_days_each": 1096,
+  "actual_touched_optimization_profiles": [
+    "O0",
+    "O2"
+  ],
+  "original_provider": "O2",
+  "science": "NOT_QUALIFIED; existing scientific FAILs and history/energy gaps retained",
+  "local_component": "BLOCK_G_TABLE_COMPONENT_RESULT.json",
+  "local_dormant_branch": "BLOCK_G_TABLE_COMPONENT_PCHIP_RESULT.json",
+  "next": "Remaining mean6/Darcy plus exact harmonic refusal replay, then bounded admission",
+  "table_policy": "original-pchip-v1",
+  "default_table_policy": "original-tspack-v1",
+  "scope": "Original PCHIP table variant; original TSPACK preprocessing remains censored; no scientific equivalence",
+  "default_surface_smoke_run": 43590666062,
+  "retained_censored_run": 43589590074,
+  "default_surface_smoke_status": "SUCCESS_ALL8_DEFAULT_SOURCE_PREIMAGES_AND_EXTERNAL_SEAMS",
+  "first_PCHIP_run": 43590665680,
+  "complete_configurations": [
+    "soil-tables",
+    "water-soil-tables",
+    "geometric-mean",
+    "weighted-geometric-mean"
+  ],
+  "complete_days": 4384,
+  "retained_harmonic_failure_day": 589,
+  "harmonic_accepted_days": 588
+}

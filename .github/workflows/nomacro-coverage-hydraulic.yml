@@ -1,0 +1,55 @@
+name: Original hydraulic tables means and evaporation
+# Own bounded hosted qualification; no peer model or platform campaign.
+on:
+  push:
+    branches: [codex/nomacro-coverage07]
+    paths: ['.github/workflows/nomacro-coverage-hydraulic.yml']
+  workflow_dispatch:
+    inputs:
+      remaining_only:
+        type: boolean
+        default: false
+        description: Qualify only weighted harmonic and Darcy after retained mean5 refusal
+      darcy_only:
+        type: boolean
+        default: false
+        description: Qualify only Darcy after both harmonic cases have retained refusals
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-hydraulic-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Compile and execute original hydraulic options O0/O2
+        env:
+          REMAINING_ONLY: ${{ inputs.remaining_only }}
+          DARCY_ONLY: ${{ inputs.darcy_only }}
+        run: |
+          if [ "$DARCY_ONLY" = true ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --hydraulic-options --configuration darcy-evaporation --output "$RUNNER_TEMP/proof"
+          elif [ "$REMAINING_ONLY" = true ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --hydraulic-options --configuration weighted-harmonic-mean --configuration darcy-evaporation --output "$RUNNER_TEMP/proof"
+          else
+            python3 -B tools/solute/check_nomacro_coverage.py --hydraulic-options --output "$RUNNER_TEMP/proof"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-hydraulic-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

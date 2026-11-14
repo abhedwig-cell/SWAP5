@@ -1,0 +1,57 @@
+name: Original harmonic refusal preservation
+on:
+  push:
+    branches: [codex/nomacro-coverage07]
+    paths: ['.github/workflows/nomacro-harmonic-refusal.yml']
+  workflow_dispatch:
+    inputs:
+      weighted:
+        type: boolean
+        default: false
+        description: Preserve weighted harmonic367 at both O0/O2
+permissions:
+  contents: read
+  actions: read
+jobs:
+  preserve:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            reference/swap-4.3.1/projects
+      - uses: actions/download-artifact@v4
+        if: inputs.weighted != true
+        with:
+          name: nomacro-hydraulic-b3421842a0a2b6142e42c5b551364de3dbb96ba9
+          run-id: 43590665680
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - uses: actions/download-artifact@v4
+        if: inputs.weighted == true
+        with:
+          name: nomacro-hydraulic-2e39ad45fc93edbc4c58d7bf681033cf2c1bc24d
+          run-id: 43591575148
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Preserve actual rejection and immutable own origin
+        env:
+          WEIGHTED: ${{ inputs.weighted }}
+        run: |
+          if [ "$WEIGHTED" = true ]; then
+            python3 -B tools/solute/check_harmonic_refusal.py --weighted --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+          else
+            python3 -B tools/solute/check_harmonic_refusal.py --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: harmonic-refusal-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

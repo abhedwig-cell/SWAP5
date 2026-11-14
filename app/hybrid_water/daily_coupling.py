@@ -144,6 +144,16 @@ def validate_bundle(bundle, reference, project):
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
     if not project.macro:
+        tables=False
+        if project.input_directory:
+            from experimental_project import inspect
+            tables=inspect(project.input_directory)['selectors']['SWSOPHY']==1
+        expected=project.soil_table_policy if tables else None
+        if identity.get('soil_table_policy') != expected:
+            raise ValueError('Bundle soil-table interpolation policy differs')
+        if project.soil_table_policy == h.PCHIP_SOIL_TABLE_POLICY and identity.get('soil_table_policy_source') != h.sha(h.APP/'daily_host.py'):
+            raise ValueError('Bundle soil-table selection source differs')
+    if not project.macro:
         expected=project.solute_step_policy if project.solute else None
         if identity.get('solute_step_policy') != expected:
             raise ValueError('Bundle chemical substep policy differs; rebuild without rebinding checkpoints')
