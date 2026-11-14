@@ -72,3 +72,17 @@ Narrow local actual original O0/O2 component gates and policy descriptor/invalid
 inactive selection pass. Full current candidate plus F seam smoke are selected
 because shared host/build metadata changes require real fresh builds and default
 source preservation; no repeated unrelated solver or platform qualification.
+
+Run43590665680 b3421842a completes4 full1096 trajectories: both PCHIP table
+cases and means3/4, with O0/O2 native2/365/530, transactions, independent workers
+and standalone reference diagnostics. Default surface preservation43590666062
+passes all8 old generated-source preimages and actual external seams.
+Unweighted harmonic5 O0 passes5/active532, but O2 refuses day589 after588 accepted:
+independentwater-9.982261767658127e-9, kernel9.982263307617423e-9; chemical closes.
+No accepted589. This is a retained strict water FAIL, not a whole-period PASS.
+Do not start a general Richards repair or change physical inputs/tolerances.
+Source/runtime remains b3421842a. Select only remaining mean6/Darcy0 cohort to
+avoid replaying four qualified unchanged configurations. Separately reproduce
+harmonic5 refusal from an actual own588 native origin and verify unchanged stocks,
+rejected publication and exact replay. Final G scope must distinguish actual full
+passes from retained failure(s), never label all7 complete.

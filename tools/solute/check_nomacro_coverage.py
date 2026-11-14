@@ -78,9 +78,11 @@ def main():
     group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
     group.add_argument('--process-options',action='store_true',help='Original thermal boundaries/analytic heat and canopy/root families')
     group.add_argument('--hydraulic-options',action='store_true',help='Original hydraulic tables, geometric/harmonic means and Darcy evaporation')
+    parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic configuration; preserves prior per-configuration evidence')
     args = parser.parse_args()
     extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options
     active_options = args.crop_options or args.process_options or args.hydraulic_options
+    if args.configuration and not args.hydraulic_options:parser.error('--configuration requires --hydraulic-options')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -312,6 +314,9 @@ def main():
                 call('unsupported-'+name+'-'+str(value),['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
             finally:control.write_bytes(saved)
 
+    if args.configuration:
+        if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
+        cases={key:value for key,value in cases.items() if key in args.configuration}
     for key, case in cases.items():
         selected_table_policy=h.PCHIP_SOIL_TABLE_POLICY if args.hydraulic_options and 'soil-tables' in key else None
         project = e.load(case,soil_table_policy=selected_table_policy)
@@ -592,7 +597,7 @@ def main():
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
     result = dict(status='EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=7 if args.hydraulic_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

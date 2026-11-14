@@ -5,6 +5,11 @@ on:
     branches: [codex/nomacro-coverage07]
     paths: ['.github/workflows/nomacro-coverage-hydraulic.yml']
   workflow_dispatch:
+    inputs:
+      remaining_only:
+        type: boolean
+        default: false
+        description: Qualify only weighted harmonic and Darcy after retained mean5 refusal
 permissions:
   contents: read
 concurrency:
@@ -27,7 +32,14 @@ jobs:
             reference/swap-4.3.1/projects
             reference/swap-4.3.1/source-archives
       - name: Compile and execute original hydraulic options O0/O2
-        run: python3 -B tools/solute/check_nomacro_coverage.py --hydraulic-options --output "$RUNNER_TEMP/proof"
+        env:
+          REMAINING_ONLY: ${{ inputs.remaining_only }}
+        run: |
+          if [ "$REMAINING_ONLY" = true ]; then
+            python3 -B tools/solute/check_nomacro_coverage.py --hydraulic-options --configuration weighted-harmonic-mean --configuration darcy-evaporation --output "$RUNNER_TEMP/proof"
+          else
+            python3 -B tools/solute/check_nomacro_coverage.py --hydraulic-options --output "$RUNNER_TEMP/proof"
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:
