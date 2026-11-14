@@ -1,3 +1,15 @@
+# G current live original-component qualification
+
+CanonicalF2ac504bbc, own branch07 PR1681 draft. Revised sourceb3421842a selects
+existing original PCHIP explicitly only for experimental tables. Full7 original
+option cohort43590665680 and unchanged-default surface seam43590666062 LIVE.
+Follow BOTH exact handles through terminal; no duplicates. Original TSPACK
+startup43589590074 censored180s,0days; local actual O0/O2 component isolates
+conductivity preprocessing, dormant original PCHIP coefficients finite/monotone.
+No TSPACK fix, fallback or tolerance relaxation; reference with only same original
+branch selected must be labeled modified. G status/recovery/raw own details.
+F admittedexactreceipt persisted; frozenRC111529865e and peer sources unchanged.
+
 # G live qualification recovery
 
 F admittedPR1680 canonical2ac504bbc exact qualified tree2fd7a6185; receipt inG.

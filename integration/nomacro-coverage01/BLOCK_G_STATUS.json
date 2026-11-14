@@ -2,10 +2,10 @@
   "work_unit": "SWAP5-NOMACRO-COVERAGE01",
   "block": "G_ORIGINAL_HYDRAULIC_TABLES_MEANS_DARCY",
   "pr": 1681,
-  "source": "0f47c7e84e8cf95a17fdfc3b296fb9ccb89ec10f",
+  "source": "b3421842a0a2b6142e42c5b551364de3dbb96ba9",
   "canonical_base": "2ac504bbcd0d2f9d175e00e8645cff0a0358aa9b",
-  "run": 43589590074,
-  "status": "EXPLICIT_ORIGINAL_PCHIP_IMPLEMENTED_FULL_QUALIFICATION_PENDING",
+  "run": 43590665680,
+  "status": "EXPLICIT_PCHIP_FULL_AND_DEFAULT_PRESERVATION_RUNNING",
   "first_run": 43589431793,
   "retained_first_failure": "Fixture SWSALINITY0 already inactive; corrected explicit0/1 handling before model",
   "requested_configurations": 7,
@@ -21,5 +21,7 @@
   "next": "Explicit experimental original PCHIP selection, unchanged defaults, full requalification",
   "table_policy": "original-pchip-v1",
   "default_table_policy": "original-tspack-v1",
-  "scope": "Original PCHIP table variant; original TSPACK preprocessing remains censored; no scientific equivalence"
+  "scope": "Original PCHIP table variant; original TSPACK preprocessing remains censored; no scientific equivalence",
+  "default_surface_smoke_run": 43590666062,
+  "retained_censored_run": 43589590074
 }
