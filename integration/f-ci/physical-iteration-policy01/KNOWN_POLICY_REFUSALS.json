@@ -1,0 +1,15 @@
+{
+  "status": "BOTH_KNOWN_POLICY_MISMATCHES_REFUSED",
+  "cases": [
+    {
+      "project": "saltfarm",
+      "requested_policy": "configured-dtmax-daily-v1",
+      "refusal": "Bundle time-step policy differs; rebuild at current source"
+    },
+    {
+      "project": "hupsel",
+      "requested_policy": "configured-dtmax-physical-growth-v2",
+      "refusal": "Bundle time-step policy differs; rebuild at current source"
+    }
+  ]
+}

@@ -9,8 +9,9 @@ p.add_argument('--output',type=Path,required=True)
 p.add_argument('--project',choices=['hupsel','saltfarm'],default='hupsel')
 p.add_argument('--reference',type=Path);p.add_argument('--bundle',type=Path);p.add_argument('--full',type=Path)
 p.add_argument('--last',type=int,default=567);p.add_argument('--first-trace',type=int,default=547)
+p.add_argument('--physical-iteration-proposal',action='store_true')
 p.add_argument('--preserve-eod-proposal',action='store_true');p.add_argument('--reset-daily-proposal',action='store_true');p.add_argument('--activate-day',type=int,default=562)
-a=p.parse_args();assert not(a.preserve_eod_proposal and a.reset_daily_proposal);a.output=a.output.resolve();a.output.mkdir();events=[]
+a=p.parse_args();assert sum([a.preserve_eod_proposal,a.reset_daily_proposal,a.physical_iteration_proposal])<=1;a.output=a.output.resolve();a.output.mkdir();events=[]
 project={'hupsel':h.HUPSEL,'saltfarm':h.SALTFARM}[a.project]
 def call(label,command,timeout=60,**kw):
     t=time.perf_counter();r=subprocess.run(list(map(str,command)),cwd=kw.pop('cwd',ROOT),capture_output=True,text=True,timeout=timeout,**kw)
@@ -42,6 +43,17 @@ anchor='         itnumb(min(100,numbit),1)';assert source.count(anchor)==1
 source=source.replace(anchor,f'''         if {condition} write(*,'(a,2(1x,es25.17e3),2(1x,i0),2(1x,es25.17e3))') &
            'PS_ACCEPT',t1900,dt,numbit,mass_polish_at,h(8),theta(8)
 '''+anchor)
+if a.physical_iteration_proposal:
+    source=h.replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                     '   use MOD_timer, only: ps_physical_iterations\n   use hybrid_step_budget, only: projected_water_residual')
+    source=h.replace(source,'mass_polish_at = 0','mass_polish_at = 0\n    ps_physical_iterations=0')
+    anchor='      if (budget_enabled .and. .not.flnonconv) then'
+    active=project.start_clock+a.activate_day-1
+    source=h.replace(source,anchor,f'''      if (t1900>={active}d0) then
+         if (flnonconv) ps_physical_iterations=0
+         if (.not.flnonconv.and.ps_physical_iterations==0) ps_physical_iterations=numbit
+      end if
+'''+anchor)
 (private/'headcalc.f90').write_text(source,encoding='cp1252')
 csv=(bundle/'swap_csv_output.f90').read_text(encoding='cp1252');anchor='   subroutine set_values_scalar()';assert csv.count(anchor)==1
 csv=csv.replace(anchor,anchor+'\n   use variables, only: ps_h=>h,ps_theta=>theta,itnumb')
@@ -49,6 +61,16 @@ anchor='   dstor_1    = wasrdm1 - iwasrdm1beg';assert csv.count(anchor)==1
 csv=csv.replace(anchor,"   write(*,'(a,*(1x,es25.17e3))') 'PS_HEAD',ps_h(1:numnod)\n   write(*,'(a,*(1x,es25.17e3))') 'PS_THETA',ps_theta(1:numnod)\n   write(*,'(a,*(1x,i0))') 'PS_HIST',itnumb(:,1)\n"+anchor)
 (private/'swap_csv_output.f90').write_text(csv,encoding='cp1252')
 names=['headcalc','swap_csv_output']
+if a.physical_iteration_proposal:
+    timer=(bundle/'timecontrol.f90').read_text(encoding='cp1252')
+    timer=h.replace(timer,'end module MOD_timer','   integer :: ps_physical_iterations=0\nend module MOD_timer')
+    timer=h.replace(timer,'         if (numbit <= numbit_crit) dt = min(dt*fact_dt_increase,dtMax)',
+                        '         if (ps_physical_iterations>0) then\n'
+                        '            if (ps_physical_iterations<=numbit_crit.and.numbit<MaxIt) dt=min(dt*fact_dt_increase,dtMax)\n'
+                        '         else\n'
+                        '            if (numbit<=numbit_crit) dt=min(dt*fact_dt_increase,dtMax)\n'
+                        '         end if')
+    (private/'timecontrol.f90').write_text(timer,encoding='cp1252');names.insert(0,'timecontrol')
 if a.reset_daily_proposal:
     timer=(reference/'build/swap-selected/timecontrol.f90').read_text(encoding='cp1252')
     anchor='         dt = max(dt, dsqrt(dtmin*dtmax))';assert timer.count(anchor)==1
@@ -111,18 +133,18 @@ for day in range(1,a.last+1):
     maxwater=max(maxwater,abs(water));maxsolute=max(maxsolute,abs(solute),abs(reported))
     if maxwater>1e-10 or maxsolute>1e-10:
         (a.output/'FRAMES.json').write_text(json.dumps(frames)+'\n');(a.output/'TRACE.txt').write_text('\n'.join(traces)+'\n')
-        (a.output/'RESULT.json').write_text(json.dumps(dict(status='REJECTED_UNCHANGED_GUARD',day=day,maximum_water_cm=maxwater,maximum_solute_mg_cm2=maxsolute,model_seconds=seconds,private_eod_proposal=a.preserve_eod_proposal,private_daily_proposal=a.reset_daily_proposal),indent=2)+'\n')
+        (a.output/'RESULT.json').write_text(json.dumps(dict(status='REJECTED_UNCHANGED_GUARD',day=day,maximum_water_cm=maxwater,maximum_solute_mg_cm2=maxsolute,model_seconds=seconds,private_physical_iteration_proposal=a.physical_iteration_proposal,private_eod_proposal=a.preserve_eod_proposal,private_daily_proposal=a.reset_daily_proposal),indent=2)+'\n')
         raise AssertionError(('unchanged guard',day,maxwater,maxsolute))
 preservation='NOT_TESTED_NO_PUBLIC_PREFIX_GIVEN'
 if (full/'daily.jsonl').exists():
     prior=[json.loads(s) for s in (full/'daily.jsonl').read_text().splitlines()]
     if len(prior)>=a.last:
-        for day,row in enumerate(prior[:min(a.last,a.activate_day-1) if (a.preserve_eod_proposal or a.reset_daily_proposal) else a.last],1):
+        for day,row in enumerate(prior[:min(a.last,a.activate_day-1) if (a.preserve_eod_proposal or a.reset_daily_proposal or a.physical_iteration_proposal) else a.last],1):
             assert frames['PS_HEAD'][day]==row['pressure_head_cm'],('observer_changed_head',day)
             assert frames['HYBRID_STOCK_FLUX'][day][:6]==row['stock_end_cm'],('observer_changed_stock',day)
             assert frames['HYBRID_EXTERNAL_FLUX'][day]==row['external_flux_cm'],('observer_changed_flow',day)
             assert frames['HYBRID_UPTAKE'][day]==row['uptake_terms_cm'],('observer_changed_uptake',day)
-        preservation=('NO_PREACTIVATION_DAYS' if a.activate_day==1 else 'PRE_ACTIVATION_PUBLIC_PREFIX_EXACT') if (a.preserve_eod_proposal or a.reset_daily_proposal) else 'ALL_PUBLIC_PREFIX_HEAD_STOCK_FLOW_UPTAKE_EXACT'
+        preservation=('NO_PREACTIVATION_DAYS' if a.activate_day==1 else 'PRE_ACTIVATION_PUBLIC_PREFIX_EXACT') if (a.preserve_eod_proposal or a.reset_daily_proposal or a.physical_iteration_proposal) else 'ALL_PUBLIC_PREFIX_HEAD_STOCK_FLOW_UPTAKE_EXACT'
 (a.output/'FRAMES.json').write_text(json.dumps(frames)+'\n');(a.output/'TRACE.txt').write_text('\n'.join(traces)+'\n')
-result=dict(project=a.project,status='PRIVATE_DAILY_NOMINAL_POLICY_NOT_ADMITTED' if a.reset_daily_proposal else 'PRIVATE_EOD_PROPOSAL_POLICY_NOT_ADMITTED' if a.preserve_eod_proposal else 'PRIVATE_READ_ONLY_PRESSURE_OBSERVATION_NOT_PRODUCTION_QUALIFICATION',private_eod_proposal=a.preserve_eod_proposal,private_daily_proposal=a.reset_daily_proposal,activation_day=a.activate_day if (a.preserve_eod_proposal or a.reset_daily_proposal) else None,source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),days=a.last,first_trace=a.first_trace,model_seconds=seconds,maximum_water_cm=maxwater,maximum_solute_mg_cm2=maxsolute,public_prefix=preservation,profile=meta['identity']['floating_point_profile'],compiler_sha256=meta['identity']['compiler_sha256'],private_executable_sha256=h.sha(exe),base_identity=meta['identity'],events=events)
+result=dict(project=a.project,status='PRIVATE_PHYSICAL_ITERATION_POLICY_NOT_ADMITTED' if a.physical_iteration_proposal else 'PRIVATE_DAILY_NOMINAL_POLICY_NOT_ADMITTED' if a.reset_daily_proposal else 'PRIVATE_EOD_PROPOSAL_POLICY_NOT_ADMITTED' if a.preserve_eod_proposal else 'PRIVATE_READ_ONLY_PRESSURE_OBSERVATION_NOT_PRODUCTION_QUALIFICATION',private_physical_iteration_proposal=a.physical_iteration_proposal,private_eod_proposal=a.preserve_eod_proposal,private_daily_proposal=a.reset_daily_proposal,activation_day=a.activate_day if (a.preserve_eod_proposal or a.reset_daily_proposal or a.physical_iteration_proposal) else None,source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),days=a.last,first_trace=a.first_trace,model_seconds=seconds,maximum_water_cm=maxwater,maximum_solute_mg_cm2=maxsolute,public_prefix=preservation,profile=meta['identity']['floating_point_profile'],compiler_sha256=meta['identity']['compiler_sha256'],private_executable_sha256=h.sha(exe),base_identity=meta['identity'],events=events)
 (a.output/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(json.dumps({k:result[k] for k in ('status','days','model_seconds','public_prefix','maximum_water_cm')}),flush=True)

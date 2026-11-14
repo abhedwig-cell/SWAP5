@@ -1,0 +1,732 @@
+{
+  "status": "COMMON_PROFILE_PUBLIC_O0_O2_FULL_OWN_PASS",
+  "source": "7e5cccebb0cc2d80e6ff81cd99e93bd4593c97a7",
+  "profiles": [
+    {
+      "project": "grass",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.1567449698822511e-14,
+      "maximum_solute_mg_cm2": 0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.02324850299999781
+    },
+    {
+      "project": "grass",
+      "opt": "O2",
+      "days": 1827,
+      "cut": 365,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.2820290680911249e-13,
+      "maximum_solute_mg_cm2": 0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 4.078503476000002
+    },
+    {
+      "project": "hupsel",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 1.0630385460785874e-14,
+      "maximum_solute_mg_cm2": 0.0,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 0.020694867000003114
+    },
+    {
+      "project": "hupsel",
+      "opt": "O2",
+      "days": 1096,
+      "cut": 365,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 9.99670639778745e-11,
+      "maximum_solute_mg_cm2": 2.2308871501642002e-13,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-daily-v1",
+      "model_seconds": 1.5189361759999969,
+      "oxygen584_cm": 0.004793468495847017
+    },
+    {
+      "project": "saltfarm",
+      "opt": "O0",
+      "days": 4,
+      "cut": 2,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 5.145571468911925e-13,
+      "maximum_solute_mg_cm2": 1.2327916465437738e-12,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-physical-growth-v2",
+      "model_seconds": 0.029607804000008286
+    },
+    {
+      "project": "saltfarm",
+      "opt": "O2",
+      "days": 1461,
+      "cut": 109,
+      "exact_all_physical": true,
+      "exact_all_printed_csv": true,
+      "exact_own_native_auxiliary": true,
+      "origin_unchanged": true,
+      "maximum_water_cm": 2.9596394779396462e-12,
+      "maximum_solute_mg_cm2": 1.3832754386378099e-11,
+      "floating_point_profile": {
+        "id": "gnu-x86_64-separate-ops-v1",
+        "flags": [
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "time_step_policy": "configured-dtmax-physical-growth-v2",
+      "model_seconds": 3.6115228200000047
+    }
+  ],
+  "events": [
+    {
+      "label": "grass-O0-build",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 9.001227015000005
+    },
+    {
+      "label": "grass-O0-control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 0.2664526790000039
+    },
+    {
+      "label": "grass-O0-full",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.13823182299999814
+    },
+    {
+      "label": "grass-O0-resume",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-candidate-full/accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.15331355499999688
+    },
+    {
+      "label": "grass-O2-build",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 4.309252962999999
+    },
+    {
+      "label": "grass-O2-control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--checkpoint-at",
+        "1827",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 4.140194146000006
+    },
+    {
+      "label": "grass-O2-full",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--checkpoint-at",
+        "365",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 4.196539658000006
+    },
+    {
+      "label": "grass-O2-resume",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_GRASSGROWTH_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-build",
+        "--days",
+        "1827",
+        "--restart",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-full/accepted-column-1-day-365.zip",
+        "--restart-day",
+        "365",
+        "--checkpoint-at",
+        "1827",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 3.314938846000004
+    },
+    {
+      "label": "hupsel-O0-build",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 5.158972817999995
+    },
+    {
+      "label": "hupsel-O0-control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 0.13205596999999614
+    },
+    {
+      "label": "hupsel-O0-full",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.13850149699999292
+    },
+    {
+      "label": "hupsel-O0-resume",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-candidate-full/accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.13657603000000051
+    },
+    {
+      "label": "hupsel-O2-build",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 6.129230233000001
+    },
+    {
+      "label": "hupsel-O2-control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--checkpoint-at",
+        "1096",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 1.5801786910000004
+    },
+    {
+      "label": "hupsel-O2-full",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--checkpoint-at",
+        "365",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 1.633269920999993
+    },
+    {
+      "label": "hupsel-O2-resume",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-candidate-build",
+        "--days",
+        "1096",
+        "--restart",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-candidate-full/accepted-column-1-day-365.zip",
+        "--restart-day",
+        "365",
+        "--checkpoint-at",
+        "1096",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/hupsel-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 1.2652623780000027
+    },
+    {
+      "label": "saltfarm-O0-build",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O0",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 5.205532075999997
+    },
+    {
+      "label": "saltfarm-O0-control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-control"
+      ],
+      "returncode": 0,
+      "seconds": 0.14718137399999875
+    },
+    {
+      "label": "saltfarm-O0-full",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--checkpoint-at",
+        "2",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 0.14257489400000622
+    },
+    {
+      "label": "saltfarm-O0-resume",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-candidate-build",
+        "--days",
+        "4",
+        "--restart",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-candidate-full/accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2",
+        "--checkpoint-at",
+        "4",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O0-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 0.16512338299999385
+    },
+    {
+      "label": "saltfarm-O2-build",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-only",
+        "--kernel-opt",
+        "O2",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-candidate-build"
+      ],
+      "returncode": 0,
+      "seconds": 6.2626580320000045
+    },
+    {
+      "label": "saltfarm-O2-control",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--checkpoint-at",
+        "1461",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-control"
+      ],
+      "returncode": 0,
+      "seconds": 3.820080912999998
+    },
+    {
+      "label": "saltfarm-O2-full",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--checkpoint-at",
+        "109",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-candidate-full"
+      ],
+      "returncode": 0,
+      "seconds": 3.7301927999999975
+    },
+    {
+      "label": "saltfarm-O2-resume",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--no-macro-release",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--build-bundle",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-candidate-build",
+        "--days",
+        "1461",
+        "--restart",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-candidate-full/accepted-column-1-day-109.zip",
+        "--restart-day",
+        "109",
+        "--checkpoint-at",
+        "1461",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/saltfarm-O2-own-resume"
+      ],
+      "returncode": 0,
+      "seconds": 3.5562261910000075
+    },
+    {
+      "label": "refusals",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/check_rc1_build_validation.py",
+        "--reference",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--bundle",
+        "/home/runner/work/_temp/daily-nominal-public/grass-O2-candidate-build",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/refusals"
+      ],
+      "returncode": 0,
+      "seconds": 1.159188186999998
+    },
+    {
+      "label": "external",
+      "command": [
+        "/opt/hostedtoolcache/Python/3.13.18/x64/bin/python",
+        "-B",
+        "tools/solute/check_publisher_coupling.py",
+        "--reference",
+        "/home/runner/work/_temp/qualified-provider/provider",
+        "--qualification",
+        "/home/runner/work/_temp/daily-nominal-public",
+        "--output",
+        "/home/runner/work/_temp/daily-nominal-public/external"
+      ],
+      "returncode": 0,
+      "seconds": 2.142204374000002
+    }
+  ],
+  "scope": "Within-profile exact own controls; no old-profile equality, cross-platform whole-science or native-solver speedup claim."
+}

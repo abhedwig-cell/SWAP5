@@ -333,3 +333,33 @@ def render_no_macro_timecontrol(selected, output):
     source=replace(source,'         dt = max(dt, dsqrt(dtmin*dtmax))',
                    '         dt = dtmax  ! SWAP5 configured-dtmax-daily-v1')
     (output/'timecontrol.f90').write_text(source,encoding='cp1252')
+
+
+def render_physical_iteration_proposal(output, *, strict_water):
+    """Explicit v2 growth policy; actual iteration limits/diagnostics are unchanged.
+
+    The transient counter belongs to the private worker. Every HeadCalc call
+    resets it, including retries; every original nonconvergence clears its streak.
+    It is never physical/checkpoint state and never bypasses the strict guard.
+    """
+    path=output/'timecontrol.f90';source=path.read_text(encoding='cp1252')
+    source=replace(source,'end module MOD_timer',
+                   '   integer :: hybrid_physical_iterations=0\nend module MOD_timer')
+    source=replace(source,'         if (numbit <= numbit_crit) dt = min(dt*fact_dt_increase,dtMax)',
+                   '         if (hybrid_physical_iterations>0) then\n'
+                   '            if (hybrid_physical_iterations<=numbit_crit.and.numbit<MaxIt) dt=min(dt*fact_dt_increase,dtMax)\n'
+                   '         else\n'
+                   '            if (numbit<=numbit_crit) dt=min(dt*fact_dt_increase,dtMax)\n'
+                   '         end if')
+    path.write_text(source,encoding='cp1252')
+    if strict_water:
+        path=output/'headcalc.f90';source=path.read_text(encoding='cp1252')
+        source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                       '   use MOD_timer, only: hybrid_physical_iterations\n   use hybrid_step_budget, only: projected_water_residual')
+        source=replace(source,'mass_polish_at = 0',
+                       'mass_polish_at = 0\n   hybrid_physical_iterations=0')
+        anchor='      if (budget_enabled .and. .not.flnonconv) then'
+        source=replace(source,anchor,
+                       '      if (flnonconv) hybrid_physical_iterations=0\n'
+                       '      if (.not.flnonconv.and.hybrid_physical_iterations==0) hybrid_physical_iterations=numbit\n'+anchor)
+        path.write_text(source,encoding='cp1252')

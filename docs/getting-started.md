@@ -204,3 +204,11 @@ source/toolchain/input/build/output and active-macro refusals. It does not execu
 Andelst or load a research provider. Existing full O0, seasonal restart, heat,
 rollback, independent-instance and external-input qualification remains separately
 source-bound; this packaging change does not change the production Fortran/host.
+
+
+The current registered numerical policies are documented in the
+[bounded policy assessment](science/PHYSICAL_ITERATION_POLICY01.md). Rebuild
+project binaries after updating source. A checkpoint remains bound to its exact
+source/build/project policy; an old SaltFarm checkpoint is not transferable to
+the new policy by editing its identity. Preserved older builds and checkpoints
+retain their original evidence and numerical behavior.
