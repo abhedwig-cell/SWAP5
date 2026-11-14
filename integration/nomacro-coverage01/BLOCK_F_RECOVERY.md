@@ -76,3 +76,10 @@ attacks must refuse. No kernel physics, new solver or external message sending.
 Peer refreshed before code: PERF3075fbbb3 has its own untracked qualification
 artifacts; macrocd2bf853e unchanged, both untouched. Canonical02ecf5187 unchanged.
 Invariants2/3/7/13/21/23/29 apply. No private peer policy imported.
+
+First fresh smoke43547735444 source8636b262f: provider, water-only O0 base and
+incremental module compile/link pass, publisher copy validates. Linux kernel
+launch fails PermissionError because old copyfile lost executable mode. Existing
+legacy qualifier manually chmodded reused capsule binaries. Fix builder to retain
+file metadata/mode through copy2; no physics/kernel object or numeric change.
+Preserve first actual fresh-build failure.

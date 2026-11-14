@@ -114,7 +114,7 @@ def build_bundle(base, reference, target, project=h.HUPSEL):
     target.mkdir()
     for p in base.iterdir():
         if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):
-            shutil.copyfile(p,target/p.name)
+            shutil.copy2(p,target/p.name)
     if 'restart_publisher' in identity:
         library=h.validate_restart_publisher(base,identity['restart_publisher'])
         shutil.copyfile(library,target/library.name)
