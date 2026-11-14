@@ -20,9 +20,9 @@ from donor_sources import records, render_checkpoint, render_day_return, render_
 
 APP = Path(__file__).resolve().parent
 ORIGINAL_TIME_POLICY = 'original-adaptive-day-seed-v1'
-DAILY_ACTUAL_ITERATION_POLICY = 'configured-dtmax-daily-v1'
-NO_MACRO_TIME_POLICY = 'configured-dtmax-physical-growth-v2'
-TIME_POLICIES = (ORIGINAL_TIME_POLICY,DAILY_ACTUAL_ITERATION_POLICY,NO_MACRO_TIME_POLICY)
+NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
+PHYSICAL_GROWTH_TIME_POLICY = 'configured-dtmax-physical-growth-v2'
+TIME_POLICIES = (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY)
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
 
@@ -55,7 +55,7 @@ class HybridProject:
 ANDELST = HybridProject('3.macroporeflow','HYBRID_ANDELST_WATER','1998-01-01',112,1e-6,macro=True,end_date='1999-04-26')
 GRASSGROWTH = HybridProject('2.grassgrowth','HYBRID_GRASSGROWTH_WATER','1980-01-01',113,1e-10,end_date='1984-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
 HUPSEL = HybridProject('1.hupselbrook','HYBRID_HUPSEL_WATER','2002-01-01',34,1e-10,solute=True,end_date='2004-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
-SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31',time_step_policy=NO_MACRO_TIME_POLICY)
+SALTFARM = HybridProject('4.salinitystress-04dS','HYBRID_SALTFARM_WATER','2012-01-01',195,1e-10,solute=True,end_date='2015-12-31',time_step_policy=PHYSICAL_GROWTH_TIME_POLICY)
 PROJECTS = (ANDELST,GRASSGROWTH,HUPSEL,SALTFARM)
 
 
@@ -176,7 +176,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
-    if not project.macro and project.time_step_policy in (DAILY_ACTUAL_ITERATION_POLICY,NO_MACRO_TIME_POLICY):
+    if not project.macro and project.time_step_policy in (NO_MACRO_TIME_POLICY,PHYSICAL_GROWTH_TIME_POLICY):
         render_no_macro_timecontrol(donor_build/'swap-selected',output)
         patched.insert(0,'timecontrol')
     if checkpoint_day is not None or runtime_checkpoint:
@@ -564,7 +564,7 @@ end module MOD_wofost""")
         source=source[:marker.start()]+procedures+source[marker.start():]
         (output/'irrigation.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'irrigation')
-    if not project.macro and project.time_step_policy==NO_MACRO_TIME_POLICY:
+    if not project.macro and project.time_step_policy==PHYSICAL_GROWTH_TIME_POLICY:
         render_physical_iteration_proposal(output,strict_water=strict_water)
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
