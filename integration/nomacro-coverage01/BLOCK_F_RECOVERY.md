@@ -144,3 +144,9 @@ original old bound as an additional restriction. No new physical flux formula,
 parameter or tolerance. Probe original-observed versus explicit private row-limit
 candidate from the same exact572 origin. If unsupported, stop local CDE patches
 and revise transport strategy. No production/default source modification yet.
+
+First transactional generator run43586530045 stopped before compilation/model
+execution: selected module interface declaration rather than CDE submodule body.
+Anchor now scoped explicitly to the CDE implementation submodule; local rendering
+of exact refused-carrier source confirms one transaction loop and unchanged
+parent interface. No numerical attempt or physical tolerance change involved.

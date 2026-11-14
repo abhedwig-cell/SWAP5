@@ -7,7 +7,7 @@ SOLUTE_STEP_POLICIES = (LEGACY_SOLUTE_STEP_POLICY, TRANSACTIONAL_SOLUTE_STEP_POL
 
 
 def render_transactional_cde(source):
-    start=source.index('      module subroutine solute_CDE(task)')
+    start=source.index('      module subroutine solute_CDE(task)',source.index('submodule (MOD_Solute) MOD_Solute_CDE'))
     end=source.index('      end subroutine solute_CDE',start)
     body=source[start:end]
     values=['csurf','cpond','isqtop','dectot','imdectot','rottot','imrottot',
