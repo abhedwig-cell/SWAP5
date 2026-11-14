@@ -46,7 +46,7 @@ source=source.replace(anchor,f'''         if {condition} write(*,'(a,2(1x,es25.1
 if a.physical_iteration_proposal:
     source=h.replace(source,'   use hybrid_step_budget, only: projected_water_residual',
                      '   use MOD_timer, only: ps_physical_iterations\n   use hybrid_step_budget, only: projected_water_residual')
-    source=h.replace(source,'    mass_polish_at = 0','    mass_polish_at = 0\n    ps_physical_iterations=0')
+    source=h.replace(source,'mass_polish_at = 0','mass_polish_at = 0\n    ps_physical_iterations=0')
     anchor='      if (budget_enabled .and. .not.flnonconv) then'
     active=project.start_clock+a.activate_day-1
     source=h.replace(source,anchor,f'''      if (t1900>={active}d0) then
