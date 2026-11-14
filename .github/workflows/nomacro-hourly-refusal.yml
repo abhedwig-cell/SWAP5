@@ -5,6 +5,10 @@ on:
     paths: ['.github/workflows/nomacro-hourly-refusal.yml']
   workflow_dispatch:
     inputs:
+      resume_constitutive_o2:
+        type: boolean
+        default: false
+        description: Complete only censored cold O2 from actual own364 origin
       constitutive_three:
         type: boolean
         default: false
@@ -42,8 +46,18 @@ jobs:
           run-id: 43599641836
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/prior
+      - uses: actions/download-artifact@v4
+        if: ${{ inputs.resume_constitutive_o2 == true }}
+        with:
+          name: original-refusal-30dc4d1e7579872db664b32b0b6fd1dbec599b14
+          run-id: 43600305896
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/carrier
+      - name: Complete only missing original O2 cold refusal
+        if: ${{ inputs.resume_constitutive_o2 == true }}
+        run: python3 -B tools/solute/check_retained_native_refusal.py --prior-proof "$RUNNER_TEMP/carrier" --prior-cohort "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
       - name: Reproduce own364 to rejected365 with fresh source and unchanged accepted state
-        if: ${{ inputs.constitutive_three == true }}
+        if: ${{ inputs.constitutive_three == true && inputs.resume_constitutive_o2 != true }}
         run: python3 -B tools/solute/check_harmonic_refusal.py --constitutive-three --fresh-build --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
       - name: Reproduce own363 to rejected364 with unchanged accepted state
         if: ${{ inputs.constitutive_three != true }}
