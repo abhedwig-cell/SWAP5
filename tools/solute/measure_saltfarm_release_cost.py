@@ -27,7 +27,7 @@ for name,sha in meta['inputs'].items():
  target=case/name;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(data);inventory[name]=sha
 exe=a.output/'swap431-common.exe';objects=sorted((a.provider/'build/swap-obj').glob('*.o'));assert objects
 link=call('original-link',['gfortran','-o',exe,*objects,a.provider/'build/ttutil-obj/libttutil.a'])
-original=call('original-model',[exe,'./swap.swp'],cwd=case,expected=100)
+original=call('original-model',[exe,'./swap.swp'],cwd=case,expected=0)
 current=call('current-public',[sys.executable,'-B',ROOT/'tools/solute/run_water.py','--no-macro-release','--model',h.SALTFARM.model,'--reference-work',a.provider,'--build-bundle',a.bundle,'--days',1461,'--timeout-seconds',60,'--output',a.output/'current'])
 read=lambda p:list(csv.DictReader(s for s in p.read_text().splitlines() if s.strip() and not s.startswith('*')))
 o=read(case/'result_output.csv');c=read(a.output/'current/original/result_output.csv');assert len(o)==len(c)==1462 and o[-1]['DATE']==c[-1]['DATE']=='2015-12-31'
