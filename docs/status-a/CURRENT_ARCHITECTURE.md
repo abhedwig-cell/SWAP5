@@ -678,3 +678,14 @@ mean dispatch and Darcy evaporation bodies are reused. Five complete trajectorie
 qualify a bounded scope; harmonic refusals and TSPACK censorship remain separate.
 Table reference executables explicitly select the same original dormant branch
 and are labeled modified original references, not unmodified-default science.
+
+## Original weather and accepted plant ET memory
+
+[Experimental weather coverage](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) reuses
+original MOD_meteo and physical compatibility rules. Only active experimental
+SWCFBS1 adds100bytes of complete original plant ET interface to distinct native
+formats, restored before original daily weather/crop calls. Both writer/reader
+validate the block; inactive codecs stay byte-identical. No physical formula,
+Richards solver, balance tolerance or registered numerical policy changes. Two
+temporal-forcing configurations remain strict full-period refusals. Build/source/
+native binding requires fresh bundles and prevents old-checkpoint rebinding.

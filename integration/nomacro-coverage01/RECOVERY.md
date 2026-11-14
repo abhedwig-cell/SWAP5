@@ -1,3 +1,25 @@
+# H bounded qualification complete, admission pending
+
+Branch08 PR1682; runtime2c0c082db unchanged through b3a873ed5. Eight complete1096
+cases8768days: seven in43597013110; uniform detailed rain in43598743032. Both
+workflows overall FAIL later at distinct pulsed/hourly364 guards; never all10PASS.
+Pulsed proof43598463596 and hourly43598942598 SUCCESS: actual O0/O2 own363native
+reproduce exact364 refusal, unchanged accepted state, no rejected publication.
+Default8/external preservation43597013103 PASS. Local codec O0/O2 and sixinactive
+source images PASS; warm1096 unchanged. Seal archives/docs and exact-head admission
+then continue larger remaining original family audit. Frozen and peers untouched.
+
+# H current: seven full cases, pulsed refusal proven, final temporal run live
+
+Branch08 PR1682. Runtime2c0c082db unchanged through bc1adba5c. Run43597013110
+has SEVEN full1096 cases and actual native/transaction gates; overall FAIL at
+pulsed rain364 retained. Default-source preservation43597013103 SUCCESS.
+Pulsed own363native refusal43598463596 SUCCESS at both O0/O2, no commit.
+Only remaining uniform-rain/hourly selection43598743032 LIVE at bc1adba5c;
+follow exact run to terminal, no duplicate dispatch. Uniform detailed rainfall
+is a separately named derived input, never a relabel/repair of pulsed FAIL.
+Source guards and all balance tolerances unchanged. No H admission yet.
+
 # H current full9 run with proven original plant ET memory
 
 Own branch08 PR1682 draft, canonicalG3aa554460. Source2c0c082db: full9-case

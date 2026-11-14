@@ -1731,3 +1731,15 @@ accepted state. Original default TSPACK startup remains censored. This is bounde
 experimental scope, not whole science or complete original functional coverage.
 `integration/nomacro-coverage01/BLOCK_G_QUALIFICATION.json` owns per-configuration
 source/run evidence; actual merge receipt owns canonical admission.
+
+## Experimental original weather coverage
+
+[Original coverage block H](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) qualifies
+eight complete1096-day ET/rain configurations,8768 model days, with exact named
+native continuations and unchanged balance/transaction guards. Pulsed rain and
+hourly weather retain day364 failures at both O0/O2 with exact own-native refusal.
+Active experimental soil-factor mode preserves the whole original plant ET
+interface; inactive codecs/default source images remain exact. Per-case authority
+is `integration/nomacro-coverage01/BLOCK_H_QUALIFICATION.json`; actual merge receipt
+owns admission. Full original coverage, scientific equivalence and whole energy
+remain open. The registered release and frozen Status-A denominator are unchanged.
