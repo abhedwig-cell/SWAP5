@@ -15,16 +15,16 @@ groups=[
  'real(8)':{'WaSrMpDm':'madm','WaUnMpDm':'madm','WaUnMpDmCp':'madm,macp','WaSrMp':'',
  'TimAbsCumDmCp':'madm,macp','ThtSrpRefDmCp':'madm,macp','SorpDmCp':'madm,macp',
  'VlMpDmCp':'madm,macp','VlMpDm':'madm','VlMp':'','ZBtDm':'madm','ZWaLevDm':'madm',
- 'FrMpWalWet':'madm,macp','AwlCorFac':'macp','ArMpTp':'','ArMpTpDm':'madm'},
+ 'FrMpWalWet':'madm,macp','FrMpWalWetOld':'madm,macp','FrReduQ':'','AwlCorFac':'macp','ArMpTp':'','ArMpTpDm':'madm'},
  'integer':{'ICpBtDm':'madm','ICpTpWaSrDm':'madm'}}),
  ('MOD_swap_mp','macro',{'real(8)':{'VlMpDyCp':'macp','SubsidCp':'macp','ArMpSs':'','KsMpSs':''}}),
- ('variables','host',{'real(8)':{'t1900':'','tstart':'','t':'','tcum':'','timjan1':'','dt':'','dtold':''},
+ ('variables','host',{'real(8)':{'t1900':'','tstart':'','t':'','tcum':'','timjan1':'','dt':'','dtold':'','volact':'','volm1':''},
  'integer':{'daynr':'','daycum':'','iyear':'','imonth':'','isteps':''},
  'logical':{'fldaystart':'','fldayend':'','fldtmin':'','flzerointr':'','flzerocumu':''}}),
  ('MOD_meteo','host',{'real(8)':{'tmn':'','tmx':'','tavd':'','hum':'','win':'','etr':'','grai':'','fprecnosnow':'','epond':'','peva':'','ptra_dry':'','ptra_wet':'','eintc':'','aintc':'','wfrac':''},
  'integer':{'meteo_rec':'','rain_rec':'','i_metdetail':''},'logical':{'fl_update_meteo':''}}),
  ('atmosphere_interface','host',{'real(8)':{'tav':'','rad':''}}),
- ('plant_interface','host',{'real(8)':{'lai':'','rd':'','vcover':'','siccap':'','sicact':'','cf':'','fco2tra':'','dt_interc_event':'','crsflx_in':'','crsflx_out':'','hlim3l':'','hlim3h':'','hlim4':''},'integer':{'noddrz':''},'logical':{'fl_cropemergence':'','fl_cropharvest':''}}),
+ ('plant_interface','host',{'real(8)':{'lai':'','rd':'','vcover':'','siccap':'','sicact':'','cf':'','fco2tra':'','dt_interc_event':'','crsflx_in':'','crsflx_out':'','hlim3l':'','hlim3h':'','hlim4':'','dvs':'','tsum':''},'integer':{'noddrz':''},'logical':{'fl_cropemergence':'','fl_cropharvest':''}}),
  ('MOD_cropdevelopment','host',{'real(8)':{'cumdens_top':'macp'}}),
 ]
 
@@ -36,6 +36,9 @@ def prepare():
        (R.parent/'swap431-macro-b1-contract06/minimal_contract.patch').read_bytes())).hexdigest()
  use='\n'.join('use '+m+', only:'+','.join(n for vs in g.values() for n in vs) for m,p,g in groups)
  decl='\n'.join(f"{f['type']},save :: b_{f['name']}"+(f"({f['shape']})" if f['shape'] else '') for f in fields)
+ def section(f,n='numnod',nd='NumDm'):
+  if f['name']=='cumdens_top':return '(1:'+n+'+1)'
+  return {'':'','madm':'(1:'+nd+')','macp':'(1:'+n+')','madm,macp':'(1:'+nd+',1:'+n+')'}[f['shape']]
  code=f'''module MOD_native09
 use MOD_arrays, only:macp,madm
 use MOD_grid, only:numnod
@@ -62,7 +65,7 @@ if(rw==2) then
  tag='SWAP431_MACRO_RESTART_V1'
  write(u) tag,1,numnod,NumDm,signature
 '''
- for f in fields:code+=f" write(u) {f['name']}\n"
+ for f in fields:code+=f" write(u) {f['name']}{section(f)}\n"
  code+=''' tag='NATIVE09_COMPLETE'
  write(u) tag
  return
@@ -74,9 +77,9 @@ if(n/=numnod.or.n<1.or.nd<1.or.nd>madm) error stop 'NATIVE09 dimensions mismatch
 saved_n=n;saved_nd=nd
 '''
  for f in fields:
-  code+=f"read(u,iostat=ios) b_{f['name']}\nif(ios/=0) error stop 'NATIVE09 incomplete {f['name']}'\n"
+  code+=f"read(u,iostat=ios) b_{f['name']}{section(f,'n','nd')}\nif(ios/=0) error stop 'NATIVE09 incomplete {f['name']}'\n"
   if f['type']=='real(8)':
-   test=f"ieee_is_finite(b_{f['name']})";test='all('+test+')' if f['shape'] else test
+   test=f"ieee_is_finite(b_{f['name']}{section(f,'n','nd')})";test='all('+test+')' if f['shape'] else test
    code+=f"if(.not.{test}) error stop 'NATIVE09 nonfinite {f['name']}'\n"
  code+='''read(u,iostat=ios) tag
 if(ios/=0.or.tag/='NATIVE09_COMPLETE') error stop 'NATIVE09 incomplete trailer'
@@ -97,7 +100,7 @@ if(.not.pending) return
 if(NumDm/=saved_nd.or.numnod/=saved_n.or.swmbf/=1.or.swabs/=1.or.swhyst/=0.or.swfrost/=0.or.swdra/=1.or.swsolu/=0.or.swhea/=1.or.swcrop/=1) error stop 'NATIVE09 incompatible mode'
 '''
  for f in fields:
-  if f['phase']=='macro':code+=f"{f['name']}=b_{f['name']}\n"
+  if f['phase']=='macro':code+=f"{f['name']}{section(f)}=b_{f['name']}{section(f)}\n"
  code+='''macro_done=.true.
 end subroutine
 subroutine install_host()
@@ -105,7 +108,7 @@ if(.not.pending) return
 if(.not.macro_done) error stop 'NATIVE09 macro install order'
 '''
  for f in fields:
-  if f['phase']=='host':code+=f"{f['name']}=b_{f['name']}\n"
+  if f['phase']=='host':code+=f"{f['name']}{section(f)}=b_{f['name']}{section(f)}\n"
  code+='''fldecdt=.false.;FlDecMpRat=.false.;IDecMpRat=0
 flrunend=.false.;fl_initialize=.false.
 pending=.false.
@@ -116,7 +119,7 @@ integer::u
 open(newunit=u,file=label//'.txt',status='replace')
 '''
  for f in fields:
-  val=f['name']
+  val=f['name']+section(f)
   if f['type']=='logical':val='merge(1,0,'+val+')'
   code+=f"write(u,*) '{f['name']}',{val}\n"
  code+='''close(u)
@@ -138,7 +141,18 @@ end subroutine
 subroutine native09_host()
 use MOD_native09, only:pending,install_host,dump
 use MOD_SoilWater, only:soilwater
+use MOD_cropdevelopment, only:cropdevelopment
+use MOD_swap_base, only:pathcrop,iun_min2,iun_max2
+use plant_interface, only:crpfilnam,cropfil,icrop,unit_crp,croptype
+integer,external :: getun2
 if(.not.pending) return
+if(croptype(icrop)/=1) error stop 'NATIVE09 only simple crop supported'
+! Read the same crop constants without cropdevelopment2/3 or daystart.
+! Rutter's parameter reader resets SICACT; accepted host installation below
+! restores that native reservoir and the saved daily geometry afterwards.
+crpfilnam=trim(pathcrop)//trim(cropfil(icrop))//'.crp'
+unit_crp=getun2(iun_min2,iun_max2,2)
+call cropdevelopment(1)
 ! Refresh matrix hydraulic caches against restored H and initialized FrArMtrx;
 ! SoilWater1 does not integrate water or sorption for SWINCO3/SWHYST0.
 call soilwater(1)
@@ -202,7 +216,7 @@ def build(opt):
  save(R/(opt+'_IDENTITY.json'),dict(exe_sha256=sha(out/'native09.exe'),sources={p.name:sha(p) for p in R.glob('*.f90')},compiler=subprocess.check_output(['gfortran','--version'],text=True)))
 
 def run(opt,mode,label=''):
- profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+('-FINAL' if not label else ''));case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
+ profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+('-FINAL2' if not label else ''));case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
  for x in json.loads(Path('C:/Users/Veldh012/swap431-state02-work/audit/CASE_IDENTITY.json').read_text()):
   p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/p,case/p)
  if mode=='RESTART':

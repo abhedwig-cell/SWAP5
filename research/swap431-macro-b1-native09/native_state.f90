@@ -6,12 +6,12 @@ use MOD_swap_base, only:swmacro,swhyst,swfrost,swdra,swsolu,swhea,swcrop,fl_init
 use MOD_swap_mp, only:IDecMpRat,FlDecMpRat
 use variables, only:fldecdt,flrunend
 use, intrinsic :: ieee_arithmetic, only:ieee_is_finite
-use MOD_macropore, only:WaSrMpDm,WaUnMpDm,WaUnMpDmCp,WaSrMp,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,VlMpDmCp,VlMpDm,VlMp,ZBtDm,ZWaLevDm,FrMpWalWet,AwlCorFac,ArMpTp,ArMpTpDm,ICpBtDm,ICpTpWaSrDm
+use MOD_macropore, only:WaSrMpDm,WaUnMpDm,WaUnMpDmCp,WaSrMp,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,VlMpDmCp,VlMpDm,VlMp,ZBtDm,ZWaLevDm,FrMpWalWet,FrMpWalWetOld,FrReduQ,AwlCorFac,ArMpTp,ArMpTpDm,ICpBtDm,ICpTpWaSrDm
 use MOD_swap_mp, only:VlMpDyCp,SubsidCp,ArMpSs,KsMpSs
-use variables, only:t1900,tstart,t,tcum,timjan1,dt,dtold,daynr,daycum,iyear,imonth,isteps,fldaystart,fldayend,fldtmin,flzerointr,flzerocumu
+use variables, only:t1900,tstart,t,tcum,timjan1,dt,dtold,volact,volm1,daynr,daycum,iyear,imonth,isteps,fldaystart,fldayend,fldtmin,flzerointr,flzerocumu
 use MOD_meteo, only:tmn,tmx,tavd,hum,win,etr,grai,fprecnosnow,epond,peva,ptra_dry,ptra_wet,eintc,aintc,wfrac,meteo_rec,rain_rec,i_metdetail,fl_update_meteo
 use atmosphere_interface, only:tav,rad
-use plant_interface, only:lai,rd,vcover,siccap,sicact,cf,fco2tra,dt_interc_event,crsflx_in,crsflx_out,hlim3l,hlim3h,hlim4,noddrz,fl_cropemergence,fl_cropharvest
+use plant_interface, only:lai,rd,vcover,siccap,sicact,cf,fco2tra,dt_interc_event,crsflx_in,crsflx_out,hlim3l,hlim3h,hlim4,dvs,tsum,noddrz,fl_cropemergence,fl_cropharvest
 use MOD_cropdevelopment, only:cumdens_top
 implicit none
 logical,save :: pending=.false.,macro_done=.false.
@@ -30,6 +30,8 @@ real(8),save :: b_VlMp
 real(8),save :: b_ZBtDm(madm)
 real(8),save :: b_ZWaLevDm(madm)
 real(8),save :: b_FrMpWalWet(madm,macp)
+real(8),save :: b_FrMpWalWetOld(madm,macp)
+real(8),save :: b_FrReduQ
 real(8),save :: b_AwlCorFac(macp)
 real(8),save :: b_ArMpTp
 real(8),save :: b_ArMpTpDm(madm)
@@ -46,6 +48,8 @@ real(8),save :: b_tcum
 real(8),save :: b_timjan1
 real(8),save :: b_dt
 real(8),save :: b_dtold
+real(8),save :: b_volact
+real(8),save :: b_volm1
 integer,save :: b_daynr
 integer,save :: b_daycum
 integer,save :: b_iyear
@@ -90,6 +94,8 @@ real(8),save :: b_crsflx_out
 real(8),save :: b_hlim3l
 real(8),save :: b_hlim3h
 real(8),save :: b_hlim4
+real(8),save :: b_dvs
+real(8),save :: b_tsum
 integer,save :: b_noddrz
 logical,save :: b_fl_cropemergence
 logical,save :: b_fl_cropharvest
@@ -105,26 +111,28 @@ if(rw==2) then
  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
  tag='SWAP431_MACRO_RESTART_V1'
  write(u) tag,1,numnod,NumDm,signature
- write(u) WaSrMpDm
- write(u) WaUnMpDm
- write(u) WaUnMpDmCp
+ write(u) WaSrMpDm(1:NumDm)
+ write(u) WaUnMpDm(1:NumDm)
+ write(u) WaUnMpDmCp(1:NumDm,1:numnod)
  write(u) WaSrMp
- write(u) TimAbsCumDmCp
- write(u) ThtSrpRefDmCp
- write(u) SorpDmCp
- write(u) VlMpDmCp
- write(u) VlMpDm
+ write(u) TimAbsCumDmCp(1:NumDm,1:numnod)
+ write(u) ThtSrpRefDmCp(1:NumDm,1:numnod)
+ write(u) SorpDmCp(1:NumDm,1:numnod)
+ write(u) VlMpDmCp(1:NumDm,1:numnod)
+ write(u) VlMpDm(1:NumDm)
  write(u) VlMp
- write(u) ZBtDm
- write(u) ZWaLevDm
- write(u) FrMpWalWet
- write(u) AwlCorFac
+ write(u) ZBtDm(1:NumDm)
+ write(u) ZWaLevDm(1:NumDm)
+ write(u) FrMpWalWet(1:NumDm,1:numnod)
+ write(u) FrMpWalWetOld(1:NumDm,1:numnod)
+ write(u) FrReduQ
+ write(u) AwlCorFac(1:numnod)
  write(u) ArMpTp
- write(u) ArMpTpDm
- write(u) ICpBtDm
- write(u) ICpTpWaSrDm
- write(u) VlMpDyCp
- write(u) SubsidCp
+ write(u) ArMpTpDm(1:NumDm)
+ write(u) ICpBtDm(1:NumDm)
+ write(u) ICpTpWaSrDm(1:NumDm)
+ write(u) VlMpDyCp(1:numnod)
+ write(u) SubsidCp(1:numnod)
  write(u) ArMpSs
  write(u) KsMpSs
  write(u) t1900
@@ -134,6 +142,8 @@ if(rw==2) then
  write(u) timjan1
  write(u) dt
  write(u) dtold
+ write(u) volact
+ write(u) volm1
  write(u) daynr
  write(u) daycum
  write(u) iyear
@@ -178,10 +188,12 @@ if(rw==2) then
  write(u) hlim3l
  write(u) hlim3h
  write(u) hlim4
+ write(u) dvs
+ write(u) tsum
  write(u) noddrz
  write(u) fl_cropemergence
  write(u) fl_cropharvest
- write(u) cumdens_top
+ write(u) cumdens_top(1:numnod+1)
  tag='NATIVE09_COMPLETE'
  write(u) tag
  return
@@ -191,64 +203,70 @@ if(ios/=0) error stop 'NATIVE09 missing trailer'
 if(tag/='SWAP431_MACRO_RESTART_V1'.or.v/=1.or.sig/=signature) error stop 'NATIVE09 version or identity mismatch'
 if(n/=numnod.or.n<1.or.nd<1.or.nd>madm) error stop 'NATIVE09 dimensions mismatch'
 saved_n=n;saved_nd=nd
-read(u,iostat=ios) b_WaSrMpDm
+read(u,iostat=ios) b_WaSrMpDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete WaSrMpDm'
-if(.not.all(ieee_is_finite(b_WaSrMpDm))) error stop 'NATIVE09 nonfinite WaSrMpDm'
-read(u,iostat=ios) b_WaUnMpDm
+if(.not.all(ieee_is_finite(b_WaSrMpDm(1:nd)))) error stop 'NATIVE09 nonfinite WaSrMpDm'
+read(u,iostat=ios) b_WaUnMpDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete WaUnMpDm'
-if(.not.all(ieee_is_finite(b_WaUnMpDm))) error stop 'NATIVE09 nonfinite WaUnMpDm'
-read(u,iostat=ios) b_WaUnMpDmCp
+if(.not.all(ieee_is_finite(b_WaUnMpDm(1:nd)))) error stop 'NATIVE09 nonfinite WaUnMpDm'
+read(u,iostat=ios) b_WaUnMpDmCp(1:nd,1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete WaUnMpDmCp'
-if(.not.all(ieee_is_finite(b_WaUnMpDmCp))) error stop 'NATIVE09 nonfinite WaUnMpDmCp'
+if(.not.all(ieee_is_finite(b_WaUnMpDmCp(1:nd,1:n)))) error stop 'NATIVE09 nonfinite WaUnMpDmCp'
 read(u,iostat=ios) b_WaSrMp
 if(ios/=0) error stop 'NATIVE09 incomplete WaSrMp'
 if(.not.ieee_is_finite(b_WaSrMp)) error stop 'NATIVE09 nonfinite WaSrMp'
-read(u,iostat=ios) b_TimAbsCumDmCp
+read(u,iostat=ios) b_TimAbsCumDmCp(1:nd,1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete TimAbsCumDmCp'
-if(.not.all(ieee_is_finite(b_TimAbsCumDmCp))) error stop 'NATIVE09 nonfinite TimAbsCumDmCp'
-read(u,iostat=ios) b_ThtSrpRefDmCp
+if(.not.all(ieee_is_finite(b_TimAbsCumDmCp(1:nd,1:n)))) error stop 'NATIVE09 nonfinite TimAbsCumDmCp'
+read(u,iostat=ios) b_ThtSrpRefDmCp(1:nd,1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete ThtSrpRefDmCp'
-if(.not.all(ieee_is_finite(b_ThtSrpRefDmCp))) error stop 'NATIVE09 nonfinite ThtSrpRefDmCp'
-read(u,iostat=ios) b_SorpDmCp
+if(.not.all(ieee_is_finite(b_ThtSrpRefDmCp(1:nd,1:n)))) error stop 'NATIVE09 nonfinite ThtSrpRefDmCp'
+read(u,iostat=ios) b_SorpDmCp(1:nd,1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete SorpDmCp'
-if(.not.all(ieee_is_finite(b_SorpDmCp))) error stop 'NATIVE09 nonfinite SorpDmCp'
-read(u,iostat=ios) b_VlMpDmCp
+if(.not.all(ieee_is_finite(b_SorpDmCp(1:nd,1:n)))) error stop 'NATIVE09 nonfinite SorpDmCp'
+read(u,iostat=ios) b_VlMpDmCp(1:nd,1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete VlMpDmCp'
-if(.not.all(ieee_is_finite(b_VlMpDmCp))) error stop 'NATIVE09 nonfinite VlMpDmCp'
-read(u,iostat=ios) b_VlMpDm
+if(.not.all(ieee_is_finite(b_VlMpDmCp(1:nd,1:n)))) error stop 'NATIVE09 nonfinite VlMpDmCp'
+read(u,iostat=ios) b_VlMpDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete VlMpDm'
-if(.not.all(ieee_is_finite(b_VlMpDm))) error stop 'NATIVE09 nonfinite VlMpDm'
+if(.not.all(ieee_is_finite(b_VlMpDm(1:nd)))) error stop 'NATIVE09 nonfinite VlMpDm'
 read(u,iostat=ios) b_VlMp
 if(ios/=0) error stop 'NATIVE09 incomplete VlMp'
 if(.not.ieee_is_finite(b_VlMp)) error stop 'NATIVE09 nonfinite VlMp'
-read(u,iostat=ios) b_ZBtDm
+read(u,iostat=ios) b_ZBtDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete ZBtDm'
-if(.not.all(ieee_is_finite(b_ZBtDm))) error stop 'NATIVE09 nonfinite ZBtDm'
-read(u,iostat=ios) b_ZWaLevDm
+if(.not.all(ieee_is_finite(b_ZBtDm(1:nd)))) error stop 'NATIVE09 nonfinite ZBtDm'
+read(u,iostat=ios) b_ZWaLevDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete ZWaLevDm'
-if(.not.all(ieee_is_finite(b_ZWaLevDm))) error stop 'NATIVE09 nonfinite ZWaLevDm'
-read(u,iostat=ios) b_FrMpWalWet
+if(.not.all(ieee_is_finite(b_ZWaLevDm(1:nd)))) error stop 'NATIVE09 nonfinite ZWaLevDm'
+read(u,iostat=ios) b_FrMpWalWet(1:nd,1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete FrMpWalWet'
-if(.not.all(ieee_is_finite(b_FrMpWalWet))) error stop 'NATIVE09 nonfinite FrMpWalWet'
-read(u,iostat=ios) b_AwlCorFac
+if(.not.all(ieee_is_finite(b_FrMpWalWet(1:nd,1:n)))) error stop 'NATIVE09 nonfinite FrMpWalWet'
+read(u,iostat=ios) b_FrMpWalWetOld(1:nd,1:n)
+if(ios/=0) error stop 'NATIVE09 incomplete FrMpWalWetOld'
+if(.not.all(ieee_is_finite(b_FrMpWalWetOld(1:nd,1:n)))) error stop 'NATIVE09 nonfinite FrMpWalWetOld'
+read(u,iostat=ios) b_FrReduQ
+if(ios/=0) error stop 'NATIVE09 incomplete FrReduQ'
+if(.not.ieee_is_finite(b_FrReduQ)) error stop 'NATIVE09 nonfinite FrReduQ'
+read(u,iostat=ios) b_AwlCorFac(1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete AwlCorFac'
-if(.not.all(ieee_is_finite(b_AwlCorFac))) error stop 'NATIVE09 nonfinite AwlCorFac'
+if(.not.all(ieee_is_finite(b_AwlCorFac(1:n)))) error stop 'NATIVE09 nonfinite AwlCorFac'
 read(u,iostat=ios) b_ArMpTp
 if(ios/=0) error stop 'NATIVE09 incomplete ArMpTp'
 if(.not.ieee_is_finite(b_ArMpTp)) error stop 'NATIVE09 nonfinite ArMpTp'
-read(u,iostat=ios) b_ArMpTpDm
+read(u,iostat=ios) b_ArMpTpDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete ArMpTpDm'
-if(.not.all(ieee_is_finite(b_ArMpTpDm))) error stop 'NATIVE09 nonfinite ArMpTpDm'
-read(u,iostat=ios) b_ICpBtDm
+if(.not.all(ieee_is_finite(b_ArMpTpDm(1:nd)))) error stop 'NATIVE09 nonfinite ArMpTpDm'
+read(u,iostat=ios) b_ICpBtDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete ICpBtDm'
-read(u,iostat=ios) b_ICpTpWaSrDm
+read(u,iostat=ios) b_ICpTpWaSrDm(1:nd)
 if(ios/=0) error stop 'NATIVE09 incomplete ICpTpWaSrDm'
-read(u,iostat=ios) b_VlMpDyCp
+read(u,iostat=ios) b_VlMpDyCp(1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete VlMpDyCp'
-if(.not.all(ieee_is_finite(b_VlMpDyCp))) error stop 'NATIVE09 nonfinite VlMpDyCp'
-read(u,iostat=ios) b_SubsidCp
+if(.not.all(ieee_is_finite(b_VlMpDyCp(1:n)))) error stop 'NATIVE09 nonfinite VlMpDyCp'
+read(u,iostat=ios) b_SubsidCp(1:n)
 if(ios/=0) error stop 'NATIVE09 incomplete SubsidCp'
-if(.not.all(ieee_is_finite(b_SubsidCp))) error stop 'NATIVE09 nonfinite SubsidCp'
+if(.not.all(ieee_is_finite(b_SubsidCp(1:n)))) error stop 'NATIVE09 nonfinite SubsidCp'
 read(u,iostat=ios) b_ArMpSs
 if(ios/=0) error stop 'NATIVE09 incomplete ArMpSs'
 if(.not.ieee_is_finite(b_ArMpSs)) error stop 'NATIVE09 nonfinite ArMpSs'
@@ -276,6 +294,12 @@ if(.not.ieee_is_finite(b_dt)) error stop 'NATIVE09 nonfinite dt'
 read(u,iostat=ios) b_dtold
 if(ios/=0) error stop 'NATIVE09 incomplete dtold'
 if(.not.ieee_is_finite(b_dtold)) error stop 'NATIVE09 nonfinite dtold'
+read(u,iostat=ios) b_volact
+if(ios/=0) error stop 'NATIVE09 incomplete volact'
+if(.not.ieee_is_finite(b_volact)) error stop 'NATIVE09 nonfinite volact'
+read(u,iostat=ios) b_volm1
+if(ios/=0) error stop 'NATIVE09 incomplete volm1'
+if(.not.ieee_is_finite(b_volm1)) error stop 'NATIVE09 nonfinite volm1'
 read(u,iostat=ios) b_daynr
 if(ios/=0) error stop 'NATIVE09 incomplete daynr'
 read(u,iostat=ios) b_daycum
@@ -394,15 +418,21 @@ if(.not.ieee_is_finite(b_hlim3h)) error stop 'NATIVE09 nonfinite hlim3h'
 read(u,iostat=ios) b_hlim4
 if(ios/=0) error stop 'NATIVE09 incomplete hlim4'
 if(.not.ieee_is_finite(b_hlim4)) error stop 'NATIVE09 nonfinite hlim4'
+read(u,iostat=ios) b_dvs
+if(ios/=0) error stop 'NATIVE09 incomplete dvs'
+if(.not.ieee_is_finite(b_dvs)) error stop 'NATIVE09 nonfinite dvs'
+read(u,iostat=ios) b_tsum
+if(ios/=0) error stop 'NATIVE09 incomplete tsum'
+if(.not.ieee_is_finite(b_tsum)) error stop 'NATIVE09 nonfinite tsum'
 read(u,iostat=ios) b_noddrz
 if(ios/=0) error stop 'NATIVE09 incomplete noddrz'
 read(u,iostat=ios) b_fl_cropemergence
 if(ios/=0) error stop 'NATIVE09 incomplete fl_cropemergence'
 read(u,iostat=ios) b_fl_cropharvest
 if(ios/=0) error stop 'NATIVE09 incomplete fl_cropharvest'
-read(u,iostat=ios) b_cumdens_top
+read(u,iostat=ios) b_cumdens_top(1:n+1)
 if(ios/=0) error stop 'NATIVE09 incomplete cumdens_top'
-if(.not.all(ieee_is_finite(b_cumdens_top))) error stop 'NATIVE09 nonfinite cumdens_top'
+if(.not.all(ieee_is_finite(b_cumdens_top(1:n+1)))) error stop 'NATIVE09 nonfinite cumdens_top'
 read(u,iostat=ios) tag
 if(ios/=0.or.tag/='NATIVE09_COMPLETE') error stop 'NATIVE09 incomplete trailer'
 if(b_tstart/=tstart.or.b_dt<=0.or.b_dtold<=0) error stop 'NATIVE09 time/origin mismatch'
@@ -420,26 +450,28 @@ end subroutine
 subroutine install_macro()
 if(.not.pending) return
 if(NumDm/=saved_nd.or.numnod/=saved_n.or.swmbf/=1.or.swabs/=1.or.swhyst/=0.or.swfrost/=0.or.swdra/=1.or.swsolu/=0.or.swhea/=1.or.swcrop/=1) error stop 'NATIVE09 incompatible mode'
-WaSrMpDm=b_WaSrMpDm
-WaUnMpDm=b_WaUnMpDm
-WaUnMpDmCp=b_WaUnMpDmCp
+WaSrMpDm(1:NumDm)=b_WaSrMpDm(1:NumDm)
+WaUnMpDm(1:NumDm)=b_WaUnMpDm(1:NumDm)
+WaUnMpDmCp(1:NumDm,1:numnod)=b_WaUnMpDmCp(1:NumDm,1:numnod)
 WaSrMp=b_WaSrMp
-TimAbsCumDmCp=b_TimAbsCumDmCp
-ThtSrpRefDmCp=b_ThtSrpRefDmCp
-SorpDmCp=b_SorpDmCp
-VlMpDmCp=b_VlMpDmCp
-VlMpDm=b_VlMpDm
+TimAbsCumDmCp(1:NumDm,1:numnod)=b_TimAbsCumDmCp(1:NumDm,1:numnod)
+ThtSrpRefDmCp(1:NumDm,1:numnod)=b_ThtSrpRefDmCp(1:NumDm,1:numnod)
+SorpDmCp(1:NumDm,1:numnod)=b_SorpDmCp(1:NumDm,1:numnod)
+VlMpDmCp(1:NumDm,1:numnod)=b_VlMpDmCp(1:NumDm,1:numnod)
+VlMpDm(1:NumDm)=b_VlMpDm(1:NumDm)
 VlMp=b_VlMp
-ZBtDm=b_ZBtDm
-ZWaLevDm=b_ZWaLevDm
-FrMpWalWet=b_FrMpWalWet
-AwlCorFac=b_AwlCorFac
+ZBtDm(1:NumDm)=b_ZBtDm(1:NumDm)
+ZWaLevDm(1:NumDm)=b_ZWaLevDm(1:NumDm)
+FrMpWalWet(1:NumDm,1:numnod)=b_FrMpWalWet(1:NumDm,1:numnod)
+FrMpWalWetOld(1:NumDm,1:numnod)=b_FrMpWalWetOld(1:NumDm,1:numnod)
+FrReduQ=b_FrReduQ
+AwlCorFac(1:numnod)=b_AwlCorFac(1:numnod)
 ArMpTp=b_ArMpTp
-ArMpTpDm=b_ArMpTpDm
-ICpBtDm=b_ICpBtDm
-ICpTpWaSrDm=b_ICpTpWaSrDm
-VlMpDyCp=b_VlMpDyCp
-SubsidCp=b_SubsidCp
+ArMpTpDm(1:NumDm)=b_ArMpTpDm(1:NumDm)
+ICpBtDm(1:NumDm)=b_ICpBtDm(1:NumDm)
+ICpTpWaSrDm(1:NumDm)=b_ICpTpWaSrDm(1:NumDm)
+VlMpDyCp(1:numnod)=b_VlMpDyCp(1:numnod)
+SubsidCp(1:numnod)=b_SubsidCp(1:numnod)
 ArMpSs=b_ArMpSs
 KsMpSs=b_KsMpSs
 macro_done=.true.
@@ -454,6 +486,8 @@ tcum=b_tcum
 timjan1=b_timjan1
 dt=b_dt
 dtold=b_dtold
+volact=b_volact
+volm1=b_volm1
 daynr=b_daynr
 daycum=b_daycum
 iyear=b_iyear
@@ -498,10 +532,12 @@ crsflx_out=b_crsflx_out
 hlim3l=b_hlim3l
 hlim3h=b_hlim3h
 hlim4=b_hlim4
+dvs=b_dvs
+tsum=b_tsum
 noddrz=b_noddrz
 fl_cropemergence=b_fl_cropemergence
 fl_cropharvest=b_fl_cropharvest
-cumdens_top=b_cumdens_top
+cumdens_top(1:numnod+1)=b_cumdens_top(1:numnod+1)
 fldecdt=.false.;FlDecMpRat=.false.;IDecMpRat=0
 flrunend=.false.;fl_initialize=.false.
 pending=.false.
@@ -510,26 +546,28 @@ subroutine dump(label)
 character(*),intent(in)::label
 integer::u
 open(newunit=u,file=label//'.txt',status='replace')
-write(u,*) 'WaSrMpDm',WaSrMpDm
-write(u,*) 'WaUnMpDm',WaUnMpDm
-write(u,*) 'WaUnMpDmCp',WaUnMpDmCp
+write(u,*) 'WaSrMpDm',WaSrMpDm(1:NumDm)
+write(u,*) 'WaUnMpDm',WaUnMpDm(1:NumDm)
+write(u,*) 'WaUnMpDmCp',WaUnMpDmCp(1:NumDm,1:numnod)
 write(u,*) 'WaSrMp',WaSrMp
-write(u,*) 'TimAbsCumDmCp',TimAbsCumDmCp
-write(u,*) 'ThtSrpRefDmCp',ThtSrpRefDmCp
-write(u,*) 'SorpDmCp',SorpDmCp
-write(u,*) 'VlMpDmCp',VlMpDmCp
-write(u,*) 'VlMpDm',VlMpDm
+write(u,*) 'TimAbsCumDmCp',TimAbsCumDmCp(1:NumDm,1:numnod)
+write(u,*) 'ThtSrpRefDmCp',ThtSrpRefDmCp(1:NumDm,1:numnod)
+write(u,*) 'SorpDmCp',SorpDmCp(1:NumDm,1:numnod)
+write(u,*) 'VlMpDmCp',VlMpDmCp(1:NumDm,1:numnod)
+write(u,*) 'VlMpDm',VlMpDm(1:NumDm)
 write(u,*) 'VlMp',VlMp
-write(u,*) 'ZBtDm',ZBtDm
-write(u,*) 'ZWaLevDm',ZWaLevDm
-write(u,*) 'FrMpWalWet',FrMpWalWet
-write(u,*) 'AwlCorFac',AwlCorFac
+write(u,*) 'ZBtDm',ZBtDm(1:NumDm)
+write(u,*) 'ZWaLevDm',ZWaLevDm(1:NumDm)
+write(u,*) 'FrMpWalWet',FrMpWalWet(1:NumDm,1:numnod)
+write(u,*) 'FrMpWalWetOld',FrMpWalWetOld(1:NumDm,1:numnod)
+write(u,*) 'FrReduQ',FrReduQ
+write(u,*) 'AwlCorFac',AwlCorFac(1:numnod)
 write(u,*) 'ArMpTp',ArMpTp
-write(u,*) 'ArMpTpDm',ArMpTpDm
-write(u,*) 'ICpBtDm',ICpBtDm
-write(u,*) 'ICpTpWaSrDm',ICpTpWaSrDm
-write(u,*) 'VlMpDyCp',VlMpDyCp
-write(u,*) 'SubsidCp',SubsidCp
+write(u,*) 'ArMpTpDm',ArMpTpDm(1:NumDm)
+write(u,*) 'ICpBtDm',ICpBtDm(1:NumDm)
+write(u,*) 'ICpTpWaSrDm',ICpTpWaSrDm(1:NumDm)
+write(u,*) 'VlMpDyCp',VlMpDyCp(1:numnod)
+write(u,*) 'SubsidCp',SubsidCp(1:numnod)
 write(u,*) 'ArMpSs',ArMpSs
 write(u,*) 'KsMpSs',KsMpSs
 write(u,*) 't1900',t1900
@@ -539,6 +577,8 @@ write(u,*) 'tcum',tcum
 write(u,*) 'timjan1',timjan1
 write(u,*) 'dt',dt
 write(u,*) 'dtold',dtold
+write(u,*) 'volact',volact
+write(u,*) 'volm1',volm1
 write(u,*) 'daynr',daynr
 write(u,*) 'daycum',daycum
 write(u,*) 'iyear',iyear
@@ -583,10 +623,12 @@ write(u,*) 'crsflx_out',crsflx_out
 write(u,*) 'hlim3l',hlim3l
 write(u,*) 'hlim3h',hlim3h
 write(u,*) 'hlim4',hlim4
+write(u,*) 'dvs',dvs
+write(u,*) 'tsum',tsum
 write(u,*) 'noddrz',noddrz
 write(u,*) 'fl_cropemergence',merge(1,0,fl_cropemergence)
 write(u,*) 'fl_cropharvest',merge(1,0,fl_cropharvest)
-write(u,*) 'cumdens_top',cumdens_top
+write(u,*) 'cumdens_top',cumdens_top(1:numnod+1)
 close(u)
 end subroutine
 end module MOD_native09
@@ -606,7 +648,18 @@ end subroutine
 subroutine native09_host()
 use MOD_native09, only:pending,install_host,dump
 use MOD_SoilWater, only:soilwater
+use MOD_cropdevelopment, only:cropdevelopment
+use MOD_swap_base, only:pathcrop,iun_min2,iun_max2
+use plant_interface, only:crpfilnam,cropfil,icrop,unit_crp,croptype
+integer,external :: getun2
 if(.not.pending) return
+if(croptype(icrop)/=1) error stop 'NATIVE09 only simple crop supported'
+! Read the same crop constants without cropdevelopment2/3 or daystart.
+! Rutter's parameter reader resets SICACT; accepted host installation below
+! restores that native reservoir and the saved daily geometry afterwards.
+crpfilnam=trim(pathcrop)//trim(cropfil(icrop))//'.crp'
+unit_crp=getun2(iun_min2,iun_max2,2)
+call cropdevelopment(1)
 ! Refresh matrix hydraulic caches against restored H and initialized FrArMtrx;
 ! SoilWater1 does not integrate water or sorption for SWINCO3/SWHYST0.
 call soilwater(1)

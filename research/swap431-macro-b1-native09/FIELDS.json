@@ -94,6 +94,20 @@
     "module": "MOD_macropore",
     "phase": "macro",
     "type": "real(8)",
+    "name": "FrMpWalWetOld",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "FrReduQ",
+    "shape": ""
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
     "name": "AwlCorFac",
     "shape": "macp"
   },
@@ -200,6 +214,20 @@
     "phase": "host",
     "type": "real(8)",
     "name": "dtold",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "volact",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "volm1",
     "shape": ""
   },
   {
@@ -508,6 +536,20 @@
     "phase": "host",
     "type": "real(8)",
     "name": "hlim4",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "dvs",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tsum",
     "shape": ""
   },
   {
