@@ -16,11 +16,13 @@ import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-from donor_sources import records, render_checkpoint, render_day_return, render_no_macro_timecontrol, replace, sha
+from donor_sources import records, render_checkpoint, render_day_return, render_no_macro_timecontrol, render_physical_iteration_proposal, replace, sha
 
 APP = Path(__file__).resolve().parent
 ORIGINAL_TIME_POLICY = 'original-adaptive-day-seed-v1'
-NO_MACRO_TIME_POLICY = 'configured-dtmax-daily-v1'
+DAILY_ACTUAL_ITERATION_POLICY = 'configured-dtmax-daily-v1'
+NO_MACRO_TIME_POLICY = 'configured-dtmax-physical-growth-v2'
+TIME_POLICIES = (ORIGINAL_TIME_POLICY,DAILY_ACTUAL_ITERATION_POLICY,NO_MACRO_TIME_POLICY)
 NO_MACRO_FP_FLAGS = ('-ffp-contract=off', '-march=x86-64', '-mtune=generic')
 
 
@@ -108,7 +110,7 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST, donor_opt="O2"):
-    if not project.macro and project.time_step_policy not in (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY):
+    if not project.macro and project.time_step_policy not in TIME_POLICIES:
         raise ValueError('Unknown no-macro daily time-step policy')
     case = project_case(reference, project)
     strict_water = project.solute or bool(project.input_directory and budget_retry)
@@ -174,7 +176,7 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
     if not project.macro:donor_flags.extend(NO_MACRO_FP_FLAGS)
     common = ["gfortran", *donor_flags, "-I", str(objects), "-I", str(ttutil)]
     patched = ["swap", "swap_main", "swap_csv_output"]
-    if not project.macro and project.time_step_policy==NO_MACRO_TIME_POLICY:
+    if not project.macro and project.time_step_policy in (DAILY_ACTUAL_ITERATION_POLICY,NO_MACRO_TIME_POLICY):
         render_no_macro_timecontrol(donor_build/'swap-selected',output)
         patched.insert(0,'timecontrol')
     if checkpoint_day is not None or runtime_checkpoint:
@@ -562,6 +564,8 @@ end module MOD_wofost""")
         source=source[:marker.start()]+procedures+source[marker.start():]
         (output/'irrigation.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'irrigation')
+    if not project.macro and project.time_step_policy==NO_MACRO_TIME_POLICY:
+        render_physical_iteration_proposal(output,strict_water=strict_water)
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
