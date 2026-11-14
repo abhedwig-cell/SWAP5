@@ -1725,3 +1725,18 @@ exact harmonic589/367 refusal proofs43591564339/43592320429 remain raw evidence.
 A failed combined workflow is never labeled all-seven full PASS; only the five
 completed configuration gates are qualified. Whole science and remaining gaps
 are not promoted.
+
+## Experimental original weather and ET controls
+
+[Block H](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) traces original process audit
+and whole-interface contract to BLOCK_H_RECOVERY, per-case qualification to
+BLOCK_H_QUALIFICATION/STATUS and actual admission to the merge receipt under
+`integration/nomacro-coverage01/`. Seven complete cases43597013110 and uniform
+detailed rain43598743032 qualify8768 days on identical app/src runtime2c0c082db.
+The later failing combined workflows are not all-ten full PASSes. Exact O0/O2
+own-native pulsed/hourly364 refusal proofs43598463596/43598942598 preserve both
+failures. Initial restart43593959340, original-component diagnostic43595033501,
+future-crop input refusal43595046093, codec O0/O2/corruption, six inactive source
+images and warm1096 preservation remain versioned. Fresh43597013103 preserves
+eight default generated-source images and actual external seams. Whole science,
+energy, independent-project denominator and remaining history gaps are unchanged.

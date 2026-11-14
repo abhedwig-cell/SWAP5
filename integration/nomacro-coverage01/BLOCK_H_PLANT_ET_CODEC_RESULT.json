@@ -1,0 +1,129 @@
+{
+  "status": "ACTUAL_ORIGINAL_PLANT_ET_CODEC_O0_O2_PASS",
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+  "profiles": [
+    {
+      "optimization": "O0",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\H_plant_et_codec\\O0\\driver.exe",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43593959340\\nomacro-weather-4d3e41c8a9a3b778228ccf474b378155893ca783\\provider\\build\\swap-selected\\arrays.f90",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\H_plant_et_codec\\O0\\interface_plant.f90",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_plant_et_codec.f90"
+      ],
+      "compile_returncode": 0,
+      "compile_stdout": "",
+      "compile_stderr": "",
+      "valid_stdout": " ORIGINAL_PLANT_ET_CODEC_EXACT         100\n",
+      "block_bytes": 100,
+      "refusals": [
+        {
+          "name": "short",
+          "returncode": 1,
+          "stderr": "ERROR STOP Incomplete original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xc0e91651\n#4  0xc0e91c4c\n#5  0xc0e9237f\n#6  0xc0e91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "flag99",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET selector\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xc0e917f6\n#4  0xc0e91c4c\n#5  0xc0e9237f\n#6  0xc0e91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "nan",
+          "returncode": 1,
+          "stderr": "ERROR STOP Nonfinite original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xc0e9186e\n#4  0xc0e91c4c\n#5  0xc0e9237f\n#6  0xc0e91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "negative",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xc0e918fa\n#4  0xc0e91c4c\n#5  0xc0e9237f\n#6  0xc0e91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "cover",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xc0e918fa\n#4  0xc0e91c4c\n#5  0xc0e9237f\n#6  0xc0e91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "invalid-write",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xc0e918fa\n#4  0xc0e91ea8\n#5  0xc0e9237f\n#6  0xc0e91156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        }
+      ],
+      "sources": {
+        "arrays.f90": "3e57ad503aee98f86384b41c5fe31facddfb9e11f61e4ce039f270864ffa72bd",
+        "interface_plant.f90": "1190d72f99abf19c80a00217e504e83568d89ea69b00e5e052bebc490b361eda",
+        "original_plant_et_codec.f90": "a433c3123ffc30dcd5f8f7cec4dcb49148c8ba48fd6ae870ce23936b3c528995"
+      },
+      "generator_sha256": "6ef445b3bd767badedd0906664abf6df6db176e44fcdb0b5588408f85072443a",
+      "executable_sha256": "2bfb1a17409fd74421985624be35edf87edb2407fa7d34eb25fb6d603fcbcf96"
+    },
+    {
+      "optimization": "O2",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\H_plant_et_codec\\O2\\driver.exe",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43593959340\\nomacro-weather-4d3e41c8a9a3b778228ccf474b378155893ca783\\provider\\build\\swap-selected\\arrays.f90",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\H_plant_et_codec\\O2\\interface_plant.f90",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_plant_et_codec.f90"
+      ],
+      "compile_returncode": 0,
+      "compile_stdout": "",
+      "compile_stderr": "",
+      "valid_stdout": " ORIGINAL_PLANT_ET_CODEC_EXACT         100\n",
+      "block_bytes": 100,
+      "refusals": [
+        {
+          "name": "short",
+          "returncode": 1,
+          "stderr": "ERROR STOP Incomplete original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xcd72199f\n#4  0xcd721fbe\n#5  0xcd722c2f\n#6  0xcd721156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "flag99",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET selector\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xcd72198b\n#4  0xcd721fbe\n#5  0xcd722c2f\n#6  0xcd721156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "nan",
+          "returncode": 1,
+          "stderr": "ERROR STOP Nonfinite original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xcd721977\n#4  0xcd721fbe\n#5  0xcd722c2f\n#6  0xcd721156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "negative",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xcd721963\n#4  0xcd721fbe\n#5  0xcd722c2f\n#6  0xcd721156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "cover",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xcd721963\n#4  0xcd721fbe\n#5  0xcd722c2f\n#6  0xcd721156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        },
+        {
+          "name": "invalid-write",
+          "returncode": 1,
+          "stderr": "ERROR STOP Invalid original plant ET history\n\nError termination. Backtrace:\n#0  0x3b89b94\n#1  0x3b04471\n#2  0x39b28f4\n#3  0xcd721963\n#4  0xcd721c10\n#5  0xcd722c2f\n#6  0xcd721156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+        }
+      ],
+      "sources": {
+        "arrays.f90": "3e57ad503aee98f86384b41c5fe31facddfb9e11f61e4ce039f270864ffa72bd",
+        "interface_plant.f90": "1190d72f99abf19c80a00217e504e83568d89ea69b00e5e052bebc490b361eda",
+        "original_plant_et_codec.f90": "a433c3123ffc30dcd5f8f7cec4dcb49148c8ba48fd6ae870ce23936b3c528995"
+      },
+      "generator_sha256": "6ef445b3bd767badedd0906664abf6df6db176e44fcdb0b5588408f85072443a",
+      "executable_sha256": "2af9bde2dd81cc0df31c8cda8a2c1939770c8021732cce7747f757c62cc32f8d"
+    }
+  ]
+}

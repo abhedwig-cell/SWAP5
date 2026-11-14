@@ -235,7 +235,7 @@ which remain outside this work unit. A supported input selector alone is not A.
 | Heat | Selected numerical and analytical temperature; original top1..4 and bottom1/2; compatible no-heat routes | B: unexecuted process combinations; whole physical energy including mass-carried energy remains a separate scientific limitation |
 | Snow/frost | Positive snow accumulation/melt, snow plus hysteresis, named exact continuations | B/C: complete frost state and corrected-reference integration; frost remains refused |
 | Solute | Original conservative CDE; separate and combined Freundlich sorption/decay | B/C: reservoir SWBR1, original age/tracer SWSOLU2 and their matching conserved ledgers/state |
-| Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | B: detailed weather/rainfall and further original top-boundary options; implicit conductivity SWKIMPL1 remains excluded |
+| Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | H: eight qualified ET/rain configurations; detailed pulsed rain/hourly weather retain day364 failures; further top-boundary options and implicit conductivity SWKIMPL1 remain open |
 | Runtime control | Registered groundwater and surface forcing; experimental original and eligible full external surface accept/discard/recovery | B/C: general runtime dynamic boundary forcing beyond the registered contracts |
 | Macropores | None within this work unit | D: all active macropore processes and owner research remain separate |
 
@@ -494,3 +494,63 @@ invented. `BLOCK_G_QUALIFICATION.json`, status, selected raw archives and actual
 merge receipt own the bounded admission. Original oxygen/scientific FAILs,
 complete physical energy, arbitrary history and the remaining coverage register
 remain open; full original no-macro coverage is not established.
+
+## Original reference ET, partitioning and temporal rainfall
+
+Block H exposes original MOD_meteo choices SWETR0/1, SWDIVIDE0/1, SWCFBS0/1,
+SWRAIN0..3 and SWMETDETAIL0/1 through the experimental adapter. Original physical
+compatibility rules apply before build/output, including every referenced future
+crop: reference ET needs daily weather, factor partition and SWCF1; detailed
+weather needs ET0/rain0/snow0; detailed weather/rain cannot use interception1/2.
+No weather, evaporation, Richards or chemical formula or tolerance is changed.
+
+Eight derived configurations complete1096 days each,8768 model days: factor
+partition; chemical and water-only soil-factor partition; reference ET with and
+without soil factor; original intensity table; measured wet duration; uniform
+within-day detailed rain. Seven complete per-case gates are in43597013110 on
+2c0c082db; the uniform detailed case is in43598743032 onbc1adba5c, with identical
+app/src runtime. Both combined workflows later fail at other configurations;
+neither is an all-configurations full PASS. Every completed case passes actual
+touched-donor/controller O0/O2 native2/365/530 continuations and endpoint bytes,
+finite native temperatures, isolated origins, inconsistent-mass refusal and
+external discard/replay/durable recovery. The immutable original provider remains
+O2. Maximum full-period water residual is9.998322937805615e-11cm and chemical
+residual3.346185460684033e-13mg/cm2, within unchanged1e-10 limits.
+
+The first soil-factor trajectory completes1096 but fails cold365 continuation:
+water differs0.006376066972421768cm despite passing balances. Read-only original
+component diagnostic43595033501 reproduces that failure and isolates the lost
+accepted plant ET interface. Only experimental active SWCFBS1 now serializes the
+whole original interface: swcf plus cf/ch/albedo/rsc/rsw/kdif/kdir/vcover/co2 and
+three CO2 factors,100bytes. It restores before original daily weather/crop calls,
+with distinct chemical/water/history tags. Actual native corruption tests and
+local original-module O0/O2 codec tests enforce exact roundtrip and malformed
+read/write refusal. Six inactive generated codec sources stay byte-identical;
+all1096 warm physical rows of the prior soil-factor case are exactly unchanged.
+Old build/native identities cannot be rebound. The initial restart failure and
+future-crop SWCF2/reference-ET incompatibility remain archived.
+
+Detailed rainfall and24-record meteorology are explicitly synthetic temporal
+redistributions of the same pinned daily Hupsel data, not new historical projects.
+Pulsed rain uses interval-end amounts0/0.8/0.2 at day fractions0.25/0.5/1; uniform
+rain is a separately named input with0.25/0.25/0.5 at those same times. Hourly
+weather uses explicit sinusoidal temperature, normalized daylight radiation and
+uniform hourly rain. All input bytes are bound. Changing the temporal forcing
+is a physical input change, not a numerical repair of a retained failing case.
+
+Pulsed rain and hourly weather each accept363 days and refuse364. Independent
+water residuals are respectively-1.0044746978632446e-10 and1.0015060482315707e-10cm;
+their integrated estimates are just within1e-10. Actual O0/O2 own363-native
+proofs43598463596 and43598942598 reproduce the exact physical refusal, leave
+accepted stocks/origin unchanged and publish no refused day. No rounding,
+threshold relaxation, Richards repair or full-period qualification is claimed.
+Standalone original references for all eight completed configurations use the
+same physical files and only output-reporting compatibility changes. They remain
+diagnostic comparisons, not scientific equivalence. Fresh43597013103 preserves
+eight old generated-source images and actual default external/no-file seams.
+
+`BLOCK_H_QUALIFICATION.json`, status and SHA256 raw archives under
+`integration/nomacro-coverage01/` own per-case evidence; the actual merge receipt
+owns admission. This adds zero independent historical projects. Complete original
+no-macro coverage, mass-carried physical energy, arbitrary history, original
+oxygen/scientific failures, TSPACK and harmonic limits remain unresolved.

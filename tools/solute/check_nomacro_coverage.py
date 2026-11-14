@@ -42,7 +42,7 @@ def payload(path):
 def management_end(aux,project):
     selected=e.inspect(project.input_directory)['selectors']
     count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
-    return len(aux)-8*count
+    return len(aux)-8*count-(100 if selected['SWCFBS'] else 0)
 
 
 def native_temperatures(checkpoint,project):
@@ -78,11 +78,12 @@ def main():
     group.add_argument('--crop-options', action='store_true', help='Water-only crop/management and independent root/interception controls')
     group.add_argument('--process-options',action='store_true',help='Original thermal boundaries/analytic heat and canopy/root families')
     group.add_argument('--hydraulic-options',action='store_true',help='Original hydraulic tables, geometric/harmonic means and Darcy evaporation')
-    parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic configuration; preserves prior per-configuration evidence')
+    group.add_argument('--weather-options',action='store_true',help='Original reference ET, rainfall and detailed meteorology')
+    parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic/weather configuration; preserves prior per-configuration evidence')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options
-    active_options = args.crop_options or args.process_options or args.hydraulic_options
-    if args.configuration and not args.hydraulic_options:parser.error('--configuration requires --hydraulic-options')
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options
+    if args.configuration and not (args.hydraulic_options or args.weather_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -314,6 +315,76 @@ def main():
                 call('unsupported-'+name+'-'+str(value),['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
             finally:control.write_bytes(saved)
 
+    if args.weather_options:
+        specs=[('factor-partition',{'SWDIVIDE':0}),('factor-partition-soil',{'SWDIVIDE':0,'SWCFBS':1}),
+               ('water-factor-soil',{'SWDIVIDE':0,'SWCFBS':1,'SWSOLU':0}),
+               ('reference-et',{'SWETR':1,'SWDIVIDE':0}),('reference-et-soil',{'SWETR':1,'SWDIVIDE':0,'SWCFBS':1}),
+               ('rain-intensity',{'SWRAIN':1}),('rain-duration',{'SWRAIN':2}),
+               ('rain-detailed',{'SWRAIN':3}),('rain-detailed-uniform',{'SWRAIN':3}),('weather-hourly',{'SWMETDETAIL':1,'SWRAIN':0})]
+        for key,changes in specs:
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            path=case/'swap.swp';text=path.read_text(encoding='cp1252')
+            for name,value in changes.items():
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),text);assert count==1
+            if key=='weather-hourly':
+                text,count=re.subn(r"(?m)^([ \t]*METFIL[ \t]*=[ \t]*)'[^']+'",r"\1'283-hourly.met'",text);assert count==1
+            path.write_text(text,encoding='cp1252')
+            if changes.get('SWSOLU',1)==0:
+                for crop in case.glob('*.crp'):
+                    body,count=re.subn(r'(?m)^([ \t]*SWSALINITY[ \t]*=[ \t]*)[01]',r'\g<1>0',crop.read_text(encoding='cp1252'));assert count==1
+                    crop.write_text(body,encoding='cp1252')
+            if changes.get('SWETR')==1:
+                for crop in case.glob('*.crp'):
+                    body,count=re.subn(r'(?m)^([ \t]*SWCF[ \t]*=[ \t]*)[12]',r'\g<1>1',crop.read_text(encoding='cp1252'));assert count==1
+                    crop.write_text(body,encoding='cp1252')
+            if key.startswith('rain-detailed') or key=='weather-hourly':
+                for crop in case.glob('*.crp'):
+                    body,count=re.subn(r'(?m)^([ \t]*SWINTER[ \t]*=[ \t]*)\d+',r'\g<1>0',crop.read_text(encoding='cp1252'));assert count==1
+                    crop.write_text(body,encoding='cp1252')
+                meteo=list(csv.DictReader(line for line in (case/'283.met').read_text().splitlines() if line.strip() and not line.startswith('*')))
+                if key.startswith('rain-detailed'):
+                    records=['DAY MONTH YEAR TIME AMOUNT\n']
+                    for row in meteo:
+                        rain=float(row['Rain'])
+                        distribution=[(0.25,0.25*rain),(0.5,0.25*rain),(1.0,0.5*rain)] if key.endswith('uniform') else [(0.25,0.0),(0.5,0.8*rain),(1.0,0.2*rain)]
+                        for fraction,amount in distribution:
+                            records.append(f"{int(row['DD'])} {int(row['MM'])} {int(row['YYYY'])} {fraction!r} {amount!r}\n")
+                    (case/'hupsel.rain').write_text(''.join(records))
+                else:
+                    records=['DATE RECORD RAD TEMP HUM WIND RAIN\n']
+                    weights=[max(0.0,math.sin(math.pi*(hour-6)/12)) for hour in range(24)];total=math.fsum(weights)
+                    for row in meteo:
+                        date_text=f"{int(row['YYYY']):04d}-{int(row['MM']):02d}-{int(row['DD']):02d}"
+                        low,high=float(row['Tmin']),float(row['Tmax'])
+                        for hour,weight in enumerate(weights):
+                            radiation=float(row['Rad'])*weight/total
+                            temperature=.5*(low+high)+.5*(high-low)*math.sin(2*math.pi*(hour-6)/24)
+                            records.append(f"{date_text} {hour+1} {radiation!r} {temperature!r} {float(row['Hum'])!r} {float(row['Wind'])!r} {float(row['Rain'])/24!r}\n")
+                    (case/'283-hourly.met').write_text(''.join(records))
+            cases[key]=case
+        # Original physical compatibility rules must refuse future crops and
+        # selector combinations before output, not be silently normalized.
+        for key,name,value in [('reference-et','SWDIVIDE',1),('weather-hourly','SWRAIN',2),
+                               ('weather-hourly','SWSNOW',1),('weather-hourly','SWETR',1)]:
+            control=cases[key]/'swap.swp';saved=control.read_bytes();target=out/('refused-'+key+'-'+name)
+            try:
+                text,count=re.subn(r'(?m)^([ \t]*'+name+r'[ \t]*=[ \t]*)\d+',lambda m:m[1]+str(value),saved.decode('cp1252'));assert count==1
+                control.write_text(text,encoding='cp1252')
+                call('incompatible-'+key+'-'+name,['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+            finally:control.write_bytes(saved)
+        for key in ('rain-detailed','weather-hourly'):
+            control=cases[key]/'potato.crp';saved=control.read_bytes();target=out/('refused-'+key+'-future-interception')
+            try:
+                text,count=re.subn(r'(?m)^([ \t]*SWINTER[ \t]*=[ \t]*)0',r'\g<1>1',saved.decode('cp1252'));assert count==1
+                control.write_text(text,encoding='cp1252')
+                call('incompatible-'+key+'-future-interception',['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+            finally:control.write_bytes(saved)
+        control=cases['reference-et']/'potato.crp';saved=control.read_bytes();target=out/'refused-reference-et-future-crop-factor'
+        try:
+            text,count=re.subn(r'(?m)^([ \t]*SWCF[ \t]*=[ \t]*)1',r'\g<1>2',saved.decode('cp1252'));assert count==1
+            control.write_text(text,encoding='cp1252')
+            call('incompatible-reference-et-future-crop-factor',['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+        finally:control.write_bytes(saved)
     if args.configuration:
         if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
         cases={key:value for key,value in cases.items() if key in args.configuration}
@@ -398,7 +469,7 @@ def main():
                 assert payload(active/f'accepted-column-1-day-{active_cut+2}.zip')==payload(endstate/f'accepted-column-1-day-{active_cut+2}.zip')
                 assert h.sha(accepted_origin)==origin_hash
                 report['active_crop_exact_native_window']=[active_cut,active_cut+2]
-                if args.process_options:
+                if args.process_options or args.weather_options:
                     report['active_native_soil_temperature_C']=native_temperatures(endstate/f'accepted-column-1-day-{active_cut+2}.zip',project)
                     report['thermal_scope']='Original temperature state and exact continuation; whole physical energy NOT_QUALIFIED'
                     (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
@@ -465,7 +536,7 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')):
+                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
@@ -568,7 +639,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = next(iter(cases)) if args.hydraulic_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
+    key = next(iter(cases)) if args.hydraulic_options or args.weather_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -595,9 +666,9 @@ def main():
             control.write_bytes(saved)
     target=out/'refused-release-claim'
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
-    result = dict(status='EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
+    result = dict(status='EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)
