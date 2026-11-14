@@ -1,4 +1,4 @@
-name: Short read-only SaltFarm original-step discriminator
+name: Short private physical-iteration proposal discriminator
 on:
   workflow_dispatch:
     inputs:
@@ -54,11 +54,11 @@ jobs:
           github-token: ${{ github.token }}
           name: daily-nominal-public-${{ matrix.os }}-2a73d1c13742b1955c2ffb5127608076a7e9b2c5
           path: ${{ runner.temp }}/prior-pressure
-      - name: Compiler-matched read-only day1009 original-step observation
+      - name: Compiler-matched private day1009 proposal policy
         shell: pwsh
         run: >-
           python -B tools/solute/trace_hupsel_pressure.py
-          --project saltfarm --output "$env:RUNNER_TEMP/pressure-proof"
+          --project saltfarm --physical-iteration-proposal --activate-day 1009 --output "$env:RUNNER_TEMP/pressure-proof"
           --reference "$env:RUNNER_TEMP/prior-pressure/provider"
           --bundle "$env:RUNNER_TEMP/prior-pressure/saltfarm-O2-candidate-build"
           --full "$env:RUNNER_TEMP/prior-pressure/saltfarm-O2-candidate-full"
