@@ -86,3 +86,14 @@ avoid replaying four qualified unchanged configurations. Separately reproduce
 harmonic5 refusal from an actual own588 native origin and verify unchanged stocks,
 rejected publication and exact replay. Final G scope must distinguish actual full
 passes from retained failure(s), never label all7 complete.
+
+Unweighted harmonic refusal proof43591564339 on2e39ad45f SUCCESS: actual warm
+589 refusal exactly reproduces from own588 native; unchanged accepted stocks,
+clock/revision and origin SHA; no rejected publication. Mean6 remaining run
+43591575148 stops at its O0 active-prefix day367:366 accepted, independent
+1.0005702050317616e-10 vs unchanged1e-10, kernel-1.0005396511303388e-10,
+integrated-9.987738219279147e-11. Retain this near-boundary disagreement; no
+rounding into PASS or solver repair. Select remaining Darcy alone and an actual
+mean6 O0/O2 own366 refusal proof. Four completed configurations/source remain
+unchanged, no duplicate complete-period replay. G final report will have bounded
+full passes and separately retained harmonic failures, not all7 full PASSes.
