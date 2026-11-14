@@ -1,0 +1,62 @@
+[
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-native09-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\meteo_native.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-native09-work\\native\\O2\\obj\\mod_meteo.o"
+    ],
+    "seconds": 2.504201899981126,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-native09-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\macropore_native.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-native09-work\\native\\O2\\obj\\macropore.o"
+    ],
+    "seconds": 1.1728767999447882,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-native09-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-native09-work\\native\\O2\\obj\\native09.o"
+    ],
+    "seconds": 0.16842000000178814,
+    "returncode": 1,
+    "output": "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90:12:33:\n\n   12 | use MOD_meteo, only:tmn,tmx,tavd,rad,hum,win,etr,grai,fprecnosnow,epond,peva,ptra_dry,ptra_wet,eintc,aintc,wfrac,meteo_rec,rain_rec,i_metdetail,fl_update_meteo\n      |                                 1\nError: Symbol 'rad' referenced at (1) not found in module 'mod_meteo'\nC:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90:553:20:\n\n  553 | write(u,*) 'rad',rad\n      |                    1\nError: Symbol 'rad' at (1) has no IMPLICIT type\nC:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90:468:1:\n\n  468 | rad=b_rad\n      | 1~~\nError: Symbol 'rad' at (1) has no IMPLICIT type\nC:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90:149:13:\n\n  149 |  write(u) rad\n      |             1\nError: Symbol 'rad' at (1) has no IMPLICIT type\nC:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90:502:1:\n\n  502 | cumdens_top=b_cumdens_top\n      | 1~~~~~~~~~~\nError: Different shape for array assignment at (1) on dimension 1 (5000 and 5001)\nC:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-native09\\native_state.f90:592:5:\n\n  592 | use MOD_native09, only:io\n      |     1\nFatal Error: Cannot open module file 'mod_native09.mod' for reading at (1): No such file or directory\ncompilation terminated.\n"
+  }
+]

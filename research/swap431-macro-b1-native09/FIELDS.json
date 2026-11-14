@@ -297,13 +297,6 @@
     "module": "MOD_meteo",
     "phase": "host",
     "type": "real(8)",
-    "name": "rad",
-    "shape": ""
-  },
-  {
-    "module": "MOD_meteo",
-    "phase": "host",
-    "type": "real(8)",
     "name": "hum",
     "shape": ""
   },
@@ -417,6 +410,13 @@
     "phase": "host",
     "type": "real(8)",
     "name": "tav",
+    "shape": ""
+  },
+  {
+    "module": "atmosphere_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "rad",
     "shape": ""
   },
   {
@@ -536,6 +536,6 @@
     "phase": "host",
     "type": "real(8)",
     "name": "cumdens_top",
-    "shape": "macp+1"
+    "shape": "macp"
   }
 ]

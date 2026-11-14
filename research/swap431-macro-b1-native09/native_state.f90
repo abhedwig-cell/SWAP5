@@ -9,8 +9,8 @@ use, intrinsic :: ieee_arithmetic, only:ieee_is_finite
 use MOD_macropore, only:WaSrMpDm,WaUnMpDm,WaUnMpDmCp,WaSrMp,TimAbsCumDmCp,ThtSrpRefDmCp,SorpDmCp,VlMpDmCp,VlMpDm,VlMp,ZBtDm,ZWaLevDm,FrMpWalWet,AwlCorFac,ArMpTp,ArMpTpDm,ICpBtDm,ICpTpWaSrDm
 use MOD_swap_mp, only:VlMpDyCp,SubsidCp,ArMpSs,KsMpSs
 use variables, only:t1900,tstart,t,tcum,timjan1,dt,dtold,daynr,daycum,iyear,imonth,isteps,fldaystart,fldayend,fldtmin,flzerointr,flzerocumu
-use MOD_meteo, only:tmn,tmx,tavd,rad,hum,win,etr,grai,fprecnosnow,epond,peva,ptra_dry,ptra_wet,eintc,aintc,wfrac,meteo_rec,rain_rec,i_metdetail,fl_update_meteo
-use atmosphere_interface, only:tav
+use MOD_meteo, only:tmn,tmx,tavd,hum,win,etr,grai,fprecnosnow,epond,peva,ptra_dry,ptra_wet,eintc,aintc,wfrac,meteo_rec,rain_rec,i_metdetail,fl_update_meteo
+use atmosphere_interface, only:tav,rad
 use plant_interface, only:lai,rd,vcover,siccap,sicact,cf,fco2tra,dt_interc_event,crsflx_in,crsflx_out,hlim3l,hlim3h,hlim4,noddrz,fl_cropemergence,fl_cropharvest
 use MOD_cropdevelopment, only:cumdens_top
 implicit none
@@ -59,7 +59,6 @@ logical,save :: b_flzerocumu
 real(8),save :: b_tmn
 real(8),save :: b_tmx
 real(8),save :: b_tavd
-real(8),save :: b_rad
 real(8),save :: b_hum
 real(8),save :: b_win
 real(8),save :: b_etr
@@ -77,6 +76,7 @@ integer,save :: b_rain_rec
 integer,save :: b_i_metdetail
 logical,save :: b_fl_update_meteo
 real(8),save :: b_tav
+real(8),save :: b_rad
 real(8),save :: b_lai
 real(8),save :: b_rd
 real(8),save :: b_vcover
@@ -93,7 +93,7 @@ real(8),save :: b_hlim4
 integer,save :: b_noddrz
 logical,save :: b_fl_cropemergence
 logical,save :: b_fl_cropharvest
-real(8),save :: b_cumdens_top(macp+1)
+real(8),save :: b_cumdens_top(macp)
 contains
 subroutine io(u,rw)
 integer,intent(in)::u,rw
@@ -146,7 +146,6 @@ if(rw==2) then
  write(u) tmn
  write(u) tmx
  write(u) tavd
- write(u) rad
  write(u) hum
  write(u) win
  write(u) etr
@@ -164,6 +163,7 @@ if(rw==2) then
  write(u) i_metdetail
  write(u) fl_update_meteo
  write(u) tav
+ write(u) rad
  write(u) lai
  write(u) rd
  write(u) vcover
@@ -303,9 +303,6 @@ if(.not.ieee_is_finite(b_tmx)) error stop 'NATIVE09 nonfinite tmx'
 read(u,iostat=ios) b_tavd
 if(ios/=0) error stop 'NATIVE09 incomplete tavd'
 if(.not.ieee_is_finite(b_tavd)) error stop 'NATIVE09 nonfinite tavd'
-read(u,iostat=ios) b_rad
-if(ios/=0) error stop 'NATIVE09 incomplete rad'
-if(.not.ieee_is_finite(b_rad)) error stop 'NATIVE09 nonfinite rad'
 read(u,iostat=ios) b_hum
 if(ios/=0) error stop 'NATIVE09 incomplete hum'
 if(.not.ieee_is_finite(b_hum)) error stop 'NATIVE09 nonfinite hum'
@@ -353,6 +350,9 @@ if(ios/=0) error stop 'NATIVE09 incomplete fl_update_meteo'
 read(u,iostat=ios) b_tav
 if(ios/=0) error stop 'NATIVE09 incomplete tav'
 if(.not.ieee_is_finite(b_tav)) error stop 'NATIVE09 nonfinite tav'
+read(u,iostat=ios) b_rad
+if(ios/=0) error stop 'NATIVE09 incomplete rad'
+if(.not.ieee_is_finite(b_rad)) error stop 'NATIVE09 nonfinite rad'
 read(u,iostat=ios) b_lai
 if(ios/=0) error stop 'NATIVE09 incomplete lai'
 if(.not.ieee_is_finite(b_lai)) error stop 'NATIVE09 nonfinite lai'
@@ -465,7 +465,6 @@ flzerocumu=b_flzerocumu
 tmn=b_tmn
 tmx=b_tmx
 tavd=b_tavd
-rad=b_rad
 hum=b_hum
 win=b_win
 etr=b_etr
@@ -483,6 +482,7 @@ rain_rec=b_rain_rec
 i_metdetail=b_i_metdetail
 fl_update_meteo=b_fl_update_meteo
 tav=b_tav
+rad=b_rad
 lai=b_lai
 rd=b_rd
 vcover=b_vcover
@@ -550,7 +550,6 @@ write(u,*) 'flzerocumu',merge(1,0,flzerocumu)
 write(u,*) 'tmn',tmn
 write(u,*) 'tmx',tmx
 write(u,*) 'tavd',tavd
-write(u,*) 'rad',rad
 write(u,*) 'hum',hum
 write(u,*) 'win',win
 write(u,*) 'etr',etr
@@ -568,6 +567,7 @@ write(u,*) 'rain_rec',rain_rec
 write(u,*) 'i_metdetail',i_metdetail
 write(u,*) 'fl_update_meteo',merge(1,0,fl_update_meteo)
 write(u,*) 'tav',tav
+write(u,*) 'rad',rad
 write(u,*) 'lai',lai
 write(u,*) 'rd',rd
 write(u,*) 'vcover',vcover

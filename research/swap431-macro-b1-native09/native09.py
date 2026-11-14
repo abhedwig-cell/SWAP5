@@ -21,11 +21,11 @@ groups=[
  ('variables','host',{'real(8)':{'t1900':'','tstart':'','t':'','tcum':'','timjan1':'','dt':'','dtold':''},
  'integer':{'daynr':'','daycum':'','iyear':'','imonth':'','isteps':''},
  'logical':{'fldaystart':'','fldayend':'','fldtmin':'','flzerointr':'','flzerocumu':''}}),
- ('MOD_meteo','host',{'real(8)':{'tmn':'','tmx':'','tavd':'','rad':'','hum':'','win':'','etr':'','grai':'','fprecnosnow':'','epond':'','peva':'','ptra_dry':'','ptra_wet':'','eintc':'','aintc':'','wfrac':''},
+ ('MOD_meteo','host',{'real(8)':{'tmn':'','tmx':'','tavd':'','hum':'','win':'','etr':'','grai':'','fprecnosnow':'','epond':'','peva':'','ptra_dry':'','ptra_wet':'','eintc':'','aintc':'','wfrac':''},
  'integer':{'meteo_rec':'','rain_rec':'','i_metdetail':''},'logical':{'fl_update_meteo':''}}),
- ('atmosphere_interface','host',{'real(8)':{'tav':''}}),
+ ('atmosphere_interface','host',{'real(8)':{'tav':'','rad':''}}),
  ('plant_interface','host',{'real(8)':{'lai':'','rd':'','vcover':'','siccap':'','sicact':'','cf':'','fco2tra':'','dt_interc_event':'','crsflx_in':'','crsflx_out':'','hlim3l':'','hlim3h':'','hlim4':''},'integer':{'noddrz':''},'logical':{'fl_cropemergence':'','fl_cropharvest':''}}),
- ('MOD_cropdevelopment','host',{'real(8)':{'cumdens_top':'macp+1'}}),
+ ('MOD_cropdevelopment','host',{'real(8)':{'cumdens_top':'macp'}}),
 ]
 
 def prepare():
