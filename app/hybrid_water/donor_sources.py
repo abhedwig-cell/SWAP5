@@ -84,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False, plant_et_state=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -237,6 +237,19 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         else:
             anchor='        call hybrid_wofost_checkpoint(unit,.false.)' if managed else '        write(unit) t,iyear'
         codec=replace(codec,anchor,anchor+'\n        write(unit) '+fields)
+    if plant_et_state:
+        if not nonmacro or not managed:raise ValueError('Plant ET history requires managed no-macro state')
+        history=int(hydraulic_history)+2*int(thermal_history)
+        old_magic=[base_magic,hys_magic,snow_magic,mixed_magic][history]
+        new_magic=(['S5ETC016','S5EHC017','S5ESC018','S5EMC019'] if solute_state else
+                   ['S5ETW020','S5EHW021','S5ESW022','S5EMW023'])[history]
+        codec=codec.replace(old_magic,new_magic)
+        codec=replace(codec,'      use MOD_swap_base, only: swmacro',
+                      '      use plant_interface,only:hybrid_plant_et_checkpoint\n      use MOD_swap_base, only: swmacro')
+        codec=replace(codec,'        read(unit,iostat=ios) trailing',
+                      '        call hybrid_plant_et_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing')
+        codec=replace(codec,'      end if\n      close(unit)',
+                      '        call hybrid_plant_et_checkpoint(unit,.false.)\n      end if\n      close(unit)')
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)

@@ -1,0 +1,88 @@
+{
+  "status": "SIX_INACTIVE_ORIGINAL_CODEC_VARIANTS_BYTE_IDENTICAL",
+  "baseline": "3aa5544608617309675a17055e817bad0aaffd3b",
+  "checks": [
+    {
+      "flags": {
+        "solute_state": true,
+        "management_state": true,
+        "hydraulic_history": false,
+        "thermal_history": false
+      },
+      "generated_exact": true,
+      "files": {
+        "macropore.f90": "aa4e1788a4882c119527d47f358e1d2b90b72780294d290eb3ab7388261f35af",
+        "swap.f90": "1a1e6c66d358bf132f1955adb27afda496807ef9a40e192d8eab07ca7da34f2e",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+      }
+    },
+    {
+      "flags": {
+        "solute_state": true,
+        "management_state": true,
+        "hydraulic_history": true,
+        "thermal_history": false
+      },
+      "generated_exact": true,
+      "files": {
+        "macropore.f90": "b94ab0471e51b04852433792bd7e287ef9ec2bc0cda05e135a30696ffe21815c",
+        "swap.f90": "1a1e6c66d358bf132f1955adb27afda496807ef9a40e192d8eab07ca7da34f2e",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+      }
+    },
+    {
+      "flags": {
+        "solute_state": true,
+        "management_state": true,
+        "hydraulic_history": false,
+        "thermal_history": true
+      },
+      "generated_exact": true,
+      "files": {
+        "macropore.f90": "3539cbff49e2ed6b15ec19549b70b94cf4c71d41e182faa8ea971e2bbe4f1a18",
+        "swap.f90": "1a1e6c66d358bf132f1955adb27afda496807ef9a40e192d8eab07ca7da34f2e",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+      }
+    },
+    {
+      "flags": {
+        "solute_state": true,
+        "management_state": true,
+        "hydraulic_history": true,
+        "thermal_history": true
+      },
+      "generated_exact": true,
+      "files": {
+        "macropore.f90": "3332d5b09c1dfba3df1ed2d78560f9d9926783d32d4136b9c8073297ea0987cd",
+        "swap.f90": "1a1e6c66d358bf132f1955adb27afda496807ef9a40e192d8eab07ca7da34f2e",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+      }
+    },
+    {
+      "flags": {
+        "solute_state": false,
+        "management_state": true
+      },
+      "generated_exact": true,
+      "files": {
+        "macropore.f90": "e17f51a555f572afb61be1cab777f500fc1273eab25783db102ef888aa25f329",
+        "swap.f90": "1a1e6c66d358bf132f1955adb27afda496807ef9a40e192d8eab07ca7da34f2e",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+      }
+    },
+    {
+      "flags": {
+        "solute_state": false,
+        "management_state": false
+      },
+      "generated_exact": true,
+      "files": {
+        "macropore.f90": "e23d498600bddbf7cd97dc23a8e77e7a5a6fdc079bce36f9f20bae1134b01f12",
+        "swap.f90": "fb6477168937434690cdc57a93a1db02525c496a52d0b31d0e7d5a1122765354",
+        "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f"
+      }
+    }
+  ],
+  "active_format_generation_count": 8,
+  "new_source_sha256": "9747b847ffa79a908039b31134fff40d865a812dfccda394aca92e1f455c2fae"
+}

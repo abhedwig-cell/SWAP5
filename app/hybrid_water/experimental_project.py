@@ -139,7 +139,7 @@ def inspect(directory):
 
     crop_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.crp')]
     root_controls={'SWINTER':{0,1,2,3},'SWOXYGEN':{0,1,2},'SWDROUGHT':{1,2,3},
-                   'SWSALINITY':{0,1},'SWCOMPENSATE':{0,1,2},'SWWRTNONOX':{0,1}}
+                   'SWSALINITY':{0,1},'SWCOMPENSATE':{0,1,2},'SWWRTNONOX':{0,1},'SWCF':{1,2}}
     structure=lambda sig:{k:v for k,v in sig.items() if k not in root_controls}
     crop_structures=list(map(structure,crop_signatures))
     drain_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.dra')]
@@ -164,6 +164,8 @@ def inspect(directory):
                 raise ValueError('Original Gash interception requires simple crop type1 for every referenced occurrence')
             if (selected['SWMETDETAIL'] or selected['SWRAIN']==3) and sig.get('SWINTER') in (1,2):
                 raise ValueError('Original detailed weather/rain cannot use interception1/2 in any future crop')
+            if selected['SWETR']==1 and sig.get('SWCF')!=1:
+                raise ValueError('Original prescribed reference ET requires crop factors1 for every referenced future crop')
             if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
@@ -223,6 +225,9 @@ def validate(project):
 def auxiliary_magic(project):
     selected = inspect(project.input_directory)['selectors']
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
+    if selected['SWCFBS']:
+        return ((b'S5ETC016',b'S5EHC017',b'S5ESC018',b'S5EMC019') if project.solute else
+                (b'S5ETW020',b'S5EHW021',b'S5ESW022',b'S5EMW023'))[history]
     formats = (b'S5HUP012',b'S5SHS013',b'S5SSN014',b'S5SMX015') if project.solute else (
                b'S5WAT007',b'S5WHS008',b'S5WSN009',b'S5WMX010')
     return formats[history]

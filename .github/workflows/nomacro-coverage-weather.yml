@@ -9,7 +9,7 @@ on:
       configuration:
         type: choice
         default: all
-        options: [all, remaining-no-soil-factor, factor-partition, factor-partition-soil, reference-et, reference-et-soil, rain-intensity, rain-duration, rain-detailed, weather-hourly]
+        options: [all, remaining-no-soil-factor, factor-partition, factor-partition-soil, water-factor-soil, reference-et, reference-et-soil, rain-intensity, rain-duration, rain-detailed, weather-hourly]
         description: Select only an uncovered configuration after retained prior evidence
 permissions:
   contents: read

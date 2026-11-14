@@ -210,7 +210,8 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                           runtime=runtime_checkpoint, nonmacro=not project.macro, solute_state=project.solute,
                           hydraulic_history=bool(project.input_directory and selector('SWHYST')>0),
                           thermal_history=bool(project.input_directory and selector('SWSNOW')>0),
-                          management_state=management_state)
+                          management_state=management_state,
+                          plant_et_state=bool(project.input_directory and selector('SWCFBS')==1))
         imports = "return_at_day_end"
         if runtime_checkpoint:
             imports += ", checkpoint_clock"
@@ -591,6 +592,41 @@ end module MOD_wofost""")
         patched.insert(0,'irrigation')
     if not project.macro and project.time_step_policy==PHYSICAL_GROWTH_TIME_POLICY:
         render_physical_iteration_proposal(output,strict_water=strict_water)
+    if project.input_directory and selector('SWCFBS')==1:
+        # Accepted original plant/ET interface can remain physically active
+        # between crops. Native bare-soil initialization does not preserve it.
+        source=(donor_build/'swap-selected/interface_plant.f90').read_text(encoding='cp1252')
+        names=['cf','ch','albedo','rsc','rsw','kdif','kdir','vcover','co2','fco2amax','fco2eff','fco2tra']
+        fields=','.join(names)
+        assignments='\n'.join('         '+name+'=values('+str(i+1)+')' for i,name in enumerate(names))
+        source=replace(source,'end module plant_interface',f"""contains
+   subroutine hybrid_plant_et_checkpoint(unit,restoring)
+      use ieee_arithmetic,only:ieee_is_finite
+      integer,intent(in)::unit
+      logical,intent(in)::restoring
+      integer::flag,ios
+      real(8)::values(12)
+      if(restoring)then
+         read(unit,iostat=ios)flag,values
+         if(ios/=0)error stop 'Incomplete original plant ET history'
+      else
+         flag=swcf
+         values=[{fields}]
+      end if
+      if(flag<0.or.flag>2)error stop 'Invalid original plant ET selector'
+      if(.not.all(ieee_is_finite(values)))error stop 'Nonfinite original plant ET history'
+      if(any(values<0d0).or.values(3)>1d0.or.values(8)>1d0) &
+        error stop 'Invalid original plant ET history'
+      if(restoring)then
+         swcf=flag
+{assignments}
+      else
+         write(unit)flag,values
+      end if
+   end subroutine
+end module plant_interface""")
+        (output/'interface_plant.f90').write_text(source,encoding='cp1252')
+        patched.insert(0,'interface_plant')
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)

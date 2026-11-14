@@ -42,7 +42,7 @@ def payload(path):
 def management_end(aux,project):
     selected=e.inspect(project.input_directory)['selectors']
     count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
-    return len(aux)-8*count
+    return len(aux)-8*count-(100 if selected['SWCFBS'] else 0)
 
 
 def native_temperatures(checkpoint,project):
@@ -317,6 +317,7 @@ def main():
 
     if args.weather_options:
         specs=[('factor-partition',{'SWDIVIDE':0}),('factor-partition-soil',{'SWDIVIDE':0,'SWCFBS':1}),
+               ('water-factor-soil',{'SWDIVIDE':0,'SWCFBS':1,'SWSOLU':0}),
                ('reference-et',{'SWETR':1,'SWDIVIDE':0}),('reference-et-soil',{'SWETR':1,'SWDIVIDE':0,'SWCFBS':1}),
                ('rain-intensity',{'SWRAIN':1}),('rain-duration',{'SWRAIN':2}),
                ('rain-detailed',{'SWRAIN':3}),('weather-hourly',{'SWMETDETAIL':1,'SWRAIN':0})]
@@ -328,6 +329,14 @@ def main():
             if key=='weather-hourly':
                 text,count=re.subn(r"(?m)^([ \t]*METFIL[ \t]*=[ \t]*)'[^']+'",r"\1'283-hourly.met'",text);assert count==1
             path.write_text(text,encoding='cp1252')
+            if changes.get('SWSOLU',1)==0:
+                for crop in case.glob('*.crp'):
+                    body,count=re.subn(r'(?m)^([ \t]*SWSALINITY[ \t]*=[ \t]*)[01]',r'\g<1>0',crop.read_text(encoding='cp1252'));assert count==1
+                    crop.write_text(body,encoding='cp1252')
+            if changes.get('SWETR')==1:
+                for crop in case.glob('*.crp'):
+                    body,count=re.subn(r'(?m)^([ \t]*SWCF[ \t]*=[ \t]*)[12]',r'\g<1>1',crop.read_text(encoding='cp1252'));assert count==1
+                    crop.write_text(body,encoding='cp1252')
             if key in ('rain-detailed','weather-hourly'):
                 for crop in case.glob('*.crp'):
                     body,count=re.subn(r'(?m)^([ \t]*SWINTER[ \t]*=[ \t]*)\d+',r'\g<1>0',crop.read_text(encoding='cp1252'));assert count==1
@@ -369,6 +378,12 @@ def main():
                 control.write_text(text,encoding='cp1252')
                 call('incompatible-'+key+'-future-interception',['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
             finally:control.write_bytes(saved)
+        control=cases['reference-et']/'potato.crp';saved=control.read_bytes();target=out/'refused-reference-et-future-crop-factor'
+        try:
+            text,count=re.subn(r'(?m)^([ \t]*SWCF[ \t]*=[ \t]*)1',r'\g<1>2',saved.decode('cp1252'));assert count==1
+            control.write_text(text,encoding='cp1252')
+            call('incompatible-reference-et-future-crop-factor',['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
+        finally:control.write_bytes(saved)
     if args.configuration:
         if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
         cases={key:value for key,value in cases.items() if key in args.configuration}
@@ -520,7 +535,7 @@ def main():
                 recovered.discard(third)
                 report.update(independent_distinct_origins=True, external_discard_replay_exact=True, external_disk_recovery=True,
                               inconsistent_mass_refused_without_commit=True)
-                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')):
+                if (args.extended and key.startswith('hupsel')) or (args.crop_options and key.startswith('water-')) or (args.weather_options and e.inspect(case)['selectors']['SWCFBS']):
                     with zipfile.ZipFile(origin) as z:
                         members={name:z.read(name) for name in z.namelist()}
                     original_aux=members['macro.bin']
