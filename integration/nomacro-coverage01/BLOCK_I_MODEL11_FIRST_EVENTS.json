@@ -1,0 +1,68 @@
+[
+  {
+    "label": "prepare",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+      "--no-macro-release",
+      "--prepare-sources",
+      "--reference-work",
+      "/home/runner/work/_temp/proof/provider"
+    ],
+    "seconds": 16.284592991000004,
+    "returncode": 0,
+    "expected_refusal": false
+  },
+  {
+    "label": "constitutive-11-O0-build",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+      "--model",
+      "HYBRID_NOMACRO_WATER",
+      "--experimental-project",
+      "/home/runner/work/_temp/proof/input-constitutive-11",
+      "--reference-work",
+      "/home/runner/work/_temp/proof/provider",
+      "--build-only",
+      "--output",
+      "/home/runner/work/_temp/proof/constitutive-11-O0-build",
+      "--kernel-opt",
+      "O0",
+      "--donor-opt",
+      "O0"
+    ],
+    "seconds": 1.696608475000005,
+    "returncode": 0,
+    "expected_refusal": false
+  },
+  {
+    "label": "constitutive-11-O0-control",
+    "command": [
+      "/usr/bin/python3",
+      "-B",
+      "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+      "--model",
+      "HYBRID_NOMACRO_WATER",
+      "--experimental-project",
+      "/home/runner/work/_temp/proof/input-constitutive-11",
+      "--reference-work",
+      "/home/runner/work/_temp/proof/provider",
+      "--build-bundle",
+      "/home/runner/work/_temp/proof/constitutive-11-O0-build",
+      "--timeout-seconds",
+      "180",
+      "--output",
+      "/home/runner/work/_temp/proof/constitutive-11-O0-control",
+      "--days",
+      "5",
+      "--checkpoint-at",
+      "2"
+    ],
+    "seconds": 0.1779968210000007,
+    "returncode": 1,
+    "expected_refusal": false
+  }
+]

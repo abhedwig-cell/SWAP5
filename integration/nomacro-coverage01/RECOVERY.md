@@ -1,3 +1,15 @@
+# I first cohort terminal; two exact follow-up runs live
+
+Own branch09 PR1683. First43599641836 terminalFAIL: model2 full1096/all gates;
+models3/5/7 strictday365(-1.15/-1.27/-1.16cm), model6 strict364(1.003e-10);
+model4 cap180s after364accepted; PDI8..11 original HA INTEGER/type refusal0days.
+Only HA lexical real notation changed(-10.0 samephysicalvalue); PDI-only
+43600505987 on2cfc20b0e LIVE. Model3 fresh own364native O0/O2 refusalproof
+43600305896 on30dc4d1e7 LIVE(cap8min; no solver/tolerance change). Follow both
+exactruns to terminal, no duplicates. First raw archive packing; reports sealed.
+No all-ten/full-science or I admission claim. Runtime generator unchanged; only
+input eligibility/vapor0 guard and harness selection changed. H exactadmitted.
+
 # I live ten original constitutive qualifications
 
 Own branch09 draftPR1683; sourcef45d9a10b run43599641836 LIVE, ten independent
