@@ -111,7 +111,7 @@ def inspect(directory):
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
-                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1})
+                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0})
     if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
         raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:

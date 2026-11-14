@@ -1,0 +1,58 @@
+{
+  "status": "ORIGINAL_CONSTITUTIVE_COMPONENT_PASS",
+  "profiles": [
+    {
+      "optimization": "O0",
+      "command": [
+        "gfortran",
+        "-O0",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\I_constitutive\\O0\\curves.exe",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43597013110\\nomacro-weather-2c0c082db4c6ef57cca7b31ccc46a087b963eef7\\provider\\build\\swap-selected\\arrays.f90",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43597013110\\nomacro-weather-2c0c082db4c6ef57cca7b31ccc46a087b963eef7\\provider\\build\\swap-selected\\variables.f90",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43597013110\\nomacro-weather-2c0c082db4c6ef57cca7b31ccc46a087b963eef7\\provider\\build\\swap-selected\\WC_K_models_04_11.f90",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_constitutive_curves.f90"
+      ],
+      "returncode": 0,
+      "curve_rows": 2896,
+      "executable_sha256": "500f3a20bb1509eea6ab9238670b6d9c21644d9ab25659a5099dba3ff51d3b39",
+      "log_sha256": "0ccb54a3eed694d430a702d59a4cfad347769879634193933151c162888fa64f"
+    },
+    {
+      "optimization": "O2",
+      "command": [
+        "gfortran",
+        "-O2",
+        "-finit-local-zero",
+        "-ffree-line-length-none",
+        "-ffp-contract=off",
+        "-march=x86-64",
+        "-mtune=generic",
+        "-o",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\I_constitutive\\O2\\curves.exe",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43597013110\\nomacro-weather-2c0c082db4c6ef57cca7b31ccc46a087b963eef7\\provider\\build\\swap-selected\\arrays.f90",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43597013110\\nomacro-weather-2c0c082db4c6ef57cca7b31ccc46a087b963eef7\\provider\\build\\swap-selected\\variables.f90",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\run43597013110\\nomacro-weather-2c0c082db4c6ef57cca7b31ccc46a087b963eef7\\provider\\build\\swap-selected\\WC_K_models_04_11.f90",
+        "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_constitutive_curves.f90"
+      ],
+      "returncode": 0,
+      "curve_rows": 2896,
+      "executable_sha256": "0594a303a50cba045f18dc4dfb28871e8fe1bca65bae27b84b1d116e0a04f357",
+      "log_sha256": "0ccb54a3eed694d430a702d59a4cfad347769879634193933151c162888fa64f"
+    }
+  ],
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "compiler_sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+  "source_sha256": {
+    "arrays.f90": "3e57ad503aee98f86384b41c5fe31facddfb9e11f61e4ce039f270864ffa72bd",
+    "variables.f90": "327a064ca74f6c4bebc327a38de367824c7fe535baa1a8611879f9a6a479c856",
+    "WC_K_models_04_11.f90": "1f956cae894e83e208630e234c9b2017c945b2c522daf8277e89541f598ae4fd",
+    "original_constitutive_curves.f90": "348ceba8069360efec5c11c5d1dd4326730a58c409edff6002fb3a24d5c6816b"
+  },
+  "scope": "Actual original4..11 curves on two explicitly derived soils; not whole-model or science"
+}

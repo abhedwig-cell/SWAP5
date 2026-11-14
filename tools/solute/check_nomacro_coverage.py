@@ -79,11 +79,12 @@ def main():
     group.add_argument('--process-options',action='store_true',help='Original thermal boundaries/analytic heat and canopy/root families')
     group.add_argument('--hydraulic-options',action='store_true',help='Original hydraulic tables, geometric/harmonic means and Darcy evaporation')
     group.add_argument('--weather-options',action='store_true',help='Original reference ET, rainfall and detailed meteorology')
+    group.add_argument('--constitutive-options',action='store_true',help='Actual original alternative water retention/conductivity models2..11')
     parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic/weather configuration; preserves prior per-configuration evidence')
     args = parser.parse_args()
-    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options
-    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options
-    if args.configuration and not (args.hydraulic_options or args.weather_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
+    extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options
+    active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options
+    if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -385,6 +386,17 @@ def main():
             control.write_text(text,encoding='cp1252')
             call('incompatible-reference-et-future-crop-factor',['--model',e.MODEL,'--experimental-project',control.parent,'--reference-work',reference,'--build-only','--output',target],refuse=True,absent=target)
         finally:control.write_bytes(saved)
+    if args.constitutive_options:
+        for model in range(2,12):
+            key='constitutive-'+str(model)
+            case=out/('input-'+key);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',case)
+            additions=['iHWCKmodel = '+str(model)]
+            if model in (3,6,7,10,11):
+                additions+=['ALFA_2 = .005 .003','NPAR_2 = 1.5 1.6','OMEGA_1 = .8 .8']
+            if model in (5,7,8,9,10,11):additions+=['H0 = -1e6 -1e6']
+            if model>=8:additions+=['HA = -10 -10','APAR = -1.5 -1.5','OMEGA_K = .01 .01','SWVAPOR = 0 0']
+            path=case/'swap.swp';path.write_text(path.read_text(encoding='cp1252')+'\n'+ '\n'.join(additions)+'\n',encoding='cp1252')
+            cases[key]=case
     if args.configuration:
         if not set(args.configuration)<=set(cases):raise ValueError('Unknown requested hydraulic configuration')
         cases={key:value for key,value in cases.items() if key in args.configuration}
@@ -469,7 +481,7 @@ def main():
                 assert payload(active/f'accepted-column-1-day-{active_cut+2}.zip')==payload(endstate/f'accepted-column-1-day-{active_cut+2}.zip')
                 assert h.sha(accepted_origin)==origin_hash
                 report['active_crop_exact_native_window']=[active_cut,active_cut+2]
-                if args.process_options or args.weather_options:
+                if args.process_options or args.weather_options or args.constitutive_options:
                     report['active_native_soil_temperature_C']=native_temperatures(endstate/f'accepted-column-1-day-{active_cut+2}.zip',project)
                     report['thermal_scope']='Original temperature state and exact continuation; whole physical energy NOT_QUALIFIED'
                     (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
@@ -639,7 +651,7 @@ def main():
         assert checked['swap_ok'] and not checked['error'].strip() and checked['returncode'] in (0, 100)
 
     # All refusals occur before any model/output ownership is acquired.
-    key = next(iter(cases)) if args.hydraulic_options or args.weather_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
+    key = next(iter(cases)) if args.hydraulic_options or args.weather_options or args.constitutive_options else ('salt-adsorption' if args.extended else ('bare' if args.basic_options else ('no-interception' if args.crop_options else ('analytic-heat' if args.process_options else 'salt08'))))
     case = cases[key]; control = case/'swap.swp'; saved = control.read_bytes()
     base = ['--model', e.MODEL, '--experimental-project', case, '--reference-work', reference,
             '--build-bundle', out/(key+'-O2-build')]
@@ -668,7 +680,7 @@ def main():
     call('negative-release-claim', base+['--no-macro-release','--output',target], refuse=True, absent=target)
     result = dict(status='EXPERIMENTAL_WEATHER_OPTIONS_PASS' if args.weather_options else 'EXPERIMENTAL_HYDRAULIC_OPTIONS_PASS' if args.hydraulic_options else 'EXPERIMENTAL_PROCESS_OPTIONS_PASS' if args.process_options else 'EXPERIMENTAL_CROP_OPTIONS_PASS' if args.crop_options else ('EXPERIMENTAL_BASIC_OPTIONS_PASS' if args.basic_options else ('EXPERIMENTAL_EXTENDED_COVERAGE_PASS' if args.extended else 'EXPERIMENTAL_FUNCTIONAL_COVERAGE_WITH_RETAINED_REFUSAL')), source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                   configurations=reports, independent_new_historical_projects=0,
-                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
+                  new_original_workbook_configurations=0 if extra else 2, new_derived_process_configurations=len(cases) if args.hydraulic_options or args.weather_options or args.constitutive_options else (9 if args.process_options else (6 if args.crop_options else (7 if args.extended or args.basic_options else 2))),
                   science='NOT_QUALIFIED; inherited FAILs/reference limits retained', events=events)
     (out/'RESULT.json').write_text(json.dumps(result, indent=2)+'\n')
     print(result['status'], flush=True)

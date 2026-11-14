@@ -1,3 +1,11 @@
+# H admitted; I original constitutive-family source audit
+
+PR1682 canonicalf1f8d0602 exacttreec421e1922 equals qualified head37856cc80.
+Runtime unchanged from2c0c082db. Eight full cases8768days; both temporal364
+failures retained with own native proofs. Frozen unchanged. Own branch09,
+no I activation/qualification yet. Audit original constitutive model readers,
+physical parameters and state dependencies before bounded full qualification.
+
 # H bounded qualification complete, admission pending
 
 Branch08 PR1682; runtime2c0c082db unchanged through b3a873ed5. Eight complete1096
