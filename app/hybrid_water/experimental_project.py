@@ -182,9 +182,9 @@ def inspect(directory):
 
 
 def load(directory, *, time_step_policy=None):
-    from daily_host import HybridProject, ORIGINAL_TIME_POLICY, NO_MACRO_TIME_POLICY
+    from daily_host import HybridProject, ORIGINAL_TIME_POLICY, TIME_POLICIES
     policy=ORIGINAL_TIME_POLICY if time_step_policy is None else time_step_policy
-    if policy not in (ORIGINAL_TIME_POLICY,NO_MACRO_TIME_POLICY):raise ValueError("Unknown experimental time-step policy")
+    if policy not in TIME_POLICIES:raise ValueError("Unknown experimental time-step policy")
     report = inspect(directory)
     key = hashlib.sha256(json.dumps(report, sort_keys=True).encode()).hexdigest()
     return HybridProject('experimental-'+key, MODEL, report['start_date'], report['nodes'], 1e-10,

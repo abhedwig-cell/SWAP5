@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\run_water.py", line 387, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\tools\solute\run_water.py", line 332, in main
+    donor,kernel,case,inputs,build_id=build(args.reference_work.resolve(),output,**profile,
+                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        runtime_checkpoint=True,kernel_opt=args.kernel_opt,project=project,donor_opt=args.donor_opt)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\daily_host.py", line 568, in build
+    render_physical_iteration_proposal(output,strict_water=strict_water)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\donor_sources.py", line 357, in render_physical_iteration_proposal
+    source=replace(source,'subroutine headcalc \n',
+                   'subroutine headcalc \n   use MOD_timer, only: hybrid_physical_iterations\n')
+  File "C:\Users\Veldh012\AppData\Local\Temp\s5-rc1-perf01\app\hybrid_water\donor_sources.py", line 9, in replace
+    raise ValueError(f"Expected a unique donor anchor: {anchor!r}")
+ValueError: Expected a unique donor anchor: 'subroutine headcalc \n'

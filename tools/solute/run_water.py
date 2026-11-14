@@ -188,7 +188,7 @@ def main():
     parser.add_argument("--model", choices=[GRASS_MODEL,HUPSEL_MODEL,experimental_model]+[p.model for p in PROJECTS])
     parser.add_argument('--experimental-project', type=Path,
                         help='Explicit experimental original project directory; no production/science claim')
-    parser.add_argument('--experimental-time-step-policy',choices=[host_module.ORIGINAL_TIME_POLICY,host_module.NO_MACRO_TIME_POLICY],
+    parser.add_argument('--experimental-time-step-policy',choices=host_module.TIME_POLICIES,
                         help='Explicit experimental numerical policy; defaults to original adaptive daily seed, new policy is not qualified for all option mixes')
     parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
     parser.add_argument("--grass-build", type=Path, help="Verified Grassgrowth thermal-control build bundle")
