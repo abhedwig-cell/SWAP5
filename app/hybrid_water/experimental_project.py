@@ -78,10 +78,10 @@ def inspect(directory):
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
                  'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
-                 'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
+                 'SWMETDETAIL': {0,1}, 'SWRUNON': {0}, 'SWKIMPL': {0},
                  'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
-                     SWDIVIDE={1}, SWRAIN={0, 2}, SWCFBS={0}, SWREDU={0, 1, 2},
+                     SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWREDU={0, 1, 2},
                      SWKMEAN=set(range(1,7)), SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
     for name, allowed in mandatory.items():
         if selected.get(name) not in allowed:
@@ -92,6 +92,10 @@ def inspect(directory):
                 raise ValueError('Solute ledger/state does not support '+name)
     if selected['SWIRFIX'] and selected.get('SWIRGFIL') != 0:
         raise ValueError('Experimental fixed irrigation must be embedded in SWP')
+    if selected['SWETR']==1 and (selected['SWMETDETAIL'] or selected['SWDIVIDE']):
+        raise ValueError('Original prescribed reference ET requires daily weather and factor partition0')
+    if selected['SWMETDETAIL'] and (selected['SWETR'] or selected['SWRAIN'] or selected['SWSNOW']):
+        raise ValueError('Original detailed weather requires ET0, rain0 and no snow')
 
     originals = ROOT/'reference/swap-4.3.1/projects'
     roots = [originals/n for n in ('1.hupselbrook', '2.grassgrowth', '4.salinitystress-04dS')]
@@ -106,7 +110,8 @@ def inspect(directory):
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
-                   SWKMEAN=set(range(1,7)), SWREDU={0,1,2})
+                   SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
+                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1})
     if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
         raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
@@ -157,6 +162,8 @@ def inspect(directory):
                 raise ValueError('Original microscopic root uptake cannot be combined with additional compensation')
             if sig.get('SWINTER')==2 and crop_types[path.resolve()] != {1}:
                 raise ValueError('Original Gash interception requires simple crop type1 for every referenced occurrence')
+            if (selected['SWMETDETAIL'] or selected['SWRAIN']==3) and sig.get('SWINTER') in (1,2):
+                raise ValueError('Original detailed weather/rain cannot use interception1/2 in any future crop')
             if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):

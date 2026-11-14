@@ -1,0 +1,43 @@
+# H original weather/reference ET and subdaily precipitation
+
+Own branch08 from canonical3aa554460 (G PR1681 exact verified tree2e604c91b).
+FrozenRC111529865e. Relevant source authority MOD_meteo.f90, timecontrol.f90,
+MOD_cropdevelopment.f90 and original Hupsel SWP/meteo bytes. Invariants2/3/7/13/
+21/23/26/27/29/30; no Richards, codec or Fortran equation changes planned.
+
+Original daily dataset already includes reference ET and wet-duration columns.
+ReadMeteo supports SWETR0/1, SWDIVIDE0/1, soil factor SWCFBS0/1, SWRAIN0..3,
+and SWMETDETAIL0/1. Original constraints: prescribed ET1 needs daily weather
+and SWDIVIDE0. Detailed meteorology requires ET0, rain0, no snow. Referenced
+crops cannot use interception1/2 with detailed meteo or rain3; unused files do
+not activate processes. Preserve those constraints before build/output, never
+silently switch physical options. Further numeric/data validation remains in
+the original reader, not reimplemented.
+
+Contract: expose those original process choices through experimental adapter.
+No new public state API or physics implementation. Eight derived Hupsel cases:
+PM factor partition; PM partition+soil factor; measured reference ET; reference
+ET+soil factor; original mean rainfall-intensity table; measured rain duration;
+detailed rain file;24-record daily detailed meteorology. Detailed cases explicitly
+select interception0 for all future referenced crops. Detailed rain file defines
+three interval-end records per day, preserving daily amount with fractions
+0/0.8/0.2 at0.25/0.5/1.0. Detailed meteo derives24 records from the same daily
+data: explicit diurnal temperature/radiation and uniform hourly rainfall.
+These are synthetic temporal redistributions, not independent historical or
+unchanged daily-weather reference claims. Preserve same daily totals; pin all
+new input bytes. Original whole MOD_meteo/process order remains the owner.
+
+Qualification: full1096 days per selected case, actual touched-unit/controller
+O0/O2, exact native2/365/530 and complete endpoints; balance, independent origins,
+external discard/replay/disk recovery and mass/input refusals. Original executable
+uses the exact same derived physical files; only CSV reporting compatibility
+may differ. Whole science/energy not promoted. Hourly state continuity must
+actually pass; if not, keep family refused pending a larger original module
+state strategy, not speculative cache tweaks. No old capsule rebinding.
+
+Dispatch changes only; full original model closure is justified by calendar,
+TTUTIL, atmospheric/crop/thermal and native-state ownership. No copied weather
+formula or mock substitutes for that production composition. Runtime/source
+of prior qualified options is unchanged; prove old descriptors unchanged.
+Expected own-runner cap25minutes. Expensive execution selected for uncovered
+original temporal forcing/state risk, not a platform/performance campaign.

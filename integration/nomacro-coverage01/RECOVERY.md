@@ -1,3 +1,14 @@
+# Current: G admitted, H weather/ET/rainfall source audit
+
+F PR1680 and G PR1681 integrated. Canonical3aa554460 exact tree2e604c91b matches
+qualified G head; no app/src runtime delta from b3421842a. G five full configs
+5480 days and retained harmonic/TSPACK failures remain explicit. FrozenRC1
+11529865e unchanged. Own branch codex/nomacro-coverage08. Persisted G_MERGE.
+Next H original MOD_meteo/evaporation/reference ET/rainfall routes; first audit
+physical input constraints and whole original day state, then bounded real
+O0/O2/full/native/transaction tests. No unqualified option activation or science
+promotion, no general Richards/macro/MODFLOW/platform/performance campaign.
+
 # G bounded admission ready
 
 PR1681 branch07: FIVE full1096 configurations5480 days; harmonic5/6 retain strict
