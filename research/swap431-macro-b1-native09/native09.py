@@ -217,7 +217,7 @@ def build(opt):
 
 def run(opt,mode,label=''):
  profile='B_'+mode+('_'+label if label else '');case=WORK/(opt+'-'+profile+('-FINAL2' if not label else ''));case.mkdir(exist_ok=True);assert not list(case.glob('*.txt'))
- for x in json.loads(Path('C:/Users/Veldh012/swap431-state02-work/audit/CASE_IDENTITY.json').read_text()):
+ for x in json.loads((R/'CASE_IDENTITY.json').read_text()):
   p=Path(x['path']);(case/p).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/p,case/p)
   assert sha(case/p)==x['sha256'],str(p)
  if mode=='RESTART':
