@@ -83,3 +83,13 @@ launch fails PermissionError because old copyfile lost executable mode. Existing
 legacy qualifier manually chmodded reused capsule binaries. Fix builder to retain
 file metadata/mode through copy2; no physics/kernel object or numeric change.
 Preserve first actual fresh-build failure.
+
+Fresh smoke43547949693 onb7b1624cc SUCCESS: two generic and two registered
+projects, all8 O0/O2 consumers compile/link/execute; copied publisher verifies,
+all exercised warm/cold physical and native states exact, positive/disabled
+water/chemical events, discard/replay/recovery and stale-input refusals pass.
+Before full-period acceptance add independently rebuilt original fixed-table
+controls, no-file base/extension preservation, actual malformed-consumer launches,
+source schedule/mode/reserved-file refusals, persisted-input attacks and isolated
+external origins. Preserve partial ledger rows incrementally and cap only the
+qualification cohort runtime; never accept a censored run as completion.
