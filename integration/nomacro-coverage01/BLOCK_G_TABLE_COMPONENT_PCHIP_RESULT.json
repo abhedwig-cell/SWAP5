@@ -1,0 +1,39 @@
+{
+  "records": [
+    {
+      "opt": "O0",
+      "input": "topsoil_sand_b2.csv",
+      "returncode": 0,
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1 F\n BEFORE_ORIGINAL_PREPROCESS           2          10\n AFTER_ORIGINAL_PREPROCESS           2 F\n",
+      "stderr": ""
+    },
+    {
+      "opt": "O0",
+      "input": "subsoil_sand_o2.csv",
+      "returncode": 0,
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1 F\n BEFORE_ORIGINAL_PREPROCESS           2          10\n AFTER_ORIGINAL_PREPROCESS           2 F\n",
+      "stderr": ""
+    },
+    {
+      "opt": "O2",
+      "input": "topsoil_sand_b2.csv",
+      "returncode": 0,
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1 F\n BEFORE_ORIGINAL_PREPROCESS           2          10\n AFTER_ORIGINAL_PREPROCESS           2 F\n",
+      "stderr": ""
+    },
+    {
+      "opt": "O2",
+      "input": "subsoil_sand_o2.csv",
+      "returncode": 0,
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1 F\n BEFORE_ORIGINAL_PREPROCESS           2          10\n AFTER_ORIGINAL_PREPROCESS           2 F\n",
+      "stderr": ""
+    }
+  ],
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "sources": {
+    "arrays.f90": "3e57ad503aee98f86384b41c5fe31facddfb9e11f61e4ce039f270864ffa72bd",
+    "original_pchip_selected.f90": "a546f42a654fc0a5636649cbf788c490490b9bc1e13ab7886a1556e76f223d1e",
+    "original_table_preprocess.f90": "2aaded053f8dac833ffe5989460b34494ef6764d7c9e5e0f66b8ae4cc487fccd"
+  },
+  "scope": "Original dormant DPCHIC preprocessing only; no full trajectory or scientific qualification"
+}

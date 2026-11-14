@@ -1,0 +1,38 @@
+{
+  "records": [
+    {
+      "opt": "O0",
+      "input": "topsoil_sand_b2.csv",
+      "status": "CENSORED_8_SECONDS",
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1          52\n BEFORE_ORIGINAL_PREPROCESS           2          10\n",
+      "stderr": ""
+    },
+    {
+      "opt": "O0",
+      "input": "subsoil_sand_o2.csv",
+      "returncode": 0,
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1           1\n BEFORE_ORIGINAL_PREPROCESS           2          10\n AFTER_ORIGINAL_PREPROCESS           2          98\n",
+      "stderr": ""
+    },
+    {
+      "opt": "O2",
+      "input": "topsoil_sand_b2.csv",
+      "status": "CENSORED_8_SECONDS",
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1          52\n BEFORE_ORIGINAL_PREPROCESS           2          10\n",
+      "stderr": ""
+    },
+    {
+      "opt": "O2",
+      "input": "subsoil_sand_o2.csv",
+      "returncode": 0,
+      "stdout": " BEFORE_ORIGINAL_PREPROCESS           1          10\n AFTER_ORIGINAL_PREPROCESS           1           1\n BEFORE_ORIGINAL_PREPROCESS           2          10\n AFTER_ORIGINAL_PREPROCESS           2          98\n",
+      "stderr": ""
+    }
+  ],
+  "compiler": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+  "sources": {
+    "arrays.f90": "3e57ad503aee98f86384b41c5fe31facddfb9e11f61e4ce039f270864ffa72bd",
+    "sptabulated.f90": "bd7c58107c866580b0a30fd4ff2fa9aa022ab9aa970e87ce6886ba99e44a94b9",
+    "original_table_preprocess.f90": "b0b9046a6ed462d53f206f820c093daa542b55103abed564257f28697add9374"
+  }
+}

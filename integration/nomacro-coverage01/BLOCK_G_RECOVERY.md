@@ -36,3 +36,39 @@ water-only fixture regex expects every crop to have salinity1; an original crop
 already has0. Retained input/source/error, corrected fixture accepts0/1 and
 explicitly selects0. No physical/numerical attempt or guard modification.
 PR1681 draft. Follow next exact run through terminal.
+
+Full43589590074 on0f47c7e84 is CENSORED: original table O0 startup exceeds180s,
+no accepted day/ledger or input error. Local real original component closure
+arrays.f90+sptabulated.f90+driver compiles O0/O2. Exact topsoil conductivity
+TSPACK preprocessing censors8s at both; subsoil and theta return. This isolates
+original table preprocessing, not Richards or daily acceptance. Original source
+already contains dormant DPCHIC/PCHIP branch behind use_TSPACK parameter. Private
+selection of that existing branch returns finite nonnegative derivatives for
+both tables at O0/O2. No formula rewritten, no interval/tolerance repair.
+
+Revised original-component strategy/contract before public code: explicitly
+select original-pchip-v1 only for experimental SWSOPHY1, retaining original
+TSPACK default and its censored evidence. This is an interpolation-policy choice,
+so table curve/trajectory may differ between knots: no unmodified-default or
+science-equivalence claim. Bind policy/source/build/native identities, refuse
+wrong/inactive policy and never fall back on runtime failure. Only original
+sptabulated.f90 needs recompilation; source audit finds all use_TSPACK consumers
+inside that same file. No new accepted state or physics formula. Table scientific
+reference must label the independently linked original executable with only this
+same dormant branch selected; the unmodified TSPACK default remains censored.
+Full SAME physical table inputs, actual O0/O2/native/transaction gates remain
+mandatory. Remaining mean/evaporation cases retain original default execution.
+No scalar repair hypotheses attempted and no general solver/performance work.
+
+Public revised candidate implements explicit original-pchip-v1 project/CLI/build
+identity and bundle guard. Default/inactive generated Fortran remains unchanged;
+only selected experimental SWSOPHY1 generates sptabulated.f90 with the original
+constant FALSE. Both original preprocessing/evaluation consumers are in that
+one original file. Independently link a standalone original PCHIP reference by
+changing only that same constant in raw provider source, retaining original main
+and all other original objects; label that modified-reference policy explicitly.
+The default original TSPACK censorship remains unqualified, not silently repaired.
+Narrow local actual original O0/O2 component gates and policy descriptor/invalid
+inactive selection pass. Full current candidate plus F seam smoke are selected
+because shared host/build metadata changes require real fresh builds and default
+source preservation; no repeated unrelated solver or platform qualification.
