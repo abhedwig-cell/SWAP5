@@ -354,8 +354,8 @@ def render_physical_iteration_proposal(output, *, strict_water):
     path.write_text(source,encoding='cp1252')
     if strict_water:
         path=output/'headcalc.f90';source=path.read_text(encoding='cp1252')
-        source=replace(source,'subroutine headcalc \n',
-                       'subroutine headcalc \n   use MOD_timer, only: hybrid_physical_iterations\n')
+        source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                       '   use MOD_timer, only: hybrid_physical_iterations\n   use hybrid_step_budget, only: projected_water_residual')
         source=replace(source,'mass_polish_at = 0',
                        'mass_polish_at = 0\n   hybrid_physical_iterations=0')
         anchor='      if (budget_enabled .and. .not.flnonconv) then'
