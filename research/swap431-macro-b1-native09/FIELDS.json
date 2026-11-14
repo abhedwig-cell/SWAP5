@@ -1,0 +1,541 @@
+[
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "WaSrMpDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "WaUnMpDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "WaUnMpDmCp",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "WaSrMp",
+    "shape": ""
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "TimAbsCumDmCp",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "ThtSrpRefDmCp",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "SorpDmCp",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "VlMpDmCp",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "VlMpDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "VlMp",
+    "shape": ""
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "ZBtDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "ZWaLevDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "FrMpWalWet",
+    "shape": "madm,macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "AwlCorFac",
+    "shape": "macp"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "ArMpTp",
+    "shape": ""
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "ArMpTpDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "integer",
+    "name": "ICpBtDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_macropore",
+    "phase": "macro",
+    "type": "integer",
+    "name": "ICpTpWaSrDm",
+    "shape": "madm"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "VlMpDyCp",
+    "shape": "macp"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "SubsidCp",
+    "shape": "macp"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "ArMpSs",
+    "shape": ""
+  },
+  {
+    "module": "MOD_swap_mp",
+    "phase": "macro",
+    "type": "real(8)",
+    "name": "KsMpSs",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "t1900",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tstart",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "t",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tcum",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "timjan1",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "dt",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "dtold",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "integer",
+    "name": "daynr",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "integer",
+    "name": "daycum",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "integer",
+    "name": "iyear",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "integer",
+    "name": "imonth",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "integer",
+    "name": "isteps",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "logical",
+    "name": "fldaystart",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "logical",
+    "name": "fldayend",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "logical",
+    "name": "fldtmin",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "logical",
+    "name": "flzerointr",
+    "shape": ""
+  },
+  {
+    "module": "variables",
+    "phase": "host",
+    "type": "logical",
+    "name": "flzerocumu",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tmn",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tmx",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tavd",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "rad",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "hum",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "win",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "etr",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "grai",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "fprecnosnow",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "epond",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "peva",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "ptra_dry",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "ptra_wet",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "eintc",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "aintc",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "wfrac",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "integer",
+    "name": "meteo_rec",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "integer",
+    "name": "rain_rec",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "integer",
+    "name": "i_metdetail",
+    "shape": ""
+  },
+  {
+    "module": "MOD_meteo",
+    "phase": "host",
+    "type": "logical",
+    "name": "fl_update_meteo",
+    "shape": ""
+  },
+  {
+    "module": "atmosphere_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "tav",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "lai",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "rd",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "vcover",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "siccap",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "sicact",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "cf",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "fco2tra",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "dt_interc_event",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "crsflx_in",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "crsflx_out",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "hlim3l",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "hlim3h",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "hlim4",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "integer",
+    "name": "noddrz",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "logical",
+    "name": "fl_cropemergence",
+    "shape": ""
+  },
+  {
+    "module": "plant_interface",
+    "phase": "host",
+    "type": "logical",
+    "name": "fl_cropharvest",
+    "shape": ""
+  },
+  {
+    "module": "MOD_cropdevelopment",
+    "phase": "host",
+    "type": "real(8)",
+    "name": "cumdens_top",
+    "shape": "macp+1"
+  }
+]
