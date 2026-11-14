@@ -20,16 +20,19 @@ historical projects. Whole science/physical energy remains NOT_QUALIFIED; origin
 FAILs and full-history gaps retained. New water-only hysteresis/snow refused;
 both failed cache hypotheses removed. Do not restart local cache/solver loops.
 
-Current own branch codex/nomacro-coverage06 on actual E merge. No own PR/model
-run pending. Next F: general experimental external surface-irrigation control,
-using existing original event consumer and durable day transactions. Source audit
-finds current builder/coupler limited to registered Hupsel/SaltFarm; original
-consumer hard-requires solute1/schedule0. Audit durable publisher copying in the
-incremental builder. See BLOCK_F_RECOVERY.md before editing. Preserve old protocol
-and bounds; declare generic water/chemistry capabilities explicitly and reject
-unsupported input atomically. Refresh active peer/canonical delta before code.
+Current own branch codex/nomacro-coverage06, PR1680 draft. Canonical moved via
+admitted PR1675..1678 to01f44996a (registered numerical-policy successors).
+Reconciled cleanly atb0ac9b7c4; no private source imported. Current F code6c79235cf
+passes expanded smoke43583358529: all8 generic/registered O0/O2 builds, exact
+native, independently rebuilt original event tables, no-file preservation,
+isolation, lineage attacks, actual protocol refusals and publisher copying.
+Full forced1096/1461 periods plus O0 active windows now live in43583516947.
+Follow that exact handle to terminal; do not restart from stale state or merge
+before full qualification. Preserve earlier fresh-executable permission failure
+and original Salt optional-IRRATE header failure (both repaired without physics).
+F contract, overlap and exact qualification: BLOCK_F_RECOVERY/STATUS/SMOKE_*.
 Other open register: hydraulic tables, detailed meteo/ET, drainage/surface water,
-reservoir/age plus full original state history. No full-coverage claim.
+reservoir/age plus full original state history. No complete-coverage claim.
 
 Active serial Codex goal is configured; no scheduled timer and no overlapping
 session. Peer last inspected PERF3075fbbb3 / macrocd2bf853e; private evidence not

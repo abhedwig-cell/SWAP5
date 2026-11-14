@@ -109,3 +109,25 @@ configured-dtmax-physical-growth-v2. Generic explicit input defaults ORIGINAL
 adaptive-day-seed-v1, as before. New policy/source identity and scalar packet
 validation retained; no fallback or physics imported/redeveloped here. All F
 qualification must now run on this reconciled source, not old smoke binaries.
+
+Full43583516947 on6c79235cf: water-only O2 completes1096 forced days, with
+every warm/cold physical/native endpoint exact. Both O0 cases pass532 and active
+531/532. Salt O2 has572 accepted forced days exact, then day573 warm physical
+CDE candidate refuses unchanged1e-10 chemical guard: reported/independent
+0.00020858649141789897mg/cm2, not rounding. No accepted day573 publication.
+Rejected auxiliary ends positive, but original CDE clips intermediate negative
+CMSY to0 and records rounderr. Actual source floors each chemical substep to
+water DTMIN after bounding it by stability/remaining interval; this can exceed
+the allowed chemical interval. Focused hypothesis1: that floor drives clipping.
+Run a private paired discriminator from the exact sealed accepted572 native
+origin: observed original versus chemical substep respecting its own existing
+stability/remaining bound. No prepared BUILD/checkpoint rebinding or accepted
+publication; exact compiler, original objects and native hashes checked.
+No public/production source repair unless that experiment supports the cause,
+then full affected qualification and explicit corrected-reference authority.
+No water/chemical tolerance relaxation, numerical-policy fallback or general
+solver campaign. Maximum two focused repair hypotheses remains binding.
+
+Canonical1679 at996f772cd changes release/cost evidence and its measurement tool,
+not app/src physics or execution. Reconcile it without replaying unchanged
+models; keep all admitted policy identities and original scientific FAILs.
