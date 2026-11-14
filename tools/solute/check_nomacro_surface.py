@@ -104,7 +104,7 @@ def main():
                     stamp=date.fromisoformat(project.start_date)+timedelta(days=day-1)
                     entries.append(f' {stamp.isoformat()} {depth!r} {conc!r} 1 {rate!r}\n')
                 text,count=re.subn(r'(?m)^([ \t]*IRDATE[ \t]+IRDEPTH[^\n]*\n)(?:[ \t]*\d{4}-\d{2}-\d{2}[^\n]*\n)+',
-                                   lambda m:m[1]+''.join(entries),text)
+                                   lambda m:(m[1] if 'IRRATE' in m[1] else m[1].rstrip('\r\n')+' IRRATE\n')+''.join(entries),text)
                 assert count==1;path.write_text(text,encoding='cp1252')
                 manual_project=e.load(manual);manual_base=out/(label+'-manual-build');manual_run=out/(label+'-manual-control')
                 manual_common=['--model',manual_project.model,'--experimental-project',manual,'--reference-work',ref,'--donor-opt',opt]

@@ -93,3 +93,19 @@ controls, no-file base/extension preservation, actual malformed-consumer launche
 source schedule/mode/reserved-file refusals, persisted-input attacks and isolated
 external origins. Preserve partial ledger rows incrementally and cap only the
 qualification cohort runtime; never accept a censored run as completion.
+
+Expanded smoke43582993979 on52772edaa: generic water O0/O2 plus independent
+manual/no-file/persisted/native/actual-consumer checks pass. Salt independent
+manual fixture failed original TTUTIL: original Salt table has4 columns without
+optional IRRATE but the new rows supplied5. Add that optional column header
+explicitly; preserve original input format validation and source error. No model
+equation or tolerance change.
+
+Canonical moved to01f44996a via admitted owner PR1675/1676/1677/1678 while this
+work was running. Inspected actual diff/status/physical-policy authority, then
+merged admitted canonical cleanly at ownb0ac9b7c4. No private owner source.
+Registered Grass/Hupsel select configured-dtmax-daily-v1; SaltFarm selects
+configured-dtmax-physical-growth-v2. Generic explicit input defaults ORIGINAL
+adaptive-day-seed-v1, as before. New policy/source identity and scalar packet
+validation retained; no fallback or physics imported/redeveloped here. All F
+qualification must now run on this reconciled source, not old smoke binaries.
