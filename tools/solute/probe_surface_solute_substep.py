@@ -27,44 +27,12 @@ def main():
     assert receipt==rows[-1]
     original=(base/'solute.f90').read_text(encoding='cp1252')
     assert h.sha(base/'solute.f90')==identity['donor_generated']['solute.f90']
-    # Second focused hypothesis: the old scalar diffusion estimate omits
-    # the actual finite-volume diagonal losses and dt-dependent LW dispersion.
-    # Derive only the time bound from the unchanged original face coefficients.
-    declaration='      real(8)                             :: isqdra,afgen'
-    assert original.count(declaration)==1
-    diagnostic=original.replace(declaration,declaration+'\n      real(8) :: row_a,row_b,row_limit,row_original')
-    anchor='           dtsolu = min(dtsolu,dummy)'
-    row_code="""           row_original=dummy
-           row_a=0d0;row_b=0d0
-           if(i>1)then
-             row_a=row_a+q(i)*inpolb(i-1)+thetav(i-1)*dispr1(i-1)/disnod(i)
-             row_b=row_b+0.5d0*thetav(i-1)*vpore2(i-1)/disnod(i)
-           end if
-           if(i<numnod)then
-             row_a=row_a-q(i+1)*inpola(i+1)+thetav(i)*dispr1(i)/disnod(i+1)
-             row_b=row_b+0.5d0*thetav(i)*vpore2(i)/disnod(i+1)
-           else
-             row_a=row_a-min(q(i+1),0d0)
-           end if
-           row_a=row_a+tscf*max(qrot(i),0d0)
-           if(nrlevs>0)row_a=row_a+sum(max(qdra(1:nrlevs,i),0d0))
-           row_a=max(row_a,0d0)/(theta(i)*dz(i))
-           row_b=row_b/(theta(i)*dz(i))
-           row_limit=huge(1d0)
-           if(row_a>0d0.or.row_b>0d0)row_limit=2d0/(row_a+sqrt(row_a*row_a+4d0*row_b))
-           if(row_limit<row_original)write(*,'(a,1x,i0,4(1x,es25.17e3))') &
-             'DIAG_CDE_ROW_LIMIT',i,row_original,row_limit,row_a,row_b
-           ! DIAG_APPLY_ROW_LIMIT
-"""
-    assert original.count(anchor)>=1
-    diagnostic=diagnostic.replace(anchor,row_code+anchor,1)
-    diagnostic=diagnostic.replace('               if (cmsy(i) < vsmall) then',
+    from solute_step_policy import render_transactional_cde
+    diagnostic=original.replace('               if (cmsy(i) < vsmall) then',
         "               if(cmsy(i)<0d0)write(*,'(a,1x,i0,4(1x,es25.17e3))') 'DIAG_CDE_NEGATIVE',i,cmsy(i)*dz(i),dt,dtmin,dtsolu\n               if (cmsy(i) < vsmall) then",1)
-    candidate=diagnostic.replace('           ! DIAG_APPLY_ROW_LIMIT','           dummy=min(dummy,row_limit)',1)
-    candidate=candidate.replace('            dtsolu  = max(dtsolu,dtmin)',
-        '            ! Independent chemical stability/remaining interval is not enlarged to water DTMIN.',1)
+    candidate=render_transactional_cde(original)
     reports=[]
-    for name,source_text in [('unchanged-cde-observed',diagnostic),('actual-cde-row-interval',candidate)]:
+    for name,source_text in [('unchanged-cde-observed',diagnostic),('transactional-original-cde',candidate)]:
         target=out/name;shutil.copytree(base,target);(target/'BUILD.json').rename(target/'CARRIER_BUILD.json')
         (target/'solute.f90').write_text(source_text,encoding='cp1252')
         for exe in ('day_donor','day_kernel'):h.executable(target,exe).chmod(0o755)
@@ -109,14 +77,14 @@ def main():
         print(name,'residual',independent,'floors',len(floors),'negative',len(negatives),flush=True)
     baseline,trial=reports
     assert baseline['failure'] and abs(baseline['independent_solute_residual_mg_cm2'])>1e-10
-    assert baseline['negative_clips'] and baseline['row_limits']
+    assert baseline['negative_clips']
     passed=trial['failure'] is None and not trial['negative_clips'] and abs(trial['independent_solute_residual_mg_cm2'])<=1e-10
     result=dict(status='FOCUSED_HYPOTHESIS_SUPPORTED_NOT_FULL_QUALIFICATION' if passed else 'FOCUSED_HYPOTHESIS_REJECTED',
         source_commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-        original_run=43583516947,refused_day=573,hypothesis=2,variants=reports,
+        original_run=43583516947,refused_day=573,strategy='Whole original chemical trial rollback',variants=reports,
         original_checkpoint_unchanged=True,no_publication=True,science='NOT_QUALIFIED')
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
-    assert passed,'Actual CDE row bound did not repair the refused day; revise original transport strategy'
+    assert passed,'Transactional original chemical block did not preserve the refused interval'
 
 
 if __name__=='__main__':main()
