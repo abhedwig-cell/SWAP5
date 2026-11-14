@@ -190,6 +190,8 @@ def main():
                         help='Explicit experimental original project directory; no production/science claim')
     parser.add_argument('--experimental-solute-step-policy',choices=host_module.SOLUTE_STEP_POLICIES,
                         help='Explicit experimental chemical execution policy; no automatic fallback')
+    parser.add_argument('--experimental-soil-table-policy',choices=host_module.SOIL_TABLE_POLICIES,
+                        help='Explicit original table interpolation branch; no automatic fallback')
     parser.add_argument('--experimental-time-step-policy',choices=host_module.TIME_POLICIES,
                         help='Explicit experimental numerical policy; defaults to original adaptive daily seed, new policy is not qualified for all option mixes')
     parser.add_argument("--reference-work", type=Path, help="Original source provider prepared by --prepare-sources (or legacy Andelst archive)")
@@ -213,7 +215,7 @@ def main():
     if args.prepare_sources:
         if (not args.no_macro_release or args.reference_work is None or args.model is not None
             or args.build_only or any(v is not None for v in (args.output,args.prepare_archive,args.build_bundle,
-                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy,args.experimental_solute_step_policy,args.donor_opt))):
+                args.grass_build,args.hupsel_build,args.days,args.checkpoint_at,args.restart,args.restart_day,args.kernel_opt,args.experimental_project,args.experimental_time_step_policy,args.experimental_solute_step_policy,args.experimental_soil_table_policy,args.donor_opt))):
             parser.error('--prepare-sources requires only --no-macro-release and a new --reference-work')
         try:
             prepared=user_prepare.prepare(args.reference_work)
@@ -224,6 +226,8 @@ def main():
     if args.model is None:
         parser.error('--model is required for a build or run')
     experimental = args.experimental_project is not None
+    if args.experimental_soil_table_policy is not None and not experimental:
+        parser.error('--experimental-soil-table-policy requires --experimental-project')
     if args.experimental_solute_step_policy is not None and not experimental:
         parser.error('--experimental-solute-step-policy requires --experimental-project')
     if args.experimental_time_step_policy is not None and not experimental:
@@ -275,7 +279,7 @@ def main():
     try:
         if experimental:
             from experimental_project import load
-            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy)
+            project = load(args.experimental_project,time_step_policy=args.experimental_time_step_policy,solute_step_policy=args.experimental_solute_step_policy,soil_table_policy=args.experimental_soil_table_policy)
         else:
             project={p.model:p for p in PROJECTS}[args.model]
     except (OSError, ValueError) as error:

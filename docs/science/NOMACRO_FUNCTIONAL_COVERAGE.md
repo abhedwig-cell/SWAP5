@@ -226,17 +226,17 @@ which remain outside this work unit. A supported input selector alone is not A.
 
 | Family | A: executed scope | B/C: remaining original integration or qualification |
 | --- | --- | --- |
-| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A/B/C | B: arbitrary grids, references and process combinations need their own evidence |
-| Richards/hydraulics | Selected original MvG and unchanged production solver; hysteresis1/2 trajectories and named restarts | B: hydraulic tables and other original constitutive families; C: later active history restart FAIL retained; water-only history explicitly refused |
+| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through G | B: arbitrary grids, references and process combinations need their own evidence |
+| Richards/hydraulics | Selected original MvG, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables and further constitutive families; later active history FAIL retained; water-only history refused |
 | Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux | C: strict solute substep receipt absent for reconstructed modes1/5; B: other original boundaries8/9 |
 | Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
-| Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; block D is pending admission |
-| Irrigation | Registered fixed surface and external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
+| Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; canonical D/E evidence retains its named scope |
+| Irrigation | Registered and eligible generic water-only/chemical external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
 | Heat | Selected numerical and analytical temperature; original top1..4 and bottom1/2; compatible no-heat routes | B: unexecuted process combinations; whole physical energy including mass-carried energy remains a separate scientific limitation |
 | Snow/frost | Positive snow accumulation/melt, snow plus hysteresis, named exact continuations | B/C: complete frost state and corrected-reference integration; frost remains refused |
 | Solute | Original conservative CDE; separate and combined Freundlich sorption/decay | B/C: reservoir SWBR1, original age/tracer SWSOLU2 and their matching conserved ledgers/state |
 | Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | B: detailed weather/rainfall and further original top-boundary options; implicit conductivity SWKIMPL1 remains excluded |
-| Runtime control | Registered groundwater and surface forcing; experimental original-forcing accept/discard/recovery | B/C: general runtime dynamic boundary forcing beyond the registered contracts |
+| Runtime control | Registered groundwater and surface forcing; experimental original and eligible full external surface accept/discard/recovery | B/C: general runtime dynamic boundary forcing beyond the registered contracts |
 | Macropores | None within this work unit | D: all active macropore processes and owner research remain separate |
 
 This register is derived from the explicit adapter restrictions in
@@ -441,3 +441,56 @@ The legacy day573 failure, two rejected scalar hypotheses, original oxygen
 FAILs, incomplete physical energy and arbitrary history gaps remain visible.
 This adds two full external-forcing histories, zero independent historical
 projects; it does not establish complete original no-macro functional coverage.
+
+## Original hydraulic tables, means and Darcy evaporation
+
+Block G selects the existing original PCHIP table code with
+`--experimental-soil-table-policy original-pchip-v1`, explicitly for SWSOPHY1.
+The default original TSPACK preprocessing remains unchanged. Its topsoil
+conductivity preprocessing censors at8seconds in the real original small
+arrays.f90/sptabulated.f90 driver at both O0/O2; full startup43589590074 censors
+at180seconds before any accepted day. The dormant original PCHIP branch returns
+finite nonnegative derivatives for the same two table inputs. No interpolation
+formula is rewritten. This is a different original interpolation choice between
+knots, not a claim of unmodified-default numerical or scientific equivalence.
+
+Project/CLI/build/source/native identity binds the choice; inactive or wrong
+choices refuse and no runtime fallback occurs. Inactive/default generated source
+is unchanged and the original state codec gains no fields. The independently
+linked standalone table references retain the original main and all objects
+except the same explicitly selected original interpolation constant. These are
+labeled modified original references. The default TSPACK censor remains separate.
+The pinned distribution contains no hydraulic table files: these two-layer
+monotone head/theta/K tables are explicit derived physical data, not the original
+MvG curve or additional independent historical projects.
+
+Five complete configurations each pass1096 days: chemical and water-only PCHIP
+tables; unweighted and weighted geometric conductivity means3/4; Darcy soil
+ evaporation0. All actual touched-donor/controller O0/O2 builds pass native2/365
+and active530 suffixes, complete endpoint bytes, unchanged hard water/active
+chemical bounds, distinct-origin isolation, inconsistent-mass refusal and
+external discard/replay/disk recovery. Four complete configurations are in
+run43590665680 onb3421842a; final Darcy43592320510 on8ffdc68f3 adds the fifth.
+The runtime/app/src source is unchanged between them. The combined5480 complete
+model days have maximum water residual9.994544780548079e-11cm and chemical
+residual2.0189361551216096e-13mg/cm2. The original provider remains O2. Fresh
+surface preservation43590666062 onb3421842a passes eight default generated-source
+preimages and actual O0/O2 external/no-file seams; no new full registered replay
+or old capsule rebinding is claimed.
+
+The initial seven-case cohort is not an all-seven full PASS. Unweighted harmonic5
+accepts588 days and refuses589 with independent water-9.982261767658127e-9cm.
+Weighted harmonic6 accepts366 and refuses367 with1.0005702050317616e-10cm at both
+O0/O2, while its integrated substep estimate is below1e-10. Neither is rounded
+into acceptance. Own588/366 native replay reproduces the exact refusal, leaves
+accepted stocks/origin unchanged and publishes no refused day. Proof runs are
+43591564339 and43592320429. No Richards repair, new time policy or tolerance change
+is used. Harmonic full-period functional qualification remains open.
+
+Original SWP comments describe logarithmic means7/8, but the actual original
+reader permits1..7 and implementation7 uses separately read Szymkiewicz tables;
+8 has no implementation. Both remain refused by this adapter rather than being
+invented. `BLOCK_G_QUALIFICATION.json`, status, selected raw archives and actual
+merge receipt own the bounded admission. Original oxygen/scientific FAILs,
+complete physical energy, arbitrary history and the remaining coverage register
+remain open; full original no-macro coverage is not established.

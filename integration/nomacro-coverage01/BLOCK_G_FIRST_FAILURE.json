@@ -1,0 +1,10 @@
+{
+  "run": 43589431793,
+  "source": "b52f1de4b024eeae79afab0ae457c93652a5b490",
+  "job": 132430820304,
+  "stage": "After provider preparation, before any model or option build",
+  "error": "AssertionError in water-only table fixture: regex only matched SWSALINITY1 but an original crop already has SWSALINITY0",
+  "traceback": "check_nomacro_coverage.py line291: re.subn SWSALINITY1 to0; assert count==1",
+  "repair": "Allow explicit0 or1, still require exactly one selector and explicitly write0; no model/source/tolerance repair",
+  "qualification": "NONE"
+}

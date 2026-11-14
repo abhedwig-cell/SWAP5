@@ -1719,3 +1719,15 @@ generated sources and numerical policies are preserved. Scientific equivalence,
 complete energy, arbitrary history and the remaining original coverage register
 are not promoted. Exact source/run/raw/admission authority belongs to
 `integration/nomacro-coverage01/BLOCK_F_STATUS.json` and its merge receipt.
+
+## Experimental original hydraulic controls
+
+[Original coverage block G](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) adds five
+complete1096-day derived trajectories: explicit original PCHIP tables with/without
+chemistry, geometric means3/4 and Darcy evaporation0. Actual touched O0/O2,
+native2/365/530, hard balances and transactional gates pass. Harmonic5/6 remain
+retained full-period FAILs at589/367, with exact own-native refusal and unchanged
+accepted state. Original default TSPACK startup remains censored. This is bounded
+experimental scope, not whole science or complete original functional coverage.
+`integration/nomacro-coverage01/BLOCK_G_QUALIFICATION.json` owns per-configuration
+source/run evidence; actual merge receipt owns canonical admission.

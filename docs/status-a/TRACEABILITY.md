@@ -1711,3 +1711,17 @@ both rejected scalar hypotheses and the private discriminator. Actual merge
 receipt owns canonical admission. Registered/default preservation uses eight
 actual generated-source preimages plus named execution seams; whole scientific
 equivalence and unimplemented history/energy scope are not promoted.
+
+## Experimental original hydraulic controls
+
+[Original coverage block G](../science/NOMACRO_FUNCTIONAL_COVERAGE.md) traces
+contract and original-code audit to BLOCK_G_RECOVERY, per-configuration assessment
+to BLOCK_G_QUALIFICATION/STATUS and actual admission to the merge receipt under
+`integration/nomacro-coverage01/`. Four full trajectories in43590665680 and final
+Darcy43592320510 qualify5480 complete days on unchanged runtimeb3421842a.
+43590666062 preserves eight old default source images and actual external seams.
+Original TSPACK startup43589590074, the local actual O0/O2 component probe, and
+exact harmonic589/367 refusal proofs43591564339/43592320429 remain raw evidence.
+A failed combined workflow is never labeled all-seven full PASS; only the five
+completed configuration gates are qualified. Whole science and remaining gaps
+are not promoted.
