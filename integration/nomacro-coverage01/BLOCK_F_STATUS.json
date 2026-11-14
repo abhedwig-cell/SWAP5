@@ -17,5 +17,13 @@
   "private_strategy_run": 43586778043,
   "private_strategy_residual_mg_cm2": -3.5551331843686196e-12,
   "new_policy": "transactional-cde-substeps-v1",
-  "next": "Fresh full forced O0/O2 public explicit-policy qualification; no canonical admission yet"
+  "next": "Fresh full forced O0/O2 public explicit-policy qualification; no canonical admission yet",
+  "candidate_source": "3c5171531bbb285b13c97d5c6e351bab3132f908",
+  "candidate_full_run": 43587528984,
+  "candidate_status": "RUNNING_NOT_ADMITTED",
+  "canceled_stale_dispatch": {
+    "run": 43587507899,
+    "source": "6116436df6e87ef34c4f96ccb6393677377eb2d2",
+    "reason": "Dispatch raced pending push; own stale job canceled, no qualification claimed"
+  }
 }

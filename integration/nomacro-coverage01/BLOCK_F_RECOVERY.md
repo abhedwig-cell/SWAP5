@@ -160,3 +160,12 @@ registered/default remains admitted-cde-substeps-v1. New generator SHA participa
 only in the selected transactional policy. All8 actual prior generated-source
 preimages are checked, allowing only genericSalt solute.f90 to differ. Fresh
 full original external history is essential; one interval is not full qualification.
+
+Public opt-in candidate3c5171531 full run43587528984 is LIVE. Follow this same run
+through terminal; do not duplicate. Own stale-head dispatch43587507899 raced the
+pending Git push and was canceled, not qualification. Current peer boundary
+refreshed: PERF5b68e5438 (own pycache only), macro7551d92dc clean; neither private
+worktree imported. Remote frozenRC111529865e unchanged. Canonical996f772cd.
+Docs source checks pass; strict rendered-doc build pending. Every old generated
+source preimage is checked on the real fresh hosted build, not inferred from
+Python AST. Only explicit genericSalt chemical Fortran may differ.
