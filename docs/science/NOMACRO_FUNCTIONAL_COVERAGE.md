@@ -373,3 +373,71 @@ Across A/B/C/D/E there are32 additional complete configurations and37627 complet
 model days, with zero new independent historical projects. Complete original
 no-macro functional coverage has not yet been established; the remaining register
 and retained history/scientific gaps are still open.
+
+## Experimental general external surface events
+
+Block F extends the existing typed surface-event transaction to validated original
+experimental projects. Every referenced future crop must retain SCHEDULE0 and
+the original SWIRFIX1 fixed-event route. Chemical1 retains S5IRR001; water-only
+uses distinct S5IRR002 and requires exactly zero chemical concentration. Original
+schedules are never implicitly disabled. Build/source/origin/clock identity,
+discard/replay, isolation and durable forcing lineage retain their existing owner.
+The incremental builder copies and verifies the restart publisher and preserves
+executable permissions; it reuses the original kernel and untouched objects.
+
+The first full source6c79235cf run43583516947 passes the complete water-only1096
+forced days with exact daily warm/cold physical and native states, and both
+generic O0 active532-day windows. Salt O2 accepts572 exact days, then the warm
+original CDE trial on573 violates the unchanged1e-10 chemical guard by
+0.00020858649141789897mg/cm2. Original intermediate negative-inventory clipping
+accounts for the mass creation. No accepted573 checkpoint is published. This
+full run is a retained FAIL, not full block qualification.
+
+Two scalar stability hypotheses fail to change that result. A revised strategy
+retains the complete original chemical substep as a transaction: snapshot every
+mutable stock and cumulative flux; refuse a negative intermediate inventory
+before clipping; roll back the whole trial and retry a smaller chemical interval.
+Only acceptance advances the chemical clock. The explicit experimental option
+`--experimental-solute-step-policy transactional-cde-substeps-v1` selects this
+execution policy for SWSOLU1; it is not an automatic failure fallback. Physical
+flux/reaction laws and all acceptance tolerances remain unchanged. Trial buffers
+are transient; the accepted physical restart schema is unchanged.
+
+Private exact573 run43586778043 reproduces the old failure and supports the new
+strategy with independent residual-3.5551331843686196e-12mg/cm2 and one whole-trial
+retry. It publishes no accepted checkpoint and establishes only that interval.
+That private interval alone does not qualify a full trajectory. Registered
+and default generated source must remain byte-identical against the eight actual
+preimages from43583358529; only the explicitly selected generic chemical source
+may differ. The selected policy/generator is build and checkpoint-bound; old
+bundles cannot be rebound. `BLOCK_F_STATUS.json` and the versioned raw evidence
+own execution status; the merge receipt owns actual canonical admission.
+
+Fresh public source3c5171531 run43587528984 passes all eight profiles. The
+water-only1096 and explicitly transactional chemical1461 trajectories complete
+2557 forced model days; every day has exact physical/native warm versus cold
+external acceptance. Both actual touched-donor/controller O0 routes complete532
+days and exact1..6/531..532 external windows. Registered original/default O0/O2
+six-day routes pass with their unchanged admitted chemical policies. All default
+generated sources match the eight actual preimages; only the explicit generic
+Salt chemical source changes. The immutable original provider remains O2.
+
+Maximum water residual is9.99749903631171e-11cm and active chemical residual
+1.5017015408957946e-11mg/cm2, below unchanged1e-10 bounds. The full chemical warm
+worker executes two actual whole-trial retries. The105 explicit refusals include
+wrong chemical policy, stale generator, malformed actual Fortran consumers,
+persisted forcing tampering, stale tokens, invalid chemistry and future schedules.
+Independent origins, no-file preservation, manual fixed-table event controls,
+external discard/replay and disk recovery also pass. An additional focused O0
+gate exercises the formerly failing573 interval with its own native build/origin;
+run43588596845 passes575 warm days, actual chemical retry, exact573..575 cold
+physical/native continuation, discard/replay and immutable own572 origin.
+
+Both unchanged original-reference executions complete with separately specified equivalent
+event tables and output-only CSV compatibility changes. Diagnostic differences
+remain: e.g. Salt maximum water-stock difference0.026321001521012022cm and
+solute-stock difference0.37333616817591064mg/cm2. These are not scientific PASSes.
+The legacy day573 failure, two rejected scalar hypotheses, original oxygen
+FAILs, incomplete physical energy and arbitrary history gaps remain visible.
+This adds two full external-forcing histories, zero independent historical
+projects; it does not establish complete original no-macro functional coverage.

@@ -17,6 +17,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
 from donor_sources import records, render_checkpoint, render_day_return, render_no_macro_timecontrol, render_physical_iteration_proposal, replace, sha
+from solute_step_policy import LEGACY_SOLUTE_STEP_POLICY, TRANSACTIONAL_SOLUTE_STEP_POLICY, SOLUTE_STEP_POLICIES, render_transactional_cde
 
 APP = Path(__file__).resolve().parent
 ORIGINAL_TIME_POLICY = 'original-adaptive-day-seed-v1'
@@ -43,6 +44,7 @@ class HybridProject:
     input_directory: str = ''
     input_inventory: tuple = ()
     time_step_policy: str = ORIGINAL_TIME_POLICY
+    solute_step_policy: str = LEGACY_SOLUTE_STEP_POLICY
 
     @property
     def last_day(self):
@@ -110,6 +112,10 @@ def verify_source(distribution):
 
 
 def build(reference, output, trace_richards=False, checkpoint_day=None, budget_retry=False, trace_day=15, shared_pond_transfer=False, refresh_macro_final=False, *, runtime_checkpoint=False, kernel_opt="O2", project=ANDELST, donor_opt="O2"):
+    if project.solute_step_policy not in SOLUTE_STEP_POLICIES:
+        raise ValueError('Unknown chemical substep policy')
+    if project.solute_step_policy != LEGACY_SOLUTE_STEP_POLICY and (not project.input_directory or project.macro or not project.solute):
+        raise ValueError('Transactional chemical substeps require explicit experimental no-macro SWSOLU1')
     if not project.macro and project.time_step_policy not in TIME_POLICIES:
         raise ValueError('Unknown no-macro daily time-step policy')
     case = project_case(reference, project)
@@ -400,6 +406,8 @@ end submodule MOD_Solute_CDE""")
                        "                  csurf = csurf + cfluxt\n"
                        "                  isqtop = qtop*(1.0d0-ArMpSs)*cpond\n"
                        "               end if")
+        if project.solute_step_policy == TRANSACTIONAL_SOLUTE_STEP_POLICY:
+            source=render_transactional_cde(source)
         (output/'solute.f90').write_text(source,encoding='cp1252')
         patched.insert(0,'solute')
     if management_state:
@@ -625,6 +633,9 @@ end module MOD_wofost""")
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
+        build_identity['solute_step_policy'] = project.solute_step_policy if project.solute else None
+        if project.solute_step_policy == TRANSACTIONAL_SOLUTE_STEP_POLICY:
+            build_identity['solute_step_policy_source'] = sha(APP/'solute_step_policy.py')
         build_identity['time_step_policy'] = project.time_step_policy
         build_identity['time_step_policy_source'] = sha(APP/'donor_sources.py')
         library = compile_restart_publisher(output)

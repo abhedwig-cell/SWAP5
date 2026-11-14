@@ -1,0 +1,47 @@
+name: General original surface-event control
+on:
+  push:
+    branches: [codex/nomacro-coverage06]
+    paths: ['.github/workflows/nomacro-coverage-surface.yml']
+  workflow_dispatch:
+    inputs:
+      full_period:
+        type: boolean
+        default: false
+        description: Run complete generic forced periods and active O0 states
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-surface-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Compile and execute actual surface consumers O0/O2
+        env:
+          FULL_PERIOD: ${{ inputs.full_period }}
+        run: |
+          if [ "$FULL_PERIOD" = true ]; then
+            python3 -B tools/solute/check_nomacro_surface.py --full-period --output "$RUNNER_TEMP/proof"
+          else
+            python3 -B tools/solute/check_nomacro_surface.py --output "$RUNNER_TEMP/proof"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-surface-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30

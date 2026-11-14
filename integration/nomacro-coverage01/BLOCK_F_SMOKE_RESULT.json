@@ -1,0 +1,1425 @@
+{
+  "status": "EXPERIMENTAL_GENERIC_SURFACE_SMOKE_PASS",
+  "source_commit": "6c79235cfdd7bd6254e9c8ec3cd900fb4fe67eee",
+  "profiles": [
+    {
+      "configuration": "water-hupsel",
+      "kernel_optimization": "O0",
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR002",
+      "solute_active": false,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 1.7347668440637065e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": true,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "water-hupsel",
+      "kernel_optimization": "O2",
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR002",
+      "solute_active": false,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 1.7347668440637065e-14,
+      "maximum_solute_residual_mg_cm2": null,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": true,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "solute-salt",
+      "kernel_optimization": "O0",
+      "generated_donor_optimization": "O0",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR001",
+      "solute_active": true,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 7.474090790715593e-13,
+      "maximum_solute_residual_mg_cm2": 7.172040739078511e-13,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": true,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "solute-salt",
+      "kernel_optimization": "O2",
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR001",
+      "solute_active": true,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 7.474090790715593e-13,
+      "maximum_solute_residual_mg_cm2": 7.172040739078511e-13,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": true,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "registered-hupsel",
+      "kernel_optimization": "O0",
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR001",
+      "solute_active": true,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 2.1220384390646663e-14,
+      "maximum_solute_residual_mg_cm2": 3.141931159689193e-14,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": false,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "registered-hupsel",
+      "kernel_optimization": "O2",
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR001",
+      "solute_active": true,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 2.1220384390646663e-14,
+      "maximum_solute_residual_mg_cm2": 3.141931159689193e-14,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": false,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "registered-salt",
+      "kernel_optimization": "O0",
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR001",
+      "solute_active": true,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 5.145571468911925e-13,
+      "maximum_solute_residual_mg_cm2": 1.2327916465437738e-12,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": false,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    },
+    {
+      "configuration": "registered-salt",
+      "kernel_optimization": "O2",
+      "generated_donor_optimization": "O2",
+      "original_provider_optimization": "O2",
+      "protocol": "S5IRR001",
+      "solute_active": true,
+      "full_model_days": 6,
+      "full_period": false,
+      "externally_accepted_days": 6,
+      "every_exercised_native_exact": true,
+      "maximum_water_residual_cm": 5.145571468911925e-13,
+      "maximum_solute_residual_mg_cm2": 1.2327916465437738e-12,
+      "original_kernel_reused": true,
+      "original_objects_reused": true,
+      "publisher_copied_and_verified": "42c2ee41be6b6c4a18aece1000c12ba1582adde8bd06d6795de6ccd42318a6e7",
+      "active_native": null,
+      "no_file_original_physical_and_native_preserved": true,
+      "manual_original_input_control_exact": false,
+      "isolated_external_origins": true,
+      "persisted_forcing_attack_refused": true,
+      "scientific_equivalence": "NOT_QUALIFIED"
+    }
+  ],
+  "refusals": [
+    {
+      "label": "water-hupsel-O0-unsupported-SWIRFIX",
+      "error": "External surface irrigation requires explicit original SWIRFIX1"
+    },
+    {
+      "label": "water-hupsel-O0-scheduled-future",
+      "error": "External fixed events require SCHEDULE0 for every referenced crop"
+    },
+    {
+      "label": "water-hupsel-O0-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O0-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O0-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O0-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "water-hupsel-O0-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "water-hupsel-O0-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "water-hupsel-O0-chemical-input",
+      "error": "Water-only irrigation cannot carry solute"
+    },
+    {
+      "label": "water-hupsel-O0-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "water-hupsel-O0-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O0-persisted-forcing",
+      "error": "Water-only irrigation cannot carry solute"
+    },
+    {
+      "label": "water-hupsel-O2-unsupported-SWIRFIX",
+      "error": "External surface irrigation requires explicit original SWIRFIX1"
+    },
+    {
+      "label": "water-hupsel-O2-scheduled-future",
+      "error": "External fixed events require SCHEDULE0 for every referenced crop"
+    },
+    {
+      "label": "water-hupsel-O2-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O2-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O2-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O2-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "water-hupsel-O2-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "water-hupsel-O2-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "water-hupsel-O2-chemical-input",
+      "error": "Water-only irrigation cannot carry solute"
+    },
+    {
+      "label": "water-hupsel-O2-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "water-hupsel-O2-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "water-hupsel-O2-persisted-forcing",
+      "error": "Water-only irrigation cannot carry solute"
+    },
+    {
+      "label": "water-hupsel-O2-consumer-foreign-protocol",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "water-hupsel-O2-consumer-stale-clock",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "water-hupsel-O2-consumer-nonfinite",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "water-hupsel-O2-consumer-chemical-water-only",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "solute-salt-O0-unsupported-SWIRFIX",
+      "error": "External surface irrigation requires explicit original SWIRFIX1"
+    },
+    {
+      "label": "solute-salt-O0-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O0-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O0-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O0-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "solute-salt-O0-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "solute-salt-O0-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "solute-salt-O0-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "solute-salt-O0-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O0-persisted-forcing",
+      "error": "Invalid persisted Cauchy forcing identity"
+    },
+    {
+      "label": "solute-salt-O2-unsupported-SWIRFIX",
+      "error": "External surface irrigation requires explicit original SWIRFIX1"
+    },
+    {
+      "label": "solute-salt-O2-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O2-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O2-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O2-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "solute-salt-O2-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "solute-salt-O2-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "solute-salt-O2-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "solute-salt-O2-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "solute-salt-O2-persisted-forcing",
+      "error": "Invalid persisted Cauchy forcing identity"
+    },
+    {
+      "label": "solute-salt-O2-consumer-foreign-protocol",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "solute-salt-O2-consumer-stale-clock",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "solute-salt-O2-consumer-nonfinite",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "registered-hupsel-O0-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O0-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O0-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O0-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "registered-hupsel-O0-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "registered-hupsel-O0-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "registered-hupsel-O0-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "registered-hupsel-O0-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O0-persisted-forcing",
+      "error": "Invalid persisted Cauchy forcing identity"
+    },
+    {
+      "label": "registered-hupsel-O2-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O2-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O2-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O2-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "registered-hupsel-O2-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "registered-hupsel-O2-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "registered-hupsel-O2-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "registered-hupsel-O2-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-hupsel-O2-persisted-forcing",
+      "error": "Invalid persisted Cauchy forcing identity"
+    },
+    {
+      "label": "registered-hupsel-O2-consumer-foreign-protocol",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "registered-hupsel-O2-consumer-stale-clock",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "registered-hupsel-O2-consumer-nonfinite",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "registered-salt-O0-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O0-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O0-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O0-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "registered-salt-O0-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "registered-salt-O0-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "registered-salt-O0-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "registered-salt-O0-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O0-persisted-forcing",
+      "error": "Invalid persisted Cauchy forcing identity"
+    },
+    {
+      "label": "registered-salt-O2-origin_day",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O2-coupling_id",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O2-t0_day1900",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O2-enabled",
+      "error": "Explicit irrigation switch required"
+    },
+    {
+      "label": "registered-salt-O2-depth_mm",
+      "error": "Nonfinite or nonnumeric irrigation"
+    },
+    {
+      "label": "registered-salt-O2-rate_mm_h",
+      "error": "Disabled irrigation must carry zero water and solute input"
+    },
+    {
+      "label": "registered-salt-O2-discarded-token-4",
+      "error": "Foreign, discarded or already accepted proposal"
+    },
+    {
+      "label": "registered-salt-O2-stale-request-4",
+      "error": "Foreign or stale irrigation origin/window"
+    },
+    {
+      "label": "registered-salt-O2-persisted-forcing",
+      "error": "Invalid persisted Cauchy forcing identity"
+    },
+    {
+      "label": "registered-salt-O2-consumer-foreign-protocol",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "registered-salt-O2-consumer-stale-clock",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    },
+    {
+      "label": "registered-salt-O2-consumer-nonfinite",
+      "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+    }
+  ],
+  "events": [
+    {
+      "label": "prepare",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--no-macro-release",
+        "--prepare-sources",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider"
+      ],
+      "returncode": 0,
+      "seconds": 18.429197766
+    },
+    {
+      "label": "water-hupsel-O0-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O0",
+        "--kernel-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-base"
+      ],
+      "returncode": 0,
+      "seconds": 1.622383338000006
+    },
+    {
+      "label": "water-hupsel-O0-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O0",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-base",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.3400526570000011
+    },
+    {
+      "label": "water-hupsel-O0-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O0",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.14157007199999327
+    },
+    {
+      "label": "water-hupsel-O0-manual-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O0",
+        "--kernel-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-manual-build"
+      ],
+      "returncode": 0,
+      "seconds": 1.512068739
+    },
+    {
+      "label": "water-hupsel-O0-manual-control",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O0",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-manual-build",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-manual-control",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.1295373850000061
+    },
+    {
+      "label": "water-hupsel-O0-reserved-input",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O0-reserved-input"
+      ],
+      "returncode": 2,
+      "seconds": 0.05292894100000467
+    },
+    {
+      "label": "water-hupsel-O2-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O2",
+        "--kernel-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-base"
+      ],
+      "returncode": 0,
+      "seconds": 4.853465575000001
+    },
+    {
+      "label": "water-hupsel-O2-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O2",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-base",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.1287108049999972
+    },
+    {
+      "label": "water-hupsel-O2-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O2",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.1395316130000026
+    },
+    {
+      "label": "water-hupsel-O2-manual-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O2",
+        "--kernel-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-manual-build"
+      ],
+      "returncode": 0,
+      "seconds": 4.865939256000004
+    },
+    {
+      "label": "water-hupsel-O2-manual-control",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O2",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-manual-build",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-manual-control",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.1229066639999985
+    },
+    {
+      "label": "water-hupsel-O2-reserved-input",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-water-hupsel",
+        "--donor-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/water-hupsel-O2-reserved-input"
+      ],
+      "returncode": 2,
+      "seconds": 0.0528818389999941
+    },
+    {
+      "label": "solute-salt-O0-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O0",
+        "--kernel-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O0-base"
+      ],
+      "returncode": 0,
+      "seconds": 1.6759762129999984
+    },
+    {
+      "label": "solute-salt-O0-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O0",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/solute-salt-O0-base",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O0-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.14951444599999775
+    },
+    {
+      "label": "solute-salt-O0-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O0",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/solute-salt-O0-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O0-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.1606335339999987
+    },
+    {
+      "label": "solute-salt-O0-manual-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/solute-salt-O0-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O0",
+        "--kernel-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O0-manual-build"
+      ],
+      "returncode": 0,
+      "seconds": 1.591306209999999
+    },
+    {
+      "label": "solute-salt-O0-manual-control",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/solute-salt-O0-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O0",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/solute-salt-O0-manual-build",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O0-manual-control",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.155961431999998
+    },
+    {
+      "label": "solute-salt-O0-reserved-input",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O0-reserved-input"
+      ],
+      "returncode": 2,
+      "seconds": 0.05529129099998897
+    },
+    {
+      "label": "solute-salt-O2-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O2",
+        "--kernel-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O2-base"
+      ],
+      "returncode": 0,
+      "seconds": 5.335173565000005
+    },
+    {
+      "label": "solute-salt-O2-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O2",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/solute-salt-O2-base",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O2-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.14568644900001004
+    },
+    {
+      "label": "solute-salt-O2-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O2",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/solute-salt-O2-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O2-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.1541882759999993
+    },
+    {
+      "label": "solute-salt-O2-manual-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/solute-salt-O2-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O2",
+        "--kernel-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O2-manual-build"
+      ],
+      "returncode": 0,
+      "seconds": 5.569026675000018
+    },
+    {
+      "label": "solute-salt-O2-manual-control",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/solute-salt-O2-manual-input",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--donor-opt",
+        "O2",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/solute-salt-O2-manual-build",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O2-manual-control",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.13520414900000333
+    },
+    {
+      "label": "solute-salt-O2-reserved-input",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--experimental-project",
+        "/home/runner/work/_temp/proof/input-solute-salt",
+        "--donor-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/solute-salt-O2-reserved-input"
+      ],
+      "returncode": 2,
+      "seconds": 0.051675521999982266
+    },
+    {
+      "label": "registered-hupsel-O0-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--kernel-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-hupsel-O0-base"
+      ],
+      "returncode": 0,
+      "seconds": 4.315737154999994
+    },
+    {
+      "label": "registered-hupsel-O0-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-hupsel-O0-base",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-hupsel-O0-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.13619960899998773
+    },
+    {
+      "label": "registered-hupsel-O0-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-hupsel-O0-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-hupsel-O0-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.11017258600000446
+    },
+    {
+      "label": "registered-hupsel-O2-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--kernel-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-hupsel-O2-base"
+      ],
+      "returncode": 0,
+      "seconds": 5.668271565999987
+    },
+    {
+      "label": "registered-hupsel-O2-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-hupsel-O2-base",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-hupsel-O2-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.10899786699999936
+    },
+    {
+      "label": "registered-hupsel-O2-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_HUPSEL_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-hupsel-O2-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-hupsel-O2-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.11081495999999902
+    },
+    {
+      "label": "registered-salt-O0-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--kernel-opt",
+        "O0",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-salt-O0-base"
+      ],
+      "returncode": 0,
+      "seconds": 4.381775138999984
+    },
+    {
+      "label": "registered-salt-O0-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-salt-O0-base",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-salt-O0-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.11787985800000911
+    },
+    {
+      "label": "registered-salt-O0-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-salt-O0-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-salt-O0-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.11680439300002377
+    },
+    {
+      "label": "registered-salt-O2-build",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--kernel-opt",
+        "O2",
+        "--build-only",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-salt-O2-base"
+      ],
+      "returncode": 0,
+      "seconds": 5.412914830999995
+    },
+    {
+      "label": "registered-salt-O2-no-file-base",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-salt-O2-base",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-salt-O2-no-file-base",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.12081600600001252
+    },
+    {
+      "label": "registered-salt-O2-no-file-extended",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/runner/work/SWAP5/SWAP5/tools/solute/run_water.py",
+        "--model",
+        "HYBRID_SALTFARM_WATER",
+        "--reference-work",
+        "/home/runner/work/_temp/proof/provider",
+        "--no-macro-release",
+        "--build-bundle",
+        "/home/runner/work/_temp/proof/registered-salt-O2-extended",
+        "--output",
+        "/home/runner/work/_temp/proof/registered-salt-O2-no-file-extended",
+        "--days",
+        "6",
+        "--checkpoint-at",
+        "4"
+      ],
+      "returncode": 0,
+      "seconds": 0.12295618100000638
+    }
+  ],
+  "science": "NOT_QUALIFIED; original FAILs and physical energy limits retained"
+}

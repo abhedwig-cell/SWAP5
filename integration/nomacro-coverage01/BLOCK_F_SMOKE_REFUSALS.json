@@ -1,0 +1,374 @@
+[
+  {
+    "label": "water-hupsel-O0-unsupported-SWIRFIX",
+    "error": "External surface irrigation requires explicit original SWIRFIX1"
+  },
+  {
+    "label": "water-hupsel-O0-scheduled-future",
+    "error": "External fixed events require SCHEDULE0 for every referenced crop"
+  },
+  {
+    "label": "water-hupsel-O0-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O0-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O0-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O0-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "water-hupsel-O0-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "water-hupsel-O0-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "water-hupsel-O0-chemical-input",
+    "error": "Water-only irrigation cannot carry solute"
+  },
+  {
+    "label": "water-hupsel-O0-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "water-hupsel-O0-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O0-persisted-forcing",
+    "error": "Water-only irrigation cannot carry solute"
+  },
+  {
+    "label": "water-hupsel-O2-unsupported-SWIRFIX",
+    "error": "External surface irrigation requires explicit original SWIRFIX1"
+  },
+  {
+    "label": "water-hupsel-O2-scheduled-future",
+    "error": "External fixed events require SCHEDULE0 for every referenced crop"
+  },
+  {
+    "label": "water-hupsel-O2-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O2-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O2-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O2-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "water-hupsel-O2-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "water-hupsel-O2-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "water-hupsel-O2-chemical-input",
+    "error": "Water-only irrigation cannot carry solute"
+  },
+  {
+    "label": "water-hupsel-O2-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "water-hupsel-O2-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "water-hupsel-O2-persisted-forcing",
+    "error": "Water-only irrigation cannot carry solute"
+  },
+  {
+    "label": "water-hupsel-O2-consumer-foreign-protocol",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "water-hupsel-O2-consumer-stale-clock",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "water-hupsel-O2-consumer-nonfinite",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "water-hupsel-O2-consumer-chemical-water-only",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "solute-salt-O0-unsupported-SWIRFIX",
+    "error": "External surface irrigation requires explicit original SWIRFIX1"
+  },
+  {
+    "label": "solute-salt-O0-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O0-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O0-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O0-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "solute-salt-O0-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "solute-salt-O0-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "solute-salt-O0-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "solute-salt-O0-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O0-persisted-forcing",
+    "error": "Invalid persisted Cauchy forcing identity"
+  },
+  {
+    "label": "solute-salt-O2-unsupported-SWIRFIX",
+    "error": "External surface irrigation requires explicit original SWIRFIX1"
+  },
+  {
+    "label": "solute-salt-O2-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O2-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O2-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O2-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "solute-salt-O2-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "solute-salt-O2-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "solute-salt-O2-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "solute-salt-O2-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "solute-salt-O2-persisted-forcing",
+    "error": "Invalid persisted Cauchy forcing identity"
+  },
+  {
+    "label": "solute-salt-O2-consumer-foreign-protocol",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "solute-salt-O2-consumer-stale-clock",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "solute-salt-O2-consumer-nonfinite",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "registered-hupsel-O0-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O0-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O0-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O0-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "registered-hupsel-O0-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "registered-hupsel-O0-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "registered-hupsel-O0-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "registered-hupsel-O0-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O0-persisted-forcing",
+    "error": "Invalid persisted Cauchy forcing identity"
+  },
+  {
+    "label": "registered-hupsel-O2-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O2-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O2-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O2-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "registered-hupsel-O2-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "registered-hupsel-O2-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "registered-hupsel-O2-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "registered-hupsel-O2-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-hupsel-O2-persisted-forcing",
+    "error": "Invalid persisted Cauchy forcing identity"
+  },
+  {
+    "label": "registered-hupsel-O2-consumer-foreign-protocol",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "registered-hupsel-O2-consumer-stale-clock",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "registered-hupsel-O2-consumer-nonfinite",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "registered-salt-O0-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O0-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O0-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O0-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "registered-salt-O0-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "registered-salt-O0-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "registered-salt-O0-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "registered-salt-O0-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O0-persisted-forcing",
+    "error": "Invalid persisted Cauchy forcing identity"
+  },
+  {
+    "label": "registered-salt-O2-origin_day",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O2-coupling_id",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O2-t0_day1900",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O2-enabled",
+    "error": "Explicit irrigation switch required"
+  },
+  {
+    "label": "registered-salt-O2-depth_mm",
+    "error": "Nonfinite or nonnumeric irrigation"
+  },
+  {
+    "label": "registered-salt-O2-rate_mm_h",
+    "error": "Disabled irrigation must carry zero water and solute input"
+  },
+  {
+    "label": "registered-salt-O2-discarded-token-4",
+    "error": "Foreign, discarded or already accepted proposal"
+  },
+  {
+    "label": "registered-salt-O2-stale-request-4",
+    "error": "Foreign or stale irrigation origin/window"
+  },
+  {
+    "label": "registered-salt-O2-persisted-forcing",
+    "error": "Invalid persisted Cauchy forcing identity"
+  },
+  {
+    "label": "registered-salt-O2-consumer-foreign-protocol",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "registered-salt-O2-consumer-stale-clock",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  },
+  {
+    "label": "registered-salt-O2-consumer-nonfinite",
+    "error": "Missing {'HYBRID_DAY_RETURN'}, process exited with 1"
+  }
+]

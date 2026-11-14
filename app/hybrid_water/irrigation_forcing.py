@@ -11,7 +11,23 @@ from donor_sources import replace
 INPUT = 'hybrid-irrigation-day.in'
 
 
-def render(source):
+def project_protocol(project):
+    if project in (h.HUPSEL,h.SALTFARM):return 'S5IRR001'
+    if not project.input_directory:raise ValueError('Unsupported surface irrigation project')
+    import experimental_project as e
+    case=e.validate(project);report=e.inspect(case)
+    if report['selectors']['SWIRFIX']!=1:
+        raise ValueError('External surface irrigation requires explicit original SWIRFIX1')
+    if report['selectors']['SWCROP']:
+        text=(case/'swap.swp').read_text(encoding='cp1252')
+        for name,_ in e.crop_entries(text):
+            crop=case/(name if name.lower().endswith('.crp') else name+'.crp')
+            if e.one(crop.read_text(encoding='cp1252'),'SCHEDULE',r'[+-]?\d+')!='0':
+                raise ValueError('External fixed events require SCHEDULE0 for every referenced crop')
+    return 'S5IRR001' if project.solute else 'S5IRR002'
+
+
+def render(source, *, water_only=False):
     # This logical is automatic per invocation, not part of the saved physics.
     source = replace(source, '      real(8)::afgen',
                      '      logical::hybrid_external_handled\n      real(8)::afgen')
@@ -72,6 +88,10 @@ def render(source):
          'HYBRID_IRRIGATION_INPUT',clock,enabled,depth,concentration,rate
    end subroutine
 '''
+    if water_only:
+        procedure=procedure.replace('S5IRR001','S5IRR002').replace('swsolu/=1','swsolu/=0')
+        procedure=procedure.replace("      if(enabled/=0.and.enabled/=1)",
+            "      if(concentration/=0d0)error stop 'Water-only irrigation cannot carry solute'\n      if(enabled/=0.and.enabled/=1)")
     return replace(source, 'end module MOD_irrigation', procedure+'\nend module MOD_irrigation')
 
 
@@ -79,7 +99,7 @@ def build_bundle(base, reference, target, project=h.HUPSEL):
     """Compile one module; preserve the validated original kernel and other objects."""
     from daily_coupling import validate_bundle
     base,reference,target=map(Path,(base,reference,target))
-    if project not in (h.HUPSEL,h.SALTFARM):raise ValueError('Unsupported surface irrigation project')
+    protocol=project_protocol(project)
     meta,_=validate_bundle(base,reference,project)
     identity=copy.deepcopy(meta['identity'])
     if 'irrigation_extension' in identity:raise ValueError('Already extended irrigation bundle')
@@ -94,9 +114,12 @@ def build_bundle(base, reference, target, project=h.HUPSEL):
     target.mkdir()
     for p in base.iterdir():
         if p.is_file() and (p.suffix.lower() in ('.o','.mod','.smod','.f90') or p.name.startswith('day_')):
-            shutil.copyfile(p,target/p.name)
+            shutil.copy2(p,target/p.name)
+    if 'restart_publisher' in identity:
+        library=h.validate_restart_publisher(base,identity['restart_publisher'])
+        shutil.copyfile(library,target/library.name)
     generated=target/'irrigation.f90'
-    generated.write_text(render(generated.read_text(encoding='cp1252')),encoding='cp1252')
+    generated.write_text(render(generated.read_text(encoding='cp1252'),water_only=protocol=='S5IRR002'),encoding='cp1252')
     commands=[['gfortran',*identity['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c','irrigation.f90']]
     replacements={Path(n).with_suffix('.o').name:target/Path(n).with_suffix('.o').name
                   for n in identity['donor_generated']}
@@ -110,7 +133,7 @@ def build_bundle(base, reference, target, project=h.HUPSEL):
         (target/'INCREMENTAL_BUILD.json').write_text(json.dumps(logs,indent=2)+'\n')
         if completed.returncode:raise ValueError('Incremental irrigation build failed')
     identity['donor_generated']['irrigation.f90']=h.sha(generated)
-    identity['irrigation_extension']={'source_sha256':h.sha(Path(__file__)),'protocol':'S5IRR001',
+    identity['irrigation_extension']={'source_sha256':h.sha(Path(__file__)),'protocol':protocol,
         'original_irrigation_sha256':meta['identity']['donor_generated']['irrigation.f90'],
         'object_sha256':h.sha(target/'irrigation.o')}
     meta['identity']=identity;meta['binding']={**meta['binding'],'build':identity}

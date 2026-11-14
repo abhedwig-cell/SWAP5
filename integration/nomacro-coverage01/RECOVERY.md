@@ -1,40 +1,77 @@
+# Block F admission-ready checkpoint
+
+Public full43587528984 and actualO0 retry43588596845 both SUCCESS.
+Runtime qualified3c5171531 unchanged in HEAD04ecc10e3; later additions are focused
+verification, docs and raw evidence. PR1680 draft, canonical996f772cd, frozenRC1
+11529865e unchanged. Finalize docs, refresh canonical/peers, merge exact head,
+verify postimage, persist merge receipt on next branch07, continue remaining
+original hydraulics/weather/drainage/history coverage. Whole science unqualified.
+
+# Current block F: full qualification PASS, O0 retry seam pending
+
+Public source3c5171531 full43587528984 SUCCESS: full1096/1461 externally forced
+periods, exact EVERY daily native and physical warm/cold endpoint, O0 active532,
+all8 default-source preimages,105 refusals, original-table/no-file/replay/recovery.
+Maxwater9.99749903631171e-11cm; maxsolute1.5017015408957946e-11mg/cm2.
+Current own branch codex/nomacro-coverage06 PR1680 remains draft and unmerged.
+Focused O0 actual-retry gate43588596845 on04ecc10e3 is LIVE. Follow to terminal;
+source/runtime unchanged from full3c5171531. Then seal raw evidence, docs and PR,
+refresh canonical996f772cd/peers and safely admit exact qualified postimage.
+FrozenRC111529865e unchanged. Full prior FAIL573, rejected hypotheses and private
+strategy proof retained. No original scientific/energy/history promotion.
+
+# Current block F checkpoint: explicit transactional chemical qualification
+
+Canonical996f772cd, own branch codex/nomacro-coverage06 PR1680 draft.
+Original full43583516947 FAILED Salt day573 after572 accepted exact external
+restarts. Water-only full1096 and both O0 active532 pass. No day573 publication.
+Two scalar hypotheses rejected; whole-original chemical trial rollback strategy
+privately PASSES exact573 in43586778043, residual-3.5551331843686196e-12.
+No tolerance relaxation and no old checkpoint rebinding. Public opt-in policy is
+now implemented, NOT yet qualified. Registered/default generated source must
+remain identical against all8 source preimages from43583358529. Fresh full
+external public-policy qualification is next; merge forbidden until it passes.
+Original full failure and both rejected hypotheses remain retained evidence.
+
 ## Current recovery checkpoint
 
-Workstream SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01,
-branch codex/nomacro-coverage05. A/B/C admitted PR1669/1670/1671. Exact C
-postmerge a6720a0e8 includes peer PR1672 GNU policy; requalified SUCCESS on
-43412494520. Historical old-head evidence remains unchanged and separate.
-A/B/C complete17 additional configurations20457 model days; zero new independent
-historical projects. Scientific FAILs retained; frozen RC111529865e untouched.
+SWAP5-NOMACRO-COVERAGE01, own worktree C:/Users/Veldh012/swap5-nomacro-coverage01.
+A/B/C/D/E admitted PR1669/1670/1671/1673/1674. Current canonical02ecf51877ec420e8e591e3a99584b78c3f7d59e.
+E actual tree4d5aeb4ca357153fd37e2df9903f77d0ca895794 equals qualified7f8b72fc5;
+relevant source/workflow diff from executedb7a9d8405 is empty. Frozen release
+11529865e76fb2259542f1e770726cd87af27603 unchanged. BLOCK_E_MERGE owns receipt.
 
-D PR1673 admitted bdf222befb3ba444d3cd7147ef2fa90e2581ca16. Actual canonical
-tree cccb02ef8a2aad4da19c8605afdc38e72fc19ad8 equals qualified headca68e2cfe;
-relevant app/src/tools/workflow diff from executed42f066bf0 is empty. All three
-workflow runs43418605842/43418610124/43418614412 SUCCESS; versioned raw data
-and native endpoints sealed. Six complete variants7306 days; across A/B/C/D,
-23 complete additional configurations27763 days, zero new independent projects.
-Both failed history cache hypotheses removed; new water-only history atomically
-refused. Frozen11529865e unchanged and no peer private source imported.
+E run43423367602 SUCCESS:9 full9864 days,18 touched-unit/controller O0/O2
+profiles with immutable original providerO2, exact native2/365/530, real growth
+or root uptake, distinct thermal states, reference and all transaction checks.
+Maxwater9.997787873191472e-11cm, solute2.0189361551216096e-13mg/cm2. Three original
+invalid-input prefixes/refusals preserved; valid derived fixtures honor all
+original constraints. No physics/codec/host/kernel/provider/CLI/time-policy
+change. Old adapter bundles require rebuild, never rebind. All24 prior selected
+descriptors exact; historical qualifications inherited only within dependency scope.
 
-Current own branch codex/nomacro-coverage05, PR1674 draft. E codeb7a9d8405
-passes actual run43423367602:9 full9864 days,18 O0/O2 touched-unit/controller
-profiles, exact native2/365/530, temperature state, original reference and all
-transaction checks. Maxwater9.997787873191472e-11cm; solute2.0189361551216096e-13.
-32 additional complete configurations37627 days across A..E; zero new
-independent projects. Three original invalid-input prefixes/refusals retained.
-No physical/codec/host/kernel/provider/CLI/time-policy change; all24 old selected
-experimental descriptors exact. Old adapter bundles require rebuild, never rebind.
-Next: finish raw archiving/docs, ready/merge PR1674 and verify exact postimage.
-Then choose the next original-process integration surface from current register.
-Known reservoir SWBR1 requires separate aquifer state/ledger and original-index
-reference audit; age2, other drainage/surfacewater, detailed meteo, hydraulic
-tables, broader crop structures and complete original history remain open.
-Do not resume two failed local cache hypotheses or start a solver campaign.
-Peer3075fbbb3/cd2bf853e inspected; canonical bdf222bef, no private import.
+Across A..E:32 additional full configurations37627 model days, zero new independent
+historical projects. Whole science/physical energy remains NOT_QUALIFIED; original
+FAILs and full-history gaps retained. New water-only hysteresis/snow refused;
+both failed cache hypotheses removed. Do not restart local cache/solver loops.
 
-An active serial autonomous Codex goal continues this work; no scheduled timer
-is configured. Later checkpoints must replace this current pointer. Inventory
-below is the dated initial baseline, not a present full-coverage claim.
+Current own branch codex/nomacro-coverage06, PR1680 draft. Canonical moved via
+admitted PR1675..1678 to01f44996a (registered numerical-policy successors).
+Reconciled cleanly atb0ac9b7c4; no private source imported. Current F code6c79235cf
+passes expanded smoke43583358529: all8 generic/registered O0/O2 builds, exact
+native, independently rebuilt original event tables, no-file preservation,
+isolation, lineage attacks, actual protocol refusals and publisher copying.
+Full forced1096/1461 periods plus O0 active windows now live in43583516947.
+Follow that exact handle to terminal; do not restart from stale state or merge
+before full qualification. Preserve earlier fresh-executable permission failure
+and original Salt optional-IRRATE header failure (both repaired without physics).
+F contract, overlap and exact qualification: BLOCK_F_RECOVERY/STATUS/SMOKE_*.
+Other open register: hydraulic tables, detailed meteo/ET, drainage/surface water,
+reservoir/age plus full original state history. No complete-coverage claim.
+
+Active serial Codex goal is configured; no scheduled timer and no overlapping
+session. Peer last inspected PERF3075fbbb3 / macrocd2bf853e; private evidence not
+imported. Later checkpoints replace this pointer. Inventory below is dated baseline.
 
 ---
 
