@@ -40,7 +40,7 @@ def inventory(directory):
     # Relative original input folders are copied with the private worker.
     if any(not (p.is_file() or p.is_dir()) for p in paths):
         raise ValueError('Experimental project requires regular input files/directories')
-    reserved = {'restart.end', 'macro-origin.bin', 'macro.bin', 'result.end', 'swap.ok', 'swap.err'}
+    reserved = {'restart.end', 'macro-origin.bin', 'macro.bin', 'result.end', 'swap.ok', 'swap.err', 'hybrid-irrigation-day.in'}
     if any(p.name.lower() in reserved for p in paths):
         raise ValueError('Experimental input collides with a worker output/restart name')
     return tuple(sorted((p.relative_to(directory).as_posix(), hashlib.sha256(p.read_bytes()).hexdigest())
@@ -56,6 +56,10 @@ def check_paths(body, name):
             raise ValueError('External/parent path in original input: '+name)
 
 
+def crop_entries(text):
+    return re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
+
+
 def inspect(directory):
     directory = Path(directory).resolve()
     inputs = inventory(directory)
@@ -64,7 +68,7 @@ def inspect(directory):
     selected = switches(text)
     crop_files=set();crop_types={}
     if selected.get('SWCROP')==1:
-        entries=re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
+        entries=crop_entries(text)
         if not entries:raise ValueError('Missing/unsupported original crop rotation')
         for name,crop_type in entries:
             path=directory/(name if name.lower().endswith('.crp') else name+'.crp')

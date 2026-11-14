@@ -169,7 +169,9 @@ def validate_bundle(bundle, reference, project):
     if 'irrigation_extension' in identity:
         from irrigation_forcing import __file__ as extension_source
         ext=identity['irrigation_extension']
-        if project not in (h.HUPSEL,h.SALTFARM) or ext['source_sha256']!=h.sha(Path(extension_source)) or ext['object_sha256']!=h.sha(bundle/'irrigation.o'):
+        from irrigation_forcing import project_protocol
+        if (ext.get('protocol')!=project_protocol(project) or ext['source_sha256']!=h.sha(Path(extension_source))
+            or ext['object_sha256']!=h.sha(bundle/'irrigation.o')):
             raise ValueError('Foreign irrigation extension source/object')
     case = h.project_case(reference, project)
     if project.input_directory and identity.get('experimental_input_adapter') != h.sha(h.APP/'experimental_project.py'):
@@ -236,9 +238,11 @@ class CoupledDailyColumn:
         if (forcing_mode not in (ORIGINAL_FORCING,CAUCHY_FORCING,GROUNDWATER_FORCING,*IRRIGATION_MODES) or
             (forcing_mode==CAUCHY_FORCING and project!=h.ANDELST) or
             (forcing_mode==GROUNDWATER_FORCING and project!=h.GRASSGROWTH) or
-            (forcing_mode==IRRIGATION_FORCING and project!=h.HUPSEL) or
-            (forcing_mode==SURFACE_IRRIGATION_FORCING and project not in (h.HUPSEL,h.SALTFARM))):
+            (forcing_mode==IRRIGATION_FORCING and project!=h.HUPSEL)):
             raise ValueError('Unsupported external forcing mode/project')
+        if forcing_mode==SURFACE_IRRIGATION_FORCING:
+            from irrigation_forcing import project_protocol
+            project_protocol(project)
         self.forcing_mode=forcing_mode
         self.bundle, self.reference, self.output = map(Path, (bundle, reference, output))
         self.meta, self.case = validate_bundle(self.bundle, self.reference, project)
@@ -353,6 +357,8 @@ class CoupledDailyColumn:
         if any(type(v) not in (int,float) or not math.isfinite(v) for v in values):
             raise ValueError('Nonfinite or nonnumeric irrigation')
         depth,conc,rate=values
+        if not self.project.solute and conc!=0:
+            raise ValueError('Water-only irrigation cannot carry solute')
         if forcing.enabled:
             if not (.01<=depth<=100 and 0<=conc<=1000 and 0<rate<=100 and (0.1*depth)/(0.1*24*rate)<=1):
                 raise ValueError('Irrigation outside original input range/duration')
@@ -401,7 +407,8 @@ class CoupledDailyColumn:
             case=trial/'forcing-case'
             shutil.copytree(self.case,case)
             from irrigation_forcing import INPUT
-            (case/INPUT).write_text('S5IRR001 '+ ' '.join(map(str,[irrigation.t0_day1900,int(irrigation.enabled),
+            protocol=self.meta['identity']['irrigation_extension']['protocol']
+            (case/INPUT).write_text(protocol+' '+ ' '.join(map(str,[irrigation.t0_day1900,int(irrigation.enabled),
                 float(irrigation.depth_mm),float(irrigation.concentration_mg_cm3),float(irrigation.rate_mm_h)]))+'\n',encoding='ascii')
         receipt, origin = None, None
         if self._origin is not None:
