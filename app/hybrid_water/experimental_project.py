@@ -62,17 +62,18 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
-    crop_files=set()
+    crop_files=set();crop_types={}
     if selected.get('SWCROP')==1:
         entries=re.findall(r"(?m)^[ \t]*\d{4}-\d{2}-\d{2}[ \t]+\d{4}-\d{2}-\d{2}[ \t]+'([^'\n]+)'[ \t]+([12])[ \t]*(?:!.*)?$",text)
         if not entries:raise ValueError('Missing/unsupported original crop rotation')
-        for name,_ in entries:
+        for name,crop_type in entries:
             path=directory/(name if name.lower().endswith('.crp') else name+'.crp')
             if not path.is_file():raise ValueError('Missing original crop input: '+name)
             crop_files.add(path.resolve())
+            crop_types.setdefault(path.resolve(),set()).add(int(crop_type))
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
-                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {2},
-                 'SWTOPBHEA': {1}, 'SWBOTBHEA': {1}, 'SWCROP': {0, 1},
+                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
+                 'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0}, 'SWRUNON': {0}, 'SWKIMPL': {0},
                  'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
@@ -99,11 +100,14 @@ def inspect(directory):
     # excluded until their complete process/state combinations are qualified.
     allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
-                   SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SW2={1, 2}, SW3={1, 2})
+                   SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
+                   SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2})
     if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
         raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
+    if selected['SWSNOW'] and selected['SWCALT'] != 2:
+        raise ValueError('Snow requires numerical thermal history integration')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
         raise ValueError('Original hysteresis requires the analytical hydraulic family')
     for name, value in selected.items():
@@ -124,8 +128,8 @@ def inspect(directory):
             raise ValueError('Unsupported boundary selector: '+name)
 
     crop_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.crp')]
-    root_controls={'SWINTER':{0,1,2,3},'SWOXYGEN':{0,1,2},'SWDROUGHT':{1,3},
-                   'SWSALINITY':{0,1},'SWCOMPENSATE':{0,1},'SWWRTNONOX':{0,1}}
+    root_controls={'SWINTER':{0,1,2,3},'SWOXYGEN':{0,1,2},'SWDROUGHT':{1,2,3},
+                   'SWSALINITY':{0,1},'SWCOMPENSATE':{0,1,2},'SWWRTNONOX':{0,1}}
     structure=lambda sig:{k:v for k,v in sig.items() if k not in root_controls}
     crop_structures=list(map(structure,crop_signatures))
     drain_signatures = [switches(p.read_text(encoding='cp1252')) for root in roots for p in root.glob('*.dra')]
@@ -144,6 +148,10 @@ def inspect(directory):
                 raise ValueError('Unsupported original irrigation schedule')
             if structure(sig) not in crop_structures or any(sig.get(k) not in values for k,values in root_controls.items()):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
+            if sig['SWDROUGHT']>1 and sig['SWCOMPENSATE']>0:
+                raise ValueError('Original microscopic root uptake cannot be combined with additional compensation')
+            if sig.get('SWINTER')==2 and crop_types[path.resolve()] != {1}:
+                raise ValueError('Original Gash interception requires simple crop type1 for every referenced occurrence')
             if not selected['SWSOLU'] and sig.get('SWSALINITY')==1:
                 raise ValueError('Original salinity stress requires active solute transport')
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):

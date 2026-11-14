@@ -1,0 +1,36 @@
+name: Original thermal canopy and root processes
+# Own bounded hosted qualification; no peer model or platform campaign.
+on:
+  push:
+    branches: [codex/nomacro-coverage05]
+    paths: ['.github/workflows/nomacro-coverage-process.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: nomacro-process-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 20
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            tools/vq
+            reference/swap-4.3.1/projects
+            reference/swap-4.3.1/source-archives
+      - name: Compile and execute original process options O0/O2
+        run: python3 -B tools/solute/check_nomacro_coverage.py --process-options --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nomacro-process-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
