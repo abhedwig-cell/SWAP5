@@ -1,0 +1,22 @@
+{
+  "work_unit": "SALTFARM_PRESSURE_LOCALIZATION01",
+  "status": "ONE_PAIRED_READ_ONLY_PROBE_COMPLETE",
+  "base": "38b7040a2e5cbf651cf253bf30e12d7a4924a156",
+  "source": "593507d0f",
+  "carrier": "8ea0a4ee4555fedb1d6ced7acf40ecfa0aafff4e",
+  "run": 43550642328,
+  "invariants": [
+    "No production state or model changes",
+    "Original input and actual NUMBIT feedback unchanged",
+    "All tolerances unchanged",
+    "No foreign restart or altered BUILD identity"
+  ],
+  "qualified": "Observer preserves same-platform1009 head/stock/flow/uptake prefix exactly; unchanged guards; both paired native and local model probes PASS",
+  "not_qualified": "Whole scientific equivalence; a fix to SaltFarm platform spread; universal new-policy process coverage",
+  "cause": "Near-threshold strict mass polish changes accepted NUMBIT3 vs4 and original following dt0.034 vs0.017",
+  "decision": "No production patch selected: distinct original-convergence versus strict-polish controller count requires source-level numerical-policy assessment, not threshold fitting",
+  "next_goal": "Read original NUMBIT and guard-polish ownership; make explicit numerical-policy decision before another model experiment",
+  "half_hour_recovery": "ACTIVE",
+  "proof": "COMPARISON.json and digest-verified platform raw ZIPs",
+  "cost": "native Windows3.986s Ubuntu3.371s local8.335s; Windows setup dominated hosted wall time; no full1461 repetition"
+}

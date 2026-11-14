@@ -46,3 +46,42 @@ profile match the recorded provider. Hosted selection43550642328 uses the exact
 carrier8ea0a4ee4555fedb1d6ced7acf40ecfa0aafff4e; the registered carrier workflow
 is excluded from the clean development branch. Results are owned by
 `integration/f-ci/saltfarm-pressure-localization01`.
+
+
+## Completed paired observation and decision
+
+[Run43550642328](https://github.com/abhedwig-cell/SWAP5/actions/runs/43550642328)
+completed SUCCESS on both platforms. Native Windows/Ubuntu costs were3.986s and
+3.371s; compiler setup, separately, dominated Windows wall time. All1009 daily
+heads/stocks/flows/uptake were exactly preserved against each original saved
+platform trajectory. Full original native frames, traces, private generated
+sources, executable and commands are in the digest-verified raw artifacts.
+
+The first discrete split occurs at original day1009 time41916.119, minute171.36.
+Original Richards convergence at iteration2 is the same on both sides. The strict
+mass decision, however, compares accumulated residual plus step residual against
+`1e-10*(t1900-budget_start+dt)`. The transmitted trace values and binary-computed
+threshold are in COMPARISON.json. Windows is just outside this limit while Ubuntu
+is just inside, a difference at roughly1e-15 cm. Consequently Ubuntu marks
+`mass_polish_at=2`; Windows first marks it at3. The existing extra original Newton
+iteration yields accepted iteration counts3 versus4. Original NUMBIT_CRIT3 then
+doubles the following Ubuntu step to0.034d while Windows retains0.017d. This is
+the first causal control-path divergence; subsequent differences in head are
+therefore not evidence of different physical formulae. The observed pressures
+and existing guards are not reclassified as a scientific PASS.
+
+**Disposition:** rounding-sensitive strict-mass polishing with adaptive-step
+feedback. No incorrect comparison, state leakage, balancing flux or ignored
+tolerance has been demonstrated. No production patch is selected in this packet.
+In particular, inserting an arbitrary extra iteration, rounding the guard or
+loosening the gate would merely tune this example. The real question for any
+future repair is whether original physical-convergence iterations and auxiliary
+strict-mass polishing should own distinct controller counts. That changes a
+numerical-policy contract and requires explicit source-level justification and
+qualification; it cannot be silently presented as preserving actual NUMBIT
+feedback. Current actual-count behavior, input, physics, rejections, all limits
+and broader scientific limitations remain intact.
+
+Next bounded objective: inspect that original-count versus guard-polish ownership
+and decide on the numerical policy before any additional model experiment.
+A second similar trace or a repeated full trajectory is not selected.
