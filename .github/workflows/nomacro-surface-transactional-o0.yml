@@ -1,0 +1,34 @@
+name: Actual transactional chemical O0 retry
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            reference/swap-4.3.1/projects
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-surface-3c5171531bbb285b13c97d5c6e351bab3132f908
+          run-id: 43587528984
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Exercise own O0 origin, chemical retry and discard replay
+        run: python3 -B tools/solute/check_surface_transactional_o0.py --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: surface-transactional-o0-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
