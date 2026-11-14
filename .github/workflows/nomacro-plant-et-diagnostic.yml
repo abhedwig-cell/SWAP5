@@ -1,0 +1,37 @@
+name: Original plant ET history discriminator
+on:
+  push:
+    branches: [codex/nomacro-coverage08]
+    paths: ['.github/workflows/nomacro-plant-et-diagnostic.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 8
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            app
+            src
+            tools/solute
+            reference/swap-4.3.1/projects
+      - uses: actions/download-artifact@v4
+        with:
+          name: nomacro-weather-4d3e41c8a9a3b778228ccf474b378155893ca783
+          run-id: 43593959340
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/prior
+      - name: Read accepted and cold original component memory without publication
+        run: python3 -B tools/solute/probe_plant_et_history.py --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: plant-et-history-${{ github.sha }}
+          path: ${{ runner.temp }}/proof
+          retention-days: 30
