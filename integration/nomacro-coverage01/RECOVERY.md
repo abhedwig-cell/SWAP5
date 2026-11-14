@@ -1,3 +1,13 @@
+# I live ten original constitutive qualifications
+
+Own branch09 draftPR1683; sourcef45d9a10b run43599641836 LIVE, ten independent
+model2..11 jobs, maxparallel2. Follow exact run through terminal, no duplicates.
+Actual original4..11 local component O0/O2 PASS. Per-layer vapor0-only guard
+now refuses later-layer activation/NaN/duplicates, actual local adapter PASS;
+it changes no generated Fortran or physical trajectory. No I admission yet.
+H canonicalf1f8d0602 verified exacttreec421e1922, receipt persisted. Frozen/peers
+untouched. Do not count derived input as independent history/scientific PASS.
+
 # H admitted; I original constitutive-family source audit
 
 PR1682 canonicalf1f8d0602 exacttreec421e1922 equals qualified head37856cc80.

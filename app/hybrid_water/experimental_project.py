@@ -66,6 +66,11 @@ def inspect(directory):
     text = (directory/'swap.swp').read_text(encoding='cp1252')
     check_paths(text, 'swap.swp')
     selected = switches(text)
+    # SWVAPOR is an original per-layer array; inspect every value, not only
+    # the first token seen by the scalar SW-selector inventory.
+    vapor = re.findall(r'(?mi)^[ \t]*SWVAPOR[ \t]*=[ \t]*([^!\r\n]+)',text)
+    if vapor and (len(vapor)!=1 or not re.fullmatch(r'0(?:[ \t]+0)*[ \t]*',vapor[0])):
+        raise ValueError('Original vapor transport requires separate conserved-state qualification')
     crop_files=set();crop_types={}
     if selected.get('SWCROP')==1:
         entries=crop_entries(text)
