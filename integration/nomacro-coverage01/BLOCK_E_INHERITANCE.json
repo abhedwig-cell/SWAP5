@@ -1,0 +1,284 @@
+{
+  "base": "bdf222befb3ba444d3cd7147ef2fa90e2581ca16",
+  "checked_code": "b7a9d8405c3ec3f79d199b9c5a8273cebd4d9bdc",
+  "source_delta": [
+    "app/hybrid_water/experimental_project.py",
+    "tools/solute/check_nomacro_coverage.py"
+  ],
+  "unchanged_registered_runtime_source": [
+    "app/hybrid_water/daily_host.py",
+    "app/hybrid_water/daily_coupling.py",
+    "app/hybrid_water/donor_sources.py",
+    "app/hybrid_water/hybrid_step_budget.f90",
+    "tools/solute/run_water.py",
+    "app/hybrid_water/user_prepare.py"
+  ],
+  "checks": [
+    {
+      "case": "no-compensation",
+      "descriptor": {
+        "case": "experimental-e40d5945bd2fa3618e11c968220888bf8ae055dee3b56af1adef6d6ec8483289",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "no-interception",
+      "descriptor": {
+        "case": "experimental-a02c4a2c8d3a4ea0574be2f2131b982c4b314a535f413ab5c2745a5584480f6e",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "no-oxygen",
+      "descriptor": {
+        "case": "experimental-abc7dd01045c25e4bacc12ec6607397ff65af1c798e79208a962c8e9ea773f18",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "no-salt-stress",
+      "descriptor": {
+        "case": "experimental-7ff36f9af835a0627ad504ebac3060383a7dcd9f351d453ae3ab03a74fe3ffce",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "water-hupsel",
+      "descriptor": {
+        "case": "experimental-bcbae22043d4244cba1de9a227255e44585c61f4ba854b62e645a6ef4f084849",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "water-salt",
+      "descriptor": {
+        "case": "experimental-0986c2febf00fb64326efca9ead0b9bb3a83a861f927b428732450d14d9fd4de",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "hupsel-hyst1",
+      "descriptor": {
+        "case": "experimental-924806372b8654abf1ee274cfbe1ed6a81d3c32678bf4cf10020502a3d6e7dca",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "hupsel-hyst2",
+      "descriptor": {
+        "case": "experimental-c68394eb92ad4d955fba643b13d5ad59b699e48d9f812511e0d9171d4f55cc2e",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "hupsel-snow",
+      "descriptor": {
+        "case": "experimental-a5d6ea8add940be5417fafa2d8da36bf889eb3ffea883ad673757e84267bb0f1",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "hupsel-snow-hyst",
+      "descriptor": {
+        "case": "experimental-8aa52d30aa7225c4a9a2b64df9130fb138638daaca3ae1276fb7beaf857724b0",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "salt-adsorption",
+      "descriptor": {
+        "case": "experimental-b570ba7d48f329b7849b1d42bab0e7187a93de991058b84f061962b0d165f237",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "salt-decay",
+      "descriptor": {
+        "case": "experimental-fefe8bae0f71b4f472c03f69b3019916223b70d5aff9b05839d4642f94fbb90b",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "salt-reactions",
+      "descriptor": {
+        "case": "experimental-bd51afa0d102fc5dc71eee3406e7ff6562af70def4df45332454cfdbf971f47d",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "hupsel-free",
+      "descriptor": {
+        "case": "experimental-6bc5432eb389e3191d21adca87cf3df408e81a34ffa63dee80d4c32c5c02e6da",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "hupsel-nodrain",
+      "descriptor": {
+        "case": "experimental-4ef5ff5eac05fc49acbc1c974905cba1cc7cea7f62bc7c8ec62e8b19737aac05",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "salt08",
+      "descriptor": {
+        "case": "experimental-4750ab2ee75fd7dddf2c8edd9fc2d8b897d9e090a2ff1038bc31d4051917fadb",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "salt16",
+      "descriptor": {
+        "case": "experimental-3aff4ee3afc9aef3345320398a2ecd9f9b643fafb4aebd55d2c5825d9007303d",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2012-01-01",
+        "nodes": 195,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "bare",
+      "descriptor": {
+        "case": "experimental-ff014ef670e8a27225a4ca185bf5dbea0667780858246e57a4df7ad27acee15b",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "head-flux-bottom",
+      "descriptor": {
+        "case": "experimental-bb010c48ee80b731f2998f98b51a1b2a03c42565242a1c972c312edff70a039e",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "noheat",
+      "descriptor": {
+        "case": "experimental-3c9d73451b14e4fa69aa4e79d9fb44aa2d3a9687d799473666b08a1bf66708d5",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "noheat-maize",
+      "descriptor": {
+        "case": "experimental-ea79bec5fa8c52da45abf93d9b83d2071f4cd5abb4db2373a9ac94049e3b1ea3",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "prescribed-bottom",
+      "descriptor": {
+        "case": "experimental-42f51a977b1414063cbbf9c65f6a5ec73bbb1cbbcdb6dc455c1ef55c74662dab",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "sine-bottom",
+      "descriptor": {
+        "case": "experimental-9ed2a21e318888e252cad7e1bf1f9479fcf06051de463e969af61a8598ff18c2",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    },
+    {
+      "case": "undrained-free",
+      "descriptor": {
+        "case": "experimental-48875ef4f2211f2fa2922b5e3791d33c6751675acffa9a2e0d32d13b16ade3a4",
+        "model": "HYBRID_NOMACRO_WATER",
+        "start_date": "2002-01-01",
+        "nodes": 34,
+        "water_tolerance": 1e-10
+      },
+      "status": "CURRENT_PREFLIGHT_PRESERVES_EXACT_EXISTING_PROJECT_DESCRIPTOR"
+    }
+  ],
+  "local_cross_platform_limit": "Full Linux bundle validation on Windows refused its platform publisher identity as expected; no bypass or binary reuse attempted. Experimental adapter fingerprint also changed, so prior prepared bundles require a fresh build; existing evidence is retained historically, never rebound.",
+  "claim": "Input-reachability expansion only. Prior trajectory/state evidence inherited within unchanged selected process and runtime dependency surface; no new model trajectory claim from this read-only check."
+}
