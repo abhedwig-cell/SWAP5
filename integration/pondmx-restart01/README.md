@@ -86,3 +86,24 @@ python -B tests/pondmx_restart/qualify.py --reference-work C:\SWAP5-RC2\provider
 The old-results argument only compares prior complete physical rows and proves
 old checkpoint refusal; it never imports/rebinds old native state. The baseline
 hypothesis probe is bound to aff4997f0 and its pre-repair build, not current code.
+
+## Incoming admitted irrigation composition
+
+Before PR1693 admission, canonical advanced to8dcda0fb247ae7823d720817d6340114d5227728
+through the independent external-irrigation work. It was merged without conflicts
+as914affd1f; composed runtime/d0e34c876 preserves both source owners. Its fixed
+COMPOSITION.json and RAW_COMPOSITION.zip verify four affected O0/O2 generated
+closures with exact input/Fortran bytes and real fresh201/own199to201, plus exact
+legacy-plate and all three registered generated source/input closures. No full
+unchanged forward period was repeated for a metadata/dead-branch change.
+
+A representative external-irrigation/no-history build additionally retains every
+archived original N Fortran source after explicitly recorded LF/CRLF normalization;
+actual hashes remain distinct and no binary identity or new N full-period claim
+is made. The actual old N consumer was executed in a real detached8dcda0fb2
+worktree and passed. Its entire admission body remains exact except this work's
+literal forwarding hook. Source4156596c7 full physics stays sealed at its own
+identity; fresh composed emission and native-prefix evidence own the dependency
+inheritance. The dedicated Ubuntu job repeats all four full trajectories on the
+composed source before merge. Earlier queued/inapplicable PR-head runs were
+canceled during reconciliation and contribute no qualification.

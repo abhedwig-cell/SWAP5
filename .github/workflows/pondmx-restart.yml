@@ -24,6 +24,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+      - name: Source admission corruption controls
+        run: python -B tests/pondmx_restart/test_admission.py
       - name: Prepare immutable original provider without model execution
         run: python -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/pondmx-provider"
       - name: Actual selected top codec O0/O2 and refusals

@@ -35,3 +35,13 @@ pass. Current source admission and six old negative methods pass locally.
 Next: source/doc checks, own Ubuntu+current F-CI terminal checks, independently
 read latest canonical/peer delta, PR admission and actual merge postimage.
 Retain all old Mixtures/M/L/historical proofs and whole science NOT_QUALIFIED.
+
+COMPOSED: canonical N8dcda0fb2 merged914affd1f; selected code d0e34c876.
+Fresh four affected O0/O2 emissions and201/own199to201 exact, four unaffected
+source/input closures exact, N no-history compiled source normalized-exact to
+its immutable archive. Incoming real baseline consumer8dc PASS. COMPOSITION
+and RAW_COMPOSITION sealed; original QUALIFICATION unchanged. Current owner
+validates both source surfaces and all old body bytes. PR1693 is the only own
+PR; finish selected Ubuntu/current F-CI on final composed head and inspect LIVE
+remote base8dc before merging, then actual parents/tree/runtime. No broad
+unrelated frozen/performance campaign, no old snapshot rebind, no science PASS.
