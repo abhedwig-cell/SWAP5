@@ -1,4 +1,4 @@
-name: Current complete crop interface and shaped root state discriminator
+name: Current complete oxygen preprocessing replay
 on:
   push:
     branches: [codex/nomacro-coverage10]
@@ -34,7 +34,7 @@ jobs:
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/prior
       - name: Reproduce complete original component state at current524-to525
-        run: python3 -B tools/solute/probe_current_history525.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --variables-snapshots --reconnect-wofost-interface
+        run: python3 -B tools/solute/probe_current_history525.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --variables-snapshots --oxygen-replay
       - uses: actions/upload-artifact@v4
         if: always()
         with:

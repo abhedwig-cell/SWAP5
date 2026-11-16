@@ -233,7 +233,7 @@ def snapshots(path,inventory):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-root',type=Path,required=True);p.add_argument('--prior',type=Path,required=True)
-    p.add_argument('--output',type=Path,required=True);p.add_argument('--reconnect-wofost-interface',action='store_true');p.add_argument('--drainage-snapshots',action='store_true');p.add_argument('--variables-snapshots',action='store_true');p.add_argument('--micro-lookup-replay',action='store_true');a=p.parse_args()
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--oxygen-replay',action='store_true');p.add_argument('--reconnect-wofost-interface',action='store_true');p.add_argument('--drainage-snapshots',action='store_true');p.add_argument('--variables-snapshots',action='store_true');p.add_argument('--micro-lookup-replay',action='store_true');a=p.parse_args()
     assert not a.micro_lookup_replay and not a.drainage_snapshots
     pinned=a.source_root.resolve();assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=pinned,text=True).strip()==PIN
     sys.path.insert(0,str(pinned/'tools/solute'));sys.path.insert(0,str(pinned/'app/hybrid_water'))
@@ -275,6 +275,14 @@ def main():
         provider_flags=['-O2','-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch',*prepared['floating_point_profile']['flags']]
         compile(['gfortran',*provider_flags,'-I',str(objects),'-I',str(ttutil),'-c','RWU_micro.f90'])
         replacements['RWU_micro.o']=target/'RWU_micro.o'
+    if a.oxygen_replay:
+        from probe_oxygen_lookup import render as oxygen_render
+        oxygen=ref/'build/swap-selected/oxygenstress.f90'
+        prepared=json.loads((ref/'PREPARED.json').read_text())
+        assert h.sha(oxygen)==prepared['provider_files']['build/swap-selected/oxygenstress.f90']
+        (target/'oxygenstress.f90').write_text(oxygen_render(oxygen.read_text(encoding='cp1252'),project.start_clock+524),encoding='cp1252')
+        compile(['gfortran',*identity['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c','oxygenstress.f90'])
+        replacements['oxygenstress.o']=target/'oxygenstress.o'
     root=(target/'MOD_cropdevelopment.f90').read_text(encoding='cp1252')
     assert h.sha(target/'MOD_cropdevelopment.f90')==identity['donor_generated']['MOD_cropdevelopment.f90']
     modulepart=re.split(r'(?im)^\s*contains\s*$',root,1)[0]
@@ -312,6 +320,9 @@ end subroutine
         return 'subroutine dump_drainage(phase)\nuse MOD_cropdevelopment,only:hybrid_root_dump\ncharacter(*),intent(in)::phase\ncall hybrid_root_dump(phase)\nend subroutine\n',root_fields
     globals()['drainage_source']=root_wrapper
     diagnostic,inventory=snapshot_source(ref/'build/swap-selected',project.start_clock+524,a.drainage_snapshots,a.variables_snapshots,a.micro_lookup_replay)
+    if a.oxygen_replay:
+        diagnostic=diagnostic.replace('implicit none','use O2_pars,only:hybrid_oxygen_probe\nimplicit none',1)
+        diagnostic=diagnostic.replace("write(*,'(a,1x,a,1x,f18.8)')'DIAG_COMPONENT_BEGIN'", "if(phase=='DAY_RETURN')call hybrid_oxygen_probe(.false.)\nwrite(*,'(a,1x,a,1x,f18.8)')'DIAG_COMPONENT_BEGIN'",1)
     (target/'hybrid_state_diagnostic.f90').write_text(diagnostic)
     for filename in ('swap.f90','swap_main.f90'):
         path=target/filename;assert h.sha(path)==identity['donor_generated'][filename]
@@ -329,11 +340,13 @@ end subroutine
     compile(['gfortran','-o',str(h.executable(target,'day_donor')),*linked,str(target/'hybrid_state_diagnostic.o')])
     records={}
     models=[('warm',h.ColumnStart(name='original'),525),('cold',h.ColumnStart(day=524,origin=origin,receipt=receipt,name='original'),1)]
+    if a.oxygen_replay:models.append(('cold-oxygen-restored',h.ColumnStart(day=524,origin=origin,receipt=receipt,name='original'),1))
     if a.micro_lookup_replay:models.append(('cold-restored',h.ColumnStart(day=524,origin=origin,receipt=receipt,name='original'),1))
     for label,start,last in models:
         model=out/label;model.mkdir();rows=[]
         with contextlib.ExitStack() as stack:
             host=h.DailyHost(stack,h.executable(target,'day_donor'),h.executable(target,'day_kernel'),case,model,[start],runtime=True,checkpoint_enabled=True,project=project)
+            if label=='cold-oxygen-restored':shutil.copy2(out/'warm/original/hybrid-oxygen-capture.bin',model/'original/hybrid-oxygen-origin.bin')
             if label=='cold-restored':shutil.copy2(out/'warm/original/hybrid-lookup-capture.bin',model/'original/hybrid-lookup-origin.bin')
             for _ in range(last):rows.append(host.step(1))
             host.close()
@@ -347,7 +360,7 @@ end subroutine
     with zipfile.ZipFile(next(p for p in (prior/'water-history-O2-everyday').rglob('accepted-column-1-day-525.zip') if '/warm/' not in p.as_posix())) as z:oldcold=json.loads(z.read('checkpoint.json'))['receipt']
     assert physical(records['warm']['last_row'])==physical(oldwarm)
     if not a.reconnect_wofost_interface:assert physical(records['cold']['last_row'])==physical(oldcold)
-    target_label='cold-restored' if a.micro_lookup_replay else 'cold'
+    target_label='cold-oxygen-restored' if a.oxygen_replay else ('cold-restored' if a.micro_lookup_replay else 'cold')
     exact=physical(records[target_label]['last_row'])==physical(records['warm']['last_row'])
     assert physical(oldwarm)!=physical(oldcold) and h.sha(source)==digest
     changes=[]
@@ -379,7 +392,11 @@ end subroutine
         result['lookup_payloads']['accepted_capture']=h.sha(capture)
         result['lookup_payloads']['restored']=h.sha(restored)
         result['lookup_header']=list(struct.unpack_from('<8sd6i',capture.read_bytes()))[1:]
+    if a.oxygen_replay:
+        result['status']='PRIVATE_WHOLE_ORIGINAL_OXYGEN_REPLAY_PASS' if exact else 'PRIVATE_WHOLE_ORIGINAL_OXYGEN_REPLAY_FAIL'
+        result['private_oxygen_source']=h.sha(target/'oxygenstress.f90')
+        result['oxygen_restored_payload_exact']=(out/'warm/original/hybrid-oxygen-capture.bin').read_bytes()==(out/'cold-oxygen-restored/original/hybrid-oxygen-restored.bin').read_bytes()
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],flush=True)
-    if a.reconnect_wofost_interface or a.micro_lookup_replay:assert exact,'Complete original component replay did not reproduce warm physical state'
+    if a.oxygen_replay or a.reconnect_wofost_interface or a.micro_lookup_replay:assert exact,'Complete original component replay did not reproduce warm physical state'
 
 if __name__=='__main__':main()
