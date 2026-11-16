@@ -1,0 +1,46 @@
+{
+  "status": "N_SEALED_RAW_AND_DOCS_PASS",
+  "runtime_source": "6afb72468c0060df60694d4b69ee8619fdc93062",
+  "archives": [
+    {
+      "label": "FULL_TRAJECTORIES",
+      "bytes": 34042140,
+      "sha256": "f95a5bd0491f3408307e1bc6a357f4360f4950cb8a365967f5e0e9302395c65c",
+      "verified_members": 4890
+    },
+    {
+      "label": "DEFAULT_PRESERVATION",
+      "bytes": 19572516,
+      "sha256": "608d8f8395b45395ea2ddd85e0d8eb241d2495c2f13b1b7b3e9e6ab765e65c45",
+      "verified_members": 4805
+    },
+    {
+      "label": "LOCAL",
+      "bytes": 2790468,
+      "sha256": "291d8b40c54e0fb8bfefb4773c4347640f0a4ea33ff560480ad147fda91a112c",
+      "verified_members": 1345
+    }
+  ],
+  "terminal_runs": [
+    {
+      "id": 43880184441,
+      "head_sha": "6afb72468c0060df60694d4b69ee8619fdc93062",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43880184441"
+    },
+    {
+      "id": 43880189052,
+      "head_sha": "6afb72468c0060df60694d4b69ee8619fdc93062",
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/abhedwig-cell/SWAP5/actions/runs/43880189052"
+    }
+  ],
+  "docs_source_check": "PASS",
+  "docs_strict_build": "PASS 30.00 seconds; unchanged historical INFO anchor",
+  "docs_log_sha256": "7bfed9beaa9306544b74dca6dcfa36bbec1bc1896cd02ab05ec192124d5db664",
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "test_selection": "Full moving F-CI/platform/performance NOT_SELECTED_IMPACT; actual N six O2 full, touched O0/O2 native/components, default8, prior-source preservation and current selector selected",
+  "canonical_delta": "d4ccdc7cb9e3d18ed044e74cd2d277252b291461 adds only sealed mixture tests/evidence and existing selector; no app/src/reference/tools delta. Four new native failures stay FAIL; reconcile before admission."
+}

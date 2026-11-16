@@ -873,3 +873,56 @@ uses a separately sealed M successor; the actual M merge receipt owns admission.
 The two independently admitted publication documents are preserved. Fixed RC1/
 RC2, original scientific FAILs, whole energy/science and unexecuted option mixes
 remain unchanged. These derived inputs add no independent historical project.
+
+## Block N: original fixed irrigation from a separate file
+
+Source6afb72468 qualifies the complete original SWIRGFIL1 route. Six explicit
+Hupsel-derived configurations cover water-only sprinkler0, surface1, subsurface2
+at one depth or over an interval, plus chemical sprinkler0/surface1. The original
+24mm,20mg/cm3,12mm/h fixed event is stored in a hash-bound .irg file; every crop
+explicitly selects SCHEDULE0. The original reader owns units, dates, file parsing,
+depth mapping and application rates. Its complete existing module and SAVE-local
+snapshot are reused. Already admitted past-last IRDATE/cursor handling works for
+the external file too; no additional reader, state codec, physical formula,
+solver or time policy is introduced.
+
+Actual original reader/event O0/O2 demonstrates the supported modes and original
+input refusals. It also proves two original limitations: chemical TYPE2 reads
+IRCONC20 but leaves CIRR0 while original CDE lacks a QSSDI source; a reversed
+depth interval can turn positive24mm into negative stored depth and zero supply.
+The new external-file policy refuses chemical TYPE2 and reversed/out-of-profile
+geometry at the native reader before accepted model state. It does not silently
+zero concentrations, sort coordinates or alter amounts. Whole original bodies
+remain the computation owners. Fresh guarded O0/O2 components pass six positive
+variants, past-last no-replay and eleven refusals per optimization. Original
+counterexamples remain retained and chemical subsurface delivery stays unqualified.
+
+All six actual Windows O0 six-day trajectories and own4to6 continuations pass
+across the day5 gift, with exact physical/native endpoints. Independent fresh
+inline0/file1 pairs for interval subsurface water and chemical sprinkling have
+all six physical rows and final native payloads byte exact; their source/input
+identities remain distinct. Actual coupled-process invalid chemical/geometry
+inputs refuse before accepting day1. No old capsule is rebound.
+
+Run43880184441 passes all six complete1096-day O2 periods, totaling6576 days.
+Actual touched O0/O2 ordinary, active530 and event4to6 native continuations pass,
+including exhausted-table late workers. Twelve event windows retain the selected
+gross-surface or subsurface channel with no delivery on the other channel.
+Independent origins, injected mass rejection, source/input binding, external
+discard/replay and durable recovery pass. Maximum independent water residual is
+9.996712219953116e-11cm; solute is2.0189361551216096e-13mg/cm2. The original1e-10
+guards remain unchanged. O0 covers ordinary5/active532/event6 prefixes and own
+windows, not six full O0 periods. Native temperature diagnostics retain their
+existing finite-state meaning; whole physical energy/science are not promoted.
+
+Default8 source/external seams pass43880189052. Current source-preservation
+compiles compare actual admitted M water/chemical stateful sources, registered
+Grassgrowth and L5; unchanged full M/L/K/J and named/platform campaigns are not
+repeated. The original standalone CSV-only diagnostic remains separate from
+scientific equivalence. `BLOCK_N_QUALIFICATION.json`, original/guarded component,
+short/equivalence/refusal records, source preservation and SHA256 raw capsules
+under `integration/nomacro-coverage01/` own qualification. The separately anchored
+existing current-source selector and actual N merge receipt govern admission.
+Chemical subsurface transport, other unqualified options/mixes, whole energy/
+science and the preserved nominal runon diagnostic remain open. No independent
+historical project is added; fixed RC1/RC2 are untouched.

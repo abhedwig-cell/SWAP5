@@ -7,8 +7,8 @@ from daily_coupling import validate_bundle
 def physical(row):return {k:v for k,v in row.items() if k not in ('column','revision')}
 
 
-def windows(bundle,reference,project,out,full_rows,opt):
-    cuts=(199,529);selected=set(cuts)|{d+2 for d in cuts};out.mkdir();warm=out/'warm';warm.mkdir();expected={}
+def windows(bundle,reference,project,out,full_rows,opt,*,cuts=(199,529),fixed_irrigation=False):
+    selected=set(cuts)|{d+2 for d in cuts};out.mkdir();warm=out/'warm';warm.mkdir();expected={}
     meta,case=validate_bundle(bundle,reference,project)
     with contextlib.ExitStack() as stack:
         host=h.DailyHost(stack,h.executable(bundle,'day_donor'),h.executable(bundle,'day_kernel'),case,warm,[h.ColumnStart()],runtime=True,checkpoint_enabled=True,binding=meta['binding'],project=project)
@@ -32,5 +32,8 @@ def windows(bundle,reference,project,out,full_rows,opt):
         assert h.sha(origin)==digest
     result=dict(optimization=opt,windows=[[cut,cut+2] for cut in cuts],physical_exact=True,native_exact=True,origins_unchanged=True,
         event_scope='199to201 crosses changing pond threshold and day200 runon;529to531 crosses day530 runon after all DATEPMX knots',
-        actual_runon_cm={day:expected[day]['external_flux_cm'][4] for day in (200,530)})
+        actual_runon_cm={day:expected[day]['external_flux_cm'][4] for day in (cut+1 for cut in cuts)})
+    if fixed_irrigation:
+        result['event_scope']='Original fixed irrigation day5, followed by exhausted-table native continuations'
+        result['actual_fixed_irrigation_cm']={day:dict(gross_surface=expected[day]['external_flux_cm'][3],subsurface=expected[day]['external_flux_cm'][5]) for day in (cut+1 for cut in cuts)}
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');return result
