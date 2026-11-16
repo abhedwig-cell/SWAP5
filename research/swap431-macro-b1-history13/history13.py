@@ -42,7 +42,10 @@ with tarfile.open(arc) as z:
 sources.append(dict(work_unit='accept01',file=m['file'],sha256=m['sha256'],daily_members=len(daily)))
 # Preserve a native cold-prefix partial output as supplementary evidence, explicitly
 # distinguished from sealed artifacts. Its existing rows match the sealed V1 data.
-p=Path('C:/Users/Veldh012/swap431-native09-work/O2-B_TRIAL-FINAL3/result_output.csv');b=p.read_bytes();(out/'NATIVE09_O2_TRIAL_partial.csv').write_bytes(b)
+p=Path('C:/Users/Veldh012/swap431-native09-work/O2-B_TRIAL-FINAL3/result_output.csv')
+captured=out/'NATIVE09_O2_TRIAL_partial.csv'
+b=captured.read_bytes() if captured.exists() else p.read_bytes()
+captured.write_bytes(b)
 rows=list(csv.DictReader(io.StringIO('\n'.join(l for l in b.decode('cp1252').splitlines() if l and not l.startswith('*')))))
 assert rows==daily[1]['rows'][:2]
 supp=dict(path=str(p),sha256=sha(b),rows=rows,authority='Supplementary local artifact, now captured; numeric rows agree with sealed V1 initial and first-day records')
