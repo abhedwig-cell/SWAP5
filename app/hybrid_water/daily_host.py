@@ -685,6 +685,14 @@ end module plant_interface""")
                 if 'readswap' in patched:raise ValueError('Multiple original reader state owners')
                 patched.append('readswap')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
+    from surface_schedule import enabled as surface_schedule_enabled
+    scheduled_pond=surface_schedule_enabled(project)
+    if scheduled_pond:
+        from surface_schedule import render_readswap as render_surface_reader
+        path=output/'readswap.f90'
+        source=path.read_text(encoding='cp1252') if 'readswap' in patched else (donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
+        path.write_text(render_surface_reader(source,project.start_clock),encoding='cp1252')
+        if 'readswap' not in patched:patched.append('readswap')
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -749,6 +757,9 @@ end module plant_interface""")
         from lower_boundary_receipt import policy as lower_policy
         build_identity['lower_boundary_receipt']={'policy':lower_policy(lower_boundary),'source_sha256':sha(APP/'lower_boundary_receipt.py'),
             'template_sha256':sha(APP/'hybrid_step_budget.f90'),'effective_SWBOTB':lower_boundary}
+    if scheduled_pond:
+        from surface_schedule import POLICY as SURFACE_SCHEDULE_POLICY
+        build_identity['surface_schedule']={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':sha(APP/'surface_schedule.py')}
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
         build_identity['soil_table_policy'] = project.soil_table_policy if soil_tables else None

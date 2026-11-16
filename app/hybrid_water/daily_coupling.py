@@ -143,6 +143,9 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY
+    expected_schedule={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':h.sha(h.APP/'surface_schedule.py')} if surface_schedule_enabled(project) else None
+    if identity.get('surface_schedule')!=expected_schedule:raise ValueError('Foreign original surface schedule')
     from lower_boundary_receipt import selected_boundary,policy as lower_policy,render_budget
     lower_boundary=selected_boundary(project)
     lower=lower_boundary is not None

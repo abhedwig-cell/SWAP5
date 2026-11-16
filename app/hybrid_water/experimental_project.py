@@ -83,8 +83,8 @@ def inspect(directory):
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
                  'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
-                 'SWMETDETAIL': {0,1}, 'SWRUNON': {0}, 'SWKIMPL': {0},
-                 'SWPONDMX': {0}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
+                 'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0},
+                 'SWPONDMX': {0,1}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
     mandatory.update(SWSOPHY={0, 1}, SWDRA={0, 1}, SWETR={0, 1},
                      SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWREDU={0, 1, 2},
                      SWKMEAN=set(range(1,7)), SWINCO={1, 2, 3}, SWBBCFILE={0, 1})
@@ -116,7 +116,8 @@ def inspect(directory):
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
-                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0})
+                   SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
+                   SWRUNON={0,1}, SWPONDMX={0,1})
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     if selected['SWSNOW'] and selected['SWCALT'] != 2:
