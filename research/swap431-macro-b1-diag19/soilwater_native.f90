@@ -147,9 +147,7 @@ module MOD_SoilWater
      
 ! ---    calculate new soil water state variables
          if (swsolve == 1) then
-            if(.not.retry07_driver()) call head_start()
- call headcalc
- call head_end()
+            if(.not.retry07_driver()) call headcalc
          else
          end if
 
@@ -265,7 +263,9 @@ logical function retry07_driver() result(handled)
   call native09_dump('context_begin')
  end if
  accepted_dt=dt
+ call head_start()
  call headcalc
+ call head_end()
 end function
 subroutine retry07_checkpoint()
  use DIAG19,only:log_start,log_end,commit

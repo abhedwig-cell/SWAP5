@@ -1,17 +1,6 @@
 --- NEXT18/soilwater_native.f90
 +++ DIAG19/soilwater_native.f90
-@@ -147,7 +147,9 @@
-      
- ! ---    calculate new soil water state variables
-          if (swsolve == 1) then
--            if(.not.retry07_driver()) call headcalc
-+            if(.not.retry07_driver()) call head_start()
-+ call headcalc
-+ call head_end()
-          else
-          end if
- 
-@@ -230,12 +232,14 @@
+@@ -230,12 +230,14 @@
  
  subroutine prefix14_start()
   use variables,only:t1900
@@ -26,7 +15,7 @@
   if(trim(mode)=='PREFIX') then
    call prefix14_coverage(t1900)
    call inventory_dump('initial')
-@@ -246,6 +250,7 @@
+@@ -246,6 +248,7 @@
   budget_open=.true.;budget_count=0
  end subroutine
  logical function retry07_driver() result(handled)
@@ -34,8 +23,13 @@
   use CONTRACT06_CONTROL, only:use_patch
   use variables,only:fldecdt,dt,t1900
   use MOD_swap_mp,only:FlDecMpRat
-@@ -263,6 +268,7 @@
+@@ -260,9 +263,12 @@
+   call native09_dump('context_begin')
+  end if
+  accepted_dt=dt
++ call head_start()
   call headcalc
++ call head_end()
  end function
  subroutine retry07_checkpoint()
 + use DIAG19,only:log_start,log_end,commit

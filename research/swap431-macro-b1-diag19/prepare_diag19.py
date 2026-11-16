@@ -19,7 +19,7 @@ s=s.replace(' use variables,only:t1900\n',' use variables,only:t1900\n use DIAG1
 s=s.replace(' use_patch=true',' use_patch=true') # literal Fortran below
 s=s.replace(' use_patch=.true.\n',' use_patch=.true.\n call start()\n',1)
 s=s.replace('logical function retry07_driver() result(handled)','logical function retry07_driver() result(handled)\n use DIAG19,only:head_start,head_end')
-s=s.replace(' call headcalc\n',' call head_start()\n call headcalc\n call head_end()\n',1)
+s=s.replace('\n call headcalc\n','\n call head_start()\n call headcalc\n call head_end()\n',1)
 s=s.replace('subroutine retry07_checkpoint()','subroutine retry07_checkpoint()\n use DIAG19,only:log_start,log_end,commit',1)
 s=s.replace(' if(budget_open) then\n',' call log_start()\n if(budget_open) then\n',1)
 needle='  if(mod(budget_count,128)==0) flush(budget_unit)\n end if\n'
