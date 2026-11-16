@@ -1,5 +1,10 @@
 # SWAP5 Status-A current status
 
+The [fixed RC2 qualification](../science/RC2_QUALIFICATION.md) provides a frozen
+source branch and checksum-bound standalone ZIP of the current selected source,
+with fresh Windows/Ubuntu public three-project and exact own-restart checks.
+The [RC2 user guide](../science/RC2_USER_GUIDE.md) is included in that ZIP.
+
 The [14 November named-scope release decision](../science/NOMACRO_RELEASE_STATUS_20261114.md)
 reconciles current platform, own-restart, balance and measured-cost evidence:
 **RELEASE READY** for registered Grassgrowth/Hupsel/SaltFarm, with the preserved
