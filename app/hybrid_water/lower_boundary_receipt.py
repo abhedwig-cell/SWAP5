@@ -36,16 +36,17 @@ def render_budget(source):
     return source
 
 def render_headcalc(source):
-    anchor='         budget_step=projected_water_residual()'
-    if source.count(anchor)!=1:raise ValueError('Changed original converged trial receipt anchor')
+    anchors=('         budget_step=projected_water_residual()',
+             '            budget_step = projected_water_residual()')
+    if any(source.count(anchor)!=1 for anchor in anchors):
+        raise ValueError('Changed original convergence/final trial receipt anchors')
     if 'logical                          :: flboth, flok' not in source:
         raise ValueError('Changed original soil-air boundary trial ownership')
-    return source.replace(anchor,'''         if(swmacro==0.and.swbotb==8)then
-           if(flboth)then
-             budget_step=projected_water_residual(-kmean(NN+1)*hgrad(NN+1))
-           else
-             budget_step=projected_water_residual(0d0)
-           end if
-         else
-           budget_step=projected_water_residual()
-         end if''')
+    for anchor in anchors:
+        indent=anchor[:len(anchor)-len(anchor.lstrip())]
+        lines=['if(swmacro==0.and.swbotb==8)then','  if(flboth)then',
+               '    budget_step=projected_water_residual(-kmean(NN+1)*hgrad(NN+1))',
+               '  else','    budget_step=projected_water_residual(0d0)','  end if',
+               'else','  budget_step=projected_water_residual()','end if']
+        source=source.replace(anchor,'\n'.join(indent+line for line in lines))
+    return source
