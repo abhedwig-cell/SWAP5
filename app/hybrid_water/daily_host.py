@@ -353,9 +353,11 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
                 from experimental_project import inspect
                 configuration=inspect(project.input_directory)
                 selected=configuration['selectors']
-                # A bounded original closed-profile successor. Named release
-                # source images and all macro/nonlinear-surface routes stay exact.
-                if selected['SWDRA']==0 and configuration['boundary']['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
+                # The same original linear pond relation applies to drain0/1.
+                # Extend the admitted tangent only to the selected new runon
+                # composition; unchanged runon0/drain1 images remain exact.
+                pond_tangent=selected['SWDRA']==0 or (selected['SWDRA']==1 and selected['SWRUNON']==1)
+                if pond_tangent and configuration['boundary']['SWBOTB']==6 and selected['SWSNOW']==0 and selected['SWKIMPL']==0:
                     source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
                                    '   use hybrid_step_budget, only: projected_water_residual, linear_pond_top_jacobian\n'
                                    '   use variables, only: rsro, rsroexp, pondmx')
