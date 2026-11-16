@@ -52,3 +52,19 @@ The rejected receipt-only approaches are preserved by their commits and local ra
 The source-bound Ubuntu26.04 run [43844795787](https://github.com/abhedwig-cell/SWAP5/actions/runs/43844795787) passed every step: actual tangent O0/O2, full undrained1096 at both profiles, exact own native continuations and all three complete named cases. UBUNTU_RAW.zip preserves the exact uploaded artifact, verified against GitHub's SHA256 digest. The head source is6e2cd26f873f9a935af92816a2f1d947df9293c7; its tested PR-merge tree isff58bbb4955e5d34b1a505df2e07dfdcfb992863. Final evidence-only changes do not alter the recorded runtime dependency surface.
 
 General F-CI43844795754 and MC-SOL column43844795879 remain red at frozen source-authority checks. CI_ADJUDICATION.json reproduces both exact first failing predicates on canonical parent3fb625da73031885624987d42ad922cb184c96e5 and the repair source: `application source differs from tested head` and `unreviewed delta`. Both guards are byte-identical across those refs and already fail on the parent, before reaching any new model test. They are not weakened or falsely reported as global CI PASS. Existing root-oxygen and the other completed affected contracts pass separately.
+
+## Current CI selection for PR1686
+
+The frozen F-CI and surface-age guards remain byte unchanged. Their first
+source predicates also fail on canonical3fb625da7, as retained in
+CI_ADJUDICATION.json. They are historical authorities, not evidence of a
+new physical regression. The current workflow uses a narrowly bounded
+PR1686 successor: exact runtime6e2cd26f, sealed proof4ee0e08b, unchanged
+1e-10 water/solute limits, all full periods and native own-restart windows.
+Only two literal current-workflow forwarding insertions are permitted; the
+old bodies, predicates and proof capsules are not repinned or rewritten.
+Unknown source changes or altered sealed proofs are refused. F-CI still runs
+the six current physical contracts; MC-SOL still builds and executes its
+actual column/file/restart tests at both optimizations before preservation.
+This selection is not whole-science admission and does not repair or hide
+the original failed science comparisons. The former red runs remain visible.

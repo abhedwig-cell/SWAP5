@@ -11,3 +11,12 @@ NEXT SAFE STEP: PR1686 review; no further runtime checks remain for this bounded
 ## Preserved rejected investigations
 
 3d54d0b06 added a projected receipt guard;2045873a2 made its reduction exact/fast. It passed51 but the elapsed-scaled version caused named-cost regressions and later dtmin433 nonconvergence with a0.053186346541cm candidate error. a1f4ed8e0 separated the full-day limit but did not provide practical full-period qualification. All are rejected research; production receipt helper was removed in48267be1c. Original HeadCalc's missing pond response was then corrected in the existing solver. Former code/raw evidence stays in history and C:\SWAP5-testing\hupsel51. Native rejected-state/unchanged-checkpoint evidence from the predecessor remains at C:\SWAP5-RC2\application-acceptance\new-variants-20261116\hupsel-reactive-undrained. No threshold tuning or physical clipping was adopted.
+
+## PR1686 CI completion
+
+Current CI forwarding now has a PR1686-only successor. The entire tested
+runtime is unchanged from6e2cd26f; immutable evidence remains anchored at
+4ee0e08b. Run tests/dataqual15/test_hupsel51_successor.py and the verifier,
+then await the two updated CI jobs and merge with an exact expected head.
+After merge verify canonical parents/runtime/tree and run a fresh bounded
+actual canonical full1096/native-own and component O0/O2 check.
