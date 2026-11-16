@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "CONTRACT_BOUNDED_CANDIDATE_REFUSED",
   "baseline": "32daab024721a8b1f66b8417e771e809882beb0b",
   "routes": [
     "O0 native to original attempt38",
@@ -9,5 +9,8 @@
   "candidate": "Before every Jacobian in target head, reset freeze flags; current MACRORATE rates and existing derivatives. No exact constrained-Jacobian claim.",
   "stop": "After target head returns, before host commit or rollback; hard20s subprocess timeout",
   "no_campaign": true,
-  "physical_equations_tolerances_dt_retry_policy_changes": false
+  "physical_equations_tolerances_dt_retry_policy_changes": false,
+  "decision": "CONTRACT_BOUNDED_CURRENT_OPERATOR_ALONE_INSUFFICIENT",
+  "models_launched": 2,
+  "note": "Original head internal refusal restore executes; stop before next host retry or commit"
 }
