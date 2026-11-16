@@ -1,0 +1,16 @@
+{
+  "document": "docs/science/NOMACRO_FUNCTIONAL_COVERAGE.md",
+  "document_sha256": "3cb3512a8e4919b6576fcb74c1df5d391ac89520ce4eb408c3ff5d16542b367e",
+  "source_check": {
+    "command": "python -B tools/docs/check_docs.py",
+    "returncode": 0
+  },
+  "strict_mkdocs": {
+    "command": "python -m mkdocs build --strict --site-dir C:/Users/Veldh012/swap5-coverage-evidence/docs-blockK",
+    "returncode": 0,
+    "seconds": 34.77,
+    "log_sha256": "f76577bbee668da0c9ad68fa06656f029c47f13e5b3cdc50b6b72f0a7ece8488",
+    "existing_info": "Legacy m3-gate-evidence missing anchor, unchanged"
+  },
+  "scope": "Actual final documentation postimage; no full model rerun for prose"
+}

@@ -1,0 +1,25 @@
+{
+  "status": "ALL_K_RAW_ARCHIVE_SHA256_PASS",
+  "archives": [
+    {
+      "manifest": "BLOCK_K_DEFAULT_PRESERVATION_ARCHIVE.json",
+      "archive": "BLOCK_K_DEFAULT_PRESERVATION_RAW.tar.xz",
+      "bytes": 19501360,
+      "sha256": "ae913c7e75e904e880bee2eeba96dd8500aa9c139f811ca62068496b18285377"
+    },
+    {
+      "manifest": "BLOCK_K_FULL_TRAJECTORIES_ARCHIVE.json",
+      "archive": "BLOCK_K_FULL_TRAJECTORIES_RAW.tar.xz",
+      "bytes": 38293112,
+      "sha256": "4944bf28fd539cc6fece87d4ea3fec2390ff54c9a270c54e61a89e9154292635"
+    },
+    {
+      "manifest": "BLOCK_K_LOCAL_ARCHIVE.json",
+      "archive": "BLOCK_K_LOCAL_RAW.tar.xz",
+      "bytes": 324028,
+      "sha256": "115f5c3e838745ef2d93ab425e87ea75d145c7b075c74fe90d6b530d174c5e71"
+    }
+  ],
+  "final_hosted_artifact_roots": 7,
+  "scope": "Complete GitHub ZIPs separately digest-verified; actual selected raw inputs/generated sources/ledgers/native/control/refusal/reference files retained without executable/provider objects"
+}
