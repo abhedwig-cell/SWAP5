@@ -784,5 +784,12 @@
     "name": "tcumold",
     "shape": "",
     "type": "real(8)"
+  },
+  {
+    "module": "MOD_macropore",
+    "name": "FrMpWalWetIntegralOld",
+    "shape": "NumDm,NumNod",
+    "type": "real(8)",
+    "note": "Explicit owner replacing local shadow; selected five domains validated"
   }
 ]

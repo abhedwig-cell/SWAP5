@@ -1,5 +1,6 @@
 module LEDGER12
-use MOD_arrays,only:macp,madr
+use MOD_arrays,only:macp,madr,madm
+use MOD_macropore,only:FrMpWalWetIntegralOld,NumDm
 use MOD_grid,only:numnod
 use,intrinsic::ieee_arithmetic,only:ieee_is_finite
 use MOD_integral,only:inqrot,inq,inqssdi,inqpotrot,inqredrot,iqdo,iqup,iqrot,iqssdi,iqredwet,iqreddry,iqredsol,iqredfrs,iintc,isintc,iepd,ipeva,iptra,ievap,iruno,irunon,iqbot,iqbdo,iqbup,iqtdo,iqtup,igrai,inrai,igird,inird,cgrai,cnrai,caintc,cqrot,cqbot,cqbotdo,cqbotup,cqssdi,cqtdo,cqtup,crunoff,crunon,cevap,cepd,cpeva,cptra,cinund,cqprai,cgird,cnird,cqdra,cqdrain,cqdrainin,cqdrainout,inqdra,inqdra_in,inqdra_out,iqdra,cgsnow,cmelt,csnrai,csubl,isnrai,igsnow,isubl
@@ -9,6 +10,7 @@ use variables,only:volini,pondini,ivolbeg,ipondbeg,isicbeg,issnowbeg,outper,ithe
 use MOD_snow,only:snowinco
 use MOD_timer,only:tcumold
 implicit none
+real(8),save::b_history(madm,macp)
 logical,save::loaded=.false.
 real(8),save::b_inqrot(macp)
 real(8),save::b_inq(macp+1)
@@ -147,7 +149,7 @@ integer::u,rw,ios,n
 character(32)::tag
 if(rw==2) then
 tag="WATER_LEDGER_V1"
-write(u) tag,131
+write(u) tag,132
 write(u) inqrot(1:numnod)
 write(u) inq(1:numnod+1)
 write(u) inqssdi(1:numnod)
@@ -279,10 +281,11 @@ write(u) nprintcount
 write(u) cntper
 write(u) period
 write(u) tcumold
+write(u) FrMpWalWetIntegralOld(1:NumDm,1:numnod)
 return
 end if
 read(u,iostat=ios) tag,n
-if(ios/=0.or.tag/="WATER_LEDGER_V1".or.n/=131) error stop "LEDGER12 missing or invalid schema"
+if(ios/=0.or.tag/="WATER_LEDGER_V1".or.n/=132) error stop "LEDGER12 missing or invalid schema"
 read(u,iostat=ios) b_inqrot(1:numnod)
 if(ios/=0) error stop "LEDGER12 incomplete"
 if(.not.all(ieee_is_finite(b_inqrot(1:numnod)))) error stop "LEDGER12 nonfinite"
@@ -671,10 +674,15 @@ if(ios/=0) error stop "LEDGER12 incomplete"
 read(u,iostat=ios) b_tcumold
 if(ios/=0) error stop "LEDGER12 incomplete"
 if(.not.ieee_is_finite(b_tcumold)) error stop "LEDGER12 nonfinite"
+read(u,iostat=ios) b_history(1:5,1:numnod)
+if(ios/=0) error stop "LEDGER12 incomplete history"
+if(.not.all(ieee_is_finite(b_history(1:5,1:numnod)))) error stop "LEDGER12 nonfinite history"
 loaded=.true.
 end subroutine
 subroutine apply()
 if(.not.loaded) return
+if(NumDm/=5) error stop "LEDGER12 domain mismatch"
+FrMpWalWetIntegralOld(1:5,1:numnod)=b_history(1:5,1:numnod)
 inqrot(1:numnod)=b_inqrot(1:numnod)
 inq(1:numnod+1)=b_inq(1:numnod+1)
 inqssdi(1:numnod)=b_inqssdi(1:numnod)
@@ -942,6 +950,7 @@ write(u,*) "nprintcount",nprintcount
 write(u,*) "cntper",cntper
 write(u,*) "period",period
 write(u,*) "tcumold",tcumold
+write(u,*) "FrMpWalWetIntegralOld",FrMpWalWetIntegralOld(1:NumDm,1:numnod)
 close(u)
 end subroutine
 end module

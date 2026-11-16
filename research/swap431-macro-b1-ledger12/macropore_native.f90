@@ -48,6 +48,7 @@ module MOD_macropore
    real(8),                       save :: ZnCrAr          = 0.d0    ! Depth at which crack area of soil surface is calculated (L)
    
 ! --- Macropore variables
+   real(8),save :: FrMpWalWetIntegralOld(madm,macp)=0d0
    logical, dimension(madm,macp), save :: FlEndSrpEvt     = .TRUE.  ! Flag indicating the end of a sorptivity event
    
    integer, dimension(madm),      save :: ICpBtDm         = 0       ! Compartment number containing actual bottom depth of domain (-)
@@ -1193,7 +1194,7 @@ module MOD_macropore
       integer ic, id
       real(8) AvFrMpWlWtDm1Cp(MaCp), AvFrMpWlWtDm2Cp(MaCp)
       !real(8) DevMasBalDm1, DevMasBalDm2
-      real(8) FrMpWalWetOld(MaDm,MaCp) 
+ 
       real(8) QInIntSatDm1Cp(MaCp),  QInIntSatDm2Cp(MaCp)
       real(8) QInMtxSatDm1Cp(MaCp),  QInMtxSatDm2Cp(MaCp)
       real(8) QOutMtxSatDm1Cp(MaCp), QOutMtxSatDm2Cp(MaCp) 
@@ -1213,8 +1214,8 @@ module MOD_macropore
          QTopMPDm1Cp(ic)     = QTopMpDmCp(1,ic)
 
 !     AvFrMpWlWtDm1Cp = fraction of mp.wall in contact with saturated water for Dm1 averaged over dt
-         AvFrMpWlWtDm1Cp(ic) = PpDmCp(1,ic) *  (FrMpWalWet(1,ic)+FrMpWalWetOld(1,ic)) / 2.d0
-         FrMpWalWetOld(1,ic) = FrMpWalWet(1,ic)
+         AvFrMpWlWtDm1Cp(ic) = PpDmCp(1,ic) *  (FrMpWalWet(1,ic)+FrMpWalWetIntegralOld(1,ic)) / 2.d0
+         FrMpWalWetIntegralOld(1,ic) = FrMpWalWet(1,ic)
 !     Water content         
          WaUnMpDm1Cp(ic) = WaUnMpDmCp(1,ic)
       end do
@@ -1245,8 +1246,8 @@ module MOD_macropore
             QTopMpDm2Cp(ic)     = QTopMpDm2Cp(ic)     + QTopMpDmCp(id,ic)
 !   - AvFrMpWlWtDm2Cp = fraction of mp.wall in contact with water for Dm2 averaged over dt
             AvFrMpWlWtDm2Cp(ic)  = AvFrMpWlWtDm2Cp(ic) + PpDmCp(id,ic) *  &
-                         (FrMpWalWet(id,ic)+FrMpWalWetOld(id,ic)) / 2.d0
-            FrMpWalWetOld(id,ic) = FrMpWalWet(id,ic)
+                         (FrMpWalWet(id,ic)+FrMpWalWetIntegralOld(id,ic)) / 2.d0
+            FrMpWalWetIntegralOld(id,ic) = FrMpWalWet(id,ic)
 !     Water content
             WaUnMpDm2Cp(ic) = WaUnMpDm2Cp(ic) + WaUnMpDmCp(id,ic)
          end do

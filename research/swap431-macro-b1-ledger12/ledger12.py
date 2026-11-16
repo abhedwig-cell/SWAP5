@@ -3,10 +3,10 @@ import sys,importlib.util,json,subprocess,shutil,os,time,re
 sys.dont_write_bytecode=True
 R=Path(__file__).resolve().parent;P=R.parent/'swap431-macro-b1-native09';W=Path('C:/Users/Veldh012/swap431-ledger12-work')
 sp=importlib.util.spec_from_file_location('native09',P/'native09.py');m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);m.R=R;m.WORK=W
-body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.index('def run(opt,')];body=body.replace("for name,dest in [","for name,dest in [('ledger_state','ledger12'),",1);exec(body,m.__dict__)
+body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.index('def run(opt,')];body=body.replace("('macropore_native','macropore'),","('macropore_native','macropore'),('ledger_state','ledger12'),",1);exec(body,m.__dict__)
 def run(opt,mode,label=''):
  profile=mode+('_'+label if label else '')
- c=W/(opt+'-'+profile);c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
+ c=W/(opt+'-'+profile+'-FINAL');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
  for x in json.loads((P/'CASE_IDENTITY.json').read_text()):
   src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];(c/x['path']).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,c/x['path'])
  src=R.parent/'swap431-macro-b1-day10/data'/opt/'CONTINUE/daycheckpoint.end' if mode=='CONTINUE' else R/'data'/opt/'CONTINUE/midnight.end'
