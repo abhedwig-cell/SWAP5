@@ -551,6 +551,15 @@ def main():
                          '--experimental-time-step-policy',h.NO_MACRO_TIME_POLICY,'--output',target,'--days',1],
                          refuse=True,absent=target)
                 meta, actual = validate_bundle(bundle, reference, project)
+                if args.lower_boundary_options:
+                    foreign=out/(label+'-foreign-receipt-build');shutil.copytree(bundle,foreign)
+                    path=foreign/'BUILD.json';changed=json.loads(path.read_text())
+                    changed['identity']['lower_boundary_receipt']['policy']='foreign'
+                    path.write_text(json.dumps(changed,indent=2)+'\n')
+                    target=out/(label+'-foreign-receipt-refused')
+                    call(label+'-foreign-receipt',base+['--build-bundle',foreign,'--output',target,'--days',1],refuse=True,absent=target)
+                    assert 'Foreign original lower-boundary receipt' in (out/(label+'-foreign-receipt.log')).read_text()
+                    report['foreign_lower_receipt_refused_before_output']=True
                 isolated = out/(label+'-isolated'); isolated.mkdir()
                 restored = out/(label+'-isolation-origin')
                 receipt = h.verify_checkpoint(short/'accepted-column-1-day-2.zip', 2, meta['binding'], restored)
@@ -629,6 +638,14 @@ def main():
                         assert h.sha(origin)==before
                     report['resealed_native_history_refusals']=len(controls)
                 (out/'PROFILES.json').write_text(json.dumps(reports, indent=2)+'\n')
+
+        if args.lower_boundary_options:
+            from qualify_lower_boundary import natural_windows
+            for opt in ('O0','O2'):
+                selected=next(r for r in reports if r['configuration']==key and r['optimization']==opt)
+                selected['natural_outlet_exact_native_windows']=natural_windows(out/(key+'-'+opt+'-build'),reference,project,
+                    out/(key+'-'+opt+'-natural-outlets'),full_rows,opt)
+            (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
 
         # The original standalone executable is a diagnostic reference,
         # with explicit original interpolation selection for table cases.
