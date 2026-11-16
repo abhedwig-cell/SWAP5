@@ -27,9 +27,10 @@ def main():
   actual=[]
   for line in (full/'original/donor.stdout').read_text().splitlines():
    if line.startswith('HYBRID_FROST_WITNESS '):
-    v=list(map(float,line.split()[1:]));assert len(v)==6 and all(map(math.isfinite,v)) and 0<=v[0]<=v[1]<=1 and v[-1]==1;actual.append(v)
-  assert len(actual)==1096
-  r['frost_witness']=dict(actual_daily_original_records=len(actual),minimum_rfcp=min(v[0] for v in actual),days_with_reduction=sum(v[0]<1 for v in actual),days_with_zero_factor=sum(v[0]==0 for v in actual),original_front_nodes=sorted(set(int(v[2]) for v in actual)),actual_records=actual)
+    v=list(map(float,line.split()[1:]));assert len(v)==6 and all(map(math.isfinite,v)) and 0<=v[0]<=v[1]<=1;actual.append(v)
+  assert len(actual)==1097
+  initial=actual.pop(0);assert initial[-1]==0 and all(v[-1]==1 for v in actual)
+  r['frost_witness']=dict(initial_original_uncomputed_diagnostic=initial,actual_daily_original_records=len(actual),minimum_rfcp=min(v[0] for v in actual),days_with_reduction=sum(v[0]<1 for v in actual),days_with_zero_factor=sum(v[0]==0 for v in actual),original_front_nodes=sorted(set(int(v[2]) for v in actual)),actual_records=actual)
   controlout=out/(opt+'-controls');controlout.mkdir();r['controls']=checks.controls(build,reference,project,controlout,full,rows,policy_key='frost_reference');save();print(a.configuration,opt,'FULL_NATIVE_AND_TRANSACTIONS_PASS',flush=True)
  result['status']='SHORT_BOUNDED_FROST_O0_O2_PASS' if a.short_only else 'COMPLETE_BOUNDED_FROST_O0_O2_PASS';save()
 

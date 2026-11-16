@@ -50,3 +50,10 @@ original reader also actually refuses SWSOLU1 with SWDIVD0. Positive P cohort is
 therefore water/chemical undrained and water ordinary-drained, each frost+snow+
 hysteresis2. Chemical drained is an actual original-reader negative control,
 not an admitted positive configuration. No numerical repair has been attempted.
+
+Actual first trajectory: short5/exact2to4 pass, full O0 rejects36 after35
+accepted days at unchanged hard independent water1e-10. All original frost
+factors are1 there. Single targeted repair: reuse admitted exact eliminated
+linear-pond top tangent for selected frost+snow; melt/frost conductance remain
+head-independent within original SWKIMPL0. No limit, clock or physical-law
+change. First require fresh37 and own35to37 O0/O2. Old source stays FAIL.
