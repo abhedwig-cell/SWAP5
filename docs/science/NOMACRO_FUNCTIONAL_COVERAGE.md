@@ -694,7 +694,7 @@ whole physical energy/science remain unqualified.
 Sourcee7a4c1e89 qualifies the original SWBOTB8 branch through the same daily host.
 Six complete1096-day configurations cover water-only and chemical1 with original
 soil-air HPLATE0, explicit ceramic-plate HPLATE-50cm and HPLATE-25cm in a separate
-BBC file. The BBC case retains the unused original main-file SWBOTB3, so receipt
+BBC file. The BBC case explicitly sets an unused main-file SWBOTB3, so receipt
 dispatch must follow the effective original boundary file. No physical switch or
 plate parameter is changed silently; all derived inputs remain hash-bound.
 
@@ -734,9 +734,66 @@ registered routes and frozen RC1/RC2 remain within their existing boundaries.
 
 `BLOCK_K_QUALIFICATION.json`, source contract/recovery record, component/Windows
 proof and SHA256 raw archives under `integration/nomacro-coverage01/` own the
-bounded result. The actual K merge receipt owns canonical admission. Modes1/5
-require a separate reconstructed-flow receipt; original readswap also supports
+bounded result. The actual K merge receipt owns canonical admission. At K's
+qualification boundary modes1/5 required a separate reconstructed-flow receipt;
+the subsequent L section qualifies5. Original readswap also supports
 mode9's paired head/flux tables, which remain unqualified. Mode9 is not identified
 as MODFLOW merely from its number; no MODFLOW campaign is selected here. Unexecuted
 option mixtures, full original no-macro coverage and whole energy/science remain
 unqualified. No independent historical project is added by these derived cases.
+
+## Block L: original prescribed lower-boundary head
+
+Source dadbda812 on the admitted closed-pond/K composition qualifies six original
+SWBOTB5 configurations: water-only and chemical, each with constant head -95cm,
+the original DATE5/HBOT5 table, or that table in an external BBC file. The BBC
+fixture explicitly sets an unused main-file SWBOTB3. Effective boundary-file
+selection owns dispatch. These derived cases add no independent historical project.
+
+The selected generator passes the original candidate gradient
+-kmean(NN+1)*hgrad(NN+1) to both convergence and final trial receipt calls.
+Original Fluxes still reconstructs qbot afterwards. The signed receipt accepts
+both influx and outflux without changing the original boundary equation,
+configured time policy, solver parameters or hard guards. Trial budget_retry is
+now explicitly enabled for5. Existing water-only1 retains its daily guard;
+chemical1 and mode9 remain outside this admission. Capsules retain exact source,
+input, policy and build binding; old capsules are not rebound.
+
+Cold530 initially exposed original DATE5 validation against the worker's shifted
+TSTART: all original knots ended in2002, while valid constant-tail extrapolation
+continued through2004. Only effective5 emits the whole original readswap with
+one changed validation argument, the bound original project start. Original
+table values, interpolation, actual worker clock and all other validation remain
+unchanged. Actual Windows O0 past-all-knots own2to4 is exact; a table invalid for
+the original full interval still refuses before accepting day1. First matrix
+43852988274 retains this failure and an obsolete negative control which changed
+5 to the same5; the corrected control changes to foreign boundary2. No failed
+result is promoted. Reader-fix matrix43855268121 passes before reconciliation;
+the final combined-source matrix43857533894 independently passes all six cases.
+
+The final cohort completes6576 days, with actual generated/controller O0/O2
+native2/365/530 windows and24 natural signed-inflow/outflow windows. Physical
+rows and complete native auxiliary payloads are exact. Distinct origins,
+injected mass rejection, foreign receipt binding, external discard/replay and
+durable recovery pass. Maximum independent residuals are3.230575529311608e-14cm
+water and1.9184653865522705e-13mg/cm2 solute; limits remain1e-10. Native soil
+temperature finiteness and original standalone diagnostics retain their bounded
+meaning; whole energy and scientific equivalence remain unqualified.
+
+Canonical PR1686/1688 changed the shared budget template and experimental closed6
+Jacobian while L ran. Their actual admitted source was merged before final L
+qualification. Fresh actual Windows closed6 O0/O2 completes1096 days per profile,
+with exact own50/530 windows and all1096 physical rows exact to the immutable
+actual-composition proof. Fresh named Grassgrowth/Hupsel/SaltFarm builds preserve
+all emitted source images, inputs, kernel/adapter/driver and policy values;
+their full-period evidence is inherited within that unchanged execution surface.
+Separate Windows provider object/library bytes are not claimed equal. The budget
+Git blob is exact; its checked-out LF/CRLF encodings have distinct verified
+digests. New source-bound CI selection retains all original sealed proofs and
+requires the separately anchored current L qualification/preservation evidence.
+
+`BLOCK_L_QUALIFICATION.json`, `BLOCK_L_CURRENT_PRESERVATION.json`, the original
+table-validation contract, recovery/status records and SHA256 raw archives under
+`integration/nomacro-coverage01/` own the qualification. The actual L merge receipt
+owns canonical admission. Frozen RC1/RC2, historical scientific FAILs, full
+original option-mixture coverage and whole physical energy/science remain separate.

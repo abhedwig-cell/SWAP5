@@ -42,3 +42,40 @@ public PR source delta before L admission; never claim composition from separate
 proof or override its exact-source CI authority. Source8 template output must stay
 exact for L's own change; later admitted external template changes need their own
 explicit dependency assessment. Invariants2/3/4/7/13/21/23/29 apply.
+
+
+FINAL COMPOSITION CHECKPOINT: admitted canonical206938ff7 (actual closed6 merge
+f1d1c13a2 and qualification1688) is merged in own branch. Qualified runtime is
+dadbda8128c16d8ba8dd858e5ac3a0b64a9a2b75, run43857533894 all6full1096 PASS,
+6576days,24 natural signed native windows, hard balances unchanged. Reader-fix
+43855268121 and first failed43852988274 remain separate immutable raw capsules.
+Fresh Windows closed6 full1096 O0/O2 and own50/530 pass; every physical daily row
+matches immutable composed source f1. Named3 fresh builds retain all emitted
+sources/inputs/kernel and policy values, with budget Git blob exact but LF/CRLF
+checkout digests different. Independently compiled binary objects are NOT exact;
+this is source-bound preservation plus actual fresh closed6 execution, not a
+binary identity or broad platform PASS. All daily_host functions/classes except
+build are AST-exact to f1. Mode5 changes only build selection/reader/receipt;
+registered execution and existing stepping/rollback/native ownership stay fixed.
+
+Maintain the existing current-CI selector in tests/hupsel51/verify_successor.py:
+keep original SEALED/RUNTIME and all historical/composed proof assertions exact;
+add immutable L evidence anchor, exact CURRENT_RUNTIME source predicate, fresh
+closed6 current native/full proof and unchanged named sources, plus original5
+qualification/receipt components and raw hashes. No broad F-CI or extra admission
+framework. New native/mass/source/window/table-domain corruption controls must
+actually refuse. Actual merge receipt, not a qualified draft, establishes L
+admission. Frozen RC1/RC2 and whole-science NOT_QUALIFIED remain unchanged.
+
+Additional Windows attempt to run the Ubuntu byte-source-preimage surface
+harness refused at irrigation.f90 LF/CRLF source digest before any model gate.
+Retain FAILURE.json/logs; it is NOT a Windows default PASS. Explicit Ubuntu
+source/external seam qualification owns that assertion. First own dispatch
+43857560916 remains queue-only with zero jobs; both cancel and force-cancel
+returned409. Replacement43859318316 with explicit full_period=false started;
+follow existing runs to terminal and retain the queue anomaly separately.
+
+Replacement43859318316 is terminalSUCCESS on actualdadb source, all8 default
+source/external seams pass. Original43857560916 still exposes zero-job queued
+metadata and409cancel responses; it contributes no qualification. Original
+Windows preimage-harness refusal remains retained, with no changed assertions.
