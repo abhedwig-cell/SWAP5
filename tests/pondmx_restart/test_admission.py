@@ -5,6 +5,13 @@ spec=importlib.util.spec_from_file_location('owner',Path(__file__).with_name('ve
 
 
 class Admission(unittest.TestCase):
+    def test_literal_reference_cannot_hide_output_mode_or_input_difference(self):
+        r=json.loads((owner.ROOT/owner.PROOF/'EXACT_REFERENCE.json').read_text());owner.validate_exact_reference(r)
+        bad=copy.deepcopy(r);bad['reports']['water-surface-history']['SWENDTYPE']=1
+        with self.assertRaises(ValueError):owner.validate_exact_reference(bad)
+        bad=copy.deepcopy(r);bad['reports']['chemical-surface-history']['actual_worker_input_sha256']['swap.swp']='foreign'
+        with self.assertRaises(ValueError):owner.validate_exact_reference(bad)
+
     def test_composition_cannot_hide_changed_source_or_native_state(self):
         c=json.loads((owner.ROOT/owner.PROOF/'COMPOSITION.json').read_text());owner.validate_composition(c)
         bad=copy.deepcopy(c);bad['reports']['water-O2']['generated_sources_byte_exact']=False

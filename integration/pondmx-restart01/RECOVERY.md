@@ -45,3 +45,13 @@ validates both source surfaces and all old body bytes. PR1693 is the only own
 PR; finish selected Ubuntu/current F-CI on final composed head and inspect LIVE
 remote base8dc before merging, then actual parents/tree/runtime. No broad
 unrelated frozen/performance campaign, no old snapshot rebind, no science PASS.
+
+LITERAL INPUT AUDIT: initial reference source deck had SWENDTYPE1 vs actual
+worker2. New exact_reference helper copies declared worker inputs only and
+executes unmodified431, with full byte inventory before/after. Both complete
+reference CSVs are exact to initial diagnostics. EXTRA proof/raw is separately
+sealed; earlier records untouched. Final own Ubuntu job executes current
+source/proof consumer AND negative controls plus actual O0/O2 full/native and
+exact-worker431 comparisons; redundant broad F-CI execution is not selected.
+No physical source change after d0e34c876. Sparse own checkout avoids unrelated
+archive retrieval. Await this selected job, not canceled unrelated workflows.

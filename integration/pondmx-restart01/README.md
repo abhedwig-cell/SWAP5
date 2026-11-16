@@ -107,3 +107,30 @@ identity; fresh composed emission and native-prefix evidence own the dependency
 inheritance. The dedicated Ubuntu job repeats all four full trajectories on the
 composed source before merge. Earlier queued/inapplicable PR-head runs were
 canceled during reconciliation and contribute no qualification.
+
+## Literal executed-input audit and completion
+
+A final byte audit found the initial source-deck reference retained SWENDTYPE1,
+while DailyHost prepared actual worker SWENDTYPE2 for native output. This was an
+output-only difference, but the earlier literal-input-equality wording was too
+strong. Initial reference results remain immutable inside QUALIFICATION/raw.
+New EXACT_REFERENCE.json and RAW_EXACT_REFERENCE.zip own two additional full
+original431 executions copied from ONLY the declared actual worker input files
+(no output/swap.ok replay). All input bytes, including SWENDTYPE2, match before
+and after original execution. Both1097-row physical CSV trajectories are also
+exact to the earlier output-compatible references; the numerical comparison and
+scientific NOT_QUALIFIED verdict are unchanged. No SWAP5 trajectory was repeated
+for this output-format verification correction. Future qualification uses the
+actual worker deck directly. Negative admission controls refuse mode1/different
+input and the current consumer requires the fixed new literal-reference proof.
+
+Final test selection places the current source/proof consumer itself together
+with all admission corruption controls in the dedicated Ubuntu workflow, followed
+by both codec profiles and all four full/native/original comparisons. Thus that
+job includes the selected current admission command too. The separately triggered
+F-CI job duplicates that same source check plus unchanged kernel contracts; it
+and unrelated frozen/kernel/performance jobs are unselected/canceled, not PASS.
+The existing current admission body is still exact except forwarding; no F-CI
+workflow assertions were changed. The own job uses a bounded sparse checkout
+instead of downloading unrelated historical archives. Source graphs, native
+proofs and baseline consumers retain their separate recorded identities.

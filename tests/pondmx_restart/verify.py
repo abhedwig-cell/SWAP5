@@ -7,6 +7,7 @@ RUNTIME='4156596c70460a849892d1d81fd69853bf68f50c'
 INCOMING='8dcda0fb247ae7823d720817d6340114d5227728'
 COMPOSED='d0e34c8764e334b078c1b256a181890310cd19c3'
 COMPOSITION_SHA256='19cf5901d186dcbb9dce6a5abe9ac3bc491dd330db89131f0c18f11964384edc'
+EXACT_REFERENCE_SHA256='11d7007e38c91326bf0daa3cfea5c2e614a651903e3026dcb0064cacd2e94117'
 PROOF='integration/pondmx-restart01/'
 SELF='tests/hupsel51/verify_successor.py'
 QUALIFICATION_SHA256='899f3656ccfa58b6deb0287ea0693d108f64d6274f1efa3b24091c1f794ffabe'
@@ -67,6 +68,14 @@ def validate_composition(c):
     require(c['incoming_baseline_consumer']['source_commit']==INCOMING and c['incoming_baseline_consumer']['returncode']==0,'incoming old admission not actually verified')
 
 
+def validate_exact_reference(r):
+    require(r['status']=='LITERAL_WORKER_INPUTS_ORIGINAL431_FULL_COMPARISON_PASS' and set(r['reports'])=={'water-surface-history','chemical-surface-history'},'missing literal comparison')
+    for c in r['reports'].values():
+        require(c['status']=='COMPLETE_DIAGNOSTIC_REFERENCE' and c['original_rows']==c['swap5_rows']==1097,'incomplete literal comparison')
+        require(c['literal_worker_inputs_exact'] and c['SWENDTYPE']==2 and c['actual_worker_input_sha256']==c['identical_executed_inputs'],'different executed input')
+        require(c['prior_output_compatible_csv_exact'],'output-mode physics changed')
+
+
 def verify():
     git('merge-base','--is-ancestor',RUNTIME,COMPOSED)
     git('merge-base','--is-ancestor',COMPOSED,'HEAD')
@@ -86,6 +95,10 @@ def verify():
     require(hashlib.sha256(raw).hexdigest()==COMPOSITION_SHA256,'composition proof changed')
     c=json.loads(raw);validate_composition(c)
     require(hashlib.sha256((ROOT/PROOF/c['raw_archive']['path']).read_bytes()).hexdigest()==c['raw_archive']['sha256'],'composition raw changed')
+    raw=git('show','HEAD:'+PROOF+'EXACT_REFERENCE.json')
+    require(hashlib.sha256(raw).hexdigest()==EXACT_REFERENCE_SHA256,'literal reference proof changed')
+    r=json.loads(raw);validate_exact_reference(r)
+    require(hashlib.sha256((ROOT/PROOF/r['raw_archive']['path']).read_bytes()).hexdigest()==r['raw_archive']['sha256'],'literal reference raw changed')
     return dict(status='SCHEDULED_PONDMX_RESTART_SOURCE_BOUND_PASS',runtime=COMPOSED,
                 full_physics_runtime=RUNTIME,incoming_canonical=INCOMING,
                 full_days=4384,exact_full_native_windows=16,prior_failed_source=BASE,
