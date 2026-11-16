@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "BOUNDED_SELECTION_NO_SUITABLE_CONTEXT",
   "baseline": "ba70d2f2eca6c5112223c0bf50ea94e3723554cc",
   "selection": {
     "C1": {
@@ -23,5 +23,34 @@
   "candidate_changes": false,
   "bounds": "Same native35797 original unchanged prefix; original30/60iterations and dt/reduction rules; max4selectedheadattempts, hard20sec perroute; no campaign",
   "qualification_requires": "Genuine solver refusal with at least1 active rank1 iteration, physical rollback, equality to direct smaller retry",
-  "scope_revision": "One final earliest original node57 failure C3; max3 original contexts, no parameters changed"
+  "scope_revision": "One final earliest original node57 failure C3; max3 original contexts, no parameters changed",
+  "decision": "NO_SUITABLE_ACTIVE_REFUSAL_IN_THREE_SELECTED_ORIGINAL_CONTEXTS",
+  "model_routes": 6,
+  "selection_final": {
+    "C1": {
+      "original_attempt": 624,
+      "prior_commits": 296,
+      "time": 35797.11202343404,
+      "dt": 0.000282842712474619,
+      "original_max_residual": 0.00021154504989853717,
+      "original_max_node": 57.0
+    },
+    "C2": {
+      "original_attempt": 3502,
+      "prior_commits": 1522,
+      "time": 35797.44176310414,
+      "dt": 7.89652864720362e-05,
+      "original_max_residual": 0.017998539531543376,
+      "original_max_node": 56.0
+    },
+    "C3": {
+      "original_attempt": 224,
+      "prior_commits": 116,
+      "time": 35797.08234510053,
+      "dt": 2.0951312035156963e-05,
+      "original_max_residual": 0.0004230553136657239,
+      "original_max_node": 57.0
+    }
+  },
+  "active_refusal_rollback_direct_qualification": false
 }

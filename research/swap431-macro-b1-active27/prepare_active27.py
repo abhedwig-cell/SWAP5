@@ -1,4 +1,4 @@
-"""At most two preselected original contexts; no tuned dt or forced refusal."""
+"""Final bounded three-context selection; see preserved SCOPE_REVISION history."""
 from pathlib import Path
 import json,difflib
 R=Path(__file__).resolve().parent;P=R.parent/'swap431-macro-b1-reject26'
@@ -37,8 +37,8 @@ s=s.replace(needle,"env['DAY10_MODE']=mode;selected=json.loads((R/'SELECTION.jso
 oldtrace=R.parent/'swap431-macro-b1-diag19/data/O2/RESUME/attempt_trace.txt'
 rows=[list(map(float,x.split())) for x in oldtrace.read_text().splitlines()]
 selection={}
-for label,att in [('C1',624),('C2',3502)]:
+for label,att in [('C1',624),('C2',3502),('C3',224)]:
  x=rows[att-1];assert x[8]==4 and x[10]==0 and x[3]>1e-5
  selection[label]=dict(original_attempt=att,prior_commits=int(x[1])-1,time=x[2],dt=x[3],original_max_residual=x[18],original_max_node=x[19])
 (R/'SELECTION.json').write_text(json.dumps(selection,indent=2)+'\n')
-(R/'STATUS.json').write_text(json.dumps(dict(stage='PREREGISTERED',baseline='ba70d2f2eca6c5112223c0bf50ea94e3723554cc',selection=selection,scope='At most2 preselected original DIAG19 contexts; O2 C1 trial first, C2 only if needed; direct and O0 only for suitable active refusal',candidate_changes=False,bounds='Same native35797 original unchanged prefix; original30/60iterations and dt/reduction rules; max4selectedheadattempts, hard20sec perroute; no campaign',qualification_requires='Genuine solver refusal with at least1 active rank1 iteration, physical rollback, equality to direct smaller retry'),indent=2)+'\n')
+(R/'STATUS.json').write_text(json.dumps(dict(stage='PREREGISTERED',baseline='ba70d2f2eca6c5112223c0bf50ea94e3723554cc',selection=selection,scope='Final max3 existing DIAG19 contexts; original two plus recorded final earliest-context revision; O0 confirms selection, direct only for suitable active refusal',candidate_changes=False,bounds='Same native35797 original unchanged prefix; original30/60iterations and dt/reduction rules; max4selectedheadattempts, hard20sec perroute; no campaign',qualification_requires='Genuine solver refusal with at least1 active rank1 iteration, physical rollback, equality to direct smaller retry'),indent=2)+'\n')

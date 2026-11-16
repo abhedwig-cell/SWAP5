@@ -1,0 +1,39 @@
+{
+  "jac24_trace": {
+    "0": "attempt",
+    "1": "iteration",
+    "2": "active",
+    "3": "O_potential_total",
+    "4": "E_outflow_excess",
+    "5": "f_outflow_factor",
+    "6": "rho_volume_density",
+    "7": "GWL",
+    "8": "L_minimum_stock",
+    "9": "W_begin_stock",
+    "10": "GWL_bracket_node",
+    "11": "h_bracket_left",
+    "12": "h_bracket_right",
+    "13": "dt",
+    "14": "Sherman_Morrison_denominator",
+    "15": "Sherman_Morrison_alpha",
+    "16": "max_linear_residual",
+    "17": "max_Newton_step",
+    "18": "U52",
+    "19": "V50",
+    "20": "V51",
+    "21": "V52",
+    "22": "native_component_dQ3_52_dh52",
+    "23": "added_J52_50",
+    "24": "added_J52_51",
+    "25": "added_J52_52"
+  },
+  "calibration": "meta12 as columnsactive throughdt of trace, vectorsU/V/base_q_derivative112nodes; same serialized SENSE23 partiallyactive basis",
+  "notes": [
+    "All indices0-based",
+    "All inherited NODE20/LIMIT21/DIAG19 trace columns unchanged",
+    "Headreturn stops before hostcommit; solver_1 is converged headcalc return state",
+    "Correction is for residual F=-Q, soU=-outpotential/dt"
+  ],
+  "commit25_scope": "One hostcommit after SoilWater3, macrostate/integrals, integral3, heat and TimeControl3. target_begin/return are before hostcommit; committed is after. Stepbudgetdt is used dt; committed controlsdt is nextdt.",
+  "scope": "Three original DIAG19 selections C1/C2/C3; prefix_budget is unchanged original accepted stream. Attempt1 is selected head, attempt2 onlyC2 original smaller retry. No DIRECT routes."
+}

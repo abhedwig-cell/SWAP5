@@ -1,0 +1,149 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-ACTIVE27",
+  "decision": "NO_SUITABLE_ACTIVE_REFUSAL_IN_THREE_SELECTED_ORIGINAL_CONTEXTS",
+  "model_routes": 6,
+  "selected_original_contexts": 3,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "candidate_physics_criteria_dt_reduction_changes": false,
+  "active_refusal_rollback_direct_qualification": false,
+  "reason": "C1 andC3 converge with update active; C2 genuinely refuses but update inactive. Direct comparison not launched without qualifying active refusal.",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "context": "C1",
+      "seconds": 2.2625957999844104,
+      "original_attempt": 624,
+      "original_begin_time": 35797.11202343404,
+      "original_dt": 0.000282842712474619,
+      "unchanged_original_prefix_rows": 296,
+      "candidate_attempts": 1,
+      "candidate_first_outcome": "CONVERGED",
+      "candidate_first_iterations": 5,
+      "rank1_active_iterations_per_attempt": [
+        1
+      ],
+      "qualifying_active_refusal": false,
+      "first_max_residual": 4.2189256428681876e-08,
+      "first_sum_residual": 2.7697837863448017e-07,
+      "accepted_step_dt": 0.000282842712474619,
+      "accepted_commit_time": 35797.11230627675,
+      "inventory_error_cm": 7.834122695178636e-11,
+      "inventory_limit_cm": 2.8284271247461902e-09
+    },
+    {
+      "optimization": "O0",
+      "context": "C2",
+      "seconds": 9.253752100048587,
+      "original_attempt": 3502,
+      "original_begin_time": 35797.44176310414,
+      "original_dt": 7.89652864720362e-05,
+      "unchanged_original_prefix_rows": 1522,
+      "candidate_attempts": 2,
+      "candidate_first_outcome": "REFUSED",
+      "candidate_first_iterations": 30,
+      "rank1_active_iterations_per_attempt": [
+        0,
+        0
+      ],
+      "qualifying_active_refusal": false,
+      "first_max_residual": 4.313964211692667e-05,
+      "first_sum_residual": -0.00020062033819847618,
+      "accepted_step_dt": 2.6321762157345398e-05,
+      "accepted_commit_time": 35797.4417894259,
+      "inventory_error_cm": -8.24150425367872e-12,
+      "inventory_limit_cm": 2.63217621573454e-10
+    },
+    {
+      "optimization": "O0",
+      "context": "C3",
+      "seconds": 0.8851010999642313,
+      "original_attempt": 224,
+      "original_begin_time": 35797.08234510053,
+      "original_dt": 2.0951312035156963e-05,
+      "unchanged_original_prefix_rows": 116,
+      "candidate_attempts": 1,
+      "candidate_first_outcome": "CONVERGED",
+      "candidate_first_iterations": 2,
+      "rank1_active_iterations_per_attempt": [
+        1
+      ],
+      "qualifying_active_refusal": false,
+      "first_max_residual": 8.501548728750974e-07,
+      "first_sum_residual": 5.558688809726689e-06,
+      "accepted_step_dt": 2.0951312035156963e-05,
+      "accepted_commit_time": 35797.082366051836,
+      "inventory_error_cm": 1.1646193614049953e-10,
+      "inventory_limit_cm": 2.0951312035156965e-10
+    },
+    {
+      "optimization": "O2",
+      "context": "C1",
+      "seconds": 1.5760079000610858,
+      "original_attempt": 624,
+      "original_begin_time": 35797.11202343404,
+      "original_dt": 0.000282842712474619,
+      "unchanged_original_prefix_rows": 296,
+      "candidate_attempts": 1,
+      "candidate_first_outcome": "CONVERGED",
+      "candidate_first_iterations": 5,
+      "rank1_active_iterations_per_attempt": [
+        1
+      ],
+      "qualifying_active_refusal": false,
+      "first_max_residual": 4.2189256428681876e-08,
+      "first_sum_residual": 2.7697837863448017e-07,
+      "accepted_step_dt": 0.000282842712474619,
+      "accepted_commit_time": 35797.11230627675,
+      "inventory_error_cm": 7.834122695178636e-11,
+      "inventory_limit_cm": 2.8284271247461902e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "C2",
+      "seconds": 7.0524643999524415,
+      "original_attempt": 3502,
+      "original_begin_time": 35797.44176310414,
+      "original_dt": 7.89652864720362e-05,
+      "unchanged_original_prefix_rows": 1522,
+      "candidate_attempts": 2,
+      "candidate_first_outcome": "REFUSED",
+      "candidate_first_iterations": 30,
+      "rank1_active_iterations_per_attempt": [
+        0,
+        0
+      ],
+      "qualifying_active_refusal": false,
+      "first_max_residual": 4.313964211692667e-05,
+      "first_sum_residual": -0.00020062033819847618,
+      "accepted_step_dt": 2.6321762157345398e-05,
+      "accepted_commit_time": 35797.4417894259,
+      "inventory_error_cm": -8.24150425367872e-12,
+      "inventory_limit_cm": 2.63217621573454e-10
+    },
+    {
+      "optimization": "O2",
+      "context": "C3",
+      "seconds": 0.8226864999160171,
+      "original_attempt": 224,
+      "original_begin_time": 35797.08234510053,
+      "original_dt": 2.0951312035156963e-05,
+      "unchanged_original_prefix_rows": 116,
+      "candidate_attempts": 1,
+      "candidate_first_outcome": "CONVERGED",
+      "candidate_first_iterations": 2,
+      "rank1_active_iterations_per_attempt": [
+        1
+      ],
+      "qualifying_active_refusal": false,
+      "first_max_residual": 8.501548728750974e-07,
+      "first_sum_residual": 5.558688809726689e-06,
+      "accepted_step_dt": 2.0951312035156963e-05,
+      "accepted_commit_time": 35797.082366051836,
+      "inventory_error_cm": 1.1646193614049953e-10,
+      "inventory_limit_cm": 2.0951312035156965e-10
+    }
+  ]
+}
