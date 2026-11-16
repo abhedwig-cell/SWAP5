@@ -1,0 +1,160 @@
+--- baseline/diag_state.f90
++++ NODE20/diag_state.f90
+@@ -1,6 +1,8 @@
+ module DIAG19
+ implicit none
+ integer,save::nvec=0,njac=0,nrate=0,nderiv=0,nback=0,nfresh=0,attempts=0,steps=0,u,v
++logical,save::target=.false.
++integer,save::iter_index=0,node_u,op_u,raw_u
+ integer,save::kind=-1,iterations=0,flags(5)=0,worst=0,prelevel=0
+ real(8),save::residual=0,maxres=0,trialdt=0,headwall=0,budgetwall=0,spanhead=0,spanbudget=0
+ integer(8),save::origin,lastclock,hclock,bclock,rate
+@@ -9,11 +11,16 @@
+ call system_clock(origin,rate);lastclock=origin
+ open(newunit=u,file='attempt_trace.txt',status='replace')
+ open(newunit=v,file='cost_trace.txt',status='replace')
++open(newunit=node_u,file='node_iterations.txt',status='replace')
++open(newunit=op_u,file='node_operator.txt',status='replace')
++open(newunit=raw_u,file='node_absorption.txt',status='replace')
+ end subroutine
+ subroutine head_start()
+ use variables,only:dt
+ use MOD_swap_mp,only:IDecMpRat
+ attempts=attempts+1
++iter_index=0
++target=attempts==38.or.(attempts>=50.and.attempts<=52)
+ nvec=0;njac=0;nrate=0;nderiv=0;nback=0;nfresh=0;kind=-1;iterations=0;flags=0
+ trialdt=dt;prelevel=IDecMpRat
+ call system_clock(hclock)
+@@ -27,6 +34,9 @@
+ write(u,*) attempts,steps+1,t1900,trialdt,prelevel,IDecMpRat,FrReduQ,numbit,kind, &
+  merge(1,0,fldecdt),merge(1,0,FlDecMpRat),merge(1,0,fldtmin),flags,residual,maxres,worst, &
+  nvec,njac,nrate,nderiv,nback,nfresh,headwall
++if(target) then
++ flush(node_u);flush(op_u);flush(raw_u)
++end if
+ if(mod(attempts,128)==0) flush(u)
+ end subroutine
+ subroutine outcome(k,it,f,f1,f2,f3,fmp,s,m,w)
+@@ -52,10 +62,10 @@
+ call system_clock(tick);elapsed=dble(tick-origin)/dble(rate);steps=steps+1
+ write(v,*) steps,t1900,dt,numbit,FrReduQ,attempts,spanhead,spanbudget,dble(tick-lastclock)/dble(rate),elapsed
+ if(mod(steps,128)==0) flush(v)
+-done=steps>=7000.or.elapsed>=16d0
++done=steps>=42.or.elapsed>=16d0
+ if(done) then
+- close(u);close(v)
+- open(newunit=o,file='outcome.txt',status='replace');write(o,*) 'DIAG19_BOUNDED',steps,elapsed;close(o)
++ close(u);close(v);close(node_u);close(op_u);close(raw_u)
++ open(newunit=o,file='outcome.txt',status='replace');write(o,*) 'NODE20_BOUNDED',steps,elapsed;close(o)
+ end if
+ spanhead=0;spanbudget=0
+ call system_clock(lastclock)
+
+--- baseline/head_diag.f90
++++ NODE20/head_diag.f90
+@@ -40,7 +40,7 @@
+    use MOD_swap_mp,        only: armpss, frarmtrx, qexcmpmtx, dfdhmp, ictopmp                        ! all input
+    use MOD_swap_mp,        only: qmplatss, idecmprat                                                 ! input + output
+    use MOD_swap_mp,        only: fldecmprat, fldecMPmbf                                              ! output
+-   use DIAG19,only:nvec,njac,nrate,nderiv,nback,nfresh,outcome
++   use DIAG19,only:nvec,njac,nrate,nderiv,nback,nfresh,outcome,target,attempts,iter_index,node_u,op_u
+    implicit none
+ 
+ !  diagnostic local storage only
+@@ -204,6 +204,7 @@
+    if (fldtmin .OR. fldecmprat) MaxIt1 = 2*MaxIt
+    sump = 0.d0
+    do numbit = 1, MaxIt1
++      iter_index=numbit
+ 
+ !     store hold and get moiscap
+       do i = 1, NN
+@@ -571,6 +572,7 @@
+  use MOD_macropore, only:NumDm,FlEndSrpEvt,ICpTpSatZon,ICpTpPerZon,ICpBtPerZon, &
+  QOutMtxUnsDmCp,QOutMtxSatDmCp,QInMtxSatDmCp,QInIntSatDmCp,FrMpWalWet,TimAbsCumDmCp
+  integer,intent(in)::stage
++ call node20_log(stage)
+  if(.not.diag_active) return
+  write(diag_u,*) stage,numbit,itry,factor,maxval(abs(F(1:NN))),sum(F(1:NN)), &
+  .5d0*dot_product(F(1:NN),F(1:NN)),sumold,merge(1,0,flunsatok(3)), &
+@@ -582,6 +584,41 @@
+  sum(QOutMtxSatDmCp(1:NumDm,45)),sum(QInMtxSatDmCp(1:NumDm,45)), &
+  sum(QInIntSatDmCp(1:NumDm,45)),sum(FrMpWalWet(1:NumDm,45)),maxval(TimAbsCumDmCp(1:NumDm,45))
+ end subroutine diag_log
++
++subroutine node20_log(stage)
++integer,intent(in)::stage
++integer::tr,ff(5)
++real(8)::fac,hh,dh,jl,jm,ju,mpd
++if(.not.target) return
++tr=0;fac=0;hh=h(52);dh=0;ff=0;jl=0;jm=0;ju=0;mpd=0
++if(stage/=0) then
++ hh=hold(52)
++ if(stage==3.or.stage==4.or.stage==5.or.stage==6) then
++  tr=itry;fac=factor;dh=difh(52)
++ end if
++end if
++if(stage==2) then
++ jl=dFdhU(52);jm=dFdhM(52);ju=dFdhL(52);mpd=dFdhMp(52)
++end if
++if(stage==4) ff=[merge(1,0,flnonconv),merge(1,0,flnonconv1(52)),merge(1,0,flnonconv2(52)),merge(1,0,flnonconv3),merge(1,0,fldecMPmbf)]
++write(node_u,*) attempts,iter_index,stage,tr,t1900,dt,IDecMpRat,fac,h(51:53),hh,dh,F(52), &
++ sum(F(1:NN)),maxval(abs(F(1:NN))),.5d0*dot_product(F(1:NN),F(1:NN)),sumold, &
++ merge(1,0,flunsatok(3)),ff,jl,jm,ju,mpd
++end subroutine node20_log
++
++subroutine node20_operator(task,grad)
++use MOD_macropore,only:NumDm,QExcMtxDmCp,QOutMtxUnsDmCp,QOutMtxSatDmCp,QInMtxSatDmCp,QInIntSatDmCp, &
++ FrMpWalWet,TimAbsCumDmCp,FlEndSrpEvt,FrReduQ,ICpTpWaSrDm,ZWaLevDm
++integer,intent(in)::task
++real(8),intent(in)::grad(macp+1)
++if(.not.target) return
++write(op_u,*) attempts,iter_index,nvec,task,t1900,dt,h(51:53),theta(52),thetm1(52),FrArMtrx(52),dz(52), &
++ (theta(52)-thetm1(52))*FrArMtrx(52)*dz(52)/dt,sink(52),-source(52),qrot(52), &
++ -kmean(52)*grad(52),kmean(53)*grad(53),-QExcMpMtx(52),F(52),merge(1,0,flunsatok(3)), &
++ FrReduQ,QExcMtxDmCp(1:NumDm,52),QOutMtxUnsDmCp(1:NumDm,52),QOutMtxSatDmCp(1:NumDm,52), &
++ QInMtxSatDmCp(1:NumDm,52),QInIntSatDmCp(1:NumDm,52),FrMpWalWet(1:NumDm,52), &
++ TimAbsCumDmCp(1:NumDm,52),merge(1,0,FlEndSrpEvt(1:NumDm,52)),ICpTpWaSrDm(1:NumDm),ZWaLevDm(1:NumDm)
++end subroutine node20_operator
+ 
+ subroutine unreduced_trace(kind)
+  use MOD_macropore, only:FrReduQ
+@@ -776,6 +813,7 @@
+ 
+    if (swmacro == 1) F(1:NN) = F(1:NN) - QExcMpMtx(1:NN)
+ 
++call node20_operator(iTask,hgrad)
+ end subroutine vector_F
+ 
+ subroutine jacobian_F()
+
+--- baseline/macrorate_node.f90
++++ NODE20/macrorate_node.f90
+@@ -1647,6 +1647,7 @@
+                                swdarcy, frreduq, qoutmtxunsdmcp, dfdhmp, ictopmp, swmbf, swabs, icpbtdmpot, dimtxsat, vlmpdmcp
+ 
+ 
++      use DIAG19,only:target,attempts,iter_index,nvec,raw_u
+       implicit none
+ 
+ ! --- global                                                         In
+@@ -1805,6 +1806,18 @@
+              HMp,DelH,RecRes,SorpFac,raw_sorp,raw_darcy,FlwOutMtxUnsDmCpPot(id,ic), &
+              merge(1,0,FlSorp(id,ic)),dt,TimAbsCumDmCp(id,ic),ICpTpWaSrDm(id)
+             end if
++            if(target.and.ic==52) then
++             block
++             real(8)::hm_log,del_log,rec_log,sf_log
++             hm_log=0;del_log=0;rec_log=0;sf_log=0
++             if(SwDarcy>0.and.ic>ICpTpWaSrDm(id)) then
++              hm_log=HMp;del_log=DelH;rec_log=RecRes;sf_log=SorpFac
++             end if
++             write(raw_u,*) attempts,iter_index,nvec,id,ic,H(ic),theta(ic),dt,FrReduQ, &
++              raw_sorp,raw_darcy,FlwOutMtxUnsDmCpPot(id,ic),merge(1,0,FlSorp(id,ic)), &
++              hm_log,del_log,rec_log,sf_log,FrMpWalWet(id,ic),TimAbsCumDmCp(id,ic),ICpTpWaSrDm(id)
++             end block
++            end if
+             FlwOutMtxUnsDmPot(id) = FlwOutMtxUnsDmPot(id) + FlwOutMtxUnsDmCpPot(id,ic)
+ !
+ ! --- Set Flag to END SoRPtivity EVenT in MACROSTATE
