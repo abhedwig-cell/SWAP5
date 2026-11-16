@@ -1,3 +1,27 @@
+# I bounded assessment ready for admission
+
+PR1683 branch09; canonicalHf1f8d0602/peers unchanged16Nov. Model2 full1096
+and all gates43599641836 PASS; six strictfails and three cap180s cases remain.
+Real-typed PDI43600505987 FAIL. Model3 O0 exactnative in capped43600305896;
+missing O2 cold43819018691 SUCCESS from real own364 carrier, no rebinding.
+Both follow-ups terminal. Core/generator unchanged; vapor-only preflight tightens
+all layers and preserves44prior descriptors. Seal docs/raw/hash checks and admit
+exact head bounded scope; then next original state/physical family audit.
+Do not call allten/science/wholeenergy complete; frozen and peers untouched.
+
+# I all ten assessed; only missing O2 cold proof live
+
+16November reconciliation: canonicalHf1f8d0602 and peers unchanged. Own branch09
+PR1683 head4abad03ae. First43599641836 terminalFAIL; real-typed PDI43600505987
+terminalFAIL. ONE full1096 model2; SIX strictfailures3/5/6/7/9/11; THREE cap180s
+models4/8/10 after364accepted. Four initial HA INTEGER-refusals retained too.
+Model3 proof43600305896 jobcap8min retains exact O0 own364native reject365,
+plus completed O2 warm365 refusal+actual own364native. Only missing O2 cold
+step is resumed in43819018691 source4abad03ae LIVE. Identity validated, no
+rebinding/warm rerun. Follow exact handle to terminal before bounded admission.
+All archives except latest cold packing/sealing, no all-ten/scientific claim.
+H exactadmitted, frozen/peer streams untouched. Do not stop at this checkpoint.
+
 # I first cohort terminal; two exact follow-up runs live
 
 Own branch09 PR1683. First43599641836 terminalFAIL: model2 full1096/all gates;
