@@ -40,7 +40,7 @@ De onafhankelijke periodecontrole uit BUFFER16 is opnieuw uitgevoerd op deze res
 
 De geselecteerde eerste periode heeft aanvankelijk nul canopywater. Alleen die situatie testen zou een foutieve constante nulbeginwaarde niet uitsluiten. Daarom wordt ook de echte volgende periodereset gecontroleerd: SICINI wordt daar **0,0025926018136122326cm**, gelijk aan SICACT op35797. Continu en native herstart geven dezelfde waarde vóór en na de eerste volgende stap.
 
-Daarnaast schrijft de echte typed ledgercode op dat moment het actuele blok, leest het terug, zet voor de test uitsluitend het uitvoerveld SICINI op nul en installeert het gelezen blok. Alle133waarden worden exact hersteld, inclusief de niet-nul canopybeginvoorraad. Dit is een kleine uitvoercodec-probe in de bestaande modelroute, na de fysieke stap; geen aanvullende modelperiode of injectie van fysieke voorraad. De voor-/nadumps zijn bytegelijk.
+Daarnaast schrijft de echte typed ledgercode op dat moment het actuele blok, zet voor de test uitsluitend het uitvoerveld SICINI op nul, leest het blok terug en installeert de gelezen waarden. Alle133waarden worden exact hersteld, inclusief de niet-nul canopybeginvoorraad. Dit is een kleine uitvoercodec-probe in de bestaande modelroute, na de fysieke stap; geen aanvullende modelperiode of injectie van fysieke voorraad. De voor-/nadumps zijn bytegelijk.
 
 Het volledige V5-eigen daggrensbestand herstelt de geaccepteerde toestand en uitvoerhistorie exact. Het natuurlijke resetgedrag en de volgende fysieke stap blijven exact gelijk tussen continu en herstart. Het oude V4-bestand wordt bij een verzoek om exacte uitvoerhistorie vóór installatie afgewezen. Er is geen stille nulaanname voor ontbrekende canopybeginhistorie.
 
