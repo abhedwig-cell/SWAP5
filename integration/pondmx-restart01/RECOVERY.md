@@ -22,3 +22,16 @@ unaltered SWAP431 input/reference comparisons reused only on exact physical
 closure. Preserve all old failures and whole science NOT_QUALIFIED. Reconcile
 active independent external-irrigation N; no duplicate/private branch imports.
 Preserve unaffected default/J/K/M emitted sources and current owner contracts.
+
+CAUSAL PROBE aff4997f0 PASS: actual pondmx warm .197938023450583 vs cold .2;
+seeding that one observed value restores exact native199to201. Private trace
+binding/raw retained; no production rebind. Implementation833d4bfd1, qualified
+physical runtime4156596c7. New selected original-top v2 carries actual pondmx;
+unselected v1 source/format exact. Windows all4full1096 O0/O2, all16 own native
+windows, all4short201 windows PASS. Forward physics/CSV exact to old failures.
+Fresh original431 comparisons complete and scientific differences unchanged.
+Default/legacy emitted source/input preservation and both component profiles
+pass. Current source admission and six old negative methods pass locally.
+Next: source/doc checks, own Ubuntu+current F-CI terminal checks, independently
+read latest canonical/peer delta, PR admission and actual merge postimage.
+Retain all old Mixtures/M/L/historical proofs and whole science NOT_QUALIFIED.
