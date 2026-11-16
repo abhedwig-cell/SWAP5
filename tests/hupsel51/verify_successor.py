@@ -270,6 +270,9 @@ def verify_m():
 
 
 def verify():
+    if (ROOT/'integration/pondmx-restart01/QUALIFICATION.json').is_file():
+        import runpy
+        return runpy.run_path(str(ROOT/'tests/pondmx_restart/verify.py'))['verify']()
     git('merge-base', '--is-ancestor', SEALED, 'HEAD')
     git('merge-base', '--is-ancestor', RUNTIME, 'HEAD')
     require(not git('diff', RUNTIME, CURRENT_RUNTIME, '--', 'src', 'reference'), 'unqualified kernel/reference delta')
