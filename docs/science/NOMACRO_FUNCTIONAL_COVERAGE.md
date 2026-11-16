@@ -625,3 +625,47 @@ this own branch were canceled and are not represented as green qualification.
 owns admission. One new complete configuration and zero independent historical
 projects are added. Full no-macro functional coverage, remaining original state
 families and whole physical energy/scientific equivalence remain open.
+
+
+## Block J: complete original initialized history context (candidate)
+
+The current experimental candidate owns three complete original component-state
+blocks for hysteresis/snow input: initialized microscopic M/K lookup tables,
+all eight saved MOD_top fields and the six once-initialized OxygenStress parameter
+arrays plus their initialization flag. Original preprocessing uses the hydraulic
+curve present at first initialization; recomputing on a later accepted scanning
+curve does not preserve that historical context. The oxygen context survives crop
+changes. State restore validates the bound clock, domains and dimensions, stages
+values, then applies them after original initialization and before root extraction.
+Undefined allocation tails remain outside the serialized physical state.
+
+The implementation changes no original equation, iterative algorithm, tolerance or
+selected numerical policy. The state policy is explicitly source-bound as
+`original-initialized-micro-top-oxygen-v3`; older capsules cannot be rebound.
+Registered/no-history generation remains outside activation. Twelve distinct
+experimental history formats cover water/chemical, hysteresis/snow and optional
+plant ET context. Source-only original preparation still executes no model.
+
+Current source10d4cc551 passes43840145787: full1096 warm days and EVERY daily
+own cold physical/native continuation, four original crop-calendar windows at
+actual touched/controller O0/O2, active native530 and resealed malformed history
+state. The immutable original provider remains O2. Local actual production codecs
+pass O0/O2 with23 microscopic,15 top and14 oxygen refusals per optimization;
+initialized/absent roundtrip, staged assignment and undefined-tail preservation
+have explicit evidence. Real Windows generated O0 day2to4 is exact; no complete
+Windows history or scientific oxygen-accuracy claim follows.
+
+The first eleven full trajectories43833787531 passed, but its additional daily
+proof failed154. Whole original top replay was causal; the successor then failed
+525 after524 exact daily continuations. Whole oxygen preprocessing replay was
+causal for525. Both failures, the earlier two D cache hypotheses and noncausal
+whole WOFOST interface re-export probes remain retained. No failed observation
+is relabeled as an exact restart. Original standalone reference diagnostics and
+scientific failures remain separate from functional qualification.
+
+Remaining ten affected complete configurations43840655461 and fresh eight
+standard source/external seams43840659129 are still under qualification at this
+checkpoint. No J canonical admission is claimed. `BLOCK_J_STATUS.json`, the
+three state contracts, per-source results and SHA256 raw archives under
+`integration/nomacro-coverage01/` own the recoverable evidence. Complete original
+no-macro option coverage and whole physical energy/science remain unqualified.
