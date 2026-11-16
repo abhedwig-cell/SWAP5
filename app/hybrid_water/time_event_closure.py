@@ -25,5 +25,6 @@ def source(original):
 def metadata(original):
     return dict(policy=POLICY, audit_id='TIME-EVENT-CLOSURE-01',
                 source_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+                terminal_receipt_sha256=hashlib.sha256((Path(__file__).parent/'terminal_water_receipt.f90').read_bytes()).hexdigest(),
                 original_sha256=ORIGINAL_SHA,
                 generated_source_sha256=hashlib.sha256(source(original)).hexdigest())

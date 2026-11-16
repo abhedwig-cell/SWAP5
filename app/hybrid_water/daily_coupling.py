@@ -150,6 +150,8 @@ def validate_bundle(bundle, reference, project):
     if identity.get('time_event_closure')!=expected_event:raise ValueError('Foreign original TimeControl event-closure policy')
     if expected_event and (bundle/'timecontrol.f90').read_bytes()!=event_source((reference/'build/swap-selected/timecontrol.f90').read_bytes()):
         raise ValueError('Foreign actual corrected TimeControl source')
+    if expected_event and (bundle/'terminal_water_receipt.f90').read_bytes()!=(h.APP/'terminal_water_receipt.f90').read_bytes():
+        raise ValueError('Foreign actual terminal water receipt source')
     expected_frost=None
     if frost_enabled(project):
         guarded=frost_source((reference/'build/swap-selected/frozencond.f90').read_bytes())

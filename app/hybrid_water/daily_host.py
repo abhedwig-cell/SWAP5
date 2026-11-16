@@ -716,6 +716,22 @@ end module plant_interface""")
         patched.insert(0,'frozencond')
         path=output/'swap_csv_output.f90'
         path.write_text(render_witness(path.read_text(encoding='cp1252')),encoding='cp1252')
+    if project.time_step_policy == EVENT_CLOSURE_TIME_POLICY:
+        if not strict_water or not budget_retry:
+            raise ValueError('Corrected event closure requires complete strict terminal water receipt')
+        (output/'terminal_water_receipt.f90').write_bytes((APP/'terminal_water_receipt.f90').read_bytes())
+        patched.insert(0,'terminal_water_receipt')
+        path=output/'headcalc.f90';source=path.read_text(encoding='cp1252')
+        source=replace(source,'   use hybrid_step_budget, only: projected_water_residual',
+                       '   use hybrid_terminal_water_receipt, only: terminal_water_residual\n'
+                       '   use variables, only: tcum\n'
+                       '   use hybrid_step_budget, only: projected_water_residual')
+        anchor='         if (abs(budget_total+budget_step)>1d-10*(t1900-budget_start+dt)) flnonconv=.true.'
+        source=replace(source,anchor,anchor+'\n'
+                       '         if(tcum+dt>=1d0-1d-8)then\n'
+                       '            if(abs(terminal_water_residual())>1d-10)flnonconv=.true.\n'
+                       '         end if')
+        path.write_text(source,encoding='cp1252')
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
