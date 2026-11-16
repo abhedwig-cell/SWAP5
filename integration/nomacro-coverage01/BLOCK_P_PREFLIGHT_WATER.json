@@ -1,0 +1,79 @@
+{
+  "status": "BOUNDED_ORIGINAL_FROST_PREFLIGHT_AND_ACTUAL_SOURCE_GUARDS_PASS",
+  "source_commit": "6c93d5a2f7876cec051f169182a59c22a54a4788",
+  "driver_sha256": "69da5b2713f25a05c0f71de53f2202ff96f482d2ce1f5f5c9b7088f49df01c1d",
+  "negative_controls": [
+    {
+      "name": "micro-future",
+      "error": "Original microscopic root extraction does not implement frost: potato.crp",
+      "actual_cli_returncode": 2,
+      "no_output": true,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Original microscopic root extraction does not implement frost: potato.crp\n"
+    },
+    {
+      "name": "no-heat",
+      "error": "Original snow requires soil heat transport"
+    },
+    {
+      "name": "no-snow",
+      "error": "Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0"
+    },
+    {
+      "name": "no-history",
+      "error": "Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0"
+    },
+    {
+      "name": "other-history",
+      "error": "Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0"
+    },
+    {
+      "name": "analytic",
+      "error": "Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0"
+    },
+    {
+      "name": "closed",
+      "error": "Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6"
+    },
+    {
+      "name": "air-temperature",
+      "error": "Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6"
+    },
+    {
+      "name": "actual-divd1",
+      "error": "Bounded original frost reference excludes effective SWDIVD1",
+      "actual_cli_returncode": 2,
+      "no_output": true,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Bounded original frost reference excludes effective SWDIVD1\n"
+    },
+    {
+      "name": "water-drained",
+      "error": "Integrated frost drainage awaits conservative snow/day receipt qualification"
+    },
+    {
+      "name": "chemical-drained",
+      "error": "Original drainage reader refuses SWDIVD0 with solute transport",
+      "actual_cli_returncode": 2,
+      "no_output": true,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Original drainage reader refuses SWDIVD0 with solute transport\n"
+    },
+    {
+      "name": "reversed-limits",
+      "error": "Unordered original frost temperature limits"
+    },
+    {
+      "name": "nonfinite-limit",
+      "error": "Nonfinite/outside original frost limit"
+    },
+    {
+      "name": "fake-main-divd",
+      "error": "Bounded original frost reference excludes effective SWDIVD1",
+      "actual_cli_returncode": 2,
+      "no_output": true,
+      "stderr": "usage: run_water.py [-h]\n                    [--model {NATIVE_GRASSGROWTH_WATER,NATIVE_HUPSEL_ROTATION,HYBRID_NOMACRO_WATER,HYBRID_ANDELST_WATER,HYBRID_GRASSGROWTH_WATER,HYBRID_HUPSEL_WATER,HYBRID_SALTFARM_WATER}]\n                    [--experimental-project EXPERIMENTAL_PROJECT]\n                    [--experimental-solute-step-policy {admitted-cde-substeps-v1,transactional-cde-substeps-v1}]\n                    [--experimental-soil-table-policy {original-tspack-v1,original-pchip-v1}]\n                    [--experimental-time-step-policy {original-adaptive-day-seed-v1,configured-dtmax-daily-v1,configured-dtmax-physical-growth-v2}]\n                    [--reference-work REFERENCE_WORK]\n                    [--grass-build GRASS_BUILD] [--hupsel-build HUPSEL_BUILD]\n                    [--output OUTPUT] [--prepare-archive PREPARE_ARCHIVE]\n                    [--days DAYS] [--checkpoint-at CHECKPOINT_AT]\n                    [--restart RESTART] [--restart-day RESTART_DAY]\n                    [--kernel-opt {O0,O2}] [--donor-opt {O0,O2}]\n                    [--no-macro-release] [--timeout-seconds TIMEOUT_SECONDS]\n                    [--prepare-sources] [--build-only]\n                    [--build-bundle BUILD_BUNDLE]\nrun_water.py: error: Bounded original frost reference excludes effective SWDIVD1\n"
+    }
+  ],
+  "foreign_actual_source_refused": true,
+  "foreign_original_chain_refused": true,
+  "validated_actual_bundle_sha256": "748b5f5ac3ba649c67e72758860eae1e77a6305c61de0e45b9499f5f22f81f93",
+  "science": "NOT_QUALIFIED"
+}

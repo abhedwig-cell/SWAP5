@@ -80,7 +80,7 @@ jobs:
           if [ "$FROST_HISTORY" = true ]; then
             python3 -B tests/nomacro_frost/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
             python3 -B tools/solute/check_bounded_frost.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/frost-component"
-            python3 -B tests/nomacro_frost/preflight.py --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
+            python3 -B tests/nomacro_frost/preflight.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
           elif [ "$POND_HISTORY" = true ]; then
             python3 -B tests/nomacro_pond_history/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
             python3 -B tools/solute/check_top_history_codec.py --scheduled-pond --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/pond-component"

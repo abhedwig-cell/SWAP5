@@ -14,7 +14,7 @@ def change(path,name,value):
 
 
 def main():
- p=argparse.ArgumentParser(description=__doc__);p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);records=[]
+ p=argparse.ArgumentParser(description=__doc__);p.add_argument('--configuration',choices=('water-frost-free','chemical-frost-free'),default='water-frost-free');p.add_argument('--reference-work',type=Path,required=True);p.add_argument('--bundle',type=Path,required=True);p.add_argument('--output',type=Path,required=True);a=p.parse_args();out=a.output.resolve();out.mkdir(parents=True,exist_ok=False);records=[]
  specs=[('micro-future','water-frost-free','potato.crp','SWDROUGHT',3),('no-heat','water-frost-free','swap.swp','SWHEA',0),('no-snow','water-frost-free','swap.swp','SWSNOW',0),('no-history','water-frost-free','swap.swp','SWHYST',0),('other-history','water-frost-free','swap.swp','SWHYST',1),('analytic','water-frost-free','swap.swp','SWCALT',1),('closed','water-frost-free','swap.swp','SWBOTB',6),('air-temperature','water-frost-free','swap.swp','SWTOPBHEA',1),('actual-divd1','water-frost-drained','swap.dra','SWDIVD',1),('water-drained','water-frost-drained',None,None,None),('chemical-drained',REFUSED,None,None,None),('reversed-limits','water-frost-free','swap.swp','TFROSTSTA',-2),('nonfinite-limit','water-frost-free','swap.swp','TFROSTEND','NaN'),('fake-main-divd','water-frost-drained','swap.dra','SWDIVD',1)]
  for name,key,file,field,value in specs:
   case=out/name;create(case,key)
@@ -27,7 +27,7 @@ def main():
   if name in ('micro-future','actual-divd1','chemical-drained','fake-main-divd'):
    target=out/(name+'-refused-build');cmd=[sys.executable,'-B',str(ROOT/'tools/solute/run_water.py'),'--model',e.MODEL,'--experimental-project',str(case),'--reference-work',str(a.reference_work),'--build-only','--output',str(target)];r=subprocess.run(cmd,capture_output=True,text=True,timeout=30);assert r.returncode!=0 and not target.exists();records.append(dict(name=name,error=message,actual_cli_returncode=r.returncode,no_output=True,stderr=r.stderr))
   else:records.append(dict(name=name,error=message))
- positive=out/'positive';create(positive,'water-frost-free');project=e.load(positive);meta,case=validate_bundle(a.bundle,a.reference_work,project)
+ positive=out/'positive';create(positive,a.configuration);project=e.load(positive);meta,case=validate_bundle(a.bundle,a.reference_work,project)
  foreign=out/'foreign-source';foreign.mkdir();shutil.copyfile(a.bundle/'BUILD.json',foreign/'BUILD.json');(foreign/'frozencond.f90').write_bytes((a.bundle/'frozencond.f90').read_bytes()+b'\n! foreign source\n')
  try:validate_bundle(foreign,a.reference_work,project)
  except ValueError as error:assert 'Foreign actual original frost source' in str(error)
