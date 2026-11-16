@@ -9,6 +9,10 @@ on:
         type: boolean
         default: false
         description: Select scheduled pond and runon file cohort instead of prescribed head
+      surface_runon_only:
+        type: boolean
+        default: false
+        description: Resume only the four affected runon configurations
 permissions:
   contents: read
 jobs:
@@ -19,7 +23,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.surface_inputs && '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        configuration: ${{ fromJSON(inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:
