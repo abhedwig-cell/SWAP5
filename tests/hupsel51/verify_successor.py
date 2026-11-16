@@ -23,7 +23,12 @@ M_RUNTIME = 'f6ce291e4c28e88ee3c1b47a206da12433a92c38'
 M_ADMITTED = '6136101463762b1dd18419fe0260965eccd482c7'
 N_RUNTIME = '6afb72468c0060df60694d4b69ee8619fdc93062'
 N_ADMITTED = '8dcda0fb247ae7823d720817d6340114d5227728'
-CURRENT_RUNTIME = 'e8d78740663a879945f05b4ecd445db30554ceac'
+O_RUNTIME = 'e8d78740663a879945f05b4ecd445db30554ceac'
+O_ADMITTED = 'fec7b4415932a9c48826e134ce76340adb855778'
+CURRENT_RUNTIME = '7bf2f817b2a025ed25670730d4745dcbb8c4001b'
+P_WINDOWS = '5a59d1799476feb6f709743724e0072669a42692'
+P_PRESERVATION = '6c93d5a2f7876cec051f169182a59c22a54a4788'
+P_SEALED = '3678bcd846a313c6d4f60f27b8d08d6c2f3f7f36'
 O_WINDOWS = '6bb58557252f3c7ab8da27efe18e8cbe53bffe5d'
 O_SEALED = '5fcb0622c4ab0c89618d92b9541dcc7f85f4c799'
 N_SEALED = '4b6e470b64cd0c5b9967cfb0b4e35c778d8fafe5'
@@ -344,7 +349,7 @@ def verify_n():
 
 
 def validate_o(q, previous, component, legacy, defaults):
-    require(q['runtime_source'] == CURRENT_RUNTIME and q['Windows_execution_source'] == O_WINDOWS and q['Windows_runtime_surface_exact_to_Ubuntu'], 'foreign O execution source')
+    require(q['runtime_source'] == O_RUNTIME and q['Windows_execution_source'] == O_WINDOWS and q['Windows_runtime_surface_exact_to_Ubuntu'], 'foreign O execution source')
     require(q['status'] == 'BOTH_PLATFORMS_COMPLETE_SCHEDULED_POND_HISTORY_O0_O2_QUALIFIED' and q['full_configurations'] == 2 and q['full_trajectories'] == 8 and q['complete_model_days'] == 8768 and q['full_native_windows'] == 32, 'O incomplete full/native cohort')
     require(q['mass_guard_cm'] == 1e-10 and q['tolerances_changed'] is False and q['physical_equations_changed'] is False, 'O changed conservation/physics')
     require(q['whole_scientific_equivalence'] == q['whole_energy'] == 'NOT_QUALIFIED' and q['old_failed_mixture_evidence'].startswith('UNCHANGED'), 'O historical science/native failure promoted')
@@ -354,7 +359,7 @@ def validate_o(q, previous, component, legacy, defaults):
     for platform,cases in q['platforms'].items():
         require(set(cases) == {'water-surface-history','chemical-surface-history'}, 'O missing physical case')
         for key,report in cases.items():
-            require(report['source_commit'] == (O_WINDOWS if platform=='Windows' else CURRENT_RUNTIME) and report['status'] == 'COMPLETE_SCHEDULED_POND_HISTORY_O0_O2_PASS', 'O report provenance')
+            require(report['source_commit'] == (O_WINDOWS if platform=='Windows' else O_RUNTIME) and report['status'] == 'COMPLETE_SCHEDULED_POND_HISTORY_O0_O2_PASS', 'O report provenance')
             require(set(report['profiles']) == {'O0','O2'} and report['science'] == 'NOT_QUALIFIED' and report['water_guard_cm'] == report['solute_guard_mg_cm2'] == 1e-10, 'O optimization/guard coverage')
             for r in report['profiles'].values():
                 require(r['status'] == 'FULL_PASS' and r['days'] == r['budgets']['days'] == 1096, 'O partial trajectory')
@@ -366,23 +371,23 @@ def validate_o(q, previous, component, legacy, defaults):
                 require(all(all(w[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) for w in r['own']), 'O nonexact native continuation')
                 c=r['controls'];require(all(c[k] is True for k in ('foreign_policy_refused','independent_origins','inconsistent_mass_refused','external_discard_replay_exact','external_disk_recovery')), 'O transaction/isolation preservation')
                 require(len(c['native_refusals']) == 4 and {v['name'] for v in c['native_refusals']} == {'old-format','pond-nan','pond-negative','foreign-clock'} and all(v['returncode'] != 0 and v['accepted_days'] == 0 for v in c['native_refusals']), 'O native domain accepted')
-    require(previous['status'] == 'O_PRIOR_J_PLATE_N_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS' and previous['qualification_source'] == CURRENT_RUNTIME and previous['qualified_runtime_surface_exact'], 'O prior-source identity')
+    require(previous['status'] == 'O_PRIOR_J_PLATE_N_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS' and previous['qualification_source'] == O_RUNTIME and previous['qualified_runtime_surface_exact'], 'O prior-source identity')
     require(set(previous['profiles']) == {'water-surface-combined','chemical-surface-combined','registered-grass','prescribed-head5','water-file-subsurface-interval','chemical-file-sprinkler','water-plate-history','chemical-plate-history'}, 'O missing prior cohort')
     require(all(p['status'] == 'ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT' and p['generated'] and p['kernel_sources'] and p['inputs'] for p in previous['profiles'].values()), 'O prior dependency drift')
     for c,status,n in ((component,'PRODUCTION_ORIGINAL_SCHEDULED_POND_CODEC_O0_O2_PASS',18),(legacy,'PRODUCTION_ORIGINAL_TOP_HISTORY_CODEC_O0_O2_PASS',15)):
         require(c['status'] == status and len(c['profiles']) == 2 and {p['optimization'] for p in c['profiles']} == {'O0','O2'}, 'O complete original codec component')
         require(all(p['roundtrip_exact'] and p['staged_read_before_assignment'] and p['positive']['returncode'] == 0 and len(p['refusals']) == n and all(v['returncode'] != 0 for v in p['refusals']) for p in c['profiles']), 'O component roundtrip/domain/staging')
-    require(defaults['status'] == 'EXPERIMENTAL_GENERIC_SURFACE_SMOKE_PASS' and defaults['source_commit'] == CURRENT_RUNTIME and len(defaults['profiles']) == 8 and all(p['every_exercised_native_exact'] for p in defaults['profiles']), 'O default preservation')
+    require(defaults['status'] == 'EXPERIMENTAL_GENERIC_SURFACE_SMOKE_PASS' and defaults['source_commit'] == O_RUNTIME and len(defaults['profiles']) == 8 and all(p['every_exercised_native_exact'] for p in defaults['profiles']), 'O default preservation')
 
 
 def verify_o():
-    git('merge-base','--is-ancestor',CURRENT_RUNTIME,O_SEALED)
+    git('merge-base','--is-ancestor',O_RUNTIME,O_SEALED)
     git('merge-base','--is-ancestor',O_SEALED,'HEAD')
-    git('merge-base','--is-ancestor',N_ADMITTED,CURRENT_RUNTIME)
+    git('merge-base','--is-ancestor',N_ADMITTED,O_RUNTIME)
     surface=('src','app','reference','tools','tests/nomacro_pond_history','tests/nomacro_mixtures')
-    require(not git('diff',CURRENT_RUNTIME,'HEAD','--',*surface), 'runtime differs from qualified O source')
-    require(not git('diff',O_WINDOWS,CURRENT_RUNTIME,'--',*surface), 'O Windows/Ubuntu physical runtime differs')
-    paths=set(git('diff','--name-only',O_SEALED,'HEAD').decode().splitlines())
+    require(not git('diff',O_RUNTIME,O_ADMITTED,'--',*surface), 'runtime differs from qualified O source')
+    require(not git('diff',O_WINDOWS,O_RUNTIME,'--',*surface), 'O Windows/Ubuntu physical runtime differs')
+    paths=set(git('diff','--name-only',O_SEALED,O_ADMITTED).decode().splitlines())
     require(paths <= {SELF,TEST,L_PROOF+'BLOCK_O_CI_SELECTION.json',L_PROOF+'BLOCK_O_MERGE.json'}, 'unqualified delta after O evidence seal')
     def sealed_json(name):
         path=L_PROOF+name+'.json';require(blob('HEAD',path)==blob(O_SEALED,path), 'O sealed proof changed: '+name)
@@ -392,6 +397,70 @@ def verify_o():
     for label in ('FULL_TRAJECTORIES','DEFAULT_PRESERVATION','LOCAL'):
         m=sealed_json('BLOCK_O_'+label+'_ARCHIVE');require(hashlib.sha256((ROOT/L_PROOF/m['archive']).read_bytes()).hexdigest()==m['sha256'], 'O raw capsule identity: '+label)
     sealed_json('BLOCK_O_OBSERVATION')
+    return q
+
+
+def validate_p(q,current,later,previous,component,defaults,references):
+    require(q['status']=='TWO_FREE_ORIGINAL_PARTIAL_FROST_CONFIGURATIONS_QUALIFIED' and q['runtime_source']==CURRENT_RUNTIME and q['Windows_execution_source']==P_WINDOWS, 'foreign/incomplete P source')
+    require(q['full_configurations']==2 and q['full_trajectories']==8 and q['complete_model_days']==8768 and q['full_native_standard_windows']==32 and q['active_native_windows']==48, 'P incomplete full/native cohort')
+    require(q['mass_guard_cm']==1e-10 and not q['tolerances_changed'] and not q['solver_or_time_policy_changed'] and not q['new_persistent_frost_codec'] and not q['global_B1_snapshot_promoted'], 'P changed physical/numerical/reference policy')
+    require(q['whole_scientific_equivalence']==q['whole_energy']=='NOT_QUALIFIED' and 'day21' in q['retained_failures'] and 'preflight-refused' in q['retained_failures'], 'P failed coupled frost/science promoted')
+    def mass(value):
+        require(type(value) in (float,int) and math.isfinite(value) and 0<=value<=1e-10, 'P hard balance')
+    for name in ('maximum_water_residual_cm','maximum_kernel_residual_cm','maximum_solute_residual_mg_cm2'):mass(q[name])
+    require(set(q['platforms'])=={'Windows','Ubuntu'}, 'P missing platform')
+    cuts={(9,11),(170,172),(374,376),(535,537),(739,741),(901,903)}
+    for platform,cases in q['platforms'].items():
+        require(set(cases)=={'water-frost-free','chemical-frost-free'}, 'P unsupported or missing physical scope')
+        for key,report in cases.items():
+            require(report['source_commit']==(P_WINDOWS if platform=='Windows' else CURRENT_RUNTIME) and report['status']=='COMPLETE_BOUNDED_FROST_O0_O2_PASS' and report['science']=='NOT_QUALIFIED', 'P report provenance')
+            selected=report['selected_physical_controls']
+            require(selected['SWDRA']==0 and selected['SWBOTB']==7 and selected['SWTOPBHEA']==2 and selected['future_crop_SWDROUGHT']==1 and selected['SWSOLU']==int(key.startswith('chemical')), 'P unqualified drainage/root/forcing dispatch')
+            require(set(report['profiles'])=={'O0','O2'}, 'P optimization scope')
+            for r in report['profiles'].values():
+                require(r['status']=='FULL_PASS' and r['days']==r['budgets']['days']==1096, 'P partial trajectory')
+                for name in ('max_water_cm','max_kernel_cm','max_solute_mg_cm2'):mass(r['budgets'][name])
+                require(len(r['own'])==4 and {(w['start'],w['end']) for w in r['own']}=={(2,4),(199,201),(365,367),(530,532)} and all(all(w[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) for w in r['own']), 'P standard native continuation')
+                w=r['frost_witness'];records=w['actual_records']
+                require(w['actual_daily_original_records']==len(records)==1096 and len(w['initial_original_uncomputed_diagnostic'])==6 and w['initial_original_uncomputed_diagnostic'][-1]==0, 'P initial datum counted as accepted day')
+                require(all(len(v)==6 and all(math.isfinite(x) for x in v) and 0<=v[0]<=v[1]<=1 and v[-1]==1 for v in records), 'P invalid original frost witness')
+                require(w['days_with_reduction']==sum(v[0]<1 for v in records)>0 and w['minimum_rfcp']==min(v[0] for v in records) and w['days_with_zero_factor']==0, 'P false or fully-blocked activation claim')
+                if key.startswith('chemical'):require(w.get('total_original_frost_uptake_reduction_cm',0)>0, 'P chemical/root frost not exercised')
+                active=r['active_frost_exact_native_windows']
+                if platform=='Ubuntu':
+                    require(len(active)==6 and {(v['start'],v['end']) for v in active}==cuts and all(all(v[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) for v in active), 'P current all-year active native continuation')
+                else:require(active['windows']==[[9,11],[170,172]] and active['native_exact'] and active['physical_exact'] and active['origins_unchanged'], 'P original completed Windows active windows')
+                c=r['controls'];require(all(c[k] is True for k in ('foreign_policy_refused','independent_origins','inconsistent_mass_refused','external_discard_replay_exact','external_disk_recovery')), 'P transaction/isolation guard')
+                require(len(c['native_refusals'])==4 and all(v['returncode']!=0 and v['accepted_days']==0 for v in c['native_refusals']), 'P native invalid state accepted')
+    expected={mode+'-'+opt for mode in ('water','chemical') for opt in ('O0','O2')}
+    require(current['runtime_source']==P_PRESERVATION and current['prior_executed_source']==P_WINDOWS and current['status']=='P_FOUR_COMPLETED_FREE_FROST_TRAJECTORIES_INHERITED_ON_FRESH_EXACT_SOURCE_AND_ACTIVE_NATIVE_PRESERVATION' and set(current['profiles'])==expected, 'P current inheritance provenance')
+    require(all(v['status']=='ACTUAL_CURRENT_FREE_FROST_SOURCES_INPUTS_AND_ACTIVE_NATIVE_PRESERVED' and v['generated'] and v['kernel_sources'] and v['inputs'] and v['all_172_physical_rows_exact_to_prior_full'] and len(v['actual_prefix']['own'])==3 and all(w['exact_native'] and w['exact_physical'] and w['exact_csv'] and w['origin_unchanged'] for w in v['actual_prefix']['own']) for v in current['profiles'].values()), 'P inherited physical/native dependency drift')
+    require(later['status']=='ALL_FOUR_CURRENT_LATER_YEAR_FROST_NATIVE_PASS' and set(later['profiles'])==expected, 'P missing later-year Windows closure')
+    for r in later['profiles'].values():
+        require(r['current_source']==CURRENT_RUNTIME and r['native_start_day']==172 and r['accepted_days']==731 and r['all_physical_rows_exact_to_prior_full'], 'P later-year physical/source drift')
+        require(len(r['own'])==4 and {(v['start'],v['end']) for v in r['own']}==cuts-{(9,11),(170,172)} and all(all(v[k] is True for k in ('exact_physical','exact_csv','exact_native','origin_unchanged')) and v['full_trace_origin_day']==172 for v in r['own']), 'P later-year native/csv origin')
+    require(previous['status']=='P_PRIOR_O_J_PLATE_N_M_L5_AND_NAMED_SOURCE_PRESERVATION_PASS' and previous['runtime_source']==CURRENT_RUNTIME and len(previous['profiles'])==10 and all(v['status']=='ACTUAL_PRIOR_GENERATED_SOURCES_INPUTS_POLICIES_EXACT' and v['generated'] and v['kernel_sources'] and v['inputs'] for v in previous['profiles'].values()), 'P prior capability source preservation')
+    require(component['status']=='ACTUAL_ORIGINAL_GUARDED_FROST_COMPONENT_O0_O2_PASS' and set(component['profiles'])=={'O0','O2'} and component['original_reporting_differences']=={'O0':2,'O2':2}, 'P original component/source failure erased')
+    for r in component['profiles'].values():
+        require(r['physical_cases_exact_original_guarded']==24 and len(r['guarded']['records'])==7 and all(v['returncode']!=0 for v in r['guarded']['records'][1:]), 'P original component invalid-domain publication')
+    require(defaults['status']=='EXPERIMENTAL_GENERIC_SURFACE_SMOKE_PASS' and defaults['source_commit']==CURRENT_RUNTIME and len(defaults['profiles'])==8 and all(v['every_exercised_native_exact'] for v in defaults['profiles']), 'P default source/native preservation')
+    require(references['corrected_source_sha256']=='d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2' and len(references['profiles'])==2 and all(v['status']=='COMPLETE_CORRECTED_ORIGINAL_DIAGNOSTIC_REFERENCE' and v['original_rows']==v['swap5_rows']==1097 and v['scientific_equivalence']=='NOT_QUALIFIED' and v['identical_executed_inputs'] for v in references['profiles'].values()), 'P original diagnostic promoted or incomplete')
+
+
+def verify_p():
+    git('merge-base','--is-ancestor',CURRENT_RUNTIME,P_SEALED);git('merge-base','--is-ancestor',P_SEALED,'HEAD');git('merge-base','--is-ancestor',O_ADMITTED,CURRENT_RUNTIME)
+    require(not git('diff',CURRENT_RUNTIME,'HEAD','--','app','src','reference','tools','tests/nomacro_frost','tests/nomacro_pond_history','tests/nomacro_mixtures'), 'runtime differs from qualified P source')
+    require(not git('diff',P_PRESERVATION,CURRENT_RUNTIME,'--','app','src','reference','tools'), 'P fresh Windows preserved runtime drift')
+    paths=set(git('diff','--name-only',P_SEALED,'HEAD').decode().splitlines());require(paths<={SELF,TEST,L_PROOF+'BLOCK_P_CI_SELECTION.json',L_PROOF+'BLOCK_P_MERGE.json'}, 'unqualified delta after P seal')
+    def sealed_json(name):
+        path=L_PROOF+name+'.json';require(blob('HEAD',path)==blob(P_SEALED,path), 'P sealed proof changed: '+name);return json.loads((ROOT/path).read_text())
+    q=sealed_json('BLOCK_P_QUALIFICATION')
+    validate_p(q,*(sealed_json('BLOCK_P_'+name) for name in ('CURRENT_FREE_PRESERVATION','LATER_NATIVE_RESULT','PRIOR_SOURCE_PRESERVATION','COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT','ORIGINAL_REFERENCE_RESULT')))
+    for name in ('PREFLIGHT_WATER','PREFLIGHT_CHEMICAL'):
+        r=sealed_json('BLOCK_P_'+name);require(r['status']=='BOUNDED_ORIGINAL_FROST_PREFLIGHT_AND_ACTUAL_SOURCE_GUARDS_PASS' and len(r['negative_controls'])==14 and r['foreign_actual_source_refused'] and r['foreign_original_chain_refused'], 'P preflight/source guard')
+    for name in ('FIRST_TRAJECTORY_FAILURE','DRAINAGE21_FAILURE','CENSORED_AND_MICRO_REFUSAL','ORIGINAL_CHEMICAL_DRAIN_REFUSAL','VERIFICATION_COMPLETION'):sealed_json('BLOCK_P_'+name)
+    for label in ('FULL_TRAJECTORIES','DEFAULT_PRESERVATION','LOCAL'):
+        r=sealed_json('BLOCK_P_'+label+'_ARCHIVE');require(hashlib.sha256((ROOT/L_PROOF/r['archive']).read_bytes()).hexdigest()==r['sha256'], 'P raw capsule identity')
     return q
 
 
@@ -447,9 +516,12 @@ def verify():
     m = verify_m()
     n = verify_n()
     o = verify_o()
+    p = verify_p()
     return dict(status='HUPSEL51_BOUNDED_CURRENT_SUCCESSOR_PASS', runtime=CURRENT_RUNTIME,
                 current_N_full_days=n['complete_model_days'], current_N_proof_anchor=N_SEALED,
                 current_O_full_days=o['complete_model_days'],current_O_proof_anchor=O_SEALED,
+                current_P_full_days=p['complete_model_days'],current_P_proof_anchor=P_SEALED,
+                integrated_frost_drainage='REFUSED after retained independent day21 mass FAIL',
                 prior_composed_runtime=RUNTIME, current_L_proof_anchor=L_SEALED,
                 current_L_full_days=q['complete_model_days'],
                 current_M_full_days=m['complete_model_days'], current_M_proof_anchor=M_SEALED,
