@@ -36,11 +36,12 @@
  
  ! --- global                                                          In
        integer, intent(in)     :: ITask
-@@ -1458,12 +1460,69 @@
+@@ -1458,12 +1460,70 @@
        end do
  
        return
 +
++      return
 +      entry sense23_rate_io(snap23_unit,snap23_mode)
 +      if(snap23_mode==1) then
 +      write(snap23_unit) ic,id,jd,SqHlp,Sq,icc
@@ -106,7 +107,7 @@
        write(limit_u,*) attempts,iter_index,nvec,macro_seq,ITask,stage,dt,FrReduQ,h(52), &
         GwlFlCpZo,ICpTpSatZon,ZWaLevDm(3),WaSrMpDm(3),lim_min,lim_max,lim_under,VlMpDm(3), &
         lim_in,lim_out,lim_tmp,lim_frin,lim_excess,FlwOutDmExces(3),outfac, &
-@@ -1496,6 +1555,8 @@
+@@ -1496,6 +1556,8 @@
        use MOD_macropore, only: dfdhmp, ICpBtDm, ppdmcp, dipocp, cdarcy, frreduq, qoutmtxsatdmcp, qinmtxsatdmcp, ictopmp, swsep, shapefacmp
                                 
        implicit none
@@ -115,12 +116,13 @@
  
  ! --- global                                                          In
        integer, intent(in)  :: ITask, id
-@@ -1653,7 +1714,15 @@
+@@ -1653,7 +1715,16 @@
        end select
  
        return
 -      end subroutine
 +      
++      return
 +      entry sense23_sat_io(snap23_unit,snap23_mode)
 +      if(snap23_mode==1) then
 +      write(snap23_unit) DelHDmCp,FlwMtxSatDmCp
@@ -132,7 +134,7 @@
  
  
  !=====================================================================
-@@ -1678,6 +1747,8 @@
+@@ -1678,6 +1749,8 @@
  
        use DIAG19,only:target,attempts,iter_index,nvec,raw_u
        implicit none
@@ -141,10 +143,11 @@
  
  ! --- global                                                         In
        integer, intent(in)     :: id, ITask
-@@ -1890,6 +1961,14 @@
+@@ -1890,6 +1963,15 @@
        end select
  
        return
++      return
 +      entry sense23_abs_io(snap23_unit,snap23_mode)
 +      if(snap23_mode==1) then
 +      write(snap23_unit) DelHDmCp,Diffusivity,FlSorp
@@ -177,10 +180,11 @@
  ! --- global
  
  ! --- local
-@@ -197,6 +199,16 @@
+@@ -197,6 +199,17 @@
           npegwl    = -1
        end if
  
++      return
 +      entry sense23_gwl_io(snap23_unit,snap23_mode)
 +      if(snap23_mode==1) then
 +      write(snap23_unit) i,node,nodheq1,flsat,message,datexti

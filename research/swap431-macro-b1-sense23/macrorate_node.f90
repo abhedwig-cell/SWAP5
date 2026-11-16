@@ -1461,6 +1461,7 @@
 
       return
 
+      return
       entry sense23_rate_io(snap23_unit,snap23_mode)
       if(snap23_mode==1) then
       write(snap23_unit) ic,id,jd,SqHlp,Sq,icc
@@ -1715,6 +1716,7 @@
 
       return
       
+      return
       entry sense23_sat_io(snap23_unit,snap23_mode)
       if(snap23_mode==1) then
       write(snap23_unit) DelHDmCp,FlwMtxSatDmCp
@@ -1960,6 +1962,7 @@ end subroutine
          call swap_error ('absorption', 'Illegal value for TASK')
       end select
 
+      return
       return
       entry sense23_abs_io(snap23_unit,snap23_mode)
       if(snap23_mode==1) then

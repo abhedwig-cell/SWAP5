@@ -199,6 +199,7 @@ contains
          npegwl    = -1
       end if
 
+      return
       entry sense23_gwl_io(snap23_unit,snap23_mode)
       if(snap23_mode==1) then
       write(snap23_unit) i,node,nodheq1,flsat,message,datexti

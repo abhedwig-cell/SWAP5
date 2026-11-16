@@ -28,7 +28,7 @@ def entry(s,start,end,ename,fields):
  assert needle;pos=needle.end();part=part[:pos]+'\n      integer::snap23_unit,snap23_mode\n'+part[pos:]
  payload='\n'.join('      '+op+'(snap23_unit) '+','.join(fields[i:i+6]) for i in range(0,len(fields),6) for op in ['write'])
  reads=payload.replace('write(','read(')
- code='\n      entry '+ename+'(snap23_unit,snap23_mode)\n      if(snap23_mode==1) then\n'+payload+'\n      else\n'+reads+'\n      end if\n      return\n'
+ code='\n      return\n      entry '+ename+'(snap23_unit,snap23_mode)\n      if(snap23_mode==1) then\n'+payload+'\n      else\n'+reads+'\n      end if\n      return\n'
  # Append entry after original final return, before internal procedures if present.
  marker=re.search(r'(?im)^\s*contains\s*$',part)
  pos=marker.start() if marker else len(part)

@@ -15,7 +15,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\diag19.o"
     ],
-    "seconds": 0.316679900046438,
+    "seconds": 0.254889199975878,
     "returncode": 0,
     "output": ""
   },
@@ -35,7 +35,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\calcgwl.o"
     ],
-    "seconds": 0.5497445999644697,
+    "seconds": 0.4083962000440806,
     "returncode": 0,
     "output": ""
   },
@@ -55,7 +55,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\headcalc.o"
     ],
-    "seconds": 1.046244699973613,
+    "seconds": 1.0096221999265254,
     "returncode": 0,
     "output": ""
   },
@@ -75,7 +75,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\macrorate.o"
     ],
-    "seconds": 2.431079400004819,
+    "seconds": 2.560835799900815,
     "returncode": 0,
     "output": ""
   },
@@ -95,7 +95,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\integral.o"
     ],
-    "seconds": 0.3828346999362111,
+    "seconds": 0.36275399988517165,
     "returncode": 0,
     "output": ""
   },
@@ -115,7 +115,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\mod_meteo.o"
     ],
-    "seconds": 1.2150115999393165,
+    "seconds": 1.5140509000048041,
     "returncode": 0,
     "output": ""
   },
@@ -135,7 +135,47 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\macropore.o"
     ],
-    "seconds": 1.3526214000303298,
+    "seconds": 1.3698499000165612,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-sense23\\probe_state.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\probe23.o"
+    ],
+    "seconds": 0.965204100124538,
+    "returncode": 0,
+    "output": ""
+  },
+  {
+    "command": [
+      "gfortran",
+      "-O2",
+      "-finit-local-zero",
+      "-fallow-argument-mismatch",
+      "-cpp",
+      "-Dlinux",
+      "-ffree-line-length-none",
+      "-I",
+      "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj",
+      "-c",
+      "C:\\Users\\Veldh012\\swap431-state02\\research\\swap431-macro-b1-sense23\\ledger_state.f90",
+      "-o",
+      "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\ledger12.o"
+    ],
+    "seconds": 1.8246975999791175,
     "returncode": 0,
     "output": ""
   },
@@ -155,7 +195,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\native09.o"
     ],
-    "seconds": 1.3609553000424057,
+    "seconds": 1.5716439001262188,
     "returncode": 0,
     "output": ""
   },
@@ -175,7 +215,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\swapoutput.o"
     ],
-    "seconds": 0.7433960000053048,
+    "seconds": 0.8693445001263171,
     "returncode": 0,
     "output": ""
   },
@@ -195,7 +235,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\soilwater.o"
     ],
-    "seconds": 0.4740736000239849,
+    "seconds": 0.5310788999777287,
     "returncode": 0,
     "output": ""
   },
@@ -215,7 +255,7 @@
       "-o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\swap.o"
     ],
-    "seconds": 0.4060577000491321,
+    "seconds": 0.4064435998443514,
     "returncode": 0,
     "output": ""
   },
@@ -245,6 +285,7 @@
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\interface_atmosphere.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\interface_plant.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\irrigation.o",
+      "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\ledger12.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\macropore.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\macroporeoutput.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\macrorate.o",
@@ -260,6 +301,7 @@
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\native09.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\oxygenstress.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\params.o",
+      "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\probe23.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\readswap.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\rootextraction.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\RWU_micro.o",
@@ -293,8 +335,8 @@
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\wofostnut.o",
       "C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\libttutil.a"
     ],
-    "seconds": 1.0070276998449117,
-    "returncode": 1,
-    "output": "C:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\headcalc.o:head_diag.f90:(.text+0x5aca): undefined reference to `sense23_probe_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\native09.o:native_state.f90:(.text+0x62b6): undefined reference to `ledger12_io_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\native09.o:native_state.f90:(.text+0x99bc): undefined reference to `ledger12_io_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\native09.o:native_state.f90:(.text+0xae4d): undefined reference to `ledger12_apply_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\native09.o:native_state.f90:(.text+0xae7c): undefined reference to `ledger12_dump_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\soilwater.o:soilwater_native.f90:(.text+0x1c80): undefined reference to `ledger12_dump_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\soilwater.o:soilwater_native.f90:(.text+0x1deb): undefined reference to `ledger12_dump_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\soilwater.o:soilwater_native.f90:(.text+0x2720): undefined reference to `ledger12_dump_'\nC:/msys64/ucrt64/bin/../lib/gcc/x86_64-w64-mingw32/16.2.0/../../../../x86_64-w64-mingw32/bin/ld.exe: C:\\Users\\Veldh012\\swap431-sense23-work\\native\\O2\\obj\\soilwater.o:soilwater_native.f90:(.text+0x28fa): undefined reference to `ledger12_dump_'\ncollect2.exe: error: ld returned 1 exit status\n"
+    "seconds": 1.0174103998579085,
+    "returncode": 0,
+    "output": ""
   }
 ]
