@@ -117,13 +117,24 @@ def inspect(directory):
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
-                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1}, SWDIVD={0,1})
+                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
+    frost_drain_file=None
     if selected['SWFROST']:
         if (selected['SWHEA']!=1 or selected['SWCALT']!=2 or selected['SWSNOW']!=1
-                or selected['SWHYST']!=2 or selected.get('SWDIVD')!=0):
+                or selected['SWHYST']!=2):
             raise ValueError('Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0')
+        if selected['SWDRA']==1:
+            # The original reader owns SWDIVD in DRFIL.dra, not the main deck.
+            name=one(text,'DRFIL',r"'[^']+'").strip("'")
+            prefix=one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip()
+            frost_drain_file=(directory/(prefix+name+'.dra')).resolve()
+            if not frost_drain_file.is_file():raise ValueError('Missing original frost drainage input')
+            if switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')!=0:
+                raise ValueError('Bounded original frost reference excludes effective SWDIVD1')
+            if selected['SWSOLU']:
+                raise ValueError('Original drainage reader refuses SWDIVD0 with solute transport')
         limits=[]
         for name in ('TFROSTSTA','TFROSTEND'):
             values=re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*([^!\r\n]+)',text)
@@ -188,7 +199,10 @@ def inspect(directory):
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
                 raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
-            raise ValueError('Drainage process/state combination is not implemented: '+path.name)
+            original_structure=lambda s:{k:v for k,v in s.items() if k!='SWDIVD'}
+            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD')!=0
+                    or original_structure(sig) not in list(map(original_structure,drain_signatures))):
+                raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':
             if one(body, 'DRAMET', r'[+-]?\d+') not in ('2', '3'):
                 raise ValueError('Unqualified drainage method')

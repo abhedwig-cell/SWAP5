@@ -41,3 +41,12 @@ current owner and exact canonical merge after complete qualification.
 Status: bounded owner selected; no P production implementation or qualified run.
 Invariants: explicit original state/clock, independent conserved balances,
 strict invalid-domain refusal, immutable historical evidence and references.
+
+Effective source finding: SWDIVD is read only from the DRFIL.dra selected by
+PATHDRAIN+DRFIL, not from swap.swp. SWDRA0 never reads it and uses original
+module default0. The first fixture failed before compile/model while attempting
+a nonexistent main-deck assignment; retained as INITIAL_FIXTURE_FAILURE. The
+original reader also actually refuses SWSOLU1 with SWDIVD0. Positive P cohort is
+therefore water/chemical undrained and water ordinary-drained, each frost+snow+
+hysteresis2. Chemical drained is an actual original-reader negative control,
+not an admitted positive configuration. No numerical repair has been attempted.
