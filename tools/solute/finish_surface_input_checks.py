@@ -77,7 +77,7 @@ def finish(out,key):
             assert payload(out/(prefix+after)/f'accepted-column-1-day-{start+2}.zip')==payload(endpoint)
         natural=out/(prefix+'surface-windows');w=json.loads((natural/'RESULT.json').read_text())
         assert w['physical_exact'] and w['native_exact'] and w['origins_unchanged'] and w['windows']==[[199,201],[529,531]]
-        warm=rows(natural/'warm');assert len(warm)==531
+        warm=[json.loads(s) for s in (natural/'warm.jsonl').read_text().splitlines()];assert len(warm)==531
         for start,end in w['windows']:
             cold=natural/('cold-'+str(start))
             assert list(map(physical,rows(cold)))==list(map(physical,warm[start:end]))
