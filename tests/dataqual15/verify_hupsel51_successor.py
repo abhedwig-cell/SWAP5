@@ -97,7 +97,10 @@ def verify():
         validate_workflow(p, (ROOT/p).read_text(), blob(SEALED, p).decode().replace('\r\n', '\n'))
     # Fixed Git anchor, not a manifest that can be resealed on the current head.
     for p in ('WINDOWS.json', 'WINDOWS_RAW.json', 'WINDOWS_RAW.zip', 'UBUNTU.json', 'UBUNTU_RAW.zip', 'CI_ADJUDICATION.json'):
-        require((ROOT/PROOF/p).read_bytes() == blob(SEALED, PROOF+p), 'sealed proof changed: '+p)
+        # Compare committed blobs: Git's Windows CRLF checkout conversion is
+        # not a scientific edit. Dirty tracked files are refused above; raw
+        # archive bytes are additionally hashed below on the actual filesystem.
+        require(blob('HEAD', PROOF+p) == blob(SEALED, PROOF+p), 'sealed proof changed: '+p)
     w = json.loads((ROOT/PROOF/'WINDOWS.json').read_text())
     u = json.loads((ROOT/PROOF/'UBUNTU.json').read_text())
     require(w['runtime_source_commit'] == u['head_sha'] == RUNTIME, 'wrong runtime identity')
