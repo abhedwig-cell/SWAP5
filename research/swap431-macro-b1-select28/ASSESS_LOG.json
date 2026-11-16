@@ -1,0 +1,148 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-SELECT28",
+  "decision": "NO_QUALIFYING_ACTIVE_REFUSAL_IN_FURTHER_THREE_ORIGINAL_CONTEXTS",
+  "model_routes": 6,
+  "hard_timeout_seconds": 20,
+  "all_uncensored": true,
+  "O0_O2_non_timing_byte_exact": true,
+  "candidate_physics_harness_criteria_changes": false,
+  "active_refusal_rollback_direct_qualification": false,
+  "reason": "All three candidate heads converge; D1/D2 have potential inflow excluding rank1, D3 activates3times and converges7iterations. No refusal fabricated.",
+  "official_promotion": false,
+  "results": [
+    {
+      "optimization": "O0",
+      "context": "D1",
+      "seconds": 6.4801671002060175,
+      "original_attempt": 2630,
+      "original_time": 35797.26534378702,
+      "original_dt": 0.0002222222222222222,
+      "original_prefix_rows_byte_exact": 1137,
+      "original_extra_line_search_trials": 13.0,
+      "candidate_converged": true,
+      "iterations": 12,
+      "extra_line_search_trials": 17.0,
+      "rank1_active_iterations": 0.0,
+      "guard_counts": {
+        "positive_potential_inflow": 12
+      },
+      "max_residual": 4.3280198500084133e-07,
+      "sum_residual": -9.311103549625745e-07,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": -2.0691340366074933e-10,
+      "inventory_limit_cm": 2.222222222222222e-09
+    },
+    {
+      "optimization": "O0",
+      "context": "D2",
+      "seconds": 6.478858900023624,
+      "original_attempt": 3066,
+      "original_time": 35797.29042064949,
+      "original_dt": 0.000282842712474619,
+      "original_prefix_rows_byte_exact": 1309,
+      "original_extra_line_search_trials": 35.0,
+      "candidate_converged": true,
+      "iterations": 24,
+      "extra_line_search_trials": 49.0,
+      "rank1_active_iterations": 0.0,
+      "guard_counts": {
+        "positive_potential_inflow": 24
+      },
+      "max_residual": 6.420525826000834e-07,
+      "sum_residual": 8.489064899215716e-07,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 2.4010691691996305e-10,
+      "inventory_limit_cm": 2.8284271247461902e-09
+    },
+    {
+      "optimization": "O0",
+      "context": "D3",
+      "seconds": 1.6549729001708329,
+      "original_attempt": 734,
+      "original_time": 35797.119712565516,
+      "original_dt": 0.000282842712474619,
+      "original_prefix_rows_byte_exact": 346,
+      "original_extra_line_search_trials": 12.0,
+      "candidate_converged": true,
+      "iterations": 7,
+      "extra_line_search_trials": 3.0,
+      "rank1_active_iterations": 3.0,
+      "guard_counts": {
+        "minimum_equals_stock": 4,
+        "eligible_partial_zero_inflow": 3
+      },
+      "max_residual": 9.378662594455855e-08,
+      "sum_residual": 6.162729378094536e-07,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 1.7430835011597763e-10,
+      "inventory_limit_cm": 2.8284271247461902e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "D1",
+      "seconds": 5.531768599990755,
+      "original_attempt": 2630,
+      "original_time": 35797.26534378702,
+      "original_dt": 0.0002222222222222222,
+      "original_prefix_rows_byte_exact": 1137,
+      "original_extra_line_search_trials": 13.0,
+      "candidate_converged": true,
+      "iterations": 12,
+      "extra_line_search_trials": 17.0,
+      "rank1_active_iterations": 0.0,
+      "guard_counts": {
+        "positive_potential_inflow": 12
+      },
+      "max_residual": 4.3280198500084133e-07,
+      "sum_residual": -9.311103549625745e-07,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": -2.0691340366074933e-10,
+      "inventory_limit_cm": 2.222222222222222e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "D2",
+      "seconds": 4.6071721999906,
+      "original_attempt": 3066,
+      "original_time": 35797.29042064949,
+      "original_dt": 0.000282842712474619,
+      "original_prefix_rows_byte_exact": 1309,
+      "original_extra_line_search_trials": 35.0,
+      "candidate_converged": true,
+      "iterations": 24,
+      "extra_line_search_trials": 49.0,
+      "rank1_active_iterations": 0.0,
+      "guard_counts": {
+        "positive_potential_inflow": 24
+      },
+      "max_residual": 6.420525826000834e-07,
+      "sum_residual": 8.489064899215716e-07,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 2.4010691691996305e-10,
+      "inventory_limit_cm": 2.8284271247461902e-09
+    },
+    {
+      "optimization": "O2",
+      "context": "D3",
+      "seconds": 1.6270979999098927,
+      "original_attempt": 734,
+      "original_time": 35797.119712565516,
+      "original_dt": 0.000282842712474619,
+      "original_prefix_rows_byte_exact": 346,
+      "original_extra_line_search_trials": 12.0,
+      "candidate_converged": true,
+      "iterations": 7,
+      "extra_line_search_trials": 3.0,
+      "rank1_active_iterations": 3.0,
+      "guard_counts": {
+        "minimum_equals_stock": 4,
+        "eligible_partial_zero_inflow": 3
+      },
+      "max_residual": 9.378662594455855e-08,
+      "sum_residual": 6.162729378094536e-07,
+      "qualifying_active_refusal": false,
+      "inventory_error_cm": 1.7430835011597763e-10,
+      "inventory_limit_cm": 2.8284271247461902e-09
+    }
+  ]
+}
