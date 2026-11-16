@@ -1,0 +1,126 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-COST15",
+  "decision": "DIAGNOSIS_IDENTIFIES_STEP_BUDGET_IO_AS_DOMINANT_MEASURED_COST",
+  "results": [
+    {
+      "optimization": "O2",
+      "steps": 694,
+      "last_model_time": 35796.34300000081,
+      "model_call_wall_seconds": 16.346425000112504,
+      "trace_elapsed_seconds": 16.0112308,
+      "measured_span_wall_seconds": 15.9709964,
+      "head_wall_seconds": 0.3020445,
+      "head_wall_fraction": 0.01891206362052652,
+      "non_head_wall_seconds": 15.668951900000001,
+      "head_CPU_quantized_seconds": 0.109375,
+      "macro_CPU_quantized_seconds": 0.078125,
+      "span_CPU_quantized_seconds": 1.171875,
+      "budget_IO_wall_seconds": null,
+      "budget_IO_fraction": null,
+      "iteration_counts": {
+        "2": 215,
+        "3": 139,
+        "5": 85,
+        "1": 229,
+        "4": 12,
+        "6": 14
+      },
+      "fresh_certification_counts": {
+        "1": 598,
+        "2": 96
+      },
+      "total_vector_calls": 3117,
+      "total_jacobian_calls": 1633,
+      "total_rate_calls": 3007,
+      "total_derivative_calls": 1523,
+      "extra_line_search_trials": 0,
+      "refusals": 0,
+      "flux_reductions": 0,
+      "budget_matches_existing_prefix_exact": true,
+      "windows": [
+        {
+          "window": "first100",
+          "mean_head_wall_seconds": 0.00056647,
+          "mean_span_wall_seconds": 0.016951549,
+          "mean_budget_IO_wall_seconds": null,
+          "mean_iterations": 4.33
+        },
+        {
+          "window": "last100",
+          "mean_head_wall_seconds": 0.000472882,
+          "mean_span_wall_seconds": 0.020396452,
+          "mean_budget_IO_wall_seconds": null,
+          "mean_iterations": 3.13
+        }
+      ]
+    },
+    {
+      "optimization": "O0",
+      "steps": 699,
+      "last_model_time": 35796.34800000112,
+      "model_call_wall_seconds": 16.612049699993804,
+      "trace_elapsed_seconds": 16.0092692,
+      "measured_span_wall_seconds": 15.9695556,
+      "head_wall_seconds": 0.393467,
+      "head_wall_fraction": 0.0246385691534209,
+      "non_head_wall_seconds": 15.5760886,
+      "head_CPU_quantized_seconds": 0.109375,
+      "macro_CPU_quantized_seconds": 0.078125,
+      "span_CPU_quantized_seconds": 0.9375,
+      "budget_IO_wall_seconds": 15.3632694,
+      "budget_IO_fraction": 0.9620348734062456,
+      "iteration_counts": {
+        "2": 215,
+        "3": 139,
+        "5": 85,
+        "1": 229,
+        "4": 12,
+        "6": 19
+      },
+      "fresh_certification_counts": {
+        "1": 598,
+        "2": 101
+      },
+      "total_vector_calls": 3162,
+      "total_jacobian_calls": 1663,
+      "total_rate_calls": 3047,
+      "total_derivative_calls": 1548,
+      "extra_line_search_trials": 0,
+      "refusals": 0,
+      "flux_reductions": 0,
+      "budget_matches_existing_prefix_exact": true,
+      "windows": [
+        {
+          "window": "first100",
+          "mean_head_wall_seconds": 0.000787774,
+          "mean_span_wall_seconds": 0.016070389,
+          "mean_budget_IO_wall_seconds": 0.014475766,
+          "mean_iterations": 4.33
+        },
+        {
+          "window": "last100",
+          "mean_head_wall_seconds": 0.0005826750000000001,
+          "mean_span_wall_seconds": 0.020141741,
+          "mean_budget_IO_wall_seconds": 0.019363613,
+          "mean_iterations": 3.33
+        }
+      ]
+    }
+  ],
+  "common_counter_records_exact": 694,
+  "model_routes": 2,
+  "route_cap_seconds": 20,
+  "diagnostic_early_stop": "700 commits or16seconds at accepted commit",
+  "physics_solver_changes": false,
+  "full_period_qualification": false,
+  "conclusion": "Direct O0 group timing attributes >90% of measured continuation wall time to the original step_budget append open/write/close; O2 independently shows headcalc is a small fraction. No solver stagnation in the measured common prefix.",
+  "limitations": [
+    "Direct budget I/O timing exists only for O0; O2 has head/host timing",
+    "CPU_TIME readings are quantized; per-call zeros do not mean no CPU and do not support fine macro component ranking",
+    "Measurements stop before PREFIX14 end; later prefix/target35797 behavior is unmeasured",
+    "Cause inside OS/filesystem/open/format/write/close is not separated; no disk/antivirus/sync attribution",
+    "No logging optimization or speedup/full-period completion demonstrated"
+  ],
+  "next_safe_step": "Optimize only diagnostic budget logging with one open buffered stream or in-memory records, preserve primitive rows exactly, then separately select the same bounded prefix capture. Do not change Newton/physics/tolerances/dt or timeout.",
+  "official_promotion": false
+}

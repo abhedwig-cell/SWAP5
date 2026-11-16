@@ -1,0 +1,81 @@
+--- a/headcalc_inventory.f90
++++ b/head_cost.f90
+@@ -40,6 +40,7 @@
+    use MOD_swap_mp,        only: armpss, frarmtrx, qexcmpmtx, dfdhmp, ictopmp                        ! all input
+    use MOD_swap_mp,        only: qmplatss, idecmprat                                                 ! input + output
+    use MOD_swap_mp,        only: fldecmprat, fldecMPmbf                                              ! output
++   use COST15,only:nvec,njac,nrate,nderiv,nback,nfresh,macro_cpu,macro_tick
+    implicit none
+ 
+ !  diagnostic local storage only
+@@ -191,6 +192,7 @@
+ 
+ !  calculate vector F (first time)
+    F = 0.0d0
++   nvec=nvec+1
+    call vector_F(1, hgrad)
+ 
+ !  initial estimate of F inner product
+@@ -223,6 +225,7 @@
+ 
+ !     incorporate Jacobian information in coefficient matrix elements
+       call diag_log(1)
++      njac=njac+1
+       call jacobian_F()
+       call diag_log(2)
+ 
+@@ -242,6 +245,7 @@
+       factor = 1.0d0
+       do itry = 1, MaxBackTr
+          iBackTr = iBackTr + 1
++         nback=nback+1
+ !        factor reduces the change of h (difh) calculated as a full Newton Raphson step
+ 
+ !        update h
+@@ -288,6 +292,7 @@
+          end if
+ 
+ !        re-calculate F-function
++         nvec=nvec+1
+          call vector_F(2, hgrad)
+ 
+ !        calculate maximum deviation per compartment and new inner product
+@@ -388,8 +393,10 @@
+ 
+ !     B1 EXPERIMENT V1: certify the current coupled operator at provisional convergence.
+       if (swmacro == 1 .AND. .NOT.flnonconv .AND. dabs(sum1) <= CritDevBalTot) then
++         nfresh=nfresh+1
+          call diag_log(5)
+          flunsatok(1:3) = .FALSE.
++         nvec=nvec+1
+          call vector_F(1,hgrad)
+          call diag_log(6)
+          sump = 0.5d0 * dot_product(F(1:NN),F(1:NN))
+@@ -659,7 +666,13 @@
+ !  depending on iTask
+    if (swmacro == 1) then
+       if (iTask == 1 .OR. .NOT. flunsatok(3)) then 
++         nrate=nrate+1
++         call cpu_time(macro_tick)
+          call MACROPORE(2)
++         block
++         real(8)::z
++         call cpu_time(z);macro_cpu=macro_cpu+z-macro_tick
++         end block
+       else
+          QMpLatSs = QMpLatSsSav
+       end if
+@@ -824,7 +837,13 @@
+ 
+ !  special case macropore
+    if (swmacro == 1 .AND. .NOT.flunsatok(3)) then
++      nderiv=nderiv+1
++      call cpu_time(macro_tick)
+       call MACROPORE(3)
++      block
++      real(8)::z
++      call cpu_time(z);macro_cpu=macro_cpu+z-macro_tick
++      end block
+       dFdhM(1:NN) = dFdhM(1:NN) - dFdhMp(1:NN)
+    end if
+ 
