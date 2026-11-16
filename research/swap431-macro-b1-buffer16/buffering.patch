@@ -1,0 +1,45 @@
+--- a/soilwater_native.f90
++++ b/soilwater_native.f90
+@@ -6,6 +6,8 @@
+    integer,save :: checkpoint_phase=0
+    character(64),save :: qualification_outcome=''
+    real(8),save :: accepted_dt=0d0
++   integer,save :: budget_unit,budget_count=0
++   logical,save :: budget_open=.false.
+ 
+ 
+    contains
+@@ -239,7 +241,8 @@
+   call inventory_dump('initial')
+   call ledger12_dump('ledger_initial')
+   call native09_dump('context_initial')
+-  open(newunit=u,file='step_budget.txt',status='replace');close(u)
++  open(newunit=budget_unit,file='step_budget.txt',status='replace')
++  budget_open=.true.;budget_count=0
+  end if
+ end subroutine
+ logical function retry07_driver() result(handled)
+@@ -276,10 +279,10 @@
+  character(24)::mode
+  call get_environment_variable('DAY10_MODE',mode)
+  if(trim(mode)=='PREFIX'.and.checkpoint_phase==0) then
+-  open(newunit=u,file='step_budget.txt',position='append')
+-  write(u,*) t1900,accepted_dt,graidt,gird,runon,crsflx_out,epd,reva,sum(qrot(1:numnod)),qbot,sum(qdra(1:nrlevs,1:numnod)),sum(qssdi(1:numnod)),sum(QOutDrRapCp(1:numnod)),runots,nraidt,nird,FrReduQ, &
++  write(budget_unit,*) t1900,accepted_dt,graidt,gird,runon,crsflx_out,epd,reva,sum(qrot(1:numnod)),qbot,sum(qdra(1:nrlevs,1:numnod)),sum(qssdi(1:numnod)),sum(QOutDrRapCp(1:numnod)),runots,nraidt,nird,FrReduQ, &
+    QInTopLatDm(1:NumDm),QInTopVrtDm(1:NumDm),sum(QExcMtxDmCp(1:NumDm,1:numnod),dim=2)
+-  close(u)
++  budget_count=budget_count+1
++  if(mod(budget_count,128)==0) flush(budget_unit)
+  end if
+  if(checkpoint_phase/=1) return
+  call inventory_dump('accepted')
+@@ -297,6 +300,9 @@
+  call inventory_dump('checkpoint')
+  call ledger12_dump('ledger_checkpoint')
+  call native09_dump('context_checkpoint')
++ if(budget_open) then
++  close(budget_unit);budget_open=.false.
++ end if
+  call native11_ready()
+  outfil='midnight';sw_end=1;sw_endtype=2;sw_endfilter=0;fl_initialize=.false.
+  call inoutend(1)
