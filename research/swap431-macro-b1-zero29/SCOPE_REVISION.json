@@ -1,0 +1,20 @@
+{
+  "original_cap": 2,
+  "final_cap": 3,
+  "reason": "E1/E2 satisfy partial activation during iteration but start fully constrained. Final E3 is preverified partial at initial evaluation in existing LIMIT21, no tuning or candidate changes",
+  "E3": {
+    "original_attempt": 50,
+    "prior_commits": 41,
+    "time": 35797.07125645635,
+    "dt": 2e-05,
+    "original_max_residual": 0.010294330569608268,
+    "original_max_node": 52.0,
+    "original_extra_line_search_trials": 6.0
+  },
+  "existing_initial_guard": {
+    "incoming_potential": 0.0,
+    "minimum_stock": 0.03536650815296705,
+    "stored_water": 0.03536675615448268,
+    "factor": 0.33490280233057534
+  }
+}
