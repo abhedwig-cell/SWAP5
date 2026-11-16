@@ -1,0 +1,29 @@
+{
+  "stage": "PREREGISTERED",
+  "baseline": "74b2482f9af8488e64f1800683d28b4f8c1cc320",
+  "selection": {
+    "E1": {
+      "original_attempt": 54,
+      "prior_commits": 43,
+      "time": 35797.071680720415,
+      "dt": 0.000282842712474619,
+      "original_max_residual": 0.007034142413126443,
+      "original_max_node": 52.0,
+      "original_extra_line_search_trials": 19.0
+    },
+    "E2": {
+      "original_attempt": 279,
+      "prior_commits": 141,
+      "time": 35797.08641299025,
+      "dt": 2.0951312035156963e-05,
+      "original_max_residual": 0.011161433905515938,
+      "original_max_node": 52.0,
+      "original_extra_line_search_trials": 15.0
+    }
+  },
+  "scope": "Maximum2 new original node52 contexts within previously proven zero-inflow phase; first after priorinitialactivecase and second near dtmin",
+  "candidate_and_harness_changes": false,
+  "routes": "O2 trialE1 first; E2 onlyifneeded; O0 confirms; direct onlyif genuine refusal with eligible partial zero inflow branch",
+  "bounds": "hard20sec perroute,max4originaltargetattempts,stoponscaledrequest,no campaign",
+  "qualification_requires": "Actual Jacobian iteration with I=0,L<W,partialoutlimit and rank1active, plus real refusal/rollback/direct equality"
+}
