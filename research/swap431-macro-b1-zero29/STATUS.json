@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "QUALIFIED_PHYSICAL_SELECTION_NO_ACTIVE_REFUSAL",
   "baseline": "74b2482f9af8488e64f1800683d28b4f8c1cc320",
   "selection": {
     "E1": {
@@ -19,11 +19,24 @@
       "original_max_residual": 0.011161433905515938,
       "original_max_node": 52.0,
       "original_extra_line_search_trials": 15.0
+    },
+    "E3": {
+      "original_attempt": 50,
+      "prior_commits": 41,
+      "time": 35797.07125645635,
+      "dt": 2e-05,
+      "original_max_residual": 0.010294330569608268,
+      "original_max_node": 52.0,
+      "original_extra_line_search_trials": 6.0
     }
   },
-  "scope": "Maximum2 new original node52 contexts within previously proven zero-inflow phase; first after priorinitialactivecase and second near dtmin",
+  "scope": "Final cap3, including one predeclared extension for strict initially partial context; see SCOPE_REVISION.json",
   "candidate_and_harness_changes": false,
   "routes": "O2 trialE1 first; E2 onlyifneeded; O0 confirms; direct onlyif genuine refusal with eligible partial zero inflow branch",
   "bounds": "hard20sec perroute,max4originaltargetattempts,stoponscaledrequest,no campaign",
-  "qualification_requires": "Actual Jacobian iteration with I=0,L<W,partialoutlimit and rank1active, plus real refusal/rollback/direct equality"
+  "qualification_requires": "Actual Jacobian iteration with I=0,L<W,partialoutlimit and rank1active, plus real refusal/rollback/direct equality",
+  "model_routes": 6,
+  "decision": "ZERO_INFLOW_PARTIAL_CONTEXTS_CONFIRMED_BUT_NO_GENUINE_REFUSAL",
+  "active_refusal_rollback_direct_qualification": false,
+  "official_promotion": false
 }
