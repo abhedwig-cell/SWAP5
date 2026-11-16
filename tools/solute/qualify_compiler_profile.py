@@ -6,7 +6,15 @@ p=argparse.ArgumentParser(description=__doc__)
 p.add_argument('--output',type=Path,required=True)
 p.add_argument('--reference',type=Path,help='Reuse a source/compiler-verified original provider, still build fresh application binaries')
 a=p.parse_args();a.output=a.output.resolve();a.output.mkdir();events=[];profiles=[]
-source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+manifest=ROOT/'RELEASE_MANIFEST.json'
+if manifest.exists():
+    record=json.loads(manifest.read_text(encoding='utf-8'))
+    for name,digest in record['files'].items():
+        target=(ROOT/name).resolve()
+        assert target.is_relative_to(ROOT) and hashlib.sha256(target.read_bytes()).hexdigest()==digest, name
+    source=record['source_commit']
+else:
+    source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 reference=a.reference.resolve() if a.reference else a.output/'provider'
 def call(label,arguments,*,script='tools/solute/run_water.py',timeout=180):
     command=[sys.executable,'-B',script,*map(str,arguments)];begin=time.perf_counter()

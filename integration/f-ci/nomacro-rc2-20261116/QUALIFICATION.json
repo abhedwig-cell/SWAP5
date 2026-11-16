@@ -1,0 +1,165 @@
+{
+  "status": "ALL_CLEAN_SOURCE_ZIP_COHORTS_PASS",
+  "candidate": "SWAP5-NOMACRO-RC2-20261116",
+  "source_commit": "38837eab440dfd30e112aef41bd6e2a4e94f982c",
+  "archive_sha256": "17df173c863d52b56ee5950f73c12e78bc94731080dc0ef52c1524a69389647e",
+  "qualification_run": 43821366575,
+  "carrier": "fcc3b6f96ffcceb6dbe8a69771a0a06517b5c049",
+  "outside_Git": true,
+  "fresh_source_preparation": true,
+  "provider_donor_optimization": "O2",
+  "kernel_optimization": "O0short/O2full",
+  "local_Windows_GNU16": "PASS",
+  "hosted": {
+    "windows": [
+      {
+        "project": "grass",
+        "kernel_opt": "O0",
+        "days": 4,
+        "restart_day": 2,
+        "water_max_cm": 1.1338466199993573e-14,
+        "solute_max_mg_cm2": 0,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "grass",
+        "kernel_opt": "O2",
+        "days": 1827,
+        "restart_day": 365,
+        "water_max_cm": 1.2771024534193507e-13,
+        "solute_max_mg_cm2": 0,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "hupsel",
+        "kernel_opt": "O0",
+        "days": 4,
+        "restart_day": 2,
+        "water_max_cm": 1.0644263248593688e-14,
+        "solute_max_mg_cm2": 0.0,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "hupsel",
+        "kernel_opt": "O2",
+        "days": 1096,
+        "restart_day": 365,
+        "water_max_cm": 9.99670639778745e-11,
+        "solute_max_mg_cm2": 2.3019408954034093e-13,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "saltfarm",
+        "kernel_opt": "O0",
+        "days": 4,
+        "restart_day": 2,
+        "water_max_cm": 5.145571468911925e-13,
+        "solute_max_mg_cm2": 1.2261303083960229e-12,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-physical-growth-v2"
+      },
+      {
+        "project": "saltfarm",
+        "kernel_opt": "O2",
+        "days": 1461,
+        "restart_day": 109,
+        "water_max_cm": 2.9591121220029493e-12,
+        "solute_max_mg_cm2": 1.3378950725062566e-11,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-physical-growth-v2"
+      }
+    ],
+    "ubuntu": [
+      {
+        "project": "grass",
+        "kernel_opt": "O0",
+        "days": 4,
+        "restart_day": 2,
+        "water_max_cm": 1.1567449698822511e-14,
+        "solute_max_mg_cm2": 0,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "grass",
+        "kernel_opt": "O2",
+        "days": 1827,
+        "restart_day": 365,
+        "water_max_cm": 1.2820290680911249e-13,
+        "solute_max_mg_cm2": 0,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "hupsel",
+        "kernel_opt": "O0",
+        "days": 4,
+        "restart_day": 2,
+        "water_max_cm": 1.0630385460785874e-14,
+        "solute_max_mg_cm2": 0.0,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "hupsel",
+        "kernel_opt": "O2",
+        "days": 1096,
+        "restart_day": 365,
+        "water_max_cm": 9.99670639778745e-11,
+        "solute_max_mg_cm2": 2.2308871501642002e-13,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-daily-v1"
+      },
+      {
+        "project": "saltfarm",
+        "kernel_opt": "O0",
+        "days": 4,
+        "restart_day": 2,
+        "water_max_cm": 5.145571468911925e-13,
+        "solute_max_mg_cm2": 1.2327916465437738e-12,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-physical-growth-v2"
+      },
+      {
+        "project": "saltfarm",
+        "kernel_opt": "O2",
+        "days": 1461,
+        "restart_day": 109,
+        "water_max_cm": 2.9596394779396462e-12,
+        "solute_max_mg_cm2": 1.3832754386378099e-11,
+        "exact_physical": true,
+        "exact_csv": true,
+        "exact_native_aux": true,
+        "policy": "configured-dtmax-physical-growth-v2"
+      }
+    ]
+  },
+  "unchanged_water_and_solute_guard": 1e-10,
+  "science": "NOT_QUALIFIED whole equivalence; retained original failures/reference/energy limits; no active macro claim"
+}
