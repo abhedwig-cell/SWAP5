@@ -13,16 +13,30 @@ def saved_numeric(source):
             fields.append((match[3],kind))
     return fields
 
-def drainage_source(selected,clock):
+def drainage_source(selected,clock,variables=False):
     source=(selected/'MOD_drainage.f90').read_text(encoding='cp1252').split('\ncontains',1)[0]
-    fields=saved_numeric(source);imports=[];writes=[];inventory=[]
-    for i,(name,kind) in enumerate(fields):
-        declaration=next(line for line in source.splitlines() if re.search(r'\bsave\s*::\s*'+name+r'\b',line,re.I))
-        assert 'allocatable' not in declaration.lower() and 'pointer' not in declaration.lower()
+    module='MOD_drain'
+    if variables:
+        source=(selected/'variables.f90').read_text(encoding='cp1252')
+        source=re.search(r'(?is)\bmodule variables\s*\n(.*?)\bend module variables',source)[1]
+        module='variables'
+    declarations=[]
+    for line in source.splitlines():
+        match=re.match(r'\s*(real\([^)]*\)|integer|logical)(?!\w).*?::\s*(\w+)',line,re.I)
+        if match:
+            kind='real' if match[1].lower().startswith('real') else match[1].lower()
+            declarations.append((match[2],kind,line))
+    imports=[];writes=[];inventory=[]
+    for i,(name,kind,declaration) in enumerate(declarations):
+        assert 'pointer' not in declaration.lower()
         alias='drain_field_'+str(i);count='size('+alias+')' if 'dimension' in declaration.lower() else '1'
-        imports.append('use MOD_drain,only:'+alias+'=>'+name)
+        imports.append('use '+module+',only:'+alias+'=>'+name)
+        if 'allocatable' in declaration.lower():writes.append('if(allocated('+alias+'))then')
         writes.append('write(unit)'+alias)
         writes.append("write(*,'(a,1x,a,1x,a,3(1x,i0))')'DIAG_DRAIN_LAYOUT',phase,'"+name+"',"+str({'real':1,'integer':2,'logical':3}[kind])+','+count+',storage_size('+alias+')')
+        if 'allocatable' in declaration.lower():
+            bits='64' if kind=='real' else '32'
+            writes+=['else',"write(*,'(a,1x,a,1x,a,3(1x,i0))')'DIAG_DRAIN_LAYOUT',phase,'"+name+"',"+str({'real':1,'integer':2,'logical':3}[kind])+',-1,'+bits,'end if']
         inventory.append(dict(field=name,kind=kind,declaration=declaration.strip()))
     text='subroutine dump_drainage(phase)\n'+'\n'.join(imports)+f'''
 implicit none
@@ -37,7 +51,7 @@ end subroutine
 '''
     return text,inventory
 
-def snapshot_source(selected,clock,drainage=False):
+def snapshot_source(selected,clock,drainage=False,variables=False):
     fields=[]
     for module,file in [('plant_interface','interface_plant.f90'),('atmosphere_interface','interface_atmosphere.f90')]:
         for name,kind in saved_numeric((selected/file).read_text(encoding='cp1252')):
@@ -71,13 +85,13 @@ contains
 subroutine hybrid_snapshot(phase)
 character(*),intent(in)::phase
 if(t1900<{clock}d0.or.t1900>{clock+1}d0)return
-'''+('call dump_drainage(phase)\n' if drainage else '')+'''
+'''+('call dump_drainage(phase)\n' if drainage or variables else '')+'''
 write(*,'(a,1x,a,1x,f18.8)')'DIAG_COMPONENT_BEGIN',phase,t1900
 '''+ '\n'.join(writes)+'''
 write(*,'(a)')'DIAG_COMPONENT_END'
 end subroutine
 '''
-    if drainage:text+=drainage_source(selected,clock)[0]
+    if drainage or variables:text+=drainage_source(selected,clock,variables)[0]
     text+='end module\n'
     return text,inventory
 
@@ -104,7 +118,12 @@ def drainage_comparison(out):
         for line in (directory/'donor.stdout').read_text().splitlines():
             if not line.startswith('DIAG_DRAIN_LAYOUT '):continue
             _,phase,name,kind,count,bits=line.split()
-            layout.setdefault(phase,[]).append(dict(field=name,kind=int(kind),count=int(count),bits=int(bits)))
+            item=dict(field=name,kind=int(kind),count=int(count),bits=int(bits))
+            fields=layout.setdefault(phase,[])
+            existing=next((x for x in fields if x['field']==name),None)
+            if existing is None:fields.append(item)
+            else:assert existing==item  # repeated original retry snapshot overwrites the same binary
+
         layouts[label]=layout
         payloads[label]={phase:(directory/('diagnostic-drain-'+phase+'.bin')).read_bytes() for phase in layout}
     assert layouts['warm']==layouts['cold'] and len(layouts['warm'])==3
@@ -112,7 +131,7 @@ def drainage_comparison(out):
     for phase,fields in layouts['warm'].items():
         offset=0;differences=[]
         for field in fields:
-            size=field['count']*field['bits']//8
+            size=max(0,field['count'])*field['bits']//8
             before=payloads['warm'][phase][offset:offset+size];after=payloads['cold'][phase][offset:offset+size]
             assert len(before)==size and len(after)==size
             if before!=after:
@@ -143,8 +162,8 @@ def snapshots(path,inventory):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-root',type=Path,required=True);p.add_argument('--prior',type=Path,required=True)
-    p.add_argument('--output',type=Path,required=True);p.add_argument('--reconnect-wofost-interface',action='store_true');p.add_argument('--drainage-snapshots',action='store_true');a=p.parse_args()
-    assert not (a.reconnect_wofost_interface and a.drainage_snapshots)
+    p.add_argument('--output',type=Path,required=True);p.add_argument('--reconnect-wofost-interface',action='store_true');p.add_argument('--drainage-snapshots',action='store_true');p.add_argument('--variables-snapshots',action='store_true');a=p.parse_args()
+    assert sum((a.reconnect_wofost_interface,a.drainage_snapshots,a.variables_snapshots))<=1
     pinned=a.source_root.resolve();assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=pinned,text=True).strip()==PIN
     sys.path.insert(0,str(pinned/'tools/solute'));sys.path.insert(0,str(pinned/'app/hybrid_water'))
     import daily_host as h
@@ -175,12 +194,12 @@ def main():
     original_link=target/'unmodified-donor-check'
     compile(['gfortran','-o',str(original_link),*linked])
     assert h.sha(original_link)==meta['executable_sha256']['donor']
-    diagnostic,inventory=snapshot_source(ref/'build/swap-selected',project.start_clock+530,a.drainage_snapshots)
+    diagnostic,inventory=snapshot_source(ref/'build/swap-selected',project.start_clock+530,a.drainage_snapshots,a.variables_snapshots)
     (target/'hybrid_state_diagnostic.f90').write_text(diagnostic)
     for filename in ('swap.f90','swap_main.f90'):
         path=target/filename;assert h.sha(path)==identity['donor_generated'][filename]
         text=path.read_text(encoding='cp1252')
-        text=instrument_source(text,filename,h.replace,a.drainage_snapshots,project.start_clock+530)
+        text=instrument_source(text,filename,h.replace,a.drainage_snapshots or a.variables_snapshots,project.start_clock+530)
         path.write_text(text,encoding='cp1252')
     if a.reconnect_wofost_interface:
         path=target/'wofost.f90';assert h.sha(path)==identity['donor_generated']['wofost.f90']
@@ -220,7 +239,9 @@ def main():
         private_sources={name:h.sha(target/name) for name in ('hybrid_state_diagnostic.f90','wofost.f90','swap.f90','swap_main.f90')},
         private_executable_sha256=h.sha(h.executable(target,'day_donor')),
         scope='Read-only original component-state evidence, not current public qualification or demonstrated causation')
-    if a.drainage_snapshots:result['complete_drainage_comparison']=drainage_comparison(out)
+    if a.drainage_snapshots or a.variables_snapshots:
+        result['complete_component_module']='variables' if a.variables_snapshots else 'MOD_drain'
+        result['complete_component_comparison']=drainage_comparison(out)
     (out/'RESULT.json').write_text(json.dumps(result,indent=2)+'\n');print(result['status'],flush=True)
     if a.reconnect_wofost_interface:assert exact,'Complete original interface reconnection did not reproduce warm physical state'
 

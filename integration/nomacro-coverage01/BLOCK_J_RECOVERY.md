@@ -48,3 +48,12 @@ permit exact field comparison without massive repeated JSON arrays. Verify
 unchanged original relink/compiler/source/native and actual physical rows again.
 This is diagnosis of whole original component ownership, not a third cached
 parameter patch or any numerical/solver/tolerance repair.
+
+Whole MOD_drain snapshot43824383388 SUCCESS:84 fixed numeric fields,7984184 bytes
+per complete snapshot. Only old fluxes/diffl differ before Drain2; ALL84 fields
+are exactly equal after first Drain2, before SoilWater. Cached ksatcp and all
+static hydraulic drainage parameters are already exact. No drainage state repair
+is justified. Keep full binary snapshots/raw report. Next read-only inventory
+ALL numeric declarations of the original implicitly SAVE Variables module,
+not only previous hand-selected profiles, at the same three process boundaries.
+No physical or numerical change and no new accepted-state publication.
