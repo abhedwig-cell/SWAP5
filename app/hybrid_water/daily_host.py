@@ -597,6 +597,7 @@ end module MOD_wofost""")
         source=(donor_build/'swap-selected/RWU_micro.f90').read_text(encoding='cp1252')
         (output/'RWU_micro.f90').write_text(render_micro_lookup(source),encoding='cp1252')
         patched.insert(0,'RWU_micro')
+        patched.remove('boundtop');patched.insert(0,'boundtop')
         from history_top_state import render as render_history_top
         (output/'boundtop.f90').write_text(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
         if checkpoint_day is not None or runtime_checkpoint:
