@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "DIAGNOSIS_COMPLETE",
   "baseline": "1822cfd9e706379c4c62b2d802ea168e42e8a5ef",
   "routes": [
     "O0 native Jan3",
@@ -7,5 +7,7 @@
   ],
   "stop": "7000 committed steps or16 measured seconds, hard20s subprocess timeout",
   "changes": "Additive counters and clock calls only; same original contexts, physical code, acceptance and retry policy",
-  "no_campaign": true
+  "no_campaign": true,
+  "decision": "DIAGNOSIS_ONLY_NO_PHYSICS_CORRECTION",
+  "models_launched": 2
 }

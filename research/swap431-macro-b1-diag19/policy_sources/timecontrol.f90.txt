@@ -1,0 +1,539 @@
+module MOD_timer
+! local, must save
+   real(8), save :: tcumold
+end module MOD_timer
+
+! File VersionID:
+!   $Id: timecontrol.f90 374 2018-03-21 13:12:23Z heine003 $
+! ----------------------------------------------------------------------
+   subroutine TimeControl(task)
+! ----------------------------------------------------------------------
+!     Date               : Aug 2004   
+!     Purpose            : Handles time variables, switches and flags
+! ----------------------------------------------------------------------
+
+   use MOD_timer
+   use MOD_swap_base,   only: project, swscre, swmacro, swsolve, fl_initialize, swirfix, swinco, swrain, swmetdetail, swrunon
+   use MOD_meteo,       only: fl_update_meteo, meteo_rec, i_metdetail, rain_rec, raintim, dt_meteo
+   use MOD_runon,       only: runon_rec, runontim
+   use MOD_swap_mp,     only: fldecmprat
+   use plant_interface, only: sw_inter, dt_interc_event
+   use MOD_irrigation,  only: irrigation, flheadirg, flirrigate, nirri, dt_irr_event
+   
+   use variables,       only: fldecdt, flrunend, fldaystart, fldtmin, flzerointr, flzerocumu, floutput, flheader,                            &
+                              flbaloutput, nprintday, flprintdt, flprintshort, period, isteps, ioutdat,                                      &
+                              ioutdatint, cntper, outper, nprintcount, t1900, tstart, iyear, t, tcum, daynr, daycum,                         &
+                              imonth, date, tend, dt, dtold, msteps, dtmin, dtmax, swheader, swres, fldayend, numbit, maxit,                 &
+                              floutputshort, outdatint, outdat,numbit_crit, fact_dt_increase, fact_dt_decrease, fact_dt_fldect, timjan1
+
+   implicit none
+! ----------------------------------------------------------------------
+!     DAYNR  : = daynumber relative to start of calendar year
+!     DAYCUM : = daynumber relative to start of simulation
+!     DAYMETEO: = day number for which meteorological data should be read
+!     IMONTH : = actual month number
+!     IYEAR  : = actual year
+!
+!     T      : = time relative to start of calendar year
+!     TCUM   : = time relative to start of simulation
+!     TEND   : = time (relative to 1900) at which simulation ends
+!     TSTART : = time (relative to 1900) at which simulation starts
+!     t1900  : = time relative to 1900
+!
+!     flCultivate : = true if crops are grown on the soil profile
+!     flDayEnd : = true if time level equals end of day
+!     flRunEnd : = true if time level equals TEND
+!     flRunStart  : = true if time level equals TSTART
+! ----------------------------------------------------------------------
+
+!  global
+   integer, intent(in) :: task
+
+!  local, need to save
+
+! local
+   character(len=200)   :: message
+   character(len=11)    :: tmp
+   character(len=80)    :: filtext
+
+! local, no need to save
+   integer              :: iyear_old
+   integer              :: datea(6)
+   real(4)              :: fsec
+   real(8)              :: dtEvent
+!  critical time-interval 
+   real(8), parameter   :: dtCrit = 1.0d-8     ! approximately 1 millisecond
+
+   select case (task)
+
+   case (1)
+
+! === initialization ===================================================
+
+! --- initialize flags ----------------------------
+      fldecdt = .FALSE.
+      flRunEnd = .FALSE.
+      flDayStart = .TRUE.
+      fldtmin = .FALSE.
+      flZeroIntr = .TRUE.
+      flZeroCumu = .TRUE.
+      floutput = .FALSE.
+      flbaloutput = .FALSE.
+      flheader = .FALSE.
+      flheadirg = .FALSE.
+      flprintshort = .FALSE.
+      if (nprintday > 1 .OR. flprintdt) then
+         flprintshort = .TRUE.
+         period = 1
+      end if
+      flIrrigate = swirfix == 1
+
+! --- initialize counters ----------------------------
+      nirri = 1
+      isteps = 0
+      ioutdat = 1
+      ioutdatint = 1
+      cntper = 0
+      outper = 0.0d0
+      tcumold = 0.0d0
+      nprintcount = 1
+
+! --- set main time variable of SWAP ------------------------
+      t1900 = tstart
+
+      ! determine time from beginning of calendar year
+      call dtdpar (t1900 + 0.1d0, datea, fsec)
+      datea = 0; datea(1) = iyear; datea(2) = 1; datea(3) = 1
+      call dtardp (datea,0.0,timjan1)
+
+      t = tstart - timjan1
+      tcum = 0.d0
+      daynr = nint(t)
+      daycum = 0
+
+! --- determine year,month and day number of current day
+      call dtdpar (t1900+0.1d0, datea, fsec)
+      iyear = datea(1)
+      imonth = datea(2)
+
+! --- determine date of current day
+      call dtdpst ('year-month-day', t1900+0.1d0, date)
+
+! --- output to screen
+      if (swscre == 2) then
+         filtext = 'Screen output of daynumbers'
+         call writehead (5,1,'screen',filtext,project)
+         call dtdpst ('year-month-day',tstart,date)
+         write (*,'(2x,2a)') 'First day of simulation:  ', date
+         call dtdpst ('year-month-day',tend,date)
+         write (*,'(2x,2a)') 'Last day of simulation:   ', date
+         write (*,'(/,a,/)') '            date  daynr  daycum'
+      end if
+
+!     dtmax should not be larger then 1/nprintday or dt_meteo; for safety; dtmin should not be larger than dtmax
+      dtmax = min(dtmax, 1.0d0/dble(nprintday))
+      if (swmetdetail == 1) dtmax = min(dtmax, dt_meteo)
+      dtmin = min(dtmin, 0.1d0*dtmax)                                ! better to have dtmin different from dtmax
+
+! --- initial time step
+      if (swsolve == 1) then
+         if (fl_initialize) then
+            if (dt < dtmin) then
+               message = 'Initial dt read from file (SWINCO=3) if absent, then default is assumed'
+               call swap_warning ('timecontrol', message)
+               dt = dsqrt(dtmin*dtmax)
+            end if
+         else
+            if (swinco /= 3) dt = dsqrt(dtmin*dtmax)
+         end if
+      else
+         dt = 1.0d0
+      end if
+
+! --- initialize
+      dtEvent = get_dtevent()
+      if (dt+dtCrit > dtEvent) then
+         dt = dtEvent
+         if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(1)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+      end if
+
+! --- set value for dtold, used in headcalc for macropore-iteration
+      dtold = dt
+
+      return
+
+   ! START OF DAY
+   case (2)
+
+      ! start of day; time 00:00:00  
+      tcum = 0.d0
+
+      ! determine year,month and day number (only during first time step of a day)
+      call dtdpar (t1900+0.1d0, datea, fsec)
+      iyear_old = iyear
+      iyear = datea(1)
+      imonth = datea(2)
+      ! determine date of current day
+      call dtdpst ('year-month-day', t1900+0.1d0, date)
+
+      ! update day numbers
+      daynr = daynr  + 1
+      daycum = daycum + 1
+      cntper = cntper + 1  ! only used in timecontrol
+
+      ! update meteo record
+      fl_update_meteo = .true.
+      meteo_rec = meteo_rec + 1
+      if (swmetdetail == 1) i_metdetail = 1
+
+      ! in case of a new year         
+      if (iyear /= iyear_old) then
+
+         ! reset daynumber and time because new calender year has started
+         daynr = 1
+         t = 0.0d0
+
+         ! update time first of January: timjan1
+         datea = 0; datea(1) = iyear; datea(2) = 1; datea(3) = 1
+         call dtardp (datea, 0.0, timjan1)
+            
+         ! in case SWRES = 1 reset counter for periodic output to 1
+         if (swres == 1 .AND. period /= 0) cntper = 1
+      end if
+      
+      ! set timestep
+      if (swsolve == 1) then
+         dt = max(dt, dsqrt(dtmin*dtmax))
+      else
+         dt = 1.d0
+      end if
+
+      ! maximum size of time interval (dtEvent)
+      dtEvent = get_dtevent()
+      if (dt+dtCrit > dtEvent) then
+         dt = dtEvent
+         if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(1)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+      end if
+
+      return
+
+   ! DYNAMIC
+   case (3)
+! === next time step ===================================================
+! 2.1  check maximum number of time steps during this day
+      isteps = isteps + 1
+      if (isteps > msteps) then
+        write(tmp,'(i11)') daynr
+        message ='The maximum number of time steps for a day is exceeded at daynumber '//trim(adjustl(tmp))//'. Check input for numerical solution of Richards equation'
+        call swap_error ('timecontrol', message)
+      end if
+
+! 2.2 update time variables
+      tcum = tcum  + dt
+      t1900 = t1900 + dt
+      t = t1900 - timjan1
+
+! 2.3  flag assignments after first time step of a day
+      if (flDayStart) then
+
+! ---    set flags for reset intermediate and cumulative fluxes
+         flZeroCumu = .FALSE.
+         if (flZeroIntr) then
+            outper = 0.0d0
+            flZeroIntr = .FALSE.
+         end if
+
+! ---    set flags for output
+         if (floutput) then
+            floutput = .FALSE.
+            flheader = swheader == 1
+         end if
+         if (flbaloutput) then
+            flbaloutput = .FALSE.
+            flheader = swheader == 1
+            flheadirg = swheader == 1
+         end if
+
+      end if
+
+! 2.6  update logicals for indication of start / end of day; retrun at end-of-day
+      if (1.d0 - tcum > dtCrit) then 
+         flDayEnd = .FALSE.
+         flDayStart = .FALSE.
+      else
+         flDayEnd = .TRUE.
+         flDayStart = .TRUE.
+      end if
+
+! 2.9 determine next time step, based on numerical performance
+      if (swsolve == 1) then
+         if (numbit <= numbit_crit) dt = min(dt*fact_dt_increase,dtMax)
+         if (numbit >= MaxIt)       dt = max(dt*fact_dt_decrease,dtMin)
+         if (dt < dtmin) then
+            dt = dtmin
+            fldtmin = .TRUE.
+         end if
+      else
+         dt = 1.0d0
+      end if
+
+! 2.7  maximum size of time interval (dtEvent)
+      dtEvent = get_dtevent()
+      if (dt > dtevent) then
+         dt = dtevent
+         if (swsolve == 2 .AND. dabs(dtevent - 1.0d0) > dtCrit ) call swap_error('timecontrol(3)', 'swsolve = 2: unexpected: dtevent < 1.0d0')
+      end if
+
+! 2.11 set flags and variables
+
+! --- in case of output during a day
+      if (flprintshort) then
+         floutputshort = .FALSE.
+         flzerointr    = .FALSE.
+! ---    determine whether output is required
+         if (flprintdt) then 
+            outper  = tcum - tcumold
+            tcumold = tcum
+            if (abs(outdatint(ioutdatint) - t1900 + 1.d0) < 1.d-3) then
+               floutputshort = .TRUE.
+               flzerointr    = .TRUE.
+            end if
+         else
+            if (t1900 - tstart + dtCrit > dble(nprintcount)/dble(nprintday)) then
+               floutputshort = .TRUE.
+               flzerointr    = .TRUE.
+               outper        = 1.0d0 / dble(nprintday)
+               tcumold       = tcum
+               ! update nprint counter
+               nprintcount   = nprintcount + 1
+            end if
+         end if
+      end if
+
+!     SSDI: end of subsurface irrigation event reached; reset
+      if (tcum - int(tcum) + dtCrit > dt_irr_event) call irrigation(9)
+
+! --- update fldtmin
+      if (dt > (1.0d0+dtCrit)*dtmin) fldtmin = .FALSE.
+
+! --- procedure when day is finished ---------------------------------------------- 
+      if (flDayEnd) then
+
+! ---    length output period
+         if (.NOT.flprintshort) outper = outper + 1.0d0
+
+! ---    write daynumber to screen
+         if (swscre == 2) write(*,'("+ ",4x,a11,i6,i8)') date,daynr,daycum
+
+! ---   in case no end of run, determine whether today output should be written 
+         if (cntper == period .AND. .NOT.flprintdt) then
+            cntper     = 0
+            floutput   = .TRUE.
+            flzerointr = .TRUE.
+         end if
+
+         if (flprintdt) then
+            if (abs(outdatint(ioutdatint) - t1900 + dt) < 1.d-3) then
+               floutput   = .TRUE.
+               flzerointr = .TRUE.
+               ioutdatint = ioutdatint + 1
+            end if
+         else
+            if (abs(outdatint(ioutdatint) - t1900 + 1.d0) < 1.d-3) then
+               floutput   = .TRUE.
+               flzerointr = .TRUE.
+               ioutdatint = ioutdatint + 1
+            end if
+         end if
+
+         if (abs(outdat(ioutdat) - t1900 + 1.d0) < 1.d-3) then
+! ---       output of water and solute balances
+            floutput    = .TRUE.
+            flbaloutput = .TRUE.
+            flzerointr  = .TRUE.
+            flzerocumu  = .TRUE.
+            ioutdat     = ioutdat + 1
+         end if
+
+! ---    reset flags for next day
+         fldtmin = .FALSE.
+
+! ---    reset counters for next day
+         isteps = 0
+
+! ---    end of run?
+         if ((nint(tend) - nint(t1900) + 1) == 0) then
+            flRunEnd    = .TRUE.
+            floutput    = .TRUE.
+            flbaloutput = .TRUE.
+         end if         
+         t1900 = dble(nint(t1900))
+
+      end if
+
+      return
+
+   case (4)
+
+      ! === reduce time step ===
+      
+      ! special: decrease time step if interception storage reaches maximum level or becomes empty (SWINTER=3)
+      if (sw_inter == 3 .AND. dt_interc_event < 1.0d0) dt = min(dt, dt_interc_event)
+
+      return
+      
+   case (5)
+
+      ! === reduce time step ===
+
+      ! decrease time step in case of no convergence in headcalc
+      if (fldecdt) then
+         if (dt > fact_dt_fldect*dtmin) then
+            dt = dt / fact_dt_fldect
+!           force dt to equal multiple dtmin to prevent very small dt-values at end of day 
+!            dt = dtmin * dble(max(1,int(dt/dtmin)))
+         else
+            dt = dtmin
+            fldtmin = .TRUE.
+         end if
+         fldecdt = .FALSE.
+         return
+      end if
+
+      ! decrease in case of Macropores
+      if (swmacro == 1 .AND. FlDecMpRat) then
+         dt = dsqrt(dtmin*dtmax)
+         return
+      end if
+
+   case (9)
+!     special: at end of day, the possible initial time step for next day may be too large: adapt if necessary
+      if (dt_irr_event < 1.0d0) dt = min(dt, dt_irr_event)
+      
+      return
+
+   case default
+      call swap_error ('timecontrol', 'Illegal value for TASK')
+   end select
+
+   return
+
+   contains
+
+   function get_dtevent()
+      
+      implicit none
+      ! global
+      real(8) :: get_dtevent
+      ! local
+      real(8) :: dtEventEOD, dtEventPrint, dtEventRain, dtEventSSDI, dtEventRunon
+
+      ! 2.7.1  remaining part of a day
+      dtEventEOD = dt
+      if (tcum+dtCrit < 1.0d0) dtEventEOD = 1.0d0 - tcum
+
+      ! 2.7.2  printing more than one times a day may limit timestep
+      dtEventPrint = 1.0d0/dble(nprintday)
+      if (flprintshort .AND. .NOT. flprintdt) then
+         dtEventPrint = (tstart - t1900) + dble(nprintcount) / dble(nprintday)
+         if (dtEventPrint < dtcrit) dtEventPrint = (tstart - t1900) + dble(nprintcount + 1) / dble(nprintday)  !dtmax
+      end if
+      get_dtEvent = min(dtEventEOD, dtEventPrint)
+
+      ! 2.7.3  input of detailed meteo may limit timestep
+      if (swmetdetail == 1) then
+         dtEventRain = dble(int(t + dtCrit)) - t + dble(i_metdetail) * dt_meteo
+         if (dtEventRain < dtCrit) then
+            ! update actual weather record
+            fl_update_meteo = .true.
+            i_metdetail = i_metdetail + 1
+            dtEventRain = dble(int(t + dtCrit)) - t + dble(i_metdetail) * dt_meteo
+         end if
+         get_dtEvent = min(get_dtEvent, dtEventRain)
+      else
+
+         ! 2.7.4 precipitation event may limit timestep
+         if (swmetdetail == 0 .AND. swrain > 0) then
+            dtEventRain = raintim(rain_rec) - t1900
+            if (dtEventRain < dtcrit) then
+               ! new rain event valid
+               rain_rec = rain_rec + 1
+               dtEventRain = raintim(rain_rec) - t1900
+            end if
+            get_dtEvent = min(get_dtEvent, dtEventRain)
+         end if
+      end if
+
+      ! 2.7.5 SSDI: adapt dt as to not pass dt_irr_event
+      if (dt_irr_event < 1.0d0) then
+         dtEventSSDI = dble(int(tcum) + dt_irr_event) - tcum
+         if (dtEventSSDI < dtCrit) dtEventSSDI = dtmax
+         get_dtEvent = min(get_dtEvent, dtEventSSDI)
+      end if
+
+      ! 2.7.6 RUNON event may limit timestep
+      if (swrunon == 1) then
+         dtEventRunon = runontim(runon_rec) - t1900
+         if (dtEventRunon < dtcrit) then
+            ! new runon event valid
+            runon_rec = runon_rec + 1
+            dtEventRunon = runontim(runon_rec) - t1900
+         end if
+         get_dtEvent = min(get_dtEvent, dtEventRunon)
+      end if
+      
+   end function get_dtevent
+
+   end subroutine TimeControl
+
+   subroutine IterTime(task)
+! ----------------------------------------------------------------------
+!     date    : 20080303
+!     update  : 20170223: intro part2 - to interrupt (near) endless simulations
+!     purpose : statistics of timing and numerical iterations
+! ----------------------------------------------------------------------
+! --- global variables
+      use MOD_swap_base, only: unit_log
+      use variables,     only: maxitertime, maxit, itnumb
+      implicit none
+      integer, intent(in)  :: task
+! --- local variables
+      integer              :: i, j, timediff
+      character(len=400)   :: message
+      real(4)              :: tmptimeinterrupt, tmptimeend
+      real(4), save        :: tmptimestart
+
+      select case (task)
+
+      case (1)
+! --- part1 - initial values
+         call cpu_time(tmptimestart)
+
+      case (2)
+! --- part2 - calculate intermediate time to be able to interrupt (near) endless simulations
+         call cpu_time(tmptimeinterrupt)
+         timediff = int(tmptimeinterrupt-tmptimestart) - MaxIterTime
+!        fatal error if cpu time exceeds input value MaxIterTime
+         if (timediff > 0) then
+            write(message,'(a,i10,3a)') 'The maximum cpu time of ',MaxIterTime,' (secs) was exceeded. Therefore simulation was interrupted'
+            call swap_error ('IterTime', message)
+         end if
+
+      case (3)
+! --- part3 - write statistics
+         write(unit_log,'(/,a20)')      'Iteration statistics'
+         write(unit_log,'(/,a29,i4)')   'Maximum number of iterations:',MaxIt
+         write(unit_log,'(/,a35/,a35)') 'It Numb  No of Hits  Tot BTr cycles', '-------  ----------  --------------'
+         do i=1,100                                       
+            if (itnumb(i,1) > 0) write(unit_log,'(i7,2x,i10,4x,i10)')i,(itnumb(i,j),j=1,2)
+         end do
+
+         call cpu_time(tmptimeend)
+         write(unit_log,'(/,a12,f20.8,a4)') ' Run-time: ',tmptimeend-tmptimestart,' sec'
+         
+      case default
+         call swap_error ('IterTime', 'Illegal value for TASK')
+      end select
+
+      return
+   end subroutine IterTime

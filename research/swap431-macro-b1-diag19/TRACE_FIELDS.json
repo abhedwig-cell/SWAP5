@@ -1,0 +1,49 @@
+{
+  "attempt_trace": {
+    "0": "attempt",
+    "1": "target_commit",
+    "2": "begin_t1900",
+    "3": "used_trial_dt",
+    "4": "pre_IDecMpRat",
+    "5": "post_IDecMpRat",
+    "6": "used_FrReduQ",
+    "7": "numbit_DO_counter",
+    "8": "outcome_0_converged_4_exhausted",
+    "9": "fldecdt",
+    "10": "FlDecMpRat",
+    "11": "post_fldtmin",
+    "12": "flnonconv",
+    "13": "any_compartment_balance_flag",
+    "14": "any_head_change_flag",
+    "15": "pond_flag",
+    "16": "macro_inventory_flag",
+    "17": "sum_F",
+    "18": "max_abs_F",
+    "19": "max_abs_F_node",
+    "20": "vector_calls",
+    "21": "jacobian_calls",
+    "22": "macro_rate_calls",
+    "23": "macro_derivative_calls",
+    "24": "line_search_trials_including_first",
+    "25": "fresh_certifications",
+    "26": "head_wall_seconds"
+  },
+  "cost_trace": {
+    "0": "commit",
+    "1": "committed_t1900",
+    "2": "next_host_dt",
+    "3": "numbit",
+    "4": "used_FrReduQ",
+    "5": "cumulative_attempts",
+    "6": "all_head_wall_since_last_commit",
+    "7": "budget_write_flush_wall",
+    "8": "span_since_previous_trace",
+    "9": "elapsed_since_start"
+  },
+  "notes": [
+    "0-based columns",
+    "numbit31 or61 after exhausted Fortran DO is30 or60 actual iterations",
+    "next_host_dt is not accepted used dt; use32column step_budget for accepted dt",
+    "rejection flags may retain preexisting FlDecMpRat; IDec difference identifies new level increase"
+  ]
+}
