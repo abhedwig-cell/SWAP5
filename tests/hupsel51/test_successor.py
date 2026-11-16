@@ -116,5 +116,28 @@ class Boundaries(unittest.TestCase):
                 s.validate_n(*bad)
 
 
+    def test_o_complete_context_source_mass_and_native_ownership(self):
+        load=lambda name:json.loads((s.ROOT/s.L_PROOF/('BLOCK_O_'+name+'.json')).read_text())
+        values=[load(n) for n in ('QUALIFICATION','PRIOR_SOURCE_PRESERVATION','COMPONENT_RESULT','LEGACY_COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT')]
+        s.validate_o(*values);attacks=[]
+        for field,value in [('runtime_source',s.N_RUNTIME),('complete_model_days',4384),('mass_guard_cm',1e-9),('maximum_water_residual_cm',float('nan')),('old_failed_mixture_evidence','PASS'),('physical_equations_changed',True),('whole_scientific_equivalence','PASS')]:
+            bad=copy.deepcopy(values);bad[0][field]=value;attacks.append(bad)
+        for edit in ('mass','window','native','physical','refusal','external'):
+            bad=copy.deepcopy(values);r=bad[0]['platforms']['Windows']['chemical-surface-history']['profiles']['O2']
+            if edit=='mass':r['budgets']['max_solute_mg_cm2']=1.0001e-10
+            elif edit=='window':r['own'].pop()
+            elif edit=='native':r['own'][1]['exact_native']=False
+            elif edit=='physical':r['all_1096_physical_rows_exact_to_failed_source']=False
+            elif edit=='refusal':r['controls']['native_refusals'][0]['accepted_days']=1
+            else:r['controls']['external_discard_replay_exact']=False
+            attacks.append(bad)
+        bad=copy.deepcopy(values);bad[1]['profiles']['water-plate-history']['generated']={};attacks.append(bad)
+        bad=copy.deepcopy(values);bad[2]['profiles'][0]['staged_read_before_assignment']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[3]['profiles'][1]['refusals'].pop();attacks.append(bad)
+        bad=copy.deepcopy(values);bad[4]['profiles'][0]['every_exercised_native_exact']=False;attacks.append(bad)
+        for index,bad in enumerate(attacks):
+            with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_o(*bad)
+
+
 if __name__ == '__main__':
     unittest.main()
