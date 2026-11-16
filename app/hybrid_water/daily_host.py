@@ -741,6 +741,7 @@ end module plant_interface""")
     subprocess.run(["gfortran", "-o", str(donor),
                     *(str(replacements.get(p.name, p)) for p in donor_objects),
                     *([str(output / "hybrid_step_budget.o")] if budget_retry else []),
+                    *([str(output / "terminal_water_receipt.o")] if project.time_step_policy==EVENT_CLOSURE_TIME_POLICY else []),
                     str(ttutil_library)], cwd=output, check=True)
     adapter = APP / "donor_adapter.f90"
     sources = [
