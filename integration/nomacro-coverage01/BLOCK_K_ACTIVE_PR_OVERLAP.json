@@ -1,0 +1,21 @@
+{
+  "current_canonical": "3fb625da73031885624987d42ad922cb184c96e5",
+  "concurrent_pr": 1686,
+  "concurrent_branch": "codex/hupsel51-water-balance",
+  "observed_head": "a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb",
+  "overlap": [
+    "app/hybrid_water/daily_host.py (separate hunks)",
+    "app/hybrid_water/hybrid_step_budget.f90 (K read dependency only; K does not modify template)"
+  ],
+  "concurrent_scope": "Experimental no-macro/no-snow SWDRA0, effective SWBOTB6, SWKIMPL0 and linear pond branch",
+  "K_scope": "Experimental effective SWBOTB8; original per-trial flboth/gradient receipt, no original template modification",
+  "eligibility_intersection": false,
+  "shared_template_current_exact_to_canonical": true,
+  "K_write_hunks": "effective-boundary selection, selected8 receipt source compilation/call wiring and build identity",
+  "concurrent_write_hunks": "strict-water closed-profile predicate and top-row derivative only",
+  "private_import": false,
+  "reference_or_qualification_inherited_from_concurrent_pr": false,
+  "current_conflict": "NONE: K is qualified on unchanged actual canonical; no concurrent PR files/source imported or overwritten",
+  "future_composition": "PR1686 source-forwarding predicates pin its own runtime. Its owner must reconcile K/new canonical and exact source/proof dependencies before later admission. K makes no composed1686 PASS or historical CI claim.",
+  "admission_condition": "Recheck actual canonical remains3fb625da7 immediately before K merge; if it advances, reconcile/requalify changed dependency instead of inheriting K blindly"
+}
