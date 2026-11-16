@@ -227,9 +227,9 @@ which remain outside this work unit. A supported input selector alone is not A.
 
 | Family | A: executed scope | B/C: remaining original integration or qualification |
 | --- | --- | --- |
-| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through J | B: arbitrary grids, references and process combinations need their own evidence |
+| Project input/grid/calendar | Three registered projects; general derived original inputs in blocks A through K | B: arbitrary grids, references and process combinations need their own evidence |
 | Richards/hydraulics | Selected original MvG/exponential2, explicit original PCHIP tables, geometric means3/4 and unchanged production solver; named hysteresis continuations | B/C: original TSPACK startup censor, harmonic5/6 strict-balance refusals, Szymkiewicz7 tables; alternative constitutive models3..11 retain six strict failures/three censors; RIA12 unqualified; D/first-J history FAILs retained; J complete initialized-context successor qualifies its eleven named combinations |
-| Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux | C: strict solute substep receipt absent for reconstructed modes1/5; B: other original boundaries8/9 |
+| Lower boundary | Selected original Cauchy/closed/free; table, sine, head-dependent flux; K soil-air8 with ceramic plate/BBC | C: original independent trial receipt for reconstructed modes1/5 remains unqualified; B: original simultaneous head/flux9 |
 | Drainage/surface water | Selected original drainage methods2/3; undrained free-bottom trajectory | B: other original drainage/division/surface-water options; retained undrained closed-bottom day51 refusal is not A |
 | Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; canonical D/E evidence retains its named scope |
 | Irrigation | Registered and eligible generic water-only/chemical external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
@@ -687,3 +687,56 @@ alone does not establish it. `BLOCK_J_STATUS.json`, the three state contracts,
 per-source results and SHA256 raw archives under `integration/nomacro-coverage01/`
 own the recoverable evidence. Complete original no-macro option coverage and
 whole physical energy/science remain unqualified.
+
+
+## Block K: original soil-air and ceramic-plate lower boundary
+
+Sourcee7a4c1e89 qualifies the original SWBOTB8 branch through the same daily host.
+Six complete1096-day configurations cover water-only and chemical1 with original
+soil-air HPLATE0, explicit ceramic-plate HPLATE-50cm and HPLATE-25cm in a separate
+BBC file. The BBC case retains the unused original main-file SWBOTB3, so receipt
+dispatch must follow the effective original boundary file. No physical switch or
+plate parameter is changed silently; all derived inputs remain hash-bound.
+
+Original Fluxes reconstructs qbot from water storage AFTER HeadCalc. This
+reconstructed value is insufficient for an independent trial check. Only selected
+experimental8 generation adds an explicit candidate flux argument: zero when the
+original local flboth is closed, otherwise the original trial
+-kmean(NN+1)*hgrad(NN+1). Both original convergence and final acceptance receipt
+calls use that same input. Original solver equations, boundary threshold, qbot
+reconstruction, iterative algorithm and1e-10 water/solute guards are unchanged.
+The first generated Windows attempt omitted the argument at the final call and
+refused before day1 publication; that refusal remains sealed. The fixed source
+passes actual Windows O0 five days and own2to4 physical continuation. A real
+production receipt driver passes O0/O2 open/closed/explicit-zero and missing/
+nonfinite controls, with original native dependency providerO2.
+
+Run43847389872 completes all6576 model days. Actual touched/controller O0/O2
+native2/365/530 continuations, finite native temperature diagnostics, distinct
+origins, injected mass refusal, external discard/replay/durable recovery and
+foreign receipt identity refusal all pass. Twenty-four natural outlet windows
+are physical/native exact: open2to4 and closed169to171(HPLATE0),179to181(-25)
+or191to193(-50) at both optimizations. Offline checks confirm the actual O0 AND
+O2 outlet regimes; the1e-6/1e-12cm classification thresholds only identify regimes
+and do not replace any acceptance/balance limit. Maximum independent residuals
+are2.1586898935055387e-14cm water and1.7053025658242404e-13mg/cm2 solute.
+Original standalone reference diagnostics remain separately recorded, not science
+or original oxygen-accuracy qualification.
+
+Fresh43847432518 preserves the eight standard source/external seams. A fresh
+J combined-history build preserves all twelve emitted source images, unchanged
+original budget template and all kernel source hashes, so the unchanged complete
+J trajectories are not rerun. The receipt policy is explicitly bound as
+`original-soil-air-trial-flux-v1`; stale/foreign recipe metadata refuses before
+output. No new accepted boundary state or codec is introduced: flboth remains
+original per-trial workspace. Native state, original preprocessing owners,
+registered routes and frozen RC1/RC2 remain within their existing boundaries.
+
+`BLOCK_K_QUALIFICATION.json`, source contract/recovery record, component/Windows
+proof and SHA256 raw archives under `integration/nomacro-coverage01/` own the
+bounded result. The actual K merge receipt owns canonical admission. Modes1/5
+require a separate reconstructed-flow receipt; original readswap also supports
+mode9's paired head/flux tables, which remain unqualified. Mode9 is not identified
+as MODFLOW merely from its number; no MODFLOW campaign is selected here. Unexecuted
+option mixtures, full original no-macro coverage and whole energy/science remain
+unqualified. No independent historical project is added by these derived cases.

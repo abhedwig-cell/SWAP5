@@ -155,6 +155,9 @@ def build(reference, output, trace_richards=False, checkpoint_day=None, budget_r
         if len(values)!=1:raise ValueError('Missing/ambiguous physical selector: '+name)
         return int(values[0])
     micro_state=bool(project.input_directory and not project.macro and (selector('SWHYST') or selector('SWSNOW')))
+    from lower_boundary_receipt import enabled as lower_receipt_enabled
+    lower_receipt=lower_receipt_enabled(project)
+    if lower_receipt and not budget_retry:raise ValueError('Soil-air boundary requires independent strict trial receipt')
     if selector('SWMACRO')!=int(project.macro) or selector('SWSOLU')!=int(project.solute):
         raise ValueError('Original physical options disagree with declared project; no implicit disabling')
     soil_tables = selector('SWSOPHY')==1
@@ -650,6 +653,12 @@ end module plant_interface""")
         patched.insert(0,'interface_plant')
     if budget_retry:
         budget_source = APP / "hybrid_step_budget.f90"
+        if lower_receipt:
+            from lower_boundary_receipt import render_budget,render_headcalc
+            budget_source=output/'hybrid_step_budget.f90'
+            budget_source.write_text(render_budget((APP/'hybrid_step_budget.f90').read_text(encoding='cp1252')),encoding='cp1252')
+            path=output/'headcalc.f90'
+            path.write_text(render_headcalc(path.read_text(encoding='cp1252')),encoding='cp1252')
         subprocess.run([*common, "-c", str(budget_source)], cwd=output, check=True)
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
@@ -711,6 +720,10 @@ end module plant_interface""")
         build_identity['oxygen_lookup_state_source']=sha(APP/'oxygen_lookup_state.py')
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
+    if lower_receipt:
+        from lower_boundary_receipt import POLICY as LOWER_POLICY
+        build_identity['lower_boundary_receipt']={'policy':LOWER_POLICY,'source_sha256':sha(APP/'lower_boundary_receipt.py'),
+            'template_sha256':sha(APP/'hybrid_step_budget.f90'),'effective_SWBOTB':8}
     if not project.macro:
         build_identity['floating_point_profile'] = no_macro_fp_profile()
         build_identity['soil_table_policy'] = project.soil_table_policy if soil_tables else None

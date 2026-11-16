@@ -111,7 +111,7 @@ def inspect(directory):
     # Stateless original dispatches; complete original Fortran bodies are kept.
     # Other bottom variants (8/9), frost and stateful surfacewater remain
     # excluded until their complete process/state combinations are qualified.
-    allowed.update(SWBOTB=set(range(1, 8)), SWDRA={0, 1}, SWSOPHY={0, 1},
+    allowed.update(SWBOTB=set(range(1, 9)), SWDRA={0, 1}, SWSOPHY={0, 1},
                    SWETR={0, 1}, SWCROP={0, 1}, SWHYST={0, 1, 2}, SWSNOW={0, 1},
                    SWSP={0, 1}, SWDC={0, 1}, SWHEA={0, 1}, SWCALT={1,2},
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
@@ -132,7 +132,7 @@ def inspect(directory):
         boundary = switches((directory/(name if name.lower().endswith('.bbc') else name+'.bbc')).read_text(encoding='cp1252'))
     else:
         boundary = selected
-    if boundary.get('SWBOTB') not in range(1, 8):
+    if boundary.get('SWBOTB') not in range(1, 9):
         raise ValueError('Unsupported/missing original lower boundary')
     if selected['SWSOLU'] and boundary['SWBOTB'] in (1, 5):
         raise ValueError('Reconstructed bottom flux requires a separate strict substep receipt')

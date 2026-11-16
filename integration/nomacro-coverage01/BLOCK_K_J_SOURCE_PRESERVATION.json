@@ -1,0 +1,75 @@
+{
+  "original_runtime_source": "10d4cc551e779ab86f235d0151284f27bc92da45",
+  "current_source": "e7a4c1e89f1995d1545cede89eff2bbbd1a0b00c",
+  "case": "Actual previous combined water hysteresis/snow input",
+  "generated_optimization": "O0",
+  "original_provider_optimization": "O2",
+  "all_generated_images_exact": true,
+  "generated": {
+    "oxygenstress.f90": "92c2d871568acb6d48067b78e2e4c98e56e500b91e8c4aa27893e1933a28e07f",
+    "boundtop.f90": "5c95fa81587361cb1dbe29ecc36ddd5da91f1826654639066cc29c0fdb6a4287",
+    "RWU_micro.f90": "b2d8d4696897a36f4644f5a7e444481da67835097b527a20e0b07a6136501441",
+    "irrigation.f90": "eed36446c49d3d5fc72b4f1765aecf69c39f8121098db9aeece57b7a691696b7",
+    "wofost.f90": "034bb5fa7d4e58c2022b1ae99f9e71d0fc97e1468d4462aff94a0fd72606d29b",
+    "macropore.f90": "09a48c142bf34c6709c7a9cf1493059ff73b8c0362e60d7612019ba402736c3f",
+    "swap.f90": "b266b73b91a6240ee23dd80dde10984d59eadb4bf82e39b593c6f051073910ee",
+    "swap_main.f90": "ed576be15253d761cd803b5a1db2c9d11bd1c749a2bb0dc772176e5e63cd0c20",
+    "swap_csv_output.f90": "56661a6f0825bf8d5d1383c24cf704f27f7df371dfde5043ac04710aa4ef6dc0",
+    "swapoutput.f90": "5f932aa8e9e9cea51b057ac625a6075f20ff4b6925b4b89bd1ef89b15231bf6f",
+    "headcalc.f90": "fa7d96c944d14dfa08d76d3b9939e7d01f4ae3077ba1542b084760bbfe17176b",
+    "MOD_cropdevelopment.f90": "5b24571a58487d3bb7ba045c79183d60d310b7d7ce73fde80d3aad747893acb5"
+  },
+  "original_budget_source_exact": "5742a2728ab9b1fcbf82def1c16e22dc841360ffcc85afff4462d4391fe7517e",
+  "kernel_sources_exact": [
+    [
+      "src/solver/mod_soil_water_accepted_step_direction_contract.f90",
+      "cd20b8a00801cca6d66829ada5f1b531417c06b47641e9832d0917e67632cf6f"
+    ],
+    [
+      "src/transaction/mod_accepted_trajectory_directional_sensitivity.f90",
+      "bf03ee9c9a7b0b9ed64a066a5f16667417048f29df0f489a6152f1499c592393"
+    ],
+    [
+      "src/transaction/mod_accepted_trajectory_directional_publication.f90",
+      "b1aa29e21681b7be82449a995733e4ec7d2800a53916706349959cf6d33bb835"
+    ],
+    [
+      "src/transaction/mod_transaction_reference.f90",
+      "7682f14b5d7023fc8bdd62b64e73faa5d41d99780deaf80ea800a14b8cb36b27"
+    ],
+    [
+      "src/runtime/mod_canonical_contracts.f90",
+      "ece5867976feb35973bff0b791a3c9d436c4aa6f9e33a2cbd912dba3ac41528d"
+    ],
+    [
+      "src/runtime/mod_canonical_interval_runtime.f90",
+      "16f3b69415272ec78e0c36c74789b4976108c85432a0968fc7bff3ee2bbb0a65"
+    ],
+    [
+      "src/kernel/mod_kernel_transactions.f90",
+      "07967d9d1ef3b421bc3fabf294d43ecda308c12f184980834fc2989e01154ab3"
+    ],
+    [
+      "src/runtime/mod_groundwater_coupling_contract.f90",
+      "bb5b3e3d3aadb8c23a7520212c51616115e828468ee0757cd6ae1bba85aef205"
+    ],
+    [
+      "src/runtime/mod_groundwater_swap_forcing_adapter.f90",
+      "774c1f56a0e4fc655a714ee8026ce879a40dfa2a2cb40f973ddac4a3cdb0b515"
+    ],
+    [
+      "src/runtime/mod_groundwater_swap_transaction_participant.f90",
+      "b33b0e1ecf16d4fcfbe34b6e94cced7637ad1d22c57fa97a523b93e1b1be223e"
+    ],
+    [
+      "src/runtime/mod_groundwater_interface_mass_ledger.f90",
+      "1b94acaddca2e716d2687d0116a796071e9f56dbe4c146852070e38a8a7b9a38"
+    ],
+    [
+      "src/runtime/mod_fmr_soil_water_application_host.f90",
+      "f15b3c1c2524c90d9b24d3e5ec1f02d663c44cedd78e26ccdb6c46e771219937"
+    ]
+  ],
+  "lower_receipt_absent": true,
+  "scope": "Actual fresh build verifies complete emitted J/core dependency preservation; source-bound capsules require fresh metadata, no old rebinding. No unchanged full J model campaign repeated."
+}

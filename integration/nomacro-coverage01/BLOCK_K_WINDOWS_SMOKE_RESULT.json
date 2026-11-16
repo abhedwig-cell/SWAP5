@@ -1,0 +1,84 @@
+{
+  "runtime_source": "d42c68bba094d913f4ada9118f16e19a0ea233d7",
+  "status": "REAL_WINDOWS_SOIL_AIR_O0_SHORT_AND_OWN_RESTART_PASS",
+  "warm_days": 5,
+  "own_restart": [
+    2,
+    4
+  ],
+  "physical_exact": true,
+  "maximum_water_residual_cm": 4.473638392241477e-16,
+  "bottom_outward_cm": [
+    5.729137317235619,
+    1.9901844516121416,
+    1.243812881898151,
+    0.8979326642150102,
+    0.6971510817654054
+  ],
+  "retained_initial_caller_failure": {
+    "source": "22ef563f6",
+    "accepted_days": 0,
+    "message": "Missing soil-air trial boundary receipt",
+    "accepted_publication": false
+  },
+  "native_exact": "Hosted endpoint gate pending; local physical smoke does not imply full native/period qualification",
+  "events": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:/Users/Veldh012/swap5-coverage-evidence/K_inputs/water-air",
+        "--reference-work",
+        "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+        "--build-bundle",
+        "C:/Users/Veldh012/swap5-coverage-evidence/K_water_air_O0_fixed_build",
+        "--timeout-seconds",
+        "180",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\K_water_air_O0_fixed_warm",
+        "--days",
+        "5",
+        "--checkpoint-at",
+        "2"
+      ],
+      "seconds": 2.6580532998777926,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "tools/solute/run_water.py",
+        "--model",
+        "HYBRID_NOMACRO_WATER",
+        "--experimental-project",
+        "C:/Users/Veldh012/swap5-coverage-evidence/K_inputs/water-air",
+        "--reference-work",
+        "C:/Users/Veldh012/swap5-coverage-evidence/J_windows_provider",
+        "--build-bundle",
+        "C:/Users/Veldh012/swap5-coverage-evidence/K_water_air_O0_fixed_build",
+        "--timeout-seconds",
+        "180",
+        "--output",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\K_water_air_O0_fixed_cold",
+        "--days",
+        "4",
+        "--restart",
+        "C:\\Users\\Veldh012\\swap5-coverage-evidence\\K_water_air_O0_fixed_warm\\accepted-column-1-day-2.zip",
+        "--restart-day",
+        "2"
+      ],
+      "seconds": 2.485070199938491,
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "science": "NOT_QUALIFIED"
+}
