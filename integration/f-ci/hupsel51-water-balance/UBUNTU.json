@@ -1,0 +1,695 @@
+{
+  "status": "UBUNTU26_04_FULL_NATIVE_O0_O2_AND_NAMED_PASS",
+  "head_sha": "6e2cd26f873f9a935af92816a2f1d947df9293c7",
+  "tested_merge_ref": "ff58bbb4955e5d34b1a505df2e07dfdcfb992863",
+  "run_id": 43844795787,
+  "job_id": 133222178697,
+  "artifact_id": 14213874483,
+  "artifact_sha256": "f360696b6314a7c708f7ee119471cf30a15a925d1440490ddb4ebbdf6ef639d5",
+  "artifact_bytes": 22538684,
+  "profiles": {
+    "component": {
+      "status": "ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS",
+      "profiles": {
+        "O0": {
+          "cases": 36,
+          "maximum_relative_complex_step_error": 2.7675639557855903e-15,
+          "maximum_old_fixed_pond_relative_error": 40.000000000000114,
+          "actual": [
+            0.009999990000010001,
+            0.009999990099019704,
+            0.009999990000010001,
+            0.009999990002009598,
+            0.009999990000010001,
+            0.009999990001009899,
+            0.009996001599360257,
+            0.00999920006399488,
+            0.009996001599360257,
+            0.009996297667530544,
+            0.009996001599360257,
+            0.00999615532487505,
+            0.9999000099990001,
+            0.9999009999009999,
+            0.9999000099990001,
+            0.9999000299910027,
+            0.9999000099990001,
+            0.9999000199960009,
+            0.9615384615384615,
+            0.9920634920634921,
+            0.9615384615384615,
+            0.9642857142857143,
+            0.9615384615384615,
+            0.9629629629629629,
+            909.090909090909,
+            909.9099099099099,
+            909.090909090909,
+            909.1074350118159,
+            909.090909090909,
+            909.0991728024725,
+            24.390243902439025,
+            111.11111111111111,
+            24.390243902439025,
+            26.29016553067186,
+            24.390243902439025,
+            25.341130604288498
+          ]
+        },
+        "O2": {
+          "cases": 36,
+          "maximum_relative_complex_step_error": 2.7675639557855903e-15,
+          "maximum_old_fixed_pond_relative_error": 40.000000000000114,
+          "actual": [
+            0.009999990000010001,
+            0.009999990099019704,
+            0.009999990000010001,
+            0.009999990002009598,
+            0.009999990000010001,
+            0.009999990001009899,
+            0.009996001599360257,
+            0.00999920006399488,
+            0.009996001599360257,
+            0.009996297667530544,
+            0.009996001599360257,
+            0.00999615532487505,
+            0.9999000099990001,
+            0.9999009999009999,
+            0.9999000099990001,
+            0.9999000299910027,
+            0.9999000099990001,
+            0.9999000199960009,
+            0.9615384615384615,
+            0.9920634920634921,
+            0.9615384615384615,
+            0.9642857142857143,
+            0.9615384615384615,
+            0.9629629629629629,
+            909.090909090909,
+            909.9099099099099,
+            909.090909090909,
+            909.1074350118159,
+            909.090909090909,
+            909.0991728024725,
+            24.390243902439025,
+            111.11111111111111,
+            24.390243902439025,
+            26.29016553067186,
+            24.390243902439025,
+            25.341130604288498
+          ]
+        }
+      },
+      "cases": [
+        {
+          "c": 0.01,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.00999999000001
+        },
+        {
+          "c": 0.01,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.009999990099019704
+        },
+        {
+          "c": 0.01,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.00999999000001
+        },
+        {
+          "c": 0.01,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.009999990002009598
+        },
+        {
+          "c": 0.01,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.00999999000001
+        },
+        {
+          "c": 0.01,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.009999990001009897
+        },
+        {
+          "c": 0.01,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.009996001599360257
+        },
+        {
+          "c": 0.01,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.00999920006399488
+        },
+        {
+          "c": 0.01,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.009996001599360257
+        },
+        {
+          "c": 0.01,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.009996297667530544
+        },
+        {
+          "c": 0.01,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.009996001599360257
+        },
+        {
+          "c": 0.01,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.009996155324875048
+        },
+        {
+          "c": 1.0,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.9999000099990001
+        },
+        {
+          "c": 1.0,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.9999009999009999
+        },
+        {
+          "c": 1.0,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.9999000099990001
+        },
+        {
+          "c": 1.0,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.9999000299910028
+        },
+        {
+          "c": 1.0,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.9999000099990001
+        },
+        {
+          "c": 1.0,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.9999000199960009
+        },
+        {
+          "c": 1.0,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.9615384615384616
+        },
+        {
+          "c": 1.0,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 0.992063492063492
+        },
+        {
+          "c": 1.0,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.9615384615384616
+        },
+        {
+          "c": 1.0,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 0.9642857142857143
+        },
+        {
+          "c": 1.0,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.9615384615384616
+        },
+        {
+          "c": 1.0,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 0.962962962962963
+        },
+        {
+          "c": 1000.0,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 909.0909090909091
+        },
+        {
+          "c": 1000.0,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 909.9099099099099
+        },
+        {
+          "c": 1000.0,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 909.0909090909091
+        },
+        {
+          "c": 1000.0,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 909.107435011816
+        },
+        {
+          "c": 1000.0,
+          "step": 0.0001,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 909.0909090909091
+        },
+        {
+          "c": 1000.0,
+          "step": 0.0001,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 909.0991728024725
+        },
+        {
+          "c": 1000.0,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 24.390243902438957
+        },
+        {
+          "c": 1000.0,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.01,
+          "expected": 111.11111111111101
+        },
+        {
+          "c": 1000.0,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 24.390243902438957
+        },
+        {
+          "c": 1000.0,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 0.5,
+          "expected": 26.290165530671835
+        },
+        {
+          "c": 1000.0,
+          "step": 0.04,
+          "pond": 0.1,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 24.390243902438957
+        },
+        {
+          "c": 1000.0,
+          "step": 0.04,
+          "pond": 0.4,
+          "threshold": 0.2,
+          "resistance": 1.0,
+          "expected": 25.341130604288505
+        }
+      ],
+      "finite_difference_tolerance_is_not_a_physical_balance_tolerance": true
+    },
+    "O2": {
+      "undrained": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1085229956186993e-13,
+          "sum_water_residual_cm": 2.925243448620614e-12
+        },
+        "model_seconds": 1.09159166500001,
+        "build_sha256": "2729b8d0ac2b8bf0659f8081508328d5cb99d7403f7a769c2e5ee6a06f809fae",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.02167000599996527
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.0215980780000109
+          }
+        ]
+      }
+    },
+    "O0": {
+      "undrained": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1085229956186993e-13,
+          "sum_water_residual_cm": 2.925243448620614e-12
+        },
+        "model_seconds": 1.1290541409999832,
+        "build_sha256": "bd695bfc7b362ba8ad0519ad0d6b44964c7f289000fbc580ff0ff172b45a2754",
+        "profiles": {
+          "kernel_flags": [
+            "-O0",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O0",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.02254326500002435
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.022456723000004786
+          }
+        ]
+      }
+    },
+    "named": {
+      "grass": {
+        "status": "FULL_PASS",
+        "full_days": 1827,
+        "budgets": {
+          "days": 1827,
+          "max_water_cm": 1.2820290680911249e-13,
+          "max_kernel_cm": 1.2817524819297432e-13,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": -2.0501121882389723e-13
+        },
+        "model_seconds": 3.578509042999997,
+        "build_sha256": "daef9a26cd29e412441225551110189869066fb46474c52aca735c4efb13c618",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.017617956000037793
+          }
+        ]
+      },
+      "hupsel": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.99670639778745e-11,
+          "max_kernel_cm": 9.99724747430264e-11,
+          "max_solute_mg_cm2": 2.2308871501642002e-13,
+          "sum_water_residual_cm": 2.6687044339391815e-10
+        },
+        "model_seconds": 1.3082090789999938,
+        "build_sha256": "196e69b6aa219142a3fb595833c7716aa12f293668402aea88a565cc3af220f2",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.056327366000004986
+          }
+        ]
+      },
+      "salt": {
+        "status": "FULL_PASS",
+        "full_days": 1461,
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 2.9596394779396462e-12,
+          "max_kernel_cm": 2.9596325390457423e-12,
+          "max_solute_mg_cm2": 1.3832754386378099e-11,
+          "sum_water_residual_cm": 2.9657073368286047e-10
+        },
+        "model_seconds": 3.2599915490000058,
+        "build_sha256": "7bd360b5bfd6f3aa196f37a958aade58b2af93d21255e558fa0de46cbd0c67be",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 109,
+            "end": 111,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.023095839999996315
+          }
+        ]
+      }
+    },
+    "invocations": {
+      "O2": {
+        "argv": [
+          "tools/solute/check_hupsel51_repair.py",
+          "--reference-work",
+          "/home/runner/work/_temp/hupsel51-provider",
+          "--output",
+          "/home/runner/work/_temp/hupsel51-O2",
+          "--model-cap",
+          "60"
+        ],
+        "source_commit": "ff58bbb4955e5d34b1a505df2e07dfdcfb992863",
+        "suite": "candidate",
+        "host_api": "Validated DailyHost.step + native checkpoint publisher; no build rebinding",
+        "model_cap_seconds": 60.0
+      },
+      "O0": {
+        "argv": [
+          "tools/solute/check_hupsel51_repair.py",
+          "--suite",
+          "O0",
+          "--reference-work",
+          "/home/runner/work/_temp/hupsel51-provider",
+          "--output",
+          "/home/runner/work/_temp/hupsel51-O0",
+          "--model-cap",
+          "60"
+        ],
+        "source_commit": "ff58bbb4955e5d34b1a505df2e07dfdcfb992863",
+        "suite": "O0",
+        "host_api": "Validated DailyHost.step + native checkpoint publisher; no build rebinding",
+        "model_cap_seconds": 60.0
+      },
+      "named": {
+        "argv": [
+          "tools/solute/check_hupsel51_repair.py",
+          "--suite",
+          "named",
+          "--reference-work",
+          "/home/runner/work/_temp/hupsel51-provider",
+          "--output",
+          "/home/runner/work/_temp/hupsel51-named",
+          "--model-cap",
+          "60"
+        ],
+        "source_commit": "ff58bbb4955e5d34b1a505df2e07dfdcfb992863",
+        "suite": "named",
+        "host_api": "Validated DailyHost.step + native checkpoint publisher; no build rebinding",
+        "model_cap_seconds": 60.0
+      }
+    }
+  },
+  "artifact_local_path": "UBUNTU_RAW.zip"
+}

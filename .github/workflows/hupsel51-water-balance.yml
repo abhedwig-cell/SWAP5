@@ -1,0 +1,50 @@
+name: Closed Hupsel pond balance repair
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'app/hybrid_water/daily_host.py'
+      - 'app/hybrid_water/hybrid_step_budget.f90'
+      - 'tools/solute/check_closed_pond_jacobian.py'
+      - 'tools/solute/check_hupsel51_repair.py'
+      - '.github/workflows/hupsel51-water-balance.yml'
+      - 'tests/hupsel51/**'
+permissions:
+  contents: read
+concurrency:
+  group: hupsel51-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  qualification:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    env:
+      OMP_NUM_THREADS: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Prepare exact original no-macro provider
+        run: python3 -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/hupsel51-provider"
+      - name: Original scalar pond equation versus actual O0/O2 Jacobian
+        run: python3 -B tools/solute/check_closed_pond_jacobian.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-component"
+      - name: Shared soil-air receipt template O0/O2 after composition
+        run: python3 -B tools/solute/check_soil_air_receipt.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-soil-air"
+      - name: Full undrained1096 and exact own50/530 restarts O2
+        run: python3 -B tools/solute/check_hupsel51_repair.py --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-O2" --model-cap 60
+      - name: Full generated-donor and kernel O0 and exact native restarts
+        run: python3 -B tools/solute/check_hupsel51_repair.py --suite O0 --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-O0" --model-cap 60
+      - name: Three complete named applications and exact native continuations
+        run: python3 -B tools/solute/check_hupsel51_repair.py --suite named --reference-work "$RUNNER_TEMP/hupsel51-provider" --output "$RUNNER_TEMP/hupsel51-named" --model-cap 60
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: hupsel51-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/hupsel51-component
+            ${{ runner.temp }}/hupsel51-soil-air
+            ${{ runner.temp }}/hupsel51-O2
+            ${{ runner.temp }}/hupsel51-O0
+            ${{ runner.temp }}/hupsel51-named
+          retention-days: 30
