@@ -117,8 +117,6 @@ def inspect(directory):
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0})
-    if not selected['SWSOLU'] and (selected['SWHYST'] or selected['SWSNOW']):
-        raise ValueError('Water-only hydraulic/snow history requires complete original restart integration')
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
     if selected['SWSNOW'] and selected['SWCALT'] != 2:
@@ -230,6 +228,9 @@ def validate(project):
 def auxiliary_magic(project):
     selected = inspect(project.input_directory)['selectors']
     history = int(selected['SWHYST']>0)+2*selected['SWSNOW']
+    if history:
+        from micro_lookup_state import MAGICS
+        return MAGICS[(project.solute,bool(selected['SWCFBS']))][history-1].encode()
     if selected['SWCFBS']:
         return ((b'S5ETC016',b'S5EHC017',b'S5ESC018',b'S5EMC019') if project.solute else
                 (b'S5ETW020',b'S5EHW021',b'S5ESW022',b'S5EMW023'))[history]

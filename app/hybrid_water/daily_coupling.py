@@ -143,6 +143,12 @@ def validate_bundle(bundle, reference, project):
     """Reuse a qualified binary only at its exact source/build/input boundary."""
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
+    from micro_lookup_state import POLICY,enabled
+    expected_micro=POLICY if enabled(project) else None
+    if identity.get('micro_lookup_state_policy')!=expected_micro:
+        raise ValueError('Bundle original microscopic lookup state policy differs; rebuild without rebinding')
+    if expected_micro and identity.get('micro_lookup_state_source')!=h.sha(h.APP/'micro_lookup_state.py'):
+        raise ValueError('Bundle original microscopic lookup state generator differs')
     if not project.macro:
         tables=False
         if project.input_directory:
