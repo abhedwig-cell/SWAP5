@@ -1,5 +1,5 @@
 """Actual complete-history native decoder attacks and full daily cold continuation."""
-import contextlib,hashlib,json,struct,zipfile
+import contextlib,hashlib,json,struct,zipfile,time
 import daily_host as h
 from daily_coupling import CoupledDailyColumn,validate_bundle
 
@@ -44,6 +44,7 @@ def malformed_active(origin,day,project,label,reuse,out,call):
 
 
 def every_day(bundle,reference,project,out,expected):
+    started=time.monotonic()
     out.mkdir();meta,case=validate_bundle(bundle,reference,project)
     warmdir=out/'warm';warmdir.mkdir()
     cold=CoupledDailyColumn(bundle,reference,out/'cold',project,'complete-history-daily')
@@ -56,6 +57,11 @@ def every_day(bundle,reference,project,out,expected):
                 row=warm.step(1,checkpoint=True)
                 assert row['committed'] and physical(row)==physical(expected[day-1]),(day,'warm reference')
                 proposal=cold.prepare()
+                if physical(proposal.budget)!=physical(row):
+                    (out/'FAILURE.json').write_text(json.dumps(dict(day=day,warm=row,cold=proposal.budget,
+                        accepted_days=day-1,seconds=time.monotonic()-started,origin_sha256=h.sha(cold.checkpoint) if cold.checkpoint else None,
+                        warm_native_sha256=h.sha(warmdir/f'accepted-column-1-day-{day}.zip'),
+                        cold_candidate_sha256=h.sha(cold._candidate[3]),scope='Exactness FAIL; never relax or promote'),indent=2)+'\n')
                 assert physical(proposal.budget)==physical(row),(day,'cold physical')
                 assert payload(cold._candidate[3])==payload(warmdir/f'accepted-column-1-day-{day}.zip'),(day,'cold native')
                 if day in (2,365,530,531,730,1095):
@@ -69,7 +75,7 @@ def every_day(bundle,reference,project,out,expected):
                     cold=CoupledDailyColumn(bundle,reference,out/f'recovered-{day}',project,'complete-history-daily',origin=cold.checkpoint,day=day)
                     events.append(day)
         warm.close()
-    return dict(days=project.last_day,every_physical_exact=True,every_native_exact=True,disk_recovery_days=events)
+    return dict(seconds=time.monotonic()-started,days=project.last_day,every_physical_exact=True,every_native_exact=True,disk_recovery_days=events)
 
 
 def transitions(bundle,reference,project,out):

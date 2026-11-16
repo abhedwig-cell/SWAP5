@@ -234,7 +234,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source-root',type=Path,required=True);p.add_argument('--prior',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True);p.add_argument('--reconnect-wofost-interface',action='store_true');p.add_argument('--drainage-snapshots',action='store_true');p.add_argument('--variables-snapshots',action='store_true');p.add_argument('--micro-lookup-replay',action='store_true');a=p.parse_args()
-    assert sum((a.reconnect_wofost_interface,a.drainage_snapshots,a.variables_snapshots,a.micro_lookup_replay))<=1
+    assert not a.micro_lookup_replay and not a.drainage_snapshots
     pinned=a.source_root.resolve();assert subprocess.check_output(['git','rev-parse','HEAD'],cwd=pinned,text=True).strip()==PIN
     sys.path.insert(0,str(pinned/'tools/solute'));sys.path.insert(0,str(pinned/'app/hybrid_water'))
     import daily_host as h
@@ -275,6 +275,40 @@ def main():
         provider_flags=['-O2','-cpp','-Dlinux','-finit-local-zero','-ffree-line-length-none','-fallow-argument-mismatch',*prepared['floating_point_profile']['flags']]
         compile(['gfortran',*provider_flags,'-I',str(objects),'-I',str(ttutil),'-c','RWU_micro.f90'])
         replacements['RWU_micro.o']=target/'RWU_micro.o'
+    root=(target/'MOD_cropdevelopment.f90').read_text(encoding='cp1252')
+    assert h.sha(target/'MOD_cropdevelopment.f90')==identity['donor_generated']['MOD_cropdevelopment.f90']
+    modulepart=re.split(r'(?im)^\s*contains\s*$',root,1)[0]
+    root_fields=[];root_writes=[]
+    for line in modulepart.splitlines():
+        match=re.match(r'\s*(real\([^)]*\)|integer|logical)(?!\w).*?\bsave\s*::\s*(.*)',line,re.I)
+        if not match:continue
+        kind='real' if match[1].lower().startswith('real') else match[1].lower()
+        for name in match[2].split('!')[0].split(','):
+            name=name.strip().split('=')[0].strip();assert re.fullmatch(r'\w+',name),(line,name)
+            count='size('+name+')' if 'dimension' in line.lower() else '1'
+            root_fields.append(dict(field=name,kind=kind,declaration=line.strip()))
+            root_writes.append('write(unit)'+name)
+            root_writes.append("write(*,'(a,1x,a,1x,a,3(1x,i0))')'DIAG_DRAIN_LAYOUT',phase,'"+name+"',"+str({'real':1,'integer':2,'logical':3}[kind])+','+count+',storage_size('+name+')')
+    routine="""
+subroutine hybrid_root_dump(phase)
+use variables,only:t1900
+character(*),intent(in)::phase
+integer::unit
+if(t1900/="""+str(project.start_clock+524)+"""d0)return
+if(phase/='BEFORE_METEO3'.and.phase/='BEFORE_DRAIN2'.and.phase/='AFTER_DRAIN2')return
+open(newunit=unit,file='diagnostic-drain-'//trim(phase)//'.bin',access='stream',form='unformatted',status='replace')
+"""+'\n'.join(root_writes)+"""
+close(unit)
+end subroutine
+"""
+    root=re.sub(r'(?im)^(\s*)contains\s*$',r'\1public :: hybrid_root_dump\n\1contains',root,count=1)
+    root=re.sub(r'(?im)^\s*end module MOD_cropdevelopment',routine+'\nend module MOD_cropdevelopment',root,count=1)
+    assert 'subroutine hybrid_root_dump' in root
+    (target/'MOD_cropdevelopment.f90').write_text(root,encoding='cp1252')
+    compile(['gfortran',*identity['donor_flags'],'-I',str(objects),'-I',str(ttutil),'-c','MOD_cropdevelopment.f90'])
+    def root_wrapper(selected,clock,variables=False):
+        return 'subroutine dump_drainage(phase)\nuse MOD_cropdevelopment,only:hybrid_root_dump\ncharacter(*),intent(in)::phase\ncall hybrid_root_dump(phase)\nend subroutine\n',root_fields
+    globals()['drainage_source']=root_wrapper
     diagnostic,inventory=snapshot_source(ref/'build/swap-selected',project.start_clock+524,a.drainage_snapshots,a.variables_snapshots,a.micro_lookup_replay)
     (target/'hybrid_state_diagnostic.f90').write_text(diagnostic)
     for filename in ('swap.f90','swap_main.f90'):
@@ -331,8 +365,9 @@ def main():
         private_executable_sha256=h.sha(h.executable(target,'day_donor')),
         scope='Read-only original component-state evidence, not current public qualification or demonstrated causation')
     if a.drainage_snapshots or a.variables_snapshots:
-        result['complete_component_module']='variables' if a.variables_snapshots else 'MOD_drain'
+        result['complete_component_module']='MOD_cropdevelopment'
         result['complete_component_comparison']=drainage_comparison(out)
+        result['whole_root_field_inventory']=root_fields
     if a.micro_lookup_replay:
         capture=out/'warm/original/hybrid-lookup-capture.bin'
         restored=out/'cold-restored/original/hybrid-lookup-restored.bin'

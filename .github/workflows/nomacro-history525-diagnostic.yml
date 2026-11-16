@@ -1,4 +1,4 @@
-name: Current active history524-to525 component discriminator
+name: Current complete crop interface and root component discriminator
 on:
   push:
     branches: [codex/nomacro-coverage10]
@@ -34,7 +34,7 @@ jobs:
           github-token: ${{ github.token }}
           path: ${{ runner.temp }}/prior
       - name: Reproduce complete original component state at current524-to525
-        run: python3 -B tools/solute/probe_current_history525.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --variables-snapshots
+        run: python3 -B tools/solute/probe_current_history525.py --source-root "$GITHUB_WORKSPACE/pinned" --prior "$RUNNER_TEMP/prior" --output "$RUNNER_TEMP/proof" --variables-snapshots --reconnect-wofost-interface
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -57,3 +57,21 @@ is justified. Keep full binary snapshots/raw report. Next read-only inventory
 ALL numeric declarations of the original implicitly SAVE Variables module,
 not only previous hand-selected profiles, at the same three process boundaries.
 No physical or numerical change and no new accepted-state publication.
+
+
+Current16Nov successor: public initialized original microscopic tables qualified
+local O0/O2; first current matrix43833787531 full11x1096 and named native windows
+pass, but daily physical/native proof first fails154. Complete original top module
+replay43835300377 is causal; production complete top72-byte state + deferred apply
+has native local15refusals per O0/O2 and real generated Windows2to4 PASS. Build-order
+failure43835991362 retained; owner-before-consumer fixed in337706029.
+
+Current source337706029 run43836309698 passes four calendar windows at both O0/O2
+and DAILY physical/native1..524; physical525 fails. Candidate NOT canonically
+admitted. No additional complete11 matrix selected until this discriminator resolves.
+Read-only original complete component diagnostic43837078318 at pinned337706029
+uses exact accepted524 and failed525 native payload, no rebind/publication. Follow
+that existing run to terminal, inspect original whole state before selecting a repair.
+Earlier D cache hypotheses and all original science/mass FAILs remain failed.
+Current canonical observedf1883e6fa (RC2 package only; app/src unchanged); reconcile
+live delta before any future admission. FrozenRC1 unchanged11529865e.
