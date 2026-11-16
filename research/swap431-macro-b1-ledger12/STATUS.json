@@ -1,8 +1,19 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "LOCAL_NUMERIC_OUTPUT_CONTINUITY_QUALIFIED_WITH_HISTORY_EXCLUSION",
   "baseline": "5306c47c7c80612a4c913a16e2a4b024db868543",
   "scope": "Same completed original day boundary; local numerical cumulative/intermediate water output continuity; no recovery of pre-bootstrap lost histories",
   "routes": "O0/O2 continue+resume one nextday step, O2 old payload rejection",
   "cap_seconds": 20,
-  "physics_changes": false
+  "physics_changes": false,
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "local_numeric_continuity": "PASS_SAME_MIDNIGHT_ONE_NEXTDAY_STEP_O0_O2",
+  "full_original_period_cumulative_validity": "NOT_QUALIFIED_PREBOOTSTRAP_HISTORY_MISSING",
+  "results": "RESULT.json",
+  "report": "REPORT.md",
+  "assessment": "assess_ledger12.py",
+  "field_schema": "LEDGER_FIELDS.json",
+  "model_routes": 5,
+  "preliminary_routes": 4,
+  "official_promotion": false,
+  "next_safe_step": "Preserve local continuity PASS; full-period historical totals require real same-candidate source history, never fabrication or an unauthorized broad campaign"
 }

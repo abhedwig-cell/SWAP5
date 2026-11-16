@@ -1,0 +1,55 @@
+{
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "local_numeric_water_output_continuity": "PASS_SAME_MIDNIGHT_ONE_STEP_O0_O2",
+  "full_original_period_cumulative_validity": "NOT_QUALIFIED_INHERITED_PREBOOTSTRAP_HISTORY_MISSING",
+  "physical_results": [
+    {
+      "optimization": "O0",
+      "step": {
+        "begin": 35797.0,
+        "dt": 0.0001733361984161963,
+        "end": 35797.0001733362,
+        "inventory_error_cm": -1.3592805266776642e-14,
+        "paired_exchange_error": 2.7755575615628914e-17
+      }
+    },
+    {
+      "optimization": "O2",
+      "step": {
+        "begin": 35797.0,
+        "dt": 0.0001733361984161963,
+        "end": 35797.0001733362,
+        "inventory_error_cm": -1.3592805266776642e-14,
+        "paired_exchange_error": 2.7755575615628914e-17
+      }
+    }
+  ],
+  "ledger_checks": [
+    {
+      "optimization": "O0",
+      "ledger_fields": 132,
+      "install_begin_accepted_exact": true,
+      "BMA_body_exact_excluding_wall_clock": true,
+      "primitive_ledger_increments_verified": true
+    },
+    {
+      "optimization": "O2",
+      "ledger_fields": 132,
+      "install_begin_accepted_exact": true,
+      "BMA_body_exact_excluding_wall_clock": true,
+      "primitive_ledger_increments_verified": true
+    }
+  ],
+  "output_memory_correction": "Explicit FrMpWalWetIntegralOld replaces local shadow; original continuous result preserved",
+  "format": "V3 with separate required 132-field ledger block; old payload rejected when ledger restoration requested",
+  "model_routes": 5,
+  "preliminary_routes": 4,
+  "max_seconds": 0.6264168999623507,
+  "physics_solver_changes": false,
+  "official_promotion": false,
+  "exclusions": [
+    "No reconstruction of lost original-run cumulative history or valid full-period BMA balance claim",
+    "No byte-append/full CSV BAL BLC/PEARL integration or timestamp continuity claim",
+    "Only selected five-domain completed-day case and one nextday step; no other modes/full campaigns"
+  ]
+}

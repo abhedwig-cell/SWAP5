@@ -1,0 +1,98 @@
+--- a/macropore_native.f90
++++ b/macropore_native.f90
+@@ -48,6 +48,7 @@
+    real(8),                       save :: ZnCrAr          = 0.d0    ! Depth at which crack area of soil surface is calculated (L)
+    
+ ! --- Macropore variables
++   real(8),save :: FrMpWalWetIntegralOld(madm,macp)=0d0
+    logical, dimension(madm,macp), save :: FlEndSrpEvt     = .TRUE.  ! Flag indicating the end of a sorptivity event
+    
+    integer, dimension(madm),      save :: ICpBtDm         = 0       ! Compartment number containing actual bottom depth of domain (-)
+@@ -1193,7 +1194,7 @@
+       integer ic, id
+       real(8) AvFrMpWlWtDm1Cp(MaCp), AvFrMpWlWtDm2Cp(MaCp)
+       !real(8) DevMasBalDm1, DevMasBalDm2
+-      real(8) FrMpWalWetOld(MaDm,MaCp) 
++ 
+       real(8) QInIntSatDm1Cp(MaCp),  QInIntSatDm2Cp(MaCp)
+       real(8) QInMtxSatDm1Cp(MaCp),  QInMtxSatDm2Cp(MaCp)
+       real(8) QOutMtxSatDm1Cp(MaCp), QOutMtxSatDm2Cp(MaCp) 
+@@ -1213,8 +1214,8 @@
+          QTopMPDm1Cp(ic)     = QTopMpDmCp(1,ic)
+ 
+ !     AvFrMpWlWtDm1Cp = fraction of mp.wall in contact with saturated water for Dm1 averaged over dt
+-         AvFrMpWlWtDm1Cp(ic) = PpDmCp(1,ic) *  (FrMpWalWet(1,ic)+FrMpWalWetOld(1,ic)) / 2.d0
+-         FrMpWalWetOld(1,ic) = FrMpWalWet(1,ic)
++         AvFrMpWlWtDm1Cp(ic) = PpDmCp(1,ic) *  (FrMpWalWet(1,ic)+FrMpWalWetIntegralOld(1,ic)) / 2.d0
++         FrMpWalWetIntegralOld(1,ic) = FrMpWalWet(1,ic)
+ !     Water content         
+          WaUnMpDm1Cp(ic) = WaUnMpDmCp(1,ic)
+       end do
+@@ -1245,8 +1246,8 @@
+             QTopMpDm2Cp(ic)     = QTopMpDm2Cp(ic)     + QTopMpDmCp(id,ic)
+ !   - AvFrMpWlWtDm2Cp = fraction of mp.wall in contact with water for Dm2 averaged over dt
+             AvFrMpWlWtDm2Cp(ic)  = AvFrMpWlWtDm2Cp(ic) + PpDmCp(id,ic) *  &
+-                         (FrMpWalWet(id,ic)+FrMpWalWetOld(id,ic)) / 2.d0
+-            FrMpWalWetOld(id,ic) = FrMpWalWet(id,ic)
++                         (FrMpWalWet(id,ic)+FrMpWalWetIntegralOld(id,ic)) / 2.d0
++            FrMpWalWetIntegralOld(id,ic) = FrMpWalWet(id,ic)
+ !     Water content
+             WaUnMpDm2Cp(ic) = WaUnMpDm2Cp(ic) + WaUnMpDmCp(id,ic)
+          end do
+--- a/native_state.f90
++++ b/native_state.f90
+@@ -111,12 +111,13 @@
+ integer::ios,n,nd,v,phase
+ character(32)::tag
+ character(64)::sig
++character(8)::require_ledger
+ if(swmacro/=1) return
+ if(rw==2) then
+  if(swmbf/=1.or.swabs/=1.or.IDecMpRat/=0.or.FlDecMpRat.or.fldecdt) error stop 'NATIVE09 unsupported boundary'
+  if(.not.day_ready) error stop 'MID11 writer phase not complete'
+- tag='SWAP431_MACRO_RESTART_V2'
+- write(u) tag,2,numnod,NumDm,signature,2
++ tag='SWAP431_MACRO_RESTART_V3'
++ write(u) tag,3,numnod,NumDm,signature,2
+  write(u) WaSrMpDm(1:NumDm)
+  write(u) WaUnMpDm(1:NumDm)
+  write(u) WaUnMpDmCp(1:NumDm,1:numnod)
+@@ -200,6 +201,7 @@
+  write(u) fl_cropemergence
+  write(u) fl_cropharvest
+  write(u) cumdens_top(1:numnod+1)
++ call ledger12_io(u,2)
+  tag='NATIVE09_COMPLETE'
+  write(u) tag
+  return
+@@ -207,7 +209,7 @@
+ read(u,iostat=ios) tag,v,n,nd,sig
+ if(ios/=0) error stop 'NATIVE09 missing trailer'
+ phase=1
+-if(v==2.and.tag=='SWAP431_MACRO_RESTART_V2') then
++if(((v==2.and.tag=='SWAP431_MACRO_RESTART_V2').or.(v==3.and.tag=='SWAP431_MACRO_RESTART_V3'))) then
+  backspace(u)
+  read(u,iostat=ios) tag,v,n,nd,sig,phase
+  if(ios/=0.or.phase/=2) error stop 'MID11 invalid completed-day phase'
+@@ -447,6 +449,10 @@
+ read(u,iostat=ios) b_cumdens_top(1:n+1)
+ if(ios/=0) error stop 'NATIVE09 incomplete cumdens_top'
+ if(.not.all(ieee_is_finite(b_cumdens_top(1:n+1)))) error stop 'NATIVE09 nonfinite cumdens_top'
++call get_environment_variable('LEDGER12_REQUIRE',require_ledger)
++if(trim(require_ledger)=='1'.and.v/=3) error stop 'LEDGER12 required history absent'
++if(v==3.and.nd/=5) error stop 'LEDGER12 selected domain mismatch'
++if(v==3) call ledger12_io(u,1)
+ read(u,iostat=ios) tag
+ if(ios/=0.or.tag/='NATIVE09_COMPLETE') error stop 'NATIVE09 incomplete trailer'
+ if(b_tstart/=tstart.or.b_dt<=0.or.b_dtold<=0) error stop 'NATIVE09 time/origin mismatch'
+@@ -687,8 +693,10 @@
+ ! SoilWater1 does not integrate water or sorption for SWINCO3/SWHYST0.
+ call soilwater(1)
+ call install_host()
++call ledger12_apply()
+ fl_readcropfile=.false.
+ call dump('native_installed')
++call ledger12_dump('ledger_installed')
+ end subroutine
+ subroutine native09_dump(label)
+ use MOD_native09, only:dump
