@@ -1,0 +1,41 @@
+name: Scheduled pond maximum native restart
+on:
+  pull_request:
+    branches: [integration/f-ci-canonical]
+    paths:
+      - 'app/hybrid_water/history_top_state.py'
+      - 'app/hybrid_water/daily_host.py'
+      - 'app/hybrid_water/daily_coupling.py'
+      - 'tests/pondmx_restart/**'
+      - '.github/workflows/pondmx-restart.yml'
+permissions:
+  contents: read
+concurrency:
+  group: pondmx-restart-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Prepare immutable original provider without model execution
+        run: python -B tools/solute/run_water.py --no-macro-release --prepare-sources --reference-work "$RUNNER_TEMP/pondmx-provider"
+      - name: Actual selected top codec O0/O2 and refusals
+        run: python -B tests/pondmx_restart/component.py "$RUNNER_TEMP/pondmx-provider" "$RUNNER_TEMP/pondmx-component"
+      - name: Unselected original top codec O0/O2 unchanged
+        run: python -B tools/solute/check_top_history_codec.py --reference-work "$RUNNER_TEMP/pondmx-provider" --output "$RUNNER_TEMP/pondmx-legacy"
+      - name: Full water and chemical1096 O0/O2 native restarts and original431
+        run: python -B tests/pondmx_restart/qualify.py --reference-work "$RUNNER_TEMP/pondmx-provider" --output "$RUNNER_TEMP/pondmx-full"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pondmx-restart-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/pondmx-component
+            ${{ runner.temp }}/pondmx-legacy
+            ${{ runner.temp }}/pondmx-full
+          retention-days: 30
