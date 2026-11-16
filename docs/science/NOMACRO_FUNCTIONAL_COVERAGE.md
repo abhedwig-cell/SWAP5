@@ -926,3 +926,48 @@ existing current-source selector and actual N merge receipt govern admission.
 Chemical subsurface transport, other unqualified options/mixes, whole energy/
 science and the preserved nominal runon diagnostic remain open. No independent
 historical project is added; fixed RC1/RC2 are untouched.
+## Block O: complete original scheduled-pond history context
+
+**Qualified, pending canonical admission.** The independent immutable mixture
+cohort in `integration/nomacro-mixtures01` retained four real199to201 native
+FAILs for water/chemical scheduled pond+runon+hysteresis2. Physical rows, CSV and
+result.end were exact; macro.bin differed in six original MOD_top.h0max bytes.
+Actual output-only instrumentation reproduced the original carry loss:
+variables.pondmx remained0.19793802345058301cm warm, while cold readswap initialized
+it to0.2cm. Restoring all eight MOD_top fields alone did not restore that carry.
+The probe records its actual generated source/build and is diagnostic evidence,
+not a production source or capsule used for qualification.
+
+For experimental SWPONDMX1 with snow/hysteresis history, the complete original
+top context now includes that actual PondRunoff-owned pondmx value alongside
+all eight MOD_top fields. It is staged and applied after original initialization.
+The top record is version2/80bytes with distinct auxiliary magic36..47 and an
+explicit source-bound policy. Old-format/foreign-clock/nonfinite/negative pond
+state is refused; no value is inferred from h0max or recalculated from DATEPMX.
+The original BoundTop/PondRunoff update schedule and physical equations remain
+unchanged. Other selected configurations retain their emitted original sources.
+
+Windows and Ubuntu each pass two1096-day configurations at both actual touched
+O0/O2 profiles: eight full trajectories,8768days and32exact own2/199/365/530
+windows. Every case first passes a short5-day execution and exact own2to4.
+All4384Windows physical daily rows are exact to the old failed-source full runs;
+that preservation does not relabel the four old native failures. Max residuals
+are water1.6611712005953905e-13cm, kernel1.6608936448392342e-13cm and
+solute2.1337792643905118e-13mg/cm2, with all hard limits unchanged1e-10.
+
+Each full profile passes independent-origin isolation, inconsistent-mass refusal
+without commit, external discard/replay and disk recovery, foreign policy refusal,
+and four real rehashed native-corruption refusals with zero accepted days.
+The real original top codec in its complete native closure passes O0/O2 with
+18invalid-state refusals per optimization; the legacy72byte mode also passes.
+Fresh actual generated-source/input/policy comparisons preserve two prior
+plate/snow/hysteresis owners, both M surface routes, L prescribed head5, two N
+external irrigation routes and registered Grassgrowth. Independent compilation
+binary identity is not claimed. No general solver/platform/performance campaign
+or moving full F-CI was needed for this dependency-specific restoration.
+
+`BLOCK_O_QUALIFICATION.json` and source-bound raw archives own the executed
+postimage. Original431 common-field differences, all earlier strict FAILs,
+chemical subsurface irrigation refusal, whole science and whole energy remain
+**NOT_QUALIFIED**. This repairs native history completeness, without establishing
+scientific equivalence or all-option completion.

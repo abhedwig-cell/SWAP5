@@ -43,11 +43,13 @@ def management_end(aux,project):
     selected=e.inspect(project.input_directory)['selectors']
     count=(5*project.nodes+4 if selected['SWHYST'] else 0)+(2*project.nodes+2 if selected['SWSNOW'] else 0)
     from micro_lookup_state import ALL_MAGICS
-    size=struct.unpack_from('=i',aux,len(aux)-4)[0] if aux[:8] in ALL_MAGICS else 0
+    from scheduled_pond_state import ALL_MAGICS as POND_MAGICS
+    top_bytes=80 if aux[:8] in POND_MAGICS else 72
+    size=struct.unpack_from('=i',aux,len(aux)-4)[0] if aux[:8] in ALL_MAGICS|POND_MAGICS else 0
     if size:assert 44<=size<=len(aux)
-    oxygen_size=struct.unpack_from('=i',aux,len(aux)-size-72-4)[0] if size else 0
+    oxygen_size=struct.unpack_from('=i',aux,len(aux)-size-top_bytes-4)[0] if size else 0
     if oxygen_size:assert oxygen_size in (24,24+48*project.nodes)
-    return len(aux)-size-(72 if size else 0)-oxygen_size-8*count-(100 if selected['SWCFBS'] else 0)
+    return len(aux)-size-(top_bytes if size else 0)-oxygen_size-8*count-(100 if selected['SWCFBS'] else 0)
 
 
 def native_temperatures(checkpoint,project):

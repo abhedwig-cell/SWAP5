@@ -84,7 +84,7 @@ def saved_names(text):
                       flags=re.MULTILINE | re.IGNORECASE)
 
 
-def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False, plant_et_state=False, micro_lookup_state=False):
+def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, nonmacro=False, solute_state=False, hydraulic_history=False, thermal_history=False, management_state=False, plant_et_state=False, micro_lookup_state=False, scheduled_pond_history=False):
     selected = build / "swap-selected"
     macro = (selected / "macropore.f90").read_text(encoding="cp1252")
     variables = (selected / "variables.f90").read_text(encoding="cp1252")
@@ -254,6 +254,8 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
         if not nonmacro or not managed or not (hydraulic_history or thermal_history):
             raise ValueError('Microscopic lookup state requires managed experimental no-macro history')
         from micro_lookup_state import MAGICS
+        if scheduled_pond_history:
+            from scheduled_pond_state import MAGICS
         history=int(hydraulic_history)+2*int(thermal_history)
         old_magic=((['S5ETC016','S5EHC017','S5ESC018','S5EMC019'] if solute_state else
                     ['S5ETW020','S5EHW021','S5ESW022','S5EMW023'])[history] if plant_et_state else
