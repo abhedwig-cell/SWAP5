@@ -1,0 +1,802 @@
+[
+  {
+    "module": "MOD_integral",
+    "name": "inqrot",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inq",
+    "shape": "macp+1",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inqssdi",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inqpotrot",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inqredrot",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqdo",
+    "shape": "macp+1",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqup",
+    "shape": "macp+1",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqrot",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqssdi",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqredwet",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqreddry",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqredsol",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqredfrs",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iintc",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "isintc",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iepd",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "ipeva",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iptra",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "ievap",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iruno",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "irunon",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqbot",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqbdo",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqbup",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqtdo",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqtup",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "igrai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inrai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "igird",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inird",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cgrai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cnrai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "caintc",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqrot",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqbot",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqbotdo",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqbotup",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqssdi",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqtdo",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqtup",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "crunoff",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "crunon",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cevap",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cepd",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cpeva",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cptra",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cinund",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqprai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cgird",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cnird",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqdra",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqdrain",
+    "shape": "madr",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqdrainin",
+    "shape": "madr",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cqdrainout",
+    "shape": "madr",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inqdra",
+    "shape": "madr,macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inqdra_in",
+    "shape": "madr,macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "inqdra_out",
+    "shape": "madr,macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "iqdra",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cgsnow",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "cmelt",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "csnrai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "csubl",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "isnrai",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "igsnow",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "isubl",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "inqpotrot_day",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "inqredrot_day",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "iqrot_day",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "iqreddry_day",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "iqredsol_day",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "iptra_day",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "ialpwet_day",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_integral_global",
+    "name": "ialpdry_day",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "WaSrDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "WaSrDm1Ini",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "WaSrDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "WaSrDm2Ini",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "WaUnMpDm1Cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "WaUnMpDm2Cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInIntSatDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInIntSatDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInMtxSatDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInMtxSatDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInTopLatDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInTopLatDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInTopVrtDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpInTopVrtDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpOutDrRap",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpOutMtxSatDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpOutMtxSatDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpOutMtxUnsDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "cQMpOutMtxUnsDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IAvFrMpWlWtDm1",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IAvFrMpWlWtDm2",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQExcMtxDm1Cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQExcMtxDm2Cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInTopLatDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInTopLatDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInTopVrtDm1",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInTopVrtDm2",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInIntSatDm1cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInIntSatDm2cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInMtxSatDm1cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQInMtxSatDm2cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQMpOutDrRap",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQOutMtxSatDm1cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQOutMtxSatDm2cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQOutMtxUnsDm1cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQOutMtxUnsDm2cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "iQOutDrRapCp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IQTopMpDm1Cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IQTopMpDm2Cp",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IWaSrDm1Beg",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IWaSrDm2Beg",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IWaUnDm1CpBeg",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_swap_mp",
+    "name": "IWaUnDm2CpBeg",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "volini",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "pondini",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_snow",
+    "name": "snowinco",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "ivolbeg",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "ipondbeg",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "isicbeg",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "issnowbeg",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "outper",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "ithetabeg",
+    "shape": "macp",
+    "type": "real(8)"
+  },
+  {
+    "module": "variables",
+    "name": "ioutdat",
+    "shape": "",
+    "type": "integer"
+  },
+  {
+    "module": "variables",
+    "name": "ioutdatint",
+    "shape": "",
+    "type": "integer"
+  },
+  {
+    "module": "variables",
+    "name": "nprintcount",
+    "shape": "",
+    "type": "integer"
+  },
+  {
+    "module": "variables",
+    "name": "cntper",
+    "shape": "",
+    "type": "integer"
+  },
+  {
+    "module": "variables",
+    "name": "period",
+    "shape": "",
+    "type": "integer"
+  },
+  {
+    "module": "MOD_timer",
+    "name": "tcumold",
+    "shape": "",
+    "type": "real(8)"
+  },
+  {
+    "module": "MOD_macropore",
+    "name": "FrMpWalWetIntegralOld",
+    "shape": "NumDm,NumNod",
+    "type": "real(8)",
+    "note": "Explicit owner replacing local shadow; selected five domains validated"
+  },
+  {
+    "module": "MOD_integral",
+    "name": "sicini",
+    "shape": "",
+    "type": "real(8)",
+    "meaning": "Canopy water at original cumulative balance reset, conditional SWINTER3"
+  }
+]

@@ -1,0 +1,28 @@
+* Project:       andelst
+* File content:  overview of macropore water balance components (cm)
+* File name:     result.bma
+* Model version: Swap 4.3.1
+* Generated at:  2026-11-16 09:44:55
+
+Period             :  1998-01-01  until  1998-01-03 
+Depth soil profile :  320.00 cm
+================================================+==================================================
+INPUT                MAIN     INTERN.  TOTAL    |  OUTPUT               MAIN     INTERN.  TOTAL
+                     BYPASS   CATCHM.  MACROP.  |                       BYPASS   CATCHM.  MACROP.
+================================================+==================================================
+Initially Present      1.58     0.05     1.63   |  Finally present        1.85     0.17     2.02
+                                                |
+Inflow top:                                     |
+- direct precipit.     0.03     0.03     0.05   |
+- overland flow        0.19     0.19     0.37   |
+Exfiltration matrix:                            |  Infiltration matrix:
+- interflow            0.00     0.00     0.00   |  - unsaturated          0.00     0.10     0.10
+- saturated            0.24     0.02     0.26   |  - saturated            0.01     0.02     0.03
+                                                |  Rapid drainage         0.18              0.18
+================================================+==================================================
+Sum                    2.03     0.29     2.32   |  Sum                    2.03     0.29     2.32
+================================================+==================================================
+Storage Change         0.27     0.12     0.39
+Balance Deviation      0.00     0.00     0.00
+===================================================================================================
+

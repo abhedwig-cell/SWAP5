@@ -1,0 +1,71 @@
+--- a/swapoutput_native.f90
++++ b/swapoutput_native.f90
+@@ -138,6 +138,7 @@
+       use MOD_Solute,    only: samini, sampro, sqprec, sqirrig, sqbot, dectot, rottot, sqdra
+       use MOD_grid,      only: zbotcp, numnod
+       use MOD_integral
++      use plant_interface,only:sw_inter,sicact
+       use MOD_snow,      only: snowinco,ssnow
+       use MOD_drain,     only: nrlevs
+       use MOD_swap_mp,   only: cQMpOutDrRap,WaSrDm1,WaSrDm2,WaSrDm1Ini,WaSrDm2Ini
+@@ -150,7 +151,7 @@
+ 
+ ! --- local
+       integer              :: i,getun
+-      real(8)              :: precip
++      real(8)              :: precip,canopy_end,canopy_begin
+       character(len=80)    :: filnam,filtext
+       character(len=11)    :: datbegin,datend
+ ! ----------------------------------------------------------------------
+@@ -183,19 +184,23 @@
+       write (bal,20) datbegin,datend
+       write (bal,22) -zbotcp(numnod)
+ 
++      canopy_end=0d0;canopy_begin=0d0
++      if(sw_inter==3) then
++         canopy_end=sicact;canopy_begin=sicini
++      end if
+       if (swsolu == 1) then
+-          write (bal,24) (volact+pond+WaSrDm1+WaSrDm2+ssnow),           &
++          write (bal,24) (volact+pond+WaSrDm1+WaSrDm2+ssnow+canopy_end),           &
+                                                   sampro,               &
+-                        (volini+PondIni+WaSrDm1Ini+WaSrDm2Ini+snowinco),&
++                        (volini+PondIni+WaSrDm1Ini+WaSrDm2Ini+snowinco+canopy_begin),&
+                                                    samini,              &
+-                        (volact+pond+WaSrDm1+WaSrDm2+ssnow-             &
+-                         volini-PondIni-WaSrDm1Ini-WaSrDm2Ini-snowinco),&
++                        (volact+pond+WaSrDm1+WaSrDm2+ssnow+canopy_end-             &
++                         volini-PondIni-WaSrDm1Ini-WaSrDm2Ini-snowinco-canopy_begin),&
+                                                   (sampro-samini)
+       else
+-          write (bal,25) (volact+pond+WaSrDm1+WaSrDm2+ssnow),           &
+-                        (volini+PondIni+WaSrDm1Ini+WaSrDm2Ini+snowinco),&
+-                        (volact+pond+WaSrDm1+WaSrDm2+ssnow-             &
+-                         volini-PondIni-WaSrDm1Ini-WaSrDm2Ini-snowinco)
++          write (bal,25) (volact+pond+WaSrDm1+WaSrDm2+ssnow+canopy_end),           &
++                        (volini+PondIni+WaSrDm1Ini+WaSrDm2Ini+snowinco+canopy_begin),&
++                        (volact+pond+WaSrDm1+WaSrDm2+ssnow+canopy_end-             &
++                         volini-PondIni-WaSrDm1Ini-WaSrDm2Ini-snowinco-canopy_begin)
+       end if
+ 
+       precip = cgrai
+--- a/integral_canopy.f90
++++ b/integral_canopy.f90
+@@ -85,6 +85,7 @@
+ 
+    public
+ 
++   real(8),save :: sicini=0d0 ! Canopy water at start of cumulative balance period
+    contains
+ 
+ ! File VersionID:
+@@ -174,7 +175,8 @@
+          volini   = volact
+          pondini  = pond
+          snowinco = ssnow
+-!         sicini   = sicact
++         sicini=0d0
++         if(sw_inter==3) sicini=sicact
+          
+          if (swmacro == 1) call macropore(6)
+          

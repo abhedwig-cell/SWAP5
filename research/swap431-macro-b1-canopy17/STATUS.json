@@ -1,10 +1,21 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "MINIMAL_BAL_CANOPY_CORRECTION_QUALIFIED",
   "baseline": "7ba226c35f6b4727cdc9879d8518bd94d432103c",
   "canonical": "f1883e6fae59658112f6b5750c395a1b54543ed2",
   "scope": "BAL current and cumulative-origin canopy inventory for SWINTER3; sameJan1-Jan2 period O0/O2; all physics/budget records unchanged",
   "cap_seconds": 20,
   "selected_routes": "Two prefixes,two ownresumes,one old-format refusal",
   "physics_changes": false,
-  "no_campaign": true
+  "no_campaign": true,
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "BAL_water_storage": "PASS_SELECTED_JAN1_JAN2_SWINTER3_O0_O2",
+  "results": "RESULT.json",
+  "report": "REPORT.md",
+  "assessment": "assess_canopy17.py",
+  "patch": "canopy_BAL.patch",
+  "field_schema": "LEDGER_FIELDS.json",
+  "model_routes": 5,
+  "no_censored": true,
+  "official_promotion": false,
+  "next_safe_step": "Retain selected BAL accounting and original water-balance PASS; no automatic other-modes/period/fulltrajectory admission"
 }

@@ -1,0 +1,103 @@
+{
+  "work_unit": "SWAP431-MACRO-B1-CANOPY17",
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "BAL_storage_accounting": "PASS_SELECTED_SWINTER3_PERIOD_O0_O2_CURRENT_AND_INITIAL_CANOPY_INCLUDED",
+  "checks": [
+    {
+      "optimization": "O0",
+      "BAL_initial_inventory_cm": 154.7122696654261,
+      "BAL_final_inventory_cm": 155.86570319971247,
+      "BAL_change_cm": 1.1534335342863642,
+      "canopy_initial_cm": 0.0,
+      "canopy_final_cm": 0.0025926018136122326,
+      "next_period_canopy_origin_cm": 0.0025926018136122326,
+      "nonzero_origin_codec_roundtrip_exact": true,
+      "all_old_budgets_and_physics_exact": true,
+      "BAL_flux_section_BLC_BMA_unchanged": true
+    },
+    {
+      "optimization": "O2",
+      "BAL_initial_inventory_cm": 154.7122696654261,
+      "BAL_final_inventory_cm": 155.86570319971247,
+      "BAL_change_cm": 1.1534335342863642,
+      "canopy_initial_cm": 0.0,
+      "canopy_final_cm": 0.0025926018136122326,
+      "next_period_canopy_origin_cm": 0.0025926018136122326,
+      "nonzero_origin_codec_roundtrip_exact": true,
+      "all_old_budgets_and_physics_exact": true,
+      "BAL_flux_section_BLC_BMA_unchanged": true
+    }
+  ],
+  "independent_period_results": [
+    {
+      "optimization": "O0",
+      "steps": 1453,
+      "old_budget_rows_byte_exact": 770,
+      "recorded_duration_days": 1.9999999988104753,
+      "period_origin": 35795.0,
+      "completed_boundary": 35797.0,
+      "matrix_change_cm": 0.7638329204791712,
+      "macro_change_cm": 0.3870080119936092,
+      "pond_change_cm": 0.0,
+      "canopy_change_cm": 0.0025926018136122326,
+      "independent_gross_external_cm": 1.1534329377278922,
+      "whole_inventory_error_cm": 5.965585003764318e-07,
+      "net_soil_macro_error_cm": 5.965585003764318e-07,
+      "inherited_total_residual_integral_envelope_cm": 1.9999999988104755e-05,
+      "domain_balance_errors_cm": [
+        -1.1102230246251565e-15,
+        -1.3877787807814457e-17,
+        -6.938893903907228e-18,
+        -6.938893903907228e-18,
+        -1.0408340855860843e-17
+      ],
+      "ledger_primitives_verified": true,
+      "natural_period_output": true,
+      "baseline_BAL_without_canopy_error_cm": -0.002592005255103169,
+      "native_file_sha256": "21bd728c9983d6a0d4e82d6b2fd12729dc02284277a5dab5d296d8edc1dcbf16",
+      "complete_history_metadata_readback": true
+    },
+    {
+      "optimization": "O2",
+      "steps": 1453,
+      "old_budget_rows_byte_exact": 787,
+      "recorded_duration_days": 1.9999999988104753,
+      "period_origin": 35795.0,
+      "completed_boundary": 35797.0,
+      "matrix_change_cm": 0.7638329204791712,
+      "macro_change_cm": 0.3870080119936092,
+      "pond_change_cm": 0.0,
+      "canopy_change_cm": 0.0025926018136122326,
+      "independent_gross_external_cm": 1.1534329377278922,
+      "whole_inventory_error_cm": 5.965585003764318e-07,
+      "net_soil_macro_error_cm": 5.965585003764318e-07,
+      "inherited_total_residual_integral_envelope_cm": 1.9999999988104755e-05,
+      "domain_balance_errors_cm": [
+        -1.1102230246251565e-15,
+        -1.3877787807814457e-17,
+        -6.938893903907228e-18,
+        -6.938893903907228e-18,
+        -1.0408340855860843e-17
+      ],
+      "ledger_primitives_verified": true,
+      "natural_period_output": true,
+      "baseline_BAL_without_canopy_error_cm": -0.002592005255103169,
+      "native_file_sha256": "21bd728c9983d6a0d4e82d6b2fd12729dc02284277a5dab5d296d8edc1dcbf16",
+      "complete_history_metadata_readback": true
+    }
+  ],
+  "output_correction_only": true,
+  "native_format": "V5 with WATER_LEDGER_V2 count133 including sicini",
+  "own_restart_and_period_reset": "PASS",
+  "old_missing_canopy_schema": "REFUSED_BEFORE_INSTALL",
+  "model_routes": 5,
+  "max_seconds": 1.6136970999650657,
+  "no_censored": true,
+  "physics_budget_tolerance_changes": false,
+  "official_promotion": false,
+  "exclusions": [
+    "Only original selectedJan1-Jan2 case SWINTER3; no other physical modes/SWSOLU1 admission",
+    "Two-decimal BAL display retained, not precision increased",
+    "No481day/fullscience/wholefileappend/PEARL/general later-period qualification"
+  ]
+}
