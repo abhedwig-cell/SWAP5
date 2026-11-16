@@ -1,0 +1,13 @@
+{
+  "stage": "PREREGISTERED",
+  "baseline": "340a19b4f0ff09115ceafc39a39777ba1ca1250a",
+  "routes": [
+    "O0 same native target38",
+    "O2 same native target38"
+  ],
+  "candidate": "One analytic rank1 domain3 outflow factor derivative with GWL/minimum and total potential outflow dependence, only selected partial zero-inflow branch; current operator retained",
+  "linear_solve": "Original tridiagonal inverse plus Sherman Morrison, no dense Jacobian",
+  "stop": "After target38 head return, before next host retry/commit; timeout20s",
+  "unchanged": "Physical providers, branch thresholds, residual criteria, maxit30, dt, reduction policy and native input",
+  "no_campaign": true
+}
