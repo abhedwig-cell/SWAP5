@@ -451,6 +451,7 @@ if(ios/=0) error stop 'NATIVE09 incomplete cumdens_top'
 if(.not.all(ieee_is_finite(b_cumdens_top(1:n+1)))) error stop 'NATIVE09 nonfinite cumdens_top'
 call get_environment_variable('LEDGER12_REQUIRE',require_ledger)
 if(trim(require_ledger)=='1'.and.v/=3) error stop 'LEDGER12 required history absent'
+if(v==3.and.nd/=5) error stop 'LEDGER12 selected domain mismatch'
 if(v==3) call ledger12_io(u,1)
 read(u,iostat=ios) tag
 if(ios/=0.or.tag/='NATIVE09_COMPLETE') error stop 'NATIVE09 incomplete trailer'

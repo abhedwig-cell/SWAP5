@@ -252,6 +252,17 @@ subroutine retry07_checkpoint()
  call inventory_dump('accepted')
  call ledger12_dump('ledger_accepted')
  call native09_dump('context_accepted')
+ block
+ use variables,only:outfil,ioutdat
+ use MOD_macropore,only:bma
+ integer::old_index
+ old_index=ioutdat;ioutdat=2;outfil='ledgerprobe'
+ call outbma(1)
+ call outbma(2)
+ close(bma)
+ ioutdat=old_index
+ call ledger12_dump('ledger_after_render')
+ end block
  open(newunit=u,file='outcome.txt',status='replace');write(u,*) 'MID11_NEXT_DAY_ACCEPTED';close(u)
  stop 0
 end subroutine

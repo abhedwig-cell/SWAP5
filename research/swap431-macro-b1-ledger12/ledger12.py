@@ -6,7 +6,7 @@ sp=importlib.util.spec_from_file_location('native09',P/'native09.py');m=importli
 body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.index('def run(opt,')];body=body.replace("('macropore_native','macropore'),","('macropore_native','macropore'),('ledger_state','ledger12'),",1);exec(body,m.__dict__)
 def run(opt,mode,label=''):
  profile=mode+('_'+label if label else '')
- c=W/(opt+'-'+profile+'-FINAL');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
+ c=W/(opt+'-'+profile+'-FINAL-RENDER');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()
  for x in json.loads((P/'CASE_IDENTITY.json').read_text()):
   src=Path('C:/Users/Veldh012/swap431-state02-work/phase/O2/V1/case')/x['path'];assert m.sha(src)==x['sha256'];(c/x['path']).parent.mkdir(parents=True,exist_ok=True);shutil.copy2(src,c/x['path'])
  src=R.parent/'swap431-macro-b1-day10/data'/opt/'CONTINUE/daycheckpoint.end' if mode=='CONTINUE' else R/'data'/opt/'CONTINUE/midnight.end'
@@ -20,7 +20,7 @@ def run(opt,mode,label=''):
   p=subprocess.run([str(W/'native'/opt/'native09.exe'),'./swap.swp'],cwd=c,env=env,capture_output=True,text=True,timeout=20);q=dict(returncode=p.returncode,censored=False,seconds=time.perf_counter()-t,stdout=p.stdout,stderr=p.stderr)
  except subprocess.TimeoutExpired:q=dict(censored=True,seconds=time.perf_counter()-t)
  m.save(R/(opt+'_'+profile+'_RUN.json'),q);d=R/'data'/opt/profile;d.mkdir(parents=True,exist_ok=True)
- for p in list(c.glob('*.txt'))+list(c.glob('*.end'))+[c/'swap.swp',c/'swap.err',c/'swap.wrn']:
+ for p in list(c.glob('*.txt'))+list(c.glob('*.end'))+list(c.glob('*.bma'))+[c/'swap.swp',c/'swap.err',c/'swap.wrn']:
   if p.exists():shutil.copy2(p,d/p.name)
  print(q)
 if __name__=='__main__':
