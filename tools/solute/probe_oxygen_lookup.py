@@ -27,7 +27,6 @@ subroutine hybrid_oxygen_probe(restoring)
 use MOD_grid,only:numnod
 use variables,only:t1900
 use ieee_arithmetic,only:ieee_is_finite
-use iso_fortran_env,only:is_iostat_end
 logical,intent(in)::restoring
 integer::unit,nodes,flag,ios
 real(8)::clock,values(numnod,6)
