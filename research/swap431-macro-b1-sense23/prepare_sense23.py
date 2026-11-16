@@ -103,6 +103,7 @@ end subroutine
 end module
 
 subroutine sense23_probe()
+use,intrinsic::ieee_exceptions,only:ieee_status_type,ieee_get_status,ieee_set_status
 use SENSE23_TRANSACTION,only:snapshot
 use DIAG19,only:probe_busy,probe_u,point_id,point_node,point_delta
 use variables,only:h,theta,k,swkimpl,dt
@@ -112,9 +113,11 @@ use MOD_grid,only:numnod,disnod,dz,z
 use MOD_swap_mp,only:FrArMtrx,QExcMpMtx,dFdhMp
 use MOD_macropore,only:QExcMtxDmCp,VlMpDmCp,WaSrMpDm,SwSoilShr
 implicit none
-integer::j,lev,sgn,u,flux_u
+integer::j,lev,sgn,u,flux_u,fp_u
+type(ieee_status_type)::fp_before,fp_after
 real(8)::eps
 character(60)::path
+call ieee_get_status(fp_before)
 call snapshot('trial23_base.bin',1)
 open(newunit=u,file='probe_context.txt',status='replace')
 write(u,*) 'h',h(50:52)
@@ -129,6 +132,8 @@ write(u,*) 'SwSoilShr',SwSoilShr
 close(u)
 open(newunit=probe_u,file='probe_limit.txt',status='replace')
 open(newunit=flux_u,file='probe_flux.txt',status='replace')
+open(newunit=fp_u,file='probe_fp_status.txt',status='replace')
+write(fp_u,*) 0,transfer(fp_before,[0])
 point_id=0;probe_busy=.true.
 call evaluate(0,0d0)
 do lev=1,2
@@ -144,11 +149,16 @@ call snapshot('trial23_base.bin',2)
 call snapshot('trial23_final.bin',1)
 probe_busy=.false.
 close(probe_u);close(flux_u)
+call ieee_set_status(fp_before)
+call ieee_get_status(fp_after)
+write(fp_u,*) 99,transfer(fp_after,[0])
+close(fp_u)
 contains
 subroutine evaluate(node,delta)
 integer,intent(in)::node
 real(8),intent(in)::delta
 call snapshot('trial23_base.bin',2)
+call ieee_set_status(fp_before)
 point_id=point_id+1;point_node=node;point_delta=delta
 if(node/=0) then
  h(node)=h(node)+delta
@@ -160,6 +170,9 @@ write(flux_u,*) point_id,node,delta,QExcMpMtx(52),QExcMtxDmCp(3,52),QExcMpMtx(1:
 call snapshot('trial23_base.bin',2)
 write(path,'(a,i0,a)') 'trial23_restored_',point_id,'.bin'
 call snapshot(trim(path),1)
+call ieee_set_status(fp_before)
+call ieee_get_status(fp_after)
+write(fp_u,*) point_id,transfer(fp_after,[0])
 end subroutine
 end subroutine
 '''
