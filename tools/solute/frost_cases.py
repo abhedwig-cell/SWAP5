@@ -2,12 +2,12 @@
 from pathlib import Path
 import re,shutil
 ROOT=Path(__file__).resolve().parents[2]
-KEYS=('water-frost-free','chemical-frost-free','water-frost-drained')
+KEYS=('water-frost-free','chemical-frost-free')
 REFUSED='chemical-frost-drained'
 
 
 def create(target,key):
-    if key not in (*KEYS,REFUSED):raise ValueError('Unknown bounded frost case')
+    if key not in (*KEYS,REFUSED,'water-frost-drained'):raise ValueError('Unknown bounded frost case')
     target=Path(target);shutil.copytree(ROOT/'reference/swap-4.3.1/projects/1.hupselbrook',target)
     changes=dict(SWMACRO=0,SWSOLU=int(key.startswith('chemical')),SWFROST=1,SWSNOW=1,SWHYST=2,SWDRA=int(key.endswith('-drained')),
                  SWBOTB=6 if key.endswith('-drained') else 7,SWTOPBHEA=2)

@@ -51,3 +51,15 @@ and select the open/bounded physical family. Model cap stays60seconds, expected
 model cost under30seconds per full, compile per job under180seconds. Full moving
 F-CI/platform/performance NOT_SELECTED_IMPACT. Follow existing selected runs to
 terminal and seal actual postimage before admission. Status: candidate only.
+
+Final positive scope: water/chemical free-bottom7, SWDRA0 only. Completed all
+4384Windows O0/O2 days; each130actual partial-frost days, chemical integrated
+frost uptake reduction2.9393824859951194cm. Winter and active-crop native exact.
+Ordinary water drainage with corrected future Feddes inputs actually rejects21
+at independent2.2546546747659324e-10 while internal9.970576989905278e-11.
+This is a retained full FAIL, now refused preflight before output. Its separate
+original component/reporting PASS does not qualify the coupled trajectory.
+No second scalar/derivative tweak; next coherent owner experiment must observe
+complete original snow/day receipt. Positive exposure is SWDRA0, free7 only.
+No tangent extension remains in final code. TSS winter/crop pulses and all future
+Feddes controls are explicit derived inputs; model/solver/time policy unchanged.

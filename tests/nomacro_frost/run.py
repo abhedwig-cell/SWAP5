@@ -38,6 +38,7 @@ def main():
   r['active_frost_exact_native_windows']=windows(build,reference,project,out/(opt+'-active-frost'),rows,opt,
         cuts=(winter[0]-1,crop[0]-1),compare_full=True)
   r['active_frost_exact_native_windows']['event_scope']='Actual original partial frost reduction during winter and active crop pulses'
+  (out/(opt+'-active-frost')/'RESULT.json').write_text(json.dumps(r['active_frost_exact_native_windows'],indent=2)+'\n')
   if project.solute:r['frost_witness']['total_original_frost_uptake_reduction_cm']=sum(row['uptake_terms_cm'][5] for row in rows)
   controlout=out/(opt+'-controls');controlout.mkdir();r['controls']=checks.controls(build,reference,project,controlout,full,rows,policy_key='frost_reference');save();print(a.configuration,opt,'FULL_NATIVE_AND_TRANSACTIONS_PASS',flush=True)
  result['status']='SHORT_BOUNDED_FROST_O0_O2_PASS' if a.short_only else 'COMPLETE_BOUNDED_FROST_O0_O2_PASS';save()

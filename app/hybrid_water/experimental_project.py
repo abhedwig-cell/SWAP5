@@ -135,6 +135,7 @@ def inspect(directory):
                 raise ValueError('Bounded original frost reference excludes effective SWDIVD1')
             if selected['SWSOLU']:
                 raise ValueError('Original drainage reader refuses SWDIVD0 with solute transport')
+            raise ValueError('Integrated frost drainage awaits conservative snow/day receipt qualification')
         limits=[]
         for name in ('TFROSTSTA','TFROSTEND'):
             values=re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*([^!\r\n]+)',text)

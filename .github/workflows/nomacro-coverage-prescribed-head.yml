@@ -40,7 +40,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: ${{ fromJSON(inputs.frost_history && '["water-frost-free","chemical-frost-free","water-frost-drained"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
+        configuration: ${{ fromJSON(inputs.frost_history && '["water-frost-free","chemical-frost-free"]' || inputs.pond_history && '["water-surface-history","chemical-surface-history"]' || inputs.fixed_irrigation_inputs && '["water-file-sprinkler","water-file-surface","water-file-subsurface","water-file-subsurface-interval","chemical-file-sprinkler","chemical-file-surface"]' || inputs.surface_inputs && (inputs.surface_runon_only && '["water-runon-file","chemical-runon-file","water-surface-combined","chemical-surface-combined"]' || '["water-pond-table","water-runon-file","chemical-pond-table","chemical-runon-file","water-surface-combined","chemical-surface-combined"]') || '["water-head-fixed","water-head-table","chemical-head-fixed","chemical-head-table","water-head-bbc","chemical-head-bbc"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:
@@ -80,6 +80,7 @@ jobs:
           if [ "$FROST_HISTORY" = true ]; then
             python3 -B tests/nomacro_frost/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
             python3 -B tools/solute/check_bounded_frost.py --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/frost-component"
+            python3 -B tests/nomacro_frost/preflight.py --reference-work "$RUNNER_TEMP/provider" --bundle "$RUNNER_TEMP/proof/O0-build" --output "$RUNNER_TEMP/proof/preflight"
           elif [ "$POND_HISTORY" = true ]; then
             python3 -B tests/nomacro_pond_history/run.py --configuration ${{ matrix.configuration }} --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof"
             python3 -B tools/solute/check_top_history_codec.py --scheduled-pond --reference-work "$RUNNER_TEMP/provider" --output "$RUNNER_TEMP/proof/pond-component"
