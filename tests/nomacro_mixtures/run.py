@@ -7,6 +7,7 @@ import argparse, contextlib, csv, hashlib, json, re, shutil, subprocess, sys, ti
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT/'app/hybrid_water'))
+sys.path.insert(0, str(ROOT/'tools/solute'))
 import daily_host as h
 import experimental_project as e
 import user_prepare
