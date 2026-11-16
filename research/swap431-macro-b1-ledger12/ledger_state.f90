@@ -5,7 +5,8 @@ use,intrinsic::ieee_arithmetic,only:ieee_is_finite
 use MOD_integral,only:inqrot,inq,inqssdi,inqpotrot,inqredrot,iqdo,iqup,iqrot,iqssdi,iqredwet,iqreddry,iqredsol,iqredfrs,iintc,isintc,iepd,ipeva,iptra,ievap,iruno,irunon,iqbot,iqbdo,iqbup,iqtdo,iqtup,igrai,inrai,igird,inird,cgrai,cnrai,caintc,cqrot,cqbot,cqbotdo,cqbotup,cqssdi,cqtdo,cqtup,crunoff,crunon,cevap,cepd,cpeva,cptra,cinund,cqprai,cgird,cnird,cqdra,cqdrain,cqdrainin,cqdrainout,inqdra,inqdra_in,inqdra_out,iqdra,cgsnow,cmelt,csnrai,csubl,isnrai,igsnow,isubl
 use MOD_integral_global,only:inqpotrot_day,inqredrot_day,iqrot_day,iqreddry_day,iqredsol_day,iptra_day,ialpwet_day,ialpdry_day
 use MOD_swap_mp,only:WaSrDm1,WaSrDm1Ini,WaSrDm2,WaSrDm2Ini,WaUnMpDm1Cp,WaUnMpDm2Cp,cQMpInIntSatDm1,cQMpInIntSatDm2,cQMpInMtxSatDm1,cQMpInMtxSatDm2,cQMpInTopLatDm1,cQMpInTopLatDm2,cQMpInTopVrtDm1,cQMpInTopVrtDm2,cQMpOutDrRap,cQMpOutMtxSatDm1,cQMpOutMtxSatDm2,cQMpOutMtxUnsDm1,cQMpOutMtxUnsDm2,IAvFrMpWlWtDm1,IAvFrMpWlWtDm2,iQExcMtxDm1Cp,iQExcMtxDm2Cp,iQInTopLatDm1,iQInTopLatDm2,iQInTopVrtDm1,iQInTopVrtDm2,iQInIntSatDm1cp,iQInIntSatDm2cp,iQInMtxSatDm1cp,iQInMtxSatDm2cp,iQMpOutDrRap,iQOutMtxSatDm1cp,iQOutMtxSatDm2cp,iQOutMtxUnsDm1cp,iQOutMtxUnsDm2cp,iQOutDrRapCp,IQTopMpDm1Cp,IQTopMpDm2Cp,IWaSrDm1Beg,IWaSrDm2Beg,IWaUnDm1CpBeg,IWaUnDm2CpBeg
-use variables,only:volini,pondini,snowinco,ivolbeg,ipondbeg,isicbeg,issnowbeg,outper,ithetabeg,ioutdat,ioutdatint,nprintcount,cntper,period
+use variables,only:volini,pondini,ivolbeg,ipondbeg,isicbeg,issnowbeg,outper,ithetabeg,ioutdat,ioutdatint,nprintcount,cntper,period
+use MOD_snow,only:snowinco
 use MOD_timer,only:tcumold
 implicit none
 logical,save::loaded=.false.
