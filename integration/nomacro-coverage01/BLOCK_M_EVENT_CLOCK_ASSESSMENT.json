@@ -1,0 +1,204 @@
+{
+  "status": "ORIGINAL_EVENT_CLOCK_CONTRACT_PASS_NOMINAL_STRICT_DIAGNOSTIC_FAILURE_RETAINED",
+  "run": 43864567262,
+  "executed_source": "166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad",
+  "original_dtCrit_days": 1e-08,
+  "mass_guard_cm": 1e-10,
+  "mass_guard_changed": false,
+  "clock_or_table_or_model_changed": false,
+  "negative_missing_pulse_refused": true,
+  "reports": {
+    "nomacro-surface-input-chemical-runon-file-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad": {
+      "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+      "original_dtCrit_days": 1e-08,
+      "original_clock_contract_pass": true,
+      "records": [
+        {
+          "day": 3,
+          "nominal_cm": 0.8,
+          "actual_integrated_cm": 0.7999999999832367,
+          "difference_cm": -1.67633684711177e-11,
+          "original_event_clock_bound_cm": 1.600000088817842e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 200,
+          "nominal_cm": 1.2000000000000002,
+          "actual_integrated_cm": 1.1999999993713575,
+          "difference_cm": -6.28642693456527e-10,
+          "original_event_clock_bound_cm": 2.4000001776356843e-08,
+          "strict_nominal_1e10_diagnostic_pass": false
+        },
+        {
+          "day": 365,
+          "nominal_cm": 0.6000000000000001,
+          "actual_integrated_cm": 0.5999999999874275,
+          "difference_cm": -1.2572609620065123e-11,
+          "original_event_clock_bound_cm": 1.2000000888178421e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 530,
+          "nominal_cm": 1.0,
+          "actual_integrated_cm": 0.9999999999790455,
+          "difference_cm": -2.0954460389077667e-11,
+          "original_event_clock_bound_cm": 2.000000177635684e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 730,
+          "nominal_cm": 0.4,
+          "actual_integrated_cm": 0.3999999999161812,
+          "difference_cm": -8.381884075703283e-11,
+          "original_event_clock_bound_cm": 8.00000044408921e-09,
+          "strict_nominal_1e10_diagnostic_pass": true
+        }
+      ],
+      "scope": "Original integrated runon event application; nominal quantity accuracy at1e-10 is a retained separate diagnostic, not a physical mass-guard relaxation"
+    },
+    "nomacro-surface-input-chemical-surface-combined-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad": {
+      "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+      "original_dtCrit_days": 1e-08,
+      "original_clock_contract_pass": true,
+      "records": [
+        {
+          "day": 3,
+          "nominal_cm": 0.8,
+          "actual_integrated_cm": 0.7999999999832367,
+          "difference_cm": -1.67633684711177e-11,
+          "original_event_clock_bound_cm": 1.600000088817842e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 200,
+          "nominal_cm": 1.2000000000000002,
+          "actual_integrated_cm": 1.1999999993713575,
+          "difference_cm": -6.28642693456527e-10,
+          "original_event_clock_bound_cm": 2.4000001776356843e-08,
+          "strict_nominal_1e10_diagnostic_pass": false
+        },
+        {
+          "day": 365,
+          "nominal_cm": 0.6000000000000001,
+          "actual_integrated_cm": 0.5999999999874275,
+          "difference_cm": -1.2572609620065123e-11,
+          "original_event_clock_bound_cm": 1.2000000888178421e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 530,
+          "nominal_cm": 1.0,
+          "actual_integrated_cm": 0.9999999999790455,
+          "difference_cm": -2.0954460389077667e-11,
+          "original_event_clock_bound_cm": 2.000000177635684e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 730,
+          "nominal_cm": 0.4,
+          "actual_integrated_cm": 0.3999999999161812,
+          "difference_cm": -8.381884075703283e-11,
+          "original_event_clock_bound_cm": 8.00000044408921e-09,
+          "strict_nominal_1e10_diagnostic_pass": true
+        }
+      ],
+      "scope": "Original integrated runon event application; nominal quantity accuracy at1e-10 is a retained separate diagnostic, not a physical mass-guard relaxation"
+    },
+    "nomacro-surface-input-water-runon-file-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad": {
+      "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+      "original_dtCrit_days": 1e-08,
+      "original_clock_contract_pass": true,
+      "records": [
+        {
+          "day": 3,
+          "nominal_cm": 0.8,
+          "actual_integrated_cm": 0.7999999999832367,
+          "difference_cm": -1.67633684711177e-11,
+          "original_event_clock_bound_cm": 1.600000088817842e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 200,
+          "nominal_cm": 1.2000000000000002,
+          "actual_integrated_cm": 1.1999999993713575,
+          "difference_cm": -6.28642693456527e-10,
+          "original_event_clock_bound_cm": 2.4000001776356843e-08,
+          "strict_nominal_1e10_diagnostic_pass": false
+        },
+        {
+          "day": 365,
+          "nominal_cm": 0.6000000000000001,
+          "actual_integrated_cm": 0.5999999999874275,
+          "difference_cm": -1.2572609620065123e-11,
+          "original_event_clock_bound_cm": 1.2000000888178421e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 530,
+          "nominal_cm": 1.0,
+          "actual_integrated_cm": 0.9999999999790455,
+          "difference_cm": -2.0954460389077667e-11,
+          "original_event_clock_bound_cm": 2.000000177635684e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 730,
+          "nominal_cm": 0.4,
+          "actual_integrated_cm": 0.3999999999161812,
+          "difference_cm": -8.381884075703283e-11,
+          "original_event_clock_bound_cm": 8.00000044408921e-09,
+          "strict_nominal_1e10_diagnostic_pass": true
+        }
+      ],
+      "scope": "Original integrated runon event application; nominal quantity accuracy at1e-10 is a retained separate diagnostic, not a physical mass-guard relaxation"
+    },
+    "nomacro-surface-input-water-surface-combined-166d4b7b5fe9ba0f6ea3aa8af6f5d55d66a904ad": {
+      "original_timecontrol_sha256": "6d2a62db0ff1e3ea00693f7b39bdb36e1811ba79011f15feef5a656ddf3181b8",
+      "original_dtCrit_days": 1e-08,
+      "original_clock_contract_pass": true,
+      "records": [
+        {
+          "day": 3,
+          "nominal_cm": 0.8,
+          "actual_integrated_cm": 0.7999999999832367,
+          "difference_cm": -1.67633684711177e-11,
+          "original_event_clock_bound_cm": 1.600000088817842e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 200,
+          "nominal_cm": 1.2000000000000002,
+          "actual_integrated_cm": 1.1999999993713575,
+          "difference_cm": -6.28642693456527e-10,
+          "original_event_clock_bound_cm": 2.4000001776356843e-08,
+          "strict_nominal_1e10_diagnostic_pass": false
+        },
+        {
+          "day": 365,
+          "nominal_cm": 0.6000000000000001,
+          "actual_integrated_cm": 0.5999999999874275,
+          "difference_cm": -1.2572609620065123e-11,
+          "original_event_clock_bound_cm": 1.2000000888178421e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 530,
+          "nominal_cm": 1.0,
+          "actual_integrated_cm": 0.9999999999790455,
+          "difference_cm": -2.0954460389077667e-11,
+          "original_event_clock_bound_cm": 2.000000177635684e-08,
+          "strict_nominal_1e10_diagnostic_pass": true
+        },
+        {
+          "day": 730,
+          "nominal_cm": 0.4,
+          "actual_integrated_cm": 0.3999999999161812,
+          "difference_cm": -8.381884075703283e-11,
+          "original_event_clock_bound_cm": 8.00000044408921e-09,
+          "strict_nominal_1e10_diagnostic_pass": true
+        }
+      ],
+      "scope": "Original integrated runon event application; nominal quantity accuracy at1e-10 is a retained separate diagnostic, not a physical mass-guard relaxation"
+    }
+  }
+}

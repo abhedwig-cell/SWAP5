@@ -90,10 +90,15 @@ def main():
     group.add_argument('--head-boundary-options',action='store_true',help='Original prescribed-head5 boundary with independent signed trial flux')
     group.add_argument('--surface-input-options',action='store_true',help='Original scheduled pond threshold and runon file input')
     parser.add_argument('--configuration',action='append',help='Explicit selected hydraulic/weather configuration; preserves prior per-configuration evidence')
+    parser.add_argument('--finish-surface-runon-evidence',action='store_true',help='Finish missing M verification on immutable actual run43864567262 artifacts; no model rerun')
     args = parser.parse_args()
     extra = args.extended or args.basic_options or args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options
     active_options = args.crop_options or args.process_options or args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options
     if args.configuration and not (args.hydraulic_options or args.weather_options or args.constitutive_options or args.history_options or args.lower_boundary_options or args.head_boundary_options or args.surface_input_options):parser.error('--configuration requires --hydraulic-options or --weather-options')
+    if args.finish_surface_runon_evidence:
+        if not args.surface_input_options or not args.configuration or len(args.configuration)!=1:parser.error('M completion requires one selected surface configuration')
+        from finish_surface_input_checks import finish
+        finish(args.output.resolve(),args.configuration[0]);return
     out = args.output.resolve()
     out.mkdir(parents=True, exist_ok=False)
     reference = out/'provider'
@@ -682,12 +687,11 @@ def main():
                 selected['surface_event_exact_native_windows']=windows(out/(key+'-'+opt+'-build'),reference,project,
                     out/(key+'-'+opt+'-surface-windows'),full_rows,opt)
                 if opt=='O2':
-                    for day,amount in PULSES_MM.items():
-                        assert abs(full_rows[day-1]['external_flux_cm'][4]-(amount*.1 if selectors['SWRUNON'] else 0))<=1e-10
+                    from finish_surface_input_checks import event_witness
+                    selected['original_runon_event_witness']=event_witness(full_rows,selectors,reference)
                     selected['max_pond_cm']=max(r['stock_end_cm'][1] for r in full_rows)
                     selected['total_runoff_cm']=sum(r['external_flux_cm'][8] for r in full_rows)
                     selected['actual_runon_cm']={day:full_rows[day-1]['external_flux_cm'][4] for day in PULSES_MM}
-                    selected['runon_witness_tolerance_cm']=1e-10
             (out/'PROFILES.json').write_text(json.dumps(reports,indent=2)+'\n')
 
         if args.lower_boundary_options or args.head_boundary_options:

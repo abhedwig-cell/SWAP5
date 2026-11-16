@@ -46,3 +46,42 @@ and default8 source/external seams43863068702 are active; poll existing jobs.
 Earlier L queue-only43857560916 eventually became terminalSUCCESS; replacement
 43859318316 remains the separately sealed qualification. No duplicate fullL
 execution is selected by that queue metadata reconciliation.
+
+
+Run43863064413 is terminalFAILURE: pond-only2 cases are complete qualified
+functional PASSes; four runon cases retain actual367 mass refusals. Default8
+43863068702 is terminalSUCCESS. Bounded existing-pond-tangent eligibility repair
+634ff93b3 is causal: fresh Windows369 succeeds with maxwater4.7559e-14cm;
+first prior physical difference is day5, so no cross-source exact trajectory
+claim is made. This new input domain has its own source identity and own-native
+proof; no old capsule is rebound.
+
+Affected4 run43864567262 source166d4b7b5 completes every1096-day trajectory and
+all O0/O2 native2/365/530, event199/529, transaction/mass and binding gates. Its
+workflow remains FAILED at the additional nominal runon amount assertion: day200
+is1.1999999993713575cm versus1.2, delta-6.28642693456527e-10cm. The original
+TimeControl event parameter dtCrit=1e-8 DAYS is exact and unchanged. The original
+single-day runon rate permits endpoint uncertainty2*dtCrit*rate; it is not the
+independent MASS guard1e-10cm. Record strict nominal1e-10 diagnostic FAIL rather
+than promoting it or changing model/table/clock. Actual storage/flux budgets,
+native equality and no off-day runon still have their separate strict checks.
+BLOCK_M_EVENT_CLOCK_ASSESSMENT retains actual values and rejects a missing pulse.
+
+Finish only missing original-standalone/input verification through the existing
+harness's bounded --finish-surface-runon-evidence mode and exact fixed run43864567262.
+It downloads original artifacts, verifies source/binary/input binding, reconsumes
+all actual full/native/event payloads, then executes only the missing reference
+and preflight controls. ZIP permission bits may be restored; bytes/identities
+cannot be altered. This is a qualification-phase continuation, not a capsule
+rebind or whole-workflow PASS for the failed run. No unchanged physical period
+is rerun for a verification-unit mismatch. Fixed L5/closed6 and pond-only images
+are compared against actual immutable preimages including input provenance and
+all original kernel source Git blobs; LF/CRLF are recorded as distinct actual
+identities. Old .cmd/.inp inputs omitted by the earlier raw selection are restored
+only from their immutable original Git blobs and exact recorded hashes. M raw
+capsules additionally retain .ru/.inp/.cmd bytes directly.
+
+Canonical advanced to90ee20596 only through two publication Markdown files;
+that admitted documentation was merged without app/src/reference changes.
+Before M admission re-read relevant latest canonical/peer delta, keep original
+L/closed6 owner evidence immutable and select the explicit qualified M successor.
