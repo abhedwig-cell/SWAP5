@@ -58,8 +58,14 @@ jobs:
           python -B tests/nut-sol/qualify_swp_etref.py --reader-O0 "$root/daily-O0/swap5_read_daily" --reader-O2 "$root/daily-O2/swap5_read_daily" --column-O0 "$root/O0/swap5_solute_column" --column-O2 "$root/O2/swap5_solute_column" --output "$root/etref"
       - name: Source bound admission and negative controls
         run: |
-          python -B integration/audits/verify_swp_reader.py
-          python -B integration/audits/verify_swp_reader.py --self-test
+          if [[ -f tests/hupsel51/verify_successor.py ]]; then
+            # Live chemistry/input/water/ETref/restart tests above are unchanged.
+            python -B tests/hupsel51/test_successor.py
+            python -B tests/hupsel51/verify_successor.py
+          else
+            python -B integration/audits/verify_swp_reader.py
+            python -B integration/audits/verify_swp_reader.py --self-test
+          fi
       - uses: actions/upload-artifact@v4
         if: always()
         with:

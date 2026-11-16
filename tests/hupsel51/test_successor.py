@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 import unittest
 
-spec = importlib.util.spec_from_file_location('successor', Path(__file__).with_name('verify_hupsel51_successor.py'))
+spec = importlib.util.spec_from_file_location('successor', Path(__file__).with_name('verify_successor.py'))
 s = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(s)
 
@@ -17,7 +17,7 @@ class Boundaries(unittest.TestCase):
                 s.validate_scope([path])
 
     def test_original_workflow_body_cannot_be_rewritten(self):
-        for path in (s.FCI, s.MC):
+        for path in (s.FCI, s.MC, s.CHEM):
             old = s.blob(s.SEALED, path).decode().replace('\r\n', '\n')
             new = (s.ROOT/path).read_text()
             s.validate_workflow(path, new, old)

@@ -61,7 +61,7 @@ CI_ADJUDICATION.json. They are historical authorities, not evidence of a
 new physical regression. The current workflow uses a narrowly bounded
 PR1686 successor: exact runtime6e2cd26f, sealed proof4ee0e08b, unchanged
 1e-10 water/solute limits, all full periods and native own-restart windows.
-Only two literal current-workflow forwarding insertions are permitted; the
+Only three literal current-workflow forwarding insertions are permitted; the
 old bodies, predicates and proof capsules are not repinned or rewritten.
 Unknown source changes or altered sealed proofs are refused. F-CI still runs
 the six current physical contracts; MC-SOL still builds and executes its

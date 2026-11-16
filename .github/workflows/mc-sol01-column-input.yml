@@ -55,9 +55,9 @@ jobs:
           python tests/nut-sol/test_column_input.py --build-O0 "$RUNNER_TEMP/solute-column/O0" --build-O2 "$RUNNER_TEMP/solute-column/O2" --output "$RUNNER_TEMP/solute-column/qualification"
       - name: Preserve existing surface age and accepted source authority
         run: |
-          if [[ -f tests/dataqual15/verify_hupsel51_successor.py ]]; then
+          if [[ -f tests/hupsel51/verify_successor.py ]]; then
             # The actual column O0/O2/restart test above still runs unchanged.
-            python -B tests/dataqual15/verify_hupsel51_successor.py
+            python -B tests/hupsel51/verify_successor.py
           else
             python -B tests/nut-sol/verify_surface_age_successor.py
           fi

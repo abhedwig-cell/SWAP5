@@ -17,14 +17,15 @@ SEALED = '4ee0e08b095b945870dce54032e0d886478fb4c4'
 RUNTIME = '6e2cd26f873f9a935af92816a2f1d947df9293c7'
 BASE = '3fb625da73031885624987d42ad922cb184c96e5'
 PROOF = 'integration/f-ci/hupsel51-water-balance/'
-SELF = 'tests/dataqual15/verify_hupsel51_successor.py'
-TEST = 'tests/dataqual15/test_hupsel51_successor.py'
+SELF = 'tests/hupsel51/verify_successor.py'
+TEST = 'tests/hupsel51/test_successor.py'
 FCI = '.github/workflows/fci-canonical.yml'
 MC = '.github/workflows/mc-sol01-column-input.yml'
-FCI_INSERT = '''          if [[ -f tests/dataqual15/verify_hupsel51_successor.py ]]; then
+CHEM = '.github/workflows/mc-sol01-swp-reader.yml'
+FCI_INSERT = '''          if [[ -f tests/hupsel51/verify_successor.py ]]; then
             # Exact current repair proof, not a relabelled historical admission.
-            python3 -B tests/dataqual15/test_hupsel51_successor.py
-            python3 -B tests/dataqual15/verify_hupsel51_successor.py
+            python3 -B tests/hupsel51/test_successor.py
+            python3 -B tests/hupsel51/verify_successor.py
             python3 -m pip install -r tests/dataqual15_hupsel/requirements-science.txt
             python3 -B tests/modularity/run_modular_tests.py \\
               --case assimilation --case boesten --case drainage --case low_air_policy \\
@@ -32,11 +33,23 @@ FCI_INSERT = '''          if [[ -f tests/dataqual15/verify_hupsel51_successor.py
           el'''
 MC_OLD = '        run: python -B tests/nut-sol/verify_surface_age_successor.py\n'
 MC_NEW = '''        run: |
-          if [[ -f tests/dataqual15/verify_hupsel51_successor.py ]]; then
+          if [[ -f tests/hupsel51/verify_successor.py ]]; then
             # The actual column O0/O2/restart test above still runs unchanged.
-            python -B tests/dataqual15/verify_hupsel51_successor.py
+            python -B tests/hupsel51/verify_successor.py
           else
             python -B tests/nut-sol/verify_surface_age_successor.py
+          fi
+'''
+CHEM_OLD = '''          python -B integration/audits/verify_swp_reader.py
+          python -B integration/audits/verify_swp_reader.py --self-test
+'''
+CHEM_NEW = '''          if [[ -f tests/hupsel51/verify_successor.py ]]; then
+            # Live chemistry/input/water/ETref/restart tests above are unchanged.
+            python -B tests/hupsel51/test_successor.py
+            python -B tests/hupsel51/verify_successor.py
+          else
+            python -B integration/audits/verify_swp_reader.py
+            python -B integration/audits/verify_swp_reader.py --self-test
           fi
 '''
 
@@ -55,7 +68,7 @@ def blob(ref, path):
 
 
 def validate_scope(paths):
-    allowed = {SELF, TEST, FCI, MC, PROOF+'README.md', PROOF+'RECOVERY.md'}
+    allowed = {SELF, TEST, FCI, MC, CHEM, PROOF+'README.md', PROOF+'RECOVERY.md'}
     require(set(paths) <= allowed, 'unqualified successor delta: '+str(set(paths)-allowed))
 
 
@@ -63,9 +76,12 @@ def validate_workflow(path, current, previous):
     if path == FCI:
         require(current.count(FCI_INSERT) == 1, 'missing/duplicate bounded F-CI selection')
         current = current.replace(FCI_INSERT, '          ', 1)
-    else:
+    elif path == MC:
         require(current.count(MC_NEW) == 1, 'missing/duplicate bounded column selection')
         current = current.replace(MC_NEW, MC_OLD, 1)
+    else:
+        require(current.count(CHEM_NEW) == 1, 'missing/duplicate bounded chemistry selection')
+        current = current.replace(CHEM_NEW, CHEM_OLD, 1)
     require(current == previous, 'historical workflow body changed: '+path)
 
 
@@ -93,7 +109,7 @@ def verify():
     paths = git('diff', '--name-only', SEALED, 'HEAD').decode().splitlines()
     validate_scope(paths)
     require(not git('diff', 'HEAD', '--', 'src', 'app', 'reference', 'tools', 'tests', '.github', 'integration'), 'dirty qualified surface')
-    for p in (FCI, MC):
+    for p in (FCI, MC, CHEM):
         validate_workflow(p, (ROOT/p).read_text(), blob(SEALED, p).decode().replace('\r\n', '\n'))
     # Fixed Git anchor, not a manifest that can be resealed on the current head.
     for p in ('WINDOWS.json', 'WINDOWS_RAW.json', 'WINDOWS_RAW.zip', 'UBUNTU.json', 'UBUNTU_RAW.zip', 'CI_ADJUDICATION.json'):

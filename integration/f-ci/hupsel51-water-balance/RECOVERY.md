@@ -16,7 +16,7 @@ NEXT SAFE STEP: PR1686 review; no further runtime checks remain for this bounded
 
 Current CI forwarding now has a PR1686-only successor. The entire tested
 runtime is unchanged from6e2cd26f; immutable evidence remains anchored at
-4ee0e08b. Run tests/dataqual15/test_hupsel51_successor.py and the verifier,
-then await the two updated CI jobs and merge with an exact expected head.
+4ee0e08b. Run tests/hupsel51/test_successor.py and the verifier,
+then await the three updated CI jobs and merge with an exact expected head.
 After merge verify canonical parents/runtime/tree and run a fresh bounded
 actual canonical full1096/native-own and component O0/O2 check.
