@@ -1,5 +1,5 @@
 {
-  "stage": "PREREGISTERED",
+  "stage": "BUFFERED_PREFIX_AND_SELECTED_PERIOD_WATER_BALANCE_QUALIFIED",
   "baseline": "a8fb68ff1819838b8701da0effea03c4fe1c6f54",
   "canonical": "f1883e6fae59658112f6b5750c395a1b54543ed2",
   "scope": "Only persistent buffered primitive budget stream; exact same32columns/list-directed write. Same uninterrupted fixed candidate Jan1->completedJan2, O0/O2",
@@ -7,5 +7,17 @@
   "selected_routes": "Two prefixes and, if full files exist, two fresh own resumes",
   "physics_solver_changes": false,
   "no_broad_campaign": true,
-  "flush_every_accepted_records": 128
+  "flush_every_accepted_records": 128,
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "period_balance": "PASS_JAN1_THROUGH_COMPLETED_JAN2_FIXED_CANDIDATE_O0_O2_CANOPY_INCLUDED",
+  "native_BAL_presentation": "EXCLUDED_CANOPY_INVENTORY_OMISSION",
+  "results": "RESULT.json",
+  "report": "REPORT.md",
+  "assessment": "assess_buffer16.py",
+  "model_routes": 5,
+  "model_censored": 0,
+  "full_period_origin": 35795,
+  "full_period_end": 35797,
+  "official_promotion": false,
+  "next_safe_step": "Retain selected period water-balance PASS; native BAL canopy inventory omission and general coverage/reset/append semantics remain separate bounded work, no campaign"
 }

@@ -1,0 +1,77 @@
+{
+  "decision": "B1_CANDIDATE_WITH_EXPLICIT_EXCLUSIONS",
+  "selected_period_water_inventory": "PASS_FIXED_CANDIDATE_FROM_ORIGIN_1998_JAN1_THROUGH_JAN2_O0_O2",
+  "exact_budget_preservation": true,
+  "results": [
+    {
+      "optimization": "O0",
+      "steps": 1453,
+      "old_budget_rows_byte_exact": 770,
+      "recorded_duration_days": 1.9999999988104753,
+      "period_origin": 35795.0,
+      "completed_boundary": 35797.0,
+      "matrix_change_cm": 0.7638329204791712,
+      "macro_change_cm": 0.3870080119936092,
+      "pond_change_cm": 0.0,
+      "canopy_change_cm": 0.0025926018136122326,
+      "independent_gross_external_cm": 1.1534329377278922,
+      "whole_inventory_error_cm": 5.965585003764318e-07,
+      "net_soil_macro_error_cm": 5.965585003764318e-07,
+      "inherited_total_residual_integral_envelope_cm": 1.9999999988104755e-05,
+      "domain_balance_errors_cm": [
+        -1.1102230246251565e-15,
+        -1.3877787807814457e-17,
+        -6.938893903907228e-18,
+        -6.938893903907228e-18,
+        -1.0408340855860843e-17
+      ],
+      "ledger_primitives_verified": true,
+      "natural_period_output": true,
+      "original_BAL_without_canopy_error_cm": -0.002592005255103169,
+      "native_file_sha256": "15fd30a9c1bcc9b78d533f751dc8d3f3cbb77029f6944c963c7b6cd6985ccc16",
+      "complete_history_metadata_readback": true
+    },
+    {
+      "optimization": "O2",
+      "steps": 1453,
+      "old_budget_rows_byte_exact": 787,
+      "recorded_duration_days": 1.9999999988104753,
+      "period_origin": 35795.0,
+      "completed_boundary": 35797.0,
+      "matrix_change_cm": 0.7638329204791712,
+      "macro_change_cm": 0.3870080119936092,
+      "pond_change_cm": 0.0,
+      "canopy_change_cm": 0.0025926018136122326,
+      "independent_gross_external_cm": 1.1534329377278922,
+      "whole_inventory_error_cm": 5.965585003764318e-07,
+      "net_soil_macro_error_cm": 5.965585003764318e-07,
+      "inherited_total_residual_integral_envelope_cm": 1.9999999988104755e-05,
+      "domain_balance_errors_cm": [
+        -1.1102230246251565e-15,
+        -1.3877787807814457e-17,
+        -6.938893903907228e-18,
+        -6.938893903907228e-18,
+        -1.0408340855860843e-17
+      ],
+      "ledger_primitives_verified": true,
+      "natural_period_output": true,
+      "original_BAL_without_canopy_error_cm": -0.002592005255103169,
+      "native_file_sha256": "15fd30a9c1bcc9b78d533f751dc8d3f3cbb77029f6944c963c7b6cd6985ccc16",
+      "complete_history_metadata_readback": true
+    }
+  ],
+  "native_own_restart": "PASS_COMPLETE_HISTORY_AND_FIRST_NEW_PERIOD_STEP_RESET_O0_O2",
+  "full_period_natural_BAL_BLC_BMA_event_executed": true,
+  "canopy_inclusive_independent_balance": true,
+  "original_BAL_presentation": "NOT_QUALIFIED_AS_COMPLETE_STORAGE_ACCOUNTING: canopy inventory omitted",
+  "model_routes": 5,
+  "max_seconds": 1.690467800013721,
+  "no_censored": true,
+  "physics_solver_changes": false,
+  "official_promotion": false,
+  "exclusions": [
+    "No481day/fullscience/othermodes qualification",
+    "Original BAL inventory display omits canopy, observed independently; no formatting/physics repair made",
+    "No arbitrary V4 origins/periods, later reset metadata lifecycle or whole append/PEARL continuity claim"
+  ]
+}
