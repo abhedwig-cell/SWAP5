@@ -3,7 +3,7 @@ import sys,importlib.util,json,subprocess,shutil,os,time,re
 sys.dont_write_bytecode=True
 R=Path(__file__).resolve().parent;P=R.parent/'swap431-macro-b1-native09';W=Path('C:/Users/Veldh012/swap431-sense23-work')
 sp=importlib.util.spec_from_file_location('native09',P/'native09.py');m=importlib.util.module_from_spec(sp);sp.loader.exec_module(m);m.R=R;m.WORK=W
-body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.index('def run(opt,')];body=body.replace("for name,dest in [","for name,dest in [('diag_state','diag19'),('calcgwl_probe','calcgwl'),('head_diag','headcalc'),('macrorate_node','macrorate'),('integral_canopy','integral'),",1);body=body.replace("('macropore_native','macropore'),('probe_state','probe23'),","('macropore_native','macropore'),('ledger_state','ledger12'),",1);exec(body,m.__dict__)
+body=(P/'native09.py').read_text();body=body[body.index('def build(opt):'):body.index('def run(opt,')];body=body.replace("for name,dest in [","for name,dest in [('diag_state','diag19'),('calcgwl_probe','calcgwl'),('head_diag','headcalc'),('macrorate_node','macrorate'),('integral_canopy','integral'),",1);body=body.replace("('macropore_native','macropore'),","('macropore_native','macropore'),('probe_state','probe23'),('ledger_state','ledger12'),",1);exec(body,m.__dict__)
 def run(opt,mode,label=''):
  profile=mode+('_'+label if label else '')
  c=W/(opt+'-'+profile+'-FINAL-RENDER');c.mkdir(parents=True,exist_ok=True);assert not (c/'outcome.txt').exists()

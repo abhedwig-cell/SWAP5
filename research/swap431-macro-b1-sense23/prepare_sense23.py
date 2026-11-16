@@ -166,7 +166,7 @@ end subroutine
 (R/'probe_state.f90').write_text(code)
 s=(P/'fresh22.py').read_text().replace('swap431-fresh22-work','swap431-sense23-work')
 s=s.replace("[('diag_state','diag19'),","[('diag_state','diag19'),('calcgwl_probe','calcgwl'),")
-s=s.replace("('macropore_native','macropore'),","('macropore_native','macropore'),('probe_state','probe23'),",1)
+s=s.replace('"(\'macropore_native\',\'macropore\'),(\'ledger_state\',\'ledger12\'),"','"(\'macropore_native\',\'macropore\'),(\'probe_state\',\'probe23\'),(\'ledger_state\',\'ledger12\'),"',1)
 (R/'sense23.py').write_text(s)
 (R/'instrumentation.patch').write_text('\n'.join(patch))
 (R/'TRANSACTION_FIELDS.json').write_text(json.dumps(schema,indent=2)+'\n')
