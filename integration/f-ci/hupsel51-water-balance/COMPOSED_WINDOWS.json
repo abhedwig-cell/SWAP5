@@ -1,0 +1,443 @@
+{
+  "runtime_source_commit": "f1d1c13a295c5b54ec11e03d864de7030ca09008",
+  "actual_merge_tree_exact": true,
+  "actual_merge_parents": [
+    "49ac58e473878b21b4050cebbf777ec1a97cc120",
+    "a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb"
+  ],
+  "actual_merge_tree": "4eb727cac399095d15674e1a037c9e15d886b4d6",
+  "Windows": {
+    "O2": {
+      "undrained": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1316295123187103e-13,
+          "sum_water_residual_cm": 3.1970948512292235e-12
+        },
+        "model_seconds": 4.762208000058308,
+        "build_sha256": "f3fc566bb963db957b0319dd36bafcf021556600e5f3533cd5fba3ed4723baec",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.2907207999378443
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.40619949996471405
+          }
+        ]
+      }
+    },
+    "O0": {
+      "undrained": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 2.3109292257572633e-13,
+          "max_kernel_cm": 2.3225865675158275e-13,
+          "max_solute_mg_cm2": 1.1316295123187103e-13,
+          "sum_water_residual_cm": 3.1970948512292235e-12
+        },
+        "model_seconds": 5.202100099995732,
+        "build_sha256": "92e358596ae554dc1ca388d7f89b73c091bdc5445727ec83c0af9e8f2942a73c",
+        "profiles": {
+          "kernel_flags": [
+            "-O0",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O0",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 50,
+            "end": 52,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.34607290010899305
+          },
+          {
+            "start": 530,
+            "end": 532,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.3971645999699831
+          }
+        ]
+      }
+    },
+    "named": {
+      "grass": {
+        "status": "FULL_PASS",
+        "full_days": 1827,
+        "budgets": {
+          "days": 1827,
+          "max_water_cm": 1.2831355015544926e-13,
+          "max_kernel_cm": 1.2828627049543684e-13,
+          "max_solute_mg_cm2": 0,
+          "sum_water_residual_cm": -1.9993334022601785e-13
+        },
+        "model_seconds": 13.648698999779299,
+        "build_sha256": "1a9026f437cae7f814edc055e2fdd41dcf570340f847a2af08efbc8a65af8c44",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.34688560012727976
+          }
+        ]
+      },
+      "hupsel": {
+        "status": "FULL_PASS",
+        "full_days": 1096,
+        "budgets": {
+          "days": 1096,
+          "max_water_cm": 9.997037887180676e-11,
+          "max_kernel_cm": 9.997380701065595e-11,
+          "max_solute_mg_cm2": 2.159834487009581e-13,
+          "sum_water_residual_cm": 2.6692236513800333e-10
+        },
+        "model_seconds": 5.402196699986234,
+        "build_sha256": "200b23f7b47961b8888427b0f957054b38fe8c3123bb65a44b8a16c73c08282d",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 365,
+            "end": 367,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.4216020000167191
+          }
+        ]
+      },
+      "salt": {
+        "status": "FULL_PASS",
+        "full_days": 1461,
+        "budgets": {
+          "days": 1461,
+          "max_water_cm": 2.959653355727454e-12,
+          "max_kernel_cm": 2.9596325390457423e-12,
+          "max_solute_mg_cm2": 1.3835196877032274e-11,
+          "sum_water_residual_cm": 2.9654271659768083e-10
+        },
+        "model_seconds": 11.3936767000705,
+        "build_sha256": "59ded1b5478fbad9a23b4b20f063f59c1664eec3bc699a4804f2c6d69bb3e457",
+        "profiles": {
+          "kernel_flags": [
+            "-O2",
+            "-ffree-line-length-none",
+            "-fcheck=all",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ],
+          "donor_flags": [
+            "-O2",
+            "-cpp",
+            "-Dlinux",
+            "-finit-local-zero",
+            "-ffree-line-length-none",
+            "-fallow-argument-mismatch",
+            "-ffp-contract=off",
+            "-march=x86-64",
+            "-mtune=generic"
+          ]
+        },
+        "restart_windows": [
+          {
+            "start": 109,
+            "end": 111,
+            "exact_physical": true,
+            "exact_csv": true,
+            "exact_native_auxiliary": true,
+            "origin_unchanged": true,
+            "seconds": 0.35848539997823536
+          }
+        ]
+      }
+    }
+  },
+  "water_guard_cm": 1e-10,
+  "solute_guard_mg_cm2": 1e-10,
+  "tolerances_changed": false,
+  "whole_scientific_equivalence": "NOT_QUALIFIED",
+  "soil_air_component_status": "PRODUCTION_ORIGINAL_SOIL_AIR_RECEIPT_O0_O2_PASS",
+  "pond_component_status": "ORIGINAL_LINEAR_POND_TANGENT_O0_O2_PASS",
+  "prior_physical_preservation": {
+    "O2/undrained": {
+      "all_physical_daily_fields_exact": true,
+      "all_physical_csv_rows_exact": true,
+      "days": 1096
+    },
+    "O0/undrained": {
+      "all_physical_daily_fields_exact": true,
+      "all_physical_csv_rows_exact": true,
+      "days": 1096
+    },
+    "named/grass": {
+      "all_physical_daily_fields_exact": true,
+      "all_physical_csv_rows_exact": true,
+      "days": 1827
+    },
+    "named/hupsel": {
+      "all_physical_daily_fields_exact": true,
+      "all_physical_csv_rows_exact": true,
+      "days": 1096
+    },
+    "named/salt": {
+      "all_physical_daily_fields_exact": true,
+      "all_physical_csv_rows_exact": true,
+      "days": 1461
+    }
+  },
+  "merge_verification": {
+    "status": "ACTUAL_CANONICAL_PHYSICS_PASS_COMPOSED_CI_PENDING",
+    "merge_sha": "f1d1c13a295c5b54ec11e03d864de7030ca09008",
+    "canonical_parent": "49ac58e473878b21b4050cebbf777ec1a97cc120",
+    "pr_head": "a6d4c4c7cfeb7286b3790bcec41dfdcf62a29adb",
+    "exact_two_parent_merge_tree": true,
+    "shared_Fortran_template_exact_to_PR1686": true,
+    "composition_requires_fresh_qualification": true,
+    "commands": [
+      {
+        "name": "component",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/check_closed_pond_jacobian.py",
+          "--reference-work",
+          "C:\\SWAP5-RC2\\provider",
+          "--output",
+          "C:\\SWAP5-testing\\hupsel51\\actual-merge\\component"
+        ],
+        "returncode": 0,
+        "seconds": 4.752091499976814
+      },
+      {
+        "name": "full1096",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/check_hupsel51_repair.py",
+          "--reference-work",
+          "C:\\SWAP5-RC2\\provider",
+          "--output",
+          "C:\\SWAP5-testing\\hupsel51\\actual-merge\\full1096",
+          "--model-cap",
+          "60"
+        ],
+        "returncode": 0,
+        "seconds": 34.79041599994525
+      },
+      {
+        "name": "full1096-O0",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/check_hupsel51_repair.py",
+          "--suite",
+          "O0",
+          "--reference-work",
+          "C:\\SWAP5-RC2\\provider",
+          "--output",
+          "C:\\SWAP5-testing\\hupsel51\\actual-merge\\full1096-O0",
+          "--model-cap",
+          "60"
+        ],
+        "returncode": 0,
+        "seconds": 17.016025099903345
+      },
+      {
+        "name": "named",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/check_hupsel51_repair.py",
+          "--suite",
+          "named",
+          "--reference-work",
+          "C:\\SWAP5-RC2\\provider",
+          "--output",
+          "C:\\SWAP5-testing\\hupsel51\\actual-merge\\named",
+          "--model-cap",
+          "60"
+        ],
+        "returncode": 0,
+        "seconds": 86.05326860002242
+      },
+      {
+        "name": "soil-air-component",
+        "command": [
+          "C:\\Users\\Veldh012\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "-B",
+          "tools/solute/check_soil_air_receipt.py",
+          "--reference-work",
+          "C:\\SWAP5-RC2\\provider",
+          "--output",
+          "C:\\SWAP5-testing\\hupsel51\\actual-merge\\soil-air-component"
+        ],
+        "returncode": 0,
+        "seconds": 2.244834099896252
+      }
+    ],
+    "inherited_proof": "4ee0e08b095b945870dce54032e0d886478fb4c4",
+    "tolerances_changed": false,
+    "full1096": {
+      "status": "FULL_PASS",
+      "full_days": 1096,
+      "budgets": {
+        "days": 1096,
+        "max_water_cm": 2.3109292257572633e-13,
+        "max_kernel_cm": 2.3225865675158275e-13,
+        "max_solute_mg_cm2": 1.1316295123187103e-13,
+        "sum_water_residual_cm": 3.1970948512292235e-12
+      },
+      "model_seconds": 4.762208000058308,
+      "build_sha256": "f3fc566bb963db957b0319dd36bafcf021556600e5f3533cd5fba3ed4723baec",
+      "profiles": {
+        "kernel_flags": [
+          "-O2",
+          "-ffree-line-length-none",
+          "-fcheck=all",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ],
+        "donor_flags": [
+          "-O2",
+          "-cpp",
+          "-Dlinux",
+          "-finit-local-zero",
+          "-ffree-line-length-none",
+          "-fallow-argument-mismatch",
+          "-ffp-contract=off",
+          "-march=x86-64",
+          "-mtune=generic"
+        ]
+      },
+      "restart_windows": [
+        {
+          "start": 50,
+          "end": 52,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "seconds": 0.2907207999378443
+        },
+        {
+          "start": 530,
+          "end": 532,
+          "exact_physical": true,
+          "exact_csv": true,
+          "exact_native_auxiliary": true,
+          "origin_unchanged": true,
+          "seconds": 0.40619949996471405
+        }
+      ]
+    }
+  },
+  "raw_sha256": "5dd145a3f54950ef09aa5ad6316729abf981b14c8c896a0d1815f5f6c5292f25",
+  "raw_members": 433,
+  "scope": "Fresh actual PR1686+1687 composed source; no physics or numerical tolerance changes; prior sealed proofs unchanged"
+}

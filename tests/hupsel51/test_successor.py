@@ -17,8 +17,8 @@ class Boundaries(unittest.TestCase):
                 s.validate_scope([path])
 
     def test_original_workflow_body_cannot_be_rewritten(self):
-        for path in (s.FCI, s.MC, s.CHEM):
-            old = s.blob(s.SEALED, path).decode().replace('\r\n', '\n')
+        for path in (s.FCI, s.MC, s.CHEM, s.QUALIFY):
+            old = s.blob(s.RUNTIME if path == s.QUALIFY else s.SEALED, path).decode().replace('\r\n', '\n')
             new = (s.ROOT/path).read_text()
             s.validate_workflow(path, new, old)
             with self.assertRaises(ValueError):
