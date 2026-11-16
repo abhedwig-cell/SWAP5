@@ -260,11 +260,11 @@ def render_checkpoint(build, output, checkpoint_day, days=2, *, runtime=False, n
                    [base_magic,hys_magic,snow_magic,mixed_magic][history])
         codec=codec.replace(old_magic,MAGICS[(solute_state,plant_et_state)][history-1])
         codec=replace(codec,'      use MOD_swap_base, only: swmacro',
-                      '      use mod_RWU_micro,only:hybrid_micro_checkpoint\n      use MOD_swap_base, only: swmacro')
+                      '      use MOD_top,only:hybrid_top_checkpoint\n      use mod_RWU_micro,only:hybrid_micro_checkpoint\n      use MOD_swap_base, only: swmacro')
         codec=replace(codec,'        read(unit,iostat=ios) trailing',
-                      '        call hybrid_micro_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing')
+                      '        call hybrid_top_checkpoint(unit,.true.)\n        call hybrid_micro_checkpoint(unit,.true.)\n        read(unit,iostat=ios) trailing')
         codec=replace(codec,'      end if\n      close(unit)',
-                      '        call hybrid_micro_checkpoint(unit,.false.)\n      end if\n      close(unit)')
+                      '        call hybrid_top_checkpoint(unit,.false.)\n        call hybrid_micro_checkpoint(unit,.false.)\n      end if\n      close(unit)')
     if runtime:
         codec = replace(codec, "../first/macro.bin", "macro-origin.bin")
     macro = replace(macro, "   contains\n", "   contains\n" + codec)

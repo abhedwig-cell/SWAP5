@@ -1,9 +1,11 @@
 name: Complete original microscopic history state
 on:
-  push:
-    branches: [codex/nomacro-coverage10]
-    paths: ['.github/workflows/nomacro-coverage-history.yml']
   workflow_dispatch:
+    inputs:
+      cohort:
+        type: choice
+        default: daily
+        options: [daily, all]
 permissions:
   contents: read
 jobs:
@@ -14,7 +16,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        configuration: [water-history, water-hyst1, water-hyst2, water-snow, water-hyst2-snow, chemical-hyst1, chemical-hyst2, chemical-snow, chemical-history, water-et-history, chemical-et-history]
+        configuration: ${{ fromJSON(inputs.cohort == 'all' && '["water-history","water-hyst1","water-hyst2","water-snow","water-hyst2-snow","chemical-hyst1","chemical-hyst2","chemical-snow","chemical-history","water-et-history","chemical-et-history"]' || '["water-history"]') }}
     env:
       OMP_NUM_THREADS: '1'
     steps:

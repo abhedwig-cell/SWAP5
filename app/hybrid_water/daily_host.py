@@ -597,12 +597,14 @@ end module MOD_wofost""")
         source=(donor_build/'swap-selected/RWU_micro.f90').read_text(encoding='cp1252')
         (output/'RWU_micro.f90').write_text(render_micro_lookup(source),encoding='cp1252')
         patched.insert(0,'RWU_micro')
+        from history_top_state import render as render_history_top
+        (output/'boundtop.f90').write_text(render_history_top((output/'boundtop.f90').read_text(encoding='cp1252')),encoding='cp1252')
         if checkpoint_day is not None or runtime_checkpoint:
             path=output/'swap.f90';source=path.read_text(encoding='cp1252')
             source=replace(source,'use MOD_wofost,only:hybrid_apply_wofost',
-                           'use mod_RWU_micro,only:hybrid_apply_micro_lookup\nuse MOD_wofost,only:hybrid_apply_wofost')
+                           'use MOD_top,only:hybrid_apply_top\nuse mod_RWU_micro,only:hybrid_apply_micro_lookup\nuse MOD_wofost,only:hybrid_apply_wofost')
             source=replace(source,'         call hybrid_apply_wofost(fl_cropemergence)',
-                           '         call hybrid_apply_wofost(fl_cropemergence)\n         call hybrid_apply_micro_lookup()')
+                           '         call hybrid_apply_wofost(fl_cropemergence)\n         call hybrid_apply_top()\n         call hybrid_apply_micro_lookup()')
             path.write_text(source,encoding='cp1252')
     if not project.macro and project.time_step_policy==PHYSICAL_GROWTH_TIME_POLICY:
         render_physical_iteration_proposal(output,strict_water=strict_water)
@@ -700,6 +702,7 @@ end module plant_interface""")
         from micro_lookup_state import POLICY
         build_identity['micro_lookup_state_policy']=POLICY
         build_identity['micro_lookup_state_source']=sha(APP/'micro_lookup_state.py')
+        build_identity['history_top_state_source']=sha(APP/'history_top_state.py')
     if budget_retry:
         build_identity["budget_source"] = sha(budget_source)
     if not project.macro:

@@ -26,6 +26,9 @@ def malformed_active(origin,day,project,label,reuse,out,call):
     for i,name in [(start+40,'M'),(start+40+430*struct.unpack_from('=i',raw,start+20)[0]*8,'K')]:
         replace(name+'-nan',i,'=d',float('nan'));replace(name+'-negative',i,'=d',-1.)
     replace('trailer',len(raw)-4,'=i',size+8)
+    top=start-72
+    for name,offset,fmt,value in [('top-version',0,'=i',9),('top-clock',4,'=d',0.),('top-nan',12,'=d',float('nan')),
+       ('top-negative',20,'=d',-1.),('top-flag',60,'=i',9),('top-trailer',68,'=i',0)]:replace(name,top+offset,fmt,value)
     changes.extend([('short',raw[:-1]),('outer-eof',raw+b'x')])
     for name,data in changes:
         changed=dict(members);changed['macro.bin']=data
@@ -67,3 +70,39 @@ def every_day(bundle,reference,project,out,expected):
                     events.append(day)
         warm.close()
     return dict(days=project.last_day,every_physical_exact=True,every_native_exact=True,disk_recovery_days=events)
+
+
+def transitions(bundle,reference,project,out):
+    from datetime import date
+    # Exact distributed Hupsel crop calendar; guard against silent fixture drift.
+    import re
+    text=(__import__('pathlib').Path(project.input_directory)/'swap.swp').read_text(encoding='cp1252')
+    calendar=re.findall(r"(?m)^\s*(200[234]-\d{2}-\d{2})\s+(200[234]-\d{2}-\d{2})\s+'(maize|potato|grass)'\s+[12]\s*$",text)
+    assert calendar==[('2002-05-01','2002-10-15','maize'),('2003-05-10','2003-09-29','potato'),('2004-01-01','2004-12-31','grass')]
+    dates=[calendar[0][0],calendar[1][0],calendar[1][1],calendar[2][0]]
+    cuts=[(date.fromisoformat(d)-date(2002,1,1)).days for d in dates]
+    selected=set(cuts+[d+2 for d in cuts]);out.mkdir();warmdir=out/'warm';warmdir.mkdir()
+    meta,case=validate_bundle(bundle,reference,project);expected={}
+    with contextlib.ExitStack() as stack:
+        host=h.DailyHost(stack,h.executable(bundle,'day_donor'),h.executable(bundle,'day_kernel'),case,warmdir,
+            [h.ColumnStart()],runtime=True,checkpoint_enabled=True,binding=meta['binding'],project=project)
+        with (out/'warm.jsonl').open('w') as log:
+            for day in range(1,max(selected)+1):
+                row=host.step(1,checkpoint=day in selected);assert row['committed']
+                expected[day]=row;log.write(json.dumps(row)+'\n')
+        host.close()
+    for cut in cuts:
+        origin=warmdir/f'accepted-column-1-day-{cut}.zip';digest=h.sha(origin)
+        restored=out/f'origin-{cut}';receipt=h.verify_checkpoint(origin,cut,meta['binding'],restored)
+        cold=out/f'cold-{cut}';cold.mkdir()
+        with contextlib.ExitStack() as stack:
+            host=h.DailyHost(stack,h.executable(bundle,'day_donor'),h.executable(bundle,'day_kernel'),case,cold,
+                [h.ColumnStart(day=cut,origin=restored,receipt=receipt)],runtime=True,checkpoint_enabled=True,binding=meta['binding'],project=project)
+            with (cold/'daily.jsonl').open('w') as log:
+                for day in range(cut+1,cut+3):
+                    row=host.step(1,checkpoint=day==cut+2);log.write(json.dumps(row)+'\n')
+                    assert row['committed'] and physical(row)==physical(expected[day]),(cut,day,'crop transition')
+            host.close()
+        assert payload(cold/f'accepted-column-1-day-{cut+2}.zip')==payload(warmdir/f'accepted-column-1-day-{cut+2}.zip')
+        assert h.sha(origin)==digest
+    return dict(calendar=calendar,windows=[[c,c+2] for c in cuts],physical_exact=True,native_exact=True,origins_unchanged=True)

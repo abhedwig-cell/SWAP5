@@ -45,7 +45,7 @@ def management_end(aux,project):
     from micro_lookup_state import ALL_MAGICS
     size=struct.unpack_from('=i',aux,len(aux)-4)[0] if aux[:8] in ALL_MAGICS else 0
     if size:assert 44<=size<=len(aux)
-    return len(aux)-size-8*count-(100 if selected['SWCFBS'] else 0)
+    return len(aux)-size-(72 if size else 0)-8*count-(100 if selected['SWCFBS'] else 0)
 
 
 def native_temperatures(checkpoint,project):
@@ -505,8 +505,9 @@ def main():
                 assert h.sha(accepted_origin)==origin_hash
                 report['active_crop_exact_native_window']=[active_cut,active_cut+2]
                 if args.history_options:
-                    from qualify_micro_history import malformed_active
+                    from qualify_micro_history import malformed_active,transitions
                     report['active_lookup_refusals']=malformed_active(accepted_origin,active_cut,project,label,reuse,out,call)
+                    report['crop_calendar_transitions']=transitions(bundle,reference,project,out/(label+'-transitions'))
                     if opt=='O2' and key=='water-history':
                         from qualify_micro_history import every_day
                         report['every_daily_cold_continuation']=every_day(bundle,reference,project,out/(label+'-everyday'),data)
