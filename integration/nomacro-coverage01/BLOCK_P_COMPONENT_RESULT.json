@@ -1,0 +1,626 @@
+{
+  "status": "ACTUAL_ORIGINAL_GUARDED_FROST_COMPONENT_O0_O2_PASS",
+  "profiles": {
+    "O0": {
+      "original": {
+        "compilation": [
+          {
+            "command": [
+              "gfortran",
+              "-O0",
+              "-cpp",
+              "-Dlinux",
+              "-finit-local-zero",
+              "-ffree-line-length-none",
+              "-fallow-argument-mismatch",
+              "-fcheck=all",
+              "-ffpe-trap=invalid,zero,overflow",
+              "-ffp-contract=off",
+              "-march=x86-64",
+              "-mtune=generic",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+              "-c",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-original\\frozencond.f90",
+              "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_bounded_frost.f90"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          },
+          {
+            "command": [
+              "gfortran",
+              "-o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-original\\frost.exe",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\solute.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-original\\frozencond.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-original\\original_bounded_frost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          }
+        ],
+        "records": [
+          {
+            "mode": "valid",
+            "returncode": 0,
+            "stdout": "PHYSICAL 1  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 1  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 2  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 2  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 3  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 3  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 4  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 4  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 5  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 5  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 6  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 6  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 7  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 7  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 8  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 8  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 9  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 9  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 10  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 10  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 11  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 11  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 12  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 12  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 13  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 13  9.49999999999999956E-001  9.49999999999999956E-001\nPHYSICAL 14  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 14  1.05000000000000004E+000  1.05000000000000004E+000\nPHYSICAL 15  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 15  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 16  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 16  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 17  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 17  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 18  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 18  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 19  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 19  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 20  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 20  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 21  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 21  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 22  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 22  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 23  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 23  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 24  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 24  9.00000000000000022E-001  9.00000000000000022E-001\n ACTUAL_ORIGINAL_FROST_CASES          24\n",
+            "stderr": ""
+          },
+          {
+            "mode": "uniform",
+            "returncode": 3,
+            "stdout": "",
+            "stderr": "\nProgram received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.\n\nBacktrace for this error:\n#0  0x45979b94\n#1  0x458e2253\n#2  0xaaa96eae\n#3  0x6870107f\n#4  0xad2464ae\n#5  0xad1a4064\n#6  0xad245ded\n#7  0x687c93f4\n#8  0x687ca183\n#9  0x687cab14\n#10  0x68701156\n#11  0xab90dda6\n#12  0xad15ee4b\n#13  0xffffffff\n"
+          },
+          {
+            "mode": "epsilon",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.90000000999999996     \n",
+            "stderr": ""
+          },
+          {
+            "mode": "nan",
+            "returncode": 3,
+            "stdout": "",
+            "stderr": "\nProgram received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.\n\nBacktrace for this error:\n#0  0x45979b94\n#1  0x458e2253\n#2  0xaaa96eae\n#3  0x6870107f\n#4  0xad2464ae\n#5  0xad1a4064\n#6  0xad245ded\n#7  0x687c8d8d\n#8  0x687ca183\n#9  0x687cab14\n#10  0x68701156\n#11  0xab90dda6\n#12  0xad15ee4b\n#13  0xffffffff\n"
+          },
+          {
+            "mode": "limits",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.80000000000000004     \n",
+            "stderr": ""
+          },
+          {
+            "mode": "grid",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.50000000000000000     \n",
+            "stderr": ""
+          },
+          {
+            "mode": "drain-index",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.50000000000000000     \n",
+            "stderr": ""
+          }
+        ],
+        "source_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+        "executable_sha256": "f2a679bf91e937b3185da0a16510ef6dbc5f20090f3a782c6dea3416c72a9567"
+      },
+      "guarded": {
+        "compilation": [
+          {
+            "command": [
+              "gfortran",
+              "-O0",
+              "-cpp",
+              "-Dlinux",
+              "-finit-local-zero",
+              "-ffree-line-length-none",
+              "-fallow-argument-mismatch",
+              "-fcheck=all",
+              "-ffpe-trap=invalid,zero,overflow",
+              "-ffp-contract=off",
+              "-march=x86-64",
+              "-mtune=generic",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+              "-DGUARDED",
+              "-c",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-guarded\\frozencond.f90",
+              "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_bounded_frost.f90"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          },
+          {
+            "command": [
+              "gfortran",
+              "-o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-guarded\\frost.exe",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\solute.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-guarded\\frozencond.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O0-guarded\\original_bounded_frost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          }
+        ],
+        "records": [
+          {
+            "mode": "valid",
+            "returncode": 0,
+            "stdout": "PHYSICAL 1  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 1  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 2  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 2  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 3  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 3  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 4  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 4  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 5  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 5  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 6  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 6  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 7  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 7  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 8  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 8  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 9  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 9  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 10  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 10  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 11  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 11  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 12  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 12  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 13  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 13  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 14  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 14  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 15  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 15  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 16  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 16  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 17  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 17  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 18  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 18  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 19  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 19  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 20  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 20  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 21  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 21  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 22  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 22  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 23  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 23  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 24  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 24  9.00000000000000022E-001  9.00000000000000022E-001\n ACTUAL_ORIGINAL_FROST_CASES          24\n",
+            "stderr": ""
+          },
+          {
+            "mode": "uniform",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           2\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x5926761b\n#4  0x5926b68d\n#5  0x5926c082\n#6  0x591a1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "epsilon",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           2\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x5926761b\n#4  0x5926b68d\n#5  0x5926c082\n#6  0x591a1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "nan",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           1\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x5926761b\n#4  0x5926b68d\n#5  0x5926c082\n#6  0x591a1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "limits",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           1\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x5926761b\n#4  0x5926b68d\n#5  0x5926c082\n#6  0x591a1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "grid",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           1\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x5926761b\n#4  0x5926b68d\n#5  0x5926c082\n#6  0x591a1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "drain-index",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS T           0\n",
+            "stderr": "ERROR STOP FROST_DRAIN_GEOMETRY_INVALID\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x592678cf\n#4  0x5926b68d\n#5  0x5926c082\n#6  0x591a1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          }
+        ],
+        "source_sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2",
+        "executable_sha256": "7260931c79eef2070e35ca6826d3fd3cd921a4bd777b11c02af71d33fd9f3f4c"
+      },
+      "physical_cases_exact_original_guarded": 24
+    },
+    "O2": {
+      "original": {
+        "compilation": [
+          {
+            "command": [
+              "gfortran",
+              "-O2",
+              "-cpp",
+              "-Dlinux",
+              "-finit-local-zero",
+              "-ffree-line-length-none",
+              "-fallow-argument-mismatch",
+              "-fcheck=all",
+              "-ffpe-trap=invalid,zero,overflow",
+              "-ffp-contract=off",
+              "-march=x86-64",
+              "-mtune=generic",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+              "-c",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-original\\frozencond.f90",
+              "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_bounded_frost.f90"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          },
+          {
+            "command": [
+              "gfortran",
+              "-o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-original\\frost.exe",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\solute.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-original\\frozencond.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-original\\original_bounded_frost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          }
+        ],
+        "records": [
+          {
+            "mode": "valid",
+            "returncode": 0,
+            "stdout": "PHYSICAL 1  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 1  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 2  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 2  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 3  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 3  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 4  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 4  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 5  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 5  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 6  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 6  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 7  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 7  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 8  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 8  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 9  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 9  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 10  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 10  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 11  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 11  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 12  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 12  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 13  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 13  9.49999999999999956E-001  9.49999999999999956E-001\nPHYSICAL 14  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 14  1.05000000000000004E+000  1.05000000000000004E+000\nPHYSICAL 15  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 15  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 16  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 16  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 17  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 17  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 18  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 18  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 19  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 19  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 20  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 20  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 21  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 21  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 22  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 22  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 23  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 23  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 24  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 24  9.00000000000000022E-001  9.00000000000000022E-001\n ACTUAL_ORIGINAL_FROST_CASES          24\n",
+            "stderr": ""
+          },
+          {
+            "mode": "uniform",
+            "returncode": 3,
+            "stdout": "",
+            "stderr": "\nProgram received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.\n\nBacktrace for this error:\n#0  0x45979b94\n#1  0x458e2253\n#2  0xaaa96eae\n#3  0xaf63107f\n#4  0xad2464ae\n#5  0xad1a4064\n#6  0xad245ded\n#7  0xaf6f7cde\n#8  0xaf6f89c8\n#9  0xaf718979\n#10  0xaf631156\n#11  0xab90dda6\n#12  0xad15ee4b\n#13  0xffffffff\n"
+          },
+          {
+            "mode": "epsilon",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.90000000999999996     \n",
+            "stderr": ""
+          },
+          {
+            "mode": "nan",
+            "returncode": 3,
+            "stdout": "",
+            "stderr": "\nProgram received signal SIGFPE: Floating-point exception - erroneous arithmetic operation.\n\nBacktrace for this error:\n#0  0x45979b94\n#1  0x458e2253\n#2  0xaaa96eae\n#3  0xaf63107f\n#4  0xad2464ae\n#5  0xad1a4064\n#6  0xad245ded\n#7  0xaf6f7d61\n#8  0xaf6f89c8\n#9  0xaf718979\n#10  0xaf631156\n#11  0xab90dda6\n#12  0xad15ee4b\n#13  0xffffffff\n"
+          },
+          {
+            "mode": "limits",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.80000000000000004     \n",
+            "stderr": ""
+          },
+          {
+            "mode": "grid",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.50000000000000000     \n",
+            "stderr": ""
+          },
+          {
+            "mode": "drain-index",
+            "returncode": 0,
+            "stdout": " UNEXPECTED_INVALID_PHYSICAL_PUBLICATION   5.0000000000000003E-002  0.50000000000000000     \n",
+            "stderr": ""
+          }
+        ],
+        "source_sha256": "edd16b08ff238ee41d264d1c4870726f1232fb1143c1340f2dc21f94a3b909cf",
+        "executable_sha256": "1ebfb19a70719a7a92c139450e78ec1a9e88b22b974069d36c74ac1ec29dd8bf"
+      },
+      "guarded": {
+        "compilation": [
+          {
+            "command": [
+              "gfortran",
+              "-O2",
+              "-cpp",
+              "-Dlinux",
+              "-finit-local-zero",
+              "-ffree-line-length-none",
+              "-fallow-argument-mismatch",
+              "-fcheck=all",
+              "-ffpe-trap=invalid,zero,overflow",
+              "-ffp-contract=off",
+              "-march=x86-64",
+              "-mtune=generic",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj",
+              "-I",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj",
+              "-DGUARDED",
+              "-c",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-guarded\\frozencond.f90",
+              "C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\drivers\\original_bounded_frost.f90"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          },
+          {
+            "command": [
+              "gfortran",
+              "-o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-guarded\\frost.exe",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\arrays.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundbottom.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\boundtop.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\calcgwl.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\description.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\divdra.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fixed.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\fluxes.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\headcalc.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\hysteresis.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\initialize.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\integral.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_atmosphere.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\interface_plant.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\irrigation.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macropore.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macroporeoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\macrorate.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\management_soil.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_cropdevelopment.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_drainage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_Kavg_Szym.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_meteo.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_MvG_functions.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_out_PEARL_ANIMO.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_RIA.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\MOD_runon.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\oxygenstress.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\params.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\readswap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\rootextraction.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\RWU_micro.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\snow.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\soilwater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\solute.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\sptabulated.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\surfacewater.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_base.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swap_csv_output.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\swapoutput.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\temperature.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tillage.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\timecontrol.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\tridag.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\variables.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\watstor.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\WC_K_models_04_11.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_amendments.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_balancecheck.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_cropresidues.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_declarations.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_interface.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_orgmatn.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_parameters.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_rateconstants.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofost_soil_watern.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap-obj\\wofostnut.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-guarded\\frozencond.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\P_frost_component_bound\\O2-guarded\\original_bounded_frost.o",
+              "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\ttutil-obj\\libttutil.a"
+            ],
+            "returncode": 0,
+            "stdout": "",
+            "stderr": ""
+          }
+        ],
+        "records": [
+          {
+            "mode": "valid",
+            "returncode": 0,
+            "stdout": "PHYSICAL 1  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 1  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 2  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 2  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 3  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 3  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 4  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 4  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 5  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 5  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 6  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 6  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 7  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 7  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 8  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 8  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 9  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 9  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 10  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 10  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 11  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 11  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 12  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 12  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 13  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 13  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 14  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 14  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 15  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 15  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 16  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000  1.00000000000000000E+000 -1.50000000000000000E+001 -5.00000000000000000E+001  3.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  0.00000000000000000E+000  0.00000000000000000E+000  4.00000000000000022E-001\nREPORT 16  5.00000000000000000E-001  5.00000000000000000E-001\nPHYSICAL 17  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 17  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 18  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 18  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 19  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 19  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 20  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  1.00000000000000006E-001  2.00000000000000011E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 20  1.00000000000000000E+000  1.00000000000000000E+000\nPHYSICAL 21  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 21  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 22  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 22  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 23  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000 -5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 23  9.00000000000000022E-001  9.00000000000000022E-001\nPHYSICAL 24  5.00000000000000000E-001  7.50000000000000000E-001  1.00000000000000000E+000  1.00000000000000000E+000  0.00000000000000000E+000  0.00000000000000000E+000 -1.00000000000000000E+000  5.00000000000000028E-002  5.00000000000000028E-002  1.50000000000000022E-001  2.99999999999999989E-001  4.00000000000000022E-001\nREPORT 24  9.00000000000000022E-001  9.00000000000000022E-001\n ACTUAL_ORIGINAL_FROST_CASES          24\n",
+            "stderr": ""
+          },
+          {
+            "mode": "uniform",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           2\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x46997871\n#4  0x46998fcc\n#5  0x469b8f79\n#6  0x468d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "epsilon",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           2\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x46997871\n#4  0x46998fcc\n#5  0x469b8f79\n#6  0x468d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "nan",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           1\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x46997871\n#4  0x46998fcc\n#5  0x469b8f79\n#6  0x468d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "limits",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           1\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x46997871\n#4  0x46998fcc\n#5  0x469b8f79\n#6  0x468d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "grid",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS F           1\n",
+            "stderr": "ERROR STOP FROST_GEOMETRY_UNAVAILABLE\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x46997871\n#4  0x46998fcc\n#5  0x469b8f79\n#6  0x468d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          },
+          {
+            "mode": "drain-index",
+            "returncode": 1,
+            "stdout": " GEOMETRY_STATUS T           0\n",
+            "stderr": "ERROR STOP FROST_DRAIN_GEOMETRY_INVALID\n\nError termination. Backtrace:\n#0  0x45979b94\n#1  0x458f4471\n#2  0x457a28f4\n#3  0x4699784b\n#4  0x46998fcc\n#5  0x469b8f79\n#6  0x468d1156\n#7  0xab90dda6\n#8  0xad15ee4b\n#9  0xffffffff\n"
+          }
+        ],
+        "source_sha256": "d5dd195187d4581e09d19e6afdd4066c0fdb23eee84f8f87947251d2778724d2",
+        "executable_sha256": "713843caf04a3c65df0a9b45e9194c8a6c11147c8fbe4f75b404d395ccc168f0"
+      },
+      "physical_cases_exact_original_guarded": 24
+    }
+  },
+  "driver_sha256": "ddb03426ede4a185b8e084afd2999acc421d73b367882bd3536d9f79d97bc255",
+  "recipe_sha256": "e15bc4ac09d45e0c7543a15e3c9f0a367e0b6e2a7b47b4c1791d9ac70e4cb010",
+  "compiler": {
+    "version": "GNU Fortran (Rev4, Built by MSYS2 project) 16.2.0",
+    "sha256": "d818d364c3f0a422fc195f80539554d4ea38fdcd719046771233dbac294bc371",
+    "target": "x86_64-w64-mingw32"
+  },
+  "source_commit": "4e26a9ae903100d4fef5fa8c3c11d30808907a82",
+  "scope": "Complete original native closure, 24valid physical cases/opt identical; reporting correction measured separately, original invalid-domain failures retained; no model/macro execution",
+  "original_reporting_differences": {
+    "O0": 2,
+    "O2": 2
+  }
+}

@@ -81,7 +81,7 @@ def inspect(directory):
             crop_files.add(path.resolve())
             crop_types.setdefault(path.resolve(),set()).add(int(crop_type))
     mandatory = {'SWMACRO': {0}, 'SWSOLU': {0, 1}, 'SWHYST': {0, 1, 2},
-                 'SWSNOW': {0, 1}, 'SWFROST': {0}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
+                 'SWSNOW': {0, 1}, 'SWFROST': {0, 1}, 'SWHEA': {0, 1}, 'SWCALT': {1, 2},
                  'SWTOPBHEA': {1, 2, 3, 4}, 'SWBOTBHEA': {1, 2}, 'SWCROP': {0, 1},
                  'SWMETDETAIL': {0,1}, 'SWRUNON': {0,1}, 'SWKIMPL': {0},
                  'SWPONDMX': {0,1}, 'SWIRFIX': {0, 1}, 'SWCSV': {1}}
@@ -117,9 +117,34 @@ def inspect(directory):
                    SWTOPBHEA={1,2,3,4}, SWBOTBHEA={1,2}, SW2={1, 2}, SW3={1, 2},
                    SWKMEAN=set(range(1,7)), SWREDU={0,1,2},
                    SWMETDETAIL={0,1}, SWDIVIDE={0,1}, SWRAIN={0,1,2,3}, SWCFBS={0,1}, SWVAPOR={0},
-                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1})
+                   SWRUNON={0,1}, SWPONDMX={0,1}, SWIRGFIL={0,1}, SWFROST={0,1})
     if selected['SWSNOW'] and selected['SWHEA'] == 0:
         raise ValueError('Original snow requires soil heat transport')
+    frost_drain_file=None
+    if selected['SWFROST']:
+        if (selected['SWHEA']!=1 or selected['SWCALT']!=2 or selected['SWSNOW']!=1
+                or selected['SWHYST']!=2):
+            raise ValueError('Bounded original frost requires numeric heat, snow, hysteresis2 and SWDIVD0')
+        if selected['SWDRA']==1:
+            # The original reader owns SWDIVD in DRFIL.dra, not the main deck.
+            name=one(text,'DRFIL',r"'[^']+'").strip("'")
+            prefix=one(text,'PATHDRAIN',r"'[^']*'").strip("'").strip()
+            frost_drain_file=(directory/(prefix+name+'.dra')).resolve()
+            if not frost_drain_file.is_file():raise ValueError('Missing original frost drainage input')
+            if switches(frost_drain_file.read_text(encoding='cp1252')).get('SWDIVD')!=0:
+                raise ValueError('Bounded original frost reference excludes effective SWDIVD1')
+            if selected['SWSOLU']:
+                raise ValueError('Original drainage reader refuses SWDIVD0 with solute transport')
+            raise ValueError('Integrated frost drainage awaits conservative snow/day receipt qualification')
+        limits=[]
+        for name in ('TFROSTSTA','TFROSTEND'):
+            values=re.findall(r'(?mi)^[ \t]*'+name+r'[ \t]*=[ \t]*([^!\r\n]+)',text)
+            if len(values)!=1:raise ValueError('Missing/ambiguous original frost limit')
+            try:value=float(values[0].strip().replace('D','e').replace('d','e'))
+            except ValueError:raise ValueError('Invalid original frost limit') from None
+            if not -10<=value<=5:raise ValueError('Nonfinite/outside original frost limit')
+            limits.append(value)
+        if limits[0]<=limits[1]:raise ValueError('Unordered original frost temperature limits')
     if selected['SWSNOW'] and selected['SWCALT'] != 2:
         raise ValueError('Snow requires numerical thermal history integration')
     if selected['SWHYST'] and selected['SWSOPHY'] != 0:
@@ -135,6 +160,10 @@ def inspect(directory):
         boundary = selected
     if boundary.get('SWBOTB') not in range(1, 9):
         raise ValueError('Unsupported/missing original lower boundary')
+    if selected['SWFROST']:
+        expected_bottom=7 if selected['SWDRA']==0 else 6
+        if boundary['SWBOTB']!=expected_bottom or selected['SWTOPBHEA']!=2:
+            raise ValueError('Bounded frost qualification requires prescribed surface temperature and free bottom7 or drained bottom6')
     if selected['SWSOLU'] and boundary['SWBOTB']==1:
         raise ValueError('Prescribed groundwater-level flux requires a separate independent trial receipt')
     for name, value in boundary.items():
@@ -162,6 +191,8 @@ def inspect(directory):
                 raise ValueError('Unsupported original irrigation schedule')
             if structure(sig) not in crop_structures or any(sig.get(k) not in values for k,values in root_controls.items()):
                 raise ValueError('Crop process/state combination is not implemented: '+path.name)
+            if selected['SWFROST'] and sig['SWDROUGHT']!=1:
+                raise ValueError('Original microscopic root extraction does not implement frost: '+path.name)
             if sig['SWDROUGHT']>1 and sig['SWCOMPENSATE']>0:
                 raise ValueError('Original microscopic root uptake cannot be combined with additional compensation')
             if sig.get('SWINTER')==2 and crop_types[path.resolve()] != {1}:
@@ -175,7 +206,10 @@ def inspect(directory):
             if selected['SWCROP'] and sig.get('SWOXYGEN')==2 and (selected['SWHEA']!=1 or selected['SWCALT']!=2):
                 raise ValueError('Original physical oxygen stress requires numerical soil heat for every future crop')
         if path.suffix.lower() == '.dra' and sig not in drain_signatures:
-            raise ValueError('Drainage process/state combination is not implemented: '+path.name)
+            original_structure=lambda s:{k:v for k,v in s.items() if k!='SWDIVD'}
+            if (path.resolve()!=frost_drain_file or sig.get('SWDIVD')!=0
+                    or original_structure(sig) not in list(map(original_structure,drain_signatures))):
+                raise ValueError('Drainage process/state combination is not implemented: '+path.name)
         if path.suffix.lower() == '.dra':
             if one(body, 'DRAMET', r'[+-]?\d+') not in ('2', '3'):
                 raise ValueError('Unqualified drainage method')

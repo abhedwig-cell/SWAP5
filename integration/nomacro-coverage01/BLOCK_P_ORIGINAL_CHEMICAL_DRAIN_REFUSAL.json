@@ -1,0 +1,22 @@
+{
+  "status": "ACTUAL_ORIGINAL_READER_REFUSES_CHEMICAL_SWDIVD0",
+  "command": [
+    "C:\\Users\\Veldh012\\swap5-coverage-evidence\\J_windows_provider\\build\\swap_b0_gfortran.exe",
+    "./swap.swp"
+  ],
+  "returncode": 0,
+  "original_executable_sha256": "c29480b2b76bac820d5c98cae59c1d09680d4e1bdfc5728932b4e1a72f37da71",
+  "error": " Data file   ./SWAP.SWP with 207 variables parsed by RDINDX\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   283.MET with  12 variables parsed by RDINDX\n METFIL: all meteo data read and stored.\n Contents of ./SWAP.SWP recovered from TMP file\n Data file   SWAP.DRA with  69 variables parsed by RDINDX\n ERROR in read_drainage:  Variabel SWDIVD=0 and SWSOLU>0 in input file :swap.dra this yields incorrect results for solute transport\n ERROR in read_drainage:  Variabel SWDIVD=0 and SWSOLU>0 in input file :swap.dra this yields incorrect results for solute transport\n",
+  "swap_ok": false,
+  "physical_model_days": 0,
+  "input_sha256": {
+    "283.met": "1de5ba86caded630f8c5b828648e8bda091115acd243891fe7d8b3551bc5add6",
+    "grass.crp": "8ca3bcfd14c415b1fdbfd2980f1c1ad077f509cfb25bf753fe1bdcd1c820b882",
+    "maize.crp": "2fe2fd36d0d6901775278ee7288d04d95db09b3c1fc3b20b7ee00b7dcbc8aa33",
+    "potato.crp": "96b8591c2401a8363c6a2a35f9d535c01c78e10ebf25d3dba88a9b807381a707",
+    "swap.dra": "e0b3ce545f4b161255d1acdcc0e1231fd572d31659a27b0217a51d8cc15163d0",
+    "swap.swp": "159a120e495fc40ca0fd0b30822dc3419a53d80ab08f4549a8ca42da4bf3ae24"
+  },
+  "science": "NOT_QUALIFIED",
+  "disposition": "Chemical ordinary-drain frost with SWDIVD0 remains explicit preflight refusal. SWDIVD1 is outside FROST-GEOMETRY-01; no bypass or source alteration."
+}

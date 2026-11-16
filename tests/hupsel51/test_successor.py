@@ -139,5 +139,32 @@ class Boundaries(unittest.TestCase):
             with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_o(*bad)
 
 
+    def test_p_partial_frost_scope_source_balances_and_all_year_native(self):
+        load=lambda n:json.loads((s.ROOT/s.L_PROOF/('BLOCK_P_'+n+'.json')).read_text())
+        values=[load(n) for n in ('QUALIFICATION','CURRENT_FREE_PRESERVATION','LATER_NATIVE_RESULT','PRIOR_SOURCE_PRESERVATION','COMPONENT_RESULT','DEFAULT_PRESERVATION_RESULT','ORIGINAL_REFERENCE_RESULT')]
+        s.validate_p(*values);attacks=[]
+        for field,value in [('runtime_source',s.O_RUNTIME),('complete_model_days',4384),('mass_guard_cm',1e-9),('maximum_water_residual_cm',float('nan')),('retained_failures','PASS'),('solver_or_time_policy_changed',True),('new_persistent_frost_codec',True),('whole_scientific_equivalence','PASS')]:
+            bad=copy.deepcopy(values);bad[0][field]=value;attacks.append(bad)
+        for edit in ('mass','forcing','window','year','activation','initial','root'):
+            bad=copy.deepcopy(values);report=bad[0]['platforms']['Ubuntu']['chemical-frost-free'];r=report['profiles']['O2']
+            if edit=='mass':r['budgets']['max_solute_mg_cm2']=None
+            elif edit=='forcing':report['selected_physical_controls']['SWDRA']=1
+            elif edit=='window':r['own'][0]['exact_native']=False
+            elif edit=='year':r['active_frost_exact_native_windows'].pop()
+            elif edit=='activation':r['frost_witness']['days_with_reduction']=0
+            elif edit=='initial':r['frost_witness']['initial_original_uncomputed_diagnostic'][-1]=1
+            else:r['frost_witness']['total_original_frost_uptake_reduction_cm']=0
+            attacks.append(bad)
+        bad=copy.deepcopy(values);bad[1]['profiles']['water-O0']['generated']={};attacks.append(bad)
+        bad=copy.deepcopy(values);bad[2]['profiles']['chemical-O2']['own'][0]['exact_csv']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[2]['profiles']['water-O0']['own'][0]['full_trace_origin_day']=0;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[3]['profiles'].pop('chemical-surface-history');attacks.append(bad)
+        bad=copy.deepcopy(values);bad[4]['original_reporting_differences']['O0']=0;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[5]['profiles'][0]['every_exercised_native_exact']=False;attacks.append(bad)
+        bad=copy.deepcopy(values);bad[6]['profiles']['chemical']['scientific_equivalence']='PASS';attacks.append(bad)
+        for index,bad in enumerate(attacks):
+            with self.subTest(attack=index),self.assertRaises(ValueError):s.validate_p(*bad)
+
+
 if __name__ == '__main__':
     unittest.main()

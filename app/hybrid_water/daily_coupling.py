@@ -144,6 +144,14 @@ def validate_bundle(bundle, reference, project):
     meta = json.loads((bundle / 'BUILD.json').read_text())
     identity = meta['identity']
     from fixed_irrigation_file import enabled as fixed_file_enabled,POLICY as FIXED_FILE_POLICY
+    from frost_reference import enabled as frost_enabled,POLICY as FROST_POLICY,source as frost_source
+    expected_frost=None
+    if frost_enabled(project):
+        guarded=frost_source((reference/'build/swap-selected/frozencond.f90').read_bytes())
+        expected_frost={'policy':FROST_POLICY,'source_sha256':h.sha(h.APP/'frost_reference.py'),
+                        'generated_source_sha256':hashlib.sha256(guarded).hexdigest()}
+    if identity.get('frost_reference')!=expected_frost:raise ValueError('Foreign bounded original frost reference policy')
+    if expected_frost and (bundle/'frozencond.f90').read_bytes()!=guarded:raise ValueError('Foreign actual original frost source')
     expected_file={'policy':FIXED_FILE_POLICY,'source_sha256':h.sha(h.APP/'fixed_irrigation_file.py')} if fixed_file_enabled(project) else None
     if identity.get('fixed_irrigation_file')!=expected_file:raise ValueError('Foreign original fixed irrigation file policy')
     from surface_schedule import enabled as surface_schedule_enabled,POLICY as SURFACE_SCHEDULE_POLICY

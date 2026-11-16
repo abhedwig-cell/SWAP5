@@ -7,7 +7,7 @@ from daily_coupling import validate_bundle
 def physical(row):return {k:v for k,v in row.items() if k not in ('column','revision')}
 
 
-def windows(bundle,reference,project,out,full_rows,opt,*,cuts=(199,529),fixed_irrigation=False):
+def windows(bundle,reference,project,out,full_rows,opt,*,cuts=(199,529),fixed_irrigation=False,compare_full=False):
     selected=set(cuts)|{d+2 for d in cuts};out.mkdir();warm=out/'warm';warm.mkdir();expected={}
     meta,case=validate_bundle(bundle,reference,project)
     with contextlib.ExitStack() as stack:
@@ -15,7 +15,7 @@ def windows(bundle,reference,project,out,full_rows,opt,*,cuts=(199,529),fixed_ir
         with (out/'warm.jsonl').open('w') as log:
             for day in range(1,max(selected)+1):
                 row=host.step(1,checkpoint=day in selected);assert row['committed']
-                if opt=='O2':assert physical(row)==physical(full_rows[day-1])
+                if opt=='O2' or compare_full:assert physical(row)==physical(full_rows[day-1])
                 expected[day]=row;log.write(json.dumps(row)+'\n')
         host.close()
     for cut in cuts:

@@ -234,7 +234,7 @@ which remain outside this work unit. A supported input selector alone is not A.
 | Crops/roots/ET | Registered grass/rotation/WOFOST; bare/simple maize; Gash/Feddes/microscopic drought2/Walsum2 | B: broader original growth structures, root/stress/interception/ET controls and combinations; canonical D/E evidence retains its named scope |
 | Irrigation | Registered and eligible generic water-only/chemical external surface histories, managed rotation | B: original scheduling and subsurface variants beyond the executed families |
 | Heat | Selected numerical and analytical temperature; original top1..4 and bottom1/2; compatible no-heat routes | B: unexecuted process combinations; whole physical energy including mass-carried energy remains a separate scientific limitation |
-| Snow/frost | Positive snow accumulation/melt, snow plus hysteresis, named exact continuations | B/C: complete frost state and corrected-reference integration; frost remains refused |
+| Snow/frost | Positive snow/melt and history; P qualifies bounded partial frost with free bottom7 | Integrated frost drainage, closed/fully blocked trajectories and unsupported root combinations remain excluded |
 | Solute | Original conservative CDE; separate and combined Freundlich sorption/decay | B/C: reservoir SWBR1, original age/tracer SWSOLU2 and their matching conserved ledgers/state |
 | Weather/top boundary | Selected original daily weather, atmosphere, interception and surface store | H: eight qualified ET/rain configurations; detailed pulsed rain/hourly weather retain day364 failures; further top-boundary options and implicit conductivity SWKIMPL1 remain open |
 | Runtime control | Registered groundwater and surface forcing; experimental original and eligible full external surface accept/discard/recovery | B/C: general runtime dynamic boundary forcing beyond the registered contracts |
@@ -971,3 +971,64 @@ postimage. Original431 common-field differences, all earlier strict FAILs,
 chemical subsurface irrigation refusal, whole science and whole energy remain
 **NOT_QUALIFIED**. This repairs native history completeness, without establishing
 scientific equivalence or all-option completion.
+## Block P: bounded original partial frost integration
+
+**Qualified snapshot, pending canonical admission.** Runtime
+`7bf2f817b2a025ed25670730d4745dcbb8c4001b` selects the exact admitted
+FROST-GEOMETRY-01 whole original module over FROST-DRAIN-01, with both source
+links pinned to immutable SHA256 values. It promotes no global B1 snapshot.
+The complete original native component closure passes24valid physical cases
+at each O0/O2, exact to the original. Two known original reporting differences
+per optimization and six guarded invalid-domain refusals are retained.
+
+The integrated positive scope is water/chemical, SWDRA0, free bottom7,
+SWHEA1/SWCALT2, SWSNOW1/SWHYST2, prescribed original TSS2 and original Feddes1
+in every future crop. Declared derived winter and crop-season surface pulses
+run from5C to-0.5C and thaw, with original frost limits0/-1C and unchanged
+weather. These are partial-freeze process fixtures, not new historical projects.
+Complete active frost fields are recomputed by original FrozenCond from restored
+TSOIL/TETOP before root/boundary use; existing whole snow/hydraulic history
+owners suffice. No new persistent frost codec, solver, clock policy or tolerance.
+
+Both platforms qualify water and chemical1096 at touched O0/O2: eight complete
+trajectories/8768days. The four completed Windows periods retain their actual
+source5a59d1799; fresh current compiled sources/inputs/policies are exact, with
+172-day physical/native preservation and source-identical continuation through903
+for missing later-year probes. Their capsules are not rebound. Ubuntu executes
+four full periods at the final runtime.32standard own2/199/365/530 windows and
+48active winter/crop windows across all three years are exact in physical rows,
+complete CSV and native payloads. Every profile records130actual reduction days;
+minimum hydraulic factor is about0.510487. Chemical original integrated frost
+uptake reduction is2.9393824859951194cm. Fully blocked flow and bracketed front cases are tested only by the small
+original component, not by these full periods.
+
+Max independent water6.31845079729354e-11cm, kernel6.318989775877526e-11cm and
+solute3.794298208958935e-12mg/cm2 remain below unchanged1e-10 guards. All profiles
+pass isolation, inconsistent-mass refusal without commit, external discard/replay,
+disk recovery, foreign recipe and actual rehashed native-history refusals.
+Default8 and ten fresh prior O/J/plate/N/M/L5/named generated-source/input/policy
+comparisons preserve their applicable earlier evidence; compiled binary identity
+is not claimed. Strict original reference-chain and current source guards refuse
+foreign content before execution.
+
+Two complete corrected-original standalone diagnostics use identical executed
+input decks and only the exact frost-module replacement. Their common-field
+water-stock difference reaches0.162628182314cm and chemical stock0.063339487278
+mg/cm2. No scientific tolerance is invented: whole science/energy remain
+**NOT_QUALIFIED**, including all retained earlier failures.
+
+Explicit exclusions preserve measured evidence. The original reader refuses
+chemical SWDIVD0; the original microscopic root owner refuses frost. Closed
+undrained frost censors at the year boundary in both warm and same-source cold
+probes. Water drainage with corrected Feddes future inputs still rejects day21
+at independent2.2546546747659324e-10 while the trial receipt is about9.97e-11.
+It is refused preflight pending complete original snow/day receipt ownership.
+A tried pond-tangent extension passes37days but remains withdrawn after the
+closed full censor. No cap or mass-limit increase, scalar cache or extra Newton
+patch is admitted. Initial fixture and verification-driver failures remain raw;
+metadata completion reuses already executed periods and exact assertions.
+
+`BLOCK_P_QUALIFICATION.json`, current preservation, original-reference and raw
+archive records own this bounded claim. Integrated frost drainage, closed or
+fully blocked trajectories, other thermal/history combinations and all-option
+completion remain open.

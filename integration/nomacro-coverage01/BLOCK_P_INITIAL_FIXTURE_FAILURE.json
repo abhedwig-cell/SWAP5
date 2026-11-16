@@ -1,0 +1,9 @@
+{
+  "status": "INITIAL_FIXTURE_DRIVER_FAILURE_BEFORE_ANY_BUILD_OR_MODEL",
+  "source_commit": "4e26a9ae9",
+  "diagnostic": "AssertionError SWDIVD: original option belongs in DRFIL.dra, not main deck",
+  "actual_log": "Traceback (most recent call last):\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tests\\nomacro_frost\\run.py\", line 37, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tests\\nomacro_frost\\run.py\", line 16, in main\n    user_prepare.validate(reference);case=out/'input';changes=frost_cases.create(case,a.configuration);project=m.e.load(case);reports={};events=[]\n                                                              ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\Users\\Veldh012\\swap5-nomacro-coverage01\\tools\\solute\\frost_cases.py\", line 14, in create\n    text,n=re.subn(r'(?m)^([ \\t]*'+name+r'[ \\t]*=[ \\t]*)\\d+',lambda m:m[1]+str(value),text);assert n==1,name\n                                                                                                   ^^^^\nAssertionError: SWDIVD\n",
+  "completed_model_days": 0,
+  "numerical_repair_attempts": 0,
+  "disposition": "Resolve exact original DRFIL/PATHDRAIN and validate effective SWDIVD, preserve unmodified inactive drain input; no original reader bypass"
+}

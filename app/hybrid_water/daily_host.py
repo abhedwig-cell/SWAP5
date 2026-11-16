@@ -701,6 +701,14 @@ end module plant_interface""")
         source=path.read_text(encoding='cp1252') if 'readswap' in patched else (donor_build/'swap-selected/readswap.f90').read_text(encoding='cp1252')
         path.write_text(render_surface_reader(source,project.start_clock),encoding='cp1252')
         if 'readswap' not in patched:patched.append('readswap')
+    from frost_reference import enabled as frost_enabled
+    frost=frost_enabled(project)
+    if frost:
+        from frost_reference import source as frost_source,render_witness
+        (output/'frozencond.f90').write_bytes(frost_source((donor_build/'swap-selected/frozencond.f90').read_bytes()))
+        patched.insert(0,'frozencond')
+        path=output/'swap_csv_output.f90'
+        path.write_text(render_witness(path.read_text(encoding='cp1252')),encoding='cp1252')
     for name in patched:
         subprocess.run([*common, "-c", name + ".f90"], cwd=output, check=True)
     donor = executable(output, "day_donor")
@@ -771,6 +779,10 @@ end module plant_interface""")
     if fixed_file:
         from fixed_irrigation_file import POLICY as FIXED_FILE_POLICY
         build_identity['fixed_irrigation_file']={'policy':FIXED_FILE_POLICY,'source_sha256':sha(APP/'fixed_irrigation_file.py')}
+    if frost:
+        from frost_reference import POLICY as FROST_POLICY
+        build_identity['frost_reference']={'policy':FROST_POLICY,'source_sha256':sha(APP/'frost_reference.py'),
+            'generated_source_sha256':sha(output/'frozencond.f90')}
     if scheduled_pond:
         from surface_schedule import POLICY as SURFACE_SCHEDULE_POLICY
         build_identity['surface_schedule']={'policy':SURFACE_SCHEDULE_POLICY,'source_sha256':sha(APP/'surface_schedule.py')}
